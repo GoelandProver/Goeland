@@ -37,7 +37,7 @@ This is still a preliminary version of the implementation. Goéland must be call
 $ ./_build/goeland problem.p
 ```
 
-By default, this will run Goéland, with all its extensions, on the problem. Beware that currently, `include`s statements in TPTP problem files aren't managed by the parser. It is scheduled to be added in the near future.
+By default, this will run Goéland, with all its extensions, on the problem. Beware that currently, `include`s statements in TPTP problem files aren't managed by the parser. It is scheduled to be added in the near future. For the moment, the python script [add_include.py](external_scripts/add_include.py) can do this job if needed.
 
 ### Parameters
 
@@ -47,7 +47,8 @@ The parameters must be passed *before* the problem file. The available parameter
 |--------------------------|-----------|
 | -l | Re-entry limit of free variables in destructive mode (default: **-1**) |
 | -nd | Use of non-destructive mode (default: **false**) |
-| -proof | Generate a proof (default: **false**) |
+| -proof | Generate a proof tree in json (default: **false**). Visualisation of this proof tree can be done with the [visualisation module](visualization/). |
+| -exchanges | Generate an excahnge tree in json (default: **false**). Visualisation of this exchange tree can be done with the [visualisation module](visualization/). |
 | -loadPlugins | Use Goéland with plugins (default: **true**) |
 
 ### Result values

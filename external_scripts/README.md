@@ -2,10 +2,6 @@
 
 External scripts are here to provide some useful functionalities to the Goéland's environment. 
 
-## License
-
-Goéland is licensed under the CeCILL 2.1 License. See [LICENSE](../LICENSE).
-
 ## Requirements
 
 Scripts needs Python 3 to being executed.
