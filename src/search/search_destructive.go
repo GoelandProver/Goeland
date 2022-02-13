@@ -1,12 +1,9 @@
 /**
-* Copyright by Julie CAILLER and Johann ROSAIN (2022)
-*
-* julie.cailler@lirmm.fr
-* johann.rosain@lirmm.fr
+* Copyright 2022 by the authors (see AUTHORs).
 *
 * Goéland is an automated theorem prover for first order logic.
 *
-* This software is governed by the CeCILL-B license under French law and
+* This software is governed by the CeCILL license under French law and
 * abiding by the rules of distribution of free software.  You can  use, 
 * modify and/ or redistribute the software under the terms of the CeCILL-B
 * license as circulated by CEA, CNRS and INRIA at the following URL
@@ -30,7 +27,7 @@
 * same conditions as regards security. 
 *
 * The fact that you are presently reading this means that you have had
-* knowledge of the CeCILL-B license and that you accept its terms.
+* knowledge of the CeCILL license and that you accept its terms.
 **/
 /*************/
 /* search.go */
@@ -46,10 +43,10 @@ import (
 	treesearch "github.com/delahayd/gotab/code-trees/tree-search"
 	treetypes "github.com/delahayd/gotab/code-trees/tree-types"
 	"github.com/delahayd/gotab/global"
-	"github.com/delahayd/gotab/proof"
 	basictypes "github.com/delahayd/gotab/types/basic-types"
 	complextypes "github.com/delahayd/gotab/types/complex-types"
-	"github.com/delahayd/gotab/visualization"
+	exchanges "github.com/delahayd/gotab/visualization_exchanges"
+	proof "github.com/delahayd/gotab/visualization_proof"
 )
 
 /* Manage quit or wait father order. Return true if th eproess is supposed to dia at the end */
@@ -292,12 +289,12 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 
 	select {
 	case quit := <-c.quit:
-		visualization.WriteExchanges(father_id, st, given_substs, complextypes.SubstAndForm{}, "WaitFather - Die")
+		exchanges.WriteExchanges(father_id, st, given_substs, complextypes.SubstAndForm{}, "WaitFather - Die")
 		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs)
 		return
 
 	case answer_father := <-c.result:
-		visualization.WriteExchanges(father_id, st, given_substs, answer_father.subst_for_children, "WaitFather")
+		exchanges.WriteExchanges(father_id, st, given_substs, answer_father.subst_for_children, "WaitFather")
 		global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", answer_father.subst_for_children.GetSubst().ToString()))
 
 		// Retrieve meta from the subst sent by my father
@@ -358,7 +355,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 
 	select {
 	case quit := <-c.quit:
-		visualization.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die")
+		exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die")
 		manageQuitOrder(quit, c, father_id, st, children, given_substs)
 		return
 	default:
@@ -385,7 +382,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			}
 			global.PrintDebug("WC", fmt.Sprintf("CurrentProof : %v", st.GetCurrentProof().ToString()))
 
-			visualization.WriteExchanges(father_id, st, nil, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
+			exchanges.WriteExchanges(father_id, st, nil, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 			sendSubToFather(c, true, false, father_id, st, given_substs)
 
 		// substs list is for father
@@ -422,7 +419,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 			}
 
-			visualization.WriteExchanges(father_id, st, result_subst, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all agree")
+			exchanges.WriteExchanges(father_id, st, result_subst, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all agree")
 
 			st.SetSubstsFound(complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound()))
 
@@ -438,7 +435,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			global.PrintDebug("WC", fmt.Sprintf("There is more than one substitution, choose one : %v and send it to children", s.GetSubst().ToString()))
 			sendSubToChildren(children, s)
 
-			visualization.WriteExchanges(father_id, st, result_subst, s, "WaitChildren - To children")
+			exchanges.WriteExchanges(father_id, st, result_subst, s, "WaitChildren - To children")
 
 			// TODO : vérifier si la sub n'a pas déjà été vue, si oui renvoyer faux
 			substs_for_backtrack = append(substs_for_backtrack, subst_res...)
@@ -446,13 +443,13 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 
 		// quit order from my father
 		case 3:
-			visualization.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die")
+			exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die")
 			global.PrintDebug("WC", "Closing order received")
 			manageQuitOrder(true, c, father_id, st, children, []complextypes.SubstAndForm{})
 
 		// wait my father
 		case 4:
-			visualization.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Wait father")
+			exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Wait father")
 			global.PrintDebug("WC", "Closing order received, let's wait father")
 			closeChildren(&children, true)
 			waitFather(father_id, st, c, given_substs)
@@ -464,11 +461,11 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			if len(substs_for_backtrack) > 0 {
 				next_subst := tryBTSubstitution(&substs_for_backtrack, st.GetMM(), children)
 
-				visualization.WriteExchanges(father_id, st, []complextypes.SubstAndForm{next_subst}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack")
+				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{next_subst}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack")
 
 				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack)
 			} else {
-				visualization.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die - Noe more BT available")
+				exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die - Noe more BT available")
 				global.PrintDebug("WC", "There is no substitution availabe")
 				closeChildren(&children, true)
 				global.PrintDebug("WC", "SFFC empty")
@@ -531,9 +528,9 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			for _, f := range processableAtoms {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.GetForm().ToString()))
 				clos_res, subst := applyClosureRules(f.GetForm(), &st)
-	
+
 				closed := manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy())
-	
+
 				if closed {
 					manageQuitOrder(true, c, father_id, st, nil, []complextypes.SubstAndForm{})
 					return

@@ -32,12 +32,12 @@ Usage of ./_build/goeland:
 
 ## Usage
 
-This is still a preliminary version of the implementation. Gull must be called from the command line. To solve a `problem.p` problem, just give this problem as an argument:
+This is still a preliminary version of the implementation. Goéland must be called from the command line. To solve a `problem.p` problem, just give this problem as an argument:
 ```console
 $ ./_build/goeland problem.p
 ```
 
-By default, this will run Goeland, with all its extensions, on the problem. Beware that currently, `include`s statements in TPTP problem files aren't managed by the parser. It is scheduled to be added in the near future.
+By default, this will run Goéland, with all its extensions, on the problem. Beware that currently, `include`s statements in TPTP problem files aren't managed by the parser. It is scheduled to be added in the near future.
 
 ### Parameters
 

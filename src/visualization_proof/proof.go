@@ -1,12 +1,9 @@
 /**
-* Copyright by Julie CAILLER and Johann ROSAIN (2022)
-*
-* julie.cailler@lirmm.fr
-* johann.rosain@lirmm.fr
+* Copyright 2022 by the authors (see AUTHORs).
 *
 * Goéland is an automated theorem prover for first order logic.
 *
-* This software is governed by the CeCILL-B license under French law and
+* This software is governed by the CeCILL license under French law and
 * abiding by the rules of distribution of free software.  You can  use, 
 * modify and/ or redistribute the software under the terms of the CeCILL-B
 * license as circulated by CEA, CNRS and INRIA at the following URL
@@ -30,7 +27,7 @@
 * same conditions as regards security. 
 *
 * The fact that you are presently reading this means that you have had
-* knowledge of the CeCILL-B license and that you accept its terms.
+* knowledge of the CeCILL license and that you accept its terms.
 **/
 /********************/
 /* visualization.go */
@@ -44,13 +41,12 @@ package proof
 import (
 	"encoding/json"
 	"os"
-	"strconv"
 	"sync"
 
 	"github.com/delahayd/gotab/global"
 )
 
-var path_proof = "./proof/graph_proof_"
+var path_proof = global.GetExecPath() + "../../visualization/json/proof_output.json"
 var file_proof *os.File
 var mutex_file_proof sync.Mutex
 
@@ -91,7 +87,7 @@ func ProofChildrenToString(l [][]ProofStruct) string {
 
 /* Getters */
 func GetGraphFileNameProof() string {
-	return path_proof + strconv.Itoa(global.GetNbStep()) + ".json"
+	return path_proof
 }
 func (p ProofStruct) GetFormula() string {
 	return p.Formula
@@ -128,6 +124,14 @@ func MakeEmptyProofStruct() ProofStruct {
 
 func MakeProofStruct(formula string, rule string, children [][]ProofStruct) ProofStruct {
 	return ProofStruct{formula, rule, children}
+}
+
+/* Functions */
+func ResetProofFile() {
+	if global.GetProof() {
+		f, _ := os.Create(GetGraphFileNameProof())
+		SetFileProof(f)
+	}
 }
 
 func WriteGraphProof(json_content []ProofStruct) {

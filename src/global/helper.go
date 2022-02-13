@@ -1,12 +1,9 @@
 /**
-* Copyright by Julie CAILLER and Johann ROSAIN (2022)
-*
-* julie.cailler@lirmm.fr
-* johann.rosain@lirmm.fr
+* Copyright 2022 by the authors (see AUTHORs).
 *
 * Goéland is an automated theorem prover for first order logic.
 *
-* This software is governed by the CeCILL-B license under French law and
+* This software is governed by the CeCILL license under French law and
 * abiding by the rules of distribution of free software.  You can  use, 
 * modify and/ or redistribute the software under the terms of the CeCILL-B
 * license as circulated by CEA, CNRS and INRIA at the following URL
@@ -30,7 +27,7 @@
 * same conditions as regards security. 
 *
 * The fact that you are presently reading this means that you have had
-* knowledge of the CeCILL-B license and that you accept its terms.
+* knowledge of the CeCILL license and that you accept its terms.
 **/
 /*************/
 /* helper.go */
@@ -44,8 +41,10 @@ package global
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"runtime"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -61,6 +60,12 @@ var proof = false
 var data_struct = "trees"
 var limit = -1
 var one_step = false
+
+// Executable path
+var current_directory, _ = os.Executable()
+var current_directory_splitted = strings.Split(current_directory, "/")
+var exec_name = current_directory_splitted[len(current_directory_splitted)-1]
+var exec_path = current_directory[:len(current_directory)-len(exec_name)]
 
 /* Prints in debug mode. */
 func PrintDebug(function, message string) {
@@ -129,6 +134,10 @@ func IsOneStep() bool {
 
 func GetProof() bool {
 	return proof
+}
+
+func GetExecPath() string {
+	return exec_path
 }
 
 /* Setters */
