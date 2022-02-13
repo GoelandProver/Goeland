@@ -8,13 +8,13 @@ import re
 if len(sys.argv) != 2: 
     print("python3 update_license folder")
 else:
-    license = '''Copyright 2022 by the authors (see AUTHORs).
+    license = '''Copyright 2022 by the authors (see AUTHORS).
 *
 * Goéland is an automated theorem prover for first order logic.
 *
 * This software is governed by the CeCILL license under French law and
 * abiding by the rules of distribution of free software.  You can  use, 
-* modify and/ or redistribute the software under the terms of the CeCILL-B
+* modify and/ or redistribute the software under the terms of the CeCILL
 * license as circulated by CEA, CNRS and INRIA at the following URL
 * "http://www.cecill.info". 
 *
