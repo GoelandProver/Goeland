@@ -1,5 +1,14 @@
-/**
-* Copyright 2022 by the authors (see AUTHORs).
+from cgi import print_form
+import os
+import sys
+import re
+
+# + Makefile + yacc
+
+if len(sys.argv) != 2: 
+    print("python3 update_license folder")
+else:
+    license = '''Copyright 2022 by the authors (see AUTHORs).
 *
 * Goéland is an automated theorem prover for first order logic.
 *
@@ -27,73 +36,27 @@
 * same conditions as regards security. 
 *
 * The fact that you are presently reading this means that you have had
-* knowledge of the CeCILL license and that you accept its terms.
-**/
-/*****************/
-/* SubstPair.go */
-/*****************/
-/**
-* This file provides the necessary structures to manipulate pairs of substitutions.
-**/
+* knowledge of the CeCILL license and that you accept its terms.'''
 
-package treetypes
+    folder = sys.argv[1]
 
-import (
-	"strconv"
-
-	basictypes "github.com/delahayd/gotab/types/basic-types"
-)
-
-/* Association between an integer and a Term. */
-type SubstPair struct {
-	i    int
-	term basictypes.Term
-}
-
-func (s SubstPair) GetIndex() int {
-	return s.i
-}
-
-func (s SubstPair) GetTerm() basictypes.Term {
-	return s.term.Copy()
-}
-
-func (s SubstPair) Copy() SubstPair {
-	return MakeSubstPair(s.GetIndex(), s.GetTerm().Copy())
-}
-
-func GetSubstAt(subst []SubstPair, index int) basictypes.Term {
-	for _, sub := range subst {
-		if sub.i == index {
-			return sub.GetTerm()
-		}
-	}
-	return nil
-}
-
-func SubstPairListToString(s []SubstPair) string {
-	res := "{"
-	for i, v := range s {
-		res += "(" + strconv.Itoa(v.i) + ", " + v.GetTerm().ToString() + ")"
-		if i < len(s)-1 {
-			res += ", "
-		}
-	}
-
-	res += "}"
-	return res
-}
-
-/* Maker */
-func MakeSubstPair(i int, term basictypes.Term) SubstPair {
-	return SubstPair{i, term.Copy()}
-}
-
-/* Copy a list of substPair */
-func CopySubstPairList(sl []SubstPair) []SubstPair {
-	res := []SubstPair{}
-	for _, sp := range sl {
-		res = append(res, sp.Copy())
-	}
-	return res
-}
+    for parent, dirnames, filenames in os.walk(folder): 
+        print(filenames)
+        for fn in filenames:
+            if fn.split(".")[-1].lower() == "go":
+                with open(os.path.join(parent, fn), 'r+') as f:
+                    content = f.read()
+                    # If the file already contains a license, replace it
+                    if re.search(r"Copyright(.|\n)*license and that you accept its terms\.", content):
+                        print("License already found, let's replace it!")
+                        f.close()
+                        f = open(os.path.join(parent, fn), 'w').close()
+                        f = open(os.path.join(parent, fn), 'r+')
+                        f.write(re.sub(r"Copyright(.|\n)*license and that you accept its terms\.", license, content))
+                    # Else, add it
+                    else:
+                        print("No license here, let's add it!")
+                        f.seek(0, 0)
+                        f.write("/**\n* "+license + '\n**/\n' + content)
+            else:
+                print("Not a .go file")

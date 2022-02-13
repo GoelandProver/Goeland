@@ -1,12 +1,9 @@
 /**
-* Copyright by Julie CAILLER and Johann ROSAIN (2022)
-*
-* julie.cailler@lirmm.fr
-* johann.rosain@lirmm.fr
+* Copyright 2022 by the authors (see AUTHORs).
 *
 * Goéland is an automated theorem prover for first order logic.
 *
-* This software is governed by the CeCILL-B license under French law and
+* This software is governed by the CeCILL license under French law and
 * abiding by the rules of distribution of free software.  You can  use, 
 * modify and/ or redistribute the software under the terms of the CeCILL-B
 * license as circulated by CEA, CNRS and INRIA at the following URL
@@ -30,7 +27,7 @@
 * same conditions as regards security. 
 *
 * The fact that you are presently reading this means that you have had
-* knowledge of the CeCILL-B license and that you accept its terms.
+* knowledge of the CeCILL license and that you accept its terms.
 **/
 /*************/
 /* search.go */
@@ -51,7 +48,7 @@ import (
 	"github.com/delahayd/gotab/global"
 	basictypes "github.com/delahayd/gotab/types/basic-types"
 	complextypes "github.com/delahayd/gotab/types/complex-types"
-	"github.com/delahayd/gotab/visualization"
+	visualization "github.com/delahayd/gotab/visualization_exchanges"
 )
 
 /**
