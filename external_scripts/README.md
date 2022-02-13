@@ -29,7 +29,7 @@ $ python3 add_include.py DIRECTORY
 
 ## update_license.py
 
-This script replace the header of the license in each file by the one in the "update_license.py" file.
+This script replace the header of the license in each file by the one in the `update_license.py` file.
 
 ```console
 $ python3 update_license.py DIRECTORY
