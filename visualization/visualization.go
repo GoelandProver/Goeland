@@ -29,85 +29,77 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************/
-/* metaList.go */
-/***************/
 /**
-* This file contains functions and types which describe the term's data structure
+* go run server.go
+* localhost:8080
 **/
 
-package basictypes
+package main
 
 import (
-	"strconv"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"os/exec"
+	"text/template"
 )
 
-/* Meta function for sort */
-type MetaList []Meta
-
-func (m MetaList) Len() int      { return len(m) }
-func (m MetaList) Swap(i, j int) { m[i], m[j] = m[j], m[i] }
-func (m MetaList) Less(i, j int) bool {
-	return (m[i].GetName() + strconv.Itoa(m[i].GetIndex())) < (m[j].GetName() + strconv.Itoa(m[j].GetIndex()))
+type JsonFile struct {
+	Data string
 }
 
-/* Print a list of metas */
-func (ml MetaList) ToString() string {
-	var s_res string
-	for i, v := range ml {
-		s_res += v.ToString()
-		if i < len(ml)-1 {
-			s_res += (", ")
-		}
-	}
-	return s_res
-}
-
-/* Check if a meta is inside a given list of metavariables */
-func (ml MetaList) Contains(m Meta) bool {
-	for _, v := range ml {
-		if v == m {
-			return true
-		}
-	}
-	return false
-}
-
-/* Append a meta to a meta list if it not already inside */
-func (ml MetaList) AppendIfNotContains(m Meta) MetaList {
-	if ml.Contains(m) {
-		return ml
+func handler_exchanges(w http.ResponseWriter, r *http.Request) {
+	cmd := exec.Command("bash", "./exchanges/make_exchanges_tree.sh")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println(err)
 	} else {
-		return append(ml, m)
+		fmt.Print(string(out))
+	}
+
+	// On lit le fichier
+	content, _ := os.ReadFile("json/exchanges_tree.json")
+
+	//Création du template
+	p := JsonFile{string(content)}
+	t := template.New("Visualisation")
+	t = template.Must(t.ParseFiles("exchanges/index.html"))
+
+	// Execute
+	err = t.ExecuteTemplate(w, "layout", p)
+	if err != nil {
+		log.Fatalf("Template execution: %s", err)
 	}
 }
 
-/* check if two metalist have metavariables in common */
-func (m1 MetaList) HasInCommon(m2 MetaList) bool {
-	for _, meta := range m1 {
-		if m2.Contains(meta) {
-			return true
-		}
+func handler_proof(w http.ResponseWriter, r *http.Request) {
+	// On génère les fi
+	cmd := exec.Command("bash", "./proof/make_proof_tree.sh")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Print(string(out))
 	}
-	return false
+
+	// On lit le fichier
+	content, _ := os.ReadFile("json/proof_tree.json")
+
+	//Création du template
+	p := JsonFile{string(content)}
+	t := template.New("Proof")
+	t = template.Must(t.ParseFiles("proof/index.html"))
+
+	// Execute
+	err = t.ExecuteTemplate(w, "layout", p)
+	if err != nil {
+		log.Fatalf("Template execution: %s", err)
+	}
 }
 
-/* Check if a list of meta is includ in another */
-func (ml MetaList) IsInclude(ml2 MetaList) bool {
-	for _, meta := range ml2 {
-		if !ml2.Contains(meta) {
-			return false
-		}
-	}
-
-	return true
-}
-
-/* Copy  a MetaList */
-func (ml MetaList) Copy() MetaList {
-	res := make(MetaList, len(ml))
-	for i := range ml {
-		res[i] = ml[i].Copy().ToMeta()
-	}
-	return res
+func main() {
+	http.HandleFunc("/exchanges", handler_exchanges)
+	http.HandleFunc("/proof", handler_proof)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

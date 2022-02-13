@@ -1,22 +1,19 @@
 /**
-* Copyright by Julie CAILLER and Johann ROSAIN (2022)
-*
-* julie.cailler@lirmm.fr
-* johann.rosain@lirmm.fr
+* Copyright 2022 by the authors (see AUTHORs).
 *
 * Goéland is an automated theorem prover for first order logic.
 *
-* This software is governed by the CeCILL-B license under French law and
-* abiding by the rules of distribution of free software.  You can  use,
+* This software is governed by the CeCILL license under French law and
+* abiding by the rules of distribution of free software.  You can  use, 
 * modify and/ or redistribute the software under the terms of the CeCILL-B
 * license as circulated by CEA, CNRS and INRIA at the following URL
-* "http://www.cecill.info".
+* "http://www.cecill.info". 
 *
 * As a counterpart to the access to the source code and  rights to copy,
 * modify and redistribute granted by the license, users are provided only
 * with a limited warranty  and the software's author,  the holder of the
 * economic rights,  and the successive licensors  have only  limited
-* liability.
+* liability. 
 *
 * In this respect, the user's attention is drawn to the risks associated
 * with loading,  using,  modifying and/or developing or reproducing the
@@ -25,12 +22,12 @@
 * therefore means  that it is reserved for developers  and  experienced
 * professionals having in-depth computer knowledge. Users are therefore
 * encouraged to load and test the software's suitability as regards their
-* requirements in conditions enabling the security of their systems and/or
-* data to be ensured and,  more generally, to use and operate it in the
-* same conditions as regards security.
+* requirements in conditions enabling the security of their systems and/or 
+* data to be ensured and,  more generally, to use and operate it in the 
+* same conditions as regards security. 
 *
 * The fact that you are presently reading this means that you have had
-* knowledge of the CeCILL-B license and that you accept its terms.
+* knowledge of the CeCILL license and that you accept its terms.
 **/
 /***************/
 /* gosat.go */
@@ -55,11 +52,11 @@ import (
 	treesearch "github.com/delahayd/gotab/code-trees/tree-search"
 	"github.com/delahayd/gotab/global"
 	"github.com/delahayd/gotab/plugin"
-	"github.com/delahayd/gotab/proof"
 	"github.com/delahayd/gotab/search"
 	basictypes "github.com/delahayd/gotab/types/basic-types"
 	complextypes "github.com/delahayd/gotab/types/complex-types"
-	visualization "github.com/delahayd/gotab/visualization"
+	exchanges "github.com/delahayd/gotab/visualization_exchanges"
+	proof "github.com/delahayd/gotab/visualization_proof"
 )
 
 // Flags
@@ -110,10 +107,12 @@ func main() {
 
 	if *flag_exchanges {
 		global.SetExchanges(true)
+		exchanges.ResetExchangesFile()
 	}
 
 	if *flag_proof {
 		global.SetProof(true)
+		proof.ResetProofFile()
 	}
 
 	// treesearch.RunTests()
@@ -209,6 +208,9 @@ func Search(f basictypes.Form, bound int) {
 
 	for ok := true; ok; ok = (!res && bound > 0 && !global.IsOneStep()) {
 		basictypes.ResetMeta()
+		proof.ResetProofFile()
+		exchanges.ResetExchangesFile()
+
 		global.PrintDebug("TMAINF", fmt.Sprintf("nb_step : %v", global.GetNbStep()))
 		fmt.Printf("nb_step : %v - limit : %v\n", global.GetNbStep(), limit)
 
@@ -224,10 +226,8 @@ func Search(f basictypes.Form, bound int) {
 		c := search.MakeCommunication(make(chan bool), make(chan search.Result))
 
 		if global.GetExchanges() {
-			f, _ := os.Create(visualization.GetExchangesFileName())
-			visualization.SetFileExchanges(f)
+			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
 		}
-		visualization.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
 
 		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm())
 		global.IncrGoRoutine(1)
@@ -241,10 +241,8 @@ func Search(f basictypes.Form, bound int) {
 		global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
 
 		if global.GetProof() {
-			f, _ := os.Create(proof.GetGraphFileNameProof())
-			proof.SetFileProof(f)
+			proof.WriteGraphProof(final_proof)
 		}
-		proof.WriteGraphProof(final_proof)
 
 		limit = 2 * limit
 		global.SetNbStep(global.GetNbStep() + 1)
@@ -267,15 +265,15 @@ func StatementListToFormula(lstm []basictypes.Statement) basictypes.Form {
 			not_form = s.GetForm()
 		}
 	}
-    switch {
-    case len(and_list) == 0 && not_form == nil:
-        fmt.Printf("Aucune données")
-        return nil
-    case len(and_list) == 0:
-        return basictypes.RefuteForm(not_form)
-    case not_form == nil:
-        return basictypes.MakeAnd(and_list)
-    default:
-        return basictypes.MakeAnd(append(and_list, basictypes.RefuteForm(not_form)))
-    }
+	switch {
+	case len(and_list) == 0 && not_form == nil:
+		fmt.Printf("Aucune données")
+		return nil
+	case len(and_list) == 0:
+		return basictypes.RefuteForm(not_form)
+	case not_form == nil:
+		return basictypes.MakeAnd(and_list)
+	default:
+		return basictypes.MakeAnd(append(and_list, basictypes.RefuteForm(not_form)))
+	}
 }
