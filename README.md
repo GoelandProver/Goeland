@@ -49,7 +49,9 @@ The parameters must be passed *before* the problem file. The available parameter
 | -nd | Use of non-destructive mode (default: **false**) |
 | -proof | Generate a proof tree in json (default: **false**). Visualisation of this proof tree can be done with the [visualisation module](visualization/). |
 | -exchanges | Generate an excahnge tree in json (default: **false**). Visualisation of this exchange tree can be done with the [visualisation module](visualization/). |
-| -loadPlugins | Use Goéland with plugins (default: **true**) |
+| -load | Load specified plugin. It should be a list of names, separated by commas and without white space, i.e. `-load dmt,arith`. If plugin is enabled by default, you don't have to call this flag. |
+| -preventLoad | Prevents a default-activated plugin to be loaded. Its value should follow the format of `-load`. |
+| -poptions | Specify options for a plugin. It should be of the following form: `pluginName:option1=...,option2=...`. If you have options for multiple plugins, it should be called multiple times: `-load dmt,arith -poptions dmt:polarized=true -poptions arith:onlyIntegers=true`. |
 
 ### Result values
 
