@@ -190,10 +190,10 @@ func PrintResult(res bool) {
 	fmt.Printf("[%.6fs][%v][Res] %v goroutines created\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), global.GetNbGoroutines())
 	fmt.Printf("==== Result ====\n")
 	if res {
-		fmt.Printf("[%.6fs][%v][Res] La formule est valide\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		fmt.Printf("[%.6fs][%v][Res] VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		os.Stderr.WriteString("Valid\n")
 	} else {
-		fmt.Printf("[%.6fs][%v][Res] La formule n'est pas valide\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		fmt.Printf("[%.6fs][%v][Res] NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		os.Stderr.WriteString("Not valid\n")
 	}
 

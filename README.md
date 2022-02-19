@@ -14,6 +14,8 @@ Goéland is licensed under the CeCILL 2.1 License. See [LICENSE](LICENSE).
 
 Goéland needs Go (version >= 1.13, download directly from the [site](https://go.dev/)) and goyacc (`sudo apt-get install golang-golang-x-tools`) to compile.
 
+Python3 (any version, download directly from the [site](https://www.python.org/downloads/)) is also needed to perform tests on the given benchmark (see  [Tests](#tests)).
+
 ### Compilation
 
 Proceed as follows to build Goéland from source (assuming that you currently are in the root folder of the repository):
@@ -56,3 +58,27 @@ The parameters must be passed *before* the problem file. The available parameter
 ### Result values
 
 Since the tableau method only proves theorems, Goéland returns `Valid` when a proof is found, otherwise it loops to infinity, trying to increase the reintroduction limit.
+
+### Tests <a id="tests"></a>
+
+The benchmark is available in [tests](tests/) folder, with the [Makefile](tests/Makefile) needed to run them. The folder on which to run the tests are specified in the [Makefile](tests/Makefile).
+
+For example, the command line:
+```console
+$ make
+```
+with the following architecture: 
+```console
+├── SET
+│   ├── problem_set_1.p
+│   ├── problem_set_2.p
+│   └── problem_set_3.p
+├── SYN
+│   ├── problem_syn_1.p
+│   ├── problem_syn_2.p
+│   └── problem_syn_3.p
+├── RESULTS
+└── Makefile
+```
+and the corresponding lines added to the [Makefile](tests/Makefile) will run Goéland and Goéland+DMT on the SYN and SET folder. Output results are placed into the [RESULTS](tests/RESULTS/) repository. 
+

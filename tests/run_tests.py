@@ -25,7 +25,7 @@ def truncate(number, decimals=0):
     return math.trunc(number * factor) / factor
 
 def TimeToString(start, end):
-    return str(truncate(end-start, 5)).replace(".", ",")
+    return str(truncate(end-start, 5))
 
 def LaunchTest(prover_name, command_line, succes, memory_limit=None, failure=None):
         print(prover_name)
@@ -49,7 +49,7 @@ def LaunchTest(prover_name, command_line, succes, memory_limit=None, failure=Non
         print("--------------------------------------------------")
 
 if len(sys.argv) != 4: 
-    print("python3 stats problem_folder output_foler timeout")
+    print("python3 run_tests problem_folder output_foler timeout")
 else:
     folder = sys.argv[1]
     folder_split = folder.split("/")
@@ -59,7 +59,7 @@ else:
     current_time = now.strftime("%H:%M:%S")
     filename = sys.argv[2]+("stats_%s_%s_%s.csv" % (folder_split[len(folder_split)-2], current_day, current_time))
     f = open(filename, "w", buffering=1)
-    f.write("File_name; Number of atoms; Max depth; Number of variables; JP - Time; JP - Result; JPDMT - Time; JPDMT - Result\n")
+    f.write("File_name; Goéland - Time; Goéland - Result; Goéland+DMT - Time; Goéland+DMT - Result\n")
    
     entries = os.listdir(folder)
     timeout = sys.argv[3]
@@ -70,32 +70,11 @@ else:
         f.write(file[:-2])
         f.write(";")
 
-        file_open = open(folder+file)
-        for line in file_open:
-
-            noa_line = "Number of atoms"
-            if noa_line in line:
-               noa_number = re.search("[0-9][0-9]*[0-9]*", line)
-               f.write(str(noa_number.group()))
-               f.write(";")
-
-            mfd_line = "Maximal formula depth"
-            if mfd_line in line:
-               mfd_number = re.search("[0-9][0-9]*[0-9]*", line)
-               f.write(str(mfd_number.group()))
-               f.write(";")
-
-            nov_line = "Number of variables"
-            if nov_line in line:
-               nov_number = re.search("[0-9][0-9]*[0-9]*", line)
-               f.write(str(nov_number.group()))
-               f.write(";")
-
         # Goéland
-        LaunchTest("Goéland", "timeout "+timeout+" ../src/bin/_build/gotab -loadPlugins=false "+folder+file, "VALID", None, "NOT VALID")
+        LaunchTest("Goéland", "timeout "+timeout+" ../src/_build/goeland -preventLoad dmt "+folder+file, "VALID", None, "NOT VALID")
         
         # Goéland - DMT
-        LaunchTest("Goéland", "timeout "+timeout+" ../src/bin/_build/gotab "+folder+file, "VALID", None, "NOT VALID")
+        LaunchTest("Goéland+DMT", "timeout "+timeout+" ../src/_build/goeland "+folder+file, "VALID", None, "NOT VALID")
 
         f.write("\n")
 
