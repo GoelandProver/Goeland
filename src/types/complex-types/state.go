@@ -295,7 +295,7 @@ func (st State) Copy() State {
 
 	if global.IsDestructive() {
 		// Don't need to copy because launched with the subst applied - no need to tell father I found something
-		new_state.SetAppliedSubst(SubstAndForm{})
+		new_state.SetAppliedSubst(MakeEmptySubstAndForm())
 	} else {
 		new_state.SetAppliedSubst(st.GetAppliedSubst())
 	}

@@ -315,15 +315,19 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			st_copy := st.Copy()
 			c2 := Communication{make(chan bool), make(chan Result)}
 
-			// Take in account tu substitutions currently applied on this process
+			// Take in account the substitutions currently applied on this process
 			ms, same_key := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), answer_father.subst_for_children.GetSubst())
+
 			if same_key {
-				fmt.Printf("Same key in S2 and S1")
+				global.PrintDebug("WF", fmt.Sprintf("Same key in S2 and S1 : %v and %v", answer_father.subst_for_children.GetSubst().ToString(), st.GetAppliedSubst().GetSubst().ToString()))
+				fmt.Printf("[WF] Same key in S2 and S1 : %v and %v", answer_father.subst_for_children.GetSubst().ToString(), st.GetAppliedSubst().GetSubst().ToString())
 			}
 			if ms.Equals(treetypes.Failure()) {
-				println("[WF] Error : MergeSubstitutions return failure")
+				global.PrintDebug("[WF]", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", answer_father.subst_for_children.GetSubst().ToString(), st.GetAppliedSubst().GetSubst().ToString()))
+				fmt.Printf("[WF] Error : MergeSubstitutions returns failure between : %v and %v \n", answer_father.subst_for_children.GetSubst().ToString(), st.GetAppliedSubst().GetSubst().ToString())
 			}
-			// TODO : mixer les form de applied susbt et de susbt from father
+
+			// TODO : mixer les forms de applied susbt et de susbt from father
 			merged_subst := complextypes.MakeSubstAndForm(ms, answer_father.subst_for_children.GetForm())
 
 			global.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", merged_subst.GetSubst().ToString()))
@@ -398,10 +402,12 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				global.PrintDebug("FOR", fmt.Sprintf("Check the susbt :%v", s.GetSubst().ToString()))
 				ms, same_key := treesearch.MergeSubstitutions(s.GetSubst(), st.GetAppliedSubst().GetSubst())
 				if same_key {
-					fmt.Printf("Same key in S2 and S1")
+					global.PrintDebug("WC", fmt.Sprintf("Same key in S2 and S1 : %v and %v", s.GetSubst().ToString(), st.GetAppliedSubst().GetSubst().ToString()))
+					fmt.Printf("[WC] Same key in S2 and S1 bewteen : %v and %v\n", s.GetSubst().ToString(), st.GetAppliedSubst().GetSubst().ToString())
 				}
 				if ms.Equals(treetypes.Failure()) {
-					println("[WF] Error : MergeSubstitutions return failure")
+					global.PrintDebug("[WC]", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v", s.GetSubst().ToString(), st.GetAppliedSubst().GetSubst().ToString()))
+					fmt.Printf("[WC] Error : MergeSubstitutions returns failure between : %v and %v", s.GetSubst().ToString(), st.GetAppliedSubst().GetSubst().ToString())
 				}
 				s_removed := complextypes.RemoveElementWithoutMM(ms, st.GetMM())
 				if !s_removed.IsEmpty() {

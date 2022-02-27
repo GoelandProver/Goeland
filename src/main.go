@@ -171,6 +171,8 @@ func ManageResult(c search.Communication) (bool, []proof.ProofStruct) {
 	} else {
 		open := false
 		for !open && runtime.NumGoroutine() > 1 {
+			// TODO : kill all goroutines if open found
+			// Close channel -> broadcast
 			res := <-c.GetResult()
 			open = !res.GetClosed()
 			time.Sleep(1 * time.Millisecond)
@@ -225,6 +227,7 @@ func Search(f basictypes.Form, bound int) {
 		global.SetNbGoroutines(0)
 		st.SetLF([]basictypes.FormAndTerm{basictypes.MakeForm(f)})
 		c := search.MakeCommunication(make(chan bool), make(chan search.Result))
+		// TODO : global quit channel in non destrutive
 
 		if global.GetExchanges() {
 			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")

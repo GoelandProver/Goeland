@@ -136,10 +136,11 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 	ms, same_key := treesearch.MergeSubstitutions(res, subst_to_reorganize)
 
 	if same_key {
-		fmt.Printf("Same key in S2 and S1")
+		global.PrintDebug("REWM", "Same key in S2 and S1")
+		fmt.Printf("[REWM] Same key in S2 and S1\n")
 	}
 	if ms.Equals(treetypes.Failure()) {
-		println("[RemoveElementWithoutMM] Error : MergeSubstitutions return failure")
+		println("[REWM] Error : MergeSubstitutions return failure")
 	}
 	return ms
 
@@ -325,7 +326,8 @@ func ApplySubstitution(st *State, saf SubstAndForm) {
 	s := saf.GetSubst()
 	ms, same_key := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), s.Copy())
 	if same_key {
-		fmt.Printf("Same key in S2 and S1")
+		global.PrintDebug("AS", "Same key in S2 and S1")
+		fmt.Printf("[AS] Same key in S2 and S1\n")
 	}
 	if ms.Equals(treetypes.Failure()) {
 		println("[AS] Error : MergeSubstitutions return failure")

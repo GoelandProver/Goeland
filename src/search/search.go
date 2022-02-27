@@ -41,7 +41,6 @@ package search
 
 import (
 	"fmt"
-	"time"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -104,19 +103,28 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		case len(substs_with_mm) > 0:
 			global.PrintDebug("MCR", "Contradiction found (with mm) !")
 			for _, subst_for_father := range substs_with_mm {
+
+				if subst_for_father.Equals(treetypes.Failure()) {
+					global.PrintDebug("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString()))
+					fmt.Printf("[MCR] Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString())
+				}
+
 				if len(st.GetAppliedSubst().GetSubst()) > 0 {
-					subst_for_father_merged, same_key := treesearch.MergeSubstitutions(subst_for_father, st.GetAppliedSubst().GetSubst())
-					subst_for_father = subst_for_father_merged
+					subst_for_father_merged, same_key := treesearch.MergeSubstitutions(subst_for_father.Copy(), st.GetAppliedSubst().GetSubst())
 
 					if same_key {
-						fmt.Printf("Same key in S2 and S1")
+						global.PrintDebug("MCR", fmt.Sprintf("Same key in S2 and S1 : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString()))
+						fmt.Printf("[MCR] Same key in S2 and S1 : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString())
 					}
 
-					if subst_for_father.Equals(treetypes.Failure()) {
-						println("[MCR] Error : MergeSubstitutions return failure")
-						time.Sleep(300000 * time.Millisecond)
+					if subst_for_father_merged.Equals(treetypes.Failure()) {
+						global.PrintDebug("MCR", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString()))
+						fmt.Printf("[MCR] Error : MergeSubstitutions returns failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString())
 					}
+
+					subst_for_father = subst_for_father_merged
 				}
+
 				if len(subst_for_father) > 0 {
 					st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), complextypes.MakeSubstAndForm(subst_for_father, f)))
 				}
