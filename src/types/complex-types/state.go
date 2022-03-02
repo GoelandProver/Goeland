@@ -208,7 +208,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure) State {
 	current_proof := proof.MakeEmptyProofStruct()
 	current_proof.SetRuleProof("Initial formula")
 
-	return State{n, []basictypes.FormAndTerm{}, []basictypes.FormAndTerm{}, []basictypes.FormAndTerm{}, []basictypes.FormAndTerm{}, []basictypes.FormAndTerm{}, []basictypes.FormAndTerm{}, []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, SubstAndForm{}, SubstAndForm{}, []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof}
+	return State{n, []basictypes.FormAndTerm{}, []basictypes.FormAndTerm{}, []basictypes.FormAndTerm{}, []basictypes.FormAndTerm{}, []basictypes.FormAndTerm{}, []basictypes.FormAndTerm{}, []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof}
 }
 
 /* Print a state */
@@ -261,9 +261,9 @@ func (st State) Print() {
 		global.PrintDebug("Pst", st.GetMC().ToString())
 	}
 
-	if len(st.GetAppliedSubst().GetSubst()) > 0 {
+	if !st.GetAppliedSubst().IsEmpty() {
 		global.PrintDebug("PSt", "Applied subst: ")
-		global.PrintDebug("PSt", st.GetAppliedSubst().GetSubst().ToString())
+		global.PrintDebug("PSt", st.GetAppliedSubst().ToString())
 	}
 
 	if len(st.GetSubstsFound()) > 0 {
@@ -271,7 +271,7 @@ func (st State) Print() {
 		global.PrintDebug("PSt", treetypes.SubstListToString(GetSubstListFromSubstAndFormList(st.GetSubstsFound())))
 	}
 
-	if !st.GetLastAppliedSubst().GetSubst().IsEmpty() {
+	if !st.GetLastAppliedSubst().IsEmpty() {
 		global.PrintDebug("PSt", "Last applied subst:")
 		global.PrintDebug("PSt", st.GetLastAppliedSubst().GetSubst().ToString())
 	}

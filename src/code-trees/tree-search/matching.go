@@ -74,19 +74,19 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 	for _, instr := range node.value {
 
-		global.PrintDebug("UX", "------------------------")
-		global.PrintDebug("UX", fmt.Sprintf("Instr: %v", instr.ToString()))
-		global.PrintDebug("UX", fmt.Sprintf("Meta : %v", m.meta.ToString()))
-		global.PrintDebug("UX", fmt.Sprintf("Subst : %v", treetypes.SubstPairListToString(m.subst)))
-		global.PrintDebug("UX", fmt.Sprintf("Post : %v", treetypes.IntPairistToString(m.post)))
-		global.PrintDebug("UX", fmt.Sprintf("IsLocked : %v", m.isLocked()))
-		global.PrintDebug("UX", fmt.Sprintf("HasPushed : %v", m.hasPushed))
-		global.PrintDebug("UX", fmt.Sprintf("HasPoped : %v", m.hasPoped))
-		global.PrintDebug("UX", fmt.Sprintf("m.beginCount: %v - m.beginLock : %v", m.beginCount, m.beginLock))
-		global.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
-		global.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, len(m.terms)))
-		global.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms[m.q].ToString()))
-		global.PrintDebug("UX", fmt.Sprintf("m.terms : %v", basictypes.TermListToString(m.terms)))
+		// global.PrintDebug("UX", "------------------------")
+		// global.PrintDebug("UX", fmt.Sprintf("Instr: %v", instr.ToString()))
+		// global.PrintDebug("UX", fmt.Sprintf("Meta : %v", m.meta.ToString()))
+		// global.PrintDebug("UX", fmt.Sprintf("Subst : %v", treetypes.SubstPairListToString(m.subst)))
+		// global.PrintDebug("UX", fmt.Sprintf("Post : %v", treetypes.IntPairistToString(m.post)))
+		// global.PrintDebug("UX", fmt.Sprintf("IsLocked : %v", m.isLocked()))
+		// global.PrintDebug("UX", fmt.Sprintf("HasPushed : %v", m.hasPushed))
+		// global.PrintDebug("UX", fmt.Sprintf("HasPoped : %v", m.hasPoped))
+		// global.PrintDebug("UX", fmt.Sprintf("m.beginCount: %v - m.beginLock : %v", m.beginCount, m.beginLock))
+		// global.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
+		// global.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, len(m.terms)))
+		// global.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms[m.q].ToString()))
+		// global.PrintDebug("UX", fmt.Sprintf("m.terms : %v", basictypes.TermListToString(m.terms)))
 
 		switch instr := instr.(type) {
 		case treetypes.Begin:
@@ -282,7 +282,6 @@ func (m *Machine) compare(i int, j int) Status {
 			}
 		}
 		// else {
-		// TODO : check : success or check in meta ?
 		//  Si la méta n'est pas dans subst ça veut dire que pendant le put la machine était lock, donc elle est à subst dans la partie droite d'une substitution
 		// Ce genre de cas va se régler avec un eliminate
 		// return Status(SUCCESS)

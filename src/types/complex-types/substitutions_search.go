@@ -57,7 +57,11 @@ func (s SubstAndForm) GetSubst() treetypes.Substitutions {
 	return s.s.Copy()
 }
 func (s SubstAndForm) GetForm() basictypes.FormAndTerm {
-	return s.f.Copy()
+	if s.f.IsEmpty() {
+		return basictypes.MakeEmptyFormAndTerm()
+	} else {
+		return s.f.Copy()
+	}
 }
 func (s *SubstAndForm) SetSubst(subst treetypes.Substitutions) {
 	s.s = subst.Copy()
@@ -72,7 +76,24 @@ func (s1 SubstAndForm) Equals(s2 SubstAndForm) bool {
 	return s1.GetSubst().Equals(s2.GetSubst()) && s1.GetForm().Equals(s2.GetForm())
 }
 func (s SubstAndForm) Copy() SubstAndForm {
-	return MakeSubstAndForm(s.GetSubst(), s.GetForm())
+	if s.IsEmpty() {
+		return MakeEmptySubstAndForm()
+	} else {
+		return MakeSubstAndForm(s.GetSubst(), s.GetForm())
+	}
+}
+func (s SubstAndForm) ToString() string {
+	res := "{ "
+	if !s.GetSubst().IsEmpty() {
+		res += s.GetSubst().ToString()
+	}
+	res += " - "
+	if !s.GetForm().IsEmpty() {
+		res += s.GetForm().ToString()
+	}
+	res += " }"
+
+	return res
 }
 
 func MakeSubstAndForm(subst treetypes.Substitutions, form basictypes.FormAndTerm) SubstAndForm {
@@ -106,6 +127,9 @@ func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
 /* Remove substitution without mm */
 func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) treetypes.Substitutions {
 
+	global.PrintDebug("REWM", fmt.Sprintf("MM : %v", mm.ToString()))
+	global.PrintDebug("REWM", fmt.Sprintf("Initial subst : %v", s.ToString()))
+
 	// Substitution définitive
 	res := treetypes.Substitutions{}
 	// Substitution à réorganiser
@@ -133,15 +157,15 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 	subst_to_reorganize = ReorganizeSubstitution(subst_to_reorganize, mm)
 	treetypes.EliminateMeta(&subst_to_reorganize)
 	treetypes.Eliminate(&subst_to_reorganize)
-	ms, same_key := treesearch.MergeSubstitutions(res, subst_to_reorganize)
+	ms, _ := treesearch.MergeSubstitutions(res, subst_to_reorganize)
 
-	if same_key {
-		global.PrintDebug("REWM", "Same key in S2 and S1")
-		fmt.Printf("[REWM] Same key in S2 and S1\n")
-	}
+	global.PrintDebug("REWM", fmt.Sprintf("Finale subst : %v", s.ToString()))
+
 	if ms.Equals(treetypes.Failure()) {
-		println("[REWM] Error : MergeSubstitutions return failure")
+		println("[REWM] Error : MergeSubstitutions returns failure")
+		// os.Exit(0)
 	}
+
 	return ms
 
 }
@@ -324,15 +348,8 @@ func applySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen
 **/
 func ApplySubstitution(st *State, saf SubstAndForm) {
 	s := saf.GetSubst()
-	ms, same_key := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), s.Copy())
-	if same_key {
-		global.PrintDebug("AS", "Same key in S2 and S1")
-		fmt.Printf("[AS] Same key in S2 and S1\n")
-	}
-	if ms.Equals(treetypes.Failure()) {
-		println("[AS] Error : MergeSubstitutions return failure")
-	}
-	st.SetAppliedSubst(MakeSubstAndForm(ms, saf.GetForm()))
+	ms := MergeSubstAndForm(st.GetAppliedSubst(), saf.Copy())
+	st.SetAppliedSubst(ms)
 	st.SetLastAppliedSubst(saf)
 	st.SetLF(ApplySubstitutionOnFormulaList(s, st.GetLF()))
 	st.SetAtomic(ApplySubstitutionOnFormulaList(s, st.GetAtomic()))
@@ -444,4 +461,61 @@ func CopySubstAndFormList(sl []SubstAndForm) []SubstAndForm {
 		res[i] = sl[i].Copy()
 	}
 	return res
+}
+
+/* Print a list of substAndForm */
+func SubstAndFormListToString(sl []SubstAndForm) string {
+	var s_res string
+	i := 0
+	s_res = "{"
+	for _, v := range sl {
+		s_res += v.ToString()
+		if i < len(sl)-1 {
+			s_res += (", ")
+		}
+		i++
+	}
+	s_res += "}"
+	return s_res
+}
+
+/* Merge two SubstAndForm (supposed to fit) */
+func MergeSubstAndForm(s1, s2 SubstAndForm) SubstAndForm {
+
+	global.PrintDebug("MSAF", fmt.Sprintf("S1 : %v", s1.ToString()))
+	global.PrintDebug("MSAF", fmt.Sprintf("S2 : %v", s2.ToString()))
+
+	if s1.IsEmpty() {
+		return s2
+	}
+
+	if s2.IsEmpty() {
+		return s1
+	}
+
+	new_subst, _ := treesearch.MergeSubstitutions(s1.GetSubst().Copy(), s2.GetSubst().Copy())
+
+	if new_subst.Equals(treetypes.Failure()) {
+		global.PrintDebug("MSAF", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString()))
+		fmt.Printf("[MSAF] Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString())
+		// os.Exit(0)
+	}
+
+	// TODO : pas de doublon dans terms (implem avec liste et meta, plus (subst, term))
+	new_form := basictypes.MakeFormAndTerm(
+		basictypes.MakeAnd([]basictypes.Form{s1.GetForm().GetForm(), s2.GetForm().GetForm()}),
+		append(s1.GetForm().GetTerms(), s2.GetForm().GetTerms()...))
+
+	return MakeSubstAndForm(new_subst, new_form)
+}
+
+/* Merge a list of subst with one subst */
+func MergeSubstListWithSubst(sl []SubstAndForm, subst SubstAndForm) []SubstAndForm {
+	sl_res := []SubstAndForm{}
+
+	for _, s := range sl {
+		sl_res = append(sl_res, MergeSubstAndForm(s, subst))
+	}
+
+	return sl_res
 }

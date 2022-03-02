@@ -50,8 +50,8 @@ func RunTests() {
 	cpt_ok = 0
 	cpt_fail = 0
 
-	toRun := []func(){Test1, Test2, Test3, Test4, Test5, Test6, Test7, Test8, Test9, Test10, Test11, Test12, Test13, Test14, Test15, Test16, Test17, Test18, Test19, Test20, Test21, Test22, Test23, Test24, Test25, Test26, Test28, Test29, Test30, Test31, Test32, Test33, Test34, Test35, Test36, Test37, Test38, Test39, Test40}
-	// toRun := []func(){Test40}
+	toRun := []func(){Test1, Test2, Test3, Test4, Test5, Test6, Test7, Test8, Test9, Test10, Test11, Test12, Test13, Test14, Test15, Test16, Test17, Test18, Test19, Test20, Test21, Test22, Test23, Test24, Test25, Test26, Test28, Test29, Test30, Test31, Test32, Test33, Test34, Test35, Test36, Test37, Test38, Test39, Test40, Test41}
+	// toRun := []func(){Test41}
 
 	for _, f := range toRun {
 		f()
@@ -1358,5 +1358,56 @@ func Test40() {
 				Z: basictypes.MakeFun(h, []basictypes.Term{X2})})},
 		[]basictypes.Form{f2},
 		[]basictypes.Form{f1},
+	)
+}
+
+/** Test 41
+* Formule : P(Y2, Y1, f(Y1, Y2, Y3)) - Y1, Y2, Y3
+*
+* Arbre :
+* ¬P(X2, X1, g(X1, X2, X3))
+* ¬P(g(X1, X2, X3), X2, X1)
+* ¬P(X1, X2, X3)
+* ¬P(skolem_X0_1, skolem_X0_1, g(X1, X2, X3))
+* ¬P(X2, X3, X1)
+* ¬P(h(g(X1, X2, X3), g(X1, X2, X3), g(X1, X2, X3)), h(g(X1, X2, X3), g(X1, X2, X3), g(X1, X2, X3)), h(g(X1, X2, X3), g(X1, X2, X3), g(X1, X2, X3)))
+* ¬P(skolem_X0_1, skolem_X0_1, h(g(X1, X2, X3), g(X1, X2, X3), g(X1, X2, X3)))
+*
+**/
+func Test41() {
+	p := basictypes.MakerId("P")
+	f := basictypes.MakerId("f")
+	g := basictypes.MakerId("g")
+	h := basictypes.MakerId("h")
+	X1 := basictypes.MakerMeta("X1", -1)
+	X2 := basictypes.MakerMeta("X2", -1)
+	X3 := basictypes.MakerMeta("X3", -1)
+	Y1 := basictypes.MakerMeta("Y1", -1)
+	Y2 := basictypes.MakerMeta("Y2", -1)
+	Y3 := basictypes.MakerMeta("Y3", -1)
+	sk := basictypes.MakerConst(basictypes.MakerId("skolem"))
+	fy := basictypes.MakeFun(f, []basictypes.Term{Y1, Y2, Y3})
+	gx := basictypes.MakeFun(g, []basictypes.Term{X1, X2, X3})
+	hgx := basictypes.MakeFun(h, []basictypes.Term{gx, gx, gx})
+
+	// Formule
+	f1 := basictypes.MakePred(p, []basictypes.Term{Y2, Y1, fy})
+
+	// Tree
+	f2 := basictypes.MakePred(p, []basictypes.Term{X2, X1, gx})
+	f3 := basictypes.MakePred(p, []basictypes.Term{gx, X2, X1})
+	f4 := basictypes.MakePred(p, []basictypes.Term{X1, X2, X3})
+	f5 := basictypes.MakePred(p, []basictypes.Term{sk, sk, gx})
+	f6 := basictypes.MakePred(p, []basictypes.Term{X2, X3, X1})
+	f7 := basictypes.MakePred(p, []basictypes.Term{hgx, hgx, hgx})
+	f8 := basictypes.MakePred(p, []basictypes.Term{sk, sk, hgx})
+
+	LaunchTest(
+		41,
+		[]treetypes.MatchingSubstitutions{
+			treetypes.MakeMatchingSubstitutions(f4, treetypes.Substitutions{X1: Y2, X2: Y1, X3: fy}),
+			treetypes.MakeMatchingSubstitutions(f6, treetypes.Substitutions{X1: fy, X2: Y2, X3: Y1})},
+		[]basictypes.Form{f1},
+		[]basictypes.Form{f2, f3, f4, f5, f6, f7, f8},
 	)
 }

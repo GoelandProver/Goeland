@@ -128,7 +128,8 @@ func computeSubstitutions(subst []treetypes.SubstPair, metas treetypes.Substitut
 	}
 
 	treetypes.EliminateMeta(&res)
-	return treetypes.Eliminate(&res)
+	treetypes.Eliminate(&res)
+	return res
 }
 
 /* Call addUnification and returns a status - modify m.meta */
@@ -160,11 +161,13 @@ func AddUnification(term1, term2 basictypes.Term, subst treetypes.Substitutions)
 		case term1.IsMeta():
 			subst[term1.ToMeta()] = term2
 			treetypes.EliminateMeta(&subst)
-			return treetypes.Eliminate(&subst)
+			treetypes.Eliminate(&subst)
+			return subst
 		case term2.IsMeta():
 			subst[term2.ToMeta()] = term1
 			treetypes.EliminateMeta(&subst)
-			return treetypes.Eliminate(&subst)
+			treetypes.Eliminate(&subst)
+			return subst
 		default:
 			return treetypes.Failure()
 		}

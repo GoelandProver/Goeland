@@ -254,12 +254,13 @@ func areFuncArgsRecursive(f basictypes.Fun, m basictypes.Meta) bool {
 }
 
 /*** Eliminate ***/
-/* Eliminate - apply each element of the subst on the entire substitution, because an element can't appear on the rigth and and the left if a substitution */
-func Eliminate(s *Substitutions) Substitutions {
+/* Eliminate - apply each element of the subst on the entire substitution, because an element can't œappears on the rigth and and the left if a substitution */
+func Eliminate(s *Substitutions) {
 	global.PrintDebug("Eliminate", "Start of Eliminate")
 	global.PrintDebug("Eliminate", s.ToString())
 	if s.Equals(Failure()) {
-		return *s
+		global.PrintDebug("Eliminate", "Failure 1")
+		return
 	}
 	has_changed := true
 
@@ -268,10 +269,17 @@ func Eliminate(s *Substitutions) Substitutions {
 		new_s := MakeEmptySubstitution()
 		// For each element  (key, value) in the given substitution
 		for key, value := range *s {
+			global.PrintDebug("Eliminate", fmt.Sprintf("Key : %v, Value : %v", key.ToString(), value.ToString()))
 			if OccurCheckValid(key, value) {
-				new_s = eliminateInside(key, value, s.Copy(), &has_changed)
+				new_s = eliminateInside(key, value, (*s).Copy(), &has_changed)
 			} else {
-				return Failure()
+				global.PrintDebug("Eliminate", "Failure 2")
+				*s = Failure()
+				return
+			}
+			if new_s.Equals(Failure()) {
+				*s = new_s.Copy()
+				return
 			}
 		}
 		*s = new_s.Copy()
@@ -279,7 +287,6 @@ func Eliminate(s *Substitutions) Substitutions {
 
 	global.PrintDebug("Eliminate", "end of Eliminate")
 	global.PrintDebug("Eliminate", s.ToString())
-	return *s
 }
 
 /* Eliminate inside : eliminate for a given couple (key, value) on a substitution */

@@ -217,8 +217,6 @@ func (n *Node) insert(sequence treetypes.Sequence) {
 	}
 }
 
-/* TODO : COPY */
-
 /* Auxiliary function to follow the sequence of instructions to insert in the Node. */
 func (n *Node) followInstructions(instructions []treetypes.Instruction, form basictypes.Form) {
 	// Initialization of the node we will be working on and of a counter.

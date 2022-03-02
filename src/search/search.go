@@ -42,7 +42,6 @@ package search
 import (
 	"fmt"
 
-	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -102,34 +101,29 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 
 		case len(substs_with_mm) > 0:
 			global.PrintDebug("MCR", "Contradiction found (with mm) !")
+
 			for _, subst_for_father := range substs_with_mm {
 
+				// Check if subst_for_father is failure
 				if subst_for_father.Equals(treetypes.Failure()) {
-					global.PrintDebug("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString()))
+					global.PrintDebug("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().ToString()))
 					fmt.Printf("[MCR] Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString())
 				}
 
-				if len(st.GetAppliedSubst().GetSubst()) > 0 {
-					subst_for_father_merged, same_key := treesearch.MergeSubstitutions(subst_for_father.Copy(), st.GetAppliedSubst().GetSubst())
+				global.PrintDebug("MCR", fmt.Sprintf("Formula = : %v", f.ToString()))
 
-					if same_key {
-						global.PrintDebug("MCR", fmt.Sprintf("Same key in S2 and S1 : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString()))
-						fmt.Printf("[MCR] Same key in S2 and S1 : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString())
-					}
+				// Create substAndForm with the current form and the subst found
+				subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, f)
 
-					if subst_for_father_merged.Equals(treetypes.Failure()) {
-						global.PrintDebug("MCR", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString()))
-						fmt.Printf("[MCR] Error : MergeSubstitutions returns failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString())
-					}
+				global.PrintDebug("MCR", fmt.Sprintf("SubstAndForm created : %v", subst_and_form_for_father.ToString()))
 
-					subst_for_father = subst_for_father_merged
-				}
+				// Merge with applied subst (if any)
+				subst_and_form_for_father = complextypes.MergeSubstAndForm(subst_and_form_for_father.Copy(), st.GetAppliedSubst())
 
-				if len(subst_for_father) > 0 {
-					st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), complextypes.MakeSubstAndForm(subst_for_father, f)))
-				}
+				st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), subst_and_form_for_father))
 			}
-			global.PrintDebug("MCR", fmt.Sprintf("Subt found now : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
+
+			global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 		}
 	}
 
