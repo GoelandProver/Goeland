@@ -41,13 +41,10 @@ package main
 import (
 	"fmt"
 	"reflect"
-	"strings"
 
-	treesearch "github.com/delahayd/gotab/code-trees/tree-search"
 	treetypes "github.com/delahayd/gotab/code-trees/tree-types"
 	"github.com/delahayd/gotab/plugin"
 	btypes "github.com/delahayd/gotab/types/basic-types"
-	ctypes "github.com/delahayd/gotab/types/complex-types"
 	datastruct "github.com/delahayd/gotab/types/data-struct"
 )
 
@@ -61,46 +58,15 @@ var activatePolarized bool
 var preskolemize bool 
 
 /**
- * Plugs DMT on the `rewrite` hook and `sendAxiom` hook.
- * Instanciates all the needed variables for the DMT.
+ * Base function needed to initialize any plugin of Goéland.
+ * It registers the hooks to the plugin manager, and parses the given options.
  **/
 func InitPlugin(pm *plugin.PluginManager, options []plugin.Option) error {
-	pm.RegisterRewriteHook(rewrite)
-	pm.RegisterSendAxiomHook(registerAxiom)
-	positiveRewrite = make(map[string]btypes.Form)
-	negativeRewrite = make(map[string]btypes.Form)
-	positiveTree = new(treesearch.Node)
-	negativeTree = new(treesearch.Node)
+	registerHooks(pm)
+	initPluginGlobalVariables()
+	parsePluginOptions(options)
 
-	// Parse options
-	for _, opt := range options {
-		switch opt.Name {
-		case "polarized":
-			activatePolarized = opt.Value == "true"
-		case "preskolemization":
-			preskolemize = opt.Value == "true"
-		}
-	}
-
-	// Display what's been activated.
-	output := "[DMT] DMT loaded "
-
-	if activatePolarized || preskolemize {
-		output += "with "
-	}
-
-	var activatedOptions []string
-	if activatePolarized {
-		activatedOptions = append(activatedOptions, "polarization")
-	} 
-	if preskolemize {
-		activatedOptions = append(activatedOptions, "preskolemization")
-	}
-
-	output += strings.Join(activatedOptions, " and ")
-	output += "\n"
-	fmt.Print(output)
-
+	// No error can be thrown in this plugin.
 	return nil
 }
 
@@ -137,7 +103,7 @@ func registerAxiom(axiom btypes.Form) bool {
 /**
  * Rewrites an atom an unification is found in the rewrite rules.
  **/
-func rewrite(atomic btypes.FormAndTerm) (btypes.FormAndTerm, error) {
+func rewrite(atomic btypes.FormAndTerm) ([]btypes.FormAndTerm, error) {
 	form, polarity := getAtomAndPolarity(atomic.GetForm())
 	
 	var tree datastruct.DataStructure
@@ -157,17 +123,22 @@ func rewrite(atomic btypes.FormAndTerm) (btypes.FormAndTerm, error) {
 /**
  * Rewrite algorithm with furnished code tree to unify on.
  **/
-func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.FormAndTerm, form btypes.Form, polarity bool) (btypes.FormAndTerm, error) {
+func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.FormAndTerm, form btypes.Form, polarity bool) ([]btypes.FormAndTerm, error) {
+	atomics := []btypes.FormAndTerm{}
 	if res, unif := tree.Unify(form); res {
-		// Choice of unification. It's the first one found at the moment.
-		unif := choose(unif, polarity)
-		equivalence, err := getUnifiedEquivalence(unif.GetForm(), unif.GetSubst(), polarity)
-		if err != nil {
-			return atomic, err
+		// Sorts the unifs found.
+		unifs := choose(unif, polarity)
+		for _, unif := range unifs {
+			equivalence, err := getUnifiedEquivalence(unif.GetForm(), unif.GetSubst(), polarity)
+			if err != nil {
+				return []btypes.FormAndTerm{atomic}, err
+			}
+			atomics = append(atomics, btypes.MakeFormAndTerm(equivalence, atomic.GetTerms()))
 		}
-		atomic = btypes.MakeFormAndTerm(equivalence, atomic.GetTerms())
+	} else {
+		atomics = []btypes.FormAndTerm{atomic}
 	}
-	return atomic, nil
+	return atomics, nil
 }
 
 /**
@@ -177,21 +148,37 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.FormAndTerm, fo
 /** 
  * Priority of substitutions: Top/Bottom > others
  **/
-func choose(unifs []treetypes.MatchingSubstitutions, polarity bool) treetypes.MatchingSubstitutions {
+func choose(unifs []treetypes.MatchingSubstitutions, polarity bool) []treetypes.MatchingSubstitutions {
+	rewriteMap := positiveRewrite
+	if !polarity {
+		rewriteMap = negativeRewrite
+	}
+
+	sortedUnifs := []treetypes.MatchingSubstitutions{}
 	for _, unif := range unifs {
 		str := unif.GetForm().ToString()
-		if polarity {
-			if positiveRewrite[str].Equals(btypes.Top{}) || positiveRewrite[str].Equals(btypes.Bot{}) {
-				return unif
-			} 
+		if rewriteMap[str].Equals(btypes.Top{}) || rewriteMap[str].Equals(btypes.Bot{}) {
+			sortedUnifs = insertFirst(sortedUnifs, unif)
 		} else {
-			if negativeRewrite[str].Equals(btypes.Top{}) || negativeRewrite[str].Equals(btypes.Bot{}) {
-				return unif
-			}
+			sortedUnifs = append(sortedUnifs, unif)
 		}
 	}
-	// TODO: this line breaks completeness. It has to change.
-	return unifs[0]
+
+	return sortedUnifs
+}
+
+/**
+ * Insert the given substitution as the first element of the slice (empty or not).
+ **/
+func insertFirst(sortedUnifs []treetypes.MatchingSubstitutions, unif treetypes.MatchingSubstitutions) []treetypes.MatchingSubstitutions {
+	if len(sortedUnifs) > 0 {
+		// Moves everything to the right once.
+		sortedUnifs = append(sortedUnifs[:1], sortedUnifs[0:]...)
+		sortedUnifs[0] = unif
+	} else {
+		sortedUnifs = append(sortedUnifs, unif)
+	}
+	return sortedUnifs
 }
 
 /**
@@ -215,20 +202,6 @@ func getUnifiedEquivalence(atom btypes.Form, subst treetypes.Substitutions, pola
 		return nil, fmt.Errorf("[DMT] Fatal error : no rewrite rule found when an unification has been found")
 	}
 	return substitute(equivalence, subst), nil
-}
-
-/**
- * Replaces all the occurences of all the keys of subst to the corresponding values.
- **/
-func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
-	//terms := []btypes.Term{}
-	for old_symbol, new_symbol := range subst {
-		form = ctypes.ApplySubstitutionOnFormula(old_symbol, new_symbol, form)
-		/*if reflect.TypeOf(new_symbol) == reflect.TypeOf(btypes.Meta{}) {
-			terms = append(terms, new_symbol)
-		}*/
-	}
-	return form
 }
 
 /**
@@ -268,48 +241,4 @@ func addRewriteRule(axiom btypes.FormAndTerm, cons btypes.Form, polarity bool) {
  **/
 func canSkolemize(form btypes.Form) bool {
 	return btypes.ShowKindOfRule(form) == btypes.Delta
-}
-
-/**
- * Stolen method : instantiation.
- * Instanciates once a formula to make meta from bound variables.
- **/
- func instantiateOnce(formula btypes.Form, terms []btypes.Term) btypes.FormAndTerm {
-	nf := formula.(btypes.All).GetForm()
-	for _, v := range formula.(btypes.All).GetVarList() {
-		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), 0)
-		terms = append(terms, meta)
-		nf = btypes.ReplaceVarByTerm(nf, v, meta)
-	}
-	return btypes.MakeFormAndTerm(nf, terms)
-}
-
-/**
- * Stolen method : skolemization.
- * Skolemizes once the formula f.
- */
- func skolemize(f btypes.Form, terms []btypes.Term) btypes.Form {
-    switch nf := f.(type) {
-	// 1 - not(forall F1)
-    case btypes.Not:
-		if reflect.TypeOf(nf.GetForm()) == reflect.TypeOf(btypes.All{}) {
-			tmp := nf.GetForm().(btypes.All).GetForm()
-			f = btypes.RefuteForm(real_skolemize(tmp, nf.GetForm().(btypes.All).GetVarList(), terms))
-		}
-	// 2 - exists F1
-    case btypes.Ex:
-        tmp := nf.GetForm()
-		f = real_skolemize(tmp, nf.GetVarList(), terms)
-    }
-
-    return f
-}
-
-func real_skolemize(f btypes.Form, vars []btypes.Var, terms []btypes.Term) btypes.Form {
-	// Replace each variable by the skolemized term.
-	for _, v := range vars {
-		skolem := btypes.MakerFun(btypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())), terms)
-		f = btypes.ReplaceVarByTerm(f, v, skolem)
-	}
-	return f
 }
