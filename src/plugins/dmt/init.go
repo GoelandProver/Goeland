@@ -29,78 +29,73 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/**************/
-/* manager.go */
-/**************/
+/***********/
+/* init.go */
+/***********/
 /**
-* This file provides an interface to manage plugins.
+* This file contains the initialization functions of the plugin.
 **/
 
-package plugin
+package main
 
 import (
+	"fmt"
+	"strings"
+
+	treesearch "github.com/delahayd/gotab/code-trees/tree-search"
+	"github.com/delahayd/gotab/plugin"
 	btypes "github.com/delahayd/gotab/types/basic-types"
 )
 
 /**
- * RewriteHook func. Takes atomic forms as input & output.
+ * Registers all the hooks of this plugin in the PluginManager.
+ * In particular, two hooks are activated by this plugin :
+ *		- SendAxiomHook, to take axioms and make it a rewrite rule
+ *		- RewriteHook, to rewrite an atom.
  **/
-type RewriteHook func(btypes.FormAndTerm) ([]btypes.FormAndTerm, error)
-type SendAxiomHook func(btypes.Form) bool 
+func registerHooks(pm *plugin.PluginManager) {
+	pm.RegisterRewriteHook(rewrite)
+	pm.RegisterSendAxiomHook(registerAxiom)
+}
 
-/**
- * Stores the hooks of the differents plugins.
- **/
-type PluginManager struct {
-	rewriteHook RewriteHook
-	sendAxiomHook SendAxiomHook
+func initPluginGlobalVariables() {
+	positiveRewrite = make(map[string]btypes.Form)
+	negativeRewrite = make(map[string]btypes.Form)
+	positiveTree = new(treesearch.Node)
+	negativeTree = new(treesearch.Node)
 }
 
 /**
- * Properly creates a new PluginManager. It is advised to keep only one 
- * instance of PluginManager in your application (that's why a pointer is returned).
+ * Parses options given to the plugin by the prover.
+ * It also displays what's been activated.
  **/
-func makeManager() *PluginManager {
-	pm := &PluginManager{}
-	return pm
-}
-
-/**
-* Exported functions, usable in others modules.
-**/
-
-/**
- * Register the rewrite hook. Use this in the plugins. Refer to the docs to see where
- * a hook can be called.
- **/
-func (pm *PluginManager) RegisterRewriteHook(hook RewriteHook) {
-	pm.rewriteHook = hook
-}
-
-/**
- * Execute the rewrite hook.
- **/
-func (pm *PluginManager) ApplyRewriteHook(arg btypes.FormAndTerm) ([]btypes.FormAndTerm, error) {
-	if pm.rewriteHook == nil {
-		return []btypes.FormAndTerm{arg}, nil
+ func parsePluginOptions(options []plugin.Option) {
+	// Parse options
+	for _, opt := range options {
+		switch opt.Name {
+		case "polarized":
+			activatePolarized = opt.Value == "true"
+		case "preskolemization":
+			preskolemize = opt.Value == "true"
+		}
 	}
-	return pm.rewriteHook(arg)
-}
 
-/**
- * Register the send axiom hook. Use this in the plugins. Refer to the docs to see where
- * a hook can be called.
- **/
-func (pm *PluginManager) RegisterSendAxiomHook(hook SendAxiomHook) {
-	pm.sendAxiomHook = hook
-}
+	// Display what's been activated.
+	output := "[DMT] DMT loaded "
 
-/**
- * Execute the sendAxiomHook hook.
- **/
-func (pm *PluginManager) ApplySendAxiomHook(arg btypes.Form) bool {
-	if pm.sendAxiomHook == nil {
-		return false
+	if activatePolarized || preskolemize {
+		output += "with "
 	}
-	return pm.sendAxiomHook(arg)
+
+	var activatedOptions []string
+	if activatePolarized {
+		activatedOptions = append(activatedOptions, "polarization")
+	} 
+	if preskolemize {
+		activatedOptions = append(activatedOptions, "preskolemization")
+	}
+
+	output += strings.Join(activatedOptions, " and ")
+	output += "\n"
+	fmt.Print(output)
 }
