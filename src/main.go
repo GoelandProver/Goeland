@@ -215,7 +215,7 @@ func Search(f basictypes.Form, bound int) {
 		proof.ResetProofFile()
 		exchanges.ResetExchangesFile()
 
-		global.PrintDebug("TMAINF", fmt.Sprintf("nb_step : %v", global.GetNbStep()))
+		global.PrintDebug("MAIN", fmt.Sprintf("nb_step : %v", global.GetNbStep()))
 		fmt.Printf("nb_step : %v - limit : %v\n", global.GetNbStep(), limit)
 
 		tp := new(treesearch.Node)
@@ -226,7 +226,7 @@ func Search(f basictypes.Form, bound int) {
 		fmt.Printf("Launch Gotab with destructive = %v, data_struct = %v\n", global.IsDestructive(), global.GetDataStruct())
 
 		global.SetNbGoroutines(0)
-		st.SetLF(basictypes.MakeSingleton(basictypes.MakeForm(f)))
+		st.SetLF(basictypes.MakeSingleElementList(basictypes.MakeForm(f)))
 		c := search.MakeCommunication(make(chan bool), make(chan search.Result))
 		// TODO : global quit channel in non destrutive
 
@@ -256,7 +256,7 @@ func Search(f basictypes.Form, bound int) {
 }
 
 func StatementListToFormula(lstm []basictypes.Statement) basictypes.Form {
-	and_list := []basictypes.Form{}
+	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
 
 	for _, s := range lstm {

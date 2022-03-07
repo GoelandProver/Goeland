@@ -56,7 +56,7 @@ import (
 /* The state of the search in a step */
 type State struct {
 	n                                     int
-	lf, atomic, alpha, beta, delta, gamma basictypes.FormAndTermList
+	lf, atomic, alpha, beta, delta, gamma basictypes.FormList
 	meta_generator                        []basictypes.MetaGen
 	mm, mc                                basictypes.MetaList
 	applied_subst                         SubstAndForm
@@ -75,22 +75,22 @@ type State struct {
 func (s State) GetN() int {
 	return s.n
 }
-func (s State) GetLF() basictypes.FormAndTermList {
+func (s State) GetLF() basictypes.FormList {
 	return s.lf.Copy()
 }
-func (s State) GetAtomic() basictypes.FormAndTermList {
+func (s State) GetAtomic() basictypes.FormList {
 	return s.atomic.Copy()
 }
-func (s State) GetAlpha() basictypes.FormAndTermList {
+func (s State) GetAlpha() basictypes.FormList {
 	return s.alpha.Copy()
 }
-func (s State) GetBeta() basictypes.FormAndTermList {
+func (s State) GetBeta() basictypes.FormList {
 	return s.beta.Copy()
 }
-func (s State) GetDelta() basictypes.FormAndTermList {
+func (s State) GetDelta() basictypes.FormList {
 	return s.delta.Copy()
 }
-func (s State) GetGamma() basictypes.FormAndTermList {
+func (s State) GetGamma() basictypes.FormList {
 	return s.gamma.Copy()
 }
 func (s State) GetMetaGen() []basictypes.MetaGen {
@@ -129,22 +129,22 @@ func (s State) GetCurrentProof() proof.ProofStruct {
 func (st *State) SetN(n int) {
 	st.n = n
 }
-func (st *State) SetLF(fl basictypes.FormAndTermList) {
+func (st *State) SetLF(fl basictypes.FormList) {
 	st.lf = fl.Copy()
 }
-func (st *State) SetAtomic(fl basictypes.FormAndTermList) {
+func (st *State) SetAtomic(fl basictypes.FormList) {
 	st.atomic = fl.Copy()
 }
-func (st *State) SetAlpha(fl basictypes.FormAndTermList) {
+func (st *State) SetAlpha(fl basictypes.FormList) {
 	st.alpha = fl.Copy()
 }
-func (st *State) SetBeta(fl basictypes.FormAndTermList) {
+func (st *State) SetBeta(fl basictypes.FormList) {
 	st.beta = fl.Copy()
 }
-func (st *State) SetDelta(fl basictypes.FormAndTermList) {
+func (st *State) SetDelta(fl basictypes.FormList) {
 	st.delta = fl.Copy()
 }
-func (st *State) SetGamma(fl basictypes.FormAndTermList) {
+func (st *State) SetGamma(fl basictypes.FormList) {
 	st.gamma = fl.Copy()
 }
 func (st *State) SetMetaGen(fl []basictypes.MetaGen) {
@@ -182,7 +182,7 @@ func (st *State) SetCurrentProof(p proof.ProofStruct) {
 		st.current_proof = p
 	}
 }
-func (st *State) SetCurrentProofFormula(f basictypes.FormAndTermList) {
+func (st *State) SetCurrentProofFormula(f basictypes.FormList) {
 	if global.GetProof() {
 		st.current_proof.SetFormulaProof(f.ToStringForProof())
 	}
@@ -208,7 +208,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure) State {
 	current_proof := proof.MakeEmptyProofStruct()
 	current_proof.SetRuleProof("Initial formula")
 
-	return State{n, basictypes.MakeEmptyFormAndTermList(), basictypes.MakeEmptyFormAndTermList(), basictypes.MakeEmptyFormAndTermList(), basictypes.MakeEmptyFormAndTermList(), basictypes.MakeEmptyFormAndTermList(), basictypes.MakeEmptyFormAndTermList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof}
+	return State{n, basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof}
 }
 
 /* Print a state */
@@ -333,23 +333,23 @@ func (st State) AreRulesApplicable() bool {
 }
 
 /* Put the given formula in the right rule box in the given state */
-func (st *State) DispatchForm(f basictypes.FormAndTerm) basictypes.FormAndTerm {
-	global.PrintDebug("DF", fmt.Sprintf("Dispatch the form : %v ", f.GetForm().ToString()))
-	global.PrintDebug("DF", fmt.Sprintf("Kind of rule : %v ", basictypes.ShowKindOfRule(f.GetForm())))
-	switch basictypes.ShowKindOfRule(f.GetForm()) {
+func (st *State) DispatchForm(f basictypes.Form) basictypes.Form {
+	global.PrintDebug("DF", fmt.Sprintf("Dispatch the form : %v ", f.ToString()))
+	global.PrintDebug("DF", fmt.Sprintf("Kind of rule : %v ", basictypes.ShowKindOfRule(f.Copy())))
+	switch basictypes.ShowKindOfRule(f.Copy()) {
 	case basictypes.Atomic:
-		if !st.GetAtomic().ContainsFormAndTerm(f) {
+		if !st.GetAtomic().Contains(f) {
 			if rewritten, err := plugin.GetPluginManager().ApplyRewriteHook(f); err == nil {
 				rewritten := rewritten[0]
 				if !rewritten.Equals(f) {
 					// If it's atomic, we need to manage closure rule before dispatching the form.
 					// So the rewritten formula is returned for the proofsearch process to reapply
 					// a loop on all rewritten atoms.
-					if basictypes.ShowKindOfRule(rewritten.GetForm()) == basictypes.Atomic {
+					if basictypes.ShowKindOfRule(rewritten) == basictypes.Atomic {
 						return rewritten
 					}
 					st.DispatchForm(rewritten.Copy())
-					return basictypes.MakeEmptyFormAndTerm()
+					return nil
 				}
 			} else {
 				global.PrintDebug("DMT", err.Error())
@@ -357,19 +357,20 @@ func (st *State) DispatchForm(f basictypes.FormAndTerm) basictypes.FormAndTerm {
 			st.SetAtomic(append(st.GetAtomic(), f))
 		}
 	case basictypes.Alpha:
-		st.SetAlpha(st.GetAlpha().AppendIfNotContainsFormAndTerm(f))
+		st.SetAlpha(st.GetAlpha().AppendIfNotContains(f))
 	case basictypes.Beta:
-		st.SetBeta(st.GetBeta().AppendIfNotContainsFormAndTerm(f))
+		st.SetBeta(st.GetBeta().AppendIfNotContains(f))
 	case basictypes.Delta:
-		st.SetDelta(st.GetDelta().AppendIfNotContainsFormAndTerm(f))
+		st.SetDelta(st.GetDelta().AppendIfNotContains(f))
 	case basictypes.Gamma:
-		st.SetGamma(st.GetGamma().AppendIfNotContainsFormAndTerm(f))
+		st.SetGamma(st.GetGamma().AppendIfNotContains(f))
 	default:
 		fmt.Println("[ERROR] Formula not recognized")
 	}
-	return basictypes.MakeEmptyFormAndTerm()
+	return nil
 }
 
-func (st *State) GetAllForms() basictypes.FormAndTermList {
+/* TODO : remove and change - for write proof */
+func (st *State) GetAllForms() basictypes.FormList {
 	return st.GetLF()
 }

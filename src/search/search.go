@@ -71,7 +71,7 @@ func ProofSearch(father_id uint64, st complextypes.State, c Communication, s com
 * Manage this result, dispatch the subst and recreate data strcutures.
 * Return if the branch is closed without variable from its father
 **/
-func manageClosureRule(father_id uint64, st *complextypes.State, c Communication, clos_res bool, substs []treetypes.Substitutions, f basictypes.FormAndTerm) bool {
+func manageClosureRule(father_id uint64, st *complextypes.State, c Communication, clos_res bool, substs []treetypes.Substitutions, f basictypes.Form) bool {
 	closed := false
 
 	if clos_res {
@@ -113,7 +113,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 				global.PrintDebug("MCR", fmt.Sprintf("Formula = : %v", f.ToString()))
 
 				// Create substAndForm with the current form and the subst found
-				subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, basictypes.MakeSingleton(f))
+				subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, basictypes.MakeSingleElementList(f))
 
 				global.PrintDebug("MCR", fmt.Sprintf("SubstAndForm created : %v", subst_and_form_for_father.ToString()))
 
@@ -178,13 +178,13 @@ func applyRules(father_id uint64, st complextypes.State, c Communication) {
 func manageAlphaRules(father_id uint64, st complextypes.State, c Communication) {
 	global.PrintDebug("PS", "Alpha rule")
 	hdf := st.GetAlpha()[0]
-	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.GetForm().ToString()))
+	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 	st.SetCurrentProofRule("α")
 
 	if len(st.GetAlpha()) > 1 {
 		st.SetAlpha(st.GetAlpha()[1:len(st.GetAlpha())])
 	} else {
-		st.SetAlpha(basictypes.MakeEmptyFormAndTermList())
+		st.SetAlpha(basictypes.MakeEmptyFormList())
 	}
 	st.SetLF(applyAlphaRules(hdf))
 	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm())
@@ -194,13 +194,13 @@ func manageAlphaRules(father_id uint64, st complextypes.State, c Communication) 
 func manageDeltaRules(father_id uint64, st complextypes.State, c Communication) {
 	global.PrintDebug("PS", "Delta rule")
 	hdf := st.GetDelta()[0]
-	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.GetForm().ToString()))
+	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 	st.SetCurrentProofRule("δ")
 
 	if len(st.GetDelta()) > 1 {
 		st.SetDelta(st.GetDelta()[1:len(st.GetDelta())])
 	} else {
-		st.SetDelta(basictypes.MakeEmptyFormAndTermList())
+		st.SetDelta(basictypes.MakeEmptyFormList())
 	}
 	st.SetLF(applyDeltaRules(hdf))
 	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm())
@@ -210,7 +210,7 @@ func manageDeltaRules(father_id uint64, st complextypes.State, c Communication) 
 func manageBetaRules(father_id uint64, st complextypes.State, c Communication) {
 	global.PrintDebug("PS", "Beta rule")
 	hdf := st.GetBeta()[0]
-	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.GetForm().ToString()))
+	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 	reslf := applyBetaRules(hdf)
 
 	// For each child, launch a goroutine, stock its channel, and wait an answer
@@ -221,7 +221,7 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication) {
 		if len(st_copy.GetBeta()) > 1 {
 			st_copy.SetBeta(st.GetBeta()[1:len(st.GetBeta())])
 		} else {
-			st_copy.SetBeta(basictypes.MakeEmptyFormAndTermList())
+			st_copy.SetBeta(basictypes.MakeEmptyFormList())
 		}
 
 		st_copy.SetLF(reslf[i])
@@ -248,13 +248,13 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication) {
 func manageGammaRules(father_id uint64, st complextypes.State, c Communication) {
 	global.PrintDebug("PS", "Gamma rule")
 	hdf := st.GetGamma()[0]
-	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.GetForm().ToString()))
+	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 	st.SetCurrentProofRule("γ")
 
 	if len(st.GetGamma()) > 1 {
 		st.SetGamma(st.GetGamma()[1:len(st.GetGamma())])
 	} else {
-		st.SetGamma(basictypes.MakeEmptyFormAndTermList())
+		st.SetGamma(basictypes.MakeEmptyFormList())
 	}
 
 	index, new_meta_gen := basictypes.GetIndexMetaGenList(hdf, st.GetMetaGen())
@@ -277,7 +277,7 @@ func manageReintroductionRules(father_id uint64, st complextypes.State, c Commun
 	st.SetCurrentProofRule("Reintroduction")
 
 	st.SetMetaGen(new_meta_generator)
-	global.PrintDebug("PS", fmt.Sprintf("Reintroduce the formula : %s", reslf.GetForm().ToString()))
-	st.SetLF(basictypes.MakeSingleton(reslf))
+	global.PrintDebug("PS", fmt.Sprintf("Reintroduce the formula : %s", reslf.ToString()))
+	st.SetLF(basictypes.MakeSingleElementList(reslf))
 	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm())
 }

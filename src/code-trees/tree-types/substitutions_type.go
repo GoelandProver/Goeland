@@ -185,13 +185,22 @@ func (s Substitutions) GetMeta() basictypes.MetaList {
 }
 
 /* check if a subst is inside a list of substitutions */
-func ContainsSubst(subst Substitutions, sl []Substitutions) bool {
+func ContainsSubst(sl []Substitutions, subst Substitutions) bool {
 	for _, s := range sl {
 		if subst.Equals(s) {
 			return true
 		}
 	}
 	return false
+}
+
+/* Append a substitution s to a list of substitution sl if s is not in sl */
+func AppendIfNotContainsSubst(sl []Substitutions, s Substitutions) []Substitutions {
+	if !ContainsSubst(sl, s) {
+		return append(sl, s)
+	} else {
+		return sl
+	}
 }
 
 /*** Makers ***/

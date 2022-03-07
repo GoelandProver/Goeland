@@ -193,18 +193,40 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 						global.PrintDebug("SLC", fmt.Sprintf("The child %v returns the current subst !", res.id))
 						current_subst_seen = true
 						cpt_children_returning_subst--
+						// Children sent the same substitution, eventually with new forms
 						result_subst = append(result_subst, current_subst.AddFormulas(res.subst_list_for_father[0].GetForm()))
 					} else {
+						// Reseat at each step
+						common_substs = []complextypes.SubstAndForm{}
+
+						// Check if there is common substitutions
 						for _, v := range res.subst_list_for_father {
-							global.PrintDebug("SLC", v.ToString())
-							for i := range common_substs {
-								if v.GetSubst().Equals(common_substs[i].GetSubst()) {
-									common_substs[i] = common_substs[i].AddFormulas(v.GetForm())
+							for i := range result_subst {
+								if v.GetSubst().Equals(result_subst[i].GetSubst()) {
+									global.PrintDebug("SLC", "Subst in common found !")
+									common_substs = append(common_substs, result_subst[i].AddFormulas(v.GetForm()))
 								}
 							}
-							// Result subst can have double but it dosen't matter, becasue wa have common subst
-							result_subst = complextypes.AppendIfNotContainsSubstAndForm(result_subst, v)
 						}
+
+						// Add new subst to result subst
+						for _, v := range res.subst_list_for_father {
+							global.PrintDebug("SLC", v.ToString())
+							added := false
+							for i := range result_subst {
+								if v.GetSubst().Equals(result_subst[i].GetSubst()) {
+									added = true
+									global.PrintDebug("SLC", "Subst already in result_subst")
+									result_subst[i] = result_subst[i].AddFormulas(v.GetForm())
+								}
+							}
+
+							if !added {
+								global.PrintDebug("SLC", "New susbt found !")
+								result_subst = complextypes.AppendIfNotContainsSubstAndForm(result_subst, v)
+							}
+						}
+
 					}
 					cpt_children_returning_subst++
 				}
@@ -289,7 +311,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 		global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", answer_father.GetSubstForChildren().ToString()))
 
 		// Check if the subst was already seen, returns eventually the subst with new formula(s)
-		if complextypes.ContainsSubst(answer_father.subst_for_children.GetSubst(), complextypes.GetSubstListFromSubstAndFormList(given_substs)) {
+		if treetypes.ContainsSubst(complextypes.GetSubstListFromSubstAndFormList(given_substs), answer_father.subst_for_children.GetSubst()) {
 			global.PrintDebug("WF", "This substitution was sent by this child")
 			subst_for_father := answer_father.GetSubstForChildren()
 			for _, subst_sent := range given_substs {
@@ -491,9 +513,9 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			complextypes.ApplySubstitution(&st, s)
 			global.PrintDebug("PS", "Searching contradiction with new atomics")
 			for _, f := range st.GetAtomic() {
-				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.GetForm().ToString()))
+				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 				// Check if exists a contradiction after applying the substitution
-				clos_res_after_apply_subst, subst_after_apply_subst := applyClosureRules(f.GetForm(), &st)
+				clos_res_after_apply_subst, subst_after_apply_subst := applyClosureRules(f.Copy(), &st)
 				closed := manageClosureRule(father_id, &st, c, clos_res_after_apply_subst, treetypes.CopySubstList(subst_after_apply_subst), f.Copy())
 
 				if closed {
@@ -515,11 +537,10 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 		processableAtoms := st.GetLF()
 		for len(processableAtoms) > 0 {
-			nextProcessableAtoms := basictypes.MakeEmptyFormAndTermList()
+			nextProcessableAtoms := basictypes.MakeEmptyFormList()
 			for _, f := range processableAtoms {
-				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.GetForm().ToString()))
-				clos_res, subst := applyClosureRules(f.GetForm(), &st)
-
+				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
+				clos_res, subst := applyClosureRules(f.Copy(), &st)
 				closed := manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy())
 
 				if closed {
@@ -527,7 +548,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 					return
 				}
 				rewritten := st.DispatchForm(f.Copy())
-				if !rewritten.Equals(basictypes.MakeEmptyFormAndTerm()) {
+				if rewritten != nil {
 					nextProcessableAtoms = append(nextProcessableAtoms, rewritten)
 				}
 			}

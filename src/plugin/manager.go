@@ -45,19 +45,19 @@ import (
 /**
  * RewriteHook func. Takes atomic forms as input & output.
  **/
-type RewriteHook func(btypes.FormAndTerm) ([]btypes.FormAndTerm, error)
-type SendAxiomHook func(btypes.Form) bool 
+type RewriteHook func(btypes.Form) (btypes.FormList, error)
+type SendAxiomHook func(btypes.Form) bool
 
 /**
  * Stores the hooks of the differents plugins.
  **/
 type PluginManager struct {
-	rewriteHook RewriteHook
+	rewriteHook   RewriteHook
 	sendAxiomHook SendAxiomHook
 }
 
 /**
- * Properly creates a new PluginManager. It is advised to keep only one 
+ * Properly creates a new PluginManager. It is advised to keep only one
  * instance of PluginManager in your application (that's why a pointer is returned).
  **/
 func makeManager() *PluginManager {
@@ -80,9 +80,9 @@ func (pm *PluginManager) RegisterRewriteHook(hook RewriteHook) {
 /**
  * Execute the rewrite hook.
  **/
-func (pm *PluginManager) ApplyRewriteHook(arg btypes.FormAndTerm) ([]btypes.FormAndTerm, error) {
+func (pm *PluginManager) ApplyRewriteHook(arg btypes.Form) (btypes.FormList, error) {
 	if pm.rewriteHook == nil {
-		return []btypes.FormAndTerm{arg}, nil
+		return btypes.MakeSingleElementList(arg), nil
 	}
 	return pm.rewriteHook(arg)
 }

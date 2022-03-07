@@ -47,22 +47,22 @@ import (
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-/* Stock the substitution and the corresponding formula */
+/* Stock the substitution and the corresponding list of formulas */
 type SubstAndForm struct {
 	s treetypes.Substitutions
-	f basictypes.FormAndTermList
+	f basictypes.FormList
 }
 
 func (s SubstAndForm) GetSubst() treetypes.Substitutions {
 	return s.s.Copy()
 }
-func (s SubstAndForm) GetForm() basictypes.FormAndTermList {
+func (s SubstAndForm) GetForm() basictypes.FormList {
 	return s.f.Copy()
 }
 func (s *SubstAndForm) SetSubst(subst treetypes.Substitutions) {
 	s.s = subst.Copy()
 }
-func (s *SubstAndForm) SetForm(form basictypes.FormAndTermList) {
+func (s *SubstAndForm) SetForm(form basictypes.FormList) {
 	s.f = form.Copy()
 }
 func (saf SubstAndForm) IsEmpty() bool {
@@ -92,14 +92,14 @@ func (s SubstAndForm) ToString() string {
 	return res
 }
 
-func MakeSubstAndForm(subst treetypes.Substitutions, form basictypes.FormAndTermList) SubstAndForm {
+func MakeSubstAndForm(subst treetypes.Substitutions, form basictypes.FormList) SubstAndForm {
 	return SubstAndForm{subst.Copy(), form.Copy()}
 }
 func MakeEmptySubstAndForm() SubstAndForm {
-	return SubstAndForm{treetypes.MakeEmptySubstitution(), basictypes.FormAndTermList{}}
+	return SubstAndForm{treetypes.MakeEmptySubstitution(), basictypes.FormList{}}
 }
-func (s SubstAndForm) AddFormulas(fl basictypes.FormAndTermList) SubstAndForm {
-	return MakeSubstAndForm(s.GetSubst(), s.GetForm().MergeFormAndTermList(fl.Copy()))
+func (s SubstAndForm) AddFormulas(fl basictypes.FormList) SubstAndForm {
+	return MakeSubstAndForm(s.GetSubst(), s.GetForm().Merge(fl.Copy()))
 }
 
 /*************/
@@ -208,25 +208,6 @@ func ContainsMetaMother(s treetypes.Substitutions, mm basictypes.MetaList) bool 
 	return false
 }
 
-/* Check if a substitution is inside a list of substitution */
-func ContainsSubst(s treetypes.Substitutions, sl []treetypes.Substitutions) bool {
-	for _, v := range sl {
-		if v.Equals(s) {
-			return true
-		}
-	}
-	return false
-}
-
-/* Append a substitution s to a list of substitution sl if s is not in sl */
-func AppendIfNotContainsSubst(sl []treetypes.Substitutions, s treetypes.Substitutions) []treetypes.Substitutions {
-	if !ContainsSubst(s, sl) {
-		return append(sl, s)
-	} else {
-		return sl
-	}
-}
-
 func FusionSubstAndFormListWithoutDouble(l1, l2 []SubstAndForm) []SubstAndForm {
 	res := l1
 	for _, s := range l2 {
@@ -269,13 +250,13 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 	case basictypes.Not:
 		res = basictypes.MakeNot(ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case basictypes.And:
-		res_tmp := []basictypes.Form{}
+		res_tmp := basictypes.MakeEmptyFormList()
 		for _, val := range nf.GetLF() {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = basictypes.MakeAnd(res_tmp)
 	case basictypes.Or:
-		res_tmp := []basictypes.Form{}
+		res_tmp := basictypes.MakeEmptyFormList()
 		for _, val := range nf.GetLF() {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
@@ -296,26 +277,23 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 }
 
 /* For each element of the substitution, apply it on the entire formula list */
-func ApplySubstitutionOnFormulaList(s treetypes.Substitutions, lf basictypes.FormAndTermList) basictypes.FormAndTermList {
-	lf_res := basictypes.FormAndTermList{}
+func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf basictypes.FormList) basictypes.FormList {
+	lf_res := basictypes.MakeEmptyFormList()
 	for _, f := range lf {
-		new_form := applySubstitutionOnFormAndTerm(s, f)
-		lf_res = lf_res.AppendIfNotContainsFormAndTerm(new_form)
+		new_form := applySubstitutionsOnFormula(s, f)
+		lf_res = lf_res.AppendIfNotContains(new_form)
 
 	}
 	return lf_res
 }
 
 /* Apply substitution on FormAndTerm */
-func applySubstitutionOnFormAndTerm(s treetypes.Substitutions, f basictypes.FormAndTerm) basictypes.FormAndTerm {
-	form_res := f.GetForm()
-	tl_res := f.GetTerms()
-
+func applySubstitutionsOnFormula(s treetypes.Substitutions, f basictypes.Form) basictypes.Form {
+	form_res := f.Copy()
 	for old_symbol, new_symbol := range s {
 		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
-		tl_res = applySubstitutionOnTermList(old_symbol, new_symbol, tl_res)
 	}
-	return basictypes.MakeFormAndTerm(form_res, tl_res)
+	return form_res
 }
 
 /* Apply a substitution on a metaGenerator list */
@@ -332,14 +310,11 @@ func applySubstitutionOnMetaGenList(s treetypes.Substitutions, lf []basictypes.M
 
 /* Apply a substitution on a metaGen form */
 func applySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen) basictypes.MetaGen {
-	form_res := mg.GetForm().GetForm()
-	tl_res := mg.GetForm().GetTerms()
-
+	form_res := mg.GetForm()
 	for old_symbol, new_symbol := range s {
 		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
-		tl_res = applySubstitutionOnTermList(old_symbol, new_symbol, tl_res)
 	}
-	return basictypes.MakeMetaGen(basictypes.MakeFormAndTerm(form_res, tl_res), mg.GetCounter())
+	return basictypes.MakeMetaGen(form_res, mg.GetCounter())
 }
 
 /** Apply a sbstitution on a state
@@ -350,12 +325,12 @@ func ApplySubstitution(st *State, saf SubstAndForm) {
 	ms := MergeSubstAndForm(st.GetAppliedSubst(), saf.Copy())
 	st.SetAppliedSubst(ms)
 	st.SetLastAppliedSubst(saf)
-	st.SetLF(ApplySubstitutionOnFormulaList(s, st.GetLF()))
-	st.SetAtomic(ApplySubstitutionOnFormulaList(s, st.GetAtomic()))
-	st.SetAlpha(ApplySubstitutionOnFormulaList(s, st.GetAlpha()))
-	st.SetBeta(ApplySubstitutionOnFormulaList(s, st.GetBeta()))
-	st.SetDelta(ApplySubstitutionOnFormulaList(s, st.GetDelta()))
-	st.SetGamma(ApplySubstitutionOnFormulaList(s, st.GetGamma()))
+	st.SetLF(ApplySubstitutionsOnFormulaList(s, st.GetLF()))
+	st.SetAtomic(ApplySubstitutionsOnFormulaList(s, st.GetAtomic()))
+	st.SetAlpha(ApplySubstitutionsOnFormulaList(s, st.GetAlpha()))
+	st.SetBeta(ApplySubstitutionsOnFormulaList(s, st.GetBeta()))
+	st.SetDelta(ApplySubstitutionsOnFormulaList(s, st.GetDelta()))
+	st.SetGamma(ApplySubstitutionsOnFormulaList(s, st.GetGamma()))
 	st.SetMetaGen(applySubstitutionOnMetaGenList(s, st.GetMetaGen()))
 
 	st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic(), true))
@@ -494,7 +469,7 @@ func MergeSubstAndForm(s1, s2 SubstAndForm) SubstAndForm {
 		// os.Exit(0)
 	}
 
-	new_form := s1.GetForm().Copy().MergeFormAndTermList(s2.GetForm().Copy())
+	new_form := s1.GetForm().Copy().Merge(s2.GetForm().Copy())
 
 	return MakeSubstAndForm(new_subst, new_form)
 }

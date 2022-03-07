@@ -85,17 +85,17 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
  **/
 func registerAxiom(axiom btypes.Form) bool {
 	// 1: instantiate forall(s).
-	axiomFT := btypes.MakeFormAndTerm(axiom, []btypes.Term{})
-	for reflect.TypeOf(axiomFT.GetForm()) == reflect.TypeOf(btypes.All{}) {
-		axiomFT = instantiateOnce(axiomFT.GetForm(), axiomFT.GetTerms())
+	axiomFT := btypes.MakeForm(axiom)
+	for reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.All{}) {
+		axiomFT = instantiateOnce(axiomFT)
 	}
 	// 2: make rewrite rule for equivalence, implication or atomic.
-	if btypes.ShowKindOfRule(axiomFT.GetForm()) == btypes.Atomic {
+	if btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
 		addPosRewriteRule(axiomFT, btypes.MakeTop())
 		addNegRewriteRule(axiomFT, btypes.MakeBot())
-	} else if reflect.TypeOf(axiomFT.GetForm()) == reflect.TypeOf(btypes.Equ{}) {
+	} else if reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Equ{}) {
 		return registerEquivalence(axiomFT)
-	} else if activatePolarized && reflect.TypeOf(axiomFT.GetForm()) == reflect.TypeOf(btypes.Imp{}) {
+	} else if activatePolarized && reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Imp{}) {
 		return registerImplication(axiomFT)
 	}
 	// 3: if it's not one of the above, the axiom wasn't consumed.
@@ -105,8 +105,8 @@ func registerAxiom(axiom btypes.Form) bool {
 /**
  * Rewrites an atom an unification is found in the rewrite rules.
  **/
-func rewrite(atomic btypes.FormAndTerm) ([]btypes.FormAndTerm, error) {
-	form, polarity := getAtomAndPolarity(atomic.GetForm())
+func rewrite(atomic btypes.Form) (btypes.FormList, error) {
+	form, polarity := getAtomAndPolarity(atomic.Copy())
 
 	var tree datastruct.DataStructure
 
@@ -125,20 +125,20 @@ func rewrite(atomic btypes.FormAndTerm) ([]btypes.FormAndTerm, error) {
 /**
  * Rewrite algorithm with furnished code tree to unify on.
  **/
-func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.FormAndTerm, form btypes.Form, polarity bool) ([]btypes.FormAndTerm, error) {
-	atomics := []btypes.FormAndTerm{}
+func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) (btypes.FormList, error) {
+	atomics := btypes.MakeEmptyFormList()
 	if res, unif := tree.Unify(form); res {
 		// Sorts the unifs found.
 		unifs := choose(unif, polarity)
 		for _, unif := range unifs {
 			equivalence, err := getUnifiedEquivalence(unif.GetForm(), unif.GetSubst(), polarity)
 			if err != nil {
-				return []btypes.FormAndTerm{atomic}, err
+				return btypes.MakeSingleElementList(atomic), err
 			}
-			atomics = append(atomics, btypes.MakeFormAndTerm(equivalence, atomic.GetTerms()))
+			atomics = append(atomics, btypes.MakeForm(equivalence))
 		}
 	} else {
-		atomics = []btypes.FormAndTerm{atomic}
+		atomics = btypes.MakeSingleElementList(atomic)
 	}
 	return atomics, nil
 }
@@ -187,7 +187,7 @@ func insertFirst(sortedUnifs []treetypes.MatchingSubstitutions, unif treetypes.M
  * Utility function to get the form to unify in the codetree and the polarity of the atom furnished.
  **/
 func getAtomAndPolarity(atom btypes.Form) (btypes.Form, bool) {
-	switch form := atom.(type) {
+	switch form := atom.Copy().(type) {
 	case btypes.Not:
 		return form.GetForm(), false
 	default:
@@ -220,24 +220,24 @@ func findEquivalence(atom btypes.Form, polarity bool) btypes.Form {
 /**
  * Enters an axiom in the rewrite tree & rewrite match.
  **/
-func addRewriteRule(axiom btypes.FormAndTerm, cons btypes.Form, polarity bool) {
+func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 	// Skolemize consequence if possible
 	for preskolemize && canSkolemize(cons) {
-		cons = skolemize(cons, axiom.GetTerms())
+		cons = skolemize(cons)
 	}
 
 	if debugActivated {
 		if polarity {
-			fmt.Printf("Rewrite rule: %s ---> %s\n", axiom.GetForm().ToString(), cons.ToString())
+			fmt.Printf("Rewrite rule: %s ---> %s\n", axiom.ToString(), cons.ToString())
 		} else {
-			fmt.Printf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom.GetForm()).ToString(), cons.ToString())
+			fmt.Printf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom).ToString(), cons.ToString())
 		}
 	}
 
 	if polarity {
-		positiveRewrite[axiom.GetForm().ToString()] = cons
+		positiveRewrite[axiom.ToString()] = cons
 	} else {
-		negativeRewrite[axiom.GetForm().ToString()] = cons
+		negativeRewrite[axiom.ToString()] = cons
 	}
 }
 

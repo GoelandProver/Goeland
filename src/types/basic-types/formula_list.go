@@ -29,11 +29,11 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/****************/
-/* form_and_term_list.go */
-/****************/
+/********************/
+/* formula_liste.go */
+/********************/
 /**
-* This file contains functions and types which describe the state's data
+* This file contains functions and types which describe the fomula_list's data
 * structure
 **/
 
@@ -45,21 +45,24 @@ import (
 	"github.com/GoelandProver/gotab/global"
 )
 
-/****************/
-/* Struct state */
-/****************/
+/*** Structure ***/
 
 /* List of formulae */
-type FormAndTermList []FormAndTerm
+type FormList []Form
 
-func (fl FormAndTermList) Len() int      { return len(fl) }
-func (fl FormAndTermList) Swap(i, j int) { fl[i], fl[j] = fl[j], fl[i] }
-func (fl FormAndTermList) Less(i, j int) bool {
+/*** Methods ***/
+
+/*Sort */
+func (fl FormList) Len() int      { return len(fl) }
+func (fl FormList) Swap(i, j int) { fl[i], fl[j] = fl[j], fl[i] }
+func (fl FormList) Less(i, j int) bool {
 	return (fl[i].ToString() < fl[j].ToString())
 }
 
-/* Convert a list of formulae and Term into string*/
-func (fl FormAndTermList) ToString() string {
+/** To String **/
+
+/* Convert a list of formulas into string*/
+func (fl FormList) ToString() string {
 	res := "{"
 	for i, v := range fl {
 		res += v.ToString()
@@ -71,17 +74,18 @@ func (fl FormAndTermList) ToString() string {
 	return res
 }
 
-func (lf FormAndTermList) Print() {
+/* Print a list of formulas */
+func (lf FormList) Print() {
 	for _, f := range lf {
 		global.PrintDebug("FLTS", f.ToString())
 	}
 }
 
-/* Convert a list of formulae and Term into string for proof struct */
-func (fl FormAndTermList) ToStringForProof() string {
+/* Convert a list of formulas into string for proof struct */
+func (fl FormList) ToStringForProof() string {
 	res := ""
 	for i, f := range fl {
-		res = res + "<tspan x='0', dy='1.2em'>" + f.GetForm().ToString() + "<tspan>"
+		res = res + "<tspan x='0', dy='1.2em'>" + f.ToString() + "<tspan>"
 		if i < len(fl)-1 {
 			res = res + ", "
 		}
@@ -89,32 +93,24 @@ func (fl FormAndTermList) ToStringForProof() string {
 	return res
 }
 
+/** Utilitary **/
+
 /* Return true is the FormList is empty, false otherwise */
-func (fl FormAndTermList) IsEmpty() bool {
+func (fl FormList) IsEmpty() bool {
 	return len(fl) <= 0
 }
 
 /* Copy a list of form */
-func (fl FormAndTermList) Copy() FormAndTermList {
-	res := FormAndTermList{}
-	for _, f := range fl {
-		res = append(res, f.Copy())
+func (fl FormList) Copy() FormList {
+	res := make([]Form, len(fl))
+	for i := range fl {
+		res[i] = fl[i].Copy()
 	}
 	return res
 }
 
-/* Make empty form_and_term_list */
-func MakeEmptyFormAndTermList() FormAndTermList {
-	return FormAndTermList{}
-}
-
-/* Make a form_and_term_list with one element */
-func MakeSingleton(f FormAndTerm) FormAndTermList {
-	return FormAndTermList{f}
-}
-
 /* Check if two form_and_term_list contains the same elements */
-func (l1 FormAndTermList) Equals(l2 FormAndTermList) bool {
+func (l1 FormList) Equals(l2 FormList) bool {
 	if len(l1) != len(l2) {
 		return false
 	} else {
@@ -133,8 +129,8 @@ func (l1 FormAndTermList) Equals(l2 FormAndTermList) bool {
 	return true
 }
 
-/* Return true if a Formula f is inside the given FormAndTerm list, false otherwise */
-func (fl FormAndTermList) ContainsFormAndTerm(f FormAndTerm) bool {
+/* Return true if a formula f is inside the given formulas list, false otherwise */
+func (fl FormList) Contains(f Form) bool {
 	for _, v := range fl {
 		if f.Equals(v) {
 			return true
@@ -143,20 +139,34 @@ func (fl FormAndTermList) ContainsFormAndTerm(f FormAndTerm) bool {
 	return false
 }
 
-/* append a formula to a list if the formula is not already inside */
-func (fl FormAndTermList) AppendIfNotContainsFormAndTerm(f FormAndTerm) FormAndTermList {
-	if fl.ContainsFormAndTerm(f) {
+/* Append a formula to a list if the formula is not already inside */
+func (fl FormList) AppendIfNotContains(f Form) FormList {
+	if fl.Contains(f) {
 		return fl.Copy()
 	} else {
 		return append(fl.Copy(), f)
 	}
 }
 
-/* merge 2 formula list */
-func (l1 FormAndTermList) MergeFormAndTermList(l2 FormAndTermList) FormAndTermList {
+/* Merge two formulas lists */
+func (l1 FormList) Merge(l2 FormList) FormList {
 	res := l1.Copy()
 	for _, f := range l2 {
-		res = res.AppendIfNotContainsFormAndTerm(f.Copy())
+		res = res.AppendIfNotContains(f.Copy())
 	}
 	return res
+}
+
+/*** Functions ***/
+
+/** Makers **/
+
+/* Make empty form_and_term_list */
+func MakeEmptyFormList() FormList {
+	return FormList{}
+}
+
+/* Make a form_and_term_list with one element */
+func MakeSingleElementList(f Form) FormList {
+	return FormList{f}
 }

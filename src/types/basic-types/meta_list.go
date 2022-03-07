@@ -151,3 +151,12 @@ func (ml MetaList) ToTermList() []Term {
 	}
 	return res
 }
+
+/* Merge two meta list */
+func (l1 MetaList) Merge(l2 MetaList) MetaList {
+	res := l1.Copy()
+	for _, f := range l2 {
+		res = res.AppendIfNotContains(f.Copy().ToMeta())
+	}
+	return res
+}

@@ -123,7 +123,7 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 	matching := []treetypes.MatchingSubstitutions{}
 
 	if node.isLeaf() {
-		global.PrintDebug("UX", fmt.Sprintf("Is leaf : %v", basictypes.FormulaListToString(node.formulae)))
+		global.PrintDebug("UX", fmt.Sprintf("Is leaf : %v", node.formulae.ToString()))
 		for _, f := range node.formulae {
 			if reflect.TypeOf(f) == reflect.TypeOf(basictypes.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(treetypes.TermForm{}) {
 				// Rebuild final substitution between meta and subst
