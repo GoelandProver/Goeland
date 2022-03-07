@@ -48,14 +48,14 @@ import (
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-var positiveRewrite map[string]btypes.Form 	/* Stores rewrites of atoms with positive occurrences */ 
-var negativeRewrite map[string]btypes.Form	/* Stores rewrites of atoms with negative occurrences */
+var positiveRewrite map[string]btypes.Form /* Stores rewrites of atoms with positive occurrences */
+var negativeRewrite map[string]btypes.Form /* Stores rewrites of atoms with negative occurrences */
 
-var positiveTree datastruct.DataStructure	/* Matches atoms with positive occurrences */
-var negativeTree datastruct.DataStructure	/* Matches atoms with negative occurrences */
+var positiveTree datastruct.DataStructure /* Matches atoms with positive occurrences */
+var negativeTree datastruct.DataStructure /* Matches atoms with negative occurrences */
 
 var activatePolarized bool
-var preskolemize bool 
+var preskolemize bool
 
 var debugActivated bool
 
@@ -78,9 +78,9 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
 
 /**
  * Implements polarized deduction modulo theory :
- * 	- Registers axioms of type (forall x1, ..., xn) . A <=> B (if A or B is atomic) 
+ * 	- Registers axioms of type (forall x1, ..., xn) . A <=> B (if A or B is atomic)
  *	  as both positive and negative occurrences.
- *	- Registers axioms of type (forall x1, ..., xn) . A => B (if A / B atomic) as 
+ *	- Registers axioms of type (forall x1, ..., xn) . A => B (if A / B atomic) as
  *	  positive occurrence for A and negative occurrence for B.
  **/
 func registerAxiom(axiom btypes.Form) bool {
@@ -107,11 +107,11 @@ func registerAxiom(axiom btypes.Form) bool {
  **/
 func rewrite(atomic btypes.FormAndTerm) ([]btypes.FormAndTerm, error) {
 	form, polarity := getAtomAndPolarity(atomic.GetForm())
-	
+
 	var tree datastruct.DataStructure
-	
+
 	// Chooses the tree to search in based on the form's polarity.
-	// A positive form will be matched in the positive tree when 
+	// A positive form will be matched in the positive tree when
 	// a negative form will be matched in the negative tree.
 	if polarity {
 		tree = positiveTree
@@ -147,7 +147,7 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.FormAndTerm, fo
  * Supporting functions of the DMT.
  **/
 
-/** 
+/**
  * Priority of substitutions: Top/Bottom > others
  **/
 func choose(unifs []treetypes.MatchingSubstitutions, polarity bool) []treetypes.MatchingSubstitutions {

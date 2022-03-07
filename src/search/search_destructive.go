@@ -189,27 +189,22 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 				if len(res.subst_list_for_father) != 0 {
 					global.PrintDebug("SLC", fmt.Sprintf("The child %v has substitution(s) !", res.id))
 
-					if len(res.subst_list_for_father) == 1 && res.subst_list_for_father[0].Equals(current_subst) {
+					if len(res.subst_list_for_father) == 1 && res.subst_list_for_father[0].GetSubst().Equals(current_subst.GetSubst()) {
 						global.PrintDebug("SLC", fmt.Sprintf("The child %v returns the current subst !", res.id))
 						current_subst_seen = true
 						cpt_children_returning_subst--
+						result_subst = append(result_subst, current_subst.AddFormulas(res.subst_list_for_father[0].GetForm()))
 					} else {
-						tmp_result := []complextypes.SubstAndForm{}
 						for _, v := range res.subst_list_for_father {
 							global.PrintDebug("SLC", v.ToString())
-							// Check if the sust has already be seen by another child
-							// Todo : add the form to the list rather than a subst + form
-							if treetypes.ContainsSubst(v.GetSubst(), complextypes.GetSubstListFromSubstAndFormList(result_subst)) {
-								common_substs = complextypes.AppendIfNotContainsSubstAndForm(common_substs, v)
-							} else {
-								tmp_result = complextypes.AppendIfNotContainsSubstAndForm(tmp_result, v)
+							for i := range common_substs {
+								if v.GetSubst().Equals(common_substs[i].GetSubst()) {
+									common_substs[i] = common_substs[i].AddFormulas(v.GetForm())
+								}
 							}
-						}
-
-						for _, v := range tmp_result {
+							// Result subst can have double but it dosen't matter, becasue wa have common subst
 							result_subst = complextypes.AppendIfNotContainsSubstAndForm(result_subst, v)
 						}
-
 					}
 					cpt_children_returning_subst++
 				}
@@ -229,17 +224,14 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 		case 0:
 			if current_subst_seen {
 				// A child returns current subst and the other nothing
-				global.PrintDebug("SLC", "A child returns current subst")
+				global.PrintDebug("SLC", "One on more children returns the current subst")
 				result_int = 1
-				result_subst = append(result_subst, current_subst)
-
 			} else {
 				result_int = 0
 			}
-
 		case 1:
 			// A child returns subst(s)
-			global.PrintDebug("SLC", "A child returns substs")
+			global.PrintDebug("SLC", "A child returns new subst(s)")
 			result_int = 1
 
 			// Merge the subst with current subst (if not empty)
@@ -283,6 +275,9 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 func waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm) {
 	global.PrintDebug("WF", "Wait father")
 
+	// CLear subst found
+	st.SetSubstsFound([]complextypes.SubstAndForm{})
+
 	select {
 	case quit := <-c.quit:
 		exchanges.WriteExchanges(father_id, st, given_substs, complextypes.SubstAndForm{}, "WaitFather - Die")
@@ -293,10 +288,16 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 		exchanges.WriteExchanges(father_id, st, given_substs, answer_father.GetSubstForChildren(), "WaitFather")
 		global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", answer_father.GetSubstForChildren().ToString()))
 
-		// TODO : check subst only, pas subst and form
+		// Check if the subst was already seen, returns eventually the subst with new formula(s)
 		if complextypes.ContainsSubst(answer_father.subst_for_children.GetSubst(), complextypes.GetSubstListFromSubstAndFormList(given_substs)) {
 			global.PrintDebug("WF", "This substitution was sent by this child")
-			st.SetSubstsFound([]complextypes.SubstAndForm{answer_father.GetSubstForChildren()})
+			subst_for_father := answer_father.GetSubstForChildren()
+			for _, subst_sent := range given_substs {
+				if subst_sent.GetSubst().Equals(answer_father.subst_for_children.GetSubst()) {
+					subst_for_father = answer_father.GetSubstForChildren().AddFormulas(subst_sent.GetForm())
+				}
+			}
+			st.SetSubstsFound([]complextypes.SubstAndForm{subst_for_father})
 			sendSubToFather(c, true, true, father_id, st, given_substs)
 			return
 		} else {
@@ -313,11 +314,6 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 
 			st_copy := st.Copy()
 			c2 := Communication{make(chan bool), make(chan Result)}
-
-			// Take in account the substitutions already applied on this process
-			// TODO 1 : useless - the current state is ok with applied subst, so no need to send it to children.
-			// Applied subst will be returned to the parent in waitchildren mode. Only need to send substForChildren to children
-			// merged_subst := complextypes.MergeSubstAndForm(st.GetAppliedSubst(), answer_father.GetSubstForChildren())
 
 			global.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", answer_father.GetSubstForChildren().GetSubst().ToString()))
 			go ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren())
@@ -343,7 +339,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 **/
 func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm) {
 	global.PrintDebug("WC", "Waiting children")
-	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT : %v, Given_subst : %v, applied subst : %v", len(children), len(substs_for_backtrack), complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString()))
+	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 	global.PrintDebug("WC", fmt.Sprintf("MM : %v", st.GetMM().ToString()))
 
 	select {
@@ -363,16 +359,18 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 		case 0:
 			global.PrintDebug("WC", "All children has finished by themselves")
 			closeChildren(&children, true)
-			subst_for_father := complextypes.RemoveElementWithoutMM(st.GetAppliedSubst().GetSubst(), st.GetMM())
 
+			// Send applied subst to father (only what's relevant)
+			subst_for_father := complextypes.RemoveElementWithoutMM(st.GetAppliedSubst().GetSubst(), st.GetMM())
 			if !subst_for_father.IsEmpty() {
 				subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, st.GetAppliedSubst().GetForm())
 				st.SetSubstsFound([]complextypes.SubstAndForm{subst_and_form_for_father})
 			}
+
 			// No need to append current_subst, because child return it anyway (if exists)
 			// Here, current subst is always empty
 			if !current_subst.IsEmpty() {
-				fmt.Printf("Current subst not empty but child returns nothing\n")
+				fmt.Printf("[ERROR] Current subst not empty but child returns nothing\n")
 			}
 
 			if cpt_children == 1 {
@@ -381,7 +379,6 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				st.SetCurrentProofChildren(proof_children)
 				st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 			}
-
 			exchanges.WriteExchanges(father_id, st, nil, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
 			sendSubToFather(c, true, false, father_id, st, given_substs)
@@ -510,7 +507,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 		if len(st.GetSubstsFound()) > 0 {
 			global.PrintDebug("PS", fmt.Sprintf("Current substitutions list: %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 		}
-		global.PrintDebug("PS", fmt.Sprintf("Formulae to be added: %v", basictypes.FormAndTermListToString(st.GetLF())))
+		global.PrintDebug("PS", fmt.Sprintf("Formulae to be added: %v", st.GetLF().ToString()))
 		global.PrintDebug("PS", "Insert tree, searching contradiction, then dispatch")
 
 		st.SetTreePos(st.GetTreePos().InsertFormulaListToDataStructure(st.GetLF(), true))
@@ -518,7 +515,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 		processableAtoms := st.GetLF()
 		for len(processableAtoms) > 0 {
-			nextProcessableAtoms := []basictypes.FormAndTerm{}
+			nextProcessableAtoms := basictypes.MakeEmptyFormAndTermList()
 			for _, f := range processableAtoms {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.GetForm().ToString()))
 				clos_res, subst := applyClosureRules(f.GetForm(), &st)
@@ -529,7 +526,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 					manageQuitOrder(true, c, father_id, st, nil, []complextypes.SubstAndForm{})
 					return
 				}
-				rewritten := st.DispatchForm(f)
+				rewritten := st.DispatchForm(f.Copy())
 				if !rewritten.Equals(basictypes.MakeEmptyFormAndTerm()) {
 					nextProcessableAtoms = append(nextProcessableAtoms, rewritten)
 				}

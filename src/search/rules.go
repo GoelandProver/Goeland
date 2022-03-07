@@ -127,8 +127,8 @@ func searchClosureRule(f basictypes.Form, st complextypes.State) (bool, []treety
 * Result :
 *	a formula list (conjunction)
 **/
-func applyAlphaRules(f basictypes.FormAndTerm) []basictypes.FormAndTerm {
-	var res []basictypes.FormAndTerm
+func applyAlphaRules(f basictypes.FormAndTerm) basictypes.FormAndTermList {
+	var res basictypes.FormAndTermList
 	switch nf := f.GetForm().(type) {
 	case basictypes.Not:
 		switch nnf := nf.GetForm().(type) {
@@ -162,34 +162,34 @@ func applyAlphaRules(f basictypes.FormAndTerm) []basictypes.FormAndTerm {
 * Result :
 *	a formula list (disjunction)
 **/
-func applyBetaRules(f basictypes.FormAndTerm) [][]basictypes.FormAndTerm {
-	var res [][]basictypes.FormAndTerm
+func applyBetaRules(f basictypes.FormAndTerm) []basictypes.FormAndTermList {
+	var res []basictypes.FormAndTermList
 	switch nf := f.GetForm().(type) {
 	case basictypes.Not:
 		switch nnf := nf.GetForm().(type) {
 		case basictypes.And:
 			global.PrintDebug("AR", "Applying β¬∧...")
 			for i := range nnf.GetLF() {
-				res = append(res, []basictypes.FormAndTerm{basictypes.MakeFormAndTerm(basictypes.RefuteForm(nnf.GetLF()[i]), f.GetTerms())})
+				res = append(res, basictypes.MakeSingleton(basictypes.MakeFormAndTerm(basictypes.RefuteForm(nnf.GetLF()[i]), f.GetTerms())))
 			}
 		case basictypes.Equ:
 			global.PrintDebug("AR", "Applying β¬⇔...")
-			res = append(res, []basictypes.FormAndTerm{basictypes.MakeFormAndTerm(basictypes.RefuteForm(nnf.GetF1()), f.GetTerms()), basictypes.MakeFormAndTerm(nnf.GetF2(), f.GetTerms())})
-			res = append(res, []basictypes.FormAndTerm{basictypes.MakeFormAndTerm(nnf.GetF1(), f.GetTerms()), basictypes.MakeFormAndTerm(basictypes.RefuteForm(nnf.GetF2()), f.GetTerms())})
+			res = append(res, basictypes.FormAndTermList{basictypes.MakeFormAndTerm(basictypes.RefuteForm(nnf.GetF1()), f.GetTerms()), basictypes.MakeFormAndTerm(nnf.GetF2(), f.GetTerms())})
+			res = append(res, basictypes.FormAndTermList{basictypes.MakeFormAndTerm(nnf.GetF1(), f.GetTerms()), basictypes.MakeFormAndTerm(basictypes.RefuteForm(nnf.GetF2()), f.GetTerms())})
 		}
 	case basictypes.Or:
 		global.PrintDebug("AR", "Applying β∨...")
 		for i := range nf.GetLF() {
-			res = append(res, []basictypes.FormAndTerm{basictypes.MakeFormAndTerm(nf.GetLF()[i], f.GetTerms())})
+			res = append(res, basictypes.MakeSingleton(basictypes.MakeFormAndTerm(nf.GetLF()[i], f.GetTerms())))
 		}
 	case basictypes.Imp:
 		global.PrintDebug("AR", "Applying β⇒...")
-		res = append(res, []basictypes.FormAndTerm{basictypes.MakeFormAndTerm(basictypes.RefuteForm(nf.GetF1()), f.GetTerms())})
-		res = append(res, []basictypes.FormAndTerm{basictypes.MakeFormAndTerm(nf.GetF2(), f.GetTerms())})
+		res = append(res, basictypes.MakeSingleton(basictypes.MakeFormAndTerm(basictypes.RefuteForm(nf.GetF1()), f.GetTerms())))
+		res = append(res, basictypes.MakeSingleton(basictypes.MakeFormAndTerm(nf.GetF2(), f.GetTerms())))
 	case basictypes.Equ:
 		global.PrintDebug("AR", "Applying β⇔...")
-		res = append(res, []basictypes.FormAndTerm{basictypes.MakeFormAndTerm(basictypes.RefuteForm(nf.GetF1()), f.GetTerms()), basictypes.MakeFormAndTerm(basictypes.RefuteForm(nf.GetF2()), f.GetTerms())})
-		res = append(res, []basictypes.FormAndTerm{basictypes.MakeFormAndTerm(nf.GetF1(), f.GetTerms()), basictypes.MakeFormAndTerm(nf.GetF2(), f.GetTerms())})
+		res = append(res, basictypes.FormAndTermList{basictypes.MakeFormAndTerm(basictypes.RefuteForm(nf.GetF1()), f.GetTerms()), basictypes.MakeFormAndTerm(basictypes.RefuteForm(nf.GetF2()), f.GetTerms())})
+		res = append(res, basictypes.FormAndTermList{basictypes.MakeFormAndTerm(nf.GetF1(), f.GetTerms()), basictypes.MakeFormAndTerm(nf.GetF2(), f.GetTerms())})
 	}
 	return res
 }
@@ -202,8 +202,8 @@ func applyBetaRules(f basictypes.FormAndTerm) [][]basictypes.FormAndTerm {
 * Result :
 *	a formula
 **/
-func applyDeltaRules(f basictypes.FormAndTerm) []basictypes.FormAndTerm {
-	var result []basictypes.FormAndTerm
+func applyDeltaRules(f basictypes.FormAndTerm) basictypes.FormAndTermList {
+	var result basictypes.FormAndTermList
 	switch nf := f.GetForm().(type) {
 	case basictypes.Not:
 		switch nnf := nf.GetForm().(type) {
@@ -238,8 +238,8 @@ func applyDeltaRules(f basictypes.FormAndTerm) []basictypes.FormAndTerm {
 *	a formula
 *	the new metavariables
 **/
-func applyGammaRules(f basictypes.FormAndTerm, index int) ([]basictypes.FormAndTerm, basictypes.MetaList) {
-	var result []basictypes.FormAndTerm
+func applyGammaRules(f basictypes.FormAndTerm, index int) (basictypes.FormAndTermList, basictypes.MetaList) {
+	var result basictypes.FormAndTermList
 	var new_terms []basictypes.Term
 	var new_mm basictypes.MetaList
 	switch nf := f.GetForm().(type) {

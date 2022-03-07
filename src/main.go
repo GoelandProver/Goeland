@@ -133,7 +133,6 @@ func main() {
 }
 
 func mainGotab() {
-	basictypes.Reset()
 	args := os.Args
 	problem := ""
 
@@ -145,6 +144,8 @@ func mainGotab() {
 	problem = args[len(args)-1]
 
 	fmt.Printf("\n[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
+	basictypes.Reset()
+	plugin.GetPluginManager()
 
 	lstm, bound := complextypes.ParseMain(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
@@ -225,7 +226,7 @@ func Search(f basictypes.Form, bound int) {
 		fmt.Printf("Launch Gotab with destructive = %v, data_struct = %v\n", global.IsDestructive(), global.GetDataStruct())
 
 		global.SetNbGoroutines(0)
-		st.SetLF([]basictypes.FormAndTerm{basictypes.MakeForm(f)})
+		st.SetLF(basictypes.MakeSingleton(basictypes.MakeForm(f)))
 		c := search.MakeCommunication(make(chan bool), make(chan search.Result))
 		// TODO : global quit channel in non destrutive
 

@@ -57,28 +57,28 @@ import (
  * Parses an option
  **/
 type Option struct {
-	Name string 			`yaml:"name"`
-	Value string 			`yaml:"default"`
+	Name  string `yaml:"name"`
+	Value string `yaml:"default"`
 }
 
 /**
  * Gets the name of the plugin & the options associated.
  **/
 type PluginConfig struct {
-	Name string		 		`yaml:"name"`
-	DefaultEnable bool    	`yaml:"defaultEnable"`
-	Options []Option		`yaml:"options"`
+	Name          string   `yaml:"name"`
+	DefaultEnable bool     `yaml:"defaultEnable"`
+	Options       []Option `yaml:"options"`
 }
 
-type PoptionsFlags []string 
+type PoptionsFlags []string
 
 /* Overloading flags functions */
 
 func (opt *PoptionsFlags) String() string {
 	repr := "["
 	for i, s := range *opt {
-		repr += s 
-		if i != len(*opt) - 1 {
+		repr += s
+		if i != len(*opt)-1 {
 			repr += ", "
 		}
 	}
@@ -106,12 +106,12 @@ func loadPlugins(path string) *PluginManager {
 	loadedPlugins = make(map[string]bool)
 
 	realpath, err := os.Executable()
-	
+
 	if err != nil {
 		return pm
 	}
 
-	err = loadPluginsAux(filepath.Dir(realpath) + "/" + path, pm)
+	err = loadPluginsAux(filepath.Dir(realpath)+"/"+path, pm)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -141,9 +141,15 @@ func loadPluginsAux(path string, pm *PluginManager) error {
 		}
 
 		// If the user asked to load this plugin, actually loads the file with the options
+<<<<<<< HEAD
 		if ((config.DefaultEnable && !inNameList(config.Name, *flag_preventLoad)) || 
 			inNameList(config.Name, *flag_load)) {
 			loadFile(pm, filepath.Join(path, lib), config)
+=======
+		if (config.DefaultEnable && !inNameList(config.Name, *flag_preventLoad)) ||
+			inNameList(config.Name, *flag_load) {
+			loadFile(pm, filepath.Join(path, lib), config.Options)
+>>>>>>> [STRUCT] Improve substitution's structure
 		}
 	}
 
@@ -159,7 +165,7 @@ func loadPluginsAux(path string, pm *PluginManager) error {
 }
 
 func inNameList(name string, list string) bool {
-	return strings.Contains(list, "," + name) || strings.Contains(list, name + ",") || list == name
+	return strings.Contains(list, ","+name) || strings.Contains(list, name+",") || list == name
 }
 
 /**
@@ -174,13 +180,13 @@ func isPlugin(lib string, cfg string) bool {
  * Gets the .so and .yaml files for a plugin configuration.
  **/
 func getPluginFiles(files []os.FileInfo) (string, string) {
-	lib, cfg := "", "" 
+	lib, cfg := "", ""
 	for _, file := range files {
 		if !file.IsDir() {
 			if strings.Contains(file.Name(), ".so") {
-				lib = file.Name() 
+				lib = file.Name()
 			} else if strings.Contains(file.Name(), ".yaml") {
-				cfg = file.Name() 
+				cfg = file.Name()
 			}
 		}
 	}
@@ -188,7 +194,7 @@ func getPluginFiles(files []os.FileInfo) (string, string) {
 }
 
 /**
- * Parses the configuration file, gets the name of the plugin, and properly 
+ * Parses the configuration file, gets the name of the plugin, and properly
  * setups the options (with default value, replaces it if it finds the option
  * listed in -poptions name:...
  **/
@@ -238,7 +244,7 @@ func overwriteOptions(config *PluginConfig) error {
 			// Put an empty value, plugins should manage it themselves.
 			nameAndValue = append(nameAndValue, "")
 		}
-		
+
 		found := false
 		for i, conf := range config.Options {
 			if conf.Name == nameAndValue[0] {
@@ -300,6 +306,7 @@ func GetPluginManager() *PluginManager {
 	}
 	return pluginManager
 }
+<<<<<<< HEAD
 
 func IsLoaded(name string) bool {
 	if b, found := loadedPlugins[name]; found {
@@ -309,3 +316,5 @@ func IsLoaded(name string) bool {
 	}
 	return false
 }
+=======
+>>>>>>> [STRUCT] Improve substitution's structure

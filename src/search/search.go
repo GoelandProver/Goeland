@@ -113,7 +113,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 				global.PrintDebug("MCR", fmt.Sprintf("Formula = : %v", f.ToString()))
 
 				// Create substAndForm with the current form and the subst found
-				subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, f)
+				subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, basictypes.MakeSingleton(f))
 
 				global.PrintDebug("MCR", fmt.Sprintf("SubstAndForm created : %v", subst_and_form_for_father.ToString()))
 
@@ -184,7 +184,7 @@ func manageAlphaRules(father_id uint64, st complextypes.State, c Communication) 
 	if len(st.GetAlpha()) > 1 {
 		st.SetAlpha(st.GetAlpha()[1:len(st.GetAlpha())])
 	} else {
-		st.SetAlpha(make([]basictypes.FormAndTerm, 0))
+		st.SetAlpha(basictypes.MakeEmptyFormAndTermList())
 	}
 	st.SetLF(applyAlphaRules(hdf))
 	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm())
@@ -200,7 +200,7 @@ func manageDeltaRules(father_id uint64, st complextypes.State, c Communication) 
 	if len(st.GetDelta()) > 1 {
 		st.SetDelta(st.GetDelta()[1:len(st.GetDelta())])
 	} else {
-		st.SetDelta(make([]basictypes.FormAndTerm, 0))
+		st.SetDelta(basictypes.MakeEmptyFormAndTermList())
 	}
 	st.SetLF(applyDeltaRules(hdf))
 	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm())
@@ -221,7 +221,7 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication) {
 		if len(st_copy.GetBeta()) > 1 {
 			st_copy.SetBeta(st.GetBeta()[1:len(st.GetBeta())])
 		} else {
-			st_copy.SetBeta(make([]basictypes.FormAndTerm, 0))
+			st_copy.SetBeta(basictypes.MakeEmptyFormAndTermList())
 		}
 
 		st_copy.SetLF(reslf[i])
@@ -254,7 +254,7 @@ func manageGammaRules(father_id uint64, st complextypes.State, c Communication) 
 	if len(st.GetGamma()) > 1 {
 		st.SetGamma(st.GetGamma()[1:len(st.GetGamma())])
 	} else {
-		st.SetGamma(make([]basictypes.FormAndTerm, 0))
+		st.SetGamma(basictypes.MakeEmptyFormAndTermList())
 	}
 
 	index, new_meta_gen := basictypes.GetIndexMetaGenList(hdf, st.GetMetaGen())
@@ -278,6 +278,6 @@ func manageReintroductionRules(father_id uint64, st complextypes.State, c Commun
 
 	st.SetMetaGen(new_meta_generator)
 	global.PrintDebug("PS", fmt.Sprintf("Reintroduce the formula : %s", reslf.GetForm().ToString()))
-	st.SetLF([]basictypes.FormAndTerm{reslf})
+	st.SetLF(basictypes.MakeSingleton(reslf))
 	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm())
 }

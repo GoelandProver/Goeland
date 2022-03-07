@@ -50,23 +50,19 @@ import (
 /* Stock the substitution and the corresponding formula */
 type SubstAndForm struct {
 	s treetypes.Substitutions
-	f basictypes.FormAndTerm
+	f basictypes.FormAndTermList
 }
 
 func (s SubstAndForm) GetSubst() treetypes.Substitutions {
 	return s.s.Copy()
 }
-func (s SubstAndForm) GetForm() basictypes.FormAndTerm {
-	if s.f.IsEmpty() {
-		return basictypes.MakeEmptyFormAndTerm()
-	} else {
-		return s.f.Copy()
-	}
+func (s SubstAndForm) GetForm() basictypes.FormAndTermList {
+	return s.f.Copy()
 }
 func (s *SubstAndForm) SetSubst(subst treetypes.Substitutions) {
 	s.s = subst.Copy()
 }
-func (s *SubstAndForm) SetForm(form basictypes.FormAndTerm) {
+func (s *SubstAndForm) SetForm(form basictypes.FormAndTermList) {
 	s.f = form.Copy()
 }
 func (saf SubstAndForm) IsEmpty() bool {
@@ -96,11 +92,14 @@ func (s SubstAndForm) ToString() string {
 	return res
 }
 
-func MakeSubstAndForm(subst treetypes.Substitutions, form basictypes.FormAndTerm) SubstAndForm {
+func MakeSubstAndForm(subst treetypes.Substitutions, form basictypes.FormAndTermList) SubstAndForm {
 	return SubstAndForm{subst.Copy(), form.Copy()}
 }
 func MakeEmptySubstAndForm() SubstAndForm {
-	return SubstAndForm{treetypes.MakeEmptySubstitution(), basictypes.MakeEmptyFormAndTerm()}
+	return SubstAndForm{treetypes.MakeEmptySubstitution(), basictypes.FormAndTermList{}}
+}
+func (s SubstAndForm) AddFormulas(fl basictypes.FormAndTermList) SubstAndForm {
+	return MakeSubstAndForm(s.GetSubst(), s.GetForm().MergeFormAndTermList(fl.Copy()))
 }
 
 /*************/
@@ -297,11 +296,11 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 }
 
 /* For each element of the substitution, apply it on the entire formula list */
-func ApplySubstitutionOnFormulaList(s treetypes.Substitutions, lf []basictypes.FormAndTerm) []basictypes.FormAndTerm {
-	lf_res := []basictypes.FormAndTerm{}
+func ApplySubstitutionOnFormulaList(s treetypes.Substitutions, lf basictypes.FormAndTermList) basictypes.FormAndTermList {
+	lf_res := basictypes.FormAndTermList{}
 	for _, f := range lf {
 		new_form := applySubstitutionOnFormAndTerm(s, f)
-		lf_res = basictypes.AppendIfNotContainsFormAndTerm(lf_res, new_form)
+		lf_res = lf_res.AppendIfNotContainsFormAndTerm(new_form)
 
 	}
 	return lf_res
@@ -466,14 +465,12 @@ func CopySubstAndFormList(sl []SubstAndForm) []SubstAndForm {
 /* Print a list of substAndForm */
 func SubstAndFormListToString(sl []SubstAndForm) string {
 	var s_res string
-	i := 0
 	s_res = "{"
-	for _, v := range sl {
+	for i, v := range sl {
 		s_res += v.ToString()
 		if i < len(sl)-1 {
 			s_res += (", ")
 		}
-		i++
 	}
 	s_res += "}"
 	return s_res
@@ -481,10 +478,6 @@ func SubstAndFormListToString(sl []SubstAndForm) string {
 
 /* Merge two SubstAndForm (supposed to fit) */
 func MergeSubstAndForm(s1, s2 SubstAndForm) SubstAndForm {
-
-	global.PrintDebug("MSAF", fmt.Sprintf("S1 : %v", s1.ToString()))
-	global.PrintDebug("MSAF", fmt.Sprintf("S2 : %v", s2.ToString()))
-
 	if s1.IsEmpty() {
 		return s2
 	}
@@ -501,10 +494,7 @@ func MergeSubstAndForm(s1, s2 SubstAndForm) SubstAndForm {
 		// os.Exit(0)
 	}
 
-	// TODO : pas de doublon dans terms (implem avec liste et meta, plus (subst, term))
-	new_form := basictypes.MakeFormAndTerm(
-		basictypes.MakeAnd([]basictypes.Form{s1.GetForm().GetForm(), s2.GetForm().GetForm()}),
-		append(s1.GetForm().GetTerms(), s2.GetForm().GetTerms()...))
+	new_form := s1.GetForm().Copy().MergeFormAndTermList(s2.GetForm().Copy())
 
 	return MakeSubstAndForm(new_subst, new_form)
 }

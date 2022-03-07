@@ -81,7 +81,7 @@ func (n Node) IsEmpty() bool {
 }
 
 /* Make data struct */
-func (n Node) MakeDataStruct(fl []basictypes.FormAndTerm, is_pos bool) datastruct.DataStructure {
+func (n Node) MakeDataStruct(fl basictypes.FormAndTermList, is_pos bool) datastruct.DataStructure {
 	return makeCodeTreeFromAtomic(fl, is_pos)
 }
 
@@ -100,7 +100,7 @@ func (n Node) isLeaf() bool {
 }
 
 /* Make two code trees (tree_pos and tree_neg) from st.atomic */
-func makeCodeTreeFromAtomic(lf []basictypes.FormAndTerm, is_pos bool) *Node {
+func makeCodeTreeFromAtomic(lf basictypes.FormAndTermList, is_pos bool) *Node {
 	var form []basictypes.Form
 
 	for _, f := range lf {
@@ -152,7 +152,7 @@ func makeNode(block CodeBlock) *Node {
 }
 
 /* Insert a lsit of formula into the right tree */
-func (n Node) InsertFormulaListToDataStructure(lf []basictypes.FormAndTerm, is_pos bool) datastruct.DataStructure {
+func (n Node) InsertFormulaListToDataStructure(lf basictypes.FormAndTermList, is_pos bool) datastruct.DataStructure {
 	for _, f := range lf {
 		switch nf := f.GetForm().(type) {
 		case basictypes.Pred:

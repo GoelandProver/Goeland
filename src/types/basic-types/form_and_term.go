@@ -38,10 +38,6 @@
 
 package basictypes
 
-import (
-	"github.com/GoelandProver/Goeland/global"
-)
-
 /* Struct ton stock the terms linked to the formula */
 type FormAndTerm struct {
 	f Form
@@ -85,76 +81,6 @@ func (f FormAndTerm) ToString() string {
 	res := f.GetForm().ToString()
 	if len(f.GetTerms()) > 0 {
 		res += " - " + TermListToString(f.GetTerms())
-	}
-	return res
-}
-
-/*** Functions ***/
-
-/* Print a list of formulae and Term */
-func PrintFormulaAndTermList(lf []FormAndTerm) {
-	for _, f := range lf {
-		global.PrintDebug("FLTS", f.ToString())
-	}
-}
-
-/* Convert a list of formulae and Term into string*/
-func FormAndTermListToString(lf []FormAndTerm) string {
-	res := ""
-	for i, f := range lf {
-		res = res + f.GetForm().ToString()
-		if i < len(lf)-1 {
-			res = res + ", "
-		}
-	}
-	return res
-}
-
-/* Convert a list of formulae and Term into string for proof struct */
-func FormAndTermListToStringForProof(lf []FormAndTerm) string {
-	res := ""
-	for i, f := range lf {
-		res = res + "<tspan x='0', dy='1.2em'>" + f.GetForm().ToString() + "<tspan>"
-		if i < len(lf)-1 {
-			res = res + ", "
-		}
-	}
-	return res
-}
-
-/* Return true if a Formula f is inside the given FormAndTerm list, false otherwise */
-func ContainsFormAndTerm(f FormAndTerm, l []FormAndTerm) bool {
-	for _, v := range l {
-		if f.Equals(v) {
-			return true
-		}
-	}
-	return false
-}
-
-/* append a formula to a list if the formula is not already inside */
-func AppendIfNotContainsFormAndTerm(lf []FormAndTerm, f FormAndTerm) []FormAndTerm {
-	if ContainsFormAndTerm(f, lf) {
-		return lf
-	} else {
-		return append(lf, f)
-	}
-}
-
-/* merge 2 formula list */
-func MergeFormAndTerm(l1, l2 []FormAndTerm) []FormAndTerm {
-	res := l1
-	for _, f := range l2 {
-		res = AppendIfNotContainsFormAndTerm(res, f)
-	}
-	return res
-}
-
-/* Copy a list of form and term */
-func CopyFormAndTermList(fl []FormAndTerm) []FormAndTerm {
-	res := make([]FormAndTerm, len(fl))
-	for i := range fl {
-		res[i] = fl[i].Copy()
 	}
 	return res
 }
