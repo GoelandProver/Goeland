@@ -49,14 +49,14 @@ import (
 
 	_ "net/http/pprof"
 
-	treesearch "github.com/delahayd/gotab/code-trees/tree-search"
-	"github.com/delahayd/gotab/global"
-	"github.com/delahayd/gotab/plugin"
-	"github.com/delahayd/gotab/search"
-	basictypes "github.com/delahayd/gotab/types/basic-types"
-	complextypes "github.com/delahayd/gotab/types/complex-types"
-	exchanges "github.com/delahayd/gotab/visualization_exchanges"
-	proof "github.com/delahayd/gotab/visualization_proof"
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
+	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugin"
+	"github.com/GoelandProver/Goeland/search"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
+	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 // Flags

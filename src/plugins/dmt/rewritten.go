@@ -46,9 +46,9 @@ import (
 	"reflect"
 	"strings"
 
-	treetypes "github.com/delahayd/gotab/code-trees/tree-types"
-	btypes "github.com/delahayd/gotab/types/basic-types"
-	ctypes "github.com/delahayd/gotab/types/complex-types"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
 /**

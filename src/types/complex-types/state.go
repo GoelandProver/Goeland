@@ -41,12 +41,12 @@ package complextypes
 import (
 	"fmt"
 
-	treetypes "github.com/delahayd/gotab/code-trees/tree-types"
-	"github.com/delahayd/gotab/global"
-	"github.com/delahayd/gotab/plugin"
-	basictypes "github.com/delahayd/gotab/types/basic-types"
-	datastruct "github.com/delahayd/gotab/types/data-struct"
-	proof "github.com/delahayd/gotab/visualization_proof"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugin"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 /****************/

@@ -1,9 +1,6 @@
 // $basictypes.Id$
 /**
-* Copyright by Julie CAILLER and Johann ROSAIN (2022)
-*
-* julie.cailler@lirmm.fr
-* johann.rosain@lirmm.fr
+* Copyright 2022 by the authors (see AUTHORS).
 *
 * Goéland is an automated theorem prover for first order logic.
 *
@@ -42,7 +39,7 @@ import (
 	"fmt"
 	"unicode"
   "io/ioutil"
-  basictypes "github.com/delahayd/gotab/types/basic-types"
+  basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	)
 
 // Count of quantifiers (bound)

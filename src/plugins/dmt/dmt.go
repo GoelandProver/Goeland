@@ -42,10 +42,10 @@ import (
 	"fmt"
 	"reflect"
 
-	treetypes "github.com/delahayd/gotab/code-trees/tree-types"
-	"github.com/delahayd/gotab/plugin"
-	btypes "github.com/delahayd/gotab/types/basic-types"
-	datastruct "github.com/delahayd/gotab/types/data-struct"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/plugin"
+	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
 var positiveRewrite map[string]btypes.Form 	/* Stores rewrites of atoms with positive occurrences */ 
@@ -57,13 +57,15 @@ var negativeTree datastruct.DataStructure	/* Matches atoms with negative occurre
 var activatePolarized bool
 var preskolemize bool 
 
+var debugActivated bool
+
 /**
  * Base function needed to initialize any plugin of Goéland.
  * It registers the hooks to the plugin manager, and parses the given options.
  **/
-func InitPlugin(pm *plugin.PluginManager, options []plugin.Option) error {
+func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode bool) error {
 	registerHooks(pm)
-	initPluginGlobalVariables()
+	initPluginGlobalVariables(debugMode)
 	parsePluginOptions(options)
 
 	// No error can be thrown in this plugin.
@@ -223,10 +225,13 @@ func addRewriteRule(axiom btypes.FormAndTerm, cons btypes.Form, polarity bool) {
 	for preskolemize && canSkolemize(cons) {
 		cons = skolemize(cons, axiom.GetTerms())
 	}
-	if polarity {
-		fmt.Printf("Rewrite rule: %s ---> %s\n", axiom.GetForm().ToString(), cons.ToString())
-	} else {
-		fmt.Printf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom.GetForm()).ToString(), cons.ToString())
+
+	if debugActivated {
+		if polarity {
+			fmt.Printf("Rewrite rule: %s ---> %s\n", axiom.GetForm().ToString(), cons.ToString())
+		} else {
+			fmt.Printf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom.GetForm()).ToString(), cons.ToString())
+		}
 	}
 
 	if polarity {

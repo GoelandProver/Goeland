@@ -39,7 +39,7 @@
 package plugin
 
 import (
-	btypes "github.com/delahayd/gotab/types/basic-types"
+	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
