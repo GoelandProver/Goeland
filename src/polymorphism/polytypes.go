@@ -62,7 +62,6 @@ type TypeScheme interface {
 	/* Exported methods */
 	ToString() 				string
 	UID()      				uint64
-	UnderlyingType()		uint64
 	Equals(oth TypeScheme) 	bool
 }
 
@@ -81,7 +80,6 @@ func (th TypeHint) toList() []uint64 { return []uint64{ th.uid } }
 
 func (th TypeHint) ToString() string {	return th.name }
 func (th TypeHint) UID() uint64 { return th.euid }
-func (th TypeHint) UnderlyingType() uint64 { return th.uid }
 func (th TypeHint) Equals(oth TypeScheme) bool { return oth.UID() == th.UID() }
 
 /**
@@ -96,25 +94,9 @@ type TypeCross struct {
 }
 
 func (tc TypeCross) isScheme() {}
-func (tc TypeCross) toList() []uint64 {  
-	uidList := []uint64{}
-	for _, t := range tc.types {
-		uidList = append(uidList, t.toList()...)
-	}
-	return uidList
-}
-
-
-func (tc TypeCross) ToString() string {
-	tStr := []string{}
-	for _, TypeScheme := range tc.types {
-		tStr = append(tStr, TypeScheme.ToString())
-	}
-	return "(" + strings.Join(tStr, " * ") + ")"
-}
-
+func (tc TypeCross) toList() []uint64 { return subtypesUID(tc.types) }
+func (tc TypeCross) ToString() string { return "(" + strings.Join(subtypesStr(tc.types), " > ") + ")" }
 func (tc TypeCross) UID() uint64 { return tc.uid }
-func (tc TypeCross) UnderlyingType() uint64 { return tc.uid }
 func (tc TypeCross) Equals(oth TypeScheme) bool { return oth.UID() == tc.UID() }
 
 /**
@@ -124,17 +106,33 @@ func (tc TypeCross) Equals(oth TypeScheme) bool { return oth.UID() == tc.UID() }
  * TypeCross has higher precedence than TypeArrow.
  **/
 type TypeArrow struct {
-	uid uint64
-	in  TypeScheme 
-	out TypeScheme
+	uid   uint64
+	types []TypeScheme
 }
 
 func (ta TypeArrow) isScheme() {}
-func (ta TypeArrow) toList() []uint64 { return append(ta.in.toList(), ta.out.toList()...) }
-func (ta TypeArrow) ToString() string { return "(" + ta.in.ToString() + " > " + ta.out.ToString() + ")" }
+func (ta TypeArrow) toList() []uint64 { return subtypesUID(ta.types) }
+func (ta TypeArrow) ToString() string { return "(" + strings.Join(subtypesStr(ta.types), " > ") + ")" }
 func (ta TypeArrow) UID() uint64 { return ta.uid }
-func (ta TypeArrow) UnderlyingType() uint64 { return ta.uid }
 func (ta TypeArrow) Equals(oth TypeScheme) bool { return oth.UID() == ta.UID() }
+
+/** Utils **/
+
+func subtypesStr(types []TypeScheme) []string {
+	tStr := []string{}
+	for _, type_ := range types {
+		tStr = append(tStr, type_.ToString())
+	}
+	return tStr
+}
+
+func subtypesUID(types []TypeScheme) []uint64 {
+	uidList := []uint64{}
+	for _, type_ := range types {
+		uidList = append(uidList, type_.toList()...)
+	}
+	return uidList
+}
 
 /**
  * Makers.
@@ -191,15 +189,15 @@ func MkTypeHint(typeName string) TypeHint {
 }
 
 /* Makes a TypeCross from any number of TypeSchemes */
-func MkTypeCross(TypeSchemes ...TypeScheme) TypeCross {
-	tc := TypeCross{uid: 0, types: TypeSchemes}
+func MkTypeCross(typeSchemes ...TypeScheme) TypeCross {
+	tc := TypeCross{uid: 0, types: typeSchemes}
 	tc.uid = encode(tc.toList(), ETypeCross)
 	return tc
 }
 
 /* Makes a TypeArrow from two TypeSchemes */
-func MkTypeArrow(inArg TypeScheme, outArg TypeScheme) TypeArrow {
-	ta := TypeArrow{uid: 0, in: inArg, out: outArg}
+func MkTypeArrow(typeSchemes ...TypeScheme) TypeArrow {
+	ta := TypeArrow{uid: 0, types: typeSchemes}
 	ta.uid = encode(ta.toList(), ETypeArrow)
 	return ta
 }
