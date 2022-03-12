@@ -61,14 +61,14 @@ func TestPrimitive(t *testing.T) {
 	}
 
 	for i, primitive := range primitiveTypes {
-		fst := MkTHint(primitive)
-		snd := MkTHint(primitive)
+		fst := MkTypeHint(primitive)
+		snd := MkTypeHint(primitive)
 		if fst.UID() != snd.UID() {
 			t.Errorf("Same primitive types (%s) have different UIDs : %v %v", primitive, fst.UID(), snd.UID())
 		}
 		for j, p2 := range primitiveTypes {
 			if i != j {
-				if fst.Equals(MkTHint(p2)) {
+				if fst.Equals(MkTypeHint(p2)) {
 					t.Fatalf("Different primitive types (%s, %s) have the same UID: %v", primitive, p2, fst.UID())
 				}
 			}
@@ -76,17 +76,17 @@ func TestPrimitive(t *testing.T) {
 	}
 }
 
-func TestCrosses(t *testing.T) {
-	tInt := MkTHint("int")
-	tRat := MkTHint("rat")
+func TesTypeCrosses(t *testing.T) {
+	tInt := MkTypeHint("int")
+	tRat := MkTypeHint("rat")
 
 	testTable := []struct{
-		c TCross
+		c TypeCross
 		e string
 	}{
-		{MkTCross(tInt, tInt), "(int * int)"},
-		{MkTCross(tInt, tRat, tInt), "(int * rat * int)"},
-		{MkTCross(tInt, MkTCross(tInt, tRat)), "(int * (int * rat))"},
+		{MkTypeCross(tInt, tInt), "(int * int)"},
+		{MkTypeCross(tInt, tRat, tInt), "(int * rat * int)"},
+		{MkTypeCross(tInt, MkTypeCross(tInt, tRat)), "(int * (int * rat))"},
 	}
 
 	for i, test := range testTable {
@@ -103,18 +103,18 @@ func TestCrosses(t *testing.T) {
 	}
 }
 
-func TestArrows(t *testing.T) {
-	tInt := MkTHint("int")
-	tRat := MkTHint("rat")
+func TesTypeArrows(t *testing.T) {
+	tInt := MkTypeHint("int")
+	tRat := MkTypeHint("rat")
 
 	testTable := []struct{
-		c TArrow
+		c TypeArrow
 		e string
 	}{
-		{ MkTArrow(tInt, tInt), "(int > int)" },
-		{ MkTArrow(tInt, tRat), "(int > rat)" },
-		{ MkTArrow(tRat, tInt), "(rat > int)" },
-		{ MkTArrow(MkTArrow(tRat, tInt), tInt), "((rat > int) > int)" },
+		{ MkTypeArrow(tInt, tInt), "(int > int)" },
+		{ MkTypeArrow(tInt, tRat), "(int > rat)" },
+		{ MkTypeArrow(tRat, tInt), "(rat > int)" },
+		{ MkTypeArrow(MkTypeArrow(tRat, tInt), tInt), "((rat > int) > int)" },
 	}
 
 	for i, test := range testTable {
@@ -132,16 +132,16 @@ func TestArrows(t *testing.T) {
 }
 
 func TestComposition(t *testing.T) {
-	tInt := MkTHint("int")
-	tRat := MkTHint("rat")
+	tInt := MkTypeHint("int")
+	tRat := MkTypeHint("rat")
 
 	testTable := []struct{
-		fst TScheme 
-		snd TScheme
+		fst TypeScheme 
+		snd TypeScheme
 	}{
-		{ MkTArrow(tInt, tInt), MkTCross(tInt, tInt) },
-		{ MkTArrow(MkTCross(tRat, tInt), tInt), MkTCross(MkTArrow(tRat, tInt), tInt) },
-		{ MkTArrow(MkTArrow(tRat, tInt), tInt), MkTCross(tRat, tInt, tInt) },
+		{ MkTypeArrow(tInt, tInt), MkTypeCross(tInt, tInt) },
+		{ MkTypeArrow(MkTypeCross(tRat, tInt), tInt), MkTypeCross(MkTypeArrow(tRat, tInt), tInt) },
+		{ MkTypeArrow(MkTypeArrow(tRat, tInt), tInt), MkTypeCross(tRat, tInt, tInt) },
 	}
 
 	for _, test := range testTable {

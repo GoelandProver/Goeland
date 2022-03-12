@@ -37,10 +37,10 @@
 /**
  * This file declares the basic types used for typing the prover.
  * For example, it defines the types :
- *	- THint, a primitive type that is used as the basis of the inductive relation
- *	- TScheme, which is either a THint, a TCross or a TArrow
- *	- TCross, a list of TScheme, which are concatenated with a *
- *	- TArrow, a list of TScheme, which are concatenated with an >
+ *	- TypeHint, a primitive type that is used as the basis of the inductive relation
+ *	- TypeScheme, which is either a TypeHint, a TypeCross or a TypeArrow
+ *	- TypeCross, a list of TypeScheme, which are concatenated with a *
+ *	- TypeArrow, a list of TypeScheme, which are concatenated with an >
  **/
 
 package polymorphism
@@ -51,52 +51,52 @@ import (
 )
 
 /**
- * Polymorphic type, used either as a THint, TCross or a TArrow to allow the inductive
- * composition of either of the 3 to give a TScheme.
+ * Polymorphic type, used either as a TypeHint, TypeCross or a TypeArrow to allow the inductive
+ * composition of either of the 3 to give a TypeScheme.
  **/
-type TScheme interface {
+type TypeScheme interface {
 	/* Non-exported methods */
 	isScheme()
-	toList()   			[]uint64
+	toList()   				[]uint64
 
 	/* Exported methods */
-	ToString() 			string
-	UID()      			uint64
-	UnderlyingType()	uint64
-	Equals(oth TScheme) bool
+	ToString() 				string
+	UID()      				uint64
+	UnderlyingType()		uint64
+	Equals(oth TypeScheme) 	bool
 }
 
 /**
  * Primitive type composed of an unique identifier, used to identify it from
  * other types, and a name, used for printing options.
  **/
-type THint struct {
+type TypeHint struct {
 	uid  uint64	/* Real ID */
 	euid uint64 /* Encoded ID */
 	name string /* Name */
 }
 
-func (th THint) isScheme() {}
-func (th THint) toList() []uint64 { return []uint64{ th.uid } }
+func (th TypeHint) isScheme() {}
+func (th TypeHint) toList() []uint64 { return []uint64{ th.uid } }
 
-func (th THint) ToString() string {	return th.name }
-func (th THint) UID() uint64 { return th.euid }
-func (th THint) UnderlyingType() uint64 { return th.uid }
-func (th THint) Equals(oth TScheme) bool { return oth.UID() == th.UID() }
+func (th TypeHint) ToString() string {	return th.name }
+func (th TypeHint) UID() uint64 { return th.euid }
+func (th TypeHint) UnderlyingType() uint64 { return th.uid }
+func (th TypeHint) Equals(oth TypeScheme) bool { return oth.UID() == th.UID() }
 
 /**
- * Type consisting of an array of TScheme, to concatenate each of theme with a cross
+ * Type consisting of an array of TypeScheme, to concatenate each of theme with a cross
  * operator. 
  * For example, if a function f takes to parameters of type int, it will be typed as 
  * f : int * int 
  **/
-type TCross struct {
+type TypeCross struct {
 	uid   uint64
-	types []TScheme
+	types []TypeScheme
 }
 
-func (tc TCross) isScheme() {}
-func (tc TCross) toList() []uint64 {  
+func (tc TypeCross) isScheme() {}
+func (tc TypeCross) toList() []uint64 {  
 	uidList := []uint64{}
 	for _, t := range tc.types {
 		uidList = append(uidList, t.toList()...)
@@ -105,36 +105,36 @@ func (tc TCross) toList() []uint64 {
 }
 
 
-func (tc TCross) ToString() string {
+func (tc TypeCross) ToString() string {
 	tStr := []string{}
-	for _, tScheme := range tc.types {
-		tStr = append(tStr, tScheme.ToString())
+	for _, TypeScheme := range tc.types {
+		tStr = append(tStr, TypeScheme.ToString())
 	}
 	return "(" + strings.Join(tStr, " * ") + ")"
 }
 
-func (tc TCross) UID() uint64 { return tc.uid }
-func (tc TCross) UnderlyingType() uint64 { return tc.uid }
-func (tc TCross) Equals(oth TScheme) bool { return oth.UID() == tc.UID() }
+func (tc TypeCross) UID() uint64 { return tc.uid }
+func (tc TypeCross) UnderlyingType() uint64 { return tc.uid }
+func (tc TypeCross) Equals(oth TypeScheme) bool { return oth.UID() == tc.UID() }
 
 /**
- * Type consisting of two TSchemes : the in-arguments parameter(s) and the out parameter. 
+ * Type consisting of two TypeSchemes : the in-arguments parameter(s) and the out parameter. 
  * For example, if a function f takes to parameters of type int, and returns an int, it
  * will be typed as f : (int * int) -> int
- * TCross has higher precedence than TArrow.
+ * TypeCross has higher precedence than TypeArrow.
  **/
-type TArrow struct {
+type TypeArrow struct {
 	uid uint64
-	in  TScheme 
-	out TScheme
+	in  TypeScheme 
+	out TypeScheme
 }
 
-func (ta TArrow) isScheme() {}
-func (ta TArrow) toList() []uint64 { return append(ta.in.toList(), ta.out.toList()...) }
-func (ta TArrow) ToString() string { return "(" + ta.in.ToString() + " > " + ta.out.ToString() + ")" }
-func (ta TArrow) UID() uint64 { return ta.uid }
-func (ta TArrow) UnderlyingType() uint64 { return ta.uid }
-func (ta TArrow) Equals(oth TScheme) bool { return oth.UID() == ta.UID() }
+func (ta TypeArrow) isScheme() {}
+func (ta TypeArrow) toList() []uint64 { return append(ta.in.toList(), ta.out.toList()...) }
+func (ta TypeArrow) ToString() string { return "(" + ta.in.ToString() + " > " + ta.out.ToString() + ")" }
+func (ta TypeArrow) UID() uint64 { return ta.uid }
+func (ta TypeArrow) UnderlyingType() uint64 { return ta.uid }
+func (ta TypeArrow) Equals(oth TypeScheme) bool { return oth.UID() == ta.UID() }
 
 /**
  * Makers.
@@ -150,56 +150,56 @@ var tCounter struct {
 
 /* Map of all the unique identifiers of the different types based on their name. */
 var tMap struct {
-	uidsMap map[string]THint 
+	uidsMap map[string]TypeHint 
 	lock    sync.Mutex
 }
 
 /* Call the init function before any type is created with MkType. */
 func Init() {
 	// Instantiate tCounter
-	tCounter.count = 0
+	tCounter.count = 1
 	tCounter.lock = sync.Mutex{}
 
 	// Instantiate tMap
-	tMap.uidsMap = make(map[string]THint)
+	tMap.uidsMap = make(map[string]TypeHint)
 	tMap.lock = sync.Mutex{}
 
 	// TPTP
 	//initTPTPTypes()
 }
 
-/* Makes a THint. If it has already been created, return the right one. Else, creates a new one. */
-func MkTHint(typeName string) THint {
+/* Makes a TypeHint. If it has already been created, return the right one. Else, creates a new one. */
+func MkTypeHint(typeName string) TypeHint {
 	tMap.lock.Lock()
-	if tHint, found := tMap.uidsMap[typeName]; found {
+	if TypeHint, found := tMap.uidsMap[typeName]; found {
 		tMap.lock.Unlock()
-		return tHint
+		return TypeHint
 	}
 	tMap.lock.Unlock()
 
 	tCounter.lock.Lock()
-	tHint := THint{uid: tCounter.count, euid: encode([]uint64{tCounter.count}, ETHint), name: typeName}
+	TypeHint := TypeHint{uid: tCounter.count, euid: encode([]uint64{tCounter.count}, ETypeHint), name: typeName}
 
 	tMap.lock.Lock()
-	tMap.uidsMap[typeName] = tHint
+	tMap.uidsMap[typeName] = TypeHint
 	tMap.lock.Unlock()
 
 	tCounter.count += 1
 	tCounter.lock.Unlock()
 
-	return tHint
+	return TypeHint
 }
 
-/* Makes a TCross from any number of TSchemes */
-func MkTCross(tSchemes ...TScheme) TCross {
-	tc := TCross{uid: 0, types: tSchemes}
-	tc.uid = encode(tc.toList(), ETCross)
+/* Makes a TypeCross from any number of TypeSchemes */
+func MkTypeCross(TypeSchemes ...TypeScheme) TypeCross {
+	tc := TypeCross{uid: 0, types: TypeSchemes}
+	tc.uid = encode(tc.toList(), ETypeCross)
 	return tc
 }
 
-/* Makes a TArrow from two TSchemes */
-func MkTArrow(inArg TScheme, outArg TScheme) TArrow {
-	ta := TArrow{uid: 0, in: inArg, out: outArg}
-	ta.uid = encode(ta.toList(), ETArrow)
+/* Makes a TypeArrow from two TypeSchemes */
+func MkTypeArrow(inArg TypeScheme, outArg TypeScheme) TypeArrow {
+	ta := TypeArrow{uid: 0, in: inArg, out: outArg}
+	ta.uid = encode(ta.toList(), ETypeArrow)
 	return ta
 }

@@ -75,15 +75,13 @@ func TestL(t *testing.T) {
 		fst []uint64
 		snd uint64
 	}{
-		{[]uint64{0}, 1},
-		{[]uint64{0, 0}, 2},
-		{[]uint64{1}, 3},
-		{[]uint64{0, 0, 0}, 4},
-		{[]uint64{0, 1}, 5},
-		{[]uint64{1, 0}, 6},
-		{[]uint64{2}, 7},
-		{[]uint64{0, 2}, 11},
-		{[]uint64{3}, 15},
+		{[]uint64{0}, 0},
+		{[]uint64{1, 1}, 3},
+		{[]uint64{2}, 4},
+		{[]uint64{1, 1, 1}, 13},
+		{[]uint64{1, 2}, 5},
+		{[]uint64{2, 1}, 21},
+		{[]uint64{3}, 9},
 	}
 
 	for _, test := range testTable {

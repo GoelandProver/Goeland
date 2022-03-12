@@ -48,15 +48,15 @@ package polymorphism
 /*
 func initTPTPTypes() {
 	// int, rat, real
-	tInt := MkTHint("int")
-	tRat := MkTHint("rat")
-	tReal := MkTHint("real")
+	tInt := MkTypeHint("int")
+	tRat := MkTypeHint("rat")
+	tReal := MkTypeHint("real")
 
 	// Schemes
 
 }
 */
 
-func IsInt(tType TScheme) bool { return tType.Equals(MkTHint("int")) }
-func IsRat(tType TScheme) bool { return tType.Equals(MkTHint("rat")) }
-func IsReal(tType TScheme) bool { return tType.Equals(MkTHint("real")) }
+func IsInt(tType TypeScheme) bool { return tType.Equals(MkTypeHint("int")) }
+func IsRat(tType TypeScheme) bool { return tType.Equals(MkTypeHint("rat")) }
+func IsReal(tType TypeScheme) bool { return tType.Equals(MkTypeHint("real")) }

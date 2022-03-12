@@ -42,33 +42,39 @@ package polymorphism
  **/
 
 const (
-	ETHint = iota
-	ETCross = iota
-	ETArrow = iota
+	ETypeHint = iota
+	ETypeCross = iota
+	ETypeArrow = iota
 )
 
 /* Encodes the type wanted. On error, returns 0. */
 func encode(uids []uint64, typeEncoded int) uint64 {
 	tmp := append(uids[:0:0], uids...)
 	switch (typeEncoded) {
-	case ETHint, ETCross:
+	case ETypeHint, ETypeCross:
 		return encodeInt(int64(encodeList(tmp)))
-	case ETArrow :
+	case ETypeArrow :
 		return encodeInt(-int64(encodeList(tmp)))
 	}
 	return 0
 }
 
-/* Encodes a list of identifiers to a new unique identifier */
+/* Encodes a list of identifiers to a new unique identifier. */
 func encodeList(uids []uint64) uint64 {
-	if len(uids) == 1 && uids[0] == 0 {
-		return 1
+	res := encodePair(0, uids[0])
+	for i := 1; i < len(uids); i++ {
+		res = encodePair(res, uids[i])
 	}
-	if uids[len(uids) - 1] == 0 {
-		return 2*encodeList(uids[:len(uids) - 1])
+	return res
+}
+
+/* Encodes a pair following Szudzik's function. */
+func encodePair(x uint64, y uint64) uint64 {
+	if y > x {
+		return y*y + x 
+	} else {
+		return x*x + x + y
 	}
-	uids[len(uids) - 1] -= 1
-	return 2*encodeList(uids) + 1
 }
 
 /* Encodes an integer to a natural number. */
