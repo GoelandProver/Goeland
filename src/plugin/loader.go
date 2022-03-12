@@ -47,6 +47,7 @@ import (
 	"plugin"
 	"strings"
 
+	"github.com/GoelandProver/Goeland/global"
 	"gopkg.in/yaml.v2"
 )
 
@@ -232,7 +233,8 @@ func overwriteOptions(config *PluginConfig) error {
 		// Parse each option individually
 		nameAndValue := strings.Split(opt, "=")
 		if len(nameAndValue) != 2 {
-			return fmt.Errorf("[PLUGINS] Plugin option %s couldn't be parsed. Make sure it's of the following form: name=value", opt)
+			// Put an empty value, plugins should manage it themselves.
+			nameAndValue = append(nameAndValue, "")
 		}
 		
 		found := false
@@ -280,8 +282,8 @@ func loadFile(pm *PluginManager, fullpath string, options []Option) error {
 		return fmt.Errorf("[PLUGINS] Init function not found in %s. Plugin hasn't been loaded", fullpath)
 	}
 
-	initFunc := ifunc.(func(*PluginManager, []Option) error)
-	if err := initFunc(pm, options); err != nil {
+	initFunc := ifunc.(func(*PluginManager, []Option, bool) error)
+	if err := initFunc(pm, options, global.GetDebug()); err != nil {
 		return fmt.Errorf("[PLUGINS] Init function error in %s. Plugin hasn't been loaded", fullpath)
 	}
 	fmt.Println("[PLUGINS]", filepath.Base(fullpath), "has been successfully loaded.")

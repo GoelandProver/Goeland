@@ -42,9 +42,9 @@ import (
 	"fmt"
 	"strings"
 
-	treesearch "github.com/delahayd/gotab/code-trees/tree-search"
-	"github.com/delahayd/gotab/plugin"
-	btypes "github.com/delahayd/gotab/types/basic-types"
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
+	"github.com/GoelandProver/Goeland/plugin"
+	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
@@ -58,11 +58,12 @@ func registerHooks(pm *plugin.PluginManager) {
 	pm.RegisterSendAxiomHook(registerAxiom)
 }
 
-func initPluginGlobalVariables() {
+func initPluginGlobalVariables(debugMode bool) {
 	positiveRewrite = make(map[string]btypes.Form)
 	negativeRewrite = make(map[string]btypes.Form)
 	positiveTree = new(treesearch.Node)
 	negativeTree = new(treesearch.Node)
+	debugActivated = debugMode
 }
 
 /**
@@ -74,9 +75,9 @@ func initPluginGlobalVariables() {
 	for _, opt := range options {
 		switch opt.Name {
 		case "polarized":
-			activatePolarized = opt.Value == "true"
+			activatePolarized = true
 		case "preskolemization":
-			preskolemize = opt.Value == "true"
+			preskolemize = true
 		}
 	}
 
