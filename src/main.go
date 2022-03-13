@@ -146,6 +146,7 @@ func mainGotab() {
 	fmt.Printf("\n[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
 	basictypes.Reset()
 	plugin.GetPluginManager()
+	plugin.IsLoaded("dmt")
 
 	lstm, bound := complextypes.ParseMain(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
