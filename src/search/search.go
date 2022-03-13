@@ -135,7 +135,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 func applyRules(father_id uint64, st complextypes.State, c Communication) {
 	global.PrintDebug("AR", "ApplyRule")
 	switch {
-	case len(st.GetLF()) > 0:
+	case len(st.GetLF()) > 0 && plugin.IsLoaded("dmt"):
 		st.SetCurrentProofFormula(st.GetAllForms())
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 		manageRewritteRules(father_id, st, c)
