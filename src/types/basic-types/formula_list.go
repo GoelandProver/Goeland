@@ -42,7 +42,7 @@ package basictypes
 import (
 	"sort"
 
-	"github.com/GoelandProver/gotab/global"
+	"github.com/GoelandProver/Goeland/global"
 )
 
 /*** Structure ***/

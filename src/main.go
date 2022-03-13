@@ -223,7 +223,7 @@ func Search(f basictypes.Form, bound int) {
 
 		st := complextypes.MakeState(limit, tp, tn)
 
-		fmt.Printf("Launch Gotab with destructive = %v, data_struct = %v\n", global.IsDestructive(), global.GetDataStruct())
+		fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
 
 		global.SetNbGoroutines(0)
 		st.SetLF(basictypes.MakeSingleElementList(basictypes.MakeForm(f)))

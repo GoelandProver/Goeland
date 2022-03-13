@@ -38,12 +38,6 @@
 
 package basictypes
 
-import (
-	"fmt"
-
-	"github.com/GoelandProver/Goeland/global"
-)
-
 /*** Structure ***/
 
 /* Formula  */
@@ -605,11 +599,9 @@ func RenameVariables(f Form) Form {
 	case Ex:
 		new_vl := copyVarList(nf.GetVarList())
 		new_form := nf.GetForm()
-		global.PrintDebug("RV", "-------------------------------")
 
 		for _, v := range nf.GetVarList() {
 			new_var := MakerNewVar(v.GetName())
-			global.PrintDebug("RV", fmt.Sprintf("Original : %v - New_var :%v", v.ToString(), new_var.ToString()))
 			new_vl = replaceVarInVarList(new_vl, v, new_var)
 			new_form = ReplaceVarByTerm(RenameVariables(new_form), v, new_var)
 
@@ -619,11 +611,9 @@ func RenameVariables(f Form) Form {
 	case All:
 		new_vl := copyVarList(nf.GetVarList())
 		new_form := nf.GetForm()
-		global.PrintDebug("RV", "-------------------------------")
 
 		for _, v := range nf.GetVarList() {
 			new_var := MakerNewVar(v.GetName())
-			global.PrintDebug("RV", fmt.Sprintf("Original : %v - New_var :%v", v.ToString(), new_var.ToString()))
 			new_vl = replaceVarInVarList(new_vl, v, new_var)
 			new_form = ReplaceVarByTerm(RenameVariables(new_form), v, new_var)
 
@@ -637,10 +627,8 @@ func RenameVariables(f Form) Form {
 
 /* replace a var by another in a var list */
 func replaceVarInVarList(vl []Var, v1, v2 Var) []Var {
-	global.PrintDebug("RVVL", fmt.Sprintf("old_var : %v - New var : %v", v1.ToString(), v2.ToString()))
 	res := []Var{}
 	for _, v := range vl {
-		global.PrintDebug("RVVL", fmt.Sprintf("v :%v", v.ToString()))
 		if v.Equals(v1) {
 			res = append(res, v2)
 		} else {

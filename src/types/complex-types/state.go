@@ -43,7 +43,6 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugin"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
@@ -333,29 +332,12 @@ func (st State) AreRulesApplicable() bool {
 }
 
 /* Put the given formula in the right rule box in the given state */
-func (st *State) DispatchForm(f basictypes.Form) basictypes.Form {
+func (st *State) DispatchForm(f basictypes.Form) {
 	global.PrintDebug("DF", fmt.Sprintf("Dispatch the form : %v ", f.ToString()))
 	global.PrintDebug("DF", fmt.Sprintf("Kind of rule : %v ", basictypes.ShowKindOfRule(f.Copy())))
 	switch basictypes.ShowKindOfRule(f.Copy()) {
 	case basictypes.Atomic:
-		if !st.GetAtomic().Contains(f) {
-			if rewritten, err := plugin.GetPluginManager().ApplyRewriteHook(f); err == nil {
-				rewritten := rewritten[0]
-				if !rewritten.Equals(f) {
-					// If it's atomic, we need to manage closure rule before dispatching the form.
-					// So the rewritten formula is returned for the proofsearch process to reapply
-					// a loop on all rewritten atoms.
-					if basictypes.ShowKindOfRule(rewritten) == basictypes.Atomic {
-						return rewritten
-					}
-					st.DispatchForm(rewritten.Copy())
-					return nil
-				}
-			} else {
-				global.PrintDebug("DMT", err.Error())
-			}
-			st.SetAtomic(append(st.GetAtomic(), f))
-		}
+		st.SetAtomic(st.GetAtomic().AppendIfNotContains(f))
 	case basictypes.Alpha:
 		st.SetAlpha(st.GetAlpha().AppendIfNotContains(f))
 	case basictypes.Beta:
@@ -367,7 +349,6 @@ func (st *State) DispatchForm(f basictypes.Form) basictypes.Form {
 	default:
 		fmt.Println("[ERROR] Formula not recognized")
 	}
-	return nil
 }
 
 /* TODO : remove and change - for write proof */
