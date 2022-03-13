@@ -75,9 +75,9 @@ func initPluginGlobalVariables(debugMode bool) {
 	for _, opt := range options {
 		switch opt.Name {
 		case "polarized":
-			activatePolarized = true
+			activatePolarized = opt.Value != "false"
 		case "preskolemization":
-			preskolemize = true
+			preskolemize = opt.Value != "false"
 		}
 	}
 

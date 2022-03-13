@@ -96,12 +96,14 @@ var pluginManager *PluginManager
 var flag_load = flag.String("load", "", "Plugins to load. Each plugin have to be separated by a comma, without white space.")
 var flag_preventLoad = flag.String("preventLoad", "", "Prevents the automatic loading of a plugin with its name.")
 var PoptionFlag PoptionsFlags
+var loadedPlugins map[string]bool
 
 /**
  * Loads all the plugins file from the "plugins/" folder at the root of the application executable.
  **/
 func loadPlugins(path string) *PluginManager {
 	pm := makeManager()
+	loadedPlugins = make(map[string]bool)
 
 	realpath, err := os.Executable()
 	
@@ -141,7 +143,7 @@ func loadPluginsAux(path string, pm *PluginManager) error {
 		// If the user asked to load this plugin, actually loads the file with the options
 		if ((config.DefaultEnable && !inNameList(config.Name, *flag_preventLoad)) || 
 			inNameList(config.Name, *flag_load)) {
-			loadFile(pm, filepath.Join(path, lib), config.Options)
+			loadFile(pm, filepath.Join(path, lib), config)
 		}
 	}
 
@@ -269,7 +271,7 @@ func getOptionsOf(plugin string) string {
 /**
  * Loads a plugin with its init function and gives it its options.
  **/
-func loadFile(pm *PluginManager, fullpath string, options []Option) error {
+func loadFile(pm *PluginManager, fullpath string, config PluginConfig) error {
 	p, err := plugin.Open(fullpath)
 
 	if err != nil {
@@ -283,10 +285,11 @@ func loadFile(pm *PluginManager, fullpath string, options []Option) error {
 	}
 
 	initFunc := ifunc.(func(*PluginManager, []Option, bool) error)
-	if err := initFunc(pm, options, global.GetDebug()); err != nil {
+	if err := initFunc(pm, config.Options, global.GetDebug()); err != nil {
 		return fmt.Errorf("[PLUGINS] Init function error in %s. Plugin hasn't been loaded", fullpath)
 	}
-	fmt.Println("[PLUGINS]", filepath.Base(fullpath), "has been successfully loaded.")
+	fmt.Println("[PLUGINS]", config.Name, "has been successfully loaded.")
+	loadedPlugins[config.Name] = true
 
 	return nil
 }
@@ -296,4 +299,13 @@ func GetPluginManager() *PluginManager {
 		pluginManager = loadPlugins("plugins")
 	}
 	return pluginManager
+}
+
+func IsLoaded(name string) bool {
+	if b, found := loadedPlugins[name]; found {
+		return b
+	} else {
+		loadedPlugins[name] = false
+	}
+	return false
 }
