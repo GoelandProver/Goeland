@@ -42,6 +42,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugin"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -567,9 +568,11 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			// Add f to new_atomics if its an atomic
 			switch basictypes.ShowKindOfRule(f.Copy()) {
 			case basictypes.Atomic:
-				// TODO if DMT :
-				new_atomics = append(new_atomics, f)
-			// Else, dispatchform
+				if plugin.IsLoaded("dmt") {
+					new_atomics = append(new_atomics, f)
+				} else {
+					st.DispatchForm(f.Copy())
+				}
 			default:
 				st.DispatchForm(f.Copy())
 			}

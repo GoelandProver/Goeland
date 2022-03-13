@@ -141,15 +141,9 @@ func loadPluginsAux(path string, pm *PluginManager) error {
 		}
 
 		// If the user asked to load this plugin, actually loads the file with the options
-<<<<<<< HEAD
-		if ((config.DefaultEnable && !inNameList(config.Name, *flag_preventLoad)) || 
-			inNameList(config.Name, *flag_load)) {
-			loadFile(pm, filepath.Join(path, lib), config)
-=======
 		if (config.DefaultEnable && !inNameList(config.Name, *flag_preventLoad)) ||
 			inNameList(config.Name, *flag_load) {
-			loadFile(pm, filepath.Join(path, lib), config.Options)
->>>>>>> [STRUCT] Improve substitution's structure
+			loadFile(pm, filepath.Join(path, lib), config)
 		}
 	}
 
@@ -306,7 +300,6 @@ func GetPluginManager() *PluginManager {
 	}
 	return pluginManager
 }
-<<<<<<< HEAD
 
 func IsLoaded(name string) bool {
 	if b, found := loadedPlugins[name]; found {
@@ -316,5 +309,3 @@ func IsLoaded(name string) bool {
 	}
 	return false
 }
-=======
->>>>>>> [STRUCT] Improve substitution's structure
