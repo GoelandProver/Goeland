@@ -45,7 +45,6 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
@@ -103,7 +102,7 @@ func makeJsonExchanges(father_uint uint64, st complextypes.State, ss_subst []tre
 	father := int(father_uint)
 
 	// Forms
-	forms := basictypes.FormAndTermListToString(st.GetLF()) + " ; " + basictypes.FormAndTermListToString(st.GetAtomic())
+	forms := st.GetLF().ToString() + " ; " + st.GetAtomic().ToString()
 
 	// Meta
 	mm := st.GetMM().ToString()

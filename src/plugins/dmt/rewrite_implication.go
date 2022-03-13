@@ -52,35 +52,35 @@ import (
  * 	 - B is atomic, in this case, the rewrite rule is -B ---> -A
  * Both of the rules can be registered in case A and B are atomic.
  **/
-func registerImplication(axiomFT btypes.FormAndTerm) bool {
-	form := axiomFT.GetForm().(btypes.Imp)
+func registerImplication(axiomFT btypes.Form) bool {
+	form := axiomFT.Copy().(btypes.Imp)
 	phi1, phi2 := form.GetF1(), form.GetF2()
 	if btypes.ShowKindOfRule(phi1) != btypes.Atomic && btypes.ShowKindOfRule(phi2) != btypes.Atomic {
 		return false
 	}
 	// A => B
 	if reflect.TypeOf(phi1) == reflect.TypeOf(btypes.Not{}) && btypes.ShowKindOfRule(phi1) == btypes.Atomic {
-		addNegRewriteRule(btypes.MakeFormAndTerm(phi1.(btypes.Not).GetForm(), axiomFT.GetTerms()), phi2)
+		addNegRewriteRule(btypes.MakeForm(phi1.(btypes.Not).GetForm()), phi2)
 	} else if btypes.ShowKindOfRule(phi1) == btypes.Atomic {
-		addPosRewriteRule(btypes.MakeFormAndTerm(phi1, axiomFT.GetTerms()), phi2)
+		addPosRewriteRule(btypes.MakeForm(phi1), phi2)
 	}
 	// -B => -A
 	if reflect.TypeOf(phi2) == reflect.TypeOf(btypes.Not{}) && btypes.ShowKindOfRule(phi2.(btypes.Not).GetForm()) == btypes.Atomic {
-		addPosRewriteRule(btypes.MakeFormAndTerm(phi2.(btypes.Not).GetForm(), axiomFT.GetTerms()), btypes.RefuteForm(phi1))
+		addPosRewriteRule(btypes.MakeForm(phi2.(btypes.Not).GetForm()), btypes.RefuteForm(phi1))
 	} else if btypes.ShowKindOfRule(phi2) == btypes.Atomic {
-		addNegRewriteRule(btypes.MakeFormAndTerm(phi2, axiomFT.GetTerms()), btypes.RefuteForm(phi1))
+		addNegRewriteRule(btypes.MakeForm(phi2), btypes.RefuteForm(phi1))
 	}
 	return true
 }
 
 /* Adds the axiom in the positive rewrite tree and sends the two others in the main component. */
-func addPosRewriteRule(axiom btypes.FormAndTerm, cons btypes.Form) {
-	positiveTree = positiveTree.InsertFormulaListToDataStructure([]btypes.FormAndTerm{axiom}, true)
+func addPosRewriteRule(axiom btypes.Form, cons btypes.Form) {
+	positiveTree = positiveTree.InsertFormulaListToDataStructure(btypes.MakeSingleElementList(axiom), true)
 	addRewriteRule(axiom, cons, true)
 }
 
 /* Adds the axiom in the negative rewrite tree and sends the two others in the main component. */
-func addNegRewriteRule(axiom btypes.FormAndTerm, cons btypes.Form) {
-	negativeTree = negativeTree.InsertFormulaListToDataStructure([]btypes.FormAndTerm{axiom}, true)
+func addNegRewriteRule(axiom btypes.Form, cons btypes.Form) {
+	negativeTree = negativeTree.InsertFormulaListToDataStructure(btypes.MakeSingleElementList(axiom), true)
 	addRewriteRule(axiom, cons, false)
 }

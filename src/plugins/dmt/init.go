@@ -70,7 +70,7 @@ func initPluginGlobalVariables(debugMode bool) {
  * Parses options given to the plugin by the prover.
  * It also displays what's been activated.
  **/
- func parsePluginOptions(options []plugin.Option) {
+func parsePluginOptions(options []plugin.Option) {
 	// Parse options
 	for _, opt := range options {
 		switch opt.Name {
@@ -91,7 +91,7 @@ func initPluginGlobalVariables(debugMode bool) {
 	var activatedOptions []string
 	if activatePolarized {
 		activatedOptions = append(activatedOptions, "polarization")
-	} 
+	}
 	if preskolemize {
 		activatedOptions = append(activatedOptions, "preskolemization")
 	}

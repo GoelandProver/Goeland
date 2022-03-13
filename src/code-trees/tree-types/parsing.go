@@ -70,6 +70,24 @@ func (t TermForm) Equals(t2 basictypes.Form) bool {
 	}
 }
 
+func (t TermForm) GetMetas() basictypes.MetaList {
+	switch nt := t.GetTerm().(type) {
+	case basictypes.Meta:
+		return append(basictypes.MakeEmptyMetaList(), nt)
+	case basictypes.Fun:
+		res := basictypes.MakeEmptyMetaList()
+		for _, m := range nt.GetArgs() {
+			switch mt := m.(type) {
+			case basictypes.Meta:
+				res = res.AppendIfNotContains(mt)
+			}
+		}
+		return res
+	default:
+		return basictypes.MakeEmptyMetaList()
+	}
+}
+
 func makeTermForm(t basictypes.Term) TermForm {
 	return TermForm{t.Copy()}
 }

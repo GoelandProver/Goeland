@@ -50,11 +50,11 @@ import (
 * A formula which can introduce a metavariable and the number of time it was used
 **/
 type MetaGen struct {
-	f       FormAndTerm
+	f       Form
 	counter int
 }
 
-func (m MetaGen) GetForm() FormAndTerm {
+func (m MetaGen) GetForm() Form {
 	return m.f.Copy()
 }
 func (m MetaGen) GetCounter() int {
@@ -67,7 +67,7 @@ func (m MetaGen) Copy() MetaGen {
 /*** Functions ***/
 
 /* Maker */
-func MakeMetaGen(f FormAndTerm, cpt int) MetaGen {
+func MakeMetaGen(f Form, cpt int) MetaGen {
 	return MetaGen{f, cpt}
 }
 
@@ -85,8 +85,8 @@ func MetaGenListToString(lf []MetaGen) string {
 	return s_res
 }
 
-/* Return true is a given FormAndTerm is in metaGenList, false otherwise */
-func ContainsMetaGenList(hdf FormAndTerm, meta_generator []MetaGen) bool {
+/* Return true is a given Form is in metaGenList, false otherwise */
+func ContainsMetaGenList(hdf Form, meta_generator []MetaGen) bool {
 	for _, v := range meta_generator {
 		if v.GetForm().Equals(hdf) {
 			return true
@@ -96,7 +96,7 @@ func ContainsMetaGenList(hdf FormAndTerm, meta_generator []MetaGen) bool {
 }
 
 /* Return the index of the formula f in meta_generator list - append if not exists */
-func GetIndexMetaGenList(f FormAndTerm, meta_generator []MetaGen) (int, []MetaGen) {
+func GetIndexMetaGenList(f Form, meta_generator []MetaGen) (int, []MetaGen) {
 	for i, v := range meta_generator {
 		if v.GetForm().Equals(f) {
 			return i, meta_generator
@@ -133,7 +133,7 @@ func chooseLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int)
 * reintroduce a given formula if index != -1
 * Choose the less reintroduced formula among a list of fomulas otherwise
 **/
-func ReintroduceMeta(meta_generator *[]MetaGen, index int) FormAndTerm {
+func ReintroduceMeta(meta_generator *[]MetaGen, index int) Form {
 
 	if index != -1 {
 		(*meta_generator)[index] = MakeMetaGen((*meta_generator)[index].GetForm(), (*meta_generator)[index].GetCounter()+1)

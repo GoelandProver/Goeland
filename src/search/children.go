@@ -40,6 +40,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -66,6 +67,7 @@ type Result struct {
 	closed, need_answer   bool
 	subst_for_children    complextypes.SubstAndForm
 	subst_list_for_father []complextypes.SubstAndForm
+	form_for_children     basictypes.Form
 	proof                 []proof.ProofStruct
 }
 
@@ -79,16 +81,23 @@ func (r Result) GetNeedAnswer() bool {
 	return r.need_answer
 }
 func (r Result) GetSubstForChildren() complextypes.SubstAndForm {
-	return r.subst_for_children
+	return r.subst_for_children.Copy()
 }
 func (r Result) GetSubstListForFather() []complextypes.SubstAndForm {
-	return r.subst_list_for_father
+	return complextypes.CopySubstAndFormList(r.subst_list_for_father)
+}
+func (r Result) GetForm() basictypes.Form {
+	if r.form_for_children == nil {
+		return nil
+	} else {
+		return r.form_for_children.Copy()
+	}
 }
 func (r Result) GetProof() []proof.ProofStruct {
 	return r.proof
 }
 func (r Result) Copy() Result {
-	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren().Copy(), complextypes.CopySubstAndFormList(r.GetSubstListForFather()), r.GetProof()}
+	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetForm(), r.GetProof()}
 }
 
 /* remove a childre  from a communication list */
@@ -133,7 +142,16 @@ func sendSubToChildren(children []Communication, s complextypes.SubstAndForm) {
 	global.PrintDebug("SSTC", fmt.Sprintf("Send sub to children : %v", len(children)))
 	for i, v := range children {
 		global.PrintDebug("SSTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
-		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, nil}
+		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, nil, nil}
+	}
+}
+
+/* Send a form to a list of child */
+func sendFormToChildren(children []Communication, f basictypes.Form) {
+	global.PrintDebug("SSTC", fmt.Sprintf("Send sub to children : %v", len(children)))
+	for i, v := range children {
+		global.PrintDebug("SSTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
+		v.result <- Result{global.GetGID(), true, true, complextypes.MakeEmptySubstAndForm(), []complextypes.SubstAndForm{}, f.Copy(), nil}
 	}
 }
 
@@ -141,9 +159,9 @@ func sendSubToChildren(children []Communication, s complextypes.SubstAndForm) {
 func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm) {
 	subst_for_father := complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound())
 	global.PrintDebug("SSTF", fmt.Sprintf("Send subst to father : %v, closed : %v, need answer : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(subst_for_father)), closed, need_answer))
-	global.PrintDebug("SSTF", "Send answer")
+	global.PrintDebug("SSTF", fmt.Sprintf("Send answer : %v", complextypes.SubstAndFormListToString(subst_for_father)))
 	select {
-	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), st.GetProof()}:
+	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), nil, st.GetProof()}:
 		if need_answer {
 			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs))
 		} else {

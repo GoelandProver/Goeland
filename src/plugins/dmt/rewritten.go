@@ -54,7 +54,7 @@ import (
 /**
  * Replaces all the occurences of all the keys of subst to the corresponding values.
  **/
- func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
+func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
 	//terms := []btypes.Term{}
 	for old_symbol, new_symbol := range subst {
 		form = ctypes.ApplySubstitutionOnFormula(old_symbol, new_symbol, form)
@@ -69,38 +69,37 @@ import (
  * Stolen method : instantiation.
  * Instanciates once a formula to make meta from bound variables.
  **/
- func instantiateOnce(formula btypes.Form, terms []btypes.Term) btypes.FormAndTerm {
+func instantiateOnce(formula btypes.Form) btypes.Form {
 	nf := formula.(btypes.All).GetForm()
 	for _, v := range formula.(btypes.All).GetVarList() {
 		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), 0)
-		terms = append(terms, meta)
 		nf = btypes.ReplaceVarByTerm(nf, v, meta)
 	}
-	return btypes.MakeFormAndTerm(nf, terms)
+	return btypes.MakeForm(nf)
 }
 
 /**
  * Skolemizes once the formula f.
  */
- func skolemize(f btypes.Form, terms []btypes.Term) btypes.Form {
-    switch nf := f.(type) {
+func skolemize(f btypes.Form) btypes.Form {
+	switch nf := f.(type) {
 	// 1 - not(forall F1)
-    case btypes.Not:
+	case btypes.Not:
 		if reflect.TypeOf(nf.GetForm()) == reflect.TypeOf(btypes.All{}) {
 			tmp := nf.GetForm().(btypes.All).GetForm()
-			f = btypes.RefuteForm(realSkolemize(tmp, nf.GetForm().(btypes.All).GetVarList(), terms))
+			f = btypes.RefuteForm(realSkolemize(tmp, nf.GetForm().(btypes.All).GetVarList(), f.GetMetas().ToTermList()))
 		}
-	// 2 - exists F1
-    case btypes.Ex:
-        tmp := nf.GetForm()
-		f = realSkolemize(tmp, nf.GetVarList(), terms)
-    }
+		// 2 - exists F1
+	case btypes.Ex:
+		tmp := nf.GetForm()
+		f = realSkolemize(tmp, nf.GetVarList(), f.GetMetas().ToTermList())
+	}
 
-    return f
+	return f
 }
 
-/** 
- * Applies skolemization to a formula (ie: replaces existential quantified variables 
+/**
+ * Applies skolemization to a formula (ie: replaces existential quantified variables
  * by fresh skolem symbols).
  **/
 func realSkolemize(f btypes.Form, vars []btypes.Var, terms []btypes.Term) btypes.Form {

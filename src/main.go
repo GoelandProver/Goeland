@@ -133,7 +133,6 @@ func main() {
 }
 
 func mainGotab() {
-	basictypes.Reset()
 	args := os.Args
 	problem := ""
 
@@ -145,6 +144,9 @@ func mainGotab() {
 	problem = args[len(args)-1]
 
 	fmt.Printf("\n[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
+	basictypes.Reset()
+	plugin.GetPluginManager()
+	plugin.IsLoaded("dmt")
 
 	lstm, bound := complextypes.ParseMain(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
@@ -171,6 +173,8 @@ func ManageResult(c search.Communication) (bool, []proof.ProofStruct) {
 	} else {
 		open := false
 		for !open && runtime.NumGoroutine() > 1 {
+			// TODO : kill all goroutines if open found
+			// Close channel -> broadcast
 			res := <-c.GetResult()
 			open = !res.GetClosed()
 			time.Sleep(1 * time.Millisecond)
@@ -212,7 +216,7 @@ func Search(f basictypes.Form, bound int) {
 		proof.ResetProofFile()
 		exchanges.ResetExchangesFile()
 
-		global.PrintDebug("TMAINF", fmt.Sprintf("nb_step : %v", global.GetNbStep()))
+		global.PrintDebug("MAIN", fmt.Sprintf("nb_step : %v", global.GetNbStep()))
 		fmt.Printf("nb_step : %v - limit : %v\n", global.GetNbStep(), limit)
 
 		tp := new(treesearch.Node)
@@ -220,11 +224,12 @@ func Search(f basictypes.Form, bound int) {
 
 		st := complextypes.MakeState(limit, tp, tn)
 
-		fmt.Printf("Launch Gotab with destructive = %v, data_struct = %v\n", global.IsDestructive(), global.GetDataStruct())
+		fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
 
 		global.SetNbGoroutines(0)
-		st.SetLF([]basictypes.FormAndTerm{basictypes.MakeForm(f)})
+		st.SetLF(basictypes.MakeSingleElementList(basictypes.MakeForm(f)))
 		c := search.MakeCommunication(make(chan bool), make(chan search.Result))
+		// TODO : global quit channel in non destrutive
 
 		if global.GetExchanges() {
 			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
@@ -252,7 +257,7 @@ func Search(f basictypes.Form, bound int) {
 }
 
 func StatementListToFormula(lstm []basictypes.Statement) basictypes.Form {
-	and_list := []basictypes.Form{}
+	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
 
 	for _, s := range lstm {

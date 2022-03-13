@@ -123,7 +123,7 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 	new_meta_generator := st.GetMetaGen()
 	reslf := basictypes.ReintroduceMeta(&new_meta_generator, index)
 	st.SetMetaGen(new_meta_generator)
-	global.PrintDebug("PS", fmt.Sprintf("Instantiate the formula : %s", reslf.GetForm().ToString()))
+	global.PrintDebug("PS", fmt.Sprintf("Instantiate the formula : %s", reslf.ToString()))
 
 	// Apply gamma rule
 	new_lf, new_metas := applyGammaRules(reslf, index)
@@ -152,12 +152,15 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 		if !found {
 			// La meta nouvellement générée n'apparaît pas dans la substitution
 			// Trouver celle de la formula de base
-			for _, term_formula := range s.GetForm().GetTerms() {
-				if !found && term_formula.IsMeta() && term_formula.GetName() == new_meta.GetName() {
-					association_subst[new_meta] = term_formula
-					found = true
+			for _, f := range s.GetForm() {
+				for _, term_formula := range f.GetMetas() {
+					if !found && term_formula.IsMeta() && term_formula.GetName() == new_meta.GetName() {
+						association_subst[new_meta] = term_formula
+						found = true
+					}
 				}
 			}
+
 		}
 		if !found { // Vérifier dans substapplied
 			for original_meta, original_term := range st.GetAppliedSubst().GetSubst() {
@@ -206,7 +209,7 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 	global.PrintDebug("PS", fmt.Sprintf("Applied subst: %s", st.GetAppliedSubst().GetSubst().ToString()))
 	global.PrintDebug("PS", fmt.Sprintf("Real substitution applied : %s", new_subst.ToString()))
 
-	st.SetLF(complextypes.ApplySubstitutionOnFormulaList(new_subst, st.GetLF()))
+	st.SetLF(complextypes.ApplySubstitutionsOnFormulaList(new_subst, st.GetLF()))
 
 	ms, same_key := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), new_subst)
 	if same_key {
@@ -273,7 +276,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v", father_id))
 
 	st.Print()
-	global.PrintDebug("PS", fmt.Sprintf("Formulae to be added: %v", basictypes.FormAndTermListToString(st.GetLF())))
+	global.PrintDebug("PS", fmt.Sprintf("Formulae to be added: %v", st.GetLF().ToString()))
 	global.PrintDebug("PS", "Insert tree, searching contradiction, then dispatch")
 
 	st.SetTreePos(st.GetTreePos().InsertFormulaListToDataStructure(st.GetLF(), true))
@@ -283,8 +286,8 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 	closed := false
 	for _, f := range st.GetLF() {
 		var substs []treetypes.Substitutions
-		global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.GetForm().ToString()))
-		closed, substs = applyClosureRules(f.GetForm(), &st)
+		global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
+		closed, substs = applyClosureRules(f.Copy(), &st)
 		closed = manageClosureRule(father_id, &st, c, closed, substs, f)
 
 		if closed {
@@ -292,7 +295,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 		}
 
 		for _, subst := range substs {
-			substs_found_at_this_step = complextypes.AppendIfNotContainsSubstAndForm(substs_found_at_this_step, complextypes.MakeSubstAndForm(subst, f))
+			substs_found_at_this_step = complextypes.AppendIfNotContainsSubstAndForm(substs_found_at_this_step, complextypes.MakeSubstAndForm(subst, basictypes.MakeSingleElementList(f)))
 		}
 		st.DispatchForm(f)
 	}
