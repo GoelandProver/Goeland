@@ -46,8 +46,11 @@
 package polymorphism
 
 import (
+	"fmt"
 	"strings"
 	"sync"
+
+	"github.com/GoelandProver/Goeland/global"
 )
 
 /**
@@ -129,7 +132,7 @@ func subtypesStr(types []TypeScheme) []string {
 func subtypesUID(types []TypeScheme) []uint64 {
 	uidList := []uint64{}
 	for _, type_ := range types {
-		uidList = append(uidList, type_.toList()...)
+		uidList = append(uidList, type_.UID())
 	}
 	return uidList
 }
@@ -152,6 +155,12 @@ var tMap struct {
 	lock    sync.Mutex
 }
 
+/* Map of Type Schemes for a function or a predicate. */
+var typeSchemesMap struct {
+	tsMap	map[string]TypeScheme
+	lock	sync.Mutex
+}
+
 /* Call the init function before any type is created with MkType. */
 func Init() {
 	// Instantiate tCounter
@@ -162,6 +171,10 @@ func Init() {
 	tMap.uidsMap = make(map[string]TypeHint)
 	tMap.lock = sync.Mutex{}
 
+	// Instantiate typeSchemesMap
+	typeSchemesMap.tsMap = make(map[string]TypeScheme)
+	typeSchemesMap.lock  = sync.Mutex{}
+
 	// TPTP
 	//initTPTPTypes()
 }
@@ -169,23 +182,23 @@ func Init() {
 /* Makes a TypeHint. If it has already been created, return the right one. Else, creates a new one. */
 func MkTypeHint(typeName string) TypeHint {
 	tMap.lock.Lock()
-	if TypeHint, found := tMap.uidsMap[typeName]; found {
+	if tHint, found := tMap.uidsMap[typeName]; found {
 		tMap.lock.Unlock()
-		return TypeHint
+		return tHint
 	}
 	tMap.lock.Unlock()
 
 	tCounter.lock.Lock()
-	TypeHint := TypeHint{uid: tCounter.count, euid: encode([]uint64{tCounter.count}, ETypeHint), name: typeName}
+	tHint := TypeHint{uid: tCounter.count, euid: encode([]uint64{tCounter.count}, ETypeHint), name: typeName}
 
 	tMap.lock.Lock()
-	tMap.uidsMap[typeName] = TypeHint
+	tMap.uidsMap[typeName] = tHint
 	tMap.lock.Unlock()
 
 	tCounter.count += 1
 	tCounter.lock.Unlock()
 
-	return TypeHint
+	return tHint
 }
 
 /* Makes a TypeCross from any number of TypeSchemes */
@@ -200,4 +213,29 @@ func MkTypeArrow(typeSchemes ...TypeScheme) TypeArrow {
 	ta := TypeArrow{uid: 0, types: typeSchemes}
 	ta.uid = encode(ta.toList(), ETypeArrow)
 	return ta
+}
+
+/* Saves a TypeScheme in the map of schemes. */
+func SaveTypeScheme(name string, typeScheme TypeScheme) {
+	typeSchemesMap.lock.Lock()
+	if tScheme, found := tMap.uidsMap[name]; found {
+		typeSchemesMap.lock.Unlock()
+		// Should this be an error ?
+		global.PrintDebug("[POLY-FOL]", fmt.Sprintf("TypeScheme %v already in saved map", tScheme.UID()))
+		return 
+	}
+
+	typeSchemesMap.tsMap[name] = typeScheme
+	typeSchemesMap.lock.Unlock()
+}
+
+/* Gets a TypeScheme from the map of schemes with the name. */
+func GetTypeScheme(name string) (TypeScheme, error) {
+	typeSchemesMap.lock.Lock()
+	if tScheme, found := tMap.uidsMap[name]; found {
+		typeSchemesMap.lock.Unlock()
+		return tScheme, nil
+	}
+	typeSchemesMap.lock.Unlock()
+	return nil, fmt.Errorf("couldn't find a TypeScheme with the following name in the saved schemes: %s", name)
 }

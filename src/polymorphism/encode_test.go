@@ -70,18 +70,34 @@ func TestZ(t *testing.T) {
 	}
 }
 
-func TestL(t *testing.T) {
+func TestIds(t *testing.T) {
 	testTable := []struct{
 		fst []uint64
 		snd uint64
 	}{
 		{[]uint64{0}, 0},
-		{[]uint64{1, 1}, 3},
+		{[]uint64{1}, 1},
 		{[]uint64{2}, 4},
+		{[]uint64{3}, 9},
+	}
+
+	for _, test := range testTable {
+		res := encode(test.fst, ETypeHint)
+		if res != test.snd {
+			t.Fatalf("Error while encoding list (%v) to nat number. Expected: %v, actual: %v", test.fst, test.snd, res)
+		}
+	}
+}
+
+func TestL(t *testing.T) {
+	testTable := []struct{
+		fst []uint64
+		snd uint64
+	}{
+		{[]uint64{1, 1}, 3},
 		{[]uint64{1, 1, 1}, 13},
 		{[]uint64{1, 2}, 5},
-		{[]uint64{2, 1}, 21},
-		{[]uint64{3}, 9},
+		{[]uint64{2, 1}, 7},
 	}
 
 	for _, test := range testTable {

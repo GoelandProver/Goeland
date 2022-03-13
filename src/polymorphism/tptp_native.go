@@ -42,9 +42,6 @@
 
 package polymorphism
 
-// Slice to store an operator string repr and its type scheme uid
-// for WF proofsearch ?
-
 /*
 func initTPTPTypes() {
 	// int, rat, real

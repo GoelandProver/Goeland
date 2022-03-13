@@ -51,7 +51,9 @@ const (
 func encode(uids []uint64, typeEncoded int) uint64 {
 	tmp := append(uids[:0:0], uids...)
 	switch (typeEncoded) {
-	case ETypeHint, ETypeCross:
+	case ETypeHint:
+		return encodePair(0, tmp[0])
+	case ETypeCross:
 		return encodeInt(int64(encodeList(tmp)))
 	case ETypeArrow :
 		return encodeInt(-int64(encodeList(tmp)))
@@ -61,7 +63,7 @@ func encode(uids []uint64, typeEncoded int) uint64 {
 
 /* Encodes a list of identifiers to a new unique identifier. */
 func encodeList(uids []uint64) uint64 {
-	res := encodePair(0, uids[0])
+	res := uids[0]
 	for i := 1; i < len(uids); i++ {
 		res = encodePair(res, uids[i])
 	}
