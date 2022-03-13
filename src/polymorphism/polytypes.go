@@ -167,7 +167,7 @@ func Init() {
 	typeSchemesMap.lock  = sync.Mutex{}
 
 	// TPTP
-	//initTPTPTypes()
+	initTPTPTypes()
 }
 
 /* Makes a TypeHint. If it has already been created, return the right one. Else, creates a new one. */

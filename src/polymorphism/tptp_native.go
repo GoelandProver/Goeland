@@ -42,17 +42,76 @@
 
 package polymorphism
 
-/*
+var tInt = MkTypeHint("int")
+var tRat = MkTypeHint("rat")
+var tReal = MkTypeHint("real")
+var tProp = MkTypeHint("o")
+
+var intCrossInt = MkTypeCross(tInt, tInt)
+var ratCrossRat = MkTypeCross(tRat, tRat)
+var realCrossReal = MkTypeCross(tReal, tReal)
+
 func initTPTPTypes() {
-	// int, rat, real
-	tInt := MkTypeHint("int")
-	tRat := MkTypeHint("rat")
-	tReal := MkTypeHint("real")
-
 	// Schemes
+	// 1 - Binary input arguments
+	recordBinaryInArgs("less")
+	recordBinaryInArgs("lesseq")
+	recordBinaryInArgs("greater")
+	recordBinaryInArgs("greatereq")
+	recordBinaryInArgs("sum")
+	recordBinaryInArgs("difference")
+	recordBinaryInArgs("product")
+	recordBinaryInArgs("quotient_e")
+	recordBinaryInArgs("quotient_t")
+	recordBinaryInArgs("quotient_f")
+	recordBinaryInArgs("remainder_e")
+	recordBinaryInArgs("remainder_t")
+	recordBinaryInArgs("remainder_f")
 
+	// 2 - $quotient
+	SaveTypeScheme("quotient", ratCrossRat, tRat)
+	SaveTypeScheme("quotient", realCrossReal, tReal)
+
+	// 3 - Unary input arguments
+	recordUnaryInArgs("uminus")
+	recordUnaryInArgs("floor")
+	recordUnaryInArgs("ceiling")
+	recordUnaryInArgs("truncate")
+	recordUnaryInArgs("round")
+
+	// 4 - Preds
+	recordUnaryProp("is_int")
+	recordUnaryProp("is_rat")
+
+	// 5 - Conversion
+	recordConversion("to_int", tInt)
+	recordConversion("to_rat", tRat)
+	recordConversion("to_real", tReal)
 }
-*/
+
+func recordBinaryInArgs(name string) {
+	SaveTypeScheme(name, intCrossInt, tInt)
+	SaveTypeScheme(name, ratCrossRat, tRat)
+	SaveTypeScheme(name, realCrossReal, tReal)
+}
+
+func recordUnaryInArgs(name string) {
+	SaveTypeScheme(name, tInt, tInt)
+	SaveTypeScheme(name, tRat, tRat)
+	SaveTypeScheme(name, tReal, tReal)
+}
+
+func recordUnaryProp(name string) {
+	SaveTypeScheme(name, tInt, tProp)
+	SaveTypeScheme(name, tRat, tProp)
+	SaveTypeScheme(name, tReal, tProp)
+}
+
+func recordConversion(name string, out TypeScheme) {
+	SaveTypeScheme(name, tInt, out)
+	SaveTypeScheme(name, tRat, out)
+	SaveTypeScheme(name, tReal, out)
+}
 
 func IsInt(tType TypeScheme) bool { return tType.Equals(MkTypeHint("int")) }
 func IsRat(tType TypeScheme) bool { return tType.Equals(MkTypeHint("rat")) }
