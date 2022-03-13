@@ -103,7 +103,7 @@ func TesTypeCrosses(t *testing.T) {
 	}
 }
 
-func TesTypeArrows(t *testing.T) {
+func TestTypeArrows(t *testing.T) {
 	tInt := MkTypeHint("int")
 	tRat := MkTypeHint("rat")
 

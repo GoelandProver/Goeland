@@ -46,11 +46,8 @@
 package polymorphism
 
 import (
-	"fmt"
 	"strings"
 	"sync"
-
-	"github.com/GoelandProver/Goeland/global"
 )
 
 /**
@@ -155,12 +152,6 @@ var tMap struct {
 	lock    sync.Mutex
 }
 
-/* Map of Type Schemes for a function or a predicate. */
-var typeSchemesMap struct {
-	tsMap	map[string]TypeScheme
-	lock	sync.Mutex
-}
-
 /* Call the init function before any type is created with MkType. */
 func Init() {
 	// Instantiate tCounter
@@ -172,7 +163,7 @@ func Init() {
 	tMap.lock = sync.Mutex{}
 
 	// Instantiate typeSchemesMap
-	typeSchemesMap.tsMap = make(map[string]TypeScheme)
+	typeSchemesMap.tsMap = make(map[string][]App)
 	typeSchemesMap.lock  = sync.Mutex{}
 
 	// TPTP
@@ -213,29 +204,4 @@ func MkTypeArrow(typeSchemes ...TypeScheme) TypeArrow {
 	ta := TypeArrow{uid: 0, types: typeSchemes}
 	ta.uid = encode(ta.toList(), ETypeArrow)
 	return ta
-}
-
-/* Saves a TypeScheme in the map of schemes. */
-func SaveTypeScheme(name string, typeScheme TypeScheme) {
-	typeSchemesMap.lock.Lock()
-	if tScheme, found := tMap.uidsMap[name]; found {
-		typeSchemesMap.lock.Unlock()
-		// Should this be an error ?
-		global.PrintDebug("[POLY-FOL]", fmt.Sprintf("TypeScheme %v already in saved map", tScheme.UID()))
-		return 
-	}
-
-	typeSchemesMap.tsMap[name] = typeScheme
-	typeSchemesMap.lock.Unlock()
-}
-
-/* Gets a TypeScheme from the map of schemes with the name. */
-func GetTypeScheme(name string) (TypeScheme, error) {
-	typeSchemesMap.lock.Lock()
-	if tScheme, found := tMap.uidsMap[name]; found {
-		typeSchemesMap.lock.Unlock()
-		return tScheme, nil
-	}
-	typeSchemesMap.lock.Unlock()
-	return nil, fmt.Errorf("couldn't find a TypeScheme with the following name in the saved schemes: %s", name)
 }
