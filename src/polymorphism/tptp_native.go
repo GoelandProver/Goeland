@@ -42,16 +42,26 @@
 
 package polymorphism
 
-var tInt = MkTypeHint("int")
-var tRat = MkTypeHint("rat")
-var tReal = MkTypeHint("real")
-var tProp = MkTypeHint("o")
+var tInt TypeHint
+var tRat TypeHint
+var tReal TypeHint
+var tProp TypeHint
 
-var intCrossInt = MkTypeCross(tInt, tInt)
-var ratCrossRat = MkTypeCross(tRat, tRat)
-var realCrossReal = MkTypeCross(tReal, tReal)
+var intCrossInt TypeScheme
+var ratCrossRat TypeScheme
+var realCrossReal TypeScheme
 
 func initTPTPTypes() {
+	// Types
+	tInt = MkTypeHint("int")
+	tRat = MkTypeHint("rat")
+	tReal = MkTypeHint("real")
+	tProp = MkTypeHint("o")
+
+	intCrossInt = MkTypeCross(tInt, tInt)
+	ratCrossRat = MkTypeCross(tRat, tRat)
+	realCrossReal = MkTypeCross(tReal, tReal)
+
 	// Schemes
 	// 1 - Binary input arguments
 	recordBinaryInArgs("less")
@@ -113,6 +123,6 @@ func recordConversion(name string, out TypeScheme) {
 	SaveTypeScheme(name, tReal, out)
 }
 
-func IsInt(tType TypeScheme) bool { return tType.Equals(MkTypeHint("int")) }
-func IsRat(tType TypeScheme) bool { return tType.Equals(MkTypeHint("rat")) }
-func IsReal(tType TypeScheme) bool { return tType.Equals(MkTypeHint("real")) }
+func IsInt(tType TypeScheme) bool  { return tType.Equals(tInt) }
+func IsRat(tType TypeScheme) bool  { return tType.Equals(tRat) }
+func IsReal(tType TypeScheme) bool { return tType.Equals(tReal) }
