@@ -303,26 +303,10 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 
 	case answer_father := <-c.result:
 		exchanges.WriteExchanges(father_id, st, given_substs, answer_father.GetSubstForChildren(), "WaitFather")
-		if answer_father.GetForm() == nil {
-			global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", answer_father.GetSubstForChildren().ToString()))
-		} else {
-			global.PrintDebug("WF", fmt.Sprintf("Form received : %v", answer_father.GetForm().ToString()))
-		}
-
-		switch {
-		// Form received from parent
-		case answer_father.GetForm() != nil:
-			st_copy := st.Copy()
-			st_copy.SetLF(append(st_copy.GetLF(), answer_father.GetForm()))
-			c2 := Communication{make(chan bool), make(chan Result)}
-			global.PrintDebug("WF", fmt.Sprintf("Add new rewrite on LF and wait : %v", answer_father.GetSubstForChildren().GetSubst().ToString()))
-			go ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren())
-			global.IncrGoRoutine(1)
-			global.PrintDebug("WF", "GO !")
-			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, basictypes.MakeEmptyFormList(), false)
+		global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", answer_father.GetSubstForChildren().ToString()))
 
 		// Check if the subst was already seen, returns eventually the subst with new formula(s)
-		case treetypes.ContainsSubst(complextypes.GetSubstListFromSubstAndFormList(given_substs), answer_father.subst_for_children.GetSubst()):
+		if treetypes.ContainsSubst(complextypes.GetSubstListFromSubstAndFormList(given_substs), answer_father.subst_for_children.GetSubst()) {
 			global.PrintDebug("WF", "This substitution was sent by this child")
 			subst_for_father := answer_father.GetSubstForChildren()
 			for _, subst_sent := range given_substs {
@@ -332,8 +316,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			}
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst_for_father})
 			sendSubToFather(c, true, true, father_id, st, given_substs)
-
-		default:
+		} else {
 			// Retrieve meta from the subst sent by my father
 			meta_sisters := st.GetMM()
 			for _, m := range complextypes.GetMetaFromSubst(answer_father.subst_for_children.GetSubst()) {
