@@ -189,7 +189,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 	for len(remaining_atomics) > 0 {
 		global.PrintDebug("PS", "Remaining atomic > 0")
 
-		// On prend le premier élément de le liaste des atomics
+		// On prend le premier élément de le liste des atomics
 		f := remaining_atomics[0].Copy()
 		remaining_atomics = remaining_atomics[1:].Copy()
 
@@ -206,6 +206,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 					// Create a child with the current rewritting rule and make this process to wait for him, with a list of other subst to try
 					st.SetLF(remaining_atomics.Copy())
 					st_copy := st.Copy()
+					st_copy.SetLF(remaining_atomics.Copy())
 					st_copy.SetCurrentProofRule("Rewrite")
 					st_copy.SetLF(append(remaining_atomics.Copy(), choosen_rewritten.Copy()))
 					c_child := Communication{make(chan bool), make(chan Result)}
