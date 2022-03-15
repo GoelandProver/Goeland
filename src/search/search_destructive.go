@@ -372,7 +372,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 **/
 func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack basictypes.FormList, bt_priority bool) {
 	global.PrintDebug("WC", "Waiting children")
-	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
+	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), len(forms_for_backtrack), bt_priority, complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 	global.PrintDebug("WC", fmt.Sprintf("MM : %v", st.GetMM().ToString()))
 
 	select {
@@ -404,6 +404,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			// Here, current subst is always empty
 			if !current_subst.IsEmpty() {
 				fmt.Printf("[ERROR] Current subst not empty but child returns nothing\n")
+				global.PrintDebug("ERROR", "Current subst not empty but child returns nothing")
 			}
 
 			if cpt_children == 1 {
@@ -485,12 +486,22 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 
 			switch {
 			case bt_priority && len(forms_for_backtrack) > 0:
-				next_form := forms_for_backtrack[0]
+				// On relance sur soi-même avec une autre form
+				global.PrintDebug("WC", "Backtrack on formulas")
+				next_form := forms_for_backtrack[0].Copy()
 				forms_for_backtrack = forms_for_backtrack[1:]
 				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on form")
-				sendFormToChildren(children, next_form)
-				waitChildren(father_id, st, c, children, given_substs, complextypes.MakeEmptySubstAndForm(), substs_for_backtrack, forms_for_backtrack, true)
+				st_copy := st.Copy()
+				st_copy.SetCurrentProofRule("Rewrite")
+				st_copy.SetLF(append(st_copy.GetLF().Copy(), next_form))
+				c_child := Communication{make(chan bool), make(chan Result)}
+				go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm())
+				global.PrintDebug("PS", "GO !")
+				global.IncrGoRoutine(1)
+				waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, forms_for_backtrack, true)
+
 			case len(substs_for_backtrack) > 0:
+				global.PrintDebug("WC", "Backtrack on subt")
 				next_subst := tryBTSubstitution(&substs_for_backtrack, st.GetMM(), children)
 				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{next_subst}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on subst")
 				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, forms_for_backtrack, false)
