@@ -39,9 +39,12 @@
 package basictypes
 
 import (
-	"strconv"
-	"github.com/GoelandProver/Goeland/global"
 	"fmt"
+	"strconv"
+
+	"github.com/GoelandProver/Goeland/global"
+
+	typing "github.com/GoelandProver/Goeland/polymorphism"
 )
 
 /*** Structure ***/
@@ -58,9 +61,10 @@ type Form interface {
 
 /* Symbol of predicate */
 type Pred struct {
-	index int
-	id    Id
-	args  []Term
+	index    int
+	id       Id
+	args     []Term
+	typeHint typing.TypeScheme
 }
 
 func (p Pred) GetID() Id {
@@ -69,6 +73,10 @@ func (p Pred) GetID() Id {
 
 func (p Pred) GetArgs() []Term {
 	return CopyTermList(p.args)
+}
+
+func (p Pred) GetTypeScheme() typing.TypeScheme {
+	return p.typeHint
 }
 
 /* Top (always true) */
@@ -365,7 +373,7 @@ func (a All) GetIndex() int {
 
 /* Copy */
 func (p Pred) Copy() Form {
-	res := MakePred(p.GetIndex(), p.GetID(), p.GetArgs())
+	res := MakePred(p.GetIndex(), p.GetID(), p.GetArgs(), p.GetTypeScheme())
 	return res
 }
 func (t Top) Copy() Form {
@@ -530,16 +538,11 @@ func (a All) GetMetas() MetaList {
 /*** Functions ***/
 
 /* Makers */
-
-/**
-* Les maker uniquement dans perseur
-* Sinon make
-**/
-func MakePred(i int, p Id, tl []Term) Pred {
-	return Pred{i, p, tl}
+func MakePred(i int, p Id, tl []Term, ts typing.TypeScheme) Pred {
+	return Pred{i, p, tl, ts}
 }
-func MakerPred(p Id, tl []Term) Pred {
-	return MakePred(MakerIndexFormula(), p, tl)
+func MakerPred(p Id, tl []Term, ts typing.TypeScheme) Pred {
+	return MakePred(MakerIndexFormula(), p, tl, ts)
 }
 
 func MakeTop(i int) Top {
@@ -648,7 +651,8 @@ func simplifyNeg(f Form, isEven bool) Form {
 func ReplaceVarByTerm(f Form, old_symbol Var, new_symbol Term) Form {
 	switch nf := f.(type) {
 	case Pred:
-		return MakePred(f.GetIndex(), nf.GetID(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol))
+		// Be careful about the type here, the correctness of doing this has not been thoroughly checked.
+		return MakePred(f.GetIndex(), nf.GetID(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol), nf.GetTypeScheme())
 	case Top:
 		return f
 	case Bot:

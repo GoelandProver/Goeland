@@ -40,6 +40,8 @@ package basictypes
 
 import (
 	"sync"
+
+	typing "github.com/GoelandProver/Goeland/polymorphism"
 )
 
 /* Datas */
@@ -101,28 +103,28 @@ func MakerNewId(s string) Id {
 }
 
 /* Var maker */
-func MakerVar(s string) Var {
+func MakerVar(s string, t typing.TypeScheme) Var {
 	lock_var.Lock()
 	i, ok := idVar[s]
 	lock_var.Unlock()
 	if ok {
-		return MakeVar(i, s)
+		return MakeVar(i, s, t)
 	} else {
-		return MakerNewVar(s)
+		return MakerNewVar(s, t)
 	}
 }
 
-func MakerNewVar(s string) Var {
+func MakerNewVar(s string, t typing.TypeScheme) Var {
 	lock_var.Lock()
 	idVar[s] = cpt_var
-	vr := MakeVar(cpt_var, s)
+	vr := MakeVar(cpt_var, s, t)
 	cpt_var += 1
 	lock_var.Unlock()
 	return vr
 }
 
 /* Meta maker */
-func MakerMeta(s string, formula int) Meta {
+func MakerMeta(s string, formula int, t typing.TypeScheme) Meta {
 	lock_meta.Lock()
 	i, ok := idMeta[s]
 	lock_meta.Unlock()
@@ -130,23 +132,23 @@ func MakerMeta(s string, formula int) Meta {
 		lock_meta.Lock()
 		idMeta[s] = i + 1
 		lock_meta.Unlock()
-		return MakeMeta(i, s, formula)
+		return MakeMeta(i, s, formula, t)
 	} else {
 		lock_meta.Lock()
 		idMeta[s] = 1
 		lock_meta.Unlock()
-		return MakeMeta(0, s, formula)
+		return MakeMeta(0, s, formula, t)
 	}
 }
 
 /* Const maker (given a id, create a fun without args) */
-func MakerConst(id Id) Fun {
-	return MakeFun(id, []Term{})
+func MakerConst(id Id, t typing.TypeScheme) Fun {
+	return MakeFun(id, []Term{}, t)
 }
 
 /* Fun maker, with given id and args */
-func MakerFun(id Id, terms []Term) Fun {
-	return MakeFun(id, terms)
+func MakerFun(id Id, terms []Term, t typing.TypeScheme) Fun {
+	return MakeFun(id, terms, t)
 }
 
 /* Index make for formula */

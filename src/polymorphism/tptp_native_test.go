@@ -45,12 +45,22 @@ import (
 	"testing"
 )
 
-func TestTPTPBinaryNativesCreation(t *testing.T) {
+func TestTPTPBinaryNativeBinaryProps(t *testing.T) {
 	ls := []string{
 		"less",
 		"lesseq",
 		"greater",
 		"greatereq",
+	}
+	for _, name := range ls {
+		if err := testBinaryPreds(name); err != nil {
+			t.Errorf(err.Error())
+		}
+	}
+}
+
+func TestTPTPBinaryNatives(t *testing.T) {
+	ls := []string{
 		"sum",
 		"difference",
 		"product",
@@ -116,6 +126,23 @@ func TestTPTPConversionFunctions(t *testing.T) {
 			t.Errorf(err.Error())
 		}
 	}
+}
+
+func testBinaryPreds(name string) error {
+	out, err := GetTypeScheme(name, MkTypeCross(tInt, tInt))
+	if err != nil || !out.Equals(MkTypeArrow(MkTypeCross(tInt, tInt), tProp)) {
+		return fmt.Errorf("Error: %s: int * int > int not defined when it should be.", name)
+	}
+	out, err = GetTypeScheme(name, MkTypeCross(tRat, tRat))
+	if err != nil || !out.Equals(MkTypeArrow(MkTypeCross(tRat, tRat), tProp)) {
+		return fmt.Errorf("Error: %s: rat * rat > rat not defined when it should be.", name)
+	}
+	out, err = GetTypeScheme(name, MkTypeCross(tReal, tReal))
+	if err != nil || !out.Equals(MkTypeArrow(MkTypeCross(tReal, tReal), tProp)) {
+		return fmt.Errorf("Error: %s: real * real > real not defined when it should be.", name)
+	}
+
+	return nil
 }
 
 func testBinaryTypes(name string) error {

@@ -63,11 +63,13 @@ func initTPTPTypes() {
 	realCrossReal = MkTypeCross(tReal, tReal)
 
 	// Schemes
-	// 1 - Binary input arguments
-	recordBinaryInArgs("less")
-	recordBinaryInArgs("lesseq")
-	recordBinaryInArgs("greater")
-	recordBinaryInArgs("greatereq")
+	// 1 - Binary predicates
+	recordBinaryProp("less")
+	recordBinaryProp("lesseq")
+	recordBinaryProp("greater")
+	recordBinaryProp("greatereq")
+	
+	// 2 - Binary input arguments
 	recordBinaryInArgs("sum")
 	recordBinaryInArgs("difference")
 	recordBinaryInArgs("product")
@@ -78,25 +80,31 @@ func initTPTPTypes() {
 	recordBinaryInArgs("remainder_t")
 	recordBinaryInArgs("remainder_f")
 
-	// 2 - $quotient
+	// 3 - $quotient
 	SaveTypeScheme("quotient", ratCrossRat, tRat)
 	SaveTypeScheme("quotient", realCrossReal, tReal)
 
-	// 3 - Unary input arguments
+	// 4 - Unary input arguments
 	recordUnaryInArgs("uminus")
 	recordUnaryInArgs("floor")
 	recordUnaryInArgs("ceiling")
 	recordUnaryInArgs("truncate")
 	recordUnaryInArgs("round")
 
-	// 4 - Preds
+	// 5 - Unary predicates
 	recordUnaryProp("is_int")
 	recordUnaryProp("is_rat")
 
-	// 5 - Conversion
+	// 6 - Conversion
 	recordConversion("to_int", tInt)
 	recordConversion("to_rat", tRat)
 	recordConversion("to_real", tReal)
+}
+
+func recordBinaryProp(name string) {
+	SaveTypeScheme(name, intCrossInt, tProp)
+	SaveTypeScheme(name, ratCrossRat, tProp)
+	SaveTypeScheme(name, realCrossReal, tProp)
 }
 
 func recordBinaryInArgs(name string) {

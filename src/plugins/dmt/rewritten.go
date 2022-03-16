@@ -47,6 +47,7 @@ import (
 	"strings"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	typing "github.com/GoelandProver/Goeland/polymorphism"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
@@ -72,7 +73,7 @@ func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
 func instantiateOnce(formula btypes.Form) btypes.Form {
 	nf := formula.(btypes.All).GetForm()
 	for _, v := range formula.(btypes.All).GetVarList() {
-		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), -1)
+		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), 0, v.GetTypeHint())
 		nf = btypes.ReplaceVarByTerm(nf, v, meta)
 	}
 	return nf
@@ -105,7 +106,21 @@ func skolemize(f btypes.Form) btypes.Form {
 func realSkolemize(f btypes.Form, vars []btypes.Var, terms []btypes.Term) btypes.Form {
 	// Replace each variable by the skolemized term.
 	for _, v := range vars {
-		skolem := btypes.MakerFun(btypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())), terms)
+		// TypeScheme construction
+		var t typing.TypeScheme
+
+		// Okay that's absolutely wrong, but it's the best way of doing things right now, I swear.
+		for _, term := range terms {
+			switch tf := term.(type) {
+			case btypes.Var:
+				t = typing.MkTypeCross(tf.GetTypeHint(), t)
+			case btypes.Fun:
+				t = typing.MkTypeCross(tf.GetTypeHint(), t)
+			case btypes.Meta:
+				t = typing.MkTypeCross(tf.GetTypeHint(), t)
+			}
+		}
+		skolem := btypes.MakerFun(btypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())), terms, typing.MkTypeArrow(t, v.GetTypeHint()))
 		f = btypes.ReplaceVarByTerm(f, v, skolem)
 	}
 	return f

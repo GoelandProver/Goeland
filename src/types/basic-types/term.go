@@ -40,6 +40,8 @@ package basictypes
 
 import (
 	"strconv"
+
+	typing "github.com/GoelandProver/Goeland/polymorphism"
 )
 
 /* Term */
@@ -68,21 +70,35 @@ type Id struct {
 
 /* Var (under forall or exists)  */
 type Var struct {
-	index int
-	name  string
+	index    int
+	name     string
+	typeHint typing.TypeScheme
 }
 
 /* Metavariable (X, Y) */
 type Meta struct {
-	index   int
-	name    string
-	formula int
+	index    int
+	name     string
+	formula  int
+	typeHint typing.TypeScheme
 }
 
 /* function or constant (f(a,b), f(X,Y), a)*/
 type Fun struct {
-	p    Id
-	args []Term
+	p        Id
+	args     []Term
+	typeHint typing.TypeScheme
+}
+
+/* GetTypeHint */
+func (v Var) GetTypeHint() typing.TypeScheme {
+	return v.typeHint
+}
+func (m Meta) GetTypeHint() typing.TypeScheme {
+	return m.typeHint
+}
+func (f Fun) GetTypeHint() typing.TypeScheme {
+	return f.typeHint
 }
 
 /* GetIndex */
@@ -234,16 +250,16 @@ func (f Fun) Equals(t Term) bool {
 /* Copy */
 /* Copy a term */
 func (v Var) Copy() Term {
-	return MakeVar(v.GetIndex(), v.GetName())
+	return MakeVar(v.GetIndex(), v.GetName(), v.GetTypeHint())
 }
 func (m Meta) Copy() Term {
-	return MakeMeta(m.GetIndex(), m.GetName(), m.GetFormula())
+	return MakeMeta(m.GetIndex(), m.GetName(), m.GetFormula(), m.GetTypeHint())
 }
 func (i Id) Copy() Term {
 	return MakeId(i.GetIndex(), i.GetName())
 }
 func (f Fun) Copy() Term {
-	return MakeFun(f.GetP(), f.GetArgs())
+	return MakeFun(f.GetP(), f.GetArgs(), f.GetTypeHint())
 }
 
 /* ToMeta */
@@ -352,14 +368,14 @@ func (f *Fun) SetArgs(tl []Term) {
 func MakeId(i int, s string) Id {
 	return Id{i, s}
 }
-func MakeVar(i int, s string) Var {
-	return Var{i, s}
+func MakeVar(i int, s string, t typing.TypeScheme) Var {
+	return Var{i, s, t}
 }
-func MakeMeta(i int, s string, f int) Meta {
-	return Meta{i, s, f}
+func MakeMeta(i int, s string, f int, t typing.TypeScheme) Meta {
+	return Meta{i, s, f, t}
 }
-func MakeFun(p Id, args []Term) Fun {
-	return Fun{p, args}
+func MakeFun(p Id, args []Term, t typing.TypeScheme) Fun {
+	return Fun{p, args, t}
 }
 
 /*** Functions ***/
