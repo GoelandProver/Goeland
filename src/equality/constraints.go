@@ -37,3 +37,92 @@
 **/
 
 package equality
+
+import (
+	"fmt"
+
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+)
+
+/* type of the constraint :
+* 0 for >
+* 1 for =
+**/
+type Constraint struct {
+	ctype int
+	tp    TermPair
+}
+
+func (c Constraint) GetCType() int {
+	return c.ctype
+}
+func (c Constraint) GetTP() TermPair {
+	return c.tp.Copy()
+}
+func (c Constraint) Copy() Constraint {
+	return MakeConstraint(c.GetCType(), c.GetTP())
+}
+func (c Constraint) Equals(c2 Constraint) bool {
+	return ((c.GetCType() == c2.GetCType()) && c.GetTP().Equals(c2.GetTP()))
+}
+func (c Constraint) ToSting() string {
+	switch c.GetCType() {
+	case 0:
+		return c.GetTP().GetT1().ToString() + " ≻ " + c.GetTP().GetT2().ToString()
+	case 1:
+		return c.GetTP().GetT1().ToString() + " ≃ " + c.GetTP().GetT2().ToString()
+	default:
+		fmt.Printf("Constraint type unknown \n")
+		return "Constraint type unknown"
+	}
+}
+
+/* return true if the constraint is not violated, false totherwise */
+func (c Constraint) Check(lpo LPO) (bool, treetypes.Substitutions) {
+	switch c.GetCType() {
+	case 0:
+		return lpo.Compare(c.GetTP().t1, c.GetTP().t2) > 0, treetypes.Failure()
+	case 1:
+		subst := treesearch.AddUnification(c.GetTP().t1.Copy(), c.GetTP().t2.Copy(), treetypes.MakeEmptySubstitution())
+		if subst.Equals(treetypes.Failure()) {
+			return false, treetypes.Failure()
+		} else {
+			return true, treetypes.Failure()
+		}
+
+	default:
+		fmt.Printf("Constraint type unknown \n")
+		return false, treetypes.Failure()
+	}
+}
+
+func MakeConstraint(i int, tp TermPair) Constraint {
+	return Constraint{i, tp.Copy()}
+}
+
+type ConstraintList []Constraint
+
+func (cl ConstraintList) Contains(c Constraint) bool {
+	for _, cst := range cl {
+		if c.Equals(cst) {
+			return true
+		}
+	}
+	return false
+}
+
+func (cl *ConstraintList) AppendIfConsistant(c Constraint, lpo LPO) bool {
+	if !cl.Contains(c) {
+		// TODO : vérifier mieux
+		checked, _ := c.Check(lpo)
+		if checked {
+			(*cl) = append((*cl), c)
+			return true
+		} else {
+			return false
+		}
+	} else {
+		return true
+	}
+}

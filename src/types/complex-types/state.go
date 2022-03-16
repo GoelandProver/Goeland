@@ -42,7 +42,6 @@ import (
 	"fmt"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/equality"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
@@ -350,11 +349,8 @@ func (st State) Copy() State {
 	}
 	new_state.SetProof([]proof.ProofStruct{})
 	new_state.SetCurrentProof(proof.MakeEmptyProofStruct())
-<<<<<<< HEAD
 	new_state.SetBTOnFormulas(st.GetBTOnFormulas())
-=======
 	new_state.SetLPO(st.GetLPO())
->>>>>>> [EQ] LPO definition
 
 	return new_state
 }

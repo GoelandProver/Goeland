@@ -98,10 +98,44 @@ func (e Equalities) Copy() Equalities {
 	return res
 }
 
-func (ie Inequalities) Copy() Equalities {
+func (ie Inequalities) Copy() Inequalities {
 	res := []TermPair{}
 	for _, tp := range ie {
 		res = append(res, tp.Copy())
+	}
+	return res
+}
+
+func (e Equalities) Contains(eq TermPair) bool {
+	for _, element := range e {
+		if element.Equals(eq) {
+			return true
+		}
+	}
+	return false
+}
+
+func (ie Inequalities) Contains(eq TermPair) bool {
+	for _, element := range ie {
+		if element.Equals(eq) {
+			return true
+		}
+	}
+	return false
+}
+
+func (e Equalities) AppendIfNotContains(eq TermPair) Equalities {
+	res := e.Copy()
+	if !e.Contains(eq) {
+		res = append(res, eq)
+	}
+	return res
+}
+
+func (ie Inequalities) AppendIfNotContains(eq TermPair) Inequalities {
+	res := ie.Copy()
+	if !ie.Contains(eq) {
+		res = append(res, eq)
 	}
 	return res
 }
