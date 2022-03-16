@@ -37,3 +37,77 @@
 **/
 
 package equality
+
+import (
+	"strconv"
+	"sync"
+
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+)
+
+type LPO map[basictypes.Term]int
+
+var lock_lpo sync.Mutex
+
+func (lpo LPO) Get(t basictypes.Term) int {
+	res, found := lpo[t]
+	if found {
+		return res
+	} else {
+		return -1
+	}
+}
+
+func (lpo *LPO) Insert(t basictypes.Term) {
+	lock_lpo.Lock()
+	(*lpo)[t] = len(*lpo)
+	lock_lpo.Unlock()
+}
+
+func (lpo LPO) Contains(t basictypes.Term) bool {
+	return lpo.Get(t) != -1
+}
+
+func (lpo *LPO) InsertIfNotContains(t basictypes.Term) {
+	if lpo.Contains(t) {
+		lpo.Insert(t)
+	}
+}
+
+/* returns positive number if t1 > t2, 0 if t1 = t2, netaive if t2 > t1*/
+func (lpo LPO) Compare(t1, t2 basictypes.Term) int {
+	return lpo.Get(t1) - lpo.Get(t2)
+}
+
+/* Is empty */
+func (lpo LPO) IsEmpty() bool {
+	return (lpo == nil || len(lpo) == 0)
+}
+
+/* ToString */
+func (lpo LPO) ToString() string {
+	res := "{"
+	for term, value := range lpo {
+		res = "[" + term.ToString() + "] : " + strconv.Itoa(value)
+		if value != len(lpo)-1 {
+			res += ", "
+		}
+	}
+	return res + "}"
+}
+
+/* Copy an LPO */
+func (lpo LPO) Copy() LPO {
+	res := LPO{}
+	lock_lpo.Lock()
+	for term, value := range lpo {
+		res[term.Copy()] = value
+	}
+	lock_lpo.Unlock()
+	return res
+}
+
+/* Maker */
+func MakeLPO() LPO {
+	return LPO{}
+}

@@ -57,6 +57,9 @@ func (tp TermPair) Copy() TermPair {
 func (tp TermPair) Equals(tp2 TermPair) bool {
 	return tp.GetT1().Equals(tp2.t1) && tp.GetT2().Equals(tp2.GetT2())
 }
+func (tp TermPair) ToString() string {
+	return tp.GetT1().ToString() + " ≈ " + tp.GetT2().ToString()
+}
 func MakeTermPair(t1, t2 basictypes.Term) TermPair {
 	return TermPair{t1.Copy(), t2.Copy()}
 }
@@ -65,13 +68,51 @@ type Equalities []TermPair
 
 type Inequalities []TermPair
 
+func (e Equalities) ToString() string {
+	res := ""
+	for i, tp := range e {
+		res += tp.ToString()
+		if i < len(e) {
+			res += ", "
+		}
+	}
+	return res
+}
+
+func (ie Inequalities) ToString() string {
+	res := ""
+	for i, tp := range ie {
+		res += tp.ToString()
+		if i < len(ie) {
+			res += ", "
+		}
+	}
+	return res
+}
+
+func (e Equalities) Copy() Equalities {
+	res := []TermPair{}
+	for _, tp := range e {
+		res = append(res, tp.Copy())
+	}
+	return res
+}
+
+func (ie Inequalities) Copy() Equalities {
+	res := []TermPair{}
+	for _, tp := range ie {
+		res = append(res, tp.Copy())
+	}
+	return res
+}
+
 type EqualityProblem struct {
 	E    Equalities
 	s, t basictypes.Term
 }
 
 func (ep EqualityProblem) GetE() Equalities {
-	return CopyTermPairList(ep.E)
+	return ep.E.Copy()
 }
 func (ep EqualityProblem) GetS() basictypes.Term {
 	return ep.s.Copy()
@@ -85,21 +126,35 @@ func (ep EqualityProblem) Copy() EqualityProblem {
 func (ep EqualityProblem) Equals(ep2 EqualityProblem) basictypes.Term {
 	return ep.t.Copy()
 }
+func (ep EqualityProblem) ToString() string {
+	return "<" + ep.GetE().ToString() + ", " + ep.GetS().ToString() + ", " + ep.GetT().ToString() + ">"
+}
 func MakeEqualityProblem(E Equalities, t basictypes.Term, s basictypes.Term) EqualityProblem {
-	return EqualityProblem{CopyTermPairList(E), s.Copy(), t.Copy()}
+	return EqualityProblem{E.Copy(), s.Copy(), t.Copy()}
 }
 
 type EqualityProblemList []EqualityProblem
 
+func (epl EqualityProblemList) ToString() string {
+	res := "{"
+	for i, ep := range epl {
+		res += ep.ToString()
+		if i < len(epl) {
+			res += ", "
+		}
+	}
+	return res + "}"
+}
+
 type EqualityProblemMultiList []EqualityProblemList
 
-/*** Functions ***/
-
-/* Copy a list of TermPair */
-func CopyTermPairList(tpl []TermPair) []TermPair {
-	res := []TermPair{}
-	for _, tp := range tpl {
-		res = append(res, tp.Copy())
+func (epl EqualityProblemMultiList) ToString() string {
+	res := "{"
+	for i, ep := range epl {
+		res += ep.ToString()
+		if i < len(epl) {
+			res += ", "
+		}
 	}
-	return res
+	return res + "}"
 }
