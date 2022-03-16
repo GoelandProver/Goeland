@@ -38,7 +38,12 @@
 
 package equality
 
-import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+import (
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
+)
 
 /* A pair of two terms */
 type TermPair struct {
@@ -141,10 +146,15 @@ func (ie Inequalities) AppendIfNotContains(eq TermPair) Inequalities {
 }
 
 type EqualityProblem struct {
-	E    Equalities
-	s, t basictypes.Term
+	E_tree datastruct.DataStructure
+	E      Equalities
+	s, t   basictypes.Term
+	c      ConstraintList
 }
 
+func (ep EqualityProblem) GetETree() datastruct.DataStructure {
+	return ep.E_tree.Copy()
+}
 func (ep EqualityProblem) GetE() Equalities {
 	return ep.E.Copy()
 }
@@ -154,17 +164,28 @@ func (ep EqualityProblem) GetS() basictypes.Term {
 func (ep EqualityProblem) GetT() basictypes.Term {
 	return ep.t.Copy()
 }
+func (ep EqualityProblem) GetC() ConstraintList {
+	return ep.c.Copy()
+}
 func (ep EqualityProblem) Copy() EqualityProblem {
-	return MakeEqualityProblem(ep.GetE(), ep.GetS(), ep.GetT())
+	return MakeEqualityProblem(ep.GetE(), ep.GetS(), ep.GetT(), ep.GetC())
 }
 func (ep EqualityProblem) Equals(ep2 EqualityProblem) basictypes.Term {
 	return ep.t.Copy()
 }
 func (ep EqualityProblem) ToString() string {
-	return "<" + ep.GetE().ToString() + ", " + ep.GetS().ToString() + ", " + ep.GetT().ToString() + ">"
+	return "<" + ep.GetE().ToString() + ", " + ep.GetS().ToString() + ", " + ep.GetT().ToString() + "> • " + ep.GetC().ToString()
 }
-func MakeEqualityProblem(E Equalities, t basictypes.Term, s basictypes.Term) EqualityProblem {
-	return EqualityProblem{E.Copy(), s.Copy(), t.Copy()}
+func MakeEqualityProblem(E Equalities, t basictypes.Term, s basictypes.Term, c ConstraintList) EqualityProblem {
+	return EqualityProblem{makeDataStructFromEqualities(E.Copy()), E.Copy(), s.Copy(), t.Copy(), c.Copy()}
+}
+func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
+	form_list := basictypes.MakeEmptyFormList()
+	for _, e := range eq {
+		form_list = append(form_list, treetypes.MakeTermForm(e.GetT1()))
+		form_list = append(form_list, treetypes.MakeTermForm(e.GetT1()))
+	}
+	return new(treesearch.Node).MakeDataStruct(form_list, true)
 }
 
 type EqualityProblemList []EqualityProblem
@@ -180,6 +201,10 @@ func (epl EqualityProblemList) ToString() string {
 	return res + "}"
 }
 
+func MakeEmptyEqualityProblemList() EqualityProblemList {
+	return EqualityProblemList{}
+}
+
 type EqualityProblemMultiList []EqualityProblemList
 
 func (epl EqualityProblemMultiList) ToString() string {
@@ -191,4 +216,97 @@ func (epl EqualityProblemMultiList) ToString() string {
 		}
 	}
 	return res + "}"
+}
+
+func MakeEmptyEqualityProblemMultiList() EqualityProblemMultiList {
+	return EqualityProblemMultiList{}
+}
+
+/*** Functions ***/
+/* Retrieve equalities from a datastructure */
+func retrieveEqualities(dt datastruct.DataStructure) Equalities {
+	res := Equalities{}
+	MetaEQ1 := basictypes.MakerMeta("METAEQ1", -1)
+	MetaEQ2 := basictypes.MakerMeta("METAEQ2", -1)
+	eq_pred := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{MetaEQ1, MetaEQ2})
+	found, eq_list := dt.Unify(eq_pred)
+	if found {
+		for _, ms := range eq_list {
+			eq1_term := ms.GetSubst()[MetaEQ1]
+			eq2_term := ms.GetSubst()[MetaEQ2]
+			res = append(res, MakeTermPair(eq1_term, eq2_term))
+		}
+	}
+	return res
+}
+
+/* Retrieve inequalities from a datastructure */
+func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
+	res := Inequalities{}
+	MetaEQ1 := basictypes.MakerMeta("METANEQ1", -1)
+	MetaEQ2 := basictypes.MakerMeta("METANEQ2", -1)
+	eq_pred := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{MetaEQ1, MetaEQ2})
+	found, eq_list := dt.Unify(eq_pred)
+	if found {
+		for _, ms := range eq_list {
+			eq1_term := ms.GetSubst()[MetaEQ1]
+			eq2_term := ms.GetSubst()[MetaEQ2]
+			res = append(res, MakeTermPair(eq1_term, eq2_term))
+		}
+	}
+	return res
+}
+
+func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) EqualityProblemMultiList {
+	res := MakeEmptyEqualityProblemMultiList()
+	for _, neq_pair := range neq {
+		res = append(res, append(MakeEmptyEqualityProblemList(), MakeEqualityProblem(eq.Copy(), neq_pair.GetT1(), neq_pair.GetT2(), MakeEmptyConstaintsList())))
+	}
+	return res
+}
+
+/* Une liste de problèmes dégalités dépendants : un prédicat */
+func buildEqualityProblemListFrom2Pred(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
+	res := MakeEmptyEqualityProblemList()
+	for i := range p1.GetArgs() {
+		res = append(res, MakeEqualityProblem(eq.Copy(), p1.GetArgs()[i].Copy(), p2.GetArgs()[i].Copy(), MakeEmptyConstaintsList()))
+	}
+	return res
+}
+
+func buildEqualityProblemListFromPredList(p basictypes.Pred, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
+	res := MakeEmptyEqualityProblemMultiList()
+	id_p := p.GetID()
+	ml := basictypes.MakeEmptyMetaList()
+	for _, arg := range p.GetArgs() {
+		ml = append(ml, basictypes.MakerMeta("METAEQ_"+arg.ToString(), -1))
+	}
+	new_term := basictypes.MakePred(id_p.Copy().(basictypes.Id), ml.ToTermList())
+	found, complementary_pred_list := tn.Unify(new_term)
+	if found {
+		for _, s := range complementary_pred_list {
+			res = append(res, buildEqualityProblemListFrom2Pred(p.Copy().(basictypes.Pred), s.GetForm().(basictypes.Pred), eq.Copy()))
+		}
+	}
+	return res
+}
+
+func buildEqualityProblemMultiListFromFormList(fl basictypes.FormList, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
+	res := MakeEmptyEqualityProblemMultiList()
+	// Recup les prédicats de TP, on cherche les mêmes dans TN
+	for _, p := range fl {
+		if pt, ok := p.(basictypes.Pred); ok {
+			res = append(res, buildEqualityProblemListFromPredList(pt, tn, eq.Copy())...)
+		}
+	}
+	return res
+}
+
+/* Une liste de problèmes d'égalités indépendants */
+func BuildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.DataStructure) EqualityProblemMultiList {
+	res := MakeEmptyEqualityProblemMultiList()
+	eq := retrieveEqualities(tp)
+	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tp.Copy()), eq.Copy())...)
+	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.Copy())...)
+	return res
 }

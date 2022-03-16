@@ -103,9 +103,9 @@ func (fl FormList) IsEmpty() bool {
 
 /* Copy a list of form */
 func (fl FormList) Copy() FormList {
-	res := make([]Form, len(fl))
-	for i := range fl {
-		res[i] = fl[i].Copy()
+	res := MakeEmptyFormList()
+	for _, f := range fl {
+		res = append(res, f.Copy())
 	}
 	return res
 }

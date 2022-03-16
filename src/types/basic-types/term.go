@@ -50,6 +50,7 @@ type Term interface {
 	IsFun() bool
 	ToMeta() Meta
 	GetMetas() MetaList
+	GetSubTerms() []Term
 }
 
 /* Variable (x,y under ForAll or Exists) */
@@ -272,6 +273,24 @@ func (f Fun) GetMetas() MetaList {
 		metas = append(metas, arg.GetMetas()...)
 	}
 	return metas
+}
+
+/* GetSubTerms */
+func (v Var) GetSubTerms() []Term {
+	return []Term{v}
+}
+func (m Meta) GetSubTerms() []Term {
+	return []Term{m}
+}
+func (i Id) GetSubTerms() []Term {
+	return []Term{i}
+}
+func (f Fun) GetSubTerms() []Term {
+	res := []Term{f.GetID()}
+	for _, arg := range f.GetArgs() {
+		res = append(res, arg.GetSubTerms()...)
+	}
+	return res
 }
 
 /* Getters */

@@ -40,6 +40,7 @@ package equality
 
 import (
 	"fmt"
+	"sort"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -66,7 +67,7 @@ func (c Constraint) Copy() Constraint {
 func (c Constraint) Equals(c2 Constraint) bool {
 	return ((c.GetCType() == c2.GetCType()) && c.GetTP().Equals(c2.GetTP()))
 }
-func (c Constraint) ToSting() string {
+func (c Constraint) ToString() string {
 	switch c.GetCType() {
 	case 0:
 		return c.GetTP().GetT1().ToString() + " ≻ " + c.GetTP().GetT2().ToString()
@@ -79,7 +80,7 @@ func (c Constraint) ToSting() string {
 }
 
 /* return true if the constraint is not violated, false totherwise */
-func (c Constraint) Check(lpo LPO) (bool, treetypes.Substitutions) {
+func (c Constraint) Check(lpo LPO, subst treetypes.Substitutions) (bool, treetypes.Substitutions) {
 	switch c.GetCType() {
 	case 0:
 		return lpo.Compare(c.GetTP().t1, c.GetTP().t2) > 0, treetypes.Failure()
@@ -103,6 +104,52 @@ func MakeConstraint(i int, tp TermPair) Constraint {
 
 type ConstraintList []Constraint
 
+/*Sort */
+func (cl ConstraintList) Len() int      { return len(cl) }
+func (cl ConstraintList) Swap(i, j int) { cl[i], cl[j] = cl[j], cl[i] }
+func (cl ConstraintList) Less(i, j int) bool {
+	return (cl[i].ToString() < cl[j].ToString())
+}
+
+func (l1 ConstraintList) Equals(l2 ConstraintList) bool {
+	if len(l1) != len(l2) {
+		return false
+	} else {
+		l1_sorted := l1.Copy()
+		sort.Sort(l1_sorted)
+
+		l2_sorted := l2.Copy()
+		sort.Sort(l2_sorted)
+
+		for i := range l1_sorted {
+			if !l1_sorted[i].Equals(l2_sorted[i]) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func (cl ConstraintList) ToString() string {
+	res := "{"
+	for i, c := range cl {
+		res += c.ToString()
+		if i < len(cl)-1 {
+			res += (", ")
+		}
+	}
+	res += "}"
+	return res
+}
+
+func (cl ConstraintList) Copy() ConstraintList {
+	res := MakeEmptyConstaintsList()
+	for _, c := range cl {
+		res = append(res, c.Copy())
+	}
+	return res
+}
+
 func (cl ConstraintList) Contains(c Constraint) bool {
 	for _, cst := range cl {
 		if c.Equals(cst) {
@@ -114,15 +161,38 @@ func (cl ConstraintList) Contains(c Constraint) bool {
 
 func (cl *ConstraintList) AppendIfConsistant(c Constraint, lpo LPO) bool {
 	if !cl.Contains(c) {
-		// TODO : vérifier mieux
-		checked, _ := c.Check(lpo)
-		if checked {
-			(*cl) = append((*cl), c)
+		new_cl := cl.Copy()
+		new_cl = append(new_cl, c)
+		is_consistant, _ := new_cl.IsConsistant(lpo)
+		if is_consistant {
+			cl = &new_cl
 			return true
 		} else {
 			return false
 		}
-	} else {
-		return true
 	}
+	return true
+}
+
+func MakeEmptyConstaintsList() ConstraintList {
+	return ConstraintList{}
+}
+
+/* CHeck if a list of constraintes is consistant */
+func (cl *ConstraintList) IsConsistant(lpo LPO) (bool, treetypes.Substitutions) {
+	consistant_subst := treetypes.MakeEmptySubstitution()
+	for _, c := range *cl {
+		is_checked, subst := c.Check(lpo, consistant_subst)
+		if is_checked {
+			subst_res, _ := treesearch.MergeSubstitutions(consistant_subst, subst)
+			if subst_res.Equals(treetypes.Failure()) {
+				return false, treetypes.Failure()
+			} else {
+				consistant_subst = subst_res
+			}
+		} else {
+			return false, treetypes.Failure()
+		}
+	}
+	return true, consistant_subst
 }
