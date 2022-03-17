@@ -37,3 +37,28 @@
 **/
 
 package equality
+
+import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+
+/* Apply equality rule
+* There is 5 terms :
+* l and r / u v
+* s and t
+* sub_term_of s is a subterm of s unifible with l
+**/
+func ApplyEQrule(l, r, sub_term_of_s, s, t basictypes.Term, lpo LPO) (bool, basictypes.Term, ConstraintList) {
+	new_s := s.Copy().ReplaceSubTermBy(sub_term_of_s, r)
+	constraints_list := MakeEmptyConstaintsList()
+	if !constraints_list.AppendIfConsistantWithLPO(MakeConstraint(0, MakeTermPair(l, r)), lpo) {
+		return false, nil, nil
+	}
+	if !constraints_list.AppendIfConsistantWithLPO(MakeConstraint(0, MakeTermPair(s, t)), lpo) {
+		return false, nil, nil
+	}
+	if !constraints_list.AppendIfConsistantWithLPO(MakeConstraint(1, MakeTermPair(l, sub_term_of_s)), lpo) {
+		return false, nil, nil
+	}
+	return true, new_s, constraints_list
+}
+
+// TryLeftRule, TryRightRule

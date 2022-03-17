@@ -159,7 +159,7 @@ func (cl ConstraintList) Contains(c Constraint) bool {
 	return false
 }
 
-func (cl *ConstraintList) AppendIfConsistant(c Constraint, lpo LPO) bool {
+func (cl *ConstraintList) AppendIfConsistantWithLPO(c Constraint, lpo LPO) bool {
 	if !cl.Contains(c) {
 		new_cl := cl.Copy()
 		new_cl = append(new_cl, c)
