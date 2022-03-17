@@ -51,6 +51,7 @@ type Term interface {
 	ToMeta() Meta
 	GetMetas() MetaList
 	GetSubTerms() []Term
+	ReplaceSubTermBy(original_term, new_term Term) Term
 }
 
 /* Variable (x,y under ForAll or Exists) */
@@ -293,6 +294,33 @@ func (f Fun) GetSubTerms() []Term {
 	return res
 }
 
+/* Replace subTermBy */
+func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
+	if v.Equals(original_term) {
+		return new_term.Copy()
+	}
+	return v
+}
+func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
+	if m.Equals(original_term) {
+		return new_term.Copy()
+	}
+	return m
+}
+func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
+	if i.Equals(original_term) {
+		return new_term.Copy()
+	}
+	return i
+}
+func (f Fun) ReplaceSubTermBy(original_term, new_term Term) Term {
+	if f.Equals(original_term) {
+		return f
+	} else {
+		return MakeFun(f.GetID(), replaceFirstOccurenceTermList(original_term, new_term, f.GetArgs()))
+	}
+}
+
 /* Getters */
 func (m Meta) GetFormula() int {
 	return m.formula
@@ -417,4 +445,18 @@ func AreEqualsVarList(tl1, tl2 []Var) bool {
 		}
 	}
 	return true
+}
+
+/* Replace the first occurence of a term in a list by another */
+func replaceFirstOccurenceTermList(old_term, new_term Term, tl []Term) []Term {
+	res := CopyTermList(tl)
+	for i := range tl {
+		// Si le terme a bien été modifié
+		modifed_term := res[i].ReplaceSubTermBy(old_term, new_term)
+		if !tl[i].Equals(modifed_term) {
+			res[i] = modifed_term
+			return res
+		}
+	}
+	return res
 }
