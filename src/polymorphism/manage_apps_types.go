@@ -59,10 +59,9 @@ type App struct {
 
 /* Map of Type Schemes for a function or a predicate. */
 var typeSchemesMap struct {
-	tsMap	map[string][]App
-	lock	sync.Mutex
+	tsMap map[string][]App
+	lock  sync.Mutex
 }
-
 
 /* Saves a TypeScheme in the map of schemes. */
 func SaveTypeScheme(name string, in TypeScheme, out TypeScheme) error {
@@ -76,6 +75,7 @@ func SaveTypeScheme(name string, in TypeScheme, out TypeScheme) error {
 		if tScheme.Equals(tArrow) {
 			return nil
 		}
+		// $i-unification
 		return fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
 	}
 
@@ -92,11 +92,12 @@ func SaveTypeScheme(name string, in TypeScheme, out TypeScheme) error {
 }
 
 /* Gets a TypeScheme from the map of schemes with the name. */
-func GetTypeScheme(name string, inArgs TypeScheme) (TypeScheme, error) {
+func GetTypeScheme(name string, inArgs TypeScheme) TypeScheme {
 	if tScheme, _ := getSchemeFromArgs(name, inArgs); tScheme != nil {
-		return tScheme, nil
+		return tScheme
 	} else {
-		return nil, fmt.Errorf("couldn't find a TypeScheme with the following name in the saved schemes: %s", name)
+		// If it's not found, the type is inferred with $i
+		return MkTypeArrow(inArgs, MkTypeHint("i"))
 	}
 }
 

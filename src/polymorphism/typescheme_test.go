@@ -67,11 +67,11 @@ func TestPolymorphicFunctions(t *testing.T) {
 		t.Fatalf("Error: an error has been detected while saving type scheme when it shouldn't ! Error text: %v", err.Error())
 	}
 
-	if tScheme, err := GetTypeScheme("sum", MkTypeCross(tInt, tInt)); err != nil || !tScheme.Equals(MkTypeArrow(MkTypeCross(tInt, tInt), tInt)) {
+	if tScheme := GetTypeScheme("sum", MkTypeCross(tInt, tInt)); !tScheme.Equals(MkTypeArrow(MkTypeCross(tInt, tInt), tInt)) {
 		t.Fatalf("Error: couldn't retrieve previously entered type scheme in map.")
 	}
 
-	if tScheme, err := GetTypeScheme("in", MkTypeCross(tInt, tInt)); tScheme != nil || err == nil {
-		t.Fatalf("Error: retrieved an item which shouldn't be in the map.")
+	if tScheme := GetTypeScheme("in", MkTypeCross(tInt, tInt)); tScheme == nil {
+		t.Fatalf("Error: couldn't infer type of scheme not entered in the map.")
 	}
 }

@@ -103,28 +103,28 @@ func MakerNewId(s string) Id {
 }
 
 /* Var maker */
-func MakerVar(s string, t typing.TypeScheme) Var {
+func MakerVar(s string, t ...typing.TypeScheme) Var {
 	lock_var.Lock()
 	i, ok := idVar[s]
 	lock_var.Unlock()
 	if ok {
-		return MakeVar(i, s, t)
+		return MakeVar(i, s, getType(t))
 	} else {
-		return MakerNewVar(s, t)
+		return MakerNewVar(s, getType(t))
 	}
 }
 
-func MakerNewVar(s string, t typing.TypeScheme) Var {
+func MakerNewVar(s string, t ...typing.TypeScheme) Var {
 	lock_var.Lock()
 	idVar[s] = cpt_var
-	vr := MakeVar(cpt_var, s, t)
+	vr := MakeVar(cpt_var, s, getType(t))
 	cpt_var += 1
 	lock_var.Unlock()
 	return vr
 }
 
 /* Meta maker */
-func MakerMeta(s string, formula int, t typing.TypeScheme) Meta {
+func MakerMeta(s string, formula int, t ...typing.TypeScheme) Meta {
 	lock_meta.Lock()
 	i, ok := idMeta[s]
 	lock_meta.Unlock()
@@ -132,23 +132,31 @@ func MakerMeta(s string, formula int, t typing.TypeScheme) Meta {
 		lock_meta.Lock()
 		idMeta[s] = i + 1
 		lock_meta.Unlock()
-		return MakeMeta(i, s, formula, t)
+		return MakeMeta(i, s, formula, getType(t))
 	} else {
 		lock_meta.Lock()
 		idMeta[s] = 1
 		lock_meta.Unlock()
-		return MakeMeta(0, s, formula, t)
+		return MakeMeta(0, s, formula, getType(t))
 	}
 }
 
 /* Const maker (given a id, create a fun without args) */
-func MakerConst(id Id, t typing.TypeScheme) Fun {
-	return MakeFun(id, []Term{}, t)
+func MakerConst(id Id, t ...typing.TypeScheme) Fun {
+	return MakeFun(id, []Term{}, getType(t))
 }
 
 /* Fun maker, with given id and args */
-func MakerFun(id Id, terms []Term, t typing.TypeScheme) Fun {
-	return MakeFun(id, terms, t)
+func MakerFun(id Id, terms []Term, t ...typing.TypeScheme) Fun {
+	return MakeFun(id, terms, getType(t))
+}
+
+func getType(t []typing.TypeScheme) typing.TypeScheme {
+	if len(t) == 1 {
+		return t[0]
+	} else {
+		return typing.DefaultType()
+	}
 }
 
 /* Index make for formula */

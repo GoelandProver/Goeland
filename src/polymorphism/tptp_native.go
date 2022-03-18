@@ -46,12 +46,14 @@ var tInt TypeHint
 var tRat TypeHint
 var tReal TypeHint
 var tProp TypeHint
+var defaultType TypeHint
 
 var intCrossInt TypeScheme
 var ratCrossRat TypeScheme
 var realCrossReal TypeScheme
 
 func initTPTPTypes() {
+	defaultType = MkTypeHint("i")
 	// Types
 	tInt = MkTypeHint("int")
 	tRat = MkTypeHint("rat")
@@ -68,7 +70,7 @@ func initTPTPTypes() {
 	recordBinaryProp("lesseq")
 	recordBinaryProp("greater")
 	recordBinaryProp("greatereq")
-	
+
 	// 2 - Binary input arguments
 	recordBinaryInArgs("sum")
 	recordBinaryInArgs("difference")
@@ -134,3 +136,4 @@ func recordConversion(name string, out TypeScheme) {
 func IsInt(tType TypeScheme) bool  { return tType.Equals(tInt) }
 func IsRat(tType TypeScheme) bool  { return tType.Equals(tRat) }
 func IsReal(tType TypeScheme) bool { return tType.Equals(tReal) }
+func DefaultType() TypeScheme      { return defaultType }

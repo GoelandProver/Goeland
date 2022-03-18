@@ -57,12 +57,12 @@ import (
 type TypeScheme interface {
 	/* Non-exported methods */
 	isScheme()
-	toList()   				[]uint64
+	toList() []uint64
 
 	/* Exported methods */
-	ToString() 				string
-	UID()      				uint64
-	Equals(oth TypeScheme) 	bool
+	ToString() string
+	UID() uint64
+	Equals(oth TypeScheme) bool
 }
 
 /**
@@ -70,37 +70,37 @@ type TypeScheme interface {
  * other types, and a name, used for printing options.
  **/
 type TypeHint struct {
-	uid  uint64	/* Real ID */
+	uid  uint64 /* Real ID */
 	euid uint64 /* Encoded ID */
 	name string /* Name */
 }
 
-func (th TypeHint) isScheme() {}
-func (th TypeHint) toList() []uint64 { return []uint64{ th.uid } }
+func (th TypeHint) isScheme()        {}
+func (th TypeHint) toList() []uint64 { return []uint64{th.uid} }
 
-func (th TypeHint) ToString() string {	return th.name }
-func (th TypeHint) UID() uint64 { return th.euid }
+func (th TypeHint) ToString() string           { return th.name }
+func (th TypeHint) UID() uint64                { return th.euid }
 func (th TypeHint) Equals(oth TypeScheme) bool { return oth.UID() == th.UID() }
 
 /**
  * Type consisting of an array of TypeScheme, to concatenate each of theme with a cross
- * operator. 
- * For example, if a function f takes to parameters of type int, it will be typed as 
- * f : int * int 
+ * operator.
+ * For example, if a function f takes to parameters of type int, it will be typed as
+ * f : int * int
  **/
 type TypeCross struct {
 	uid   uint64
 	types []TypeScheme
 }
 
-func (tc TypeCross) isScheme() {}
-func (tc TypeCross) toList() []uint64 { return subtypesUID(tc.types) }
-func (tc TypeCross) ToString() string { return "(" + strings.Join(subtypesStr(tc.types), " > ") + ")" }
-func (tc TypeCross) UID() uint64 { return tc.uid }
+func (tc TypeCross) isScheme()                  {}
+func (tc TypeCross) toList() []uint64           { return subtypesUID(tc.types) }
+func (tc TypeCross) ToString() string           { return "(" + strings.Join(subtypesStr(tc.types), " > ") + ")" }
+func (tc TypeCross) UID() uint64                { return tc.uid }
 func (tc TypeCross) Equals(oth TypeScheme) bool { return oth.UID() == tc.UID() }
 
 /**
- * Type consisting of two TypeSchemes : the in-arguments parameter(s) and the out parameter. 
+ * Type consisting of two TypeSchemes : the in-arguments parameter(s) and the out parameter.
  * For example, if a function f takes to parameters of type int, and returns an int, it
  * will be typed as f : (int * int) -> int
  * TypeCross has higher precedence than TypeArrow.
@@ -110,10 +110,10 @@ type TypeArrow struct {
 	types []TypeScheme
 }
 
-func (ta TypeArrow) isScheme() {}
-func (ta TypeArrow) toList() []uint64 { return subtypesUID(ta.types) }
-func (ta TypeArrow) ToString() string { return "(" + strings.Join(subtypesStr(ta.types), " > ") + ")" }
-func (ta TypeArrow) UID() uint64 { return ta.uid }
+func (ta TypeArrow) isScheme()                  {}
+func (ta TypeArrow) toList() []uint64           { return subtypesUID(ta.types) }
+func (ta TypeArrow) ToString() string           { return "(" + strings.Join(subtypesStr(ta.types), " > ") + ")" }
+func (ta TypeArrow) UID() uint64                { return ta.uid }
 func (ta TypeArrow) Equals(oth TypeScheme) bool { return oth.UID() == ta.UID() }
 
 /** Utils **/
@@ -136,8 +136,8 @@ func subtypesUID(types []TypeScheme) []uint64 {
 
 /**
  * Makers.
- * As each type is unique, and stored in a global map (in shared memory), a lock should 
- * be defined. 
+ * As each type is unique, and stored in a global map (in shared memory), a lock should
+ * be defined.
  **/
 
 /* Current unused unique identifier. Comes with a lock. */
@@ -148,7 +148,7 @@ var tCounter struct {
 
 /* Map of all the unique identifiers of the different types based on their name. */
 var tMap struct {
-	uidsMap map[string]TypeHint 
+	uidsMap map[string]TypeHint
 	lock    sync.Mutex
 }
 
@@ -164,7 +164,7 @@ func Init() {
 
 	// Instantiate typeSchemesMap
 	typeSchemesMap.tsMap = make(map[string][]App)
-	typeSchemesMap.lock  = sync.Mutex{}
+	typeSchemesMap.lock = sync.Mutex{}
 
 	// TPTP
 	initTPTPTypes()

@@ -538,11 +538,11 @@ func (a All) GetMetas() MetaList {
 /*** Functions ***/
 
 /* Makers */
-func MakePred(i int, p Id, tl []Term, ts typing.TypeScheme) Pred {
-	return Pred{i, p, tl, ts}
+func MakePred(i int, p Id, tl []Term, ts ...typing.TypeScheme) Pred {
+	return Pred{i, p, tl, getType(ts)}
 }
-func MakerPred(p Id, tl []Term, ts typing.TypeScheme) Pred {
-	return MakePred(MakerIndexFormula(), p, tl, ts)
+func MakerPred(p Id, tl []Term, ts ...typing.TypeScheme) Pred {
+	return MakePred(MakerIndexFormula(), p, tl, getType(ts))
 }
 
 func MakeTop(i int) Top {
@@ -696,7 +696,7 @@ func replaceVarInTermList(original_list []Term, old_symbol Var, new_symbol Term)
 				new_list[i] = val
 			}
 		case Fun:
-			new_list[i] = MakerFun(nf.GetP(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol))
+			new_list[i] = MakerFun(nf.GetP(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol), nf.GetTypeHint())
 		default:
 			new_list[i] = val
 		}
@@ -740,8 +740,8 @@ func RenameVariables(f Form) Form {
 
 		for _, v := range nf.GetVarList() {
 			global.PrintDebug("RV", v.ToString())
-			new_var := MakerNewVar(v.GetName())
-			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()))
+			new_var := MakerNewVar(v.GetName(), v.GetTypeHint())
+			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()), v.GetTypeHint())
 			new_vl = replaceVarInVarList(new_vl, v, new_var)
 			new_form = ReplaceVarByVar(new_form, v, new_var)
 			global.PrintDebug("RV", fmt.Sprintf("New form :%v", new_form.ToString()))
@@ -754,8 +754,8 @@ func RenameVariables(f Form) Form {
 		new_form := nf.GetForm()
 
 		for _, v := range nf.GetVarList() {
-			new_var := MakerNewVar(v.GetName())
-			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()))
+			new_var := MakerNewVar(v.GetName(), v.GetTypeHint())
+			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()), v.GetTypeHint())
 			new_vl = replaceVarInVarList(new_vl, v, new_var)
 			new_form = ReplaceVarByVar(new_form, v, new_var)
 

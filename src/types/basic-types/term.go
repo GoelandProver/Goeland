@@ -368,14 +368,14 @@ func (f *Fun) SetArgs(tl []Term) {
 func MakeId(i int, s string) Id {
 	return Id{i, s}
 }
-func MakeVar(i int, s string, t typing.TypeScheme) Var {
-	return Var{i, s, t}
+func MakeVar(i int, s string, t ...typing.TypeScheme) Var {
+	return Var{i, s, getType(t)}
 }
-func MakeMeta(i int, s string, f int, t typing.TypeScheme) Meta {
-	return Meta{i, s, f, t}
+func MakeMeta(i int, s string, f int, t ...typing.TypeScheme) Meta {
+	return Meta{i, s, f, getType(t)}
 }
-func MakeFun(p Id, args []Term, t typing.TypeScheme) Fun {
-	return Fun{p, args, t}
+func MakeFun(p Id, args []Term, t ...typing.TypeScheme) Fun {
+	return Fun{p, args, getType(t)}
 }
 
 /*** Functions ***/

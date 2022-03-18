@@ -12,6 +12,12 @@ GOC=go build
 GOFLAGS=
 BIN=_build/goeland
 PREFIX=TPTP
+RELEASE=
+SHUTUP=
+ifdef RELEASE
+	SHUTUP=2>/dev/null 
+	GOFLAGS=-gcflags=-m
+endif
 
 # Parse files
 PROB=../../problems/SYN

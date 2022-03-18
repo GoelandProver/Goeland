@@ -40,12 +40,12 @@ package search
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
@@ -259,75 +259,132 @@ func applyBetaRules(f basictypes.Form, st *complextypes.State) []basictypes.Form
 *	a formula
 **/
 func applyDeltaRules(f basictypes.Form, st *complextypes.State) basictypes.FormList {
-	var result basictypes.FormList
 	switch nf := f.(type) {
 	case basictypes.Not:
-		switch nnf := nf.GetForm().(type) {
-		case basictypes.All:
-			global.PrintDebug("AR", "Applying δ¬∀...")
-			st.SetCurrentProofRule("δ¬∀")
-			st.SetCurrentProofRuleName("DELTA_NOT_FORALL")
-			fun_tmp := nnf.GetForm()
-			for _, v := range nnf.GetVarList() {
-				skolem_fun := basictypes.MakerFun(basictypes.MakerNewId("skolem_"+v.GetName()+strconv.Itoa(v.GetIndex())), f.GetMetas().ToTermList())
-				fun_tmp = basictypes.ReplaceVarByTerm(fun_tmp, v, skolem_fun)
-			}
-			result = append(result, basictypes.RefuteForm(fun_tmp))
-		}
+		global.PrintDebug("AR", "Applying δ¬∀...")
+		st.SetCurrentProofRule("δ¬∀")
+		st.SetCurrentProofRuleName("DELTA_NOT_FORALL")
 	case basictypes.Ex:
 		global.PrintDebug("AR", "Applying δ∃...")
 		st.SetCurrentProofRule("δ∃")
 		st.SetCurrentProofRuleName("DELTA_EXISTS")
-		fun_tmp := nf.GetForm()
-		for _, v := range nf.GetVarList() {
-			skolem_fun := basictypes.MakerFun(basictypes.MakerNewId("skolem_"+v.GetName()+strconv.Itoa(v.GetIndex())), f.GetMetas().ToTermList())
-			fun_tmp = basictypes.ReplaceVarByTerm(fun_tmp, v, skolem_fun)
-		}
-		result = append(result, fun_tmp)
-
 	}
-	return result
+
+	return basictypes.MakeSingleElementList(Skolemize(f))
 }
 
 /**
-* ApplyDeltaRules
-* Take a formula, return a new formula without existential variables
+* ApplyGammaRules
+* Take a formula, return a new formula without universal variables
 * Datas :
 * 	f : a formula to which a delta rule will be applied
 * Result :
 *	a formula
 *	the new metavariables
 **/
-func applyGammaRules(f basictypes.Form, index int, st *complextypes.State) (basictypes.FormList, basictypes.MetaList) {
-	var result basictypes.FormList
-	var new_mm basictypes.MetaList
+func applyGammaRules(f basictypes.Form, index int) (basictypes.FormList, basictypes.MetaList) {
 	switch nf := f.(type) {
 	case basictypes.Not:
-		switch nnf := nf.GetForm().(type) {
-		case basictypes.Ex:
-			global.PrintDebug("AR", "Applying γ¬∃...")
-			st.SetCurrentProofRule("γ¬∃")
-			st.SetCurrentProofRuleName("GAMMA_NOT_EXISTS")
-			fun_tmp := nnf.GetForm()
-			for _, v := range nnf.GetVarList() {
-				meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index)
-				new_mm = append(new_mm, meta)
-				fun_tmp = basictypes.ReplaceVarByTerm(fun_tmp, v, meta)
-			}
-			result = append(result, basictypes.RefuteForm(fun_tmp))
-		}
-	case basictypes.All:
+		global.PrintDebug("AR", "Applying γ¬∃...")
+		st.SetCurrentProofRule("γ¬∃")
+		st.SetCurrentProofRuleName("GAMMA_NOT_EXISTS")
+	case basictypes.Ex:
 		global.PrintDebug("AR", "Applying γ∀...")
 		st.SetCurrentProofRule("γ∀")
 		st.SetCurrentProofRuleName("GAMMA_FORALL")
-		fun_tmp := nf.GetForm()
-		for _, v := range nf.GetVarList() {
-			meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index)
-			new_mm = append(new_mm, meta)
-			fun_tmp = basictypes.ReplaceVarByTerm(fun_tmp, v, meta)
-		}
-		result = append(result, fun_tmp)
-
 	}
-	return result, new_mm
+
+	form, mm := Instantiate(f, index)
+	return basictypes.MakeSingleElementList(form), mm
+}
+
+/* Syntaxic manipulations below */
+
+/**
+ * Skolemizes once the formula f.
+ */
+func Skolemize(f basictypes.Form) basictypes.Form {
+	switch nf := f.(type) {
+	// 1 - not(forall F1)
+	case basictypes.Not:
+		if tmp, ok := nf.GetForm().(basictypes.All); ok {
+			f = basictypes.RefuteForm(realSkolemize(tmp.GetForm(), tmp.GetVarList(), f.GetMetas().ToTermList()))
+		}
+		// 2 - exists F1
+	case basictypes.Ex:
+		f = realSkolemize(nf.GetForm(), nf.GetVarList(), f.GetMetas().ToTermList())
+	}
+
+	return f
+}
+
+/**
+ * Applies skolemization to a formula (ie: replaces existential quantified variables
+ * by fresh skolem symbols).
+ **/
+func realSkolemize(f basictypes.Form, vars []basictypes.Var, terms []basictypes.Term) basictypes.Form {
+	// Replace each variable by the skolemized term.
+	for _, v := range vars {
+		// TypeScheme construction
+		var t typing.TypeScheme
+		// Okay that's absolutely wrong, but it's the best way of doing things right now, I swear.
+		for _, term := range terms {
+			switch tf := term.(type) {
+			case basictypes.Var:
+				t = crossType(t, tf.GetTypeHint())
+			case basictypes.Fun:
+				t = crossType(t, tf.GetTypeHint())
+			case basictypes.Meta:
+				t = crossType(t, tf.GetTypeHint())
+			}
+		}
+
+		if t == nil {
+			t = v.GetTypeHint()
+		} else {
+			t = typing.MkTypeArrow(t, v.GetTypeHint())
+		}
+
+		skolem := basictypes.MakerFun(basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())), terms, t)
+		f = basictypes.ReplaceVarByTerm(f, v, skolem)
+	}
+	return f
+}
+
+/**
+ * Instantiates once the formula f.
+ */
+func Instantiate(f basictypes.Form, index int) (basictypes.Form, basictypes.MetaList) {
+	var newMm basictypes.MetaList
+	switch nf := f.(type) {
+	case basictypes.Not:
+		if tmp, ok := nf.GetForm().(basictypes.Ex); ok {
+			form, metas := realInstantiate(tmp.GetForm(), index, tmp.GetVarList())
+			newMm = append(newMm, metas...)
+			f = form
+		}
+	case basictypes.All:
+		global.PrintDebug("AR", "Applying γ∀...")
+		form, metas := realInstantiate(nf.GetForm(), index, nf.GetVarList())
+		newMm = append(newMm, metas...)
+		f = form
+	}
+	return f, newMm
+}
+
+func realInstantiate(form basictypes.Form, index int, vars []basictypes.Var) (basictypes.Form, basictypes.MetaList) {
+	var newMm basictypes.MetaList
+	for _, v := range vars {
+		meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint())
+		newMm = append(newMm, meta)
+		form = basictypes.ReplaceVarByTerm(form, v, meta)
+	}
+	return form, newMm
+}
+
+func crossType(t typing.TypeScheme, tf typing.TypeScheme) typing.TypeScheme {
+	if t == nil {
+		return tf
+	}
+	return typing.MkTypeCross(t, tf)
 }
