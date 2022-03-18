@@ -36,7 +36,7 @@
 * This file contains the type definition of the contraints struct.
 **/
 
-package equality
+package main
 
 import (
 	"fmt"

@@ -350,8 +350,6 @@ func (st State) Copy() State {
 	new_state.SetProof([]proof.ProofStruct{})
 	new_state.SetCurrentProof(proof.MakeEmptyProofStruct())
 	new_state.SetBTOnFormulas(st.GetBTOnFormulas())
-	new_state.SetLPO(st.GetLPO())
-
 	return new_state
 }
 
@@ -376,7 +374,7 @@ func (st *State) DispatchForm(f basictypes.Form) {
 	global.PrintDebug("DF", fmt.Sprintf("Kind of rule : %v ", basictypes.ShowKindOfRule(f.Copy())))
 	switch basictypes.ShowKindOfRule(f.Copy()) {
 	case basictypes.Atomic:
-		st.InsertFormInLPO(f)
+		// st.InsertFormInLPO(f)
 		st.SetAtomic(st.GetAtomic().AppendIfNotContains(f))
 	case basictypes.Alpha:
 		st.SetAlpha(st.GetAlpha().AppendIfNotContains(f))

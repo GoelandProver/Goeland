@@ -36,7 +36,7 @@
 * This file contains the type definition for equality reasonning.
 **/
 
-package equality
+package main
 
 import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"

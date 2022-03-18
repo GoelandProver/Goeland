@@ -36,7 +36,7 @@
 * This file contains the left an right rule n equality reasonning.
 **/
 
-package equality
+package main
 
 import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 

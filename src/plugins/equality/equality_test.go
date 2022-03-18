@@ -36,4 +36,4 @@
 * This file contains the tests on equality.
 **/
 
-package equality
+package main
