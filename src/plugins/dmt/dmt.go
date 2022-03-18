@@ -82,15 +82,17 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
  *	  as both positive and negative occurrences.
  *	- Registers axioms of type (forall x1, ..., xn) . A => B (if A / B atomic) as
  *	  positive occurrence for A and negative occurrence for B.
+ *  - Registers axioms of type forall x1, ..., xn.P
  **/
 func registerAxiom(axiom btypes.Form) bool {
 	// 1: instantiate forall(s).
-	axiomFT := btypes.MakeForm(axiom)
+	axiomFT := axiom.Copy()
+	_, wasForall := axiomFT.(btypes.All)
 	for reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.All{}) {
 		axiomFT = instantiateOnce(axiomFT)
 	}
 	// 2: make rewrite rule for equivalence, implication or atomic.
-	if btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
+	if wasForall && btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
 		addPosRewriteRule(axiomFT, btypes.MakeTop())
 		addNegRewriteRule(axiomFT, btypes.MakeBot())
 	} else if reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Equ{}) {
