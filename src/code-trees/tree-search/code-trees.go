@@ -39,7 +39,6 @@
 package treesearch
 
 import (
-	"fmt"
 	"strings"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -125,15 +124,11 @@ func makeCodeTreeFromAtomic(lf basictypes.FormList, is_pos bool) *Node {
 
 /* Makes a Code Tree from a Sequence of instructions */
 func makeCodeTree(forms basictypes.FormList) *Node {
-	global.PrintDebug("MCT", forms.ToString())
 	root := makeNode(nil)
 
 	for _, f := range forms {
-		global.PrintDebug("MCT", fmt.Sprintf("Insert : %v", f.ToString()))
 		f_tmp := f.Copy()
-		global.PrintDebug("f_tmp", f_tmp.ToString())
 		form_tmp := treetypes.ParseFormula(f_tmp)
-		global.PrintDebug("form_tmp", form_tmp.GetFormula().ToString())
 		root.insert(form_tmp)
 	}
 

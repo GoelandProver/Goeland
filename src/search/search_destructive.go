@@ -376,26 +376,20 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			global.PrintDebug("WC", "All children has finished by themselves")
 			closeChildren(&children, true)
 
-			if current_subst.IsEmpty() {
-				// Send applied subst to father (only what's relevant)
-				subst_for_father := complextypes.RemoveElementWithoutMM(st.GetAppliedSubst().GetSubst(), st.GetMM())
-				if !subst_for_father.IsEmpty() {
-					subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, st.GetAppliedSubst().GetForm())
-					st.SetSubstsFound([]complextypes.SubstAndForm{subst_and_form_for_father})
-				}
+			// Send applied subst to father (only what's relevant)
+			subst_for_father := complextypes.RemoveElementWithoutMM(st.GetAppliedSubst().GetSubst(), st.GetMM())
+			if !subst_for_father.IsEmpty() {
+				subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, st.GetAppliedSubst().GetForm())
+				st.SetSubstsFound([]complextypes.SubstAndForm{subst_and_form_for_father})
 			} else {
-				// Merge with current subst if not empty
-				new_result_subst := []complextypes.SubstAndForm{}
-				global.PrintDebug("WC", fmt.Sprintf("Check the susbt, remove useless element and merge with applied subst :%v", current_subst.GetSubst().ToString()))
-				s_merged := complextypes.MergeSubstAndForm(current_subst, st.GetAppliedSubst())
-				s_removed := complextypes.RemoveElementWithoutMM(s_merged.GetSubst().Copy(), st.GetMM())
-				subst_and_form_removed := complextypes.MakeSubstAndForm(s_removed, current_subst.GetForm())
+				st.SetSubstsFound([]complextypes.SubstAndForm{})
+			}
 
-				if !s_removed.IsEmpty() {
-					new_result_subst = append(new_result_subst, subst_and_form_removed.Copy())
-				}
-				st.SetSubstsFound(new_result_subst)
-
+			// No need to append current_subst, because child return it anyway (if exists)
+			// Here, current subst is always empty
+			if !current_subst.IsEmpty() {
+				fmt.Printf("[ERROR] Current subst not empty but child returns nothing\n")
+				global.PrintDebug("ERROR", "Current subst not empty but child returns nothing")
 			}
 
 			if cpt_children == 1 {
@@ -406,15 +400,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			}
 			exchanges.WriteExchanges(father_id, st, nil, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
-			st.SetSubstsFound(complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound()))
-
-			if len(st.GetSubstsFound()) == 0 {
-				sendSubToFather(c, true, false, father_id, st, given_substs)
-			} else {
-				sendSubToFather(c, true, true, father_id, st, given_substs)
-			}
-
-			// sendSubToFather(c, true, false, father_id, st, given_substs)
+			sendSubToFather(c, true, false, father_id, st, given_substs)
 
 		// substs list is for father
 		case 1:
