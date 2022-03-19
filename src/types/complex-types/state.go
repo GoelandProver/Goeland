@@ -43,7 +43,6 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugin"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
@@ -310,7 +309,7 @@ func (st State) Copy() State {
 	}
 
 	// Réccréer arbre
-	if plugin.IsLoaded("dmt") {
+	if global.IsLoaded("dmt") {
 		new_state.SetTreePos(st.tree_pos.MakeDataStruct(st.GetAtomic(), true))
 		new_state.SetTreeNeg(st.tree_pos.MakeDataStruct(st.GetAtomic(), false))
 	} else {
@@ -356,6 +355,26 @@ func (st *State) DispatchForm(f basictypes.Form) {
 	default:
 		fmt.Println("[ERROR] Formula not recognized")
 	}
+}
+
+/** Apply a sbstitution on a state
+* TODO : remove old MM/MC
+**/
+func ApplySubstitution(st *State, saf SubstAndForm) {
+	s := saf.GetSubst()
+	ms := MergeSubstAndForm(st.GetAppliedSubst(), saf.Copy())
+	st.SetAppliedSubst(ms)
+	st.SetLastAppliedSubst(saf)
+	st.SetLF(ApplySubstitutionsOnFormulaList(s, st.GetLF()))
+	st.SetAtomic(ApplySubstitutionsOnFormulaList(s, st.GetAtomic()))
+	st.SetAlpha(ApplySubstitutionsOnFormulaList(s, st.GetAlpha()))
+	st.SetBeta(ApplySubstitutionsOnFormulaList(s, st.GetBeta()))
+	st.SetDelta(ApplySubstitutionsOnFormulaList(s, st.GetDelta()))
+	st.SetGamma(ApplySubstitutionsOnFormulaList(s, st.GetGamma()))
+	st.SetMetaGen(ApplySubstitutionOnMetaGenList(s, st.GetMetaGen()))
+
+	st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic(), true))
+	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic(), false))
 }
 
 /* TODO : remove and change - for write proof */

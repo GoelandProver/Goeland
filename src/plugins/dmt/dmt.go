@@ -45,6 +45,7 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/plugin"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
@@ -107,7 +108,7 @@ func registerAxiom(axiom btypes.Form) bool {
 /**
  * Rewrites an atom an unification is found in the rewrite rules.
  **/
-func rewrite(atomic btypes.Form) (btypes.FormList, error) {
+func rewrite(atomic btypes.Form) ([]ctypes.SubstAndForm, error) {
 	form, polarity := getAtomAndPolarity(atomic.Copy())
 
 	var tree datastruct.DataStructure
@@ -127,20 +128,20 @@ func rewrite(atomic btypes.Form) (btypes.FormList, error) {
 /**
  * Rewrite algorithm with furnished code tree to unify on.
  **/
-func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) (btypes.FormList, error) {
-	atomics := btypes.MakeEmptyFormList()
+func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) ([]ctypes.SubstAndForm, error) {
+	atomics := []ctypes.SubstAndForm{}
 	if res, unif := tree.Unify(form); res {
 		// Sorts the unifs found.
 		unifs := choose(unif, polarity)
 		for _, unif := range unifs {
 			equivalence, err := getUnifiedEquivalence(unif.GetForm(), unif.GetSubst(), polarity)
 			if err != nil {
-				return btypes.MakeSingleElementList(atomic), err
+				return []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}, err
 			}
-			atomics = append(atomics, btypes.MakeForm(equivalence))
+			atomics = append(atomics, ctypes.MakeSubstAndForm(unif.GetSubst(), btypes.MakeSingleElementList(equivalence)))
 		}
 	} else {
-		atomics = btypes.MakeSingleElementList(atomic)
+		atomics = []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}
 	}
 	return atomics, nil
 }

@@ -336,7 +336,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			global.IncrGoRoutine(1)
 
 			global.PrintDebug("WF", "GO !")
-			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, basictypes.MakeEmptyFormList(), false)
+			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, false)
 		}
 	}
 }
@@ -353,7 +353,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 * 	current_substitution : the substitution sent by this node to its children at this step
 * 	subst_for_backtrack : list of subst if we need to backtrack
 **/
-func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack basictypes.FormList, bt_priority bool) {
+func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.SubstAndForm, bt_priority bool) {
 	global.PrintDebug("WC", "Waiting children")
 	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), len(forms_for_backtrack), bt_priority, complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 	global.PrintDebug("WC", fmt.Sprintf("MM : %v", st.GetMM().ToString()))
@@ -473,7 +473,8 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			case bt_priority && len(forms_for_backtrack) > 0:
 				// On relance sur soi-même avec une autre form
 				global.PrintDebug("WC", "Backtrack on formulas")
-				next_form := forms_for_backtrack[0].Copy()
+				next_subst_and_form := forms_for_backtrack[0].Copy()
+				next_form := next_subst_and_form.GetForm()[0].Copy()
 				forms_for_backtrack = forms_for_backtrack[1:]
 				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on form")
 				st_copy := st.Copy()
@@ -481,7 +482,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				st_copy.SetLF(append(st_copy.GetLF().Copy(), next_form))
 				st_copy.SetSubstsFound(st.GetSubstsFound())
 				c_child := Communication{make(chan bool), make(chan Result)}
-				go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm())
+				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form)
 				global.PrintDebug("PS", "GO !")
 				global.IncrGoRoutine(1)
 				waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, forms_for_backtrack, true)
@@ -490,7 +491,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				global.PrintDebug("WC", "Backtrack on subt")
 				next_subst := tryBTSubstitution(&substs_for_backtrack, st.GetMM(), children)
 				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{next_subst}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on subst")
-				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, forms_for_backtrack, false)
+				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, []complextypes.SubstAndForm{}, false)
 
 			default:
 				exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die - No more BT available")

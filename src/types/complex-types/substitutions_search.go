@@ -47,65 +47,6 @@ import (
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-/* Stock the substitution and the corresponding list of formulas */
-type SubstAndForm struct {
-	s treetypes.Substitutions
-	f basictypes.FormList
-}
-
-func (s SubstAndForm) GetSubst() treetypes.Substitutions {
-	return s.s.Copy()
-}
-func (s SubstAndForm) GetForm() basictypes.FormList {
-	return s.f.Copy()
-}
-func (s *SubstAndForm) SetSubst(subst treetypes.Substitutions) {
-	s.s = subst.Copy()
-}
-func (s *SubstAndForm) SetForm(form basictypes.FormList) {
-	s.f = form.Copy()
-}
-func (saf SubstAndForm) IsEmpty() bool {
-	return saf.s.IsEmpty()
-}
-func (s1 SubstAndForm) Equals(s2 SubstAndForm) bool {
-	return s1.GetSubst().Equals(s2.GetSubst()) && s1.GetForm().Equals(s2.GetForm())
-}
-func (s SubstAndForm) Copy() SubstAndForm {
-	if s.IsEmpty() {
-		return MakeEmptySubstAndForm()
-	} else {
-		return MakeSubstAndForm(s.GetSubst(), s.GetForm())
-	}
-}
-func (s SubstAndForm) ToString() string {
-	res := "{ "
-	if !s.GetSubst().IsEmpty() {
-		res += s.GetSubst().ToString()
-	}
-	res += " - "
-	if !s.GetForm().IsEmpty() {
-		res += s.GetForm().ToString()
-	}
-	res += " }"
-
-	return res
-}
-
-func MakeSubstAndForm(subst treetypes.Substitutions, form basictypes.FormList) SubstAndForm {
-	return SubstAndForm{subst.Copy(), form.Copy()}
-}
-func MakeEmptySubstAndForm() SubstAndForm {
-	return SubstAndForm{treetypes.MakeEmptySubstitution(), basictypes.FormList{}}
-}
-func (s SubstAndForm) AddFormulas(fl basictypes.FormList) SubstAndForm {
-	return MakeSubstAndForm(s.GetSubst(), s.GetForm().Merge(fl.Copy()))
-}
-
-/*************/
-/* Functions */
-/*************/
-
 /* Return the list of metavariable from a substitution */
 func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
 	res := basictypes.MetaList{}
@@ -297,10 +238,10 @@ func applySubstitutionsOnFormula(s treetypes.Substitutions, f basictypes.Form) b
 }
 
 /* Apply a substitution on a metaGenerator list */
-func applySubstitutionOnMetaGenList(s treetypes.Substitutions, lf []basictypes.MetaGen) []basictypes.MetaGen {
+func ApplySubstitutionOnMetaGenList(s treetypes.Substitutions, lf []basictypes.MetaGen) []basictypes.MetaGen {
 	lf_res := []basictypes.MetaGen{}
 	for _, f := range lf {
-		new_form := applySubstitutionOnMetaGen(s, f)
+		new_form := ApplySubstitutionOnMetaGen(s, f)
 		if !basictypes.ContainsMetaGenList(new_form.GetForm(), lf_res) {
 			lf_res = append(lf_res, new_form)
 		}
@@ -309,32 +250,12 @@ func applySubstitutionOnMetaGenList(s treetypes.Substitutions, lf []basictypes.M
 }
 
 /* Apply a substitution on a metaGen form */
-func applySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen) basictypes.MetaGen {
+func ApplySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen) basictypes.MetaGen {
 	form_res := mg.GetForm()
 	for old_symbol, new_symbol := range s {
 		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
 	}
 	return basictypes.MakeMetaGen(form_res, mg.GetCounter())
-}
-
-/** Apply a sbstitution on a state
-* TODO : remove old MM/MC
-**/
-func ApplySubstitution(st *State, saf SubstAndForm) {
-	s := saf.GetSubst()
-	ms := MergeSubstAndForm(st.GetAppliedSubst(), saf.Copy())
-	st.SetAppliedSubst(ms)
-	st.SetLastAppliedSubst(saf)
-	st.SetLF(ApplySubstitutionsOnFormulaList(s, st.GetLF()))
-	st.SetAtomic(ApplySubstitutionsOnFormulaList(s, st.GetAtomic()))
-	st.SetAlpha(ApplySubstitutionsOnFormulaList(s, st.GetAlpha()))
-	st.SetBeta(ApplySubstitutionsOnFormulaList(s, st.GetBeta()))
-	st.SetDelta(ApplySubstitutionsOnFormulaList(s, st.GetDelta()))
-	st.SetGamma(ApplySubstitutionsOnFormulaList(s, st.GetGamma()))
-	st.SetMetaGen(applySubstitutionOnMetaGenList(s, st.GetMetaGen()))
-
-	st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic(), true))
-	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic(), false))
 }
 
 /* Dispatch a list of substitution : containing mm or not */

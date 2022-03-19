@@ -201,10 +201,11 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 
 				// Keep all the possibility of rewritting and choose the first one
 				choosen_rewritten := rewritten[0].Copy()
-				rewritten = rewritten[1:].Copy()
+				choosen_rewritten_form := choosen_rewritten.GetForm()[0].Copy()
+				rewritten = complextypes.CopySubstAndFormList(rewritten[1:])
 
 				// Si on ne s'est pas réécrit en soi-même ?
-				if !choosen_rewritten.Equals(f) {
+				if !choosen_rewritten_form.Equals(f) {
 					// Create a child with the current rewritting rule and make this process to wait for him, with a list of other subst to try
 
 					// Ici je fais une recherche inutile
@@ -213,10 +214,10 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 					st_copy := st.Copy()
 					st_copy.SetLF(remaining_atomics.Copy())
 					st_copy.SetCurrentProofRule("Rewrite")
-					st_copy.SetLF(append(remaining_atomics.Copy(), choosen_rewritten.Copy()))
+					st_copy.SetLF(append(remaining_atomics.Copy(), choosen_rewritten_form.Copy()))
 					st_copy.SetSubstsFound(st.GetSubstsFound())
 					c_child := Communication{make(chan bool), make(chan Result)}
-					go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm())
+					go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten)
 					global.PrintDebug("PS", "GO !")
 					global.IncrGoRoutine(1)
 					waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, rewritten, true)
@@ -289,7 +290,7 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication) {
 
 	}
 	if global.IsDestructive() {
-		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, basictypes.MakeEmptyFormList(), false)
+		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, false)
 	} else {
 		global.PrintDebug("PS", "Die")
 	}

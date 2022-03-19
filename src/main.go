@@ -76,6 +76,8 @@ func main() {
 
 	flag.Var(&plugin.PoptionFlag, "poptions", "Options for the different plugins.")
 	flag.Parse()
+	// TODO
+	global.SetPlugin("dmt", plugin.IsLoaded("dmt"))
 
 	if *cpuprofile != "" {
 		f, err := os.Create(*cpuprofile)
