@@ -43,6 +43,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugin"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
@@ -308,8 +309,14 @@ func (st State) Copy() State {
 		new_state.SetSubstsFound(st.GetSubstsFound())
 	}
 
-	new_state.SetTreePos(st.GetTreePos())
-	new_state.SetTreeNeg(st.GetTreeNeg())
+	// Réccréer arbre
+	if plugin.IsLoaded("dmt") {
+		new_state.SetTreePos(st.tree_pos.MakeDataStruct(st.GetAtomic(), true))
+		new_state.SetTreeNeg(st.tree_pos.MakeDataStruct(st.GetAtomic(), false))
+	} else {
+		new_state.SetTreePos(st.GetTreePos())
+		new_state.SetTreeNeg(st.GetTreeNeg())
+	}
 	new_state.SetProof([]proof.ProofStruct{})
 	new_state.SetCurrentProof(proof.MakeEmptyProofStruct())
 

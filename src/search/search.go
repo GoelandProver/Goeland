@@ -192,6 +192,8 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 		// On prend le premier élément de le liste des atomics
 		f := remaining_atomics[0].Copy()
 		remaining_atomics = remaining_atomics[1:].Copy()
+		global.PrintDebug("PS", fmt.Sprintf("Choosen %v", f.ToString()))
+		global.PrintDebug("PS", fmt.Sprintf("Remaining_atomics %v", remaining_atomics.ToString()))
 
 		// Si f est dans atomic, ça veut dire qu'on a pas pu réécrire, donc inutile de vérifier
 		if !st.GetAtomic().Contains(f) {
@@ -204,11 +206,15 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 				// Si on ne s'est pas réécrit en soi-même ?
 				if !choosen_rewritten.Equals(f) {
 					// Create a child with the current rewritting rule and make this process to wait for him, with a list of other subst to try
+
+					// Ici je fais une recherche inutile
+					// Envoyer subst found à mon fils dans ce contexte ?
 					st.SetLF(remaining_atomics.Copy())
 					st_copy := st.Copy()
 					st_copy.SetLF(remaining_atomics.Copy())
 					st_copy.SetCurrentProofRule("Rewrite")
 					st_copy.SetLF(append(remaining_atomics.Copy(), choosen_rewritten.Copy()))
+					st_copy.SetSubstsFound(st.GetSubstsFound())
 					c_child := Communication{make(chan bool), make(chan Result)}
 					go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm())
 					global.PrintDebug("PS", "GO !")

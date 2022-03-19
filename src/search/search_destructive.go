@@ -376,18 +376,26 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			global.PrintDebug("WC", "All children has finished by themselves")
 			closeChildren(&children, true)
 
-			// Send applied subst to father (only what's relevant)
-			subst_for_father := complextypes.RemoveElementWithoutMM(st.GetAppliedSubst().GetSubst(), st.GetMM())
-			if !subst_for_father.IsEmpty() {
-				subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, st.GetAppliedSubst().GetForm())
-				st.SetSubstsFound([]complextypes.SubstAndForm{subst_and_form_for_father})
-			}
+			if current_subst.IsEmpty() {
+				// Send applied subst to father (only what's relevant)
+				subst_for_father := complextypes.RemoveElementWithoutMM(st.GetAppliedSubst().GetSubst(), st.GetMM())
+				if !subst_for_father.IsEmpty() {
+					subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, st.GetAppliedSubst().GetForm())
+					st.SetSubstsFound([]complextypes.SubstAndForm{subst_and_form_for_father})
+				}
+			} else {
+				// Merge with current subst if not empty
+				new_result_subst := []complextypes.SubstAndForm{}
+				global.PrintDebug("WC", fmt.Sprintf("Check the susbt, remove useless element and merge with applied subst :%v", current_subst.GetSubst().ToString()))
+				s_merged := complextypes.MergeSubstAndForm(current_subst, st.GetAppliedSubst())
+				s_removed := complextypes.RemoveElementWithoutMM(s_merged.GetSubst().Copy(), st.GetMM())
+				subst_and_form_removed := complextypes.MakeSubstAndForm(s_removed, current_subst.GetForm())
 
-			// No need to append current_subst, because child return it anyway (if exists)
-			// Here, current subst is always empty
-			if !current_subst.IsEmpty() {
-				fmt.Printf("[ERROR] Current subst not empty but child returns nothing\n")
-				global.PrintDebug("ERROR", "Current subst not empty but child returns nothing")
+				if !s_removed.IsEmpty() {
+					new_result_subst = append(new_result_subst, subst_and_form_removed.Copy())
+				}
+				st.SetSubstsFound(new_result_subst)
+
 			}
 
 			if cpt_children == 1 {
@@ -398,7 +406,15 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			}
 			exchanges.WriteExchanges(father_id, st, nil, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
-			sendSubToFather(c, true, false, father_id, st, given_substs)
+			st.SetSubstsFound(complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound()))
+
+			if len(st.GetSubstsFound()) == 0 {
+				sendSubToFather(c, true, false, father_id, st, given_substs)
+			} else {
+				sendSubToFather(c, true, true, father_id, st, given_substs)
+			}
+
+			// sendSubToFather(c, true, false, father_id, st, given_substs)
 
 		// substs list is for father
 		case 1:
@@ -477,6 +493,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				st_copy := st.Copy()
 				st_copy.SetCurrentProofRule("Rewrite")
 				st_copy.SetLF(append(st_copy.GetLF().Copy(), next_form))
+				st_copy.SetSubstsFound(st.GetSubstsFound())
 				c_child := Communication{make(chan bool), make(chan Result)}
 				go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm())
 				global.PrintDebug("PS", "GO !")
@@ -488,6 +505,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				next_subst := tryBTSubstitution(&substs_for_backtrack, st.GetMM(), children)
 				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{next_subst}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on subst")
 				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, forms_for_backtrack, false)
+
 			default:
 				exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die - No more BT available")
 				global.PrintDebug("WC", "There is no substitution availabe")
@@ -560,21 +578,16 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			}
 
 			// Add f to new_atomics if its an atomic
-			switch basictypes.ShowKindOfRule(f.Copy()) {
-			case basictypes.Atomic:
-				if plugin.IsLoaded("dmt") {
-					new_atomics = append(new_atomics, f)
-				} else {
-					st.DispatchForm(f.Copy())
-				}
-			default:
+			if basictypes.ShowKindOfRule(f.Copy()) == basictypes.Atomic && plugin.IsLoaded("dmt") {
+				new_atomics = append(new_atomics, f)
+			} else {
 				st.DispatchForm(f.Copy())
 			}
 		}
 
 		global.PrintDebug("PS", "Let's apply rules !")
 		st.SetLF(new_atomics)
+		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", new_atomics.ToString()))
 		applyRules(father_id, st, c)
-
 	}
 }
