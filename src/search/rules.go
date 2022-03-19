@@ -259,7 +259,7 @@ func applyBetaRules(f basictypes.Form, st *complextypes.State) []basictypes.Form
 *	a formula
 **/
 func applyDeltaRules(f basictypes.Form, st *complextypes.State) basictypes.FormList {
-	switch nf := f.(type) {
+	switch f.(type) {
 	case basictypes.Not:
 		global.PrintDebug("AR", "Applying δ¬∀...")
 		st.SetCurrentProofRule("δ¬∀")
@@ -282,8 +282,8 @@ func applyDeltaRules(f basictypes.Form, st *complextypes.State) basictypes.FormL
 *	a formula
 *	the new metavariables
 **/
-func applyGammaRules(f basictypes.Form, index int) (basictypes.FormList, basictypes.MetaList) {
-	switch nf := f.(type) {
+func applyGammaRules(f basictypes.Form, index int, st *complextypes.State) (basictypes.FormList, basictypes.MetaList) {
+	switch f.(type) {
 	case basictypes.Not:
 		global.PrintDebug("AR", "Applying γ¬∃...")
 		st.SetCurrentProofRule("γ¬∃")
@@ -310,7 +310,7 @@ func Skolemize(f basictypes.Form) basictypes.Form {
 		if tmp, ok := nf.GetForm().(basictypes.All); ok {
 			f = basictypes.RefuteForm(realSkolemize(tmp.GetForm(), tmp.GetVarList(), f.GetMetas().ToTermList()))
 		}
-		// 2 - exists F1
+	// 2 - exists F1
 	case basictypes.Ex:
 		f = realSkolemize(nf.GetForm(), nf.GetVarList(), f.GetMetas().ToTermList())
 	}
@@ -361,10 +361,9 @@ func Instantiate(f basictypes.Form, index int) (basictypes.Form, basictypes.Meta
 		if tmp, ok := nf.GetForm().(basictypes.Ex); ok {
 			form, metas := realInstantiate(tmp.GetForm(), index, tmp.GetVarList())
 			newMm = append(newMm, metas...)
-			f = form
+			f = basictypes.RefuteForm(form)
 		}
 	case basictypes.All:
-		global.PrintDebug("AR", "Applying γ∀...")
 		form, metas := realInstantiate(nf.GetForm(), index, nf.GetVarList())
 		newMm = append(newMm, metas...)
 		f = form

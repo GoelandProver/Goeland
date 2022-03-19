@@ -539,7 +539,11 @@ func (a All) GetMetas() MetaList {
 
 /* Makers */
 func MakePred(i int, p Id, tl []Term, ts ...typing.TypeScheme) Pred {
-	return Pred{i, p, tl, getType(ts)}
+	if len(ts) == 1 {
+		return Pred{i, p, tl, ts[0]}
+	} else {
+		return Pred{i, p, tl, typing.DefaultPropType(len(tl))}
+	}
 }
 func MakerPred(p Id, tl []Term, ts ...typing.TypeScheme) Pred {
 	return MakePred(MakerIndexFormula(), p, tl, getType(ts))

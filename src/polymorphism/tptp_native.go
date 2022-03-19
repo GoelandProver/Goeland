@@ -137,3 +137,25 @@ func IsInt(tType TypeScheme) bool  { return tType.Equals(tInt) }
 func IsRat(tType TypeScheme) bool  { return tType.Equals(tRat) }
 func IsReal(tType TypeScheme) bool { return tType.Equals(tReal) }
 func DefaultType() TypeScheme      { return defaultType }
+
+func DefaultFunType(len int) TypeScheme {
+	return defaultAppType(len, defaultType)
+}
+
+func DefaultPropType(len int) TypeScheme {
+	return defaultAppType(len, tProp)
+}
+
+func defaultAppType(len int, out TypeScheme) TypeScheme {
+	if len == 0 {
+		return out
+	} else if len == 1 {
+		return MkTypeArrow(defaultType, out)
+	} else {
+		ts := []TypeScheme{}
+		for i := 0; i < len; i++ {
+			ts = append(ts, defaultType)
+		}
+		return MkTypeArrow(MkTypeCross(ts...), out)
+	}
+}

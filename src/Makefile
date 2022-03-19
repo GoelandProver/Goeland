@@ -37,3 +37,8 @@ parse:
 clean:
 	rm -f *~ $(GOPARSER) y.output  
 	rm -rf $(BUILD)
+
+tests:
+	go test -v -coverprofile=coverage.out ./...
+	go tool cover -html=coverage.out
+	rm coverage.out

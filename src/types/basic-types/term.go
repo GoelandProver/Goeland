@@ -375,7 +375,11 @@ func MakeMeta(i int, s string, f int, t ...typing.TypeScheme) Meta {
 	return Meta{i, s, f, getType(t)}
 }
 func MakeFun(p Id, args []Term, t ...typing.TypeScheme) Fun {
-	return Fun{p, args, getType(t)}
+	if len(t) == 1 {
+		return Fun{p, args, t[0]}
+	} else {
+		return Fun{p, args, typing.DefaultFunType(len(args))}
+	}
 }
 
 /*** Functions ***/
