@@ -61,6 +61,7 @@ var data_struct = "trees"
 var limit = -1
 var one_step = false
 var plugins map[string]bool = make(map[string]bool)
+var lock_plugins sync.Mutex
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -141,6 +142,7 @@ func GetExecPath() string {
 	return exec_path
 }
 func IsLoaded(s string) bool {
+	// Not locked here because read-only except in main
 	return plugins[s]
 }
 
@@ -186,5 +188,7 @@ func SetProof(b bool) {
 }
 
 func SetPlugin(s string, b bool) {
+	lock_plugins.Lock()
 	plugins[s] = b
+	lock_plugins.Unlock()
 }
