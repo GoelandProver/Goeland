@@ -72,7 +72,7 @@ func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
 func instantiateOnce(formula btypes.Form) btypes.Form {
 	nf := formula.(btypes.All).GetForm()
 	for _, v := range formula.(btypes.All).GetVarList() {
-		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), 0)
+		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), -1)
 		nf = btypes.ReplaceVarByTerm(nf, v, meta)
 	}
 	return btypes.MakeForm(nf)

@@ -43,8 +43,10 @@ import (
 	"reflect"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugin"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
@@ -85,16 +87,21 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
  *  - Registers axioms of type forall x1, ..., xn.P
  **/
 func registerAxiom(axiom btypes.Form) bool {
+	global.PrintDebug("DMT", fmt.Sprintf("Try to add the form : %v", axiom.ToString()))
+
 	// 1: instantiate forall(s).
 	axiomFT := axiom.Copy()
 	_, wasForall := axiomFT.(btypes.All)
+
 	for reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.All{}) {
 		axiomFT = instantiateOnce(axiomFT)
 	}
+
 	// 2: make rewrite rule for equivalence, implication or atomic.
 	if wasForall && btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
 		addPosRewriteRule(axiomFT, btypes.MakeTop())
 		addNegRewriteRule(axiomFT, btypes.MakeBot())
+		return true
 	} else if reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Equ{}) {
 		return registerEquivalence(axiomFT)
 	} else if activatePolarized && reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Imp{}) {
@@ -107,7 +114,7 @@ func registerAxiom(axiom btypes.Form) bool {
 /**
  * Rewrites an atom an unification is found in the rewrite rules.
  **/
-func rewrite(atomic btypes.Form) (btypes.FormList, error) {
+func rewrite(atomic btypes.Form) ([]ctypes.SubstAndForm, error) {
 	form, polarity := getAtomAndPolarity(atomic.Copy())
 
 	var tree datastruct.DataStructure
@@ -127,20 +134,20 @@ func rewrite(atomic btypes.Form) (btypes.FormList, error) {
 /**
  * Rewrite algorithm with furnished code tree to unify on.
  **/
-func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) (btypes.FormList, error) {
-	atomics := btypes.MakeEmptyFormList()
+func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) ([]ctypes.SubstAndForm, error) {
+	atomics := []ctypes.SubstAndForm{}
 	if res, unif := tree.Unify(form); res {
 		// Sorts the unifs found.
 		unifs := choose(unif, polarity)
 		for _, unif := range unifs {
 			equivalence, err := getUnifiedEquivalence(unif.GetForm(), unif.GetSubst(), polarity)
 			if err != nil {
-				return btypes.MakeSingleElementList(atomic), err
+				return []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}, err
 			}
-			atomics = append(atomics, btypes.MakeForm(equivalence))
+			atomics = append(atomics, ctypes.MakeSubstAndForm(unif.GetSubst(), btypes.MakeSingleElementList(equivalence)))
 		}
 	} else {
-		atomics = btypes.MakeSingleElementList(atomic)
+		atomics = []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}
 	}
 	return atomics, nil
 }
@@ -231,8 +238,10 @@ func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 	if debugActivated {
 		if polarity {
 			fmt.Printf("Rewrite rule: %s ---> %s\n", axiom.ToString(), cons.ToString())
+			global.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", axiom.ToString(), cons.ToString()))
 		} else {
 			fmt.Printf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom).ToString(), cons.ToString())
+			global.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom).ToString(), cons.ToString()))
 		}
 	}
 

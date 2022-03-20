@@ -64,6 +64,7 @@ type State struct {
 	tree_pos, tree_neg                    datastruct.DataStructure
 	proof                                 []proof.ProofStruct
 	current_proof                         proof.ProofStruct
+	bt_on_formulas                        bool
 }
 
 /***********/
@@ -121,6 +122,9 @@ func (s State) GetProof() []proof.ProofStruct {
 }
 func (s State) GetCurrentProof() proof.ProofStruct {
 	return s.current_proof.Copy()
+}
+func (s State) GetBTOnFormulas() bool {
+	return s.bt_on_formulas
 }
 
 /* Setters */
@@ -196,6 +200,9 @@ func (st *State) SetCurrentProofChildren(c [][]proof.ProofStruct) {
 		st.current_proof.SetChildrenProof(c)
 	}
 }
+func (st *State) SetBTOnFormulas(b bool) {
+	st.bt_on_formulas = b
+}
 
 /* Maker */
 func MakeState(limit int, tp, tn datastruct.DataStructure) State {
@@ -207,7 +214,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure) State {
 	current_proof := proof.MakeEmptyProofStruct()
 	current_proof.SetRuleProof("Initial formula")
 
-	return State{n, basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof}
+	return State{n, basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false}
 }
 
 /* Print a state */
@@ -272,8 +279,11 @@ func (st State) Print() {
 
 	if !st.GetLastAppliedSubst().IsEmpty() {
 		global.PrintDebug("PSt", "Last applied subst:")
-		global.PrintDebug("PSt", st.GetLastAppliedSubst().GetSubst().ToString())
+		global.PrintDebug("PSt", st.GetLastAppliedSubst().ToString())
 	}
+
+	global.PrintDebug("PSt", fmt.Sprintf("BT on formulas : %v", st.GetBTOnFormulas()))
+
 }
 
 /* Copy a state, merge mm and mc*/
@@ -308,10 +318,17 @@ func (st State) Copy() State {
 		new_state.SetSubstsFound(st.GetSubstsFound())
 	}
 
-	new_state.SetTreePos(st.GetTreePos())
-	new_state.SetTreeNeg(st.GetTreeNeg())
+	// Réccréer arbre
+	if global.IsLoaded("dmt") {
+		new_state.SetTreePos(st.tree_pos.MakeDataStruct(st.GetAtomic(), true))
+		new_state.SetTreeNeg(st.tree_pos.MakeDataStruct(st.GetAtomic(), false))
+	} else {
+		new_state.SetTreePos(st.GetTreePos())
+		new_state.SetTreeNeg(st.GetTreeNeg())
+	}
 	new_state.SetProof([]proof.ProofStruct{})
 	new_state.SetCurrentProof(proof.MakeEmptyProofStruct())
+	new_state.SetBTOnFormulas(st.GetBTOnFormulas())
 
 	return new_state
 }
@@ -349,6 +366,26 @@ func (st *State) DispatchForm(f basictypes.Form) {
 	default:
 		fmt.Println("[ERROR] Formula not recognized")
 	}
+}
+
+/** Apply a sbstitution on a state
+* TODO : remove old MM/MC
+**/
+func ApplySubstitution(st *State, saf SubstAndForm) {
+	s := saf.GetSubst()
+	ms := MergeSubstAndForm(st.GetAppliedSubst(), saf.Copy())
+	st.SetAppliedSubst(ms)
+	st.SetLastAppliedSubst(saf)
+	st.SetLF(ApplySubstitutionsOnFormulaList(s, st.GetLF()))
+	st.SetAtomic(ApplySubstitutionsOnFormulaList(s, st.GetAtomic()))
+	st.SetAlpha(ApplySubstitutionsOnFormulaList(s, st.GetAlpha()))
+	st.SetBeta(ApplySubstitutionsOnFormulaList(s, st.GetBeta()))
+	st.SetDelta(ApplySubstitutionsOnFormulaList(s, st.GetDelta()))
+	st.SetGamma(ApplySubstitutionsOnFormulaList(s, st.GetGamma()))
+	st.SetMetaGen(ApplySubstitutionOnMetaGenList(s, st.GetMetaGen()))
+
+	st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic(), true))
+	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic(), false))
 }
 
 /* TODO : remove and change - for write proof */

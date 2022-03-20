@@ -39,7 +39,6 @@
 package treesearch
 
 import (
-	"fmt"
 	"reflect"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -68,22 +67,14 @@ func computeSubstitutions(subst []treetypes.SubstPair, metas treetypes.Substitut
 		return treetypes.Failure()
 	}
 
-	global.PrintDebug("TS", fmt.Sprintf("subst : %v ", treetypes.SubstPairListToString(subst)))
-	global.PrintDebug("TS", fmt.Sprintf("meta_from_tree_form : %v ", metas_from_tree_form.ToString()))
-	global.PrintDebug("TS", fmt.Sprintf("subst_to_subst : %v ", tree_subst.ToString()))
-
 	//  Transform subst tree into a real substitution
 	for _, value := range subst {
 		current_meta := metas_from_tree_form[value.GetIndex()]
 		current_value := value.GetTerm()
-		global.PrintDebug("TS", "___________________________")
-		global.PrintDebug("TS", fmt.Sprintf("index : %v - Meta : %v - Value : %v ", value.GetIndex(), current_meta.ToString(), current_value.ToString()))
-		global.PrintDebug("TS", fmt.Sprintf("tree_subst (begin) : %v ", tree_subst.ToString()))
 
 		if !current_meta.Equals(current_value) {
 			// Si current_meta a déjà une association dans metas
 			if treetypes.HasSubst(metas, current_meta) && !current_value.Equals(metas[current_meta]) {
-				global.PrintDebug("TS", fmt.Sprintf("current_meta already has an association ! : %v ", metas[current_meta].ToString()))
 				// On cherche a unifier les deux valeurs
 				tree_subst[current_meta] = current_value
 				new_unif := AddUnification(current_value.Copy(), metas[current_meta].Copy(), tree_subst.Copy())
@@ -95,28 +86,19 @@ func computeSubstitutions(subst []treetypes.SubstPair, metas treetypes.Substitut
 			} else { // Ne pas ajouter la susbtitution égalité
 				tree_subst[current_meta] = current_value
 			}
-			global.PrintDebug("TS", fmt.Sprintf("tree_subst (end) : %v ", tree_subst.ToString()))
 		}
 	}
-	global.PrintDebug("TS", fmt.Sprintf("tree_subst : %v ", tree_subst.ToString()))
-
-	// Copy metas
-	global.PrintDebug("TS", fmt.Sprintf("metas_subst : %v ", metas.ToString()))
 
 	// Metas_subst eliminate
 	treetypes.EliminateMeta(&metas)
-	global.PrintDebug("TS", fmt.Sprintf("metas_subst (after eliminate meta) : %v ", metas.ToString()))
 	treetypes.Eliminate(&metas)
-	global.PrintDebug("TS", fmt.Sprintf("metas_subst (after eliminate) : %v ", metas.ToString()))
 	if metas.Equals(treetypes.Failure()) {
 		return treetypes.Failure()
 	}
 
 	// Tree subst elminate
 	treetypes.EliminateMeta(&tree_subst)
-	global.PrintDebug("TS", fmt.Sprintf("tree_subst (after eliminate meta) : %v ", tree_subst.ToString()))
 	treetypes.Eliminate(&tree_subst)
-	global.PrintDebug("TS", fmt.Sprintf("tree_subst (after eliminate) : %v ", tree_subst.ToString()))
 	if tree_subst.Equals(treetypes.Failure()) {
 		return treetypes.Failure()
 	}
@@ -143,7 +125,6 @@ func (m *Machine) trySubstituteMeta(i basictypes.Term, j basictypes.Term) Status
 }
 
 func AddUnification(term1, term2 basictypes.Term, subst treetypes.Substitutions) treetypes.Substitutions {
-	global.PrintDebug("AU", fmt.Sprintf("Add (%v, %v) to %v", term1.ToString(), term2.ToString(), subst.ToString()))
 
 	// unify with ct only if the term already has an unification or if there is 2 fun. Just add it and eliminate otherwise.
 	if (term1.IsMeta() && treetypes.HasSubst(subst, term1.ToMeta()) && !subst[term1.ToMeta()].Equals(term2)) ||
@@ -176,7 +157,6 @@ func AddUnification(term1, term2 basictypes.Term, subst treetypes.Substitutions)
 
 /* Adds the unifications found to the meta substitutions from running the algorithm on term1 and term2. */
 func (m *Machine) addUnifications(term1, term2 basictypes.Term) Status {
-	global.PrintDebug("AU", fmt.Sprintf("m.meta : %v", m.meta.ToString()))
 	meta := tryUnification(term1.Copy(), term2.Copy(), m.meta.Copy()) // Return empty or an array of 1 matching substitution, which is m.meta improved wit (term1, term2)
 
 	if len(meta) == 0 {
@@ -198,15 +178,12 @@ func tryUnification(term1, term2 basictypes.Term, meta treetypes.Substitutions) 
 
 	// add begin at the start and end at the end !
 	tree := makeBranch(treetypes.ParseTerm(term1.Copy()))
-	global.PrintDebug("TU", "--------------- NEW MACHINE ---------------")
 	res := aux.unifyAux(*tree)
-	global.PrintDebug("TU", "--------------- END MACHINE ---------------")
 	return res
 }
 
 /* Merge two valid substitutions */
 func MergeSubstitutions(s1, s2 treetypes.Substitutions) (treetypes.Substitutions, bool) {
-	global.PrintDebug("MS", fmt.Sprintf("Begin MS - S1 : %v - S2 : %v", s1.ToString(), s2.ToString()))
 	res := treetypes.Substitutions{}
 	same_key := false
 
@@ -227,9 +204,7 @@ func MergeSubstitutions(s1, s2 treetypes.Substitutions) (treetypes.Substitutions
 	for s2_k, s2_v := range s2 {
 		if treetypes.HasSubst(res, s2_k) {
 			same_key = true
-			global.PrintDebug("MS", fmt.Sprintf("Subst before add unif : %v", res.ToString()))
 			res = AddUnification(s2_k.Copy(), s2_v.Copy(), res.Copy())
-			global.PrintDebug("MS", fmt.Sprintf("Subst after add unif : %v", res.ToString()))
 		} else {
 			res[s2_k.ToMeta()] = s2_v
 			treetypes.EliminateMeta(&res)
@@ -237,6 +212,5 @@ func MergeSubstitutions(s1, s2 treetypes.Substitutions) (treetypes.Substitutions
 		}
 
 	}
-	global.PrintDebug("MS", "End MS")
 	return res, same_key
 }
