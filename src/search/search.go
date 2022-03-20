@@ -135,7 +135,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 func applyRules(father_id uint64, st complextypes.State, c Communication) {
 	global.PrintDebug("AR", "ApplyRule")
 	switch {
-	case len(st.GetLF()) > 0 && plugin.IsLoaded("dmt"):
+	case len(st.GetLF()) > 0 && global.IsLoaded("dmt"):
 		st.SetCurrentProofFormula(st.GetAllForms())
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 		manageRewritteRules(father_id, st, c)
@@ -186,6 +186,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 	global.PrintDebug("PS", "Try rewritte rule")
 	remaining_atomics := st.GetLF()
 
+	// For each atomic
 	for len(remaining_atomics) > 0 {
 		global.PrintDebug("PS", "Remaining atomic > 0")
 
@@ -199,30 +200,32 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 		if !st.GetAtomic().Contains(f) {
 			if rewritten, err := plugin.GetPluginManager().ApplyRewriteHook(f); err == nil {
 
+				// Rewritten is the list of backtrack on subst
+				// Keep only relevant substitutions
+				for i := range rewritten {
+					rewritten[i] = complextypes.MakeSubstAndForm(complextypes.RemoveElementWithoutMM(rewritten[i].GetSubst(), st.GetMC().Merge(st.GetMM())), rewritten[i].GetForm())
+				}
+				rewritten = append(rewritten, complextypes.MakeSubstAndForm(treetypes.MakeEmptySubstitution(), basictypes.MakeSingleElementList(f)))
+
 				// Keep all the possibility of rewritting and choose the first one
-				choosen_rewritten := rewritten[0].Copy()
+				choosen_rewritten := rewritten[0]
 				choosen_rewritten_form := choosen_rewritten.GetForm()[0].Copy()
 				rewritten = complextypes.CopySubstAndFormList(rewritten[1:])
 
 				// Si on ne s'est pas réécrit en soi-même ?
 				if !choosen_rewritten_form.Equals(f) {
 					// Create a child with the current rewritting rule and make this process to wait for him, with a list of other subst to try
+					st.SetLF(append(remaining_atomics.Copy(), choosen_rewritten_form.Copy()))
+					st.SetBTOnFormulas(true) // I need to know that I can bt on form and my child needs to know it to to don't loop
 
-					// Ici je fais une recherche inutile
-					// Envoyer subst found à mon fils dans ce contexte ?
-					st.SetLF(remaining_atomics.Copy())
 					st_copy := st.Copy()
-					st_copy.SetLF(remaining_atomics.Copy())
 					st_copy.SetCurrentProofRule("Rewrite")
-					st_copy.SetLF(append(remaining_atomics.Copy(), choosen_rewritten_form.Copy()))
 					st_copy.SetSubstsFound(st.GetSubstsFound())
 					c_child := Communication{make(chan bool), make(chan Result)}
 					go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten)
 					global.PrintDebug("PS", "GO !")
 					global.IncrGoRoutine(1)
-					waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, rewritten, true)
-					// Version d'avant
-					// st.DispatchForm(choosen_rewritten.Copy())
+					waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, rewritten)
 					return
 				} else {
 					// Pas de réécriture disponible
@@ -290,7 +293,8 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication) {
 
 	}
 	if global.IsDestructive() {
-		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, false)
+		st.SetBTOnFormulas(false)
+		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{})
 	} else {
 		global.PrintDebug("PS", "Die")
 	}

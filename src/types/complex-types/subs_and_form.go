@@ -62,7 +62,7 @@ func (s *SubstAndForm) SetForm(form basictypes.FormList) {
 	s.f = form.Copy()
 }
 func (saf SubstAndForm) IsEmpty() bool {
-	return saf.s.IsEmpty()
+	return saf.s.IsEmpty() && saf.f.IsEmpty()
 }
 func (s1 SubstAndForm) Equals(s2 SubstAndForm) bool {
 	return s1.GetSubst().Equals(s2.GetSubst()) && s1.GetForm().Equals(s2.GetForm())

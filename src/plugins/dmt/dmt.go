@@ -43,6 +43,7 @@ import (
 	"reflect"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugin"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -86,16 +87,21 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
  *  - Registers axioms of type forall x1, ..., xn.P
  **/
 func registerAxiom(axiom btypes.Form) bool {
+	global.PrintDebug("DMT", fmt.Sprintf("Try to add the form : %v", axiom.ToString()))
+
 	// 1: instantiate forall(s).
 	axiomFT := axiom.Copy()
 	_, wasForall := axiomFT.(btypes.All)
+
 	for reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.All{}) {
 		axiomFT = instantiateOnce(axiomFT)
 	}
+
 	// 2: make rewrite rule for equivalence, implication or atomic.
 	if wasForall && btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
 		addPosRewriteRule(axiomFT, btypes.MakeTop())
 		addNegRewriteRule(axiomFT, btypes.MakeBot())
+		return true
 	} else if reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Equ{}) {
 		return registerEquivalence(axiomFT)
 	} else if activatePolarized && reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Imp{}) {
@@ -232,8 +238,10 @@ func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 	if debugActivated {
 		if polarity {
 			fmt.Printf("Rewrite rule: %s ---> %s\n", axiom.ToString(), cons.ToString())
+			global.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", axiom.ToString(), cons.ToString()))
 		} else {
 			fmt.Printf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom).ToString(), cons.ToString())
+			global.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom).ToString(), cons.ToString()))
 		}
 	}
 

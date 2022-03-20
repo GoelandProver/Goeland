@@ -99,7 +99,7 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 	treetypes.Eliminate(&subst_to_reorganize)
 	ms, _ := treesearch.MergeSubstitutions(res, subst_to_reorganize)
 
-	global.PrintDebug("REWM", fmt.Sprintf("Finale subst : %v", s.ToString()))
+	global.PrintDebug("REWM", fmt.Sprintf("Finale subst : %v", ms.ToString()))
 
 	if ms.Equals(treetypes.Failure()) {
 		println("[REWM] Error : MergeSubstitutions returns failure")

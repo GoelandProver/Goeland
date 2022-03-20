@@ -76,8 +76,6 @@ func main() {
 
 	flag.Var(&plugin.PoptionFlag, "poptions", "Options for the different plugins.")
 	flag.Parse()
-	// TODO
-	global.SetPlugin("dmt", plugin.IsLoaded("dmt"))
 
 	if *cpuprofile != "" {
 		f, err := os.Create(*cpuprofile)
@@ -147,6 +145,8 @@ func mainGotab() {
 
 	fmt.Printf("\n[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
 	basictypes.Reset()
+	// TODO
+	global.SetPlugin("dmt", true)
 	plugin.GetPluginManager()
 	plugin.IsLoaded("dmt")
 
@@ -266,6 +266,7 @@ func StatementListToFormula(lstm []basictypes.Statement) basictypes.Form {
 		switch s.GetRole() {
 		case basictypes.Axiom:
 			new_form := basictypes.RenameVariables(s.GetForm())
+			global.PrintDebug("RV", fmt.Sprintf("%v -> %v", s.GetForm().ToString(), new_form.ToString()))
 			if consumed := plugin.GetPluginManager().ApplySendAxiomHook(new_form.Copy()); !consumed {
 				and_list = append(and_list, new_form)
 			}

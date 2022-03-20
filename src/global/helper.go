@@ -60,7 +60,7 @@ var proof = false
 var data_struct = "trees"
 var limit = -1
 var one_step = false
-var plugins map[string]bool
+var plugins map[string]bool = make(map[string]bool)
 
 // Executable path
 var current_directory, _ = os.Executable()
