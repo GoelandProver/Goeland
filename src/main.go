@@ -51,6 +51,7 @@ import (
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/parser"
 	"github.com/GoelandProver/Goeland/plugin"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -150,7 +151,7 @@ func mainGotab() {
 	plugin.GetPluginManager()
 	plugin.IsLoaded("dmt")
 
-	lstm, bound := complextypes.ParseMain(problem)
+	lstm, bound := parser.ParseMain(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
 	if global.GetLimit() != -1 {
 		bound = global.GetLimit()

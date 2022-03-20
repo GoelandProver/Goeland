@@ -1,7 +1,7 @@
 # Sources
 GOSRC=main.go
 PLUGINS_SRC=plugins/
-YACCFILE=./types/complex-types/tptp_6.3.0.y
+YACCFILE=./parser/tptp_6.3.0.y
 GOPARSER=$(YACCFILE:.y=.go)
 
 # Compilation

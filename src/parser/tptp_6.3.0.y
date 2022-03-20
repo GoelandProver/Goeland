@@ -33,7 +33,7 @@
 
 %{
 
-package complextypes
+package parser
 
 import (
 	"fmt"
