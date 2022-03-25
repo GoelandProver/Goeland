@@ -287,7 +287,7 @@ func (i Id) GetSubTerms() []Term {
 	return []Term{i}
 }
 func (f Fun) GetSubTerms() []Term {
-	res := []Term{f.GetID()}
+	res := []Term{f}
 	for _, arg := range f.GetArgs() {
 		res = append(res, arg.GetSubTerms()...)
 	}

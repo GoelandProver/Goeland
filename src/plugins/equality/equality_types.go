@@ -147,6 +147,7 @@ func (ie Inequalities) AppendIfNotContains(eq TermPair) Inequalities {
 
 type EqualityProblem struct {
 	E_tree datastruct.DataStructure
+	E_map  map[basictypes.Term][]basictypes.Term
 	E      Equalities
 	s, t   basictypes.Term
 	c      ConstraintList
@@ -154,6 +155,13 @@ type EqualityProblem struct {
 
 func (ep EqualityProblem) GetETree() datastruct.DataStructure {
 	return ep.E_tree.Copy()
+}
+func (ep EqualityProblem) GetEMap() map[basictypes.Term][]basictypes.Term {
+	map_res := make(map[basictypes.Term][]basictypes.Term)
+	for k, v := range ep.E_map {
+		map_res[k.Copy()] = basictypes.CopyTermList(v)
+	}
+	return map_res
 }
 func (ep EqualityProblem) GetE() Equalities {
 	return ep.E.Copy()
@@ -177,15 +185,25 @@ func (ep EqualityProblem) ToString() string {
 	return "<" + ep.GetE().ToString() + ", " + ep.GetS().ToString() + ", " + ep.GetT().ToString() + "> • " + ep.GetC().ToString()
 }
 func MakeEqualityProblem(E Equalities, t basictypes.Term, s basictypes.Term, c ConstraintList) EqualityProblem {
-	return EqualityProblem{makeDataStructFromEqualities(E.Copy()), E.Copy(), s.Copy(), t.Copy(), c.Copy()}
+	return EqualityProblem{makeDataStructFromEqualities(E.Copy()), makeEQMapFromEqualities(E.Copy()), E.Copy(), s.Copy(), t.Copy(), c.Copy()}
 }
+
 func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
 	form_list := basictypes.MakeEmptyFormList()
 	for _, e := range eq {
 		form_list = append(form_list, treetypes.MakeTermForm(e.GetT1()))
-		form_list = append(form_list, treetypes.MakeTermForm(e.GetT1()))
+		form_list = append(form_list, treetypes.MakeTermForm(e.GetT2()))
 	}
 	return new(treesearch.Node).MakeDataStruct(form_list, true)
+}
+
+func makeEQMapFromEqualities(eq Equalities) map[basictypes.Term][]basictypes.Term {
+	map_res := make(map[basictypes.Term][]basictypes.Term)
+	for _, e := range eq {
+		map_res[e.GetT1()] = append(map_res[e.GetT1()], e.GetT2())
+		map_res[e.GetT2()] = append(map_res[e.GetT2()], e.GetT1())
+	}
+	return map_res
 }
 
 type EqualityProblemList []EqualityProblem
