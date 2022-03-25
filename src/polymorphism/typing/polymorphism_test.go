@@ -48,14 +48,14 @@ import (
 
 func TestMain(m *testing.M) {
 	Init()
-    code := m.Run()
+	code := m.Run()
 	os.Exit(code)
 }
 
 /* INTERNAL: testing encoding functions */
 
 func TestZ(t *testing.T) {
-	testTable := []struct{
+	testTable := []struct {
 		fst int64
 		snd uint64
 	}{
@@ -78,7 +78,7 @@ func TestZ(t *testing.T) {
 }
 
 func TestIds(t *testing.T) {
-	testTable := []struct{
+	testTable := []struct {
 		fst []uint64
 		snd uint64
 	}{
@@ -97,7 +97,7 @@ func TestIds(t *testing.T) {
 }
 
 func TestL(t *testing.T) {
-	testTable := []struct{
+	testTable := []struct {
 		fst []uint64
 		snd uint64
 	}{
@@ -115,7 +115,6 @@ func TestL(t *testing.T) {
 	}
 }
 
-
 func TestCopy(t *testing.T) {
 	testTable := [][][]uint64{
 		{{0}, {0}},
@@ -125,12 +124,12 @@ func TestCopy(t *testing.T) {
 	}
 
 	for _, test := range testTable {
-		t.Run(fmt.Sprintf("%v", test[1]), func (t *testing.T) {
+		t.Run(fmt.Sprintf("%v", test[1]), func(t *testing.T) {
 			encodeList(test[0])
 			for i := range test[1] {
 				if len(test[0]) < i || test[0][i] != test[1][i] {
 					t.Fatalf("Error: list isn't properly copied.")
-				} 
+				}
 			}
 		})
 	}
@@ -164,7 +163,7 @@ func TesTypeCrosses(t *testing.T) {
 	tInt := MkTypeHint("int")
 	tRat := MkTypeHint("rat")
 
-	testTable := []struct{
+	testTable := []struct {
 		c TypeCross
 		e string
 	}{
@@ -191,14 +190,14 @@ func TestTypeArrows(t *testing.T) {
 	tInt := MkTypeHint("int")
 	tRat := MkTypeHint("rat")
 
-	testTable := []struct{
+	testTable := []struct {
 		c TypeArrow
 		e string
 	}{
-		{ MkTypeArrow(tInt, tInt), "(int > int)" },
-		{ MkTypeArrow(tInt, tRat), "(int > rat)" },
-		{ MkTypeArrow(tRat, tInt), "(rat > int)" },
-		{ MkTypeArrow(MkTypeArrow(tRat, tInt), tInt), "((rat > int) > int)" },
+		{MkTypeArrow(tInt, tInt), "(int > int)"},
+		{MkTypeArrow(tInt, tRat), "(int > rat)"},
+		{MkTypeArrow(tRat, tInt), "(rat > int)"},
+		{MkTypeArrow(MkTypeArrow(tRat, tInt), tInt), "((rat > int) > int)"},
 	}
 
 	for i, test := range testTable {
@@ -219,13 +218,13 @@ func TestComposition(t *testing.T) {
 	tInt := MkTypeHint("int")
 	tRat := MkTypeHint("rat")
 
-	testTable := []struct{
-		fst TypeScheme 
+	testTable := []struct {
+		fst TypeScheme
 		snd TypeScheme
 	}{
-		{ MkTypeArrow(tInt, tInt), MkTypeCross(tInt, tInt) },
-		{ MkTypeArrow(MkTypeCross(tRat, tInt), tInt), MkTypeCross(MkTypeArrow(tRat, tInt), tInt) },
-		{ MkTypeArrow(MkTypeArrow(tRat, tInt), tInt), MkTypeCross(tRat, tInt, tInt) },
+		{MkTypeArrow(tInt, tInt), MkTypeCross(tInt, tInt)},
+		{MkTypeArrow(MkTypeCross(tRat, tInt), tInt), MkTypeCross(MkTypeArrow(tRat, tInt), tInt)},
+		{MkTypeArrow(MkTypeArrow(tRat, tInt), tInt), MkTypeCross(tRat, tInt, tInt)},
 	}
 
 	for _, test := range testTable {
@@ -451,5 +450,18 @@ func TestDefaultPropType(t *testing.T) {
 	expected := MkTypeArrow(MkTypeCross(defaultType, defaultType, defaultType, defaultType), tProp)
 	if !DefaultPropType(4).Equals(expected) {
 		t.Errorf("Wrong fun default type. Expected: %s, actual: %s", expected.ToString(), DefaultPropType(4).ToString())
+	}
+}
+
+/* Trivial yet important: strings */
+
+func TestCrossToString(t *testing.T) {
+	if MkTypeCross(tInt, tInt).ToString() != fmt.Sprintf("(%s * %s)", tInt.ToString(), tInt.ToString()) {
+		t.Errorf("TypeCross ToString failed. Expected: (%s * %s), actual: %s", tInt.ToString(), tInt.ToString(), MkTypeCross(tInt, tInt).ToString())
+	}
+}
+func TestArrowToString(t *testing.T) {
+	if MkTypeArrow(tInt, tInt).ToString() != fmt.Sprintf("(%s > %s)", tInt.ToString(), tInt.ToString()) {
+		t.Errorf("TypeCross ToString failed. Expected: (%s > %s), actual: %s", tInt.ToString(), tInt.ToString(), MkTypeArrow(tInt, tInt).ToString())
 	}
 }

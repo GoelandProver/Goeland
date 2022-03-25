@@ -95,7 +95,7 @@ type TypeCross struct {
 
 func (tc TypeCross) isScheme()                  {}
 func (tc TypeCross) toList() []uint64           { return subtypesUID(tc.types) }
-func (tc TypeCross) ToString() string           { return "(" + strings.Join(subtypesStr(tc.types), " > ") + ")" }
+func (tc TypeCross) ToString() string           { return "(" + strings.Join(subtypesStr(tc.types), " * ") + ")" }
 func (tc TypeCross) UID() uint64                { return tc.uid }
 func (tc TypeCross) Equals(oth TypeScheme) bool { return oth.UID() == tc.UID() }
 
@@ -204,4 +204,9 @@ func MkTypeArrow(typeSchemes ...TypeScheme) TypeArrow {
 	ta := TypeArrow{uid: 0, types: typeSchemes}
 	ta.uid = encode(ta.toList(), ETypeArrow)
 	return ta
+}
+
+/* Gets the out type of an arrow type scheme */
+func GetOutType(typeArrow TypeArrow) TypeScheme {
+	return typeArrow.types[len(typeArrow.types)-1]
 }

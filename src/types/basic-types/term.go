@@ -41,7 +41,7 @@ package basictypes
 import (
 	"strconv"
 
-	typing "github.com/GoelandProver/Goeland/polymorphism"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
 /* Term */

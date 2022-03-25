@@ -44,13 +44,13 @@ import (
 	"os"
 	"testing"
 
-	"github.com/GoelandProver/Goeland/polymorphism"
+	polymorphism "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 func TestMain(m *testing.M) {
 	polymorphism.Init()
-    code := m.Run()
+	code := m.Run()
 	os.Exit(code)
 }
 
@@ -340,7 +340,7 @@ func TestSyntaxicTransformationOnFormula(t *testing.T) {
 		if pred, ok := f2_sko.(basictypes.Pred); ok {
 			if !pred.GetTypeScheme().Equals(polymorphism.MkTypeArrow(polymorphism.MkTypeCross(polymorphism.DefaultType(), polymorphism.DefaultType()), polymorphism.MkTypeHint("o"))) {
 				t.Errorf("Wrong type scheme for default predicate.")
-			} 
+			}
 			// #0 is a function with 1 argument and #1 a meta
 			if fun, ok := pred.GetArgs()[0].(basictypes.Fun); ok {
 				if len(fun.GetArgs()) != 1 {
@@ -387,7 +387,7 @@ func TestSyntaxicTransformationOnTypedFormula(t *testing.T) {
 		if pred, ok := f2_sko.(basictypes.Pred); ok {
 			if !pred.GetTypeScheme().Equals(polymorphism.MkTypeArrow(polymorphism.MkTypeCross(tInt, tInt), tProp)) {
 				t.Errorf("Wrong type scheme for default predicate.")
-			} 
+			}
 			// #0 is a function with 1 argument and #1 a meta
 			if fun, ok := pred.GetArgs()[0].(basictypes.Fun); ok {
 				if len(fun.GetArgs()) != 1 {

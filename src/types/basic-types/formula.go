@@ -44,7 +44,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/global"
 
-	typing "github.com/GoelandProver/Goeland/polymorphism"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
 /*** Structure ***/
