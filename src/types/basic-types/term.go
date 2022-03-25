@@ -317,7 +317,7 @@ func (f Fun) ReplaceSubTermBy(original_term, new_term Term) Term {
 	if f.Equals(original_term) {
 		return f
 	} else {
-		return MakeFun(f.GetID(), replaceFirstOccurenceTermList(original_term, new_term, f.GetArgs()))
+		return MakeFun(f.GetID(), replaceFirstOccurrenceTermList(original_term, new_term, f.GetArgs()))
 	}
 }
 
@@ -448,7 +448,11 @@ func AreEqualsVarList(tl1, tl2 []Var) bool {
 }
 
 /* Replace the first occurence of a term in a list by another */
-func replaceFirstOccurenceTermList(old_term, new_term Term, tl []Term) []Term {
+/*
+* Pourquoi seulement la première occurrence ?
+* TODO : la fonction les remplace TOUTES
+**/
+func replaceFirstOccurrenceTermList(old_term, new_term Term, tl []Term) []Term {
 	res := CopyTermList(tl)
 	for i := range tl {
 		// Si le terme a bien été modifié

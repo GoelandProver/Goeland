@@ -200,7 +200,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 		// On prend le premier élément de le liste des atomics
 		f := remaining_atomics[0].Copy()
 		remaining_atomics = remaining_atomics[1:].Copy()
-		global.PrintDebug("PS", fmt.Sprintf("Choosen : %v", f.ToString()))
+		global.PrintDebug("PS", fmt.Sprintf("Choose : %v", f.ToString()))
 		global.PrintDebug("PS", fmt.Sprintf("Remaining_atomics %v", remaining_atomics.ToString()))
 
 		// Si f est dans atomic, ça veut dire qu'on a pas pu réécrire, donc inutile de vérifier
