@@ -205,7 +205,7 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 
 	switch nf := f.(type) {
 	case basictypes.Pred:
-		res = basictypes.MakePred(f.GetIndex(), nf.GetID(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()), nf.GetTypeScheme())
+		res = basictypes.MakePred(f.GetIndex(), nf.GetID(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()), nf.GetType())
 	case basictypes.Not:
 		res = basictypes.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case basictypes.And:

@@ -259,11 +259,11 @@ func TestPolymorphicFunctions(t *testing.T) {
 		t.Fatalf("Error: an error has been detected while saving type scheme when it shouldn't ! Error text: %v", err.Error())
 	}
 
-	if tScheme := GetTypeScheme("sum", MkTypeCross(tInt, tInt)); !tScheme.Equals(MkTypeArrow(MkTypeCross(tInt, tInt), tInt)) {
+	if tScheme := GetType("sum", MkTypeCross(tInt, tInt)); !tScheme.Equals(MkTypeArrow(MkTypeCross(tInt, tInt), tInt)) {
 		t.Fatalf("Error: couldn't retrieve previously entered type scheme in map.")
 	}
 
-	if tScheme := GetTypeScheme("in", MkTypeCross(tInt, tInt)); tScheme == nil {
+	if tScheme := GetType("in", MkTypeCross(tInt, tInt)); tScheme == nil {
 		t.Fatalf("Error: couldn't infer type of scheme not entered in the map.")
 	}
 }
@@ -301,11 +301,11 @@ func TestTPTPBinaryNatives(t *testing.T) {
 			t.Errorf(err.Error())
 		}
 	}
-	out := GetTypeScheme("quotient", MkTypeCross(tRat, tRat))
+	out := GetType("quotient", MkTypeCross(tRat, tRat))
 	if !out.Equals(MkTypeArrow(MkTypeCross(tRat, tRat), tRat)) {
 		t.Errorf("Error: quotient: rat * rat > rat not defined when it should be.")
 	}
-	out = GetTypeScheme("quotient", MkTypeCross(tReal, tReal))
+	out = GetType("quotient", MkTypeCross(tReal, tReal))
 	if !out.Equals(MkTypeArrow(MkTypeCross(tReal, tReal), tReal)) {
 		t.Errorf("Error: quotient: real * real > real not defined when it should be.")
 	}
@@ -354,15 +354,15 @@ func TestTPTPConversionFunctions(t *testing.T) {
 }
 
 func testBinaryPreds(name string) error {
-	out := GetTypeScheme(name, MkTypeCross(tInt, tInt))
+	out := GetType(name, MkTypeCross(tInt, tInt))
 	if !out.Equals(MkTypeArrow(MkTypeCross(tInt, tInt), tProp)) {
 		return fmt.Errorf("Error: %s: int * int > int not defined when it should be.", name)
 	}
-	out = GetTypeScheme(name, MkTypeCross(tRat, tRat))
+	out = GetType(name, MkTypeCross(tRat, tRat))
 	if !out.Equals(MkTypeArrow(MkTypeCross(tRat, tRat), tProp)) {
 		return fmt.Errorf("Error: %s: rat * rat > rat not defined when it should be.", name)
 	}
-	out = GetTypeScheme(name, MkTypeCross(tReal, tReal))
+	out = GetType(name, MkTypeCross(tReal, tReal))
 	if !out.Equals(MkTypeArrow(MkTypeCross(tReal, tReal), tProp)) {
 		return fmt.Errorf("Error: %s: real * real > real not defined when it should be.", name)
 	}
@@ -371,15 +371,15 @@ func testBinaryPreds(name string) error {
 }
 
 func testBinaryTypes(name string) error {
-	out := GetTypeScheme(name, MkTypeCross(tInt, tInt))
+	out := GetType(name, MkTypeCross(tInt, tInt))
 	if !out.Equals(MkTypeArrow(MkTypeCross(tInt, tInt), tInt)) {
 		return fmt.Errorf("Error: %s: int * int > int not defined when it should be.", name)
 	}
-	out = GetTypeScheme(name, MkTypeCross(tRat, tRat))
+	out = GetType(name, MkTypeCross(tRat, tRat))
 	if !out.Equals(MkTypeArrow(MkTypeCross(tRat, tRat), tRat)) {
 		return fmt.Errorf("Error: %s: rat * rat > rat not defined when it should be.", name)
 	}
-	out = GetTypeScheme(name, MkTypeCross(tReal, tReal))
+	out = GetType(name, MkTypeCross(tReal, tReal))
 	if !out.Equals(MkTypeArrow(MkTypeCross(tReal, tReal), tReal)) {
 		return fmt.Errorf("Error: %s: real * real > real not defined when it should be.", name)
 	}
@@ -388,15 +388,15 @@ func testBinaryTypes(name string) error {
 }
 
 func testUnaryTypes(name string) error {
-	out := GetTypeScheme(name, tInt)
+	out := GetType(name, tInt)
 	if !out.Equals(MkTypeArrow(tInt, tInt)) {
 		return fmt.Errorf("Error: %s: int > int not defined when it should be.", name)
 	}
-	out = GetTypeScheme(name, tRat)
+	out = GetType(name, tRat)
 	if !out.Equals(MkTypeArrow(tRat, tRat)) {
 		return fmt.Errorf("Error: %s: rat > rat not defined when it should be.", name)
 	}
-	out = GetTypeScheme(name, tReal)
+	out = GetType(name, tReal)
 	if !out.Equals(MkTypeArrow(tReal, tReal)) {
 		return fmt.Errorf("Error: %s: real > real not defined when it should be.", name)
 	}
@@ -405,15 +405,15 @@ func testUnaryTypes(name string) error {
 }
 
 func testUnaryProp(name string) error {
-	out := GetTypeScheme(name, tInt)
+	out := GetType(name, tInt)
 	if !out.Equals(MkTypeArrow(tInt, tProp)) {
 		return fmt.Errorf("Error: %s: int > o not defined when it should be.", name)
 	}
-	out = GetTypeScheme(name, tRat)
+	out = GetType(name, tRat)
 	if !out.Equals(MkTypeArrow(tRat, tProp)) {
 		return fmt.Errorf("Error: %s: rat > o not defined when it should be.", name)
 	}
-	out = GetTypeScheme(name, tReal)
+	out = GetType(name, tReal)
 	if !out.Equals(MkTypeArrow(tReal, tProp)) {
 		return fmt.Errorf("Error: %s: real > o not defined when it should be.", name)
 	}
@@ -422,15 +422,15 @@ func testUnaryProp(name string) error {
 }
 
 func testConversion(name string, outType TypeScheme) error {
-	out := GetTypeScheme(name, tInt)
+	out := GetType(name, tInt)
 	if !out.Equals(MkTypeArrow(tInt, outType)) {
 		return fmt.Errorf("Error: %s: int > int not defined when it should be.", name)
 	}
-	out = GetTypeScheme(name, tRat)
+	out = GetType(name, tRat)
 	if !out.Equals(MkTypeArrow(tRat, outType)) {
 		return fmt.Errorf("Error: %s: rat > int not defined when it should be.", name)
 	}
-	out = GetTypeScheme(name, tReal)
+	out = GetType(name, tReal)
 	if !out.Equals(MkTypeArrow(tReal, outType)) {
 		return fmt.Errorf("Error: %s: int > int not defined when it should be.", name)
 	}

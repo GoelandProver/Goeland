@@ -75,7 +75,6 @@ func SaveTypeScheme(name string, in TypeScheme, out TypeScheme) error {
 		if tScheme.Equals(tArrow) {
 			return nil
 		}
-		// $i-unification
 		return fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
 	}
 
@@ -91,14 +90,55 @@ func SaveTypeScheme(name string, in TypeScheme, out TypeScheme) error {
 	return nil
 }
 
+/* Saves the TypeScheme of a constant function */
+func SaveConstant(name string, out TypeScheme) error {
+	// Check if the constant is already saved in the context
+	typeSchemesMap.lock.Lock()
+	if arr, found := typeSchemesMap.tsMap[name]; found {
+		var err error
+		if !arr[0].out.Equals(out) {
+			err = fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
+		}
+		typeSchemesMap.lock.Unlock()
+		return err
+	}
+	
+	// Save the constant in the context
+	typeSchemesMap.tsMap[name] = []App{
+		{out: out, app: out},
+	}
+
+	typeSchemesMap.lock.Unlock()
+	return nil
+}
+
 /* Gets a TypeScheme from the map of schemes with the name. */
-func GetTypeScheme(name string, inArgs TypeScheme) TypeScheme {
-	if tScheme, _ := getSchemeFromArgs(name, inArgs); tScheme != nil {
+func GetType(name string, inArgs ...TypeScheme) TypeScheme {
+	if len(inArgs) == 0 {
+		return getConstantTypeScheme(name)
+	}
+	args := inArgs[0]
+
+	if tScheme, _ := getSchemeFromArgs(name, args); tScheme != nil {
 		return tScheme
 	} else {
 		// If it's not found, the type is inferred with $i
-		return MkTypeArrow(inArgs, MkTypeHint("i"))
+		return MkTypeArrow(args, MkTypeHint("i"))
 	}
+}
+
+/* Gets the */
+func getConstantTypeScheme(name string) TypeScheme {
+	var tScheme TypeScheme
+	typeSchemesMap.lock.Lock()
+	if typeSchemes, found := typeSchemesMap.tsMap[name]; found {
+		tScheme = typeSchemes[0].out
+	} else {
+		// If it's not found, the type is inferred with $i
+		tScheme = defaultType
+	}
+	typeSchemesMap.lock.Unlock()
+	return tScheme
 }
 
 /* Returns the TypeScheme from the name & inArgs if it exists in the map. Else, nil. true means fun name is in the map. */

@@ -57,6 +57,7 @@ type Form interface {
 	Copy() Form
 	Equals(Form) bool
 	GetMetas() MetaList
+	GetType() typing.TypeScheme
 }
 
 /* Symbol of predicate */
@@ -67,27 +68,23 @@ type Pred struct {
 	typeHint typing.TypeScheme
 }
 
-func (p Pred) GetID() Id {
-	return p.id.Copy().(Id)
-}
-
-func (p Pred) GetArgs() []Term {
-	return CopyTermList(p.args)
-}
-
-func (p Pred) GetTypeScheme() typing.TypeScheme {
-	return p.typeHint
-}
+func (p Pred) GetID() Id                  { return p.id.Copy().(Id) }
+func (p Pred) GetArgs() []Term            { return CopyTermList(p.args) }
+func (p Pred) GetType() typing.TypeScheme { return p.typeHint }
 
 /* Top (always true) */
 type Top struct {
 	index int
 }
 
+func (t Top) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
+
 /* Bot (always false) */
 type Bot struct {
 	index int
 }
+
+func (b Bot) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 /* Not(formula): negation of a formula */
 type Not struct {
@@ -95,9 +92,8 @@ type Not struct {
 	f     Form
 }
 
-func (n Not) GetForm() Form {
-	return n.f
-}
+func (n Not) GetForm() Form              { return n.f }
+func (n Not) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 /* And(formula list): conjunction of formulae */
 type And struct {
@@ -105,9 +101,8 @@ type And struct {
 	lf    FormList
 }
 
-func (a And) GetLF() FormList {
-	return a.lf.Copy()
-}
+func (a And) GetLF() FormList            { return a.lf.Copy() }
+func (a And) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 /* Or(formula list): disjunction of formulae */
 type Or struct {
@@ -115,9 +110,8 @@ type Or struct {
 	lf    FormList
 }
 
-func (o Or) GetLF() FormList {
-	return o.lf.Copy()
-}
+func (o Or) GetLF() FormList            { return o.lf.Copy() }
+func (o Or) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 /* Imp(f1,f2): f1 imply f2*/
 type Imp struct {
@@ -125,12 +119,9 @@ type Imp struct {
 	f1, f2 Form
 }
 
-func (i Imp) GetF1() Form {
-	return i.f1.Copy()
-}
-func (i Imp) GetF2() Form {
-	return i.f2.Copy()
-}
+func (i Imp) GetF1() Form                { return i.f1.Copy() }
+func (i Imp) GetF2() Form                { return i.f2.Copy() }
+func (i Imp) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 /* Equ(f1, f2): f1 equivalent to f2 */
 type Equ struct {
@@ -138,12 +129,9 @@ type Equ struct {
 	f1, f2 Form
 }
 
-func (e Equ) GetF1() Form {
-	return e.f1.Copy()
-}
-func (e Equ) GetF2() Form {
-	return e.f2.Copy()
-}
+func (e Equ) GetF1() Form                { return e.f1.Copy() }
+func (e Equ) GetF2() Form                { return e.f2.Copy() }
+func (e Equ) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 type Ex struct {
 	index    int
@@ -151,12 +139,9 @@ type Ex struct {
 	f        Form
 }
 
-func (e Ex) GetVarList() []Var {
-	return copyVarList(e.var_list)
-}
-func (e Ex) GetForm() Form {
-	return e.f.Copy()
-}
+func (e Ex) GetVarList() []Var          { return copyVarList(e.var_list) }
+func (e Ex) GetForm() Form              { return e.f.Copy() }
+func (e Ex) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 type All struct {
 	index    int
@@ -164,12 +149,9 @@ type All struct {
 	f        Form
 }
 
-func (a All) GetVarList() []Var {
-	return copyVarList(a.var_list)
-}
-func (a All) GetForm() Form {
-	return a.f.Copy()
-}
+func (a All) GetVarList() []Var          { return copyVarList(a.var_list) }
+func (a All) GetForm() Form              { return a.f.Copy() }
+func (a All) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 /*** Methods ***/
 
@@ -373,7 +355,7 @@ func (a All) GetIndex() int {
 
 /* Copy */
 func (p Pred) Copy() Form {
-	res := MakePred(p.GetIndex(), p.GetID(), p.GetArgs(), p.GetTypeScheme())
+	res := MakePred(p.GetIndex(), p.GetID(), p.GetArgs(), p.GetType())
 	return res
 }
 func (t Top) Copy() Form {
@@ -656,7 +638,7 @@ func ReplaceVarByTerm(f Form, old_symbol Var, new_symbol Term) Form {
 	switch nf := f.(type) {
 	case Pred:
 		// Be careful about the type here, the correctness of doing this has not been thoroughly checked.
-		return MakePred(f.GetIndex(), nf.GetID(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol), nf.GetTypeScheme())
+		return MakePred(f.GetIndex(), nf.GetID(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol), nf.GetType())
 	case Top:
 		return f
 	case Bot:

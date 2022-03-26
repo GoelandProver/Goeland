@@ -207,6 +207,13 @@ func MkTypeArrow(typeSchemes ...TypeScheme) TypeArrow {
 }
 
 /* Gets the out type of an arrow type scheme */
-func GetOutType(typeArrow TypeArrow) TypeScheme {
-	return typeArrow.types[len(typeArrow.types)-1]
+func GetOutType(typeScheme TypeScheme) TypeScheme {
+	// typeScheme may be a TypeHint if it comes from a constant.
+	switch t := typeScheme.(type) {
+	case TypeArrow:
+		return t.types[len(t.types)-1]
+	case TypeHint:
+		return t
+	}
+	return nil
 }

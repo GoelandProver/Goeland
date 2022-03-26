@@ -30,15 +30,14 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/****************/
-/*  context.go  */
-/****************/
+/**********************/
+/*  type_formulas.go  */
+/**********************/
 
 package polyrules
 
 /**
- * This file manages the typing global and local context for typing rules.
- * It is also used to properly type a formula after the first pass.
+ * This file is used to properly type a formula after the first pass.
  **/
 
 import (
@@ -46,8 +45,6 @@ import (
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
-
-// Contexte local + double passe du typage dans le fichier.
 
 /**
  * Types all terms of a formula :
@@ -57,9 +54,11 @@ import (
 func TypeFormula(form btypes.Form) btypes.Form {
 	var res btypes.Form
 
+	// No need to check if the pred has already a type: it shouldn't.
+	// This function is assumed to be called only once: after parsing the problem file.
 	switch newForm := form.(type) {
 	case btypes.Pred:
-		newTerms, typeScheme := typeAppTerms(newForm.GetArgs())
+		newTerms, typeScheme := typeAppTerms(newForm.GetID(), newForm.GetArgs())
 		res = btypes.MakePred(newForm.GetID(), newTerms, typeScheme)
 	case btypes.All, btypes.Ex:
 		res = typeQuantifiedFormula(newForm)
@@ -74,13 +73,15 @@ func TypeFormula(form btypes.Form) btypes.Form {
 	return res
 }
 
+/**
+ * Types a term and its subterms if it has any.
+ **/
 func typeTerm(term btypes.Term) btypes.Term {
-	switch newTerm := term.(type) {
-	case btypes.Fun:
-		newTerms, typeScheme := typeAppTerms(newTerm.GetArgs())
+	// Vars are already typed, there shouldn't be any metas but it's also
+	// typed, and IDs are filtered.
+	if newTerm, ok := term.(btypes.Fun); ok {
+		newTerms, typeScheme := typeAppTerms(newTerm.GetID(), newTerm.GetArgs())
 		term = btypes.MakeFun(newTerm.GetID(), newTerms, typeScheme)
-		// Vars are already typed, there shouldn't be any metas but it's also
-		// typed, and IDs are filtered.
 	}
 	return term
 }
@@ -100,9 +101,9 @@ func typeTerm(term btypes.Term) btypes.Term {
 func typeQuantifiedFormula(form btypes.Form) btypes.Form {
 	switch newForm := form.(type) {
 	case btypes.All:
-		return TypeFormula(newForm.GetForm())
+		return btypes.MakeAll(newForm.GetVarList(), TypeFormula(newForm.GetForm()))
 	case btypes.Ex:
-		return TypeFormula(newForm.GetForm())
+		return btypes.MakeEx(newForm.GetVarList(), TypeFormula(newForm.GetForm()))
 	}
 	return nil
 }
@@ -158,7 +159,7 @@ func typeFormList(formList btypes.FormList) btypes.FormList {
 /**
  * Infer the Type Scheme of the predicate by typing its terms.
  **/
-func typeAppTerms(terms []btypes.Term) ([]btypes.Term, typing.TypeScheme) {
+func typeAppTerms(id btypes.Id, terms []btypes.Term) ([]btypes.Term, typing.TypeScheme) {
 	var newTerms []btypes.Term
 
 	for _, term := range terms {
@@ -166,7 +167,11 @@ func typeAppTerms(terms []btypes.Term) ([]btypes.Term, typing.TypeScheme) {
 		newTerms = append(newTerms, t)
 	}
 
-	return newTerms, typing.MkTypeArrow(typeApp(newTerms), typing.DefaultPropType(0))
+	if len(newTerms) > 0 {
+		return newTerms, typing.GetType(id.GetName(), typeApp(newTerms))
+	} else {
+		return newTerms, typing.GetType(id.GetName())
+	}
 }
 
 /**
@@ -178,7 +183,7 @@ func typeApp(terms []btypes.Term) typing.TypeScheme {
 	for _, term := range terms {
 		switch tmpTerm := term.(type) {
 		case btypes.Fun:
-			types = append(types, typing.GetOutType(tmpTerm.GetTypeHint().(typing.TypeArrow)))
+			types = append(types, typing.GetOutType(tmpTerm.GetTypeHint()))
 		case btypes.Var:
 			types = append(types, tmpTerm.GetTypeHint())
 		// There shouldn't be Metas yet.

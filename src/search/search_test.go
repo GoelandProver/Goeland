@@ -324,7 +324,7 @@ func TestSyntaxicTransformationOnFormula(t *testing.T) {
 	f1_inst, metas := Instantiate(form, 0)
 
 	if pred, ok := f1_inst.(basictypes.Pred); ok {
-		if !pred.GetTypeScheme().Equals(polymorphism.DefaultPropType(1)) {
+		if !pred.GetType().Equals(polymorphism.DefaultPropType(1)) {
 			t.Errorf("Wrong default type for 1-arity predicate.")
 		}
 	}
@@ -338,7 +338,7 @@ func TestSyntaxicTransformationOnFormula(t *testing.T) {
 		t.Errorf("Wrong amount of metas have been created")
 	} else {
 		if pred, ok := f2_sko.(basictypes.Pred); ok {
-			if !pred.GetTypeScheme().Equals(polymorphism.MkTypeArrow(polymorphism.MkTypeCross(polymorphism.DefaultType(), polymorphism.DefaultType()), polymorphism.MkTypeHint("o"))) {
+			if !pred.GetType().Equals(polymorphism.MkTypeArrow(polymorphism.MkTypeCross(polymorphism.DefaultType(), polymorphism.DefaultType()), polymorphism.MkTypeHint("o"))) {
 				t.Errorf("Wrong type scheme for default predicate.")
 			}
 			// #0 is a function with 1 argument and #1 a meta
@@ -371,7 +371,7 @@ func TestSyntaxicTransformationOnTypedFormula(t *testing.T) {
 	f1_inst, metas := Instantiate(form, 0)
 
 	if pred, ok := f1_inst.(basictypes.Pred); ok {
-		if !pred.GetTypeScheme().Equals(polymorphism.DefaultPropType(1)) {
+		if !pred.GetType().Equals(polymorphism.DefaultPropType(1)) {
 			t.Errorf("Wrong default type for 1-arity predicate.")
 		}
 	}
@@ -385,7 +385,7 @@ func TestSyntaxicTransformationOnTypedFormula(t *testing.T) {
 		t.Errorf("Wrong amount of metas have been created")
 	} else {
 		if pred, ok := f2_sko.(basictypes.Pred); ok {
-			if !pred.GetTypeScheme().Equals(polymorphism.MkTypeArrow(polymorphism.MkTypeCross(tInt, tInt), tProp)) {
+			if !pred.GetType().Equals(polymorphism.MkTypeArrow(polymorphism.MkTypeCross(tInt, tInt), tProp)) {
 				t.Errorf("Wrong type scheme for default predicate.")
 			}
 			// #0 is a function with 1 argument and #1 a meta

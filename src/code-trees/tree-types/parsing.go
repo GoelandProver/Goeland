@@ -36,6 +36,7 @@
 package treetypes
 
 import (
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -44,24 +45,12 @@ type TermForm struct {
 	t     basictypes.Term
 }
 
-func (tf TermForm) GetTerm() basictypes.Term {
-	return tf.t.Copy()
-}
-func (tf TermForm) GetIndex() int {
-	return tf.index
-}
-
-func (tf TermForm) ToString() string {
-	return tf.t.ToString()
-}
-
-func (t TermForm) ToStringWithSuffixMeta(string) string {
-	return t.ToString()
-}
-
-func (t TermForm) Copy() basictypes.Form {
-	return makeTermForm(t.GetIndex(), t.GetTerm())
-}
+func (tf TermForm) GetTerm() basictypes.Term            { return tf.t.Copy() }
+func (tf TermForm) GetIndex() int                       { return tf.index }
+func (tf TermForm) ToString() string                    { return tf.t.ToString() }
+func (t TermForm) ToStringWithSuffixMeta(string) string { return t.ToString() }
+func (t TermForm) Copy() basictypes.Form                { return makeTermForm(t.GetTerm()) }
+func (t TermForm) GetType() typing.TypeScheme           { return typing.DefaultPropType(0) }
 
 func (t TermForm) Equals(t2 basictypes.Form) bool {
 	switch nt := t2.(type) {
