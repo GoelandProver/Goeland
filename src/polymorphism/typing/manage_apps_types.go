@@ -63,6 +63,11 @@ var typeSchemesMap struct {
 	lock  sync.Mutex
 }
 
+const (
+	Fun = iota 
+	Prop = iota
+)
+
 /* Saves a TypeScheme in the map of schemes. */
 func SaveTypeScheme(name string, in TypeScheme, out TypeScheme) error {
 	tArrow := MkTypeArrow(in, out)
@@ -112,7 +117,28 @@ func SaveConstant(name string, out TypeScheme) error {
 	return nil
 }
 
-/* Gets a TypeScheme from the map of schemes with the name. */
+/* Gets the TypeScheme from the global context. Returns default type if it doesn't exists. */
+func GetTypeOrDefault(name string, outDefault int, inArgs ...TypeScheme) TypeScheme {
+	typeScheme := GetType(name, inArgs...)
+	if typeScheme == nil {
+		var size int 
+		if len(inArgs) == 0 {
+			size = 0
+		} else {
+			size = inArgs[0].size()
+		}
+
+		switch outDefault {
+		case Fun:
+			return DefaultFunType(size)
+		case Prop:
+			return DefaultPropType(size)
+		}
+	}
+	return typeScheme
+}
+
+/* Gets a TypeScheme from the map of schemes with the name. Nil if it doesn't exists in the global context. */
 func GetType(name string, inArgs ...TypeScheme) TypeScheme {
 	if len(inArgs) == 0 {
 		return getConstantTypeScheme(name)
@@ -122,12 +148,11 @@ func GetType(name string, inArgs ...TypeScheme) TypeScheme {
 	if tScheme, _ := getSchemeFromArgs(name, args); tScheme != nil {
 		return tScheme
 	} else {
-		// If it's not found, the type is inferred with $i
-		return MkTypeArrow(args, MkTypeHint("i"))
+		return nil
 	}
 }
 
-/* Gets the */
+/* Gets the constants saved in the context */
 func getConstantTypeScheme(name string) TypeScheme {
 	var tScheme TypeScheme
 	typeSchemesMap.lock.Lock()

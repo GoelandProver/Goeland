@@ -58,6 +58,7 @@ type TypeScheme interface {
 	/* Non-exported methods */
 	isScheme()
 	toList() []uint64
+	size() int
 
 	/* Exported methods */
 	ToString() string
@@ -77,6 +78,7 @@ type TypeHint struct {
 
 func (th TypeHint) isScheme()        {}
 func (th TypeHint) toList() []uint64 { return []uint64{th.uid} }
+func (th TypeHint) size() int 		 { return 1 }
 
 func (th TypeHint) ToString() string           { return th.name }
 func (th TypeHint) UID() uint64                { return th.euid }
@@ -93,8 +95,10 @@ type TypeCross struct {
 	types []TypeScheme
 }
 
-func (tc TypeCross) isScheme()                  {}
-func (tc TypeCross) toList() []uint64           { return subtypesUID(tc.types) }
+func (tc TypeCross) isScheme()        {}
+func (tc TypeCross) toList() []uint64 { return subtypesUID(tc.types) }
+func (tc TypeCross) size() int 		  { return getSize(tc.types) }
+
 func (tc TypeCross) ToString() string           { return "(" + strings.Join(subtypesStr(tc.types), " * ") + ")" }
 func (tc TypeCross) UID() uint64                { return tc.uid }
 func (tc TypeCross) Equals(oth TypeScheme) bool { return oth.UID() == tc.UID() }
@@ -110,8 +114,10 @@ type TypeArrow struct {
 	types []TypeScheme
 }
 
-func (ta TypeArrow) isScheme()                  {}
-func (ta TypeArrow) toList() []uint64           { return subtypesUID(ta.types) }
+func (ta TypeArrow) isScheme()        {}
+func (ta TypeArrow) toList() []uint64 { return subtypesUID(ta.types) }
+func (ta TypeArrow) size() int 		  { return getSize(ta.types) }
+
 func (ta TypeArrow) ToString() string           { return "(" + strings.Join(subtypesStr(ta.types), " > ") + ")" }
 func (ta TypeArrow) UID() uint64                { return ta.uid }
 func (ta TypeArrow) Equals(oth TypeScheme) bool { return oth.UID() == ta.UID() }
@@ -132,6 +138,14 @@ func subtypesUID(types []TypeScheme) []uint64 {
 		uidList = append(uidList, type_.UID())
 	}
 	return uidList
+}
+
+func getSize(types []TypeScheme) int {
+	sum := 0
+	for _, type_ := range types {
+		sum += type_.size()
+	}
+	return sum
 }
 
 /**

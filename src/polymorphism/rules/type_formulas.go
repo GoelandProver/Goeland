@@ -58,7 +58,7 @@ func TypeFormula(form btypes.Form) btypes.Form {
 	// This function is assumed to be called only once: after parsing the problem file.
 	switch newForm := form.(type) {
 	case btypes.Pred:
-		newTerms, typeScheme := typeAppTerms(newForm.GetID(), newForm.GetArgs())
+		newTerms, typeScheme := typeAppTerms(newForm.GetID(), newForm.GetArgs(), typing.Prop)
 		res = btypes.MakePred(newForm.GetID(), newTerms, typeScheme)
 	case btypes.All, btypes.Ex:
 		res = typeQuantifiedFormula(newForm)
@@ -80,7 +80,7 @@ func typeTerm(term btypes.Term) btypes.Term {
 	// Vars are already typed, there shouldn't be any metas but it's also
 	// typed, and IDs are filtered.
 	if newTerm, ok := term.(btypes.Fun); ok {
-		newTerms, typeScheme := typeAppTerms(newTerm.GetID(), newTerm.GetArgs())
+		newTerms, typeScheme := typeAppTerms(newTerm.GetID(), newTerm.GetArgs(), typing.Fun)
 		term = btypes.MakeFun(newTerm.GetID(), newTerms, typeScheme)
 	}
 	return term
@@ -159,7 +159,7 @@ func typeFormList(formList btypes.FormList) btypes.FormList {
 /**
  * Infer the Type Scheme of the predicate by typing its terms.
  **/
-func typeAppTerms(id btypes.Id, terms []btypes.Term) ([]btypes.Term, typing.TypeScheme) {
+func typeAppTerms(id btypes.Id, terms []btypes.Term, outType int) ([]btypes.Term, typing.TypeScheme) {
 	var newTerms []btypes.Term
 
 	for _, term := range terms {
@@ -168,9 +168,9 @@ func typeAppTerms(id btypes.Id, terms []btypes.Term) ([]btypes.Term, typing.Type
 	}
 
 	if len(newTerms) > 0 {
-		return newTerms, typing.GetType(id.GetName(), typeApp(newTerms))
+		return newTerms, typing.GetTypeOrDefault(id.GetName(), outType, typeApp(newTerms))
 	} else {
-		return newTerms, typing.GetType(id.GetName())
+		return newTerms, typing.GetTypeOrDefault(id.GetName(), outType)
 	}
 }
 

@@ -77,12 +77,14 @@ func TestSimpleDoublePass(t *testing.T) {
 	// Double pass pred
 	newPred := TypeFormula(pred)
 
-	// Pred should be of type (int * int) -> o
-	if !newPred.GetType().Equals(typing.MkTypeArrow(
+	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
-	)) {
-		t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
+	)
+	// Pred should be of type (int * int) -> o
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) || 
+	   !newPred.GetType().Equals(expected) {
+		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newPred.GetType().ToString())
 	}
 }
 
@@ -99,15 +101,20 @@ func TestNegDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Not); !ok {
 		t.Fatalf("Double pass should've returned a negation. Actual: %s", newPred.ToString())
 	}
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
+				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+	}
 
 	newPred = newPred.(btypes.Not).GetForm()
 
-	// Pred should be of type (int * int) -> o
-	if !newPred.GetType().Equals(typing.MkTypeArrow(
+	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
-	)) {
-		t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
+	)
+	// Pred should be of type (int * int) -> o
+	if !newPred.GetType().Equals(expected) {
+		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newPred.GetType().ToString())
 	}
 }
 
@@ -130,22 +137,24 @@ func TestBinaryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Imp); !ok {
 		t.Fatalf("Double pass should've returned an implication. Actual: %s", newPred.ToString())
 	}
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
+				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+	}
 
 	F1 := newPred.(btypes.Imp).GetF1()
 	F2 := newPred.(btypes.Imp).GetF2()
 
+	expected := typing.MkTypeArrow(
+		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
+		typing.DefaultPropType(0),
+	)
 	// Pred should be of type (int * int) -> o
-	if !F1.GetType().Equals(typing.MkTypeArrow(
-		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
-	)) {
-		t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
+	if !F1.GetType().Equals(expected) {
+		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), F1.GetType().ToString())
 	}
-	if !F2.GetType().Equals(typing.MkTypeArrow(
-		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
-	)) {
-		t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
+	if !F2.GetType().Equals(expected) {
+		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), F2.GetType().ToString())
 	}
 
 	// P(2, 2) <=> P(3, 3)
@@ -166,22 +175,20 @@ func TestBinaryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Equ); !ok {
 		t.Fatalf("Double pass should've returned an equivalence. Actual: %s", newPred.ToString())
 	}
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
+				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+	}
 
 	F1 = newPred.(btypes.Equ).GetF1()
 	F2 = newPred.(btypes.Equ).GetF2()
 
 	// Pred should be of type (int * int) -> o
-	if !F1.GetType().Equals(typing.MkTypeArrow(
-		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
-	)) {
-		t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
+	if !F1.GetType().Equals(expected) {
+		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), F1.GetType().ToString())
 	}
-	if !F2.GetType().Equals(typing.MkTypeArrow(
-		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
-	)) {
-		t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
+	if !F2.GetType().Equals(expected) {
+		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), F2.GetType().ToString())
 	}
 }
 
@@ -201,15 +208,20 @@ func TestQuantDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.All); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	} 
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
+				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+	}
 
 	newForm := newPred.(btypes.All).GetForm()
 
-	// Pred should be of type (int * int) -> o
-	if !newForm.GetType().Equals(typing.MkTypeArrow(
+	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
-	)) {
-		t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
+	)
+	// Pred should be of type (int * int) -> o
+	if !newForm.GetType().Equals(expected) {
+		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newForm.GetType().ToString())
 	}
 
 	// exists x y : int, P(x, y)
@@ -224,15 +236,16 @@ func TestQuantDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Ex); !ok {
 		t.Fatalf("Double pass should've returned an existential quantifier. Actual: %s", newPred.ToString())
 	}
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
+				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+	}
 
 	newForm = newPred.(btypes.Ex).GetForm()
 
 	// Pred should be of type (int * int) -> o
-	if !newForm.GetType().Equals(typing.MkTypeArrow(
-		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
-	)) {
-		t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
+	if !newForm.GetType().Equals(expected) {
+		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newForm.GetType().ToString())
 	}
 }
 
@@ -254,16 +267,21 @@ func TestNAryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Or); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
+				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+	}
 
 	newForms := newPred.(btypes.Or).GetLF()
 
+	expected := typing.MkTypeArrow(
+		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
+		typing.DefaultPropType(0),
+	)
 	for _, newForm := range newForms {
 		// Pred should be of type (int * int) -> o
-		if !newForm.GetType().Equals(typing.MkTypeArrow(
-			typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-			typing.DefaultPropType(0),
-		)) {
-			t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
+		if !newForm.GetType().Equals(expected) {
+			t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newForm.GetType().ToString())
 		}
 	}
 
@@ -282,16 +300,35 @@ func TestNAryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.And); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
+				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+	}
 
 	newForms = newPred.(btypes.And).GetLF()
 
 	for _, newForm := range newForms {
 		// Pred should be of type (int * int) -> o
-		if !newForm.GetType().Equals(typing.MkTypeArrow(
-			typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-			typing.DefaultPropType(0),
-		)) {
-			t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
+		if !newForm.GetType().Equals(expected) {
+			t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newForm.GetType().ToString())
 		}
+	}
+}
+
+// What happens if I try to type something not in the global context ?
+func TestTypingNotInGlobalContext(t *testing.T) {
+	// Q(2, 3)
+	pred := btypes.MakePred(btypes.MakerId("Q"), []btypes.Term{
+		btypes.MakeFun(btypes.MakerId("2"), []btypes.Term{}),
+		btypes.MakeFun(btypes.MakerId("3"), []btypes.Term{}),
+	})
+
+	// Double pass pred
+	newPred := TypeFormula(pred)
+
+	expected := typing.DefaultPropType(len(pred.GetArgs()))
+	// Pred should be of type (i * i) -> o
+	if !newPred.GetType().Equals(expected) {
+		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newPred.GetType().ToString())
 	}
 }

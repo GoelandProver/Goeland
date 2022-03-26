@@ -263,8 +263,8 @@ func TestPolymorphicFunctions(t *testing.T) {
 		t.Fatalf("Error: couldn't retrieve previously entered type scheme in map.")
 	}
 
-	if tScheme := GetType("in", MkTypeCross(tInt, tInt)); tScheme == nil {
-		t.Fatalf("Error: couldn't infer type of scheme not entered in the map.")
+	if tScheme := GetType("in", MkTypeCross(tInt, tInt)); tScheme != nil {
+		t.Fatalf("Error: infered type not in global context.")
 	}
 }
 
