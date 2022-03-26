@@ -78,7 +78,7 @@ func TestSimpleDoublePass(t *testing.T) {
 	newPred := TypeFormula(pred)
 
 	// Pred should be of type (int * int) -> o
-	if !newPred.(btypes.Pred).GetType().Equals(typing.MkTypeArrow(
+	if !newPred.GetType().Equals(typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
 	)) {
@@ -103,7 +103,7 @@ func TestNegDoublePass(t *testing.T) {
 	newPred = newPred.(btypes.Not).GetForm()
 
 	// Pred should be of type (int * int) -> o
-	if !newPred.(btypes.Pred).GetType().Equals(typing.MkTypeArrow(
+	if !newPred.GetType().Equals(typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
 	)) {
@@ -135,13 +135,13 @@ func TestBinaryDoublePass(t *testing.T) {
 	F2 := newPred.(btypes.Imp).GetF2()
 
 	// Pred should be of type (int * int) -> o
-	if !F1.(btypes.Pred).GetType().Equals(typing.MkTypeArrow(
+	if !F1.GetType().Equals(typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
 	)) {
 		t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
 	}
-	if !F2.(btypes.Pred).GetType().Equals(typing.MkTypeArrow(
+	if !F2.GetType().Equals(typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
 	)) {
@@ -171,13 +171,13 @@ func TestBinaryDoublePass(t *testing.T) {
 	F2 = newPred.(btypes.Equ).GetF2()
 
 	// Pred should be of type (int * int) -> o
-	if !F1.(btypes.Pred).GetType().Equals(typing.MkTypeArrow(
+	if !F1.GetType().Equals(typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
 	)) {
 		t.Errorf("Double pass didn't succeed. Actual: %s", pred.GetType().ToString())
 	}
-	if !F2.(btypes.Pred).GetType().Equals(typing.MkTypeArrow(
+	if !F2.GetType().Equals(typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
 	)) {
@@ -205,7 +205,7 @@ func TestQuantDoublePass(t *testing.T) {
 	newForm := newPred.(btypes.All).GetForm()
 
 	// Pred should be of type (int * int) -> o
-	if !newForm.(btypes.Pred).GetType().Equals(typing.MkTypeArrow(
+	if !newForm.GetType().Equals(typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
 	)) {
@@ -228,7 +228,7 @@ func TestQuantDoublePass(t *testing.T) {
 	newForm = newPred.(btypes.Ex).GetForm()
 
 	// Pred should be of type (int * int) -> o
-	if !newForm.(btypes.Pred).GetType().Equals(typing.MkTypeArrow(
+	if !newForm.GetType().Equals(typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultPropType(0),
 	)) {
@@ -259,7 +259,7 @@ func TestNAryDoublePass(t *testing.T) {
 
 	for _, newForm := range newForms {
 		// Pred should be of type (int * int) -> o
-		if !newForm.(btypes.Pred).GetType().Equals(typing.MkTypeArrow(
+		if !newForm.GetType().Equals(typing.MkTypeArrow(
 			typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 			typing.DefaultPropType(0),
 		)) {
@@ -287,7 +287,7 @@ func TestNAryDoublePass(t *testing.T) {
 
 	for _, newForm := range newForms {
 		// Pred should be of type (int * int) -> o
-		if !newForm.(btypes.Pred).GetType().Equals(typing.MkTypeArrow(
+		if !newForm.GetType().Equals(typing.MkTypeArrow(
 			typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 			typing.DefaultPropType(0),
 		)) {

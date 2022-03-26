@@ -388,84 +388,55 @@ func (a All) Copy() Form {
 
 /* Equals */
 func (p Pred) Equals(f Form) bool {
-	switch nf := f.(type) {
-	case Pred:
-		return nf.GetID().Equals(p.GetID()) && AreEqualsTermList(nf.GetArgs(), p.GetArgs())
-	default:
-		return false
-	}
+	oth, isPred := f.(Pred)
+	return isPred &&
+		oth.GetID().Equals(p.GetID()) &&
+		AreEqualsTermList(oth.GetArgs(), p.GetArgs()) &&
+		p.typeHint.Equals(oth.typeHint)
 }
-func (Top) Equals(f Form) bool {
-	switch f.(type) {
-	case Top:
-		return true
-	default:
-		return false
-	}
-}
-func (Bot) Equals(f Form) bool {
-	switch f.(type) {
-	case Bot:
-		return true
-	default:
-		return false
-	}
-}
+
+func (Top) Equals(f Form) bool { _, isTop := f.(Top); return isTop }
+func (Bot) Equals(f Form) bool { _, isBot := f.(Bot); return isBot }
+
 func (n Not) Equals(f Form) bool {
-	switch nf := f.(type) {
-	case Not:
-		return nf.GetForm().Equals(n.GetForm())
-	default:
-		return false
-	}
+	oth, isNot := f.(Not)
+	return isNot && oth.GetForm().Equals(n.GetForm())
 }
+
 func (a And) Equals(f Form) bool {
-	switch nf := f.(type) {
-	case And:
-		return nf.GetLF().Equals(a.GetLF())
-	default:
-		return false
-	}
+	oth, isAnd := f.(And)
+	return isAnd && oth.GetLF().Equals(a.GetLF())
 }
+
 func (o Or) Equals(f Form) bool {
-	switch nf := f.(type) {
-	case Or:
-		return nf.GetLF().Equals(o.GetLF())
-	default:
-		return false
-	}
+	oth, isOr := f.(Or)
+	return isOr && oth.GetLF().Equals(o.GetLF())
 }
+
 func (i Imp) Equals(f Form) bool {
-	switch nf := f.(type) {
-	case Imp:
-		return i.GetF1().Equals(nf.GetF1()) && i.GetF2().Equals(nf.GetF2())
-	default:
-		return false
-	}
+	oth, isImp := f.(Imp)
+	return isImp &&
+		i.GetF1().Equals(oth.GetF1()) && i.GetF2().Equals(oth.GetF2())
 }
+
 func (e Equ) Equals(f Form) bool {
-	switch nf := f.(type) {
-	case Equ:
-		return e.GetF1().Equals(nf.GetF1()) && e.GetF2().Equals(nf.GetF2())
-	default:
-		return false
-	}
+	oth, isEqu := f.(Equ)
+	return isEqu &&
+		e.GetF1().Equals(oth.GetF1()) && e.GetF2().Equals(oth.GetF2())
 }
+
 func (e Ex) Equals(f Form) bool {
-	switch nf := f.(type) {
-	case Ex:
-		return AreEqualsVarList(e.GetVarList(), nf.GetVarList()) && e.GetForm().Equals(nf.GetForm())
-	default:
-		return false
-	}
+	oth, isEx := f.(Ex)
+	return isEx &&
+		AreEqualsVarList(e.GetVarList(), oth.GetVarList()) &&
+		e.GetForm().Equals(oth.GetForm())
 }
+
 func (a All) Equals(f Form) bool {
-	switch nf := f.(type) {
-	case All:
-		return AreEqualsVarList(a.GetVarList(), nf.GetVarList()) && a.GetForm().Equals(nf.GetForm())
-	default:
-		return false
-	}
+	oth, isAll := f.(Ex)
+	return isAll &&
+		AreEqualsVarList(a.GetVarList(), oth.GetVarList()) &&
+		a.GetForm().Equals(oth.GetForm())
 }
 
 /* Get Metavariable of the formula */
@@ -481,15 +452,10 @@ func (p Pred) GetMetas() MetaList {
 	}
 	return res
 }
-func (Top) GetMetas() MetaList {
-	return MakeEmptyMetaList()
-}
-func (Bot) GetMetas() MetaList {
-	return MakeEmptyMetaList()
-}
-func (n Not) GetMetas() MetaList {
-	return n.GetForm().GetMetas()
-}
+func (Top) GetMetas() MetaList   { return MakeEmptyMetaList() }
+func (Bot) GetMetas() MetaList   { return MakeEmptyMetaList() }
+func (n Not) GetMetas() MetaList { return n.GetForm().GetMetas() }
+
 func (a And) GetMetas() MetaList {
 	res := MakeEmptyMetaList()
 	for _, f := range a.GetLF() {
@@ -497,6 +463,7 @@ func (a And) GetMetas() MetaList {
 	}
 	return res
 }
+
 func (o Or) GetMetas() MetaList {
 	res := MakeEmptyMetaList()
 	for _, f := range o.GetLF() {
@@ -504,18 +471,11 @@ func (o Or) GetMetas() MetaList {
 	}
 	return res
 }
-func (i Imp) GetMetas() MetaList {
-	return i.f1.GetMetas().Merge(i.f2.GetMetas())
-}
-func (e Equ) GetMetas() MetaList {
-	return e.f1.GetMetas().Merge(e.f2.GetMetas())
-}
-func (e Ex) GetMetas() MetaList {
-	return e.GetForm().GetMetas()
-}
-func (a All) GetMetas() MetaList {
-	return a.GetForm().GetMetas()
-}
+
+func (i Imp) GetMetas() MetaList { return i.f1.GetMetas().Merge(i.f2.GetMetas()) }
+func (e Equ) GetMetas() MetaList { return e.f1.GetMetas().Merge(e.f2.GetMetas()) }
+func (e Ex) GetMetas() MetaList  { return e.GetForm().GetMetas() }
+func (a All) GetMetas() MetaList { return a.GetForm().GetMetas() }
 
 /*** Functions ***/
 

@@ -39,7 +39,7 @@
 package basictypes
 
 import (
-	"strconv"
+	"fmt"
 
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -58,6 +58,10 @@ type Term interface {
 	GetMetas() MetaList
 	GetSubTerms() []Term
 	ReplaceSubTermBy(original_term, new_term Term) Term
+}
+
+type TypedTerm interface {
+	GetTypeHint() typing.TypeScheme
 }
 
 /* Variable (x,y under ForAll or Exists) */
@@ -91,54 +95,29 @@ type Fun struct {
 }
 
 /* GetTypeHint */
-func (v Var) GetTypeHint() typing.TypeScheme {
-	return v.typeHint
-}
-func (m Meta) GetTypeHint() typing.TypeScheme {
-	return m.typeHint
-}
-func (f Fun) GetTypeHint() typing.TypeScheme {
-	return f.typeHint
-}
+func (v Var) GetTypeHint() typing.TypeScheme  { return v.typeHint }
+func (m Meta) GetTypeHint() typing.TypeScheme { return m.typeHint }
+func (f Fun) GetTypeHint() typing.TypeScheme  { return f.typeHint }
 
 /* GetIndex */
-func (v Var) GetIndex() int {
-	return v.index
-}
-func (m Meta) GetIndex() int {
-	return m.index
-}
-func (i Id) GetIndex() int {
-	return i.index
-}
-func (f Fun) GetIndex() int {
-	return f.GetID().GetIndex()
-}
+func (v Var) GetIndex() int  { return v.index }
+func (m Meta) GetIndex() int { return m.index }
+func (i Id) GetIndex() int   { return i.index }
+func (f Fun) GetIndex() int  { return f.GetID().GetIndex() }
 
 /* GetName */
-func (v Var) GetName() string {
-	return v.name
-}
-func (m Meta) GetName() string {
-	return m.name
-}
-func (i Id) GetName() string {
-	return i.name
-}
-func (f Fun) GetName() string {
-	return f.GetID().GetName()
-}
+func (v Var) GetName() string  { return v.name }
+func (m Meta) GetName() string { return m.name }
+func (i Id) GetName() string   { return i.name }
+func (f Fun) GetName() string  { return f.GetID().GetName() }
 
 /* ToString */
-func (v Var) ToString() string {
-	return v.GetName() + "_" + strconv.Itoa(v.GetIndex())
-}
+func (v Var) ToString() string { return fmt.Sprintf("%s_%d", v.GetName(), v.GetIndex()) }
 func (m Meta) ToString() string {
-	return m.GetName() + "_" + strconv.Itoa(m.GetIndex()) + "_" + strconv.Itoa(m.GetFormula())
+	return fmt.Sprintf("%s_%d_%d", m.GetName(), m.GetIndex(), m.GetFormula())
 }
-func (i Id) ToString() string {
-	return i.GetName() //+ "_" + strconv.Itoa(i.GetIndex())
-}
+func (i Id) ToString() string { return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex()) }
+
 func (f Fun) ToString() string {
 	s_res := f.GetID().ToString()
 	if len(f.args) > 0 {
@@ -157,15 +136,10 @@ func (f Fun) ToString() string {
 }
 
 /* ToStringWithSuffixMeta */
-func (v Var) ToStringWithSuffixMeta(string) string {
-	return v.ToString()
-}
-func (m Meta) ToStringWithSuffixMeta(suffix string) string {
-	return m.ToString() + suffix
-}
-func (i Id) ToStringWithSuffixMeta(string) string {
-	return i.ToString()
-}
+func (v Var) ToStringWithSuffixMeta(string) string         { return v.ToString() }
+func (m Meta) ToStringWithSuffixMeta(suffix string) string { return m.ToString() + suffix }
+func (i Id) ToStringWithSuffixMeta(string) string          { return i.ToString() }
+
 func (f Fun) ToStringWithSuffixMeta(suffix string) string {
 	s_res := f.GetID().GetName()
 	if len(f.args) > 0 {
@@ -185,109 +159,73 @@ func (f Fun) ToStringWithSuffixMeta(suffix string) string {
 
 /* IsMeta */
 /* Check if a term is a meta */
-func (v Var) IsMeta() bool {
-	return false
-}
-func (m Meta) IsMeta() bool {
-	return true
-}
-func (i Id) IsMeta() bool {
-	return false
-}
-func (f Fun) IsMeta() bool {
-	return false
-}
+func (v Var) IsMeta() bool  { return false }
+func (m Meta) IsMeta() bool { return true }
+func (i Id) IsMeta() bool   { return false }
+func (f Fun) IsMeta() bool  { return false }
 
 /* IsFun */
 /* Check is a term is a fun */
-func (v Var) IsFun() bool {
-	return false
-}
-func (m Meta) IsFun() bool {
-	return false
-}
-func (i Id) IsFun() bool {
-	return false
-}
-func (f Fun) IsFun() bool {
-	return true
-}
+func (v Var) IsFun() bool  { return false }
+func (m Meta) IsFun() bool { return false }
+func (i Id) IsFun() bool   { return false }
+func (f Fun) IsFun() bool  { return true }
 
 /* Equals */
 func (v Var) Equals(t Term) bool {
-	switch tf := t.(type) {
-	case Var:
-		return (tf.GetIndex() == v.GetIndex()) && (tf.GetName() == v.GetName())
-	default:
-		return false
-	}
+	oth, isVar := t.(Var)
+	return isVar &&
+		(oth.GetIndex() == v.GetIndex()) &&
+		(oth.GetName() == v.GetName()) &&
+		(v.typeHint.Equals(oth.typeHint))
 }
+
 func (m Meta) Equals(t Term) bool {
-	switch tf := t.(type) {
-	case Meta:
-		return (tf.GetIndex() == m.GetIndex()) && (tf.GetName() == m.GetName()) && (tf.GetFormula() == m.GetFormula())
-	default:
-		return false
-	}
+	oth, isMeta := t.(Meta)
+	return isMeta &&
+		(oth.GetIndex() == m.GetIndex()) &&
+		(oth.GetName() == m.GetName()) &&
+		(oth.GetFormula() == m.GetFormula()) &&
+		(m.typeHint.Equals(oth.typeHint))
 }
+
 func (i Id) Equals(t Term) bool {
-	switch tf := t.(type) {
-	case Id:
-		return (tf.GetIndex() == i.GetIndex()) && (tf.GetName() == i.GetName())
-	default:
-		return false
-	}
+	oth, isId := t.(Id)
+	return isId &&
+		(oth.GetIndex() == i.GetIndex()) &&
+		(oth.GetName() == i.GetName())
 }
+
 func (f Fun) Equals(t Term) bool {
-	switch tf := t.(type) {
-	case Fun:
-		return tf.GetID() == f.GetID() && AreEqualsTermList(tf.GetArgs(), f.GetArgs())
-	default:
-		return false
-	}
+	oth, isFun := t.(Fun)
+	return isFun &&
+		(oth.GetID() == f.GetID()) &&
+		AreEqualsTermList(oth.GetArgs(), f.GetArgs()) &&
+		f.typeHint.Equals(oth.typeHint)
 }
 
 /* Copy */
 /* Copy a term */
-func (v Var) Copy() Term {
-	return MakeVar(v.GetIndex(), v.GetName(), v.GetTypeHint())
-}
+func (v Var) Copy() Term { return MakeVar(v.GetIndex(), v.GetName(), v.GetTypeHint()) }
 func (m Meta) Copy() Term {
 	return MakeMeta(m.GetIndex(), m.GetName(), m.GetFormula(), m.GetTypeHint())
 }
-func (i Id) Copy() Term {
-	return MakeId(i.GetIndex(), i.GetName())
-}
-func (f Fun) Copy() Term {
-	return MakeFun(f.GetP(), f.GetArgs(), f.GetTypeHint())
-}
+func (i Id) Copy() Term  { return MakeId(i.GetIndex(), i.GetName()) }
+func (f Fun) Copy() Term { return MakeFun(f.GetP(), f.GetArgs(), f.GetTypeHint()) }
 
 /* ToMeta */
 /* Make a meta from a term (empty meta if not possible) */
-func (Var) ToMeta() Meta {
-	return Meta{}
-}
-func (m Meta) ToMeta() Meta {
-	return m
-}
-func (Id) ToMeta() Meta {
-	return Meta{}
-}
-func (Fun) ToMeta() Meta {
-	return Meta{}
-}
+func (Var) ToMeta() Meta    { return Meta{} }
+func (m Meta) ToMeta() Meta { return m }
+func (Id) ToMeta() Meta     { return Meta{} }
+func (Fun) ToMeta() Meta    { return Meta{} }
 
 /* GetMetas */
 /* Get all the metas of the term. */
-func (Var) GetMetas() MetaList {
-	return MetaList{}
-}
-func (m Meta) GetMetas() MetaList {
-	return MetaList{m}
-}
-func (Id) GetMetas() MetaList {
-	return MetaList{}
-}
+func (Var) GetMetas() MetaList    { return MetaList{} }
+func (m Meta) GetMetas() MetaList { return MetaList{m} }
+func (Id) GetMetas() MetaList     { return MetaList{} }
+
 func (f Fun) GetMetas() MetaList {
 	metas := MetaList{}
 	for _, arg := range f.GetArgs() {
@@ -342,38 +280,20 @@ func (f Fun) ReplaceSubTermBy(original_term, new_term Term) Term {
 }
 
 /* Getters */
-func (m Meta) GetFormula() int {
-	return m.formula
-}
-
-func (f Fun) GetID() Id {
-	return f.p.Copy().(Id)
-}
-
-func (f Fun) GetP() Id {
-	return f.p.Copy().(Id)
-}
-
-func (f Fun) GetArgs() []Term {
-	return CopyTermList(f.args)
-}
+func (m Meta) GetFormula() int { return m.formula }
+func (f Fun) GetID() Id        { return f.p.Copy().(Id) }
+func (f Fun) GetP() Id         { return f.p.Copy().(Id) }
+func (f Fun) GetArgs() []Term  { return CopyTermList(f.args) }
 
 /* Setters */
-func (f *Fun) SetArgs(tl []Term) {
-	f.args = tl
-}
+func (f *Fun) SetArgs(tl []Term) { f.args = tl }
 
 /*** Makers ***/
 
-func MakeId(i int, s string) Id {
-	return Id{i, s}
-}
-func MakeVar(i int, s string, t ...typing.TypeScheme) Var {
-	return Var{i, s, getType(t)}
-}
-func MakeMeta(i int, s string, f int, t ...typing.TypeScheme) Meta {
-	return Meta{i, s, f, getType(t)}
-}
+func MakeId(i int, s string) Id                                    { return Id{i, s} }
+func MakeVar(i int, s string, t ...typing.TypeScheme) Var          { return Var{i, s, getType(t)} }
+func MakeMeta(i int, s string, f int, t ...typing.TypeScheme) Meta { return Meta{i, s, f, getType(t)} }
+
 func MakeFun(p Id, args []Term, t ...typing.TypeScheme) Fun {
 	if len(t) == 1 {
 		return Fun{p, args, t[0]}
