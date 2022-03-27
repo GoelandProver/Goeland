@@ -91,8 +91,11 @@ type Meta struct {
 type Fun struct {
 	p        Id
 	args     []Term
+	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
 }
+
+func (f Fun) GetTypeVars() []typing.TypeApp { return f.typeVars }
 
 /* GetTypeHint */
 func (v Var) GetTypeHint() typing.TypeScheme  { return v.typeHint }
@@ -210,8 +213,10 @@ func (v Var) Copy() Term { return MakeVar(v.GetIndex(), v.GetName(), v.GetTypeHi
 func (m Meta) Copy() Term {
 	return MakeMeta(m.GetIndex(), m.GetName(), m.GetFormula(), m.GetTypeHint())
 }
-func (i Id) Copy() Term  { return MakeId(i.GetIndex(), i.GetName()) }
-func (f Fun) Copy() Term { return MakeFun(f.GetP(), f.GetArgs(), f.GetTypeHint()) }
+func (i Id) Copy() Term { return MakeId(i.GetIndex(), i.GetName()) }
+func (f Fun) Copy() Term {
+	return MakeFun(f.GetP(), f.GetArgs(), typing.CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
+}
 
 /* ToMeta */
 /* Make a meta from a term (empty meta if not possible) */
@@ -294,11 +299,11 @@ func MakeId(i int, s string) Id                                    { return Id{i
 func MakeVar(i int, s string, t ...typing.TypeScheme) Var          { return Var{i, s, getType(t)} }
 func MakeMeta(i int, s string, f int, t ...typing.TypeScheme) Meta { return Meta{i, s, f, getType(t)} }
 
-func MakeFun(p Id, args []Term, t ...typing.TypeScheme) Fun {
+func MakeFun(p Id, args []Term, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
 	if len(t) == 1 {
-		return Fun{p, args, t[0]}
+		return Fun{p, args, typeVars, t[0]}
 	} else {
-		return Fun{p, args, typing.DefaultFunType(len(args))}
+		return Fun{p, args, typeVars, typing.DefaultFunType(len(args))}
 	}
 }
 

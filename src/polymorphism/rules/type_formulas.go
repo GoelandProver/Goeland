@@ -59,7 +59,7 @@ func TypeFormula(form btypes.Form) btypes.Form {
 	switch newForm := form.(type) {
 	case btypes.Pred:
 		newTerms, typeScheme := typeAppTerms(newForm.GetID(), newForm.GetArgs(), typing.Prop)
-		res = btypes.MakePred(newForm.GetID(), newTerms, typeScheme)
+		res = btypes.MakePred(newForm.GetID(), newTerms, []typing.TypeApp{}, typeScheme)
 	case btypes.All, btypes.Ex:
 		res = typeQuantifiedFormula(newForm)
 	case btypes.Imp, btypes.Equ:
@@ -81,7 +81,7 @@ func typeTerm(term btypes.Term) btypes.Term {
 	// typed, and IDs are filtered.
 	if newTerm, ok := term.(btypes.Fun); ok {
 		newTerms, typeScheme := typeAppTerms(newTerm.GetID(), newTerm.GetArgs(), typing.Fun)
-		term = btypes.MakeFun(newTerm.GetID(), newTerms, typeScheme)
+		term = btypes.MakeFun(newTerm.GetID(), newTerms, []typing.TypeApp{}, typeScheme)
 	}
 	return term
 }
@@ -177,15 +177,16 @@ func typeAppTerms(id btypes.Id, terms []btypes.Term, outType int) ([]btypes.Term
 /**
  * Takes all the types of the terms and makes a cross product of everything
  **/
-func typeApp(terms []btypes.Term) typing.TypeScheme {
-	var types []typing.TypeScheme
+func typeApp(terms []btypes.Term) typing.TypeApp {
+	var types []typing.TypeApp
 
 	for _, term := range terms {
 		switch tmpTerm := term.(type) {
 		case btypes.Fun:
 			types = append(types, typing.GetOutType(tmpTerm.GetTypeHint()))
 		case btypes.Var:
-			types = append(types, tmpTerm.GetTypeHint())
+			// Variables can't be of type TypeScheme, so this line shouldn't fail.
+			types = append(types, tmpTerm.GetTypeHint().(typing.TypeApp))
 		// There shouldn't be Metas yet.
 		case btypes.Meta:
 			global.PrintDebug("PTA", "Found a Meta while typing everything.")

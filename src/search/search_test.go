@@ -61,7 +61,7 @@ func TestMain(m *testing.M) {
 func TestSimpleExistSkolemization(t *testing.T) {
 	// exists x. P(x) ==> x should be a new constant expression
 	x := basictypes.MakerVar("x")
-	form := basictypes.MakeEx([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}))
+	form := basictypes.MakeEx([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}, []polymorphism.TypeApp{}))
 	f := Skolemize(form)
 
 	if pred, ok := f.(basictypes.Pred); ok {
@@ -73,7 +73,7 @@ func TestSimpleExistSkolemization(t *testing.T) {
 				if len(fun.GetArgs()) != 0 {
 					t.Errorf("Wrong number of skolemized function arguments.")
 				}
-				if !fun.GetTypeHint().Equals(polymorphism.DefaultType()) {
+				if !fun.GetTypeHint().Equals(polymorphism.DefaultType().ToTypeScheme()) {
 					t.Errorf("Skolemized function is wrongely typed")
 				}
 			} else {
@@ -88,7 +88,7 @@ func TestSimpleExistSkolemization(t *testing.T) {
 func TestSimpleNotForallSkolemization(t *testing.T) {
 	// not(forall x. P(x)) ==> x should be a new constant expression
 	x := basictypes.MakerVar("x")
-	form := basictypes.MakeNot(basictypes.MakeAll([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x})))
+	form := basictypes.MakeNot(basictypes.MakeAll([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}, []polymorphism.TypeApp{})))
 	f := Skolemize(form)
 
 	if neg, ok := f.(basictypes.Not); ok {
@@ -101,7 +101,7 @@ func TestSimpleNotForallSkolemization(t *testing.T) {
 					if len(fun.GetArgs()) != 0 {
 						t.Errorf("Wrong number of skolemized function arguments.")
 					}
-					if !fun.GetTypeHint().Equals(polymorphism.DefaultType()) {
+					if !fun.GetTypeHint().Equals(polymorphism.DefaultType().ToTypeScheme()) {
 						t.Errorf("Skolemized function is wrongely typed")
 					}
 				} else {
@@ -119,7 +119,7 @@ func TestSimpleNotForallSkolemization(t *testing.T) {
 func TestSimpleForallInstantiation(t *testing.T) {
 	// forall x. P(x) ==> x should be a new meta
 	x := basictypes.MakerVar("x")
-	form := basictypes.MakeAll([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}))
+	form := basictypes.MakeAll([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}, []polymorphism.TypeApp{}))
 	f, metas := Instantiate(form, 0)
 
 	if len(metas) != 1 {
@@ -134,7 +134,7 @@ func TestSimpleForallInstantiation(t *testing.T) {
 					if !meta.Equals(metas[0]) {
 						t.Errorf("MetaList and generated meta is not the same on instantiation.")
 					}
-					if !meta.GetTypeHint().Equals(polymorphism.DefaultType()) {
+					if !meta.GetTypeHint().Equals(polymorphism.DefaultType().ToTypeScheme()) {
 						t.Errorf("Instantiated meta is wrongely typed")
 					}
 				} else {
@@ -150,7 +150,7 @@ func TestSimpleForallInstantiation(t *testing.T) {
 func TestSimpleNotExistsInstantiation(t *testing.T) {
 	// neg(exists x. P(x)) ==> x should be a new meta
 	x := basictypes.MakerVar("x")
-	form := basictypes.MakeNot(basictypes.MakeEx([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x})))
+	form := basictypes.MakeNot(basictypes.MakeEx([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}, []polymorphism.TypeApp{})))
 	f, metas := Instantiate(form, 0)
 
 	if len(metas) != 1 {
@@ -166,7 +166,7 @@ func TestSimpleNotExistsInstantiation(t *testing.T) {
 						if !meta.Equals(metas[0]) {
 							t.Errorf("MetaList and generated meta is not the same on instantiation.")
 						}
-						if !meta.GetTypeHint().Equals(polymorphism.DefaultType()) {
+						if !meta.GetTypeHint().Equals(polymorphism.DefaultType().ToTypeScheme()) {
 							t.Errorf("Instantiated meta is wrongely typed")
 						}
 					} else {
@@ -188,7 +188,7 @@ func TestSimpleTypedExistSkolemization(t *testing.T) {
 	tInt := polymorphism.MkTypeHint("int")
 	// exists x. P(x) ==> x should be a new constant expression
 	x := basictypes.MakerVar("x", tInt)
-	form := basictypes.MakeEx([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}))
+	form := basictypes.MakeEx([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}, []polymorphism.TypeApp{}))
 	f := Skolemize(form)
 
 	if pred, ok := f.(basictypes.Pred); ok {
@@ -216,7 +216,7 @@ func TestSimpleTypedNotForallSkolemization(t *testing.T) {
 	tInt := polymorphism.MkTypeHint("int")
 	// not(forall x. P(x)) ==> x should be a new constant expression
 	x := basictypes.MakerVar("x", tInt)
-	form := basictypes.MakeNot(basictypes.MakeAll([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x})))
+	form := basictypes.MakeNot(basictypes.MakeAll([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}, []polymorphism.TypeApp{})))
 	f := Skolemize(form)
 
 	if neg, ok := f.(basictypes.Not); ok {
@@ -248,7 +248,7 @@ func TestSimpleTypedForallInstantiation(t *testing.T) {
 	tInt := polymorphism.MkTypeHint("int")
 	// forall x. P(x) ==> x should be a new meta
 	x := basictypes.MakerVar("x", tInt)
-	form := basictypes.MakeAll([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}))
+	form := basictypes.MakeAll([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}, []polymorphism.TypeApp{}))
 	f, metas := Instantiate(form, 0)
 
 	if len(metas) != 1 {
@@ -280,7 +280,7 @@ func TestSimpleTypedNotExistsInstantiation(t *testing.T) {
 	tInt := polymorphism.MkTypeHint("int")
 	// neg(exists x. P(x)) ==> x should be a new meta
 	x := basictypes.MakerVar("x", tInt)
-	form := basictypes.MakeNot(basictypes.MakeEx([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x})))
+	form := basictypes.MakeNot(basictypes.MakeEx([]basictypes.Var{x}, basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{x}, []polymorphism.TypeApp{})))
 	f, metas := Instantiate(form, 0)
 
 	if len(metas) != 1 {
@@ -318,7 +318,7 @@ func TestSyntaxicTransformationOnFormula(t *testing.T) {
 	// Formula definition
 	vars := []basictypes.Var{basictypes.MakerVar("x"), basictypes.MakerVar("y"), basictypes.MakerVar("z")}
 	// forall x. P(x) => forall y. exists z.R(z, y)
-	form := basictypes.MakeAll([]basictypes.Var{vars[0]}, basictypes.MakeImp(basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{vars[0]}), basictypes.MakeAll([]basictypes.Var{vars[1]}, basictypes.MakeEx([]basictypes.Var{vars[2]}, basictypes.MakePred(basictypes.MakerId("R"), []basictypes.Term{vars[2], vars[1]})))))
+	form := basictypes.MakeAll([]basictypes.Var{vars[0]}, basictypes.MakeImp(basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{vars[0]}, []polymorphism.TypeApp{}), basictypes.MakeAll([]basictypes.Var{vars[1]}, basictypes.MakeEx([]basictypes.Var{vars[2]}, basictypes.MakePred(basictypes.MakerId("R"), []basictypes.Term{vars[2], vars[1]}, []polymorphism.TypeApp{})))))
 
 	// Instantiate x
 	f1_inst, metas := Instantiate(form, 0)
@@ -365,7 +365,7 @@ func TestSyntaxicTransformationOnTypedFormula(t *testing.T) {
 	// Formula definition
 	vars := []basictypes.Var{basictypes.MakerVar("x", tInt), basictypes.MakerVar("y", tInt), basictypes.MakerVar("z", tInt)}
 	// forall x. P(x) => forall y. exists z.R(z, y)
-	form := basictypes.MakeAll([]basictypes.Var{vars[0]}, basictypes.MakeImp(basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{vars[0]}), basictypes.MakeAll([]basictypes.Var{vars[1]}, basictypes.MakeEx([]basictypes.Var{vars[2]}, basictypes.MakePred(basictypes.MakerId("R"), []basictypes.Term{vars[2], vars[1]}, polymorphism.MkTypeArrow(polymorphism.MkTypeCross(tInt, tInt), tProp))))))
+	form := basictypes.MakeAll([]basictypes.Var{vars[0]}, basictypes.MakeImp(basictypes.MakePred(basictypes.MakerId("P"), []basictypes.Term{vars[0]}, []polymorphism.TypeApp{}), basictypes.MakeAll([]basictypes.Var{vars[1]}, basictypes.MakeEx([]basictypes.Var{vars[2]}, basictypes.MakePred(basictypes.MakerId("R"), []basictypes.Term{vars[2], vars[1]}, []polymorphism.TypeApp{}, polymorphism.MkTypeArrow(polymorphism.MkTypeCross(tInt, tInt), tProp))))))
 
 	// Instantiate x
 	f1_inst, metas := Instantiate(form, 0)

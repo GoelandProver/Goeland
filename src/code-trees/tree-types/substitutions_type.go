@@ -302,7 +302,12 @@ func eliminateInside(key basictypes.Meta, value basictypes.Term, s Substitutions
 					s_tmp[key_2] = value_2
 				}
 			case basictypes.Fun:
-				new_value := basictypes.MakeFun(value_2_type.GetP(), eliminateList(key, value, value_2_type.GetArgs(), &has_changed), value_2_type.GetTypeHint())
+				new_value := basictypes.MakeFun(
+					value_2_type.GetP(), 
+					eliminateList(key, value, value_2_type.GetArgs(), &has_changed), 
+					value_2_type.GetTypeVars(),
+					value_2_type.GetTypeHint(),
+				)
 				if OccurCheckValid(key_2, new_value) {
 					s_tmp[key_2] = new_value
 				} else {
@@ -337,7 +342,12 @@ func eliminateList(key basictypes.Meta, value basictypes.Term, l []basictypes.Te
 					list_tmp = append(list_tmp, list_element)
 				}
 			case basictypes.Fun: // If its a function, reccursive call for the arguments
-				list_tmp = append(list_tmp, basictypes.MakeFun(lt.GetP(), eliminateList(key, value, lt.GetArgs(), &has_changed), lt.GetTypeHint()))
+				list_tmp = append(list_tmp, basictypes.MakeFun(
+					lt.GetP(), 
+					eliminateList(key, value, lt.GetArgs(), &has_changed), 
+					lt.GetTypeVars(),
+					lt.GetTypeHint(),
+					))
 			default:
 				list_tmp = append(list_tmp, list_element)
 			}

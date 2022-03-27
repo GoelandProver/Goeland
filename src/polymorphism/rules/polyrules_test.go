@@ -56,7 +56,7 @@ func TestMain(m *testing.M) {
 	typing.SaveTypeScheme(
 		"P", 
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	typing.SaveConstant("2", typing.MkTypeHint("int"))
 	typing.SaveConstant("3", typing.MkTypeHint("int"))
@@ -70,19 +70,19 @@ func TestMain(m *testing.M) {
 func TestSimpleDoublePass(t *testing.T) {
 	// P(2, 3)
 	pred := btypes.MakePred(btypes.MakerId("P"), []btypes.Term{
-		btypes.MakeFun(btypes.MakerId("2"), []btypes.Term{}),
-		btypes.MakeFun(btypes.MakerId("3"), []btypes.Term{}),
-	})
+		btypes.MakerConst(btypes.MakerId("2")),
+		btypes.MakerConst(btypes.MakerId("3")),
+	}, []typing.TypeApp{})
 
 	// Double pass pred
 	newPred := TypeFormula(pred)
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	// Pred should be of type (int * int) -> o
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) || 
+	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) || 
 	   !newPred.GetType().Equals(expected) {
 		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newPred.GetType().ToString())
 	}
@@ -91,9 +91,9 @@ func TestSimpleDoublePass(t *testing.T) {
 func TestNegDoublePass(t *testing.T) {
 	// ¬P(2, 3)
 	pred := btypes.RefuteForm(btypes.MakePred(btypes.MakerId("P"), []btypes.Term{
-		btypes.MakeFun(btypes.MakerId("2"), []btypes.Term{}),
-		btypes.MakeFun(btypes.MakerId("3"), []btypes.Term{}),
-	}))
+		btypes.MakerConst(btypes.MakerId("2")),
+		btypes.MakerConst(btypes.MakerId("3")),
+	}, []typing.TypeApp{}))
 
 	// Double pass pred
 	newPred := TypeFormula(pred)
@@ -101,7 +101,7 @@ func TestNegDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Not); !ok {
 		t.Fatalf("Double pass should've returned a negation. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
 				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
@@ -110,7 +110,7 @@ func TestNegDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	// Pred should be of type (int * int) -> o
 	if !newPred.GetType().Equals(expected) {
@@ -122,13 +122,13 @@ func TestBinaryDoublePass(t *testing.T) {
 	// P(2, 2) => P(3, 3)
 	pred := btypes.MakeImp(
 		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{
-			btypes.MakeFun(btypes.MakerId("2"), []btypes.Term{}),
-			btypes.MakeFun(btypes.MakerId("2"), []btypes.Term{}),
-		}),
+			btypes.MakerConst(btypes.MakerId("2")),
+			btypes.MakerConst(btypes.MakerId("2")),
+		}, []typing.TypeApp{}),
 		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{
-			btypes.MakeFun(btypes.MakerId("3"), []btypes.Term{}),
-			btypes.MakeFun(btypes.MakerId("3"), []btypes.Term{}),
-		}),
+			btypes.MakerConst(btypes.MakerId("3")),
+			btypes.MakerConst(btypes.MakerId("3")),
+		}, []typing.TypeApp{}),
 	)
 
 	// Double pass pred
@@ -137,7 +137,7 @@ func TestBinaryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Imp); !ok {
 		t.Fatalf("Double pass should've returned an implication. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
 				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
@@ -147,7 +147,7 @@ func TestBinaryDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	// Pred should be of type (int * int) -> o
 	if !F1.GetType().Equals(expected) {
@@ -160,13 +160,13 @@ func TestBinaryDoublePass(t *testing.T) {
 	// P(2, 2) <=> P(3, 3)
 	predEqu := btypes.MakeEqu(
 		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{
-			btypes.MakeFun(btypes.MakerId("2"), []btypes.Term{}),
-			btypes.MakeFun(btypes.MakerId("2"), []btypes.Term{}),
-		}),
+			btypes.MakerConst(btypes.MakerId("2")),
+			btypes.MakerConst(btypes.MakerId("2")),
+		}, []typing.TypeApp{}),
 		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{
-			btypes.MakeFun(btypes.MakerId("3"), []btypes.Term{}),
-			btypes.MakeFun(btypes.MakerId("3"), []btypes.Term{}),
-		}),
+			btypes.MakerConst(btypes.MakerId("3")),
+			btypes.MakerConst(btypes.MakerId("3")),
+		}, []typing.TypeApp{}),
 	)
 
 	// Double pass pred
@@ -175,7 +175,7 @@ func TestBinaryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Equ); !ok {
 		t.Fatalf("Double pass should've returned an equivalence. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
 				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
@@ -199,7 +199,7 @@ func TestQuantDoublePass(t *testing.T) {
 
 	pred := btypes.MakeAll(
 		[]btypes.Var{x, y},
-		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{x, y}),
+		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{x, y}, []typing.TypeApp{}),
 	)
 
 	// Double pass pred
@@ -208,7 +208,7 @@ func TestQuantDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.All); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	} 
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
 				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
@@ -217,7 +217,7 @@ func TestQuantDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	// Pred should be of type (int * int) -> o
 	if !newForm.GetType().Equals(expected) {
@@ -227,7 +227,7 @@ func TestQuantDoublePass(t *testing.T) {
 	// exists x y : int, P(x, y)
 	predEqu := btypes.MakeEx(
 		[]btypes.Var{x, y},
-		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{x, y}),
+		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{x, y}, []typing.TypeApp{}),
 	)
 
 	// Double pass pred
@@ -236,7 +236,7 @@ func TestQuantDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Ex); !ok {
 		t.Fatalf("Double pass should've returned an existential quantifier. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
 				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
@@ -251,14 +251,14 @@ func TestQuantDoublePass(t *testing.T) {
 
 func TestNAryDoublePass(t *testing.T) {
 	// P(2, 2) v P(2, 3) v P(3, 2) v P(3, 3)
-	two := btypes.MakeFun(btypes.MakerId("2"), []btypes.Term{})
-	three := btypes.MakeFun(btypes.MakerId("3"), []btypes.Term{})
+	two := btypes.MakerConst(btypes.MakerId("2"))
+	three := btypes.MakerConst(btypes.MakerId("3"))
 
 	pred := btypes.MakeOr(btypes.FormList{
-		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{two, two}),
-		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{two, three}),
-		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{three, two}),
-		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{three, three}),
+		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{two, two}, []typing.TypeApp{}),
+		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{two, three}, []typing.TypeApp{}),
+		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{three, two}, []typing.TypeApp{}),
+		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{three, three}, []typing.TypeApp{}),
 	})
 
 	// Double pass pred
@@ -267,7 +267,7 @@ func TestNAryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Or); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
 				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
@@ -276,7 +276,7 @@ func TestNAryDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	for _, newForm := range newForms {
 		// Pred should be of type (int * int) -> o
@@ -288,10 +288,10 @@ func TestNAryDoublePass(t *testing.T) {
 	// P(2, 2) ^ P(2, 3) ^ P(3, 2) ^ P(3, 3)
 
 	andPred := btypes.MakeAnd(btypes.FormList{
-		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{two, two}),
-		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{two, three}),
-		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{three, two}),
-		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{three, three}),
+		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{two, two}, []typing.TypeApp{}),
+		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{two, three}, []typing.TypeApp{}),
+		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{three, two}, []typing.TypeApp{}),
+		btypes.MakePred(btypes.MakerId("P"), []btypes.Term{three, three}, []typing.TypeApp{}),
 	})
 
 	// Double pass pred
@@ -300,7 +300,7 @@ func TestNAryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.And); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
 				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
@@ -319,9 +319,9 @@ func TestNAryDoublePass(t *testing.T) {
 func TestTypingNotInGlobalContext(t *testing.T) {
 	// Q(2, 3)
 	pred := btypes.MakePred(btypes.MakerId("Q"), []btypes.Term{
-		btypes.MakeFun(btypes.MakerId("2"), []btypes.Term{}),
-		btypes.MakeFun(btypes.MakerId("3"), []btypes.Term{}),
-	})
+		btypes.MakerConst(btypes.MakerId("2")),
+		btypes.MakerConst(btypes.MakerId("3")),
+	}, []typing.TypeApp{})
 
 	// Double pass pred
 	newPred := TypeFormula(pred)

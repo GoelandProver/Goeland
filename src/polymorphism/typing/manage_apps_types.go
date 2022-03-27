@@ -52,8 +52,8 @@ import (
 
 /* Maps an application: input type scheme and output type scheme. */
 type App struct {
-	in  TypeScheme
-	out TypeScheme
+	in  TypeApp
+	out TypeApp
 	app TypeScheme
 }
 
@@ -69,7 +69,7 @@ const (
 )
 
 /* Saves a TypeScheme in the map of schemes. */
-func SaveTypeScheme(name string, in TypeScheme, out TypeScheme) error {
+func SaveTypeScheme(name string, in TypeApp, out TypeApp) error {
 	tArrow := MkTypeArrow(in, out)
 
 	// If the map contains the name of the function/predicate, a type scheme has already been
@@ -96,21 +96,22 @@ func SaveTypeScheme(name string, in TypeScheme, out TypeScheme) error {
 }
 
 /* Saves the TypeScheme of a constant function */
-func SaveConstant(name string, out TypeScheme) error {
+func SaveConstant(name string, out TypeApp) error {
 	// Check if the constant is already saved in the context
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		var err error
-		if !arr[0].out.Equals(out) {
+		if !arr[0].out.ToTypeScheme().Equals(out.ToTypeScheme()) {
 			err = fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
 		}
 		typeSchemesMap.lock.Unlock()
 		return err
 	}
 	
-	// Save the constant in the context
+	// Save the constant in the context. 
+	// The line out.(TypeScheme) shouldn't fail : it's never a TypeVar.
 	typeSchemesMap.tsMap[name] = []App{
-		{out: out, app: out},
+		{out: out, app: out.(TypeScheme)},
 	}
 
 	typeSchemesMap.lock.Unlock()
@@ -118,7 +119,7 @@ func SaveConstant(name string, out TypeScheme) error {
 }
 
 /* Gets the TypeScheme from the global context. Returns default type if it doesn't exists. */
-func GetTypeOrDefault(name string, outDefault int, inArgs ...TypeScheme) TypeScheme {
+func GetTypeOrDefault(name string, outDefault int, inArgs ...TypeApp) TypeScheme {
 	typeScheme := GetType(name, inArgs...)
 	if typeScheme == nil {
 		var size int 
@@ -139,7 +140,7 @@ func GetTypeOrDefault(name string, outDefault int, inArgs ...TypeScheme) TypeSch
 }
 
 /* Gets a TypeScheme from the map of schemes with the name. Nil if it doesn't exists in the global context. */
-func GetType(name string, inArgs ...TypeScheme) TypeScheme {
+func GetType(name string, inArgs ...TypeApp) TypeScheme {
 	if len(inArgs) == 0 {
 		return getConstantTypeScheme(name)
 	}
@@ -157,7 +158,7 @@ func getConstantTypeScheme(name string) TypeScheme {
 	var tScheme TypeScheme
 	typeSchemesMap.lock.Lock()
 	if typeSchemes, found := typeSchemesMap.tsMap[name]; found {
-		tScheme = typeSchemes[0].out
+		tScheme = typeSchemes[0].app
 	} else {
 		// If it's not found, the type is inferred with $i
 		tScheme = defaultType
@@ -167,11 +168,11 @@ func getConstantTypeScheme(name string) TypeScheme {
 }
 
 /* Returns the TypeScheme from the name & inArgs if it exists in the map. Else, nil. true means fun name is in the map. */
-func getSchemeFromArgs(name string, inArgs TypeScheme) (TypeScheme, bool) {
+func getSchemeFromArgs(name string, inArgs TypeApp) (TypeScheme, bool) {
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
-			if fun.in.Equals(inArgs) {
+			if fun.in.ToTypeScheme().Equals(inArgs.ToTypeScheme()) {
 				typeSchemesMap.lock.Unlock()
 				return fun.app, true
 			}
@@ -181,4 +182,13 @@ func getSchemeFromArgs(name string, inArgs TypeScheme) (TypeScheme, bool) {
 	}
 	typeSchemesMap.lock.Unlock()
 	return nil, false
+}
+
+/* Copies a list of TypeApp */
+func CopyTypeAppList(ta []TypeApp) []TypeApp {
+	res := make([]TypeApp, len(ta))
+	for i := range ta {
+		res[i] = ta[i].Copy()
+	}
+	return res
 }

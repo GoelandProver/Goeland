@@ -45,20 +45,20 @@ package polymorphism
 var tInt TypeHint
 var tRat TypeHint
 var tReal TypeHint
-var tProp TypeHint
 var defaultType TypeHint
+var defaultProp TypeHint
 
-var intCrossInt TypeScheme
-var ratCrossRat TypeScheme
-var realCrossReal TypeScheme
+var intCrossInt TypeApp
+var ratCrossRat TypeApp
+var realCrossReal TypeApp
 
 func initTPTPTypes() {
 	defaultType = MkTypeHint("i")
+	defaultProp = MkTypeHint("o")
 	// Types
 	tInt = MkTypeHint("int")
 	tRat = MkTypeHint("rat")
 	tReal = MkTypeHint("real")
-	tProp = MkTypeHint("o")
 
 	intCrossInt = MkTypeCross(tInt, tInt)
 	ratCrossRat = MkTypeCross(tRat, tRat)
@@ -104,9 +104,9 @@ func initTPTPTypes() {
 }
 
 func recordBinaryProp(name string) {
-	SaveTypeScheme(name, intCrossInt, tProp)
-	SaveTypeScheme(name, ratCrossRat, tProp)
-	SaveTypeScheme(name, realCrossReal, tProp)
+	SaveTypeScheme(name, intCrossInt, defaultProp)
+	SaveTypeScheme(name, ratCrossRat, defaultProp)
+	SaveTypeScheme(name, realCrossReal, defaultProp)
 }
 
 func recordBinaryInArgs(name string) {
@@ -122,12 +122,12 @@ func recordUnaryInArgs(name string) {
 }
 
 func recordUnaryProp(name string) {
-	SaveTypeScheme(name, tInt, tProp)
-	SaveTypeScheme(name, tRat, tProp)
-	SaveTypeScheme(name, tReal, tProp)
+	SaveTypeScheme(name, tInt, defaultProp)
+	SaveTypeScheme(name, tRat, defaultProp)
+	SaveTypeScheme(name, tReal, defaultProp)
 }
 
-func recordConversion(name string, out TypeScheme) {
+func recordConversion(name string, out TypeApp) {
 	SaveTypeScheme(name, tInt, out)
 	SaveTypeScheme(name, tRat, out)
 	SaveTypeScheme(name, tReal, out)
@@ -136,23 +136,18 @@ func recordConversion(name string, out TypeScheme) {
 func IsInt(tType TypeScheme) bool  { return tType.Equals(tInt) }
 func IsRat(tType TypeScheme) bool  { return tType.Equals(tRat) }
 func IsReal(tType TypeScheme) bool { return tType.Equals(tReal) }
-func DefaultType() TypeScheme      { return defaultType }
+func DefaultType() TypeApp         { return defaultType }
+func DefaultProp() TypeApp         { return defaultProp }
+func DefaultFunType(len int) TypeScheme { return defaultAppType(len, defaultType) }
+func DefaultPropType(len int) TypeScheme { return defaultAppType(len, defaultProp) }
 
-func DefaultFunType(len int) TypeScheme {
-	return defaultAppType(len, defaultType)
-}
-
-func DefaultPropType(len int) TypeScheme {
-	return defaultAppType(len, tProp)
-}
-
-func defaultAppType(len int, out TypeScheme) TypeScheme {
+func defaultAppType(len int, out TypeApp) TypeScheme {
 	if len == 0 {
-		return out
+		return out.ToTypeScheme()
 	} else if len == 1 {
 		return MkTypeArrow(defaultType, out)
 	} else {
-		ts := []TypeScheme{}
+		ts := []TypeApp{}
 		for i := 0; i < len; i++ {
 			ts = append(ts, defaultType)
 		}

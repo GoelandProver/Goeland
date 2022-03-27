@@ -185,7 +185,12 @@ func ApplySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictype
 			res = new_symbol.Copy()
 		}
 	case basictypes.Fun:
-		res = basictypes.MakeFun(nf.GetP(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()), nf.GetTypeHint())
+		res = basictypes.MakeFun(
+			nf.GetP(),
+			applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
+			nf.GetTypeVars(),
+			nf.GetTypeHint(),
+		)
 	}
 	return res
 }
@@ -205,7 +210,13 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 
 	switch nf := f.(type) {
 	case basictypes.Pred:
-		res = basictypes.MakePred(f.GetIndex(), nf.GetID(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()), nf.GetType())
+		res = basictypes.MakePred(
+			f.GetIndex(),
+			nf.GetID(),
+			applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
+			nf.GetTypeVars(),
+			nf.GetType(),
+		)
 	case basictypes.Not:
 		res = basictypes.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case basictypes.And:

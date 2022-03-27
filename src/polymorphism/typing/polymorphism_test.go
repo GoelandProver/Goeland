@@ -197,7 +197,6 @@ func TestTypeArrows(t *testing.T) {
 		{MkTypeArrow(tInt, tInt), "(int > int)"},
 		{MkTypeArrow(tInt, tRat), "(int > rat)"},
 		{MkTypeArrow(tRat, tInt), "(rat > int)"},
-		{MkTypeArrow(MkTypeArrow(tRat, tInt), tInt), "((rat > int) > int)"},
 	}
 
 	for i, test := range testTable {
@@ -223,8 +222,7 @@ func TestComposition(t *testing.T) {
 		snd TypeScheme
 	}{
 		{MkTypeArrow(tInt, tInt), MkTypeCross(tInt, tInt)},
-		{MkTypeArrow(MkTypeCross(tRat, tInt), tInt), MkTypeCross(MkTypeArrow(tRat, tInt), tInt)},
-		{MkTypeArrow(MkTypeArrow(tRat, tInt), tInt), MkTypeCross(tRat, tInt, tInt)},
+		{MkTypeArrow(tRat, tRat), MkTypeCross(tRat, tRat)},
 	}
 
 	for _, test := range testTable {
@@ -254,7 +252,7 @@ func TestPolymorphicFunctions(t *testing.T) {
 		t.Fatalf("Error: no error has been detected while saving type scheme when it should have !")
 	}
 
-	err = SaveTypeScheme("eq", MkTypeArrow(tInt, tInt), tInt)
+	err = SaveTypeScheme("eq", MkTypeCross(tInt, tInt), tInt)
 	if err != nil {
 		t.Fatalf("Error: an error has been detected while saving type scheme when it shouldn't ! Error text: %v", err.Error())
 	}
@@ -339,7 +337,7 @@ func TestUnaryProp(t *testing.T) {
 func TestTPTPConversionFunctions(t *testing.T) {
 	ls := []struct {
 		name string
-		out  TypeScheme
+		out  TypeApp
 	}{
 		{"to_int", tInt},
 		{"to_rat", tRat},
@@ -355,15 +353,15 @@ func TestTPTPConversionFunctions(t *testing.T) {
 
 func testBinaryPreds(name string) error {
 	out := GetType(name, MkTypeCross(tInt, tInt))
-	if !out.Equals(MkTypeArrow(MkTypeCross(tInt, tInt), tProp)) {
+	if !out.Equals(MkTypeArrow(MkTypeCross(tInt, tInt), defaultProp)) {
 		return fmt.Errorf("Error: %s: int * int > int not defined when it should be.", name)
 	}
 	out = GetType(name, MkTypeCross(tRat, tRat))
-	if !out.Equals(MkTypeArrow(MkTypeCross(tRat, tRat), tProp)) {
+	if !out.Equals(MkTypeArrow(MkTypeCross(tRat, tRat), defaultProp)) {
 		return fmt.Errorf("Error: %s: rat * rat > rat not defined when it should be.", name)
 	}
 	out = GetType(name, MkTypeCross(tReal, tReal))
-	if !out.Equals(MkTypeArrow(MkTypeCross(tReal, tReal), tProp)) {
+	if !out.Equals(MkTypeArrow(MkTypeCross(tReal, tReal), defaultProp)) {
 		return fmt.Errorf("Error: %s: real * real > real not defined when it should be.", name)
 	}
 
@@ -406,22 +404,22 @@ func testUnaryTypes(name string) error {
 
 func testUnaryProp(name string) error {
 	out := GetType(name, tInt)
-	if !out.Equals(MkTypeArrow(tInt, tProp)) {
+	if !out.Equals(MkTypeArrow(tInt, defaultProp)) {
 		return fmt.Errorf("Error: %s: int > o not defined when it should be.", name)
 	}
 	out = GetType(name, tRat)
-	if !out.Equals(MkTypeArrow(tRat, tProp)) {
+	if !out.Equals(MkTypeArrow(tRat, defaultProp)) {
 		return fmt.Errorf("Error: %s: rat > o not defined when it should be.", name)
 	}
 	out = GetType(name, tReal)
-	if !out.Equals(MkTypeArrow(tReal, tProp)) {
+	if !out.Equals(MkTypeArrow(tReal, defaultProp)) {
 		return fmt.Errorf("Error: %s: real > o not defined when it should be.", name)
 	}
 
 	return nil
 }
 
-func testConversion(name string, outType TypeScheme) error {
+func testConversion(name string, outType TypeApp) error {
 	out := GetType(name, tInt)
 	if !out.Equals(MkTypeArrow(tInt, outType)) {
 		return fmt.Errorf("Error: %s: int > int not defined when it should be.", name)
@@ -447,7 +445,7 @@ func TestDefaultFunType(t *testing.T) {
 	}
 }
 func TestDefaultPropType(t *testing.T) {
-	expected := MkTypeArrow(MkTypeCross(defaultType, defaultType, defaultType, defaultType), tProp)
+	expected := MkTypeArrow(MkTypeCross(defaultType, defaultType, defaultType, defaultType), defaultProp)
 	if !DefaultPropType(4).Equals(expected) {
 		t.Errorf("Wrong fun default type. Expected: %s, actual: %s", expected.ToString(), DefaultPropType(4).ToString())
 	}

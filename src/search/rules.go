@@ -151,7 +151,7 @@ func searchClosureRule(f basictypes.Form, st complextypes.State) (bool, []treety
 			return st.GetTreePos().Unify(nf.GetForm())
 		default:
 			return false, nil
-		}
+		} 
 	default:
 		return false, nil
 	}
@@ -326,26 +326,28 @@ func realSkolemize(f basictypes.Form, vars []basictypes.Var, terms []basictypes.
 	// Replace each variable by the skolemized term.
 	for _, v := range vars {
 		// TypeScheme construction
-		var t typing.TypeScheme
+		var t typing.TypeApp
 		// Okay that's absolutely wrong, but it's the best way of doing things right now, I swear.
 		for _, term := range terms {
-			switch tf := term.(type) {
-			case basictypes.Var:
-				t = crossType(t, tf.GetTypeHint())
-			case basictypes.Fun:
-				t = crossType(t, tf.GetTypeHint())
-			case basictypes.Meta:
-				t = crossType(t, tf.GetTypeHint())
+			if meta, ok := term.(basictypes.Meta); ok {
+				t = crossType(t, meta.GetTypeHint().(typing.TypeApp))
 			}
 		}
 
+		var scheme typing.TypeScheme
 		if t == nil {
-			t = v.GetTypeHint()
+			scheme = v.GetTypeHint()
 		} else {
-			t = typing.MkTypeArrow(t, v.GetTypeHint())
+			scheme = typing.MkTypeArrow(t, v.GetTypeHint().(typing.TypeApp))
 		}
 
-		skolem := basictypes.MakerFun(basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())), terms, t)
+		// A Skolem symbol has no quantified variables.
+		skolem := basictypes.MakerFun(
+			basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())), 
+			terms, 
+			[]typing.TypeApp{}, 
+			scheme,
+		)
 		f = basictypes.ReplaceVarByTerm(f, v, skolem)
 	}
 	return f
@@ -381,7 +383,7 @@ func realInstantiate(form basictypes.Form, index int, vars []basictypes.Var) (ba
 	return form, newMm
 }
 
-func crossType(t typing.TypeScheme, tf typing.TypeScheme) typing.TypeScheme {
+func crossType(t typing.TypeApp, tf typing.TypeApp) typing.TypeApp {
 	if t == nil {
 		return tf
 	}

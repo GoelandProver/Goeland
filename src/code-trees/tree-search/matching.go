@@ -72,7 +72,7 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 	}
 
 	// Transform the predicate to a function to make the tool work properly
-	m.terms = []basictypes.Term{basictypes.MakeFun(formula.(basictypes.Pred).GetID(), formula.(basictypes.Pred).GetArgs(), formula.(basictypes.Pred).GetType())}
+	m.terms = []basictypes.Term{basictypes.MakeFun(formula.(basictypes.Pred).GetID(), formula.(basictypes.Pred).GetArgs(), formula.(basictypes.Pred).GetTypeVars(), formula.(basictypes.Pred).GetType())}
 
 }
 
