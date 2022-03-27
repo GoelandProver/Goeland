@@ -143,6 +143,7 @@ type Ex struct {
 
 func (e Ex) GetVarList() []Var          { return copyVarList(e.var_list) }
 func (e Ex) GetForm() Form              { return e.f.Copy() }
+func (e Ex) GetUnderlyingForm() Form    { return e.f }
 func (e Ex) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 type All struct {
@@ -153,6 +154,7 @@ type All struct {
 
 func (a All) GetVarList() []Var          { return copyVarList(a.var_list) }
 func (a All) GetForm() Form              { return a.f.Copy() }
+func (a All) GetUnderlyingForm() Form    { return a.f }
 func (a All) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 /*** Methods ***/
@@ -688,8 +690,8 @@ func RenameVariables(f Form) Form {
 
 		for _, v := range nf.GetVarList() {
 			global.PrintDebug("RV", v.ToString())
-			new_var := MakerNewVar(v.GetName(), v.GetTypeHint())
-			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()), v.GetTypeHint())
+			new_var := MakerNewVar(v.GetName(), v.typeHint)
+			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()), v.typeHint)
 			new_vl = replaceVarInVarList(new_vl, v, new_var)
 			new_form = ReplaceVarByVar(new_form, v, new_var)
 			global.PrintDebug("RV", fmt.Sprintf("New form :%v", new_form.ToString()))
@@ -702,8 +704,8 @@ func RenameVariables(f Form) Form {
 		new_form := nf.GetForm()
 
 		for _, v := range nf.GetVarList() {
-			new_var := MakerNewVar(v.GetName(), v.GetTypeHint())
-			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()), v.GetTypeHint())
+			new_var := MakerNewVar(v.GetName(), v.typeHint)
+			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()), v.typeHint)
 			new_vl = replaceVarInVarList(new_vl, v, new_var)
 			new_form = ReplaceVarByVar(new_form, v, new_var)
 

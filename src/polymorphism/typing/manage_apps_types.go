@@ -192,3 +192,11 @@ func CopyTypeAppList(ta []TypeApp) []TypeApp {
 	}
 	return res
 }
+
+/* Returns the global context. Use this only in polyrules. */
+func GetGlobalContext() map[string][]App {
+	typeSchemesMap.lock.Lock()
+	globalContext := typeSchemesMap.tsMap
+	typeSchemesMap.lock.Unlock()
+	return globalContext
+}

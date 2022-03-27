@@ -76,7 +76,7 @@ type Id struct {
 type Var struct {
 	index    int
 	name     string
-	typeHint typing.TypeScheme
+	typeHint typing.TypeApp
 }
 
 /* Metavariable (X, Y) */
@@ -84,7 +84,7 @@ type Meta struct {
 	index    int
 	name     string
 	formula  int
-	typeHint typing.TypeScheme
+	typeHint typing.TypeApp
 }
 
 /* function or constant (f(a,b), f(X,Y), a)*/
@@ -98,8 +98,8 @@ type Fun struct {
 func (f Fun) GetTypeVars() []typing.TypeApp { return f.typeVars }
 
 /* GetTypeHint */
-func (v Var) GetTypeHint() typing.TypeScheme  { return v.typeHint }
-func (m Meta) GetTypeHint() typing.TypeScheme { return m.typeHint }
+func (v Var) GetTypeHint() typing.TypeScheme  { return v.typeHint.ToTypeScheme() }
+func (m Meta) GetTypeHint() typing.TypeScheme { return m.typeHint.ToTypeScheme() }
 func (f Fun) GetTypeHint() typing.TypeScheme  { return f.typeHint }
 
 /* GetIndex */
@@ -180,7 +180,7 @@ func (v Var) Equals(t Term) bool {
 	return isVar &&
 		(oth.GetIndex() == v.GetIndex()) &&
 		(oth.GetName() == v.GetName()) &&
-		(v.typeHint.Equals(oth.typeHint))
+		(v.typeHint.ToTypeScheme().Equals(oth.typeHint.ToTypeScheme()))
 }
 
 func (m Meta) Equals(t Term) bool {
@@ -189,7 +189,7 @@ func (m Meta) Equals(t Term) bool {
 		(oth.GetIndex() == m.GetIndex()) &&
 		(oth.GetName() == m.GetName()) &&
 		(oth.GetFormula() == m.GetFormula()) &&
-		(m.typeHint.Equals(oth.typeHint))
+		(m.typeHint.ToTypeScheme().Equals(oth.typeHint.ToTypeScheme()))
 }
 
 func (i Id) Equals(t Term) bool {
@@ -209,11 +209,9 @@ func (f Fun) Equals(t Term) bool {
 
 /* Copy */
 /* Copy a term */
-func (v Var) Copy() Term { return MakeVar(v.GetIndex(), v.GetName(), v.GetTypeHint()) }
-func (m Meta) Copy() Term {
-	return MakeMeta(m.GetIndex(), m.GetName(), m.GetFormula(), m.GetTypeHint())
-}
-func (i Id) Copy() Term { return MakeId(i.GetIndex(), i.GetName()) }
+func (v Var) Copy() Term  { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
+func (m Meta) Copy() Term { return MakeMeta(m.GetIndex(), m.GetName(), m.GetFormula(), m.typeHint) }
+func (i Id) Copy() Term   { return MakeId(i.GetIndex(), i.GetName()) }
 func (f Fun) Copy() Term {
 	return MakeFun(f.GetP(), f.GetArgs(), typing.CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
 }
@@ -295,9 +293,9 @@ func (f *Fun) SetArgs(tl []Term) { f.args = tl }
 
 /*** Makers ***/
 
-func MakeId(i int, s string) Id                                    { return Id{i, s} }
-func MakeVar(i int, s string, t ...typing.TypeScheme) Var          { return Var{i, s, getType(t)} }
-func MakeMeta(i int, s string, f int, t ...typing.TypeScheme) Meta { return Meta{i, s, f, getType(t)} }
+func MakeId(i int, s string) Id                                 { return Id{i, s} }
+func MakeVar(i int, s string, t ...typing.TypeApp) Var          { return Var{i, s, getType(t)} }
+func MakeMeta(i int, s string, f int, t ...typing.TypeApp) Meta { return Meta{i, s, f, getType(t)} }
 
 func MakeFun(p Id, args []Term, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
 	if len(t) == 1 {

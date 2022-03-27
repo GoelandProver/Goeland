@@ -332,3 +332,37 @@ func TestTypingNotInGlobalContext(t *testing.T) {
 		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newPred.GetType().ToString())
 	}
 }
+
+/* Typing rules tests */
+
+func TestBabyNoErr(t *testing.T) {
+	//a := typing.MkTypeVar("α")
+	x := btypes.MakerVar("x", typing.MkTypeHint("int"))
+	y := btypes.MakerVar("y", typing.MkTypeHint("int"))
+
+	form := btypes.MakeForm(btypes.MakeAll(
+		[]btypes.Var{x, y}, 
+		btypes.MakePred(
+			btypes.MakerId("P"),
+			[]btypes.Term{x, y},
+			[]typing.TypeApp{},
+		)))
+
+	err := WellFormedVerification(&form)
+	if err != nil {
+		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
+	}
+
+	form = btypes.MakeForm(btypes.MakeEx(
+		[]btypes.Var{x, y}, 
+		btypes.MakePred(
+			btypes.MakerId("P"),
+			[]btypes.Term{x, y},
+			[]typing.TypeApp{},
+		)))
+
+	err = WellFormedVerification(&form)
+	if err != nil {
+		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
+	}
+}

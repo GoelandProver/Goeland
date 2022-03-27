@@ -376,7 +376,7 @@ func Instantiate(f basictypes.Form, index int) (basictypes.Form, basictypes.Meta
 func realInstantiate(form basictypes.Form, index int, vars []basictypes.Var) (basictypes.Form, basictypes.MetaList) {
 	var newMm basictypes.MetaList
 	for _, v := range vars {
-		meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint())
+		meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
 		newMm = append(newMm, meta)
 		form = basictypes.ReplaceVarByTerm(form, v, meta)
 	}

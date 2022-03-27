@@ -103,7 +103,7 @@ func MakerNewId(s string) Id {
 }
 
 /* Var maker */
-func MakerVar(s string, t ...typing.TypeScheme) Var {
+func MakerVar(s string, t ...typing.TypeApp) Var {
 	lock_var.Lock()
 	i, ok := idVar[s]
 	lock_var.Unlock()
@@ -114,7 +114,7 @@ func MakerVar(s string, t ...typing.TypeScheme) Var {
 	}
 }
 
-func MakerNewVar(s string, t ...typing.TypeScheme) Var {
+func MakerNewVar(s string, t ...typing.TypeApp) Var {
 	lock_var.Lock()
 	idVar[s] = cpt_var
 	vr := MakeVar(cpt_var, s, getType(t))
@@ -124,7 +124,7 @@ func MakerNewVar(s string, t ...typing.TypeScheme) Var {
 }
 
 /* Meta maker */
-func MakerMeta(s string, formula int, t ...typing.TypeScheme) Meta {
+func MakerMeta(s string, formula int, t ...typing.TypeApp) Meta {
 	lock_meta.Lock()
 	i, ok := idMeta[s]
 	lock_meta.Unlock()
@@ -142,20 +142,26 @@ func MakerMeta(s string, formula int, t ...typing.TypeScheme) Meta {
 }
 
 /* Const maker (given a id, create a fun without args) */
-func MakerConst(id Id, t ...typing.TypeScheme) Fun {
-	return MakeFun(id, []Term{}, []typing.TypeApp{}, getType(t))
+func MakerConst(id Id, t ...typing.TypeApp) Fun {
+	return MakeFun(id, []Term{}, []typing.TypeApp{}, getType(t).ToTypeScheme())
 }
 
 /* Fun maker, with given id and args */
 func MakerFun(id Id, terms []Term, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
-	return MakeFun(id, terms, typeVars, getType(t))
+	var ts typing.TypeScheme
+	if len(t) == 1 {
+		ts = t[0]
+	} else {
+		ts = typing.DefaultFunType(len(terms))
+	}
+	return MakeFun(id, terms, typeVars, ts)
 }
 
-func getType(t []typing.TypeScheme) typing.TypeScheme {
+func getType(t []typing.TypeApp) typing.TypeApp {
 	if len(t) == 1 {
 		return t[0]
 	} else {
-		return typing.DefaultType().ToTypeScheme()
+		return typing.DefaultType()
 	}
 }
 
