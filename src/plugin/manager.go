@@ -39,15 +39,13 @@
 package plugin
 
 import (
-	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
-	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
 /**
  * RewriteHook func. Takes atomic forms as input & output.
  **/
-type RewriteHook func(btypes.Form) ([]ctypes.SubstAndForm, error)
+type RewriteHook func(btypes.Form) (btypes.FormList, error)
 type SendAxiomHook func(btypes.Form) bool
 
 /**
@@ -82,9 +80,9 @@ func (pm *PluginManager) RegisterRewriteHook(hook RewriteHook) {
 /**
  * Execute the rewrite hook.
  **/
-func (pm *PluginManager) ApplyRewriteHook(arg btypes.Form) ([]ctypes.SubstAndForm, error) {
+func (pm *PluginManager) ApplyRewriteHook(arg btypes.Form) (btypes.FormList, error) {
 	if pm.rewriteHook == nil {
-		return []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(arg))}, nil
+		return btypes.MakeSingleElementList(arg), nil
 	}
 	return pm.rewriteHook(arg)
 }
