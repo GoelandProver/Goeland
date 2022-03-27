@@ -199,19 +199,11 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 		// Si f est dans atomic, ça veut dire qu'on a pas pu réécrire, donc inutile de vérifier
 		if !st.GetAtomic().Contains(f) {
 			if rewritten, err := plugin.GetPluginManager().ApplyRewriteHook(f); err == nil {
-				global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.SubstAndFormListToString(rewritten)))
-
-				// Rewritten is the list of backtrack on subst
-				// Keep only relevant substitutions
-				for i := range rewritten {
-					rewritten[i] = complextypes.MakeSubstAndForm(complextypes.RemoveElementWithoutMM(rewritten[i].GetSubst(), st.GetMC().Merge(st.GetMM())), rewritten[i].GetForm())
-				}
-				rewritten = append(rewritten, complextypes.MakeSubstAndForm(treetypes.MakeEmptySubstitution(), basictypes.MakeSingleElementList(f)))
+				global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", rewritten.ToString()))
 
 				// Keep all the possibility of rewritting and choose the first one
-				choosen_rewritten := rewritten[0]
-				choosen_rewritten_form := choosen_rewritten.GetForm()[0].Copy()
-				rewritten = complextypes.CopySubstAndFormList(rewritten[1:])
+				choosen_rewritten_form := rewritten[0].Copy()
+				rewritten = rewritten[1:].Copy()
 
 				// Si on ne s'est pas réécrit en soi-même ?
 				if !choosen_rewritten_form.Equals(f) {
@@ -223,7 +215,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 					st_copy.SetCurrentProofRule("Rewrite")
 					// st_copy.SetSubstsFound(st.GetSubstsFound())
 					c_child := Communication{make(chan bool), make(chan Result)}
-					go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten)
+					go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm())
 					global.PrintDebug("PS", "GO !")
 					global.IncrGoRoutine(1)
 					waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, rewritten)
@@ -295,7 +287,7 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication) {
 	}
 	if global.IsDestructive() {
 		st.SetBTOnFormulas(false)
-		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{})
+		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, basictypes.MakeEmptyFormList())
 	} else {
 		global.PrintDebug("PS", "Die")
 	}
