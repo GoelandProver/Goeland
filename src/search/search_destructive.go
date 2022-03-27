@@ -485,7 +485,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 
 				st_copy := st.Copy()
 				st_copy.SetCurrentProofRule("Rewrite")
-				st_copy.SetSubstsFound(st.GetSubstsFound())
+				// st_copy.SetSubstsFound(st.GetSubstsFound())
 				c_child := Communication{make(chan bool), make(chan Result)}
 				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form)
 				global.PrintDebug("PS", "GO !")

@@ -193,12 +193,13 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 		// On prend le premier élément de le liste des atomics
 		f := remaining_atomics[0].Copy()
 		remaining_atomics = remaining_atomics[1:].Copy()
-		global.PrintDebug("PS", fmt.Sprintf("Choosen %v", f.ToString()))
+		global.PrintDebug("PS", fmt.Sprintf("Choosen : %v", f.ToString()))
 		global.PrintDebug("PS", fmt.Sprintf("Remaining_atomics %v", remaining_atomics.ToString()))
 
 		// Si f est dans atomic, ça veut dire qu'on a pas pu réécrire, donc inutile de vérifier
 		if !st.GetAtomic().Contains(f) {
 			if rewritten, err := plugin.GetPluginManager().ApplyRewriteHook(f); err == nil {
+				global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.SubstAndFormListToString(rewritten)))
 
 				// Rewritten is the list of backtrack on subst
 				// Keep only relevant substitutions
@@ -220,7 +221,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 
 					st_copy := st.Copy()
 					st_copy.SetCurrentProofRule("Rewrite")
-					st_copy.SetSubstsFound(st.GetSubstsFound())
+					// st_copy.SetSubstsFound(st.GetSubstsFound())
 					c_child := Communication{make(chan bool), make(chan Result)}
 					go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten)
 					global.PrintDebug("PS", "GO !")
