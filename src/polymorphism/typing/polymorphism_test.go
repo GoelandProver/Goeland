@@ -463,3 +463,29 @@ func TestArrowToString(t *testing.T) {
 		t.Errorf("TypeCross ToString failed. Expected: (%s > %s), actual: %s", tInt.ToString(), tInt.ToString(), MkTypeArrow(tInt, tInt).ToString())
 	}
 }
+
+/* Test polymorphic quantified types */
+
+func TestPolymorphicSubstitution(t *testing.T) {
+	a := MkTypeVar("a")
+	b := MkTypeVar("b")
+
+	quantType := MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(MkTypeCross(a, b), a))
+
+	expectedString := "Π a, b: Type, ((*_0 * *_1) > *_0)"
+	// Test string
+	if quantType.ToString() != expectedString {
+		t.Fatalf("Strings do not match. Expected: %s, actual: %s", expectedString, quantType.ToString())
+	}
+
+	// Test UID
+	expectedScheme := MkTypeArrow(MkTypeCross(MkTypeHint("*_0"), MkTypeHint("*_1")), MkTypeHint("*_0"))
+	if !expectedScheme.Equals(quantType) {
+		t.Fatalf("Schemes do not match. Expected: %s, actual: %s", expectedScheme.ToString(), quantType.ToString())
+	}
+
+	// Test input arguments size
+	if GetInputType(expectedScheme)[0].size() != 2 {
+		t.Fatalf("Wrong size of arguments. Expected: 2, actual: %d", GetInputType(expectedScheme)[0].size())
+	}
+}

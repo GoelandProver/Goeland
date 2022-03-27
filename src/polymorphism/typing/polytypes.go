@@ -46,8 +46,11 @@
 package polymorphism
 
 import (
+	"fmt"
 	"strings"
 	"sync"
+
+	"github.com/GoelandProver/Goeland/global"
 )
 
 /**
@@ -77,6 +80,7 @@ type TypeApp interface {
 	/* Non-exported methods */
 	isTypeApp()
 	size() int
+	substitute(map[TypeVar]TypeHint) TypeScheme
 
 	/* Exported methods */
 	ToString() string
@@ -105,6 +109,7 @@ func (th TypeHint) Equals(oth TypeScheme) bool { return oth.UID() == th.UID() }
 
 /* TypeApp interface */
 func (th TypeHint) isTypeApp() {}
+func (th TypeHint) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return th }
 
 func (th TypeHint) ToTypeScheme() TypeScheme { return th }
 func (th TypeHint) Copy() TypeApp { return MkTypeHint(th.name) }
@@ -142,6 +147,10 @@ func (tc TypeCross) Copy() TypeApp {
 	return MkTypeCross(newTypeApp...) 
 }
 
+func (tc TypeCross) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { 
+	return MkTypeCross(substTypeAppList(mapSubst, tc.types)...)
+}
+
 /**
  * Type consisting of two TypeSchemes : the in-arguments parameter(s) and the out parameter.
  * For example, if a function f takes to parameters of type int, and returns an int, it
@@ -162,6 +171,11 @@ func (ta TypeArrow) ToString() string           { return "(" + strings.Join(subt
 func (ta TypeArrow) UID() uint64                { return ta.uid }
 func (ta TypeArrow) Equals(oth TypeScheme) bool { return oth.UID() == ta.UID() }
 
+/* TypeArrow methods */
+func (ta TypeArrow) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { 
+	return MkTypeArrow(substTypeAppList(mapSubst, ta.types)...)
+}
+
 /**
  * A quantified variable of type.
  * It's not a TypeScheme, but it can serve in arguments of a function or predicate.
@@ -173,6 +187,8 @@ type TypeVar struct {
 /* TypeApp interface */
 func (tv TypeVar) isTypeApp() {}
 func (tv TypeVar) size() int  { return 1 }
+
+func (tv TypeVar) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return mapSubst[tv] }
 
 func (tv TypeVar) ToString() string 		{ return tv.name }
 func (tv TypeVar) ToTypeScheme() TypeScheme { return nil }
@@ -200,7 +216,7 @@ func (qt QuantifiedType) ToString() string {
 	for _, var_ := range qt.vars {
 		varsString = append(varsString, var_.ToString())
 	}  
-	return "Π" + strings.Join(varsString, ", ") + ": Type, " + qt.scheme.ToString() 
+	return "Π " + strings.Join(varsString, ", ") + ": Type, " + qt.scheme.ToString() 
 }
 
 /** Utils **/
@@ -216,7 +232,9 @@ func subtypesStr(types []TypeApp) []string {
 func subtypesUID(types []TypeApp) []uint64 {
 	uidList := []uint64{}
 	for _, type_ := range types {
-		uidList = append(uidList, type_.ToTypeScheme().UID())
+		if tScheme := type_.ToTypeScheme(); tScheme != nil {
+			uidList = append(uidList, tScheme.UID())
+		}
 	}
 	return uidList
 }
@@ -227,6 +245,14 @@ func getSize(types []TypeApp) int {
 		sum += type_.ToTypeScheme().size()
 	}
 	return sum
+}
+
+func substTypeAppList(mapSubst map[TypeVar]TypeHint, typeApp []TypeApp) []TypeApp {
+	newTypeApp := []TypeApp{}
+	for _, type_ := range typeApp {
+		newTypeApp = append(newTypeApp, type_.substitute(mapSubst).(TypeApp))
+	}
+	return newTypeApp
 }
 
 /**
@@ -290,14 +316,18 @@ func MkTypeHint(typeName string) TypeHint {
 /* Makes a TypeCross from any number of TypeSchemes */
 func MkTypeCross(typeSchemes ...TypeApp) TypeCross {
 	tc := TypeCross{uid: 0, types: typeSchemes}
-	tc.uid = encode(tc.toList(), ETypeCross)
+	if len(tc.toList()) > 0 {
+		tc.uid = encode(tc.toList(), ETypeCross)
+	}
 	return tc
 }
 
 /* Makes a TypeArrow from two TypeSchemes */
 func MkTypeArrow(typeSchemes ...TypeApp) TypeArrow {
 	ta := TypeArrow{uid: 0, types: typeSchemes}
-	ta.uid = encode(ta.toList(), ETypeArrow)
+	if len(ta.toList()) > 0 {
+		ta.uid = encode(ta.toList(), ETypeArrow)
+	}
 	return ta
 }
 
@@ -309,7 +339,19 @@ func MkTypeVar(name string) TypeVar {
 /* Makes a QuantifiedType from TypeVars and a TypeScheme. */
 func MkQuantifiedType(vars []TypeVar, typeScheme TypeScheme) QuantifiedType {
 	// Modify the typeScheme to make it modulo alpha-conversion
-	// ...
+	
+	// 1 - Corresponding map creation
+	metaTypeMap := utilMapCreation(vars)
+	
+	// 2 - Substitute all TypeVar with the meta type
+	switch ts := typeScheme.(type) {
+	case TypeApp:
+		typeScheme = ts.substitute(metaTypeMap)
+	case TypeArrow:
+		typeScheme = ts.substitute(metaTypeMap)
+	default:
+		global.PrintDebug("MQT", "Error: shouldn't be here")
+	}
 	
 	return QuantifiedType{vars: vars, scheme: typeScheme}
 }
@@ -324,4 +366,26 @@ func GetOutType(typeScheme TypeScheme) TypeApp {
 		return t
 	}
 	return nil
+}
+
+/* Gets the input type of an arrow type scheme */
+func GetInputType(typeScheme TypeScheme) []TypeApp {
+	// typeScheme may be a TypeHint if it comes from a constant.
+	switch t := typeScheme.(type) {
+	case TypeArrow:
+		return t.types[len(t.types)-2:]
+	case TypeHint:
+		return []TypeApp{}
+	}
+	return nil
+}
+
+/* Utils */
+
+func utilMapCreation(vars []TypeVar) map[TypeVar]TypeHint {
+	metaTypeMap := make(map[TypeVar]TypeHint)
+	for i, var_ := range vars {
+		metaTypeMap[var_] = MkTypeHint(fmt.Sprintf("*_%d", i))
+	}
+	return metaTypeMap
 }

@@ -39,6 +39,4 @@ clean:
 	rm -rf $(BUILD)
 
 tests:
-	go test -v -coverprofile=coverage.out ./...
-	go tool cover -html=coverage.out
-	rm coverage.out
+	go test -v -coverprofile=coverage.out ./... || (go tool cover -html=coverage.out && rm coverage.out)
