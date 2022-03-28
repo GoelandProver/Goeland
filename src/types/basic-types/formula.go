@@ -69,17 +69,10 @@ type Pred struct {
 	typeHint typing.TypeScheme
 }
 
-func (p Pred) GetID() Id       { return p.id.Copy().(Id) }
-func (p Pred) GetArgs() []Term { return CopyTermList(p.args) }
-func (p Pred) GetType() typing.TypeScheme {
-	fmt.Printf("GetType %s\n", p.typeHint.ToString())
-	return p.typeHint
-}
+func (p Pred) GetID() Id                     { return p.id.Copy().(Id) }
+func (p Pred) GetArgs() []Term               { return CopyTermList(p.args) }
+func (p Pred) GetType() typing.TypeScheme    { return p.typeHint }
 func (p Pred) GetTypeVars() []typing.TypeApp { return p.typeVars }
-func (p *Pred) SetType(t typing.TypeScheme) {
-	fmt.Printf("SetType %s\n", t.ToString())
-	p.typeHint = t
-}
 
 /* Top (always true) */
 type Top struct {
@@ -150,7 +143,6 @@ type Ex struct {
 
 func (e Ex) GetVarList() []Var          { return copyVarList(e.var_list) }
 func (e Ex) GetForm() Form              { return e.f.Copy() }
-func (e Ex) GetUnderlyingForm() Form    { return e.f }
 func (e Ex) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 type All struct {
@@ -161,7 +153,6 @@ type All struct {
 
 func (a All) GetVarList() []Var          { return copyVarList(a.var_list) }
 func (a All) GetForm() Form              { return a.f.Copy() }
-func (a All) GetUnderlyingForm() Form    { return a.f }
 func (a All) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 /* Struct describing a forall with type variables */
@@ -176,7 +167,6 @@ type AllType struct {
 func (a AllType) GetIndex() int                { return a.index }
 func (a AllType) GetVarList() []typing.TypeVar { return copyTypeVarList(a.tvList) }
 func (a AllType) GetForm() Form                { return a.form.Copy() }
-func (a AllType) GetUnderlyingForm() Form      { return a.form }
 func (a AllType) GetType() typing.TypeScheme   { return typing.DefaultPropType(0) }
 
 /* Form interface */
@@ -614,6 +604,9 @@ func MakeAll(i int, vl []Var, f Form) All {
 func MakerAll(vl []Var, f Form) All {
 	return MakeAll(MakerIndexFormula(), vl, f)
 }
+
+func MakeAllType(i int, vl []typing.TypeVar, f Form) AllType { return AllType{i, vl, f} }
+func MakerAllType(vl []typing.TypeVar, f Form) AllType       { return AllType{MakerIndexFormula(), vl, f} }
 
 /* Transform a formula into its negation */
 func RefuteForm(f Form) Form {

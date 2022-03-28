@@ -50,19 +50,19 @@ import (
  **/
 
 /* Applies the App rule for predicates or functions */
-func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	var id btypes.Id
 	var terms []btypes.Term
 	var vars  []typing.TypeApp
 
 	if whatIsSet(state.consequence) == formIsSet {
-		id = toForm(state.consequence.f).(btypes.Pred).GetID()
-		terms = toForm(state.consequence.f).(btypes.Pred).GetArgs()
-		vars = toForm(state.consequence.f).(btypes.Pred).GetTypeVars()
+		id = (state.consequence.f).(btypes.Pred).GetID()
+		terms = (state.consequence.f).(btypes.Pred).GetArgs()
+		vars = (state.consequence.f).(btypes.Pred).GetTypeVars()
 	} else {
-		id = toTerm(state.consequence.t).(btypes.Fun).GetID()
-		terms = toTerm(state.consequence.t).(btypes.Fun).GetArgs()
-		vars = toTerm(state.consequence.t).(btypes.Fun).GetTypeVars()
+		id = (state.consequence.t).(btypes.Fun).GetID()
+		terms = (state.consequence.t).(btypes.Fun).GetArgs()
+		vars = (state.consequence.t).(btypes.Fun).GetTypeVars()
 	}
 
 	root.appliedRule = "App"
@@ -70,23 +70,23 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
 	// Search for the ID in the global context
 	typeScheme := getTypeSchemeFromGlobalContext(state.globalContext, id, vars, terms)
 	if typeScheme == nil {
-		return Error{result: false, err: fmt.Errorf("App not found in the global context: %s", id.GetName())}
+		return Reconstruct{
+			result: false,
+			err: fmt.Errorf("App not found in the global context: %s", id.GetName()),
+		}
 	}
 
 	// Type predicate or function
 	if whatIsSet(state.consequence) == formIsSet {
 		// For an unknown reason, Go doesn't want setter to modify the object !
-		// Wonderful! 
-		pred := (*btypes.Pred)(state.consequence.f)
-		pred.SetType(typeScheme)
-		fmt.Printf("Pred ptr: %p ; Pred Type: %s ; f Type: %s\n", &pred, pred.GetType().ToString(), toForm(state.consequence.f).GetType().ToString())
+		// Wonderful!
+		fTyped := btypes.MakePred(id, terms, vars, typeScheme)
+		return reconstructForm(launchChildren(createAppChildren(state, vars, terms), root, fatherChan), fTyped)
 	} else {
-		//((*btypes.Fun)(unsafe.Pointer(state.consequence.t))).SetTypeScheme(typeScheme)
-	}
-
-	// Launch the children in a goroutine, and wait for it to close.
-	// If one branch closes with an error, then the system is not well-typed.
-	return launchChildren(createAppChildren(state, vars, terms), root, fatherChan)
+	 	//fTyped := btypes.MakeFun(id, terms, vars, typeScheme)
+		//return reconstructTerm(launchChildren(createAppChildren(state, vars, terms), root, fatherChan), fTyped)
+	}	
+	return Reconstruct{}
 }
 
 
@@ -140,7 +140,7 @@ func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term
 		children = append(children, Sequent{
 			globalContext: getGlobalContext(state.globalContext),
 			localContext: state.localContext.copy(),
-			consequence: Consequence{t: fromTerm(&term)},
+			consequence: Consequence{t: term},
 		})
 	}
 

@@ -37,9 +37,10 @@
 package polyrules
 
 import (
-	"unsafe"
+	"reflect"
 
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -75,8 +76,8 @@ func (lc LocalContext) copy() LocalContext {
 
 /* Stores the consequence of the sequent */
 type Consequence struct {
-	f unsafe.Pointer
-	t unsafe.Pointer 
+	f btypes.Form
+	t btypes.Term
 	a typing.TypeApp
 }
 
@@ -114,12 +115,11 @@ func (pt *ProofTree) addChildWith(sequent Sequent) *ProofTree {
  * Otherwise, it will return an error.
  **/
 func WellFormedVerification(form btypes.Form) (btypes.Form, error) {
-	f := unsafe.Pointer(&form)
 	// Sequent creation
 	state := Sequent{
 		globalContext: getGlobalContext(typing.GetGlobalContext()),
 		localContext: LocalContext{vars: []btypes.Var{}, typeVars: []typing.TypeVar{}},
-		consequence: Consequence{f: f},
+		consequence: Consequence{f: form},
 	}
 
 	// Prooftree creation
@@ -129,8 +129,7 @@ func WellFormedVerification(form btypes.Form) (btypes.Form, error) {
 	}
 
 	// Launch the typing system
-	err := launchRuleApplication(state, &root)
-	return toForm(f), err
+	return launchRuleApplication(state, &root)
 }
 
 // TODO: copy global context if WF1 rule is found useful
@@ -152,18 +151,50 @@ func getTypeSchemeFromGlobalContext(context map[string][]typing.App, id btypes.I
 	return typeScheme
 }
 
-func toForm(f unsafe.Pointer) btypes.Form {
-	return *(*btypes.Form)(f)
+/* Reconstructs a From depending on what the children has returned */
+func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstruct {
+	if !reconstruction.result {
+		return reconstruction
+	}
+
+	var f btypes.Form
+	switch form := baseForm.(type) {
+	case btypes.All:
+		f = btypes.MakeAll(form.GetVarList(), unquantify(reconstruction.forms[1], form))
+	case btypes.AllType:
+		f = btypes.MakeAllType(form.GetVarList(), unquantify(reconstruction.forms[1], form))
+	case btypes.Ex:
+		f = btypes.MakeEx(form.GetVarList(), unquantify(reconstruction.forms[1], form))
+	case btypes.And:
+		f = btypes.MakeAnd(reconstruction.forms)
+	case btypes.Or:
+		f = btypes.MakeOr(reconstruction.forms)
+	case btypes.Imp:
+		f = btypes.MakeImp(reconstruction.forms[0], reconstruction.forms[1])
+	case btypes.Equ:
+		f = btypes.MakeEqu(reconstruction.forms[0], reconstruction.forms[1])
+	case btypes.Not:
+		f = btypes.MakeNot(reconstruction.forms[0])
+	case btypes.Pred:
+		f = form
+	}
+
+	return Reconstruct{result: true, forms: []btypes.Form{f}, err: nil}
 }
 
-func toTerm(t unsafe.Pointer) btypes.Term {
-	return *(*btypes.Term)(t)
-}
+/* Utils for reconstructions function */
 
-func fromForm(f *btypes.Form) unsafe.Pointer {
-	return unsafe.Pointer(f)
-}
-
-func fromTerm(t *btypes.Term) unsafe.Pointer {
-	return unsafe.Pointer(t)
+/* Removes all the quantifiers of form of the same type of quant. */
+func unquantify(form basictypes.Form, quant btypes.Form) btypes.Form {
+	for reflect.TypeOf(form) == reflect.TypeOf(quant) {
+		switch quant.(type) {
+		case btypes.All:
+			form = form.(btypes.All).GetForm()
+		case btypes.AllType:
+			form = form.(btypes.AllType).GetForm()
+		case btypes.Ex:
+			form = form.(btypes.Ex).GetForm()
+		}
+	}
+	return form
 }

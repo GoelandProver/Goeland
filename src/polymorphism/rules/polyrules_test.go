@@ -93,7 +93,7 @@ func TestSimpleDoublePass(t *testing.T) {
 	}
 }
 
-/*
+
 func TestNegDoublePass(t *testing.T) {
 	// ¬P(2, 3)
 	pred := btypes.RefuteForm(btypes.MakePred(btypes.MakerId("P"), []btypes.Term{
@@ -102,7 +102,11 @@ func TestNegDoublePass(t *testing.T) {
 	}, []typing.TypeApp{}))
 
 	// Double pass pred
-	newPred := TypeFormula(pred)
+	newPred, err := WellFormedVerification(pred)
+
+	if err != nil {
+		t.Fatalf("Error during formal verification: %s", err.Error())
+	}
 
 	if _, ok := newPred.(btypes.Not); !ok {
 		t.Fatalf("Double pass should've returned a negation. Actual: %s", newPred.ToString())
@@ -124,6 +128,7 @@ func TestNegDoublePass(t *testing.T) {
 	}
 }
 
+
 func TestBinaryDoublePass(t *testing.T) {
 	// P(2, 2) => P(3, 3)
 	pred := btypes.MakeImp(
@@ -138,7 +143,11 @@ func TestBinaryDoublePass(t *testing.T) {
 	)
 
 	// Double pass pred
-	newPred := TypeFormula(pred)
+	newPred, err := WellFormedVerification(pred)
+
+	if err != nil {
+		t.Fatalf("Error during formal verification: %s", err.Error())
+	}
 
 	if _, ok := newPred.(btypes.Imp); !ok {
 		t.Fatalf("Double pass should've returned an implication. Actual: %s", newPred.ToString())
@@ -176,7 +185,11 @@ func TestBinaryDoublePass(t *testing.T) {
 	)
 
 	// Double pass pred
-	newPred = TypeFormula(predEqu)
+	newPred, err = WellFormedVerification(predEqu)
+
+	if err != nil {
+		t.Fatalf("Error during formal verification: %s", err.Error())
+	}
 
 	if _, ok := newPred.(btypes.Equ); !ok {
 		t.Fatalf("Double pass should've returned an equivalence. Actual: %s", newPred.ToString())
@@ -209,7 +222,11 @@ func TestQuantDoublePass(t *testing.T) {
 	)
 
 	// Double pass pred
-	newPred := TypeFormula(pred)
+	newPred, err := WellFormedVerification(pred)
+
+	if err != nil {
+		t.Fatalf("Error during formal verification: %s", err.Error())
+	}
 
 	if _, ok := newPred.(btypes.All); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
@@ -237,7 +254,11 @@ func TestQuantDoublePass(t *testing.T) {
 	)
 
 	// Double pass pred
-	newPred = TypeFormula(predEqu)
+	newPred, err = WellFormedVerification(predEqu)
+
+	if err != nil {
+		t.Fatalf("Error during formal verification: %s", err.Error())
+	}
 
 	if _, ok := newPred.(btypes.Ex); !ok {
 		t.Fatalf("Double pass should've returned an existential quantifier. Actual: %s", newPred.ToString())
@@ -268,7 +289,11 @@ func TestNAryDoublePass(t *testing.T) {
 	})
 
 	// Double pass pred
-	newPred := TypeFormula(pred)
+	newPred, err := WellFormedVerification(pred)
+
+	if err != nil {
+		t.Fatalf("Error during formal verification: %s", err.Error())
+	}
 
 	if _, ok := newPred.(btypes.Or); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
@@ -301,7 +326,11 @@ func TestNAryDoublePass(t *testing.T) {
 	})
 
 	// Double pass pred
-	newPred = TypeFormula(andPred)
+	newPred, err = WellFormedVerification(andPred)
+
+	if err != nil {
+		t.Fatalf("Error during formal verification: %s", err.Error())
+	}
 
 	if _, ok := newPred.(btypes.And); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
@@ -330,12 +359,10 @@ func TestTypingNotInGlobalContext(t *testing.T) {
 	}, []typing.TypeApp{})
 
 	// Double pass pred
-	newPred := TypeFormula(pred)
+	_, err := WellFormedVerification(pred)
 
-	expected := typing.DefaultPropType(len(pred.GetArgs()))
-	// Pred should be of type (i * i) -> o
-	if !newPred.GetType().Equals(expected) {
-		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newPred.GetType().ToString())
+	if err == nil {
+		t.Fatalf("Formal verification didn't catch the problem.")
 	}
 }
 
@@ -358,6 +385,17 @@ func TestBabyNoErr(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
+	
+	form = form.(btypes.All).GetForm()
+
+	expected := typing.MkTypeArrow(
+		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
+		typing.DefaultProp(),
+	)
+	if !typing.GetOutType(form.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) || 
+	   !form.GetType().Equals(expected) {
+		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
+	}
 
 	form = btypes.MakeForm(btypes.MakeEx(
 		[]btypes.Var{x, y}, 
@@ -370,5 +408,12 @@ func TestBabyNoErr(t *testing.T) {
 	form, err = WellFormedVerification(form)
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
+	}
+	
+	pred := form.(btypes.Ex).GetForm()
+
+	if !typing.GetOutType(pred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) || 
+	   !pred.GetType().Equals(expected) {
+		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
 }

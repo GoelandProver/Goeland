@@ -48,18 +48,21 @@ import (
  **/
 
 /* Applies quantification rule and launches 2 goroutines waiting its children. */
-func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	// Add rule to prooftree
-	switch toForm(state.consequence.f).(type) {
-	case btypes.All:
+	switch (state.consequence.f).(type) {
+	case btypes.All, btypes.AllType:
 		root.appliedRule = "∀"
 	case btypes.Ex:
 		root.appliedRule = "∃"
 	}
 
-	varTreated, newForm := removeOneVar(toForm(state.consequence.f)) 
+	varTreated, newForm := removeOneVar(state.consequence.f) 
 	if _, isTypeApp := varTreated.GetTypeHint().(typing.TypeApp); !isTypeApp {
-		return Error{result: false, err: fmt.Errorf("A quantified variable is not a TypeApp: %s", varTreated.ToString())}
+		return Reconstruct{
+			result: false, 
+			err: fmt.Errorf("A quantified variable is not a TypeApp: %s", varTreated.ToString()),
+		}
 	}
 
 	// Create 2 children:
@@ -76,20 +79,20 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Error) Error
 		{
 			globalContext: getGlobalContext(state.globalContext),
 			localContext: state.localContext.addVar(varTreated),
-			consequence: Consequence{f: fromForm(&newForm)},
+			consequence: Consequence{f: newForm},
 		},
 	}
 
 	// Launch the children in a goroutine, and wait for it to close.
 	// If one branch closes with an error, then the system is not well-typed.
-	return launchChildren(children, root, fatherChan)
+	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
 }
 
 /* Applies OR or AND rule and launches n goroutines waiting its children */
-func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	formList := btypes.MakeEmptyFormList()
 	// Add rule to prooftree
-	switch f := toForm(state.consequence.f).(type) {
+	switch f := (state.consequence.f).(type) {
 	case btypes.And:
 		root.appliedRule = "∧"
 		formList = f.GetLF()
@@ -104,20 +107,20 @@ func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Error) Error 
 		children = append(children, Sequent{
 			globalContext: getGlobalContext(state.globalContext),
 			localContext: state.localContext.copy(),
-			consequence: Consequence{f: fromForm(&form)},
+			consequence: Consequence{f: form},
 		})
 	}
 
 	// Launch the children in a goroutine, and wait for it to close.
 	// If one branch closes with an error, then the system is not well-typed.
-	return launchChildren(children, root, fatherChan)
+	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
 }
 
 /* Applies => or <=> rule and launches 2 goroutines waiting its children */
-func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	var f1, f2 btypes.Form
 	// Add rule to prooftree
-	switch f := toForm(state.consequence.f).(type) {
+	switch f := (state.consequence.f).(type) {
 	case btypes.Imp:
 		root.appliedRule = "⇒"
 		f1, f2 = f.GetF1(), f.GetF2()
@@ -131,24 +134,24 @@ func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Error) Erro
 		{
 			globalContext: getGlobalContext(state.globalContext),
 			localContext: state.localContext.copy(),
-			consequence: Consequence{f: fromForm(&f1)},
+			consequence: Consequence{f: f1},
 		},
 		{
 			globalContext: getGlobalContext(state.globalContext),
 			localContext: state.localContext.copy(),
-			consequence: Consequence{f: fromForm(&f2)},
+			consequence: Consequence{f: f2},
 		},
 	}
 
 	// Launch the children in a goroutine, and wait for it to close.
 	// If one branch closes with an error, then the system is not well-typed.
-	return launchChildren(children, root, fatherChan)
+	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
 }
 
 /* Applies BOT or TOP rule and does not create a new goroutine */
-func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	// Add rule to prooftree
-	switch toForm(state.consequence.f).(type) {
+	switch (state.consequence.f).(type) {
 	case btypes.Top:
 		root.appliedRule = "⊤"
 	case btypes.Bot:
@@ -165,25 +168,25 @@ func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Error) Erro
 	}
 
 	// If the branch closes with an error, then the system is not well-typed.
-	return launchChildren(children, root, fatherChan)
+	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
 }
 
-func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	// Add rule to prooftree
 	root.appliedRule = "¬"
-	form := toForm(state.consequence.f).(btypes.Not).GetForm()
+	form := (state.consequence.f).(btypes.Not).GetForm()
 
 	// Construct children with the contexts
 	children := []Sequent{
 		{
 			globalContext: getGlobalContext(state.globalContext),
 			localContext: state.localContext.copy(),
-			consequence: Consequence{f: fromForm(&form)},
+			consequence: Consequence{f: form},
 		},
 	}
 
 	// If the branch closes with an error, then the system is not well-typed.
-	return launchChildren(children, root, fatherChan)
+	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
 }
 
 /** 
@@ -197,13 +200,13 @@ func removeOneVar(form btypes.Form) (btypes.Var, btypes.Form) {
 	case btypes.Ex:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			return v, btypes.MakeEx(f.GetVarList()[1:], f.GetUnderlyingForm())
+			return v, btypes.MakeEx(f.GetVarList()[1:], f.GetForm())
 		}
 		return v, f.GetForm()
 	case btypes.All:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			return v, btypes.MakeAll(f.GetVarList()[1:], f.GetUnderlyingForm())
+			return v, btypes.MakeAll(f.GetVarList()[1:], f.GetForm())
 		}
 		return v, f.GetForm()
 	}

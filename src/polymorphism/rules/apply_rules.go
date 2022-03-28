@@ -54,10 +54,13 @@ const (
 )
 
 /* Launch the rules depending on what's on the right side of the sequent. */
-func applyRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+func applyRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	// Only one of the three should be set
 	if !onlyOneConsequenceIsSet(state) {
-		return Error{result: false, err: fmt.Errorf("Multiple elements on the right-side of the sequent. Cannot type this system.")}
+		return Reconstruct{
+			result: false, 
+			err: fmt.Errorf("Multiple elements on the right-side of the sequent. Cannot type this system."),
+		}
 	}
 
 	// The applicable rules depend on what is set: the form, the term, or the type ?
@@ -72,14 +75,14 @@ func applyRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
 		return applyWFRule(state, root, fatherChan)
 	}
 
-	return Error{result: true, err: nil}
+	return Reconstruct{result: true, err: nil}
 }
 
 /* Applies one of the forms rule based on the type of the form. */
-func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
-	var err Error
-	switch toForm(state.consequence.f).(type) {
-	case btypes.All, btypes.Ex:
+func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+	var err Reconstruct
+	switch (state.consequence.f).(type) {
+	case btypes.All, btypes.AllType, btypes.Ex:
 		err = applyQuantRule(state, root, fatherChan)
 	case btypes.And, btypes.Or:
 		err = applyNAryRule(state, root, fatherChan)
@@ -96,18 +99,18 @@ func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Error) Error 
 }
 
 /* Applies one of the terms rule based on the type of the form. */
-func applyTermRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
-	return Error{result: true, err: nil}
+func applyTermRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+	return Reconstruct{result: true, err: nil}
 }
 
 /* Applies one of the types rule based on the type of the form. */
-func applyTypeRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
-	return Error{result: true, err: nil}
+func applyTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+	return Reconstruct{result: true, err: nil}
 }
 
 /* Applies one of the WF rule based on the type of the form. */
-func applyWFRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
-	return Error{result: true, err: nil}
+func applyWFRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+	return Reconstruct{result: true, err: nil}
 }
 
 /* Checks that at most one consequence of the sequent is set. */
