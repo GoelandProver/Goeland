@@ -54,7 +54,7 @@ import (
 type App struct {
 	in  TypeApp
 	out TypeApp
-	app TypeScheme
+	App TypeScheme
 }
 
 /* Map of Type Schemes for a function or a predicate. */
@@ -86,9 +86,9 @@ func SaveTypeScheme(name string, in TypeApp, out TypeApp) error {
 	// It's not in the map, it should be added
 	typeSchemesMap.lock.Lock()
 	if found {
-		typeSchemesMap.tsMap[name] = append(typeSchemesMap.tsMap[name], App{in: in, out: out, app: tArrow})
+		typeSchemesMap.tsMap[name] = append(typeSchemesMap.tsMap[name], App{in: in, out: out, App: tArrow})
 	} else {
-		typeSchemesMap.tsMap[name] = []App{{in: in, out: out, app: tArrow}}
+		typeSchemesMap.tsMap[name] = []App{{in: in, out: out, App: tArrow}}
 	}
 	typeSchemesMap.lock.Unlock()
 
@@ -107,9 +107,9 @@ func SavePolymorphScheme(name string, scheme TypeScheme) error {
 	// It's not in the map, it should be added
 	typeSchemesMap.lock.Lock()
 	if found {
-		typeSchemesMap.tsMap[name] = append(typeSchemesMap.tsMap[name], App{app: scheme})
+		typeSchemesMap.tsMap[name] = append(typeSchemesMap.tsMap[name], App{App: scheme})
 	} else {
-		typeSchemesMap.tsMap[name] = []App{{app: scheme}}
+		typeSchemesMap.tsMap[name] = []App{{App: scheme}}
 	}
 	typeSchemesMap.lock.Unlock()
 
@@ -132,7 +132,7 @@ func SaveConstant(name string, out TypeApp) error {
 	// Save the constant in the context. 
 	// The line out.(TypeScheme) shouldn't fail : it's never a TypeVar.
 	typeSchemesMap.tsMap[name] = []App{
-		{out: out, app: out.(TypeScheme)},
+		{out: out, App: out.(TypeScheme)},
 	}
 
 	typeSchemesMap.lock.Unlock()
@@ -179,9 +179,9 @@ func GetPolymorphicType(name string, lenVars, lenTerms int) TypeScheme {
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
-			if fun.app.size() == lenTerms && len(fun.app.(QuantifiedType).vars) == lenVars {
+			if fun.App.size() == lenTerms && len(fun.App.(QuantifiedType).vars) == lenVars {
 				typeSchemesMap.lock.Unlock()
-				return fun.app
+				return fun.App
 			}
 		}
 	}
@@ -194,7 +194,7 @@ func getConstantTypeScheme(name string) TypeScheme {
 	var tScheme TypeScheme
 	typeSchemesMap.lock.Lock()
 	if typeSchemes, found := typeSchemesMap.tsMap[name]; found {
-		tScheme = typeSchemes[0].app
+		tScheme = typeSchemes[0].App
 	} else {
 		// If it's not found, the type is inferred with $i
 		tScheme = nil
@@ -210,7 +210,7 @@ func getSchemeFromArgs(name string, inArgs TypeApp) (TypeScheme, bool) {
 		for _, fun := range arr {
 			if fun.in.ToTypeScheme().Equals(inArgs.ToTypeScheme()) {
 				typeSchemesMap.lock.Unlock()
-				return fun.app, true
+				return fun.App, true
 			}
 		}
 		typeSchemesMap.lock.Unlock()
@@ -225,9 +225,9 @@ func getPolymorphSchemeFromArgs(name string, scheme TypeScheme) (TypeScheme, boo
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
-			if fun.app.Equals(scheme) {
+			if fun.App.Equals(scheme) {
 				typeSchemesMap.lock.Unlock()
-				return fun.app, true
+				return fun.App, true
 			}
 		}
 		typeSchemesMap.lock.Unlock()
@@ -248,8 +248,15 @@ func CopyTypeAppList(ta []TypeApp) []TypeApp {
 
 /* Returns the global context. Use this only in polyrules. */
 func GetGlobalContext() map[string][]App {
+	// Get type schemes
 	typeSchemesMap.lock.Lock()
 	globalContext := typeSchemesMap.tsMap
 	typeSchemesMap.lock.Unlock()
+	// Add TypeHints
+	tMap.lock.Lock()
+	for name, type_ := range tMap.uidsMap {
+		globalContext[name] = []App{{App: type_}}
+	}
+	tMap.lock.Unlock()
 	return globalContext
 }

@@ -40,17 +40,10 @@ package polyrules
  * This file is used to properly type a formula after the first pass.
  **/
 
-import (
-	"github.com/GoelandProver/Goeland/global"
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
-)
-
 /**
  * Types all terms of a formula :
  *	- functions terms
  *	- predicates
- **/
 func typeFormula(form btypes.Form) btypes.Form {
 	var res btypes.Form
 
@@ -75,7 +68,6 @@ func typeFormula(form btypes.Form) btypes.Form {
 
 /**
  * Types a term and its subterms if it has any.
- **/
 func typeTerm(term btypes.Term) btypes.Term {
 	// Vars are already typed, there shouldn't be any metas but it's also
 	// typed, and IDs are filtered.
@@ -97,7 +89,6 @@ func typeTerm(term btypes.Term) btypes.Term {
  *	- btypes.All
  *	- btypes.Ex
  * If it's another type, it will return nil.
- **/
 func typeQuantifiedFormula(form btypes.Form) btypes.Form {
 	switch newForm := form.(type) {
 	case btypes.All:
@@ -115,7 +106,6 @@ func typeQuantifiedFormula(form btypes.Form) btypes.Form {
  *	- btypes.Imp
  *	- btypes.Equ
  * If it's another type, it will return nil.
- **/
 func typeBinaryFormula(form btypes.Form) btypes.Form {
 	switch newForm := form.(type) {
 	case btypes.Imp:
@@ -133,7 +123,6 @@ func typeBinaryFormula(form btypes.Form) btypes.Form {
  *	- btypes.Or
  *	- btypes.And
  * If it's another type, it will return nil.
- **/
 func typeNaryFormula(form btypes.Form) btypes.Form {
 	switch newForm := form.(type) {
 	case btypes.Or:
@@ -147,7 +136,6 @@ func typeNaryFormula(form btypes.Form) btypes.Form {
 
 /**
  * Types a form list.
- **/
 func typeFormList(formList btypes.FormList) btypes.FormList {
 	typedForms := btypes.MakeEmptyFormList()
 	for _, subForm := range formList {
@@ -158,7 +146,6 @@ func typeFormList(formList btypes.FormList) btypes.FormList {
 
 /**
  * Infer the Type Scheme of the predicate by typing its terms.
- **/
 func typeAppTerms(id btypes.Id, terms []btypes.Term, outType int) ([]btypes.Term, typing.TypeScheme) {
 	var newTerms []btypes.Term
 
@@ -176,7 +163,6 @@ func typeAppTerms(id btypes.Id, terms []btypes.Term, outType int) ([]btypes.Term
 
 /**
  * Takes all the types of the terms and makes a cross product of everything
- **/
 func typeApp(terms []btypes.Term) typing.TypeApp {
 	var types []typing.TypeApp
 
@@ -196,3 +182,4 @@ func typeApp(terms []btypes.Term) typing.TypeApp {
 
 	return typing.MkTypeCross(types...)
 }
+*/

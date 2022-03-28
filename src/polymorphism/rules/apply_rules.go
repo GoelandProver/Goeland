@@ -39,6 +39,7 @@ package polyrules
 import (
 	"fmt"
 
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -80,37 +81,99 @@ func applyRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reco
 
 /* Applies one of the forms rule based on the type of the form. */
 func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	var err Reconstruct
+	var rec Reconstruct
 	switch (state.consequence.f).(type) {
 	case btypes.All, btypes.AllType, btypes.Ex:
-		err = applyQuantRule(state, root, fatherChan)
+		rec = applyQuantRule(state, root, fatherChan)
 	case btypes.And, btypes.Or:
-		err = applyNAryRule(state, root, fatherChan)
+		rec = applyNAryRule(state, root, fatherChan)
 	case btypes.Imp, btypes.Equ:
-		err = applyBinaryRule(state, root, fatherChan)
+		rec = applyBinaryRule(state, root, fatherChan)
 	case btypes.Top, btypes.Bot:
-		err = applyBotTopRule(state, root, fatherChan)
+		rec = applyBotTopRule(state, root, fatherChan)
 	case btypes.Not:
-		err = applyNotRule(state, root, fatherChan)
+		rec = applyNotRule(state, root, fatherChan)
 	case btypes.Pred:
-		err = applyAppRule(state, root, fatherChan)
+		// TODO: = rule
+		rec = applyAppRule(state, root, fatherChan)
 	}
-	return err
+	return rec
 }
 
 /* Applies one of the terms rule based on the type of the form. */
 func applyTermRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	return Reconstruct{result: true, err: nil}
+	var rec Reconstruct
+	switch (state.consequence.t).(type) {
+	case btypes.Fun:
+		rec = applyAppRule(state, root, fatherChan)
+	case btypes.Var:
+		rec = applyVarRule(state, root, fatherChan)
+		// Metas shoudln't appear in the formula yet.
+		// IDs are not a real Term.
+	}
+	return rec
 }
 
 /* Applies one of the types rule based on the type of the form. */
 func applyTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	return Reconstruct{result: true, err: nil}
+	var rec Reconstruct
+	switch type_ := (state.consequence.a).(type) {
+	case typing.TypeHint:
+		if type_.Equals(metaType) {
+			rec = applyTypeWFRule(state, root, fatherChan)
+		} else {
+			rec = applyGlobalTypeVarRule(state, root, fatherChan)
+		}
+	case typing.TypeVar:
+		rec = applyLocalTypeVarRule(state, root, fatherChan)
+	case typing.TypeCross:
+		// Apply composed rule: launch a child for each TypeHint of the composed type. 
+		rec = applyCrossRule(state, root, fatherChan)
+		// There shouldn't be any TypeArrow: can not type a variable with it in first order.
+	}
+	return rec
 }
 
 /* Applies one of the WF rule based on the type of the form. */
 func applyWFRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	return Reconstruct{result: true, err: nil}
+	if (state.localContext.isEmpty()) {
+		root.appliedRule = "WF_0"
+		return Reconstruct{
+			result: true,
+			err: nil,
+		}
+	}
+
+	return applyWF1(state, root, fatherChan)
+}
+
+func applyWF1(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+	root.appliedRule = "WF_1"
+
+	// Try to empty vars first
+	if len(state.localContext.vars) > 0 {
+		// Launch child on the type of the first var
+		var_, newLocalContext := state.localContext.popVar()
+		child := []Sequent{
+			{
+				localContext: newLocalContext,
+				globalContext: getGlobalContext(state.globalContext),
+				consequence: Consequence{a: var_.GetTypeHint().(typing.TypeApp)},
+			},
+		}
+		return launchChildren(child, root, fatherChan)
+	}
+
+	// Then, if vars is not empty, empty the types
+	_, newLocalContext := state.localContext.popTypeVar()
+	child := []Sequent{
+		{
+			localContext: newLocalContext,
+			globalContext: getGlobalContext(state.globalContext),
+			consequence: Consequence{a: metaType},
+		},
+	}
+	return launchChildren(child, root, fatherChan)
 }
 
 /* Checks that at most one consequence of the sequent is set. */

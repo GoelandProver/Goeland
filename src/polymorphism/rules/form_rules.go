@@ -57,11 +57,28 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 		root.appliedRule = "∃"
 	}
 
-	varTreated, newForm := removeOneVar(state.consequence.f) 
-	if _, isTypeApp := varTreated.GetTypeHint().(typing.TypeApp); !isTypeApp {
-		return Reconstruct{
-			result: false, 
-			err: fmt.Errorf("A quantified variable is not a TypeApp: %s", varTreated.ToString()),
+	var newForm btypes.Form 
+	var varTreated btypes.Var
+	var typeTreated typing.TypeVar
+
+	switch f := (state.consequence.f).(type) {
+	case btypes.All, btypes.Ex:
+		varTreated, newForm = removeOneVar(state.consequence.f) 
+	case btypes.AllType:
+		v := f.GetVarList()[0]
+		if len(f.GetVarList()) > 1 {
+			typeTreated, newForm = v, btypes.MakeAllType(f.GetVarList()[1:], f.GetForm())
+		} else {
+			typeTreated, newForm = v, f.GetForm()
+		} 
+	}
+
+	if !varTreated.Equals(btypes.Var{}) {
+		if _, isTypeApp := varTreated.GetTypeHint().(typing.TypeApp); !isTypeApp {
+			return Reconstruct{
+				result: false, 
+				err: fmt.Errorf("A quantified variable is not a TypeApp: %s", varTreated.ToString()),
+			}
 		}
 	}
 
@@ -70,18 +87,7 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 	//	2 - Second one with the quantified variable added in the local context.
 	// => copy the local context and use the function to get the global context (copy or not).
 	// The underlying form should be gotten to be properly typed.
-	children := []Sequent{
-		{
-			globalContext: getGlobalContext(state.globalContext), 
-			localContext: state.localContext.copy(),
-			consequence: Consequence{a: varTreated.GetTypeHint().(typing.TypeApp)},
-		},
-		{
-			globalContext: getGlobalContext(state.globalContext),
-			localContext: state.localContext.addVar(varTreated),
-			consequence: Consequence{f: newForm},
-		},
-	}
+	children := mkQuantChildren(state, varTreated, typeTreated, newForm)
 
 	// Launch the children in a goroutine, and wait for it to close.
 	// If one branch closes with an error, then the system is not well-typed.
@@ -211,4 +217,30 @@ func removeOneVar(form btypes.Form) (btypes.Var, btypes.Form) {
 		return v, f.GetForm()
 	}
 	return btypes.Var{}, nil
+}
+
+/* Makes the child treating the variable depending on which is set. */
+func mkQuantChildren(state Sequent, varTreated btypes.Var, typeTreated typing.TypeVar, newForm btypes.Form) []Sequent {
+	var type_ typing.TypeApp
+	var newLocalContext LocalContext
+	if typeTreated.Equals(typing.TypeVar{}) {
+		type_ = varTreated.GetTypeHint().(typing.TypeApp)
+		newLocalContext = state.localContext.addVar(varTreated)
+	} else {
+		type_ = metaType
+		newLocalContext = state.localContext.addTypeVar(typeTreated)
+	}
+
+	return []Sequent{
+		{
+			globalContext: getGlobalContext(state.globalContext), 
+			localContext: state.localContext.copy(),
+			consequence: Consequence{a: type_},
+		}, 
+		{
+			globalContext: getGlobalContext(state.globalContext),
+			localContext: newLocalContext,
+			consequence: Consequence{f: newForm},
+		},
+	}
 }

@@ -151,6 +151,18 @@ func (tc TypeCross) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
 	return MkTypeCross(substTypeAppList(mapSubst, tc.types)...)
 }
 
+func (tc TypeCross) GetAllUnderlyingTypes() []TypeApp {
+	underlyingTypes := []TypeApp{}
+	for _, typeApp := range tc.types {
+		if tc, isTc := typeApp.(TypeCross); isTc {
+			underlyingTypes = append(underlyingTypes, tc.GetAllUnderlyingTypes()...)
+		} else {
+			underlyingTypes = append(underlyingTypes, typeApp)
+		}
+	}
+	return underlyingTypes
+}
+
 /**
  * Type consisting of two TypeSchemes : the in-arguments parameter(s) and the out parameter.
  * For example, if a function f takes to parameters of type int, and returns an int, it

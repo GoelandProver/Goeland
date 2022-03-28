@@ -76,19 +76,45 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 		}
 	}
 
+	// Affect new type scheme to the prooftree
+	root.typeScheme = typeScheme
+
 	// Type predicate or function
 	if whatIsSet(state.consequence) == formIsSet {
-		// For an unknown reason, Go doesn't want setter to modify the object !
-		// Wonderful!
 		fTyped := btypes.MakePred(id, terms, vars, typeScheme)
 		return reconstructForm(launchChildren(createAppChildren(state, vars, terms), root, fatherChan), fTyped)
 	} else {
-	 	//fTyped := btypes.MakeFun(id, terms, vars, typeScheme)
-		//return reconstructTerm(launchChildren(createAppChildren(state, vars, terms), root, fatherChan), fTyped)
-	}	
-	return Reconstruct{}
+	 	fTyped := btypes.MakeFun(id, terms, vars, typeScheme)
+		return reconstructTerm(launchChildren(createAppChildren(state, vars, terms), root, fatherChan), fTyped)
+	}
 }
 
+/* Applies the Var rule for a term variable. */
+func applyVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+	// Add applied rule to the prooftree
+	root.appliedRule = "Var"
+
+	// Find current variable in the local context
+	if _, ok := getTermFromLocalContext(state.localContext, state.consequence.t); !ok {
+		return Reconstruct{
+			result: false,
+			err: fmt.Errorf("Term %s not found in the local context", state.consequence.t.ToString()),
+		}
+	}
+
+	// No consequence: next rule is the WF rule.
+	children := []Sequent{
+		{
+			globalContext: getGlobalContext(state.globalContext),
+			localContext: state.localContext.copy(),
+			consequence: Consequence{},
+		},
+	}
+
+	return reconstructTerm(launchChildren(children, root, fatherChan), state.consequence.t)
+}
+
+/* Utils functions */
 
 /**
  * Takes all the types of the terms and makes a cross product of everything
@@ -145,4 +171,14 @@ func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term
 	}
 
 	return children
+}
+
+/* Finds the given term in the local context, returns false if it couldn't */
+func getTermFromLocalContext(localContext LocalContext, term btypes.Term) (btypes.Var, bool) {
+	for _, var_ := range localContext.vars {
+		if var_.Equals(term) {
+			return var_, true
+		}
+	}
+	return btypes.Var{}, false
 }

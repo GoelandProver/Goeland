@@ -65,6 +65,13 @@ func (lc LocalContext) addVar(var_ btypes.Var) LocalContext {
 	return newLc
 }
 
+/* Adds a type var to a copy of the local context and returns it. */
+func (lc LocalContext) addTypeVar(var_ typing.TypeVar) LocalContext {
+	newLc := lc.copy()
+	newLc.typeVars = append(newLc.typeVars, var_)
+	return newLc
+}
+
 /* Copies a LocalContext. */
 func (lc LocalContext) copy() LocalContext {
 	newVars := make([]btypes.Var, len(lc.vars))
@@ -72,6 +79,31 @@ func (lc LocalContext) copy() LocalContext {
 	copy(newVars, lc.vars)
 	copy(newTypeVars, lc.typeVars)
 	return LocalContext{vars: newVars, typeVars: newTypeVars}
+}
+
+/* True if all the slices are cleared */
+func (lc LocalContext) isEmpty() bool {
+	return len(lc.vars) + len(lc.typeVars) == 0
+}
+
+/**
+ * Copies the context and pops the first var (and returns it with the new local context). 
+ * It doesn't check if the size of the array is positive, it should be checked before.
+ **/
+func (lc LocalContext) popVar() (btypes.Var, LocalContext) {
+	newLc := lc.copy()
+	newLc.vars = newLc.vars[1:]
+	return lc.vars[0], newLc
+}
+
+/**
+ * Copies the context and pops the first type var (and returns it with the new local context). 
+ * It doesn't check if the size of the array is positive, it should be checked before.
+ **/
+func (lc LocalContext) popTypeVar() (typing.TypeVar, LocalContext) {
+	newLc := lc.copy()
+	newLc.typeVars = newLc.typeVars[1:]
+	return lc.typeVars[0], newLc
 }
 
 /* Stores the consequence of the sequent */
@@ -96,6 +128,9 @@ type ProofTree struct {
 	children []ProofTree
 }
 
+/* ProofTree meta-type */
+var metaType typing.TypeHint
+
 /* ProofTree methods */
 
 /* Creates and adds a child to the prooftree and returns it. */
@@ -109,7 +144,7 @@ func (pt *ProofTree) addChildWith(sequent Sequent) *ProofTree {
 }
 
 /**
- * Tries to type Form.
+ * Tries to type form.
  * If the system is well-formed, all subforms and subterms of the formula will 
  * be typed after this step.
  * Otherwise, it will return an error.
@@ -127,6 +162,9 @@ func WellFormedVerification(form btypes.Form) (btypes.Form, error) {
 		sequent: state,
 		children: []ProofTree{},
 	}
+
+	// Instanciate meta type
+	metaType = typing.MkTypeHint("Type")
 
 	// Launch the typing system
 	return launchRuleApplication(state, &root)
@@ -151,7 +189,7 @@ func getTypeSchemeFromGlobalContext(context map[string][]typing.App, id btypes.I
 	return typeScheme
 }
 
-/* Reconstructs a From depending on what the children has returned */
+/* Reconstructs a Form depending on what the children has returned */
 func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstruct {
 	if !reconstruction.result {
 		return reconstruction
@@ -180,6 +218,15 @@ func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstru
 	}
 
 	return Reconstruct{result: true, forms: []btypes.Form{f}, err: nil}
+}
+
+/* Reconstructs a Term depending on what the children has returned */
+func reconstructTerm(reconstruction Reconstruct, baseTerm btypes.Term) Reconstruct {
+	if !reconstruction.result {
+		return reconstruction
+	}
+
+	return Reconstruct{result: true, terms: []btypes.Term{baseTerm}, err: nil}
 }
 
 /* Utils for reconstructions function */
