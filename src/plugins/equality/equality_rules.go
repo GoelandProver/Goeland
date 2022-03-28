@@ -61,4 +61,31 @@ func ApplyEQrule(l, r, sub_term_of_s, s, t basictypes.Term, lpo LPO) (bool, basi
 	return true, new_s, constraints_list
 }
 
-// TryLeftRule, TryRightRule
+// TryLeftRule, TryRightRule, check cas d'arrêt
+
+/**
+* Fonction général equalityReasoning
+* Prend un  EqualityProblemMultiList
+* renvoie true ou false si clôturé + list de susbtAndForm, ou juste de susbt ?
+* On veut clore au moins une des listes
+* On fait une goroutine par pb
+**/
+
+/**
+* FOnction equalityReasonningList
+* Prend en entrée une list de problème d'égalit
+* s'occuper de transmettre les substitutions
+**/
+
+/**
+* fonction cas d'arrêt, prend un problème
+*
+**/
+
+/**
+* Fonction try left
+**/
+
+/**
+* Fonction try right
+**/
