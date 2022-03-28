@@ -158,7 +158,7 @@ func applyWF1(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Recon
 			{
 				localContext: newLocalContext,
 				globalContext: getGlobalContext(state.globalContext),
-				consequence: Consequence{a: var_.GetTypeHint().(typing.TypeApp)},
+				consequence: Consequence{a: var_.GetTypeApp()},
 			},
 		}
 		return launchChildren(child, root, fatherChan)

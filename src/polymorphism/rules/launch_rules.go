@@ -166,11 +166,15 @@ func selectCleanup(errorFound error, hasAnswered []bool, chansTab [](chan Recons
 
 /* Treats the different return types of the system. */
 func treatReturns(res Reconstruct) (btypes.Form, error) {
-	if len(res.forms) == 0 {
+	if !res.result {
 		return nil, res.err
+	} else {
+		if len(res.forms) == 0 {
+			return nil, res.err
+		} 
+		if len(res.forms) > 1 {
+			return nil, fmt.Errorf("More than one formula is returned by the typing system.")
+		}
+		return res.forms[0], res.err
 	}
-	if len(res.forms) > 1 {
-		return nil, fmt.Errorf("More than one formula is returned by the typing system.")
-	}
-	return res.forms[0], res.err
 }

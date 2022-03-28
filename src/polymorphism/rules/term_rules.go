@@ -137,7 +137,7 @@ func getArgsTypes(context map[string][]typing.App, terms []btypes.Term) typing.T
 			)
 		case btypes.Var:
 			// Variables can't be of type TypeScheme, so this line shouldn't fail.
-			types = append(types, tmpTerm.GetTypeHint().(typing.TypeApp))
+			types = append(types, tmpTerm.GetTypeApp())
 		// There shouldn't be Metas yet.
 		case btypes.Meta:
 			global.PrintDebug("GAT", "Found a Meta while typing everything.")

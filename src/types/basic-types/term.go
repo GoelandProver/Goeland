@@ -62,6 +62,7 @@ type Term interface {
 
 type TypedTerm interface {
 	GetTypeHint() typing.TypeScheme
+	GetTypeApp() typing.TypeApp
 }
 
 /* Variable (x,y under ForAll or Exists) */
@@ -98,6 +99,9 @@ type Fun struct {
 func (f Fun) GetTypeVars() []typing.TypeApp { return f.typeVars }
 
 /* GetTypeHint */
+func (v Var) GetTypeApp() typing.TypeApp      { return v.typeHint }
+func (m Meta) GetTypeApp() typing.TypeApp     { return m.typeHint }
+func (f Fun) GetTypeApp() typing.TypeApp      { return nil }
 func (v Var) GetTypeHint() typing.TypeScheme  { return v.typeHint.ToTypeScheme() }
 func (m Meta) GetTypeHint() typing.TypeScheme { return m.typeHint.ToTypeScheme() }
 func (f Fun) GetTypeHint() typing.TypeScheme  { return f.typeHint }
@@ -180,7 +184,12 @@ func (v Var) Equals(t Term) bool {
 	return isVar &&
 		(oth.GetIndex() == v.GetIndex()) &&
 		(oth.GetName() == v.GetName()) &&
-		(v.typeHint.ToTypeScheme().Equals(oth.typeHint.ToTypeScheme()))
+		((v.typeHint.ToTypeScheme() == nil && // It's a typeVar
+			oth.typeHint.ToTypeScheme() == nil && // It's also a typeVar
+			v.typeHint.(typing.TypeVar).Equals(oth.typeHint.(typing.TypeVar))) || // typeVar equality
+			(v.typeHint.ToTypeScheme() != nil && // It's not a typeVar
+				oth.typeHint.ToTypeScheme() != nil && // It's also not a typeVar
+				v.typeHint.ToTypeScheme().Equals(oth.typeHint.ToTypeScheme())))
 }
 
 func (m Meta) Equals(t Term) bool {

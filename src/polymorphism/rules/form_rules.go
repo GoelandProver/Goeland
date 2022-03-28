@@ -37,8 +37,6 @@
 package polyrules
 
 import (
-	"fmt"
-
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -61,9 +59,12 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 	var varTreated btypes.Var
 	var typeTreated typing.TypeVar
 
+	varInstantiated := false
+
 	switch f := (state.consequence.f).(type) {
 	case btypes.All, btypes.Ex:
 		varTreated, newForm = removeOneVar(state.consequence.f) 
+		varInstantiated = true
 	case btypes.AllType:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
@@ -73,21 +74,12 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 		} 
 	}
 
-	if !varTreated.Equals(btypes.Var{}) {
-		if _, isTypeApp := varTreated.GetTypeHint().(typing.TypeApp); !isTypeApp {
-			return Reconstruct{
-				result: false, 
-				err: fmt.Errorf("A quantified variable is not a TypeApp: %s", varTreated.ToString()),
-			}
-		}
-	}
-
 	// Create 2 children:
 	//	1 - First one with the type of the quantified variable. It should be a TypeApp. 
 	//	2 - Second one with the quantified variable added in the local context.
 	// => copy the local context and use the function to get the global context (copy or not).
 	// The underlying form should be gotten to be properly typed.
-	children := mkQuantChildren(state, varTreated, typeTreated, newForm)
+	children := mkQuantChildren(state, varInstantiated, varTreated, typeTreated, newForm)
 
 	// Launch the children in a goroutine, and wait for it to close.
 	// If one branch closes with an error, then the system is not well-typed.
@@ -220,11 +212,11 @@ func removeOneVar(form btypes.Form) (btypes.Var, btypes.Form) {
 }
 
 /* Makes the child treating the variable depending on which is set. */
-func mkQuantChildren(state Sequent, varTreated btypes.Var, typeTreated typing.TypeVar, newForm btypes.Form) []Sequent {
+func mkQuantChildren(state Sequent, varInstantiated bool, varTreated btypes.Var, typeTreated typing.TypeVar, newForm btypes.Form) []Sequent {
 	var type_ typing.TypeApp
 	var newLocalContext LocalContext
-	if typeTreated.Equals(typing.TypeVar{}) {
-		type_ = varTreated.GetTypeHint().(typing.TypeApp)
+	if varInstantiated {
+		type_ = varTreated.GetTypeApp()
 		newLocalContext = state.localContext.addVar(varTreated)
 	} else {
 		type_ = metaType

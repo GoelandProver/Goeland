@@ -125,7 +125,7 @@ type ProofTree struct {
 	sequent Sequent 
 	appliedRule string 
 	typeScheme typing.TypeScheme
-	children []ProofTree
+	children []*ProofTree
 }
 
 /* ProofTree meta-type */
@@ -137,9 +137,9 @@ var metaType typing.TypeHint
 func (pt *ProofTree) addChildWith(sequent Sequent) *ProofTree {
 	child := ProofTree{
 		sequent: sequent,
-		children: []ProofTree{},
+		children: []*ProofTree{},
 	}
-	pt.children = append(pt.children, child)
+	pt.children = append(pt.children, &child)
 	return &child
 }
 
@@ -149,7 +149,7 @@ func (pt *ProofTree) addChildWith(sequent Sequent) *ProofTree {
  * be typed after this step.
  * Otherwise, it will return an error.
  **/
-func WellFormedVerification(form btypes.Form) (btypes.Form, error) {
+func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
 	// Sequent creation
 	state := Sequent{
 		globalContext: getGlobalContext(typing.GetGlobalContext()),
@@ -160,14 +160,21 @@ func WellFormedVerification(form btypes.Form) (btypes.Form, error) {
 	// Prooftree creation
 	root := ProofTree{
 		sequent: state,
-		children: []ProofTree{},
+		children: []*ProofTree{},
 	}
 
 	// Instanciate meta type
 	metaType = typing.MkTypeHint("Type")
 
 	// Launch the typing system
-	return launchRuleApplication(state, &root)
+	form, err := launchRuleApplication(state, &root)
+
+	// Dump prooftree in json if it's asked & there is no error
+	if err == nil && dump {
+		root.DumpJson()
+	}
+
+	return form, err
 }
 
 // TODO: copy global context if WF1 rule is found useful
@@ -200,7 +207,7 @@ func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstru
 	case btypes.All:
 		f = btypes.MakeAll(form.GetVarList(), unquantify(reconstruction.forms[1], form))
 	case btypes.AllType:
-		f = btypes.MakeAllType(form.GetVarList(), unquantify(reconstruction.forms[1], form))
+		f = btypes.MakeAllType(form.GetVarList(), unquantify(reconstruction.forms[1], form)) 
 	case btypes.Ex:
 		f = btypes.MakeEx(form.GetVarList(), unquantify(reconstruction.forms[1], form))
 	case btypes.And:

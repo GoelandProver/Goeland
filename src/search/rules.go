@@ -330,7 +330,7 @@ func realSkolemize(f basictypes.Form, vars []basictypes.Var, terms []basictypes.
 		// Okay that's absolutely wrong, but it's the best way of doing things right now, I swear.
 		for _, term := range terms {
 			if meta, ok := term.(basictypes.Meta); ok {
-				t = crossType(t, meta.GetTypeHint().(typing.TypeApp))
+				t = crossType(t, meta.GetTypeApp())
 			}
 		}
 

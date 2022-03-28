@@ -179,7 +179,7 @@ func GetPolymorphicType(name string, lenVars, lenTerms int) TypeScheme {
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
-			if fun.App.size() == lenTerms && len(fun.App.(QuantifiedType).vars) == lenVars {
+			if fun.App.size() - 1 == lenTerms && len(fun.App.(QuantifiedType).vars) == lenVars {
 				typeSchemesMap.lock.Unlock()
 				return fun.App
 			}
@@ -208,6 +208,10 @@ func getSchemeFromArgs(name string, inArgs TypeApp) (TypeScheme, bool) {
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
+			// Polymorphic schemes don't have any of them.
+			if fun.in == nil || inArgs.ToTypeScheme() == nil {
+				continue
+			}
 			if fun.in.ToTypeScheme().Equals(inArgs.ToTypeScheme()) {
 				typeSchemesMap.lock.Unlock()
 				return fun.App, true

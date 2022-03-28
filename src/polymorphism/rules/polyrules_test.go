@@ -76,7 +76,7 @@ func TestSimpleDoublePass(t *testing.T) {
 
 	// Formal type verification
 	//ptr := (*btypes.Form)(unsafe.Pointer(&pred))
-	form, err := WellFormedVerification(pred)
+	form, err := WellFormedVerification(pred, false)
 
 	if err != nil {
 		t.Fatalf("Error during formal verification: %s", err.Error())
@@ -102,7 +102,7 @@ func TestNegDoublePass(t *testing.T) {
 	}, []typing.TypeApp{}))
 
 	// Double pass pred
-	newPred, err := WellFormedVerification(pred)
+	newPred, err := WellFormedVerification(pred, false)
 
 	if err != nil {
 		t.Fatalf("Error during formal verification: %s", err.Error())
@@ -143,7 +143,7 @@ func TestBinaryDoublePass(t *testing.T) {
 	)
 
 	// Double pass pred
-	newPred, err := WellFormedVerification(pred)
+	newPred, err := WellFormedVerification(pred, false)
 
 	if err != nil {
 		t.Fatalf("Error during formal verification: %s", err.Error())
@@ -185,7 +185,7 @@ func TestBinaryDoublePass(t *testing.T) {
 	)
 
 	// Double pass pred
-	newPred, err = WellFormedVerification(predEqu)
+	newPred, err = WellFormedVerification(predEqu, false)
 
 	if err != nil {
 		t.Fatalf("Error during formal verification: %s", err.Error())
@@ -222,7 +222,7 @@ func TestQuantDoublePass(t *testing.T) {
 	)
 
 	// Double pass pred
-	newPred, err := WellFormedVerification(pred)
+	newPred, err := WellFormedVerification(pred, false)
 
 	if err != nil {
 		t.Fatalf("Error during formal verification: %s", err.Error())
@@ -254,7 +254,7 @@ func TestQuantDoublePass(t *testing.T) {
 	)
 
 	// Double pass pred
-	newPred, err = WellFormedVerification(predEqu)
+	newPred, err = WellFormedVerification(predEqu, false)
 
 	if err != nil {
 		t.Fatalf("Error during formal verification: %s", err.Error())
@@ -289,7 +289,7 @@ func TestNAryDoublePass(t *testing.T) {
 	})
 
 	// Double pass pred
-	newPred, err := WellFormedVerification(pred)
+	newPred, err := WellFormedVerification(pred, false)
 
 	if err != nil {
 		t.Fatalf("Error during formal verification: %s", err.Error())
@@ -326,7 +326,7 @@ func TestNAryDoublePass(t *testing.T) {
 	})
 
 	// Double pass pred
-	newPred, err = WellFormedVerification(andPred)
+	newPred, err = WellFormedVerification(andPred, false)
 
 	if err != nil {
 		t.Fatalf("Error during formal verification: %s", err.Error())
@@ -359,7 +359,7 @@ func TestTypingNotInGlobalContext(t *testing.T) {
 	}, []typing.TypeApp{})
 
 	// Double pass pred
-	_, err := WellFormedVerification(pred)
+	_, err := WellFormedVerification(pred, false)
 
 	if err == nil {
 		t.Fatalf("Formal verification didn't catch the problem.")
@@ -381,7 +381,7 @@ func TestBabyNoErr(t *testing.T) {
 			[]typing.TypeApp{},
 		)))
 
-	form, err := WellFormedVerification(form)
+	form, err := WellFormedVerification(form, false)
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
@@ -405,7 +405,7 @@ func TestBabyNoErr(t *testing.T) {
 			[]typing.TypeApp{},
 		)))
 
-	form, err = WellFormedVerification(form)
+	form, err = WellFormedVerification(form, false)
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
@@ -416,4 +416,60 @@ func TestBabyNoErr(t *testing.T) {
 	   !pred.GetType().Equals(expected) {
 		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
+}
+
+// Final boss, we will try to visualize the type proof of this test
+func TestPolymorphicExample(t *testing.T) {
+	// Creation of the exemple: ∀α : Type, ∀x, y : α.P (α, x, y)
+	// Global context: Φ : Πα : Type.α × α → o
+	typeVar := typing.MkTypeVar("α")
+	typeScheme := typing.MkQuantifiedType(
+		[]typing.TypeVar{typeVar},
+		typing.MkTypeArrow(
+			typing.MkTypeCross(typeVar, typeVar),
+			typing.DefaultProp(),
+		),
+	)
+
+	typing.SavePolymorphScheme("Φ", typeScheme)
+
+	// Check if it's saved properly
+	polymorphicScheme := typing.GetPolymorphicType("Φ", 1, 2)
+
+	if polymorphicScheme == nil {
+		t.Fatalf("Couldn't find Φ's polymorphic type scheme")
+	}
+
+	// Everything is fine, let's create the predicate
+	x := btypes.MakerVar("x", typeVar)
+	y := btypes.MakerVar("y", typeVar)
+
+	form := btypes.MakeForm(btypes.MakeAllType(
+		[]typing.TypeVar{typeVar},
+		btypes.MakeAll(
+			[]btypes.Var{x, y}, 
+			btypes.MakePred(
+				btypes.MakerId("Φ"),
+				[]btypes.Term{x, y},
+				[]typing.TypeApp{typeVar},
+			),
+		),
+	))
+
+	// Try to type this
+
+	form, err := WellFormedVerification(form, true)
+	if err != nil {
+		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
+	}
+
+	// Apparently, it's still well-typed (great !)
+	// Let's check Φ's type
+	pred := form.(btypes.AllType).GetForm().(btypes.All).GetForm()
+
+	if !pred.GetType().Equals(typeScheme) {
+		t.Fatalf("Type schemes do not match. Expected: %s, actual: %s", typeScheme.ToString(), form.GetType().ToString())
+	}
+
+	// GGs!
 }
