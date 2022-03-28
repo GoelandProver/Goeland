@@ -41,9 +41,9 @@ package basictypes
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
-
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -69,10 +69,17 @@ type Pred struct {
 	typeHint typing.TypeScheme
 }
 
-func (p Pred) GetID() Id                     { return p.id.Copy().(Id) }
-func (p Pred) GetArgs() []Term               { return CopyTermList(p.args) }
-func (p Pred) GetType() typing.TypeScheme    { return p.typeHint }
+func (p Pred) GetID() Id       { return p.id.Copy().(Id) }
+func (p Pred) GetArgs() []Term { return CopyTermList(p.args) }
+func (p Pred) GetType() typing.TypeScheme {
+	fmt.Printf("GetType %s\n", p.typeHint.ToString())
+	return p.typeHint
+}
 func (p Pred) GetTypeVars() []typing.TypeApp { return p.typeVars }
+func (p *Pred) SetType(t typing.TypeScheme) {
+	fmt.Printf("SetType %s\n", t.ToString())
+	p.typeHint = t
+}
 
 /* Top (always true) */
 type Top struct {
@@ -156,6 +163,56 @@ func (a All) GetVarList() []Var          { return copyVarList(a.var_list) }
 func (a All) GetForm() Form              { return a.f.Copy() }
 func (a All) GetUnderlyingForm() Form    { return a.f }
 func (a All) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
+
+/* Struct describing a forall with type variables */
+type AllType struct {
+	index  int
+	tvList []typing.TypeVar
+	form   Form
+}
+
+/* Methods */
+
+func (a AllType) GetIndex() int                { return a.index }
+func (a AllType) GetVarList() []typing.TypeVar { return copyTypeVarList(a.tvList) }
+func (a AllType) GetForm() Form                { return a.form.Copy() }
+func (a AllType) GetUnderlyingForm() Form      { return a.form }
+func (a AllType) GetType() typing.TypeScheme   { return typing.DefaultPropType(0) }
+
+/* Form interface */
+
+func (a AllType) toString() string {
+	varListStr := []string{}
+	for _, t := range a.tvList {
+		varListStr = append(varListStr, t.ToString())
+	}
+	return "∀ " + strings.Join(varListStr, ", ")
+}
+func (a AllType) ToString() string {
+	return a.toString() + " (" + a.GetForm().ToString() + ")"
+}
+
+func (a AllType) ToStringWithSuffixMeta(suffix string) string {
+	return a.toString() + " (" + a.GetForm().ToStringWithSuffixMeta(suffix) + ")"
+}
+
+func (a AllType) Copy() Form {
+	return AllType{
+		form:   a.form.Copy(),
+		tvList: copyTypeVarList(a.tvList),
+	}
+}
+
+func (a AllType) Equals(f Form) bool {
+	oth, isAll := f.(AllType)
+	return isAll &&
+		AreEqualsTypeVarList(a.GetVarList(), oth.GetVarList()) &&
+		a.GetForm().Equals(oth.GetForm())
+}
+
+func (a AllType) GetMetas() MetaList {
+	return a.GetForm().GetMetas()
+}
 
 /*** Methods ***/
 
@@ -437,7 +494,7 @@ func (e Ex) Equals(f Form) bool {
 }
 
 func (a All) Equals(f Form) bool {
-	oth, isAll := f.(Ex)
+	oth, isAll := f.(All)
 	return isAll &&
 		AreEqualsVarList(a.GetVarList(), oth.GetVarList()) &&
 		a.GetForm().Equals(oth.GetForm())

@@ -50,14 +50,14 @@ import (
 /* Applies quantification rule and launches 2 goroutines waiting its children. */
 func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
 	// Add rule to prooftree
-	switch (*state.consequence.f).(type) {
+	switch toForm(state.consequence.f).(type) {
 	case btypes.All:
 		root.appliedRule = "∀"
 	case btypes.Ex:
 		root.appliedRule = "∃"
 	}
 
-	varTreated, newForm := removeOneVar(*state.consequence.f) 
+	varTreated, newForm := removeOneVar(toForm(state.consequence.f)) 
 	if _, isTypeApp := varTreated.GetTypeHint().(typing.TypeApp); !isTypeApp {
 		return Error{result: false, err: fmt.Errorf("A quantified variable is not a TypeApp: %s", varTreated.ToString())}
 	}
@@ -76,12 +76,113 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Error) Error
 		{
 			globalContext: getGlobalContext(state.globalContext),
 			localContext: state.localContext.addVar(varTreated),
-			consequence: Consequence{f: &newForm},
+			consequence: Consequence{f: fromForm(&newForm)},
 		},
 	}
 
 	// Launch the children in a goroutine, and wait for it to close.
 	// If one branch closes with an error, then the system is not well-typed.
+	return launchChildren(children, root, fatherChan)
+}
+
+/* Applies OR or AND rule and launches n goroutines waiting its children */
+func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+	formList := btypes.MakeEmptyFormList()
+	// Add rule to prooftree
+	switch f := toForm(state.consequence.f).(type) {
+	case btypes.And:
+		root.appliedRule = "∧"
+		formList = f.GetLF()
+	case btypes.Or:
+		root.appliedRule = "∨"
+		formList = f.GetLF()
+	}
+
+	// Construct children with all the formulas
+	children := []Sequent{}
+	for _, form := range formList {
+		children = append(children, Sequent{
+			globalContext: getGlobalContext(state.globalContext),
+			localContext: state.localContext.copy(),
+			consequence: Consequence{f: fromForm(&form)},
+		})
+	}
+
+	// Launch the children in a goroutine, and wait for it to close.
+	// If one branch closes with an error, then the system is not well-typed.
+	return launchChildren(children, root, fatherChan)
+}
+
+/* Applies => or <=> rule and launches 2 goroutines waiting its children */
+func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+	var f1, f2 btypes.Form
+	// Add rule to prooftree
+	switch f := toForm(state.consequence.f).(type) {
+	case btypes.Imp:
+		root.appliedRule = "⇒"
+		f1, f2 = f.GetF1(), f.GetF2()
+	case btypes.Equ:
+		root.appliedRule = "⇔"
+		f1, f2 = f.GetF1(), f.GetF2()
+	}
+
+	// Construct children with the 2 formulas
+	children := []Sequent{
+		{
+			globalContext: getGlobalContext(state.globalContext),
+			localContext: state.localContext.copy(),
+			consequence: Consequence{f: fromForm(&f1)},
+		},
+		{
+			globalContext: getGlobalContext(state.globalContext),
+			localContext: state.localContext.copy(),
+			consequence: Consequence{f: fromForm(&f2)},
+		},
+	}
+
+	// Launch the children in a goroutine, and wait for it to close.
+	// If one branch closes with an error, then the system is not well-typed.
+	return launchChildren(children, root, fatherChan)
+}
+
+/* Applies BOT or TOP rule and does not create a new goroutine */
+func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+	// Add rule to prooftree
+	switch toForm(state.consequence.f).(type) {
+	case btypes.Top:
+		root.appliedRule = "⊤"
+	case btypes.Bot:
+		root.appliedRule = "⊥"
+	}
+
+	// Construct children with the contexts
+	children := []Sequent{
+		{
+			globalContext: getGlobalContext(state.globalContext),
+			localContext: state.localContext.copy(),
+			consequence: Consequence{},
+		},
+	}
+
+	// If the branch closes with an error, then the system is not well-typed.
+	return launchChildren(children, root, fatherChan)
+}
+
+func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+	// Add rule to prooftree
+	root.appliedRule = "¬"
+	form := toForm(state.consequence.f).(btypes.Not).GetForm()
+
+	// Construct children with the contexts
+	children := []Sequent{
+		{
+			globalContext: getGlobalContext(state.globalContext),
+			localContext: state.localContext.copy(),
+			consequence: Consequence{f: fromForm(&form)},
+		},
+	}
+
+	// If the branch closes with an error, then the system is not well-typed.
 	return launchChildren(children, root, fatherChan)
 }
 

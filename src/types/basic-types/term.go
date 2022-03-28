@@ -289,7 +289,8 @@ func (f Fun) GetP() Id         { return f.p.Copy().(Id) }
 func (f Fun) GetArgs() []Term  { return CopyTermList(f.args) }
 
 /* Setters */
-func (f *Fun) SetArgs(tl []Term) { f.args = tl }
+func (f *Fun) SetArgs(tl []Term)                  { f.args = tl }
+func (f *Fun) SetTypeScheme(ts typing.TypeScheme) { f.typeHint = ts }
 
 /*** Makers ***/
 
@@ -368,6 +369,14 @@ func copyVarList(tl []Var) []Var {
 	return res
 }
 
+func copyTypeVarList(tv []typing.TypeVar) []typing.TypeVar {
+	res := []typing.TypeVar{}
+	for _, t := range tv {
+		res = append(res, t.Copy().(typing.TypeVar))
+	}
+	return res
+}
+
 /* check if two lists of terms are equals */
 func AreEqualsTermList(tl1, tl2 []Term) bool {
 	if len(tl1) != len(tl2) {
@@ -410,4 +419,15 @@ func replaceFirstOccurrenceTermList(old_term, new_term Term, tl []Term) []Term {
 		}
 	}
 	return res
+}
+func AreEqualsTypeVarList(tv1, tv2 []typing.TypeVar) bool {
+	if len(tv1) != len(tv2) {
+		return false
+	}
+	for i := range tv1 {
+		if !tv2[i].Equals(tv1[i]) {
+			return false
+		}
+	}
+	return true
 }

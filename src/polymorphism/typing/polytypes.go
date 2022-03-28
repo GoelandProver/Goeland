@@ -193,6 +193,7 @@ func (tv TypeVar) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return 
 func (tv TypeVar) ToString() string 		{ return tv.name }
 func (tv TypeVar) ToTypeScheme() TypeScheme { return nil }
 func (tv TypeVar) Copy() TypeApp { return MkTypeVar(tv.name) }
+func (tv TypeVar) Equals(oth TypeVar) bool { return tv.name == oth.name }
 
 /** 
  * Quantified TypeScheme.

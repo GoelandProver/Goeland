@@ -55,6 +55,7 @@ func launchRuleApplication(state Sequent, root *ProofTree) error {
 	superFatherChan := make(chan Error)
 	go tryApplyRule(state, root, superFatherChan)
 	res := <-superFatherChan
+	fmt.Printf("Form ptr: %p ; Type: %s\n", state.consequence.f, toForm(state.consequence.f).GetType().ToString())
 	return res.err
 }
 

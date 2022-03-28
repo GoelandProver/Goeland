@@ -74,20 +74,26 @@ func TestSimpleDoublePass(t *testing.T) {
 		btypes.MakerConst(btypes.MakerId("3")),
 	}, []typing.TypeApp{})
 
-	// Double pass pred
-	newPred := TypeFormula(pred)
+	// Formal type verification
+	//ptr := (*btypes.Form)(unsafe.Pointer(&pred))
+	form, err := WellFormedVerification(pred)
+
+	if err != nil {
+		t.Fatalf("Error during formal verification: %s", err.Error())
+	}
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultProp(),
 	)
 	// Pred should be of type (int * int) -> o
-	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) || 
-	   !newPred.GetType().Equals(expected) {
-		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newPred.GetType().ToString())
+	if !typing.GetOutType(form.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) || 
+	   !form.GetType().Equals(expected) {
+		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
 }
 
+/*
 func TestNegDoublePass(t *testing.T) {
 	// ¬P(2, 3)
 	pred := btypes.RefuteForm(btypes.MakePred(btypes.MakerId("P"), []btypes.Term{
@@ -348,7 +354,7 @@ func TestBabyNoErr(t *testing.T) {
 			[]typing.TypeApp{},
 		)))
 
-	err := WellFormedVerification(&form)
+	form, err := WellFormedVerification(form)
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
@@ -361,7 +367,7 @@ func TestBabyNoErr(t *testing.T) {
 			[]typing.TypeApp{},
 		)))
 
-	err = WellFormedVerification(&form)
+	form, err = WellFormedVerification(form)
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}

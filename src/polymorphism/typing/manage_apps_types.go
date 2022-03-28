@@ -95,6 +95,27 @@ func SaveTypeScheme(name string, in TypeApp, out TypeApp) error {
 	return nil
 }
 
+func SavePolymorphScheme(name string, scheme TypeScheme) error {
+	tScheme, found := getPolymorphSchemeFromArgs(name, scheme)
+	if tScheme != nil {
+		if tScheme.Equals(scheme) {
+			return nil
+		}
+		return fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
+	}
+
+	// It's not in the map, it should be added
+	typeSchemesMap.lock.Lock()
+	if found {
+		typeSchemesMap.tsMap[name] = append(typeSchemesMap.tsMap[name], App{app: scheme})
+	} else {
+		typeSchemesMap.tsMap[name] = []App{{app: scheme}}
+	}
+	typeSchemesMap.lock.Unlock()
+
+	return nil
+}
+
 /* Saves the TypeScheme of a constant function */
 func SaveConstant(name string, out TypeApp) error {
 	// Check if the constant is already saved in the context
@@ -153,6 +174,21 @@ func GetType(name string, inArgs ...TypeApp) TypeScheme {
 	}
 }
 
+/* Gets a TypeScheme from the map of schemes with the name. Nil if it doesn't exists in the global context. */
+func GetPolymorphicType(name string, lenVars, lenTerms int) TypeScheme {
+	typeSchemesMap.lock.Lock()
+	if arr, found := typeSchemesMap.tsMap[name]; found {
+		for _, fun := range arr {
+			if fun.app.size() == lenTerms && len(fun.app.(QuantifiedType).vars) == lenVars {
+				typeSchemesMap.lock.Unlock()
+				return fun.app
+			}
+		}
+	}
+	typeSchemesMap.lock.Unlock()
+	return nil
+}
+
 /* Gets the constants saved in the context */
 func getConstantTypeScheme(name string) TypeScheme {
 	var tScheme TypeScheme
@@ -161,7 +197,7 @@ func getConstantTypeScheme(name string) TypeScheme {
 		tScheme = typeSchemes[0].app
 	} else {
 		// If it's not found, the type is inferred with $i
-		tScheme = defaultType
+		tScheme = nil
 	}
 	typeSchemesMap.lock.Unlock()
 	return tScheme
@@ -173,6 +209,23 @@ func getSchemeFromArgs(name string, inArgs TypeApp) (TypeScheme, bool) {
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
 			if fun.in.ToTypeScheme().Equals(inArgs.ToTypeScheme()) {
+				typeSchemesMap.lock.Unlock()
+				return fun.app, true
+			}
+		}
+		typeSchemesMap.lock.Unlock()
+		return nil, true
+	}
+	typeSchemesMap.lock.Unlock()
+	return nil, false
+}
+
+/* Returns the TypeScheme from the name & inArgs if it exists in the map. Else, nil. true means fun name is in the map. */
+func getPolymorphSchemeFromArgs(name string, scheme TypeScheme) (TypeScheme, bool) {
+	typeSchemesMap.lock.Lock()
+	if arr, found := typeSchemesMap.tsMap[name]; found {
+		for _, fun := range arr {
+			if fun.app.Equals(scheme) {
 				typeSchemesMap.lock.Unlock()
 				return fun.app, true
 			}

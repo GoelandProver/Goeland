@@ -37,6 +37,8 @@
 package polyrules
 
 import (
+	"unsafe"
+
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -73,8 +75,8 @@ func (lc LocalContext) copy() LocalContext {
 
 /* Stores the consequence of the sequent */
 type Consequence struct {
-	f *btypes.Form 
-	t *btypes.Term 
+	f unsafe.Pointer
+	t unsafe.Pointer 
 	a typing.TypeApp
 }
 
@@ -111,12 +113,13 @@ func (pt *ProofTree) addChildWith(sequent Sequent) *ProofTree {
  * be typed after this step.
  * Otherwise, it will return an error.
  **/
-func WellFormedVerification(form *btypes.Form) error {
+func WellFormedVerification(form btypes.Form) (btypes.Form, error) {
+	f := unsafe.Pointer(&form)
 	// Sequent creation
 	state := Sequent{
 		globalContext: getGlobalContext(typing.GetGlobalContext()),
 		localContext: LocalContext{vars: []btypes.Var{}, typeVars: []typing.TypeVar{}},
-		consequence: Consequence{f: form},
+		consequence: Consequence{f: f},
 	}
 
 	// Prooftree creation
@@ -126,7 +129,8 @@ func WellFormedVerification(form *btypes.Form) error {
 	}
 
 	// Launch the typing system
-	return launchRuleApplication(state, &root)
+	err := launchRuleApplication(state, &root)
+	return toForm(f), err
 }
 
 // TODO: copy global context if WF1 rule is found useful
@@ -134,3 +138,32 @@ func getGlobalContext(context map[string][]typing.App) map[string][]typing.App {
 	return context
 }
 
+// If WF1 rule is found useful, we can not do that anymore.
+func getTypeSchemeFromGlobalContext(context map[string][]typing.App, id btypes.Id, vars []typing.TypeApp, terms []btypes.Term) typing.TypeScheme {
+	args := getArgsTypes(context, terms)
+	if args == nil {
+		return typing.GetType(id.GetName())
+	}
+
+	typeScheme := typing.GetType(id.GetName(), args)
+	if typeScheme == nil {
+		typeScheme = typing.GetPolymorphicType(id.GetName(), len(vars), len(terms))
+	}
+	return typeScheme
+}
+
+func toForm(f unsafe.Pointer) btypes.Form {
+	return *(*btypes.Form)(f)
+}
+
+func toTerm(t unsafe.Pointer) btypes.Term {
+	return *(*btypes.Term)(t)
+}
+
+func fromForm(f *btypes.Form) unsafe.Pointer {
+	return unsafe.Pointer(f)
+}
+
+func fromTerm(t *btypes.Term) unsafe.Pointer {
+	return unsafe.Pointer(t)
+}

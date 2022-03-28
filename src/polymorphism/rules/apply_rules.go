@@ -50,6 +50,7 @@ const (
 	formIsSet = iota
 	termIsSet = iota
 	typeIsSet = iota
+	noConsequence = iota
 )
 
 /* Launch the rules depending on what's on the right side of the sequent. */
@@ -67,6 +68,8 @@ func applyRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
 		return applyTermRule(state, root, fatherChan)
 	case typeIsSet:
 		return applyTypeRule(state, root, fatherChan)
+	case noConsequence:
+		return applyWFRule(state, root, fatherChan)
 	}
 
 	return Error{result: true, err: nil}
@@ -75,19 +78,19 @@ func applyRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
 /* Applies one of the forms rule based on the type of the form. */
 func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
 	var err Error
-	switch (*state.consequence.f).(type) {
+	switch toForm(state.consequence.f).(type) {
 	case btypes.All, btypes.Ex:
 		err = applyQuantRule(state, root, fatherChan)
 	case btypes.And, btypes.Or:
-		// Apply n-ary rule
+		err = applyNAryRule(state, root, fatherChan)
 	case btypes.Imp, btypes.Equ:
-		// Apply binary rule
+		err = applyBinaryRule(state, root, fatherChan)
 	case btypes.Top, btypes.Bot:
-		// Apply top/bot rule
+		err = applyBotTopRule(state, root, fatherChan)
 	case btypes.Not:
-		// Apply not rule
+		err = applyNotRule(state, root, fatherChan)
 	case btypes.Pred:
-		// Apply App rule
+		err = applyAppRule(state, root, fatherChan)
 	}
 	return err
 }
@@ -102,14 +105,18 @@ func applyTypeRule(state Sequent, root *ProofTree, fatherChan chan Error) Error 
 	return Error{result: true, err: nil}
 }
 
-/* Checks that one and only one consequence of the sequent is set. */
+/* Applies one of the WF rule based on the type of the form. */
+func applyWFRule(state Sequent, root *ProofTree, fatherChan chan Error) Error {
+	return Error{result: true, err: nil}
+}
+
+/* Checks that at most one consequence of the sequent is set. */
 func onlyOneConsequenceIsSet(state Sequent) bool {
 	isFormSet := state.consequence.f != nil
 	isTermSet := state.consequence.t != nil
 	isTypeSet := state.consequence.a != nil
 
-	return (isFormSet || isTermSet || isTypeSet) && 
-			!((isFormSet && isTermSet) || (isFormSet && isTypeSet) || (isTermSet && isTypeSet))
+	return !((isFormSet && isTermSet) || (isFormSet && isTypeSet) || (isTermSet && isTypeSet))
 }
 
 /** 
@@ -123,8 +130,10 @@ func whatIsSet(cons Consequence) int {
 		set = formIsSet
 	} else if cons.t != nil {
 		set = termIsSet
-	} else {
+	} else if cons.a != nil {
 		set = typeIsSet
+	} else {
+		set = noConsequence
 	}
 	return set
 }

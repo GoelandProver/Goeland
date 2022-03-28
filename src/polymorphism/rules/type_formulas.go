@@ -51,7 +51,7 @@ import (
  *	- functions terms
  *	- predicates
  **/
-func TypeFormula(form btypes.Form) btypes.Form {
+func typeFormula(form btypes.Form) btypes.Form {
 	var res btypes.Form
 
 	// No need to check if the pred has already a type: it shouldn't.
@@ -67,7 +67,7 @@ func TypeFormula(form btypes.Form) btypes.Form {
 	case btypes.Or, btypes.And:
 		res = typeNaryFormula(newForm)
 	case btypes.Not:
-		res = btypes.RefuteForm(TypeFormula(newForm.GetForm()))
+		res = btypes.RefuteForm(typeFormula(newForm.GetForm()))
 	}
 
 	return res
@@ -101,9 +101,9 @@ func typeTerm(term btypes.Term) btypes.Term {
 func typeQuantifiedFormula(form btypes.Form) btypes.Form {
 	switch newForm := form.(type) {
 	case btypes.All:
-		return btypes.MakeAll(newForm.GetVarList(), TypeFormula(newForm.GetForm()))
+		return btypes.MakeAll(newForm.GetVarList(), typeFormula(newForm.GetForm()))
 	case btypes.Ex:
-		return btypes.MakeEx(newForm.GetVarList(), TypeFormula(newForm.GetForm()))
+		return btypes.MakeEx(newForm.GetVarList(), typeFormula(newForm.GetForm()))
 	}
 	return nil
 }
@@ -119,9 +119,9 @@ func typeQuantifiedFormula(form btypes.Form) btypes.Form {
 func typeBinaryFormula(form btypes.Form) btypes.Form {
 	switch newForm := form.(type) {
 	case btypes.Imp:
-		return btypes.MakeImp(TypeFormula(newForm.GetF1()), TypeFormula(newForm.GetF2()))
+		return btypes.MakeImp(typeFormula(newForm.GetF1()), typeFormula(newForm.GetF2()))
 	case btypes.Equ:
-		return btypes.MakeEqu(TypeFormula(newForm.GetF1()), TypeFormula(newForm.GetF2()))
+		return btypes.MakeEqu(typeFormula(newForm.GetF1()), typeFormula(newForm.GetF2()))
 	}
 	return nil
 }
@@ -151,7 +151,7 @@ func typeNaryFormula(form btypes.Form) btypes.Form {
 func typeFormList(formList btypes.FormList) btypes.FormList {
 	typedForms := btypes.MakeEmptyFormList()
 	for _, subForm := range formList {
-		typedForms = append(typedForms, TypeFormula(subForm))
+		typedForms = append(typedForms, typeFormula(subForm))
 	}
 	return typedForms
 }
