@@ -10,7 +10,7 @@ class Cell:
     def toString(self, depth) :
         add = ''
         if depth == 0 : add = 'style="border-bottom: none"'
-        string = f"<span {add}>" + self.string + f"<div class='rule'>{self.rule}</div></span>" 
+        string = f"<span {add} span-rule='{self.rule}'>" + self.string + "</span>" 
         return string 
 
 if len(sys.argv) != 2 :
@@ -29,10 +29,10 @@ def addCellsWithData(data, depth = 0) :
     if data['localContext'] == "":
         data['localContext'] = '∅'
 
-    cons = ""
+    cons = "wf"
     if data['consequence'] != "":
-        cons = subify(data['consequence']) + " : " + subify(data['typeScheme'].replace('u003e', '⟶'))
-    cell = Cell(f"{subify('Γ_G')};{subify(data['localContext'])} ⊢ {cons}", subify(data['rule']))
+        cons = "⊢ " + subify(data['consequence']) + " : " + subify(data['typeScheme'].replace('u003e', '⟶'))
+    cell = Cell(f"{subify('Γ_G')};{subify(data['localContext'])} {cons}", subify(data['rule']))
 
     currentDiv = "<li>" + cell.toString(depth) + "<ul>"
     for child in reversed(data['children']) :
@@ -125,7 +125,7 @@ with open(file, "r") as f:
     .rule {
         position: absolute;
         top: -10px;
-        right: -10px;
+        right: -35px;
     }
                     """))
 
@@ -144,6 +144,38 @@ with open(file, "r") as f:
                 <ul>{addCellsWithData(data)}</ul>
             </div>
         </body>
+        <script>
+        document.querySelectorAll("span").forEach(function (el) {{
+            li = el.parentNode.getElementsByTagName("ul")[0].getElementsByTagName("li")[0]
+            let offset = document.createElement("span")
+            offset.innerHTML = el.getAttribute("span-rule")
+            el.appendChild(offset)
+
+            offset.style.font = "times new roman";
+            offset.style.fontSize = 12 + "px";
+            offset.style.height = 'auto';
+            offset.style.width = 'auto';
+            offset.style.position = 'absolute';
+            offset.style.whiteSpace = 'no-wrap';
+
+            const w = offset.clientWidth;
+            const h = offset.clientHeight
+            el.removeChild(offset)
+            let div = document.createElement("div")
+            div.innerHTML = el.getAttribute("span-rule")
+            if (li !== undefined) {{
+                span = li.getElementsByTagName("span")[0]
+                div.style.position = "absolute"
+                div.style.right = (-w).toString() + "px"
+                div.style.bottom = (-h/2).toString() + "px"
+                span.appendChild(div)
+            }}
+            else {{
+                el.appendChild(div)
+                div.classList.add("rule")
+            }}
+        }})
+        </script>
     </html>
             """
         )

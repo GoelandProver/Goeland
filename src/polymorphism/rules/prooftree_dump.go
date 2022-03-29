@@ -54,7 +54,7 @@ import (
 func (root *ProofTree) DumpJson() error {
 	// Dump folder should be a flag in the future
 	dump := "../../../visualization/types/"
-	// Create a new file 
+	// Create a new file
 	i := 0
 	for fileExists(getFileName(dump, i)) {
 		i++
@@ -108,7 +108,7 @@ func (root *ProofTree) dump() (string, error) {
 	case typeIsSet:
 		consequence = root.sequent.consequence.a.ToString()
 		if root.typeScheme == nil {
-			ts = root.sequent.consequence.a.ToString()
+			ts = "Type"
 		}
 	}
 
@@ -123,17 +123,17 @@ func (root *ProofTree) dump() (string, error) {
 	}
 
 	bytes, err := json.Marshal(&struct {
-		LocalContext     string       `json:"localContext"`
-		Consequence      string       `json:"consequence"`
-		TypeScheme       string       `json:"typeScheme"`
-		Rule             string   	  `json:"rule"`
-		Children 		 []string     `json:"children"`
+		LocalContext string   `json:"localContext"`
+		Consequence  string   `json:"consequence"`
+		TypeScheme   string   `json:"typeScheme"`
+		Rule         string   `json:"rule"`
+		Children     []string `json:"children"`
 	}{
 		LocalContext: strings.Join(varsString, ", "),
 		Consequence:  consequence,
 		TypeScheme:   ts,
-		Rule:		  root.appliedRule,
-		Children:	  childrenProofs,
+		Rule:         root.appliedRule,
+		Children:     childrenProofs,
 	})
 
 	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(string(bytes), "\\", ""), "\"{", "{"), "}\"", "}"), err
@@ -143,8 +143,8 @@ func (root *ProofTree) dump() (string, error) {
 
 /* Checks if file exists at given path */
 func fileExists(path string) bool {
-    _, err := os.Stat(path)
-    return !errors.Is(err, os.ErrNotExist)
+	_, err := os.Stat(path)
+	return !errors.Is(err, os.ErrNotExist)
 }
 
 /* Create a formated file name */
