@@ -52,9 +52,7 @@ var intCrossInt TypeApp
 var ratCrossRat TypeApp
 var realCrossReal TypeApp
 
-func initTPTPTypes() {
-	defaultType = MkTypeHint("i")
-	defaultProp = MkTypeHint("o")
+func InitTPTPArithmetic() {
 	// Types
 	tInt = MkTypeHint("int")
 	tRat = MkTypeHint("rat")
@@ -71,6 +69,7 @@ func initTPTPTypes() {
 	recordBinaryProp("greater")
 	recordBinaryProp("greatereq")
 
+	
 	// 2 - Binary input arguments
 	recordBinaryInArgs("sum")
 	recordBinaryInArgs("difference")

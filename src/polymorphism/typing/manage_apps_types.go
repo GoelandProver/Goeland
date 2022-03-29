@@ -139,6 +139,15 @@ func SaveConstant(name string, out TypeApp) error {
 	return nil
 }
 
+/* Checks if the given name is a constant (TypeHint) */
+func IsConstant(name string) bool {
+	res := false
+	typeSchemesMap.lock.Lock()
+	_, res = typeSchemesMap.tsMap[name]
+	typeSchemesMap.lock.Unlock()
+	return res
+}
+
 /* Gets the TypeScheme from the global context. Returns default type if it doesn't exists. */
 func GetTypeOrDefault(name string, outDefault int, inArgs ...TypeApp) TypeScheme {
 	typeScheme := GetType(name, inArgs...)
@@ -147,7 +156,7 @@ func GetTypeOrDefault(name string, outDefault int, inArgs ...TypeApp) TypeScheme
 		if len(inArgs) == 0 {
 			size = 0
 		} else {
-			size = inArgs[0].size()
+			size = inArgs[0].Size()
 		}
 
 		switch outDefault {
@@ -179,7 +188,7 @@ func GetPolymorphicType(name string, lenVars, lenTerms int) TypeScheme {
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
-			if fun.App.size() - 1 == lenTerms && len(fun.App.(QuantifiedType).vars) == lenVars {
+			if fun.App.Size() - 1 == lenTerms && len(fun.App.(QuantifiedType).vars) == lenVars {
 				typeSchemesMap.lock.Unlock()
 				return fun.App
 			}
@@ -254,7 +263,13 @@ func CopyTypeAppList(ta []TypeApp) []TypeApp {
 func GetGlobalContext() map[string][]App {
 	// Get type schemes
 	typeSchemesMap.lock.Lock()
-	globalContext := typeSchemesMap.tsMap
+	globalContext := make(map[string][]App)
+
+	for name, app := range typeSchemesMap.tsMap {
+		globalContext[name] = make([]App, len(app))
+		copy(globalContext[name], app)
+	}
+
 	typeSchemesMap.lock.Unlock()
 	// Add TypeHints
 	tMap.lock.Lock()

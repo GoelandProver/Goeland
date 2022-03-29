@@ -37,6 +37,7 @@
 package polyrules
 
 import (
+	"fmt"
 	"reflect"
 
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
@@ -50,72 +51,17 @@ import (
  * system is well-typed.
  **/
 
-/* Stores the local context */
-type LocalContext struct {
-	vars 	 []btypes.Var
-	typeVars []typing.TypeVar
-}
-
-/* LocalContext methods */
-
-/* Adds a var to a copy of the local context and returns it. */
-func (lc LocalContext) addVar(var_ btypes.Var) LocalContext {
-	newLc := lc.copy()
-	newLc.vars = append(newLc.vars, var_)
-	return newLc
-}
-
-/* Adds a type var to a copy of the local context and returns it. */
-func (lc LocalContext) addTypeVar(var_ typing.TypeVar) LocalContext {
-	newLc := lc.copy()
-	newLc.typeVars = append(newLc.typeVars, var_)
-	return newLc
-}
-
-/* Copies a LocalContext. */
-func (lc LocalContext) copy() LocalContext {
-	newVars := make([]btypes.Var, len(lc.vars))
-	newTypeVars := make([]typing.TypeVar, len(lc.typeVars))
-	copy(newVars, lc.vars)
-	copy(newTypeVars, lc.typeVars)
-	return LocalContext{vars: newVars, typeVars: newTypeVars}
-}
-
-/* True if all the slices are cleared */
-func (lc LocalContext) isEmpty() bool {
-	return len(lc.vars) + len(lc.typeVars) == 0
-}
-
-/**
- * Copies the context and pops the first var (and returns it with the new local context). 
- * It doesn't check if the size of the array is positive, it should be checked before.
- **/
-func (lc LocalContext) popVar() (btypes.Var, LocalContext) {
-	newLc := lc.copy()
-	newLc.vars = newLc.vars[1:]
-	return lc.vars[0], newLc
-}
-
-/**
- * Copies the context and pops the first type var (and returns it with the new local context). 
- * It doesn't check if the size of the array is positive, it should be checked before.
- **/
-func (lc LocalContext) popTypeVar() (typing.TypeVar, LocalContext) {
-	newLc := lc.copy()
-	newLc.typeVars = newLc.typeVars[1:]
-	return lc.typeVars[0], newLc
-}
-
 /* Stores the consequence of the sequent */
 type Consequence struct {
 	f btypes.Form
 	t btypes.Term
 	a typing.TypeApp
+	s typing.TypeScheme
 }
 
 /* A Sequent is formed of a global context, local context, and a formula or a term to type */
 type Sequent struct {
-	globalContext map[string][]typing.App
+	globalContext GlobalContext
 	localContext LocalContext
 	consequence Consequence
 }
@@ -143,6 +89,8 @@ func (pt *ProofTree) addChildWith(sequent Sequent) *ProofTree {
 	return &child
 }
 
+var globalContextIsWellTyped bool = false
+
 /**
  * Tries to type form.
  * If the system is well-formed, all subforms and subterms of the formula will 
@@ -150,9 +98,17 @@ func (pt *ProofTree) addChildWith(sequent Sequent) *ProofTree {
  * Otherwise, it will return an error.
  **/
 func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
+	// Instanciate meta type
+	metaType = typing.MkTypeHint("Type")
+
+	err := verifyGlobalContextIfNotDone()
+	if err != nil {
+		return nil, err
+	}
+
 	// Sequent creation
 	state := Sequent{
-		globalContext: getGlobalContext(typing.GetGlobalContext()),
+		globalContext: createGlobalContext(typing.GetGlobalContext()),
 		localContext: LocalContext{vars: []btypes.Var{}, typeVars: []typing.TypeVar{}},
 		consequence: Consequence{f: form},
 	}
@@ -163,11 +119,8 @@ func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
 		children: []*ProofTree{},
 	}
 
-	// Instanciate meta type
-	metaType = typing.MkTypeHint("Type")
-
 	// Launch the typing system
-	form, err := launchRuleApplication(state, &root)
+	form, err = launchRuleApplication(state, &root)
 
 	// Dump prooftree in json if it's asked & there is no error
 	if err == nil && dump {
@@ -177,23 +130,31 @@ func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
 	return form, err
 }
 
-// TODO: copy global context if WF1 rule is found useful
-func getGlobalContext(context map[string][]typing.App) map[string][]typing.App {
-	return context
-}
-
-// If WF1 rule is found useful, we can not do that anymore.
-func getTypeSchemeFromGlobalContext(context map[string][]typing.App, id btypes.Id, vars []typing.TypeApp, terms []btypes.Term) typing.TypeScheme {
-	args := getArgsTypes(context, terms)
-	if args == nil {
-		return typing.GetType(id.GetName())
+/* Launches the rule application on the global context if it has not been checked already */
+func verifyGlobalContextIfNotDone() error {
+	if globalContextIsWellTyped {
+		return nil
 	}
 
-	typeScheme := typing.GetType(id.GetName(), args)
-	if typeScheme == nil {
-		typeScheme = typing.GetPolymorphicType(id.GetName(), len(vars), len(terms))
+	// Sequent & prooftree creation
+	state := Sequent{
+		globalContext: createGlobalContext(typing.GetGlobalContext()),
+		localContext: LocalContext{vars: []btypes.Var{}, typeVars: []typing.TypeVar{}},
+		consequence: Consequence{},
 	}
-	return typeScheme
+	root := ProofTree{
+		sequent: state,
+		children: []*ProofTree{},
+	}
+
+	// Typing system
+	if _, err := launchRuleApplication(state, &root); err != nil && 
+		err.Error() != "More than one formula is returned by the typing system." {
+		return fmt.Errorf("Global context is not properly typed.")
+	}
+	globalContextIsWellTyped = true
+	root.DumpJson()
+	return nil
 }
 
 /* Reconstructs a Form depending on what the children has returned */

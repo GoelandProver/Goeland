@@ -485,7 +485,7 @@ func TestPolymorphicSubstitution(t *testing.T) {
 	}
 
 	// Test input arguments size
-	if GetInputType(expectedScheme)[0].size() != 2 {
-		t.Fatalf("Wrong size of arguments. Expected: 2, actual: %d", GetInputType(expectedScheme)[0].size())
+	if GetInputType(expectedScheme).Size() != 2 {
+		t.Fatalf("Wrong size of arguments. Expected: 2, actual: %d", GetInputType(expectedScheme).Size())
 	}
 }

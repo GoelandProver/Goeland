@@ -68,11 +68,11 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	root.appliedRule = "App"
 
 	// Search for the ID in the global context
-	typeScheme := getTypeSchemeFromGlobalContext(state.globalContext, id, vars, terms)
-	if typeScheme == nil {
+	typeScheme, err := state.globalContext.getTypeScheme(id, vars, terms)
+	if err != nil {
 		return Reconstruct{
 			result: false,
-			err: fmt.Errorf("App not found in the global context: %s", id.GetName()),
+			err: err,
 		}
 	}
 
@@ -105,7 +105,7 @@ func applyVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	// No consequence: next rule is the WF rule.
 	children := []Sequent{
 		{
-			globalContext: getGlobalContext(state.globalContext),
+			globalContext: state.globalContext.copy(),
 			localContext: state.localContext.copy(),
 			consequence: Consequence{},
 		},
@@ -119,9 +119,9 @@ func applyVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 /**
  * Takes all the types of the terms and makes a cross product of everything
  **/
-func getArgsTypes(context map[string][]typing.App, terms []btypes.Term) typing.TypeApp {
+func getArgsTypes(context GlobalContext, terms []btypes.Term) (typing.TypeApp, error) {
 	if len(terms) == 0 {
-		return nil
+		return nil, nil
 	}
 
 	var types []typing.TypeApp
@@ -129,12 +129,18 @@ func getArgsTypes(context map[string][]typing.App, terms []btypes.Term) typing.T
 	for _, term := range terms {
 		switch tmpTerm := term.(type) {
 		case btypes.Fun:
-			types = append(types, typing.GetOutType(getTypeSchemeFromGlobalContext(
-				context, 
+			typeScheme, err := context.getTypeScheme(
 				tmpTerm.GetID(), 
 				tmpTerm.GetTypeVars(), 
-				tmpTerm.GetArgs())),
+				tmpTerm.GetArgs(),
 			)
+			if err != nil {
+				return nil, err
+			}
+			if typeScheme == nil {
+				return nil, fmt.Errorf("Function %s not found in global context.", tmpTerm.GetName())
+			}
+			types = append(types, typing.GetOutType(typeScheme))
 		case btypes.Var:
 			// Variables can't be of type TypeScheme, so this line shouldn't fail.
 			types = append(types, tmpTerm.GetTypeApp())
@@ -145,7 +151,7 @@ func getArgsTypes(context map[string][]typing.App, terms []btypes.Term) typing.T
 		}
 	}
 
-	return typing.MkTypeCross(types...)
+	return typing.MkTypeCross(types...), nil
 }
 
 /* Creates children for app rule */
@@ -155,7 +161,7 @@ func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term
 	// 1 for each type in the vars
 	for _, var_ := range vars {
 		children = append(children, Sequent{
-			globalContext: getGlobalContext(state.globalContext),
+			globalContext: state.globalContext.copy(),
 			localContext: state.localContext.copy(),
 			consequence: Consequence{a: var_},
 		})
@@ -164,7 +170,7 @@ func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term
 	// 1 for each term 
 	for _, term := range terms {
 		children = append(children, Sequent{
-			globalContext: getGlobalContext(state.globalContext),
+			globalContext: state.globalContext.copy(),
 			localContext: state.localContext.copy(),
 			consequence: Consequence{t: term},
 		})

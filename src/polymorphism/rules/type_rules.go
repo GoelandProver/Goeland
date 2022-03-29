@@ -63,7 +63,7 @@ func applyLocalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Recon
 	// No consequence: next rule is the WF rule.
 	children := []Sequent{
 		{
-			globalContext: getGlobalContext(state.globalContext),
+			globalContext: state.globalContext.copy(),
 			localContext: state.localContext.copy(),
 			consequence: Consequence{},
 		},
@@ -78,17 +78,17 @@ func applyGlobalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Reco
 	root.appliedRule = "Var"
 
 	// Find current variable in the local context
-	if _, ok := getTypeFromGlobalContext(state.globalContext, state.consequence.a.ToTypeScheme()); !ok {
+	if found := state.globalContext.isTypeInContext(state.consequence.a.ToTypeScheme()); !found {
 		return Reconstruct{
 			result: false,
-			err: fmt.Errorf("TypeVar %s not found in the local context", state.consequence.a.ToString()),
+			err: fmt.Errorf("TypeVar %s not found in the global context", state.consequence.a.ToString()),
 		}
 	}
 
 	// No consequence: next rule is the WF rule.
 	children := []Sequent{
 		{
-			globalContext: getGlobalContext(state.globalContext),
+			globalContext: state.globalContext.copy(),
 			localContext: state.localContext.copy(),
 			consequence: Consequence{},
 		},
@@ -105,7 +105,7 @@ func applyTypeWFRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct
 	// WF child
 	children := []Sequent{
 		{
-			globalContext: getGlobalContext(state.globalContext),
+			globalContext: state.globalContext.copy(),
 			localContext: state.localContext.copy(),
 			consequence: Consequence{},
 		},
@@ -130,6 +130,38 @@ func applyCrossRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 	}
 }
 
+/* Sym rule: a child for each type in the input, and one for the output if it's a function */
+func applySymRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+	root.appliedRule = "Sym"
+
+	primitives := state.consequence.s.GetPrimitives()
+	out := typing.GetOutType(state.consequence.s)
+
+	newLocalContext := state.localContext.copy()
+	if qt, found := state.consequence.s.(typing.QuantifiedType); found {
+		newLocalContext.typeVars = append(newLocalContext.typeVars, qt.QuantifiedVars()...)
+	}
+
+	children := []Sequent{}
+	if out.ToTypeScheme() != nil && !out.ToTypeScheme().Equals(typing.DefaultProp().ToTypeScheme()) {
+		children = append(children, Sequent{
+			globalContext: state.globalContext.copy(),
+			localContext: newLocalContext,
+			consequence: Consequence{a: out},
+		})
+	}
+
+	for _, type_ := range primitives[:len(primitives)-1] {
+		children = append(children, Sequent{
+			globalContext: state.globalContext.copy(),
+			localContext: newLocalContext,
+			consequence: Consequence{a: type_},
+		})
+	}
+
+	return launchChildren(children, root, fatherChan)
+}
+
 /* Utils functions */
 
 /* Finds the given term in the local context, returns false if it couldn't */
@@ -142,24 +174,12 @@ func getTypeFromLocalContext(localContext LocalContext, typeApp typing.TypeVar) 
 	return typing.TypeVar{}, false
 }
 
-/* Finds the given term in the global context, returns false if it couldn't */
-func getTypeFromGlobalContext(context map[string][]typing.App, typeApp typing.TypeScheme) (typing.TypeScheme, bool) {
-	for _, type_ := range context {
-		for _, t := range type_ {
-			if t.App.Equals(typeApp) {
-				return t.App, true
-			}
-		}
-	}
-	return nil, false
-}
-
 /* Constructs all the children of a composed type */
 func constructWithTypes(state Sequent, types []typing.TypeApp) []Sequent {
 	children := []Sequent{}
 	for _, type_ := range types {
 		children = append(children, Sequent{
-			globalContext: getGlobalContext(state.globalContext),
+			globalContext: state.globalContext.copy(),
 			localContext: state.localContext.copy(),
 			consequence: Consequence{a: type_},
 		})

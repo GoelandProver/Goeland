@@ -473,3 +473,17 @@ func TestPolymorphicExample(t *testing.T) {
 
 	// GGs!
 }
+
+// Standalone test (do not execute with others)
+func TestAriWellTyped(t *testing.T) {
+	t.SkipNow()
+
+	typing.Init()
+	typing.InitTPTPArithmetic()
+
+	_, err := WellFormedVerification(btypes.MakeTop(), true)
+
+	if err != nil {
+		t.Fatalf("Error during formal verification: %s", err.Error())
+	}
+}

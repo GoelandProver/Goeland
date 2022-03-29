@@ -54,6 +54,7 @@ with open(file, "r") as f:
     $reverse: true;
 
     .tree {
+        display: inline-block;
         @if $reverse {
             transform: rotate(180deg);
             transform-origin: 50%;

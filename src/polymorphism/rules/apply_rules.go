@@ -51,6 +51,7 @@ const (
 	formIsSet = iota
 	termIsSet = iota
 	typeIsSet = iota
+	schemeIsSet = iota
 	noConsequence = iota
 )
 
@@ -72,6 +73,8 @@ func applyRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reco
 		return applyTermRule(state, root, fatherChan)
 	case typeIsSet:
 		return applyTypeRule(state, root, fatherChan)
+	case schemeIsSet:
+		return applySymRule(state, root, fatherChan)
 	case noConsequence:
 		return applyWFRule(state, root, fatherChan)
 	}
@@ -94,7 +97,7 @@ func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 	case btypes.Not:
 		rec = applyNotRule(state, root, fatherChan)
 	case btypes.Pred:
-		// TODO: = rule
+		// TODO: equality rule
 		rec = applyAppRule(state, root, fatherChan)
 	}
 	return rec
@@ -136,53 +139,36 @@ func applyTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 
 /* Applies one of the WF rule based on the type of the form. */
 func applyWFRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	if (state.localContext.isEmpty()) {
+	if (canApplyWF0(state)) {
 		root.appliedRule = "WF_0"
-		return Reconstruct{
-			result: true,
-			err: nil,
-		}
+		return Reconstruct{ result: true, err: nil }
+	}
+
+	if (canApplyWF2(state)) {
+		return applyWF2(state, root, fatherChan)
 	}
 
 	return applyWF1(state, root, fatherChan)
 }
 
-func applyWF1(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	root.appliedRule = "WF_1"
-
-	// Try to empty vars first
-	if len(state.localContext.vars) > 0 {
-		// Launch child on the type of the first var
-		var_, newLocalContext := state.localContext.popVar()
-		child := []Sequent{
-			{
-				localContext: newLocalContext,
-				globalContext: getGlobalContext(state.globalContext),
-				consequence: Consequence{a: var_.GetTypeApp()},
-			},
-		}
-		return launchChildren(child, root, fatherChan)
-	}
-
-	// Then, if vars is not empty, empty the types
-	_, newLocalContext := state.localContext.popTypeVar()
-	child := []Sequent{
-		{
-			localContext: newLocalContext,
-			globalContext: getGlobalContext(state.globalContext),
-			consequence: Consequence{a: metaType},
-		},
-	}
-	return launchChildren(child, root, fatherChan)
-}
 
 /* Checks that at most one consequence of the sequent is set. */
 func onlyOneConsequenceIsSet(state Sequent) bool {
-	isFormSet := state.consequence.f != nil
-	isTermSet := state.consequence.t != nil
-	isTypeSet := state.consequence.a != nil
+	numberSet := 0
+	if state.consequence.f != nil {
+		numberSet++
+	}
+	if state.consequence.t != nil {
+		numberSet++
+	}
+	if state.consequence.a != nil {
+		numberSet++
+	}
+	if state.consequence.s != nil {
+		numberSet++
+	}
 
-	return !((isFormSet && isTermSet) || (isFormSet && isTypeSet) || (isTermSet && isTypeSet))
+	return numberSet < 2
 }
 
 /** 
@@ -198,6 +184,8 @@ func whatIsSet(cons Consequence) int {
 		set = termIsSet
 	} else if cons.a != nil {
 		set = typeIsSet
+	} else if cons.s != nil {
+		set = schemeIsSet
 	} else {
 		set = noConsequence
 	}

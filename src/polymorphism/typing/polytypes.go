@@ -61,12 +61,13 @@ type TypeScheme interface {
 	/* Non-exported methods */
 	isScheme()
 	toList() []uint64
-	size() int
 
 	/* Exported methods */
 	ToString() string
 	UID() uint64
 	Equals(oth TypeScheme) bool
+	Size() int
+	GetPrimitives() []TypeApp
 }
 
 /** 
@@ -79,13 +80,13 @@ type TypeScheme interface {
 type TypeApp interface {
 	/* Non-exported methods */
 	isTypeApp()
-	size() int
 	substitute(map[TypeVar]TypeHint) TypeScheme
 
 	/* Exported methods */
 	ToString() string
 	ToTypeScheme() TypeScheme
 	Copy() TypeApp
+	Size() int
 }
 
 /**
@@ -101,11 +102,12 @@ type TypeHint struct {
 /* TypeScheme interface */
 func (th TypeHint) isScheme()        {}
 func (th TypeHint) toList() []uint64 { return []uint64{th.uid} }
-func (th TypeHint) size() int 		 { return 1 }
 
 func (th TypeHint) ToString() string           { return th.name }
 func (th TypeHint) UID() uint64                { return th.euid }
 func (th TypeHint) Equals(oth TypeScheme) bool { return oth.UID() == th.UID() }
+func (th TypeHint) Size() int 		 		   { return 1 }
+func (th TypeHint) GetPrimitives() []TypeApp   { return []TypeApp{th} }
 
 /* TypeApp interface */
 func (th TypeHint) isTypeApp() {}
@@ -128,15 +130,15 @@ type TypeCross struct {
 /* TypeScheme interface */
 func (tc TypeCross) isScheme()        {}
 func (tc TypeCross) toList() []uint64 { return subtypesUID(tc.types) }
-func (tc TypeCross) size() int 		  { return getSize(tc.types) }
 
 func (tc TypeCross) ToString() string           { return "(" + strings.Join(subtypesStr(tc.types), " * ") + ")" }
 func (tc TypeCross) UID() uint64                { return tc.uid }
 func (tc TypeCross) Equals(oth TypeScheme) bool { return oth.UID() == tc.UID() }
+func (tc TypeCross) Size() int 		  		    { return getSize(tc.types) }
+func (tc TypeCross) GetPrimitives() []TypeApp   { return tc.GetAllUnderlyingTypes() }
 
 /* TypeApp interface */
 func (tc TypeCross) isTypeApp() {}
-
 func (tc TypeCross) ToTypeScheme() TypeScheme { return tc }
 
 func (tc TypeCross) Copy() TypeApp { 
@@ -152,15 +154,7 @@ func (tc TypeCross) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
 }
 
 func (tc TypeCross) GetAllUnderlyingTypes() []TypeApp {
-	underlyingTypes := []TypeApp{}
-	for _, typeApp := range tc.types {
-		if tc, isTc := typeApp.(TypeCross); isTc {
-			underlyingTypes = append(underlyingTypes, tc.GetAllUnderlyingTypes()...)
-		} else {
-			underlyingTypes = append(underlyingTypes, typeApp)
-		}
-	}
-	return underlyingTypes
+	return getAllUnderlyingTypes(tc.types)
 }
 
 /**
@@ -177,11 +171,12 @@ type TypeArrow struct {
 /* TypeScheme interface */
 func (ta TypeArrow) isScheme()        {}
 func (ta TypeArrow) toList() []uint64 { return subtypesUID(ta.types) }
-func (ta TypeArrow) size() int 		  { return getSize(ta.types) }
 
 func (ta TypeArrow) ToString() string           { return "(" + strings.Join(subtypesStr(ta.types), " > ") + ")" }
 func (ta TypeArrow) UID() uint64                { return ta.uid }
 func (ta TypeArrow) Equals(oth TypeScheme) bool { return oth.UID() == ta.UID() }
+func (ta TypeArrow) Size() int 		  			{ return getSize(ta.types) }
+func (ta TypeArrow) GetPrimitives() []TypeApp   { return getAllUnderlyingTypes(ta.types) }
 
 /* TypeArrow methods */
 func (ta TypeArrow) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { 
@@ -198,7 +193,6 @@ type TypeVar struct {
 
 /* TypeApp interface */
 func (tv TypeVar) isTypeApp() {}
-func (tv TypeVar) size() int  { return 1 }
 
 func (tv TypeVar) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return mapSubst[tv] }
 
@@ -206,6 +200,7 @@ func (tv TypeVar) ToString() string 		{ return tv.name }
 func (tv TypeVar) ToTypeScheme() TypeScheme { return nil }
 func (tv TypeVar) Copy() TypeApp { return MkTypeVar(tv.name) }
 func (tv TypeVar) Equals(oth TypeVar) bool { return tv.name == oth.name }
+func (tv TypeVar) Size() int  			   { return 1 }
 
 /** 
  * Quantified TypeScheme.
@@ -219,10 +214,12 @@ type QuantifiedType struct {
 /* TypeScheme interface */
 func (qt QuantifiedType) isScheme()        {}
 func (qt QuantifiedType) toList() []uint64 { return qt.scheme.toList() }
-func (qt QuantifiedType) size() int 	   { return qt.scheme.size() }
 
 func (qt QuantifiedType) UID() uint64                { return qt.scheme.UID() }
 func (qt QuantifiedType) Equals(oth TypeScheme) bool { return oth.UID() == qt.scheme.UID() }
+func (qt QuantifiedType) QuantifiedVarsLen() int     { return len(qt.vars) }
+func (qt QuantifiedType) QuantifiedVars() []TypeVar  { return qt.vars }
+func (qt QuantifiedType) Size() int 	   			 { return qt.scheme.Size() }
 
 func (qt QuantifiedType) ToString() string {
 	varsString := []string{}
@@ -230,6 +227,22 @@ func (qt QuantifiedType) ToString() string {
 		varsString = append(varsString, var_.ToString())
 	}  
 	return "Π " + strings.Join(varsString, ", ") + ": Type, " + qt.scheme.ToString() 
+}
+
+func (qt QuantifiedType) GetPrimitives() []TypeApp {
+	vars := make(map[TypeHint]TypeVar)
+	for i, var_ := range qt.vars {
+		vars[MkTypeHint(fmt.Sprintf("*_%d", i))] = var_
+	}  
+	primitives := []TypeApp{}
+	for _, th := range qt.scheme.GetPrimitives() {
+		if var_, found := vars[th.(TypeHint)]; found {
+			primitives = append(primitives, var_)
+		} else {
+			primitives = append(primitives, th)
+		}
+	}
+	return primitives
 }
 
 /** Utils **/
@@ -255,7 +268,7 @@ func subtypesUID(types []TypeApp) []uint64 {
 func getSize(types []TypeApp) int {
 	sum := 0
 	for _, type_ := range types {
-		sum += type_.ToTypeScheme().size()
+		sum += type_.ToTypeScheme().Size()
 	}
 	return sum
 }
@@ -266,6 +279,18 @@ func substTypeAppList(mapSubst map[TypeVar]TypeHint, typeApp []TypeApp) []TypeAp
 		newTypeApp = append(newTypeApp, type_.substitute(mapSubst).(TypeApp))
 	}
 	return newTypeApp
+}
+
+func getAllUnderlyingTypes(ta []TypeApp) []TypeApp {
+	underlyingTypes := []TypeApp{}
+	for _, typeApp := range ta {
+		if tc, isTc := typeApp.(TypeCross); isTc {
+			underlyingTypes = append(underlyingTypes, getAllUnderlyingTypes(tc.types)...)
+		} else {
+			underlyingTypes = append(underlyingTypes, typeApp)
+		}
+	}
+	return underlyingTypes
 }
 
 /**
@@ -300,8 +325,11 @@ func Init() {
 	typeSchemesMap.tsMap = make(map[string][]App)
 	typeSchemesMap.lock = sync.Mutex{}
 
+	// Default types
+	defaultType = MkTypeHint("i")
+	defaultProp = MkTypeHint("o")
 	// TPTP
-	initTPTPTypes()
+	//initTPTPArithmetic()
 }
 
 /* Makes a TypeHint. If it has already been created, return the right one. Else, creates a new one. */
@@ -375,6 +403,8 @@ func GetOutType(typeScheme TypeScheme) TypeApp {
 	switch t := typeScheme.(type) {
 	case TypeArrow:
 		return t.types[len(t.types)-1]
+	case QuantifiedType:
+		return GetOutType(t.scheme)
 	case TypeHint:
 		return t
 	}
@@ -382,13 +412,11 @@ func GetOutType(typeScheme TypeScheme) TypeApp {
 }
 
 /* Gets the input type of an arrow type scheme */
-func GetInputType(typeScheme TypeScheme) []TypeApp {
+func GetInputType(typeScheme TypeScheme) TypeApp {
 	// typeScheme may be a TypeHint if it comes from a constant.
 	switch t := typeScheme.(type) {
 	case TypeArrow:
-		return t.types[len(t.types)-2:]
-	case TypeHint:
-		return []TypeApp{}
+		return t.types[0]
 	}
 	return nil
 }
