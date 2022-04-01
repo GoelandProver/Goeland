@@ -38,7 +38,6 @@ package polyrules
 
 import (
 	"fmt"
-	"reflect"
 
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -50,7 +49,7 @@ import (
 
 /* Stores the local context */
 type LocalContext struct {
-	vars 	 []btypes.Var
+	vars     []btypes.Var
 	typeVars []typing.TypeVar
 }
 
@@ -81,11 +80,11 @@ func (lc LocalContext) copy() LocalContext {
 
 /* True if all the slices are cleared */
 func (lc LocalContext) isEmpty() bool {
-	return len(lc.vars) + len(lc.typeVars) == 0
+	return len(lc.vars)+len(lc.typeVars) == 0
 }
 
 /**
- * Copies the context and pops the first var (and returns it with the new local context). 
+ * Copies the context and pops the first var (and returns it with the new local context).
  * It doesn't check if the size of the array is positive, it should be checked before.
  **/
 func (lc LocalContext) popVar() (btypes.Var, LocalContext) {
@@ -95,7 +94,7 @@ func (lc LocalContext) popVar() (btypes.Var, LocalContext) {
 }
 
 /**
- * Copies the context and pops the first type var (and returns it with the new local context). 
+ * Copies the context and pops the first type var (and returns it with the new local context).
  * It doesn't check if the size of the array is positive, it should be checked before.
  **/
 func (lc LocalContext) popTypeVar() (typing.TypeVar, LocalContext) {
@@ -106,20 +105,21 @@ func (lc LocalContext) popTypeVar() (typing.TypeVar, LocalContext) {
 
 /* Stores the global context */
 type GlobalContext struct {
-	primitiveTypes   []typing.TypeHint 
-	simpleSchemes    map[string][]typing.TypeScheme 
+	primitiveTypes   []typing.TypeHint
+	composedType     map[string]typing.TypeCross
+	simpleSchemes    map[string][]typing.TypeScheme
 	polymorphSchemes map[string][]typing.QuantifiedType
-} 
+}
 
 /* Copies a GlobalContext into a new variable and returns it. */
 func (gc GlobalContext) copy() GlobalContext {
 	context := GlobalContext{
-		primitiveTypes: make([]typing.TypeHint, len(gc.primitiveTypes)),
-		simpleSchemes: make(map[string][]typing.TypeScheme),
+		primitiveTypes:   make([]typing.TypeHint, len(gc.primitiveTypes)),
+		simpleSchemes:    make(map[string][]typing.TypeScheme),
 		polymorphSchemes: make(map[string][]typing.QuantifiedType),
 	}
 	copy(context.primitiveTypes, gc.primitiveTypes)
-	
+
 	for name, list := range gc.simpleSchemes {
 		context.simpleSchemes[name] = make([]typing.TypeScheme, len(list))
 		copy(context.simpleSchemes[name], list)
@@ -168,7 +168,7 @@ func (gc GlobalContext) getSimpleTypeScheme(name string, termsType typing.TypeAp
 			if typing.GetInputType(typeScheme).ToTypeScheme().Equals(termsType.ToTypeScheme()) {
 				return typeScheme, nil
 			}
-		} 
+		}
 	}
 	return nil, fmt.Errorf("No predicate/function with the name %s in the global context.", name)
 }
@@ -177,7 +177,7 @@ func (gc GlobalContext) getSimpleTypeScheme(name string, termsType typing.TypeAp
 func (gc GlobalContext) getPolymorphicTypeScheme(name string, varsLen, termsLen int) (typing.TypeScheme, error) {
 	if typeSchemeList, found := gc.polymorphSchemes[name]; found {
 		for _, typeScheme := range typeSchemeList {
-			if termsLen == typeScheme.Size() - 1 && varsLen == typeScheme.QuantifiedVarsLen() {
+			if termsLen == typeScheme.Size()-1 && varsLen == typeScheme.QuantifiedVarsLen() {
 				return typeScheme, nil
 			}
 		}
@@ -188,6 +188,11 @@ func (gc GlobalContext) getPolymorphicTypeScheme(name string, varsLen, termsLen 
 /* Returns true if the TypeHint is found in the context */
 func (gc GlobalContext) isTypeInContext(typeApp typing.TypeScheme) bool {
 	for _, type_ := range gc.primitiveTypes {
+		if type_.Equals(typeApp) {
+			return true
+		}
+	}
+	for _, type_ := range gc.composedType {
 		if type_.Equals(typeApp) {
 			return true
 		}
@@ -209,57 +214,87 @@ func (gc GlobalContext) isEmpty() bool {
 	return result
 }
 
-/* Copies the context, while popping the first type scheme, either polymorphic or not. */
-func (gc GlobalContext) popTypeScheme() (typing.TypeScheme, GlobalContext) {
-	newContext := gc.copy()
-	if len(newContext.polymorphSchemes) > 0 {
-		scheme, map_ := getFirstAndDelete(newContext.polymorphSchemes)
-		newContext.polymorphSchemes = map_
-		return scheme, newContext
-	}
-	if len(newContext.simpleSchemes) > 0 {
-		scheme, map_ := getFirstAndDelete(newContext.simpleSchemes)
-		newContext.simpleSchemes = map_
-		return scheme, newContext
-	}
-	return nil, newContext
-}
-
 /* Utils */
 
-/* Creates a global context from all the types / type schemes recorded in the map of types. */
-func createGlobalContext(context map[string][]typing.App) GlobalContext {
+/**
+ * Creates a global context from all the types / type schemes recorded in the map of types.
+ * Incrementally verifies if the context is well typed.
+ * If not, an error is returned.
+ **/
+func createGlobalContext(context map[string][]typing.App) (GlobalContext, error) {
 	globalContext := GlobalContext{
-		primitiveTypes: []typing.TypeHint{},
-		simpleSchemes: make(map[string][]typing.TypeScheme),
+		primitiveTypes:   []typing.TypeHint{},
+		composedType:     make(map[string]typing.TypeCross),
+		simpleSchemes:    make(map[string][]typing.TypeScheme),
 		polymorphSchemes: make(map[string][]typing.QuantifiedType),
 	}
+
+	// Fill first the primitive types
 	for name, appList := range context {
+		for _, app := range appList {
+			if type_, isTypeHint := app.App.(typing.TypeHint); isTypeHint {
+				if !typing.IsConstant(name) {
+					globalContext.primitiveTypes = append(globalContext.primitiveTypes, type_)
+				}
+			}
+		}
+	}
+
+	for name, appList := range context {
+		// Then, fill everything else
 		for _, app := range appList {
 			switch type_ := app.App.(type) {
 			case typing.TypeHint:
 				if typing.IsConstant(name) {
 					globalContext.simpleSchemes[name] = append(globalContext.simpleSchemes[name], type_)
-				} else {
-					globalContext.primitiveTypes = append(globalContext.primitiveTypes, type_)
 				}
-			case typing.TypeArrow, typing.TypeCross:
+			case typing.TypeCross:
+				globalContext.composedType[name] = type_
+			case typing.TypeArrow:
 				globalContext.simpleSchemes[name] = append(globalContext.simpleSchemes[name], type_)
 			case typing.QuantifiedType:
 				globalContext.polymorphSchemes[name] = append(globalContext.polymorphSchemes[name], type_)
 			}
+			if err := incrementalVerificationOfGlobalContext(globalContext.copy(), name, app.App); err != nil {
+				return GlobalContext{}, err
+			}
 		}
 	}
-	return globalContext
+
+	if !globalContextIsWellTyped {
+		globalContextIsWellTyped = true
+	}
+	return globalContext, nil
 }
 
-/* Gets first element of map it founds and deletes at the key if it's the only item in the slice */
-func getFirstAndDelete[T interface{}](map_ map[string][]T) (T, map[string][]T) {
-	name := reflect.ValueOf(map_).MapKeys()[0].String()
-	scheme := map_[name][0]
-	map_[name] = map_[name][1:]
-	if len(map_[name]) == 0 {
-		delete(map_, name)
+/**
+ * Triggers rules to verify the global context while it's constructed.
+ * It will avoid combinatorial explosion on global context well formedness verification.
+ **/
+func incrementalVerificationOfGlobalContext(globalContext GlobalContext, name string, app typing.TypeScheme) error {
+	if globalContextIsWellTyped {
+		return nil
 	}
-	return scheme, map_
+
+	sequent := Sequent{
+		globalContext: globalContext,
+		localContext:  LocalContext{},
+	}
+	rec := Reconstruct{err: nil}
+	proofTree, chan_ := new(ProofTree), make(chan Reconstruct)
+
+	switch type_ := app.(type) {
+	case typing.TypeCross:
+		sequent.consequence = Consequence{a: type_}
+		rec = applyCrossRule(sequent, proofTree, chan_)
+	case typing.QuantifiedType, typing.TypeArrow:
+		sequent.consequence = Consequence{s: app}
+		rec = applySymRule(sequent, proofTree, chan_)
+	case typing.TypeHint:
+		if typing.IsConstant(name) {
+			sequent.consequence = Consequence{a: type_}
+			rec = applyGlobalTypeVarRule(sequent, proofTree, chan_)
+		}
+	}
+	return rec.err
 }

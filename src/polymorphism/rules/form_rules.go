@@ -55,7 +55,7 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 		root.appliedRule = "∃"
 	}
 
-	var newForm btypes.Form 
+	var newForm btypes.Form
 	var varTreated btypes.Var
 	var typeTreated typing.TypeVar
 
@@ -63,7 +63,7 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 
 	switch f := (state.consequence.f).(type) {
 	case btypes.All, btypes.Ex:
-		varTreated, newForm = removeOneVar(state.consequence.f) 
+		varTreated, newForm = removeOneVar(state.consequence.f)
 		varInstantiated = true
 	case btypes.AllType:
 		v := f.GetVarList()[0]
@@ -71,11 +71,11 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 			typeTreated, newForm = v, btypes.MakeAllType(f.GetVarList()[1:], f.GetForm())
 		} else {
 			typeTreated, newForm = v, f.GetForm()
-		} 
+		}
 	}
 
 	// Create 2 children:
-	//	1 - First one with the type of the quantified variable. It should be a TypeApp. 
+	//	1 - First one with the type of the quantified variable. It should be a TypeApp.
 	//	2 - Second one with the quantified variable added in the local context.
 	// => copy the local context and use the function to get the global context (copy or not).
 	// The underlying form should be gotten to be properly typed.
@@ -103,9 +103,9 @@ func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 	children := []Sequent{}
 	for _, form := range formList {
 		children = append(children, Sequent{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{f: form},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{f: form},
 		})
 	}
 
@@ -130,14 +130,14 @@ func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct
 	// Construct children with the 2 formulas
 	children := []Sequent{
 		{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{f: f1},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{f: f1},
 		},
 		{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{f: f2},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{f: f2},
 		},
 	}
 
@@ -159,9 +159,9 @@ func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct
 	// Construct children with the contexts
 	children := []Sequent{
 		{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{},
 		},
 	}
 
@@ -177,9 +177,9 @@ func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	// Construct children with the contexts
 	children := []Sequent{
 		{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{f: form},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{f: form},
 		},
 	}
 
@@ -187,7 +187,7 @@ func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
 }
 
-/** 
+/**
  * Removes the first variable of an exitential or universal form, and returns a
  * universal / existential form iff it still possesses other vars.
  * Otherwise, it returns the form gotten with GetForm().
@@ -225,14 +225,14 @@ func mkQuantChildren(state Sequent, varInstantiated bool, varTreated btypes.Var,
 
 	return []Sequent{
 		{
-			globalContext: state.globalContext.copy(), 
-			localContext: state.localContext.copy(),
-			consequence: Consequence{a: type_},
-		}, 
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{a: type_},
+		},
 		{
-			globalContext: state.globalContext.copy(),
-			localContext: newLocalContext,
-			consequence: Consequence{f: newForm},
+			globalContext: state.globalContext,
+			localContext:  newLocalContext,
+			consequence:   Consequence{f: newForm},
 		},
 	}
 }

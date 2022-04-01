@@ -53,7 +53,7 @@ import (
 func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	var id btypes.Id
 	var terms []btypes.Term
-	var vars  []typing.TypeApp
+	var vars []typing.TypeApp
 
 	if whatIsSet(state.consequence) == formIsSet {
 		id = (state.consequence.f).(btypes.Pred).GetID()
@@ -72,7 +72,7 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	if err != nil {
 		return Reconstruct{
 			result: false,
-			err: err,
+			err:    err,
 		}
 	}
 
@@ -84,7 +84,7 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 		fTyped := btypes.MakePred(id, terms, vars, typeScheme)
 		return reconstructForm(launchChildren(createAppChildren(state, vars, terms), root, fatherChan), fTyped)
 	} else {
-	 	fTyped := btypes.MakeFun(id, terms, vars, typeScheme)
+		fTyped := btypes.MakeFun(id, terms, vars, typeScheme)
 		return reconstructTerm(launchChildren(createAppChildren(state, vars, terms), root, fatherChan), fTyped)
 	}
 }
@@ -98,16 +98,16 @@ func applyVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	if _, ok := getTermFromLocalContext(state.localContext, state.consequence.t); !ok {
 		return Reconstruct{
 			result: false,
-			err: fmt.Errorf("Term %s not found in the local context", state.consequence.t.ToString()),
+			err:    fmt.Errorf("Term %s not found in the local context", state.consequence.t.ToString()),
 		}
 	}
 
 	// No consequence: next rule is the WF rule.
 	children := []Sequent{
 		{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{},
 		},
 	}
 
@@ -130,8 +130,8 @@ func getArgsTypes(context GlobalContext, terms []btypes.Term) (typing.TypeApp, e
 		switch tmpTerm := term.(type) {
 		case btypes.Fun:
 			typeScheme, err := context.getTypeScheme(
-				tmpTerm.GetID(), 
-				tmpTerm.GetTypeVars(), 
+				tmpTerm.GetID(),
+				tmpTerm.GetTypeVars(),
 				tmpTerm.GetArgs(),
 			)
 			if err != nil {
@@ -161,18 +161,18 @@ func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term
 	// 1 for each type in the vars
 	for _, var_ := range vars {
 		children = append(children, Sequent{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{a: var_},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{a: var_},
 		})
 	}
 
-	// 1 for each term 
+	// 1 for each term
 	for _, term := range terms {
 		children = append(children, Sequent{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{t: term},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{t: term},
 		})
 	}
 

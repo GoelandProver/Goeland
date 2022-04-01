@@ -56,16 +56,16 @@ func applyLocalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Recon
 	if _, ok := getTypeFromLocalContext(state.localContext, state.consequence.a.(typing.TypeVar)); !ok {
 		return Reconstruct{
 			result: false,
-			err: fmt.Errorf("TypeVar %s not found in the local context", state.consequence.a.ToString()),
+			err:    fmt.Errorf("TypeVar %s not found in the local context", state.consequence.a.ToString()),
 		}
 	}
 
 	// No consequence: next rule is the WF rule.
 	children := []Sequent{
 		{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{},
 		},
 	}
 
@@ -81,16 +81,16 @@ func applyGlobalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Reco
 	if found := state.globalContext.isTypeInContext(state.consequence.a.ToTypeScheme()); !found {
 		return Reconstruct{
 			result: false,
-			err: fmt.Errorf("TypeVar %s not found in the global context", state.consequence.a.ToString()),
+			err:    fmt.Errorf("TypeVar %s not found in the global context", state.consequence.a.ToString()),
 		}
 	}
 
 	// No consequence: next rule is the WF rule.
 	children := []Sequent{
 		{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{},
 		},
 	}
 
@@ -105,9 +105,9 @@ func applyTypeWFRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct
 	// WF child
 	children := []Sequent{
 		{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{},
 		},
 	}
 
@@ -125,7 +125,7 @@ func applyCrossRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 	} else {
 		return Reconstruct{
 			result: false,
-			err: fmt.Errorf("CrossRule type on something that is not a TypeCross: %s", state.consequence.a.ToString()),
+			err:    fmt.Errorf("CrossRule type on something that is not a TypeCross: %s", state.consequence.a.ToString()),
 		}
 	}
 }
@@ -145,17 +145,17 @@ func applySymRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	children := []Sequent{}
 	if out.ToTypeScheme() != nil && !out.ToTypeScheme().Equals(typing.DefaultProp().ToTypeScheme()) {
 		children = append(children, Sequent{
-			globalContext: state.globalContext.copy(),
-			localContext: newLocalContext,
-			consequence: Consequence{a: out},
+			globalContext: state.globalContext,
+			localContext:  newLocalContext,
+			consequence:   Consequence{a: out},
 		})
 	}
 
 	for _, type_ := range primitives[:len(primitives)-1] {
 		children = append(children, Sequent{
-			globalContext: state.globalContext.copy(),
-			localContext: newLocalContext,
-			consequence: Consequence{a: type_},
+			globalContext: state.globalContext,
+			localContext:  newLocalContext,
+			consequence:   Consequence{a: type_},
 		})
 	}
 
@@ -179,9 +179,9 @@ func constructWithTypes(state Sequent, types []typing.TypeApp) []Sequent {
 	children := []Sequent{}
 	for _, type_ := range types {
 		children = append(children, Sequent{
-			globalContext: state.globalContext.copy(),
-			localContext: state.localContext.copy(),
-			consequence: Consequence{a: type_},
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{a: type_},
 		})
 	}
 	return children

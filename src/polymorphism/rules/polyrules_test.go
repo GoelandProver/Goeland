@@ -54,7 +54,7 @@ func TestMain(m *testing.M) {
 
 	// Add pred scheme to global context
 	typing.SaveTypeScheme(
-		"P", 
+		"P",
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultProp(),
 	)
@@ -87,12 +87,11 @@ func TestSimpleDoublePass(t *testing.T) {
 		typing.DefaultProp(),
 	)
 	// Pred should be of type (int * int) -> o
-	if !typing.GetOutType(form.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) || 
-	   !form.GetType().Equals(expected) {
+	if !typing.GetOutType(form.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) ||
+		!form.GetType().Equals(expected) {
 		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
 }
-
 
 func TestNegDoublePass(t *testing.T) {
 	// ¬P(2, 3)
@@ -112,8 +111,8 @@ func TestNegDoublePass(t *testing.T) {
 		t.Fatalf("Double pass should've returned a negation. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
-		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
-				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
+			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	newPred = newPred.(btypes.Not).GetForm()
@@ -127,7 +126,6 @@ func TestNegDoublePass(t *testing.T) {
 		t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newPred.GetType().ToString())
 	}
 }
-
 
 func TestBinaryDoublePass(t *testing.T) {
 	// P(2, 2) => P(3, 3)
@@ -153,8 +151,8 @@ func TestBinaryDoublePass(t *testing.T) {
 		t.Fatalf("Double pass should've returned an implication. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
-		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
-				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
+			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	F1 := newPred.(btypes.Imp).GetF1()
@@ -195,8 +193,8 @@ func TestBinaryDoublePass(t *testing.T) {
 		t.Fatalf("Double pass should've returned an equivalence. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
-		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
-				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
+			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	F1 = newPred.(btypes.Equ).GetF1()
@@ -230,10 +228,10 @@ func TestQuantDoublePass(t *testing.T) {
 
 	if _, ok := newPred.(btypes.All); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
-	} 
+	}
 	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
-		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
-				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
+			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	newForm := newPred.(btypes.All).GetForm()
@@ -264,8 +262,8 @@ func TestQuantDoublePass(t *testing.T) {
 		t.Fatalf("Double pass should've returned an existential quantifier. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
-		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
-				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
+			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	newForm = newPred.(btypes.Ex).GetForm()
@@ -299,8 +297,8 @@ func TestNAryDoublePass(t *testing.T) {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
-		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
-				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
+			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	newForms := newPred.(btypes.Or).GetLF()
@@ -336,8 +334,8 @@ func TestNAryDoublePass(t *testing.T) {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) {
-		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s", 
-				 typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
+			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	newForms = newPred.(btypes.And).GetLF()
@@ -374,7 +372,7 @@ func TestBabyNoErr(t *testing.T) {
 	y := btypes.MakerVar("y", typing.MkTypeHint("int"))
 
 	form := btypes.MakeForm(btypes.MakeAll(
-		[]btypes.Var{x, y}, 
+		[]btypes.Var{x, y},
 		btypes.MakePred(
 			btypes.MakerId("P"),
 			[]btypes.Term{x, y},
@@ -385,20 +383,20 @@ func TestBabyNoErr(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
-	
+
 	form = form.(btypes.All).GetForm()
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
 		typing.DefaultProp(),
 	)
-	if !typing.GetOutType(form.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) || 
-	   !form.GetType().Equals(expected) {
+	if !typing.GetOutType(form.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) ||
+		!form.GetType().Equals(expected) {
 		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
 
 	form = btypes.MakeForm(btypes.MakeEx(
-		[]btypes.Var{x, y}, 
+		[]btypes.Var{x, y},
 		btypes.MakePred(
 			btypes.MakerId("P"),
 			[]btypes.Term{x, y},
@@ -409,11 +407,11 @@ func TestBabyNoErr(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
-	
+
 	pred := form.(btypes.Ex).GetForm()
 
-	if !typing.GetOutType(pred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) || 
-	   !pred.GetType().Equals(expected) {
+	if !typing.GetOutType(pred.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) ||
+		!pred.GetType().Equals(expected) {
 		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
 }
@@ -447,7 +445,7 @@ func TestPolymorphicExample(t *testing.T) {
 	form := btypes.MakeForm(btypes.MakeAllType(
 		[]typing.TypeVar{typeVar},
 		btypes.MakeAll(
-			[]btypes.Var{x, y}, 
+			[]btypes.Var{x, y},
 			btypes.MakePred(
 				btypes.MakerId("Φ"),
 				[]btypes.Term{x, y},

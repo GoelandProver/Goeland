@@ -53,8 +53,8 @@ func canApplyWF2(state Sequent) bool {
 }
 
 /* WF1 rule first empties the variables, and then the types. */
-func applyWF1(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	root.appliedRule = "WF_1"
+func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+	root.appliedRule = "WF_2"
 
 	// Try to empty vars first
 	if len(state.localContext.vars) > 0 {
@@ -62,9 +62,9 @@ func applyWF1(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Recon
 		var_, newLocalContext := state.localContext.popVar()
 		child := []Sequent{
 			{
-				localContext: newLocalContext,
-				globalContext: state.globalContext.copy(),
-				consequence: Consequence{a: var_.GetTypeApp()},
+				localContext:  newLocalContext,
+				globalContext: state.globalContext,
+				consequence:   Consequence{a: var_.GetTypeApp()},
 			},
 		}
 		return launchChildren(child, root, fatherChan)
@@ -74,15 +74,15 @@ func applyWF1(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Recon
 	_, newLocalContext := state.localContext.popTypeVar()
 	child := []Sequent{
 		{
-			localContext: newLocalContext,
-			globalContext: state.globalContext.copy(),
-			consequence: Consequence{a: metaType},
+			localContext:  newLocalContext,
+			globalContext: state.globalContext,
+			consequence:   Consequence{a: metaType},
 		},
 	}
 	return launchChildren(child, root, fatherChan)
 }
 
-/* WF2 rule first empties type schemes, and then the types. */
+/* WF2 rule first empties type schemes, and then the types.
 func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	root.appliedRule = "WF_2"
 
@@ -97,3 +97,4 @@ func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Recon
 	}
 	return launchChildren(child, root, fatherChan)
 }
+*/

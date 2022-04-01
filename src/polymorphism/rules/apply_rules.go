@@ -48,10 +48,10 @@ import (
  **/
 
 const (
-	formIsSet = iota
-	termIsSet = iota
-	typeIsSet = iota
-	schemeIsSet = iota
+	formIsSet     = iota
+	termIsSet     = iota
+	typeIsSet     = iota
+	schemeIsSet   = iota
 	noConsequence = iota
 )
 
@@ -60,8 +60,8 @@ func applyRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reco
 	// Only one of the three should be set
 	if !onlyOneConsequenceIsSet(state) {
 		return Reconstruct{
-			result: false, 
-			err: fmt.Errorf("Multiple elements on the right-side of the sequent. Cannot type this system."),
+			result: false,
+			err:    fmt.Errorf("Multiple elements on the right-side of the sequent. Cannot type this system."),
 		}
 	}
 
@@ -97,7 +97,6 @@ func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 	case btypes.Not:
 		rec = applyNotRule(state, root, fatherChan)
 	case btypes.Pred:
-		// TODO: equality rule
 		rec = applyAppRule(state, root, fatherChan)
 	}
 	return rec
@@ -130,7 +129,7 @@ func applyTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 	case typing.TypeVar:
 		rec = applyLocalTypeVarRule(state, root, fatherChan)
 	case typing.TypeCross:
-		// Apply composed rule: launch a child for each TypeHint of the composed type. 
+		// Apply composed rule: launch a child for each TypeHint of the composed type.
 		rec = applyCrossRule(state, root, fatherChan)
 		// There shouldn't be any TypeArrow: can not type a variable with it in first order.
 	}
@@ -139,18 +138,17 @@ func applyTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 
 /* Applies one of the WF rule based on the type of the form. */
 func applyWFRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	if (canApplyWF0(state)) {
+	if state.localContext.isEmpty() && state.globalContext.isEmpty() {
 		root.appliedRule = "WF_0"
-		return Reconstruct{ result: true, err: nil }
+		return Reconstruct{result: true, err: nil}
+	}
+	if state.localContext.isEmpty() {
+		root.appliedRule = "WF_1"
+		return Reconstruct{result: true, err: nil}
 	}
 
-	if (canApplyWF2(state)) {
-		return applyWF2(state, root, fatherChan)
-	}
-
-	return applyWF1(state, root, fatherChan)
+	return applyWF2(state, root, fatherChan)
 }
-
 
 /* Checks that at most one consequence of the sequent is set. */
 func onlyOneConsequenceIsSet(state Sequent) bool {
@@ -171,13 +169,13 @@ func onlyOneConsequenceIsSet(state Sequent) bool {
 	return numberSet < 2
 }
 
-/** 
- * Returns what is set in the consequence of the sequent. Either it's the form, 
- * the term, or the type. 
+/**
+ * Returns what is set in the consequence of the sequent. Either it's the form,
+ * the term, or the type.
  * It doesn't check if multiple elements are set, it should be done before.
  **/
 func whatIsSet(cons Consequence) int {
-	var set int 
+	var set int
 	if cons.f != nil {
 		set = formIsSet
 	} else if cons.t != nil {

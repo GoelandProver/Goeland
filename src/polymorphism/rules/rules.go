@@ -37,7 +37,6 @@
 package polyrules
 
 import (
-	"fmt"
 	"reflect"
 
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
@@ -62,16 +61,16 @@ type Consequence struct {
 /* A Sequent is formed of a global context, local context, and a formula or a term to type */
 type Sequent struct {
 	globalContext GlobalContext
-	localContext LocalContext
-	consequence Consequence
+	localContext  LocalContext
+	consequence   Consequence
 }
 
 /* Makes a typing prooftree to output. */
 type ProofTree struct {
-	sequent Sequent 
-	appliedRule string 
-	typeScheme typing.TypeScheme
-	children []*ProofTree
+	sequent     Sequent
+	appliedRule string
+	typeScheme  typing.TypeScheme
+	children    []*ProofTree
 }
 
 /* ProofTree meta-type */
@@ -82,7 +81,7 @@ var metaType typing.TypeHint
 /* Creates and adds a child to the prooftree and returns it. */
 func (pt *ProofTree) addChildWith(sequent Sequent) *ProofTree {
 	child := ProofTree{
-		sequent: sequent,
+		sequent:  sequent,
 		children: []*ProofTree{},
 	}
 	pt.children = append(pt.children, &child)
@@ -93,7 +92,7 @@ var globalContextIsWellTyped bool = false
 
 /**
  * Tries to type form.
- * If the system is well-formed, all subforms and subterms of the formula will 
+ * If the system is well-formed, all subforms and subterms of the formula will
  * be typed after this step.
  * Otherwise, it will return an error.
  **/
@@ -101,21 +100,21 @@ func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
 	// Instanciate meta type
 	metaType = typing.MkTypeHint("Type")
 
-	err := verifyGlobalContextIfNotDone()
+	globalContext, err := createGlobalContext(typing.GetGlobalContext())
 	if err != nil {
 		return nil, err
 	}
 
 	// Sequent creation
 	state := Sequent{
-		globalContext: createGlobalContext(typing.GetGlobalContext()),
-		localContext: LocalContext{vars: []btypes.Var{}, typeVars: []typing.TypeVar{}},
-		consequence: Consequence{f: form},
+		globalContext: globalContext,
+		localContext:  LocalContext{vars: []btypes.Var{}, typeVars: []typing.TypeVar{}},
+		consequence:   Consequence{f: form},
 	}
 
 	// Prooftree creation
 	root := ProofTree{
-		sequent: state,
+		sequent:  state,
 		children: []*ProofTree{},
 	}
 
@@ -130,33 +129,6 @@ func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
 	return form, err
 }
 
-/* Launches the rule application on the global context if it has not been checked already */
-func verifyGlobalContextIfNotDone() error {
-	if globalContextIsWellTyped {
-		return nil
-	}
-
-	// Sequent & prooftree creation
-	state := Sequent{
-		globalContext: createGlobalContext(typing.GetGlobalContext()),
-		localContext: LocalContext{vars: []btypes.Var{}, typeVars: []typing.TypeVar{}},
-		consequence: Consequence{},
-	}
-	root := ProofTree{
-		sequent: state,
-		children: []*ProofTree{},
-	}
-
-	// Typing system
-	if _, err := launchRuleApplication(state, &root); err != nil && 
-		err.Error() != "More than one formula is returned by the typing system." {
-		return fmt.Errorf("Global context is not properly typed.")
-	}
-	globalContextIsWellTyped = true
-	root.DumpJson()
-	return nil
-}
-
 /* Reconstructs a Form depending on what the children has returned */
 func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstruct {
 	if !reconstruction.result {
@@ -168,7 +140,7 @@ func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstru
 	case btypes.All:
 		f = btypes.MakeAll(form.GetVarList(), unquantify(reconstruction.forms[1], form))
 	case btypes.AllType:
-		f = btypes.MakeAllType(form.GetVarList(), unquantify(reconstruction.forms[1], form)) 
+		f = btypes.MakeAllType(form.GetVarList(), unquantify(reconstruction.forms[1], form))
 	case btypes.Ex:
 		f = btypes.MakeEx(form.GetVarList(), unquantify(reconstruction.forms[1], form))
 	case btypes.And:
