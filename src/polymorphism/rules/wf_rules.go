@@ -40,18 +40,6 @@ package polyrules
  * This file defines the WF rules.
  **/
 
-func canApplyWF0(state Sequent) bool {
-	if globalContextIsWellTyped {
-		return state.localContext.isEmpty()
-	} else {
-		return state.localContext.isEmpty() && state.globalContext.isEmpty()
-	}
-}
-
-func canApplyWF2(state Sequent) bool {
-	return !globalContextIsWellTyped && state.localContext.isEmpty()
-}
-
 /* WF1 rule first empties the variables, and then the types. */
 func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	root.appliedRule = "WF_2"
@@ -81,20 +69,3 @@ func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Recon
 	}
 	return launchChildren(child, root, fatherChan)
 }
-
-/* WF2 rule first empties type schemes, and then the types.
-func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	root.appliedRule = "WF_2"
-
-	// We do not treat the TypeHint, because they cannot be not well-formed, only schemes can.
-	scheme, newGlobalContext := state.globalContext.popTypeScheme()
-	child := []Sequent{
-		{
-			localContext: state.localContext.copy(),
-			globalContext: newGlobalContext,
-			consequence: Consequence{s: scheme},
-		},
-	}
-	return launchChildren(child, root, fatherChan)
-}
-*/
