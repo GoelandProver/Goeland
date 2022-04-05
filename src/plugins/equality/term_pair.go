@@ -29,13 +29,39 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*********************/
-/* equality_tests.go */
-/*********************/
+/****************/
+/* term_pair.go */
+/****************/
 /**
-* This file contains the tests on equality.
+* This file contains the type definition for equality reasonning.
 **/
 
 package main
 
-/* cas X=Y dans egalités */
+import (
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+)
+
+/* A pair of two terms */
+type TermPair struct {
+	t1, t2 basictypes.Term
+}
+
+func (tp TermPair) GetT1() basictypes.Term {
+	return tp.t1.Copy()
+}
+func (tp TermPair) GetT2() basictypes.Term {
+	return tp.t2.Copy()
+}
+func (tp TermPair) Copy() TermPair {
+	return MakeTermPair(tp.GetT1(), tp.GetT2())
+}
+func (tp TermPair) Equals(tp2 TermPair) bool {
+	return tp.GetT1().Equals(tp2.t1) && tp.GetT2().Equals(tp2.GetT2())
+}
+func (tp TermPair) ToString() string {
+	return tp.GetT1().ToString() + " ≈ " + tp.GetT2().ToString()
+}
+func MakeTermPair(t1, t2 basictypes.Term) TermPair {
+	return TermPair{t1.Copy(), t2.Copy()}
+}

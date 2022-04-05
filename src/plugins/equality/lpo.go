@@ -39,44 +39,195 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 	"sync"
 
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-type LPO map[basictypes.Term]int
+type LPO map[basictypes.Id]int
 
 var lock_lpo sync.Mutex
 
-func (lpo LPO) Get(t basictypes.Term) int {
+func (lpo LPO) Get(t basictypes.Id) int {
 	res, found := lpo[t]
 	if found {
 		return res
 	} else {
+		fmt.Printf("Error : id not in the LPO : %v", t.ToString())
 		return -1
 	}
 }
 
-func (lpo *LPO) Insert(t basictypes.Term) {
+func (lpo *LPO) Insert(t basictypes.Id) {
 	lock_lpo.Lock()
 	(*lpo)[t] = len(*lpo)
 	lock_lpo.Unlock()
 }
 
-func (lpo LPO) Contains(t basictypes.Term) bool {
+func (lpo LPO) Contains(t basictypes.Id) bool {
 	return lpo.Get(t) != -1
 }
 
-func (lpo *LPO) InsertIfNotContains(t basictypes.Term) {
+func (lpo *LPO) InsertIfNotContains(t basictypes.Id) {
 	if lpo.Contains(t) {
 		lpo.Insert(t)
 	}
 }
 
-/* returns positive number if t1 > t2, 0 if t1 = t2, netaive if t2 > t1*/
-func (lpo LPO) Compare(t1, t2 basictypes.Term) int {
-	return lpo.Get(t1) - lpo.Get(t2)
+/** Check if two terms respect the LPO
+* Data : s an t, two terms
+* Result :
+*	an int : 1 if s < t, 0 si s = t, -1 if s > t
+*	a boolean : true if the two term are comparable, false otherwise
+*	two terms : the new terms for the constraint (if not comparable)
+**/
+func (lpo LPO) Compare(s, t basictypes.Term) (int, bool, basictypes.Term, basictypes.Term) {
+	switch s_type := s.(type) {
+	case basictypes.Fun:
+		switch t_type := t.(type) {
+		case basictypes.Fun:
+			// function and function
+			return compareFunFun(s_type, t_type, lpo)
+		case basictypes.Meta:
+			// function & meta : Occurences inside : f(x) < x, f(y) < x
+			return compareMetaFun(t_type, s_type, -1, lpo)
+		default:
+			fmt.Printf("Type of t unknown")
+		}
+	case basictypes.Meta:
+		switch t_type := t.(type) {
+		case basictypes.Fun:
+			// meta & function : Occurences inside : x < f(x), x < f(y)
+			return compareMetaFun(s_type, t_type, 1, lpo)
+		case basictypes.Meta:
+			// Meta and meta
+			return compareMetaMeta(s_type, t_type)
+		default:
+			fmt.Printf("Type of t unknown")
+		}
+	default:
+		fmt.Printf("Type of s unknown")
+	}
+	return 0, false, s, t
+}
+
+/* return code can be 1 or -1 */
+func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LPO) (int, bool, basictypes.Term, basictypes.Term) {
+	i := 0
+	for i < len(f.GetArgs()) {
+		res, is_comparable, _, _ := lpo.Compare(f.GetArgs()[i], m)
+		if is_comparable && res == 0 {
+			return return_code, true, nil, nil
+		}
+		i++
+	}
+	if return_code == 1 {
+		return 0, false, m, f
+	} else {
+		return 0, false, f, m
+	}
+}
+
+/* Compare two meta wrt LPO */
+func compareMetaMeta(m1, m2 basictypes.Meta) (int, bool, basictypes.Term, basictypes.Term) {
+	if m1.Equals(m2) {
+		return 0, true, nil, nil
+	} else {
+		return 1, false, m1, m2
+	}
+}
+
+/* Compare two functions */
+func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, basictypes.Term) {
+	// f < g
+	if lpo.Get(s.GetID()) < lpo.Get(t.GetID()) {
+		if len(s.GetArgs()) == 0 {
+			return 1, true, nil, nil
+		} else {
+			i := 0
+			stopped := false
+			for i < len(s.GetArgs()) && !stopped {
+				res, is_comparable, _, _ := lpo.Compare(s.GetArgs()[i], t)
+				if !is_comparable {
+					return 0, false, s, t
+				}
+				if res <= 0 {
+					stopped = true
+				}
+				i++
+			}
+			if !stopped {
+				return 1, true, nil, nil
+			}
+		}
+	}
+
+	// f == g
+	if lpo.Get(s.GetID()) == lpo.Get(t.GetID()) {
+		if len(s.GetArgs()) != len(t.GetArgs()) {
+			fmt.Printf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString())
+			return 0, false, nil, nil
+		}
+		n := len(s.GetArgs())
+		i := 0
+		stopped := false
+		val_res := 0
+		// First loop : while euqals
+		for i < n && !stopped {
+			res, is_comparable, t1, t2 := lpo.Compare(s.GetArgs()[i], t.GetArgs()[i])
+			if !is_comparable {
+				return 0, false, t1, t2
+			}
+			if res != 0 {
+				stopped = true
+				val_res = res
+			} else {
+				i++
+			}
+		}
+		if !stopped {
+			return 0, true, nil, nil
+		}
+
+		// Check and second loop : while <= 0
+		if val_res > 0 {
+			for i < n && !stopped {
+				res, is_comparable, _, _ := lpo.Compare(s.GetArgs()[i], t.GetArgs()[i])
+				if !is_comparable {
+					return 0, false, s, t
+				}
+				if res <= 0 {
+					stopped = true
+				}
+				i++
+			}
+			if !stopped {
+				return 1, true, nil, nil
+			}
+		}
+	}
+
+	// Occurences inside
+	m := len(t.GetArgs())
+	i := 0
+	stopped := false
+	for i < m && !stopped {
+		res, is_comparable, _, _ := lpo.Compare(s, t.GetArgs()[i])
+		if !is_comparable {
+			return 0, false, s, t
+		}
+		if res >= 0 {
+			stopped = true
+		}
+		i++
+	}
+	if stopped {
+		return 1, true, nil, nil
+	}
+
+	return -1, true, nil, nil
 }
 
 /* Is empty */
@@ -100,8 +251,8 @@ func (lpo LPO) ToString() string {
 func (lpo LPO) Copy() LPO {
 	res := LPO{}
 	lock_lpo.Lock()
-	for term, value := range lpo {
-		res[term.Copy()] = value
+	for id, value := range lpo {
+		res[id.Copy().(basictypes.Id)] = value
 	}
 	lock_lpo.Unlock()
 	return res

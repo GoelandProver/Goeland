@@ -159,13 +159,13 @@ func FusionSubstAndFormListWithoutDouble(l1, l2 []SubstAndForm) []SubstAndForm {
 }
 
 /* Apply a substElement on a term */
-func applySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictypes.Term) basictypes.Term {
+func ApplySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictypes.Term) basictypes.Term {
 	res := t
 
 	switch nf := t.(type) {
 	case basictypes.Meta:
 		if nf == old_symbol {
-			res = new_symbol
+			res = new_symbol.Copy()
 		}
 	case basictypes.Fun:
 		res = basictypes.MakeFun(nf.GetP(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()))
@@ -177,7 +177,7 @@ func applySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictype
 func applySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl []basictypes.Term) []basictypes.Term {
 	res := make([]basictypes.Term, len(tl))
 	for i, t := range tl {
-		res[i] = applySubstitutionOnTerm(old_symbol, new_symbol, t)
+		res[i] = ApplySubstitutionOnTerm(old_symbol, new_symbol, t)
 	}
 	return res
 }

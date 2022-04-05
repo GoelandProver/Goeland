@@ -44,12 +44,15 @@ import (
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
-/* type of the constraint :
-* 0 for >
-* 1 for =
-**/
+const (
+	PREC int = iota
+	EQ
+)
+
 type Constraint struct {
 	ctype int
 	tp    TermPair
@@ -61,6 +64,9 @@ func (c Constraint) GetCType() int {
 func (c Constraint) GetTP() TermPair {
 	return c.tp.Copy()
 }
+func (c *Constraint) SetTP(tp TermPair) {
+	c.tp = tp
+}
 func (c Constraint) Copy() Constraint {
 	return MakeConstraint(c.GetCType(), c.GetTP())
 }
@@ -69,9 +75,9 @@ func (c Constraint) Equals(c2 Constraint) bool {
 }
 func (c Constraint) ToString() string {
 	switch c.GetCType() {
-	case 0:
+	case PREC:
 		return c.GetTP().GetT1().ToString() + " ≻ " + c.GetTP().GetT2().ToString()
-	case 1:
+	case EQ:
 		return c.GetTP().GetT1().ToString() + " ≃ " + c.GetTP().GetT2().ToString()
 	default:
 		fmt.Printf("Constraint type unknown \n")
@@ -79,23 +85,60 @@ func (c Constraint) ToString() string {
 	}
 }
 
-/* return true if the constraint is not violated, false totherwise */
-func (c Constraint) Check(lpo LPO, subst treetypes.Substitutions) (bool, treetypes.Substitutions) {
-	switch c.GetCType() {
-	case 0:
-		return lpo.Compare(c.GetTP().t1, c.GetTP().t2) > 0, treetypes.Failure()
-	case 1:
-		subst := treesearch.AddUnification(c.GetTP().t1.Copy(), c.GetTP().t2.Copy(), treetypes.MakeEmptySubstitution())
-		if subst.Equals(treetypes.Failure()) {
-			return false, treetypes.Failure()
+/* return true if the constraint is not violated, false totherwise  + the useful part of the constraint */
+func (c *Constraint) checkLPO(lpo LPO) (bool, bool) {
+	if c.GetCType() == PREC {
+		res, is_comparable, new_t1, new_t2 := lpo.Compare(c.GetTP().GetT1(), c.GetTP().GetT2())
+		if !is_comparable {
+			c.SetTP(MakeTermPair(new_t1, new_t2))
+			return true, true
 		} else {
-			return true, treetypes.Failure()
+			return res > 0, false
+		}
+	} else {
+		fmt.Printf("Constraint type not valid \n")
+		return false, false
+	}
+}
+
+/** checkConstraintList
+* Take a constraint list metavariable < fun or fun < metavariable
+* create a map metavariable : list_inf, list_sup
+* check intersection is empty
+**/
+func (c Constraint) checkConstraintList(cl ConstraintList) bool {
+	map_constraintes := make(map[basictypes.Meta][][]basictypes.Term)
+	for _, c := range cl {
+		if c.GetCType() != PREC {
+			fmt.Printf("Bad constraint type in checkConstraintList")
+			return false
 		}
 
-	default:
-		fmt.Printf("Constraint type unknown \n")
-		return false, treetypes.Failure()
+		if c_t1_type, ok := c.GetTP().GetT1().(basictypes.Meta); ok {
+			// Case meta < fun : add to fisrt list
+			if !appendToMapAndCheck(c_t1_type, c.GetTP().GetT2(), &map_constraintes, 0, 1) {
+				return false
+			}
+		} else if c_t2_type, ok := c.GetTP().GetT2().(basictypes.Meta); ok {
+			// Case fun < meta : add to second list
+			if !appendToMapAndCheck(c_t2_type, c.GetTP().GetT1(), &map_constraintes, 1, 0) {
+				return false
+			}
+		} else {
+			fmt.Printf("None of the term is a metavariable")
+		}
 	}
+	return true
+}
+
+/* append to the map and check if the new element is not in the other list */
+func appendToMapAndCheck(m basictypes.Meta, t basictypes.Term, map_constraintes *map[basictypes.Meta][][]basictypes.Term, index_append, index_check int) bool {
+	if _, ok := (*map_constraintes)[m]; !ok {
+		(*map_constraintes)[m] = make([][]basictypes.Term, 0)
+	}
+	(*map_constraintes)[m][index_append] = append((*map_constraintes)[m][index_append], t)
+
+	return !basictypes.ContainsTermList(t, (*map_constraintes)[m][index_check])
 }
 
 func MakeConstraint(i int, tp TermPair) Constraint {
@@ -159,12 +202,12 @@ func (cl ConstraintList) Contains(c Constraint) bool {
 	return false
 }
 
-func (cl *ConstraintList) AppendIfConsistantWithLPO(c Constraint, lpo LPO) bool {
+/* Append relevant constraint if its consistant with cl and LPO */
+func (cl *ConstraintList) AppendIfConsistant(c Constraint, lpo LPO) bool {
 	if !cl.Contains(c) {
 		new_cl := cl.Copy()
-		new_cl = append(new_cl, c)
-		is_consistant, _ := new_cl.IsConsistant(lpo)
-		if is_consistant {
+		if is_consistant := cl.isConsistantWith(c, lpo); is_consistant {
+			new_cl = append(new_cl, c)
 			cl = &new_cl
 			return true
 		} else {
@@ -174,25 +217,65 @@ func (cl *ConstraintList) AppendIfConsistantWithLPO(c Constraint, lpo LPO) bool 
 	return true
 }
 
-func MakeEmptyConstaintsList() ConstraintList {
-	return ConstraintList{}
-}
-
-/* CHeck if a list of constraintes is consistant */
-func (cl *ConstraintList) IsConsistant(lpo LPO) (bool, treetypes.Substitutions) {
-	consistant_subst := treetypes.MakeEmptySubstitution()
-	for _, c := range *cl {
-		is_checked, subst := c.Check(lpo, consistant_subst)
-		if is_checked {
-			subst_res, _ := treesearch.MergeSubstitutions(consistant_subst, subst)
-			if subst_res.Equals(treetypes.Failure()) {
-				return false, treetypes.Failure()
-			} else {
-				consistant_subst = subst_res
-			}
+/* Check if a constraint is consistant with LPO and constraint list + update cl */
+func (cl *ConstraintList) isConsistantWith(c Constraint, lpo LPO) bool {
+	switch c.GetCType() {
+	case PREC:
+		respect_lpo, is_comparable := c.checkLPO(lpo)
+		if is_comparable {
+			return respect_lpo
 		} else {
-			return false, treetypes.Failure()
+			if c.checkConstraintList(*cl) {
+				*cl = append(*cl, c)
+				return true
+			} else {
+				return false
+			}
+		}
+	case EQ:
+		subst := treesearch.AddUnification(c.GetTP().t1.Copy(), c.GetTP().t2.Copy(), treetypes.MakeEmptySubstitution())
+		if subst.Equals(treetypes.Failure()) {
+			return false
+		} else {
+			if !subst.IsEmpty() {
+				*cl = append(*cl, c)
+			}
+			return true
 		}
 	}
-	return true, consistant_subst
+
+	return true
+}
+
+/* Check if a constraint is consistant with LPO and constraint list */
+func (cl ConstraintList) isConsistant(lpo LPO, s treetypes.Substitutions) (bool, treetypes.Substitutions) {
+	for _, c_element := range cl {
+		c := c_element.Copy()
+		c.applySubstitution(s)
+		switch c.GetCType() {
+		case PREC:
+			respect_lpo, is_comparable := c.checkLPO(lpo)
+			if is_comparable && !respect_lpo {
+				return false, nil
+			}
+		case EQ:
+			s = treesearch.AddUnification(c.GetTP().t1.Copy(), c.GetTP().t2.Copy(), s.Copy())
+			if s.Equals(treetypes.Failure()) {
+				return false, nil
+			}
+		}
+	}
+	return true, s.Copy()
+}
+
+func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
+	for m, t := range s {
+		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.GetTP().GetT1())
+		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.GetTP().GetT2())
+		c.SetTP(MakeTermPair(new_t1, new_t2))
+	}
+}
+
+func MakeEmptyConstaintsList() ConstraintList {
+	return ConstraintList{}
 }
