@@ -36,8 +36,6 @@
 package treetypes
 
 import (
-	"reflect"
-
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -109,17 +107,21 @@ func MakeTermForm(t basictypes.Term) TermForm {
 func ParseFormula(formula basictypes.Form) Sequence {
 
 	// The formula has to be a predicate
-	if reflect.TypeOf(formula) != reflect.TypeOf(basictypes.Pred{}) {
+	switch formula_type := formula.(type) {
+	case basictypes.Pred:
+		instructions := Sequence{formula: formula}
+
+		instructions.add(Begin{})
+		parsePred(formula_type, &instructions)
+		instructions.add(End{})
+
+		return instructions
+	case TermForm:
+		return ParseTerm(formula_type.GetTerm())
+
+	default:
 		return Sequence{}
 	}
-
-	instructions := Sequence{formula: formula}
-
-	instructions.add(Begin{})
-	parsePred(formula.(basictypes.Pred), &instructions)
-	instructions.add(End{})
-
-	return instructions
 }
 
 /* Parses a predicate to machine instructions */

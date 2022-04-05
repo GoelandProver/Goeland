@@ -238,9 +238,11 @@ func (lpo LPO) IsEmpty() bool {
 /* ToString */
 func (lpo LPO) ToString() string {
 	res := "{"
+	cpt := 0
 	for term, value := range lpo {
-		res = "[" + term.ToString() + "] : " + strconv.Itoa(value)
-		if value != len(lpo)-1 {
+		res += "[" + term.ToString() + "] : " + strconv.Itoa(value)
+		cpt++
+		if cpt != len(lpo)-1 {
 			res += ", "
 		}
 	}

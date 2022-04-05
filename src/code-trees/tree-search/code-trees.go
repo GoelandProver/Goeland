@@ -39,6 +39,7 @@
 package treesearch
 
 import (
+	"fmt"
 	"strings"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -116,6 +117,9 @@ func makeCodeTreeFromAtomic(lf basictypes.FormList, is_pos bool) *Node {
 					form = append(form, nf.GetForm())
 				}
 			}
+		case treetypes.TermForm:
+			// EQUALITY - To build a tree of terms
+			form = append(form, f)
 		}
 	}
 
@@ -188,6 +192,7 @@ func (n Node) printAux(tab int) {
 			tab += 1
 		}
 		global.PrintDebug("PT", strings.Repeat("\t", tab)+instr.ToString())
+		fmt.Printf(strings.Repeat("\t", tab) + instr.ToString() + "\n")
 
 		if treetypes.IsEnd(instr) {
 			tab -= 1
@@ -197,6 +202,7 @@ func (n Node) printAux(tab int) {
 	if n.isLeaf() {
 		for _, form := range n.formulae {
 			global.PrintDebug("PT", strings.Repeat("\t", tab+1)+form.ToString())
+			fmt.Printf(strings.Repeat("\t", tab+1) + form.ToString() + "\n")
 		}
 	}
 	global.PrintDebug("PT", "\n")

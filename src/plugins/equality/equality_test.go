@@ -38,4 +38,89 @@
 
 package main
 
+import (
+	"fmt"
+	"os"
+	"testing"
+
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
+)
+
 /* cas X=Y dans egalités */
+
+func TestMain(m *testing.M) {
+	code := m.Run()
+	os.Exit(code)
+}
+
+/* Tests equality */
+func TestEQProbleme(t *testing.T) {
+
+	f_id := basictypes.MakerId("f")
+	g_id := basictypes.MakerId("g")
+	a_id := basictypes.MakerId("a")
+
+	a := basictypes.MakerConst(a_id)
+	x := basictypes.MakerMeta("X", -1)
+	fa := basictypes.MakerFun(f_id, []basictypes.Term{a})
+	gx := basictypes.MakerFun(g_id, []basictypes.Term{x})
+	ggx := basictypes.MakerFun(g_id, []basictypes.Term{gx})
+	gggx := basictypes.MakerFun(g_id, []basictypes.Term{ggx})
+
+	eq1 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{fa, a})
+	eq2 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{ggx, fa})
+	eq3 := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{gggx, x})
+
+	lpo := MakeLPO()
+	lpo.Insert(g_id)
+	lpo.Insert(f_id)
+	lpo.Insert(a_id)
+	fmt.Printf("LPO : %v\n", lpo.ToString())
+
+	lf := basictypes.FormList{eq1, eq2, eq3}
+	fmt.Printf("LF : %v\n", lf.ToString())
+
+	var tp, tn datastruct.DataStructure
+	tp = new(treesearch.Node)
+	tn = new(treesearch.Node)
+	tp = tp.MakeDataStruct(lf, true)
+	tn = tn.MakeDataStruct(lf, false)
+
+	fmt.Printf("TP : %v\n", tp)
+	if tp.IsEmpty() {
+		fmt.Printf("tp is nil\n")
+	} else {
+		fmt.Printf("tp is not nil\n")
+		tp.Print()
+	}
+	fmt.Printf("TN : %v\n", tn)
+	if tn.IsEmpty() {
+		fmt.Printf("tn is nil\n")
+	} else {
+		fmt.Printf("tn is not nil\n")
+		tn.Print()
+	}
+
+	res, subst := EqualityReasoning(tp, tn, lf, lpo)
+	fmt.Printf("Res : %v\n", res)
+	fmt.Printf("Subst : %v\n", treetypes.SubstListToString(subst))
+}
+
+/* Tests LPO */
+func TestCreateLPO(t *testing.T) {
+	f_id := basictypes.MakerId("f")
+	g_id := basictypes.MakerId("g")
+	a_id := basictypes.MakerId("a")
+
+	lpo := MakeLPO()
+	lpo.Insert(g_id)
+	lpo.Insert(f_id)
+	lpo.Insert(a_id)
+
+	fmt.Printf("%v\n", lpo.ToString())
+}
+
+/* Tets constraintes */

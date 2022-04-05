@@ -118,7 +118,9 @@ func equalityReasoningMultiList(epml EqualityProblemMultiList, lpo LPO) (bool, [
 	found := false
 
 	for _, epl := range epml {
+		fmt.Printf("EPL : %v\n", epl.ToString())
 		if has_solution, subst_res_tmp := equalityReasoningList(epl, lpo); has_solution {
+			fmt.Printf("Solution found for one EPL !\n")
 			found = true
 			substs_res = append(substs_res, subst_res_tmp...)
 		}
@@ -138,7 +140,9 @@ func equalityReasoningList(epl EqualityProblemList, lpo LPO) (bool, []treetypes.
 	found := true
 
 	for _, ep := range epl {
+		fmt.Printf("EP : %v\n", ep.ToString())
 		if has_solution, subst_res_tmp := equalityReasoningProblemWithApplySubst(ep, substs_res, lpo); has_solution {
+			fmt.Printf("Solution found for on EP !\n")
 			substs_res = append(substs_res, subst_res_tmp...)
 		} else {
 			return false, []treetypes.Substitutions{treetypes.Failure()}
@@ -156,20 +160,31 @@ func equalityReasoningProblemWithApplySubst(ep EqualityProblem, sl []treetypes.S
 	found := false
 	children_chan := make(chan []treetypes.Substitutions)
 
-	for _, s := range sl {
-		go equalityReasoningProblem(ep.applySubstitution(s), lpo, children_chan)
-		subst_res := <-children_chan
-		if len(subst_res) > 0 {
+	if len(sl) == 0 {
+		fmt.Print("No subst ! \n")
+		go equalityReasoningProblem(ep.Copy(), lpo, children_chan)
+		subst_res_chan := <-children_chan
+		if len(subst_res_chan) > 0 {
 			found = true
-			for _, subst_element := range substs_res {
-				merged_subst, same_key := treesearch.MergeSubstitutions(s.Copy(), subst_element.Copy())
-				if same_key {
-					fmt.Printf("Error in EqualityReasoningList : same key appears in merge")
-				}
-				if merged_subst.Equals(treetypes.Failure()) {
-					fmt.Printf("Error in EqualityReasoningList : merge returns failure")
-				} else {
-					substs_res = append(substs_res, merged_subst)
+			substs_res = append(substs_res, subst_res_chan...)
+		}
+	} else {
+		fmt.Printf("Subst !\n")
+		for _, s := range sl {
+			go equalityReasoningProblem(ep.applySubstitution(s), lpo, children_chan)
+			subst_res_chan := <-children_chan
+			if len(subst_res_chan) > 0 {
+				found = true
+				for _, subst_element := range subst_res_chan {
+					merged_subst, same_key := treesearch.MergeSubstitutions(s.Copy(), subst_element.Copy())
+					if same_key {
+						fmt.Printf("Error in EqualityReasoningList : same key appears in merge\n")
+					}
+					if merged_subst.Equals(treetypes.Failure()) {
+						fmt.Printf("Error in EqualityReasoningList : merge returns failure\n")
+					} else {
+						substs_res = append(substs_res, merged_subst)
+					}
 				}
 			}
 		}
@@ -180,9 +195,11 @@ func equalityReasoningProblemWithApplySubst(ep EqualityProblem, sl []treetypes.S
 
 // Brancher pour règles
 func equalityReasoningProblem(ep EqualityProblem, lpo LPO, parent chan []treetypes.Substitutions) {
+	fmt.Printf("EP : %v\n", ep.ToString())
 	substs_res := []treetypes.Substitutions{}
 
 	if ok, subst_found := checkUnif(ep.GetS(), ep.GetT()); ok {
+		fmt.Printf("Unif found !\n")
 		is_consistant, new_subst := ep.GetC().isConsistant(lpo, subst_found)
 		if is_consistant {
 			substs_res = append(substs_res, new_subst)
@@ -190,12 +207,15 @@ func equalityReasoningProblem(ep EqualityProblem, lpo LPO, parent chan []treetyp
 	}
 
 	if checkStopCases(ep) {
+		fmt.Printf("Stop case found !\n")
 		parent <- substs_res
 		return
 	}
 
 	rules_available := tryApplyRules(ep)
+	fmt.Printf("There is %v rules available ! \n", len(rules_available))
 
+	// TODO : select
 	tab_chan := [](chan []treetypes.Substitutions){}
 	for _, r := range rules_available {
 		chan_rule := make(chan []treetypes.Substitutions)
@@ -271,15 +291,22 @@ func tryApplyRightRules(ep EqualityProblem) []ruleStruct {
 }
 
 func tryApplyRuleAux(s, t basictypes.Term, ep EqualityProblem) []ruleStruct {
+	fmt.Printf("Try apply rule aux on : %v and %v\n", s.ToString(), t.ToString())
 	res := []ruleStruct{}
 	// ici j'ai s et t
 	// je récupe la liste de l', l
 	subterms_of_s := s.GetSubTerms()
+	fmt.Printf("len subterms found : %v\n", len(subterms_of_s))
+	fmt.Printf("EP eq list : %v\n", ep.GetE().ToString())
+
 	list_l_prime_l := searchUnifBewteenListAndEq(subterms_of_s, ep.GetETree())
+	fmt.Printf("len unifiable subterms found : %v\n", len(list_l_prime_l))
 
 	for _, l_prime_l_pair := range list_l_prime_l {
+
+		fmt.Printf("Subterms unifiable found : %v\n", l_prime_l_pair.ToString())
 		// on trouve r en cherchant l dans la liste
-		for _, r := range ep.GetEMap()[l_prime_l_pair.GetT2()] {
+		for _, r := range ep.GetEMap()[l_prime_l_pair.GetT2().ToString()] {
 			res = append(res, MakeRuleStruct(RIGHT, l_prime_l_pair.GetT2(), r.Copy(), l_prime_l_pair.GetT1(), s.Copy(), t.Copy()))
 		}
 	}
@@ -291,12 +318,18 @@ func searchUnifBewteenListAndEq(tl []basictypes.Term, tree datastruct.DataStruct
 	term_pair_list := []TermPair{}
 	for _, t_prime := range tl {
 		// If the subterm is not a variable
+		fmt.Printf("------------------------------------------\n")
+		fmt.Printf("Current subterm : %v\n", t_prime.ToString())
 		if !t_prime.IsMeta() {
+			fmt.Printf("Not a meta !\n")
 			res, tl := checkUnifInTree(t_prime, tree)
 			if res {
+				fmt.Printf("Unification found !\n")
 				for _, t := range tl {
 					term_pair_list = append(term_pair_list, MakeTermPair(t_prime, t))
 				}
+			} else {
+				fmt.Printf("Unification not found !\n")
 			}
 		}
 	}
@@ -324,7 +357,7 @@ func applyRule(rs ruleStruct, ep EqualityProblem, lpo LPO, parent chan []treetyp
 	case RIGHT:
 		applyRightRule(rs, ep, lpo, parent)
 	default:
-		fmt.Printf("[EQ] Rule type unknown")
+		fmt.Printf("[EQ] Rule type unknown\n")
 	}
 }
 
