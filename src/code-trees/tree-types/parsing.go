@@ -117,7 +117,14 @@ func ParseFormula(formula basictypes.Form) Sequence {
 
 		return instructions
 	case TermForm:
-		return ParseTerm(formula_type.GetTerm())
+		instructions := Sequence{formula: formula}
+		varCount := 0
+		postCount := 0
+		instructions.add(Begin{})
+		parseTerms([]basictypes.Term{formula_type.GetTerm().Copy()}, &instructions, basictypes.MetaList{}, &varCount, &postCount)
+		instructions.add(End{})
+
+		return instructions
 
 	default:
 		return Sequence{}

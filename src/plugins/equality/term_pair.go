@@ -57,7 +57,12 @@ func (tp TermPair) Copy() TermPair {
 	return MakeTermPair(tp.GetT1(), tp.GetT2())
 }
 func (tp TermPair) Equals(tp2 TermPair) bool {
-	return tp.GetT1().Equals(tp2.t1) && tp.GetT2().Equals(tp2.GetT2())
+	return tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())
+}
+func (tp TermPair) EqualsModulo(tp2 TermPair) bool {
+	return (tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())) ||
+		(tp.GetT1().Equals(tp2.GetT2()) && tp.GetT2().Equals(tp2.GetT1()))
+
 }
 func (tp TermPair) ToString() string {
 	return tp.GetT1().ToString() + " ≈ " + tp.GetT2().ToString()

@@ -63,11 +63,9 @@ func RunTests() {
 func LaunchTest(index int, expected []treetypes.MatchingSubstitutions, toMatch, forms basictypes.FormList) {
 	fmt.Printf("Test %v : \n", index)
 
-	global.PrintDebug("Test", "To match :")
-	toMatch.ToString()
+	global.PrintDebug("Test", fmt.Sprintf("To match :%v", toMatch.ToString()))
 
-	global.PrintDebug("Test", "Tree :")
-	forms.ToString()
+	global.PrintDebug("Test", fmt.Sprintf("Tree : %v", forms.ToString()))
 
 	codeTree := makeCodeTree(forms)
 

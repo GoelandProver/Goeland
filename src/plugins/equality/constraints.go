@@ -44,6 +44,7 @@ import (
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
@@ -76,7 +77,7 @@ func (c Constraint) Equals(c2 Constraint) bool {
 func (c Constraint) ToString() string {
 	switch c.GetCType() {
 	case PREC:
-		return c.GetTP().GetT1().ToString() + " ≻ " + c.GetTP().GetT2().ToString()
+		return c.GetTP().GetT1().ToString() + " ≺ " + c.GetTP().GetT2().ToString()
 	case EQ:
 		return c.GetTP().GetT1().ToString() + " ≃ " + c.GetTP().GetT2().ToString()
 	default:
@@ -85,19 +86,22 @@ func (c Constraint) ToString() string {
 	}
 }
 
-/* return true if the constraint is not violated, false totherwise  + the useful part of the constraint */
+/* return true if the constraint is not violated, false otherwise  + true is the contraint is comparable, false otherwise + the useful part of the constraint */
 func (c *Constraint) checkLPO(lpo LPO) (bool, bool) {
 	if c.GetCType() == PREC {
+		global.PrintDebug("CLPO", fmt.Sprintf("Type PREC, cst : %v", c.ToString()))
 		res, is_comparable, new_t1, new_t2 := lpo.Compare(c.GetTP().GetT1(), c.GetTP().GetT2())
+		global.PrintDebug("CLPO", fmt.Sprintf("res : %v, is_comparable : %v", res, is_comparable))
 		if !is_comparable {
+			global.PrintDebug("CLPO", fmt.Sprintf("new_t1 : %v, new_t2 : %v", new_t1.ToString(), new_t2.ToString()))
 			c.SetTP(MakeTermPair(new_t1, new_t2))
-			return true, true
+			return true, false
 		} else {
-			return res > 0, false
+			return res > 0, true
 		}
 	} else {
 		fmt.Printf("Constraint type not valid \n")
-		return false, false
+		return false, true
 	}
 }
 
@@ -106,35 +110,28 @@ func (c *Constraint) checkLPO(lpo LPO) (bool, bool) {
 * create a map metavariable : list_inf, list_sup
 * check intersection is empty
 **/
-func (c Constraint) checkConstraintList(cl ConstraintList) bool {
-	map_constraintes := make(map[basictypes.Meta][][]basictypes.Term)
+func (cl ConstraintList) checkConstraintList() bool {
+	map_constraintes := make(map[string][][]basictypes.Term)
 	for _, c := range cl {
-		if c.GetCType() != PREC {
-			fmt.Printf("Bad constraint type in checkConstraintList")
-			return false
-		}
-
-		if c_t1_type, ok := c.GetTP().GetT1().(basictypes.Meta); ok {
-			// Case meta < fun : add to fisrt list
-			if !appendToMapAndCheck(c_t1_type, c.GetTP().GetT2(), &map_constraintes, 0, 1) {
+		global.PrintDebug("CCL", fmt.Sprintf("Constraint : %v", c.ToString()))
+		if c.GetCType() == PREC {
+			if !appendToMapAndCheck(c.GetTP().GetT1().ToString(), c.GetTP().GetT2(), &map_constraintes, 0, 1) {
 				return false
 			}
-		} else if c_t2_type, ok := c.GetTP().GetT2().(basictypes.Meta); ok {
-			// Case fun < meta : add to second list
-			if !appendToMapAndCheck(c_t2_type, c.GetTP().GetT1(), &map_constraintes, 1, 0) {
+			if !appendToMapAndCheck(c.GetTP().GetT2().ToString(), c.GetTP().GetT1(), &map_constraintes, 1, 0) {
 				return false
 			}
-		} else {
-			fmt.Printf("None of the term is a metavariable")
 		}
 	}
 	return true
 }
 
 /* append to the map and check if the new element is not in the other list */
-func appendToMapAndCheck(m basictypes.Meta, t basictypes.Term, map_constraintes *map[basictypes.Meta][][]basictypes.Term, index_append, index_check int) bool {
+func appendToMapAndCheck(m string, t basictypes.Term, map_constraintes *map[string][][]basictypes.Term, index_append, index_check int) bool {
 	if _, ok := (*map_constraintes)[m]; !ok {
-		(*map_constraintes)[m] = make([][]basictypes.Term, 0)
+		(*map_constraintes)[m] = make([][]basictypes.Term, 2)
+		(*map_constraintes)[m][0] = []basictypes.Term{}
+		(*map_constraintes)[m][1] = []basictypes.Term{}
 	}
 	(*map_constraintes)[m][index_append] = append((*map_constraintes)[m][index_append], t)
 
@@ -204,29 +201,35 @@ func (cl ConstraintList) Contains(c Constraint) bool {
 
 /* Append relevant constraint if its consistant with cl and LPO */
 func (cl *ConstraintList) AppendIfConsistant(c Constraint, lpo LPO) bool {
+	global.PrintDebug("AIF", fmt.Sprintf("CL : %v - c : %v", cl.ToString(), c.ToString()))
 	if !cl.Contains(c) {
-		new_cl := cl.Copy()
 		if is_consistant := cl.isConsistantWith(c, lpo); is_consistant {
-			new_cl = append(new_cl, c)
-			cl = &new_cl
+			global.PrintDebug("AIF", fmt.Sprintf("%v is consistant", c.ToString()))
+			global.PrintDebug("AIF", fmt.Sprintf("CL at the end : %v", cl.ToString()))
 			return true
 		} else {
+			global.PrintDebug("AIF", fmt.Sprintf("%v is not consistant", c.ToString()))
+			global.PrintDebug("AIF", fmt.Sprintf("CL at the end : %v", cl.ToString()))
 			return false
 		}
 	}
+
 	return true
 }
 
 /* Check if a constraint is consistant with LPO and constraint list + update cl */
 func (cl *ConstraintList) isConsistantWith(c Constraint, lpo LPO) bool {
+	global.PrintDebug("ICW", fmt.Sprintf("Constraint : %v", c.ToString()))
 	switch c.GetCType() {
 	case PREC:
 		respect_lpo, is_comparable := c.checkLPO(lpo)
+		global.PrintDebug("ICW", fmt.Sprintf("Is_comparable : %v, respec_lpo : %v", is_comparable, respect_lpo))
 		if is_comparable {
 			return respect_lpo
 		} else {
-			if c.checkConstraintList(*cl) {
-				*cl = append(*cl, c)
+			new_cl := append((*cl).Copy(), c)
+			if new_cl.checkConstraintList() {
+				*cl = new_cl
 				return true
 			} else {
 				return false

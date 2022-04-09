@@ -39,6 +39,7 @@
 package main
 
 import (
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -49,7 +50,7 @@ func (epl EqualityProblemList) ToString() string {
 	res := "{"
 	for i, ep := range epl {
 		res += ep.ToString()
-		if i < len(epl) {
+		if i < len(epl)-1 {
 			res += ", "
 		}
 	}
@@ -66,7 +67,7 @@ func (epl EqualityProblemMultiList) ToString() string {
 	res := "{"
 	for i, ep := range epl {
 		res += ep.ToString()
-		if i < len(epl) {
+		if i < len(epl)-1 {
 			res += ", "
 		}
 	}
@@ -126,8 +127,9 @@ func buildEqualityProblemMultiListFromFormList(fl basictypes.FormList, tn datast
 
 /* Une liste de problèmes d'égalités indépendants */
 func BuildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.DataStructure) EqualityProblemMultiList {
+	global.PrintDebug("BEPML", "Build equality problem multilist")
 	res := MakeEmptyEqualityProblemMultiList()
-	eq := retrieveEqualities(tp)
+	eq := retrieveEqualities(tp.Copy())
 	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tp.Copy()), eq.Copy())...)
 	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.Copy())...)
 	return res

@@ -94,7 +94,7 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 	new_equalities := ep.GetE()
 
 	if len(ep.GetC()) > 0 {
-		fmt.Printf("Error : contraint not null in applySUbstitution")
+		fmt.Printf("Error : contraint not null in applySubstitution")
 	}
 
 	for old_symbol, new_symbol := range s {
@@ -118,8 +118,7 @@ func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
 		form_list = append(form_list, treetypes.MakeTermForm(e.GetT1()))
 		form_list = append(form_list, treetypes.MakeTermForm(e.GetT2()))
 	}
-	fmt.Printf("Form_list len : %v\n", len(form_list))
-	return new(treesearch.Node).MakeDataStruct(form_list, true)
+	return new(treesearch.Node).MakeDataStruct(form_list.Copy(), true)
 }
 
 func makeEQMapFromEqualities(eq Equalities) map[string][]basictypes.Term {

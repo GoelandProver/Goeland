@@ -42,9 +42,11 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -57,8 +59,9 @@ func TestMain(m *testing.M) {
 }
 
 /* Tests equality */
-func TestEQProbleme(t *testing.T) {
-
+func TestEQ1(t *testing.T) {
+	global.SetStart(time.Now())
+	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
 	g_id := basictypes.MakerId("g")
 	a_id := basictypes.MakerId("a")
@@ -78,10 +81,10 @@ func TestEQProbleme(t *testing.T) {
 	lpo.Insert(g_id)
 	lpo.Insert(f_id)
 	lpo.Insert(a_id)
-	fmt.Printf("LPO : %v\n", lpo.ToString())
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.ToString()))
 
 	lf := basictypes.FormList{eq1, eq2, eq3}
-	fmt.Printf("LF : %v\n", lf.ToString())
+	global.PrintDebug("MAIN", fmt.Sprintf("LF : %v\n", lf.ToString()))
 
 	var tp, tn datastruct.DataStructure
 	tp = new(treesearch.Node)
@@ -89,28 +92,118 @@ func TestEQProbleme(t *testing.T) {
 	tp = tp.MakeDataStruct(lf, true)
 	tn = tn.MakeDataStruct(lf, false)
 
-	fmt.Printf("TP : %v\n", tp)
-	if tp.IsEmpty() {
-		fmt.Printf("tp is nil\n")
-	} else {
-		fmt.Printf("tp is not nil\n")
-		tp.Print()
-	}
-	fmt.Printf("TN : %v\n", tn)
-	if tn.IsEmpty() {
-		fmt.Printf("tn is nil\n")
-	} else {
-		fmt.Printf("tn is not nil\n")
-		tn.Print()
-	}
-
 	res, subst := EqualityReasoning(tp, tn, lf, lpo)
-	fmt.Printf("Res : %v\n", res)
-	fmt.Printf("Subst : %v\n", treetypes.SubstListToString(subst))
+	global.PrintDebug("MAIN", fmt.Sprintf("RES : %v", res))
+	global.PrintDebug("MAIN", fmt.Sprintf("SUBST : %v", treetypes.SubstListToString(subst)))
+}
+
+func TestEQ2(t *testing.T) {
+	global.SetStart(time.Now())
+	global.PrintDebug("MAIN", "Start of the problem")
+	f_id := basictypes.MakerId("f")
+	g_id := basictypes.MakerId("g")
+	a_id := basictypes.MakerId("a")
+	b_id := basictypes.MakerId("b")
+	c_id := basictypes.MakerId("c")
+	p_id := basictypes.MakerId("P")
+
+	// a := basictypes.MakerConst(a_id)
+	b := basictypes.MakerConst(b_id)
+	c := basictypes.MakerConst(c_id)
+	x := basictypes.MakerMeta("X", -1)
+	y := basictypes.MakerMeta("Y", -1)
+	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
+	gx := basictypes.MakerFun(g_id, []basictypes.Term{x})
+	// ga := basictypes.MakerFun(g_id, []basictypes.Term{a})
+	// gga := basictypes.MakerFun(g_id, []basictypes.Term{ga})
+	fy := basictypes.MakerFun(f_id, []basictypes.Term{y})
+	gfy := basictypes.MakerFun(g_id, []basictypes.Term{fy})
+
+	b_c := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{b, c})
+	gfy_y := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gfy, y})
+	gx_fx := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gx, fx})
+	pggab := basictypes.MakePred(p_id, []basictypes.Term{b})
+	pac := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{c}))
+
+	lpo := MakeLPO()
+	lpo.Insert(g_id)
+	lpo.Insert(f_id)
+	lpo.Insert(c_id)
+	lpo.Insert(b_id)
+	lpo.Insert(a_id)
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.ToString()))
+
+	lf_b1 := basictypes.FormList{b_c, gx_fx, pggab, pac, gfy_y}
+
+	global.PrintDebug("MAIN", fmt.Sprintf("B1_ LF : %v\n", lf_b1.ToString()))
+
+	var tp, tn datastruct.DataStructure
+	tp = new(treesearch.Node)
+	tn = new(treesearch.Node)
+	tp = tp.MakeDataStruct(lf_b1, true)
+	tn = tn.MakeDataStruct(lf_b1, false)
+
+	res, subst := EqualityReasoning(tp, tn, lf_b1, lpo)
+
+	global.PrintDebug("MAIN", fmt.Sprintf("RES B1: %v", res))
+	global.PrintDebug("MAIN", fmt.Sprintf("SUBST B1: %v", treetypes.SubstListToString(subst)))
+
+}
+
+func TestEQB2(t *testing.T) {
+	global.SetStart(time.Now())
+	global.PrintDebug("MAIN", "Start of the problem")
+	f_id := basictypes.MakerId("f")
+	g_id := basictypes.MakerId("g")
+	a_id := basictypes.MakerId("a")
+	b_id := basictypes.MakerId("b")
+	c_id := basictypes.MakerId("c")
+	p_id := basictypes.MakerId("P")
+
+	a := basictypes.MakerConst(a_id)
+	b := basictypes.MakerConst(b_id)
+	c := basictypes.MakerConst(c_id)
+	x := basictypes.MakerMeta("X", -1)
+	y := basictypes.MakerMeta("Y", -1)
+	ga := basictypes.MakerFun(g_id, []basictypes.Term{a})
+	gga := basictypes.MakerFun(g_id, []basictypes.Term{ga})
+	fy := basictypes.MakerFun(f_id, []basictypes.Term{y})
+	gfy := basictypes.MakerFun(g_id, []basictypes.Term{fy})
+
+	b_c := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{b, c})
+	gfy_y := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gfy, y})
+	x_a := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{x, a})
+	pggab := basictypes.MakePred(p_id, []basictypes.Term{gga, b})
+	pac := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{a, c}))
+
+	lpo := MakeLPO()
+	lpo.Insert(g_id)
+	lpo.Insert(f_id)
+	lpo.Insert(c_id)
+	lpo.Insert(b_id)
+	lpo.Insert(a_id)
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.ToString()))
+
+	lf_b2 := basictypes.FormList{b_c, pggab, pac, gfy_y, x_a}
+
+	global.PrintDebug("MAIN", fmt.Sprintf("B2_ LF : %v\n", lf_b2.ToString()))
+
+	var tp, tn datastruct.DataStructure
+	tp = new(treesearch.Node)
+	tn = new(treesearch.Node)
+	tp = tp.MakeDataStruct(lf_b2, true)
+	tn = tn.MakeDataStruct(lf_b2, false)
+
+	res, subst := EqualityReasoning(tp, tn, lf_b2, lpo)
+
+	global.PrintDebug("MAIN", fmt.Sprintf("RES B2: %v", res))
+	global.PrintDebug("MAIN", fmt.Sprintf("SUBST B2: %v", treetypes.SubstListToString(subst)))
+
 }
 
 /* Tests LPO */
 func TestCreateLPO(t *testing.T) {
+	global.SetStart(time.Now())
 	f_id := basictypes.MakerId("f")
 	g_id := basictypes.MakerId("g")
 	a_id := basictypes.MakerId("a")
@@ -124,3 +217,93 @@ func TestCreateLPO(t *testing.T) {
 }
 
 /* Tets constraintes */
+func TestConstaintes(t *testing.T) {
+	global.SetStart(time.Now())
+	global.PrintDebug("MAIN", "Start of the problem")
+	f_id := basictypes.MakerId("f")
+	x := basictypes.MakerMeta("X", -1)
+	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
+	ffx := basictypes.MakerFun(f_id, []basictypes.Term{fx})
+
+	tp := MakeTermPair(ffx, x)
+	c := MakeConstraint(PREC, tp)
+	cl := MakeEmptyConstaintsList()
+
+	lpo := MakeLPO()
+	lpo.Insert(f_id)
+
+	cl.AppendIfConsistant(c, lpo)
+	fmt.Printf("CL : %v\n", cl.ToString())
+}
+
+func TestConstaintes2(t *testing.T) {
+	global.SetStart(time.Now())
+	global.PrintDebug("MAIN", "Start of the problem")
+	f_id := basictypes.MakerId("f")
+	x := basictypes.MakerMeta("X", -1)
+	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
+	ffx := basictypes.MakerFun(f_id, []basictypes.Term{fx})
+
+	tp := MakeTermPair(x, ffx)
+	c := MakeConstraint(PREC, tp)
+	cl := MakeEmptyConstaintsList()
+
+	lpo := MakeLPO()
+	lpo.Insert(f_id)
+
+	cl.AppendIfConsistant(c, lpo)
+	fmt.Printf("CL : %v\n", cl.ToString())
+}
+
+func TestConstaintes3(t *testing.T) {
+	global.SetStart(time.Now())
+	global.PrintDebug("MAIN", "Start of the problem")
+	f_id := basictypes.MakerId("f")
+	x := basictypes.MakerMeta("X", -1)
+	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
+	a_id := basictypes.MakerId("a")
+	a := basictypes.MakerConst(a_id)
+
+	tp := MakeTermPair(fx, a)
+	c := MakeConstraint(PREC, tp)
+	cl := MakeEmptyConstaintsList()
+
+	lpo := MakeLPO()
+	lpo.Insert(f_id)
+	lpo.Insert(a_id)
+
+	cl.AppendIfConsistant(c, lpo)
+	fmt.Printf("CL : %v\n", cl.ToString())
+}
+
+func TestConstaintes4(t *testing.T) {
+	global.SetStart(time.Now())
+	global.PrintDebug("MAIN", "Start of the problem")
+	f_id := basictypes.MakerId("f")
+	x := basictypes.MakerMeta("X", -1)
+	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
+	// ffx := basictypes.MakerFun(f_id, []basictypes.Term{fx})
+	a_id := basictypes.MakerId("a")
+	a := basictypes.MakerConst(a_id)
+
+	tp := MakeTermPair(fx, a)
+	c := MakeConstraint(PREC, tp)
+	cl := MakeEmptyConstaintsList()
+
+	lpo := MakeLPO()
+	lpo.Insert(f_id)
+	lpo.Insert(a_id)
+
+	cl.AppendIfConsistant(c, lpo)
+	fmt.Printf("CL : %v\n", cl.ToString())
+
+	tp2 := MakeTermPair(a, fx)
+	c2 := MakeConstraint(PREC, tp2)
+
+	cl.AppendIfConsistant(c2, lpo)
+	fmt.Printf("CL : %v\n", cl.ToString())
+
+	/*
+	* On accepte les cas comme f(f(x)) < a et a < f(x)
+	 */
+}
