@@ -77,11 +77,11 @@ func TestEQ1(t *testing.T) {
 	eq2 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{ggx, fa})
 	eq3 := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{gggx, x})
 
-	lpo := MakeLPO()
-	lpo.Insert(g_id)
-	lpo.Insert(f_id)
-	lpo.Insert(a_id)
-	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.ToString()))
+	lpo := makeLPO()
+	lpo.insert(g_id)
+	lpo.insert(f_id)
+	lpo.insert(a_id)
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
 
 	lf := basictypes.FormList{eq1, eq2, eq3}
 	global.PrintDebug("MAIN", fmt.Sprintf("LF : %v\n", lf.ToString()))
@@ -92,7 +92,7 @@ func TestEQ1(t *testing.T) {
 	tp = tp.MakeDataStruct(lf, true)
 	tn = tn.MakeDataStruct(lf, false)
 
-	res, subst := EqualityReasoning(tp, tn, lf, lpo)
+	res, subst := EqualityReasoning(tp, tn, lf)
 	global.PrintDebug("MAIN", fmt.Sprintf("RES : %v", res))
 	global.PrintDebug("MAIN", fmt.Sprintf("SUBST : %v", treetypes.SubstListToString(subst)))
 }
@@ -125,13 +125,13 @@ func TestEQ2(t *testing.T) {
 	pggab := basictypes.MakePred(p_id, []basictypes.Term{b})
 	pac := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{c}))
 
-	lpo := MakeLPO()
-	lpo.Insert(g_id)
-	lpo.Insert(f_id)
-	lpo.Insert(c_id)
-	lpo.Insert(b_id)
-	lpo.Insert(a_id)
-	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.ToString()))
+	lpo := makeLPO()
+	lpo.insert(g_id)
+	lpo.insert(f_id)
+	lpo.insert(c_id)
+	lpo.insert(b_id)
+	lpo.insert(a_id)
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
 
 	lf_b1 := basictypes.FormList{b_c, gx_fx, pggab, pac, gfy_y}
 
@@ -143,7 +143,7 @@ func TestEQ2(t *testing.T) {
 	tp = tp.MakeDataStruct(lf_b1, true)
 	tn = tn.MakeDataStruct(lf_b1, false)
 
-	res, subst := EqualityReasoning(tp, tn, lf_b1, lpo)
+	res, subst := EqualityReasoning(tp, tn, lf_b1)
 
 	global.PrintDebug("MAIN", fmt.Sprintf("RES B1: %v", res))
 	global.PrintDebug("MAIN", fmt.Sprintf("SUBST B1: %v", treetypes.SubstListToString(subst)))
@@ -176,13 +176,13 @@ func TestEQB2(t *testing.T) {
 	pggab := basictypes.MakePred(p_id, []basictypes.Term{gga, b})
 	pac := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{a, c}))
 
-	lpo := MakeLPO()
-	lpo.Insert(g_id)
-	lpo.Insert(f_id)
-	lpo.Insert(c_id)
-	lpo.Insert(b_id)
-	lpo.Insert(a_id)
-	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.ToString()))
+	lpo := makeLPO()
+	lpo.insert(g_id)
+	lpo.insert(f_id)
+	lpo.insert(c_id)
+	lpo.insert(b_id)
+	lpo.insert(a_id)
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
 
 	lf_b2 := basictypes.FormList{b_c, pggab, pac, gfy_y, x_a}
 
@@ -194,7 +194,7 @@ func TestEQB2(t *testing.T) {
 	tp = tp.MakeDataStruct(lf_b2, true)
 	tn = tn.MakeDataStruct(lf_b2, false)
 
-	res, subst := EqualityReasoning(tp, tn, lf_b2, lpo)
+	res, subst := EqualityReasoning(tp, tn, lf_b2)
 
 	global.PrintDebug("MAIN", fmt.Sprintf("RES B2: %v", res))
 	global.PrintDebug("MAIN", fmt.Sprintf("SUBST B2: %v", treetypes.SubstListToString(subst)))
@@ -208,12 +208,12 @@ func TestCreateLPO(t *testing.T) {
 	g_id := basictypes.MakerId("g")
 	a_id := basictypes.MakerId("a")
 
-	lpo := MakeLPO()
-	lpo.Insert(g_id)
-	lpo.Insert(f_id)
-	lpo.Insert(a_id)
+	lpo := makeLPO()
+	lpo.insert(g_id)
+	lpo.insert(f_id)
+	lpo.insert(a_id)
 
-	fmt.Printf("%v\n", lpo.ToString())
+	fmt.Printf("%v\n", lpo.toString())
 }
 
 /* Tets constraintes */
@@ -229,10 +229,10 @@ func TestConstaintes(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	lpo := MakeLPO()
-	lpo.Insert(f_id)
+	lpo := makeLPO()
+	lpo.insert(f_id)
 
-	cl.AppendIfConsistant(c, lpo)
+	cl.AppendIfConsistant(c)
 	fmt.Printf("CL : %v\n", cl.ToString())
 }
 
@@ -248,10 +248,10 @@ func TestConstaintes2(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	lpo := MakeLPO()
-	lpo.Insert(f_id)
+	lpo := makeLPO()
+	lpo.insert(f_id)
 
-	cl.AppendIfConsistant(c, lpo)
+	cl.AppendIfConsistant(c)
 	fmt.Printf("CL : %v\n", cl.ToString())
 }
 
@@ -268,11 +268,11 @@ func TestConstaintes3(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	lpo := MakeLPO()
-	lpo.Insert(f_id)
-	lpo.Insert(a_id)
+	lpo := makeLPO()
+	lpo.insert(f_id)
+	lpo.insert(a_id)
 
-	cl.AppendIfConsistant(c, lpo)
+	cl.AppendIfConsistant(c)
 	fmt.Printf("CL : %v\n", cl.ToString())
 }
 
@@ -290,17 +290,17 @@ func TestConstaintes4(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	lpo := MakeLPO()
-	lpo.Insert(f_id)
-	lpo.Insert(a_id)
+	lpo := makeLPO()
+	lpo.insert(f_id)
+	lpo.insert(a_id)
 
-	cl.AppendIfConsistant(c, lpo)
+	cl.AppendIfConsistant(c)
 	fmt.Printf("CL : %v\n", cl.ToString())
 
 	tp2 := MakeTermPair(a, fx)
 	c2 := MakeConstraint(PREC, tp2)
 
-	cl.AppendIfConsistant(c2, lpo)
+	cl.AppendIfConsistant(c2)
 	fmt.Printf("CL : %v\n", cl.ToString())
 
 	/*

@@ -275,6 +275,7 @@ func initialization() {
 	if *flag_dmt {
 		dmt.InitPlugin()
 	}
+	// global.SetPlugin("equality", true)
 }
 
 /* Init flag */

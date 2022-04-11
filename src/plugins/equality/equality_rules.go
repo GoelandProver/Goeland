@@ -49,18 +49,6 @@ import (
 )
 
 /**
-* Fonction EqualityReasoning
-* Prend atomics
-* créé problème
-* réturn bool et substitution
-* prend lpo
-**/
-func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList, lpo LPO) (bool, []treetypes.Substitutions) {
-	global.PrintDebug("ER", "ER call")
-	return equalityReasoningMultiList(BuildEqualityProblemMultiList(atomic, tree_pos, tree_neg), lpo)
-}
-
-/**
 * EqualityReasoningMultiList
 * Data : a whole equality problem (EqualityProblemMultiList)
 * Result : true if at least on of the list return a solution, and the corresponding substitutions
@@ -69,14 +57,14 @@ func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basic
 * On parallèlise ?
 * On s'arrête au premier trouvé ?
 **/
-func equalityReasoningMultiList(epml EqualityProblemMultiList, lpo LPO) (bool, []treetypes.Substitutions) {
+func equalityReasoningMultiList(epml EqualityProblemMultiList) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning multilist : %v", len(epml)))
 	substs_res := []treetypes.Substitutions{}
 	found := false
 
 	for _, epl := range epml {
 		global.PrintDebug("ERML", fmt.Sprintf("iteration on EPL : %v", epl.ToString()))
-		if has_solution, subst_res_tmp := equalityReasoningList(epl, lpo); has_solution {
+		if has_solution, subst_res_tmp := equalityReasoningList(epl); has_solution {
 			global.PrintDebug("ERML", "Solution found for one EPL !")
 			found = true
 			for subst_res_tmp_element := range subst_res_tmp {
@@ -94,7 +82,7 @@ func equalityReasoningMultiList(epml EqualityProblemMultiList, lpo LPO) (bool, [
 * Result : true if all of the problem in the list agrees on at least one substitution, and the corresponding substitutions
 **/
 // TODO : faire waitFather ? Parallèliser ? s'arrêter à la première trouvée ?
-func equalityReasoningList(epl EqualityProblemList, lpo LPO) (bool, []treetypes.Substitutions) {
+func equalityReasoningList(epl EqualityProblemList) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning list : %v", epl.ToString()))
 
 	substs_res := []treetypes.Substitutions{}
@@ -102,7 +90,7 @@ func equalityReasoningList(epl EqualityProblemList, lpo LPO) (bool, []treetypes.
 
 	for _, ep := range epl {
 		global.PrintDebug("ERL", fmt.Sprintf("Iteration on EP : %v", ep.ToString()))
-		if has_solution, subst_res_tmp := equalityReasoningProblemWithApplySubst(ep, substs_res, lpo); has_solution {
+		if has_solution, subst_res_tmp := equalityReasoningProblemWithApplySubst(ep, substs_res); has_solution {
 			global.PrintDebug("ERL", "Solution found for on EP !")
 			substs_res = append(substs_res, subst_res_tmp...)
 		} else {
@@ -116,7 +104,7 @@ func equalityReasoningList(epl EqualityProblemList, lpo LPO) (bool, []treetypes.
 * equalityReasoningWithApplySubst
 * return true if at least on subst on the subst list returns result, and the corresponding substitution list
 **/
-func equalityReasoningProblemWithApplySubst(ep EqualityProblem, sl []treetypes.Substitutions, lpo LPO) (bool, []treetypes.Substitutions) {
+func equalityReasoningProblemWithApplySubst(ep EqualityProblem, sl []treetypes.Substitutions) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ERPWAS", "Start on equality reasoning  problem with apply subst")
 	substs_res := []treetypes.Substitutions{}
 	found := false
@@ -125,7 +113,7 @@ func equalityReasoningProblemWithApplySubst(ep EqualityProblem, sl []treetypes.S
 	if len(sl) == 0 {
 		global.PrintDebug("ERPWAS", "No subst ! - Launch goroutine ")
 		global.PrintDebug("ERPWAS", "Go !")
-		go equalityReasoningProblem(ep.Copy(), lpo, children_chan, global.GetGID())
+		go equalityReasoningProblem(ep.Copy(), children_chan, global.GetGID())
 		subst_res_chan := <-children_chan
 		if len(subst_res_chan) > 0 {
 			found = true
@@ -135,7 +123,7 @@ func equalityReasoningProblemWithApplySubst(ep EqualityProblem, sl []treetypes.S
 		global.PrintDebug("ERPWAS", "Subst ! - lauche goroutine ")
 		for _, s := range sl {
 			global.PrintDebug("ERPWAS", "Go !")
-			go equalityReasoningProblem(ep.applySubstitution(s), lpo, children_chan, global.GetGID())
+			go equalityReasoningProblem(ep.applySubstitution(s), children_chan, global.GetGID())
 			subst_res_chan := <-children_chan
 			if len(subst_res_chan) > 0 {
 				found = true
@@ -158,14 +146,14 @@ func equalityReasoningProblemWithApplySubst(ep EqualityProblem, sl []treetypes.S
 }
 
 // Brancher pour règles
-func equalityReasoningProblem(ep EqualityProblem, lpo LPO, parent chan []treetypes.Substitutions, father_id uint64) {
+func equalityReasoningProblem(ep EqualityProblem, parent chan []treetypes.Substitutions, father_id uint64) {
 	global.PrintDebug("ERP", fmt.Sprintf("Child of %v", father_id))
 	global.PrintDebug("ERP", fmt.Sprintf("EP : %v", ep.ToString()))
 	substs_res := []treetypes.Substitutions{}
 
 	if ok, subst_found := checkUnif(ep.GetS(), ep.GetT()); ok {
 		global.PrintDebug("ERP", "Unif found !")
-		is_consistant, new_subst := ep.GetC().isConsistant(lpo, subst_found)
+		is_consistant, new_subst := ep.GetC().isConsistant(subst_found)
 		if is_consistant {
 			global.PrintDebug("ERP", fmt.Sprintf("Unif found and consistant : %v", subst_found.ToString()))
 			substs_res = append(substs_res, new_subst)
@@ -191,7 +179,7 @@ func equalityReasoningProblem(ep EqualityProblem, lpo LPO, parent chan []treetyp
 	for _, r := range rules_available {
 		global.PrintDebug("ERP", "Go !")
 		chan_rule := make(chan []treetypes.Substitutions)
-		go applyRule(r, ep, lpo, chan_rule, global.GetGID())
+		go applyRule(r, ep, chan_rule, global.GetGID())
 		tab_chan = append(tab_chan, chan_rule)
 	}
 
@@ -350,24 +338,24 @@ func checkUnifInTree(t basictypes.Term, tree datastruct.DataStructure) (bool, []
 }
 
 /*** Functions apply rules ***/
-func applyRule(rs ruleStruct, ep EqualityProblem, lpo LPO, parent chan []treetypes.Substitutions, father_id uint64) {
+func applyRule(rs ruleStruct, ep EqualityProblem, parent chan []treetypes.Substitutions, father_id uint64) {
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Child of %v", father_id))
 	global.PrintDebug("EQ-AR", fmt.Sprintf("EQ before applying rule %v", ep.ToString()))
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Apply rule %v", rs.ToString()))
 	switch rs.getRule() {
 	case LEFT:
-		applyLeftRule(rs, ep, lpo, parent, father_id)
+		applyLeftRule(rs, ep, parent, father_id)
 	case RIGHT:
-		applyRightRule(rs, ep, lpo, parent, father_id)
+		applyRightRule(rs, ep, parent, father_id)
 	default:
 		global.PrintDebug("AR", "[EQ] Rule type unknown")
 	}
 }
 
-func applyLeftRule(rs ruleStruct, ep EqualityProblem, lpo LPO, parent chan []treetypes.Substitutions, father_id uint64) {
+func applyLeftRule(rs ruleStruct, ep EqualityProblem, parent chan []treetypes.Substitutions, father_id uint64) {
 	global.PrintDebug("ALR", "Apply left rule")
 
-	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), lpo, ep.GetC())
+	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.GetC())
 
 	if is_consistant_with_lpo {
 		global.PrintDebug("ALR", fmt.Sprintf("New term : %v", new_term.ToString()))
@@ -378,7 +366,7 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, lpo LPO, parent chan []tre
 			new_eq_list[rs.getIndexEQList()] = MakeTermPair(rs.getS(), new_term.Copy())
 		}
 		global.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.ToString()))
-		equalityReasoningProblem(MakeEqualityProblem(new_eq_list, ep.GetS(), ep.GetT(), new_cl), lpo, parent, father_id)
+		equalityReasoningProblem(MakeEqualityProblem(new_eq_list, ep.GetS(), ep.GetT(), new_cl), parent, father_id)
 	} else {
 		global.PrintDebug("ALR", "Not consistant with LPO")
 		parent <- nil
@@ -386,17 +374,17 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, lpo LPO, parent chan []tre
 	global.PrintDebug("ALR", "Die")
 }
 
-func applyRightRule(rs ruleStruct, ep EqualityProblem, lpo LPO, parent chan []treetypes.Substitutions, father_id uint64) {
+func applyRightRule(rs ruleStruct, ep EqualityProblem, parent chan []treetypes.Substitutions, father_id uint64) {
 	global.PrintDebug("ARR", "Apply right rule")
 
-	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), lpo, ep.GetC())
+	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.GetC())
 
 	if is_consistant_with_lpo {
 		global.PrintDebug("ARR", fmt.Sprintf("New term : %v", new_term.ToString()))
 		if rs.getIsSModified() {
-			equalityReasoningProblem(MakeEqualityProblem(ep.Copy().GetE(), new_term.Copy(), rs.getT(), new_cl), lpo, parent, father_id)
+			equalityReasoningProblem(MakeEqualityProblem(ep.Copy().GetE(), new_term.Copy(), rs.getT(), new_cl), parent, father_id)
 		} else {
-			equalityReasoningProblem(MakeEqualityProblem(ep.Copy().GetE(), rs.getS(), new_term.Copy(), new_cl), lpo, parent, father_id)
+			equalityReasoningProblem(MakeEqualityProblem(ep.Copy().GetE(), rs.getS(), new_term.Copy(), new_cl), parent, father_id)
 		}
 	} else {
 		global.PrintDebug("ARR", "Not consistant with LPO")
@@ -413,19 +401,19 @@ func applyRightRule(rs ruleStruct, ep EqualityProblem, lpo LPO, parent chan []tr
 * sub_term_of s is a subterm of s unifible with l
 **/
 // reconstruire le problème à chaque fois, le code trees, etc
-func applyEQRule(l, r, sub_term_of_s, s, t basictypes.Term, lpo LPO, cl ConstraintList) (bool, basictypes.Term, ConstraintList) {
+func applyEQRule(l, r, sub_term_of_s, s, t basictypes.Term, cl ConstraintList) (bool, basictypes.Term, ConstraintList) {
 	global.PrintDebug("AEQR", "Apply eq rule")
 	global.PrintDebug("AEQR", fmt.Sprintf("Replace %v by %v in %v", sub_term_of_s.ToString(), r.ToString(), s.ToString()))
 	new_s := s.Copy().ReplaceSubTermBy(sub_term_of_s, r)
 	global.PrintDebug("AEQR", fmt.Sprintf("s = %v, new_s = %v", s.ToString(), new_s.ToString()))
 	constraints_list := cl.Copy()
-	if !constraints_list.AppendIfConsistant(MakeConstraint(PREC, MakeTermPair(r, l)), lpo) {
+	if !constraints_list.AppendIfConsistant(MakeConstraint(PREC, MakeTermPair(r, l))) {
 		return false, nil, nil
 	}
-	if !constraints_list.AppendIfConsistant(MakeConstraint(PREC, MakeTermPair(t, s)), lpo) {
+	if !constraints_list.AppendIfConsistant(MakeConstraint(PREC, MakeTermPair(t, s))) {
 		return false, nil, nil
 	}
-	if !constraints_list.AppendIfConsistant(MakeConstraint(EQ, MakeTermPair(l, sub_term_of_s)), lpo) {
+	if !constraints_list.AppendIfConsistant(MakeConstraint(EQ, MakeTermPair(l, sub_term_of_s))) {
 		return false, nil, nil
 	}
 	return true, new_s, constraints_list

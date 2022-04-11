@@ -29,47 +29,43 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/****************/
-/* equalitys.go */
-/****************/
+/***********/
+/* init.go */
+/***********/
 /**
-* This file implements the main logic behind the equality plugin.
+* This file contains the initialization functions of the plugin.
 **/
 
 package main
 
 import (
-	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/global"
+	"fmt"
+
 	"github.com/GoelandProver/Goeland/plugin"
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
-	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
 /**
- * Base function needed to initialize any plugin of Goéland.
- * It registers the hooks to the plugin manager, and parses the given options.
+ * Registers all the hooks of this plugin in the PluginManager.
+ * In particular, two hooks are activated by this plugin :
+ *		- SendAxiomHook, to take axioms and make it a rewrite rule
+ *		- RewriteHook, to rewrite an atom.
  **/
-func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode bool) error {
-	registerHooks(pm)
-	initPluginGlobalVariables()
-	parsePluginOptions(options)
+func registerHooks(pm *plugin.PluginManager) {
+	pm.RegisterEqualityHook(EqualityReasoning)
+	pm.RegisterSendIDTOLPOHook(lpo.insertIfNotContains)
+}
 
-	// No error can be thrown in this plugin.
-	return nil
+func initPluginGlobalVariables() {
+	lpo = makeLPO()
 }
 
 /**
-* Fonction EqualityReasoning
-* Prend atomics
-* créé problème
-* réturn bool et substitution
-**/
-func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList) (bool, []treetypes.Substitutions) {
-	global.PrintDebug("ER", "ER call")
-	return equalityReasoningMultiList(BuildEqualityProblemMultiList(atomic, tree_pos, tree_neg))
-}
-
-func InsertLPO(id basictypes.Id) {
-	lpo.insertIfNotContains(id)
+ * Parses options given to the plugin by the prover.
+ * It also displays what's been activated.
+ **/
+func parsePluginOptions(options []plugin.Option) {
+	// Display what's been activated.
+	output := "[EQ] Equality loaded \n"
+	output += "\n"
+	fmt.Print(output)
 }

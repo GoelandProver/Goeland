@@ -50,6 +50,7 @@ import (
 type LPO map[basictypes.Id]int
 
 var lock_lpo sync.Mutex
+var lpo LPO
 
 func (lpo LPO) Get(t basictypes.Id) int {
 	res, found := lpo[t]
@@ -61,19 +62,19 @@ func (lpo LPO) Get(t basictypes.Id) int {
 	}
 }
 
-func (lpo *LPO) Insert(t basictypes.Id) {
+func (lpo *LPO) insert(t basictypes.Id) {
 	lock_lpo.Lock()
 	(*lpo)[t] = len(*lpo)
 	lock_lpo.Unlock()
 }
 
-func (lpo LPO) Contains(t basictypes.Id) bool {
+func (lpo LPO) contains(t basictypes.Id) bool {
 	return lpo.Get(t) != -1
 }
 
-func (lpo *LPO) InsertIfNotContains(t basictypes.Id) {
-	if lpo.Contains(t) {
-		lpo.Insert(t)
+func (lpo *LPO) insertIfNotContains(t basictypes.Id) {
+	if lpo.contains(t) {
+		lpo.insert(t)
 	}
 }
 
@@ -84,7 +85,7 @@ func (lpo *LPO) InsertIfNotContains(t basictypes.Id) {
 *	a boolean : true if the two term are comparable, false otherwise
 *	two terms : the new terms for the constraint (if not comparable)
 **/
-func (lpo LPO) Compare(s, t basictypes.Term) (int, bool, basictypes.Term, basictypes.Term) {
+func (lpo LPO) compare(s, t basictypes.Term) (int, bool, basictypes.Term, basictypes.Term) {
 	global.PrintDebug("C", fmt.Sprintf("Compare %v and %v", s.ToString(), t.ToString()))
 	switch s_type := s.(type) {
 	case basictypes.Fun:
@@ -126,9 +127,9 @@ func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LP
 		is_comparable := false
 		switch return_code {
 		case 1:
-			res, is_comparable, _, _ = lpo.Compare(m, f.GetArgs()[i])
+			res, is_comparable, _, _ = lpo.compare(m, f.GetArgs()[i])
 		case -1:
-			res, is_comparable, _, _ = lpo.Compare(f.GetArgs()[i], m)
+			res, is_comparable, _, _ = lpo.compare(f.GetArgs()[i], m)
 		default:
 			fmt.Printf("Unexpected return_code in compare\n")
 		}
@@ -173,7 +174,7 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, ba
 			i := 0
 			stopped := false
 			for i < len(s.GetArgs()) && !stopped {
-				res, is_comparable, _, _ := lpo.Compare(s.GetArgs()[i], t)
+				res, is_comparable, _, _ := lpo.compare(s.GetArgs()[i], t)
 				if !is_comparable {
 					return 0, false, s, t
 				}
@@ -200,7 +201,7 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, ba
 		val_res := 0
 		// First loop : while euqals
 		for i < n && !stopped {
-			res, is_comparable, t1, t2 := lpo.Compare(s.GetArgs()[i], t.GetArgs()[i])
+			res, is_comparable, t1, t2 := lpo.compare(s.GetArgs()[i], t.GetArgs()[i])
 			if !is_comparable {
 				return 0, false, t1, t2
 			}
@@ -218,7 +219,7 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, ba
 		// Check and second loop : while <= 0
 		if val_res > 0 {
 			for i < n && !stopped {
-				res, is_comparable, _, _ := lpo.Compare(s.GetArgs()[i], t.GetArgs()[i])
+				res, is_comparable, _, _ := lpo.compare(s.GetArgs()[i], t.GetArgs()[i])
 				if !is_comparable {
 					return 0, false, s, t
 				}
@@ -238,7 +239,7 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, ba
 	i := 0
 	stopped := false
 	for i < m && !stopped {
-		res, is_comparable, _, _ := lpo.Compare(s, t.GetArgs()[i])
+		res, is_comparable, _, _ := lpo.compare(s, t.GetArgs()[i])
 		if !is_comparable {
 			return 0, false, s, t
 		}
@@ -255,12 +256,12 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, ba
 }
 
 /* Is empty */
-func (lpo LPO) IsEmpty() bool {
+func (lpo LPO) isEmpty() bool {
 	return (lpo == nil || len(lpo) == 0)
 }
 
 /* ToString */
-func (lpo LPO) ToString() string {
+func (lpo LPO) toString() string {
 	res := "{"
 	cpt := 0
 	for term, value := range lpo {
@@ -273,18 +274,7 @@ func (lpo LPO) ToString() string {
 	return res + "}"
 }
 
-/* Copy an LPO */
-func (lpo LPO) Copy() LPO {
-	res := LPO{}
-	lock_lpo.Lock()
-	for id, value := range lpo {
-		res[id.Copy().(basictypes.Id)] = value
-	}
-	lock_lpo.Unlock()
-	return res
-}
-
 /* Maker */
-func MakeLPO() LPO {
+func makeLPO() LPO {
 	return LPO{}
 }

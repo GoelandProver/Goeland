@@ -87,10 +87,10 @@ func (c Constraint) ToString() string {
 }
 
 /* return true if the constraint is not violated, false otherwise  + true is the contraint is comparable, false otherwise + the useful part of the constraint */
-func (c *Constraint) checkLPO(lpo LPO) (bool, bool) {
+func (c *Constraint) checkLPO() (bool, bool) {
 	if c.GetCType() == PREC {
 		global.PrintDebug("CLPO", fmt.Sprintf("Type PREC, cst : %v", c.ToString()))
-		res, is_comparable, new_t1, new_t2 := lpo.Compare(c.GetTP().GetT1(), c.GetTP().GetT2())
+		res, is_comparable, new_t1, new_t2 := lpo.compare(c.GetTP().GetT1(), c.GetTP().GetT2())
 		global.PrintDebug("CLPO", fmt.Sprintf("res : %v, is_comparable : %v", res, is_comparable))
 		if !is_comparable {
 			global.PrintDebug("CLPO", fmt.Sprintf("new_t1 : %v, new_t2 : %v", new_t1.ToString(), new_t2.ToString()))
@@ -200,10 +200,10 @@ func (cl ConstraintList) Contains(c Constraint) bool {
 }
 
 /* Append relevant constraint if its consistant with cl and LPO */
-func (cl *ConstraintList) AppendIfConsistant(c Constraint, lpo LPO) bool {
+func (cl *ConstraintList) AppendIfConsistant(c Constraint) bool {
 	global.PrintDebug("AIF", fmt.Sprintf("CL : %v - c : %v", cl.ToString(), c.ToString()))
 	if !cl.Contains(c) {
-		if is_consistant := cl.isConsistantWith(c, lpo); is_consistant {
+		if is_consistant := cl.isConsistantWith(c); is_consistant {
 			global.PrintDebug("AIF", fmt.Sprintf("%v is consistant", c.ToString()))
 			global.PrintDebug("AIF", fmt.Sprintf("CL at the end : %v", cl.ToString()))
 			return true
@@ -218,11 +218,11 @@ func (cl *ConstraintList) AppendIfConsistant(c Constraint, lpo LPO) bool {
 }
 
 /* Check if a constraint is consistant with LPO and constraint list + update cl */
-func (cl *ConstraintList) isConsistantWith(c Constraint, lpo LPO) bool {
+func (cl *ConstraintList) isConsistantWith(c Constraint) bool {
 	global.PrintDebug("ICW", fmt.Sprintf("Constraint : %v", c.ToString()))
 	switch c.GetCType() {
 	case PREC:
-		respect_lpo, is_comparable := c.checkLPO(lpo)
+		respect_lpo, is_comparable := c.checkLPO()
 		global.PrintDebug("ICW", fmt.Sprintf("Is_comparable : %v, respec_lpo : %v", is_comparable, respect_lpo))
 		if is_comparable {
 			return respect_lpo
@@ -251,13 +251,13 @@ func (cl *ConstraintList) isConsistantWith(c Constraint, lpo LPO) bool {
 }
 
 /* Check if a constraint is consistant with LPO and constraint list */
-func (cl ConstraintList) isConsistant(lpo LPO, s treetypes.Substitutions) (bool, treetypes.Substitutions) {
+func (cl ConstraintList) isConsistant(s treetypes.Substitutions) (bool, treetypes.Substitutions) {
 	for _, c_element := range cl {
 		c := c_element.Copy()
 		c.applySubstitution(s)
 		switch c.GetCType() {
 		case PREC:
-			respect_lpo, is_comparable := c.checkLPO(lpo)
+			respect_lpo, is_comparable := c.checkLPO()
 			if is_comparable && !respect_lpo {
 				return false, nil
 			}
