@@ -80,6 +80,7 @@ func applyClosureRules(f basictypes.Form, st *complextypes.State) (bool, []treet
 			sl = treetypes.AppendIfNotContainsSubst(sl, s.GetSubst())
 		}
 	}
+
 	return res, sl
 }
 

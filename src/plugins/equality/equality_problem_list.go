@@ -39,7 +39,6 @@
 package main
 
 import (
-	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -125,12 +124,12 @@ func buildEqualityProblemMultiListFromFormList(fl basictypes.FormList, tn datast
 	return res
 }
 
-/* Une liste de problèmes d'égalités indépendants */
-func BuildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.DataStructure) EqualityProblemMultiList {
-	global.PrintDebug("BEPML", "Build equality problem multilist")
+/* Une liste de problèmes d'égalités indépendants + a boolean, true if there is equality in the fomrula list, false otherwise */
+func BuildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.DataStructure) (EqualityProblemMultiList, bool) {
+	// global.PrintDebug("BEPML", "Build equality problem multilist")
 	res := MakeEmptyEqualityProblemMultiList()
 	eq := retrieveEqualities(tp.Copy())
 	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tp.Copy()), eq.Copy())...)
 	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.Copy())...)
-	return res
+	return res, (len(eq) > 0)
 }

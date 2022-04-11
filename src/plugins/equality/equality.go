@@ -67,9 +67,14 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
 **/
 func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ER", "ER call")
-	return equalityReasoningMultiList(BuildEqualityProblemMultiList(atomic, tree_pos, tree_neg))
+	problem, equalities := BuildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
+	if equalities {
+		return equalityReasoningMultiList(problem)
+	} else {
+		return false, []treetypes.Substitutions{}
+	}
 }
 
-func InsertLPO(id basictypes.Id) {
-	lpo.insertIfNotContains(id)
+func InsertLPO(p basictypes.Pred) {
+	lpo.insertPred(p)
 }

@@ -42,6 +42,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugin"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -583,6 +584,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 		// Search for a contradiction in LF
 		new_atomics := basictypes.MakeEmptyFormList()
 		for i, f := range st.GetLF() {
+			plugin.GetPluginManager().ApplySendPredToLPOHook(f.Copy())
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 			clos_res, subst := applyClosureRules(f.Copy(), &st)
 			closed := manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy(), node_id)
@@ -605,6 +607,12 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			} else {
 				st.DispatchForm(f.Copy())
 			}
+		}
+
+		/* Equality */
+		res_eq, subst_eq := plugin.GetPluginManager().ApplyEqualityHook(st.GetTreePos(), st.GetTreeNeg(), st.GetAtomic())
+		if res_eq {
+			manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{}))
 		}
 
 		global.PrintDebug("PS", "Let's apply rules !")

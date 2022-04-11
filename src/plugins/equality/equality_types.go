@@ -42,6 +42,7 @@ import (
 	"fmt"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
@@ -145,22 +146,26 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 	MetaEQ1 := basictypes.MakerMeta("METAEQ1", -1)
 	MetaEQ2 := basictypes.MakerMeta("METAEQ2", -1)
 	eq_pred := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{MetaEQ1, MetaEQ2})
-	found, eq_list := dt.Unify(eq_pred)
-	if found {
-		for _, ms := range eq_list {
-			ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaEQ1, MetaEQ2)
+	global.PrintDebug("RE", fmt.Sprintf("Try to unify with : %v", eq_pred.ToString()))
+	_, eq_list := dt.Unify(eq_pred)
 
-			eq1_term, ok_t1 := ms_ordered[MetaEQ1]
-			if !ok_t1 {
-				fmt.Printf("Meta 1 not found in map\n")
-			}
-			eq2_term, ok_t2 := ms_ordered[MetaEQ2]
-			if !ok_t2 {
-				fmt.Printf("Meta 2 not found in map\n")
-			}
-			res = append(res, MakeTermPair(eq1_term, eq2_term))
+	for _, ms := range eq_list {
+		global.PrintDebug("RE", fmt.Sprintf("eq_list = %v - %v", ms.GetForm().ToString(), ms.GetSubst().ToString()))
+		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaEQ1, MetaEQ2)
+
+		eq1_term, ok_t1 := ms_ordered[MetaEQ1]
+		if !ok_t1 {
+			fmt.Printf("Meta_eq_1 not found in map\n")
+			global.PrintDebug("RI", "Meta_eq_1 not found in map")
 		}
+		eq2_term, ok_t2 := ms_ordered[MetaEQ2]
+		if !ok_t2 {
+			fmt.Printf("Meta_eq_2 not found in map\n")
+			global.PrintDebug("RI", "Meta_eq_2 not found in map")
+		}
+		res = append(res, MakeTermPair(eq1_term, eq2_term))
 	}
+
 	return res
 }
 
@@ -169,24 +174,19 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 	res := Inequalities{}
 	MetaNEQ1 := basictypes.MakerMeta("META_NEQ_1", -1)
 	MetaNEQ2 := basictypes.MakerMeta("META_NEQ_2", -1)
-	eq_pred := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{MetaNEQ1, MetaNEQ2})
-	found, neq_list := dt.Unify(eq_pred)
-	fmt.Printf("Found : %v\n", found)
-	fmt.Printf("len(neq_list) : %v\n", len(neq_list))
-	for i, ms := range neq_list {
-		fmt.Printf("neq_list[%v] : %v\n", i, ms.GetSubst().ToString())
-
+	eq_neq_pred := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{MetaNEQ1, MetaNEQ2})
+	_, neq_list := dt.Unify(eq_neq_pred)
+	for _, ms := range neq_list {
 		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaNEQ1, MetaNEQ2)
-
-		fmt.Printf("ms_ordered : %v\n", ms_ordered.ToString())
-
 		neq1_term, ok_t1 := ms_ordered[MetaNEQ1]
 		if !ok_t1 {
-			fmt.Printf("Meta 1 not found in map\n")
+			fmt.Printf("Meta_neq_1 not found in map\n")
+			global.PrintDebug("RI", "Meta_neq_1 not found in map")
 		}
 		neq2_term, ok_t2 := ms_ordered[MetaNEQ2]
 		if !ok_t2 {
-			fmt.Printf("Meta 2 not found in map\n")
+			fmt.Printf("Meta_neq_2 not found in map\n")
+			global.PrintDebug("RI", "Meta_neq_2 not found in map")
 		}
 		res = append(res, MakeTermPair(neq1_term, neq2_term))
 	}
@@ -195,10 +195,12 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 
 func orderSubstForRetrieve(s treetypes.Substitutions, M1, M2 basictypes.Meta) treetypes.Substitutions {
 	new_subst := treetypes.MakeEmptySubstitution()
+	global.PrintDebug("OSFR", fmt.Sprintf("Subst (begin) : %v", s.ToString()))
 	for k, v := range s {
 		if !k.Equals(M1) && !k.Equals(M2) {
 			if !v.IsMeta() {
 				fmt.Printf("Error : Meta EQ/NEQ not found")
+				global.PrintDebug("OSFR", "Meta EQ/NEQ not found")
 			} else {
 				new_subst[v.ToMeta()] = k
 			}
@@ -208,5 +210,6 @@ func orderSubstForRetrieve(s treetypes.Substitutions, M1, M2 basictypes.Meta) tr
 	}
 	treetypes.EliminateMeta(&new_subst)
 	treetypes.Eliminate(&new_subst)
+	global.PrintDebug("OSFR", fmt.Sprintf("Subst (begin) : %v", new_subst.ToString()))
 	return new_subst
 }

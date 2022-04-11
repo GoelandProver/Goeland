@@ -59,7 +59,9 @@ func TestMain(m *testing.M) {
 }
 
 /* Tests equality */
+/* (X, g(a)), (X, f(g(a))) */
 func TestEQ1(t *testing.T) {
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
@@ -77,14 +79,14 @@ func TestEQ1(t *testing.T) {
 	eq2 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{ggx, fa})
 	eq3 := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{gggx, x})
 
-	lpo := makeLPO()
-	lpo.insert(g_id)
-	lpo.insert(f_id)
-	lpo.insert(a_id)
-	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
+	initPluginGlobalVariables()
+	lpo.insertTerm(g_id)
+	lpo.insertTerm(f_id)
+	lpo.insertTerm(a_id)
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v", lpo.toString()))
 
 	lf := basictypes.FormList{eq1, eq2, eq3}
-	global.PrintDebug("MAIN", fmt.Sprintf("LF : %v\n", lf.ToString()))
+	global.PrintDebug("MAIN", fmt.Sprintf("LF : %v", lf.ToString()))
 
 	var tp, tn datastruct.DataStructure
 	tp = new(treesearch.Node)
@@ -97,7 +99,9 @@ func TestEQ1(t *testing.T) {
 	global.PrintDebug("MAIN", fmt.Sprintf("SUBST : %v", treetypes.SubstListToString(subst)))
 }
 
-func TestEQ2(t *testing.T) {
+/* rien, et X = Y */
+func TestEQB1(t *testing.T) {
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
@@ -107,30 +111,82 @@ func TestEQ2(t *testing.T) {
 	c_id := basictypes.MakerId("c")
 	p_id := basictypes.MakerId("P")
 
-	// a := basictypes.MakerConst(a_id)
 	b := basictypes.MakerConst(b_id)
 	c := basictypes.MakerConst(c_id)
 	x := basictypes.MakerMeta("X", -1)
 	y := basictypes.MakerMeta("Y", -1)
 	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
 	gx := basictypes.MakerFun(g_id, []basictypes.Term{x})
-	// ga := basictypes.MakerFun(g_id, []basictypes.Term{a})
-	// gga := basictypes.MakerFun(g_id, []basictypes.Term{ga})
 	fy := basictypes.MakerFun(f_id, []basictypes.Term{y})
 	gfy := basictypes.MakerFun(g_id, []basictypes.Term{fy})
 
 	b_c := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{b, c})
 	gfy_y := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gfy, y})
 	gx_fx := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gx, fx})
-	pggab := basictypes.MakePred(p_id, []basictypes.Term{b})
-	pac := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{c}))
+	pb := basictypes.MakePred(p_id, []basictypes.Term{b})
+	pc := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{c}))
 
-	lpo := makeLPO()
-	lpo.insert(g_id)
-	lpo.insert(f_id)
-	lpo.insert(c_id)
-	lpo.insert(b_id)
-	lpo.insert(a_id)
+	initPluginGlobalVariables()
+	lpo.insertTerm(g_id)
+	lpo.insertTerm(f_id)
+	lpo.insertTerm(c_id)
+	lpo.insertTerm(b_id)
+	lpo.insertTerm(a_id)
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
+
+	lf_b1 := basictypes.FormList{b_c, gx_fx, pb, pc, gfy_y}
+
+	global.PrintDebug("MAIN", fmt.Sprintf("B1_ LF : %v\n", lf_b1.ToString()))
+
+	var tp, tn datastruct.DataStructure
+	tp = new(treesearch.Node)
+	tn = new(treesearch.Node)
+	tp = tp.MakeDataStruct(lf_b1, true)
+	tn = tn.MakeDataStruct(lf_b1, false)
+
+	res, subst := EqualityReasoning(tp, tn, lf_b1)
+
+	global.PrintDebug("MAIN", fmt.Sprintf("RES B1: %v", res))
+	global.PrintDebug("MAIN", fmt.Sprintf("SUBST B1: %v", treetypes.SubstListToString(subst)))
+
+}
+
+/* (X, a), (Y, a) */
+func TestEQB1_2(t *testing.T) {
+	global.SetDebug(true)
+	global.SetStart(time.Now())
+	global.PrintDebug("MAIN", "Start of the problem")
+	f_id := basictypes.MakerId("f")
+	g_id := basictypes.MakerId("g")
+	a_id := basictypes.MakerId("a")
+	b_id := basictypes.MakerId("b")
+	c_id := basictypes.MakerId("c")
+	p_id := basictypes.MakerId("P")
+
+	a := basictypes.MakerConst(a_id)
+	b := basictypes.MakerConst(b_id)
+	c := basictypes.MakerConst(c_id)
+	x := basictypes.MakerMeta("X", -1)
+	y := basictypes.MakerMeta("Y", -1)
+	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
+	gx := basictypes.MakerFun(g_id, []basictypes.Term{x})
+	ga := basictypes.MakerFun(g_id, []basictypes.Term{a})
+	gga := basictypes.MakerFun(g_id, []basictypes.Term{ga})
+	fy := basictypes.MakerFun(f_id, []basictypes.Term{y})
+	gfy := basictypes.MakerFun(g_id, []basictypes.Term{fy})
+
+	b_c := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{b, c})
+	gfy_y := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gfy, y})
+	gx_fx := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gx, fx})
+	pggab := basictypes.MakePred(p_id, []basictypes.Term{gga, b})
+	pac := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{a, c}))
+
+	initPluginGlobalVariables()
+	lpo.insertTerm(g_id)
+	lpo.insertTerm(f_id)
+	lpo.insertTerm(c_id)
+	lpo.insertTerm(b_id)
+	lpo.insertTerm(a_id)
 	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
 
 	lf_b1 := basictypes.FormList{b_c, gx_fx, pggab, pac, gfy_y}
@@ -150,7 +206,9 @@ func TestEQ2(t *testing.T) {
 
 }
 
+/* (X, a) */
 func TestEQB2(t *testing.T) {
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
@@ -176,12 +234,12 @@ func TestEQB2(t *testing.T) {
 	pggab := basictypes.MakePred(p_id, []basictypes.Term{gga, b})
 	pac := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{a, c}))
 
-	lpo := makeLPO()
-	lpo.insert(g_id)
-	lpo.insert(f_id)
-	lpo.insert(c_id)
-	lpo.insert(b_id)
-	lpo.insert(a_id)
+	initPluginGlobalVariables()
+	lpo.insertTerm(g_id)
+	lpo.insertTerm(f_id)
+	lpo.insertTerm(c_id)
+	lpo.insertTerm(b_id)
+	lpo.insertTerm(a_id)
 	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
 
 	lf_b2 := basictypes.FormList{b_c, pggab, pac, gfy_y, x_a}
@@ -208,16 +266,18 @@ func TestCreateLPO(t *testing.T) {
 	g_id := basictypes.MakerId("g")
 	a_id := basictypes.MakerId("a")
 
-	lpo := makeLPO()
-	lpo.insert(g_id)
-	lpo.insert(f_id)
-	lpo.insert(a_id)
+	initPluginGlobalVariables()
+	lpo.insertTerm(g_id)
+	lpo.insertTerm(f_id)
+	lpo.insertTerm(a_id)
 
 	fmt.Printf("%v\n", lpo.toString())
 }
 
 /* Tets constraintes */
+/* Not consistant */
 func TestConstaintes(t *testing.T) {
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
@@ -229,14 +289,16 @@ func TestConstaintes(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	lpo := makeLPO()
-	lpo.insert(f_id)
+	initPluginGlobalVariables()
+	lpo.insertTerm(f_id)
 
 	cl.AppendIfConsistant(c)
 	fmt.Printf("CL : %v\n", cl.ToString())
 }
 
+/* COnsistant but useless */
 func TestConstaintes2(t *testing.T) {
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
@@ -248,14 +310,16 @@ func TestConstaintes2(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	lpo := makeLPO()
-	lpo.insert(f_id)
+	initPluginGlobalVariables()
+	lpo.insertTerm(f_id)
 
 	cl.AppendIfConsistant(c)
 	fmt.Printf("CL : %v\n", cl.ToString())
 }
 
+/* COnsistant and relevant */
 func TestConstaintes3(t *testing.T) {
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
@@ -268,15 +332,17 @@ func TestConstaintes3(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	lpo := makeLPO()
-	lpo.insert(f_id)
-	lpo.insert(a_id)
+	initPluginGlobalVariables()
+	lpo.insertTerm(f_id)
+	lpo.insertTerm(a_id)
 
 	cl.AppendIfConsistant(c)
 	fmt.Printf("CL : %v\n", cl.ToString())
 }
 
+/* First constraint is consistnt, second not with the first one */
 func TestConstaintes4(t *testing.T) {
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
@@ -290,9 +356,9 @@ func TestConstaintes4(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	lpo := makeLPO()
-	lpo.insert(f_id)
-	lpo.insert(a_id)
+	initPluginGlobalVariables()
+	lpo.insertTerm(f_id)
+	lpo.insertTerm(a_id)
 
 	cl.AppendIfConsistant(c)
 	fmt.Printf("CL : %v\n", cl.ToString())

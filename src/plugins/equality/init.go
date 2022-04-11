@@ -52,7 +52,7 @@ import (
  **/
 func registerHooks(pm *plugin.PluginManager) {
 	pm.RegisterEqualityHook(EqualityReasoning)
-	pm.RegisterSendIDTOLPOHook(lpo.insertIfNotContains)
+	pm.RegisterSendIDToLPOHook(lpo.insertPred)
 }
 
 func initPluginGlobalVariables() {
@@ -65,7 +65,7 @@ func initPluginGlobalVariables() {
  **/
 func parsePluginOptions(options []plugin.Option) {
 	// Display what's been activated.
-	output := "[EQ] Equality loaded \n"
+	output := "[EQ] Equality loaded"
 	output += "\n"
 	fmt.Print(output)
 }

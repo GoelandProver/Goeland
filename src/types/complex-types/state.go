@@ -374,7 +374,6 @@ func (st *State) DispatchForm(f basictypes.Form) {
 	global.PrintDebug("DF", fmt.Sprintf("Kind of rule : %v ", basictypes.ShowKindOfRule(f.Copy())))
 	switch basictypes.ShowKindOfRule(f.Copy()) {
 	case basictypes.Atomic:
-		// st.InsertFormInLPO(f)
 		st.SetAtomic(st.GetAtomic().AppendIfNotContains(f))
 	case basictypes.Alpha:
 		st.SetAlpha(st.GetAlpha().AppendIfNotContains(f))

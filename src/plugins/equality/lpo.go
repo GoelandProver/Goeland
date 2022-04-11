@@ -43,7 +43,6 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -53,28 +52,53 @@ var lock_lpo sync.Mutex
 var lpo LPO
 
 func (lpo LPO) Get(t basictypes.Id) int {
+	lock_lpo.Lock()
 	res, found := lpo[t]
+	lock_lpo.Unlock()
 	if found {
 		return res
 	} else {
-		fmt.Printf("Error : id not in the LPO : %v", t.ToString())
 		return -1
 	}
 }
 
-func (lpo *LPO) insert(t basictypes.Id) {
-	lock_lpo.Lock()
-	(*lpo)[t] = len(*lpo)
-	lock_lpo.Unlock()
+func (lpo *LPO) insertPred(p basictypes.Form) {
+	switch pt := p.(type) {
+	case basictypes.Pred:
+		lpo.insertIdIfNotContains(pt.GetID())
+		for _, arg := range pt.GetArgs() {
+			lpo.insertTerm(arg)
+		}
+	case basictypes.Not:
+		lpo.insertPred(pt.GetForm())
+	}
 }
 
-func (lpo LPO) contains(t basictypes.Id) bool {
-	return lpo.Get(t) != -1
+func (lpo *LPO) insertTerm(t basictypes.Term) {
+	switch t_type := t.(type) {
+	case basictypes.Id:
+		lpo.insertIdIfNotContains(t_type)
+	case basictypes.Fun:
+		if !lpo.contains(t_type.GetID()) {
+			lock_lpo.Lock()
+			(*lpo)[t_type.GetID()] = len(*lpo)
+			lock_lpo.Unlock()
+		}
+		for _, arg := range t_type.GetArgs() {
+			lpo.insertTerm(arg)
+		}
+	}
 }
 
-func (lpo *LPO) insertIfNotContains(t basictypes.Id) {
-	if lpo.contains(t) {
-		lpo.insert(t)
+func (lpo LPO) contains(i basictypes.Id) bool {
+	return lpo.Get(i) != -1
+}
+
+func (lpo *LPO) insertIdIfNotContains(i basictypes.Id) {
+	if !lpo.contains(i) {
+		lock_lpo.Lock()
+		(*lpo)[i] = len(*lpo)
+		lock_lpo.Unlock()
 	}
 }
 
@@ -86,7 +110,7 @@ func (lpo *LPO) insertIfNotContains(t basictypes.Id) {
 *	two terms : the new terms for the constraint (if not comparable)
 **/
 func (lpo LPO) compare(s, t basictypes.Term) (int, bool, basictypes.Term, basictypes.Term) {
-	global.PrintDebug("C", fmt.Sprintf("Compare %v and %v", s.ToString(), t.ToString()))
+	// global.PrintDebug("C", fmt.Sprintf("Compare %v and %v", s.ToString(), t.ToString()))
 	switch s_type := s.(type) {
 	case basictypes.Fun:
 		switch t_type := t.(type) {
@@ -95,7 +119,7 @@ func (lpo LPO) compare(s, t basictypes.Term) (int, bool, basictypes.Term, basict
 			return compareFunFun(s_type, t_type, lpo)
 		case basictypes.Meta:
 			// function & meta : Occurences inside : f(x) < x, f(y) < x
-			global.PrintDebug("C", "Occurence inside, ko")
+			// global.PrintDebug("C", "Occurence inside, ko")
 			return compareMetaFun(t_type, s_type, -1, lpo)
 		default:
 			fmt.Printf("Type of t unknown")
@@ -104,7 +128,7 @@ func (lpo LPO) compare(s, t basictypes.Term) (int, bool, basictypes.Term, basict
 		switch t_type := t.(type) {
 		case basictypes.Fun:
 			// meta & function : Occurences inside : x < f(x), x < f(y)
-			global.PrintDebug("C", "Occurence inside, ok")
+			// global.PrintDebug("C", "Occurence inside, ok")
 			return compareMetaFun(s_type, t_type, 1, lpo)
 		case basictypes.Meta:
 			// Meta and meta
@@ -120,7 +144,7 @@ func (lpo LPO) compare(s, t basictypes.Term) (int, bool, basictypes.Term, basict
 
 /* return code can be 1 or -1 */
 func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LPO) (int, bool, basictypes.Term, basictypes.Term) {
-	global.PrintDebug("CMF", fmt.Sprintf("Meta - Fun : return_code = %v", return_code))
+	// global.PrintDebug("CMF", fmt.Sprintf("Meta - Fun : return_code = %v", return_code))
 	i := 0
 	for i < len(f.GetArgs()) {
 		res := 0
@@ -134,7 +158,7 @@ func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LP
 			fmt.Printf("Unexpected return_code in compare\n")
 		}
 
-		global.PrintDebug("CMF", fmt.Sprintf("Comparable : %v, res = %v", res, is_comparable))
+		// global.PrintDebug("CMF", fmt.Sprintf("Comparable : %v, res = %v", res, is_comparable))
 		if is_comparable {
 			if res == 0 { // Res of compare meta meta
 				return return_code, true, nil, nil
@@ -153,21 +177,32 @@ func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LP
 
 /* Compare two meta wrt LPO */
 func compareMetaMeta(m1, m2 basictypes.Meta) (int, bool, basictypes.Term, basictypes.Term) {
-	global.PrintDebug("CMM", "Meta - Meta")
+	// global.PrintDebug("CMM", "Meta - Meta")
 	if m1.Equals(m2) {
-		global.PrintDebug("CMM", "Meta - Meta - 0, true, nil, nil")
+		// global.PrintDebug("CMM", "Meta - Meta - 0, true, nil, nil")
 		return 0, true, nil, nil
 	} else {
-		global.PrintDebug("CMM", fmt.Sprintf("Meta - Meta - 1, false, %v, %v", m1.ToString(), m2.ToString()))
+		// global.PrintDebug("CMM", fmt.Sprintf("Meta - Meta - 1, false, %v, %v", m1.ToString(), m2.ToString()))
 		return 1, false, m1, m2
 	}
 }
 
 /* Compare two functions */
 func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, basictypes.Term) {
-	global.PrintDebug("CFF", "Fun - Fun")
+	// global.PrintDebug("CFF", "Fun - Fun")
+	f := lpo.Get(s.GetID())
+	g := lpo.Get(t.GetID())
+	if f == -1 {
+		// global.PrintDebug("Get", fmt.Sprintf("Error : Id not in the LPO : %v", s.GetID().ToString()))
+		fmt.Printf("Error : id not in the LPO : %v\n", s.GetID().ToString())
+	}
+	if g == -1 {
+		// global.PrintDebug("Get", fmt.Sprintf("Error : Id not in the LPO : %v", t.GetID().ToString()))
+		fmt.Printf("Error : id not in the LPO : %v\n", t.GetID().ToString())
+	}
+
 	// f < g
-	if lpo.Get(s.GetID()) < lpo.Get(t.GetID()) {
+	if f < g {
 		if len(s.GetArgs()) == 0 {
 			return 1, true, nil, nil
 		} else {
@@ -190,7 +225,7 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, ba
 	}
 
 	// f == g
-	if lpo.Get(s.GetID()) == lpo.Get(t.GetID()) {
+	if f == g {
 		if len(s.GetArgs()) != len(t.GetArgs()) {
 			fmt.Printf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString())
 			return 0, false, nil, nil
