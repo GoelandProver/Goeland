@@ -52,10 +52,16 @@ import (
 func TestMain(m *testing.M) {
 	typing.Init()
 
+	typing.SaveParamereterizedType("map", []typing.TypeApp{nil, nil})
 	// Add pred scheme to global context
 	typing.SaveTypeScheme(
 		"P",
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
+		typing.DefaultProp(),
+	)
+	typing.SaveTypeScheme(
+		"Q",
+		typing.MkParameterizedType("map", []typing.TypeApp{typing.MkTypeHint("int"), typing.MkTypeHint("int")}),
 		typing.DefaultProp(),
 	)
 	typing.SaveConstant("2", typing.MkTypeHint("int"))

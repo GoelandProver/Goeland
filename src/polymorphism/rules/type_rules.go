@@ -162,6 +162,33 @@ func applySymRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	return launchChildren(children, root, fatherChan)
 }
 
+/* AppType rule: a child for each type in the input, and checks if the parameterized type exists. */
+func applyAppTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+	root.appliedRule = "App"
+
+	type_ := state.consequence.a.(typing.ParameterizedType)
+	types := type_.GetParameters()
+
+	// Search for the ID in the global context
+	if !state.globalContext.parameterizedTypesContains(type_.ToString()) {
+		return Reconstruct{
+			result: false,
+			err:    fmt.Errorf("Parameterized Type %s not in context", type_.ToString()),
+		}
+	}
+
+	children := []Sequent{}
+	for _, type_ := range types {
+		children = append(children, Sequent{
+			globalContext: state.globalContext,
+			localContext:  state.localContext.copy(),
+			consequence:   Consequence{a: type_},
+		})
+	}
+
+	return launchChildren(children, root, fatherChan)
+}
+
 /* Utils functions */
 
 /* Finds the given term in the local context, returns false if it couldn't */

@@ -105,20 +105,23 @@ func (lc LocalContext) popTypeVar() (typing.TypeVar, LocalContext) {
 
 /* Stores the global context */
 type GlobalContext struct {
-	primitiveTypes   []typing.TypeHint
-	composedType     map[string]typing.TypeCross
-	simpleSchemes    map[string][]typing.TypeScheme
-	polymorphSchemes map[string][]typing.QuantifiedType
+	primitiveTypes     []typing.TypeHint
+	parameterizedTypes []string
+	composedType       map[string]typing.TypeCross
+	simpleSchemes      map[string][]typing.TypeScheme
+	polymorphSchemes   map[string][]typing.QuantifiedType
 }
 
 /* Copies a GlobalContext into a new variable and returns it. */
 func (gc GlobalContext) copy() GlobalContext {
 	context := GlobalContext{
-		primitiveTypes:   make([]typing.TypeHint, len(gc.primitiveTypes)),
-		simpleSchemes:    make(map[string][]typing.TypeScheme),
-		polymorphSchemes: make(map[string][]typing.QuantifiedType),
+		primitiveTypes:     make([]typing.TypeHint, len(gc.primitiveTypes)),
+		parameterizedTypes: make([]string, len(gc.parameterizedTypes)),
+		simpleSchemes:      make(map[string][]typing.TypeScheme),
+		polymorphSchemes:   make(map[string][]typing.QuantifiedType),
 	}
 	copy(context.primitiveTypes, gc.primitiveTypes)
+	copy(context.parameterizedTypes, gc.parameterizedTypes)
 
 	for name, list := range gc.simpleSchemes {
 		context.simpleSchemes[name] = make([]typing.TypeScheme, len(list))
@@ -214,6 +217,16 @@ func (gc GlobalContext) isEmpty() bool {
 	return result
 }
 
+/* Checks if the parameterized types contains the given name */
+func (gc GlobalContext) parameterizedTypesContains(name string) bool {
+	for _, parameterTypeName := range gc.parameterizedTypes {
+		if name == parameterTypeName {
+			return true
+		}
+	}
+	return false
+}
+
 /* Utils */
 
 /**
@@ -223,14 +236,18 @@ func (gc GlobalContext) isEmpty() bool {
  **/
 func createGlobalContext(context map[string][]typing.App) (GlobalContext, error) {
 	globalContext := GlobalContext{
-		primitiveTypes:   []typing.TypeHint{},
-		composedType:     make(map[string]typing.TypeCross),
-		simpleSchemes:    make(map[string][]typing.TypeScheme),
-		polymorphSchemes: make(map[string][]typing.QuantifiedType),
+		primitiveTypes:     []typing.TypeHint{},
+		parameterizedTypes: []string{},
+		composedType:       make(map[string]typing.TypeCross),
+		simpleSchemes:      make(map[string][]typing.TypeScheme),
+		polymorphSchemes:   make(map[string][]typing.QuantifiedType),
 	}
 
 	// Fill first the primitive types
 	for name, appList := range context {
+		if len(appList) == 0 {
+			globalContext.parameterizedTypes = append(globalContext.parameterizedTypes, name)
+		}
 		for _, app := range appList {
 			if type_, isTypeHint := app.App.(typing.TypeHint); isTypeHint {
 				if !typing.IsConstant(name) {

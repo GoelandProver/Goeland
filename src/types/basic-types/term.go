@@ -440,3 +440,38 @@ func AreEqualsTypeVarList(tv1, tv2 []typing.TypeVar) bool {
 	}
 	return true
 }
+
+/* Creates a Term from a TypeApp to unify it properly */
+func TypeAppToTerm(typeApp typing.TypeApp) Term {
+	var term Term
+	switch nt := typeApp.(type) {
+	case typing.TypeVar:
+		if nt.IsMeta() {
+			term = typeVarToMeta(nt)
+		} else {
+			fmt.Println("[ERROR] A TypeVar should be only converted to terms if it has been instantiated.")
+			term = nil
+		}
+	case typing.TypeHint, typing.TypeCross:
+		term = MakerFun(MakerId(nt.ToString()), []Term{}, []typing.TypeApp{}, typing.MkTypeHint("Type"))
+	case typing.ParameterizedType:
+		args := []Term{}
+		for _, type_ := range nt.GetParameters() {
+			args = append(args, TypeAppToTerm(type_))
+		}
+		term = MakeFun(MakerId(nt.ToString()), args, []typing.TypeApp{}, typing.MkTypeHint("Type"))
+	}
+	return term
+}
+
+func typeVarToMeta(typeVar typing.TypeVar) Meta {
+	var meta Meta
+	index, formula := typeVar.MetaInfos()
+	if !typeVar.Instantiated() {
+		meta = MakerMeta(typeVar.ToString(), formula, typing.MkTypeHint("Type"))
+		typeVar.Instantiate(meta.index)
+	} else {
+		meta = MakeMeta(index, typeVar.ToString(), formula, typing.MkTypeHint("Type"))
+	}
+	return meta
+}

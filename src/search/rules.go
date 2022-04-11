@@ -151,7 +151,7 @@ func searchClosureRule(f basictypes.Form, st complextypes.State) (bool, []treety
 			return st.GetTreePos().Unify(nf.GetForm())
 		default:
 			return false, nil
-		} 
+		}
 	default:
 		return false, nil
 	}
@@ -343,9 +343,9 @@ func realSkolemize(f basictypes.Form, vars []basictypes.Var, terms []basictypes.
 
 		// A Skolem symbol has no quantified variables.
 		skolem := basictypes.MakerFun(
-			basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())), 
-			terms, 
-			[]typing.TypeApp{}, 
+			basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())),
+			terms,
+			[]typing.TypeApp{},
 			scheme,
 		)
 		f = basictypes.ReplaceVarByTerm(f, v, skolem)
@@ -369,6 +369,10 @@ func Instantiate(f basictypes.Form, index int) (basictypes.Form, basictypes.Meta
 		form, metas := realInstantiate(nf.GetForm(), index, nf.GetVarList())
 		newMm = append(newMm, metas...)
 		f = form
+	case basictypes.AllType:
+		for _, v := range nf.GetVarList() {
+			v.ShouldBeMeta(index)
+		}
 	}
 	return f, newMm
 }

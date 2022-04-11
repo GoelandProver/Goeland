@@ -70,8 +70,8 @@ type TypeScheme interface {
 	GetPrimitives() []TypeApp
 }
 
-/** 
- * Used for types which can be put inside a function or a predicate as arguments 
+/**
+ * Used for types which can be put inside a function or a predicate as arguments
  * for a polymorphic scheme.
  * It includes : TypeVar, TypeHint and TypeCross.
  * In TFF, TypeArrow can not be the type of a variable.
@@ -106,15 +106,15 @@ func (th TypeHint) toList() []uint64 { return []uint64{th.uid} }
 func (th TypeHint) ToString() string           { return th.name }
 func (th TypeHint) UID() uint64                { return th.euid }
 func (th TypeHint) Equals(oth TypeScheme) bool { return oth.UID() == th.UID() }
-func (th TypeHint) Size() int 		 		   { return 1 }
+func (th TypeHint) Size() int                  { return 1 }
 func (th TypeHint) GetPrimitives() []TypeApp   { return []TypeApp{th} }
 
 /* TypeApp interface */
-func (th TypeHint) isTypeApp() {}
+func (th TypeHint) isTypeApp()                                          {}
 func (th TypeHint) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return th }
 
 func (th TypeHint) ToTypeScheme() TypeScheme { return th }
-func (th TypeHint) Copy() TypeApp { return MkTypeHint(th.name) }
+func (th TypeHint) Copy() TypeApp            { return MkTypeHint(th.name) }
 
 /**
  * Type consisting of an array of TypeScheme, to concatenate each of theme with a cross
@@ -134,22 +134,22 @@ func (tc TypeCross) toList() []uint64 { return subtypesUID(tc.types) }
 func (tc TypeCross) ToString() string           { return "(" + strings.Join(subtypesStr(tc.types), " * ") + ")" }
 func (tc TypeCross) UID() uint64                { return tc.uid }
 func (tc TypeCross) Equals(oth TypeScheme) bool { return oth.UID() == tc.UID() }
-func (tc TypeCross) Size() int 		  		    { return getSize(tc.types) }
+func (tc TypeCross) Size() int                  { return getSize(tc.types) }
 func (tc TypeCross) GetPrimitives() []TypeApp   { return tc.GetAllUnderlyingTypes() }
 
 /* TypeApp interface */
-func (tc TypeCross) isTypeApp() {}
+func (tc TypeCross) isTypeApp()               {}
 func (tc TypeCross) ToTypeScheme() TypeScheme { return tc }
 
-func (tc TypeCross) Copy() TypeApp { 
+func (tc TypeCross) Copy() TypeApp {
 	newTypeApp := []TypeApp{}
 	for _, type_ := range tc.types {
 		newTypeApp = append(newTypeApp, type_.Copy())
 	}
-	return MkTypeCross(newTypeApp...) 
+	return MkTypeCross(newTypeApp...)
 }
 
-func (tc TypeCross) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { 
+func (tc TypeCross) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
 	return MkTypeCross(substTypeAppList(mapSubst, tc.types)...)
 }
 
@@ -175,11 +175,11 @@ func (ta TypeArrow) toList() []uint64 { return subtypesUID(ta.types) }
 func (ta TypeArrow) ToString() string           { return "(" + strings.Join(subtypesStr(ta.types), " > ") + ")" }
 func (ta TypeArrow) UID() uint64                { return ta.uid }
 func (ta TypeArrow) Equals(oth TypeScheme) bool { return oth.UID() == ta.UID() }
-func (ta TypeArrow) Size() int 		  			{ return getSize(ta.types) }
+func (ta TypeArrow) Size() int                  { return getSize(ta.types) }
 func (ta TypeArrow) GetPrimitives() []TypeApp   { return getAllUnderlyingTypes(ta.types) }
 
 /* TypeArrow methods */
-func (ta TypeArrow) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { 
+func (ta TypeArrow) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
 	return MkTypeArrow(substTypeAppList(mapSubst, ta.types)...)
 }
 
@@ -188,7 +188,11 @@ func (ta TypeArrow) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
  * It's not a TypeScheme, but it can serve in arguments of a function or predicate.
  **/
 type TypeVar struct {
-	name string
+	name     string
+	metaInfo struct {
+		formulaIndex int
+		index        int
+	}
 }
 
 /* TypeApp interface */
@@ -196,18 +200,27 @@ func (tv TypeVar) isTypeApp() {}
 
 func (tv TypeVar) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return mapSubst[tv] }
 
-func (tv TypeVar) ToString() string 		{ return tv.name }
+func (tv TypeVar) ToString() string         { return tv.name }
 func (tv TypeVar) ToTypeScheme() TypeScheme { return nil }
-func (tv TypeVar) Copy() TypeApp { return MkTypeVar(tv.name) }
-func (tv TypeVar) Equals(oth TypeVar) bool { return tv.name == oth.name }
-func (tv TypeVar) Size() int  			   { return 1 }
+func (tv TypeVar) Copy() TypeApp            { return MkTypeVar(tv.name) }
+func (tv TypeVar) Equals(oth TypeVar) bool {
+	return tv.name == oth.name && tv.metaInfo == oth.metaInfo
+}
+func (tv TypeVar) Size() int { return 1 }
 
-/** 
+/* TypeVar should be converted to Meta when becoming a term */
+func (tv *TypeVar) ShouldBeMeta(formula int) { tv.metaInfo.formulaIndex = formula }
+func (tv *TypeVar) Instantiate(index int)    { tv.metaInfo.index = index }
+func (tv TypeVar) IsMeta() bool              { return tv.metaInfo.formulaIndex != -1 }
+func (tv TypeVar) Instantiated() bool        { return tv.metaInfo.index != -1 }
+func (tv TypeVar) MetaInfos() (int, int)     { return tv.metaInfo.formulaIndex, tv.metaInfo.index }
+
+/**
  * Quantified TypeScheme.
  * It has a list of type vars and an associated scheme.
  **/
 type QuantifiedType struct {
-	vars []TypeVar 
+	vars   []TypeVar
 	scheme TypeScheme
 }
 
@@ -219,21 +232,21 @@ func (qt QuantifiedType) UID() uint64                { return qt.scheme.UID() }
 func (qt QuantifiedType) Equals(oth TypeScheme) bool { return oth.UID() == qt.scheme.UID() }
 func (qt QuantifiedType) QuantifiedVarsLen() int     { return len(qt.vars) }
 func (qt QuantifiedType) QuantifiedVars() []TypeVar  { return qt.vars }
-func (qt QuantifiedType) Size() int 	   			 { return qt.scheme.Size() }
+func (qt QuantifiedType) Size() int                  { return qt.scheme.Size() }
 
 func (qt QuantifiedType) ToString() string {
 	varsString := []string{}
 	for _, var_ := range qt.vars {
 		varsString = append(varsString, var_.ToString())
-	}  
-	return "Π " + strings.Join(varsString, ", ") + ": Type, " + qt.scheme.ToString() 
+	}
+	return "Π " + strings.Join(varsString, ", ") + ": Type, " + qt.scheme.ToString()
 }
 
 func (qt QuantifiedType) GetPrimitives() []TypeApp {
 	vars := make(map[TypeHint]TypeVar)
 	for i, var_ := range qt.vars {
 		vars[MkTypeHint(fmt.Sprintf("*_%d", i))] = var_
-	}  
+	}
 	primitives := []TypeApp{}
 	for _, th := range qt.scheme.GetPrimitives() {
 		if var_, found := vars[th.(TypeHint)]; found {
@@ -244,6 +257,41 @@ func (qt QuantifiedType) GetPrimitives() []TypeApp {
 	}
 	return primitives
 }
+
+/**
+ * Parameterized Type (TypeApp + TypeScheme)
+ * A Type which is parameterized with type apps to compose types.
+ * Example: map(int, int)
+ **/
+type ParameterizedType struct {
+	name       string
+	uid        uint64
+	parameters []TypeApp
+}
+
+/* TypeScheme interface */
+func (pt ParameterizedType) isScheme()        {}
+func (pt ParameterizedType) toList() []uint64 { return subtypesUID(pt.parameters) }
+
+func (pt ParameterizedType) ToString() string           { return pt.name }
+func (pt ParameterizedType) UID() uint64                { return pt.uid }
+func (pt ParameterizedType) Equals(oth TypeScheme) bool { return oth.UID() == pt.UID() }
+func (pt ParameterizedType) Size() int                  { return 1 }
+func (pt ParameterizedType) GetPrimitives() []TypeApp   { return []TypeApp{pt} }
+func (pt ParameterizedType) GetParameters() []TypeApp   { return pt.parameters }
+
+/* TypeApp interface */
+func (pt ParameterizedType) isTypeApp() {}
+func (pt ParameterizedType) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
+	newPt := ParameterizedType{pt.name, 0, []TypeApp{}}
+	for _, param := range pt.parameters {
+		newPt.parameters = append(newPt.parameters, param.substitute(mapSubst).(TypeApp))
+	}
+	return newPt
+}
+
+func (pt ParameterizedType) ToTypeScheme() TypeScheme { return pt }
+func (pt ParameterizedType) Copy() TypeApp            { return MkTypeHint(pt.name) }
 
 /** Utils **/
 
@@ -325,6 +373,10 @@ func Init() {
 	typeSchemesMap.tsMap = make(map[string][]App)
 	typeSchemesMap.lock = sync.Mutex{}
 
+	// Instanciate parameters map
+	pMap.parametersMap = make(map[string][]TypeApp)
+	pMap.lock = sync.Mutex{}
+
 	// Default types
 	defaultType = MkTypeHint("i")
 	defaultProp = MkTypeHint("o")
@@ -374,16 +426,19 @@ func MkTypeArrow(typeSchemes ...TypeApp) TypeArrow {
 
 /* Makes a TypeVar from a name */
 func MkTypeVar(name string) TypeVar {
-	return TypeVar{name}
+	return TypeVar{name, struct {
+		formulaIndex int
+		index        int
+	}{-1, -1}}
 }
 
 /* Makes a QuantifiedType from TypeVars and a TypeScheme. */
 func MkQuantifiedType(vars []TypeVar, typeScheme TypeScheme) QuantifiedType {
 	// Modify the typeScheme to make it modulo alpha-conversion
-	
+
 	// 1 - Corresponding map creation
 	metaTypeMap := utilMapCreation(vars)
-	
+
 	// 2 - Substitute all TypeVar with the meta type
 	switch ts := typeScheme.(type) {
 	case TypeApp:
@@ -393,8 +448,44 @@ func MkQuantifiedType(vars []TypeVar, typeScheme TypeScheme) QuantifiedType {
 	default:
 		global.PrintDebug("MQT", "Error: shouldn't be here")
 	}
-	
+
 	return QuantifiedType{vars: vars, scheme: typeScheme}
+}
+
+/* Makes a Parameterized Type from name and parameters */
+func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
+	pMap.lock.Lock()
+	if parameters, found := pMap.parametersMap[name]; found {
+		k := 0
+		nextTypes := make([]TypeApp, len(parameters))
+		copy(nextTypes, parameters)
+		for i, param := range nextTypes {
+			if param == nil {
+				nextTypes[i] = types[k]
+				k++
+			}
+		}
+		types = nextTypes
+	} else {
+		pMap.lock.Unlock()
+		fmt.Println("[ERROR] Parameterized type not found.")
+		return ParameterizedType{}
+	}
+	pMap.lock.Unlock()
+
+	parameterizedType := ParameterizedType{name, 0, types}
+
+	vars := []TypeVar{}
+	for _, type_ := range types {
+		if var_, ok := type_.(TypeVar); ok {
+			vars = append(vars, var_)
+		}
+	}
+	ls := parameterizedType.substitute(utilMapCreation(vars)).toList()
+	ls = append(ls, MkTypeHint(parameterizedType.name).UID())
+	parameterizedType.uid = encode(ls, ETypeArrow)
+
+	return parameterizedType
 }
 
 /* Gets the out type of an arrow type scheme */

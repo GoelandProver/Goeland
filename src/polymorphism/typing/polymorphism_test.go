@@ -48,6 +48,7 @@ import (
 
 func TestMain(m *testing.M) {
 	Init()
+	InitTPTPArithmetic()
 	code := m.Run()
 	os.Exit(code)
 }

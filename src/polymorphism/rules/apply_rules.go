@@ -132,6 +132,9 @@ func applyTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 		// Apply composed rule: launch a child for each TypeHint of the composed type.
 		rec = applyCrossRule(state, root, fatherChan)
 		// There shouldn't be any TypeArrow: can not type a variable with it in first order.
+	case typing.ParameterizedType:
+		// Apply app rule, we only need to check if the name of the type exists.
+		rec = applyAppTypeRule(state, root, fatherChan)
 	}
 	return rec
 }

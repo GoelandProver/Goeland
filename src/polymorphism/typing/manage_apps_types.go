@@ -63,8 +63,13 @@ var typeSchemesMap struct {
 	lock  sync.Mutex
 }
 
+var pMap struct {
+	parametersMap map[string][]TypeApp
+	lock          sync.Mutex
+}
+
 const (
-	Fun = iota 
+	Fun  = iota
 	Prop = iota
 )
 
@@ -128,8 +133,8 @@ func SaveConstant(name string, out TypeApp) error {
 		typeSchemesMap.lock.Unlock()
 		return err
 	}
-	
-	// Save the constant in the context. 
+
+	// Save the constant in the context.
 	// The line out.(TypeScheme) shouldn't fail : it's never a TypeVar.
 	typeSchemesMap.tsMap[name] = []App{
 		{out: out, App: out.(TypeScheme)},
@@ -152,7 +157,7 @@ func IsConstant(name string) bool {
 func GetTypeOrDefault(name string, outDefault int, inArgs ...TypeApp) TypeScheme {
 	typeScheme := GetType(name, inArgs...)
 	if typeScheme == nil {
-		var size int 
+		var size int
 		if len(inArgs) == 0 {
 			size = 0
 		} else {
@@ -188,7 +193,7 @@ func GetPolymorphicType(name string, lenVars, lenTerms int) TypeScheme {
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
-			if fun.App.Size() - 1 == lenTerms && len(fun.App.(QuantifiedType).vars) == lenVars {
+			if fun.App.Size()-1 == lenTerms && len(fun.App.(QuantifiedType).vars) == lenVars {
 				typeSchemesMap.lock.Unlock()
 				return fun.App
 			}
@@ -196,6 +201,15 @@ func GetPolymorphicType(name string, lenVars, lenTerms int) TypeScheme {
 	}
 	typeSchemesMap.lock.Unlock()
 	return nil
+}
+
+/* Saves a parameterized type. A TypeApp should be nil if it's unknown */
+func SaveParamereterizedType(name string, types []TypeApp) {
+	pMap.lock.Lock()
+	if _, found := pMap.parametersMap[name]; !found {
+		pMap.parametersMap[name] = types
+	}
+	pMap.lock.Unlock()
 }
 
 /* Gets the constants saved in the context */
@@ -277,5 +291,12 @@ func GetGlobalContext() map[string][]App {
 		globalContext[name] = []App{{App: type_}}
 	}
 	tMap.lock.Unlock()
+
+	// Add parameterized types
+	pMap.lock.Lock()
+	for name := range pMap.parametersMap {
+		globalContext[name] = []App{}
+	}
+	pMap.lock.Unlock()
 	return globalContext
 }
