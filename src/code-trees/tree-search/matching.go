@@ -43,6 +43,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -70,9 +71,12 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 		return m.failure
 
 	}
+	terms := []basictypes.Term{}
+	terms = append(terms, basictypes.TypeAppArrToTerm(formula.(basictypes.Pred).GetTypeVars())...)
+	terms = append(terms, formula.(basictypes.Pred).GetArgs()...)
 
 	// Transform the predicate to a function to make the tool work properly
-	m.terms = []basictypes.Term{basictypes.MakeFun(formula.(basictypes.Pred).GetID(), formula.(basictypes.Pred).GetArgs(), formula.(basictypes.Pred).GetTypeVars(), formula.(basictypes.Pred).GetType())}
+	m.terms = []basictypes.Term{basictypes.MakeFun(formula.(basictypes.Pred).GetID(), terms, []typing.TypeApp{}, formula.(basictypes.Pred).GetType())}
 
 }
 

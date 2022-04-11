@@ -441,6 +441,14 @@ func AreEqualsTypeVarList(tv1, tv2 []typing.TypeVar) bool {
 	return true
 }
 
+func TypeAppArrToTerm(typeApp []typing.TypeApp) []Term {
+	terms := []Term{}
+	for _, type_ := range typeApp {
+		terms = append(terms, TypeAppToTerm(type_))
+	}
+	return terms
+}
+
 /* Creates a Term from a TypeApp to unify it properly */
 func TypeAppToTerm(typeApp typing.TypeApp) Term {
 	var term Term
