@@ -60,9 +60,12 @@ func TestMain(m *testing.M) {
 
 /* Tests equality */
 /* (X, g(a)), (X, f(g(a))) */
-func TestEQ1(t *testing.T) {
+func TestEQ(t *testing.T) {
 	global.SetDebug(true)
 	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
 	g_id := basictypes.MakerId("g")
@@ -103,6 +106,9 @@ func TestEQ1(t *testing.T) {
 func TestEQB1(t *testing.T) {
 	global.SetDebug(true)
 	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
 	g_id := basictypes.MakerId("g")
@@ -126,7 +132,6 @@ func TestEQB1(t *testing.T) {
 	pb := basictypes.MakePred(p_id, []basictypes.Term{b})
 	pc := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{c}))
 
-	initPluginGlobalVariables()
 	lpo.insertTerm(g_id)
 	lpo.insertTerm(f_id)
 	lpo.insertTerm(c_id)
@@ -155,6 +160,9 @@ func TestEQB1(t *testing.T) {
 func TestEQB1_2(t *testing.T) {
 	global.SetDebug(true)
 	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
 	g_id := basictypes.MakerId("g")
@@ -181,7 +189,6 @@ func TestEQB1_2(t *testing.T) {
 	pggab := basictypes.MakePred(p_id, []basictypes.Term{gga, b})
 	pac := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{a, c}))
 
-	initPluginGlobalVariables()
 	lpo.insertTerm(g_id)
 	lpo.insertTerm(f_id)
 	lpo.insertTerm(c_id)
@@ -210,6 +217,9 @@ func TestEQB1_2(t *testing.T) {
 func TestEQB2(t *testing.T) {
 	global.SetDebug(true)
 	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
 	g_id := basictypes.MakerId("g")
@@ -234,7 +244,6 @@ func TestEQB2(t *testing.T) {
 	pggab := basictypes.MakePred(p_id, []basictypes.Term{gga, b})
 	pac := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{a, c}))
 
-	initPluginGlobalVariables()
 	lpo.insertTerm(g_id)
 	lpo.insertTerm(f_id)
 	lpo.insertTerm(c_id)
@@ -262,11 +271,13 @@ func TestEQB2(t *testing.T) {
 /* Tests LPO */
 func TestCreateLPO(t *testing.T) {
 	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
 	f_id := basictypes.MakerId("f")
 	g_id := basictypes.MakerId("g")
 	a_id := basictypes.MakerId("a")
 
-	initPluginGlobalVariables()
 	lpo.insertTerm(g_id)
 	lpo.insertTerm(f_id)
 	lpo.insertTerm(a_id)
@@ -279,6 +290,9 @@ func TestCreateLPO(t *testing.T) {
 func TestConstaintes(t *testing.T) {
 	global.SetDebug(true)
 	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
 	x := basictypes.MakerMeta("X", -1)
@@ -289,17 +303,19 @@ func TestConstaintes(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	initPluginGlobalVariables()
 	lpo.insertTerm(f_id)
 
 	cl.AppendIfConsistant(c)
 	fmt.Printf("CL : %v\n", cl.ToString())
 }
 
-/* COnsistant but useless */
+/* Consistant but useless */
 func TestConstaintes2(t *testing.T) {
 	global.SetDebug(true)
 	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
 	x := basictypes.MakerMeta("X", -1)
@@ -310,17 +326,19 @@ func TestConstaintes2(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	initPluginGlobalVariables()
 	lpo.insertTerm(f_id)
 
 	cl.AppendIfConsistant(c)
 	fmt.Printf("CL : %v\n", cl.ToString())
 }
 
-/* COnsistant and relevant */
+/* Consistant and relevant */
 func TestConstaintes3(t *testing.T) {
 	global.SetDebug(true)
 	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
 	x := basictypes.MakerMeta("X", -1)
@@ -332,7 +350,6 @@ func TestConstaintes3(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	initPluginGlobalVariables()
 	lpo.insertTerm(f_id)
 	lpo.insertTerm(a_id)
 
@@ -344,6 +361,9 @@ func TestConstaintes3(t *testing.T) {
 func TestConstaintes4(t *testing.T) {
 	global.SetDebug(true)
 	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
 	global.PrintDebug("MAIN", "Start of the problem")
 	f_id := basictypes.MakerId("f")
 	x := basictypes.MakerMeta("X", -1)
@@ -356,7 +376,6 @@ func TestConstaintes4(t *testing.T) {
 	c := MakeConstraint(PREC, tp)
 	cl := MakeEmptyConstaintsList()
 
-	initPluginGlobalVariables()
 	lpo.insertTerm(f_id)
 	lpo.insertTerm(a_id)
 
@@ -372,4 +391,99 @@ func TestConstaintes4(t *testing.T) {
 	/*
 	* On accepte les cas comme f(f(x)) < a et a < f(x)
 	 */
+}
+
+/* Not consistant */
+func TestConstaintes5(t *testing.T) {
+	global.SetDebug(true)
+	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
+	global.PrintDebug("MAIN", "Start of the problem")
+	f_id := basictypes.MakerId("f")
+	a_id := basictypes.MakerId("a")
+	a := basictypes.MakerConst(a_id)
+	b_id := basictypes.MakerId("b")
+	b := basictypes.MakerConst(b_id)
+	c_id := basictypes.MakerId("c")
+	c := basictypes.MakerConst(c_id)
+	fab := basictypes.MakerFun(f_id, []basictypes.Term{a, b})
+	fbc := basictypes.MakerFun(f_id, []basictypes.Term{b, c})
+	f_fab_c := basictypes.MakerFun(f_id, []basictypes.Term{fab, c})
+	f_a_fbc := basictypes.MakerFun(f_id, []basictypes.Term{a, fbc})
+
+	tp := MakeTermPair(f_fab_c, f_a_fbc)
+	cst := MakeConstraint(PREC, tp)
+	cl := MakeEmptyConstaintsList()
+
+	lpo.insertTerm(c_id)
+	lpo.insertTerm(b_id)
+	lpo.insertTerm(a_id)
+	lpo.insertTerm(f_id)
+
+	cl.AppendIfConsistant(cst)
+	fmt.Printf("CL : %v\n", cl.ToString())
+}
+
+/* Consistant */
+func TestConstaintes6(t *testing.T) {
+	global.SetDebug(true)
+	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
+	global.PrintDebug("MAIN", "Start of the problem")
+	f_id := basictypes.MakerId("f")
+	a_id := basictypes.MakerId("a")
+	a := basictypes.MakerConst(a_id)
+	b_id := basictypes.MakerId("b")
+	b := basictypes.MakerConst(b_id)
+	c_id := basictypes.MakerId("c")
+	c := basictypes.MakerConst(c_id)
+	fab := basictypes.MakerFun(f_id, []basictypes.Term{a, b})
+	fbc := basictypes.MakerFun(f_id, []basictypes.Term{b, c})
+	f_fab_c := basictypes.MakerFun(f_id, []basictypes.Term{fab, c})
+	f_a_fbc := basictypes.MakerFun(f_id, []basictypes.Term{a, fbc})
+
+	tp := MakeTermPair(f_a_fbc, f_fab_c)
+	cst := MakeConstraint(PREC, tp)
+	cl := MakeEmptyConstaintsList()
+
+	lpo.insertTerm(c_id)
+	lpo.insertTerm(b_id)
+	lpo.insertTerm(a_id)
+	lpo.insertTerm(f_id)
+
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v", lpo.toString()))
+	cl.AppendIfConsistant(cst)
+	fmt.Printf("CL : %v\n", cl.ToString())
+}
+
+/* consistant */
+func TestConstaintes7(t *testing.T) {
+	global.SetDebug(true)
+	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
+	global.PrintDebug("MAIN", "Start of the problem")
+	f_id := basictypes.MakerId("f")
+	x := basictypes.MakerMeta("X", -1)
+	y := basictypes.MakerMeta("Y", -1)
+	z := basictypes.MakerMeta("Z", -1)
+	fxy := basictypes.MakerFun(f_id, []basictypes.Term{x, y})
+	fyz := basictypes.MakerFun(f_id, []basictypes.Term{y, z})
+	f_fxy_z := basictypes.MakerFun(f_id, []basictypes.Term{fxy, z})
+	f_x_fyz := basictypes.MakerFun(f_id, []basictypes.Term{x, fyz})
+
+	tp := MakeTermPair(f_x_fyz, f_fxy_z)
+	cst := MakeConstraint(PREC, tp)
+	cl := MakeEmptyConstaintsList()
+
+	lpo.insertTerm(f_id)
+
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v", lpo.toString()))
+	cl.AppendIfConsistant(cst)
+	fmt.Printf("CL : %v\n", cl.ToString())
 }

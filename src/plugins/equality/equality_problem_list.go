@@ -129,7 +129,10 @@ func BuildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.Dat
 	// global.PrintDebug("BEPML", "Build equality problem multilist")
 	res := MakeEmptyEqualityProblemMultiList()
 	eq := retrieveEqualities(tp.Copy())
+	if len(eq) <= 0 {
+		return res, false
+	}
 	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tp.Copy()), eq.Copy())...)
 	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.Copy())...)
-	return res, (len(eq) > 0)
+	return res, true
 }

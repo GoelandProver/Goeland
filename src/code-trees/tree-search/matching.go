@@ -39,7 +39,6 @@
 package treesearch
 
 import (
-	"fmt"
 	"reflect"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -53,7 +52,7 @@ import (
 func (n Node) Unify(formula basictypes.Form) (bool, []treetypes.MatchingSubstitutions) {
 	machine := makeMachine()
 	res := machine.unify(n, formula)
-	global.PrintDebug("Unify", fmt.Sprintf("Res = %v", !reflect.DeepEqual(machine.failure, res)))
+	// global.PrintDebug("Unify", fmt.Sprintf("Res = %v", !reflect.DeepEqual(machine.failure, res)))
 	return !reflect.DeepEqual(machine.failure, res), res // return found, res
 }
 

@@ -195,7 +195,6 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 
 func orderSubstForRetrieve(s treetypes.Substitutions, M1, M2 basictypes.Meta) treetypes.Substitutions {
 	new_subst := treetypes.MakeEmptySubstitution()
-	global.PrintDebug("OSFR", fmt.Sprintf("Subst (begin) : %v", s.ToString()))
 	for k, v := range s {
 		if !k.Equals(M1) && !k.Equals(M2) {
 			if !v.IsMeta() {
@@ -210,6 +209,5 @@ func orderSubstForRetrieve(s treetypes.Substitutions, M1, M2 basictypes.Meta) tr
 	}
 	treetypes.EliminateMeta(&new_subst)
 	treetypes.Eliminate(&new_subst)
-	global.PrintDebug("OSFR", fmt.Sprintf("Subst (begin) : %v", new_subst.ToString()))
 	return new_subst
 }

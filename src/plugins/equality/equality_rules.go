@@ -59,14 +59,14 @@ import (
 **/
 func equalityReasoningMultiList(epml EqualityProblemMultiList) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning multilist : %v", len(epml)))
-	global.PrintDebug("ERML", fmt.Sprintf("LPO : %v", lpo.toString()))
+	// global.PrintDebug("ERML", fmt.Sprintf("LPO : %v", lpo.toString()))
 	substs_res := []treetypes.Substitutions{}
 	found := false
 
 	for _, epl := range epml {
-		// global.PrintDebug("ERML", fmt.Sprintf("iteration on EPL : %v", epl.ToString()))
+		global.PrintDebug("ERML", fmt.Sprintf("iteration on EPL : %v", epl.ToString()))
 		if has_solution, subst_res_tmp := equalityReasoningList(epl); has_solution {
-			// global.PrintDebug("ERML", "Solution found for one EPL !")
+			global.PrintDebug("ERML", fmt.Sprintf("Solution found for one EPL : %v !", treetypes.SubstListToString(subst_res_tmp)))
 			found = true
 			for subst_res_tmp_element := range subst_res_tmp {
 				substs_res = treetypes.AppendIfNotContainsSubst(substs_res, subst_res_tmp[subst_res_tmp_element])
@@ -92,7 +92,7 @@ func equalityReasoningList(epl EqualityProblemList) (bool, []treetypes.Substitut
 	for _, ep := range epl {
 		// global.PrintDebug("ERL", fmt.Sprintf("Iteration on EP : %v", ep.ToString()))
 		if has_solution, subst_res_tmp := equalityReasoningProblemWithApplySubst(ep, substs_res); has_solution {
-			// global.PrintDebug("ERL", "Solution found for on EP !")
+			// global.PrintDebug("ERL", fmt.Sprintf("Solution found for on EP : %v !", treetypes.SubstListToString(subst_res_tmp)))
 			substs_res = append(substs_res, subst_res_tmp...)
 		} else {
 			return false, []treetypes.Substitutions{treetypes.Failure()}
@@ -148,32 +148,34 @@ func equalityReasoningProblemWithApplySubst(ep EqualityProblem, sl []treetypes.S
 
 // Brancher pour règles
 func equalityReasoningProblem(ep EqualityProblem, parent chan []treetypes.Substitutions, father_id uint64) {
-	// global.PrintDebug("ERP", fmt.Sprintf("Child of %v", father_id))
-	// global.PrintDebug("ERP", fmt.Sprintf("EP : %v", ep.ToString()))
+	global.PrintDebug("ERP", fmt.Sprintf("Child of %v", father_id))
+	global.PrintDebug("ERP", fmt.Sprintf("EP : %v", ep.ToString()))
 	substs_res := []treetypes.Substitutions{}
 
 	if ok, subst_found := checkUnif(ep.GetS(), ep.GetT()); ok {
-		// global.PrintDebug("ERP", "Unif found !")
+		global.PrintDebug("ERP", "Unif found !")
 		is_consistant, new_subst := ep.GetC().isConsistant(subst_found)
 		if is_consistant {
-			// global.PrintDebug("ERP", fmt.Sprintf("Unif found and consistant : %v", subst_found.ToString()))
+			global.PrintDebug("ERP", fmt.Sprintf("Unif found and consistant : %v", subst_found.ToString()))
 			substs_res = append(substs_res, new_subst)
+		} else {
+			global.PrintDebug("ERP", fmt.Sprintf("Unif found but not consistant : %v", subst_found.ToString()))
 		}
 	} else {
-		// global.PrintDebug("ERP", "Unification not found")
+		global.PrintDebug("ERP", "Unification not found")
 	}
 
 	if checkStopCases(ep) {
-		// global.PrintDebug("ERP", "Stop case found !")
+		global.PrintDebug("ERP", "Stop case found !")
 		parent <- substs_res
 		return
 	} else {
-		// global.PrintDebug("ERP", "Stop case not found")
+		global.PrintDebug("ERP", "Stop case not found")
 	}
 
-	// global.PrintDebug("ERP", "Try apply rules !")
+	global.PrintDebug("ERP", "Try apply rules !")
 	rules_available := tryApplyRules(ep)
-	// global.PrintDebug("ERP", fmt.Sprintf("There is %v rules available : %v ", len(rules_available), RuleSTructListTString(rules_available)))
+	global.PrintDebug("ERP", fmt.Sprintf("There is %v rules available : %v ", len(rules_available), RuleSTructListTString(rules_available)))
 
 	// TODO : select
 	tab_chan := [](chan []treetypes.Substitutions){}
@@ -340,7 +342,7 @@ func checkUnifInTree(t basictypes.Term, tree datastruct.DataStructure) (bool, []
 
 /*** Functions apply rules ***/
 func applyRule(rs ruleStruct, ep EqualityProblem, parent chan []treetypes.Substitutions, father_id uint64) {
-	// global.PrintDebug("EQ-AR", fmt.Sprintf("Child of %v", father_id))
+	global.PrintDebug("EQ-AR", fmt.Sprintf("Child of %v", father_id))
 	// global.PrintDebug("EQ-AR", fmt.Sprintf("EQ before applying rule %v", ep.ToString()))
 	// global.PrintDebug("EQ-AR", fmt.Sprintf("Apply rule %v", rs.ToString()))
 	switch rs.getRule() {
