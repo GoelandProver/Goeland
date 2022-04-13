@@ -338,7 +338,7 @@ func TestUnaryProp(t *testing.T) {
 func TestTPTPConversionFunctions(t *testing.T) {
 	ls := []struct {
 		name string
-		out  TypeApp
+		out  TypeScheme
 	}{
 		{"to_int", tInt},
 		{"to_rat", tRat},
@@ -420,7 +420,7 @@ func testUnaryProp(name string) error {
 	return nil
 }
 
-func testConversion(name string, outType TypeApp) error {
+func testConversion(name string, outType TypeScheme) error {
 	out := GetType(name, tInt)
 	if !out.Equals(MkTypeArrow(tInt, outType)) {
 		return fmt.Errorf("Error: %s: int > int not defined when it should be.", name)

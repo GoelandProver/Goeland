@@ -57,12 +57,12 @@ func TestMain(m *testing.M) {
 	typing.SaveTypeScheme(
 		"P",
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultProp(),
+		typing.DefaultPropType(0),
 	)
 	typing.SaveTypeScheme(
 		"Q",
 		typing.MkParameterizedType("map", []typing.TypeApp{typing.MkTypeHint("int"), typing.MkTypeHint("int")}),
-		typing.DefaultProp(),
+		typing.DefaultPropType(0),
 	)
 	typing.SaveConstant("2", typing.MkTypeHint("int"))
 	typing.SaveConstant("3", typing.MkTypeHint("int"))
@@ -90,7 +90,7 @@ func TestSimpleDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultProp(),
+		typing.DefaultPropType(0),
 	)
 	// Pred should be of type (int * int) -> o
 	if !typing.GetOutType(form.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) ||
@@ -125,7 +125,7 @@ func TestNegDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultProp(),
+		typing.DefaultPropType(0),
 	)
 	// Pred should be of type (int * int) -> o
 	if !newPred.GetType().Equals(expected) {
@@ -166,7 +166,7 @@ func TestBinaryDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultProp(),
+		typing.DefaultPropType(0),
 	)
 	// Pred should be of type (int * int) -> o
 	if !F1.GetType().Equals(expected) {
@@ -244,7 +244,7 @@ func TestQuantDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultProp(),
+		typing.DefaultPropType(0),
 	)
 	// Pred should be of type (int * int) -> o
 	if !newForm.GetType().Equals(expected) {
@@ -311,7 +311,7 @@ func TestNAryDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultProp(),
+		typing.DefaultPropType(0),
 	)
 	for _, newForm := range newForms {
 		// Pred should be of type (int * int) -> o
@@ -394,7 +394,7 @@ func TestBabyNoErr(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultProp(),
+		typing.DefaultPropType(0),
 	)
 	if !typing.GetOutType(form.GetType()).ToTypeScheme().Equals(typing.DefaultPropType(0)) ||
 		!form.GetType().Equals(expected) {
@@ -431,7 +431,7 @@ func TestPolymorphicExample(t *testing.T) {
 		[]typing.TypeVar{typeVar},
 		typing.MkTypeArrow(
 			typing.MkTypeCross(typeVar, typeVar),
-			typing.DefaultProp(),
+			typing.DefaultPropType(0),
 		),
 	)
 

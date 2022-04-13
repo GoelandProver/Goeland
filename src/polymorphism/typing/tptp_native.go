@@ -69,7 +69,6 @@ func InitTPTPArithmetic() {
 	recordBinaryProp("greater")
 	recordBinaryProp("greatereq")
 
-	
 	// 2 - Binary input arguments
 	recordBinaryInArgs("sum")
 	recordBinaryInArgs("difference")
@@ -126,23 +125,23 @@ func recordUnaryProp(name string) {
 	SaveTypeScheme(name, tReal, defaultProp)
 }
 
-func recordConversion(name string, out TypeApp) {
+func recordConversion(name string, out TypeScheme) {
 	SaveTypeScheme(name, tInt, out)
 	SaveTypeScheme(name, tRat, out)
 	SaveTypeScheme(name, tReal, out)
 }
 
-func IsInt(tType TypeScheme) bool  { return tType.Equals(tInt) }
-func IsRat(tType TypeScheme) bool  { return tType.Equals(tRat) }
-func IsReal(tType TypeScheme) bool { return tType.Equals(tReal) }
-func DefaultType() TypeApp         { return defaultType }
-func DefaultProp() TypeApp         { return defaultProp }
-func DefaultFunType(len int) TypeScheme { return defaultAppType(len, defaultType) }
+func IsInt(tType TypeScheme) bool        { return tType.Equals(tInt) }
+func IsRat(tType TypeScheme) bool        { return tType.Equals(tRat) }
+func IsReal(tType TypeScheme) bool       { return tType.Equals(tReal) }
+func DefaultType() TypeApp               { return defaultType }
+func DefaultProp() TypeApp               { return defaultProp }
+func DefaultFunType(len int) TypeScheme  { return defaultAppType(len, defaultType) }
 func DefaultPropType(len int) TypeScheme { return defaultAppType(len, defaultProp) }
 
-func defaultAppType(len int, out TypeApp) TypeScheme {
+func defaultAppType(len int, out TypeScheme) TypeScheme {
 	if len == 0 {
-		return out.ToTypeScheme()
+		return out
 	} else if len == 1 {
 		return MkTypeArrow(defaultType, out)
 	} else {

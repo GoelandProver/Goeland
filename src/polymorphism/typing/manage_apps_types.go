@@ -53,7 +53,7 @@ import (
 /* Maps an application: input type scheme and output type scheme. */
 type App struct {
 	in  TypeApp
-	out TypeApp
+	out TypeScheme
 	App TypeScheme
 }
 
@@ -74,7 +74,7 @@ const (
 )
 
 /* Saves a TypeScheme in the map of schemes. */
-func SaveTypeScheme(name string, in TypeApp, out TypeApp) error {
+func SaveTypeScheme(name string, in TypeApp, out TypeScheme) error {
 	tArrow := MkTypeArrow(in, out)
 
 	// If the map contains the name of the function/predicate, a type scheme has already been
@@ -122,12 +122,12 @@ func SavePolymorphScheme(name string, scheme TypeScheme) error {
 }
 
 /* Saves the TypeScheme of a constant function */
-func SaveConstant(name string, out TypeApp) error {
+func SaveConstant(name string, out TypeScheme) error {
 	// Check if the constant is already saved in the context
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		var err error
-		if !arr[0].out.ToTypeScheme().Equals(out.ToTypeScheme()) {
+		if !arr[0].out.Equals(out) {
 			err = fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
 		}
 		typeSchemesMap.lock.Unlock()
@@ -137,7 +137,7 @@ func SaveConstant(name string, out TypeApp) error {
 	// Save the constant in the context.
 	// The line out.(TypeScheme) shouldn't fail : it's never a TypeVar.
 	typeSchemesMap.tsMap[name] = []App{
-		{out: out, App: out.(TypeScheme)},
+		{out: out, App: out},
 	}
 
 	typeSchemesMap.lock.Unlock()
