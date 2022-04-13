@@ -78,14 +78,15 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 
 	// Affect new type scheme to the prooftree
 	root.typeScheme = typeScheme
+	primitives := typeScheme.GetPrimitives()
 
 	// Type predicate or function
 	if whatIsSet(state.consequence) == formIsSet {
 		fTyped := btypes.MakePred(id, terms, vars, typeScheme)
-		return reconstructForm(launchChildren(createAppChildren(state, vars, terms), root, fatherChan), fTyped)
+		return reconstructForm(launchChildren(createAppChildren(state, vars, terms, primitives), root, fatherChan), fTyped)
 	} else {
 		fTyped := btypes.MakeFun(id, terms, vars, typeScheme)
-		return reconstructTerm(launchChildren(createAppChildren(state, vars, terms), root, fatherChan), fTyped)
+		return reconstructTerm(launchChildren(createAppChildren(state, vars, terms, primitives), root, fatherChan), fTyped)
 	}
 }
 
@@ -98,7 +99,7 @@ func applyVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	if _, ok := getTermFromLocalContext(state.localContext, state.consequence.t); !ok {
 		return Reconstruct{
 			result: false,
-			err:    fmt.Errorf("Term %s not found in the local context", state.consequence.t.ToString()),
+			err:    fmt.Errorf("term %s not found in the local context", state.consequence.t.ToString()),
 		}
 	}
 
@@ -138,7 +139,7 @@ func getArgsTypes(context GlobalContext, terms []btypes.Term) (typing.TypeApp, e
 				return nil, err
 			}
 			if typeScheme == nil {
-				return nil, fmt.Errorf("Function %s not found in global context.", tmpTerm.GetName())
+				return nil, fmt.Errorf("function %s not found in global context", tmpTerm.GetName())
 			}
 			types = append(types, typing.GetOutType(typeScheme))
 		case btypes.Var:
@@ -155,7 +156,7 @@ func getArgsTypes(context GlobalContext, terms []btypes.Term) (typing.TypeApp, e
 }
 
 /* Creates children for app rule */
-func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term) []Sequent {
+func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term, primitives []typing.TypeApp) []Sequent {
 	children := []Sequent{}
 
 	// 1 for each type in the vars
@@ -168,7 +169,15 @@ func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term
 	}
 
 	// 1 for each term
-	for _, term := range terms {
+	for i, term := range terms {
+		switch t := term.(type) {
+		case btypes.Fun:
+			term = btypes.MakeFun(t.GetID(), t.GetArgs(), t.GetTypeVars(), primitives[i].(typing.TypeScheme))
+		case btypes.Meta:
+			term = btypes.MakeMeta(t.GetIndex(), t.GetName(), t.GetFormula(), primitives[i])
+		case btypes.Var:
+			term = btypes.MakeVar(t.GetIndex(), t.GetName(), primitives[i])
+		}
 		children = append(children, Sequent{
 			globalContext: state.globalContext,
 			localContext:  state.localContext.copy(),

@@ -61,7 +61,7 @@ func applyRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reco
 	if !onlyOneConsequenceIsSet(state) {
 		return Reconstruct{
 			result: false,
-			err:    fmt.Errorf("Multiple elements on the right-side of the sequent. Cannot type this system."),
+			err:    fmt.Errorf("multiple elements on the right-side of the sequent. Cannot type this system"),
 		}
 	}
 

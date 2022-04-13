@@ -173,7 +173,7 @@ func applyAppTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruc
 	if !state.globalContext.parameterizedTypesContains(type_.ToString()) {
 		return Reconstruct{
 			result: false,
-			err:    fmt.Errorf("Parameterized Type %s not in context", type_.ToString()),
+			err:    fmt.Errorf("parameterized Type %s not in context", type_.ToString()),
 		}
 	}
 

@@ -48,9 +48,9 @@ import (
  **/
 
 type Reconstruct struct {
-	result bool 
+	result bool
 	forms  []btypes.Form
-	terms  []btypes.Term 
+	terms  []btypes.Term
 	err    error
 }
 
@@ -114,10 +114,10 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 		index, value, _ := reflect.Select(cases)
 		remaining--
 		if index == indexQuit {
-			errorFound = fmt.Errorf("Father detected an error.")
+			errorFound = fmt.Errorf("father detected an error")
 		} else {
 			res := value.Interface().(Reconstruct)
-			hasAnswered[index] = true 
+			hasAnswered[index] = true
 			if !res.result {
 				errorFound = res.err
 			} else {
@@ -140,7 +140,7 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 
 /* Makes the array of cases from the channels */
 func makeCases(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) []reflect.SelectCase {
-	cases := make([]reflect.SelectCase, len(chansTab) + 1)
+	cases := make([]reflect.SelectCase, len(chansTab)+1)
 	// Children
 	for i, chan_ := range chansTab {
 		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(chan_)}
@@ -171,9 +171,9 @@ func treatReturns(res Reconstruct) (btypes.Form, error) {
 	} else {
 		if len(res.forms) == 0 {
 			return nil, res.err
-		} 
+		}
 		if len(res.forms) > 1 {
-			return nil, fmt.Errorf("More than one formula is returned by the typing system.")
+			return nil, fmt.Errorf("more than one formula is returned by the typing system")
 		}
 		return res.forms[0], res.err
 	}

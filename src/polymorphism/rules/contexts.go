@@ -162,7 +162,7 @@ func (gc GlobalContext) getSimpleTypeScheme(name string, termsType typing.TypeAp
 		if typeScheme, found := gc.simpleSchemes[name]; found {
 			return typeScheme[0], nil
 		} else {
-			return nil, fmt.Errorf("No constant function with the name %s in the global context.", name)
+			return nil, fmt.Errorf("no constant function with the name %s in the global context", name)
 		}
 	}
 
@@ -173,7 +173,7 @@ func (gc GlobalContext) getSimpleTypeScheme(name string, termsType typing.TypeAp
 			}
 		}
 	}
-	return nil, fmt.Errorf("No predicate/function with the name %s in the global context.", name)
+	return nil, fmt.Errorf("no predicate/function with the name %s in the global context", name)
 }
 
 /* Gets the polymorphic type scheme corresponding to the input. */
@@ -185,7 +185,7 @@ func (gc GlobalContext) getPolymorphicTypeScheme(name string, varsLen, termsLen 
 			}
 		}
 	}
-	return nil, fmt.Errorf("No predicate/function with the name %s in the global context.", name)
+	return nil, fmt.Errorf("no predicate/function with the name %s in the global context", name)
 }
 
 /* Returns true if the TypeHint is found in the context */

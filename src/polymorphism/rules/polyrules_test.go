@@ -478,6 +478,51 @@ func TestPolymorphicExample(t *testing.T) {
 	// GGs!
 }
 
+func TestPolymorphicFailureExample(t *testing.T) {
+	// Creation of the exemple: ∀α : Type, ∀x, y : α.P (α, x, y)
+	// Global context: Φ : Πα : Type.α × α → o
+	typeVar := typing.MkTypeVar("α")
+	typeScheme := typing.MkQuantifiedType(
+		[]typing.TypeVar{typeVar},
+		typing.MkTypeArrow(
+			typing.MkTypeCross(typeVar, typeVar),
+			typing.DefaultPropType(0),
+		),
+	)
+
+	typing.SavePolymorphScheme("Φ", typeScheme)
+
+	// Check if it's saved properly
+	polymorphicScheme := typing.GetPolymorphicType("Φ", 1, 2)
+
+	if polymorphicScheme == nil {
+		t.Fatalf("Couldn't find Φ's polymorphic type scheme")
+	}
+
+	// Everything is fine, let's create the predicate
+	x := btypes.MakerVar("x", typing.MkTypeHint("int"))
+	y := btypes.MakerVar("y", typeVar)
+
+	form := btypes.MakeForm(btypes.MakeAllType(
+		[]typing.TypeVar{typeVar},
+		btypes.MakeAll(
+			[]btypes.Var{x, y},
+			btypes.MakePred(
+				btypes.MakerId("Φ"),
+				[]btypes.Term{x, y},
+				[]typing.TypeApp{typeVar},
+			),
+		),
+	))
+
+	// Try to type this
+
+	_, err := WellFormedVerification(form, false)
+	if err == nil {
+		t.Fatalf("Never encountered error when system is not well-typed.")
+	}
+}
+
 // Standalone test (do not execute with others)
 func TestAriWellTyped(t *testing.T) {
 	t.SkipNow()

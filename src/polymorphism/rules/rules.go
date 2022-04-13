@@ -40,7 +40,6 @@ import (
 	"reflect"
 
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -172,7 +171,7 @@ func reconstructTerm(reconstruction Reconstruct, baseTerm btypes.Term) Reconstru
 /* Utils for reconstructions function */
 
 /* Removes all the quantifiers of form of the same type of quant. */
-func unquantify(form basictypes.Form, quant btypes.Form) btypes.Form {
+func unquantify(form btypes.Form, quant btypes.Form) btypes.Form {
 	for reflect.TypeOf(form) == reflect.TypeOf(quant) {
 		switch quant.(type) {
 		case btypes.All:
