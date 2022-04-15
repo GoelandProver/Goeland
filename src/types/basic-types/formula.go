@@ -756,12 +756,12 @@ func RenameVariables(f Form) Form {
 
 		for _, v := range nf.GetVarList() {
 			new_var := MakerNewVar(v.GetName())
-			new_var = MakerVar(new_var.GetName() + strconv.Itoa(new_var.GetIndex()))
+			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()))
 			new_vl = replaceVarInVarList(new_vl, v, new_var)
-			new_form = ReplaceVarByTerm(RenameVariables(new_form), v, new_var)
+			new_form = ReplaceVarByTerm(new_form, v, new_var)
 
 		}
-		return MakeEx(f.GetIndex(), new_vl, new_form)
+		return MakeEx(f.GetIndex(), new_vl, RenameVariables(new_form))
 
 	case All:
 		new_vl := copyVarList(nf.GetVarList())
@@ -769,12 +769,12 @@ func RenameVariables(f Form) Form {
 
 		for _, v := range nf.GetVarList() {
 			new_var := MakerNewVar(v.GetName())
-			new_var = MakerVar(new_var.GetName() + strconv.Itoa(new_var.GetIndex()))
+			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()))
 			new_vl = replaceVarInVarList(new_vl, v, new_var)
-			new_form = ReplaceVarByTerm(RenameVariables(new_form), v, new_var)
+			new_form = ReplaceVarByTerm(new_form, v, new_var)
 
 		}
-		return MakeAll(f.GetIndex(), new_vl, new_form)
+		return MakeAll(f.GetIndex(), new_vl, RenameVariables(new_form))
 
 	default:
 		return f

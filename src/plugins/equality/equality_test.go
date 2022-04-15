@@ -61,7 +61,7 @@ func TestMain(m *testing.M) {
 /* Tests equality */
 /* (X, g(a)), (X, f(g(a))) */
 func TestEQ(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -104,7 +104,7 @@ func TestEQ(t *testing.T) {
 
 /* rien, et X = Y */
 func TestEQB1(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -158,7 +158,7 @@ func TestEQB1(t *testing.T) {
 
 /* (X, a), (Y, a) */
 func TestEQB1_2(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -215,7 +215,7 @@ func TestEQB1_2(t *testing.T) {
 
 /* (X, a) */
 func TestEQB2(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -288,7 +288,7 @@ func TestCreateLPO(t *testing.T) {
 /* Tets constraintes */
 /* Not consistant */
 func TestConstaintes(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -311,7 +311,7 @@ func TestConstaintes(t *testing.T) {
 
 /* Consistant but useless */
 func TestConstaintes2(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -334,7 +334,7 @@ func TestConstaintes2(t *testing.T) {
 
 /* Consistant and relevant */
 func TestConstaintes3(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -359,7 +359,7 @@ func TestConstaintes3(t *testing.T) {
 
 /* First constraint is consistnt, second not with the first one */
 func TestConstaintes4(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -395,7 +395,7 @@ func TestConstaintes4(t *testing.T) {
 
 /* Not consistant */
 func TestConstaintes5(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -428,7 +428,7 @@ func TestConstaintes5(t *testing.T) {
 
 /* Consistant */
 func TestConstaintes6(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -462,7 +462,7 @@ func TestConstaintes6(t *testing.T) {
 
 /* consistant */
 func TestConstaintes7(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebug(false)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
