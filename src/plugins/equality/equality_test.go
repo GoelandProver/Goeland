@@ -61,7 +61,7 @@ func TestMain(m *testing.M) {
 /* Tests equality */
 /* (X, g(a)), (X, f(g(a))) */
 func TestEQ(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -104,7 +104,7 @@ func TestEQ(t *testing.T) {
 
 /* rien, et X = Y */
 func TestEQB1(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -158,7 +158,7 @@ func TestEQB1(t *testing.T) {
 
 /* (X, a), (Y, a) */
 func TestEQB1_2(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -215,7 +215,7 @@ func TestEQB1_2(t *testing.T) {
 
 /* (X, a) */
 func TestEQB2(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -268,6 +268,115 @@ func TestEQB2(t *testing.T) {
 
 }
 
+/* 2 solutions */
+/* {<[Z1 ≈ c1, Z2 ≈ c1], a, b> • {}}
+(z1 =a, z2= b ou z1 = b, z2 = a) */
+func TestEQ2(t *testing.T) {
+	global.SetDebug(true)
+	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
+	global.PrintDebug("MAIN", "Start of the problem")
+	a_id := basictypes.MakerId("a")
+	b_id := basictypes.MakerId("b")
+	c1_id := basictypes.MakerId("c1")
+	p_id := basictypes.MakerId("P")
+
+	a := basictypes.MakerConst(a_id)
+	b := basictypes.MakerConst(b_id)
+	c1 := basictypes.MakerConst(c1_id)
+	z1 := basictypes.MakerMeta("Z1", -1)
+	z2 := basictypes.MakerMeta("Z2", -1)
+
+	pa := basictypes.MakePred(p_id, []basictypes.Term{a})
+	pb := basictypes.MakePred(p_id, []basictypes.Term{b})
+	neq_a_b := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{a, b})
+	eq_z1_c2 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{z1, c1})
+	eq_z2_c1 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{z2, c1})
+
+	lpo.insertTerm(c1_id)
+	lpo.insertTerm(b_id)
+	lpo.insertTerm(a_id)
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
+
+	lf_b2 := basictypes.FormList{pa, pb, neq_a_b, eq_z1_c2, eq_z2_c1}
+
+	global.PrintDebug("MAIN", fmt.Sprintf("LF : %v\n", lf_b2.ToString()))
+
+	var tp, tn datastruct.DataStructure
+	tp = new(treesearch.Node)
+	tn = new(treesearch.Node)
+	tp = tp.MakeDataStruct(lf_b2, true)
+	tn = tn.MakeDataStruct(lf_b2, false)
+
+	res, subst := EqualityReasoning(tp, tn, lf_b2)
+
+	global.PrintDebug("MAIN", fmt.Sprintf("RES : %v", res))
+	global.PrintDebug("MAIN", fmt.Sprintf("SUBST : %v", treetypes.SubstListToString(subst)))
+}
+
+/* 18 solutions */
+/* {<[Z1 ≈ c2, Z2 ≈ c1, Z3 ≈ c1], b, c> • {}}
+*  {<[Z1 ≈ c2, Z2 ≈ c1, Z3 ≈ c1], a, c> • {}}
+* {<[Z1 ≈ c2, Z2 ≈ c1, Z3 ≈ c1], a, b> • {}}
+**/
+func TestEQ3(t *testing.T) {
+	global.SetDebug(true)
+	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
+	global.PrintDebug("MAIN", "Start of the problem")
+	a_id := basictypes.MakerId("a")
+	b_id := basictypes.MakerId("b")
+	c_id := basictypes.MakerId("c")
+	c1_id := basictypes.MakerId("c1")
+	c2_id := basictypes.MakerId("c2")
+	p_id := basictypes.MakerId("P")
+
+	a := basictypes.MakerConst(a_id)
+	b := basictypes.MakerConst(b_id)
+	c := basictypes.MakerConst(c_id)
+	c1 := basictypes.MakerConst(c1_id)
+	c2 := basictypes.MakerConst(c2_id)
+	z1 := basictypes.MakerMeta("Z1", -1)
+	z2 := basictypes.MakerMeta("Z2", -1)
+	z3 := basictypes.MakerMeta("Z3", -1)
+
+	pa := basictypes.MakePred(p_id, []basictypes.Term{a})
+	pb := basictypes.MakePred(p_id, []basictypes.Term{b})
+	not_pc := basictypes.RefuteForm(basictypes.MakePred(p_id, []basictypes.Term{c}))
+	neq_a_b := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{a, b})
+	eq_z1_c2 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{z1, c2})
+	eq_z2_c1 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{z2, c1})
+	eq_z3_c1 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{z3, c1})
+
+	lpo.insertTerm(c2_id)
+	lpo.insertTerm(c1_id)
+	lpo.insertTerm(c_id)
+	lpo.insertTerm(b_id)
+	lpo.insertTerm(a_id)
+	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
+
+	lf_b2 := basictypes.FormList{pa, pb, not_pc, neq_a_b, eq_z1_c2, eq_z2_c1, eq_z3_c1}
+
+	global.PrintDebug("MAIN", fmt.Sprintf("LF : %v\n", lf_b2.ToString()))
+
+	var tp, tn datastruct.DataStructure
+	tp = new(treesearch.Node)
+	tn = new(treesearch.Node)
+	tp = tp.MakeDataStruct(lf_b2, true)
+	tn = tn.MakeDataStruct(lf_b2, false)
+
+	global.SetDebug(false)
+	res, subst := EqualityReasoning(tp, tn, lf_b2)
+	global.SetDebug(true)
+
+	global.PrintDebug("MAIN", fmt.Sprintf("RES : %v", res))
+	global.PrintDebug("MAIN", fmt.Sprintf("SUBST : %v", treetypes.SubstListToString(subst)))
+}
+
 /* Tests LPO */
 func TestCreateLPO(t *testing.T) {
 	global.SetStart(time.Now())
@@ -288,7 +397,7 @@ func TestCreateLPO(t *testing.T) {
 /* Tets constraintes */
 /* Not consistant */
 func TestConstaintes(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -311,7 +420,7 @@ func TestConstaintes(t *testing.T) {
 
 /* Consistant but useless */
 func TestConstaintes2(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -334,7 +443,7 @@ func TestConstaintes2(t *testing.T) {
 
 /* Consistant and relevant */
 func TestConstaintes3(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -359,7 +468,7 @@ func TestConstaintes3(t *testing.T) {
 
 /* First constraint is consistnt, second not with the first one */
 func TestConstaintes4(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -395,7 +504,7 @@ func TestConstaintes4(t *testing.T) {
 
 /* Not consistant */
 func TestConstaintes5(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -426,9 +535,9 @@ func TestConstaintes5(t *testing.T) {
 	fmt.Printf("CL : %v\n", cl.ToString())
 }
 
-/* Consistant */
+/* Consistant but not relevant */
 func TestConstaintes6(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
@@ -460,9 +569,9 @@ func TestConstaintes6(t *testing.T) {
 	fmt.Printf("CL : %v\n", cl.ToString())
 }
 
-/* consistant */
+/* consistant but not relevant */
 func TestConstaintes7(t *testing.T) {
-	global.SetDebug(false)
+	global.SetDebug(true)
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()

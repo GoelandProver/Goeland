@@ -179,25 +179,25 @@ func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LP
 func compareMetaMeta(m1, m2 basictypes.Meta) (int, bool, basictypes.Term, basictypes.Term) {
 	//global.PrintDebug("CMM", "Meta - Meta")
 	if m1.Equals(m2) {
-		//global.PrintDebug("CMM", "Meta - Meta - 0, true, nil, nil")
+		// global.PrintDebug("CMM", "Meta - Meta - 0, true, nil, nil")
 		return 0, true, nil, nil
 	} else {
-		//global.PrintDebug("CMM", fmt.Sprintf("Meta - Meta - 1, false, %v, %v", m1.ToString(), m2.ToString()))
+		// global.PrintDebug("CMM", fmt.Sprintf("Meta - Meta - 1, false, %v, %v", m1.ToString(), m2.ToString()))
 		return 1, false, m1, m2
 	}
 }
 
 /* Compare two functions */
 func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, basictypes.Term) {
-	// //global.PrintDebug("CFF", "Fun - Fun")
+	// global.PrintDebug("CFF", "Fun - Fun")
 	f := lpo.Get(s.GetID())
 	g := lpo.Get(t.GetID())
 	if f == -1 {
-		//global.PrintDebug("Get", fmt.Sprintf("Error : Id not in the LPO : %v", s.GetID().ToString()))
+		// global.PrintDebug("Get", fmt.Sprintf("Error : Id not in the LPO : %v", s.GetID().ToString()))
 		fmt.Printf("Error : id not in the LPO : %v\n", s.GetID().ToString())
 	}
 	if g == -1 {
-		//global.PrintDebug("Get", fmt.Sprintf("Error : Id not in the LPO : %v", t.GetID().ToString()))
+		// global.PrintDebug("Get", fmt.Sprintf("Error : Id not in the LPO : %v", t.GetID().ToString()))
 		fmt.Printf("Error : id not in the LPO : %v\n", t.GetID().ToString())
 	}
 
@@ -233,7 +233,7 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, ba
 
 	// f == g
 	if f == g {
-		//global.PrintDebug("CFF", "f == g")
+		// global.PrintDebug("CFF", "f == g")
 		if len(s.GetArgs()) != len(t.GetArgs()) {
 			fmt.Printf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString())
 			return 0, false, nil, nil
@@ -244,11 +244,11 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, ba
 		val_res := 0
 		// First loop : while equals
 		for i < n && !stopped {
-			//global.PrintDebug("CFF", "-----------")
+			// global.PrintDebug("CFF", "-----------")
 			res, is_comparable, t1, t2 := lpo.compare(s.GetArgs()[i], t.GetArgs()[i])
 			if !is_comparable {
-				//global.PrintDebug("CFF", "0, true")
-				//global.PrintDebug("CFF", "-----------")
+				// global.PrintDebug("CFF", "0, false")
+				// global.PrintDebug("CFF", "-----------")
 				return 0, false, t1, t2
 			}
 			if res != 0 {
@@ -256,10 +256,10 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, ba
 				val_res = res
 			}
 			i++
-			//global.PrintDebug("CFF", "-----------")
+			// global.PrintDebug("CFF", "-----------")
 		}
 		if !stopped {
-			//global.PrintDebug("CFF", "0, true")
+			// global.PrintDebug("CFF", "0, true")
 			return 0, true, nil, nil
 		}
 
@@ -322,6 +322,7 @@ func (lpo LPO) isEmpty() bool {
 func (lpo LPO) toString() string {
 	res := "{"
 	cpt := 0
+	lock_lpo.Lock()
 	for term, value := range lpo {
 		res += "[" + term.ToString() + "] : " + strconv.Itoa(value)
 		if cpt < len(lpo)-1 {
@@ -329,6 +330,7 @@ func (lpo LPO) toString() string {
 		}
 		cpt++
 	}
+	lock_lpo.Unlock()
 	return res + "}"
 }
 

@@ -136,7 +136,7 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 				if !final_subst.Equals(treetypes.Failure()) {
 					matching = append(matching, treetypes.MakeMatchingSubstitutions(f, final_subst))
 				} else {
-					global.PrintDebug("UX", "Error try substitute")
+					// global.PrintDebug("UX", "Error try substitute")
 				}
 			}
 		}
