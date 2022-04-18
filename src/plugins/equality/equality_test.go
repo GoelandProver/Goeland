@@ -408,14 +408,14 @@ func TestConstaintes(t *testing.T) {
 	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
 	ffx := basictypes.MakerFun(f_id, []basictypes.Term{fx})
 
-	tp := MakeTermPair(ffx, x)
+	tp := makeTermPair(ffx, x)
 	c := MakeConstraint(PREC, tp)
-	cl := MakeEmptyConstaintsList()
+	cs := makeEmptyConstaintStruct()
 
 	lpo.insertTerm(f_id)
 
-	cl.AppendIfConsistant(c)
-	fmt.Printf("CL : %v\n", cl.ToString())
+	cs.appendIfConsistant(c)
+	fmt.Printf("CL : %v\n", cs.toString())
 }
 
 /* Consistant but useless */
@@ -431,14 +431,14 @@ func TestConstaintes2(t *testing.T) {
 	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
 	ffx := basictypes.MakerFun(f_id, []basictypes.Term{fx})
 
-	tp := MakeTermPair(x, ffx)
+	tp := makeTermPair(x, ffx)
 	c := MakeConstraint(PREC, tp)
-	cl := MakeEmptyConstaintsList()
+	cs := makeEmptyConstaintStruct()
 
 	lpo.insertTerm(f_id)
 
-	cl.AppendIfConsistant(c)
-	fmt.Printf("CL : %v\n", cl.ToString())
+	cs.appendIfConsistant(c)
+	fmt.Printf("CL : %v\n", cs.toString())
 }
 
 /* Consistant and relevant */
@@ -455,15 +455,15 @@ func TestConstaintes3(t *testing.T) {
 	a_id := basictypes.MakerId("a")
 	a := basictypes.MakerConst(a_id)
 
-	tp := MakeTermPair(fx, a)
+	tp := makeTermPair(fx, a)
 	c := MakeConstraint(PREC, tp)
-	cl := MakeEmptyConstaintsList()
+	cs := makeEmptyConstaintStruct()
 
 	lpo.insertTerm(f_id)
 	lpo.insertTerm(a_id)
 
-	cl.AppendIfConsistant(c)
-	fmt.Printf("CL : %v\n", cl.ToString())
+	cs.appendIfConsistant(c)
+	fmt.Printf("CL : %v\n", cs.toString())
 }
 
 /* First constraint is consistnt, second not with the first one */
@@ -481,21 +481,21 @@ func TestConstaintes4(t *testing.T) {
 	a_id := basictypes.MakerId("a")
 	a := basictypes.MakerConst(a_id)
 
-	tp := MakeTermPair(fx, a)
+	tp := makeTermPair(fx, a)
 	c := MakeConstraint(PREC, tp)
-	cl := MakeEmptyConstaintsList()
+	cs := makeEmptyConstaintStruct()
 
 	lpo.insertTerm(f_id)
 	lpo.insertTerm(a_id)
 
-	cl.AppendIfConsistant(c)
-	fmt.Printf("CL : %v\n", cl.ToString())
+	cs.appendIfConsistant(c)
+	fmt.Printf("CL : %v\n", cs.toString())
 
-	tp2 := MakeTermPair(a, fx)
+	tp2 := makeTermPair(a, fx)
 	c2 := MakeConstraint(PREC, tp2)
 
-	cl.AppendIfConsistant(c2)
-	fmt.Printf("CL : %v\n", cl.ToString())
+	cs.appendIfConsistant(c2)
+	fmt.Printf("CL : %v\n", cs.toString())
 
 	/*
 	* On accepte les cas comme f(f(x)) < a et a < f(x)
@@ -522,17 +522,17 @@ func TestConstaintes5(t *testing.T) {
 	f_fab_c := basictypes.MakerFun(f_id, []basictypes.Term{fab, c})
 	f_a_fbc := basictypes.MakerFun(f_id, []basictypes.Term{a, fbc})
 
-	tp := MakeTermPair(f_fab_c, f_a_fbc)
+	tp := makeTermPair(f_fab_c, f_a_fbc)
 	cst := MakeConstraint(PREC, tp)
-	cl := MakeEmptyConstaintsList()
+	cs := makeEmptyConstaintStruct()
 
 	lpo.insertTerm(c_id)
 	lpo.insertTerm(b_id)
 	lpo.insertTerm(a_id)
 	lpo.insertTerm(f_id)
 
-	cl.AppendIfConsistant(cst)
-	fmt.Printf("CL : %v\n", cl.ToString())
+	cs.appendIfConsistant(cst)
+	fmt.Printf("CL : %v\n", cs.toString())
 }
 
 /* Consistant but not relevant */
@@ -555,9 +555,9 @@ func TestConstaintes6(t *testing.T) {
 	f_fab_c := basictypes.MakerFun(f_id, []basictypes.Term{fab, c})
 	f_a_fbc := basictypes.MakerFun(f_id, []basictypes.Term{a, fbc})
 
-	tp := MakeTermPair(f_a_fbc, f_fab_c)
+	tp := makeTermPair(f_a_fbc, f_fab_c)
 	cst := MakeConstraint(PREC, tp)
-	cl := MakeEmptyConstaintsList()
+	cs := makeEmptyConstaintStruct()
 
 	lpo.insertTerm(c_id)
 	lpo.insertTerm(b_id)
@@ -565,8 +565,8 @@ func TestConstaintes6(t *testing.T) {
 	lpo.insertTerm(f_id)
 
 	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v", lpo.toString()))
-	cl.AppendIfConsistant(cst)
-	fmt.Printf("CL : %v\n", cl.ToString())
+	cs.appendIfConsistant(cst)
+	fmt.Printf("CL : %v\n", cs.toString())
 }
 
 /* consistant but not relevant */
@@ -586,13 +586,13 @@ func TestConstaintes7(t *testing.T) {
 	f_fxy_z := basictypes.MakerFun(f_id, []basictypes.Term{fxy, z})
 	f_x_fyz := basictypes.MakerFun(f_id, []basictypes.Term{x, fyz})
 
-	tp := MakeTermPair(f_x_fyz, f_fxy_z)
+	tp := makeTermPair(f_x_fyz, f_fxy_z)
 	cst := MakeConstraint(PREC, tp)
-	cl := MakeEmptyConstaintsList()
+	cs := makeEmptyConstaintStruct()
 
 	lpo.insertTerm(f_id)
 
 	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v", lpo.toString()))
-	cl.AppendIfConsistant(cst)
-	fmt.Printf("CL : %v\n", cl.ToString())
+	cs.appendIfConsistant(cst)
+	fmt.Printf("CL : %v\n", cs.toString())
 }

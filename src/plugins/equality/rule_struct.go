@@ -86,20 +86,20 @@ func (r *ruleStruct) setIsSModified(b bool) {
 func (r *ruleStruct) setIndexEQList(i int) {
 	r.index_eq_list = i
 }
-func (r ruleStruct) ToString() string {
+func (r ruleStruct) toString() string {
 	type_rule := "LEFT"
 	if r.getRule() == RIGHT {
 		type_rule = "RIGHT"
 	}
 	return "[ type = " + type_rule + ", s = " + r.getS().ToString() + ", t = " + r.getT().ToString() + ", l' = " + r.getLPrime().ToString() + ", l = " + r.getL().ToString() + ", r = " + r.getR().ToString() + ", is s modified = " + fmt.Sprintf("%v", r.getIsSModified()) + ", index = " + fmt.Sprintf("%v", r.getIndexEQList()) + " ]"
 }
-func MakeRuleStruct(rule int, l, r, l_prime, s, t basictypes.Term) ruleStruct {
+func makeRuleStruct(rule int, l, r, l_prime, s, t basictypes.Term) ruleStruct {
 	return ruleStruct{rule, l, r, l_prime, s, t, true, -1}
 }
-func RuleSTructListTString(rsl []ruleStruct) string {
+func ruleStructListToString(rsl []ruleStruct) string {
 	res := ""
 	for i, r := range rsl {
-		res += r.ToString()
+		res += r.toString()
 		if i < len(rsl)-1 {
 			res += ", "
 		}

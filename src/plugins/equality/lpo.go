@@ -51,7 +51,7 @@ type LPO map[basictypes.Id]int
 var lock_lpo sync.Mutex
 var lpo LPO
 
-func (lpo LPO) Get(t basictypes.Id) int {
+func (lpo LPO) get(t basictypes.Id) int {
 	lock_lpo.Lock()
 	res, found := lpo[t]
 	lock_lpo.Unlock()
@@ -91,7 +91,7 @@ func (lpo *LPO) insertTerm(t basictypes.Term) {
 }
 
 func (lpo LPO) contains(i basictypes.Id) bool {
-	return lpo.Get(i) != -1
+	return lpo.get(i) != -1
 }
 
 func (lpo *LPO) insertIdIfNotContains(i basictypes.Id) {
@@ -190,8 +190,8 @@ func compareMetaMeta(m1, m2 basictypes.Meta) (int, bool, basictypes.Term, basict
 /* Compare two functions */
 func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, basictypes.Term) {
 	// global.PrintDebug("CFF", "Fun - Fun")
-	f := lpo.Get(s.GetID())
-	g := lpo.Get(t.GetID())
+	f := lpo.get(s.GetID())
+	g := lpo.get(t.GetID())
 	if f == -1 {
 		// global.PrintDebug("Get", fmt.Sprintf("Error : Id not in the LPO : %v", s.GetID().ToString()))
 		fmt.Printf("Error : id not in the LPO : %v\n", s.GetID().ToString())

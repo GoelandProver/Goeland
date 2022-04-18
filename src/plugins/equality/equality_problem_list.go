@@ -45,10 +45,10 @@ import (
 
 type EqualityProblemList []EqualityProblem
 
-func (epl EqualityProblemList) ToString() string {
+func (epl EqualityProblemList) toString() string {
 	res := "{"
 	for i, ep := range epl {
-		res += ep.ToString()
+		res += ep.toString()
 		if i < len(epl)-1 {
 			res += ", "
 		}
@@ -56,7 +56,7 @@ func (epl EqualityProblemList) ToString() string {
 	return res + "}"
 }
 
-func MakeEmptyEqualityProblemList() EqualityProblemList {
+func makeEmptyEqualityProblemList() EqualityProblemList {
 	return EqualityProblemList{}
 }
 
@@ -65,7 +65,7 @@ type EqualityProblemMultiList []EqualityProblemList
 func (epl EqualityProblemMultiList) ToString() string {
 	res := "{"
 	for i, ep := range epl {
-		res += ep.ToString()
+		res += ep.toString()
 		if i < len(epl)-1 {
 			res += ", "
 		}
@@ -73,31 +73,31 @@ func (epl EqualityProblemMultiList) ToString() string {
 	return res + "}"
 }
 
-func MakeEmptyEqualityProblemMultiList() EqualityProblemMultiList {
+func makeEmptyEqualityProblemMultiList() EqualityProblemMultiList {
 	return EqualityProblemMultiList{}
 }
 
 /*** Functions ***/
 
 func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) EqualityProblemMultiList {
-	res := MakeEmptyEqualityProblemMultiList()
+	res := makeEmptyEqualityProblemMultiList()
 	for _, neq_pair := range neq {
-		res = append(res, append(MakeEmptyEqualityProblemList(), MakeEqualityProblem(eq.Copy(), neq_pair.GetT1(), neq_pair.GetT2(), MakeEmptyConstaintsList())))
+		res = append(res, append(makeEmptyEqualityProblemList(), makeEqualityProblem(eq.copy(), neq_pair.getT1(), neq_pair.getT2(), makeEmptyConstaintStruct())))
 	}
 	return res
 }
 
 /* Une liste de problèmes dégalités dépendants : un prédicat */
 func buildEqualityProblemListFrom2Pred(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
-	res := MakeEmptyEqualityProblemList()
+	res := makeEmptyEqualityProblemList()
 	for i := range p1.GetArgs() {
-		res = append(res, MakeEqualityProblem(eq.Copy(), p1.GetArgs()[i].Copy(), p2.GetArgs()[i].Copy(), MakeEmptyConstaintsList()))
+		res = append(res, makeEqualityProblem(eq.copy(), p1.GetArgs()[i].Copy(), p2.GetArgs()[i].Copy(), makeEmptyConstaintStruct()))
 	}
 	return res
 }
 
 func buildEqualityProblemListFromPredList(p basictypes.Pred, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
-	res := MakeEmptyEqualityProblemMultiList()
+	res := makeEmptyEqualityProblemMultiList()
 	id_p := p.GetID()
 	ml := basictypes.MakeEmptyMetaList()
 	for _, arg := range p.GetArgs() {
@@ -107,32 +107,32 @@ func buildEqualityProblemListFromPredList(p basictypes.Pred, tn datastruct.DataS
 	found, complementary_pred_list := tn.Unify(new_term)
 	if found {
 		for _, s := range complementary_pred_list {
-			res = append(res, buildEqualityProblemListFrom2Pred(p.Copy().(basictypes.Pred), s.GetForm().(basictypes.Pred), eq.Copy()))
+			res = append(res, buildEqualityProblemListFrom2Pred(p.Copy().(basictypes.Pred), s.GetForm().(basictypes.Pred), eq.copy()))
 		}
 	}
 	return res
 }
 
 func buildEqualityProblemMultiListFromFormList(fl basictypes.FormList, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
-	res := MakeEmptyEqualityProblemMultiList()
+	res := makeEmptyEqualityProblemMultiList()
 	// Recup les prédicats de TP, on cherche les mêmes dans TN
 	for _, p := range fl {
 		if pt, ok := p.(basictypes.Pred); ok {
-			res = append(res, buildEqualityProblemListFromPredList(pt, tn, eq.Copy())...)
+			res = append(res, buildEqualityProblemListFromPredList(pt, tn, eq.copy())...)
 		}
 	}
 	return res
 }
 
 /* Une liste de problèmes d'égalités indépendants + a boolean, true if there is equality in the fomrula list, false otherwise */
-func BuildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.DataStructure) (EqualityProblemMultiList, bool) {
+func buildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.DataStructure) (EqualityProblemMultiList, bool) {
 	// global.PrintDebug("BEPML", "Build equality problem multilist")
-	res := MakeEmptyEqualityProblemMultiList()
+	res := makeEmptyEqualityProblemMultiList()
 	eq := retrieveEqualities(tp.Copy())
 	if len(eq) <= 0 {
 		return res, false
 	}
-	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tp.Copy()), eq.Copy())...)
-	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.Copy())...)
+	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tp.Copy()), eq.copy())...)
+	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.copy())...)
 	return res, true
 }

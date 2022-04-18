@@ -47,26 +47,26 @@ type TermPair struct {
 	t1, t2 basictypes.Term
 }
 
-func (tp TermPair) GetT1() basictypes.Term {
+func (tp TermPair) getT1() basictypes.Term {
 	return tp.t1.Copy()
 }
-func (tp TermPair) GetT2() basictypes.Term {
+func (tp TermPair) getT2() basictypes.Term {
 	return tp.t2.Copy()
 }
 func (tp TermPair) Copy() TermPair {
-	return MakeTermPair(tp.GetT1(), tp.GetT2())
+	return makeTermPair(tp.getT1(), tp.getT2())
 }
 func (tp TermPair) Equals(tp2 TermPair) bool {
-	return tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())
+	return tp.getT1().Equals(tp2.getT1()) && tp.getT2().Equals(tp2.getT2())
 }
 func (tp TermPair) EqualsModulo(tp2 TermPair) bool {
-	return (tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())) ||
-		(tp.GetT1().Equals(tp2.GetT2()) && tp.GetT2().Equals(tp2.GetT1()))
+	return (tp.getT1().Equals(tp2.getT1()) && tp.getT2().Equals(tp2.getT2())) ||
+		(tp.getT1().Equals(tp2.getT2()) && tp.getT2().Equals(tp2.getT1()))
 
 }
-func (tp TermPair) ToString() string {
-	return tp.GetT1().ToString() + " ≈ " + tp.GetT2().ToString()
+func (tp TermPair) toString() string {
+	return tp.getT1().ToString() + " ≈ " + tp.getT2().ToString()
 }
-func MakeTermPair(t1, t2 basictypes.Term) TermPair {
+func makeTermPair(t1, t2 basictypes.Term) TermPair {
 	return TermPair{t1.Copy(), t2.Copy()}
 }

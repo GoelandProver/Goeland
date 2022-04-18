@@ -59,27 +59,27 @@ type Constraint struct {
 	tp    TermPair
 }
 
-func (c Constraint) GetCType() int {
+func (c Constraint) getCType() int {
 	return c.ctype
 }
-func (c Constraint) GetTP() TermPair {
+func (c Constraint) getTP() TermPair {
 	return c.tp.Copy()
 }
-func (c *Constraint) SetTP(tp TermPair) {
+func (c *Constraint) setTP(tp TermPair) {
 	c.tp = tp
 }
-func (c Constraint) Copy() Constraint {
-	return MakeConstraint(c.GetCType(), c.GetTP())
+func (c Constraint) copy() Constraint {
+	return MakeConstraint(c.getCType(), c.getTP())
 }
-func (c Constraint) Equals(c2 Constraint) bool {
-	return ((c.GetCType() == c2.GetCType()) && c.GetTP().Equals(c2.GetTP()))
+func (c Constraint) equals(c2 Constraint) bool {
+	return ((c.getCType() == c2.getCType()) && c.getTP().Equals(c2.getTP()))
 }
-func (c Constraint) ToString() string {
-	switch c.GetCType() {
+func (c Constraint) toString() string {
+	switch c.getCType() {
 	case PREC:
-		return c.GetTP().GetT1().ToString() + " ≺ " + c.GetTP().GetT2().ToString()
+		return c.getTP().getT1().ToString() + " ≺ " + c.getTP().getT2().ToString()
 	case EQ:
-		return c.GetTP().GetT1().ToString() + " ≃ " + c.GetTP().GetT2().ToString()
+		return c.getTP().getT1().ToString() + " ≃ " + c.getTP().getT2().ToString()
 	default:
 		fmt.Printf("Constraint type unknown \n")
 		return "Constraint type unknown"
@@ -88,11 +88,11 @@ func (c Constraint) ToString() string {
 
 /* return true if the constraint is not violated, false otherwise  + true is the contraint is comparable, false otherwise + update c into the useful part of the constraint */
 func (c *Constraint) checkLPO() (bool, bool) {
-	global.PrintDebug("CLPO", fmt.Sprintf("Type PREC, cst : %v", c.ToString()))
-	res, is_comparable, new_t1, new_t2 := lpo.compare(c.GetTP().GetT1(), c.GetTP().GetT2())
+	global.PrintDebug("CLPO", fmt.Sprintf("Type PREC, cst : %v", c.toString()))
+	res, is_comparable, new_t1, new_t2 := lpo.compare(c.getTP().getT1(), c.getTP().getT2())
 	global.PrintDebug("CLPO", fmt.Sprintf("res : %v, is_comparable : %v", res, is_comparable))
 	if is_comparable {
-		switch c.GetCType() {
+		switch c.getCType() {
 		case PREC:
 			return res > 0, true
 		case EQ:
@@ -103,7 +103,7 @@ func (c *Constraint) checkLPO() (bool, bool) {
 		}
 	}
 	global.PrintDebug("CLPO", fmt.Sprintf("new_t1 : %v, new_t2 : %v", new_t1.ToString(), new_t2.ToString()))
-	c.SetTP(MakeTermPair(new_t1, new_t2))
+	c.setTP(makeTermPair(new_t1, new_t2))
 	return true, false
 }
 
@@ -115,20 +115,20 @@ func (c *Constraint) checkLPO() (bool, bool) {
 func (cl ConstraintList) checkConstraintList() bool {
 	map_constraintes := make(map[string][][]basictypes.Term)
 	for _, c := range cl {
-		global.PrintDebug("CCL", fmt.Sprintf("Constraint : %v", c.ToString()))
-		switch c.GetCType() {
+		global.PrintDebug("CCL", fmt.Sprintf("Constraint : %v", c.toString()))
+		switch c.getCType() {
 		case PREC:
-			if !appendToMapAndCheck(c.GetTP().GetT1().ToString(), c.GetTP().GetT2(), &map_constraintes, 1, 2) {
+			if !appendToMapAndCheck(c.getTP().getT1().ToString(), c.getTP().getT2(), &map_constraintes, 1, 2) {
 				return false
 			}
-			if !appendToMapAndCheck(c.GetTP().GetT2().ToString(), c.GetTP().GetT1(), &map_constraintes, 2, 2) {
+			if !appendToMapAndCheck(c.getTP().getT2().ToString(), c.getTP().getT1(), &map_constraintes, 2, 2) {
 				return false
 			}
 		case EQ:
-			if !appendToMapAndCheck(c.GetTP().GetT1().ToString(), c.GetTP().GetT2(), &map_constraintes, 0, 2) {
+			if !appendToMapAndCheck(c.getTP().getT1().ToString(), c.getTP().getT2(), &map_constraintes, 0, 2) {
 				return false
 			}
-			if !appendToMapAndCheck(c.GetTP().GetT2().ToString(), c.GetTP().GetT1(), &map_constraintes, 0, 2) {
+			if !appendToMapAndCheck(c.getTP().getT2().ToString(), c.getTP().getT1(), &map_constraintes, 0, 2) {
 				return false
 			}
 		}
@@ -169,10 +169,9 @@ type ConstraintList []Constraint
 func (cl ConstraintList) Len() int      { return len(cl) }
 func (cl ConstraintList) Swap(i, j int) { cl[i], cl[j] = cl[j], cl[i] }
 func (cl ConstraintList) Less(i, j int) bool {
-	return (cl[i].ToString() < cl[j].ToString())
+	return (cl[i].toString() < cl[j].toString())
 }
-
-func (l1 ConstraintList) Equals(l2 ConstraintList) bool {
+func (l1 ConstraintList) equals(l2 ConstraintList) bool {
 	if len(l1) != len(l2) {
 		return false
 	} else {
@@ -183,18 +182,17 @@ func (l1 ConstraintList) Equals(l2 ConstraintList) bool {
 		sort.Sort(l2_sorted)
 
 		for i := range l1_sorted {
-			if !l1_sorted[i].Equals(l2_sorted[i]) {
+			if !l1_sorted[i].equals(l2_sorted[i]) {
 				return false
 			}
 		}
 	}
 	return true
 }
-
-func (cl ConstraintList) ToString() string {
+func (cl ConstraintList) toString() string {
 	res := "{"
 	for i, c := range cl {
-		res += c.ToString()
+		res += c.toString()
 		if i < len(cl)-1 {
 			res += (", ")
 		}
@@ -202,124 +200,43 @@ func (cl ConstraintList) ToString() string {
 	res += "}"
 	return res
 }
-
 func (cl ConstraintList) Copy() ConstraintList {
-	res := MakeEmptyConstaintsList()
+	res := makeEmptyConstaintsList()
 	for _, c := range cl {
-		res = append(res, c.Copy())
+		res = append(res, c.copy())
 	}
 	return res
 }
-
-func (cl ConstraintList) Contains(c Constraint) bool {
+func (cl ConstraintList) contains(c Constraint) bool {
 	for _, cst := range cl {
-		if c.Equals(cst) {
+		if c.equals(cst) {
 			return true
 		}
 	}
 	return false
 }
-
-/* Append relevant constraint if its consistant with cl and LPO */
-func (cl *ConstraintList) AppendIfConsistant(c Constraint) bool {
-	// global.PrintDebug("AIC", fmt.Sprintf("CL : %v - c : %v", cl.ToString(), c.ToString()))
-	if !cl.Contains(c) {
-		if is_consistant := cl.isConsistantWith(c); is_consistant {
-			global.PrintDebug("AIC", fmt.Sprintf("%v is consistant", c.ToString()))
-			global.PrintDebug("AIC", fmt.Sprintf("CL at the end : %v", cl.ToString()))
-			return true
-		} else {
-			global.PrintDebug("AIC", fmt.Sprintf("%v is not consistant", c.ToString()))
-			global.PrintDebug("AIC", fmt.Sprintf("CL at the end : %v", cl.ToString()))
-			return false
-		}
-	}
-
-	return true
+func (cl ConstraintList) isEmpty() bool {
+	return len(cl) == 0
 }
-
-/* Check if a constraint is consistant with LPO and constraint list + update cl */
-func (cl *ConstraintList) isConsistantWith(c Constraint) bool {
-	global.PrintDebug("ICW", fmt.Sprintf("Constraint : %v", c.ToString()))
-	switch c.GetCType() {
-	case PREC:
-		respect_lpo, is_comparable := c.checkLPO()
-		global.PrintDebug("ICW", fmt.Sprintf("Is_comparable : %v, respec_lpo : %v", is_comparable, respect_lpo))
-		if is_comparable {
-			return respect_lpo
-		} else {
-			new_cl := append((*cl).Copy(), c)
-			if new_cl.checkConstraintList() {
-				*cl = new_cl
-				return true
-			} else {
-				return false
-			}
-		}
-	case EQ:
-		// Check if the EQ constraint is unifiable
-		subst := treesearch.AddUnification(c.GetTP().t1.Copy(), c.GetTP().t2.Copy(), treetypes.MakeEmptySubstitution())
-		if subst.Equals(treetypes.Failure()) {
-			return false
-		}
-		if !subst.IsEmpty() {
-			// Simplify it
-			respect_lpo, is_comparable := c.checkLPO()
-			global.PrintDebug("ICW", fmt.Sprintf("Is_comparable : %v, respec_lpo : %v", is_comparable, respect_lpo))
-			if !is_comparable {
-				// Generate a new subst with all the other eq constraints
-				new_subst := cl.computeGlobalSubst(subst)
-				global.PrintDebug("ICW", fmt.Sprintf("Compute global subst : %v", new_subst.ToString()))
-				if new_subst.Equals(treetypes.Failure()) {
-					global.PrintDebug("ICW", "Global subst return failure")
-					return false
-				}
-				// Apply the subst to the all the constraint and check
-				global.PrintDebug("ICW", "Check if consistant with the whole cl")
-				if !cl.isConsistantWithSubst(new_subst) {
-					global.PrintDebug("ICW", "Not consistant with the whole cl")
-					return false
-				}
-
-				// Append the constraint to cl if there is no x = a and x < a
-				new_cl := append((*cl).Copy(), c)
-				global.PrintDebug("ICW", "Check intersection with other constraints")
-				if new_cl.checkConstraintList() {
-					global.PrintDebug("ICW", "Ok, add it to cl")
-					*cl = new_cl
-					return true
-				} else {
-					global.PrintDebug("ICW", "Intersection not null")
-					return false
-				}
-			} else {
-				return respect_lpo
-			}
-		}
-		return true
-	}
-	return true
+func makeEmptyConstaintsList() ConstraintList {
+	return ConstraintList{}
 }
-
-/* Compute a global substitution from a list of constraints and a new constraint */
-func (cl ConstraintList) computeGlobalSubst(s treetypes.Substitutions) treetypes.Substitutions {
-	subst_res := s.Copy()
-	for _, c := range cl {
-		if c.GetCType() == EQ {
-			subst_res = treesearch.AddUnification(c.GetTP().GetT1(), c.GetTP().GetT2(), subst_res)
-		}
+func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
+	for m, t := range s {
+		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().getT1())
+		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().getT2())
+		c.setTP(makeTermPair(new_t1, new_t2))
 	}
-	return subst_res
 }
 
 /* Check if a constraint is consistant with LPO and constraint list */
 func (cl ConstraintList) isConsistantWithSubst(s treetypes.Substitutions) bool {
 	global.PrintDebug("ICWS", fmt.Sprintf("Is consistant with the subst : %v", s.ToString()))
 	for _, c_element := range cl {
-		c := c_element.Copy()
-		global.PrintDebug("ICWS", fmt.Sprintf("Constraint : %v", c.ToString()))
+		c := c_element.copy()
+		global.PrintDebug("ICWS", fmt.Sprintf("Constraint : %v", c.toString()))
 		c.applySubstitution(s)
-		global.PrintDebug("ICWS", fmt.Sprintf("Constraint after apply subst : %v", c.ToString()))
+		global.PrintDebug("ICWS", fmt.Sprintf("Constraint after apply subst : %v", c.toString()))
 		respect_lpo, is_comparable := c.checkLPO()
 		global.PrintDebug("ICWS", fmt.Sprintf("Is comparable : %v - respect lpo : %v: ", is_comparable, respect_lpo))
 		if is_comparable && !respect_lpo {
@@ -329,14 +246,141 @@ func (cl ConstraintList) isConsistantWithSubst(s treetypes.Substitutions) bool {
 	return true
 }
 
-func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
-	for m, t := range s {
-		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.GetTP().GetT1())
-		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.GetTP().GetT2())
-		c.SetTP(MakeTermPair(new_t1, new_t2))
+type ConstraintStruct struct {
+	all_constraints ConstraintList
+	subst           treetypes.Substitutions
+	prec            ConstraintList
+}
+
+func (cs ConstraintStruct) getSubst() treetypes.Substitutions {
+	return cs.subst.Copy()
+}
+func (cs ConstraintStruct) getPrec() ConstraintList {
+	return cs.prec.Copy()
+}
+func (cs ConstraintStruct) getAllConstraints() ConstraintList {
+	return cs.all_constraints
+}
+func (cs *ConstraintStruct) setSubst(s treetypes.Substitutions) {
+	cs.subst = s.Copy()
+}
+func (cs *ConstraintStruct) setPrec(cl ConstraintList) {
+	cs.prec = cl.Copy()
+}
+func (cs *ConstraintStruct) setAllConstraits(cl ConstraintList) {
+	cs.all_constraints = cl.Copy()
+}
+func (cs *ConstraintStruct) addPrec(c Constraint) {
+	cs.setPrec(append(cs.getPrec(), c))
+}
+func (cs *ConstraintStruct) addAllConstraints(c Constraint) {
+	cs.setAllConstraits(append(cs.getAllConstraints(), c))
+}
+func (cs ConstraintStruct) isEmpty() bool {
+	return cs.getSubst().IsEmpty() && cs.getPrec().isEmpty() && cs.getAllConstraints().isEmpty()
+}
+func (cs ConstraintStruct) copy() ConstraintStruct {
+	return makeConstraintStruct(cs.getAllConstraints(), cs.getSubst(), cs.getPrec())
+}
+func (cs ConstraintStruct) toString() string {
+	return "EQ subst : " + cs.getSubst().ToString() + " - PREC List : " + cs.getPrec().toString() + " - All cst : " + cs.getAllConstraints().toString()
+}
+func makeEmptyConstaintStruct() ConstraintStruct {
+	return ConstraintStruct{makeEmptyConstaintsList(), treetypes.MakeEmptySubstitution(), makeEmptyConstaintsList()}
+}
+func makeConstraintStruct(ac ConstraintList, s treetypes.Substitutions, p ConstraintList) ConstraintStruct {
+	res := makeEmptyConstaintStruct()
+	res.setAllConstraits(ac)
+	res.setSubst(s)
+	res.setPrec(p)
+	return res
+}
+
+/* Append relevant constraint if its consistant with cl and LPO */
+func (cs *ConstraintStruct) appendIfConsistant(c Constraint) bool {
+	// global.PrintDebug("AIC", fmt.Sprintf("CL : %v - c : %v", cl.ToString(), c.ToString()))
+	if !cs.getAllConstraints().contains(c) {
+		if is_consistant := cs.isConsistantWith(c); is_consistant {
+			global.PrintDebug("AIC", fmt.Sprintf("%v is consistant", c.toString()))
+			global.PrintDebug("AIC", fmt.Sprintf("CL at the end : %v", cs.toString()))
+			return true
+		} else {
+			global.PrintDebug("AIC", fmt.Sprintf("%v is not consistant", c.toString()))
+			global.PrintDebug("AIC", fmt.Sprintf("CL at the end : %v", cs.toString()))
+			return false
+		}
+	}
+	return true
+}
+
+/* Check if a constraint is consistant with LPO and constraint list + update cl */
+func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
+	global.PrintDebug("ICW", fmt.Sprintf("Constraint : %v", c.toString()))
+	switch c.getCType() {
+	case PREC:
+		// Apply subst and check LPO
+		new_c := c.copy()
+		new_c.applySubstitution(cs.getSubst())
+		respect_lpo, is_comparable := new_c.checkLPO()
+		global.PrintDebug("ICW", fmt.Sprintf("Is_comparable : %v, respec_lpo : %v", is_comparable, respect_lpo))
+		if is_comparable {
+			return respect_lpo
+		}
+
+		// If not comparale, check conflict with other constraints
+		new_prec := append(cs.getPrec().Copy(), c)
+		if new_prec.checkConstraintList() {
+			cs.setPrec(new_prec)
+			cs.addAllConstraints(c)
+			return true
+		} else {
+			return false
+		}
+
+	case EQ:
+		// Check if the EQ constraint is unifiable
+		subst := treesearch.AddUnification(c.getTP().t1.Copy(), c.getTP().t2.Copy(), treetypes.MakeEmptySubstitution())
+		global.PrintDebug("ICW", fmt.Sprintf("Candidate subst : %v", subst.ToString()))
+		if subst.Equals(treetypes.Failure()) {
+			return false
+		}
+		if subst.IsEmpty() {
+			return true
+		}
+
+		// Simplify it
+		respect_lpo, is_comparable := c.checkLPO()
+		global.PrintDebug("ICW", fmt.Sprintf("Is_comparable : %v, respec_lpo : %v", is_comparable, respect_lpo))
+		if is_comparable {
+			return respect_lpo
+		}
+
+		// Add it to subst and check unification consistency
+		subst_all := treesearch.AddUnification(c.getTP().t1.Copy(), c.getTP().t2.Copy(), cs.getSubst())
+		global.PrintDebug("ICW", fmt.Sprintf("Subst all : %v", subst_all.ToString()))
+		if subst_all.Equals(treetypes.Failure()) {
+			return false
+		}
+		if subst_all.IsEmpty() {
+			return true
+		}
+
+		// Apply nw global subst to prec
+		global.PrintDebug("ICW", "Check if consistant with the whole cl")
+		if !cs.getPrec().isConsistantWithSubst(subst_all) {
+			global.PrintDebug("ICW", "Not consistant with the whole cl")
+			return false
+		}
+
+		// If all is ok, append if
+		cs.setSubst(subst_all)
+		cs.addAllConstraints(c)
+		return true
+
+	default:
+		global.PrintDebug("ICW", "Constraint type unknown")
+		return false
 	}
 }
 
-func MakeEmptyConstaintsList() ConstraintList {
-	return ConstraintList{}
-}
+// TODO : append if not contains

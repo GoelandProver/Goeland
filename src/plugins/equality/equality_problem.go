@@ -43,6 +43,7 @@ import (
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
@@ -53,48 +54,49 @@ type EqualityProblem struct {
 	E_map  map[string][]basictypes.Term
 	E      Equalities
 	s, t   basictypes.Term
-	c      ConstraintList
+	c      ConstraintStruct
 }
 
-func (ep EqualityProblem) GetETree() datastruct.DataStructure {
+func (ep EqualityProblem) getETree() datastruct.DataStructure {
 	return ep.E_tree.Copy()
 }
-func (ep EqualityProblem) GetEMap() map[string][]basictypes.Term {
+func (ep EqualityProblem) getEMap() map[string][]basictypes.Term {
 	map_res := make(map[string][]basictypes.Term)
 	for k, v := range ep.E_map {
 		map_res[k] = basictypes.CopyTermList(v)
 	}
 	return map_res
 }
-func (ep EqualityProblem) GetE() Equalities {
-	return ep.E.Copy()
+func (ep EqualityProblem) getE() Equalities {
+	return ep.E.copy()
 }
-func (ep EqualityProblem) GetS() basictypes.Term {
+func (ep EqualityProblem) getS() basictypes.Term {
 	return ep.s.Copy()
 }
-func (ep EqualityProblem) GetT() basictypes.Term {
+func (ep EqualityProblem) getT() basictypes.Term {
 	return ep.t.Copy()
 }
-func (ep EqualityProblem) GetC() ConstraintList {
-	return ep.c.Copy()
+func (ep EqualityProblem) getC() ConstraintStruct {
+	return ep.c.copy()
 }
-func (ep EqualityProblem) Copy() EqualityProblem {
-	return MakeEqualityProblem(ep.GetE(), ep.GetS(), ep.GetT(), ep.GetC())
+func (ep EqualityProblem) copy() EqualityProblem {
+	return makeEqualityProblem(ep.getE(), ep.getS(), ep.getT(), ep.getC())
 }
-func (ep EqualityProblem) Equals(ep2 EqualityProblem) basictypes.Term {
+func (ep EqualityProblem) equals(ep2 EqualityProblem) basictypes.Term {
 	return ep.t.Copy()
 }
-func (ep EqualityProblem) ToString() string {
-	return "<" + ep.GetE().ToString() + ", " + ep.GetS().ToString() + ", " + ep.GetT().ToString() + "> • " + ep.GetC().ToString()
+func (ep EqualityProblem) toString() string {
+	return "<" + ep.getE().toString() + ", " + ep.getS().ToString() + ", " + ep.getT().ToString() + "> • " + ep.getC().toString()
 }
 
 func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityProblem {
-	new_s := ep.GetS()
-	new_t := ep.GetT()
-	new_equalities := ep.GetE()
+	new_s := ep.getS()
+	new_t := ep.getT()
+	new_equalities := ep.getE()
 
-	if len(ep.GetC()) > 0 {
-		fmt.Printf("Error : contraint not null in applySubstitution")
+	if !ep.getC().isEmpty() {
+		fmt.Printf("Error : constraint not null in applySubstitution\n")
+		global.PrintDebug("EQ-AS", fmt.Sprintf("Error : constraint not null in applySubstitution : %v", ep.getC().toString()))
 	}
 
 	for old_symbol, new_symbol := range s {
@@ -103,20 +105,20 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 		new_equalities = new_equalities.applySubstitution(old_symbol, new_symbol)
 	}
 
-	return MakeEqualityProblem(new_equalities, new_s, new_t, MakeEmptyConstaintsList())
+	return makeEqualityProblem(new_equalities, new_s, new_t, makeEmptyConstaintStruct())
 }
 
 /*** Functions ***/
 
-func MakeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c ConstraintList) EqualityProblem {
-	return EqualityProblem{makeDataStructFromEqualities(E.Copy()), makeEQMapFromEqualities(E.Copy()), E.Copy(), s.Copy(), t.Copy(), c.Copy()}
+func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c ConstraintStruct) EqualityProblem {
+	return EqualityProblem{makeDataStructFromEqualities(E.copy()), makeEQMapFromEqualities(E.copy()), E.copy(), s.Copy(), t.Copy(), c.copy()}
 }
 
 func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
 	form_list := basictypes.MakeEmptyFormList()
 	for _, e := range eq {
-		form_list = append(form_list, treetypes.MakeTermForm(e.GetT1()))
-		form_list = append(form_list, treetypes.MakeTermForm(e.GetT2()))
+		form_list = append(form_list, treetypes.MakeTermForm(e.getT1()))
+		form_list = append(form_list, treetypes.MakeTermForm(e.getT2()))
 	}
 	return new(treesearch.Node).MakeDataStruct(form_list.Copy(), true)
 }
@@ -124,8 +126,8 @@ func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
 func makeEQMapFromEqualities(eq Equalities) map[string][]basictypes.Term {
 	map_res := make(map[string][]basictypes.Term)
 	for _, e := range eq {
-		map_res[e.GetT1().ToString()] = append(map_res[e.GetT1().ToString()], e.GetT2())
-		map_res[e.GetT2().ToString()] = append(map_res[e.GetT2().ToString()], e.GetT1())
+		map_res[e.getT1().ToString()] = append(map_res[e.getT1().ToString()], e.getT2())
+		map_res[e.getT2().ToString()] = append(map_res[e.getT2().ToString()], e.getT1())
 	}
 	return map_res
 }

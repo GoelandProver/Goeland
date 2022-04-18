@@ -52,10 +52,10 @@ type Equalities []TermPair
 
 type Inequalities []TermPair
 
-func (e Equalities) ToString() string {
+func (e Equalities) toString() string {
 	res := "["
 	for i, tp := range e {
-		res += tp.ToString()
+		res += tp.toString()
 		if i < len(e)-1 {
 			res += ", "
 		}
@@ -63,10 +63,10 @@ func (e Equalities) ToString() string {
 	return res + "]"
 }
 
-func (ie Inequalities) ToString() string {
+func (ie Inequalities) toString() string {
 	res := ""
 	for i, tp := range ie {
-		res += tp.ToString()
+		res += tp.toString()
 		if i < len(ie) {
 			res += ", "
 		}
@@ -74,7 +74,7 @@ func (ie Inequalities) ToString() string {
 	return res
 }
 
-func (e Equalities) Copy() Equalities {
+func (e Equalities) copy() Equalities {
 	res := []TermPair{}
 	for _, tp := range e {
 		res = append(res, tp.Copy())
@@ -82,7 +82,7 @@ func (e Equalities) Copy() Equalities {
 	return res
 }
 
-func (ie Inequalities) Copy() Inequalities {
+func (ie Inequalities) copy() Inequalities {
 	res := []TermPair{}
 	for _, tp := range ie {
 		res = append(res, tp.Copy())
@@ -90,7 +90,7 @@ func (ie Inequalities) Copy() Inequalities {
 	return res
 }
 
-func (e Equalities) Contains(eq TermPair) bool {
+func (e Equalities) contains(eq TermPair) bool {
 	for _, element := range e {
 		if element.Equals(eq) {
 			return true
@@ -99,7 +99,7 @@ func (e Equalities) Contains(eq TermPair) bool {
 	return false
 }
 
-func (ie Inequalities) Contains(eq TermPair) bool {
+func (ie Inequalities) contains(eq TermPair) bool {
 	for _, element := range ie {
 		if element.Equals(eq) {
 			return true
@@ -108,17 +108,17 @@ func (ie Inequalities) Contains(eq TermPair) bool {
 	return false
 }
 
-func (e Equalities) AppendIfNotContains(eq TermPair) Equalities {
-	res := e.Copy()
-	if !e.Contains(eq) {
+func (e Equalities) appendIfNotContains(eq TermPair) Equalities {
+	res := e.copy()
+	if !e.contains(eq) {
 		res = append(res, eq)
 	}
 	return res
 }
 
-func (ie Inequalities) AppendIfNotContains(eq TermPair) Inequalities {
-	res := ie.Copy()
-	if !ie.Contains(eq) {
+func (ie Inequalities) appendIfNotContains(eq TermPair) Inequalities {
+	res := ie.copy()
+	if !ie.contains(eq) {
 		res = append(res, eq)
 	}
 	return res
@@ -133,9 +133,9 @@ func (ie Inequalities) AppendIfNotContains(eq TermPair) Inequalities {
 // }
 
 func (e Equalities) applySubstitution(old_symbol basictypes.Meta, new_symbol basictypes.Term) Equalities {
-	res := e.Copy()
+	res := e.copy()
 	for i, tp := range res {
-		res[i] = MakeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT2()))
+		res[i] = makeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.getT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.getT2()))
 	}
 	return res
 }
@@ -163,7 +163,7 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 			fmt.Printf("Meta_eq_2 not found in map\n")
 			global.PrintDebug("RI", "Meta_eq_2 not found in map")
 		}
-		res = append(res, MakeTermPair(eq1_term, eq2_term))
+		res = append(res, makeTermPair(eq1_term, eq2_term))
 	}
 
 	return res
@@ -188,7 +188,7 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 			fmt.Printf("Meta_neq_2 not found in map\n")
 			global.PrintDebug("RI", "Meta_neq_2 not found in map")
 		}
-		res = append(res, MakeTermPair(neq1_term, neq2_term))
+		res = append(res, makeTermPair(neq1_term, neq2_term))
 	}
 	return res
 }
