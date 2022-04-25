@@ -507,7 +507,36 @@ func MakeForm(f Form) Form {
 
 /* Transform a formula into its negation */
 func RefuteForm(f Form) Form {
-	return Not{f}
+	return Not{f.Copy()}
+}
+
+/* Remove all the negations */
+func RemoveNeg(f Form) Form {
+	switch ft := f.(type) {
+	case Not:
+		return RemoveNeg(ft.GetForm())
+	default:
+		return f.Copy()
+	}
+}
+
+/* Simplify a neg neg eng formual (for DMT) */
+func SimplifyNeg(f Form, is_even bool) Form {
+	switch ft := f.(type) {
+	case Not:
+		// Already under a not
+		if !is_even {
+			return SimplifyNeg(ft.GetForm(), true)
+		} else {
+			return SimplifyNeg(ft.GetForm(), false)
+		}
+	default:
+		if is_even {
+			return f.Copy()
+		} else {
+			return RefuteForm(f.Copy())
+		}
+	}
 }
 
 /** Replace a Var by a term - Useful functions for Delta and Gamma rules (replace var by term) **/

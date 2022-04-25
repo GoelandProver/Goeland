@@ -87,8 +87,6 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
  *  - Registers axioms of type forall x1, ..., xn.P
  **/
 func registerAxiom(axiom btypes.Form) bool {
-	global.PrintDebug("DMT", fmt.Sprintf("Try to add the form : %v", axiom.ToString()))
-
 	// 1: instantiate forall(s).
 	axiomFT := axiom.Copy()
 	_, wasForall := axiomFT.(btypes.All)
@@ -99,8 +97,13 @@ func registerAxiom(axiom btypes.Form) bool {
 
 	// 2: make rewrite rule for equivalence, implication or atomic.
 	if wasForall && btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
-		addPosRewriteRule(axiomFT, btypes.MakeTop())
-		addNegRewriteRule(axiomFT, btypes.MakeBot())
+		if _, ok := axiomFT.(btypes.Pred); ok {
+			addPosRewriteRule(axiomFT, btypes.MakeTop())
+			addNegRewriteRule(axiomFT, btypes.MakeBot())
+		} else {
+			addNegRewriteRule(axiomFT, btypes.MakeTop())
+			addPosRewriteRule(axiomFT, btypes.MakeBot())
+		}
 		return true
 	} else if reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Equ{}) {
 		return registerEquivalence(axiomFT)
@@ -136,6 +139,14 @@ func rewrite(atomic btypes.Form) (btypes.FormList, error) {
  **/
 func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) (btypes.FormList, error) {
 	atomics := btypes.MakeEmptyFormList()
+
+	// for k, v := range positiveRewrite {
+	// 	global.PrintDebug("PR", fmt.Sprintf("[ %v : %v] - ", k, v.ToString()))
+	// }
+	// for k, v := range negativeRewrite {
+	// 	global.PrintDebug("NR", fmt.Sprintf("[ %v : %v] - ", k, v.ToString()))
+	// }
+
 	if res, unif := tree.Unify(form); res {
 		// Sorts the unifs found.
 		unifs := choose(unif, polarity, atomic)
@@ -179,11 +190,13 @@ func choose(unifs []treetypes.MatchingSubstitutions, polarity bool, atomic btype
 
 		if useful_subst.IsEmpty() {
 			str := unif.GetForm().ToString()
-			if rewriteMap[str].Equals(btypes.Top{}) || rewriteMap[str].Equals(btypes.Bot{}) {
+			// Subst found but wrong polarity
+			if rewriteMap[str].Equals(btypes.MakeTop()) || rewriteMap[str].Equals(btypes.MakeBot()) {
 				sortedUnifs = insertFirst(sortedUnifs, unif)
 			} else {
 				sortedUnifs = append(sortedUnifs, unif)
 			}
+
 		}
 	}
 
@@ -222,7 +235,8 @@ func getAtomAndPolarity(atom btypes.Form) (btypes.Form, bool) {
 func getUnifiedEquivalence(atom btypes.Form, subst treetypes.Substitutions, polarity bool) (btypes.Form, error) {
 	equivalence := findEquivalence(atom, polarity)
 	if equivalence == nil {
-		return nil, fmt.Errorf("[DMT] Fatal error : no rewrite rule found when an unification has been found")
+		fmt.Printf("[DMT] Fatal error : no rewrite rule found when an unification has been found : %v", atom.ToString())
+		return nil, fmt.Errorf("[DMT] Fatal error : no rewrite rule found when an unification has been found : %v", atom.ToString())
 	}
 	return substitute(equivalence, subst), nil
 }

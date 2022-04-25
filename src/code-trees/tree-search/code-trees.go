@@ -154,19 +154,17 @@ func makeNode(block CodeBlock) *Node {
 }
 
 /* Insert a lsit of formula into the right tree */
-func (n Node) InsertFormulaListToDataStructure(lf basictypes.FormList, is_pos bool) datastruct.DataStructure {
+func (n Node) InsertFormulaListToDataStructure(lf basictypes.FormList) datastruct.DataStructure {
 	for _, f := range lf {
 		switch nf := f.Copy().(type) {
 		case basictypes.Pred:
-			if is_pos {
-				n.insert(treetypes.ParseFormula(nf))
-			}
+			n.insert(treetypes.ParseFormula(nf))
+
 		case basictypes.Not:
 			switch nf.GetForm().(type) {
 			case basictypes.Pred:
-				if !is_pos {
-					n.insert(treetypes.ParseFormula(nf.GetForm()))
-				}
+				n.insert(treetypes.ParseFormula(nf.GetForm()))
+
 			}
 		}
 	}

@@ -48,7 +48,7 @@ type DataStructure interface {
 	Print()
 	IsEmpty() bool
 	MakeDataStruct(basictypes.FormList, bool) DataStructure
-	InsertFormulaListToDataStructure(basictypes.FormList, bool) DataStructure
+	InsertFormulaListToDataStructure(basictypes.FormList) DataStructure
 	Unify(basictypes.Form) (bool, []treetypes.MatchingSubstitutions)
 	Copy() DataStructure
 }

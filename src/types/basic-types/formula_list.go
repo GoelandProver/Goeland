@@ -157,6 +157,27 @@ func (l1 FormList) Merge(l2 FormList) FormList {
 	return res
 }
 
+/* Kepp only predicate with right polarity */
+func (lf FormList) FilterPred(pola bool) FormList {
+	res := MakeEmptyFormList()
+	for _, f := range lf {
+		switch nf := f.Copy().(type) {
+		case Pred:
+			if pola {
+				res.AppendIfNotContains(nf)
+			}
+		case Not:
+			switch nf.GetForm().(type) {
+			case Pred:
+				if !pola {
+					res.AppendIfNotContains(nf.GetForm())
+				}
+			}
+		}
+	}
+	return res
+}
+
 /*** Functions ***/
 
 /** Makers **/

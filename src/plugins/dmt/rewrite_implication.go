@@ -75,12 +75,14 @@ func registerImplication(axiomFT btypes.Form) bool {
 
 /* Adds the axiom in the positive rewrite tree and sends the two others in the main component. */
 func addPosRewriteRule(axiom btypes.Form, cons btypes.Form) {
-	positiveTree = positiveTree.InsertFormulaListToDataStructure(btypes.MakeSingleElementList(axiom), true)
-	addRewriteRule(axiom, cons, true)
+	simplified_axiom := btypes.RemoveNeg(axiom)
+	positiveTree = positiveTree.InsertFormulaListToDataStructure(btypes.MakeSingleElementList(simplified_axiom))
+	addRewriteRule(simplified_axiom, cons, true)
 }
 
 /* Adds the axiom in the negative rewrite tree and sends the two others in the main component. */
 func addNegRewriteRule(axiom btypes.Form, cons btypes.Form) {
-	negativeTree = negativeTree.InsertFormulaListToDataStructure(btypes.MakeSingleElementList(axiom), true)
-	addRewriteRule(axiom, cons, false)
+	simplified_axiom := btypes.RemoveNeg(axiom)
+	negativeTree = negativeTree.InsertFormulaListToDataStructure(btypes.MakeSingleElementList(simplified_axiom))
+	addRewriteRule(simplified_axiom, cons, false)
 }

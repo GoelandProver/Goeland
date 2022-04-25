@@ -69,8 +69,9 @@ func registerEquivalence(axiomFT btypes.Form) bool {
  * and phi2 will be refuted. If phi2 is already a negation, it cancels it out.
  **/
 func refuteIfNeeded(phi1 btypes.Form, phi2 btypes.Form) (btypes.Form, btypes.Form) {
+	new_phi1 := btypes.SimplifyNeg(phi1, true)
 	if reflect.TypeOf(phi1) == reflect.TypeOf(btypes.Not{}) {
-		phi1 = phi1.(btypes.Not).GetForm()
+		phi1 = new_phi1.(btypes.Not).GetForm()
 
 		if reflect.TypeOf(phi2) == reflect.TypeOf(btypes.Not{}) {
 			phi2 = phi2.(btypes.Not).GetForm()

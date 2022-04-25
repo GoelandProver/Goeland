@@ -206,6 +206,7 @@ func StatementListToFormula(lstm []basictypes.Statement) basictypes.Form {
 			not_form = s.GetForm()
 		}
 	}
+
 	switch {
 	case len(and_list) == 0 && not_form == nil:
 		fmt.Printf("Aucune données")
