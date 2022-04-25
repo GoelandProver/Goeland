@@ -120,7 +120,7 @@ func registerAxiom(axiom btypes.Form) bool {
 /**
  * Rewrites an atom an unification is found in the rewrite rules.
  **/
-func rewrite(atomic btypes.Form) (btypes.FormList, error) {
+func rewrite(atomic btypes.Form) ([]ctypes.SubstAndForm, error) {
 	form, polarity := getAtomAndPolarity(atomic.Copy())
 
 	var tree datastruct.DataStructure
@@ -140,33 +140,26 @@ func rewrite(atomic btypes.Form) (btypes.FormList, error) {
 /**
  * Rewrite algorithm with furnished code tree to unify on.
  **/
-func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) (btypes.FormList, error) {
-	atomics := btypes.MakeEmptyFormList()
-
-	// for k, v := range positiveRewrite {
-	// 	global.PrintDebug("PR", fmt.Sprintf("[ %v : %v] - ", k, v.ToString()))
-	// }
-	// for k, v := range negativeRewrite {
-	// 	global.PrintDebug("NR", fmt.Sprintf("[ %v : %v] - ", k, v.ToString()))
-	// }
+func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) ([]ctypes.SubstAndForm, error) {
+	atomics := []ctypes.SubstAndForm{}
 
 	if res, unif := tree.Unify(form); res {
 		// Sorts the unifs found.
 		unifs := choose(unif, polarity, atomic)
 
 		if len(unifs) == 0 {
-			atomics = btypes.MakeSingleElementList(atomic)
+			atomics = []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}
 		}
 
 		for _, unif := range unifs {
 			equivalence, err := getUnifiedEquivalence(unif.GetForm(), unif.GetSubst(), polarity)
 			if err != nil {
-				return btypes.MakeSingleElementList(atomic), err
+				return []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}, err
 			}
-			atomics = append(atomics, equivalence)
+			atomics = append(atomics, ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), btypes.MakeSingleElementList(equivalence)))
 		}
 	} else {
-		atomics = btypes.MakeSingleElementList(atomic)
+		atomics = []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}
 	}
 	return atomics, nil
 }
@@ -190,17 +183,18 @@ func choose(unifs []treetypes.MatchingSubstitutions, polarity bool, atomic btype
 
 		// Keep only relevant substitution
 		useful_subst := ctypes.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas())
+		new_unif := treetypes.MakeMatchingSubstitutions(unif.GetForm(), useful_subst)
 
-		if useful_subst.IsEmpty() {
-			str := unif.GetForm().ToString()
-			// Subst found but wrong polarity
-			if rewriteMap[str].Equals(btypes.MakeTop()) || rewriteMap[str].Equals(btypes.MakeBot()) {
-				sortedUnifs = insertFirst(sortedUnifs, unif)
-			} else {
-				sortedUnifs = append(sortedUnifs, unif)
-			}
-
+		// if useful_subst.IsEmpty() {
+		str := unif.GetForm().ToString()
+		// Subst found but wrong polarity
+		if rewriteMap[str].Equals(btypes.MakeTop()) || rewriteMap[str].Equals(btypes.MakeBot()) {
+			sortedUnifs = insertFirst(sortedUnifs, new_unif)
+		} else {
+			sortedUnifs = append(sortedUnifs, new_unif)
 		}
+
+		// }
 	}
 
 	return sortedUnifs

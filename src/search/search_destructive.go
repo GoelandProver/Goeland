@@ -336,7 +336,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 
 			global.PrintDebug("WF", "GO !")
 			st.SetBTOnFormulas(false)
-			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, basictypes.MakeEmptyFormList())
+			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{})
 		}
 	}
 }
@@ -353,7 +353,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 * 	current_substitution : the substitution sent by this node to its children at this step
 * 	subst_for_backtrack : list of subst if we need to backtrack
 **/
-func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack basictypes.FormList) {
+func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.SubstAndForm) {
 	global.PrintDebug("WC", "Waiting children")
 	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), len(forms_for_backtrack), st.GetBTOnFormulas(), complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 	global.PrintDebug("WC", fmt.Sprintf("MM : %v", st.GetMM().ToString()))
@@ -475,9 +475,11 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				// On relance sur soi-même avec une autre form
 
 				global.PrintDebug("WC", "Backtrack on formulas")
-				next_form := forms_for_backtrack[0].Copy()
-				forms_for_backtrack = forms_for_backtrack[1:].Copy()
-				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on form")
+
+				next_subst_and_form := forms_for_backtrack[0].Copy()
+				next_form := next_subst_and_form.GetForm()[0].Copy()
+				forms_for_backtrack = forms_for_backtrack[1:]
+				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{}, next_subst_and_form, "WaitChildren - Backtrack on form")
 
 				// The last formula of getLF is the previous formula choosen among rewritten. So, discrad it and add the new one
 				st.SetLF(append(st.GetLF()[0:len(st.GetLF())-1].Copy(), next_form))
@@ -486,7 +488,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				st_copy.SetCurrentProofRule("Rewrite")
 				// st_copy.SetSubstsFound(st.GetSubstsFound())
 				c_child := Communication{make(chan bool), make(chan Result)}
-				go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm())
+				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form)
 				global.PrintDebug("PS", "GO !")
 				global.IncrGoRoutine(1)
 				waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, forms_for_backtrack)
@@ -496,7 +498,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				next_subst := tryBTSubstitution(&substs_for_backtrack, st.GetMM(), children)
 				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{next_subst}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on subst")
 				st.SetBTOnFormulas(false)
-				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, basictypes.MakeEmptyFormList())
+				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, []complextypes.SubstAndForm{})
 
 			default:
 				exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die - No more BT available")
