@@ -97,7 +97,10 @@ func registerAxiom(axiom btypes.Form) bool {
 
 	// 2: make rewrite rule for equivalence, implication or atomic.
 	if wasForall && btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
-		if _, ok := axiomFT.(btypes.Pred); ok {
+		if axiom_ft_pred, ok := axiomFT.(btypes.Pred); ok {
+			if axiom_ft_pred.GetID().Equals(btypes.Id_eq) || axiom_ft_pred.GetID().Equals(btypes.Id_neq) {
+				return false
+			}
 			addPosRewriteRule(axiomFT, btypes.MakeTop())
 			addNegRewriteRule(axiomFT, btypes.MakeBot())
 		} else {
