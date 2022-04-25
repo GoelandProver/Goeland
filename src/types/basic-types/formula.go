@@ -507,7 +507,31 @@ func MakeForm(f Form) Form {
 
 /* Transform a formula into its negation */
 func RefuteForm(f Form) Form {
-	return Not{f.Copy()}
+	new_f, changed := rewriteNEQ(f)
+	if changed {
+		return new_f
+	} else {
+		return MakeNot(new_f)
+	}
+}
+
+/* if a not(eq) is found, transform it into !=  and if not(neq) is found, transform it into = */
+func rewriteNEQ(f Form) (Form, bool) {
+	if pred, ok := f.(Pred); ok {
+		if pred.GetID().Equals(Id_eq) {
+			return MakePred(Id_neq, pred.GetArgs()), true
+		}
+	}
+
+	if not, ok := f.(Not); ok {
+		if pred, ok := not.GetForm().(Pred); ok {
+			if pred.GetID().Equals(Id_neq) {
+				return MakePred(Id_eq, pred.GetArgs()), true
+			}
+		}
+	}
+
+	return f, false
 }
 
 /* Remove all the negations */

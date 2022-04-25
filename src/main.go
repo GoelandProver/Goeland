@@ -226,7 +226,7 @@ func initialization() {
 	global.SetStart(time.Now())
 
 	// Terms
-	basictypes.Reset()
+	basictypes.Init()
 
 	// Init pulgins
 	plugin.GetPluginManager()

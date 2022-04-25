@@ -53,6 +53,17 @@ var lock_id sync.Mutex
 var lock_var sync.Mutex
 var lock_meta sync.Mutex
 
+// Global id
+var Id_eq Id
+var Id_neq Id
+
+/* Initialization */
+func Init() {
+	Reset()
+	Id_eq = MakerId("=")
+	Id_neq = MakerId("!=")
+}
+
 /* Reset all the maps and counters */
 func Reset() {
 	cpt_id = 0

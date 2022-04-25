@@ -199,11 +199,13 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 		// Si f est dans atomic, ça veut dire qu'on a pas pu réécrire, donc inutile de vérifier
 		if !st.GetAtomic().Contains(f) {
 			if rewritten, err := plugin.GetPluginManager().ApplyRewriteHook(f); err == nil {
-				global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", rewritten.ToString()))
+				global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.SubstAndFormListToString(rewritten)))
 
 				// Keep all the possibility of rewritting and choose the first one
-				choosen_rewritten_form := rewritten[0].Copy()
-				rewritten = rewritten[1:].Copy()
+				choosen_rewritten := rewritten[0]
+				choosen_rewritten_form := choosen_rewritten.GetForm()[0].Copy()
+				// cas plusieurs formules : on doit aussi copier rewitten[0] sans la première formule. Ce cas ne peux pas arriver vu le code de DMT
+				rewritten = complextypes.CopySubstAndFormList(rewritten[1:])
 
 				// Si on ne s'est pas réécrit en soi-même ?
 				if !choosen_rewritten_form.Equals(f) {
@@ -215,7 +217,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 					st_copy.SetCurrentProofRule("Rewrite")
 					// st_copy.SetSubstsFound(st.GetSubstsFound())
 					c_child := Communication{make(chan bool), make(chan Result)}
-					go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm())
+					go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten)
 					global.PrintDebug("PS", "GO !")
 					global.IncrGoRoutine(1)
 					waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, rewritten)
@@ -287,7 +289,7 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication) {
 	}
 	if global.IsDestructive() {
 		st.SetBTOnFormulas(false)
-		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, basictypes.MakeEmptyFormList())
+		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{})
 	} else {
 		global.PrintDebug("PS", "Die")
 	}
