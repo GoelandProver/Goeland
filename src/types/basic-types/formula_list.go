@@ -164,13 +164,13 @@ func (lf FormList) FilterPred(pola bool) FormList {
 		switch nf := f.Copy().(type) {
 		case Pred:
 			if pola {
-				res.AppendIfNotContains(nf)
+				res = res.AppendIfNotContains(nf)
 			}
 		case Not:
 			switch nf.GetForm().(type) {
 			case Pred:
 				if !pola {
-					res.AppendIfNotContains(nf.GetForm())
+					res = res.AppendIfNotContains(nf.GetForm())
 				}
 			}
 		}
