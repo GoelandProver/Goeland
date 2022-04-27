@@ -89,15 +89,14 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
 func registerAxiom(axiom btypes.Form) bool {
 	// 1: instantiate forall(s).
 	axiomFT := axiom.Copy()
-	global.PrintDebug("RA", fmt.Sprintf("Axiom : %v", axiomFT.ToString()))
+	_, wasForall := axiomFT.(btypes.All)
 
 	for reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.All{}) {
 		axiomFT = instantiateOnce(axiomFT)
 	}
 
 	// 2: make rewrite rule for equivalence, implication or atomic.
-	if btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
-		global.PrintDebug("RA", fmt.Sprintf("Register : %v", axiomFT.ToString()))
+	if wasForall && btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
 		if axiom_ft_pred, ok := axiomFT.(btypes.Pred); ok {
 			if axiom_ft_pred.GetID().Equals(btypes.Id_eq) || axiom_ft_pred.GetID().Equals(btypes.Id_neq) {
 				return false
@@ -108,8 +107,6 @@ func registerAxiom(axiom btypes.Form) bool {
 			addNegRewriteRule(axiomFT, btypes.MakeTop())
 			addPosRewriteRule(axiomFT, btypes.MakeBot())
 		}
-		global.PrintDebug("RG", fmt.Sprintf("PR : %v", positiveRewrite))
-		global.PrintDebug("RG", fmt.Sprintf("NR : %v", negativeRewrite))
 		return true
 	} else if reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Equ{}) {
 		return registerEquivalence(axiomFT)
@@ -147,7 +144,6 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btyp
 	atomics := []ctypes.SubstAndForm{}
 
 	if res, unif := tree.Unify(form); res {
-		global.PrintDebug("RG", fmt.Sprintf("res = %v", res))
 		// Sorts the unifs found.
 		unifs := choose(unif, polarity, atomic)
 
