@@ -148,6 +148,18 @@ func (fl FormList) AppendIfNotContains(f Form) FormList {
 	}
 }
 
+/* insert first */
+func (fl FormList) InsertFirst(f Form) FormList {
+	if len(fl) > 0 {
+		// Moves everything to the right once.
+		fl = append(fl[:1], fl[0:]...)
+		fl[0] = f
+	} else {
+		fl = append(fl, f)
+	}
+	return fl
+}
+
 /* Merge two formulas lists */
 func (l1 FormList) Merge(l2 FormList) FormList {
 	res := l1.Copy()

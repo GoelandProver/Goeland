@@ -59,8 +59,8 @@ func registerHooks(pm *plugin.PluginManager) {
 }
 
 func initPluginGlobalVariables(debugMode bool) {
-	positiveRewrite = make(map[string]btypes.Form)
-	negativeRewrite = make(map[string]btypes.Form)
+	positiveRewrite = make(map[string]btypes.FormList)
+	negativeRewrite = make(map[string]btypes.FormList)
 	positiveTree = new(treesearch.Node)
 	negativeTree = new(treesearch.Node)
 	debugActivated = debugMode

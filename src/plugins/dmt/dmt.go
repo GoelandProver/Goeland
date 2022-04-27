@@ -50,8 +50,8 @@ import (
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-var positiveRewrite map[string]btypes.Form /* Stores rewrites of atoms with positive occurrences */
-var negativeRewrite map[string]btypes.Form /* Stores rewrites of atoms with negative occurrences */
+var positiveRewrite map[string]btypes.FormList /* Stores rewrites of atoms with positive occurrences */
+var negativeRewrite map[string]btypes.FormList /* Stores rewrites of atoms with negative occurrences */
 
 var positiveTree datastruct.DataStructure /* Matches atoms with positive occurrences */
 var negativeTree datastruct.DataStructure /* Matches atoms with negative occurrences */
@@ -89,14 +89,15 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
 func registerAxiom(axiom btypes.Form) bool {
 	// 1: instantiate forall(s).
 	axiomFT := axiom.Copy()
-	_, wasForall := axiomFT.(btypes.All)
+	global.PrintDebug("RA", fmt.Sprintf("Axiom : %v", axiomFT.ToString()))
 
 	for reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.All{}) {
 		axiomFT = instantiateOnce(axiomFT)
 	}
 
 	// 2: make rewrite rule for equivalence, implication or atomic.
-	if wasForall && btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
+	if btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
+		global.PrintDebug("RA", fmt.Sprintf("Register : %v", axiomFT.ToString()))
 		if axiom_ft_pred, ok := axiomFT.(btypes.Pred); ok {
 			if axiom_ft_pred.GetID().Equals(btypes.Id_eq) || axiom_ft_pred.GetID().Equals(btypes.Id_neq) {
 				return false
@@ -107,6 +108,8 @@ func registerAxiom(axiom btypes.Form) bool {
 			addNegRewriteRule(axiomFT, btypes.MakeTop())
 			addPosRewriteRule(axiomFT, btypes.MakeBot())
 		}
+		global.PrintDebug("RG", fmt.Sprintf("PR : %v", positiveRewrite))
+		global.PrintDebug("RG", fmt.Sprintf("NR : %v", negativeRewrite))
 		return true
 	} else if reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Equ{}) {
 		return registerEquivalence(axiomFT)
@@ -144,6 +147,7 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btyp
 	atomics := []ctypes.SubstAndForm{}
 
 	if res, unif := tree.Unify(form); res {
+		global.PrintDebug("RG", fmt.Sprintf("res = %v", res))
 		// Sorts the unifs found.
 		unifs := choose(unif, polarity, atomic)
 
@@ -156,7 +160,13 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btyp
 			if err != nil {
 				return []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}, err
 			}
-			atomics = append(atomics, ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), btypes.MakeSingleElementList(equivalence)))
+			for _, rewriten_candidate := range equivalence {
+				if rewriten_candidate.Equals(btypes.MakeBot()) || rewriten_candidate.Equals(btypes.MakeTop()) {
+					atomics = ctypes.InsertFirstSubstAndFormList(atomics, ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), btypes.MakeSingleElementList(rewriten_candidate)))
+				} else {
+					atomics = append(atomics, ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), btypes.MakeSingleElementList(rewriten_candidate)))
+				}
+			}
 		}
 	} else {
 		atomics = []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}
@@ -187,14 +197,11 @@ func choose(unifs []treetypes.MatchingSubstitutions, polarity bool, atomic btype
 
 		// if useful_subst.IsEmpty() {
 		str := unif.GetForm().ToString()
-		// Subst found but wrong polarity
-		if rewriteMap[str].Equals(btypes.MakeTop()) || rewriteMap[str].Equals(btypes.MakeBot()) {
+		if rewriteMap[str].Contains(btypes.MakeTop()) || rewriteMap[str].Contains(btypes.MakeBot()) {
 			sortedUnifs = insertFirst(sortedUnifs, new_unif)
 		} else {
 			sortedUnifs = append(sortedUnifs, new_unif)
 		}
-
-		// }
 	}
 
 	return sortedUnifs
@@ -229,19 +236,25 @@ func getAtomAndPolarity(atom btypes.Form) (btypes.Form, bool) {
 /**
  * Unifies the substitution with the equivalence of the given atom.
  **/
-func getUnifiedEquivalence(atom btypes.Form, subst treetypes.Substitutions, polarity bool) (btypes.Form, error) {
+func getUnifiedEquivalence(atom btypes.Form, subst treetypes.Substitutions, polarity bool) (btypes.FormList, error) {
 	equivalence := findEquivalence(atom, polarity)
 	if equivalence == nil {
 		fmt.Printf("[DMT] Fatal error : no rewrite rule found when an unification has been found : %v", atom.ToString())
 		return nil, fmt.Errorf("[DMT] Fatal error : no rewrite rule found when an unification has been found : %v", atom.ToString())
 	}
-	return substitute(equivalence, subst), nil
+
+	res := btypes.MakeEmptyFormList()
+	for _, f := range equivalence {
+		res = res.AppendIfNotContains(substitute(f, subst))
+	}
+
+	return res, nil
 }
 
 /**
  * Finds the equivalence of the atom in our rewriteMatches.
  **/
-func findEquivalence(atom btypes.Form, polarity bool) btypes.Form {
+func findEquivalence(atom btypes.Form, polarity bool) btypes.FormList {
 	if polarity {
 		return positiveRewrite[atom.ToString()]
 	} else {
@@ -269,9 +282,9 @@ func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 	}
 
 	if polarity {
-		positiveRewrite[axiom.ToString()] = cons
+		positiveRewrite[axiom.ToString()] = append(positiveRewrite[axiom.ToString()], cons)
 	} else {
-		negativeRewrite[axiom.ToString()] = cons
+		negativeRewrite[axiom.ToString()] = append(negativeRewrite[axiom.ToString()], cons)
 	}
 }
 
