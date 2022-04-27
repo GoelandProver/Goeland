@@ -97,3 +97,13 @@ func MakeEmptySubstAndForm() SubstAndForm {
 func (s SubstAndForm) AddFormulas(fl basictypes.FormList) SubstAndForm {
 	return MakeSubstAndForm(s.GetSubst(), s.GetForm().Merge(fl.Copy()))
 }
+func InsertFirstSubstAndFormList(safL []SubstAndForm, saf SubstAndForm) []SubstAndForm {
+	if len(safL) > 0 {
+		// Moves everything to the right once.
+		safL = append(safL[:1], safL[0:]...)
+		safL[0] = saf
+	} else {
+		safL = append(safL, saf)
+	}
+	return safL
+}

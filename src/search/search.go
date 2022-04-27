@@ -220,7 +220,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 					go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten)
 					global.PrintDebug("PS", "GO !")
 					global.IncrGoRoutine(1)
-					waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, rewritten)
+					waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, choosen_rewritten, []complextypes.SubstAndForm{}, rewritten)
 					return
 				} else {
 					// Pas de réécriture disponible
