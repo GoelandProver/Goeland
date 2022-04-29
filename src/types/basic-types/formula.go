@@ -545,17 +545,20 @@ func RemoveNeg(f Form) Form {
 }
 
 /* Simplify a neg neg eng formual (for DMT) */
-func SimplifyNeg(f Form, is_even bool) Form {
-	switch ft := f.(type) {
-	case Not:
-		// Already under a not
-		if !is_even {
-			return SimplifyNeg(ft.GetForm(), true)
+func SimplifyNeg(f Form) Form {
+	return simplifyNeg(f, true)
+}
+
+func simplifyNeg(f Form, isEven bool) Form {
+	// Already under a not
+	if ft, isNot := f.(Not); isNot {
+		if !isEven {
+			return simplifyNeg(ft.GetForm(), true)
 		} else {
-			return SimplifyNeg(ft.GetForm(), false)
+			return simplifyNeg(ft.GetForm(), false)
 		}
-	default:
-		if is_even {
+	} else {
+		if isEven {
 			return f.Copy()
 		} else {
 			return RefuteForm(f.Copy())
