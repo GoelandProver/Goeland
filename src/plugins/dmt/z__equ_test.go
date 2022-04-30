@@ -46,8 +46,10 @@
 package main_test
 
 import (
+	"fmt"
 	"testing"
 
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	. "github.com/GoelandProver/Goeland/plugin"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -63,8 +65,7 @@ var Q = btypes.MakerId("Q")
 // Makes a plugin manager and inits the DMT for equivalences tests
 func getEquivalencePM() PluginManager {
 	pm := PluginManager{}
-	dmt.InitPlugin(&pm, []Option{}, false)
-	//global.SetDebug(true)
+	dmt.InitPlugin(&pm, []Option{{Name: "polarized", Value: "false"}, {Name: "preskolemisation", Value: "false"}}, true)
 	return pm
 }
 
@@ -709,5 +710,73 @@ func TestMultipleAxiomDefinition2(t *testing.T) {
 	if !forms.Contains(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{ a, y }))) || 
 	   !forms.Contains(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{ y, a }))) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms.ToString())
+	}
+}
+
+/**
+ * This function tests the error that should be returned if something is not in the rewrite tree
+ **/
+func TestError(t *testing.T) {
+	pm := getEquivalencePM()
+
+	form := btypes.MakePred(P, []btypes.Term{ a })
+	substs, err := pm.ApplyRewriteHook(form)
+
+	if err != nil {
+		t.Fatalf("Error: %s found in rewrite tree when it's empty.", form.ToString())
+	}
+
+	if len(substs) > 1 || !substs[0].GetSubst().Equals(treetypes.Failure()) {
+		t.Fatalf("Error: error not triggered when searching for something not in the rewrite tree.")
+	}
+}
+
+/**
+ * Sorting test : top/bot formulas should be first in line
+ **/
+func TestSort(t *testing.T) {
+	pm := getEquivalencePM()
+
+	equPred := btypes.MakeAll(
+		[]btypes.Var{ x },
+		btypes.MakeEqu(
+			btypes.MakePred(P, []btypes.Term{ x }),
+			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y})),
+		),
+	)
+
+	if !pm.ApplySendAxiomHook(equPred) {
+		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred.ToString())
+	}
+
+	axiom := btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(P, []btypes.Term{x}))
+
+	if !pm.ApplySendAxiomHook(axiom) {
+		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
+	}
+
+	// forall x.P(x) and forall x.P(x) <=> forall y.Q(x, y) are in the rewrite tree.
+
+	form := btypes.MakePred(P, []btypes.Term{ a })
+	substs, err := pm.ApplyRewriteHook(form)
+
+	if err != nil {
+		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
+	}
+
+	fmt.Println(substs)
+	if len(substs) != 2 {
+		t.Fatal("Error: substs size should be 2.")
+	}
+
+	topBot := substs[0].GetForm()
+	others := substs[1].GetForm()
+
+	if len(topBot) > 1 || !topBot[0].Equals(btypes.MakeTop()) {
+		t.Fatal("Error: rewritten formulas are not properly sorted.")
+	}
+
+	if len(others) > 1 {
+		t.Fatal("Error: rewritten formulas are not properly sorted (2).")
 	}
 }

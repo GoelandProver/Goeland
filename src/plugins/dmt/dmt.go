@@ -102,9 +102,9 @@ func registerAxiom(axiom btypes.Form) bool {
 				return false
 			}
 			addPosRewriteRule(axiomFT, btypes.MakeTop())
-			addNegRewriteRule(axiomFT, btypes.MakeBot())
+			addNegRewriteRule(axiomFT, btypes.MakeNot(btypes.MakeTop()))
 		} else {
-			addNegRewriteRule(axiomFT, btypes.MakeTop())
+			addNegRewriteRule(axiomFT, btypes.MakeNot(btypes.MakeBot()))
 			addPosRewriteRule(axiomFT, btypes.MakeBot())
 		}
 		return true
