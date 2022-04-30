@@ -66,9 +66,9 @@ func registerImplication(axiomFT btypes.Form) bool {
 	}
 	// -B => -A
 	if reflect.TypeOf(phi2) == reflect.TypeOf(btypes.Not{}) && btypes.ShowKindOfRule(phi2.(btypes.Not).GetForm()) == btypes.Atomic {
-		addPosRewriteRule(btypes.MakeForm(phi2.(btypes.Not).GetForm()), btypes.RefuteForm(phi1))
+		addPosRewriteRule(btypes.MakeForm(phi2.(btypes.Not).GetForm()), btypes.SimplifyNeg(btypes.RefuteForm(phi1)))
 	} else if btypes.ShowKindOfRule(phi2) == btypes.Atomic {
-		addNegRewriteRule(btypes.MakeForm(phi2), btypes.RefuteForm(phi1))
+		addNegRewriteRule(btypes.MakeForm(phi2), btypes.SimplifyNeg(btypes.RefuteForm(phi1)))
 	}
 	return true
 }

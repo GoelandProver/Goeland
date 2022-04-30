@@ -102,9 +102,9 @@ func registerAxiom(axiom btypes.Form) bool {
 				return false
 			}
 			addPosRewriteRule(axiomFT, btypes.MakeTop())
-			addNegRewriteRule(axiomFT, btypes.MakeBot())
+			addNegRewriteRule(axiomFT, btypes.MakeNot(btypes.MakeTop()))
 		} else {
-			addNegRewriteRule(axiomFT, btypes.MakeTop())
+			addNegRewriteRule(axiomFT, btypes.MakeNot(btypes.MakeBot()))
 			addPosRewriteRule(axiomFT, btypes.MakeBot())
 		}
 		return true
@@ -146,26 +146,29 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btyp
 	if res, unif := tree.Unify(form); res {
 		// Sorts the unifs found.
 		unifs := choose(unif, polarity, atomic)
-
 		if len(unifs) == 0 {
-			atomics = []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}
+			atomics = rewriteFailure(atomic)
 		}
 
 		for _, unif := range unifs {
 			equivalence, err := getUnifiedEquivalence(unif.GetForm(), unif.GetSubst(), polarity)
 			if err != nil {
-				return []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}, err
+				return rewriteFailure(atomic), err
 			}
-			for _, rewriten_candidate := range equivalence {
-				if rewriten_candidate.Equals(btypes.MakeBot()) || rewriten_candidate.Equals(btypes.MakeTop()) {
-					atomics = ctypes.InsertFirstSubstAndFormList(atomics, ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), btypes.MakeSingleElementList(rewriten_candidate)))
-				} else {
-					atomics = append(atomics, ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), btypes.MakeSingleElementList(rewriten_candidate)))
-				}
+
+			// Keep only useful substitutions
+			filteredUnif := treetypes.MakeMatchingSubstitutions(
+				unif.GetForm(), 
+				ctypes.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas()),
+			)
+
+			// Add each candidate to the rewrite slice with precedence order (Top/Bot are prioritized).
+			for _, rewrittenCandidate := range equivalence {
+				atomics = addUnifToAtomics(atomics, rewrittenCandidate, filteredUnif)
 			}
 		}
 	} else {
-		atomics = []ctypes.SubstAndForm{ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))}
+		atomics = rewriteFailure(atomic)
 	}
 	return atomics, nil
 }
@@ -173,6 +176,37 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btyp
 /**
  * Supporting functions of the DMT.
  **/
+
+/**
+ * Returns a failure-type slice of subst and form
+ **/
+func rewriteFailure(atomic btypes.Form) []ctypes.SubstAndForm {
+	return []ctypes.SubstAndForm{
+		ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic)),
+	}
+}
+
+/**
+ * Adds unification to atomics in order of importance (Top/Bot first and then the others)
+ **/
+func addUnifToAtomics(atomics []ctypes.SubstAndForm, candidate btypes.Form, unif treetypes.MatchingSubstitutions) []ctypes.SubstAndForm {
+	substAndForm := ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), btypes.MakeSingleElementList(candidate))
+	if isBotOrTop(candidate) {
+		atomics = ctypes.InsertFirstSubstAndFormList(atomics, substAndForm)
+	} else {
+		atomics = append(atomics, substAndForm)
+	}
+	return atomics
+}
+
+/**
+ * Checks if a formula is Bot or Top
+ **/
+func isBotOrTop(form btypes.Form) bool {
+	_, isBot := form.(btypes.Bot)
+	_, isTop := form.(btypes.Top)
+	return isBot || isTop
+}
 
 /**
  * Priority of substitutions: Top/Bottom > others
@@ -186,17 +220,11 @@ func choose(unifs []treetypes.MatchingSubstitutions, polarity bool, atomic btype
 
 	sortedUnifs := []treetypes.MatchingSubstitutions{}
 	for _, unif := range unifs {
-
-		// Keep only relevant substitution
-		useful_subst := ctypes.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas())
-		new_unif := treetypes.MakeMatchingSubstitutions(unif.GetForm(), useful_subst)
-
-		// if useful_subst.IsEmpty() {
 		str := unif.GetForm().ToString()
 		if rewriteMap[str].Contains(btypes.MakeTop()) || rewriteMap[str].Contains(btypes.MakeBot()) {
-			sortedUnifs = insertFirst(sortedUnifs, new_unif)
+			sortedUnifs = insertFirst(sortedUnifs, unif)
 		} else {
-			sortedUnifs = append(sortedUnifs, new_unif)
+			sortedUnifs = append(sortedUnifs, unif)
 		}
 	}
 
