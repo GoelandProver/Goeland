@@ -225,11 +225,11 @@ fof_binary_nonassoc:
   | fof_unitary_formula IMPLY fof_unitary_formula {$$ = basictypes.MakeImp($1, $3)}
   | fof_unitary_formula LEFT_IMPLY fof_unitary_formula {$$ = basictypes.MakeImp($3, $1)}
   | fof_unitary_formula XOR fof_unitary_formula
-    {$$ = basictypes.MakeOr([]basictypes.Form{basictypes.MakeAnd([]basictypes.Form{$1, basictypes.MakeNot($3)}), basictypes.MakeAnd([]basictypes.Form{basictypes.MakeNot($1), $3})})}
+    {$$ = basictypes.MakeOr([]basictypes.Form{basictypes.MakeAnd([]basictypes.Form{$1, basictypes.RefuteForm($3)}), basictypes.MakeAnd([]basictypes.Form{basictypes.RefuteForm($1), $3})})}
   | fof_unitary_formula NOTVLINE fof_unitary_formula
-    {$$ = basictypes.MakeNot(basictypes.MakeOr([]basictypes.Form{$1, $3}))}
+    {$$ = basictypes.RefuteForm(basictypes.MakeOr([]basictypes.Form{$1, $3}))}
   | fof_unitary_formula NOTAND fof_unitary_formula
-    {$$ = basictypes.MakeNot(basictypes.MakeAnd([]basictypes.Form{$1, $3}))}
+    {$$ = basictypes.RefuteForm(basictypes.MakeAnd([]basictypes.Form{$1, $3}))}
   ;
 
 fof_binary_assoc:
@@ -269,7 +269,7 @@ fof_variable_list:
   ;
 
 fof_unary_formula:
-    NOT fof_unitary_formula {$$ = basictypes.MakeNot($2)}
+    NOT fof_unitary_formula {$$ = basictypes.RefuteForm($2)}
   | fol_infix_unary {$$ = $1}
   ;
 
@@ -303,7 +303,7 @@ fof_unary_formula:
 /* Special formulas */
 
 fol_infix_unary:
-    term NOT_EQUAL term {$$ = basictypes.MakeNot(basictypes.MakePred(basictypes.MakerId("="), []basictypes.Term{$1, $3}))}
+    term NOT_EQUAL term {$$ = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{$1, $3})}
   ;
 
 /* First order atoms */
@@ -334,7 +334,7 @@ defined_atomic_formula:
     ;*/
 
 defined_infix_formula:
-    term EQUAL term {$$ = basictypes.MakePred(basictypes.MakerId("="), []basictypes.Term{$1, $3})}
+    term EQUAL term {$$ = basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{$1, $3})}
   ;
 
 /*system_atomic_formula:

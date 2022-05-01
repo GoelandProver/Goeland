@@ -214,7 +214,7 @@ func applyDeltaRules(f basictypes.Form) basictypes.FormList {
 				skolem_fun := basictypes.MakerFun(basictypes.MakerNewId("skolem_"+v.GetName()+strconv.Itoa(v.GetIndex())), f.GetMetas().ToTermList())
 				fun_tmp = basictypes.ReplaceVarByTerm(fun_tmp, v, skolem_fun)
 			}
-			result = append(result, basictypes.MakeNot(fun_tmp))
+			result = append(result, basictypes.RefuteForm(fun_tmp))
 		}
 	case basictypes.Ex:
 		global.PrintDebug("AR", "Applying δ∃...")
@@ -252,7 +252,7 @@ func applyGammaRules(f basictypes.Form, index int) (basictypes.FormList, basicty
 				new_mm = append(new_mm, meta)
 				fun_tmp = basictypes.ReplaceVarByTerm(fun_tmp, v, meta)
 			}
-			result = append(result, basictypes.MakeNot(fun_tmp))
+			result = append(result, basictypes.RefuteForm(fun_tmp))
 		}
 	case basictypes.All:
 		global.PrintDebug("AR", "Applying γ∀...")
