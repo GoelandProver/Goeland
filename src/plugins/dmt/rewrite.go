@@ -71,7 +71,7 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btyp
 }
 
 func getRewrittenFormulas(rewritten []ctypes.SubstAndForm, unif []treetypes.MatchingSubstitutions, atomic btypes.Form, polarity bool) ([]ctypes.SubstAndForm, error) {
-	unifs := choose(unif, polarity, atomic)
+	unifs := sortUnifications(unif, polarity, atomic)
 	if len(unifs) == 0 {
 		rewritten = rewriteFailure(atomic)
 	}
@@ -137,7 +137,7 @@ func isBotOrTop(form btypes.Form) bool {
 	return is[btypes.Bot](form) || is[btypes.Top](form)
 }
 
-func choose(unifs []treetypes.MatchingSubstitutions, polarity bool, atomic btypes.Form) []treetypes.MatchingSubstitutions {
+func sortUnifications(unifs []treetypes.MatchingSubstitutions, polarity bool, atomic btypes.Form) []treetypes.MatchingSubstitutions {
 	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
 
 	sortedUnifs := []treetypes.MatchingSubstitutions{}
