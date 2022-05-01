@@ -29,24 +29,24 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
+
 /**********/
 /* dmt.go */
 /**********/
+
 /**
-* This file implements the main logic behind the deduction modulo theorie plugin.
+* This file inits the global variables of the DMT and hook the functions to the prover.
 **/
 
 package main
 
 import (
 	"fmt"
-	"reflect"
+	"strings"
 
-	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/global"
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	"github.com/GoelandProver/Goeland/plugin"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
-	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
@@ -75,246 +75,54 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
 }
 
 /**
- * Top-level functions of the DMT.
+ * Registers all the hooks of this plugin in the PluginManager.
+ * In particular, two hooks are activated by this plugin :
+ *		- SendAxiomHook, to take axioms and make it a rewrite rule
+ *		- RewriteHook, to rewrite an atom.
  **/
+func registerHooks(pm *plugin.PluginManager) {
+	pm.RegisterRewriteHook(rewrite)
+	pm.RegisterSendAxiomHook(registerAxiom)
+}
 
-/**
- * Implements polarized deduction modulo theory :
- * 	- Registers axioms of type (forall x1, ..., xn) . A <=> B (if A or B is atomic)
- *	  as both positive and negative occurrences.
- *	- Registers axioms of type (forall x1, ..., xn) . A => B (if A / B atomic) as
- *	  positive occurrence for A and negative occurrence for B.
- *  - Registers axioms of type forall x1, ..., xn.P
- **/
-func registerAxiom(axiom btypes.Form) bool {
-	// 1: instantiate forall(s).
-	axiomFT := axiom.Copy()
-	_, wasForall := axiomFT.(btypes.All)
-
-	for reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.All{}) {
-		axiomFT = instantiateOnce(axiomFT)
-	}
-
-	// 2: make rewrite rule for equivalence, implication or atomic.
-	if wasForall && btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
-		if axiom_ft_pred, ok := axiomFT.(btypes.Pred); ok {
-			if axiom_ft_pred.GetID().Equals(btypes.Id_eq) || axiom_ft_pred.GetID().Equals(btypes.Id_neq) {
-				return false
-			}
-			addPosRewriteRule(axiomFT, btypes.MakeTop())
-			addNegRewriteRule(axiomFT, btypes.MakeNot(btypes.MakeTop()))
-		} else {
-			addNegRewriteRule(axiomFT, btypes.MakeNot(btypes.MakeBot()))
-			addPosRewriteRule(axiomFT, btypes.MakeBot())
-		}
-		return true
-	} else if _, ok := axiomFT.(btypes.Equ); ok {
-		return registerEquivalence(axiomFT)
-	} else if _, ok := axiomFT.(btypes.Imp); ok && activatePolarized {
-		return registerImplication(axiomFT)
-	}
-	// 3: if it's not one of the above, the axiom wasn't consumed.
-	return false
+func initPluginGlobalVariables(debugMode bool) {
+	positiveRewrite = make(map[string]btypes.FormList)
+	negativeRewrite = make(map[string]btypes.FormList)
+	positiveTree = new(treesearch.Node)
+	negativeTree = new(treesearch.Node)
+	debugActivated = debugMode
 }
 
 /**
- * Rewrites an atom an unification is found in the rewrite rules.
+ * Parses options given to the plugin by the prover.
+ * It also displays what's been activated.
  **/
-func rewrite(atomic btypes.Form) ([]ctypes.SubstAndForm, error) {
-	form, polarity := getAtomAndPolarity(atomic.Copy())
-
-	var tree datastruct.DataStructure
-
-	// Chooses the tree to search in based on the form's polarity.
-	// A positive form will be matched in the positive tree when
-	// a negative form will be matched in the negative tree.
-	if polarity {
-		tree = positiveTree
-	} else {
-		tree = negativeTree
-	}
-
-	return rewriteGeneric(tree, atomic, form, polarity)
-}
-
-/**
- * Rewrite algorithm with furnished code tree to unify on.
- **/
-func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) ([]ctypes.SubstAndForm, error) {
-	atomics := []ctypes.SubstAndForm{}
-
-	if res, unif := tree.Unify(form); res {
-		// Sorts the unifs found.
-		unifs := choose(unif, polarity, atomic)
-		if len(unifs) == 0 {
-			atomics = rewriteFailure(atomic)
-		}
-
-		for _, unif := range unifs {
-			equivalence, err := getUnifiedEquivalence(unif.GetForm(), unif.GetSubst(), polarity)
-			if err != nil {
-				return rewriteFailure(atomic), err
-			}
-
-			// Keep only useful substitutions
-			filteredUnif := treetypes.MakeMatchingSubstitutions(
-				unif.GetForm(),
-				ctypes.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas()),
-			)
-
-			// Add each candidate to the rewrite slice with precedence order (Top/Bot are prioritized).
-			for _, rewrittenCandidate := range equivalence {
-				atomics = addUnifToAtomics(atomics, rewrittenCandidate, filteredUnif)
-			}
-		}
-	} else {
-		atomics = rewriteFailure(atomic)
-	}
-	return atomics, nil
-}
-
-/**
- * Supporting functions of the DMT.
- **/
-
-/**
- * Returns a failure-type slice of subst and form
- **/
-func rewriteFailure(atomic btypes.Form) []ctypes.SubstAndForm {
-	return []ctypes.SubstAndForm{
-		ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic)),
-	}
-}
-
-/**
- * Adds unification to atomics in order of importance (Top/Bot first and then the others)
- **/
-func addUnifToAtomics(atomics []ctypes.SubstAndForm, candidate btypes.Form, unif treetypes.MatchingSubstitutions) []ctypes.SubstAndForm {
-	substAndForm := ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), btypes.MakeSingleElementList(candidate))
-	if isBotOrTop(candidate) {
-		atomics = ctypes.InsertFirstSubstAndFormList(atomics, substAndForm)
-	} else {
-		atomics = append(atomics, substAndForm)
-	}
-	return atomics
-}
-
-/**
- * Checks if a formula is Bot or Top
- **/
-func isBotOrTop(form btypes.Form) bool {
-	_, isBot := form.(btypes.Bot)
-	_, isTop := form.(btypes.Top)
-	return isBot || isTop
-}
-
-/**
- * Priority of substitutions: Top/Bottom > others
- * remove substitutions containing metavariables from form and tree
- **/
-func choose(unifs []treetypes.MatchingSubstitutions, polarity bool, atomic btypes.Form) []treetypes.MatchingSubstitutions {
-	rewriteMap := positiveRewrite
-	if !polarity {
-		rewriteMap = negativeRewrite
-	}
-
-	sortedUnifs := []treetypes.MatchingSubstitutions{}
-	for _, unif := range unifs {
-		str := unif.GetForm().ToString()
-		if rewriteMap[str].Contains(btypes.MakeTop()) || rewriteMap[str].Contains(btypes.MakeBot()) {
-			sortedUnifs = insertFirst(sortedUnifs, unif)
-		} else {
-			sortedUnifs = append(sortedUnifs, unif)
+func parsePluginOptions(options []plugin.Option) {
+	// Parse options
+	for _, opt := range options {
+		switch opt.Name {
+		case "polarized":
+			activatePolarized = opt.Value != "false"
+		case "preskolemization":
+			preskolemize = opt.Value != "false"
 		}
 	}
 
-	return sortedUnifs
-}
+	// Display what's been activated.
+	output := "[DMT] DMT loaded "
 
-/**
- * Insert the given substitution as the first element of the slice (empty or not).
- **/
-func insertFirst(sortedUnifs []treetypes.MatchingSubstitutions, unif treetypes.MatchingSubstitutions) []treetypes.MatchingSubstitutions {
-	if len(sortedUnifs) > 0 {
-		// Moves everything to the right once.
-		sortedUnifs = append(sortedUnifs[:1], sortedUnifs[0:]...)
-		sortedUnifs[0] = unif
-	} else {
-		sortedUnifs = append(sortedUnifs, unif)
-	}
-	return sortedUnifs
-}
-
-/**
- * Utility function to get the form to unify in the codetree and the polarity of the atom furnished.
- **/
-func getAtomAndPolarity(atom btypes.Form) (btypes.Form, bool) {
-	switch form := atom.Copy().(type) {
-	case btypes.Not:
-		return form.GetForm(), false
-	default:
-		return form, true
-	}
-}
-
-/**
- * Unifies the substitution with the equivalence of the given atom.
- **/
-func getUnifiedEquivalence(atom btypes.Form, subst treetypes.Substitutions, polarity bool) (btypes.FormList, error) {
-	equivalence := findEquivalence(atom, polarity)
-	if equivalence == nil {
-		fmt.Printf("[DMT] Fatal error : no rewrite rule found when an unification has been found : %v", atom.ToString())
-		return nil, fmt.Errorf("[DMT] Fatal error : no rewrite rule found when an unification has been found : %v", atom.ToString())
+	if activatePolarized || preskolemize {
+		output += "with "
 	}
 
-	res := btypes.MakeEmptyFormList()
-	for _, f := range equivalence {
-		res = res.AppendIfNotContains(substitute(f, subst))
+	var activatedOptions []string
+	if activatePolarized {
+		activatedOptions = append(activatedOptions, "polarization")
+	}
+	if preskolemize {
+		activatedOptions = append(activatedOptions, "preskolemization")
 	}
 
-	return res, nil
-}
-
-/**
- * Finds the equivalence of the atom in our rewriteMatches.
- **/
-func findEquivalence(atom btypes.Form, polarity bool) btypes.FormList {
-	if polarity {
-		return positiveRewrite[atom.ToString()]
-	} else {
-		return negativeRewrite[atom.ToString()]
-	}
-}
-
-/**
- * Enters an axiom in the rewrite tree & rewrite match.
- **/
-func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
-	// Skolemize consequence if possible
-	for preskolemize && canSkolemize(cons) {
-		cons = skolemize(cons)
-	}
-
-	if debugActivated {
-		if polarity {
-			fmt.Printf("Rewrite rule: %s ---> %s\n", axiom.ToString(), cons.ToString())
-			global.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", axiom.ToString(), cons.ToString()))
-		} else {
-			fmt.Printf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom).ToString(), cons.ToString())
-			global.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom).ToString(), cons.ToString()))
-		}
-	}
-
-	if polarity {
-		positiveRewrite[axiom.ToString()] = append(positiveRewrite[axiom.ToString()], cons)
-	} else {
-		negativeRewrite[axiom.ToString()] = append(negativeRewrite[axiom.ToString()], cons)
-	}
-}
-
-/**
- * Skolemization can be applied only when the kind of rule appliable is a delta-rule.
- **/
-func canSkolemize(form btypes.Form) bool {
-	return btypes.ShowKindOfRule(form) == btypes.Delta
+	output += strings.Join(activatedOptions, " and ")
+	fmt.Print(output + "\n")
 }

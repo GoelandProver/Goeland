@@ -46,7 +46,7 @@
 package main_test
 
 import (
-	"fmt"
+	"os"
 	"testing"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -62,19 +62,19 @@ var P btypes.Id
 var Q btypes.Id
 
 // Init variables for test
-func initVar() {
+func TestMain(m *testing.M) {
 	a = btypes.MakerConst(btypes.MakerId("a"))
 	x = btypes.MakerVar("x")
 	y = btypes.MakerVar("y")
 	P = btypes.MakerId("P")
 	Q = btypes.MakerId("Q")
+	btypes.Init()
+	os.Exit(m.Run())
 }
 
 // Makes a plugin manager and inits the DMT for equivalences tests
 func getEquivalencePM() PluginManager {
 	pm := PluginManager{}
-	btypes.Init()
-	initVar()
 	dmt.InitPlugin(&pm, []Option{{Name: "polarized", Value: "false"}, {Name: "preskolemisation", Value: "false"}}, true)
 	return pm
 }
@@ -226,6 +226,19 @@ func TestEquRegistration(t *testing.T) {
 	if pm.ApplySendAxiomHook(eqPred10) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't (equalities are not registered).", eqPred10.ToString())
 	}
+
+	// forall x.¬(x = x) <=> forall y. Q(x, y) shouldn't be registered
+	eqPred11 := btypes.MakeAll(
+		[]btypes.Var{x},
+		btypes.MakeEqu(
+			btypes.MakeNot(btypes.MakePred(btypes.Id_eq, []btypes.Term{x, x})),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
+		),
+	)
+	if pm.ApplySendAxiomHook(eqPred11) {
+		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't (equalities are not registered).", eqPred11.ToString())
+	}
+
 }
 
 /**
@@ -793,7 +806,7 @@ func TestSort(t *testing.T) {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
 	}
 
-	fmt.Println(substs)
+	//fmt.Println(substs)
 	if len(substs) != 2 {
 		t.Fatal("Error: substs size should be 2.")
 	}

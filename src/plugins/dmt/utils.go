@@ -29,14 +29,12 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/**************************/
-/* rewrite_equivalence.go */
-/**************************/
-
+/************/
+/* utils.go */
+/************/
 /**
- * This file contains everything needed to transform an atomic formula into a
- * rewrite rule if the root connector is an <=>
- **/
+* This file implements some useful functions for the plugin.
+**/
 
 package main
 
@@ -44,34 +42,31 @@ import (
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-/* Registers a formula with <=> as its root connector as a rewrite rule. */
-func registerEquivalence(axiomFT btypes.Form) bool {
-	form := axiomFT.Copy().(btypes.Equ)
-	phi1, phi2 := form.GetF1(), form.GetF2()
-	if (btypes.ShowKindOfRule(phi1) == btypes.Atomic && btypes.ShowKindOfRule(phi2) == btypes.Atomic) || (btypes.ShowKindOfRule(phi1) != btypes.Atomic && btypes.ShowKindOfRule(phi2) != btypes.Atomic) {
-		return false
-	}
-	if btypes.ShowKindOfRule(phi1) == btypes.Atomic {
-		if phi_1_pred, ok := phi1.(btypes.Pred); ok && (phi_1_pred.GetID().Equals(btypes.Id_eq) || phi_1_pred.GetID().Equals(btypes.Id_neq)) {
-			return false
-		}
-		addEquivalenceRewriteRule(phi1, phi2)
-	} else {
-		if phi_2_pred, ok := phi2.(btypes.Pred); ok && (phi_2_pred.GetID().Equals(btypes.Id_eq) || phi_2_pred.GetID().Equals(btypes.Id_neq)) {
-			return false
-		}
-		addEquivalenceRewriteRule(phi2, phi1)
-	}
-	return true
+func is[T any, U any](obj U) bool {
+	_, isT := any(obj).(T)
+	return isT
 }
 
-/* Adds the axiom in the rewrite tree and sends the two others in the main component. */
-func addEquivalenceRewriteRule(axiom btypes.Form, cons btypes.Form) {
-	if _, isNeg := axiom.(btypes.Not); isNeg {
-		addPosRewriteRule(axiom, btypes.SimplifyNeg(btypes.RefuteForm(cons)))
-		addNegRewriteRule(axiom, cons)
-	} else {
-		addPosRewriteRule(axiom, cons)
-		addNegRewriteRule(axiom, btypes.SimplifyNeg(btypes.RefuteForm(cons)))
+func isEquality(pred btypes.Pred) bool {
+	return pred.GetID().Equals(btypes.Id_eq) || pred.GetID().Equals(btypes.Id_neq)
+}
+
+func refute(f btypes.Form) btypes.Form {
+	return btypes.SimplifyNeg(btypes.RefuteForm(f))
+}
+
+func predFromNegatedAtom(f btypes.Form) btypes.Pred {
+	return f.(btypes.Not).GetForm().(btypes.Pred)
+}
+
+func selectFromPolarity[T any](polarity bool, positive, negative T) T {
+	if polarity {
+		return positive
 	}
+	return negative
+}
+
+func rewriteMapInsertion(polarity bool, key string, val btypes.Form) {
+	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
+	rewriteMap[key] = append(rewriteMap[key], val)
 }
