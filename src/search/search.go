@@ -135,7 +135,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 func applyRules(father_id uint64, st complextypes.State, c Communication) {
 	global.PrintDebug("AR", "ApplyRule")
 	switch {
-	case len(st.GetLF()) > 0 && global.IsLoaded("dmt"):
+	case len(st.GetLF()) > 0 && global.IsLoaded("dmt") && len(st.GetSubstsFound()) == 0:
 		st.SetCurrentProofFormula(st.GetAllForms())
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 		manageRewritteRules(father_id, st, c)
@@ -208,10 +208,14 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 				rewritten = complextypes.CopySubstAndFormList(rewritten[1:])
 
 				// Si on ne s'est pas réécrit en soi-même ?
-				if !choosen_rewritten_form.Equals(f) {
+				if !choosen_rewritten.GetSubst().Equals(treetypes.Failure()) {
 					// Create a child with the current rewritting rule and make this process to wait for him, with a list of other subst to try
 					st.SetLF(append(remaining_atomics.Copy(), choosen_rewritten_form.Copy()))
 					st.SetBTOnFormulas(true) // I need to know that I can bt on form and my child needs to know it to to don't loop
+
+					if choosen_rewritten.GetSubst().IsEmpty() {
+						choosen_rewritten = complextypes.MakeEmptySubstAndForm()
+					}
 
 					st_copy := st.Copy()
 					st_copy.SetCurrentProofRule("Rewrite")

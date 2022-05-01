@@ -75,7 +75,7 @@ func instantiateOnce(formula btypes.Form) btypes.Form {
 		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), -1)
 		nf = btypes.ReplaceVarByTerm(nf, v, meta)
 	}
-	return btypes.MakeForm(nf)
+	return nf
 }
 
 /**

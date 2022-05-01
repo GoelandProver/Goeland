@@ -505,10 +505,10 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				global.PrintDebug("WC", "There is no substitution availabe")
 				closeChildren(&children, true)
 				global.PrintDebug("WC", "SFFC empty")
+				// Todo : if subst found, return true ! -> not need because priority order change in apply rules
 				sendSubToFather(c, false, true, father_id, st, given_substs)
 
 			}
-
 		}
 	}
 }

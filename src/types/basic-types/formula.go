@@ -500,11 +500,6 @@ func MakeAll(vl []Var, f Form) All {
 	return All{vl, f}
 }
 
-/* Create a FormAndTerm element without meta */
-func MakeForm(f Form) Form {
-	return f.Copy()
-}
-
 /* Transform a formula into its negation */
 func RefuteForm(f Form) Form {
 	new_f, changed := rewriteNEQ(f)

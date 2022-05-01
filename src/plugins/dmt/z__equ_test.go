@@ -55,16 +55,26 @@ import (
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
+var a btypes.Fun
+var x btypes.Var
+var y btypes.Var
+var P btypes.Id
+var Q btypes.Id
 
-var a = btypes.MakerConst(btypes.MakerId("a"))
-var x = btypes.MakerVar("x")
-var y = btypes.MakerVar("y")
-var P = btypes.MakerId("P")
-var Q = btypes.MakerId("Q")
+// Init variables for test
+func initVar() {
+	a = btypes.MakerConst(btypes.MakerId("a"))
+	x = btypes.MakerVar("x")
+	y = btypes.MakerVar("y")
+	P = btypes.MakerId("P")
+	Q = btypes.MakerId("Q")
+}
 
 // Makes a plugin manager and inits the DMT for equivalences tests
 func getEquivalencePM() PluginManager {
 	pm := PluginManager{}
+	btypes.Init()
+	initVar()
 	dmt.InitPlugin(&pm, []Option{{Name: "polarized", Value: "false"}, {Name: "preskolemisation", Value: "false"}}, true)
 	return pm
 }
@@ -81,10 +91,10 @@ func TestEquRegistration(t *testing.T) {
 
 	// forall x.P(x) <=> forall y.Q(x, y)
 	equPred := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakePred(P, []btypes.Term{ x }),
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y})),
+			btypes.MakePred(P, []btypes.Term{x}),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
 		),
 	)
 
@@ -96,8 +106,8 @@ func TestEquRegistration(t *testing.T) {
 
 	// P(a) <=> forall y.Q(a, y)
 	equPred2 := btypes.MakeEqu(
-		btypes.MakePred(P, []btypes.Term{ a }),
-		btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{a, y})),
+		btypes.MakePred(P, []btypes.Term{a}),
+		btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y})),
 	)
 
 	if !pm.ApplySendAxiomHook(equPred2) {
@@ -108,9 +118,9 @@ func TestEquRegistration(t *testing.T) {
 
 	// forall x.P(x) <=> Q(x, a)
 	equPred3 := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakePred(P, []btypes.Term{ x }),
+			btypes.MakePred(P, []btypes.Term{x}),
 			btypes.MakePred(Q, []btypes.Term{x, a}),
 		),
 	)
@@ -120,13 +130,13 @@ func TestEquRegistration(t *testing.T) {
 	}
 
 	// The right-side is atomic, and not the left !
-	
+
 	// forall x.(P(x) => Q(x, a)) <=> Q(a, x)
 	equPred4 := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakeImp(btypes.MakePred(P, []btypes.Term{ x }), btypes.MakePred(Q, []btypes.Term{ x, a })),
-			btypes.MakePred(Q, []btypes.Term{ a, x }),
+			btypes.MakeImp(btypes.MakePred(P, []btypes.Term{x}), btypes.MakePred(Q, []btypes.Term{x, a})),
+			btypes.MakePred(Q, []btypes.Term{a, x}),
 		),
 	)
 
@@ -135,13 +145,13 @@ func TestEquRegistration(t *testing.T) {
 	}
 
 	// Inside forall
-	
+
 	// forall x.(forall y.Q(x, y)) <=> P(x)
 	equPred5 := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{ x, y })),
-			btypes.MakePred(P, []btypes.Term{ x }),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
+			btypes.MakePred(P, []btypes.Term{x}),
 		),
 	)
 
@@ -150,15 +160,15 @@ func TestEquRegistration(t *testing.T) {
 	}
 
 	// Outside forall
-	
+
 	// forall x.forall y.Q(x, y) <=> P(x)
 	equPred6 := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeAll(
-			[]btypes.Var{ y },
+			[]btypes.Var{y},
 			btypes.MakeEqu(
-				btypes.MakePred(Q, []btypes.Term{ x, y }),
-				btypes.MakePred(P, []btypes.Term{ x }),
+				btypes.MakePred(Q, []btypes.Term{x, y}),
+				btypes.MakePred(P, []btypes.Term{x}),
 			),
 		),
 	)
@@ -171,10 +181,10 @@ func TestEquRegistration(t *testing.T) {
 
 	// forall x.¬P(x) <=> forall y.Q(x, y)
 	equPred7 := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.RefuteForm(btypes.MakePred(P, []btypes.Term{ x })),
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y})),
+			btypes.RefuteForm(btypes.MakePred(P, []btypes.Term{x})),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
 		),
 	)
 
@@ -186,15 +196,35 @@ func TestEquRegistration(t *testing.T) {
 
 	// forall x.¬P(x) <=> ¬forall y.Q(x, y)
 	equPred8 := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.RefuteForm(btypes.MakePred(P, []btypes.Term{ x })),
-			btypes.RefuteForm(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y}))),
+			btypes.RefuteForm(btypes.MakePred(P, []btypes.Term{x})),
+			btypes.RefuteForm(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y}))),
 		),
 	)
 
 	if !pm.ApplySendAxiomHook(equPred8) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred8.ToString())
+	}
+
+	// (x = x) => forall x. P(x) shouldn't be registered (because equality and dmt are managed separately)
+	neqPred := btypes.MakePred(btypes.Id_neq, []btypes.Term{x, x})
+	eqPred9 := btypes.MakeEqu(
+		neqPred,
+		btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(P, []btypes.Term{x})),
+	)
+	if pm.ApplySendAxiomHook(eqPred9) {
+		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't (equalities are not registered).", eqPred9.ToString())
+	}
+
+	// (Vx (x = x)) => forall x. P(x) shouldn't be registered
+	neqPred2 := btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(btypes.Id_neq, []btypes.Term{x, x}))
+	eqPred10 := btypes.MakeEqu(
+		neqPred2,
+		btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(P, []btypes.Term{x})),
+	)
+	if pm.ApplySendAxiomHook(eqPred10) {
+		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't (equalities are not registered).", eqPred10.ToString())
 	}
 }
 
@@ -203,9 +233,8 @@ func TestEquRegistration(t *testing.T) {
  **/
 func TestSimpleAxiomRegistration(t *testing.T) {
 	pm := getEquivalencePM()
-
 	// forall x.P(x)
-	simplePred := btypes.MakeAll([]btypes.Var{ x }, btypes.MakePred(P, []btypes.Term{ x }))
+	simplePred := btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(P, []btypes.Term{x}))
 
 	if !pm.ApplySendAxiomHook(simplePred) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", simplePred.ToString())
@@ -214,14 +243,14 @@ func TestSimpleAxiomRegistration(t *testing.T) {
 	// If it's a fact, it shouldn't be registered
 
 	// P(a)
-	simplePred2 := btypes.MakePred(P, []btypes.Term{ a })
+	simplePred2 := btypes.MakePred(P, []btypes.Term{a})
 
 	if pm.ApplySendAxiomHook(simplePred2) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't (a fact has to be kept).", simplePred2.ToString())
 	}
 
 	// forall x.¬P(x)
-	simplePred3 := btypes.MakeAll([]btypes.Var{ x }, btypes.RefuteForm(btypes.MakePred(P, []btypes.Term{ x })))
+	simplePred3 := btypes.MakeAll([]btypes.Var{x}, btypes.RefuteForm(btypes.MakePred(P, []btypes.Term{x})))
 
 	if !pm.ApplySendAxiomHook(simplePred3) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", simplePred3.ToString())
@@ -250,10 +279,10 @@ func TestImpRegistration(t *testing.T) {
 
 	// forall x.P(x) => forall y.Q(x, y)
 	impPred := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeImp(
-			btypes.MakePred(P, []btypes.Term{ x }),
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y})),
+			btypes.MakePred(P, []btypes.Term{x}),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
 		),
 	)
 
@@ -274,10 +303,10 @@ func TestEquRewrite1(t *testing.T) {
 
 	// forall x.P(x) <=> forall y.Q(x, y)
 	equPred := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakePred(P, []btypes.Term{ x }),
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y})),
+			btypes.MakePred(P, []btypes.Term{x}),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
 		),
 	)
 
@@ -285,7 +314,7 @@ func TestEquRewrite1(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred.ToString())
 	}
 
-	form := btypes.MakePred(P, []btypes.Term{ a })
+	form := btypes.MakePred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -303,10 +332,10 @@ func TestEquRewrite1(t *testing.T) {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
 	}
 
-	if !forms[0].Equals(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{a, y}))) || 
+	if !forms[0].Equals(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y}))) ||
 		len(subst.GetMeta()) > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
-	} 
+	}
 }
 
 /**
@@ -317,10 +346,10 @@ func TestEquRewrite2(t *testing.T) {
 
 	// forall x.P(x) <=> forall y.Q(x, y)
 	equPred := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakePred(P, []btypes.Term{ x }),
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y})),
+			btypes.MakePred(P, []btypes.Term{x}),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
 		),
 	)
 
@@ -328,7 +357,7 @@ func TestEquRewrite2(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred.ToString())
 	}
 
-	form := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{ a }))
+	form := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{a}))
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -346,10 +375,10 @@ func TestEquRewrite2(t *testing.T) {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
 	}
 
-	if !forms[0].Equals(btypes.MakeNot(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{a, y})))) || 
+	if !forms[0].Equals(btypes.MakeNot(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y})))) ||
 		len(subst.GetMeta()) > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
-	} 
+	}
 }
 
 /**
@@ -360,10 +389,10 @@ func TestEquRewrite3(t *testing.T) {
 
 	// forall x.¬P(x) <=> forall y.Q(x, y)
 	equPred := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakeNot(btypes.MakePred(P, []btypes.Term{ x })),
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y})),
+			btypes.MakeNot(btypes.MakePred(P, []btypes.Term{x})),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
 		),
 	)
 
@@ -371,7 +400,7 @@ func TestEquRewrite3(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred.ToString())
 	}
 
-	form := btypes.MakePred(P, []btypes.Term{ a })
+	form := btypes.MakePred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -389,10 +418,10 @@ func TestEquRewrite3(t *testing.T) {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
 	}
 
-	if !forms[0].Equals(btypes.MakeNot(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{a, y})))) || 
+	if !forms[0].Equals(btypes.MakeNot(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y})))) ||
 		len(subst.GetMeta()) > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
-	} 
+	}
 }
 
 /**
@@ -403,10 +432,10 @@ func TestEquRewrite4(t *testing.T) {
 
 	// forall x.¬P(x) <=> forall y.Q(x, y)
 	equPred := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakeNot(btypes.MakePred(P, []btypes.Term{ x })),
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y})),
+			btypes.MakeNot(btypes.MakePred(P, []btypes.Term{x})),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
 		),
 	)
 
@@ -414,7 +443,7 @@ func TestEquRewrite4(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred.ToString())
 	}
 
-	form := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{ a }))
+	form := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{a}))
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -432,24 +461,24 @@ func TestEquRewrite4(t *testing.T) {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
 	}
 
-	if !forms[0].Equals(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{a, y}))) || 
+	if !forms[0].Equals(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y}))) ||
 		len(subst.GetMeta()) > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
-	} 
+	}
 }
 
 /**
  * Insertion of a negative atom with negative equivalence
  **/
- func TestEquRewrite5(t *testing.T) {
+func TestEquRewrite5(t *testing.T) {
 	pm := getEquivalencePM()
 
 	// forall x.¬P(x) <=> ¬forall y.Q(x, y)
 	equPred := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakeNot(btypes.MakePred(P, []btypes.Term{ x })),
-			btypes.MakeNot(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y}))),
+			btypes.MakeNot(btypes.MakePred(P, []btypes.Term{x})),
+			btypes.MakeNot(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y}))),
 		),
 	)
 
@@ -457,7 +486,7 @@ func TestEquRewrite4(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred.ToString())
 	}
 
-	form := btypes.MakePred(P, []btypes.Term{ a })
+	form := btypes.MakePred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -475,24 +504,24 @@ func TestEquRewrite4(t *testing.T) {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
 	}
 
-	if !forms[0].Equals(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{a, y}))) || 
+	if !forms[0].Equals(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y}))) ||
 		len(subst.GetMeta()) > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
-	} 
+	}
 }
 
 /**
  * Insertion of a negative atom with negative equivalence
  **/
- func TestEquRewrite6(t *testing.T) {
+func TestEquRewrite6(t *testing.T) {
 	pm := getEquivalencePM()
 
 	// forall x.¬P(x) <=> ¬forall y.Q(x, y)
 	equPred := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakeNot(btypes.MakePred(P, []btypes.Term{ x })),
-			btypes.MakeNot(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y}))),
+			btypes.MakeNot(btypes.MakePred(P, []btypes.Term{x})),
+			btypes.MakeNot(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y}))),
 		),
 	)
 
@@ -500,7 +529,7 @@ func TestEquRewrite4(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred.ToString())
 	}
 
-	form := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{ a }))
+	form := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{a}))
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -518,10 +547,10 @@ func TestEquRewrite4(t *testing.T) {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
 	}
 
-	if !forms[0].Equals(btypes.MakeNot(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{a, y})))) || 
+	if !forms[0].Equals(btypes.MakeNot(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y})))) ||
 		len(subst.GetMeta()) > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
-	} 
+	}
 }
 
 /**
@@ -532,9 +561,9 @@ func TestSubst1(t *testing.T) {
 
 	// forall x.P(x, x) <=> P(x, x) ^ Q(x, x)
 	equPred := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakePred(P, []btypes.Term{ x, x }),
+			btypes.MakePred(P, []btypes.Term{x, x}),
 			btypes.MakeAnd([]btypes.Form{btypes.MakePred(Q, []btypes.Term{x, x}), btypes.MakePred(P, []btypes.Term{x, x})}),
 		),
 	)
@@ -546,7 +575,7 @@ func TestSubst1(t *testing.T) {
 	Y := btypes.MakerMeta("Y", 1)
 	Z := btypes.MakerMeta("Z", 1)
 
-	form := btypes.MakePred(P, []btypes.Term{ Y, Z })
+	form := btypes.MakePred(P, []btypes.Term{Y, Z})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -564,11 +593,11 @@ func TestSubst1(t *testing.T) {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
 	}
 
-	if !(forms[0].Equals(btypes.MakeAnd([]btypes.Form{btypes.MakePred(Q, []btypes.Term{Y, Y}), btypes.MakePred(P, []btypes.Term{Y ,Y})})) || 
-	forms[0].Equals(btypes.MakeAnd([]btypes.Form{btypes.MakePred(Q, []btypes.Term{Z, Z}), btypes.MakePred(P, []btypes.Term{Z, Z})}))) ||
-	len(subst) != 1 {
+	if !(forms[0].Equals(btypes.MakeAnd([]btypes.Form{btypes.MakePred(Q, []btypes.Term{Y, Y}), btypes.MakePred(P, []btypes.Term{Y, Y})})) ||
+		forms[0].Equals(btypes.MakeAnd([]btypes.Form{btypes.MakePred(Q, []btypes.Term{Z, Z}), btypes.MakePred(P, []btypes.Term{Z, Z})}))) ||
+		len(subst) != 1 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
-	} 
+	}
 }
 
 /**
@@ -577,10 +606,10 @@ func TestSubst1(t *testing.T) {
 func TestSubst2(t *testing.T) {
 	pm := getEquivalencePM()
 
-	// P(a) <=> forall y.Q(a, y) 
+	// P(a) <=> forall y.Q(a, y)
 	equPred := btypes.MakeEqu(
-		btypes.MakePred(P, []btypes.Term{ a }),
-		btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{a, y})),
+		btypes.MakePred(P, []btypes.Term{a}),
+		btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y})),
 	)
 
 	if !pm.ApplySendAxiomHook(equPred) {
@@ -589,7 +618,7 @@ func TestSubst2(t *testing.T) {
 
 	X := btypes.MakerMeta("X", 1)
 
-	form := btypes.MakePred(P, []btypes.Term{ X })
+	form := btypes.MakePred(P, []btypes.Term{X})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -610,7 +639,7 @@ func TestSubst2(t *testing.T) {
 	if !forms[0].Equals(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y}))) ||
 		!(len(subst) == 1 && subst[X].Equals(a)) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
-	} 
+	}
 }
 
 /******************************************************************************
@@ -620,15 +649,15 @@ func TestSubst2(t *testing.T) {
 func TestMultipleAxiomDefinition(t *testing.T) {
 	pm := getEquivalencePM()
 
-	// P(a) <=> forall y.Q(a, y) 
+	// P(a) <=> forall y.Q(a, y)
 	equPred := btypes.MakeEqu(
-		btypes.MakePred(P, []btypes.Term{ a }),
-		btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{a, y})),
+		btypes.MakePred(P, []btypes.Term{a}),
+		btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y})),
 	)
-	// P(a) <=> forall y.Q(y, a) 
+	// P(a) <=> forall y.Q(y, a)
 	equPred2 := btypes.MakeEqu(
-		btypes.MakePred(P, []btypes.Term{ a }),
-		btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{y, a})),
+		btypes.MakePred(P, []btypes.Term{a}),
+		btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{y, a})),
 	)
 
 	if !pm.ApplySendAxiomHook(equPred) {
@@ -638,7 +667,7 @@ func TestMultipleAxiomDefinition(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred2.ToString())
 	}
 
-	form := btypes.MakePred(P, []btypes.Term{ a })
+	form := btypes.MakePred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -656,8 +685,8 @@ func TestMultipleAxiomDefinition(t *testing.T) {
 		t.Fatalf("Error: %s can be rewritten by more than two formulas when it should be rewritten by only two.", form.ToString())
 	}
 
-	if !forms.Contains(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{ a, y }))) || 
-	   !forms.Contains(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{ y, a }))) {
+	if !forms.Contains(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y}))) ||
+		!forms.Contains(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{y, a}))) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms.ToString())
 	}
 }
@@ -665,22 +694,22 @@ func TestMultipleAxiomDefinition(t *testing.T) {
 func TestMultipleAxiomDefinition2(t *testing.T) {
 	pm := getEquivalencePM()
 
-	// forall x.P(x) <=> forall y.Q(x, y) 
+	// forall x.P(x) <=> forall y.Q(x, y)
 	equPred := btypes.MakeAll(
 		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakePred(P, []btypes.Term{ x }),
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y})),
+			btypes.MakePred(P, []btypes.Term{x}),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
 		),
-	)	
-	// P(a) <=> forall y.Q(y, a) 
+	)
+	// P(a) <=> forall y.Q(y, a)
 	equPred2 := btypes.MakeAll(
 		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakePred(P, []btypes.Term{ x }),
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{y, x})),
+			btypes.MakePred(P, []btypes.Term{x}),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{y, x})),
 		),
-	)	
+	)
 
 	if !pm.ApplySendAxiomHook(equPred) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred.ToString())
@@ -689,7 +718,7 @@ func TestMultipleAxiomDefinition2(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred2.ToString())
 	}
 
-	form := btypes.MakePred(P, []btypes.Term{ a })
+	form := btypes.MakePred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -707,8 +736,8 @@ func TestMultipleAxiomDefinition2(t *testing.T) {
 		t.Fatalf("Error: %s can be rewritten by more than two formulas when it should be rewritten by only two.", form.ToString())
 	}
 
-	if !forms.Contains(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{ a, y }))) || 
-	   !forms.Contains(btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{ y, a }))) {
+	if !forms.Contains(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y}))) ||
+		!forms.Contains(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{y, a}))) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms.ToString())
 	}
 }
@@ -719,7 +748,7 @@ func TestMultipleAxiomDefinition2(t *testing.T) {
 func TestError(t *testing.T) {
 	pm := getEquivalencePM()
 
-	form := btypes.MakePred(P, []btypes.Term{ a })
+	form := btypes.MakePred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -738,10 +767,10 @@ func TestSort(t *testing.T) {
 	pm := getEquivalencePM()
 
 	equPred := btypes.MakeAll(
-		[]btypes.Var{ x },
+		[]btypes.Var{x},
 		btypes.MakeEqu(
-			btypes.MakePred(P, []btypes.Term{ x }),
-			btypes.MakeAll([]btypes.Var{ y }, btypes.MakePred(Q, []btypes.Term{x, y})),
+			btypes.MakePred(P, []btypes.Term{x}),
+			btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{x, y})),
 		),
 	)
 
@@ -757,7 +786,7 @@ func TestSort(t *testing.T) {
 
 	// forall x.P(x) and forall x.P(x) <=> forall y.Q(x, y) are in the rewrite tree.
 
-	form := btypes.MakePred(P, []btypes.Term{ a })
+	form := btypes.MakePred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {

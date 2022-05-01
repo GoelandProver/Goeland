@@ -108,9 +108,9 @@ func registerAxiom(axiom btypes.Form) bool {
 			addPosRewriteRule(axiomFT, btypes.MakeBot())
 		}
 		return true
-	} else if reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Equ{}) {
+	} else if _, ok := axiomFT.(btypes.Equ); ok {
 		return registerEquivalence(axiomFT)
-	} else if activatePolarized && reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.Imp{}) {
+	} else if _, ok := axiomFT.(btypes.Imp); ok && activatePolarized {
 		return registerImplication(axiomFT)
 	}
 	// 3: if it's not one of the above, the axiom wasn't consumed.
@@ -158,7 +158,7 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btyp
 
 			// Keep only useful substitutions
 			filteredUnif := treetypes.MakeMatchingSubstitutions(
-				unif.GetForm(), 
+				unif.GetForm(),
 				ctypes.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas()),
 			)
 

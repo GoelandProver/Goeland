@@ -134,21 +134,21 @@ func applyAlphaRules(f basictypes.Form) basictypes.FormList {
 		switch nnf := nf.GetForm().(type) {
 		case basictypes.Not:
 			global.PrintDebug("AR", "Applying α¬¬...")
-			res = append(res, basictypes.MakeForm(nnf.GetForm()))
+			res = append(res, nnf.GetForm())
 		case basictypes.Or:
 			global.PrintDebug("AR", "Applying α¬∨...")
 			for i := range nnf.GetLF() {
-				res = append(res, basictypes.MakeForm(basictypes.RefuteForm(nnf.GetLF()[i])))
+				res = append(res, basictypes.RefuteForm(nnf.GetLF()[i]))
 			}
 		case basictypes.Imp:
 			global.PrintDebug("AR", "Applying α¬⇒...")
-			res = append(res, basictypes.MakeForm(nnf.GetF1()))
-			res = append(res, basictypes.MakeForm(basictypes.RefuteForm(nnf.GetF2())))
+			res = append(res, nnf.GetF1())
+			res = append(res, basictypes.RefuteForm(nnf.GetF2()))
 		}
 	case basictypes.And:
 		global.PrintDebug("AR", "Applying α∧...")
 		for i := range nf.GetLF() {
-			res = append(res, basictypes.MakeForm(nf.GetLF()[i]))
+			res = append(res, nf.GetLF()[i])
 		}
 	}
 	return res
@@ -170,26 +170,26 @@ func applyBetaRules(f basictypes.Form) []basictypes.FormList {
 		case basictypes.And:
 			global.PrintDebug("AR", "Applying β¬∧...")
 			for i := range nnf.GetLF() {
-				res = append(res, basictypes.MakeSingleElementList(basictypes.MakeForm(basictypes.RefuteForm(nnf.GetLF()[i]))))
+				res = append(res, basictypes.MakeSingleElementList(basictypes.RefuteForm(nnf.GetLF()[i])))
 			}
 		case basictypes.Equ:
 			global.PrintDebug("AR", "Applying β¬⇔...")
-			res = append(res, basictypes.FormList{basictypes.MakeForm(basictypes.RefuteForm(nnf.GetF1())), basictypes.MakeForm(nnf.GetF2())})
-			res = append(res, basictypes.FormList{basictypes.MakeForm(nnf.GetF1()), basictypes.MakeForm(basictypes.RefuteForm(nnf.GetF2()))})
+			res = append(res, basictypes.FormList{basictypes.RefuteForm(nnf.GetF1()), nnf.GetF2()})
+			res = append(res, basictypes.FormList{nnf.GetF1(), basictypes.RefuteForm(nnf.GetF2())})
 		}
 	case basictypes.Or:
 		global.PrintDebug("AR", "Applying β∨...")
 		for i := range nf.GetLF() {
-			res = append(res, basictypes.MakeSingleElementList(basictypes.MakeForm(nf.GetLF()[i])))
+			res = append(res, basictypes.MakeSingleElementList(nf.GetLF()[i]))
 		}
 	case basictypes.Imp:
 		global.PrintDebug("AR", "Applying β⇒...")
-		res = append(res, basictypes.MakeSingleElementList(basictypes.MakeForm(basictypes.RefuteForm(nf.GetF1()))))
-		res = append(res, basictypes.MakeSingleElementList(basictypes.MakeForm(nf.GetF2())))
+		res = append(res, basictypes.MakeSingleElementList(basictypes.RefuteForm(nf.GetF1())))
+		res = append(res, basictypes.MakeSingleElementList(nf.GetF2()))
 	case basictypes.Equ:
 		global.PrintDebug("AR", "Applying β⇔...")
-		res = append(res, basictypes.FormList{basictypes.MakeForm(basictypes.RefuteForm(nf.GetF1())), basictypes.MakeForm(basictypes.RefuteForm(nf.GetF2()))})
-		res = append(res, basictypes.FormList{basictypes.MakeForm(nf.GetF1()), basictypes.MakeForm(nf.GetF2())})
+		res = append(res, basictypes.FormList{basictypes.RefuteForm(nf.GetF1()), basictypes.RefuteForm(nf.GetF2())})
+		res = append(res, basictypes.FormList{nf.GetF1(), nf.GetF2()})
 	}
 	return res
 }
@@ -214,7 +214,7 @@ func applyDeltaRules(f basictypes.Form) basictypes.FormList {
 				skolem_fun := basictypes.MakerFun(basictypes.MakerNewId("skolem_"+v.GetName()+strconv.Itoa(v.GetIndex())), f.GetMetas().ToTermList())
 				fun_tmp = basictypes.ReplaceVarByTerm(fun_tmp, v, skolem_fun)
 			}
-			result = append(result, basictypes.MakeForm(basictypes.MakeNot(fun_tmp)))
+			result = append(result, basictypes.MakeNot(fun_tmp))
 		}
 	case basictypes.Ex:
 		global.PrintDebug("AR", "Applying δ∃...")
@@ -223,7 +223,7 @@ func applyDeltaRules(f basictypes.Form) basictypes.FormList {
 			skolem_fun := basictypes.MakerFun(basictypes.MakerNewId("skolem_"+v.GetName()+strconv.Itoa(v.GetIndex())), f.GetMetas().ToTermList())
 			fun_tmp = basictypes.ReplaceVarByTerm(fun_tmp, v, skolem_fun)
 		}
-		result = append(result, basictypes.MakeForm(fun_tmp))
+		result = append(result, fun_tmp)
 
 	}
 	return result
@@ -252,7 +252,7 @@ func applyGammaRules(f basictypes.Form, index int) (basictypes.FormList, basicty
 				new_mm = append(new_mm, meta)
 				fun_tmp = basictypes.ReplaceVarByTerm(fun_tmp, v, meta)
 			}
-			result = append(result, basictypes.MakeForm(basictypes.MakeNot(fun_tmp)))
+			result = append(result, basictypes.MakeNot(fun_tmp))
 		}
 	case basictypes.All:
 		global.PrintDebug("AR", "Applying γ∀...")
@@ -262,7 +262,7 @@ func applyGammaRules(f basictypes.Form, index int) (basictypes.FormList, basicty
 			new_mm = append(new_mm, meta)
 			fun_tmp = basictypes.ReplaceVarByTerm(fun_tmp, v, meta)
 		}
-		result = append(result, basictypes.MakeForm(fun_tmp))
+		result = append(result, fun_tmp)
 
 	}
 	return result, new_mm

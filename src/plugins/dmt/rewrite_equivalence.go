@@ -52,9 +52,15 @@ func registerEquivalence(axiomFT btypes.Form) bool {
 		return false
 	}
 	if btypes.ShowKindOfRule(phi1) == btypes.Atomic {
-		addEquivalenceRewriteRule(btypes.MakeForm(phi1), phi2)
+		if phi_1_pred, ok := phi1.(btypes.Pred); ok && (phi_1_pred.GetID().Equals(btypes.Id_eq) || phi_1_pred.GetID().Equals(btypes.Id_neq)) {
+			return false
+		}
+		addEquivalenceRewriteRule(phi1, phi2)
 	} else {
-		addEquivalenceRewriteRule(btypes.MakeForm(phi2), phi1)
+		if phi_2_pred, ok := phi2.(btypes.Pred); ok && (phi_2_pred.GetID().Equals(btypes.Id_eq) || phi_2_pred.GetID().Equals(btypes.Id_neq)) {
+			return false
+		}
+		addEquivalenceRewriteRule(phi2, phi1)
 	}
 	return true
 }

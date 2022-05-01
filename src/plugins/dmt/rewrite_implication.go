@@ -41,8 +41,6 @@
 package main
 
 import (
-	"reflect"
-
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -53,23 +51,47 @@ import (
  * Both of the rules can be registered in case A and B are atomic.
  **/
 func registerImplication(axiomFT btypes.Form) bool {
-	form := axiomFT.Copy().(btypes.Imp)
+	form, ok := axiomFT.Copy().(btypes.Imp)
+	if !ok {
+		return false
+	}
 	phi1, phi2 := form.GetF1(), form.GetF2()
+
 	if btypes.ShowKindOfRule(phi1) != btypes.Atomic && btypes.ShowKindOfRule(phi2) != btypes.Atomic {
 		return false
 	}
-	// A => B
-	if reflect.TypeOf(phi1) == reflect.TypeOf(btypes.Not{}) && btypes.ShowKindOfRule(phi1) == btypes.Atomic {
-		addNegRewriteRule(btypes.MakeForm(phi1.(btypes.Not).GetForm()), phi2)
-	} else if btypes.ShowKindOfRule(phi1) == btypes.Atomic {
-		addPosRewriteRule(btypes.MakeForm(phi1), phi2)
+
+	switch phi_1_t := phi1.(type) {
+	case btypes.Pred:
+		if phi_1_t.GetID().Equals(btypes.Id_eq) || phi_1_t.GetID().Equals(btypes.Id_neq) {
+			return false
+		}
+		addPosRewriteRule(phi1, phi2) // Case A => Form
+
+	case btypes.Not:
+		if phi_1_not_pred, ok := phi_1_t.GetForm().(btypes.Pred); ok {
+			if phi_1_not_pred.GetID().Equals(btypes.Id_eq) || phi_1_not_pred.GetID().Equals(btypes.Id_neq) {
+				return false
+			}
+			addNegRewriteRule(phi_1_not_pred, phi2) // case -A => Form
+		}
 	}
-	// -B => -A
-	if reflect.TypeOf(phi2) == reflect.TypeOf(btypes.Not{}) && btypes.ShowKindOfRule(phi2.(btypes.Not).GetForm()) == btypes.Atomic {
-		addPosRewriteRule(btypes.MakeForm(phi2.(btypes.Not).GetForm()), btypes.SimplifyNeg(btypes.RefuteForm(phi1)))
-	} else if btypes.ShowKindOfRule(phi2) == btypes.Atomic {
-		addNegRewriteRule(btypes.MakeForm(phi2), btypes.SimplifyNeg(btypes.RefuteForm(phi1)))
+
+	switch phi_2_t := phi2.(type) {
+	case btypes.Pred:
+		if phi_2_t.GetID().Equals(btypes.Id_eq) || phi_2_t.GetID().Equals(btypes.Id_neq) {
+			return false
+		}
+		addNegRewriteRule(phi2, btypes.SimplifyNeg(btypes.RefuteForm(phi1))) // Case Form => B
+	case btypes.Not:
+		if phi_2_not_pred, ok := phi_2_t.GetForm().(btypes.Pred); ok {
+			if phi_2_not_pred.GetID().Equals(btypes.Id_eq) || phi_2_not_pred.GetID().Equals(btypes.Id_neq) {
+				return false
+			}
+			addPosRewriteRule(phi_2_not_pred, btypes.SimplifyNeg(btypes.RefuteForm(phi1))) // Case Form => -B
+		}
 	}
+
 	return true
 }
 
