@@ -40,10 +40,8 @@ package main
 
 import (
 	"fmt"
-	"reflect"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugin"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -77,45 +75,6 @@ func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode boo
 /**
  * Top-level functions of the DMT.
  **/
-
-/**
- * Implements polarized deduction modulo theory :
- * 	- Registers axioms of type (forall x1, ..., xn) . A <=> B (if A or B is atomic)
- *	  as both positive and negative occurrences.
- *	- Registers axioms of type (forall x1, ..., xn) . A => B (if A / B atomic) as
- *	  positive occurrence for A and negative occurrence for B.
- *  - Registers axioms of type forall x1, ..., xn.P
- **/
-func registerAxiom(axiom btypes.Form) bool {
-	// 1: instantiate forall(s).
-	axiomFT := axiom.Copy()
-	_, wasForall := axiomFT.(btypes.All)
-
-	for reflect.TypeOf(axiomFT) == reflect.TypeOf(btypes.All{}) {
-		axiomFT = instantiateOnce(axiomFT)
-	}
-
-	// 2: make rewrite rule for equivalence, implication or atomic.
-	if wasForall && btypes.ShowKindOfRule(axiomFT) == btypes.Atomic {
-		if axiom_ft_pred, ok := axiomFT.(btypes.Pred); ok {
-			if axiom_ft_pred.GetID().Equals(btypes.Id_eq) || axiom_ft_pred.GetID().Equals(btypes.Id_neq) {
-				return false
-			}
-			addPosRewriteRule(axiomFT, btypes.MakeTop())
-			addNegRewriteRule(axiomFT, btypes.MakeNot(btypes.MakeTop()))
-		} else {
-			addNegRewriteRule(axiomFT, btypes.MakeNot(btypes.MakeBot()))
-			addPosRewriteRule(axiomFT, btypes.MakeBot())
-		}
-		return true
-	} else if _, ok := axiomFT.(btypes.Equ); ok {
-		return registerEquivalence(axiomFT)
-	} else if _, ok := axiomFT.(btypes.Imp); ok && activatePolarized {
-		return registerImplication(axiomFT)
-	}
-	// 3: if it's not one of the above, the axiom wasn't consumed.
-	return false
-}
 
 /**
  * Rewrites an atom an unification is found in the rewrite rules.
@@ -284,37 +243,4 @@ func findEquivalence(atom btypes.Form, polarity bool) btypes.FormList {
 	} else {
 		return negativeRewrite[atom.ToString()]
 	}
-}
-
-/**
- * Enters an axiom in the rewrite tree & rewrite match.
- **/
-func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
-	// Skolemize consequence if possible
-	for preskolemize && canSkolemize(cons) {
-		cons = skolemize(cons)
-	}
-
-	if debugActivated {
-		if polarity {
-			fmt.Printf("Rewrite rule: %s ---> %s\n", axiom.ToString(), cons.ToString())
-			global.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", axiom.ToString(), cons.ToString()))
-		} else {
-			fmt.Printf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom).ToString(), cons.ToString())
-			global.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", btypes.RefuteForm(axiom).ToString(), cons.ToString()))
-		}
-	}
-
-	if polarity {
-		positiveRewrite[axiom.ToString()] = append(positiveRewrite[axiom.ToString()], cons)
-	} else {
-		negativeRewrite[axiom.ToString()] = append(negativeRewrite[axiom.ToString()], cons)
-	}
-}
-
-/**
- * Skolemization can be applied only when the kind of rule appliable is a delta-rule.
- **/
-func canSkolemize(form btypes.Form) bool {
-	return btypes.ShowKindOfRule(form) == btypes.Delta
 }

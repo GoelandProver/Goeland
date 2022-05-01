@@ -53,8 +53,6 @@ import (
 // Makes a plugin manager and inits the DMT for polarized tests
 func getPolarizedPM() PluginManager {
 	pm := PluginManager{}
-	btypes.Init()
-	initVar()
 	dmt.InitPlugin(&pm, []Option{{Name: "polarized"}}, false)
 	return pm
 }
