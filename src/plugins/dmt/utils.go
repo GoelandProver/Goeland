@@ -59,12 +59,14 @@ func predFromNegatedAtom(f btypes.Form) btypes.Pred {
 	return f.(btypes.Not).GetForm().(btypes.Pred)
 }
 
-func rewriteMapInsertion(polarity bool, key string, val btypes.Form) {
-	var rewriteMap map[string]btypes.FormList
+func selectFromPolarity[T any](polarity bool, positive, negative T) T {
 	if polarity {
-		rewriteMap = positiveRewrite
-	} else {
-		rewriteMap = negativeRewrite
+		return positive
 	}
+	return negative
+}
+
+func rewriteMapInsertion(polarity bool, key string, val btypes.Form) {
+	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
 	rewriteMap[key] = append(rewriteMap[key], val)
 }
