@@ -56,6 +56,8 @@ import (
 	"github.com/GoelandProver/Goeland/parser"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	equality "github.com/GoelandProver/Goeland/plugins/equality"
+	polymorphism "github.com/GoelandProver/Goeland/polymorphism/rules"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -97,17 +99,19 @@ func main() {
 		bound = global.GetLimit()
 	}
 
-	/*
-		current_dir, err := os.Getwd()
+	form, bound := StatementListToFormula(lstm, bound, path.Dir(problem))
+	// If global context is empty, it means that this is not a typed proof.
+	if !typing.EmptyGlobalContext() {
+		formula, err := polymorphism.WellFormedVerification(form, false)
 		if err != nil {
-			fmt.Printf("Error in os.Getwd")
+			fmt.Printf("[%.6fs][%v][MAIN] Typing error : %s\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), err.Error())
 			return
-		}*/
-	formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
-	// os.Chdir(current_dir)
+		}
+		form = formula
+	}
 
 	fmt.Printf("Start search\n")
-	Search(formula, new_bound)
+	Search(form, bound)
 
 	if *memprofile != "" {
 		f, err := os.Create(*memprofile)
@@ -306,6 +310,8 @@ func initialization() {
 		equality.InitPlugin()
 	}
 
+	// Init typing
+	typing.Init()
 }
 
 /* Init flag */

@@ -41,6 +41,7 @@ import (
   "io/ioutil"
   "os"
   basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+  typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	)
 
 // Count of quantifiers (bound)
@@ -323,7 +324,7 @@ fof_unary_formula:
 /* Special formulas */
 
 fol_infix_unary:
-    term NOT_EQUAL term {$$ = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{$1, $3}))}
+    term NOT_EQUAL term {$$ = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{$1, $3}, []typing.TypeApp{})}
   ;
 
 /* First order atoms */
@@ -335,7 +336,7 @@ atomic_formula:
   /*  | system_atomic_formula */
 
 plain_atomic_formula:
-    plain_term {$$ = basictypes.MakerPred($1.symb, $1.args)}
+    plain_term {$$ = basictypes.MakePred($1.symb, $1.args, []typing.TypeApp{})}
   ;
 
 defined_atomic_formula:
@@ -354,7 +355,7 @@ defined_atomic_formula:
     ;*/
 
 defined_infix_formula:
-    term EQUAL term {$$ = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{$1, $3})}
+    term EQUAL term {$$ = basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{$1, $3}, []typing.TypeApp{})}
   ;
 
 /*system_atomic_formula:
@@ -373,8 +374,8 @@ term:
     | t=let_term */
 
 function_term:
-    plain_term {$$ = basictypes.MakerFun($1.symb, $1.args)}
-    | defined_term { $$ = basictypes.MakerFun($1.symb, $1.args) }
+    plain_term {$$ = basictypes.MakeFun($1.symb, $1.args, []typing.TypeApp{})}
+    | defined_term { $$ = basictypes.MakeFun($1.symb, $1.args, []typing.TypeApp{}) }
   ;
 /*  | defined_term
     | system_term */

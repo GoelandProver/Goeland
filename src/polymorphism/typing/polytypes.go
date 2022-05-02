@@ -127,3 +127,10 @@ func substTypeAppList(mapSubst map[TypeVar]TypeHint, typeApp []TypeApp) []TypeAp
 	}
 	return newTypeApp
 }
+
+func EmptyGlobalContext() bool {
+	typeSchemesMap.lock.Lock()
+	schemeLen := len(typeSchemesMap.tsMap)
+	typeSchemesMap.lock.Unlock()
+	return schemeLen == 0
+}
