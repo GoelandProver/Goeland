@@ -90,6 +90,7 @@ func (ep EqualityProblem) toString() string {
 }
 
 func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityProblem {
+	// global.PrintDebug("EQ - AS", fmt.Sprintf("Start of ApplySubstitution on : %v", ep.toString()))
 	new_s := ep.getS()
 	new_t := ep.getT()
 	new_equalities := ep.getE()
@@ -105,7 +106,9 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 		new_equalities = new_equalities.applySubstitution(old_symbol, new_symbol)
 	}
 
-	return makeEqualityProblem(new_equalities, new_s, new_t, makeEmptyConstaintStruct())
+	res := makeEqualityProblem(new_equalities, new_s, new_t, makeEmptyConstaintStruct())
+	// global.PrintDebug("EQ - AS", fmt.Sprintf("End of ApplySubstitution on : %v", res.toString()))
+	return res
 }
 
 /*** Functions ***/

@@ -377,6 +377,79 @@ func TestEQ3(t *testing.T) {
 	global.PrintDebug("MAIN", fmt.Sprintf("SUBST : %v", treetypes.SubstListToString(subst)))
 }
 
+/* (a = b) et (a != b) */
+func TestEQ4(t *testing.T) {
+	global.SetDebug(true)
+	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
+	global.PrintDebug("MAIN", "Start of the problem")
+	a_id := basictypes.MakerId("a")
+	a := basictypes.MakerConst(a_id)
+	b_id := basictypes.MakerId("b")
+	b := basictypes.MakerConst(b_id)
+	eq_a_b := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{a, b})
+	neq_a_b := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{a, b})
+
+	lpo.insertTerm(a_id)
+	lpo.insertTerm(b_id)
+
+	lf := basictypes.FormList{eq_a_b, neq_a_b}
+
+	global.PrintDebug("MAIN", fmt.Sprintf("LF : %v\n", lf.ToString()))
+
+	var tp, tn datastruct.DataStructure
+	tp = new(treesearch.Node)
+	tn = new(treesearch.Node)
+	tp = tp.MakeDataStruct(lf, true)
+	tn = tn.MakeDataStruct(lf, false)
+
+	global.SetDebug(false)
+	res, subst := EqualityReasoning(tp, tn, lf)
+	global.SetDebug(true)
+	global.PrintDebug("MAIN", fmt.Sprintf("RES : %v", res))
+	global.PrintDebug("MAIN", fmt.Sprintf("SUBST : %v", treetypes.SubstListToString(subst)))
+}
+
+/* Test apply substitution */
+/**
+* Problème : <[X = Y], X, Y>
+* Substitution : (X, a)
+**/
+func TestAS(t *testing.T) {
+	global.SetDebug(true)
+	global.SetStart(time.Now())
+	initPluginGlobalVariables()
+	basictypes.Init()
+
+	global.PrintDebug("MAIN", "Start of the problem")
+	a_id := basictypes.MakerId("a")
+
+	a := basictypes.MakerConst(a_id)
+	x := basictypes.MakerMeta("X", -1)
+	y := basictypes.MakerMeta("Y", -1)
+
+	eq_x_y := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{x, y})
+
+	var tp datastruct.DataStructure
+	tp = new(treesearch.Node)
+	tp = tp.MakeDataStruct(basictypes.MakeSingleElementList(eq_x_y), true)
+	eq := retrieveEqualities(tp)
+	ep := makeEqualityProblem(eq, x, y, makeEmptyConstaintStruct())
+
+	s := treetypes.MakeEmptySubstitution()
+	s[x] = a
+
+	global.PrintDebug("MAIN", fmt.Sprintf("EP : %v - subst = %v", ep.toString(), s.ToString()))
+
+	global.SetDebug(false)
+	new_ep := ep.applySubstitution(s)
+	global.SetDebug(true)
+
+	global.PrintDebug("MAIN", fmt.Sprintf("New EP : %v", new_ep.toString()))
+}
+
 /* Tests LPO */
 func TestCreateLPO(t *testing.T) {
 	global.SetStart(time.Now())

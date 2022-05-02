@@ -146,11 +146,11 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 	MetaEQ1 := basictypes.MakerMeta("METAEQ1", -1)
 	MetaEQ2 := basictypes.MakerMeta("METAEQ2", -1)
 	eq_pred := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{MetaEQ1, MetaEQ2})
-	global.PrintDebug("RE", fmt.Sprintf("Try to unify with : %v", eq_pred.ToString()))
+	// global.PrintDebug("RE", fmt.Sprintf("Try to unify with : %v", eq_pred.ToString()))
 	_, eq_list := dt.Unify(eq_pred)
 
 	for _, ms := range eq_list {
-		global.PrintDebug("RE", fmt.Sprintf("eq_list = %v - %v", ms.GetForm().ToString(), ms.GetSubst().ToString()))
+		// global.PrintDebug("RE", fmt.Sprintf("eq_list = %v - %v", ms.GetForm().ToString(), ms.GetSubst().ToString()))
 		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaEQ1, MetaEQ2)
 
 		eq1_term, ok_t1 := ms_ordered[MetaEQ1]

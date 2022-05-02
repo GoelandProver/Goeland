@@ -129,12 +129,12 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 					fmt.Printf("[MCR] Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString())
 				}
 
-				global.PrintDebug("MCR", fmt.Sprintf("Formula = : %v", f.ToString()))
+				// global.PrintDebug("MCR", fmt.Sprintf("Formula = : %v", f.ToString()))
 
 				// Create substAndForm with the current form and the subst found
 				subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, basictypes.MakeSingleElementList(f))
 
-				global.PrintDebug("MCR", fmt.Sprintf("SubstAndForm created : %v", subst_and_form_for_father.ToString()))
+				// global.PrintDebug("MCR", fmt.Sprintf("SubstAndForm created : %v", subst_and_form_for_father.ToString()))
 
 				// Merge with applied subst (if any)
 				subst_and_form_for_father = complextypes.MergeSubstAndForm(subst_and_form_for_father.Copy(), st.GetAppliedSubst())
@@ -142,7 +142,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 				st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), subst_and_form_for_father))
 			}
 
-			global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
+			// global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 		}
 	}
 

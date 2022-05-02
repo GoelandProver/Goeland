@@ -48,6 +48,11 @@ import (
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
+type answerEP struct {
+	id     uint64
+	substs []treetypes.Substitutions
+}
+
 /**
 * EqualityReasoningMultiList
 * Data : a whole equality problem (EqualityProblemMultiList)
@@ -109,33 +114,33 @@ func equalityReasoningProblemWithApplySubst(ep EqualityProblem, sl []treetypes.S
 	global.PrintDebug("ERPWAS", "Start on equality reasoning  problem with apply subst")
 	substs_res := []treetypes.Substitutions{}
 	found := false
-	children_chan := make(chan []treetypes.Substitutions)
+	children_chan := make(chan answerEP)
 
 	if len(sl) == 0 {
 		global.PrintDebug("ERPWAS", "No subst ! - Launch goroutine ")
 		global.PrintDebug("ERPWAS", "Go !")
 		go equalityReasoningProblem(ep.copy(), children_chan, global.GetGID())
 		subst_res_chan := <-children_chan
-		global.PrintDebug("REPWAS", fmt.Sprintf("Recieved : %v !", treetypes.SubstListToString(subst_res_chan)))
-		if len(subst_res_chan) > 0 {
-			for _, subst_element := range subst_res_chan {
+		global.PrintDebug("REPWAS", fmt.Sprintf("Recieved from %v : %v !", subst_res_chan.id, treetypes.SubstListToString(subst_res_chan.substs)))
+		if len(subst_res_chan.substs) > 0 {
+			for _, subst_element := range subst_res_chan.substs {
 				if !subst_element.Equals(treetypes.Failure()) {
 					found = true
-					substs_res = append(substs_res, subst_res_chan...)
+					substs_res = append(substs_res, subst_res_chan.substs...)
 				}
 			}
 		}
 	} else {
 		global.PrintDebug("ERPWAS", "Subst ! - lauche goroutine ")
 		for _, s := range sl {
-			global.PrintDebug("ERPWAS", "Go !")
-			go equalityReasoningProblem(ep.applySubstitution(s), children_chan, global.GetGID())
+			global.PrintDebug("ERPWAS", fmt.Sprintf("Go ! - with %v", s.ToString()))
+			go equalityReasoningProblem(ep.applySubstitution(s.Copy()), children_chan, global.GetGID())
 			subst_res_chan := <-children_chan
-			global.PrintDebug("REPWAS", fmt.Sprintf("Recieved : %v !", treetypes.SubstListToString(subst_res_chan)))
+			global.PrintDebug("REPWAS", fmt.Sprintf("Recieved from %v : %v !", subst_res_chan.id, treetypes.SubstListToString(subst_res_chan.substs)))
 
-			if len(subst_res_chan) > 0 {
+			if len(subst_res_chan.substs) > 0 {
 
-				for _, subst_element := range subst_res_chan {
+				for _, subst_element := range subst_res_chan.substs {
 					merged_subst, same_key := treesearch.MergeSubstitutions(s.Copy(), subst_element.Copy())
 					if same_key {
 						global.PrintDebug("ERPWAS", "Error in EqualityReasoningList : same key appears in merge")
@@ -157,7 +162,7 @@ func equalityReasoningProblemWithApplySubst(ep EqualityProblem, sl []treetypes.S
 }
 
 // Brancher pour règles
-func equalityReasoningProblem(ep EqualityProblem, parent chan []treetypes.Substitutions, father_id uint64) {
+func equalityReasoningProblem(ep EqualityProblem, parent chan answerEP, father_id uint64) {
 	global.PrintDebug("ERP", fmt.Sprintf("Child of %v", father_id))
 	global.PrintDebug("ERP", fmt.Sprintf("EP : %v", ep.toString()))
 	substs_res := []treetypes.Substitutions{}
@@ -170,7 +175,8 @@ func equalityReasoningProblem(ep EqualityProblem, parent chan []treetypes.Substi
 			if is_consistant {
 				global.PrintDebug("ERP", fmt.Sprintf("Unif found and consistant : %v", new_subst.ToString()))
 				substs_res = append(substs_res, new_subst)
-				parent <- substs_res // TODO
+				// parent <- answerEP{global.GetGID(), substs_res}
+				// return // return instant ? Prete de complétude
 			} else {
 				global.PrintDebug("ERP", fmt.Sprintf("Unif found but not consistant : %v", subst_found.ToString()))
 			}
@@ -183,7 +189,7 @@ func equalityReasoningProblem(ep EqualityProblem, parent chan []treetypes.Substi
 
 	if checkStopCases(ep) {
 		global.PrintDebug("ERP", fmt.Sprintf("Stop case found ! Send : %v", treetypes.SubstListToString(substs_res)))
-		parent <- substs_res
+		parent <- answerEP{global.GetGID(), substs_res}
 		return
 	} else {
 		global.PrintDebug("ERP", "Stop case not found")
@@ -196,19 +202,19 @@ func equalityReasoningProblem(ep EqualityProblem, parent chan []treetypes.Substi
 	// TODO : select
 
 	// Right rule
-	tab_chan := [](chan []treetypes.Substitutions){}
+	tab_chan := [](chan answerEP){}
 	for _, r := range rr {
 		global.PrintDebug("ERP", "Go !")
-		chan_rule := make(chan []treetypes.Substitutions)
+		chan_rule := make(chan answerEP)
 		go applyRule(r, ep, chan_rule, global.GetGID())
 		tab_chan = append(tab_chan, chan_rule)
 	}
 
 	for _, c := range tab_chan {
 		res := <-c
-		global.PrintDebug("ERP", fmt.Sprintf("Recieved (rr) : %v", treetypes.SubstListToString(res)))
-		if len(res) > 0 {
-			for _, s := range res {
+		global.PrintDebug("ERP", fmt.Sprintf("Recieved (rr) %v : %v", res.id, treetypes.SubstListToString(res.substs)))
+		if len(res.substs) > 0 {
+			for _, s := range res.substs {
 				if !s.Equals(treetypes.Failure()) {
 					substs_res = append(substs_res, s)
 				}
@@ -216,22 +222,22 @@ func equalityReasoningProblem(ep EqualityProblem, parent chan []treetypes.Substi
 		}
 	}
 
+	// Left rule
 	if len(substs_res) == 0 {
 		global.PrintDebug("ERP", "Right rule dosen't works, try left rules")
-		// Left rule
-		tab_chan = [](chan []treetypes.Substitutions){}
+		tab_chan = [](chan answerEP){}
 		for _, r := range lr {
 			global.PrintDebug("ERP", "Go !")
-			chan_rule := make(chan []treetypes.Substitutions)
+			chan_rule := make(chan answerEP)
 			go applyRule(r, ep, chan_rule, global.GetGID())
 			tab_chan = append(tab_chan, chan_rule)
 		}
 
 		for _, c := range tab_chan {
 			res := <-c
-			global.PrintDebug("ERP", fmt.Sprintf("Recieved (lr) : %v", treetypes.SubstListToString(res)))
-			if len(res) > 0 {
-				for _, s := range res {
+			global.PrintDebug("ERP", fmt.Sprintf("Recieved (lr) %v : %v", res.id, treetypes.SubstListToString(res.substs)))
+			if len(res.substs) > 0 {
+				for _, s := range res.substs {
 					if !s.Equals(treetypes.Failure()) {
 						substs_res = append(substs_res, s)
 					}
@@ -241,7 +247,7 @@ func equalityReasoningProblem(ep EqualityProblem, parent chan []treetypes.Substi
 	}
 
 	global.PrintDebug("ERP", fmt.Sprintf("Send : %v !", treetypes.SubstListToString(substs_res)))
-	parent <- substs_res
+	parent <- answerEP{global.GetGID(), substs_res}
 	global.PrintDebug("ERP", "die")
 }
 
@@ -392,7 +398,7 @@ func checkUnifInTree(t basictypes.Term, tree datastruct.DataStructure) (bool, []
 }
 
 /*** Functions apply rules ***/
-func applyRule(rs ruleStruct, ep EqualityProblem, parent chan []treetypes.Substitutions, father_id uint64) {
+func applyRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64) {
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Child of %v", father_id))
 	global.PrintDebug("EQ-AR", fmt.Sprintf("EQ before applying rule %v", ep.toString()))
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Apply rule %v", rs.toString()))
@@ -409,7 +415,7 @@ func applyRule(rs ruleStruct, ep EqualityProblem, parent chan []treetypes.Substi
 	}
 }
 
-func applyLeftRule(rs ruleStruct, ep EqualityProblem, parent chan []treetypes.Substitutions, father_id uint64) {
+func applyLeftRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64) {
 	global.PrintDebug("ALR", "Apply left rule")
 
 	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC())
@@ -427,13 +433,13 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, parent chan []treetypes.Su
 		return
 	} else {
 		global.PrintDebug("ALR", "Not consistant with LPO, send nil")
-		parent <- nil
+		parent <- answerEP{0, nil}
 		global.PrintDebug("ALR", "Die")
 		return
 	}
 }
 
-func applyRightRule(rs ruleStruct, ep EqualityProblem, parent chan []treetypes.Substitutions, father_id uint64) {
+func applyRightRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64) {
 	global.PrintDebug("ARR", "Apply right rule")
 
 	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC())
@@ -449,7 +455,7 @@ func applyRightRule(rs ruleStruct, ep EqualityProblem, parent chan []treetypes.S
 		}
 	} else {
 		global.PrintDebug("ARR", "Not consistant with LPO, send nil")
-		parent <- nil
+		parent <- answerEP{0, nil}
 		global.PrintDebug("ARR", "Die")
 		return
 	}

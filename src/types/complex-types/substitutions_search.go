@@ -68,8 +68,8 @@ func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
 /* Remove substitution without mm */
 func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) treetypes.Substitutions {
 
-	global.PrintDebug("REWM", fmt.Sprintf("MM : %v", mm.ToString()))
-	global.PrintDebug("REWM", fmt.Sprintf("Initial subst : %v", s.ToString()))
+	// global.PrintDebug("REWM", fmt.Sprintf("MM : %v", mm.ToString()))
+	// global.PrintDebug("REWM", fmt.Sprintf("Initial subst : %v", s.ToString()))
 
 	// Substitution définitive
 	res := treetypes.Substitutions{}
@@ -100,7 +100,7 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 	treetypes.Eliminate(&subst_to_reorganize)
 	ms, _ := treesearch.MergeSubstitutions(res, subst_to_reorganize)
 
-	global.PrintDebug("REWM", fmt.Sprintf("Finale subst : %v", ms.ToString()))
+	// global.PrintDebug("REWM", fmt.Sprintf("Finale subst : %v", ms.ToString()))
 
 	if ms.Equals(treetypes.Failure()) {
 		println("[REWM] Error : MergeSubstitutions returns failure")

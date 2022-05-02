@@ -74,7 +74,3 @@ func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basic
 		return false, []treetypes.Substitutions{}
 	}
 }
-
-func insertLPO(p basictypes.Pred) {
-	lpo.insertPred(p)
-}
