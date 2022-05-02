@@ -46,6 +46,7 @@ import (
 	"testing"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -56,14 +57,14 @@ func TestAxiomRewriting(t *testing.T) {
 	pm := getEquivalencePM()
 
 	// forall x.P(x)
-	axiom := btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(P, []btypes.Term{x}))
+	axiom := btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(P, []btypes.Term{x}, []typing.TypeApp{}))
 
 	if !pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
 	}
 
 	// Top
-	form := btypes.MakerPred(P, []btypes.Term{a})
+	form := btypes.MakePred(P, []btypes.Term{a}, []typing.TypeApp{})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -78,11 +79,8 @@ func TestAxiomRewriting(t *testing.T) {
 	}
 
 	// ¬Top
-	form2 := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}))
-	substs, err = pm.ApplyRewriteHook(form2)
-
+	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{a}, []typing.TypeApp{}))
 	if err != nil {
-		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form2.ToString())
 	}
 
 	if len(substs) > 1 ||
@@ -100,14 +98,14 @@ func TestAxiomRewriting2(t *testing.T) {
 	pm := getEquivalencePM()
 
 	// forall x.¬P(x)
-	axiom := btypes.MakerAll([]btypes.Var{x}, btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{x})))
+	axiom := btypes.MakeAll([]btypes.Var{x}, btypes.MakeNot(btypes.MakePred(P, []btypes.Term{x}, []typing.TypeApp{})))
 
 	if !pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
 	}
 
 	// Bot
-	form := btypes.MakerPred(P, []btypes.Term{a})
+	form := btypes.MakePred(P, []btypes.Term{a}, []typing.TypeApp{})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -122,7 +120,7 @@ func TestAxiomRewriting2(t *testing.T) {
 	}
 
 	// ¬Bot
-	form2 := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}))
+	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{a}, []typing.TypeApp{}))
 	substs, err = pm.ApplyRewriteHook(form2)
 
 	if err != nil {
@@ -144,7 +142,7 @@ func TestAxiomRewriting3(t *testing.T) {
 	pm := getEquivalencePM()
 
 	// forall x.P(x)
-	axiom := btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(P, []btypes.Term{x, x}))
+	axiom := btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(P, []btypes.Term{x, x}, []typing.TypeApp{}))
 
 	if !pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
@@ -153,7 +151,7 @@ func TestAxiomRewriting3(t *testing.T) {
 	X := btypes.MakerMeta("X", 1)
 	Y := btypes.MakerMeta("Y", 1)
 	// Top
-	form := btypes.MakerPred(P, []btypes.Term{X, Y})
+	form := btypes.MakePred(P, []btypes.Term{X, Y}, []typing.TypeApp{})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -168,7 +166,7 @@ func TestAxiomRewriting3(t *testing.T) {
 	}
 
 	// ¬Top
-	form2 := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{X, Y}))
+	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{X, Y}, []typing.TypeApp{}))
 	substs, err = pm.ApplyRewriteHook(form2)
 
 	if err != nil {
@@ -183,7 +181,7 @@ func TestAxiomRewriting3(t *testing.T) {
 	}
 
 	// Top with subst
-	form3 := btypes.MakerPred(P, []btypes.Term{a, Y})
+	form3 := btypes.MakePred(P, []btypes.Term{a, Y}, []typing.TypeApp{})
 	substs, err = pm.ApplyRewriteHook(form3)
 
 	if err != nil {
@@ -198,7 +196,7 @@ func TestAxiomRewriting3(t *testing.T) {
 	}
 
 	// Should fail
-	form4 := btypes.MakerPred(P, []btypes.Term{a, btypes.MakerConst(btypes.MakerId("b"))})
+	form4 := btypes.MakePred(P, []btypes.Term{a, btypes.MakerConst(btypes.MakerId("b"))}, []typing.TypeApp{})
 	substs, err = pm.ApplyRewriteHook(form4)
 
 	if err != nil {

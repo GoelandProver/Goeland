@@ -44,6 +44,7 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/search"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -66,7 +67,7 @@ func RegisterAxiom(axiom btypes.Form) bool {
 func instanciateForalls(axiom btypes.Form) btypes.Form {
 	axiomFT := axiom.Copy()
 	for is[btypes.All](axiomFT) {
-		axiomFT = instantiateOnce(axiomFT)
+		axiomFT, _ = search.Instantiate(axiomFT, -1)
 	}
 	return axiomFT
 }
@@ -89,7 +90,7 @@ func addNegRewriteRule(axiom btypes.Form, cons btypes.Form) {
 
 func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 	for canSkolemize(cons) {
-		cons = skolemize(cons)
+		cons = search.Skolemize(cons)
 	}
 	printDebugRewriteRule(polarity, axiom, cons)
 	rewriteMapInsertion(polarity, axiom.ToString(), cons)

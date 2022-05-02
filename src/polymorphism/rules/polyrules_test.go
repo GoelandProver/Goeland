@@ -377,15 +377,15 @@ func TestBabyNoErr(t *testing.T) {
 	x := btypes.MakerVar("x", typing.MkTypeHint("int"))
 	y := btypes.MakerVar("y", typing.MkTypeHint("int"))
 
-	form := btypes.MakeForm(btypes.MakeAll(
+	testForm := btypes.MakeAll(
 		[]btypes.Var{x, y},
 		btypes.MakePred(
 			btypes.MakerId("P"),
 			[]btypes.Term{x, y},
 			[]typing.TypeApp{},
-		)))
+		))
 
-	form, err := WellFormedVerification(form, false)
+	form, err := WellFormedVerification(testForm, false)
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
@@ -401,15 +401,15 @@ func TestBabyNoErr(t *testing.T) {
 		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
 
-	form = btypes.MakeForm(btypes.MakeEx(
+	testForm2 := btypes.MakeEx(
 		[]btypes.Var{x, y},
 		btypes.MakePred(
 			btypes.MakerId("P"),
 			[]btypes.Term{x, y},
 			[]typing.TypeApp{},
-		)))
+		))
 
-	form, err = WellFormedVerification(form, false)
+	form, err = WellFormedVerification(testForm2, false)
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
@@ -448,7 +448,7 @@ func TestPolymorphicExample(t *testing.T) {
 	x := btypes.MakerVar("x", typeVar)
 	y := btypes.MakerVar("y", typeVar)
 
-	form := btypes.MakeForm(btypes.MakeAllType(
+	testForm := btypes.MakeAllType(
 		[]typing.TypeVar{typeVar},
 		btypes.MakeAll(
 			[]btypes.Var{x, y},
@@ -458,11 +458,11 @@ func TestPolymorphicExample(t *testing.T) {
 				[]typing.TypeApp{typeVar},
 			),
 		),
-	))
+	)
 
 	// Try to type this
 
-	form, err := WellFormedVerification(form, true)
+	form, err := WellFormedVerification(testForm, true)
 	if err != nil {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
@@ -503,7 +503,7 @@ func TestPolymorphicFailureExample(t *testing.T) {
 	x := btypes.MakerVar("x", typing.MkTypeHint("int"))
 	y := btypes.MakerVar("y", typeVar)
 
-	form := btypes.MakeForm(btypes.MakeAllType(
+	testForm := btypes.MakeAllType(
 		[]typing.TypeVar{typeVar},
 		btypes.MakeAll(
 			[]btypes.Var{x, y},
@@ -513,11 +513,11 @@ func TestPolymorphicFailureExample(t *testing.T) {
 				[]typing.TypeApp{typeVar},
 			),
 		),
-	))
+	)
 
 	// Try to type this
 
-	_, err := WellFormedVerification(form, false)
+	_, err := WellFormedVerification(testForm, false)
 	if err == nil {
 		t.Fatalf("Never encountered error when system is not well-typed.")
 	}
