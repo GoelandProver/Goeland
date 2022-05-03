@@ -43,6 +43,7 @@ package polymorphism
 
 import (
 	"fmt"
+	"strings"
 
 	. "github.com/GoelandProver/Goeland/global"
 )
@@ -59,8 +60,15 @@ type ParameterizedType struct {
 
 /* TypeScheme interface */
 func (pt ParameterizedType) isScheme() {}
+func (pt ParameterizedType) toMappedString(subst map[string]string) string {
+	mappedString := []string{}
+	for _, typeScheme := range convert(pt.parameters, typeAppToTypeScheme) {
+		mappedString = append(mappedString, typeScheme.toMappedString(subst))
+	}
+	return pt.name + "(" + strings.Join(mappedString, ", ") + ")"
+}
 
-func (pt ParameterizedType) ToString() string { return pt.name }
+func (pt ParameterizedType) ToString() string { return pt.toMappedString(make(map[string]string)) }
 func (pt ParameterizedType) Equals(oth interface{}) bool {
 	if !Is[ParameterizedType](oth) {
 		return false
@@ -74,7 +82,7 @@ func (pt ParameterizedType) GetParameters() []TypeApp { return pt.parameters }
 
 /* TypeApp interface */
 func (pt ParameterizedType) isTypeApp() {}
-func (pt ParameterizedType) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
+func (pt ParameterizedType) substitute(mapSubst map[TypeVar]string) TypeScheme {
 	newPt := ParameterizedType{pt.name, ComparableList[TypeApp]{}}
 	for _, param := range pt.parameters {
 		newPt.parameters = append(newPt.parameters, param.substitute(mapSubst).(TypeApp))

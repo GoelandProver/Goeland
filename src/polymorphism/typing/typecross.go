@@ -66,6 +66,13 @@ type TypeCross struct {
 /* TypeScheme interface */
 // Non-exported methods.
 func (tc TypeCross) isScheme() {}
+func (tc TypeCross) toMappedString(subst map[string]string) string {
+	mappedString := []string{}
+	for _, typeScheme := range convert(tc.types, typeAppToTypeScheme) {
+		mappedString = append(mappedString, typeScheme.toMappedString(subst))
+	}
+	return "(" + strings.Join(mappedString, " * ") + ")"
+}
 
 // Exported methods.
 func (tc TypeCross) ToString() string {
@@ -83,7 +90,7 @@ func (tc TypeCross) Equals(oth interface{}) bool {
 /* TypeApp interface */
 // Non-exported methods.
 func (tc TypeCross) isTypeApp() {}
-func (tc TypeCross) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
+func (tc TypeCross) substitute(mapSubst map[TypeVar]string) TypeScheme {
 	return MkTypeCross(substTypeAppList(mapSubst, tc.types)...)
 }
 

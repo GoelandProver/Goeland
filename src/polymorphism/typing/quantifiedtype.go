@@ -58,22 +58,19 @@ type QuantifiedType struct {
 }
 
 /* TypeScheme interface */
-func (qt QuantifiedType) isScheme() {}
+func (qt QuantifiedType) isScheme()                                     {}
+func (qt QuantifiedType) toMappedString(subst map[string]string) string { return qt.ToString() }
 
 func (qt QuantifiedType) Equals(oth interface{}) bool {
-	if !Is[QuantifiedType](oth) {
-		return false
-	}
-	othQT := To[QuantifiedType](oth)
-	return qt.vars.Equals(othQT.vars) && qt.scheme.Equals(othQT.scheme)
+	return Is[QuantifiedType](oth) && qt.scheme.Equals(To[QuantifiedType](oth).scheme)
 }
 
-func (qt QuantifiedType) QuantifiedVarsLen() int    { return len(qt.vars) }
-func (qt QuantifiedType) QuantifiedVars() []TypeVar { return qt.vars }
-func (qt QuantifiedType) Size() int                 { return qt.scheme.Size() }
+func (qt QuantifiedType) QuantifiedVarsLen() int                  { return len(qt.vars) }
+func (qt QuantifiedType) QuantifiedVars() ComparableList[TypeVar] { return qt.vars }
+func (qt QuantifiedType) Size() int                               { return qt.scheme.Size() }
 
 func (qt QuantifiedType) ToString() string {
-	return "Π " + strings.Join(convert(qt.vars, typeTToString[TypeVar]), ", ") + ": Type, " + qt.scheme.ToString()
+	return "Π " + strings.Join(convert(qt.vars, typeTToString[TypeVar]), ", ") + ": Type. " + qt.scheme.toMappedString(utilMapReverseCreation(qt.vars))
 }
 
 func (qt QuantifiedType) GetPrimitives() []TypeApp {

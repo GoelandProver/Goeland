@@ -62,6 +62,13 @@ type TypeArrow struct {
 /* TypeScheme interface */
 // Unexported methods.
 func (ta TypeArrow) isScheme() {}
+func (ta TypeArrow) toMappedString(subst map[string]string) string {
+	mappedString := []string{To[TypeScheme](ta.left).toMappedString(subst)}
+	for _, typeScheme := range convert(ta.right, typeAppToTypeScheme) {
+		mappedString = append(mappedString, typeScheme.toMappedString(subst))
+	}
+	return "(" + strings.Join(mappedString, " > ") + ")"
+}
 
 // Exported methods.
 /**
@@ -93,7 +100,7 @@ func (ta TypeArrow) GetPrimitives() []TypeApp {
 }
 
 /* TypeArrow methods */
-func (ta TypeArrow) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
+func (ta TypeArrow) substitute(mapSubst map[TypeVar]string) TypeScheme {
 	return MkTypeArrow(ta.left.substitute(mapSubst).(TypeApp), substTypeAppList(mapSubst, ta.right)...)
 }
 

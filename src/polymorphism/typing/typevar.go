@@ -64,6 +64,12 @@ type TypeVar struct {
 /* TypeScheme interface */
 // Non-exported methods.
 func (tv TypeVar) isScheme() {}
+func (tv TypeVar) toMappedString(subst map[string]string) string {
+	if substString, inMap := subst[tv.name]; inMap {
+		return substString
+	}
+	return tv.name
+}
 
 // Exported methods.
 func (tv TypeVar) ToString() string         { return tv.name }
@@ -82,7 +88,11 @@ func (tv TypeVar) Equals(oth interface{}) bool {
 func (tv TypeVar) isTypeApp() {}
 
 // TODO: Make it a typevar to, it doesn't need to be a TypeScheme anymore, does it ?
-func (tv TypeVar) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return mapSubst[tv] }
+func (tv TypeVar) substitute(mapSubst map[TypeVar]string) TypeScheme {
+	newTv := tv.Copy().(TypeVar)
+	newTv.name = mapSubst[tv]
+	return newTv
+}
 
 func (tv TypeVar) Copy() TypeApp {
 	newTv := MkTypeVar(tv.name)

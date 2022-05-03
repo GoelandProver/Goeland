@@ -58,7 +58,8 @@ type TypeHint struct {
 
 /* TypeScheme interface */
 // Non-exported methods
-func (th TypeHint) isScheme() {}
+func (th TypeHint) isScheme()                                     {}
+func (th TypeHint) toMappedString(subst map[string]string) string { return th.ToString() }
 
 // Exported methods
 func (th TypeHint) ToString() string         { return th.name }
@@ -71,8 +72,8 @@ func (th TypeHint) Equals(oth interface{}) bool {
 
 /* TypeApp interface */
 // Non-exported methods
-func (th TypeHint) isTypeApp()                                          {}
-func (th TypeHint) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return th }
+func (th TypeHint) isTypeApp()                                        {}
+func (th TypeHint) substitute(mapSubst map[TypeVar]string) TypeScheme { return th }
 
 // Exported methods
 func (th TypeHint) Copy() TypeApp { return MkTypeHint(th.name) }

@@ -52,7 +52,7 @@ import (
 type TypeScheme interface {
 	/* Non-exported methods */
 	isScheme()
-	//toList() []uint64
+	toMappedString(map[string]string) string
 
 	/* Exported methods */
 	ToString() string
@@ -71,7 +71,7 @@ type TypeScheme interface {
 type TypeApp interface {
 	/* Non-exported methods */
 	isTypeApp()
-	substitute(map[TypeVar]TypeHint) TypeScheme
+	substitute(map[TypeVar]string) TypeScheme
 
 	/* Exported methods */
 	ToString() string
@@ -111,15 +111,23 @@ func Init() {
 
 /* Utils */
 
-func utilMapCreation(vars []TypeVar) map[TypeVar]TypeHint {
-	metaTypeMap := make(map[TypeVar]TypeHint)
+func utilMapCreation(vars []TypeVar) map[TypeVar]string {
+	metaTypeMap := make(map[TypeVar]string)
 	for i, var_ := range vars {
-		metaTypeMap[var_] = MkTypeHint(fmt.Sprintf("*_%d", i))
+		metaTypeMap[var_] = fmt.Sprintf("*_%d", i)
 	}
 	return metaTypeMap
 }
 
-func substTypeAppList(mapSubst map[TypeVar]TypeHint, typeApp []TypeApp) []TypeApp {
+func utilMapReverseCreation(vars []TypeVar) map[string]string {
+	metaTypeMap := make(map[string]string)
+	for i, var_ := range vars {
+		metaTypeMap[fmt.Sprintf("*_%d", i)] = var_.ToString()
+	}
+	return metaTypeMap
+}
+
+func substTypeAppList(mapSubst map[TypeVar]string, typeApp []TypeApp) []TypeApp {
 	newTypeApp := []TypeApp{}
 	for _, type_ := range typeApp {
 		newTypeApp = append(newTypeApp, type_.substitute(mapSubst).(TypeApp))
