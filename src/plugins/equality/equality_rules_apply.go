@@ -45,6 +45,7 @@ import (
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
+/* apply a rule */
 func applyRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64) {
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Child of %v", father_id))
 	global.PrintDebug("EQ-AR", fmt.Sprintf("EQ before applying rule %v", ep.toString()))
@@ -52,17 +53,15 @@ func applyRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_i
 	switch rs.getRule() {
 	case LEFT:
 		applyLeftRule(rs, ep, parent, father_id)
-		return
 	case RIGHT:
 		applyRightRule(rs, ep, parent, father_id)
-		return
 	default:
 		global.PrintDebug("AR", "[EQ] Rule type unknown")
-		return
 	}
 }
 
-func applyLeftRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64) {
+/* Apply left rigid basic superposition rule */
+func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP, father_id uint64) {
 	global.PrintDebug("ALR", "Apply left rule")
 
 	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC())
@@ -76,17 +75,16 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, fath
 			new_eq_list[rs.getIndexEQList()] = makeTermPair(rs.getS(), new_term.Copy())
 		}
 		global.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.toString()))
-		equalityReasoningProblem(makeEqualityProblem(new_eq_list, ep.getS(), ep.getT(), new_cl), parent, father_id)
-		return
+		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.getS(), ep.getT(), new_cl), father_chan)
 	} else {
 		global.PrintDebug("ALR", "Not consistant with LPO, send nil")
-		parent <- answerEP{global.GetGID(), nil}
+		father_chan <- makeEmptyAnswerEP()
 		global.PrintDebug("ALR", "Die")
-		return
 	}
 }
 
-func applyRightRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64) {
+/* Apply right rigid basic superposition rule */
+func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP, father_id uint64) {
 	global.PrintDebug("ARR", "Apply right rule")
 
 	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC())
@@ -94,17 +92,14 @@ func applyRightRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, fat
 	if is_consistant_with_lpo {
 		global.PrintDebug("ARR", fmt.Sprintf("New term : %v", new_term.ToString()))
 		if rs.getIsSModified() {
-			equalityReasoningProblem(makeEqualityProblem(ep.copy().getE(), new_term.Copy(), rs.getT(), new_cl), parent, father_id)
-			return
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), new_term.Copy(), rs.getT(), new_cl), father_chan)
 		} else {
-			equalityReasoningProblem(makeEqualityProblem(ep.copy().getE(), rs.getS(), new_term.Copy(), new_cl), parent, father_id)
-			return
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), rs.getS(), new_term.Copy(), new_cl), father_chan)
 		}
 	} else {
 		global.PrintDebug("ARR", "Not consistant with LPO, send nil")
-		parent <- answerEP{global.GetGID(), nil}
+		father_chan <- makeEmptyAnswerEP()
 		global.PrintDebug("ARR", "Die")
-		return
 	}
 }
 
@@ -115,7 +110,6 @@ func applyRightRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, fat
 * s and t
 * sub_term_of s is a subterm of s unifible with l
 **/
-// reconstruire le problème à chaque fois, le code trees, etc
 func applyEQRule(l, r, sub_term_of_s, s, t basictypes.Term, cs ConstraintStruct) (bool, basictypes.Term, ConstraintStruct) {
 	global.PrintDebug("AEQR", "Apply eq rule")
 	global.PrintDebug("AEQR", fmt.Sprintf("Replace %v by %v in %v", sub_term_of_s.ToString(), r.ToString(), s.ToString()))

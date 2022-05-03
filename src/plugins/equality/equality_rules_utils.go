@@ -39,10 +39,27 @@
 package main
 
 import (
+	"fmt"
+
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
+
+type answerEP struct {
+	id     uint64
+	found  bool
+	substs []treetypes.Substitutions
+}
+
+func makeEmptyAnswerEP() answerEP {
+	return answerEP{global.GetGID(), false, nil}
+}
+
+func makeAnswerEP(found bool, substs []treetypes.Substitutions) answerEP {
+	return answerEP{global.GetGID(), found, substs}
+}
 
 /**
 * check if the search should stop, ie if s = t
@@ -51,11 +68,34 @@ func checkStopCases(ep EqualityProblem) bool {
 	return ep.getS().Equals(ep.getT())
 }
 
-/**
-* Try to unify s and t
-**/
-func checkUnif(s, t basictypes.Term) (bool, treetypes.Substitutions) {
+/* Try to unify s and t */
+func tryUnifySAndT(s, t basictypes.Term) (bool, treetypes.Substitutions) {
 	subst := treetypes.MakeEmptySubstitution()
 	subst = treesearch.AddUnification(s.Copy(), t.Copy(), subst)
 	return !subst.Equals(treetypes.Failure()), subst
+}
+
+/* check unfiication */
+func checkUnif(ep EqualityProblem) (bool, []treetypes.Substitutions) {
+	found := false
+	substs_res := []treetypes.Substitutions{}
+	if ok, subst_found := tryUnifySAndT(ep.getS(), ep.getT()); ok {
+		global.PrintDebug("ERP", "Unif found !")
+		new_subst := treesearch.AddUnification(ep.getS(), ep.getT(), ep.getC().getSubst())
+		if !new_subst.Equals(treetypes.Failure()) {
+			is_consistant := ep.c.getPrec().isConsistantWithSubst(new_subst)
+			if is_consistant {
+				global.PrintDebug("ERP", fmt.Sprintf("Unif found and consistant : %v", new_subst.ToString()))
+				found = true
+				substs_res = append(substs_res, new_subst)
+			} else {
+				global.PrintDebug("ERP", fmt.Sprintf("Unif found but not consistant : %v", subst_found.ToString()))
+			}
+		} else {
+			global.PrintDebug("ERP", fmt.Sprintf("Unif found but not consistant with other unifications : %v", subst_found.ToString()))
+		}
+	} else {
+		global.PrintDebug("ERP", "Unification not found")
+	}
+	return found, substs_res
 }
