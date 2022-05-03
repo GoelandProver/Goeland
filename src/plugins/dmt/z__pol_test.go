@@ -149,6 +149,23 @@ func TestPolarizedInsertion(t *testing.T) {
 	if pm.ApplySendAxiomHook(polPred8) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't (equalities are not registered).", polPred8.ToString())
 	}
+
+	polPred9 := btypes.MakeAll(
+		[]btypes.Var{x, y},
+		btypes.MakeImp(
+			btypes.MakePred(P, []btypes.Term{x, y}, []typing.TypeApp{}),
+			btypes.MakeAnd(
+				[]btypes.Form{
+					btypes.MakePred(Q, []btypes.Term{x, y}, []typing.TypeApp{}),
+					btypes.MakePred(Q, []btypes.Term{x, y}, []typing.TypeApp{}),
+				},
+			),
+		),
+	)
+
+	if !pm.ApplySendAxiomHook(polPred9) {
+		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", polPred9.ToString())
+	}
 }
 
 /**

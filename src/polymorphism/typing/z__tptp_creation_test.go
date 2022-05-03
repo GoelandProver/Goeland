@@ -114,6 +114,123 @@ func TestPrimitive(t *testing.T) {
 	}
 }
 
+func TestIsIntFunction(t *testing.T) {
+	testTable := []struct {
+		t p.TypeHint
+		b bool
+	}{
+		{tInt, true}, {tRat, false}, {tReal, false}, {p.MkTypeHint("o"), false}, {p.MkTypeHint("i"), false},
+	}
+
+	for _, test := range testTable {
+		t.Run(fmt.Sprintf("%v", test.t.ToString()), func(t *testing.T) {
+			if test.b && !p.IsInt(test.t) {
+				t.Fatalf("%s is int when it shouldn't", test.t.ToString())
+			}
+		})
+	}
+}
+
+func TestIsRatFunction(t *testing.T) {
+	testTable := []struct {
+		t p.TypeHint
+		b bool
+	}{
+		{tInt, false}, {tRat, true}, {tReal, false}, {p.MkTypeHint("o"), false}, {p.MkTypeHint("i"), false},
+	}
+
+	for _, test := range testTable {
+		t.Run(fmt.Sprintf("%v", test.t.ToString()), func(t *testing.T) {
+			if test.b && !p.IsRat(test.t) {
+				t.Fatalf("%s is rat when it shouldn't", test.t.ToString())
+			}
+		})
+	}
+}
+
+func TestIsRealFunction(t *testing.T) {
+	testTable := []struct {
+		t p.TypeHint
+		b bool
+	}{
+		{tInt, false}, {tRat, false}, {tReal, true}, {p.MkTypeHint("o"), false}, {p.MkTypeHint("i"), false},
+	}
+
+	for _, test := range testTable {
+		t.Run(fmt.Sprintf("%v", test.t.ToString()), func(t *testing.T) {
+			if test.b && !p.IsReal(test.t) {
+				t.Fatalf("%s is real when it shouldn't", test.t.ToString())
+			}
+		})
+	}
+}
+
+func TestDefaultType(t *testing.T) {
+	if !p.DefaultType().Equals(p.MkTypeHint("i")) {
+		t.Fatalf("Wrong default type: %s", p.DefaultType().ToString())
+	}
+}
+
+func TestDefaultProp(t *testing.T) {
+	if !p.DefaultProp().Equals(p.MkTypeHint("o")) {
+		t.Fatalf("Wrong default type: %s", p.DefaultProp().ToString())
+	}
+}
+
+func TestDefaultType2(t *testing.T) {
+	if !p.DefaultFunType(0).Equals(p.DefaultType()) {
+		t.Fatalf("Wrong default type with 0 arguments: %s", p.DefaultFunType(0))
+	}
+}
+
+func TestDefaultProp2(t *testing.T) {
+	if !p.DefaultPropType(0).Equals(p.DefaultProp()) {
+		t.Fatalf("Wrong default type with 0 arguments: %s", p.DefaultPropType(0))
+	}
+}
+
+func TestEmptyGlobalContext(t *testing.T) {
+	if p.EmptyGlobalContext() {
+		t.Fatalf("It says that global context is empty when it's loaded")
+	}
+}
+
+func TestDefaultType3(t *testing.T) {
+	testTable := []struct {
+		size int
+		name string
+	}{
+		{1, "(i > i)"},
+		{2, "((i * i) > i)"},
+		{3, "((i * i * i) > i)"},
+		{10, "((i * i * i * i * i * i * i * i * i * i) > i)"},
+	}
+
+	for _, test := range testTable {
+		if p.DefaultFunType(test.size).ToString() != test.name {
+			t.Fatalf("Wrong default fun type. Expected: %s, actual: %s", test.name, p.DefaultFunType(test.size).ToString())
+		}
+	}
+}
+
+func TestDefaultProp3(t *testing.T) {
+	testTable := []struct {
+		size int
+		name string
+	}{
+		{1, "(i > o)"},
+		{2, "((i * i) > o)"},
+		{3, "((i * i * i) > o)"},
+		{10, "((i * i * i * i * i * i * i * i * i * i) > o)"},
+	}
+
+	for _, test := range testTable {
+		if p.DefaultPropType(test.size).ToString() != test.name {
+			t.Fatalf("Wrong default fun type. Expected: %s, actual: %s", test.name, p.DefaultPropType(test.size).ToString())
+		}
+	}
+}
+
 func testBinaryPreds(name string) error {
 	out := p.GetType(name, p.MkTypeCross(tInt, tInt))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tInt, tInt), p.DefaultProp())) {

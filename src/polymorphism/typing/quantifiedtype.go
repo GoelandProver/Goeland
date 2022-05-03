@@ -58,8 +58,10 @@ type QuantifiedType struct {
 }
 
 /* TypeScheme interface */
-func (qt QuantifiedType) isScheme()                                     {}
-func (qt QuantifiedType) toMappedString(subst map[string]string) string { return qt.ToString() }
+func (qt QuantifiedType) isScheme() {}
+func (qt QuantifiedType) toMappedString(subst map[string]string) string {
+	return "Π " + strings.Join(convert(qt.vars, typeTToString[TypeVar]), ", ") + ": Type. " + qt.scheme.toMappedString(subst)
+}
 
 func (qt QuantifiedType) Equals(oth interface{}) bool {
 	return Is[QuantifiedType](oth) && qt.scheme.Equals(To[QuantifiedType](oth).scheme)
@@ -70,18 +72,20 @@ func (qt QuantifiedType) QuantifiedVars() ComparableList[TypeVar] { return qt.va
 func (qt QuantifiedType) Size() int                               { return qt.scheme.Size() }
 
 func (qt QuantifiedType) ToString() string {
-	return "Π " + strings.Join(convert(qt.vars, typeTToString[TypeVar]), ", ") + ": Type. " + qt.scheme.toMappedString(utilMapReverseCreation(qt.vars))
+	return qt.toMappedString(utilMapReverseCreation(qt.vars))
 }
 
 func (qt QuantifiedType) GetPrimitives() []TypeApp {
-	vars := make(map[TypeHint]TypeVar)
+	vars := make(map[string]TypeVar)
 	for i, var_ := range qt.vars {
-		vars[MkTypeHint(fmt.Sprintf("*_%d", i))] = var_
+		vars[fmt.Sprintf("*_%d", i)] = var_
 	}
 	primitives := []TypeApp{}
 	for _, th := range qt.scheme.GetPrimitives() {
-		if var_, found := vars[th.(TypeHint)]; found {
-			primitives = append(primitives, var_)
+		if Is[TypeVar](th) {
+			if var_, found := vars[th.(TypeVar).ToString()]; found {
+				primitives = append(primitives, var_)
+			}
 		} else {
 			primitives = append(primitives, th)
 		}

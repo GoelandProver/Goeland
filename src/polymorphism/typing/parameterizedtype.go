@@ -90,8 +90,11 @@ func (pt ParameterizedType) substitute(mapSubst map[TypeVar]string) TypeScheme {
 	return newPt
 }
 
-func (pt ParameterizedType) ToTypeScheme() TypeScheme { return pt }
-func (pt ParameterizedType) Copy() TypeApp            { return MkTypeHint(pt.name) }
+func (pt ParameterizedType) Copy() TypeApp {
+	newPT := ParameterizedType{name: pt.name, parameters: make(ComparableList[TypeApp], len(pt.parameters))}
+	copy(newPT.parameters, pt.parameters)
+	return newPT
+}
 
 /* Makes a Parameterized Type from name and parameters */
 func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
@@ -105,6 +108,11 @@ func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
 				nextTypes[i] = types[k]
 				k++
 			}
+		}
+		if k != len(types) {
+			pMap.lock.Unlock()
+			fmt.Println("[ERROR] Parameterized type can not be instanciated with this number of arguments.")
+			return ParameterizedType{}
 		}
 		types = nextTypes
 	} else {

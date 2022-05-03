@@ -50,15 +50,6 @@ type Type interface {
 }
 
 /**
- * Adds input TypeScheme argument UID to the list.
- * Should be used on call to convert function.
- **/
-/*
-func typeSchemeToUint64(ls []uint64, in TypeScheme) []uint64 {
-	return append(ls, in.UID())
-}*/
-
-/**
  * Converts a TypeApp to a TypeScheme.
  * If the TypeApp is not a TypeScheme, it doesn't do anything.
  **/
@@ -67,14 +58,6 @@ func typeAppToTypeScheme(ls []TypeScheme, in TypeApp) []TypeScheme {
 		return append(ls, typeScheme)
 	}
 	return ls
-}
-
-/**
- * All TypeSchemes are TypeApp, so it's added to the list anyways.
- * Use as lambda in the convert function.
- **/
-func typeSchemeToTypeApp(ls []TypeApp, in TypeScheme) []TypeApp {
-	return append(ls, in.(TypeApp))
 }
 
 /**
@@ -99,21 +82,6 @@ func typeTToSize[T Type](ls []int, in T) []int {
  **/
 func copyTypeApp(ls []TypeApp, in TypeApp) []TypeApp {
 	return append(ls, in.Copy())
-}
-
-/**
- * Adds underlying types of the TypeScheme argument to the list.
- * Should be used on call to convert function.
- **/
-func typeSchemeToUnderlyingType(ls []TypeApp, in TypeScheme) []TypeApp {
-	switch type_ := in.(type) {
-	case TypeCross:
-		return append(ls, type_.GetAllUnderlyingTypes()...)
-	case TypeArrow:
-		return append(ls, type_.GetPrimitives()...)
-	default:
-		return append(ls, in.(TypeApp))
-	}
 }
 
 /**
