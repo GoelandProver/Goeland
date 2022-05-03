@@ -42,11 +42,6 @@ import (
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func is[T any, U any](obj U) bool {
-	_, isT := any(obj).(T)
-	return isT
-}
-
 func isEquality(pred btypes.Pred) bool {
 	return pred.GetID().Equals(btypes.Id_eq)
 }

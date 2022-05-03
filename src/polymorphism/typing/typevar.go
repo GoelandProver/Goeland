@@ -41,6 +41,10 @@
 
 package polymorphism
 
+import (
+	. "github.com/GoelandProver/Goeland/global"
+)
+
 const (
 	BAD_INDEX = -1
 )
@@ -59,22 +63,29 @@ type TypeVar struct {
 
 /* TypeScheme interface */
 // Non-exported methods.
-func (tv TypeVar) isScheme()        {}
-func (tv TypeVar) toList() []uint64 { return []uint64{tv.UID()} }
+func (tv TypeVar) isScheme() {}
 
 // Exported methods.
-func (tv TypeVar) UID() uint64                { return ^uint64(0) }
-func (tv TypeVar) Equals(oth TypeScheme) bool { return oth.UID() == tv.UID() }
-func (tv TypeVar) ToString() string           { return tv.name }
-func (tv TypeVar) Size() int                  { return 1 }
-func (tv TypeVar) GetPrimitives() []TypeApp   { return []TypeApp{tv} }
+func (tv TypeVar) ToString() string         { return tv.name }
+func (tv TypeVar) Size() int                { return 1 }
+func (tv TypeVar) GetPrimitives() []TypeApp { return []TypeApp{tv} }
+
+func (tv TypeVar) Equals(oth interface{}) bool {
+	if typeVar := To[TypeVar](oth); Is[TypeVar](oth) {
+		return typeVar.name == tv.name &&
+			typeVar.metaInfo.formulaIndex == tv.metaInfo.formulaIndex &&
+			typeVar.metaInfo.index == tv.metaInfo.index
+	}
+	return false
+}
 
 /* TypeApp interface */
-func (tv TypeVar) isTypeApp()                                          {}
+func (tv TypeVar) isTypeApp() {}
+
+// TODO: Make it a typevar to, it doesn't need to be a TypeScheme anymore, does it ?
 func (tv TypeVar) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return mapSubst[tv] }
 
-func (tv TypeVar) ToTypeScheme() TypeScheme { return nil }
-func (tv TypeVar) Copy() TypeApp            { return MkTypeVar(tv.name) }
+func (tv TypeVar) Copy() TypeApp { return MkTypeVar(tv.name) }
 
 /* TypeVar should be converted to Meta when becoming a term */
 func (tv *TypeVar) ShouldBeMeta(formula int) { tv.metaInfo.formulaIndex = formula }

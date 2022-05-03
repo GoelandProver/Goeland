@@ -101,13 +101,13 @@ func TestPrimitive(t *testing.T) {
 	for i, primitive := range primitiveTypes {
 		fst := p.MkTypeHint(primitive)
 		snd := p.MkTypeHint(primitive)
-		if fst.UID() != snd.UID() {
-			t.Errorf("Same primitive types (%s) have different UIDs : %v %v", primitive, fst.UID(), snd.UID())
+		if !fst.Equals(snd) {
+			t.Errorf("Same primitive types (%s) have different UIDs !", primitive)
 		}
 		for j, p2 := range primitiveTypes {
 			if i != j {
 				if fst.Equals(p.MkTypeHint(p2)) {
-					t.Fatalf("Different primitive types (%s, %s) have the same UID: %v", primitive, p2, fst.UID())
+					t.Fatalf("Different primitive types (%s, %s) have the same UID !", primitive, p2)
 				}
 			}
 		}

@@ -52,14 +52,13 @@ import (
 type TypeScheme interface {
 	/* Non-exported methods */
 	isScheme()
-	toList() []uint64
+	//toList() []uint64
 
 	/* Exported methods */
 	ToString() string
-	UID() uint64
-	Equals(oth TypeScheme) bool
 	Size() int
 	GetPrimitives() []TypeApp
+	Equals(oth interface{}) bool
 }
 
 /**
@@ -76,9 +75,9 @@ type TypeApp interface {
 
 	/* Exported methods */
 	ToString() string
-	ToTypeScheme() TypeScheme
 	Copy() TypeApp
 	Size() int
+	Equals(oth interface{}) bool
 }
 
 /**
@@ -108,6 +107,8 @@ func Init() {
 	// Default types
 	defaultType = MkTypeHint("i")
 	defaultProp = MkTypeHint("o")
+
+	// Eq/Neq types
 }
 
 /* Utils */

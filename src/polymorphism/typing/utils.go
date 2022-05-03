@@ -40,6 +40,10 @@
 
 package polymorphism
 
+import (
+	. "github.com/GoelandProver/Goeland/global"
+)
+
 type Type interface {
 	Size() int
 	ToString() string
@@ -49,16 +53,17 @@ type Type interface {
  * Adds input TypeScheme argument UID to the list.
  * Should be used on call to convert function.
  **/
+/*
 func typeSchemeToUint64(ls []uint64, in TypeScheme) []uint64 {
 	return append(ls, in.UID())
-}
+}*/
 
 /**
  * Converts a TypeApp to a TypeScheme.
  * If the TypeApp is not a TypeScheme, it doesn't do anything.
  **/
 func typeAppToTypeScheme(ls []TypeScheme, in TypeApp) []TypeScheme {
-	if typeScheme := in.ToTypeScheme(); typeScheme != nil {
+	if typeScheme := To[TypeScheme](in); Is[TypeScheme](in) {
 		return append(ls, typeScheme)
 	}
 	return ls

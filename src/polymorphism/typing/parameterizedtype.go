@@ -41,7 +41,11 @@
 
 package polymorphism
 
-import "fmt"
+import (
+	"fmt"
+
+	. "github.com/GoelandProver/Goeland/global"
+)
 
 /**
  * Parameterized Type (TypeApp + TypeScheme)
@@ -50,27 +54,27 @@ import "fmt"
  **/
 type ParameterizedType struct {
 	name       string
-	uid        uint64
-	parameters []TypeApp
+	parameters ComparableList[TypeApp]
 }
 
 /* TypeScheme interface */
 func (pt ParameterizedType) isScheme() {}
-func (pt ParameterizedType) toList() []uint64 {
-	return convert(convert(pt.parameters, typeAppToTypeScheme), typeSchemeToUint64)
-}
 
-func (pt ParameterizedType) ToString() string           { return pt.name }
-func (pt ParameterizedType) UID() uint64                { return pt.uid }
-func (pt ParameterizedType) Equals(oth TypeScheme) bool { return oth.UID() == pt.UID() }
-func (pt ParameterizedType) Size() int                  { return 1 }
-func (pt ParameterizedType) GetPrimitives() []TypeApp   { return []TypeApp{pt} }
-func (pt ParameterizedType) GetParameters() []TypeApp   { return pt.parameters }
+func (pt ParameterizedType) ToString() string { return pt.name }
+func (pt ParameterizedType) Equals(oth interface{}) bool {
+	if othPT := To[ParameterizedType](oth); Is[ParameterizedType](oth) {
+		return pt.name == othPT.name && pt.parameters.Equals(othPT.parameters)
+	}
+	return false
+}
+func (pt ParameterizedType) Size() int                { return 1 }
+func (pt ParameterizedType) GetPrimitives() []TypeApp { return []TypeApp{pt} }
+func (pt ParameterizedType) GetParameters() []TypeApp { return pt.parameters }
 
 /* TypeApp interface */
 func (pt ParameterizedType) isTypeApp() {}
 func (pt ParameterizedType) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
-	newPt := ParameterizedType{pt.name, 0, []TypeApp{}}
+	newPt := ParameterizedType{pt.name, ComparableList[TypeApp]{}}
 	for _, param := range pt.parameters {
 		newPt.parameters = append(newPt.parameters, param.substitute(mapSubst).(TypeApp))
 	}
@@ -101,7 +105,7 @@ func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
 	}
 	pMap.lock.Unlock()
 
-	parameterizedType := ParameterizedType{name, 0, types}
+	parameterizedType := ParameterizedType{name, types}
 
 	vars := []TypeVar{}
 	for _, type_ := range types {
@@ -109,9 +113,6 @@ func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
 			vars = append(vars, var_)
 		}
 	}
-	ls := parameterizedType.substitute(utilMapCreation(vars)).toList()
-	ls = append(ls, MkTypeHint(parameterizedType.name).UID())
-	parameterizedType.uid = encode(ls, ETypeArrow)
 
 	return parameterizedType
 }

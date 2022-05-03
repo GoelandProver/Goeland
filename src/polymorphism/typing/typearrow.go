@@ -42,7 +42,11 @@
 
 package polymorphism
 
-import "strings"
+import (
+	"strings"
+
+	. "github.com/GoelandProver/Goeland/global"
+)
 
 /**
  * Type consisting of two TypeSchemes : the in-arguments parameter(s) and the out parameter.
@@ -51,22 +55,13 @@ import "strings"
  * TypeCross has higher precedence than TypeArrow.
  **/
 type TypeArrow struct {
-	uid   uint64
 	left  TypeApp
-	right []TypeScheme
+	right ComparableList[TypeScheme]
 }
 
 /* TypeScheme interface */
 // Unexported methods.
 func (ta TypeArrow) isScheme() {}
-func (ta TypeArrow) toList() []uint64 {
-	list := []uint64{}
-	if ta.left.ToTypeScheme() != nil {
-		list = append(list, ta.left.ToTypeScheme().UID())
-	}
-	subtypesUIDs := convert(ta.right, typeSchemeToUint64)
-	return append(list, subtypesUIDs...)
-}
 
 // Exported methods.
 /**
@@ -78,8 +73,15 @@ func (ta TypeArrow) ToString() string {
 	return "(" + strings.Join(list, " > ") + ")"
 }
 
-func (ta TypeArrow) UID() uint64                { return ta.uid }
-func (ta TypeArrow) Equals(oth TypeScheme) bool { return oth.UID() == ta.UID() }
+func (ta TypeArrow) Equals(oth interface{}) bool {
+	if !Is[TypeArrow](oth) {
+		return false
+	}
+
+	othTA := To[TypeArrow](oth)
+	return ta.left.Equals(othTA.left) && ta.right.Equals(othTA.right)
+}
+
 func (ta TypeArrow) Size() int {
 	return ta.left.Size() + sum(convert(ta.right, typeTToSize[TypeScheme]))
 }
@@ -98,10 +100,12 @@ func (ta TypeArrow) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
 
 /* Makes a TypeArrow from two TypeSchemes */
 func MkTypeArrow(left TypeApp, typeSchemes ...TypeScheme) TypeArrow {
-	ta := TypeArrow{uid: 0, left: left, right: typeSchemes}
-	if len(ta.toList()) > 0 {
-		ta.uid = encode(ta.toList(), ETypeArrow)
+	if len(typeSchemes) < 1 {
+		PrintDebug("MKTA", "There should be at least one out type in a TypeArrow.")
+		return TypeArrow{}
 	}
+	ta := TypeArrow{left: left, right: make(ComparableList[TypeScheme], len(typeSchemes))}
+	copy(ta.right, typeSchemes)
 	return ta
 }
 

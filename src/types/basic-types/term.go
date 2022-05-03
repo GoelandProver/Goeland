@@ -102,8 +102,8 @@ func (f Fun) GetTypeVars() []typing.TypeApp { return f.typeVars }
 func (v Var) GetTypeApp() typing.TypeApp      { return v.typeHint }
 func (m Meta) GetTypeApp() typing.TypeApp     { return m.typeHint }
 func (f Fun) GetTypeApp() typing.TypeApp      { return nil }
-func (v Var) GetTypeHint() typing.TypeScheme  { return v.typeHint.ToTypeScheme() }
-func (m Meta) GetTypeHint() typing.TypeScheme { return m.typeHint.ToTypeScheme() }
+func (v Var) GetTypeHint() typing.TypeScheme  { return v.typeHint.(typing.TypeScheme) }
+func (m Meta) GetTypeHint() typing.TypeScheme { return m.typeHint.(typing.TypeScheme) }
 func (f Fun) GetTypeHint() typing.TypeScheme  { return f.typeHint }
 
 /* GetIndex */

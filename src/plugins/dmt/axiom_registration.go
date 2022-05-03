@@ -43,7 +43,7 @@ package dmt
 import (
 	"fmt"
 
-	"github.com/GoelandProver/Goeland/global"
+	. "github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/search"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -66,7 +66,7 @@ func RegisterAxiom(axiom btypes.Form) bool {
 
 func instanciateForalls(axiom btypes.Form) btypes.Form {
 	axiomFT := axiom.Copy()
-	for is[btypes.All](axiomFT) {
+	for Is[btypes.All](axiomFT) {
 		axiomFT, _ = search.Instantiate(axiomFT, -1)
 	}
 	return axiomFT
@@ -104,7 +104,7 @@ func printDebugRewriteRule(polarity bool, axiom, cons btypes.Form) {
 		} else {
 			ax, co = btypes.RefuteForm(axiom).ToString(), cons.ToString()
 		}
-		global.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co))
+		PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co))
 	}
 }
 
@@ -119,14 +119,11 @@ func canSkolemize(form btypes.Form) bool {
 // Rewrite rules from atomic predicate.
 
 func isRegisterableAsAtomic(axiom, instanciatedAxiom btypes.Form) bool {
-	return is[btypes.All](axiom) && btypes.ShowKindOfRule(instanciatedAxiom) == btypes.Atomic
+	return Is[btypes.All](axiom) && btypes.ShowKindOfRule(instanciatedAxiom) == btypes.Atomic
 }
 
 func makeRewriteRuleFromAtomic(atomic btypes.Form) bool {
-	if isEqualityPred(atomic) {
-		return false
-	}
-	if is[btypes.Pred](atomic) {
+	if Is[btypes.Pred](atomic) {
 		return makeRewriteRuleFromPred(atomic.(btypes.Pred))
 	}
 	return makeRewriteRuleFromNegatedAtom(atomic.(btypes.Not))
@@ -154,7 +151,7 @@ func makeRewriteRuleFromNegatedAtom(atom btypes.Not) bool {
 // Rewrite rules from equivalence formula.
 
 func isRegisterableAsEqu(instanciatedAxiom btypes.Form) bool {
-	return is[btypes.Equ](instanciatedAxiom)
+	return Is[btypes.Equ](instanciatedAxiom)
 }
 
 func makeRewriteRuleFromEquivalence(equForm btypes.Equ) bool {
@@ -187,8 +184,8 @@ func neitherAreAtomics(f1, f2 btypes.Form) bool {
 }
 
 func isEqualityPred(f btypes.Form) bool {
-	return (is[btypes.Pred](f) && isEquality(f.(btypes.Pred))) ||
-		(is[btypes.Not](f) && isEquality(predFromNegatedAtom(f)))
+	return (Is[btypes.Pred](f) && isEquality(f.(btypes.Pred))) ||
+		(Is[btypes.Not](f) && isEquality(predFromNegatedAtom(f)))
 }
 
 func addEquRewriteRuleIfNotEquality(f1, f2 btypes.Form) bool {
@@ -200,7 +197,7 @@ func addEquRewriteRuleIfNotEquality(f1, f2 btypes.Form) bool {
 }
 
 func addEquivalenceRewriteRule(axiom, cons btypes.Form) {
-	if is[btypes.Not](axiom) {
+	if Is[btypes.Not](axiom) {
 		addPosRewriteRule(axiom, refute(cons))
 		addNegRewriteRule(axiom, cons)
 	} else {
@@ -216,7 +213,7 @@ func addEquivalenceRewriteRule(axiom, cons btypes.Form) {
 // Rewrite rules from implicated formula.
 
 func isRegisterableAsImplication(instanciatedAxiom btypes.Form) bool {
-	return activatePolarized && is[btypes.Imp](instanciatedAxiom)
+	return activatePolarized && Is[btypes.Imp](instanciatedAxiom)
 }
 
 func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
@@ -229,7 +226,7 @@ func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
 	}
 
 	if isAtomic(phi1) {
-		if is[btypes.Pred](phi1) {
+		if Is[btypes.Pred](phi1) {
 			addPosRewriteRule(phi1, phi2)
 		} else {
 			addNegRewriteRule(predFromNegatedAtom(phi1), phi2)
@@ -239,7 +236,7 @@ func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
 	// This line currently blocks the generation of a rewrite rule if there is
 	// an equality atom on the right-side of the formula.
 	if isAtomic(phi2) && !isEqualityPred(phi2) {
-		if is[btypes.Pred](phi2) {
+		if Is[btypes.Pred](phi2) {
 			addNegRewriteRule(phi2, refute(phi1))
 		} else {
 			addPosRewriteRule(predFromNegatedAtom(phi2), refute(phi1))

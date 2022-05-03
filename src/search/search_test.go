@@ -73,7 +73,7 @@ func TestSimpleExistSkolemization(t *testing.T) {
 				if len(fun.GetArgs()) != 0 {
 					t.Errorf("Wrong number of skolemized function arguments.")
 				}
-				if !fun.GetTypeHint().Equals(polymorphism.DefaultType().ToTypeScheme()) {
+				if !fun.GetTypeHint().Equals(polymorphism.DefaultType()) {
 					t.Errorf("Skolemized function is wrongely typed")
 				}
 			} else {
@@ -101,7 +101,7 @@ func TestSimpleNotForallSkolemization(t *testing.T) {
 					if len(fun.GetArgs()) != 0 {
 						t.Errorf("Wrong number of skolemized function arguments.")
 					}
-					if !fun.GetTypeHint().Equals(polymorphism.DefaultType().ToTypeScheme()) {
+					if !fun.GetTypeHint().Equals(polymorphism.DefaultType()) {
 						t.Errorf("Skolemized function is wrongely typed")
 					}
 				} else {
@@ -134,7 +134,7 @@ func TestSimpleForallInstantiation(t *testing.T) {
 					if !meta.Equals(metas[0]) {
 						t.Errorf("MetaList and generated meta is not the same on instantiation.")
 					}
-					if !meta.GetTypeHint().Equals(polymorphism.DefaultType().ToTypeScheme()) {
+					if !meta.GetTypeHint().Equals(polymorphism.DefaultType()) {
 						t.Errorf("Instantiated meta is wrongely typed")
 					}
 				} else {
@@ -166,7 +166,7 @@ func TestSimpleNotExistsInstantiation(t *testing.T) {
 						if !meta.Equals(metas[0]) {
 							t.Errorf("MetaList and generated meta is not the same on instantiation.")
 						}
-						if !meta.GetTypeHint().Equals(polymorphism.DefaultType().ToTypeScheme()) {
+						if !meta.GetTypeHint().Equals(polymorphism.DefaultType()) {
 							t.Errorf("Instantiated meta is wrongely typed")
 						}
 					} else {

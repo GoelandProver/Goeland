@@ -43,7 +43,11 @@
 
 package polymorphism
 
-import "strings"
+import (
+	"strings"
+
+	. "github.com/GoelandProver/Goeland/global"
+)
 
 /**
  * A conjonction of types.
@@ -56,25 +60,25 @@ import "strings"
  * not(int) v not(int) v int is equivalent to not(int ^ int) v int = int * int > int).
  **/
 type TypeCross struct {
-	uid   uint64
-	types []TypeApp
+	types ComparableList[TypeApp]
 }
 
 /* TypeScheme interface */
 // Non-exported methods.
 func (tc TypeCross) isScheme() {}
-func (tc TypeCross) toList() []uint64 {
-	return convert(convert(tc.types, typeAppToTypeScheme), typeSchemeToUint64)
-}
 
 // Exported methods.
 func (tc TypeCross) ToString() string {
 	return "(" + strings.Join(convert(tc.types, typeTToString[TypeApp]), " * ") + ")"
 }
-func (tc TypeCross) UID() uint64                { return tc.uid }
-func (tc TypeCross) Equals(oth TypeScheme) bool { return oth.UID() == tc.UID() }
-func (tc TypeCross) Size() int                  { return sum(convert(tc.types, typeTToSize[TypeApp])) }
-func (tc TypeCross) GetPrimitives() []TypeApp   { return tc.GetAllUnderlyingTypes() }
+func (tc TypeCross) Size() int { return sum(convert(tc.types, typeTToSize[TypeApp])) }
+
+// GetAllUnderlyingTypes ? Or just tc.types ? I'm thinking the 2nd is better cause the first looses associativity ? Is it fine ?
+func (tc TypeCross) GetPrimitives() []TypeApp { return tc.GetAllUnderlyingTypes() }
+
+func (tc TypeCross) Equals(oth interface{}) bool {
+	return Is[TypeCross](oth) && tc.types.Equals(To[TypeCross](oth).types)
+}
 
 /* TypeApp interface */
 // Non-exported methods.
@@ -104,9 +108,11 @@ func (tc TypeCross) GetAllUnderlyingTypes() []TypeApp {
  * Makes a TypeCross from any number of TypeApp.
  **/
 func MkTypeCross(typeSchemes ...TypeApp) TypeCross {
-	tc := TypeCross{uid: 0, types: typeSchemes}
-	if len(tc.toList()) > 0 {
-		tc.uid = encode(tc.toList(), ETypeCross)
+	if len(typeSchemes) < 2 {
+		PrintDebug("MKTC", "There should be at least two underlying types in a TypeCross.")
+		return TypeCross{}
 	}
+	tc := TypeCross{types: make([]TypeApp, len(typeSchemes))}
+	copy(tc.types, typeSchemes)
 	return tc
 }

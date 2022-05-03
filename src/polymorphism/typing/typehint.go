@@ -41,7 +41,11 @@
 
 package polymorphism
 
-import "sync"
+import (
+	"sync"
+
+	. "github.com/GoelandProver/Goeland/global"
+)
 
 /**
  * Primitive type composed of an unique identifier, used to identify it from
@@ -49,21 +53,21 @@ import "sync"
  **/
 type TypeHint struct {
 	uid  uint64 /* Real ID */
-	euid uint64 /* Encoded ID */
 	name string /* Name */
 }
 
 /* TypeScheme interface */
 // Non-exported methods
-func (th TypeHint) isScheme()        {}
-func (th TypeHint) toList() []uint64 { return []uint64{th.uid} }
+func (th TypeHint) isScheme() {}
 
 // Exported methods
-func (th TypeHint) ToString() string           { return th.name }
-func (th TypeHint) UID() uint64                { return th.euid }
-func (th TypeHint) Equals(oth TypeScheme) bool { return oth.UID() == th.UID() }
-func (th TypeHint) Size() int                  { return 1 }
-func (th TypeHint) GetPrimitives() []TypeApp   { return []TypeApp{th} }
+func (th TypeHint) ToString() string         { return th.name }
+func (th TypeHint) Size() int                { return 1 }
+func (th TypeHint) GetPrimitives() []TypeApp { return []TypeApp{th} }
+
+func (th TypeHint) Equals(oth interface{}) bool {
+	return Is[TypeHint](oth) && To[TypeHint](oth).uid == th.uid
+}
 
 /* TypeApp interface */
 // Non-exported methods
@@ -105,7 +109,6 @@ func MkTypeHint(typeName string) TypeHint {
 	tCounter.lock.Lock()
 	tHint := TypeHint{
 		uid:  tCounter.count,
-		euid: encode([]uint64{tCounter.count}, ETypeHint),
 		name: typeName,
 	}
 	tCounter.count += 1

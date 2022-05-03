@@ -39,6 +39,8 @@ package polymorphism
 import (
 	"fmt"
 	"sync"
+
+	. "github.com/GoelandProver/Goeland/global"
 )
 
 /**
@@ -232,10 +234,10 @@ func getSchemeFromArgs(name string, inArgs TypeApp) (TypeScheme, bool) {
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
 			// Polymorphic schemes don't have any of them.
-			if fun.in == nil || inArgs.ToTypeScheme() == nil {
+			if fun.in == nil || !Is[TypeScheme](inArgs) {
 				continue
 			}
-			if fun.in.ToTypeScheme().Equals(inArgs.ToTypeScheme()) {
+			if fun.in.Equals(inArgs) {
 				typeSchemesMap.lock.Unlock()
 				return fun.App, true
 			}

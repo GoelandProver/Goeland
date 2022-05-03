@@ -44,6 +44,8 @@ package polymorphism
 import (
 	"fmt"
 	"strings"
+
+	. "github.com/GoelandProver/Goeland/global"
 )
 
 /**
@@ -51,19 +53,23 @@ import (
  * It has a list of type vars and an associated scheme.
  **/
 type QuantifiedType struct {
-	vars   []TypeVar
+	vars   ComparableList[TypeVar]
 	scheme TypeScheme
 }
 
 /* TypeScheme interface */
-func (qt QuantifiedType) isScheme()        {}
-func (qt QuantifiedType) toList() []uint64 { return qt.scheme.toList() }
+func (qt QuantifiedType) isScheme() {}
 
-func (qt QuantifiedType) UID() uint64                { return qt.scheme.UID() }
-func (qt QuantifiedType) Equals(oth TypeScheme) bool { return oth.UID() == qt.scheme.UID() }
-func (qt QuantifiedType) QuantifiedVarsLen() int     { return len(qt.vars) }
-func (qt QuantifiedType) QuantifiedVars() []TypeVar  { return qt.vars }
-func (qt QuantifiedType) Size() int                  { return qt.scheme.Size() }
+func (qt QuantifiedType) Equals(oth interface{}) bool {
+	if quantifiedType := To[QuantifiedType](oth); !Is[QuantifiedType](oth) {
+		return qt.vars.Equals(quantifiedType.vars) && qt.scheme.Equals(quantifiedType.scheme)
+	}
+	return false
+}
+
+func (qt QuantifiedType) QuantifiedVarsLen() int    { return len(qt.vars) }
+func (qt QuantifiedType) QuantifiedVars() []TypeVar { return qt.vars }
+func (qt QuantifiedType) Size() int                 { return qt.scheme.Size() }
 
 func (qt QuantifiedType) ToString() string {
 	return "Π " + strings.Join(convert(qt.vars, typeTToString[TypeVar]), ", ") + ": Type, " + qt.scheme.ToString()

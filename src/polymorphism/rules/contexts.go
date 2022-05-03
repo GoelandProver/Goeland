@@ -168,7 +168,7 @@ func (gc GlobalContext) getSimpleTypeScheme(name string, termsType typing.TypeAp
 
 	if typeSchemeList, found := gc.simpleSchemes[name]; found {
 		for _, typeScheme := range typeSchemeList {
-			if typing.GetInputType(typeScheme).ToTypeScheme().Equals(termsType.ToTypeScheme()) {
+			if typing.GetInputType(typeScheme).Equals(termsType) {
 				return typeScheme, nil
 			}
 		}

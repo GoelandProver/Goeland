@@ -30,60 +30,40 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*******************/
-/*  encode_uid.go  */
-/*******************/
-
-package polymorphism
+/************/
+/* utils.go */
+/************/
 
 /**
- * This file declares utilities functions to calculate the uid of a type scheme.
- * Unique identifiers are needed to quickly verify if a typescheme is equal to another.
- **/
+* This file contains some useful functions.
+**/
 
-const (
-	ETypeHint = iota
-	ETypeCross = iota
-	ETypeArrow = iota
-)
+package global
 
-/* Encodes the type wanted. On error, returns 0. */
-func encode(uids []uint64, typeEncoded int) uint64 {
-	tmp := append(uids[:0:0], uids...)
-	switch (typeEncoded) {
-	case ETypeHint:
-		return encodePair(0, tmp[0])
-	case ETypeCross:
-		return encodeInt(int64(encodeList(tmp)))
-	case ETypeArrow :
-		return encodeInt(-int64(encodeList(tmp)))
-	}
-	return 0
+type Comparable interface {
+	Equals(interface{}) bool
 }
 
-/* Encodes a list of identifiers to a new unique identifier. */
-func encodeList(uids []uint64) uint64 {
-	res := uids[0]
-	for i := 1; i < len(uids); i++ {
-		res = encodePair(res, uids[i])
+type ComparableList[T Comparable] []T
+
+func (cpbl ComparableList[T]) Equals(oth ComparableList[T]) bool {
+	if len(cpbl) != len(oth) {
+		return false
 	}
-	return res
+
+	for i := range cpbl {
+		if !cpbl[i].Equals(oth[i]) {
+			return false
+		}
+	}
+	return true
 }
 
-/* Encodes a pair following Szudzik's function. */
-func encodePair(x uint64, y uint64) uint64 {
-	if y > x {
-		return y*y + x 
-	} else {
-		return x*x + x + y
-	}
+func Is[T any, U any](obj U) bool {
+	_, isT := any(obj).(T)
+	return isT
 }
 
-/* Encodes an integer to a natural number. */
-func encodeInt(x int64) uint64 {
-	if x >= 0 {
-		return 2*uint64(x)
-	} else {
-		return 2*uint64(-x) - 1
-	}
+func To[T any, U any](obj U) T {
+	return any(obj).(T)
 }

@@ -39,6 +39,7 @@ package polyrules
 import (
 	"fmt"
 
+	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -78,7 +79,7 @@ func applyGlobalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Reco
 	root.appliedRule = "Var"
 
 	// Find current variable in the local context
-	if found := state.globalContext.isTypeInContext(state.consequence.a.ToTypeScheme()); !found {
+	if found := state.globalContext.isTypeInContext(To[typing.TypeScheme](state.consequence.a)); !found {
 		return Reconstruct{
 			result: false,
 			err:    fmt.Errorf("TypeVar %s not found in the global context", state.consequence.a.ToString()),
@@ -143,7 +144,7 @@ func applySymRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	}
 
 	children := []Sequent{}
-	if out.ToTypeScheme() != nil && !out.ToTypeScheme().Equals(typing.DefaultProp().ToTypeScheme()) {
+	if Is[typing.TypeScheme](out) && !out.Equals(typing.DefaultProp()) {
 		children = append(children, Sequent{
 			globalContext: state.globalContext,
 			localContext:  newLocalContext,
