@@ -42,6 +42,10 @@
 
 package polymorphism
 
+import (
+	. "github.com/GoelandProver/Goeland/global"
+)
+
 var tInt TypeHint
 var tRat TypeHint
 var tReal TypeHint
@@ -125,7 +129,7 @@ func recordUnaryProp(name string) {
 	SaveTypeScheme(name, tReal, defaultProp)
 }
 
-func recordConversion(name string, out TypeScheme) {
+func recordConversion(name string, out TypeApp) {
 	SaveTypeScheme(name, tInt, out)
 	SaveTypeScheme(name, tRat, out)
 	SaveTypeScheme(name, tReal, out)
@@ -139,9 +143,9 @@ func DefaultProp() TypeApp               { return defaultProp }
 func DefaultFunType(len int) TypeScheme  { return defaultAppType(len, defaultType) }
 func DefaultPropType(len int) TypeScheme { return defaultAppType(len, defaultProp) }
 
-func defaultAppType(len int, out TypeScheme) TypeScheme {
+func defaultAppType(len int, out TypeApp) TypeScheme {
 	if len == 0 {
-		return out
+		return To[TypeScheme](out)
 	} else if len == 1 {
 		return MkTypeArrow(defaultType, out)
 	} else {

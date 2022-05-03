@@ -56,7 +56,7 @@ import (
  **/
 type TypeArrow struct {
 	left  TypeApp
-	right ComparableList[TypeScheme]
+	right ComparableList[TypeApp]
 }
 
 /* TypeScheme interface */
@@ -69,7 +69,7 @@ func (ta TypeArrow) isScheme() {}
  **/
 func (ta TypeArrow) ToString() string {
 	list := []string{ta.left.ToString()}
-	list = append(list, convert(ta.right, typeTToString[TypeScheme])...)
+	list = append(list, convert(ta.right, typeTToString[TypeApp])...)
 	return "(" + strings.Join(list, " > ") + ")"
 }
 
@@ -79,33 +79,32 @@ func (ta TypeArrow) Equals(oth interface{}) bool {
 	}
 
 	othTA := To[TypeArrow](oth)
-	return ta.left.Equals(othTA.left) && ta.right.Equals(othTA.right)
+	return ((ta.left == nil && othTA.left == nil) || ta.left.Equals(othTA.left)) && ta.right.Equals(othTA.right)
 }
 
 func (ta TypeArrow) Size() int {
-	return ta.left.Size() + sum(convert(ta.right, typeTToSize[TypeScheme]))
+	return ta.left.Size() + sum(convert(ta.right, typeTToSize[TypeApp]))
 }
 
 func (ta TypeArrow) GetPrimitives() []TypeApp {
 	typeApp := []TypeApp{}
 	typeApp = typeAppToUnderlyingType(typeApp, ta.left)
-	return append(typeApp, convert(ta.right, typeSchemeToUnderlyingType)...)
+	return append(typeApp, convert(ta.right, typeAppToUnderlyingType)...)
 }
 
 /* TypeArrow methods */
 func (ta TypeArrow) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
-	ls := substTypeAppList(mapSubst, convert(ta.right, typeSchemeToTypeApp))
-	return MkTypeArrow(ta.left.substitute(mapSubst).(TypeApp), convert(ls, typeAppToTypeScheme)...)
+	return MkTypeArrow(ta.left.substitute(mapSubst).(TypeApp), substTypeAppList(mapSubst, ta.right)...)
 }
 
 /* Makes a TypeArrow from two TypeSchemes */
-func MkTypeArrow(left TypeApp, typeSchemes ...TypeScheme) TypeArrow {
-	if len(typeSchemes) < 1 {
+func MkTypeArrow(left TypeApp, typeApps ...TypeApp) TypeArrow {
+	if len(typeApps) < 1 {
 		PrintDebug("MKTA", "There should be at least one out type in a TypeArrow.")
 		return TypeArrow{}
 	}
-	ta := TypeArrow{left: left, right: make(ComparableList[TypeScheme], len(typeSchemes))}
-	copy(ta.right, typeSchemes)
+	ta := TypeArrow{left: left, right: make(ComparableList[TypeApp], len(typeApps))}
+	copy(ta.right, typeApps)
 	return ta
 }
 
@@ -114,7 +113,7 @@ func GetOutType(typeScheme TypeScheme) TypeApp {
 	switch t := typeScheme.(type) {
 	case TypeArrow:
 		// Returns the out type of the last arrow.
-		return GetOutType(t.right[len(t.right)-1])
+		return GetOutType(To[TypeScheme](t.right[len(t.right)-1]))
 	case QuantifiedType:
 		return GetOutType(t.scheme)
 	// typeScheme may be a TypeHint if it comes from a constant.
@@ -127,9 +126,12 @@ func GetOutType(typeScheme TypeScheme) TypeApp {
 }
 
 /* Gets the input type of an arrow type scheme */
-func GetInputType(typeScheme TypeScheme) TypeApp {
-	if typeArrow, isTypeArrow := typeScheme.(TypeArrow); isTypeArrow {
-		return typeArrow.left
+func GetInputType(typeScheme TypeScheme) ComparableList[TypeApp] {
+	if !Is[TypeArrow](typeScheme) {
+		return nil
 	}
-	return nil
+	typeArrow := To[TypeArrow](typeScheme)
+	list := ComparableList[TypeApp]{typeArrow.left}
+	list = append(list, typeArrow.right[:len(typeArrow.right)-1]...)
+	return list
 }

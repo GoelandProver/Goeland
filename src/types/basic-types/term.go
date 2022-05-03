@@ -181,15 +181,8 @@ func (f Fun) IsFun() bool  { return true }
 /* Equals */
 func (v Var) Equals(t Term) bool {
 	oth, isVar := t.(Var)
-	return isVar &&
-		(oth.GetIndex() == v.GetIndex()) &&
-		(oth.GetName() == v.GetName()) &&
-		((v.typeHint.ToTypeScheme() == nil && // It's a typeVar
-			oth.typeHint.ToTypeScheme() == nil && // It's also a typeVar
-			v.typeHint.(typing.TypeVar).Equals(oth.typeHint.(typing.TypeVar))) || // typeVar equality
-			(v.typeHint.ToTypeScheme() != nil && // It's not a typeVar
-				oth.typeHint.ToTypeScheme() != nil && // It's also not a typeVar
-				v.typeHint.ToTypeScheme().Equals(oth.typeHint.ToTypeScheme())))
+	return isVar && (oth.GetIndex() == v.GetIndex()) &&
+		(oth.GetName() == v.GetName()) && (v.typeHint.Equals(oth.typeHint))
 }
 
 func (m Meta) Equals(t Term) bool {
@@ -198,7 +191,7 @@ func (m Meta) Equals(t Term) bool {
 		(oth.GetIndex() == m.GetIndex()) &&
 		(oth.GetName() == m.GetName()) &&
 		(oth.GetFormula() == m.GetFormula()) &&
-		(m.typeHint.ToTypeScheme().Equals(oth.typeHint.ToTypeScheme()))
+		(m.typeHint.Equals(oth.typeHint))
 }
 
 func (i Id) Equals(t Term) bool {

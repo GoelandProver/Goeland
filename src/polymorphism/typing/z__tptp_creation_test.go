@@ -78,7 +78,7 @@ func TestUnaryProp(t *testing.T) {
 func TestTPTPConversionFunctions(t *testing.T) {
 	ls := []struct {
 		name string
-		out  p.TypeScheme
+		out  p.TypeApp
 	}{
 		{"to_int", tInt},
 		{"to_rat", tRat},
@@ -116,15 +116,15 @@ func TestPrimitive(t *testing.T) {
 
 func testBinaryPreds(name string) error {
 	out := p.GetType(name, p.MkTypeCross(tInt, tInt))
-	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tInt, tInt), p.DefaultPropType(0))) {
+	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tInt, tInt), p.DefaultProp())) {
 		return fmt.Errorf("Error: %s: int * int > int not defined when it should be.", name)
 	}
 	out = p.GetType(name, p.MkTypeCross(tRat, tRat))
-	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tRat, tRat), p.DefaultPropType(0))) {
+	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tRat, tRat), p.DefaultProp())) {
 		return fmt.Errorf("Error: %s: rat * rat > rat not defined when it should be.", name)
 	}
 	out = p.GetType(name, p.MkTypeCross(tReal, tReal))
-	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tReal, tReal), p.DefaultPropType(0))) {
+	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tReal, tReal), p.DefaultProp())) {
 		return fmt.Errorf("Error: %s: real * real > real not defined when it should be.", name)
 	}
 
@@ -167,22 +167,22 @@ func testUnaryTypes(name string) error {
 
 func testUnaryProp(name string) error {
 	out := p.GetType(name, tInt)
-	if !out.Equals(p.MkTypeArrow(tInt, p.DefaultPropType(0))) {
+	if !out.Equals(p.MkTypeArrow(tInt, p.DefaultProp())) {
 		return fmt.Errorf("Error: %s: int > o not defined when it should be.", name)
 	}
 	out = p.GetType(name, tRat)
-	if !out.Equals(p.MkTypeArrow(tRat, p.DefaultPropType(0))) {
+	if !out.Equals(p.MkTypeArrow(tRat, p.DefaultProp())) {
 		return fmt.Errorf("Error: %s: rat > o not defined when it should be.", name)
 	}
 	out = p.GetType(name, tReal)
-	if !out.Equals(p.MkTypeArrow(tReal, p.DefaultPropType(0))) {
+	if !out.Equals(p.MkTypeArrow(tReal, p.DefaultProp())) {
 		return fmt.Errorf("Error: %s: real > o not defined when it should be.", name)
 	}
 
 	return nil
 }
 
-func testConversion(name string, outType p.TypeScheme) error {
+func testConversion(name string, outType p.TypeApp) error {
 	out := p.GetType(name, tInt)
 	if !out.Equals(p.MkTypeArrow(tInt, outType)) {
 		return fmt.Errorf("Error: %s: int > int not defined when it should be.", name)

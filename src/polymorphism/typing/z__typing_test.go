@@ -63,79 +63,6 @@ func TestMain(m *testing.M) {
 
 /*
 
-func TestTypeCrosses(t *testing.T) {
-	tInt := p.MkTypeHint("int")
-	tRat := p.MkTypeHint("rat")
-
-	testTable := []struct {
-		c p.TypeCross
-		e string
-	}{
-		{p.MkTypeCross(tInt, tInt), "(int * int)"},
-		{p.MkTypeCross(tInt, tRat, tInt), "(int * rat * int)"},
-		{p.MkTypeCross(tInt, p.MkTypeCross(tInt, tRat)), "(int * (int * rat))"},
-	}
-
-	for i, test := range testTable {
-		if test.c.ToString() != test.e {
-			t.Errorf("Error in parsing to string. Expected: %s, actual: %s", test.e, test.c.ToString())
-		}
-		for j, test2 := range testTable {
-			if i != j {
-				if test.c.Equals(test2.c) {
-					t.Fatalf("Error: two different types have the same UID: %v (%s, %s)", test.c.UID(), test.c.ToString(), test2.c.ToString())
-				}
-			}
-		}
-	}
-}
-
-func TestTypeArrows(t *testing.T) {
-	tInt := p.MkTypeHint("int")
-	tRat := p.MkTypeHint("rat")
-
-	testTable := []struct {
-		c p.TypeArrow
-		e string
-	}{
-		{p.MkTypeArrow(tInt, tInt), "(int > int)"},
-		{p.MkTypeArrow(tInt, tRat), "(int > rat)"},
-		{p.MkTypeArrow(tRat, tInt), "(rat > int)"},
-	}
-
-	for i, test := range testTable {
-		if test.c.ToString() != test.e {
-			t.Errorf("Error in parsing to string. Expected: %s, actual: %s", test.e, test.c.ToString())
-		}
-		for j, test2 := range testTable {
-			if i != j {
-				if test.c.Equals(test2.c) {
-					t.Fatalf("Error: two different types have the same UID = %v (%s, %s)", test.c.UID(), test.c.ToString(), test2.c.ToString())
-				}
-			}
-		}
-	}
-}
-
-func TestComposition(t *testing.T) {
-	tInt := p.MkTypeHint("int")
-	tRat := p.MkTypeHint("rat")
-
-	testTable := []struct {
-		fst p.TypeScheme
-		snd p.TypeScheme
-	}{
-		{p.MkTypeArrow(tInt, tInt), p.MkTypeCross(tInt, tInt)},
-		{p.MkTypeArrow(tRat, tRat), p.MkTypeCross(tRat, tRat)},
-	}
-
-	for _, test := range testTable {
-		if test.fst.Equals(test.snd) {
-			t.Errorf("Error: two different types schemes have the same UID: %s %s", test.fst.ToString(), test.snd.ToString())
-		}
-	}
-}
-
 /* Testing p.TypeSchemes
 
 func TestPolymorphicFunctions(t *testing.T) {
@@ -182,20 +109,6 @@ func TestDefaultPropType(t *testing.T) {
 	expected := p.MkTypeArrow(p.MkTypeCross(p.DefaultType(), p.DefaultType(), p.DefaultType(), p.DefaultType()), p.DefaultPropType(0))
 	if !p.DefaultPropType(4).Equals(expected) {
 		t.Errorf("Wrong fun default type. Expected: %s, actual: %s", expected.ToString(), p.DefaultPropType(4).ToString())
-	}
-}
-
-/* Trivial yet important: strings
-
-func TestCrossToString(t *testing.T) {
-	if p.MkTypeCross(tInt, tInt).ToString() != fmt.Sprintf("(%s * %s)", tInt.ToString(), tInt.ToString()) {
-		t.Errorf("TypeCross ToString failed. Expected: (%s * %s), actual: %s", tInt.ToString(), tInt.ToString(), p.MkTypeCross(tInt, tInt).ToString())
-	}
-}
-
-func TestArrowToString(t *testing.T) {
-	if p.MkTypeArrow(tInt, tInt).ToString() != fmt.Sprintf("(%s > %s)", tInt.ToString(), tInt.ToString()) {
-		t.Errorf("TypeCross ToString failed. Expected: (%s > %s), actual: %s", tInt.ToString(), tInt.ToString(), p.MkTypeArrow(tInt, tInt).ToString())
 	}
 }
 

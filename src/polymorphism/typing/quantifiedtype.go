@@ -61,10 +61,11 @@ type QuantifiedType struct {
 func (qt QuantifiedType) isScheme() {}
 
 func (qt QuantifiedType) Equals(oth interface{}) bool {
-	if quantifiedType := To[QuantifiedType](oth); !Is[QuantifiedType](oth) {
-		return qt.vars.Equals(quantifiedType.vars) && qt.scheme.Equals(quantifiedType.scheme)
+	if !Is[QuantifiedType](oth) {
+		return false
 	}
-	return false
+	othQT := To[QuantifiedType](oth)
+	return qt.vars.Equals(othQT.vars) && qt.scheme.Equals(othQT.scheme)
 }
 
 func (qt QuantifiedType) QuantifiedVarsLen() int    { return len(qt.vars) }

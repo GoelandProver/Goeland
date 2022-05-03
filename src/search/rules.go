@@ -338,7 +338,7 @@ func realSkolemize(f basictypes.Form, vars []basictypes.Var, terms []basictypes.
 		if t == nil {
 			scheme = v.GetTypeHint()
 		} else {
-			scheme = typing.MkTypeArrow(t, v.GetTypeHint())
+			scheme = typing.MkTypeArrow(t, global.To[typing.TypeApp](v.GetTypeHint()))
 		}
 
 		// A Skolem symbol has no quantified variables.

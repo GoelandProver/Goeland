@@ -62,10 +62,11 @@ func (pt ParameterizedType) isScheme() {}
 
 func (pt ParameterizedType) ToString() string { return pt.name }
 func (pt ParameterizedType) Equals(oth interface{}) bool {
-	if othPT := To[ParameterizedType](oth); Is[ParameterizedType](oth) {
-		return pt.name == othPT.name && pt.parameters.Equals(othPT.parameters)
+	if !Is[ParameterizedType](oth) {
+		return false
 	}
-	return false
+	othPT := To[ParameterizedType](oth)
+	return pt.name == othPT.name && pt.parameters.Equals(othPT.parameters)
 }
 func (pt ParameterizedType) Size() int                { return 1 }
 func (pt ParameterizedType) GetPrimitives() []TypeApp { return []TypeApp{pt} }

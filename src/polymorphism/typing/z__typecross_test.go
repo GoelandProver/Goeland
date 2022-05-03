@@ -163,9 +163,38 @@ func TestTypeCrossNotEquals(t *testing.T) {
 		for j, test2 := range testTable {
 			t.Run(fmt.Sprintf("%v-%v", test.type_.ToString(), test2.type_.ToString()), func(t *testing.T) {
 				if !primitiveContains(test.expectedEq, j) && test.type_.Equals(test2.type_) {
-					t.Fatalf("Expected different UID between %s and %s", test.type_.ToString(), test2.type_.ToString())
+					t.Fatalf("Expected %s != %s, but it was equal", test.type_.ToString(), test2.type_.ToString())
 				}
 			})
 		}
+	}
+}
+
+func TestTypeCrossNotEquals2(t *testing.T) {
+	testTable := getTestTypeCrossTable()
+	testTable2 := []TypeHint{tInt, tRat, tReal}
+
+	for _, test := range testTable {
+		for _, test2 := range testTable2 {
+			t.Run(fmt.Sprintf("%v-%v", test.type_.ToString(), test2.ToString()), func(t *testing.T) {
+				if test.type_.Equals(test2) {
+					t.Fatalf("Expected %s != %s, but it was equal", test.type_.ToString(), test2.ToString())
+				}
+			})
+		}
+	}
+}
+
+func TestFailedCreation(t *testing.T) {
+	a := MkTypeCross()
+	b := MkTypeCross(tInt)
+	emptyTypeCross := TypeCross{}
+
+	if !emptyTypeCross.Equals(a) {
+		t.Fatalf("A TypeCross was created with less than 2 primitives: %s", a.ToString())
+	}
+
+	if !emptyTypeCross.Equals(b) {
+		t.Fatalf("A TypeCross was created with less than 2 primitives: %s", b.ToString())
 	}
 }

@@ -75,8 +75,7 @@ func (th TypeHint) isTypeApp()                                          {}
 func (th TypeHint) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return th }
 
 // Exported methods
-func (th TypeHint) ToTypeScheme() TypeScheme { return th }
-func (th TypeHint) Copy() TypeApp            { return MkTypeHint(th.name) }
+func (th TypeHint) Copy() TypeApp { return MkTypeHint(th.name) }
 
 /* Current unused unique identifier. Comes with a lock. */
 var tCounter struct {

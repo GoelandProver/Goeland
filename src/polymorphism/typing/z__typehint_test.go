@@ -137,3 +137,18 @@ func TestTypeHintNotEquals(t *testing.T) {
 		}
 	}
 }
+
+func TestTypeHintNotEquals2(t *testing.T) {
+	testTable := getTestTypeHintTable()
+	testTable2 := getTestTypeVarTable()
+
+	for _, test := range testTable {
+		for _, test2 := range testTable2 {
+			t.Run(fmt.Sprintf("%v/%v", test.type_.ToString(), test2.type_.ToString()), func(t *testing.T) {
+				if test.type_.Equals(test2.type_) {
+					t.Fatalf("Expected that a TypeHint is not a TypeVar")
+				}
+			})
+		}
+	}
+}

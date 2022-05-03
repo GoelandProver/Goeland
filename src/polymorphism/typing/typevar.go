@@ -71,12 +71,11 @@ func (tv TypeVar) Size() int                { return 1 }
 func (tv TypeVar) GetPrimitives() []TypeApp { return []TypeApp{tv} }
 
 func (tv TypeVar) Equals(oth interface{}) bool {
-	if typeVar := To[TypeVar](oth); Is[TypeVar](oth) {
-		return typeVar.name == tv.name &&
-			typeVar.metaInfo.formulaIndex == tv.metaInfo.formulaIndex &&
-			typeVar.metaInfo.index == tv.metaInfo.index
+	if !Is[TypeVar](oth) {
+		return false
 	}
-	return false
+	typeVar := To[TypeVar](oth)
+	return typeVar.name == tv.name && typeVar.metaInfo == tv.metaInfo
 }
 
 /* TypeApp interface */
@@ -85,7 +84,11 @@ func (tv TypeVar) isTypeApp() {}
 // TODO: Make it a typevar to, it doesn't need to be a TypeScheme anymore, does it ?
 func (tv TypeVar) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme { return mapSubst[tv] }
 
-func (tv TypeVar) Copy() TypeApp { return MkTypeVar(tv.name) }
+func (tv TypeVar) Copy() TypeApp {
+	newTv := MkTypeVar(tv.name)
+	newTv.metaInfo = tv.metaInfo
+	return newTv
+}
 
 /* TypeVar should be converted to Meta when becoming a term */
 func (tv *TypeVar) ShouldBeMeta(formula int) { tv.metaInfo.formulaIndex = formula }

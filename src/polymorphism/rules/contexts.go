@@ -39,6 +39,7 @@ package polyrules
 import (
 	"fmt"
 
+	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -168,7 +169,7 @@ func (gc GlobalContext) getSimpleTypeScheme(name string, termsType typing.TypeAp
 
 	if typeSchemeList, found := gc.simpleSchemes[name]; found {
 		for _, typeScheme := range typeSchemeList {
-			if typing.GetInputType(typeScheme).Equals(termsType) {
+			if typing.GetInputType(typeScheme).Equals(ComparableList[typing.TypeApp]{termsType}) {
 				return typeScheme, nil
 			}
 		}

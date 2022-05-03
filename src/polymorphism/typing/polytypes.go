@@ -107,8 +107,6 @@ func Init() {
 	// Default types
 	defaultType = MkTypeHint("i")
 	defaultProp = MkTypeHint("o")
-
-	// Eq/Neq types
 }
 
 /* Utils */
@@ -133,5 +131,5 @@ func EmptyGlobalContext() bool {
 	typeSchemesMap.lock.Lock()
 	schemeLen := len(typeSchemesMap.tsMap)
 	typeSchemesMap.lock.Unlock()
-	return schemeLen == 0
+	return schemeLen == 2
 }

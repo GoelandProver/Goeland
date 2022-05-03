@@ -88,8 +88,6 @@ func (tc TypeCross) substitute(mapSubst map[TypeVar]TypeHint) TypeScheme {
 }
 
 // Exported methods.
-func (tc TypeCross) ToTypeScheme() TypeScheme { return tc }
-
 /**
  * Copies the TypeApp slice to avoid wrong modifications.
  **/

@@ -57,12 +57,12 @@ func TestMain(m *testing.M) {
 	typing.SaveTypeScheme(
 		"P",
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	typing.SaveTypeScheme(
 		"Q",
 		typing.MkParameterizedType("map", []typing.TypeApp{typing.MkTypeHint("int"), typing.MkTypeHint("int")}),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	typing.SaveConstant("2", typing.MkTypeHint("int"))
 	typing.SaveConstant("3", typing.MkTypeHint("int"))
@@ -90,10 +90,10 @@ func TestSimpleDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	// Pred should be of type (int * int) -> o
-	if !typing.GetOutType(form.GetType()).Equals(typing.DefaultPropType(0)) ||
+	if !typing.GetOutType(form.GetType()).Equals(typing.DefaultProp()) ||
 		!form.GetType().Equals(expected) {
 		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
@@ -116,16 +116,16 @@ func TestNegDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Not); !ok {
 		t.Fatalf("Double pass should've returned a negation. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
-			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	newPred = newPred.(btypes.Not).GetForm()
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	// Pred should be of type (int * int) -> o
 	if !newPred.GetType().Equals(expected) {
@@ -156,9 +156,9 @@ func TestBinaryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Imp); !ok {
 		t.Fatalf("Double pass should've returned an implication. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
-			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	F1 := newPred.(btypes.Imp).GetF1()
@@ -166,7 +166,7 @@ func TestBinaryDoublePass(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	// Pred should be of type (int * int) -> o
 	if !F1.GetType().Equals(expected) {
@@ -198,9 +198,9 @@ func TestBinaryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Equ); !ok {
 		t.Fatalf("Double pass should've returned an equivalence. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
-			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	F1 = newPred.(btypes.Equ).GetF1()
@@ -235,16 +235,16 @@ func TestQuantDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.All); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
-			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	newForm := newPred.(btypes.All).GetForm()
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	// Pred should be of type (int * int) -> o
 	if !newForm.GetType().Equals(expected) {
@@ -267,9 +267,9 @@ func TestQuantDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Ex); !ok {
 		t.Fatalf("Double pass should've returned an existential quantifier. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
-			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	newForm = newPred.(btypes.Ex).GetForm()
@@ -302,16 +302,16 @@ func TestNAryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.Or); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
-			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	newForms := newPred.(btypes.Or).GetLF()
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
 	for _, newForm := range newForms {
 		// Pred should be of type (int * int) -> o
@@ -339,9 +339,9 @@ func TestNAryDoublePass(t *testing.T) {
 	if _, ok := newPred.(btypes.And); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
-	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultPropType(0)) {
+	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
 		t.Errorf("Double pass didn't succeed. OutType expected: %s, actual: %s",
-			typing.DefaultPropType(0).ToString(), typing.GetOutType(newPred.GetType()).ToString())
+			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
 	newForms = newPred.(btypes.And).GetLF()
@@ -394,9 +394,9 @@ func TestBabyNoErr(t *testing.T) {
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("int"), typing.MkTypeHint("int")),
-		typing.DefaultPropType(0),
+		typing.DefaultProp(),
 	)
-	if !typing.GetOutType(form.GetType()).Equals(typing.DefaultPropType(0)) ||
+	if !typing.GetOutType(form.GetType()).Equals(typing.DefaultProp()) ||
 		!form.GetType().Equals(expected) {
 		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
@@ -416,7 +416,7 @@ func TestBabyNoErr(t *testing.T) {
 
 	pred := form.(btypes.Ex).GetForm()
 
-	if !typing.GetOutType(pred.GetType()).Equals(typing.DefaultPropType(0)) ||
+	if !typing.GetOutType(pred.GetType()).Equals(typing.DefaultProp()) ||
 		!pred.GetType().Equals(expected) {
 		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
@@ -431,7 +431,7 @@ func TestPolymorphicExample(t *testing.T) {
 		[]typing.TypeVar{typeVar},
 		typing.MkTypeArrow(
 			typing.MkTypeCross(typeVar, typeVar),
-			typing.DefaultPropType(0),
+			typing.DefaultProp(),
 		),
 	)
 
@@ -486,7 +486,7 @@ func TestPolymorphicFailureExample(t *testing.T) {
 		[]typing.TypeVar{typeVar},
 		typing.MkTypeArrow(
 			typing.MkTypeCross(typeVar, typeVar),
-			typing.DefaultPropType(0),
+			typing.DefaultProp(),
 		),
 	)
 

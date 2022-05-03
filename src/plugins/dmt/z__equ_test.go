@@ -66,6 +66,8 @@ var f btypes.Id
 
 // Init variables for test
 func TestMain(m *testing.M) {
+	typing.Init()
+	btypes.Init()
 	a = btypes.MakerConst(btypes.MakerId("a"))
 	x = btypes.MakerVar("x")
 	y = btypes.MakerVar("y")
@@ -73,8 +75,6 @@ func TestMain(m *testing.M) {
 	P = btypes.MakerId("P")
 	Q = btypes.MakerId("Q")
 	f = btypes.MakerId("f")
-	btypes.Init()
-	typing.Init()
 	os.Exit(m.Run())
 }
 
