@@ -142,8 +142,11 @@ func sortUnifications(unifs []treetypes.MatchingSubstitutions, polarity bool, at
 
 	sortedUnifs := []treetypes.MatchingSubstitutions{}
 	for _, unif := range unifs {
-		str := unif.GetForm().ToString()
-		sortedUnifs = insert(sortedUnifs, rewriteMap[str], unif)
+		// Check if th esubstitution is a filter
+		if isFiltering(unif) {
+			str := unif.GetForm().ToString()
+			sortedUnifs = insert(sortedUnifs, rewriteMap[str], unif)
+		}
 	}
 
 	return sortedUnifs
@@ -168,6 +171,24 @@ func insertFirst(sortedUnifs []treetypes.MatchingSubstitutions, unif treetypes.M
 		sortedUnifs = append(sortedUnifs, unif)
 	}
 	return sortedUnifs
+}
+
+// Check wether or not a MatchingSubstitution is a filtering, ie : all the meta in the formula are instanciated
+func isFiltering(ms treetypes.MatchingSubstitutions) bool {
+	subst := ms.GetSubst()
+	metas := ms.GetForm().GetMetas()
+	for _, m := range metas {
+		m_found := false
+		for k, v := range subst {
+			if m.Equals(k) || m.Equals(v) {
+				m_found = true
+			}
+		}
+		if !m_found {
+			return false
+		}
+	}
+	return true
 }
 
 func getUnifiedEquivalence(atom btypes.Form, subst treetypes.Substitutions, polarity bool) (btypes.FormList, error) {

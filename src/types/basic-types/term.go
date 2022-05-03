@@ -271,7 +271,7 @@ func (Id) GetMetas() MetaList {
 func (f Fun) GetMetas() MetaList {
 	metas := MetaList{}
 	for _, arg := range f.GetArgs() {
-		metas = append(metas, arg.GetMetas()...)
+		metas = metas.Merge(arg.GetMetas())
 	}
 	return metas
 }

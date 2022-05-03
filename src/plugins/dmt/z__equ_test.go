@@ -58,16 +58,20 @@ import (
 var a btypes.Fun
 var x btypes.Var
 var y btypes.Var
+var z btypes.Var
 var P btypes.Id
 var Q btypes.Id
+var f btypes.Id
 
 // Init variables for test
 func TestMain(m *testing.M) {
 	a = btypes.MakerConst(btypes.MakerId("a"))
 	x = btypes.MakerVar("x")
 	y = btypes.MakerVar("y")
+	z = btypes.MakerVar("z")
 	P = btypes.MakerId("P")
 	Q = btypes.MakerId("Q")
+	f = btypes.MakerId("f")
 	btypes.Init()
 	os.Exit(m.Run())
 }
@@ -652,6 +656,30 @@ func TestSubst2(t *testing.T) {
 	if !forms[0].Equals(btypes.MakeAll([]btypes.Var{y}, btypes.MakePred(Q, []btypes.Term{a, y}))) ||
 		!(len(subst) == 1 && subst[X].Equals(a)) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
+	}
+}
+
+func TestSubst3(t *testing.T) {
+	pm := getEquivalencePM()
+
+	axiom := btypes.MakeAll([]btypes.Var{x, y}, btypes.MakeEqu(btypes.MakePred(P, []btypes.Term{x, btypes.MakeFun(f, []btypes.Term{y})}), btypes.MakeAnd(btypes.FormList{btypes.MakePred(Q, []btypes.Term{x, y}), btypes.MakePred(Q, []btypes.Term{x, y})})))
+
+	if !pm.ApplySendAxiomHook(axiom) {
+		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
+	}
+
+	X := btypes.MakerMeta("X2", 1)
+	Y := btypes.MakerMeta("Y2", 1)
+
+	form := btypes.MakePred(P, []btypes.Term{X, Y})
+	substs, err := pm.ApplyRewriteHook(form)
+
+	if err != nil {
+		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
+	}
+
+	if len(substs) != 1 && !substs[0].GetSubst().Equals(treetypes.Failure()) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s - %v.", form.ToString(), substs[0].GetForm()[0].ToString(), substs[0].GetSubst().ToString())
 	}
 }
 
