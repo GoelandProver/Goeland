@@ -29,222 +29,22 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/******************/
-/* constraints.go */
-/******************/
+/*************************/
+/* constraints_struct.go */
+/*************************/
 /**
-* This file contains the type definition of the contraints struct.
+* This file contains the type definition of a constraint struct for equality reasoning.
 **/
 
 package main
 
 import (
 	"fmt"
-	"sort"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
-	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
-
-const (
-	PREC int = iota
-	EQ
-)
-
-type Constraint struct {
-	ctype int
-	tp    TermPair
-}
-
-func (c Constraint) getCType() int {
-	return c.ctype
-}
-func (c Constraint) getTP() TermPair {
-	return c.tp.Copy()
-}
-func (c *Constraint) setTP(tp TermPair) {
-	c.tp = tp
-}
-func (c Constraint) copy() Constraint {
-	return MakeConstraint(c.getCType(), c.getTP())
-}
-func (c Constraint) equals(c2 Constraint) bool {
-	return ((c.getCType() == c2.getCType()) && c.getTP().Equals(c2.getTP()))
-}
-func (c Constraint) toString() string {
-	switch c.getCType() {
-	case PREC:
-		return c.getTP().getT1().ToString() + " ≺ " + c.getTP().getT2().ToString()
-	case EQ:
-		return c.getTP().getT1().ToString() + " ≃ " + c.getTP().getT2().ToString()
-	default:
-		fmt.Printf("Constraint type unknown \n")
-		return "Constraint type unknown"
-	}
-}
-
-/* return true if the constraint is not violated, false otherwise  + true is the contraint is comparable, false otherwise + update c into the useful part of the constraint */
-func (c *Constraint) checkLPO() (bool, bool) {
-	global.PrintDebug("CLPO", fmt.Sprintf("Type PREC, cst : %v", c.toString()))
-	res, is_comparable, new_t1, new_t2 := lpo.compare(c.getTP().getT1(), c.getTP().getT2())
-	global.PrintDebug("CLPO", fmt.Sprintf("res : %v, is_comparable : %v", res, is_comparable))
-	if is_comparable {
-		switch c.getCType() {
-		case PREC:
-			return res > 0, true
-		case EQ:
-			return res == 0, true
-		default:
-			fmt.Printf("Constraint type not valid \n")
-			return false, true
-		}
-	}
-	global.PrintDebug("CLPO", fmt.Sprintf("new_t1 : %v, new_t2 : %v", new_t1.ToString(), new_t2.ToString()))
-	c.setTP(makeTermPair(new_t1, new_t2))
-	return true, false
-}
-
-/** checkConstraintList
-* Take a constraint list metavariable < fun or fun < metavariable
-* create a map metavariable : list_eq, list_inf, list_sup
-* check intersection is empty
-**/
-func (cl ConstraintList) checkConstraintList() bool {
-	map_constraintes := make(map[string][][]basictypes.Term)
-	for _, c := range cl {
-		global.PrintDebug("CCL", fmt.Sprintf("Constraint : %v", c.toString()))
-		switch c.getCType() {
-		case PREC:
-			if !appendToMapAndCheck(c.getTP().getT1().ToString(), c.getTP().getT2(), &map_constraintes, 1, 2) {
-				return false
-			}
-			if !appendToMapAndCheck(c.getTP().getT2().ToString(), c.getTP().getT1(), &map_constraintes, 2, 2) {
-				return false
-			}
-		case EQ:
-			if !appendToMapAndCheck(c.getTP().getT1().ToString(), c.getTP().getT2(), &map_constraintes, 0, 2) {
-				return false
-			}
-			if !appendToMapAndCheck(c.getTP().getT2().ToString(), c.getTP().getT1(), &map_constraintes, 0, 2) {
-				return false
-			}
-		}
-
-	}
-	return true
-}
-
-/* append to the map and check if the new element is not in the other list */
-func appendToMapAndCheck(m string, t basictypes.Term, map_constraintes *map[string][][]basictypes.Term, index_append, index_max_other_lists int) bool {
-	if _, ok := (*map_constraintes)[m]; !ok {
-		(*map_constraintes)[m] = make([][]basictypes.Term, index_max_other_lists+1)
-		for i := 0; i <= index_max_other_lists; i++ {
-			(*map_constraintes)[m][i] = []basictypes.Term{}
-		}
-	}
-	(*map_constraintes)[m][index_append] = append((*map_constraintes)[m][index_append], t)
-	// global.PrintDebug("ATMAC", fmt.Sprintf("%v", *map_constraintes))
-
-	for i := 0; i <= index_max_other_lists; i++ {
-
-		// global.PrintDebug("ATMAC", fmt.Sprintf("Term : %v - in : %v", m, basictypes.TermListToString((*map_constraintes)[m][i])))
-		if i != index_append && basictypes.ContainsTermList(t, (*map_constraintes)[m][i]) {
-			// global.PrintDebug("ATMAC", "Term found in list")
-			return false
-		}
-	}
-	return true
-}
-
-func MakeConstraint(i int, tp TermPair) Constraint {
-	return Constraint{i, tp.Copy()}
-}
-
-type ConstraintList []Constraint
-
-/*Sort */
-func (cl ConstraintList) Len() int      { return len(cl) }
-func (cl ConstraintList) Swap(i, j int) { cl[i], cl[j] = cl[j], cl[i] }
-func (cl ConstraintList) Less(i, j int) bool {
-	return (cl[i].toString() < cl[j].toString())
-}
-func (l1 ConstraintList) equals(l2 ConstraintList) bool {
-	if len(l1) != len(l2) {
-		return false
-	} else {
-		l1_sorted := l1.Copy()
-		sort.Sort(l1_sorted)
-
-		l2_sorted := l2.Copy()
-		sort.Sort(l2_sorted)
-
-		for i := range l1_sorted {
-			if !l1_sorted[i].equals(l2_sorted[i]) {
-				return false
-			}
-		}
-	}
-	return true
-}
-func (cl ConstraintList) toString() string {
-	res := "{"
-	for i, c := range cl {
-		res += c.toString()
-		if i < len(cl)-1 {
-			res += (", ")
-		}
-	}
-	res += "}"
-	return res
-}
-func (cl ConstraintList) Copy() ConstraintList {
-	res := makeEmptyConstaintsList()
-	for _, c := range cl {
-		res = append(res, c.copy())
-	}
-	return res
-}
-func (cl ConstraintList) contains(c Constraint) bool {
-	for _, cst := range cl {
-		if c.equals(cst) {
-			return true
-		}
-	}
-	return false
-}
-func (cl ConstraintList) isEmpty() bool {
-	return len(cl) == 0
-}
-func makeEmptyConstaintsList() ConstraintList {
-	return ConstraintList{}
-}
-func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
-	for m, t := range s {
-		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().getT1())
-		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().getT2())
-		c.setTP(makeTermPair(new_t1, new_t2))
-	}
-}
-
-/* Check if a constraint is consistant with LPO and constraint list */
-func (cl ConstraintList) isConsistantWithSubst(s treetypes.Substitutions) bool {
-	global.PrintDebug("ICWS", fmt.Sprintf("Is consistant with the subst : %v", s.ToString()))
-	for _, c_element := range cl {
-		c := c_element.copy()
-		global.PrintDebug("ICWS", fmt.Sprintf("Constraint : %v", c.toString()))
-		c.applySubstitution(s)
-		global.PrintDebug("ICWS", fmt.Sprintf("Constraint after apply subst : %v", c.toString()))
-		respect_lpo, is_comparable := c.checkLPO()
-		global.PrintDebug("ICWS", fmt.Sprintf("Is comparable : %v - respect lpo : %v: ", is_comparable, respect_lpo))
-		if is_comparable && !respect_lpo {
-			return false
-		}
-	}
-	return true
-}
 
 type ConstraintStruct struct {
 	all_constraints ConstraintList

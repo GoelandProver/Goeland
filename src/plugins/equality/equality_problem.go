@@ -89,8 +89,8 @@ func (ep EqualityProblem) toString() string {
 	return "<" + ep.getE().toString() + ", " + ep.getS().ToString() + ", " + ep.getT().ToString() + "> • " + ep.getC().toString()
 }
 
+/* Apply a substitution on an equality problem */
 func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityProblem {
-	// global.PrintDebug("EQ - AS", fmt.Sprintf("Start of ApplySubstitution on : %v", ep.toString()))
 	new_s := ep.getS()
 	new_t := ep.getT()
 	new_equalities := ep.getE()
@@ -107,7 +107,6 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 	}
 
 	res := makeEqualityProblem(new_equalities, new_s, new_t, makeEmptyConstaintStruct())
-	// global.PrintDebug("EQ - AS", fmt.Sprintf("End of ApplySubstitution on : %v", res.toString()))
 	return res
 }
 
@@ -117,6 +116,7 @@ func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c C
 	return EqualityProblem{makeDataStructFromEqualities(E.copy()), makeEQMapFromEqualities(E.copy()), E.copy(), s.Copy(), t.Copy(), c.copy()}
 }
 
+/* Take a list of equalities and build the corresponding code tree */
 func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
 	form_list := basictypes.MakeEmptyFormList()
 	for _, e := range eq {
@@ -126,6 +126,7 @@ func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
 	return new(treesearch.Node).MakeDataStruct(form_list.Copy(), true)
 }
 
+/* Take a list of equalities and build the corresponding assocative map */
 func makeEQMapFromEqualities(eq Equalities) map[string][]basictypes.Term {
 	map_res := make(map[string][]basictypes.Term)
 	for _, e := range eq {

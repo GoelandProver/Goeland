@@ -33,7 +33,9 @@
 /* equality_problem_list.go */
 /****************************/
 /**
-* This file contains the type definition for equality reasonning.
+* This file contains the type definition for equality problem list. and multilist.
+* Equality problem list :  a list of equality problem wich are connected to each other. A solution for one of them needs to be a solution for the others.
+* Equality problem multi list : a list of list of equality problem. Independent
 **/
 
 package main
@@ -79,6 +81,7 @@ func makeEmptyEqualityProblemMultiList() EqualityProblemMultiList {
 
 /*** Functions ***/
 
+/* Build an equalit problem multilist from a list of inequation */
 func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
 	for _, neq_pair := range neq {
@@ -87,7 +90,7 @@ func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) Equal
 	return res
 }
 
-/* Une liste de problèmes dégalités dépendants : un prédicat */
+/* Build an equality problem list from a predicat and its negation */
 func buildEqualityProblemListFrom2Pred(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
 	res := makeEmptyEqualityProblemList()
 	for i := range p1.GetArgs() {
@@ -96,7 +99,8 @@ func buildEqualityProblemListFrom2Pred(p1 basictypes.Pred, p2 basictypes.Pred, e
 	return res
 }
 
-func buildEqualityProblemListFromPredList(p basictypes.Pred, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
+/* Build an equality problem multi list from a list of predicate. Take one predicate, search for its negation in the code tree, and if it found any, build the corresponding equality problem list */
+func buildEqualityProblemMultiListFromPredList(p basictypes.Pred, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
 	id_p := p.GetID()
 	ml := basictypes.MakeEmptyMetaList()
@@ -113,20 +117,22 @@ func buildEqualityProblemListFromPredList(p basictypes.Pred, tn datastruct.DataS
 	return res
 }
 
+/* Take a list of form and build an equality problem list, corresponding to thoses related to a predicate and it negation */
 func buildEqualityProblemMultiListFromFormList(fl basictypes.FormList, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
-	// Recup les prédicats de TP, on cherche les mêmes dans TN
 	for _, p := range fl {
 		if pt, ok := p.(basictypes.Pred); ok {
-			res = append(res, buildEqualityProblemListFromPredList(pt, tn, eq.copy())...)
+			res = append(res, buildEqualityProblemMultiListFromPredList(pt, tn, eq.copy())...)
 		}
 	}
 	return res
 }
 
-/* Une liste de problèmes d'égalités indépendants + a boolean, true if there is equality in the fomrula list, false otherwise */
+/**
+* Take a form list
+* Retun a lis of independent problem list (from predicate and negation) + a boolean, true if there is equality in the formula list, false otherwise
+**/
 func buildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.DataStructure) (EqualityProblemMultiList, bool) {
-	// global.PrintDebug("BEPML", "Build equality problem multilist")
 	res := makeEmptyEqualityProblemMultiList()
 	eq := retrieveEqualities(tp.Copy())
 	if len(eq) <= 0 {

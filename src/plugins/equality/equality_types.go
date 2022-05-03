@@ -124,14 +124,7 @@ func (ie Inequalities) appendIfNotContains(eq TermPair) Inequalities {
 	return res
 }
 
-// func (e Equalities) applySubstitutions(sub treetypes.Substitutions) Equalities {
-// 	res := e.Copy()
-// 	for old_symbol, new_symbol := range sub {
-// 		res = res.applySubstitution(old_symbol, new_symbol)
-// 	}
-// 	return res
-// }
-
+/* Apply a substitution on an equality */
 func (e Equalities) applySubstitution(old_symbol basictypes.Meta, new_symbol basictypes.Term) Equalities {
 	res := e.copy()
 	for i, tp := range res {
@@ -146,13 +139,10 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 	MetaEQ1 := basictypes.MakerMeta("METAEQ1", -1)
 	MetaEQ2 := basictypes.MakerMeta("METAEQ2", -1)
 	eq_pred := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{MetaEQ1, MetaEQ2})
-	// global.PrintDebug("RE", fmt.Sprintf("Try to unify with : %v", eq_pred.ToString()))
 	_, eq_list := dt.Unify(eq_pred)
 
 	for _, ms := range eq_list {
-		// global.PrintDebug("RE", fmt.Sprintf("eq_list = %v - %v", ms.GetForm().ToString(), ms.GetSubst().ToString()))
 		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaEQ1, MetaEQ2)
-
 		eq1_term, ok_t1 := ms_ordered[MetaEQ1]
 		if !ok_t1 {
 			fmt.Printf("Meta_eq_1 not found in map\n")
@@ -165,7 +155,6 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 		}
 		res = append(res, makeTermPair(eq1_term, eq2_term))
 	}
-
 	return res
 }
 
@@ -193,6 +182,7 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 	return res
 }
 
+/* Reoder substitution in case of metavariable equalities. (X, META_1) => (META_1, X). Need to find association. */
 func orderSubstForRetrieve(s treetypes.Substitutions, M1, M2 basictypes.Meta) treetypes.Substitutions {
 	new_subst := treetypes.MakeEmptySubstitution()
 	for k, v := range s {

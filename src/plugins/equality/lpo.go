@@ -48,8 +48,45 @@ import (
 
 type LPO map[basictypes.Id]int
 
+type compareStruct struct {
+	order          int
+	is_comparable  bool
+	new_t1, new_t2 basictypes.Term
+}
+
+func makeCompareStruct(o int, ic bool, t1, t2 basictypes.Term) compareStruct {
+	return compareStruct{o, ic, t1, t2}
+}
+
+func makeEmptyCompareStruct() compareStruct {
+	return makeCompareStruct(0, false, nil, nil)
+}
+
 var lock_lpo sync.Mutex
 var lpo LPO
+
+func makeLPO() LPO {
+	return LPO{}
+}
+
+func (lpo LPO) isEmpty() bool {
+	return (lpo == nil || len(lpo) == 0)
+}
+
+func (lpo LPO) toString() string {
+	res := "{"
+	cpt := 0
+	lock_lpo.Lock()
+	for term, value := range lpo {
+		res += "[" + term.ToString() + "] : " + strconv.Itoa(value)
+		if cpt < len(lpo)-1 {
+			res += ", "
+		}
+		cpt++
+	}
+	lock_lpo.Unlock()
+	return res + "}"
+}
 
 func (lpo LPO) get(t basictypes.Id) int {
 	lock_lpo.Lock()
@@ -109,8 +146,7 @@ func (lpo *LPO) insertIdIfNotContains(i basictypes.Id) {
 *	a boolean : true if the two term are comparable, false otherwise
 *	two terms : the new terms for the constraint (if not comparable)
 **/
-func (lpo LPO) compare(s, t basictypes.Term) (int, bool, basictypes.Term, basictypes.Term) {
-	// global.PrintDebug("C", fmt.Sprintf("Compare %v and %v", s.ToString(), t.ToString()))
+func (lpo LPO) compare(s, t basictypes.Term) compareStruct {
 	switch s_type := s.(type) {
 	case basictypes.Fun:
 		switch t_type := t.(type) {
@@ -119,7 +155,6 @@ func (lpo LPO) compare(s, t basictypes.Term) (int, bool, basictypes.Term, basict
 			return compareFunFun(s_type, t_type, lpo)
 		case basictypes.Meta:
 			// function & meta : Occurences inside : f(x) < x, f(y) < x
-			//global.PrintDebug("C", "Occurence inside, ko")
 			return compareMetaFun(t_type, s_type, -1, lpo)
 		default:
 			fmt.Printf("Type of t unknown")
@@ -128,7 +163,6 @@ func (lpo LPO) compare(s, t basictypes.Term) (int, bool, basictypes.Term, basict
 		switch t_type := t.(type) {
 		case basictypes.Fun:
 			// meta & function : Occurences inside : x < f(x), x < f(y)
-			//global.PrintDebug("C", "Occurence inside, ok")
 			return compareMetaFun(s_type, t_type, 1, lpo)
 		case basictypes.Meta:
 			// Meta and meta
@@ -139,202 +173,194 @@ func (lpo LPO) compare(s, t basictypes.Term) (int, bool, basictypes.Term, basict
 	default:
 		fmt.Printf("Type of s unknown")
 	}
-	return 0, false, s, t
+	return makeCompareStruct(0, false, s, t)
 }
 
-/* return code can be 1 or -1 */
-func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LPO) (int, bool, basictypes.Term, basictypes.Term) {
-	//global.PrintDebug("CMF", fmt.Sprintf("Meta - Fun : return_code = %v", return_code))
+/**
+* Compare a metavariable and a function.
+* Return code comes for the compare function and code must be 1 or -1. It correspond to the code to return of the CompreMetaFun fits the LPO.
+* It's needed to keep the order.
+* For example, x < f(x) is ok but f(x) < x isn't
+**/
+func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LPO) compareStruct {
+
+	// Check argument inside f
+	if found, res := compareMetaFunInside(m, f, return_code, lpo); found {
+		return res
+	}
+
+	// f has no args or all respect LPO
+	if return_code == 1 {
+		return makeCompareStruct(0, false, m, f)
+	} else {
+		return makeCompareStruct(0, false, f, m)
+	}
+}
+
+func compareMetaFunInside(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LPO) (bool, compareStruct) {
 	i := 0
+	// Check arguments to find occur-check eventually
 	for i < len(f.GetArgs()) {
 		res := 0
 		is_comparable := false
 		switch return_code {
 		case 1:
-			res, is_comparable, _, _ = lpo.compare(m, f.GetArgs()[i])
+			cs := lpo.compare(m, f.GetArgs()[i])
+			res = cs.order
+			is_comparable = cs.is_comparable
 		case -1:
-			res, is_comparable, _, _ = lpo.compare(f.GetArgs()[i], m)
+			cs := lpo.compare(f.GetArgs()[i], m)
+			res = cs.order
+			is_comparable = cs.is_comparable
 		default:
 			fmt.Printf("Unexpected return_code in compare\n")
 		}
 
-		//global.PrintDebug("CMF", fmt.Sprintf("Comparable : %v, res = %v", res, is_comparable))
 		if is_comparable {
-			if res == 0 { // Res of compare meta meta
-				return return_code, true, nil, nil
+			if res == 0 { // Comparable and return 0 : same symbol or same Meta (meta in this case)
+				return true, makeCompareStruct(return_code, true, nil, nil)
 			} else {
-				return res, true, nil, nil
+				return true, makeCompareStruct(res, true, nil, nil)
 			}
 		}
 		i++
 	}
-	if return_code == 1 {
-		return 0, false, m, f
-	} else {
-		return 0, false, f, m
-	}
+	return false, makeEmptyCompareStruct()
 }
 
 /* Compare two meta wrt LPO */
-func compareMetaMeta(m1, m2 basictypes.Meta) (int, bool, basictypes.Term, basictypes.Term) {
-	//global.PrintDebug("CMM", "Meta - Meta")
+func compareMetaMeta(m1, m2 basictypes.Meta) compareStruct {
 	if m1.Equals(m2) {
-		// global.PrintDebug("CMM", "Meta - Meta - 0, true, nil, nil")
-		return 0, true, nil, nil
+		return makeCompareStruct(0, true, nil, nil)
 	} else {
-		// global.PrintDebug("CMM", fmt.Sprintf("Meta - Meta - 1, false, %v, %v", m1.ToString(), m2.ToString()))
-		return 1, false, m1, m2
+		return makeCompareStruct(1, false, m1, m2)
 	}
 }
 
 /* Compare two functions */
-func compareFunFun(s, t basictypes.Fun, lpo LPO) (int, bool, basictypes.Term, basictypes.Term) {
-	// global.PrintDebug("CFF", "Fun - Fun")
+func compareFunFun(s, t basictypes.Fun, lpo LPO) compareStruct {
+
+	// Initalisation
 	f := lpo.get(s.GetID())
 	g := lpo.get(t.GetID())
+
 	if f == -1 {
-		// global.PrintDebug("Get", fmt.Sprintf("Error : Id not in the LPO : %v", s.GetID().ToString()))
 		fmt.Printf("Error : id not in the LPO : %v\n", s.GetID().ToString())
 	}
 	if g == -1 {
-		// global.PrintDebug("Get", fmt.Sprintf("Error : Id not in the LPO : %v", t.GetID().ToString()))
 		fmt.Printf("Error : id not in the LPO : %v\n", t.GetID().ToString())
 	}
 
-	// f < g
 	if f < g {
-		//global.PrintDebug("CFF", "f < g")
-		if len(s.GetArgs()) == 0 {
-			//global.PrintDebug("CFF", "1, true")
-			return 1, true, nil, nil
-		} else {
-			i := 0
-			stopped := false
-			for i < len(s.GetArgs()) && !stopped {
-				//global.PrintDebug("CFF", "-----------")
-				res, is_comparable, _, _ := lpo.compare(s.GetArgs()[i], t)
-				if !is_comparable {
-					//global.PrintDebug("CFF", "0, false")
-					//global.PrintDebug("CFF", "-----------")
-					return 0, false, s, t
-				}
-				if res <= 0 {
-					stopped = true
-				}
-				i++
-				//global.PrintDebug("CFF", "-----------")
-			}
-			if !stopped {
-				//global.PrintDebug("CFF", "1, true")
-				return 1, true, nil, nil
-			}
+		if found, res := caseFLessG(s, t, lpo); found {
+			return res
 		}
 	}
 
-	// f == g
 	if f == g {
-		// global.PrintDebug("CFF", "f == g")
-		if len(s.GetArgs()) != len(t.GetArgs()) {
-			fmt.Printf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString())
-			return 0, false, nil, nil
+		if found, res := caseFEqualsG(s, t, lpo); found {
+			return res
 		}
-		n := len(s.GetArgs())
+	}
+
+	return caseDefault(s, t, lpo)
+
+}
+
+/* Case f < g */
+func caseFLessG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
+	// f < g and f has no argument
+	if len(s.GetArgs()) == 0 {
+		return true, makeCompareStruct(1, true, nil, nil)
+	} else {
 		i := 0
 		stopped := false
-		val_res := 0
-		// First loop : while equals
-		for i < n && !stopped {
-			// global.PrintDebug("CFF", "-----------")
-			res, is_comparable, t1, t2 := lpo.compare(s.GetArgs()[i], t.GetArgs()[i])
-			if !is_comparable {
-				// global.PrintDebug("CFF", "0, false")
-				// global.PrintDebug("CFF", "-----------")
-				return 0, false, t1, t2
+		for i < len(s.GetArgs()) && !stopped {
+			cs := lpo.compare(s.GetArgs()[i], t)
+
+			if !cs.is_comparable {
+				return true, makeCompareStruct(0, false, s, t)
 			}
-			if res != 0 {
+			if cs.order <= 0 {
 				stopped = true
-				val_res = res
 			}
 			i++
-			// global.PrintDebug("CFF", "-----------")
 		}
 		if !stopped {
-			// global.PrintDebug("CFF", "0, true")
-			return 0, true, nil, nil
-		}
-
-		// Check and second loop : while <= t
-		stopped = false
-		//global.PrintDebug("CFF", fmt.Sprintf("Val res = %v, i = %v, n = %v, stoppped = %v", val_res, i, n, stopped))
-		if val_res > 0 {
-			for i < n && !stopped {
-				//global.PrintDebug("CFF", "-----------")
-				res, is_comparable, _, _ := lpo.compare(s.GetArgs()[i], t)
-				if !is_comparable {
-					//global.PrintDebug("CFF", "0, false")
-					//global.PrintDebug("CFF", "-----------")
-					return 0, false, s, t
-				}
-				if res <= 0 {
-					stopped = true
-				}
-				i++
-				//global.PrintDebug("CFF", "-----------")
-			}
-			if !stopped {
-				//global.PrintDebug("CFF", "1, true")
-				return 1, true, nil, nil
-			}
+			return true, makeCompareStruct(1, true, nil, nil)
 		}
 	}
+	return false, makeEmptyCompareStruct()
+}
 
+/* Case f == g */
+func caseFEqualsG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
+	if len(s.GetArgs()) != len(t.GetArgs()) {
+		fmt.Printf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString())
+		return true, makeCompareStruct(0, false, nil, nil)
+	}
+
+	n := len(s.GetArgs())
+	i := 0
+	stopped := false
+	val_res := 0
+	// First loop : while equals
+	for i < n && !stopped {
+		cs := lpo.compare(s.GetArgs()[i], t.GetArgs()[i])
+
+		if !cs.is_comparable {
+			return true, makeCompareStruct(0, false, cs.new_t1, cs.new_t2)
+		}
+		if cs.order != 0 {
+			stopped = true
+			val_res = cs.order
+		}
+		i++
+	}
+
+	if !stopped {
+		return true, makeCompareStruct(0, true, nil, nil)
+	}
+
+	// Check and second loop : while <= t
+	stopped = false
+	if val_res > 0 {
+		for i < n && !stopped {
+			cs := lpo.compare(s.GetArgs()[i], t)
+			if !cs.is_comparable {
+				return true, makeCompareStruct(0, false, s, t)
+			}
+			if cs.order <= 0 {
+				stopped = true
+			}
+			i++
+		}
+		if !stopped {
+			return true, makeCompareStruct(1, true, nil, nil)
+		}
+	}
+	return false, makeEmptyCompareStruct()
+}
+
+/* Default case */
+func caseDefault(s, t basictypes.Fun, lpo LPO) compareStruct {
 	// Occurences inside
-	//global.PrintDebug("CFF", "s <= ti ?")
 	m := len(t.GetArgs())
 	i := 0
 	stopped := false
 	for i < m && !stopped {
-		//global.PrintDebug("CFF", "-----------")
-		res, is_comparable, _, _ := lpo.compare(s, t.GetArgs()[i])
-		if !is_comparable {
-			//global.PrintDebug("CFF", "-----------")
-			return 0, false, s, t
+		cs := lpo.compare(s, t.GetArgs()[i])
+		if !cs.is_comparable {
+			return makeCompareStruct(0, false, s, t)
 		}
-		if res >= 0 {
+		if cs.order >= 0 {
 			stopped = true
 		}
 		i++
-		//global.PrintDebug("CFF", "-----------")
 	}
 	if stopped {
-		return 1, true, nil, nil
+		return makeCompareStruct(1, true, nil, nil)
 	}
 
-	return -1, true, nil, nil
-}
-
-/* Is empty */
-func (lpo LPO) isEmpty() bool {
-	return (lpo == nil || len(lpo) == 0)
-}
-
-/* ToString */
-func (lpo LPO) toString() string {
-	res := "{"
-	cpt := 0
-	lock_lpo.Lock()
-	for term, value := range lpo {
-		res += "[" + term.ToString() + "] : " + strconv.Itoa(value)
-		if cpt < len(lpo)-1 {
-			res += ", "
-		}
-		cpt++
-	}
-	lock_lpo.Unlock()
-	return res + "}"
-}
-
-/* Maker */
-func makeLPO() LPO {
-	return LPO{}
+	return makeCompareStruct(-1, true, nil, nil)
 }
