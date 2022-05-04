@@ -114,7 +114,9 @@ func manageRLRules(ep EqualityProblem, rr, lr []ruleStruct, father chan answerEP
 	if res_right {
 		return true, subst_right
 	} else {
-		return manageRule(ep, lr, father)
+		// return manageRule(ep, lr, father)
+		// TODO : TEST HERE SYN074
+		return false, []treetypes.Substitutions{}
 	}
 }
 
@@ -163,9 +165,7 @@ func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP) (bool
 			hasAnswered[index] = true
 			if res.found {
 				answer_found = true
-				for _, subst_element := range res.substs {
-					substs_res = append(substs_res, subst_element)
-				}
+				substs_res = append(substs_res, res.substs...)
 			} else {
 				global.PrintDebug("SAEP", "Child provide no solution")
 			}
