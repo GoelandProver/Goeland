@@ -171,7 +171,7 @@ func applyAppTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruc
 	types := type_.GetParameters()
 
 	// Search for the ID in the global context
-	if !state.globalContext.parameterizedTypesContains(type_.ToString()) {
+	if !state.globalContext.parameterizedTypesContains(type_.GetName()) {
 		return Reconstruct{
 			result: false,
 			err:    fmt.Errorf("parameterized Type %s not in context", type_.ToString()),

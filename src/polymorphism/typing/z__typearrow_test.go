@@ -201,8 +201,8 @@ func TestRandomInputType(t *testing.T) {
 
 	for _, test := range testTable {
 		t.Run(fmt.Sprintf("%v", test.type_.ToString()), func(t *testing.T) {
-			if GetInputType(test.type_) != nil {
-				t.Fatalf("Expected: %v, actual: %v", nil, GetInputType(test.type_))
+			if GetInputType(test.type_) == nil {
+				t.Fatalf("Expected: %v, actual: %v", test.type_.ToString(), GetInputType(test.type_))
 			}
 		})
 	}

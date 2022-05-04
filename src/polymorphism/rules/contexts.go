@@ -220,7 +220,6 @@ func (gc GlobalContext) isEmpty() bool {
 
 /* Checks if the parameterized types contains the given name */
 func (gc GlobalContext) parameterizedTypesContains(name string) bool {
-	// Change this with name & size of paremeters
 	for _, parameterTypeName := range gc.parameterizedTypes {
 		if name == parameterTypeName {
 			return true

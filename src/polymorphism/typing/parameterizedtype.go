@@ -96,6 +96,10 @@ func (pt ParameterizedType) Copy() TypeApp {
 	return newPT
 }
 
+func (pt ParameterizedType) GetName() string {
+	return pt.name
+}
+
 /* Makes a Parameterized Type from name and parameters */
 func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
 	pMap.lock.Lock()

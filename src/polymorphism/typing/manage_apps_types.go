@@ -105,10 +105,10 @@ func SaveTypeScheme(name string, in TypeApp, out TypeApp) error {
 func SavePolymorphScheme(name string, scheme TypeScheme) error {
 	tScheme, found := getPolymorphSchemeFromArgs(name, scheme)
 	if tScheme != nil {
-		if tScheme.Equals(scheme) {
-			return nil
+		if !GetOutType(tScheme).Equals(GetOutType(scheme)) {
+			return fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
 		}
-		return fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
+		return nil
 	}
 
 	// It's not in the map, it should be added
@@ -252,9 +252,10 @@ func getSchemeFromArgs(name string, inArgs TypeApp) (TypeScheme, bool) {
 /* Returns the TypeScheme from the name & inArgs if it exists in the map. Else, nil. true means fun name is in the map. */
 func getPolymorphSchemeFromArgs(name string, scheme TypeScheme) (TypeScheme, bool) {
 	typeSchemesMap.lock.Lock()
+	fmt.Println(name)
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
-			if fun.App.Equals(scheme) {
+			if GetInputType(fun.App).Equals(GetInputType(scheme)) {
 				typeSchemesMap.lock.Unlock()
 				return fun.App, true
 			}

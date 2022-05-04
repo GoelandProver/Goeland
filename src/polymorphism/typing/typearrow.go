@@ -134,11 +134,16 @@ func GetOutType(typeScheme TypeScheme) TypeApp {
 
 /* Gets the input type of an arrow type scheme */
 func GetInputType(typeScheme TypeScheme) ComparableList[TypeApp] {
-	if !Is[TypeArrow](typeScheme) {
-		return nil
+	switch t := typeScheme.(type) {
+	case QuantifiedType:
+		return GetInputType(t.scheme)
+	case TypeArrow:
+		typeArrow := To[TypeArrow](typeScheme)
+		list := ComparableList[TypeApp]{typeArrow.left}
+		list = append(list, typeArrow.right[:len(typeArrow.right)-1]...)
+		return list
+	case TypeApp:
+		return []TypeApp{t}
 	}
-	typeArrow := To[TypeArrow](typeScheme)
-	list := ComparableList[TypeApp]{typeArrow.left}
-	list = append(list, typeArrow.right[:len(typeArrow.right)-1]...)
-	return list
+	return nil
 }
