@@ -89,9 +89,14 @@ func getRewrittenFormulas(rewritten []ctypes.SubstAndForm, unif []treetypes.Matc
 
 func addRewrittenFormulas(rewritten []ctypes.SubstAndForm, unif treetypes.MatchingSubstitutions, atomic btypes.Form, equivalence btypes.FormList) []ctypes.SubstAndForm {
 	// Keep only useful substitutions
+	useful_subst := ctypes.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas())
+	meta_search := atomic.GetMetas()
+	if !checkMetaAreFromSearch(meta_search, useful_subst) {
+		fmt.Printf("[DMT] Error : There is at least one meta in final subst which is not from search : %v - %v - %v\n", useful_subst.ToString(), atomic.ToString(), unif.GetForm().ToString())
+	}
 	filteredUnif := treetypes.MakeMatchingSubstitutions(
 		unif.GetForm(),
-		ctypes.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas()),
+		useful_subst,
 	)
 
 	// Add each candidate to the rewrite slice with precedence order (Top/Bot are prioritized).
@@ -142,8 +147,11 @@ func sortUnifications(unifs []treetypes.MatchingSubstitutions, polarity bool, at
 
 	sortedUnifs := []treetypes.MatchingSubstitutions{}
 	for _, unif := range unifs {
-		str := unif.GetForm().ToString()
-		sortedUnifs = insert(sortedUnifs, rewriteMap[str], unif)
+		// Check if th esubstitution is a filter
+		if isFiltering(unif) {
+			str := unif.GetForm().ToString()
+			sortedUnifs = insert(sortedUnifs, rewriteMap[str], unif)
+		}
 	}
 
 	return sortedUnifs
@@ -168,6 +176,41 @@ func insertFirst(sortedUnifs []treetypes.MatchingSubstitutions, unif treetypes.M
 		sortedUnifs = append(sortedUnifs, unif)
 	}
 	return sortedUnifs
+}
+
+// Check wether or not a MatchingSubstitution is a filtering, ie : all the meta in the formula are instanciated
+func isFiltering(ms treetypes.MatchingSubstitutions) bool {
+	subst := ms.GetSubst()
+	metas := ms.GetForm().GetMetas()
+	return checkAllMetaAreInstanciated(metas, subst)
+}
+
+func checkAllMetaAreInstanciated(metas btypes.MetaList, subst treetypes.Substitutions) bool {
+	for _, m := range metas {
+		m_found := false
+		for k, v := range subst {
+			if m.Equals(k) || m.Equals(v) {
+				m_found = true
+			}
+		}
+		if !m_found {
+			return false
+		}
+	}
+	return true
+}
+
+func checkMetaAreFromSearch(metas btypes.MetaList, subst treetypes.Substitutions) bool {
+	for k, v := range subst {
+		if !metas.Contains(k) {
+			return false
+		} else {
+			if meta_v, ok := v.(btypes.Meta); ok && !metas.Contains(meta_v) {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func getUnifiedEquivalence(atom btypes.Form, subst treetypes.Substitutions, polarity bool) (btypes.FormList, error) {

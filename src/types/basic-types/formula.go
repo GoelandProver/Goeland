@@ -426,6 +426,8 @@ func (p Pred) GetMetas() MetaList {
 		switch mt := m.(type) {
 		case Meta:
 			res = res.AppendIfNotContains(mt)
+		case Fun:
+			res = res.Merge(mt.GetMetas())
 		}
 	}
 	return res

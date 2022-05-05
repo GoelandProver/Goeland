@@ -364,3 +364,30 @@ func TestPolarizedRewrite3(t *testing.T) {
 		t.Fatalf("Error: error not triggered when searching for something not in the rewrite tree.")
 	}
 }
+
+/**
+ * Tests if polarized rewrite works properly (Bad unification)
+ **/
+func TestPolarizedRewrite4(t *testing.T) {
+	pm := getPolarizedPM()
+
+	axiom := btypes.MakeAll([]btypes.Var{x, y}, btypes.MakeImp(btypes.MakePred(P, []btypes.Term{x, btypes.MakeFun(f, []btypes.Term{y})}), btypes.MakeAnd(btypes.FormList{btypes.MakePred(Q, []btypes.Term{x, y}), btypes.MakePred(Q, []btypes.Term{x, y})})))
+
+	if !pm.ApplySendAxiomHook(axiom) {
+		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
+	}
+
+	X := btypes.MakerMeta("X2", 1)
+	Y := btypes.MakerMeta("Y2", 1)
+
+	form := btypes.MakePred(P, []btypes.Term{X, Y})
+	substs, err := pm.ApplyRewriteHook(form)
+
+	if err != nil {
+		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
+	}
+
+	if len(substs) != 1 && !substs[0].GetSubst().Equals(treetypes.Failure()) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s - %v.", form.ToString(), substs[0].GetForm()[0].ToString(), substs[0].GetSubst().ToString())
+	}
+}

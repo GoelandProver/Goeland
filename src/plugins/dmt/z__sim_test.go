@@ -63,31 +63,31 @@ func TestAxiomRewriting(t *testing.T) {
 	}
 
 	// Top
-	form := btypes.MakePred(P, []btypes.Term{ a })
+	form := btypes.MakePred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
 	}
 
-	if 	len(substs) > 1 ||
+	if len(substs) > 1 ||
 		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-	   	len(substs[0].GetForm()) > 1 ||
+		len(substs[0].GetForm()) > 1 ||
 		!substs[0].GetForm()[0].Equals(btypes.MakeTop()) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), btypes.MakeTop().ToString(), substs[0].GetForm()[0].ToString())
 	}
 
 	// ¬Top
-	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{ a }))
+	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{a}))
 	substs, err = pm.ApplyRewriteHook(form2)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form2.ToString())
 	}
 
-	if 	len(substs) > 1 ||
+	if len(substs) > 1 ||
 		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-	   	len(substs[0].GetForm()) > 1 ||
+		len(substs[0].GetForm()) > 1 ||
 		!substs[0].GetForm()[0].Equals(btypes.MakeNot(btypes.MakeTop())) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), btypes.MakeNot(btypes.MakeTop()).ToString(), substs[0].GetForm()[0].ToString())
 	}
@@ -107,31 +107,31 @@ func TestAxiomRewriting2(t *testing.T) {
 	}
 
 	// Bot
-	form := btypes.MakePred(P, []btypes.Term{ a })
+	form := btypes.MakePred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
 	}
 
-	if 	len(substs) > 1 ||
+	if len(substs) > 1 ||
 		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-	   	len(substs[0].GetForm()) > 1 ||
+		len(substs[0].GetForm()) > 1 ||
 		!substs[0].GetForm()[0].Equals(btypes.MakeBot()) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), btypes.MakeBot().ToString(), substs[0].GetForm()[0].ToString())
 	}
 
 	// ¬Bot
-	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{ a }))
+	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{a}))
 	substs, err = pm.ApplyRewriteHook(form2)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form2.ToString())
 	}
 
-	if 	len(substs) > 1 ||
+	if len(substs) > 1 ||
 		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-	   	len(substs[0].GetForm()) > 1 ||
+		len(substs[0].GetForm()) > 1 ||
 		!substs[0].GetForm()[0].Equals(btypes.MakeNot(btypes.MakeBot())) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), btypes.MakeNot(btypes.MakeBot()).ToString(), substs[0].GetForm()[0].ToString())
 	}
@@ -140,7 +140,7 @@ func TestAxiomRewriting2(t *testing.T) {
 /**
  * This function tests if : forall x.P(x, x) is rewritten as T/¬T with the right substitutions
  **/
- func TestAxiomRewriting3(t *testing.T) {
+func TestAxiomRewriting3(t *testing.T) {
 	pm := getEquivalencePM()
 
 	// forall x.P(x)
@@ -153,52 +153,52 @@ func TestAxiomRewriting2(t *testing.T) {
 	X := btypes.MakerMeta("X", 1)
 	Y := btypes.MakerMeta("Y", 1)
 	// Top
-	form := btypes.MakePred(P, []btypes.Term{ X, Y })
+	form := btypes.MakePred(P, []btypes.Term{X, Y})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
 	}
 
-	if 	len(substs) > 1 ||
+	if len(substs) > 1 ||
 		!(substs[0].GetSubst()[X].Equals(Y) || substs[0].GetSubst()[Y].Equals(X)) ||
-	   	len(substs[0].GetForm()) > 1 ||
+		len(substs[0].GetForm()) > 1 ||
 		!substs[0].GetForm()[0].Equals(btypes.MakeTop()) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), btypes.MakeTop().ToString(), substs[0].GetForm()[0].ToString())
 	}
 
 	// ¬Top
-	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{ X, Y }))
+	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{X, Y}))
 	substs, err = pm.ApplyRewriteHook(form2)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form2.ToString())
 	}
 
-	if 	len(substs) > 1 ||
+	if len(substs) > 1 ||
 		!(substs[0].GetSubst()[X].Equals(Y) || substs[0].GetSubst()[Y].Equals(X)) ||
-	   	len(substs[0].GetForm()) > 1 ||
+		len(substs[0].GetForm()) > 1 ||
 		!substs[0].GetForm()[0].Equals(btypes.MakeNot(btypes.MakeTop())) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), btypes.MakeNot(btypes.MakeTop()).ToString(), substs[0].GetForm()[0].ToString())
 	}
 
 	// Top with subst
-	form3 := btypes.MakePred(P, []btypes.Term{ a, Y })
+	form3 := btypes.MakePred(P, []btypes.Term{a, Y})
 	substs, err = pm.ApplyRewriteHook(form3)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form3.ToString())
 	}
 
-	if 	len(substs) > 1 ||
+	if len(substs) > 1 ||
 		!substs[0].GetSubst()[Y].Equals(a) ||
-	   	len(substs[0].GetForm()) > 1 ||
+		len(substs[0].GetForm()) > 1 ||
 		!substs[0].GetForm()[0].Equals(btypes.MakeTop()) {
 		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), btypes.MakeTop().ToString(), substs[0].GetForm()[0].ToString())
 	}
 
 	// Should fail
-	form4 := btypes.MakePred(P, []btypes.Term{ a, btypes.MakerConst(btypes.MakerId("b")) })
+	form4 := btypes.MakePred(P, []btypes.Term{a, btypes.MakerConst(btypes.MakerId("b"))})
 	substs, err = pm.ApplyRewriteHook(form4)
 
 	if err != nil {
