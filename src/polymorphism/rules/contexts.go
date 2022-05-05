@@ -174,7 +174,7 @@ func (gc GlobalContext) getSimpleTypeScheme(name string, termsType typing.TypeAp
 			}
 		}
 	}
-	return nil, fmt.Errorf("no predicate/function with the name %s in the global context", name)
+	return nil, fmt.Errorf("no predicate/function with the name %s in the global context and arguments of type %s", name, termsType.ToString())
 }
 
 /* Gets the polymorphic type scheme corresponding to the input. */

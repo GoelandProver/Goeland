@@ -389,7 +389,11 @@ func TestPolarizedRewrite3(t *testing.T) {
 func TestPolarizedRewrite4(t *testing.T) {
 	pm := getPolarizedPM()
 
-	axiom := btypes.MakerAll([]btypes.Var{x, y}, btypes.MakerImp(btypes.MakerPred(P, []btypes.Term{x, btypes.MakerFun(f, []btypes.Term{y})}), btypes.MakerAnd(btypes.FormList{btypes.MakerPred(Q, []btypes.Term{x, y}), btypes.MakerPred(Q, []btypes.Term{x, y})})))
+	axiom := btypes.MakeAll(
+		[]btypes.Var{x, y},
+		btypes.MakeImp(
+			btypes.MakePred(P, []btypes.Term{x, btypes.MakeFun(f, []btypes.Term{y}, []typing.TypeApp{})}, []typing.TypeApp{}),
+			btypes.MakeAnd(btypes.FormList{btypes.MakePred(Q, []btypes.Term{x, y}, []typing.TypeApp{}), btypes.MakePred(Q, []btypes.Term{x, y}, []typing.TypeApp{})})))
 
 	if !pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
@@ -398,7 +402,7 @@ func TestPolarizedRewrite4(t *testing.T) {
 	X := btypes.MakerMeta("X2", 1)
 	Y := btypes.MakerMeta("Y2", 1)
 
-	form := btypes.MakerPred(P, []btypes.Term{X, Y})
+	form := btypes.MakePred(P, []btypes.Term{X, Y}, []typing.TypeApp{})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {

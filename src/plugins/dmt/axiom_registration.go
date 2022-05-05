@@ -123,6 +123,9 @@ func isRegisterableAsAtomic(axiom, instanciatedAxiom btypes.Form) bool {
 }
 
 func makeRewriteRuleFromAtomic(atomic btypes.Form) bool {
+	if isEqualityPred(atomic) {
+		return false
+	}
 	if Is[btypes.Pred](atomic) {
 		return makeRewriteRuleFromPred(atomic.(btypes.Pred))
 	}

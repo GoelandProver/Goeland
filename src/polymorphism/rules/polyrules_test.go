@@ -44,6 +44,7 @@ import (
 	"os"
 	"testing"
 
+	. "github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/polymorphism/rules"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -51,6 +52,7 @@ import (
 
 func TestMain(m *testing.M) {
 	typing.Init()
+	typing.InitTPTPArithmetic()
 
 	typing.SaveParamereterizedType("map", []typing.TypeApp{nil, nil})
 	// Add pred scheme to global context
@@ -64,6 +66,7 @@ func TestMain(m *testing.M) {
 		typing.MkParameterizedType("map", []typing.TypeApp{typing.MkTypeHint("int"), typing.MkTypeHint("int")}),
 		typing.DefaultProp(),
 	)
+	typing.SaveConstant("1", typing.MkTypeHint("int"))
 	typing.SaveConstant("2", typing.MkTypeHint("int"))
 	typing.SaveConstant("3", typing.MkTypeHint("int"))
 
@@ -520,6 +523,145 @@ func TestPolymorphicFailureExample(t *testing.T) {
 	_, err := WellFormedVerification(testForm, false)
 	if err == nil {
 		t.Fatalf("Never encountered error when system is not well-typed.")
+	}
+}
+
+func TestArithmeticFunction(t *testing.T) {
+	// 1 + 2 <= 3
+	pred := btypes.MakePred(
+		btypes.MakerId("lesseq"),
+		[]btypes.Term{btypes.MakerFun(btypes.MakerId("sum"), []btypes.Term{btypes.MakerConst(btypes.MakerId("1")), btypes.MakerConst(btypes.MakerId("2"))}, []typing.TypeApp{}), btypes.MakerConst(btypes.MakerId("3"))},
+		[]typing.TypeApp{},
+	)
+
+	_, err := WellFormedVerification(pred, false)
+	if err != nil {
+		t.Fatalf("Encountered an error when system is well-typed: %s", err.Error())
+	}
+}
+
+func TestArithmeticFunction2(t *testing.T) {
+	// (1 + 2) * 3 <= 9
+	typing.SaveConstant("9", typing.MkTypeHint("int"))
+	fun := btypes.MakerFun(
+		btypes.MakerId("product"),
+		[]btypes.Term{
+			btypes.MakerFun(
+				btypes.MakerId("sum"), []btypes.Term{btypes.MakerConst(btypes.MakerId("1")), btypes.MakerConst(btypes.MakerId("2"))}, []typing.TypeApp{},
+			),
+			btypes.MakerConst(btypes.MakerId("3")),
+		},
+		[]typing.TypeApp{},
+	)
+	pred := btypes.MakePred(
+		btypes.MakerId("lesseq"),
+		[]btypes.Term{fun, btypes.MakerConst(btypes.MakerId("9"))},
+		[]typing.TypeApp{},
+	)
+
+	typedForm, err := WellFormedVerification(pred, false)
+	if err != nil {
+		t.Fatalf("Encountered an error when system is well-typed: %s", err.Error())
+	}
+
+	tint := typing.MkTypeHint("int")
+	expected := typing.MkTypeArrow(typing.MkTypeCross(tint, tint), typing.DefaultProp())
+	if !typedForm.GetType().Equals(expected) {
+		t.Fatalf("TypeScheme isn't the expected type. Expected: %s, actual: %s", expected.ToString(), typedForm.GetType().ToString())
+	}
+
+	termsType := make(map[string]typing.TypeScheme)
+
+	termsType[btypes.MakerId("product").ToString()] = typing.MkTypeArrow(typing.MkTypeCross(tint, tint), tint)
+	termsType[btypes.MakerId("sum").ToString()] = typing.MkTypeArrow(typing.MkTypeCross(tint, tint), tint)
+	termsType[btypes.MakerId("1").ToString()] = tint
+	termsType[btypes.MakerId("2").ToString()] = tint
+	termsType[btypes.MakerId("3").ToString()] = tint
+	termsType[btypes.MakerId("9").ToString()] = tint
+
+	for _, term := range typedForm.(btypes.Pred).GetArgs() {
+		checkType(t, termsType, term)
+	}
+}
+
+func checkType(t *testing.T, types map[string]typing.TypeScheme, term btypes.Term) {
+	if Is[btypes.Fun](term) {
+		fun := To[btypes.Fun](term)
+		if !types[fun.GetID().ToString()].Equals(term.(btypes.TypedTerm).GetTypeHint()) {
+			t.Fatalf("Error: wrong TypeScheme for %s. Expected: %s, actual: %s", fun.GetID().ToString(), types[fun.GetID().ToString()].ToString(), term.(btypes.TypedTerm).GetTypeHint().ToString())
+		}
+		for _, nt := range fun.GetArgs() {
+			checkType(t, types, nt)
+		}
+	} else {
+		if !types[term.ToString()].Equals(term.(btypes.TypedTerm).GetTypeHint()) {
+			t.Fatalf("Error: wrong TypeScheme for %s. Expected: %s, actual: %s", term.ToString(), types[term.ToString()].ToString(), term.(btypes.TypedTerm).GetTypeHint().ToString())
+		}
+	}
+}
+
+func TestArithmeticFunction3(t *testing.T) {
+	// (x + y) * 4 <= 9
+	x := btypes.MakerVar("x", typing.MkTypeHint("rat"))
+	y := btypes.MakerVar("y", typing.MkTypeHint("rat"))
+	typing.SaveConstant("9", typing.MkTypeHint("int"))
+	typing.SaveConstant("4", typing.MkTypeHint("rat"))
+	fun := btypes.MakerFun(
+		btypes.MakerId("product"),
+		[]btypes.Term{
+			btypes.MakerFun(
+				btypes.MakerId("sum"), []btypes.Term{x, y}, []typing.TypeApp{},
+			),
+			btypes.MakerConst(btypes.MakerId("4")),
+		},
+		[]typing.TypeApp{},
+	)
+	pred := btypes.MakePred(
+		btypes.MakerId("lesseq"),
+		[]btypes.Term{fun, btypes.MakerConst(btypes.MakerId("9"))},
+		[]typing.TypeApp{},
+	)
+
+	_, err := WellFormedVerification(pred, false)
+	if err == nil {
+		t.Fatalf("Encountered no error when system is not well-typed")
+	}
+}
+
+func TestArithmeticFunction4(t *testing.T) {
+	// 1 + 2 <= 3
+	x := btypes.MakerVar("x", typing.MkTypeHint("int"))
+	y := btypes.MakerVar("y", typing.MkTypeHint("int"))
+	pred := btypes.MakeAll(
+		[]btypes.Var{
+			x, y,
+		},
+		btypes.MakeImp(
+			btypes.MakePred(
+				btypes.MakerId("lesseq"),
+				[]btypes.Term{btypes.MakerFun(btypes.MakerId("sum"), []btypes.Term{x, y}, []typing.TypeApp{}), btypes.MakerConst(btypes.MakerId("3"))},
+				[]typing.TypeApp{},
+			),
+			btypes.MakeAnd(
+				[]btypes.Form{
+					btypes.MakePred(
+						btypes.MakerId("lesseq"),
+						[]btypes.Term{x, btypes.MakerConst(btypes.MakerId("3"))},
+						[]typing.TypeApp{},
+					),
+					btypes.MakePred(
+						btypes.MakerId("lesseq"),
+						[]btypes.Term{y, btypes.MakerConst(btypes.MakerId("3"))},
+						[]typing.TypeApp{},
+					),
+				},
+			),
+		),
+	)
+
+	_, err := WellFormedVerification(pred, false)
+	if err != nil {
+		t.Fatalf("Encountered an error when system is well-typed: %s", err.Error())
 	}
 }
 

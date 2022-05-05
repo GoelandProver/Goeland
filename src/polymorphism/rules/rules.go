@@ -39,6 +39,7 @@ package polyrules
 import (
 	"reflect"
 
+	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -153,7 +154,7 @@ func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstru
 	case btypes.Not:
 		f = btypes.MakeNot(reconstruction.forms[0])
 	case btypes.Pred:
-		f = form
+		f = btypes.MakePred(form.GetID(), reconstruction.terms[len(form.GetTypeVars()):], form.GetTypeVars(), form.GetType())
 	}
 
 	return Reconstruct{result: true, forms: []btypes.Form{f}, err: nil}
@@ -165,6 +166,12 @@ func reconstructTerm(reconstruction Reconstruct, baseTerm btypes.Term) Reconstru
 		return reconstruction
 	}
 
+	if Is[btypes.Fun](baseTerm) {
+		termFun := To[btypes.Fun](baseTerm)
+		fun := btypes.MakerFun(termFun.GetID(), reconstruction.terms[len(termFun.GetTypeVars()):], termFun.GetTypeVars(), termFun.GetTypeHint())
+		return Reconstruct{result: true, terms: []btypes.Term{fun}, err: nil}
+	}
+	// fun: reconstruct with children terms
 	return Reconstruct{result: true, terms: []btypes.Term{baseTerm}, err: nil}
 }
 

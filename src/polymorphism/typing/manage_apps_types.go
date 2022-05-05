@@ -252,7 +252,6 @@ func getSchemeFromArgs(name string, inArgs TypeApp) (TypeScheme, bool) {
 /* Returns the TypeScheme from the name & inArgs if it exists in the map. Else, nil. true means fun name is in the map. */
 func getPolymorphSchemeFromArgs(name string, scheme TypeScheme) (TypeScheme, bool) {
 	typeSchemesMap.lock.Lock()
-	fmt.Println(name)
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
 			if GetInputType(fun.App).Equals(GetInputType(scheme)) {
