@@ -209,3 +209,38 @@ func TestAxiomRewriting3(t *testing.T) {
 		t.Fatalf("Error: error not triggered when searching for something not in the rewrite tree.")
 	}
 }
+
+/**
+ * This function tests if : forall x.x = x & forall x.x != x
+ **/
+func TestAxiomRewriting4(t *testing.T) {
+	pm := getEquivalencePM()
+
+	// forall x.x = x
+	axiom := btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(btypes.Id_eq, []btypes.Term{x, x}))
+
+	if pm.ApplySendAxiomHook(axiom) {
+		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
+	}
+
+	// forall x.x != x
+	axiom = btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(btypes.Id_neq, []btypes.Term{x, x}))
+
+	if pm.ApplySendAxiomHook(axiom) {
+		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
+	}
+
+	// forall x.¬(x = x)
+	axiom = btypes.MakeAll([]btypes.Var{x}, btypes.MakeNot(btypes.MakePred(btypes.Id_eq, []btypes.Term{x, x})))
+
+	if pm.ApplySendAxiomHook(axiom) {
+		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
+	}
+
+	// forall x.¬(x != x)
+	axiom = btypes.MakeAll([]btypes.Var{x}, btypes.MakeNot(btypes.MakePred(btypes.Id_neq, []btypes.Term{x, x})))
+
+	if pm.ApplySendAxiomHook(axiom) {
+		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
+	}
+}
