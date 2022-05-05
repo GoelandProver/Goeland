@@ -82,9 +82,6 @@ func (ep EqualityProblem) getC() ConstraintStruct {
 func (ep EqualityProblem) copy() EqualityProblem {
 	return makeEqualityProblem(ep.getE(), ep.getS(), ep.getT(), ep.getC())
 }
-func (ep EqualityProblem) equals(ep2 EqualityProblem) basictypes.Term {
-	return ep.t.Copy()
-}
 func (ep EqualityProblem) toString() string {
 	return "<" + ep.getE().toString() + ", " + ep.getS().ToString() + ", " + ep.getT().ToString() + "> • " + ep.getC().toString()
 }

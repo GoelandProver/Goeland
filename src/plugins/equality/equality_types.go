@@ -92,7 +92,7 @@ func (ie Inequalities) copy() Inequalities {
 
 func (e Equalities) contains(eq TermPair) bool {
 	for _, element := range e {
-		if element.Equals(eq) {
+		if element.equals(eq) {
 			return true
 		}
 	}
@@ -101,7 +101,7 @@ func (e Equalities) contains(eq TermPair) bool {
 
 func (ie Inequalities) contains(eq TermPair) bool {
 	for _, element := range ie {
-		if element.Equals(eq) {
+		if element.equals(eq) {
 			return true
 		}
 	}

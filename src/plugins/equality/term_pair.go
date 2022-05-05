@@ -56,7 +56,7 @@ func (tp TermPair) getT2() basictypes.Term {
 func (tp TermPair) Copy() TermPair {
 	return makeTermPair(tp.getT1(), tp.getT2())
 }
-func (tp TermPair) Equals(tp2 TermPair) bool {
+func (tp TermPair) equals(tp2 TermPair) bool {
 	return tp.getT1().Equals(tp2.getT1()) && tp.getT2().Equals(tp2.getT2())
 }
 func (tp TermPair) EqualsModulo(tp2 TermPair) bool {

@@ -70,7 +70,7 @@ func (c Constraint) copy() Constraint {
 	return MakeConstraint(c.getCType(), c.getTP())
 }
 func (c Constraint) equals(c2 Constraint) bool {
-	return ((c.getCType() == c2.getCType()) && c.getTP().Equals(c2.getTP()))
+	return ((c.getCType() == c2.getCType()) && c.getTP().equals(c2.getTP()))
 }
 func (c Constraint) toString() string {
 	switch c.getCType() {
