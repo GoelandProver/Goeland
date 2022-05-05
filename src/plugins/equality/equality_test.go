@@ -51,162 +51,180 @@ import (
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-/* cas X=Y dans egalités */
+// Code trees
+var tp, tn datastruct.DataStructure
 
-func TestMain(m *testing.M) {
-	code := m.Run()
-	os.Exit(code)
-}
+// Id
+var p_id basictypes.Id
+var g_id basictypes.Id
+var f_id basictypes.Id
+var a_id basictypes.Id
+var b_id basictypes.Id
+var c_id basictypes.Id
 
-/* Tests equality */
-/* (X, g(a)), (X, f(g(a))) */
-func TestEQ(t *testing.T) {
-	global.SetDebug(true)
-	global.SetStart(time.Now())
-	initPluginGlobalVariables()
-	basictypes.Init()
+// Meta
+var x basictypes.Meta
+var y basictypes.Meta
 
-	global.PrintDebug("MAIN", "Start of the problem")
-	f_id := basictypes.MakerId("f")
-	g_id := basictypes.MakerId("g")
-	a_id := basictypes.MakerId("a")
+// Const
+var a basictypes.Fun
+var b basictypes.Fun
+var c basictypes.Fun
 
-	a := basictypes.MakerConst(a_id)
-	x := basictypes.MakerMeta("X", -1)
-	fa := basictypes.MakerFun(f_id, []basictypes.Term{a})
-	gx := basictypes.MakerFun(g_id, []basictypes.Term{x})
-	ggx := basictypes.MakerFun(g_id, []basictypes.Term{gx})
-	gggx := basictypes.MakerFun(g_id, []basictypes.Term{ggx})
+// Fun
+var gx basictypes.Fun
+var ggx basictypes.Fun
+var gggx basictypes.Fun
+var gfy basictypes.Fun
+var ga basictypes.Fun
+var gga basictypes.Fun
+var fa basictypes.Fun
+var fx basictypes.Fun
+var fy basictypes.Fun
 
-	eq1 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{fa, a})
-	eq2 := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{ggx, fa})
-	eq3 := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{gggx, x})
+// Equalities
 
-	initPluginGlobalVariables()
+func initTestVariable() {
+	p_id = basictypes.MakerId("P")
+	g_id = basictypes.MakerId("g")
+	f_id = basictypes.MakerId("f")
+	a_id = basictypes.MakerId("a")
+	b_id = basictypes.MakerId("b")
+	c_id = basictypes.MakerId("c")
+
+	x = basictypes.MakerMeta("X", -1)
+	y := basictypes.MakerMeta("Y", -1)
+
+	a = basictypes.MakerConst(a_id)
+	b = basictypes.MakerConst(b_id)
+	c = basictypes.MakerConst(c_id)
+
+	gx = basictypes.MakerFun(g_id, []basictypes.Term{x})
+	ggx = basictypes.MakerFun(g_id, []basictypes.Term{gx})
+	gggx = basictypes.MakerFun(g_id, []basictypes.Term{ggx})
+	gfy = basictypes.MakerFun(g_id, []basictypes.Term{fy})
+	ga = basictypes.MakerFun(g_id, []basictypes.Term{a})
+	gga = basictypes.MakerFun(g_id, []basictypes.Term{ga})
+	fx = basictypes.MakerFun(f_id, []basictypes.Term{x})
+	fy = basictypes.MakerFun(f_id, []basictypes.Term{y})
+	fa = basictypes.MakerFun(f_id, []basictypes.Term{a})
+
+	lpo.insertTerm(p_id)
 	lpo.insertTerm(g_id)
 	lpo.insertTerm(f_id)
+	lpo.insertTerm(c_id)
+	lpo.insertTerm(b_id)
 	lpo.insertTerm(a_id)
-	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v", lpo.toString()))
+}
 
-	lf := basictypes.FormList{eq1, eq2, eq3}
-	global.PrintDebug("MAIN", fmt.Sprintf("LF : %v", lf.ToString()))
-
-	var tp, tn datastruct.DataStructure
+func initCodeTreesTests(lf basictypes.FormList) (datastruct.DataStructure, datastruct.DataStructure) {
 	tp = new(treesearch.Node)
 	tn = new(treesearch.Node)
 	tp = tp.MakeDataStruct(lf, true)
 	tn = tn.MakeDataStruct(lf, false)
-
-	res, subst := EqualityReasoning(tp, tn, lf)
-	global.PrintDebug("MAIN", fmt.Sprintf("RES : %v", res))
-	global.PrintDebug("MAIN", fmt.Sprintf("SUBST : %v", treetypes.SubstListToString(subst)))
+	return tp, tn
 }
 
-/* rien, et X = Y */
-func TestEQB1(t *testing.T) {
-	global.SetDebug(true)
+func TestMain(m *testing.M) {
 	global.SetStart(time.Now())
 	initPluginGlobalVariables()
 	basictypes.Init()
+	code := m.Run()
+	os.Exit(code)
+}
 
-	global.PrintDebug("MAIN", "Start of the problem")
-	f_id := basictypes.MakerId("f")
-	g_id := basictypes.MakerId("g")
-	a_id := basictypes.MakerId("a")
-	b_id := basictypes.MakerId("b")
-	c_id := basictypes.MakerId("c")
-	p_id := basictypes.MakerId("P")
+/** Tests equality problem ***/
+func TestEQ1(t *testing.T) {
 
-	b := basictypes.MakerConst(b_id)
-	c := basictypes.MakerConst(c_id)
-	x := basictypes.MakerMeta("X", -1)
-	y := basictypes.MakerMeta("Y", -1)
-	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
-	gx := basictypes.MakerFun(g_id, []basictypes.Term{x})
-	fy := basictypes.MakerFun(f_id, []basictypes.Term{y})
-	gfy := basictypes.MakerFun(g_id, []basictypes.Term{fy})
+	/**
+	* Eq :
+	* fa = a
+	* ggx = fa
+	*
+	* Problem : gggx != x
+	*
+	* Solutionss : (X, g(a)), (X, f(g(a)))
+	**/
 
-	b_c := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{b, c})
-	gfy_y := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gfy, y})
-	gx_fx := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gx, fx})
+	// EQ
+	eq_fa_a := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{fa, a})
+	eq_ggx_x := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{ggx, fa})
+
+	// NEQ
+	neq_gggx_x := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{gggx, x})
+
+	lf := basictypes.FormList{eq_fa_a, eq_ggx_x, neq_gggx_x}
+	tp, tn = initCodeTreesTests(lf)
+	res, subst := EqualityReasoning(tp, tn, lf)
+
+	expected_subst_1 := treetypes.MakeEmptySubstitution()
+	expected_subst_1[x] = basictypes.MakerFun(g_id, []basictypes.Term{a})
+
+	expected_subst_2 := treetypes.MakeEmptySubstitution()
+	expected_subst_2[x] = basictypes.MakerFun(g_id, []basictypes.Term{fa})
+
+	if !res || len(subst) > 2 || len(subst) < 1 ||
+		(!subst[0].Equals(expected_subst_1) && !subst[0].Equals(expected_subst_2)) ||
+		(len(subst) == 2 && !subst[1].Equals(expected_subst_1) && !subst[0].Equals(expected_subst_2)) {
+		t.Fatalf("Error: %s is not the excpected substitution. Excpeted : %v or %v", treetypes.SubstListToString(subst), expected_subst_1.ToString(), expected_subst_2.ToString())
+	}
+}
+
+func TestEQ2(t *testing.T) {
+
+	/**
+	* Eq :
+	* b = c
+	* gfy = y
+	* gx = fx
+	*
+	* Problem : pb, pc -> b != c
+	*
+	* Solutionss : {} or X = Y
+	**/
+
+	// EQ
+	eq_b_c := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{b, c})
+	eq_gfy_y := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gfy, y})
+	eq_gx_fx := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gx, fx})
+
+	// Pred
 	pb := basictypes.MakePred(p_id, []basictypes.Term{b})
 	pc := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{c}))
 
-	lpo.insertTerm(g_id)
-	lpo.insertTerm(f_id)
-	lpo.insertTerm(c_id)
-	lpo.insertTerm(b_id)
-	lpo.insertTerm(a_id)
-	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
+	lf := basictypes.FormList{eq_b_c, eq_gx_fx, pb, pc, eq_gfy_y}
+	tp, tn = initCodeTreesTests(lf)
+	res, subst := EqualityReasoning(tp, tn, lf)
 
-	lf_b1 := basictypes.FormList{b_c, gx_fx, pb, pc, gfy_y}
+	expected_subst_1 := treetypes.MakeEmptySubstitution()
+	expected_subst_1[x] = y
 
-	global.PrintDebug("MAIN", fmt.Sprintf("B1_ LF : %v\n", lf_b1.ToString()))
+	expected_subst_2 := treetypes.MakeEmptySubstitution()
 
-	var tp, tn datastruct.DataStructure
-	tp = new(treesearch.Node)
-	tn = new(treesearch.Node)
-	tp = tp.MakeDataStruct(lf_b1, true)
-	tn = tn.MakeDataStruct(lf_b1, false)
-
-	res, subst := EqualityReasoning(tp, tn, lf_b1)
-
-	global.PrintDebug("MAIN", fmt.Sprintf("RES B1: %v", res))
-	global.PrintDebug("MAIN", fmt.Sprintf("SUBST B1: %v", treetypes.SubstListToString(subst)))
+	if !res || len(subst) > 2 || len(subst) < 1 ||
+		(!subst[0].Equals(expected_subst_1) && !subst[0].Equals(expected_subst_2)) ||
+		(len(subst) == 2 && !subst[1].Equals(expected_subst_1) && !subst[0].Equals(expected_subst_2)) {
+		t.Fatalf("Error: %s is not the excpected substitution. Excpeted : %v or %v", treetypes.SubstListToString(subst), expected_subst_1.ToString(), expected_subst_2.ToString())
+	}
 
 }
 
 /* (X, a), (Y, a) */
-func TestEQB1_2(t *testing.T) {
-	global.SetDebug(true)
-	global.SetStart(time.Now())
-	initPluginGlobalVariables()
-	basictypes.Init()
+func TestEQ3(t *testing.T) {
 
-	global.PrintDebug("MAIN", "Start of the problem")
-	f_id := basictypes.MakerId("f")
-	g_id := basictypes.MakerId("g")
-	a_id := basictypes.MakerId("a")
-	b_id := basictypes.MakerId("b")
-	c_id := basictypes.MakerId("c")
-	p_id := basictypes.MakerId("P")
-
-	a := basictypes.MakerConst(a_id)
-	b := basictypes.MakerConst(b_id)
-	c := basictypes.MakerConst(c_id)
-	x := basictypes.MakerMeta("X", -1)
-	y := basictypes.MakerMeta("Y", -1)
-	fx := basictypes.MakerFun(f_id, []basictypes.Term{x})
-	gx := basictypes.MakerFun(g_id, []basictypes.Term{x})
-	ga := basictypes.MakerFun(g_id, []basictypes.Term{a})
-	gga := basictypes.MakerFun(g_id, []basictypes.Term{ga})
-	fy := basictypes.MakerFun(f_id, []basictypes.Term{y})
-	gfy := basictypes.MakerFun(g_id, []basictypes.Term{fy})
-
-	b_c := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{b, c})
+	// EQ
+	eq_b_c := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{b, c})
 	gfy_y := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gfy, y})
 	gx_fx := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gx, fx})
+
+	// Pred
 	pggab := basictypes.MakePred(p_id, []basictypes.Term{gga, b})
 	pac := basictypes.MakeNot(basictypes.MakePred(p_id, []basictypes.Term{a, c}))
 
-	lpo.insertTerm(g_id)
-	lpo.insertTerm(f_id)
-	lpo.insertTerm(c_id)
-	lpo.insertTerm(b_id)
-	lpo.insertTerm(a_id)
-	global.PrintDebug("MAIN", fmt.Sprintf("LPO : %v\n", lpo.toString()))
+	lf := basictypes.FormList{b_c, gx_fx, pggab, pac, gfy_y}
 
-	lf_b1 := basictypes.FormList{b_c, gx_fx, pggab, pac, gfy_y}
-
-	global.PrintDebug("MAIN", fmt.Sprintf("B1_ LF : %v\n", lf_b1.ToString()))
-
-	var tp, tn datastruct.DataStructure
-	tp = new(treesearch.Node)
-	tn = new(treesearch.Node)
-	tp = tp.MakeDataStruct(lf_b1, true)
-	tn = tn.MakeDataStruct(lf_b1, false)
-
-	res, subst := EqualityReasoning(tp, tn, lf_b1)
+	tp, tn = initCodeTreesTests(lf)
+	res, subst := EqualityReasoning(tp, tn, lf)
 
 	global.PrintDebug("MAIN", fmt.Sprintf("RES B1: %v", res))
 	global.PrintDebug("MAIN", fmt.Sprintf("SUBST B1: %v", treetypes.SubstListToString(subst)))

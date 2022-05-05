@@ -86,6 +86,18 @@ func (r *ruleStruct) setIsSModified(b bool) {
 func (r *ruleStruct) setIndexEQList(i int) {
 	r.index_eq_list = i
 }
+
+func (r ruleStruct) equals(r2 ruleStruct) bool {
+	return r.getRule() == r2.getRule() &&
+		r.getL().Equals(r2.getL()) &&
+		r.getR().Equals(r2.getR()) &&
+		r.getLPrime().Equals(r2.getLPrime()) &&
+		r.getS().Equals(r2.getS()) &&
+		r.getT().Equals(r2.getT()) &&
+		r.getIsSModified() == r2.getIsSModified() &&
+		r.getIndexEQList() == r2.getIndexEQList()
+}
+
 func (r ruleStruct) toString() string {
 	type_rule := "LEFT"
 	if r.getRule() == RIGHT {
@@ -96,7 +108,10 @@ func (r ruleStruct) toString() string {
 func makeRuleStruct(rule int, l, r, l_prime, s, t basictypes.Term) ruleStruct {
 	return ruleStruct{rule, l, r, l_prime, s, t, true, -1}
 }
-func ruleStructListToString(rsl []ruleStruct) string {
+
+type ruleStructList []ruleStruct
+
+func (rsl ruleStructList) toString() string {
 	res := ""
 	for i, r := range rsl {
 		res += r.toString()
@@ -105,4 +120,33 @@ func ruleStructListToString(rsl []ruleStruct) string {
 		}
 	}
 	return res
+}
+
+func (rsl *ruleStructList) append(r ruleStruct) {
+	*rsl = append(*rsl, r)
+}
+
+func (rsl ruleStructList) contains(r ruleStruct) bool {
+	for _, rs := range rsl {
+		if rs.equals(r) {
+			return true
+		}
+	}
+	return false
+}
+
+func (rsl *ruleStructList) appendIfNotContains(r ruleStruct) {
+	if !rsl.contains(r) {
+		rsl.append(r)
+	}
+}
+
+func (rsl *ruleStructList) merge(rsl2 ruleStructList) {
+	for _, r := range rsl2 {
+		rsl.appendIfNotContains(r)
+	}
+}
+
+func makeEmptyRuleStructList() ruleStructList {
+	return ruleStructList{}
 }

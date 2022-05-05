@@ -48,16 +48,16 @@ import (
 )
 
 /* TryAPplyRules - try if an unification is possible - right first, then left */
-func tryApplyRules(ep EqualityProblem) ([]ruleStruct, []ruleStruct) {
+func tryApplyRules(ep EqualityProblem) (ruleStructList, ruleStructList) {
 	lr := tryApplyRightRules(ep)
 	rr := tryApplyLeftRules(ep)
 	return lr, rr
 }
 
 /* Try left rule */
-func tryApplyLeftRules(ep EqualityProblem) []ruleStruct {
+func tryApplyLeftRules(ep EqualityProblem) ruleStructList {
 	global.PrintDebug("TALR", "-- Try apply left rule")
-	res := []ruleStruct{}
+	res := ruleStructList{}
 	for i, eq_pair := range ep.getE() {
 		res = append(res, tryApplyRuleAux(eq_pair.getT1(), eq_pair.getT2(), ep.copy(), LEFT, true, i)...)
 		res = append(res, tryApplyRuleAux(eq_pair.getT2(), eq_pair.getT1(), ep.copy(), LEFT, false, i)...)
@@ -67,9 +67,9 @@ func tryApplyLeftRules(ep EqualityProblem) []ruleStruct {
 }
 
 /* Try right rule */
-func tryApplyRightRules(ep EqualityProblem) []ruleStruct {
+func tryApplyRightRules(ep EqualityProblem) ruleStructList {
 	global.PrintDebug("TARR", "-- Try apply right rule")
-	res := []ruleStruct{}
+	res := ruleStructList{}
 	res = append(res, tryApplyRuleAux(ep.getS(), ep.getT(), ep.copy(), RIGHT, true, -1)...)
 	res = append(res, tryApplyRuleAux(ep.getT(), ep.getS(), ep.copy(), RIGHT, false, -1)...)
 	global.PrintDebug("TARR", "-- End of Try apply right rule")
@@ -77,9 +77,9 @@ func tryApplyRightRules(ep EqualityProblem) []ruleStruct {
 }
 
 /* Set rule's parameter */
-func tryApplyRuleAux(t1, t2 basictypes.Term, ep EqualityProblem, ruleType int, is_s_modified bool, index int) []ruleStruct {
+func tryApplyRuleAux(t1, t2 basictypes.Term, ep EqualityProblem, ruleType int, is_s_modified bool, index int) ruleStructList {
 	res := tryApplyRuleCompute(t1.Copy(), t2.Copy(), ep.copy(), ruleType)
-	new_res := []ruleStruct{}
+	new_res := ruleStructList{}
 	for _, r := range res {
 		r.setIsSModified(is_s_modified)
 		r.setIndexEQList(index)
@@ -89,7 +89,7 @@ func tryApplyRuleAux(t1, t2 basictypes.Term, ep EqualityProblem, ruleType int, i
 }
 
 // Take s, t and return a rule
-func tryApplyRuleCompute(s, t basictypes.Term, ep EqualityProblem, type_rule int) []ruleStruct {
+func tryApplyRuleCompute(s, t basictypes.Term, ep EqualityProblem, type_rule int) ruleStructList {
 	global.PrintDebug("TARA", "===============================================")
 	global.PrintDebug("TARA", fmt.Sprintf("Try apply rule aux on : %v and %v", s.ToString(), t.ToString()))
 
@@ -107,8 +107,8 @@ func tryApplyRuleCompute(s, t basictypes.Term, ep EqualityProblem, type_rule int
 }
 
 /* Retrieve the last membre of rule struct and return the list */
-func connectLAndR(list_l_prime_l []TermPair, ep EqualityProblem, s basictypes.Term, t basictypes.Term, type_rule int) []ruleStruct {
-	res := []ruleStruct{}
+func connectLAndR(list_l_prime_l []TermPair, ep EqualityProblem, s basictypes.Term, t basictypes.Term, type_rule int) ruleStructList {
+	res := ruleStructList{}
 
 	for _, l_prime_l_pair := range list_l_prime_l {
 		global.PrintDebug("TARA", fmt.Sprintf("Subterms unifiable found : %v", l_prime_l_pair.toString()))

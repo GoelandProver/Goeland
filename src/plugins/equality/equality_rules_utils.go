@@ -48,17 +48,18 @@ import (
 )
 
 type answerEP struct {
-	id     uint64
-	found  bool
-	substs []treetypes.Substitutions
+	id            uint64
+	found         bool
+	substs        []treetypes.Substitutions
+	applied_rules []ruleStruct
 }
 
 func makeEmptyAnswerEP() answerEP {
-	return answerEP{global.GetGID(), false, nil}
+	return answerEP{global.GetGID(), false, nil, nil}
 }
 
-func makeAnswerEP(found bool, substs []treetypes.Substitutions) answerEP {
-	return answerEP{global.GetGID(), found, substs}
+func makeAnswerEP(found bool, substs []treetypes.Substitutions, applied_rules []ruleStruct) answerEP {
+	return answerEP{global.GetGID(), found, substs, applied_rules}
 }
 
 /**

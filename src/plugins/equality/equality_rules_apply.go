@@ -46,22 +46,22 @@ import (
 )
 
 /* apply a rule */
-func applyRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64) {
+func applyRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64, applied_rules ruleStructList) {
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Child of %v", father_id))
 	global.PrintDebug("EQ-AR", fmt.Sprintf("EQ before applying rule %v", ep.toString()))
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Apply rule %v", rs.toString()))
 	switch rs.getRule() {
 	case LEFT:
-		applyLeftRule(rs, ep, parent, father_id)
+		applyLeftRule(rs, ep, parent, father_id, applied_rules)
 	case RIGHT:
-		applyRightRule(rs, ep, parent, father_id)
+		applyRightRule(rs, ep, parent, father_id, applied_rules)
 	default:
 		global.PrintDebug("AR", "[EQ] Rule type unknown")
 	}
 }
 
 /* Apply left rigid basic superposition rule */
-func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP, father_id uint64) {
+func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP, father_id uint64, applied_rules ruleStructList) {
 	global.PrintDebug("ALR", "Apply left rule")
 
 	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC())
@@ -75,7 +75,7 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP,
 			new_eq_list[rs.getIndexEQList()] = makeTermPair(rs.getS(), new_term.Copy())
 		}
 		global.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.toString()))
-		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.getS(), ep.getT(), new_cl), father_chan)
+		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.getS(), ep.getT(), new_cl), father_chan, applied_rules)
 	} else {
 		global.PrintDebug("ALR", "Not consistant with LPO, send nil")
 		father_chan <- makeEmptyAnswerEP()
@@ -84,7 +84,7 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP,
 }
 
 /* Apply right rigid basic superposition rule */
-func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP, father_id uint64) {
+func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP, father_id uint64, applied_rules ruleStructList) {
 	global.PrintDebug("ARR", "Apply right rule")
 
 	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC())
@@ -92,9 +92,9 @@ func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP
 	if is_consistant_with_lpo {
 		global.PrintDebug("ARR", fmt.Sprintf("New term : %v", new_term.ToString()))
 		if rs.getIsSModified() {
-			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), new_term.Copy(), rs.getT(), new_cl), father_chan)
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), new_term.Copy(), rs.getT(), new_cl), father_chan, applied_rules)
 		} else {
-			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), rs.getS(), new_term.Copy(), new_cl), father_chan)
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), rs.getS(), new_term.Copy(), new_cl), father_chan, applied_rules)
 		}
 	} else {
 		global.PrintDebug("ARR", "Not consistant with LPO, send nil")
