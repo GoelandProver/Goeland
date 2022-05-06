@@ -61,6 +61,7 @@ var f_id basictypes.Id
 var a_id basictypes.Id
 var b_id basictypes.Id
 var c_id basictypes.Id
+var d_id basictypes.Id
 var c1_id basictypes.Id
 var c2_id basictypes.Id
 
@@ -76,6 +77,7 @@ var z3 basictypes.Meta
 var a basictypes.Fun
 var b basictypes.Fun
 var c basictypes.Fun
+var d basictypes.Fun
 var c1 basictypes.Fun
 var c2 basictypes.Fun
 
@@ -120,6 +122,7 @@ var eq_a_b basictypes.Pred
 // Inequalites
 var neq_x_a basictypes.Pred
 var neq_a_b basictypes.Pred
+var neq_a_d basictypes.Pred
 var neq_gggx_x basictypes.Pred
 
 // Form
@@ -137,6 +140,7 @@ func initTestVariable() {
 	a_id = basictypes.MakerId("a")
 	b_id = basictypes.MakerId("b")
 	c_id = basictypes.MakerId("c")
+	d_id = basictypes.MakerId("d")
 	c1_id = basictypes.MakerId("c1")
 	c2_id = basictypes.MakerId("c2")
 
@@ -152,6 +156,7 @@ func initTestVariable() {
 	a = basictypes.MakerConst(a_id)
 	b = basictypes.MakerConst(b_id)
 	c = basictypes.MakerConst(c_id)
+	d = basictypes.MakerConst(d_id)
 	c1 = basictypes.MakerConst(c1_id)
 	c2 = basictypes.MakerConst(c2_id)
 
@@ -197,6 +202,7 @@ func initTestVariable() {
 	// Inequalites
 	neq_x_a = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{x, a})
 	neq_a_b = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{a, b})
+	neq_a_d = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{a, d})
 	neq_gggx_x = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{gggx, x})
 
 	// Predicates
@@ -211,6 +217,7 @@ func initTestVariable() {
 	lpo.insertTerm(f_id)
 	lpo.insertTerm(c2_id)
 	lpo.insertTerm(c1_id)
+	lpo.insertTerm(d_id)
 	lpo.insertTerm(c_id)
 	lpo.insertTerm(b_id)
 	lpo.insertTerm(a_id)
@@ -475,12 +482,33 @@ func TestEQ7(t *testing.T) {
 	}
 }
 
+func TestEQ8(t *testing.T) {
+	/**
+	* EQ
+	* a = b
+	* b = c
+	*
+	* NEQ:
+	* a != d
+	*
+	**/
+	lf := basictypes.FormList{eq_a_b, eq_b_c, neq_a_d}
+	tp, tn = initCodeTreesTests(lf)
+	global.SetDebug(true)
+	res, subst := EqualityReasoning(tp, tn, lf)
+
+	if res {
+		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
+	}
+
+}
+
 /* Test apply substitution */
 
 func TestAS(t *testing.T) {
 	/**
 	* Problème : <[X = Y], X, Y>
-	* Substitution : (X, a)
+	* Substitution : (Y, a)
 	**/
 
 	// Original problem
@@ -503,7 +531,6 @@ func TestAS(t *testing.T) {
 	global.PrintDebug("TEST_AS", fmt.Sprintf("Current EP : %v", new_ep.toString()))
 	global.PrintDebug("TEST_AS", fmt.Sprintf("Expected : %v", expected_ep.toString()))
 	global.SetDebug(false)
-
 }
 
 /*** Test constraints ***/

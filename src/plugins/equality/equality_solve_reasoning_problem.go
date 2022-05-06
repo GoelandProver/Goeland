@@ -50,13 +50,14 @@ import (
 /* Launches the first instance of applyEqualityReasoningProblem. */
 func launchEqualityReasoningProblem(ep EqualityProblem) []treetypes.Substitutions {
 	superFatherChan := make(chan answerEP)
-	go tryEqualityReasoningProblem(ep, superFatherChan, makeEmptyRuleStructList())
+	go tryEqualityReasoningProblem(ep, superFatherChan, makeEmptyRuleStructList(), global.GetGID())
 	res := <-superFatherChan
 	return res.substs
 }
 
 /* try equalityReasoningProblem */
-func tryEqualityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, rsl ruleStructList) {
+func tryEqualityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, rsl ruleStructList, father_id uint64) {
+	global.PrintDebug("TERP", fmt.Sprintf("Child of %v", father_id))
 	select {
 	case <-father_chan: // kil order
 	default:
@@ -110,21 +111,27 @@ func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, app
 
 /* Manage application of right and left rules - // bewteen same type, sequential bewteen doffrent types */
 func manageRLRules(ep EqualityProblem, rr, lr ruleStructList, father chan answerEP, applied_rules ruleStructList) (bool, []treetypes.Substitutions, ruleStructList) {
-	res_right, subst_right, applied_rules_apfter_right := manageRule(ep, rr, father, applied_rules)
+	global.PrintDebug("MRLR", fmt.Sprintf("Len of applied_rules brefore RR : %v\n", len(applied_rules)))
+	res_right, subst_right, applied_rules_after_right := manageRule(ep, rr, father, applied_rules)
+	global.PrintDebug("MRLR", fmt.Sprintf("Len of applied_rules after RR : %v\n", len(applied_rules)))
 	if res_right {
-		return true, subst_right, applied_rules_apfter_right
+		return true, subst_right, applied_rules_after_right
 	} else {
 		// Ne pas réappliquer les règles déjà appliquer, faire la différences des deux listes, manage rule return applied rules
-		// remaining_lr := makeEmptyRuleStructList()
-		// for _, r := range lr {
-		// 	if !applied_rules_apfter_right.contains(r) {
-		// 		remaining_lr = append(remaining_lr, r)
-		// 	}
-		// }
-		// fmt.Printf("Len remaingin lr : %v", len(remaining_lr))
-		return manageRule(ep, lr, father, applied_rules)
+		remaining_lr := makeEmptyRuleStructList()
+		global.PrintDebug("MRLR", fmt.Sprintf("Len of LR brefore remaining : %v\n", len(lr)))
+		for _, r := range lr {
+			if !applied_rules_after_right.contains(r) {
+				remaining_lr = append(remaining_lr, r)
+			}
+		}
+		global.PrintDebug("MRLR", fmt.Sprintf("Len remaining LR : %v\n", len(remaining_lr)))
+		if len(remaining_lr) > 0 {
+			return manageRule(ep, remaining_lr, father, applied_rules)
+		} else {
+			return false, nil, applied_rules_after_right
+		}
 		// TODO : TEST HERE SYN074
-		// return false, []treetypes.Substitutions{}
 	}
 }
 
@@ -163,6 +170,7 @@ func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP, appli
 
 	// Wait for at least on child to finish.
 	for remaining > 0 && !answer_found && !stop_found {
+		global.PrintDebug("SAEP", fmt.Sprintf("Remainig : %v - answer_found : %v - stop_found : %v", remaining, answer_found, stop_found))
 		index, value, _ := reflect.Select(cases)
 		remaining--
 		if index == indexQuit {
@@ -181,6 +189,8 @@ func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP, appli
 			applied_rules.merge(res.applied_rules)
 		}
 	}
+
+	global.PrintDebug("SAEP", "End of select")
 
 	selectCleanup(hasAnswered, chan_tab)
 	return answer_found, substs_res, applied_rules

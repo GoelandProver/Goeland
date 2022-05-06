@@ -75,7 +75,7 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP,
 			new_eq_list[rs.getIndexEQList()] = makeTermPair(rs.getS(), new_term.Copy())
 		}
 		global.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.toString()))
-		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.getS(), ep.getT(), new_cl), father_chan, applied_rules)
+		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.getS(), ep.getT(), new_cl), father_chan, applied_rules, father_id)
 	} else {
 		global.PrintDebug("ALR", "Not consistant with LPO, send nil")
 		father_chan <- makeEmptyAnswerEP()
@@ -92,9 +92,9 @@ func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP
 	if is_consistant_with_lpo {
 		global.PrintDebug("ARR", fmt.Sprintf("New term : %v", new_term.ToString()))
 		if rs.getIsSModified() {
-			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), new_term.Copy(), rs.getT(), new_cl), father_chan, applied_rules)
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), new_term.Copy(), rs.getT(), new_cl), father_chan, applied_rules, father_id)
 		} else {
-			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), rs.getS(), new_term.Copy(), new_cl), father_chan, applied_rules)
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), rs.getS(), new_term.Copy(), new_cl), father_chan, applied_rules, father_id)
 		}
 	} else {
 		global.PrintDebug("ARR", "Not consistant with LPO, send nil")
