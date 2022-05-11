@@ -491,10 +491,11 @@ func TestEQ8(t *testing.T) {
 	* NEQ:
 	* a != d
 	*
+	* Check if a rule is not applied miltiple times (once in the rigt branch, not in the left one)
+	*
 	**/
 	lf := basictypes.FormList{eq_a_b, eq_b_c, neq_a_d}
 	tp, tn = initCodeTreesTests(lf)
-	global.SetDebug(true)
 	res, subst := EqualityReasoning(tp, tn, lf)
 
 	if res {
