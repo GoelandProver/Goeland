@@ -163,7 +163,7 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 	res := Inequalities{}
 	MetaNEQ1 := basictypes.MakerMeta("META_NEQ_1", -1)
 	MetaNEQ2 := basictypes.MakerMeta("META_NEQ_2", -1)
-	eq_neq_pred := basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{MetaNEQ1, MetaNEQ2})
+	eq_neq_pred := basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{MetaNEQ1, MetaNEQ2})
 	_, neq_list := dt.Unify(eq_neq_pred)
 	for _, ms := range neq_list {
 		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaNEQ1, MetaNEQ2)

@@ -57,13 +57,11 @@ var lock_formula sync.Mutex
 
 // Global id
 var Id_eq Id
-var Id_neq Id
 
 /* Initialization */
 func Init() {
 	Reset()
 	Id_eq = MakerId("=")
-	Id_neq = MakerId("!=")
 }
 
 /* Reset all the maps and counters */

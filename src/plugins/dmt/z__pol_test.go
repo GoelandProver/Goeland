@@ -130,7 +130,7 @@ func TestPolarizedInsertion(t *testing.T) {
 	}
 
 	// (x = x) => forall x. P(x) shouldn't be registered (because equality and dmt are managed separately)
-	neqPred := btypes.MakerPred(btypes.Id_neq, []btypes.Term{x, x})
+	neqPred := btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, []btypes.Term{x, x}))
 	polPred7 := btypes.MakerImp(
 		neqPred,
 		btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(P, []btypes.Term{x})),
@@ -140,7 +140,7 @@ func TestPolarizedInsertion(t *testing.T) {
 	}
 
 	// (Vx (x = x)) => forall x. P(x) shouldn't be registered
-	neqPred2 := btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(btypes.Id_neq, []btypes.Term{x, x}))
+	neqPred2 := btypes.MakerAll([]btypes.Var{x}, btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, []btypes.Term{x, x})))
 	polPred8 := btypes.MakerImp(
 		neqPred2,
 		btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(P, []btypes.Term{x})),

@@ -48,7 +48,7 @@ func is[T any, U any](obj U) bool {
 }
 
 func isEquality(pred btypes.Pred) bool {
-	return pred.GetID().Equals(btypes.Id_eq) || pred.GetID().Equals(btypes.Id_neq)
+	return pred.GetID().Equals(btypes.Id_eq)
 }
 
 func refute(f btypes.Form) btypes.Form {

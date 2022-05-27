@@ -168,6 +168,7 @@ func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP) (bool
 	substs_res := []treetypes.Substitutions{}
 
 	// Wait for at least on child to finish.
+	// TODO : perte complétude here
 	for remaining > 0 && !answer_found && !stop_found {
 		global.PrintDebug("SAEP", fmt.Sprintf("Remainig : %v - answer_found : %v - stop_found : %v", remaining, answer_found, stop_found))
 		index, value, _ := reflect.Select(cases)
@@ -181,7 +182,9 @@ func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP) (bool
 			hasAnswered[index] = true
 			if res.found {
 				answer_found = true
-				substs_res = append(substs_res, res.substs...)
+				for _, s := range res.substs {
+					substs_res = treetypes.AppendIfNotContainsSubst(substs_res, s)
+				}
 			} else {
 				global.PrintDebug("SAEP", "Child provide no solution")
 			}

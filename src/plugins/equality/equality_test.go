@@ -120,10 +120,10 @@ var eq_b_c basictypes.Pred
 var eq_a_b basictypes.Pred
 
 // Inequalites
-var neq_x_a basictypes.Pred
-var neq_a_b basictypes.Pred
-var neq_a_d basictypes.Pred
-var neq_gggx_x basictypes.Pred
+var neq_x_a basictypes.Form
+var neq_a_b basictypes.Form
+var neq_a_d basictypes.Form
+var neq_gggx_x basictypes.Form
 
 // Form
 var pggab basictypes.Form
@@ -200,10 +200,10 @@ func initTestVariable() {
 	eq_b_c = basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{b, c})
 
 	// Inequalites
-	neq_x_a = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{x, a})
-	neq_a_b = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{a, b})
-	neq_a_d = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{a, d})
-	neq_gggx_x = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{gggx, x})
+	neq_x_a = basictypes.MakeNot(basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{x, a}))
+	neq_a_b = basictypes.MakeNot(basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{a, b}))
+	neq_a_d = basictypes.MakeNot(basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{a, d}))
+	neq_gggx_x = basictypes.MakeNot(basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{gggx, x}))
 
 	// Predicates
 	pggab = basictypes.MakePred(p_id, []basictypes.Term{gga, b})
@@ -236,6 +236,7 @@ func TestMain(m *testing.M) {
 	basictypes.Init()
 	initPluginGlobalVariables()
 	initTestVariable()
+	global.SetDebug(true)
 	code := m.Run()
 	os.Exit(code)
 }
@@ -327,7 +328,7 @@ func TestEQ4(t *testing.T) {
 	* Eq :
 	* b = c
 	* gfy = y
-	* x = a
+	* x != a
 	*
 	* Problem : pggab, pac
 	*
@@ -336,13 +337,17 @@ func TestEQ4(t *testing.T) {
 
 	lf := basictypes.FormList{eq_b_c, eq_gfy_y, neq_x_a, pggab, pac}
 	tp, tn = initCodeTreesTests(lf)
+	global.PrintDebug("PT", "Tree pos")
+	tp.Print()
+	global.PrintDebug("PT", "Tree neg")
+	tn.Print()
 	res, subst := EqualityReasoning(tp, tn, lf)
 
 	expected_subst := treetypes.MakeEmptySubstitution()
 	expected_subst[x] = a
 
 	if !res || len(subst) != 1 || !subst[0].Equals(expected_subst) {
-		t.Fatalf("Error: %v - %v is not the expected substitution. expected : %v", res, treetypes.SubstListToString(subst), expected_subst.ToString())
+		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expected_subst.ToString())
 	}
 
 }

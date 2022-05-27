@@ -323,7 +323,7 @@ fof_unary_formula:
 /* Special formulas */
 
 fol_infix_unary:
-    term NOT_EQUAL term {$$ = basictypes.MakerPred(basictypes.Id_neq, []basictypes.Term{$1, $3})}
+    term NOT_EQUAL term {$$ = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{$1, $3}))}
   ;
 
 /* First order atoms */

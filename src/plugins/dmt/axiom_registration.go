@@ -136,6 +136,9 @@ func makeRewriteRuleFromPred(pred btypes.Pred) bool {
 }
 
 func makeRewriteRuleFromNegatedAtom(atom btypes.Not) bool {
+	if isEquality(atom.GetForm().(btypes.Pred)) {
+		return false
+	}
 	addNegRewriteRule(atom, btypes.RefuteForm(btypes.MakerBot()))
 	addPosRewriteRule(atom, btypes.MakerBot())
 	return true

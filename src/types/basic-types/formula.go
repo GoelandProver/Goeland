@@ -603,31 +603,7 @@ func MakerAll(vl []Var, f Form) All {
 
 /* Transform a formula into its negation */
 func RefuteForm(f Form) Form {
-	new_f, changed := rewriteNEQ(f)
-	if changed {
-		return new_f
-	} else {
-		return MakerNot(new_f)
-	}
-}
-
-/* if a not(eq) is found, transform it into !=  and if not(neq) is found, transform it into = */
-func rewriteNEQ(f Form) (Form, bool) {
-	if pred, ok := f.(Pred); ok {
-		if pred.GetID().Equals(Id_eq) {
-			return MakePred(pred.GetIndex(), Id_neq, pred.GetArgs()), true
-		}
-	}
-
-	if not, ok := f.(Not); ok {
-		if pred, ok := not.GetForm().(Pred); ok {
-			if pred.GetID().Equals(Id_neq) {
-				return MakePred(pred.GetIndex(), Id_eq, pred.GetArgs()), true
-			}
-		}
-	}
-
-	return f, false
+	return MakeNot(f.GetIndex(), f)
 }
 
 /* Remove all the negations */

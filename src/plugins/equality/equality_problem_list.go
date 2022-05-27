@@ -41,6 +41,9 @@
 package main
 
 import (
+	"fmt"
+
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -117,12 +120,15 @@ func buildEqualityProblemMultiListFromPredList(p basictypes.Pred, tn datastruct.
 	return res
 }
 
-/* Take a list of form and build an equality problem list, corresponding to thoses related to a predicate and it negation */
+/* Take a list of form and build an equality problem list, corresponding to thoses related to a predicate and its negation */
 func buildEqualityProblemMultiListFromFormList(fl basictypes.FormList, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
 	for _, p := range fl {
 		if pt, ok := p.(basictypes.Pred); ok {
-			res = append(res, buildEqualityProblemMultiListFromPredList(pt, tn, eq.copy())...)
+			global.PrintDebug("BEPMLFFL", fmt.Sprintf("Pred found : %v", p.ToString()))
+			if !pt.GetID().Equals(basictypes.Id_eq) {
+				res = append(res, buildEqualityProblemMultiListFromPredList(pt, tn, eq.copy())...)
+			}
 		}
 	}
 	return res
@@ -138,7 +144,9 @@ func buildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.Dat
 	if len(eq) <= 0 {
 		return res, false
 	}
-	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tp.Copy()), eq.copy())...)
+	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tn.Copy()), eq.copy())...)
+	global.PrintDebug("BEPML", fmt.Sprintf("Res after FromNEQ : %v", res.ToString()))
 	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.copy())...)
+	global.PrintDebug("BEPML", fmt.Sprintf("Res after FromForm : %v", res.ToString()))
 	return res, true
 }

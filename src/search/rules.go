@@ -112,26 +112,28 @@ func searchObviousClosureRule(f basictypes.Form) bool {
 	}
 }
 
-/* Search contradiction with inequalities */
+/* Search contradiction with inequalities (for example, !(x,a) -> subst(x, a)) */
 func searchInequalities(f basictypes.Form) (bool, treetypes.Substitutions) {
 	subst := treetypes.MakeEmptySubstitution()
-	if pred_neq, ok := f.(basictypes.Pred); ok {
-		if pred_neq.GetID().Equals(basictypes.Id_neq) {
+	if form_not, ok := f.(basictypes.Not); ok {
+		if pred_neq, ok := form_not.GetForm().(basictypes.Pred); ok {
+			if pred_neq.GetID().Equals(basictypes.Id_eq) {
 
-			global.PrintDebug("SI", fmt.Sprintf("Search Inequality closure rule : %v", f.ToString()))
+				global.PrintDebug("SI", fmt.Sprintf("Search Inequality closure rule : %v", f.ToString()))
 
-			// Search if the two terms are unfiable
-			arg_1 := pred_neq.GetArgs()[0]
-			arg_2 := pred_neq.GetArgs()[1]
+				// Search if the two terms are unfiable
+				arg_1 := pred_neq.GetArgs()[0]
+				arg_2 := pred_neq.GetArgs()[1]
 
-			global.PrintDebug("SI", fmt.Sprintf("Arg 1 : %v", arg_1.ToString()))
-			global.PrintDebug("SI", fmt.Sprintf("Arg 2 : %v", arg_2.ToString()))
+				global.PrintDebug("SI", fmt.Sprintf("Arg 1 : %v", arg_1.ToString()))
+				global.PrintDebug("SI", fmt.Sprintf("Arg 2 : %v", arg_2.ToString()))
 
-			subst = treesearch.AddUnification(arg_1, arg_2, subst)
-			global.PrintDebug("SI", fmt.Sprintf("Subst : %v", subst.ToString()))
+				subst = treesearch.AddUnification(arg_1, arg_2, subst)
+				global.PrintDebug("SI", fmt.Sprintf("Subst : %v", subst.ToString()))
 
-			if !subst.Equals(treetypes.Failure()) {
-				return true, subst
+				if !subst.Equals(treetypes.Failure()) {
+					return true, subst
+				}
 			}
 		}
 	}
