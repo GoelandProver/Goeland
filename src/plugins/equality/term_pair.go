@@ -38,9 +38,7 @@
 
 package main
 
-import (
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
-)
+import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 
 /* A pair of two terms */
 type TermPair struct {
@@ -53,13 +51,13 @@ func (tp TermPair) getT1() basictypes.Term {
 func (tp TermPair) getT2() basictypes.Term {
 	return tp.t2.Copy()
 }
-func (tp TermPair) Copy() TermPair {
+func (tp TermPair) copy() TermPair {
 	return makeTermPair(tp.getT1(), tp.getT2())
 }
 func (tp TermPair) equals(tp2 TermPair) bool {
 	return tp.getT1().Equals(tp2.getT1()) && tp.getT2().Equals(tp2.getT2())
 }
-func (tp TermPair) EqualsModulo(tp2 TermPair) bool {
+func (tp TermPair) equalsModulo(tp2 TermPair) bool {
 	return (tp.getT1().Equals(tp2.getT1()) && tp.getT2().Equals(tp2.getT2())) ||
 		(tp.getT1().Equals(tp2.getT2()) && tp.getT2().Equals(tp2.getT1()))
 

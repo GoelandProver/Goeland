@@ -50,116 +50,115 @@ import (
 /* Launches the first instance of applyEqualityReasoningProblem. */
 func launchEqualityReasoningProblem(ep EqualityProblem) []treetypes.Substitutions {
 	superFatherChan := make(chan answerEP)
-	go tryEqualityReasoningProblem(ep, superFatherChan, makeEmptyRuleStructList(), global.GetGID())
+	go tryEqualityReasoningProblem(ep, superFatherChan, -1, RIGHT, global.GetGID())
 	res := <-superFatherChan
 	return res.substs
 }
 
 /* try equalityReasoningProblem */
-func tryEqualityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, rsl ruleStructList, father_id uint64) {
+func tryEqualityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, last_applied_rule_index, last_applied_rule_type int, father_id uint64) {
 	global.PrintDebug("TERP", fmt.Sprintf("Child of %v", father_id))
 	select {
 	case <-father_chan: // kil order
 	default:
 		// No kill order, let's apply the next rules.
-		found, substs, applied_rules := equalityReasoningProblem(ep, father_chan, rsl)
+		found, substs := equalityReasoningProblem(ep, father_chan, last_applied_rule_index, last_applied_rule_type)
 		global.PrintDebug("TERP", "Send solution to father_chan")
 		select {
 		case <-father_chan: // Kill order received, it's finished anyway.
 			global.PrintDebug("TERP", "Kill order recieved")
-		case father_chan <- makeAnswerEP(found, substs, applied_rules): // Otherwise, send result to father.
+		case father_chan <- makeAnswerEP(found, substs): // Otherwise, send result to father.
 			global.PrintDebug("TERP", "Message sent")
 		}
 	}
 }
 
 /* launch an equality reasoning problem resolution. Stop when the first solution is found */
-func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, applied_rules ruleStructList) (bool, []treetypes.Substitutions, ruleStructList) {
+func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, last_applied_rule_index, last_applied_rule_type int) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ERP", fmt.Sprintf("EP : %v", ep.toString()))
 	substs_res := []treetypes.Substitutions{}
+	unif_found := false
 
 	// Check if an unification exist between s and t and if its consistant with constraints
-	check_unif_found, check_unif_substs_res := checkUnif(ep)
-	if check_unif_found {
-		substs_res = append(substs_res, check_unif_substs_res...)
+	if last_applied_rule_type == RIGHT {
+		check_unif_found, check_unif_substs_res := checkUnif(ep)
+		if check_unif_found {
+			unif_found = true
+			substs_res = append(substs_res, check_unif_substs_res...)
+		}
 	}
 
 	// Check stop case
 	if checkStopCases(ep) {
 		global.PrintDebug("ERP", fmt.Sprintf("Stop case found ! Send : %v", treetypes.SubstListToString(substs_res)))
-		return true, substs_res, applied_rules
+		return true, substs_res
 	} else {
 		global.PrintDebug("ERP", "Stop case not found")
 	}
 
-	// Compute available rules
-	global.PrintDebug("ERP", "Try apply rules !")
-	rr, lr := tryApplyRules(ep)
-	global.PrintDebug("ERP", fmt.Sprintf("There is %v - %v rules available : %v and %v ", len(rr), len(lr), rr.toString(), lr.toString()))
-
 	// Apply avaibalbe rule
-	solution_found, solution_subst, new_applied_rules := manageRLRules(ep, rr, lr, father_chan, applied_rules)
+	solution_found, solution_subst := manageRLRules(ep, father_chan, last_applied_rule_index, last_applied_rule_type)
 	if solution_found {
+		unif_found = true
 		substs_res = append(substs_res, solution_subst...)
 	}
 
 	global.PrintDebug("ERP", fmt.Sprintf("Send : %v !", treetypes.SubstListToString(substs_res)))
-	return (check_unif_found || solution_found), substs_res, new_applied_rules
+	return unif_found, substs_res
 }
 
 /*** Launch rules ***/
 
-/* Manage application of right and left rules - // bewteen same type, sequential bewteen doffrent types */
-func manageRLRules(ep EqualityProblem, rr, lr ruleStructList, father chan answerEP, applied_rules ruleStructList) (bool, []treetypes.Substitutions, ruleStructList) {
-	global.PrintDebug("MRLR", fmt.Sprintf("Len of applied_rules brefore RR : %v\n", len(applied_rules)))
-	res_right, subst_right, applied_rules_after_right := manageRule(ep, rr, father, applied_rules)
-	global.PrintDebug("MRLR", fmt.Sprintf("Len of applied_rules after RR : %v\n", len(applied_rules)))
+/* Manage application of right and left rules - // bewteen same type, sequential bewteen diffrent types */
+func manageRLRules(ep EqualityProblem, father chan answerEP, last_applied_rule_index, last_applied_rule_type int) (bool, []treetypes.Substitutions) {
+
+	// Compute right rule
+	global.PrintDebug("MRLR", "Try apply right rules !")
+	rules_to_apply := tryApplyRightRules(ep) // TODO : ne chercher la contradiction seulemnt avec l'index donné
+	global.PrintDebug("MRLR", fmt.Sprintf("There is %v right rules available : %v ", len(rules_to_apply), rules_to_apply.toString()))
+	// apply right rules
+	res_right, subst_right := manageRule(ep, rules_to_apply, father)
+
 	if res_right {
-		return true, subst_right, applied_rules_after_right
+		return true, subst_right
 	} else {
-		// Ne pas réappliquer les règles déjà appliquer, faire la différences des deux listes, manage rule return applied rules
-		remaining_lr := makeEmptyRuleStructList()
-		global.PrintDebug("MRLR", fmt.Sprintf("Len of LR brefore remaining : %v\n", len(lr)))
-		for _, r := range lr {
-			if !applied_rules_after_right.contains(r) {
-				remaining_lr = append(remaining_lr, r)
-			}
+		// Compute left rule
+		global.PrintDebug("MRLR", "Try apply left rules !")
+		index_begin := 0
+		if last_applied_rule_type == LEFT {
+			index_begin = last_applied_rule_index
 		}
-		global.PrintDebug("MRLR", fmt.Sprintf("Len remaining LR : %v\n", len(remaining_lr)))
-		if len(remaining_lr) > 0 {
-			return manageRule(ep, remaining_lr, father, applied_rules)
-		} else {
-			return false, nil, applied_rules_after_right
-		}
-		// TODO : TEST HERE SYN074
+		rules_to_apply = tryApplyLeftRules(ep, index_begin)
+		global.PrintDebug("MRLR", fmt.Sprintf("There is %v left rules available : %v ", len(rules_to_apply), rules_to_apply.toString()))
+		return manageRule(ep, rules_to_apply, father)
+
 	}
 }
 
-func manageRule(ep EqualityProblem, rsl ruleStructList, father chan answerEP, applied_rules ruleStructList) (bool, []treetypes.Substitutions, ruleStructList) {
-	chan_tab := tryLaunchRule(ep, rsl, applied_rules)
-	applied_rules.merge(rsl)
-	return selectAnswerEP(chan_tab, father, applied_rules)
+func manageRule(ep EqualityProblem, rsl ruleStructList, father chan answerEP) (bool, []treetypes.Substitutions) {
+	chan_tab := tryLaunchRule(ep, rsl)
+	return selectAnswerEP(chan_tab, father)
 }
 
-func tryLaunchRule(ep EqualityProblem, rules ruleStructList, applied_rules ruleStructList) [](chan answerEP) {
+func tryLaunchRule(ep EqualityProblem, rules ruleStructList) [](chan answerEP) {
 	chan_tab := [](chan answerEP){}
 	for _, r := range rules {
-		chan_tab = append(chan_tab, launchApplyRules(r, ep, applied_rules))
+		chan_tab = append(chan_tab, launchApplyRules(r, ep))
 	}
 	return chan_tab
 }
 
 /* Lanch an equality reasoning problem, return a channel */
-func launchApplyRules(rs ruleStruct, ep EqualityProblem, applied_rules ruleStructList) chan answerEP {
+func launchApplyRules(rs ruleStruct, ep EqualityProblem) chan answerEP {
 	chan_child := make(chan answerEP)
-	go applyRule(rs, ep, chan_child, global.GetGID(), applied_rules)
+	go applyRule(rs, ep, chan_child, global.GetGID())
 	return chan_child
 }
 
 /*** Retrieve result ***/
 
 /* Wait for children to close. Return chen the fisrt child with a substitution answer */
-func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP, applied_rules ruleStructList) (bool, []treetypes.Substitutions, ruleStructList) {
+func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP) (bool, []treetypes.Substitutions) {
 	// Instantiation
 	cases := makeCases(chan_tab, chan_parent)
 	hasAnswered := make([]bool, len(chan_tab)) // Everything to false
@@ -186,14 +185,13 @@ func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP, appli
 			} else {
 				global.PrintDebug("SAEP", "Child provide no solution")
 			}
-			applied_rules.merge(res.applied_rules)
 		}
 	}
 
 	global.PrintDebug("SAEP", "End of select")
 
 	selectCleanup(hasAnswered, chan_tab)
-	return answer_found, substs_res, applied_rules
+	return answer_found, substs_res
 }
 
 /* Make cases : take a list of chan an make a select structure */

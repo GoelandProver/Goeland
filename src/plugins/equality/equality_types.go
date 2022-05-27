@@ -77,7 +77,7 @@ func (ie Inequalities) toString() string {
 func (e Equalities) copy() Equalities {
 	res := []TermPair{}
 	for _, tp := range e {
-		res = append(res, tp.Copy())
+		res = append(res, tp.copy())
 	}
 	return res
 }
@@ -85,7 +85,7 @@ func (e Equalities) copy() Equalities {
 func (ie Inequalities) copy() Inequalities {
 	res := []TermPair{}
 	for _, tp := range ie {
-		res = append(res, tp.Copy())
+		res = append(res, tp.copy())
 	}
 	return res
 }

@@ -47,20 +47,16 @@ import (
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-/* TryAPplyRules - try if an unification is possible - right first, then left */
-func tryApplyRules(ep EqualityProblem) (ruleStructList, ruleStructList) {
-	lr := tryApplyRightRules(ep)
-	rr := tryApplyLeftRules(ep)
-	return lr, rr
-}
-
 /* Try left rule */
-func tryApplyLeftRules(ep EqualityProblem) ruleStructList {
+func tryApplyLeftRules(ep EqualityProblem, index_begin int) ruleStructList {
 	global.PrintDebug("TALR", "-- Try apply left rule")
 	res := ruleStructList{}
-	for i, eq_pair := range ep.getE() {
+	i := index_begin
+	for i < len(ep.getE()) {
+		eq_pair := ep.getE()[i]
 		res = append(res, tryApplyRuleAux(eq_pair.getT1(), eq_pair.getT2(), ep.copy(), LEFT, true, i)...)
 		res = append(res, tryApplyRuleAux(eq_pair.getT2(), eq_pair.getT1(), ep.copy(), LEFT, false, i)...)
+		i++
 	}
 	global.PrintDebug("TALR", "-- End of Try apply left rule")
 	return res
@@ -121,7 +117,7 @@ func connectLAndR(list_l_prime_l []TermPair, ep EqualityProblem, s basictypes.Te
 			l_r := makeTermPair(l_prime_l_pair.getT2(), r)
 
 			// if s = t is not l = r OR, if they are, the rule's type is right, so it's ok
-			if !s_t.EqualsModulo(l_r) || type_rule == RIGHT {
+			if !s_t.equalsModulo(l_r) || type_rule == RIGHT {
 				global.PrintDebug("TARA", "Try apply rule ok !")
 				res = append(res, makeRuleStruct(type_rule, l_prime_l_pair.getT2(), r.Copy(), l_prime_l_pair.getT1(), s.Copy(), t.Copy()))
 			} else {

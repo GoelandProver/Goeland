@@ -165,7 +165,7 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 			return true
 		}
 
-		// Apply nw global subst to prec
+		// Apply new global subst to prec
 		global.PrintDebug("ICW", "Check if consistant with the whole cl")
 		if !cs.getPrec().isConsistantWithSubst(subst_all) {
 			global.PrintDebug("ICW", "Not consistant with the whole cl")

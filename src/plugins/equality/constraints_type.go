@@ -61,7 +61,7 @@ func (c Constraint) getCType() int {
 	return c.ctype
 }
 func (c Constraint) getTP() TermPair {
-	return c.tp.Copy()
+	return c.tp.copy()
 }
 func (c *Constraint) setTP(tp TermPair) {
 	c.tp = tp
@@ -85,7 +85,7 @@ func (c Constraint) toString() string {
 }
 
 func MakeConstraint(i int, tp TermPair) Constraint {
-	return Constraint{i, tp.Copy()}
+	return Constraint{i, tp.copy()}
 }
 
 func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
