@@ -65,6 +65,7 @@ type State struct {
 	proof                                 []proof.ProofStruct
 	current_proof                         proof.ProofStruct
 	bt_on_formulas                        bool
+	eq_tree                               datastruct.DataStructure
 }
 
 /***********/
@@ -125,6 +126,9 @@ func (s State) GetCurrentProof() proof.ProofStruct {
 }
 func (s State) GetBTOnFormulas() bool {
 	return s.bt_on_formulas
+}
+func (s State) GetEqTree() datastruct.DataStructure {
+	return s.eq_tree.Copy()
 }
 
 /* Setters */
@@ -223,9 +227,12 @@ func (st *State) SetCurrentProofNodeId(i int) {
 func (st *State) SetBTOnFormulas(b bool) {
 	st.bt_on_formulas = b
 }
+func (st *State) SetEqTree(d datastruct.DataStructure) {
+	st.eq_tree = d
+}
 
 /* Maker */
-func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) State {
+func MakeState(limit int, tp, tn, eq_tree datastruct.DataStructure, f basictypes.Form) State {
 	n := 0
 	if global.IsDestructive() {
 		n = limit
@@ -235,7 +242,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) St
 	current_proof.SetRuleProof("Initial formula")
 	current_proof.SetFormulaProof(f.Copy())
 
-	return State{n, basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false}
+	return State{n, basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, eq_tree}
 }
 
 /* Print a state */
@@ -246,6 +253,11 @@ func (st State) Print() {
 	if !st.GetLF().IsEmpty() {
 		global.PrintDebug("Pst", "Formulae list: ")
 		st.GetLF().Print()
+	}
+
+	if global.IsLoaded("equality") {
+		global.PrintDebug("Pst", "Eq_tree : ")
+		st.GetEqTree().Print()
 	}
 
 	if !st.GetAtomic().IsEmpty() {
@@ -339,7 +351,7 @@ func (st State) Copy() State {
 		new_state.SetSubstsFound(st.GetSubstsFound())
 	}
 
-	// Réccréer arbre
+	// Recréer arbre
 	if global.IsLoaded("dmt") {
 		new_state.SetTreePos(st.tree_pos.MakeDataStruct(st.GetAtomic(), true))
 		new_state.SetTreeNeg(st.tree_pos.MakeDataStruct(st.GetAtomic(), false))
@@ -347,6 +359,8 @@ func (st State) Copy() State {
 		new_state.SetTreePos(st.GetTreePos())
 		new_state.SetTreeNeg(st.GetTreeNeg())
 	}
+
+	new_state.SetEqTree(st.GetEqTree())
 	new_state.SetProof([]proof.ProofStruct{})
 	new_state.SetCurrentProof(proof.MakeEmptyProofStruct())
 	new_state.SetBTOnFormulas(st.GetBTOnFormulas())

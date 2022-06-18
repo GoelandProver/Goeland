@@ -250,7 +250,7 @@ func TestEQ1(t *testing.T) {
 	*
 	* Problem : gggx != x
 	*
-	* Solutions : (X, g(a)), (X, f(g(a)))
+	* Solutions : (X, g(a)), (X, g(f(a)))
 	**/
 
 	lf := basictypes.FormList{eq_fa_a, eq_ggx_x, neq_gggx_x}

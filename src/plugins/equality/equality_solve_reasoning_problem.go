@@ -114,12 +114,13 @@ func manageRLRules(ep EqualityProblem, father chan answerEP, last_applied_rule_i
 
 	// Compute right rule
 	global.PrintDebug("MRLR", "Try apply right rules !")
-	rules_to_apply := tryApplyRightRules(ep) // TODO : ne chercher la contradiction seulemnt avec l'index donné
+	rules_to_apply := tryApplyRightRules(ep) // TODO : ne chercher la contradiction seulement avec l'index donné
 	global.PrintDebug("MRLR", fmt.Sprintf("There is %v right rules available : %v ", len(rules_to_apply), rules_to_apply.toString()))
 	// apply right rules
 	res_right, subst_right := manageRule(ep, rules_to_apply, father)
 
 	if res_right {
+		// TODO : HERE - lost completeness
 		return true, subst_right
 	} else {
 		// Compute left rule

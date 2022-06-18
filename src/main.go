@@ -73,6 +73,7 @@ var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a fi
 var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
 var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
 var problem_name string
+var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
 
 func main() {
 	initFlag()
@@ -187,8 +188,9 @@ func Search(f basictypes.Form, bound int) {
 
 		tp := new(treesearch.Node)
 		tn := new(treesearch.Node)
+		eq_tree := new(treesearch.Node)
 
-		st := complextypes.MakeState(limit, tp, tn, f)
+		st := complextypes.MakeState(limit, tp, tn, eq_tree, f)
 		st.SetCurrentProofNodeId(0)
 
 		fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
@@ -322,6 +324,9 @@ func initFlag() {
 	}
 
 	global.SetPlugin("dmt", *flag_dmt)
+	if *flag_dmt_before_eq {
+		global.SetDMTBeforeEQ(true)
+	}
 }
 
 func getFile(filename string, dir string) (string, error) {

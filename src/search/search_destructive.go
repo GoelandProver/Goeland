@@ -543,7 +543,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v", father_id))
 
-	if global.GetProof(){
+	if global.GetProof() {
 		st.SetCurrentProofNodeId(node_id)
 	}
 
@@ -583,7 +583,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 		// Search for a contradiction in LF
 		new_atomics := basictypes.MakeEmptyFormList()
-		for i, f := range st.GetLF() {
+		for _, f := range st.GetLF() {
 			plugin.GetPluginManager().ApplySendPredToLPOHook(f.Copy())
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 			clos_res, subst := applyClosureRules(f.Copy(), &st)
@@ -594,29 +594,103 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				return
 			}
 
-			/** Add f to new_atomics if its an atomic
-			* last condition the don't loop on the same formula
-			* We can rewrite iff :
-			* i is not the last element
-			* or we're not in bt formula mode
-			* or the subst to apply is empty
-			* = !(i is last and getBtOnFOrm and subst not null)
-			**/
-			if basictypes.ShowKindOfRule(f.Copy()) == basictypes.Atomic && global.IsLoaded("dmt") && !(i == len(st.GetLF()) && st.GetBTOnFormulas() && !s.IsEmpty()) {
+			// Retrieve atomics generated at this step
+			if basictypes.ShowKindOfRule(f.Copy()) == basictypes.Atomic {
 				new_atomics = append(new_atomics, f)
 			} else {
 				st.DispatchForm(f.Copy())
 			}
 		}
 
-		/* Equality */
-		res_eq, subst_eq := plugin.GetPluginManager().ApplyEqualityHook(st.GetTreePos(), st.GetTreeNeg(), st.GetAtomic())
-		if res_eq {
-			manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{}))
+		/** Filter Atomics for DMT
+		* last condition to don't loop on the same formula
+		* We can rewrite iff :
+		* i is not the last element
+		* or we're not in bt formula mode
+		* or the subst to apply is empty
+		* = !(i is last and getBtOnFOrm and subst not null)
+		**/
+		atomics_for_dmt := getAtomicsForDMT(new_atomics, &st, s)
+
+		/* Equality - ok because dmt do not apply on equalities */
+		// Variation : do not apply if new_atomics not empty
+		if !global.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 {
+			global.PrintDebug("PS", "Try apply EQ !")
+			if shouldApplyEquality(new_atomics, &st) {
+				global.PrintDebug("PS", "EQ is applicable !")
+				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
+				res_eq, subst_eq := plugin.GetPluginManager().ApplyEqualityHook(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
+				if res_eq {
+					manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{}))
+				}
+			}
 		}
 
 		global.PrintDebug("PS", "Let's apply rules !")
-		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", new_atomics.ToString()))
-		applyRules(father_id, st, c, new_atomics, node_id)
+		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", atomics_for_dmt.ToString()))
+		applyRules(father_id, st, c, atomics_for_dmt, node_id)
 	}
+}
+
+func shouldApplyEquality(new_atomics basictypes.FormList, st *complextypes.State) bool {
+	found := false
+	for _, f := range new_atomics {
+		switch ft := f.(type) {
+		case basictypes.Pred:
+			if ft.GetID().Equals(basictypes.Id_eq) {
+				found = true
+				t1 := ft.GetArgs()[0]
+				t2 := ft.GetArgs()[1]
+				form_list := basictypes.FormList{treetypes.MakeTermForm(t1), treetypes.MakeTermForm(t2)}
+				st.SetEqTree(st.GetEqTree().InsertFormulaListToDataStructure(form_list))
+			}
+
+			if !found {
+				f_term := basictypes.MakeFun(ft.GetID(), ft.GetArgs())
+				subterms_of_f := f_term.GetSubTerms()
+				for _, subterm := range subterms_of_f {
+					subterm_form := treetypes.MakeTermForm(subterm)
+					if res, _ := st.GetEqTree().Unify(subterm_form); res {
+						found = true
+					}
+				}
+			}
+
+		case basictypes.Not:
+			switch ft2 := ft.GetForm().(type) {
+			case basictypes.Pred:
+				if ft2.GetID().Equals(basictypes.Id_eq) {
+					found = true
+					t1 := ft2.GetArgs()[0]
+					t2 := ft2.GetArgs()[1]
+					form_list := basictypes.FormList{treetypes.MakeTermForm(t1), treetypes.MakeTermForm(t2)}
+					st.SetEqTree(st.GetEqTree().InsertFormulaListToDataStructure(form_list))
+				}
+
+				if !found {
+					f_term := basictypes.MakeFun(ft2.GetID(), ft2.GetArgs())
+					subterms_of_f := f_term.GetSubTerms()
+					for _, subterm := range subterms_of_f {
+						subterm_form := treetypes.MakeTermForm(subterm)
+						if res, _ := st.GetEqTree().Unify(subterm_form); res {
+							found = true
+						}
+					}
+				}
+			}
+		}
+	}
+	return found
+}
+
+func getAtomicsForDMT(new_atomics basictypes.FormList, st *complextypes.State, s complextypes.SubstAndForm) basictypes.FormList {
+	atomics_for_dmt := basictypes.MakeEmptyFormList()
+	for i, f := range new_atomics {
+		if global.IsLoaded("dmt") && !(i == len(st.GetLF()) && st.GetBTOnFormulas() && !s.IsEmpty()) {
+			atomics_for_dmt = append(atomics_for_dmt, f)
+		} else {
+			st.DispatchForm(f.Copy())
+		}
+	}
+	return atomics_for_dmt
 }
