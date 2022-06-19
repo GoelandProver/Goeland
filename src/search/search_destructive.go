@@ -616,7 +616,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 		// Variation : do not apply if new_atomics not empty
 		if !global.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 {
 			global.PrintDebug("PS", "Try apply EQ !")
-			if shouldApplyEquality(new_atomics, &st) {
+			if shouldApplyEquality(new_atomics) {
 				global.PrintDebug("PS", "EQ is applicable !")
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := plugin.GetPluginManager().ApplyEqualityHook(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
@@ -632,55 +632,8 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 	}
 }
 
-func shouldApplyEquality(new_atomics basictypes.FormList, st *complextypes.State) bool {
-	found := false
-	for _, f := range new_atomics {
-		switch ft := f.(type) {
-		case basictypes.Pred:
-			if ft.GetID().Equals(basictypes.Id_eq) {
-				found = true
-				t1 := ft.GetArgs()[0]
-				t2 := ft.GetArgs()[1]
-				form_list := basictypes.FormList{treetypes.MakeTermForm(t1), treetypes.MakeTermForm(t2)}
-				st.SetEqTree(st.GetEqTree().InsertFormulaListToDataStructure(form_list))
-			}
-
-			if !found {
-				f_term := basictypes.MakeFun(ft.GetID(), ft.GetArgs())
-				subterms_of_f := f_term.GetSubTerms()
-				for _, subterm := range subterms_of_f {
-					subterm_form := treetypes.MakeTermForm(subterm)
-					if res, _ := st.GetEqTree().Unify(subterm_form); res {
-						found = true
-					}
-				}
-			}
-
-		case basictypes.Not:
-			switch ft2 := ft.GetForm().(type) {
-			case basictypes.Pred:
-				if ft2.GetID().Equals(basictypes.Id_eq) {
-					found = true
-					t1 := ft2.GetArgs()[0]
-					t2 := ft2.GetArgs()[1]
-					form_list := basictypes.FormList{treetypes.MakeTermForm(t1), treetypes.MakeTermForm(t2)}
-					st.SetEqTree(st.GetEqTree().InsertFormulaListToDataStructure(form_list))
-				}
-
-				if !found {
-					f_term := basictypes.MakeFun(ft2.GetID(), ft2.GetArgs())
-					subterms_of_f := f_term.GetSubTerms()
-					for _, subterm := range subterms_of_f {
-						subterm_form := treetypes.MakeTermForm(subterm)
-						if res, _ := st.GetEqTree().Unify(subterm_form); res {
-							found = true
-						}
-					}
-				}
-			}
-		}
-	}
-	return found
+func shouldApplyEquality(new_atomics basictypes.FormList) bool {
+	return len(new_atomics) > 0
 }
 
 func getAtomicsForDMT(new_atomics basictypes.FormList, st *complextypes.State, s complextypes.SubstAndForm) basictypes.FormList {
