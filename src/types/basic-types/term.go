@@ -280,7 +280,7 @@ func (f Fun) ReplaceSubTermBy(original_term, new_term Term) Term {
 	if f.Equals(original_term) {
 		return new_term.Copy()
 	} else {
-		return MakeFun(f.GetID(), replaceFirstOccurrenceTermList(original_term, new_term, f.GetArgs()))
+		return MakeFun(f.GetID(), replaceFirstOccurrenceTermList(original_term, new_term, f.GetArgs()), f.GetTypeVars(), f.GetTypeHint())
 	}
 }
 

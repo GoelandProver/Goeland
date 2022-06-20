@@ -30,69 +30,37 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/************/
-/* utils.go */
-/************/
+/**********/
+/* not.go */
+/**********/
 
 /**
-* This file contains some useful functions.
+* This file implements a negation of a formula.
 **/
 
-package global
+package basictypes
 
-import "strings"
+import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 
-type Comparable interface {
-	Equals(interface{}) bool
+/* Not(formula): negation of a formula */
+type Not struct {
+	index int
+	f     Form
 }
 
-type ComparableList[T Comparable] []T
+func (n Not) GetIndex() int                        { return n.index }
+func (n Not) GetForm() Form                        { return n.f.Copy() }
+func (n Not) GetType() typing.TypeScheme           { return typing.DefaultPropType(0) }
+func (n Not) ToString() string                     { return "¬" + n.GetForm().ToString() }
+func (n Not) ToStringWithSuffixMeta(string) string { return n.ToString() }
+func (n Not) Copy() Form                           { return MakeNot(n.GetIndex(), n.GetForm()) }
+func (n Not) GetMetas() MetaList                   { return n.GetForm().GetMetas() }
 
-func (cpbl ComparableList[T]) Equals(oth ComparableList[T]) bool {
-	if len(cpbl) != len(oth) {
-		return false
-	}
-
-	for i := range cpbl {
-		if !cpbl[i].Equals(oth[i]) {
-			return false
-		}
-	}
-	return true
+func (n Not) Equals(f Form) bool {
+	oth, isNot := f.(Not)
+	return isNot && oth.GetForm().Equals(n.GetForm())
 }
 
-func (cpbl ComparableList[T]) Contains(element T) bool {
-	for i := range cpbl {
-		if cpbl[i].Equals(element) {
-			return true
-		}
-	}
-	return false
-}
-
-type Stringable interface {
-	ToString() string
-}
-
-func ListToString[T Stringable](sgbl []T, sep, emptyValue string) string {
-	strArr := []string{}
-
-	for _, element := range sgbl {
-		strArr = append(strArr, element.ToString())
-	}
-
-	if len(strArr) == 0 && emptyValue != "" {
-		strArr = append(strArr, emptyValue)
-	}
-
-	return strings.Join(strArr, sep)
-}
-
-func Is[T any, U any](obj U) bool {
-	_, isT := any(obj).(T)
-	return isT
-}
-
-func To[T any, U any](obj U) T {
-	return any(obj).(T)
+func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
+	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
 }

@@ -370,9 +370,11 @@ func Instantiate(f basictypes.Form, index int) (basictypes.Form, basictypes.Meta
 		newMm = append(newMm, metas...)
 		f = form
 	case basictypes.AllType:
+		f = basictypes.ReplaceTypeByMeta(f, nf.GetVarList(), index)
 		for _, v := range nf.GetVarList() {
 			v.ShouldBeMeta(index)
 		}
+		f = basictypes.MakeAllType(nf.GetVarList(), f)
 	}
 	return f, newMm
 }

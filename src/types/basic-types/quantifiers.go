@@ -1,0 +1,159 @@
+/**
+* Copyright 2022 by the authors (see AUTHORS).
+*
+* Goéland is an automated theorem prover for first order logic.
+*
+* This software is governed by the CeCILL license under French law and
+* abiding by the rules of distribution of free software.  You can  use,
+* modify and/ or redistribute the software under the terms of the CeCILL
+* license as circulated by CEA, CNRS and INRIA at the following URL
+* "http://www.cecill.info".
+*
+* As a counterpart to the access to the source code and  rights to copy,
+* modify and redistribute granted by the license, users are provided only
+* with a limited warranty  and the software's author,  the holder of the
+* economic rights,  and the successive licensors  have only  limited
+* liability.
+*
+* In this respect, the user's attention is drawn to the risks associated
+* with loading,  using,  modifying and/or developing or reproducing the
+* software by the user in light of its specific status of free software,
+* that may mean  that it is complicated to manipulate,  and  that  also
+* therefore means  that it is reserved for developers  and  experienced
+* professionals having in-depth computer knowledge. Users are therefore
+* encouraged to load and test the software's suitability as regards their
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and,  more generally, to use and operate it in the
+* same conditions as regards security.
+*
+* The fact that you are presently reading this means that you have had
+* knowledge of the CeCILL license and that you accept its terms.
+**/
+
+/******************/
+/* quantifiers.go */
+/******************/
+
+/**
+* This file implements quantifiers over formulas (forall, exists, forall (types)).
+**/
+
+package basictypes
+
+import (
+	. "github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+)
+
+type Ex struct {
+	index    int
+	var_list []Var
+	f        Form
+}
+
+func (e Ex) GetIndex() int              { return e.index }
+func (e Ex) GetVarList() []Var          { return copyVarList(e.var_list) }
+func (e Ex) GetForm() Form              { return e.f.Copy() }
+func (e Ex) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
+func (e Ex) GetMetas() MetaList         { return e.GetForm().GetMetas() }
+
+func (e Ex) ToString() string {
+	return "∃ " + ListToString(e.GetVarList(), ", ", "") + " (" + e.GetForm().ToString() + ")"
+}
+
+func (e Ex) ToStringWithSuffixMeta(suffix string) string {
+	return "∃ " + ListToString(e.GetVarList(), ", ", "") + "(" + e.GetForm().ToStringWithSuffixMeta(suffix) + ")"
+}
+
+func (e Ex) Copy() Form {
+	return MakeEx(e.GetIndex(), copyVarList(e.GetVarList()), e.GetForm())
+}
+
+func (e Ex) Equals(f Form) bool {
+	oth, isEx := f.(Ex)
+	return isEx &&
+		AreEqualsVarList(e.GetVarList(), oth.GetVarList()) &&
+		e.GetForm().Equals(oth.GetForm())
+}
+
+func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
+	return MakeEx(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceTypeByMeta(varList, index))
+}
+
+type All struct {
+	index    int
+	var_list []Var
+	f        Form
+}
+
+func (a All) GetIndex() int              { return a.index }
+func (a All) GetVarList() []Var          { return copyVarList(a.var_list) }
+func (a All) GetForm() Form              { return a.f.Copy() }
+func (a All) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
+func (a All) GetMetas() MetaList         { return a.GetForm().GetMetas() }
+
+func (a All) ToString() string {
+	return "∀ " + ListToString(a.GetVarList(), ", ", "") + " (" + a.GetForm().ToString() + ")"
+}
+
+func (a All) ToStringWithSuffixMeta(suffix string) string {
+	return "∀ " + ListToString(a.GetVarList(), ", ", "") + "(" + a.GetForm().ToStringWithSuffixMeta(suffix) + ")"
+}
+
+func (a All) Copy() Form {
+	return MakeAll(a.GetIndex(), copyVarList(a.GetVarList()), a.GetForm())
+}
+
+func (a All) Equals(f Form) bool {
+	oth, isAll := f.(All)
+	return isAll &&
+		AreEqualsVarList(a.GetVarList(), oth.GetVarList()) &&
+		a.GetForm().Equals(oth.GetForm())
+}
+
+func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
+	return MakeAll(a.GetIndex(), a.GetVarList(), a.GetForm().ReplaceTypeByMeta(varList, index))
+}
+
+/* Struct describing a forall with type variables */
+type AllType struct {
+	index  int
+	tvList []typing.TypeVar
+	form   Form
+}
+
+/* Methods */
+
+func (a AllType) GetIndex() int                { return a.index }
+func (a AllType) GetVarList() []typing.TypeVar { return copyTypeVarList(a.tvList) }
+func (a AllType) GetForm() Form                { return a.form.Copy() }
+func (a AllType) GetType() typing.TypeScheme   { return typing.DefaultPropType(0) }
+
+/* Form interface */
+
+func (a AllType) toString() string   { return "∀ " + ListToString(a.tvList, ", ", "") }
+func (a AllType) ToString() string   { return a.toString() + " (" + a.GetForm().ToString() + ")" }
+func (a AllType) GetMetas() MetaList { return a.GetForm().GetMetas() }
+
+func (a AllType) ToStringWithSuffixMeta(suffix string) string {
+	return a.toString() + " (" + a.GetForm().ToStringWithSuffixMeta(suffix) + ")"
+}
+
+func (a AllType) Copy() Form {
+	return AllType{
+		index:  a.index,
+		form:   a.form.Copy(),
+		tvList: copyTypeVarList(a.tvList),
+	}
+}
+
+func (a AllType) Equals(f Form) bool {
+	oth, isAll := f.(AllType)
+	return isAll &&
+		AreEqualsTypeVarList(a.GetVarList(), oth.GetVarList()) &&
+		a.GetForm().Equals(oth.GetForm())
+}
+
+func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
+	return MakeAllType(a.GetIndex(), a.tvList, a.GetForm().ReplaceTypeByMeta(varList, index))
+}

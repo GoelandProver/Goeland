@@ -298,6 +298,8 @@ func initialization() {
 
 	// Search parameters
 	conjecture_found = false
+	// Init typing
+	typing.Init()
 
 	// Terms
 	basictypes.Init()
@@ -309,9 +311,6 @@ func initialization() {
 	if !*flag_noeq {
 		equality.InitPlugin()
 	}
-
-	// Init typing
-	typing.Init()
 }
 
 /* Init flag */
