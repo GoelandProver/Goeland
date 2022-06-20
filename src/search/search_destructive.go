@@ -614,9 +614,9 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 		/* Equality - ok because dmt do not apply on equalities */
 		// Variation : do not apply if new_atomics not empty
-		if !global.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 {
+		if !global.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 || len(st.GetLF()) == 0 {
 			global.PrintDebug("PS", "Try apply EQ !")
-			if shouldApplyEquality(new_atomics) {
+			if shouldApplyEquality(new_atomics, st) {
 				global.PrintDebug("PS", "EQ is applicable !")
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := plugin.GetPluginManager().ApplyEqualityHook(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
@@ -632,8 +632,8 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 	}
 }
 
-func shouldApplyEquality(new_atomics basictypes.FormList) bool {
-	return len(new_atomics) > 0
+func shouldApplyEquality(new_atomics basictypes.FormList, st complextypes.State) bool {
+	return len(new_atomics) > 0 || len(st.GetLF()) == 0
 }
 
 func getAtomicsForDMT(new_atomics basictypes.FormList, st *complextypes.State, s complextypes.SubstAndForm) basictypes.FormList {
