@@ -30,77 +30,48 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/************/
-/* utils.go */
-/************/
+/*********/
+/* id.go */
+/*********/
 
 /**
-* This file contains some useful functions.
+* This file contains the implementation of IDs.
 **/
 
-package global
+package basictypes
 
-import "strings"
+import "fmt"
 
-type Comparable interface {
-	Equals(interface{}) bool
+/* id (for predicate) */
+type Id struct {
+	index int
+	name  string
 }
 
-type ComparableList[T Comparable] []T
+func (i Id) GetIndex() int                        { return i.index }
+func (i Id) GetName() string                      { return i.name }
+func (i Id) ToString() string                     { return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex()) }
+func (i Id) ToStringWithSuffixMeta(string) string { return i.ToString() }
+func (i Id) IsMeta() bool                         { return false }
+func (i Id) IsFun() bool                          { return false }
+func (i Id) Copy() Term                           { return MakeId(i.GetIndex(), i.GetName()) }
+func (Id) ToMeta() Meta                           { return Meta{} }
+func (Id) GetMetas() MetaList                     { return MetaList{} }
 
-func (cpbl ComparableList[T]) Equals(oth ComparableList[T]) bool {
-	if len(cpbl) != len(oth) {
-		return false
+func (i Id) Equals(t Term) bool {
+	oth, isId := t.(Id)
+	return isId &&
+		(oth.GetIndex() == i.GetIndex()) &&
+		(oth.GetName() == i.GetName())
+}
+
+func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
+	if i.Equals(original_term) {
+		return new_term.Copy()
 	}
-
-	for i := range cpbl {
-		if !cpbl[i].Equals(oth[i]) {
-			return false
-		}
-	}
-	return true
+	return i
 }
 
-func (cpbl ComparableList[T]) Contains(element T) bool {
-	for i := range cpbl {
-		if cpbl[i].Equals(element) {
-			return true
-		}
-	}
-	return false
-}
-
-type Stringable interface {
-	ToString() string
-}
-
-func ListToString[T Stringable](sgbl []T, sep, emptyValue string) string {
-	strArr := []string{}
-
-	for _, element := range sgbl {
-		strArr = append(strArr, element.ToString())
-	}
-
-	if len(strArr) == 0 && emptyValue != "" {
-		strArr = append(strArr, emptyValue)
-	}
-
-	return strings.Join(strArr, sep)
-}
-
-func Is[T any, U any](obj U) bool {
-	_, isT := any(obj).(T)
-	return isT
-}
-
-func To[T any, U any](obj U) T {
-	return any(obj).(T)
-}
-
-func ConvertList[T any, U any](input []T) []U {
-	output := []U{}
-	for _, element := range input {
-		output = append(output, any(element).(U))
-	}
-	return output
+func (i Id) GetSubTerms() []Term {
+	return []Term{i}
 }

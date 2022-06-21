@@ -348,7 +348,7 @@ func realSkolemize(f basictypes.Form, vars []basictypes.Var, terms []basictypes.
 			[]typing.TypeApp{},
 			scheme,
 		)
-		f = basictypes.ReplaceVarByTerm(f, v, skolem)
+		f = f.ReplaceVarByTerm(v, skolem)
 	}
 	return f
 }
@@ -370,11 +370,11 @@ func Instantiate(f basictypes.Form, index int) (basictypes.Form, basictypes.Meta
 		newMm = append(newMm, metas...)
 		f = form
 	case basictypes.AllType:
-		f = basictypes.ReplaceTypeByMeta(f, nf.GetVarList(), index)
+		f = f.ReplaceTypeByMeta(nf.GetVarList(), index)
 		for _, v := range nf.GetVarList() {
 			v.ShouldBeMeta(index)
 		}
-		f = basictypes.MakeAllType(nf.GetVarList(), f)
+		f = basictypes.MakeAllType(nf.GetIndex(), nf.GetVarList(), f)
 	}
 	return f, newMm
 }
@@ -384,7 +384,7 @@ func realInstantiate(form basictypes.Form, index int, vars []basictypes.Var) (ba
 	for _, v := range vars {
 		meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
 		newMm = append(newMm, meta)
-		form = basictypes.ReplaceVarByTerm(form, v, meta)
+		form = form.ReplaceVarByTerm(v, meta)
 	}
 	return form, newMm
 }

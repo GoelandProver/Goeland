@@ -56,6 +56,8 @@ func (t Top) Copy() Form                                   { return MakeTop(t.Ge
 func (Top) Equals(f Form) bool                             { _, isTop := f.(Top); return isTop }
 func (Top) GetMetas() MetaList                             { return MakeEmptyMetaList() }
 func (t Top) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeTop(t.GetIndex()) }
+func (t Top) ReplaceVarByTerm(old Var, new Term) Form      { return MakeTop(t.GetIndex()) }
+func (t Top) RenameVariables() Form                        { return MakeTop(t.GetIndex()) }
 func (t Top) GetIndex() int                                { return t.index }
 
 /* Bot (always false) definitino */
@@ -70,4 +72,6 @@ func (b Bot) Copy() Form                                   { return MakeBot(b.Ge
 func (Bot) Equals(f Form) bool                             { _, isBot := f.(Bot); return isBot }
 func (Bot) GetMetas() MetaList                             { return MakeEmptyMetaList() }
 func (b Bot) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeBot(b.GetIndex()) }
+func (b Bot) ReplaceVarByTerm(old Var, new Term) Form      { return MakeBot(b.GetIndex()) }
+func (b Bot) RenameVariables() Form                        { return MakeBot(b.GetIndex()) }
 func (b Bot) GetIndex() int                                { return b.index }

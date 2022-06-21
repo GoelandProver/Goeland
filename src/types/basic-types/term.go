@@ -29,9 +29,11 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
+
 /***********/
 /* term.go */
 /***********/
+
 /**
 * This file contains functions and types which describe the term's data structure
 **/
@@ -41,6 +43,7 @@ package basictypes
 import (
 	"fmt"
 
+	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -65,235 +68,6 @@ type TypedTerm interface {
 	GetTypeApp() typing.TypeApp
 }
 
-/* Variable (x,y under ForAll or Exists) */
-
-/* id (for predicate) */
-type Id struct {
-	index int
-	name  string
-}
-
-/* Var (under forall or exists)  */
-type Var struct {
-	index    int
-	name     string
-	typeHint typing.TypeApp
-}
-
-/* Metavariable (X, Y) */
-type Meta struct {
-	index    int
-	name     string
-	formula  int
-	typeHint typing.TypeApp
-}
-
-/* function or constant (f(a,b), f(X,Y), a)*/
-type Fun struct {
-	p        Id
-	args     []Term
-	typeVars []typing.TypeApp
-	typeHint typing.TypeScheme
-}
-
-func (f Fun) GetTypeVars() []typing.TypeApp { return f.typeVars }
-
-/* GetTypeHint */
-func (v Var) GetTypeApp() typing.TypeApp      { return v.typeHint }
-func (m Meta) GetTypeApp() typing.TypeApp     { return m.typeHint }
-func (f Fun) GetTypeApp() typing.TypeApp      { return nil }
-func (v Var) GetTypeHint() typing.TypeScheme  { return v.typeHint.(typing.TypeScheme) }
-func (m Meta) GetTypeHint() typing.TypeScheme { return m.typeHint.(typing.TypeScheme) }
-func (f Fun) GetTypeHint() typing.TypeScheme  { return f.typeHint }
-
-/* GetIndex */
-func (v Var) GetIndex() int  { return v.index }
-func (m Meta) GetIndex() int { return m.index }
-func (i Id) GetIndex() int   { return i.index }
-func (f Fun) GetIndex() int  { return f.GetID().GetIndex() }
-
-/* GetName */
-func (v Var) GetName() string  { return v.name }
-func (m Meta) GetName() string { return m.name }
-func (i Id) GetName() string   { return i.name }
-func (f Fun) GetName() string  { return f.GetID().GetName() }
-
-/* ToString */
-func (v Var) ToString() string { return fmt.Sprintf("%s_%d", v.GetName(), v.GetIndex()) }
-func (m Meta) ToString() string {
-	return fmt.Sprintf("%s_%d_%d", m.GetName(), m.GetIndex(), m.GetFormula())
-}
-func (i Id) ToString() string { return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex()) }
-
-func (f Fun) ToString() string {
-	s_res := f.GetID().ToString()
-	if len(f.args) > 0 {
-		s_res += "("
-		s_res += f.args[0].ToString()
-		if len(f.args) > 0 {
-			s := f.args[1:]
-			for _, v := range s {
-				s_res += ", "
-				s_res += v.ToString()
-			}
-		}
-		s_res += ")"
-	}
-	return s_res
-}
-
-/* ToStringWithSuffixMeta */
-func (v Var) ToStringWithSuffixMeta(string) string         { return v.ToString() }
-func (m Meta) ToStringWithSuffixMeta(suffix string) string { return m.ToString() + suffix }
-func (i Id) ToStringWithSuffixMeta(string) string          { return i.ToString() }
-
-func (f Fun) ToStringWithSuffixMeta(suffix string) string {
-	s_res := f.GetID().GetName()
-	if len(f.args) > 0 {
-		s_res += "("
-		s_res += f.args[0].ToStringWithSuffixMeta(suffix)
-		if len(f.args) > 0 {
-			s := f.args[1:]
-			for _, v := range s {
-				s_res += ", "
-				s_res += v.ToStringWithSuffixMeta(suffix)
-			}
-		}
-		s_res += ")"
-	}
-	return s_res
-}
-
-/* IsMeta */
-/* Check if a term is a meta */
-func (v Var) IsMeta() bool  { return false }
-func (m Meta) IsMeta() bool { return true }
-func (i Id) IsMeta() bool   { return false }
-func (f Fun) IsMeta() bool  { return false }
-
-/* IsFun */
-/* Check is a term is a fun */
-func (v Var) IsFun() bool  { return false }
-func (m Meta) IsFun() bool { return false }
-func (i Id) IsFun() bool   { return false }
-func (f Fun) IsFun() bool  { return true }
-
-/* Equals */
-func (v Var) Equals(t Term) bool {
-	oth, isVar := t.(Var)
-	return isVar && (oth.GetIndex() == v.GetIndex()) &&
-		(oth.GetName() == v.GetName()) && (v.typeHint.Equals(oth.typeHint))
-}
-
-func (m Meta) Equals(t Term) bool {
-	oth, isMeta := t.(Meta)
-	return isMeta &&
-		(oth.GetIndex() == m.GetIndex()) &&
-		(oth.GetName() == m.GetName()) &&
-		(oth.GetFormula() == m.GetFormula()) &&
-		(m.typeHint.Equals(oth.typeHint))
-}
-
-func (i Id) Equals(t Term) bool {
-	oth, isId := t.(Id)
-	return isId &&
-		(oth.GetIndex() == i.GetIndex()) &&
-		(oth.GetName() == i.GetName())
-}
-
-func (f Fun) Equals(t Term) bool {
-	oth, isFun := t.(Fun)
-	return isFun &&
-		(oth.GetID() == f.GetID()) &&
-		AreEqualsTermList(oth.GetArgs(), f.GetArgs()) &&
-		f.typeHint.Equals(oth.typeHint)
-}
-
-/* Copy */
-/* Copy a term */
-func (v Var) Copy() Term  { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
-func (m Meta) Copy() Term { return MakeMeta(m.GetIndex(), m.GetName(), m.GetFormula(), m.typeHint) }
-func (i Id) Copy() Term   { return MakeId(i.GetIndex(), i.GetName()) }
-func (f Fun) Copy() Term {
-	return MakeFun(f.GetP(), f.GetArgs(), typing.CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
-}
-
-/* ToMeta */
-/* Make a meta from a term (empty meta if not possible) */
-func (Var) ToMeta() Meta    { return Meta{} }
-func (m Meta) ToMeta() Meta { return m }
-func (Id) ToMeta() Meta     { return Meta{} }
-func (Fun) ToMeta() Meta    { return Meta{} }
-
-/* GetMetas */
-/* Get all the metas of the term. */
-func (Var) GetMetas() MetaList    { return MetaList{} }
-func (m Meta) GetMetas() MetaList { return MetaList{m} }
-func (Id) GetMetas() MetaList     { return MetaList{} }
-
-func (f Fun) GetMetas() MetaList {
-	metas := MetaList{}
-	for _, arg := range f.GetArgs() {
-		metas = append(metas, arg.GetMetas()...)
-	}
-	return metas
-}
-
-/* GetSubTerms */
-func (v Var) GetSubTerms() []Term {
-	return []Term{v}
-}
-func (m Meta) GetSubTerms() []Term {
-	return []Term{m}
-}
-func (i Id) GetSubTerms() []Term {
-	return []Term{i}
-}
-func (f Fun) GetSubTerms() []Term {
-	res := []Term{f}
-	for _, arg := range f.GetArgs() {
-		res = append(res, arg.GetSubTerms()...)
-	}
-	return res
-}
-
-/* Replace subTermBy */
-func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
-	if v.Equals(original_term) {
-		return new_term.Copy()
-	}
-	return v
-}
-func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
-	if m.Equals(original_term) {
-		return new_term.Copy()
-	}
-	return m
-}
-func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
-	if i.Equals(original_term) {
-		return new_term.Copy()
-	}
-	return i
-}
-func (f Fun) ReplaceSubTermBy(original_term, new_term Term) Term {
-	if f.Equals(original_term) {
-		return new_term.Copy()
-	} else {
-		return MakeFun(f.GetID(), replaceFirstOccurrenceTermList(original_term, new_term, f.GetArgs()), f.GetTypeVars(), f.GetTypeHint())
-	}
-}
-
-/* Getters */
-func (m Meta) GetFormula() int { return m.formula }
-func (f Fun) GetID() Id        { return f.p.Copy().(Id) }
-func (f Fun) GetP() Id         { return f.p.Copy().(Id) }
-func (f Fun) GetArgs() []Term  { return CopyTermList(f.args) }
-
-/* Setters */
-func (f *Fun) SetArgs(tl []Term)                  { f.args = tl }
-func (f *Fun) SetTypeScheme(ts typing.TypeScheme) { f.typeHint = ts }
-
 /*** Makers ***/
 
 func MakeId(i int, s string) Id                                 { return Id{i, s} }
@@ -312,14 +86,7 @@ func MakeFun(p Id, args []Term, typeVars []typing.TypeApp, t ...typing.TypeSchem
 
 /* Print a list of terms */
 func TermListToString(lf []Term) string {
-	var s_res string
-	for i, v := range lf {
-		s_res += v.ToString()
-		if i < len(lf)-1 {
-			s_res += (", ")
-		}
-	}
-	return s_res
+	return ListToString(lf, ", ", "")
 }
 
 /* Get the metavariables of a formula list */
@@ -394,15 +161,7 @@ func AreEqualsTermList(tl1, tl2 []Term) bool {
 
 /* check if two lists of var are equals */
 func AreEqualsVarList(tl1, tl2 []Var) bool {
-	if len(tl1) != len(tl2) {
-		return false
-	}
-	for i := range tl1 {
-		if !tl2[i].Equals(tl1[i]) {
-			return false
-		}
-	}
-	return true
+	return AreEqualsTermList(ConvertList[Var, Term](tl1), ConvertList[Var, Term](tl2))
 }
 
 /* Replace the first occurence of a term in a list by another */
@@ -423,15 +182,7 @@ func replaceFirstOccurrenceTermList(old_term, new_term Term, tl []Term) []Term {
 	return res
 }
 func AreEqualsTypeVarList(tv1, tv2 []typing.TypeVar) bool {
-	if len(tv1) != len(tv2) {
-		return false
-	}
-	for i := range tv1 {
-		if !tv2[i].Equals(tv1[i]) {
-			return false
-		}
-	}
-	return true
+	return ComparableList[typing.TypeVar](tv1).Equals(tv2)
 }
 
 func TypeAppArrToTerm(typeApp []typing.TypeApp) []Term {
@@ -475,4 +226,17 @@ func typeVarToMeta(typeVar typing.TypeVar) Meta {
 		meta = MakeMeta(index, typeVar.ToString(), formula, typing.MkTypeHint("Type"))
 	}
 	return meta
+}
+
+func replaceTermListTypesByMeta(tl []Term, varList []typing.TypeVar, index int) []Term {
+	terms := []Term{}
+	for _, term := range tl {
+		if Is[Fun](term) {
+			t := To[Fun](term)
+			terms = append(terms, MakeFun(t.GetID(), replaceTermListTypesByMeta(t.GetArgs(), varList, index), instanciateTypeAppList(t.GetTypeVars(), varList, index), t.GetTypeHint()))
+		} else {
+			terms = append(terms, term)
+		}
+	}
+	return terms
 }

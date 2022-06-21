@@ -65,6 +65,9 @@ func (p Pred) GetTypeVars() []typing.TypeApp { return typing.CopyTypeAppList(p.t
 
 /* Formula methods */
 
+func (p Pred) GetType() typing.TypeScheme { return p.typeHint }
+func (p Pred) RenameVariables() Form      { return p }
+
 func (p Pred) ToString() string {
 	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", "∅") +
 		" ; " + ListToString(p.GetArgs(), ", ", "∅") + ")"
@@ -102,7 +105,9 @@ func (p Pred) GetMetas() MetaList {
 }
 
 func (p Pred) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakePred(p.GetIndex(), p.GetID(), p.GetArgs(), instanciateTypeAppList(p.typeVars, varList, index), p.GetType())
+	return MakePred(p.GetIndex(), p.GetID(), replaceTermListTypesByMeta(p.GetArgs(), varList, index), instanciateTypeAppList(p.typeVars, varList, index), p.GetType())
 }
 
-func (p Pred) GetType() typing.TypeScheme { return p.typeHint }
+func (p Pred) ReplaceVarByTerm(old Var, new Term) Form {
+	return MakePred(p.GetIndex(), p.GetID(), replaceVarInTermList(p.GetArgs(), old, new), p.GetTypeVars(), p.GetType())
+}

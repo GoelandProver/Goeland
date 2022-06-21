@@ -48,13 +48,16 @@ type Not struct {
 	f     Form
 }
 
-func (n Not) GetIndex() int                        { return n.index }
 func (n Not) GetForm() Form                        { return n.f.Copy() }
 func (n Not) GetType() typing.TypeScheme           { return typing.DefaultPropType(0) }
 func (n Not) ToString() string                     { return "¬" + n.GetForm().ToString() }
 func (n Not) ToStringWithSuffixMeta(string) string { return n.ToString() }
 func (n Not) Copy() Form                           { return MakeNot(n.GetIndex(), n.GetForm()) }
 func (n Not) GetMetas() MetaList                   { return n.GetForm().GetMetas() }
+func (n Not) ReplaceVarByTerm(old Var, new Term) Form {
+	return MakeNot(n.GetIndex(), n.f.ReplaceVarByTerm(old, new))
+}
+func (n Not) GetIndex() int { return n.index }
 
 func (n Not) Equals(f Form) bool {
 	oth, isNot := f.(Not)
@@ -63,4 +66,8 @@ func (n Not) Equals(f Form) bool {
 
 func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
+}
+
+func (n Not) RenameVariables() Form {
+	return MakeNot(n.GetIndex(), n.f.RenameVariables())
 }

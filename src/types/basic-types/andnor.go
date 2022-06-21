@@ -58,6 +58,7 @@ func (a And) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (a And) ToString() string           { return "(" + ListToString(a.GetLF(), " ∧ ", "") + ")" }
 func (a And) Copy() Form                 { return MakeAnd(a.GetIndex(), a.GetLF()) }
 func (a And) GetMetas() MetaList         { return metasUnion(a.GetLF()) }
+func (a And) RenameVariables() Form      { return MakeAnd(a.GetIndex(), renameFormList(a.GetLF())) }
 
 func (a And) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + listToStringMeta(a.GetLF(), suffix, " ∧ ", "") + ")"
@@ -70,6 +71,10 @@ func (a And) Equals(f Form) bool {
 
 func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAnd(a.GetIndex(), replaceList(a.GetLF(), varList, index))
+}
+
+func (a And) ReplaceVarByTerm(old Var, new Term) Form {
+	return MakeAnd(a.GetIndex(), replaceVarInFormList(a.GetLF(), old, new))
 }
 
 /* Or(formula list): disjunction of formulae */
@@ -85,6 +90,7 @@ func (o Or) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (o Or) ToString() string           { return "(" + ListToString(o.GetLF(), " ∨ ", "") + ")" }
 func (o Or) Copy() Form                 { return MakeOr(o.GetIndex(), o.GetLF()) }
 func (o Or) GetMetas() MetaList         { return metasUnion(o.GetLF()) }
+func (o Or) RenameVariables() Form      { return MakeOr(o.GetIndex(), renameFormList(o.GetLF())) }
 
 func (o Or) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + listToStringMeta(o.GetLF(), suffix, " ∨ ", "") + ")"
@@ -97,6 +103,10 @@ func (o Or) Equals(f Form) bool {
 
 func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeOr(o.GetIndex(), replaceList(o.GetLF(), varList, index))
+}
+
+func (o Or) ReplaceVarByTerm(old Var, new Term) Form {
+	return MakeOr(o.GetIndex(), replaceVarInFormList(o.GetLF(), old, new))
 }
 
 // ----------------------------------------------------------------------------
@@ -115,6 +125,22 @@ func replaceList(fl FormList, varList []typing.TypeVar, index int) FormList {
 	nfl := MakeEmptyFormList()
 	for _, f := range fl {
 		nfl = append(nfl, f.ReplaceTypeByMeta(varList, index))
+	}
+	return nfl
+}
+
+func replaceVarInFormList(fl FormList, old Var, new Term) FormList {
+	nfl := MakeEmptyFormList()
+	for _, form := range fl {
+		nfl = append(nfl, form.ReplaceVarByTerm(old, new))
+	}
+	return nfl
+}
+
+func renameFormList(fl FormList) FormList {
+	nfl := MakeEmptyFormList()
+	for _, form := range fl {
+		nfl = append(nfl, form.RenameVariables())
 	}
 	return nfl
 }

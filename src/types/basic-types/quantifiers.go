@@ -41,6 +41,8 @@
 package basictypes
 
 import (
+	"fmt"
+
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -80,6 +82,15 @@ func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeEx(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceTypeByMeta(varList, index))
 }
 
+func (e Ex) ReplaceVarByTerm(old Var, new Term) Form {
+	return MakeEx(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceVarByTerm(old, new))
+}
+
+func (e Ex) RenameVariables() Form {
+	newVarList, newForm := renameVariable(e.GetForm(), e.GetVarList())
+	return MakeEx(e.GetIndex(), newVarList, newForm)
+}
+
 type All struct {
 	index    int
 	var_list []Var
@@ -113,6 +124,15 @@ func (a All) Equals(f Form) bool {
 
 func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAll(a.GetIndex(), a.GetVarList(), a.GetForm().ReplaceTypeByMeta(varList, index))
+}
+
+func (a All) ReplaceVarByTerm(old Var, new Term) Form {
+	return MakeAll(a.GetIndex(), a.GetVarList(), a.GetForm().ReplaceVarByTerm(old, new))
+}
+
+func (a All) RenameVariables() Form {
+	newVarList, newForm := renameVariable(a.GetForm(), a.GetVarList())
+	return MakeAll(a.GetIndex(), newVarList, newForm)
 }
 
 /* Struct describing a forall with type variables */
@@ -156,4 +176,30 @@ func (a AllType) Equals(f Form) bool {
 
 func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAllType(a.GetIndex(), a.tvList, a.GetForm().ReplaceTypeByMeta(varList, index))
+}
+
+func (a AllType) ReplaceVarByTerm(old Var, new Term) Form {
+	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().ReplaceVarByTerm(old, new))
+}
+
+func (a AllType) RenameVariables() Form {
+	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
+}
+
+// ----------------------------------------------------------------------------
+// Utility of quantified forms
+// ----------------------------------------------------------------------------
+
+func renameVariable(form Form, varList []Var) ([]Var, Form) {
+	newVL := []Var{}
+	newForm := form
+
+	for _, v := range varList {
+		newVar := MakerNewVar(v.GetName())
+		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()), v.typeHint)
+		newVL = append(newVL, newVar)
+		newForm = newForm.RenameVariables().ReplaceVarByTerm(v, newVar)
+	}
+
+	return newVL, newForm
 }

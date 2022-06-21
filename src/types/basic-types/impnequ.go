@@ -73,6 +73,14 @@ func (i Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeImp(i.GetIndex(), i.GetF1().ReplaceTypeByMeta(varList, index), i.GetF2().ReplaceTypeByMeta(varList, index))
 }
 
+func (i Imp) ReplaceVarByTerm(old Var, new Term) Form {
+	return MakeImp(i.GetIndex(), i.GetF1().ReplaceVarByTerm(old, new), i.GetF2().ReplaceVarByTerm(old, new))
+}
+
+func (i Imp) RenameVariables() Form {
+	return MakeImp(i.GetIndex(), i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
+}
+
 /* Equ(f1, f2): f1 equivalent to f2 */
 type Equ struct {
 	index  int
@@ -102,4 +110,12 @@ func (e Equ) Equals(f Form) bool {
 
 func (e Equ) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeEqu(e.GetIndex(), e.GetF1().ReplaceTypeByMeta(varList, index), e.GetF2().ReplaceTypeByMeta(varList, index))
+}
+
+func (e Equ) ReplaceVarByTerm(old Var, new Term) Form {
+	return MakeEqu(e.GetIndex(), e.GetF1().ReplaceVarByTerm(old, new), e.GetF2().ReplaceVarByTerm(old, new))
+}
+
+func (e Equ) RenameVariables() Form {
+	return MakeEqu(e.GetIndex(), e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
 }

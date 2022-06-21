@@ -30,77 +30,58 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/************/
-/* utils.go */
-/************/
+/**********/
+/* var.go */
+/**********/
 
 /**
-* This file contains some useful functions.
+* This file contains the implementation of a closed variable.
 **/
 
-package global
+package basictypes
 
-import "strings"
+import (
+	"fmt"
 
-type Comparable interface {
-	Equals(interface{}) bool
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+)
+
+/* Variable (x,y under ForAll or Exists) */
+type Var struct {
+	index    int
+	name     string
+	typeHint typing.TypeApp
 }
 
-type ComparableList[T Comparable] []T
+func (v Var) GetTypeApp() typing.TypeApp     { return v.typeHint }
+func (v Var) GetTypeHint() typing.TypeScheme { return v.typeHint.(typing.TypeScheme) }
+func (v Var) GetIndex() int                  { return v.index }
+func (v Var) GetName() string                { return v.name }
+func (v Var) IsMeta() bool                   { return false }
+func (v Var) IsFun() bool                    { return false }
+func (v Var) Copy() Term                     { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
+func (Var) ToMeta() Meta                     { return Meta{} }
+func (Var) GetMetas() MetaList               { return MetaList{} }
 
-func (cpbl ComparableList[T]) Equals(oth ComparableList[T]) bool {
-	if len(cpbl) != len(oth) {
-		return false
+func (v Var) ToString() string {
+	return fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
+}
+
+func (v Var) ToStringWithSuffixMeta(string) string { return v.ToString() }
+
+func (v Var) Equals(t Term) bool {
+	oth, isVar := t.(Var)
+	return isVar && (oth.GetIndex() == v.GetIndex()) &&
+		(oth.GetName() == v.GetName()) && (v.typeHint.Equals(oth.typeHint))
+}
+
+func (v Var) GetSubTerms() []Term {
+	return []Term{v}
+}
+
+func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
+	if v.Equals(original_term) {
+		return new_term.Copy()
 	}
-
-	for i := range cpbl {
-		if !cpbl[i].Equals(oth[i]) {
-			return false
-		}
-	}
-	return true
-}
-
-func (cpbl ComparableList[T]) Contains(element T) bool {
-	for i := range cpbl {
-		if cpbl[i].Equals(element) {
-			return true
-		}
-	}
-	return false
-}
-
-type Stringable interface {
-	ToString() string
-}
-
-func ListToString[T Stringable](sgbl []T, sep, emptyValue string) string {
-	strArr := []string{}
-
-	for _, element := range sgbl {
-		strArr = append(strArr, element.ToString())
-	}
-
-	if len(strArr) == 0 && emptyValue != "" {
-		strArr = append(strArr, emptyValue)
-	}
-
-	return strings.Join(strArr, sep)
-}
-
-func Is[T any, U any](obj U) bool {
-	_, isT := any(obj).(T)
-	return isT
-}
-
-func To[T any, U any](obj U) T {
-	return any(obj).(T)
-}
-
-func ConvertList[T any, U any](input []T) []U {
-	output := []U{}
-	for _, element := range input {
-		output = append(output, any(element).(U))
-	}
-	return output
+	return v
 }

@@ -265,7 +265,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			and_list = append(and_list, new_form_list)
 
 		case basictypes.Axiom:
-			new_form := basictypes.RenameVariables(s.GetForm())
+			new_form := s.GetForm().RenameVariables()
 			if !global.IsLoaded("dmt") {
 				and_list = append(and_list, new_form)
 			} else if consumed := dmt.RegisterAxiom(new_form.Copy()); !consumed {
@@ -274,7 +274,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 
 		case basictypes.Conjecture:
 			conjecture_found = true
-			not_form = basictypes.RenameVariables(s.GetForm())
+			not_form = s.GetForm().RenameVariables()
 		}
 	}
 	switch {

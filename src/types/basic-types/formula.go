@@ -60,6 +60,8 @@ type Form interface {
 	GetMetas() MetaList
 	GetType() typing.TypeScheme
 	ReplaceTypeByMeta([]typing.TypeVar, int) Form
+	ReplaceVarByTerm(old Var, new Term) Form
+	RenameVariables() Form
 }
 
 /*** Functions ***/
@@ -193,45 +195,6 @@ func simplifyNeg(f Form, isEven bool) Form {
 		} else {
 			return RefuteForm(f.Copy())
 		}
-	}
-}
-
-/** Replace a Var by a term - Useful functions for Delta and Gamma rules (replace var by term) **/
-
-/* Replace a var by a term */
-func ReplaceVarByTerm(f Form, old_symbol Var, new_symbol Term) Form {
-	switch nf := f.(type) {
-	case Pred:
-		// Be careful about the type here, the correctness of doing this has not been thoroughly checked.
-		return MakePred(f.GetIndex(), nf.GetID(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol), nf.GetTypeVars(), nf.GetType())
-	case Top:
-		return f
-	case Bot:
-		return f
-	case Not:
-		return MakeNot(f.GetIndex(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
-	case And:
-		var res FormList
-		for _, val := range nf.GetLF() {
-			res = append(res, ReplaceVarByTerm(val, old_symbol, new_symbol))
-		}
-		return MakeAnd(f.GetIndex(), res)
-	case Or:
-		var res FormList
-		for _, val := range nf.GetLF() {
-			res = append(res, ReplaceVarByTerm(val, old_symbol, new_symbol))
-		}
-		return MakeOr(f.GetIndex(), res)
-	case Imp:
-		return MakeImp(f.GetIndex(), ReplaceVarByTerm(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByTerm(nf.GetF2(), old_symbol, new_symbol))
-	case Equ:
-		return MakeEqu(f.GetIndex(), ReplaceVarByTerm(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByTerm(nf.GetF2(), old_symbol, new_symbol))
-	case Ex:
-		return MakeEx(f.GetIndex(), nf.GetVarList(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
-	case All:
-		return MakeAll(f.GetIndex(), nf.GetVarList(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
-	default:
-		return nil
 	}
 }
 
