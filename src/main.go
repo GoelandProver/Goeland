@@ -43,6 +43,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
 	"runtime"
 	"runtime/pprof"
 	"time"
@@ -87,7 +88,16 @@ func main() {
 	if global.GetLimit() != -1 {
 		bound = global.GetLimit()
 	}
-	Search(StatementListToFormula(lstm), bound)
+
+	current_dir, err := os.Getwd()
+	if err != nil {
+		fmt.Printf("Error in os.Getwd")
+		return
+	}
+	formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
+	os.Chdir(current_dir)
+
+	Search(formula, new_bound)
 }
 
 /* Manage return from search for destructive and non-destructive versions  */
@@ -191,12 +201,23 @@ func Search(f basictypes.Form, bound int) {
 }
 
 /* Transform a list of statement into a formula */
-func StatementListToFormula(lstm []basictypes.Statement) basictypes.Form {
+func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_dir string) (basictypes.Form, int) {
+	fmt.Printf("Bound at the begining of SLTF : %v\n", old_bound)
 	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
+	bound := old_bound
+	os.Chdir(current_dir)
 
 	for _, s := range lstm {
 		switch s.GetRole() {
+		case basictypes.Include:
+			file_name := s.GetName()
+			fmt.Printf("File to parse : %v\n", file_name)
+			new_lstm, bound_tmp := parser.ParseMain(file_name)
+			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Dir(file_name))
+			bound = new_bound
+			fmt.Printf("Bound after include : %v\n", bound)
+			and_list = append(and_list, new_form_list)
 		case basictypes.Axiom:
 			new_form := basictypes.RenameVariables(s.GetForm())
 			if consumed := plugin.GetPluginManager().ApplySendAxiomHook(new_form.Copy()); !consumed {
@@ -207,16 +228,18 @@ func StatementListToFormula(lstm []basictypes.Statement) basictypes.Form {
 		}
 	}
 
+	fmt.Printf("Bound after parse : %v\n", bound)
+
 	switch {
 	case len(and_list) == 0 && not_form == nil:
 		fmt.Printf("Aucune données")
-		return nil
+		return nil, bound
 	case len(and_list) == 0:
-		return basictypes.RefuteForm(not_form)
+		return basictypes.RefuteForm(not_form), bound
 	case not_form == nil:
-		return basictypes.MakeAnd(and_list)
+		return basictypes.MakeAnd(and_list), bound
 	default:
-		return basictypes.MakeAnd(append(and_list, basictypes.RefuteForm(not_form)))
+		return basictypes.MakeAnd(append(and_list, basictypes.RefuteForm(not_form))), bound
 	}
 }
 
