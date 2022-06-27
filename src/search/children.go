@@ -4,16 +4,16 @@
 * Goéland is an automated theorem prover for first order logic.
 *
 * This software is governed by the CeCILL license under French law and
-* abiding by the rules of distribution of free software.  You can  use, 
+* abiding by the rules of distribution of free software.  You can  use,
 * modify and/ or redistribute the software under the terms of the CeCILL
 * license as circulated by CEA, CNRS and INRIA at the following URL
-* "http://www.cecill.info". 
+* "http://www.cecill.info".
 *
 * As a counterpart to the access to the source code and  rights to copy,
 * modify and redistribute granted by the license, users are provided only
 * with a limited warranty  and the software's author,  the holder of the
 * economic rights,  and the successive licensors  have only  limited
-* liability. 
+* liability.
 *
 * In this respect, the user's attention is drawn to the risks associated
 * with loading,  using,  modifying and/or developing or reproducing the
@@ -22,9 +22,9 @@
 * therefore means  that it is reserved for developers  and  experienced
 * professionals having in-depth computer knowledge. Users are therefore
 * encouraged to load and test the software's suitability as regards their
-* requirements in conditions enabling the security of their systems and/or 
-* data to be ensured and,  more generally, to use and operate it in the 
-* same conditions as regards security. 
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and,  more generally, to use and operate it in the
+* same conditions as regards security.
 *
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
@@ -38,10 +38,10 @@ package search
 import (
 	"fmt"
 
-	treetypes "github.com/delahayd/gotab/code-trees/tree-types"
-	"github.com/delahayd/gotab/global"
-	complextypes "github.com/delahayd/gotab/types/complex-types"
-	proof "github.com/delahayd/gotab/visualization_proof"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
+	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 /* Struct result to communicate substitution or a quit order through a channel */
@@ -79,16 +79,16 @@ func (r Result) GetNeedAnswer() bool {
 	return r.need_answer
 }
 func (r Result) GetSubstForChildren() complextypes.SubstAndForm {
-	return r.subst_for_children
+	return r.subst_for_children.Copy()
 }
 func (r Result) GetSubstListForFather() []complextypes.SubstAndForm {
-	return r.subst_list_for_father
+	return complextypes.CopySubstAndFormList(r.subst_list_for_father)
 }
 func (r Result) GetProof() []proof.ProofStruct {
 	return r.proof
 }
 func (r Result) Copy() Result {
-	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren().Copy(), complextypes.CopySubstAndFormList(r.GetSubstListForFather()), r.GetProof()}
+	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetProof()}
 }
 
 /* remove a childre  from a communication list */
@@ -141,7 +141,7 @@ func sendSubToChildren(children []Communication, s complextypes.SubstAndForm) {
 func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm) {
 	subst_for_father := complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound())
 	global.PrintDebug("SSTF", fmt.Sprintf("Send subst to father : %v, closed : %v, need answer : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(subst_for_father)), closed, need_answer))
-	global.PrintDebug("SSTF", "Send answer")
+	global.PrintDebug("SSTF", fmt.Sprintf("Send answer : %v", complextypes.SubstAndFormListToString(subst_for_father)))
 	select {
 	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), st.GetProof()}:
 		if need_answer {

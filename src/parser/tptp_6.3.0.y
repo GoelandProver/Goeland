@@ -1,9 +1,6 @@
 // $basictypes.Id$
 /**
-* Copyright by Julie CAILLER and Johann ROSAIN (2022)
-*
-* julie.cailler@lirmm.fr
-* johann.rosain@lirmm.fr
+* Copyright 2022 by the authors (see AUTHORS).
 *
 * Goéland is an automated theorem prover for first order logic.
 *
@@ -36,13 +33,13 @@
 
 %{
 
-package complextypes
+package parser
 
 import (
 	"fmt"
 	"unicode"
   "io/ioutil"
-  basictypes "github.com/delahayd/gotab/types/basic-types"
+  basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	)
 
 // Count of quantifiers (bound)
@@ -76,13 +73,14 @@ var res []basictypes.Statement
 	vrb basictypes.Var
 	app App
 	id basictypes.Id
+  ls []string
 }
 
 // any non-terminal which returns a value needs a type, which is
 // really a field name in the above union struct
 %type <lstm> file tptp_input_list
-%type <stm> tptp_input annotated_formula fof_annotated
-%type <val> name
+%type <stm> tptp_input annotated_formula fof_annotated include
+%type <val> name file_name
 %type <fr> formula_role
 %type <form> fof_formula fof_logic_formula fof_binary_formula
 %type <form> fof_unitary_formula fof_binary_nonassoc fof_binary_assoc
@@ -95,6 +93,7 @@ var res []basictypes.Statement
 %type <vrb> variable
 %type <app> plain_term
 %type <id> constant tptp_functor atomic_word
+%type <ls> name_list
 
 // same for terminals
 /* Token declarations for Tptp parser */
@@ -170,8 +169,8 @@ tptp_input_list: {$$ = nil}
   | tptp_input tptp_input_list {$$ = append([]basictypes.Statement{$1}, $2...)} 
   ;
 
-tptp_input:
-    annotated_formula {$$ = $1}
+tptp_input: annotated_formula {$$ = $1}
+  | include {$$ = $1}
   ;
 
 /* Formula records */
@@ -193,6 +192,18 @@ annotations:
    //|
    //{ None }
   ;
+
+/* include record */
+include:
+  INCLUDE LEFT_PAREN file_name RIGHT_PAREN DOT  { $$ = basictypes.MakeStatement($3, basictypes.Include, nil) }
+  | INCLUDE LEFT_PAREN file_name COMMA LEFT_BRACKET name_list RIGHT_BRACKET RIGHT_PAREN DOT { $$ = basictypes.MakeStatement($3, basictypes.Include, nil) }
+
+file_name:
+  SINGLE_QUOTED     { $$ = $1 }
+
+name_list:
+  name { $$ = []string{$1} }
+  | name COMMA name_list { $$ = append([]string{$1}, $3...) }
 
 formula_role:
     LOWER_WORD
@@ -228,11 +239,11 @@ fof_binary_nonassoc:
   | fof_unitary_formula IMPLY fof_unitary_formula {$$ = basictypes.MakeImp($1, $3)}
   | fof_unitary_formula LEFT_IMPLY fof_unitary_formula {$$ = basictypes.MakeImp($3, $1)}
   | fof_unitary_formula XOR fof_unitary_formula
-    {$$ = basictypes.MakeOr([]basictypes.Form{basictypes.MakeAnd([]basictypes.Form{$1, basictypes.MakeNot($3)}), basictypes.MakeAnd([]basictypes.Form{basictypes.MakeNot($1), $3})})}
+    {$$ = basictypes.MakeOr([]basictypes.Form{basictypes.MakeAnd([]basictypes.Form{$1, basictypes.RefuteForm($3)}), basictypes.MakeAnd([]basictypes.Form{basictypes.RefuteForm($1), $3})})}
   | fof_unitary_formula NOTVLINE fof_unitary_formula
-    {$$ = basictypes.MakeNot(basictypes.MakeOr([]basictypes.Form{$1, $3}))}
+    {$$ = basictypes.RefuteForm(basictypes.MakeOr([]basictypes.Form{$1, $3}))}
   | fof_unitary_formula NOTAND fof_unitary_formula
-    {$$ = basictypes.MakeNot(basictypes.MakeAnd([]basictypes.Form{$1, $3}))}
+    {$$ = basictypes.RefuteForm(basictypes.MakeAnd([]basictypes.Form{$1, $3}))}
   ;
 
 fof_binary_assoc:
@@ -272,7 +283,7 @@ fof_variable_list:
   ;
 
 fof_unary_formula:
-    NOT fof_unitary_formula {$$ = basictypes.MakeNot($2)}
+    NOT fof_unitary_formula {$$ = basictypes.RefuteForm($2)}
   | fol_infix_unary {$$ = $1}
   ;
 
@@ -306,7 +317,7 @@ fof_unary_formula:
 /* Special formulas */
 
 fol_infix_unary:
-    term NOT_EQUAL term {$$ = basictypes.MakeNot(basictypes.MakePred(basictypes.MakerId("="), []basictypes.Term{$1, $3}))}
+    term NOT_EQUAL term {$$ = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{$1, $3})}
   ;
 
 /* First order atoms */
@@ -337,7 +348,7 @@ defined_atomic_formula:
     ;*/
 
 defined_infix_formula:
-    term EQUAL term {$$ = basictypes.MakePred(basictypes.MakerId("="), []basictypes.Term{$1, $3})}
+    term EQUAL term {$$ = basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{$1, $3})}
   ;
 
 /*system_atomic_formula:
@@ -540,14 +551,15 @@ general_terms:
 name:
     LOWER_WORD
   ;
-/*  | SINGLE_QUOTED
+/*  
+  | SINGLE_QUOTED
   | INTEGER
   ;*/
 
 atomic_word:
     LOWER_WORD {$$ = basictypes.MakerId($1)}
   ;
-/*  | SINGLE_QUOTED */
+  /*   | SINGLE_QUOTED */
 
 /*atomic_defined_word:
     DOLLAR_WORD
@@ -678,6 +690,8 @@ func IsKeyword(name string) (int, bool) {
         switch name {
 	case "fof":
 	        return FOF, false
+  case "include":
+          return INCLUDE, false
 	default:
 	        return 0, true
         }//switch
@@ -722,10 +736,40 @@ func (l *TPTPLex) Word(lval *TPTPSymType) int {
 		}/*if*/ else {
 		        return kwd
 		}//else
-	} else {
+	} else if c == '\'' {
+      l.pos += 1
+      c = rune(l.s[l.pos])
+      sq_quoted := ""
+      for isSqChar(c) || c == '\\' {
+          if c == '\\' {
+            l.pos += 1
+            c = rune(l.s[l.pos])
+            if c == '\\' || c == '\'' {
+                sq_quoted += string('\\'+c)
+            }
+          } else {
+            sq_quoted += string(c)
+          }
+          l.pos += 1
+          // ... Si y'a des bugs, voir ici
+          c = rune(l.s[l.pos])
+      }
+      l.pos += 1
+      c = rune(l.s[l.pos])
+      lval.val = sq_quoted
+return SINGLE_QUOTED 
+  } else {
 	        return 0
 	}//else
 }//Word
+
+// 40-46, 50-133, 135-176 et \\ ou \'
+//32-38 40-91 93-126
+func isSqChar(c rune) bool {
+  ascii := int(c)
+  return (ascii >= 32 && ascii <= 38) || (ascii >= 40 && ascii <= 91) || (ascii >= 93 && ascii <= 126) 
+}
+
 
 // Checks if the next token is a special word
 // Returns the token if recognized, 0 otherwise

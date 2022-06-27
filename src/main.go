@@ -43,20 +43,22 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
 	"runtime"
 	"runtime/pprof"
 	"time"
 
 	_ "net/http/pprof"
 
-	treesearch "github.com/delahayd/gotab/code-trees/tree-search"
-	"github.com/delahayd/gotab/global"
-	"github.com/delahayd/gotab/plugin"
-	"github.com/delahayd/gotab/search"
-	basictypes "github.com/delahayd/gotab/types/basic-types"
-	complextypes "github.com/delahayd/gotab/types/complex-types"
-	exchanges "github.com/delahayd/gotab/visualization_exchanges"
-	proof "github.com/delahayd/gotab/visualization_proof"
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
+	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/parser"
+	"github.com/GoelandProver/Goeland/plugin"
+	"github.com/GoelandProver/Goeland/search"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
+	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 // Flags
@@ -70,88 +72,32 @@ var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a fi
 var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
 
 func main() {
-	global.SetStart(time.Now())
-	// runtime.GOMAXPROCS(1)
-	// fmt.Printf("nb of cpu : %v", runtime.NumCPU())
+	initFlag()
+	initialization()
 
-	flag.Var(&plugin.PoptionFlag, "poptions", "Options for the different plugins.")
-	flag.Parse()
-
-	if *cpuprofile != "" {
-		f, err := os.Create(*cpuprofile)
-		if err != nil {
-			log.Fatal("could not create CPU profile: ", err)
-		}
-		defer f.Close() // error handling omitted for example
-		if err := pprof.StartCPUProfile(f); err != nil {
-			log.Fatal("could not start CPU profile: ", err)
-		}
-		defer pprof.StopCPUProfile()
-	}
-
-	if *flag_debug {
-		global.SetDebug(true)
-	}
-
-	if *flag_limit != -1 {
-		global.SetLimit(*flag_limit)
-	}
-
-	if *flag_one_step {
-		global.SetOneStep(true)
-	}
-
-	if *flag_non_destructive {
-		global.SetDestructive(false)
-		global.SetOneStep(true)
-	}
-
-	if *flag_exchanges {
-		global.SetExchanges(true)
-		exchanges.ResetExchangesFile()
-	}
-
-	if *flag_proof {
-		global.SetProof(true)
-		proof.ResetProofFile()
-	}
-
-	// treesearch.RunTests()
-	mainGotab()
-
-	if *memprofile != "" {
-		f, err := os.Create(*memprofile)
-		if err != nil {
-			log.Fatal("could not create memory profile: ", err)
-		}
-		defer f.Close() // error handling omitted for example
-		runtime.GC()    // get up-to-date statistics
-		if err := pprof.WriteHeapProfile(f); err != nil {
-			log.Fatal("could not write memory profile: ", err)
-		}
-	}
-}
-
-func mainGotab() {
-	basictypes.Reset()
 	args := os.Args
-	problem := ""
-
 	if len(args) < 2 {
 		fmt.Printf("./gotab [options] problem_file\n")
 		return
 	}
 
-	problem = args[len(args)-1]
-
-	fmt.Printf("\n[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
-
-	lstm, bound := complextypes.ParseMain(problem)
+	problem := args[len(args)-1]
+	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
+	lstm, bound := parser.ParseMain(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
 	if global.GetLimit() != -1 {
 		bound = global.GetLimit()
 	}
-	Search(StatementListToFormula(lstm), bound)
+
+	current_dir, err := os.Getwd()
+	if err != nil {
+		fmt.Printf("Error in os.Getwd")
+		return
+	}
+	formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
+	os.Chdir(current_dir)
+
+	Search(formula, new_bound)
 }
 
 /* Manage return from search for destructive and non-destructive versions  */
@@ -171,6 +117,8 @@ func ManageResult(c search.Communication) (bool, []proof.ProofStruct) {
 	} else {
 		open := false
 		for !open && runtime.NumGoroutine() > 1 {
+			// TODO : kill all goroutines if open found
+			// Close channel -> broadcast
 			res := <-c.GetResult()
 			open = !res.GetClosed()
 			time.Sleep(1 * time.Millisecond)
@@ -212,7 +160,7 @@ func Search(f basictypes.Form, bound int) {
 		proof.ResetProofFile()
 		exchanges.ResetExchangesFile()
 
-		global.PrintDebug("TMAINF", fmt.Sprintf("nb_step : %v", global.GetNbStep()))
+		global.PrintDebug("MAIN", fmt.Sprintf("nb_step : %v", global.GetNbStep()))
 		fmt.Printf("nb_step : %v - limit : %v\n", global.GetNbStep(), limit)
 
 		tp := new(treesearch.Node)
@@ -220,11 +168,12 @@ func Search(f basictypes.Form, bound int) {
 
 		st := complextypes.MakeState(limit, tp, tn)
 
-		fmt.Printf("Launch Gotab with destructive = %v, data_struct = %v\n", global.IsDestructive(), global.GetDataStruct())
+		fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
 
 		global.SetNbGoroutines(0)
-		st.SetLF([]basictypes.FormAndTerm{basictypes.MakeForm(f)})
+		st.SetLF(basictypes.MakeSingleElementList(f))
 		c := search.MakeCommunication(make(chan bool), make(chan search.Result))
+		// TODO : global quit channel in non destrutive
 
 		if global.GetExchanges() {
 			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
@@ -251,12 +200,24 @@ func Search(f basictypes.Form, bound int) {
 	PrintResult(res)
 }
 
-func StatementListToFormula(lstm []basictypes.Statement) basictypes.Form {
-	and_list := []basictypes.Form{}
+/* Transform a list of statement into a formula */
+func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_dir string) (basictypes.Form, int) {
+	fmt.Printf("Bound at the begining of SLTF : %v\n", old_bound)
+	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
+	bound := old_bound
+	os.Chdir(current_dir)
 
 	for _, s := range lstm {
 		switch s.GetRole() {
+		case basictypes.Include:
+			file_name := s.GetName()
+			fmt.Printf("File to parse : %v\n", file_name)
+			new_lstm, bound_tmp := parser.ParseMain(file_name)
+			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Dir(file_name))
+			bound = new_bound
+			fmt.Printf("Bound after include : %v\n", bound)
+			and_list = append(and_list, new_form_list)
 		case basictypes.Axiom:
 			new_form := basictypes.RenameVariables(s.GetForm())
 			if consumed := plugin.GetPluginManager().ApplySendAxiomHook(new_form.Copy()); !consumed {
@@ -266,15 +227,88 @@ func StatementListToFormula(lstm []basictypes.Statement) basictypes.Form {
 			not_form = s.GetForm()
 		}
 	}
+
+	fmt.Printf("Bound after parse : %v\n", bound)
+
 	switch {
 	case len(and_list) == 0 && not_form == nil:
 		fmt.Printf("Aucune données")
-		return nil
+		return nil, bound
 	case len(and_list) == 0:
-		return basictypes.RefuteForm(not_form)
+		return basictypes.RefuteForm(not_form), bound
 	case not_form == nil:
-		return basictypes.MakeAnd(and_list)
+		return basictypes.MakeAnd(and_list), bound
 	default:
-		return basictypes.MakeAnd(append(and_list, basictypes.RefuteForm(not_form)))
+		return basictypes.MakeAnd(append(and_list, basictypes.RefuteForm(not_form))), bound
+	}
+}
+
+/* Initialize global variable, time, call plugins */
+func initialization() {
+	// Time
+	global.SetStart(time.Now())
+
+	// Terms
+	basictypes.Init()
+
+	// Init pulgins
+	plugin.GetPluginManager()
+	global.SetPlugin("dmt", plugin.IsLoaded("dmt"))
+}
+
+/* Init flag */
+func initFlag() {
+	flag.Var(&plugin.PoptionFlag, "poptions", "Options for the different plugins.")
+	flag.Parse()
+
+	if *flag_debug {
+		global.SetDebug(true)
+	}
+
+	if *flag_limit != -1 {
+		global.SetLimit(*flag_limit)
+	}
+
+	if *flag_one_step {
+		global.SetOneStep(true)
+	}
+
+	if *flag_non_destructive {
+		global.SetDestructive(false)
+		global.SetOneStep(true)
+	}
+
+	if *flag_exchanges {
+		global.SetExchanges(true)
+		exchanges.ResetExchangesFile()
+	}
+
+	if *flag_proof {
+		global.SetProof(true)
+		proof.ResetProofFile()
+	}
+
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+		if err != nil {
+			log.Fatal("could not create CPU profile: ", err)
+		}
+		defer f.Close() // error handling omitted for example
+		if err := pprof.StartCPUProfile(f); err != nil {
+			log.Fatal("could not start CPU profile: ", err)
+		}
+		defer pprof.StopCPUProfile()
+	}
+
+	if *memprofile != "" {
+		f, err := os.Create(*memprofile)
+		if err != nil {
+			log.Fatal("could not create memory profile: ", err)
+		}
+		defer f.Close() // error handling omitted for example
+		runtime.GC()    // get up-to-date statistics
+		if err := pprof.WriteHeapProfile(f); err != nil {
+			log.Fatal("could not write memory profile: ", err)
+		}
 	}
 }

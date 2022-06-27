@@ -4,16 +4,16 @@
 * Goéland is an automated theorem prover for first order logic.
 *
 * This software is governed by the CeCILL license under French law and
-* abiding by the rules of distribution of free software.  You can  use, 
+* abiding by the rules of distribution of free software.  You can  use,
 * modify and/ or redistribute the software under the terms of the CeCILL
 * license as circulated by CEA, CNRS and INRIA at the following URL
-* "http://www.cecill.info". 
+* "http://www.cecill.info".
 *
 * As a counterpart to the access to the source code and  rights to copy,
 * modify and redistribute granted by the license, users are provided only
 * with a limited warranty  and the software's author,  the holder of the
 * economic rights,  and the successive licensors  have only  limited
-* liability. 
+* liability.
 *
 * In this respect, the user's attention is drawn to the risks associated
 * with loading,  using,  modifying and/or developing or reproducing the
@@ -22,9 +22,9 @@
 * therefore means  that it is reserved for developers  and  experienced
 * professionals having in-depth computer knowledge. Users are therefore
 * encouraged to load and test the software's suitability as regards their
-* requirements in conditions enabling the security of their systems and/or 
-* data to be ensured and,  more generally, to use and operate it in the 
-* same conditions as regards security. 
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and,  more generally, to use and operate it in the
+* same conditions as regards security.
 *
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
@@ -41,50 +41,11 @@ package complextypes
 import (
 	"fmt"
 
-	treesearch "github.com/delahayd/gotab/code-trees/tree-search"
-	treetypes "github.com/delahayd/gotab/code-trees/tree-types"
-	"github.com/delahayd/gotab/global"
-	basictypes "github.com/delahayd/gotab/types/basic-types"
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
-
-/* Stock the substitution and the corresponding formula */
-type SubstAndForm struct {
-	s treetypes.Substitutions
-	f basictypes.FormAndTerm
-}
-
-func (s SubstAndForm) GetSubst() treetypes.Substitutions {
-	return s.s.Copy()
-}
-func (s SubstAndForm) GetForm() basictypes.FormAndTerm {
-	return s.f.Copy()
-}
-func (s *SubstAndForm) SetSubst(subst treetypes.Substitutions) {
-	s.s = subst.Copy()
-}
-func (s *SubstAndForm) SetForm(form basictypes.FormAndTerm) {
-	s.f = form.Copy()
-}
-func (saf SubstAndForm) IsEmpty() bool {
-	return saf.s.IsEmpty()
-}
-func (s1 SubstAndForm) Equals(s2 SubstAndForm) bool {
-	return s1.GetSubst().Equals(s2.GetSubst()) && s1.GetForm().Equals(s2.GetForm())
-}
-func (s SubstAndForm) Copy() SubstAndForm {
-	return MakeSubstAndForm(s.GetSubst(), s.GetForm())
-}
-
-func MakeSubstAndForm(subst treetypes.Substitutions, form basictypes.FormAndTerm) SubstAndForm {
-	return SubstAndForm{subst.Copy(), form.Copy()}
-}
-func MakeEmptySubstAndForm() SubstAndForm {
-	return SubstAndForm{treetypes.MakeEmptySubstitution(), basictypes.MakeEmptyFormAndTerm()}
-}
-
-/*************/
-/* Functions */
-/*************/
 
 /* Return the list of metavariable from a substitution */
 func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
@@ -105,6 +66,9 @@ func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
 
 /* Remove substitution without mm */
 func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) treetypes.Substitutions {
+
+	global.PrintDebug("REWM", fmt.Sprintf("MM : %v", mm.ToString()))
+	global.PrintDebug("REWM", fmt.Sprintf("Initial subst : %v", s.ToString()))
 
 	// Substitution définitive
 	res := treetypes.Substitutions{}
@@ -133,14 +97,15 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 	subst_to_reorganize = ReorganizeSubstitution(subst_to_reorganize, mm)
 	treetypes.EliminateMeta(&subst_to_reorganize)
 	treetypes.Eliminate(&subst_to_reorganize)
-	ms, same_key := treesearch.MergeSubstitutions(res, subst_to_reorganize)
+	ms, _ := treesearch.MergeSubstitutions(res, subst_to_reorganize)
 
-	if same_key {
-		fmt.Printf("Same key in S2 and S1")
-	}
+	global.PrintDebug("REWM", fmt.Sprintf("Finale subst : %v", ms.ToString()))
+
 	if ms.Equals(treetypes.Failure()) {
-		println("[RemoveElementWithoutMM] Error : MergeSubstitutions return failure")
+		println("[REWM] Error : MergeSubstitutions returns failure")
+		// os.Exit(0)
 	}
+
 	return ms
 
 }
@@ -182,25 +147,6 @@ func ContainsMetaMother(s treetypes.Substitutions, mm basictypes.MetaList) bool 
 		}
 	}
 	return false
-}
-
-/* Check if a substitution is inside a list of substitution */
-func ContainsSubst(s treetypes.Substitutions, sl []treetypes.Substitutions) bool {
-	for _, v := range sl {
-		if v.Equals(s) {
-			return true
-		}
-	}
-	return false
-}
-
-/* Append a substitution s to a list of substitution sl if s is not in sl */
-func AppendIfNotContainsSubst(sl []treetypes.Substitutions, s treetypes.Substitutions) []treetypes.Substitutions {
-	if !ContainsSubst(s, sl) {
-		return append(sl, s)
-	} else {
-		return sl
-	}
 }
 
 func FusionSubstAndFormListWithoutDouble(l1, l2 []SubstAndForm) []SubstAndForm {
@@ -245,13 +191,13 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 	case basictypes.Not:
 		res = basictypes.MakeNot(ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case basictypes.And:
-		res_tmp := []basictypes.Form{}
+		res_tmp := basictypes.MakeEmptyFormList()
 		for _, val := range nf.GetLF() {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = basictypes.MakeAnd(res_tmp)
 	case basictypes.Or:
-		res_tmp := []basictypes.Form{}
+		res_tmp := basictypes.MakeEmptyFormList()
 		for _, val := range nf.GetLF() {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
@@ -272,33 +218,30 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 }
 
 /* For each element of the substitution, apply it on the entire formula list */
-func ApplySubstitutionOnFormulaList(s treetypes.Substitutions, lf []basictypes.FormAndTerm) []basictypes.FormAndTerm {
-	lf_res := []basictypes.FormAndTerm{}
+func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf basictypes.FormList) basictypes.FormList {
+	lf_res := basictypes.MakeEmptyFormList()
 	for _, f := range lf {
-		new_form := applySubstitutionOnFormAndTerm(s, f)
-		lf_res = basictypes.AppendIfNotContainsFormAndTerm(lf_res, new_form)
+		new_form := applySubstitutionsOnFormula(s, f)
+		lf_res = lf_res.AppendIfNotContains(new_form)
 
 	}
 	return lf_res
 }
 
 /* Apply substitution on FormAndTerm */
-func applySubstitutionOnFormAndTerm(s treetypes.Substitutions, f basictypes.FormAndTerm) basictypes.FormAndTerm {
-	form_res := f.GetForm()
-	tl_res := f.GetTerms()
-
+func applySubstitutionsOnFormula(s treetypes.Substitutions, f basictypes.Form) basictypes.Form {
+	form_res := f.Copy()
 	for old_symbol, new_symbol := range s {
 		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
-		tl_res = applySubstitutionOnTermList(old_symbol, new_symbol, tl_res)
 	}
-	return basictypes.MakeFormAndTerm(form_res, tl_res)
+	return form_res
 }
 
 /* Apply a substitution on a metaGenerator list */
-func applySubstitutionOnMetaGenList(s treetypes.Substitutions, lf []basictypes.MetaGen) []basictypes.MetaGen {
+func ApplySubstitutionOnMetaGenList(s treetypes.Substitutions, lf []basictypes.MetaGen) []basictypes.MetaGen {
 	lf_res := []basictypes.MetaGen{}
 	for _, f := range lf {
-		new_form := applySubstitutionOnMetaGen(s, f)
+		new_form := ApplySubstitutionOnMetaGen(s, f)
 		if !basictypes.ContainsMetaGenList(new_form.GetForm(), lf_res) {
 			lf_res = append(lf_res, new_form)
 		}
@@ -307,41 +250,12 @@ func applySubstitutionOnMetaGenList(s treetypes.Substitutions, lf []basictypes.M
 }
 
 /* Apply a substitution on a metaGen form */
-func applySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen) basictypes.MetaGen {
-	form_res := mg.GetForm().GetForm()
-	tl_res := mg.GetForm().GetTerms()
-
+func ApplySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen) basictypes.MetaGen {
+	form_res := mg.GetForm()
 	for old_symbol, new_symbol := range s {
 		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
-		tl_res = applySubstitutionOnTermList(old_symbol, new_symbol, tl_res)
 	}
-	return basictypes.MakeMetaGen(basictypes.MakeFormAndTerm(form_res, tl_res), mg.GetCounter())
-}
-
-/** Apply a sbstitution on a state
-* TODO : remove old MM/MC
-**/
-func ApplySubstitution(st *State, saf SubstAndForm) {
-	s := saf.GetSubst()
-	ms, same_key := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), s.Copy())
-	if same_key {
-		fmt.Printf("Same key in S2 and S1")
-	}
-	if ms.Equals(treetypes.Failure()) {
-		println("[AS] Error : MergeSubstitutions return failure")
-	}
-	st.SetAppliedSubst(MakeSubstAndForm(ms, saf.GetForm()))
-	st.SetLastAppliedSubst(saf)
-	st.SetLF(ApplySubstitutionOnFormulaList(s, st.GetLF()))
-	st.SetAtomic(ApplySubstitutionOnFormulaList(s, st.GetAtomic()))
-	st.SetAlpha(ApplySubstitutionOnFormulaList(s, st.GetAlpha()))
-	st.SetBeta(ApplySubstitutionOnFormulaList(s, st.GetBeta()))
-	st.SetDelta(ApplySubstitutionOnFormulaList(s, st.GetDelta()))
-	st.SetGamma(ApplySubstitutionOnFormulaList(s, st.GetGamma()))
-	st.SetMetaGen(applySubstitutionOnMetaGenList(s, st.GetMetaGen()))
-
-	st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic(), true))
-	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic(), false))
+	return basictypes.MakeMetaGen(form_res, mg.GetCounter())
 }
 
 /* Dispatch a list of substitution : containing mm or not */
@@ -442,4 +356,52 @@ func CopySubstAndFormList(sl []SubstAndForm) []SubstAndForm {
 		res[i] = sl[i].Copy()
 	}
 	return res
+}
+
+/* Print a list of substAndForm */
+func SubstAndFormListToString(sl []SubstAndForm) string {
+	var s_res string
+	s_res = "{"
+	for i, v := range sl {
+		s_res += v.ToString()
+		if i < len(sl)-1 {
+			s_res += (", ")
+		}
+	}
+	s_res += "}"
+	return s_res
+}
+
+/* Merge two SubstAndForm (supposed to fit) */
+func MergeSubstAndForm(s1, s2 SubstAndForm) SubstAndForm {
+	if s1.IsEmpty() {
+		return s2
+	}
+
+	if s2.IsEmpty() {
+		return s1
+	}
+
+	new_subst, _ := treesearch.MergeSubstitutions(s1.GetSubst().Copy(), s2.GetSubst().Copy())
+
+	if new_subst.Equals(treetypes.Failure()) {
+		global.PrintDebug("MSAF", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString()))
+		fmt.Printf("[MSAF] Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString())
+		// os.Exit(0)
+	}
+
+	new_form := s1.GetForm().Copy().Merge(s2.GetForm().Copy())
+
+	return MakeSubstAndForm(new_subst, new_form)
+}
+
+/* Merge a list of subst with one subst */
+func MergeSubstListWithSubst(sl []SubstAndForm, subst SubstAndForm) []SubstAndForm {
+	sl_res := []SubstAndForm{}
+
+	for _, s := range sl {
+		sl_res = append(sl_res, MergeSubstAndForm(s, subst))
+	}
+
+	return sl_res
 }

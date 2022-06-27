@@ -47,6 +47,7 @@ import (
 	"plugin"
 	"strings"
 
+	"github.com/GoelandProver/Goeland/global"
 	"gopkg.in/yaml.v2"
 )
 
@@ -56,28 +57,28 @@ import (
  * Parses an option
  **/
 type Option struct {
-	Name string 			`yaml:"name"`
-	Value string 			`yaml:"default"`
+	Name  string `yaml:"name"`
+	Value string `yaml:"default"`
 }
 
 /**
  * Gets the name of the plugin & the options associated.
  **/
 type PluginConfig struct {
-	Name string		 		`yaml:"name"`
-	DefaultEnable bool    	`yaml:"defaultEnable"`
-	Options []Option		`yaml:"options"`
+	Name          string   `yaml:"name"`
+	DefaultEnable bool     `yaml:"defaultEnable"`
+	Options       []Option `yaml:"options"`
 }
 
-type PoptionsFlags []string 
+type PoptionsFlags []string
 
 /* Overloading flags functions */
 
 func (opt *PoptionsFlags) String() string {
 	repr := "["
 	for i, s := range *opt {
-		repr += s 
-		if i != len(*opt) - 1 {
+		repr += s
+		if i != len(*opt)-1 {
 			repr += ", "
 		}
 	}
@@ -95,20 +96,22 @@ var pluginManager *PluginManager
 var flag_load = flag.String("load", "", "Plugins to load. Each plugin have to be separated by a comma, without white space.")
 var flag_preventLoad = flag.String("preventLoad", "", "Prevents the automatic loading of a plugin with its name.")
 var PoptionFlag PoptionsFlags
+var loadedPlugins map[string]bool
 
 /**
  * Loads all the plugins file from the "plugins/" folder at the root of the application executable.
  **/
 func loadPlugins(path string) *PluginManager {
 	pm := makeManager()
+	loadedPlugins = make(map[string]bool)
 
 	realpath, err := os.Executable()
-	
+
 	if err != nil {
 		return pm
 	}
 
-	err = loadPluginsAux(filepath.Dir(realpath) + "/" + path, pm)
+	err = loadPluginsAux(filepath.Dir(realpath)+"/"+path, pm)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -138,9 +141,9 @@ func loadPluginsAux(path string, pm *PluginManager) error {
 		}
 
 		// If the user asked to load this plugin, actually loads the file with the options
-		if ((config.DefaultEnable && !inNameList(config.Name, *flag_preventLoad)) || 
-			inNameList(config.Name, *flag_load)) {
-			loadFile(pm, filepath.Join(path, lib), config.Options)
+		if (config.DefaultEnable && !inNameList(config.Name, *flag_preventLoad)) ||
+			inNameList(config.Name, *flag_load) {
+			loadFile(pm, filepath.Join(path, lib), config)
 		}
 	}
 
@@ -156,7 +159,7 @@ func loadPluginsAux(path string, pm *PluginManager) error {
 }
 
 func inNameList(name string, list string) bool {
-	return strings.Contains(list, "," + name) || strings.Contains(list, name + ",") || list == name
+	return strings.Contains(list, ","+name) || strings.Contains(list, name+",") || list == name
 }
 
 /**
@@ -171,13 +174,13 @@ func isPlugin(lib string, cfg string) bool {
  * Gets the .so and .yaml files for a plugin configuration.
  **/
 func getPluginFiles(files []os.FileInfo) (string, string) {
-	lib, cfg := "", "" 
+	lib, cfg := "", ""
 	for _, file := range files {
 		if !file.IsDir() {
 			if strings.Contains(file.Name(), ".so") {
-				lib = file.Name() 
+				lib = file.Name()
 			} else if strings.Contains(file.Name(), ".yaml") {
-				cfg = file.Name() 
+				cfg = file.Name()
 			}
 		}
 	}
@@ -185,7 +188,7 @@ func getPluginFiles(files []os.FileInfo) (string, string) {
 }
 
 /**
- * Parses the configuration file, gets the name of the plugin, and properly 
+ * Parses the configuration file, gets the name of the plugin, and properly
  * setups the options (with default value, replaces it if it finds the option
  * listed in -poptions name:...
  **/
@@ -232,9 +235,10 @@ func overwriteOptions(config *PluginConfig) error {
 		// Parse each option individually
 		nameAndValue := strings.Split(opt, "=")
 		if len(nameAndValue) != 2 {
-			return fmt.Errorf("[PLUGINS] Plugin option %s couldn't be parsed. Make sure it's of the following form: name=value", opt)
+			// Put an empty value, plugins should manage it themselves.
+			nameAndValue = append(nameAndValue, "")
 		}
-		
+
 		found := false
 		for i, conf := range config.Options {
 			if conf.Name == nameAndValue[0] {
@@ -267,7 +271,7 @@ func getOptionsOf(plugin string) string {
 /**
  * Loads a plugin with its init function and gives it its options.
  **/
-func loadFile(pm *PluginManager, fullpath string, options []Option) error {
+func loadFile(pm *PluginManager, fullpath string, config PluginConfig) error {
 	p, err := plugin.Open(fullpath)
 
 	if err != nil {
@@ -280,11 +284,12 @@ func loadFile(pm *PluginManager, fullpath string, options []Option) error {
 		return fmt.Errorf("[PLUGINS] Init function not found in %s. Plugin hasn't been loaded", fullpath)
 	}
 
-	initFunc := ifunc.(func(*PluginManager, []Option) error)
-	if err := initFunc(pm, options); err != nil {
+	initFunc := ifunc.(func(*PluginManager, []Option, bool) error)
+	if err := initFunc(pm, config.Options, global.GetDebug()); err != nil {
 		return fmt.Errorf("[PLUGINS] Init function error in %s. Plugin hasn't been loaded", fullpath)
 	}
-	fmt.Println("[PLUGINS]", filepath.Base(fullpath), "has been successfully loaded.")
+	fmt.Println("[PLUGINS]", config.Name, "has been successfully loaded.")
+	loadedPlugins[config.Name] = true
 
 	return nil
 }
@@ -294,4 +299,13 @@ func GetPluginManager() *PluginManager {
 		pluginManager = loadPlugins("plugins")
 	}
 	return pluginManager
+}
+
+func IsLoaded(name string) bool {
+	if b, found := loadedPlugins[name]; found {
+		return b
+	} else {
+		loadedPlugins[name] = false
+	}
+	return false
 }

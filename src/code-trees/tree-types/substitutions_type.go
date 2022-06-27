@@ -4,16 +4,16 @@
 * Goéland is an automated theorem prover for first order logic.
 *
 * This software is governed by the CeCILL license under French law and
-* abiding by the rules of distribution of free software.  You can  use, 
+* abiding by the rules of distribution of free software.  You can  use,
 * modify and/ or redistribute the software under the terms of the CeCILL
 * license as circulated by CEA, CNRS and INRIA at the following URL
-* "http://www.cecill.info". 
+* "http://www.cecill.info".
 *
 * As a counterpart to the access to the source code and  rights to copy,
 * modify and redistribute granted by the license, users are provided only
 * with a limited warranty  and the software's author,  the holder of the
 * economic rights,  and the successive licensors  have only  limited
-* liability. 
+* liability.
 *
 * In this respect, the user's attention is drawn to the risks associated
 * with loading,  using,  modifying and/or developing or reproducing the
@@ -22,9 +22,9 @@
 * therefore means  that it is reserved for developers  and  experienced
 * professionals having in-depth computer knowledge. Users are therefore
 * encouraged to load and test the software's suitability as regards their
-* requirements in conditions enabling the security of their systems and/or 
-* data to be ensured and,  more generally, to use and operate it in the 
-* same conditions as regards security. 
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and,  more generally, to use and operate it in the
+* same conditions as regards security.
 *
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
@@ -42,8 +42,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/delahayd/gotab/global"
-	basictypes "github.com/delahayd/gotab/types/basic-types"
+	"github.com/GoelandProver/Goeland/global"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /* Stores the result of the algorithm and the substitutions for each metavariable. */
@@ -60,9 +60,8 @@ func (s Substitutions) ToString() string {
 	sort.Sort(keys)
 
 	var s_res string
-	i := 0
 	s_res = "{"
-	for _, v := range keys {
+	for i, v := range keys {
 		s_res += "("
 		s_res += v.ToString()
 		s_res += ", "
@@ -71,7 +70,6 @@ func (s Substitutions) ToString() string {
 		if i < len(s)-1 {
 			s_res += (", ")
 		}
-		i++
 	}
 	s_res += "}"
 	return s_res
@@ -86,9 +84,8 @@ func (s Substitutions) ToStringForProof() string {
 	sort.Sort(keys)
 
 	var s_res string
-	i := 0
 	s_res = "{"
-	for _, v := range keys {
+	for i, v := range keys {
 		s_res += "<tspan x='0', dy='1.2em'>" + "("
 		s_res += v.ToString()
 		s_res += ", "
@@ -97,7 +94,6 @@ func (s Substitutions) ToStringForProof() string {
 		if i < len(s)-1 {
 			s_res += (", ")
 		}
-		i++
 	}
 	s_res += "}"
 	return s_res
@@ -115,14 +111,12 @@ func (s Substitutions) Print() {
 /* Substitution list into string */
 func SubstListToString(s []Substitutions) string {
 	var s_res string
-	i := 0
 	s_res = "{"
-	for _, v := range s {
+	for i, v := range s {
 		s_res += v.ToString()
 		if i < len(s)-1 {
 			s_res += (", ")
 		}
-		i++
 	}
 	s_res += "}"
 	return s_res
@@ -131,14 +125,12 @@ func SubstListToString(s []Substitutions) string {
 /* Substitution list into string for proof */
 func SubstListToStringForProof(s []Substitutions) string {
 	var s_res string
-	i := 0
 	s_res = "{"
-	for _, v := range s {
+	for i, v := range s {
 		s_res += v.ToStringForProof()
 		if i < len(s)-1 {
 			s_res += (", ")
 		}
-		i++
 	}
 	s_res += "}"
 	return s_res
@@ -193,13 +185,22 @@ func (s Substitutions) GetMeta() basictypes.MetaList {
 }
 
 /* check if a subst is inside a list of substitutions */
-func ContainsSubst(subst Substitutions, sl []Substitutions) bool {
+func ContainsSubst(sl []Substitutions, subst Substitutions) bool {
 	for _, s := range sl {
 		if subst.Equals(s) {
 			return true
 		}
 	}
 	return false
+}
+
+/* Append a substitution s to a list of substitution sl if s is not in sl */
+func AppendIfNotContainsSubst(sl []Substitutions, s Substitutions) []Substitutions {
+	if !ContainsSubst(sl, s) {
+		return append(sl, s)
+	} else {
+		return sl
+	}
 }
 
 /*** Makers ***/
@@ -254,12 +255,10 @@ func areFuncArgsRecursive(f basictypes.Fun, m basictypes.Meta) bool {
 }
 
 /*** Eliminate ***/
-/* Eliminate - apply each element of the subst on the entire substitution, because an element can't appear on the rigth and and the left if a substitution */
-func Eliminate(s *Substitutions) Substitutions {
-	global.PrintDebug("Eliminate", "Start of Eliminate")
-	global.PrintDebug("Eliminate", s.ToString())
+/* Eliminate - apply each element of the subst on the entire substitution, because an element can't œappears on the rigth and and the left if a substitution */
+func Eliminate(s *Substitutions) {
 	if s.Equals(Failure()) {
-		return *s
+		return
 	}
 	has_changed := true
 
@@ -269,17 +268,18 @@ func Eliminate(s *Substitutions) Substitutions {
 		// For each element  (key, value) in the given substitution
 		for key, value := range *s {
 			if OccurCheckValid(key, value) {
-				new_s = eliminateInside(key, value, s.Copy(), &has_changed)
+				new_s = eliminateInside(key, value, (*s).Copy(), &has_changed)
 			} else {
-				return Failure()
+				*s = Failure()
+				return
+			}
+			if new_s.Equals(Failure()) {
+				*s = new_s.Copy()
+				return
 			}
 		}
 		*s = new_s.Copy()
 	}
-
-	global.PrintDebug("Eliminate", "end of Eliminate")
-	global.PrintDebug("Eliminate", s.ToString())
-	return *s
 }
 
 /* Eliminate inside : eliminate for a given couple (key, value) on a substitution */
@@ -350,7 +350,6 @@ func eliminateList(key basictypes.Meta, value basictypes.Term, l []basictypes.Te
 
 /* Eliminates one of the subsitution of a pair like (X, Y) (Y, X). It will keep the first one indexed in the map. */
 func EliminateMeta(subst *Substitutions) {
-	global.PrintDebug("EM", "Start of eliminate meta")
 	meta := Substitutions{}
 
 	for k, v := range *subst {

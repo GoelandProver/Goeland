@@ -4,16 +4,16 @@
 * Goéland is an automated theorem prover for first order logic.
 *
 * This software is governed by the CeCILL license under French law and
-* abiding by the rules of distribution of free software.  You can  use, 
+* abiding by the rules of distribution of free software.  You can  use,
 * modify and/ or redistribute the software under the terms of the CeCILL
 * license as circulated by CEA, CNRS and INRIA at the following URL
-* "http://www.cecill.info". 
+* "http://www.cecill.info".
 *
 * As a counterpart to the access to the source code and  rights to copy,
 * modify and redistribute granted by the license, users are provided only
 * with a limited warranty  and the software's author,  the holder of the
 * economic rights,  and the successive licensors  have only  limited
-* liability. 
+* liability.
 *
 * In this respect, the user's attention is drawn to the risks associated
 * with loading,  using,  modifying and/or developing or reproducing the
@@ -22,9 +22,9 @@
 * therefore means  that it is reserved for developers  and  experienced
 * professionals having in-depth computer knowledge. Users are therefore
 * encouraged to load and test the software's suitability as regards their
-* requirements in conditions enabling the security of their systems and/or 
-* data to be ensured and,  more generally, to use and operate it in the 
-* same conditions as regards security. 
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and,  more generally, to use and operate it in the
+* same conditions as regards security.
 *
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
@@ -38,9 +38,9 @@ package treesearch
 import (
 	"fmt"
 
-	treetypes "github.com/delahayd/gotab/code-trees/tree-types"
-	"github.com/delahayd/gotab/global"
-	basictypes "github.com/delahayd/gotab/types/basic-types"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 var cpt_ok int
@@ -50,8 +50,8 @@ func RunTests() {
 	cpt_ok = 0
 	cpt_fail = 0
 
-	toRun := []func(){Test1, Test2, Test3, Test4, Test5, Test6, Test7, Test8, Test9, Test10, Test11, Test12, Test13, Test14, Test15, Test16, Test17, Test18, Test19, Test20, Test21, Test22, Test23, Test24, Test25, Test26, Test28, Test29, Test30, Test31, Test32, Test33, Test34, Test35, Test36, Test37, Test38, Test39, Test40}
-	// toRun := []func(){Test40}
+	toRun := []func(){Test1, Test2, Test3, Test4, Test5, Test6, Test7, Test8, Test9, Test10, Test11, Test12, Test13, Test14, Test15, Test16, Test17, Test18, Test19, Test20, Test21, Test22, Test23, Test24, Test25, Test26, Test28, Test29, Test30, Test31, Test32, Test33, Test34, Test35, Test36, Test37, Test38, Test39, Test40, Test41}
+	// toRun := []func(){Test41}
 
 	for _, f := range toRun {
 		f()
@@ -60,14 +60,14 @@ func RunTests() {
 	fmt.Printf("\nTests passed: %v, failed: %v\n", cpt_ok, cpt_fail)
 }
 
-func LaunchTest(index int, expected []treetypes.MatchingSubstitutions, toMatch, forms []basictypes.Form) {
+func LaunchTest(index int, expected []treetypes.MatchingSubstitutions, toMatch, forms basictypes.FormList) {
 	fmt.Printf("Test %v : \n", index)
 
 	global.PrintDebug("Test", "To match :")
-	basictypes.PrintFormulaList(toMatch)
+	toMatch.ToString()
 
 	global.PrintDebug("Test", "Tree :")
-	basictypes.PrintFormulaList(forms)
+	forms.ToString()
 
 	codeTree := makeCodeTree(forms)
 
@@ -158,8 +158,8 @@ func Test1() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: a}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -167,8 +167,8 @@ func Test1() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: a}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -189,8 +189,8 @@ func Test2() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{y: x}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -198,8 +198,8 @@ func Test2() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: y}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -216,15 +216,15 @@ func Test3() {
 	LaunchTest(
 		3,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
 		3,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -245,8 +245,8 @@ func Test4() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{y: f}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -254,8 +254,8 @@ func Test4() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{y: f}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -275,15 +275,15 @@ func Test5() {
 	LaunchTest(
 		5,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
 		5,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 
 	// 5.2
@@ -293,14 +293,14 @@ func Test5() {
 	LaunchTest(
 		5,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f3},
-		[]basictypes.Form{f4},
+		basictypes.MakeSingleElementList(f3),
+		basictypes.MakeSingleElementList(f4),
 	)
 	LaunchTest(
 		5,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f4},
-		[]basictypes.Form{f3},
+		basictypes.MakeSingleElementList(f4),
+		basictypes.MakeSingleElementList(f3),
 	)
 
 	// 5.3
@@ -310,14 +310,14 @@ func Test5() {
 	LaunchTest(
 		5,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f5},
-		[]basictypes.Form{f6},
+		basictypes.MakeSingleElementList(f5),
+		basictypes.MakeSingleElementList(f6),
 	)
 	LaunchTest(
 		5,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f6},
-		[]basictypes.Form{f5},
+		basictypes.MakeSingleElementList(f6),
+		basictypes.MakeSingleElementList(f5),
 	)
 }
 
@@ -349,7 +349,7 @@ func Test6() {
 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{z: a, t: x}),
 			treetypes.MakeMatchingSubstitutions(f4, treetypes.Substitutions{x: a}),
 		},
-		[]basictypes.Form{f},
+		basictypes.MakeSingleElementList(f),
 		[]basictypes.Form{f, f1, f2, f3, f4},
 	)
 }
@@ -371,8 +371,8 @@ func Test7() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: a, y: a}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -380,8 +380,8 @@ func Test7() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: a, y: a}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -402,8 +402,8 @@ func Test8() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: a, y: a}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -411,8 +411,8 @@ func Test8() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: a, y: a}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -432,8 +432,8 @@ func Test9() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: y}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -441,8 +441,8 @@ func Test9() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{y: x}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -463,8 +463,8 @@ func Test10() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: a, y: a}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -472,8 +472,8 @@ func Test10() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: a, y: a}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -496,8 +496,8 @@ func Test11() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{y: b}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -505,8 +505,8 @@ func Test11() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{y: b}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -522,15 +522,15 @@ func Test12() {
 	LaunchTest(
 		12,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
 		12,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -555,8 +555,8 @@ func Test13() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: fun1, y: b}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -564,8 +564,8 @@ func Test13() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: fun1, y: b}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -587,8 +587,8 @@ func Test14() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: a, y: b}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -596,11 +596,11 @@ func Test14() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: a, y: b}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 
-	//LaunchTest(14, map[int]map[int]Substitutions{0: {1: Substitutions{x: a, y: b}}}, 1: {0: Substitutions{x: a, y: b}}}}, []basictypes.Form{f1, f2}, []basictypes.Form{f1, f2})
+	//LaunchTest(14, map[int]map[int]Substitutions{0: {1: Substitutions{x: a, y: b}}}, 1: {0: Substitutions{x: a, y: b}}}}, basictypes.MakeSingleElementList(f1, f2), basictypes.MakeSingleElementList(f1, f2))
 }
 
 /**
@@ -624,7 +624,7 @@ func Test15() {
 			treetypes.MakeMatchingSubstitutions(f, treetypes.Substitutions{}),
 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{x: basictypes.MakerFun(fun, []basictypes.Term{y})}),
 		},
-		[]basictypes.Form{f},
+		basictypes.MakeSingleElementList(f),
 		[]basictypes.Form{f, f1, f2, f3},
 	)
 }
@@ -649,7 +649,7 @@ func Test16() {
 			treetypes.MakeMatchingSubstitutions(f, treetypes.Substitutions{}),
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{z: basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})}),
 		},
-		[]basictypes.Form{f},
+		basictypes.MakeSingleElementList(f),
 		[]basictypes.Form{f, f1, f2},
 	)
 }
@@ -670,7 +670,7 @@ func Test17() {
 	LaunchTest(
 		17,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f},
+		basictypes.MakeSingleElementList(f),
 		[]basictypes.Form{f1, f2},
 	)
 }
@@ -689,15 +689,15 @@ func Test18() {
 	LaunchTest(
 		18,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
 		18,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -719,7 +719,7 @@ func Test19() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{x: basictypes.MakerFun(f, []basictypes.Term{y})}),
 		},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f1),
 		[]basictypes.Form{f2, f3},
 	)
 }
@@ -740,15 +740,15 @@ func Test20() {
 	LaunchTest(
 		20,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
 		20,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -768,15 +768,15 @@ func Test21() {
 	LaunchTest(
 		21,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
 		21,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -797,8 +797,8 @@ func Test22() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: z, y: z}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -806,8 +806,8 @@ func Test22() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: z, y: z}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -824,7 +824,7 @@ func Test23() {
 	LaunchTest(
 		23,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f1),
 		[]basictypes.Form{f1, f2},
 	)
 }
@@ -849,8 +849,8 @@ func Test24() {
 	LaunchTest(
 		24,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -876,15 +876,15 @@ func Test25() {
 	LaunchTest(
 		25,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 
 	LaunchTest(
 		25,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 }
 
@@ -912,7 +912,7 @@ func Test26() {
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: fy}),
 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{y: fx}),
 		},
-		[]basictypes.Form{f4},
+		basictypes.MakeSingleElementList(f4),
 		[]basictypes.Form{f1, f2, f3},
 	)
 }
@@ -935,15 +935,15 @@ func Test27() {
 	LaunchTest(
 		27,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
 		27,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -966,8 +966,8 @@ func Test28() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: ffy}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -975,8 +975,8 @@ func Test28() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: ffy}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 }
 
@@ -1010,7 +1010,7 @@ func Test29() {
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x_197: x_250, y_250: basictypes.MakerFun(g, []basictypes.Term{x_250, y_7})}),
 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{x_197: x_250, y_250: basictypes.MakerFun(g, []basictypes.Term{x_250, basictypes.MakerFun(g, []basictypes.Term{x_250, y_7})})}),
 		},
-		[]basictypes.Form{f0},
+		basictypes.MakeSingleElementList(f0),
 		[]basictypes.Form{f2, f3},
 	)
 }
@@ -1038,7 +1038,7 @@ func Test30() {
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{z: basictypes.MakerFun(fun, []basictypes.Term{a})}),
 			treetypes.MakeMatchingSubstitutions(f, treetypes.Substitutions{z: basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})}),
 		},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f2),
 		[]basictypes.Form{f, f1, f2},
 	)
 }
@@ -1067,7 +1067,7 @@ func Test31() {
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{X: a}),
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{Y: basictypes.MakerFun(fun, []basictypes.Term{X})}),
 		},
-		[]basictypes.Form{f},
+		basictypes.MakeSingleElementList(f),
 		[]basictypes.Form{f, f1, f2},
 	)
 }
@@ -1091,8 +1091,8 @@ func Test32() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f1),
 	)
 
 }
@@ -1119,8 +1119,8 @@ func Test33() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{y0: fun_2, x0: fun_1}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -1128,8 +1128,8 @@ func Test33() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{y0: fun_2, x0: fun_1}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 
 }
@@ -1153,8 +1153,8 @@ func Test34() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: fa}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -1162,8 +1162,8 @@ func Test34() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: fa}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 
 }
@@ -1187,8 +1187,8 @@ func Test35() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: fa}),
 		},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -1196,8 +1196,8 @@ func Test35() {
 		[]treetypes.MatchingSubstitutions{
 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: fa}),
 		},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 
 }
@@ -1222,15 +1222,15 @@ func Test36() {
 	LaunchTest(
 		36,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
 		36,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 
 }
@@ -1252,15 +1252,15 @@ func Test37() {
 	LaunchTest(
 		37,
 		[]treetypes.MatchingSubstitutions{treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x: a})},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
 		37,
 		[]treetypes.MatchingSubstitutions{treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{x: a})},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 
 }
@@ -1282,15 +1282,15 @@ func Test38() {
 	LaunchTest(
 		38,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
 		38,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
 	)
 
 }
@@ -1315,7 +1315,7 @@ func Test39() {
 	LaunchTest(
 		39,
 		[]treetypes.MatchingSubstitutions{},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f1),
 		[]basictypes.Form{f2, f3},
 	)
 }
@@ -1345,8 +1345,8 @@ func Test40() {
 				X:  basictypes.MakeFun(f, []basictypes.Term{Y, basictypes.MakeFun(g, []basictypes.Term{Y2})}),
 				X2: Y,
 				Z:  basictypes.MakeFun(h, []basictypes.Term{Y})})},
-		[]basictypes.Form{f1},
-		[]basictypes.Form{f2},
+		basictypes.MakeSingleElementList(f1),
+		basictypes.MakeSingleElementList(f2),
 	)
 
 	LaunchTest(
@@ -1356,7 +1356,58 @@ func Test40() {
 				X: basictypes.MakeFun(f, []basictypes.Term{X2, basictypes.MakeFun(g, []basictypes.Term{Y2})}),
 				Y: X2,
 				Z: basictypes.MakeFun(h, []basictypes.Term{X2})})},
-		[]basictypes.Form{f2},
-		[]basictypes.Form{f1},
+		basictypes.MakeSingleElementList(f2),
+		basictypes.MakeSingleElementList(f1),
+	)
+}
+
+/** Test 41
+* Formule : P(Y2, Y1, f(Y1, Y2, Y3)) - Y1, Y2, Y3
+*
+* Arbre :
+* ¬P(X2, X1, g(X1, X2, X3))
+* ¬P(g(X1, X2, X3), X2, X1)
+* ¬P(X1, X2, X3)
+* ¬P(skolem_X0_1, skolem_X0_1, g(X1, X2, X3))
+* ¬P(X2, X3, X1)
+* ¬P(h(g(X1, X2, X3), g(X1, X2, X3), g(X1, X2, X3)), h(g(X1, X2, X3), g(X1, X2, X3), g(X1, X2, X3)), h(g(X1, X2, X3), g(X1, X2, X3), g(X1, X2, X3)))
+* ¬P(skolem_X0_1, skolem_X0_1, h(g(X1, X2, X3), g(X1, X2, X3), g(X1, X2, X3)))
+*
+**/
+func Test41() {
+	p := basictypes.MakerId("P")
+	f := basictypes.MakerId("f")
+	g := basictypes.MakerId("g")
+	h := basictypes.MakerId("h")
+	X1 := basictypes.MakerMeta("X1", -1)
+	X2 := basictypes.MakerMeta("X2", -1)
+	X3 := basictypes.MakerMeta("X3", -1)
+	Y1 := basictypes.MakerMeta("Y1", -1)
+	Y2 := basictypes.MakerMeta("Y2", -1)
+	Y3 := basictypes.MakerMeta("Y3", -1)
+	sk := basictypes.MakerConst(basictypes.MakerId("skolem"))
+	fy := basictypes.MakeFun(f, []basictypes.Term{Y1, Y2, Y3})
+	gx := basictypes.MakeFun(g, []basictypes.Term{X1, X2, X3})
+	hgx := basictypes.MakeFun(h, []basictypes.Term{gx, gx, gx})
+
+	// Formule
+	f1 := basictypes.MakePred(p, []basictypes.Term{Y2, Y1, fy})
+
+	// Tree
+	f2 := basictypes.MakePred(p, []basictypes.Term{X2, X1, gx})
+	f3 := basictypes.MakePred(p, []basictypes.Term{gx, X2, X1})
+	f4 := basictypes.MakePred(p, []basictypes.Term{X1, X2, X3})
+	f5 := basictypes.MakePred(p, []basictypes.Term{sk, sk, gx})
+	f6 := basictypes.MakePred(p, []basictypes.Term{X2, X3, X1})
+	f7 := basictypes.MakePred(p, []basictypes.Term{hgx, hgx, hgx})
+	f8 := basictypes.MakePred(p, []basictypes.Term{sk, sk, hgx})
+
+	LaunchTest(
+		41,
+		[]treetypes.MatchingSubstitutions{
+			treetypes.MakeMatchingSubstitutions(f4, treetypes.Substitutions{X1: Y2, X2: Y1, X3: fy}),
+			treetypes.MakeMatchingSubstitutions(f6, treetypes.Substitutions{X1: fy, X2: Y2, X3: Y1})},
+		basictypes.MakeSingleElementList(f1),
+		[]basictypes.Form{f2, f3, f4, f5, f6, f7, f8},
 	)
 }

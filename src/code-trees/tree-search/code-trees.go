@@ -4,16 +4,16 @@
 * Goéland is an automated theorem prover for first order logic.
 *
 * This software is governed by the CeCILL license under French law and
-* abiding by the rules of distribution of free software.  You can  use, 
+* abiding by the rules of distribution of free software.  You can  use,
 * modify and/ or redistribute the software under the terms of the CeCILL
 * license as circulated by CEA, CNRS and INRIA at the following URL
-* "http://www.cecill.info". 
+* "http://www.cecill.info".
 *
 * As a counterpart to the access to the source code and  rights to copy,
 * modify and redistribute granted by the license, users are provided only
 * with a limited warranty  and the software's author,  the holder of the
 * economic rights,  and the successive licensors  have only  limited
-* liability. 
+* liability.
 *
 * In this respect, the user's attention is drawn to the risks associated
 * with loading,  using,  modifying and/or developing or reproducing the
@@ -22,9 +22,9 @@
 * therefore means  that it is reserved for developers  and  experienced
 * professionals having in-depth computer knowledge. Users are therefore
 * encouraged to load and test the software's suitability as regards their
-* requirements in conditions enabling the security of their systems and/or 
-* data to be ensured and,  more generally, to use and operate it in the 
-* same conditions as regards security. 
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and,  more generally, to use and operate it in the
+* same conditions as regards security.
 *
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
@@ -41,10 +41,10 @@ package treesearch
 import (
 	"strings"
 
-	treetypes "github.com/delahayd/gotab/code-trees/tree-types"
-	"github.com/delahayd/gotab/global"
-	basictypes "github.com/delahayd/gotab/types/basic-types"
-	datastruct "github.com/delahayd/gotab/types/data-struct"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
 /*************************/
@@ -62,7 +62,7 @@ func (c CodeBlock) Copy() CodeBlock {
 type Node struct {
 	value    CodeBlock
 	children []*Node
-	formulae []basictypes.Form
+	formulae basictypes.FormList
 }
 
 func (n Node) getValue() CodeBlock {
@@ -71,8 +71,8 @@ func (n Node) getValue() CodeBlock {
 func (n Node) getChildren() []*Node {
 	return CopyNodeList(n.children)
 }
-func (n Node) getFormulae() []basictypes.Form {
-	return basictypes.CopyFormList(n.formulae)
+func (n Node) getFormulae() basictypes.FormList {
+	return n.formulae.Copy()
 }
 
 /* Check if a node is empty */
@@ -81,7 +81,7 @@ func (n Node) IsEmpty() bool {
 }
 
 /* Make data struct */
-func (n Node) MakeDataStruct(fl []basictypes.FormAndTerm, is_pos bool) datastruct.DataStructure {
+func (n Node) MakeDataStruct(fl basictypes.FormList, is_pos bool) datastruct.DataStructure {
 	return makeCodeTreeFromAtomic(fl, is_pos)
 }
 
@@ -100,14 +100,14 @@ func (n Node) isLeaf() bool {
 }
 
 /* Make two code trees (tree_pos and tree_neg) from st.atomic */
-func makeCodeTreeFromAtomic(lf []basictypes.FormAndTerm, is_pos bool) *Node {
-	var form []basictypes.Form
+func makeCodeTreeFromAtomic(lf basictypes.FormList, is_pos bool) *Node {
+	var form basictypes.FormList
 
 	for _, f := range lf {
-		switch nf := f.GetForm().(type) {
+		switch nf := f.Copy().(type) {
 		case basictypes.Pred:
 			if is_pos {
-				form = append(form, f.GetForm())
+				form = append(form, f)
 			}
 		case basictypes.Not:
 			switch nf.GetForm().(type) {
@@ -123,11 +123,13 @@ func makeCodeTreeFromAtomic(lf []basictypes.FormAndTerm, is_pos bool) *Node {
 }
 
 /* Makes a Code Tree from a Sequence of instructions */
-func makeCodeTree(forms []basictypes.Form) *Node {
+func makeCodeTree(forms basictypes.FormList) *Node {
 	root := makeNode(nil)
 
 	for _, f := range forms {
-		root.insert(treetypes.ParseFormula(f.Copy()))
+		f_tmp := f.Copy()
+		form_tmp := treetypes.ParseFormula(f_tmp)
+		root.insert(form_tmp)
 	}
 
 	return root
@@ -147,24 +149,22 @@ func makeNode(block CodeBlock) *Node {
 	n := new(Node)
 	n.value = block.Copy()
 	n.children = []*Node{}
-	n.formulae = []basictypes.Form{}
+	n.formulae = basictypes.MakeEmptyFormList()
 	return n
 }
 
 /* Insert a lsit of formula into the right tree */
-func (n Node) InsertFormulaListToDataStructure(lf []basictypes.FormAndTerm, is_pos bool) datastruct.DataStructure {
+func (n Node) InsertFormulaListToDataStructure(lf basictypes.FormList) datastruct.DataStructure {
 	for _, f := range lf {
-		switch nf := f.GetForm().(type) {
+		switch nf := f.Copy().(type) {
 		case basictypes.Pred:
-			if is_pos {
-				n.insert(treetypes.ParseFormula(nf))
-			}
+			n.insert(treetypes.ParseFormula(nf))
+
 		case basictypes.Not:
 			switch nf.GetForm().(type) {
 			case basictypes.Pred:
-				if !is_pos {
-					n.insert(treetypes.ParseFormula(nf.GetForm()))
-				}
+				n.insert(treetypes.ParseFormula(nf.GetForm()))
+
 			}
 		}
 	}
@@ -211,13 +211,11 @@ func (n Node) printAux(tab int) {
 func (n *Node) insert(sequence treetypes.Sequence) {
 	if len(n.value) == 0 {
 		n.value = sequence.GetInstructions()
-		n.formulae = []basictypes.Form{sequence.GetFormula()}
+		n.formulae = basictypes.MakeSingleElementList(sequence.GetFormula())
 	} else {
 		n.followInstructions(sequence.GetInstructions(), sequence.GetFormula())
 	}
 }
-
-/* TODO : COPY */
 
 /* Auxiliary function to follow the sequence of instructions to insert in the Node. */
 func (n *Node) followInstructions(instructions []treetypes.Instruction, form basictypes.Form) {
@@ -235,7 +233,7 @@ func (n *Node) followInstructions(instructions []treetypes.Instruction, form bas
 		//    * It's the end of the CodeBlock, but not of the sequence. In this case, check if the following instruction matches with any child.
 		if instr.IsEquivalent(current.value[oui]) {
 			oui += 1
-			if i == len(instructions)-1 && oui == len(current.value) && !basictypes.ContainsFormula(form, current.formulae) {
+			if i == len(instructions)-1 && oui == len(current.value) && !current.formulae.Contains(form) {
 				current.formulae = append(current.formulae, form)
 			} else if i < len(instructions)-1 && oui == len(current.value) {
 
@@ -251,7 +249,7 @@ func (n *Node) followInstructions(instructions []treetypes.Instruction, form bas
 				}
 				if !found {
 					newNode := makeNode(instructions[i+1:])
-					newNode.formulae = []basictypes.Form{form}
+					newNode.formulae = basictypes.MakeSingleElementList(form)
 					current.children = append(current.children, newNode)
 					break
 				}
@@ -262,13 +260,13 @@ func (n *Node) followInstructions(instructions []treetypes.Instruction, form bas
 			//    * The second one contains the remaining instructions of the sequence plus the formulae.
 			child1 := makeNode(current.value[oui:])
 			child2 := makeNode(instructions[i:])
-			child2.formulae = []basictypes.Form{form}
+			child2.formulae = basictypes.MakeSingleElementList(form)
 
 			child1.children = current.children
 			child1.formulae = current.formulae
 
 			current.value = current.value[:oui]
-			current.formulae = []basictypes.Form{}
+			current.formulae = basictypes.MakeEmptyFormList()
 			current.children = []*Node{child1, child2}
 
 			break
@@ -283,7 +281,7 @@ func (n *Node) followInstructions(instructions []treetypes.Instruction, form bas
 		child1.children = current.children
 		current.value = current.value[:oui]
 		current.children = []*Node{child1}
-		current.formulae = []basictypes.Form{form.Copy()}
+		current.formulae = basictypes.MakeSingleElementList(form.Copy())
 	}
 }
 

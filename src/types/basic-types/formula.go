@@ -4,16 +4,16 @@
 * Goéland is an automated theorem prover for first order logic.
 *
 * This software is governed by the CeCILL license under French law and
-* abiding by the rules of distribution of free software.  You can  use, 
+* abiding by the rules of distribution of free software.  You can  use,
 * modify and/ or redistribute the software under the terms of the CeCILL
 * license as circulated by CEA, CNRS and INRIA at the following URL
-* "http://www.cecill.info". 
+* "http://www.cecill.info".
 *
 * As a counterpart to the access to the source code and  rights to copy,
 * modify and redistribute granted by the license, users are provided only
 * with a limited warranty  and the software's author,  the holder of the
 * economic rights,  and the successive licensors  have only  limited
-* liability. 
+* liability.
 *
 * In this respect, the user's attention is drawn to the risks associated
 * with loading,  using,  modifying and/or developing or reproducing the
@@ -22,9 +22,9 @@
 * therefore means  that it is reserved for developers  and  experienced
 * professionals having in-depth computer knowledge. Users are therefore
 * encouraged to load and test the software's suitability as regards their
-* requirements in conditions enabling the security of their systems and/or 
-* data to be ensured and,  more generally, to use and operate it in the 
-* same conditions as regards security. 
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and,  more generally, to use and operate it in the
+* same conditions as regards security.
 *
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
@@ -38,11 +38,9 @@
 
 package basictypes
 
-import (
-	"fmt"
+import "strconv"
 
-	"github.com/delahayd/gotab/global"
-)
+/*** Structure ***/
 
 /* Formula  */
 type Form interface {
@@ -50,6 +48,7 @@ type Form interface {
 	ToStringWithSuffixMeta(string) string
 	Copy() Form
 	Equals(Form) bool
+	GetMetas() MetaList
 }
 
 /* Symbol of predicate */
@@ -85,20 +84,20 @@ func (n Not) GetForm() Form {
 
 /* And(formula list): conjunction of formulae */
 type And struct {
-	lf []Form
+	lf FormList
 }
 
-func (a And) GetLF() []Form {
-	return CopyFormList(a.lf)
+func (a And) GetLF() FormList {
+	return a.lf.Copy()
 }
 
 /* Or(formula list): disjunction of formulae */
 type Or struct {
-	lf []Form
+	lf FormList
 }
 
-func (o Or) GetLF() []Form {
-	return CopyFormList(o.lf)
+func (o Or) GetLF() FormList {
+	return o.lf.Copy()
 }
 
 /* Imp(f1,f2): f1 imply f2*/
@@ -148,6 +147,8 @@ func (a All) GetVarList() []Var {
 func (a All) GetForm() Form {
 	return a.f.Copy()
 }
+
+/*** Methods ***/
 
 /* ToString */
 func (p Pred) ToString() string {
@@ -372,7 +373,7 @@ func (n Not) Equals(f Form) bool {
 func (a And) Equals(f Form) bool {
 	switch nf := f.(type) {
 	case And:
-		return AreEqualsFormList(nf.GetLF(), a.GetLF())
+		return nf.GetLF().Equals(a.GetLF())
 	default:
 		return false
 	}
@@ -380,7 +381,7 @@ func (a And) Equals(f Form) bool {
 func (o Or) Equals(f Form) bool {
 	switch nf := f.(type) {
 	case Or:
-		return AreEqualsFormList(nf.GetLF(), o.GetLF())
+		return nf.GetLF().Equals(o.GetLF())
 	default:
 		return false
 	}
@@ -418,6 +419,55 @@ func (a All) Equals(f Form) bool {
 	}
 }
 
+/* Get Metavariable of the formula */
+func (p Pred) GetMetas() MetaList {
+	res := MakeEmptyMetaList()
+	for _, m := range p.GetArgs() {
+		switch mt := m.(type) {
+		case Meta:
+			res = res.AppendIfNotContains(mt)
+		case Fun:
+			res = res.Merge(mt.GetMetas())
+		}
+	}
+	return res
+}
+func (Top) GetMetas() MetaList {
+	return MakeEmptyMetaList()
+}
+func (Bot) GetMetas() MetaList {
+	return MakeEmptyMetaList()
+}
+func (n Not) GetMetas() MetaList {
+	return n.GetForm().GetMetas()
+}
+func (a And) GetMetas() MetaList {
+	res := MakeEmptyMetaList()
+	for _, f := range a.GetLF() {
+		res = res.Merge(f.GetMetas())
+	}
+	return res
+}
+func (o Or) GetMetas() MetaList {
+	res := MakeEmptyMetaList()
+	for _, f := range o.GetLF() {
+		res = res.Merge(f.GetMetas())
+	}
+	return res
+}
+func (i Imp) GetMetas() MetaList {
+	return i.f1.GetMetas().Merge(i.f2.GetMetas())
+}
+func (e Equ) GetMetas() MetaList {
+	return e.f1.GetMetas().Merge(e.f2.GetMetas())
+}
+func (e Ex) GetMetas() MetaList {
+	return e.GetForm().GetMetas()
+}
+func (a All) GetMetas() MetaList {
+	return a.GetForm().GetMetas()
+}
+
 /*** Functions ***/
 
 /* Makers */
@@ -433,10 +483,10 @@ func MakeBot() Bot {
 func MakeNot(f Form) Not {
 	return Not{f}
 }
-func MakeAnd(fl []Form) And {
+func MakeAnd(fl FormList) And {
 	return And{fl}
 }
-func MakeOr(fl []Form) Or {
+func MakeOr(fl FormList) Or {
 	return Or{fl}
 }
 func MakeImp(f1, f2 Form) Imp {
@@ -452,129 +502,104 @@ func MakeAll(vl []Var, f Form) All {
 	return All{vl, f}
 }
 
-/* Create a FormAndTerm element without meta */
-func MakeForm(f Form) FormAndTerm {
-	return FormAndTerm{f, []Term{}}
-}
-
 /* Transform a formula into its negation */
 func RefuteForm(f Form) Form {
-	return Not{f}
+	new_f, changed := rewriteNEQ(f)
+	if changed {
+		return new_f
+	} else {
+		return MakeNot(new_f)
+	}
 }
 
-/* Print a list of formulae */
-func FormulaListToString(lf []Form) string {
-	var s_res string
-	for i, v := range lf {
-		s_res += v.ToString()
-		if i < len(lf)-1 {
-			s_res += (", ")
+/* if a not(eq) is found, transform it into !=  and if not(neq) is found, transform it into = */
+func rewriteNEQ(f Form) (Form, bool) {
+	if pred, ok := f.(Pred); ok {
+		if pred.GetID().Equals(Id_eq) {
+			return MakePred(Id_neq, pred.GetArgs()), true
 		}
 	}
-	return s_res
-}
 
-/* Print a list of formulae */
-func PrintFormulaList(lf []Form) {
-	for _, f := range lf {
-		global.PrintDebug("FLTS", f.ToString())
-	}
-}
-
-/* Return true if a Formula f is inside the given Formula list, false otherwise */
-func ContainsFormula(f Form, l []Form) bool {
-	for _, v := range l {
-		if f.Equals(v) {
-			return true
+	if not, ok := f.(Not); ok {
+		if pred, ok := not.GetForm().(Pred); ok {
+			if pred.GetID().Equals(Id_neq) {
+				return MakePred(Id_eq, pred.GetArgs()), true
+			}
 		}
 	}
-	return false
+
+	return f, false
 }
 
-/* check if two formula list are euqals */
-func AreEqualsFormList(fl1, fl2 []Form) bool {
-	if len(fl1) != len(fl2) {
-		return false
+/* Remove all the negations */
+func RemoveNeg(f Form) Form {
+	switch ft := f.(type) {
+	case Not:
+		return RemoveNeg(ft.GetForm())
+	default:
+		return f.Copy()
 	}
-	for i := range fl1 {
-		if !fl2[i].Equals(fl1[i]) {
-			return false
+}
+
+/* Simplify a neg neg eng formual (for DMT) */
+func SimplifyNeg(f Form) Form {
+	return simplifyNeg(f, true)
+}
+
+func simplifyNeg(f Form, isEven bool) Form {
+	// Already under a not
+	if ft, isNot := f.(Not); isNot {
+		if !isEven {
+			return simplifyNeg(ft.GetForm(), true)
+		} else {
+			return simplifyNeg(ft.GetForm(), false)
+		}
+	} else {
+		if isEven {
+			return f.Copy()
+		} else {
+			return RefuteForm(f.Copy())
 		}
 	}
-	return true
 }
 
-/* Copy a list of form */
-func CopyFormList(fl []Form) []Form {
-	res := make([]Form, len(fl))
-	for i := range fl {
-		res[i] = fl[i].Copy()
-	}
-	return res
-}
+/** Replace a Var by a term - Useful functions for Delta and Gamma rules (replace var by term) **/
 
-/* rename variable if any */
-func RenameVariables(f Form) Form {
+/* Replace a var by a term */
+func ReplaceVarByTerm(f Form, old_symbol Var, new_symbol Term) Form {
 	switch nf := f.(type) {
 	case Pred:
-		return f
+		return MakePred(nf.GetID(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol))
 	case Top:
 		return f
 	case Bot:
 		return f
 	case Not:
-		return MakeNot(RenameVariables(nf.GetForm()))
+		return MakeNot(ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
 	case And:
-		var res []Form
+		var res FormList
 		for _, val := range nf.GetLF() {
-			res = append(res, RenameVariables(val))
+			res = append(res, ReplaceVarByTerm(val, old_symbol, new_symbol))
 		}
 		return MakeAnd(res)
 	case Or:
-		var res []Form
+		var res FormList
 		for _, val := range nf.GetLF() {
-			res = append(res, RenameVariables(val))
+			res = append(res, ReplaceVarByTerm(val, old_symbol, new_symbol))
 		}
 		return MakeOr(res)
 	case Imp:
-		return MakeImp(RenameVariables(nf.GetF1()), RenameVariables(nf.GetF2()))
+		return MakeImp(ReplaceVarByTerm(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByTerm(nf.GetF2(), old_symbol, new_symbol))
 	case Equ:
-		return MakeEqu(RenameVariables(nf.GetF1()), RenameVariables(nf.GetF2()))
-
+		return MakeEqu(ReplaceVarByTerm(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByTerm(nf.GetF2(), old_symbol, new_symbol))
 	case Ex:
-		new_vl := copyVarList(nf.GetVarList())
-		new_form := nf.GetForm().Copy()
-		global.PrintDebug("RV", "-------------------------------")
-
-		for _, v := range nf.GetVarList() {
-			new_var := MakerNewVar(v.GetName())
-			global.PrintDebug("RV", fmt.Sprintf("Original : %v - New_var :%v", v.ToString(), new_var.ToString()))
-			new_vl = replaceVarInVarList(new_vl, v, new_var)
-			new_form = ReplaceVarByTerm(RenameVariables(new_form), v, new_var)
-
-		}
-		return MakeEx(new_vl, new_form)
-
+		return MakeEx(nf.GetVarList(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
 	case All:
-		new_vl := copyVarList(nf.GetVarList())
-		new_form := nf.GetForm().Copy()
-		global.PrintDebug("RV", "-------------------------------")
-
-		for _, v := range nf.GetVarList() {
-			new_var := MakerNewVar(v.GetName())
-			global.PrintDebug("RV", fmt.Sprintf("Original : %v - New_var :%v", v.ToString(), new_var.ToString()))
-			new_vl = replaceVarInVarList(new_vl, v, new_var)
-			new_form = ReplaceVarByTerm(RenameVariables(new_form), v, new_var)
-
-		}
-		return MakeAll(new_vl, new_form)
-
+		return MakeAll(nf.GetVarList(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
 	default:
-		return f
+		return nil
 	}
 }
-
-/** Useful functions for Delta and Gamma rules (replace var by term) **/
 
 /* Replace a Var by a term inside a function */
 func replaceVarInTermList(original_list []Term, old_symbol Var, new_symbol Term) []Term {
@@ -596,48 +621,71 @@ func replaceVarInTermList(original_list []Term, old_symbol Var, new_symbol Term)
 	return new_list
 }
 
-/* Replace a var by a term */
-func ReplaceVarByTerm(f Form, old_symbol Var, new_symbol Term) Form {
+/** Replace a Var by a Var - for parser **/
+
+/* rename variable if any */
+func RenameVariables(f Form) Form {
 	switch nf := f.(type) {
 	case Pred:
-		return MakePred(nf.GetID(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol))
+		return f
 	case Top:
 		return f
 	case Bot:
 		return f
 	case Not:
-		return MakeNot(ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
+		return MakeNot(RenameVariables(nf.GetForm()))
 	case And:
-		var res []Form
+		var res FormList
 		for _, val := range nf.GetLF() {
-			res = append(res, ReplaceVarByTerm(val, old_symbol, new_symbol))
+			res = append(res, RenameVariables(val))
 		}
 		return MakeAnd(res)
 	case Or:
-		var res []Form
+		var res FormList
 		for _, val := range nf.GetLF() {
-			res = append(res, ReplaceVarByTerm(val, old_symbol, new_symbol))
+			res = append(res, RenameVariables(val))
 		}
 		return MakeOr(res)
 	case Imp:
-		return MakeImp(ReplaceVarByTerm(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByTerm(nf.GetF2(), old_symbol, new_symbol))
+		return MakeImp(RenameVariables(nf.GetF1()), RenameVariables(nf.GetF2()))
 	case Equ:
-		return MakeEqu(ReplaceVarByTerm(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByTerm(nf.GetF2(), old_symbol, new_symbol))
+		return MakeEqu(RenameVariables(nf.GetF1()), RenameVariables(nf.GetF2()))
+
 	case Ex:
-		return MakeEx(nf.GetVarList(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
+		new_vl := copyVarList(nf.GetVarList())
+		new_form := nf.GetForm()
+
+		for _, v := range nf.GetVarList() {
+			new_var := MakerNewVar(v.GetName())
+			new_var = MakerVar(new_var.GetName() + strconv.Itoa(new_var.GetIndex()))
+			new_vl = replaceVarInVarList(new_vl, v, new_var)
+			new_form = ReplaceVarByTerm(RenameVariables(new_form), v, new_var)
+
+		}
+		return MakeEx(new_vl, new_form)
+
 	case All:
-		return MakeAll(nf.GetVarList(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
+		new_vl := copyVarList(nf.GetVarList())
+		new_form := nf.GetForm()
+
+		for _, v := range nf.GetVarList() {
+			new_var := MakerNewVar(v.GetName())
+			new_var = MakerVar(new_var.GetName() + strconv.Itoa(new_var.GetIndex()))
+			new_vl = replaceVarInVarList(new_vl, v, new_var)
+			new_form = ReplaceVarByTerm(RenameVariables(new_form), v, new_var)
+
+		}
+		return MakeAll(new_vl, new_form)
+
 	default:
-		return nil
+		return f
 	}
 }
 
 /* replace a var by another in a var list */
 func replaceVarInVarList(vl []Var, v1, v2 Var) []Var {
-	global.PrintDebug("RVVL", fmt.Sprintf("old_var : %v - New var : %v", v1.ToString(), v2.ToString()))
 	res := []Var{}
 	for _, v := range vl {
-		global.PrintDebug("RVVL", fmt.Sprintf("v :%v", v.ToString()))
 		if v.Equals(v1) {
 			res = append(res, v2)
 		} else {

@@ -12,7 +12,7 @@ Goéland is licensed under the CeCILL 2.1 License. See [LICENSE](LICENSE).
 
 ### Dependencies
 
-Goéland needs Go (version >= 1.13, download directly from the [site](https://go.dev/)) and goyacc (`sudo apt-get install golang-golang-x-tools`) to compile.
+Goéland needs Go (version >= 1.18, download directly from the [site](https://go.dev/)) and goyacc (`sudo apt-get install golang-golang-x-tools`) to compile.
 
 Python3 (any version, download directly from the [site](https://www.python.org/downloads/)) is also needed to perform tests on the given benchmark (see  [Tests](#tests)).
 
@@ -38,8 +38,6 @@ This is still a preliminary version of the implementation. Goéland must be call
 ```console
 $ ./_build/goeland problem.p
 ```
-
-By default, this will run Goéland, with all its extensions, on the problem. Beware that currently, `include`s statements in TPTP problem files aren't managed by the parser. It is scheduled to be added in the near future. For the moment, the python script [add_include.py](external_scripts/add_include.py) can do this job if needed.
 
 ### Parameters
 

@@ -29,26 +29,44 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************/
-/* formula.go */
-/***************/
+/************/
+/* utils.go */
+/************/
 /**
-* This file contains functions and types which describe the formula's data
-  structure
+* This file implements some useful functions for the plugin.
 **/
 
-package datastruct
+package main
 
 import (
-	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-type DataStructure interface {
-	Print()
-	IsEmpty() bool
-	MakeDataStruct(basictypes.FormList, bool) DataStructure
-	InsertFormulaListToDataStructure(basictypes.FormList) DataStructure
-	Unify(basictypes.Form) (bool, []treetypes.MatchingSubstitutions)
-	Copy() DataStructure
+func is[T any, U any](obj U) bool {
+	_, isT := any(obj).(T)
+	return isT
+}
+
+func isEquality(pred btypes.Pred) bool {
+	return pred.GetID().Equals(btypes.Id_eq) || pred.GetID().Equals(btypes.Id_neq)
+}
+
+func refute(f btypes.Form) btypes.Form {
+	return btypes.SimplifyNeg(btypes.RefuteForm(f))
+}
+
+func predFromNegatedAtom(f btypes.Form) btypes.Pred {
+	return f.(btypes.Not).GetForm().(btypes.Pred)
+}
+
+func selectFromPolarity[T any](polarity bool, positive, negative T) T {
+	if polarity {
+		return positive
+	}
+	return negative
+}
+
+func rewriteMapInsertion(polarity bool, key string, val btypes.Form) {
+	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
+	rewriteMap[key] = append(rewriteMap[key], val)
 }
