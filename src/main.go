@@ -94,10 +94,12 @@ func main() {
 		fmt.Printf("Error in os.Getwd")
 		return
 	}
-	formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
+	// formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
+	StatementListToFormula(lstm, bound, path.Dir(problem))
 	os.Chdir(current_dir)
 
-	Search(formula, new_bound)
+	fmt.Printf("Start search\n")
+	//Search(formula, new_bound)
 }
 
 /* Manage return from search for destructive and non-destructive versions  */
@@ -232,7 +234,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 
 	switch {
 	case len(and_list) == 0 && not_form == nil:
-		fmt.Printf("Aucune données")
+		fmt.Printf("Aucune données\n")
 		return nil, bound
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound
