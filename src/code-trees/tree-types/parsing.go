@@ -45,12 +45,15 @@ type TermForm struct {
 	t     basictypes.Term
 }
 
-func (tf TermForm) GetTerm() basictypes.Term            { return tf.t.Copy() }
-func (tf TermForm) GetIndex() int                       { return tf.index }
-func (tf TermForm) ToString() string                    { return tf.t.ToString() }
-func (t TermForm) ToStringWithSuffixMeta(string) string { return t.ToString() }
-func (t TermForm) Copy() basictypes.Form                { return makeTermForm(t.GetTerm()) }
-func (t TermForm) GetType() typing.TypeScheme           { return typing.DefaultPropType(0) }
+func (tf TermForm) GetTerm() basictypes.Term                                                { return tf.t.Copy() }
+func (tf TermForm) ToString() string                                                        { return tf.t.ToString() }
+func (t TermForm) ToStringWithSuffixMeta(string) string                                     { return t.ToString() }
+func (t TermForm) Copy() basictypes.Form                                                    { return makeTermForm(t.GetIndex(), t.GetTerm()) }
+func (t TermForm) GetType() typing.TypeScheme                                               { return typing.DefaultPropType(0) }
+func (t TermForm) RenameVariables() basictypes.Form                                         { return t }
+func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) basictypes.Form                  { return t }
+func (t TermForm) ReplaceVarByTerm(old basictypes.Var, new basictypes.Term) basictypes.Form { return t }
+func (tf TermForm) GetIndex() int                                                           { return tf.index }
 
 func (t TermForm) Equals(t2 basictypes.Form) bool {
 	switch nt := t2.(type) {
