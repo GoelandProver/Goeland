@@ -39,6 +39,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -89,17 +90,18 @@ func main() {
 		bound = global.GetLimit()
 	}
 
-	current_dir, err := os.Getwd()
-	if err != nil {
-		fmt.Printf("Error in os.Getwd")
-		return
-	}
-	// formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
+	/*
+		current_dir, err := os.Getwd()
+		if err != nil {
+			fmt.Printf("Error in os.Getwd")
+			return
+		}*/
+	formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
 	StatementListToFormula(lstm, bound, path.Dir(problem))
-	os.Chdir(current_dir)
+	// os.Chdir(current_dir)
 
 	fmt.Printf("Start search\n")
-	//Search(formula, new_bound)
+	Search(formula, new_bound)
 }
 
 /* Manage return from search for destructive and non-destructive versions  */
@@ -208,15 +210,23 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
 	bound := old_bound
-	os.Chdir(current_dir)
+	//os.Chdir(current_dir)
 
 	for _, s := range lstm {
 		switch s.GetRole() {
 		case basictypes.Include:
 			file_name := s.GetName()
-			fmt.Printf("File to parse : %v\n", file_name)
-			new_lstm, bound_tmp := parser.ParseMain(file_name)
-			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Dir(file_name))
+
+			realname, err := getFile(file_name, current_dir)
+			fmt.Printf("File to parse : %v\n", realname)
+
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+
+			new_lstm, bound_tmp := parser.ParseMain(realname)
+			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(current_dir, path.Dir(file_name)))
 			bound = new_bound
 			fmt.Printf("Bound after include : %v\n", bound)
 			and_list = append(and_list, new_form_list)
@@ -313,4 +323,24 @@ func initFlag() {
 			log.Fatal("could not write memory profile: ", err)
 		}
 	}
+}
+
+func getFile(filename string, dir string) (string, error) {
+	// 1 - From Goéland's path
+	if _, err := os.Stat(filename); !(err != nil && errors.Is(err, os.ErrNotExist)) {
+		return filename, err
+	}
+
+	// 2 - from dir's path
+	if _, err := os.Stat(path.Join(dir, filename)); !(err != nil && errors.Is(err, os.ErrNotExist)) {
+		return path.Join(dir, filename), err
+	}
+
+	// 3 - Environment variable
+	directory := os.Getenv("TPTP")
+	if _, err := os.Stat(path.Join(directory, filename)); !(err != nil && errors.Is(err, os.ErrNotExist)) {
+		return path.Join(directory, filename), err
+	}
+
+	return "", fmt.Errorf("file %s not found", filename)
 }
