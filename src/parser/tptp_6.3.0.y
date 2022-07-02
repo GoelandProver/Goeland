@@ -39,6 +39,7 @@ import (
 	"fmt"
 	"unicode"
   "io/ioutil"
+  "os"
   basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	)
 
@@ -1049,6 +1050,7 @@ func (l *TPTPLex) Error(s string) {
 func check(e error) {
         if e != nil {
                 panic(e)
+                os.Exit(1)
         }
 }//check
 

@@ -97,7 +97,6 @@ func main() {
 			return
 		}*/
 	formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
-	StatementListToFormula(lstm, bound, path.Dir(problem))
 	// os.Chdir(current_dir)
 
 	fmt.Printf("Start search\n")
@@ -206,7 +205,6 @@ func Search(f basictypes.Form, bound int) {
 
 /* Transform a list of statement into a formula */
 func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_dir string) (basictypes.Form, int) {
-	fmt.Printf("Bound at the begining of SLTF : %v\n", old_bound)
 	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
 	bound := old_bound
@@ -218,7 +216,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			file_name := s.GetName()
 
 			realname, err := getFile(file_name, current_dir)
-			fmt.Printf("File to parse : %v\n", realname)
+			global.PrintDebug("File to parse : %v\n", realname)
 
 			if err != nil {
 				fmt.Println(err.Error())
@@ -228,7 +226,6 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			new_lstm, bound_tmp := parser.ParseMain(realname)
 			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(current_dir, path.Dir(file_name)))
 			bound = new_bound
-			fmt.Printf("Bound after include : %v\n", bound)
 			and_list = append(and_list, new_form_list)
 		case basictypes.Axiom:
 			new_form := basictypes.RenameVariables(s.GetForm())
@@ -239,12 +236,10 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			not_form = s.GetForm()
 		}
 	}
-
-	fmt.Printf("Bound after parse : %v\n", bound)
-
 	switch {
 	case len(and_list) == 0 && not_form == nil:
 		fmt.Printf("Aucune données\n")
+		os.Exit(1)
 		return nil, bound
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound
