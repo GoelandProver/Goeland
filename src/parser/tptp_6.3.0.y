@@ -1049,7 +1049,7 @@ func (l *TPTPLex) Error(s string) {
 
 func check(e error) {
         if e != nil {
-                panic(e)
+                fmt.Printf("Error : %v\n", e)
                 os.Exit(1)
         }
 }//check
