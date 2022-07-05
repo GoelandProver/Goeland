@@ -91,9 +91,8 @@ func main() {
 	}
 
 	problem := args[len(args)-1]
-	_, problem_name = path.Split(problem)
-	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem_name)
-	lstm, bound := parser.ParseMain(problem)
+	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
+	lstm, bound := parser.ParseTPTPFile(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
 	if global.GetLimit() != -1 {
 		bound = global.GetLimit()
@@ -259,7 +258,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 				os.Exit(1)
 			}
 
-			new_lstm, bound_tmp := parser.ParseMain(realname)
+			new_lstm, bound_tmp := parser.ParseTPTPFile(realname)
 			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(current_dir, path.Dir(file_name)))
 			bound = new_bound
 			and_list = append(and_list, new_form_list)
@@ -279,7 +278,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	}
 	switch {
 	case len(and_list) == 0 && not_form == nil:
-		fmt.Printf("Formulas not found\n")
+		fmt.Printf("No data found.\n")
 		os.Exit(1)
 		return nil, bound
 	case len(and_list) == 0:
