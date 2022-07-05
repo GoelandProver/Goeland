@@ -64,7 +64,7 @@ var statement []btypes.Statement
 // Tokens definition
 
 // Keywords
-%token FOF CNF THF TFF TCF TPI INCLUDE FOT
+%token FOF CNF THF TFF TCF TPI INCLUDE DOLLAR_FOT DOLLAR_FOF
 // Punctuation
 %token LEFT_PAREN RIGHT_PAREN COMMA DOT LEFT_BRACKET RIGHT_BRACKET COLON
 // Operators
@@ -490,8 +490,8 @@ general_data: atomic_word
 general_function: atomic_word LEFT_PAREN general_terms RIGHT_PAREN
   ;
   
-formula_data: FOF LEFT_PAREN fof_formula RIGHT_PAREN
-  | FOT LEFT_PAREN fof_term RIGHT_PAREN
+formula_data: DOLLAR_FOF LEFT_PAREN fof_formula RIGHT_PAREN
+  | DOLLAR_FOT LEFT_PAREN fof_term RIGHT_PAREN
   ;
   // | TFF LEFT_PAREN tff_formula RIGHT_PAREN
   

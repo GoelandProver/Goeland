@@ -74,9 +74,6 @@ func (lexer *TPTPLex) advance() {
 }
 
 func (lexer *TPTPLex) remove(chars int) {
-	if chars == 0 {
-		chars = 1
-	}
 	lexer.pos -= chars
 	if lexer.pos == 0 {
 		lexer.c = rune(lexer.s[0])
@@ -188,7 +185,6 @@ func (lexer *TPTPLex) isKeyword() (int, bool) {
 		"tff":     TFF,
 		"tcf":     TCF,
 		"tpi":     TPI,
-		"fot":     FOT,
 		"include": INCLUDE,
 	}
 
@@ -423,6 +419,14 @@ func (lexer *TPTPLex) word(yylval *TPTPSymType) int {
 		lexer.alphaNumeric(yylval)
 	}
 
+	if token == DOLLAR_WORD {
+		if yylval.str == "$fot" {
+			token = DOLLAR_FOT
+		} else if yylval.str == "$fof" {
+			token = DOLLAR_FOF
+		}
+	}
+
 	return token
 }
 
@@ -474,7 +478,9 @@ func (lexer TPTPLex) specialChars() int {
 func (lexer *TPTPLex) number(yylval *TPTPSymType) int {
 	if lexer.real(yylval) {
 		return REAL
-	} else if lexer.rational(yylval) {
+	}
+	fmt.Println(string(lexer.c))
+	if lexer.rational(yylval) {
 		return RATIONAL
 	} else if lexer.integer(yylval) {
 		return INTEGER
@@ -540,7 +546,10 @@ func (lexer *TPTPLex) decimalFraction(yylval *TPTPSymType) bool {
 		return false
 	}
 
+	lexer.advance()
+
 	if !lexer.dotDecimal(yylval) {
+		lexer.remove(1)
 		lexer.remove(len(yylval.str) - pos - 1)
 		yylval.str = yylval.str[:pos]
 		return false
@@ -571,8 +580,9 @@ func (lexer *TPTPLex) positiveDecimal(yylval *TPTPSymType) bool {
 		yylval.str += string(lexer.c)
 		lexer.advance()
 	}
+	lexer.remove(1)
 
-	if lexer.pos == len(lexer.s) {
+	if lexer.pos == len(lexer.s)-1 {
 		yylval.str += string(lexer.c)
 	}
 
@@ -598,8 +608,9 @@ func (lexer *TPTPLex) dotDecimal(yylval *TPTPSymType) bool {
 		yylval.str += string(lexer.c)
 		lexer.advance()
 	}
+	lexer.remove(1)
 
-	if lexer.pos == len(lexer.s) {
+	if lexer.pos == len(lexer.s)-1 {
 		yylval.str += string(lexer.c)
 	}
 
@@ -633,8 +644,9 @@ func (lexer *TPTPLex) unsignedExpInteger(yylval *TPTPSymType) bool {
 		yylval.str += string(lexer.c)
 		lexer.advance()
 	}
+	lexer.remove(1)
 
-	if lexer.pos == len(lexer.s) {
+	if lexer.pos == len(lexer.s)-1 {
 		yylval.str += string(lexer.c)
 	}
 
@@ -750,7 +762,7 @@ func (lexer TPTPLex) isNumeric() bool {
 }
 
 func (lexer TPTPLex) Error(s string) {
-	fmt.Println(lexer.pos, string(lexer.c))
+	// fmt.Println(lexer.pos, string(lexer.c))
 	log.Fatalf("Syntax error, line %d: %s\n", yylineno, s)
 }
 
@@ -768,27 +780,27 @@ func (lexer *TPTPLex) Lex(yylval *TPTPSymType) int {
 	}
 
 	if token := lexer.SyntacticLex(); token != FAILURE_TOKEN {
-		fmt.Printf("Syntactic lex: %d\n", token)
+		// fmt.Printf("Syntactic lex: %d\n", token)
 		return token
 	}
 
 	if token := lexer.quotedWords(yylval); token != FAILURE_TOKEN {
-		fmt.Printf("Quoted word: %d %s\n", token, yylval.str)
+		// fmt.Printf("Quoted word: %d %s\n", token, yylval.str)
 		return token
 	}
 
 	if token := lexer.word(yylval); token != FAILURE_TOKEN {
-		fmt.Printf("Word: %d %s\n", token, yylval.str)
+		// fmt.Printf("Word: %d %s\n", token, yylval.str)
 		return token
 	}
 
 	if token := lexer.specialChars(); token != FAILURE_TOKEN {
-		fmt.Printf("Special char: %d\n", token)
+		// fmt.Printf("Special char: %d\n", token)
 		return token
 	}
 
 	if token := lexer.number(yylval); token != FAILURE_TOKEN {
-		fmt.Printf("Number: %d %s\n", token, yylval.str)
+		// fmt.Printf("Number: %d %s\n", token, yylval.str)
 		return token
 	}
 
