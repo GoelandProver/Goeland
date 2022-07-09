@@ -41,6 +41,7 @@ package proof
 import (
 	"encoding/json"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -48,7 +49,7 @@ import (
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-var path_proof = global.GetExecPath() + "../../visualization/json/proof_output.json"
+var path_proof = global.GetExecPath() + "proof_output.json"
 var file_proof *os.File
 var mutex_file_proof sync.Mutex
 
@@ -268,4 +269,42 @@ func CopyProofStructList(ps []ProofStruct) []ProofStruct {
 		res[i] = ps[i].Copy()
 	}
 	return res
+}
+
+func (j *JsonProofStruct) ToText() string {
+	res := ""
+	res += "[" + strconv.Itoa(j.Node_id) + "]"
+	res += " (" + j.Rule + ") " + j.Rule_name + " : "
+	res += j.Formula + "\n"
+	for _, rf := range j.Result_formulas {
+		res += "	-> "
+		for i, rf2 := range rf {
+			res += "[" + strconv.Itoa(rf2.I) + "] " + rf2.S
+			if i < len(rf)-1 {
+				res += ", "
+			}
+		}
+		res += "\n"
+	}
+
+	res += "\n"
+
+	for _, c := range j.Children {
+		res += JsonProofStructListToText(c)
+	}
+
+	return res
+}
+
+func JsonProofStructListToText(jps []JsonProofStruct) string {
+	res := ""
+	for _, j2 := range jps {
+		res += j2.ToText()
+	}
+	return res
+}
+
+func ProofStructListToText(ps []ProofStruct) string {
+	json_content := ProofStructListToJsonProofStructList(ps)
+	return JsonProofStructListToText(json_content)
 }

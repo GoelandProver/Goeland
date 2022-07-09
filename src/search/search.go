@@ -91,7 +91,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
 			st.SetCurrentProofNodeId(f.GetIndex())
-			st.SetCurrentProofResultFormulas([]basictypes.FormList{basictypes.MakeEmptyFormList()})
+			st.SetCurrentProofResultFormulas([]basictypes.FormList{})
 			st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id)
@@ -106,7 +106,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
 			st.SetCurrentProofNodeId(f.GetIndex())
-			st.SetCurrentProofResultFormulas([]basictypes.FormList{basictypes.MakeEmptyFormList()})
+			st.SetCurrentProofResultFormulas([]basictypes.FormList{})
 			st.SetProof(complextypes.ApplySubstitutionOnProofList(substs_without_mm[0], append(st.GetProof(), st.GetCurrentProof())))
 
 			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id)

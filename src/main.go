@@ -196,8 +196,9 @@ func Search(f basictypes.Form, bound int) {
 		global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
 		global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
 
-		if global.GetProof() {
+		if global.GetProof() && res {
 			proof.WriteGraphProof(final_proof)
+			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
 		}
 
 		limit = 2 * limit

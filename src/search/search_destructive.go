@@ -290,8 +290,6 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 **/
 func waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int) {
 	global.PrintDebug("WF", "Wait father")
-	global.PrintDebug("WF", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(st.GetProof())))
-	global.PrintDebug("WF", fmt.Sprintf("Current proof : %v", st.GetCurrentProof().ToString()))
 
 	// CLear subst found
 	st.SetSubstsFound([]complextypes.SubstAndForm{})
@@ -320,7 +318,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			st.SetCurrentProofNodeId(answer_father.subst_for_children.GetForm()[0].GetIndex())
 			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", answer_father.subst_for_children.GetSubst().ToString()))
 			st.SetCurrentProofRuleName("CLOSURE")
-			st.SetCurrentProofResultFormulas([]basictypes.FormList{basictypes.MakeEmptyFormList()})
+			st.SetCurrentProofResultFormulas([]basictypes.FormList{})
 
 			st.SetProof(complextypes.ApplySubstitutionOnProofList(answer_father.subst_for_children.GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
 
@@ -415,7 +413,6 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			} else {
 				st.SetCurrentProofChildren(proof_children)
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
-				st.SetCurrentProofFormula(result_subst[0].GetForm()[0])
 			}
 
 			exchanges.WriteExchanges(father_id, st, nil, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
@@ -544,8 +541,6 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 func proofSearchDestructive(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm, node_id int) {
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v", father_id))
-	global.PrintDebug("Proof", fmt.Sprintf("%v", proof.ProofStructListToString(st.GetProof())))
-	global.PrintDebug("Current Proof", fmt.Sprintf("%v", st.GetCurrentProof().ToString()))
 
 	// Select to check kill order
 	select {
