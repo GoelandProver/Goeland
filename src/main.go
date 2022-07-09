@@ -109,6 +109,9 @@ func ManageResult(c search.Communication) (bool, []proof.ProofStruct) {
 	final_proof := []proof.ProofStruct{}
 	if global.IsDestructive() {
 		result := <-c.GetResult()
+
+		global.PrintDebug("MAIN", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(result.GetProof())))
+
 		final_proof = result.GetProof()
 		if result.GetNeedAnswer() {
 			c.GetQuit() <- true
@@ -169,7 +172,7 @@ func Search(f basictypes.Form, bound int) {
 		tp := new(treesearch.Node)
 		tn := new(treesearch.Node)
 
-		st := complextypes.MakeState(limit, tp, tn)
+		st := complextypes.MakeState(limit, tp, tn, f)
 
 		fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
 
@@ -182,7 +185,7 @@ func Search(f basictypes.Form, bound int) {
 			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
 		}
 
-		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm())
+		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), global.IncrCptNode())
 		global.IncrGoRoutine(1)
 
 		global.PrintDebug("MAIN", "GO")
@@ -244,9 +247,9 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound
 	case not_form == nil:
-		return basictypes.MakeAnd(and_list), bound
+		return basictypes.MakerAnd(and_list), bound
 	default:
-		return basictypes.MakeAnd(append(and_list, basictypes.RefuteForm(not_form))), bound
+		return basictypes.MakerAnd(append(and_list, basictypes.RefuteForm(not_form))), bound
 	}
 }
 

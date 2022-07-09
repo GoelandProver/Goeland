@@ -127,26 +127,34 @@ func searchClosureRule(f basictypes.Form, st complextypes.State) (bool, []treety
 * Result :
 *	a formula list (conjunction)
 **/
-func applyAlphaRules(f basictypes.Form) basictypes.FormList {
+func applyAlphaRules(f basictypes.Form, st *complextypes.State) basictypes.FormList {
 	var res basictypes.FormList
 	switch nf := f.(type) {
 	case basictypes.Not:
 		switch nnf := nf.GetForm().(type) {
 		case basictypes.Not:
 			global.PrintDebug("AR", "Applying α¬¬...")
+			st.SetCurrentProofRule("α¬¬")
+			st.SetCurrentProofRuleName("ALPHA_NOT_NOT")
 			res = append(res, nnf.GetForm())
 		case basictypes.Or:
 			global.PrintDebug("AR", "Applying α¬∨...")
+			st.SetCurrentProofRule("α¬∨")
+			st.SetCurrentProofRuleName("ALPHA_NOT_OR")
 			for i := range nnf.GetLF() {
 				res = append(res, basictypes.RefuteForm(nnf.GetLF()[i]))
 			}
 		case basictypes.Imp:
 			global.PrintDebug("AR", "Applying α¬⇒...")
+			st.SetCurrentProofRule("α¬⇒")
+			st.SetCurrentProofRuleName("ALPHA_NOT_IMPLY")
 			res = append(res, nnf.GetF1())
 			res = append(res, basictypes.RefuteForm(nnf.GetF2()))
 		}
 	case basictypes.And:
 		global.PrintDebug("AR", "Applying α∧...")
+		st.SetCurrentProofRule("α∧")
+		st.SetCurrentProofRuleName("ALPHA_AND")
 		for i := range nf.GetLF() {
 			res = append(res, nf.GetLF()[i])
 		}
@@ -162,32 +170,42 @@ func applyAlphaRules(f basictypes.Form) basictypes.FormList {
 * Result :
 *	a formula list (disjunction)
 **/
-func applyBetaRules(f basictypes.Form) []basictypes.FormList {
+func applyBetaRules(f basictypes.Form, st *complextypes.State) []basictypes.FormList {
 	var res []basictypes.FormList
 	switch nf := f.(type) {
 	case basictypes.Not:
 		switch nnf := nf.GetForm().(type) {
 		case basictypes.And:
 			global.PrintDebug("AR", "Applying β¬∧...")
+			st.SetCurrentProofRule("β¬∧")
+			st.SetCurrentProofRuleName("BETA_NOT_AND")
 			for i := range nnf.GetLF() {
 				res = append(res, basictypes.MakeSingleElementList(basictypes.RefuteForm(nnf.GetLF()[i])))
 			}
 		case basictypes.Equ:
 			global.PrintDebug("AR", "Applying β¬⇔...")
+			st.SetCurrentProofRule("β¬⇔")
+			st.SetCurrentProofRuleName("BETA_NOT_EQUIV")
 			res = append(res, basictypes.FormList{basictypes.RefuteForm(nnf.GetF1()), nnf.GetF2()})
 			res = append(res, basictypes.FormList{nnf.GetF1(), basictypes.RefuteForm(nnf.GetF2())})
 		}
 	case basictypes.Or:
 		global.PrintDebug("AR", "Applying β∨...")
+		st.SetCurrentProofRule("β∨")
+		st.SetCurrentProofRuleName("BETA_OR")
 		for i := range nf.GetLF() {
 			res = append(res, basictypes.MakeSingleElementList(nf.GetLF()[i]))
 		}
 	case basictypes.Imp:
 		global.PrintDebug("AR", "Applying β⇒...")
+		st.SetCurrentProofRule("β⇒")
+		st.SetCurrentProofRuleName("BETA_IMPLY")
 		res = append(res, basictypes.MakeSingleElementList(basictypes.RefuteForm(nf.GetF1())))
 		res = append(res, basictypes.MakeSingleElementList(nf.GetF2()))
 	case basictypes.Equ:
 		global.PrintDebug("AR", "Applying β⇔...")
+		st.SetCurrentProofRule("β⇔")
+		st.SetCurrentProofRuleName("BETA_EQUIV")
 		res = append(res, basictypes.FormList{basictypes.RefuteForm(nf.GetF1()), basictypes.RefuteForm(nf.GetF2())})
 		res = append(res, basictypes.FormList{nf.GetF1(), nf.GetF2()})
 	}
@@ -202,13 +220,15 @@ func applyBetaRules(f basictypes.Form) []basictypes.FormList {
 * Result :
 *	a formula
 **/
-func applyDeltaRules(f basictypes.Form) basictypes.FormList {
+func applyDeltaRules(f basictypes.Form, st *complextypes.State) basictypes.FormList {
 	var result basictypes.FormList
 	switch nf := f.(type) {
 	case basictypes.Not:
 		switch nnf := nf.GetForm().(type) {
 		case basictypes.All:
 			global.PrintDebug("AR", "Applying δ¬∀...")
+			st.SetCurrentProofRule("δ¬∀")
+			st.SetCurrentProofRuleName("DELTA_NOT_FORALL")
 			fun_tmp := nnf.GetForm()
 			for _, v := range nnf.GetVarList() {
 				skolem_fun := basictypes.MakerFun(basictypes.MakerNewId("skolem_"+v.GetName()+strconv.Itoa(v.GetIndex())), f.GetMetas().ToTermList())
@@ -218,6 +238,8 @@ func applyDeltaRules(f basictypes.Form) basictypes.FormList {
 		}
 	case basictypes.Ex:
 		global.PrintDebug("AR", "Applying δ∃...")
+		st.SetCurrentProofRule("δ∃")
+		st.SetCurrentProofRuleName("DELTA_EXISTS")
 		fun_tmp := nf.GetForm()
 		for _, v := range nf.GetVarList() {
 			skolem_fun := basictypes.MakerFun(basictypes.MakerNewId("skolem_"+v.GetName()+strconv.Itoa(v.GetIndex())), f.GetMetas().ToTermList())
@@ -238,7 +260,7 @@ func applyDeltaRules(f basictypes.Form) basictypes.FormList {
 *	a formula
 *	the new metavariables
 **/
-func applyGammaRules(f basictypes.Form, index int) (basictypes.FormList, basictypes.MetaList) {
+func applyGammaRules(f basictypes.Form, index int, st *complextypes.State) (basictypes.FormList, basictypes.MetaList) {
 	var result basictypes.FormList
 	var new_mm basictypes.MetaList
 	switch nf := f.(type) {
@@ -246,6 +268,8 @@ func applyGammaRules(f basictypes.Form, index int) (basictypes.FormList, basicty
 		switch nnf := nf.GetForm().(type) {
 		case basictypes.Ex:
 			global.PrintDebug("AR", "Applying γ¬∃...")
+			st.SetCurrentProofRule("γ¬∃")
+			st.SetCurrentProofRuleName("GAMMA_NOT_EXISTS")
 			fun_tmp := nnf.GetForm()
 			for _, v := range nnf.GetVarList() {
 				meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index)
@@ -256,6 +280,8 @@ func applyGammaRules(f basictypes.Form, index int) (basictypes.FormList, basicty
 		}
 	case basictypes.All:
 		global.PrintDebug("AR", "Applying γ∀...")
+		st.SetCurrentProofRule("γ∀")
+		st.SetCurrentProofRuleName("GAMMA_FORALL")
 		fun_tmp := nf.GetForm()
 		for _, v := range nf.GetVarList() {
 			meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index)

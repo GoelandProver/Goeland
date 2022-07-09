@@ -42,11 +42,15 @@ import (
 )
 
 type TermForm struct {
-	t basictypes.Term
+	index int
+	t     basictypes.Term
 }
 
 func (tf TermForm) GetTerm() basictypes.Term {
 	return tf.t.Copy()
+}
+func (tf TermForm) GetIndex() int {
+	return tf.index
 }
 
 func (tf TermForm) ToString() string {
@@ -58,7 +62,7 @@ func (t TermForm) ToStringWithSuffixMeta(string) string {
 }
 
 func (t TermForm) Copy() basictypes.Form {
-	return makeTermForm(t.GetTerm())
+	return makeTermForm(t.GetIndex(), t.GetTerm())
 }
 
 func (t TermForm) Equals(t2 basictypes.Form) bool {
@@ -88,8 +92,12 @@ func (t TermForm) GetMetas() basictypes.MetaList {
 	}
 }
 
-func makeTermForm(t basictypes.Term) TermForm {
-	return TermForm{t.Copy()}
+func makerTermForm(t basictypes.Term) TermForm {
+	return TermForm{basictypes.MakerIndexFormula(), t.Copy()}
+}
+
+func makeTermForm(i int, t basictypes.Term) TermForm {
+	return TermForm{i, t.Copy()}
 }
 
 /* Parses a formulae to a sequence of instructions. */
@@ -181,6 +189,6 @@ func ParseTerm(term basictypes.Term) Sequence {
 	varCount := 0
 	postCount := 0
 	parseTerms([]basictypes.Term{term.Copy()}, &instructions, basictypes.MetaList{}, &varCount, &postCount)
-	instructions.formula = makeTermForm(term)
+	instructions.formula = makerTermForm(term)
 	return instructions
 }

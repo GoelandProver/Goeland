@@ -130,14 +130,14 @@ func makeRewriteRuleFromAtomic(atomic btypes.Form) bool {
 }
 
 func makeRewriteRuleFromPred(pred btypes.Pred) bool {
-	addPosRewriteRule(pred, btypes.MakeTop())
-	addNegRewriteRule(pred, btypes.RefuteForm(btypes.MakeTop()))
+	addPosRewriteRule(pred, btypes.MakerTop())
+	addNegRewriteRule(pred, btypes.RefuteForm(btypes.MakerTop()))
 	return true
 }
 
 func makeRewriteRuleFromNegatedAtom(atom btypes.Not) bool {
-	addNegRewriteRule(atom, btypes.RefuteForm(btypes.MakeBot()))
-	addPosRewriteRule(atom, btypes.MakeBot())
+	addNegRewriteRule(atom, btypes.RefuteForm(btypes.MakerBot()))
+	addPosRewriteRule(atom, btypes.MakerBot())
 	return true
 }
 

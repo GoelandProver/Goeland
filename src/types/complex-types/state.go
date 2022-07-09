@@ -185,9 +185,18 @@ func (st *State) SetCurrentProof(p proof.ProofStruct) {
 		st.current_proof = p
 	}
 }
-func (st *State) SetCurrentProofFormula(f basictypes.FormList) {
+func (st *State) SetCurrentProofFormula(f basictypes.Form) {
 	if global.GetProof() {
-		st.current_proof.SetFormulaProof(f.ToStringForProof())
+		st.current_proof.SetFormulaProof(f.Copy())
+	}
+}
+func (st *State) SetCurrentProofResultFormulas(fll []basictypes.FormList) {
+	if global.GetProof() {
+		new_fll := []basictypes.FormList{}
+		for _, fl := range fll {
+			new_fll = append(new_fll, fl.Copy())
+		}
+		st.current_proof.SetResultFormulasProof(new_fll)
 	}
 }
 func (st *State) SetCurrentProofRule(s string) {
@@ -195,17 +204,28 @@ func (st *State) SetCurrentProofRule(s string) {
 		st.current_proof.SetRuleProof(s)
 	}
 }
+func (st *State) SetCurrentProofRuleName(s string) {
+	if global.GetProof() {
+		st.current_proof.SetRuleNameProof(s)
+	}
+}
 func (st *State) SetCurrentProofChildren(c [][]proof.ProofStruct) {
 	if global.GetProof() {
 		st.current_proof.SetChildrenProof(c)
 	}
 }
+func (st *State) SetCurrentProofNodeId(i int) {
+	if global.GetProof() {
+		st.current_proof.SetNodeIdProof(i)
+	}
+}
+
 func (st *State) SetBTOnFormulas(b bool) {
 	st.bt_on_formulas = b
 }
 
 /* Maker */
-func MakeState(limit int, tp, tn datastruct.DataStructure) State {
+func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) State {
 	n := 0
 	if global.IsDestructive() {
 		n = limit
@@ -213,6 +233,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure) State {
 
 	current_proof := proof.MakeEmptyProofStruct()
 	current_proof.SetRuleProof("Initial formula")
+	current_proof.SetFormulaProof(f.Copy())
 
 	return State{n, basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false}
 }

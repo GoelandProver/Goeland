@@ -1,7 +1,6 @@
 import json
 import jsons
 import copy
-import os
 
 
 class json_object:

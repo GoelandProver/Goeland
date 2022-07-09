@@ -83,14 +83,15 @@ func (lf FormList) Print() {
 
 /* Convert a list of formulas into string for proof struct */
 func (fl FormList) ToStringForProof() string {
-	res := ""
-	for i, f := range fl {
-		res = res + "<tspan x='0', dy='1.2em'>" + f.ToString() + "<tspan>"
-		if i < len(fl)-1 {
-			res = res + ", "
-		}
-	}
-	return res
+	return fl.ToString()
+	// res := ""
+	// for i, f := range fl {
+	// 	res = res + "<tspan x='0', dy='1.2em'>" + f.ToString() + "<tspan>"
+	// 	if i < len(fl)-1 {
+	// 		res = res + ", "
+	// 	}
+	// }
+	// return res
 }
 
 /** Utilitary **/

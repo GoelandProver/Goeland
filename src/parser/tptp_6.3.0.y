@@ -241,15 +241,15 @@ fof_binary_formula:
   ;
 
 fof_binary_nonassoc:
-    fof_unitary_formula EQUIV fof_unitary_formula {$$ = basictypes.MakeEqu($1, $3)}
-  | fof_unitary_formula IMPLY fof_unitary_formula {$$ = basictypes.MakeImp($1, $3)}
-  | fof_unitary_formula LEFT_IMPLY fof_unitary_formula {$$ = basictypes.MakeImp($3, $1)}
+    fof_unitary_formula EQUIV fof_unitary_formula {$$ = basictypes.MakerEqu($1, $3)}
+  | fof_unitary_formula IMPLY fof_unitary_formula {$$ = basictypes.MakerImp($1, $3)}
+  | fof_unitary_formula LEFT_IMPLY fof_unitary_formula {$$ = basictypes.MakerImp($3, $1)}
   | fof_unitary_formula XOR fof_unitary_formula
-    {$$ = basictypes.MakeOr([]basictypes.Form{basictypes.MakeAnd([]basictypes.Form{$1, basictypes.RefuteForm($3)}), basictypes.MakeAnd([]basictypes.Form{basictypes.RefuteForm($1), $3})})}
+    {$$ = basictypes.MakerOr([]basictypes.Form{basictypes.MakerAnd([]basictypes.Form{$1, basictypes.RefuteForm($3)}), basictypes.MakerAnd([]basictypes.Form{basictypes.RefuteForm($1), $3})})}
   | fof_unitary_formula NOTVLINE fof_unitary_formula
-    {$$ = basictypes.RefuteForm(basictypes.MakeOr([]basictypes.Form{$1, $3}))}
+    {$$ = basictypes.RefuteForm(basictypes.MakerOr([]basictypes.Form{$1, $3}))}
   | fof_unitary_formula NOTAND fof_unitary_formula
-    {$$ = basictypes.RefuteForm(basictypes.MakeAnd([]basictypes.Form{$1, $3}))}
+    {$$ = basictypes.RefuteForm(basictypes.MakerAnd([]basictypes.Form{$1, $3}))}
   ;
 
 fof_binary_assoc:
@@ -258,13 +258,13 @@ fof_binary_assoc:
   ;
 
 fof_or_formula:
-    fof_unitary_formula VLINE fof_unitary_formula {$$ = basictypes.MakeOr([]basictypes.Form{$1, $3})}
-  | fof_or_formula VLINE fof_unitary_formula {$$ = basictypes.MakeOr([]basictypes.Form{$1, $3})}
+    fof_unitary_formula VLINE fof_unitary_formula {$$ = basictypes.MakerOr([]basictypes.Form{$1, $3})}
+  | fof_or_formula VLINE fof_unitary_formula {$$ = basictypes.MakerOr([]basictypes.Form{$1, $3})}
   ;
 
 fof_and_formula:
-    fof_unitary_formula AND fof_unitary_formula {$$ = basictypes.MakeAnd([]basictypes.Form{$1, $3})}
-  | fof_and_formula AND fof_unitary_formula {$$ = basictypes.MakeAnd([]basictypes.Form{$1, $3})}
+    fof_unitary_formula AND fof_unitary_formula {$$ = basictypes.MakerAnd([]basictypes.Form{$1, $3})}
+  | fof_and_formula AND fof_unitary_formula {$$ = basictypes.MakerAnd([]basictypes.Form{$1, $3})}
   ;
 
 fof_unitary_formula:
@@ -277,10 +277,10 @@ fof_unitary_formula:
 fof_quantified_formula:
     FORALL LEFT_BRACKET fof_variable_list RIGHT_BRACKET COLON
       fof_unitary_formula
-    {$$ = basictypes.MakeAll($3, $6)}
+    {$$ = basictypes.MakerAll($3, $6)}
   | EXISTS LEFT_BRACKET fof_variable_list RIGHT_BRACKET COLON
       fof_unitary_formula
-    {$$ = basictypes.MakeEx($3, $6)}
+    {$$ = basictypes.MakerEx($3, $6)}
   ;
 
 fof_variable_list:
@@ -323,7 +323,7 @@ fof_unary_formula:
 /* Special formulas */
 
 fol_infix_unary:
-    term NOT_EQUAL term {$$ = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{$1, $3})}
+    term NOT_EQUAL term {$$ = basictypes.MakerPred(basictypes.Id_neq, []basictypes.Term{$1, $3})}
   ;
 
 /* First order atoms */
@@ -335,7 +335,7 @@ atomic_formula:
   /*  | system_atomic_formula */
 
 plain_atomic_formula:
-    plain_term {$$ = basictypes.MakePred($1.symb, $1.args)}
+    plain_term {$$ = basictypes.MakerPred($1.symb, $1.args)}
   ;
 
 defined_atomic_formula:
@@ -354,7 +354,7 @@ defined_atomic_formula:
     ;*/
 
 defined_infix_formula:
-    term EQUAL term {$$ = basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{$1, $3})}
+    term EQUAL term {$$ = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{$1, $3})}
   ;
 
 /*system_atomic_formula:
@@ -373,8 +373,8 @@ term:
     | t=let_term */
 
 function_term:
-    plain_term {$$ = basictypes.MakeFun($1.symb, $1.args)}
-    | defined_term { $$ = basictypes.MakeFun($1.symb, $1.args) }
+    plain_term {$$ = basictypes.MakerFun($1.symb, $1.args)}
+    | defined_term { $$ = basictypes.MakerFun($1.symb, $1.args) }
   ;
 /*  | defined_term
     | system_term */

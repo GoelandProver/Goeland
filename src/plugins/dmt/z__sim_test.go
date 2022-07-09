@@ -56,14 +56,14 @@ func TestAxiomRewriting(t *testing.T) {
 	pm := getEquivalencePM()
 
 	// forall x.P(x)
-	axiom := btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(P, []btypes.Term{x}))
+	axiom := btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(P, []btypes.Term{x}))
 
 	if !pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
 	}
 
 	// Top
-	form := btypes.MakePred(P, []btypes.Term{a})
+	form := btypes.MakerPred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -73,12 +73,12 @@ func TestAxiomRewriting(t *testing.T) {
 	if len(substs) > 1 ||
 		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(btypes.MakeTop()) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), btypes.MakeTop().ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetForm()[0].Equals(btypes.MakerTop()) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), btypes.MakerTop().ToString(), substs[0].GetForm()[0].ToString())
 	}
 
 	// ¬Top
-	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{a}))
+	form2 := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}))
 	substs, err = pm.ApplyRewriteHook(form2)
 
 	if err != nil {
@@ -88,8 +88,8 @@ func TestAxiomRewriting(t *testing.T) {
 	if len(substs) > 1 ||
 		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(btypes.MakeNot(btypes.MakeTop())) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), btypes.MakeNot(btypes.MakeTop()).ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetForm()[0].Equals(btypes.MakerNot(btypes.MakerTop())) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), btypes.MakerNot(btypes.MakerTop()).ToString(), substs[0].GetForm()[0].ToString())
 	}
 }
 
@@ -100,14 +100,14 @@ func TestAxiomRewriting2(t *testing.T) {
 	pm := getEquivalencePM()
 
 	// forall x.¬P(x)
-	axiom := btypes.MakeAll([]btypes.Var{x}, btypes.MakeNot(btypes.MakePred(P, []btypes.Term{x})))
+	axiom := btypes.MakerAll([]btypes.Var{x}, btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{x})))
 
 	if !pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
 	}
 
 	// Bot
-	form := btypes.MakePred(P, []btypes.Term{a})
+	form := btypes.MakerPred(P, []btypes.Term{a})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -117,12 +117,12 @@ func TestAxiomRewriting2(t *testing.T) {
 	if len(substs) > 1 ||
 		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(btypes.MakeBot()) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), btypes.MakeBot().ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetForm()[0].Equals(btypes.MakerBot()) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), btypes.MakerBot().ToString(), substs[0].GetForm()[0].ToString())
 	}
 
 	// ¬Bot
-	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{a}))
+	form2 := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}))
 	substs, err = pm.ApplyRewriteHook(form2)
 
 	if err != nil {
@@ -132,8 +132,8 @@ func TestAxiomRewriting2(t *testing.T) {
 	if len(substs) > 1 ||
 		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(btypes.MakeNot(btypes.MakeBot())) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), btypes.MakeNot(btypes.MakeBot()).ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetForm()[0].Equals(btypes.MakerNot(btypes.MakerBot())) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), btypes.MakerNot(btypes.MakerBot()).ToString(), substs[0].GetForm()[0].ToString())
 	}
 }
 
@@ -144,7 +144,7 @@ func TestAxiomRewriting3(t *testing.T) {
 	pm := getEquivalencePM()
 
 	// forall x.P(x)
-	axiom := btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(P, []btypes.Term{x, x}))
+	axiom := btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(P, []btypes.Term{x, x}))
 
 	if !pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
@@ -153,7 +153,7 @@ func TestAxiomRewriting3(t *testing.T) {
 	X := btypes.MakerMeta("X", 1)
 	Y := btypes.MakerMeta("Y", 1)
 	// Top
-	form := btypes.MakePred(P, []btypes.Term{X, Y})
+	form := btypes.MakerPred(P, []btypes.Term{X, Y})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -163,12 +163,12 @@ func TestAxiomRewriting3(t *testing.T) {
 	if len(substs) > 1 ||
 		!(substs[0].GetSubst()[X].Equals(Y) || substs[0].GetSubst()[Y].Equals(X)) ||
 		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(btypes.MakeTop()) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), btypes.MakeTop().ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetForm()[0].Equals(btypes.MakerTop()) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), btypes.MakerTop().ToString(), substs[0].GetForm()[0].ToString())
 	}
 
 	// ¬Top
-	form2 := btypes.MakeNot(btypes.MakePred(P, []btypes.Term{X, Y}))
+	form2 := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{X, Y}))
 	substs, err = pm.ApplyRewriteHook(form2)
 
 	if err != nil {
@@ -178,12 +178,12 @@ func TestAxiomRewriting3(t *testing.T) {
 	if len(substs) > 1 ||
 		!(substs[0].GetSubst()[X].Equals(Y) || substs[0].GetSubst()[Y].Equals(X)) ||
 		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(btypes.MakeNot(btypes.MakeTop())) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), btypes.MakeNot(btypes.MakeTop()).ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetForm()[0].Equals(btypes.MakerNot(btypes.MakerTop())) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), btypes.MakerNot(btypes.MakerTop()).ToString(), substs[0].GetForm()[0].ToString())
 	}
 
 	// Top with subst
-	form3 := btypes.MakePred(P, []btypes.Term{a, Y})
+	form3 := btypes.MakerPred(P, []btypes.Term{a, Y})
 	substs, err = pm.ApplyRewriteHook(form3)
 
 	if err != nil {
@@ -193,12 +193,12 @@ func TestAxiomRewriting3(t *testing.T) {
 	if len(substs) > 1 ||
 		!substs[0].GetSubst()[Y].Equals(a) ||
 		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(btypes.MakeTop()) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), btypes.MakeTop().ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetForm()[0].Equals(btypes.MakerTop()) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), btypes.MakerTop().ToString(), substs[0].GetForm()[0].ToString())
 	}
 
 	// Should fail
-	form4 := btypes.MakePred(P, []btypes.Term{a, btypes.MakerConst(btypes.MakerId("b"))})
+	form4 := btypes.MakerPred(P, []btypes.Term{a, btypes.MakerConst(btypes.MakerId("b"))})
 	substs, err = pm.ApplyRewriteHook(form4)
 
 	if err != nil {
@@ -217,28 +217,28 @@ func TestAxiomRewriting4(t *testing.T) {
 	pm := getEquivalencePM()
 
 	// forall x.x = x
-	axiom := btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(btypes.Id_eq, []btypes.Term{x, x}))
+	axiom := btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(btypes.Id_eq, []btypes.Term{x, x}))
 
 	if pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
 	}
 
 	// forall x.x != x
-	axiom = btypes.MakeAll([]btypes.Var{x}, btypes.MakePred(btypes.Id_neq, []btypes.Term{x, x}))
+	axiom = btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(btypes.Id_neq, []btypes.Term{x, x}))
 
 	if pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
 	}
 
 	// forall x.¬(x = x)
-	axiom = btypes.MakeAll([]btypes.Var{x}, btypes.MakeNot(btypes.MakePred(btypes.Id_eq, []btypes.Term{x, x})))
+	axiom = btypes.MakerAll([]btypes.Var{x}, btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, []btypes.Term{x, x})))
 
 	if pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
 	}
 
 	// forall x.¬(x != x)
-	axiom = btypes.MakeAll([]btypes.Var{x}, btypes.MakeNot(btypes.MakePred(btypes.Id_neq, []btypes.Term{x, x})))
+	axiom = btypes.MakerAll([]btypes.Var{x}, btypes.MakerNot(btypes.MakerPred(btypes.Id_neq, []btypes.Term{x, x})))
 
 	if pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())

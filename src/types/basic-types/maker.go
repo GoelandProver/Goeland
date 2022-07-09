@@ -45,6 +45,7 @@ import (
 /* Datas */
 var cpt_id int
 var cpt_var int
+var cpt_formula int
 
 var idTable map[string]int = make(map[string]int)
 var idVar map[string]int = make(map[string]int)
@@ -52,6 +53,7 @@ var idMeta map[string]int = make(map[string]int)
 var lock_id sync.Mutex
 var lock_var sync.Mutex
 var lock_meta sync.Mutex
+var lock_formula sync.Mutex
 
 // Global id
 var Id_eq Id
@@ -68,6 +70,7 @@ func Init() {
 func Reset() {
 	cpt_id = 0
 	cpt_var = 0
+	cpt_formula = 0
 	idTable = map[string]int{}
 	idVar = map[string]int{}
 	ResetMeta()
@@ -146,4 +149,13 @@ func MakerConst(id Id) Fun {
 /* Fun maker, with given id and args */
 func MakerFun(id Id, terms []Term) Fun {
 	return MakeFun(id, terms)
+}
+
+/* Index make for formula */
+func MakerIndexFormula() int {
+	lock_meta.Lock()
+	res := cpt_formula
+	cpt_formula++
+	lock_meta.Unlock()
+	return res
 }
