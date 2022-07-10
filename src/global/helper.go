@@ -62,6 +62,8 @@ var limit = -1
 var one_step = false
 var plugins map[string]bool = make(map[string]bool)
 var lock_plugins sync.Mutex
+var cpt_node = -1
+var lock_cpt_node sync.Mutex
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -144,6 +146,15 @@ func GetExecPath() string {
 func IsLoaded(s string) bool {
 	// Not locked here because read-only except in main
 	return plugins[s]
+}
+func GetCptNode() int {
+	return cpt_node
+}
+func IncrCptNode() int {
+	lock_cpt_node.Lock()
+	cpt_node++
+	lock_cpt_node.Unlock()
+	return GetCptNode()
 }
 
 /* Setters */

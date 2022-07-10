@@ -39,7 +39,7 @@
  * Any of these could be replaced by its other part when they are exported.
  **/
 
-package main
+package dmt
 
 import (
 	"fmt"

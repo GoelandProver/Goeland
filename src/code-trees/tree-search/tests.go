@@ -150,8 +150,8 @@ func Test1() {
 	x := basictypes.MakerMeta("X", -1)
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{x})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{a})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{x})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{a})})
 
 	LaunchTest(
 		1,
@@ -181,8 +181,8 @@ func Test2() {
 	x := basictypes.MakerMeta("X", -1)
 	y := basictypes.MakerMeta("Y", -1)
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{x})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{y})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{x})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{y})})
 
 	LaunchTest(
 		2,
@@ -210,8 +210,8 @@ func Test3() {
 	p := basictypes.MakerId("P")
 	x := basictypes.MakerMeta("X", -1)
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, x})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a")), basictypes.MakerConst(basictypes.MakerId("b"))})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, x})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a")), basictypes.MakerConst(basictypes.MakerId("b"))})
 
 	LaunchTest(
 		3,
@@ -237,8 +237,8 @@ func Test4() {
 	y := basictypes.MakerMeta("Y", -1)
 	f := basictypes.MakerFun(basictypes.MakerId("f"), []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a")), basictypes.MakerConst(basictypes.MakerId("b"))})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, f})
-	f2 := basictypes.MakePred(p, []basictypes.Term{x, y})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, f})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{x, y})
 
 	LaunchTest(
 		4,
@@ -269,8 +269,8 @@ func Test5() {
 	f := basictypes.MakerId("f")
 
 	// 5.1
-	f1 := basictypes.MakePred(p, []basictypes.Term{x})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{x})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{x})})
 
 	LaunchTest(
 		5,
@@ -287,8 +287,8 @@ func Test5() {
 	)
 
 	// 5.2
-	f3 := basictypes.MakePred(p, []basictypes.Term{x, x})
-	f4 := basictypes.MakePred(p, []basictypes.Term{y, basictypes.MakerFun(f, []basictypes.Term{y})})
+	f3 := basictypes.MakerPred(p, []basictypes.Term{x, x})
+	f4 := basictypes.MakerPred(p, []basictypes.Term{y, basictypes.MakerFun(f, []basictypes.Term{y})})
 
 	LaunchTest(
 		5,
@@ -304,8 +304,8 @@ func Test5() {
 	)
 
 	// 5.3
-	f5 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a")), y})})
-	f6 := basictypes.MakePred(p, []basictypes.Term{x, y})
+	f5 := basictypes.MakerPred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a")), y})})
+	f6 := basictypes.MakerPred(p, []basictypes.Term{x, y})
 
 	LaunchTest(
 		5,
@@ -333,12 +333,12 @@ func Test6() {
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 
-	f := basictypes.MakePred(p, []basictypes.Term{a, x})
+	f := basictypes.MakerPred(p, []basictypes.Term{a, x})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{a, b})
-	f2 := basictypes.MakePred(p, []basictypes.Term{x, y})
-	f3 := basictypes.MakePred(p, []basictypes.Term{z, t})
-	f4 := basictypes.MakePred(p, []basictypes.Term{x, x})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{a, b})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{x, y})
+	f3 := basictypes.MakerPred(p, []basictypes.Term{z, t})
+	f4 := basictypes.MakerPred(p, []basictypes.Term{x, x})
 
 	LaunchTest(
 		6,
@@ -363,8 +363,8 @@ func Test7() {
 	y := basictypes.MakerMeta("Y", -1)
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, x})
-	f2 := basictypes.MakePred(p, []basictypes.Term{y, a})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, x})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{y, a})
 
 	LaunchTest(
 		7,
@@ -394,8 +394,8 @@ func Test8() {
 	x := basictypes.MakerMeta("X", -1)
 	y := basictypes.MakerMeta("Y", -1)
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, y})
-	f2 := basictypes.MakePred(p, []basictypes.Term{a, a})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, y})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{a, a})
 
 	LaunchTest(
 		8,
@@ -424,8 +424,8 @@ func Test9() {
 	x := basictypes.MakerMeta("X", -1)
 	y := basictypes.MakerMeta("Y", -1)
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, y})
-	f2 := basictypes.MakePred(p, []basictypes.Term{x, x})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, y})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{x, x})
 
 	LaunchTest(
 		9,
@@ -455,8 +455,8 @@ func Test10() {
 	y := basictypes.MakerMeta("Y", -1)
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, y})
-	f2 := basictypes.MakePred(p, []basictypes.Term{y, a})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, y})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{y, a})
 
 	LaunchTest(
 		10,
@@ -488,8 +488,8 @@ func Test11() {
 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 	f := basictypes.MakerId("f")
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, y})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, b})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, y})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, b})})
 
 	LaunchTest(
 		11,
@@ -516,8 +516,8 @@ func Test11() {
 func Test12() {
 	p := basictypes.MakerId("P")
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(basictypes.MakerId("f"), []basictypes.Term{basictypes.MakerMeta("Y", -1)})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a"))})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(basictypes.MakerId("f"), []basictypes.Term{basictypes.MakerMeta("Y", -1)})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a"))})
 
 	LaunchTest(
 		12,
@@ -547,8 +547,8 @@ func Test13() {
 	fun1 := basictypes.MakerFun(f, []basictypes.Term{a, b})
 	fun2 := basictypes.MakerFun(f, []basictypes.Term{a, y})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, x})
-	f2 := basictypes.MakePred(p, []basictypes.Term{fun1, fun2})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, x})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{fun1, fun2})
 
 	LaunchTest(
 		13,
@@ -579,8 +579,8 @@ func Test14() {
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, b, x})
-	f2 := basictypes.MakePred(p, []basictypes.Term{x, y, a})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, b, x})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{x, y, a})
 
 	LaunchTest(
 		14,
@@ -612,11 +612,11 @@ func Test15() {
 	y := basictypes.MakerMeta("Y", -1)
 	fun := basictypes.MakerId("f")
 
-	f := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})})
+	f := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})})})
-	f3 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{y})})})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})})})
+	f3 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{y})})})})
 
 	LaunchTest(
 		15,
@@ -638,10 +638,10 @@ func Test16() {
 	z := basictypes.MakerMeta("Z", -1)
 	fun := basictypes.MakerId("f")
 
-	f := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})})
+	f := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{z})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{z})
 
 	LaunchTest(
 		16,
@@ -662,10 +662,10 @@ func Test17() {
 	x := basictypes.MakerMeta("X", -1)
 	fun := basictypes.MakerId("f")
 
-	f := basictypes.MakePred(p, []basictypes.Term{x, x})
+	f := basictypes.MakerPred(p, []basictypes.Term{x, x})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x}), basictypes.MakerFun(fun, []basictypes.Term{x})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x}), basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x}), basictypes.MakerFun(fun, []basictypes.Term{x})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x}), basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})})
 
 	LaunchTest(
 		17,
@@ -683,8 +683,8 @@ func Test18() {
 	y1 := basictypes.MakerMeta("Y", -1)
 	y2 := basictypes.MakerMeta("Y", -1)
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{y2, y1, basictypes.MakerFun(basictypes.MakerId("f"), []basictypes.Term{y1, y2})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerMeta("X", -1), basictypes.MakerMeta("X", -1), y1})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{y2, y1, basictypes.MakerFun(basictypes.MakerId("f"), []basictypes.Term{y1, y2})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerMeta("X", -1), basictypes.MakerMeta("X", -1), y1})
 
 	LaunchTest(
 		18,
@@ -710,9 +710,9 @@ func Test19() {
 	y := basictypes.MakerMeta("Y", -1)
 	f := basictypes.MakerId("f")
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{x})})
-	f3 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{y})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{x})})
+	f3 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{y})})
 
 	LaunchTest(
 		19,
@@ -734,8 +734,8 @@ func Test20() {
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, x})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{b}), basictypes.MakerFun(f, []basictypes.Term{a, basictypes.MakerFun(f, []basictypes.Term{x})})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, x})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{b}), basictypes.MakerFun(f, []basictypes.Term{a, basictypes.MakerFun(f, []basictypes.Term{x})})})
 
 	LaunchTest(
 		20,
@@ -762,8 +762,8 @@ func Test21() {
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, x}), b})
-	f2 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, x})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, x}), b})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, x})})
 
 	LaunchTest(
 		21,
@@ -789,8 +789,8 @@ func Test22() {
 	y := basictypes.MakerMeta("Y", -1)
 	z := basictypes.MakerMeta("Z", -1)
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, y, z})
-	f2 := basictypes.MakePred(p, []basictypes.Term{y, z, y})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, y, z})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{y, z, y})
 
 	LaunchTest(
 		22,
@@ -818,8 +818,8 @@ func Test23() {
 	p1 := basictypes.MakerId("P1")
 	p2 := basictypes.MakerId("P2")
 
-	f1 := basictypes.MakePred(p1, []basictypes.Term{})
-	f2 := basictypes.MakePred(p2, []basictypes.Term{})
+	f1 := basictypes.MakerPred(p1, []basictypes.Term{})
+	f2 := basictypes.MakerPred(p2, []basictypes.Term{})
 
 	LaunchTest(
 		23,
@@ -843,8 +843,8 @@ func Test24() {
 	//y := basictypes.MakerMeta("Y")
 	f := basictypes.MakerId("f")
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2, z1})
-	f2 := basictypes.MakePred(p, []basictypes.Term{z1, x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2, z1})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{z1, x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2})
 
 	LaunchTest(
 		24,
@@ -868,11 +868,11 @@ func Test25() {
 	f := basictypes.MakerId("f")
 	//s := basictypes.MakerId("skolem_Z")
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2, z1})
-	f2 := basictypes.MakePred(p, []basictypes.Term{z1, x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2, z1})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{z1, x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2})
 
-	//f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(s, []basictypes.Term{y}), y}}
-	//f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(s, []basictypes.Term{y}), basictypes.MakerFun(f, []basictypes.Term{s_x})}}
+	//f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(s, []basictypes.Term{y}), y}}
+	//f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(s, []basictypes.Term{y}), basictypes.MakerFun(f, []basictypes.Term{s_x})}}
 	LaunchTest(
 		25,
 		[]treetypes.MatchingSubstitutions{},
@@ -901,10 +901,10 @@ func Test26() {
 	fx := basictypes.MakerFun(f, []basictypes.Term{x})
 	fy := basictypes.MakerFun(f, []basictypes.Term{y})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x})
-	f2 := basictypes.MakePred(p, []basictypes.Term{y})
-	f3 := basictypes.MakePred(p, []basictypes.Term{ffx})
-	f4 := basictypes.MakePred(p, []basictypes.Term{fy})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{y})
+	f3 := basictypes.MakerPred(p, []basictypes.Term{ffx})
+	f4 := basictypes.MakerPred(p, []basictypes.Term{fy})
 
 	LaunchTest(
 		26,
@@ -929,8 +929,8 @@ func Test27() {
 	f := basictypes.MakerId("f")
 	ffy := basictypes.MakerFun(f, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{y})})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerConst(f)})
-	f2 := basictypes.MakePred(p, []basictypes.Term{ffy})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerConst(f)})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{ffy})
 
 	LaunchTest(
 		27,
@@ -958,8 +958,8 @@ func Test28() {
 	f := basictypes.MakerId("f")
 	ffy := basictypes.MakerFun(f, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{y})})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x})
-	f2 := basictypes.MakePred(p, []basictypes.Term{ffy})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{ffy})
 
 	LaunchTest(
 		28,
@@ -1000,9 +1000,9 @@ func Test29() {
 	y_7 := basictypes.MakerMeta("Y", -1)
 	sk_x197_y7 := basictypes.MakerFun(g, []basictypes.Term{x_197, y_7})
 
-	f0 := basictypes.MakePred(f, []basictypes.Term{x_250, y_250})
-	f2 := basictypes.MakePred(f, []basictypes.Term{x_197, sk_x197_y7})
-	f3 := basictypes.MakePred(f, []basictypes.Term{x_197, basictypes.MakerFun(g, []basictypes.Term{x_197, sk_x197_y7})})
+	f0 := basictypes.MakerPred(f, []basictypes.Term{x_250, y_250})
+	f2 := basictypes.MakerPred(f, []basictypes.Term{x_197, sk_x197_y7})
+	f3 := basictypes.MakerPred(f, []basictypes.Term{x_197, basictypes.MakerFun(g, []basictypes.Term{x_197, sk_x197_y7})})
 
 	LaunchTest(
 		29,
@@ -1026,10 +1026,10 @@ func Test30() {
 	z := basictypes.MakerMeta("Z", -1)
 	fun := basictypes.MakerId("f")
 
-	f := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})})
+	f := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{z})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{z})
 
 	LaunchTest(
 		30,
@@ -1055,10 +1055,10 @@ func Test31() {
 	Y := basictypes.MakerMeta("Y", -1)
 	fun := basictypes.MakerId("f")
 
-	f := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{X})})
+	f := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{X})})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{Y})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{Y})
 
 	LaunchTest(
 		31,
@@ -1084,7 +1084,7 @@ func Test32() {
 	fun_1 := basictypes.MakerFun(f, []basictypes.Term{x})
 	fun_2 := basictypes.MakerFun(f, []basictypes.Term{fun_1, fun_1})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{fun_2, z})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{fun_2, z})
 
 	LaunchTest(
 		32,
@@ -1111,8 +1111,8 @@ func Test33() {
 	fun_1 := basictypes.MakerFun(f, []basictypes.Term{x1, y1})
 	fun_2 := basictypes.MakerFun(f, []basictypes.Term{fun_1, y1})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x0, y0})
-	f2 := basictypes.MakePred(p, []basictypes.Term{fun_1, fun_2})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x0, y0})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{fun_1, fun_2})
 
 	LaunchTest(
 		33,
@@ -1145,8 +1145,8 @@ func Test34() {
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 	fa := basictypes.MakerFun(f, []basictypes.Term{a})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{a, x})
-	f2 := basictypes.MakePred(p, []basictypes.Term{a, fa})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{a, x})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{a, fa})
 
 	LaunchTest(
 		34,
@@ -1179,8 +1179,8 @@ func Test35() {
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 	fa := basictypes.MakerFun(f, []basictypes.Term{a, a, a})
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{a, x, a})
-	f2 := basictypes.MakePred(p, []basictypes.Term{a, fa, a})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{a, x, a})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{a, fa, a})
 
 	LaunchTest(
 		35,
@@ -1216,8 +1216,8 @@ func Test36() {
 	y := basictypes.MakerMeta("y", -1)
 	z := basictypes.MakerMeta("z", -1)
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakeFun(f, []basictypes.Term{y, x})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{z, basictypes.MakeFun(f, []basictypes.Term{z, basictypes.MakeFun(g, []basictypes.Term{z})})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{x, basictypes.MakeFun(f, []basictypes.Term{y, x})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{z, basictypes.MakeFun(f, []basictypes.Term{z, basictypes.MakeFun(g, []basictypes.Term{z})})})
 
 	LaunchTest(
 		36,
@@ -1246,8 +1246,8 @@ func Test37() {
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 	x := basictypes.MakerMeta("x", -1)
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{a})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{x})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{a})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{x})})
 
 	LaunchTest(
 		37,
@@ -1276,8 +1276,8 @@ func Test38() {
 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{a})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{b})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{a})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{b})})
 
 	LaunchTest(
 		38,
@@ -1308,9 +1308,9 @@ func Test39() {
 	X := basictypes.MakerMeta("X", -1)
 	Y := basictypes.MakerMeta("Y", -1)
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{Y, basictypes.MakeFun(f, []basictypes.Term{Y, basictypes.MakeFun(f, []basictypes.Term{X})})})
-	f2 := basictypes.MakePred(p, []basictypes.Term{X, Y})
-	f3 := basictypes.MakePred(p, []basictypes.Term{Y, X})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{Y, basictypes.MakeFun(f, []basictypes.Term{Y, basictypes.MakeFun(f, []basictypes.Term{X})})})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{X, Y})
+	f3 := basictypes.MakerPred(p, []basictypes.Term{Y, X})
 
 	LaunchTest(
 		39,
@@ -1335,8 +1335,8 @@ func Test40() {
 	X2 := basictypes.MakerMeta("X2", -1)
 	Y2 := basictypes.MakerMeta("Y2", -1)
 
-	f1 := basictypes.MakePred(p, []basictypes.Term{X, Y, Z})
-	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{X2, basictypes.MakeFun(g, []basictypes.Term{Y2})}), X2, basictypes.MakeFun(h, []basictypes.Term{X2})})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{X, Y, Z})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{X2, basictypes.MakeFun(g, []basictypes.Term{Y2})}), X2, basictypes.MakeFun(h, []basictypes.Term{X2})})
 
 	LaunchTest(
 		40,
@@ -1391,16 +1391,16 @@ func Test41() {
 	hgx := basictypes.MakeFun(h, []basictypes.Term{gx, gx, gx})
 
 	// Formule
-	f1 := basictypes.MakePred(p, []basictypes.Term{Y2, Y1, fy})
+	f1 := basictypes.MakerPred(p, []basictypes.Term{Y2, Y1, fy})
 
 	// Tree
-	f2 := basictypes.MakePred(p, []basictypes.Term{X2, X1, gx})
-	f3 := basictypes.MakePred(p, []basictypes.Term{gx, X2, X1})
-	f4 := basictypes.MakePred(p, []basictypes.Term{X1, X2, X3})
-	f5 := basictypes.MakePred(p, []basictypes.Term{sk, sk, gx})
-	f6 := basictypes.MakePred(p, []basictypes.Term{X2, X3, X1})
-	f7 := basictypes.MakePred(p, []basictypes.Term{hgx, hgx, hgx})
-	f8 := basictypes.MakePred(p, []basictypes.Term{sk, sk, hgx})
+	f2 := basictypes.MakerPred(p, []basictypes.Term{X2, X1, gx})
+	f3 := basictypes.MakerPred(p, []basictypes.Term{gx, X2, X1})
+	f4 := basictypes.MakerPred(p, []basictypes.Term{X1, X2, X3})
+	f5 := basictypes.MakerPred(p, []basictypes.Term{sk, sk, gx})
+	f6 := basictypes.MakerPred(p, []basictypes.Term{X2, X3, X1})
+	f7 := basictypes.MakerPred(p, []basictypes.Term{hgx, hgx, hgx})
+	f8 := basictypes.MakerPred(p, []basictypes.Term{sk, sk, hgx})
 
 	LaunchTest(
 		41,

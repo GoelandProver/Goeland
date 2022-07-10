@@ -38,12 +38,15 @@
 
 package basictypes
 
-import "strconv"
+import (
+	"strconv"
+)
 
 /*** Structure ***/
 
 /* Formula  */
 type Form interface {
+	GetIndex() int
 	ToString() string
 	ToStringWithSuffixMeta(string) string
 	Copy() Form
@@ -53,8 +56,9 @@ type Form interface {
 
 /* Symbol of predicate */
 type Pred struct {
-	id   Id
-	args []Term
+	index int
+	id    Id
+	args  []Term
 }
 
 func (p Pred) GetID() Id {
@@ -67,15 +71,18 @@ func (p Pred) GetArgs() []Term {
 
 /* Top (always true) */
 type Top struct {
+	index int
 }
 
 /* Bot (always false) */
 type Bot struct {
+	index int
 }
 
 /* Not(formula): negation of a formula */
 type Not struct {
-	f Form
+	index int
+	f     Form
 }
 
 func (n Not) GetForm() Form {
@@ -84,7 +91,8 @@ func (n Not) GetForm() Form {
 
 /* And(formula list): conjunction of formulae */
 type And struct {
-	lf FormList
+	index int
+	lf    FormList
 }
 
 func (a And) GetLF() FormList {
@@ -93,7 +101,8 @@ func (a And) GetLF() FormList {
 
 /* Or(formula list): disjunction of formulae */
 type Or struct {
-	lf FormList
+	index int
+	lf    FormList
 }
 
 func (o Or) GetLF() FormList {
@@ -102,6 +111,7 @@ func (o Or) GetLF() FormList {
 
 /* Imp(f1,f2): f1 imply f2*/
 type Imp struct {
+	index  int
 	f1, f2 Form
 }
 
@@ -114,6 +124,7 @@ func (i Imp) GetF2() Form {
 
 /* Equ(f1, f2): f1 equivalent to f2 */
 type Equ struct {
+	index  int
 	f1, f2 Form
 }
 
@@ -125,6 +136,7 @@ func (e Equ) GetF2() Form {
 }
 
 type Ex struct {
+	index    int
 	var_list []Var
 	f        Form
 }
@@ -137,6 +149,7 @@ func (e Ex) GetForm() Form {
 }
 
 type All struct {
+	index    int
 	var_list []Var
 	f        Form
 }
@@ -152,7 +165,9 @@ func (a All) GetForm() Form {
 
 /* ToString */
 func (p Pred) ToString() string {
-	s_res := p.GetID().ToString()
+	s_res :=
+		// "(" + strconv.Itoa(p.GetIndex()) + ")" +
+		p.GetID().ToString()
 	if len(p.GetArgs()) > 0 {
 		s_res += "("
 		s_res += p.GetArgs()[0].ToString()
@@ -167,17 +182,19 @@ func (p Pred) ToString() string {
 	}
 	return s_res
 }
-func (Top) ToString() string {
-	return "⊤"
+func (t Top) ToString() string {
+	return /* "(" + strconv.Itoa(t.GetIndex()) + ")" + */ "⊤"
 }
-func (Bot) ToString() string {
-	return "⊥"
+func (b Bot) ToString() string {
+	return /* "(" + strconv.Itoa(b.GetIndex()) + ")" + */ "⊥"
 }
 func (n Not) ToString() string {
-	return "¬" + n.GetForm().ToString()
+	return /* "(" + strconv.Itoa(n.GetIndex()) + ")" + */ "¬" + n.GetForm().ToString()
 }
 func (a And) ToString() string {
-	s_res := "(" + a.GetLF()[0].ToString()
+	s_res :=
+		// "(" + strconv.Itoa(a.GetIndex()) + ")" +
+		"(" + a.GetLF()[0].ToString()
 	s := a.GetLF()[1:]
 	for _, v := range s {
 		s_res += " ∧ "
@@ -187,7 +204,9 @@ func (a And) ToString() string {
 	return s_res
 }
 func (o Or) ToString() string {
-	s_res := "(" + o.GetLF()[0].ToString()
+	s_res :=
+		// "(" + strconv.Itoa(o.GetIndex()) + ")" +
+		"(" + o.GetLF()[0].ToString()
 	s := o.GetLF()[1:]
 	for _, v := range s {
 		s_res += " ∨ "
@@ -197,13 +216,15 @@ func (o Or) ToString() string {
 	return s_res
 }
 func (i Imp) ToString() string {
-	return "(" + i.GetF1().ToString() + " ⇒ " + i.GetF2().ToString() + ")"
+	return /* "(" + strconv.Itoa(i.GetIndex()) + ")" + */ "(" + i.GetF1().ToString() + " ⇒ " + i.GetF2().ToString() + ")"
 }
 func (e Equ) ToString() string {
-	return "(" + e.GetF1().ToString() + " ⇔ " + e.GetF2().ToString() + ")"
+	return /* "(" + strconv.Itoa(e.GetIndex()) + ")"  + */ "(" + e.GetF1().ToString() + " ⇔ " + e.GetF2().ToString() + ")"
 }
 func (e Ex) ToString() string {
-	s_res := "∃ " + e.GetVarList()[0].ToString()
+	s_res :=
+		// "(" + strconv.Itoa(e.GetIndex()) + ")" +
+		"∃ " + e.GetVarList()[0].ToString()
 	if len(e.GetVarList()) > 1 {
 		s := e.GetVarList()[1:]
 		for _, v := range s {
@@ -215,7 +236,9 @@ func (e Ex) ToString() string {
 	return s_res
 }
 func (a All) ToString() string {
-	s_res := "∀ " + a.GetVarList()[0].ToString()
+	s_res :=
+		// "(" + strconv.Itoa(a.GetIndex()) + ")" +
+		"∀ " + a.GetVarList()[0].ToString()
 	if len(a.GetVarList()) > 1 {
 		s := a.GetVarList()[1:]
 		for _, v := range s {
@@ -304,37 +327,69 @@ func (a All) ToStringWithSuffixMeta(suffix string) string {
 	return s_res
 }
 
+/* Id */
+func (p Pred) GetIndex() int {
+	return p.index
+}
+func (t Top) GetIndex() int {
+	return t.index
+}
+func (b Bot) GetIndex() int {
+	return b.index
+}
+func (n Not) GetIndex() int {
+	return n.index
+}
+func (a And) GetIndex() int {
+	return a.index
+}
+func (o Or) GetIndex() int {
+	return o.index
+}
+func (i Imp) GetIndex() int {
+	return i.index
+}
+func (e Equ) GetIndex() int {
+	return e.index
+}
+func (e Ex) GetIndex() int {
+	return e.index
+}
+func (a All) GetIndex() int {
+	return a.index
+}
+
 /* Copy */
 func (p Pred) Copy() Form {
-	res := MakePred(p.GetID(), p.GetArgs())
+	res := MakePred(p.GetIndex(), p.GetID(), p.GetArgs())
 	return res
 }
-func (Top) Copy() Form {
-	return MakeTop()
+func (t Top) Copy() Form {
+	return MakeTop(t.GetIndex())
 }
-func (Bot) Copy() Form {
-	return MakeBot()
+func (b Bot) Copy() Form {
+	return MakeBot(b.GetIndex())
 }
 func (n Not) Copy() Form {
-	return MakeNot(n.GetForm())
+	return MakeNot(n.GetIndex(), n.GetForm())
 }
 func (a And) Copy() Form {
-	return MakeAnd(a.GetLF())
+	return MakeAnd(a.GetIndex(), a.GetLF())
 }
 func (o Or) Copy() Form {
-	return MakeOr(o.GetLF())
+	return MakeOr(o.GetIndex(), o.GetLF())
 }
 func (i Imp) Copy() Form {
-	return MakeImp(i.GetF1(), i.GetF2())
+	return MakeImp(i.GetIndex(), i.GetF1(), i.GetF2())
 }
 func (e Equ) Copy() Form {
-	return MakeEqu(e.GetF1(), e.GetF2())
+	return MakeEqu(e.GetIndex(), e.GetF1(), e.GetF2())
 }
 func (e Ex) Copy() Form {
-	return MakeEx(copyVarList(e.GetVarList()), e.GetForm())
+	return MakeEx(e.GetIndex(), copyVarList(e.GetVarList()), e.GetForm())
 }
 func (a All) Copy() Form {
-	return MakeAll(copyVarList(a.GetVarList()), a.GetForm())
+	return MakeAll(a.GetIndex(), copyVarList(a.GetVarList()), a.GetForm())
 }
 
 /* Equals */
@@ -471,35 +526,79 @@ func (a All) GetMetas() MetaList {
 /*** Functions ***/
 
 /* Makers */
-func MakePred(p Id, tl []Term) Pred {
-	return Pred{p, tl}
+
+/**
+* Les maker uniquement dans perseur
+* Sinon make
+**/
+func MakePred(i int, p Id, tl []Term) Pred {
+	return Pred{i, p, tl}
 }
-func MakeTop() Top {
-	return Top{}
+func MakerPred(p Id, tl []Term) Pred {
+	return MakePred(MakerIndexFormula(), p, tl)
 }
-func MakeBot() Bot {
-	return Bot{}
+
+func MakeTop(i int) Top {
+	return Top{i}
 }
-func MakeNot(f Form) Not {
-	return Not{f}
+func MakerTop() Top {
+	return MakeTop(MakerIndexFormula())
 }
-func MakeAnd(fl FormList) And {
-	return And{fl}
+
+func MakeBot(i int) Bot {
+	return Bot{i}
 }
-func MakeOr(fl FormList) Or {
-	return Or{fl}
+func MakerBot() Bot {
+	return MakeBot(MakerIndexFormula())
 }
-func MakeImp(f1, f2 Form) Imp {
-	return Imp{f1, f2}
+
+func MakeNot(i int, f Form) Not {
+	return Not{i, f}
 }
-func MakeEqu(f1, f2 Form) Equ {
-	return Equ{f1, f2}
+func MakerNot(f Form) Not {
+	return MakeNot(MakerIndexFormula(), f)
 }
-func MakeEx(vl []Var, f Form) Ex {
-	return Ex{vl, f}
+
+func MakeAnd(i int, fl FormList) And {
+	return And{i, fl}
 }
-func MakeAll(vl []Var, f Form) All {
-	return All{vl, f}
+func MakerAnd(fl FormList) And {
+	return MakeAnd(MakerIndexFormula(), fl)
+}
+
+func MakeOr(i int, fl FormList) Or {
+	return Or{i, fl}
+}
+func MakerOr(fl FormList) Or {
+	return MakeOr(MakerIndexFormula(), fl)
+}
+
+func MakeImp(i int, f1, f2 Form) Imp {
+	return Imp{i, f1, f2}
+}
+func MakerImp(f1, f2 Form) Imp {
+	return MakeImp(MakerIndexFormula(), f1, f2)
+}
+
+func MakeEqu(i int, f1, f2 Form) Equ {
+	return Equ{i, f1, f2}
+}
+func MakerEqu(f1, f2 Form) Equ {
+	return MakeEqu(MakerIndexFormula(), f1, f2)
+}
+
+func MakeEx(i int, vl []Var, f Form) Ex {
+	return Ex{i, vl, f}
+}
+func MakerEx(vl []Var, f Form) Ex {
+	return MakeEx(MakerIndexFormula(), vl, f)
+}
+
+func MakeAll(i int, vl []Var, f Form) All {
+	return All{i, vl, f}
+}
+func MakerAll(vl []Var, f Form) All {
+	return MakeAll(MakerIndexFormula(), vl, f)
 }
 
 /* Transform a formula into its negation */
@@ -508,7 +607,7 @@ func RefuteForm(f Form) Form {
 	if changed {
 		return new_f
 	} else {
-		return MakeNot(new_f)
+		return MakerNot(new_f)
 	}
 }
 
@@ -516,14 +615,14 @@ func RefuteForm(f Form) Form {
 func rewriteNEQ(f Form) (Form, bool) {
 	if pred, ok := f.(Pred); ok {
 		if pred.GetID().Equals(Id_eq) {
-			return MakePred(Id_neq, pred.GetArgs()), true
+			return MakePred(pred.GetIndex(), Id_neq, pred.GetArgs()), true
 		}
 	}
 
 	if not, ok := f.(Not); ok {
 		if pred, ok := not.GetForm().(Pred); ok {
 			if pred.GetID().Equals(Id_neq) {
-				return MakePred(Id_eq, pred.GetArgs()), true
+				return MakePred(pred.GetIndex(), Id_eq, pred.GetArgs()), true
 			}
 		}
 	}
@@ -569,33 +668,33 @@ func simplifyNeg(f Form, isEven bool) Form {
 func ReplaceVarByTerm(f Form, old_symbol Var, new_symbol Term) Form {
 	switch nf := f.(type) {
 	case Pred:
-		return MakePred(nf.GetID(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol))
+		return MakePred(f.GetIndex(), nf.GetID(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol))
 	case Top:
 		return f
 	case Bot:
 		return f
 	case Not:
-		return MakeNot(ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
+		return MakeNot(f.GetIndex(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
 	case And:
 		var res FormList
 		for _, val := range nf.GetLF() {
 			res = append(res, ReplaceVarByTerm(val, old_symbol, new_symbol))
 		}
-		return MakeAnd(res)
+		return MakeAnd(f.GetIndex(), res)
 	case Or:
 		var res FormList
 		for _, val := range nf.GetLF() {
 			res = append(res, ReplaceVarByTerm(val, old_symbol, new_symbol))
 		}
-		return MakeOr(res)
+		return MakeOr(f.GetIndex(), res)
 	case Imp:
-		return MakeImp(ReplaceVarByTerm(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByTerm(nf.GetF2(), old_symbol, new_symbol))
+		return MakeImp(f.GetIndex(), ReplaceVarByTerm(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByTerm(nf.GetF2(), old_symbol, new_symbol))
 	case Equ:
-		return MakeEqu(ReplaceVarByTerm(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByTerm(nf.GetF2(), old_symbol, new_symbol))
+		return MakeEqu(f.GetIndex(), ReplaceVarByTerm(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByTerm(nf.GetF2(), old_symbol, new_symbol))
 	case Ex:
-		return MakeEx(nf.GetVarList(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
+		return MakeEx(f.GetIndex(), nf.GetVarList(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
 	case All:
-		return MakeAll(nf.GetVarList(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
+		return MakeAll(f.GetIndex(), nf.GetVarList(), ReplaceVarByTerm(nf.GetForm(), old_symbol, new_symbol))
 	default:
 		return nil
 	}
@@ -633,23 +732,23 @@ func RenameVariables(f Form) Form {
 	case Bot:
 		return f
 	case Not:
-		return MakeNot(RenameVariables(nf.GetForm()))
+		return MakeNot(f.GetIndex(), RenameVariables(nf.GetForm()))
 	case And:
 		var res FormList
 		for _, val := range nf.GetLF() {
 			res = append(res, RenameVariables(val))
 		}
-		return MakeAnd(res)
+		return MakeAnd(f.GetIndex(), res)
 	case Or:
 		var res FormList
 		for _, val := range nf.GetLF() {
 			res = append(res, RenameVariables(val))
 		}
-		return MakeOr(res)
+		return MakeOr(f.GetIndex(), res)
 	case Imp:
-		return MakeImp(RenameVariables(nf.GetF1()), RenameVariables(nf.GetF2()))
+		return MakeImp(f.GetIndex(), RenameVariables(nf.GetF1()), RenameVariables(nf.GetF2()))
 	case Equ:
-		return MakeEqu(RenameVariables(nf.GetF1()), RenameVariables(nf.GetF2()))
+		return MakeEqu(f.GetIndex(), RenameVariables(nf.GetF1()), RenameVariables(nf.GetF2()))
 
 	case Ex:
 		new_vl := copyVarList(nf.GetVarList())
@@ -662,7 +761,7 @@ func RenameVariables(f Form) Form {
 			new_form = ReplaceVarByTerm(RenameVariables(new_form), v, new_var)
 
 		}
-		return MakeEx(new_vl, new_form)
+		return MakeEx(f.GetIndex(), new_vl, new_form)
 
 	case All:
 		new_vl := copyVarList(nf.GetVarList())
@@ -675,7 +774,7 @@ func RenameVariables(f Form) Form {
 			new_form = ReplaceVarByTerm(RenameVariables(new_form), v, new_var)
 
 		}
-		return MakeAll(new_vl, new_form)
+		return MakeAll(f.GetIndex(), new_vl, new_form)
 
 	default:
 		return f

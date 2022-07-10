@@ -45,6 +45,7 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 /* Return the list of metavariable from a substitution */
@@ -187,29 +188,29 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 
 	switch nf := f.(type) {
 	case basictypes.Pred:
-		res = basictypes.MakePred(nf.GetID(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()))
+		res = basictypes.MakePred(f.GetIndex(), nf.GetID(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()))
 	case basictypes.Not:
-		res = basictypes.MakeNot(ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
+		res = basictypes.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case basictypes.And:
 		res_tmp := basictypes.MakeEmptyFormList()
 		for _, val := range nf.GetLF() {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
-		res = basictypes.MakeAnd(res_tmp)
+		res = basictypes.MakeAnd(f.GetIndex(), res_tmp)
 	case basictypes.Or:
 		res_tmp := basictypes.MakeEmptyFormList()
 		for _, val := range nf.GetLF() {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
-		res = basictypes.MakeOr(res_tmp)
+		res = basictypes.MakeOr(f.GetIndex(), res_tmp)
 	case basictypes.Imp:
-		res = basictypes.MakeImp(ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF1()), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF2()))
+		res = basictypes.MakeImp(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF1()), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF2()))
 	case basictypes.Equ:
-		res = basictypes.MakeEqu(ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF1()), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF2()))
+		res = basictypes.MakeEqu(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF1()), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF2()))
 	case basictypes.Ex:
-		res = basictypes.MakeEx(nf.GetVarList(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
+		res = basictypes.MakeEx(f.GetIndex(), nf.GetVarList(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case basictypes.All:
-		res = basictypes.MakeAll(nf.GetVarList(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
+		res = basictypes.MakeAll(f.GetIndex(), nf.GetVarList(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	default:
 		res = f
 	}
@@ -221,7 +222,7 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf basictypes.FormList) basictypes.FormList {
 	lf_res := basictypes.MakeEmptyFormList()
 	for _, f := range lf {
-		new_form := applySubstitutionsOnFormula(s, f)
+		new_form := ApplySubstitutionsOnFormula(s, f)
 		lf_res = lf_res.AppendIfNotContains(new_form)
 
 	}
@@ -229,12 +230,16 @@ func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf basictypes.Fo
 }
 
 /* Apply substitution on FormAndTerm */
-func applySubstitutionsOnFormula(s treetypes.Substitutions, f basictypes.Form) basictypes.Form {
-	form_res := f.Copy()
-	for old_symbol, new_symbol := range s {
-		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
+func ApplySubstitutionsOnFormula(s treetypes.Substitutions, f basictypes.Form) basictypes.Form {
+	if f != nil {
+		form_res := f.Copy()
+		for old_symbol, new_symbol := range s {
+			form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
+		}
+		return form_res
+	} else {
+		return nil
 	}
-	return form_res
 }
 
 /* Apply a substitution on a metaGenerator list */
@@ -404,4 +409,29 @@ func MergeSubstListWithSubst(sl []SubstAndForm, subst SubstAndForm) []SubstAndFo
 	}
 
 	return sl_res
+}
+
+/* Apply subst on a proof tree */
+func ApplySubstitutionOnProofList(s treetypes.Substitutions, proof_list []proof.ProofStruct) []proof.ProofStruct {
+	new_proof_list := []proof.ProofStruct{}
+
+	for _, p := range proof_list {
+		new_proof := p.Copy()
+		new_proof.SetFormulaProof(ApplySubstitutionsOnFormula(s, p.GetFormula()))
+
+		new_result_formulas := []proof.IntFormList{}
+		for _, f := range p.GetResultFormulas() {
+			new_result_formulas = append(new_result_formulas, proof.MakeIntFormList(f.GetI(), ApplySubstitutionsOnFormulaList(s, f.GetFL())))
+		}
+		new_proof.SetResultFormulasProof(new_result_formulas)
+
+		new_children := [][]proof.ProofStruct{}
+		for _, c := range p.GetChildren() {
+			new_children = append(new_children, ApplySubstitutionOnProofList(s, c))
+		}
+		new_proof.SetChildrenProof(new_children)
+
+		new_proof_list = append(new_proof_list, new_proof)
+	}
+	return new_proof_list
 }

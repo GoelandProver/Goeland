@@ -38,7 +38,7 @@
 * This file implements the main algorithms for turning axioms into rewrite rules.
 **/
 
-package main
+package dmt
 
 import (
 	"fmt"
@@ -47,7 +47,7 @@ import (
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func registerAxiom(axiom btypes.Form) bool {
+func RegisterAxiom(axiom btypes.Form) bool {
 	axiomFT := instanciateForalls(axiom)
 
 	if isRegisterableAsAtomic(axiom, axiomFT) {
@@ -130,14 +130,14 @@ func makeRewriteRuleFromAtomic(atomic btypes.Form) bool {
 }
 
 func makeRewriteRuleFromPred(pred btypes.Pred) bool {
-	addPosRewriteRule(pred, btypes.MakeTop())
-	addNegRewriteRule(pred, btypes.RefuteForm(btypes.MakeTop()))
+	addPosRewriteRule(pred, btypes.MakerTop())
+	addNegRewriteRule(pred, btypes.RefuteForm(btypes.MakerTop()))
 	return true
 }
 
 func makeRewriteRuleFromNegatedAtom(atom btypes.Not) bool {
-	addNegRewriteRule(atom, btypes.RefuteForm(btypes.MakeBot()))
-	addPosRewriteRule(atom, btypes.MakeBot())
+	addNegRewriteRule(atom, btypes.RefuteForm(btypes.MakerBot()))
+	addPosRewriteRule(atom, btypes.MakerBot())
 	return true
 }
 

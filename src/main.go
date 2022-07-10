@@ -39,6 +39,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -53,7 +54,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/parser"
-	"github.com/GoelandProver/Goeland/plugin"
+	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -70,6 +71,8 @@ var flag_limit = flag.Int("l", -1, "Limit in destructive mode")
 var flag_one_step = flag.Bool("one_step", false, "Only one step of search")
 var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a file")
 var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
+var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
+var problem_name string
 
 func main() {
 	initFlag()
@@ -77,26 +80,29 @@ func main() {
 
 	args := os.Args
 	if len(args) < 2 {
-		fmt.Printf("./gotab [options] problem_file\n")
+		fmt.Printf("%s [options] problem_file\n", os.Args[0])
 		return
 	}
 
 	problem := args[len(args)-1]
-	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
+	_, problem_name = path.Split(problem)
+	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem_name)
 	lstm, bound := parser.ParseMain(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
 	if global.GetLimit() != -1 {
 		bound = global.GetLimit()
 	}
 
-	current_dir, err := os.Getwd()
-	if err != nil {
-		fmt.Printf("Error in os.Getwd")
-		return
-	}
+	/*
+		current_dir, err := os.Getwd()
+		if err != nil {
+			fmt.Printf("Error in os.Getwd")
+			return
+		}*/
 	formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
-	os.Chdir(current_dir)
+	// os.Chdir(current_dir)
 
+	fmt.Printf("Start search\n")
 	Search(formula, new_bound)
 }
 
@@ -106,6 +112,9 @@ func ManageResult(c search.Communication) (bool, []proof.ProofStruct) {
 	final_proof := []proof.ProofStruct{}
 	if global.IsDestructive() {
 		result := <-c.GetResult()
+
+		global.PrintDebug("MAIN", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(result.GetProof())))
+
 		final_proof = result.GetProof()
 		if result.GetNeedAnswer() {
 			c.GetQuit() <- true
@@ -139,10 +148,11 @@ func PrintResult(res bool) {
 	fmt.Printf("==== Result ====\n")
 	if res {
 		fmt.Printf("[%.6fs][%v][Res] VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-		os.Stderr.WriteString("Valid\n")
+		fmt.Printf("%s SZS status Theorem for %v\n", "%", problem_name)
 	} else {
 		fmt.Printf("[%.6fs][%v][Res] NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-		os.Stderr.WriteString("Not valid\n")
+		fmt.Printf("%s SZS status Counter Theorem for %v\n", "%", problem_name)
+
 	}
 
 }
@@ -166,7 +176,8 @@ func Search(f basictypes.Form, bound int) {
 		tp := new(treesearch.Node)
 		tn := new(treesearch.Node)
 
-		st := complextypes.MakeState(limit, tp, tn)
+		st := complextypes.MakeState(limit, tp, tn, f)
+		st.SetCurrentProofNodeId(0)
 
 		fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
 
@@ -179,7 +190,7 @@ func Search(f basictypes.Form, bound int) {
 			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
 		}
 
-		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm())
+		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), global.IncrCptNode())
 		global.IncrGoRoutine(1)
 
 		global.PrintDebug("MAIN", "GO")
@@ -190,8 +201,11 @@ func Search(f basictypes.Form, bound int) {
 		global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
 		global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
 
-		if global.GetProof() {
-			proof.WriteGraphProof(final_proof)
+		if global.GetProof() && res {
+			//proof.WriteGraphProof(final_proof)
+			fmt.Printf("%s SZS output start Proof for %v\n", "%", problem_name)
+			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
+			fmt.Printf("%s SZS output end Proof for %v\n", "%", problem_name)
 		}
 
 		limit = 2 * limit
@@ -202,44 +216,50 @@ func Search(f basictypes.Form, bound int) {
 
 /* Transform a list of statement into a formula */
 func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_dir string) (basictypes.Form, int) {
-	fmt.Printf("Bound at the begining of SLTF : %v\n", old_bound)
 	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
 	bound := old_bound
-	os.Chdir(current_dir)
+	//os.Chdir(current_dir)
 
 	for _, s := range lstm {
 		switch s.GetRole() {
 		case basictypes.Include:
 			file_name := s.GetName()
-			fmt.Printf("File to parse : %v\n", file_name)
-			new_lstm, bound_tmp := parser.ParseMain(file_name)
-			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Dir(file_name))
+
+			realname, err := getFile(file_name, current_dir)
+			global.PrintDebug("File to parse : %v\n", realname)
+
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+
+			new_lstm, bound_tmp := parser.ParseMain(realname)
+			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(current_dir, path.Dir(file_name)))
 			bound = new_bound
-			fmt.Printf("Bound after include : %v\n", bound)
 			and_list = append(and_list, new_form_list)
 		case basictypes.Axiom:
 			new_form := basictypes.RenameVariables(s.GetForm())
-			if consumed := plugin.GetPluginManager().ApplySendAxiomHook(new_form.Copy()); !consumed {
+			if !global.IsLoaded("dmt") {
+				and_list = append(and_list, new_form)
+			} else if consumed := dmt.RegisterAxiom(new_form.Copy()); !consumed {
 				and_list = append(and_list, new_form)
 			}
 		case basictypes.Conjecture:
 			not_form = s.GetForm()
 		}
 	}
-
-	fmt.Printf("Bound after parse : %v\n", bound)
-
 	switch {
 	case len(and_list) == 0 && not_form == nil:
-		fmt.Printf("Aucune données")
+		fmt.Printf("Aucune données\n")
+		os.Exit(1)
 		return nil, bound
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound
 	case not_form == nil:
-		return basictypes.MakeAnd(and_list), bound
+		return basictypes.MakerAnd(and_list), bound
 	default:
-		return basictypes.MakeAnd(append(and_list, basictypes.RefuteForm(not_form))), bound
+		return basictypes.MakerAnd(append(and_list, basictypes.RefuteForm(not_form))), bound
 	}
 }
 
@@ -252,13 +272,13 @@ func initialization() {
 	basictypes.Init()
 
 	// Init pulgins
-	plugin.GetPluginManager()
-	global.SetPlugin("dmt", plugin.IsLoaded("dmt"))
+	if *flag_dmt {
+		dmt.InitPlugin()
+	}
 }
 
 /* Init flag */
 func initFlag() {
-	flag.Var(&plugin.PoptionFlag, "poptions", "Options for the different plugins.")
 	flag.Parse()
 
 	if *flag_debug {
@@ -311,4 +331,26 @@ func initFlag() {
 			log.Fatal("could not write memory profile: ", err)
 		}
 	}
+
+	global.SetPlugin("dmt", *flag_dmt)
+}
+
+func getFile(filename string, dir string) (string, error) {
+	// 1 - From Goéland's path
+	if _, err := os.Stat(filename); !(err != nil && errors.Is(err, os.ErrNotExist)) {
+		return filename, err
+	}
+
+	// 2 - from dir's path
+	if _, err := os.Stat(path.Join(dir, filename)); !(err != nil && errors.Is(err, os.ErrNotExist)) {
+		return path.Join(dir, filename), err
+	}
+
+	// 3 - Environment variable
+	directory := os.Getenv("TPTP")
+	if _, err := os.Stat(path.Join(directory, filename)); !(err != nil && errors.Is(err, os.ErrNotExist)) {
+		return path.Join(directory, filename), err
+	}
+
+	return "", fmt.Errorf("file %s not found", filename)
 }

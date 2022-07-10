@@ -126,7 +126,7 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 	global.PrintDebug("PS", fmt.Sprintf("Instantiate the formula : %s", reslf.ToString()))
 
 	// Apply gamma rule
-	new_lf, new_metas := applyGammaRules(reslf, index)
+	new_lf, new_metas := applyGammaRules(reslf, index, st)
 	st.SetLF(new_lf)
 	st.SetMC(append(st.GetMC(), new_metas...))
 
@@ -288,7 +288,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 		var substs []treetypes.Substitutions
 		global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 		closed, substs = applyClosureRules(f.Copy(), &st)
-		closed = manageClosureRule(father_id, &st, c, closed, substs, f)
+		closed = manageClosureRule(father_id, &st, c, closed, substs, f, -1)
 
 		if closed {
 			return
@@ -308,11 +308,11 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 
 	if form_to_instantiate == -1 {
 		global.PrintDebug("PS", "Let's apply rules !")
-		applyRules(father_id, st, c)
+		applyRules(father_id, st, c, basictypes.MakeEmptyFormList(), -1)
 	} else {
 		global.PrintDebug("PS", "Let's instantiate !")
 		instantiate(father_id, &st, c, form_to_instantiate, choosen_subst)
-		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm())
+		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1)
 	}
 
 }

@@ -49,7 +49,7 @@ import (
 )
 
 /* Manage quit or wait father order. Return true if th eproess is supposed to dia at the end */
-func manageQuitOrder(quit bool, c Communication, father_id uint64, st complextypes.State, children []Communication, given_substs []complextypes.SubstAndForm) {
+func manageQuitOrder(quit bool, c Communication, father_id uint64, st complextypes.State, children []Communication, given_substs []complextypes.SubstAndForm, node_id int) {
 	if len(children) > 0 {
 		closeChildren(&children, true)
 	}
@@ -58,7 +58,7 @@ func manageQuitOrder(quit bool, c Communication, father_id uint64, st complextyp
 		global.PrintDebug("MQO", "Die")
 	} else {
 		global.PrintDebug("MQO", "Closing order received, let's wait father")
-		waitFather(father_id, st, c, given_substs)
+		waitFather(father_id, st, c, given_substs, node_id)
 	}
 }
 
@@ -288,7 +288,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 * 	children : list of children
 * 	given_substs : subst send by this node to its father
 **/
-func waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm) {
+func waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int) {
 	global.PrintDebug("WF", "Wait father")
 
 	// CLear subst found
@@ -297,7 +297,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 	select {
 	case quit := <-c.quit:
 		exchanges.WriteExchanges(father_id, st, given_substs, complextypes.SubstAndForm{}, "WaitFather - Die")
-		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs)
+		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id)
 		return
 
 	case answer_father := <-c.result:
@@ -313,8 +313,17 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 					subst_for_father = answer_father.GetSubstForChildren().AddFormulas(subst_sent.GetForm())
 				}
 			}
+
+			st.SetCurrentProofFormula(answer_father.subst_for_children.GetForm()[0])
+			st.SetCurrentProofNodeId(node_id)
+			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", answer_father.subst_for_children.GetSubst().ToString()))
+			st.SetCurrentProofRuleName("CLOSURE")
+			st.SetCurrentProofResultFormulas([]proof.IntFormList{})
+
+			st.SetProof(complextypes.ApplySubstitutionOnProofList(answer_father.subst_for_children.GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
+
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst_for_father})
-			sendSubToFather(c, true, true, father_id, st, given_substs)
+			sendSubToFather(c, true, true, father_id, st, given_substs, node_id)
 		} else {
 			// Retrieve meta from the subst sent by my father
 			meta_sisters := st.GetMM()
@@ -331,12 +340,12 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			c2 := Communication{make(chan bool), make(chan Result)}
 
 			global.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", answer_father.GetSubstForChildren().GetSubst().ToString()))
-			go ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren())
+			go ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren(), node_id)
 			global.IncrGoRoutine(1)
 
 			global.PrintDebug("WF", "GO !")
 			st.SetBTOnFormulas(false)
-			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{})
+			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, node_id)
 		}
 	}
 }
@@ -353,7 +362,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 * 	current_substitution : the substitution sent by this node to its children at this step
 * 	subst_for_backtrack : list of subst if we need to backtrack
 **/
-func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.SubstAndForm) {
+func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.SubstAndForm, node_id int) {
 	global.PrintDebug("WC", "Waiting children")
 	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), len(forms_for_backtrack), st.GetBTOnFormulas(), complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 	global.PrintDebug("WC", fmt.Sprintf("MM : %v", st.GetMM().ToString()))
@@ -361,13 +370,20 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 	select {
 	case quit := <-c.quit:
 		exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die")
-		manageQuitOrder(quit, c, father_id, st, children, given_substs)
+		manageQuitOrder(quit, c, father_id, st, children, given_substs, node_id)
 		return
 	default:
 		global.PrintDebug("WC", fmt.Sprintf("Current subst : %v", current_subst.GetSubst().ToString()))
 		cpt_children := len(children)
 		result_int, result_subst, proof_children := selectChildren(c, &children, current_subst)
 		global.PrintDebug("WC", fmt.Sprintf("End of select - result_subst : %v ", complextypes.SubstAndFormListToString(result_subst)))
+
+		global.PrintDebug("WC", "-------------------------------------------")
+		global.PrintDebug("WC", fmt.Sprintf("Result int : %v", result_int))
+		global.PrintDebug("WC", "Proof children :")
+		for _, c := range proof_children {
+			global.PrintDebug("WC", proof.ProofStructListToString(c))
+		}
 
 		switch result_int {
 
@@ -392,19 +408,27 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				global.PrintDebug("ERROR", "Current subst not empty but child returns nothing")
 			}
 
-			if cpt_children == 1 {
-				st.SetProof(proof_children[0])
+			if cpt_children == 1 && !st.GetBTOnFormulas() {
+				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), proof_children[0]))
 			} else {
 				st.SetCurrentProofChildren(proof_children)
-				st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
+				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
 			}
+
 			exchanges.WriteExchanges(father_id, st, nil, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
-			sendSubToFather(c, true, false, father_id, st, given_substs)
+			sendSubToFather(c, true, false, father_id, st, given_substs, node_id)
 
 		// substs list is for father
 		case 1:
 			global.PrintDebug("WC", fmt.Sprintf("All children agree on the substitution(s) : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(result_subst))))
+
+			if cpt_children == 1 && !st.GetBTOnFormulas() {
+				st.SetProof(complextypes.ApplySubstitutionOnProofList(complextypes.MergeSubstAndForm(st.GetAppliedSubst(), result_subst[0]).GetSubst(), proof_children[0]))
+			} else {
+				st.SetCurrentProofChildren(proof_children)
+				st.SetProof(complextypes.ApplySubstitutionOnProofList(complextypes.MergeSubstAndForm(st.GetAppliedSubst(), result_subst[0]).GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
+			}
 
 			// Remove substs we don't need to sent to father
 			new_result_subst := []complextypes.SubstAndForm{}
@@ -422,21 +446,14 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			closeChildren(&children, true)
 			st.SetSubstsFound(new_result_subst)
 
-			if cpt_children == 1 {
-				st.SetProof(proof_children[0])
-			} else {
-				st.SetCurrentProofChildren(proof_children)
-				st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
-			}
-
 			exchanges.WriteExchanges(father_id, st, result_subst, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all agree")
 
 			st.SetSubstsFound(complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound()))
 
 			if len(st.GetSubstsFound()) == 0 {
-				sendSubToFather(c, true, false, father_id, st, given_substs)
+				sendSubToFather(c, true, false, father_id, st, given_substs, node_id)
 			} else {
-				sendSubToFather(c, true, true, father_id, st, given_substs)
+				sendSubToFather(c, true, true, father_id, st, given_substs, node_id)
 			}
 
 		// substs list is for children
@@ -450,20 +467,20 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			// TODO : vérifier si la sub n'a pas déjà été vue, si oui renvoyer faux
 			substs_for_backtrack = append(substs_for_backtrack, subst_res...)
 			st.SetBTOnFormulas(false)
-			waitChildren(father_id, st, c, children, given_substs, s, substs_for_backtrack, forms_for_backtrack)
+			waitChildren(father_id, st, c, children, given_substs, s, substs_for_backtrack, forms_for_backtrack, node_id)
 
 		// quit order from my father
 		case 3:
 			exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die")
 			global.PrintDebug("WC", "Closing order received")
-			manageQuitOrder(true, c, father_id, st, children, []complextypes.SubstAndForm{})
+			manageQuitOrder(true, c, father_id, st, children, []complextypes.SubstAndForm{}, node_id)
 
 		// wait my father
 		case 4:
 			exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Wait father")
 			global.PrintDebug("WC", "Closing order received, let's wait father")
 			closeChildren(&children, true)
-			waitFather(father_id, st, c, given_substs)
+			waitFather(father_id, st, c, given_substs, node_id)
 
 		// One of my child can't found a way, tell to the other to wait for me
 		case 5:
@@ -488,17 +505,17 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				st_copy.SetCurrentProofRule("Rewrite")
 				// st_copy.SetSubstsFound(st.GetSubstsFound())
 				c_child := Communication{make(chan bool), make(chan Result)}
-				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form)
+				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form, global.IncrCptNode())
 				global.PrintDebug("PS", "GO !")
 				global.IncrGoRoutine(1)
-				waitChildren(father_id, st, c, []Communication{c_child}, given_substs, next_subst_and_form, substs_for_backtrack, forms_for_backtrack)
+				waitChildren(father_id, st, c, []Communication{c_child}, given_substs, next_subst_and_form, substs_for_backtrack, forms_for_backtrack, node_id)
 
 			case len(substs_for_backtrack) > 0:
 				global.PrintDebug("WC", "Backtrack on subt")
 				next_subst := tryBTSubstitution(&substs_for_backtrack, st.GetMM(), children)
 				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{next_subst}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on subst")
 				st.SetBTOnFormulas(false)
-				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, forms_for_backtrack)
+				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, forms_for_backtrack, node_id)
 
 			default:
 				exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die - No more BT available")
@@ -506,7 +523,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				closeChildren(&children, true)
 				global.PrintDebug("WC", "SFFC empty")
 				// Todo : if subst found, return true ! -> not need because priority order change in apply rules
-				sendSubToFather(c, false, true, father_id, st, given_substs)
+				sendSubToFather(c, false, true, father_id, st, given_substs, node_id)
 
 			}
 		}
@@ -521,14 +538,18 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 * c : channel to send the answer to the father
 * s : substitution to apply to the current state
 **/
-func proofSearchDestructive(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm) {
+func proofSearchDestructive(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm, node_id int) {
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v", father_id))
+
+	if global.GetProof(){
+		st.SetCurrentProofNodeId(node_id)
+	}
 
 	// Select to check kill order
 	select {
 	case quit := <-c.quit:
-		manageQuitOrder(quit, c, father_id, st, nil, st.GetSubstsFound())
+		manageQuitOrder(quit, c, father_id, st, nil, st.GetSubstsFound(), node_id)
 	default:
 		// Apply subst if any
 		if !s.IsEmpty() {
@@ -540,10 +561,10 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 				// Check if exists a contradiction after applying the substitution
 				clos_res_after_apply_subst, subst_after_apply_subst := applyClosureRules(f.Copy(), &st)
-				closed := manageClosureRule(father_id, &st, c, clos_res_after_apply_subst, treetypes.CopySubstList(subst_after_apply_subst), f.Copy())
+				closed := manageClosureRule(father_id, &st, c, clos_res_after_apply_subst, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id)
 
 				if closed {
-					manageQuitOrder(true, c, father_id, st, nil, []complextypes.SubstAndForm{})
+					manageQuitOrder(true, c, father_id, st, nil, []complextypes.SubstAndForm{}, node_id)
 					return
 				}
 			}
@@ -564,10 +585,10 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 		for i, f := range st.GetLF() {
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 			clos_res, subst := applyClosureRules(f.Copy(), &st)
-			closed := manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy())
+			closed := manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy(), node_id)
 
 			if closed {
-				manageQuitOrder(true, c, father_id, st, nil, []complextypes.SubstAndForm{})
+				manageQuitOrder(true, c, father_id, st, nil, []complextypes.SubstAndForm{}, node_id)
 				return
 			}
 
@@ -587,8 +608,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 		}
 
 		global.PrintDebug("PS", "Let's apply rules !")
-		st.SetLF(new_atomics)
 		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", new_atomics.ToString()))
-		applyRules(father_id, st, c)
+		applyRules(father_id, st, c, new_atomics, node_id)
 	}
 }

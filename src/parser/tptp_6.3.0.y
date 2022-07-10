@@ -39,6 +39,7 @@ import (
 	"fmt"
 	"unicode"
   "io/ioutil"
+  "os"
   basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	)
 
@@ -80,18 +81,18 @@ var res []basictypes.Statement
 // really a field name in the above union struct
 %type <lstm> file tptp_input_list
 %type <stm> tptp_input annotated_formula fof_annotated include
-%type <val> name file_name
+%type <val> name file_name number integer rational real distinct_object signed_integer unsigned_integer decimal positive_decimal signed_rational unsigned_rational unsigned_real decimal_fraction dot_decimal decimal_exponent exp_integer signed_exp_integer unsigned_exp_integer signed_real
 %type <fr> formula_role
 %type <form> fof_formula fof_logic_formula fof_binary_formula
 %type <form> fof_unitary_formula fof_binary_nonassoc fof_binary_assoc
 %type <form> fof_or_formula fof_and_formula fof_quantified_formula
-%type <form> fof_unary_formula atomic_formula fol_infix_unary atomic_formula
+%type <form> fof_unary_formula atomic_formula fol_infix_unary
 %type <form> plain_atomic_formula defined_atomic_formula defined_infix_formula
 %type <term> term function_term
 %type <ltrm> arguments
 %type <vrl> fof_variable_list
 %type <vrb> variable
-%type <app> plain_term
+%type <app> plain_term defined_term
 %type <id> constant tptp_functor atomic_word
 %type <ls> name_list
 
@@ -103,6 +104,7 @@ var res []basictypes.Statement
 %token DOT
 %token COMMA
 %token COLON
+%token EXPONENT
 
 %token LEFT_PAREN
 %token RIGHT_PAREN
@@ -119,6 +121,10 @@ var res []basictypes.Statement
 
 %token STAR
 %token PLUS
+%token <val> SIGN
+%token ZERO_NUMERIC
+%token <val> NUMERIC
+%token SLASH
 
 %token XOR
 %token EQUIV
@@ -185,7 +191,7 @@ fof_annotated:
     {$$ = basictypes.MakeStatement($3, $5, $7)}
   ;
 
-annotations:
+annotations:  {}
   | COMMA source optional_info
    //| COMMA s=source i=optional_info
    //    { let loc = L.mk_pos $startpos $endpos in Some (S.annot ~loc s i) }
@@ -235,15 +241,15 @@ fof_binary_formula:
   ;
 
 fof_binary_nonassoc:
-    fof_unitary_formula EQUIV fof_unitary_formula {$$ = basictypes.MakeEqu($1, $3)}
-  | fof_unitary_formula IMPLY fof_unitary_formula {$$ = basictypes.MakeImp($1, $3)}
-  | fof_unitary_formula LEFT_IMPLY fof_unitary_formula {$$ = basictypes.MakeImp($3, $1)}
+    fof_unitary_formula EQUIV fof_unitary_formula {$$ = basictypes.MakerEqu($1, $3)}
+  | fof_unitary_formula IMPLY fof_unitary_formula {$$ = basictypes.MakerImp($1, $3)}
+  | fof_unitary_formula LEFT_IMPLY fof_unitary_formula {$$ = basictypes.MakerImp($3, $1)}
   | fof_unitary_formula XOR fof_unitary_formula
-    {$$ = basictypes.MakeOr([]basictypes.Form{basictypes.MakeAnd([]basictypes.Form{$1, basictypes.RefuteForm($3)}), basictypes.MakeAnd([]basictypes.Form{basictypes.RefuteForm($1), $3})})}
+    {$$ = basictypes.MakerOr([]basictypes.Form{basictypes.MakerAnd([]basictypes.Form{$1, basictypes.RefuteForm($3)}), basictypes.MakerAnd([]basictypes.Form{basictypes.RefuteForm($1), $3})})}
   | fof_unitary_formula NOTVLINE fof_unitary_formula
-    {$$ = basictypes.RefuteForm(basictypes.MakeOr([]basictypes.Form{$1, $3}))}
+    {$$ = basictypes.RefuteForm(basictypes.MakerOr([]basictypes.Form{$1, $3}))}
   | fof_unitary_formula NOTAND fof_unitary_formula
-    {$$ = basictypes.RefuteForm(basictypes.MakeAnd([]basictypes.Form{$1, $3}))}
+    {$$ = basictypes.RefuteForm(basictypes.MakerAnd([]basictypes.Form{$1, $3}))}
   ;
 
 fof_binary_assoc:
@@ -252,13 +258,13 @@ fof_binary_assoc:
   ;
 
 fof_or_formula:
-    fof_unitary_formula VLINE fof_unitary_formula {$$ = basictypes.MakeOr([]basictypes.Form{$1, $3})}
-  | fof_or_formula VLINE fof_unitary_formula {$$ = basictypes.MakeOr([]basictypes.Form{$1, $3})}
+    fof_unitary_formula VLINE fof_unitary_formula {$$ = basictypes.MakerOr([]basictypes.Form{$1, $3})}
+  | fof_or_formula VLINE fof_unitary_formula {$$ = basictypes.MakerOr([]basictypes.Form{$1, $3})}
   ;
 
 fof_and_formula:
-    fof_unitary_formula AND fof_unitary_formula {$$ = basictypes.MakeAnd([]basictypes.Form{$1, $3})}
-  | fof_and_formula AND fof_unitary_formula {$$ = basictypes.MakeAnd([]basictypes.Form{$1, $3})}
+    fof_unitary_formula AND fof_unitary_formula {$$ = basictypes.MakerAnd([]basictypes.Form{$1, $3})}
+  | fof_and_formula AND fof_unitary_formula {$$ = basictypes.MakerAnd([]basictypes.Form{$1, $3})}
   ;
 
 fof_unitary_formula:
@@ -271,10 +277,10 @@ fof_unitary_formula:
 fof_quantified_formula:
     FORALL LEFT_BRACKET fof_variable_list RIGHT_BRACKET COLON
       fof_unitary_formula
-    {$$ = basictypes.MakeAll($3, $6)}
+    {$$ = basictypes.MakerAll($3, $6)}
   | EXISTS LEFT_BRACKET fof_variable_list RIGHT_BRACKET COLON
       fof_unitary_formula
-    {$$ = basictypes.MakeEx($3, $6)}
+    {$$ = basictypes.MakerEx($3, $6)}
   ;
 
 fof_variable_list:
@@ -317,7 +323,7 @@ fof_unary_formula:
 /* Special formulas */
 
 fol_infix_unary:
-    term NOT_EQUAL term {$$ = basictypes.MakePred(basictypes.Id_neq, []basictypes.Term{$1, $3})}
+    term NOT_EQUAL term {$$ = basictypes.MakerPred(basictypes.Id_neq, []basictypes.Term{$1, $3})}
   ;
 
 /* First order atoms */
@@ -329,7 +335,7 @@ atomic_formula:
   /*  | system_atomic_formula */
 
 plain_atomic_formula:
-    plain_term {$$ = basictypes.MakePred($1.symb, $1.args)}
+    plain_term {$$ = basictypes.MakerPred($1.symb, $1.args)}
   ;
 
 defined_atomic_formula:
@@ -348,7 +354,7 @@ defined_atomic_formula:
     ;*/
 
 defined_infix_formula:
-    term EQUAL term {$$ = basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{$1, $3})}
+    term EQUAL term {$$ = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{$1, $3})}
   ;
 
 /*system_atomic_formula:
@@ -367,7 +373,8 @@ term:
     | t=let_term */
 
 function_term:
-    plain_term {$$ = basictypes.MakeFun($1.symb, $1.args)}
+    plain_term {$$ = basictypes.MakerFun($1.symb, $1.args)}
+    | defined_term { $$ = basictypes.MakerFun($1.symb, $1.args) }
   ;
 /*  | defined_term
     | system_term */
@@ -376,6 +383,12 @@ plain_term:
     constant {$$ = App{$1, []basictypes.Term{}}}
   | tptp_functor LEFT_PAREN arguments RIGHT_PAREN {$$ = App{$1, $3}}
   ;
+
+defined_term:
+  number { $$ = App{basictypes.MakerId($1), []basictypes.Term{}} }
+  | distinct_object  { $$ = App{basictypes.MakerId($1), []basictypes.Term{}} }
+  ;
+
 
 constant:
     tptp_functor {$$ = $1}
@@ -549,15 +562,19 @@ general_terms:
   produce ids instead of terms
 */
 name:
-    LOWER_WORD
+    atomic_word   { $$ = $1.GetName() }
+  | integer { $$ = $1 }
+
   ;
 /*  
   | SINGLE_QUOTED
   | INTEGER
+    | integer     { $$ = $1 }   
   ;*/
 
 atomic_word:
     LOWER_WORD {$$ = basictypes.MakerId($1)}
+    | SINGLE_QUOTED  { $$ = basictypes.MakerId($1) }
   ;
   /*   | SINGLE_QUOTED */
 
@@ -576,14 +593,37 @@ atomic_word:
     T.const ~loc (I.mk I.term s) }*/
 
 number:
-    integer
-  | rational
-  | real
+    integer { $$ = $1 }
+  | rational { $$ = $1 }
+  | real { $$ = $1 }
   ;
   /* | n=integer
   | n=rational
   | n=real
   { n }*/
+
+integer:
+  signed_integer   { $$ = $1 }
+  | unsigned_integer { $$ = $1 }
+;
+
+signed_integer: 
+  SIGN unsigned_integer { $$ = $1+$2 } // SIGN = + ou -, valeur sémantique à définir
+;
+
+unsigned_integer: 
+  decimal { $$ = $1 }
+;
+
+decimal: 
+  ZERO_NUMERIC {$$ = "0" }// 0
+  | positive_decimal { $$ = $1 }
+;
+
+positive_decimal: 
+  NUMERIC // [1-9][0-9]*
+;
+
 
 /* Wrapper around some lexical definitions */
 
@@ -594,20 +634,63 @@ distinct_object:
     { let loc = L.mk_pos $startpos $endpos in
     T.distinct ~loc (I.mk I.term s) }*/
 
-integer:
-  INTEGER
-  ;
-/* | n=INTEGER
+/* | n=
      { let loc = L.mk_pos $startpos $endpos in T.int ~loc n } */
 
 rational:
-  RATIONAL
-  ;
+  signed_rational   { $$ = $1 }
+  | unsigned_rational { $$ = $1 }
+;
+
+signed_rational: 
+  SIGN unsigned_rational { $$ = $1+$2 } // SIGN = + ou -, valeur sémantique à définir
+;
+
+unsigned_rational: 
+  decimal SLASH positive_decimal { $$ = $1 }
+;
+
 /* | n=RATIONAL
    { let loc = L.mk_pos $startpos $endpos in T.rat ~loc n }*/
 
 real:
-  REAL
+  signed_real   { $$ = $1 }
+  | unsigned_real { $$ = $1 }
+;
+
+signed_real: 
+  SIGN unsigned_real { $$ = $1+$2 }
+  ;
+
+unsigned_real: 
+  decimal_fraction   { $$ = $1 }
+  | decimal_exponent { $$ = $1}
+  ;
+
+decimal_fraction:
+  decimal dot_decimal   { $$ = $1+$2 }
+  ;
+
+dot_decimal:
+  DOT NUMERIC { $$ = "."+$2 }
+  ;
+
+decimal_exponent:
+  decimal EXPONENT exp_integer { $$ = $1+"E"+$3 }
+  | decimal_fraction EXPONENT exp_integer { $$ = $1+"E"+$3 }
+  ;
+
+exp_integer:
+  signed_exp_integer { $$ = $1 }
+  | unsigned_exp_integer { $$ = $1 }
+  ;
+
+signed_exp_integer:
+  SIGN unsigned_exp_integer { $$ = $1+$2 }
+  ;
+
+unsigned_exp_integer:
+  NUMERIC  
   ;
 /*| n=REAL
     { let loc = L.mk_pos $startpos $endpos in T.real ~loc n }*/
@@ -730,7 +813,7 @@ func (l *TPTPLex) Word(lval *TPTPSymType) int {
 			c = rune(l.s[l.pos])
 		}//for
 		kwd, err := IsKeyword(name)
-		if err {
+		if err || c != '(' {
 		        lval.val = name
 			return token
 		}/*if*/ else {
@@ -758,6 +841,39 @@ func (l *TPTPLex) Word(lval *TPTPSymType) int {
       c = rune(l.s[l.pos])
       lval.val = sq_quoted
 return SINGLE_QUOTED 
+  } else if c == '"' {
+   l.pos += 1
+      c = rune(l.s[l.pos])
+      sq_quoted := ""
+      for isDoChar(c) || c == '\\' {
+          if c == '\\' {
+            l.pos += 1
+            c = rune(l.s[l.pos])
+            if c == '\\' || c == '"' {
+                sq_quoted += string('\\'+c)
+            }
+          } else {
+            sq_quoted += string(c)
+          }
+          l.pos += 1
+          // ... Si y'a des bugs, voir ici
+          c = rune(l.s[l.pos])
+      }
+      l.pos += 1
+      c = rune(l.s[l.pos])
+      lval.val = sq_quoted
+return DISTINCT_OBJECT  
+  } else if unicode.IsDigit(c) {
+      tmp := string(c)
+      l.pos += 1
+      c = rune(l.s[l.pos])
+      for unicode.IsDigit(c) {
+         tmp += string(c)
+        l.pos += 1
+        c = rune(l.s[l.pos])
+      }
+      lval.val = tmp
+      return NUMERIC
   } else {
 	        return 0
 	}//else
@@ -768,6 +884,11 @@ return SINGLE_QUOTED
 func isSqChar(c rune) bool {
   ascii := int(c)
   return (ascii >= 32 && ascii <= 38) || (ascii >= 40 && ascii <= 91) || (ascii >= 93 && ascii <= 126) 
+}
+
+func isDoChar(c rune) bool {
+  ascii := int(c)
+  return (ascii >= 32 && ascii <= 33) || (ascii >= 35 && ascii <= 91) || (ascii >= 93 && ascii <= 126) 
 }
 
 
@@ -791,6 +912,15 @@ func (l *TPTPLex) SpecialWord(lval *TPTPSymType) int {
 	        return LEFT_BRACKET
 	case ']':
 	        return RIGHT_BRACKET
+  case '+', '-':
+          lval.val = string(c)
+          return SIGN 
+  case '0':
+          return ZERO_NUMERIC
+  case '/':
+          return SLASH
+  case 'e', 'E':
+          return EXPONENT
 	case '!':
 	        if l.pos == len(l.s) {
             cpt_quantif++
@@ -877,11 +1007,18 @@ func (l *TPTPLex) SpecialWord(lval *TPTPSymType) int {
 		        return 0
 		}/*if*/ else {
                         token := l.Word(lval)
-			if (token == LOWER_WORD) &&
-			   (lval.val == "true" || lval.val == "false") {
+			if (token == LOWER_WORD) {
+        if (lval.val == "fot") {
+          return DOLLAR_FOT
+        } else if (lval.val == "true" || lval.val == "false") {
 		                return DOLLAR_WORD
-			}//if
-	        }//else
+			  } 
+      } else if (token == FOF) {
+          return DOLLAR_FOF
+        }//if
+      }
+			   
+	        //else
 	}//switch
         return 0
 }//SpecialWord
@@ -912,7 +1049,8 @@ func (l *TPTPLex) Error(s string) {
 
 func check(e error) {
         if e != nil {
-                panic(e)
+                fmt.Printf("Error : %v\n", e)
+                os.Exit(1)
         }
 }//check
 

@@ -85,7 +85,7 @@ func (r Result) GetSubstListForFather() []complextypes.SubstAndForm {
 	return complextypes.CopySubstAndFormList(r.subst_list_for_father)
 }
 func (r Result) GetProof() []proof.ProofStruct {
-	return r.proof
+	return proof.CopyProofStructList(r.proof)
 }
 func (r Result) Copy() Result {
 	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetProof()}
@@ -138,18 +138,21 @@ func sendSubToChildren(children []Communication, s complextypes.SubstAndForm) {
 }
 
 /* Send a subst to father. Return true if the process is supposed to die after */
-func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm) {
+func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm, node_id int) {
 	subst_for_father := complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound())
 	global.PrintDebug("SSTF", fmt.Sprintf("Send subst to father : %v, closed : %v, need answer : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(subst_for_father)), closed, need_answer))
 	global.PrintDebug("SSTF", fmt.Sprintf("Send answer : %v", complextypes.SubstAndFormListToString(subst_for_father)))
+
+	global.PrintDebug("SSTF", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(st.GetProof())))
+
 	select {
 	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), st.GetProof()}:
 		if need_answer {
-			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs))
+			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id)
 		} else {
 			global.PrintDebug("SSTF", "Die")
 		}
 	case quit := <-c.quit:
-		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs)
+		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id)
 	}
 }

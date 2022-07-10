@@ -1,7 +1,6 @@
 import json
 import jsons
 import copy
-import os
 
 
 class json_object:
@@ -10,7 +9,7 @@ class json_object:
     self.rule = rule
     self.children = children
 
-f = open("./json/proof_output.json", "r")
+f = open("../src/_build/proof_output.json", "r")
 f_json = json.load(f)
 remaining_element = copy.deepcopy(f_json)
 f.close()

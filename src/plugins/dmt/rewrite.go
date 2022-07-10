@@ -38,7 +38,7 @@
 * This file implements the rewrite part of the DMT plugin.
 **/
 
-package main
+package dmt
 
 import (
 	"fmt"
@@ -52,7 +52,7 @@ import (
 // ----------------------------------------------------------------------------
 // Primary algorithms.
 
-func rewrite(atomic btypes.Form) ([]ctypes.SubstAndForm, error) {
+func Rewrite(atomic btypes.Form) ([]ctypes.SubstAndForm, error) {
 	form, polarity := getAtomAndPolarity(atomic)
 	tree := selectFromPolarity(polarity, positiveTree, negativeTree)
 	return rewriteGeneric(tree, atomic, form, polarity)
@@ -159,7 +159,7 @@ func sortUnifications(unifs []treetypes.MatchingSubstitutions, polarity bool, at
 
 // Priority of substitutions: Top/Bottom > others
 func insert(sortedUnifs []treetypes.MatchingSubstitutions, list btypes.FormList, unif treetypes.MatchingSubstitutions) []treetypes.MatchingSubstitutions {
-	if list.Contains(btypes.MakeTop()) || list.Contains(btypes.MakeBot()) {
+	if list.Contains(btypes.MakerTop()) || list.Contains(btypes.MakerBot()) {
 		sortedUnifs = insertFirst(sortedUnifs, unif)
 	} else {
 		sortedUnifs = append(sortedUnifs, unif)

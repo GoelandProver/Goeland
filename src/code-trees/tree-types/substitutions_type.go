@@ -77,26 +77,27 @@ func (s Substitutions) ToString() string {
 
 /* Transform a substitutin into a string for proof struct */
 func (s Substitutions) ToStringForProof() string {
-	keys := make(basictypes.MetaList, 0, len(s))
-	for k := range s {
-		keys = append(keys, k)
-	}
-	sort.Sort(keys)
+	return s.ToString()
+	// keys := make(basictypes.MetaList, 0, len(s))
+	// for k := range s {
+	// 	keys = append(keys, k)
+	// }
+	// sort.Sort(keys)
 
-	var s_res string
-	s_res = "{"
-	for i, v := range keys {
-		s_res += "<tspan x='0', dy='1.2em'>" + "("
-		s_res += v.ToString()
-		s_res += ", "
-		s_res += s[v].ToString()
-		s_res += ")" + "<tspan>"
-		if i < len(s)-1 {
-			s_res += (", ")
-		}
-	}
-	s_res += "}"
-	return s_res
+	// var s_res string
+	// s_res = "{"
+	// for i, v := range keys {
+	// 	s_res += "<tspan x='0', dy='1.2em'>" + "("
+	// 	s_res += v.ToString()
+	// 	s_res += ", "
+	// 	s_res += s[v].ToString()
+	// 	s_res += ")" + "<tspan>"
+	// 	if i < len(s)-1 {
+	// 		s_res += (", ")
+	// 	}
+	// }
+	// s_res += "}"
+	// return s_res
 }
 
 /* Helper function, prints the content of a Substitutions object. */

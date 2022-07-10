@@ -9,24 +9,20 @@ BUILD=_build/
 GOYACC=goyacc
 GOYACCFLAGS=-l
 GOC=go build
-GOFLAGS=-gcflags=-m
+GOFLAGS=
 BIN=_build/goeland
 PREFIX=TPTP
 
 # Parse files
 PROB=../../problems/SYN
 
-# Plugins
-PLUGINS=dmt
-
-all: $(PLUGINS)
+all: 
 	$(GOYACC) $(GOYACCFLAGS) -p $(PREFIX) -o $(GOPARSER) $(YACCFILE); \
-	$(GOC) $(GOFLAGS) -o $(BIN) $(GOSRC) 2>/dev/null
-	@for dir in `ls $(PLUGINS_SRC)`; do \
-		`cp $(PLUGINS_SRC)/$$dir/plugin.yaml $(BUILD)plugins/$$dir/plugin.yaml`; done
+	$(GOC) $(GOFLAGS) -o $(BIN) $(GOSRC) 
 
-dmt:
-	$(GOC) $(GOFLAGS) -buildmode=plugin -o $(BUILD)plugins/dmt/dmt.so $(PLUGINS_SRC)dmt/*.go 2>/dev/null
+static-linux-release:
+	$(GOYACC) $(GOYACCFLAGS) -p $(PREFIX) -o $(GOPARSER) $(YACCFILE); \
+	GOOS=linux GOARCH=amd64 $(GOC) -tags osusergo,netgo -ldflags="-extldflags=-static" -o $(BIN)_linux_release $(GOSRC)
 	
 parse:
 	@for i in `ls $(PROB)/*.p`; do echo -e "File \033[32m$$i\033[39m: "; \
