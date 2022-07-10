@@ -71,6 +71,7 @@ var flag_limit = flag.Int("l", -1, "Limit in destructive mode")
 var flag_one_step = flag.Bool("one_step", false, "Only one step of search")
 var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a file")
 var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
+var problem_name string
 
 func main() {
 	initFlag()
@@ -83,7 +84,8 @@ func main() {
 	}
 
 	problem := args[len(args)-1]
-	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
+	_, problem_name = path.Split(problem)
+	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem_name)
 	lstm, bound := parser.ParseMain(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
 	if global.GetLimit() != -1 {
@@ -145,10 +147,11 @@ func PrintResult(res bool) {
 	fmt.Printf("==== Result ====\n")
 	if res {
 		fmt.Printf("[%.6fs][%v][Res] VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-		os.Stderr.WriteString("Valid\n")
+		fmt.Printf("%s SZS status Theorem for %v\n", "%", problem_name)
 	} else {
 		fmt.Printf("[%.6fs][%v][Res] NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-		os.Stderr.WriteString("Not valid\n")
+		fmt.Printf("%s SZS status Counter Theorem for %v\n", "%", problem_name)
+
 	}
 
 }
@@ -199,7 +202,9 @@ func Search(f basictypes.Form, bound int) {
 
 		if global.GetProof() && res {
 			proof.WriteGraphProof(final_proof)
+			fmt.Printf("%s SZS output start Proof for %v\n", "%", problem_name)
 			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
+			fmt.Printf("%s SZS output end Proof for %v\n", "%", problem_name)
 		}
 
 		limit = 2 * limit
