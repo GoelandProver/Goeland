@@ -36,7 +36,7 @@
 * This file contains the type definition of a constraint struct for equality reasoning.
 **/
 
-package main
+package equality
 
 import (
 	"fmt"

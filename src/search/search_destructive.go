@@ -42,7 +42,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugin"
+	"github.com/GoelandProver/Goeland/plugins/equality"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -584,7 +584,9 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 		// Search for a contradiction in LF
 		new_atomics := basictypes.MakeEmptyFormList()
 		for _, f := range st.GetLF() {
-			plugin.GetPluginManager().ApplySendPredToLPOHook(f.Copy())
+			if global.IsLoaded("equality") {
+				equality.InsertPred(f.Copy())
+			}
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 			clos_res, subst := applyClosureRules(f.Copy(), &st)
 			closed := manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy(), node_id)
@@ -614,12 +616,12 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 		/* Equality - ok because dmt do not apply on equalities */
 		// Variation : do not apply if new_atomics not empty
-		if !global.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 || len(st.GetLF()) == 0 {
+		if global.IsLoaded("equality") && (!global.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 || len(st.GetLF()) == 0) {
 			global.PrintDebug("PS", "Try apply EQ !")
 			if shouldApplyEquality(new_atomics, st) {
 				global.PrintDebug("PS", "EQ is applicable !")
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
-				res_eq, subst_eq := plugin.GetPluginManager().ApplyEqualityHook(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
+				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
 				if res_eq {
 					manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}), node_id)
 				}

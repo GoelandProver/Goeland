@@ -36,7 +36,7 @@
 * This file contains some functions about unification and stop cases for equality reasoning.
 **/
 
-package main
+package equality
 
 import (
 	"fmt"

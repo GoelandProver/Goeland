@@ -36,12 +36,14 @@
 * This file implements the main logic behind the equality plugin.
 **/
 
-package main
+package equality
 
 import (
+	"fmt"
+
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugin"
+
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -50,11 +52,10 @@ import (
  * Base function needed to initialize any plugin of Goéland.
  * It registers the hooks to the plugin manager, and parses the given options.
  **/
-func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode bool) error {
-	registerHooks(pm)
-	initPluginGlobalVariables()
-	parsePluginOptions(options)
+func InitPlugin() error {
+	lpo = makeLPO()
 
+	fmt.Println("[EQ] equality loaded.")
 	// No error can be thrown in this plugin.
 	return nil
 }
@@ -73,4 +74,8 @@ func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basic
 	} else {
 		return false, []treetypes.Substitutions{}
 	}
+}
+
+func InsertPred(p basictypes.Form) {
+	lpo.insertPred(p)
 }

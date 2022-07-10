@@ -36,7 +36,7 @@
 * This file contains the rule strucut for equality reasoning
 **/
 
-package main
+package equality
 
 import (
 	"fmt"

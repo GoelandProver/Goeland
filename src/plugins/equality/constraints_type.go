@@ -36,7 +36,7 @@
 * This file contains the type definition of a contraint.
 **/
 
-package main
+package equality
 
 import (
 	"fmt"

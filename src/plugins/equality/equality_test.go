@@ -36,7 +36,7 @@
 * This file contains the tests on equality.
 **/
 
-package main
+package equality
 
 import (
 	"fmt"

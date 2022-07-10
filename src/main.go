@@ -55,6 +55,7 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/parser"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
+	equality "github.com/GoelandProver/Goeland/plugins/equality"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -72,6 +73,7 @@ var flag_one_step = flag.Bool("one_step", false, "Only one step of search")
 var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a file")
 var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
 var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
+var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable equality")
 var problem_name string
 var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
 
@@ -288,7 +290,9 @@ func initialization() {
 	if *flag_dmt {
 		dmt.InitPlugin()
 	}
-	// global.SetPlugin("equality", true)
+	if !*flag_noeq {
+		equality.InitPlugin()
+	}
 }
 
 /* Init flag */
@@ -323,6 +327,7 @@ func initFlag() {
 	}
 
 	global.SetPlugin("dmt", *flag_dmt)
+	global.SetPlugin("equality", !*flag_noeq)
 	if *flag_dmt_before_eq {
 		global.SetDMTBeforeEQ(true)
 	}

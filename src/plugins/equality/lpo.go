@@ -36,7 +36,7 @@
 * This file contains the type definitionof the lixicographic path ordering.
 **/
 
-package main
+package equality
 
 import (
 	"fmt"

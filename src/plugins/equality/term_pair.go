@@ -36,7 +36,7 @@
 * This file contains the type definition for equality reasonning.
 **/
 
-package main
+package equality
 
 import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 

@@ -36,7 +36,7 @@
 * This file contains the functions to apply a rule on an equality problem struct
 **/
 
-package main
+package equality
 
 import (
 	"fmt"
