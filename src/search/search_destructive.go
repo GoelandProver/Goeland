@@ -621,7 +621,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := plugin.GetPluginManager().ApplyEqualityHook(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
 				if res_eq {
-					manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakePred(basictypes.Id_eq, []basictypes.Term{}))
+					manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}), node_id)
 				}
 			}
 		}

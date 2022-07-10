@@ -157,7 +157,7 @@ func searchUnifBewteenListAndEq(tl []basictypes.Term, tree datastruct.DataStruct
 /* Take a (sub)-term t, and retrieve all the term t' unifiable with t */
 func checkUnifInTree(t basictypes.Term, tree datastruct.DataStructure) (bool, []basictypes.Term) {
 	result_list := []basictypes.Term{}
-	res, ms := tree.Unify(treetypes.MakeTermForm(t.Copy()))
+	res, ms := tree.Unify(treetypes.MakerTermForm(t.Copy()))
 	if !res {
 		return false, result_list
 	}

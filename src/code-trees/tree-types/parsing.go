@@ -90,17 +90,12 @@ func (t TermForm) GetMetas() basictypes.MetaList {
 	}
 }
 
-<<<<<<< HEAD
-func makerTermForm(t basictypes.Term) TermForm {
-	return TermForm{basictypes.MakerIndexFormula(), t.Copy()}
+func MakerTermForm(t basictypes.Term) TermForm {
+	return makeTermForm(basictypes.MakerIndexFormula(), t.Copy())
 }
 
 func makeTermForm(i int, t basictypes.Term) TermForm {
 	return TermForm{i, t.Copy()}
-=======
-func MakeTermForm(t basictypes.Term) TermForm {
-	return TermForm{t.Copy()}
->>>>>>> [EQ] Make Equality problem
 }
 
 /* Parses a formulae to a sequence of instructions. */
@@ -203,10 +198,6 @@ func ParseTerm(term basictypes.Term) Sequence {
 	varCount := 0
 	postCount := 0
 	parseTerms([]basictypes.Term{term.Copy()}, &instructions, basictypes.MetaList{}, &varCount, &postCount)
-<<<<<<< HEAD
-	instructions.formula = makerTermForm(term)
-=======
-	instructions.formula = MakeTermForm(term)
->>>>>>> [EQ] Make Equality problem
+	instructions.formula = MakerTermForm(term)
 	return instructions
 }

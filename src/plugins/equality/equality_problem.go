@@ -117,8 +117,8 @@ func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c C
 func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
 	form_list := basictypes.MakeEmptyFormList()
 	for _, e := range eq {
-		form_list = append(form_list, treetypes.MakeTermForm(e.getT1()))
-		form_list = append(form_list, treetypes.MakeTermForm(e.getT2()))
+		form_list = append(form_list, treetypes.MakerTermForm(e.getT1()))
+		form_list = append(form_list, treetypes.MakerTermForm(e.getT2()))
 	}
 	return new(treesearch.Node).MakeDataStruct(form_list.Copy(), true)
 }
