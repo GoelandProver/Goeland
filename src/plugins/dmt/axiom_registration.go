@@ -38,7 +38,7 @@
 * This file implements the main algorithms for turning axioms into rewrite rules.
 **/
 
-package main
+package dmt
 
 import (
 	"fmt"
@@ -47,7 +47,7 @@ import (
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func registerAxiom(axiom btypes.Form) bool {
+func RegisterAxiom(axiom btypes.Form) bool {
 	axiomFT := instanciateForalls(axiom)
 
 	if isRegisterableAsAtomic(axiom, axiomFT) {

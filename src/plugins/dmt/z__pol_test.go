@@ -39,7 +39,7 @@
  *	- Axioms of format : (forall x).P => Q
  **/
 
-package main_test
+package dmt_test
 
 import (
 	"testing"

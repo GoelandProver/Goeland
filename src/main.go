@@ -54,7 +54,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/parser"
-	"github.com/GoelandProver/Goeland/plugin"
+	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -71,6 +71,7 @@ var flag_limit = flag.Int("l", -1, "Limit in destructive mode")
 var flag_one_step = flag.Bool("one_step", false, "Only one step of search")
 var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a file")
 var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
+var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
 var problem_name string
 
 func main() {
@@ -79,7 +80,7 @@ func main() {
 
 	args := os.Args
 	if len(args) < 2 {
-		fmt.Printf("./gotab [options] problem_file\n")
+		fmt.Printf("%s [options] problem_file\n", os.Args[0])
 		return
 	}
 
@@ -239,7 +240,9 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			and_list = append(and_list, new_form_list)
 		case basictypes.Axiom:
 			new_form := basictypes.RenameVariables(s.GetForm())
-			if consumed := plugin.GetPluginManager().ApplySendAxiomHook(new_form.Copy()); !consumed {
+			if !global.IsLoaded("dmt") {
+				and_list = append(and_list, new_form)
+			} else if consumed := dmt.RegisterAxiom(new_form.Copy()); !consumed {
 				and_list = append(and_list, new_form)
 			}
 		case basictypes.Conjecture:
@@ -269,13 +272,13 @@ func initialization() {
 	basictypes.Init()
 
 	// Init pulgins
-	plugin.GetPluginManager()
-	global.SetPlugin("dmt", plugin.IsLoaded("dmt"))
+	if *flag_dmt {
+		dmt.InitPlugin()
+	}
 }
 
 /* Init flag */
 func initFlag() {
-	flag.Var(&plugin.PoptionFlag, "poptions", "Options for the different plugins.")
 	flag.Parse()
 
 	if *flag_debug {
@@ -328,6 +331,8 @@ func initFlag() {
 			log.Fatal("could not write memory profile: ", err)
 		}
 	}
+
+	global.SetPlugin("dmt", *flag_dmt)
 }
 
 func getFile(filename string, dir string) (string, error) {

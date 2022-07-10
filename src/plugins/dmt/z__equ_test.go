@@ -43,7 +43,7 @@
  *	- feeding multiple versions of the same atom with a constant
  **/
 
-package main_test
+package dmt_test
 
 import (
 	"os"

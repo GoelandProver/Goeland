@@ -44,7 +44,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugin"
+	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	visualization "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -205,50 +205,52 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 
 		// Si f est dans atomic, ça veut dire qu'on a pas pu réécrire, donc inutile de vérifier
 		if !st.GetAtomic().Contains(f) {
-			if rewritten, err := plugin.GetPluginManager().ApplyRewriteHook(f); err == nil {
-				global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.SubstAndFormListToString(rewritten)))
+			if global.IsLoaded("dmt") {
+				if rewritten, err := dmt.Rewrite(f); err == nil {
+					global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.SubstAndFormListToString(rewritten)))
 
-				// Keep all the possibility of rewritting and choose the first one
-				choosen_rewritten := rewritten[0]
-				choosen_rewritten_form := choosen_rewritten.GetForm()[0].Copy()
-				// cas plusieurs formules : on doit aussi copier rewitten[0] sans la première formule. Ce cas ne peux pas arriver vu le code de DMT
-				rewritten = complextypes.CopySubstAndFormList(rewritten[1:])
+					// Keep all the possibility of rewritting and choose the first one
+					choosen_rewritten := rewritten[0]
+					choosen_rewritten_form := choosen_rewritten.GetForm()[0].Copy()
+					// cas plusieurs formules : on doit aussi copier rewitten[0] sans la première formule. Ce cas ne peux pas arriver vu le code de DMT
+					rewritten = complextypes.CopySubstAndFormList(rewritten[1:])
 
-				st.SetCurrentProofFormula(f)
+					st.SetCurrentProofFormula(f)
 
-				// Si on ne s'est pas réécrit en soi-même ?
-				if !choosen_rewritten.GetSubst().Equals(treetypes.Failure()) {
-					// Create a child with the current rewritting rule and make this process to wait for him, with a list of other subst to try
-					st.SetLF(append(remaining_atomics.Copy(), choosen_rewritten_form.Copy()))
-					st.SetBTOnFormulas(true) // I need to know that I can bt on form and my child needs to know it to to don't loop
+					// Si on ne s'est pas réécrit en soi-même ?
+					if !choosen_rewritten.GetSubst().Equals(treetypes.Failure()) {
+						// Create a child with the current rewritting rule and make this process to wait for him, with a list of other subst to try
+						st.SetLF(append(remaining_atomics.Copy(), choosen_rewritten_form.Copy()))
+						st.SetBTOnFormulas(true) // I need to know that I can bt on form and my child needs to know it to to don't loop
 
-					// Proof
-					child_node := global.IncrCptNode()
-					st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(child_node, basictypes.MakeSingleElementList(choosen_rewritten_form.Copy()))})
-					st.SetCurrentProofRule("Rewrite")
-					st.SetCurrentProofRuleName("Rewrite")
+						// Proof
+						child_node := global.IncrCptNode()
+						st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(child_node, basictypes.MakeSingleElementList(choosen_rewritten_form.Copy()))})
+						st.SetCurrentProofRule("Rewrite")
+						st.SetCurrentProofRuleName("Rewrite")
 
-					if choosen_rewritten.GetSubst().IsEmpty() {
-						choosen_rewritten = complextypes.MakeEmptySubstAndForm()
+						if choosen_rewritten.GetSubst().IsEmpty() {
+							choosen_rewritten = complextypes.MakeEmptySubstAndForm()
+						}
+
+						st_copy := st.Copy()
+
+						// st_copy.SetSubstsFound(st.GetSubstsFound())
+						c_child := Communication{make(chan bool), make(chan Result)}
+						go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten, child_node)
+						global.PrintDebug("PS", "GO !")
+						global.IncrGoRoutine(1)
+						waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, choosen_rewritten, []complextypes.SubstAndForm{}, rewritten, current_node_id)
+						return
+					} else {
+						// Pas de réécriture disponible
+						global.PrintDebug("PS", fmt.Sprintf("Pas de réécriture possible, dispatchform de %v", f.ToString()))
+						// Si pas de réécriture de disponible, on ajoute f à atomics
+						st.DispatchForm(f.Copy())
 					}
-
-					st_copy := st.Copy()
-
-					// st_copy.SetSubstsFound(st.GetSubstsFound())
-					c_child := Communication{make(chan bool), make(chan Result)}
-					go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten, child_node)
-					global.PrintDebug("PS", "GO !")
-					global.IncrGoRoutine(1)
-					waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, choosen_rewritten, []complextypes.SubstAndForm{}, rewritten, current_node_id)
-					return
 				} else {
-					// Pas de réécriture disponible
-					global.PrintDebug("PS", fmt.Sprintf("Pas de réécriture possible, dispatchform de %v", f.ToString()))
-					// Si pas de réécriture de disponible, on ajoute f à atomics
-					st.DispatchForm(f.Copy())
+					fmt.Printf("[DMT] Error %v", err.Error())
 				}
-			} else {
-				fmt.Printf("[DMT] Error %v", err.Error())
 			}
 		}
 	}
@@ -310,7 +312,6 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication, c
 		int_form_list_list = append(int_form_list_list, proof.MakeIntFormList(global.IncrCptNode(), fl))
 	}
 	st.SetCurrentProofResultFormulas(int_form_list_list)
-
 
 	// For each child, launch a goroutine, stock its channel, and wait an answer
 	var chan_tab []Communication

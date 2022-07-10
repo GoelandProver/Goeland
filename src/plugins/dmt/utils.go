@@ -36,7 +36,7 @@
 * This file implements some useful functions for the plugin.
 **/
 
-package main
+package dmt
 
 import (
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"

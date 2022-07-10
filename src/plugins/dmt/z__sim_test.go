@@ -40,7 +40,7 @@
  *	- Checks if it doesn't break the proof
  **/
 
-package main_test
+package dmt_test
 
 import (
 	"testing"

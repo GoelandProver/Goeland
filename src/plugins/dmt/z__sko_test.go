@@ -38,7 +38,7 @@
  * This file tests the preskolemized functionnalities of the DMT plugin.
  **/
 
-package main_test
+package dmt_test
 
 import (
 	"reflect"

@@ -38,14 +38,15 @@
 * This file inits the global variables of the DMT and hook the functions to the prover.
 **/
 
-package main
+package dmt
 
 import (
+	"flag"
 	"fmt"
 	"strings"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
-	"github.com/GoelandProver/Goeland/plugin"
+	"github.com/GoelandProver/Goeland/global"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -61,52 +62,37 @@ var preskolemize bool
 
 var debugActivated bool
 
+var flagPolarized = flag.Bool("polarized", false, "Activate polarized DMT")
+var flagPresko = flag.Bool("presko", false, "Activate preskolemization on DMT")
+
 /**
  * Base function needed to initialize any plugin of Goéland.
  * It registers the hooks to the plugin manager, and parses the given options.
  **/
-func InitPlugin(pm *plugin.PluginManager, options []plugin.Option, debugMode bool) error {
-	registerHooks(pm)
-	initPluginGlobalVariables(debugMode)
-	parsePluginOptions(options)
+func InitPlugin() error {
+	initPluginGlobalVariables()
+	parsePluginOptions()
 
 	// No error can be thrown in this plugin.
 	return nil
 }
 
-/**
- * Registers all the hooks of this plugin in the PluginManager.
- * In particular, two hooks are activated by this plugin :
- *		- SendAxiomHook, to take axioms and make it a rewrite rule
- *		- RewriteHook, to rewrite an atom.
- **/
-func registerHooks(pm *plugin.PluginManager) {
-	pm.RegisterRewriteHook(rewrite)
-	pm.RegisterSendAxiomHook(registerAxiom)
-}
-
-func initPluginGlobalVariables(debugMode bool) {
+func initPluginGlobalVariables() {
 	positiveRewrite = make(map[string]btypes.FormList)
 	negativeRewrite = make(map[string]btypes.FormList)
 	positiveTree = new(treesearch.Node)
 	negativeTree = new(treesearch.Node)
-	debugActivated = debugMode
+	debugActivated = global.GetDebug()
 }
 
 /**
  * Parses options given to the plugin by the prover.
  * It also displays what's been activated.
  **/
-func parsePluginOptions(options []plugin.Option) {
+func parsePluginOptions() {
 	// Parse options
-	for _, opt := range options {
-		switch opt.Name {
-		case "polarized":
-			activatePolarized = opt.Value != "false"
-		case "preskolemization":
-			preskolemize = opt.Value != "false"
-		}
-	}
+	activatePolarized = *flagPolarized
+	preskolemize = *flagPresko
 
 	// Display what's been activated.
 	output := "[DMT] DMT loaded "

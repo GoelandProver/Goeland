@@ -38,7 +38,7 @@
 * This file implements the rewrite part of the DMT plugin.
 **/
 
-package main
+package dmt
 
 import (
 	"fmt"
@@ -52,7 +52,7 @@ import (
 // ----------------------------------------------------------------------------
 // Primary algorithms.
 
-func rewrite(atomic btypes.Form) ([]ctypes.SubstAndForm, error) {
+func Rewrite(atomic btypes.Form) ([]ctypes.SubstAndForm, error) {
 	form, polarity := getAtomAndPolarity(atomic)
 	tree := selectFromPolarity(polarity, positiveTree, negativeTree)
 	return rewriteGeneric(tree, atomic, form, polarity)
