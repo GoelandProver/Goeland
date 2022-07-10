@@ -419,9 +419,9 @@ func ApplySubstitutionOnProofList(s treetypes.Substitutions, proof_list []proof.
 		new_proof := p.Copy()
 		new_proof.SetFormulaProof(ApplySubstitutionsOnFormula(s, p.GetFormula()))
 
-		new_result_formulas := []basictypes.FormList{}
+		new_result_formulas := []proof.IntFormList{}
 		for _, f := range p.GetResultFormulas() {
-			new_result_formulas = append(new_result_formulas, ApplySubstitutionsOnFormulaList(s, f))
+			new_result_formulas = append(new_result_formulas, proof.MakeIntFormList(f.GetI(), ApplySubstitutionsOnFormulaList(s, f.GetFL())))
 		}
 		new_proof.SetResultFormulasProof(new_result_formulas)
 

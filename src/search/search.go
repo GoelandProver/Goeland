@@ -48,6 +48,7 @@ import (
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	visualization "github.com/GoelandProver/Goeland/visualization_exchanges"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 /**
@@ -90,8 +91,8 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetCurrentProofRule("⊙")
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
-			st.SetCurrentProofNodeId(f.GetIndex())
-			st.SetCurrentProofResultFormulas([]basictypes.FormList{})
+			st.SetCurrentProofNodeId(node_id)
+			st.SetCurrentProofResultFormulas([]proof.IntFormList{})
 			st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id)
@@ -105,8 +106,8 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", substs_without_mm[0].ToString()))
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
-			st.SetCurrentProofNodeId(f.GetIndex())
-			st.SetCurrentProofResultFormulas([]basictypes.FormList{})
+			st.SetCurrentProofNodeId(node_id)
+			st.SetCurrentProofResultFormulas([]proof.IntFormList{})
 			st.SetProof(complextypes.ApplySubstitutionOnProofList(substs_without_mm[0], append(st.GetProof(), st.GetCurrentProof())))
 
 			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id)
@@ -118,7 +119,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", treetypes.SubstListToStringForProof(substs_with_mm)))
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
-			st.SetCurrentProofNodeId(f.GetIndex())
+			st.SetCurrentProofNodeId(node_id)
 
 			for _, subst_for_father := range substs_with_mm {
 
@@ -213,7 +214,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 				// cas plusieurs formules : on doit aussi copier rewitten[0] sans la première formule. Ce cas ne peux pas arriver vu le code de DMT
 				rewritten = complextypes.CopySubstAndFormList(rewritten[1:])
 
-				st.SetCurrentProofFormula(choosen_rewritten_form)
+				st.SetCurrentProofFormula(f)
 
 				// Si on ne s'est pas réécrit en soi-même ?
 				if !choosen_rewritten.GetSubst().Equals(treetypes.Failure()) {
@@ -222,20 +223,20 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 					st.SetBTOnFormulas(true) // I need to know that I can bt on form and my child needs to know it to to don't loop
 
 					// Proof
-					st.SetCurrentProofNodeId(choosen_rewritten_form.GetIndex())
-					st.SetCurrentProofResultFormulas([]basictypes.FormList{st.GetLF()})
+					child_node := global.IncrCptNode()
+					st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(child_node, basictypes.MakeSingleElementList(choosen_rewritten_form.Copy()))})
+					st.SetCurrentProofRule("Rewrite")
+					st.SetCurrentProofRuleName("Rewrite")
 
 					if choosen_rewritten.GetSubst().IsEmpty() {
 						choosen_rewritten = complextypes.MakeEmptySubstAndForm()
 					}
 
 					st_copy := st.Copy()
-					st_copy.SetCurrentProofRule("Rewrite")
-					st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 					// st_copy.SetSubstsFound(st.GetSubstsFound())
 					c_child := Communication{make(chan bool), make(chan Result)}
-					go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten, global.IncrCptNode())
+					go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten, child_node)
 					global.PrintDebug("PS", "GO !")
 					global.IncrGoRoutine(1)
 					waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, choosen_rewritten, []complextypes.SubstAndForm{}, rewritten, current_node_id)
@@ -269,8 +270,7 @@ func manageAlphaRules(father_id uint64, st complextypes.State, c Communication) 
 	// Proof
 	st.SetCurrentProofFormula(hdf)
 	id_children := global.IncrCptNode()
-	st.SetCurrentProofNodeId(hdf.GetIndex())
-	st.SetCurrentProofResultFormulas([]basictypes.FormList{result_forms})
+	st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(id_children, result_forms)})
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children)
@@ -288,8 +288,7 @@ func manageDeltaRules(father_id uint64, st complextypes.State, c Communication) 
 	// Proof
 	st.SetCurrentProofFormula(hdf)
 	id_children := global.IncrCptNode()
-	st.SetCurrentProofNodeId(hdf.GetIndex())
-	st.SetCurrentProofResultFormulas([]basictypes.FormList{result_forms})
+	st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(id_children, result_forms)})
 
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
@@ -305,21 +304,26 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication, c
 
 	// Proof
 	st.SetCurrentProofFormula(hdf)
-	st.SetCurrentProofNodeId(hdf.GetIndex())
-	st.SetCurrentProofResultFormulas(reslf)
+
+	int_form_list_list := []proof.IntFormList{}
+	for _, fl := range reslf {
+		int_form_list_list = append(int_form_list_list, proof.MakeIntFormList(global.IncrCptNode(), fl))
+	}
+	st.SetCurrentProofResultFormulas(int_form_list_list)
+
 
 	// For each child, launch a goroutine, stock its channel, and wait an answer
 	var chan_tab []Communication
-	for _, fl := range reslf {
+	for _, fl := range int_form_list_list {
 		st_copy := st.Copy()
 		st_copy.SetBeta(st.GetBeta()[1:])
-		st_copy.SetLF(fl)
+		st_copy.SetLF(fl.GetFL())
 		if global.IsDestructive() {
 			c_child := Communication{make(chan bool), make(chan Result)}
 			chan_tab = append(chan_tab, c_child)
-			go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm(), -1)
+			go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm(), fl.GetI())
 		} else {
-			go ProofSearch(global.GetGID(), st_copy, c, complextypes.MakeEmptySubstAndForm(), -1)
+			go ProofSearch(global.GetGID(), st_copy, c, complextypes.MakeEmptySubstAndForm(), fl.GetI())
 		}
 
 		global.IncrGoRoutine(1)
@@ -354,8 +358,7 @@ func manageGammaRules(father_id uint64, st complextypes.State, c Communication) 
 	// Proof
 	st.SetCurrentProofFormula(hdf)
 	id_children := global.IncrCptNode()
-	st.SetCurrentProofNodeId(hdf.GetIndex())
-	st.SetCurrentProofResultFormulas([]basictypes.FormList{new_lf})
+	st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(id_children, new_lf)})
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children)
@@ -376,8 +379,7 @@ func manageReintroductionRules(father_id uint64, st complextypes.State, c Commun
 	id_children := global.IncrCptNode()
 	st.SetCurrentProofRule("Reintroduction")
 	st.SetCurrentProofFormula(reslf)
-	st.SetCurrentProofNodeId(reslf.GetIndex())
-	st.SetCurrentProofResultFormulas([]basictypes.FormList{basictypes.MakeSingleElementList(reslf)})
+	st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(id_children, basictypes.MakeSingleElementList(reslf))})
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children)

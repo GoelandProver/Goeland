@@ -59,25 +59,60 @@ type ProofStruct struct {
 	Node_id         int
 	Rule            string
 	Rule_name       string
-	Result_formulas []basictypes.FormList
+	Result_formulas []IntFormList
 	Children        [][]ProofStruct
 }
 
 type JsonProofStruct struct {
 	Formula         string              `json:"Formula"`
-	Node_id         int                 `json:"Formula_id"`
+	Node_id         int                 `json:"Node_id"`
 	Rule            string              `json:"Rule"`
 	Rule_name       string              `json:"Rule_name"`
-	Result_formulas [][]IntStringPair   `json:"Generated_formulas"`
+	Result_formulas []IntIntStringPair   `json:"Generated_formulas"`
 	Children        [][]JsonProofStruct `json:"Children"`
+}
+
+type IntIntStringPair struct {
+	Node_id int `json:"Node_Id"`
+	isp []IntStringPair `json:"Formulas"`
 }
 
 type IntStringPair struct {
 	I int    `json:"Id"`
-	S string `json:"Formulas"`
+	S string `json:"Formula"`
 }
 
-func FormListListToString(fll []basictypes.FormList) string {
+type IntFormList struct {
+	i int
+	fl basictypes.FormList
+}
+
+func (ifl *IntFormList) setInt(i int) {
+	ifl.i = i
+}
+func (ifl *IntFormList) setFl(fl basictypes.FormList) {
+	ifl.fl = fl
+}
+func (ifl *IntFormList) GetI() int {
+	return ifl.i
+}
+func (ifl *IntFormList) GetFL() basictypes.FormList {
+	return ifl.fl.Copy()
+}
+
+func (ifl *IntFormList) ToString() string {
+	return strconv.Itoa(ifl.i) + " - " + ifl.fl.ToString()
+}
+
+func (ifl *IntFormList) Copy() IntFormList {
+	return MakeIntFormList(ifl.i, ifl.fl.Copy())
+}
+
+func MakeIntFormList(i int, fl basictypes.FormList) IntFormList {
+	return IntFormList{i, fl}
+}
+
+func IntFormListListToString(fll []IntFormList) string {
 	strArr := []string{}
 
 	for _, element := range fll {
@@ -88,7 +123,7 @@ func FormListListToString(fll []basictypes.FormList) string {
 }
 
 func (p ProofStruct) ToString() string {
-	res := p.GetFormula().ToString() + " - " + p.GetRule() + " - " + FormListListToString(p.GetResultFormulas())
+	res := p.GetFormula().ToString() + " - " + p.GetRule() + " - " + IntFormListListToString(p.GetResultFormulas())
 	if len(p.GetChildren()) > 0 {
 		res += " - " + ProofChildrenToString(p.GetChildren())
 	}
@@ -136,7 +171,7 @@ func (p ProofStruct) GetRule() string {
 func (p ProofStruct) GetRuleName() string {
 	return p.Rule_name
 }
-func (p ProofStruct) GetResultFormulas() []basictypes.FormList {
+func (p ProofStruct) GetResultFormulas() []IntFormList {
 	return p.Result_formulas
 }
 func (p ProofStruct) GetChildren() [][]ProofStruct {
@@ -168,17 +203,17 @@ func (p *ProofStruct) SetRuleNameProof(r string) {
 	p.Rule_name = r
 }
 
-func (p *ProofStruct) SetResultFormulasProof(fl []basictypes.FormList) {
+func (p *ProofStruct) SetResultFormulasProof(fl []IntFormList) {
 	p.Result_formulas = fl
 }
 
 /* makers */
 
 func MakeEmptyProofStruct() ProofStruct {
-	return ProofStruct{basictypes.MakerBot(), -1, "", "", []basictypes.FormList{}, [][]ProofStruct{}}
+	return ProofStruct{basictypes.MakerBot(), -1, "", "", []IntFormList{}, [][]ProofStruct{}}
 }
 
-func MakeProofStruct(formula basictypes.Form, id int, rule, rule_name string, Result_formulas []basictypes.FormList, children [][]ProofStruct) ProofStruct {
+func MakeProofStruct(formula basictypes.Form, id int, rule, rule_name string, Result_formulas []IntFormList, children [][]ProofStruct) ProofStruct {
 	return ProofStruct{formula, id, rule, rule_name, Result_formulas, children}
 }
 
@@ -198,12 +233,14 @@ func JsonProofStructListToString(jpsl []JsonProofStruct) string {
 }
 
 /* Functions */
-func FormListToIntStringPairList(fl []basictypes.FormList) [][]IntStringPair {
-	res := [][]IntStringPair{}
+func IntFormListToIntIntStringPairList(fl []IntFormList) []IntIntStringPair {
+	res := []IntIntStringPair{}
 	for _, f := range fl {
-		tmp_fl := []IntStringPair{}
-		for _, f2 := range f {
-			tmp_fl = append(tmp_fl, IntStringPair{f2.GetIndex(), f2.ToString()})
+		tmp_fl := IntIntStringPair{}
+		tmp_fl.Node_id = f.i
+
+		for _, f2 := range f.fl {
+			tmp_fl.isp = append(tmp_fl.isp, IntStringPair{f2.GetIndex(), f2.ToString()})
 		}
 		res = append(res, tmp_fl)
 	}
@@ -213,7 +250,7 @@ func FormListToIntStringPairList(fl []basictypes.FormList) [][]IntStringPair {
 func ProofStructListToJsonProofStructList(ps []ProofStruct) []JsonProofStruct {
 	res := []JsonProofStruct{}
 	for _, p := range ps {
-		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.Node_id, p.Rule, p.Rule_name, FormListToIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
+		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.Node_id, p.Rule, p.Rule_name, IntFormListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
 		res = append(res, new_json_element)
 	}
 	return res
@@ -277,10 +314,10 @@ func (j *JsonProofStruct) ToText() string {
 	res += " (" + j.Rule + ") " + j.Rule_name + " : "
 	res += j.Formula + "\n"
 	for _, rf := range j.Result_formulas {
-		res += "	-> "
-		for i, rf2 := range rf {
-			res += "[" + strconv.Itoa(rf2.I) + "] " + rf2.S
-			if i < len(rf)-1 {
+		res += "	-> " + "["+strconv.Itoa(rf.Node_id)+"] "
+		for i, rf2 := range rf.isp {
+			res += /* "(" + strconv.Itoa(rf2.I) + ") " + */ rf2.S
+			if i < len(rf.isp)-1 {
 				res += ", "
 			}
 		}

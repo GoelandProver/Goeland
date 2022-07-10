@@ -173,6 +173,7 @@ func Search(f basictypes.Form, bound int) {
 		tn := new(treesearch.Node)
 
 		st := complextypes.MakeState(limit, tp, tn, f)
+		st.SetCurrentProofNodeId(0)
 
 		fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
 

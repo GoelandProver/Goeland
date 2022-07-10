@@ -190,9 +190,9 @@ func (st *State) SetCurrentProofFormula(f basictypes.Form) {
 		st.current_proof.SetFormulaProof(f.Copy())
 	}
 }
-func (st *State) SetCurrentProofResultFormulas(fll []basictypes.FormList) {
+func (st *State) SetCurrentProofResultFormulas(fll []proof.IntFormList) {
 	if global.GetProof() {
-		new_fll := []basictypes.FormList{}
+		new_fll := []proof.IntFormList{}
 		for _, fl := range fll {
 			new_fll = append(new_fll, fl.Copy())
 		}

@@ -315,10 +315,10 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			}
 
 			st.SetCurrentProofFormula(answer_father.subst_for_children.GetForm()[0])
-			st.SetCurrentProofNodeId(answer_father.subst_for_children.GetForm()[0].GetIndex())
+			st.SetCurrentProofNodeId(node_id)
 			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", answer_father.subst_for_children.GetSubst().ToString()))
 			st.SetCurrentProofRuleName("CLOSURE")
-			st.SetCurrentProofResultFormulas([]basictypes.FormList{})
+			st.SetCurrentProofResultFormulas([]proof.IntFormList{})
 
 			st.SetProof(complextypes.ApplySubstitutionOnProofList(answer_father.subst_for_children.GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
 
@@ -340,7 +340,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			c2 := Communication{make(chan bool), make(chan Result)}
 
 			global.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", answer_father.GetSubstForChildren().GetSubst().ToString()))
-			go ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren(), global.IncrCptNode())
+			go ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren(), node_id)
 			global.IncrGoRoutine(1)
 
 			global.PrintDebug("WF", "GO !")
@@ -408,7 +408,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				global.PrintDebug("ERROR", "Current subst not empty but child returns nothing")
 			}
 
-			if cpt_children == 1 {
+			if cpt_children == 1 && !st.GetBTOnFormulas() {
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), proof_children[0]))
 			} else {
 				st.SetCurrentProofChildren(proof_children)
@@ -423,7 +423,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 		case 1:
 			global.PrintDebug("WC", fmt.Sprintf("All children agree on the substitution(s) : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(result_subst))))
 
-			if cpt_children == 1 {
+			if cpt_children == 1 && !st.GetBTOnFormulas() {
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(complextypes.MergeSubstAndForm(st.GetAppliedSubst(), result_subst[0]).GetSubst(), proof_children[0]))
 			} else {
 				st.SetCurrentProofChildren(proof_children)
@@ -541,6 +541,10 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 func proofSearchDestructive(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm, node_id int) {
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v", father_id))
+
+	if global.GetProof(){
+		st.SetCurrentProofNodeId(node_id)
+	}
 
 	// Select to check kill order
 	select {
