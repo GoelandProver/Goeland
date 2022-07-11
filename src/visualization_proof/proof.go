@@ -68,13 +68,13 @@ type JsonProofStruct struct {
 	Node_id         int                 `json:"Node_id"`
 	Rule            string              `json:"Rule"`
 	Rule_name       string              `json:"Rule_name"`
-	Result_formulas []IntIntStringPair   `json:"Generated_formulas"`
+	Result_formulas []IntIntStringPair  `json:"Generated_formulas"`
 	Children        [][]JsonProofStruct `json:"Children"`
 }
 
 type IntIntStringPair struct {
-	Node_id int `json:"Node_Id"`
-	isp []IntStringPair `json:"Formulas"`
+	Node_id int             `json:"Node_Id"`
+	Isp     []IntStringPair `json:"Formulas"`
 }
 
 type IntStringPair struct {
@@ -83,7 +83,7 @@ type IntStringPair struct {
 }
 
 type IntFormList struct {
-	i int
+	i  int
 	fl basictypes.FormList
 }
 
@@ -240,7 +240,7 @@ func IntFormListToIntIntStringPairList(fl []IntFormList) []IntIntStringPair {
 		tmp_fl.Node_id = f.i
 
 		for _, f2 := range f.fl {
-			tmp_fl.isp = append(tmp_fl.isp, IntStringPair{f2.GetIndex(), f2.ToString()})
+			tmp_fl.Isp = append(tmp_fl.Isp, IntStringPair{f2.GetIndex(), f2.ToString()})
 		}
 		res = append(res, tmp_fl)
 	}
@@ -311,13 +311,13 @@ func CopyProofStructList(ps []ProofStruct) []ProofStruct {
 func (j *JsonProofStruct) ToText() string {
 	res := ""
 	res += "[" + strconv.Itoa(j.Node_id) + "]"
-	res += " (" + j.Rule + ") " + j.Rule_name + " : "
+	res += /*" (" + j.Rule + ") " +*/ " " + j.Rule_name + " : "
 	res += j.Formula + "\n"
 	for _, rf := range j.Result_formulas {
-		res += "	-> " + "["+strconv.Itoa(rf.Node_id)+"] "
-		for i, rf2 := range rf.isp {
+		res += "	-> " + "[" + strconv.Itoa(rf.Node_id) + "] "
+		for i, rf2 := range rf.Isp {
 			res += /* "(" + strconv.Itoa(rf2.I) + ") " + */ rf2.S
-			if i < len(rf.isp)-1 {
+			if i < len(rf.Isp)-1 {
 				res += ", "
 			}
 		}

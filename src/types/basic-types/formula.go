@@ -183,13 +183,13 @@ func (p Pred) ToString() string {
 	return s_res
 }
 func (t Top) ToString() string {
-	return /* "(" + strconv.Itoa(t.GetIndex()) + ")" + */ "⊤"
+	return /* "(" + strconv.Itoa(t.GetIndex()) + ")" + */ "$true"
 }
 func (b Bot) ToString() string {
-	return /* "(" + strconv.Itoa(b.GetIndex()) + ")" + */ "⊥"
+	return /* "(" + strconv.Itoa(b.GetIndex()) + ")" + */ "$false"
 }
 func (n Not) ToString() string {
-	return /* "(" + strconv.Itoa(n.GetIndex()) + ")" + */ "¬" + n.GetForm().ToString()
+	return /* "(" + strconv.Itoa(n.GetIndex()) + ")" + */ /*"¬"*/ "~" + n.GetForm().ToString()
 }
 func (a And) ToString() string {
 	s_res :=
@@ -197,7 +197,7 @@ func (a And) ToString() string {
 		"(" + a.GetLF()[0].ToString()
 	s := a.GetLF()[1:]
 	for _, v := range s {
-		s_res += " ∧ "
+		s_res += " & "
 		s_res += v.ToString()
 	}
 	s_res += ")"
@@ -209,22 +209,22 @@ func (o Or) ToString() string {
 		"(" + o.GetLF()[0].ToString()
 	s := o.GetLF()[1:]
 	for _, v := range s {
-		s_res += " ∨ "
+		s_res += " | "
 		s_res += v.ToString()
 	}
 	s_res += ")"
 	return s_res
 }
 func (i Imp) ToString() string {
-	return /* "(" + strconv.Itoa(i.GetIndex()) + ")" + */ "(" + i.GetF1().ToString() + " ⇒ " + i.GetF2().ToString() + ")"
+	return /* "(" + strconv.Itoa(i.GetIndex()) + ")" + */ "(" + i.GetF1().ToString() + " => " + i.GetF2().ToString() + ")"
 }
 func (e Equ) ToString() string {
-	return /* "(" + strconv.Itoa(e.GetIndex()) + ")"  + */ "(" + e.GetF1().ToString() + " ⇔ " + e.GetF2().ToString() + ")"
+	return /* "(" + strconv.Itoa(e.GetIndex()) + ")"  + */ "(" + e.GetF1().ToString() + " <=> " + e.GetF2().ToString() + ")"
 }
 func (e Ex) ToString() string {
 	s_res :=
 		// "(" + strconv.Itoa(e.GetIndex()) + ")" +
-		"∃ " + e.GetVarList()[0].ToString()
+		"? [" + e.GetVarList()[0].ToString() + "] : "
 	if len(e.GetVarList()) > 1 {
 		s := e.GetVarList()[1:]
 		for _, v := range s {
@@ -238,7 +238,7 @@ func (e Ex) ToString() string {
 func (a All) ToString() string {
 	s_res :=
 		// "(" + strconv.Itoa(a.GetIndex()) + ")" +
-		"∀ " + a.GetVarList()[0].ToString()
+		"! [" + a.GetVarList()[0].ToString() + "] : "
 	if len(a.GetVarList()) > 1 {
 		s := a.GetVarList()[1:]
 		for _, v := range s {

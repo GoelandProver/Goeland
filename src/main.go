@@ -202,7 +202,7 @@ func Search(f basictypes.Form, bound int) {
 		global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
 
 		if global.GetProof() && res {
-			//proof.WriteGraphProof(final_proof)
+			proof.WriteGraphProof(final_proof)
 			fmt.Printf("%s SZS output start Proof for %v\n", "%", problem_name)
 			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
 			fmt.Printf("%s SZS output end Proof for %v\n", "%", problem_name)
