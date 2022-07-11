@@ -150,6 +150,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 	cpt_children_returning_subst := 0
 	cpt_remaining_children := len(*children)
 	current_subst_seen := false
+	new_current_subst := current_subst.Copy()
 
 	// Until all the children have answered
 	for cpt_remaining_children > 0 && result_int < 3 {
@@ -187,9 +188,8 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 					if len(res.subst_list_for_father) == 1 && res.subst_list_for_father[0].GetSubst().Equals(current_subst.GetSubst()) {
 						global.PrintDebug("SLC", fmt.Sprintf("The child %v returns the current subst !", res.id))
 						current_subst_seen = true
-						cpt_children_returning_subst--
 						// Children sent the same substitution, eventually with new forms
-						result_subst = append(result_subst, current_subst.AddFormulas(res.subst_list_for_father[0].GetForm()))
+						new_current_subst = current_subst.AddFormulas(res.subst_list_for_father[0].GetForm())
 					} else {
 						// Reseat at each step
 						common_substs = []complextypes.SubstAndForm{}
@@ -206,24 +206,26 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 
 						// Add new subst to result subst
 						for _, v := range res.subst_list_for_father {
-							global.PrintDebug("SLC", v.ToString())
-							added := false
-							for i := range result_subst {
-								if v.GetSubst().Equals(result_subst[i].GetSubst()) {
-									added = true
-									global.PrintDebug("SLC", "Subst already in result_subst")
-									result_subst[i] = result_subst[i].AddFormulas(v.GetForm())
+							global.PrintDebug("SLC", fmt.Sprintf("Check if the substitution was already found by another child : %v\n", v.ToString()))
+							if !v.GetSubst().Equals(new_current_subst.GetSubst()) {
+								added := false
+								global.PrintDebug("SLC", fmt.Sprintf("Result_subst :%v", complextypes.SubstAndFormListToString(result_subst)))
+								for i := range result_subst {
+									if v.GetSubst().Equals(result_subst[i].GetSubst()) {
+										added = true
+										global.PrintDebug("SLC", "Subst already in result_subst")
+										result_subst[i] = result_subst[i].AddFormulas(v.GetForm())
+									}
+								}
+
+								if !added {
+									global.PrintDebug("SLC", fmt.Sprintf("New susbt found : %v", v.ToString()))
+									result_subst = complextypes.AppendIfNotContainsSubstAndForm(result_subst, v)
 								}
 							}
-
-							if !added {
-								global.PrintDebug("SLC", "New susbt found !")
-								result_subst = complextypes.AppendIfNotContainsSubstAndForm(result_subst, v)
-							}
 						}
-
+						cpt_children_returning_subst++
 					}
-					cpt_children_returning_subst++
 				}
 
 			} else {
@@ -243,6 +245,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 				// A child returns current subst and the other nothing
 				global.PrintDebug("SLC", "One on more children returns the current subst")
 				result_int = 1
+				result_subst = append(result_subst, new_current_subst)
 			} else {
 				result_int = 0
 			}
@@ -252,11 +255,11 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 			result_int = 1
 
 			// Merge the subst with current subst (if not empty)
-			if !current_subst.IsEmpty() {
+			if !new_current_subst.IsEmpty() {
 				new_result_subst := []complextypes.SubstAndForm{}
 				for _, s := range result_subst {
-					if !s.GetSubst().Equals(current_subst.GetSubst()) {
-						new_subst := complextypes.MergeSubstAndForm(s.Copy(), current_subst.Copy())
+					if !s.GetSubst().Equals(new_current_subst.GetSubst()) {
+						new_subst := complextypes.MergeSubstAndForm(s.Copy(), new_current_subst.Copy())
 						new_result_subst = append(new_result_subst, new_subst)
 					}
 				}
@@ -427,7 +430,18 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				subst_and_form_removed := complextypes.MakeSubstAndForm(s_removed, s.GetForm())
 
 				if !s_removed.IsEmpty() {
-					new_result_subst = append(new_result_subst, subst_and_form_removed.Copy())
+					// Check if th enew substitution is already in th elist, merge formulas
+					added := false
+					for i := range new_result_subst {
+						if new_result_subst[i].GetSubst().Equals(s_removed) {
+							added = true
+							new_result_subst[i] = new_result_subst[i].AddFormulas(s.GetForm())
+						}
+					}
+
+					if !added {
+						new_result_subst = append(new_result_subst, subst_and_form_removed.Copy())
+					}
 				}
 			}
 
