@@ -317,6 +317,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 					subst_for_father = answer_father.GetSubstForChildren().AddFormulas(subst_sent.GetForm())
 				}
 			}
+
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst_for_father})
 			sendSubToFather(c, true, true, father_id, st, given_substs, node_id)
 		} else {
@@ -335,7 +336,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			c2 := Communication{make(chan bool), make(chan Result)}
 
 			global.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", answer_father.GetSubstForChildren().GetSubst().ToString()))
-			go ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren(), node_id*1000)
+			go ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren(), node_id)
 			global.IncrGoRoutine(1)
 
 			global.PrintDebug("WF", "GO !")
