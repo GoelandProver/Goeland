@@ -168,7 +168,6 @@ func applyRules(father_id uint64, st complextypes.State, c Communication, new_at
 		st.SetCurrentProofRule("⊙")
 		st.SetCurrentProofRuleName("CLOSURE")
 		st.SetCurrentProofResultFormulas([]proof.IntFormList{})
-		st.SetCurrentProofFormula(st.GetSubstsFound()[0].GetForm()[0])
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 		sendSubToFather(c, true, true, father_id, st, []complextypes.SubstAndForm{}, current_node_id)
