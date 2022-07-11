@@ -215,8 +215,6 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 					// cas plusieurs formules : on doit aussi copier rewitten[0] sans la première formule. Ce cas ne peux pas arriver vu le code de DMT
 					rewritten = complextypes.CopySubstAndFormList(rewritten[1:])
 
-					st.SetCurrentProofFormula(f)
-
 					// Si on ne s'est pas réécrit en soi-même ?
 					if !choosen_rewritten.GetSubst().Equals(treetypes.Failure()) {
 						// Create a child with the current rewritting rule and make this process to wait for him, with a list of other subst to try
@@ -224,6 +222,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 						st.SetBTOnFormulas(true) // I need to know that I can bt on form and my child needs to know it to to don't loop
 
 						// Proof
+						st.SetCurrentProofFormula(f)
 						child_node := global.IncrCptNode()
 						st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(child_node, basictypes.MakeSingleElementList(choosen_rewritten_form.Copy()))})
 						st.SetCurrentProofRule("Rewrite")

@@ -409,9 +409,12 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				global.PrintDebug("ERROR", "Current subst not empty but child returns nothing")
 			}
 
-			if cpt_children == 1 && !st.GetBTOnFormulas() {
+			switch {
+			case st.GetBTOnFormulas() && cpt_children == 1: // rewrite
+				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), append(st.GetProof(), proof_children[0]...)))
+			case cpt_children == 1:
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), proof_children[0]))
-			} else {
+			default:
 				st.SetCurrentProofChildren(proof_children)
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
 			}
