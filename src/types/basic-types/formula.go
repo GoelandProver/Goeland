@@ -224,7 +224,7 @@ func (e Equ) ToString() string {
 func (e Ex) ToString() string {
 	s_res :=
 		// "(" + strconv.Itoa(e.GetIndex()) + ")" +
-		"? [" + e.GetVarList()[0].ToString() + "] : "
+		"? [" + e.GetVarList()[0].ToString()
 	if len(e.GetVarList()) > 1 {
 		s := e.GetVarList()[1:]
 		for _, v := range s {
@@ -232,13 +232,14 @@ func (e Ex) ToString() string {
 			s_res += v.ToString()
 		}
 	}
+	s_res += "] : "
 	s_res += " (" + e.GetForm().ToString() + ")"
 	return s_res
 }
 func (a All) ToString() string {
 	s_res :=
 		// "(" + strconv.Itoa(a.GetIndex()) + ")" +
-		"! [" + a.GetVarList()[0].ToString() + "] : "
+		"! [" + a.GetVarList()[0].ToString()
 	if len(a.GetVarList()) > 1 {
 		s := a.GetVarList()[1:]
 		for _, v := range s {
@@ -246,6 +247,7 @@ func (a All) ToString() string {
 			s_res += v.ToString()
 		}
 	}
+	s_res += "] : "
 	s_res += " (" + a.GetForm().ToString() + ")"
 	return s_res
 }
