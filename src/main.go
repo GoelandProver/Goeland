@@ -261,12 +261,12 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 				and_list = append(and_list, new_form)
 			}
 		case basictypes.Conjecture:
-			not_form = s.GetForm()
+			not_form = basictypes.RenameVariables(s.GetForm())
 		}
 	}
 	switch {
 	case len(and_list) == 0 && not_form == nil:
-		fmt.Printf("Aucune données\n")
+		fmt.Printf("Formulas not found\n")
 		os.Exit(1)
 		return nil, bound
 	case len(and_list) == 0:

@@ -38,6 +38,10 @@
 
 package basictypes
 
+import (
+	"strconv"
+)
+
 /* Term */
 type Term interface {
 	GetIndex() int
@@ -111,13 +115,13 @@ func (f Fun) GetName() string {
 
 /* ToString */
 func (v Var) ToString() string {
-	return v.GetName() // + "_" + strconv.Itoa(v.GetIndex())
+	return v.GetName() + "_" + strconv.Itoa(v.GetIndex())
 }
 func (m Meta) ToString() string {
-	return m.GetName() // + "_" + strconv.Itoa(m.GetIndex()) + "_" + strconv.Itoa(m.GetFormula())
+	return m.GetName() + "_" + strconv.Itoa(m.GetIndex()) + "_" + strconv.Itoa(m.GetFormula())
 }
 func (i Id) ToString() string {
-	return i.GetName() // + "_" + strconv.Itoa(i.GetIndex())
+	return i.GetName() //+ "_" + strconv.Itoa(i.GetIndex())
 }
 func (f Fun) ToString() string {
 	s_res := f.GetID().ToString()

@@ -40,6 +40,8 @@ package basictypes
 
 import (
 	"strconv"
+	"github.com/GoelandProver/Goeland/global"
+	"fmt"
 )
 
 /*** Structure ***/
@@ -733,10 +735,12 @@ func RenameVariables(f Form) Form {
 		new_form := nf.GetForm()
 
 		for _, v := range nf.GetVarList() {
+			global.PrintDebug("RV", v.ToString())
 			new_var := MakerNewVar(v.GetName())
 			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()))
 			new_vl = replaceVarInVarList(new_vl, v, new_var)
-			new_form = ReplaceVarByTerm(new_form, v, new_var)
+			new_form = ReplaceVarByVar(new_form, v, new_var)
+			global.PrintDebug("RV", fmt.Sprintf("New form :%v", new_form.ToString()))
 
 		}
 		return MakeEx(f.GetIndex(), new_vl, RenameVariables(new_form))
@@ -749,7 +753,7 @@ func RenameVariables(f Form) Form {
 			new_var := MakerNewVar(v.GetName())
 			new_var = MakeVar(new_var.GetIndex(), new_var.GetName()+strconv.Itoa(new_var.GetIndex()))
 			new_vl = replaceVarInVarList(new_vl, v, new_var)
-			new_form = ReplaceVarByTerm(new_form, v, new_var)
+			new_form = ReplaceVarByVar(new_form, v, new_var)
 
 		}
 		return MakeAll(f.GetIndex(), new_vl, RenameVariables(new_form))
@@ -770,4 +774,39 @@ func replaceVarInVarList(vl []Var, v1, v2 Var) []Var {
 		}
 	}
 	return res
+}
+
+func ReplaceVarByVar(f Form, old_symbol Var, new_symbol Var) Form {
+	switch nf := f.(type) {
+	case Pred:
+		return MakePred(f.GetIndex(), nf.GetID(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol))
+	case Top:
+		return f
+	case Bot:
+		return f
+	case Not:
+		return MakeNot(f.GetIndex(), ReplaceVarByVar(nf.GetForm(), old_symbol, new_symbol))
+	case And:
+		var res FormList
+		for _, val := range nf.GetLF() {
+			res = append(res, ReplaceVarByVar(val, old_symbol, new_symbol))
+		}
+		return MakeAnd(f.GetIndex(), res)
+	case Or:
+		var res FormList
+		for _, val := range nf.GetLF() {
+			res = append(res, ReplaceVarByVar(val, old_symbol, new_symbol))
+		}
+		return MakeOr(f.GetIndex(), res)
+	case Imp:
+		return MakeImp(f.GetIndex(), ReplaceVarByVar(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByVar(nf.GetF2(), old_symbol, new_symbol))
+	case Equ:
+		return MakeEqu(f.GetIndex(), ReplaceVarByVar(nf.GetF1(), old_symbol, new_symbol), ReplaceVarByVar(nf.GetF2(), old_symbol, new_symbol))
+	case Ex:
+		return MakeEx(f.GetIndex(), replaceVarInVarList(nf.GetVarList(), old_symbol, new_symbol), ReplaceVarByVar(nf.GetForm(), old_symbol, new_symbol))
+	case All:
+		return MakeAll(f.GetIndex(), replaceVarInVarList(nf.GetVarList(), old_symbol, new_symbol), ReplaceVarByVar(nf.GetForm(), old_symbol, new_symbol))
+	default:
+		return nil
+	}
 }

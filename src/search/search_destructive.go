@@ -209,7 +209,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 							global.PrintDebug("SLC", fmt.Sprintf("Check if the substitution was already found by another child : %v\n", v.ToString()))
 							if !v.GetSubst().Equals(new_current_subst.GetSubst()) {
 								added := false
-								global.PrintDebug("SLC", fmt.Sprintf("Result_subst :%v", complextypes.SubstAndFormListToString(result_subst)))
+								global.PrintDebug("SLC", fmt.Sprintf("Result_subst :%v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(result_subst))))
 								for i := range result_subst {
 									if v.GetSubst().Equals(result_subst[i].GetSubst()) {
 										added = true
@@ -221,6 +221,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 								if !added {
 									global.PrintDebug("SLC", fmt.Sprintf("New susbt found : %v", v.ToString()))
 									result_subst = complextypes.AppendIfNotContainsSubstAndForm(result_subst, v)
+									global.PrintDebug("SLC", fmt.Sprintf("New result susbt : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(result_subst))))
 								}
 							}
 						}
@@ -265,7 +266,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 				}
 				result_subst = complextypes.CopySubstAndFormList(new_result_subst)
 			}
-			global.PrintDebug("SLC", fmt.Sprintf("New subst at the end : %v", complextypes.SubstAndFormListToString(result_subst)))
+			global.PrintDebug("SLC", fmt.Sprintf("New subst at the end : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(result_subst))))
 		default:
 			// Multiple child returns substs, try each one (or only one if it's the same)
 			switch {
@@ -363,8 +364,9 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 **/
 func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.SubstAndForm, node_id int, overwrite_proof bool) {
 	global.PrintDebug("WC", "Waiting children")
-	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), len(forms_for_backtrack), st.GetBTOnFormulas(), complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
+	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), len(forms_for_backtrack), st.GetBTOnFormulas(), complextypes.SubstAndFormListToString( given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 	global.PrintDebug("WC", fmt.Sprintf("MM : %v", st.GetMM().ToString()))
+	global.PrintDebug("WC", fmt.Sprintf("MC : %v", st.GetMC().ToString()))
 
 	select {
 	case quit := <-c.quit:
