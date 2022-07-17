@@ -50,9 +50,11 @@ import (
 func RegisterAxiom(axiom btypes.Form) bool {
 	axiomFT := instanciateForalls(axiom)
 
-	if isRegisterableAsAtomic(axiom, axiomFT) {
-		return makeRewriteRuleFromAtomic(axiomFT)
-	} else if isRegisterableAsEqu(axiomFT) {
+	// if isRegisterableAsAtomic(axiom, axiomFT) {
+	//	return makeRewriteRuleFromAtomic(axiomFT)
+	// } else 
+	
+	if isRegisterableAsEqu(axiomFT) {
 		return makeRewriteRuleFromEquivalence(axiomFT.(btypes.Equ))
 	} else if isRegisterableAsImplication(axiomFT) {
 		return makeRewriteRuleFromImplication(axiomFT.(btypes.Imp))
