@@ -234,7 +234,6 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
 	bound := old_bound
-	//os.Chdir(current_dir)
 
 	for _, s := range lstm {
 		switch s.GetRole() {
@@ -253,6 +252,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(current_dir, path.Dir(file_name)))
 			bound = new_bound
 			and_list = append(and_list, new_form_list)
+
 		case basictypes.Axiom:
 			new_form := basictypes.RenameVariables(s.GetForm())
 			if !global.IsLoaded("dmt") {
@@ -260,6 +260,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			} else if consumed := dmt.RegisterAxiom(new_form.Copy()); !consumed {
 				and_list = append(and_list, new_form)
 			}
+
 		case basictypes.Conjecture:
 			not_form = basictypes.RenameVariables(s.GetForm())
 		}
@@ -272,6 +273,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound
 	case not_form == nil:
+		fmt.Printf("Conjecture not found\n")
 		return basictypes.MakerAnd(and_list), bound
 	default:
 		return basictypes.MakerAnd(append(and_list, basictypes.RefuteForm(not_form))), bound

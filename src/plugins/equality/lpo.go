@@ -43,6 +43,7 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -147,24 +148,31 @@ func (lpo *LPO) insertIdIfNotContains(i basictypes.Id) {
 *	two terms : the new terms for the constraint (if not comparable)
 **/
 func (lpo LPO) compare(s, t basictypes.Term) compareStruct {
+	global.PrintDebug("CPR", fmt.Sprintf("Compare %v and %v", s.ToString(), t.ToString()))
 	switch s_type := s.(type) {
 	case basictypes.Fun:
+		global.PrintDebug("CPR", fmt.Sprintf("%v is a function", s.ToString()))
 		switch t_type := t.(type) {
 		case basictypes.Fun:
+			global.PrintDebug("CPR", fmt.Sprintf("%v is a function", t.ToString()))
 			// function and function
 			return compareFunFun(s_type, t_type, lpo)
 		case basictypes.Meta:
+			global.PrintDebug("CPR", fmt.Sprintf("%v is a Meta", t.ToString()))
 			// function & meta : Occurences inside : f(x) < x, f(y) < x
 			return compareMetaFun(t_type, s_type, -1, lpo)
 		default:
 			fmt.Printf("Type of t unknown")
 		}
 	case basictypes.Meta:
+		global.PrintDebug("CPR", fmt.Sprintf("%v is a Meta", s.ToString()))
 		switch t_type := t.(type) {
 		case basictypes.Fun:
+			global.PrintDebug("CPR", fmt.Sprintf("%v is a function", t.ToString()))
 			// meta & function : Occurences inside : x < f(x), x < f(y)
 			return compareMetaFun(s_type, t_type, 1, lpo)
 		case basictypes.Meta:
+			global.PrintDebug("CPR", fmt.Sprintf("%v is a Meta", t.ToString()))
 			// Meta and meta
 			return compareMetaMeta(s_type, t_type)
 		default:
@@ -183,12 +191,14 @@ func (lpo LPO) compare(s, t basictypes.Term) compareStruct {
 * For example, x < f(x) is ok but f(x) < x isn't
 **/
 func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LPO) compareStruct {
-
+	global.PrintDebug("CMF", "Compare Meta Fun")
 	// Check argument inside f
 	if found, res := compareMetaFunInside(m, f, return_code, lpo); found {
+		global.PrintDebug("CMF", fmt.Sprintf("Found after compare inside : %v", res))
 		return res
 	}
 
+	global.PrintDebug("CMF", fmt.Sprintf("Not found and return_code is %v", return_code))
 	// f has no args or all respect LPO
 	if return_code == 1 {
 		return makeCompareStruct(0, false, m, f)
@@ -198,6 +208,7 @@ func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LP
 }
 
 func compareMetaFunInside(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LPO) (bool, compareStruct) {
+	global.PrintDebug("CMFI", "Compare Meta Fun Inside")
 	i := 0
 	// Check arguments to find occur-check eventually
 	for i < len(f.GetArgs()) {
@@ -239,7 +250,7 @@ func compareMetaMeta(m1, m2 basictypes.Meta) compareStruct {
 
 /* Compare two functions */
 func compareFunFun(s, t basictypes.Fun, lpo LPO) compareStruct {
-
+	global.PrintDebug("CFF", "Compare Fun Fun")
 	// Initalisation
 	f := lpo.get(s.GetID())
 	g := lpo.get(t.GetID())
@@ -295,6 +306,7 @@ func caseFLessG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
 
 /* Case f == g */
 func caseFEqualsG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
+	global.PrintDebug("F=G", "Case F = G")
 	if len(s.GetArgs()) != len(t.GetArgs()) {
 		fmt.Printf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString())
 		return true, makeCompareStruct(0, false, nil, nil)
@@ -308,7 +320,9 @@ func caseFEqualsG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
 	for i < n && !stopped {
 		cs := lpo.compare(s.GetArgs()[i], t.GetArgs()[i])
 
+		// Bug here : les autres arguments !
 		if !cs.is_comparable {
+			global.PrintDebug("F=G", fmt.Sprintf("Not comparable, return : %v and %v", cs.new_t1.ToString(), cs.new_t2.ToString()))
 			return true, makeCompareStruct(0, false, cs.new_t1, cs.new_t2)
 		}
 		if cs.order != 0 {

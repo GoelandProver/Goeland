@@ -95,6 +95,8 @@ var gfa basictypes.Fun
 var fxy basictypes.Fun
 var fyz basictypes.Fun
 var ffx basictypes.Fun
+var fxa basictypes.Fun
+var fay basictypes.Fun
 var fab basictypes.Fun
 var fbc basictypes.Fun
 
@@ -174,6 +176,8 @@ func initTestVariable() {
 	fxy = basictypes.MakerFun(f_id, []basictypes.Term{x, y})
 	fyz = basictypes.MakerFun(f_id, []basictypes.Term{y, z})
 	ffx = basictypes.MakerFun(f_id, []basictypes.Term{fx})
+	fxa = basictypes.MakerFun(f_id, []basictypes.Term{x, a})
+	fay = basictypes.MakerFun(f_id, []basictypes.Term{a, y})
 	fab = basictypes.MakerFun(f_id, []basictypes.Term{a, b})
 	fbc = basictypes.MakerFun(f_id, []basictypes.Term{b, c})
 
@@ -234,7 +238,7 @@ func initCodeTreesTests(lf basictypes.FormList) (datastruct.DataStructure, datas
 func TestMain(m *testing.M) {
 	global.SetStart(time.Now())
 	basictypes.Init()
-	initPluginGlobalVariables()
+	InitPlugin()
 	initTestVariable()
 	global.SetDebug(true)
 	code := m.Run()
@@ -243,6 +247,7 @@ func TestMain(m *testing.M) {
 
 /** Tests equality problem ***/
 func TestEQ1(t *testing.T) {
+	global.SetDebug(true)
 	/**
 	* Eq :
 	* fa = a
@@ -631,4 +636,49 @@ func TestConstaintes6(t *testing.T) {
 	if !append || len(cs.getPrec()) > 0 {
 		t.Fatalf("Error: %v and %v is not the expected PREC list. Expected consistant and empty PREC list", append, cs.getPrec().toString())
 	}
+}
+
+func TestConstaintes7(t *testing.T) {
+	cs := makeEmptyConstaintStruct()
+
+	/* consistant, should return X,a and Y, b */
+	tp_fxy_fab := makeTermPair(fxy, fab)
+	constraint_fxy_fab := MakeConstraint(EQ, tp_fxy_fab)
+	// append :=
+	cs.appendIfConsistant(constraint_fxy_fab)
+	/*
+		if !append || len(cs.getPrec()) > 0 {
+			t.Fatalf("Error: %v and %v is not the expected PREC list. Expected consistant and empty PREC list", append, cs.getPrec().toString())
+		}
+	*/
+}
+
+func TestConstaintes8(t *testing.T) {
+	cs := makeEmptyConstaintStruct()
+
+	/* consistant, should return X,a and Y, b */
+	tp_fxa_fay := makeTermPair(fxa, fay)
+	constraint_fxa_fay := MakeConstraint(EQ, tp_fxa_fay)
+	// append :=
+	cs.appendIfConsistant(constraint_fxa_fay)
+	/*
+		if !append || len(cs.getPrec()) > 0 {
+			t.Fatalf("Error: %v and %v is not the expected PREC list. Expected consistant and empty PREC list", append, cs.getPrec().toString())
+		}
+	*/
+}
+
+func TestConstaintes9(t *testing.T) {
+	cs := makeEmptyConstaintStruct()
+
+	/* consistant, should return X,a and Y, b */
+	tp_gga_ggx := makeTermPair(gga, ggx)
+	constraint_gga_ggx := MakeConstraint(PREC, tp_gga_ggx)
+	// append :=
+	cs.appendIfConsistant(constraint_gga_ggx)
+	/*
+		if !append || len(cs.getPrec()) > 0 {
+			t.Fatalf("Error: %v and %v is not the expected PREC list. Expected consistant and empty PREC list", append, cs.getPrec().toString())
+		}
+	*/
 }

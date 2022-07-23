@@ -98,7 +98,7 @@ func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
 
 /* return true if the constraint is not violated, false otherwise  + true is the contraint is comparable, false otherwise + update c into the useful part of the constraint */
 func (c *Constraint) checkLPO() (bool, bool) {
-	global.PrintDebug("CLPO", fmt.Sprintf("Type PREC, cst : %v", c.toString()))
+	global.PrintDebug("CLPO", fmt.Sprintf("Type %v, cst : %v", c.getCType(), c.toString()))
 	cs := lpo.compare(c.getTP().getT1(), c.getTP().getT2())
 	global.PrintDebug("CLPO", fmt.Sprintf("res : %v, is_comparable : %v", cs.order, cs.is_comparable))
 	if cs.is_comparable {
@@ -112,8 +112,11 @@ func (c *Constraint) checkLPO() (bool, bool) {
 			return false, true
 		}
 	}
-	global.PrintDebug("CLPO", fmt.Sprintf("new_t1 : %v, new_t2 : %v", cs.new_t1.ToString(), cs.new_t2.ToString()))
-	c.setTP(makeTermPair(cs.new_t1, cs.new_t2))
+	//global.PrintDebug("CLPO", fmt.Sprintf("new_t1 : %v, new_t2 : %v", cs.new_t1.ToString(), cs.new_t2.ToString()))
+	// if (!c.getTP().getT1().Equals(cs.new_t1)) || (!c.getTP().getT2().Equals(cs.new_t2)) {
+	//	global.PrintDebug("CLPO", fmt.Sprintf("Compare LPO changed terms : %v and %v became : %v and %v", c.getTP().getT1().ToString(), c.getTP().getT2().ToString(), cs.new_t1.ToString(), cs.new_t2.ToString()))
+	// }
+	//c.setTP(makeTermPair(cs.new_t1, cs.new_t2))
 	return true, false
 }
 

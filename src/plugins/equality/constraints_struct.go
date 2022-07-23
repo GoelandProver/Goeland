@@ -149,11 +149,11 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 		}
 
 		// Simplify it
-		respect_lpo, is_comparable := c.checkLPO()
-		global.PrintDebug("ICW", fmt.Sprintf("Is_comparable : %v, respec_lpo : %v", is_comparable, respect_lpo))
-		if is_comparable {
-			return respect_lpo
-		}
+		// respect_lpo, is_comparable := c.checkLPO()
+		// global.PrintDebug("ICW", fmt.Sprintf("Is_comparable : %v, respec_lpo : %v", is_comparable, respect_lpo))
+		// if is_comparable {
+		//	return respect_lpo
+		// }
 
 		// Add it to subst and check unification consistency
 		subst_all := treesearch.AddUnification(c.getTP().t1.Copy(), c.getTP().t2.Copy(), cs.getSubst())
