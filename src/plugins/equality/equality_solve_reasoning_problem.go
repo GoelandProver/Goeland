@@ -132,7 +132,6 @@ func manageRLRules(ep EqualityProblem, father chan answerEP, last_applied_rule_i
 		rules_to_apply = tryApplyLeftRules(ep, index_begin)
 		global.PrintDebug("MRLR", fmt.Sprintf("There is %v left rules available : %v ", len(rules_to_apply), rules_to_apply.toString()))
 		return manageRule(ep, rules_to_apply, father)
-
 	}
 }
 
