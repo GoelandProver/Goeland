@@ -364,7 +364,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 **/
 func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.SubstAndForm, node_id int, overwrite_proof bool) {
 	global.PrintDebug("WC", "Waiting children")
-	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), len(forms_for_backtrack), st.GetBTOnFormulas(), complextypes.SubstAndFormListToString( given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
+	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), len(forms_for_backtrack), st.GetBTOnFormulas(), complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 	global.PrintDebug("WC", fmt.Sprintf("MM : %v", st.GetMM().ToString()))
 	global.PrintDebug("WC", fmt.Sprintf("MC : %v", st.GetMC().ToString()))
 
@@ -569,10 +569,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 				// Check if exists a contradiction after applying the substitution
 				clos_res_after_apply_subst, subst_after_apply_subst := applyClosureRules(f.Copy(), &st)
-				closed := manageClosureRule(father_id, &st, c, clos_res_after_apply_subst, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id)
-
-				if closed {
-					manageQuitOrder(true, c, father_id, st, nil, []complextypes.SubstAndForm{}, node_id)
+				if manageClosureRule(father_id, &st, c, clos_res_after_apply_subst, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id) {
 					return
 				}
 			}
@@ -596,10 +593,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			}
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 			clos_res, subst := applyClosureRules(f.Copy(), &st)
-			closed := manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy(), node_id)
-
-			if closed {
-				manageQuitOrder(true, c, father_id, st, nil, []complextypes.SubstAndForm{}, node_id)
+			if manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy(), node_id) {
 				return
 			}
 
@@ -630,7 +624,9 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
 				if res_eq {
-					manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}), node_id)
+					if manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}), node_id) {
+						return
+					}
 				}
 			}
 		}
