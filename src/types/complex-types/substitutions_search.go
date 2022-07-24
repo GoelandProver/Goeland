@@ -68,39 +68,56 @@ func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
 /* Remove substitution without mm */
 func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) treetypes.Substitutions {
 
-	// global.PrintDebug("REWM", fmt.Sprintf("MM : %v", mm.ToString()))
+	global.PrintDebug("REWM", fmt.Sprintf("MM : %v", mm.ToString()))
 	// global.PrintDebug("REWM", fmt.Sprintf("Initial subst : %v", s.ToString()))
 
 	// Substitution définitive
 	res := treetypes.Substitutions{}
 	// Substitution à réorganiser
 	subst_to_reorganize := treetypes.Substitutions{}
+	// Relevant meta
+	relevant_metas := mm.Copy()
+	// Has changer
+	has_changed := true
 
-	for k, v := range s {
-		switch vt := v.(type) {
+	for has_changed {
+		has_changed = false
+		global.PrintDebug("REWM", fmt.Sprintf("Relevant meta : %v", relevant_metas.ToString()))
+		for k, v := range s {
+			switch vt := v.(type) {
 
-		case basictypes.Meta:
-			switch {
-			case mm.Contains(k) && mm.Contains(vt):
-				res[k] = vt
+			case basictypes.Meta:
+				switch {
+				case relevant_metas.Contains(k) && relevant_metas.Contains(vt):
+					res[k] = vt
 
-			case mm.Contains(k) && !mm.Contains(vt):
-				subst_to_reorganize[k] = vt
+				case relevant_metas.Contains(k) && !relevant_metas.Contains(vt):
+					subst_to_reorganize[k] = vt
+				}
+
+			default:
+				if relevant_metas.Contains(k) {
+					res[k] = v
+					for _, candidate_meta := range v.GetMetas() {
+						if !relevant_metas.Contains(candidate_meta) {
+							relevant_metas = append(relevant_metas, candidate_meta)
+							has_changed = true
+						}
+					}
+				}
 			}
-
-		default:
-			if mm.Contains(k) {
-				res[k] = v
-			}
-
 		}
 	}
-	subst_to_reorganize = ReorganizeSubstitution(subst_to_reorganize, mm)
+
+	global.PrintDebug("REWM", fmt.Sprintf("Subst intermédiaire res : %v", res.ToString()))
+	global.PrintDebug("REWM", fmt.Sprintf("Subst intermédiaire subst_to_reorganize  : %v", subst_to_reorganize.ToString()))
+
+	subst_to_reorganize = ReorganizeSubstitution(subst_to_reorganize)
 	treetypes.EliminateMeta(&subst_to_reorganize)
 	treetypes.Eliminate(&subst_to_reorganize)
 	ms, _ := treesearch.MergeSubstitutions(res, subst_to_reorganize)
 
-	// global.PrintDebug("REWM", fmt.Sprintf("Finale subst : %v", ms.ToString()))
+	global.PrintDebug("REWM", fmt.Sprintf("Finale subst : %v", ms.ToString()))
 
 	if ms.Equals(treetypes.Failure()) {
 		println("[REWM] Error : MergeSubstitutions returns failure")
@@ -115,7 +132,7 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 * Take a substitution wich conatins elements like (meta_mother, meta_current), returning only relevante substitution like (meta_mother, meta_mother)
 * (X, X2) (Y, X2) -> (X, Y)
 **/
-func ReorganizeSubstitution(s treetypes.Substitutions, mm basictypes.MetaList) treetypes.Substitutions {
+func ReorganizeSubstitution(s treetypes.Substitutions) treetypes.Substitutions {
 	res := treetypes.Substitutions{}
 	meta_seen := basictypes.MetaList{}
 
