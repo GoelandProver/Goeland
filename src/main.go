@@ -76,6 +76,7 @@ var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
 var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable equality")
 var problem_name string
 var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
+var conjecture_found bool
 
 func main() {
 	initFlag()
@@ -163,13 +164,19 @@ func PrintResult(res bool) {
 	fmt.Printf("==== Result ====\n")
 	if res {
 		fmt.Printf("[%.6fs][%v][Res] VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-		fmt.Printf("%s SZS status Theorem for %v\n", "%", problem_name)
+		if conjecture_found {
+			fmt.Printf("%s SZS status Theorem for %v\n", "%", problem_name)
+		} else {
+			fmt.Printf("%s SZS status Unsatisfiable for %v\n", "%", problem_name)
+		}
 	} else {
 		fmt.Printf("[%.6fs][%v][Res] NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-		fmt.Printf("%s SZS status Counter Theorem for %v\n", "%", problem_name)
-
+		if conjecture_found {
+			fmt.Printf("%s SZS status CounterSatisfiable for %v\n", "%", problem_name)
+		} else {
+			fmt.Printf("%s SZS status Satisfiable for %v\n", "%", problem_name)
+		}
 	}
-
 }
 
 /* Begin the proof search */
@@ -262,6 +269,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			}
 
 		case basictypes.Conjecture:
+			conjecture_found = true
 			not_form = basictypes.RenameVariables(s.GetForm())
 		}
 	}
@@ -273,7 +281,6 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound
 	case not_form == nil:
-		fmt.Printf("Conjecture not found\n")
 		return basictypes.MakerAnd(and_list), bound
 	default:
 		return basictypes.MakerAnd(append(and_list, basictypes.RefuteForm(not_form))), bound
@@ -285,6 +292,9 @@ func initialization() {
 	// Time
 	global.SetStart(time.Now())
 
+	// Search parameters
+	conjecture_found = false
+
 	// Terms
 	basictypes.Init()
 
@@ -295,6 +305,7 @@ func initialization() {
 	if !*flag_noeq {
 		equality.InitPlugin()
 	}
+
 }
 
 /* Init flag */
