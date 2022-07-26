@@ -210,6 +210,7 @@ func (lexer TPTPLex) isPunctuation() (int, bool) {
 func (lexer *TPTPLex) isOperator() (int, bool) {
 	lexMap := map[string]int{
 		"!":   FORALL,
+		"!>":  FORALL_TYPE,
 		"?":   EXISTS,
 		"~":   NOT,
 		"|":   VLINE,
@@ -222,12 +223,24 @@ func (lexer *TPTPLex) isOperator() (int, bool) {
 		"~&":  NOTAND,
 		"*":   STAR,
 		"+":   PLUS,
+		"<<":  SUBTYPE,
 	}
 
 	word := string(lexer.c)
 
 	switch lexer.c {
-	case '!', '?':
+	case '!':
+		if lexer.checkAdvance('>') { // !>
+			word += ">"
+			quantifiersCounter += 1
+		} else {
+			if lexer.pos >= len(lexer.s) || lexer.checkNext(' ') {
+				quantifiersCounter += 1
+			} else {
+				return FAILURE_TOKEN, false
+			}
+		}
+	case '?':
 		if lexer.pos >= len(lexer.s) || lexer.checkNext(' ') {
 			quantifiersCounter += 1
 		} else {
@@ -243,6 +256,8 @@ func (lexer *TPTPLex) isOperator() (int, bool) {
 			if lexer.checkAdvance('>') {
 				word += "~>"
 			}
+		} else if lexer.checkAdvance('<') { // <<
+			word += "<"
 		}
 	case '=':
 		if lexer.checkAdvance('>') { // =>
@@ -454,9 +469,9 @@ func (lexer *TPTPLex) alphaNumeric(yylval *TPTPSymType) {
 // <slosh_char>           ::: [\\]
 func (lexer TPTPLex) specialChars() int {
 	switch lexer.c {
-	case '<':
-		return ARROW
 	case '>':
+		return ARROW
+	case '<':
 		return LESS_SIGN
 	case '#':
 		return HASH

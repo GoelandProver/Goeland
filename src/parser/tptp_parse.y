@@ -34,6 +34,8 @@
 package parser 
 
 import (
+    "fmt"
+
     btypes "github.com/GoelandProver/Goeland/types/basic-types"
     typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -43,6 +45,27 @@ var yylineno = 1
 
 // Final result
 var statement []btypes.Statement
+
+// Either a TypeVar or a Typed Variable
+type TFFVar struct {
+    type_ typing.TypeVar
+    typedVar btypes.Var
+}
+
+type TFFVarList struct {
+    types []typing.TypeVar
+    typedVars []btypes.Var
+}
+
+type TFFTerm struct {
+    type_ typing.TypeApp
+    term btypes.Term
+}
+
+type TFFTermList struct {
+    types []typing.TypeApp
+    terms []btypes.Term
+}
 %}
 
 // Semantic union
@@ -54,11 +77,22 @@ var statement []btypes.Statement
     form btypes.Form
     tvl []typing.TypeVar
     tv typing.TypeVar
-	vrl []btypes.Var
-	vrb btypes.Var
+	  vrl []btypes.Var
+	  vrb btypes.Var
     id btypes.Id
     trm btypes.Term 
     tml []btypes.Term
+    tfv TFFVar
+    tfl TFFVarList
+    ttl TFFTermList
+    tft TFFTerm
+    tph typing.TypeHint
+    tpc typing.TypeCross
+    tpa typing.TypeArrow
+    tya typing.TypeApp
+    tal []typing.TypeApp
+    tps typing.TypeScheme
+    qtp typing.QuantifiedType
 }
 
 // Tokens definition
@@ -68,7 +102,7 @@ var statement []btypes.Statement
 // Punctuation
 %token LEFT_PAREN RIGHT_PAREN COMMA DOT LEFT_BRACKET RIGHT_BRACKET COLON
 // Operators
-%token FORALL EXISTS NOT VLINE AND EQUIV IMPLY LEFT_IMPLY XOR NOTVLINE NOTAND STAR PLUS 
+%token FORALL EXISTS NOT VLINE AND EQUIV IMPLY LEFT_IMPLY XOR NOTVLINE NOTAND STAR PLUS FORALL_TYPE SUBTYPE
 // Predicates
 %token EQUAL NOT_EQUAL TRUE FALSE
 // Quoted words
@@ -82,21 +116,29 @@ var statement []btypes.Statement
 
 // Semantic type of non-terminal type
 %type <lstm> tptp_file tptp_input_list
-// %type <stm> tff_annotated
+%type <stm> tff_annotated
 %type <stm>  tptp_input annotated_formula include fof_annotated tpi_annotated
-%type <str>  name atomic_word atomic_defined_word number file_name
+%type <str>  name atomic_word atomic_defined_word number file_name type_constant type_functor defined_type
 %type <fr>   formula_role 
 %type <form>  tpi_formula
-//%type <form> tff_formula  tff_logic_formula tff_and_formula tff_binary_assoc tff_binary_formula tff_binary_nonassoc tff_or_formula tff_unitary_formula tff_unit_formula tff_preunit_formula tff_quantified_formula tff_unary_formula tff_prefix_unary tff_infix_unary tff_atomic_formula
-%type <form> fof_formula fof_infix_unary fof_logic_formula fof_binary_formula fof_binary_nonassoc fof_binary_assoc fof_or_formula fof_and_formula fof_unary_formula fof_unit_formula fof_unitary_formula fof_quantified_formula fof_atomic_formula fof_plain_atomic_formula fof_defined_atomic_formula fof_defined_plain_formula fof_defined_infix_formula
-//%type <vrl> tff_variable_list 
+%type <form> tff_formula  tff_logic_formula tff_and_formula tff_binary_assoc tff_binary_formula tff_binary_nonassoc tff_or_formula tff_unitary_formula tff_unit_formula tff_preunit_formula tff_quantified_formula tff_unary_formula tff_prefix_unary tff_infix_unary tff_atomic_formula tff_plain_atomic_formula tff_defined_atomic tff_defined_plain
+%type <form> fof_formula fof_infix_unary fof_logic_formula fof_binary_formula fof_binary_nonassoc fof_binary_assoc fof_or_formula fof_and_formula fof_unary_formula fof_unit_formula fof_unitary_formula fof_quantified_formula fof_atomic_formula fof_plain_atomic_formula fof_defined_atomic_formula fof_defined_plain_formula fof_defined_infix_formula tff_defined_infix
+%type <tfv> tff_variable tff_typed_variable
+%type <tfl> tff_variable_list
 %type <vrl> fof_variable_list
-//%type <vrb> tff_variable tff_typed_variable 
 %type <vrb> variable
-%type <id> constant defined_constant functor defined_functor
+%type <id> constant defined_constant functor defined_functor untyped_atom tff_subtype
 %type <trm> fof_plain_term fof_defined_term fof_defined_atomic_term fof_defined_plain_term fof_term fof_function_term defined_term /* fof_plain_atomic_term */
 %type <tml> fof_arguments
+%type <ttl> tff_arguments
+%type <tft> tff_term tff_plain_term tff_defined_term tff_defined_atomic_term tff_defined_plain_term tff_function_term
 
+%type <tpc> tff_xprod_type
+%type <tpa> tff_mapping_type
+%type <tya> tff_unitary_type tff_atomic_type
+%type <tal> tff_type_arguments
+%type <tps> tff_monotype tff_non_atomic_type tff_top_level_type tff_atom_typing
+%type <qtp> tf1_quantified_type 
 %%
 
 /**
@@ -119,13 +161,11 @@ tptp_input: annotated_formula   { $$ = $1 }
 // %----Formula records
 annotated_formula: fof_annotated    { $$ = $1 }
   | tpi_annotated                   { $$ = $1 }
+  | tff_annotated    { $$ = $1 }
   ;
-  // | tff_annotated    { $$ = $1 }
 
-/*
 tff_annotated: TFF LEFT_PAREN name COMMA formula_role COMMA tff_formula annotations RIGHT_PAREN DOT { $$ = btypes.MakeStatement($3, $5, $7) }
   ;
-*/
 
 fof_annotated: FOF LEFT_PAREN name COMMA formula_role COMMA fof_formula annotations RIGHT_PAREN DOT  { $$ = btypes.MakeStatement($3, $5, $7) }
   ;
@@ -144,165 +184,200 @@ formula_role: LOWER_WORD            { $$ = btypes.MakeFormulaRoleFromString($1) 
   | LOWER_WORD DASH general_term    { $$ = btypes.MakeFormulaRoleFromString($1) }
   ;
 
+// ----------------------------------------------------------------------------
+// TFF
+// ----------------------------------------------------------------------------
+
 // %----TFF formulae.
-// tff_formula: tff_logic_formula      { $$ = $1 }
-//   | tff_atom_typing                 {}
-//   | tff_subtype                     {}
-//   ;
+tff_formula: tff_logic_formula      { fmt.Println($1.ToString())
+$$ = $1 }
+  | tff_atom_typing                 {}
+  | tff_subtype                     {}
+  ;
 
-// tff_logic_formula: tff_unitary_formula  { $$ = $1 }
-//   | tff_unary_formula                   { $$ = $1 }
-//   | tff_binary_formula                  { $$ = $1 }
-//   | tff_defined_infix 
-//   ;
-// //   | tfx_definition
-// //   | tfx_sequent
-// // %----<tff_defined_infix> up here to avoid confusion in a = b | p, for TFX.
-// // %----For plain TFF it can be in <tff_defined_atomic>
+tff_logic_formula: tff_unitary_formula  { $$ = $1 }
+  | tff_unary_formula                   { $$ = $1 }
+  | tff_binary_formula                  { $$ = $1 }
+  ;
+//   | tfx_definition
+//   | tfx_sequent
+// %----<tff_defined_infix> up here to avoid confusion in a = b | p, for TFX.
+// %----For plain TFF it can be in <tff_defined_atomic>
 
-// tff_binary_formula: tff_binary_nonassoc { $$ = $1 }
-//   | tff_binary_assoc                    { $$ = $1 }
-//   ;
+tff_binary_formula: tff_binary_nonassoc { $$ = $1 }
+  | tff_binary_assoc                    { $$ = $1 }
+  ;
 
-// tff_binary_nonassoc: tff_unit_formula EQUIV tff_unit_formula    { $$ = btypes.MakeEqu($1, $3) }
-//   | tff_unit_formula IMPLY tff_unit_formula                     { $$ = btypes.MakeImp($1, $3) }
-//   | tff_unit_formula LEFT_IMPLY tff_unit_formula                { $$ = btypes.MakeImp($3, $1) }
-//   | tff_unit_formula XOR tff_unit_formula                       { $$ = btypes.MakeOr([]btypes.Form{btypes.MakeAnd([]btypes.Form{$1, btypes.RefuteForm($3)}), btypes.MakeAnd([]btypes.Form{btypes.RefuteForm($1), $3})})}
-//   | tff_unit_formula NOTVLINE tff_unit_formula                  { $$ = btypes.RefuteForm(btypes.MakeOr([]btypes.Form{$1, $3}))}
-//   | tff_unit_formula NOTAND tff_unit_formula                    { $$ = btypes.RefuteForm(btypes.MakeAnd([]btypes.Form{$1, $3}))}
-//   ;
+tff_binary_nonassoc: tff_unit_formula EQUIV tff_unit_formula    { $$ = btypes.MakeEqu($1, $3) }
+  | tff_unit_formula IMPLY tff_unit_formula                     { $$ = btypes.MakeImp($1, $3) }
+  | tff_unit_formula LEFT_IMPLY tff_unit_formula                { $$ = btypes.MakeImp($3, $1) }
+  | tff_unit_formula XOR tff_unit_formula                       { $$ = btypes.MakeOr([]btypes.Form{btypes.MakeAnd([]btypes.Form{$1, btypes.RefuteForm($3)}), btypes.MakeAnd([]btypes.Form{btypes.RefuteForm($1), $3})})}
+  | tff_unit_formula NOTVLINE tff_unit_formula                  { $$ = btypes.RefuteForm(btypes.MakeOr([]btypes.Form{$1, $3}))}
+  | tff_unit_formula NOTAND tff_unit_formula                    { $$ = btypes.RefuteForm(btypes.MakeAnd([]btypes.Form{$1, $3}))}
+  ;
 
-// tff_binary_assoc: tff_or_formula { $$ = $1 }
-//   | tff_and_formula              { $$ = $1 }
-//   ;
+tff_binary_assoc: tff_or_formula { $$ = $1 }
+  | tff_and_formula              { $$ = $1 }
+  ;
 
-// tff_or_formula: tff_unit_formula VLINE tff_unit_formula { $$ = btypes.MakeOr([]btypes.Form{$1, $3}) }
-//   | tff_or_formula VLINE tff_unit_formula               { $$ = btypes.MakeOr([]btypes.Form{$1, $3}) }
-//   ;
+tff_or_formula: tff_unit_formula VLINE tff_unit_formula { $$ = btypes.MakeOr([]btypes.Form{$1, $3}) }
+  | tff_or_formula VLINE tff_unit_formula               { $$ = btypes.MakeOr([]btypes.Form{$1, $3}) }
+  ;
 
-// tff_and_formula: tff_unit_formula AND tff_unit_formula { $$ = btypes.MakeAnd([]btypes.Form{$1, $3}) }
-//   | tff_and_formula AND tff_unit_formula                { $$ = btypes.MakeAnd([]btypes.Form{$1, $3}) }
-//   ;
+tff_and_formula: tff_unit_formula AND tff_unit_formula { $$ = btypes.MakeAnd([]btypes.Form{$1, $3}) }
+  | tff_and_formula AND tff_unit_formula                { $$ = btypes.MakeAnd([]btypes.Form{$1, $3}) }
+  ;
 
-// tff_unit_formula: tff_unitary_formula { $$ = $1 }
-//   | tff_unary_formula                 { $$ = $1 }
-//   | tff_defined_infix 
-//   ;
+tff_unit_formula: tff_unitary_formula { $$ = $1 }
+  | tff_unary_formula                 { $$ = $1 }
+  | tff_defined_infix                 { $$ = $1 }
+  ;
 
-// tff_preunit_formula: tff_unitary_formula { $$ = $1 }
-//   | tff_prefix_unary                     { $$ = $1 }
-//   ;
+tff_preunit_formula: tff_unitary_formula { $$ = $1 }
+  | tff_prefix_unary                     { $$ = $1 }
+  ;
 
-// tff_unitary_formula: tff_quantified_formula  { $$ = $1 }
-//   | tff_atomic_formula                       { $$ = $1 }
-//   | LEFT_PAREN tff_logic_formula RIGHT_PAREN { $$ = $2 }
-//   ;
+tff_unitary_formula: tff_quantified_formula  { $$ = $1 }
+  | tff_atomic_formula                       { $$ = $1 }
+  | LEFT_PAREN tff_logic_formula RIGHT_PAREN { $$ = $2 }
+  ;
 
-// tff_quantified_formula: FORALL LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_unit_formula { $$ = btypes.MakeAll($3, $6) }
-//   | EXISTS LEFT_BRACKET tff_variable RIGHT_BRACKET COLON tff_unit_formula                          { $$ = btypes.MakeEx($3, $6) }
-//   ;
+tff_quantified_formula: FORALL LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_unit_formula { $$ = btypes.MakeAll($3.typedVars, $6) }
+  | EXISTS LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_unit_formula                     { $$ = btypes.MakeEx($3.typedVars, $6) }
+  ;
 // // %----Quantified formulae bind tightly, so cannot include infix formulae
 
-// tff_variable_list: tff_variable             { $$ = []typing.TypeVar{ $1 } }
-//   | tff_variable COMMA tff_variable_list    { $$ = []typing.TypeVar{ $1, $2... } }
-//   ;
+tff_variable_list: tff_variable             { $$ = makeVarList($1) }
+  | tff_variable COMMA tff_variable_list    { $$ = appendVarList($1, $3) }
+  ;
 
-// tff_variable: tff_typed_variable { $$ = $1 }
-//   | variable                     { $$ = $1 }
-//   ;
+tff_variable: tff_typed_variable { $$ = $1 }
+  | variable                     { 
+        tfv := TFFVar{}
+        tfv.type_ = typing.MkTypeVar($1.GetName())
+        $$ = tfv
+    }
+  ;
 
-// tff_typed_variable: variable COLON tff_atomic_type { $$ = btypes.MakeVar($1.GetIndex(), $1.GetName(), $3) }
-//   ;
+tff_typed_variable: variable COLON tff_atomic_type { $$ = makeTfv($1, $3) }
+  ;
 
-// tff_unary_formula: tff_prefix_unary { $$ = $1 }
-//   | tff_infix_unary                 { $$ = $1 }
-//   ;
+tff_unary_formula: tff_prefix_unary { $$ = $1 }
+  | tff_infix_unary                 { $$ = $1 }
+  ;
 
-// tff_prefix_unary: NOT tff_preunit_formula { $$ = btypes.RefuteForm($2) }
-//   ;
+tff_prefix_unary: NOT tff_preunit_formula { $$ = btypes.RefuteForm($2) }
+  ;
 
-// tff_infix_unary: tff_unitary_term NOT_EQUAL tff_unitary_term { $$ = btypes.MakePred(btypes.Id_neq, []btypes.Term{$1, $3}, []typing.TypeApp{$1.(TypedTerm).GetTypeApp(), $3.(TypedTerm).GetTypeApp() }) }
-//   ;
+tff_infix_unary: tff_term NOT_EQUAL tff_term { $$ = btypes.MakePred(btypes.Id_neq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{$1.term.(btypes.TypedTerm).GetTypeApp(), $3.term.(btypes.TypedTerm).GetTypeApp() }) }
+  ;
 
-// tff_atomic_formula: tff_plain_atomic_formula    { $$ = $1 }
-//   | tff_defined_atomic                          { $$ = $1 }
-//   | tff_system_atomic                           { $$ = $1 }
-//   ;
+tff_atomic_formula: tff_plain_atomic_formula    { $$ = $1 }
+  | tff_defined_atomic                          { $$ = $1 }
+  ;
 
-// tff_plain_atomic_formula: proposition { $$ = $1 }
-//   |
+tff_plain_atomic_formula: constant                { $$ = btypes.MakePred($1, []btypes.Term{}, []typing.TypeApp{}) }
+  | functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = btypes.MakePred($1, $3.terms, $3.types) }
+  ;
 
-// <tff_plain_atomic>     ::= <constant> | <functor>(<tff_arguments>)
-// <tff_plain_atomic>     :== <proposition> | <predicate>(<tff_arguments>)
-// %----<tnc_connective> allowed as formulae for logic specifications
-// <tff_defined_atomic>   ::= <tff_defined_plain> | <tnc_connective>
-// %---To avoid confusion in TFX mode a = b | p   | <tff_defined_infix>
-// <tff_defined_plain>    ::= <defined_constant> |
-//                            <defined_functor>(<tff_arguments>) | 
-//                            <tfx_tnc_atom> | <tfx_let> 
-// % <tfx_conditional> 
-// %----<tfx_conditional> is omitted from <tff_defined_plain> because $ite is
-// %----read simply as a <tff_atomic_formula>
-// <tff_defined_plain>    :== <defined_proposition> |
-//                            <defined_predicate>(<tff_arguments>) |
-//                            <tfx_conditional> | <tfx_let> | <tfx_tnc>
-// %----This is the only one that is strictly a formula, type $o. In TFX, if the
-// %----LHS/RHS is a formula that does not look like a term, then it must be ()ed
-// %----per <tff_unitary_term>. If you put an un()ed formula that looks like a term
-// %----it will be interpreted as a term.
-// <tff_defined_infix>    ::= <tff_unitary_term> <defined_infix_pred>
-//                            <tff_unitary_term>
-// <tff_system_atomic>    ::= <system_constant> |
-//                            <system_functor>(<tff_arguments>)
-// <tff_system_atomic>    :== <system_proposition> |
-//                            <system_predicate>(<tff_arguments>)
-// %----<tfx_conditional> is written and read as a <tff_defined_atomic>
-// <tfx_conditional>      :== $ite(<tff_logic_formula>,<tff_term>,<tff_term>)
-// <tfx_let>              ::= $let(<tfx_let_types>,<tfx_let_defns>,<tff_term>)
-// <tfx_let_types>        ::= <tff_atom_typing> | [<tff_atom_typing_list>]
-// <tff_atom_typing_list> ::= <tff_atom_typing> |
-//                            <tff_atom_typing>,<tff_atom_typing_list>
-// <tfx_let_defns>        ::= <tfx_let_defn> | [<tfx_let_defn_list>]
-// <tfx_let_defn>         ::= <tfx_let_LHS> <assignment> <tff_term>
-// <tfx_let_LHS>          ::= <tff_plain_atomic> | <tfx_tuple>
-// <tfx_let_defn_list>    ::= <tfx_let_defn> | <tfx_let_defn>,<tfx_let_defn_list>
-// <tfx_tnc_atom>         ::= <tnc_connective>(<tff_arguments>)
+tff_defined_atomic: tff_defined_plain { $$ = $1 }
+  ;
 
-// <tff_term>             ::= <tff_logic_formula> | <defined_term> | <tfx_tuple> |
-//                            <tnc_key_pair>
-// <tff_unitary_term>     ::= <tff_atomic_formula> | <defined_term> |
-//                            <tfx_tuple> | <variable> | (<tff_logic_formula>)
-// <tfx_tuple>            ::= [] | [<tff_arguments>]
+tff_defined_plain: defined_constant                       { $$ = btypes.MakePred($1, []btypes.Term{}, []typing.TypeApp{}) }
+  | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = btypes.MakePred($1, $3.terms, $3.types) }
+  ;
 
-// <tff_arguments>        ::= <tff_term> | <tff_term>,<tff_arguments>
+tff_defined_infix: tff_term EQUAL tff_term { $$ = btypes.MakePred(btypes.Id_eq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{$1.term.(btypes.TypedTerm).GetTypeApp(), $3.term.(btypes.TypedTerm).GetTypeApp() }) }
+  ;
 
-// %----<tff_atom_typing> can appear only at top level.
-// <tff_atom_typing>      ::= <untyped_atom> : <tff_top_level_type> |
-//                            (<tff_atom_typing>)
-// <tff_top_level_type>   ::= <tff_atomic_type> | <tff_non_atomic_type>
-// <tff_non_atomic_type>  ::= <tff_mapping_type> | <tf1_quantified_type> |
-//                            (<tff_non_atomic_type>)
-// <tf1_quantified_type>  ::= !> [<tff_variable_list>] : <tff_monotype>
-// <tff_monotype>         ::= <tff_atomic_type> | (<tff_mapping_type>) |
-//                            <tf1_quantified_type>
-// <tff_unitary_type>     ::= <tff_atomic_type> | (<tff_xprod_type>)
-// <tff_atomic_type>      ::= <type_constant> | <defined_type> | <variable> |
-//                            <type_functor>(<tff_type_arguments>) |
-//                            (<tff_atomic_type>) | <tfx_tuple_type>
-// <tff_type_arguments>   ::= <tff_atomic_type> |
-//                            <tff_atomic_type>,<tff_type_arguments>
-// <tff_mapping_type>     ::= <tff_unitary_type> <arrow> <tff_atomic_type>
-// <tff_xprod_type>       ::= <tff_unitary_type> <star> <tff_atomic_type> |
-//                            <tff_xprod_type> <star> <tff_atomic_type>
-// %----For TFX only
-// <tfx_tuple_type>       ::= [<tff_type_list>]
-// <tff_type_list>        ::= <tff_top_level_type> |
-//                            <tff_top_level_type>,<tff_type_list>
+tff_plain_term: constant                         { $$ = tftFrom(typing.TypeVar{}, btypes.MakerConst($1)) }
+  | functor LEFT_PAREN tff_arguments RIGHT_PAREN { $$ = tftFrom(typing.TypeVar{}, btypes.MakerFun($1, $3.terms, $3.types)) }
+  ;
+  
+tff_defined_term: defined_term  { $$ = tftFrom(typing.TypeVar{}, $1) } 
+  | tff_defined_atomic_term     { $$ = $1 }
+  ;
 
-// <tff_subtype>          ::= <untyped_atom> <subtype_sign> <atom>
+tff_defined_atomic_term: tff_defined_plain_term { $$ = $1 }
+  ;
 
-// <tfx_definition>       ::= <tff_atomic_formula> <identical> <tff_term>
-// <tfx_sequent>          ::= <tfx_tuple> <gentzen_arrow> <tfx_tuple>
+tff_defined_plain_term: defined_constant                    { $$ = tftFrom(typing.TypeVar{}, btypes.MakerConst($1)) }
+  | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN    { $$ = tftFrom(typing.TypeVar{}, btypes.MakerFun($1, $3.terms, $3.types)) }
+  ;
+
+tff_term: tff_function_term { $$ = $1 }
+  | tff_variable            { $$ = tftFromTfv($1) }
+  ;
+
+tff_function_term: tff_plain_term   { $$ = $1 }
+  | tff_defined_term                { $$ = $1 }
+  ;
+
+tff_arguments: tff_term           { $$ = makeTermList($1) }
+  | tff_term COMMA tff_arguments  { $$ = appendTermList($1, $3) }
+  ;
+
+tff_atom_typing: untyped_atom COLON tff_top_level_type { fmt.Printf("%s: %s\n", $1.ToString(), $3.ToString()) /* TypeScheme || ParameterizedType || constant, what to do? */}
+  | LEFT_PAREN tff_atom_typing RIGHT_PAREN { $$ = $2 }
+  ;
+
+tff_top_level_type: tff_atomic_type { $$ = $1.(typing.TypeScheme) }
+  | tff_non_atomic_type             { $$ = $1 }
+  ;
+
+tff_non_atomic_type: tff_mapping_type           { $$ = $1 }
+  | tf1_quantified_type                         { $$ = $1 }
+  | LEFT_PAREN tff_non_atomic_type RIGHT_PAREN  { $$ = $2 }
+  ;
+
+tf1_quantified_type: FORALL_TYPE LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_monotype { $$ = typing.MkQuantifiedType($3.types, $6) }
+  ;
+
+tff_monotype: tff_atomic_type               { $$ = $1.(typing.TypeScheme) /* will it work? */}
+  | LEFT_PAREN tff_mapping_type RIGHT_PAREN { $$ = $2 }
+  | tf1_quantified_type                     { $$ = $1 }
+  ;
+
+tff_unitary_type: tff_atomic_type         { $$ = $1 }
+  | LEFT_PAREN tff_xprod_type RIGHT_PAREN { $$ = $2 }
+  ;
+  
+tff_atomic_type: type_constant                              { $$ = typing.MkTypeHint($1) }
+  | defined_type                                            { $$ = typing.MkTypeHint($1) }
+  | UPPER_WORD                                              { $$ = typing.MkTypeVar($1) }
+  | type_functor LEFT_PAREN tff_type_arguments RIGHT_PAREN  { $$ = typing.MkParameterizedType($1, $3) /* >< */ }
+  | LEFT_PAREN tff_atomic_type RIGHT_PAREN                  { $$ = $2 }
+  ;
+  
+tff_type_arguments: tff_atomic_type           { $$ = []typing.TypeApp{$1} }
+  | tff_atomic_type COMMA tff_type_arguments  { $$ = append([]typing.TypeApp{$1}, $3...) }
+  ;
+  
+tff_mapping_type: tff_unitary_type ARROW tff_atomic_type { $$ = typing.MkTypeArrow($1, $3) }
+  ;
+  
+tff_xprod_type: tff_unitary_type STAR tff_atomic_type { $$ = typing.MkTypeCross($1, $3) }
+  | tff_xprod_type STAR tff_atomic_type               { $$ = typing.MkTypeCross($1, $3) }
+  ;
+  
+tff_subtype: untyped_atom SUBTYPE untyped_atom { $$ = $1 } // whats this lol
+  ;
+
+untyped_atom: constant { $$ = $1 }
+  ;
+
+type_constant: type_functor { $$ = $1 }
+  ;
+
+type_functor: atomic_word { $$ = $1 }
+  ;
+
+defined_type: atomic_defined_word { $$ = $1 }
+  ;
+
+// ----------------------------------------------------------------------------
+// FOF
+// ----------------------------------------------------------------------------
 
 fof_formula: fof_logic_formula  { $$ = $1 }
   ;
@@ -522,3 +597,65 @@ number: INTEGER { $$ = $1 }
 file_name: SINGLE_QUOTED { $$ = $1 }
   ;
 %%
+
+func makeVarList(in TFFVar) TFFVarList {
+    if in.type_.Equals(typing.TypeVar{}) {
+        return TFFVarList{[]typing.TypeVar{in.type_}, []btypes.Var{}}
+    }
+    return TFFVarList{[]typing.TypeVar{}, []btypes.Var{in.typedVar}}
+}
+
+func appendVarList(in TFFVar, ls TFFVarList) TFFVarList {
+    if in.type_.Equals(typing.TypeVar{}) {
+        ls.typedVars = append(ls.typedVars, in.typedVar)
+    } else {
+        ls.types = append(ls.types, in.type_)
+    }
+    return ls
+}
+
+func tftFromTfv(in TFFVar) TFFTerm {
+    tffTerm := TFFTerm{}
+    if in.type_.Equals(typing.TypeVar{}) {
+        tffTerm.term = in.typedVar
+    } else {
+        tffTerm.type_ = in.type_
+    }
+    return tffTerm
+}
+
+func makeTermList(in TFFTerm) TFFTermList {
+    if in.type_ == nil {
+        return TFFTermList{[]typing.TypeApp{}, []btypes.Term{in.term}}
+    }
+    return TFFTermList{[]typing.TypeApp{in.type_}, []btypes.Term{}}
+}
+
+func appendTermList(in TFFTerm, ls TFFTermList) TFFTermList {
+    if in.type_.Equals(typing.TypeVar{}) {
+        ls.terms = append(ls.terms, in.term)
+    } else {
+        ls.types = append(ls.types, in.type_)
+    }
+    return ls
+}
+
+func makeTfv(var_ btypes.Var, type_ typing.TypeApp) TFFVar {
+    tffVar := TFFVar{}
+    if type_.Equals(typing.MkTypeHint("tType")) {
+        tffVar.type_ = typing.MkTypeVar(var_.GetName())
+    } else {
+        tffVar.typedVar = btypes.MakeVar(var_.GetIndex(), var_.GetName(), type_)
+    }
+    return tffVar
+}
+
+func tftFrom(type_ typing.TypeApp, term btypes.Term) TFFTerm {
+    tffTerm := TFFTerm{}
+    if type_ == nil {
+        tffTerm.term = term
+    } else {
+        tffTerm.type_ = type_
+    }
+    return tffTerm
+}
