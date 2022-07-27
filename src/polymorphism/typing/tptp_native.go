@@ -58,9 +58,9 @@ var realCrossReal TypeApp
 
 func InitTPTPArithmetic() {
 	// Types
-	tInt = MkTypeHint("int")
-	tRat = MkTypeHint("rat")
-	tReal = MkTypeHint("real")
+	tInt = MkTypeHint("$int")
+	tRat = MkTypeHint("$rat")
+	tReal = MkTypeHint("$real")
 
 	intCrossInt = MkTypeCross(tInt, tInt)
 	ratCrossRat = MkTypeCross(tRat, tRat)
@@ -68,41 +68,41 @@ func InitTPTPArithmetic() {
 
 	// Schemes
 	// 1 - Binary predicates
-	recordBinaryProp("less")
-	recordBinaryProp("lesseq")
-	recordBinaryProp("greater")
-	recordBinaryProp("greatereq")
+	recordBinaryProp("$less")
+	recordBinaryProp("$lesseq")
+	recordBinaryProp("$greater")
+	recordBinaryProp("$greatereq")
 
 	// 2 - Binary input arguments
-	recordBinaryInArgs("sum")
-	recordBinaryInArgs("difference")
-	recordBinaryInArgs("product")
-	recordBinaryInArgs("quotient_e")
-	recordBinaryInArgs("quotient_t")
-	recordBinaryInArgs("quotient_f")
-	recordBinaryInArgs("remainder_e")
-	recordBinaryInArgs("remainder_t")
-	recordBinaryInArgs("remainder_f")
+	recordBinaryInArgs("$sum")
+	recordBinaryInArgs("$difference")
+	recordBinaryInArgs("$product")
+	recordBinaryInArgs("$quotient_e")
+	recordBinaryInArgs("$quotient_t")
+	recordBinaryInArgs("$quotient_f")
+	recordBinaryInArgs("$remainder_e")
+	recordBinaryInArgs("$remainder_t")
+	recordBinaryInArgs("$remainder_f")
 
 	// 3 - $quotient
-	SaveTypeScheme("quotient", ratCrossRat, tRat)
-	SaveTypeScheme("quotient", realCrossReal, tReal)
+	SaveTypeScheme("$quotient", ratCrossRat, tRat)
+	SaveTypeScheme("$quotient", realCrossReal, tReal)
 
 	// 4 - Unary input arguments
-	recordUnaryInArgs("uminus")
-	recordUnaryInArgs("floor")
-	recordUnaryInArgs("ceiling")
-	recordUnaryInArgs("truncate")
-	recordUnaryInArgs("round")
+	recordUnaryInArgs("$uminus")
+	recordUnaryInArgs("$floor")
+	recordUnaryInArgs("$ceiling")
+	recordUnaryInArgs("$truncate")
+	recordUnaryInArgs("$round")
 
 	// 5 - Unary predicates
-	recordUnaryProp("is_int")
-	recordUnaryProp("is_rat")
+	recordUnaryProp("$is_int")
+	recordUnaryProp("$is_rat")
 
 	// 6 - Conversion
-	recordConversion("to_int", tInt)
-	recordConversion("to_rat", tRat)
-	recordConversion("to_real", tReal)
+	recordConversion("$to_int", tInt)
+	recordConversion("$to_rat", tRat)
+	recordConversion("$to_real", tReal)
 }
 
 func recordBinaryProp(name string) {

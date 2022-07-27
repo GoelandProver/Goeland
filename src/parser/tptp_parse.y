@@ -38,6 +38,7 @@ import (
 
     btypes "github.com/GoelandProver/Goeland/types/basic-types"
     typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+    . "github.com/GoelandProver/Goeland/global"
 )
 
 var quantifiersCounter = 0
@@ -48,12 +49,12 @@ var statement []btypes.Statement
 
 // Either a TypeVar or a Typed Variable
 type TFFVar struct {
-    type_ typing.TypeVar
+    type_ typing.TypeApp
     typedVar btypes.Var
 }
 
 type TFFVarList struct {
-    types []typing.TypeVar
+    types []typing.TypeApp
     typedVars []btypes.Var
 }
 
@@ -77,8 +78,8 @@ type TFFTermList struct {
     form btypes.Form
     tvl []typing.TypeVar
     tv typing.TypeVar
-	  vrl []btypes.Var
-	  vrb btypes.Var
+	vrl []btypes.Var
+	vrb btypes.Var
     id btypes.Id
     trm btypes.Term 
     tml []btypes.Term
@@ -161,7 +162,7 @@ tptp_input: annotated_formula   { $$ = $1 }
 // %----Formula records
 annotated_formula: fof_annotated    { $$ = $1 }
   | tpi_annotated                   { $$ = $1 }
-  | tff_annotated    { $$ = $1 }
+  | tff_annotated                   { $$ = $1 }
   ;
 
 tff_annotated: TFF LEFT_PAREN name COMMA formula_role COMMA tff_formula annotations RIGHT_PAREN DOT { $$ = btypes.MakeStatement($3, $5, $7) }
@@ -198,6 +199,7 @@ $$ = $1 }
 tff_logic_formula: tff_unitary_formula  { $$ = $1 }
   | tff_unary_formula                   { $$ = $1 }
   | tff_binary_formula                  { $$ = $1 }
+  | tff_defined_infix                   { $$ = $1 }
   ;
 //   | tfx_definition
 //   | tfx_sequent
@@ -252,11 +254,7 @@ tff_variable_list: tff_variable             { $$ = makeVarList($1) }
   ;
 
 tff_variable: tff_typed_variable { $$ = $1 }
-  | variable                     { 
-        tfv := TFFVar{}
-        tfv.type_ = typing.MkTypeVar($1.GetName())
-        $$ = tfv
-    }
+  | variable                     { $$ = makeTfv($1, nil) }
   ;
 
 tff_typed_variable: variable COLON tff_atomic_type { $$ = makeTfv($1, $3) }
@@ -269,7 +267,7 @@ tff_unary_formula: tff_prefix_unary { $$ = $1 }
 tff_prefix_unary: NOT tff_preunit_formula { $$ = btypes.RefuteForm($2) }
   ;
 
-tff_infix_unary: tff_term NOT_EQUAL tff_term { $$ = btypes.MakePred(btypes.Id_neq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{$1.term.(btypes.TypedTerm).GetTypeApp(), $3.term.(btypes.TypedTerm).GetTypeApp() }) }
+tff_infix_unary: tff_term NOT_EQUAL tff_term { $$ = btypes.MakePred(btypes.Id_neq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{}) }
   ;
 
 tff_atomic_formula: tff_plain_atomic_formula    { $$ = $1 }
@@ -283,26 +281,34 @@ tff_plain_atomic_formula: constant                { $$ = btypes.MakePred($1, []b
 tff_defined_atomic: tff_defined_plain { $$ = $1 }
   ;
 
-tff_defined_plain: defined_constant                       { $$ = btypes.MakePred($1, []btypes.Term{}, []typing.TypeApp{}) }
+tff_defined_plain: defined_constant                       { 
+    if $1.GetName() == "$true" {
+        $$ = btypes.MakeTop()
+    } else if $1.GetName() == "$false" {
+        $$ = btypes.MakeBot()
+    } else {
+        $$ = btypes.MakePred($1, []btypes.Term{}, []typing.TypeApp{})
+    }
+    }
   | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = btypes.MakePred($1, $3.terms, $3.types) }
   ;
 
-tff_defined_infix: tff_term EQUAL tff_term { $$ = btypes.MakePred(btypes.Id_eq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{$1.term.(btypes.TypedTerm).GetTypeApp(), $3.term.(btypes.TypedTerm).GetTypeApp() }) }
+tff_defined_infix: tff_term EQUAL tff_term { $$ = btypes.MakePred(btypes.Id_eq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{}) }
   ;
 
-tff_plain_term: constant                         { $$ = tftFrom(typing.TypeVar{}, btypes.MakerConst($1)) }
-  | functor LEFT_PAREN tff_arguments RIGHT_PAREN { $$ = tftFrom(typing.TypeVar{}, btypes.MakerFun($1, $3.terms, $3.types)) }
+tff_plain_term: constant                         { $$ = tftFrom(nil, btypes.MakerConst($1)) }
+  | functor LEFT_PAREN tff_arguments RIGHT_PAREN { $$ = tftFrom(nil, btypes.MakerFun($1, $3.terms, $3.types)) }
   ;
   
-tff_defined_term: defined_term  { $$ = tftFrom(typing.TypeVar{}, $1) } 
+tff_defined_term: defined_term  { $$ = tftFrom(nil, $1) } 
   | tff_defined_atomic_term     { $$ = $1 }
   ;
 
 tff_defined_atomic_term: tff_defined_plain_term { $$ = $1 }
   ;
 
-tff_defined_plain_term: defined_constant                    { $$ = tftFrom(typing.TypeVar{}, btypes.MakerConst($1)) }
-  | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN    { $$ = tftFrom(typing.TypeVar{}, btypes.MakerFun($1, $3.terms, $3.types)) }
+tff_defined_plain_term: defined_constant                    { $$ = tftFrom(nil, btypes.MakerConst($1)) }
+  | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN    { $$ = tftFrom(nil, btypes.MakerFun($1, $3.terms, $3.types)) }
   ;
 
 tff_term: tff_function_term { $$ = $1 }
@@ -330,7 +336,7 @@ tff_non_atomic_type: tff_mapping_type           { $$ = $1 }
   | LEFT_PAREN tff_non_atomic_type RIGHT_PAREN  { $$ = $2 }
   ;
 
-tf1_quantified_type: FORALL_TYPE LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_monotype { $$ = typing.MkQuantifiedType($3.types, $6) }
+tf1_quantified_type: FORALL_TYPE LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_monotype { $$ = typing.MkQuantifiedType(ConvertList[typing.TypeApp, typing.TypeVar]($3.types), $6) }
   ;
 
 tff_monotype: tff_atomic_type               { $$ = $1.(typing.TypeScheme) /* will it work? */}
@@ -453,7 +459,15 @@ fof_defined_atomic_formula: fof_defined_plain_formula { $$ = $1 }
   | fof_defined_infix_formula                         { $$ = $1 }
   ;
 
-fof_defined_plain_formula: defined_constant               { $$ = btypes.MakePred($1, []btypes.Term{}, []typing.TypeApp{}) }
+fof_defined_plain_formula: defined_constant               { 
+    if $1.GetName() == "$true" {
+        $$ = btypes.MakeTop()
+    } else if $1.GetName() == "$false" {
+        $$ = btypes.MakeBot()
+    } else {
+        $$ = btypes.MakePred($1, []btypes.Term{}, []typing.TypeApp{})
+    }
+    }
   | defined_functor LEFT_PAREN fof_arguments RIGHT_PAREN  { $$ = btypes.MakePred($1, $3, []typing.TypeApp{}) }
   ;
 
@@ -599,24 +613,24 @@ file_name: SINGLE_QUOTED { $$ = $1 }
 %%
 
 func makeVarList(in TFFVar) TFFVarList {
-    if in.type_.Equals(typing.TypeVar{}) {
-        return TFFVarList{[]typing.TypeVar{in.type_}, []btypes.Var{}}
+    if in.type_ == nil {
+        return TFFVarList{[]typing.TypeApp{}, []btypes.Var{in.typedVar}}
     }
-    return TFFVarList{[]typing.TypeVar{}, []btypes.Var{in.typedVar}}
+    return TFFVarList{[]typing.TypeApp{in.type_}, []btypes.Var{}}
 }
 
 func appendVarList(in TFFVar, ls TFFVarList) TFFVarList {
-    if in.type_.Equals(typing.TypeVar{}) {
-        ls.typedVars = append(ls.typedVars, in.typedVar)
+    if in.type_ == nil {
+        ls.typedVars = append([]btypes.Var{in.typedVar}, ls.typedVars...)
     } else {
-        ls.types = append(ls.types, in.type_)
+        ls.types = append([]typing.TypeApp{in.type_}, ls.types...)
     }
     return ls
 }
 
 func tftFromTfv(in TFFVar) TFFTerm {
     tffTerm := TFFTerm{}
-    if in.type_.Equals(typing.TypeVar{}) {
+    if in.type_ == nil {
         tffTerm.term = in.typedVar
     } else {
         tffTerm.type_ = in.type_
@@ -626,23 +640,25 @@ func tftFromTfv(in TFFVar) TFFTerm {
 
 func makeTermList(in TFFTerm) TFFTermList {
     if in.type_ == nil {
-        return TFFTermList{[]typing.TypeApp{}, []btypes.Term{in.term}}
+        return TFFTermList{types: []typing.TypeApp{}, terms: []btypes.Term{in.term}}
     }
-    return TFFTermList{[]typing.TypeApp{in.type_}, []btypes.Term{}}
+    return TFFTermList{types: []typing.TypeApp{in.type_}, terms: []btypes.Term{}}
 }
 
 func appendTermList(in TFFTerm, ls TFFTermList) TFFTermList {
-    if in.type_.Equals(typing.TypeVar{}) {
-        ls.terms = append(ls.terms, in.term)
+    if in.type_ == nil {
+        ls.terms = append([]btypes.Term{in.term}, ls.terms...)
     } else {
-        ls.types = append(ls.types, in.type_)
+        ls.types = append([]typing.TypeApp{in.type_}, ls.types...)
     }
     return ls
 }
 
 func makeTfv(var_ btypes.Var, type_ typing.TypeApp) TFFVar {
     tffVar := TFFVar{}
-    if type_.Equals(typing.MkTypeHint("tType")) {
+    if type_ == nil {
+        tffVar.typedVar = var_
+    } else if type_.Equals(typing.MkTypeHint("$tType")) {
         tffVar.type_ = typing.MkTypeVar(var_.GetName())
     } else {
         tffVar.typedVar = btypes.MakeVar(var_.GetIndex(), var_.GetName(), type_)

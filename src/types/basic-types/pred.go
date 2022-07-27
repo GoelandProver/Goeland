@@ -69,11 +69,17 @@ func (p Pred) GetType() typing.TypeScheme { return p.typeHint }
 func (p Pred) RenameVariables() Form      { return p }
 
 func (p Pred) ToString() string {
+	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
+		return p.GetID().ToString()
+	}
 	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", "∅") +
 		" ; " + ListToString(p.GetArgs(), ", ", "∅") + ")"
 }
 
 func (p Pred) ToStringWithSuffixMeta(suffix string) string {
+	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
+		return p.GetID().ToString()
+	}
 	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", "∅") +
 		" ; " + listToStringMeta(p.GetArgs(), suffix, ", ", "∅") + ")"
 }

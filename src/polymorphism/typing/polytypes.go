@@ -105,8 +105,8 @@ func Init() {
 	pMap.lock = sync.Mutex{}
 
 	// Default types
-	defaultType = MkTypeHint("i")
-	defaultProp = MkTypeHint("o")
+	defaultType = MkTypeHint("$i")
+	defaultProp = MkTypeHint("$o")
 }
 
 /* Utils */
