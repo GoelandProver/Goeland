@@ -29,44 +29,53 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/************/
-/* utils.go */
-/************/
+/****************/
+/* equalitys.go */
+/****************/
 /**
-* This file implements some useful functions for the plugin.
+* This file implements the main logic behind the equality plugin.
 **/
 
-package dmt
+package equality
 
 import (
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	"fmt"
+
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
+
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-func is[T any, U any](obj U) bool {
-	_, isT := any(obj).(T)
-	return isT
+/**
+ * Base function needed to initialize any plugin of Goéland.
+ * It registers the hooks to the plugin manager, and parses the given options.
+ **/
+func InitPlugin() error {
+	lpo = makeLPO()
+
+	fmt.Println("[EQ] equality loaded.")
+	// No error can be thrown in this plugin.
+	return nil
 }
 
-func isEquality(pred btypes.Pred) bool {
-	return pred.GetID().Equals(btypes.Id_eq)
-}
-
-func refute(f btypes.Form) btypes.Form {
-	return btypes.SimplifyNeg(btypes.RefuteForm(f))
-}
-
-func predFromNegatedAtom(f btypes.Form) btypes.Pred {
-	return f.(btypes.Not).GetForm().(btypes.Pred)
-}
-
-func selectFromPolarity[T any](polarity bool, positive, negative T) T {
-	if polarity {
-		return positive
+/**
+* Fonction EqualityReasoning
+* Prend atomics
+* créé problème
+* réturn bool et substitution
+**/
+func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList) (bool, []treetypes.Substitutions) {
+	global.PrintDebug("ER", "ER call")
+	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
+	if equalities {
+		return equalityReasoningMultiList(problem)
+	} else {
+		return false, []treetypes.Substitutions{}
 	}
-	return negative
 }
 
-func rewriteMapInsertion(polarity bool, key string, val btypes.Form) {
-	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
-	rewriteMap[key] = append(rewriteMap[key], val)
+func InsertPred(p basictypes.Form) {
+	lpo.insertPred(p)
 }

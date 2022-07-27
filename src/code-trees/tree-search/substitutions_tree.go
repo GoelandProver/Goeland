@@ -39,10 +39,7 @@
 package treesearch
 
 import (
-	"reflect"
-
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -57,13 +54,14 @@ func computeSubstitutions(subst []treetypes.SubstPair, metas treetypes.Substitut
 	tree_subst := treetypes.Substitutions{}
 
 	// Retrieve all the meta of from the tree formula
-	if reflect.TypeOf(form) == reflect.TypeOf(basictypes.Pred{}) {
-		for _, arg := range form.(basictypes.Pred).GetArgs() {
+	switch t_form := form.(type) {
+	case basictypes.Pred:
+		for _, arg := range t_form.GetArgs() {
 			metas_from_tree_form = append(metas_from_tree_form, arg.GetMetas()...)
 		}
-	} else if reflect.TypeOf(form) == reflect.TypeOf(treetypes.TermForm{}) {
-		metas_from_tree_form = append(metas_from_tree_form, form.(treetypes.TermForm).GetTerm().GetMetas()...)
-	} else {
+	case treetypes.TermForm:
+		metas_from_tree_form = append(metas_from_tree_form, t_form.GetTerm().GetMetas()...)
+	default:
 		return treetypes.Failure()
 	}
 
@@ -188,12 +186,10 @@ func MergeSubstitutions(s1, s2 treetypes.Substitutions) (treetypes.Substitutions
 	same_key := false
 
 	if s1.IsEmpty() {
-		global.PrintDebug("MS", "S1 empty")
 		return s2, false
 	}
 
 	if s2.IsEmpty() {
-		global.PrintDebug("MS", "S2 empty")
 		return s1, false
 	}
 

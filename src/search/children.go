@@ -143,8 +143,6 @@ func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64
 	global.PrintDebug("SSTF", fmt.Sprintf("Send subst to father : %v, closed : %v, need answer : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(subst_for_father)), closed, need_answer))
 	global.PrintDebug("SSTF", fmt.Sprintf("Send answer : %v", complextypes.SubstAndFormListToString(subst_for_father)))
 
-	global.PrintDebug("SSTF", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(st.GetProof())))
-
 	select {
 	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), st.GetProof()}:
 		if need_answer {

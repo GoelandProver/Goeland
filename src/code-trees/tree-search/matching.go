@@ -39,7 +39,6 @@
 package treesearch
 
 import (
-	"fmt"
 	"reflect"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -53,21 +52,27 @@ import (
 func (n Node) Unify(formula basictypes.Form) (bool, []treetypes.MatchingSubstitutions) {
 	machine := makeMachine()
 	res := machine.unify(n, formula)
-	global.PrintDebug("Unify", fmt.Sprintf("Res = %v", !reflect.DeepEqual(machine.failure, res)))
+	// global.PrintDebug("Unify", fmt.Sprintf("Res = %v", !reflect.DeepEqual(machine.failure, res)))
 	return !reflect.DeepEqual(machine.failure, res), res // return found, res
 }
 
 /* Tries to find the substitutions needed to unify the formulae with the one described by the sequence of instructions. */
 func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.MatchingSubstitutions {
 	// The formula has to be a predicate.
-	if reflect.TypeOf(formula) != reflect.TypeOf(basictypes.Pred{}) {
+	switch formula_type := formula.(type) {
+	case basictypes.Pred:
+		m.terms = []basictypes.Term{basictypes.MakeFun(formula_type.GetID(), formula_type.GetArgs())}
+		return m.unifyAux(node)
+	case treetypes.TermForm:
+		m.terms = []basictypes.Term{formula_type.GetTerm()}
+		return m.unifyAux(node)
+	default:
 		return m.failure
+
 	}
 
 	// Transform the predicate to a function to make the tool work properly
-	m.terms = []basictypes.Term{basictypes.MakeFun(formula.(basictypes.Pred).GetID(), formula.(basictypes.Pred).GetArgs())}
 
-	return m.unifyAux(node)
 }
 
 /*** Unify aux ***/
@@ -123,7 +128,7 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 	matching := []treetypes.MatchingSubstitutions{}
 
 	if node.isLeaf() {
-		global.PrintDebug("UX", fmt.Sprintf("Is leaf : %v", node.formulae.ToString()))
+		// global.PrintDebug("UX", fmt.Sprintf("Is leaf : %v", node.formulae.ToString()))
 		for _, f := range node.formulae {
 			if reflect.TypeOf(f) == reflect.TypeOf(basictypes.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(treetypes.TermForm{}) {
 				// Rebuild final substitution between meta and subst
@@ -131,7 +136,7 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 				if !final_subst.Equals(treetypes.Failure()) {
 					matching = append(matching, treetypes.MakeMatchingSubstitutions(f, final_subst))
 				} else {
-					global.PrintDebug("UX", "Error try substitute")
+					// global.PrintDebug("UX", "Error try substitute")
 				}
 			}
 		}
@@ -143,9 +148,9 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 /* Unify on goroutines - to manage die message */
 /* TODO : remove when debug ok */
 func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []treetypes.MatchingSubstitutions, father_id uint64) {
-	global.PrintDebug("UA", fmt.Sprintf("Child of %v, Unify Aux", father_id))
+	// global.PrintDebug("UA", fmt.Sprintf("Child of %v, Unify Aux", father_id))
 	ch <- m.unifyAux(n)
-	global.PrintDebug("UA", "Die")
+	// global.PrintDebug("UA", "Die")
 }
 
 /* Launches each child of the current node in a goroutine. */

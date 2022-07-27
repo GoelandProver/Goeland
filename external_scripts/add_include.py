@@ -23,7 +23,7 @@ def process(src, dst) :
     f.close()
 
 if len(sys.argv) != 2:
-    print("./add_include DIRECTORY")
+    print("python3 add_include DIRECTORY")
 else :
     dir = sys.argv[1]
     dir_include = dir[:-1]+"_INCLUDE/"

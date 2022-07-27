@@ -224,7 +224,7 @@ func TestAxiomRewriting4(t *testing.T) {
 	}
 
 	// forall x.x != x
-	axiom = btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(btypes.Id_neq, []btypes.Term{x, x}))
+	axiom = btypes.MakerAll([]btypes.Var{x}, btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, []btypes.Term{x, x})))
 
 	if pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
@@ -238,7 +238,7 @@ func TestAxiomRewriting4(t *testing.T) {
 	}
 
 	// forall x.¬(x != x)
-	axiom = btypes.MakerAll([]btypes.Var{x}, btypes.MakerNot(btypes.MakerPred(btypes.Id_neq, []btypes.Term{x, x})))
+	axiom = btypes.MakerAll([]btypes.Var{x}, btypes.MakerNot(btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, []btypes.Term{x, x}))))
 
 	if pm.ApplySendAxiomHook(axiom) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())

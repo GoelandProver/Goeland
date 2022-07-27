@@ -69,33 +69,50 @@ func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
 func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) treetypes.Substitutions {
 
 	global.PrintDebug("REWM", fmt.Sprintf("MM : %v", mm.ToString()))
-	global.PrintDebug("REWM", fmt.Sprintf("Initial subst : %v", s.ToString()))
+	// global.PrintDebug("REWM", fmt.Sprintf("Initial subst : %v", s.ToString()))
 
 	// Substitution définitive
 	res := treetypes.Substitutions{}
 	// Substitution à réorganiser
 	subst_to_reorganize := treetypes.Substitutions{}
+	// Relevant meta
+	relevant_metas := mm.Copy()
+	// Has changer
+	has_changed := true
 
-	for k, v := range s {
-		switch vt := v.(type) {
+	for has_changed {
+		has_changed = false
+		global.PrintDebug("REWM", fmt.Sprintf("Relevant meta : %v", relevant_metas.ToString()))
+		for k, v := range s {
+			switch vt := v.(type) {
 
-		case basictypes.Meta:
-			switch {
-			case mm.Contains(k) && mm.Contains(vt):
-				res[k] = vt
+			case basictypes.Meta:
+				switch {
+				case relevant_metas.Contains(k) && relevant_metas.Contains(vt):
+					res[k] = vt
 
-			case mm.Contains(k) && !mm.Contains(vt):
-				subst_to_reorganize[k] = vt
+				case relevant_metas.Contains(k) && !relevant_metas.Contains(vt):
+					subst_to_reorganize[k] = vt
+				}
+
+			default:
+				if relevant_metas.Contains(k) {
+					res[k] = v
+					for _, candidate_meta := range v.GetMetas() {
+						if !relevant_metas.Contains(candidate_meta) {
+							relevant_metas = append(relevant_metas, candidate_meta)
+							has_changed = true
+						}
+					}
+				}
 			}
-
-		default:
-			if mm.Contains(k) {
-				res[k] = v
-			}
-
 		}
 	}
-	subst_to_reorganize = ReorganizeSubstitution(subst_to_reorganize, mm)
+
+	global.PrintDebug("REWM", fmt.Sprintf("Subst intermédiaire res : %v", res.ToString()))
+	global.PrintDebug("REWM", fmt.Sprintf("Subst intermédiaire subst_to_reorganize  : %v", subst_to_reorganize.ToString()))
+
+	subst_to_reorganize = ReorganizeSubstitution(subst_to_reorganize)
 	treetypes.EliminateMeta(&subst_to_reorganize)
 	treetypes.Eliminate(&subst_to_reorganize)
 	ms, _ := treesearch.MergeSubstitutions(res, subst_to_reorganize)
@@ -115,7 +132,7 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 * Take a substitution wich conatins elements like (meta_mother, meta_current), returning only relevante substitution like (meta_mother, meta_mother)
 * (X, X2) (Y, X2) -> (X, Y)
 **/
-func ReorganizeSubstitution(s treetypes.Substitutions, mm basictypes.MetaList) treetypes.Substitutions {
+func ReorganizeSubstitution(s treetypes.Substitutions) treetypes.Substitutions {
 	res := treetypes.Substitutions{}
 	meta_seen := basictypes.MetaList{}
 
@@ -159,13 +176,13 @@ func FusionSubstAndFormListWithoutDouble(l1, l2 []SubstAndForm) []SubstAndForm {
 }
 
 /* Apply a substElement on a term */
-func applySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictypes.Term) basictypes.Term {
+func ApplySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictypes.Term) basictypes.Term {
 	res := t
 
 	switch nf := t.(type) {
 	case basictypes.Meta:
 		if nf == old_symbol {
-			res = new_symbol
+			res = new_symbol.Copy()
 		}
 	case basictypes.Fun:
 		res = basictypes.MakeFun(nf.GetP(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()))
@@ -177,7 +194,7 @@ func applySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictype
 func applySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl []basictypes.Term) []basictypes.Term {
 	res := make([]basictypes.Term, len(tl))
 	for i, t := range tl {
-		res[i] = applySubstitutionOnTerm(old_symbol, new_symbol, t)
+		res[i] = ApplySubstitutionOnTerm(old_symbol, new_symbol, t)
 	}
 	return res
 }
@@ -274,9 +291,9 @@ func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]tree
 			s_removed = RemoveElementWithoutMM(s, mm)
 		}
 		if ContainsMetaMother(s_removed, mm) {
-			subst_with_mm = append(subst_with_mm, s_removed)
+			subst_with_mm = treetypes.AppendIfNotContainsSubst(subst_with_mm, s_removed)
 		} else {
-			subst_without_mm = append(subst_without_mm, s)
+			subst_without_mm = treetypes.AppendIfNotContainsSubst(subst_without_mm, s_removed)
 		}
 	}
 

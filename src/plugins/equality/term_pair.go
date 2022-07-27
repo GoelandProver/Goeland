@@ -29,44 +29,42 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/************/
-/* utils.go */
-/************/
+/****************/
+/* term_pair.go */
+/****************/
 /**
-* This file implements some useful functions for the plugin.
+* This file contains the type definition for equality reasonning.
 **/
 
-package dmt
+package equality
 
-import (
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
-)
+import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 
-func is[T any, U any](obj U) bool {
-	_, isT := any(obj).(T)
-	return isT
+/* A pair of two terms */
+type TermPair struct {
+	t1, t2 basictypes.Term
 }
 
-func isEquality(pred btypes.Pred) bool {
-	return pred.GetID().Equals(btypes.Id_eq)
+func (tp TermPair) getT1() basictypes.Term {
+	return tp.t1.Copy()
 }
-
-func refute(f btypes.Form) btypes.Form {
-	return btypes.SimplifyNeg(btypes.RefuteForm(f))
+func (tp TermPair) getT2() basictypes.Term {
+	return tp.t2.Copy()
 }
-
-func predFromNegatedAtom(f btypes.Form) btypes.Pred {
-	return f.(btypes.Not).GetForm().(btypes.Pred)
+func (tp TermPair) copy() TermPair {
+	return makeTermPair(tp.getT1(), tp.getT2())
 }
-
-func selectFromPolarity[T any](polarity bool, positive, negative T) T {
-	if polarity {
-		return positive
-	}
-	return negative
+func (tp TermPair) equals(tp2 TermPair) bool {
+	return tp.getT1().Equals(tp2.getT1()) && tp.getT2().Equals(tp2.getT2())
 }
+func (tp TermPair) equalsModulo(tp2 TermPair) bool {
+	return (tp.getT1().Equals(tp2.getT1()) && tp.getT2().Equals(tp2.getT2())) ||
+		(tp.getT1().Equals(tp2.getT2()) && tp.getT2().Equals(tp2.getT1()))
 
-func rewriteMapInsertion(polarity bool, key string, val btypes.Form) {
-	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
-	rewriteMap[key] = append(rewriteMap[key], val)
+}
+func (tp TermPair) toString() string {
+	return tp.getT1().ToString() + " ≈ " + tp.getT2().ToString()
+}
+func makeTermPair(t1, t2 basictypes.Term) TermPair {
+	return TermPair{t1.Copy(), t2.Copy()}
 }

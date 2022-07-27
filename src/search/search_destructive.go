@@ -42,6 +42,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/equality"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -149,6 +150,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 	cpt_children_returning_subst := 0
 	cpt_remaining_children := len(*children)
 	current_subst_seen := false
+	new_current_subst := current_subst.Copy()
 
 	// Until all the children have answered
 	for cpt_remaining_children > 0 && result_int < 3 {
@@ -186,9 +188,8 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 					if len(res.subst_list_for_father) == 1 && res.subst_list_for_father[0].GetSubst().Equals(current_subst.GetSubst()) {
 						global.PrintDebug("SLC", fmt.Sprintf("The child %v returns the current subst !", res.id))
 						current_subst_seen = true
-						cpt_children_returning_subst--
 						// Children sent the same substitution, eventually with new forms
-						result_subst = append(result_subst, current_subst.AddFormulas(res.subst_list_for_father[0].GetForm()))
+						new_current_subst = current_subst.AddFormulas(res.subst_list_for_father[0].GetForm())
 					} else {
 						// Reseat at each step
 						common_substs = []complextypes.SubstAndForm{}
@@ -205,24 +206,27 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 
 						// Add new subst to result subst
 						for _, v := range res.subst_list_for_father {
-							global.PrintDebug("SLC", v.ToString())
-							added := false
-							for i := range result_subst {
-								if v.GetSubst().Equals(result_subst[i].GetSubst()) {
-									added = true
-									global.PrintDebug("SLC", "Subst already in result_subst")
-									result_subst[i] = result_subst[i].AddFormulas(v.GetForm())
+							global.PrintDebug("SLC", fmt.Sprintf("Check if the substitution was already found by another child : %v\n", v.ToString()))
+							if !v.GetSubst().Equals(new_current_subst.GetSubst()) {
+								added := false
+								global.PrintDebug("SLC", fmt.Sprintf("Result_subst :%v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(result_subst))))
+								for i := range result_subst {
+									if v.GetSubst().Equals(result_subst[i].GetSubst()) {
+										added = true
+										global.PrintDebug("SLC", "Subst already in result_subst")
+										result_subst[i] = result_subst[i].AddFormulas(v.GetForm())
+									}
+								}
+
+								if !added {
+									global.PrintDebug("SLC", fmt.Sprintf("New susbt found : %v", v.ToString()))
+									result_subst = complextypes.AppendIfNotContainsSubstAndForm(result_subst, v)
+									global.PrintDebug("SLC", fmt.Sprintf("New result susbt : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(result_subst))))
 								}
 							}
-
-							if !added {
-								global.PrintDebug("SLC", "New susbt found !")
-								result_subst = complextypes.AppendIfNotContainsSubstAndForm(result_subst, v)
-							}
 						}
-
+						cpt_children_returning_subst++
 					}
-					cpt_children_returning_subst++
 				}
 
 			} else {
@@ -242,6 +246,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 				// A child returns current subst and the other nothing
 				global.PrintDebug("SLC", "One on more children returns the current subst")
 				result_int = 1
+				result_subst = append(result_subst, new_current_subst)
 			} else {
 				result_int = 0
 			}
@@ -251,14 +256,17 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 			result_int = 1
 
 			// Merge the subst with current subst (if not empty)
-			if !current_subst.IsEmpty() {
+			if !new_current_subst.IsEmpty() {
 				new_result_subst := []complextypes.SubstAndForm{}
 				for _, s := range result_subst {
-					new_subst := complextypes.MergeSubstAndForm(s.Copy(), current_subst.Copy())
-					new_result_subst = append(new_result_subst, new_subst)
+					if !s.GetSubst().Equals(new_current_subst.GetSubst()) {
+						new_subst := complextypes.MergeSubstAndForm(s.Copy(), new_current_subst.Copy())
+						new_result_subst = append(new_result_subst, new_subst)
+					}
 				}
 				result_subst = complextypes.CopySubstAndFormList(new_result_subst)
 			}
+			global.PrintDebug("SLC", fmt.Sprintf("New subst at the end : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(result_subst))))
 		default:
 			// Multiple child returns substs, try each one (or only one if it's the same)
 			switch {
@@ -314,14 +322,6 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 				}
 			}
 
-			st.SetCurrentProofFormula(answer_father.subst_for_children.GetForm()[0])
-			st.SetCurrentProofNodeId(node_id)
-			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", answer_father.subst_for_children.GetSubst().ToString()))
-			st.SetCurrentProofRuleName("CLOSURE")
-			st.SetCurrentProofResultFormulas([]proof.IntFormList{})
-
-			st.SetProof(complextypes.ApplySubstitutionOnProofList(answer_father.subst_for_children.GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
-
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst_for_father})
 			sendSubToFather(c, true, true, father_id, st, given_substs, node_id)
 		} else {
@@ -345,7 +345,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 
 			global.PrintDebug("WF", "GO !")
 			st.SetBTOnFormulas(false)
-			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, node_id)
+			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, node_id, true)
 		}
 	}
 }
@@ -362,10 +362,11 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 * 	current_substitution : the substitution sent by this node to its children at this step
 * 	subst_for_backtrack : list of subst if we need to backtrack
 **/
-func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.SubstAndForm, node_id int) {
+func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.SubstAndForm, node_id int, overwrite_proof bool) {
 	global.PrintDebug("WC", "Waiting children")
 	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), len(forms_for_backtrack), st.GetBTOnFormulas(), complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 	global.PrintDebug("WC", fmt.Sprintf("MM : %v", st.GetMM().ToString()))
+	global.PrintDebug("WC", fmt.Sprintf("MC : %v", st.GetMC().ToString()))
 
 	select {
 	case quit := <-c.quit:
@@ -374,17 +375,8 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 		return
 	default:
 		global.PrintDebug("WC", fmt.Sprintf("Current subst : %v", current_subst.GetSubst().ToString()))
-		cpt_children := len(children)
 		result_int, result_subst, proof_children := selectChildren(c, &children, current_subst)
 		global.PrintDebug("WC", fmt.Sprintf("End of select - result_subst : %v ", complextypes.SubstAndFormListToString(result_subst)))
-
-		global.PrintDebug("WC", "-------------------------------------------")
-		global.PrintDebug("WC", fmt.Sprintf("Result int : %v", result_int))
-		global.PrintDebug("WC", "Proof children :")
-		for _, c := range proof_children {
-			global.PrintDebug("WC", proof.ProofStructListToString(c))
-		}
-
 		switch result_int {
 
 		// closed by itself, return applied subst if not empty
@@ -408,7 +400,8 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				global.PrintDebug("ERROR", "Current subst not empty but child returns nothing")
 			}
 
-			if cpt_children == 1 && !st.GetBTOnFormulas() {
+			// Proof
+			if overwrite_proof {
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), proof_children[0]))
 			} else {
 				st.SetCurrentProofChildren(proof_children)
@@ -423,8 +416,8 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 		case 1:
 			global.PrintDebug("WC", fmt.Sprintf("All children agree on the substitution(s) : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(result_subst))))
 
-			if cpt_children == 1 && !st.GetBTOnFormulas() {
-				st.SetProof(complextypes.ApplySubstitutionOnProofList(complextypes.MergeSubstAndForm(st.GetAppliedSubst(), result_subst[0]).GetSubst(), proof_children[0]))
+			if overwrite_proof {
+				st.SetProof(complextypes.ApplySubstitutionOnProofList(result_subst[0].GetSubst(), proof_children[0]))
 			} else {
 				st.SetCurrentProofChildren(proof_children)
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(complextypes.MergeSubstAndForm(st.GetAppliedSubst(), result_subst[0]).GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
@@ -439,7 +432,18 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				subst_and_form_removed := complextypes.MakeSubstAndForm(s_removed, s.GetForm())
 
 				if !s_removed.IsEmpty() {
-					new_result_subst = append(new_result_subst, subst_and_form_removed.Copy())
+					// Check if th enew substitution is already in th elist, merge formulas
+					added := false
+					for i := range new_result_subst {
+						if new_result_subst[i].GetSubst().Equals(s_removed) {
+							added = true
+							new_result_subst[i] = new_result_subst[i].AddFormulas(s.GetForm())
+						}
+					}
+
+					if !added {
+						new_result_subst = append(new_result_subst, subst_and_form_removed.Copy())
+					}
 				}
 			}
 
@@ -467,7 +471,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			// TODO : vérifier si la sub n'a pas déjà été vue, si oui renvoyer faux
 			substs_for_backtrack = append(substs_for_backtrack, subst_res...)
 			st.SetBTOnFormulas(false)
-			waitChildren(father_id, st, c, children, given_substs, s, substs_for_backtrack, forms_for_backtrack, node_id)
+			waitChildren(father_id, st, c, children, given_substs, s, substs_for_backtrack, forms_for_backtrack, node_id, false)
 
 		// quit order from my father
 		case 3:
@@ -498,24 +502,28 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				forms_for_backtrack = forms_for_backtrack[1:]
 				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{}, next_subst_and_form, "WaitChildren - Backtrack on form")
 
+				// Proof
+				child_node := global.IncrCptNode()
+				st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(child_node, basictypes.MakeSingleElementList(next_form.Copy()))})
+				st.SetCurrentProofRule("Rewrite")
+				st.SetCurrentProofRuleName("Rewrite")
+
 				// The last formula of getLF is the previous formula choosen among rewritten. So, discrad it and add the new one
 				st.SetLF(append(st.GetLF()[0:len(st.GetLF())-1].Copy(), next_form))
 
 				st_copy := st.Copy()
-				st_copy.SetCurrentProofRule("Rewrite")
-				// st_copy.SetSubstsFound(st.GetSubstsFound())
 				c_child := Communication{make(chan bool), make(chan Result)}
-				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form, global.IncrCptNode())
+				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form, child_node)
 				global.PrintDebug("PS", "GO !")
 				global.IncrGoRoutine(1)
-				waitChildren(father_id, st, c, []Communication{c_child}, given_substs, next_subst_and_form, substs_for_backtrack, forms_for_backtrack, node_id)
+				waitChildren(father_id, st, c, []Communication{c_child}, given_substs, next_subst_and_form, substs_for_backtrack, forms_for_backtrack, node_id, false)
 
 			case len(substs_for_backtrack) > 0:
 				global.PrintDebug("WC", "Backtrack on subt")
 				next_subst := tryBTSubstitution(&substs_for_backtrack, st.GetMM(), children)
 				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{next_subst}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on subst")
 				st.SetBTOnFormulas(false)
-				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, forms_for_backtrack, node_id)
+				waitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, forms_for_backtrack, node_id, false)
 
 			default:
 				exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die - No more BT available")
@@ -542,7 +550,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v", father_id))
 
-	if global.GetProof(){
+	if global.GetProof() {
 		st.SetCurrentProofNodeId(node_id)
 	}
 
@@ -561,10 +569,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 				// Check if exists a contradiction after applying the substitution
 				clos_res_after_apply_subst, subst_after_apply_subst := applyClosureRules(f.Copy(), &st)
-				closed := manageClosureRule(father_id, &st, c, clos_res_after_apply_subst, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id)
-
-				if closed {
-					manageQuitOrder(true, c, father_id, st, nil, []complextypes.SubstAndForm{}, node_id)
+				if manageClosureRule(father_id, &st, c, clos_res_after_apply_subst, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id) {
 					return
 				}
 			}
@@ -582,33 +587,68 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 		// Search for a contradiction in LF
 		new_atomics := basictypes.MakeEmptyFormList()
-		for i, f := range st.GetLF() {
+		for _, f := range st.GetLF() {
+			if global.IsLoaded("equality") {
+				equality.InsertPred(f.Copy())
+			}
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 			clos_res, subst := applyClosureRules(f.Copy(), &st)
-			closed := manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy(), node_id)
-
-			if closed {
-				manageQuitOrder(true, c, father_id, st, nil, []complextypes.SubstAndForm{}, node_id)
+			if manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy(), node_id) {
 				return
 			}
 
-			/** Add f to new_atomics if its an atomic
-			* last condition the don't loop on the same formula
-			* We can rewrite iff :
-			* i is not the last element
-			* or we're not in bt formula mode
-			* or the subst to apply is empty
-			* = !(i is last and getBtOnFOrm and subst not null)
-			**/
-			if basictypes.ShowKindOfRule(f.Copy()) == basictypes.Atomic && global.IsLoaded("dmt") && !(i == len(st.GetLF()) && st.GetBTOnFormulas() && !s.IsEmpty()) {
+			// Retrieve atomics generated at this step
+			if basictypes.ShowKindOfRule(f.Copy()) == basictypes.Atomic {
 				new_atomics = append(new_atomics, f)
 			} else {
 				st.DispatchForm(f.Copy())
 			}
 		}
 
+		/** Filter Atomics for DMT
+		* last condition to don't loop on the same formula
+		* We can rewrite iff :
+		* i is not the last element
+		* or we're not in bt formula mode
+		* or the subst to apply is empty
+		* = !(i is last and getBtOnFOrm and subst not null)
+		**/
+		atomics_for_dmt := getAtomicsForDMT(new_atomics, &st, s)
+
+		/* Equality - ok because dmt do not apply on equalities */
+		// Variation : do not apply if new_atomics not empty
+		if global.IsLoaded("equality") && (!global.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 || len(st.GetLF()) == 0) {
+			global.PrintDebug("PS", "Try apply EQ !")
+			if shouldApplyEquality(new_atomics, st) {
+				global.PrintDebug("PS", "EQ is applicable !")
+				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
+				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
+				if res_eq {
+					if manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}), node_id) {
+						return
+					}
+				}
+			}
+		}
+
 		global.PrintDebug("PS", "Let's apply rules !")
-		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", new_atomics.ToString()))
-		applyRules(father_id, st, c, new_atomics, node_id)
+		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", atomics_for_dmt.ToString()))
+		applyRules(father_id, st, c, atomics_for_dmt, node_id)
 	}
+}
+
+func shouldApplyEquality(new_atomics basictypes.FormList, st complextypes.State) bool {
+	return len(new_atomics) > 0 || len(st.GetLF()) == 0
+}
+
+func getAtomicsForDMT(new_atomics basictypes.FormList, st *complextypes.State, s complextypes.SubstAndForm) basictypes.FormList {
+	atomics_for_dmt := basictypes.MakeEmptyFormList()
+	for i, f := range new_atomics {
+		if global.IsLoaded("dmt") && !(i == len(st.GetLF()) && st.GetBTOnFormulas() && !s.IsEmpty()) {
+			atomics_for_dmt = append(atomics_for_dmt, f)
+		} else {
+			st.DispatchForm(f.Copy())
+		}
+	}
+	return atomics_for_dmt
 }

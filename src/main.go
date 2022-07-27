@@ -55,6 +55,7 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/parser"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
+	equality "github.com/GoelandProver/Goeland/plugins/equality"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -72,7 +73,10 @@ var flag_one_step = flag.Bool("one_step", false, "Only one step of search")
 var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a file")
 var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
 var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
+var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable equality")
 var problem_name string
+var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
+var conjecture_found bool
 
 func main() {
 	initFlag()
@@ -104,6 +108,18 @@ func main() {
 
 	fmt.Printf("Start search\n")
 	Search(formula, new_bound)
+
+	if *memprofile != "" {
+		f, err := os.Create(*memprofile)
+		if err != nil {
+			log.Fatal("could not create memory profile: ", err)
+		}
+		defer f.Close() // error handling omitted for example
+		runtime.GC()    // get up-to-date statistics
+		if err := pprof.WriteHeapProfile(f); err != nil {
+			log.Fatal("could not write memory profile: ", err)
+		}
+	}
 }
 
 /* Manage return from search for destructive and non-destructive versions  */
@@ -148,13 +164,19 @@ func PrintResult(res bool) {
 	fmt.Printf("==== Result ====\n")
 	if res {
 		fmt.Printf("[%.6fs][%v][Res] VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-		fmt.Printf("%s SZS status Theorem for %v\n", "%", problem_name)
+		if conjecture_found {
+			fmt.Printf("%s SZS status Theorem for %v\n", "%", problem_name)
+		} else {
+			fmt.Printf("%s SZS status Unsatisfiable for %v\n", "%", problem_name)
+		}
 	} else {
 		fmt.Printf("[%.6fs][%v][Res] NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-		fmt.Printf("%s SZS status Counter Theorem for %v\n", "%", problem_name)
-
+		if conjecture_found {
+			fmt.Printf("%s SZS status CounterSatisfiable for %v\n", "%", problem_name)
+		} else {
+			fmt.Printf("%s SZS status Satisfiable for %v\n", "%", problem_name)
+		}
 	}
-
 }
 
 /* Begin the proof search */
@@ -219,7 +241,6 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
 	bound := old_bound
-	//os.Chdir(current_dir)
 
 	for _, s := range lstm {
 		switch s.GetRole() {
@@ -238,6 +259,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(current_dir, path.Dir(file_name)))
 			bound = new_bound
 			and_list = append(and_list, new_form_list)
+
 		case basictypes.Axiom:
 			new_form := basictypes.RenameVariables(s.GetForm())
 			if !global.IsLoaded("dmt") {
@@ -245,13 +267,15 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			} else if consumed := dmt.RegisterAxiom(new_form.Copy()); !consumed {
 				and_list = append(and_list, new_form)
 			}
+
 		case basictypes.Conjecture:
-			not_form = s.GetForm()
+			conjecture_found = true
+			not_form = basictypes.RenameVariables(s.GetForm())
 		}
 	}
 	switch {
 	case len(and_list) == 0 && not_form == nil:
-		fmt.Printf("Aucune données\n")
+		fmt.Printf("Formulas not found\n")
 		os.Exit(1)
 		return nil, bound
 	case len(and_list) == 0:
@@ -268,6 +292,9 @@ func initialization() {
 	// Time
 	global.SetStart(time.Now())
 
+	// Search parameters
+	conjecture_found = false
+
 	// Terms
 	basictypes.Init()
 
@@ -275,6 +302,10 @@ func initialization() {
 	if *flag_dmt {
 		dmt.InitPlugin()
 	}
+	if !*flag_noeq {
+		equality.InitPlugin()
+	}
+
 }
 
 /* Init flag */
@@ -308,31 +339,11 @@ func initFlag() {
 		proof.ResetProofFile()
 	}
 
-	if *cpuprofile != "" {
-		f, err := os.Create(*cpuprofile)
-		if err != nil {
-			log.Fatal("could not create CPU profile: ", err)
-		}
-		defer f.Close() // error handling omitted for example
-		if err := pprof.StartCPUProfile(f); err != nil {
-			log.Fatal("could not start CPU profile: ", err)
-		}
-		defer pprof.StopCPUProfile()
-	}
-
-	if *memprofile != "" {
-		f, err := os.Create(*memprofile)
-		if err != nil {
-			log.Fatal("could not create memory profile: ", err)
-		}
-		defer f.Close() // error handling omitted for example
-		runtime.GC()    // get up-to-date statistics
-		if err := pprof.WriteHeapProfile(f); err != nil {
-			log.Fatal("could not write memory profile: ", err)
-		}
-	}
-
 	global.SetPlugin("dmt", *flag_dmt)
+	global.SetPlugin("equality", !*flag_noeq)
+	if *flag_dmt_before_eq {
+		global.SetDMTBeforeEQ(true)
+	}
 }
 
 func getFile(filename string, dir string) (string, error) {

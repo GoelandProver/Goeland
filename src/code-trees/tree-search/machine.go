@@ -40,7 +40,6 @@ package treesearch
 
 import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -171,11 +170,11 @@ func (m *Machine) tryUnlock(instrTerm basictypes.Term) Status {
 	if m.isLocked() && m.beginCount == m.beginLock {
 		m.unlockMachine()
 		if errorOccured(m.trySubstituteMeta(m.getCurrentMeta(), instrTerm.Copy())) {
-			global.PrintDebug("TU", "ERROR in ATTM")
+			// global.PrintDebug("TU", "ERROR in ATTM")
 			return Status(ERROR)
 		}
 		if errorOccured(m.lockedRight()) {
-			global.PrintDebug("TU", "ERROR in LR")
+			// global.PrintDebug("TU", "ERROR in LR")
 			return Status(ERROR)
 		}
 	}

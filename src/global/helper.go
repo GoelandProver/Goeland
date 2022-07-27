@@ -64,6 +64,7 @@ var plugins map[string]bool = make(map[string]bool)
 var lock_plugins sync.Mutex
 var cpt_node = -1
 var lock_cpt_node sync.Mutex
+var dmt_before_eq bool
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -157,6 +158,10 @@ func IncrCptNode() int {
 	return GetCptNode()
 }
 
+func GetDMTBeforeEq() bool {
+	return dmt_before_eq
+}
+
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
@@ -202,4 +207,8 @@ func SetPlugin(s string, b bool) {
 	lock_plugins.Lock()
 	plugins[s] = b
 	lock_plugins.Unlock()
+}
+
+func SetDMTBeforeEQ(b bool) {
+	dmt_before_eq = b
 }

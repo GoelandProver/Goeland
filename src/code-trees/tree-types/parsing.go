@@ -36,8 +36,6 @@
 package treetypes
 
 import (
-	"reflect"
-
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -92,8 +90,8 @@ func (t TermForm) GetMetas() basictypes.MetaList {
 	}
 }
 
-func makerTermForm(t basictypes.Term) TermForm {
-	return TermForm{basictypes.MakerIndexFormula(), t.Copy()}
+func MakerTermForm(t basictypes.Term) TermForm {
+	return makeTermForm(basictypes.MakerIndexFormula(), t.Copy())
 }
 
 func makeTermForm(i int, t basictypes.Term) TermForm {
@@ -104,17 +102,28 @@ func makeTermForm(i int, t basictypes.Term) TermForm {
 func ParseFormula(formula basictypes.Form) Sequence {
 
 	// The formula has to be a predicate
-	if reflect.TypeOf(formula) != reflect.TypeOf(basictypes.Pred{}) {
+	switch formula_type := formula.(type) {
+	case basictypes.Pred:
+		instructions := Sequence{formula: formula}
+
+		instructions.add(Begin{})
+		parsePred(formula_type, &instructions)
+		instructions.add(End{})
+
+		return instructions
+	case TermForm:
+		instructions := Sequence{formula: formula}
+		varCount := 0
+		postCount := 0
+		instructions.add(Begin{})
+		parseTerms([]basictypes.Term{formula_type.GetTerm().Copy()}, &instructions, basictypes.MetaList{}, &varCount, &postCount)
+		instructions.add(End{})
+
+		return instructions
+
+	default:
 		return Sequence{}
 	}
-
-	instructions := Sequence{formula: formula}
-
-	instructions.add(Begin{})
-	parsePred(formula.(basictypes.Pred), &instructions)
-	instructions.add(End{})
-
-	return instructions
 }
 
 /* Parses a predicate to machine instructions */
@@ -189,6 +198,6 @@ func ParseTerm(term basictypes.Term) Sequence {
 	varCount := 0
 	postCount := 0
 	parseTerms([]basictypes.Term{term.Copy()}, &instructions, basictypes.MetaList{}, &varCount, &postCount)
-	instructions.formula = makerTermForm(term)
+	instructions.formula = MakerTermForm(term)
 	return instructions
 }

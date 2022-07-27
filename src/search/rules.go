@@ -43,6 +43,7 @@ import (
 	"strconv"
 	"strings"
 
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -64,22 +65,31 @@ import (
 *	a substitution, the substitution which make the contradiction (possibly empty)
 **/
 func applyClosureRules(f basictypes.Form, st *complextypes.State) (bool, []treetypes.Substitutions) {
-	var msl []treetypes.MatchingSubstitutions
 	var sl []treetypes.Substitutions
+	res := false
 
 	/* Search obvious closure rule */
 	if searchObviousClosureRule(f) {
 		return true, sl
 	}
 
+	// Search inequality
+	subst_found, subst := searchInequalities(f)
+	if subst_found {
+		res = true
+		sl = append(sl, subst)
+	}
+
 	/* Search contradiction */
-	res, msl := searchClosureRule(f, *st)
-	if len(msl) > 0 {
+	subst_found, msl := searchClosureRule(f, *st)
+	if subst_found {
+		res = true
 		for _, s := range msl {
 			global.PrintDebug("ACR", fmt.Sprintf("Subst found between : %v and %v : %v", f.ToString(), s.GetForm().ToString(), s.GetSubst().ToString()))
 			sl = treetypes.AppendIfNotContainsSubst(sl, s.GetSubst())
 		}
 	}
+
 	return res, sl
 }
 
@@ -100,6 +110,34 @@ func searchObviousClosureRule(f basictypes.Form) bool {
 	default:
 		return false
 	}
+}
+
+/* Search contradiction with inequalities (for example, !(x,a) -> subst(x, a)) */
+func searchInequalities(f basictypes.Form) (bool, treetypes.Substitutions) {
+	subst := treetypes.MakeEmptySubstitution()
+	if form_not, ok := f.(basictypes.Not); ok {
+		if pred_neq, ok := form_not.GetForm().(basictypes.Pred); ok {
+			if pred_neq.GetID().Equals(basictypes.Id_eq) {
+
+				global.PrintDebug("SI", fmt.Sprintf("Search Inequality closure rule : %v", f.ToString()))
+
+				// Search if the two terms are unfiable
+				arg_1 := pred_neq.GetArgs()[0]
+				arg_2 := pred_neq.GetArgs()[1]
+
+				global.PrintDebug("SI", fmt.Sprintf("Arg 1 : %v", arg_1.ToString()))
+				global.PrintDebug("SI", fmt.Sprintf("Arg 2 : %v", arg_2.ToString()))
+
+				subst = treesearch.AddUnification(arg_1, arg_2, subst)
+				global.PrintDebug("SI", fmt.Sprintf("Subst : %v", subst.ToString()))
+
+				if !subst.Equals(treetypes.Failure()) {
+					return true, subst
+				}
+			}
+		}
+	}
+	return false, nil
 }
 
 /* Search a contradiction between a formula and another in the datastructure */

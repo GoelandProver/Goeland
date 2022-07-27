@@ -123,7 +123,7 @@ func IntFormListListToString(fll []IntFormList) string {
 }
 
 func (p ProofStruct) ToString() string {
-	res := p.GetFormula().ToString() + " - " + p.GetRule() + " - " + IntFormListListToString(p.GetResultFormulas())
+	res := "(" + strconv.Itoa(p.GetNodeId()) + ")" + p.GetFormula().ToString() + " - " + p.GetRule() + " - " + IntFormListListToString(p.GetResultFormulas())
 	if len(p.GetChildren()) > 0 {
 		res += " - " + ProofChildrenToString(p.GetChildren())
 	}
@@ -149,7 +149,7 @@ func ProofChildrenToString(l [][]ProofStruct) string {
 	for i, v := range l {
 		s_res += "[" + ProofStructListToString(v) + "]"
 		if i < len(l)-1 {
-			s_res += (" - ")
+			s_res += (" --- ")
 		}
 	}
 	return s_res

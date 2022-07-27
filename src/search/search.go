@@ -120,6 +120,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
 			st.SetCurrentProofNodeId(node_id)
+			st.SetCurrentProofResultFormulas([]proof.IntFormList{})
 
 			for _, subst_for_father := range substs_with_mm {
 
@@ -164,10 +165,11 @@ func applyRules(father_id uint64, st complextypes.State, c Communication, new_at
 
 	case len(st.GetSubstsFound()) > 0 && global.IsDestructive():
 		global.PrintDebug("PS", fmt.Sprintf("Send subst with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
-		// st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", treetypes.SubstListToStringForProof(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
-		// st.SetCurrentProofRuleName("CLOSURE")
-		// st.SetCurrentProofResultFormulas([]basictypes.FormList{basictypes.MakeEmptyFormList()})
-		// st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
+		st.SetCurrentProofRule("⊙")
+		st.SetCurrentProofRuleName("CLOSURE")
+		st.SetCurrentProofResultFormulas([]proof.IntFormList{})
+		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
+
 		sendSubToFather(c, true, true, father_id, st, []complextypes.SubstAndForm{}, current_node_id)
 
 	case len(st.GetBeta()) > 0:
@@ -200,7 +202,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 		// On prend le premier élément de le liste des atomics
 		f := remaining_atomics[0].Copy()
 		remaining_atomics = remaining_atomics[1:].Copy()
-		global.PrintDebug("PS", fmt.Sprintf("Choosen : %v", f.ToString()))
+		global.PrintDebug("PS", fmt.Sprintf("Choose : %v", f.ToString()))
 		global.PrintDebug("PS", fmt.Sprintf("Remaining_atomics %v", remaining_atomics.ToString()))
 
 		// Si f est dans atomic, ça veut dire qu'on a pas pu réécrire, donc inutile de vérifier
@@ -215,8 +217,6 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 					// cas plusieurs formules : on doit aussi copier rewitten[0] sans la première formule. Ce cas ne peux pas arriver vu le code de DMT
 					rewritten = complextypes.CopySubstAndFormList(rewritten[1:])
 
-					st.SetCurrentProofFormula(f)
-
 					// Si on ne s'est pas réécrit en soi-même ?
 					if !choosen_rewritten.GetSubst().Equals(treetypes.Failure()) {
 						// Create a child with the current rewritting rule and make this process to wait for him, with a list of other subst to try
@@ -224,6 +224,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 						st.SetBTOnFormulas(true) // I need to know that I can bt on form and my child needs to know it to to don't loop
 
 						// Proof
+						st.SetCurrentProofFormula(f)
 						child_node := global.IncrCptNode()
 						st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(child_node, basictypes.MakeSingleElementList(choosen_rewritten_form.Copy()))})
 						st.SetCurrentProofRule("Rewrite")
@@ -234,13 +235,14 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 						}
 
 						st_copy := st.Copy()
+						st_copy.SetBTOnFormulas(false)
 
 						// st_copy.SetSubstsFound(st.GetSubstsFound())
 						c_child := Communication{make(chan bool), make(chan Result)}
 						go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten, child_node)
 						global.PrintDebug("PS", "GO !")
 						global.IncrGoRoutine(1)
-						waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, choosen_rewritten, []complextypes.SubstAndForm{}, rewritten, current_node_id)
+						waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, choosen_rewritten, []complextypes.SubstAndForm{}, rewritten, current_node_id, false)
 						return
 					} else {
 						// Pas de réécriture disponible
@@ -312,6 +314,7 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication, c
 		int_form_list_list = append(int_form_list_list, proof.MakeIntFormList(global.IncrCptNode(), fl))
 	}
 	st.SetCurrentProofResultFormulas(int_form_list_list)
+	st.SetBTOnFormulas(false)
 
 	// For each child, launch a goroutine, stock its channel, and wait an answer
 	var chan_tab []Communication
@@ -332,8 +335,7 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication, c
 
 	}
 	if global.IsDestructive() {
-		st.SetBTOnFormulas(false)
-		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, current_node_id)
+		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, current_node_id, false)
 	} else {
 		global.PrintDebug("PS", "Die")
 	}

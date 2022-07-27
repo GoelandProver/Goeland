@@ -339,7 +339,7 @@ func (st State) Copy() State {
 		new_state.SetSubstsFound(st.GetSubstsFound())
 	}
 
-	// Réccréer arbre
+	// Recréer arbre
 	if global.IsLoaded("dmt") {
 		new_state.SetTreePos(st.tree_pos.MakeDataStruct(st.GetAtomic(), true))
 		new_state.SetTreeNeg(st.tree_pos.MakeDataStruct(st.GetAtomic(), false))
@@ -347,10 +347,10 @@ func (st State) Copy() State {
 		new_state.SetTreePos(st.GetTreePos())
 		new_state.SetTreeNeg(st.GetTreeNeg())
 	}
+
 	new_state.SetProof([]proof.ProofStruct{})
 	new_state.SetCurrentProof(proof.MakeEmptyProofStruct())
 	new_state.SetBTOnFormulas(st.GetBTOnFormulas())
-
 	return new_state
 }
 
