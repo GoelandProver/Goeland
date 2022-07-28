@@ -68,7 +68,7 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 	case btypes.AllType:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			typeTreated, newForm = v, btypes.MakeAllType(f.GetVarList()[1:], f.GetForm())
+			typeTreated, newForm = v, btypes.MakeAllType(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
 		} else {
 			typeTreated, newForm = v, f.GetForm()
 		}
@@ -198,13 +198,13 @@ func removeOneVar(form btypes.Form) (btypes.Var, btypes.Form) {
 	case btypes.Ex:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			return v, btypes.MakeEx(f.GetVarList()[1:], f.GetForm())
+			return v, btypes.MakeEx(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
 		}
 		return v, f.GetForm()
 	case btypes.All:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			return v, btypes.MakeAll(f.GetVarList()[1:], f.GetForm())
+			return v, btypes.MakeAll(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
 		}
 		return v, f.GetForm()
 	}

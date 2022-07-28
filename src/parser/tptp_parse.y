@@ -210,24 +210,24 @@ tff_binary_formula: tff_binary_nonassoc { $$ = $1 }
   | tff_binary_assoc                    { $$ = $1 }
   ;
 
-tff_binary_nonassoc: tff_unit_formula EQUIV tff_unit_formula    { $$ = btypes.MakeEqu($1, $3) }
-  | tff_unit_formula IMPLY tff_unit_formula                     { $$ = btypes.MakeImp($1, $3) }
-  | tff_unit_formula LEFT_IMPLY tff_unit_formula                { $$ = btypes.MakeImp($3, $1) }
-  | tff_unit_formula XOR tff_unit_formula                       { $$ = btypes.MakeOr([]btypes.Form{btypes.MakeAnd([]btypes.Form{$1, btypes.RefuteForm($3)}), btypes.MakeAnd([]btypes.Form{btypes.RefuteForm($1), $3})})}
-  | tff_unit_formula NOTVLINE tff_unit_formula                  { $$ = btypes.RefuteForm(btypes.MakeOr([]btypes.Form{$1, $3}))}
-  | tff_unit_formula NOTAND tff_unit_formula                    { $$ = btypes.RefuteForm(btypes.MakeAnd([]btypes.Form{$1, $3}))}
+tff_binary_nonassoc: tff_unit_formula EQUIV tff_unit_formula    { $$ = btypes.MakerEqu($1, $3) }
+  | tff_unit_formula IMPLY tff_unit_formula                     { $$ = btypes.MakerImp($1, $3) }
+  | tff_unit_formula LEFT_IMPLY tff_unit_formula                { $$ = btypes.MakerImp($3, $1) }
+  | tff_unit_formula XOR tff_unit_formula                       { $$ = btypes.MakerOr([]btypes.Form{btypes.MakerAnd([]btypes.Form{$1, btypes.RefuteForm($3)}), btypes.MakerAnd([]btypes.Form{btypes.RefuteForm($1), $3})})}
+  | tff_unit_formula NOTVLINE tff_unit_formula                  { $$ = btypes.RefuteForm(btypes.MakerOr([]btypes.Form{$1, $3}))}
+  | tff_unit_formula NOTAND tff_unit_formula                    { $$ = btypes.RefuteForm(btypes.MakerAnd([]btypes.Form{$1, $3}))}
   ;
 
 tff_binary_assoc: tff_or_formula { $$ = $1 }
   | tff_and_formula              { $$ = $1 }
   ;
 
-tff_or_formula: tff_unit_formula VLINE tff_unit_formula { $$ = btypes.MakeOr([]btypes.Form{$1, $3}) }
-  | tff_or_formula VLINE tff_unit_formula               { $$ = btypes.MakeOr([]btypes.Form{$1, $3}) }
+tff_or_formula: tff_unit_formula VLINE tff_unit_formula { $$ = btypes.MakerOr([]btypes.Form{$1, $3}) }
+  | tff_or_formula VLINE tff_unit_formula               { $$ = btypes.MakerOr([]btypes.Form{$1, $3}) }
   ;
 
-tff_and_formula: tff_unit_formula AND tff_unit_formula { $$ = btypes.MakeAnd([]btypes.Form{$1, $3}) }
-  | tff_and_formula AND tff_unit_formula                { $$ = btypes.MakeAnd([]btypes.Form{$1, $3}) }
+tff_and_formula: tff_unit_formula AND tff_unit_formula { $$ = btypes.MakerAnd([]btypes.Form{$1, $3}) }
+  | tff_and_formula AND tff_unit_formula                { $$ = btypes.MakerAnd([]btypes.Form{$1, $3}) }
   ;
 
 tff_unit_formula: tff_unitary_formula { $$ = $1 }
@@ -244,8 +244,14 @@ tff_unitary_formula: tff_quantified_formula  { $$ = $1 }
   | LEFT_PAREN tff_logic_formula RIGHT_PAREN { $$ = $2 }
   ;
 
-tff_quantified_formula: FORALL LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_unit_formula { $$ = btypes.MakeAll($3.typedVars, $6) }
-  | EXISTS LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_unit_formula                     { $$ = btypes.MakeEx($3.typedVars, $6) }
+tff_quantified_formula: FORALL LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_unit_formula { 
+        if len($3.types) == 0 {
+            $$ = btypes.MakerAll($3.typedVars, $6)
+        } else {
+            $$ = btypes.MakerAllType(ConvertList[typing.TypeApp, typing.TypeVar]($3.types), $6)
+        }
+    }
+  | EXISTS LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_unit_formula                     { $$ = btypes.MakerEx($3.typedVars, $6) }
   ;
 // // %----Quantified formulae bind tightly, so cannot include infix formulae
 
@@ -267,15 +273,15 @@ tff_unary_formula: tff_prefix_unary { $$ = $1 }
 tff_prefix_unary: NOT tff_preunit_formula { $$ = btypes.RefuteForm($2) }
   ;
 
-tff_infix_unary: tff_term NOT_EQUAL tff_term { $$ = btypes.MakePred(btypes.Id_neq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{}) }
+tff_infix_unary: tff_term NOT_EQUAL tff_term { $$ = btypes.MakerPred(btypes.Id_neq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{}) }
   ;
 
 tff_atomic_formula: tff_plain_atomic_formula    { $$ = $1 }
   | tff_defined_atomic                          { $$ = $1 }
   ;
 
-tff_plain_atomic_formula: constant                { $$ = btypes.MakePred($1, []btypes.Term{}, []typing.TypeApp{}) }
-  | functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = btypes.MakePred($1, $3.terms, $3.types) }
+tff_plain_atomic_formula: constant                { $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{}) }
+  | functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = btypes.MakerPred($1, $3.terms, $3.types) }
   ;
 
 tff_defined_atomic: tff_defined_plain { $$ = $1 }
@@ -283,17 +289,17 @@ tff_defined_atomic: tff_defined_plain { $$ = $1 }
 
 tff_defined_plain: defined_constant                       { 
     if $1.GetName() == "$true" {
-        $$ = btypes.MakeTop()
+        $$ = btypes.MakerTop()
     } else if $1.GetName() == "$false" {
-        $$ = btypes.MakeBot()
+        $$ = btypes.MakerBot()
     } else {
-        $$ = btypes.MakePred($1, []btypes.Term{}, []typing.TypeApp{})
+        $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{})
     }
     }
-  | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = btypes.MakePred($1, $3.terms, $3.types) }
+  | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = btypes.MakerPred($1, $3.terms, $3.types) }
   ;
 
-tff_defined_infix: tff_term EQUAL tff_term { $$ = btypes.MakePred(btypes.Id_eq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{}) }
+tff_defined_infix: tff_term EQUAL tff_term { $$ = btypes.MakerPred(btypes.Id_eq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{}) }
   ;
 
 tff_plain_term: constant                         { $$ = tftFrom(nil, btypes.MakerConst($1)) }
@@ -397,31 +403,31 @@ fof_binary_formula: fof_binary_nonassoc     { $$ = $1 }
   | fof_binary_assoc                        { $$ = $1 }
   ;
 
-fof_binary_nonassoc: fof_unit_formula EQUIV fof_unit_formula { $$ = btypes.MakeEqu($1, $3) }
-  | fof_unit_formula IMPLY fof_unit_formula                  { $$ = btypes.MakeImp($1, $3) }
-  | fof_unit_formula LEFT_IMPLY fof_unit_formula             { $$ = btypes.MakeImp($3, $1) }
-  | fof_unit_formula XOR fof_unit_formula                       { $$ = btypes.MakeOr([]btypes.Form{btypes.MakeAnd([]btypes.Form{$1, btypes.RefuteForm($3)}), btypes.MakeAnd([]btypes.Form{btypes.RefuteForm($1), $3})})}
-  | fof_unit_formula NOTVLINE fof_unit_formula                  { $$ = btypes.RefuteForm(btypes.MakeOr([]btypes.Form{$1, $3}))}
-  | fof_unit_formula NOTAND fof_unit_formula                    { $$ = btypes.RefuteForm(btypes.MakeAnd([]btypes.Form{$1, $3}))}
+fof_binary_nonassoc: fof_unit_formula EQUIV fof_unit_formula { $$ = btypes.MakerEqu($1, $3) }
+  | fof_unit_formula IMPLY fof_unit_formula                  { $$ = btypes.MakerImp($1, $3) }
+  | fof_unit_formula LEFT_IMPLY fof_unit_formula             { $$ = btypes.MakerImp($3, $1) }
+  | fof_unit_formula XOR fof_unit_formula                       { $$ = btypes.MakerOr([]btypes.Form{btypes.MakerAnd([]btypes.Form{$1, btypes.RefuteForm($3)}), btypes.MakerAnd([]btypes.Form{btypes.RefuteForm($1), $3})})}
+  | fof_unit_formula NOTVLINE fof_unit_formula                  { $$ = btypes.RefuteForm(btypes.MakerOr([]btypes.Form{$1, $3}))}
+  | fof_unit_formula NOTAND fof_unit_formula                    { $$ = btypes.RefuteForm(btypes.MakerAnd([]btypes.Form{$1, $3}))}
   ;
 
 fof_binary_assoc: fof_or_formula    { $$ = $1 }
   | fof_and_formula                 { $$ = $1 }
   ;
 
-fof_or_formula: fof_unit_formula VLINE fof_unit_formula { $$ = btypes.MakeOr([]btypes.Form{$1, $3}) }
-  | fof_or_formula VLINE fof_unit_formula               { $$ = btypes.MakeOr([]btypes.Form{$1, $3}) }
+fof_or_formula: fof_unit_formula VLINE fof_unit_formula { $$ = btypes.MakerOr([]btypes.Form{$1, $3}) }
+  | fof_or_formula VLINE fof_unit_formula               { $$ = btypes.MakerOr([]btypes.Form{$1, $3}) }
   ;
 
-fof_and_formula: fof_unit_formula AND fof_unit_formula  { $$ = btypes.MakeAnd([]btypes.Form{$1, $3}) }
-  | fof_and_formula AND fof_unit_formula                { $$ = btypes.MakeAnd([]btypes.Form{$1, $3}) }
+fof_and_formula: fof_unit_formula AND fof_unit_formula  { $$ = btypes.MakerAnd([]btypes.Form{$1, $3}) }
+  | fof_and_formula AND fof_unit_formula                { $$ = btypes.MakerAnd([]btypes.Form{$1, $3}) }
   ;
   
 fof_unary_formula: NOT fof_unit_formula     { $$ = btypes.RefuteForm($2) }
   | fof_infix_unary                         { $$ = $1 }
   ;
   
-fof_infix_unary: fof_term NOT_EQUAL fof_term { $$ = btypes.MakePred(btypes.Id_neq, []btypes.Term{$1, $3}, []typing.TypeApp{}) }
+fof_infix_unary: fof_term NOT_EQUAL fof_term { $$ = btypes.MakerPred(btypes.Id_neq, []btypes.Term{$1, $3}, []typing.TypeApp{}) }
   ;
   
 fof_unit_formula: fof_unitary_formula   { $$ = $1 }
@@ -433,8 +439,8 @@ fof_unitary_formula: fof_quantified_formula     { $$ = $1 }
   | LEFT_PAREN fof_logic_formula RIGHT_PAREN    { $$ = $2 }
   ;
   
-fof_quantified_formula: FORALL LEFT_BRACKET fof_variable_list RIGHT_BRACKET COLON fof_unit_formula { $$ = btypes.MakeAll($3, $6) }
-  | EXISTS LEFT_BRACKET fof_variable_list RIGHT_BRACKET COLON fof_unit_formula                     { $$ = btypes.MakeEx($3, $6) }
+fof_quantified_formula: FORALL LEFT_BRACKET fof_variable_list RIGHT_BRACKET COLON fof_unit_formula { $$ = btypes.MakerAll($3, $6) }
+  | EXISTS LEFT_BRACKET fof_variable_list RIGHT_BRACKET COLON fof_unit_formula                     { $$ = btypes.MakerEx($3, $6) }
   ;
   
 fof_variable_list: variable             { $$ = []btypes.Var{$1} }
@@ -446,8 +452,8 @@ fof_atomic_formula: fof_plain_atomic_formula    { $$ = $1 }
   ;
   //   | fof_system_atomic_formula                   { $$ = $1 }
 
-fof_plain_atomic_formula: constant                  { $$ = btypes.MakePred($1, []btypes.Term{}, []typing.TypeApp{}) }
-  | functor LEFT_PAREN fof_arguments RIGHT_PAREN    { $$ = btypes.MakePred($1, $3, []typing.TypeApp{}) }
+fof_plain_atomic_formula: constant                  { $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{}) }
+  | functor LEFT_PAREN fof_arguments RIGHT_PAREN    { $$ = btypes.MakerPred($1, $3, []typing.TypeApp{}) }
   ;
 
 /*
@@ -461,17 +467,17 @@ fof_defined_atomic_formula: fof_defined_plain_formula { $$ = $1 }
 
 fof_defined_plain_formula: defined_constant               { 
     if $1.GetName() == "$true" {
-        $$ = btypes.MakeTop()
+        $$ = btypes.MakerTop()
     } else if $1.GetName() == "$false" {
-        $$ = btypes.MakeBot()
+        $$ = btypes.MakerBot()
     } else {
-        $$ = btypes.MakePred($1, []btypes.Term{}, []typing.TypeApp{})
+        $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{})
     }
     }
-  | defined_functor LEFT_PAREN fof_arguments RIGHT_PAREN  { $$ = btypes.MakePred($1, $3, []typing.TypeApp{}) }
+  | defined_functor LEFT_PAREN fof_arguments RIGHT_PAREN  { $$ = btypes.MakerPred($1, $3, []typing.TypeApp{}) }
   ;
 
-fof_defined_infix_formula: fof_term EQUAL fof_term { $$ = btypes.MakePred(btypes.Id_eq, []btypes.Term{$1, $3}, []typing.TypeApp{}) }
+fof_defined_infix_formula: fof_term EQUAL fof_term { $$ = btypes.MakerPred(btypes.Id_eq, []btypes.Term{$1, $3}, []typing.TypeApp{}) }
   ;
 
 // <fof_system_atomic_formula> ::= <fof_system_term>

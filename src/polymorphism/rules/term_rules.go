@@ -51,11 +51,13 @@ import (
 
 /* Applies the App rule for predicates or functions */
 func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+	var index int
 	var id btypes.Id
 	var terms []btypes.Term
 	var vars []typing.TypeApp
 
 	if whatIsSet(state.consequence) == formIsSet {
+		index = (state.consequence.f).(btypes.Pred).GetIndex()
 		id = (state.consequence.f).(btypes.Pred).GetID()
 		terms = (state.consequence.f).(btypes.Pred).GetArgs()
 		vars = (state.consequence.f).(btypes.Pred).GetTypeVars()
@@ -82,7 +84,7 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 
 	// Type predicate or function
 	if whatIsSet(state.consequence) == formIsSet {
-		fTyped := btypes.MakePred(id, terms, vars, typeScheme)
+		fTyped := btypes.MakePred(index, id, terms, vars, typeScheme)
 		return reconstructForm(launchChildren(createAppChildren(state, vars, terms, primitives), root, fatherChan), fTyped)
 	} else {
 		fTyped := btypes.MakeFun(id, terms, vars, typeScheme)

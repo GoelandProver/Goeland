@@ -62,22 +62,19 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 	// The formula has to be a predicate.
 	switch formula_type := formula.(type) {
 	case basictypes.Pred:
-		m.terms = []basictypes.Term{basictypes.MakeFun(formula_type.GetID(), formula_type.GetArgs())}
+		terms := []basictypes.Term{}
+		terms = append(terms, basictypes.TypeAppArrToTerm(formula.(basictypes.Pred).GetTypeVars())...)
+		terms = append(terms, formula.(basictypes.Pred).GetArgs()...)
+
+		// Transform the predicate to a function to make the tool work properly
+		m.terms = []basictypes.Term{basictypes.MakeFun(formula.(basictypes.Pred).GetID(), terms, []typing.TypeApp{}, formula.(basictypes.Pred).GetType())}
 		return m.unifyAux(node)
 	case treetypes.TermForm:
 		m.terms = []basictypes.Term{formula_type.GetTerm()}
 		return m.unifyAux(node)
 	default:
 		return m.failure
-
 	}
-	terms := []basictypes.Term{}
-	terms = append(terms, basictypes.TypeAppArrToTerm(formula.(basictypes.Pred).GetTypeVars())...)
-	terms = append(terms, formula.(basictypes.Pred).GetArgs()...)
-
-	// Transform the predicate to a function to make the tool work properly
-	m.terms = []basictypes.Term{basictypes.MakeFun(formula.(basictypes.Pred).GetID(), terms, []typing.TypeApp{}, formula.(basictypes.Pred).GetType())}
-
 }
 
 /*** Unify aux ***/

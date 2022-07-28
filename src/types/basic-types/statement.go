@@ -67,7 +67,6 @@ func (s *Statement) SetForm(f Form) {
 
 func MakeStatement(s string, r FormulaRole, f Form) Statement {
 	return Statement{s, r, f}
-
 }
 
 // Formula roles (enumerate type)

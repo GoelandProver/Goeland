@@ -138,23 +138,23 @@ func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstru
 	var f btypes.Form
 	switch form := baseForm.(type) {
 	case btypes.All:
-		f = btypes.MakeAll(form.GetVarList(), unquantify(reconstruction.forms[1], form))
+		f = btypes.MakeAll(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms[1], form))
 	case btypes.AllType:
-		f = btypes.MakeAllType(form.GetVarList(), unquantify(reconstruction.forms[1], form))
+		f = btypes.MakeAllType(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms[1], form))
 	case btypes.Ex:
-		f = btypes.MakeEx(form.GetVarList(), unquantify(reconstruction.forms[1], form))
+		f = btypes.MakeEx(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms[1], form))
 	case btypes.And:
-		f = btypes.MakeAnd(reconstruction.forms)
+		f = btypes.MakeAnd(form.GetIndex(), reconstruction.forms)
 	case btypes.Or:
-		f = btypes.MakeOr(reconstruction.forms)
+		f = btypes.MakeOr(form.GetIndex(), reconstruction.forms)
 	case btypes.Imp:
-		f = btypes.MakeImp(reconstruction.forms[0], reconstruction.forms[1])
+		f = btypes.MakeImp(form.GetIndex(), reconstruction.forms[0], reconstruction.forms[1])
 	case btypes.Equ:
-		f = btypes.MakeEqu(reconstruction.forms[0], reconstruction.forms[1])
+		f = btypes.MakeEqu(form.GetIndex(), reconstruction.forms[0], reconstruction.forms[1])
 	case btypes.Not:
-		f = btypes.MakeNot(reconstruction.forms[0])
+		f = btypes.MakeNot(form.GetIndex(), reconstruction.forms[0])
 	case btypes.Pred:
-		f = btypes.MakePred(form.GetID(), reconstruction.terms[len(form.GetTypeVars()):], form.GetTypeVars(), form.GetType())
+		f = btypes.MakePred(form.GetIndex(), form.GetID(), reconstruction.terms[len(form.GetTypeVars()):], form.GetTypeVars(), form.GetType())
 	}
 
 	return Reconstruct{result: true, forms: []btypes.Form{f}, err: nil}

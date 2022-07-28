@@ -106,23 +106,6 @@ func MakerAnd(fl FormList) And {
 	return MakeAnd(MakerIndexFormula(), fl)
 }
 
-/* if a not(eq) is found, transform it into !=  and if not(neq) is found, transform it into = */
-func rewriteNEQ(f Form) (Form, bool) {
-	if pred, ok := f.(Pred); ok {
-		if pred.GetID().Equals(Id_eq) {
-			return MakePred(Id_neq, pred.GetArgs(), pred.GetTypeVars(), typing.GetPolymorphicType(Id_neq.GetName(), len(pred.GetTypeVars()), len(pred.GetArgs()))), true
-		}
-	}
-
-	if not, ok := f.(Not); ok {
-		if pred, ok := not.GetForm().(Pred); ok {
-			if pred.GetID().Equals(Id_neq) {
-				return MakePred(Id_eq, pred.GetArgs(), pred.GetTypeVars(), typing.GetPolymorphicType(Id_eq.GetName(), len(pred.GetTypeVars()), len(pred.GetArgs()))), true
-			}
-		}
-	}
-}
-
 func MakeOr(i int, fl FormList) Or {
 	return Or{i, fl}
 }

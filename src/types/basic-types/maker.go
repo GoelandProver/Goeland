@@ -175,9 +175,9 @@ func getType(t []typing.TypeApp) typing.TypeApp {
 
 /* Index make for formula */
 func MakerIndexFormula() int {
-	lock_meta.Lock()
+	lock_formula.Lock()
 	res := cpt_formula
 	cpt_formula++
-	lock_meta.Unlock()
+	lock_formula.Unlock()
 	return res
 }
