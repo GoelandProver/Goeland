@@ -53,7 +53,7 @@ import (
 /* Dumps the prooftree in a json. */
 func (root *ProofTree) DumpJson() error {
 	// Dump folder should be a flag in the future
-	dump := "../../../visualization/types/"
+	dump := "../visualization/types/"
 	// Create a new file
 	i := 0
 	for fileExists(getFileName(dump, i)) {
@@ -71,6 +71,7 @@ func (root *ProofTree) DumpJson() error {
 	}
 
 	_, err = f.WriteString(json)
+	fmt.Printf("Dumped type proof in %s\n", f.Name())
 	return err
 }
 

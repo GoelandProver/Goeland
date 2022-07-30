@@ -74,6 +74,7 @@ func (th TypeHint) Equals(oth interface{}) bool {
 // Non-exported methods
 func (th TypeHint) isTypeApp()                                        {}
 func (th TypeHint) substitute(mapSubst map[TypeVar]string) TypeScheme { return th }
+func (th TypeHint) instanciate(map[TypeVar]TypeApp) TypeApp           { return th }
 
 // Exported methods
 func (th TypeHint) Copy() TypeApp { return MkTypeHint(th.name) }

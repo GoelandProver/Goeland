@@ -87,11 +87,19 @@ func (tv TypeVar) Equals(oth interface{}) bool {
 /* TypeApp interface */
 func (tv TypeVar) isTypeApp() {}
 
-// TODO: Make it a typevar to, it doesn't need to be a TypeScheme anymore, does it ?
 func (tv TypeVar) substitute(mapSubst map[TypeVar]string) TypeScheme {
 	newTv := tv.Copy().(TypeVar)
 	newTv.name = mapSubst[tv]
 	return newTv
+}
+
+func (tv TypeVar) instanciate(mapSubst map[TypeVar]TypeApp) TypeApp {
+	typeApp, found := mapSubst[tv]
+	if found {
+		return typeApp
+	} else {
+		return tv
+	}
 }
 
 func (tv TypeVar) Copy() TypeApp {

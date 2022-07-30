@@ -195,7 +195,7 @@ func GetPolymorphicType(name string, lenVars, lenTerms int) TypeScheme {
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
-			if fun.App.Size()-1 == lenTerms && len(fun.App.(QuantifiedType).vars) == lenVars {
+			if fun.App.Size()-1 == lenTerms && (Is[QuantifiedType](fun.App) && len(fun.App.(QuantifiedType).vars) == lenVars) {
 				typeSchemesMap.lock.Unlock()
 				return fun.App
 			}

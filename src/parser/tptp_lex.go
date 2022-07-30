@@ -33,7 +33,6 @@
 package parser
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"unicode"
@@ -439,6 +438,8 @@ func (lexer *TPTPLex) word(yylval *TPTPSymType) int {
 			token = DOLLAR_FOT
 		} else if yylval.str == "$fof" {
 			token = DOLLAR_FOF
+		} else if yylval.str == "$tff" {
+			token = DOLLAR_TFF
 		}
 	}
 
@@ -494,7 +495,7 @@ func (lexer *TPTPLex) number(yylval *TPTPSymType) int {
 	if lexer.real(yylval) {
 		return REAL
 	}
-	fmt.Println(string(lexer.c))
+
 	if lexer.rational(yylval) {
 		return RATIONAL
 	} else if lexer.integer(yylval) {

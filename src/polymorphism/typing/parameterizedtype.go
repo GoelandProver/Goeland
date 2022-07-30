@@ -89,6 +89,13 @@ func (pt ParameterizedType) substitute(mapSubst map[TypeVar]string) TypeScheme {
 	}
 	return newPt
 }
+func (pt ParameterizedType) instanciate(substMap map[TypeVar]TypeApp) TypeApp {
+	newPt := ParameterizedType{pt.name, ComparableList[TypeApp]{}}
+	for _, param := range pt.parameters {
+		newPt.parameters = append(newPt.parameters, param.instanciate(substMap))
+	}
+	return newPt
+}
 
 func (pt ParameterizedType) Copy() TypeApp {
 	newPT := ParameterizedType{name: pt.name, parameters: make(ComparableList[TypeApp], len(pt.parameters))}

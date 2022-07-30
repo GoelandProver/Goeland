@@ -68,7 +68,7 @@ func Init() {
 	Id_neq = MakerId("!=")
 
 	// Eq/Neq types
-	tv := typing.MkTypeVar("a")
+	tv := typing.MkTypeVar("*_0")
 	scheme := typing.MkQuantifiedType([]typing.TypeVar{tv}, typing.MkTypeArrow(typing.MkTypeCross(tv, tv), tv))
 	typing.SavePolymorphScheme(Id_eq.GetName(), scheme)
 	typing.SavePolymorphScheme(Id_neq.GetName(), scheme)

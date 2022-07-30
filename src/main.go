@@ -76,6 +76,7 @@ var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a fi
 var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
 var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
 var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable equality")
+var flag_type_proof = flag.Bool("type_proof", false, "Apply this flag if you want to enable type proof visualisation")
 var problem_name string
 var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
 var conjecture_found bool
@@ -101,7 +102,7 @@ func main() {
 	form, bound := StatementListToFormula(lstm, bound, path.Dir(problem))
 	// If global context is empty, it means that this is not a typed proof.
 	if !typing.EmptyGlobalContext() {
-		formula, err := polymorphism.WellFormedVerification(form, false)
+		formula, err := polymorphism.WellFormedVerification(form, *flag_type_proof)
 		if err != nil {
 			fmt.Printf("[%.6fs][%v][MAIN] Typing error : %s\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), err.Error())
 			return
@@ -251,7 +252,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			file_name := s.GetName()
 
 			realname, err := getFile(file_name, current_dir)
-			global.PrintDebug("File to parse : %v\n", realname)
+			global.PrintDebug("MAIN", fmt.Sprintf("File to parse : %s\n", realname))
 
 			if err != nil {
 				fmt.Println(err.Error())
@@ -274,6 +275,22 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 		case basictypes.Conjecture:
 			conjecture_found = true
 			not_form = s.GetForm().RenameVariables()
+
+		case basictypes.Type:
+			typeScheme := s.GetAtomTyping().Ts
+
+			if typeScheme.Size() == 1 {
+				if typeScheme.ToString() == "$tType" {
+					// New type
+					//typing.MkTypeHint(s.GetAtomTyping().Literal.GetName())
+				} else {
+					// Constant
+					typing.SaveConstant(s.GetAtomTyping().Literal.GetName(), typeScheme.GetPrimitives()[0])
+				}
+			} else {
+				// TypeArrow !
+				typing.SaveTypeScheme(s.GetAtomTyping().Literal.GetName(), typing.GetInputType(typeScheme)[0], typing.GetOutType(typeScheme))
+			}
 		}
 	}
 	switch {

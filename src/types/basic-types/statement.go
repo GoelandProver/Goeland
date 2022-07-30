@@ -35,15 +35,23 @@
 
 package basictypes
 
+import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+
 /***************************/
 /* Structure of statements */
 /***************************/
 
+type TFFAtomTyping struct {
+	Literal Id
+	Ts      typing.TypeScheme
+}
+
 // TPTP inputs are a list of statements
 type Statement struct {
-	name string
-	role FormulaRole
-	form Form
+	name       string
+	role       FormulaRole
+	form       Form
+	atomTyping TFFAtomTyping
 }
 
 func (s Statement) GetName() string {
@@ -55,6 +63,9 @@ func (s Statement) GetRole() FormulaRole {
 func (s Statement) GetForm() Form {
 	return s.form
 }
+func (s Statement) GetAtomTyping() TFFAtomTyping {
+	return s.atomTyping
+}
 func (s *Statement) SetName(n string) {
 	s.name = n
 }
@@ -65,8 +76,8 @@ func (s *Statement) SetForm(f Form) {
 	s.form = f
 }
 
-func MakeStatement(s string, r FormulaRole, f Form) Statement {
-	return Statement{s, r, f}
+func MakeStatement(s string, r FormulaRole, f Form, at TFFAtomTyping) Statement {
+	return Statement{s, r, f, at}
 }
 
 // Formula roles (enumerate type)
@@ -143,10 +154,15 @@ func MakeFormulaRoleFromString(arg string) FormulaRole {
 }
 
 func (stm Statement) ToString() string {
-	if stm.GetRole() == Include {
+	switch stm.GetRole() {
+	case Include:
 		return stm.GetRole().ToString() + " " + stm.GetName()
-	} else {
+	case Axiom, Conjecture:
 		return stm.GetRole().ToString() + " " + stm.GetName() + " " + stm.GetForm().ToString()
+	case Type:
+		return stm.GetRole().ToString() + " " + stm.GetName() + " " + stm.atomTyping.Literal.ToString() + ": " + stm.atomTyping.Ts.ToString()
+	default:
+		return "Unknown"
 	}
 }
 

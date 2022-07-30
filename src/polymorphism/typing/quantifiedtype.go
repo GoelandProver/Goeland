@@ -93,6 +93,21 @@ func (qt QuantifiedType) GetPrimitives() []TypeApp {
 	return primitives
 }
 
+func (qt QuantifiedType) Instanciate(types []TypeApp) TypeScheme {
+	substMap := make(map[TypeVar]TypeApp)
+	for i, var_ := range qt.vars {
+		substMap[var_] = types[i]
+	}
+
+	if Is[TypeApp](qt.scheme) {
+		return To[TypeScheme](To[TypeApp](qt.scheme).instanciate(substMap))
+	} else if Is[TypeArrow](qt.scheme) {
+		return To[TypeArrow](qt.scheme).instanciate(substMap)
+	} else {
+		return To[TypeScheme](To[ParameterizedType](qt.scheme).instanciate(substMap))
+	}
+}
+
 /* Makes a QuantifiedType from TypeVars and a TypeScheme. */
 func MkQuantifiedType(vars []TypeVar, typeScheme TypeScheme) QuantifiedType {
 	// Modify the typeScheme to make it modulo alpha-conversion

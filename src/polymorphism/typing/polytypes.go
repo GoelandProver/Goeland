@@ -72,6 +72,7 @@ type TypeApp interface {
 	/* Non-exported methods */
 	isTypeApp()
 	substitute(map[TypeVar]string) TypeScheme
+	instanciate(map[TypeVar]TypeApp) TypeApp
 
 	/* Exported methods */
 	ToString() string
@@ -131,6 +132,14 @@ func substTypeAppList(mapSubst map[TypeVar]string, typeApp []TypeApp) []TypeApp 
 	newTypeApp := []TypeApp{}
 	for _, type_ := range typeApp {
 		newTypeApp = append(newTypeApp, type_.substitute(mapSubst).(TypeApp))
+	}
+	return newTypeApp
+}
+
+func instanciateList(mapSubst map[TypeVar]TypeApp, typeApp []TypeApp) []TypeApp {
+	newTypeApp := []TypeApp{}
+	for _, type_ := range typeApp {
+		newTypeApp = append(newTypeApp, type_.instanciate(mapSubst).(TypeApp))
 	}
 	return newTypeApp
 }

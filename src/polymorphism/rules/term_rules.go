@@ -154,7 +154,14 @@ func getArgsTypes(context GlobalContext, terms []btypes.Term) (typing.TypeApp, e
 		}
 	}
 
-	return typing.MkTypeCross(types...), nil
+	if len(types) == 1 {
+		return types[0], nil
+	}
+	typeCross := typing.MkTypeCross(types[0], types[1])
+	for i := 2; i < len(types); i += 1 {
+		typeCross = typing.MkTypeCross(typeCross, types[i])
+	}
+	return typeCross, nil
 }
 
 /* Creates children for app rule */

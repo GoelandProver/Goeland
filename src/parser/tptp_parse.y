@@ -34,8 +34,6 @@
 package parser 
 
 import (
-    "fmt"
-
     btypes "github.com/GoelandProver/Goeland/types/basic-types"
     typing "github.com/GoelandProver/Goeland/polymorphism/typing"
     . "github.com/GoelandProver/Goeland/global"
@@ -67,6 +65,11 @@ type TFFTermList struct {
     types []typing.TypeApp
     terms []btypes.Term
 }
+
+type TFFFormula struct {
+    form btypes.Form
+    atomTyping btypes.TFFAtomTyping 
+}
 %}
 
 // Semantic union
@@ -94,12 +97,14 @@ type TFFTermList struct {
     tal []typing.TypeApp
     tps typing.TypeScheme
     qtp typing.QuantifiedType
+    tat btypes.TFFAtomTyping
+    tff TFFFormula
 }
 
 // Tokens definition
 
 // Keywords
-%token FOF CNF THF TFF TCF TPI INCLUDE DOLLAR_FOT DOLLAR_FOF
+%token FOF CNF THF TFF TCF TPI INCLUDE DOLLAR_FOT DOLLAR_FOF DOLLAR_TFF
 // Punctuation
 %token LEFT_PAREN RIGHT_PAREN COMMA DOT LEFT_BRACKET RIGHT_BRACKET COLON
 // Operators
@@ -122,13 +127,13 @@ type TFFTermList struct {
 %type <str>  name atomic_word atomic_defined_word number file_name type_constant type_functor defined_type
 %type <fr>   formula_role 
 %type <form>  tpi_formula
-%type <form> tff_formula  tff_logic_formula tff_and_formula tff_binary_assoc tff_binary_formula tff_binary_nonassoc tff_or_formula tff_unitary_formula tff_unit_formula tff_preunit_formula tff_quantified_formula tff_unary_formula tff_prefix_unary tff_infix_unary tff_atomic_formula tff_plain_atomic_formula tff_defined_atomic tff_defined_plain
+%type <form>  tff_logic_formula tff_and_formula tff_binary_assoc tff_binary_formula tff_binary_nonassoc tff_or_formula tff_unitary_formula tff_unit_formula tff_preunit_formula tff_quantified_formula tff_unary_formula tff_prefix_unary tff_infix_unary tff_atomic_formula tff_plain_atomic_formula tff_defined_atomic tff_defined_plain
 %type <form> fof_formula fof_infix_unary fof_logic_formula fof_binary_formula fof_binary_nonassoc fof_binary_assoc fof_or_formula fof_and_formula fof_unary_formula fof_unit_formula fof_unitary_formula fof_quantified_formula fof_atomic_formula fof_plain_atomic_formula fof_defined_atomic_formula fof_defined_plain_formula fof_defined_infix_formula tff_defined_infix
 %type <tfv> tff_variable tff_typed_variable
 %type <tfl> tff_variable_list
 %type <vrl> fof_variable_list
 %type <vrb> variable
-%type <id> constant defined_constant functor defined_functor untyped_atom tff_subtype
+%type <id> constant defined_constant functor defined_functor untyped_atom 
 %type <trm> fof_plain_term fof_defined_term fof_defined_atomic_term fof_defined_plain_term fof_term fof_function_term defined_term /* fof_plain_atomic_term */
 %type <tml> fof_arguments
 %type <ttl> tff_arguments
@@ -138,8 +143,10 @@ type TFFTermList struct {
 %type <tpa> tff_mapping_type
 %type <tya> tff_unitary_type tff_atomic_type
 %type <tal> tff_type_arguments
-%type <tps> tff_monotype tff_non_atomic_type tff_top_level_type tff_atom_typing
+%type <tps> tff_monotype tff_non_atomic_type tff_top_level_type 
 %type <qtp> tf1_quantified_type 
+%type <tat> tff_atom_typing
+%type <tff> tff_formula
 %%
 
 /**
@@ -165,13 +172,13 @@ annotated_formula: fof_annotated    { $$ = $1 }
   | tff_annotated                   { $$ = $1 }
   ;
 
-tff_annotated: TFF LEFT_PAREN name COMMA formula_role COMMA tff_formula annotations RIGHT_PAREN DOT { $$ = btypes.MakeStatement($3, $5, $7) }
+tff_annotated: TFF LEFT_PAREN name COMMA formula_role COMMA tff_formula annotations RIGHT_PAREN DOT { $$ = btypes.MakeStatement($3, $5, $7.form, $7.atomTyping) }
   ;
 
-fof_annotated: FOF LEFT_PAREN name COMMA formula_role COMMA fof_formula annotations RIGHT_PAREN DOT  { $$ = btypes.MakeStatement($3, $5, $7) }
+fof_annotated: FOF LEFT_PAREN name COMMA formula_role COMMA fof_formula annotations RIGHT_PAREN DOT  { $$ = btypes.MakeStatement($3, $5, $7, btypes.TFFAtomTyping{}) }
   ;
 
-tpi_annotated: TPI LEFT_PAREN name COMMA formula_role COMMA tpi_formula annotations RIGHT_PAREN DOT { $$ = btypes.MakeStatement($3, $5, $7) }
+tpi_annotated: TPI LEFT_PAREN name COMMA formula_role COMMA tpi_formula annotations RIGHT_PAREN DOT { $$ = btypes.MakeStatement($3, $5, $7, btypes.TFFAtomTyping{}) }
   ;
 
 tpi_formula: fof_formula { $$ = $1 }
@@ -190,11 +197,10 @@ formula_role: LOWER_WORD            { $$ = btypes.MakeFormulaRoleFromString($1) 
 // ----------------------------------------------------------------------------
 
 // %----TFF formulae.
-tff_formula: tff_logic_formula      { fmt.Println($1.ToString())
-$$ = $1 }
-  | tff_atom_typing                 {}
-  | tff_subtype                     {}
+tff_formula: tff_logic_formula      { $$.form = $1 }
+  | tff_atom_typing                 { $$.atomTyping = $1 }
   ;
+  // | tff_subtype                     { /*$$.atomTyping = ?*/ }
 
 tff_logic_formula: tff_unitary_formula  { $$ = $1 }
   | tff_unary_formula                   { $$ = $1 }
@@ -329,7 +335,15 @@ tff_arguments: tff_term           { $$ = makeTermList($1) }
   | tff_term COMMA tff_arguments  { $$ = appendTermList($1, $3) }
   ;
 
-tff_atom_typing: untyped_atom COLON tff_top_level_type { fmt.Printf("%s: %s\n", $1.ToString(), $3.ToString()) /* TypeScheme || ParameterizedType || constant, what to do? */}
+tff_atom_typing: untyped_atom COLON tff_top_level_type { 
+    // If $tType in $3, then it's a parameterized type.
+    // In this case, return nothing. In other cases, return a TFFAtomTyping.
+    // if parameterizedType($3) { typing.SaveParameterizedType(...) }
+    // else {
+    $$ = btypes.TFFAtomTyping{$1, $3}
+    // }
+    //fmt.Printf("%s: %s\n", $1.ToString(), $3.ToString()) /* TypeScheme || ParameterizedType || constant, what to do? */
+    }
   | LEFT_PAREN tff_atom_typing RIGHT_PAREN { $$ = $2 }
   ;
 
@@ -372,8 +386,9 @@ tff_xprod_type: tff_unitary_type STAR tff_atomic_type { $$ = typing.MkTypeCross(
   | tff_xprod_type STAR tff_atomic_type               { $$ = typing.MkTypeCross($1, $3) }
   ;
   
+/*
 tff_subtype: untyped_atom SUBTYPE untyped_atom { $$ = $1 } // whats this lol
-  ;
+  ; */
 
 untyped_atom: constant { $$ = $1 }
   ;
@@ -548,7 +563,7 @@ defined_term: number { $$ = btypes.MakerConst(btypes.MakerId($1)) }
 variable: UPPER_WORD { $$ = btypes.MakerVar($1) }
   ;
   
-include: INCLUDE LEFT_PAREN file_name formula_selection RIGHT_PAREN DOT { $$ = btypes.MakeStatement($3, btypes.Include, nil) }
+include: INCLUDE LEFT_PAREN file_name formula_selection RIGHT_PAREN DOT { $$ = btypes.MakeStatement($3, btypes.Include, nil, btypes.TFFAtomTyping{}) }
   ;
 
 formula_selection: 
@@ -587,8 +602,8 @@ general_function: atomic_word LEFT_PAREN general_terms RIGHT_PAREN
   
 formula_data: DOLLAR_FOF LEFT_PAREN fof_formula RIGHT_PAREN
   | DOLLAR_FOT LEFT_PAREN fof_term RIGHT_PAREN
+  | DOLLAR_TFF LEFT_PAREN tff_formula RIGHT_PAREN
   ;
-  // | TFF LEFT_PAREN tff_formula RIGHT_PAREN
   
 general_list: LEFT_BRACKET RIGHT_BRACKET
   | LEFT_BRACKET general_terms RIGHT_BRACKET

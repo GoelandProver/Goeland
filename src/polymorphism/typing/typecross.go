@@ -93,6 +93,9 @@ func (tc TypeCross) isTypeApp() {}
 func (tc TypeCross) substitute(mapSubst map[TypeVar]string) TypeScheme {
 	return MkTypeCross(substTypeAppList(mapSubst, tc.types)...)
 }
+func (tc TypeCross) instanciate(mapSubst map[TypeVar]TypeApp) TypeApp {
+	return MkTypeCross(instanciateList(mapSubst, tc.types)...)
+}
 
 // Exported methods.
 /**

@@ -40,6 +40,7 @@ import (
 	"reflect"
 
 	. "github.com/GoelandProver/Goeland/global"
+	sp "github.com/GoelandProver/Goeland/polymorphism/second-pass"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -98,7 +99,10 @@ var globalContextIsWellTyped bool = false
  **/
 func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
 	// Instanciate meta type
-	metaType = typing.MkTypeHint("Type")
+	metaType = typing.MkTypeHint("$tType")
+
+	// Second pass to type variables & to give the typevars to functions and predicates
+	form = sp.SecondPass(form)
 
 	globalContext, err := createGlobalContext(typing.GetGlobalContext())
 	if err != nil {
@@ -122,8 +126,8 @@ func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
 	form, err = launchRuleApplication(state, &root)
 
 	// Dump prooftree in json if it's asked & there is no error
-	if err == nil && dump {
-		root.DumpJson()
+	if dump && err == nil {
+		err = root.DumpJson()
 	}
 
 	return form, err
@@ -155,6 +159,8 @@ func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstru
 		f = btypes.MakeNot(form.GetIndex(), reconstruction.forms[0])
 	case btypes.Pred:
 		f = btypes.MakePred(form.GetIndex(), form.GetID(), reconstruction.terms[len(form.GetTypeVars()):], form.GetTypeVars(), form.GetType())
+	case btypes.Top, btypes.Bot:
+		f = baseForm
 	}
 
 	return Reconstruct{result: true, forms: []btypes.Form{f}, err: nil}

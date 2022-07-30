@@ -103,6 +103,9 @@ func (ta TypeArrow) GetPrimitives() []TypeApp {
 func (ta TypeArrow) substitute(mapSubst map[TypeVar]string) TypeScheme {
 	return MkTypeArrow(ta.left.substitute(mapSubst).(TypeApp), substTypeAppList(mapSubst, ta.right)...)
 }
+func (ta TypeArrow) instanciate(mapSubst map[TypeVar]TypeApp) TypeScheme {
+	return MkTypeArrow(ta.left.instanciate(mapSubst), instanciateList(mapSubst, ta.right)...)
+}
 
 /* Makes a TypeArrow from two TypeSchemes */
 func MkTypeArrow(left TypeApp, typeApps ...TypeApp) TypeArrow {
