@@ -146,10 +146,12 @@ func (gc GlobalContext) getTypeScheme(id btypes.Id, vars []typing.TypeApp, terms
 
 	typeScheme, err := gc.getSimpleTypeScheme(id.GetName(), args)
 
-	if args != nil && typeScheme == nil {
+	if typeScheme == nil {
 		typeScheme, err = gc.getPolymorphicTypeScheme(id.GetName(), len(vars), len(terms))
 		// Instantiate type scheme with actual types
-		typeScheme = To[typing.QuantifiedType](typeScheme).Instanciate(vars)
+		if typeScheme != nil {
+			typeScheme = To[typing.QuantifiedType](typeScheme).Instanciate(vars)
+		}
 	}
 
 	if err != nil {
@@ -274,6 +276,8 @@ func createGlobalContext(context map[string][]typing.App) (GlobalContext, error)
 				globalContext.simpleSchemes[name] = append(globalContext.simpleSchemes[name], type_)
 			case typing.QuantifiedType:
 				globalContext.polymorphSchemes[name] = append(globalContext.polymorphSchemes[name], type_)
+			case typing.ParameterizedType:
+				globalContext.simpleSchemes[name] = append(globalContext.simpleSchemes[name], type_)
 			}
 			if err := incrementalVerificationOfGlobalContext(globalContext.copy(), name, app.App); err != nil {
 				return GlobalContext{}, err

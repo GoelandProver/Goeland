@@ -107,6 +107,7 @@ func main() {
 			fmt.Printf("[%.6fs][%v][MAIN] Typing error : %s\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), err.Error())
 			return
 		}
+		fmt.Printf("[%.6fs][%v][TypeRes] Well Typed\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		form = formula
 	}
 
@@ -279,17 +280,30 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 		case basictypes.Type:
 			typeScheme := s.GetAtomTyping().Ts
 
+			if typeScheme == nil {
+				continue
+			}
+
 			if typeScheme.Size() == 1 {
 				if typeScheme.ToString() == "$tType" {
 					// New type
-					//typing.MkTypeHint(s.GetAtomTyping().Literal.GetName())
+					typing.MkTypeHint(s.GetAtomTyping().Literal.GetName())
 				} else {
-					// Constant
-					typing.SaveConstant(s.GetAtomTyping().Literal.GetName(), typeScheme.GetPrimitives()[0])
+					if global.Is[typing.QuantifiedType](typeScheme) {
+						typing.SavePolymorphScheme(s.GetAtomTyping().Literal.GetName(), typeScheme)
+					} else {
+						// Constant
+						typing.SaveConstant(s.GetAtomTyping().Literal.GetName(), typeScheme.GetPrimitives()[0])
+					}
 				}
 			} else {
 				// TypeArrow !
-				typing.SaveTypeScheme(s.GetAtomTyping().Literal.GetName(), typing.GetInputType(typeScheme)[0], typing.GetOutType(typeScheme))
+				switch typeScheme.(type) {
+				case typing.TypeArrow:
+					typing.SaveTypeScheme(s.GetAtomTyping().Literal.GetName(), typing.GetInputType(typeScheme)[0], typing.GetOutType(typeScheme))
+				case typing.QuantifiedType:
+					typing.SavePolymorphScheme(s.GetAtomTyping().Literal.GetName(), typeScheme)
+				}
 			}
 		}
 	}

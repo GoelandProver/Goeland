@@ -41,6 +41,7 @@ import (
 
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
@@ -187,7 +188,10 @@ func applyAppTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruc
 		})
 	}
 
-	return launchChildren(children, root, fatherChan)
+	result := launchChildren(children, root, fatherChan)
+
+	// Only one term needs to be returned because the ParameterizedType is counted as one.
+	return Reconstruct{result: result.result, err: result.err, terms: []btypes.Term{nil}}
 }
 
 /* Utils functions */

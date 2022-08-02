@@ -778,7 +778,6 @@ func (lexer TPTPLex) isNumeric() bool {
 }
 
 func (lexer TPTPLex) Error(s string) {
-	// fmt.Println(lexer.pos, string(lexer.c))
 	log.Fatalf("Syntax error, line %d: %s\n", yylineno, s)
 }
 

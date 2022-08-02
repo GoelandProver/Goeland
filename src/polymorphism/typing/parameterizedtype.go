@@ -68,18 +68,6 @@ func (pt ParameterizedType) toMappedString(subst map[string]string) string {
 	return pt.name + "(" + strings.Join(mappedString, ", ") + ")"
 }
 
-func (pt ParameterizedType) ToString() string { return pt.toMappedString(make(map[string]string)) }
-func (pt ParameterizedType) Equals(oth interface{}) bool {
-	if !Is[ParameterizedType](oth) {
-		return false
-	}
-	othPT := To[ParameterizedType](oth)
-	return pt.name == othPT.name && pt.parameters.Equals(othPT.parameters)
-}
-func (pt ParameterizedType) Size() int                { return 1 }
-func (pt ParameterizedType) GetPrimitives() []TypeApp { return []TypeApp{pt} }
-func (pt ParameterizedType) GetParameters() []TypeApp { return pt.parameters }
-
 /* TypeApp interface */
 func (pt ParameterizedType) isTypeApp() {}
 func (pt ParameterizedType) substitute(mapSubst map[TypeVar]string) TypeScheme {
@@ -96,6 +84,20 @@ func (pt ParameterizedType) instanciate(substMap map[TypeVar]TypeApp) TypeApp {
 	}
 	return newPt
 }
+
+// Exported methods
+
+func (pt ParameterizedType) ToString() string { return pt.toMappedString(make(map[string]string)) }
+func (pt ParameterizedType) Equals(oth interface{}) bool {
+	if !Is[ParameterizedType](oth) {
+		return false
+	}
+	othPT := To[ParameterizedType](oth)
+	return pt.name == othPT.name && pt.parameters.Equals(othPT.parameters)
+}
+func (pt ParameterizedType) Size() int                { return 1 }
+func (pt ParameterizedType) GetPrimitives() []TypeApp { return []TypeApp{pt} }
+func (pt ParameterizedType) GetParameters() []TypeApp { return pt.parameters }
 
 func (pt ParameterizedType) Copy() TypeApp {
 	newPT := ParameterizedType{name: pt.name, parameters: make(ComparableList[TypeApp], len(pt.parameters))}
@@ -143,4 +145,11 @@ func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
 	}
 
 	return parameterizedType
+}
+
+func IsParameterizedType(name string) bool {
+	pMap.lock.Lock()
+	_, found := pMap.parametersMap[name]
+	pMap.lock.Unlock()
+	return found
 }

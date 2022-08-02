@@ -73,7 +73,7 @@ func (f Fun) ToString() string {
 	if len(f.args) == 0 {
 		return f.GetID().GetName()
 	}
-	return f.GetID().GetName() + "(" + ListToString(f.args, ", ", "") + ") : " + f.typeHint.ToString()
+	return f.GetID().GetName() + "(" + ListToString(f.typeVars, ", ", "∅") + " ; " + ListToString(f.args, ", ", "") + ") : " + f.typeHint.ToString()
 }
 
 func (f Fun) ToStringWithSuffixMeta(suffix string) string {

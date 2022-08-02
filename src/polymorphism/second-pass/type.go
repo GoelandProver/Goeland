@@ -37,8 +37,6 @@
 package polypass
 
 import (
-	"fmt"
-
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -52,7 +50,6 @@ import (
 
 func SecondPass(form btypes.Form) btypes.Form {
 	after := secondPassAux(form, []btypes.Var{}, []typing.TypeApp{})
-	//fmt.Printf("Before: %s\n\n after: %s\n", form.ToString(), after.ToString())
 	return after
 }
 
@@ -91,25 +88,31 @@ func secondPassAux(form btypes.Form, vars []btypes.Var, types []typing.TypeApp) 
 func secondPassTerm(term btypes.Term, vars []btypes.Var, types []typing.TypeApp) (btypes.Term, []typing.TypeApp) {
 	switch t := term.(type) {
 	case btypes.Fun:
+		// 3 cases:
+		//	- It's a TypeHint
+		if typing.IsPrimitive(t.GetName()) {
+			return nil, []typing.TypeApp{typing.MkTypeHint(t.GetName())}
+		}
+
 		terms, v := nArySecondPassTerms(t.GetArgs(), vars, types)
 
+		// 	- It's a parameterized type
+		if typing.IsParameterizedType(t.GetName()) {
+			return nil, []typing.TypeApp{typing.MkParameterizedType(t.GetName(), v)}
+		}
+
+		//	- It's a function
 		outType := func(term btypes.Term) typing.TypeApp {
 			return typing.GetOutType(To[btypes.TypedTerm](term).GetTypeHint())
 		}
 
 		termsType := []typing.TypeApp{}
-		if len(terms) == 1 {
-			termsType = []typing.TypeApp{outType(terms[0])}
-		}
-		if len(terms) > 1 {
-			tc := typing.MkTypeCross(outType(terms[0]), outType(terms[1]))
-			for i := 2; i < len(terms); i += 1 {
-				tc = typing.MkTypeCross(tc, outType(terms[i]))
-			}
-			termsType = []typing.TypeApp{tc}
+		for _, tm := range terms {
+			termsType = append(termsType, outType(tm))
 		}
 
 		return btypes.MakeFun(t.GetID(), terms, v, getTypeOfFunction(t.GetName(), v, termsType)), []typing.TypeApp{}
+
 	case btypes.Var:
 		for _, v := range types {
 			if v.ToString() == t.GetName() {
@@ -147,30 +150,49 @@ func nArySecondPassTerms(terms []btypes.Term, vars []btypes.Var, types []typing.
 }
 
 func getTypeOfFunction(name string, vars []typing.TypeApp, termsType []typing.TypeApp) typing.TypeScheme {
-	simpleTypeScheme := typing.GetType(name, termsType...)
+	// Build TypeCross from termsType
+	var tt []typing.TypeApp
+	if len(termsType) >= 2 {
+		tc := typing.MkTypeCross(termsType[0], termsType[1])
+		for i := 2; i < len(termsType); i += 1 {
+			tc = typing.MkTypeCross(tc, termsType[i])
+		}
+		tt = []typing.TypeApp{tc}
+	} else {
+		tt = termsType
+	}
+
+	simpleTypeScheme := typing.GetType(name, tt...)
 	if simpleTypeScheme != nil {
+		if Is[typing.QuantifiedType](simpleTypeScheme) {
+			return To[typing.QuantifiedType](simpleTypeScheme).Instanciate(vars)
+		}
 		return simpleTypeScheme
 	}
 
 	typeScheme := typing.GetPolymorphicType(name, len(vars), len(termsType))
 
 	if typeScheme != nil {
-		fmt.Println(typeScheme.ToString())
 		// Instantiate type scheme with actual types
 		typeScheme = To[typing.QuantifiedType](typeScheme).Instanciate(vars)
 	} else {
-		// Dunno if it should be like this or not
+		// As only distinct objects are here, it should work with only this.
+		// I leave the other condition if others weirderies are found later.
 		if len(termsType) == 0 {
 			typing.SaveConstant(name, To[typing.TypeApp](typing.DefaultFunType(0)))
-		} else {
-			type_ := typing.DefaultFunType(len(termsType))
-			if len(termsType) == 1 {
-				typing.SaveTypeScheme(name, typing.GetInputType(type_)[0], typing.GetOutType(type_))
-			} else {
-				typing.SaveTypeScheme(name, typing.MkTypeCross(typing.GetInputType(type_)...), typing.GetOutType(type_))
-			}
 		}
+		/*
+			else {
+				type_ := typing.DefaultFunType(len(termsType))
+				if len(termsType) == 1 {
+					typing.SaveTypeScheme(name, typing.GetInputType(type_)[0], typing.GetOutType(type_))
+				} else {
+					typing.SaveTypeScheme(name, typing.MkTypeCross(typing.GetInputType(type_)...), typing.GetOutType(type_))
+				}
+			}
+		*/
 		typeScheme = typing.DefaultFunType(0)
+
 	}
 
 	return typeScheme

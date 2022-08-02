@@ -187,7 +187,7 @@ func replaceVarInTermList(original_list []Term, old_symbol Var, new_symbol Term)
 	for i, val := range original_list {
 		switch nf := val.(type) {
 		case Var:
-			if old_symbol.Equals(nf) {
+			if old_symbol.GetIndex() == nf.GetIndex() {
 				new_list[i] = new_symbol
 			} else {
 				new_list[i] = val
@@ -268,7 +268,7 @@ func RenameVariables(f Form) Form {
 func replaceVarInVarList(vl []Var, v1, v2 Var) []Var {
 	res := []Var{}
 	for _, v := range vl {
-		if v.Equals(v1) {
+		if v.GetIndex() == v1.GetIndex() {
 			res = append(res, v2)
 		} else {
 			res = append(res, v)

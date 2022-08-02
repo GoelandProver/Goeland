@@ -148,9 +148,8 @@ func SaveConstant(name string, out TypeApp) error {
 
 /* Checks if the given name is a constant (TypeHint) */
 func IsConstant(name string) bool {
-	res := false
 	typeSchemesMap.lock.Lock()
-	_, res = typeSchemesMap.tsMap[name]
+	_, res := typeSchemesMap.tsMap[name]
 	typeSchemesMap.lock.Unlock()
 	return res
 }
@@ -301,4 +300,11 @@ func GetGlobalContext() map[string][]App {
 	}
 	pMap.lock.Unlock()
 	return globalContext
+}
+
+func IsPrimitive(name string) bool {
+	tMap.lock.Lock()
+	_, found := tMap.uidsMap[name]
+	tMap.lock.Unlock()
+	return found
 }

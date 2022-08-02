@@ -76,27 +76,30 @@ func (qt QuantifiedType) ToString() string {
 }
 
 func (qt QuantifiedType) GetPrimitives() []TypeApp {
-	vars := make(map[string]TypeVar)
+	vars := make(map[TypeVar]TypeApp)
 	for i, var_ := range qt.vars {
-		vars[fmt.Sprintf("*_%d", i)] = var_
+		vars[MkTypeVar(fmt.Sprintf("*_%d", i))] = var_
 	}
 	primitives := []TypeApp{}
 	for _, th := range qt.scheme.GetPrimitives() {
 		if Is[TypeVar](th) {
-			if var_, found := vars[th.(TypeVar).ToString()]; found {
+			if var_, found := vars[th.(TypeVar)]; found {
 				primitives = append(primitives, var_)
 			}
+		} else if Is[ParameterizedType](th) {
+			primitives = append(primitives, th.instanciate(vars))
 		} else {
 			primitives = append(primitives, th)
 		}
 	}
+
 	return primitives
 }
 
 func (qt QuantifiedType) Instanciate(types []TypeApp) TypeScheme {
 	substMap := make(map[TypeVar]TypeApp)
-	for i, var_ := range qt.vars {
-		substMap[var_] = types[i]
+	for i := range qt.vars {
+		substMap[MkTypeVar(fmt.Sprintf("*_%d", i))] = types[i]
 	}
 
 	if Is[TypeApp](qt.scheme) {

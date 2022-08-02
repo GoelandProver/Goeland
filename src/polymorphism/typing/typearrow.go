@@ -43,6 +43,7 @@
 package polymorphism
 
 import (
+	"fmt"
 	"strings"
 
 	. "github.com/GoelandProver/Goeland/global"
@@ -68,6 +69,14 @@ func (ta TypeArrow) toMappedString(subst map[string]string) string {
 		mappedString = append(mappedString, typeScheme.toMappedString(subst))
 	}
 	return "(" + strings.Join(mappedString, " > ") + ")"
+}
+
+/* TypeArrow methods */
+func (ta TypeArrow) substitute(mapSubst map[TypeVar]string) TypeScheme {
+	return MkTypeArrow(ta.left.substitute(mapSubst).(TypeApp), substTypeAppList(mapSubst, ta.right)...)
+}
+func (ta TypeArrow) instanciate(mapSubst map[TypeVar]TypeApp) TypeScheme {
+	return MkTypeArrow(ta.left.instanciate(mapSubst), instanciateList(mapSubst, ta.right)...)
 }
 
 // Exported methods.
@@ -99,14 +108,6 @@ func (ta TypeArrow) GetPrimitives() []TypeApp {
 	return append(typeApp, convert(ta.right, typeAppToUnderlyingType)...)
 }
 
-/* TypeArrow methods */
-func (ta TypeArrow) substitute(mapSubst map[TypeVar]string) TypeScheme {
-	return MkTypeArrow(ta.left.substitute(mapSubst).(TypeApp), substTypeAppList(mapSubst, ta.right)...)
-}
-func (ta TypeArrow) instanciate(mapSubst map[TypeVar]TypeApp) TypeScheme {
-	return MkTypeArrow(ta.left.instanciate(mapSubst), instanciateList(mapSubst, ta.right)...)
-}
-
 /* Makes a TypeArrow from two TypeSchemes */
 func MkTypeArrow(left TypeApp, typeApps ...TypeApp) TypeArrow {
 	if len(typeApps) < 1 {
@@ -125,7 +126,16 @@ func GetOutType(typeScheme TypeScheme) TypeApp {
 		// Returns the out type of the last arrow.
 		return GetOutType(To[TypeScheme](t.right[len(t.right)-1]))
 	case QuantifiedType:
-		return GetOutType(t.scheme)
+		vars := make(map[TypeVar]string)
+		for i, var_ := range t.vars {
+			vars[MkTypeVar(fmt.Sprintf("*_%d", i))] = var_.ToString()
+		}
+
+		if Is[TypeArrow](t.scheme) {
+			return GetOutType(To[TypeArrow](t.scheme).substitute(vars))
+		} else {
+			return GetOutType(To[TypeApp](t.scheme).substitute(vars))
+		}
 	// typeScheme may be a TypeHint if it comes from a constant.
 	case TypeHint:
 		return t

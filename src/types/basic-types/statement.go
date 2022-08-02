@@ -160,10 +160,11 @@ func (stm Statement) ToString() string {
 	case Axiom, Conjecture:
 		return stm.GetRole().ToString() + " " + stm.GetName() + " " + stm.GetForm().ToString()
 	case Type:
-		return stm.GetRole().ToString() + " " + stm.GetName() + " " + stm.atomTyping.Literal.ToString() + ": " + stm.atomTyping.Ts.ToString()
-	default:
-		return "Unknown"
+		if stm.atomTyping.Ts != nil {
+			return stm.GetRole().ToString() + " " + stm.GetName() + " " + stm.atomTyping.Literal.ToString() + ": " + stm.atomTyping.Ts.ToString()
+		}
 	}
+	return "Unknown"
 }
 
 func StatementListToString(lstm []Statement) string {

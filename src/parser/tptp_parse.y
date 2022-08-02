@@ -254,7 +254,11 @@ tff_quantified_formula: FORALL LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLO
         if len($3.types) == 0 {
             $$ = btypes.MakerAll($3.typedVars, $6)
         } else {
-            $$ = btypes.MakerAllType(ConvertList[typing.TypeApp, typing.TypeVar]($3.types), $6)
+            if len($3.typedVars) == 0 {
+                $$ = btypes.MakerAllType(ConvertList[typing.TypeApp, typing.TypeVar]($3.types), $6)
+            } else {
+                $$ = btypes.MakerAllType(ConvertList[typing.TypeApp, typing.TypeVar]($3.types), btypes.MakerAll($3.typedVars, $6))
+            }
         }
     }
   | EXISTS LEFT_BRACKET tff_variable_list RIGHT_BRACKET COLON tff_unit_formula                     { $$ = btypes.MakerEx($3.typedVars, $6) }
@@ -336,13 +340,11 @@ tff_arguments: tff_term           { $$ = makeTermList($1) }
   ;
 
 tff_atom_typing: untyped_atom COLON tff_top_level_type { 
-    // If $tType in $3, then it's a parameterized type.
-    // In this case, return nothing. In other cases, return a TFFAtomTyping.
-    // if parameterizedType($3) { typing.SaveParameterizedType(...) }
-    // else {
-    $$ = btypes.TFFAtomTyping{$1, $3}
-    // }
-    //fmt.Printf("%s: %s\n", $1.ToString(), $3.ToString()) /* TypeScheme || ParameterizedType || constant, what to do? */
+    if isParameterizedType($3) {
+        typing.SaveParamereterizedType($1.GetName(), toParameterizedType($3))
+    } else {
+        $$ = btypes.TFFAtomTyping{$1, $3}
+    }
     }
   | LEFT_PAREN tff_atom_typing RIGHT_PAREN { $$ = $2 }
   ;
@@ -695,4 +697,51 @@ func tftFrom(type_ typing.TypeApp, term btypes.Term) TFFTerm {
         tffTerm.type_ = type_
     }
     return tffTerm
+}
+
+func isParameterizedType(ts typing.TypeScheme) bool {
+    if !Is[typing.TypeArrow](ts) {
+        return false
+    }
+
+    var aux func(typing.TypeApp) bool
+    aux = func(ta typing.TypeApp) bool {
+        switch t := ta.(type) {
+        case typing.TypeHint:
+            return t.Equals(typing.MkTypeHint("$tType"))
+        case typing.TypeVar:
+            return false 
+        case typing.TypeCross:
+            for _, type_ := range t.GetPrimitives() {
+                if aux(type_) {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }    
+
+    return aux(typing.GetInputType(ts)[0])
+}
+
+func toParameterizedType(ts typing.TypeScheme) []typing.TypeApp {
+    arr := []typing.TypeApp{}
+
+    switch t := typing.GetInputType(ts)[0].(type) {
+        case typing.TypeHint:
+            arr = append(arr, t)
+        case typing.TypeCross:
+            arr = t.GetPrimitives()
+    }
+
+    realArr := []typing.TypeApp{}
+    for _, type_ := range arr {
+        if type_.Equals(typing.MkTypeHint("$tType")) {
+            realArr = append(realArr, nil)
+        } else {
+            realArr = append(realArr, type_)
+        }
+    }
+    return realArr
 }

@@ -158,7 +158,13 @@ func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstru
 	case btypes.Not:
 		f = btypes.MakeNot(form.GetIndex(), reconstruction.forms[0])
 	case btypes.Pred:
-		f = btypes.MakePred(form.GetIndex(), form.GetID(), reconstruction.terms[len(form.GetTypeVars()):], form.GetTypeVars(), form.GetType())
+		// The len(form.GetTypeVars()) first children launched are children for typevars.
+		// So the len(form.GetTypeVars()) first children will return <nil>
+		if len(reconstruction.terms) > len(form.GetTypeVars()) {
+			f = btypes.MakePred(form.GetIndex(), form.GetID(), reconstruction.terms[len(form.GetTypeVars()):], form.GetTypeVars(), form.GetType())
+		} else {
+			f = btypes.MakePred(form.GetIndex(), form.GetID(), []btypes.Term{}, form.GetTypeVars(), form.GetType())
+		}
 	case btypes.Top, btypes.Bot:
 		f = baseForm
 	}
@@ -172,12 +178,20 @@ func reconstructTerm(reconstruction Reconstruct, baseTerm btypes.Term) Reconstru
 		return reconstruction
 	}
 
+	// fun: reconstruct with children terms
 	if Is[btypes.Fun](baseTerm) {
 		termFun := To[btypes.Fun](baseTerm)
-		fun := btypes.MakerFun(termFun.GetID(), reconstruction.terms[len(termFun.GetTypeVars()):], termFun.GetTypeVars(), termFun.GetTypeHint())
+		var fun btypes.Fun
+		// The len(form.GetTypeVars()) first children launched are children for typevars.
+		// So the len(form.GetTypeVars()) first children will return <nil>
+		if len(reconstruction.terms) > len(termFun.GetTypeVars()) {
+			fun = btypes.MakerFun(termFun.GetID(), reconstruction.terms[len(termFun.GetTypeVars()):], termFun.GetTypeVars(), termFun.GetTypeHint())
+		} else {
+			fun = btypes.MakerFun(termFun.GetID(), []btypes.Term{}, termFun.GetTypeVars(), termFun.GetTypeHint())
+		}
 		return Reconstruct{result: true, terms: []btypes.Term{fun}, err: nil}
 	}
-	// fun: reconstruct with children terms
+
 	return Reconstruct{result: true, terms: []btypes.Term{baseTerm}, err: nil}
 }
 
@@ -188,11 +202,11 @@ func unquantify(form btypes.Form, quant btypes.Form) btypes.Form {
 	for reflect.TypeOf(form) == reflect.TypeOf(quant) {
 		switch quant.(type) {
 		case btypes.All:
-			form = form.(btypes.All).GetForm()
+			form = To[btypes.All](form).GetForm()
 		case btypes.AllType:
-			form = form.(btypes.AllType).GetForm()
+			form = To[btypes.AllType](form).GetForm()
 		case btypes.Ex:
-			form = form.(btypes.Ex).GetForm()
+			form = To[btypes.Ex](form).GetForm()
 		}
 	}
 	return form
