@@ -79,6 +79,7 @@ var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable
 var flag_type_proof = flag.Bool("type_proof", false, "Apply this flag if you want to enable type proof visualisation")
 var problem_name string
 var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
+var flag_ari = flag.Bool("ari", false, "Enable arithmetic module")
 var conjecture_found bool
 
 func main() {
@@ -92,6 +93,8 @@ func main() {
 	}
 
 	problem := args[len(args)-1]
+	problem_name = path.Base(problem)
+
 	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
 	lstm, bound := parser.ParseTPTPFile(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
@@ -330,6 +333,10 @@ func initialization() {
 	conjecture_found = false
 	// Init typing
 	typing.Init()
+
+	if *flag_ari {
+		typing.InitTPTPArithmetic()
+	}
 
 	// Terms
 	basictypes.Init()

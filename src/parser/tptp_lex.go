@@ -578,9 +578,6 @@ func (lexer *TPTPLex) decimalFraction(yylval *TPTPSymType) bool {
 func (lexer *TPTPLex) decimal(yylval *TPTPSymType) bool {
 	if lexer.isZeroNumeric() {
 		yylval.str += "0"
-		if lexer.pos < len(lexer.s) {
-			lexer.advance()
-		}
 		return true
 	}
 	return lexer.positiveDecimal(yylval)

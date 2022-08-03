@@ -44,6 +44,7 @@ var yylineno = 1
 
 // Final result
 var statement []btypes.Statement
+var definedType string
 
 // Either a TypeVar or a Typed Variable
 type TFFVar struct {
@@ -316,7 +317,9 @@ tff_plain_term: constant                         { $$ = tftFrom(nil, btypes.Make
   | functor LEFT_PAREN tff_arguments RIGHT_PAREN { $$ = tftFrom(nil, btypes.MakerFun($1, $3.terms, $3.types)) }
   ;
   
-tff_defined_term: defined_term  { $$ = tftFrom(nil, $1) } 
+tff_defined_term: defined_term  { 
+  recordNumberInGlobalContext($1.GetName())
+  $$ = tftFrom(nil, $1) } 
   | tff_defined_atomic_term     { $$ = $1 }
   ;
 
@@ -626,9 +629,15 @@ atomic_word: LOWER_WORD { $$ = $1 }
 atomic_defined_word: DOLLAR_WORD { $$ = $1 }
   ;
   
-number: INTEGER { $$ = $1 }
-  | RATIONAL    { $$ = $1 }
-  | REAL        { $$ = $1 }
+number: INTEGER { 
+  definedType = "$int"
+  $$ = $1 }
+  | RATIONAL    {
+  definedType = "$rat"
+    $$ = $1 }
+  | REAL        { 
+  definedType = "$real"
+  $$ = $1 }
   ;
 
 file_name: SINGLE_QUOTED { $$ = $1 }
@@ -745,3 +754,10 @@ func toParameterizedType(ts typing.TypeScheme) []typing.TypeApp {
     }
     return realArr
 }
+
+func recordNumberInGlobalContext(name string) {
+    if name[0] == '$' {
+        return
+    }
+    typing.SaveConstant(name, typing.MkTypeHint(definedType))
+} 
