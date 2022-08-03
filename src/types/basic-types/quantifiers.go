@@ -43,6 +43,7 @@ package basictypes
 import (
 	"fmt"
 
+	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -53,6 +54,13 @@ type Ex struct {
 	f        Form
 }
 
+func (e Ex) sep() string {
+	if global.IsPrettyPrint() {
+		return "∃ "
+	}
+	return "? "
+}
+
 func (e Ex) GetIndex() int              { return e.index }
 func (e Ex) GetVarList() []Var          { return copyVarList(e.var_list) }
 func (e Ex) GetForm() Form              { return e.f.Copy() }
@@ -60,11 +68,11 @@ func (e Ex) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (e Ex) GetMetas() MetaList         { return e.GetForm().GetMetas() }
 
 func (e Ex) ToString() string {
-	return "∃ " + ListToString(e.GetVarList(), ", ", "") + " (" + e.GetForm().ToString() + ")"
+	return e.sep() + "[" + ListToString(e.GetVarList(), ", ", "") + "] (" + e.GetForm().ToString() + ")"
 }
 
 func (e Ex) ToStringWithSuffixMeta(suffix string) string {
-	return "∃ " + ListToString(e.GetVarList(), ", ", "") + "(" + e.GetForm().ToStringWithSuffixMeta(suffix) + ")"
+	return e.sep() + "[" + ListToString(e.GetVarList(), ", ", "") + "] (" + e.GetForm().ToStringWithSuffixMeta(suffix) + ")"
 }
 
 func (e Ex) Copy() Form {
@@ -97,6 +105,13 @@ type All struct {
 	f        Form
 }
 
+func (a All) sep() string {
+	if global.IsPrettyPrint() {
+		return "∀ "
+	}
+	return "! "
+}
+
 func (a All) GetIndex() int              { return a.index }
 func (a All) GetVarList() []Var          { return copyVarList(a.var_list) }
 func (a All) GetForm() Form              { return a.f.Copy() }
@@ -104,11 +119,11 @@ func (a All) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (a All) GetMetas() MetaList         { return a.GetForm().GetMetas() }
 
 func (a All) ToString() string {
-	return "∀ " + ListToString(a.GetVarList(), ", ", "") + " (" + a.GetForm().ToString() + ")"
+	return a.sep() + "[" + ListToString(a.GetVarList(), ", ", "") + "] (" + a.GetForm().ToString() + ")"
 }
 
 func (a All) ToStringWithSuffixMeta(suffix string) string {
-	return "∀ " + ListToString(a.GetVarList(), ", ", "") + "(" + a.GetForm().ToStringWithSuffixMeta(suffix) + ")"
+	return a.sep() + "[" + ListToString(a.GetVarList(), ", ", "") + "] (" + a.GetForm().ToStringWithSuffixMeta(suffix) + ")"
 }
 
 func (a All) Copy() Form {
@@ -142,6 +157,13 @@ type AllType struct {
 	form   Form
 }
 
+func (a AllType) sep() string {
+	if global.IsPrettyPrint() {
+		return "∀ "
+	}
+	return "! "
+}
+
 /* Methods */
 
 func (a AllType) GetIndex() int                { return a.index }
@@ -151,7 +173,7 @@ func (a AllType) GetType() typing.TypeScheme   { return typing.DefaultPropType(0
 
 /* Form interface */
 
-func (a AllType) toString() string   { return "∀ " + ListToString(a.tvList, ", ", "") }
+func (a AllType) toString() string   { return a.sep() + "[" + ListToString(a.tvList, ", ", "") + "]" }
 func (a AllType) ToString() string   { return a.toString() + " (" + a.GetForm().ToString() + ")" }
 func (a AllType) GetMetas() MetaList { return a.GetForm().GetMetas() }
 

@@ -40,7 +40,10 @@
 
 package basictypes
 
-import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+import (
+	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+)
 
 /* Not(formula): negation of a formula */
 type Not struct {
@@ -48,9 +51,16 @@ type Not struct {
 	f     Form
 }
 
+func (n Not) sep() string {
+	if global.IsPrettyPrint() {
+		return "¬"
+	}
+	return "~"
+}
+
 func (n Not) GetForm() Form                        { return n.f.Copy() }
 func (n Not) GetType() typing.TypeScheme           { return typing.DefaultPropType(0) }
-func (n Not) ToString() string                     { return "¬" + n.GetForm().ToString() }
+func (n Not) ToString() string                     { return n.sep() + n.GetForm().ToString() }
 func (n Not) ToStringWithSuffixMeta(string) string { return n.ToString() }
 func (n Not) Copy() Form                           { return MakeNot(n.GetIndex(), n.GetForm()) }
 func (n Not) GetMetas() MetaList                   { return n.GetForm().GetMetas() }

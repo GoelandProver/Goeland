@@ -40,12 +40,22 @@
 
 package basictypes
 
-import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+import (
+	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+)
 
 /* Imp(f1,f2): f1 imply f2*/
 type Imp struct {
 	index  int
 	f1, f2 Form
+}
+
+func (i Imp) sep() string {
+	if global.IsPrettyPrint() {
+		return " ⇒ "
+	}
+	return " => "
 }
 
 func (i Imp) GetIndex() int              { return i.index }
@@ -56,11 +66,11 @@ func (i Imp) GetMetas() MetaList         { return i.f1.GetMetas().Merge(i.f2.Get
 func (i Imp) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 func (i Imp) ToString() string {
-	return "(" + i.GetF1().ToString() + " ⇒ " + i.GetF2().ToString() + ")"
+	return "(" + i.GetF1().ToString() + i.sep() + i.GetF2().ToString() + ")"
 }
 
 func (i Imp) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + i.GetF1().ToStringWithSuffixMeta(suffix) + " ⇒ " + i.GetF2().ToStringWithSuffixMeta(suffix) + ")"
+	return "(" + i.GetF1().ToStringWithSuffixMeta(suffix) + i.sep() + i.GetF2().ToStringWithSuffixMeta(suffix) + ")"
 }
 
 func (i Imp) Equals(f Form) bool {
@@ -87,6 +97,13 @@ type Equ struct {
 	f1, f2 Form
 }
 
+func (e Equ) sep() string {
+	if global.IsPrettyPrint() {
+		return " ⇔ "
+	}
+	return " <=> "
+}
+
 func (e Equ) GetIndex() int              { return e.index }
 func (e Equ) GetF1() Form                { return e.f1.Copy() }
 func (e Equ) GetF2() Form                { return e.f2.Copy() }
@@ -95,11 +112,11 @@ func (e Equ) GetMetas() MetaList         { return e.f1.GetMetas().Merge(e.f2.Get
 func (e Equ) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 
 func (e Equ) ToString() string {
-	return "(" + e.GetF1().ToString() + " ⇔ " + e.GetF2().ToString() + ")"
+	return "(" + e.GetF1().ToString() + e.sep() + e.GetF2().ToString() + ")"
 }
 
 func (e Equ) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + e.GetF1().ToStringWithSuffixMeta(suffix) + " ⇔ " + e.GetF2().ToStringWithSuffixMeta(suffix) + ")"
+	return "(" + e.GetF1().ToStringWithSuffixMeta(suffix) + e.sep() + e.GetF2().ToStringWithSuffixMeta(suffix) + ")"
 }
 
 func (e Equ) Equals(f Form) bool {

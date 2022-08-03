@@ -73,7 +73,8 @@ var flag_non_destructive = flag.Bool("nd", false, "Use the non-destructive versi
 var flag_limit = flag.Int("l", -1, "Limit in destructive mode")
 var flag_one_step = flag.Bool("one_step", false, "Only one step of search")
 var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a file")
-var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
+var flag_proof = flag.Bool("proof", false, "Displays a proof of the problem (in TPTP format)")
+var flag_pretty_print = flag.Bool("pretty", false, "Prints are done with UTF-8 characters (when used in combination with -proof, results in a pretty proof)")
 var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
 var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable equality")
 var flag_type_proof = flag.Bool("type_proof", false, "Apply this flag if you want to enable type proof visualisation")
@@ -379,6 +380,10 @@ func initFlag() {
 	if *flag_proof {
 		global.SetProof(true)
 		proof.ResetProofFile()
+	}
+
+	if *flag_pretty_print {
+		global.DisplayPretty()
 	}
 
 	global.SetPlugin("dmt", *flag_dmt)
