@@ -58,6 +58,10 @@ func (m MatchingSubstitutions) GetSubst() Substitutions {
 	return m.subst.Copy()
 }
 
+func (m MatchingSubstitutions) ToString() string {
+	return m.GetForm().ToString() + " " + m.GetSubst().ToString()
+}
+
 func (m MatchingSubstitutions) Print() {
 	global.PrintDebug("M.P", fmt.Sprintf(" %s ", m.GetForm().ToString()))
 	m.GetSubst().Print()

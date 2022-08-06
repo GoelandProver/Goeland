@@ -236,7 +236,7 @@ func Eliminate(s *Substitutions) {
 		for _, t := range *s {
 			key, value := t.Get()
 			if OccurCheckValid(key, value) {
-				new_s = eliminateInside(key, value, (*s).Copy(), &has_changed)
+				*s = eliminateInside(key, value, (*s).Copy(), &has_changed)
 			} else {
 				*s = Failure()
 				return
@@ -253,7 +253,6 @@ func Eliminate(s *Substitutions) {
 /* Eliminate inside : eliminate for a given couple (key, value) on a substitution */
 func eliminateInside(key basictypes.Meta, value basictypes.Term, s Substitutions, has_changed_top *bool) Substitutions {
 	has_changed := true
-
 	for has_changed {
 		has_changed = false
 		s_tmp := MakeEmptySubstitution()
@@ -284,6 +283,7 @@ func eliminateInside(key basictypes.Meta, value basictypes.Term, s Substitutions
 				s_tmp.Set(key_2, value_2)
 			}
 		}
+
 		s = s_tmp.Copy()
 		if has_changed {
 			*has_changed_top = true

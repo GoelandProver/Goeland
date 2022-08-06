@@ -76,8 +76,8 @@ func (m Meta) Equals(t Term) bool {
 	return isMeta &&
 		(oth.GetIndex() == m.GetIndex()) &&
 		(oth.GetName() == m.GetName()) &&
-		(oth.GetFormula() == m.GetFormula()) &&
-		(m.typeHint.Equals(oth.typeHint))
+		(oth.GetFormula() == m.GetFormula()) /*&&
+		(m.typeHint.Equals(oth.typeHint))*/
 }
 
 func (m Meta) Copy() Term { return MakeMeta(m.GetIndex(), m.GetName(), m.GetFormula(), m.typeHint) }

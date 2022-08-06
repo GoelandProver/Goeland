@@ -77,6 +77,9 @@ func (tv TypeVar) Size() int                { return 1 }
 func (tv TypeVar) GetPrimitives() []TypeApp { return []TypeApp{tv} }
 
 func (tv TypeVar) Equals(oth interface{}) bool {
+	if tv.metaInfo.formulaIndex != BAD_INDEX && tv.metaInfo.index != BAD_INDEX {
+		return true
+	}
 	if !Is[TypeVar](oth) {
 		return false
 	}

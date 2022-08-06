@@ -80,7 +80,7 @@ func (p Pred) ToString() string {
 		return p.GetID().ToString()
 	}
 	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", p.getEmptyChar()) +
-		" ; " + ListToString(p.GetArgs(), ", ", "∅") + ")"
+		" ; " + ListToString(p.GetArgs(), ", ", p.getEmptyChar()) + ")"
 }
 
 func (p Pred) ToStringWithSuffixMeta(suffix string) string {
@@ -88,7 +88,7 @@ func (p Pred) ToStringWithSuffixMeta(suffix string) string {
 		return p.GetID().ToString()
 	}
 	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", p.getEmptyChar()) +
-		" ; " + listToStringMeta(p.GetArgs(), suffix, ", ", "∅") + ")"
+		" ; " + listToStringMeta(p.GetArgs(), suffix, ", ", p.getEmptyChar()) + ")"
 }
 
 func (p Pred) Copy() Form {

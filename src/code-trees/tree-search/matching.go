@@ -59,6 +59,7 @@ func (n Node) Unify(formula basictypes.Form) (bool, []treetypes.MatchingSubstitu
 
 /* Tries to find the substitutions needed to unify the formulae with the one described by the sequence of instructions. */
 func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.MatchingSubstitutions {
+	var result []treetypes.MatchingSubstitutions
 	// The formula has to be a predicate.
 	switch formula_type := formula.(type) {
 	case basictypes.Pred:
@@ -68,13 +69,19 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 
 		// Transform the predicate to a function to make the tool work properly
 		m.terms = []basictypes.Term{basictypes.MakeFun(formula_type.GetID(), terms, []typing.TypeApp{}, formula_type.GetType())}
-		return m.unifyAux(node)
+		result = m.unifyAux(node)
 	case treetypes.TermForm:
 		m.terms = []basictypes.Term{formula_type.GetTerm()}
-		return m.unifyAux(node)
+		result = m.unifyAux(node)
 	default:
-		return m.failure
+		result = m.failure
 	}
+
+	if !reflect.DeepEqual(m.failure, result) {
+		// Treat result to reconstruct the types
+		//fmt.Println(global.ListToString(result, ", ", ""))
+	}
+	return result
 }
 
 /*** Unify aux ***/
