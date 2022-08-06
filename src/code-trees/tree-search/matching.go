@@ -39,6 +39,7 @@
 package treesearch
 
 import (
+	"fmt"
 	"reflect"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -63,9 +64,7 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 	// The formula has to be a predicate.
 	switch formula_type := formula.(type) {
 	case basictypes.Pred:
-		terms := []basictypes.Term{}
-		terms = append(terms, basictypes.TypeAppArrToTerm(formula_type.GetTypeVars())...)
-		terms = append(terms, formula_type.GetArgs()...)
+		terms := treetypes.TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs())
 
 		// Transform the predicate to a function to make the tool work properly
 		m.terms = []basictypes.Term{basictypes.MakeFun(formula_type.GetID(), terms, []typing.TypeApp{}, formula_type.GetType())}
@@ -79,7 +78,7 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 
 	if !reflect.DeepEqual(m.failure, result) {
 		// Treat result to reconstruct the types
-		//fmt.Println(global.ListToString(result, ", ", ""))
+		fmt.Println(global.ListToString(result, "\n", ""))
 	}
 	return result
 }

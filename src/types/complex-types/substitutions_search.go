@@ -186,7 +186,7 @@ func ApplySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictype
 
 	switch nf := t.(type) {
 	case basictypes.Meta:
-		if nf == old_symbol {
+		if nf.Equals(old_symbol) {
 			res = new_symbol.Copy()
 		}
 	case basictypes.Fun:

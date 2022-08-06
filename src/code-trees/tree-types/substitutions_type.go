@@ -231,7 +231,7 @@ func Eliminate(s *Substitutions) {
 
 	for has_changed {
 		has_changed = false
-		new_s := MakeEmptySubstitution()
+
 		// For each element  (key, value) in the given substitution
 		for _, t := range *s {
 			key, value := t.Get()
@@ -239,14 +239,11 @@ func Eliminate(s *Substitutions) {
 				*s = eliminateInside(key, value, (*s).Copy(), &has_changed)
 			} else {
 				*s = Failure()
-				return
 			}
-			if new_s.Equals(Failure()) {
-				*s = new_s.Copy()
+			if s.Equals(Failure()) {
 				return
 			}
 		}
-		*s = new_s.Copy()
 	}
 }
 
