@@ -89,7 +89,8 @@ func MakeConstraint(i int, tp TermPair) Constraint {
 }
 
 func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
-	for m, t := range s {
+	for _, subst := range s {
+		m, t := subst.Get()
 		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().getT1())
 		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().getT2())
 		c.setTP(makeTermPair(new_t1, new_t2))

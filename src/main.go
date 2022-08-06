@@ -108,10 +108,11 @@ func main() {
 	if !typing.EmptyGlobalContext() {
 		formula, err := polymorphism.WellFormedVerification(form, *flag_type_proof)
 		if err != nil {
-			fmt.Printf("[%.6fs][%v][MAIN] Typing error : %s\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), err.Error())
+			global.PrintDebug("MAIN", fmt.Sprintf("Typing error: %s\n", err.Error()))
+			fmt.Printf("[%.6fs][%v][Type] Error: not well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 			return
 		}
-		fmt.Printf("[%.6fs][%v][TypeRes] Well Typed\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		fmt.Printf("[%.6fs][%v][Type] Well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		form = formula
 	}
 

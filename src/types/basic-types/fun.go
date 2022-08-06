@@ -41,6 +41,7 @@
 package basictypes
 
 import (
+	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -51,6 +52,13 @@ type Fun struct {
 	args     []Term
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
+}
+
+func (f Fun) getEmptyChar() string {
+	if global.IsPrettyPrint() {
+		return "∅"
+	}
+	return "{}"
 }
 
 func (f Fun) GetID() Id       { return f.p.Copy().(Id) }
@@ -73,7 +81,7 @@ func (f Fun) ToString() string {
 	if len(f.args) == 0 {
 		return f.GetID().GetName()
 	}
-	return f.GetID().GetName() + "(" + ListToString(f.typeVars, ", ", "∅") + " ; " + ListToString(f.args, ", ", "") + ") : " + f.typeHint.ToString()
+	return f.GetID().GetName() + "(" + ListToString(f.typeVars, ", ", f.getEmptyChar()) + " ; " + ListToString(f.args, ", ", "") + ") : " + f.typeHint.ToString()
 }
 
 func (f Fun) ToStringWithSuffixMeta(suffix string) string {

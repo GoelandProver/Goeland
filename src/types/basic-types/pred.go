@@ -56,6 +56,13 @@ type Pred struct {
 	typeHint typing.TypeScheme
 }
 
+func (p Pred) getEmptyChar() string {
+	if IsPrettyPrint() {
+		return "∅"
+	}
+	return "{}"
+}
+
 /* Pred attributes getters */
 
 func (p Pred) GetIndex() int                 { return p.index }
@@ -72,7 +79,7 @@ func (p Pred) ToString() string {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
 		return p.GetID().ToString()
 	}
-	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", "∅") +
+	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", p.getEmptyChar()) +
 		" ; " + ListToString(p.GetArgs(), ", ", "∅") + ")"
 }
 
@@ -80,7 +87,7 @@ func (p Pred) ToStringWithSuffixMeta(suffix string) string {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
 		return p.GetID().ToString()
 	}
-	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", "∅") +
+	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", p.getEmptyChar()) +
 		" ; " + listToStringMeta(p.GetArgs(), suffix, ", ", "∅") + ")"
 }
 

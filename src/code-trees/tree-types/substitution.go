@@ -30,47 +30,46 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/****************/
-/* rewritten.go */
-/****************/
+/*************************/
+/* substitution.go */
+/*************************/
 
 /**
- * This file contains the functions definition gotten from the main prover.
- * Any of these could be replaced by its other part when they are exported.
- **/
-
-package dmt
-
-import (
-	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
-	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
-)
-
-/**
- * Replaces all the occurences of all the keys of subst to the corresponding values.
- **/
-func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
-	//terms := []btypes.Term{}
-	for _, s := range subst {
-		old_symbol, new_symbol := s.Get()
-		form = ctypes.ApplySubstitutionOnFormula(old_symbol, new_symbol, form)
-		/*if reflect.TypeOf(new_symbol) == reflect.TypeOf(btypes.Meta{}) {
-			terms = append(terms, new_symbol)
-		}*/
-	}
-	return form
-}
-
-/**
- * Stolen method : instantiation.
- * Instanciates once a formula to make meta from bound variables.
-func instantiateOnce(formula btypes.Form) btypes.Form {
-	nf := formula.(btypes.All).GetForm()
-	for _, v := range formula.(btypes.All).GetVarList() {
-		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), 0, v.GetTypeHint())
-		nf = btypes.ReplaceVarByTerm(nf, v, meta)
-	}
-	return nf
-}
+* This file provides the necessary structures to manipulate sustitutions
 **/
+
+package treetypes
+
+import btypes "github.com/GoelandProver/Goeland/types/basic-types"
+
+type Substitution struct {
+	k btypes.Meta
+	v btypes.Term
+}
+
+func (s Substitution) ToString() string {
+	return "(" + s.k.ToString() + ": " + s.v.ToString() + ")"
+}
+
+func (s Substitution) Key() btypes.Meta {
+	return s.k
+}
+
+func (s Substitution) Value() btypes.Term {
+	return s.v
+}
+
+func (s Substitution) Copy() Substitution {
+	return Substitution{
+		k: s.k.Copy().ToMeta(),
+		v: s.v.Copy(),
+	}
+}
+
+func (s Substitution) Get() (btypes.Meta, btypes.Term) {
+	return s.k, s.v
+}
+
+func (s *Substitution) Set(value btypes.Term) {
+	s.v = value
+}

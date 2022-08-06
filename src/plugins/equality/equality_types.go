@@ -145,12 +145,12 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 
 	for _, ms := range eq_list {
 		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaEQ1, MetaEQ2)
-		eq1_term, ok_t1 := ms_ordered[MetaEQ1]
+		eq1_term, ok_t1 := ms_ordered.Get(MetaEQ1)
 		if !ok_t1 {
 			fmt.Printf("Meta_eq_1 not found in map\n")
 			global.PrintDebug("RI", "Meta_eq_1 not found in map")
 		}
-		eq2_term, ok_t2 := ms_ordered[MetaEQ2]
+		eq2_term, ok_t2 := ms_ordered.Get(MetaEQ2)
 		if !ok_t2 {
 			fmt.Printf("Meta_eq_2 not found in map\n")
 			global.PrintDebug("RI", "Meta_eq_2 not found in map")
@@ -170,12 +170,12 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 	_, neq_list := dt.Unify(eq_neq_pred)
 	for _, ms := range neq_list {
 		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaNEQ1, MetaNEQ2)
-		neq1_term, ok_t1 := ms_ordered[MetaNEQ1]
+		neq1_term, ok_t1 := ms_ordered.Get(MetaNEQ1)
 		if !ok_t1 {
 			fmt.Printf("Meta_neq_1 not found in map\n")
 			global.PrintDebug("RI", "Meta_neq_1 not found in map")
 		}
-		neq2_term, ok_t2 := ms_ordered[MetaNEQ2]
+		neq2_term, ok_t2 := ms_ordered.Get(MetaNEQ2)
 		if !ok_t2 {
 			fmt.Printf("Meta_neq_2 not found in map\n")
 			global.PrintDebug("RI", "Meta_neq_2 not found in map")
@@ -188,16 +188,17 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 /* Reoder substitution in case of metavariable equalities. (X, META_1) => (META_1, X). Need to find association. */
 func orderSubstForRetrieve(s treetypes.Substitutions, M1, M2 basictypes.Meta) treetypes.Substitutions {
 	new_subst := treetypes.MakeEmptySubstitution()
-	for k, v := range s {
+	for _, subst := range s {
+		k, v := subst.Get()
 		if !k.Equals(M1) && !k.Equals(M2) {
 			if !v.IsMeta() {
 				fmt.Printf("Error : Meta EQ/NEQ not found")
 				global.PrintDebug("OSFR", "Meta EQ/NEQ not found")
 			} else {
-				new_subst[v.ToMeta()] = k
+				new_subst.Set(v.ToMeta(), k)
 			}
 		} else {
-			new_subst[k] = v
+			new_subst.Set(k, v)
 		}
 	}
 	treetypes.EliminateMeta(&new_subst)

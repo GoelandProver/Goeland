@@ -205,13 +205,13 @@ func TypeAppToTerm(typeApp typing.TypeApp) Term {
 			term = nil
 		}
 	case typing.TypeHint, typing.TypeCross:
-		term = MakerFun(MakerId(nt.ToString()), []Term{}, []typing.TypeApp{}, typing.MkTypeHint("Type"))
+		term = MakerFun(MakerId(nt.ToString()), []Term{}, []typing.TypeApp{}, typing.MkTypeHint("$tType"))
 	case typing.ParameterizedType:
 		args := []Term{}
 		for _, type_ := range nt.GetParameters() {
 			args = append(args, TypeAppToTerm(type_))
 		}
-		term = MakeFun(MakerId(nt.ToString()), args, []typing.TypeApp{}, typing.MkTypeHint("Type"))
+		term = MakeFun(MakerId(nt.ToString()), args, []typing.TypeApp{}, typing.MkTypeHint("$tType"))
 	}
 	return term
 }
@@ -220,10 +220,10 @@ func typeVarToMeta(typeVar typing.TypeVar) Meta {
 	var meta Meta
 	index, formula := typeVar.MetaInfos()
 	if !typeVar.Instantiated() {
-		meta = MakerMeta(typeVar.ToString(), formula, typing.MkTypeHint("Type"))
+		meta = MakerMeta(typeVar.ToString(), formula, typing.MkTypeHint("$tType"))
 		typeVar.Instantiate(meta.index)
 	} else {
-		meta = MakeMeta(index, typeVar.ToString(), formula, typing.MkTypeHint("Type"))
+		meta = MakeMeta(index, typeVar.ToString(), formula, typing.MkTypeHint("$tType"))
 	}
 	return meta
 }

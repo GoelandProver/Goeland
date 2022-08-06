@@ -189,7 +189,8 @@ func isFiltering(ms treetypes.MatchingSubstitutions) bool {
 func checkAllMetaAreInstanciated(metas btypes.MetaList, subst treetypes.Substitutions) bool {
 	for _, m := range metas {
 		m_found := false
-		for k, v := range subst {
+		for _, s := range subst {
+			k, v := s.Get()
 			if m.Equals(k) || m.Equals(v) {
 				m_found = true
 			}
@@ -202,7 +203,8 @@ func checkAllMetaAreInstanciated(metas btypes.MetaList, subst treetypes.Substitu
 }
 
 func checkMetaAreFromSearch(metas btypes.MetaList, subst treetypes.Substitutions) bool {
-	for k, v := range subst {
+	for _, s := range subst {
+		k, v := s.Get()
 		if !metas.Contains(k) {
 			return false
 		} else {
