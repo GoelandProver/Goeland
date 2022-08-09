@@ -242,7 +242,9 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	var not_form basictypes.Form
 	bound := old_bound
 
+	// TODO : DMT ?
 	for _, s := range lstm {
+		// fmt.Printf("%v\n", s.ToString())
 		switch s.GetRole() {
 		case basictypes.Include:
 			file_name := s.GetName()
@@ -257,8 +259,11 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 
 			new_lstm, bound_tmp := parser.ParseMain(realname)
 			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(current_dir, path.Dir(file_name)))
-			bound = new_bound
-			and_list = append(and_list, new_form_list)
+
+			if new_form_list != nil {
+				bound = new_bound
+				and_list = append(and_list, new_form_list)
+			}
 
 		case basictypes.Axiom:
 			new_form := basictypes.RenameVariables(s.GetForm())
@@ -276,7 +281,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	switch {
 	case len(and_list) == 0 && not_form == nil:
 		fmt.Printf("Formulas not found\n")
-		os.Exit(1)
+		// TODO
 		return nil, bound
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound
