@@ -1,0 +1,185 @@
+
+<HR><!------------------------------------------------------------------------>
+<H2>Goéland 1.0.0</H2>
+Julie CAILLER, Johann ROSAIN, David DELAHAYE, Simon ROBILLARD, Hinde Lilia
+BOUZIANE<br>
+LIRMM, Univ Montpellier, CNRS, Montpellier, France<br>
+Firstname.Lastname@lirmm.fr
+
+<H3>Architecture</H3>
+
+<p>
+Goéland [CR+22] is a first-order
+concurrent automated theorem prover. It implements the free variable
+tableau method with equality (using rigid E-unification [DA98]) and
+Deduction Modulo Theory (DMT) [DD+13], with some variations like
+preskolemization or polarized DMT [Her18]. It produces human readable
+proofs.
+</p>
+
+<H3>Strategies</H3>
+
+<p>Goéland is based on concurrency and message exchanges. Branches are
+explored by different processes, each returning a local solution,
+i.e., a substitution that closes that branch. The parent process then
+has to select a solution on which all the branches can agree, or
+perform backtracking if no such substitution can be found. This
+concurrent approach helps limit backtracking and avoids some forms of
+unfairness in proof search related to the order in which branches are
+explored. Iterative deepening is used to guard against unfairness
+caused by unbounded free variable introductions.
+</p>
+
+<H3>Implementation</H3>
+
+Goéland is implemented in Go. This language fits well with the core idea of
+concurrency behind the prover, which is provided by means of the notion of
+goroutine. Goroutines are actually light threads and a large number of them can
+be launched simultaneously at runtime. In Goéland, each goroutine contains a
+non-branching step of the proof, which interacts with other goroutines.<br><br>
+
+The implementation of Goéland can be found here:
+<PRE><A HREF="https://github.com/GoelandProver/Goeland">https://github.com/GoelandProver/Goeland</A></PRE>
+
+<H3>Expected Competition Performance</H3>
+
+<p>
+Development of Goéland started one year ago, and functionalities such
+as DMT or equality reasoning are even more recent. For this first
+participation at CASC, we do not have any particular expectations. Our
+goal is mainly to present our approach to the community (feel free to
+read our article accepted at IJCAR 2022[CR+22]). Good luck,
+Goéland!
+</p>
+
+<H3>References</H3>
+
+<DL>
+
+    <DT> CR+22
+        <DD> Cailler, J. and Rosain, J. and Delahaye, D. and
+            Robillard, S. and Bouziane, H. L. (2022),
+                <STRONG>Goéland: A Concurrent Tableau-Based Theorem Prover</STRONG>,
+                Blanchette, J. and Kovacs, L and Pattinson, D.,
+                <EM>Proceedings of the 22th International Joint Conference on
+                    Automated Reasoning</EM>
+                (Haïfa, Israel),
+                Lecture Notes in Computer Science 13385,
+                Springer.
+
+
+    <DT> DA98
+    <DD> Degtyarev, A. and Voronkov, A. (1998),
+            <STRONG>What you always wanted to know about rigid E-unification</STRONG>,
+            <EM>Journal of Automated Reasoning</EM> 20,
+            pp.47-80,
+            Springer.
+
+    <DT> DD+13
+    <DD> Delahaye, D. and Doligez, D. and Gibert, F. and
+        Halmagrand, P. and Hermant, O. (2013),
+            <STRONG>Zenon Modulo: When Achilles Outruns the Tortoise using
+                Deduction Modulo</STRONG>,
+                McMillan, K. and Middeldorp, A. and Voronkov, A.,
+            <EM>Proceedings of the 19th International Conference on
+                Logic for Programming, Artificial Intelligence, and
+                Reasoning</EM>
+            (Stellenbosch, South Africa),
+            pp.274-290,
+            Lecture Notes in Computer Science 8312,
+            Springer-Verlag.
+
+    <DT> Her18
+    <DD> Hermant, O. (2018),
+        <STRONG>Polarized Rewriting and Tableaux in B Set Theory</STRONG>,
+        Cristia, M. and Delahaye, D. and Dubois, C.
+        <EM>Proceedings of the 3rd International Workshop on Sets and Tools co-located
+            with the 6th International {ABZ} Conference, SETS@ABZ 2018</EM>
+            (Southampton, United Kingdom),
+            pp.67-72,
+            {CEUR} Workshop Proceedings 2199,
+            CEUR-WS.org.
+
+</DL>
+
+
+
+<!-- <DL>
+<DT> DA98
+    <DD>
+        @article{DA98,
+            title={What you always wanted to know about rigid E-unification},
+            author={Degtyarev, Anatoli and Voronkov, Andrei},
+            journal={Journal of Automated Reasoning},
+            volume={20},
+            number={1},
+            pages={47--80},
+            year={1998},
+            publisher={Springer}
+          }
+    </DD>
+
+<DT> DD+13
+    <DD>
+        @InProceedings{DD+13,
+            Author       = "Delahaye, D. and Doligez, D. and Gibert, F. and
+                            Halmagrand, P. and Hermant, O.",
+            Year         = "2013",
+            Title        = "{Zenon Modulo: When Achilles Outruns the Tortoise using
+                            Deduction Modulo}",
+            Editor       = "McMillan, K. and Middeldorp, A. and Voronkov, A.",
+            BookTitle    = "{Proceedings of the 19th International Conference on
+                            Logic for Programming, Artificial Intelligence, and
+                            Reasoning}",
+            Place        = "Stellenbosch, South Africa",
+            Series       = "Lecture Notes in Computer Science",
+            Number       = "8312",
+            Pages        = "274-290",
+            Publisher    = "Springer-Verlag",
+            Comment      = ""
+        }
+    </DD>
+
+<DT>  Her18
+<DD>
+    @inproceedings{Her18,
+    author    = {Hermant, O.},
+    editor    = {Cristia, M. and Delahaye, D. and Dubois, C.},
+    title     = {Polarized Rewriting and Tableaux in {B} Set Theory},
+    booktitle = {Proceedings of the 3rd International Workshop on Sets and Tools co-located
+                with the 6th International {ABZ} Conference, SETS@ABZ 2018, Southamptom,
+                UK, June 5, 2018},
+    series    = {{CEUR} Workshop Proceedings},
+    volume    = {2199},
+    pages     = {67--72},
+    publisher = {CEUR-WS.org},
+    year      = {2018},
+    url       = {http://ceur-ws.org/Vol-2199/paper6.pdf},
+    timestamp = {Wed, 12 Feb 2020 16:45:18 +0100},
+    biburl    = {https://dblp.org/rec/conf/zum/Hermant18.bib},
+    bibsource = {dblp computer science bibliography, https://dblp.org}
+    }
+</DD>
+
+<DT>  CR+22
+    <DD>
+        @InProceedings{CR+13,
+            Author       = "Cailler, J. and Rosain, J. and Delahaye, D. and
+                            Robillard, S. and Bouziane, H. L.",
+            Year         = "2022",
+            Title        = "{Goéland: A Concurrent Tableau-Based Theorem Prover}",
+            Editor       = "Blanchette, J. and Kovacs, L and Pattinson, D.",
+            BookTitle    = "{Proceedings of the 22th International Joint Conference on
+                            Automated Reasoning}",
+            Place        = "Haïfa, Israël",
+            Series       = "Lecture Notes in Computer Science",
+            Number       = "13385",
+            Publisher    = "Springer"
+        }
+    </DD>
+
+</DL> -->
+
+<P>
+
+<HR><!------------------------------------------------------------------------>

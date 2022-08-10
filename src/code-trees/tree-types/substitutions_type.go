@@ -265,21 +265,19 @@ func Eliminate(s *Substitutions) {
 
 	for has_changed {
 		has_changed = false
-		new_s := MakeEmptySubstitution()
+
 		// For each element  (key, value) in the given substitution
 		for key, value := range *s {
 			if OccurCheckValid(key, value) {
-				new_s = eliminateInside(key, value, (*s).Copy(), &has_changed)
+				*s = eliminateInside(key, value, (*s).Copy(), &has_changed)
 			} else {
 				*s = Failure()
-				return
 			}
-			if new_s.Equals(Failure()) {
-				*s = new_s.Copy()
+			if s.Equals(Failure()) {
 				return
 			}
 		}
-		*s = new_s.Copy()
+
 	}
 }
 
@@ -311,11 +309,13 @@ func eliminateInside(key basictypes.Meta, value basictypes.Term, s Substitutions
 				s_tmp[key_2] = value_2
 			}
 		}
+
 		s = s_tmp.Copy()
 		if has_changed {
 			*has_changed_top = true
 		}
 	}
+
 	return s
 }
 

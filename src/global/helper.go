@@ -49,6 +49,7 @@ import (
 	"time"
 )
 
+// Global variables
 var debug = false
 var destructive = true
 var nb_gor = 0
@@ -65,6 +66,9 @@ var lock_plugins sync.Mutex
 var cpt_node = -1
 var lock_cpt_node sync.Mutex
 var dmt_before_eq bool
+var problem_name string
+var core_limit int
+var goroutines_limit int
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -80,7 +84,15 @@ func PrintDebug(function, message string) {
 	}
 }
 
-/* incr the  global number of gouroutine lanched */
+/*** Goroutine management ***/
+/* Lanch a goroutine */
+func LanchGoroutine(f func()) {
+	// if nb_gourinte < x
+	IncrGoRoutine(1)
+	go f()
+}
+
+/* Incr the  global number of gouroutine lanched */
 func IncrGoRoutine(i int) {
 	mutex.Lock()
 	nb_gor = nb_gor + i
@@ -157,58 +169,64 @@ func IncrCptNode() int {
 	lock_cpt_node.Unlock()
 	return GetCptNode()
 }
-
 func GetDMTBeforeEq() bool {
 	return dmt_before_eq
+}
+func GetCoreLimit() int {
+	return core_limit
+}
+func GteGoroutinesLimit() int {
+	return goroutines_limit
+}
+func GetProblemName() string {
+	return problem_name
 }
 
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
 }
-
 func SetStart(t time.Time) {
 	start = t
 }
-
 func SetDestructive(b bool) {
 	destructive = b
 }
-
 func SetNbGoroutines(i int) {
 	nb_gor = i
 }
-
 func SetNbStep(i int) {
 	nb_step = i
 }
-
 func SetExchanges(b bool) {
 	exchanges = b
 }
-
 func SetDataStruct(s string) {
 	data_struct = s
 }
-
 func SetLimit(i int) {
 	limit = i
 }
-
 func SetOneStep(b bool) {
 	one_step = b
 }
-
 func SetProof(b bool) {
 	proof = b
 }
-
 func SetPlugin(s string, b bool) {
 	lock_plugins.Lock()
 	plugins[s] = b
 	lock_plugins.Unlock()
 }
-
 func SetDMTBeforeEQ(b bool) {
 	dmt_before_eq = b
+}
+func SetCoreLimit(i int) {
+	core_limit = i
+}
+func SetGoroutinesLimit(i int) {
+	goroutines_limit = i
+}
+func SetProblemName(s string) {
+	problem_name = s
 }

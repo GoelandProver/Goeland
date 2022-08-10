@@ -42,11 +42,9 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"path"
 	"runtime"
-	"runtime/pprof"
 	"time"
 
 	_ "net/http/pprof"
@@ -64,8 +62,6 @@ import (
 )
 
 // Flags
-var cpuprofile = flag.String("cpuprofile", "", "Write cpu profile to `file`")
-var memprofile = flag.String("memprofile", "", "Write memory profile to `file`")
 var flag_debug = flag.Bool("debug", false, "Print debug")
 var flag_non_destructive = flag.Bool("nd", false, "Use the non-destructive version")
 var flag_limit = flag.Int("l", -1, "Limit in destructive mode")
@@ -74,9 +70,10 @@ var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a fi
 var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
 var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
 var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable equality")
-var problem_name string
 var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
 var conjecture_found bool
+var flag_nb_core = flag.Int("core_limit", -1, "Number of core (default: all)")
+var flag_nb_goroutines = flag.Int("max_gor", -1, "Maximal number of goroutines")
 
 func main() {
 	initFlag()
@@ -89,37 +86,19 @@ func main() {
 	}
 
 	problem := args[len(args)-1]
-	_, problem_name = path.Split(problem)
-	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem_name)
+	_, problem_name := path.Split(problem)
+	global.SetProblemName(problem_name)
+	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), global.GetProblemName())
 	lstm, bound := parser.ParseMain(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
 	if global.GetLimit() != -1 {
 		bound = global.GetLimit()
 	}
 
-	/*
-		current_dir, err := os.Getwd()
-		if err != nil {
-			fmt.Printf("Error in os.Getwd")
-			return
-		}*/
 	formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
-	// os.Chdir(current_dir)
 
 	fmt.Printf("Start search\n")
 	Search(formula, new_bound)
-
-	if *memprofile != "" {
-		f, err := os.Create(*memprofile)
-		if err != nil {
-			log.Fatal("could not create memory profile: ", err)
-		}
-		defer f.Close() // error handling omitted for example
-		runtime.GC()    // get up-to-date statistics
-		if err := pprof.WriteHeapProfile(f); err != nil {
-			log.Fatal("could not write memory profile: ", err)
-		}
-	}
 }
 
 /* Manage return from search for destructive and non-destructive versions  */
@@ -165,16 +144,16 @@ func PrintResult(res bool) {
 	if res {
 		fmt.Printf("[%.6fs][%v][Res] VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		if conjecture_found {
-			fmt.Printf("%s SZS status Theorem for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status Theorem for %v\n", "%", global.GetProblemName())
 		} else {
-			fmt.Printf("%s SZS status Unsatisfiable for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status Unsatisfiable for %v\n", "%", global.GetProblemName())
 		}
 	} else {
 		fmt.Printf("[%.6fs][%v][Res] NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		if conjecture_found {
-			fmt.Printf("%s SZS status CounterSatisfiable for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status CounterSatisfiable for %v\n", "%", global.GetProblemName())
 		} else {
-			fmt.Printf("%s SZS status Satisfiable for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status Satisfiable for %v\n", "%", global.GetProblemName())
 		}
 	}
 }
@@ -225,9 +204,9 @@ func Search(f basictypes.Form, bound int) {
 
 		if global.GetProof() && res {
 			proof.WriteGraphProof(final_proof)
-			fmt.Printf("%s SZS output start Proof for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS output start Proof for %v\n", "%", global.GetProblemName())
 			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
-			fmt.Printf("%s SZS output end Proof for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS output end Proof for %v\n", "%", global.GetProblemName())
 		}
 
 		limit = 2 * limit
@@ -244,7 +223,6 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 
 	// TODO : DMT ?
 	for _, s := range lstm {
-		// fmt.Printf("%v\n", s.ToString())
 		switch s.GetRole() {
 		case basictypes.Include:
 			file_name := s.GetName()
@@ -294,6 +272,9 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 
 /* Initialize global variable, time, call plugins */
 func initialization() {
+	// NB core
+	runtime.GOMAXPROCS(global.GetCoreLimit())
+
 	// Time
 	global.SetStart(time.Now())
 
@@ -348,6 +329,14 @@ func initFlag() {
 	global.SetPlugin("equality", !*flag_noeq)
 	if *flag_dmt_before_eq {
 		global.SetDMTBeforeEQ(true)
+	}
+
+	if *flag_nb_core != -1 {
+		global.SetCoreLimit(*flag_nb_core)
+	}
+
+	if *flag_nb_goroutines != -1 {
+		global.SetGoroutinesLimit(*flag_nb_core)
 	}
 }
 
