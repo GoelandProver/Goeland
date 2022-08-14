@@ -56,6 +56,8 @@ import (
 	"github.com/GoelandProver/Goeland/parser"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	equality "github.com/GoelandProver/Goeland/plugins/equality"
+	polymorphism "github.com/GoelandProver/Goeland/polymorphism/rules"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -71,11 +73,14 @@ var flag_non_destructive = flag.Bool("nd", false, "Use the non-destructive versi
 var flag_limit = flag.Int("l", -1, "Limit in destructive mode")
 var flag_one_step = flag.Bool("one_step", false, "Only one step of search")
 var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a file")
-var flag_proof = flag.Bool("proof", false, "Write tree proof in a file")
+var flag_proof = flag.Bool("proof", false, "Displays a proof of the problem (in TPTP format)")
+var flag_pretty_print = flag.Bool("pretty", false, "Prints are done with UTF-8 characters (when used in combination with -proof, results in a pretty proof)")
 var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
 var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable equality")
+var flag_type_proof = flag.Bool("type_proof", false, "Apply this flag if you want to enable type proof visualisation")
 var problem_name string
 var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
+var flag_ari = flag.Bool("ari", false, "Enable arithmetic module")
 var conjecture_found bool
 
 func main() {
@@ -89,25 +94,35 @@ func main() {
 	}
 
 	problem := args[len(args)-1]
-	_, problem_name = path.Split(problem)
-	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem_name)
-	lstm, bound := parser.ParseMain(problem)
+	problem_name = path.Base(problem)
+
+	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
+	lstm, bound := parser.ParseTPTPFile(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
 	if global.GetLimit() != -1 {
 		bound = global.GetLimit()
 	}
 
-	/*
-		current_dir, err := os.Getwd()
-		if err != nil {
-			fmt.Printf("Error in os.Getwd")
-			return
-		}*/
-	formula, new_bound := StatementListToFormula(lstm, bound, path.Dir(problem))
-	// os.Chdir(current_dir)
+	form, bound := StatementListToFormula(lstm, bound, path.Dir(problem))
+	if form == nil {
+		fmt.Printf("[%.6fs][%v][Err] Problem not found.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		os.Exit(1)
+	}
 
-	fmt.Printf("Start search\n")
-	Search(formula, new_bound)
+	// If global context is empty, it means that this is not a typed proof.
+	if !typing.EmptyGlobalContext() {
+		formula, err := polymorphism.WellFormedVerification(form, *flag_type_proof)
+		if err != nil {
+			global.PrintDebug("MAIN", fmt.Sprintf("Typing error: %s\n", err.Error()))
+			fmt.Printf("[%.6fs][%v][Type] Error: not well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+			return
+		}
+		fmt.Printf("[%.6fs][%v][Type] Well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		form = formula
+	}
+
+	global.PrintDebug("MAIN", "Start search")
+	Search(form, bound)
 
 	if *memprofile != "" {
 		f, err := os.Create(*memprofile)
@@ -248,20 +263,24 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			file_name := s.GetName()
 
 			realname, err := getFile(file_name, current_dir)
-			global.PrintDebug("File to parse : %v\n", realname)
+			global.PrintDebug("MAIN", fmt.Sprintf("File to parse : %s\n", realname))
 
 			if err != nil {
 				fmt.Println(err.Error())
-				os.Exit(1)
+				return nil, -1
+				//os.Exit(1)
 			}
 
-			new_lstm, bound_tmp := parser.ParseMain(realname)
+			new_lstm, bound_tmp := parser.ParseTPTPFile(realname)
 			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(current_dir, path.Dir(file_name)))
-			bound = new_bound
-			and_list = append(and_list, new_form_list)
+
+			if new_form_list != nil {
+				bound = new_bound
+				and_list = append(and_list, new_form_list)
+			}
 
 		case basictypes.Axiom:
-			new_form := basictypes.RenameVariables(s.GetForm())
+			new_form := s.GetForm().RenameVariables()
 			if !global.IsLoaded("dmt") {
 				and_list = append(and_list, new_form)
 			} else if consumed := dmt.RegisterAxiom(new_form.Copy()); !consumed {
@@ -270,13 +289,42 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 
 		case basictypes.Conjecture:
 			conjecture_found = true
-			not_form = basictypes.RenameVariables(s.GetForm())
+			not_form = s.GetForm().RenameVariables()
+
+		case basictypes.Type:
+			typeScheme := s.GetAtomTyping().Ts
+
+			if typeScheme == nil {
+				continue
+			}
+
+			if typeScheme.Size() == 1 {
+				if typeScheme.ToString() == "$tType" {
+					// New type
+					typing.MkTypeHint(s.GetAtomTyping().Literal.GetName())
+				} else {
+					if global.Is[typing.QuantifiedType](typeScheme) {
+						typing.SavePolymorphScheme(s.GetAtomTyping().Literal.GetName(), typeScheme)
+					} else {
+						// Constant
+						typing.SaveConstant(s.GetAtomTyping().Literal.GetName(), typeScheme.GetPrimitives()[0])
+					}
+				}
+			} else {
+				// TypeArrow !
+				switch typeScheme.(type) {
+				case typing.TypeArrow:
+					typing.SaveTypeScheme(s.GetAtomTyping().Literal.GetName(), typing.GetInputType(typeScheme)[0], typing.GetOutType(typeScheme))
+				case typing.QuantifiedType:
+					typing.SavePolymorphScheme(s.GetAtomTyping().Literal.GetName(), typeScheme)
+				}
+			}
 		}
 	}
 	switch {
 	case len(and_list) == 0 && not_form == nil:
-		fmt.Printf("Formulas not found\n")
-		os.Exit(1)
+		//fmt.Printf("No data found.\n")
+		//os.Exit(1)
 		return nil, bound
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound
@@ -294,6 +342,12 @@ func initialization() {
 
 	// Search parameters
 	conjecture_found = false
+	// Init typing
+	typing.Init()
+
+	if *flag_ari {
+		typing.InitTPTPArithmetic()
+	}
 
 	// Terms
 	basictypes.Init()
@@ -305,7 +359,6 @@ func initialization() {
 	if !*flag_noeq {
 		equality.InitPlugin()
 	}
-
 }
 
 /* Init flag */
@@ -337,6 +390,10 @@ func initFlag() {
 	if *flag_proof {
 		global.SetProof(true)
 		proof.ResetProofFile()
+	}
+
+	if *flag_pretty_print {
+		global.DisplayPretty()
 	}
 
 	global.SetPlugin("dmt", *flag_dmt)

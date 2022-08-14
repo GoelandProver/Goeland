@@ -35,15 +35,23 @@
 
 package basictypes
 
+import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+
 /***************************/
 /* Structure of statements */
 /***************************/
 
+type TFFAtomTyping struct {
+	Literal Id
+	Ts      typing.TypeScheme
+}
+
 // TPTP inputs are a list of statements
 type Statement struct {
-	name string
-	role FormulaRole
-	form Form
+	name       string
+	role       FormulaRole
+	form       Form
+	atomTyping TFFAtomTyping
 }
 
 func (s Statement) GetName() string {
@@ -55,6 +63,9 @@ func (s Statement) GetRole() FormulaRole {
 func (s Statement) GetForm() Form {
 	return s.form
 }
+func (s Statement) GetAtomTyping() TFFAtomTyping {
+	return s.atomTyping
+}
 func (s *Statement) SetName(n string) {
 	s.name = n
 }
@@ -65,9 +76,8 @@ func (s *Statement) SetForm(f Form) {
 	s.form = f
 }
 
-func MakeStatement(s string, r FormulaRole, f Form) Statement {
-	return Statement{s, r, f}
-
+func MakeStatement(s string, r FormulaRole, f Form, at TFFAtomTyping) Statement {
+	return Statement{s, r, f, at}
 }
 
 // Formula roles (enumerate type)
@@ -76,6 +86,9 @@ type FormulaRole int
 const (
 	Axiom FormulaRole = iota
 	Conjecture
+	NegatedConjecture
+	Type
+	Unknown
 	Include
 )
 
@@ -90,16 +103,68 @@ func (fr FormulaRole) ToString() string {
 		res = "Axiom"
 	case Conjecture:
 		res = "Conjecture"
+	case Type:
+		res = "Type"
+	case NegatedConjecture:
+		res = "NegatedConjecture"
+	case Include:
+		res = "Include"
+	case Unknown:
+		res = "Unknown"
 	}
 	return res
 }
 
-func (stm Statement) ToString() string {
-	if stm.GetRole() == Include {
-		return stm.GetRole().ToString() + " " + stm.GetName()
-	} else {
-		return stm.GetRole().ToString() + " " + stm.GetName() + " " + stm.GetForm().ToString()
+// %----"axiom"s are accepted, without proof. There is no guarantee that the
+// %----axioms of a problem are consistent.
+// %----"hypothesis"s are assumed to be true for a particular problem, and are
+// %----used like "axiom"s.
+// %----"definition"s are intended to define symbols. They are either universally
+// %----quantified equations, or universally quantified equivalences with an
+// %----atomic lefthand side. They can be treated like "axiom"s.
+// %----"assumption"s can be used like axioms, but must be discharged before a
+// %----derivation is complete.
+// %----"lemma"s and "theorem"s have been proven from the "axiom"s. They can be
+// %----used like "axiom"s in problems, and a problem containing a non-redundant
+// %----"lemma" or theorem" is ill-formed. They can also appear in derivations.
+// %----"theorem"s are more important than "lemma"s from the user perspective.
+// %----"conjecture"s are to be proven from the "axiom"(-like) formulae. A problem
+// %----is solved only when all "conjecture"s are proven.
+// %----"negated_conjecture"s are formed from negation of a "conjecture" (usually
+// %----in a FOF to CNF conversion).
+// %----"plain"s have no specified user semantics.
+// %----"fi_domain", "fi_functors", and "fi_predicates" are used to record the
+// %----domain, interpretation of functors, and interpretation of predicates, for
+// %----a finite interpretation.
+// %----"type" defines the type globally for one symbol; treat as $true.
+// %----"unknown"s have unknown role, and this is an error situation.
+func MakeFormulaRoleFromString(arg string) FormulaRole {
+	switch arg {
+	case "axiom", "hypothesis", "definition", "assumption", "lemma", "theorem":
+		return Axiom
+	case "conjecture":
+		return Conjecture
+	case "negated_conjecture":
+		return NegatedConjecture
+	case "type":
+		return Type
+	default:
+		return Unknown
 	}
+}
+
+func (stm Statement) ToString() string {
+	switch stm.GetRole() {
+	case Include:
+		return stm.GetRole().ToString() + " " + stm.GetName()
+	case Axiom, Conjecture:
+		return stm.GetRole().ToString() + " " + stm.GetName() + " " + stm.GetForm().ToString()
+	case Type:
+		if stm.atomTyping.Ts != nil {
+			return stm.GetRole().ToString() + " " + stm.GetName() + " " + stm.atomTyping.Literal.ToString() + ": " + stm.atomTyping.Ts.ToString()
+		}
+	}
+	return "Unknown"
 }
 
 func StatementListToString(lstm []Statement) string {

@@ -44,6 +44,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -51,7 +52,8 @@ import (
 /* Return the list of metavariable from a substitution */
 func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
 	res := basictypes.MetaList{}
-	for m, t := range s {
+	for _, v := range s {
+		m, t := v.Get()
 		res = res.AppendIfNotContains(m)
 		switch ttype := t.(type) {
 		case basictypes.Meta:
@@ -83,21 +85,22 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 	for has_changed {
 		has_changed = false
 		global.PrintDebug("REWM", fmt.Sprintf("Relevant meta : %v", relevant_metas.ToString()))
-		for k, v := range s {
+		for _, t := range s {
+			k, v := t.Get()
 			switch vt := v.(type) {
 
 			case basictypes.Meta:
 				switch {
 				case relevant_metas.Contains(k) && relevant_metas.Contains(vt):
-					res[k] = vt
+					res.Set(k, vt)
 
 				case relevant_metas.Contains(k) && !relevant_metas.Contains(vt):
-					subst_to_reorganize[k] = vt
+					subst_to_reorganize.Set(k, vt)
 				}
 
 			default:
 				if relevant_metas.Contains(k) {
-					res[k] = v
+					res.Set(k, v)
 					for _, candidate_meta := range v.GetMetas() {
 						if !relevant_metas.Contains(candidate_meta) {
 							relevant_metas = append(relevant_metas, candidate_meta)
@@ -136,12 +139,14 @@ func ReorganizeSubstitution(s treetypes.Substitutions) treetypes.Substitutions {
 	res := treetypes.Substitutions{}
 	meta_seen := basictypes.MetaList{}
 
-	for meta_mother, meta_current := range s {
+	for _, subst := range s {
+		meta_mother, meta_current := subst.Get()
 		meta_seen = meta_seen.AppendIfNotContains(meta_mother)
 
-		for meta_mother_2, meta_current_2 := range s {
+		for _, subst_2 := range s {
+			meta_mother_2, meta_current_2 := subst_2.Get()
 			if meta_current == meta_current_2 && meta_mother != meta_mother_2 && !meta_seen.Contains(meta_mother_2) {
-				res[meta_mother_2] = meta_mother
+				res.Set(meta_mother_2, meta_mother)
 				meta_seen = meta_seen.AppendIfNotContains(meta_mother_2)
 			}
 		}
@@ -152,7 +157,8 @@ func ReorganizeSubstitution(s treetypes.Substitutions) treetypes.Substitutions {
 
 /* Check if a substitution contains a metavirbale which is inside a given list of metavariable (check for the key, not the value) */
 func ContainsMetaMother(s treetypes.Substitutions, mm basictypes.MetaList) bool {
-	for k, v := range s {
+	for _, subst := range s {
+		k, v := subst.Get()
 		if mm.Contains(k) {
 			return true
 		} else {
@@ -181,13 +187,27 @@ func ApplySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictype
 
 	switch nf := t.(type) {
 	case basictypes.Meta:
-		if nf == old_symbol {
+		if nf.Equals(old_symbol) {
 			res = new_symbol.Copy()
 		}
 	case basictypes.Fun:
-		res = basictypes.MakeFun(nf.GetP(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()))
+		res = basictypes.MakeFun(
+			nf.GetP(),
+			applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
+			nf.GetTypeVars(),
+			nf.GetTypeHint(),
+		)
 	}
 	return res
+}
+
+func applySubstitutionOnType(old_type, new_type, t typing.TypeApp) typing.TypeApp {
+	if tv, isTv := t.(typing.TypeVar); isTv {
+		if tv.Instantiated() && tv.Equals(old_type) {
+			return new_type
+		}
+	}
+	return t
 }
 
 /* Apply substElement on a term list */
@@ -199,13 +219,27 @@ func applySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictyp
 	return res
 }
 
+func applySubstitutionOnTypeList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl []typing.TypeApp) []typing.TypeApp {
+	res := make([]typing.TypeApp, len(tl))
+	for i, t := range tl {
+		res[i] = applySubstitutionOnType(old_symbol.GetTypeApp(), new_symbol.(basictypes.TypedTerm).GetTypeApp(), t)
+	}
+	return res
+}
+
 /* Apply a substitution on a formula */
 func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictypes.Term, f basictypes.Form) basictypes.Form {
 	var res basictypes.Form
 
 	switch nf := f.(type) {
 	case basictypes.Pred:
-		res = basictypes.MakePred(f.GetIndex(), nf.GetID(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()))
+		res = basictypes.MakePred(
+			f.GetIndex(),
+			nf.GetID(),
+			applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
+			applySubstitutionOnTypeList(old_symbol, new_symbol, nf.GetTypeVars()),
+			nf.GetType(),
+		)
 	case basictypes.Not:
 		res = basictypes.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case basictypes.And:
@@ -250,7 +284,8 @@ func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf basictypes.Fo
 func ApplySubstitutionsOnFormula(s treetypes.Substitutions, f basictypes.Form) basictypes.Form {
 	if f != nil {
 		form_res := f.Copy()
-		for old_symbol, new_symbol := range s {
+		for _, subst := range s {
+			old_symbol, new_symbol := subst.Get()
 			form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
 		}
 		return form_res
@@ -274,7 +309,8 @@ func ApplySubstitutionOnMetaGenList(s treetypes.Substitutions, lf []basictypes.M
 /* Apply a substitution on a metaGen form */
 func ApplySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen) basictypes.MetaGen {
 	form_res := mg.GetForm()
-	for old_symbol, new_symbol := range s {
+	for _, subst := range s {
+		old_symbol, new_symbol := subst.Get()
 		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
 	}
 	return basictypes.MakeMetaGen(form_res, mg.GetCounter())
@@ -325,9 +361,10 @@ func RemoveEmptySubstFromSubstAndFormList(sl []SubstAndForm) []SubstAndForm {
 /* remove identity in substitution (non destructive case), can happen renaming variables */
 func RemoveIdentitySubst(s *treetypes.Substitutions) {
 	res := treetypes.Substitutions{}
-	for meta, term := range *s {
+	for _, subst := range *s {
+		meta, term := subst.Get()
 		if !meta.Equals(term) {
-			res[meta] = term
+			res.Set(meta, term)
 		}
 	}
 	*s = res

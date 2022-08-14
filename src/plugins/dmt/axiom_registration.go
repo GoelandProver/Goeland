@@ -42,8 +42,10 @@ package dmt
 
 import (
 	"fmt"
+	"strings"
 
-	"github.com/GoelandProver/Goeland/global"
+	. "github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -52,8 +54,8 @@ func RegisterAxiom(axiom btypes.Form) bool {
 
 	// if isRegisterableAsAtomic(axiom, axiomFT) {
 	//	return makeRewriteRuleFromAtomic(axiomFT)
-	// } else 
-	
+	// } else
+
 	if isRegisterableAsEqu(axiomFT) {
 		return makeRewriteRuleFromEquivalence(axiomFT.(btypes.Equ))
 	} else if isRegisterableAsImplication(axiomFT) {
@@ -65,8 +67,8 @@ func RegisterAxiom(axiom btypes.Form) bool {
 
 func instanciateForalls(axiom btypes.Form) btypes.Form {
 	axiomFT := axiom.Copy()
-	for is[btypes.All](axiomFT) {
-		axiomFT = instantiateOnce(axiomFT)
+	for Is[btypes.All](axiomFT) {
+		axiomFT, _ = Instantiate(axiomFT, -1)
 	}
 	return axiomFT
 }
@@ -89,7 +91,7 @@ func addNegRewriteRule(axiom btypes.Form, cons btypes.Form) {
 
 func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 	for canSkolemize(cons) {
-		cons = skolemize(cons)
+		cons = Skolemize(cons)
 	}
 	printDebugRewriteRule(polarity, axiom, cons)
 	rewriteMapInsertion(polarity, axiom.ToString(), cons)
@@ -103,7 +105,7 @@ func printDebugRewriteRule(polarity bool, axiom, cons btypes.Form) {
 		} else {
 			ax, co = btypes.RefuteForm(axiom).ToString(), cons.ToString()
 		}
-		global.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co))
+		PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co))
 	}
 }
 
@@ -118,14 +120,14 @@ func canSkolemize(form btypes.Form) bool {
 // Rewrite rules from atomic predicate.
 
 func isRegisterableAsAtomic(axiom, instanciatedAxiom btypes.Form) bool {
-	return is[btypes.All](axiom) && btypes.ShowKindOfRule(instanciatedAxiom) == btypes.Atomic
+	return Is[btypes.All](axiom) && btypes.ShowKindOfRule(instanciatedAxiom) == btypes.Atomic
 }
 
 func makeRewriteRuleFromAtomic(atomic btypes.Form) bool {
 	if isEqualityPred(atomic) {
 		return false
 	}
-	if is[btypes.Pred](atomic) {
+	if Is[btypes.Pred](atomic) {
 		return makeRewriteRuleFromPred(atomic.(btypes.Pred))
 	}
 	return makeRewriteRuleFromNegatedAtom(atomic.(btypes.Not))
@@ -153,7 +155,7 @@ func makeRewriteRuleFromNegatedAtom(atom btypes.Not) bool {
 // Rewrite rules from equivalence formula.
 
 func isRegisterableAsEqu(instanciatedAxiom btypes.Form) bool {
-	return is[btypes.Equ](instanciatedAxiom)
+	return Is[btypes.Equ](instanciatedAxiom)
 }
 
 func makeRewriteRuleFromEquivalence(equForm btypes.Equ) bool {
@@ -186,8 +188,8 @@ func neitherAreAtomics(f1, f2 btypes.Form) bool {
 }
 
 func isEqualityPred(f btypes.Form) bool {
-	return (is[btypes.Pred](f) && isEquality(f.(btypes.Pred))) ||
-		(is[btypes.Not](f) && isEquality(predFromNegatedAtom(f)))
+	return (Is[btypes.Pred](f) && isEquality(f.(btypes.Pred))) ||
+		(Is[btypes.Not](f) && isEquality(predFromNegatedAtom(f)))
 }
 
 func addEquRewriteRuleIfNotEquality(f1, f2 btypes.Form) bool {
@@ -199,7 +201,7 @@ func addEquRewriteRuleIfNotEquality(f1, f2 btypes.Form) bool {
 }
 
 func addEquivalenceRewriteRule(axiom, cons btypes.Form) {
-	if is[btypes.Not](axiom) {
+	if Is[btypes.Not](axiom) {
 		addPosRewriteRule(axiom, refute(cons))
 		addNegRewriteRule(axiom, cons)
 	} else {
@@ -215,7 +217,7 @@ func addEquivalenceRewriteRule(axiom, cons btypes.Form) {
 // Rewrite rules from implicated formula.
 
 func isRegisterableAsImplication(instanciatedAxiom btypes.Form) bool {
-	return activatePolarized && is[btypes.Imp](instanciatedAxiom)
+	return activatePolarized && Is[btypes.Imp](instanciatedAxiom)
 }
 
 func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
@@ -228,7 +230,7 @@ func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
 	}
 
 	if isAtomic(phi1) {
-		if is[btypes.Pred](phi1) {
+		if Is[btypes.Pred](phi1) {
 			addPosRewriteRule(phi1, phi2)
 		} else {
 			addNegRewriteRule(predFromNegatedAtom(phi1), phi2)
@@ -238,7 +240,7 @@ func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
 	// This line currently blocks the generation of a rewrite rule if there is
 	// an equality atom on the right-side of the formula.
 	if isAtomic(phi2) && !isEqualityPred(phi2) {
-		if is[btypes.Pred](phi2) {
+		if Is[btypes.Pred](phi2) {
 			addNegRewriteRule(phi2, refute(phi1))
 		} else {
 			addPosRewriteRule(predFromNegatedAtom(phi2), refute(phi1))
@@ -250,3 +252,101 @@ func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
 
 // End rewrite rule from implicated formula.
 // ----------------------------------------------------------------------------
+
+// ...
+
+/**
+ * Skolemizes once the formula f.
+ */
+func Skolemize(f btypes.Form) btypes.Form {
+	switch nf := f.(type) {
+	// 1 - not(forall F1)
+	case btypes.Not:
+		if tmp, ok := nf.GetForm().(btypes.All); ok {
+			f = btypes.RefuteForm(realSkolemize(tmp.GetForm(), tmp.GetVarList(), f.GetMetas().ToTermList()))
+		}
+	// 2 - exists F1
+	case btypes.Ex:
+		f = realSkolemize(nf.GetForm(), nf.GetVarList(), f.GetMetas().ToTermList())
+	}
+
+	return f
+}
+
+/**
+ * Applies skolemization to a formula (ie: replaces existential quantified variables
+ * by fresh skolem symbols).
+ **/
+func realSkolemize(f btypes.Form, vars []btypes.Var, terms []btypes.Term) btypes.Form {
+	// Replace each variable by the skolemized term.
+	for _, v := range vars {
+		// TypeScheme construction
+		var t typing.TypeApp
+		// Okay that's absolutely wrong, but it's the best way of doing things right now, I swear.
+		for _, term := range terms {
+			if meta, ok := term.(btypes.Meta); ok {
+				t = crossType(t, meta.GetTypeApp())
+			}
+		}
+
+		var scheme typing.TypeScheme
+		if t == nil {
+			scheme = v.GetTypeHint()
+		} else {
+			scheme = typing.MkTypeArrow(t, To[typing.TypeApp](v.GetTypeHint()))
+		}
+
+		// A Skolem symbol has no quantified variables.
+		skolem := btypes.MakerFun(
+			btypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())),
+			terms,
+			[]typing.TypeApp{},
+			scheme,
+		)
+		f = f.ReplaceVarByTerm(v, skolem)
+	}
+	return f
+}
+
+/**
+ * Instantiates once the formula f.
+ */
+func Instantiate(f btypes.Form, index int) (btypes.Form, btypes.MetaList) {
+	var newMm btypes.MetaList
+	switch nf := f.(type) {
+	case btypes.Not:
+		if tmp, ok := nf.GetForm().(btypes.Ex); ok {
+			form, metas := realInstantiate(tmp.GetForm(), index, tmp.GetVarList())
+			newMm = append(newMm, metas...)
+			f = btypes.RefuteForm(form)
+		}
+	case btypes.All:
+		form, metas := realInstantiate(nf.GetForm(), index, nf.GetVarList())
+		newMm = append(newMm, metas...)
+		f = form
+	case btypes.AllType:
+		f = f.ReplaceTypeByMeta(nf.GetVarList(), index)
+		for _, v := range nf.GetVarList() {
+			v.ShouldBeMeta(index)
+		}
+		f = btypes.MakeAllType(nf.GetIndex(), nf.GetVarList(), f)
+	}
+	return f, newMm
+}
+
+func realInstantiate(form btypes.Form, index int, vars []btypes.Var) (btypes.Form, btypes.MetaList) {
+	var newMm btypes.MetaList
+	for _, v := range vars {
+		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
+		newMm = append(newMm, meta)
+		form = form.ReplaceVarByTerm(v, meta)
+	}
+	return form, newMm
+}
+
+func crossType(t typing.TypeApp, tf typing.TypeApp) typing.TypeApp {
+	if t == nil {
+		return tf
+	}
+	return typing.MkTypeCross(t, tf)
+}

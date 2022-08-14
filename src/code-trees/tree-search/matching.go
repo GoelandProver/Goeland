@@ -43,6 +43,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -58,21 +59,33 @@ func (n Node) Unify(formula basictypes.Form) (bool, []treetypes.MatchingSubstitu
 
 /* Tries to find the substitutions needed to unify the formulae with the one described by the sequence of instructions. */
 func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.MatchingSubstitutions {
+	var result []treetypes.MatchingSubstitutions
 	// The formula has to be a predicate.
 	switch formula_type := formula.(type) {
 	case basictypes.Pred:
-		m.terms = []basictypes.Term{basictypes.MakeFun(formula_type.GetID(), formula_type.GetArgs())}
-		return m.unifyAux(node)
+		terms := treetypes.TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs())
+
+		// Transform the predicate to a function to make the tool work properly
+		m.terms = []basictypes.Term{basictypes.MakeFun(formula_type.GetID(), terms, []typing.TypeApp{}, formula_type.GetType())}
+		result = m.unifyAux(node)
+
+		if !reflect.DeepEqual(m.failure, result) {
+			filteredResult := []treetypes.MatchingSubstitutions{}
+			// For each substitutions, remove the [0...MetaCount(formula_type.GetTypeVars())] ones to put it in another slice (the type slice)
+			for _, matchingSubst := range result {
+				actualSubsts := matchingSubst.GetSubst()[typing.CountMeta(formula_type.GetTypeVars()):]
+				filteredResult = append(filteredResult, treetypes.MakeMatchingSubstitutions(matchingSubst.GetForm(), actualSubsts))
+			}
+			result = filteredResult
+		}
 	case treetypes.TermForm:
 		m.terms = []basictypes.Term{formula_type.GetTerm()}
-		return m.unifyAux(node)
+		result = m.unifyAux(node)
 	default:
-		return m.failure
-
+		result = m.failure
 	}
 
-	// Transform the predicate to a function to make the tool work properly
-
+	return result
 }
 
 /*** Unify aux ***/

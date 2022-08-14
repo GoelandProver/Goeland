@@ -107,7 +107,7 @@ func (m *Machine) getCurrentMeta() basictypes.Meta {
 func (m *Machine) unwrapMeta(term basictypes.Term) basictypes.Term {
 	deja_vu := map[basictypes.Term]bool{}
 	for term.IsMeta() {
-		val, ok := m.meta[term.ToMeta()]
+		val, ok := m.meta.Get(term.ToMeta())
 		if !ok || deja_vu[term] {
 			break
 		}
@@ -222,7 +222,8 @@ func (m *Machine) matchIndexes(t basictypes.Term, instrTerm basictypes.Term) Sta
 /* Checks if the substitution of the metavariable t matches the index of instrTerm. */
 func (m *Machine) checkMeta(t basictypes.Meta, instrTerm basictypes.Term) Status {
 	if treetypes.HasSubst(m.meta, t) {
-		unwrapped := m.unwrapMeta(m.meta[t])
+		metaGotten, _ := m.meta.Get(t)
+		unwrapped := m.unwrapMeta(metaGotten)
 		if !unwrapped.IsMeta() && !m.doIndexMatch(unwrapped, instrTerm) {
 			return Status(ERROR)
 		}

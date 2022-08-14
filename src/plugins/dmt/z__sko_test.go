@@ -47,6 +47,7 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	. "github.com/GoelandProver/Goeland/plugin"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -66,15 +67,15 @@ func TestPreskolemization(t *testing.T) {
 	in := btypes.MakerId("in")
 
 	// forall x, y. subset(x, y) <=> forall z. in(z, x) => in(z, y)
-	axiom := btypes.MakerAll(
+	axiom := btypes.MakeAll(
 		[]btypes.Var{x, y},
-		btypes.MakerEqu(
-			btypes.MakerPred(subset, []btypes.Term{x, y}),
-			btypes.MakerAll(
+		btypes.MakeEqu(
+			btypes.MakePred(subset, []btypes.Term{x, y}, []typing.TypeApp{}),
+			btypes.MakeAll(
 				[]btypes.Var{z},
-				btypes.MakerImp(
-					btypes.MakerPred(in, []btypes.Term{z, x}),
-					btypes.MakerPred(in, []btypes.Term{z, y}),
+				btypes.MakeImp(
+					btypes.MakePred(in, []btypes.Term{z, x}, []typing.TypeApp{}),
+					btypes.MakePred(in, []btypes.Term{z, y}, []typing.TypeApp{}),
 				),
 			),
 		),
@@ -85,18 +86,18 @@ func TestPreskolemization(t *testing.T) {
 	}
 
 	// Positive occurrences should be rewritten normally
-	form := btypes.MakerPred(subset, []btypes.Term{a, b})
+	form := btypes.MakePred(subset, []btypes.Term{a, b}, []typing.TypeApp{})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
 	}
 
-	expected := btypes.MakerAll(
+	expected := btypes.MakeAll(
 		[]btypes.Var{z},
-		btypes.MakerImp(
-			btypes.MakerPred(in, []btypes.Term{z, a}),
-			btypes.MakerPred(in, []btypes.Term{z, b}),
+		btypes.MakeImp(
+			btypes.MakePred(in, []btypes.Term{z, a}, []typing.TypeApp{}),
+			btypes.MakePred(in, []btypes.Term{z, b}, []typing.TypeApp{}),
 		),
 	)
 
@@ -108,7 +109,7 @@ func TestPreskolemization(t *testing.T) {
 	}
 
 	// Negative occurrences should be skolemized
-	form2 := btypes.MakerNot(btypes.MakerPred(subset, []btypes.Term{a, b}))
+	form2 := btypes.MakeNot(btypes.MakePred(subset, []btypes.Term{a, b}, []typing.TypeApp{}))
 	substs, err = pm.ApplyRewriteHook(form2)
 
 	if err != nil {
@@ -135,15 +136,15 @@ func TestPreskolemization2(t *testing.T) {
 	in := btypes.MakerId("in")
 
 	// forall x, y. subset(x, y) <=> forall z. in(z, x) => in(z, y)
-	axiom := btypes.MakerAll(
+	axiom := btypes.MakeAll(
 		[]btypes.Var{x, y},
-		btypes.MakerEqu(
-			btypes.MakerPred(subset, []btypes.Term{x, y}),
-			btypes.MakerEx(
+		btypes.MakeEqu(
+			btypes.MakePred(subset, []btypes.Term{x, y}, []typing.TypeApp{}),
+			btypes.MakeEx(
 				[]btypes.Var{z},
-				btypes.MakerImp(
-					btypes.MakerPred(in, []btypes.Term{z, x}),
-					btypes.MakerPred(in, []btypes.Term{z, y}),
+				btypes.MakeImp(
+					btypes.MakePred(in, []btypes.Term{z, x}, []typing.TypeApp{}),
+					btypes.MakePred(in, []btypes.Term{z, y}, []typing.TypeApp{}),
 				),
 			),
 		),
@@ -154,7 +155,7 @@ func TestPreskolemization2(t *testing.T) {
 	}
 
 	// Positive occurrences should be skolemized
-	form := btypes.MakerPred(subset, []btypes.Term{a, b})
+	form := btypes.MakePred(subset, []btypes.Term{a, b}, []typing.TypeApp{})
 	substs, err := pm.ApplyRewriteHook(form)
 
 	if err != nil {
@@ -171,18 +172,18 @@ func TestPreskolemization2(t *testing.T) {
 	}
 
 	// Negative occurrences should be rewritten normally
-	form2 := btypes.MakerNot(btypes.MakerPred(subset, []btypes.Term{a, b}))
+	form2 := btypes.MakeNot(btypes.MakePred(subset, []btypes.Term{a, b}, []typing.TypeApp{}))
 	substs, err = pm.ApplyRewriteHook(form2)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form2.ToString())
 	}
 
-	expected := btypes.MakerNot(btypes.MakerEx(
+	expected := btypes.MakeNot(btypes.MakeEx(
 		[]btypes.Var{z},
-		btypes.MakerImp(
-			btypes.MakerPred(in, []btypes.Term{z, a}),
-			btypes.MakerPred(in, []btypes.Term{z, b}),
+		btypes.MakeImp(
+			btypes.MakePred(in, []btypes.Term{z, a}, []typing.TypeApp{}),
+			btypes.MakePred(in, []btypes.Term{z, b}, []typing.TypeApp{}),
 		),
 	))
 

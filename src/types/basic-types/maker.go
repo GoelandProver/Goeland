@@ -40,6 +40,8 @@ package basictypes
 
 import (
 	"sync"
+
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
 /* Datas */
@@ -57,11 +59,19 @@ var lock_formula sync.Mutex
 
 // Global id
 var Id_eq Id
+var Id_neq Id
 
 /* Initialization */
 func Init() {
 	Reset()
 	Id_eq = MakerId("=")
+	Id_neq = MakerId("!=")
+
+	// Eq/Neq types
+	tv := typing.MkTypeVar("α")
+	scheme := typing.MkQuantifiedType([]typing.TypeVar{tv}, typing.MkTypeArrow(typing.MkTypeCross(tv, tv), tv))
+	typing.SavePolymorphScheme(Id_eq.GetName(), scheme)
+	typing.SavePolymorphScheme(Id_neq.GetName(), scheme)
 }
 
 /* Reset all the maps and counters */
@@ -101,28 +111,28 @@ func MakerNewId(s string) Id {
 }
 
 /* Var maker */
-func MakerVar(s string) Var {
+func MakerVar(s string, t ...typing.TypeApp) Var {
 	lock_var.Lock()
 	i, ok := idVar[s]
 	lock_var.Unlock()
 	if ok {
-		return MakeVar(i, s)
+		return MakeVar(i, s, getType(t))
 	} else {
-		return MakerNewVar(s)
+		return MakerNewVar(s, getType(t))
 	}
 }
 
-func MakerNewVar(s string) Var {
+func MakerNewVar(s string, t ...typing.TypeApp) Var {
 	lock_var.Lock()
 	idVar[s] = cpt_var
-	vr := MakeVar(cpt_var, s)
+	vr := MakeVar(cpt_var, s, getType(t))
 	cpt_var += 1
 	lock_var.Unlock()
 	return vr
 }
 
 /* Meta maker */
-func MakerMeta(s string, formula int) Meta {
+func MakerMeta(s string, formula int, t ...typing.TypeApp) Meta {
 	lock_meta.Lock()
 	i, ok := idMeta[s]
 	lock_meta.Unlock()
@@ -130,30 +140,44 @@ func MakerMeta(s string, formula int) Meta {
 		lock_meta.Lock()
 		idMeta[s] = i + 1
 		lock_meta.Unlock()
-		return MakeMeta(i, s, formula)
+		return MakeMeta(i, s, formula, getType(t))
 	} else {
 		lock_meta.Lock()
 		idMeta[s] = 1
 		lock_meta.Unlock()
-		return MakeMeta(0, s, formula)
+		return MakeMeta(0, s, formula, getType(t))
 	}
 }
 
 /* Const maker (given a id, create a fun without args) */
-func MakerConst(id Id) Fun {
-	return MakeFun(id, []Term{})
+func MakerConst(id Id, t ...typing.TypeApp) Fun {
+	return MakeFun(id, []Term{}, []typing.TypeApp{}, getType(t).(typing.TypeScheme))
 }
 
 /* Fun maker, with given id and args */
-func MakerFun(id Id, terms []Term) Fun {
-	return MakeFun(id, terms)
+func MakerFun(id Id, terms []Term, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
+	var ts typing.TypeScheme
+	if len(t) == 1 {
+		ts = t[0]
+	} else {
+		ts = typing.DefaultFunType(len(terms))
+	}
+	return MakeFun(id, terms, typeVars, ts)
+}
+
+func getType(t []typing.TypeApp) typing.TypeApp {
+	if len(t) == 1 {
+		return t[0]
+	} else {
+		return typing.DefaultType()
+	}
 }
 
 /* Index make for formula */
 func MakerIndexFormula() int {
-	lock_meta.Lock()
+	lock_formula.Lock()
 	res := cpt_formula
 	cpt_formula++
-	lock_meta.Unlock()
+	lock_formula.Unlock()
 	return res
 }

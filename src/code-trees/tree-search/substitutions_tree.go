@@ -72,17 +72,18 @@ func computeSubstitutions(subst []treetypes.SubstPair, metas treetypes.Substitut
 
 		if !current_meta.Equals(current_value) {
 			// Si current_meta a déjà une association dans metas
-			if treetypes.HasSubst(metas, current_meta) && !current_value.Equals(metas[current_meta]) {
+			metaGet, found := metas.Get(current_meta)
+			if treetypes.HasSubst(metas, current_meta) && found && !current_value.Equals(metaGet) {
 				// On cherche a unifier les deux valeurs
-				tree_subst[current_meta] = current_value
-				new_unif := AddUnification(current_value.Copy(), metas[current_meta].Copy(), tree_subst.Copy())
+				tree_subst.Set(current_meta, current_value)
+				new_unif := AddUnification(current_value.Copy(), metaGet.Copy(), tree_subst.Copy())
 				if new_unif.Equals(treetypes.Failure()) {
 					return treetypes.Failure()
 				} else {
 					tree_subst = new_unif
 				}
 			} else { // Ne pas ajouter la susbtitution égalité
-				tree_subst[current_meta] = current_value
+				tree_subst.Set(current_meta, current_value)
 			}
 		}
 	}
@@ -125,8 +126,10 @@ func (m *Machine) trySubstituteMeta(i basictypes.Term, j basictypes.Term) Status
 func AddUnification(term1, term2 basictypes.Term, subst treetypes.Substitutions) treetypes.Substitutions {
 
 	// unify with ct only if the term already has an unification or if there is 2 fun. Just add it and eliminate otherwise.
-	if (term1.IsMeta() && treetypes.HasSubst(subst, term1.ToMeta()) && !subst[term1.ToMeta()].Equals(term2)) ||
-		(term2.IsMeta() && treetypes.HasSubst(subst, term2.ToMeta()) && !subst[term2.ToMeta()].Equals(term1)) ||
+	t1v, _ := subst.Get(term1.ToMeta())
+	t2v, _ := subst.Get(term2.ToMeta())
+	if (term1.IsMeta() && treetypes.HasSubst(subst, term1.ToMeta()) && !t1v.Equals(term2)) ||
+		(term2.IsMeta() && treetypes.HasSubst(subst, term2.ToMeta()) && !t2v.Equals(term1)) ||
 		(term1.IsFun() && term2.IsFun()) {
 		m := makeMachine()
 		m.meta = subst.Copy()
@@ -138,12 +141,12 @@ func AddUnification(term1, term2 basictypes.Term, subst treetypes.Substitutions)
 	} else {
 		switch {
 		case term1.IsMeta():
-			subst[term1.ToMeta()] = term2
+			subst.Set(term1.ToMeta(), term2)
 			treetypes.EliminateMeta(&subst)
 			treetypes.Eliminate(&subst)
 			return subst
 		case term2.IsMeta():
-			subst[term2.ToMeta()] = term1
+			subst.Set(term2.ToMeta(), term1)
 			treetypes.EliminateMeta(&subst)
 			treetypes.Eliminate(&subst)
 			return subst
@@ -193,16 +196,17 @@ func MergeSubstitutions(s1, s2 treetypes.Substitutions) (treetypes.Substitutions
 		return s1, false
 	}
 
-	for s1_k, s1_v := range s1 {
-		res[s1_k] = s1_v
+	for _, subst := range s1 {
+		res.Set(subst.Get())
 	}
 
-	for s2_k, s2_v := range s2 {
+	for _, subst := range s2 {
+		s2_k, s2_v := subst.Get()
 		if treetypes.HasSubst(res, s2_k) {
 			same_key = true
 			res = AddUnification(s2_k.Copy(), s2_v.Copy(), res.Copy())
 		} else {
-			res[s2_k.ToMeta()] = s2_v
+			res.Set(s2_k.ToMeta(), s2_v)
 			treetypes.EliminateMeta(&res)
 			treetypes.Eliminate(&res)
 		}

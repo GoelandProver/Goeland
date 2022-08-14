@@ -97,7 +97,8 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 		global.PrintDebug("EQ-AS", fmt.Sprintf("Error : constraint not null in applySubstitution : %v", ep.getC().toString()))
 	}
 
-	for old_symbol, new_symbol := range s {
+	for _, subst := range s {
+		old_symbol, new_symbol := subst.Get()
 		new_s = complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, new_s)
 		new_t = complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, new_t)
 		new_equalities = new_equalities.applySubstitution(old_symbol, new_symbol)

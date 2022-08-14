@@ -41,6 +41,8 @@ package basictypes
 import (
 	"sort"
 	"strconv"
+
+	"github.com/GoelandProver/Goeland/global"
 )
 
 /* Meta function for sort */
@@ -54,20 +56,13 @@ func (m MetaList) Less(i, j int) bool {
 
 /* Print a list of metas */
 func (ml MetaList) ToString() string {
-	var s_res string
-	for i, v := range ml {
-		s_res += v.ToString()
-		if i < len(ml)-1 {
-			s_res += (", ")
-		}
-	}
-	return s_res
+	return global.ListToString(ml, ", ", "")
 }
 
 /* Check if a meta is inside a given list of metavariables */
 func (ml MetaList) Contains(m Meta) bool {
 	for _, v := range ml {
-		if v == m {
+		if v.Equals(m) {
 			return true
 		}
 	}
