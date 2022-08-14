@@ -1,6 +1,6 @@
 # Goéland
 
-Goéland is an automated theorem prover using the tableau method for first order logic.
+Goéland is a concurrent automated theorem prover using the tableau method for first order logic.
 
 It supports [TPTP](http://tptp.org/) FOF and TFF files.
 

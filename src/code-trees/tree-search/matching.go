@@ -39,7 +39,6 @@
 package treesearch
 
 import (
-	"fmt"
 	"reflect"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -69,6 +68,16 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 		// Transform the predicate to a function to make the tool work properly
 		m.terms = []basictypes.Term{basictypes.MakeFun(formula_type.GetID(), terms, []typing.TypeApp{}, formula_type.GetType())}
 		result = m.unifyAux(node)
+
+		if !reflect.DeepEqual(m.failure, result) {
+			filteredResult := []treetypes.MatchingSubstitutions{}
+			// For each substitutions, remove the [0...MetaCount(formula_type.GetTypeVars())] ones to put it in another slice (the type slice)
+			for _, matchingSubst := range result {
+				actualSubsts := matchingSubst.GetSubst()[typing.CountMeta(formula_type.GetTypeVars()):]
+				filteredResult = append(filteredResult, treetypes.MakeMatchingSubstitutions(matchingSubst.GetForm(), actualSubsts))
+			}
+			result = filteredResult
+		}
 	case treetypes.TermForm:
 		m.terms = []basictypes.Term{formula_type.GetTerm()}
 		result = m.unifyAux(node)
@@ -76,10 +85,6 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 		result = m.failure
 	}
 
-	if !reflect.DeepEqual(m.failure, result) {
-		// Treat result to reconstruct the types
-		fmt.Println(global.ListToString(result, "\n", ""))
-	}
 	return result
 }
 

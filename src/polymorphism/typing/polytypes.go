@@ -150,3 +150,13 @@ func EmptyGlobalContext() bool {
 	typeSchemesMap.lock.Unlock()
 	return schemeLen == 2
 }
+
+func CountMeta(types []TypeApp) int {
+	metas := 0
+	for _, type_ := range types {
+		if tv, isTv := type_.(TypeVar); isTv && tv.Instantiated() {
+			metas += 1
+		}
+	}
+	return metas
+}

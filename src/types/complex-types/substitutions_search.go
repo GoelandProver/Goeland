@@ -44,6 +44,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -200,11 +201,28 @@ func ApplySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictype
 	return res
 }
 
+func applySubstitutionOnType(old_type, new_type, t typing.TypeApp) typing.TypeApp {
+	if tv, isTv := t.(typing.TypeVar); isTv {
+		if tv.Instantiated() && tv.Equals(old_type) {
+			return new_type
+		}
+	}
+	return t
+}
+
 /* Apply substElement on a term list */
 func applySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl []basictypes.Term) []basictypes.Term {
 	res := make([]basictypes.Term, len(tl))
 	for i, t := range tl {
 		res[i] = ApplySubstitutionOnTerm(old_symbol, new_symbol, t)
+	}
+	return res
+}
+
+func applySubstitutionOnTypeList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl []typing.TypeApp) []typing.TypeApp {
+	res := make([]typing.TypeApp, len(tl))
+	for i, t := range tl {
+		res[i] = applySubstitutionOnType(old_symbol.GetTypeApp(), new_symbol.(basictypes.TypedTerm).GetTypeApp(), t)
 	}
 	return res
 }
@@ -219,7 +237,7 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 			f.GetIndex(),
 			nf.GetID(),
 			applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
-			nf.GetTypeVars(),
+			applySubstitutionOnTypeList(old_symbol, new_symbol, nf.GetTypeVars()),
 			nf.GetType(),
 		)
 	case basictypes.Not:

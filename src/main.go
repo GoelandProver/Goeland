@@ -104,6 +104,11 @@ func main() {
 	}
 
 	form, bound := StatementListToFormula(lstm, bound, path.Dir(problem))
+	if form == nil {
+		fmt.Printf("[%.6fs][%v][Err] Problem not found.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		os.Exit(1)
+	}
+
 	// If global context is empty, it means that this is not a typed proof.
 	if !typing.EmptyGlobalContext() {
 		formula, err := polymorphism.WellFormedVerification(form, *flag_type_proof)
@@ -116,7 +121,7 @@ func main() {
 		form = formula
 	}
 
-	fmt.Printf("Start search\n")
+	global.PrintDebug("MAIN", "Start search")
 	Search(form, bound)
 
 	if *memprofile != "" {
@@ -262,13 +267,17 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 
 			if err != nil {
 				fmt.Println(err.Error())
-				os.Exit(1)
+				return nil, -1
+				//os.Exit(1)
 			}
 
 			new_lstm, bound_tmp := parser.ParseTPTPFile(realname)
 			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(current_dir, path.Dir(file_name)))
-			bound = new_bound
-			and_list = append(and_list, new_form_list)
+
+			if new_form_list != nil {
+				bound = new_bound
+				and_list = append(and_list, new_form_list)
+			}
 
 		case basictypes.Axiom:
 			new_form := s.GetForm().RenameVariables()
@@ -314,8 +323,8 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	}
 	switch {
 	case len(and_list) == 0 && not_form == nil:
-		fmt.Printf("No data found.\n")
-		os.Exit(1)
+		//fmt.Printf("No data found.\n")
+		//os.Exit(1)
 		return nil, bound
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound

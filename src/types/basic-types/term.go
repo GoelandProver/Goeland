@@ -204,8 +204,14 @@ func TypeAppToTerm(typeApp typing.TypeApp) Term {
 			fmt.Println("[ERROR] A TypeVar should be only converted to terms if it has been instantiated.")
 			term = nil
 		}
-	case typing.TypeHint, typing.TypeCross:
+	case typing.TypeHint:
 		term = MakerFun(MakerId(nt.ToString()), []Term{}, []typing.TypeApp{}, typing.MkTypeHint("$tType"))
+	case typing.TypeCross:
+		args := []Term{}
+		for _, type_ := range nt.GetAllUnderlyingTypes() {
+			args = append(args, TypeAppToTerm(type_))
+		}
+		term = MakeFun(MakerId("$$tCross"), args, []typing.TypeApp{}, typing.MkTypeHint("$tType"))
 	case typing.ParameterizedType:
 		args := []Term{}
 		for _, type_ := range nt.GetParameters() {
