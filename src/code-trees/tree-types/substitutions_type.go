@@ -116,13 +116,18 @@ func (s *Substitutions) Set(key basictypes.Meta, value basictypes.Term) {
 	}
 }
 
-func (s Substitutions) Get(key basictypes.Meta) (basictypes.Term, bool) {
-	for _, subst := range s {
+func (s Substitutions) Get(key basictypes.Meta) (basictypes.Term, int) {
+	for i, subst := range s {
 		if subst.Key().Equals(key) {
-			return subst.Value(), true
+			return subst.Value(), i
 		}
 	}
-	return nil, false
+	return nil, -1
+}
+
+func (s *Substitutions) Remove(index int) {
+	(*s)[index] = (*s)[len(*s)-1]
+	(*s) = (*s)[:len(*s)-1]
 }
 
 /* Copy a list of substitutions */
@@ -224,6 +229,7 @@ func areFuncArgsRecursive(f basictypes.Fun, m basictypes.Meta) bool {
 /*** Eliminate ***/
 /* Eliminate - apply each element of the subst on the entire substitution, because an element can't œappears on the rigth and and the left if a substitution */
 func Eliminate(s *Substitutions) {
+	global.PrintDebug("EL", fmt.Sprintf("Eliminate on %v", s.ToString()))
 	if s.Equals(Failure()) {
 		return
 	}
@@ -326,13 +332,14 @@ func eliminateList(key basictypes.Meta, value basictypes.Term, l []basictypes.Te
 
 /* Eliminates one of the subsitution of a pair like (X, Y) (Y, X). It will keep the first one indexed in the map. */
 func EliminateMeta(subst *Substitutions) {
+	global.PrintDebug("EM", fmt.Sprintf("Eliminate Meta on %v", subst.ToString()))
 	meta := Substitutions{}
 
 	for _, t := range *subst {
 		k, v := t.Get()
 		v_meta := v.ToMeta()
-		v_key, found := (*subst).Get(v_meta)
-		if !(v.IsMeta() && HasSubst(*subst, v_meta) && HasSubst(meta, v_meta) && found && v_key.Equals(k)) {
+		v_key, index := (*subst).Get(v_meta)
+		if !(v.IsMeta() && HasSubst(*subst, v_meta) && HasSubst(meta, v_meta) && (index != -1) && v_key.Equals(k)) {
 			meta.Set(k, v)
 		}
 	}

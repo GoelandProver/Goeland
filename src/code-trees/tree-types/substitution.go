@@ -48,7 +48,7 @@ type Substitution struct {
 }
 
 func (s Substitution) ToString() string {
-	return "(" + s.k.ToString() + ": " + s.v.ToString() + ")"
+	return "(" + s.k.ToString() + " |-> " + s.v.ToString() + ")"
 }
 
 func (s Substitution) Key() btypes.Meta {

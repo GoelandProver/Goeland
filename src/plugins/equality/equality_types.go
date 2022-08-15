@@ -150,12 +150,12 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 	for _, ms := range eq_list {
 		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaEQ1, MetaEQ2)
 		eq1_term, ok_t1 := ms_ordered.Get(MetaEQ1)
-		if !ok_t1 {
+		if ok_t1 == -1 {
 			fmt.Printf("Meta_eq_1 not found in map\n")
 			global.PrintDebug("RI", "Meta_eq_1 not found in map")
 		}
 		eq2_term, ok_t2 := ms_ordered.Get(MetaEQ2)
-		if !ok_t2 {
+		if ok_t2 == -1 {
 			fmt.Printf("Meta_eq_2 not found in map\n")
 			global.PrintDebug("RI", "Meta_eq_2 not found in map")
 		}
@@ -170,17 +170,23 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 	MetaNEQ1 := basictypes.MakerMeta("META_NEQ_1", -1)
 	MetaNEQ2 := basictypes.MakerMeta("META_NEQ_2", -1)
 	// TODO: type this
-	eq_neq_pred := basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{MetaNEQ1, MetaNEQ2}, []typing.TypeApp{typing.DefaultType(), typing.DefaultType()}, typing.GetType(basictypes.Id_eq.GetName(), typing.DefaultType(), typing.DefaultType()))
-	_, neq_list := dt.Unify(eq_neq_pred)
+
+	tv := typing.MkTypeVar("EQ")
+	neq_pred := basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{})
+	tv.ShouldBeMeta(neq_pred.GetIndex())
+	tv.Instantiate(1)
+	neq_pred = basictypes.MakePred(neq_pred.GetIndex(), basictypes.Id_eq, []basictypes.Term{MetaNEQ1, MetaNEQ2}, []typing.TypeApp{}, typing.GetPolymorphicType(basictypes.Id_eq.GetName(), 1, 2))
+	_, neq_list := dt.Unify(neq_pred)
+
 	for _, ms := range neq_list {
 		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaNEQ1, MetaNEQ2)
 		neq1_term, ok_t1 := ms_ordered.Get(MetaNEQ1)
-		if !ok_t1 {
+		if ok_t1 == -1 {
 			fmt.Printf("Meta_neq_1 not found in map\n")
 			global.PrintDebug("RI", "Meta_neq_1 not found in map")
 		}
 		neq2_term, ok_t2 := ms_ordered.Get(MetaNEQ2)
-		if !ok_t2 {
+		if ok_t2 == -1 {
 			fmt.Printf("Meta_neq_2 not found in map\n")
 			global.PrintDebug("RI", "Meta_neq_2 not found in map")
 		}

@@ -108,7 +108,7 @@ func (m *Machine) unwrapMeta(term basictypes.Term) basictypes.Term {
 	deja_vu := map[basictypes.Term]bool{}
 	for term.IsMeta() {
 		val, ok := m.meta.Get(term.ToMeta())
-		if !ok || deja_vu[term] {
+		if (ok != -1) || deja_vu[term] {
 			break
 		}
 
