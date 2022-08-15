@@ -23,12 +23,6 @@ jobs:
       - run: mkdir soundness_test
       - run: mv TPTP-v8.1.0/Axioms soundness_test
       - run: python3 external_scripts/fof_tff_countersat.py TPTP-v8.1.0 soundness_test/problems
-      - run: python3 external_scripts/add_include.py soundness_test/problems_0/
-      - run: python3 external_scripts/add_include.py soundness_test/problems_1/
-      - run: python3 external_scripts/add_include.py soundness_test/problems_2/
-      - run: python3 external_scripts/add_include.py soundness_test/problems_3/
-      - run: python3 external_scripts/add_include.py soundness_test/problems_4/
-      - run: python3 external_scripts/add_include.py soundness_test/problems_5/
-      - run: python3 external_scripts/add_include.py soundness_test/problems_6/
+      - run: python3 external_scripts/add_include.py ${{ inputs.folder }}/
       - run: rm -rf TPTP-v8.1.0
-      - run: python3 external_scripts/run_soundness_test.py ${{ inputs.folder }} 120 
+      - run: python3 external_scripts/run_soundness_test.py ${{ inputs.folder }}_INCLUDE 120 

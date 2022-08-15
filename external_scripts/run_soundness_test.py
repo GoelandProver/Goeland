@@ -26,6 +26,6 @@ else:
     entries = os.listdir(folder)
     timeout = sys.argv[2]
     for index, file in enumerate(entries):
-        print("Problem %s/%s : %s" %(index+1, len(entries), folder+file))
+        print(f"Problem {index+1}/{len(entries)} : {folder+file}")
         LaunchTest("Goéland", "timeout "+timeout+" src/_build/goeland "+folder+file, "VALID", None, "NOT VALID")
 

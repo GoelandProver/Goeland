@@ -33,4 +33,4 @@ else :
          os.mkdir(dir_include, 0o777)
     for file in os.listdir(dir) :
         process(f"{dir}/{file}", f"{dir_include}{file}")
-        print(f"{file} processed.")
+        #print(f"{file} processed.")
