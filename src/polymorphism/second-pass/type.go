@@ -59,7 +59,7 @@ func secondPassAux(form btypes.Form, vars []btypes.Var, types []typing.TypeApp) 
 		terms, typeApps := nArySecondPassTerms(f.GetArgs(), vars, types)
 
 		// Special case: defined predicate. We need to infer types.
-		if f.GetID().Equals(btypes.Id_eq) || f.GetID().Equals(btypes.Id_neq) {
+		if f.GetID().Equals(btypes.Id_eq) {
 			return btypes.MakePred(f.GetIndex(), f.GetID(), terms, []typing.TypeApp{typing.GetOutType(To[btypes.TypedTerm](terms[0]).GetTypeHint())})
 		}
 

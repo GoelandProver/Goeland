@@ -284,7 +284,7 @@ tff_unary_formula: tff_prefix_unary { $$ = $1 }
 tff_prefix_unary: NOT tff_preunit_formula { $$ = btypes.RefuteForm($2) }
   ;
 
-tff_infix_unary: tff_term NOT_EQUAL tff_term { $$ = btypes.MakerPred(btypes.Id_neq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{}) }
+tff_infix_unary: tff_term NOT_EQUAL tff_term { $$ = btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{}))}
   ;
 
 tff_atomic_formula: tff_plain_atomic_formula    { $$ = $1 }
@@ -447,7 +447,7 @@ fof_unary_formula: NOT fof_unit_formula     { $$ = btypes.RefuteForm($2) }
   | fof_infix_unary                         { $$ = $1 }
   ;
   
-fof_infix_unary: fof_term NOT_EQUAL fof_term { $$ = btypes.MakerPred(btypes.Id_neq, []btypes.Term{$1, $3}, []typing.TypeApp{}) }
+fof_infix_unary: fof_term NOT_EQUAL fof_term { $$ = btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, []btypes.Term{$1, $3}, []typing.TypeApp{})) }
   ;
   
 fof_unit_formula: fof_unitary_formula   { $$ = $1 }

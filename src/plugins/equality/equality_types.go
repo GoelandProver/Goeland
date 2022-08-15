@@ -140,7 +140,11 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 	MetaEQ1 := basictypes.MakerMeta("METAEQ1", -1)
 	MetaEQ2 := basictypes.MakerMeta("METAEQ2", -1)
 	// TODO: type this
-	eq_pred := basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{MetaEQ1, MetaEQ2}, []typing.TypeApp{typing.DefaultType(), typing.DefaultType()}, typing.GetType(basictypes.Id_eq.GetName(), typing.DefaultType(), typing.DefaultType()))
+	tv := typing.MkTypeVar("EQ")
+	eq_pred := basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{})
+	tv.ShouldBeMeta(eq_pred.GetIndex())
+	tv.Instantiate(1)
+	eq_pred = basictypes.MakePred(eq_pred.GetIndex(), basictypes.Id_eq, []basictypes.Term{MetaEQ1, MetaEQ2}, []typing.TypeApp{}, typing.GetPolymorphicType(basictypes.Id_eq.GetName(), 1, 2))
 	_, eq_list := dt.Unify(eq_pred)
 
 	for _, ms := range eq_list {

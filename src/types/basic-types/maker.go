@@ -59,19 +59,16 @@ var lock_formula sync.Mutex
 
 // Global id
 var Id_eq Id
-var Id_neq Id
 
 /* Initialization */
 func Init() {
 	Reset()
 	Id_eq = MakerId("=")
-	Id_neq = MakerId("!=")
 
 	// Eq/Neq types
 	tv := typing.MkTypeVar("α")
 	scheme := typing.MkQuantifiedType([]typing.TypeVar{tv}, typing.MkTypeArrow(typing.MkTypeCross(tv, tv), tv))
 	typing.SavePolymorphScheme(Id_eq.GetName(), scheme)
-	typing.SavePolymorphScheme(Id_neq.GetName(), scheme)
 }
 
 /* Reset all the maps and counters */
