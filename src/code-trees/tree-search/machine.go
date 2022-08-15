@@ -39,7 +39,10 @@
 package treesearch
 
 import (
+	"fmt"
+
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -108,10 +111,12 @@ func (m *Machine) unwrapMeta(term basictypes.Term) basictypes.Term {
 	deja_vu := map[basictypes.Term]bool{}
 	for term.IsMeta() {
 		val, ok := m.meta.Get(term.ToMeta())
-		if (ok != -1) || deja_vu[term] {
+		global.PrintDebug("UM", fmt.Sprintf("ok : %v", ok))
+		if (ok == -1) || deja_vu[term] {
 			break
 		}
-
+		global.PrintDebug("UM", fmt.Sprintf("ok 2 : %v", ok))
+		global.PrintDebug("UM", fmt.Sprintf("Val : %v", val.ToString()))
 		deja_vu[term] = true
 		term = val.Copy()
 	}

@@ -46,10 +46,12 @@
 package dmt_test
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -566,6 +568,7 @@ func TestEquRewrite6(t *testing.T) {
  **/
 func TestSubst1(t *testing.T) {
 	initDMT()
+	global.SetDebug(true)
 	// forall x.P(x, x) <=> P(x, x) ^ Q(x, x)
 	equPred := btypes.MakerAll(
 		[]btypes.Var{x},
@@ -574,6 +577,7 @@ func TestSubst1(t *testing.T) {
 			btypes.MakerAnd([]btypes.Form{btypes.MakerPred(Q, []btypes.Term{x, x}, []typing.TypeApp{}), btypes.MakerPred(P, []btypes.Term{x, x}, []typing.TypeApp{})}),
 		),
 	)
+	global.PrintDebug("TS1", fmt.Sprintf("equpred : %v", equPred.ToString()))
 
 	if !dmt.RegisterAxiom(equPred) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred.ToString())
@@ -583,6 +587,8 @@ func TestSubst1(t *testing.T) {
 	Z := btypes.MakerMeta("Z", 1)
 
 	form := btypes.MakerPred(P, []btypes.Term{Y, Z}, []typing.TypeApp{})
+	global.PrintDebug("TS1", fmt.Sprintf("form : %v", form.ToString()))
+
 	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
@@ -593,6 +599,7 @@ func TestSubst1(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
+	global.PrintDebug("TS1", fmt.Sprintf("after form : %v", form.ToString()))
 	forms := substs[0].GetForm()
 	subst := substs[0].GetSubst()
 
