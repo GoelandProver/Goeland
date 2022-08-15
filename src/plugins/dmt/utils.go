@@ -43,7 +43,7 @@ import (
 )
 
 func isEquality(pred btypes.Pred) bool {
-	return pred.GetID().Equals(btypes.Id_eq)
+	return pred.GetID().Equals(btypes.Id_eq) || pred.GetID().Equals(btypes.Id_neq)
 }
 
 func refute(f btypes.Form) btypes.Form {

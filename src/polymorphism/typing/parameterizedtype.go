@@ -97,7 +97,17 @@ func (pt ParameterizedType) Equals(oth interface{}) bool {
 }
 func (pt ParameterizedType) Size() int                { return 1 }
 func (pt ParameterizedType) GetPrimitives() []TypeApp { return []TypeApp{pt} }
-func (pt ParameterizedType) GetParameters() []TypeApp { return pt.parameters }
+func (pt ParameterizedType) GetParameters() []TypeApp {
+	res := []TypeApp{}
+	for _, param := range pt.parameters {
+		if Is[ParameterizedType](param) {
+			res = append(res, To[ParameterizedType](param).GetParameters()...)
+		} else {
+			res = append(res, param)
+		}
+	}
+	return res
+}
 
 func (pt ParameterizedType) Copy() TypeApp {
 	newPT := ParameterizedType{name: pt.name, parameters: make(ComparableList[TypeApp], len(pt.parameters))}

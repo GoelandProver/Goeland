@@ -97,8 +97,7 @@ func (tv TypeVar) substitute(mapSubst map[TypeVar]string) TypeScheme {
 }
 
 func (tv TypeVar) instanciate(mapSubst map[TypeVar]TypeApp) TypeApp {
-	typeApp, found := mapSubst[tv]
-	if found {
+	if typeApp, found := mapSubst[tv]; found {
 		return typeApp
 	} else {
 		return tv

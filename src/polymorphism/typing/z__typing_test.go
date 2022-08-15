@@ -54,9 +54,9 @@ var tReal p.TypeHint
 func TestMain(m *testing.M) {
 	p.Init()
 	p.InitTPTPArithmetic()
-	tInt = p.MkTypeHint("int")
-	tRat = p.MkTypeHint("rat")
-	tReal = p.MkTypeHint("real")
+	tInt = p.MkTypeHint("$int")
+	tRat = p.MkTypeHint("$rat")
+	tReal = p.MkTypeHint("$real")
 	code := m.Run()
 	os.Exit(code)
 }

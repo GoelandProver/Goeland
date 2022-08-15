@@ -291,7 +291,7 @@ func TestPolymorphicSaving(t *testing.T) {
 		saved     bool
 	}{
 		{"T1", MkQuantifiedType([]TypeVar{a}, MkTypeArrow(MkTypeCross(a, a), a)), false, true},
-		{"T1", MkQuantifiedType([]TypeVar{b}, MkTypeArrow(MkTypeCross(b, b), b)), false, true},
+		{"T1", MkQuantifiedType([]TypeVar{b}, MkTypeArrow(MkTypeCross(b, b), b)), true, false},
 		{"T2", MkQuantifiedType([]TypeVar{a}, MkTypeArrow(MkTypeCross(a, a), a)), false, true},
 		{"T1", MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(MkTypeCross(a, b), a)), false, true},
 		{"T2", MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(MkTypeCross(a, a), b)), true, false},

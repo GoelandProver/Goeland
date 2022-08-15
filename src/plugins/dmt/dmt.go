@@ -77,6 +77,13 @@ func InitPlugin() error {
 	return nil
 }
 
+// For testing purposes
+func InitPluginTests(polarized, presko bool) {
+	*flagPolarized = polarized
+	*flagPresko = presko
+	InitPlugin()
+}
+
 func initPluginGlobalVariables() {
 	positiveRewrite = make(map[string]btypes.FormList)
 	negativeRewrite = make(map[string]btypes.FormList)
