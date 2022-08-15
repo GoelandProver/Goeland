@@ -92,7 +92,6 @@ func (qt QuantifiedType) GetPrimitives() []TypeApp {
 			primitives = append(primitives, th)
 		}
 	}
-
 	return primitives
 }
 
@@ -102,11 +101,41 @@ func (qt QuantifiedType) Instanciate(types []TypeApp) TypeScheme {
 		substMap[MkTypeVar(fmt.Sprintf("*_%d", i))] = types[i]
 	}
 
+	tv := []TypeVar{}
+	for _, var_ := range types {
+		if Is[TypeVar](var_) {
+			tv = append(tv, To[TypeVar](var_))
+		} else if Is[ParameterizedType](var_) {
+			prim := To[ParameterizedType](var_).GetParameters()
+			for _, p := range prim {
+				if Is[TypeVar](p) {
+					tv = append(tv, To[TypeVar](p))
+				}
+			}
+		} else if Is[TypeScheme](var_) {
+			prim := To[TypeScheme](var_).GetPrimitives()
+			for _, p := range prim {
+				if Is[TypeVar](p) {
+					tv = append(tv, To[TypeVar](p))
+				}
+			}
+		}
+	}
+
 	if Is[TypeApp](qt.scheme) {
+		if len(tv) > 0 {
+			return MkQuantifiedType(tv, To[TypeScheme](To[TypeApp](qt.scheme).instanciate(substMap)))
+		}
 		return To[TypeScheme](To[TypeApp](qt.scheme).instanciate(substMap))
 	} else if Is[TypeArrow](qt.scheme) {
+		if len(tv) > 0 {
+			return MkQuantifiedType(tv, To[TypeArrow](qt.scheme).instanciate(substMap))
+		}
 		return To[TypeArrow](qt.scheme).instanciate(substMap)
 	} else {
+		if len(tv) > 0 {
+			return MkQuantifiedType(tv, To[TypeScheme](To[ParameterizedType](qt.scheme).instanciate(substMap)))
+		}
 		return To[TypeScheme](To[ParameterizedType](qt.scheme).instanciate(substMap))
 	}
 }

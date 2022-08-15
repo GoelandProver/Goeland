@@ -11,10 +11,10 @@ import (
 
 func TestTPTPBinaryNativeBinaryProps(t *testing.T) {
 	ls := []string{
-		"less",
-		"lesseq",
-		"greater",
-		"greatereq",
+		"$less",
+		"$lesseq",
+		"$greater",
+		"$greatereq",
 	}
 	for _, name := range ls {
 		if err := testBinaryPreds(name); err != nil {
@@ -25,26 +25,26 @@ func TestTPTPBinaryNativeBinaryProps(t *testing.T) {
 
 func TestTPTPBinaryNatives(t *testing.T) {
 	ls := []string{
-		"sum",
-		"difference",
-		"product",
-		"quotient_e",
-		"quotient_t",
-		"quotient_f",
-		"remainder_e",
-		"remainder_t",
-		"remainder_f",
+		"$sum",
+		"$difference",
+		"$product",
+		"$quotient_e",
+		"$quotient_t",
+		"$quotient_f",
+		"$remainder_e",
+		"$remainder_t",
+		"$remainder_f",
 	}
 	for _, name := range ls {
 		if err := testBinaryTypes(name); err != nil {
 			t.Errorf(err.Error())
 		}
 	}
-	out := p.GetType("quotient", p.MkTypeCross(tRat, tRat))
+	out := p.GetType("$quotient", p.MkTypeCross(tRat, tRat))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tRat, tRat), tRat)) {
 		t.Errorf("Error: quotient: rat * rat > rat not defined when it should be.")
 	}
-	out = p.GetType("quotient", p.MkTypeCross(tReal, tReal))
+	out = p.GetType("$quotient", p.MkTypeCross(tReal, tReal))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tReal, tReal), tReal)) {
 		t.Errorf("Error: quotient: real * real > real not defined when it should be.")
 	}
@@ -52,11 +52,11 @@ func TestTPTPBinaryNatives(t *testing.T) {
 
 func TestTPTPUnaryNativesCreation(t *testing.T) {
 	ls := []string{
-		"uminus",
-		"floor",
-		"ceiling",
-		"truncate",
-		"round",
+		"$uminus",
+		"$floor",
+		"$ceiling",
+		"$truncate",
+		"$round",
 	}
 	for _, name := range ls {
 		if err := testUnaryTypes(name); err != nil {
@@ -66,7 +66,7 @@ func TestTPTPUnaryNativesCreation(t *testing.T) {
 }
 
 func TestUnaryProp(t *testing.T) {
-	ls := []string{"is_int", "is_rat"}
+	ls := []string{"$is_int", "$is_rat"}
 
 	for _, name := range ls {
 		if err := testUnaryProp(name); err != nil {
@@ -80,9 +80,9 @@ func TestTPTPConversionFunctions(t *testing.T) {
 		name string
 		out  p.TypeApp
 	}{
-		{"to_int", tInt},
-		{"to_rat", tRat},
-		{"to_real", tReal},
+		{"$to_int", tInt},
+		{"$to_rat", tRat},
+		{"$to_real", tReal},
 	}
 
 	for _, type_ := range ls {
@@ -94,8 +94,8 @@ func TestTPTPConversionFunctions(t *testing.T) {
 
 func TestPrimitive(t *testing.T) {
 	primitiveTypes := []string{
-		"int",
-		"rat",
+		"$int",
+		"$rat",
 	}
 
 	for i, primitive := range primitiveTypes {
@@ -136,7 +136,7 @@ func TestIsRatFunction(t *testing.T) {
 		t p.TypeHint
 		b bool
 	}{
-		{tInt, false}, {tRat, true}, {tReal, false}, {p.MkTypeHint("o"), false}, {p.MkTypeHint("i"), false},
+		{tInt, false}, {tRat, true}, {tReal, false}, {p.MkTypeHint("$o"), false}, {p.MkTypeHint("$i"), false},
 	}
 
 	for _, test := range testTable {
@@ -153,7 +153,7 @@ func TestIsRealFunction(t *testing.T) {
 		t p.TypeHint
 		b bool
 	}{
-		{tInt, false}, {tRat, false}, {tReal, true}, {p.MkTypeHint("o"), false}, {p.MkTypeHint("i"), false},
+		{tInt, false}, {tRat, false}, {tReal, true}, {p.MkTypeHint("$o"), false}, {p.MkTypeHint("$i"), false},
 	}
 
 	for _, test := range testTable {
@@ -166,13 +166,13 @@ func TestIsRealFunction(t *testing.T) {
 }
 
 func TestDefaultType(t *testing.T) {
-	if !p.DefaultType().Equals(p.MkTypeHint("i")) {
+	if !p.DefaultType().Equals(p.MkTypeHint("$i")) {
 		t.Fatalf("Wrong default type: %s", p.DefaultType().ToString())
 	}
 }
 
 func TestDefaultProp(t *testing.T) {
-	if !p.DefaultProp().Equals(p.MkTypeHint("o")) {
+	if !p.DefaultProp().Equals(p.MkTypeHint("$o")) {
 		t.Fatalf("Wrong default type: %s", p.DefaultProp().ToString())
 	}
 }
@@ -200,10 +200,10 @@ func TestDefaultType3(t *testing.T) {
 		size int
 		name string
 	}{
-		{1, "(i > i)"},
-		{2, "((i * i) > i)"},
-		{3, "((i * i * i) > i)"},
-		{10, "((i * i * i * i * i * i * i * i * i * i) > i)"},
+		{1, "($i > $i)"},
+		{2, "(($i * $i) > $i)"},
+		{3, "(($i * $i * $i) > $i)"},
+		{10, "(($i * $i * $i * $i * $i * $i * $i * $i * $i * $i) > $i)"},
 	}
 
 	for _, test := range testTable {
@@ -218,10 +218,10 @@ func TestDefaultProp3(t *testing.T) {
 		size int
 		name string
 	}{
-		{1, "(i > o)"},
-		{2, "((i * i) > o)"},
-		{3, "((i * i * i) > o)"},
-		{10, "((i * i * i * i * i * i * i * i * i * i) > o)"},
+		{1, "($i > $o)"},
+		{2, "(($i * $i) > $o)"},
+		{3, "(($i * $i * $i) > $o)"},
+		{10, "(($i * $i * $i * $i * $i * $i * $i * $i * $i * $i) > $o)"},
 	}
 
 	for _, test := range testTable {

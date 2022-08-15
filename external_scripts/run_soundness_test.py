@@ -17,14 +17,15 @@ def LaunchTest(prover_name, command_line, succes, memory_limit=None, failure=Non
         print("OK")
 
 if len(sys.argv) != 3: 
-    print("python3 run_tests.py problem_folder timeout")
+    print(f"python3 {sys.argv[0]} problem_folder timeout")
 else:
     folder = sys.argv[1]
     folder_split = folder.split("/")
+    folder += "/"
    
     entries = os.listdir(folder)
     timeout = sys.argv[2]
     for index, file in enumerate(entries):
-        print("Problem %s/%s : %s" %(index+1, len(entries), file))
-        LaunchTest("Goéland", "timeout "+timeout+" ../src/_build/goeland "+folder+file, "VALID", None, "NOT VALID")
+        print("Problem %s/%s : %s" %(index+1, len(entries), folder+file))
+        LaunchTest("Goéland", "timeout "+timeout+" src/_build/goeland "+folder+file, "VALID", None, "NOT VALID")
 

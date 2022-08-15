@@ -67,15 +67,15 @@ func getTestParamTypeTable() []struct {
 		primitives         ComparableList[TypeApp]
 		expectedParameters ComparableList[TypeApp]
 	}{
-		{MkParameterizedType("list", []TypeApp{tInt}), "list(int)", []TypeApp{tInt}, []TypeApp{tInt}},
-		{MkParameterizedType("list", []TypeApp{tRat}), "list(rat)", []TypeApp{tRat}, []TypeApp{tRat}},
-		{MkParameterizedType("map", []TypeApp{tInt, tInt}), "map(int, int)", []TypeApp{tInt, tInt}, []TypeApp{tInt, tInt}},
-		{MkParameterizedType("map", []TypeApp{tInt, tRat}), "map(int, rat)", []TypeApp{tInt, tRat}, []TypeApp{tInt, tRat}},
-		{MkParameterizedType("map", []TypeApp{tRat, tRat}), "map(rat, rat)", []TypeApp{tRat, tRat}, []TypeApp{tRat, tRat}},
-		{MkParameterizedType("pair", []TypeApp{a, tRat}), "pair(a, rat)", []TypeApp{a, tRat}, []TypeApp{a, tRat}},
-		{MkParameterizedType("pair", []TypeApp{MkTypeCross(tInt, tInt), MkTypeCross(tRat, tRat)}), "pair((int * int), (rat * rat))", []TypeApp{tInt, tInt, tRat, tRat}, []TypeApp{MkTypeCross(tInt, tInt), MkTypeCross(tRat, tRat)}},
-		{MkParameterizedType("intMap", []TypeApp{tRat}), "intMap(int, rat)", []TypeApp{tInt, tRat}, []TypeApp{tInt, tRat}},
-		{MkParameterizedType("ratMap", []TypeApp{tInt}), "ratMap(rat, int)", []TypeApp{tRat, tInt}, []TypeApp{tRat, tInt}},
+		{MkParameterizedType("list", []TypeApp{tInt}), "list($int)", []TypeApp{tInt}, []TypeApp{tInt}},
+		{MkParameterizedType("list", []TypeApp{tRat}), "list($rat)", []TypeApp{tRat}, []TypeApp{tRat}},
+		{MkParameterizedType("map", []TypeApp{tInt, tInt}), "map($int, $int)", []TypeApp{tInt, tInt}, []TypeApp{tInt, tInt}},
+		{MkParameterizedType("map", []TypeApp{tInt, tRat}), "map($int, $rat)", []TypeApp{tInt, tRat}, []TypeApp{tInt, tRat}},
+		{MkParameterizedType("map", []TypeApp{tRat, tRat}), "map($rat, $rat)", []TypeApp{tRat, tRat}, []TypeApp{tRat, tRat}},
+		{MkParameterizedType("pair", []TypeApp{a, tRat}), "pair(a, $rat)", []TypeApp{a, tRat}, []TypeApp{a, tRat}},
+		{MkParameterizedType("pair", []TypeApp{MkTypeCross(tInt, tInt), MkTypeCross(tRat, tRat)}), "pair(($int * $int), ($rat * $rat))", []TypeApp{tInt, tInt, tRat, tRat}, []TypeApp{MkTypeCross(tInt, tInt), MkTypeCross(tRat, tRat)}},
+		{MkParameterizedType("intMap", []TypeApp{tRat}), "intMap($int, $rat)", []TypeApp{tInt, tRat}, []TypeApp{tInt, tRat}},
+		{MkParameterizedType("ratMap", []TypeApp{tInt}), "ratMap($rat, $int)", []TypeApp{tRat, tInt}, []TypeApp{tRat, tInt}},
 	}
 }
 

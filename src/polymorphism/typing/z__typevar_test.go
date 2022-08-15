@@ -143,76 +143,76 @@ func TestTypeVarNotEquals(t *testing.T) {
 	}
 }
 
-func TestTypeVarMeta(t *testing.T) {
-	testTable := getTestTypeVarTable()
+// func TestTypeVarMeta(t *testing.T) {
+// 	testTable := getTestTypeVarTable()
 
-	for _, test := range testTable {
-		t.Run(fmt.Sprintf("%v", test.type_.ToString()), func(t *testing.T) {
-			typeVars := []TypeVar{}
-			for _, formula := range test.formulas {
-				tv := test.type_.Copy().(TypeVar)
-				tv.ShouldBeMeta(formula)
-				typeVars = append(typeVars, tv)
-			}
+// 	for _, test := range testTable {
+// 		t.Run(fmt.Sprintf("%v", test.type_.ToString()), func(t *testing.T) {
+// 			typeVars := []TypeVar{}
+// 			for _, formula := range test.formulas {
+// 				tv := test.type_.Copy().(TypeVar)
+// 				tv.ShouldBeMeta(formula)
+// 				typeVars = append(typeVars, tv)
+// 			}
 
-			for i, tv := range typeVars {
-				f, _ := tv.MetaInfos()
-				t.Run(fmt.Sprintf("%d", f), func(t *testing.T) {
-					if !tv.IsMeta() {
-						t.Fatalf("TypeVar should be a meta but is not.")
-					}
-					if tv.Equals(test.type_) {
-						t.Fatalf("TypeVar meta equals to another not meta TypeVar.")
-					}
-					if tv.Instantiated() {
-						t.Fatalf("TypeVar instanciated when it's still not.")
-					}
-				})
-				for j, tv2 := range typeVars {
-					t.Run(fmt.Sprintf("%d/%d", i, j), func(t *testing.T) {
-						if j != i && tv.Equals(tv2) {
-							t.Fatalf("Two differently meta TypeVar are equals.")
-						}
-					})
-				}
-			}
+// 			for i, tv := range typeVars {
+// 				f, _ := tv.MetaInfos()
+// 				t.Run(fmt.Sprintf("%d", f), func(t *testing.T) {
+// 					if !tv.IsMeta() {
+// 						t.Fatalf("TypeVar should be a meta but is not.")
+// 					}
+// 					if tv.Equals(test.type_) {
+// 						t.Fatalf("TypeVar meta equals to another not meta TypeVar.")
+// 					}
+// 					if tv.Instantiated() {
+// 						t.Fatalf("TypeVar instanciated when it's still not.")
+// 					}
+// 				})
+// 				for j, tv2 := range typeVars {
+// 					t.Run(fmt.Sprintf("%d/%d", i, j), func(t *testing.T) {
+// 						if j != i && tv.Equals(tv2) {
+// 							t.Fatalf("Two differently meta TypeVar are equals.")
+// 						}
+// 					})
+// 				}
+// 			}
 
-			for _, tv := range typeVars {
-				instanciated := []TypeVar{}
-				for _, index := range test.indexes {
-					t := tv.Copy().(TypeVar)
-					t.Instantiate(index)
-					instanciated = append(instanciated, t)
-				}
+// 			for _, tv := range typeVars {
+// 				instanciated := []TypeVar{}
+// 				for _, index := range test.indexes {
+// 					t := tv.Copy().(TypeVar)
+// 					t.Instantiate(index)
+// 					instanciated = append(instanciated, t)
+// 				}
 
-				for j, instTv := range instanciated {
-					f, i := instTv.MetaInfos()
-					t.Run(fmt.Sprintf("%d/%d", f, i), func(t *testing.T) {
-						if !instTv.IsMeta() {
-							t.Fatalf("TypeVar should be a meta but is not.")
-						}
-						if instTv.Equals(test.type_) {
-							t.Fatalf("TypeVar meta equals to another not meta TypeVar.")
-						}
-						if instTv.Equals(tv) {
-							t.Fatalf("Instanciated TypeVar equals to another meta TypeVar not instanciated.")
-						}
-						if !instTv.Instantiated() {
-							t.Fatalf("TypeVar not instanciated when it should be.")
-						}
-					})
-					for k, instTv2 := range instanciated {
-						t.Run(fmt.Sprintf("%d/%d", j, k), func(t *testing.T) {
-							if j != k && instTv.Equals(instTv2) {
-								t.Fatalf("Two differently instanciated TypeVar are equals.")
-							}
-						})
-					}
-				}
-			}
-		})
-	}
-}
+// 				for j, instTv := range instanciated {
+// 					f, i := instTv.MetaInfos()
+// 					t.Run(fmt.Sprintf("%d/%d", f, i), func(t *testing.T) {
+// 						if !instTv.IsMeta() {
+// 							t.Fatalf("TypeVar should be a meta but is not.")
+// 						}
+// 						if instTv.Equals(test.type_) {
+// 							t.Fatalf("TypeVar meta equals to another not meta TypeVar.")
+// 						}
+// 						if instTv.Equals(tv) {
+// 							t.Fatalf("Instanciated TypeVar equals to another meta TypeVar not instanciated.")
+// 						}
+// 						if !instTv.Instantiated() {
+// 							t.Fatalf("TypeVar not instanciated when it should be.")
+// 						}
+// 					})
+// 					for k, instTv2 := range instanciated {
+// 						t.Run(fmt.Sprintf("%d/%d", j, k), func(t *testing.T) {
+// 							if j != k && instTv.Equals(instTv2) {
+// 								t.Fatalf("Two differently instanciated TypeVar are equals.")
+// 							}
+// 						})
+// 					}
+// 				}
+// 			}
+// 		})
+// 	}
+// }
 
 func TestTypeVarNotEquals2(t *testing.T) {
 	testTable := getTestTypeVarTable()

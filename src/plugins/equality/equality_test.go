@@ -47,6 +47,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -163,58 +164,58 @@ func initTestVariable() {
 	c2 = basictypes.MakerConst(c2_id)
 
 	// Fun
-	gx = basictypes.MakerFun(g_id, []basictypes.Term{x})
-	ga = basictypes.MakerFun(g_id, []basictypes.Term{a})
-	fx = basictypes.MakerFun(f_id, []basictypes.Term{x})
-	fy = basictypes.MakerFun(f_id, []basictypes.Term{y})
-	fa = basictypes.MakerFun(f_id, []basictypes.Term{a})
+	gx = basictypes.MakerFun(g_id, []basictypes.Term{x}, []typing.TypeApp{})
+	ga = basictypes.MakerFun(g_id, []basictypes.Term{a}, []typing.TypeApp{})
+	fx = basictypes.MakerFun(f_id, []basictypes.Term{x}, []typing.TypeApp{})
+	fy = basictypes.MakerFun(f_id, []basictypes.Term{y}, []typing.TypeApp{})
+	fa = basictypes.MakerFun(f_id, []basictypes.Term{a}, []typing.TypeApp{})
 
-	ggx = basictypes.MakerFun(g_id, []basictypes.Term{gx})
-	gga = basictypes.MakerFun(g_id, []basictypes.Term{ga})
-	gfy = basictypes.MakerFun(g_id, []basictypes.Term{fy})
-	gfa = basictypes.MakerFun(g_id, []basictypes.Term{fa})
-	fxy = basictypes.MakerFun(f_id, []basictypes.Term{x, y})
-	fyz = basictypes.MakerFun(f_id, []basictypes.Term{y, z})
-	ffx = basictypes.MakerFun(f_id, []basictypes.Term{fx})
-	fxa = basictypes.MakerFun(f_id, []basictypes.Term{x, a})
-	fay = basictypes.MakerFun(f_id, []basictypes.Term{a, y})
-	fab = basictypes.MakerFun(f_id, []basictypes.Term{a, b})
-	fbc = basictypes.MakerFun(f_id, []basictypes.Term{b, c})
+	ggx = basictypes.MakerFun(g_id, []basictypes.Term{gx}, []typing.TypeApp{})
+	gga = basictypes.MakerFun(g_id, []basictypes.Term{ga}, []typing.TypeApp{})
+	gfy = basictypes.MakerFun(g_id, []basictypes.Term{fy}, []typing.TypeApp{})
+	gfa = basictypes.MakerFun(g_id, []basictypes.Term{fa}, []typing.TypeApp{})
+	fxy = basictypes.MakerFun(f_id, []basictypes.Term{x, y}, []typing.TypeApp{})
+	fyz = basictypes.MakerFun(f_id, []basictypes.Term{y, z}, []typing.TypeApp{})
+	ffx = basictypes.MakerFun(f_id, []basictypes.Term{fx}, []typing.TypeApp{})
+	fxa = basictypes.MakerFun(f_id, []basictypes.Term{x, a}, []typing.TypeApp{})
+	fay = basictypes.MakerFun(f_id, []basictypes.Term{a, y}, []typing.TypeApp{})
+	fab = basictypes.MakerFun(f_id, []basictypes.Term{a, b}, []typing.TypeApp{})
+	fbc = basictypes.MakerFun(f_id, []basictypes.Term{b, c}, []typing.TypeApp{})
 
-	gggx = basictypes.MakerFun(g_id, []basictypes.Term{ggx})
+	gggx = basictypes.MakerFun(g_id, []basictypes.Term{ggx}, []typing.TypeApp{})
 
-	f_fxy_z = basictypes.MakerFun(f_id, []basictypes.Term{fxy, z})
-	f_x_fyz = basictypes.MakerFun(f_id, []basictypes.Term{x, fyz})
-	f_fab_c = basictypes.MakerFun(f_id, []basictypes.Term{fab, c})
-	f_a_fbc = basictypes.MakerFun(f_id, []basictypes.Term{a, fbc})
+	f_fxy_z = basictypes.MakerFun(f_id, []basictypes.Term{fxy, z}, []typing.TypeApp{})
+	f_x_fyz = basictypes.MakerFun(f_id, []basictypes.Term{x, fyz}, []typing.TypeApp{})
+	f_fab_c = basictypes.MakerFun(f_id, []basictypes.Term{fab, c}, []typing.TypeApp{})
+	f_a_fbc = basictypes.MakerFun(f_id, []basictypes.Term{a, fbc}, []typing.TypeApp{})
 
 	// Equalities
-	eq_x_y = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{x, y})
-	eq_x_a = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{x, a})
-	eq_z1_c1 = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{z1, c1})
-	eq_z1_c2 = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{z1, c2})
-	eq_z2_c1 = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{z2, c1})
-	eq_z3_c1 = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{z3, c1})
+	eq_x_y = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{x, y}, []typing.TypeApp{})
+	eq_x_a = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{x, a}, []typing.TypeApp{})
+	eq_z1_c1 = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{z1, c1}, []typing.TypeApp{})
+	eq_z1_c2 = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{z1, c2}, []typing.TypeApp{})
+	eq_z2_c1 = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{z2, c1}, []typing.TypeApp{})
+	eq_z3_c1 = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{z3, c1}, []typing.TypeApp{})
 
-	eq_ggx_x = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{ggx, fa})
-	eq_gfy_y = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{gfy, y})
-	eq_gx_fx = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{gx, fx})
-	eq_fa_a = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{fa, a})
-	eq_a_b = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{a, b})
-	eq_b_c = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{b, c})
+	eq_ggx_x = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{ggx, fa}, []typing.TypeApp{})
+	eq_gfy_y = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{gfy, y}, []typing.TypeApp{})
+	eq_gx_fx = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{gx, fx}, []typing.TypeApp{})
+	eq_fa_a = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{fa, a}, []typing.TypeApp{})
+	eq_a_b = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{a, b}, []typing.TypeApp{})
+	eq_b_c = basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{b, c}, []typing.TypeApp{})
 
 	// Inequalites
-	neq_x_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{x, a}))
-	neq_a_b = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{a, b}))
-	neq_a_d = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{a, d}))
-	neq_gggx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{gggx, x}))
+	neq_x_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{x, a}, []typing.TypeApp{}))
+	neq_a_b = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{a, b}, []typing.TypeApp{}))
+	neq_a_d = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{a, d}, []typing.TypeApp{}))
+	neq_gggx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{gggx, x}, []typing.TypeApp{}))
 
 	// Predicates
-	pggab = basictypes.MakerPred(p_id, []basictypes.Term{gga, b})
-	pac = basictypes.MakerNot(basictypes.MakerPred(p_id, []basictypes.Term{a, c}))
-	pa = basictypes.MakerPred(p_id, []basictypes.Term{a})
-	pb = basictypes.MakerPred(p_id, []basictypes.Term{b})
-	not_pc = basictypes.RefuteForm(basictypes.MakerPred(p_id, []basictypes.Term{c}))
+	pggab = basictypes.MakerPred(p_id, []basictypes.Term{gga, b}, []typing.TypeApp{})
+	pac = basictypes.MakerNot(basictypes.MakerPred(p_id, []basictypes.Term{a, c}, []typing.TypeApp{}))
+	pa = basictypes.MakerPred(p_id, []basictypes.Term{a}, []typing.TypeApp{})
+	pb = basictypes.MakerPred(p_id, []basictypes.Term{b}, []typing.TypeApp{})
+	not_pc = basictypes.RefuteForm(basictypes.MakerPred(p_id, []basictypes.Term{c}, []typing.TypeApp{}))
 
 	lpo.insertTerm(p_id)
 	lpo.insertTerm(g_id)
@@ -237,6 +238,7 @@ func initCodeTreesTests(lf basictypes.FormList) (datastruct.DataStructure, datas
 
 func TestMain(m *testing.M) {
 	global.SetStart(time.Now())
+	typing.Init()
 	basictypes.Init()
 	InitPlugin()
 	initTestVariable()
@@ -263,10 +265,10 @@ func TestEQ1(t *testing.T) {
 	res, subst := EqualityReasoning(tp, tn, lf)
 
 	expected_subst_1 := treetypes.MakeEmptySubstitution()
-	expected_subst_1[x] = ga
+	expected_subst_1.Set(x, ga)
 
 	expected_subst_2 := treetypes.MakeEmptySubstitution()
-	expected_subst_2[x] = gfa
+	expected_subst_2.Set(x, gfa)
 
 	if !res || len(subst) > 2 || len(subst) < 1 ||
 		(!subst[0].Equals(expected_subst_1) && !subst[0].Equals(expected_subst_2)) ||
@@ -292,7 +294,7 @@ func TestEQ2(t *testing.T) {
 	res, subst := EqualityReasoning(tp, tn, lf)
 
 	expected_subst_1 := treetypes.MakeEmptySubstitution()
-	expected_subst_1[x] = y
+	expected_subst_1.Set(x, y)
 
 	expected_subst_2 := treetypes.MakeEmptySubstitution()
 
@@ -320,8 +322,8 @@ func TestEQ3(t *testing.T) {
 	res, subst := EqualityReasoning(tp, tn, lf)
 
 	expected_subst := treetypes.MakeEmptySubstitution()
-	expected_subst[x] = a
-	expected_subst[y] = a
+	expected_subst.Set(x, a)
+	expected_subst.Set(y, a)
 
 	if !res || len(subst) != 1 || !subst[0].Equals(expected_subst) {
 		t.Fatalf("Error: %v - %v is not the expected substitution. expected : %v", res, treetypes.SubstListToString(subst), expected_subst.ToString())
@@ -349,7 +351,7 @@ func TestEQ4(t *testing.T) {
 	res, subst := EqualityReasoning(tp, tn, lf)
 
 	expected_subst := treetypes.MakeEmptySubstitution()
-	expected_subst[x] = a
+	expected_subst.Set(x, a)
 
 	if !res || len(subst) != 1 || !subst[0].Equals(expected_subst) {
 		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expected_subst.ToString())
@@ -373,12 +375,12 @@ func TestEQ5(t *testing.T) {
 	res, subst := EqualityReasoning(tp, tn, lf)
 
 	expected_subst_1 := treetypes.MakeEmptySubstitution()
-	expected_subst_1[z1] = a
-	expected_subst_1[z2] = b
+	expected_subst_1.Set(z1, a)
+	expected_subst_1.Set(z2, b)
 
 	expected_subst_2 := treetypes.MakeEmptySubstitution()
-	expected_subst_2[z1] = b
-	expected_subst_2[z2] = a
+	expected_subst_2.Set(z1, b)
+	expected_subst_2.Set(z2, a)
 
 	if !res || len(subst) != 1 || (!subst[0].Equals(expected_subst_1) && !subst[0].Equals(expected_subst_2)) {
 		t.Fatalf("Error: %v -  %v is not the expected substitution. expected : %v or %v", res, treetypes.SubstListToString(subst), expected_subst_1.ToString(), expected_subst_2.ToString())
@@ -417,28 +419,28 @@ func TestEQ6(t *testing.T) {
 	res, subst := EqualityReasoning(tp, tn, lf)
 
 	expected_subst_1 := treetypes.MakeEmptySubstitution()
-	expected_subst_1[z2] = b
-	expected_subst_1[z3] = c
+	expected_subst_1.Set(z2, b)
+	expected_subst_1.Set(z3, c)
 
 	expected_subst_1_bis := treetypes.MakeEmptySubstitution()
-	expected_subst_1_bis[z2] = c
-	expected_subst_1_bis[z3] = b
+	expected_subst_1_bis.Set(z2, c)
+	expected_subst_1_bis.Set(z3, b)
 
 	expected_subst_2 := treetypes.MakeEmptySubstitution()
-	expected_subst_2[z2] = a
-	expected_subst_2[z3] = c
+	expected_subst_2.Set(z2, a)
+	expected_subst_2.Set(z3, c)
 
 	expected_subst_2_bis := treetypes.MakeEmptySubstitution()
-	expected_subst_2_bis[z2] = c
-	expected_subst_2_bis[z3] = a
+	expected_subst_2_bis.Set(z2, c)
+	expected_subst_2_bis.Set(z3, a)
 
 	expected_subst_3 := treetypes.MakeEmptySubstitution()
-	expected_subst_3[z2] = a
-	expected_subst_3[z3] = b
+	expected_subst_3.Set(z2, a)
+	expected_subst_3.Set(z3, b)
 
 	expected_subst_3_bis := treetypes.MakeEmptySubstitution()
-	expected_subst_3_bis[z2] = b
-	expected_subst_3_bis[z3] = a
+	expected_subst_3_bis.Set(z2, b)
+	expected_subst_3_bis.Set(z3, a)
 
 	if !res || len(subst) != 3 {
 		t.Fatalf("Error: %v -  %v is not the expected substitution. Expected true and 3", res, len(subst))
@@ -535,7 +537,7 @@ func TestAS(t *testing.T) {
 	expected_ep := makeEqualityProblem(eq2, x, a, makeEmptyConstaintStruct())
 
 	s := treetypes.MakeEmptySubstitution()
-	s[y] = a
+	s.Set(y, a)
 	new_ep := ep.applySubstitution(s)
 
 	global.SetDebug(true)
