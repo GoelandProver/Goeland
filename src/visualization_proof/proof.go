@@ -59,6 +59,7 @@ type ProofStruct struct {
 	Node_id         int
 	Rule            string
 	Rule_name       string
+	Rule_formula    basictypes.Form
 	Result_formulas []IntFormList
 	Children        [][]ProofStruct
 }
@@ -68,6 +69,7 @@ type JsonProofStruct struct {
 	Node_id         int                 `json:"Node_id"`
 	Rule            string              `json:"Rule"`
 	Rule_name       string              `json:"Rule_name"`
+	Rule_formula    string              `json:"Rule_formula"`
 	Result_formulas []IntIntStringPair  `json:"Generated_formulas"`
 	Children        [][]JsonProofStruct `json:"Children"`
 }
@@ -130,7 +132,7 @@ func (p ProofStruct) ToString() string {
 	return res
 }
 func (p ProofStruct) Copy() ProofStruct {
-	return ProofStruct{p.GetFormula(), p.GetNodeId(), p.GetRule(), p.GetRuleName(), p.GetResultFormulas(), copyProofStructChildren(p.Children)}
+	return ProofStruct{p.GetFormula(), p.GetNodeId(), p.GetRule(), p.GetRuleName(), p.GetRuleFormula(), p.GetResultFormulas(), copyProofStructChildren(p.Children)}
 }
 
 func ProofStructListToString(l []ProofStruct) string {
@@ -171,6 +173,9 @@ func (p ProofStruct) GetRule() string {
 func (p ProofStruct) GetRuleName() string {
 	return p.Rule_name
 }
+func (p ProofStruct) GetRuleFormula() basictypes.Form {
+	return p.Rule_formula
+}
 func (p ProofStruct) GetResultFormulas() []IntFormList {
 	return p.Result_formulas
 }
@@ -182,27 +187,24 @@ func (p ProofStruct) GetChildren() [][]ProofStruct {
 func SetFileProof(file *os.File) {
 	file_proof = file
 }
-
 func (p *ProofStruct) SetChildrenProof(c [][]ProofStruct) {
 	p.Children = copyProofStructChildren(c)
 }
-
 func (p *ProofStruct) SetFormulaProof(f basictypes.Form) {
 	p.Formula = f
 }
-
 func (p *ProofStruct) SetNodeIdProof(i int) {
 	p.Node_id = i
 }
-
 func (p *ProofStruct) SetRuleProof(r string) {
 	p.Rule = r
 }
-
 func (p *ProofStruct) SetRuleNameProof(r string) {
 	p.Rule_name = r
 }
-
+func (p *ProofStruct) SetRuleFormulaProof(f basictypes.Form) {
+	p.Rule_formula = f
+}
 func (p *ProofStruct) SetResultFormulasProof(fl []IntFormList) {
 	p.Result_formulas = fl
 }
@@ -210,11 +212,11 @@ func (p *ProofStruct) SetResultFormulasProof(fl []IntFormList) {
 /* makers */
 
 func MakeEmptyProofStruct() ProofStruct {
-	return ProofStruct{basictypes.MakerBot(), -1, "", "", []IntFormList{}, [][]ProofStruct{}}
+	return ProofStruct{basictypes.MakerBot(), -1, "", "", basictypes.MakerBot(), []IntFormList{}, [][]ProofStruct{}}
 }
 
-func MakeProofStruct(formula basictypes.Form, id int, rule, rule_name string, Result_formulas []IntFormList, children [][]ProofStruct) ProofStruct {
-	return ProofStruct{formula, id, rule, rule_name, Result_formulas, children}
+func MakeProofStruct(formula basictypes.Form, id int, rule, rule_name string, rule_formula basictypes.Form, result_formulas []IntFormList, children [][]ProofStruct) ProofStruct {
+	return ProofStruct{formula, id, rule, rule_name, rule_formula, result_formulas, children}
 }
 
 /* tostring */
@@ -250,7 +252,7 @@ func IntFormListToIntIntStringPairList(fl []IntFormList) []IntIntStringPair {
 func ProofStructListToJsonProofStructList(ps []ProofStruct) []JsonProofStruct {
 	res := []JsonProofStruct{}
 	for _, p := range ps {
-		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.Node_id, p.Rule, p.Rule_name, IntFormListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
+		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.GetNodeId(), p.GetRule(), p.GetRuleName(), p.GetRuleFormula().ToString(), IntFormListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
 		res = append(res, new_json_element)
 	}
 	return res

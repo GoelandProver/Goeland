@@ -280,9 +280,10 @@ func ApplySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen
 	return basictypes.MakeMetaGen(form_res, mg.GetCounter())
 }
 
-/* Dispatch a list of substitution : containing mm or not */
-func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]treetypes.Substitutions, []treetypes.Substitutions) {
+/* Dispatch a list of substitution : containing mm or not (and ifncontains mm : only thoses relevant for the parent and all te substitution for the proof) */
+func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]treetypes.Substitutions, []treetypes.Substitutions, []treetypes.Substitutions) {
 	var subst_with_mm []treetypes.Substitutions
+	var subst_with_mm_for_proof []treetypes.Substitutions
 	var subst_without_mm []treetypes.Substitutions
 
 	for _, s := range sl {
@@ -290,14 +291,14 @@ func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]tree
 		if global.IsDestructive() {
 			s_removed = RemoveElementWithoutMM(s, mm)
 		}
-		if ContainsMetaMother(s_removed, mm) {
+		if !s_removed.IsEmpty() {
 			subst_with_mm = treetypes.AppendIfNotContainsSubst(subst_with_mm, s_removed)
 		} else {
-			subst_without_mm = treetypes.AppendIfNotContainsSubst(subst_without_mm, s_removed)
+			subst_without_mm = treetypes.AppendIfNotContainsSubst(subst_without_mm, s) // s because s_removed is empty
 		}
 	}
 
-	return subst_with_mm, subst_without_mm
+	return subst_with_mm, subst_with_mm_for_proof, subst_without_mm
 }
 
 /* Remove empty substitution from a substitution list */

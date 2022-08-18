@@ -168,6 +168,7 @@ func Search(f basictypes.Form, bound int) {
 
 	for ok := true; ok; ok = (!res && bound > 0 && !global.IsOneStep()) {
 		basictypes.ResetMeta()
+		global.SetCptNode(-1)
 		proof.ResetProofFile()
 		exchanges.ResetExchangesFile()
 

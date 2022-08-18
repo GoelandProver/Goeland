@@ -67,7 +67,7 @@ var cpt_node = -1
 var lock_cpt_node sync.Mutex
 var dmt_before_eq bool
 var problem_name string
-var core_limit int
+var core_limit = -1
 var goroutines_limit int
 
 // Executable path
@@ -217,6 +217,9 @@ func SetPlugin(s string, b bool) {
 	lock_plugins.Lock()
 	plugins[s] = b
 	lock_plugins.Unlock()
+}
+func SetCptNode(i int) {
+	cpt_node = i
 }
 func SetDMTBeforeEQ(b bool) {
 	dmt_before_eq = b

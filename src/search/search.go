@@ -79,7 +79,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 	if clos_res {
 
 		mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
-		substs_with_mm, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
+		substs_with_mm, substs_with_mm_for_proof, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
 
 		switch {
 
@@ -116,7 +116,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		case len(substs_with_mm) > 0:
 			global.PrintDebug("MCR", "Contradiction found (with mm) !")
 
-			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", treetypes.SubstListToStringForProof(substs_with_mm)))
+			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", treetypes.SubstListToStringForProof(substs_with_mm_for_proof)))
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
 			st.SetCurrentProofNodeId(node_id)
@@ -154,6 +154,15 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 func applyRules(father_id uint64, st complextypes.State, c Communication, new_atomics basictypes.FormList, current_node_id int) {
 	global.PrintDebug("AR", "ApplyRule")
 	switch {
+
+	case len(st.GetSubstsFound()) > 0 && global.IsDestructive():
+		global.PrintDebug("PS", fmt.Sprintf("Send subst with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
+		st.SetCurrentProofRule("⊙")
+		st.SetCurrentProofRuleName("CLOSURE")
+		st.SetCurrentProofResultFormulas([]proof.IntFormList{})
+		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
+		sendSubToFather(c, true, true, father_id, st, []complextypes.SubstAndForm{}, current_node_id)
+
 	case len(new_atomics) > 0 && global.IsLoaded("dmt") && len(st.GetSubstsFound()) == 0:
 		manageRewritteRules(father_id, st, c, new_atomics, current_node_id)
 
@@ -162,15 +171,6 @@ func applyRules(father_id uint64, st complextypes.State, c Communication, new_at
 
 	case len(st.GetDelta()) > 0:
 		manageDeltaRules(father_id, st, c)
-
-	case len(st.GetSubstsFound()) > 0 && global.IsDestructive():
-		global.PrintDebug("PS", fmt.Sprintf("Send subst with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
-		st.SetCurrentProofRule("⊙")
-		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofResultFormulas([]proof.IntFormList{})
-		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
-
-		sendSubToFather(c, true, true, father_id, st, []complextypes.SubstAndForm{}, current_node_id)
 
 	case len(st.GetBeta()) > 0:
 		manageBetaRules(father_id, st, c, current_node_id)
