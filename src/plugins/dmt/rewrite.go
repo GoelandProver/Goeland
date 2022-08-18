@@ -44,6 +44,7 @@ import (
 	"fmt"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	. "github.com/GoelandProver/Goeland/global"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
@@ -139,7 +140,7 @@ func addUnifToAtomics(atomics []ctypes.SubstAndForm, candidate btypes.Form, unif
 }
 
 func isBotOrTop(form btypes.Form) bool {
-	return is[btypes.Bot](form) || is[btypes.Top](form)
+	return Is[btypes.Bot](form) || Is[btypes.Top](form)
 }
 
 func sortUnifications(unifs []treetypes.MatchingSubstitutions, polarity bool, atomic btypes.Form) []treetypes.MatchingSubstitutions {
@@ -188,7 +189,8 @@ func isFiltering(ms treetypes.MatchingSubstitutions) bool {
 func checkAllMetaAreInstanciated(metas btypes.MetaList, subst treetypes.Substitutions) bool {
 	for _, m := range metas {
 		m_found := false
-		for k, v := range subst {
+		for _, s := range subst {
+			k, v := s.Get()
 			if m.Equals(k) || m.Equals(v) {
 				m_found = true
 			}
@@ -201,7 +203,8 @@ func checkAllMetaAreInstanciated(metas btypes.MetaList, subst treetypes.Substitu
 }
 
 func checkMetaAreFromSearch(metas btypes.MetaList, subst treetypes.Substitutions) bool {
-	for k, v := range subst {
+	for _, s := range subst {
+		k, v := s.Get()
 		if !metas.Contains(k) {
 			return false
 		} else {

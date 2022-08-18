@@ -155,8 +155,9 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 		//	return respect_lpo
 		// }
 
+		global.PrintDebug("ICW", fmt.Sprintf("Try to check compatibility : %v (%v and %v) and %v", subst.ToString(), c.getTP().getT1().ToString(), c.getTP().getT2().ToString(), cs.getSubst().ToString()))
 		// Add it to subst and check unification consistency
-		subst_all := treesearch.AddUnification(c.getTP().t1.Copy(), c.getTP().t2.Copy(), cs.getSubst())
+		subst_all := treesearch.AddUnification(c.getTP().getT1(), c.getTP().getT2(), cs.getSubst())
 		global.PrintDebug("ICW", fmt.Sprintf("Subst all : %v", subst_all.ToString()))
 		if subst_all.Equals(treetypes.Failure()) {
 			return false

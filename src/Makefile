@@ -1,7 +1,7 @@
 # Sources
 GOSRC=main.go
 PLUGINS_SRC=plugins/
-YACCFILE=./parser/tptp_6.3.0.y
+YACCFILE=./parser/tptp_parse.y
 GOPARSER=$(YACCFILE:.y=.go)
 
 # Compilation
@@ -12,6 +12,12 @@ GOC=go build
 GOFLAGS=
 BIN=_build/goeland
 PREFIX=TPTP
+RELEASE=
+SHUTUP=
+ifdef RELEASE
+	SHUTUP=2>/dev/null 
+	GOFLAGS=-gcflags=-m
+endif
 
 # Parse files
 PROB=../../problems/SYN
@@ -31,3 +37,6 @@ parse:
 clean:
 	rm -f *~ $(GOPARSER) y.output  
 	rm -rf $(BUILD)
+
+tests:
+	go test -v -coverprofile=coverage.out ./... || (go tool cover -html=coverage.out && rm coverage.out)

@@ -43,6 +43,7 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/equality"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -624,7 +625,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
 				if res_eq {
-					if manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}), node_id) {
+					if manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{}), node_id) {
 						return
 					}
 				}

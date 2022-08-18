@@ -36,6 +36,8 @@
 package treetypes
 
 import (
+	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -44,24 +46,15 @@ type TermForm struct {
 	t     basictypes.Term
 }
 
-func (tf TermForm) GetTerm() basictypes.Term {
-	return tf.t.Copy()
-}
-func (tf TermForm) GetIndex() int {
-	return tf.index
-}
-
-func (tf TermForm) ToString() string {
-	return tf.t.ToString()
-}
-
-func (t TermForm) ToStringWithSuffixMeta(string) string {
-	return t.ToString()
-}
-
-func (t TermForm) Copy() basictypes.Form {
-	return makeTermForm(t.GetIndex(), t.GetTerm())
-}
+func (tf TermForm) GetTerm() basictypes.Term                                                { return tf.t.Copy() }
+func (tf TermForm) ToString() string                                                        { return tf.t.ToString() }
+func (t TermForm) ToStringWithSuffixMeta(string) string                                     { return t.ToString() }
+func (t TermForm) Copy() basictypes.Form                                                    { return makeTermForm(t.GetIndex(), t.GetTerm()) }
+func (t TermForm) GetType() typing.TypeScheme                                               { return typing.DefaultFunType(0) }
+func (t TermForm) RenameVariables() basictypes.Form                                         { return t }
+func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) basictypes.Form                  { return t }
+func (t TermForm) ReplaceVarByTerm(old basictypes.Var, new basictypes.Term) basictypes.Form { return t }
+func (tf TermForm) GetIndex() int                                                           { return tf.index }
 
 func (t TermForm) Equals(t2 basictypes.Form) bool {
 	switch nt := t2.(type) {
@@ -104,14 +97,20 @@ func ParseFormula(formula basictypes.Form) Sequence {
 	// The formula has to be a predicate
 	switch formula_type := formula.(type) {
 	case basictypes.Pred:
-		instructions := Sequence{formula: formula}
+		pred := basictypes.MakePred(formula_type.GetIndex(), formula_type.GetID(), TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs()), []typing.TypeApp{}, formula_type.GetType())
+		instructions := Sequence{formula: pred}
 
 		instructions.add(Begin{})
-		parsePred(formula_type, &instructions)
+		parsePred(pred, &instructions)
 		instructions.add(End{})
 
 		return instructions
 	case TermForm:
+		if global.Is[basictypes.Fun](formula_type.GetTerm()) {
+			fun := global.To[basictypes.Fun](formula_type.GetTerm())
+			formula = makeTermForm(formula.GetIndex(), basictypes.MakeFun(fun.GetID(), TypeAndTermsToTerms(fun.GetTypeVars(), fun.GetArgs()), []typing.TypeApp{}))
+		}
+
 		instructions := Sequence{formula: formula}
 		varCount := 0
 		postCount := 0
@@ -124,6 +123,13 @@ func ParseFormula(formula basictypes.Form) Sequence {
 	default:
 		return Sequence{}
 	}
+}
+
+func TypeAndTermsToTerms(types []typing.TypeApp, terms []basictypes.Term) []basictypes.Term {
+	tms := []basictypes.Term{}
+	tms = append(tms, basictypes.TypeAppArrToTerm(types)...)
+	tms = append(tms, terms...)
+	return tms
 }
 
 /* Parses a predicate to machine instructions */

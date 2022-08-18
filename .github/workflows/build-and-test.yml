@@ -1,0 +1,67 @@
+name: Build And Test
+
+on: [push]
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.18.0'
+      - run: sudo apt-get install -y golang-golang-x-tools
+      - run: cd src && make
+  Test:
+    runs-on: ubuntu-latest
+    needs: Build
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.18.0'
+      - run: sudo apt-get install -y golang-golang-x-tools
+      - run: cd src && make
+      - run: cd src && go test ./...
+  Soundness-1:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: soundness_test/problems_0
+  Soundness-2:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: soundness_test/problems_1
+  Soundness-3:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: soundness_test/problems_2
+  Soundness-4:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: soundness_test/problems_3
+  Soundness-5:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: soundness_test/problems_4
+  Soundness-6:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: soundness_test/problems_5
+  Soundness-7:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: soundness_test/problems_6

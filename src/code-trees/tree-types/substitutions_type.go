@@ -40,101 +40,40 @@ package treetypes
 
 import (
 	"fmt"
-	"sort"
 
 	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /* Stores the result of the algorithm and the substitutions for each metavariable. */
-type Substitutions map[basictypes.Meta]basictypes.Term
+type Substitutions []Substitution
 
 /*** Methods ***/
 
 /* Transform a substitutin into a string */
 func (s Substitutions) ToString() string {
-	keys := make(basictypes.MetaList, 0, len(s))
-	for k := range s {
-		keys = append(keys, k)
-	}
-	sort.Sort(keys)
-
-	var s_res string
-	s_res = "{"
-	for i, v := range keys {
-		s_res += "("
-		s_res += v.ToString()
-		s_res += ", "
-		s_res += s[v].ToString()
-		s_res += ")"
-		if i < len(s)-1 {
-			s_res += (", ")
-		}
-	}
-	s_res += "}"
-	return s_res
+	return "{ " + global.ListToString(s, ", ", "") + " }"
 }
 
 /* Transform a substitutin into a string for proof struct */
 func (s Substitutions) ToStringForProof() string {
 	return s.ToString()
-	// keys := make(basictypes.MetaList, 0, len(s))
-	// for k := range s {
-	// 	keys = append(keys, k)
-	// }
-	// sort.Sort(keys)
-
-	// var s_res string
-	// s_res = "{"
-	// for i, v := range keys {
-	// 	s_res += "<tspan x='0', dy='1.2em'>" + "("
-	// 	s_res += v.ToString()
-	// 	s_res += ", "
-	// 	s_res += s[v].ToString()
-	// 	s_res += ")" + "<tspan>"
-	// 	if i < len(s)-1 {
-	// 		s_res += (", ")
-	// 	}
-	// }
-	// s_res += "}"
-	// return s_res
 }
 
 /* Helper function, prints the content of a Substitutions object. */
 func (s Substitutions) Print() {
-	subst_string := ""
-	for key, value := range s {
-		subst_string += "(" + key.ToString() + ", " + value.ToString() + ") "
-	}
-	global.PrintDebug("Print", fmt.Sprintf("Success. %v ", subst_string))
+	global.PrintDebug("Print", fmt.Sprintf("Success. %v ", s.ToString()))
 }
 
 /* Substitution list into string */
 func SubstListToString(s []Substitutions) string {
-	var s_res string
-	s_res = "{"
-	for i, v := range s {
-		s_res += v.ToString()
-		if i < len(s)-1 {
-			s_res += (", ")
-		}
-	}
-	s_res += "}"
-	return s_res
+	return "{ " + global.ListToString(s, " ; ", "") + " }"
 }
 
 /* Substitution list into string for proof */
 func SubstListToStringForProof(s []Substitutions) string {
-	var s_res string
-	s_res = "{"
-	for i, v := range s {
-		s_res += v.ToStringForProof()
-		if i < len(s)-1 {
-			s_res += (", ")
-		}
-	}
-	s_res += "}"
-	return s_res
+	return SubstListToString(s)
 }
 
 /* Check if the substitutin is empty */
@@ -148,7 +87,7 @@ func (s Substitutions) Equals(s2 Substitutions) bool {
 		return false
 	}
 	for k, v := range s {
-		if s2[k] == nil || !s2[k].Equals(v) {
+		if s2[k].Value() == nil || !s2[k].Value().Equals(v.Value()) {
 			return false
 		}
 	}
@@ -158,10 +97,37 @@ func (s Substitutions) Equals(s2 Substitutions) bool {
 /* Copy the current substitution */
 func (s Substitutions) Copy() Substitutions {
 	res := MakeEmptySubstitution()
-	for k, v := range s {
-		res[k.Copy().ToMeta()] = v.Copy()
+	for _, v := range s {
+		res = append(res, v.Copy())
 	}
 	return res
+}
+
+func (s *Substitutions) Set(key basictypes.Meta, value basictypes.Term) {
+	found := false
+	for _, subst := range *s {
+		if subst.Key().Equals(key) {
+			subst.Set(value)
+			found = true
+		}
+	}
+	if !found {
+		*s = append(*s, Substitution{key, value})
+	}
+}
+
+func (s Substitutions) Get(key basictypes.Meta) (basictypes.Term, int) {
+	for i, subst := range s {
+		if subst.Key().Equals(key) {
+			return subst.Value(), i
+		}
+	}
+	return nil, -1
+}
+
+func (s *Substitutions) Remove(index int) {
+	(*s)[index] = (*s)[len(*s)-1]
+	(*s) = (*s)[:len(*s)-1]
 }
 
 /* Copy a list of substitutions */
@@ -176,7 +142,8 @@ func CopySubstList(sl []Substitutions) []Substitutions {
 /* Get all the metavariables of a substitution */
 func (s Substitutions) GetMeta() basictypes.MetaList {
 	res := basictypes.MetaList{}
-	for meta, term := range s {
+	for _, v := range s {
+		meta, term := v.Key(), v.Value()
 		res = res.AppendIfNotContains(meta.Copy().ToMeta())
 		if term.IsMeta() {
 			res = res.AppendIfNotContains(term.Copy().ToMeta())
@@ -211,15 +178,19 @@ func MakeEmptySubstitution() Substitutions {
 
 /* Returns a « failed » substitution. */
 func Failure() Substitutions {
-	fail := basictypes.MakeMeta(-1, "FAILURE", -1)
-	return Substitutions{fail: fail}
+	fail := basictypes.MakeMeta(-1, "FAILURE", -1, typing.MkTypeHint("i"))
+	return Substitutions{Substitution{fail, fail}}
 }
 
 /*** Helper functions ***/
 /* Checks if a term has a substitution in s. */
 func HasSubst(s Substitutions, m basictypes.Meta) bool {
-	_, ok := s[m]
-	return ok
+	for _, subst := range s {
+		if subst.Key().Equals(m) {
+			return true
+		}
+	}
+	return false
 }
 
 /*** Occur check ***/
@@ -258,6 +229,7 @@ func areFuncArgsRecursive(f basictypes.Fun, m basictypes.Meta) bool {
 /*** Eliminate ***/
 /* Eliminate - apply each element of the subst on the entire substitution, because an element can't œappears on the rigth and and the left if a substitution */
 func Eliminate(s *Substitutions) {
+	global.PrintDebug("EL", fmt.Sprintf("Eliminate on %v", s.ToString()))
 	if s.Equals(Failure()) {
 		return
 	}
@@ -267,7 +239,8 @@ func Eliminate(s *Substitutions) {
 		has_changed = false
 
 		// For each element  (key, value) in the given substitution
-		for key, value := range *s {
+		for _, t := range *s {
+			key, value := t.Get()
 			if OccurCheckValid(key, value) {
 				*s = eliminateInside(key, value, (*s).Copy(), &has_changed)
 			} else {
@@ -277,36 +250,40 @@ func Eliminate(s *Substitutions) {
 				return
 			}
 		}
-
 	}
 }
 
 /* Eliminate inside : eliminate for a given couple (key, value) on a substitution */
 func eliminateInside(key basictypes.Meta, value basictypes.Term, s Substitutions, has_changed_top *bool) Substitutions {
 	has_changed := true
-
 	for has_changed {
 		has_changed = false
 		s_tmp := MakeEmptySubstitution()
 
-		for key_2, value_2 := range s { // For each element in the substitution
+		for _, v := range s { // For each element in the substitution
+			key_2, value_2 := v.Get()
 			switch value_2_type := value_2.(type) {
 			case basictypes.Meta:
 				if key.Equals(value_2_type) {
-					s_tmp[key_2] = value
+					s_tmp.Set(key_2, value)
 					has_changed = true
 				} else {
-					s_tmp[key_2] = value_2
+					s_tmp.Set(key_2, value_2)
 				}
 			case basictypes.Fun:
-				new_value := basictypes.MakeFun(value_2_type.GetP(), eliminateList(key, value, value_2_type.GetArgs(), &has_changed))
+				new_value := basictypes.MakeFun(
+					value_2_type.GetP(),
+					eliminateList(key, value, value_2_type.GetArgs(), &has_changed),
+					value_2_type.GetTypeVars(),
+					value_2_type.GetTypeHint(),
+				)
 				if OccurCheckValid(key_2, new_value) {
-					s_tmp[key_2] = new_value
+					s_tmp.Set(key_2, new_value)
 				} else {
 					return Failure()
 				}
 			default:
-				s_tmp[key_2] = value_2
+				s_tmp.Set(key_2, value_2)
 			}
 		}
 
@@ -336,7 +313,12 @@ func eliminateList(key basictypes.Meta, value basictypes.Term, l []basictypes.Te
 					list_tmp = append(list_tmp, list_element)
 				}
 			case basictypes.Fun: // If its a function, reccursive call for the arguments
-				list_tmp = append(list_tmp, basictypes.MakeFun(lt.GetP(), eliminateList(key, value, lt.GetArgs(), &has_changed)))
+				list_tmp = append(list_tmp, basictypes.MakeFun(
+					lt.GetP(),
+					eliminateList(key, value, lt.GetArgs(), &has_changed),
+					lt.GetTypeVars(),
+					lt.GetTypeHint(),
+				))
 			default:
 				list_tmp = append(list_tmp, list_element)
 			}
@@ -351,12 +333,15 @@ func eliminateList(key basictypes.Meta, value basictypes.Term, l []basictypes.Te
 
 /* Eliminates one of the subsitution of a pair like (X, Y) (Y, X). It will keep the first one indexed in the map. */
 func EliminateMeta(subst *Substitutions) {
+	global.PrintDebug("EM", fmt.Sprintf("Eliminate Meta on %v", subst.ToString()))
 	meta := Substitutions{}
 
-	for k, v := range *subst {
+	for _, t := range *subst {
+		k, v := t.Get()
 		v_meta := v.ToMeta()
-		if !(v.IsMeta() && HasSubst(*subst, v_meta) && HasSubst(meta, v_meta) && (*subst)[v_meta].Equals(k)) {
-			meta[k] = v
+		v_key, index := (*subst).Get(v_meta)
+		if !(v.IsMeta() && HasSubst(*subst, v_meta) && HasSubst(meta, v_meta) && (index != -1) && v_key.Equals(k)) {
+			meta.Set(k, v)
 		}
 	}
 

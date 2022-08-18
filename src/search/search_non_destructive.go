@@ -102,7 +102,8 @@ func chooseSubstitutionNonDestructive(substs_found_this_step []complextypes.Subs
 /*  Take a substitution, returns the id of the formula which introduce the metavariable */
 func catchFormulaToInstantiate(subst_found treetypes.Substitutions) int {
 	meta_to_reintroduce := -1
-	for meta, term := range subst_found {
+	for _, subst := range subst_found {
+		meta, term := subst.Get()
 		if meta.GetFormula() < meta_to_reintroduce || meta_to_reintroduce == -1 {
 			meta_to_reintroduce = meta.GetFormula()
 		}
@@ -155,7 +156,7 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 			for _, f := range s.GetForm() {
 				for _, term_formula := range f.GetMetas() {
 					if !found && term_formula.IsMeta() && term_formula.GetName() == new_meta.GetName() {
-						association_subst[new_meta] = term_formula
+						association_subst.Set(new_meta, term_formula)
 						found = true
 					}
 				}
@@ -163,9 +164,10 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 
 		}
 		if !found { // Vérifier dans substapplied
-			for original_meta, original_term := range st.GetAppliedSubst().GetSubst() {
+			for _, subst := range st.GetAppliedSubst().GetSubst() {
+				original_meta, original_term := subst.Get()
 				if !found && original_meta.GetName() == new_meta.GetName() && !found {
-					association_subst[new_meta] = original_term
+					association_subst.Set(new_meta, original_term)
 					found = true
 				}
 			}

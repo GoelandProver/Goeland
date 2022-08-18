@@ -58,6 +58,7 @@ var start time.Time
 var nb_step = 1
 var exchanges = false
 var proof = false
+var prettyPrint = false
 var data_struct = "trees"
 var limit = -1
 var one_step = false
@@ -182,6 +183,10 @@ func GetProblemName() string {
 	return problem_name
 }
 
+func IsPrettyPrint() bool {
+	return prettyPrint
+}
+
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
@@ -213,6 +218,11 @@ func SetOneStep(b bool) {
 func SetProof(b bool) {
 	proof = b
 }
+
+func DisplayPretty() {
+	prettyPrint = true
+}
+
 func SetPlugin(s string, b bool) {
 	lock_plugins.Lock()
 	plugins[s] = b

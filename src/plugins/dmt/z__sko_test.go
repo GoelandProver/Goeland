@@ -45,20 +45,18 @@ import (
 	"testing"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	. "github.com/GoelandProver/Goeland/plugin"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 // Makers a plugin manager and inits the DMT for presko tests
-func getPreskolemizedPM() PluginManager {
-	pm := PluginManager{}
-	dmt.InitPlugin(&pm, []Option{{Name: "preskolemization"}}, false)
-	return pm
+func initPreskoDMT() {
+	dmt.InitPluginTests(false, true)
 }
 
 func TestPreskolemization(t *testing.T) {
-	pm := getPreskolemizedPM()
+	initPreskoDMT()
 
 	b := btypes.MakerConst(btypes.MakerId("b"))
 	z := btypes.MakerVar("z")
@@ -69,24 +67,24 @@ func TestPreskolemization(t *testing.T) {
 	axiom := btypes.MakerAll(
 		[]btypes.Var{x, y},
 		btypes.MakerEqu(
-			btypes.MakerPred(subset, []btypes.Term{x, y}),
+			btypes.MakerPred(subset, []btypes.Term{x, y}, []typing.TypeApp{}),
 			btypes.MakerAll(
 				[]btypes.Var{z},
 				btypes.MakerImp(
-					btypes.MakerPred(in, []btypes.Term{z, x}),
-					btypes.MakerPred(in, []btypes.Term{z, y}),
+					btypes.MakerPred(in, []btypes.Term{z, x}, []typing.TypeApp{}),
+					btypes.MakerPred(in, []btypes.Term{z, y}, []typing.TypeApp{}),
 				),
 			),
 		),
 	)
 
-	if !pm.ApplySendAxiomHook(axiom) {
+	if !dmt.RegisterAxiom(axiom) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
 	}
 
 	// Positive occurrences should be rewritten normally
-	form := btypes.MakerPred(subset, []btypes.Term{a, b})
-	substs, err := pm.ApplyRewriteHook(form)
+	form := btypes.MakerPred(subset, []btypes.Term{a, b}, []typing.TypeApp{})
+	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
@@ -95,8 +93,8 @@ func TestPreskolemization(t *testing.T) {
 	expected := btypes.MakerAll(
 		[]btypes.Var{z},
 		btypes.MakerImp(
-			btypes.MakerPred(in, []btypes.Term{z, a}),
-			btypes.MakerPred(in, []btypes.Term{z, b}),
+			btypes.MakerPred(in, []btypes.Term{z, a}, []typing.TypeApp{}),
+			btypes.MakerPred(in, []btypes.Term{z, b}, []typing.TypeApp{}),
 		),
 	)
 
@@ -108,8 +106,8 @@ func TestPreskolemization(t *testing.T) {
 	}
 
 	// Negative occurrences should be skolemized
-	form2 := btypes.MakerNot(btypes.MakerPred(subset, []btypes.Term{a, b}))
-	substs, err = pm.ApplyRewriteHook(form2)
+	form2 := btypes.MakerNot(btypes.MakerPred(subset, []btypes.Term{a, b}, []typing.TypeApp{}))
+	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form2.ToString())
@@ -127,7 +125,7 @@ func TestPreskolemization(t *testing.T) {
 }
 
 func TestPreskolemization2(t *testing.T) {
-	pm := getPreskolemizedPM()
+	initPreskoDMT()
 
 	b := btypes.MakerConst(btypes.MakerId("b"))
 	z := btypes.MakerVar("z")
@@ -138,24 +136,24 @@ func TestPreskolemization2(t *testing.T) {
 	axiom := btypes.MakerAll(
 		[]btypes.Var{x, y},
 		btypes.MakerEqu(
-			btypes.MakerPred(subset, []btypes.Term{x, y}),
+			btypes.MakerPred(subset, []btypes.Term{x, y}, []typing.TypeApp{}),
 			btypes.MakerEx(
 				[]btypes.Var{z},
 				btypes.MakerImp(
-					btypes.MakerPred(in, []btypes.Term{z, x}),
-					btypes.MakerPred(in, []btypes.Term{z, y}),
+					btypes.MakerPred(in, []btypes.Term{z, x}, []typing.TypeApp{}),
+					btypes.MakerPred(in, []btypes.Term{z, y}, []typing.TypeApp{}),
 				),
 			),
 		),
 	)
 
-	if !pm.ApplySendAxiomHook(axiom) {
+	if !dmt.RegisterAxiom(axiom) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
 	}
 
 	// Positive occurrences should be skolemized
-	form := btypes.MakerPred(subset, []btypes.Term{a, b})
-	substs, err := pm.ApplyRewriteHook(form)
+	form := btypes.MakerPred(subset, []btypes.Term{a, b}, []typing.TypeApp{})
+	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
@@ -171,8 +169,8 @@ func TestPreskolemization2(t *testing.T) {
 	}
 
 	// Negative occurrences should be rewritten normally
-	form2 := btypes.MakerNot(btypes.MakerPred(subset, []btypes.Term{a, b}))
-	substs, err = pm.ApplyRewriteHook(form2)
+	form2 := btypes.MakerNot(btypes.MakerPred(subset, []btypes.Term{a, b}, []typing.TypeApp{}))
+	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form2.ToString())
@@ -181,8 +179,8 @@ func TestPreskolemization2(t *testing.T) {
 	expected := btypes.MakerNot(btypes.MakerEx(
 		[]btypes.Var{z},
 		btypes.MakerImp(
-			btypes.MakerPred(in, []btypes.Term{z, a}),
-			btypes.MakerPred(in, []btypes.Term{z, b}),
+			btypes.MakerPred(in, []btypes.Term{z, a}, []typing.TypeApp{}),
+			btypes.MakerPred(in, []btypes.Term{z, b}, []typing.TypeApp{}),
 		),
 	))
 

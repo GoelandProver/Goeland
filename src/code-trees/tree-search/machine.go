@@ -39,7 +39,10 @@
 package treesearch
 
 import (
+	"fmt"
+
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -107,11 +110,13 @@ func (m *Machine) getCurrentMeta() basictypes.Meta {
 func (m *Machine) unwrapMeta(term basictypes.Term) basictypes.Term {
 	deja_vu := map[basictypes.Term]bool{}
 	for term.IsMeta() {
-		val, ok := m.meta[term.ToMeta()]
-		if !ok || deja_vu[term] {
+		val, ok := m.meta.Get(term.ToMeta())
+		global.PrintDebug("UM", fmt.Sprintf("ok : %v", ok))
+		if (ok == -1) || deja_vu[term] {
 			break
 		}
-
+		global.PrintDebug("UM", fmt.Sprintf("ok 2 : %v", ok))
+		global.PrintDebug("UM", fmt.Sprintf("Val : %v", val.ToString()))
 		deja_vu[term] = true
 		term = val.Copy()
 	}
@@ -222,7 +227,8 @@ func (m *Machine) matchIndexes(t basictypes.Term, instrTerm basictypes.Term) Sta
 /* Checks if the substitution of the metavariable t matches the index of instrTerm. */
 func (m *Machine) checkMeta(t basictypes.Meta, instrTerm basictypes.Term) Status {
 	if treetypes.HasSubst(m.meta, t) {
-		unwrapped := m.unwrapMeta(m.meta[t])
+		metaGotten, _ := m.meta.Get(t)
+		unwrapped := m.unwrapMeta(metaGotten)
 		if !unwrapped.IsMeta() && !m.doIndexMatch(unwrapped, instrTerm) {
 			return Status(ERROR)
 		}

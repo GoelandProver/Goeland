@@ -110,7 +110,7 @@ func buildEqualityProblemMultiListFromPredList(p basictypes.Pred, tn datastruct.
 	for _, arg := range p.GetArgs() {
 		ml = append(ml, basictypes.MakerMeta("METAEQ_"+arg.ToString(), -1))
 	}
-	new_term := basictypes.MakerPred(id_p.Copy().(basictypes.Id), ml.ToTermList())
+	new_term := basictypes.MakerPred(id_p.Copy().(basictypes.Id), ml.ToTermList(), p.GetTypeVars(), p.GetType())
 	found, complementary_pred_list := tn.Unify(new_term)
 	if found {
 		for _, s := range complementary_pred_list {

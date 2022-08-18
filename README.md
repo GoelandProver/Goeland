@@ -1,8 +1,8 @@
 # Goéland
 
-Goéland is an automated theorem prover using the tableau method for first order logic.
+Goéland is a concurrent automated theorem prover using the tableau method for first order logic.
 
-It supports [TPTP](http://tptp.org/) FOF files (TFF files will be supported in a future version).
+It supports [TPTP](http://tptp.org/) FOF and TFF files.
 
 ## License
 
@@ -45,13 +45,17 @@ The parameters must be passed *before* the problem file. The available parameter
 
 | Parameter flag | Effect |
 |--------------------------|-----------|
+| -ari | Enable the use of (TPTP) arithmetic functions (default: **false**). |
+| -dmt | Allow the use of deduction modulo theory during the proofsearch (default: **false**). |
+| -exchanges | Generate an exchange tree in json (default: **false**). Visualisation of this exchange tree can be done with the [visualisation module](visualization/). |
 | -l | Re-entry limit of free variables in destructive mode (default: **-1**) |
 | -nd | Use of non-destructive mode (default: **false**) |
-| -proof | Generate a proof tree in json (default: **false**). Visualisation of this proof tree can be done with the [visualisation module](visualization/). |
-| -exchanges | Generate an excahnge tree in json (default: **false**). Visualisation of this exchange tree can be done with the [visualisation module](visualization/). |
-| -dmt | Allows the use of deduction modulo theory during the proofsearch |
+| -noeq | Disable the use of rigid E-Unification (default: **false**). |
+| -proof | Display a proof of the theorem (default: **false**). |
 | -polarized | Only useful if -dmt is activated. Polarises deduction modulo to also transform axioms with implications as the root connective |
 | -presko | Only useful if -dmt is activated. Preskolemises rewrited formulas if possible. |
+| -pretty | Use pretty connectives and quantifiers when printing formulas (default: **false**). Can be used in combination with `-proof` to have a pretty proof. | 
+| -type_proof | Generate a sequent-style proof of the well-typedness of the problem in a json (default: **false**). Visualisation of the proof can be done with the [visualisation module](visualization/). |
 
 ### Result values
 
