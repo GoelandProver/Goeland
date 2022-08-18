@@ -49,6 +49,7 @@ import (
 	"time"
 )
 
+var ocoq = false
 var debug = false
 var destructive = true
 var nb_gor = 0
@@ -167,6 +168,10 @@ func IsPrettyPrint() bool {
 	return prettyPrint
 }
 
+func IsCoqOutput() bool {
+	return ocoq
+}
+
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
@@ -210,6 +215,10 @@ func SetProof(b bool) {
 
 func DisplayPretty() {
 	prettyPrint = true
+}
+
+func OutputCoq() {
+	ocoq = true
 }
 
 func SetPlugin(s string, b bool) {

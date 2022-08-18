@@ -54,6 +54,7 @@ import (
 type Form interface {
 	GetIndex() int
 	ToString() string
+	ToMappedString(MapString, bool) string
 	ToStringWithSuffixMeta(string) string
 	Copy() Form
 	Equals(Form) bool

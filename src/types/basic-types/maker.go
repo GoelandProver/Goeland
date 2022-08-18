@@ -69,6 +69,7 @@ func Init() {
 	tv := typing.MkTypeVar("α")
 	scheme := typing.MkQuantifiedType([]typing.TypeVar{tv}, typing.MkTypeArrow(typing.MkTypeCross(tv, tv), tv))
 	typing.SavePolymorphScheme(Id_eq.GetName(), scheme)
+	initDefaultMap()
 }
 
 /* Reset all the maps and counters */

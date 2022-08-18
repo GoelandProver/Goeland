@@ -30,50 +30,80 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**********/
-/* not.go */
-/**********/
+/*********************/
+/* mapped_strings.go */
+/*********************/
 
 /**
-* This file implements a negation of a formula.
+* This file provides things.
 **/
 
 package basictypes
 
 import (
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+	"strings"
+
+	"github.com/GoelandProver/Goeland/global"
 )
 
-/* Not(formula): negation of a formula */
-type Not struct {
-	index int
-	f     Form
+type FormulaType int
+type MapString map[FormulaType]string
+
+const (
+	AndConn FormulaType = iota
+	OrConn
+	ImpConn
+	EquConn
+	NotConn
+	TopType
+	BotType
+	AllQuant
+	ExQuant
+	AllTypeQuant
+)
+
+var defaultMap = make(map[FormulaType]string)
+
+func initDefaultMap() {
+	if global.IsPrettyPrint() {
+		defaultMap[AndConn] = "∧"
+		defaultMap[OrConn] = "∨"
+		defaultMap[ImpConn] = "⇒"
+		defaultMap[EquConn] = "⇔"
+		defaultMap[NotConn] = "¬"
+		defaultMap[TopType] = "⊤"
+		defaultMap[BotType] = "⊥"
+		defaultMap[AllQuant] = "∀"
+		defaultMap[ExQuant] = "∃"
+		defaultMap[AllTypeQuant] = "∀"
+	} else {
+		defaultMap[AndConn] = "&"
+		defaultMap[OrConn] = "|"
+		defaultMap[ImpConn] = "=>"
+		defaultMap[EquConn] = "<=>"
+		defaultMap[NotConn] = "~"
+		defaultMap[TopType] = "$true"
+		defaultMap[BotType] = "$false"
+		defaultMap[AllQuant] = "!"
+		defaultMap[ExQuant] = "?"
+		defaultMap[AllTypeQuant] = "!"
+	}
 }
 
-func (n Not) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[NotConn] + "(" + n.GetForm().ToMappedString(map_, displayTypes) + ")"
+type MappedStringable interface {
+	ToMappedString(MapString, bool) string
 }
 
-func (n Not) GetForm() Form                        { return n.f.Copy() }
-func (n Not) GetType() typing.TypeScheme           { return typing.DefaultPropType(0) }
-func (n Not) ToString() string                     { return n.ToMappedString(defaultMap, true) }
-func (n Not) ToStringWithSuffixMeta(string) string { return n.ToString() }
-func (n Not) Copy() Form                           { return MakeNot(n.GetIndex(), n.GetForm()) }
-func (n Not) GetMetas() MetaList                   { return n.GetForm().GetMetas() }
-func (n Not) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceVarByTerm(old, new))
-}
-func (n Not) GetIndex() int { return n.index }
+func ListToMappedString[T MappedStringable](sgbl []T, sep, emptyValue string, map_ MapString, displayTypes bool) string {
+	strArr := []string{}
 
-func (n Not) Equals(f Form) bool {
-	oth, isNot := f.(Not)
-	return isNot && oth.GetForm().Equals(n.GetForm())
-}
+	for _, element := range sgbl {
+		strArr = append(strArr, element.ToMappedString(map_, displayTypes))
+	}
 
-func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
-}
+	if len(strArr) == 0 && emptyValue != "" {
+		strArr = append(strArr, emptyValue)
+	}
 
-func (n Not) RenameVariables() Form {
-	return MakeNot(n.GetIndex(), n.f.RenameVariables())
+	return strings.Join(strArr, sep)
 }

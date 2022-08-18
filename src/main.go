@@ -54,6 +54,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/parser"
+	coq "github.com/GoelandProver/Goeland/plugins/coq"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	equality "github.com/GoelandProver/Goeland/plugins/equality"
 	polymorphism "github.com/GoelandProver/Goeland/polymorphism/rules"
@@ -241,7 +242,11 @@ func Search(f basictypes.Form, bound int) {
 		if global.GetProof() && res {
 			proof.WriteGraphProof(final_proof)
 			fmt.Printf("%s SZS output start Proof for %v\n", "%", problem_name)
-			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
+			if global.IsCoqOutput() {
+				fmt.Printf("%s", coq.MakeCoqOutput(final_proof))
+			} else {
+				fmt.Printf("%v", proof.ProofStructListToText(final_proof))
+			}
 			fmt.Printf("%s SZS output end Proof for %v\n", "%", problem_name)
 		}
 
@@ -401,6 +406,8 @@ func initFlag() {
 	if *flag_dmt_before_eq {
 		global.SetDMTBeforeEQ(true)
 	}
+
+	coq.InitFlag()
 }
 
 func getFile(filename string, dir string) (string, error) {
