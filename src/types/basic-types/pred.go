@@ -43,6 +43,8 @@
 package basictypes
 
 import (
+	"strings"
+
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -54,13 +56,6 @@ type Pred struct {
 	args     []Term
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
-}
-
-func (p Pred) getEmptyChar() string {
-	if IsPrettyPrint() {
-		return "∅"
-	}
-	return "{}"
 }
 
 /* Pred attributes getters */
@@ -75,24 +70,40 @@ func (p Pred) GetTypeVars() []typing.TypeApp { return typing.CopyTypeAppList(p.t
 func (p Pred) GetType() typing.TypeScheme { return p.typeHint }
 func (p Pred) RenameVariables() Form      { return p }
 
-func (p Pred) ToMappedString(MapString, bool) string {
-	return p.ToString()
-}
-
-func (p Pred) ToString() string {
+func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
 		return p.GetID().ToString()
 	}
-	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", p.getEmptyChar()) +
-		" ; " + ListToString(p.GetArgs(), ", ", p.getEmptyChar()) + ")"
+	args := []string{}
+
+	if tv := ListToString(p.typeVars, ", ", map_[PredEmpty]); tv != "" {
+		args = append(args, tv)
+	}
+	if vs := ListToMappedString(p.GetArgs(), ", ", map_[PredEmpty], map_, type_); vs != "" {
+		args = append(args, vs)
+	}
+
+	// Defined infix: =
+	if p.GetID().GetName() == "=" {
+		if len(p.GetArgs()) != 2 {
+			panic("= should only have 2 arguments")
+		}
+		return "(" + p.GetArgs()[0].ToMappedString(map_, type_) + " = " + p.GetArgs()[1].ToMappedString(map_, type_) + ")"
+	}
+
+	return p.GetID().ToString() + "(" + strings.Join(args, map_[PredTypeVarSep]) + ")"
+}
+
+func (p Pred) ToString() string {
+	return p.ToMappedString(defaultMap, true)
 }
 
 func (p Pred) ToStringWithSuffixMeta(suffix string) string {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
 		return p.GetID().ToString()
 	}
-	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", p.getEmptyChar()) +
-		" ; " + listToStringMeta(p.GetArgs(), suffix, ", ", p.getEmptyChar()) + ")"
+	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", defaultMap[PredEmpty]) +
+		" ; " + listToStringMeta(p.GetArgs(), suffix, ", ", defaultMap[PredEmpty]) + ")"
 }
 
 func (p Pred) Copy() Form {

@@ -42,8 +42,8 @@ package basictypes
 
 import (
 	"fmt"
+	"strings"
 
-	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -54,15 +54,8 @@ type Ex struct {
 	f        Form
 }
 
-func (e Ex) sep() string {
-	if global.IsPrettyPrint() {
-		return "∃ "
-	}
-	return "? "
-}
-
 func (e Ex) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[ExQuant] + " [" + ListToString(e.GetVarList(), ", ", "") + "] (" + e.GetForm().ToMappedString(map_, displayTypes) + ")"
+	return toMappedString(map_[ExQuant], map_, e.GetVarList(), e.GetForm(), displayTypes)
 }
 
 func (e Ex) GetIndex() int              { return e.index }
@@ -110,7 +103,7 @@ type All struct {
 }
 
 func (a All) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[AllQuant] + " [" + ListToString(a.GetVarList(), ", ", "") + "] (" + a.GetForm().ToMappedString(map_, displayTypes) + ")"
+	return toMappedString(map_[AllQuant], map_, a.GetVarList(), a.GetForm(), displayTypes)
 }
 
 func (a All) GetIndex() int              { return a.index }
@@ -168,17 +161,16 @@ func (a AllType) GetType() typing.TypeScheme   { return typing.DefaultPropType(0
 /* Form interface */
 
 func (a AllType) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[AllTypeQuant] + " [" + ListToString(a.GetVarList(), ", ", "") + "] "
+	return map_[AllTypeQuant] + " " + map_[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + map_[TypeVarType] + map_[QuantVarClose] + map_[QuantVarSep]
 }
 
-func (a AllType) toString() string {
-	return defaultMap[AllTypeQuant] + "[" + ListToString(a.tvList, ", ", "") + "]"
+func (a AllType) ToString() string {
+	return a.ToMappedString(defaultMap, true) + " (" + a.GetForm().ToString() + ")"
 }
-func (a AllType) ToString() string   { return a.toString() + " (" + a.GetForm().ToString() + ")" }
 func (a AllType) GetMetas() MetaList { return a.GetForm().GetMetas() }
 
 func (a AllType) ToStringWithSuffixMeta(suffix string) string {
-	return a.toString() + " (" + a.GetForm().ToStringWithSuffixMeta(suffix) + ")"
+	return a.ToMappedString(defaultMap, true) + " (" + a.GetForm().ToStringWithSuffixMeta(suffix) + ")"
 }
 
 func (a AllType) Copy() Form {
@@ -224,4 +216,36 @@ func renameVariable(form Form, varList []Var) ([]Var, Form) {
 	}
 
 	return newVL, newForm
+}
+
+func toMappedString(quant string, map_ MapString, varList []Var, form Form, displayTypes bool) string {
+	type VarType struct {
+		vars  []Var
+		type_ typing.TypeApp
+	}
+
+	varsType := []VarType{}
+	for _, v := range varList {
+		found := false
+		for _, vt := range varsType {
+			if vt.type_.Equals(v.GetTypeApp()) {
+				vt.vars = append(vt.vars, v)
+				found = true
+			}
+		}
+		if !found {
+			varsType = append(varsType, VarType{[]Var{v}, v.GetTypeApp()})
+		}
+	}
+
+	varStrings := []string{}
+
+	for _, vt := range varsType {
+		str := map_[QuantVarOpen]
+		str += ListToMappedString(varList, " ", "", map_, false)
+		str += " : " + vt.type_.ToString()
+		varStrings = append(varStrings, str+map_[QuantVarClose])
+	}
+
+	return quant + " " + strings.Join(varStrings, " ") + map_[QuantVarSep] + " (" + form.ToMappedString(map_, displayTypes) + ")"
 }

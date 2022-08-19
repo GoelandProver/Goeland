@@ -42,6 +42,8 @@ package coq
 
 import (
 	"flag"
+	"fmt"
+	"time"
 
 	"github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
@@ -58,6 +60,11 @@ func InitFlag() {
 }
 
 func MakeCoqOutput(proof []proof.ProofStruct) string {
+	if len(proof) == 0 {
+		fmt.Printf("[%.6fs][%v][Coq] Nothing to output.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		return ""
+	}
+
 	resultingString := ""
 	// If output is standalone, then print context
 	if *context {
@@ -89,15 +96,21 @@ func printTheorem(formula btps.Form) string {
 // Creates a map of operators and quantifiers for coq to print formulas with.
 func coqMapConnectorsCreation() map[btps.FormulaType]string {
 	return map[btps.FormulaType]string{
-		btps.AndConn:      "/\\",
-		btps.OrConn:       "\\/",
-		btps.ImpConn:      "->",
-		btps.EquConn:      "<->",
-		btps.NotConn:      "~",
-		btps.TopType:      "True",
-		btps.BotType:      "False",
-		btps.AllQuant:     "forall",
-		btps.ExQuant:      "exists",
-		btps.AllTypeQuant: "forall",
+		btps.AndConn:        "/\\",
+		btps.OrConn:         "\\/",
+		btps.ImpConn:        "->",
+		btps.EquConn:        "<->",
+		btps.NotConn:        "~",
+		btps.TopType:        "True",
+		btps.BotType:        "False",
+		btps.AllQuant:       "forall",
+		btps.ExQuant:        "exists",
+		btps.AllTypeQuant:   "forall",
+		btps.QuantVarOpen:   "(",
+		btps.QuantVarClose:  ")",
+		btps.QuantVarSep:    ",",
+		btps.PredEmpty:      "",
+		btps.PredTypeVarSep: ",",
+		btps.TypeVarType:    "Type",
 	}
 }

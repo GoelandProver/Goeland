@@ -60,6 +60,12 @@ const (
 	AllQuant
 	ExQuant
 	AllTypeQuant
+	QuantVarOpen
+	QuantVarClose
+	QuantVarSep
+	PredEmpty
+	PredTypeVarSep
+	TypeVarType
 )
 
 var defaultMap = make(map[FormulaType]string)
@@ -76,6 +82,7 @@ func initDefaultMap() {
 		defaultMap[AllQuant] = "∀"
 		defaultMap[ExQuant] = "∃"
 		defaultMap[AllTypeQuant] = "∀"
+		defaultMap[PredEmpty] = "∅"
 	} else {
 		defaultMap[AndConn] = "&"
 		defaultMap[OrConn] = "|"
@@ -87,7 +94,13 @@ func initDefaultMap() {
 		defaultMap[AllQuant] = "!"
 		defaultMap[ExQuant] = "?"
 		defaultMap[AllTypeQuant] = "!"
+		defaultMap[PredEmpty] = "{}"
 	}
+	defaultMap[QuantVarOpen] = "["
+	defaultMap[QuantVarClose] = "]"
+	defaultMap[QuantVarSep] = ":"
+	defaultMap[PredTypeVarSep] = ";"
+	defaultMap[TypeVarType] = "$tType"
 }
 
 type MappedStringable interface {
