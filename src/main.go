@@ -316,7 +316,14 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound
 	case not_form == nil:
-		return basictypes.MakerAnd(and_list), bound
+		// TODO : check if len > 1
+		var new_and basictypes.Form
+		if len(and_list) > 1 {
+			new_and = basictypes.MakerAnd(and_list)
+		} else {
+			new_and = and_list[0]
+		}
+		return new_and, bound
 	default:
 		return basictypes.MakerAnd(append(and_list, basictypes.RefuteForm(not_form))), bound
 	}

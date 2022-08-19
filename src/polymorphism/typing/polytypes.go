@@ -139,7 +139,7 @@ func substTypeAppList(mapSubst map[TypeVar]string, typeApp []TypeApp) []TypeApp 
 func instanciateList(mapSubst map[TypeVar]TypeApp, typeApp []TypeApp) []TypeApp {
 	newTypeApp := []TypeApp{}
 	for _, type_ := range typeApp {
-		newTypeApp = append(newTypeApp, type_.instanciate(mapSubst).(TypeApp))
+		newTypeApp = append(newTypeApp, type_.instanciate(mapSubst))
 	}
 	return newTypeApp
 }
@@ -148,7 +148,7 @@ func EmptyGlobalContext() bool {
 	typeSchemesMap.lock.Lock()
 	schemeLen := len(typeSchemesMap.tsMap)
 	typeSchemesMap.lock.Unlock()
-	return schemeLen == 2
+	return schemeLen == 1
 }
 
 func CountMeta(types []TypeApp) int {

@@ -402,7 +402,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			}
 
 			// Proof
-			if overwrite_proof {
+			if overwrite_proof { // Backtrack-node is not a child
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), proof_children[0]))
 			} else {
 				st.SetCurrentProofChildren(proof_children)
