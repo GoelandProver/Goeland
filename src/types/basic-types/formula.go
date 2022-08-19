@@ -147,7 +147,7 @@ func MakerAllType(vl []typing.TypeVar, f Form) AllType       { return AllType{Ma
 
 /* Transform a formula into its negation */
 func RefuteForm(f Form) Form {
-	return MakeNot(f.GetIndex(), f)
+	return MakerNot(f)
 }
 
 /* Remove all the negations */

@@ -239,7 +239,7 @@ func Search(f basictypes.Form, bound int) {
 		global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
 		global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
 
-		if (global.GetProof() || global.IsCoqOutput()) && res {
+		if global.GetProof() && res {
 			proof.WriteGraphProof(final_proof)
 			fmt.Printf("%s SZS output start Proof for %v\n", "%", problem_name)
 			if global.IsCoqOutput() {
