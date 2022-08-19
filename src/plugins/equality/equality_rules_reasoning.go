@@ -44,6 +44,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 /**
@@ -52,11 +53,12 @@ import (
 * Result : true if at least on of the list return a solution, and the corresponding substitutions
 **/
 // Todo : S'arrêter au premier trouvé ?
-func equalityReasoningMultiList(epml EqualityProblemMultiList) (bool, []treetypes.Substitutions) {
+func equalityReasoningMultiList(epml EqualityProblemMultiList) (bool, []treetypes.Substitutions, [][]proof.ProofStruct) {
 	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning multilist : %v", len(epml)))
 	global.PrintDebug("ERML", fmt.Sprintf("LPO : %v", lpo.toString()))
 	substs_res := []treetypes.Substitutions{}
 	found := false
+	proof_struct := [][]proof.ProofStruct{}
 
 	for _, epl := range epml {
 		global.PrintDebug("ERML", fmt.Sprintf("iteration on EPL : %v", epl.toString()))
@@ -69,7 +71,7 @@ func equalityReasoningMultiList(epml EqualityProblemMultiList) (bool, []treetype
 		}
 	}
 	global.PrintDebug("ERML", fmt.Sprintf("Final subst after ER : %v", treetypes.SubstListToString(substs_res)))
-	return found, substs_res
+	return found, substs_res, proof_struct
 }
 
 /**

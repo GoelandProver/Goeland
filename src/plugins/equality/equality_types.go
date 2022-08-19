@@ -139,7 +139,6 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 	res := Equalities{}
 	MetaEQ1 := basictypes.MakerMeta("METAEQ1", -1)
 	MetaEQ2 := basictypes.MakerMeta("METAEQ2", -1)
-	// TODO: type this
 	tv := typing.MkTypeVar("EQ")
 	eq_pred := basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{})
 	tv.ShouldBeMeta(eq_pred.GetIndex())
@@ -169,8 +168,6 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 	res := Inequalities{}
 	MetaNEQ1 := basictypes.MakerMeta("META_NEQ_1", -1)
 	MetaNEQ2 := basictypes.MakerMeta("META_NEQ_2", -1)
-	// TODO: type this
-
 	tv := typing.MkTypeVar("EQ")
 	neq_pred := basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{})
 	tv.ShouldBeMeta(neq_pred.GetIndex())

@@ -243,7 +243,6 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	var not_form basictypes.Form
 	bound := old_bound
 
-	// TODO : DMT ?
 	for _, s := range lstm {
 		switch s.GetRole() {
 		case basictypes.Include:
@@ -316,7 +315,6 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	case len(and_list) == 0:
 		return basictypes.RefuteForm(not_form), bound
 	case not_form == nil:
-		// TODO : check if len > 1
 		var new_and basictypes.Form
 		if len(and_list) > 1 {
 			new_and = basictypes.MakerAnd(and_list)

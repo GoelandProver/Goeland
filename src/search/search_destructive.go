@@ -623,8 +623,12 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			if shouldApplyEquality(new_atomics, st) {
 				global.PrintDebug("PS", "EQ is applicable !")
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
-				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
+				res_eq, subst_eq, proof_children := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
 				if res_eq {
+					// TODO : Proof
+					st.SetCurrentProofChildren(proof_children)
+					st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
+
 					if manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{}), node_id) {
 						return
 					}

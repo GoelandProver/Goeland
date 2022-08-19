@@ -183,5 +183,3 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 		return false
 	}
 }
-
-// TODO : append if not contains

@@ -43,6 +43,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
@@ -66,13 +67,13 @@ func InitPlugin() error {
 * créé problème
 * réturn bool et substitution
 **/
-func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList) (bool, []treetypes.Substitutions) {
+func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList) (bool, []treetypes.Substitutions, [][]proof.ProofStruct) {
 	global.PrintDebug("ER", "ER call")
 	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
 	if equalities {
 		return equalityReasoningMultiList(problem)
 	} else {
-		return false, []treetypes.Substitutions{}
+		return false, []treetypes.Substitutions{}, [][]proof.ProofStruct{}
 	}
 }
 

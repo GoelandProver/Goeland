@@ -99,10 +99,12 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			closed = true
 
 		case len(substs_without_mm) > 0:
+			// [EQ-PROOF] Link with eq proof
 			global.PrintDebug("MCR", fmt.Sprintf("Contradiction found (without mm) : %v", treetypes.SubstListToString(substs_without_mm)))
 			st.SetSubstsFound([]complextypes.SubstAndForm{st.GetAppliedSubst()})
 
 			// Proof
+			// [EQ-PROOF] Insert eq proof between st.GetProof and st.GetCurrentProof
 			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", substs_without_mm[0].ToString()))
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
@@ -156,7 +158,7 @@ func applyRules(father_id uint64, st complextypes.State, c Communication, new_at
 	switch {
 
 	case len(st.GetSubstsFound()) > 0 && global.IsDestructive():
-		global.PrintDebug("PS", fmt.Sprintf("Send subst with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
+		global.PrintDebug("PS", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 		st.SetCurrentProofRule("⊙")
 		st.SetCurrentProofRuleName("CLOSURE")
 		st.SetCurrentProofResultFormulas([]proof.IntFormList{})
