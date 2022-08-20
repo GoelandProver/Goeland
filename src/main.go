@@ -228,7 +228,8 @@ func Search(f basictypes.Form, bound int) {
 			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
 		}
 
-		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), global.IncrCptNode())
+		node_id := global.IncrCptNode()
+		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id)
 		global.IncrGoRoutine(1)
 
 		global.PrintDebug("MAIN", "GO")

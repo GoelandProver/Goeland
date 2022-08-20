@@ -69,7 +69,7 @@ func (e Ex) ToString() string {
 }
 
 func (e Ex) ToStringWithSuffixMeta(suffix string) string {
-	return defaultMap[ExQuant] + " [" + ListToString(e.GetVarList(), ", ", "") + "] (" + e.GetForm().ToStringWithSuffixMeta(suffix) + ")"
+	return "(" + defaultMap[ExQuant] + " [" + ListToString(e.GetVarList(), ", ", "") + "] (" + e.GetForm().ToStringWithSuffixMeta(suffix) + "))"
 }
 
 func (e Ex) Copy() Form {
@@ -117,7 +117,7 @@ func (a All) ToString() string {
 }
 
 func (a All) ToStringWithSuffixMeta(suffix string) string {
-	return defaultMap[AllQuant] + " [" + ListToString(a.GetVarList(), ", ", "") + "] (" + a.GetForm().ToStringWithSuffixMeta(suffix) + ")"
+	return "(" + defaultMap[AllQuant] + " [" + ListToString(a.GetVarList(), ", ", "") + "] (" + a.GetForm().ToStringWithSuffixMeta(suffix) + "))"
 }
 
 func (a All) Copy() Form {
@@ -165,7 +165,7 @@ func (a AllType) ToMappedString(map_ MapString, displayTypes bool) string {
 }
 
 func (a AllType) ToString() string {
-	return a.ToMappedString(defaultMap, true) + " (" + a.GetForm().ToString() + ")"
+	return "(" + a.ToMappedString(defaultMap, true) + " (" + a.GetForm().ToString() + "))"
 }
 func (a AllType) GetMetas() MetaList { return a.GetForm().GetMetas() }
 
@@ -247,5 +247,5 @@ func toMappedString(quant string, map_ MapString, varList []Var, form Form, disp
 		varStrings = append(varStrings, str+map_[QuantVarClose])
 	}
 
-	return quant + " " + strings.Join(varStrings, " ") + map_[QuantVarSep] + " (" + form.ToMappedString(map_, displayTypes) + ")"
+	return "(" + quant + " " + strings.Join(varStrings, " ") + map_[QuantVarSep] + " (" + form.ToMappedString(map_, displayTypes) + "))"
 }

@@ -91,7 +91,7 @@ func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 		return "(" + p.GetArgs()[0].ToMappedString(map_, type_) + " = " + p.GetArgs()[1].ToMappedString(map_, type_) + ")"
 	}
 
-	return p.GetID().ToString() + "(" + strings.Join(args, map_[PredTypeVarSep]) + ")"
+	return p.GetID().ToString() + "(" + strings.Join(args, " "+map_[PredTypeVarSep]+" ") + ")"
 }
 
 func (p Pred) ToString() string {

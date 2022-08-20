@@ -290,7 +290,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 		var substs []treetypes.Substitutions
 		global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 		closed, substs = applyClosureRules(f.Copy(), &st)
-		closed = manageClosureRule(father_id, &st, c, closed, substs, f, -1)
+		closed = manageClosureRule(father_id, &st, c, closed, substs, f, -1, -1)
 
 		if closed {
 			return
@@ -310,11 +310,11 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 
 	if form_to_instantiate == -1 {
 		global.PrintDebug("PS", "Let's apply rules !")
-		applyRules(father_id, st, c, basictypes.MakeEmptyFormList(), -1)
+		applyRules(father_id, st, c, basictypes.MakeEmptyFormList(), -1, -1)
 	} else {
 		global.PrintDebug("PS", "Let's instantiate !")
 		instantiate(father_id, &st, c, form_to_instantiate, choosen_subst)
-		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1)
+		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1, -1)
 	}
 
 }

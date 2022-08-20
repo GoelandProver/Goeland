@@ -67,6 +67,8 @@ type Result struct {
 	subst_for_children    complextypes.SubstAndForm
 	subst_list_for_father []complextypes.SubstAndForm
 	proof                 []proof.ProofStruct
+	node_id               int
+	original_node_id      int
 }
 
 func (r Result) GetId() uint64 {
@@ -87,8 +89,14 @@ func (r Result) GetSubstListForFather() []complextypes.SubstAndForm {
 func (r Result) GetProof() []proof.ProofStruct {
 	return proof.CopyProofStructList(r.proof)
 }
+func (r Result) GetNodeId() int {
+	return r.node_id
+}
+func (r Result) GetOriginalNodeId() int {
+	return r.original_node_id
+}
 func (r Result) Copy() Result {
-	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetProof()}
+	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetProof(), r.GetNodeId(), r.GetOriginalNodeId()}
 }
 
 /* remove a childre  from a communication list */
@@ -133,24 +141,24 @@ func sendSubToChildren(children []Communication, s complextypes.SubstAndForm) {
 	global.PrintDebug("SSTC", fmt.Sprintf("Send sub to children : %v", len(children)))
 	for i, v := range children {
 		global.PrintDebug("SSTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
-		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, nil}
+		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, nil, -1, -1}
 	}
 }
 
 /* Send a subst to father. Return true if the process is supposed to die after */
-func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm, node_id int) {
+func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int) {
 	subst_for_father := complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound())
 	global.PrintDebug("SSTF", fmt.Sprintf("Send subst to father : %v, closed : %v, need answer : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(subst_for_father)), closed, need_answer))
 	global.PrintDebug("SSTF", fmt.Sprintf("Send answer : %v", complextypes.SubstAndFormListToString(subst_for_father)))
 
 	select {
-	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), st.GetProof()}:
+	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), st.GetProof(), node_id, original_node_id}:
 		if need_answer {
-			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id)
+			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{})
 		} else {
 			global.PrintDebug("SSTF", "Die")
 		}
 	case quit := <-c.quit:
-		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id)
+		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id, original_node_id, []int{})
 	}
 }

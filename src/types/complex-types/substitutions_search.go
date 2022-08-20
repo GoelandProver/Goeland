@@ -326,10 +326,10 @@ func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]tree
 		if global.IsDestructive() {
 			s_removed = RemoveElementWithoutMM(s, mm)
 		}
-		if ContainsMetaMother(s_removed, mm) {
+		if !s_removed.IsEmpty() {
 			subst_with_mm = treetypes.AppendIfNotContainsSubst(subst_with_mm, s_removed)
 		} else {
-			subst_without_mm = treetypes.AppendIfNotContainsSubst(subst_without_mm, s_removed)
+			subst_without_mm = treetypes.AppendIfNotContainsSubst(subst_without_mm, s)
 		}
 	}
 

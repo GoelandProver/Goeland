@@ -95,27 +95,31 @@ func MakeCoqOutput(proof []proof.ProofStruct) string {
 func makeCoqProof(proofs []proof.ProofStruct) string {
 	resultingString := ""
 	// Modify first formula to prove validity
-	proofs[0].Formula = processMainFormula(proofs[0].Formula)
+	firstFormula, index := processMainFormula(proofs[0].Formula)
 	// Prints the theorem to prove
-	resultingString += printTheorem(proofs[0].Formula)
+	resultingString += printTheorem(firstFormula)
 	// Prints the proof
 	resultingString += "Proof.\n"
-	resultingString += proofPreamble(proofs[0].Formula)
+	preambleString, hasHyp := proofPreamble(firstFormula, index)
+	resultingString += preambleString
+	if hasHyp {
+		proofs = proofs[1:]
+	}
 	resultingString += coqProofFromGoeland(proofs, 0)
 	resultingString += "Qed.\n"
 	return resultingString
 }
 
-func processMainFormula(form btps.Form) btps.Form {
+func processMainFormula(form btps.Form) (btps.Form, int) {
 	switch nf := form.(type) {
 	case btps.Not:
-		return nf.GetForm()
+		return nf.GetForm(), nf.GetIndex()
 	case btps.And:
-		lastForm := nf.GetLF()[len(nf.GetLF())-1]
+		lastForm := nf.GetLF()[len(nf.GetLF())-1].(btps.Not).GetForm()
 		fl := nf.GetLF()[:len(nf.GetLF())-1]
-		return btps.MakeAnd(nf.GetIndex(), append(fl, lastForm))
+		return btps.MakerImp(btps.MakeAnd(nf.GetIndex(), fl), lastForm), nf.GetLF()[len(nf.GetLF())-1].GetIndex()
 	}
-	return form
+	return form, form.GetIndex()
 }
 
 // ----------------------------------------------------------------------------
@@ -127,7 +131,6 @@ func processMainFormula(form btps.Form) btps.Form {
 // TODO:
 //	* replace $i by the defined set of the context and $o by Prop.
 //	* print problem name in the theorem.
-//	* remove the negated conjecture
 
 func printTheorem(formula btps.Form) string {
 	return "Theorem goeland_proof_of_ : " + /* global.GetProblemName()  +" : " + */ formula.ToMappedString(coqMapConnectorsCreation(), false) + ".\n"
@@ -163,8 +166,30 @@ func coqMapConnectorsCreation() map[btps.FormulaType]string {
 // For each step of the proof, prints it in a coq format.
 // TODO:
 
-func proofPreamble(root btps.Form) string {
-	return fmt.Sprintf("  apply NNPP. intro H%d.\n", root.GetIndex())
+func proofPreamble(root btps.Form, index int) (string, bool) {
+	imp, isImp := root.(btps.Imp)
+	if !isImp {
+		return fmt.Sprintf("  apply NNPP. intro H%d.\n", index), false
+	} else {
+		lf := imp.GetF1().(btps.And).GetLF()
+		if len(lf) == 1 {
+			return fmt.Sprintf("  intros H%d. apply NNPP. intro H%d.\n", lf[0].GetIndex(), index), true
+		}
+		return fmt.Sprintf("  intros goeland_ax. %sapply NNPP. intro H%d.\n", constructHypotheses(imp.GetF1()), index), true
+	}
+}
+
+func constructHypotheses(and btps.Form) string {
+	str := ""
+	lf := and.(btps.And).GetLF()
+	for i := 0; i < len(lf)-1; i += 1 {
+		if i == len(lf)-2 {
+			str += fmt.Sprintf("destruct goeland_ax as [ H%d H%d ]. ", lf[i].GetIndex(), lf[i+1].GetIndex())
+		} else {
+			str += fmt.Sprintf("destruct goeland_ax as [ H%d goeland_ax ]. ", lf[i].GetIndex())
+		}
+	}
+	return str
 }
 
 func coqProofFromGoeland(proofs []proof.ProofStruct, nested int) string {
@@ -193,9 +218,13 @@ func coqProofFromGoeland(proofs []proof.ProofStruct, nested int) string {
 
 	lastProof := proofs[len(proofs)-1]
 	if len(lastProof.Children) > 0 {
-		for i := len(lastProof.Children) - 1; i >= 0; i -= 1 {
-			resultingProof += coqProofFromGoeland(lastProof.Children[i], nested+1)
+		for _, child := range lastProof.GetChildren() {
+			resultingProof += coqProofFromGoeland(child, nested+1)
 		}
+		/*
+			for i := len(lastProof.Children) - 1; i >= 0; i -= 1 {
+				resultingProof += coqProofFromGoeland(lastProof.Children[i], nested+1)
+			}*/
 	}
 
 	return resultingProof
@@ -227,13 +256,13 @@ func proofOneStep(p proof.ProofStruct) string {
 		result = fmt.Sprintf("apply (goeland_notimply_s _ _ H%d). ", p.GetFormula().GetIndex())
 		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), ". ") + "."
 	case "BETA_NOT_AND":
-		result = fmt.Sprintf("apply (goeland_notand_s _ _ H%d). ", p.GetFormula().GetIndex())
+		result = fmt.Sprintf("apply (goeland_notand_s _ _ H%d); ", p.GetFormula().GetIndex())
 		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
 	case "BETA_OR":
-		result = fmt.Sprintf("apply (goeland_or_s _ _ H%d). ", p.GetFormula().GetIndex())
+		result = fmt.Sprintf("apply (goeland_or_s _ _ H%d); ", p.GetFormula().GetIndex())
 		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
 	case "BETA_IMPLY":
-		result = fmt.Sprintf("apply (goeland_imply_s _ _ H%d). ", p.GetFormula().GetIndex())
+		result = fmt.Sprintf("apply (goeland_imply_s _ _ H%d); ", p.GetFormula().GetIndex())
 		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
 	case "BETA_EQUIV":
 		result = fmt.Sprintf("apply (goeland_equiv_s _ _ H%d); ", p.GetFormula().GetIndex())
@@ -242,19 +271,30 @@ func proofOneStep(p proof.ProofStruct) string {
 		result = fmt.Sprintf("apply (goeland_notequiv_s _ _ H%d); ", p.GetFormula().GetIndex())
 		result += "[ " + strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), "; ") + " | " + strings.Join(nAryIntro(p.GetResultFormulas()[1].GetFL()), "; ") + " ]."
 	case "DELTA_EXISTS":
-		// TODO: multiple at the same time (exists x, y -> x & y are skolemized at once)
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = fmt.Sprintf("elim H%d. goeland_intro %s. goeland_intro H%d.", p.GetFormula().GetIndex(), createConst(p.GetFormula(), resultForm), resultForm.GetIndex())
+		result = applyNTimes("elim H%d. goeland_intro %s. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), createConsts(p.GetFormula(), resultForm))
 	case "DELTA_NOT_FORALL":
 		// Apply + new const
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = fmt.Sprintf("apply H%d. goeland_intro %s. apply NNPP. goeland_intro H%d.", p.GetFormula().GetIndex(), createConst(p.GetFormula(), resultForm), resultForm.GetIndex())
+		result = applyNTimes("apply H%d. goeland_intro %s. apply NNPP. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), createConsts(p.GetFormula(), resultForm))
 	case "GAMMA_FORALL":
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = fmt.Sprintf("generalize (H%d, %s). goeland_intro H%d.", p.GetFormula().GetIndex(), instanciate(p.GetFormula(), resultForm), resultForm.GetIndex())
+		result = applyNTimes("generalize (H%d, %s). goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), instanciate(p.GetFormula(), resultForm))
 	case "GAMMA_NOT_EXISTS":
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = fmt.Sprintf("apply H%d. exists %s. apply NNPP. goeland_intro H%d.", p.GetFormula().GetIndex(), instanciate(p.GetFormula(), resultForm), resultForm.GetIndex())
+		result = applyNTimes("apply H%d. exists %s. apply NNPP. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), instanciate(p.GetFormula(), resultForm))
+	}
+	return result
+}
+
+func applyNTimes(command string, start, end int, vars []string) string {
+	result := ""
+	for i, var_ := range vars {
+		if i == len(vars)-1 {
+			result += fmt.Sprintf(command, start, var_, fmt.Sprintf("%d", end))
+		} else {
+			result += fmt.Sprintf(command, start, var_, fmt.Sprintf("%d_%d", start, i)) + " "
+		}
 	}
 	return result
 }
@@ -267,21 +307,32 @@ func nAryIntro(fl btps.FormList) []string {
 	return result
 }
 
-func createConst(form, resultForm btps.Form) string {
-	constant := fmt.Sprintf("sko_%d", len(constantsCreated))
-	constantsCreated = append(constantsCreated, inOneButNotInOther(form, resultForm)...)
-	return constant
+func createConsts(form, resultForm btps.Form) []string {
+	terms := inOneButNotInOther(form, resultForm)
+	constants := []string{}
+	for _, term := range terms {
+		constants = append(constants, fmt.Sprintf("sko_%d", len(constantsCreated)))
+		constantsCreated = append(constantsCreated, term)
+	}
+	return constants
 }
 
-func instanciate(form, resultForm btps.Form) string {
+func instanciate(form, resultForm btps.Form) []string {
 	toInstanciate := inOneButNotInOther(form, resultForm)
-	fmt.Println(global.ListToString(toInstanciate, ", ", ""))
-	for i, term := range constantsCreated {
-		if term.Equals(toInstanciate[0]) {
-			return fmt.Sprintf("sko_%d", i)
+	result := []string{}
+	for _, toInst := range toInstanciate {
+		found := false
+		for i, term := range constantsCreated {
+			if !found && term.Equals(toInst) {
+				result = append(result, fmt.Sprintf("sko_%d", i))
+				found = true
+			}
+		}
+		if !found {
+			result = append(result, toInst.ToMappedString(coqMapConnectorsCreation(), false))
 		}
 	}
-	return "error"
+	return result
 }
 
 func getGroundTerms(form btps.Form) []btps.Term {
@@ -336,7 +387,6 @@ func inOneButNotInOther(form1, form2 btps.Form) []btps.Term {
 		for _, groundTerm1 := range groundTerms1 {
 			if groundTerm2.Equals(groundTerm1) {
 				found = true
-				break
 			}
 		}
 		if !found {
