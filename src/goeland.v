@@ -17,7 +17,7 @@ Lemma goeland_eqsym : forall (T : Type) (t u : T),
 Proof. auto. Qed.
 
 Lemma goeland_and : forall P Q : Prop,
-  (P -> Q -> False) -> (P /\ Q -> False).
+  (P -> (Q -> False)) -> (P /\ Q -> False).
 Proof. tauto. Qed.
 
 Lemma goeland_or : forall P Q : Prop,

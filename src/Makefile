@@ -34,9 +34,13 @@ parse:
 	@for i in `ls $(PROB)/*.p`; do echo -e "File \033[32m$$i\033[39m: "; \
         ./$(BIN) $$i; echo; done
 
+coq:
+	coqc -Q . Goeland goeland.v
+
 clean:
 	rm -f *~ $(GOPARSER) y.output  
 	rm -rf $(BUILD)
+	rm goeland.vo* goeland.glob
 
 tests:
 	go test -v -coverprofile=coverage.out ./... || (go tool cover -html=coverage.out && rm coverage.out)

@@ -383,6 +383,7 @@ func manageReintroductionRules(father_id uint64, st complextypes.State, c Commun
 	// Proof
 	id_children := global.IncrCptNode()
 	st.SetCurrentProofRule("Reintroduction")
+	st.SetCurrentProofRuleName("Reintroduction")
 	st.SetCurrentProofFormula(reslf)
 	st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(id_children, basictypes.MakeSingleElementList(reslf))})
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))

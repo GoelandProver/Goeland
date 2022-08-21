@@ -224,8 +224,8 @@ func applyBetaRules(f basictypes.Form, st *complextypes.State) []basictypes.Form
 			global.PrintDebug("AR", "Applying β¬⇔...")
 			st.SetCurrentProofRule("β¬⇔")
 			st.SetCurrentProofRuleName("BETA_NOT_EQUIV")
-			res = append(res, basictypes.FormList{nnf.GetF1(), basictypes.RefuteForm(nnf.GetF2())})
 			res = append(res, basictypes.FormList{basictypes.RefuteForm(nnf.GetF1()), nnf.GetF2()})
+			res = append(res, basictypes.FormList{nnf.GetF1(), basictypes.RefuteForm(nnf.GetF2())})
 		}
 	case basictypes.Or:
 		global.PrintDebug("AR", "Applying β∨...")
