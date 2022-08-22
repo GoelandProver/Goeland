@@ -231,9 +231,13 @@ func constructHypotheses(and btps.Form) string {
 }
 
 func coqProofFromGoeland(proofs []proof.ProofStruct, nested int) string {
+	// Beautiful print
 	preamble := func(nested, i int) string {
 		if i == 0 {
 			return ""
+		}
+		if nested == 0 {
+			return "  "
 		}
 		return strings.Repeat(" ", nested*3+1)
 	}
@@ -259,10 +263,6 @@ func coqProofFromGoeland(proofs []proof.ProofStruct, nested int) string {
 		for _, child := range lastProof.GetChildren() {
 			resultingProof += coqProofFromGoeland(child, nested+1)
 		}
-		/*
-			for i := len(lastProof.Children) - 1; i >= 0; i -= 1 {
-				resultingProof += coqProofFromGoeland(lastProof.Children[i], nested+1)
-			}*/
 	}
 
 	return resultingProof
@@ -310,28 +310,31 @@ func proofOneStep(p proof.ProofStruct) string {
 		result += "[ " + strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), "; ") + " | " + strings.Join(nAryIntro(p.GetResultFormulas()[1].GetFL()), "; ") + " ]."
 	case "DELTA_EXISTS":
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = applyNTimes("elim H%d. goeland_intro %s. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), createConsts(p.GetFormula(), resultForm))
+		result = applyNTimes("elim H%s. goeland_intro %s. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), createConsts(p.GetFormula(), resultForm))
 	case "DELTA_NOT_FORALL":
 		// Apply + new const
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = applyNTimes("apply H%d. goeland_intro %s. apply NNPP. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), createConsts(p.GetFormula(), resultForm))
+		result = applyNTimes("apply H%s. goeland_intro %s. apply NNPP. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), createConsts(p.GetFormula(), resultForm))
 	case "GAMMA_FORALL":
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = applyNTimes("generalize (H%d, %s). goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), instanciate(p.GetFormula(), resultForm))
+		result = applyNTimes("generalize (H%s %s). goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), instanciate(p.GetFormula(), resultForm))
 	case "GAMMA_NOT_EXISTS":
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = applyNTimes("apply H%d. exists %s. apply NNPP. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), instanciate(p.GetFormula(), resultForm))
+		result = applyNTimes("apply H%s. exists %s. apply NNPP. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), instanciate(p.GetFormula(), resultForm))
 	}
 	return result
 }
 
 func applyNTimes(command string, start, end int, vars []string) string {
 	result := ""
+	hypo := fmt.Sprintf("%d", start)
 	for i, var_ := range vars {
 		if i == len(vars)-1 {
-			result += fmt.Sprintf(command, start, var_, fmt.Sprintf("%d", end))
+			result += fmt.Sprintf(command, hypo, var_, fmt.Sprintf("%d", end))
 		} else {
-			result += fmt.Sprintf(command, start, var_, fmt.Sprintf("%d_%d", start, i)) + " "
+			nextHypo := fmt.Sprintf("%d_%d", start, i)
+			result += fmt.Sprintf(command, hypo, var_, nextHypo) + " "
+			hypo = nextHypo
 		}
 	}
 	return result
@@ -476,7 +479,9 @@ func getContextFromFormula(root btps.Form) []string {
 	case btps.Not:
 		result = clean(result, getContextFromFormula(nf.GetForm()))
 	case btps.Pred:
-		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToString(), nf.GetType().ToString())))
+		if !nf.GetID().Equals(btps.Id_eq) {
+			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToString(), nf.GetType().ToString())))
+		}
 		for _, term := range nf.GetArgs() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}

@@ -337,8 +337,20 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	case not_form == nil:
 		return basictypes.MakerAnd(and_list), bound
 	default:
-		return basictypes.MakerAnd(append(and_list, basictypes.RefuteForm(not_form))), bound
+		return basictypes.MakerAnd(append(flatten(and_list), basictypes.RefuteForm(not_form))), bound
 	}
+}
+
+func flatten(fl basictypes.FormList) basictypes.FormList {
+	result := basictypes.FormList{}
+	for _, form := range fl {
+		if and, isAnd := form.(basictypes.And); isAnd {
+			result = append(result, flatten(and.GetLF())...)
+		} else {
+			result = append(result, form)
+		}
+	}
+	return result
 }
 
 /* Initialize global variable, time, call plugins */
