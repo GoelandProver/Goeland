@@ -75,7 +75,7 @@ func InitFlag() {
 	}
 }
 
-func MakeCoqOutput(proof []proof.ProofStruct) string {
+func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 	if len(proof) == 0 {
 		fmt.Printf("[%.6fs][%v][Coq] Nothing to output.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		return ""

@@ -345,3 +345,11 @@ func ProofStructListToText(ps []ProofStruct) string {
 	json_content := ProofStructListToJsonProofStructList(ps)
 	return JsonProofStructListToText(json_content)
 }
+
+func RetrieveUninstantiatedMetaFromProof(p []ProofStruct) basictypes.MetaList {
+	res := basictypes.MakeEmptyMetaList()
+	for _, proof_element := range p {
+		res = res.Merge(proof_element.GetFormula().GetMetas())
+	}
+	return res
+}

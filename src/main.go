@@ -235,7 +235,9 @@ func Search(f basictypes.Form, bound int) {
 		global.PrintDebug("MAIN", "GO")
 
 		var final_proof []proof.ProofStruct
+		var uninstantiated_meta basictypes.MetaList
 		res, final_proof = ManageResult(c)
+		uninstantiated_meta = proof.RetrieveUninstantiatedMetaFromProof(final_proof)
 
 		global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
 		global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
@@ -244,7 +246,7 @@ func Search(f basictypes.Form, bound int) {
 			proof.WriteGraphProof(final_proof)
 			fmt.Printf("%s SZS output start Proof for %v\n", "%", problem_name)
 			if global.IsCoqOutput() {
-				fmt.Printf("%s", coq.MakeCoqOutput(final_proof))
+				fmt.Printf("%s", coq.MakeCoqOutput(final_proof, uninstantiated_meta))
 			} else {
 				fmt.Printf("%v", proof.ProofStructListToText(final_proof))
 			}
