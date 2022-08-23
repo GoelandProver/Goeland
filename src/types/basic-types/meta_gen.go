@@ -133,14 +133,14 @@ func chooseLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int)
 * reintroduce a given formula if index != -1
 * Choose the less reintroduced formula among a list of fomulas otherwise
 **/
-func ReintroduceMeta(meta_generator *[]MetaGen, index int) Form {
+func ReintroduceMeta(meta_generator *[]MetaGen, index int) (Form, int) {
 
 	if index != -1 {
 		(*meta_generator)[index] = MakeMetaGen((*meta_generator)[index].GetForm(), (*meta_generator)[index].GetCounter()+1)
-		return (*meta_generator)[index].GetForm()
+		return (*meta_generator)[index].GetForm(), (*meta_generator)[index].GetCounter()
 	} else {
 		index_less_reintroduced_meta := chooseLessReintroducedMeta(*meta_generator, nil)
 		(*meta_generator)[index_less_reintroduced_meta] = MakeMetaGen((*meta_generator)[index_less_reintroduced_meta].GetForm(), (*meta_generator)[index_less_reintroduced_meta].GetCounter()+1)
-		return (*meta_generator)[index_less_reintroduced_meta].GetForm()
+		return (*meta_generator)[index_less_reintroduced_meta].GetForm(), (*meta_generator)[index_less_reintroduced_meta].GetCounter()
 	}
 }

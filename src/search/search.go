@@ -91,6 +91,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetCurrentProofRule("⊙")
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
+			st.SetCurrentProofFormulaUse(0)
 			st.SetCurrentProofNodeId(node_id)
 			st.SetCurrentProofResultFormulas([]proof.IntFormList{})
 			st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
@@ -106,6 +107,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", substs_without_mm[0].ToString()))
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
+			st.SetCurrentProofFormulaUse(0)
 			st.SetCurrentProofNodeId(node_id)
 			st.SetCurrentProofResultFormulas([]proof.IntFormList{})
 			st.SetProof(complextypes.ApplySubstitutionOnProofList(substs_without_mm[0], append(st.GetProof(), st.GetCurrentProof())))
@@ -119,6 +121,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", treetypes.SubstListToStringForProof(substs_with_mm)))
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
+			st.SetCurrentProofFormulaUse(0)
 			st.SetCurrentProofNodeId(node_id)
 			st.SetCurrentProofResultFormulas([]proof.IntFormList{})
 
@@ -225,6 +228,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 
 						// Proof
 						st.SetCurrentProofFormula(f)
+						st.SetCurrentProofFormulaUse(0)
 						child_node := global.IncrCptNode()
 						st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(child_node, basictypes.MakeSingleElementList(choosen_rewritten_form.Copy()))})
 						st.SetCurrentProofRule("Rewrite")
@@ -273,6 +277,7 @@ func manageAlphaRules(father_id uint64, st complextypes.State, c Communication, 
 
 	// Proof
 	st.SetCurrentProofFormula(hdf)
+	st.SetCurrentProofFormulaUse(0)
 	id_children := global.IncrCptNode()
 	st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(id_children, result_forms)})
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
@@ -291,6 +296,7 @@ func manageDeltaRules(father_id uint64, st complextypes.State, c Communication, 
 
 	// Proof
 	st.SetCurrentProofFormula(hdf)
+	st.SetCurrentProofFormulaUse(0)
 	id_children := global.IncrCptNode()
 	st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(id_children, result_forms)})
 
@@ -309,6 +315,7 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication, c
 
 	// Proof
 	st.SetCurrentProofFormula(hdf)
+	st.SetCurrentProofFormulaUse(0)
 
 	int_form_list_list := []proof.IntFormList{}
 	for _, fl := range reslf {
@@ -351,7 +358,11 @@ func manageGammaRules(father_id uint64, st complextypes.State, c Communication, 
 	st.SetGamma(st.GetGamma()[1:])
 
 	// Update MetaGen
+	len_meta_gen := len(st.GetMetaGen())
 	index, new_meta_gen := basictypes.GetIndexMetaGenList(hdf, st.GetMetaGen())
+	if index == len_meta_gen { // If it's the first time for this formula to be managed, inherit from reintroduce meta gen otherwise
+		st.SetCurrentProofFormulaUse(0)
+	}
 	st.SetMetaGen(new_meta_gen)
 	new_lf, new_metas := applyGammaRules(hdf, index, &st)
 	st.SetLF(new_lf)
@@ -373,7 +384,7 @@ func manageGammaRules(father_id uint64, st complextypes.State, c Communication, 
 func manageReintroductionRules(father_id uint64, st complextypes.State, c Communication, original_node_id int) {
 	global.PrintDebug("PS", "Reintroduction")
 	new_meta_generator := st.GetMetaGen()
-	reslf := basictypes.ReintroduceMeta(&new_meta_generator, -1)
+	reslf, cpt := basictypes.ReintroduceMeta(&new_meta_generator, -1)
 	global.PrintDebug("PS", fmt.Sprintf("Reintroduce the formula : %s", reslf.ToString()))
 	st.SetLF(basictypes.MakeSingleElementList(reslf))
 
@@ -385,6 +396,7 @@ func manageReintroductionRules(father_id uint64, st complextypes.State, c Commun
 	st.SetCurrentProofRule("Reintroduction")
 	st.SetCurrentProofRuleName("Reintroduction")
 	st.SetCurrentProofFormula(reslf)
+	st.SetCurrentProofFormulaUse(cpt)
 	st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(id_children, basictypes.MakeSingleElementList(reslf))})
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
