@@ -43,13 +43,10 @@ package coq
 import (
 	"flag"
 	"fmt"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/GoelandProver/Goeland/global"
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -114,16 +111,6 @@ func makeCoqProof(proofs []proof.ProofStruct) string {
 		resultingString += coqProofFromGoeland(proofs, 0)
 	}
 	resultingString += "Qed.\n"
-	return resultingString
-}
-
-func makeContext(root btps.Form) string {
-	resultingString := contextPreamble()
-	if typing.EmptyGlobalContext() {
-		resultingString += strings.Join(getContextFromFormula(root), "\n")
-	} else {
-		// TODO: get context and print everything.
-	}
 	return resultingString
 }
 
@@ -376,62 +363,41 @@ func instanciate(form, resultForm btps.Form) []string {
 	return result
 }
 
-func getGroundTerms(form btps.Form) []btps.Term {
-	result := []btps.Term{}
-	switch nf := form.(type) {
-	case btps.All:
-		result = getGroundTerms(nf.GetForm())
-	case btps.Ex:
-		result = getGroundTerms(nf.GetForm())
-	case btps.AllType:
-		result = getGroundTerms(nf.GetForm())
-	case btps.And:
-		for _, f := range nf.GetLF() {
-			result = append(result, getGroundTerms(f)...)
-		}
-	case btps.Or:
-		for _, f := range nf.GetLF() {
-			result = append(result, getGroundTerms(f)...)
-		}
-	case btps.Imp:
-		result = append(getGroundTerms(nf.GetF1()), getGroundTerms(nf.GetF2())...)
-	case btps.Equ:
-		result = append(getGroundTerms(nf.GetF1()), getGroundTerms(nf.GetF2())...)
-	case btps.Not:
-		result = getGroundTerms(nf.GetForm())
-	case btps.Pred:
-		for _, term := range nf.GetArgs() {
-			result = append(result, getGroundTermsFromTerm(term)...)
-		}
-	}
-	return result
-}
-
-func getGroundTermsFromTerm(term btps.Term) []btps.Term {
-	result := []btps.Term{term}
-	if fun, isFun := term.(btps.Fun); isFun {
-		for _, term := range fun.GetArgs() {
-			result = append(result, getGroundTermsFromTerm(term)...)
-		}
-	}
-	return result
-}
-
 func inOneButNotInOther(form1, form2 btps.Form) []btps.Term {
-	result := []btps.Term{}
+	// Normalize
+	if not, isNot := form1.(btps.Not); isNot {
+		form1 = not.GetForm()
+	}
+	if not, isNot := form2.(btps.Not); isNot {
+		form2 = not.GetForm()
+	}
 
-	groundTerms1 := getGroundTerms(form1)
-	groundTerms2 := getGroundTerms(form2)
+	// Get var list
+	var varList []btps.Var
+	var realForm btps.Form
+	switch f := form1.(type) {
+	case btps.All:
+		varList = f.GetVarList()
+		realForm = f.GetForm()
+	case btps.Ex:
+		varList = f.GetVarList()
+		realForm = f.GetForm()
+		// TODO: AllType for typed problems
+	}
 
-	for _, groundTerm2 := range groundTerms2 {
-		found := false
-		for _, groundTerm1 := range groundTerms1 {
-			if groundTerm2.Equals(groundTerm1) {
-				found = true
+	// Get subterms
+	subterms := findSubterms(realForm, varList)
+
+	// Get corresponding terms in the other form
+	mapping := getSubtermsOf(form2, subterms)
+
+	// Returns a list of terms ordered properly
+	result := make([]btps.Term, len(varList))
+	for _, map_ := range mapping {
+		for i, var_ := range varList {
+			if var_.Equals(map_.var_) {
+				result[i] = map_.term
 			}
-		}
-		if !found {
-			result = append(result, groundTerm2)
 		}
 	}
 
@@ -440,83 +406,6 @@ func inOneButNotInOther(form1, form2 btps.Form) []btps.Term {
 
 // ----------------------------------------------------------------------------
 // Search symbols and their type.
-
-func contextPreamble() string {
-	str := "Add LoadPath \"" + pathToGoelandCoq() + "\" as Goeland.\n"
-	str += "Require Import Goeland.goeland.\n"
-	str += "Parameter goeland_U : Set. (* individual type *)\n\n"
-	return str
-}
-
-func pathToGoelandCoq() string {
-	path, _ := os.Executable()
-	return filepath.Clean(filepath.Dir(path) + "/../")
-}
-
-func getContextFromFormula(root btps.Form) []string {
-	result := []string{}
-	switch nf := root.(type) {
-	case btps.All:
-		result = getContextFromFormula(nf.GetForm())
-	case btps.Ex:
-		result = getContextFromFormula(nf.GetForm())
-	case btps.AllType:
-		result = getContextFromFormula(nf.GetForm())
-	case btps.And:
-		for _, f := range nf.GetLF() {
-			result = append(result, clean(result, getContextFromFormula(f))...)
-		}
-	case btps.Or:
-		for _, f := range nf.GetLF() {
-			result = append(result, clean(result, getContextFromFormula(f))...)
-		}
-	case btps.Imp:
-		result = clean(result, getContextFromFormula(nf.GetF1()))
-		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case btps.Equ:
-		result = clean(result, getContextFromFormula(nf.GetF1()))
-		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case btps.Not:
-		result = clean(result, getContextFromFormula(nf.GetForm()))
-	case btps.Pred:
-		if !nf.GetID().Equals(btps.Id_eq) {
-			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToString(), nf.GetType().ToString())))
-		}
-		for _, term := range nf.GetArgs() {
-			result = append(result, clean(result, getContextFromTerm(term))...)
-		}
-	}
-	return result
-}
-
-func getContextFromTerm(trm btps.Term) []string {
-	result := []string{}
-	if fun, isFun := trm.(btps.Fun); isFun {
-		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToString(), fun.GetTypeHint().ToString())))
-		for _, term := range fun.GetArgs() {
-			result = append(result, clean(result, getContextFromTerm(term))...)
-		}
-	}
-	return result
-}
-
-// Returns everything in add not in set
-func clean(set, add []string) []string {
-	result := []string{}
-	for _, str := range add {
-		found := false
-		for _, s := range set {
-			if s == str {
-				found = true
-				break
-			}
-		}
-		if !found {
-			result = append(result, str)
-		}
-	}
-	return result
-}
 
 func mapDefault(str string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
