@@ -375,6 +375,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 **/
 func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.SubstAndForm, node_id int, original_node_id int, overwrite_proof bool, child_order []int) {
 	global.PrintDebug("WC", "Waiting children")
+	global.PrintDebug("WC", fmt.Sprintf("Id : %v, original node id :%v", node_id, original_node_id))
 	global.PrintDebug("WC", fmt.Sprintf("Child order : %v", child_order))
 	global.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(children), len(substs_for_backtrack), len(forms_for_backtrack), st.GetBTOnFormulas(), complextypes.SubstAndFormListToString(given_substs), st.GetAppliedSubst().ToString(), complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 	global.PrintDebug("WC", fmt.Sprintf("MM : %v", st.GetMM().ToString()))

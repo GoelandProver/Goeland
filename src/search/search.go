@@ -196,6 +196,7 @@ func applyRules(father_id uint64, st complextypes.State, c Communication, new_at
 /* Manage Rewritte rules - return true if a rewritting rule was applied, false otherwise */
 func manageRewritteRules(father_id uint64, st complextypes.State, c Communication, new_atomics basictypes.FormList, current_node_id int, original_node_id int) {
 	global.PrintDebug("PS", "Try rewritte rule")
+	global.PrintDebug("PS - MRR", fmt.Sprintf("Id : %v, original node id :%v", current_node_id, original_node_id))
 	remaining_atomics := new_atomics.Copy()
 
 	// For each atomic
@@ -246,7 +247,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 						go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten, child_node, child_node)
 						global.PrintDebug("PS", "GO !")
 						global.IncrGoRoutine(1)
-						waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, choosen_rewritten, []complextypes.SubstAndForm{}, rewritten, current_node_id, child_node, false, []int{child_node})
+						waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, choosen_rewritten, []complextypes.SubstAndForm{}, rewritten, current_node_id, original_node_id, false, []int{child_node})
 						return
 					} else {
 						// Pas de réécriture disponible
