@@ -359,6 +359,9 @@ func RetrieveUninstantiatedMetaFromProof(p []ProofStruct) basictypes.MetaList {
 	res := basictypes.MakeEmptyMetaList()
 	for _, proof_element := range p {
 		res = res.Merge(proof_element.GetFormula().GetMetas())
+		for _, children := range proof_element.GetChildren() {
+			res = res.Merge(RetrieveUninstantiatedMetaFromProof(children))
+		}
 	}
 	return res
 }
