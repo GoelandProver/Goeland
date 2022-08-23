@@ -58,7 +58,7 @@ var constantsCreated []btps.Term
 var formulasIntroduced []btps.Form
 
 // ----------------------------------------------------------------------------
-// Plugin initialisation.
+// Plugin initialisation and main function to call.
 
 // Section: init
 // Functions: InitFlag, MakeCoqOutput, makeCoqProof
@@ -108,7 +108,7 @@ func makeCoqProof(proofs []proof.ProofStruct) string {
 		if hasHyp {
 			proofs = proofs[1:]
 		}
-		resultingString += coqProofFromGoeland(proofs, 0)
+		resultingString += coqProofFromGoeland(proofs, 0, true)
 	}
 	resultingString += "Qed.\n"
 	return resultingString

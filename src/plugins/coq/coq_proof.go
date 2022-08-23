@@ -44,6 +44,8 @@ import (
 	"fmt"
 	"strings"
 
+	global "github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/dmt"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -58,7 +60,25 @@ import (
 //	* print problem name in the theorem.
 
 func printTheorem(formula btps.Form) string {
-	return "Theorem goeland_proof_of_ : " + /* global.GetProblemName()  +" : " + */ mapDefault(formula.ToMappedString(coqMapConnectorsCreation(), false)) + ".\n"
+	result := ""
+
+	// Deduction modulo theory
+	if global.IsLoaded("dmt") {
+		result += "\n(* REWRITE RULES BEGIN *)\n"
+		// Prints each registered axiom in the proof
+		for _, form := range dmt.GetRegisteredAxioms() {
+			result += fmt.Sprintf(
+				"Axiom goeland_axiom_%d : %s.\n",
+				form.GetIndex(), // TODO: it won't work properly, get the "good" index
+				mapDefault(form.ToMappedString(coqMapConnectorsCreation(), false)),
+			)
+		}
+		result += "(* REWRITE RULES END *)\n\n"
+	}
+
+	// Theorem
+	result += "Theorem goeland_proof_of_ : " + /* global.GetProblemName()  +" : " + */ mapDefault(formula.ToMappedString(coqMapConnectorsCreation(), false)) + ".\n"
+	return result
 }
 
 // Creates a map of operators and quantifiers for coq to print formulas with.
@@ -123,7 +143,7 @@ func constructHypotheses(and btps.Form) string {
 }
 
 /* Applies oneStep repeatdly with beautiful prints */
-func coqProofFromGoeland(proofs []proof.ProofStruct, nested int) string {
+func coqProofFromGoeland(proofs []proof.ProofStruct, nested int, printStar bool) string {
 	// Beautiful print
 	preamble := func(nested, i int) string {
 		if i == 0 {
@@ -135,7 +155,12 @@ func coqProofFromGoeland(proofs []proof.ProofStruct, nested int) string {
 		return strings.Repeat(" ", nested*3+1)
 	}
 
-	resultingProof := strings.Repeat(" ", nested*2) + strings.Repeat("*", nested) + " "
+	resultingProof := strings.Repeat(" ", nested*2)
+	if printStar {
+		resultingProof += strings.Repeat("*", nested) + " "
+	} else {
+		resultingProof += strings.Repeat(" ", nested+1)
+	}
 
 	if nested == 0 {
 		resultingProof += " "
@@ -152,11 +177,15 @@ func coqProofFromGoeland(proofs []proof.ProofStruct, nested int) string {
 	}
 
 	lastProof := proofs[len(proofs)-1]
-	if len(lastProof.Children) > 0 {
-		for _, child := range lastProof.GetChildren() {
-			before := copyFormulas()
-			resultingProof += coqProofFromGoeland(child, nested+1)
-			formulasIntroduced = before
+	if len(lastProof.GetChildren()) > 0 {
+		if len(lastProof.GetChildren()) == 1 {
+			resultingProof += coqProofFromGoeland(lastProof.GetChildren()[0], nested, false)
+		} else {
+			for _, child := range lastProof.GetChildren() {
+				before := copyFormulas()
+				resultingProof += coqProofFromGoeland(child, nested+1, true)
+				formulasIntroduced = before
+			}
 		}
 	}
 
@@ -227,6 +256,11 @@ func proofOneStep(p proof.ProofStruct) string {
 		// Reintroduction problem
 		// p.GetFormulaUse()
 		result = applyNTimes("apply H%s. exists %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), instanciate(p.GetFormula(), resultForm))
+	case "Rewrite":
+		hypo := get(p.Formula)
+		result = fmt.Sprintf("rewrite goeland_axiom_%d in H%d.", p.Formula.GetIndex(), hypo)
+		// Update hypotheses introduced
+		formulasIntroduced[hypo] = p.GetResultFormulas()[0].GetFL()[0]
 	}
 	return result
 }
@@ -238,7 +272,6 @@ func get(form btps.Form) int {
 			return i
 		}
 	}
-	fmt.Println(form.ToString())
 	return -1
 }
 
@@ -280,7 +313,6 @@ func createConsts(form, resultForm btps.Form) []string {
 	constants := []string{}
 	for _, term := range terms {
 		constants = append(constants, fmt.Sprintf("sko_%d", len(constantsCreated)))
-		fmt.Printf("sko_%d : %s\n", len(constantsCreated), term.ToString())
 		constantsCreated = append(constantsCreated, term)
 	}
 	return constants

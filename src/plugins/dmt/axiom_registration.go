@@ -57,8 +57,10 @@ func RegisterAxiom(axiom btypes.Form) bool {
 	// } else
 
 	if isRegisterableAsEqu(axiomFT) {
+		registeredAxioms = append(registeredAxioms, axiom)
 		return makeRewriteRuleFromEquivalence(axiomFT.(btypes.Equ))
 	} else if isRegisterableAsImplication(axiomFT) {
+		registeredAxioms = append(registeredAxioms, axiom)
 		return makeRewriteRuleFromImplication(axiomFT.(btypes.Imp))
 	}
 
