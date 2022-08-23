@@ -62,12 +62,16 @@ func equalityReasoningMultiList(epml EqualityProblemMultiList) (bool, []treetype
 
 	for _, epl := range epml {
 		global.PrintDebug("ERML", fmt.Sprintf("iteration on EPL : %v", epl.toString()))
+		// returns a list of list of equality_proof_step
 		if has_solution, subst_res_tmp := equalityReasoningList(epl); has_solution {
 			global.PrintDebug("ERML", fmt.Sprintf("Solution found for one EPL : %v !", treetypes.SubstListToString(subst_res_tmp)))
 			found = true
 			for subst_res_tmp_element := range subst_res_tmp {
 				substs_res = treetypes.AppendIfNotContainsSubst(substs_res, subst_res_tmp[subst_res_tmp_element])
+				proof_struct = append(proof_struct, proof_list...)
 			}
+			// from <term, eq, term> to <pred, eq, pred>
+			// Return subst, list(<pred, eq, pred>)
 		}
 	}
 	global.PrintDebug("ERML", fmt.Sprintf("Final subst after ER : %v", treetypes.SubstListToString(substs_res)))
@@ -79,36 +83,45 @@ func equalityReasoningMultiList(epml EqualityProblemMultiList) (bool, []treetype
 * Data : an equality problem list (EqualityProblemList), corresponding to an inequality or two complementary predicates
 * Result : true if all of the problem in the list agrees on at least one substitution, and the corresponding substitutions
 **/
-func equalityReasoningList(epl EqualityProblemList) (bool, []treetypes.Substitutions) {
+func equalityReasoningList(epl EqualityProblemList) (bool, []treetypes.Substitutions, [][]proof.ProofStruct) {
 	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning list : %v", epl.toString()))
 
 	substs_res := []treetypes.Substitutions{}
+	proof_res := [][]proof.ProofStruct{}
 
-	for _, ep := range epl {
+	for _, ep := range epl.GetEPL() {
 		global.PrintDebug("ERL", fmt.Sprintf("Iteration on EP : %v", ep.toString()))
 		// Each step manage one problem with n subtitutions
-		if has_solution, subst_res_tmp := manageEqualityReasoningProblem(ep.copy(), substs_res); has_solution {
+		if has_solution, subst_res_tmp, proof_tmp := manageEqualityReasoningProblem(ep.copy(), substs_res, proof_res); has_solution {
 			global.PrintDebug("ERL", fmt.Sprintf("Solution found for on EP : %v !", treetypes.SubstListToString(subst_res_tmp)))
 			substs_res = treetypes.CopySubstList(subst_res_tmp)
+			proof_res = proof_tmp
 		} else {
-			return false, []treetypes.Substitutions{treetypes.Failure()}
+			return false, []treetypes.Substitutions{treetypes.Failure()}, [][]proof.ProofStruct{}
 		}
 	}
-	return true, substs_res
+	return true, substs_res, proof_res
 }
 
 /* return true if at least on subst on the subst list returns result, and the corresponding substitution list */
-func manageEqualityReasoningProblem(ep EqualityProblem, sl []treetypes.Substitutions) (bool, []treetypes.Substitutions) {
+func manageEqualityReasoningProblem(ep EqualityProblem, sl []treetypes.Substitutions, current_proof_list [][]proof.ProofStruct) (bool, []treetypes.Substitutions, [][]proof.ProofStruct) {
 	global.PrintDebug("ERPWAS", "Start on equality reasoning  problem with apply subst")
 	if len(sl) == 0 {
-		subst := launchEqualityReasoningProblem(ep)
-		return len(subst) > 0, subst
+		// <R ou L, init, eq, final>
+		found, subst, proof_res := launchEqualityReasoningProblem(ep)
+		// Here : toutes les listes match avec la proof renvoyée
+		// TODO : merge current_proof_list avec prood_res (n*m)
+		return found, subst
 	} else {
 		found := false
 		res_substs := []treetypes.Substitutions{}
 		for _, s := range sl {
-			s_subst := launchEqualityReasoningProblem(ep.applySubstitution(s))
-			if len(s_subst) > 0 {
+			// TODO : trouve la/les liste de proof associée et la mettre à jour avec les nouvelles
+			// Here : seul les proof correspondant à la subst match avec les proofs renvoyées
+			// Combinatoire n * m
+			// Faire une liste (subst, [][]proof)
+			found, s_subst, proof_res := launchEqualityReasoningProblem(ep.applySubstitution(s))
+			if found {
 				for _, subst_element := range s_subst {
 					merged_subst, same_key := treesearch.MergeSubstitutions(s.Copy(), subst_element.Copy())
 					if same_key {

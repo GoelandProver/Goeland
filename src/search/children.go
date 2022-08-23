@@ -41,55 +41,7 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
-	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
-
-/* Struct result to communicate substitution or a quit order through a channel */
-type Communication struct {
-	quit   chan bool // True if need to die, false si need to wait
-	result chan Result
-}
-
-func (c Communication) GetQuit() chan bool {
-	return c.quit
-}
-func (c Communication) GetResult() chan Result {
-	return c.result
-}
-
-func MakeCommunication(quit chan bool, result chan Result) Communication {
-	return Communication{quit, result}
-}
-
-type Result struct {
-	id                    uint64
-	closed, need_answer   bool
-	subst_for_children    complextypes.SubstAndForm
-	subst_list_for_father []complextypes.SubstAndForm
-	proof                 []proof.ProofStruct
-}
-
-func (r Result) GetId() uint64 {
-	return r.id
-}
-func (r Result) GetClosed() bool {
-	return r.closed
-}
-func (r Result) GetNeedAnswer() bool {
-	return r.need_answer
-}
-func (r Result) GetSubstForChildren() complextypes.SubstAndForm {
-	return r.subst_for_children.Copy()
-}
-func (r Result) GetSubstListForFather() []complextypes.SubstAndForm {
-	return complextypes.CopySubstAndFormList(r.subst_list_for_father)
-}
-func (r Result) GetProof() []proof.ProofStruct {
-	return proof.CopyProofStructList(r.proof)
-}
-func (r Result) Copy() Result {
-	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetProof()}
-}
 
 /* remove a childre  from a communication list */
 func removeChildren(s []Communication, i int) []Communication {
@@ -146,6 +98,7 @@ func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64
 	select {
 	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), st.GetProof()}:
 		if need_answer {
+			// Pass arg here too
 			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id)
 		} else {
 			global.PrintDebug("SSTF", "Die")

@@ -73,9 +73,12 @@ func ProofSearch(father_id uint64, st complextypes.State, c Communication, s com
 * Manage this result, dispatch the subst and recreate data strcutures.
 * Return if the branch is closed without variable from its father
 **/
-func manageClosureRule(father_id uint64, st *complextypes.State, c Communication, clos_res bool, substs []treetypes.Substitutions, f basictypes.Form, node_id int) bool {
-	closed := false
+func manageClosureRule(father_id uint64, st *complextypes.State, c Communication, clos_res bool, substs []treetypes.Substitutions, f basictypes.Form, node_id int) (bool, SubstProofPairList) {
+	subst_proof_list := makeEmptySubstProofPairList()
 
+	// Param : <subst, proof>
+	// Si je me clos direct, choix arbitraire, comme pour susbt
+	// Sinon, return bool, <subst,proof>, va dns wait father, clos si renvoie le même et append, overwrite sinon
 	if clos_res {
 
 		mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
@@ -96,7 +99,6 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id)
-			closed = true
 
 		case len(substs_without_mm) > 0:
 			// [EQ-PROOF] Link with eq proof
@@ -113,16 +115,17 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			st.SetProof(complextypes.ApplySubstitutionOnProofList(substs_without_mm[0], append(st.GetProof(), st.GetCurrentProof())))
 
 			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id)
-			closed = true
 
 		case len(substs_with_mm) > 0:
 			global.PrintDebug("MCR", "Contradiction found (with mm) !")
 
-			st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", treetypes.SubstListToStringForProof(substs_with_mm_for_proof)))
+			// TODO : REMOVE vu qu fait dans wait father ?
+			st.SetCurrentProofRule("⊙")
 			st.SetCurrentProofRuleName("CLOSURE")
 			st.SetCurrentProofFormula(f.Copy())
 			st.SetCurrentProofNodeId(node_id)
 			st.SetCurrentProofResultFormulas([]proof.IntFormList{})
+			st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 			for _, subst_for_father := range substs_with_mm {
 
@@ -143,28 +146,29 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 				subst_and_form_for_father = complextypes.MergeSubstAndForm(subst_and_form_for_father.Copy(), st.GetAppliedSubst())
 
 				st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), subst_and_form_for_father))
+				// append en boucle, store i, et faire un map <subst with_all_mm, proof>
 			}
 
 			global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
+
+			// Add this here
+			// case len(st.GetSubstsFound()) > 0 && global.IsDestructive():
+			// 	// décalrer ça dans manage closure rule
+			// 	// TODO : here : faux pour
+			// 	global.PrintDebug("PS", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
+			// 	// Pass arg here too
+			// 	sendSubToFather(c, true, true, father_id, st, []complextypes.SubstAndForm{}, current_node_id)
 		}
 	}
 
-	return closed
+	return clos_res, subst_proof_list
 }
 
 /* Apply rules with priority (closure < rewritte < alpha < delta < closure with mm < beta < gamma) */
 func applyRules(father_id uint64, st complextypes.State, c Communication, new_atomics basictypes.FormList, current_node_id int) {
+	// Param en + : <subst, rule>
 	global.PrintDebug("AR", "ApplyRule")
 	switch {
-
-	case len(st.GetSubstsFound()) > 0 && global.IsDestructive():
-		global.PrintDebug("PS", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
-		st.SetCurrentProofRule("⊙")
-		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofResultFormulas([]proof.IntFormList{})
-		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
-		sendSubToFather(c, true, true, father_id, st, []complextypes.SubstAndForm{}, current_node_id)
-
 	case len(new_atomics) > 0 && global.IsLoaded("dmt") && len(st.GetSubstsFound()) == 0:
 		manageRewritteRules(father_id, st, c, new_atomics, current_node_id)
 

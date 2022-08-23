@@ -132,7 +132,7 @@ func (p ProofStruct) ToString() string {
 	return res
 }
 func (p ProofStruct) Copy() ProofStruct {
-	return ProofStruct{p.GetFormula(), p.GetNodeId(), p.GetRule(), p.GetRuleName(), p.GetRuleFormula(), p.GetResultFormulas(), copyProofStructChildren(p.Children)}
+	return ProofStruct{p.GetFormula(), p.GetNodeId(), p.GetRule(), p.GetRuleName(), p.GetRuleFormula(), p.GetResultFormulas(), CopyProofStructChildren(p.Children)}
 }
 
 func ProofStructListToString(l []ProofStruct) string {
@@ -188,7 +188,7 @@ func SetFileProof(file *os.File) {
 	file_proof = file
 }
 func (p *ProofStruct) SetChildrenProof(c [][]ProofStruct) {
-	p.Children = copyProofStructChildren(c)
+	p.Children = CopyProofStructChildren(c)
 }
 func (p *ProofStruct) SetFormulaProof(f basictypes.Form) {
 	p.Formula = f
@@ -290,7 +290,7 @@ func WriteGraphProof(proof_content []ProofStruct) {
 }
 
 /* Copy children */
-func copyProofStructChildren(c [][]ProofStruct) [][]ProofStruct {
+func CopyProofStructChildren(c [][]ProofStruct) [][]ProofStruct {
 	res := make([][]ProofStruct, len(c))
 	for i := range c {
 		res[i] = make([]ProofStruct, len(c[i]))

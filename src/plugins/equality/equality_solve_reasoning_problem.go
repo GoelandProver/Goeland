@@ -44,15 +44,17 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 /*** Instaniation ***/
 /* Launches the first instance of applyEqualityReasoningProblem. */
-func launchEqualityReasoningProblem(ep EqualityProblem) []treetypes.Substitutions {
+func launchEqualityReasoningProblem(ep EqualityProblem) (bool, []treetypes.Substitutions, [][]proof.ProofStruct) {
 	superFatherChan := make(chan answerEP)
 	go tryEqualityReasoningProblem(ep, superFatherChan, -1, RIGHT, global.GetGID())
 	res := <-superFatherChan
-	return res.substs
+	// Return list de coupe (subst, [][]<coté, init, eq, final>)
+	return res.found, res.substs, res.proof
 }
 
 /* try equalityReasoningProblem */

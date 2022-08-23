@@ -44,17 +44,32 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/global"
+	polymorphism "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-type EqualityProblemList []EqualityProblem
+type EqualityProblemList struct {
+	p1  basictypes.Form
+	p2  basictypes.Form
+	epl []EqualityProblem
+}
+
+func (epl EqualityProblemList) GetEPL() []EqualityProblem {
+	return epl.epl
+}
+func (epl EqualityProblemList) GetP1() basictypes.Form {
+	return epl.p1.Copy()
+}
+func (epl EqualityProblemList) GetP2() basictypes.Form {
+	return epl.p2.Copy()
+}
 
 func (epl EqualityProblemList) toString() string {
 	res := "{"
-	for i, ep := range epl {
+	for i, ep := range epl.GetEPL() {
 		res += ep.toString()
-		if i < len(epl)-1 {
+		if i < len(epl.GetEPL())-1 {
 			res += ", "
 		}
 	}
@@ -63,6 +78,9 @@ func (epl EqualityProblemList) toString() string {
 
 func makeEmptyEqualityProblemList() EqualityProblemList {
 	return EqualityProblemList{}
+}
+func makeEqualityProblemList(p1, p2 basictypes.Form, l []EqualityProblem) EqualityProblemList {
+	return EqualityProblemList{p1, p2, l}
 }
 
 type EqualityProblemMultiList []EqualityProblemList
@@ -88,18 +106,28 @@ func makeEmptyEqualityProblemMultiList() EqualityProblemMultiList {
 func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
 	for _, neq_pair := range neq {
-		res = append(res, append(makeEmptyEqualityProblemList(), makeEqualityProblem(eq.copy(), neq_pair.getT1(), neq_pair.getT2(), makeEmptyConstaintStruct())))
+		res = append(res,
+			makeEqualityProblemList(
+				basictypes.MakerNot(
+					basictypes.MakerPred(
+						basictypes.Id_eq,
+						[]basictypes.Term{neq_pair.getT1(), neq_pair.getT2()}, []polymorphism.TypeApp{neq_pair.getT1().(basictypes.TypedTerm).GetTypeApp()})),
+				basictypes.MakerNot(
+					basictypes.MakerPred(
+						basictypes.Id_eq,
+						[]basictypes.Term{neq_pair.getT1(), neq_pair.getT2()}, []polymorphism.TypeApp{neq_pair.getT1().(basictypes.TypedTerm).GetTypeApp()})),
+				[]EqualityProblem{makeEqualityProblem(eq.copy(), neq_pair.getT1(), neq_pair.getT2(), makeEmptyConstaintStruct())}))
 	}
 	return res
 }
 
 /* Build an equality problem list from a predicat and its negation */
 func buildEqualityProblemListFrom2Pred(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
-	res := makeEmptyEqualityProblemList()
+	res := []EqualityProblem{}
 	for i := range p1.GetArgs() {
 		res = append(res, makeEqualityProblem(eq.copy(), p1.GetArgs()[i].Copy(), p2.GetArgs()[i].Copy(), makeEmptyConstaintStruct()))
 	}
-	return res
+	return makeEqualityProblemList(p1, p2, res)
 }
 
 /* Build an equality problem multi list from a list of predicate. Take one predicate, search for its negation in the code tree, and if it found any, build the corresponding equality problem list */

@@ -45,20 +45,22 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 type answerEP struct {
 	id     uint64
 	found  bool
 	substs []treetypes.Substitutions
+	proof  [][]proof.ProofStruct
 }
 
 func makeEmptyAnswerEP() answerEP {
-	return answerEP{global.GetGID(), false, nil}
+	return answerEP{global.GetGID(), false, nil, nil}
 }
 
-func makeAnswerEP(found bool, substs []treetypes.Substitutions) answerEP {
-	return answerEP{global.GetGID(), found, substs}
+func makeAnswerEP(found bool, substs []treetypes.Substitutions, proofstruct [][]proof.ProofStruct) answerEP {
+	return answerEP{global.GetGID(), found, substs, proofstruct}
 }
 
 /**

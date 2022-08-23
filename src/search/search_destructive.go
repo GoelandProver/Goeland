@@ -314,6 +314,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 		global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", answer_father.GetSubstForChildren().ToString()))
 
 		// Check if the subst was already seen, returns eventually the subst with new formula(s)
+		// Return index to find equavalent eq (if any)
 		if treetypes.ContainsSubst(complextypes.GetSubstListFromSubstAndFormList(given_substs), answer_father.subst_for_children.GetSubst()) {
 			global.PrintDebug("WF", "This substitution was sent by this child")
 			subst_for_father := answer_father.GetSubstForChildren()
@@ -325,6 +326,14 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst_for_father})
 			sendSubToFather(c, true, true, father_id, st, given_substs, node_id)
+			// Aller voir dans la map, maj current proof
+			// st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", substs_without_mm[0].ToString()))
+			// st.SetCurrentProofRuleName("CLOSURE")
+			// st.SetCurrentProofFormula(f.Copy())
+			// st.SetCurrentProofNodeId(node_id)
+			// st.SetCurrentProofResultFormulas([]proof.IntFormList{})
+			// st.SetProof(complextypes.ApplySubstitutionOnProofList(substs_without_mm[0], append(st.GetProof(), st.GetCurrentProof())))
+
 		} else {
 			// Retrieve meta from the subst sent by my father
 			meta_sisters := st.GetMM()
@@ -594,6 +603,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			}
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 			clos_res, subst := applyClosureRules(f.Copy(), &st)
+			// Her return bool + proof struct (a voir vu que ça va dans susbt found)
 			if manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy(), node_id) {
 				return
 			}
@@ -623,13 +633,10 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			if shouldApplyEquality(new_atomics, st) {
 				global.PrintDebug("PS", "EQ is applicable !")
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
-				res_eq, subst_eq, proof_children := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
+				res_eq, subst_eq, subst_proof_list := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
 				if res_eq {
-					// TODO : Proof
-					st.SetCurrentProofChildren(proof_children)
-					st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
-
-					if manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{}), node_id) {
+					// <subst, proof>
+					if manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{}), node_id, subst_proof_list) {
 						return
 					}
 				}
@@ -638,6 +645,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 		global.PrintDebug("PS", "Let's apply rules !")
 		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", atomics_for_dmt.ToString()))
+		// Donner <subst, proof>
 		applyRules(father_id, st, c, atomics_for_dmt, node_id)
 	}
 }

@@ -72,6 +72,8 @@ func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basic
 	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
 	if equalities {
 		return equalityReasoningMultiList(problem)
+		// TODO : transform list <subst, <coté, init, eq, final>> en <subst, [][]proofstruct>
+		return
 	} else {
 		return false, []treetypes.Substitutions{}, [][]proof.ProofStruct{}
 	}
