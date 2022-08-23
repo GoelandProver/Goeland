@@ -144,7 +144,7 @@ func TestNormalTS(t *testing.T) {
 			err := SaveTypeScheme(test.name, test.in, test.out)
 			if test.expectedError {
 				if err == nil {
-					t.Fatalf("Expected error when saving %s : (%s > %s) but it didn't happen", test.name, test.in.ToString(), test.out.ToString())
+					t.Fatalf("Expected error when saving %s : (%s -> %s) but it didn't happen", test.name, test.in.ToString(), test.out.ToString())
 				}
 			} else {
 				if err != nil {

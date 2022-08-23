@@ -42,11 +42,11 @@ func TestTPTPBinaryNatives(t *testing.T) {
 	}
 	out := p.GetType("$quotient", p.MkTypeCross(tRat, tRat))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tRat, tRat), tRat)) {
-		t.Errorf("Error: quotient: rat * rat > rat not defined when it should be.")
+		t.Errorf("Error: quotient: rat * rat -> rat not defined when it should be.")
 	}
 	out = p.GetType("$quotient", p.MkTypeCross(tReal, tReal))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tReal, tReal), tReal)) {
-		t.Errorf("Error: quotient: real * real > real not defined when it should be.")
+		t.Errorf("Error: quotient: real * real -> real not defined when it should be.")
 	}
 }
 
@@ -200,10 +200,10 @@ func TestDefaultType3(t *testing.T) {
 		size int
 		name string
 	}{
-		{1, "($i > $i)"},
-		{2, "(($i * $i) > $i)"},
-		{3, "(($i * $i * $i) > $i)"},
-		{10, "(($i * $i * $i * $i * $i * $i * $i * $i * $i * $i) > $i)"},
+		{1, "($i -> $i)"},
+		{2, "(($i * $i) -> $i)"},
+		{3, "(($i * $i * $i) -> $i)"},
+		{10, "(($i * $i * $i * $i * $i * $i * $i * $i * $i * $i) -> $i)"},
 	}
 
 	for _, test := range testTable {
@@ -218,10 +218,10 @@ func TestDefaultProp3(t *testing.T) {
 		size int
 		name string
 	}{
-		{1, "($i > $o)"},
-		{2, "(($i * $i) > $o)"},
-		{3, "(($i * $i * $i) > $o)"},
-		{10, "(($i * $i * $i * $i * $i * $i * $i * $i * $i * $i) > $o)"},
+		{1, "($i -> $o)"},
+		{2, "(($i * $i) -> $o)"},
+		{3, "(($i * $i * $i) -> $o)"},
+		{10, "(($i * $i * $i * $i * $i * $i * $i * $i * $i * $i) -> $o)"},
 	}
 
 	for _, test := range testTable {
@@ -234,15 +234,15 @@ func TestDefaultProp3(t *testing.T) {
 func testBinaryPreds(name string) error {
 	out := p.GetType(name, p.MkTypeCross(tInt, tInt))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tInt, tInt), p.DefaultProp())) {
-		return fmt.Errorf("Error: %s: int * int > int not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: int * int -> int not defined when it should be.", name)
 	}
 	out = p.GetType(name, p.MkTypeCross(tRat, tRat))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tRat, tRat), p.DefaultProp())) {
-		return fmt.Errorf("Error: %s: rat * rat > rat not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: rat * rat -> rat not defined when it should be.", name)
 	}
 	out = p.GetType(name, p.MkTypeCross(tReal, tReal))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tReal, tReal), p.DefaultProp())) {
-		return fmt.Errorf("Error: %s: real * real > real not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: real * real -> real not defined when it should be.", name)
 	}
 
 	return nil
@@ -251,15 +251,15 @@ func testBinaryPreds(name string) error {
 func testBinaryTypes(name string) error {
 	out := p.GetType(name, p.MkTypeCross(tInt, tInt))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tInt, tInt), tInt)) {
-		return fmt.Errorf("Error: %s: int * int > int not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: int * int -> int not defined when it should be.", name)
 	}
 	out = p.GetType(name, p.MkTypeCross(tRat, tRat))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tRat, tRat), tRat)) {
-		return fmt.Errorf("Error: %s: rat * rat > rat not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: rat * rat -> rat not defined when it should be.", name)
 	}
 	out = p.GetType(name, p.MkTypeCross(tReal, tReal))
 	if !out.Equals(p.MkTypeArrow(p.MkTypeCross(tReal, tReal), tReal)) {
-		return fmt.Errorf("Error: %s: real * real > real not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: real * real -> real not defined when it should be.", name)
 	}
 
 	return nil
@@ -268,15 +268,15 @@ func testBinaryTypes(name string) error {
 func testUnaryTypes(name string) error {
 	out := p.GetType(name, tInt)
 	if !out.Equals(p.MkTypeArrow(tInt, tInt)) {
-		return fmt.Errorf("Error: %s: int > int not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: int -> int not defined when it should be.", name)
 	}
 	out = p.GetType(name, tRat)
 	if !out.Equals(p.MkTypeArrow(tRat, tRat)) {
-		return fmt.Errorf("Error: %s: rat > rat not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: rat -> rat not defined when it should be.", name)
 	}
 	out = p.GetType(name, tReal)
 	if !out.Equals(p.MkTypeArrow(tReal, tReal)) {
-		return fmt.Errorf("Error: %s: real > real not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: real -> real not defined when it should be.", name)
 	}
 
 	return nil
@@ -285,15 +285,15 @@ func testUnaryTypes(name string) error {
 func testUnaryProp(name string) error {
 	out := p.GetType(name, tInt)
 	if !out.Equals(p.MkTypeArrow(tInt, p.DefaultProp())) {
-		return fmt.Errorf("Error: %s: int > o not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: $int -> $o not defined when it should be.", name)
 	}
 	out = p.GetType(name, tRat)
 	if !out.Equals(p.MkTypeArrow(tRat, p.DefaultProp())) {
-		return fmt.Errorf("Error: %s: rat > o not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: $rat -> $o not defined when it should be.", name)
 	}
 	out = p.GetType(name, tReal)
 	if !out.Equals(p.MkTypeArrow(tReal, p.DefaultProp())) {
-		return fmt.Errorf("Error: %s: real > o not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: $real -> $o not defined when it should be.", name)
 	}
 
 	return nil
@@ -302,15 +302,15 @@ func testUnaryProp(name string) error {
 func testConversion(name string, outType p.TypeApp) error {
 	out := p.GetType(name, tInt)
 	if !out.Equals(p.MkTypeArrow(tInt, outType)) {
-		return fmt.Errorf("Error: %s: int > int not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: $int -> $int not defined when it should be.", name)
 	}
 	out = p.GetType(name, tRat)
 	if !out.Equals(p.MkTypeArrow(tRat, outType)) {
-		return fmt.Errorf("Error: %s: rat > int not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: $rat -> $int not defined when it should be.", name)
 	}
 	out = p.GetType(name, tReal)
 	if !out.Equals(p.MkTypeArrow(tReal, outType)) {
-		return fmt.Errorf("Error: %s: int > int not defined when it should be.", name)
+		return fmt.Errorf("Error: %s: $int -> $int not defined when it should be.", name)
 	}
 
 	return nil

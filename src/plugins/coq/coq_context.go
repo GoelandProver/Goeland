@@ -53,7 +53,7 @@ import (
 func makeContext(root btps.Form, metaList btps.MetaList) string {
 	resultingString := contextPreamble()
 	if typing.EmptyGlobalContext() {
-		resultingString += strings.Join(getContextFromFormula(root), "\n")
+		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
 		resultingString += strings.Join(contextualizeMetas(metaList), "\n")
 	} else {
 		// TODO: get context and print everything.
