@@ -83,7 +83,7 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 	if *context {
 		// TODO: context
 		resultingString += "(* CONTEXT BEGIN *)\n"
-		resultingString += makeContext(proof[0].Formula)
+		resultingString += makeContext(proof[0].Formula, meta)
 		resultingString += "\n(* CONTEXT END *)\n\n"
 	}
 	resultingString += "(* PROOF BEGIN *)\n"
@@ -304,9 +304,13 @@ func proofOneStep(p proof.ProofStruct) string {
 		result = applyNTimes("apply H%s. goeland_intro %s. apply NNPP. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), createConsts(p.GetFormula(), resultForm))
 	case "GAMMA_FORALL":
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
+		// Reintroduction problem
+		// p.GetFormulaUse()
 		result = applyNTimes("generalize (H%s %s). goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), instanciate(p.GetFormula(), resultForm))
 	case "GAMMA_NOT_EXISTS":
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
+		// Reintroduction problem
+		// p.GetFormulaUse()
 		result = applyNTimes("apply H%s. exists %s. apply NNPP. goeland_intro H%s.", p.GetFormula().GetIndex(), resultForm.GetIndex(), instanciate(p.GetFormula(), resultForm))
 	}
 	return result

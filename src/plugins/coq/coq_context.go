@@ -50,10 +50,11 @@ import (
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func makeContext(root btps.Form) string {
+func makeContext(root btps.Form, metaList btps.MetaList) string {
 	resultingString := contextPreamble()
 	if typing.EmptyGlobalContext() {
 		resultingString += strings.Join(getContextFromFormula(root), "\n")
+		resultingString += strings.Join(contextualizeMetas(metaList), "\n")
 	} else {
 		// TODO: get context and print everything.
 	}
@@ -133,6 +134,17 @@ func clean(set, add []string) []string {
 		if !found {
 			result = append(result, str)
 		}
+	}
+	return result
+}
+
+func contextualizeMetas(metaList btps.MetaList) []string {
+	result := []string{}
+	for _, meta := range metaList {
+		result = append(
+			result,
+			fmt.Sprintf("Parameter %s : goeland_U.", meta.ToMappedString(coqMapConnectorsCreation(), false)),
+		)
 	}
 	return result
 }
