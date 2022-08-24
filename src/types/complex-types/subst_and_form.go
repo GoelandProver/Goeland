@@ -39,7 +39,11 @@
 package complextypes
 
 import (
+	"fmt"
+
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -97,13 +101,120 @@ func MakeEmptySubstAndForm() SubstAndForm {
 func (s SubstAndForm) AddFormulas(fl basictypes.FormList) SubstAndForm {
 	return MakeSubstAndForm(s.GetSubst(), s.GetForm().Merge(fl.Copy()))
 }
-func InsertFirstSubstAndFormList(safL []SubstAndForm, saf SubstAndForm) []SubstAndForm {
-	if len(safL) > 0 {
-		// Moves everything to the right once.
-		safL = append(safL[:1], safL[0:]...)
-		safL[0] = saf
-	} else {
-		safL = append(safL, saf)
+
+/* Remove empty substitution from a substitution list */
+func RemoveEmptySubstFromSubstList(sl []treetypes.Substitutions) []treetypes.Substitutions {
+	res := []treetypes.Substitutions{}
+	for _, s := range sl {
+		if !(s.IsEmpty()) {
+			res = append(res, s)
+		}
 	}
-	return safL
+	return res
+}
+
+/* Remove empty substitution from a substitution list */
+func RemoveEmptySubstFromSubstAndFormList(sl []SubstAndForm) []SubstAndForm {
+	res := []SubstAndForm{}
+	for _, s := range sl {
+		if !(s.GetSubst().IsEmpty()) {
+			res = append(res, s)
+		}
+	}
+	return res
+}
+
+/* Get a subst list from SubstAndForm lsit */
+func GetSubstListFromSubstAndFormList(l []SubstAndForm) []treetypes.Substitutions {
+	res := []treetypes.Substitutions{}
+	for _, saf := range l {
+		res = append(res, saf.GetSubst())
+	}
+	return res
+}
+
+/* Check if a substitution is inside a list of SubstAndForm */
+func ContainsSubstAndForm(s SubstAndForm, sl []SubstAndForm) bool {
+	for _, v := range sl {
+		if v.Equals(s) {
+			return true
+		}
+	}
+	return false
+}
+
+/* Append a substitution s to a list of substitution sl if s is not in sl */
+func AppendIfNotContainsSubstAndForm(sl []SubstAndForm, s SubstAndForm) []SubstAndForm {
+	if !ContainsSubstAndForm(s, sl) {
+		return append(sl, s)
+	} else {
+		return sl
+	}
+}
+
+/* Remove a substitution from a list of substitutions */
+func RemoveSubstFromSubstAndFormList(i int, sl []SubstAndForm) []SubstAndForm {
+	if len(sl) > 1 {
+		sl[i] = sl[len(sl)-1].Copy()
+		return sl[:len(sl)-1]
+	} else {
+		return []SubstAndForm{}
+	}
+}
+
+/* Copy a list of subst and form */
+func CopySubstAndFormList(sl []SubstAndForm) []SubstAndForm {
+	res := make([]SubstAndForm, len(sl))
+	for i := range sl {
+		res[i] = sl[i].Copy()
+	}
+	return res
+}
+
+/* Print a list of substAndForm */
+func SubstAndFormListToString(sl []SubstAndForm) string {
+	var s_res string
+	s_res = "{"
+	for i, v := range sl {
+		s_res += v.ToString()
+		if i < len(sl)-1 {
+			s_res += (", ")
+		}
+	}
+	s_res += "}"
+	return s_res
+}
+
+/* Merge two SubstAndForm (supposed to fit) */
+func MergeSubstAndForm(s1, s2 SubstAndForm) SubstAndForm {
+	if s1.IsEmpty() {
+		return s2
+	}
+
+	if s2.IsEmpty() {
+		return s1
+	}
+
+	new_subst, _ := treesearch.MergeSubstitutions(s1.GetSubst().Copy(), s2.GetSubst().Copy())
+
+	if new_subst.Equals(treetypes.Failure()) {
+		global.PrintDebug("MSAF", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString()))
+		fmt.Printf("[MSAF] Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString())
+		// os.Exit(0)
+	}
+
+	new_form := s1.GetForm().Copy().Merge(s2.GetForm().Copy())
+
+	return MakeSubstAndForm(new_subst, new_form)
+}
+
+/* Merge a list of subst with one subst */
+func MergeSubstListWithSubst(sl []SubstAndForm, subst SubstAndForm) []SubstAndForm {
+	sl_res := []SubstAndForm{}
+
+	for _, s := range sl {
+		sl_res = append(sl_res, MergeSubstAndForm(s, subst))
+	}
+
+	return sl_res
 }

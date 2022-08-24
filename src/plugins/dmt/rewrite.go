@@ -53,14 +53,14 @@ import (
 // ----------------------------------------------------------------------------
 // Primary algorithms.
 
-func Rewrite(atomic btypes.Form) ([]ctypes.SubstAndForm, error) {
+func Rewrite(atomic btypes.Form) ([]ctypes.IntSubstAndForm, error) {
 	form, polarity := getAtomAndPolarity(atomic)
 	tree := selectFromPolarity(polarity, positiveTree, negativeTree)
 	return rewriteGeneric(tree, atomic, form, polarity)
 }
 
-func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) ([]ctypes.SubstAndForm, error) {
-	rewritten := []ctypes.SubstAndForm{}
+func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) ([]ctypes.IntSubstAndForm, error) {
+	rewritten := []ctypes.IntSubstAndForm{}
 
 	var err error = nil
 	if isUnified, unif := tree.Unify(form); isUnified {
@@ -71,7 +71,7 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btyp
 	return rewritten, err
 }
 
-func getRewrittenFormulas(rewritten []ctypes.SubstAndForm, unif []treetypes.MatchingSubstitutions, atomic btypes.Form, polarity bool) ([]ctypes.SubstAndForm, error) {
+func getRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif []treetypes.MatchingSubstitutions, atomic btypes.Form, polarity bool) ([]ctypes.IntSubstAndForm, error) {
 	unifs := sortUnifications(unif, polarity, atomic)
 	if len(unifs) == 0 {
 		rewritten = rewriteFailure(atomic)
@@ -88,7 +88,7 @@ func getRewrittenFormulas(rewritten []ctypes.SubstAndForm, unif []treetypes.Matc
 	return rewritten, nil
 }
 
-func addRewrittenFormulas(rewritten []ctypes.SubstAndForm, unif treetypes.MatchingSubstitutions, atomic btypes.Form, equivalence btypes.FormList) []ctypes.SubstAndForm {
+func addRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif treetypes.MatchingSubstitutions, atomic btypes.Form, equivalence btypes.FormList) []ctypes.IntSubstAndForm {
 	// Keep only useful substitutions
 	useful_subst := ctypes.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas())
 	meta_search := atomic.GetMetas()
@@ -123,18 +123,18 @@ func getAtomAndPolarity(atom btypes.Form) (btypes.Form, bool) {
 	}
 }
 
-func rewriteFailure(atomic btypes.Form) []ctypes.SubstAndForm {
-	return []ctypes.SubstAndForm{
-		ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic)),
+func rewriteFailure(atomic btypes.Form) []ctypes.IntSubstAndForm {
+	return []ctypes.IntSubstAndForm{
+		ctypes.MakeIntSubstAndForm(-1, ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))),
 	}
 }
 
-func addUnifToAtomics(atomics []ctypes.SubstAndForm, candidate btypes.Form, unif treetypes.MatchingSubstitutions) []ctypes.SubstAndForm {
+func addUnifToAtomics(atomics []ctypes.IntSubstAndForm, candidate btypes.Form, unif treetypes.MatchingSubstitutions) []ctypes.IntSubstAndForm {
 	substAndForm := ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), btypes.MakeSingleElementList(candidate))
 	if isBotOrTop(candidate) {
-		atomics = ctypes.InsertFirstSubstAndFormList(atomics, substAndForm)
+		atomics = ctypes.InsertFirstIntSubstAndFormList(atomics, ctypes.MakeIntSubstAndForm(unif.GetForm().GetIndex(), substAndForm))
 	} else {
-		atomics = append(atomics, substAndForm)
+		atomics = append(atomics, ctypes.MakeIntSubstAndForm(unif.GetForm().GetIndex(), substAndForm))
 	}
 	return atomics
 }

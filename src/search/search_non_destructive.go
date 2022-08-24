@@ -122,7 +122,7 @@ func catchFormulaToInstantiate(subst_found treetypes.Substitutions) int {
 func instantiate(father_id uint64, st *complextypes.State, c Communication, index int, s complextypes.SubstAndForm) {
 	global.PrintDebug("PS", fmt.Sprintf("Instantiate with subst : %v ", s.GetSubst().ToString()))
 	new_meta_generator := st.GetMetaGen()
-	reslf, _ := basictypes.ReintroduceMeta(&new_meta_generator, index)
+	reslf := basictypes.ReintroduceMeta(&new_meta_generator, index)
 	st.SetMetaGen(new_meta_generator)
 	global.PrintDebug("PS", fmt.Sprintf("Instantiate the formula : %s", reslf.ToString()))
 

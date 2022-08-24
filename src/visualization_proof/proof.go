@@ -56,7 +56,7 @@ var mutex_file_proof sync.Mutex
 // Graph struct
 type ProofStruct struct {
 	Formula         basictypes.Form
-	Formula_use     int
+	Id_dmt          int
 	Node_id         int
 	Rule            string
 	Rule_name       string
@@ -66,7 +66,7 @@ type ProofStruct struct {
 
 type JsonProofStruct struct {
 	Formula         string              `json:"Formula"`
-	Formula_use     int                 `json:"Formula_use"`
+	Id_dmt          int                 `json:"id_dmt"`
 	Node_id         int                 `json:"Node_id"`
 	Rule            string              `json:"Rule"`
 	Rule_name       string              `json:"Rule_name"`
@@ -132,7 +132,7 @@ func (p ProofStruct) ToString() string {
 	return res
 }
 func (p ProofStruct) Copy() ProofStruct {
-	return ProofStruct{p.GetFormula(), p.GetFormulaUse(), p.GetNodeId(), p.GetRule(), p.GetRuleName(), p.GetResultFormulas(), copyProofStructChildren(p.Children)}
+	return ProofStruct{p.GetFormula(), p.GetIdDMT(), p.GetNodeId(), p.GetRule(), p.GetRuleName(), p.GetResultFormulas(), copyProofStructChildren(p.Children)}
 }
 
 func ProofStructListToString(l []ProofStruct) string {
@@ -164,8 +164,8 @@ func GetGraphFileNameProof() string {
 func (p ProofStruct) GetFormula() basictypes.Form {
 	return p.Formula
 }
-func (p ProofStruct) GetFormulaUse() int {
-	return p.Formula_use
+func (p ProofStruct) GetIdDMT() int {
+	return p.Id_dmt
 }
 func (p ProofStruct) GetNodeId() int {
 	return p.Node_id
@@ -196,8 +196,8 @@ func (p *ProofStruct) SetFormulaProof(f basictypes.Form) {
 	p.Formula = f
 }
 
-func (p *ProofStruct) SetFormulaUse(i int) {
-	p.Formula_use = i
+func (p *ProofStruct) SetIdDMT(i int) {
+	p.Id_dmt = i
 }
 
 func (p *ProofStruct) SetNodeIdProof(i int) {
@@ -259,7 +259,7 @@ func IntFormListToIntIntStringPairList(fl []IntFormList) []IntIntStringPair {
 func ProofStructListToJsonProofStructList(ps []ProofStruct) []JsonProofStruct {
 	res := []JsonProofStruct{}
 	for _, p := range ps {
-		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.GetFormulaUse(), p.Node_id, p.Rule, p.Rule_name, IntFormListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
+		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.GetIdDMT(), p.Node_id, p.Rule, p.Rule_name, IntFormListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
 		res = append(res, new_json_element)
 	}
 	return res

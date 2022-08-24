@@ -356,7 +356,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 
 			global.PrintDebug("WF", "GO !")
 			st.SetBTOnFormulas(false)
-			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, node_id, original_node_id, true, []int{original_node_id})
+			waitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.IntSubstAndForm{}, node_id, original_node_id, true, []int{original_node_id})
 		}
 	}
 }
@@ -373,7 +373,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 * 	current_substitution : the substitution sent by this node to its children at this step
 * 	subst_for_backtrack : list of subst if we need to backtrack
 **/
-func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.SubstAndForm, node_id int, original_node_id int, overwrite_proof bool, child_order []int) {
+func waitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.IntSubstAndForm, node_id int, original_node_id int, overwrite_proof bool, child_order []int) {
 	global.PrintDebug("WC", "Waiting children")
 	global.PrintDebug("WC", fmt.Sprintf("Id : %v, original node id :%v", node_id, original_node_id))
 	global.PrintDebug("WC", fmt.Sprintf("Child order : %v", child_order))
@@ -511,25 +511,26 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				global.PrintDebug("WC", "Backtrack on formulas")
 
 				next_subst_and_form := forms_for_backtrack[0].Copy()
-				next_form := next_subst_and_form.GetForm()[0].Copy()
+				next_form := next_subst_and_form.GetSaf().GetForm()[0].Copy()
 				forms_for_backtrack = forms_for_backtrack[1:]
-				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{}, next_subst_and_form, "WaitChildren - Backtrack on form")
+				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{}, next_subst_and_form.GetSaf(), "WaitChildren - Backtrack on form")
 
 				// Proof
 				child_node := global.IncrCptNode()
 				st.SetCurrentProofResultFormulas([]proof.IntFormList{proof.MakeIntFormList(child_node, basictypes.MakeSingleElementList(next_form.Copy()))})
 				st.SetCurrentProofRule("Rewrite")
 				st.SetCurrentProofRuleName("Rewrite")
+				st.SetCurrentProofIdDMT(next_subst_and_form.GetId_rewrite())
 
 				// The last formula of getLF is the previous formula choosen among rewritten. So, discrad it and add the new one
 				st.SetLF(append(st.GetLF()[0:len(st.GetLF())-1].Copy(), next_form))
 
 				st_copy := st.Copy()
 				c_child := Communication{make(chan bool), make(chan Result)}
-				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form, child_node, original_node_id)
+				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form.GetSaf(), child_node, original_node_id)
 				global.PrintDebug("PS", "GO !")
 				global.IncrGoRoutine(1)
-				waitChildren(father_id, st, c, []Communication{c_child}, given_substs, next_subst_and_form, substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, []int{child_node})
+				waitChildren(father_id, st, c, []Communication{c_child}, given_substs, next_subst_and_form.GetSaf(), substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, []int{child_node})
 
 			case len(substs_for_backtrack) > 0:
 				global.PrintDebug("WC", "Backtrack on subt")

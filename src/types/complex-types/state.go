@@ -190,9 +190,9 @@ func (st *State) SetCurrentProofFormula(f basictypes.Form) {
 		st.current_proof.SetFormulaProof(f.Copy())
 	}
 }
-func (st *State) SetCurrentProofFormulaUse(i int) {
+func (st *State) SetCurrentProofIdDMT(i int) {
 	if global.GetProof() {
-		st.current_proof.SetFormulaUse(i)
+		st.current_proof.SetIdDMT(i)
 	}
 }
 func (st *State) SetCurrentProofResultFormulas(fll []proof.IntFormList) {
@@ -239,7 +239,6 @@ func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) St
 	current_proof := proof.MakeEmptyProofStruct()
 	current_proof.SetRuleProof("Initial formula")
 	current_proof.SetFormulaProof(f.Copy())
-	current_proof.SetFormulaUse(0)
 
 	return State{n, basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false}
 }
