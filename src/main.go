@@ -79,7 +79,6 @@ var flag_pretty_print = flag.Bool("pretty", false, "Prints are done with UTF-8 c
 var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
 var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable equality")
 var flag_type_proof = flag.Bool("type_proof", false, "Apply this flag if you want to enable type proof visualisation")
-var problem_name string
 var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
 var flag_ari = flag.Bool("ari", false, "Enable arithmetic module")
 var conjecture_found bool
@@ -95,7 +94,8 @@ func main() {
 	}
 
 	problem := args[len(args)-1]
-	problem_name = path.Base(problem)
+	problem_name := path.Base(problem)
+	global.SetProblemName(problem_name)
 
 	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
 	lstm, bound := parser.ParseTPTPFile(problem)
@@ -181,16 +181,16 @@ func PrintResult(res bool) {
 	if res {
 		fmt.Printf("[%.6fs][%v][Res] VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		if conjecture_found {
-			fmt.Printf("%s SZS status Theorem for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status Theorem for %v\n", "%", global.GetProblemName())
 		} else {
-			fmt.Printf("%s SZS status Unsatisfiable for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status Unsatisfiable for %v\n", "%", global.GetProblemName())
 		}
 	} else {
 		fmt.Printf("[%.6fs][%v][Res] NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		if conjecture_found {
-			fmt.Printf("%s SZS status CounterSatisfiable for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status CounterSatisfiable for %v\n", "%", global.GetProblemName())
 		} else {
-			fmt.Printf("%s SZS status Satisfiable for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status Satisfiable for %v\n", "%", global.GetProblemName())
 		}
 	}
 }
@@ -244,13 +244,13 @@ func Search(f basictypes.Form, bound int) {
 
 		if global.GetProof() && res {
 			proof.WriteGraphProof(final_proof)
-			fmt.Printf("%s SZS output start Proof for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS output start Proof for %v\n", "%", global.GetProblemName())
 			if global.IsCoqOutput() {
 				fmt.Printf("%s", coq.MakeCoqOutput(final_proof, uninstantiated_meta))
 			} else {
 				fmt.Printf("%v", proof.ProofStructListToText(final_proof))
 			}
-			fmt.Printf("%s SZS output end Proof for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS output end Proof for %v\n", "%", global.GetProblemName())
 		}
 
 		limit = 2 * limit

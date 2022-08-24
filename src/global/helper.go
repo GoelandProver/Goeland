@@ -67,6 +67,7 @@ var lock_plugins sync.Mutex
 var cpt_node = -1
 var lock_cpt_node sync.Mutex
 var dmt_before_eq bool
+var problem_name string
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -172,6 +173,10 @@ func IsCoqOutput() bool {
 	return ocoq
 }
 
+func GetProblemName() string {
+	return problem_name
+}
+
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
@@ -229,4 +234,8 @@ func SetPlugin(s string, b bool) {
 
 func SetDMTBeforeEQ(b bool) {
 	dmt_before_eq = b
+}
+
+func SetProblemName(problem string) {
+	problem_name = problem
 }

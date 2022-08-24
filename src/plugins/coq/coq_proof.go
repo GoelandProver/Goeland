@@ -62,6 +62,10 @@ import (
 func printTheorem(formula btps.Form) string {
 	result := ""
 
+	process := func(str string) string {
+		return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, ".", "_"), "=", "_"), "+", "_")
+	}
+
 	// Deduction modulo theory
 	if global.IsLoaded("dmt") {
 		result += "\n(* REWRITE RULES BEGIN *)\n"
@@ -69,16 +73,54 @@ func printTheorem(formula btps.Form) string {
 		for _, form := range dmt.GetRegisteredAxioms() {
 			result += fmt.Sprintf(
 				"Axiom goeland_axiom_%d : %s.\n",
-				form.GetIndex(), // TODO: it won't work properly, get the "good" index
+				getAtomicIndex(form),
 				mapDefault(form.ToMappedString(coqMapConnectorsCreation(), false)),
 			)
 		}
 		result += "(* REWRITE RULES END *)\n\n"
 	}
 
+	result += "(* PROOF BEGIN *)\n"
 	// Theorem
-	result += "Theorem goeland_proof_of_ : " + /* global.GetProblemName()  +" : " + */ mapDefault(formula.ToMappedString(coqMapConnectorsCreation(), false)) + ".\n"
+	result += "Theorem goeland_proof_of_" + process(global.GetProblemName()) + " : " + mapDefault(formula.ToMappedString(coqMapConnectorsCreation(), false)) + ".\n"
 	return result
+}
+
+func removeNot(form btps.Form) btps.Form {
+	if not, isNot := form.(btps.Not); isNot {
+		return not.GetForm()
+	}
+	return form
+}
+
+func getAtomicIndex(form btps.Form) int {
+	index := -1
+
+	for true {
+		if all, isAll := form.(btps.All); isAll {
+			form = all.GetForm()
+		} else {
+			break
+		}
+	}
+
+	switch f := form.(type) {
+	case btps.Imp:
+		index = removeNot(f.GetF1()).GetIndex()
+	case btps.Equ:
+		switch nf := f.GetF1().(type) {
+		case btps.Pred:
+			index = nf.GetIndex()
+		case btps.Not:
+			if pred, isPred := nf.GetForm().(btps.Pred); isPred {
+				index = pred.GetIndex()
+			}
+		default:
+			index = removeNot(f.GetF2()).GetIndex()
+		}
+	}
+
+	return index
 }
 
 // Creates a map of operators and quantifiers for coq to print formulas with.
@@ -258,7 +300,7 @@ func proofOneStep(p proof.ProofStruct) string {
 		result = applyNTimes("apply H%s. exists %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), instanciate(p.GetFormula(), resultForm))
 	case "Rewrite":
 		hypo := get(p.Formula)
-		result = fmt.Sprintf("rewrite goeland_axiom_%d in H%d.", p.Formula.GetIndex(), hypo)
+		result = fmt.Sprintf("rewrite goeland_axiom_%d in H%d.", p.Id_dmt, hypo)
 		// Update hypotheses introduced
 		formulasIntroduced[hypo] = p.GetResultFormulas()[0].GetFL()[0]
 	}

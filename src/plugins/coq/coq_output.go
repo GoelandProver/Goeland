@@ -86,7 +86,6 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 		resultingString += makeContext(proof[0].Formula, meta)
 		resultingString += "\n(* CONTEXT END *)\n\n"
 	}
-	resultingString += "(* PROOF BEGIN *)\n"
 	resultingString += makeCoqProof(proof)
 	resultingString += "(* PROOF END *)\n"
 	return resultingString
