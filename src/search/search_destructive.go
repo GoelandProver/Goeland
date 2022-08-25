@@ -414,7 +414,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			}
 
 			// Proof
-			if overwrite_proof {
+			if overwrite_proof && global.GetProof() {
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), append(st.GetProof()[0:len(st.GetProof())-1], proof_children[0]...)))
 			} else {
 				st.SetCurrentProofChildren(proof_children)
@@ -429,7 +429,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 		case 1:
 			global.PrintDebug("WC", fmt.Sprintf("All children agree on the substitution(s) : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(result_subst))))
 
-			if overwrite_proof {
+			if overwrite_proof && global.GetProof() {
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(st.GetAppliedSubst().GetSubst(), append(st.GetProof()[0:len(st.GetProof())-1], proof_children[0]...)))
 			} else {
 				st.SetCurrentProofChildren(proof_children)
