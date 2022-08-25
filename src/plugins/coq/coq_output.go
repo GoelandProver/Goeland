@@ -55,7 +55,9 @@ var outputCoq = flag.Bool("ocoq", false, "Outputs a proof in a coq format instea
 var context = flag.Bool("context", false, "Should be used together with the -ocoq parameter. Produces the context for a standalone execution.")
 
 var constantsCreated []btps.Term
+var axiomsRegistered []btps.Form
 var formulasIntroduced []btps.Form
+var usedAxioms []int
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
@@ -84,7 +86,7 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 	if *context {
 		resultingString += "(* CONTEXT BEGIN *)\n"
 		resultingString += makeContext(proof[0].Formula, meta)
-		resultingString += "\n(* CONTEXT END *)\n\n"
+		resultingString += "\n(* CONTEXT END *)\n"
 	}
 	resultingString += makeCoqProof(proof)
 	resultingString += "(* PROOF END *)\n"
@@ -94,23 +96,23 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 func makeCoqProof(proofs []proof.ProofStruct) string {
 	resultingString := ""
 	// Modify first formula to prove validity
-	firstFormula, index := processMainFormula(proofs[0].Formula)
+	axioms, firstFormula := processMainFormula(proofs[0].Formula)
 	// Prints the theorem to prove
-	resultingString += printTheorem(firstFormula)
+	resultingString += printTheorem(axioms, firstFormula)
 	// Prints the proof
 	resultingString += "Proof.\n"
 	if isNNPP(firstFormula) {
 		resultingString += "  apply NNPP.\n"
 	} else {
-		preambleString, hasHyp := proofPreamble(firstFormula, index)
+		preambleString := proofPreamble(firstFormula)
 		resultingString += preambleString
-		if hasHyp {
+		if len(axioms) > 0 {
 			proofs = proofs[1:]
 		}
 		resultingString += coqProofFromGoeland(proofs, 0, true)
 	}
 	resultingString += "Qed.\n"
-	return resultingString
+	return removeUnusedAxioms(resultingString)
 }
 
 // ----------------------------------------------------------------------------

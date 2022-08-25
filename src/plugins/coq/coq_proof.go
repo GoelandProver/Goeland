@@ -42,6 +42,7 @@ package coq
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	global "github.com/GoelandProver/Goeland/global"
@@ -59,7 +60,7 @@ import (
 // TODO:
 //	* print problem name in the theorem.
 
-func printTheorem(formula btps.Form) string {
+func printTheorem(axioms btps.FormList, formula btps.Form) string {
 	result := ""
 
 	process := func(str string) string {
@@ -78,6 +79,16 @@ func printTheorem(formula btps.Form) string {
 			)
 		}
 		result += "(* REWRITE RULES END *)\n\n"
+	}
+
+	if len(axioms) > 0 {
+		result += "\n(* PROBLEM'S AXIOMS BEGIN *)\n"
+		// Print problem's axioms as Coq's axioms.
+		axiomsRegistered = axioms
+		for _, axiom := range axioms {
+			result += fmt.Sprintf("Axiom goeland_axiom_%d : %s.\n", axiom.GetIndex(), mapDefault(axiom.ToMappedString(coqMapConnectorsCreation(), false)))
+		}
+		result += "(* PROBLEM'S AXIOMS END *)\n\n"
 	}
 
 	result += "(* PROOF BEGIN *)\n"
@@ -153,35 +164,8 @@ func coqMapConnectorsCreation() map[btps.FormulaType]string {
 // For each step of the proof, prints it in a coq format.
 
 /* Prints preamble depending on the type of the form. */
-func proofPreamble(root btps.Form, index int) (string, bool) {
-	imp, isImp := root.(btps.Imp)
-	if !isImp {
-		return fmt.Sprintf("  apply NNPP. intro H%d.\n", index), false
-	} else {
-		and, isAnd := imp.GetF1().(btps.And)
-		if !isAnd {
-			return fmt.Sprintf("  apply NNPP. intro H%d.\n", index), false
-		}
-		lf := and.GetLF()
-		if len(lf) == 1 {
-			return fmt.Sprintf("  intros H%d. apply NNPP. intro H%d.\n", introduce(lf[0]), index), true
-		}
-		return fmt.Sprintf("  intros goeland_ax. %sapply NNPP. intro H%d.\n", constructHypotheses(imp.GetF1()), index), true
-	}
-}
-
-/* Properly destruct hypotheses. */
-func constructHypotheses(and btps.Form) string {
-	str := ""
-	lf := and.(btps.And).GetLF()
-	for i := 0; i < len(lf)-1; i += 1 {
-		if i == len(lf)-2 {
-			str += fmt.Sprintf("destruct goeland_ax as [ H%d H%d ]. ", introduce(lf[i]), introduce(lf[i+1]))
-		} else {
-			str += fmt.Sprintf("destruct goeland_ax as [ H%d goeland_ax ]. ", introduce(lf[i]))
-		}
-	}
-	return str
+func proofPreamble(root btps.Form) string {
+	return fmt.Sprintf("  apply NNPP. intro H%d.\n", introduce(btps.RefuteForm(root)))
 }
 
 /* Applies oneStep repeatdly with beautiful prints */
@@ -234,6 +218,29 @@ func coqProofFromGoeland(proofs []proof.ProofStruct, nested int, printStar bool)
 	return resultingProof
 }
 
+func removeUnusedAxioms(proof string) string {
+	lines := strings.Split(proof, "\n")
+	resultingLines := []string{}
+
+	for _, line := range lines {
+		if strings.Contains(line, "Axiom goeland_axiom") {
+			found := false
+			for _, usedAx := range usedAxioms {
+				if strings.Contains(line, fmt.Sprintf("Axiom goeland_axiom_%d", usedAx)) {
+					found = true
+				}
+			}
+			if found {
+				resultingLines = append(resultingLines, line)
+			}
+		} else {
+			resultingLines = append(resultingLines, line)
+		}
+	}
+
+	return strings.Join(resultingLines, "\n")
+}
+
 func copyFormulas() []btps.Form {
 	cp := make([]btps.Form, len(formulasIntroduced))
 	copy(cp, formulasIntroduced)
@@ -253,68 +260,85 @@ func proofOneStep(p proof.ProofStruct) string {
 	result := ""
 	switch p.Rule_name {
 	case "CLOSURE":
-		result = "auto."
+		if pred, isPred := p.GetFormula().(btps.Pred); isPred && pred.GetID().Equals(btps.Id_eq) {
+			result = "congruence."
+		} else {
+			result = "auto."
+		}
 		//result = fmt.Sprintf("apply H%d. assumption.", proof.GetFormula().GetIndex())
 	case "ALPHA_NOT_NOT":
-		result = fmt.Sprintf("apply H%d. goeland_intro H%d.", get(p.Formula), introduce(p.GetResultFormulas()[0].GetFL()[0]))
+		result = fmt.Sprintf("apply %s. goeland_intro H%d.", get(p.GetFormula()), introduce(p.GetResultFormulas()[0].GetFL()[0]))
 	case "ALPHA_AND":
-		result = fmt.Sprintf("apply (goeland_and_s _ _ H%d). ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_and_s _ _ %s). ", get(p.GetFormula()))
 		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), ". ") + "."
 	case "ALPHA_NOT_OR":
-		result = fmt.Sprintf("apply (goeland_notor_s _ _ H%d). ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_notor_s _ _ %s). ", get(p.GetFormula()))
 		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), ". ") + "."
 	case "ALPHA_NOT_IMPLY":
-		result = fmt.Sprintf("apply (goeland_notimply_s _ _ H%d). ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_notimply_s _ _ %s). ", get(p.GetFormula()))
 		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), ". ") + "."
 	case "BETA_NOT_AND":
-		result = fmt.Sprintf("apply (goeland_notand_s _ _ H%d); ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_notand_s _ _ %s); ", get(p.GetFormula()))
 		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
 	case "BETA_OR":
-		result = fmt.Sprintf("apply (goeland_or_s _ _ H%d); ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_or_s _ _ %s); ", get(p.GetFormula()))
 		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
 	case "BETA_IMPLY":
-		result = fmt.Sprintf("apply (goeland_imply_s _ _ H%d); ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_imply_s _ _ %s); ", get(p.GetFormula()))
 		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
 	case "BETA_EQUIV":
-		result = fmt.Sprintf("apply (goeland_equiv_s _ _ H%d); ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_equiv_s _ _ %s); ", get(p.GetFormula()))
 		result += "[ " + strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), "; ") + " | " + strings.Join(nAryIntro(p.GetResultFormulas()[1].GetFL()), "; ") + " ]."
 	case "BETA_NOT_EQUIV":
-		result = fmt.Sprintf("apply (goeland_notequiv_s _ _ H%d); ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_notequiv_s _ _ %s); ", get(p.GetFormula()))
 		result += "[ " + strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), "; ") + " | " + strings.Join(nAryIntro(p.GetResultFormulas()[1].GetFL()), "; ") + " ]."
 	case "DELTA_EXISTS":
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = applyNTimes("elim H%s. goeland_intro %s. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), createConsts(p.GetFormula(), resultForm))
+		result = applyNTimes("elim %s. goeland_intro %s. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), createConsts(p.GetFormula(), resultForm))
 	case "DELTA_NOT_FORALL":
 		// Apply + new const
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = applyNTimes("apply H%s. goeland_intro %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), createConsts(p.GetFormula(), resultForm))
+		result = applyNTimes("apply %s. goeland_intro %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), createConsts(p.GetFormula(), resultForm))
 	case "GAMMA_FORALL":
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		// Reintroduction problem
-		// p.GetFormulaUse()
-		result = applyNTimes("generalize (H%s %s). goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), instanciate(p.GetFormula(), resultForm))
+		result = applyNTimes("generalize (%s %s). goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), instanciate(p.GetFormula(), resultForm))
 	case "GAMMA_NOT_EXISTS":
 		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		// Reintroduction problem
-		// p.GetFormulaUse()
-		result = applyNTimes("apply H%s. exists %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), instanciate(p.GetFormula(), resultForm))
+		result = applyNTimes("apply %s. exists %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), instanciate(p.GetFormula(), resultForm))
 	case "Rewrite":
 		hypo := get(p.Formula)
-		result = fmt.Sprintf("rewrite goeland_axiom_%d in H%d.", p.Id_dmt, hypo)
+		result = fmt.Sprintf("rewrite goeland_axiom_%d in %s.", p.Id_dmt, hypo)
+		addUsedAxiom(p.Id_dmt)
+		hypoIndex, _ := strconv.Atoi(hypo[1:])
 		// Update hypotheses introduced
-		formulasIntroduced[hypo] = p.GetResultFormulas()[0].GetFL()[0]
+		formulasIntroduced[hypoIndex] = p.GetResultFormulas()[0].GetFL()[0]
 	}
 	return result
 }
 
-/* Always use this function to apply a formula */
-func get(form btps.Form) int {
-	for i, f := range formulasIntroduced {
-		if f.Equals(form) {
-			return i
+func addUsedAxiom(axiom int) {
+	for _, usedAx := range usedAxioms {
+		if usedAx == axiom {
+			return
 		}
 	}
-	return -1
+	usedAxioms = append(usedAxioms, axiom)
+}
+
+/* Always use this function to apply a formula */
+func get(form btps.Form) string {
+	for i, f := range formulasIntroduced {
+		if f.Equals(form) {
+			return fmt.Sprintf("H%d", i)
+		}
+	}
+	for _, ax := range axiomsRegistered {
+		if ax.Equals(form) {
+			addUsedAxiom(ax.GetIndex())
+			return fmt.Sprintf("goeland_axiom_%d", ax.GetIndex())
+		}
+	}
+	return "error"
 }
 
 /* Always use this function to intro a formula */
@@ -325,15 +349,18 @@ func introduce(form btps.Form) int {
 }
 
 /* Applies a command N times. Creates N-1 hypotheses with an index. */
-func applyNTimes(command string, start, end int, vars []string) string {
+func applyNTimes(command, start string, end int, vars []string) string {
 	result := ""
-	hypo := fmt.Sprintf("%d", start)
+	hypo := start
 	for i, var_ := range vars {
 		if i == len(vars)-1 {
 			result += fmt.Sprintf(command, hypo, var_, fmt.Sprintf("%d", end))
 		} else {
-			nextHypo := fmt.Sprintf("%d_%d", start, i)
+			nextHypo := fmt.Sprintf("%s_%d", start, i)
 			result += fmt.Sprintf(command, hypo, var_, nextHypo) + " "
+			if nextHypo[0] != 'H' {
+				nextHypo = "H" + nextHypo
+			}
 			hypo = nextHypo
 		}
 	}

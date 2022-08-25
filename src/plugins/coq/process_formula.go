@@ -59,14 +59,14 @@ func isNNPP(form btps.Form) bool {
 	return false
 }
 
-func processMainFormula(form btps.Form) (btps.Form, int) {
+func processMainFormula(form btps.Form) (btps.FormList, btps.Form) {
 	switch nf := form.(type) {
 	case btps.Not:
-		return nf.GetForm(), introduce(nf)
+		return btps.FormList{}, nf.GetForm()
 	case btps.And:
 		lastForm := nf.GetLF()[len(nf.GetLF())-1].(btps.Not).GetForm()
 		fl := nf.GetLF()[:len(nf.GetLF())-1]
-		return btps.MakerImp(btps.MakeAnd(nf.GetIndex(), fl), lastForm), introduce(nf.GetLF()[len(nf.GetLF())-1])
+		return fl, lastForm
 	}
-	return form, introduce(form)
+	return btps.FormList{}, form
 }
