@@ -340,8 +340,8 @@ func TestEquRewrite1(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
-	forms := substs[0].GetForm()
-	subst := substs[0].GetSubst()
+	forms := substs[0].GetSaf().GetForm()
+	subst := substs[0].GetSaf().GetSubst()
 
 	if len(forms) > 1 {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
@@ -382,8 +382,8 @@ func TestEquRewrite2(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
-	forms := substs[0].GetForm()
-	subst := substs[0].GetSubst()
+	forms := substs[0].GetSaf().GetForm()
+	subst := substs[0].GetSaf().GetSubst()
 
 	if len(forms) > 1 {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
@@ -424,8 +424,8 @@ func TestEquRewrite3(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
-	forms := substs[0].GetForm()
-	subst := substs[0].GetSubst()
+	forms := substs[0].GetSaf().GetForm()
+	subst := substs[0].GetSaf().GetSubst()
 
 	if len(forms) > 1 {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
@@ -466,8 +466,8 @@ func TestEquRewrite4(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
-	forms := substs[0].GetForm()
-	subst := substs[0].GetSubst()
+	forms := substs[0].GetSaf().GetForm()
+	subst := substs[0].GetSaf().GetSubst()
 
 	if len(forms) > 1 {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
@@ -508,8 +508,8 @@ func TestEquRewrite5(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
-	forms := substs[0].GetForm()
-	subst := substs[0].GetSubst()
+	forms := substs[0].GetSaf().GetForm()
+	subst := substs[0].GetSaf().GetSubst()
 
 	if len(forms) > 1 {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
@@ -550,8 +550,8 @@ func TestEquRewrite6(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
-	forms := substs[0].GetForm()
-	subst := substs[0].GetSubst()
+	forms := substs[0].GetSaf().GetForm()
+	subst := substs[0].GetSaf().GetSubst()
 
 	if len(forms) > 1 {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
@@ -600,8 +600,8 @@ func TestSubst1(t *testing.T) {
 	}
 
 	global.PrintDebug("TS1", fmt.Sprintf("after form : %v", form.ToString()))
-	forms := substs[0].GetForm()
-	subst := substs[0].GetSubst()
+	forms := substs[0].GetSaf().GetForm()
+	subst := substs[0].GetSaf().GetSubst()
 
 	if len(forms) > 1 {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
@@ -642,8 +642,8 @@ func TestSubst2(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
-	forms := substs[0].GetForm()
-	subst := substs[0].GetSubst()
+	forms := substs[0].GetSaf().GetForm()
+	subst := substs[0].GetSaf().GetSubst()
 
 	if len(forms) > 1 {
 		t.Fatalf("Error: %s can be rewritten by more than one formula when it should be rewritten by only one.", form.ToString())
@@ -681,8 +681,8 @@ func TestSubst3(t *testing.T) {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
 	}
 
-	if len(substs) != 1 && !substs[0].GetSubst().Equals(treetypes.Failure()) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s - %v.", form.ToString(), substs[0].GetForm()[0].ToString(), substs[0].GetSubst().ToString())
+	if len(substs) != 1 && !substs[0].GetSaf().GetSubst().Equals(treetypes.Failure()) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s - %v.", form.ToString(), substs[0].GetSaf().GetForm()[0].ToString(), substs[0].GetSaf().GetSubst().ToString())
 	}
 }
 
@@ -721,8 +721,8 @@ func TestMultipleAxiomDefinition(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
-	forms := substs[0].GetForm()
-	forms = append(forms, substs[1].GetForm()...)
+	forms := substs[0].GetSaf().GetForm()
+	forms = append(forms, substs[1].GetSaf().GetForm()...)
 
 	if len(forms) != 2 {
 		t.Fatalf("Error: %s can be rewritten by more than two formulas when it should be rewritten by only two.", form.ToString())
@@ -771,8 +771,8 @@ func TestMultipleAxiomDefinition2(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
-	forms := substs[0].GetForm()
-	forms = append(forms, substs[1].GetForm()...)
+	forms := substs[0].GetSaf().GetForm()
+	forms = append(forms, substs[1].GetSaf().GetForm()...)
 
 	if len(forms) != 2 {
 		t.Fatalf("Error: %s can be rewritten by more than two formulas when it should be rewritten by only two.", form.ToString())
@@ -796,7 +796,7 @@ func TestError(t *testing.T) {
 		t.Fatalf("Error: %s found in rewrite tree when it's empty.", form.ToString())
 	}
 
-	if len(substs) > 1 || !substs[0].GetSubst().Equals(treetypes.Failure()) {
+	if len(substs) > 1 || !substs[0].GetSaf().GetSubst().Equals(treetypes.Failure()) {
 		t.Fatalf("Error: error not triggered when searching for something not in the rewrite tree.")
 	}
 }
@@ -837,7 +837,7 @@ func TestSort(t *testing.T) {
 		t.Fatal("Error: substs size should be 1.")
 	}
 
-	others := substs[0].GetForm()
+	others := substs[0].GetSaf().GetForm()
 
 	if len(others) > 1 {
 		t.Fatal("Error: rewritten formulas are not properly sorted (2).")

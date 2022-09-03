@@ -46,6 +46,7 @@ type TermForm struct {
 	t     basictypes.Term
 }
 
+func (tf TermForm) ToMappedString(basictypes.MapString, bool) string                        { return tf.ToString() }
 func (tf TermForm) GetTerm() basictypes.Term                                                { return tf.t.Copy() }
 func (tf TermForm) ToString() string                                                        { return tf.t.ToString() }
 func (t TermForm) ToStringWithSuffixMeta(string) string                                     { return t.ToString() }

@@ -41,7 +41,6 @@
 package basictypes
 
 import (
-	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -51,24 +50,21 @@ type And struct {
 	lf    FormList
 }
 
-func (a And) sep() string {
-	if IsPrettyPrint() {
-		return " ∧ "
-	}
-	return " & "
-}
-
 func (a And) GetLF() FormList { return a.lf.Copy() }
+
+func (a And) ToMappedString(map_ MapString, displayTypes bool) string {
+	return "(" + ListToMappedString(a.GetLF(), " "+map_[AndConn]+" ", "", map_, displayTypes) + ")"
+}
 
 func (a And) GetIndex() int              { return a.index }
 func (a And) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-func (a And) ToString() string           { return "(" + ListToString(a.GetLF(), a.sep(), "") + ")" }
+func (a And) ToString() string           { return a.ToMappedString(defaultMap, true) }
 func (a And) Copy() Form                 { return MakeAnd(a.GetIndex(), a.GetLF()) }
 func (a And) GetMetas() MetaList         { return metasUnion(a.GetLF()) }
 func (a And) RenameVariables() Form      { return MakeAnd(a.GetIndex(), renameFormList(a.GetLF())) }
 
 func (a And) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + listToStringMeta(a.GetLF(), suffix, a.sep(), "") + ")"
+	return "(" + listToStringMeta(a.GetLF(), suffix, " "+defaultMap[AndConn]+" ", "") + ")"
 }
 
 func (a And) Equals(f Form) bool {
@@ -90,24 +86,21 @@ type Or struct {
 	lf    FormList
 }
 
-func (o Or) sep() string {
-	if IsPrettyPrint() {
-		return " ∨ "
-	}
-	return " | "
-}
-
 func (o Or) GetLF() FormList { return o.lf.Copy() }
+
+func (o Or) ToMappedString(map_ MapString, displayTypes bool) string {
+	return "(" + ListToMappedString(o.GetLF(), " "+map_[OrConn]+" ", "", map_, displayTypes) + ")"
+}
 
 func (o Or) GetIndex() int              { return o.index }
 func (o Or) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-func (o Or) ToString() string           { return "(" + ListToString(o.GetLF(), o.sep(), "") + ")" }
+func (o Or) ToString() string           { return o.ToMappedString(defaultMap, true) }
 func (o Or) Copy() Form                 { return MakeOr(o.GetIndex(), o.GetLF()) }
 func (o Or) GetMetas() MetaList         { return metasUnion(o.GetLF()) }
 func (o Or) RenameVariables() Form      { return MakeOr(o.GetIndex(), renameFormList(o.GetLF())) }
 
 func (o Or) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + listToStringMeta(o.GetLF(), suffix, o.sep(), "") + ")"
+	return "(" + listToStringMeta(o.GetLF(), suffix, " "+defaultMap[OrConn]+" ", "") + ")"
 }
 
 func (o Or) Equals(f Form) bool {

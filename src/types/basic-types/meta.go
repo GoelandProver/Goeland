@@ -71,6 +71,13 @@ func (m Meta) ToString() string {
 	return fmt.Sprintf("%s_%d_%d : %s", m.GetName(), m.GetIndex(), m.GetFormula(), m.typeHint.ToString())
 }
 
+func (m Meta) ToMappedString(map_ MapString, type_ bool) string {
+	if type_ {
+		return m.ToString()
+	}
+	return fmt.Sprintf("%s_%d_%d", m.GetName(), m.GetIndex(), m.GetFormula())
+}
+
 func (m Meta) Equals(t Term) bool {
 	oth, isMeta := t.(Meta)
 	return isMeta &&

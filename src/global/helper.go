@@ -49,6 +49,7 @@ import (
 	"time"
 )
 
+var ocoq = false
 var debug = false
 var destructive = true
 var nb_gor = 0
@@ -66,6 +67,7 @@ var lock_plugins sync.Mutex
 var cpt_node = -1
 var lock_cpt_node sync.Mutex
 var dmt_before_eq bool
+var problem_name string
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -167,6 +169,14 @@ func IsPrettyPrint() bool {
 	return prettyPrint
 }
 
+func IsCoqOutput() bool {
+	return ocoq
+}
+
+func GetProblemName() string {
+	return problem_name
+}
+
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
@@ -212,6 +222,10 @@ func DisplayPretty() {
 	prettyPrint = true
 }
 
+func OutputCoq() {
+	ocoq = true
+}
+
 func SetPlugin(s string, b bool) {
 	lock_plugins.Lock()
 	plugins[s] = b
@@ -220,4 +234,8 @@ func SetPlugin(s string, b bool) {
 
 func SetDMTBeforeEQ(b bool) {
 	dmt_before_eq = b
+}
+
+func SetProblemName(problem string) {
+	problem_name = problem
 }

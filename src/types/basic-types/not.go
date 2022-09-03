@@ -41,7 +41,6 @@
 package basictypes
 
 import (
-	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -51,16 +50,13 @@ type Not struct {
 	f     Form
 }
 
-func (n Not) sep() string {
-	if global.IsPrettyPrint() {
-		return "¬"
-	}
-	return "~"
+func (n Not) ToMappedString(map_ MapString, displayTypes bool) string {
+	return map_[NotConn] + "(" + n.GetForm().ToMappedString(map_, displayTypes) + ")"
 }
 
 func (n Not) GetForm() Form                        { return n.f.Copy() }
 func (n Not) GetType() typing.TypeScheme           { return typing.DefaultPropType(0) }
-func (n Not) ToString() string                     { return n.sep() + n.GetForm().ToString() }
+func (n Not) ToString() string                     { return n.ToMappedString(defaultMap, true) }
 func (n Not) ToStringWithSuffixMeta(string) string { return n.ToString() }
 func (n Not) Copy() Form                           { return MakeNot(n.GetIndex(), n.GetForm()) }
 func (n Not) GetMetas() MetaList                   { return n.GetForm().GetMetas() }

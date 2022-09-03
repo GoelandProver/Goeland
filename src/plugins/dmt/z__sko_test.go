@@ -99,10 +99,10 @@ func TestPreskolemization(t *testing.T) {
 	)
 
 	if len(substs) > 1 ||
-		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(expected) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
+		len(substs[0].GetSaf().GetForm()) > 1 ||
+		!substs[0].GetSaf().GetForm()[0].Equals(expected) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 
 	// Negative occurrences should be skolemized
@@ -114,13 +114,13 @@ func TestPreskolemization(t *testing.T) {
 	}
 
 	if len(substs) > 1 ||
-		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetForm()) > 1 ||
-		reflect.TypeOf(substs[0].GetForm()[0]) != reflect.TypeOf(btypes.Not{}) ||
-		reflect.TypeOf(substs[0].GetForm()[0].(btypes.Not).GetForm()) != reflect.TypeOf(btypes.Imp{}) ||
-		!substs[0].GetForm()[0].(btypes.Not).GetForm().(btypes.Imp).GetF1().(btypes.Pred).GetArgs()[0].IsFun() ||
-		!substs[0].GetForm()[0].(btypes.Not).GetForm().(btypes.Imp).GetF2().(btypes.Pred).GetArgs()[0].IsFun() {
-		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form2.ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
+		len(substs[0].GetSaf().GetForm()) > 1 ||
+		reflect.TypeOf(substs[0].GetSaf().GetForm()[0]) != reflect.TypeOf(btypes.Not{}) ||
+		reflect.TypeOf(substs[0].GetSaf().GetForm()[0].(btypes.Not).GetForm()) != reflect.TypeOf(btypes.Imp{}) ||
+		!substs[0].GetSaf().GetForm()[0].(btypes.Not).GetForm().(btypes.Imp).GetF1().(btypes.Pred).GetArgs()[0].IsFun() ||
+		!substs[0].GetSaf().GetForm()[0].(btypes.Not).GetForm().(btypes.Imp).GetF2().(btypes.Pred).GetArgs()[0].IsFun() {
+		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form2.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 }
 
@@ -160,12 +160,12 @@ func TestPreskolemization2(t *testing.T) {
 	}
 
 	if len(substs) > 1 ||
-		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetForm()) > 1 ||
-		reflect.TypeOf(substs[0].GetForm()[0]) != reflect.TypeOf(btypes.Imp{}) ||
-		!substs[0].GetForm()[0].(btypes.Imp).GetF1().(btypes.Pred).GetArgs()[0].IsFun() ||
-		!substs[0].GetForm()[0].(btypes.Imp).GetF2().(btypes.Pred).GetArgs()[0].IsFun() {
-		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
+		len(substs[0].GetSaf().GetForm()) > 1 ||
+		reflect.TypeOf(substs[0].GetSaf().GetForm()[0]) != reflect.TypeOf(btypes.Imp{}) ||
+		!substs[0].GetSaf().GetForm()[0].(btypes.Imp).GetF1().(btypes.Pred).GetArgs()[0].IsFun() ||
+		!substs[0].GetSaf().GetForm()[0].(btypes.Imp).GetF2().(btypes.Pred).GetArgs()[0].IsFun() {
+		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 
 	// Negative occurrences should be rewritten normally
@@ -185,9 +185,9 @@ func TestPreskolemization2(t *testing.T) {
 	))
 
 	if len(substs) > 1 ||
-		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(expected) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), expected.ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
+		len(substs[0].GetSaf().GetForm()) > 1 ||
+		!substs[0].GetSaf().GetForm()[0].Equals(expected) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), expected.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 }

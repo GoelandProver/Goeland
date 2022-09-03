@@ -30,49 +30,43 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*********/
-/* id.go */
-/*********/
+/**********************/
+/* process_formula.go */
+/**********************/
 
 /**
-* This file contains the implementation of IDs.
+* This file processes Goeland's formula to make it coq-friendly.
 **/
 
-package basictypes
+package coq
 
-import "fmt"
+import btps "github.com/GoelandProver/Goeland/types/basic-types"
 
-/* id (for predicate) */
-type Id struct {
-	index int
-	name  string
-}
-
-func (i Id) ToMappedString(MapString, bool) string { return i.ToString() }
-func (i Id) GetIndex() int                         { return i.index }
-func (i Id) GetName() string                       { return i.name }
-func (i Id) ToString() string                      { return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex()) }
-func (i Id) ToStringWithSuffixMeta(string) string  { return i.ToString() }
-func (i Id) IsMeta() bool                          { return false }
-func (i Id) IsFun() bool                           { return false }
-func (i Id) Copy() Term                            { return MakeId(i.GetIndex(), i.GetName()) }
-func (Id) ToMeta() Meta                            { return Meta{} }
-func (Id) GetMetas() MetaList                      { return MetaList{} }
-
-func (i Id) Equals(t Term) bool {
-	oth, isId := t.(Id)
-	return isId &&
-		(oth.GetIndex() == i.GetIndex()) &&
-		(oth.GetName() == i.GetName())
-}
-
-func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
-	if i.Equals(original_term) {
-		return new_term.Copy()
+func isNNPP(form btps.Form) bool {
+	// Special case : ~~p -> p : exactly NNPP.
+	imp, isImp := form.(btps.Imp)
+	if isImp {
+		if not, isNot := imp.GetF1().(btps.Not); isNot {
+			if not2, isNot2 := not.GetForm().(btps.Not); isNot2 {
+				if pred, isPred := not2.GetForm().(btps.Pred); isPred {
+					if pred.Equals(imp.GetF2()) {
+						return true
+					}
+				}
+			}
+		}
 	}
-	return i
+	return false
 }
 
-func (i Id) GetSubTerms() []Term {
-	return []Term{i}
+func processMainFormula(form btps.Form) (btps.FormList, btps.Form) {
+	switch nf := form.(type) {
+	case btps.Not:
+		return btps.FormList{}, nf.GetForm()
+	case btps.And:
+		lastForm := nf.GetLF()[len(nf.GetLF())-1].(btps.Not).GetForm()
+		fl := nf.GetLF()[:len(nf.GetLF())-1]
+		return fl, lastForm
+	}
+	return btps.FormList{}, form
 }

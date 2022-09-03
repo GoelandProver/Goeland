@@ -51,6 +51,7 @@ import (
 type Term interface {
 	GetIndex() int
 	GetName() string
+	ToMappedString(MapString, bool) string
 	ToString() string
 	ToStringWithSuffixMeta(string) string
 	Copy() Term

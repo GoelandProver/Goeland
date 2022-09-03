@@ -68,15 +68,15 @@ func getTestTypeArrowTable() []struct {
 		expectedInput      ComparableList[TypeApp]
 		expectedOutput     TypeApp
 	}{
-		{MkTypeArrow(tInt, tInt), fmt.Sprintf("(%s > %s)", intName, intName), 2, []int{0}, []TypeHint{tInt, tInt}, ComparableList[TypeApp]{tInt}, tInt},
-		{MkTypeArrow(tInt, tRat), fmt.Sprintf("(%s > %s)", intName, ratName), 2, []int{1}, []TypeHint{tInt, tRat}, ComparableList[TypeApp]{tInt}, tRat},
-		{MkTypeArrow(tRat, tInt), fmt.Sprintf("(%s > %s)", ratName, intName), 2, []int{2}, []TypeHint{tRat, tInt}, ComparableList[TypeApp]{tRat}, tInt},
-		{MkTypeArrow(tRat, tRat), fmt.Sprintf("(%s > %s)", ratName, ratName), 2, []int{3}, []TypeHint{tRat, tRat}, ComparableList[TypeApp]{tRat}, tRat},
-		{MkTypeArrow(tInt, tRat, tInt), fmt.Sprintf("(%s > %s > %s)", intName, ratName, intName), 3, []int{4}, []TypeHint{tInt, tRat, tInt}, ComparableList[TypeApp]{tInt, tRat}, tInt},
-		{MkTypeArrow(MkTypeCross(tInt, tInt), tRat), fmt.Sprintf("((%s * %s) > %s)", intName, intName, ratName), 3, []int{5}, []TypeHint{tInt, tInt, tRat}, ComparableList[TypeApp]{MkTypeCross(tInt, tInt)}, tRat},
-		{MkTypeArrow(MkTypeCross(tRat, tRat), MkTypeCross(tInt, tInt)), fmt.Sprintf("((%s * %s) > (%s * %s))", ratName, ratName, intName, intName), 4, []int{6}, []TypeHint{tRat, tRat, tInt, tInt}, ComparableList[TypeApp]{MkTypeCross(tRat, tRat)}, MkTypeCross(tInt, tInt)},
-		{MkTypeArrow(MkTypeCross(tRat, tRat, tInt), tInt), fmt.Sprintf("((%s * %s * %s) > %s)", ratName, ratName, intName, intName), 4, []int{7}, []TypeHint{tRat, tRat, tInt, tInt}, ComparableList[TypeApp]{MkTypeCross(tRat, tRat, tInt)}, tInt},
-		{MkTypeArrow(tRat, tRat, tInt, tInt), fmt.Sprintf("(%s > %s > %s > %s)", ratName, ratName, intName, intName), 4, []int{8}, []TypeHint{tRat, tRat, tInt, tInt}, ComparableList[TypeApp]{tRat, tRat, tInt}, tInt},
+		{MkTypeArrow(tInt, tInt), fmt.Sprintf("(%s -> %s)", intName, intName), 2, []int{0}, []TypeHint{tInt, tInt}, ComparableList[TypeApp]{tInt}, tInt},
+		{MkTypeArrow(tInt, tRat), fmt.Sprintf("(%s -> %s)", intName, ratName), 2, []int{1}, []TypeHint{tInt, tRat}, ComparableList[TypeApp]{tInt}, tRat},
+		{MkTypeArrow(tRat, tInt), fmt.Sprintf("(%s -> %s)", ratName, intName), 2, []int{2}, []TypeHint{tRat, tInt}, ComparableList[TypeApp]{tRat}, tInt},
+		{MkTypeArrow(tRat, tRat), fmt.Sprintf("(%s -> %s)", ratName, ratName), 2, []int{3}, []TypeHint{tRat, tRat}, ComparableList[TypeApp]{tRat}, tRat},
+		{MkTypeArrow(tInt, tRat, tInt), fmt.Sprintf("(%s -> %s -> %s)", intName, ratName, intName), 3, []int{4}, []TypeHint{tInt, tRat, tInt}, ComparableList[TypeApp]{tInt, tRat}, tInt},
+		{MkTypeArrow(MkTypeCross(tInt, tInt), tRat), fmt.Sprintf("((%s * %s) -> %s)", intName, intName, ratName), 3, []int{5}, []TypeHint{tInt, tInt, tRat}, ComparableList[TypeApp]{MkTypeCross(tInt, tInt)}, tRat},
+		{MkTypeArrow(MkTypeCross(tRat, tRat), MkTypeCross(tInt, tInt)), fmt.Sprintf("((%s * %s) -> (%s * %s))", ratName, ratName, intName, intName), 4, []int{6}, []TypeHint{tRat, tRat, tInt, tInt}, ComparableList[TypeApp]{MkTypeCross(tRat, tRat)}, MkTypeCross(tInt, tInt)},
+		{MkTypeArrow(MkTypeCross(tRat, tRat, tInt), tInt), fmt.Sprintf("((%s * %s * %s) -> %s)", ratName, ratName, intName, intName), 4, []int{7}, []TypeHint{tRat, tRat, tInt, tInt}, ComparableList[TypeApp]{MkTypeCross(tRat, tRat, tInt)}, tInt},
+		{MkTypeArrow(tRat, tRat, tInt, tInt), fmt.Sprintf("(%s -> %s -> %s -> %s)", ratName, ratName, intName, intName), 4, []int{8}, []TypeHint{tRat, tRat, tInt, tInt}, ComparableList[TypeApp]{tRat, tRat, tInt}, tInt},
 	}
 }
 

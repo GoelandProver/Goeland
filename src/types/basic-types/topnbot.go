@@ -49,8 +49,12 @@ type Top struct {
 	index int
 }
 
+func (t Top) ToMappedString(map_ MapString, displayTypes bool) string {
+	return map_[TopType]
+}
+
 func (t Top) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
-func (Top) ToString() string                               { return "⊤" }
+func (t Top) ToString() string                             { return t.ToMappedString(defaultMap, true) }
 func (t Top) ToStringWithSuffixMeta(string) string         { return t.ToString() }
 func (t Top) Copy() Form                                   { return MakeTop(t.GetIndex()) }
 func (Top) Equals(f Form) bool                             { _, isTop := f.(Top); return isTop }
@@ -65,8 +69,12 @@ type Bot struct {
 	index int
 }
 
+func (b Bot) ToMappedString(map_ MapString, displayTypes bool) string {
+	return map_[TopType]
+}
+
 func (b Bot) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
-func (Bot) ToString() string                               { return "⊥" }
+func (b Bot) ToString() string                             { return b.ToMappedString(defaultMap, true) }
 func (b Bot) ToStringWithSuffixMeta(string) string         { return b.ToString() }
 func (b Bot) Copy() Form                                   { return MakeBot(b.GetIndex()) }
 func (Bot) Equals(f Form) bool                             { _, isBot := f.(Bot); return isBot }

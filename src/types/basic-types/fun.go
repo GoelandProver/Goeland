@@ -41,7 +41,8 @@
 package basictypes
 
 import (
-	"github.com/GoelandProver/Goeland/global"
+	"strings"
+
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -54,11 +55,24 @@ type Fun struct {
 	typeHint typing.TypeScheme
 }
 
-func (f Fun) getEmptyChar() string {
-	if global.IsPrettyPrint() {
-		return "∅"
+func (f Fun) ToMappedString(map_ MapString, type_ bool) string {
+	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
+		return f.GetID().ToString()
 	}
-	return "{}"
+	args := []string{}
+
+	if tv := ListToString(f.typeVars, ", ", map_[PredEmpty]); tv != "" {
+		args = append(args, tv)
+	}
+	if vs := ListToMappedString(f.GetArgs(), ", ", map_[PredEmpty], map_, type_); vs != "" {
+		args = append(args, vs)
+	}
+
+	str := f.GetID().ToString() + "(" + strings.Join(args, map_[PredTypeVarSep]) + ")"
+	if type_ {
+		str += " : " + f.typeHint.ToString()
+	}
+	return str
 }
 
 func (f Fun) GetID() Id       { return f.p.Copy().(Id) }
@@ -78,10 +92,7 @@ func (f Fun) IsFun() bool                    { return true }
 func (Fun) ToMeta() Meta                     { return Meta{} }
 
 func (f Fun) ToString() string {
-	if len(f.args) == 0 {
-		return f.GetID().GetName()
-	}
-	return f.GetID().GetName() + "(" + ListToString(f.typeVars, ", ", f.getEmptyChar()) + " ; " + ListToString(f.args, ", ", "") + ") : " + f.typeHint.ToString()
+	return f.ToMappedString(defaultMap, true)
 }
 
 func (f Fun) ToStringWithSuffixMeta(suffix string) string {

@@ -56,6 +56,7 @@ var mutex_file_proof sync.Mutex
 // Graph struct
 type ProofStruct struct {
 	Formula         basictypes.Form
+	Id_dmt          int
 	Node_id         int
 	Rule            string
 	Rule_name       string
@@ -65,6 +66,7 @@ type ProofStruct struct {
 
 type JsonProofStruct struct {
 	Formula         string              `json:"Formula"`
+	Id_dmt          int                 `json:"id_dmt"`
 	Node_id         int                 `json:"Node_id"`
 	Rule            string              `json:"Rule"`
 	Rule_name       string              `json:"Rule_name"`
@@ -130,7 +132,7 @@ func (p ProofStruct) ToString() string {
 	return res
 }
 func (p ProofStruct) Copy() ProofStruct {
-	return ProofStruct{p.GetFormula(), p.GetNodeId(), p.GetRule(), p.GetRuleName(), p.GetResultFormulas(), copyProofStructChildren(p.Children)}
+	return ProofStruct{p.GetFormula(), p.GetIdDMT(), p.GetNodeId(), p.GetRule(), p.GetRuleName(), p.GetResultFormulas(), copyProofStructChildren(p.Children)}
 }
 
 func ProofStructListToString(l []ProofStruct) string {
@@ -162,6 +164,9 @@ func GetGraphFileNameProof() string {
 func (p ProofStruct) GetFormula() basictypes.Form {
 	return p.Formula
 }
+func (p ProofStruct) GetIdDMT() int {
+	return p.Id_dmt
+}
 func (p ProofStruct) GetNodeId() int {
 	return p.Node_id
 }
@@ -191,6 +196,10 @@ func (p *ProofStruct) SetFormulaProof(f basictypes.Form) {
 	p.Formula = f
 }
 
+func (p *ProofStruct) SetIdDMT(i int) {
+	p.Id_dmt = i
+}
+
 func (p *ProofStruct) SetNodeIdProof(i int) {
 	p.Node_id = i
 }
@@ -210,11 +219,11 @@ func (p *ProofStruct) SetResultFormulasProof(fl []IntFormList) {
 /* makers */
 
 func MakeEmptyProofStruct() ProofStruct {
-	return ProofStruct{basictypes.MakerBot(), -1, "", "", []IntFormList{}, [][]ProofStruct{}}
+	return ProofStruct{basictypes.MakerBot(), -1, -1, "", "", []IntFormList{}, [][]ProofStruct{}}
 }
 
-func MakeProofStruct(formula basictypes.Form, id int, rule, rule_name string, Result_formulas []IntFormList, children [][]ProofStruct) ProofStruct {
-	return ProofStruct{formula, id, rule, rule_name, Result_formulas, children}
+func MakeProofStruct(formula basictypes.Form, formula_use, id int, rule, rule_name string, Result_formulas []IntFormList, children [][]ProofStruct) ProofStruct {
+	return ProofStruct{formula, formula_use, id, rule, rule_name, Result_formulas, children}
 }
 
 /* tostring */
@@ -250,7 +259,7 @@ func IntFormListToIntIntStringPairList(fl []IntFormList) []IntIntStringPair {
 func ProofStructListToJsonProofStructList(ps []ProofStruct) []JsonProofStruct {
 	res := []JsonProofStruct{}
 	for _, p := range ps {
-		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.Node_id, p.Rule, p.Rule_name, IntFormListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
+		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.GetIdDMT(), p.Node_id, p.Rule, p.Rule_name, IntFormListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
 		res = append(res, new_json_element)
 	}
 	return res
@@ -344,4 +353,15 @@ func JsonProofStructListToText(jps []JsonProofStruct) string {
 func ProofStructListToText(ps []ProofStruct) string {
 	json_content := ProofStructListToJsonProofStructList(ps)
 	return JsonProofStructListToText(json_content)
+}
+
+func RetrieveUninstantiatedMetaFromProof(p []ProofStruct) basictypes.MetaList {
+	res := basictypes.MakeEmptyMetaList()
+	for _, proof_element := range p {
+		res = res.Merge(proof_element.GetFormula().GetMetas())
+		for _, children := range proof_element.GetChildren() {
+			res = res.Merge(RetrieveUninstantiatedMetaFromProof(children))
+		}
+	}
+	return res
 }

@@ -190,6 +190,11 @@ func (st *State) SetCurrentProofFormula(f basictypes.Form) {
 		st.current_proof.SetFormulaProof(f.Copy())
 	}
 }
+func (st *State) SetCurrentProofIdDMT(i int) {
+	if global.GetProof() {
+		st.current_proof.SetIdDMT(i)
+	}
+}
 func (st *State) SetCurrentProofResultFormulas(fll []proof.IntFormList) {
 	if global.GetProof() {
 		new_fll := []proof.IntFormList{}

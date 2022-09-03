@@ -54,6 +54,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/parser"
+	coq "github.com/GoelandProver/Goeland/plugins/coq"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	equality "github.com/GoelandProver/Goeland/plugins/equality"
 	polymorphism "github.com/GoelandProver/Goeland/polymorphism/rules"
@@ -78,7 +79,6 @@ var flag_pretty_print = flag.Bool("pretty", false, "Prints are done with UTF-8 c
 var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
 var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable equality")
 var flag_type_proof = flag.Bool("type_proof", false, "Apply this flag if you want to enable type proof visualisation")
-var problem_name string
 var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
 var flag_ari = flag.Bool("ari", false, "Enable arithmetic module")
 var conjecture_found bool
@@ -94,7 +94,8 @@ func main() {
 	}
 
 	problem := args[len(args)-1]
-	problem_name = path.Base(problem)
+	problem_name := path.Base(problem)
+	global.SetProblemName(problem_name)
 
 	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
 	lstm, bound := parser.ParseTPTPFile(problem)
@@ -180,16 +181,16 @@ func PrintResult(res bool) {
 	if res {
 		fmt.Printf("[%.6fs][%v][Res] VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		if conjecture_found {
-			fmt.Printf("%s SZS status Theorem for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status Theorem for %v\n", "%", global.GetProblemName())
 		} else {
-			fmt.Printf("%s SZS status Unsatisfiable for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status Unsatisfiable for %v\n", "%", global.GetProblemName())
 		}
 	} else {
 		fmt.Printf("[%.6fs][%v][Res] NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		if conjecture_found {
-			fmt.Printf("%s SZS status CounterSatisfiable for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status CounterSatisfiable for %v\n", "%", global.GetProblemName())
 		} else {
-			fmt.Printf("%s SZS status Satisfiable for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS status Satisfiable for %v\n", "%", global.GetProblemName())
 		}
 	}
 }
@@ -227,22 +228,29 @@ func Search(f basictypes.Form, bound int) {
 			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
 		}
 
-		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), global.IncrCptNode())
+		node_id := global.IncrCptNode()
+		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id)
 		global.IncrGoRoutine(1)
 
 		global.PrintDebug("MAIN", "GO")
 
 		var final_proof []proof.ProofStruct
+		var uninstantiated_meta basictypes.MetaList
 		res, final_proof = ManageResult(c)
+		uninstantiated_meta = proof.RetrieveUninstantiatedMetaFromProof(final_proof)
 
 		global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
 		global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
 
 		if global.GetProof() && res {
 			proof.WriteGraphProof(final_proof)
-			fmt.Printf("%s SZS output start Proof for %v\n", "%", problem_name)
-			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
-			fmt.Printf("%s SZS output end Proof for %v\n", "%", problem_name)
+			fmt.Printf("%s SZS output start Proof for %v\n", "%", global.GetProblemName())
+			if global.IsCoqOutput() {
+				fmt.Printf("%s", coq.MakeCoqOutput(final_proof, uninstantiated_meta))
+			} else {
+				fmt.Printf("%v", proof.ProofStructListToText(final_proof))
+			}
+			fmt.Printf("%s SZS output end Proof for %v\n", "%", global.GetProblemName())
 		}
 
 		limit = 2 * limit
@@ -331,8 +339,20 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 	case not_form == nil:
 		return basictypes.MakerAnd(and_list), bound
 	default:
-		return basictypes.MakerAnd(append(and_list, basictypes.RefuteForm(not_form))), bound
+		return basictypes.MakerAnd(append(flatten(and_list), basictypes.RefuteForm(not_form))), bound
 	}
+}
+
+func flatten(fl basictypes.FormList) basictypes.FormList {
+	result := basictypes.FormList{}
+	for _, form := range fl {
+		if and, isAnd := form.(basictypes.And); isAnd {
+			result = append(result, flatten(and.GetLF())...)
+		} else {
+			result = append(result, form)
+		}
+	}
+	return result
 }
 
 /* Initialize global variable, time, call plugins */
@@ -401,6 +421,8 @@ func initFlag() {
 	if *flag_dmt_before_eq {
 		global.SetDMTBeforeEQ(true)
 	}
+
+	coq.InitFlag()
 }
 
 func getFile(filename string, dir string) (string, error) {

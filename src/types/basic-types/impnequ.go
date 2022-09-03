@@ -41,7 +41,6 @@
 package basictypes
 
 import (
-	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -51,11 +50,8 @@ type Imp struct {
 	f1, f2 Form
 }
 
-func (i Imp) sep() string {
-	if global.IsPrettyPrint() {
-		return " ⇒ "
-	}
-	return " => "
+func (i Imp) ToMappedString(map_ MapString, displayTypes bool) string {
+	return "(" + i.GetF1().ToMappedString(map_, displayTypes) + " " + map_[ImpConn] + " " + i.GetF2().ToMappedString(map_, displayTypes) + ")"
 }
 
 func (i Imp) GetIndex() int              { return i.index }
@@ -64,13 +60,10 @@ func (i Imp) GetF2() Form                { return i.f2.Copy() }
 func (i Imp) Copy() Form                 { return MakeImp(i.GetIndex(), i.GetF1(), i.GetF2()) }
 func (i Imp) GetMetas() MetaList         { return i.f1.GetMetas().Merge(i.f2.GetMetas()) }
 func (i Imp) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-
-func (i Imp) ToString() string {
-	return "(" + i.GetF1().ToString() + i.sep() + i.GetF2().ToString() + ")"
-}
+func (i Imp) ToString() string           { return i.ToMappedString(defaultMap, true) }
 
 func (i Imp) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + i.GetF1().ToStringWithSuffixMeta(suffix) + i.sep() + i.GetF2().ToStringWithSuffixMeta(suffix) + ")"
+	return "(" + i.GetF1().ToStringWithSuffixMeta(suffix) + " " + defaultMap[ImpConn] + " " + i.GetF2().ToStringWithSuffixMeta(suffix) + ")"
 }
 
 func (i Imp) Equals(f Form) bool {
@@ -97,11 +90,8 @@ type Equ struct {
 	f1, f2 Form
 }
 
-func (e Equ) sep() string {
-	if global.IsPrettyPrint() {
-		return " ⇔ "
-	}
-	return " <=> "
+func (e Equ) ToMappedString(map_ MapString, displayTypes bool) string {
+	return "(" + e.GetF1().ToMappedString(map_, displayTypes) + " " + map_[EquConn] + " " + e.GetF2().ToMappedString(map_, displayTypes) + ")"
 }
 
 func (e Equ) GetIndex() int              { return e.index }
@@ -110,13 +100,10 @@ func (e Equ) GetF2() Form                { return e.f2.Copy() }
 func (e Equ) Copy() Form                 { return MakeEqu(e.GetIndex(), e.GetF1(), e.GetF2()) }
 func (e Equ) GetMetas() MetaList         { return e.f1.GetMetas().Merge(e.f2.GetMetas()) }
 func (e Equ) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-
-func (e Equ) ToString() string {
-	return "(" + e.GetF1().ToString() + e.sep() + e.GetF2().ToString() + ")"
-}
+func (e Equ) ToString() string           { return e.ToMappedString(defaultMap, true) }
 
 func (e Equ) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + e.GetF1().ToStringWithSuffixMeta(suffix) + e.sep() + e.GetF2().ToStringWithSuffixMeta(suffix) + ")"
+	return "(" + e.GetF1().ToStringWithSuffixMeta(suffix) + " " + defaultMap[EquConn] + " " + e.GetF2().ToStringWithSuffixMeta(suffix) + ")"
 }
 
 func (e Equ) Equals(f Form) bool {

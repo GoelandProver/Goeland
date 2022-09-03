@@ -54,6 +54,7 @@ import (
 type Form interface {
 	GetIndex() int
 	ToString() string
+	ToMappedString(MapString, bool) string
 	ToStringWithSuffixMeta(string) string
 	Copy() Form
 	Equals(Form) bool
@@ -146,7 +147,7 @@ func MakerAllType(vl []typing.TypeVar, f Form) AllType       { return AllType{Ma
 
 /* Transform a formula into its negation */
 func RefuteForm(f Form) Form {
-	return MakeNot(f.GetIndex(), f)
+	return MakerNot(f)
 }
 
 /* Remove all the negations */

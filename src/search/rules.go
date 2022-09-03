@@ -288,7 +288,7 @@ func applyGammaRules(f basictypes.Form, index int, st *complextypes.State) (basi
 		global.PrintDebug("AR", "Applying γ¬∃...")
 		st.SetCurrentProofRule("γ¬∃")
 		st.SetCurrentProofRuleName("GAMMA_NOT_EXISTS")
-	case basictypes.Ex:
+	case basictypes.All:
 		global.PrintDebug("AR", "Applying γ∀...")
 		st.SetCurrentProofRule("γ∀")
 		st.SetCurrentProofRuleName("GAMMA_FORALL")

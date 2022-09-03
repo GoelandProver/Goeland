@@ -65,6 +65,8 @@ var debugActivated bool
 var flagPolarized = flag.Bool("polarized", false, "Activate polarized DMT")
 var flagPresko = flag.Bool("presko", false, "Activate preskolemization on DMT")
 
+var registeredAxioms btypes.FormList
+
 /**
  * Base function needed to initialize any plugin of Goéland.
  * It registers the hooks to the plugin manager, and parses the given options.
@@ -118,4 +120,8 @@ func parsePluginOptions() {
 
 	output += strings.Join(activatedOptions, " and ")
 	fmt.Print(output + "\n")
+}
+
+func GetRegisteredAxioms() btypes.FormList {
+	return registeredAxioms
 }

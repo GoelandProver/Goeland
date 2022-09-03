@@ -197,10 +197,10 @@ func TestPolarizedRewrite1(t *testing.T) {
 	)
 
 	if len(substs) > 1 ||
-		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(expected) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
+		len(substs[0].GetSaf().GetForm()) > 1 ||
+		!substs[0].GetSaf().GetForm()[0].Equals(expected) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 
 	form2 := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{}))
@@ -210,7 +210,7 @@ func TestPolarizedRewrite1(t *testing.T) {
 		t.Fatalf("Error: %s found in rewrite tree when it shouldn't be.", form2.ToString())
 	}
 
-	if len(substs) > 1 || !substs[0].GetSubst().Equals(treetypes.Failure()) {
+	if len(substs) > 1 || !substs[0].GetSaf().GetSubst().Equals(treetypes.Failure()) {
 		t.Fatalf("Error: error not triggered when searching for something not in the rewrite tree.")
 	}
 
@@ -223,7 +223,7 @@ func TestPolarizedRewrite1(t *testing.T) {
 		t.Fatalf("Error: %s found in rewrite tree when it shouldn't be.", form3.ToString())
 	}
 
-	if len(substs) > 1 || !substs[0].GetSubst().Equals(treetypes.Failure()) {
+	if len(substs) > 1 || !substs[0].GetSaf().GetSubst().Equals(treetypes.Failure()) {
 		t.Fatalf("Error: error not triggered when searching for something not in the rewrite tree.")
 	}
 }
@@ -257,10 +257,10 @@ func TestPolarizedRewrite2(t *testing.T) {
 	expected := btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{})
 
 	if len(substs) > 1 ||
-		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(expected) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
+		len(substs[0].GetSaf().GetForm()) > 1 ||
+		!substs[0].GetSaf().GetForm()[0].Equals(expected) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 
 	form2 := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{}))
@@ -270,7 +270,7 @@ func TestPolarizedRewrite2(t *testing.T) {
 		t.Fatalf("Error: %s found in rewrite tree when it shouldn't be.", form2.ToString())
 	}
 
-	if len(substs) > 1 || !substs[0].GetSubst().Equals(treetypes.Failure()) {
+	if len(substs) > 1 || !substs[0].GetSaf().GetSubst().Equals(treetypes.Failure()) {
 		t.Fatalf("Error: error not triggered when searching for something not in the rewrite tree.")
 	}
 
@@ -286,10 +286,10 @@ func TestPolarizedRewrite2(t *testing.T) {
 	expectedNeg := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{}))
 
 	if len(substs) > 1 ||
-		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(expectedNeg) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), expectedNeg.ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
+		len(substs[0].GetSaf().GetForm()) > 1 ||
+		!substs[0].GetSaf().GetForm()[0].Equals(expectedNeg) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), expectedNeg.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 
 	form4 := btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{})
@@ -299,7 +299,7 @@ func TestPolarizedRewrite2(t *testing.T) {
 		t.Fatalf("Error: %s found in rewrite tree when it shouldn't be.", form4.ToString())
 	}
 
-	if len(substs) > 1 || !substs[0].GetSubst().Equals(treetypes.Failure()) {
+	if len(substs) > 1 || !substs[0].GetSaf().GetSubst().Equals(treetypes.Failure()) {
 		t.Fatalf("Error: error not triggered when searching for something not in the rewrite tree.")
 	}
 }
@@ -333,10 +333,10 @@ func TestPolarizedRewrite3(t *testing.T) {
 	expected := btypes.MakerNot(btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{}))
 
 	if len(substs) > 1 ||
-		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(expected) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
+		len(substs[0].GetSaf().GetForm()) > 1 ||
+		!substs[0].GetSaf().GetForm()[0].Equals(expected) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 
 	form2 := btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{})
@@ -346,7 +346,7 @@ func TestPolarizedRewrite3(t *testing.T) {
 		t.Fatalf("Error: %s found in rewrite tree when it shouldn't be.", form2.ToString())
 	}
 
-	if len(substs) > 1 || !substs[0].GetSubst().Equals(treetypes.Failure()) {
+	if len(substs) > 1 || !substs[0].GetSaf().GetSubst().Equals(treetypes.Failure()) {
 		t.Fatalf("Error: error not triggered when searching for something not in the rewrite tree.")
 	}
 
@@ -362,10 +362,10 @@ func TestPolarizedRewrite3(t *testing.T) {
 	expectedNeg := btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{})
 
 	if len(substs) > 1 ||
-		!substs[0].GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetForm()) > 1 ||
-		!substs[0].GetForm()[0].Equals(expectedNeg) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), expectedNeg.ToString(), substs[0].GetForm()[0].ToString())
+		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
+		len(substs[0].GetSaf().GetForm()) > 1 ||
+		!substs[0].GetSaf().GetForm()[0].Equals(expectedNeg) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), expectedNeg.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 
 	form4 := btypes.MakerNot(btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{}))
@@ -375,7 +375,7 @@ func TestPolarizedRewrite3(t *testing.T) {
 		t.Fatalf("Error: %s found in rewrite tree when it shouldn't be.", form4.ToString())
 	}
 
-	if len(substs) > 1 || !substs[0].GetSubst().Equals(treetypes.Failure()) {
+	if len(substs) > 1 || !substs[0].GetSaf().GetSubst().Equals(treetypes.Failure()) {
 		t.Fatalf("Error: error not triggered when searching for something not in the rewrite tree.")
 	}
 }
@@ -406,7 +406,7 @@ func TestPolarizedRewrite4(t *testing.T) {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
 	}
 
-	if len(substs) != 1 && !substs[0].GetSubst().Equals(treetypes.Failure()) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s - %v.", form.ToString(), substs[0].GetForm()[0].ToString(), substs[0].GetSubst().ToString())
+	if len(substs) != 1 && !substs[0].GetSaf().GetSubst().Equals(treetypes.Failure()) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s - %v.", form.ToString(), substs[0].GetSaf().GetForm()[0].ToString(), substs[0].GetSaf().GetSubst().ToString())
 	}
 }
