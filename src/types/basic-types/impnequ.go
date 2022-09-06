@@ -84,6 +84,10 @@ func (i Imp) RenameVariables() Form {
 	return MakeImp(i.GetIndex(), i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
 }
 
+func (i Imp) GetSubTerms() []Term {
+	return MergeTermList(i.GetF1().GetSubTerms(), i.GetF2().GetSubTerms())
+}
+
 /* Equ(f1, f2): f1 equivalent to f2 */
 type Equ struct {
 	index  int
@@ -122,4 +126,8 @@ func (e Equ) ReplaceVarByTerm(old Var, new Term) Form {
 
 func (e Equ) RenameVariables() Form {
 	return MakeEqu(e.GetIndex(), e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
+}
+
+func (e Equ) GetSubTerms() []Term {
+	return MergeTermList(e.GetF1().GetSubTerms(), e.GetF2().GetSubTerms())
 }

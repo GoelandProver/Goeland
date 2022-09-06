@@ -583,7 +583,8 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 				// Check if exists a contradiction after applying the substitution
 				clos_res_after_apply_subst, subst_after_apply_subst := applyClosureRules(f.Copy(), &st)
-				if manageClosureRule(father_id, &st, c, clos_res_after_apply_subst, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id) {
+				if clos_res_after_apply_subst {
+					manageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
 					return
 				}
 			}
@@ -607,7 +608,8 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			}
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 			clos_res, subst := applyClosureRules(f.Copy(), &st)
-			if manageClosureRule(father_id, &st, c, clos_res, treetypes.CopySubstList(subst), f.Copy(), node_id, original_node_id) {
+			if clos_res {
+				manageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst), f.Copy(), node_id, original_node_id)
 				return
 			}
 
@@ -638,9 +640,8 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt)
 				if res_eq {
-					if manageClosureRule(father_id, &st, c, res_eq, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{}), node_id, original_node_id) {
-						return
-					}
+					manageClosureRule(father_id, &st, c, subst_eq, basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{}), node_id, original_node_id)
+					return
 				}
 			}
 		}

@@ -416,5 +416,12 @@ func ApplySubstitution(st *State, saf SubstAndForm) {
 
 /* TODO : remove and change - for write proof */
 func (st *State) GetAllForms() basictypes.FormList {
-	return st.GetLF()
+	res := basictypes.MakeEmptyFormList()
+	res = res.Merge(st.GetLF())
+	res = res.Merge(st.GetAtomic())
+	res = res.Merge(st.GetAlpha())
+	res = res.Merge(st.GetBeta())
+	res = res.Merge(st.GetDelta())
+	res = res.Merge(st.GetGamma())
+	return res
 }

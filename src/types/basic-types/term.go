@@ -71,9 +71,11 @@ type TypedTerm interface {
 
 /*** Makers ***/
 
-func MakeId(i int, s string) Id                                 { return Id{i, s} }
-func MakeVar(i int, s string, t ...typing.TypeApp) Var          { return Var{i, s, getType(t)} }
-func MakeMeta(i int, s string, f int, t ...typing.TypeApp) Meta { return Meta{i, s, f, getType(t)} }
+func MakeId(i int, s string) Id                        { return Id{i, s} }
+func MakeVar(i int, s string, t ...typing.TypeApp) Var { return Var{i, s, getType(t)} }
+func MakeMeta(index, occurence int, s string, f int, t ...typing.TypeApp) Meta {
+	return Meta{index, occurence, s, f, getType(t)}
+}
 
 func MakeFun(p Id, args []Term, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
 	if len(t) == 1 {
@@ -119,6 +121,15 @@ func AppendIfNotContainsTermList(t Term, tl []Term) []Term {
 	} else {
 		return tl
 	}
+}
+
+/* Megre */
+func MergeTermList(tl, tl2 []Term) []Term {
+	res := CopyTermList(tl)
+	for _, t := range tl2 {
+		res = AppendIfNotContainsTermList(t, res)
+	}
+	return res
 }
 
 /* copy a list of terms */
@@ -225,12 +236,12 @@ func TypeAppToTerm(typeApp typing.TypeApp) Term {
 
 func typeVarToMeta(typeVar typing.TypeVar) Meta {
 	var meta Meta
-	index, formula := typeVar.MetaInfos()
+	index, formula, occurence := typeVar.MetaInfos()
 	if !typeVar.Instantiated() {
 		meta = MakerMeta(typeVar.ToString(), formula, typing.MkTypeHint("$tType"))
 		typeVar.Instantiate(meta.index)
 	} else {
-		meta = MakeMeta(index, typeVar.ToString(), formula, typing.MkTypeHint("$tType"))
+		meta = MakeMeta(index, occurence, typeVar.ToString(), formula, typing.MkTypeHint("$tType"))
 	}
 	return meta
 }

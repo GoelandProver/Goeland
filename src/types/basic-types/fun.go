@@ -89,7 +89,7 @@ func (f Fun) GetIndex() int                  { return f.GetID().GetIndex() }
 func (f Fun) GetName() string                { return f.GetID().GetName() }
 func (f Fun) IsMeta() bool                   { return false }
 func (f Fun) IsFun() bool                    { return true }
-func (Fun) ToMeta() Meta                     { return Meta{} }
+func (Fun) ToMeta() Meta                     { return MakeEmptyMeta() }
 
 func (f Fun) ToString() string {
 	return f.ToMappedString(defaultMap, true)

@@ -140,3 +140,12 @@ func (p Pred) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 func (p Pred) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakePred(p.GetIndex(), p.GetID(), replaceVarInTermList(p.GetArgs(), old, new), p.GetTypeVars(), p.GetType())
 }
+
+func (p Pred) GetSubTerms() []Term {
+	res := []Term{}
+	for _, t := range p.GetArgs() {
+		res = AppendIfNotContainsTermList(t, res)
+		res = MergeTermList(res, t.GetSubTerms())
+	}
+	return res
+}

@@ -183,7 +183,7 @@ func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term
 		case btypes.Fun:
 			term = btypes.MakeFun(t.GetID(), t.GetArgs(), t.GetTypeVars(), primitives[i].(typing.TypeScheme))
 		case btypes.Meta:
-			term = btypes.MakeMeta(t.GetIndex(), t.GetName(), t.GetFormula(), primitives[i])
+			term = btypes.MakeMeta(t.GetIndex(), t.GetOccurence(), t.GetName(), t.GetFormula(), primitives[i])
 		case btypes.Var:
 			term = btypes.MakeVar(t.GetIndex(), t.GetName(), primitives[i])
 		}

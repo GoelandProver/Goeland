@@ -77,3 +77,7 @@ func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 func (n Not) RenameVariables() Form {
 	return MakeNot(n.GetIndex(), n.f.RenameVariables())
 }
+
+func (n Not) GetSubTerms() []Term {
+	return n.GetForm().GetSubTerms()
+}

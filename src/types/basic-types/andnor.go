@@ -80,6 +80,14 @@ func (a And) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakeAnd(a.GetIndex(), replaceVarInFormList(a.GetLF(), old, new))
 }
 
+func (a And) GetSubTerms() []Term {
+	res := []Term{}
+	for _, tl := range a.GetLF() {
+		res = MergeTermList(res, tl.GetSubTerms())
+	}
+	return res
+}
+
 /* Or(formula list): disjunction of formulae */
 type Or struct {
 	index int
@@ -114,6 +122,13 @@ func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (o Or) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakeOr(o.GetIndex(), replaceVarInFormList(o.GetLF(), old, new))
+}
+func (o Or) GetSubTerms() []Term {
+	res := []Term{}
+	for _, tl := range o.GetLF() {
+		res = MergeTermList(res, tl.GetSubTerms())
+	}
+	return res
 }
 
 // ----------------------------------------------------------------------------

@@ -117,9 +117,11 @@ func (s *Substitutions) Set(key basictypes.Meta, value basictypes.Term) {
 }
 
 func (s Substitutions) Get(key basictypes.Meta) (basictypes.Term, int) {
-	for i, subst := range s {
-		if subst.Key().Equals(key) {
-			return subst.Value(), i
+	if key.GetIndex() != -1 {
+		for i, subst := range s {
+			if subst.Key().Equals(key) {
+				return subst.Value(), i
+			}
 		}
 	}
 	return nil, -1
@@ -178,7 +180,7 @@ func MakeEmptySubstitution() Substitutions {
 
 /* Returns a « failed » substitution. */
 func Failure() Substitutions {
-	fail := basictypes.MakeMeta(-1, "FAILURE", -1, typing.MkTypeHint("i"))
+	fail := basictypes.MakeMeta(-1, -1, "FAILURE", -1, typing.MkTypeHint("i"))
 	return Substitutions{Substitution{fail, fail}}
 }
 
@@ -196,18 +198,24 @@ func HasSubst(s Substitutions, m basictypes.Meta) bool {
 /*** Occur check ***/
 /* An invalid occur-check happens if the same meta-variable as the key is found in the value. */
 func OccurCheckValid(key basictypes.Meta, val basictypes.Term) bool {
+	// global.PrintDebug("OC", fmt.Sprintf("Occur-chek between %v and %v", key.ToString(), val.ToString()))
 	if val.IsFun() && isRecursive(val, key) || key.Equals(val) {
+		// global.PrintDebug("OC", "OC FAIL")
 		return false
 	}
+	// global.PrintDebug("OC", "OC SUCCESS")
 	return true
 }
 
 /* Checks if the substitution is of type (X, f(X)). */
 func isRecursive(t basictypes.Term, m basictypes.Meta) bool {
+	// global.PrintDebug("IR", fmt.Sprintf("IR between %v and %v", t.ToString(), m.ToString()))
 	switch t := t.(type) {
 	case basictypes.Fun:
+		// global.PrintDebug("IR", "IR FUN")
 		return areFuncArgsRecursive(t, m)
 	case basictypes.Meta:
+		// global.PrintDebug("IR", "IR META")
 		return t.Equals(m)
 	default:
 		global.PrintDebug("IR", "Error: [[substitution.go:157]] shouldn't be attained.")
@@ -218,6 +226,7 @@ func isRecursive(t basictypes.Term, m basictypes.Meta) bool {
 
 /* Checks if any argument of the function f contains the metavariable m. */
 func areFuncArgsRecursive(f basictypes.Fun, m basictypes.Meta) bool {
+	// global.PrintDebug("AFAR", fmt.Sprintf("AFAR between %v and %v", f.ToString(), m.ToString()))
 	for _, term := range f.GetArgs() {
 		if isRecursive(term, m) {
 			return true
@@ -229,7 +238,7 @@ func areFuncArgsRecursive(f basictypes.Fun, m basictypes.Meta) bool {
 /*** Eliminate ***/
 /* Eliminate - apply each element of the subst on the entire substitution, because an element can't œappears on the rigth and and the left if a substitution */
 func Eliminate(s *Substitutions) {
-	global.PrintDebug("EL", fmt.Sprintf("Eliminate on %v", s.ToString()))
+	// global.PrintDebug("EL", fmt.Sprintf("Eliminate on %v", s.ToString()))
 	if s.Equals(Failure()) {
 		return
 	}
@@ -261,15 +270,19 @@ func eliminateInside(key basictypes.Meta, value basictypes.Term, s Substitutions
 		s_tmp := MakeEmptySubstitution()
 
 		for _, v := range s { // For each element in the substitution
+			// Update the key of the substitution
 			key_2, value_2 := v.Get()
+
 			switch value_2_type := value_2.(type) {
 			case basictypes.Meta:
+
 				if key.Equals(value_2_type) {
 					s_tmp.Set(key_2, value)
 					has_changed = true
 				} else {
 					s_tmp.Set(key_2, value_2)
 				}
+
 			case basictypes.Fun:
 				new_value := basictypes.MakeFun(
 					value_2_type.GetP(),

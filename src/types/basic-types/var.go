@@ -60,7 +60,7 @@ func (v Var) GetName() string                { return v.name }
 func (v Var) IsMeta() bool                   { return false }
 func (v Var) IsFun() bool                    { return false }
 func (v Var) Copy() Term                     { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
-func (Var) ToMeta() Meta                     { return Meta{} }
+func (Var) ToMeta() Meta                     { return MakeEmptyMeta() }
 func (Var) GetMetas() MetaList               { return MetaList{} }
 
 func (v Var) ToString() string {
@@ -70,9 +70,10 @@ func (v Var) ToString() string {
 func (v Var) ToStringWithSuffixMeta(string) string { return v.ToString() }
 
 func (v Var) Equals(t Term) bool {
-	oth, isVar := t.(Var)
-	return isVar && (oth.GetIndex() == v.GetIndex()) &&
-		(oth.GetName() == v.GetName()) && (v.typeHint.Equals(oth.typeHint))
+	return v.GetIndex() == t.GetIndex()
+	// oth, isVar := t.(Var)
+	// return isVar && (oth.GetIndex() == v.GetIndex()) &&
+	// 	(oth.GetName() == v.GetName()) && (v.typeHint.Equals(oth.typeHint))
 }
 
 func (v Var) GetSubTerms() []Term {

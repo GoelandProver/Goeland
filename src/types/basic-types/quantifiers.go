@@ -95,6 +95,9 @@ func (e Ex) RenameVariables() Form {
 	newVarList, newForm := renameVariable(e.GetForm(), e.GetVarList())
 	return MakeEx(e.GetIndex(), newVarList, newForm)
 }
+func (e Ex) GetSubTerms() []Term {
+	return e.GetForm().GetSubTerms()
+}
 
 type All struct {
 	index    int
@@ -142,6 +145,10 @@ func (a All) ReplaceVarByTerm(old Var, new Term) Form {
 func (a All) RenameVariables() Form {
 	newVarList, newForm := renameVariable(a.GetForm(), a.GetVarList())
 	return MakeAll(a.GetIndex(), newVarList, newForm)
+}
+
+func (a All) GetSubTerms() []Term {
+	return a.GetForm().GetSubTerms()
 }
 
 /* Struct describing a forall with type variables */
@@ -198,6 +205,10 @@ func (a AllType) ReplaceVarByTerm(old Var, new Term) Form {
 
 func (a AllType) RenameVariables() Form {
 	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
+}
+
+func (a AllType) GetSubTerms() []Term {
+	return a.GetForm().GetSubTerms()
 }
 
 // ----------------------------------------------------------------------------

@@ -49,10 +49,11 @@ import (
 
 /* Metavariable (X, Y) */
 type Meta struct {
-	index    int
-	name     string
-	formula  int
-	typeHint typing.TypeApp
+	index     int
+	occurence int
+	name      string
+	formula   int
+	typeHint  typing.TypeApp
 }
 
 func (m Meta) GetFormula() int { return m.formula }
@@ -61,6 +62,7 @@ func (m Meta) GetTypeApp() typing.TypeApp                  { return m.typeHint }
 func (m Meta) GetTypeHint() typing.TypeScheme              { return m.typeHint.(typing.TypeScheme) }
 func (m Meta) GetName() string                             { return m.name }
 func (m Meta) GetIndex() int                               { return m.index }
+func (m Meta) GetOccurence() int                           { return m.occurence }
 func (m Meta) ToStringWithSuffixMeta(suffix string) string { return m.ToString() + suffix }
 func (m Meta) IsMeta() bool                                { return true }
 func (m Meta) IsFun() bool                                 { return false }
@@ -68,7 +70,7 @@ func (m Meta) ToMeta() Meta                                { return m }
 func (m Meta) GetMetas() MetaList                          { return MetaList{m} }
 
 func (m Meta) ToString() string {
-	return fmt.Sprintf("%s_%d_%d : %s", m.GetName(), m.GetIndex(), m.GetFormula(), m.typeHint.ToString())
+	return fmt.Sprintf("%s_%d_%d_%d : %s", m.GetName(), m.GetOccurence(), m.GetFormula(), m.GetIndex(), m.GetTypeHint().ToString())
 }
 
 func (m Meta) ToMappedString(map_ MapString, type_ bool) string {
@@ -79,15 +81,19 @@ func (m Meta) ToMappedString(map_ MapString, type_ bool) string {
 }
 
 func (m Meta) Equals(t Term) bool {
-	oth, isMeta := t.(Meta)
-	return isMeta &&
-		(oth.GetIndex() == m.GetIndex()) &&
-		(oth.GetName() == m.GetName()) &&
-		(oth.GetFormula() == m.GetFormula()) &&
-		(m.typeHint.Equals(oth.typeHint))
+	return t.GetIndex() == m.GetIndex()
+	// oth, isMeta := t.(Meta)
+	// return isMeta &&
+	// 	(oth.GetIndex() == m.GetIndex()) &&
+	// 	(oth.GetOccurence() == m.GetOccurence()) &&
+	// 	(oth.GetName() == m.GetName()) &&
+	// 	(oth.GetFormula() == m.GetFormula()) &&
+	// 	(m.typeHint.Equals(oth.typeHint))
 }
 
-func (m Meta) Copy() Term { return MakeMeta(m.GetIndex(), m.GetName(), m.GetFormula(), m.typeHint) }
+func (m Meta) Copy() Term {
+	return MakeMeta(m.GetIndex(), m.GetOccurence(), m.GetName(), m.GetFormula(), m.GetTypeApp())
+}
 
 func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 	if m.Equals(original_term) {
@@ -98,4 +104,8 @@ func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 
 func (m Meta) GetSubTerms() []Term {
 	return []Term{m}
+}
+
+func MakeEmptyMeta() Meta {
+	return MakeMeta(-1, -1, "-1", -1, nil, typing.DefaultType())
 }
