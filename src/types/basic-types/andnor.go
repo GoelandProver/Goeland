@@ -68,9 +68,8 @@ func (a And) ToStringWithSuffixMeta(suffix string) string {
 }
 
 func (a And) Equals(f Form) bool {
-	return a.GetIndex() == f.GetIndex()
-	// oth, isAnd := f.(And)
-	// return isAnd && oth.GetLF().Equals(a.GetLF())
+	oth, isAnd := f.(And)
+	return isAnd && oth.GetLF().Equals(a.GetLF())
 }
 
 func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -113,9 +112,8 @@ func (o Or) ToStringWithSuffixMeta(suffix string) string {
 }
 
 func (o Or) Equals(f Form) bool {
-	return o.GetIndex() == f.GetIndex()
-	// oth, isOr := f.(Or)
-	// return isOr && oth.GetLF().Equals(o.GetLF())
+	oth, isOr := f.(Or)
+	return isOr && oth.GetLF().Equals(o.GetLF())
 }
 
 func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {

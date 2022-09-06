@@ -112,13 +112,12 @@ func (p Pred) Copy() Form {
 }
 
 func (p Pred) Equals(f Form) bool {
-	return p.GetIndex() == f.GetIndex()
-	// oth, isPred := f.(Pred)
-	// return isPred &&
-	// 	oth.GetID().Equals(p.GetID()) &&
-	// 	ComparableList[typing.TypeApp](p.typeVars).Equals(oth.typeVars) &&
-	// 	AreEqualsTermList(oth.GetArgs(), p.GetArgs()) &&
-	// 	p.typeHint.Equals(oth.typeHint)
+	oth, isPred := f.(Pred)
+	return isPred &&
+		oth.GetID().Equals(p.GetID()) &&
+		ComparableList[typing.TypeApp](p.typeVars).Equals(oth.typeVars) &&
+		AreEqualsTermList(oth.GetArgs(), p.GetArgs()) &&
+		p.typeHint.Equals(oth.typeHint)
 }
 
 func (p Pred) GetMetas() MetaList {

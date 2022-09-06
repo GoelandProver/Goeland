@@ -60,7 +60,7 @@ func (Id) ToMeta() Meta                            { return MakeEmptyMeta() }
 func (Id) GetMetas() MetaList                      { return MetaList{} }
 
 func (i Id) Equals(t Term) bool {
-	return i.GetIndex() == t.GetIndex()
+	return t.GetIndex() == i.GetIndex()
 	// oth, isId := t.(Id)
 	// return isId &&
 	// 	(oth.GetIndex() == i.GetIndex()) &&

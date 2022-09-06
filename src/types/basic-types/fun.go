@@ -103,12 +103,11 @@ func (f Fun) ToStringWithSuffixMeta(suffix string) string {
 }
 
 func (f Fun) Equals(t Term) bool {
-	return f.GetIndex() == t.GetIndex()
-	// oth, isFun := t.(Fun)
-	// return isFun &&
-	// 	(oth.GetID() == f.GetID()) &&
-	// 	AreEqualsTermList(oth.GetArgs(), f.GetArgs()) &&
-	// 	f.typeHint.Equals(oth.typeHint)
+	oth, isFun := t.(Fun)
+	return isFun &&
+		(oth.GetID() == f.GetID()) &&
+		AreEqualsTermList(oth.GetArgs(), f.GetArgs()) &&
+		f.typeHint.Equals(oth.typeHint)
 }
 
 func (f Fun) Copy() Term {

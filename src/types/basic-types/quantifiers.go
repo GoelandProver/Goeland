@@ -77,11 +77,10 @@ func (e Ex) Copy() Form {
 }
 
 func (e Ex) Equals(f Form) bool {
-	return e.GetIndex() == f.GetIndex()
-	// oth, isEx := f.(Ex)
-	// return isEx &&
-	// 	AreEqualsVarList(e.GetVarList(), oth.GetVarList()) &&
-	// 	e.GetForm().Equals(oth.GetForm())
+	oth, isEx := f.(Ex)
+	return isEx &&
+		AreEqualsVarList(e.GetVarList(), oth.GetVarList()) &&
+		e.GetForm().Equals(oth.GetForm())
 }
 
 func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -129,11 +128,10 @@ func (a All) Copy() Form {
 }
 
 func (a All) Equals(f Form) bool {
-	return a.GetIndex() == f.GetIndex()
-	// oth, isAll := f.(All)
-	// return isAll &&
-	// 	AreEqualsVarList(a.GetVarList(), oth.GetVarList()) &&
-	// 	a.GetForm().Equals(oth.GetForm())
+	oth, isAll := f.(All)
+	return isAll &&
+		AreEqualsVarList(a.GetVarList(), oth.GetVarList()) &&
+		a.GetForm().Equals(oth.GetForm())
 }
 
 func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -191,11 +189,10 @@ func (a AllType) Copy() Form {
 }
 
 func (a AllType) Equals(f Form) bool {
-	return a.GetIndex() == f.GetIndex()
-	// oth, isAll := f.(AllType)
-	// return isAll &&
-	// 	AreEqualsTypeVarList(a.GetVarList(), oth.GetVarList()) &&
-	// 	a.GetForm().Equals(oth.GetForm())
+	oth, isAll := f.(AllType)
+	return isAll &&
+		AreEqualsTypeVarList(a.GetVarList(), oth.GetVarList()) &&
+		a.GetForm().Equals(oth.GetForm())
 }
 
 func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {

@@ -81,7 +81,7 @@ func (m Meta) ToMappedString(map_ MapString, type_ bool) string {
 }
 
 func (m Meta) Equals(t Term) bool {
-	return m.GetIndex() == t.GetIndex()
+	return t.GetIndex() == m.GetIndex()
 	// oth, isMeta := t.(Meta)
 	// return isMeta &&
 	// 	(oth.GetIndex() == m.GetIndex()) &&

@@ -66,9 +66,8 @@ func (n Not) ReplaceVarByTerm(old Var, new Term) Form {
 func (n Not) GetIndex() int { return n.index }
 
 func (n Not) Equals(f Form) bool {
-	return n.GetIndex() == f.GetIndex()
-	// oth, isNot := f.(Not)
-	// return isNot && oth.GetForm().Equals(n.GetForm())
+	oth, isNot := f.(Not)
+	return isNot && oth.GetForm().Equals(n.GetForm())
 }
 
 func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {

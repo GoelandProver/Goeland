@@ -67,10 +67,9 @@ func (i Imp) ToStringWithSuffixMeta(suffix string) string {
 }
 
 func (i Imp) Equals(f Form) bool {
-	return i.GetIndex() == f.GetIndex()
-	// oth, isImp := f.(Imp)
-	// return isImp &&
-	// 	i.GetF1().Equals(oth.GetF1()) && i.GetF2().Equals(oth.GetF2())
+	oth, isImp := f.(Imp)
+	return isImp &&
+		i.GetF1().Equals(oth.GetF1()) && i.GetF2().Equals(oth.GetF2())
 }
 
 func (i Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -112,10 +111,9 @@ func (e Equ) ToStringWithSuffixMeta(suffix string) string {
 }
 
 func (e Equ) Equals(f Form) bool {
-	return e.GetIndex() == f.GetIndex()
-	// oth, isEqu := f.(Equ)
-	// return isEqu &&
-	// 	e.GetF1().Equals(oth.GetF1()) && e.GetF2().Equals(oth.GetF2())
+	oth, isEqu := f.(Equ)
+	return isEqu &&
+		e.GetF1().Equals(oth.GetF1()) && e.GetF2().Equals(oth.GetF2())
 }
 
 func (e Equ) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
