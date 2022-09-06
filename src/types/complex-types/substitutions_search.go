@@ -145,7 +145,7 @@ func ReorganizeSubstitution(s treetypes.Substitutions) treetypes.Substitutions {
 
 		for _, subst_2 := range s {
 			meta_mother_2, meta_current_2 := subst_2.Get()
-			if meta_current == meta_current_2 && meta_mother != meta_mother_2 && !meta_seen.Contains(meta_mother_2) {
+			if meta_current.Equals(meta_current_2) && !meta_mother.Equals(meta_mother_2) && !meta_seen.Contains(meta_mother_2) {
 				res.Set(meta_mother_2, meta_mother)
 				meta_seen = meta_seen.AppendIfNotContains(meta_mother_2)
 			}
@@ -193,7 +193,7 @@ func ApplySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictype
 	case basictypes.Fun:
 		res = basictypes.MakeFun(
 			nf.GetP(),
-			applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
+			ApplySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
 			nf.GetTypeVars(),
 			nf.GetTypeHint(),
 		)
@@ -210,8 +210,32 @@ func applySubstitutionOnType(old_type, new_type, t typing.TypeApp) typing.TypeAp
 	return t
 }
 
+/* Apply substitutions on a list of terms */
+func ApplySubstitutionsOnTermList(s treetypes.Substitutions, tl []basictypes.Term) []basictypes.Term {
+	res := []basictypes.Term{}
+	for _, t := range tl {
+		new_term := ApplySubstitutionsOnTerm(s, t)
+		res = basictypes.AppendIfNotContainsTermList(new_term, res)
+
+	}
+	return res
+}
+
+func ApplySubstitutionsOnTerm(s treetypes.Substitutions, t basictypes.Term) basictypes.Term {
+	if t != nil {
+		term_res := t.Copy()
+		for _, subst := range s {
+			old_symbol, new_symbol := subst.Get()
+			term_res = ApplySubstitutionOnTerm(old_symbol, new_symbol, term_res)
+		}
+		return term_res
+	} else {
+		return nil
+	}
+}
+
 /* Apply substElement on a term list */
-func applySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl []basictypes.Term) []basictypes.Term {
+func ApplySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl []basictypes.Term) []basictypes.Term {
 	res := make([]basictypes.Term, len(tl))
 	for i, t := range tl {
 		res[i] = ApplySubstitutionOnTerm(old_symbol, new_symbol, t)
@@ -234,9 +258,9 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 	switch nf := f.(type) {
 	case basictypes.Pred:
 		res = basictypes.MakePred(
-			f.GetIndex(),
+			nf.GetIndex(),
 			nf.GetID(),
-			applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
+			ApplySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
 			applySubstitutionOnTypeList(old_symbol, new_symbol, nf.GetTypeVars()),
 			nf.GetType(),
 		)

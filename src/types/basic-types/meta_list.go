@@ -51,7 +51,7 @@ type MetaList []Meta
 func (m MetaList) Len() int      { return len(m) }
 func (m MetaList) Swap(i, j int) { m[i], m[j] = m[j], m[i] }
 func (m MetaList) Less(i, j int) bool {
-	return (m[i].GetName() + strconv.Itoa(m[i].GetIndex())) < (m[j].GetName() + strconv.Itoa(m[j].GetIndex()))
+	return (m[i].GetName() + strconv.Itoa(m[i].GetOccurence())) < (m[j].GetName() + strconv.Itoa(m[j].GetOccurence()))
 }
 
 /* Print a list of metas */
@@ -142,7 +142,7 @@ func MakeEmptyMetaList() MetaList {
 func (ml MetaList) ToTermList() []Term {
 	res := []Term{}
 	for _, m := range ml {
-		res = append(res, m)
+		res = append(res, m.Copy())
 	}
 	return res
 }

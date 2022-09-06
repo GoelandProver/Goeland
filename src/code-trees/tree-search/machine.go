@@ -39,10 +39,7 @@
 package treesearch
 
 import (
-	"fmt"
-
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -108,16 +105,16 @@ func (m *Machine) getCurrentMeta() basictypes.Meta {
 
 /* While term is a metavariable, replace it by its substitution in the map of substitutions (meta). */
 func (m *Machine) unwrapMeta(term basictypes.Term) basictypes.Term {
-	deja_vu := map[basictypes.Term]bool{}
+	deja_vu := map[int]bool{}
 	for term.IsMeta() {
 		val, ok := m.meta.Get(term.ToMeta())
-		global.PrintDebug("UM", fmt.Sprintf("ok : %v", ok))
-		if (ok == -1) || deja_vu[term] {
+		// global.PrintDebug("UM", fmt.Sprintf("ok : %v", ok))
+		if (ok == -1) || deja_vu[term.GetIndex()] {
 			break
 		}
-		global.PrintDebug("UM", fmt.Sprintf("ok 2 : %v", ok))
-		global.PrintDebug("UM", fmt.Sprintf("Val : %v", val.ToString()))
-		deja_vu[term] = true
+		// global.PrintDebug("UM", fmt.Sprintf("ok 2 : %v", ok))
+		// global.PrintDebug("UM", fmt.Sprintf("Val : %v", val.ToString()))
+		deja_vu[term.GetIndex()] = true
 		term = val.Copy()
 	}
 	return term

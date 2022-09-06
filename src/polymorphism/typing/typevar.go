@@ -58,6 +58,7 @@ type TypeVar struct {
 	metaInfo struct {
 		formulaIndex int
 		index        int
+		occurence    int
 	}
 }
 
@@ -115,12 +116,15 @@ func (tv *TypeVar) ShouldBeMeta(formula int) { tv.metaInfo.formulaIndex = formul
 func (tv *TypeVar) Instantiate(index int)    { tv.metaInfo.index = index }
 func (tv TypeVar) IsMeta() bool              { return tv.metaInfo.formulaIndex != BAD_INDEX }
 func (tv TypeVar) Instantiated() bool        { return tv.metaInfo.index != BAD_INDEX }
-func (tv TypeVar) MetaInfos() (int, int)     { return tv.metaInfo.formulaIndex, tv.metaInfo.index }
+func (tv TypeVar) MetaInfos() (int, int, int) {
+	return tv.metaInfo.formulaIndex, tv.metaInfo.index, tv.metaInfo.occurence
+}
 
 /* Makes a TypeVar from a name */
 func MkTypeVar(name string) TypeVar {
 	return TypeVar{name, struct {
 		formulaIndex int
 		index        int
-	}{BAD_INDEX, BAD_INDEX}}
+		occurence    int
+	}{BAD_INDEX, BAD_INDEX, BAD_INDEX}}
 }

@@ -56,14 +56,15 @@ func (i Id) ToStringWithSuffixMeta(string) string  { return i.ToString() }
 func (i Id) IsMeta() bool                          { return false }
 func (i Id) IsFun() bool                           { return false }
 func (i Id) Copy() Term                            { return MakeId(i.GetIndex(), i.GetName()) }
-func (Id) ToMeta() Meta                            { return Meta{} }
+func (Id) ToMeta() Meta                            { return MakeEmptyMeta() }
 func (Id) GetMetas() MetaList                      { return MetaList{} }
 
 func (i Id) Equals(t Term) bool {
-	oth, isId := t.(Id)
-	return isId &&
-		(oth.GetIndex() == i.GetIndex()) &&
-		(oth.GetName() == i.GetName())
+	return i.GetIndex() == t.GetIndex()
+	// oth, isId := t.(Id)
+	// return isId &&
+	// 	(oth.GetIndex() == i.GetIndex()) &&
+	// 	(oth.GetName() == i.GetName())
 }
 
 func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {

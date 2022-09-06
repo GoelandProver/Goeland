@@ -68,8 +68,9 @@ func (a And) ToStringWithSuffixMeta(suffix string) string {
 }
 
 func (a And) Equals(f Form) bool {
-	oth, isAnd := f.(And)
-	return isAnd && oth.GetLF().Equals(a.GetLF())
+	return a.GetIndex() == f.GetIndex()
+	// oth, isAnd := f.(And)
+	// return isAnd && oth.GetLF().Equals(a.GetLF())
 }
 
 func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -78,6 +79,14 @@ func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (a And) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakeAnd(a.GetIndex(), replaceVarInFormList(a.GetLF(), old, new))
+}
+
+func (a And) GetSubTerms() []Term {
+	res := []Term{}
+	for _, tl := range a.GetLF() {
+		res = MergeTermList(res, tl.GetSubTerms())
+	}
+	return res
 }
 
 /* Or(formula list): disjunction of formulae */
@@ -104,8 +113,9 @@ func (o Or) ToStringWithSuffixMeta(suffix string) string {
 }
 
 func (o Or) Equals(f Form) bool {
-	oth, isOr := f.(Or)
-	return isOr && oth.GetLF().Equals(o.GetLF())
+	return o.GetIndex() == f.GetIndex()
+	// oth, isOr := f.(Or)
+	// return isOr && oth.GetLF().Equals(o.GetLF())
 }
 
 func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -114,6 +124,13 @@ func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (o Or) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakeOr(o.GetIndex(), replaceVarInFormList(o.GetLF(), old, new))
+}
+func (o Or) GetSubTerms() []Term {
+	res := []Term{}
+	for _, tl := range o.GetLF() {
+		res = MergeTermList(res, tl.GetSubTerms())
+	}
+	return res
 }
 
 // ----------------------------------------------------------------------------

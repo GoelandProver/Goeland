@@ -77,10 +77,11 @@ func (e Ex) Copy() Form {
 }
 
 func (e Ex) Equals(f Form) bool {
-	oth, isEx := f.(Ex)
-	return isEx &&
-		AreEqualsVarList(e.GetVarList(), oth.GetVarList()) &&
-		e.GetForm().Equals(oth.GetForm())
+	return e.GetIndex() == f.GetIndex()
+	// oth, isEx := f.(Ex)
+	// return isEx &&
+	// 	AreEqualsVarList(e.GetVarList(), oth.GetVarList()) &&
+	// 	e.GetForm().Equals(oth.GetForm())
 }
 
 func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -94,6 +95,9 @@ func (e Ex) ReplaceVarByTerm(old Var, new Term) Form {
 func (e Ex) RenameVariables() Form {
 	newVarList, newForm := renameVariable(e.GetForm(), e.GetVarList())
 	return MakeEx(e.GetIndex(), newVarList, newForm)
+}
+func (e Ex) GetSubTerms() []Term {
+	return e.GetForm().GetSubTerms()
 }
 
 type All struct {
@@ -125,10 +129,11 @@ func (a All) Copy() Form {
 }
 
 func (a All) Equals(f Form) bool {
-	oth, isAll := f.(All)
-	return isAll &&
-		AreEqualsVarList(a.GetVarList(), oth.GetVarList()) &&
-		a.GetForm().Equals(oth.GetForm())
+	return a.GetIndex() == f.GetIndex()
+	// oth, isAll := f.(All)
+	// return isAll &&
+	// 	AreEqualsVarList(a.GetVarList(), oth.GetVarList()) &&
+	// 	a.GetForm().Equals(oth.GetForm())
 }
 
 func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -142,6 +147,10 @@ func (a All) ReplaceVarByTerm(old Var, new Term) Form {
 func (a All) RenameVariables() Form {
 	newVarList, newForm := renameVariable(a.GetForm(), a.GetVarList())
 	return MakeAll(a.GetIndex(), newVarList, newForm)
+}
+
+func (a All) GetSubTerms() []Term {
+	return a.GetForm().GetSubTerms()
 }
 
 /* Struct describing a forall with type variables */
@@ -182,10 +191,11 @@ func (a AllType) Copy() Form {
 }
 
 func (a AllType) Equals(f Form) bool {
-	oth, isAll := f.(AllType)
-	return isAll &&
-		AreEqualsTypeVarList(a.GetVarList(), oth.GetVarList()) &&
-		a.GetForm().Equals(oth.GetForm())
+	return a.GetIndex() == f.GetIndex()
+	// oth, isAll := f.(AllType)
+	// return isAll &&
+	// 	AreEqualsTypeVarList(a.GetVarList(), oth.GetVarList()) &&
+	// 	a.GetForm().Equals(oth.GetForm())
 }
 
 func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -198,6 +208,10 @@ func (a AllType) ReplaceVarByTerm(old Var, new Term) Form {
 
 func (a AllType) RenameVariables() Form {
 	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
+}
+
+func (a AllType) GetSubTerms() []Term {
+	return a.GetForm().GetSubTerms()
 }
 
 // ----------------------------------------------------------------------------

@@ -112,12 +112,13 @@ func (p Pred) Copy() Form {
 }
 
 func (p Pred) Equals(f Form) bool {
-	oth, isPred := f.(Pred)
-	return isPred &&
-		oth.GetID().Equals(p.GetID()) &&
-		ComparableList[typing.TypeApp](p.typeVars).Equals(oth.typeVars) &&
-		AreEqualsTermList(oth.GetArgs(), p.GetArgs()) &&
-		p.typeHint.Equals(oth.typeHint)
+	return p.GetIndex() == f.GetIndex()
+	// oth, isPred := f.(Pred)
+	// return isPred &&
+	// 	oth.GetID().Equals(p.GetID()) &&
+	// 	ComparableList[typing.TypeApp](p.typeVars).Equals(oth.typeVars) &&
+	// 	AreEqualsTermList(oth.GetArgs(), p.GetArgs()) &&
+	// 	p.typeHint.Equals(oth.typeHint)
 }
 
 func (p Pred) GetMetas() MetaList {
@@ -139,4 +140,13 @@ func (p Pred) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (p Pred) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakePred(p.GetIndex(), p.GetID(), replaceVarInTermList(p.GetArgs(), old, new), p.GetTypeVars(), p.GetType())
+}
+
+func (p Pred) GetSubTerms() []Term {
+	res := []Term{}
+	for _, t := range p.GetArgs() {
+		res = AppendIfNotContainsTermList(t, res)
+		res = MergeTermList(res, t.GetSubTerms())
+	}
+	return res
 }

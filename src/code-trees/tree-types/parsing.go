@@ -84,6 +84,10 @@ func (t TermForm) GetMetas() basictypes.MetaList {
 	}
 }
 
+func (t TermForm) GetSubTerms() []basictypes.Term {
+	return t.GetTerm().GetSubTerms()
+}
+
 func MakerTermForm(t basictypes.Term) TermForm {
 	return makeTermForm(basictypes.MakerIndexFormula(), t.Copy())
 }

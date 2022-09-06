@@ -63,6 +63,7 @@ type Form interface {
 	ReplaceTypeByMeta([]typing.TypeVar, int) Form
 	ReplaceVarByTerm(old Var, new Term) Form
 	RenameVariables() Form
+	GetSubTerms() []Term
 }
 
 /*** Functions ***/

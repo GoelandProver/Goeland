@@ -40,11 +40,18 @@
 
 package treetypes
 
-import btypes "github.com/GoelandProver/Goeland/types/basic-types"
+import (
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+)
 
 type Substitution struct {
 	k btypes.Meta
 	v btypes.Term
+}
+
+func MakeSubstitution(k basictypes.Meta, v basictypes.Term) Substitution {
+	return Substitution{k, v}
 }
 
 func (s Substitution) ToString() string {
