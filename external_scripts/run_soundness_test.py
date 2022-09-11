@@ -9,6 +9,7 @@ def Out(command):
 
 def LaunchTest(prover_name, command_line, succes, memory_limit=None, failure=None):
         output = Out(command_line).encode('utf-8', errors='ignore').decode(errors='ignore')
+        print(output)
 
         if re.search(succes, output):
             print(f"Found proof. {prover_name} is unsound.")
@@ -27,5 +28,5 @@ else:
     timeout = sys.argv[2]
     for index, file in enumerate(entries):
         print(f"Problem {index+1}/{len(entries)} : {folder+file}")
-        LaunchTest("Goéland", "timeout "+timeout+" src/_build/goeland "+folder+file, "VALID", None, "NOT VALID")
+        LaunchTest("Goéland", "timeout "+timeout+" src/_build/goeland "+folder+file, "% RES : VALID", None, "% RES : NOT VALID")
 
