@@ -179,14 +179,14 @@ func PrintResult(res bool) {
 	fmt.Printf("[%.6fs][%v][Res] %v goroutines created\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), global.GetNbGoroutines())
 	fmt.Printf("==== Result ====\n")
 	if res {
-		fmt.Printf("[%.6fs][%v][Res] VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		fmt.Printf("[%.6fs][%v][Res] %s RES : VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), "%")
 		if conjecture_found {
 			fmt.Printf("%s SZS status Theorem for %v\n", "%", global.GetProblemName())
 		} else {
 			fmt.Printf("%s SZS status Unsatisfiable for %v\n", "%", global.GetProblemName())
 		}
 	} else {
-		fmt.Printf("[%.6fs][%v][Res] NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		fmt.Printf("[%.6fs][%v][Res] %s RES : NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), "%")
 		if conjecture_found {
 			fmt.Printf("%s SZS status CounterSatisfiable for %v\n", "%", global.GetProblemName())
 		} else {
