@@ -193,7 +193,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 			// Manage the substitution sent by this child
 			if res.closed {
 				if len(res.subst_list_for_father) != 0 {
-					global.PrintDebug("SLC", fmt.Sprintf("The child %v has substitution(s) !", res.id))
+					global.PrintDebug("SLC", fmt.Sprintf("The child %v has %v substitution(s) !", res.id, len(res.subst_list_for_father)))
 
 					if len(res.subst_list_for_father) == 1 && res.subst_list_for_father[0].GetSubst().Equals(current_subst.GetSubst()) {
 						global.PrintDebug("SLC", fmt.Sprintf("The child %v returns the current subst !", res.id))
@@ -205,11 +205,11 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 						common_substs = []complextypes.SubstAndForm{}
 
 						// Check if there is common substitutions
-						for _, v := range res.subst_list_for_father {
+						for _, current_subst_from_children := range res.subst_list_for_father {
 							for i := range result_subst {
-								if v.GetSubst().Equals(result_subst[i].GetSubst()) {
-									global.PrintDebug("SLC", "Subst in common found !")
-									common_substs = append(common_substs, result_subst[i].AddFormulas(v.GetForm()))
+								if current_subst_from_children.GetSubst().Equals(result_subst[i].GetSubst()) {
+									global.PrintDebug("SLC", fmt.Sprintf("Subst in common found : %v !", current_subst_from_children.GetSubst().ToString()))
+									common_substs = append(common_substs, result_subst[i].AddFormulas(current_subst_from_children.GetForm()))
 								}
 							}
 						}

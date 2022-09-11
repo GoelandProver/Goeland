@@ -70,7 +70,9 @@ func (m Meta) ToMeta() Meta                                { return m }
 func (m Meta) GetMetas() MetaList                          { return MetaList{m} }
 
 func (m Meta) ToString() string {
-	return fmt.Sprintf("%s_%d_%d_%d : %s", m.GetName(), m.GetOccurence(), m.GetFormula(), m.GetIndex(), m.GetTypeHint().ToString())
+	// return fmt.Sprintf("%s_%d_%d_%d : %s", m.GetName(), m.GetOccurence(), m.GetFormula(), m.GetIndex(), m.GetTypeHint().ToString())
+	return fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.GetTypeHint().ToString())
+
 }
 
 func (m Meta) ToMappedString(map_ MapString, type_ bool) string {

@@ -86,8 +86,17 @@ func (s Substitutions) Equals(s2 Substitutions) bool {
 	if len(s) != len(s2) {
 		return false
 	}
-	for k, v := range s {
-		if s2[k].Value() == nil || !s2[k].Value().Equals(v.Value()) {
+
+	for _, subst_s1 := range s {
+		found := false
+		i := 0
+		for !found && i < len(s2) {
+			if subst_s1.Key().Equals(s2[i].Key()) && subst_s1.Value().Equals(s2[i].Value()) {
+				found = true
+			}
+			i++
+		}
+		if !found {
 			return false
 		}
 	}
