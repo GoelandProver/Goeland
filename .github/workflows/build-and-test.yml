@@ -65,3 +65,33 @@ jobs:
     uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
     with:
       folder: soundness_test/problems_6
+  SYN-1:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: theorem_test/SYN_1
+  SYN-2:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: theorem_test/SYN_2
+  SET-1:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: theorem_test/SET_1
+  SET-2:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: theorem_test/SET_2
+  SET-3:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/setup-tptp.yml@develop
+    with:
+      folder: theorem_test/SET_3   
