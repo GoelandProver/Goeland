@@ -6,19 +6,21 @@ if len(sys.argv) != 4:
 
 category = sys.argv[1]
 folder = sys.argv[2]
+result_folder = sys.argv[3]
 total = 0
-out_folder = f"{sys.argv[3]}_{total // 170}"
+out_folder = f"{result_folder}_{total // 170}"
 os.makedirs(out_folder)
+print(f"Create folder : {out_folder}")
 
-for parent, dirnames, filenames in os.walk(folder): 
-    if dirnames == category:
+for parent, dirnames, filenames in os.walk(folder):
+    if parent == category:
         for fn in filenames:
                 if fn.split(".")[-1].lower() == "p" and ("+" in fn or "_" in fn):
                     with open(os.path.join(parent, fn), 'r+') as f:
                         content = f.read()
                         if "% Status   : Theorem" in content:
-                            if f"{sys.argv[2]}_{total // 170}" != out_folder :
-                                out_folder = f"{sys.argv[2]}_{total // 170}"
+                            if f"{result_folder}_{total // 170}" != out_folder :
+                                out_folder = f"{result_folder}_{total // 170}"
                                 os.makedirs(out_folder)
                             shutil.copy2(os.path.join(parent, fn), os.path.join(out_folder, fn))
                             total += 1
