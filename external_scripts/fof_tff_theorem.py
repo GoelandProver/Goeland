@@ -12,7 +12,7 @@ out_folder = f"{result_folder}_{total // 170}"
 os.makedirs(out_folder)
 print(f"Create folder : {out_folder}")
 
-for parent, dirnames, filenames in os.walk(folder):
+for parent, dirnames, filenames in sorted(os.walk(folder)):
     print(parent)
     print(category)
     print(parent == category)

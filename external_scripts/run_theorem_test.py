@@ -34,7 +34,7 @@ else:
 
     for index, file in enumerate(entries):
         print(f"Problem {index+1}/{len(entries)} : {folder+file}")
-        if LaunchTest("Goéland", "timeout "+timeout+" src/_build/goeland "+folder+file, "% RES : VALID", cpt, None, "% RES : NOT VALID"):
+        if LaunchTest("Goéland", "timeout "+timeout+" src/_build/goeland "+folder+file, "% RES : VALID", None, "% RES : NOT VALID"):
             cpt+=1
 
     print(f"Number of problems solved : {cpt}/{total}")
