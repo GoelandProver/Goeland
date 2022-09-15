@@ -1,0 +1,20 @@
+name: Test On The Theorems Of The SYN Category With CASC Settings
+
+on: 
+  workflow_call:
+    inputs:
+      folder:
+        required: true
+        type: string
+
+jobs:
+  SYN-Test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.18.0'
+      - run: sudo apt-get install -y golang-golang-x-tools
+      - run: cd src && make
+      - run: python3 external_scripts/run_theorem_test.py ${{ inputs.folder }}_INCLUDE 120  

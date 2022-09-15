@@ -95,3 +95,21 @@ jobs:
     uses: GoelandProver/Goeland/.github/workflows/SET.yml@develop
     with:
       folder: SET_test/problems_2
+  CASC-1:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/SET.yml@develop
+    with:
+      folder: tests/CASC2022_0
+  CASC-2:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/SET.yml@develop
+    with:
+      folder: tests/CASC2022_1
+  CASC-3:
+    needs: Test
+    if: github.ref == 'refs/heads/develop'
+    uses: GoelandProver/Goeland/.github/workflows/SET.yml@develop
+    with:
+      folder: tests/CASC2022_2

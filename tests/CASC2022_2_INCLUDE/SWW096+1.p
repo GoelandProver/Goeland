@@ -1,0 +1,383 @@
+%------------------------------------------------------------------------------
+% File     : SWW096+1 : TPTP v8.1.0. Released v5.2.0.
+% Domain   : Software Verification
+% Problem  : Equivalenace of the semantic and syntactic definition of and 
+% Version  : [deN09] axioms.
+% English  : 
+
+% Refs     : [deN09] de Nivelle (2009), Email to Geoff Sutcliffe
+%          : [deN10] de Nivelle (2010), Classical Logic with Partial Functi
+% Source   : [deN09]
+% Names    : 
+
+% Status   : Theorem
+% Rating   : 0.81 v8.1.0, 0.75 v7.5.0, 0.81 v7.4.0, 0.77 v7.3.0, 0.83 v7.1.0, 0.78 v7.0.0, 0.70 v6.4.0, 0.73 v6.3.0, 0.79 v6.2.0, 0.88 v6.1.0, 0.93 v6.0.0, 1.00 v5.2.0
+% Syntax   : Number of formulae    :   45 (  15 unt;   0 def)
+%            Number of atoms       :   97 (  50 equ)
+%            Maximal formula atoms :    9 (   2 avg)
+%            Number of connectives :   77 (  25   ~;   6   |;  26   &)
+%                                         (   5 <=>;  15  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   10 (   4 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :    5 (   4 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   27 (  27 usr;   5 con; 0-3 aty)
+%            Number of variables   :   77 (  63   !;  14   ?)
+% SPC      : FOF_THM_RFO_SEQ
+
+% Comments : They even agree on non truth values.
+%------------------------------------------------------------------------------
+%----Include axioms for Syntactic definitions of the logical operators
+%------------------------------------------------------------------------------
+% File     : SWV012+0 : TPTP v8.1.0. Released v5.2.0.
+% Domain   : Software Verification
+% Axioms   : Syntactic definitions of the logical operators 
+% Version  : [deN09] axioms : Especial.
+% English  :
+
+% Refs     : [deN09] de Nivelle (2009), Email to Geoff Sutcliffe
+% Source   : [deN09]
+% Names    : 
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   44 (  14 unt;   0 def)
+%            Number of atoms       :   96 (  49 equ)
+%            Maximal formula atoms :    9 (   2 avg)
+%            Number of connectives :   77 (  25   ~;   6   |;  26   &)
+%                                         (   5 <=>;  15  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   10 (   4 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :    5 (   4 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   27 (  27 usr;   5 con; 0-3 aty)
+%            Number of variables   :   75 (  61   !;  14   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments : For each op in {and, lazy_and, or, exists, not, false}, this file
+%            contains the following: 
+%                op1 : the semantic definition of Theorem 4.
+%                op2 : the syntactic definition of Figure 4. 
+%            For each operator, we define a goal of form 
+%                FOR EACH arg1, ... argn, 
+%                    op1(arg1,...,argn) = op2(arg1, ..., argn).
+%            We specify the structure of the domain U_D. 
+%            We define the following predicates: 
+%                d(A) :      A in D. 
+%                bool(A) :   A in { false, true }.
+%            Note that U_D = U_0 |_| U_1 |_| U_2 |_| ...., and D = U_0.
+%------------------------------------------------------------------------------
+%----The predicate bool is true exactly on true and false:
+fof(def_bool,axiom,
+    ! [X] :
+      ( bool(X)
+    <=> ( X = false
+        | X = true ) ) ).
+
+%----err, true and false are distinct constants:
+fof(distinct_false_true_err,axiom,
+    ( true != false
+    & true != err
+    & false != err ) ).
+
+%----err, true and false are in D:
+fof(false_true_err_in_d,axiom,
+    ( d(true)
+    & d(false)
+    & d(err) ) ).
+
+%----forallprefers is needed by the forall quantifier. 
+%----In the rest of this comment we write '<' for 'forallprefers.'
+%----< is defined by the sequence
+%----( U_D \ D ) < ( D \ bool ) < f < t. 
+%----The value of forall x   p(x) is obtained as follows:
+%----First define R := range of   lambda x. p(x).
+%----Select a <-minimal element in R.
+%----Return Phi(r), where r is the selected element. 
+
+%----Notin D is preferred over D.
+%----Inside D, nonbool is preferred over bool.
+%----Inside bool, false is preferred over true:
+%----The <-order is partial.
+fof(def_forallprefers,axiom,
+    ! [X,Y] :
+      ( forallprefers(X,Y)
+    <=> ( ( ~ d(X)
+          & d(Y) )
+        | ( d(X)
+          & d(Y)
+          & ~ bool(X)
+          & bool(Y) )
+        | ( X = false
+          & Y = true ) ) ) ).
+
+%----existsprefers is like forallprefers, but it is defined by
+%----the sequence: 
+%---- ( U_D \ D ) < ( D \ bool ) < t < f. 
+fof(def_existsprefers,axiom,
+    ! [X,Y] :
+      ( existsprefers(X,Y)
+    <=> ( ( ~ d(X)
+          & d(Y) )
+        | ( d(X)
+          & d(Y)
+          & ~ bool(X)
+          & bool(Y) )
+        | ( X = true
+          & Y = false ) ) ) ).
+
+%----The function phi(X) is defined by:
+%----phi(X) = err if X not in D.
+%----phi(X) = X if X in D.
+%----It is defined in Definition 8 of the paper. 
+fof(def_phi,axiom,
+    ! [X] :
+      ( ( d(X)
+        & phi(X) = X )
+      | ( ~ d(X)
+        & phi(X) = err ) ) ).
+
+%----Axiomatization of prop. 
+%----The difference between bool and prop is that bool
+%----is a predicate which we use in the meta language (TPTP),
+%----while prop is a function inside the logic.
+fof(prop_true,axiom,
+    ! [X] :
+      ( prop(X) = true
+    <=> bool(X) ) ).
+
+fof(prop_false,axiom,
+    ! [X] :
+      ( prop(X) = false
+    <=> ~ bool(X) ) ).
+
+%----Axiomatization of impl. Because impl and lazy_impl are primitive,
+%----they have only one definition: 
+%----   If A is not bool, then ( A -> B ) = phi(A). 
+%----   If A is bool, but B is not bool, then ( A -> B ) = phi(B). 
+%----   If A is false, and B is bool, then ( A -> B ) = true
+%----   If A is true, and B is bool, then ( A -> B ) = B. 
+fof(impl_axiom1,axiom,
+    ! [A,B] :
+      ( ~ bool(A)
+     => impl(A,B) = phi(A) ) ).
+
+fof(impl_axiom2,axiom,
+    ! [A,B] :
+      ( ( bool(A)
+        & ~ bool(B) )
+     => impl(A,B) = phi(B) ) ).
+
+fof(impl_axiom3,axiom,
+    ! [B] :
+      ( bool(B)
+     => impl(false,B) = true ) ).
+
+fof(impl_axiom4,axiom,
+    ! [B] :
+      ( bool(B)
+     => impl(true,B) = B ) ).
+
+%----Axiomatization of lazy_impl:
+%----   If A is not bool, then [A] B = phi(A). 
+%----   If A is false, then [A] B = true. 
+%----   If A is true, then [A] B = phi(B). 
+fof(lazy_impl_axiom1,axiom,
+    ! [A,B] :
+      ( ~ bool(A)
+     => lazy_impl(A,B) = phi(A) ) ).
+
+fof(lazy_impl_axiom2,axiom,
+    ! [B] : lazy_impl(false,B) = true ).
+
+fof(lazy_impl_axiom3,axiom,
+    ! [B] : lazy_impl(true,B) = phi(B) ).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----Axiomatization of semantic definition of and:
+%----   If A is not bool, then ( A /\ B ) = phi(A). 
+%----   If A is bool, but B is not bool, then ( A /\ B ) = phi(B). 
+%----   If A = false, and B is bool, then ( A /\ B ) = false.
+%----   If A = true, and B is bool, then ( A /\ B ) = B.
+fof(and1_axiom1,axiom,
+    ! [A,B] :
+      ( ~ bool(A)
+     => and1(A,B) = phi(A) ) ).
+
+fof(and1_axiom2,axiom,
+    ! [A,B] :
+      ( ( bool(A)
+        & ~ bool(B) )
+     => and1(A,B) = phi(B) ) ).
+
+fof(and1_axiom3,axiom,
+    ! [B] :
+      ( bool(B)
+     => and1(false,B) = false ) ).
+
+fof(and1_axiom4,axiom,
+    ! [B] :
+      ( bool(B)
+     => and1(true,B) = B ) ).
+
+%----Syntactic definition of and in Figure 4:
+%----The definition is:
+%----P /\ Q = forall R, [ Prop(R) ] ( P -> Q -> R ) -> R.
+fof(def_f1,axiom,
+    ! [P,Q,R] : f1(P,Q,R) = lazy_impl(prop(R),impl(impl(P,impl(Q,R)),R)) ).
+
+fof(def_and2,axiom,
+    ! [P,Q] :
+    ? [R] :
+      ( and2(P,Q) = phi(f1(P,Q,R))
+      & ~ ? [R1] : forallprefers(f1(P,Q,R1),f1(P,Q,R)) ) ).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----Axiomatization of semantic definition of lazy_and:
+%----   If A is not bool, then <A> B = phi(A). 
+%----   If A is false, then <A> B = false. 
+%----   If A is true, then <A> B = phi(B). 
+fof(lazy_and1_axiom1,axiom,
+    ! [A,B] :
+      ( ~ bool(A)
+     => lazy_and1(A,B) = phi(A) ) ).
+
+fof(lazy_and1_axiom2,axiom,
+    ! [B] : lazy_and1(false,B) = false ).
+
+fof(lazy_and1_axiom3,axiom,
+    ! [B] : lazy_and1(true,B) = phi(B) ).
+
+%----Syntactic definition of lazy_and in Figure 4:
+%----The definition is:
+%----   <P> Q = forall R, [ Prop(R) ] ( [ P ] Q -> R ) -> R.
+fof(def_f2,axiom,
+    ! [P,Q,R] : f2(P,Q,R) = lazy_impl(prop(R),impl(lazy_impl(P,impl(Q,R)),R)) ).
+
+fof(def_lazy_and2,axiom,
+    ! [P,Q] :
+    ? [R] :
+      ( lazy_and2(P,Q) = phi(f2(P,Q,R))
+      & ~ ? [R1] : forallprefers(f2(P,Q,R1),f2(P,Q,R)) ) ).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----Axiomatization of semantic definition of or: 
+%----   If A is not bool, then ( A \/ B ) = phi(A).
+%----   If A is bool, but B is not bool, then ( A \/ B ) = phi(B).
+%----   If A = true, and B is bool, then ( A \/ B ) = true.
+%----   If A = false, and B is bool, then ( A \/ B ) = B.
+fof(or1_axiom1,axiom,
+    ! [A,B] :
+      ( ~ bool(A)
+     => or1(A,B) = phi(A) ) ).
+
+fof(or1_axiom2,axiom,
+    ! [A,B] :
+      ( ( bool(A)
+        & ~ bool(B) )
+     => or1(A,B) = phi(B) ) ).
+
+fof(or1_axiom3,axiom,
+    ! [B] :
+      ( bool(B)
+     => or1(true,B) = true ) ).
+
+fof(or1_axiom4,axiom,
+    ! [B] :
+      ( bool(B)
+     => or1(false,B) = B ) ).
+
+%----Syntactic definition of or in Figure 4.
+%----The definition is:
+%----P \/ Q = forall R, [ Prop(R) ] ( P -> R ) -> ( Q -> R ) -> R.
+fof(def_f3,axiom,
+    ! [P,Q,R] : f3(P,Q,R) = lazy_impl(prop(R),impl(impl(P,R),impl(impl(Q,R),R))) ).
+
+fof(def_or2,axiom,
+    ! [P,Q] :
+    ? [R] :
+      ( or2(P,Q) = phi(f3(P,Q,R))
+      & ~ ? [R1] : forallprefers(f3(P,Q,R1),f3(P,Q,R)) ) ).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----Axiomatization of semantic definition of exists. 
+%----
+%----For each predicate, there exists an an x, s.t.
+%----exists(P) = phi( P. x ) and 
+%----   there exists no x1, s.t. ( P. x1 ) < ( P. x ), where 
+%----      < is the existsprefers order, and 
+%----      . is the application operator. 
+fof(exists1_axiom1,axiom,
+    ! [P] :
+    ? [X] :
+      ( exists1(P) = phi(apply(P,X))
+      & ~ ? [X1] : existsprefers(apply(P,X1),apply(P,X)) ) ).
+
+%----Syntactic definition of exists in the paper:
+%
+%----( Exists P ) = forall R, [ Prop(R) ] ( forall x ( P x ) -> R ) -> R.
+%
+%----We define functions  f4(P,x,R) :=   ( P. x ) -> R.
+%----                     f5(P,R)   :=   forall x. f4( P,x,R )
+%----                     f6(P,R)   :=   [ Prop(R) ] f5( P, R ) -> R. 
+%----                     exists2(P) :=  forall R. f6( P, R ).  
+fof(def_f4,axiom,
+    ! [P,X,R] : f4(P,X,R) = impl(apply(P,X),R) ).
+
+fof(def_f5,axiom,
+    ! [P,R] :
+    ? [X] :
+      ( f5(P,R) = phi(f4(P,X,R))
+      & ~ ? [X1] : forallprefers(f4(P,X1,R),f4(P,X,R)) ) ).
+
+fof(def_f6,axiom,
+    ! [P,R] : f6(P,R) = lazy_impl(prop(R),impl(f5(P,R),R)) ).
+
+fof(def_exists2,axiom,
+    ! [P] :
+    ? [R] :
+      ( exists2(P) = phi(f6(P,R))
+      & ~ ? [R1] : forallprefers(f6(P,R1),f6(P,R)) ) ).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----The semantic definition of false is just the false constant.
+fof(def_false1,axiom,
+    false1 = false ).
+
+%----The syntactic definition of false equals: 
+%----   false := forall P, [ Prop(P) ] P .
+%----f7(P) := [ Prop(P) ] P.
+fof(def_f7,axiom,
+    ! [P] : f7(P) = lazy_impl(prop(P),P) ).
+
+fof(def_false2,axiom,
+    ? [P] :
+      ( false2 = phi(f7(P))
+      & ~ ? [P1] : forallprefers(f7(P1),f7(P)) ) ).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----Axiomatization of semantic definition of not: 
+%----   If A is not bool, then not(A) = phi(A). 
+%----   If A = false, then not(A) = true. 
+%----   If A = true, then not(A) = false. 
+fof(not1_axiom1,axiom,
+    ! [A] :
+      ( ~ bool(A)
+     => not1(A) = phi(A) ) ).
+
+fof(not1_axiom2,axiom,
+    not1(false) = true ).
+
+fof(not1_axiom3,axiom,
+    not1(true) = false ).
+
+%----Syntactic definition of not in paper:
+%----The definition is:
+%----~ P := ( P -> False ).
+fof(def_not2,axiom,
+    ! [P] : not2(P) = impl(P,false2) ).
+
+%------------------------------------------------------------------------------
+
+%------------------------------------------------------------------------------
+fof(and1_and2,conjecture,
+    ! [P,Q] : and1(P,Q) = and2(P,Q) ).
+
+%------------------------------------------------------------------------------
