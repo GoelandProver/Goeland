@@ -22,7 +22,7 @@ jobs:
       - run: rm TPTP-v8.1.0.tgz
       - run: mkdir SYN_test
       - run: mv TPTP-v8.1.0/Axioms SYN_test
-      - run: python3 external_scripts/fof_tff_theorem.py Problems/SYN TPTP-v8.1.0 SYN_test/problems
+      - run: python3 external_scripts/fof_tff_theorem.py TPTP-v8.1.0/Problems/SYN TPTP-v8.1.0 SYN_test/problems
       - run: python3 external_scripts/add_include.py ${{ inputs.folder }}/
       - run: rm -rf TPTP-v8.1.0
       - run: python3 external_scripts/run_theorem_test.py ${{ inputs.folder }}_INCLUDE 120  
