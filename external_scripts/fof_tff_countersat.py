@@ -8,6 +8,7 @@ folder = sys.argv[1]
 total = 0
 out_folder = f"{sys.argv[2]}_{total // 170}"
 os.makedirs(out_folder)
+print(f"Create folder : {out_folder}")
 
 for parent, dirnames, filenames in os.walk(folder): 
     for fn in filenames:

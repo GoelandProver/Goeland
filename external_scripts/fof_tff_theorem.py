@@ -13,6 +13,10 @@ os.makedirs(out_folder)
 print(f"Create folder : {out_folder}")
 
 for parent, dirnames, filenames in os.walk(folder):
+    print(parent)
+    print(category)
+    print(parent == category)
+    print("============")
     if parent == category:
         for fn in filenames:
                 if fn.split(".")[-1].lower() == "p" and ("+" in fn or "_" in fn):
