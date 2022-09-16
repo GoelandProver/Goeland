@@ -82,6 +82,7 @@ var flag_type_proof = flag.Bool("type_proof", false, "Apply this flag if you wan
 var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
 var flag_ari = flag.Bool("ari", false, "Enable arithmetic module")
 var conjecture_found bool
+var flag_nb_core = flag.Int("core_limit", -1, "Number of core (default: all)")
 
 func main() {
 	initFlag()
@@ -357,6 +358,9 @@ func flatten(fl basictypes.FormList) basictypes.FormList {
 
 /* Initialize global variable, time, call plugins */
 func initialization() {
+	// NB core
+	runtime.GOMAXPROCS(global.GetCoreLimit())
+
 	// Time
 	global.SetStart(time.Now())
 
@@ -420,6 +424,10 @@ func initFlag() {
 	global.SetPlugin("equality", !*flag_noeq)
 	if *flag_dmt_before_eq {
 		global.SetDMTBeforeEQ(true)
+	}
+
+	if *flag_nb_core != -1 {
+		global.SetCoreLimit(*flag_nb_core)
 	}
 
 	coq.InitFlag()

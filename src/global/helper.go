@@ -68,6 +68,7 @@ var cpt_node = -1
 var lock_cpt_node sync.Mutex
 var dmt_before_eq bool
 var problem_name string
+var core_limit = -1
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -176,6 +177,9 @@ func IsCoqOutput() bool {
 func GetProblemName() string {
 	return problem_name
 }
+func GetCoreLimit() int {
+	return core_limit
+}
 
 /* Setters */
 func SetDebug(b bool) {
@@ -238,4 +242,8 @@ func SetDMTBeforeEQ(b bool) {
 
 func SetProblemName(problem string) {
 	problem_name = problem
+}
+
+func SetCoreLimit(i int) {
+	core_limit = i
 }

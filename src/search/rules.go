@@ -343,7 +343,7 @@ func realSkolemize(f basictypes.Form, vars []basictypes.Var, terms []basictypes.
 
 		// A Skolem symbol has no quantified variables.
 		skolem := basictypes.MakerFun(
-			basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())),
+			basictypes.MakerId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())), // Or makerNewId
 			terms,
 			[]typing.TypeApp{},
 			scheme,
