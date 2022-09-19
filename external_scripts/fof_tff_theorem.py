@@ -19,10 +19,13 @@ for parent, dirnames, filenames in sorted(os.walk(folder)):
     print("============")
     if parent == category:
         for fn in filenames:
+                print("Check file : "+fn)
                 if fn.split(".")[-1].lower() == "p" and ("+" in fn or "_" in fn):
+                    print("Right extension : "+fn)
                     with open(os.path.join(parent, fn), 'r+') as f:
                         content = f.read()
                         if "% Status   : Theorem" in content:
+                            print("File is a theorem : "+fn)
                             if f"{result_folder}_{total // 170}" != out_folder :
                                 out_folder = f"{result_folder}_{total // 170}"
                                 os.makedirs(out_folder)
