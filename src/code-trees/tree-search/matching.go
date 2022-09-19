@@ -39,6 +39,7 @@
 package treesearch
 
 import (
+	"fmt"
 	"reflect"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -92,19 +93,19 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 	for _, instr := range node.value {
 
-		// global.PrintDebug("UX", "------------------------")
-		// global.PrintDebug("UX", fmt.Sprintf("Instr: %v", instr.ToString()))
-		// global.PrintDebug("UX", fmt.Sprintf("Meta : %v", m.meta.ToString()))
-		// global.PrintDebug("UX", fmt.Sprintf("Subst : %v", treetypes.SubstPairListToString(m.subst)))
-		// global.PrintDebug("UX", fmt.Sprintf("Post : %v", treetypes.IntPairistToString(m.post)))
-		// global.PrintDebug("UX", fmt.Sprintf("IsLocked : %v", m.isLocked()))
-		// global.PrintDebug("UX", fmt.Sprintf("HasPushed : %v", m.hasPushed))
-		// global.PrintDebug("UX", fmt.Sprintf("HasPoped : %v", m.hasPoped))
-		// global.PrintDebug("UX", fmt.Sprintf("m.beginCount: %v - m.beginLock : %v", m.beginCount, m.beginLock))
-		// global.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
-		// global.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, len(m.terms)))
-		// global.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms[m.q].ToString()))
-		// global.PrintDebug("UX", fmt.Sprintf("m.terms : %v", basictypes.TermListToString(m.terms)))
+		global.PrintDebug("UX", "------------------------")
+		global.PrintDebug("UX", fmt.Sprintf("Instr: %v", instr.ToString()))
+		global.PrintDebug("UX", fmt.Sprintf("Meta : %v", m.meta.ToString()))
+		global.PrintDebug("UX", fmt.Sprintf("Subst : %v", treetypes.SubstPairListToString(m.subst)))
+		global.PrintDebug("UX", fmt.Sprintf("Post : %v", treetypes.IntPairistToString(m.post)))
+		global.PrintDebug("UX", fmt.Sprintf("IsLocked : %v", m.isLocked()))
+		global.PrintDebug("UX", fmt.Sprintf("HasPushed : %v", m.hasPushed))
+		global.PrintDebug("UX", fmt.Sprintf("HasPoped : %v", m.hasPoped))
+		global.PrintDebug("UX", fmt.Sprintf("m.beginCount: %v - m.beginLock : %v", m.beginCount, m.beginLock))
+		global.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
+		global.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, len(m.terms)))
+		global.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms[m.q].ToString()))
+		global.PrintDebug("UX", fmt.Sprintf("m.terms : %v", basictypes.TermListToString(m.terms)))
 
 		switch instr := instr.(type) {
 		case treetypes.Begin:
@@ -161,9 +162,9 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 /* Unify on goroutines - to manage die message */
 /* TODO : remove when debug ok */
 func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []treetypes.MatchingSubstitutions, father_id uint64) {
-	// global.PrintDebug("UA", fmt.Sprintf("Child of %v, Unify Aux", father_id))
+	global.PrintDebug("UA", fmt.Sprintf("Child of %v, Unify Aux", father_id))
 	ch <- m.unifyAux(n)
-	// global.PrintDebug("UA", "Die")
+	global.PrintDebug("UA", "Die")
 }
 
 /* Launches each child of the current node in a goroutine. */

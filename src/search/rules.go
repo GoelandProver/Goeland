@@ -315,6 +315,8 @@ func Skolemize(f basictypes.Form) basictypes.Form {
 		f = realSkolemize(nf.GetForm(), nf.GetVarList(), f.GetMetas().ToTermList())
 	}
 
+	// TOdo : pas getMetas, getTerm !
+
 	return f
 }
 
