@@ -65,7 +65,7 @@ type Machine struct {
 	hasPoped      bool
 	post          []treetypes.IntPair
 	subst         []treetypes.SubstPair
-	terms         []basictypes.Term
+	terms         basictypes.TermList
 	meta          treetypes.Substitutions
 	failure       []treetypes.MatchingSubstitutions
 	topLevelTot   int
@@ -82,7 +82,7 @@ func makeMachine() Machine {
 		hasPoped:      false,
 		post:          []treetypes.IntPair{},
 		subst:         []treetypes.SubstPair{},
-		terms:         []basictypes.Term{},
+		terms:         basictypes.TermList{},
 		meta:          treetypes.Substitutions{},
 		failure:       []treetypes.MatchingSubstitutions{},
 		topLevelTot:   0,

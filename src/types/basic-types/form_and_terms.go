@@ -30,54 +30,54 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**********/
-/* not.go */
-/**********/
+/******************/
+/* formAndTerm.go */
+/******************/
 
 /**
-* This file implements a negation of a formula.
+* This file contains the implementation of formAndTerm.
 **/
 
 package basictypes
 
-import (
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-)
-
-/* Not(formula): negation of a formula */
-type Not struct {
-	index int
-	f     Form
+/* id (for predicate) */
+type FormAndTerms struct {
+	form  Form
+	Terms TermList
 }
 
-func (n Not) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[NotConn] + "(" + n.GetForm().ToMappedString(map_, displayTypes) + ")"
+func (fat FormAndTerms) GetForm() Form {
+	if fat.form != nil {
+		return fat.form.Copy()
+	} else {
+		return nil
+	}
 }
 
-func (n Not) GetForm() Form                        { return n.f.Copy() }
-func (n Not) GetType() typing.TypeScheme           { return typing.DefaultPropType(0) }
-func (n Not) ToString() string                     { return n.ToMappedString(defaultMap, true) }
-func (n Not) ToStringWithSuffixMeta(string) string { return n.ToString() }
-func (n Not) Copy() Form                           { return MakeNot(n.GetIndex(), n.GetForm()) }
-func (n Not) GetMetas() MetaList                   { return n.GetForm().GetMetas() }
-func (n Not) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceVarByTerm(old, new))
-}
-func (n Not) GetIndex() int { return n.index }
-
-func (n Not) Equals(f Form) bool {
-	oth, isNot := f.(Not)
-	return isNot && oth.GetForm().Equals(n.GetForm())
+func (fat FormAndTerms) GetTerms() TermList {
+	return fat.Terms.Copy()
 }
 
-func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
+func (fat *FormAndTerms) SetForm(form Form) {
+	fat.form = form
 }
 
-func (n Not) RenameVariables() Form {
-	return MakeNot(n.GetIndex(), n.f.RenameVariables())
+func (fat *FormAndTerms) SetTerms(Terms TermList) {
+	fat.Terms = Terms
 }
 
-func (n Not) GetSubTerms() TermList {
-	return n.GetForm().GetSubTerms()
+func MakeFormAndTerm(f Form, tl TermList) FormAndTerms {
+	return FormAndTerms{f, tl}
+}
+
+func (fat FormAndTerms) Copy() FormAndTerms {
+	return MakeFormAndTerm(fat.GetForm(), fat.GetTerms())
+}
+
+func (fat FormAndTerms) Equals(fat2 FormAndTerms) bool {
+	return fat.GetForm().Equals(fat2.GetForm()) && fat.GetTerms().EqualsWithoutOrder(fat2.GetTerms())
+}
+
+func (fat FormAndTerms) ToString() string {
+	return fat.GetForm().ToString()
 }

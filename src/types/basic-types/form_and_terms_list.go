@@ -48,24 +48,24 @@ import (
 /*** Structure ***/
 
 /* List of formulae */
-type FormList []Form
+type FormAndTermsList []FormAndTerms
 
 /*** Methods ***/
 
 /*Sort */
-func (fl FormList) Len() int      { return len(fl) }
-func (fl FormList) Swap(i, j int) { fl[i], fl[j] = fl[j], fl[i] }
-func (fl FormList) Less(i, j int) bool {
-	return (fl[i].ToString() < fl[j].ToString())
+func (fl FormAndTermsList) Len() int      { return len(fl) }
+func (fl FormAndTermsList) Swap(i, j int) { fl[i], fl[j] = fl[j], fl[i] }
+func (fl FormAndTermsList) Less(i, j int) bool {
+	return (fl[i].GetForm().ToString() < fl[j].GetForm().ToString())
 }
 
 /** To String **/
 
 /* Convert a list of formulas into string*/
-func (fl FormList) ToString() string {
+func (fl FormAndTermsList) ToString() string {
 	res := "{"
 	for i, v := range fl {
-		res += v.ToString()
+		res += v.GetForm().ToString()
 		if i < len(fl)-1 {
 			res += (", ")
 		}
@@ -75,35 +75,27 @@ func (fl FormList) ToString() string {
 }
 
 /* Print a list of formulas */
-func (lf FormList) Print() {
+func (lf FormAndTermsList) Print() {
 	for _, f := range lf {
-		global.PrintDebug("FLTS", f.ToString())
+		global.PrintDebug("FLTS", f.GetForm().ToString())
 	}
 }
 
 /* Convert a list of formulas into string for proof struct */
-func (fl FormList) ToStringForProof() string {
+func (fl FormAndTermsList) ToStringForProof() string {
 	return fl.ToString()
-	// res := ""
-	// for i, f := range fl {
-	// 	res = res + "<tspan x='0', dy='1.2em'>" + f.ToString() + "<tspan>"
-	// 	if i < len(fl)-1 {
-	// 		res = res + ", "
-	// 	}
-	// }
-	// return res
 }
 
 /** Utilitary **/
 
 /* Return true is the FormList is empty, false otherwise */
-func (fl FormList) IsEmpty() bool {
+func (fl FormAndTermsList) IsEmpty() bool {
 	return len(fl) <= 0
 }
 
 /* Copy a list of form */
-func (fl FormList) Copy() FormList {
-	res := MakeEmptyFormList()
+func (fl FormAndTermsList) Copy() FormAndTermsList {
+	res := MakeEmptyFormAndTermsList()
 	for _, f := range fl {
 		res = append(res, f.Copy())
 	}
@@ -111,7 +103,7 @@ func (fl FormList) Copy() FormList {
 }
 
 /* Check if two form_and_term_list contains the same elements */
-func (l1 FormList) Equals(l2 FormList) bool {
+func (l1 FormAndTermsList) Equals(l2 FormAndTermsList) bool {
 	if len(l1) != len(l2) {
 		return false
 	} else {
@@ -131,7 +123,7 @@ func (l1 FormList) Equals(l2 FormList) bool {
 }
 
 /* Return true if a formula f is inside the given formulas list, false otherwise */
-func (fl FormList) Contains(f Form) bool {
+func (fl FormAndTermsList) Contains(f FormAndTerms) bool {
 	for _, v := range fl {
 		if f.Equals(v) {
 			return true
@@ -141,7 +133,7 @@ func (fl FormList) Contains(f Form) bool {
 }
 
 /* Append a formula to a list if the formula is not already inside */
-func (fl FormList) AppendIfNotContains(f Form) FormList {
+func (fl FormAndTermsList) AppendIfNotContains(f FormAndTerms) FormAndTermsList {
 	if fl.Contains(f) {
 		return fl.Copy()
 	} else {
@@ -150,7 +142,7 @@ func (fl FormList) AppendIfNotContains(f Form) FormList {
 }
 
 /* insert first */
-func (fl FormList) InsertFirst(f Form) FormList {
+func (fl FormAndTermsList) InsertFirst(f FormAndTerms) FormAndTermsList {
 	if len(fl) > 0 {
 		// Moves everything to the right once.
 		fl = append(fl[:1], fl[0:]...)
@@ -162,7 +154,7 @@ func (fl FormList) InsertFirst(f Form) FormList {
 }
 
 /* Merge two formulas lists */
-func (l1 FormList) Merge(l2 FormList) FormList {
+func (l1 FormAndTermsList) Merge(l2 FormAndTermsList) FormAndTermsList {
 	res := l1.Copy()
 	for _, f := range l2 {
 		res = res.AppendIfNotContains(f.Copy())
@@ -170,11 +162,33 @@ func (l1 FormList) Merge(l2 FormList) FormList {
 	return res
 }
 
+func (fl FormAndTermsList) ExtractForms() FormList {
+	res := MakeEmptyFormList()
+	for _, f := range fl {
+		res = res.AppendIfNotContains(f.GetForm())
+	}
+	return res
+}
+
+/*** Functions ***/
+
+/** Makers **/
+
+/* Make empty form_and_term_list */
+func MakeEmptyFormAndTermsList() FormAndTermsList {
+	return FormAndTermsList{}
+}
+
+/* Make a form_and_term_list with one element */
+func MakeSingleElementFormAndTermList(f FormAndTerms) FormAndTermsList {
+	return FormAndTermsList{f}
+}
+
 /* Keep only predicate with right polarity */
-func (lf FormList) FilterPred(pola bool) FormList {
+func (lf FormAndTermsList) FilterPred(pola bool) FormList {
 	res := MakeEmptyFormList()
 	for _, f := range lf {
-		switch nf := f.Copy().(type) {
+		switch nf := f.GetForm().(type) {
 		case Pred:
 			if pola {
 				res = res.AppendIfNotContains(nf)
@@ -189,18 +203,4 @@ func (lf FormList) FilterPred(pola bool) FormList {
 		}
 	}
 	return res
-}
-
-/*** Functions ***/
-
-/** Makers **/
-
-/* Make empty form_and_term_list */
-func MakeEmptyFormList() FormList {
-	return FormList{}
-}
-
-/* Make a form_and_term_list with one element */
-func MakeSingleElementList(f Form) FormList {
-	return FormList{f}
 }

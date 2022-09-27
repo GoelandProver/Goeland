@@ -91,7 +91,7 @@ func tryApplyRuleCompute(s, t basictypes.Term, ep EqualityProblem, type_rule int
 
 	// Retrieve the list of substerm of s
 	subterms_of_s := s.GetSubTerms()
-	global.PrintDebug("TARA", fmt.Sprintf("len subterms found : %v - %v", len(subterms_of_s), basictypes.TermListToString(subterms_of_s)))
+	global.PrintDebug("TARA", fmt.Sprintf("len subterms found : %v - %v", len(subterms_of_s), subterms_of_s.ToString()))
 	global.PrintDebug("TARA", fmt.Sprintf("EP eq list : %v", ep.getE().toString()))
 
 	// for each l' substerm of s, return a list (l', l) unifiable
@@ -129,8 +129,8 @@ func connectLAndR(list_l_prime_l []TermPair, ep EqualityProblem, s basictypes.Te
 }
 
 /* return all the pair (l, l') unifiable */
-func searchUnifBewteenListAndEq(tl []basictypes.Term, tree datastruct.DataStructure) []TermPair {
-	global.PrintDebug("SUBLE", fmt.Sprintf("Searching unfication between %v and the eq tree", basictypes.TermListToString(tl)))
+func searchUnifBewteenListAndEq(tl basictypes.TermList, tree datastruct.DataStructure) []TermPair {
+	global.PrintDebug("SUBLE", fmt.Sprintf("Searching unfication between %v and the eq tree", tl.ToString()))
 	term_pair_list := []TermPair{}
 	for _, t_prime := range tl {
 		// If the subterm is not a variable
@@ -155,8 +155,8 @@ func searchUnifBewteenListAndEq(tl []basictypes.Term, tree datastruct.DataStruct
 }
 
 /* Take a (sub)-term t, and retrieve all the term t' unifiable with t */
-func checkUnifInTree(t basictypes.Term, tree datastruct.DataStructure) (bool, []basictypes.Term) {
-	result_list := []basictypes.Term{}
+func checkUnifInTree(t basictypes.Term, tree datastruct.DataStructure) (bool, basictypes.TermList) {
+	result_list := basictypes.MakeEmptyTermList()
 	res, ms := tree.Unify(treetypes.MakerTermForm(t.Copy()))
 	if !res {
 		return false, result_list

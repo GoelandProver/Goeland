@@ -53,7 +53,7 @@ import (
 type Pred struct {
 	index    int
 	id       Id
-	args     []Term
+	args     TermList
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
 }
@@ -62,7 +62,7 @@ type Pred struct {
 
 func (p Pred) GetIndex() int                 { return p.index }
 func (p Pred) GetID() Id                     { return p.id.Copy().(Id) }
-func (p Pred) GetArgs() []Term               { return CopyTermList(p.args) }
+func (p Pred) GetArgs() TermList             { return p.args.Copy() }
 func (p Pred) GetTypeVars() []typing.TypeApp { return typing.CopyTypeAppList(p.typeVars) }
 
 /* Formula methods */
@@ -116,7 +116,7 @@ func (p Pred) Equals(f Form) bool {
 	return isPred &&
 		oth.GetID().Equals(p.GetID()) &&
 		ComparableList[typing.TypeApp](p.typeVars).Equals(oth.typeVars) &&
-		AreEqualsTermList(oth.GetArgs(), p.GetArgs()) &&
+		oth.GetArgs().Equals(p.GetArgs()) &&
 		p.typeHint.Equals(oth.typeHint)
 }
 
@@ -141,11 +141,11 @@ func (p Pred) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakePred(p.GetIndex(), p.GetID(), replaceVarInTermList(p.GetArgs(), old, new), p.GetTypeVars(), p.GetType())
 }
 
-func (p Pred) GetSubTerms() []Term {
-	res := []Term{}
+func (p Pred) GetSubTerms() TermList {
+	res := MakeEmptyTermList()
 	for _, t := range p.GetArgs() {
-		res = AppendIfNotContainsTermList(t, res)
-		res = MergeTermList(res, t.GetSubTerms())
+		res = res.AppendIfNotContains(t)
+		res = res.MergeTermList(t.GetSubTerms())
 	}
 	return res
 }

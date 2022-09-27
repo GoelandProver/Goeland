@@ -67,7 +67,7 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 		terms := treetypes.TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs())
 
 		// Transform the predicate to a function to make the tool work properly
-		m.terms = []basictypes.Term{basictypes.MakeFun(formula_type.GetID(), terms, []typing.TypeApp{}, formula_type.GetType())}
+		m.terms = basictypes.TermList{basictypes.MakeFun(formula_type.GetID(), terms, []typing.TypeApp{}, formula_type.GetType())}
 		result = m.unifyAux(node)
 
 		if !reflect.DeepEqual(m.failure, result) {
@@ -80,7 +80,7 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 			result = filteredResult
 		}
 	case treetypes.TermForm:
-		m.terms = []basictypes.Term{formula_type.GetTerm()}
+		m.terms = basictypes.TermList{formula_type.GetTerm()}
 		result = m.unifyAux(node)
 	default:
 		result = m.failure
@@ -105,7 +105,7 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 		global.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
 		global.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, len(m.terms)))
 		global.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms[m.q].ToString()))
-		global.PrintDebug("UX", fmt.Sprintf("m.terms : %v", basictypes.TermListToString(m.terms)))
+		global.PrintDebug("UX", fmt.Sprintf("m.terms : %v", m.terms.ToString()))
 
 		switch instr := instr.(type) {
 		case treetypes.Begin:
@@ -177,7 +177,7 @@ func (m *Machine) launchChildrenSearch(node Node) []treetypes.MatchingSubstituti
 	matching := []treetypes.MatchingSubstitutions{}
 	for i, n := range node.children {
 		ch := channels[i]
-		st := basictypes.CopyTermList(m.terms)
+		st := m.terms.Copy()
 		ip := treetypes.CopyIntPairList(m.post)
 		sc := treetypes.CopySubstPairList(m.subst)
 

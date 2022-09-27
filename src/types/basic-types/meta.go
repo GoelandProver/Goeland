@@ -104,8 +104,8 @@ func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return m
 }
 
-func (m Meta) GetSubTerms() []Term {
-	return []Term{m}
+func (m Meta) GetSubTerms() TermList {
+	return TermList{m}
 }
 
 func MakeEmptyMeta() Meta {

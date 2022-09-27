@@ -149,11 +149,11 @@ func MakerMeta(s string, formula int, t ...typing.TypeApp) Meta {
 
 /* Const maker (given a id, create a fun without args) */
 func MakerConst(id Id, t ...typing.TypeApp) Fun {
-	return MakeFun(id, []Term{}, []typing.TypeApp{}, getType(t).(typing.TypeScheme))
+	return MakeFun(id, MakeEmptyTermList(), []typing.TypeApp{}, getType(t).(typing.TypeScheme))
 }
 
 /* Fun maker, with given id and args */
-func MakerFun(id Id, terms []Term, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
+func MakerFun(id Id, terms TermList, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
 	var ts typing.TypeScheme
 	if len(t) == 1 {
 		ts = t[0]

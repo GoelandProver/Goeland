@@ -80,10 +80,10 @@ func (a And) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakeAnd(a.GetIndex(), replaceVarInFormList(a.GetLF(), old, new))
 }
 
-func (a And) GetSubTerms() []Term {
-	res := []Term{}
+func (a And) GetSubTerms() TermList {
+	res := TermList{}
 	for _, tl := range a.GetLF() {
-		res = MergeTermList(res, tl.GetSubTerms())
+		res = res.MergeTermList(tl.GetSubTerms())
 	}
 	return res
 }
@@ -123,10 +123,10 @@ func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 func (o Or) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakeOr(o.GetIndex(), replaceVarInFormList(o.GetLF(), old, new))
 }
-func (o Or) GetSubTerms() []Term {
-	res := []Term{}
+func (o Or) GetSubTerms() TermList {
+	res := MakeEmptyTermList()
 	for _, tl := range o.GetLF() {
-		res = MergeTermList(res, tl.GetSubTerms())
+		res = res.MergeTermList(tl.GetSubTerms())
 	}
 	return res
 }

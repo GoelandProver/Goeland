@@ -50,7 +50,7 @@ import (
 /* function or constant (f(a,b), f(X,Y), a) */
 type Fun struct {
 	p        Id
-	args     []Term
+	args     TermList
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
 }
@@ -75,11 +75,11 @@ func (f Fun) ToMappedString(map_ MapString, type_ bool) string {
 	return str
 }
 
-func (f Fun) GetID() Id       { return f.p.Copy().(Id) }
-func (f Fun) GetP() Id        { return f.p.Copy().(Id) }
-func (f Fun) GetArgs() []Term { return CopyTermList(f.args) }
+func (f Fun) GetID() Id         { return f.p.Copy().(Id) }
+func (f Fun) GetP() Id          { return f.p.Copy().(Id) }
+func (f Fun) GetArgs() TermList { return f.args.Copy() }
 
-func (f *Fun) SetArgs(tl []Term)                  { f.args = tl }
+func (f *Fun) SetArgs(tl TermList)                { f.args = tl }
 func (f *Fun) SetTypeScheme(ts typing.TypeScheme) { f.typeHint = ts }
 
 func (f Fun) GetTypeVars() []typing.TypeApp  { return f.typeVars }
@@ -106,7 +106,7 @@ func (f Fun) Equals(t Term) bool {
 	oth, isFun := t.(Fun)
 	return isFun &&
 		(oth.GetID() == f.GetID()) &&
-		AreEqualsTermList(oth.GetArgs(), f.GetArgs()) &&
+		oth.GetArgs().Equals(f.GetArgs()) &&
 		f.typeHint.Equals(oth.typeHint)
 }
 
@@ -126,12 +126,13 @@ func (f Fun) ReplaceSubTermBy(original_term, new_term Term) Term {
 	if f.Equals(original_term) {
 		return new_term.Copy()
 	} else {
-		return MakeFun(f.GetID(), replaceFirstOccurrenceTermList(original_term, new_term, f.GetArgs()), f.GetTypeVars(), f.GetTypeHint())
+		return MakeFun(f.GetID(), f.GetArgs().replaceFirstOccurrenceTermList(original_term, new_term), f.GetTypeVars(), f.GetTypeHint())
 	}
 }
 
-func (f Fun) GetSubTerms() []Term {
-	res := []Term{f}
+func (f Fun) GetSubTerms() TermList {
+	res := MakeEmptyTermList()
+	res = res.AppendIfNotContains(f)
 	for _, arg := range f.GetArgs() {
 		res = append(res, arg.GetSubTerms()...)
 	}

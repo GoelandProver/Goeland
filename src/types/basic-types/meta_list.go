@@ -139,8 +139,8 @@ func MakeEmptyMetaList() MetaList {
 }
 
 /* MetaList to term list */
-func (ml MetaList) ToTermList() []Term {
-	res := []Term{}
+func (ml MetaList) ToTermList() TermList {
+	res := MakeEmptyTermList()
 	for _, m := range ml {
 		res = append(res, m.Copy())
 	}

@@ -105,10 +105,10 @@ func makeCodeTreeFromAtomic(lf basictypes.FormList, is_pos bool) *Node {
 	var form basictypes.FormList
 
 	for _, f := range lf {
-		switch nf := f.Copy().(type) {
+		switch nf := f.(type) {
 		case basictypes.Pred:
 			if is_pos {
-				form = append(form, f)
+				form = append(form, nf.Copy())
 			}
 		case basictypes.Not:
 			switch nf.GetForm().(type) {
@@ -119,7 +119,7 @@ func makeCodeTreeFromAtomic(lf basictypes.FormList, is_pos bool) *Node {
 			}
 		case treetypes.TermForm:
 			// EQUALITY - To build a tree of terms
-			form = append(form, f)
+			form = append(form, nf.Copy())
 		}
 	}
 

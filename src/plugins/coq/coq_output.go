@@ -85,7 +85,7 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 	// If output is standalone, then print context
 	if *context {
 		resultingString += "(* CONTEXT BEGIN *)\n"
-		resultingString += makeContext(proof[0].Formula, meta)
+		resultingString += makeContext(proof[0].Formula.GetForm(), meta)
 		resultingString += "\n(* CONTEXT END *)\n"
 	}
 	resultingString += makeCoqProof(proof)
@@ -96,7 +96,7 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 func makeCoqProof(proofs []proof.ProofStruct) string {
 	resultingString := ""
 	// Modify first formula to prove validity
-	axioms, firstFormula := processMainFormula(proofs[0].Formula)
+	axioms, firstFormula := processMainFormula(proofs[0].Formula.GetForm())
 	// Prints the theorem to prove
 	resultingString += printTheorem(axioms, firstFormula)
 	// Prints the proof

@@ -51,7 +51,7 @@ import (
 
 type EqualityProblem struct {
 	E_tree datastruct.DataStructure
-	E_map  map[string][]basictypes.Term
+	E_map  map[string]basictypes.TermList
 	E      Equalities
 	s, t   basictypes.Term
 	c      ConstraintStruct
@@ -60,10 +60,10 @@ type EqualityProblem struct {
 func (ep EqualityProblem) getETree() datastruct.DataStructure {
 	return ep.E_tree.Copy()
 }
-func (ep EqualityProblem) getEMap() map[string][]basictypes.Term {
-	map_res := make(map[string][]basictypes.Term)
+func (ep EqualityProblem) getEMap() map[string]basictypes.TermList {
+	map_res := make(map[string]basictypes.TermList)
 	for k, v := range ep.E_map {
-		map_res[k] = basictypes.CopyTermList(v)
+		map_res[k] = v.Copy()
 	}
 	return map_res
 }
@@ -125,8 +125,8 @@ func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
 }
 
 /* Take a list of equalities and build the corresponding assocative map */
-func makeEQMapFromEqualities(eq Equalities) map[string][]basictypes.Term {
-	map_res := make(map[string][]basictypes.Term)
+func makeEQMapFromEqualities(eq Equalities) map[string]basictypes.TermList {
+	map_res := make(map[string]basictypes.TermList)
 	for _, e := range eq {
 		map_res[e.getT1().ToString()] = append(map_res[e.getT1().ToString()], e.getT2())
 		map_res[e.getT2().ToString()] = append(map_res[e.getT2().ToString()], e.getT1())

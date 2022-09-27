@@ -29,55 +29,56 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-
-/**********/
-/* not.go */
-/**********/
-
+/************/
+/* subst.go */
+/************/
 /**
-* This file implements a negation of a formula.
+* This file contains functions and types which describe the substitution management in a proofsearch.
 **/
 
-package basictypes
+package complextypes
 
-import (
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-)
-
-/* Not(formula): negation of a formula */
-type Not struct {
-	index int
-	f     Form
+type IntSubstAndFormAndTerms struct {
+	id_rewrite int
+	saf        SubstAndFormAndTerms
 }
 
-func (n Not) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[NotConn] + "(" + n.GetForm().ToMappedString(map_, displayTypes) + ")"
+func (intsubstandform IntSubstAndFormAndTerms) GetId_rewrite() int {
+	return intsubstandform.id_rewrite
 }
 
-func (n Not) GetForm() Form                        { return n.f.Copy() }
-func (n Not) GetType() typing.TypeScheme           { return typing.DefaultPropType(0) }
-func (n Not) ToString() string                     { return n.ToMappedString(defaultMap, true) }
-func (n Not) ToStringWithSuffixMeta(string) string { return n.ToString() }
-func (n Not) Copy() Form                           { return MakeNot(n.GetIndex(), n.GetForm()) }
-func (n Not) GetMetas() MetaList                   { return n.GetForm().GetMetas() }
-func (n Not) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceVarByTerm(old, new))
-}
-func (n Not) GetIndex() int { return n.index }
-
-func (n Not) Equals(f Form) bool {
-	oth, isNot := f.(Not)
-	return isNot && oth.GetForm().Equals(n.GetForm())
+func (intsubstandform IntSubstAndFormAndTerms) GetSaf() SubstAndFormAndTerms {
+	return intsubstandform.saf.Copy()
 }
 
-func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
+func (intsubstandform *IntSubstAndFormAndTerms) SetId_rewrite(id_rewrite int) {
+	intsubstandform.id_rewrite = id_rewrite
 }
 
-func (n Not) RenameVariables() Form {
-	return MakeNot(n.GetIndex(), n.f.RenameVariables())
+func (intsubstandform *IntSubstAndFormAndTerms) SetSaf(saf SubstAndFormAndTerms) {
+	intsubstandform.saf = saf
 }
 
-func (n Not) GetSubTerms() TermList {
-	return n.GetForm().GetSubTerms()
+func MakeIntSubstAndFormAndTerms(i int, saf SubstAndFormAndTerms) IntSubstAndFormAndTerms {
+	return IntSubstAndFormAndTerms{i, saf}
+}
+func MakeEmptyIntSubstAndFormAndTerms() IntSubstAndFormAndTerms {
+	return IntSubstAndFormAndTerms{-1, MakeEmptySubstAndFormAndTerms()}
+}
+
+func (s IntSubstAndFormAndTerms) Copy() IntSubstAndFormAndTerms {
+	if s.GetSaf().IsEmpty() {
+		return MakeEmptyIntSubstAndFormAndTerms()
+	} else {
+		return MakeIntSubstAndFormAndTerms(s.GetId_rewrite(), s.GetSaf())
+	}
+}
+
+/* Copy a list of subst and form */
+func CopyIntSubstAndFormAndTermsList(sl []IntSubstAndFormAndTerms) []IntSubstAndFormAndTerms {
+	res := make([]IntSubstAndFormAndTerms, len(sl))
+	for i := range sl {
+		res[i] = sl[i].Copy()
+	}
+	return res
 }

@@ -249,10 +249,10 @@ func copyFormulas() []btps.Form {
 
 /* Main conversion function. */
 func proofOneStep(p proof.ProofStruct) string {
-	unfoldResultFormulas := func(ifl []proof.IntFormList) btps.FormList {
-		fl := btps.FormList{}
+	unfoldResultFormulas := func(ifl []proof.IntFormAndTermsList) btps.FormList {
+		fl := btps.MakeEmptyFormList()
 		for _, iform := range ifl {
-			fl = append(fl, iform.GetFL()[0])
+			fl = append(fl, iform.GetFL().ExtractForms()[0])
 		}
 		return fl
 	}
@@ -260,58 +260,58 @@ func proofOneStep(p proof.ProofStruct) string {
 	result := ""
 	switch p.Rule_name {
 	case "CLOSURE":
-		if pred, isPred := p.GetFormula().(btps.Pred); isPred && pred.GetID().Equals(btps.Id_eq) {
+		if pred, isPred := p.GetFormula().GetForm().(btps.Pred); isPred && pred.GetID().Equals(btps.Id_eq) {
 			result = "congruence."
 		} else {
 			result = "auto."
 		}
 		//result = fmt.Sprintf("apply H%d. assumption.", proof.GetFormula().GetIndex())
 	case "ALPHA_NOT_NOT":
-		result = fmt.Sprintf("apply %s. goeland_intro H%d.", get(p.GetFormula()), introduce(p.GetResultFormulas()[0].GetFL()[0]))
+		result = fmt.Sprintf("apply %s. goeland_intro H%d.", get(p.GetFormula().GetForm()), introduce(p.GetResultFormulas()[0].GetFL().ExtractForms()[0]))
 	case "ALPHA_AND":
-		result = fmt.Sprintf("apply (goeland_and_s _ _ %s). ", get(p.GetFormula()))
-		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), ". ") + "."
+		result = fmt.Sprintf("apply (goeland_and_s _ _ %s). ", get(p.GetFormula().GetForm()))
+		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms()), ". ") + "."
 	case "ALPHA_NOT_OR":
-		result = fmt.Sprintf("apply (goeland_notor_s _ _ %s). ", get(p.GetFormula()))
-		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), ". ") + "."
+		result = fmt.Sprintf("apply (goeland_notor_s _ _ %s). ", get(p.GetFormula().GetForm()))
+		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms()), ". ") + "."
 	case "ALPHA_NOT_IMPLY":
-		result = fmt.Sprintf("apply (goeland_notimply_s _ _ %s). ", get(p.GetFormula()))
-		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), ". ") + "."
+		result = fmt.Sprintf("apply (goeland_notimply_s _ _ %s). ", get(p.GetFormula().GetForm()))
+		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms()), ". ") + "."
 	case "BETA_NOT_AND":
-		result = fmt.Sprintf("apply (goeland_notand_s _ _ %s); ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_notand_s _ _ %s); ", get(p.GetFormula().GetForm()))
 		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
 	case "BETA_OR":
-		result = fmt.Sprintf("apply (goeland_or_s _ _ %s); ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_or_s _ _ %s); ", get(p.GetFormula().GetForm()))
 		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
 	case "BETA_IMPLY":
-		result = fmt.Sprintf("apply (goeland_imply_s _ _ %s); ", get(p.GetFormula()))
+		result = fmt.Sprintf("apply (goeland_imply_s _ _ %s); ", get(p.GetFormula().GetForm()))
 		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
 	case "BETA_EQUIV":
-		result = fmt.Sprintf("apply (goeland_equiv_s _ _ %s); ", get(p.GetFormula()))
-		result += "[ " + strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), "; ") + " | " + strings.Join(nAryIntro(p.GetResultFormulas()[1].GetFL()), "; ") + " ]."
+		result = fmt.Sprintf("apply (goeland_equiv_s _ _ %s); ", get(p.GetFormula().GetForm()))
+		result += "[ " + strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms()), "; ") + " | " + strings.Join(nAryIntro(p.GetResultFormulas()[1].GetFL().ExtractForms()), "; ") + " ]."
 	case "BETA_NOT_EQUIV":
-		result = fmt.Sprintf("apply (goeland_notequiv_s _ _ %s); ", get(p.GetFormula()))
-		result += "[ " + strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL()), "; ") + " | " + strings.Join(nAryIntro(p.GetResultFormulas()[1].GetFL()), "; ") + " ]."
+		result = fmt.Sprintf("apply (goeland_notequiv_s _ _ %s); ", get(p.GetFormula().GetForm()))
+		result += "[ " + strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms()), "; ") + " | " + strings.Join(nAryIntro(p.GetResultFormulas()[1].GetFL().ExtractForms()), "; ") + " ]."
 	case "DELTA_EXISTS":
-		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = applyNTimes("elim %s. goeland_intro %s. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), createConsts(p.GetFormula(), resultForm))
+		resultForm := p.GetResultFormulas()[0].GetFL().ExtractForms()[0]
+		result = applyNTimes("elim %s. goeland_intro %s. goeland_intro H%s.", get(p.GetFormula().GetForm()), introduce(resultForm), createConsts(p.GetFormula().GetForm(), resultForm))
 	case "DELTA_NOT_FORALL":
 		// Apply + new const
-		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = applyNTimes("apply %s. goeland_intro %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), createConsts(p.GetFormula(), resultForm))
+		resultForm := p.GetResultFormulas()[0].GetFL().ExtractForms()[0]
+		result = applyNTimes("apply %s. goeland_intro %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula().GetForm()), introduce(resultForm), createConsts(p.GetFormula().GetForm(), resultForm))
 	case "GAMMA_FORALL":
-		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = applyNTimes("generalize (%s %s). goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), instanciate(p.GetFormula(), resultForm))
+		resultForm := p.GetResultFormulas()[0].GetFL().ExtractForms()[0]
+		result = applyNTimes("generalize (%s %s). goeland_intro H%s.", get(p.GetFormula().GetForm()), introduce(resultForm), instanciate(p.GetFormula().GetForm(), resultForm))
 	case "GAMMA_NOT_EXISTS":
-		resultForm := p.GetResultFormulas()[0].GetFL()[0]
-		result = applyNTimes("apply %s. exists %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula()), introduce(resultForm), instanciate(p.GetFormula(), resultForm))
+		resultForm := p.GetResultFormulas()[0].GetFL().ExtractForms()[0]
+		result = applyNTimes("apply %s. exists %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula().GetForm()), introduce(resultForm), instanciate(p.GetFormula().GetForm(), resultForm))
 	case "Rewrite":
-		hypo := get(p.Formula)
+		hypo := get(p.Formula.GetForm())
 		result = fmt.Sprintf("rewrite goeland_axiom_%d in %s.", p.Id_dmt, hypo)
 		addUsedAxiom(p.Id_dmt)
 		hypoIndex, _ := strconv.Atoi(hypo[1:])
 		// Update hypotheses introduced
-		formulasIntroduced[hypoIndex] = p.GetResultFormulas()[0].GetFL()[0]
+		formulasIntroduced[hypoIndex] = p.GetResultFormulas()[0].GetFL().ExtractForms()[0]
 	}
 	return result
 }
@@ -338,6 +338,7 @@ func get(form btps.Form) string {
 			return fmt.Sprintf("goeland_axiom_%d", ax.GetIndex())
 		}
 	}
+	// fmt.Printf("[%v] RETURN ERROR : %v \n", global.GetGID(), form.ToString())
 	return "error"
 }
 

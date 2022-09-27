@@ -190,7 +190,7 @@ func (m *Machine) addUnifications(term1, term2 basictypes.Term) Status {
 func tryUnification(term1, term2 basictypes.Term, meta treetypes.Substitutions) []treetypes.MatchingSubstitutions {
 	global.PrintDebug("TU", fmt.Sprintf("Try unification : %v and %v", term1.ToString(), term2.ToString()))
 	aux := makeMachine()
-	aux.terms = []basictypes.Term{term2}
+	aux.terms = basictypes.TermList{term2}
 	aux.meta = meta
 
 	// add begin at the start and end at the end !

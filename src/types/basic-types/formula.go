@@ -63,20 +63,20 @@ type Form interface {
 	ReplaceTypeByMeta([]typing.TypeVar, int) Form
 	ReplaceVarByTerm(old Var, new Term) Form
 	RenameVariables() Form
-	GetSubTerms() []Term
+	GetSubTerms() TermList
 }
 
 /*** Functions ***/
 
 /* Makers */
-func MakePred(i int, p Id, tl []Term, tv []typing.TypeApp, ts ...typing.TypeScheme) Pred {
+func MakePred(i int, p Id, tl TermList, tv []typing.TypeApp, ts ...typing.TypeScheme) Pred {
 	if len(ts) == 1 {
 		return Pred{i, p, tl, tv, ts[0]}
 	} else {
 		return Pred{i, p, tl, tv, typing.DefaultPropType(len(tl))}
 	}
 }
-func MakerPred(p Id, tl []Term, tv []typing.TypeApp, ts ...typing.TypeScheme) Pred {
+func MakerPred(p Id, tl TermList, tv []typing.TypeApp, ts ...typing.TypeScheme) Pred {
 	return MakePred(MakerIndexFormula(), p, tl, tv, ts...)
 }
 
@@ -184,8 +184,8 @@ func simplifyNeg(f Form, isEven bool) Form {
 }
 
 /* Replace a Var by a term inside a function */
-func replaceVarInTermList(original_list []Term, old_symbol Var, new_symbol Term) []Term {
-	new_list := make([]Term, len(original_list))
+func replaceVarInTermList(original_list TermList, old_symbol Var, new_symbol Term) TermList {
+	new_list := make(TermList, len(original_list))
 	for i, val := range original_list {
 		switch nf := val.(type) {
 		case Var:

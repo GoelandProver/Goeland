@@ -150,8 +150,8 @@ package treesearch
 // 	x := basictypes.MakerMeta("X", -1)
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{x})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{a})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(q, basictypes.TermList{x})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(q, basictypes.TermList{a})})
 
 // 	LaunchTest(
 // 		1,
@@ -181,8 +181,8 @@ package treesearch
 // 	x := basictypes.MakerMeta("X", -1)
 // 	y := basictypes.MakerMeta("Y", -1)
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{x})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(q, []basictypes.Term{y})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(q, basictypes.TermList{x})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(q, basictypes.TermList{y})})
 
 // 	LaunchTest(
 // 		2,
@@ -210,8 +210,8 @@ package treesearch
 // 	p := basictypes.MakerId("P")
 // 	x := basictypes.MakerMeta("X", -1)
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, x})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a")), basictypes.MakerConst(basictypes.MakerId("b"))})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, x})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerConst(basictypes.MakerId("a")), basictypes.MakerConst(basictypes.MakerId("b"))})
 
 // 	LaunchTest(
 // 		3,
@@ -235,10 +235,10 @@ package treesearch
 // 	p := basictypes.MakerId("P")
 // 	x := basictypes.MakerMeta("X", -1)
 // 	y := basictypes.MakerMeta("Y", -1)
-// 	f := basictypes.MakerFun(basictypes.MakerId("f"), []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a")), basictypes.MakerConst(basictypes.MakerId("b"))})
+// 	f := basictypes.MakerFun(basictypes.MakerId("f"), basictypes.TermList{basictypes.MakerConst(basictypes.MakerId("a")), basictypes.MakerConst(basictypes.MakerId("b"))})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, f})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{x, y})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, f})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{x, y})
 
 // 	LaunchTest(
 // 		4,
@@ -269,8 +269,8 @@ package treesearch
 // 	f := basictypes.MakerId("f")
 
 // 	// 5.1
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{x})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(f, basictypes.TermList{x})})
 
 // 	LaunchTest(
 // 		5,
@@ -287,8 +287,8 @@ package treesearch
 // 	)
 
 // 	// 5.2
-// 	f3 := basictypes.MakePred(p, []basictypes.Term{x, x})
-// 	f4 := basictypes.MakePred(p, []basictypes.Term{y, basictypes.MakerFun(f, []basictypes.Term{y})})
+// 	f3 := basictypes.MakePred(p, basictypes.TermList{x, x})
+// 	f4 := basictypes.MakePred(p, basictypes.TermList{y, basictypes.MakerFun(f, basictypes.TermList{y})})
 
 // 	LaunchTest(
 // 		5,
@@ -304,8 +304,8 @@ package treesearch
 // 	)
 
 // 	// 5.3
-// 	f5 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a")), y})})
-// 	f6 := basictypes.MakePred(p, []basictypes.Term{x, y})
+// 	f5 := basictypes.MakePred(p, basictypes.TermList{x, basictypes.MakerFun(f, basictypes.TermList{basictypes.MakerConst(basictypes.MakerId("a")), y})})
+// 	f6 := basictypes.MakePred(p, basictypes.TermList{x, y})
 
 // 	LaunchTest(
 // 		5,
@@ -333,12 +333,12 @@ package treesearch
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 // 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 
-// 	f := basictypes.MakePred(p, []basictypes.Term{a, x})
+// 	f := basictypes.MakePred(p, basictypes.TermList{a, x})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{a, b})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{x, y})
-// 	f3 := basictypes.MakePred(p, []basictypes.Term{z, t})
-// 	f4 := basictypes.MakePred(p, []basictypes.Term{x, x})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{a, b})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{x, y})
+// 	f3 := basictypes.MakePred(p, basictypes.TermList{z, t})
+// 	f4 := basictypes.MakePred(p, basictypes.TermList{x, x})
 
 // 	LaunchTest(
 // 		6,
@@ -363,8 +363,8 @@ package treesearch
 // 	y := basictypes.MakerMeta("Y", -1)
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, x})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{y, a})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, x})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{y, a})
 
 // 	LaunchTest(
 // 		7,
@@ -394,8 +394,8 @@ package treesearch
 // 	x := basictypes.MakerMeta("X", -1)
 // 	y := basictypes.MakerMeta("Y", -1)
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, y})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{a, a})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, y})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{a, a})
 
 // 	LaunchTest(
 // 		8,
@@ -424,8 +424,8 @@ package treesearch
 // 	x := basictypes.MakerMeta("X", -1)
 // 	y := basictypes.MakerMeta("Y", -1)
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, y})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{x, x})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, y})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{x, x})
 
 // 	LaunchTest(
 // 		9,
@@ -455,8 +455,8 @@ package treesearch
 // 	y := basictypes.MakerMeta("Y", -1)
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, y})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{y, a})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, y})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{y, a})
 
 // 	LaunchTest(
 // 		10,
@@ -488,8 +488,8 @@ package treesearch
 // 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 // 	f := basictypes.MakerId("f")
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, y})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, b})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, basictypes.MakerFun(f, basictypes.TermList{a, y})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{x, basictypes.MakerFun(f, basictypes.TermList{a, b})})
 
 // 	LaunchTest(
 // 		11,
@@ -516,8 +516,8 @@ package treesearch
 // func Test12() {
 // 	p := basictypes.MakerId("P")
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(basictypes.MakerId("f"), []basictypes.Term{basictypes.MakerMeta("Y", -1)})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerConst(basictypes.MakerId("a"))})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(basictypes.MakerId("f"), basictypes.TermList{basictypes.MakerMeta("Y", -1)})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerConst(basictypes.MakerId("a"))})
 
 // 	LaunchTest(
 // 		12,
@@ -544,11 +544,11 @@ package treesearch
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 // 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 // 	f := basictypes.MakerId("f")
-// 	fun1 := basictypes.MakerFun(f, []basictypes.Term{a, b})
-// 	fun2 := basictypes.MakerFun(f, []basictypes.Term{a, y})
+// 	fun1 := basictypes.MakerFun(f, basictypes.TermList{a, b})
+// 	fun2 := basictypes.MakerFun(f, basictypes.TermList{a, y})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, x})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{fun1, fun2})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, x})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{fun1, fun2})
 
 // 	LaunchTest(
 // 		13,
@@ -579,8 +579,8 @@ package treesearch
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 // 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, b, x})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{x, y, a})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, b, x})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{x, y, a})
 
 // 	LaunchTest(
 // 		14,
@@ -612,17 +612,17 @@ package treesearch
 // 	y := basictypes.MakerMeta("Y", -1)
 // 	fun := basictypes.MakerId("f")
 
-// 	f := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})})
+// 	f := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{x})})})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})})})
-// 	f3 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{y})})})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{x})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{x})})})})
+// 	f3 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{y})})})})
 
 // 	LaunchTest(
 // 		15,
 // 		[]treetypes.MatchingSubstitutions{
 // 			treetypes.MakeMatchingSubstitutions(f, treetypes.Substitutions{}),
-// 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{x: basictypes.MakerFun(fun, []basictypes.Term{y})}),
+// 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{x: basictypes.MakerFun(fun, basictypes.TermList{y})}),
 // 		},
 // 		basictypes.MakeSingleElementList(f),
 // 		[]basictypes.Form{f, f1, f2, f3},
@@ -638,16 +638,16 @@ package treesearch
 // 	z := basictypes.MakerMeta("Z", -1)
 // 	fun := basictypes.MakerId("f")
 
-// 	f := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})})
+// 	f := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{a})})})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{z})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{a})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{z})
 
 // 	LaunchTest(
 // 		16,
 // 		[]treetypes.MatchingSubstitutions{
 // 			treetypes.MakeMatchingSubstitutions(f, treetypes.Substitutions{}),
-// 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{z: basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})}),
+// 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{z: basictypes.MakerFun(fun, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{a})})}),
 // 		},
 // 		basictypes.MakeSingleElementList(f),
 // 		[]basictypes.Form{f, f1, f2},
@@ -662,10 +662,10 @@ package treesearch
 // 	x := basictypes.MakerMeta("X", -1)
 // 	fun := basictypes.MakerId("f")
 
-// 	f := basictypes.MakePred(p, []basictypes.Term{x, x})
+// 	f := basictypes.MakePred(p, basictypes.TermList{x, x})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x}), basictypes.MakerFun(fun, []basictypes.Term{x})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x}), basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{x})})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{x}), basictypes.MakerFun(fun, basictypes.TermList{x})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{x}), basictypes.MakerFun(fun, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{x})})})
 
 // 	LaunchTest(
 // 		17,
@@ -683,8 +683,8 @@ package treesearch
 // 	y1 := basictypes.MakerMeta("Y", -1)
 // 	y2 := basictypes.MakerMeta("Y", -1)
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{y2, y1, basictypes.MakerFun(basictypes.MakerId("f"), []basictypes.Term{y1, y2})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerMeta("X", -1), basictypes.MakerMeta("X", -1), y1})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{y2, y1, basictypes.MakerFun(basictypes.MakerId("f"), basictypes.TermList{y1, y2})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerMeta("X", -1), basictypes.MakerMeta("X", -1), y1})
 
 // 	LaunchTest(
 // 		18,
@@ -710,14 +710,14 @@ package treesearch
 // 	y := basictypes.MakerMeta("Y", -1)
 // 	f := basictypes.MakerId("f")
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{x})})
-// 	f3 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{y})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(f, basictypes.TermList{x})})
+// 	f3 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(f, basictypes.TermList{y})})
 
 // 	LaunchTest(
 // 		19,
 // 		[]treetypes.MatchingSubstitutions{
-// 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{x: basictypes.MakerFun(f, []basictypes.Term{y})}),
+// 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{x: basictypes.MakerFun(f, basictypes.TermList{y})}),
 // 		},
 // 		basictypes.MakeSingleElementList(f1),
 // 		[]basictypes.Form{f2, f3},
@@ -734,8 +734,8 @@ package treesearch
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 // 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, x})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{b}), basictypes.MakerFun(f, []basictypes.Term{a, basictypes.MakerFun(f, []basictypes.Term{x})})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, basictypes.MakerFun(f, basictypes.TermList{a, x})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(f, basictypes.TermList{b}), basictypes.MakerFun(f, basictypes.TermList{a, basictypes.MakerFun(f, basictypes.TermList{x})})})
 
 // 	LaunchTest(
 // 		20,
@@ -762,8 +762,8 @@ package treesearch
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 // 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, x}), b})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{a, x})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, basictypes.MakerFun(f, basictypes.TermList{a, x}), b})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{x, basictypes.MakerFun(f, basictypes.TermList{a, x})})
 
 // 	LaunchTest(
 // 		21,
@@ -789,8 +789,8 @@ package treesearch
 // 	y := basictypes.MakerMeta("Y", -1)
 // 	z := basictypes.MakerMeta("Z", -1)
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, y, z})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{y, z, y})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, y, z})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{y, z, y})
 
 // 	LaunchTest(
 // 		22,
@@ -818,8 +818,8 @@ package treesearch
 // 	p1 := basictypes.MakerId("P1")
 // 	p2 := basictypes.MakerId("P2")
 
-// 	f1 := basictypes.MakePred(p1, []basictypes.Term{})
-// 	f2 := basictypes.MakePred(p2, []basictypes.Term{})
+// 	f1 := basictypes.MakePred(p1, basictypes.TermList{})
+// 	f2 := basictypes.MakePred(p2, basictypes.TermList{})
 
 // 	LaunchTest(
 // 		23,
@@ -843,8 +843,8 @@ package treesearch
 // 	//y := basictypes.MakerMeta("Y")
 // 	f := basictypes.MakerId("f")
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2, z1})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{z1, x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, basictypes.MakerFun(f, basictypes.TermList{x}), z1, z2, z1})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{z1, x, basictypes.MakerFun(f, basictypes.TermList{x}), z1, z2})
 
 // 	LaunchTest(
 // 		24,
@@ -868,11 +868,11 @@ package treesearch
 // 	f := basictypes.MakerId("f")
 // 	//s := basictypes.MakerId("skolem_Z")
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2, z1})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{z1, x, basictypes.MakerFun(f, []basictypes.Term{x}), z1, z2})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, basictypes.MakerFun(f, basictypes.TermList{x}), z1, z2, z1})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{z1, x, basictypes.MakerFun(f, basictypes.TermList{x}), z1, z2})
 
-// 	//f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(s, []basictypes.Term{y}), y}}
-// 	//f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(s, []basictypes.Term{y}), basictypes.MakerFun(f, []basictypes.Term{s_x})}}
+// 	//f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(s, basictypes.TermList{y}), y}}
+// 	//f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(s, basictypes.TermList{y}), basictypes.MakerFun(f, basictypes.TermList{s_x})}}
 // 	LaunchTest(
 // 		25,
 // 		[]treetypes.MatchingSubstitutions{},
@@ -897,14 +897,14 @@ package treesearch
 // 	x := basictypes.MakerMeta("X", -1)
 // 	y := basictypes.MakerMeta("Y", -1)
 // 	f := basictypes.MakerId("f")
-// 	ffx := basictypes.MakerFun(f, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{x})})
-// 	fx := basictypes.MakerFun(f, []basictypes.Term{x})
-// 	fy := basictypes.MakerFun(f, []basictypes.Term{y})
+// 	ffx := basictypes.MakerFun(f, basictypes.TermList{basictypes.MakerFun(f, basictypes.TermList{x})})
+// 	fx := basictypes.MakerFun(f, basictypes.TermList{x})
+// 	fy := basictypes.MakerFun(f, basictypes.TermList{y})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{y})
-// 	f3 := basictypes.MakePred(p, []basictypes.Term{ffx})
-// 	f4 := basictypes.MakePred(p, []basictypes.Term{fy})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{y})
+// 	f3 := basictypes.MakePred(p, basictypes.TermList{ffx})
+// 	f4 := basictypes.MakePred(p, basictypes.TermList{fy})
 
 // 	LaunchTest(
 // 		26,
@@ -927,10 +927,10 @@ package treesearch
 // 	// x := basictypes.MakerMeta("X")
 // 	y := basictypes.MakerMeta("Y", -1)
 // 	f := basictypes.MakerId("f")
-// 	ffy := basictypes.MakerFun(f, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{y})})
+// 	ffy := basictypes.MakerFun(f, basictypes.TermList{basictypes.MakerFun(f, basictypes.TermList{y})})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerConst(f)})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{ffy})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerConst(f)})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{ffy})
 
 // 	LaunchTest(
 // 		27,
@@ -956,10 +956,10 @@ package treesearch
 // 	x := basictypes.MakerMeta("X", -1)
 // 	y := basictypes.MakerMeta("Y", -1)
 // 	f := basictypes.MakerId("f")
-// 	ffy := basictypes.MakerFun(f, []basictypes.Term{basictypes.MakerFun(f, []basictypes.Term{y})})
+// 	ffy := basictypes.MakerFun(f, basictypes.TermList{basictypes.MakerFun(f, basictypes.TermList{y})})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{ffy})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{ffy})
 
 // 	LaunchTest(
 // 		28,
@@ -998,17 +998,17 @@ package treesearch
 // 	x_197 := basictypes.MakerMeta("X", -1)
 // 	g := basictypes.MakerId("g")
 // 	y_7 := basictypes.MakerMeta("Y", -1)
-// 	sk_x197_y7 := basictypes.MakerFun(g, []basictypes.Term{x_197, y_7})
+// 	sk_x197_y7 := basictypes.MakerFun(g, basictypes.TermList{x_197, y_7})
 
-// 	f0 := basictypes.MakePred(f, []basictypes.Term{x_250, y_250})
-// 	f2 := basictypes.MakePred(f, []basictypes.Term{x_197, sk_x197_y7})
-// 	f3 := basictypes.MakePred(f, []basictypes.Term{x_197, basictypes.MakerFun(g, []basictypes.Term{x_197, sk_x197_y7})})
+// 	f0 := basictypes.MakePred(f, basictypes.TermList{x_250, y_250})
+// 	f2 := basictypes.MakePred(f, basictypes.TermList{x_197, sk_x197_y7})
+// 	f3 := basictypes.MakePred(f, basictypes.TermList{x_197, basictypes.MakerFun(g, basictypes.TermList{x_197, sk_x197_y7})})
 
 // 	LaunchTest(
 // 		29,
 // 		[]treetypes.MatchingSubstitutions{
-// 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x_197: x_250, y_250: basictypes.MakerFun(g, []basictypes.Term{x_250, y_7})}),
-// 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{x_197: x_250, y_250: basictypes.MakerFun(g, []basictypes.Term{x_250, basictypes.MakerFun(g, []basictypes.Term{x_250, y_7})})}),
+// 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{x_197: x_250, y_250: basictypes.MakerFun(g, basictypes.TermList{x_250, y_7})}),
+// 			treetypes.MakeMatchingSubstitutions(f3, treetypes.Substitutions{x_197: x_250, y_250: basictypes.MakerFun(g, basictypes.TermList{x_250, basictypes.MakerFun(g, basictypes.TermList{x_250, y_7})})}),
 // 		},
 // 		basictypes.MakeSingleElementList(f0),
 // 		[]basictypes.Form{f2, f3},
@@ -1026,17 +1026,17 @@ package treesearch
 // 	z := basictypes.MakerMeta("Z", -1)
 // 	fun := basictypes.MakerId("f")
 
-// 	f := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})})
+// 	f := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{a})})})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{z})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{a})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{z})
 
 // 	LaunchTest(
 // 		30,
 // 		[]treetypes.MatchingSubstitutions{
 // 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{}),
-// 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{z: basictypes.MakerFun(fun, []basictypes.Term{a})}),
-// 			treetypes.MakeMatchingSubstitutions(f, treetypes.Substitutions{z: basictypes.MakerFun(fun, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})}),
+// 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{z: basictypes.MakerFun(fun, basictypes.TermList{a})}),
+// 			treetypes.MakeMatchingSubstitutions(f, treetypes.Substitutions{z: basictypes.MakerFun(fun, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{a})})}),
 // 		},
 // 		basictypes.MakeSingleElementList(f2),
 // 		[]basictypes.Form{f, f1, f2},
@@ -1055,17 +1055,17 @@ package treesearch
 // 	Y := basictypes.MakerMeta("Y", -1)
 // 	fun := basictypes.MakerId("f")
 
-// 	f := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{X})})
+// 	f := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{X})})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakerFun(fun, []basictypes.Term{a})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{Y})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakerFun(fun, basictypes.TermList{a})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{Y})
 
 // 	LaunchTest(
 // 		31,
 // 		[]treetypes.MatchingSubstitutions{
 // 			treetypes.MakeMatchingSubstitutions(f, treetypes.Substitutions{}),
 // 			treetypes.MakeMatchingSubstitutions(f1, treetypes.Substitutions{X: a}),
-// 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{Y: basictypes.MakerFun(fun, []basictypes.Term{X})}),
+// 			treetypes.MakeMatchingSubstitutions(f2, treetypes.Substitutions{Y: basictypes.MakerFun(fun, basictypes.TermList{X})}),
 // 		},
 // 		basictypes.MakeSingleElementList(f),
 // 		[]basictypes.Form{f, f1, f2},
@@ -1081,10 +1081,10 @@ package treesearch
 // 	f := basictypes.MakerId("f")
 // 	x := basictypes.MakerMeta("x", -1)
 // 	z := basictypes.MakerMeta("z", -1)
-// 	fun_1 := basictypes.MakerFun(f, []basictypes.Term{x})
-// 	fun_2 := basictypes.MakerFun(f, []basictypes.Term{fun_1, fun_1})
+// 	fun_1 := basictypes.MakerFun(f, basictypes.TermList{x})
+// 	fun_2 := basictypes.MakerFun(f, basictypes.TermList{fun_1, fun_1})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{fun_2, z})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{fun_2, z})
 
 // 	LaunchTest(
 // 		32,
@@ -1108,11 +1108,11 @@ package treesearch
 // 	x1 := basictypes.MakerMeta("x", -1)
 // 	y0 := basictypes.MakerMeta("y", -1)
 // 	y1 := basictypes.MakerMeta("y", -1)
-// 	fun_1 := basictypes.MakerFun(f, []basictypes.Term{x1, y1})
-// 	fun_2 := basictypes.MakerFun(f, []basictypes.Term{fun_1, y1})
+// 	fun_1 := basictypes.MakerFun(f, basictypes.TermList{x1, y1})
+// 	fun_2 := basictypes.MakerFun(f, basictypes.TermList{fun_1, y1})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x0, y0})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{fun_1, fun_2})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x0, y0})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{fun_1, fun_2})
 
 // 	LaunchTest(
 // 		33,
@@ -1143,10 +1143,10 @@ package treesearch
 // 	f := basictypes.MakerId("f")
 // 	x := basictypes.MakerMeta("x", -1)
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
-// 	fa := basictypes.MakerFun(f, []basictypes.Term{a})
+// 	fa := basictypes.MakerFun(f, basictypes.TermList{a})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{a, x})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{a, fa})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{a, x})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{a, fa})
 
 // 	LaunchTest(
 // 		34,
@@ -1177,10 +1177,10 @@ package treesearch
 // 	f := basictypes.MakerId("f")
 // 	x := basictypes.MakerMeta("x", -1)
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
-// 	fa := basictypes.MakerFun(f, []basictypes.Term{a, a, a})
+// 	fa := basictypes.MakerFun(f, basictypes.TermList{a, a, a})
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{a, x, a})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{a, fa, a})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{a, x, a})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{a, fa, a})
 
 // 	LaunchTest(
 // 		35,
@@ -1216,8 +1216,8 @@ package treesearch
 // 	y := basictypes.MakerMeta("y", -1)
 // 	z := basictypes.MakerMeta("z", -1)
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{x, basictypes.MakeFun(f, []basictypes.Term{y, x})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{z, basictypes.MakeFun(f, []basictypes.Term{z, basictypes.MakeFun(g, []basictypes.Term{z})})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{x, basictypes.MakeFun(f, basictypes.TermList{y, x})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{z, basictypes.MakeFun(f, basictypes.TermList{z, basictypes.MakeFun(g, basictypes.TermList{z})})})
 
 // 	LaunchTest(
 // 		36,
@@ -1246,8 +1246,8 @@ package treesearch
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 // 	x := basictypes.MakerMeta("x", -1)
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{a})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{x})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakeFun(f, basictypes.TermList{a})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakeFun(f, basictypes.TermList{x})})
 
 // 	LaunchTest(
 // 		37,
@@ -1276,8 +1276,8 @@ package treesearch
 // 	a := basictypes.MakerConst(basictypes.MakerId("a"))
 // 	b := basictypes.MakerConst(basictypes.MakerId("b"))
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{a})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{b})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakeFun(f, basictypes.TermList{a})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakeFun(f, basictypes.TermList{b})})
 
 // 	LaunchTest(
 // 		38,
@@ -1308,9 +1308,9 @@ package treesearch
 // 	X := basictypes.MakerMeta("X", -1)
 // 	Y := basictypes.MakerMeta("Y", -1)
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{Y, basictypes.MakeFun(f, []basictypes.Term{Y, basictypes.MakeFun(f, []basictypes.Term{X})})})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{X, Y})
-// 	f3 := basictypes.MakePred(p, []basictypes.Term{Y, X})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{Y, basictypes.MakeFun(f, basictypes.TermList{Y, basictypes.MakeFun(f, basictypes.TermList{X})})})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{X, Y})
+// 	f3 := basictypes.MakePred(p, basictypes.TermList{Y, X})
 
 // 	LaunchTest(
 // 		39,
@@ -1335,16 +1335,16 @@ package treesearch
 // 	X2 := basictypes.MakerMeta("X2", -1)
 // 	Y2 := basictypes.MakerMeta("Y2", -1)
 
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{X, Y, Z})
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{basictypes.MakeFun(f, []basictypes.Term{X2, basictypes.MakeFun(g, []basictypes.Term{Y2})}), X2, basictypes.MakeFun(h, []basictypes.Term{X2})})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{X, Y, Z})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{basictypes.MakeFun(f, basictypes.TermList{X2, basictypes.MakeFun(g, basictypes.TermList{Y2})}), X2, basictypes.MakeFun(h, basictypes.TermList{X2})})
 
 // 	LaunchTest(
 // 		40,
 // 		[]treetypes.MatchingSubstitutions{treetypes.MakeMatchingSubstitutions(f2,
 // 			treetypes.Substitutions{
-// 				X:  basictypes.MakeFun(f, []basictypes.Term{Y, basictypes.MakeFun(g, []basictypes.Term{Y2})}),
+// 				X:  basictypes.MakeFun(f, basictypes.TermList{Y, basictypes.MakeFun(g, basictypes.TermList{Y2})}),
 // 				X2: Y,
-// 				Z:  basictypes.MakeFun(h, []basictypes.Term{Y})})},
+// 				Z:  basictypes.MakeFun(h, basictypes.TermList{Y})})},
 // 		basictypes.MakeSingleElementList(f1),
 // 		basictypes.MakeSingleElementList(f2),
 // 	)
@@ -1353,9 +1353,9 @@ package treesearch
 // 		40,
 // 		[]treetypes.MatchingSubstitutions{treetypes.MakeMatchingSubstitutions(f1,
 // 			treetypes.Substitutions{
-// 				X: basictypes.MakeFun(f, []basictypes.Term{X2, basictypes.MakeFun(g, []basictypes.Term{Y2})}),
+// 				X: basictypes.MakeFun(f, basictypes.TermList{X2, basictypes.MakeFun(g, basictypes.TermList{Y2})}),
 // 				Y: X2,
-// 				Z: basictypes.MakeFun(h, []basictypes.Term{X2})})},
+// 				Z: basictypes.MakeFun(h, basictypes.TermList{X2})})},
 // 		basictypes.MakeSingleElementList(f2),
 // 		basictypes.MakeSingleElementList(f1),
 // 	)
@@ -1386,21 +1386,21 @@ package treesearch
 // 	Y2 := basictypes.MakerMeta("Y2", -1)
 // 	Y3 := basictypes.MakerMeta("Y3", -1)
 // 	sk := basictypes.MakerConst(basictypes.MakerId("skolem"))
-// 	fy := basictypes.MakeFun(f, []basictypes.Term{Y1, Y2, Y3})
-// 	gx := basictypes.MakeFun(g, []basictypes.Term{X1, X2, X3})
-// 	hgx := basictypes.MakeFun(h, []basictypes.Term{gx, gx, gx})
+// 	fy := basictypes.MakeFun(f, basictypes.TermList{Y1, Y2, Y3})
+// 	gx := basictypes.MakeFun(g, basictypes.TermList{X1, X2, X3})
+// 	hgx := basictypes.MakeFun(h, basictypes.TermList{gx, gx, gx})
 
 // 	// Formule
-// 	f1 := basictypes.MakePred(p, []basictypes.Term{Y2, Y1, fy})
+// 	f1 := basictypes.MakePred(p, basictypes.TermList{Y2, Y1, fy})
 
 // 	// Tree
-// 	f2 := basictypes.MakePred(p, []basictypes.Term{X2, X1, gx})
-// 	f3 := basictypes.MakePred(p, []basictypes.Term{gx, X2, X1})
-// 	f4 := basictypes.MakePred(p, []basictypes.Term{X1, X2, X3})
-// 	f5 := basictypes.MakePred(p, []basictypes.Term{sk, sk, gx})
-// 	f6 := basictypes.MakePred(p, []basictypes.Term{X2, X3, X1})
-// 	f7 := basictypes.MakePred(p, []basictypes.Term{hgx, hgx, hgx})
-// 	f8 := basictypes.MakePred(p, []basictypes.Term{sk, sk, hgx})
+// 	f2 := basictypes.MakePred(p, basictypes.TermList{X2, X1, gx})
+// 	f3 := basictypes.MakePred(p, basictypes.TermList{gx, X2, X1})
+// 	f4 := basictypes.MakePred(p, basictypes.TermList{X1, X2, X3})
+// 	f5 := basictypes.MakePred(p, basictypes.TermList{sk, sk, gx})
+// 	f6 := basictypes.MakePred(p, basictypes.TermList{X2, X3, X1})
+// 	f7 := basictypes.MakePred(p, basictypes.TermList{hgx, hgx, hgx})
+// 	f8 := basictypes.MakePred(p, basictypes.TermList{sk, sk, hgx})
 
 // 	LaunchTest(
 // 		41,

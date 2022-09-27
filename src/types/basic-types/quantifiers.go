@@ -95,7 +95,7 @@ func (e Ex) RenameVariables() Form {
 	newVarList, newForm := renameVariable(e.GetForm(), e.GetVarList())
 	return MakeEx(e.GetIndex(), newVarList, newForm)
 }
-func (e Ex) GetSubTerms() []Term {
+func (e Ex) GetSubTerms() TermList {
 	return e.GetForm().GetSubTerms()
 }
 
@@ -147,7 +147,7 @@ func (a All) RenameVariables() Form {
 	return MakeAll(a.GetIndex(), newVarList, newForm)
 }
 
-func (a All) GetSubTerms() []Term {
+func (a All) GetSubTerms() TermList {
 	return a.GetForm().GetSubTerms()
 }
 
@@ -207,7 +207,7 @@ func (a AllType) RenameVariables() Form {
 	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
 }
 
-func (a AllType) GetSubTerms() []Term {
+func (a AllType) GetSubTerms() TermList {
 	return a.GetForm().GetSubTerms()
 }
 

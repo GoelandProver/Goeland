@@ -122,11 +122,11 @@ func (c *Constraint) checkLPO() (bool, bool) {
 }
 
 /* append to the map and check if the new element is not in the other list */
-func appendToMapAndCheck(m string, t basictypes.Term, map_constraintes *map[string][][]basictypes.Term, index_append, index_max_other_lists int) bool {
+func appendToMapAndCheck(m string, t basictypes.Term, map_constraintes *map[string][]basictypes.TermList, index_append, index_max_other_lists int) bool {
 	if _, ok := (*map_constraintes)[m]; !ok {
-		(*map_constraintes)[m] = make([][]basictypes.Term, index_max_other_lists+1)
+		(*map_constraintes)[m] = make([]basictypes.TermList, index_max_other_lists+1)
 		for i := 0; i <= index_max_other_lists; i++ {
-			(*map_constraintes)[m][i] = []basictypes.Term{}
+			(*map_constraintes)[m][i] = basictypes.MakeEmptyTermList()
 		}
 	}
 	(*map_constraintes)[m][index_append] = append((*map_constraintes)[m][index_append], t)
@@ -135,7 +135,7 @@ func appendToMapAndCheck(m string, t basictypes.Term, map_constraintes *map[stri
 	for i := 0; i <= index_max_other_lists; i++ {
 
 		// global.PrintDebug("ATMAC", fmt.Sprintf("Term : %v - in : %v", m, basictypes.TermListToString((*map_constraintes)[m][i])))
-		if i != index_append && basictypes.ContainsTermList(t, (*map_constraintes)[m][i]) {
+		if i != index_append && (*map_constraintes)[m][i].Contains(t) {
 			// global.PrintDebug("ATMAC", "Term found in list")
 			return false
 		}

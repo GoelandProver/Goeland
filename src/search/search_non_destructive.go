@@ -211,7 +211,7 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 	global.PrintDebug("PS", fmt.Sprintf("Applied subst: %s", st.GetAppliedSubst().GetSubst().ToString()))
 	global.PrintDebug("PS", fmt.Sprintf("Real substitution applied : %s", new_subst.ToString()))
 
-	st.SetLF(complextypes.ApplySubstitutionsOnFormulaList(new_subst, st.GetLF()))
+	st.SetLF(complextypes.ApplySubstitutionsOnFormAndTermsList(new_subst, st.GetLF()))
 
 	ms, same_key := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), new_subst)
 	if same_key {
@@ -228,7 +228,7 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 * Choose the best subtitution to instantiate : avoid the same than last used, and the one which contains meta already used in last applied
 **/
 
-func manageSubstFoundNonDestructive(father_id uint64, st *complextypes.State, c Communication, substs_found_at_this_step []complextypes.SubstAndForm) (int, complextypes.SubstAndForm) {
+func manageSubstFoundNonDestructive(father_id uint64, st *complextypes.State, c Communication, substs_found_at_this_step []complextypes.SubstAndFormAndTerms) (int, complextypes.SubstAndForm) {
 	form_to_instantiate := -1
 	choosen_subst := complextypes.MakeEmptySubstAndForm()
 	new_choosen_subst := complextypes.MakeEmptySubstAndForm()
@@ -284,12 +284,12 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 	st.SetTreePos(st.GetTreePos().InsertFormulaListToDataStructure(st.GetLF().FilterPred(true)))
 	st.SetTreeNeg(st.GetTreeNeg().InsertFormulaListToDataStructure(st.GetLF().FilterPred(false)))
 
-	substs_found_at_this_step := []complextypes.SubstAndForm{}
+	substs_found_at_this_step := []complextypes.SubstAndFormAndTerms{}
 	closed := false
 	for _, f := range st.GetLF() {
 		var substs []treetypes.Substitutions
 		global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
-		closed, substs = applyClosureRules(f.Copy(), &st)
+		closed, substs = applyClosureRules(f.GetForm(), &st)
 		manageClosureRule(father_id, &st, c, substs, f, -1, -1)
 
 		if closed {
@@ -297,7 +297,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 		}
 
 		for _, subst := range substs {
-			substs_found_at_this_step = complextypes.AppendIfNotContainsSubstAndForm(substs_found_at_this_step, complextypes.MakeSubstAndForm(subst, basictypes.MakeSingleElementList(f)))
+			substs_found_at_this_step = complextypes.AppendIfNotContainsSubstAndFormAndTerms(substs_found_at_this_step, complextypes.MakeSubstAndFormAndTerms(subst, basictypes.MakeSingleElementFormAndTermList(f)))
 		}
 		st.DispatchForm(f)
 	}
@@ -310,7 +310,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 
 	if form_to_instantiate == -1 {
 		global.PrintDebug("PS", "Let's apply rules !")
-		applyRules(father_id, st, c, basictypes.MakeEmptyFormList(), -1, -1)
+		applyRules(father_id, st, c, basictypes.MakeEmptyFormAndTermsList(), -1, -1)
 	} else {
 		global.PrintDebug("PS", "Let's instantiate !")
 		instantiate(father_id, &st, c, form_to_instantiate, choosen_subst)

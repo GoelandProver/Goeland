@@ -141,10 +141,10 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 	MetaEQ2 := basictypes.MakerMeta("METAEQ2", -1)
 	// TODO: type this
 	tv := typing.MkTypeVar("EQ")
-	eq_pred := basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{})
+	eq_pred := basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{})
 	tv.ShouldBeMeta(eq_pred.GetIndex())
 	tv.Instantiate(1)
-	eq_pred = basictypes.MakePred(eq_pred.GetIndex(), basictypes.Id_eq, []basictypes.Term{MetaEQ1, MetaEQ2}, []typing.TypeApp{}, typing.GetPolymorphicType(basictypes.Id_eq.GetName(), 1, 2))
+	eq_pred = basictypes.MakePred(eq_pred.GetIndex(), basictypes.Id_eq, basictypes.TermList{MetaEQ1, MetaEQ2}, []typing.TypeApp{}, typing.GetPolymorphicType(basictypes.Id_eq.GetName(), 1, 2))
 	_, eq_list := dt.Unify(eq_pred)
 
 	for _, ms := range eq_list {
@@ -172,10 +172,10 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 	// TODO: type this
 
 	tv := typing.MkTypeVar("EQ")
-	neq_pred := basictypes.MakerPred(basictypes.Id_eq, []basictypes.Term{}, []typing.TypeApp{})
+	neq_pred := basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{})
 	tv.ShouldBeMeta(neq_pred.GetIndex())
 	tv.Instantiate(1)
-	neq_pred = basictypes.MakePred(neq_pred.GetIndex(), basictypes.Id_eq, []basictypes.Term{MetaNEQ1, MetaNEQ2}, []typing.TypeApp{}, typing.GetPolymorphicType(basictypes.Id_eq.GetName(), 1, 2))
+	neq_pred = basictypes.MakePred(neq_pred.GetIndex(), basictypes.Id_eq, basictypes.TermList{MetaNEQ1, MetaNEQ2}, []typing.TypeApp{}, typing.GetPolymorphicType(basictypes.Id_eq.GetName(), 1, 2))
 	_, neq_list := dt.Unify(neq_pred)
 
 	for _, ms := range neq_list {

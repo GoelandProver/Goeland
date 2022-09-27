@@ -221,7 +221,7 @@ func Search(f basictypes.Form, bound int) {
 		fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
 
 		global.SetNbGoroutines(0)
-		st.SetLF(basictypes.MakeSingleElementList(f))
+		st.SetLF(basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(f, basictypes.MakeEmptyTermList())))
 		c := search.MakeCommunication(make(chan bool), make(chan search.Result))
 		// TODO : global quit channel in non destrutive
 

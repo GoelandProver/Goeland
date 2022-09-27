@@ -318,12 +318,12 @@ func eliminateInside(key basictypes.Meta, value basictypes.Term, s Substitutions
 }
 
 /* Eliminate for a list of Terms */
-func eliminateList(key basictypes.Meta, value basictypes.Term, l []basictypes.Term, has_changed_top *bool) []basictypes.Term {
+func eliminateList(key basictypes.Meta, value basictypes.Term, l basictypes.TermList, has_changed_top *bool) basictypes.TermList {
 	has_changed := true
 
 	for has_changed {
 		has_changed = false
-		list_tmp := []basictypes.Term{}
+		list_tmp := basictypes.MakeEmptyTermList()
 		for _, list_element := range l {
 			switch lt := list_element.(type) {
 			case basictypes.Meta: // If its a meta and its equals to the key te replace
@@ -344,7 +344,7 @@ func eliminateList(key basictypes.Meta, value basictypes.Term, l []basictypes.Te
 				list_tmp = append(list_tmp, list_element)
 			}
 		}
-		l = basictypes.CopyTermList(list_tmp)
+		l = list_tmp.Copy()
 		if has_changed {
 			*has_changed_top = true
 		}

@@ -63,7 +63,7 @@ func (t Top) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeTop(t.Ge
 func (t Top) ReplaceVarByTerm(old Var, new Term) Form      { return MakeTop(t.GetIndex()) }
 func (t Top) RenameVariables() Form                        { return MakeTop(t.GetIndex()) }
 func (t Top) GetIndex() int                                { return t.index }
-func (t Top) GetSubTerms() []Term                          { return []Term{} }
+func (t Top) GetSubTerms() TermList                        { return MakeEmptyTermList() }
 
 /* Bot (always false) definitino */
 type Bot struct {
@@ -84,4 +84,4 @@ func (b Bot) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeBot(b.Ge
 func (b Bot) ReplaceVarByTerm(old Var, new Term) Form      { return MakeBot(b.GetIndex()) }
 func (b Bot) RenameVariables() Form                        { return MakeBot(b.GetIndex()) }
 func (b Bot) GetIndex() int                                { return b.index }
-func (b Bot) GetSubTerms() []Term                          { return []Term{} }
+func (b Bot) GetSubTerms() TermList                        { return MakeEmptyTermList() }

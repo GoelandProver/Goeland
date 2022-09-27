@@ -129,7 +129,7 @@ func (cl ConstraintList) isConsistantWithSubst(s treetypes.Substitutions) bool {
 * check intersection is empty
 **/
 func (cl ConstraintList) checkConstraintList() bool {
-	map_constraintes := make(map[string][][]basictypes.Term)
+	map_constraintes := make(map[string][]basictypes.TermList)
 	for _, c := range cl {
 		global.PrintDebug("CCL", fmt.Sprintf("Constraint : %v", c.toString()))
 		switch c.getCType() {

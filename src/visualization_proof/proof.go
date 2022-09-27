@@ -55,12 +55,12 @@ var mutex_file_proof sync.Mutex
 
 // Graph struct
 type ProofStruct struct {
-	Formula         basictypes.Form
+	Formula         basictypes.FormAndTerms
 	Id_dmt          int
 	Node_id         int
 	Rule            string
 	Rule_name       string
-	Result_formulas []IntFormList
+	Result_formulas []IntFormAndTermsList
 	Children        [][]ProofStruct
 }
 
@@ -84,37 +84,37 @@ type IntStringPair struct {
 	S string `json:"Formula"`
 }
 
-type IntFormList struct {
+type IntFormAndTermsList struct {
 	i  int
-	fl basictypes.FormList
+	fl basictypes.FormAndTermsList
 }
 
-func (ifl *IntFormList) setInt(i int) {
+func (ifl *IntFormAndTermsList) setInt(i int) {
 	ifl.i = i
 }
-func (ifl *IntFormList) setFl(fl basictypes.FormList) {
+func (ifl *IntFormAndTermsList) setFl(fl basictypes.FormAndTermsList) {
 	ifl.fl = fl
 }
-func (ifl *IntFormList) GetI() int {
+func (ifl *IntFormAndTermsList) GetI() int {
 	return ifl.i
 }
-func (ifl *IntFormList) GetFL() basictypes.FormList {
+func (ifl *IntFormAndTermsList) GetFL() basictypes.FormAndTermsList {
 	return ifl.fl.Copy()
 }
 
-func (ifl *IntFormList) ToString() string {
+func (ifl *IntFormAndTermsList) ToString() string {
 	return strconv.Itoa(ifl.i) + " - " + ifl.fl.ToString()
 }
 
-func (ifl *IntFormList) Copy() IntFormList {
-	return MakeIntFormList(ifl.i, ifl.fl.Copy())
+func (ifl *IntFormAndTermsList) Copy() IntFormAndTermsList {
+	return MakeIntFormAndTermsList(ifl.i, ifl.fl.Copy())
 }
 
-func MakeIntFormList(i int, fl basictypes.FormList) IntFormList {
-	return IntFormList{i, fl}
+func MakeIntFormAndTermsList(i int, fl basictypes.FormAndTermsList) IntFormAndTermsList {
+	return IntFormAndTermsList{i, fl}
 }
 
-func IntFormListListToString(fll []IntFormList) string {
+func IntFormAndTermsListListToString(fll []IntFormAndTermsList) string {
 	strArr := []string{}
 
 	for _, element := range fll {
@@ -125,7 +125,7 @@ func IntFormListListToString(fll []IntFormList) string {
 }
 
 func (p ProofStruct) ToString() string {
-	res := "(" + strconv.Itoa(p.GetNodeId()) + ")" + p.GetFormula().ToString() + " - " + p.GetRule() + " - " + IntFormListListToString(p.GetResultFormulas())
+	res := "(" + strconv.Itoa(p.GetNodeId()) + ")" + p.GetFormula().ToString() + " - " + p.GetRule() + " - " + IntFormAndTermsListListToString(p.GetResultFormulas())
 	if len(p.GetChildren()) > 0 {
 		res += " - " + ProofChildrenToString(p.GetChildren())
 	}
@@ -161,7 +161,7 @@ func ProofChildrenToString(l [][]ProofStruct) string {
 func GetGraphFileNameProof() string {
 	return path_proof
 }
-func (p ProofStruct) GetFormula() basictypes.Form {
+func (p ProofStruct) GetFormula() basictypes.FormAndTerms {
 	return p.Formula
 }
 func (p ProofStruct) GetIdDMT() int {
@@ -176,7 +176,7 @@ func (p ProofStruct) GetRule() string {
 func (p ProofStruct) GetRuleName() string {
 	return p.Rule_name
 }
-func (p ProofStruct) GetResultFormulas() []IntFormList {
+func (p ProofStruct) GetResultFormulas() []IntFormAndTermsList {
 	return p.Result_formulas
 }
 func (p ProofStruct) GetChildren() [][]ProofStruct {
@@ -192,7 +192,7 @@ func (p *ProofStruct) SetChildrenProof(c [][]ProofStruct) {
 	p.Children = copyProofStructChildren(c)
 }
 
-func (p *ProofStruct) SetFormulaProof(f basictypes.Form) {
+func (p *ProofStruct) SetFormulaProof(f basictypes.FormAndTerms) {
 	p.Formula = f
 }
 
@@ -212,17 +212,17 @@ func (p *ProofStruct) SetRuleNameProof(r string) {
 	p.Rule_name = r
 }
 
-func (p *ProofStruct) SetResultFormulasProof(fl []IntFormList) {
+func (p *ProofStruct) SetResultFormulasProof(fl []IntFormAndTermsList) {
 	p.Result_formulas = fl
 }
 
 /* makers */
 
 func MakeEmptyProofStruct() ProofStruct {
-	return ProofStruct{basictypes.MakerBot(), -1, -1, "", "", []IntFormList{}, [][]ProofStruct{}}
+	return ProofStruct{basictypes.MakeFormAndTerm(basictypes.MakerBot(), basictypes.MakeEmptyTermList()), -1, -1, "", "", []IntFormAndTermsList{}, [][]ProofStruct{}}
 }
 
-func MakeProofStruct(formula basictypes.Form, formula_use, id int, rule, rule_name string, Result_formulas []IntFormList, children [][]ProofStruct) ProofStruct {
+func MakeProofStruct(formula basictypes.FormAndTerms, formula_use, id int, rule, rule_name string, Result_formulas []IntFormAndTermsList, children [][]ProofStruct) ProofStruct {
 	return ProofStruct{formula, formula_use, id, rule, rule_name, Result_formulas, children}
 }
 
@@ -242,14 +242,14 @@ func JsonProofStructListToString(jpsl []JsonProofStruct) string {
 }
 
 /* Functions */
-func IntFormListToIntIntStringPairList(fl []IntFormList) []IntIntStringPair {
+func IntFormAndTermsListToIntIntStringPairList(fl []IntFormAndTermsList) []IntIntStringPair {
 	res := []IntIntStringPair{}
 	for _, f := range fl {
 		tmp_fl := IntIntStringPair{}
 		tmp_fl.Node_id = f.i
 
 		for _, f2 := range f.fl {
-			tmp_fl.Isp = append(tmp_fl.Isp, IntStringPair{f2.GetIndex(), f2.ToString()})
+			tmp_fl.Isp = append(tmp_fl.Isp, IntStringPair{f2.GetForm().GetIndex(), f2.ToString()})
 		}
 		res = append(res, tmp_fl)
 	}
@@ -259,7 +259,7 @@ func IntFormListToIntIntStringPairList(fl []IntFormList) []IntIntStringPair {
 func ProofStructListToJsonProofStructList(ps []ProofStruct) []JsonProofStruct {
 	res := []JsonProofStruct{}
 	for _, p := range ps {
-		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.GetIdDMT(), p.Node_id, p.Rule, p.Rule_name, IntFormListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
+		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.GetIdDMT(), p.Node_id, p.Rule, p.Rule_name, IntFormAndTermsListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
 		res = append(res, new_json_element)
 	}
 	return res
@@ -358,7 +358,7 @@ func ProofStructListToText(ps []ProofStruct) string {
 func RetrieveUninstantiatedMetaFromProof(p []ProofStruct) basictypes.MetaList {
 	res := basictypes.MakeEmptyMetaList()
 	for _, proof_element := range p {
-		res = res.Merge(proof_element.GetFormula().GetMetas())
+		res = res.Merge(proof_element.GetFormula().GetForm().GetMetas())
 		for _, children := range proof_element.GetChildren() {
 			res = res.Merge(RetrieveUninstantiatedMetaFromProof(children))
 		}

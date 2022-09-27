@@ -59,7 +59,7 @@ func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
 		case basictypes.Meta:
 			res = res.AppendIfNotContains(ttype)
 		case basictypes.Fun:
-			for _, meta_term_list := range basictypes.GetMetaInTermList(ttype.GetArgs()) {
+			for _, meta_term_list := range ttype.GetArgs().GetMetas() {
 				res = res.AppendIfNotContains(meta_term_list)
 			}
 		}
@@ -211,11 +211,11 @@ func applySubstitutionOnType(old_type, new_type, t typing.TypeApp) typing.TypeAp
 }
 
 /* Apply substitutions on a list of terms */
-func ApplySubstitutionsOnTermList(s treetypes.Substitutions, tl []basictypes.Term) []basictypes.Term {
-	res := []basictypes.Term{}
+func ApplySubstitutionsOnTermList(s treetypes.Substitutions, tl basictypes.TermList) basictypes.TermList {
+	res := basictypes.MakeEmptyTermList()
 	for _, t := range tl {
 		new_term := ApplySubstitutionsOnTerm(s, t)
-		res = basictypes.AppendIfNotContainsTermList(new_term, res)
+		res = res.AppendIfNotContains(new_term)
 
 	}
 	return res
@@ -235,8 +235,8 @@ func ApplySubstitutionsOnTerm(s treetypes.Substitutions, t basictypes.Term) basi
 }
 
 /* Apply substElement on a term list */
-func ApplySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl []basictypes.Term) []basictypes.Term {
-	res := make([]basictypes.Term, len(tl))
+func ApplySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl basictypes.TermList) basictypes.TermList {
+	res := make(basictypes.TermList, len(tl))
 	for i, t := range tl {
 		res[i] = ApplySubstitutionOnTerm(old_symbol, new_symbol, t)
 	}
@@ -293,18 +293,7 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 	return res
 }
 
-/* For each element of the substitution, apply it on the entire formula list */
-func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf basictypes.FormList) basictypes.FormList {
-	lf_res := basictypes.MakeEmptyFormList()
-	for _, f := range lf {
-		new_form := ApplySubstitutionsOnFormula(s, f)
-		lf_res = lf_res.AppendIfNotContains(new_form)
-
-	}
-	return lf_res
-}
-
-/* Apply substitution on FormAndTerm */
+/* Apply substitutions on Formula */
 func ApplySubstitutionsOnFormula(s treetypes.Substitutions, f basictypes.Form) basictypes.Form {
 	if f != nil {
 		form_res := f.Copy()
@@ -316,6 +305,41 @@ func ApplySubstitutionsOnFormula(s treetypes.Substitutions, f basictypes.Form) b
 	} else {
 		return nil
 	}
+}
+
+/* For each element of the substitution, apply it on the entire formula list */
+func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf basictypes.FormList) basictypes.FormList {
+	lf_res := basictypes.MakeEmptyFormList()
+	for _, f := range lf {
+		new_form := ApplySubstitutionsOnFormula(s, f)
+		lf_res = lf_res.AppendIfNotContains(new_form)
+
+	}
+	return lf_res
+}
+
+/* Apply substitutions on FormAndTerm */
+func ApplySubstitutionsOnFormAndTerms(s treetypes.Substitutions, fat basictypes.FormAndTerms) basictypes.FormAndTerms {
+	// if fat != basictypes.FormAndTerms{} {
+	form_res := fat.GetForm()
+	tl_res := fat.GetTerms()
+	for _, subst := range s {
+		old_symbol, new_symbol := subst.Get()
+		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
+		tl_res = ApplySubstitutionOnTermList(old_symbol, new_symbol, tl_res)
+	}
+	return basictypes.MakeFormAndTerm(form_res, tl_res)
+}
+
+/* For each element of the substitution, apply it on the entire formAndTerms list */
+func ApplySubstitutionsOnFormAndTermsList(s treetypes.Substitutions, lf basictypes.FormAndTermsList) basictypes.FormAndTermsList {
+	lf_res := basictypes.MakeEmptyFormAndTermsList()
+	for _, f := range lf {
+		new_form := ApplySubstitutionsOnFormAndTerms(s, f)
+		lf_res = lf_res.AppendIfNotContains(new_form)
+
+	}
+	return lf_res
 }
 
 /* Apply a substitution on a metaGenerator list */
@@ -332,12 +356,14 @@ func ApplySubstitutionOnMetaGenList(s treetypes.Substitutions, lf []basictypes.M
 
 /* Apply a substitution on a metaGen form */
 func ApplySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen) basictypes.MetaGen {
-	form_res := mg.GetForm()
+	form_res := mg.GetForm().GetForm()
+	terms_res := mg.GetForm().Terms
 	for _, subst := range s {
 		old_symbol, new_symbol := subst.Get()
 		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
+		terms_res = ApplySubstitutionOnTermList(old_symbol, new_symbol, terms_res)
 	}
-	return basictypes.MakeMetaGen(form_res, mg.GetCounter())
+	return basictypes.MakeMetaGen(basictypes.MakeFormAndTerm(form_res, terms_res), mg.GetCounter())
 }
 
 /* Dispatch a list of substitution : containing mm or not */
@@ -378,11 +404,11 @@ func ApplySubstitutionOnProofList(s treetypes.Substitutions, proof_list []proof.
 
 	for _, p := range proof_list {
 		new_proof := p.Copy()
-		new_proof.SetFormulaProof(ApplySubstitutionsOnFormula(s, p.GetFormula()))
+		new_proof.SetFormulaProof(ApplySubstitutionsOnFormAndTerms(s, p.GetFormula()))
 
-		new_result_formulas := []proof.IntFormList{}
+		new_result_formulas := []proof.IntFormAndTermsList{}
 		for _, f := range p.GetResultFormulas() {
-			new_result_formulas = append(new_result_formulas, proof.MakeIntFormList(f.GetI(), ApplySubstitutionsOnFormulaList(s, f.GetFL())))
+			new_result_formulas = append(new_result_formulas, proof.MakeIntFormAndTermsList(f.GetI(), ApplySubstitutionsOnFormAndTermsList(s, f.GetFL())))
 		}
 		new_proof.SetResultFormulasProof(new_result_formulas)
 
