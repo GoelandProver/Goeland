@@ -230,7 +230,7 @@ func Search(f basictypes.Form, bound int) {
 		}
 
 		node_id := global.IncrCptNode()
-		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id)
+		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{})
 		global.IncrGoRoutine(1)
 
 		global.PrintDebug("MAIN", "GO")

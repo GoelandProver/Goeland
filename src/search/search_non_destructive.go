@@ -310,11 +310,11 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 
 	if form_to_instantiate == -1 {
 		global.PrintDebug("PS", "Let's apply rules !")
-		applyRules(father_id, st, c, basictypes.MakeEmptyFormAndTermsList(), -1, -1)
+		applyRules(father_id, st, c, basictypes.MakeEmptyFormAndTermsList(), -1, -1, []int{})
 	} else {
 		global.PrintDebug("PS", "Let's instantiate !")
 		instantiate(father_id, &st, c, form_to_instantiate, choosen_subst)
-		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1, -1)
+		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1, -1, []int{})
 	}
 
 }

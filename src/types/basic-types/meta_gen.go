@@ -39,6 +39,7 @@
 package basictypes
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -128,13 +129,32 @@ func chooseLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int)
 	return saved_index
 }
 
+/* Choose less reintroduced Meta */
+func getAllLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int) []int {
+	min := -1
+	saved_indexes := []int{}
+	for i, v := range meta_generator {
+		global.PrintDebug("PS", fmt.Sprintf("v.getCounter : %d - Min : %d", v.GetCounter(), min))
+		if (allowed_indexes == nil || global.ContainsInt(i, allowed_indexes)) && ((v.GetCounter() <= min) || min == -1) {
+			new_min := v.GetCounter()
+			if new_min < min || min == -1 {
+				saved_indexes = []int{i}
+				min = new_min
+			} else {
+				saved_indexes = global.AppendIfNotContainsInt(saved_indexes, i)
+			}
+		}
+		global.PrintDebug("PS", fmt.Sprintf("Min after : %d", min))
+	}
+	return saved_indexes
+}
+
 /**
 * Reintroduce meta
 * reintroduce a given formula if index != -1
 * Choose the less reintroduced formula among a list of fomulas otherwise
 **/
 func ReintroduceMeta(meta_generator *[]MetaGen, index int) FormAndTerms {
-
 	if index != -1 {
 		(*meta_generator)[index] = MakeMetaGen((*meta_generator)[index].GetForm(), (*meta_generator)[index].GetCounter()+1)
 		return (*meta_generator)[index].GetForm()
@@ -143,4 +163,19 @@ func ReintroduceMeta(meta_generator *[]MetaGen, index int) FormAndTerms {
 		(*meta_generator)[index_less_reintroduced_meta] = MakeMetaGen((*meta_generator)[index_less_reintroduced_meta].GetForm(), (*meta_generator)[index_less_reintroduced_meta].GetCounter()+1)
 		return (*meta_generator)[index_less_reintroduced_meta].GetForm()
 	}
+}
+
+/* reintroduce the given meta iff is it part of the less reintroduced ones */
+func ReintroduceMetaIfLessReintroduced(meta_generator *[]MetaGen, index int) FormAndTerms {
+	indexes_less_reintroduced_meta := getAllLessReintroducedMeta(*meta_generator, nil)
+	global.PrintDebug("PS", fmt.Sprintf("Less reintroduced metas : %s", global.IntListToString(indexes_less_reintroduced_meta)))
+	index_less_reintroduced_meta := -1
+	if global.ContainsInt(index, indexes_less_reintroduced_meta) {
+		index_less_reintroduced_meta = index
+	} else {
+		index_less_reintroduced_meta = indexes_less_reintroduced_meta[0]
+	}
+	(*meta_generator)[index_less_reintroduced_meta] = MakeMetaGen((*meta_generator)[index_less_reintroduced_meta].GetForm(), (*meta_generator)[index_less_reintroduced_meta].GetCounter()+1)
+	return (*meta_generator)[index_less_reintroduced_meta].GetForm()
+
 }
