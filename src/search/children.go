@@ -152,6 +152,7 @@ func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64
 	global.PrintDebug("SSTF", fmt.Sprintf("Send answer : %v", complextypes.SubstAndFormListToString(subst_for_father)))
 	global.PrintDebug("SSTF", fmt.Sprintf("Id : %v, original node id :%v", node_id, original_node_id))
 	global.PrintDebug("SSTF", fmt.Sprintf("Send proof : %v", proof.ProofStructListToString(st.GetProof())))
+	global.PrintDebug("SSTF", fmt.Sprintf("Meta to reintroduce: %v", global.IntListToString(meta_to_reintroduce)))
 
 	select {
 	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), st.GetProof(), node_id, original_node_id}:

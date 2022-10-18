@@ -439,6 +439,9 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				st.SetProof(complextypes.ApplySubstitutionOnProofList(complextypes.MergeSubstAndForm(st.GetAppliedSubst(), result_subst[0]).GetSubst(), append(st.GetProof(), st.GetCurrentProof())))
 			}
 
+			new_meta_to_reintroduce := meta_to_reintroduce
+			global.PrintDebug("WC", fmt.Sprintf("new meta to reintroduce: %v", global.IntListToString(new_meta_to_reintroduce)))
+
 			// Remove substs we don't need to sent to father
 			new_result_subst := []complextypes.SubstAndForm{}
 			for _, s := range result_subst {
@@ -448,7 +451,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				subst_and_form_removed := complextypes.MakeSubstAndForm(s_removed, s.GetForm())
 
 				if !s_removed.IsEmpty() {
-					// Check if th enew substitution is already in th elist, merge formulas
+					// Check if the new substitution is already in the list, merge formulas
 					added := false
 					for i := range new_result_subst {
 						if new_result_subst[i].GetSubst().Equals(s_removed) {
@@ -460,6 +463,12 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 					if !added {
 						new_result_subst = append(new_result_subst, subst_and_form_removed.Copy())
 					}
+
+					new_meta_to_reintroduce = global.UnionIntList(new_meta_to_reintroduce, retrieveMetaFromSubst(s_removed))
+					global.PrintDebug("WC", fmt.Sprintf("New meta to reintroduce in loop: %v - %v ", global.IntListToString(new_meta_to_reintroduce), global.IntListToString(retrieveMetaFromSubst(s_removed))))
+
+				} else {
+					global.PrintDebug("WC", "Subst empty")
 				}
 			}
 
@@ -471,9 +480,9 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			st.SetSubstsFound(complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound()))
 
 			if len(st.GetSubstsFound()) == 0 {
-				sendSubToFather(c, true, false, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
+				sendSubToFather(c, true, false, father_id, st, given_substs, node_id, original_node_id, new_meta_to_reintroduce)
 			} else {
-				sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
+				sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, new_meta_to_reintroduce)
 			}
 
 		// substs list is for children
@@ -566,6 +575,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 func proofSearchDestructive(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v - node id : %v - original node id : %v", father_id, node_id, original_node_id))
+	global.PrintDebug("PS", fmt.Sprintf("Meta to reintroduce: %v", global.IntListToString(meta_to_reintroduce)))
 
 	if global.GetProof() {
 		st.SetCurrentProofNodeId(node_id)

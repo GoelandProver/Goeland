@@ -177,7 +177,7 @@ func applyRules(father_id uint64, st complextypes.State, c Communication, new_at
 	case len(st.GetBeta()) > 0:
 		manageBetaRules(father_id, st, c, current_node_id, original_node_id, meta_to_reintroduce)
 
-	case len(st.GetGamma()) > 0 && st.CanApplyGammaRule():
+	case len(st.GetGamma()) > 0: //  && st.CanApplyGammaRule()
 		manageGammaRules(father_id, st, c, original_node_id)
 
 	case len(st.GetMetaGen()) > 0 && st.CanReintroduce():

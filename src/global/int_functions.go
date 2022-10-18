@@ -87,3 +87,9 @@ func InterIntList(l1, l2 []int) []int {
 	}
 	return res
 }
+
+func CopyIntList(il []int) []int {
+	res := make([]int, len(il))
+	copy(res, il)
+	return res
+}

@@ -99,7 +99,8 @@ func main() {
 	global.SetProblemName(problem_name)
 
 	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
-	lstm, bound := parser.ParseTPTPFile(problem)
+	lstm, _ := parser.ParseTPTPFile(problem)
+	bound := 1
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
 	if global.GetLimit() != -1 {
 		bound = global.GetLimit()
@@ -124,7 +125,7 @@ func main() {
 	}
 
 	global.PrintDebug("MAIN", "Start search")
-	Search(form, bound/2)
+	Search(form, bound)
 
 	if *memprofile != "" {
 		f, err := os.Create(*memprofile)

@@ -370,7 +370,7 @@ func (st State) CanReintroduce() bool {
 		i++
 	}
 	global.PrintDebug("CR", fmt.Sprintf("%v", st.n > 0 && global.IsDestructive() && (formula_available || (len(st.GetGamma()) > 0))))
-	return st.n > 0 && global.IsDestructive() && (formula_available || (len(st.GetGamma()) > 0))
+	return global.IsDestructive() && (formula_available || (len(st.GetGamma()) > 0)) // st.n > 0
 }
 
 /* Check if the sate is allowed to reintroduce */
