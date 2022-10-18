@@ -154,8 +154,8 @@ func getAllLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int)
 * reintroduce a given formula if index != -1
 * Choose the less reintroduced formula among a list of fomulas otherwise
 **/
-func ReintroduceMeta(meta_generator *[]MetaGen, index int) FormAndTerms {
-	if index != -1 {
+func ReintroduceMeta(meta_generator *[]MetaGen, index int, limit int) FormAndTerms {
+	if index != -1 && (*meta_generator)[index].GetCounter() <= limit {
 		(*meta_generator)[index] = MakeMetaGen((*meta_generator)[index].GetForm(), (*meta_generator)[index].GetCounter()+1)
 		return (*meta_generator)[index].GetForm()
 	} else {

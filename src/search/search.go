@@ -162,6 +162,9 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 func applyRules(father_id uint64, st complextypes.State, c Communication, new_atomics basictypes.FormAndTermsList, current_node_id int, original_node_id int, meta_to_reintroduce []int) {
 	global.PrintDebug("AR", "ApplyRule")
 	switch {
+	case len(meta_to_reintroduce) > 0:
+		manageReintroductionRules(father_id, st, c, original_node_id, meta_to_reintroduce, new_atomics, current_node_id, false)
+
 	case len(new_atomics) > 0 && global.IsLoaded("dmt") && len(st.GetSubstsFound()) == 0:
 		manageRewritteRules(father_id, st, c, new_atomics, current_node_id, original_node_id, meta_to_reintroduce)
 
@@ -178,7 +181,7 @@ func applyRules(father_id uint64, st complextypes.State, c Communication, new_at
 		manageGammaRules(father_id, st, c, original_node_id)
 
 	case len(st.GetMetaGen()) > 0 && st.CanReintroduce():
-		manageReintroductionRules(father_id, st, c, original_node_id, meta_to_reintroduce)
+		manageReintroductionRules(father_id, st, c, original_node_id, meta_to_reintroduce, new_atomics, current_node_id, true)
 
 	default:
 		visualization.WriteExchanges(father_id, st, nil, complextypes.MakeEmptySubstAndForm(), "ApplyRules - SAT")
@@ -367,9 +370,9 @@ func manageGammaRules(father_id uint64, st complextypes.State, c Communication, 
 	new_lf, new_metas := applyGammaRules(hdf, index, &st)
 	st.SetLF(new_lf)
 	st.SetMC(append(st.GetMC(), new_metas...))
-	if global.IsDestructive() {
-		st.SetN(st.GetN() - 1)
-	}
+	// if global.IsDestructive() {
+	// 	st.SetN(st.GetN() - 1)
+	// }
 
 	// Proof
 	st.SetCurrentProofFormula(hdf)
@@ -381,26 +384,33 @@ func manageGammaRules(father_id uint64, st complextypes.State, c Communication, 
 }
 
 /* Manage reintroduction */
-func manageReintroductionRules(father_id uint64, st complextypes.State, c Communication, original_node_id int, meta_to_reintroduce []int) {
+func manageReintroductionRules(father_id uint64, st complextypes.State, c Communication, original_node_id int, meta_to_reintroduce []int, new_atomics basictypes.FormAndTermsList, current_node_id int, reintroducue_anyway bool) {
 
-	var current_meta_to_reintroduce int
+	current_meta_to_reintroduce := -1
+	i := 0
 
-	switch len(meta_to_reintroduce) {
-	case 0:
-		current_meta_to_reintroduce = -1
-		meta_to_reintroduce = []int{}
-	case 1:
-		current_meta_to_reintroduce = meta_to_reintroduce[0]
-		meta_to_reintroduce = []int{}
-	default:
-		current_meta_to_reintroduce = meta_to_reintroduce[0]
-		meta_to_reintroduce = meta_to_reintroduce[1:]
+	for current_meta_to_reintroduce == -1 && i < len(new_atomics) {
+		if st.GetMetaGen()[i].GetCounter() <= st.GetN() {
+			current_meta_to_reintroduce = i
+		}
+
+		if len(meta_to_reintroduce) > 1 {
+			meta_to_reintroduce = meta_to_reintroduce[1:]
+		} else {
+			meta_to_reintroduce = []int{}
+		}
+
+		i++
+	}
+
+	if current_meta_to_reintroduce == -1 && !reintroducue_anyway {
+		applyRules(father_id, st, c, new_atomics, current_node_id, original_node_id, []int{})
 	}
 
 	global.PrintDebug("PS", "Reintroduction")
 	global.PrintDebug("PS", fmt.Sprintf("Meta to reintroduce : %s", global.IntListToString(meta_to_reintroduce)))
 	new_meta_generator := st.GetMetaGen()
-	reslf := basictypes.ReintroduceMetaIfLessReintroduced(&new_meta_generator, current_meta_to_reintroduce)
+	reslf := basictypes.ReintroduceMeta(&new_meta_generator, current_meta_to_reintroduce, st.GetN())
 	global.PrintDebug("PS", fmt.Sprintf("Reintroduce the formula : %s", reslf.ToString()))
 	st.SetLF(basictypes.MakeSingleElementFormAndTermList(reslf))
 

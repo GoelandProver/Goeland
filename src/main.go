@@ -124,7 +124,7 @@ func main() {
 	}
 
 	global.PrintDebug("MAIN", "Start search")
-	Search(form, bound)
+	Search(form, bound/2)
 
 	if *memprofile != "" {
 		f, err := os.Create(*memprofile)
