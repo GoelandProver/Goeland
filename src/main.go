@@ -99,8 +99,7 @@ func main() {
 	global.SetProblemName(problem_name)
 
 	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
-	lstm, _ := parser.ParseTPTPFile(problem)
-	bound := 1
+	lstm, bound := parser.ParseTPTPFile(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
 	if global.GetLimit() != -1 {
 		bound = global.GetLimit()
@@ -110,6 +109,10 @@ func main() {
 	if form == nil {
 		fmt.Printf("[%.6fs][%v][Err] Problem not found.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		os.Exit(1)
+	}
+
+	if bound != 0 {
+		bound = 1
 	}
 
 	// If global context is empty, it means that this is not a typed proof.
