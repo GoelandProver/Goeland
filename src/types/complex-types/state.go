@@ -361,16 +361,17 @@ func (st State) Copy() State {
 
 /* Check if the sate is allowed to reintroduce */
 func (st State) CanReintroduce() bool {
-	formula_available := false
-	i := 0
-	for !formula_available && i < len(st.GetMetaGen()) {
-		if st.GetMetaGen()[i].GetCounter() <= st.GetN() {
-			formula_available = true
-		}
-		i++
-	}
-	global.PrintDebug("CR", fmt.Sprintf("%v", st.n > 0 && global.IsDestructive() && (formula_available || (len(st.GetGamma()) > 0))))
-	return global.IsDestructive() && (formula_available || (len(st.GetGamma()) > 0)) // st.n > 0
+	return global.IsDestructive() && st.GetN() > 0
+	// formula_available := false
+	// i := 0
+	// for !formula_available && i < len(st.GetMetaGen()) {
+	// 	if st.GetMetaGen()[i].GetCounter() <= st.GetN() {
+	// 		formula_available = true
+	// 	}
+	// 	i++
+	// }
+	// global.PrintDebug("CR", fmt.Sprintf("%v", st.n > 0 && global.IsDestructive() && (formula_available || (len(st.GetGamma()) > 0))))
+	// return global.IsDestructive() && (formula_available || (len(st.GetGamma()) > 0)) // st.n > 0
 }
 
 /* Check if the sate is allowed to reintroduce */

@@ -111,9 +111,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	if bound != 0 {
-		bound = 1
-	}
+	// if bound != 0 {
+	// 	bound = 2
+	// }
 
 	// If global context is empty, it means that this is not a typed proof.
 	if !typing.EmptyGlobalContext() {

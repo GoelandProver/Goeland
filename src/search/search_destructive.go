@@ -345,7 +345,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			}
 			// Set to MM
 			st.SetMM(meta_sisters)
-			global.PrintDebug("WC", fmt.Sprintf("MC after sisters : %v", meta_sisters.ToString()))
+			global.PrintDebug("WF", fmt.Sprintf("MC after sisters : %v", meta_sisters.ToString()))
 
 			meta_to_reintroduce_from_subt := retrieveMetaFromSubst(answer_father.subst_for_children.GetSubst())
 			new_meta_to_reintroduce := global.InterIntList(meta_to_reintroduce, meta_to_reintroduce_from_subt)
