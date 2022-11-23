@@ -218,6 +218,8 @@ func Search(f basictypes.Form, bound int) {
 
 		tp := new(treesearch.Node)
 		tn := new(treesearch.Node)
+		// tp := new(datastruct.FormListDS)
+		// tn := new(datastruct.FormListDS)
 
 		st := complextypes.MakeState(limit, tp, tn, f)
 		st.SetCurrentProofNodeId(0)

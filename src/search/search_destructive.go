@@ -612,6 +612,10 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 		st.SetTreePos(st.GetTreePos().InsertFormulaListToDataStructure(st.GetLF().FilterPred(true)))
 		st.SetTreeNeg(st.GetTreeNeg().InsertFormulaListToDataStructure(st.GetLF().FilterPred(false)))
+		// global.PrintDebug("PS", "Tree pos : ")
+		// st.GetTreePos().Print()
+		// global.PrintDebug("PS", "Tree pos : ")
+		// st.GetTreeNeg().Print()
 
 		// Search for a contradiction in LF
 		new_atomics := basictypes.MakeEmptyFormAndTermsList()
