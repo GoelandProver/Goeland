@@ -272,7 +272,7 @@ func manageSubstFoundNonDestructive(father_id uint64, st *complextypes.State, c 
 * s : substitution to apply to the current state
 * subst_found : treetypes.Substitutions found by this process
 **/
-func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Communication) {
+func proofSearchNonDestructive(father_id uint64, st *complextypes.State, c Communication) {
 
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v", father_id))
@@ -289,8 +289,8 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 	for _, f := range st.GetLF() {
 		var substs []treetypes.Substitutions
 		global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
-		closed, substs = applyClosureRules(f.GetForm(), &st)
-		manageClosureRule(father_id, &st, c, substs, f, -1, -1)
+		closed, substs = applyClosureRules(f.GetForm(), st)
+		manageClosureRule(father_id, st, c, substs, f, -1, -1)
 
 		if closed {
 			return
@@ -304,7 +304,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 
 	global.PrintDebug("PS", fmt.Sprintf("Subst_found before management : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 
-	form_to_instantiate, choosen_subst := manageSubstFoundNonDestructive(father_id, &st, c, substs_found_at_this_step)
+	form_to_instantiate, choosen_subst := manageSubstFoundNonDestructive(father_id, st, c, substs_found_at_this_step)
 
 	global.PrintDebug("PS", fmt.Sprintf("Subst_found after management : %v ", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 
@@ -313,7 +313,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 		applyRules(father_id, st, c, basictypes.MakeEmptyFormAndTermsList(), -1, -1, []int{})
 	} else {
 		global.PrintDebug("PS", "Let's instantiate !")
-		instantiate(father_id, &st, c, form_to_instantiate, choosen_subst)
+		instantiate(father_id, st, c, form_to_instantiate, choosen_subst)
 		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1, -1, []int{})
 	}
 

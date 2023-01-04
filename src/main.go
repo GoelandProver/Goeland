@@ -87,6 +87,19 @@ var flag_nb_core = flag.Int("core_limit", -1, "Number of core (default: all)")
 func main() {
 	initFlag()
 	initialization()
+	// go tool pprof -http=localhost:8887 cpu.prof
+
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+		if err != nil {
+			log.Fatal("could not create CPU profile: ", err)
+		}
+		defer f.Close() // error handling omitted for example
+		if err := pprof.StartCPUProfile(f); err != nil {
+			log.Fatal("could not start CPU profile: ", err)
+		}
+		defer pprof.StopCPUProfile()
+	}
 
 	args := os.Args
 	if len(args) < 2 {
@@ -214,7 +227,7 @@ func Search(f basictypes.Form, bound int) {
 		exchanges.ResetExchangesFile()
 
 		global.PrintDebug("MAIN", fmt.Sprintf("nb_step : %v", global.GetNbStep()))
-		fmt.Printf("nb_step : %v - limit : %v\n", global.GetNbStep(), limit)
+		fmt.Printf("[%v] nb_step : %v - limit : %v\n", time.Since(global.GetStart()).Seconds(), global.GetNbStep(), limit)
 
 		tp := new(treesearch.Node)
 		tn := new(treesearch.Node)
@@ -232,11 +245,11 @@ func Search(f basictypes.Form, bound int) {
 		// TODO : global quit channel in non destrutive
 
 		if global.GetExchanges() {
-			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
+			exchanges.WriteExchanges(global.GetGID(), &st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
 		}
 
 		node_id := global.IncrCptNode()
-		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{})
+		go search.ProofSearch(global.GetGID(), &st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{})
 		global.IncrGoRoutine(1)
 
 		global.PrintDebug("MAIN", "GO")

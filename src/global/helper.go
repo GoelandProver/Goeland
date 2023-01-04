@@ -39,11 +39,8 @@
 package global
 
 import (
-	"bytes"
 	"fmt"
 	"os"
-	"runtime"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -96,12 +93,13 @@ func IncrGoRoutine(i int) {
 *  Otherwise, you will go straight to hell.
 **/
 func GetGID() uint64 {
-	b := make([]byte, 64)
-	b = b[:runtime.Stack(b, false)]
-	b = bytes.TrimPrefix(b, []byte("goroutine "))
-	b = b[:bytes.IndexByte(b, ' ')]
-	n, _ := strconv.ParseUint(string(b), 10, 64)
-	return n
+	return 0
+	// b := make([]byte, 64)
+	// b = b[:runtime.Stack(b, false)]
+	// b = bytes.TrimPrefix(b, []byte("goroutine "))
+	// b = b[:bytes.IndexByte(b, ' ')]
+	// n, _ := strconv.ParseUint(string(b), 10, 64)
+	// return n
 }
 
 /* Getters */
