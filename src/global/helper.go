@@ -39,8 +39,11 @@
 package global
 
 import (
+	"bytes"
 	"fmt"
 	"os"
+	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -66,6 +69,7 @@ var lock_cpt_node sync.Mutex
 var dmt_before_eq bool
 var problem_name string
 var core_limit = -1
+var completeness = false
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -93,13 +97,16 @@ func IncrGoRoutine(i int) {
 *  Otherwise, you will go straight to hell.
 **/
 func GetGID() uint64 {
-	return 0
-	// b := make([]byte, 64)
-	// b = b[:runtime.Stack(b, false)]
-	// b = bytes.TrimPrefix(b, []byte("goroutine "))
-	// b = b[:bytes.IndexByte(b, ' ')]
-	// n, _ := strconv.ParseUint(string(b), 10, 64)
-	// return n
+	if GetDebug() {
+		b := make([]byte, 64)
+		b = b[:runtime.Stack(b, false)]
+		b = bytes.TrimPrefix(b, []byte("goroutine "))
+		b = b[:bytes.IndexByte(b, ' ')]
+		n, _ := strconv.ParseUint(string(b), 10, 64)
+		return n
+	} else {
+		return 0
+	}
 }
 
 /* Getters */
@@ -178,6 +185,9 @@ func GetProblemName() string {
 func GetCoreLimit() int {
 	return core_limit
 }
+func GetCompleteness() bool {
+	return completeness
+}
 
 /* Setters */
 func SetDebug(b bool) {
@@ -244,4 +254,8 @@ func SetProblemName(problem string) {
 
 func SetCoreLimit(i int) {
 	core_limit = i
+}
+
+func SetCompleteness(b bool) {
+	completeness = b
 }

@@ -65,6 +65,7 @@ import (
 *	a substitution, the substitution which make the contradiction (possibly empty)
 **/
 func applyClosureRules(f basictypes.Form, st *complextypes.State) (bool, []treetypes.Substitutions) {
+	global.PrintDebug("ACR", "Start ACR")
 	var sl []treetypes.Substitutions
 	res := false
 
@@ -82,11 +83,34 @@ func applyClosureRules(f basictypes.Form, st *complextypes.State) (bool, []treet
 
 	/* Search contradiction */
 	subst_found, msl := searchClosureRule(f, *st)
+
 	if subst_found {
-		res = true
-		for _, s := range msl {
-			global.PrintDebug("ACR", fmt.Sprintf("Subst found between : %v and %v : %v", f.ToString(), s.GetForm().ToString(), s.GetSubst().ToString()))
-			sl = treetypes.AppendIfNotContainsSubst(sl, s.GetSubst())
+		global.PrintDebug("ACR", "Subst found")
+
+		// Check if the substitution was not tried before
+		for _, s := range msl { // Pour chaque ensemble de substitution
+			global.PrintDebug("ACR", fmt.Sprintf("MSL : %v", s.ToString()))
+
+			if s.GetSubst().Equals(treetypes.MakeEmptySubstitution()) {
+				res = true
+			} else {
+				// Je regarde chaque élément de ma substitution
+				found_forbidden := false
+				for _, subst_forbidden := range st.GetForbiddenSubsts() { // Si j'en trouve un qui a une instance en commun avec un fobidden, on interdit
+					if complextypes.AreEqualsModuloaLaphaConversion(s.GetSubst(), subst_forbidden) {
+						found_forbidden = true
+					}
+				}
+
+				if !found_forbidden {
+					res = true
+				}
+			}
+
+			if res {
+				global.PrintDebug("ACR", fmt.Sprintf("Subst found between : %v and %v : %v", f.ToString(), s.GetForm().ToString(), s.GetSubst().ToString()))
+				sl = treetypes.AppendIfNotContainsSubst(sl, s.GetSubst())
+			}
 		}
 	}
 

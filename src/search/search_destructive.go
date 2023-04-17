@@ -321,6 +321,7 @@ func waitFather(father_id uint64, st *complextypes.State, c Communication, given
 
 	case answer_father := <-c.result:
 		exchanges.WriteExchanges(father_id, st, given_substs, answer_father.GetSubstForChildren(), "WaitFather")
+
 		global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", answer_father.GetSubstForChildren().ToString()))
 
 		// Check if the subst was already seen, returns eventually the subst with new formula(s)
@@ -336,16 +337,24 @@ func waitFather(father_id uint64, st *complextypes.State, c Communication, given
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst_for_father})
 			sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
 		} else {
-			// Retrieve meta from the subst sent by my father
-			meta_sisters := st.GetMM()
-			for _, m := range complextypes.GetMetaFromSubst(answer_father.subst_for_children.GetSubst()) {
-				if !st.GetMC().Contains(m) { // If the meta is not a meta current for the process
-					meta_sisters = meta_sisters.AppendIfNotContains(m)
+
+			// Maj forbidden
+			if len(answer_father.forbidden) > 0 {
+				global.PrintDebug("WF", fmt.Sprintf("Forbidden received : %v", treetypes.SubstListToString(answer_father.GetForbiddenSubsts())))
+				st.SetForbiddenSubsts(answer_father.GetForbiddenSubsts())
+				global.PrintDebug("WF", fmt.Sprintf("New forbidden fo this state : %v", treetypes.SubstListToString(st.GetForbiddenSubsts())))
+			} else {
+				// Retrieve meta from the subst sent by my father
+				meta_sisters := st.GetMM()
+				for _, m := range complextypes.GetMetaFromSubst(answer_father.subst_for_children.GetSubst()) {
+					if !st.GetMC().Contains(m) { // If the meta is not a meta current for the process
+						meta_sisters = meta_sisters.AppendIfNotContains(m)
+					}
 				}
+				// Set to MM
+				st.SetMM(meta_sisters)
+				global.PrintDebug("WF", fmt.Sprintf("MC after sisters : %v", meta_sisters.ToString()))
 			}
-			// Set to MM
-			st.SetMM(meta_sisters)
-			global.PrintDebug("WF", fmt.Sprintf("MC after sisters : %v", meta_sisters.ToString()))
 
 			meta_to_reintroduce_from_subt := retrieveMetaFromSubst(answer_father.subst_for_children.GetSubst())
 			new_meta_to_reintroduce := global.InterIntList(meta_to_reintroduce, meta_to_reintroduce_from_subt)
@@ -354,6 +363,7 @@ func waitFather(father_id uint64, st *complextypes.State, c Communication, given
 			c2 := Communication{make(chan bool), make(chan Result)}
 
 			global.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", answer_father.GetSubstForChildren().GetSubst().ToString()))
+			global.PrintDebug("WF", fmt.Sprintf("Forbidden : %v", treetypes.SubstListToString(st_copy.GetForbiddenSubsts())))
 			go ProofSearch(global.GetGID(), &st_copy, c2, answer_father.GetSubstForChildren(), node_id, original_node_id, new_meta_to_reintroduce)
 			global.IncrGoRoutine(1)
 
@@ -472,13 +482,10 @@ func waitChildren(father_id uint64, st *complextypes.State, c Communication, chi
 				}
 			}
 
-			closeChildren(&children, true)
-			st.SetSubstsFound(new_result_subst)
-
+			st.SetSubstsFound(complextypes.RemoveEmptySubstFromSubstAndFormList(new_result_subst))
 			exchanges.WriteExchanges(father_id, st, result_subst, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all agree")
 
-			st.SetSubstsFound(complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound()))
-
+			closeChildren(&children, true)
 			if len(st.GetSubstsFound()) == 0 {
 				sendSubToFather(c, true, false, father_id, st, given_substs, node_id, original_node_id, new_meta_to_reintroduce)
 			} else {
@@ -515,6 +522,11 @@ func waitChildren(father_id uint64, st *complextypes.State, c Communication, chi
 		case 5:
 			global.PrintDebug("WC", "Open children previously found, tell to children to wait for me and try another substitution")
 			closeChildren(&children, false)
+
+			// Add current susbt to the forbidden ones
+			if global.GetCompleteness() {
+				st.SetForbiddenSubsts(treetypes.AddSubstToSubstitutionsList(st.GetForbiddenSubsts(), current_subst.GetSubst()))
+			}
 
 			switch {
 			case st.GetBTOnFormulas() && len(forms_for_backtrack) > 0:
@@ -553,11 +565,17 @@ func waitChildren(father_id uint64, st *complextypes.State, c Communication, chi
 
 			default:
 				exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die - No more BT available")
-				global.PrintDebug("WC", "There is no substitution availabe")
-				closeChildren(&children, true)
-				global.PrintDebug("WC", "SFFC empty")
-				// Todo : if subst found, return true ! -> not need because priority order change in apply rules
-				sendSubToFather(c, false, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
+				global.PrintDebug("WC", "There is no substitution available")
+				if global.GetCompleteness() && len(children) > 1 && !current_subst.IsEmpty() {
+					global.PrintDebug("WC", "Restart proof without subst")
+					sendForbiddenToChildren(children, st.GetForbiddenSubsts())
+					waitChildren(father_id, st, c, children, given_substs, complextypes.MakeEmptySubstAndForm(), substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, child_order, meta_to_reintroduce)
+				} else {
+					closeChildren(&children, true)
+					global.PrintDebug("WC", "Return no solution")
+					// Todo : if subst found, return true ! -> not need because priority order change in apply rules
+					sendSubToFather(c, false, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
+				}
 
 			}
 		}
@@ -603,7 +621,7 @@ func proofSearchDestructive(father_id uint64, st *complextypes.State, c Communic
 			}
 		}
 
-		// st.Print()
+		st.Print()
 		if len(st.GetSubstsFound()) > 0 {
 			global.PrintDebug("PS", fmt.Sprintf("Current substitutions list: %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 		}

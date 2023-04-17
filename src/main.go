@@ -83,6 +83,7 @@ var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equ
 var flag_ari = flag.Bool("ari", false, "Enable arithmetic module")
 var conjecture_found bool
 var flag_nb_core = flag.Int("core_limit", -1, "Number of core (default: all)")
+var flag_completeness = flag.Bool("completeness", false, "Completeness mode")
 
 func main() {
 	initFlag()
@@ -447,6 +448,10 @@ func initFlag() {
 
 	if *flag_nb_core != -1 {
 		global.SetCoreLimit(*flag_nb_core)
+	}
+
+	if *flag_completeness {
+		global.SetCompleteness(true)
 	}
 
 	coq.InitFlag()

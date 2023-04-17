@@ -66,6 +66,7 @@ type Result struct {
 	closed, need_answer   bool
 	subst_for_children    complextypes.SubstAndForm
 	subst_list_for_father []complextypes.SubstAndForm
+	forbidden             []treetypes.Substitutions
 	proof                 []proof.ProofStruct
 	node_id               int
 	original_node_id      int
@@ -86,6 +87,9 @@ func (r Result) GetSubstForChildren() complextypes.SubstAndForm {
 func (r Result) GetSubstListForFather() []complextypes.SubstAndForm {
 	return complextypes.CopySubstAndFormList(r.subst_list_for_father)
 }
+func (r Result) GetForbiddenSubsts() []treetypes.Substitutions {
+	return treetypes.CopySubstList(r.forbidden)
+}
 func (r Result) GetProof() []proof.ProofStruct {
 	return proof.CopyProofStructList(r.proof)
 }
@@ -96,7 +100,7 @@ func (r Result) GetOriginalNodeId() int {
 	return r.original_node_id
 }
 func (r Result) Copy() Result {
-	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetProof(), r.GetNodeId(), r.GetOriginalNodeId()}
+	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetForbiddenSubsts(), r.GetProof(), r.GetNodeId(), r.GetOriginalNodeId()}
 }
 
 /* remove a childre  from a communication list */
@@ -141,7 +145,16 @@ func sendSubToChildren(children []Communication, s complextypes.SubstAndForm) {
 	global.PrintDebug("SSTC", fmt.Sprintf("Send sub to children : %v", len(children)))
 	for i, v := range children {
 		global.PrintDebug("SSTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
-		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, nil, -1, -1}
+		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, treetypes.MakeEmptySubstitutionList(), nil, -1, -1}
+	}
+}
+
+/* Send a substitution to a list of child */
+func sendForbiddenToChildren(children []Communication, s []treetypes.Substitutions) {
+	global.PrintDebug("SFTC", fmt.Sprintf("Send forbidden to children : %v", len(children)))
+	for i, v := range children {
+		global.PrintDebug("SFTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
+		v.result <- Result{global.GetGID(), true, true, complextypes.MakeEmptySubstAndForm(), []complextypes.SubstAndForm{}, s, nil, -1, -1}
 	}
 }
 
@@ -155,7 +168,7 @@ func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64
 	global.PrintDebug("SSTF", fmt.Sprintf("Meta to reintroduce: %v", global.IntListToString(meta_to_reintroduce)))
 
 	select {
-	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), st.GetProof(), node_id, original_node_id}:
+	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), treetypes.MakeEmptySubstitutionList(), st.GetProof(), node_id, original_node_id}:
 		if need_answer {
 			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
 		} else {

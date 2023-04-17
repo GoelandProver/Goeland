@@ -65,6 +65,7 @@ type State struct {
 	proof                                 []proof.ProofStruct
 	current_proof                         proof.ProofStruct
 	bt_on_formulas                        bool
+	forbidden                             []treetypes.Substitutions
 }
 
 /***********/
@@ -125,6 +126,9 @@ func (s State) GetCurrentProof() proof.ProofStruct {
 }
 func (s State) GetBTOnFormulas() bool {
 	return s.bt_on_formulas
+}
+func (s State) GetForbiddenSubsts() []treetypes.Substitutions {
+	return s.forbidden
 }
 
 /* Setters */
@@ -224,9 +228,11 @@ func (st *State) SetCurrentProofNodeId(i int) {
 		st.current_proof.SetNodeIdProof(i)
 	}
 }
-
 func (st *State) SetBTOnFormulas(b bool) {
 	st.bt_on_formulas = b
+}
+func (st *State) SetForbiddenSubsts(s []treetypes.Substitutions) {
+	st.forbidden = treetypes.CopySubstList(s)
 }
 
 /* Maker */
@@ -240,7 +246,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) St
 	current_proof.SetRuleProof("Initial formula")
 	current_proof.SetFormulaProof(basictypes.MakeFormAndTerm(f.Copy(), basictypes.MakeEmptyTermList()))
 
-	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false}
+	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}}
 }
 
 /* Print a state */
@@ -308,6 +314,11 @@ func (st State) Print() {
 		global.PrintDebug("PSt", st.GetLastAppliedSubst().ToString())
 	}
 
+	if len(st.forbidden) > 0 {
+		global.PrintDebug("PSt", "Forbidden:")
+		global.PrintDebug("PSt", treetypes.SubstListToString(st.forbidden))
+	}
+
 	global.PrintDebug("PSt", fmt.Sprintf("BT on formulas : %v", st.GetBTOnFormulas()))
 
 }
@@ -356,6 +367,7 @@ func (st State) Copy() State {
 	new_state.SetProof([]proof.ProofStruct{})
 	new_state.SetCurrentProof(proof.MakeEmptyProofStruct())
 	new_state.SetBTOnFormulas(st.GetBTOnFormulas())
+	new_state.SetForbiddenSubsts(st.GetForbiddenSubsts())
 	return new_state
 }
 

@@ -422,3 +422,18 @@ func ApplySubstitutionOnProofList(s treetypes.Substitutions, proof_list []proof.
 	}
 	return new_proof_list
 }
+
+// true if s1 included or equals to s2 modlulo aplha conversion (or vice versa)
+func AreEqualsModuloaLaphaConversion(s1, s2 treetypes.Substitutions) bool {
+	cpt := 0
+	i := 0
+	for i < len(s1) && cpt == i {
+		for _, s2_element := range s2 {
+			if (s1[i].Key().GetName() == s2_element.Key().GetName()) && (s1[i].Value().Equals(s2_element.Value())) {
+				cpt++
+			}
+		}
+		i++
+	}
+	return cpt == i
+}

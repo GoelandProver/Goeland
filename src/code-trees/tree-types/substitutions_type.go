@@ -173,6 +173,15 @@ func ContainsSubst(sl []Substitutions, subst Substitutions) bool {
 	return false
 }
 
+/* check if a subst is inside a list of substitutions */
+func AddSubstToSubstitutionsList(sl1 []Substitutions, s Substitutions) []Substitutions {
+	res := CopySubstList(sl1)
+	if !ContainsSubst(res, s) {
+		res = append(res, s)
+	}
+	return res
+}
+
 /* Append a substitution s to a list of substitution sl if s is not in sl */
 func AppendIfNotContainsSubst(sl []Substitutions, s Substitutions) []Substitutions {
 	if !ContainsSubst(sl, s) {
@@ -185,6 +194,10 @@ func AppendIfNotContainsSubst(sl []Substitutions, s Substitutions) []Substitutio
 /*** Makers ***/
 func MakeEmptySubstitution() Substitutions {
 	return Substitutions{}
+}
+
+func MakeEmptySubstitutionList() []Substitutions {
+	return []Substitutions{}
 }
 
 /* Returns a « failed » substitution. */
