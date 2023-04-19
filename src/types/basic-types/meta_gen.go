@@ -163,6 +163,7 @@ func ReintroduceMeta(meta_generator *[]MetaGen, index int, limit int) FormAndTer
 		(*meta_generator)[index_less_reintroduced_meta] = MakeMetaGen((*meta_generator)[index_less_reintroduced_meta].GetForm(), (*meta_generator)[index_less_reintroduced_meta].GetCounter()+1)
 		return (*meta_generator)[index_less_reintroduced_meta].GetForm()
 	}
+
 }
 
 /* reintroduce the given meta iff is it part of the less reintroduced ones */

@@ -84,7 +84,7 @@ func ResetExchangesFile() {
 	}
 }
 
-func makeJsonExchanges(father_uint uint64, st *complextypes.State, ss_subst []treetypes.Substitutions, subst_received treetypes.Substitutions, calling_function string) exchanges_struct {
+func makeJsonExchanges(father_uint uint64, st complextypes.State, ss_subst []treetypes.Substitutions, subst_received treetypes.Substitutions, calling_function string) exchanges_struct {
 	// ID
 	id_process := global.GetGID()
 	id := int(id_process)
@@ -126,7 +126,7 @@ func makeJsonExchanges(father_uint uint64, st *complextypes.State, ss_subst []tr
 	return exchanges_struct{id, version, father, forms, mm, mc, ss, sr, calling_function}
 }
 
-func WriteExchanges(father uint64, st *complextypes.State, sub_sent []complextypes.SubstAndForm, subst_received complextypes.SubstAndForm, calling_function string) {
+func WriteExchanges(father uint64, st complextypes.State, sub_sent []complextypes.SubstAndForm, subst_received complextypes.SubstAndForm, calling_function string) {
 	if global.GetExchanges() {
 		mutex_file_exchanges.Lock()
 		global.PrintDebug("WG", calling_function)

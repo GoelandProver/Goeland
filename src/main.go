@@ -184,7 +184,7 @@ func ManageResult(c search.Communication) (bool, []proof.ProofStruct) {
 			time.Sleep(1 * time.Millisecond)
 			global.PrintDebug("MAIN", fmt.Sprintf("open is : %v from %v", open, res.GetId()))
 			global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines()))
-			fmt.Printf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines())
+			// fmt.Printf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines())
 		}
 
 		res = !open
@@ -238,7 +238,7 @@ func Search(f basictypes.Form, bound int) {
 		st := complextypes.MakeState(limit, tp, tn, f)
 		st.SetCurrentProofNodeId(0)
 
-		fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
+		// fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
 
 		global.SetNbGoroutines(0)
 		st.SetLF(basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(f, basictypes.MakeEmptyTermList())))
@@ -246,11 +246,11 @@ func Search(f basictypes.Form, bound int) {
 		// TODO : global quit channel in non destrutive
 
 		if global.GetExchanges() {
-			exchanges.WriteExchanges(global.GetGID(), &st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
+			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
 		}
 
 		node_id := global.IncrCptNode()
-		go search.ProofSearch(global.GetGID(), &st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{})
+		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{})
 		global.IncrGoRoutine(1)
 
 		global.PrintDebug("MAIN", "GO")

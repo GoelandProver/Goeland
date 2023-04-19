@@ -48,6 +48,8 @@ import (
 	global "github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	ctps "github.com/GoelandProver/Goeland/types/complex-types"
+
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
@@ -107,7 +109,7 @@ func removeNot(form btps.Form) btps.Form {
 func getAtomicIndex(form btps.Form) int {
 	index := -1
 
-	for true {
+	for {
 		if all, isAll := form.(btps.All); isAll {
 			form = all.GetForm()
 		} else {
@@ -164,12 +166,15 @@ func coqMapConnectorsCreation() map[btps.FormulaType]string {
 // For each step of the proof, prints it in a coq format.
 
 /* Prints preamble depending on the type of the form. */
-func proofPreamble(root btps.Form) string {
-	return fmt.Sprintf("  apply NNPP. intro H%d.\n", introduce(btps.RefuteForm(root)))
+func proofPreamble(root btps.Form, formulaIntroduced *ctps.IntAndFormList) string {
+	return fmt.Sprintf("  apply NNPP. intro H%d.\n", introduce(btps.RefuteForm(root), formulaIntroduced))
 }
 
 /* Applies oneStep repeatdly with beautiful prints */
-func coqProofFromGoeland(proofs []proof.ProofStruct, nested int, printStar bool) string {
+func coqProofFromGoeland(proofs []proof.ProofStruct, nested int, printStar bool, formulasIntroduced ctps.IntAndFormList, constantsCreated btps.TermList) string {
+	var resulting_formulas []ctps.IntAndFormList
+	var proofOS string
+
 	// Beautiful print
 	preamble := func(nested, i int) string {
 		if i == 0 {
@@ -194,7 +199,7 @@ func coqProofFromGoeland(proofs []proof.ProofStruct, nested int, printStar bool)
 
 	failed := 0
 	for i, proof := range proofs {
-		proofOS := proofOneStep(proof)
+		proofOS, resulting_formulas = proofOneStep(proof, &formulasIntroduced, &constantsCreated)
 		if proofOS != "" {
 			resultingProof += preamble(nested, i-failed) + proofOS + "\n"
 		} else {
@@ -205,12 +210,10 @@ func coqProofFromGoeland(proofs []proof.ProofStruct, nested int, printStar bool)
 	lastProof := proofs[len(proofs)-1]
 	if len(lastProof.GetChildren()) > 0 {
 		if len(lastProof.GetChildren()) == 1 {
-			resultingProof += coqProofFromGoeland(lastProof.GetChildren()[0], nested, false)
+			resultingProof += coqProofFromGoeland(lastProof.GetChildren()[0], nested, false, resulting_formulas[0], constantsCreated)
 		} else {
-			for _, child := range lastProof.GetChildren() {
-				before := copyFormulas()
-				resultingProof += coqProofFromGoeland(child, nested+1, true)
-				formulasIntroduced = before
+			for i, child := range lastProof.GetChildren() {
+				resultingProof += coqProofFromGoeland(child, nested+1, true, resulting_formulas[i].Copy(), constantsCreated.Copy())
 			}
 		}
 	}
@@ -241,14 +244,11 @@ func removeUnusedAxioms(proof string) string {
 	return strings.Join(resultingLines, "\n")
 }
 
-func copyFormulas() []btps.Form {
-	cp := make([]btps.Form, len(formulasIntroduced))
-	copy(cp, formulasIntroduced)
-	return cp
-}
-
 /* Main conversion function. */
-func proofOneStep(p proof.ProofStruct) string {
+func proofOneStep(p proof.ProofStruct, formulasIntroduced *ctps.IntAndFormList, constantsCreated *btps.TermList) (string, []ctps.IntAndFormList) {
+	resulting_formulas := make([]ctps.IntAndFormList, 2)
+	var resulting_string []string
+
 	unfoldResultFormulas := func(ifl []proof.IntFormAndTermsList) btps.FormList {
 		fl := btps.MakeEmptyFormList()
 		for _, iform := range ifl {
@@ -267,53 +267,86 @@ func proofOneStep(p proof.ProofStruct) string {
 		}
 		//result = fmt.Sprintf("apply H%d. assumption.", proof.GetFormula().GetIndex())
 	case "ALPHA_NOT_NOT":
-		result = fmt.Sprintf("apply %s. goeland_intro H%d.", get(p.GetFormula().GetForm()), introduce(p.GetResultFormulas()[0].GetFL().ExtractForms()[0]))
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = fmt.Sprintf("apply %s. goeland_intro H%d.", get_res, introduce(p.GetResultFormulas()[0].GetFL().ExtractForms()[0], formulasIntroduced))
 	case "ALPHA_AND":
-		result = fmt.Sprintf("apply (goeland_and_s _ _ %s). ", get(p.GetFormula().GetForm()))
-		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms()), ". ") + "."
+		resulting_string, _ = nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms(), formulasIntroduced, false)
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = fmt.Sprintf("apply (goeland_and_s _ _ %s). ", get_res)
+		result += strings.Join(resulting_string, ". ") + "."
 	case "ALPHA_NOT_OR":
-		result = fmt.Sprintf("apply (goeland_notor_s _ _ %s). ", get(p.GetFormula().GetForm()))
-		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms()), ". ") + "."
+		resulting_string, _ = nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms(), formulasIntroduced, false)
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = fmt.Sprintf("apply (goeland_notor_s _ _ %s). ", get_res)
+		result += strings.Join(resulting_string, ". ") + "."
 	case "ALPHA_NOT_IMPLY":
-		result = fmt.Sprintf("apply (goeland_notimply_s _ _ %s). ", get(p.GetFormula().GetForm()))
-		result += strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms()), ". ") + "."
+		resulting_string, _ = nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms(), formulasIntroduced, false)
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = fmt.Sprintf("apply (goeland_notimply_s _ _ %s). ", get_res)
+		result += strings.Join(resulting_string, ". ") + "."
 	case "BETA_NOT_AND":
-		result = fmt.Sprintf("apply (goeland_notand_s _ _ %s); ", get(p.GetFormula().GetForm()))
-		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
+		resulting_string, resulting_formulas = nAryIntro(unfoldResultFormulas(p.GetResultFormulas()), formulasIntroduced, true)
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = fmt.Sprintf("apply (goeland_notand_s _ _ %s); ", get_res)
+		result += "[ " + strings.Join(resulting_string, " | ") + " ]."
 	case "BETA_OR":
-		result = fmt.Sprintf("apply (goeland_or_s _ _ %s); ", get(p.GetFormula().GetForm()))
-		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
+		resulting_string, resulting_formulas = nAryIntro(unfoldResultFormulas(p.GetResultFormulas()), formulasIntroduced, true)
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = fmt.Sprintf("apply (goeland_or_s _ _ %s); ", get_res)
+		result += "[ " + strings.Join(resulting_string, " | ") + " ]."
 	case "BETA_IMPLY":
-		result = fmt.Sprintf("apply (goeland_imply_s _ _ %s); ", get(p.GetFormula().GetForm()))
-		result += "[ " + strings.Join(nAryIntro(unfoldResultFormulas(p.GetResultFormulas())), " | ") + " ]."
+		resulting_string, resulting_formulas = nAryIntro(unfoldResultFormulas(p.GetResultFormulas()), formulasIntroduced, true)
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = fmt.Sprintf("apply (goeland_imply_s _ _ %s); ", get_res)
+		result += "[ " + strings.Join(resulting_string, " | ") + " ]."
 	case "BETA_EQUIV":
-		result = fmt.Sprintf("apply (goeland_equiv_s _ _ %s); ", get(p.GetFormula().GetForm()))
-		result += "[ " + strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms()), "; ") + " | " + strings.Join(nAryIntro(p.GetResultFormulas()[1].GetFL().ExtractForms()), "; ") + " ]."
+		resulting_formulas[0] = formulasIntroduced.Copy()
+		resulting_formulas[1] = formulasIntroduced.Copy()
+
+		resulting_string_1, _ := nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms(), &resulting_formulas[0], false)
+		resulting_string_2, _ := nAryIntro(p.GetResultFormulas()[1].GetFL().ExtractForms(), &resulting_formulas[1], false)
+
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+
+		result = fmt.Sprintf("apply (goeland_equiv_s _ _ %s); ", get_res)
+		result += "[ " + strings.Join(resulting_string_1, "; ") + " | " + strings.Join(resulting_string_2, "; ") + " ]."
 	case "BETA_NOT_EQUIV":
-		result = fmt.Sprintf("apply (goeland_notequiv_s _ _ %s); ", get(p.GetFormula().GetForm()))
-		result += "[ " + strings.Join(nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms()), "; ") + " | " + strings.Join(nAryIntro(p.GetResultFormulas()[1].GetFL().ExtractForms()), "; ") + " ]."
+		resulting_formulas[0] = formulasIntroduced.Copy()
+		resulting_formulas[1] = formulasIntroduced.Copy()
+
+		resulting_string_1, _ := nAryIntro(p.GetResultFormulas()[0].GetFL().ExtractForms(), &resulting_formulas[0], false)
+		resulting_string_2, _ := nAryIntro(p.GetResultFormulas()[1].GetFL().ExtractForms(), &resulting_formulas[1], false)
+
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+
+		result = fmt.Sprintf("apply (goeland_notequiv_s _ _ %s); ", get_res)
+		result += "[ " + strings.Join(resulting_string_1, "; ") + " | " + strings.Join(resulting_string_2, "; ") + " ]."
 	case "DELTA_EXISTS":
 		resultForm := p.GetResultFormulas()[0].GetFL().ExtractForms()[0]
-		result = applyNTimes("elim %s. goeland_intro %s. goeland_intro H%s.", get(p.GetFormula().GetForm()), introduce(resultForm), createConsts(p.GetFormula().GetForm(), resultForm))
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = applyNTimes("elim %s. goeland_intro %s. goeland_intro H%s.", get_res, introduce(resultForm, formulasIntroduced), createConsts(p.GetFormula().GetForm(), resultForm, constantsCreated))
 	case "DELTA_NOT_FORALL":
 		// Apply + new const
 		resultForm := p.GetResultFormulas()[0].GetFL().ExtractForms()[0]
-		result = applyNTimes("apply %s. goeland_intro %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula().GetForm()), introduce(resultForm), createConsts(p.GetFormula().GetForm(), resultForm))
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = applyNTimes("apply %s. goeland_intro %s. apply NNPP. goeland_intro H%s.", get_res, introduce(resultForm, formulasIntroduced), createConsts(p.GetFormula().GetForm(), resultForm, constantsCreated))
 	case "GAMMA_FORALL":
 		resultForm := p.GetResultFormulas()[0].GetFL().ExtractForms()[0]
-		result = applyNTimes("generalize (%s %s). goeland_intro H%s.", get(p.GetFormula().GetForm()), introduce(resultForm), instanciate(p.GetFormula().GetForm(), resultForm))
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = applyNTimes("generalize (%s %s). goeland_intro H%s.", get_res, introduce(resultForm, formulasIntroduced), instanciate(p.GetFormula().GetForm(), resultForm, constantsCreated))
 	case "GAMMA_NOT_EXISTS":
 		resultForm := p.GetResultFormulas()[0].GetFL().ExtractForms()[0]
-		result = applyNTimes("apply %s. exists %s. apply NNPP. goeland_intro H%s.", get(p.GetFormula().GetForm()), introduce(resultForm), instanciate(p.GetFormula().GetForm(), resultForm))
+		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
+		result = applyNTimes("apply %s. exists %s. apply NNPP. goeland_intro H%s.", get_res, introduce(resultForm, formulasIntroduced), instanciate(p.GetFormula().GetForm(), resultForm, constantsCreated))
 	case "Rewrite":
-		hypo := get(p.Formula.GetForm())
+		hypo, index_in_fi := get(p.Formula.GetForm(), *formulasIntroduced)
 		result = fmt.Sprintf("rewrite goeland_axiom_%d in %s.", p.Id_dmt, hypo)
 		addUsedAxiom(p.Id_dmt)
 		hypoIndex, _ := strconv.Atoi(hypo[1:])
 		// Update hypotheses introduced
-		formulasIntroduced[hypoIndex] = p.GetResultFormulas()[0].GetFL().ExtractForms()[0]
+		(*formulasIntroduced)[index_in_fi] = ctps.MakeIntAndForm(hypoIndex, p.GetResultFormulas()[0].GetFL().ExtractForms()[0])
 	}
-	return result
+	return result, resulting_formulas
 }
 
 func addUsedAxiom(axiom int) {
@@ -326,26 +359,29 @@ func addUsedAxiom(axiom int) {
 }
 
 /* Always use this function to apply a formula */
-func get(form btps.Form) string {
+func get(form btps.Form, formulasIntroduced ctps.IntAndFormList) (string, int) {
 	for i, f := range formulasIntroduced {
-		if f.Equals(form) {
-			return fmt.Sprintf("H%d", i)
+		if f.GetForm().Equals(form) {
+			return fmt.Sprintf("H%d", f.GetIndex()), i
 		}
 	}
 	for _, ax := range axiomsRegistered {
 		if ax.Equals(form) {
 			addUsedAxiom(ax.GetIndex())
-			return fmt.Sprintf("goeland_axiom_%d", ax.GetIndex())
+			return fmt.Sprintf("goeland_axiom_%d", ax.GetIndex()), -1
 		}
 	}
-	// fmt.Printf("[%v] RETURN ERROR : %v \n", global.GetGID(), form.ToString())
-	return "error"
+	fmt.Printf("[%v] RETURN ERROR : %v \n", global.GetGID(), form.ToString())
+	return "error", -1
 }
 
 /* Always use this function to intro a formula */
-func introduce(form btps.Form) int {
-	result := len(formulasIntroduced)
-	formulasIntroduced = append(formulasIntroduced, form)
+func introduce(form btps.Form, formulasIntroduced *ctps.IntAndFormList) int {
+	mutex_hypothesis.Lock()
+	result := cpt_hypothesis
+	cpt_hypothesis++
+	mutex_hypothesis.Unlock()
+	*formulasIntroduced = append(*formulasIntroduced, ctps.MakeIntAndForm(result, form))
 	return result
 }
 
@@ -358,10 +394,10 @@ func applyNTimes(command, start string, end int, vars []string) string {
 			result += fmt.Sprintf(command, hypo, var_, fmt.Sprintf("%d", end))
 		} else {
 			nextHypo := fmt.Sprintf("%s_%d", start, i)
-			result += fmt.Sprintf(command, hypo, var_, nextHypo) + " "
 			if nextHypo[0] != 'H' {
 				nextHypo = "H" + nextHypo
 			}
+			result += fmt.Sprintf(command, hypo, var_, nextHypo[1:]) + " "
 			hypo = nextHypo
 		}
 	}
@@ -369,38 +405,46 @@ func applyNTimes(command, start string, end int, vars []string) string {
 }
 
 /* Introduces n times. */
-func nAryIntro(fl btps.FormList) []string {
+func nAryIntro(fl btps.FormList, formulasIntroduced *ctps.IntAndFormList, return_new bool) ([]string, []ctps.IntAndFormList) {
 	result := []string{}
-	for _, form := range fl {
-		result = append(result, fmt.Sprintf("goeland_intro H%d", introduce(form)))
+	resulting_formulas := make([]ctps.IntAndFormList, len(fl))
+	if return_new {
+		for i, form := range fl {
+			resulting_formulas[i] = formulasIntroduced.Copy()
+			result = append(result, fmt.Sprintf("goeland_intro H%d", introduce(form, &resulting_formulas[i])))
+		}
+	} else {
+		for _, form := range fl {
+			result = append(result, fmt.Sprintf("goeland_intro H%d", introduce(form, formulasIntroduced)))
+		}
 	}
-	return result
+	return result, resulting_formulas
 }
 
 /* Creates skolemized terms for delta rules. */
-func createConsts(form, resultForm btps.Form) []string {
+func createConsts(form, resultForm btps.Form, constantsCreated *btps.TermList) []string {
 	terms := inOneButNotInOther(form, resultForm)
 	constants := []string{}
 	for _, term := range terms {
-		constants = append(constants, fmt.Sprintf("sko_%d", len(constantsCreated)))
-		constantsCreated = append(constantsCreated, term)
+		constants = append(constants, fmt.Sprintf("sko_%d", len(*constantsCreated)))
+		*constantsCreated = append(*constantsCreated, term)
 	}
 	return constants
 }
 
 /* Instanciates gamma rules with the actual terms. */
-func instanciate(form, resultForm btps.Form) []string {
+func instanciate(form, resultForm btps.Form, constantsCreated *btps.TermList) []string {
 	toInstanciate := inOneButNotInOther(form, resultForm)
 	result := []string{}
 	for _, toInst := range toInstanciate {
 		found := false
-		for i, term := range constantsCreated {
+		for i, term := range *constantsCreated {
 			if !found && term.Equals(toInst) {
 				result = append(result, fmt.Sprintf("sko_%d", i))
 				found = true
 			}
 		}
-		if !found {
+		if !found && toInst != nil {
 			result = append(result, toInst.ToMappedString(coqMapConnectorsCreation(), false))
 		}
 	}
@@ -408,7 +452,7 @@ func instanciate(form, resultForm btps.Form) []string {
 }
 
 /* Gets the term corresponding to the variables in the right order. */
-func inOneButNotInOther(form1, form2 btps.Form) []btps.Term {
+func inOneButNotInOther(form1, form2 btps.Form) btps.TermList {
 	// Normalize
 	if not, isNot := form1.(btps.Not); isNot {
 		form1 = not.GetForm()
@@ -437,7 +481,7 @@ func inOneButNotInOther(form1, form2 btps.Form) []btps.Term {
 	mapping := getSubtermsOf(form2, subterms)
 
 	// Returns a list of terms ordered properly
-	result := make([]btps.Term, len(varList))
+	result := make(btps.TermList, len(varList))
 	for _, map_ := range mapping {
 		for i, var_ := range varList {
 			if var_.Equals(map_.var_) {

@@ -44,20 +44,24 @@ import (
 	"flag"
 	"fmt"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	ctps "github.com/GoelandProver/Goeland/types/complex-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 var outputCoq = flag.Bool("ocoq", false, "Outputs a proof in a coq format instead of a text.")
 var context = flag.Bool("context", false, "Should be used together with the -ocoq parameter. Produces the context for a standalone execution.")
 
-var constantsCreated []btps.Term
-var axiomsRegistered []btps.Form
-var formulasIntroduced []btps.Form
+// var constantsCreated btps.TermList
+// var formulasIntroduced btps.FormList
+var axiomsRegistered btps.FormList
 var usedAxioms []int
+var cpt_hypothesis int
+var mutex_hypothesis sync.Mutex
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
@@ -95,6 +99,8 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 
 func makeCoqProof(proofs []proof.ProofStruct) string {
 	resultingString := ""
+	formulasIntroduced := ctps.MakeEmptyIntAndFormList()
+	constantsCreated := btps.MakeEmptyTermList()
 	// Modify first formula to prove validity
 	axioms, firstFormula := processMainFormula(proofs[0].Formula.GetForm())
 	// Prints the theorem to prove
@@ -104,12 +110,12 @@ func makeCoqProof(proofs []proof.ProofStruct) string {
 	if isNNPP(firstFormula) {
 		resultingString += "  apply NNPP.\n"
 	} else {
-		preambleString := proofPreamble(firstFormula)
+		preambleString := proofPreamble(firstFormula, &formulasIntroduced)
 		resultingString += preambleString
 		if len(axioms) > 0 {
 			proofs = proofs[1:]
 		}
-		resultingString += coqProofFromGoeland(proofs, 0, true)
+		resultingString += coqProofFromGoeland(proofs, 0, true, formulasIntroduced, constantsCreated)
 	}
 	resultingString += "Qed.\n"
 	return removeUnusedAxioms(resultingString)

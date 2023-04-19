@@ -159,7 +159,7 @@ func sendForbiddenToChildren(children []Communication, s []treetypes.Substitutio
 }
 
 /* Send a subst to father. Return true if the process is supposed to die after */
-func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st *complextypes.State, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
+func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
 	subst_for_father := complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound())
 	global.PrintDebug("SSTF", fmt.Sprintf("Send subst to father : %v, closed : %v, need answer : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(subst_for_father)), closed, need_answer))
 	global.PrintDebug("SSTF", fmt.Sprintf("Send answer : %v", complextypes.SubstAndFormListToString(subst_for_father)))

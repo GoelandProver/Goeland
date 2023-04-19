@@ -110,6 +110,22 @@ func (ifl *IntFormAndTermsList) Copy() IntFormAndTermsList {
 	return MakeIntFormAndTermsList(ifl.i, ifl.fl.Copy())
 }
 
+func (ifl *IntFormAndTermsList) GetForms() basictypes.FormList {
+	res := basictypes.MakeEmptyFormList()
+	for _, ift := range (*ifl).GetFL() {
+		res = append(res, ift.GetForm())
+	}
+	return res
+}
+
+func GetFormulasFromIntFormAndTermList(iftl []IntFormAndTermsList) basictypes.FormList {
+	res := basictypes.MakeEmptyFormList()
+	for _, v := range iftl {
+		res = append(res, v.GetForms()...)
+	}
+	return res
+}
+
 func MakeIntFormAndTermsList(i int, fl basictypes.FormAndTermsList) IntFormAndTermsList {
 	return IntFormAndTermsList{i, fl}
 }
@@ -359,9 +375,14 @@ func RetrieveUninstantiatedMetaFromProof(p []ProofStruct) basictypes.MetaList {
 	res := basictypes.MakeEmptyMetaList()
 	for _, proof_element := range p {
 		res = res.Merge(proof_element.GetFormula().GetForm().GetMetas())
+		res_result_formulas := GetFormulasFromIntFormAndTermList(proof_element.GetResultFormulas())
+		for _, v := range res_result_formulas {
+			res = res.Merge(v.GetMetas())
+		}
 		for _, children := range proof_element.GetChildren() {
 			res = res.Merge(RetrieveUninstantiatedMetaFromProof(children))
 		}
+
 	}
 	return res
 }

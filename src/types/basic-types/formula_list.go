@@ -40,6 +40,7 @@
 package basictypes
 
 import (
+	"fmt"
 	"sort"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -65,9 +66,9 @@ func (fl FormList) Less(i, j int) bool {
 func (fl FormList) ToString() string {
 	res := "{"
 	for i, v := range fl {
-		res += v.ToString()
+		res += fmt.Sprintf("\t[%v] %v", i, v.ToString())
 		if i < len(fl)-1 {
-			res += (", ")
+			res += (",\n")
 		}
 	}
 	res += "}"
@@ -203,4 +204,24 @@ func MakeEmptyFormList() FormList {
 /* Make a form_and_term_list with one element */
 func MakeSingleElementList(f Form) FormList {
 	return FormList{f}
+}
+
+func JoinFormListList(fl []FormList) FormList {
+	res := MakeEmptyFormList()
+	for _, f := range fl {
+		res = append(res, f...)
+	}
+	return res
+}
+
+func FormListListToString(fl []FormList) string {
+	res := ""
+	for i, v := range fl {
+		res += fmt.Sprintf("[%d] - %v : ", i, len(v))
+		res += v.ToString()
+		if i < len(fl)-1 {
+			res += ("\n")
+		}
+	}
+	return res
 }
