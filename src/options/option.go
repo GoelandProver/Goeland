@@ -43,11 +43,11 @@ func (op *option[T]) init(name string, defaultValue T, usage string, funcNotDefa
 
 	switch any(defaultValue).(type) {
 	case bool:
-		op.value = any(flag.Bool("debug", any(defaultValue).(bool), "Print debug")).(*T)
+		op.value = any(flag.Bool(name, any(defaultValue).(bool), usage)).(*T)
 	case int:
-		op.value = any(flag.Int("debug", any(defaultValue).(int), "Print debug")).(*T)
+		op.value = any(flag.Int(usage, any(defaultValue).(int), usage)).(*T)
 	case string:
-		op.value = any(flag.String("debug", any(defaultValue).(string), "Print debug")).(*T)
+		op.value = any(flag.String(usage, any(defaultValue).(string), usage)).(*T)
 	}
 }
 
