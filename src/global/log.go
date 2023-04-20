@@ -15,6 +15,10 @@ var (
 	LogError   *log.Logger
 )
 
+func InitLogger() {
+	initLogger(GetLogFile(), GetDebugTerminal(), GetDebugFile(), GetShowTrace())
+}
+
 /**
 *  Initialises the loggers
 *  -
@@ -23,14 +27,12 @@ var (
 *  Will write the debug logs in the terminal only if the parameter debugInTerminal is true
 *  Will write the line where the logger was called only if the parameter showTrace is true
 **/
-func InitLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
+func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}
-
-	defer f.Close()
 
 	wrt := io.MultiWriter(os.Stdout, f)
 

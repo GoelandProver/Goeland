@@ -65,9 +65,28 @@ func initOptions() {
 	(&option[bool]{}).init(
 		"debug",
 		false,
-		"Enables printing debug information",
-		func(val bool) { global.SetDebugTerminal(val) },
+		"Enables printing debug information in the terminal",
+		func(bool) { global.SetDebugTerminal(true) },
 		func(bool) {})
+	(&option[bool]{}).init(
+		"dif",
+		false,
+		"Short for 'Debug In File'. Enables printing debug information in the log file",
+		func(bool) { global.SetDebugFile(true) },
+		func(bool) {})
+	(&option[string]{}).init(
+		"log",
+		"logs",
+		"Changes the `file` output for loggers",
+		func(string) {},
+		func(val string) { global.SetLogFile(val) })
+	(&option[bool]{}).init(
+		"show_trace",
+		false,
+		"Enables the location of the loggers call to be shown in the logs",
+		func(bool) { global.SetShowTrace(true) },
+		func(bool) {})
+
 	(&option[bool]{}).init(
 		"nd",
 		false,

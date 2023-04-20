@@ -74,6 +74,7 @@ var conjecture_found bool
 
 func main() {
 	options.RunOptions()
+	global.InitLogger()
 	initialization()
 	// go tool pprof -http=localhost:8887 cpu.prof
 

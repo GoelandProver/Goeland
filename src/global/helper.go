@@ -74,6 +74,7 @@ var arithModule = false
 var debugTerminal = false
 var debugFile = false
 var showTrace = false
+var logFile string
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -120,6 +121,10 @@ func GetDebugFile() bool {
 
 func GetShowTrace() bool {
 	return showTrace
+}
+
+func GetLogFile() string {
+	return logFile
 }
 
 func IsDestructive() bool {
@@ -221,6 +226,10 @@ func SetDebugFile(b bool) {
 
 func SetShowTrace(b bool) {
 	showTrace = b
+}
+
+func SetLogFile(s string) {
+	logFile = s
 }
 
 func SetStart(t time.Time) {
