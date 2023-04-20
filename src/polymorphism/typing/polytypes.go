@@ -43,6 +43,8 @@ package polymorphism
 import (
 	"fmt"
 	"sync"
+
+	"github.com/GoelandProver/Goeland/global"
 )
 
 /**
@@ -108,6 +110,10 @@ func Init() {
 	// Default types
 	defaultType = MkTypeHint("$i")
 	defaultProp = MkTypeHint("$o")
+
+	if global.GetArithModule() {
+		InitTPTPArithmetic()
+	}
 }
 
 /* Utils */

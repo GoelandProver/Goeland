@@ -53,10 +53,10 @@ import (
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/options"
 	"github.com/GoelandProver/Goeland/parser"
 	coq "github.com/GoelandProver/Goeland/plugins/coq"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
-	equality "github.com/GoelandProver/Goeland/plugins/equality"
 	polymorphism "github.com/GoelandProver/Goeland/polymorphism/rules"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	"github.com/GoelandProver/Goeland/search"
@@ -69,24 +69,11 @@ import (
 // Flags
 var cpuprofile = flag.String("cpuprofile", "", "Write cpu profile to `file`")
 var memprofile = flag.String("memprofile", "", "Write memory profile to `file`")
-var flag_debug = flag.Bool("debug", false, "Print debug")
-var flag_non_destructive = flag.Bool("nd", false, "Use the non-destructive version")
-var flag_limit = flag.Int("l", -1, "Limit in destructive mode")
-var flag_one_step = flag.Bool("one_step", false, "Only one step of search")
-var flag_exchanges = flag.Bool("exchanges", false, "Write node exchanges in a file")
-var flag_proof = flag.Bool("proof", false, "Displays a proof of the problem (in TPTP format)")
-var flag_pretty_print = flag.Bool("pretty", false, "Prints are done with UTF-8 characters (when used in combination with -proof, results in a pretty proof)")
-var flag_dmt = flag.Bool("dmt", false, "Activates deduction modulo theory")
-var flag_noeq = flag.Bool("noeq", false, "Apply this flag if you want to disable equality")
-var flag_type_proof = flag.Bool("type_proof", false, "Apply this flag if you want to enable type proof visualisation")
-var flag_dmt_before_eq = flag.Bool("dmt_before_eq", false, "Apply dmt before equality")
-var flag_ari = flag.Bool("ari", false, "Enable arithmetic module")
+
 var conjecture_found bool
-var flag_nb_core = flag.Int("core_limit", -1, "Number of core (default: all)")
-var flag_completeness = flag.Bool("completeness", false, "Completeness mode")
 
 func main() {
-	initFlag()
+	options.RunOptions()
 	initialization()
 	// go tool pprof -http=localhost:8887 cpu.prof
 
@@ -131,7 +118,7 @@ func main() {
 
 	// If global context is empty, it means that this is not a typed proof.
 	if !typing.EmptyGlobalContext() {
-		formula, err := polymorphism.WellFormedVerification(form, *flag_type_proof)
+		formula, err := polymorphism.WellFormedVerification(form, global.GetTypeProof())
 		if err != nil {
 			global.PrintDebug("MAIN", fmt.Sprintf("Typing error: %s\n", err.Error()))
 			fmt.Printf("[%.6fs][%v][Type] Error: not well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
@@ -389,72 +376,8 @@ func initialization() {
 	// Init typing
 	typing.Init()
 
-	if *flag_ari {
-		typing.InitTPTPArithmetic()
-	}
-
 	// Terms
 	basictypes.Init()
-
-	// Init pulgins
-	if *flag_dmt {
-		dmt.InitPlugin()
-	}
-	if !*flag_noeq {
-		equality.InitPlugin()
-	}
-}
-
-/* Init flag */
-func initFlag() {
-	flag.Parse()
-
-	if *flag_debug {
-		global.SetDebug(true)
-	}
-
-	if *flag_limit != -1 {
-		global.SetLimit(*flag_limit)
-	}
-
-	if *flag_one_step {
-		global.SetOneStep(true)
-	}
-
-	if *flag_non_destructive {
-		global.SetDestructive(false)
-		global.SetOneStep(true)
-	}
-
-	if *flag_exchanges {
-		global.SetExchanges(true)
-		exchanges.ResetExchangesFile()
-	}
-
-	if *flag_proof {
-		global.SetProof(true)
-		proof.ResetProofFile()
-	}
-
-	if *flag_pretty_print {
-		global.DisplayPretty()
-	}
-
-	global.SetPlugin("dmt", *flag_dmt)
-	global.SetPlugin("equality", !*flag_noeq)
-	if *flag_dmt_before_eq {
-		global.SetDMTBeforeEQ(true)
-	}
-
-	if *flag_nb_core != -1 {
-		global.SetCoreLimit(*flag_nb_core)
-	}
-
-	if *flag_completeness {
-		global.SetCompleteness(true)
-	}
-
-	coq.InitFlag()
 }
 
 func getFile(filename string, dir string) (string, error) {

@@ -70,6 +70,8 @@ var dmt_before_eq bool
 var problem_name string
 var core_limit = -1
 var completeness = false
+var isTypeProof = false
+var arithModule = false
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -153,13 +155,16 @@ func GetProof() bool {
 func GetExecPath() string {
 	return exec_path
 }
+
 func IsLoaded(s string) bool {
 	// Not locked here because read-only except in main
 	return plugins[s]
 }
+
 func GetCptNode() int {
 	return cpt_node
 }
+
 func IncrCptNode() int {
 	lock_cpt_node.Lock()
 	cpt_node++
@@ -182,11 +187,21 @@ func IsCoqOutput() bool {
 func GetProblemName() string {
 	return problem_name
 }
+
 func GetCoreLimit() int {
 	return core_limit
 }
+
 func GetCompleteness() bool {
 	return completeness
+}
+
+func GetTypeProof() bool {
+	return isTypeProof
+}
+
+func GetArithModule() bool {
+	return arithModule
 }
 
 /* Setters */
@@ -258,4 +273,12 @@ func SetCoreLimit(i int) {
 
 func SetCompleteness(b bool) {
 	completeness = b
+}
+
+func SetTypeProof(b bool) {
+	isTypeProof = b
+}
+
+func SetArithModule(b bool) {
+	arithModule = b
 }

@@ -41,7 +41,6 @@
 package coq
 
 import (
-	"flag"
 	"fmt"
 	"strings"
 	"sync"
@@ -53,15 +52,14 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-var outputCoq = flag.Bool("ocoq", false, "Outputs a proof in a coq format instead of a text.")
-var context = flag.Bool("context", false, "Should be used together with the -ocoq parameter. Produces the context for a standalone execution.")
-
 // var constantsCreated btps.TermList
 // var formulasIntroduced btps.FormList
 var axiomsRegistered btps.FormList
 var usedAxioms []int
 var cpt_hypothesis int
 var mutex_hypothesis sync.Mutex
+
+var contextEnabled bool = false
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
@@ -72,13 +70,6 @@ var mutex_hypothesis sync.Mutex
 // TODO:
 //	* Write the context for TFF problems
 
-func InitFlag() {
-	if *outputCoq {
-		global.OutputCoq()
-		global.SetProof(true)
-	}
-}
-
 func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 	if len(proof) == 0 {
 		fmt.Printf("[%.6fs][%v][Coq] Nothing to output.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
@@ -87,7 +78,7 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 
 	resultingString := ""
 	// If output is standalone, then print context
-	if *context {
+	if GetContextEnabled() {
 		resultingString += "(* CONTEXT BEGIN *)\n"
 		resultingString += makeContext(proof[0].Formula.GetForm(), meta)
 		resultingString += "\n(* CONTEXT END *)\n"
@@ -126,4 +117,12 @@ func makeCoqProof(proofs []proof.ProofStruct) string {
 
 func mapDefault(str string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
+}
+
+func GetContextEnabled() bool {
+	return contextEnabled
+}
+
+func SetContextEnabled(ce bool) {
+	contextEnabled = true
 }

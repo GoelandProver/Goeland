@@ -2,6 +2,13 @@ package options
 
 import (
 	"flag"
+
+	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/coq"
+	"github.com/GoelandProver/Goeland/plugins/dmt"
+	"github.com/GoelandProver/Goeland/plugins/equality"
+	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 func RunOptions() {
@@ -15,4 +22,117 @@ func RunOptions() {
 
 func initOptions() {
 
+	(&option[bool]{}).init(
+		"debug",
+		false,
+		"Enables printing debug information",
+		func(val bool) { global.SetDebug(val) },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"nd",
+		false,
+		"Enables the non-destructive version",
+		func(bool) {
+			global.SetDestructive(false)
+			global.SetOneStep(true)
+		},
+		func(bool) {})
+	(&option[int]{}).init(
+		"l",
+		-1,
+		"Sets the limit in destructive mode",
+		func(limit int) { global.SetLimit(limit) },
+		func(int) {})
+	(&option[bool]{}).init(
+		"one_step",
+		false,
+		"Enables only one step of search",
+		func(bool) {},
+		func(bool) { global.SetOneStep(true) })
+	(&option[bool]{}).init(
+		"exchanges",
+		false,
+		"Enables the node exchanges to be written in a file",
+		func(bool) {
+			global.SetExchanges(true)
+			exchanges.ResetExchangesFile()
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"proof",
+		false,
+		"Enables the display of a proof of the problem (in TPTP format)",
+		func(bool) {
+			global.SetProof(true)
+			proof.ResetProofFile()
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"pretty",
+		false,
+		"Enables UTF-8 characters in prints (use in combination with -proof for a pretty proof)",
+		func(bool) { global.DisplayPretty() },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"dmt",
+		false,
+		"Enables deduction modulo theory",
+		func(bool) { dmt.InitPlugin() },
+		func(dmt bool) { global.SetPlugin("dmt", dmt) })
+	(&option[bool]{}).init(
+		"noeq",
+		false,
+		"Disables equality",
+		func(bool) {},
+		func(noeq bool) {
+			global.SetPlugin("equality", !noeq)
+			if !noeq {
+				equality.InitPlugin()
+			}
+		})
+	(&option[bool]{}).init(
+		"type_proof",
+		false,
+		"Enables type proof visualisation",
+		func(bool) { global.SetTypeProof(true) },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"dmt_before_eq",
+		false,
+		"Enables dmt before equality",
+		func(bool) { global.SetDMTBeforeEQ(true) },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"ari",
+		false,
+		"Enables arithmetic module",
+		func(bool) { global.SetArithModule(true) },
+		func(bool) {})
+	(&option[int]{}).init(
+		"core_limit",
+		-1,
+		"Sets the limit in number of cores (default: all)",
+		func(nb int) { global.SetCoreLimit(nb) },
+		func(int) {})
+	(&option[bool]{}).init(
+		"completeness",
+		false,
+		"Enables completeness mode",
+		func(bool) { global.SetCompleteness(true) },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"ocoq",
+		false,
+		"Enables the Coq format for proofs instead of text",
+		func(bool) {
+			global.OutputCoq()
+			global.SetProof(true)
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"context",
+		false,
+		"Should only be used with the -ocoq parameter. Enables the context for a standalone execution.",
+		func(bool) { coq.SetContextEnabled(true) },
+		func(bool) {})
 }
