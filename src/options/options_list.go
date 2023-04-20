@@ -61,7 +61,6 @@ func RunOptions() {
 }
 
 func initOptions() {
-
 	(&option[bool]{}).init(
 		"debug",
 		false,

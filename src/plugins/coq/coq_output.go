@@ -41,10 +41,8 @@
 package coq
 
 import (
-	"fmt"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
@@ -72,7 +70,7 @@ var contextEnabled bool = false
 
 func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 	if len(proof) == 0 {
-		fmt.Printf("[%.6fs][%v][Coq] Nothing to output.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		global.PrintInfo("Coq", "Nothing to output")
 		return ""
 	}
 

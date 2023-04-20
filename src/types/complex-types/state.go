@@ -412,7 +412,7 @@ func (st *State) DispatchForm(f basictypes.FormAndTerms) {
 	case basictypes.Gamma:
 		st.SetGamma(st.GetGamma().AppendIfNotContains(f))
 	default:
-		fmt.Println("[ERROR] Formula not recognized")
+		global.PrintError("STATE", "Formula not recognized")
 	}
 }
 

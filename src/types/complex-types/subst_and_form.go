@@ -198,8 +198,7 @@ func MergeSubstAndForm(s1, s2 SubstAndForm) SubstAndForm {
 	new_subst, _ := treesearch.MergeSubstitutions(s1.GetSubst().Copy(), s2.GetSubst().Copy())
 
 	if new_subst.Equals(treetypes.Failure()) {
-		global.PrintDebug("MSAF", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString()))
-		fmt.Printf("[MSAF] Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString())
+		global.PrintError("MSAF", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString()))
 		// os.Exit(0)
 	}
 

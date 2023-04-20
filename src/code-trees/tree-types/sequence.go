@@ -65,6 +65,7 @@ func (s *Sequence) add(instr Instruction) {
 	s.instructions = append(s.instructions, instr)
 }
 
+// ILL TODO: Should not print directly, should return a string that is then printed
 func (s Sequence) Print() {
 	for _, instr := range s.instructions {
 		fmt.Printf("%v", instr)

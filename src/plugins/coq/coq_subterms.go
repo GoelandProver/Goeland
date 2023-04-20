@@ -41,9 +41,6 @@
 package coq
 
 import (
-	"fmt"
-	"time"
-
 	"github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -257,7 +254,7 @@ func merge(ls []VarMaps, element VarMaps) []VarMaps {
 		if listEl.var_.Equals(element.var_) {
 			found = true
 			if !listEl.term.Equals(element.term) {
-				fmt.Printf("[%.6fs][%v][Coq] Error when instanciating a variable.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+				global.PrintError("Coq", "Error when instanciating a variable")
 				panic("Same var different terms")
 			}
 		}

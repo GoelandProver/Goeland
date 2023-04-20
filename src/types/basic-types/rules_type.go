@@ -38,20 +38,22 @@
 **/
 package basictypes
 
-import "fmt"
+import "github.com/GoelandProver/Goeland/global"
 
 /******************/
 /* Structure rule */
 /******************/
 
-/**
+/*
+*
 Rules are representedby an int :
 1 : atomic
 2 : alpha
 3 : beta
 4 : delta
 5 : gamma
-**/
+*
+*/
 type KindOfRule int
 
 const (
@@ -85,7 +87,7 @@ func ShowKindOfRule(f Form) KindOfRule {
 		case All:
 			res = Delta
 		case AllType:
-			fmt.Println("[ERROR] not forall(type) found when it shouldn't happen.")
+			global.PrintError("RULE", "not forall(type) found when it shouldn't happen.")
 		}
 	case And:
 		res = Alpha

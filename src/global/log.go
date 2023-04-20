@@ -9,10 +9,10 @@ import (
 )
 
 var (
-	LogDebug   *log.Logger
-	LogInfo    *log.Logger
-	LogWarning *log.Logger
-	LogError   *log.Logger
+	logDebug   *log.Logger
+	logInfo    *log.Logger
+	logWarning *log.Logger
+	logError   *log.Logger
 )
 
 func InitLogger() {
@@ -28,7 +28,7 @@ func InitLogger() {
 *  Will write the line where the logger was called only if the parameter showTrace is true
 **/
 func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
-	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
 
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
@@ -45,37 +45,41 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
 
 	if debugInFile {
 		if debugInTerminal {
-			LogDebug = log.New(wrt, debPrefix, logOptions)
+			logDebug = log.New(wrt, debPrefix, logOptions)
 		} else {
-			LogDebug = log.New(f, debPrefix, logOptions)
+			logDebug = log.New(f, debPrefix, logOptions)
 		}
 	} else if debugInTerminal {
-		LogDebug = log.New(os.Stdout, debPrefix, logOptions)
+		logDebug = log.New(os.Stdout, debPrefix, logOptions)
 	}
 
-	LogInfo = log.New(wrt, "INF: ", logOptions)
-	LogWarning = log.New(wrt, "WAR: ", logOptions)
-	LogError = log.New(wrt, "ERR: ", logOptions)
+	logInfo = log.New(wrt, "INF: ", logOptions)
+	logWarning = log.New(wrt, "WAR: ", logOptions)
+	logError = log.New(wrt, "ERR: ", logOptions)
 }
 
 func printToLogger(logger log.Logger, function, message string) {
-	logger.Output(3, fmt.Sprintf("[%.6fs][%v] %v\n", time.Since(start).Seconds(), function, message))
+	if GetDebug() {
+		logger.Output(3, fmt.Sprintf("[%.6fs][%v][%v] %v\n", time.Since(start).Seconds(), GetGID(), function, message))
+	} else {
+		logger.Output(3, fmt.Sprintf("[%.6fs][%v] %v\n", time.Since(start).Seconds(), function, message))
+	}
 }
 
 func PrintDebug(function, message string) {
-	if LogDebug != nil {
-		printToLogger(*LogDebug, function, message)
+	if logDebug != nil {
+		printToLogger(*logDebug, function, message)
 	}
 }
 
 func PrintInfo(function, message string) {
-	printToLogger(*LogInfo, function, message)
+	printToLogger(*logInfo, function, message)
 }
 
 func PrintWarning(function, message string) {
-	printToLogger(*LogWarning, function, message)
+	printToLogger(*logWarning, function, message)
 }
 
 func PrintError(function, message string) {
-	printToLogger(*LogError, function, message)
+	printToLogger(*logError, function, message)
 }

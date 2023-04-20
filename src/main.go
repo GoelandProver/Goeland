@@ -100,7 +100,7 @@ func main() {
 	problem_name := path.Base(problem)
 	global.SetProblemName(problem_name)
 
-	fmt.Printf("[%.6fs][%v][MAIN] Problem : %v\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), problem)
+	global.PrintInfo("MAIN", fmt.Sprintf("Problem : %v", problem))
 	lstm, bound := parser.ParseTPTPFile(problem)
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
 	if global.GetLimit() != -1 {
@@ -109,7 +109,7 @@ func main() {
 
 	form, bound := StatementListToFormula(lstm, bound, path.Dir(problem))
 	if form == nil {
-		fmt.Printf("[%.6fs][%v][Err] Problem not found.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		global.PrintError("MAIN", "Problem not found")
 		os.Exit(1)
 	}
 
@@ -121,11 +121,10 @@ func main() {
 	if !typing.EmptyGlobalContext() {
 		formula, err := polymorphism.WellFormedVerification(form, global.GetTypeProof())
 		if err != nil {
-			global.PrintDebug("MAIN", fmt.Sprintf("Typing error: %s\n", err.Error()))
-			fmt.Printf("[%.6fs][%v][Type] Error: not well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+			global.PrintError("MAIN", fmt.Sprintf("Typing error: %s\n", err.Error()))
 			return
 		}
-		fmt.Printf("[%.6fs][%v][Type] Well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
+		global.PrintInfo("MAIN", "Well typed.")
 		form = formula
 	}
 
@@ -171,8 +170,7 @@ func ManageResult(c search.Communication) (bool, []proof.ProofStruct) {
 			open = !res.GetClosed()
 			time.Sleep(1 * time.Millisecond)
 			global.PrintDebug("MAIN", fmt.Sprintf("open is : %v from %v", open, res.GetId()))
-			global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines()))
-			// fmt.Printf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines())
+			global.PrintInfo("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines()))
 		}
 
 		res = !open
@@ -183,21 +181,21 @@ func ManageResult(c search.Communication) (bool, []proof.ProofStruct) {
 
 /* Print the result of search algorithm */
 func PrintResult(res bool) {
-	fmt.Printf("[%.6fs][%v][Res] %v goroutines created\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), global.GetNbGoroutines())
-	fmt.Printf("==== Result ====\n")
+	global.PrintInfo("Res", fmt.Sprintf("%v goroutines created", global.GetNbGoroutines()))
+	global.PrintInfo("Res", "==== Result ====")
 	if res {
-		fmt.Printf("[%.6fs][%v][Res] %s RES : VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), "%")
+		global.PrintInfo("Res", "% RES : VALID")
 		if conjecture_found {
-			fmt.Printf("%s SZS status Theorem for %v\n", "%", global.GetProblemName())
+			global.PrintInfo("Res", fmt.Sprintf("%s SZS status Theorem for %v", "%", global.GetProblemName()))
 		} else {
-			fmt.Printf("%s SZS status Unsatisfiable for %v\n", "%", global.GetProblemName())
+			global.PrintInfo("Res", fmt.Sprintf("%s SZS status Unsatisfiable for %v", "%", global.GetProblemName()))
 		}
 	} else {
-		fmt.Printf("[%.6fs][%v][Res] %s RES : NOT VALID\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), "%")
+		global.PrintInfo("Res", "% RES : NOT VALID")
 		if conjecture_found {
-			fmt.Printf("%s SZS status CounterSatisfiable for %v\n", "%", global.GetProblemName())
+			global.PrintInfo("Res", fmt.Sprintf("%s SZS status CounterSatisfiable for %v", "%", global.GetProblemName()))
 		} else {
-			fmt.Printf("%s SZS status Satisfiable for %v\n", "%", global.GetProblemName())
+			global.PrintInfo("Res", fmt.Sprintf("%s SZS status Satisfiable for %v", "%", global.GetProblemName()))
 		}
 	}
 }
@@ -215,8 +213,7 @@ func Search(f basictypes.Form, bound int) {
 		proof.ResetProofFile()
 		exchanges.ResetExchangesFile()
 
-		global.PrintDebug("MAIN", fmt.Sprintf("nb_step : %v", global.GetNbStep()))
-		fmt.Printf("[%v] nb_step : %v - limit : %v\n", time.Since(global.GetStart()).Seconds(), global.GetNbStep(), limit)
+		global.PrintInfo("MAIN", fmt.Sprintf("nb_step : %v - limit : %v", global.GetNbStep(), limit))
 
 		tp := new(treesearch.Node)
 		tn := new(treesearch.Node)
@@ -226,7 +223,7 @@ func Search(f basictypes.Form, bound int) {
 		st := complextypes.MakeState(limit, tp, tn, f)
 		st.SetCurrentProofNodeId(0)
 
-		// fmt.Printf("Launch Gotab with destructive = %v\n", global.IsDestructive())
+		global.PrintInfo("MAIN", fmt.Sprintf("Launch Gotab with destructive = %v", global.IsDestructive()))
 
 		global.SetNbGoroutines(0)
 		st.SetLF(basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(f, basictypes.MakeEmptyTermList())))
@@ -253,13 +250,13 @@ func Search(f basictypes.Form, bound int) {
 
 		if global.GetProof() && res {
 			proof.WriteGraphProof(final_proof)
-			fmt.Printf("%s SZS output start Proof for %v\n", "%", global.GetProblemName())
+			global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
 			if global.IsCoqOutput() {
 				fmt.Printf("%s", coq.MakeCoqOutput(final_proof, uninstantiated_meta))
 			} else {
 				fmt.Printf("%v", proof.ProofStructListToText(final_proof))
 			}
-			fmt.Printf("%s SZS output end Proof for %v\n", "%", global.GetProblemName())
+			global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output end Proof for %v", "%", global.GetProblemName()))
 		}
 
 		limit = 2 * limit
@@ -283,7 +280,7 @@ func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_
 			global.PrintDebug("MAIN", fmt.Sprintf("File to parse : %s\n", realname))
 
 			if err != nil {
-				fmt.Println(err.Error())
+				global.PrintError("MAIN", err.Error())
 				return nil, -1
 				//os.Exit(1)
 			}
