@@ -60,6 +60,14 @@ func RunOptions() {
 	}
 }
 
+/**
+*  An option has a type T and is initialized with five parameters:
+*  name string: the name of the option that will be used in the command line.
+*  defaultValue T: the default value that will be used if the option is not used.
+*  usage string: the description on how to use and what the option does.
+*  funcNotDefault func(T): a function that will be run if the option has changed from its default value. The parameter will be the value of the option.
+*  funcAlways func(T): a function that will always be run. The parameter will be the value of the option.
+**/
 func initOptions() {
 	(&option[bool]{}).init(
 		"debug",

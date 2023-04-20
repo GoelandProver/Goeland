@@ -35,7 +35,7 @@
 /*************/
 
 /**
-* This file defines the structure for options
+* This file defines the structure for options. To make new options, go to the options_list.go file.
 **/
 
 package options
