@@ -40,7 +40,6 @@ package global
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 	"runtime"
 	"strconv"
@@ -50,7 +49,6 @@ import (
 )
 
 var ocoq = false
-var debug = false
 var destructive = true
 var nb_gor = 0
 var mutex sync.Mutex
@@ -73,19 +71,15 @@ var completeness = false
 var isTypeProof = false
 var arithModule = false
 
+var debugTerminal = false
+var debugFile = false
+var showTrace = false
+
 // Executable path
 var current_directory, _ = os.Executable()
 var current_directory_splitted = strings.Split(current_directory, "/")
 var exec_name = current_directory_splitted[len(current_directory_splitted)-1]
 var exec_path = current_directory[:len(current_directory)-len(exec_name)]
-
-/* Prints in debug mode. */
-func PrintDebug(function, message string) {
-	if debug {
-		fmt.Printf("[%.6fs][%v][%v] %v\n", time.Since(start).Seconds(), GetGID(), function, message)
-		//[\033[1;34mDEBUG\033[0m]
-	}
-}
 
 /* incr the  global number of gouroutine lanched */
 func IncrGoRoutine(i int) {
@@ -113,7 +107,19 @@ func GetGID() uint64 {
 
 /* Getters */
 func GetDebug() bool {
-	return debug
+	return debugTerminal || debugFile
+}
+
+func GetDebugTerminal() bool {
+	return debugTerminal
+}
+
+func GetDebugFile() bool {
+	return debugFile
+}
+
+func GetShowTrace() bool {
+	return showTrace
 }
 
 func IsDestructive() bool {
@@ -205,8 +211,16 @@ func GetArithModule() bool {
 }
 
 /* Setters */
-func SetDebug(b bool) {
-	debug = b
+func SetDebugTerminal(b bool) {
+	debugTerminal = b
+}
+
+func SetDebugFile(b bool) {
+	debugFile = b
+}
+
+func SetShowTrace(b bool) {
+	showTrace = b
 }
 
 func SetStart(t time.Time) {

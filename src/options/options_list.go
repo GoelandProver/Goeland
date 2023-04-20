@@ -66,7 +66,7 @@ func initOptions() {
 		"debug",
 		false,
 		"Enables printing debug information",
-		func(val bool) { global.SetDebug(val) },
+		func(val bool) { global.SetDebugTerminal(val) },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"nd",
