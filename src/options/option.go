@@ -45,9 +45,9 @@ func (op *option[T]) init(name string, defaultValue T, usage string, funcNotDefa
 	case bool:
 		op.value = any(flag.Bool(name, any(defaultValue).(bool), usage)).(*T)
 	case int:
-		op.value = any(flag.Int(usage, any(defaultValue).(int), usage)).(*T)
+		op.value = any(flag.Int(name, any(defaultValue).(int), usage)).(*T)
 	case string:
-		op.value = any(flag.String(usage, any(defaultValue).(string), usage)).(*T)
+		op.value = any(flag.String(name, any(defaultValue).(string), usage)).(*T)
 	}
 }
 
