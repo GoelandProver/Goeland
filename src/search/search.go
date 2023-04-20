@@ -133,8 +133,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 
 			// Check if subst_for_father is failure
 			if subst_for_father.Equals(treetypes.Failure()) {
-				global.PrintDebug("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().ToString()))
-				fmt.Printf("[MCR] Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString())
+				global.PrintError("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().ToString()))
 			}
 
 			global.PrintDebug("MCR", fmt.Sprintf("Formula = : %v", f.ToString()))
@@ -265,7 +264,7 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 						st.DispatchForm(f.Copy())
 					}
 				} else {
-					fmt.Printf("[DMT] Error %v", err.Error())
+					global.PrintError("DMT", err.Error())
 				}
 			}
 		}

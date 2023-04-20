@@ -109,7 +109,8 @@ func chooseSubstitutionDestructive(subst_list []complextypes.SubstAndForm, mm []
 	return subst_found, subst_list
 }
 
-/**
+/*
+*
 * Select children
 * Wait for a children to answer and return substitutions
 *
@@ -123,11 +124,13 @@ func chooseSubstitutionDestructive(subst_list []complextypes.SubstAndForm, mm []
 *   	- 0 : closed by itself
 *		- 1 : substs list is for father
 *		- 2 : substs list is for children
-		- 3 : quit order from my father
-		- 4 : wait my father
-		- 5 : open from my children - tell te other to wait me
+  - 3 : quit order from my father
+  - 4 : wait my father
+  - 5 : open from my children - tell te other to wait me
+
 * 	[]complextypes.SubstAndForm : substitutions list
-**/
+*
+*/
 func selectChildren(father Communication, children *[]Communication, current_subst complextypes.SubstAndForm, child_order []int) (int, []complextypes.SubstAndForm, [][]proof.ProofStruct) {
 
 	proof_tab := make([][]proof.ProofStruct, len(child_order))
@@ -422,8 +425,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			// No need to append current_subst, because child return it anyway (if exists)
 			// Here, current subst is always empty
 			if !current_subst.IsEmpty() {
-				fmt.Printf("[ERROR] Current subst not empty but child returns nothing\n")
-				global.PrintDebug("ERROR", "Current subst not empty but child returns nothing")
+				global.PrintError("SRCH_DST", "Current subst not empty but child returns nothing")
 			}
 
 			// Proof

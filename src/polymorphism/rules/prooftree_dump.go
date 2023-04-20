@@ -43,6 +43,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/GoelandProver/Goeland/global"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -71,7 +72,7 @@ func (root *ProofTree) DumpJson() error {
 	}
 
 	_, err = f.WriteString(json)
-	fmt.Printf("Dumped type proof in %s\n", f.Name())
+	global.PrintInfo("DUMP", fmt.Sprintf("Dumped type proof in %s\n", f.Name()))
 	return err
 }
 
