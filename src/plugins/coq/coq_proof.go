@@ -481,16 +481,23 @@ func inOneButNotInOther(form1, form2 btps.Form) btps.TermList {
 	mapping := getSubtermsOf(form2, subterms)
 
 	// Returns a list of terms ordered properly
-	result := make(btps.TermList, len(varList))
-	for _, map_ := range mapping {
-		for i, var_ := range varList {
-			if var_.Equals(map_.var_) {
-				result[i] = map_.term
+
+	if len(mapping) > 0 {
+		result := make([]btps.Term, len(varList))
+
+		for _, map_ := range mapping {
+			for i, var_ := range varList {
+				if var_.Equals(map_.var_) {
+					result[i] = map_.term
+				}
 			}
 		}
+
+		return result
+	} else {
+		return []btps.Term{}
 	}
 
-	return result
 }
 
 func normalize(form1, form2 btps.Form) btps.Form {
