@@ -51,8 +51,9 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
+// Build the options, parses the flags, calls the 'funcAlways' functions on every option and if an option has been changed, calls the 'funcNotDefault' option on it.
 func RunOptions() {
-	initOptions()
+	buildOptions()
 	flag.Parse()
 
 	for _, op := range options {
@@ -68,7 +69,7 @@ func RunOptions() {
 *  funcNotDefault func(T): a function that will be run if the option has changed from its default value. The parameter will be the value of the option.
 *  funcAlways func(T): a function that will always be run. The parameter will be the value of the option.
 **/
-func initOptions() {
+func buildOptions() {
 	(&option[bool]{}).init(
 		"debug",
 		false,
