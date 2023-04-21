@@ -13,6 +13,8 @@ var (
 	logInfo    *log.Logger
 	logWarning *log.Logger
 	logError   *log.Logger
+	logPanic   *log.Logger
+	logFatal   *log.Logger
 )
 
 func InitLogger() {
@@ -56,6 +58,8 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
 	logInfo = log.New(wrt, "INF: ", logOptions)
 	logWarning = log.New(wrt, "WAR: ", logOptions)
 	logError = log.New(wrt, "ERR: ", logOptions)
+	logPanic = log.New(wrt, "FAT: ", logOptions)
+	logFatal = log.New(wrt, "PAN: ", logOptions)
 }
 
 func printToLogger(logger log.Logger, function, message string) {
@@ -82,4 +86,14 @@ func PrintWarning(function, message string) {
 
 func PrintError(function, message string) {
 	printToLogger(*logError, function, message)
+}
+
+func PrintPanic(function, message string) {
+	printToLogger(*logPanic, function, message)
+	panic(fmt.Sprintf("[%v] %v", function, message))
+}
+
+func PrintFatal(function, message string) {
+	printToLogger(*logFatal, function, message)
+	os.Exit(1)
 }
