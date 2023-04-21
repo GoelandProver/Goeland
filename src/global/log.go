@@ -17,6 +17,7 @@ var (
 	logFatal   *log.Logger
 )
 
+// Initialises the logger with the correct options
 func InitLogger() {
 	initLogger(GetLogFile(), GetDebugTerminal(), GetDebugFile(), GetShowTrace())
 }
@@ -70,29 +71,55 @@ func printToLogger(logger log.Logger, function, message string) {
 	}
 }
 
+// Prints the message into the terminal and/or the file as a debug message
+//
+// Use when you want to display a message for debugging purposes only.
+// The prefix for debug messages is 'DEB'.
+// Will only print in the terminal and/or the file if the corresponding options -debug and -dif have been set.
 func PrintDebug(function, message string) {
 	if logDebug != nil {
 		printToLogger(*logDebug, function, message)
 	}
 }
 
+// Prints the message into the terminal and the file as an information message
+//
+// Use when you want to display an important information.
+// The prefix for information messages is 'INF'.
 func PrintInfo(function, message string) {
 	printToLogger(*logInfo, function, message)
 }
 
+// Prints the message into the terminal and the file as a warning message
+//
+// Use when you want to warn that something is not happening as it should but is not very important.
+// The prefix for warning messages is 'WAR'.
 func PrintWarning(function, message string) {
 	printToLogger(*logWarning, function, message)
 }
 
+// Prints the message into the terminal and the file as an error message
+//
+// Use when you want to warn that something is not happening as it should and it is important and must be corrected.
+// The prefix for error messages is 'ERR'.
 func PrintError(function, message string) {
 	printToLogger(*logError, function, message)
 }
 
+// Prints the message into the terminal and the file as a panic message and calls panic()
+//
+// Use when something is not happening as it should and you want to call a panic.
+// The format of the panic message is '[function] message'.
+// The prefix for panic messages is 'PAN'.
 func PrintPanic(function, message string) {
 	printToLogger(*logPanic, function, message)
 	panic(fmt.Sprintf("[%v] %v", function, message))
 }
 
+// Prints the message into the terminal and the file as a fatal message and calls os.Exit(1)
+//
+// Use when something is not happening as it should and you want to stop the current program immediatly.
+// The prefix for fatal messages is 'FAT'.
 func PrintFatal(function, message string) {
 	printToLogger(*logFatal, function, message)
 	os.Exit(1)
