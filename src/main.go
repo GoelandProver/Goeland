@@ -42,7 +42,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"path"
 	"runtime"
@@ -81,11 +80,11 @@ func main() {
 	if *cpuprofile != "" {
 		f, err := os.Create(*cpuprofile)
 		if err != nil {
-			log.Fatal("could not create CPU profile: ", err)
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a CPU profile: %v", err))
 		}
 		defer f.Close() // error handling omitted for example
 		if err := pprof.StartCPUProfile(f); err != nil {
-			log.Fatal("could not start CPU profile: ", err)
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
 		}
 		defer pprof.StopCPUProfile()
 	}
@@ -109,8 +108,7 @@ func main() {
 
 	form, bound := StatementListToFormula(lstm, bound, path.Dir(problem))
 	if form == nil {
-		global.PrintError("MAIN", "Problem not found")
-		os.Exit(1)
+		global.PrintFatal("MAIN", "Problem not found")
 	}
 
 	// if bound != 0 {
@@ -134,12 +132,12 @@ func main() {
 	if *memprofile != "" {
 		f, err := os.Create(*memprofile)
 		if err != nil {
-			log.Fatal("could not create memory profile: ", err)
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a memory profile: %v", err))
 		}
 		defer f.Close() // error handling omitted for example
 		runtime.GC()    // get up-to-date statistics
 		if err := pprof.WriteHeapProfile(f); err != nil {
-			log.Fatal("could not write memory profile: ", err)
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not write the memory profile: %v", err))
 		}
 	}
 }

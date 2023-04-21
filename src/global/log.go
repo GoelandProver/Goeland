@@ -33,7 +33,7 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
 
 	if err != nil {
-		log.Fatalf("error opening file: %v", err)
+		log.Fatalf("Error opening log file: %v", err)
 	}
 
 	wrt := io.MultiWriter(os.Stdout, f)

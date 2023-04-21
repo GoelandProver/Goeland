@@ -254,8 +254,7 @@ func merge(ls []VarMaps, element VarMaps) []VarMaps {
 		if listEl.var_.Equals(element.var_) {
 			found = true
 			if !listEl.term.Equals(element.term) {
-				global.PrintError("Coq", "Error when instanciating a variable")
-				panic("Same var different terms")
+				global.PrintPanic("Coq", "Error when instanciating a variable: same var different terms")
 			}
 		}
 	}

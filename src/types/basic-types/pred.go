@@ -45,6 +45,7 @@ package basictypes
 import (
 	"strings"
 
+	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -86,7 +87,7 @@ func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 	// Defined infix: =
 	if p.GetID().GetName() == "=" {
 		if len(p.GetArgs()) != 2 {
-			panic("= should only have 2 arguments")
+			global.PrintPanic("Pred", "infix '=' should only have 2 arguments")
 		}
 		return "(" + p.GetArgs()[0].ToMappedString(map_, type_) + " = " + p.GetArgs()[1].ToMappedString(map_, type_) + ")"
 	}
