@@ -70,7 +70,7 @@ func InitLogger() {
 *  Will write the line where the logger was called only if the parameter showTrace is true
 **/
 func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
-	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
+	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 
 	if err != nil {
 		log.Fatalf("Error opening log file: %v", err)
