@@ -114,8 +114,8 @@ func buildOptions() {
 		"one_step",
 		false,
 		"Enables only one step of search",
-		func(bool) {},
-		func(bool) { global.SetOneStep(true) })
+		func(bool) { global.SetOneStep(true) },
+		func(bool) {})
 	(&option[bool]{}).init(
 		"exchanges",
 		false,
