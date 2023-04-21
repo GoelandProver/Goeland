@@ -103,11 +103,23 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
 }
 
 func printToLogger(logger log.Logger, function, message string) {
+	toParse := "[%.6fs]"
+	options := []any{time.Since(start).Seconds()}
+
 	if GetDebug() {
-		logger.Output(3, fmt.Sprintf("[%.6fs][%v][%v] %v\n", time.Since(start).Seconds(), GetGID(), function, message))
-	} else {
-		logger.Output(3, fmt.Sprintf("[%.6fs][%v] %v\n", time.Since(start).Seconds(), function, message))
+		toParse += "[%v]"
+		options = append(options, GetGID())
 	}
+
+	if !GetShowTrace() {
+		toParse += "[%v]"
+		options = append(options, function)
+	}
+
+	toParse += " %v\n"
+	options = append(options, message)
+
+	logger.Output(3, fmt.Sprintf(toParse, options...))
 }
 
 // Prints the message into the terminal and/or the file as a debug message
