@@ -42,6 +42,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"path"
 	"runtime"
@@ -250,7 +251,17 @@ func Search(f basictypes.Form, bound int) {
 			proof.WriteGraphProof(final_proof)
 			global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
 			if global.IsCoqOutput() {
-				fmt.Printf("%s", coq.MakeCoqOutput(final_proof, uninstantiated_meta))
+				coqOutput := coq.MakeCoqOutput(final_proof, uninstantiated_meta)
+
+				f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+				defer f.Close()
+
+				if err != nil {
+					log.Fatalf("Error opening problem_coq file: %v", err)
+				}
+				f.WriteString(coqOutput)
+
+				fmt.Printf("%s", coqOutput)
 			} else {
 				fmt.Printf("%v", proof.ProofStructListToText(final_proof))
 			}

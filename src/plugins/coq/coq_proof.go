@@ -62,6 +62,8 @@ import (
 // TODO:
 //	* print problem name in the theorem.
 
+var hypos map[string]int = make(map[string]int)
+
 func printTheorem(axioms btps.FormList, formula btps.Form) string {
 	result := ""
 
@@ -381,6 +383,7 @@ func introduce(form btps.Form, formulasIntroduced *ctps.IntAndFormList) int {
 	result := cpt_hypothesis
 	cpt_hypothesis++
 	mutex_hypothesis.Unlock()
+	hypos[fmt.Sprintf("H%v", result)] = 0
 	*formulasIntroduced = append(*formulasIntroduced, ctps.MakeIntAndForm(result, form))
 	return result
 }
@@ -393,11 +396,16 @@ func applyNTimes(command, start string, end int, vars []string) string {
 		if i == len(vars)-1 {
 			result += fmt.Sprintf(command, hypo, var_, fmt.Sprintf("%d", end))
 		} else {
-			nextHypo := fmt.Sprintf("%s_%d", start, i)
-			if nextHypo[0] != 'H' {
-				nextHypo = "H" + nextHypo
+			baseHypo := start
+			if baseHypo[0] != 'H' {
+				baseHypo = "H" + baseHypo
 			}
+
+			nextHypo := fmt.Sprintf("%s_%d", baseHypo, hypos[baseHypo])
+			hypos[baseHypo] = hypos[baseHypo] + 1
+
 			result += fmt.Sprintf(command, hypo, var_, nextHypo[1:]) + " "
+
 			hypo = nextHypo
 		}
 	}
