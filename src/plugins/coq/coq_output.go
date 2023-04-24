@@ -56,6 +56,7 @@ var axiomsRegistered btps.FormList
 var usedAxioms []int
 var cpt_hypothesis int
 var mutex_hypothesis sync.Mutex
+var hypos map[string]int = make(map[string]int)
 
 var contextEnabled bool = false
 

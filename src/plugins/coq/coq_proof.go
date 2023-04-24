@@ -62,8 +62,6 @@ import (
 // TODO:
 //	* print problem name in the theorem.
 
-var hypos map[string]int = make(map[string]int)
-
 func printTheorem(axioms btps.FormList, formula btps.Form) string {
 	result := ""
 
