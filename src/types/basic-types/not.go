@@ -78,6 +78,11 @@ func (n Not) RenameVariables() Form {
 	return MakeNot(n.GetIndex(), n.f.RenameVariables())
 }
 
+func (n Not) CleanFormula() Form {
+	n.f = n.f.CleanFormula()
+	return n
+}
+
 func (n Not) GetSubTerms() TermList {
 	return n.GetForm().GetSubTerms()
 }

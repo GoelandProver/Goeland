@@ -62,6 +62,7 @@ func (a And) ToString() string           { return a.ToMappedString(defaultMap, t
 func (a And) Copy() Form                 { return MakeAnd(a.GetIndex(), a.GetLF()) }
 func (a And) GetMetas() MetaList         { return metasUnion(a.GetLF()) }
 func (a And) RenameVariables() Form      { return MakeAnd(a.GetIndex(), renameFormList(a.GetLF())) }
+func (a And) CleanFormula() Form         { a.lf = a.lf.CleanFormList(); return a }
 
 func (a And) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + listToStringMeta(a.GetLF(), suffix, " "+defaultMap[AndConn]+" ", "") + ")"
@@ -106,6 +107,7 @@ func (o Or) ToString() string           { return o.ToMappedString(defaultMap, tr
 func (o Or) Copy() Form                 { return MakeOr(o.GetIndex(), o.GetLF()) }
 func (o Or) GetMetas() MetaList         { return metasUnion(o.GetLF()) }
 func (o Or) RenameVariables() Form      { return MakeOr(o.GetIndex(), renameFormList(o.GetLF())) }
+func (o Or) CleanFormula() Form         { o.lf = o.lf.CleanFormList(); return o }
 
 func (o Or) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + listToStringMeta(o.GetLF(), suffix, " "+defaultMap[OrConn]+" ", "") + ")"

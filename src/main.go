@@ -203,6 +203,10 @@ func PrintResult(res bool) {
 func Search(f basictypes.Form, bound int) {
 	global.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", f.ToString()))
 
+	f = f.CleanFormula()
+
+	//renameVariables formula.go
+
 	res := false
 	global.SetNbStep(1)
 	limit := bound

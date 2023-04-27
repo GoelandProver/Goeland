@@ -457,7 +457,7 @@ func instanciate(form, resultForm btps.Form, constantsCreated *btps.TermList) []
 	return result
 }
 
-/* Gets the term corresponding to the variables in the right order. */
+/* Gets the term corresponding to the variables. */
 func inOneButNotInOther(form1, form2 btps.Form) btps.TermList {
 	// Normalize
 	if not, isNot := form1.(btps.Not); isNot {
@@ -487,23 +487,17 @@ func inOneButNotInOther(form1, form2 btps.Form) btps.TermList {
 	mapping := getSubtermsOf(form2, subterms)
 
 	// Returns a list of terms ordered properly
+	result := []btps.Term{}
 
-	if len(mapping) > 0 {
-		result := make([]btps.Term, len(varList))
-
-		for _, map_ := range mapping {
-			for i, var_ := range varList {
-				if var_.Equals(map_.var_) {
-					result[i] = map_.term
-				}
+	for _, map_ := range mapping {
+		for _, var_ := range varList {
+			if var_.Equals(map_.var_) {
+				result = append(result, map_.term)
 			}
 		}
-
-		return result
-	} else {
-		return []btps.Term{}
 	}
 
+	return result
 }
 
 func normalize(form1, form2 btps.Form) btps.Form {

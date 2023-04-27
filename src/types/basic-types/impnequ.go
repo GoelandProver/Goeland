@@ -83,6 +83,12 @@ func (i Imp) ReplaceVarByTerm(old Var, new Term) Form {
 func (i Imp) RenameVariables() Form {
 	return MakeImp(i.GetIndex(), i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
 }
+func (i Imp) CleanFormula() Form {
+	i.f1 = i.f1.CleanFormula()
+	i.f2 = i.f2.CleanFormula()
+
+	return i
+}
 
 func (i Imp) GetSubTerms() TermList {
 	return i.GetF1().GetSubTerms().MergeTermList(i.GetF2().GetSubTerms())
@@ -126,6 +132,12 @@ func (e Equ) ReplaceVarByTerm(old Var, new Term) Form {
 
 func (e Equ) RenameVariables() Form {
 	return MakeEqu(e.GetIndex(), e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
+}
+func (e Equ) CleanFormula() Form {
+	e.f1 = e.f1.CleanFormula()
+	e.f2 = e.f2.CleanFormula()
+
+	return e
 }
 
 func (e Equ) GetSubTerms() TermList {

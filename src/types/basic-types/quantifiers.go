@@ -95,6 +95,13 @@ func (e Ex) RenameVariables() Form {
 	newVarList, newForm := renameVariable(e.GetForm(), e.GetVarList())
 	return MakeEx(e.GetIndex(), newVarList, newForm)
 }
+
+func (e Ex) CleanFormula() Form {
+	e.var_list, e.f = cleanQuantifiedFormula(&e)
+
+	return e
+}
+
 func (e Ex) GetSubTerms() TermList {
 	return e.GetForm().GetSubTerms()
 }
@@ -145,6 +152,11 @@ func (a All) ReplaceVarByTerm(old Var, new Term) Form {
 func (a All) RenameVariables() Form {
 	newVarList, newForm := renameVariable(a.GetForm(), a.GetVarList())
 	return MakeAll(a.GetIndex(), newVarList, newForm)
+}
+
+func (a All) CleanFormula() Form {
+	a.var_list, a.f = cleanQuantifiedFormula(&a)
+	return a
 }
 
 func (a All) GetSubTerms() TermList {
@@ -207,6 +219,31 @@ func (a AllType) RenameVariables() Form {
 	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
 }
 
+func (a AllType) CleanFormula() Form {
+	a.form = a.form.CleanFormula()
+
+	areSeen := make([]bool, len(a.tvList))
+
+	terms := a.GetVarList()
+
+	for i, v := range a.tvList {
+		for _, term := range terms {
+			if term.Equals(v) {
+				areSeen[i] = true
+			}
+		}
+	}
+
+	for i, seen := range areSeen {
+		if !seen {
+			a.tvList = append(a.tvList[:i], a.tvList[i+1:]...)
+			i--
+		}
+	}
+
+	return a
+}
+
 func (a AllType) GetSubTerms() TermList {
 	return a.GetForm().GetSubTerms()
 }
@@ -259,4 +296,36 @@ func toMappedString(quant string, map_ MapString, varList []Var, form Form, disp
 	}
 
 	return "(" + quant + " " + strings.Join(varStrings, " ") + map_[QuantVarSep] + " (" + form.ToMappedString(map_, displayTypes) + "))"
+}
+
+type QuantifiedForm interface {
+	GetForm() Form
+	GetSubTerms() TermList
+	GetVarList() []Var
+}
+
+func cleanQuantifiedFormula(qf QuantifiedForm) ([]Var, Form) {
+	f := qf.GetForm().CleanFormula()
+
+	varList := qf.GetVarList()
+	areSeen := make([]bool, len(varList))
+
+	terms := qf.GetSubTerms()
+
+	for i, v := range varList {
+		for _, term := range terms {
+			if term.Equals(v) {
+				areSeen[i] = true
+			}
+		}
+	}
+
+	for i, seen := range areSeen {
+		if !seen {
+			varList = append(varList[:i], varList[i+1:]...)
+			i--
+		}
+	}
+
+	return varList, f
 }

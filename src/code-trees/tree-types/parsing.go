@@ -53,6 +53,7 @@ func (t TermForm) ToStringWithSuffixMeta(string) string                         
 func (t TermForm) Copy() basictypes.Form                                                    { return makeTermForm(t.GetIndex(), t.GetTerm()) }
 func (t TermForm) GetType() typing.TypeScheme                                               { return typing.DefaultFunType(0) }
 func (t TermForm) RenameVariables() basictypes.Form                                         { return t }
+func (t TermForm) CleanFormula() basictypes.Form                                            { return t }
 func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) basictypes.Form                  { return t }
 func (t TermForm) ReplaceVarByTerm(old basictypes.Var, new basictypes.Term) basictypes.Form { return t }
 func (tf TermForm) GetIndex() int                                                           { return tf.index }

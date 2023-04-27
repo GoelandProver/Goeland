@@ -738,7 +738,7 @@ func create_pos_var_tab(tab_coef [][]*big.Rat, tab_nom_var []string) []string {
 	return pos_var_tab
 }
 
-//Remplace = par >= avec bool pour savoir si ce n'étais pas déja une inequation
+// Remplace = par >= avec bool pour savoir si ce n'étais pas déja une inequation
 func remplaceEgal(eq string) (string, bool) {
 	tab_ascii := []rune(eq)
 	for index, ascii := range tab_ascii {
@@ -750,7 +750,7 @@ func remplaceEgal(eq string) (string, bool) {
 	return eq, false
 }
 
-//Retourne le négatif d'une inéquation
+// Retourne le négatif d'une inéquation
 func negEq(eq string) string {
 	tab_ascii := []rune(eq)
 
@@ -790,7 +790,7 @@ func negEq(eq string) string {
 	return string(tab_ascii)
 }
 
-//Retourne les inequations correspondante au equation d'entré
+// Retourne les inequations correspondante au equation d'entré
 func getIneq(eq string) []string {
 	ineq, verif := remplaceEgal(eq)
 	if verif {
