@@ -78,6 +78,14 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
 
 	wrt := io.MultiWriter(os.Stdout, f)
 
+	f, err = os.OpenFile("/tmp/Goeland"+time.Now().Format("[2006-01-02 15:04:05]")+".log", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+
+	if err != nil {
+		log.Fatalf("Error opening log file: %v", err)
+	}
+
+	wrt = io.MultiWriter(wrt, f)
+
 	logOptions := 0
 	if showTrace {
 		logOptions = log.Lshortfile
