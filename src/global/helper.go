@@ -79,6 +79,8 @@ var logFile string
 var cpuProfile string
 var memProfile string
 
+var isConjectureFound = false
+
 // Executable path
 var current_directory, _ = os.Executable()
 var current_directory_splitted = strings.Split(current_directory, "/")
@@ -226,6 +228,10 @@ func GetMemProfile() string {
 	return memProfile
 }
 
+func IsConjectureFound() bool {
+	return isConjectureFound
+}
+
 /* Setters */
 func SetDebugTerminal(b bool) {
 	debugTerminal = b
@@ -323,4 +329,8 @@ func SetCpuProfile(s string) {
 
 func SetMemProfile(s string) {
 	memProfile = s
+}
+
+func SetConjecture(b bool) {
+	isConjectureFound = b
 }

@@ -65,138 +65,236 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-// Flags
-
-var conjecture_found bool
-
 func main() {
-	options.RunOptions()
-	global.InitLogger()
-	initialization()
-	// go tool pprof -http=localhost:8887 cpu.prof
-
-	if global.GetCpuProfile() != "" {
-		f, err := os.Create(global.GetCpuProfile())
-		if err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a CPU profile: %v", err))
-		}
-		defer f.Close() // error handling omitted for example
-		if err := pprof.StartCPUProfile(f); err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
-		}
-		defer pprof.StopCPUProfile()
-	}
-
 	args := os.Args
 	if len(args) < 2 {
 		fmt.Printf("%s [options] problem_file\n", os.Args[0])
 		return
 	}
 
-	problem := args[len(args)-1]
-	problem_name := path.Base(problem)
-	global.SetProblemName(problem_name)
+	initEverything()
 
+	doCPUProfile()
+	defer pprof.StopCPUProfile()
+
+	problem := args[len(args)-1]
+	global.SetProblemName(path.Base(problem))
 	global.PrintInfo("MAIN", fmt.Sprintf("Problem : %v", problem))
-	lstm, bound := parser.ParseTPTPFile(problem)
-	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(lstm)))
+
+	statements, bound := parser.ParseTPTPFile(problem)
+
+	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(statements)))
+
 	if global.GetLimit() != -1 {
 		bound = global.GetLimit()
 	}
 
-	form, bound := StatementListToFormula(lstm, bound, path.Dir(problem))
+	form, bound := StatementListToFormula(statements, bound, path.Dir(problem))
+
 	if form == nil {
 		global.PrintFatal("MAIN", "Problem not found")
 	}
 
-	// if bound != 0 {
-	// 	bound = 2
-	// }
+	form = checkForTypedProof(form)
 
-	// If global context is empty, it means that this is not a typed proof.
-	if !typing.EmptyGlobalContext() {
-		formula, err := polymorphism.WellFormedVerification(form, global.GetTypeProof())
-		if err != nil {
-			global.PrintPanic("MAIN", fmt.Sprintf("Typing error: %s\n", err.Error()))
-		}
-		global.PrintInfo("MAIN", "Well typed.")
-		form = formula
-	}
-
-	global.PrintDebug("MAIN", "Start search")
 	Search(form, bound)
 
-	if global.GetMemProfile() != "" {
-		f, err := os.Create(global.GetMemProfile())
+	doMemProfile()
+}
+
+/* Initializes the options, the loggers and some other global variables*/
+func initEverything() {
+	options.InitAndRunOptions()
+
+	global.InitLogger()
+
+	runtime.GOMAXPROCS(global.GetCoreLimit())
+
+	global.SetStart(time.Now())
+
+	typing.Init()
+
+	basictypes.Init()
+}
+
+func doCPUProfile() {
+	if global.GetCpuProfile() != "" {
+		file, err := os.Create(global.GetCpuProfile())
 		if err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a memory profile: %v", err))
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a CPU profile: %v", err))
 		}
-		defer f.Close() // error handling omitted for example
-		runtime.GC()    // get up-to-date statistics
-		if err := pprof.WriteHeapProfile(f); err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not write the memory profile: %v", err))
+		defer file.Close()
+
+		if err := pprof.StartCPUProfile(file); err != nil {
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
 		}
 	}
 }
 
-/* Manage return from search for destructive and non-destructive versions  */
-func ManageResult(c search.Communication) (bool, []proof.ProofStruct) {
-	res := false
-	final_proof := []proof.ProofStruct{}
-	if global.IsDestructive() {
-		result := <-c.GetResult()
+// ILL TODO this function should not have to call the parser. The parser should do it themselves.
+/* Transforms a list of statements into a formula and returns it with its new bound */
+func StatementListToFormula(statements []basictypes.Statement, old_bound int, problemDir string) (basictypes.Form, int) {
+	and_list := basictypes.MakeEmptyFormList()
+	var not_form basictypes.Form
+	bound := old_bound
 
-		global.PrintDebug("MAIN", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(result.GetProof())))
+	for _, statement := range statements {
+		switch statement.GetRole() {
+		case basictypes.Include:
+			file_name := statement.GetName()
 
-		final_proof = result.GetProof()
-		if result.GetNeedAnswer() {
-			c.GetQuit() <- true
-			global.PrintDebug("MAIN", "Close order sent")
-		} else {
-			global.PrintDebug("MAIN", "Close order not sent")
+			realname, err := getFile(file_name, problemDir)
+			global.PrintDebug("MAIN", fmt.Sprintf("File to parse : %s\n", realname))
+
+			if err != nil {
+				global.PrintError("MAIN", err.Error())
+				return nil, -1
+			}
+
+			new_lstm, bound_tmp := parser.ParseTPTPFile(realname)
+			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(problemDir, path.Dir(file_name)))
+
+			if new_form_list != nil {
+				bound = new_bound
+				and_list = append(and_list, new_form_list)
+			}
+
+		case basictypes.Axiom:
+			and_list = testFunc(and_list, statement)
+
+		case basictypes.Conjecture:
+			not_form = doConjectureStatement(statement)
+
+		case basictypes.Type:
+			doTypeStatement(statement)
 		}
-		res = result.GetClosed()
-	} else {
-		open := false
-		for !open && runtime.NumGoroutine() > 1 {
-			// TODO : kill all goroutines if open found
-			// Close channel -> broadcast
-			res := <-c.GetResult()
-			open = !res.GetClosed()
-			time.Sleep(1 * time.Millisecond)
-			global.PrintDebug("MAIN", fmt.Sprintf("open is : %v from %v", open, res.GetId()))
-			global.PrintInfo("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines()))
-		}
-
-		res = !open
-
 	}
-	return res, final_proof
+
+	switch {
+	case len(and_list) == 0 && not_form == nil:
+		return nil, bound
+	case len(and_list) == 0:
+		return basictypes.RefuteForm(not_form), bound
+	case not_form == nil:
+		return basictypes.MakerAnd(and_list), bound
+	default:
+		return basictypes.MakerAnd(append(flatten(and_list), basictypes.RefuteForm(not_form))), bound
+	}
 }
 
-/* Print the result of search algorithm */
-func PrintResult(res bool) {
-	global.PrintInfo("Res", fmt.Sprintf("%v goroutines created", global.GetNbGoroutines()))
-	global.PrintInfo("Res", "==== Result ====")
-	if res {
-		global.PrintInfo("Res", "% RES : VALID")
-		if conjecture_found {
-			global.PrintInfo("Res", fmt.Sprintf("%s SZS status Theorem for %v", "%", global.GetProblemName()))
+func testFunc(and_list basictypes.FormList, statement basictypes.Statement) basictypes.FormList {
+	new_form := statement.GetForm().RenameVariables()
+
+	if !global.IsLoaded("dmt") {
+		return append(and_list, new_form)
+	}
+
+	consumed := dmt.RegisterAxiom(new_form.Copy())
+	if !consumed {
+		return append(and_list, new_form)
+	}
+
+	return and_list
+}
+
+func doConjectureStatement(statement basictypes.Statement) basictypes.Form {
+	global.SetConjecture(true)
+	return statement.GetForm().RenameVariables()
+}
+
+func doTypeStatement(statement basictypes.Statement) {
+	typeScheme := statement.GetAtomTyping().Ts
+
+	if typeScheme == nil {
+		return
+	}
+
+	if typeScheme.Size() == 1 {
+		isNewType := typeScheme.ToString() == "$tType"
+		if isNewType {
+			typing.MkTypeHint(statement.GetAtomTyping().Literal.GetName())
 		} else {
-			global.PrintInfo("Res", fmt.Sprintf("%s SZS status Unsatisfiable for %v", "%", global.GetProblemName()))
+			isConstant := !global.Is[typing.QuantifiedType](typeScheme)
+			if isConstant {
+				typing.SaveConstant(statement.GetAtomTyping().Literal.GetName(), typeScheme.GetPrimitives()[0])
+			} else {
+				typing.SavePolymorphScheme(statement.GetAtomTyping().Literal.GetName(), typeScheme)
+			}
 		}
 	} else {
-		global.PrintInfo("Res", "% RES : NOT VALID")
-		if conjecture_found {
-			global.PrintInfo("Res", fmt.Sprintf("%s SZS status CounterSatisfiable for %v", "%", global.GetProblemName()))
-		} else {
-			global.PrintInfo("Res", fmt.Sprintf("%s SZS status Satisfiable for %v", "%", global.GetProblemName()))
+		switch typeScheme.(type) {
+		case typing.TypeArrow:
+			typing.SaveTypeScheme(statement.GetAtomTyping().Literal.GetName(), typing.GetInputType(typeScheme)[0], typing.GetOutType(typeScheme))
+		case typing.QuantifiedType:
+			typing.SavePolymorphScheme(statement.GetAtomTyping().Literal.GetName(), typeScheme)
 		}
 	}
+}
+
+func flatten(fl basictypes.FormList) basictypes.FormList {
+	result := basictypes.FormList{}
+
+	for _, form := range fl {
+		formAsAnd, isFormAnd := form.(basictypes.And)
+
+		if isFormAnd {
+			result = append(result, flatten(formAsAnd.GetLF())...)
+		} else {
+			result = append(result, form)
+		}
+	}
+
+	return result
+}
+
+func getFile(filename string, dir string) (string, error) {
+	// Check in Goéland's path
+	_, err := os.Stat(filename)
+	fileExists := err != nil && errors.Is(err, os.ErrNotExist)
+	if fileExists {
+		return filename, err
+	}
+
+	// Check in the dir's path
+	otherFilename := path.Join(dir, filename)
+	_, err = os.Stat(filename)
+	fileExists = err != nil && errors.Is(err, os.ErrNotExist)
+	if fileExists {
+		return otherFilename, err
+	}
+
+	// Check in the environment variable
+	directory := os.Getenv("TPTP")
+	otherFilename = path.Join(directory, filename)
+	_, err = os.Stat(filename)
+	fileExists = err != nil && errors.Is(err, os.ErrNotExist)
+	if fileExists {
+		return otherFilename, err
+	}
+
+	return "", fmt.Errorf("file %s not found", filename)
+}
+
+func checkForTypedProof(form basictypes.Form) basictypes.Form {
+	isTypedProof := !typing.EmptyGlobalContext()
+
+	if isTypedProof {
+		formula, err := polymorphism.WellFormedVerification(form, global.GetTypeProof())
+
+		if err != nil {
+			global.PrintPanic("MAIN", fmt.Sprintf("Typing error: %v", err))
+		} else {
+			global.PrintInfo("MAIN", "Well typed.")
+			return formula
+		}
+	}
+
+	return form
 }
 
 /* Begin the proof search */
 func Search(f basictypes.Form, bound int) {
+	global.PrintDebug("MAIN", "Start search")
 	global.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", f.ToString()))
 
 	f = f.CleanFormula()
@@ -271,138 +369,99 @@ func Search(f basictypes.Form, bound int) {
 		limit = 2 * limit
 		global.SetNbStep(global.GetNbStep() + 1)
 	}
-	PrintResult(res)
+	PrintSearchResult(res)
 }
 
-/* Transform a list of statement into a formula */
-func StatementListToFormula(lstm []basictypes.Statement, old_bound int, current_dir string) (basictypes.Form, int) {
-	and_list := basictypes.MakeEmptyFormList()
-	var not_form basictypes.Form
-	bound := old_bound
+/* Manage return from search for destructive and non-destructive versions  */
+func ManageResult(c search.Communication) (bool, []proof.ProofStruct) {
+	res := false
+	final_proof := []proof.ProofStruct{}
 
-	for _, s := range lstm {
-		switch s.GetRole() {
-		case basictypes.Include:
-			file_name := s.GetName()
-
-			realname, err := getFile(file_name, current_dir)
-			global.PrintDebug("MAIN", fmt.Sprintf("File to parse : %s\n", realname))
-
-			if err != nil {
-				global.PrintError("MAIN", err.Error())
-				return nil, -1
-				//os.Exit(1)
-			}
-
-			new_lstm, bound_tmp := parser.ParseTPTPFile(realname)
-			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(current_dir, path.Dir(file_name)))
-
-			if new_form_list != nil {
-				bound = new_bound
-				and_list = append(and_list, new_form_list)
-			}
-
-		case basictypes.Axiom:
-			new_form := s.GetForm().RenameVariables()
-			if !global.IsLoaded("dmt") {
-				and_list = append(and_list, new_form)
-			} else if consumed := dmt.RegisterAxiom(new_form.Copy()); !consumed {
-				and_list = append(and_list, new_form)
-			}
-
-		case basictypes.Conjecture:
-			conjecture_found = true
-			not_form = s.GetForm().RenameVariables()
-
-		case basictypes.Type:
-			typeScheme := s.GetAtomTyping().Ts
-
-			if typeScheme == nil {
-				continue
-			}
-
-			if typeScheme.Size() == 1 {
-				if typeScheme.ToString() == "$tType" {
-					// New type
-					typing.MkTypeHint(s.GetAtomTyping().Literal.GetName())
-				} else {
-					if global.Is[typing.QuantifiedType](typeScheme) {
-						typing.SavePolymorphScheme(s.GetAtomTyping().Literal.GetName(), typeScheme)
-					} else {
-						// Constant
-						typing.SaveConstant(s.GetAtomTyping().Literal.GetName(), typeScheme.GetPrimitives()[0])
-					}
-				}
-			} else {
-				// TypeArrow !
-				switch typeScheme.(type) {
-				case typing.TypeArrow:
-					typing.SaveTypeScheme(s.GetAtomTyping().Literal.GetName(), typing.GetInputType(typeScheme)[0], typing.GetOutType(typeScheme))
-				case typing.QuantifiedType:
-					typing.SavePolymorphScheme(s.GetAtomTyping().Literal.GetName(), typeScheme)
-				}
-			}
-		}
+	if global.IsDestructive() {
+		final_proof, res = manageDestructiveResult(c)
+	} else {
+		res = manageNotDestructiveResult(c)
 	}
-	switch {
-	case len(and_list) == 0 && not_form == nil:
-		//fmt.Printf("No data found.\n")
-		//os.Exit(1)
-		return nil, bound
-	case len(and_list) == 0:
-		return basictypes.RefuteForm(not_form), bound
-	case not_form == nil:
-		return basictypes.MakerAnd(and_list), bound
-	default:
-		return basictypes.MakerAnd(append(flatten(and_list), basictypes.RefuteForm(not_form))), bound
-	}
+
+	return res, final_proof
 }
 
-func flatten(fl basictypes.FormList) basictypes.FormList {
-	result := basictypes.FormList{}
-	for _, form := range fl {
-		if and, isAnd := form.(basictypes.And); isAnd {
-			result = append(result, flatten(and.GetLF())...)
+func manageDestructiveResult(c search.Communication) ([]proof.ProofStruct, bool) {
+	result := <-c.GetResult()
+
+	global.PrintDebug("MAIN", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(result.GetProof())))
+
+	if result.GetNeedAnswer() {
+		c.GetQuit() <- true
+		global.PrintDebug("MAIN", "Close order sent")
+	} else {
+		global.PrintDebug("MAIN", "Close order not sent")
+	}
+
+	return result.GetProof(), result.GetClosed()
+}
+
+func manageNotDestructiveResult(c search.Communication) bool {
+	open := false
+
+	for !open && runtime.NumGoroutine() > 1 {
+
+		// TODO : kill all goroutines if open found
+		// Close channel -> broadcast
+		res := <-c.GetResult()
+
+		open = !res.GetClosed()
+
+		time.Sleep(1 * time.Millisecond)
+
+		global.PrintDebug("MAIN", fmt.Sprintf("open is : %v from %v", open, res.GetId()))
+		global.PrintInfo("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines()))
+	}
+
+	return !open
+}
+
+func PrintSearchResult(res bool) {
+	global.PrintInfo("Res", fmt.Sprintf("%v goroutines created", global.GetNbGoroutines()))
+	global.PrintInfo("Res", "==== Result ====")
+
+	validity := ""
+	status := ""
+
+	if res {
+		validity = "VALID"
+
+		if global.IsConjectureFound() {
+			status = "Theorm"
 		} else {
-			result = append(result, form)
+			status = "Unsatisfiable"
+		}
+	} else {
+		validity = "NOT VALID"
+
+		if global.IsConjectureFound() {
+			status = "CounterSatisfiable"
+		} else {
+			status = "Satisfiable"
 		}
 	}
-	return result
+
+	global.PrintInfo("Res", fmt.Sprintf("%v RES : %v", "%", validity))
+	global.PrintInfo("Res", fmt.Sprintf("%s SZS status %v for %v", "%", status, global.GetProblemName()))
 }
 
-/* Initialize global variable, time, call plugins */
-func initialization() {
-	// NB core
-	runtime.GOMAXPROCS(global.GetCoreLimit())
+func doMemProfile() {
+	if global.GetMemProfile() != "" {
+		f, err := os.Create(global.GetMemProfile())
+		if err != nil {
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a memory profile: %v", err))
+		}
+		defer f.Close()
 
-	// Time
-	global.SetStart(time.Now())
-
-	// Search parameters
-	conjecture_found = false
-	// Init typing
-	typing.Init()
-
-	// Terms
-	basictypes.Init()
-}
-
-func getFile(filename string, dir string) (string, error) {
-	// 1 - From Goéland's path
-	if _, err := os.Stat(filename); !(err != nil && errors.Is(err, os.ErrNotExist)) {
-		return filename, err
+		//Calls the garbage collector to get up-to-date statistics
+		runtime.GC()
+		if err := pprof.WriteHeapProfile(f); err != nil {
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not write the memory profile: %v", err))
+		}
 	}
-
-	// 2 - from dir's path
-	if _, err := os.Stat(path.Join(dir, filename)); !(err != nil && errors.Is(err, os.ErrNotExist)) {
-		return path.Join(dir, filename), err
-	}
-
-	// 3 - Environment variable
-	directory := os.Getenv("TPTP")
-	if _, err := os.Stat(path.Join(directory, filename)); !(err != nil && errors.Is(err, os.ErrNotExist)) {
-		return path.Join(directory, filename), err
-	}
-
-	return "", fmt.Errorf("file %s not found", filename)
 }

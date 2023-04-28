@@ -52,7 +52,7 @@ import (
 )
 
 // Build the options, parses the flags, calls the 'funcAlways' functions on every option and if an option has been changed, calls the 'funcNotDefault' option on it.
-func RunOptions() {
+func InitAndRunOptions() {
 	buildOptions()
 	flag.Parse()
 
@@ -99,13 +99,13 @@ func buildOptions() {
 		"cpuprofile",
 		"",
 		"Writes the cpu profile to `file`",
-		func(string) {},
+		func(s string) { global.SetCpuProfile(s) },
 		func(string) {})
 	(&option[string]{}).init(
 		"memprofile",
 		"",
 		"Write the memory profile to `file`",
-		func(string) {},
+		func(s string) { global.SetMemProfile(s) },
 		func(string) {})
 
 	(&option[bool]{}).init(
