@@ -76,6 +76,9 @@ var debugFile = false
 var showTrace = false
 var logFile string
 
+var cpuProfile string
+var memProfile string
+
 // Executable path
 var current_directory, _ = os.Executable()
 var current_directory_splitted = strings.Split(current_directory, "/")
@@ -215,6 +218,14 @@ func GetArithModule() bool {
 	return arithModule
 }
 
+func GetCpuProfile() string {
+	return cpuProfile
+}
+
+func GetMemProfile() string {
+	return memProfile
+}
+
 /* Setters */
 func SetDebugTerminal(b bool) {
 	debugTerminal = b
@@ -304,4 +315,12 @@ func SetTypeProof(b bool) {
 
 func SetArithModule(b bool) {
 	arithModule = b
+}
+
+func SetCpuProfile(s string) {
+	cpuProfile = s
+}
+
+func SetMemProfile(s string) {
+	memProfile = s
 }

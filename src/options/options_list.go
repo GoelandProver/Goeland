@@ -95,6 +95,19 @@ func buildOptions() {
 		func(bool) { global.SetShowTrace(true) },
 		func(bool) {})
 
+	(&option[string]{}).init(
+		"cpuprofile",
+		"",
+		"Writes the cpu profile to `file`",
+		func(string) {},
+		func(string) {})
+	(&option[string]{}).init(
+		"memprofile",
+		"",
+		"Write the memory profile to `file`",
+		func(string) {},
+		func(string) {})
+
 	(&option[bool]{}).init(
 		"nd",
 		false,

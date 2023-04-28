@@ -40,7 +40,6 @@ package main
 
 import (
 	"errors"
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -67,8 +66,6 @@ import (
 )
 
 // Flags
-var cpuprofile = flag.String("cpuprofile", "", "Write cpu profile to `file`")
-var memprofile = flag.String("memprofile", "", "Write memory profile to `file`")
 
 var conjecture_found bool
 
@@ -78,8 +75,8 @@ func main() {
 	initialization()
 	// go tool pprof -http=localhost:8887 cpu.prof
 
-	if *cpuprofile != "" {
-		f, err := os.Create(*cpuprofile)
+	if global.GetCpuProfile() != "" {
+		f, err := os.Create(global.GetCpuProfile())
 		if err != nil {
 			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a CPU profile: %v", err))
 		}
@@ -129,8 +126,8 @@ func main() {
 	global.PrintDebug("MAIN", "Start search")
 	Search(form, bound)
 
-	if *memprofile != "" {
-		f, err := os.Create(*memprofile)
+	if global.GetMemProfile() != "" {
+		f, err := os.Create(global.GetMemProfile())
 		if err != nil {
 			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a memory profile: %v", err))
 		}
