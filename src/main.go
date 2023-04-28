@@ -120,8 +120,7 @@ func main() {
 	if !typing.EmptyGlobalContext() {
 		formula, err := polymorphism.WellFormedVerification(form, global.GetTypeProof())
 		if err != nil {
-			global.PrintError("MAIN", fmt.Sprintf("Typing error: %s\n", err.Error()))
-			return
+			global.PrintPanic("MAIN", fmt.Sprintf("Typing error: %s\n", err.Error()))
 		}
 		global.PrintInfo("MAIN", "Well typed.")
 		form = formula

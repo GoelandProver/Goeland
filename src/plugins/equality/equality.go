@@ -39,6 +39,8 @@
 package equality
 
 import (
+	"fmt"
+
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 
@@ -53,7 +55,7 @@ import (
 func InitPlugin() error {
 	lpo = makeLPO()
 
-	global.PrintInfo("EQ", "Equality loaded")
+	fmt.Println("Plugin Equality loaded")
 	// No error can be thrown in this plugin.
 	return nil
 }
