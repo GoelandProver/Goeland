@@ -71,7 +71,7 @@ var contextEnabled bool = false
 
 func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 	if len(proof) == 0 {
-		global.PrintWarning("Coq", "Nothing to output")
+		global.PrintError("Coq", "Nothing to output")
 		return ""
 	}
 

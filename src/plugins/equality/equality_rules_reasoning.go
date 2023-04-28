@@ -110,12 +110,10 @@ func manageEqualityReasoningProblem(ep EqualityProblem, sl []treetypes.Substitut
 				for _, subst_element := range s_subst {
 					merged_subst, same_key := treesearch.MergeSubstitutions(s.Copy(), subst_element.Copy())
 					if same_key {
-						global.PrintDebug("ERPWAS", "Error in EqualityReasoningList : same key appears in merge")
-						fmt.Printf("[ERPWAS] Error in EqualityReasoningList : same key appears in merge\n")
+						global.PrintError("ERPWAS", "Error in EqualityReasoningList : same key appears in merge")
 					}
 					if merged_subst.Equals(treetypes.Failure()) {
-						global.PrintDebug("ERPWAS", "Error in EqualityReasoningList : merge returns failure")
-						fmt.Printf("[ERPWAS] Error in EqualityReasoningList : merge returns failure\n")
+						global.PrintError("ERPWAS", "Error in EqualityReasoningList : merge returns failure")
 					} else {
 						found = true
 						res_substs = append(res_substs, merged_subst)

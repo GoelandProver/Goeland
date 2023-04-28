@@ -48,12 +48,11 @@ import (
 )
 
 var (
-	logDebug   *log.Logger
-	logInfo    *log.Logger
-	logWarning *log.Logger
-	logError   *log.Logger
-	logPanic   *log.Logger
-	logFatal   *log.Logger
+	logDebug *log.Logger
+	logInfo  *log.Logger
+	logError *log.Logger
+	logPanic *log.Logger
+	logFatal *log.Logger
 )
 
 // Initialises the logger with the correct options
@@ -104,10 +103,9 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
 	}
 
 	logInfo = log.New(wrt, "INF: ", logOptions)
-	logWarning = log.New(wrt, "WAR: ", logOptions)
 	logError = log.New(wrt, "ERR: ", logOptions)
-	logPanic = log.New(wrt, "FAT: ", logOptions)
-	logFatal = log.New(wrt, "PAN: ", logOptions)
+	logPanic = log.New(wrt, "PAN: ", logOptions)
+	logFatal = log.New(wrt, "FAT: ", logOptions)
 }
 
 func printToLogger(logger log.Logger, function, message string) {
@@ -147,14 +145,6 @@ func PrintDebug(function, message string) {
 // The prefix for information messages is 'INF'.
 func PrintInfo(function, message string) {
 	printToLogger(*logInfo, function, message)
-}
-
-// Prints the message into the terminal and the file as a warning message
-//
-// Use when you want to warn that something is not happening as it should but is not very important.
-// The prefix for warning messages is 'WAR'.
-func PrintWarning(function, message string) {
-	printToLogger(*logWarning, function, message)
 }
 
 // Prints the message into the terminal and the file as an error message

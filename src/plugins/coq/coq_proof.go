@@ -371,7 +371,7 @@ func get(form btps.Form, formulasIntroduced ctps.IntAndFormList) (string, int) {
 			return fmt.Sprintf("goeland_axiom_%d", ax.GetIndex()), -1
 		}
 	}
-	fmt.Printf("[%v] RETURN ERROR : %v \n", global.GetGID(), form.ToString())
+	global.PrintError("COQ", fmt.Sprintf("RETURN ERROR : %v", form.ToString()))
 	return "error", -1
 }
 

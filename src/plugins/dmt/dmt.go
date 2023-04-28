@@ -42,7 +42,6 @@ package dmt
 
 import (
 	"flag"
-	"fmt"
 	"strings"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
@@ -119,7 +118,7 @@ func parsePluginOptions() {
 	}
 
 	output += strings.Join(activatedOptions, " and ")
-	fmt.Print(output + "\n")
+	global.PrintInfo("DMT", output)
 }
 
 func GetRegisteredAxioms() btypes.FormList {

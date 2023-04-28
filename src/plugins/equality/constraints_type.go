@@ -79,7 +79,7 @@ func (c Constraint) toString() string {
 	case EQ:
 		return c.getTP().getT1().ToString() + " ≃ " + c.getTP().getT2().ToString()
 	default:
-		fmt.Printf("Constraint type unknown \n")
+		global.PrintError("CT", "Constraint type unknown")
 		return "Constraint type unknown"
 	}
 }
@@ -109,7 +109,7 @@ func (c *Constraint) checkLPO() (bool, bool) {
 		case EQ:
 			return cs.order == 0, true
 		default:
-			fmt.Printf("Constraint type not valid \n")
+			global.PrintError("CT", "Constraint type not valid")
 			return false, true
 		}
 	}

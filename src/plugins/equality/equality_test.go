@@ -262,9 +262,9 @@ func TestEQ1(t *testing.T) {
 
 	lf := basictypes.FormList{eq_fa_a, eq_ggx_x, neq_gggx_x}
 	tp, tn = initCodeTreesTests(lf)
-	fmt.Printf("##### TP #####\n")
+	global.PrintInfo("EQ", "##### TP #####")
 	tp.Print()
-	fmt.Printf("##### TN #####\n")
+	global.PrintInfo("EQ", "##### TN #####")
 	tn.Print()
 	res, subst := EqualityReasoning(tp, tn, lf)
 
