@@ -57,7 +57,7 @@ var (
 
 // Initialises the logger with the correct options
 func InitLogger() {
-	initLogger(GetLogFile(), GetDebugTerminal(), GetDebugFile(), GetShowTrace())
+	initLogger(GetLogFile(), GetDebugTerminal(), GetDebugFile(), GetShowTrace(), GetNotWriteLogs())
 }
 
 /**
@@ -68,22 +68,31 @@ func InitLogger() {
 *  Will write the debug logs in the terminal only if the parameter debugInTerminal is true
 *  Will write the line where the logger was called only if the parameter showTrace is true
 **/
-func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
-	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+func initLogger(fileName string, debugInTerminal, debugInFile, showTrace, notWriteLogs bool) {
 
-	if err != nil {
-		log.Fatalf("Error opening log file: %v", err)
+	var wrt io.Writer
+	var f *os.File
+
+	if !notWriteLogs {
+		fmt.Println("TESTTESTETETTST")
+		f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+
+		if err != nil {
+			log.Fatalf("Error opening log file: %v", err)
+		}
+
+		wrt = io.MultiWriter(os.Stdout, f)
+
+		f, err = os.OpenFile("/tmp/Goeland"+time.Now().Format("[2006-01-02 15:04:05]")+".log", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+
+		if err != nil {
+			log.Fatalf("Error opening log file: %v", err)
+		}
+
+		wrt = io.MultiWriter(wrt, f)
+	} else {
+		wrt = os.Stdout
 	}
-
-	wrt := io.MultiWriter(os.Stdout, f)
-
-	f, err = os.OpenFile("/tmp/Goeland"+time.Now().Format("[2006-01-02 15:04:05]")+".log", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-
-	if err != nil {
-		log.Fatalf("Error opening log file: %v", err)
-	}
-
-	wrt = io.MultiWriter(wrt, f)
 
 	logOptions := 0
 	if showTrace {
@@ -92,7 +101,7 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace bool) {
 
 	debPrefix := "DEB: "
 
-	if debugInFile {
+	if debugInFile && notWriteLogs {
 		if debugInTerminal {
 			logDebug = log.New(wrt, debPrefix, logOptions)
 		} else {

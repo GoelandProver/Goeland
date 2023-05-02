@@ -351,13 +351,15 @@ func Search(f basictypes.Form, bound int) {
 			if global.IsCoqOutput() {
 				coqOutput := coq.MakeCoqOutput(final_proof, uninstantiated_meta)
 
-				f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-				defer f.Close()
+				if !global.GetNotWriteLogs() {
+					f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+					defer f.Close()
 
-				if err != nil {
-					log.Fatalf("Error opening problem_coq file: %v", err)
+					if err != nil {
+						log.Fatalf("Error opening problem_coq file: %v", err)
+					}
+					f.WriteString(coqOutput)
 				}
-				f.WriteString(coqOutput)
 
 				fmt.Printf("%s", coqOutput)
 			} else {

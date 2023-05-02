@@ -75,6 +75,7 @@ var debugTerminal = false
 var debugFile = false
 var showTrace = false
 var logFile string
+var notWriteLogs = false
 
 var cpuProfile string
 var memProfile string
@@ -130,6 +131,10 @@ func GetShowTrace() bool {
 
 func GetLogFile() string {
 	return logFile
+}
+
+func GetNotWriteLogs() bool {
+	return notWriteLogs
 }
 
 func IsDestructive() bool {
@@ -247,6 +252,10 @@ func SetShowTrace(b bool) {
 
 func SetLogFile(s string) {
 	logFile = s
+}
+
+func SetNotWriteLogs(b bool) {
+	notWriteLogs = b
 }
 
 func SetStart(t time.Time) {
