@@ -160,7 +160,7 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 			}
 
 		case basictypes.Axiom:
-			and_list = testFunc(and_list, statement)
+			and_list = doAxiomStatement(and_list, statement)
 
 		case basictypes.Conjecture:
 			not_form = doConjectureStatement(statement)
@@ -182,7 +182,7 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 	}
 }
 
-func testFunc(and_list basictypes.FormList, statement basictypes.Statement) basictypes.FormList {
+func doAxiomStatement(and_list basictypes.FormList, statement basictypes.Statement) basictypes.FormList {
 	new_form := statement.GetForm().RenameVariables()
 
 	if !global.IsLoaded("dmt") {
@@ -293,85 +293,100 @@ func checkForTypedProof(form basictypes.Form) basictypes.Form {
 }
 
 /* Begin the proof search */
-func Search(f basictypes.Form, bound int) {
+func Search(formula basictypes.Form, bound int) {
 	global.PrintDebug("MAIN", "Start search")
-	global.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", f.ToString()))
+	global.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", formula.ToString()))
 
-	f = f.CleanFormula()
-
-	//renameVariables formula.go
+	formula = formula.CleanFormula()
+	global.PrintDebug("MAIN", fmt.Sprintf("Cleaned formula: %v", formula.ToString()))
 
 	res := false
 	global.SetNbStep(1)
 	limit := bound
 
 	for ok := true; ok; ok = (!res && bound > 0 && !global.IsOneStep()) {
-		basictypes.ResetMeta()
-		proof.ResetProofFile()
-		exchanges.ResetExchangesFile()
-
-		global.PrintInfo("MAIN", fmt.Sprintf("nb_step : %v - limit : %v", global.GetNbStep(), limit))
-
-		tp := new(treesearch.Node)
-		tn := new(treesearch.Node)
-		// tp := new(datastruct.FormListDS)
-		// tn := new(datastruct.FormListDS)
-
-		st := complextypes.MakeState(limit, tp, tn, f)
-		st.SetCurrentProofNodeId(0)
-
-		global.PrintInfo("MAIN", fmt.Sprintf("Launch Gotab with destructive = %v", global.IsDestructive()))
-
-		global.SetNbGoroutines(0)
-		st.SetLF(basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(f, basictypes.MakeEmptyTermList())))
-		c := search.MakeCommunication(make(chan bool), make(chan search.Result))
-		// TODO : global quit channel in non destrutive
-
-		if global.GetExchanges() {
-			exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
-		}
-
-		node_id := global.IncrCptNode()
-		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{})
-		global.IncrGoRoutine(1)
-
-		global.PrintDebug("MAIN", "GO")
-
-		var final_proof []proof.ProofStruct
-		var uninstantiated_meta basictypes.MetaList
-		res, final_proof = ManageResult(c)
-		uninstantiated_meta = proof.RetrieveUninstantiatedMetaFromProof(final_proof)
-
-		global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
-		global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
-
-		if global.GetProof() && res {
-			proof.WriteGraphProof(final_proof)
-			global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
-			if global.IsCoqOutput() {
-				coqOutput := coq.MakeCoqOutput(final_proof, uninstantiated_meta)
-
-				if !global.GetNotWriteLogs() {
-					f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-					defer f.Close()
-
-					if err != nil {
-						log.Fatalf("Error opening problem_coq file: %v", err)
-					}
-					f.WriteString(coqOutput)
-				}
-
-				fmt.Printf("%s", coqOutput)
-			} else {
-				fmt.Printf("%v", proof.ProofStructListToText(final_proof))
-			}
-			global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output end Proof for %v", "%", global.GetProblemName()))
-		}
-
-		limit = 2 * limit
-		global.SetNbStep(global.GetNbStep() + 1)
+		res, limit = doOneStep(limit, formula)
 	}
+
 	PrintSearchResult(res)
+}
+
+func doOneStep(limit int, formula basictypes.Form) (bool, int) {
+	basictypes.ResetMeta()
+	proof.ResetProofFile()
+	exchanges.ResetExchangesFile()
+
+	global.PrintInfo("MAIN", fmt.Sprintf("nb_step : %v - limit : %v", global.GetNbStep(), limit))
+
+	tp := new(treesearch.Node)
+	tn := new(treesearch.Node)
+	// tp := new(datastruct.FormListDS)
+	// tn := new(datastruct.FormListDS)
+
+	st := complextypes.MakeState(limit, tp, tn, formula)
+	st.SetCurrentProofNodeId(0)
+
+	global.PrintInfo("MAIN", fmt.Sprintf("Launch Gotab with destructive = %v", global.IsDestructive()))
+
+	global.SetNbGoroutines(0)
+	st.SetLF(basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(formula, basictypes.MakeEmptyTermList())))
+	c := search.MakeCommunication(make(chan bool), make(chan search.Result))
+	// TODO : global quit channel in non destrutive
+
+	if global.GetExchanges() {
+		exchanges.WriteExchanges(global.GetGID(), st, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
+	}
+
+	node_id := global.IncrCptNode()
+	go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{})
+	global.IncrGoRoutine(1)
+
+	global.PrintDebug("MAIN", "GO")
+
+	res, final_proof := ManageResult(c)
+	uninstantiated_meta := proof.RetrieveUninstantiatedMetaFromProof(final_proof)
+
+	global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
+	global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
+
+	if res {
+		printProof(res, final_proof, uninstantiated_meta)
+	}
+
+	global.SetNbStep(global.GetNbStep() + 1)
+	return res, 2 * limit
+}
+
+func printProof(res bool, final_proof []proof.ProofStruct, uninstantiated_meta basictypes.MetaList) {
+	if global.GetProof() {
+		proof.WriteGraphProof(final_proof)
+
+		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
+
+		if global.IsCoqOutput() {
+			printCoqOutput(final_proof, uninstantiated_meta)
+		} else {
+			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
+		}
+
+		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output end Proof for %v", "%", global.GetProblemName()))
+	}
+}
+
+func printCoqOutput(final_proof []proof.ProofStruct, uninstantiated_meta basictypes.MetaList) {
+	coqOutput := coq.MakeCoqOutput(final_proof, uninstantiated_meta)
+
+	if !global.GetNotWriteLogs() {
+		f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+		defer f.Close()
+
+		if err != nil {
+			log.Fatalf("Error opening problem_coq file: %v", err)
+		}
+		f.WriteString(coqOutput)
+	}
+
+	fmt.Printf("%s", coqOutput)
 }
 
 /* Manage return from search for destructive and non-destructive versions  */
