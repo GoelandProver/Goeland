@@ -308,9 +308,16 @@ func cleanQuantifiedFormula(qf QuantifiedForm) ([]Var, Form) {
 	f := qf.GetForm().CleanFormula()
 
 	varList := qf.GetVarList()
-	areSeen := make([]bool, len(varList))
-
 	terms := qf.GetSubTerms()
+
+	areSeen := checkSeenVars(varList, terms)
+	newList := getSeenVars(areSeen, varList)
+
+	return newList, f
+}
+
+func checkSeenVars(varList []Var, terms TermList) []bool {
+	areSeen := make([]bool, len(varList))
 
 	for i, v := range varList {
 		for _, term := range terms {
@@ -319,13 +326,16 @@ func cleanQuantifiedFormula(qf QuantifiedForm) ([]Var, Form) {
 			}
 		}
 	}
+	return areSeen
+}
+
+func getSeenVars(areSeen []bool, varList []Var) []Var {
+	newList := []Var{}
 
 	for i, seen := range areSeen {
-		if !seen {
-			varList = append(varList[:i], varList[i+1:]...)
-			i--
+		if seen {
+			newList = append(newList, varList[i])
 		}
 	}
-
-	return varList, f
+	return newList
 }

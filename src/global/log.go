@@ -74,7 +74,6 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace, notWri
 	var f *os.File
 
 	if !notWriteLogs {
-		fmt.Println("TESTTESTETETTST")
 		f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 
 		if err != nil {
