@@ -110,10 +110,23 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace, notWri
 		logDebug = log.New(os.Stdout, debPrefix, logOptions)
 	}
 
+	setDebugFunction()
+
 	logInfo = log.New(wrt, "INF: ", logOptions)
 	logError = log.New(wrt, "ERR: ", logOptions)
 	logPanic = log.New(wrt, "PAN: ", logOptions)
 	logFatal = log.New(wrt, "FAT: ", logOptions)
+}
+
+/* Sets the function to be called when PrintDebug is called. This way, we avoid an if test when not in debug mode. */
+func setDebugFunction() {
+	if GetDebug() {
+		PrintDebug = func(function, message string) {
+			printToLogger(*logDebug, function, message)
+		}
+	} else {
+		PrintDebug = func(function, message string) {}
+	}
 }
 
 func printToLogger(logger log.Logger, function, message string) {
@@ -141,11 +154,7 @@ func printToLogger(logger log.Logger, function, message string) {
 // Use when you want to display a message for debugging purposes only.
 // The prefix for debug messages is 'DEB'.
 // Will only print in the terminal and/or the file if the corresponding options -debug and -dif have been set.
-func PrintDebug(function, message string) {
-	if logDebug != nil {
-		printToLogger(*logDebug, function, message)
-	}
-}
+var PrintDebug func(function, message string)
 
 // Prints the message into the terminal and the file as an information message
 //
