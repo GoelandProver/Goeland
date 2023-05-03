@@ -68,7 +68,7 @@ func (a And) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + listToStringMeta(a.GetLF(), suffix, " "+defaultMap[AndConn]+" ", "") + ")"
 }
 
-func (a And) Equals(f Form) bool {
+func (a And) Equals(f any) bool {
 	oth, isAnd := f.(And)
 	return isAnd && oth.GetLF().Equals(a.GetLF())
 }
@@ -113,7 +113,7 @@ func (o Or) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + listToStringMeta(o.GetLF(), suffix, " "+defaultMap[OrConn]+" ", "") + ")"
 }
 
-func (o Or) Equals(f Form) bool {
+func (o Or) Equals(f any) bool {
 	oth, isOr := f.(Or)
 	return isOr && oth.GetLF().Equals(o.GetLF())
 }

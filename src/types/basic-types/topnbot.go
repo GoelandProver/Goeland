@@ -57,7 +57,7 @@ func (t Top) GetType() typing.TypeScheme                   { return typing.Defau
 func (t Top) ToString() string                             { return t.ToMappedString(defaultMap, true) }
 func (t Top) ToStringWithSuffixMeta(string) string         { return t.ToString() }
 func (t Top) Copy() Form                                   { return MakeTop(t.GetIndex()) }
-func (Top) Equals(f Form) bool                             { _, isTop := f.(Top); return isTop }
+func (Top) Equals(f any) bool                              { _, isTop := f.(Top); return isTop }
 func (Top) GetMetas() MetaList                             { return MakeEmptyMetaList() }
 func (t Top) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeTop(t.GetIndex()) }
 func (t Top) ReplaceVarByTerm(old Var, new Term) Form      { return MakeTop(t.GetIndex()) }
@@ -79,7 +79,7 @@ func (b Bot) GetType() typing.TypeScheme                   { return typing.Defau
 func (b Bot) ToString() string                             { return b.ToMappedString(defaultMap, true) }
 func (b Bot) ToStringWithSuffixMeta(string) string         { return b.ToString() }
 func (b Bot) Copy() Form                                   { return MakeBot(b.GetIndex()) }
-func (Bot) Equals(f Form) bool                             { _, isBot := f.(Bot); return isBot }
+func (Bot) Equals(f any) bool                              { _, isBot := f.(Bot); return isBot }
 func (Bot) GetMetas() MetaList                             { return MakeEmptyMetaList() }
 func (b Bot) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeBot(b.GetIndex()) }
 func (b Bot) ReplaceVarByTerm(old Var, new Term) Form      { return MakeBot(b.GetIndex()) }

@@ -113,7 +113,7 @@ func (p Pred) Copy() Form {
 	return MakePred(p.GetIndex(), p.GetID(), p.GetArgs(), typing.CopyTypeAppList(p.GetTypeVars()), p.GetType())
 }
 
-func (p Pred) Equals(f Form) bool {
+func (p Pred) Equals(f any) bool {
 	oth, isPred := f.(Pred)
 	return isPred &&
 		oth.GetID().Equals(p.GetID()) &&

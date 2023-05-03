@@ -76,7 +76,7 @@ func (e Ex) Copy() Form {
 	return MakeEx(e.GetIndex(), copyVarList(e.GetVarList()), e.GetForm())
 }
 
-func (e Ex) Equals(f Form) bool {
+func (e Ex) Equals(f any) bool {
 	oth, isEx := f.(Ex)
 	return isEx &&
 		AreEqualsVarList(e.GetVarList(), oth.GetVarList()) &&
@@ -134,7 +134,7 @@ func (a All) Copy() Form {
 	return MakeAll(a.GetIndex(), copyVarList(a.GetVarList()), a.GetForm())
 }
 
-func (a All) Equals(f Form) bool {
+func (a All) Equals(f any) bool {
 	oth, isAll := f.(All)
 	return isAll &&
 		AreEqualsVarList(a.GetVarList(), oth.GetVarList()) &&
@@ -200,7 +200,7 @@ func (a AllType) Copy() Form {
 	}
 }
 
-func (a AllType) Equals(f Form) bool {
+func (a AllType) Equals(f any) bool {
 	oth, isAll := f.(AllType)
 	return isAll &&
 		AreEqualsTypeVarList(a.GetVarList(), oth.GetVarList()) &&

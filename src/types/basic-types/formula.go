@@ -49,29 +49,32 @@ import (
 
 /* Formula  */
 type Form interface {
+	Stringable
+	Comparable
+	Copyable[Form]
+
 	GetIndex() int
-	ToString() string
-	ToMappedString(MapString, bool) string
-	ToStringWithSuffixMeta(string) string
-	Copy() Form
-	Equals(Form) bool
 	GetMetas() MetaList
 	GetType() typing.TypeScheme
+	GetSubTerms() TermList
+
+	ToMappedString(MapString, bool) string
+	ToStringWithSuffixMeta(string) string
+
 	ReplaceTypeByMeta([]typing.TypeVar, int) Form
 	ReplaceVarByTerm(old Var, new Term) Form
 	RenameVariables() Form
-	GetSubTerms() TermList
 	CleanFormula() Form
 }
 
 /*** Functions ***/
 
 /* Makers */
-func MakePred(i int, p Id, tl TermList, tv []typing.TypeApp, ts ...typing.TypeScheme) Pred {
+func MakePred(index int, id Id, terms TermList, tv []typing.TypeApp, ts ...typing.TypeScheme) Pred {
 	if len(ts) == 1 {
-		return Pred{i, p, tl, tv, ts[0]}
+		return Pred{index, id, terms, tv, ts[0]}
 	} else {
-		return Pred{i, p, tl, tv, typing.DefaultPropType(len(tl))}
+		return Pred{index, id, terms, tv, typing.DefaultPropType(len(terms))}
 	}
 }
 func MakerPred(p Id, tl TermList, tv []typing.TypeApp, ts ...typing.TypeScheme) Pred {

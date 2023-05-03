@@ -66,7 +66,7 @@ func (i Imp) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + i.GetF1().ToStringWithSuffixMeta(suffix) + " " + defaultMap[ImpConn] + " " + i.GetF2().ToStringWithSuffixMeta(suffix) + ")"
 }
 
-func (i Imp) Equals(f Form) bool {
+func (i Imp) Equals(f any) bool {
 	oth, isImp := f.(Imp)
 	return isImp &&
 		i.GetF1().Equals(oth.GetF1()) && i.GetF2().Equals(oth.GetF2())
@@ -116,7 +116,7 @@ func (e Equ) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + e.GetF1().ToStringWithSuffixMeta(suffix) + " " + defaultMap[EquConn] + " " + e.GetF2().ToStringWithSuffixMeta(suffix) + ")"
 }
 
-func (e Equ) Equals(f Form) bool {
+func (e Equ) Equals(f any) bool {
 	oth, isEqu := f.(Equ)
 	return isEqu &&
 		e.GetF1().Equals(oth.GetF1()) && e.GetF2().Equals(oth.GetF2())
