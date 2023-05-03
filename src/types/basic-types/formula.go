@@ -70,20 +70,22 @@ type Form interface {
 /*** Functions ***/
 
 /* Makers */
-func MakePred(index int, id Id, terms TermList, tv []typing.TypeApp, ts ...typing.TypeScheme) Pred {
-	if len(ts) == 1 {
-		return Pred{index, id, terms, tv, ts[0]}
+func MakePred(index int, id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
+	if len(typeSchemes) == 1 {
+		return Pred{index, id, terms, typeApps, typeSchemes[0]}
 	} else {
-		return Pred{index, id, terms, tv, typing.DefaultPropType(len(terms))}
+		return Pred{index, id, terms, typeApps, typing.DefaultPropType(len(terms))}
 	}
 }
-func MakerPred(p Id, tl TermList, tv []typing.TypeApp, ts ...typing.TypeScheme) Pred {
-	return MakePred(MakerIndexFormula(), p, tl, tv, ts...)
+
+func MakerPred(id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
+	return MakePred(MakerIndexFormula(), id, terms, typeApps, typeSchemes...)
 }
 
 func MakeTop(i int) Top {
 	return Top{i}
 }
+
 func MakerTop() Top {
 	return MakeTop(MakerIndexFormula())
 }
@@ -91,85 +93,98 @@ func MakerTop() Top {
 func MakeBot(i int) Bot {
 	return Bot{i}
 }
+
 func MakerBot() Bot {
 	return MakeBot(MakerIndexFormula())
 }
 
-func MakeNot(i int, f Form) Not {
-	return Not{i, f}
-}
-func MakerNot(f Form) Not {
-	return MakeNot(MakerIndexFormula(), f)
+func MakeNot(i int, form Form) Not {
+	return Not{i, form}
 }
 
-func MakeAnd(i int, fl FormList) And {
-	return And{i, fl}
+func MakerNot(form Form) Not {
+	return MakeNot(MakerIndexFormula(), form)
 }
+
+func MakeAnd(i int, forms FormList) And {
+	return And{i, forms}
+}
+
 func MakerAnd(fl FormList) And {
 	return MakeAnd(MakerIndexFormula(), fl)
 }
 
-func MakeOr(i int, fl FormList) Or {
-	return Or{i, fl}
-}
-func MakerOr(fl FormList) Or {
-	return MakeOr(MakerIndexFormula(), fl)
+func MakeOr(i int, forms FormList) Or {
+	return Or{i, forms}
 }
 
-func MakeImp(i int, f1, f2 Form) Imp {
-	return Imp{i, f1, f2}
-}
-func MakerImp(f1, f2 Form) Imp {
-	return MakeImp(MakerIndexFormula(), f1, f2)
+func MakerOr(forms FormList) Or {
+	return MakeOr(MakerIndexFormula(), forms)
 }
 
-func MakeEqu(i int, f1, f2 Form) Equ {
-	return Equ{i, f1, f2}
-}
-func MakerEqu(f1, f2 Form) Equ {
-	return MakeEqu(MakerIndexFormula(), f1, f2)
+func MakeImp(i int, firstForm, secondForm Form) Imp {
+	return Imp{i, firstForm, secondForm}
 }
 
-func MakeEx(i int, vl []Var, f Form) Ex {
-	return Ex{i, vl, f}
-}
-func MakerEx(vl []Var, f Form) Ex {
-	return MakeEx(MakerIndexFormula(), vl, f)
+func MakerImp(firstForm, secondForm Form) Imp {
+	return MakeImp(MakerIndexFormula(), firstForm, secondForm)
 }
 
-func MakeAll(i int, vl []Var, f Form) All {
-	return All{i, vl, f}
-}
-func MakerAll(vl []Var, f Form) All {
-	return MakeAll(MakerIndexFormula(), vl, f)
+func MakeEqu(i int, firstForm, secondForm Form) Equ {
+	return Equ{i, firstForm, secondForm}
 }
 
-func MakeAllType(i int, vl []typing.TypeVar, f Form) AllType { return AllType{i, vl, f} }
-func MakerAllType(vl []typing.TypeVar, f Form) AllType       { return AllType{MakerIndexFormula(), vl, f} }
+func MakerEqu(firstForm, secondForm Form) Equ {
+	return MakeEqu(MakerIndexFormula(), firstForm, secondForm)
+}
+
+func MakeEx(i int, vars []Var, form Form) Ex {
+	return Ex{i, vars, form}
+}
+
+func MakerEx(vars []Var, form Form) Ex {
+	return MakeEx(MakerIndexFormula(), vars, form)
+}
+
+func MakeAll(i int, vars []Var, forms Form) All {
+	return All{i, vars, forms}
+}
+
+func MakerAll(vars []Var, forms Form) All {
+	return MakeAll(MakerIndexFormula(), vars, forms)
+}
+
+func MakeAllType(i int, typeVars []typing.TypeVar, form Form) AllType {
+	return AllType{i, typeVars, form}
+}
+
+func MakerAllType(typeVars []typing.TypeVar, form Form) AllType {
+	return AllType{MakerIndexFormula(), typeVars, form}
+}
 
 /* Transform a formula into its negation */
-func RefuteForm(f Form) Form {
-	return MakerNot(f)
+func RefuteForm(form Form) Form {
+	return MakerNot(form)
 }
 
 /* Remove all the negations */
-func RemoveNeg(f Form) Form {
-	switch ft := f.(type) {
+func RemoveNeg(form Form) Form {
+	switch ft := form.(type) {
 	case Not:
 		return RemoveNeg(ft.GetForm())
 	default:
-		return f.Copy()
+		return form.Copy()
 	}
 }
 
 /* Simplify a neg neg eng formual (for DMT) */
-func SimplifyNeg(f Form) Form {
-	return simplifyNeg(f, true)
+func SimplifyNeg(form Form) Form {
+	return simplifyNeg(form, true)
 }
 
-func simplifyNeg(f Form, isEven bool) Form {
+func simplifyNeg(form Form, isEven bool) Form {
 	// Already under a not
-	if ft, isNot := f.(Not); isNot {
+	if ft, isNot := form.(Not); isNot {
 		if !isEven {
 			return simplifyNeg(ft.GetForm(), true)
 		} else {
@@ -177,26 +192,26 @@ func simplifyNeg(f Form, isEven bool) Form {
 		}
 	} else {
 		if isEven {
-			return f.Copy()
+			return form.Copy()
 		} else {
-			return RefuteForm(f.Copy())
+			return RefuteForm(form.Copy())
 		}
 	}
 }
 
 /* Replace a Var by a term inside a function */
-func replaceVarInTermList(original_list TermList, old_symbol Var, new_symbol Term) TermList {
-	new_list := make(TermList, len(original_list))
-	for i, val := range original_list {
+func replaceVarInTermList(terms TermList, originalVar Var, replacementTerm Term) TermList {
+	new_list := make(TermList, len(terms))
+	for i, val := range terms {
 		switch nf := val.(type) {
 		case Var:
-			if old_symbol.GetIndex() == nf.GetIndex() {
-				new_list[i] = new_symbol
+			if originalVar.GetIndex() == nf.GetIndex() {
+				new_list[i] = replacementTerm
 			} else {
 				new_list[i] = val
 			}
 		case Fun:
-			new_list[i] = MakerFun(nf.GetP(), replaceVarInTermList(nf.GetArgs(), old_symbol, new_symbol), nf.GetTypeVars(), nf.GetTypeHint())
+			new_list[i] = MakerFun(nf.GetP(), replaceVarInTermList(nf.GetArgs(), originalVar, replacementTerm), nf.GetTypeVars(), nf.GetTypeHint())
 		default:
 			new_list[i] = val
 		}
@@ -205,11 +220,11 @@ func replaceVarInTermList(original_list TermList, old_symbol Var, new_symbol Ter
 }
 
 /* replace a var by another in a var list */
-func replaceVarInVarList(vl []Var, v1, v2 Var) []Var {
+func replaceVarInVarList(vars []Var, originalVar, replacementVar Var) []Var {
 	res := []Var{}
-	for _, v := range vl {
-		if v.GetIndex() == v1.GetIndex() {
-			res = append(res, v2)
+	for _, v := range vars {
+		if v.GetIndex() == originalVar.GetIndex() {
+			res = append(res, replacementVar)
 		} else {
 			res = append(res, v)
 		}
@@ -237,13 +252,13 @@ func listToStringMeta[T FormOrTerm](fot []T, suffix, sep, emptyValue string) str
 	return strings.Join(strArr, sep)
 }
 
-func instanciateTypeAppList(appList []typing.TypeApp, varList []typing.TypeVar, index int) []typing.TypeApp {
+func instanciateTypeAppList(typeApps []typing.TypeApp, vars []typing.TypeVar, index int) []typing.TypeApp {
 	// For each typeVar € nf.GetTypeVars(), if typeVar € varList, instanciate typeVar
 	typeVars := []typing.TypeApp{}
-	for _, typeVar := range appList {
+	for _, typeVar := range typeApps {
 		if Is[typing.TypeVar](typeVar) {
 			tv := To[typing.TypeVar](typeVar)
-			if ComparableList[typing.TypeVar](varList).Contains(tv) {
+			if ComparableList[typing.TypeVar](vars).Contains(tv) {
 				tv.ShouldBeMeta(index)
 			}
 			typeVars = append(typeVars, tv)
