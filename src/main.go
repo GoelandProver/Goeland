@@ -244,7 +244,7 @@ func flatten(fl basictypes.FormList) basictypes.FormList {
 func getFile(filename string, dir string) (string, error) {
 	// Check in Goéland's path
 	_, err := os.Stat(filename)
-	fileExists := err != nil && errors.Is(err, os.ErrNotExist)
+	fileExists := !(err != nil && errors.Is(err, os.ErrNotExist))
 	if fileExists {
 		return filename, err
 	}
@@ -252,7 +252,7 @@ func getFile(filename string, dir string) (string, error) {
 	// Check in the dir's path
 	otherFilename := path.Join(dir, filename)
 	_, err = os.Stat(filename)
-	fileExists = err != nil && errors.Is(err, os.ErrNotExist)
+	fileExists = !(err != nil && errors.Is(err, os.ErrNotExist))
 	if fileExists {
 		return otherFilename, err
 	}
@@ -261,7 +261,7 @@ func getFile(filename string, dir string) (string, error) {
 	directory := os.Getenv("TPTP")
 	otherFilename = path.Join(directory, filename)
 	_, err = os.Stat(filename)
-	fileExists = err != nil && errors.Is(err, os.ErrNotExist)
+	fileExists = !(err != nil && errors.Is(err, os.ErrNotExist))
 	if fileExists {
 		return otherFilename, err
 	}
