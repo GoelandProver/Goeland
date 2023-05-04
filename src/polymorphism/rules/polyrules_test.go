@@ -310,7 +310,7 @@ func TestNAryDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	newForms := newPred.(btypes.Or).GetLF()
+	newForms := newPred.(btypes.Or).GetForms()
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("$int"), typing.MkTypeHint("$int")),
@@ -347,7 +347,7 @@ func TestNAryDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	newForms = newPred.(*btypes.And).GetLF()
+	newForms = newPred.(*btypes.And).GetForms()
 
 	for _, newForm := range newForms {
 		// Pred should be of type ($int * $int) -> o

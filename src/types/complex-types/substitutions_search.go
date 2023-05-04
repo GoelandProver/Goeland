@@ -268,13 +268,13 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 		res = basictypes.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case *basictypes.And:
 		res_tmp := basictypes.MakeEmptyFormList()
-		for _, val := range nf.GetLF() {
+		for _, val := range nf.GetForms() {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = basictypes.MakeAnd(f.GetIndex(), res_tmp)
 	case basictypes.Or:
 		res_tmp := basictypes.MakeEmptyFormList()
-		for _, val := range nf.GetLF() {
+		for _, val := range nf.GetForms() {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = basictypes.MakeOr(f.GetIndex(), res_tmp)

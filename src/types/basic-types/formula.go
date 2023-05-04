@@ -49,14 +49,14 @@ import (
 
 /* Formula  */
 type Form interface {
-	Stringable
-	Comparable
-	Copyable[Form]
-
 	GetIndex() int
 	GetMetas() MetaList
 	GetType() typing.TypeScheme
 	GetSubTerms() TermList
+
+	Stringable
+	Comparable
+	Copyable[Form]
 
 	ToMappedString(MapString, bool) string
 	ToStringWithSuffixMeta(string) string
@@ -104,22 +104,6 @@ func MakeNot(i int, form Form) Not {
 
 func MakerNot(form Form) Not {
 	return MakeNot(MakerIndexFormula(), form)
-}
-
-func MakeAnd(i int, forms FormList) *And {
-	return &And{i, forms}
-}
-
-func MakerAnd(fl FormList) *And {
-	return MakeAnd(MakerIndexFormula(), fl)
-}
-
-func MakeOr(i int, forms FormList) Or {
-	return Or{i, forms}
-}
-
-func MakerOr(forms FormList) Or {
-	return MakeOr(MakerIndexFormula(), forms)
 }
 
 func MakeImp(i int, firstForm, secondForm Form) Imp {
@@ -268,4 +252,47 @@ func instanciateTypeAppList(typeApps []typing.TypeApp, vars []typing.TypeVar, in
 	}
 
 	return typeVars
+}
+
+// Creates and returns a MetaList from a FormList, making sure there are no duplicates
+func metasUnion(forms FormList) MetaList {
+	res := MakeEmptyMetaList()
+
+	for _, form := range forms {
+		res = res.Merge(form.GetMetas())
+	}
+
+	return res
+}
+
+// Creates and returns a FormList
+func replaceList(oldForms FormList, vars []typing.TypeVar, index int) FormList {
+	newForms := MakeEmptyFormList()
+
+	for _, form := range oldForms {
+		newForms = append(newForms, form.ReplaceTypeByMeta(vars, index))
+	}
+
+	return newForms
+}
+
+func replaceVarInFormList(oldForms FormList, oldVar Var, newTerm Term) FormList {
+	newForms := MakeEmptyFormList()
+
+	for _, form := range oldForms {
+		newForms = append(newForms, form.ReplaceVarByTerm(oldVar, newTerm))
+	}
+
+	return newForms
+}
+
+// Creates and returns a FormList with its Forms renamed
+func renameFormList(forms FormList) FormList {
+	newForms := MakeEmptyFormList()
+
+	for _, form := range forms {
+		newForms = append(newForms, form.RenameVariables())
+	}
+
+	return newForms
 }
