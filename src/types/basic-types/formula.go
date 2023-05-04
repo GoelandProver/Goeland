@@ -106,11 +106,11 @@ func MakerNot(form Form) Not {
 	return MakeNot(MakerIndexFormula(), form)
 }
 
-func MakeAnd(i int, forms FormList) And {
-	return And{i, forms}
+func MakeAnd(i int, forms FormList) *And {
+	return &And{i, forms}
 }
 
-func MakerAnd(fl FormList) And {
+func MakerAnd(fl FormList) *And {
 	return MakeAnd(MakerIndexFormula(), fl)
 }
 
@@ -200,18 +200,18 @@ func simplifyNeg(form Form, isEven bool) Form {
 }
 
 /* Replace a Var by a term inside a function */
-func replaceVarInTermList(terms TermList, originalVar Var, replacementTerm Term) TermList {
+func replaceVarInTermList(terms TermList, oldVar Var, newTerm Term) TermList {
 	new_list := make(TermList, len(terms))
 	for i, val := range terms {
 		switch nf := val.(type) {
 		case Var:
-			if originalVar.GetIndex() == nf.GetIndex() {
-				new_list[i] = replacementTerm
+			if oldVar.GetIndex() == nf.GetIndex() {
+				new_list[i] = newTerm
 			} else {
 				new_list[i] = val
 			}
 		case Fun:
-			new_list[i] = MakerFun(nf.GetP(), replaceVarInTermList(nf.GetArgs(), originalVar, replacementTerm), nf.GetTypeVars(), nf.GetTypeHint())
+			new_list[i] = MakerFun(nf.GetP(), replaceVarInTermList(nf.GetArgs(), oldVar, newTerm), nf.GetTypeVars(), nf.GetTypeHint())
 		default:
 			new_list[i] = val
 		}
@@ -220,11 +220,11 @@ func replaceVarInTermList(terms TermList, originalVar Var, replacementTerm Term)
 }
 
 /* replace a var by another in a var list */
-func replaceVarInVarList(vars []Var, originalVar, replacementVar Var) []Var {
+func replaceVarInVarList(vars []Var, oldVar, newVar Var) []Var {
 	res := []Var{}
 	for _, v := range vars {
-		if v.GetIndex() == originalVar.GetIndex() {
-			res = append(res, replacementVar)
+		if v.GetIndex() == oldVar.GetIndex() {
+			res = append(res, newVar)
 		} else {
 			res = append(res, v)
 		}

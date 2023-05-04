@@ -231,8 +231,8 @@ func applyAlphaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 	switch formTyped := form.(type) {
 	case basictypes.Not:
 		result = applyAlphaNotRule(formTyped, state, terms, result)
-	case basictypes.And:
-		result = applyAlphaAndRule(formTyped, state, terms, result)
+	case *basictypes.And:
+		result = applyAlphaAndRule(*formTyped, state, terms, result)
 	}
 
 	return result
@@ -318,8 +318,8 @@ func applyBetaRules(fnt basictypes.FormAndTerms, state *complextypes.State) []ba
 
 func applyBetaNotRule(formTyped basictypes.Not, state *complextypes.State, terms basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
 	switch formWithoutNot := formTyped.GetForm().(type) {
-	case basictypes.And:
-		result = applyBetaNotAndRule(formWithoutNot, state, terms, result)
+	case *basictypes.And:
+		result = applyBetaNotAndRule(*formWithoutNot, state, terms, result)
 	case basictypes.Equ:
 		result = applyBetaNotEquRule(formWithoutNot, state, terms, result)
 	}

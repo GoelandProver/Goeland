@@ -229,7 +229,7 @@ func flatten(fl basictypes.FormList) basictypes.FormList {
 	result := basictypes.FormList{}
 
 	for _, form := range fl {
-		formAsAnd, isFormAnd := form.(basictypes.And)
+		formAsAnd, isFormAnd := form.(*basictypes.And)
 
 		if isFormAnd {
 			result = append(result, flatten(formAsAnd.GetLF())...)

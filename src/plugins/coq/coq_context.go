@@ -89,7 +89,7 @@ func getContextFromFormula(root btps.Form) []string {
 		result = getContextFromFormula(nf.GetForm())
 	case btps.AllType:
 		result = getContextFromFormula(nf.GetForm())
-	case btps.And:
+	case *btps.And:
 		for _, f := range nf.GetLF() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}

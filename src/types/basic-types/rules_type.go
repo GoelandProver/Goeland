@@ -80,7 +80,7 @@ func ShowKindOfRule(f Form) KindOfRule {
 			res = Atomic
 		case Not, Imp, Or:
 			res = Alpha
-		case And, Equ:
+		case *And, Equ:
 			res = Beta
 		case Ex:
 			res = Gamma
@@ -89,7 +89,7 @@ func ShowKindOfRule(f Form) KindOfRule {
 		case AllType:
 			global.PrintError("RULE", "not forall(type) found when it shouldn't happen.")
 		}
-	case And:
+	case *And:
 		res = Alpha
 	case Or, Imp, Equ:
 		res = Beta

@@ -47,41 +47,64 @@ import (
 /* And(formula list): conjunction of formulae */
 type And struct {
 	index int
-	lf    FormList
+	forms FormList
 }
 
-func (a And) GetLF() FormList { return a.lf.Copy() }
+func (a *And) GetLF() FormList {
+	return a.forms.Copy()
+}
 
-func (a And) ToMappedString(map_ MapString, displayTypes bool) string {
+func (a *And) ToMappedString(map_ MapString, displayTypes bool) string {
 	return "(" + ListToMappedString(a.GetLF(), " "+map_[AndConn]+" ", "", map_, displayTypes) + ")"
 }
 
-func (a And) GetIndex() int              { return a.index }
-func (a And) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-func (a And) ToString() string           { return a.ToMappedString(defaultMap, true) }
-func (a And) Copy() Form                 { return MakeAnd(a.GetIndex(), a.GetLF()) }
-func (a And) GetMetas() MetaList         { return metasUnion(a.GetLF()) }
-func (a And) RenameVariables() Form      { return MakeAnd(a.GetIndex(), renameFormList(a.GetLF())) }
-func (a And) CleanFormula() Form         { a.lf = a.lf.CleanFormList(); return a }
+func (a *And) GetIndex() int {
+	return a.index
+}
 
-func (a And) ToStringWithSuffixMeta(suffix string) string {
+func (a *And) GetType() typing.TypeScheme {
+	return typing.DefaultPropType(0)
+}
+
+func (a *And) ToString() string {
+	return a.ToMappedString(defaultMap, true)
+}
+
+func (a *And) Copy() Form {
+	return MakeAnd(a.GetIndex(), a.GetLF())
+}
+
+func (a *And) GetMetas() MetaList {
+	return metasUnion(a.GetLF())
+}
+
+func (a *And) RenameVariables() Form {
+	return MakeAnd(a.GetIndex(), renameFormList(a.GetLF()))
+}
+
+func (a *And) CleanFormula() Form {
+	a.forms = a.forms.CleanFormList()
+	return a
+}
+
+func (a *And) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + listToStringMeta(a.GetLF(), suffix, " "+defaultMap[AndConn]+" ", "") + ")"
 }
 
-func (a And) Equals(f any) bool {
+func (a *And) Equals(f any) bool {
 	oth, isAnd := f.(And)
 	return isAnd && oth.GetLF().Equals(a.GetLF())
 }
 
-func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
+func (a *And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAnd(a.GetIndex(), replaceList(a.GetLF(), varList, index))
 }
 
-func (a And) ReplaceVarByTerm(old Var, new Term) Form {
+func (a *And) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakeAnd(a.GetIndex(), replaceVarInFormList(a.GetLF(), old, new))
 }
 
-func (a And) GetSubTerms() TermList {
+func (a *And) GetSubTerms() TermList {
 	res := TermList{}
 	for _, tl := range a.GetLF() {
 		res = res.MergeTermList(tl.GetSubTerms())
@@ -92,22 +115,45 @@ func (a And) GetSubTerms() TermList {
 /* Or(formula list): disjunction of formulae */
 type Or struct {
 	index int
-	lf    FormList
+	forms FormList
 }
 
-func (o Or) GetLF() FormList { return o.lf.Copy() }
+func (o Or) GetLF() FormList {
+	return o.forms.Copy()
+}
 
 func (o Or) ToMappedString(map_ MapString, displayTypes bool) string {
 	return "(" + ListToMappedString(o.GetLF(), " "+map_[OrConn]+" ", "", map_, displayTypes) + ")"
 }
 
-func (o Or) GetIndex() int              { return o.index }
-func (o Or) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-func (o Or) ToString() string           { return o.ToMappedString(defaultMap, true) }
-func (o Or) Copy() Form                 { return MakeOr(o.GetIndex(), o.GetLF()) }
-func (o Or) GetMetas() MetaList         { return metasUnion(o.GetLF()) }
-func (o Or) RenameVariables() Form      { return MakeOr(o.GetIndex(), renameFormList(o.GetLF())) }
-func (o Or) CleanFormula() Form         { o.lf = o.lf.CleanFormList(); return o }
+func (o Or) GetIndex() int {
+	return o.index
+}
+
+func (o Or) GetType() typing.TypeScheme {
+	return typing.DefaultPropType(0)
+}
+
+func (o Or) ToString() string {
+	return o.ToMappedString(defaultMap, true)
+}
+
+func (o Or) Copy() Form {
+	return MakeOr(o.GetIndex(), o.GetLF())
+}
+
+func (o Or) GetMetas() MetaList {
+	return metasUnion(o.GetLF())
+}
+
+func (o Or) RenameVariables() Form {
+	return MakeOr(o.GetIndex(), renameFormList(o.GetLF()))
+}
+
+func (o Or) CleanFormula() Form {
+	o.forms = o.forms.CleanFormList()
+	return o
+}
 
 func (o Or) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + listToStringMeta(o.GetLF(), suffix, " "+defaultMap[OrConn]+" ", "") + ")"
@@ -125,6 +171,7 @@ func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 func (o Or) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakeOr(o.GetIndex(), replaceVarInFormList(o.GetLF(), old, new))
 }
+
 func (o Or) GetSubTerms() TermList {
 	res := MakeEmptyTermList()
 	for _, tl := range o.GetLF() {
@@ -137,34 +184,42 @@ func (o Or) GetSubTerms() TermList {
 // Utility Or/And functions
 // ----------------------------------------------------------------------------
 
-func metasUnion(fl FormList) MetaList {
+func metasUnion(forms FormList) MetaList {
 	res := MakeEmptyMetaList()
-	for _, f := range fl {
-		res = res.Merge(f.GetMetas())
+
+	for _, form := range forms {
+		res = res.Merge(form.GetMetas())
 	}
+
 	return res
 }
 
-func replaceList(fl FormList, varList []typing.TypeVar, index int) FormList {
-	nfl := MakeEmptyFormList()
-	for _, f := range fl {
-		nfl = append(nfl, f.ReplaceTypeByMeta(varList, index))
+func replaceList(oldForms FormList, vars []typing.TypeVar, index int) FormList {
+	newForms := MakeEmptyFormList()
+
+	for _, form := range oldForms {
+		newForms = append(newForms, form.ReplaceTypeByMeta(vars, index))
 	}
-	return nfl
+
+	return newForms
 }
 
-func replaceVarInFormList(fl FormList, old Var, new Term) FormList {
-	nfl := MakeEmptyFormList()
-	for _, form := range fl {
-		nfl = append(nfl, form.ReplaceVarByTerm(old, new))
+func replaceVarInFormList(oldForms FormList, oldVar Var, newTerm Term) FormList {
+	newForms := MakeEmptyFormList()
+
+	for _, form := range oldForms {
+		newForms = append(newForms, form.ReplaceVarByTerm(oldVar, newTerm))
 	}
-	return nfl
+
+	return newForms
 }
 
-func renameFormList(fl FormList) FormList {
-	nfl := MakeEmptyFormList()
-	for _, form := range fl {
-		nfl = append(nfl, form.RenameVariables())
+func renameFormList(forms FormList) FormList {
+	newForms := MakeEmptyFormList()
+
+	for _, form := range forms {
+		newForms = append(newForms, form.RenameVariables())
 	}
-	return nfl
+
+	return newForms
 }

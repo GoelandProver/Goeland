@@ -266,7 +266,7 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 		)
 	case basictypes.Not:
 		res = basictypes.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
-	case basictypes.And:
+	case *basictypes.And:
 		res_tmp := basictypes.MakeEmptyFormList()
 		for _, val := range nf.GetLF() {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
