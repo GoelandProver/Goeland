@@ -67,7 +67,7 @@ func secondPassAux(form btypes.Form, vars []btypes.Var, types []typing.TypeApp) 
 		return btypes.MakePred(f.GetIndex(), f.GetID(), terms, typeApps)
 	case *btypes.And:
 		return btypes.MakeAnd(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
-	case btypes.Or:
+	case *btypes.Or:
 		return btypes.MakeOr(f.GetIndex(), nArySecondPass(f.GetForms(), vars, types))
 	case btypes.Imp:
 		return btypes.MakeImp(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))

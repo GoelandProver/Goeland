@@ -78,7 +78,7 @@ func ShowKindOfRule(f Form) KindOfRule {
 		switch nf.f.(type) {
 		case Pred, Top, Bot:
 			res = Atomic
-		case Not, Imp, Or:
+		case Not, Imp, *Or:
 			res = Alpha
 		case *And, Equ:
 			res = Beta
@@ -91,7 +91,7 @@ func ShowKindOfRule(f Form) KindOfRule {
 		}
 	case *And:
 		res = Alpha
-	case Or, Imp, Equ:
+	case *Or, Imp, Equ:
 		res = Beta
 	case Ex:
 		res = Delta

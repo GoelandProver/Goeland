@@ -302,7 +302,7 @@ func TestNAryDoublePass(t *testing.T) {
 		t.Fatalf("Error during formal verification: %s", err.Error())
 	}
 
-	if _, ok := newPred.(btypes.Or); !ok {
+	if _, ok := newPred.(*btypes.Or); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
@@ -310,7 +310,7 @@ func TestNAryDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	newForms := newPred.(btypes.Or).GetForms()
+	newForms := newPred.(*btypes.Or).GetForms()
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("$int"), typing.MkTypeHint("$int")),

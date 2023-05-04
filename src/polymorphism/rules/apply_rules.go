@@ -88,7 +88,7 @@ func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 	switch (state.consequence.f).(type) {
 	case btypes.All, btypes.AllType, btypes.Ex:
 		rec = applyQuantRule(state, root, fatherChan)
-	case *btypes.And, btypes.Or:
+	case *btypes.And, *btypes.Or:
 		rec = applyNAryRule(state, root, fatherChan)
 	case btypes.Imp, btypes.Equ:
 		rec = applyBinaryRule(state, root, fatherChan)

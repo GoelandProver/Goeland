@@ -94,7 +94,7 @@ func findSubterms(form btps.Form, vars []btps.Var) []Subterm {
 		// n-ary connectors
 		case *btps.And:
 			result = nAryResult(f.FormList, vars, path)
-		case btps.Or:
+		case *btps.Or:
 			result = nAryResult(f.GetForms(), vars, path)
 		// --------------------------------------------------------------------
 		// Unary connectors
@@ -199,7 +199,7 @@ func getSubtermsOf(form btps.Form, subterms []Subterm) []VarMaps {
 		// n-ary connectors
 		case *btps.And:
 			result = getFromPath(f.FormList[path[0]], path[1:])
-		case btps.Or:
+		case *btps.Or:
 			result = getFromPath(f.GetForms()[path[0]], path[1:])
 		// Unary connectors:
 		case btps.Not:

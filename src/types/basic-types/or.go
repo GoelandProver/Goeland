@@ -52,11 +52,11 @@ type Or struct {
 
 /** Constructors **/
 
-func MakeOr(i int, forms FormList) Or {
-	return Or{i, forms}
+func MakeOr(i int, forms FormList) *Or {
+	return &Or{i, forms}
 }
 
-func MakerOr(forms FormList) Or {
+func MakerOr(forms FormList) *Or {
 	return MakeOr(MakerIndexFormula(), forms)
 }
 
@@ -64,19 +64,19 @@ func MakerOr(forms FormList) Or {
 
 /** - Form interface Methods **/
 
-func (o Or) GetIndex() int {
+func (o *Or) GetIndex() int {
 	return o.index
 }
 
-func (o Or) GetMetas() MetaList {
+func (o *Or) GetMetas() MetaList {
 	return metasUnion(o.GetForms())
 }
 
-func (o Or) GetType() typing.TypeScheme {
+func (o *Or) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (o Or) GetSubTerms() TermList {
+func (o *Or) GetSubTerms() TermList {
 	res := MakeEmptyTermList()
 	for _, tl := range o.GetForms() {
 		res = res.MergeTermList(tl.GetSubTerms())
@@ -84,46 +84,46 @@ func (o Or) GetSubTerms() TermList {
 	return res
 }
 
-func (o Or) ToString() string {
+func (o *Or) ToString() string {
 	return o.ToMappedString(defaultMap, true)
 }
 
-func (o Or) Equals(f any) bool {
+func (o *Or) Equals(f any) bool {
 	oth, isOr := f.(Or)
 	return isOr && oth.GetForms().Equals(o.GetForms())
 }
 
-func (o Or) Copy() Form {
+func (o *Or) Copy() Form {
 	return MakeOr(o.GetIndex(), o.GetForms())
 }
 
-func (o Or) ToMappedString(map_ MapString, displayTypes bool) string {
+func (o *Or) ToMappedString(map_ MapString, displayTypes bool) string {
 	return "(" + ListToMappedString(o.GetForms(), " "+map_[OrConn]+" ", "", map_, displayTypes) + ")"
 }
 
-func (o Or) ToStringWithSuffixMeta(suffix string) string {
+func (o *Or) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + listToStringMeta(o.GetForms(), suffix, " "+defaultMap[OrConn]+" ", "") + ")"
 }
 
-func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
+func (o *Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeOr(o.GetIndex(), replaceList(o.GetForms(), varList, index))
 }
 
-func (o Or) ReplaceVarByTerm(old Var, new Term) Form {
+func (o *Or) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakeOr(o.GetIndex(), replaceVarInFormList(o.GetForms(), old, new))
 }
 
-func (o Or) RenameVariables() Form {
+func (o *Or) RenameVariables() Form {
 	return MakeOr(o.GetIndex(), renameFormList(o.GetForms()))
 }
 
-func (o Or) CleanFormula() Form {
+func (o *Or) CleanFormula() Form {
 	o.forms = o.forms.CleanFormList()
 	return o
 }
 
 /** - Other Methods **/
 
-func (o Or) GetForms() FormList {
+func (o *Or) GetForms() FormList {
 	return o.forms.Copy()
 }
