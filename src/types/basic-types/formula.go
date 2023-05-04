@@ -98,14 +98,6 @@ func MakerBot() Bot {
 	return MakeBot(MakerIndexFormula())
 }
 
-func MakeNot(i int, form Form) Not {
-	return Not{i, form}
-}
-
-func MakerNot(form Form) Not {
-	return MakeNot(MakerIndexFormula(), form)
-}
-
 func MakeImp(i int, firstForm, secondForm Form) Imp {
 	return Imp{i, firstForm, secondForm}
 }
@@ -144,43 +136,6 @@ func MakeAllType(i int, typeVars []typing.TypeVar, form Form) AllType {
 
 func MakerAllType(typeVars []typing.TypeVar, form Form) AllType {
 	return AllType{MakerIndexFormula(), typeVars, form}
-}
-
-/* Transform a formula into its negation */
-func RefuteForm(form Form) Form {
-	return MakerNot(form)
-}
-
-/* Remove all the negations */
-func RemoveNeg(form Form) Form {
-	switch ft := form.(type) {
-	case Not:
-		return RemoveNeg(ft.GetForm())
-	default:
-		return form.Copy()
-	}
-}
-
-/* Simplify a neg neg eng formual (for DMT) */
-func SimplifyNeg(form Form) Form {
-	return simplifyNeg(form, true)
-}
-
-func simplifyNeg(form Form, isEven bool) Form {
-	// Already under a not
-	if ft, isNot := form.(Not); isNot {
-		if !isEven {
-			return simplifyNeg(ft.GetForm(), true)
-		} else {
-			return simplifyNeg(ft.GetForm(), false)
-		}
-	} else {
-		if isEven {
-			return form.Copy()
-		} else {
-			return RefuteForm(form.Copy())
-		}
-	}
 }
 
 /* Replace a Var by a term inside a function */

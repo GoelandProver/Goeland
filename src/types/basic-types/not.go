@@ -44,34 +44,69 @@ import (
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
-/* Not(formula): negation of a formula */
+// The negation of a Formula
 type Not struct {
 	index int
 	f     Form
 }
 
-func (n Not) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[NotConn] + "(" + n.GetForm().ToMappedString(map_, displayTypes) + ")"
+/** Constructors **/
+
+func MakeNot(i int, form Form) Not {
+	return Not{i, form}
 }
 
-func (n Not) GetForm() Form                        { return n.f.Copy() }
-func (n Not) GetType() typing.TypeScheme           { return typing.DefaultPropType(0) }
-func (n Not) ToString() string                     { return n.ToMappedString(defaultMap, true) }
-func (n Not) ToStringWithSuffixMeta(string) string { return n.ToString() }
-func (n Not) Copy() Form                           { return MakeNot(n.GetIndex(), n.GetForm()) }
-func (n Not) GetMetas() MetaList                   { return n.GetForm().GetMetas() }
-func (n Not) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceVarByTerm(old, new))
+func MakerNot(form Form) Not {
+	return MakeNot(MakerIndexFormula(), form)
 }
-func (n Not) GetIndex() int { return n.index }
+
+/** Methods **/
+
+/** - Form interface Methods **/
+
+func (n Not) GetIndex() int {
+	return n.index
+}
+
+func (n Not) GetMetas() MetaList {
+	return n.GetForm().GetMetas()
+}
+
+func (n Not) GetType() typing.TypeScheme {
+	return typing.DefaultPropType(0)
+}
+
+func (n Not) GetSubTerms() TermList {
+	return n.GetForm().GetSubTerms()
+}
+
+func (n Not) ToString() string {
+	return n.ToMappedString(defaultMap, true)
+}
 
 func (n Not) Equals(f any) bool {
 	oth, isNot := f.(Not)
 	return isNot && oth.GetForm().Equals(n.GetForm())
 }
 
+func (n Not) Copy() Form {
+	return MakeNot(n.GetIndex(), n.GetForm())
+}
+
+func (n Not) ToMappedString(map_ MapString, displayTypes bool) string {
+	return map_[NotConn] + "(" + n.GetForm().ToMappedString(map_, displayTypes) + ")"
+}
+
+func (n Not) ToStringWithSuffixMeta(string) string {
+	return n.ToString()
+}
+
 func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
+}
+
+func (n Not) ReplaceVarByTerm(old Var, new Term) Form {
+	return MakeNot(n.GetIndex(), n.f.ReplaceVarByTerm(old, new))
 }
 
 func (n Not) RenameVariables() Form {
@@ -83,6 +118,44 @@ func (n Not) CleanFormula() Form {
 	return n
 }
 
-func (n Not) GetSubTerms() TermList {
-	return n.GetForm().GetSubTerms()
+/** - Other Methods **/
+
+func (n Not) GetForm() Form {
+	return n.f.Copy()
+}
+
+/** Utils **/
+
+/* Gives a new Form that is the negation of the given Form */
+func RefuteForm(form Form) Form {
+	return MakerNot(form)
+}
+
+/* Gives a new Form that isn't a Not */
+func RemoveNeg(form Form) Form {
+	switch typedForm := form.(type) {
+	case Not:
+		return RemoveNeg(typedForm.GetForm())
+	default:
+		return form
+	}
+}
+
+/* Gives the deepest Form that has one or less Not around */
+func SimplifyNegations(form Form) Form {
+	form, isEven := getDeepFormWithoutNot(form, true)
+
+	if !isEven {
+		form = RefuteForm(form)
+	}
+
+	return form
+}
+
+func getDeepFormWithoutNot(form Form, isEven bool) (Form, bool) {
+	if not, isNot := form.(Not); isNot {
+		return getDeepFormWithoutNot(not.GetForm(), !isEven)
+	} else {
+		return form, isEven
+	}
 }
