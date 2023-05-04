@@ -99,7 +99,11 @@ func (e Ex) RenameVariables() Form {
 func (e Ex) CleanFormula() Form {
 	e.var_list, e.f = cleanQuantifiedFormula(&e)
 
-	return e
+	if len(e.var_list) > 0 {
+		return e
+	} else {
+		return e.f
+	}
 }
 
 func (e Ex) GetSubTerms() TermList {
@@ -156,7 +160,12 @@ func (a All) RenameVariables() Form {
 
 func (a All) CleanFormula() Form {
 	a.var_list, a.f = cleanQuantifiedFormula(&a)
-	return a
+
+	if len(a.var_list) > 0 {
+		return a
+	} else {
+		return a.f
+	}
 }
 
 func (a All) GetSubTerms() TermList {
