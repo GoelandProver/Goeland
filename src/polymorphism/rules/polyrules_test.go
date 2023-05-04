@@ -347,7 +347,7 @@ func TestNAryDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	newForms = newPred.(*btypes.And).GetForms()
+	newForms = newPred.(*btypes.And).FormList
 
 	for _, newForm := range newForms {
 		// Pred should be of type ($int * $int) -> o

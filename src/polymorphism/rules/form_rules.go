@@ -93,7 +93,7 @@ func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 	switch f := (state.consequence.f).(type) {
 	case *btypes.And:
 		root.appliedRule = "∧"
-		formList = f.GetForms()
+		formList = f.FormList
 	case btypes.Or:
 		root.appliedRule = "∨"
 		formList = f.GetForms()

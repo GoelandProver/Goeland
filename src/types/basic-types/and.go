@@ -47,13 +47,13 @@ import (
 // A Formula list that represents the conjunction of formulae
 type And struct {
 	index int
-	forms FormList
+	FormList
 }
 
 /** Constructors **/
 
 func MakeAnd(i int, forms FormList) *And {
-	return &And{index: i, forms: forms}
+	return &And{index: i, FormList: forms}
 }
 
 func MakerAnd(forms FormList) *And {
@@ -69,7 +69,7 @@ func (a *And) GetIndex() int {
 }
 
 func (a *And) GetMetas() MetaList {
-	return metasUnion(a.GetForms())
+	return metasUnion(a.FormList)
 }
 
 func (a *And) GetType() typing.TypeScheme {
@@ -78,7 +78,7 @@ func (a *And) GetType() typing.TypeScheme {
 
 func (a *And) GetSubTerms() TermList {
 	res := TermList{}
-	for _, tl := range a.GetForms() {
+	for _, tl := range a.FormList {
 		res = res.MergeTermList(tl.GetSubTerms())
 	}
 	return res
@@ -90,40 +90,34 @@ func (a *And) ToString() string {
 
 func (a *And) Equals(f any) bool {
 	oth, isAnd := f.(And)
-	return isAnd && oth.GetForms().Equals(a.GetForms())
+	return isAnd && oth.FormList.Equals(a.FormList)
 }
 
 func (a *And) Copy() Form {
-	return MakeAnd(a.GetIndex(), a.GetForms())
+	return MakeAnd(a.GetIndex(), a.FormList)
 }
 
 func (a *And) ToMappedString(map_ MapString, displayTypes bool) string {
-	return "(" + ListToMappedString(a.GetForms(), " "+map_[AndConn]+" ", "", map_, displayTypes) + ")"
+	return "(" + ListToMappedString(a.FormList, " "+map_[AndConn]+" ", "", map_, displayTypes) + ")"
 }
 
 func (a *And) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + listToStringMeta(a.GetForms(), suffix, " "+defaultMap[AndConn]+" ", "") + ")"
+	return "(" + listToStringMeta(a.FormList, suffix, " "+defaultMap[AndConn]+" ", "") + ")"
 }
 
 func (a *And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeAnd(a.GetIndex(), replaceList(a.GetForms(), varList, index))
+	return MakeAnd(a.GetIndex(), replaceList(a.FormList, varList, index))
 }
 
 func (a *And) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeAnd(a.GetIndex(), replaceVarInFormList(a.GetForms(), old, new))
+	return MakeAnd(a.GetIndex(), replaceVarInFormList(a.FormList, old, new))
 }
 
 func (a *And) RenameVariables() Form {
-	return MakeAnd(a.GetIndex(), renameFormList(a.GetForms()))
+	return MakeAnd(a.GetIndex(), renameFormList(a.FormList))
 }
 
 func (a *And) CleanFormula() Form {
-	a.forms = a.forms.CleanFormList()
+	a.CleanFormList()
 	return a
-}
-
-/** - Other Methods **/
-
-func (a *And) GetForms() FormList {
-	return a.forms.Copy()
 }
