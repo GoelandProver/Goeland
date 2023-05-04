@@ -310,7 +310,7 @@ func TestNAryDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	newForms := newPred.(*btypes.Or).GetForms()
+	newForms := newPred.(*btypes.Or).FormList
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("$int"), typing.MkTypeHint("$int")),

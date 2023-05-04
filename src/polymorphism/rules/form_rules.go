@@ -96,7 +96,7 @@ func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 		formList = f.FormList
 	case *btypes.Or:
 		root.appliedRule = "∨"
-		formList = f.GetForms()
+		formList = f.FormList
 	}
 
 	// Construct children with all the formulas

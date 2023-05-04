@@ -47,7 +47,7 @@ import (
 // A Formula list that represents the disjunction of formulae
 type Or struct {
 	index int
-	forms FormList
+	FormList
 }
 
 /** Constructors **/
@@ -69,7 +69,7 @@ func (o *Or) GetIndex() int {
 }
 
 func (o *Or) GetMetas() MetaList {
-	return metasUnion(o.GetForms())
+	return metasUnion(o.FormList)
 }
 
 func (o *Or) GetType() typing.TypeScheme {
@@ -78,7 +78,7 @@ func (o *Or) GetType() typing.TypeScheme {
 
 func (o *Or) GetSubTerms() TermList {
 	res := MakeEmptyTermList()
-	for _, tl := range o.GetForms() {
+	for _, tl := range o.FormList {
 		res = res.MergeTermList(tl.GetSubTerms())
 	}
 	return res
@@ -90,40 +90,34 @@ func (o *Or) ToString() string {
 
 func (o *Or) Equals(f any) bool {
 	oth, isOr := f.(Or)
-	return isOr && oth.GetForms().Equals(o.GetForms())
+	return isOr && oth.FormList.Equals(o.FormList)
 }
 
 func (o *Or) Copy() Form {
-	return MakeOr(o.GetIndex(), o.GetForms())
+	return MakeOr(o.GetIndex(), o.FormList)
 }
 
 func (o *Or) ToMappedString(map_ MapString, displayTypes bool) string {
-	return "(" + ListToMappedString(o.GetForms(), " "+map_[OrConn]+" ", "", map_, displayTypes) + ")"
+	return "(" + ListToMappedString(o.FormList, " "+map_[OrConn]+" ", "", map_, displayTypes) + ")"
 }
 
 func (o *Or) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + listToStringMeta(o.GetForms(), suffix, " "+defaultMap[OrConn]+" ", "") + ")"
+	return "(" + listToStringMeta(o.FormList, suffix, " "+defaultMap[OrConn]+" ", "") + ")"
 }
 
 func (o *Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeOr(o.GetIndex(), replaceList(o.GetForms(), varList, index))
+	return MakeOr(o.GetIndex(), replaceList(o.FormList, varList, index))
 }
 
 func (o *Or) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeOr(o.GetIndex(), replaceVarInFormList(o.GetForms(), old, new))
+	return MakeOr(o.GetIndex(), replaceVarInFormList(o.FormList, old, new))
 }
 
 func (o *Or) RenameVariables() Form {
-	return MakeOr(o.GetIndex(), renameFormList(o.GetForms()))
+	return MakeOr(o.GetIndex(), renameFormList(o.FormList))
 }
 
 func (o *Or) CleanFormula() Form {
-	o.forms = o.forms.CleanFormList()
+	o.FormList.CleanFormList()
 	return o
-}
-
-/** - Other Methods **/
-
-func (o *Or) GetForms() FormList {
-	return o.forms.Copy()
 }
