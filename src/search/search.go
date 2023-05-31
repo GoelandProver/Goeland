@@ -230,7 +230,12 @@ func PrintSearchResult(res bool) {
 	}
 
 	global.PrintInfo("Res", fmt.Sprintf("%v RES : %v", "%", validity))
-	global.PrintInfo("Res", fmt.Sprintf("%s SZS status %v for %v", "%", status, global.GetProblemName()))
+	PrintStandardSolution(status)
+}
+
+// Do not change this function, it is the standard output for TPTP files
+func PrintStandardSolution(status string) {
+	fmt.Printf("%s SZS status %v for %v", "%", status, global.GetProblemName())
 }
 
 /**
