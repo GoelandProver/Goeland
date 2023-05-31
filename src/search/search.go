@@ -258,7 +258,7 @@ func retrieveMetaFromSubst(s treetypes.Substitutions) []int {
 	return res
 }
 
-//ILL TODO Clean the following function and be carefull with the Coq output.
+//ILL TODO Clean the following function and be careful with the Coq output.
 /**
 * clos_res and subst are the result of applyClosureRule.
 * Manage this result, dispatch the subst and recreate data strcutures.
@@ -370,7 +370,6 @@ func applyRules(fatherId uint64, state complextypes.State, c Communication, newA
 	}
 }
 
-/* Manage Rewrite rules - return true if a rewriting rule was applied, false otherwise */
 func manageRewriteRules(fatherId uint64, state complextypes.State, c Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
 	global.PrintDebug("PS", "Try rewrite rule")
 	global.PrintDebug("PS - MRR", fmt.Sprintf("Id : %v, original node id :%v", currentNodeId, originalNodeId))
@@ -460,7 +459,6 @@ func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTe
 	}
 }
 
-/* Manage alpha rules */
 func manageAlphaRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int) {
 	global.PrintDebug("PS", "Alpha rule")
 	hdf := state.GetAlpha()[0]
@@ -478,7 +476,6 @@ func manageAlphaRules(fatherId uint64, state complextypes.State, c Communication
 	ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, []int{})
 }
 
-/* Manage delta rules */
 func manageDeltaRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int) {
 	global.PrintDebug("PS", "Delta rule")
 	hdf := state.GetDelta()[0]
@@ -496,7 +493,6 @@ func manageDeltaRules(fatherId uint64, state complextypes.State, c Communication
 	ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, []int{})
 }
 
-/* Manage beta rules */
 func manageBetaRules(fatherId uint64, state complextypes.State, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
 	global.PrintDebug("PS", "Beta rule")
 	hdf := state.GetBeta()[0]
@@ -540,7 +536,6 @@ func manageBetaRules(fatherId uint64, state complextypes.State, c Communication,
 	}
 }
 
-/* Manage gamma rule */
 func manageGammaRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int) {
 	global.PrintDebug("PS", "Gamma rule")
 	hdf := state.GetGamma()[0]
@@ -566,7 +561,6 @@ func manageGammaRules(fatherId uint64, state complextypes.State, c Communication
 	ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, []int{})
 }
 
-/* Manage reintroduction */
 func manageReintroductionRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int, metaToReintroduce []int, newAtomics basictypes.FormAndTermsList, currentNodeId int, reintroduceAnyway bool) {
 
 	currentMTR := -1

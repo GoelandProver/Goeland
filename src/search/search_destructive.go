@@ -50,7 +50,7 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-/* Manage quit or wait father order. Return true if th eproess is supposed to dia at the end */
+/* Manage quit or wait father order. Return true if the process is supposed to die at the end */
 func manageQuitOrder(quit bool, c Communication, father_id uint64, st complextypes.State, children []Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
 	if len(children) > 0 {
 		closeChildren(&children, true)
@@ -110,26 +110,26 @@ func chooseSubstitutionDestructive(subst_list []complextypes.SubstAndForm, mm []
 }
 
 /*
-*
-* Select children
-* Wait for a children to answer and return substitutions
-*
-* Datas :
-* 	father : father's id (debug)
-*	children : slice of communication
-* 	current_subst : the substitution previously applied
-*
-* Result :
-* 	int :
-*   	- 0 : closed by itself
-*		- 1 : substs list is for father
-*		- 2 : substs list is for children
-  - 3 : quit order from my father
-  - 4 : wait my father
-  - 5 : open from my children - tell te other to wait me
+Select children
+Wait for a children to answer and return substitutions
 
-* 	[]complextypes.SubstAndForm : substitutions list
-*
+Datas :
+
+	father : father's id (debug)
+	children : slice of communication
+	current_subst : the substitution previously applied
+
+Result :
+
+	int :
+	- 0 : closed by itself
+	- 1 : substs list is for father
+	- 2 : substs list is for children
+	- 3 : quit order from my father
+	- 4 : wait my father
+	- 5 : open from my children - tell te other to wait me
+
+[]complextypes.SubstAndForm : substitutions list
 */
 func selectChildren(father Communication, children *[]Communication, current_subst complextypes.SubstAndForm, child_order []int) (int, []complextypes.SubstAndForm, [][]proof.ProofStruct) {
 
@@ -599,7 +599,7 @@ func waitChildren(father_id uint64, st complextypes.State, c Communication, chil
 * c : channel to send the answer to the father
 * s : substitution to apply to the current state
 **/
-func proofSearchDestructive(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
+func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communication, s complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v - node id : %v - original node id : %v", father_id, node_id, original_node_id))
 	global.PrintDebug("PS", fmt.Sprintf("Meta to reintroduce: %v", global.IntListToString(meta_to_reintroduce)))
@@ -610,8 +610,8 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 	// Select to check kill order
 	select {
-	case quit := <-c.quit:
-		manageQuitOrder(quit, c, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce)
+	case quit := <-cha.quit:
+		manageQuitOrder(quit, cha, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce)
 	default:
 		// Apply subst if any
 		if !s.IsEmpty() {
@@ -624,7 +624,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				// Check if exists a contradiction after applying the substitution
 				clos_res_after_apply_subst, subst_after_apply_subst := applyClosureRules(f.GetForm(), &st)
 				if clos_res_after_apply_subst {
-					manageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
+					manageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
 					return
 				}
 			}
@@ -653,7 +653,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 			clos_res, subst := applyClosureRules(f.GetForm(), &st)
 			if clos_res {
-				manageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst), f.Copy(), node_id, original_node_id)
+				manageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst), f.Copy(), node_id, original_node_id)
 				return
 			}
 
@@ -684,7 +684,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms())
 				if res_eq {
-					manageClosureRule(father_id, &st, c, subst_eq, basictypes.MakeFormAndTerm(basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{}), basictypes.MakeEmptyTermList()), node_id, original_node_id)
+					manageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{}), basictypes.MakeEmptyTermList()), node_id, original_node_id)
 					return
 				}
 			}
@@ -692,7 +692,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 		global.PrintDebug("PS", "Let's apply rules !")
 		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", atomics_for_dmt.ToString()))
-		applyRules(father_id, st, c, atomics_for_dmt, node_id, original_node_id, meta_to_reintroduce)
+		applyRules(father_id, st, cha, atomics_for_dmt, node_id, original_node_id, meta_to_reintroduce)
 	}
 }
 

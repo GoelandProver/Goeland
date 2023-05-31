@@ -265,7 +265,6 @@ func proofOneStep(p proof.ProofStruct, formulasIntroduced *ctps.IntAndFormList, 
 		} else {
 			result = "auto."
 		}
-		//result = fmt.Sprintf("apply H%d. assumption.", proof.GetFormula().GetIndex())
 	case "ALPHA_NOT_NOT":
 		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
 		result = fmt.Sprintf("apply %s. goeland_intro H%d.", get_res, introduce(p.GetResultFormulas()[0].GetFL().ExtractForms()[0], formulasIntroduced))
