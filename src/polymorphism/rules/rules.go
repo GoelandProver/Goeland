@@ -147,9 +147,9 @@ func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstru
 		f = btypes.MakeAllType(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms[1], form))
 	case btypes.Ex:
 		f = btypes.MakeEx(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms[1], form))
-	case *btypes.And:
+	case btypes.And:
 		f = btypes.MakeAnd(form.GetIndex(), reconstruction.forms)
-	case *btypes.Or:
+	case btypes.Or:
 		f = btypes.MakeOr(form.GetIndex(), reconstruction.forms)
 	case btypes.Imp:
 		f = btypes.MakeImp(form.GetIndex(), reconstruction.forms[0], reconstruction.forms[1])

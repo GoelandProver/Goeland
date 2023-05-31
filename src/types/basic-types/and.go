@@ -52,11 +52,11 @@ type And struct {
 
 /** Constructors **/
 
-func MakeAnd(i int, forms FormList) *And {
-	return &And{index: i, FormList: forms}
+func MakeAnd(i int, forms FormList) And {
+	return And{index: i, FormList: forms}
 }
 
-func MakerAnd(forms FormList) *And {
+func MakerAnd(forms FormList) And {
 	return MakeAnd(MakerIndexFormula(), forms)
 }
 
@@ -64,19 +64,19 @@ func MakerAnd(forms FormList) *And {
 
 /** - Form interface Methods **/
 
-func (a *And) GetIndex() int {
+func (a And) GetIndex() int {
 	return a.index
 }
 
-func (a *And) GetMetas() MetaList {
+func (a And) GetMetas() MetaList {
 	return metasUnion(a.FormList)
 }
 
-func (a *And) GetType() typing.TypeScheme {
+func (a And) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (a *And) GetSubTerms() TermList {
+func (a And) GetSubTerms() TermList {
 	res := TermList{}
 	for _, tl := range a.FormList {
 		res = res.MergeTermList(tl.GetSubTerms())
@@ -84,40 +84,40 @@ func (a *And) GetSubTerms() TermList {
 	return res
 }
 
-func (a *And) ToString() string {
+func (a And) ToString() string {
 	return a.ToMappedString(defaultMap, true)
 }
 
-func (a *And) Equals(f any) bool {
+func (a And) Equals(f any) bool {
 	oth, isAnd := f.(And)
 	return isAnd && oth.FormList.Equals(a.FormList)
 }
 
-func (a *And) Copy() Form {
+func (a And) Copy() Form {
 	return MakeAnd(a.GetIndex(), a.FormList)
 }
 
-func (a *And) ToMappedString(map_ MapString, displayTypes bool) string {
+func (a And) ToMappedString(map_ MapString, displayTypes bool) string {
 	return "(" + ListToMappedString(a.FormList, " "+map_[AndConn]+" ", "", map_, displayTypes) + ")"
 }
 
-func (a *And) ToStringWithSuffixMeta(suffix string) string {
+func (a And) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + listToStringMeta(a.FormList, suffix, " "+defaultMap[AndConn]+" ", "") + ")"
 }
 
-func (a *And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
+func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAnd(a.GetIndex(), replaceList(a.FormList, varList, index))
 }
 
-func (a *And) ReplaceVarByTerm(old Var, new Term) Form {
+func (a And) ReplaceVarByTerm(old Var, new Term) Form {
 	return MakeAnd(a.GetIndex(), replaceVarInFormList(a.FormList, old, new))
 }
 
-func (a *And) RenameVariables() Form {
+func (a And) RenameVariables() Form {
 	return MakeAnd(a.GetIndex(), renameFormList(a.FormList))
 }
 
-func (a *And) CleanFormula() Form {
+func (a And) CleanFormula() Form {
 	a.CleanFormList()
 	return a
 }

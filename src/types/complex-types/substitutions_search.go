@@ -266,13 +266,13 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 		)
 	case basictypes.Not:
 		res = basictypes.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
-	case *basictypes.And:
+	case basictypes.And:
 		res_tmp := basictypes.MakeEmptyFormList()
 		for _, val := range nf.FormList {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = basictypes.MakeAnd(f.GetIndex(), res_tmp)
-	case *basictypes.Or:
+	case basictypes.Or:
 		res_tmp := basictypes.MakeEmptyFormList()
 		for _, val := range nf.FormList {
 			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
@@ -402,6 +402,11 @@ func RemoveIdentitySubst(s *treetypes.Substitutions) {
 func ApplySubstitutionOnProofList(s treetypes.Substitutions, proof_list []proof.ProofStruct) []proof.ProofStruct {
 	new_proof_list := []proof.ProofStruct{}
 
+	str := fmt.Sprintln("\nSubst: ", s.ToString())
+	for _, p := range proof_list {
+		str += fmt.Sprintln(p.ToString())
+	}
+
 	for _, p := range proof_list {
 		new_proof := p.Copy()
 		new_proof.SetFormulaProof(ApplySubstitutionsOnFormAndTerms(s, p.GetFormula()))
@@ -420,6 +425,15 @@ func ApplySubstitutionOnProofList(s treetypes.Substitutions, proof_list []proof.
 
 		new_proof_list = append(new_proof_list, new_proof)
 	}
+
+	str += fmt.Sprintln("--------After--------")
+
+	for _, p := range new_proof_list {
+		str += fmt.Sprintln(p.ToString())
+	}
+
+	fmt.Println(str)
+
 	return new_proof_list
 }
 
