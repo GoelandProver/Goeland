@@ -142,7 +142,7 @@ func printProof(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta ba
 func printCoqOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
 	coqOutput := coq.MakeCoqOutput(final_proof, uninstanciatedMeta)
 
-	if !global.GetNotWriteLogs() {
+	if global.GetWriteLogs() {
 		f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 		defer f.Close()
 

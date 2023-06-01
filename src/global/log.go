@@ -57,7 +57,7 @@ var (
 
 // Initialises the logger with the correct options
 func InitLogger() {
-	initLogger(GetLogFile(), GetDebugTerminal(), GetDebugFile(), GetShowTrace(), GetNotWriteLogs())
+	initLogger(GetLogFile(), GetDebugTerminal(), GetDebugFile(), GetShowTrace(), GetWriteLogs())
 }
 
 /**
@@ -68,12 +68,12 @@ func InitLogger() {
 *  Will write the debug logs in the terminal only if the parameter debugInTerminal is true
 *  Will write the line where the logger was called only if the parameter showTrace is true
 **/
-func initLogger(fileName string, debugInTerminal, debugInFile, showTrace, notWriteLogs bool) {
+func initLogger(fileName string, debugInTerminal, debugInFile, showTrace, writeLogs bool) {
 
 	var wrt io.Writer
 	var f *os.File
 
-	if !notWriteLogs {
+	if writeLogs {
 		f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 
 		if err != nil {
@@ -100,7 +100,7 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace, notWri
 
 	debPrefix := "DEB: "
 
-	if debugInFile && notWriteLogs {
+	if debugInFile && !writeLogs {
 		if debugInTerminal {
 			logDebug = log.New(wrt, debPrefix, logOptions)
 		} else {
