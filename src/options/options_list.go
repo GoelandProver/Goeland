@@ -95,11 +95,11 @@ func buildOptions() {
 		func(bool) { global.SetShowTrace(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
-		"nwlogs",
-		false,
-		"Disables the writing of the logs in files",
-		func(bool) { global.SetNotWriteLogs(true) },
-		func(bool) {})
+		"wlogs",
+		true,
+		"Enables the writing of the logs in files",
+		func(bool) { global.SetNotWriteLogs(false) },
+		func(bool) { global.SetNotWriteLogs(true) })
 
 	(&option[string]{}).init(
 		"cpuprofile",

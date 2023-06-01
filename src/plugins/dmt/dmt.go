@@ -119,7 +119,7 @@ func parsePluginOptions() {
 	}
 
 	output += strings.Join(activatedOptions, " and ")
-	fmt.Println("[DMT]" + output)
+	fmt.Println(output)
 }
 
 func GetRegisteredAxioms() btypes.FormList {
