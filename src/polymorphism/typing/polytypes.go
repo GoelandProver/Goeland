@@ -116,6 +116,10 @@ func Init() {
 	}
 }
 
+func EmptyTAArray() []TypeApp {
+	return []TypeApp{}
+}
+
 /* Utils */
 
 func utilMapCreation(vars []TypeVar) map[TypeVar]string {

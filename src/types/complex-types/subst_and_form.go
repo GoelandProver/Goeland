@@ -39,6 +39,7 @@
 package complextypes
 
 import (
+	"errors"
 	"fmt"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
@@ -186,34 +187,38 @@ func SubstAndFormListToString(sl []SubstAndForm) string {
 }
 
 /* Merge two SubstAndForm (supposed to fit) */
-func MergeSubstAndForm(s1, s2 SubstAndForm) SubstAndForm {
+func MergeSubstAndForm(s1, s2 SubstAndForm) (error, SubstAndForm) {
 	if s1.IsEmpty() {
-		return s2
+		return nil, s2
 	}
 
 	if s2.IsEmpty() {
-		return s1
+		return nil, s1
 	}
 
 	new_subst, _ := treesearch.MergeSubstitutions(s1.GetSubst().Copy(), s2.GetSubst().Copy())
 
 	if new_subst.Equals(treetypes.Failure()) {
 		global.PrintError("MSAF", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString()))
-		// os.Exit(0)
+		return errors.New("Couldn't merge two substitutions"), MakeEmptySubstAndForm()
 	}
 
 	new_form := s1.GetForm().Copy().Merge(s2.GetForm().Copy())
 
-	return MakeSubstAndForm(new_subst, new_form)
+	return nil, MakeSubstAndForm(new_subst, new_form)
 }
 
 /* Merge a list of subst with one subst */
-func MergeSubstListWithSubst(sl []SubstAndForm, subst SubstAndForm) []SubstAndForm {
+func MergeSubstListWithSubst(sl []SubstAndForm, subst SubstAndForm) (error, []SubstAndForm) {
 	sl_res := []SubstAndForm{}
 
 	for _, s := range sl {
-		sl_res = append(sl_res, MergeSubstAndForm(s, subst))
+		err, merged := MergeSubstAndForm(s, subst)
+		if err != nil {
+			return err, make([]SubstAndForm, 0)
+		}
+		sl_res = append(sl_res, merged)
 	}
 
-	return sl_res
+	return nil, sl_res
 }

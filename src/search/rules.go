@@ -402,7 +402,7 @@ func applyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 		setStateRules(state, "DELTA", "EXISTS")
 	}
 
-	return basictypes.MakeSingleElementFormAndTermList(Skolemize(fnt))
+	return basictypes.MakeSingleElementFormAndTermList(Skolemize(fnt, state))
 }
 
 /**
@@ -428,67 +428,6 @@ func applyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes
 }
 
 /* Syntaxic manipulations below */
-
-/**
- * Skolemizes once the formula f.
- */
-func Skolemize(fnt basictypes.FormAndTerms) basictypes.FormAndTerms {
-	form := fnt.GetForm()
-	terms := fnt.GetTerms()
-
-	switch nf := form.(type) {
-	// 1 - not(forall F1)
-	case basictypes.Not:
-		if tmp, ok := nf.GetForm().(basictypes.All); ok {
-			fnt = basictypes.MakeFormAndTerm(basictypes.RefuteForm(realSkolemize(tmp.GetForm(), tmp.GetVarList(), terms)), terms)
-		}
-	// 2 - exists F1
-	case basictypes.Ex:
-		fnt = basictypes.MakeFormAndTerm(realSkolemize(nf.GetForm(), nf.GetVarList(), terms), terms)
-	}
-
-	return fnt
-}
-
-/**
- * Applies skolemization to a formula (ie: replaces existential quantified variables
- * by fresh skolem symbols).
- * delta : all the meta under and new function name
- * delta+ : only relevant meta : getmeta + meta replaced
- * delta++ : same function name (need classical skolem for meta)
- **/
-func realSkolemize(fnt basictypes.Form, vars []basictypes.Var, terms basictypes.TermList) basictypes.Form {
-	// Replace each variable by the skolemized term.
-	for _, v := range vars {
-		// TypeScheme construction
-		var t typing.TypeApp
-		//ILL TODO: Yup...
-		// Okay that's absolutely wrong, but it's the best way of doing things right now, I swear.
-		for _, term := range terms {
-			if meta, ok := term.(basictypes.Meta); ok {
-				t = crossType(t, meta.GetTypeApp())
-			}
-		}
-
-		var scheme typing.TypeScheme
-		if t == nil {
-			scheme = v.GetTypeHint()
-		} else {
-			scheme = typing.MkTypeArrow(t, global.To[typing.TypeApp](v.GetTypeHint()))
-		}
-
-		// A Skolem symbol has no quantified variables.
-		skolem := basictypes.MakerFun(
-			basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())), // Or makerNewId
-			terms,
-			[]typing.TypeApp{},
-			scheme,
-		)
-		fnt = fnt.ReplaceVarByTerm(v, skolem)
-	}
-
-	return fnt
-}
 
 /**
  * Instantiates once the formula fnt.

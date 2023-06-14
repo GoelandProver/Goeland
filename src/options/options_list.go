@@ -221,4 +221,16 @@ func buildOptions() {
 		"Should only be used with the -ocoq parameter. Enables the context for a standalone execution.",
 		func(bool) { coq.SetContextEnabled(true) },
 		func(bool) {})
+	(&option[bool]{}).init(
+		"inner",
+		false,
+		"Enables on-the-fly inner Skolemisation during the proof-search.",
+		func(bool) { global.SetInnerSko(true) },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"optimised",
+		false,
+		"Enables on-the-fly optimised (delta++) Skolemisation during the proof-search.",
+		func(bool) { global.SetOptimisedSko(true) },
+		func(bool) {})
 }

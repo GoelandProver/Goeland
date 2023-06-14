@@ -70,6 +70,8 @@ var core_limit = -1
 var completeness = false
 var isTypeProof = false
 var arithModule = false
+var innerSkolem = false
+var optimisedSkolem = false
 
 var debugTerminal = false
 var debugFile = false
@@ -237,6 +239,14 @@ func IsConjectureFound() bool {
 	return isConjectureFound
 }
 
+func IsInnerSko() bool {
+	return innerSkolem
+}
+
+func IsOptimisedSko() bool {
+	return optimisedSkolem
+}
+
 /* Setters */
 func SetDebugTerminal(b bool) {
 	debugTerminal = b
@@ -342,4 +352,12 @@ func SetMemProfile(s string) {
 
 func SetConjecture(b bool) {
 	isConjectureFound = b
+}
+
+func SetInnerSko(b bool) {
+	innerSkolem = b
+}
+
+func SetOptimisedSko(b bool) {
+	optimisedSkolem = b
 }
