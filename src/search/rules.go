@@ -79,6 +79,7 @@ var strToPrintMap map[string]string = map[string]string{
 *	a substitution, the substitution which make the contradiction (possibly empty)
 **/
 func applyClosureRules(form basictypes.Form, state *complextypes.State) (bool, []treetypes.Substitutions) {
+	//form = complextypes.ApplySubstitutionsOnFormula(state.GetAppliedSubst().GetSubst(), form)
 	global.PrintDebug("ACR", "Start ACR")
 	var substitutions []treetypes.Substitutions
 	result := false

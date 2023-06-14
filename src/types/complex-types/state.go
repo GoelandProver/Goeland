@@ -429,13 +429,13 @@ func ApplySubstitution(st *State, saf SubstAndForm) error {
 
 	st.SetAppliedSubst(ms)
 	st.SetLastAppliedSubst(saf)
-	st.SetLF(ApplySubstitutionsOnFormAndTermsList(s, st.GetLF()))
+	//st.SetLF(ApplySubstitutionsOnFormAndTermsList(s, st.GetLF()))
 	st.SetAtomic(ApplySubstitutionsOnFormAndTermsList(s, st.GetAtomic()))
-	st.SetAlpha(ApplySubstitutionsOnFormAndTermsList(s, st.GetAlpha()))
+	/*st.SetAlpha(ApplySubstitutionsOnFormAndTermsList(s, st.GetAlpha()))
 	st.SetBeta(ApplySubstitutionsOnFormAndTermsList(s, st.GetBeta()))
 	st.SetDelta(ApplySubstitutionsOnFormAndTermsList(s, st.GetDelta()))
 	st.SetGamma(ApplySubstitutionsOnFormAndTermsList(s, st.GetGamma()))
-	st.SetMetaGen(ApplySubstitutionOnMetaGenList(s, st.GetMetaGen()))
+	st.SetMetaGen(ApplySubstitutionOnMetaGenList(s, st.GetMetaGen()))*/
 
 	st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().ExtractForms(), true))
 	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().ExtractForms(), false))

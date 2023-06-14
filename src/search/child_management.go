@@ -1,7 +1,6 @@
 package search
 
 import (
-	"errors"
 	"fmt"
 
 	ttps "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -61,7 +60,7 @@ func (args wcdArgs) printDebugMessages() {
 
 // TODO: POUR TOUTE FONCTION, ALIMENTER LE GLOBAL UNIFIER
 
-func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruct) error {
+func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruct) {
 	global.PrintDebug("WC", "All children has finished by themselves")
 
 	// All children are closed & did not send any subst, i.e., they can be closed.
@@ -69,32 +68,26 @@ func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruc
 
 	// Remove all the metavariables that have been introduced in this node: the parent do not know them.
 	substForFather := ctps.RemoveElementWithoutMM(args.st.GetAppliedSubst().GetSubst(), args.st.GetMM())
+	args.st = updateGlobalUnifier(args.st)
 	if !substForFather.IsEmpty() {
 		args.st.SetSubstsFound([]ctps.SubstAndForm{ctps.MakeSubstAndForm(substForFather, args.st.GetAppliedSubst().GetForm())})
 	} else {
 		args.st.SetSubstsFound([]ctps.SubstAndForm{})
 	}
 
-	// No need to append the current substitution, because the children returns it anyway (if it exists)
-	// So here, the current substitution should be empty. Otherwise, there's a big bug somewhere else.
-	if !args.currentSubst.IsEmpty() {
-		return errors.New("Current substitution is not empty but children close by themselves. That shouldn't happen.")
-	}
-
 	// Updates the proof using the proofs of the children of the node.
-	updateProof(args, proofChildren)
+	args.st = updateProof(args, proofChildren)
 
 	xchg.WriteExchanges(args.fatherId, args.st, nil, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
 	sendSubToFather(args.c, true, false, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
-	return nil
 }
 
 func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs []ctps.SubstAndForm) error {
 	global.PrintDebug("WC", fmt.Sprintf("All children agree on the substitution(s) : %v", ttps.SubstListToString(ctps.GetSubstListFromSubstAndFormList(substs))))
 
 	// Updates the proof with what the children have found
-	updateProof(args, proofChildren)
+	args.st = updateProof(args, proofChildren)
 	newMetas := args.toReintroduce
 	global.PrintDebug("WC", fmt.Sprintf("new meta to reintroduce: %v", global.IntListToString(newMetas)))
 
@@ -116,7 +109,9 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 		// Otherwise, we have to check if the cleaned substitution is already in the resulting substs list
 		// and, if applicable, add the formula to the list of substituted formulas.
 		// It is useful for the nondestructive mode, to store with which formula the contradiction has been found.
+		// Furthermore, adds the cleaned substitutions to the global unifier.
 		if !cleaned.IsEmpty() {
+			args.st = updateGlobalUnifier(args.st)
 			// Check if the new substitution is already in the list, merge formulas
 			added := false
 			for i := 0; !added && i < len(resultingSubsts); i++ {
@@ -246,4 +241,8 @@ func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {
 	}
 
 	return args.st
+}
+
+func updateGlobalUnifier(st ctps.State) ctps.State {
+	return st
 }

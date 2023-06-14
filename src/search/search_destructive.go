@@ -286,7 +286,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 						err, new_subst := complextypes.MergeSubstAndForm(s.Copy(), new_current_subst.Copy())
 
 						if err != nil {
-							global.PrintError("SLC", "Error when merging substitutions. What to do?")
+							global.PrintError("SLC", "Error when merging substitutions. It shouldn't be possible as the current substitution is applied.")
 						}
 
 						new_result_subst = append(new_result_subst, new_subst)
@@ -414,7 +414,7 @@ func waitChildren(args wcdArgs) {
 
 		switch status {
 		case CLOSE_BY_ITSELF:
-			err = childrenClosedByThemselves(args, proofs)
+			childrenClosedByThemselves(args, proofs)
 		case SUBST_FOR_PARENT:
 			err = passSubstToParent(args, proofs, substs)
 		case SUBST_FOR_CHILDREN:
@@ -434,6 +434,7 @@ func waitChildren(args wcdArgs) {
 
 		if err != nil {
 			global.PrintError("WC", "Error when waiting for children. It should be an error when merging substitutions. What to do?")
+			global.PrintError("WC", err.Error())
 		}
 	}
 }
@@ -463,8 +464,8 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 		// Apply subst if any
 		if !s.IsEmpty() {
 			//st.SetCurrentProofRule(fmt.Sprintf("Apply substitution : %v", s.GetSubst().ToStringForProof()))
-			//global.PrintDebug("PS", fmt.Sprintf("Apply Substitution : %v", s.ToString()))
-			//complextypes.ApplySubstitution(&st, s)
+			global.PrintDebug("PS", fmt.Sprintf("Apply Substitution : %v", s.ToString()))
+			complextypes.ApplySubstitution(&st, s)
 			global.PrintDebug("PS", "Searching contradiction with new atomics")
 			for _, f := range st.GetAtomic() {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
@@ -499,6 +500,12 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 		for _, f := range st.GetLF() {
 			if basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
 				st.DispatchForm(f.Copy())
+			} else {
+				res, subst, nf := tryObviousClosureRule(f.GetForm(), &st)
+				if res {
+					manageClosureRule(father_id, &st, cha, subst, basictypes.MakeFormAndTerm(nf, basictypes.MakeEmptyTermList()), node_id, original_node_id)
+					return
+				}
 			}
 		}
 
@@ -509,6 +516,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 			}
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
 			clos_res, subst := applyClosureRules(atomic, &st)
+			//global.PrintInfo("PS", "Found in new atomics.")
 			fAt := basictypes.MakeFormAndTerm(atomic, basictypes.MakeEmptyTermList())
 
 			if clos_res {
@@ -582,4 +590,18 @@ func getAtomicsForDMT(new_atomics basictypes.FormAndTermsList, st *complextypes.
 		}
 	}
 	return atomics_for_dmt
+}
+
+func tryObviousClosureRule(f basictypes.Form, st *complextypes.State) (bool, []treetypes.Substitutions, basictypes.Form) {
+	switch nf := f.(type) {
+	case basictypes.Bot:
+		res, subst := applyClosureRules(nf, st)
+		return res, subst, nf
+	case basictypes.Not:
+		if _, isTop := nf.GetForm().(basictypes.Top); isTop {
+			res, subst := applyClosureRules(nf, st)
+			return res, subst, nf
+		}
+	}
+	return false, []treetypes.Substitutions{}, nil
 }
