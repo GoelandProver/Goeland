@@ -326,7 +326,7 @@ func ApplySubstitutionsOnFormAndTerms(s treetypes.Substitutions, fat basictypes.
 	for _, subst := range s {
 		old_symbol, new_symbol := subst.Get()
 		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
-		tl_res = ApplySubstitutionOnTermList(old_symbol, new_symbol, tl_res)
+		//tl_res = ApplySubstitutionOnTermList(old_symbol, new_symbol, tl_res)
 	}
 	return basictypes.MakeFormAndTerm(form_res, tl_res)
 }

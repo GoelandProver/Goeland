@@ -283,7 +283,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		// Proof
 		st.SetCurrentProofRule("⊙")
 		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofFormula(f.Copy())
+		st.SetCurrentProofFormula(f)
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
@@ -297,7 +297,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		// Proof
 		st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", substs_without_mm[0].ToString()))
 		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofFormula(f.Copy())
+		st.SetCurrentProofFormula(f)
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(complextypes.ApplySubstitutionOnProofList(substs_without_mm[0], append(st.GetProof(), st.GetCurrentProof())))
@@ -310,7 +310,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		// TODO : REMOVE vu qu fait dans wait father ?
 		st.SetCurrentProofRule("⊙")
 		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofFormula(f.Copy())
+		st.SetCurrentProofFormula(f)
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
@@ -331,7 +331,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			global.PrintDebug("MCR", fmt.Sprintf("SubstAndForm created : %v", subst_and_form_for_father.ToString()))
 
 			// Merge with applied subst (if any)
-			subst_and_form_for_father = complextypes.MergeSubstAndForm(subst_and_form_for_father.Copy(), st.GetAppliedSubst())
+			_, subst_and_form_for_father = complextypes.MergeSubstAndForm(subst_and_form_for_father.Copy(), st.GetAppliedSubst())
 
 			st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), subst_and_form_for_father))
 			meta_to_reintroduce = global.UnionIntList(meta_to_reintroduce, retrieveMetaFromSubst(subst_for_father))
@@ -452,7 +452,7 @@ func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTe
 		go ProofSearch(global.GetGID(), otherState, channelChild, choosenRewritten.GetSaf().ToSubstAndForm(), childNode, childNode, []int{})
 		global.PrintDebug("PS", "GO !")
 		global.IncrGoRoutine(1)
-		waitChildren(fatherId, state, c, []Communication{channelChild}, []complextypes.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce)
+		waitChildren(MakeWcdArgs(fatherId, state, c, []Communication{channelChild}, []complextypes.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
 		return true
 	} else {
 		// No rewriting possible
@@ -535,7 +535,7 @@ func manageBetaRules(fatherId uint64, state complextypes.State, c Communication,
 
 	}
 	if global.IsDestructive() {
-		waitChildren(fatherId, state, c, channels, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, currentNodeId, originalNodeId, false, childIds, metaToReintroduce)
+		waitChildren(MakeWcdArgs(fatherId, state, c, channels, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, currentNodeId, originalNodeId, false, childIds, metaToReintroduce))
 	} else {
 		global.PrintDebug("PS", "Die")
 	}

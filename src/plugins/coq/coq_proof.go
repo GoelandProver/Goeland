@@ -440,6 +440,7 @@ func createConsts(form, resultForm btps.Form, constantsCreated *btps.TermList) [
 /* Instanciates gamma rules with the actual terms. */
 func instanciate(form, resultForm btps.Form, constantsCreated *btps.TermList) []string {
 	toInstanciate := inOneButNotInOther(form, resultForm)
+	fmt.Printf(toInstanciate.ToString())
 	result := []string{}
 	for _, toInst := range toInstanciate {
 		found := false
