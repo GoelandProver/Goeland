@@ -340,23 +340,11 @@ func (st State) Copy() State {
 	new_state.SetMM(append(new_state.GetMM(), append(st.GetMM(), st.GetMC()...)...))
 	new_state.SetMC(basictypes.MetaList{})
 
-	if global.IsDestructive() {
-		// Don't need to copy because launched with the subst applied - no need to tell father I found something
-		new_state.SetAppliedSubst(MakeEmptySubstAndForm())
-	} else {
-		new_state.SetAppliedSubst(st.GetAppliedSubst())
-	}
+	new_state.SetAppliedSubst(st.GetAppliedSubst())
+	new_state.SetLastAppliedSubst(st.GetLastAppliedSubst())
+	new_state.SetSubstsFound(st.GetSubstsFound())
 
-	new_state.SetLastAppliedSubst(st.GetLastAppliedSubst()) // ND only, destructive dosen't care
-
-	if global.IsDestructive() {
-		// Don't copy in destructive mode beacause we need to discard the subst found when we recieved a wait father order
-		new_state.SetSubstsFound([]SubstAndForm{})
-	} else {
-		new_state.SetSubstsFound(st.GetSubstsFound())
-	}
-
-	// Recréer arbre
+	// Recreate code tree.
 	if global.IsLoaded("dmt") {
 		new_state.SetTreePos(st.tree_pos.MakeDataStruct(st.GetAtomic().ExtractForms(), true))
 		new_state.SetTreeNeg(st.tree_pos.MakeDataStruct(st.GetAtomic().ExtractForms(), false))
@@ -421,7 +409,6 @@ func (st *State) DispatchForm(f basictypes.FormAndTerms) {
 * TODO : remove old MM/MC
 **/
 func ApplySubstitution(st *State, saf SubstAndForm) error {
-	s := saf.GetSubst()
 	err, ms := MergeSubstAndForm(st.GetAppliedSubst(), saf.Copy())
 	if err != nil {
 		return err
@@ -429,16 +416,17 @@ func ApplySubstitution(st *State, saf SubstAndForm) error {
 
 	st.SetAppliedSubst(ms)
 	st.SetLastAppliedSubst(saf)
+	atomics := ApplySubstitutionsOnFormAndTermsList(ms.GetSubst(), st.GetAtomic())
 	//st.SetLF(ApplySubstitutionsOnFormAndTermsList(s, st.GetLF()))
-	st.SetAtomic(ApplySubstitutionsOnFormAndTermsList(s, st.GetAtomic()))
+	//st.SetAtomic(ApplySubstitutionsOnFormAndTermsList(s, st.GetAtomic()))
 	/*st.SetAlpha(ApplySubstitutionsOnFormAndTermsList(s, st.GetAlpha()))
 	st.SetBeta(ApplySubstitutionsOnFormAndTermsList(s, st.GetBeta()))
 	st.SetDelta(ApplySubstitutionsOnFormAndTermsList(s, st.GetDelta()))
 	st.SetGamma(ApplySubstitutionsOnFormAndTermsList(s, st.GetGamma()))
 	st.SetMetaGen(ApplySubstitutionOnMetaGenList(s, st.GetMetaGen()))*/
 
-	st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().ExtractForms(), true))
-	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().ExtractForms(), false))
+	st.SetTreePos(st.GetTreePos().MakeDataStruct(atomics.ExtractForms(), true))
+	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(atomics.ExtractForms(), false))
 
 	return nil
 }

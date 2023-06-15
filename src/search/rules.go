@@ -79,15 +79,17 @@ var strToPrintMap map[string]string = map[string]string{
 *	a substitution, the substitution which make the contradiction (possibly empty)
 **/
 func applyClosureRules(form basictypes.Form, state *complextypes.State) (bool, []treetypes.Substitutions) {
-	//form = complextypes.ApplySubstitutionsOnFormula(state.GetAppliedSubst().GetSubst(), form)
 	global.PrintDebug("ACR", "Start ACR")
 	var substitutions []treetypes.Substitutions
-	result := false
 
 	if searchObviousClosureRule(form) {
 		return true, substitutions
 	}
 
+	// The formula needs to be substituted as free variables are kept in the proof-search.
+	form = complextypes.ApplySubstitutionsOnFormula(state.GetAppliedSubst().GetSubst(), form)
+
+	result := false
 	substFound, subst := searchInequalities(form)
 	if substFound {
 		result = true
@@ -102,15 +104,13 @@ func applyClosureRules(form basictypes.Form, state *complextypes.State) (bool, [
 		for _, subst := range matchSubsts {
 			global.PrintDebug("ACR", fmt.Sprintf("MSL : %v", subst.ToString()))
 
-			if subst.GetSubst().Equals(treetypes.MakeEmptySubstitution()) {
-				result = true
-			} else {
-				if !searchForbidden(state, subst) {
-					result = true
-				}
+			shouldBeAdded := true
+			if global.GetCompleteness() && searchForbidden(state, subst) {
+				shouldBeAdded = false
 			}
-
-			if result {
+			if shouldBeAdded {
+				// Result should be true as at least one substitution is added in the substitutions returned to the parent.
+				result = true
 				global.PrintDebug("ACR", fmt.Sprintf("Subst found between : %v and %v : %v", form.ToString(), subst.GetForm().ToString(), subst.GetSubst().ToString()))
 				substitutions = treetypes.AppendIfNotContainsSubst(substitutions, subst.GetSubst())
 			}

@@ -93,12 +93,11 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 
 	// Remove all the metas introduced by the current node to only retrieve relevant ones for the parent.
 	resultingSubsts := []ctps.SubstAndForm{}
-	for _, subst := range substs {
-		global.PrintDebug("WC", fmt.Sprintf("Check the susbt, remove useless element and merge with applied subst :%v", subst.GetSubst().ToString()))
-		err, merged := ctps.MergeSubstAndForm(subst, args.st.GetAppliedSubst())
 
+	for _, subst := range substs {
+		err, merged := ctps.MergeSubstAndForm(subst, args.st.GetAppliedSubst())
 		if err != nil {
-			global.PrintError("WC", fmt.Sprintf("Error when merging the children substitution's with the applied one."))
+			global.PrintError("WC", fmt.Sprintf("Error: when merging the children substitution's with the applied one. It shouldn't happen as the conflict resolution has already taken place."))
 			return err
 		}
 

@@ -461,11 +461,16 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 	case quit := <-cha.quit:
 		manageQuitOrder(quit, cha, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce)
 	default:
+		err := complextypes.ApplySubstitution(&st, s)
+		if err != nil {
+			global.PrintError("PSD", "There was an error when merging substitutions. What to do?")
+		}
+
 		// Apply subst if any
 		if !s.IsEmpty() {
 			//st.SetCurrentProofRule(fmt.Sprintf("Apply substitution : %v", s.GetSubst().ToStringForProof()))
-			global.PrintDebug("PS", fmt.Sprintf("Apply Substitution : %v", s.ToString()))
-			complextypes.ApplySubstitution(&st, s)
+			//global.PrintDebug("PS", fmt.Sprintf("Apply Substitution : %v", s.ToString()))
+
 			global.PrintDebug("PS", "Searching contradiction with new atomics")
 			for _, f := range st.GetAtomic() {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
@@ -486,8 +491,8 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 		global.PrintDebug("PS", "Insert tree, searching contradiction, then dispatch")
 
 		// Applying substitutions before inserting in the code tree.
-		atomicsPlus := complextypes.ApplySubstitutionsOnFormulaList(s.GetSubst(), st.GetLF().FilterPred(true))
-		atomicsMinus := complextypes.ApplySubstitutionsOnFormulaList(s.GetSubst(), st.GetLF().FilterPred(false))
+		atomicsPlus := complextypes.ApplySubstitutionsOnFormulaList(st.GetAppliedSubst().GetSubst(), st.GetLF().FilterPred(true))
+		atomicsMinus := complextypes.ApplySubstitutionsOnFormulaList(st.GetAppliedSubst().GetSubst(), st.GetLF().FilterPred(false))
 		st.SetTreePos(st.GetTreePos().InsertFormulaListToDataStructure(atomicsPlus))
 		st.SetTreeNeg(st.GetTreeNeg().InsertFormulaListToDataStructure(atomicsMinus))
 
@@ -516,7 +521,6 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 			}
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
 			clos_res, subst := applyClosureRules(atomic, &st)
-			//global.PrintInfo("PS", "Found in new atomics.")
 			fAt := basictypes.MakeFormAndTerm(atomic, basictypes.MakeEmptyTermList())
 
 			if clos_res {

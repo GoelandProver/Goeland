@@ -215,7 +215,7 @@ func PrintSearchResult(res bool) {
 		validity = "VALID"
 
 		if global.IsConjectureFound() {
-			status = "Theorm"
+			status = "Theorem"
 		} else {
 			status = "Unsatisfiable"
 		}
@@ -331,7 +331,11 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			global.PrintDebug("MCR", fmt.Sprintf("SubstAndForm created : %v", subst_and_form_for_father.ToString()))
 
 			// Merge with applied subst (if any)
-			_, subst_and_form_for_father = complextypes.MergeSubstAndForm(subst_and_form_for_father.Copy(), st.GetAppliedSubst())
+			err, subst_and_form_for_father := complextypes.MergeSubstAndForm(subst_and_form_for_father.Copy(), st.GetAppliedSubst())
+
+			if err != nil {
+				global.PrintError("MCR", "Contradiction found between applied subst and child subst. What to do?")
+			}
 
 			st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), subst_and_form_for_father))
 			meta_to_reintroduce = global.UnionIntList(meta_to_reintroduce, retrieveMetaFromSubst(subst_for_father))
