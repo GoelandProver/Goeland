@@ -44,6 +44,15 @@ import (
 	"strings"
 )
 
+type Pair[T, U any] struct {
+	Fst T
+	Snd U
+}
+
+func MakePair[T, U any](fst T, snd U) Pair[T, U] {
+	return Pair[T, U]{Fst: fst, Snd: snd}
+}
+
 type Comparable interface {
 	Equals(any) bool
 }
@@ -70,6 +79,15 @@ func (cpbl ComparableList[T]) Contains(element T) bool {
 		}
 	}
 	return false
+}
+
+func Find[T Comparable](cpbl ComparableList[T], element T) int64 {
+	for i, el := range cpbl {
+		if el.Equals(element) {
+			return int64(i)
+		}
+	}
+	return -1
 }
 
 type Stringable interface {
@@ -99,12 +117,16 @@ func To[T any, U any](obj U) T {
 	return any(obj).(T)
 }
 
-func ConvertList[T any, U any](input []T) []U {
+func Map[T any, U any](input []T, fn func(int, T) U) []U {
 	output := []U{}
-	for _, element := range input {
-		output = append(output, any(element).(U))
+	for i, element := range input {
+		output = append(output, fn(i, element))
 	}
 	return output
+}
+
+func ConvertList[T any, U any](input []T) []U {
+	return Map[T, U](input, func(_ int, element T) U { return any(element).(U) })
 }
 
 type Copyable[T any] interface {

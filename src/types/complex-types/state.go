@@ -66,7 +66,7 @@ type State struct {
 	current_proof                         proof.ProofStruct
 	bt_on_formulas                        bool
 	forbidden                             []treetypes.Substitutions
-	global_unifiers                       []treetypes.Substitutions
+	unifier                               Unifier
 }
 
 /***********/
@@ -130,6 +130,9 @@ func (s State) GetBTOnFormulas() bool {
 }
 func (s State) GetForbiddenSubsts() []treetypes.Substitutions {
 	return s.forbidden
+}
+func (s State) GetGlobalUnifier() Unifier {
+	return s.unifier.Copy()
 }
 
 /* Setters */
@@ -204,7 +207,7 @@ func (st *State) SetCurrentProofResultFormulas(fll []proof.IntFormAndTermsList) 
 	if global.GetProof() {
 		new_fll := []proof.IntFormAndTermsList{}
 		for _, fl := range fll {
-			new_fll = append(new_fll, proof.MakeIntFormAndTermsList(fl.GetI(), ApplySubstitutionsOnFormAndTermsList(st.GetAppliedSubst().GetSubst(), fl.GetFL())))
+			new_fll = append(new_fll, proof.MakeIntFormAndTermsList(fl.GetI(), fl.GetFL()))
 		}
 		st.current_proof.SetResultFormulasProof(new_fll)
 	}
@@ -235,6 +238,9 @@ func (st *State) SetBTOnFormulas(b bool) {
 func (st *State) SetForbiddenSubsts(s []treetypes.Substitutions) {
 	st.forbidden = treetypes.CopySubstList(s)
 }
+func (s *State) SetGlobalUnifier(u Unifier) {
+	s.unifier = u.Copy()
+}
 
 /* Maker */
 func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) State {
@@ -247,7 +253,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) St
 	current_proof.SetRuleProof("Initial formula")
 	current_proof.SetFormulaProof(basictypes.MakeFormAndTerm(f.Copy(), basictypes.MakeEmptyTermList()))
 
-	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, []treetypes.Substitutions{}}
+	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier()}
 }
 
 /* Print a state */
@@ -343,6 +349,7 @@ func (st State) Copy() State {
 	new_state.SetAppliedSubst(st.GetAppliedSubst())
 	new_state.SetLastAppliedSubst(st.GetLastAppliedSubst())
 	new_state.SetSubstsFound(st.GetSubstsFound())
+	new_state.SetGlobalUnifier(st.GetGlobalUnifier().Copy())
 
 	// Recreate code tree.
 	if global.IsLoaded("dmt") {

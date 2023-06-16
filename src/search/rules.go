@@ -87,16 +87,16 @@ func applyClosureRules(form basictypes.Form, state *complextypes.State) (bool, [
 	}
 
 	// The formula needs to be substituted as free variables are kept in the proof-search.
-	form = complextypes.ApplySubstitutionsOnFormula(state.GetAppliedSubst().GetSubst(), form)
+	f := complextypes.ApplySubstitutionsOnFormula(state.GetAppliedSubst().GetSubst(), form.Copy())
 
 	result := false
-	substFound, subst := searchInequalities(form)
+	substFound, subst := searchInequalities(f)
 	if substFound {
 		result = true
 		substitutions = append(substitutions, subst)
 	}
 
-	substFound, matchSubsts := searchClosureRule(form, *state)
+	substFound, matchSubsts := searchClosureRule(f, *state)
 
 	if substFound {
 		global.PrintDebug("ACR", "Subst found")

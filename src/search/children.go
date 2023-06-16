@@ -70,6 +70,7 @@ type Result struct {
 	proof                 []proof.ProofStruct
 	node_id               int
 	original_node_id      int
+	unifier               complextypes.Unifier
 }
 
 func (r Result) GetId() uint64 {
@@ -99,8 +100,12 @@ func (r Result) GetNodeId() int {
 func (r Result) GetOriginalNodeId() int {
 	return r.original_node_id
 }
+func (r Result) GetUnifier() complextypes.Unifier {
+	return r.unifier.Copy()
+}
+
 func (r Result) Copy() Result {
-	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetForbiddenSubsts(), r.GetProof(), r.GetNodeId(), r.GetOriginalNodeId()}
+	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetForbiddenSubsts(), r.GetProof(), r.GetNodeId(), r.GetOriginalNodeId(), r.GetUnifier()}
 }
 
 /* remove a childre  from a communication list */
@@ -145,7 +150,7 @@ func sendSubToChildren(children []Communication, s complextypes.SubstAndForm) {
 	global.PrintDebug("SSTC", fmt.Sprintf("Send sub to children : %v", len(children)))
 	for i, v := range children {
 		global.PrintDebug("SSTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
-		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, treetypes.MakeEmptySubstitutionList(), nil, -1, -1}
+		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, treetypes.MakeEmptySubstitutionList(), nil, -1, -1, complextypes.MakeUnifier()}
 	}
 }
 
@@ -154,7 +159,7 @@ func sendForbiddenToChildren(children []Communication, s []treetypes.Substitutio
 	global.PrintDebug("SFTC", fmt.Sprintf("Send forbidden to children : %v", len(children)))
 	for i, v := range children {
 		global.PrintDebug("SFTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
-		v.result <- Result{global.GetGID(), true, true, complextypes.MakeEmptySubstAndForm(), []complextypes.SubstAndForm{}, s, nil, -1, -1}
+		v.result <- Result{global.GetGID(), true, true, complextypes.MakeEmptySubstAndForm(), []complextypes.SubstAndForm{}, s, nil, -1, -1, complextypes.MakeUnifier()}
 	}
 }
 
@@ -168,7 +173,7 @@ func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64
 	global.PrintDebug("SSTF", fmt.Sprintf("Meta to reintroduce: %v", global.IntListToString(meta_to_reintroduce)))
 
 	select {
-	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), treetypes.MakeEmptySubstitutionList(), st.GetProof(), node_id, original_node_id}:
+	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), treetypes.MakeEmptySubstitutionList(), st.GetProof(), node_id, original_node_id, st.GetGlobalUnifier()}:
 		if need_answer {
 			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
 		} else {
