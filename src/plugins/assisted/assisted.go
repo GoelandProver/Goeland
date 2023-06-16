@@ -267,7 +267,7 @@ func concatenateFormsToString(str string, forms basictypes.FormAndTermsList) str
 * Séléction de la règle -> afficher les formules disponnibles -> appliquer "applyXrule" sur la cible
 * Communiquer le résultat au State et le réactualiser ICI via le channel dans InitAssisted()
 *
-*
+* J'ai github
 **/
 
 func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
