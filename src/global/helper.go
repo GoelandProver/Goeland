@@ -51,6 +51,7 @@ import (
 
 var ocoq = false
 var debug = false
+var Assisted = false
 var destructive = true
 var nb_gor = 0
 var mutex sync.Mutex
@@ -112,6 +113,10 @@ func GetGID() uint64 {
 /* Getters */
 func GetDebug() bool {
 	return debug
+}
+
+func GetAssisted() bool {
+	return Assisted
 }
 
 func IsDestructive() bool {
@@ -192,6 +197,10 @@ func GetCompleteness() bool {
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
+}
+
+func SetAssisted(b bool) {
+	Assisted = b
 }
 
 func SetStart(t time.Time) {

@@ -61,11 +61,11 @@ import (
 * s : substitution to apply to the current complextypes.State
 * subst_found : treetypes.Substitutions found by this process
 **/
-func ProofSearch(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
+func ProofSearch(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
 	if global.IsDestructive() {
-		proofSearchDestructive(father_id, st, c, s, node_id, original_node_id, meta_to_reintroduce)
+		proofSearchDestructive(father_id, st, c, s, node_id, original_node_id, meta_to_reintroduce, chFyne)
 	} else {
-		proofSearchNonDestructive(father_id, st, c)
+		proofSearchNonDestructive(father_id, st, c, chFyne)
 	}
 }
 
@@ -82,7 +82,7 @@ func retrieveMetaFromSubst(s treetypes.Substitutions) []int {
 * Manage this result, dispatch the subst and recreate data strcutures.
 * Return if the branch is closed without variable from its father
 **/
-func manageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) {
+func manageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int, chFyne chan complextypes.State) {
 
 	mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
 	substs_with_mm, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
@@ -101,7 +101,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
-		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
+		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{}, chFyne)
 
 	case len(substs_without_mm) > 0:
 		global.PrintDebug("MCR", fmt.Sprintf("Contradiction found (without mm) : %v", treetypes.SubstListToString(substs_without_mm)))
@@ -115,7 +115,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(complextypes.ApplySubstitutionOnProofList(substs_without_mm[0], append(st.GetProof(), st.GetCurrentProof())))
 
-		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
+		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{}, chFyne)
 
 	case len(substs_with_mm) > 0:
 		global.PrintDebug("MCR", "Contradiction found (with mm) !")
@@ -154,46 +154,46 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 		global.PrintDebug("MCR", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 		sort.Ints(meta_to_reintroduce)
-		sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce)
+		sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce, chFyne)
 	}
 }
 
 /* Apply rules with priority (closure < rewritte < alpha < delta < closure with mm < beta < gamma) */
-func applyRules(father_id uint64, st complextypes.State, c Communication, new_atomics basictypes.FormAndTermsList, current_node_id int, original_node_id int, meta_to_reintroduce []int) {
+func applyRules(father_id uint64, st complextypes.State, c Communication, new_atomics basictypes.FormAndTermsList, current_node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
 	global.PrintDebug("AR", "ApplyRule")
 	switch {
 	// case len(meta_to_reintroduce) > 0:
 	// 	manageReintroductionRules(father_id, st, c, original_node_id, meta_to_reintroduce, new_atomics, current_node_id, false)
 
 	case len(new_atomics) > 0 && global.IsLoaded("dmt") && len(st.GetSubstsFound()) == 0:
-		manageRewritteRules(father_id, st, c, new_atomics, current_node_id, original_node_id, meta_to_reintroduce)
+		manageRewritteRules(father_id, st, c, new_atomics, current_node_id, original_node_id, meta_to_reintroduce, chFyne)
 
 	case len(st.GetAlpha()) > 0:
-		manageAlphaRules(father_id, st, c, original_node_id)
+		manageAlphaRules(father_id, st, c, original_node_id, chFyne)
 
 	case len(st.GetDelta()) > 0:
-		manageDeltaRules(father_id, st, c, original_node_id)
+		manageDeltaRules(father_id, st, c, original_node_id, chFyne)
 
 	case len(st.GetBeta()) > 0:
-		manageBetaRules(father_id, st, c, current_node_id, original_node_id, meta_to_reintroduce)
+		manageBetaRules(father_id, st, c, current_node_id, original_node_id, meta_to_reintroduce, chFyne)
 
 	case len(st.GetGamma()) > 0: //  && st.CanApplyGammaRule()
-		manageGammaRules(father_id, st, c, original_node_id)
+		manageGammaRules(father_id, st, c, original_node_id, chFyne)
 
 	case len(st.GetMetaGen()) > 0 && st.CanReintroduce():
-		manageReintroductionRules(father_id, st, c, original_node_id, meta_to_reintroduce, new_atomics, current_node_id, true)
+		manageReintroductionRules(father_id, st, c, original_node_id, meta_to_reintroduce, new_atomics, current_node_id, true, chFyne)
 
 	default:
 		visualization.WriteExchanges(father_id, st, nil, complextypes.MakeEmptySubstAndForm(), "ApplyRules - SAT")
 		st.SetCurrentProofRule("Sat")
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 		global.PrintDebug("PS", "Nothing found, return sat")
-		sendSubToFather(c, false, false, father_id, st, []complextypes.SubstAndForm{}, current_node_id, original_node_id, []int{})
+		sendSubToFather(c, false, false, father_id, st, []complextypes.SubstAndForm{}, current_node_id, original_node_id, []int{}, chFyne)
 	}
 }
 
 /* Manage Rewritte rules - return true if a rewritting rule was applied, false otherwise */
-func manageRewritteRules(father_id uint64, st complextypes.State, c Communication, new_atomics basictypes.FormAndTermsList, current_node_id int, original_node_id int, meta_to_reintroduce []int) {
+func manageRewritteRules(father_id uint64, st complextypes.State, c Communication, new_atomics basictypes.FormAndTermsList, current_node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
 	global.PrintDebug("PS", "Try rewritte rule")
 	global.PrintDebug("PS - MRR", fmt.Sprintf("Id : %v, original node id :%v", current_node_id, original_node_id))
 	remaining_atomics := new_atomics.Copy()
@@ -253,10 +253,10 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 
 						// st_copy.SetSubstsFound(st.GetSubstsFound())
 						c_child := Communication{make(chan bool), make(chan Result)}
-						go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten.GetSaf().ToSubstAndForm(), child_node, child_node, []int{})
+						go ProofSearch(global.GetGID(), st_copy, c_child, choosen_rewritten.GetSaf().ToSubstAndForm(), child_node, child_node, []int{}, chFyne)
 						global.PrintDebug("PS", "GO !")
 						global.IncrGoRoutine(1)
-						waitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, choosen_rewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, new_rewritten, current_node_id, original_node_id, false, []int{child_node}, meta_to_reintroduce)
+						WaitChildren(father_id, st, c, []Communication{c_child}, []complextypes.SubstAndForm{}, choosen_rewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, new_rewritten, current_node_id, original_node_id, false, []int{child_node}, meta_to_reintroduce, chFyne)
 						return
 					} else {
 						// Pas de réécriture disponible
@@ -273,16 +273,16 @@ func manageRewritteRules(father_id uint64, st complextypes.State, c Communicatio
 
 	// Si aucune réécriture n'a été trouvée, on relance une étape "vide"
 	st.SetLF(basictypes.MakeEmptyFormAndTermsList())
-	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), current_node_id, original_node_id, []int{})
+	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), current_node_id, original_node_id, []int{}, chFyne)
 }
 
 /* Manage alpha rules */
-func manageAlphaRules(father_id uint64, st complextypes.State, c Communication, original_node_id int) {
+func manageAlphaRules(father_id uint64, st complextypes.State, c Communication, original_node_id int, chFyne chan complextypes.State) {
 	global.PrintDebug("PS", "Alpha rule")
 	hdf := st.GetAlpha()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 	st.SetAlpha(st.GetAlpha()[1:])
-	result_forms := applyAlphaRules(hdf, &st)
+	result_forms := ApplyAlphaRules(hdf, &st)
 	st.SetLF(result_forms)
 
 	// Proof
@@ -291,16 +291,16 @@ func manageAlphaRules(father_id uint64, st complextypes.State, c Communication, 
 	st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, result_forms)})
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
-	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{})
+	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{}, chFyne)
 }
 
 /* Manage delta rules */
-func manageDeltaRules(father_id uint64, st complextypes.State, c Communication, original_node_id int) {
+func manageDeltaRules(father_id uint64, st complextypes.State, c Communication, original_node_id int, chFyne chan complextypes.State) {
 	global.PrintDebug("PS", "Delta rule")
 	hdf := st.GetDelta()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 	st.SetDelta(st.GetDelta()[1:])
-	result_forms := applyDeltaRules(hdf, &st)
+	result_forms := ApplyDeltaRules(hdf, &st)
 	st.SetLF(result_forms)
 
 	// Proof
@@ -310,15 +310,15 @@ func manageDeltaRules(father_id uint64, st complextypes.State, c Communication, 
 
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
-	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{})
+	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{}, chFyne)
 }
 
 /* Manage beta rules */
-func manageBetaRules(father_id uint64, st complextypes.State, c Communication, current_node_id int, original_node_id int, meta_to_reintroduce []int) {
+func manageBetaRules(father_id uint64, st complextypes.State, c Communication, current_node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
 	global.PrintDebug("PS", "Beta rule")
 	hdf := st.GetBeta()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
-	reslf := applyBetaRules(hdf, &st)
+	reslf := ApplyBetaRules(hdf, &st)
 	child_id_list := []int{}
 
 	// Proof
@@ -341,9 +341,9 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication, c
 		if global.IsDestructive() {
 			c_child := Communication{make(chan bool), make(chan Result)}
 			chan_tab = append(chan_tab, c_child)
-			go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm(), fl.GetI(), fl.GetI(), []int{})
+			go ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm(), fl.GetI(), fl.GetI(), []int{}, chFyne)
 		} else {
-			go ProofSearch(global.GetGID(), st_copy, c, complextypes.MakeEmptySubstAndForm(), fl.GetI(), fl.GetI(), []int{})
+			go ProofSearch(global.GetGID(), st_copy, c, complextypes.MakeEmptySubstAndForm(), fl.GetI(), fl.GetI(), []int{}, chFyne)
 		}
 
 		global.IncrGoRoutine(1)
@@ -351,14 +351,14 @@ func manageBetaRules(father_id uint64, st complextypes.State, c Communication, c
 
 	}
 	if global.IsDestructive() {
-		waitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, current_node_id, original_node_id, false, child_id_list, meta_to_reintroduce)
+		WaitChildren(father_id, st, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, current_node_id, original_node_id, false, child_id_list, meta_to_reintroduce, chFyne)
 	} else {
 		global.PrintDebug("PS", "Die")
 	}
 }
 
 /* Manage gamma rule */
-func manageGammaRules(father_id uint64, st complextypes.State, c Communication, original_node_id int) {
+func manageGammaRules(father_id uint64, st complextypes.State, c Communication, original_node_id int, chFyne chan complextypes.State) {
 	global.PrintDebug("PS", "Gamma rule")
 	hdf := st.GetGamma()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
@@ -367,7 +367,7 @@ func manageGammaRules(father_id uint64, st complextypes.State, c Communication, 
 	// Update MetaGen
 	index, new_meta_gen := basictypes.GetIndexMetaGenList(hdf, st.GetMetaGen())
 	st.SetMetaGen(new_meta_gen)
-	new_lf, new_metas := applyGammaRules(hdf, index, &st)
+	new_lf, new_metas := ApplyGammaRules(hdf, index, &st)
 	st.SetLF(new_lf)
 	st.SetMC(append(st.GetMC(), new_metas...))
 	if global.IsDestructive() {
@@ -380,11 +380,11 @@ func manageGammaRules(father_id uint64, st complextypes.State, c Communication, 
 	st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, new_lf)})
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
-	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{})
+	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{}, chFyne)
 }
 
 /* Manage reintroduction */
-func manageReintroductionRules(father_id uint64, st complextypes.State, c Communication, original_node_id int, meta_to_reintroduce []int, new_atomics basictypes.FormAndTermsList, current_node_id int, reintroducue_anyway bool) {
+func manageReintroductionRules(father_id uint64, st complextypes.State, c Communication, original_node_id int, meta_to_reintroduce []int, new_atomics basictypes.FormAndTermsList, current_node_id int, reintroducue_anyway bool, chFyne chan complextypes.State) {
 
 	current_meta_to_reintroduce := -1
 	// i := 0
@@ -425,5 +425,5 @@ func manageReintroductionRules(father_id uint64, st complextypes.State, c Commun
 	st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, basictypes.MakeSingleElementFormAndTermList(reslf))})
 	st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
-	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, meta_to_reintroduce)
+	ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, meta_to_reintroduce, chFyne)
 }

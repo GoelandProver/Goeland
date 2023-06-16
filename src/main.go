@@ -49,6 +49,10 @@ import (
 	"runtime/pprof"
 	"time"
 
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"github.com/GoelandProver/Goeland/plugins/assisted"
+
 	_ "net/http/pprof"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
@@ -84,8 +88,57 @@ var flag_ari = flag.Bool("ari", false, "Enable arithmetic module")
 var conjecture_found bool
 var flag_nb_core = flag.Int("core_limit", -1, "Number of core (default: all)")
 var flag_completeness = flag.Bool("completeness", false, "Completeness mode")
+var flag_assisted = flag.Bool("assisted", false, "Step-by-step mode used to select specific rules to specific formulae")
+
+var chMain chan bool = make(chan bool)
 
 func main() {
+	chFyne := make(chan complextypes.State, 1)
+	form, bound := mainA()
+
+	if global.GetAssisted() {
+		fmt.Printf("AZE\n")
+		// Initialisation
+		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
+
+		myApp := app.New()
+		myWindow := myApp.NewWindow("Fenetre test")
+		myWindow.Resize(fyne.NewSize(800, 560))
+		myWindow.Show()
+
+		assisted.MainWindow = myWindow
+
+		go mainB(form, bound, chFyne)
+
+		myApp.Run()
+
+		// assisted.SendChMain(chMain)
+	}
+
+}
+
+// Start solving. Called in a goroutine so that assisted mode can execute a Fyne application in main goroutine.
+func mainB(form basictypes.Form, bound int, chFyne chan complextypes.State) {
+	global.PrintDebug("MAIN", "Start search")
+	Search(form, bound, chFyne)
+
+	if *memprofile != "" {
+		f, err := os.Create(*memprofile)
+		if err != nil {
+			log.Fatal("could not create memory profile: ", err)
+		}
+		defer f.Close() // error handling omitted for example
+		runtime.GC()    // get up-to-date statistics
+		if err := pprof.WriteHeapProfile(f); err != nil {
+			log.Fatal("could not write memory profile: ", err)
+		}
+	}
+
+	chMain <- true
+}
+
+// Initialization
+func mainA() (basictypes.Form, int) {
 	initFlag()
 	initialization()
 	// go tool pprof -http=localhost:8887 cpu.prof
@@ -105,7 +158,7 @@ func main() {
 	args := os.Args
 	if len(args) < 2 {
 		fmt.Printf("%s [options] problem_file\n", os.Args[0])
-		return
+		os.Exit(1) // replaces the "return ", function type issue. -matthieu
 	}
 
 	problem := args[len(args)-1]
@@ -135,26 +188,12 @@ func main() {
 		if err != nil {
 			global.PrintDebug("MAIN", fmt.Sprintf("Typing error: %s\n", err.Error()))
 			fmt.Printf("[%.6fs][%v][Type] Error: not well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-			return
+			os.Exit(1) // replaces the "return ", function type issue. -matthieu
 		}
 		fmt.Printf("[%.6fs][%v][Type] Well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		form = formula
 	}
-
-	global.PrintDebug("MAIN", "Start search")
-	Search(form, bound)
-
-	if *memprofile != "" {
-		f, err := os.Create(*memprofile)
-		if err != nil {
-			log.Fatal("could not create memory profile: ", err)
-		}
-		defer f.Close() // error handling omitted for example
-		runtime.GC()    // get up-to-date statistics
-		if err := pprof.WriteHeapProfile(f); err != nil {
-			log.Fatal("could not write memory profile: ", err)
-		}
-	}
+	return form, bound
 }
 
 /* Manage return from search for destructive and non-destructive versions  */
@@ -215,7 +254,7 @@ func PrintResult(res bool) {
 }
 
 /* Begin the proof search */
-func Search(f basictypes.Form, bound int) {
+func Search(f basictypes.Form, bound int, chFyne chan complextypes.State) {
 	global.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", f.ToString()))
 
 	res := false
@@ -242,6 +281,7 @@ func Search(f basictypes.Form, bound int) {
 
 		global.SetNbGoroutines(0)
 		st.SetLF(basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(f, basictypes.MakeEmptyTermList())))
+
 		c := search.MakeCommunication(make(chan bool), make(chan search.Result))
 		// TODO : global quit channel in non destrutive
 
@@ -250,7 +290,8 @@ func Search(f basictypes.Form, bound int) {
 		}
 
 		node_id := global.IncrCptNode()
-		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{})
+
+		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{}, chFyne)
 		global.IncrGoRoutine(1)
 
 		global.PrintDebug("MAIN", "GO")
@@ -278,6 +319,7 @@ func Search(f basictypes.Form, bound int) {
 		global.SetNbStep(global.GetNbStep() + 1)
 	}
 	PrintResult(res)
+
 }
 
 /* Transform a list of statement into a formula */
@@ -411,6 +453,10 @@ func initFlag() {
 
 	if *flag_debug {
 		global.SetDebug(true)
+	}
+
+	if *flag_assisted {
+		global.SetAssisted(true)
 	}
 
 	if *flag_limit != -1 {

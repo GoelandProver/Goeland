@@ -189,7 +189,7 @@ func searchClosureRule(f basictypes.Form, st complextypes.State) (bool, []treety
 * Result :
 *	a formula list (conjunction)
 **/
-func applyAlphaRules(f basictypes.FormAndTerms, st *complextypes.State) basictypes.FormAndTermsList {
+func ApplyAlphaRules(f basictypes.FormAndTerms, st *complextypes.State) basictypes.FormAndTermsList {
 	var res basictypes.FormAndTermsList
 	form := f.GetForm()
 	terms := f.GetTerms()
@@ -234,7 +234,7 @@ func applyAlphaRules(f basictypes.FormAndTerms, st *complextypes.State) basictyp
 * Result :
 *	a formula list (disjunction)
 **/
-func applyBetaRules(f basictypes.FormAndTerms, st *complextypes.State) []basictypes.FormAndTermsList {
+func ApplyBetaRules(f basictypes.FormAndTerms, st *complextypes.State) []basictypes.FormAndTermsList {
 	var res []basictypes.FormAndTermsList
 	form := f.GetForm()
 	terms := f.GetTerms()
@@ -298,7 +298,7 @@ func applyBetaRules(f basictypes.FormAndTerms, st *complextypes.State) []basicty
 * Result :
 *	a formula
 **/
-func applyDeltaRules(f basictypes.FormAndTerms, st *complextypes.State) basictypes.FormAndTermsList {
+func ApplyDeltaRules(f basictypes.FormAndTerms, st *complextypes.State) basictypes.FormAndTermsList {
 	switch f.GetForm().(type) {
 	case basictypes.Not:
 		global.PrintDebug("AR", "Applying δ¬∀...")
@@ -322,7 +322,7 @@ func applyDeltaRules(f basictypes.FormAndTerms, st *complextypes.State) basictyp
 *	a formula
 *	the new metavariables
 **/
-func applyGammaRules(f basictypes.FormAndTerms, index int, st *complextypes.State) (basictypes.FormAndTermsList, basictypes.MetaList) {
+func ApplyGammaRules(f basictypes.FormAndTerms, index int, st *complextypes.State) (basictypes.FormAndTermsList, basictypes.MetaList) {
 	switch f.GetForm().(type) {
 	case basictypes.Not:
 		global.PrintDebug("AR", "Applying γ¬∃...")

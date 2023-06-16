@@ -127,7 +127,7 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 	global.PrintDebug("PS", fmt.Sprintf("Instantiate the formula : %s", reslf.ToString()))
 
 	// Apply gamma rule
-	new_lf, new_metas := applyGammaRules(reslf, index, st)
+	new_lf, new_metas := ApplyGammaRules(reslf, index, st)
 	st.SetLF(new_lf)
 	st.SetMC(append(st.GetMC(), new_metas...))
 
@@ -272,7 +272,7 @@ func manageSubstFoundNonDestructive(father_id uint64, st *complextypes.State, c 
 * s : substitution to apply to the current state
 * subst_found : treetypes.Substitutions found by this process
 **/
-func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Communication) {
+func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Communication, chFyne chan complextypes.State) {
 
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v", father_id))
@@ -290,7 +290,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 		var substs []treetypes.Substitutions
 		global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 		closed, substs = applyClosureRules(f.GetForm(), &st)
-		manageClosureRule(father_id, &st, c, substs, f, -1, -1)
+		manageClosureRule(father_id, &st, c, substs, f, -1, -1, chFyne)
 
 		if closed {
 			return
@@ -310,11 +310,11 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 
 	if form_to_instantiate == -1 {
 		global.PrintDebug("PS", "Let's apply rules !")
-		applyRules(father_id, st, c, basictypes.MakeEmptyFormAndTermsList(), -1, -1, []int{})
+		applyRules(father_id, st, c, basictypes.MakeEmptyFormAndTermsList(), -1, -1, []int{}, chFyne)
 	} else {
 		global.PrintDebug("PS", "Let's instantiate !")
 		instantiate(father_id, &st, c, form_to_instantiate, choosen_subst)
-		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1, -1, []int{})
+		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1, -1, []int{}, chFyne)
 	}
 
 }
