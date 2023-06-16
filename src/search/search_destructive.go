@@ -141,7 +141,7 @@ Result :
 
 []complextypes.SubstAndForm : substitutions list
 */
-func selectChildren(father Communication, children *[]Communication, current_subst complextypes.SubstAndForm, child_order []int) (int, []complextypes.SubstAndForm, [][]proof.ProofStruct) {
+func selectChildren(father Communication, children *[]Communication, current_subst complextypes.SubstAndForm, child_order []int) (int, []complextypes.SubstAndForm, [][]proof.ProofStruct, []complextypes.Unifier) {
 
 	proof_tab := make([][]proof.ProofStruct, len(child_order))
 
@@ -159,6 +159,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 	result_int := ERROR
 	result_subst := []complextypes.SubstAndForm{}
 	common_substs := []complextypes.SubstAndForm{}
+	unifiers := []complextypes.Unifier{}
 
 	// Counters
 	cpt_children_returning_subst := 0
@@ -205,6 +206,8 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 
 			// Manage the substitution sent by this child
 			if res.closed {
+				unifiers = append(unifiers, res.GetUnifier())
+
 				if len(res.subst_list_for_father) != 0 {
 					global.PrintDebug("SLC", fmt.Sprintf("The child %v has %v substitution(s) !", res.id, len(res.subst_list_for_father)))
 
@@ -214,7 +217,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 						// Children sent the same substitution, eventually with new forms
 						new_current_subst = current_subst.AddFormulas(res.subst_list_for_father[0].GetForm())
 					} else {
-						// Reseat at each step
+						// Reset at each step
 						common_substs = []complextypes.SubstAndForm{}
 
 						// Check if there is common substitutions
@@ -312,7 +315,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 
 	result_subst = complextypes.RemoveEmptySubstFromSubstAndFormList(result_subst)
 
-	return result_int, result_subst, proof_tab
+	return result_int, result_subst, proof_tab, unifiers
 }
 
 /**
@@ -339,6 +342,11 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 
 	case answer_father := <-c.result:
 		subst := answer_father.GetSubstForChildren()
+
+		// Update to prune everything that shouldn't happen.
+		unifier := st.GetGlobalUnifier()
+		unifier.PruneSubstitutions([]treetypes.Substitutions{subst.GetSubst()})
+
 		exchanges.WriteExchanges(father_id, st, given_substs, subst, "WaitFather")
 		global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", subst.ToString()))
 
@@ -356,7 +364,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 					subst = answer_father.GetSubstForChildren().AddFormulas(subst_sent.GetForm())
 				}
 			}
-
+			st.SetGlobalUnifier(unifier)
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst})
 			sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
 		} else {
@@ -383,6 +391,8 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			new_meta_to_reintroduce := global.InterIntList(meta_to_reintroduce, meta_to_reintroduce_from_subt)
 
 			st_copy := st.Copy()
+			st_copy.SetGlobalUnifier(unifier)
+
 			c2 := Communication{make(chan bool), make(chan Result)}
 
 			global.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", answer_father.GetSubstForChildren().GetSubst().ToString()))
@@ -408,8 +418,12 @@ func waitChildren(args wcdArgs) {
 		return
 	default:
 		global.PrintDebug("WC", fmt.Sprintf("Current substs : %v", args.currentSubst.GetSubst().ToString()))
-		status, substs, proofs := selectChildren(args.c, &args.children, args.currentSubst, args.childOrdering)
+		status, substs, proofs, unifiers := selectChildren(args.c, &args.children, args.currentSubst, args.childOrdering)
 		global.PrintDebug("WC", fmt.Sprintf("End of select - resulting substs : %v ", complextypes.SubstAndFormListToString(substs)))
+		if status == CLOSE_BY_ITSELF || status == SUBST_FOR_PARENT {
+			// Updates the global unifier using the children's. Every substitution is compatible.
+			args.st.SetGlobalUnifier(complextypes.MergeUnifierList(unifiers))
+		}
 		var err error
 
 		switch status {

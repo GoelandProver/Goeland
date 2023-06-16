@@ -109,7 +109,8 @@ func doOneStep(limit int, formula basictypes.Form) (bool, int) {
 
 	global.PrintDebug("MAIN", "GO")
 
-	result, finalProof := ManageResult(c)
+	unifier, result, finalProof := ManageResult(c)
+	finalProof = complextypes.ApplySubstitutionOnProofList(unifier.GetUnifier(), finalProof)
 	uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
 
 	global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
@@ -156,20 +157,21 @@ func printCoqOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictyp
 }
 
 /* Manage return from search for destructive and non-destructive versions  */
-func ManageResult(c Communication) (bool, []proof.ProofStruct) {
+func ManageResult(c Communication) (complextypes.Unifier, bool, []proof.ProofStruct) {
 	res := false
 	final_proof := []proof.ProofStruct{}
+	unifier := complextypes.MakeUnifier()
 
 	if global.IsDestructive() {
-		final_proof, res = manageDestructiveResult(c)
+		unifier, final_proof, res = manageDestructiveResult(c)
 	} else {
 		res = manageNotDestructiveResult(c)
 	}
 
-	return res, final_proof
+	return unifier, res, final_proof
 }
 
-func manageDestructiveResult(c Communication) ([]proof.ProofStruct, bool) {
+func manageDestructiveResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool) {
 	result := <-c.GetResult()
 
 	global.PrintDebug("MAIN", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(result.GetProof())))
@@ -181,7 +183,7 @@ func manageDestructiveResult(c Communication) ([]proof.ProofStruct, bool) {
 		global.PrintDebug("MAIN", "Close order not sent")
 	}
 
-	return result.GetProof(), result.GetClosed()
+	return result.GetUnifier(), result.GetProof(), result.GetClosed()
 }
 
 func manageNotDestructiveResult(c Communication) bool {
@@ -274,6 +276,11 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 	mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
 	substs_with_mm, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
 
+	// Add everything to the global unifier. It will get pruned later so no worries.
+	unifier := st.GetGlobalUnifier()
+	unifier.AddSubstitutions(substs)
+	st.SetGlobalUnifier(unifier)
+
 	switch {
 
 	case len(substs) == 0:
@@ -300,7 +307,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		st.SetCurrentProofFormula(f.Copy())
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
-		st.SetProof(complextypes.ApplySubstitutionOnProofList(substs_without_mm[0], append(st.GetProof(), st.GetCurrentProof())))
+		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
 

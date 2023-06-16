@@ -79,14 +79,18 @@ func (tl TermList) GetMetas() []Meta {
 	return res
 }
 
-/* Contains term list */
-func (tl TermList) Contains(t Term) bool {
-	for _, element := range tl {
-		if element.Equals(t) {
-			return true
+func (tl TermList) Find(t Term) int {
+	for i, v := range tl {
+		if v.Equals(t) {
+			return i
 		}
 	}
-	return false
+	return -1
+}
+
+/* Contains term list */
+func (tl TermList) Contains(t Term) bool {
+	return tl.Find(t) != -1
 }
 
 /* Append if not contains */

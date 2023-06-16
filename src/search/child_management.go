@@ -59,8 +59,6 @@ func (args wcdArgs) printDebugMessages() {
 
 /* Utilitary subfunctions */
 
-// TODO: POUR TOUTE FONCTION, ALIMENTER LE GLOBAL UNIFIER
-
 func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruct) error {
 	global.PrintDebug("WC", "All children has finished by themselves")
 
@@ -86,6 +84,8 @@ func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruc
 
 	xchg.WriteExchanges(args.fatherId, args.st, nil, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
+	global.PrintInfo("CCBT", args.st.GetGlobalUnifier().ToString())
+
 	sendSubToFather(args.c, true, false, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
 	return nil
 }
@@ -99,7 +99,9 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 	global.PrintDebug("WC", fmt.Sprintf("new meta to reintroduce: %v", global.IntListToString(newMetas)))
 
 	// Remove all the metas introduced by the current node to only retrieve relevant ones for the parent.
-	resultingSubsts := []ctps.SubstAndForm{}
+	resultingSubstsAndForms := []ctps.SubstAndForm{}
+	resultingSubsts := []ttps.Substitutions{}
+
 	for _, subst := range substs {
 		global.PrintDebug("WC", fmt.Sprintf("Check the susbt, remove useless element and merge with applied subst :%v", subst.GetSubst().ToString()))
 		err, merged := ctps.MergeSubstAndForm(subst, args.st.GetAppliedSubst())
@@ -120,14 +122,15 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 			// Check if the new substitution is already in the list, merge formulas
 			added := false
 			for i := 0; !added && i < len(resultingSubsts); i++ {
-				if resultingSubsts[i].GetSubst().Equals(cleaned) {
+				if resultingSubstsAndForms[i].GetSubst().Equals(cleaned) {
 					added = true
-					resultingSubsts[i] = resultingSubsts[i].AddFormulas(subst.GetForm())
+					resultingSubstsAndForms[i] = resultingSubstsAndForms[i].AddFormulas(subst.GetForm())
 				}
 			}
 
 			if !added {
-				resultingSubsts = append(resultingSubsts, substAndFormCleaned.Copy())
+				resultingSubstsAndForms = append(resultingSubstsAndForms, substAndFormCleaned.Copy())
+				resultingSubsts = append(resultingSubsts, substAndFormCleaned.GetSubst())
 			}
 
 			newMetas = global.UnionIntList(newMetas, retrieveMetaFromSubst(cleaned))
@@ -138,8 +141,10 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 		}
 	}
 
-	args.st.SetSubstsFound(ctps.RemoveEmptySubstFromSubstAndFormList(resultingSubsts))
-	xchg.WriteExchanges(args.fatherId, args.st, resultingSubsts, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all agree")
+	resultingSubstsAndForms = ctps.RemoveEmptySubstFromSubstAndFormList(resultingSubstsAndForms)
+	args.st = cleanGlobalUnifier(args.st, resultingSubsts)
+	args.st.SetSubstsFound(resultingSubstsAndForms)
+	xchg.WriteExchanges(args.fatherId, args.st, resultingSubstsAndForms, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all agree")
 
 	closeChildren(&args.children, true)
 	sendSubToFather(args.c, true, len(args.st.GetSubstsFound()) != 0, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, newMetas)
@@ -246,4 +251,12 @@ func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {
 	}
 
 	return args.st
+}
+
+func cleanGlobalUnifier(st ctps.State, substs []ttps.Substitutions) ctps.State {
+	// All remaining substitutions in the global unifier should have at least every substitution of subst.
+	unifier := st.GetGlobalUnifier()
+	unifier.PruneSubstitutions(substs)
+	st.SetGlobalUnifier(unifier)
+	return st
 }

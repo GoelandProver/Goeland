@@ -86,5 +86,5 @@ func makeSkolemFunction(args skoArgs) basictypes.Term {
 }
 
 func substAndReturn(args skoArgs, sko basictypes.Term) basictypes.Form {
-	return args.formula.ReplaceVarByTerm(args.sourceVar, complextypes.ApplySubstitutionsOnTerm(args.subst, sko))
+	return args.formula.ReplaceVarByTerm(args.sourceVar, sko)
 }

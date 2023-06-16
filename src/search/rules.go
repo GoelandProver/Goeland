@@ -87,13 +87,15 @@ func applyClosureRules(form basictypes.Form, state *complextypes.State) (bool, [
 		return true, substitutions
 	}
 
+	f := form.Copy()
+
 	substFound, subst := searchInequalities(form)
 	if substFound {
 		result = true
 		substitutions = append(substitutions, subst)
 	}
 
-	substFound, matchSubsts := searchClosureRule(form, *state)
+	substFound, matchSubsts := searchClosureRule(f, *state)
 
 	if substFound {
 		global.PrintDebug("ACR", "Subst found")
