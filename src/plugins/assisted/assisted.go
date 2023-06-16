@@ -6,9 +6,9 @@ import (
 
 	"github.com/GoelandProver/Goeland/search"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/widget"
+	// "fyne.io/fyne/v2"
+	// "fyne.io/fyne/v2/container"
+	// "fyne.io/fyne/v2/widget"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -18,6 +18,7 @@ import (
 // Used to lock for display and fmt.Scanf() purposes
 var lock_choices sync.Mutex
 
+// May be outdated with the addition of more prints
 var ruleList = map[string]string{
 	"Atomic": "X",
 	"Axiom":  "X",
@@ -46,15 +47,25 @@ var ruleList = map[string]string{
 	"g":     "G",
 }
 
-var chJesaispas chan complextypes.State = make(chan complextypes.State)
+/** WINDOW ASSETS NOTES : 06/16/2023
+* All parts of code related to visual functionnal window has been put into comments, the reason behind that
+* is the time that it would take to create a fully functionnal window, with dynamic tree visualisation, zooming
+* though it and its communication with goroutines would not have been implemented within the time I was given.
+*
+* Maybe hello to DymDym that may have to get it done later !
+**/
+
 var chRule = make(chan string, 1)
 var chFormula = make(chan int, 1)
-var MainWindow fyne.Window
+
+// var MainWindow fyne.Window // Keep the window in a global variable, so that we can update it and no need to pass it through function arguments.
 var state = make(chan complextypes.State)
 
+/*
 func SendChMain(chMain chan bool) {
 	chMain <- true
 }
+*/
 
 // Prints formulae relative to rules from a State. For terminal uses.
 func PrintFormListFromState(st complextypes.State) {
@@ -92,6 +103,7 @@ func ChooseRule(st complextypes.State) string {
 	return rule
 }
 
+// Given a string, returns the FormAndTermsList associated with that rule.
 func ChooseFormulae(rule string, st complextypes.State) basictypes.FormAndTermsList {
 	var chosenFormulae basictypes.FormAndTermsList
 	switch rule {
@@ -110,11 +122,16 @@ func ChooseFormulae(rule string, st complextypes.State) basictypes.FormAndTermsL
 	return chosenFormulae
 }
 
-func ChooseFormula(forms basictypes.FormAndTermsList) int {
-
+// Listing formulae from FormAndTermsList with an index. Might be moved to utils.go later.
+func listIndexedForms(forms basictypes.FormAndTermsList) {
 	for i, s := range forms {
 		fmt.Printf("[%d] %s\n", i, s.ToString())
 	}
+}
+
+// Choose a formula from an indexed formula list.
+func ChooseFormula(forms basictypes.FormAndTermsList) int {
+	listIndexedForms(forms)
 
 	checker1 := 0
 	var choice int
@@ -130,6 +147,8 @@ func ChooseFormula(forms basictypes.FormAndTermsList) int {
 	return choice
 }
 
+/*
+// Updates the window with applicable rules and their formulae.
 func Window(st complextypes.State) {
 	fmt.Printf("Je suis dans Window\n")
 	items := initRuleList(st)
@@ -157,6 +176,7 @@ func Window(st complextypes.State) {
 	MainWindow.SetContent(scrollContainer)
 }
 
+// Updates the window with a list of formulae.
 func WindowForms(char byte, st complextypes.State) {
 	global.PrintDebug("SBS", fmt.Sprintf("Entering formula selection"))
 	items := []string{}
@@ -221,9 +241,9 @@ func WindowForms(char byte, st complextypes.State) {
 	MainWindow.SetContent(scrollContainer)
 
 }
+*/
 
-//func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State)
-
+// Mmh subject to changes.
 func initRuleList(st complextypes.State) []string {
 	items := []string{}
 	str := ""
@@ -262,40 +282,29 @@ func concatenateFormsToString(str string, forms basictypes.FormAndTermsList) str
 	return str
 }
 
-/**
-* TODO :
-* Séléction de la règle -> afficher les formules disponnibles -> appliquer "applyXrule" sur la cible
-* Communiquer le résultat au State et le réactualiser ICI via le channel dans InitAssisted()
-*
-* J'ai github
-**/
-
+// Function to apply tabeau rules as we want, given string rule and int choice.
 func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
 	lock_choices.Lock()
 
-	Window(state1)
+	// Updates the window with the current state. Can only be done there because
+	// ApplyRulesAssisted redefines DoCorrectApplyRules in search_destructive.go
+	//Window(state1)
 
+	// Prints the state to the terminal
 	PrintFormListFromState(state1)
-
 	fmt.Printf("Which rule would you like to apply ?\n")
-
 	rule := ChooseRule(state1)
 	choice := ChooseFormula(ChooseFormulae(rule, state1))
-
 	lock_choices.Unlock()
 
-	// Mets a jour la fenetre avec le nouveau state
 	// Attends le choix fait par la fenetre
-	fmt.Printf("Coucou je suis dans applyRules\n")
 	//rule := <-chRule
-	fmt.Printf("Coucou j'ai recu rule\n")
 	//choice := <-chFormula
-	fmt.Printf("Coucou j'ai recu choice\n")
+
 	switch rule {
 	case "X":
 		/**
-		beta nequ, alpha nimp, bimp,a nn,
-		* Not yet complete for X
+		* Not yet complete for Atomics and reintroduction.
 		**/
 		global.PrintDebug("PS", "User chose Atomic rule")
 		hdf := state1.GetAtomic()[choice]
@@ -306,10 +315,10 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		// state1.SetLF(result_forms)
 	case "A":
 		global.PrintDebug("PS", "User chose Alpha rule")
-		hdf := state1.GetAlpha()[choice]
+		hdf := state1.GetAlpha()[choice] // Gets the chosen formula
 		global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 
-		state1.SetAlpha(append(state1.GetAlpha()[:choice], state1.GetAlpha()[choice+1:]...))
+		state1.SetAlpha(append(state1.GetAlpha()[:choice], state1.GetAlpha()[choice+1:]...)) // Cuts the chosen formula from the slice
 		result_forms := search.ApplyAlphaRules(hdf, &state1)
 		state1.SetLF(result_forms)
 
@@ -401,7 +410,4 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 
 		search.ProofSearch(father_id, state1, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{}, chFyne)
 	}
-
-	fmt.Printf("state : %s", state1.GetBeta())
-	fmt.Printf("Coucou j'ai passé le switch et j'ai appelé Window\n")
 }

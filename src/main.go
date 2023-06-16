@@ -49,8 +49,9 @@ import (
 	"runtime/pprof"
 	"time"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
+	//"fyne.io/fyne/v2"
+	//"fyne.io/fyne/v2/app"
+
 	"github.com/GoelandProver/Goeland/plugins/assisted"
 
 	_ "net/http/pprof"
@@ -100,19 +101,18 @@ func main() {
 		fmt.Printf("AZE\n")
 		// Initialisation
 		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
+		/*
+			myApp := app.New()
+			myWindow := myApp.NewWindow("Fenetre test")
+			myWindow.Resize(fyne.NewSize(800, 560))
+			myWindow.Show()
 
-		myApp := app.New()
-		myWindow := myApp.NewWindow("Fenetre test")
-		myWindow.Resize(fyne.NewSize(800, 560))
-		myWindow.Show()
-
-		assisted.MainWindow = myWindow
-
+			assisted.MainWindow = myWindow
+		*/
 		go mainB(form, bound, chFyne)
 
-		myApp.Run()
-
-		// assisted.SendChMain(chMain)
+		//myApp.Run()
+		<-chMain
 	}
 
 }

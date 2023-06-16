@@ -50,6 +50,7 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
+// init() func from a go file are called when the file is loaded, so DoCorrectApplyRules is always defined.
 func init() {
 	DoCorrectApplyRules = applyRules
 }
@@ -127,9 +128,9 @@ func chooseSubstitutionDestructive(subst_list []complextypes.SubstAndForm, mm []
 *   	- 0 : closed by itself
 *		- 1 : substs list is for father
 *		- 2 : substs list is for children
-		- 3 : quit order from my father
-		- 4 : wait my father
-		- 5 : open from my children - tell te other to wait me
+*		- 3 : quit order from my father
+*		- 4 : wait my father
+*		- 5 : open from my children - tell te other to wait me
 * 	[]complextypes.SubstAndForm : substitutions list
 **/
 func selectChildren(father Communication, children *[]Communication, current_subst complextypes.SubstAndForm, child_order []int) (int, []complextypes.SubstAndForm, [][]proof.ProofStruct) {
@@ -696,6 +697,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 		global.PrintDebug("PS", "Let's apply rules !")
 		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", atomics_for_dmt.ToString()))
 
+		// DoCorrectApplyRules is defined by default as ApplyRules, or to ApplyRulesAssisted if assisted flag is given.
 		go DoCorrectApplyRules(father_id, st, c, atomics_for_dmt, node_id, original_node_id, meta_to_reintroduce, chFyne)
 	}
 }
