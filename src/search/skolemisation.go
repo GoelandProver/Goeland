@@ -2,6 +2,7 @@ package search
 
 import (
 	"fmt"
+	"sync"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
@@ -17,6 +18,14 @@ type skoArgs struct {
 	symbol    basictypes.Id
 	subst     treetypes.Substitutions
 }
+
+type class struct {
+	availableForms   []basictypes.Form
+	availableSymbols []basictypes.Id
+	mu               sync.Mutex
+}
+
+var symbolMaker class
 
 /**
  * Skolemizes once the formula f.
@@ -64,7 +73,7 @@ func applySelectedSkolemisation(args skoArgs) basictypes.Form {
 		return applyInnerSkolemisation(args)
 	}
 	if global.IsOptimisedSko() {
-		return /*applyOptimisedSkolemisation(args)*/ applyInnerSkolemisation(args)
+		return applyOptimisedSkolemisation(args)
 	}
 	return applyOuterSkolemisation(args)
 }
@@ -80,6 +89,11 @@ func applyInnerSkolemisation(args skoArgs) basictypes.Form {
 	return substAndReturn(args, makeSkolemFunction(args))
 }
 
+func applyOptimisedSkolemisation(args skoArgs) basictypes.Form {
+	args.symbol = symbolMaker.make(args.formula, args.sourceVar)
+	return applyInnerSkolemisation(args)
+}
+
 // Makes a function with the given arguments and symbol. Its type is the type of the variable.
 func makeSkolemFunction(args skoArgs) basictypes.Term {
 	return basictypes.MakerFun(args.symbol, args.terms, typing.EmptyTAArray(), args.sourceVar.GetTypeHint())
@@ -87,4 +101,86 @@ func makeSkolemFunction(args skoArgs) basictypes.Term {
 
 func substAndReturn(args skoArgs, sko basictypes.Term) basictypes.Form {
 	return args.formula.ReplaceVarByTerm(args.sourceVar, sko)
+}
+
+func (c *class) make(form basictypes.Form, source basictypes.Var) basictypes.Id {
+	form = alphaConvert(basictypes.MakerEx([]basictypes.Var{source}, form), 0, make(map[basictypes.Var]basictypes.Var))
+	c.mu.Lock()
+	symbol := c.getSymbol(form, basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", source.GetName(), source.GetIndex())))
+	c.mu.Unlock()
+	return symbol
+}
+
+func (c *class) getSymbol(form basictypes.Form, defaultId basictypes.Id) basictypes.Id {
+	index := -1
+	for i, f := range c.availableForms {
+		if f.Equals(form) {
+			index = i
+			break
+		}
+	}
+
+	if index == -1 {
+		index = len(c.availableForms)
+		c.availableForms = append(c.availableForms, form)
+		c.availableSymbols = append(c.availableSymbols, defaultId)
+	}
+
+	return c.availableSymbols[index]
+}
+
+// Alpha-conversion of formulas & terms
+
+func fresh(k int) string {
+	return fmt.Sprintf("x@%d", k)
+}
+
+func alphaConvert(form basictypes.Form, k int, substitution map[basictypes.Var]basictypes.Var) basictypes.Form {
+	switch f := form.(type) {
+	case basictypes.Top, basictypes.Bot:
+		return form
+	case basictypes.Pred:
+		return basictypes.MakePred(f.GetIndex(), f.GetID(), global.Map(f.GetSubTerms(), func(_ int, t basictypes.Term) basictypes.Term { return alphaConvertTerm(t, substitution) }), f.GetTypeVars(), f.GetType())
+	case basictypes.Not:
+		return basictypes.MakeNot(f.GetIndex(), alphaConvert(f.GetForm(), k, substitution))
+	case basictypes.Imp:
+		return basictypes.MakeImp(f.GetIndex(), alphaConvert(f.GetF1(), k, substitution), alphaConvert(f.GetF2(), k, substitution))
+	case basictypes.Equ:
+		return basictypes.MakeEqu(f.GetIndex(), alphaConvert(f.GetF1(), k, substitution), alphaConvert(f.GetF2(), k, substitution))
+	case basictypes.And:
+		return basictypes.MakeAnd(f.GetIndex(), global.Map(f.FormList, func(_ int, f basictypes.Form) basictypes.Form { return alphaConvert(f, k, substitution) }))
+	case basictypes.Or:
+		return basictypes.MakeOr(f.GetIndex(), global.Map(f.FormList, func(_ int, f basictypes.Form) basictypes.Form { return alphaConvert(f, k, substitution) }))
+	case basictypes.All:
+		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
+		return basictypes.MakeAll(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
+	case basictypes.Ex:
+		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
+		return basictypes.MakeEx(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
+	}
+	return form
+}
+
+func makeConvertedVarList(k int, substitution map[basictypes.Var]basictypes.Var, vl []basictypes.Var) (int, map[basictypes.Var]basictypes.Var, []basictypes.Var) {
+	newVarList := []basictypes.Var{}
+	for i, v := range vl {
+		nv := basictypes.MakeVar(k+i, fresh(k+i), v.GetTypeApp())
+		newVarList = append(newVarList, nv)
+		substitution[v] = nv
+	}
+	return k + len(vl), substitution, newVarList
+}
+
+func alphaConvertTerm(t basictypes.Term, substitution map[basictypes.Var]basictypes.Var) basictypes.Term {
+	switch nt := t.(type) {
+	case basictypes.Var:
+		if val, ok := substitution[nt]; ok {
+			return val
+		} else {
+			return nt
+		}
+	case basictypes.Fun:
+		return basictypes.MakeFun(nt.GetID(), global.Map(nt.GetSubTerms(), func(_ int, t basictypes.Term) basictypes.Term { return alphaConvertTerm(t, substitution) }), nt.GetTypeVars(), nt.GetTypeHint())
+	}
+	return t
 }
