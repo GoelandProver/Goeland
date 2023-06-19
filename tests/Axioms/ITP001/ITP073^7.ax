@@ -1,0 +1,283 @@
+%------------------------------------------------------------------------------
+% File     : ITP073^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : quotient_sum.ax [Gau19]
+%          : HL4073^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   43 (   6 unt;  21 typ;   0 def)
+%            Number of atoms       :   80 (  13 equ;   1 cnn)
+%            Maximal formula atoms :    9 (   1 avg)
+%            Number of connectives :  578 (   1   ~;   1   |;   8   &; 526   @)
+%                                         (   7 <=>;  35  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   38 (  15 avg; 526 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :  209 ( 209   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   22 (  20 usr;   2 con; 0-8 aty)
+%            Number of variables   :  227 (   0   ^ 200   !;   1   ?; 227   :)
+%                                         (  26  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Esum_2Esum,type,
+    tyop_2Esum_2Esum: $tType > $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Esum_2E_2B_2B,type,
+    c_2Esum_2E_2B_2B: 
+      !>[A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType] : ( ( A_27a > A_27c ) > ( A_27b > A_27d ) > ( tyop_2Esum_2Esum @ A_27a @ A_27b ) > ( tyop_2Esum_2Esum @ A_27c @ A_27d ) ) ).
+
+thf(c_2Equotient__sum_2E_2B_2B_2B,type,
+    c_2Equotient__sum_2E_2B_2B_2B: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > A_27a > $o ) > ( A_27b > A_27b > $o ) > ( tyop_2Esum_2Esum @ A_27a @ A_27b ) > ( tyop_2Esum_2Esum @ A_27a @ A_27b ) > $o ) ).
+
+thf(c_2Equotient_2E_2D_2D_3E,type,
+    c_2Equotient_2E_2D_2D_3E: 
+      !>[A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType] : ( ( A_27a > A_27c ) > ( A_27b > A_27d ) > ( A_27c > A_27b ) > A_27a > A_27d ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Equotient_2E_3D_3D_3D_3E,type,
+    c_2Equotient_2E_3D_3D_3D_3E: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > A_27a > $o ) > ( A_27b > A_27b > $o ) > ( A_27a > A_27b ) > ( A_27a > A_27b ) > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Equotient_2EEQUIV,type,
+    c_2Equotient_2EEQUIV: 
+      !>[A_27a: $tType] : ( ( A_27a > A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2EF,type,
+    c_2Ebool_2EF: $o ).
+
+thf(c_2Esum_2EINL,type,
+    c_2Esum_2EINL: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > ( tyop_2Esum_2Esum @ A_27a @ A_27b ) ) ).
+
+thf(c_2Esum_2EINR,type,
+    c_2Esum_2EINR: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27b > ( tyop_2Esum_2Esum @ A_27a @ A_27b ) ) ).
+
+thf(c_2Esum_2EISL,type,
+    c_2Esum_2EISL: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Esum_2Esum @ A_27a @ A_27b ) > $o ) ).
+
+thf(c_2Esum_2EISR,type,
+    c_2Esum_2EISR: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Esum_2Esum @ A_27a @ A_27b ) > $o ) ).
+
+thf(c_2Equotient_2EQUOTIENT,type,
+    c_2Equotient_2EQUOTIENT: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > A_27a > $o ) > ( A_27a > A_27b ) > ( A_27b > A_27a ) > $o ) ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2Equotient__sum_2ESUM__REL__ind,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0P: ( A_27a > A_27a > $o ) > ( A_27b > A_27b > $o ) > ( tyop_2Esum_2Esum @ A_27a @ A_27b ) > ( tyop_2Esum_2Esum @ A_27a @ A_27b ) > $o] :
+      ( ( ! [V1R1: A_27a > A_27a > $o,V2R2: A_27b > A_27b > $o,V3a1: A_27a,V4a2: A_27a] : ( V0P @ V1R1 @ V2R2 @ ( c_2Esum_2EINL @ A_27a @ A_27b @ V3a1 ) @ ( c_2Esum_2EINL @ A_27a @ A_27b @ V4a2 ) )
+        & ! [V5R1: A_27a > A_27a > $o,V6R2: A_27b > A_27b > $o,V7b1: A_27b,V8b2: A_27b] : ( V0P @ V5R1 @ V6R2 @ ( c_2Esum_2EINR @ A_27a @ A_27b @ V7b1 ) @ ( c_2Esum_2EINR @ A_27a @ A_27b @ V8b2 ) )
+        & ! [V9R1: A_27a > A_27a > $o,V10R2: A_27b > A_27b > $o,V11a1: A_27a,V12b2: A_27b] : ( V0P @ V9R1 @ V10R2 @ ( c_2Esum_2EINL @ A_27a @ A_27b @ V11a1 ) @ ( c_2Esum_2EINR @ A_27a @ A_27b @ V12b2 ) )
+        & ! [V13R1: A_27a > A_27a > $o,V14R2: A_27b > A_27b > $o,V15b1: A_27b,V16a2: A_27a] : ( V0P @ V13R1 @ V14R2 @ ( c_2Esum_2EINR @ A_27a @ A_27b @ V15b1 ) @ ( c_2Esum_2EINL @ A_27a @ A_27b @ V16a2 ) ) )
+     => ! [V17v: A_27a > A_27a > $o,V18v1: A_27b > A_27b > $o,V19v2: tyop_2Esum_2Esum @ A_27a @ A_27b,V20v3: tyop_2Esum_2Esum @ A_27a @ A_27b] : ( V0P @ V17v @ V18v1 @ V19v2 @ V20v3 ) ) ).
+
+thf(thm_2Equotient__sum_2ESUM__REL__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0b2: A_27b,V1b1: A_27b,V2a2: A_27a,V3a1: A_27a,V4R2: A_27b > A_27b > $o,V5R1: A_27a > A_27a > $o] :
+      ( ( ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ V5R1 @ V4R2 @ ( c_2Esum_2EINL @ A_27a @ A_27b @ V3a1 ) @ ( c_2Esum_2EINL @ A_27a @ A_27b @ V2a2 ) )
+        = ( V5R1 @ V3a1 @ V2a2 ) )
+      & ( ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ V5R1 @ V4R2 @ ( c_2Esum_2EINR @ A_27a @ A_27b @ V1b1 ) @ ( c_2Esum_2EINR @ A_27a @ A_27b @ V0b2 ) )
+        = ( V4R2 @ V1b1 @ V0b2 ) )
+      & ( ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ V5R1 @ V4R2 @ ( c_2Esum_2EINL @ A_27a @ A_27b @ V3a1 ) @ ( c_2Esum_2EINR @ A_27a @ A_27b @ V0b2 ) )
+        = c_2Ebool_2EF )
+      & ( ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ V5R1 @ V4R2 @ ( c_2Esum_2EINR @ A_27a @ A_27b @ V1b1 ) @ ( c_2Esum_2EINL @ A_27a @ A_27b @ V2a2 ) )
+        = c_2Ebool_2EF ) ) ).
+
+thf(thm_2Equotient__sum_2ESUM__REL__EQ,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ ( c_2Emin_2E_3D @ A_27a ) @ ( c_2Emin_2E_3D @ A_27b ) )
+      = ( c_2Emin_2E_3D @ ( tyop_2Esum_2Esum @ A_27a @ A_27b ) ) ) ).
+
+thf(thm_2Equotient__sum_2ESUM__EQUIV,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0R1: A_27a > A_27a > $o,V1R2: A_27b > A_27b > $o] :
+      ( ( c_2Equotient_2EEQUIV @ A_27a @ V0R1 )
+     => ( ( c_2Equotient_2EEQUIV @ A_27b @ V1R2 )
+       => ( c_2Equotient_2EEQUIV @ ( tyop_2Esum_2Esum @ A_27a @ A_27b ) @ ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ V0R1 @ V1R2 ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2ESUM__QUOTIENT,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27c,V2rep1: A_27c > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27c @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27d,V5rep2: A_27d > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27d @ V3R2 @ V4abs2 @ V5rep2 )
+         => ( c_2Equotient_2EQUOTIENT @ ( tyop_2Esum_2Esum @ A_27a @ A_27b ) @ ( tyop_2Esum_2Esum @ A_27c @ A_27d ) @ ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ V0R1 @ V3R2 ) @ ( c_2Esum_2E_2B_2B @ A_27a @ A_27b @ A_27c @ A_27d @ V1abs1 @ V4abs2 ) @ ( c_2Esum_2E_2B_2B @ A_27c @ A_27d @ A_27a @ A_27b @ V2rep1 @ V5rep2 ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2EINL__PRS,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27c,V2rep1: A_27c > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27c @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27d,V5rep2: A_27d > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27d @ V3R2 @ V4abs2 @ V5rep2 )
+         => ! [V6a: A_27c] :
+              ( ( c_2Esum_2EINL @ A_27c @ A_27d @ V6a )
+              = ( c_2Esum_2E_2B_2B @ A_27a @ A_27b @ A_27c @ A_27d @ V1abs1 @ V4abs2 @ ( c_2Esum_2EINL @ A_27a @ A_27b @ ( V2rep1 @ V6a ) ) ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2EINL__RSP,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27c,V2rep1: A_27c > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27c @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27d,V5rep2: A_27d > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27d @ V3R2 @ V4abs2 @ V5rep2 )
+         => ! [V6a1: A_27a,V7a2: A_27a] :
+              ( ( V0R1 @ V6a1 @ V7a2 )
+             => ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ V0R1 @ V3R2 @ ( c_2Esum_2EINL @ A_27a @ A_27b @ V6a1 ) @ ( c_2Esum_2EINL @ A_27a @ A_27b @ V7a2 ) ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2EINR__PRS,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27c,V2rep1: A_27c > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27c @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27d,V5rep2: A_27d > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27d @ V3R2 @ V4abs2 @ V5rep2 )
+         => ! [V6b: A_27d] :
+              ( ( c_2Esum_2EINR @ A_27c @ A_27d @ V6b )
+              = ( c_2Esum_2E_2B_2B @ A_27a @ A_27b @ A_27c @ A_27d @ V1abs1 @ V4abs2 @ ( c_2Esum_2EINR @ A_27a @ A_27b @ ( V5rep2 @ V6b ) ) ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2EINR__RSP,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27c,V2rep1: A_27c > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27c @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27d,V5rep2: A_27d > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27d @ V3R2 @ V4abs2 @ V5rep2 )
+         => ! [V6b1: A_27b,V7b2: A_27b] :
+              ( ( V3R2 @ V6b1 @ V7b2 )
+             => ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ V0R1 @ V3R2 @ ( c_2Esum_2EINR @ A_27a @ A_27b @ V6b1 ) @ ( c_2Esum_2EINR @ A_27a @ A_27b @ V7b2 ) ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2EISL__PRS,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27c,V2rep1: A_27c > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27c @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27d,V5rep2: A_27d > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27d @ V3R2 @ V4abs2 @ V5rep2 )
+         => ! [V6a: tyop_2Esum_2Esum @ A_27c @ A_27d] :
+              ( ( c_2Esum_2EISL @ A_27c @ A_27d @ V6a )
+              = ( c_2Esum_2EISL @ A_27a @ A_27b @ ( c_2Esum_2E_2B_2B @ A_27c @ A_27d @ A_27a @ A_27b @ V2rep1 @ V5rep2 @ V6a ) ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2EISL__RSP,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27c,V2rep1: A_27c > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27c @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27d,V5rep2: A_27d > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27d @ V3R2 @ V4abs2 @ V5rep2 )
+         => ! [V6a1: tyop_2Esum_2Esum @ A_27a @ A_27b,V7a2: tyop_2Esum_2Esum @ A_27a @ A_27b] :
+              ( ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ V0R1 @ V3R2 @ V6a1 @ V7a2 )
+             => ( ( c_2Esum_2EISL @ A_27a @ A_27b @ V6a1 )
+                = ( c_2Esum_2EISL @ A_27a @ A_27b @ V7a2 ) ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2EISR__PRS,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27c,V2rep1: A_27c > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27c @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27d,V5rep2: A_27d > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27d @ V3R2 @ V4abs2 @ V5rep2 )
+         => ! [V6a: tyop_2Esum_2Esum @ A_27c @ A_27d] :
+              ( ( c_2Esum_2EISR @ A_27c @ A_27d @ V6a )
+              = ( c_2Esum_2EISR @ A_27a @ A_27b @ ( c_2Esum_2E_2B_2B @ A_27c @ A_27d @ A_27a @ A_27b @ V2rep1 @ V5rep2 @ V6a ) ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2EISR__RSP,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27c,V2rep1: A_27c > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27c @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27d,V5rep2: A_27d > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27d @ V3R2 @ V4abs2 @ V5rep2 )
+         => ! [V6a1: tyop_2Esum_2Esum @ A_27a @ A_27b,V7a2: tyop_2Esum_2Esum @ A_27a @ A_27b] :
+              ( ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27b @ V0R1 @ V3R2 @ V6a1 @ V7a2 )
+             => ( ( c_2Esum_2EISR @ A_27a @ A_27b @ V6a1 )
+                = ( c_2Esum_2EISR @ A_27a @ A_27b @ V7a2 ) ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2ESUM__MAP__PRS,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,A_27e: $tType,A_27f: $tType,A_27g: $tType,A_27h: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27e,V2rep1: A_27e > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27e @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27f,V5rep2: A_27f > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27f @ V3R2 @ V4abs2 @ V5rep2 )
+         => ! [V6R3: A_27c > A_27c > $o,V7abs3: A_27c > A_27g,V8rep3: A_27g > A_27c] :
+              ( ( c_2Equotient_2EQUOTIENT @ A_27c @ A_27g @ V6R3 @ V7abs3 @ V8rep3 )
+             => ! [V9R4: A_27d > A_27d > $o,V10abs4: A_27d > A_27h,V11rep4: A_27h > A_27d] :
+                  ( ( c_2Equotient_2EQUOTIENT @ A_27d @ A_27h @ V9R4 @ V10abs4 @ V11rep4 )
+                 => ! [V12f: A_27e > A_27f,V13g: A_27g > A_27h] :
+                      ( ( c_2Esum_2E_2B_2B @ A_27e @ A_27g @ A_27f @ A_27h @ V12f @ V13g )
+                      = ( c_2Equotient_2E_2D_2D_3E @ ( tyop_2Esum_2Esum @ A_27e @ A_27g ) @ ( tyop_2Esum_2Esum @ A_27b @ A_27d ) @ ( tyop_2Esum_2Esum @ A_27a @ A_27c ) @ ( tyop_2Esum_2Esum @ A_27f @ A_27h ) @ ( c_2Esum_2E_2B_2B @ A_27e @ A_27g @ A_27a @ A_27c @ V2rep1 @ V8rep3 ) @ ( c_2Esum_2E_2B_2B @ A_27b @ A_27d @ A_27f @ A_27h @ V4abs2 @ V10abs4 ) @ ( c_2Esum_2E_2B_2B @ A_27a @ A_27c @ A_27b @ A_27d @ ( c_2Equotient_2E_2D_2D_3E @ A_27a @ A_27f @ A_27e @ A_27b @ V1abs1 @ V5rep2 @ V12f ) @ ( c_2Equotient_2E_2D_2D_3E @ A_27c @ A_27h @ A_27g @ A_27d @ V7abs3 @ V11rep4 @ V13g ) ) ) ) ) ) ) ) ).
+
+thf(thm_2Equotient__sum_2ESUM__MAP__RSP,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,A_27d: $tType,A_27e: $tType,A_27f: $tType,A_27g: $tType,A_27h: $tType,V0R1: A_27a > A_27a > $o,V1abs1: A_27a > A_27e,V2rep1: A_27e > A_27a] :
+      ( ( c_2Equotient_2EQUOTIENT @ A_27a @ A_27e @ V0R1 @ V1abs1 @ V2rep1 )
+     => ! [V3R2: A_27b > A_27b > $o,V4abs2: A_27b > A_27f,V5rep2: A_27f > A_27b] :
+          ( ( c_2Equotient_2EQUOTIENT @ A_27b @ A_27f @ V3R2 @ V4abs2 @ V5rep2 )
+         => ! [V6R3: A_27c > A_27c > $o,V7abs3: A_27c > A_27g,V8rep3: A_27g > A_27c] :
+              ( ( c_2Equotient_2EQUOTIENT @ A_27c @ A_27g @ V6R3 @ V7abs3 @ V8rep3 )
+             => ! [V9R4: A_27d > A_27d > $o,V10abs4: A_27d > A_27h,V11rep4: A_27h > A_27d] :
+                  ( ( c_2Equotient_2EQUOTIENT @ A_27d @ A_27h @ V9R4 @ V10abs4 @ V11rep4 )
+                 => ! [V12f1: A_27a > A_27b,V13f2: A_27a > A_27b,V14g1: A_27c > A_27d,V15g2: A_27c > A_27d] :
+                      ( ( ( c_2Equotient_2E_3D_3D_3D_3E @ A_27a @ A_27b @ V0R1 @ V3R2 @ V12f1 @ V13f2 )
+                        & ( c_2Equotient_2E_3D_3D_3D_3E @ A_27c @ A_27d @ V6R3 @ V9R4 @ V14g1 @ V15g2 ) )
+                     => ( c_2Equotient_2E_3D_3D_3D_3E @ ( tyop_2Esum_2Esum @ A_27a @ A_27c ) @ ( tyop_2Esum_2Esum @ A_27b @ A_27d ) @ ( c_2Equotient__sum_2E_2B_2B_2B @ A_27a @ A_27c @ V0R1 @ V6R3 ) @ ( c_2Equotient__sum_2E_2B_2B_2B @ A_27b @ A_27d @ V3R2 @ V9R4 ) @ ( c_2Esum_2E_2B_2B @ A_27a @ A_27c @ A_27b @ A_27d @ V12f1 @ V14g1 ) @ ( c_2Esum_2E_2B_2B @ A_27a @ A_27c @ A_27b @ A_27d @ V13f2 @ V15g2 ) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

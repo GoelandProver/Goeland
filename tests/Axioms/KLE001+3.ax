@@ -1,0 +1,45 @@
+%------------------------------------------------------------------------------
+% File     : KLE001+3 : TPTP v8.1.2. Released v3.6.0.
+% Domain   : Kleene Algebra
+% Axioms   : Universal characterisation of meet
+% Version  : [Hoe08] axioms.
+% English  :
+
+% Refs     : [Hoe08] Hoefner (2008), Email to G. Sutcliffe
+% Source   : [Hoe08]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    2 (   0 unt;   0 def)
+%            Number of atoms       :   10 (   0 equ)
+%            Maximal formula atoms :    6 (   5 avg)
+%            Number of connectives :    8 (   0   ~;   0   |;   4   &)
+%                                         (   3 <=>;   1  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   10 (   9 avg)
+%            Maximal term depth    :    1 (   1 avg)
+%            Number of predicates  :    3 (   3 usr;   0 prp; 2-3 aty)
+%            Number of functors    :    0 (   0 usr;   0 con; --- aty)
+%            Number of variables   :    8 (   8   !;   0   ?)
+% SPC      : 
+
+% Comments : Requires KLE001+0.ax, KLE002+0.ax or KLE003+0.ax
+%------------------------------------------------------------------------------
+fof(ismeet,axiom,
+    ! [X0,X1,X2] :
+      ( ismeet(X2,X0,X1)
+    <=> ( leq(X2,X0)
+        & leq(X2,X1)
+        & ! [X3] :
+            ( ( leq(X3,X0)
+              & leq(X3,X1) )
+           => leq(X3,X2) ) ) ) ).
+
+fof(ismeetu,axiom,
+    ! [X0,X1,X2] :
+      ( ismeetu(X2,X0,X1)
+    <=> ! [X3] :
+          ( ( leq(X3,X0)
+            & leq(X3,X1) )
+        <=> leq(X3,X2) ) ) ).
+
+%------------------------------------------------------------------------------

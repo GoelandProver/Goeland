@@ -95,6 +95,9 @@ func (u Unifier) ToString() string {
 	str := "object Unifier{\n"
 	for _, unifier := range u.localUnifiers {
 		str += "\t { " + strings.Join(Map(unifier, func(index int, element int64) string {
+			if element == UNMAPPED {
+				return fmt.Sprintf("(%s: UNMAPPED)", u.availableMetaList[index].ToString())
+			}
 			meta, term := u.unmaps(int64(index), element)
 			return fmt.Sprintf("(%s -> %s)", meta.ToString(), term.ToString())
 		}), ", ") + " }\n"
@@ -226,7 +229,11 @@ func (u *Unifier) addSymetricDifference(unifierIndex int64, needAdded substituti
 
 /** Adds a local unifier from an uncompatible substitution sent. */
 func (u Unifier) shouldAddNewLocalUnifier(reference substitutions, old substitutions) substitutions {
-	cp := make(substitutions, len(reference))
+	size := len(reference)
+	if len(old) > size {
+		size = len(old)
+	}
+	cp := make(substitutions, size)
 	copy(cp, reference)
 
 	for i, v := range old {
@@ -298,8 +305,10 @@ func appendIfNeeded(newUnifiers []substitutions, currentUnifier substitutions) [
 func (u Unifier) makeUnifier(index int) ttps.Substitutions {
 	unifier := ttps.Substitutions{}
 	for i, v := range u.localUnifiers[index] {
-		meta, term := u.unmaps(int64(i), int64(v))
-		unifier = append(unifier, ttps.MakeSubstitution(meta, term))
+		if v != UNMAPPED {
+			meta, term := u.unmaps(int64(i), int64(v))
+			unifier = append(unifier, ttps.MakeSubstitution(meta, term))
+		}
 	}
 	return unifier
 }

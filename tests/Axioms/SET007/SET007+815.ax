@@ -1,0 +1,689 @@
+%------------------------------------------------------------------------------
+% File     : SET007+815 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : The Class of Series-Parallel Graphs.  Part III
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : neckla_3 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   66 (   4 unt;   0 def)
+%            Number of atoms       :  402 (  35 equ)
+%            Maximal formula atoms :   18 (   6 avg)
+%            Number of connectives :  403 (  67   ~;   8   |; 183   &)
+%                                         (   8 <=>; 137  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   7 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   36 (  35 usr;   0 prp; 1-4 aty)
+%            Number of functors    :   38 (  38 usr;   8 con; 0-8 aty)
+%            Number of variables   :  153 ( 151   !;   2   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_neckla_3,axiom,
+    ! [A,B] :
+      ( ( v1_realset1(A)
+        & v1_realset1(B) )
+     => ! [C] :
+          ( m1_relset_1(C,A,B)
+         => ( v1_finset_1(C)
+            & v1_realset1(C) ) ) ) ).
+
+fof(cc2_neckla_3,axiom,
+    ! [A] :
+      ( v1_realset1(A)
+     => ! [B] :
+          ( m1_relset_1(B,A,A)
+         => ( v1_relat_2(B)
+            & v3_relat_2(B)
+            & v7_relat_2(B)
+            & v8_relat_2(B)
+            & v1_finset_1(B)
+            & v1_realset1(B) ) ) ) ).
+
+fof(rc1_neckla_3,axiom,
+    ? [A] :
+      ( l1_orders_2(A)
+      & ~ v3_struct_0(A)
+      & v1_orders_2(A)
+      & v1_necklace(A)
+      & v3_necklace(A)
+      & v6_group_1(A) ) ).
+
+fof(cc3_neckla_3,axiom,
+    ! [A] :
+      ( ( v3_necklace(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_yellow_0(B,A)
+         => ( v4_yellow_0(B,A)
+           => ( v3_necklace(B)
+              & v4_yellow_0(B,A) ) ) ) ) ).
+
+fof(cc4_neckla_3,axiom,
+    ! [A] :
+      ( ( v1_necklace(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_yellow_0(B,A)
+         => ( v4_yellow_0(B,A)
+           => ( v1_necklace(B)
+              & v4_yellow_0(B,A) ) ) ) ) ).
+
+fof(fc1_neckla_3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A)
+        & l1_orders_2(B) )
+     => ( ~ v3_struct_0(k1_neckla_2(A,B))
+        & v1_orders_2(k1_neckla_2(A,B)) ) ) ).
+
+fof(fc2_neckla_3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A)
+        & l1_orders_2(B) )
+     => ( ~ v3_struct_0(k2_neckla_2(A,B))
+        & v1_orders_2(k2_neckla_2(A,B)) ) ) ).
+
+fof(fc3_neckla_3,axiom,
+    ! [A,B] :
+      ( ( l1_orders_2(A)
+        & ~ v3_struct_0(B)
+        & l1_orders_2(B) )
+     => ( ~ v3_struct_0(k1_neckla_2(A,B))
+        & v1_orders_2(k1_neckla_2(A,B)) ) ) ).
+
+fof(fc4_neckla_3,axiom,
+    ! [A,B] :
+      ( ( l1_orders_2(A)
+        & ~ v3_struct_0(B)
+        & l1_orders_2(B) )
+     => ( ~ v3_struct_0(k2_neckla_2(A,B))
+        & v1_orders_2(k2_neckla_2(A,B)) ) ) ).
+
+fof(fc5_neckla_3,axiom,
+    ! [A,B] :
+      ( ( v6_group_1(A)
+        & l1_orders_2(A)
+        & v6_group_1(B)
+        & l1_orders_2(B) )
+     => ( v1_orders_2(k1_neckla_2(A,B))
+        & v6_group_1(k1_neckla_2(A,B)) ) ) ).
+
+fof(fc6_neckla_3,axiom,
+    ! [A,B] :
+      ( ( v6_group_1(A)
+        & l1_orders_2(A)
+        & v6_group_1(B)
+        & l1_orders_2(B) )
+     => ( v1_orders_2(k2_neckla_2(A,B))
+        & v6_group_1(k2_neckla_2(A,B)) ) ) ).
+
+fof(fc7_neckla_3,axiom,
+    ! [A,B] :
+      ( ( v1_necklace(A)
+        & l1_orders_2(A)
+        & v1_necklace(B)
+        & l1_orders_2(B) )
+     => ( v1_orders_2(k1_neckla_2(A,B))
+        & v1_necklace(k1_neckla_2(A,B)) ) ) ).
+
+fof(fc8_neckla_3,axiom,
+    ! [A,B] :
+      ( ( v1_necklace(A)
+        & l1_orders_2(A)
+        & v1_necklace(B)
+        & l1_orders_2(B) )
+     => ( v1_orders_2(k2_neckla_2(A,B))
+        & v1_necklace(k2_neckla_2(A,B)) ) ) ).
+
+fof(fc9_neckla_3,axiom,
+    ! [A,B] :
+      ( ( v3_necklace(A)
+        & l1_orders_2(A)
+        & v3_necklace(B)
+        & l1_orders_2(B) )
+     => ( v1_orders_2(k1_neckla_2(A,B))
+        & v3_necklace(k1_neckla_2(A,B)) ) ) ).
+
+fof(fc10_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_orders_2(k3_necklace(A))
+        & v3_necklace(k3_necklace(A)) ) ) ).
+
+fof(fc11_neckla_3,axiom,
+    ! [A] :
+      ( ( v1_necklace(A)
+        & l1_orders_2(A) )
+     => ( v1_orders_2(k3_necklace(A))
+        & v1_necklace(k3_necklace(A))
+        & v3_necklace(k3_necklace(A)) ) ) ).
+
+fof(cc5_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( ~ v3_struct_0(A)
+          & v1_orders_2(A)
+          & v3_realset2(A) )
+       => ( ~ v3_struct_0(A)
+          & v1_neckla_2(A) ) ) ) ).
+
+fof(cc6_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v3_struct_0(A)
+       => v1_neckla_3(A) ) ) ).
+
+fof(cc7_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( ~ v3_struct_0(A)
+          & v16_waybel_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v1_neckla_3(A) ) ) ) ).
+
+fof(cc8_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_orders_2(A)
+          & v1_neckla_3(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_orders_2(A)
+          & v16_waybel_0(A)
+          & v1_neckla_3(A) ) ) ) ).
+
+fof(fc12_neckla_3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => ~ v1_xboole_0(k1_neckla_3(A,B)) ) ).
+
+fof(t1_neckla_3,axiom,
+    ! [A,B] : k2_partfun1(A,A,k6_partfun1(A),B) = k3_xboole_0(k6_partfun1(A),k2_zfmisc_1(B,B)) ).
+
+fof(t2_neckla_3,axiom,
+    ! [A,B,C,D] : k6_partfun1(k2_enumset1(A,B,C,D)) = k2_enumset1(k4_tarski(A,A),k4_tarski(B,B),k4_tarski(C,C),k4_tarski(D,D)) ).
+
+fof(t3_neckla_3,axiom,
+    ! [A,B,C,D,E,F,G,H] : k2_zfmisc_1(k2_enumset1(A,B,C,D),k2_enumset1(E,F,G,H)) = k2_xboole_0(k6_enumset1(k4_tarski(A,E),k4_tarski(A,F),k4_tarski(B,E),k4_tarski(B,F),k4_tarski(A,G),k4_tarski(A,H),k4_tarski(B,G),k4_tarski(B,H)),k6_enumset1(k4_tarski(C,E),k4_tarski(C,F),k4_tarski(D,E),k4_tarski(D,F),k4_tarski(C,G),k4_tarski(C,H),k4_tarski(D,G),k4_tarski(D,H))) ).
+
+fof(t4_neckla_3,axiom,
+    ! [A] :
+      ( v1_realset1(A)
+     => ! [B] :
+          ( m2_relset_1(B,A,A)
+         => ~ ( ~ v1_xboole_0(B)
+              & ! [C] : B != k1_tarski(k4_tarski(C,C)) ) ) ) ).
+
+fof(t5_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_realset1(A) )
+     => ! [B] :
+          ( m2_relset_1(B,A,A)
+         => r3_relat_2(B,A) ) ) ).
+
+fof(t6_neckla_3,axiom,
+    ! [A] :
+      ( ( v1_necklace(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => ~ ( k1_card_1(u1_struct_0(A)) = np__2
+          & ! [B,C] :
+              ~ ( u1_struct_0(A) = k2_tarski(B,C)
+                & ( u1_orders_2(A) = k2_tarski(k4_tarski(B,C),k4_tarski(C,B))
+                  | u1_orders_2(A) = k1_xboole_0 ) ) ) ) ).
+
+fof(t7_neckla_3,axiom,
+    ! [A] :
+      ( ( v3_necklace(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v3_necklace(B)
+            & l1_orders_2(B) )
+         => ( r1_xboole_0(u1_struct_0(A),u1_struct_0(B))
+           => v3_necklace(k2_neckla_2(A,B)) ) ) ) ).
+
+fof(t8_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( l1_orders_2(B)
+         => ( k1_neckla_2(A,B) = k1_neckla_2(B,A)
+            & k2_neckla_2(A,B) = k2_neckla_2(B,A) ) ) ) ).
+
+fof(t9_neckla_3,axiom,
+    ! [A] :
+      ( ( v3_necklace(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( l1_orders_2(B)
+         => ! [C] :
+              ( l1_orders_2(C)
+             => ( ( A = k1_neckla_2(B,C)
+                  | A = k2_neckla_2(B,C) )
+               => ( v3_necklace(B)
+                  & v3_necklace(C) ) ) ) ) ) ).
+
+fof(t10_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( l1_orders_2(B)
+         => ! [C] :
+              ( l1_orders_2(C)
+             => ( r1_xboole_0(u1_struct_0(B),u1_struct_0(C))
+               => ( ( g1_orders_2(u1_struct_0(A),u1_orders_2(A)) != k1_neckla_2(B,C)
+                    & g1_orders_2(u1_struct_0(A),u1_orders_2(A)) != k2_neckla_2(B,C) )
+                  | ( v4_yellow_0(B,A)
+                    & m1_yellow_0(B,A)
+                    & v4_yellow_0(C,A)
+                    & m1_yellow_0(C,A) ) ) ) ) ) ) ).
+
+fof(t11_neckla_3,axiom,
+    u1_orders_2(k3_necklace(k4_necklace(np__4))) = k4_enumset1(k4_tarski(np__0,np__2),k4_tarski(np__2,np__0),k4_tarski(np__0,np__3),k4_tarski(np__3,np__0),k4_tarski(np__1,np__3),k4_tarski(np__3,np__1)) ).
+
+fof(t12_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => r1_xboole_0(u1_orders_2(A),u1_orders_2(k3_necklace(A))) ) ).
+
+fof(t13_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => r1_xboole_0(k6_partfun1(u1_struct_0(A)),u1_orders_2(k3_necklace(A))) ) ).
+
+fof(t14_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)) = k2_xboole_0(k3_eqrel_1(u1_struct_0(A),k6_partfun1(u1_struct_0(A)),u1_orders_2(A)),u1_orders_2(k3_necklace(A))) ) ).
+
+fof(t15_neckla_3,axiom,
+    ! [A] :
+      ( ( v1_orders_2(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => ( v3_realset2(A)
+       => k3_necklace(A) = A ) ) ).
+
+fof(t16_neckla_3,axiom,
+    ! [A] :
+      ( ( v1_orders_2(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => k3_necklace(k3_necklace(A)) = A ) ).
+
+fof(t17_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( l1_orders_2(B)
+         => ( r1_xboole_0(u1_struct_0(A),u1_struct_0(B))
+           => k3_necklace(k1_neckla_2(A,B)) = k2_neckla_2(k3_necklace(A),k3_necklace(B)) ) ) ) ).
+
+fof(t18_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( l1_orders_2(B)
+         => ( r1_xboole_0(u1_struct_0(A),u1_struct_0(B))
+           => k3_necklace(k2_neckla_2(A,B)) = k1_neckla_2(k3_necklace(A),k3_necklace(B)) ) ) ) ).
+
+fof(t19_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( ( v4_yellow_0(B,A)
+            & m1_yellow_0(B,A) )
+         => u1_orders_2(k3_necklace(B)) = k2_wellord1(u1_orders_2(k3_necklace(A)),u1_struct_0(k3_necklace(B))) ) ) ).
+
+fof(t20_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k3_necklace(A)))
+             => ( B = C
+               => k3_necklace(k5_yellow_0(A,k6_subset_1(u1_struct_0(A),k2_pre_topc(A),k1_struct_0(A,B)))) = k5_yellow_0(k3_necklace(A),k6_subset_1(u1_struct_0(k3_necklace(A)),k2_pre_topc(k3_necklace(A)),k1_struct_0(k3_necklace(A),C))) ) ) ) ) ).
+
+fof(t21_neckla_3,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( l1_orders_2(B)
+         => ( ? [C] :
+                ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B))
+                & ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ( r2_hidden(k4_tarski(D,E),u1_orders_2(A))
+                        <=> r2_hidden(k4_tarski(k1_funct_1(C,D),k1_funct_1(C,E)),u1_orders_2(B)) ) ) ) )
+          <=> r2_necklace(A,B) ) ) ) ).
+
+fof(t22_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v4_yellow_0(B,A)
+            & m1_yellow_0(B,A) )
+         => r3_necklace(B,A) ) ) ).
+
+fof(t23_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v4_yellow_0(B,A)
+            & m1_yellow_0(B,A) )
+         => ( v1_neckla_2(A)
+           => v1_neckla_2(B) ) ) ) ).
+
+fof(t24_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => ( r3_necklace(k4_necklace(np__4),A)
+      <=> r3_necklace(k4_necklace(np__4),k3_necklace(A)) ) ) ).
+
+fof(t25_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => ( v1_neckla_2(A)
+      <=> v1_neckla_2(k3_necklace(A)) ) ) ).
+
+fof(d1_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_neckla_3(A)
+      <=> ! [B,C] :
+            ~ ( r2_hidden(B,u1_struct_0(A))
+              & r2_hidden(C,u1_struct_0(A))
+              & B != C
+              & ~ r1_rewrite1(u1_orders_2(A),B,C)
+              & ~ r1_rewrite1(u1_orders_2(A),C,B) ) ) ) ).
+
+fof(t26_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_rewrite1(u1_orders_2(A),B,C)
+               => r2_hidden(k4_tarski(B,C),u1_orders_2(A)) ) ) ) ) ).
+
+fof(t27_neckla_3,axiom,
+    ! [A] :
+      ( ( v1_necklace(A)
+        & l1_orders_2(A) )
+     => ! [B,C] :
+          ( ( r2_hidden(B,u1_struct_0(A))
+            & r2_hidden(C,u1_struct_0(A))
+            & r1_rewrite1(u1_orders_2(A),B,C) )
+         => r1_rewrite1(u1_orders_2(A),C,B) ) ) ).
+
+fof(d2_neckla_3,axiom,
+    ! [A] :
+      ( ( v1_necklace(A)
+        & l1_orders_2(A) )
+     => ( v1_neckla_3(A)
+      <=> ! [B,C] :
+            ( ( r2_hidden(B,u1_struct_0(A))
+              & r2_hidden(C,u1_struct_0(A)) )
+           => ( B = C
+              | r1_rewrite1(u1_orders_2(A),B,C) ) ) ) ) ).
+
+fof(d3_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k1_neckla_3(A,B) = k6_eqrel_1(u1_struct_0(A),k1_msualg_5(u1_struct_0(A),u1_orders_2(A)),B) ) ) ).
+
+fof(t28_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => r2_hidden(B,k1_neckla_3(A,B)) ) ) ).
+
+fof(t29_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( r2_hidden(C,k1_neckla_3(A,B))
+             => r2_hidden(k4_tarski(B,C),k1_msualg_5(u1_struct_0(A),u1_orders_2(A))) ) ) ) ).
+
+fof(t30_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( C = k1_neckla_3(A,B)
+            <=> ! [D] :
+                  ( r2_hidden(D,C)
+                <=> r2_hidden(k4_tarski(B,D),k1_msualg_5(u1_struct_0(A),u1_orders_2(A))) ) ) ) ) ).
+
+fof(t31_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_necklace(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => ~ ( ~ v1_neckla_3(A)
+          & ! [B] :
+              ( ( ~ v3_struct_0(B)
+                & v1_orders_2(B)
+                & v1_necklace(B)
+                & v3_necklace(B)
+                & l1_orders_2(B) )
+             => ! [C] :
+                  ( ( ~ v3_struct_0(C)
+                    & v1_orders_2(C)
+                    & v1_necklace(C)
+                    & v3_necklace(C)
+                    & l1_orders_2(C) )
+                 => ~ ( r1_subset_1(u1_struct_0(B),u1_struct_0(C))
+                      & g1_orders_2(u1_struct_0(A),u1_orders_2(A)) = k1_neckla_2(B,C) ) ) ) ) ) ).
+
+fof(t32_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_necklace(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => ~ ( ~ v1_neckla_3(k3_necklace(A))
+          & ! [B] :
+              ( ( ~ v3_struct_0(B)
+                & v1_orders_2(B)
+                & v1_necklace(B)
+                & v3_necklace(B)
+                & l1_orders_2(B) )
+             => ! [C] :
+                  ( ( ~ v3_struct_0(C)
+                    & v1_orders_2(C)
+                    & v1_necklace(C)
+                    & v3_necklace(C)
+                    & l1_orders_2(C) )
+                 => ~ ( r1_subset_1(u1_struct_0(B),u1_struct_0(C))
+                      & g1_orders_2(u1_struct_0(A),u1_orders_2(A)) = k2_neckla_2(B,C) ) ) ) ) ) ).
+
+fof(t33_neckla_3,axiom,
+    ! [A] :
+      ( ( v3_necklace(A)
+        & l1_orders_2(A) )
+     => ( r2_hidden(A,k4_neckla_2)
+       => r2_hidden(k3_necklace(A),k4_neckla_2) ) ) ).
+
+fof(t34_neckla_3,axiom,
+    ! [A] :
+      ( ( v1_necklace(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => ( ( k1_card_1(u1_struct_0(A)) = np__2
+          & r2_hidden(u1_struct_0(A),k13_classes2) )
+       => r2_hidden(g1_orders_2(u1_struct_0(A),u1_orders_2(A)),k4_neckla_2) ) ) ).
+
+fof(t35_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( r2_hidden(A,k4_neckla_2)
+       => v1_necklace(A) ) ) ).
+
+fof(t36_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & l1_orders_2(C) )
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(C))
+                     => ~ ( A = k1_neckla_2(B,C)
+                          & r1_subset_1(u1_struct_0(B),u1_struct_0(C))
+                          & r2_hidden(k4_tarski(D,E),u1_orders_2(A)) ) ) ) ) ) ) ).
+
+fof(t37_neckla_3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & l1_orders_2(C) )
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(C))
+                     => ~ ( A = k2_neckla_2(B,C)
+                          & r2_hidden(k4_tarski(D,E),u1_orders_2(k3_necklace(A))) ) ) ) ) ) ) ).
+
+fof(t38_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_necklace(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & l1_orders_2(C) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & l1_orders_2(D) )
+                 => ~ ( r1_subset_1(u1_struct_0(C),u1_struct_0(D))
+                      & k5_yellow_0(A,k6_subset_1(u1_struct_0(A),k2_pre_topc(A),k1_struct_0(A,B))) = k1_neckla_2(C,D)
+                      & v1_neckla_3(A)
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(C))
+                         => ~ r2_hidden(k4_tarski(E,B),u1_orders_2(A)) ) ) ) ) ) ) ).
+
+fof(t39_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_necklace(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A)))
+                         => ( ( F = k2_enumset1(B,C,D,E)
+                              & r2_incproj(B,C,D,E)
+                              & r2_hidden(k4_tarski(B,C),u1_orders_2(A))
+                              & r2_hidden(k4_tarski(C,D),u1_orders_2(A))
+                              & r2_hidden(k4_tarski(D,E),u1_orders_2(A)) )
+                           => ( r2_hidden(k4_tarski(B,D),u1_orders_2(A))
+                              | r2_hidden(k4_tarski(B,E),u1_orders_2(A))
+                              | r2_hidden(k4_tarski(C,E),u1_orders_2(A))
+                              | r2_necklace(k4_necklace(np__4),k5_yellow_0(A,F)) ) ) ) ) ) ) ) ) ).
+
+fof(t40_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_necklace(A)
+        & v3_necklace(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & l1_orders_2(C) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & l1_orders_2(D) )
+                 => ( ( r1_subset_1(u1_struct_0(C),u1_struct_0(D))
+                      & k5_yellow_0(A,k6_subset_1(u1_struct_0(A),k2_pre_topc(A),k1_struct_0(A,B))) = k1_neckla_2(C,D)
+                      & v1_neckla_3(A)
+                      & v1_neckla_3(k3_necklace(A)) )
+                   => ( v3_realset2(A)
+                      | r3_necklace(k4_necklace(np__4),A) ) ) ) ) ) ) ).
+
+fof(t41_neckla_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_orders_2(A)
+        & v1_necklace(A)
+        & v3_necklace(A)
+        & v6_group_1(A)
+        & l1_orders_2(A) )
+     => ( ( v1_neckla_2(A)
+          & r2_hidden(u1_struct_0(A),k13_classes2) )
+       => r2_hidden(g1_orders_2(u1_struct_0(A),u1_orders_2(A)),k4_neckla_2) ) ) ).
+
+fof(dt_k1_neckla_3,axiom,
+    ! [A,B] :
+      ( ( l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => m1_subset_1(k1_neckla_3(A,B),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+%------------------------------------------------------------------------------

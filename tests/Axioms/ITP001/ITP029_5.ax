@@ -1,0 +1,92 @@
+%------------------------------------------------------------------------------
+% File     : ITP029_5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : gcdset_2.ax [Gau20]
+%          : HL4029_5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   13 (   2 unt;   4 typ;   0 def)
+%            Number of atoms       :  183 (   6 equ)
+%            Maximal formula atoms :    4 (  14 avg)
+%            Number of connectives :   10 (   0   ~;   0   |;   0   &)
+%                                         (   0 <=>;  10  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    7 (   4 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of FOOLs       :  164 ( 164 fml;   0 var)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :    4 (   3   >;   1   *;   0   +;   0  <<)
+%            Number of predicates  :   28 (  27 usr;  11 prp; 0-2 aty)
+%            Number of functors    :    4 (   4 usr;   1 con; 0-2 aty)
+%            Number of variables   :   15 (  15   !;   0   ?;  15   :)
+% SPC      : TF0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+tff(tp_c_2Egcdset_2Egcdset,type,
+    c_2Egcdset_2Egcdset: $i ).
+
+tff(mem_c_2Egcdset_2Egcdset,axiom,
+    mem(c_2Egcdset_2Egcdset,arr(arr(ty_2Enum_2Enum,bool),ty_2Enum_2Enum)) ).
+
+tff(lamtp_f314,type,
+    f314: $i > $i ).
+
+tff(lameq_f314,axiom,
+    ! [V0s: $i] :
+      ( mem(V0s,arr(ty_2Enum_2Enum,bool))
+     => ! [V1n: tp__ty_2Enum_2Enum] : ( ap(f314(V0s),inj__ty_2Enum_2Enum(V1n)) = ap(ap(c_2Epair_2E_2C(ty_2Enum_2Enum,bool),inj__ty_2Enum_2Enum(V1n)),ap(ap(c_2Earithmetic_2E_3C_3D,inj__ty_2Enum_2Enum(V1n)),ap(c_2Epred__set_2EMIN__SET,ap(ap(c_2Epred__set_2EDELETE(ty_2Enum_2Enum),V0s),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))))) ) ) ).
+
+tff(lamtp_f315,type,
+    f315: ( $i * tp__ty_2Enum_2Enum ) > $i ).
+
+tff(lameq_f315,axiom,
+    ! [V0s: $i] :
+      ( mem(V0s,arr(ty_2Enum_2Enum,bool))
+     => ! [V2d: tp__ty_2Enum_2Enum,V3e: tp__ty_2Enum_2Enum] : ( ap(f315(V0s,V2d),inj__ty_2Enum_2Enum(V3e)) = ap(ap(c_2Emin_2E_3D_3D_3E,ap(ap(c_2Ebool_2EIN(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V3e)),V0s)),ap(ap(c_2Edivides_2Edivides,inj__ty_2Enum_2Enum(V2d)),inj__ty_2Enum_2Enum(V3e))) ) ) ).
+
+tff(lamtp_f316,type,
+    f316: $i > $i ).
+
+tff(lameq_f316,axiom,
+    ! [V0s: $i] :
+      ( mem(V0s,arr(ty_2Enum_2Enum,bool))
+     => ! [V2d: tp__ty_2Enum_2Enum] : ( ap(f316(V0s),inj__ty_2Enum_2Enum(V2d)) = ap(ap(c_2Epair_2E_2C(ty_2Enum_2Enum,bool),inj__ty_2Enum_2Enum(V2d)),ap(c_2Ebool_2E_21(ty_2Enum_2Enum),f315(V0s,V2d))) ) ) ).
+
+tff(ax_thm_2Egcdset_2Egcdset__def,axiom,
+    ! [V0s: $i] :
+      ( mem(V0s,arr(ty_2Enum_2Enum,bool))
+     => ( surj__ty_2Enum_2Enum(ap(c_2Egcdset_2Egcdset,V0s)) = surj__ty_2Enum_2Enum(ap(ap(ap(c_2Ebool_2ECOND(ty_2Enum_2Enum),ap(ap(c_2Ebool_2E_5C_2F,ap(ap(c_2Emin_2E_3D(arr(ty_2Enum_2Enum,bool)),V0s),c_2Epred__set_2EEMPTY(ty_2Enum_2Enum))),ap(ap(c_2Emin_2E_3D(arr(ty_2Enum_2Enum,bool)),V0s),ap(ap(c_2Epred__set_2EINSERT(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),c_2Epred__set_2EEMPTY(ty_2Enum_2Enum))))),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Epred__set_2EMAX__SET,ap(ap(c_2Epred__set_2EINTER(ty_2Enum_2Enum),ap(c_2Epred__set_2EGSPEC(ty_2Enum_2Enum,ty_2Enum_2Enum),f314(V0s))),ap(c_2Epred__set_2EGSPEC(ty_2Enum_2Enum,ty_2Enum_2Enum),f316(V0s)))))) ) ) ).
+
+tff(conj_thm_2Egcdset_2Egcdset__divides,axiom,
+    ! [V0s: $i] :
+      ( mem(V0s,arr(ty_2Enum_2Enum,bool))
+     => ! [V1e: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Ebool_2EIN(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V1e)),V0s))
+         => p(ap(ap(c_2Edivides_2Edivides,ap(c_2Egcdset_2Egcdset,V0s)),inj__ty_2Enum_2Enum(V1e))) ) ) ).
+
+tff(conj_thm_2Egcdset_2Egcdset__greatest,axiom,
+    ! [V0s: $i] :
+      ( mem(V0s,arr(ty_2Enum_2Enum,bool))
+     => ! [V1g: tp__ty_2Enum_2Enum] :
+          ( ! [V2e: tp__ty_2Enum_2Enum] :
+              ( p(ap(ap(c_2Ebool_2EIN(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V2e)),V0s))
+             => p(ap(ap(c_2Edivides_2Edivides,inj__ty_2Enum_2Enum(V1g)),inj__ty_2Enum_2Enum(V2e))) )
+         => p(ap(ap(c_2Edivides_2Edivides,inj__ty_2Enum_2Enum(V1g)),ap(c_2Egcdset_2Egcdset,V0s))) ) ) ).
+
+tff(conj_thm_2Egcdset_2Egcdset__EMPTY,axiom,
+    surj__ty_2Enum_2Enum(ap(c_2Egcdset_2Egcdset,c_2Epred__set_2EEMPTY(ty_2Enum_2Enum))) = fo__c_2Enum_2E0 ).
+
+tff(conj_thm_2Egcdset_2Egcdset__INSERT,axiom,
+    ! [V0x: tp__ty_2Enum_2Enum,V1s: $i] :
+      ( mem(V1s,arr(ty_2Enum_2Enum,bool))
+     => ( surj__ty_2Enum_2Enum(ap(c_2Egcdset_2Egcdset,ap(ap(c_2Epred__set_2EINSERT(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V0x)),V1s))) = surj__ty_2Enum_2Enum(ap(ap(c_2Egcd_2Egcd,inj__ty_2Enum_2Enum(V0x)),ap(c_2Egcdset_2Egcdset,V1s))) ) ) ).
+
+%------------------------------------------------------------------------------

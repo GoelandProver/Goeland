@@ -1,0 +1,916 @@
+%------------------------------------------------------------------------------
+% File     : SET007+716 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Dickson's Lemma
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : dickson [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   99 (   9 unt;   0 def)
+%            Number of atoms       :  514 (  37 equ)
+%            Maximal formula atoms :   17 (   5 avg)
+%            Number of connectives :  492 (  77   ~;   1   |; 204   &)
+%                                         (  26 <=>; 184  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   6 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   51 (  49 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   54 (  54 usr;  10 con; 0-4 aty)
+%            Number of variables   :  189 ( 176   !;  13   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_dickson,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v1_relat_1(k3_dickson(A))
+        & v5_relat_2(k3_dickson(A)) ) ) ).
+
+fof(fc2_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( ~ v3_struct_0(k5_dickson(A))
+        & v1_orders_2(k5_dickson(A)) ) ) ).
+
+fof(fc3_dickson,axiom,
+    ! [A] :
+      ( ( v3_orders_2(A)
+        & l1_orders_2(A) )
+     => ( v1_orders_2(k5_dickson(A))
+        & v3_orders_2(k5_dickson(A)) ) ) ).
+
+fof(fc4_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_orders_2(k5_dickson(A))
+        & v4_orders_2(k5_dickson(A)) ) ) ).
+
+fof(fc5_dickson,axiom,
+    ! [A,B,C] :
+      ( ( v1_yellow_1(B)
+        & m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => ( v1_relat_1(k7_relat_1(B,C))
+        & v1_funct_1(k7_relat_1(B,C))
+        & v1_yellow_1(k7_relat_1(B,C))
+        & v2_pralg_1(k7_relat_1(B,C)) ) ) ).
+
+fof(fc6_dickson,axiom,
+    ! [A] :
+      ( ( v1_yellow_1(A)
+        & m1_pboole(A,k1_xboole_0) )
+     => ( ~ v3_struct_0(k5_yellow_1(k1_xboole_0,A))
+        & v1_orders_2(k5_yellow_1(k1_xboole_0,A)) ) ) ).
+
+fof(fc7_dickson,axiom,
+    ! [A] :
+      ( ( v1_yellow_1(A)
+        & m1_pboole(A,k1_xboole_0) )
+     => ( v1_orders_2(k5_yellow_1(k1_xboole_0,A))
+        & v4_orders_2(k5_yellow_1(k1_xboole_0,A)) ) ) ).
+
+fof(fc8_dickson,axiom,
+    ! [A] :
+      ( ( v1_yellow_1(A)
+        & m1_pboole(A,k1_xboole_0) )
+     => ( v1_orders_2(k5_yellow_1(k1_xboole_0,A))
+        & v3_dickson(k5_yellow_1(k1_xboole_0,A)) ) ) ).
+
+fof(fc9_dickson,axiom,
+    ! [A] :
+      ( ( v1_yellow_1(A)
+        & m1_pboole(A,k1_xboole_0) )
+     => ( v1_orders_2(k5_yellow_1(k1_xboole_0,A))
+        & v4_dickson(k5_yellow_1(k1_xboole_0,A)) ) ) ).
+
+fof(fc10_dickson,axiom,
+    ( ~ v3_struct_0(k11_dickson)
+    & v16_waybel_0(k11_dickson) ) ).
+
+fof(fc11_dickson,axiom,
+    ( ~ v3_struct_0(k11_dickson)
+    & v4_dickson(k11_dickson) ) ).
+
+fof(fc12_dickson,axiom,
+    ( ~ v3_struct_0(k11_dickson)
+    & v3_dickson(k11_dickson) ) ).
+
+fof(fc13_dickson,axiom,
+    ( ~ v3_struct_0(k11_dickson)
+    & v4_orders_2(k11_dickson) ) ).
+
+fof(fc14_dickson,axiom,
+    ( ~ v3_struct_0(k11_dickson)
+    & v3_orders_2(k11_dickson) ) ).
+
+fof(fc15_dickson,axiom,
+    ( ~ v3_struct_0(k11_dickson)
+    & v1_wellfnd1(k11_dickson) ) ).
+
+fof(fc16_dickson,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( ~ v3_struct_0(k5_yellow_1(A,k2_pre_circ(A,k11_dickson)))
+        & v1_orders_2(k5_yellow_1(A,k2_pre_circ(A,k11_dickson))) ) ) ).
+
+fof(fc17_dickson,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( v1_orders_2(k5_yellow_1(A,k2_pre_circ(A,k11_dickson)))
+        & v4_dickson(k5_yellow_1(A,k2_pre_circ(A,k11_dickson))) ) ) ).
+
+fof(fc18_dickson,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( v1_orders_2(k5_yellow_1(A,k2_pre_circ(A,k11_dickson)))
+        & v3_dickson(k5_yellow_1(A,k2_pre_circ(A,k11_dickson))) ) ) ).
+
+fof(fc19_dickson,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( v1_orders_2(k5_yellow_1(A,k2_pre_circ(A,k11_dickson)))
+        & v4_orders_2(k5_yellow_1(A,k2_pre_circ(A,k11_dickson))) ) ) ).
+
+fof(t1_dickson,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( k1_relat_1(A) = k1_tarski(B)
+         => A = k3_cqc_lang(B,k1_funct_1(A,B)) ) ) ).
+
+fof(t2_dickson,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => r1_tarski(A,k1_nat_1(A,np__1)) ) ).
+
+fof(t3_dickson,axiom,
+    ! [A] :
+      ( ~ v1_finset_1(A)
+     => ? [B] :
+          ( v1_funct_1(B)
+          & v1_funct_2(B,k5_numbers,A)
+          & m2_relset_1(B,k5_numbers,A)
+          & v2_funct_1(B) ) ) ).
+
+fof(d1_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ( v1_dickson(B,A)
+          <=> ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => ( k8_funct_2(k5_numbers,u1_struct_0(A),B,k1_nat_1(C,np__1)) != k8_funct_2(k5_numbers,u1_struct_0(A),B,C)
+                  & r2_hidden(k4_tarski(k8_funct_2(k5_numbers,u1_struct_0(A),B,C),k8_funct_2(k5_numbers,u1_struct_0(A),B,k1_nat_1(C,np__1))),u1_orders_2(A)) ) ) ) ) ) ).
+
+fof(d2_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ( v2_dickson(B,A)
+          <=> ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r2_hidden(k4_tarski(k8_funct_2(k5_numbers,u1_struct_0(A),B,C),k8_funct_2(k5_numbers,u1_struct_0(A),B,k1_nat_1(C,np__1))),u1_orders_2(A)) ) ) ) ) ).
+
+fof(t4_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ( v2_dickson(B,A)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => ( ~ r1_xreal_0(D,C)
+                     => r1_orders_2(A,k2_normsp_1(A,B,C),k2_normsp_1(A,B,D)) ) ) ) ) ) ) ).
+
+fof(t5_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( v16_waybel_0(A)
+      <=> r7_relat_2(u1_orders_2(A),u1_struct_0(A)) ) ) ).
+
+fof(t6_dickson,axiom,
+    $true ).
+
+fof(t7_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B,C] :
+          ( ( r1_xboole_0(k1_wellord1(u1_orders_2(A),C),B)
+            & r2_hidden(C,B) )
+        <=> r4_waybel_4(B,C,u1_orders_2(A)) ) ) ).
+
+fof(t8_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C,D] :
+              ( r4_waybel_4(k3_xboole_0(k1_wellord1(u1_orders_2(A),B),D),C,u1_orders_2(A))
+             => r4_waybel_4(D,C,u1_orders_2(A)) ) ) ) ).
+
+fof(d3_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v3_dickson(A)
+      <=> ( v2_orders_2(A)
+          & v3_orders_2(A) ) ) ) ).
+
+fof(d4_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v3_dickson(A)
+       => k1_dickson(A) = k2_eqrel_1(u1_struct_0(A),u1_orders_2(A),k6_relset_1(u1_struct_0(A),u1_struct_0(A),u1_orders_2(A))) ) ) ).
+
+fof(t9_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( v3_dickson(A)
+               => ( r2_hidden(B,k6_eqrel_1(u1_struct_0(A),k1_dickson(A),C))
+                <=> ( r1_orders_2(A,B,C)
+                    & r1_orders_2(A,C,B) ) ) ) ) ) ) ).
+
+fof(d5_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( m2_relset_1(B,k8_eqrel_1(u1_struct_0(A),k1_dickson(A)),k8_eqrel_1(u1_struct_0(A),k1_dickson(A)))
+         => ( B = k2_dickson(A)
+          <=> ! [C,D] :
+                ( r2_hidden(k4_tarski(C,D),B)
+              <=> ? [E] :
+                    ( m1_subset_1(E,u1_struct_0(A))
+                    & ? [F] :
+                        ( m1_subset_1(F,u1_struct_0(A))
+                        & C = k6_eqrel_1(u1_struct_0(A),k1_dickson(A),E)
+                        & D = k6_eqrel_1(u1_struct_0(A),k1_dickson(A),F)
+                        & r1_orders_2(A,E,F) ) ) ) ) ) ) ).
+
+fof(t10_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v3_dickson(A)
+       => r2_orders_1(k2_dickson(A),k8_eqrel_1(u1_struct_0(A),k1_dickson(A))) ) ) ).
+
+fof(t11_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( ( v3_dickson(A)
+          & v16_waybel_0(A) )
+       => r3_orders_1(k2_dickson(A),k8_eqrel_1(u1_struct_0(A),k1_dickson(A))) ) ) ).
+
+fof(d6_dickson,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => k3_dickson(A) = k4_xboole_0(A,k4_relat_1(A)) ) ).
+
+fof(d7_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => k5_dickson(A) = g1_orders_2(u1_struct_0(A),k4_dickson(u1_struct_0(A),u1_orders_2(A))) ) ).
+
+fof(t12_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k6_eqrel_1(u1_struct_0(A),k1_dickson(A),B) = k15_cqc_sim1(u1_struct_0(A),B) ) ) ).
+
+fof(t13_dickson,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( A = k3_dickson(A)
+      <=> v5_relat_2(A) ) ) ).
+
+fof(t14_dickson,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v8_relat_2(A)
+       => v8_relat_2(k3_dickson(A)) ) ) ).
+
+fof(t15_dickson,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B,C] :
+          ( v4_relat_2(A)
+         => ( r2_hidden(k4_tarski(B,C),k3_dickson(A))
+          <=> ( r2_hidden(k4_tarski(B,C),A)
+              & B != C ) ) ) ) ).
+
+fof(t16_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_wellfnd1(A)
+       => v1_wellfnd1(k5_dickson(A)) ) ) ).
+
+fof(t17_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( v1_wellfnd1(k5_dickson(A))
+          & v4_orders_2(A) )
+       => v1_wellfnd1(A) ) ) ).
+
+fof(t18_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B,C] :
+          ( m1_subset_1(C,u1_struct_0(k5_dickson(A)))
+         => ( r4_waybel_4(B,C,u1_orders_2(k5_dickson(A)))
+          <=> ( r2_hidden(C,B)
+              & ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( ( r2_hidden(D,B)
+                      & r2_hidden(k4_tarski(D,C),u1_orders_2(A)) )
+                   => r2_hidden(k4_tarski(C,D),u1_orders_2(A)) ) ) ) ) ) ) ).
+
+fof(t19_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( ( v3_dickson(A)
+                  & v4_orders_2(B)
+                  & v1_wellfnd1(k5_dickson(B))
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ( ( r1_orders_2(A,D,E)
+                             => r1_orders_2(B,k1_waybel_0(A,B,C,D),k1_waybel_0(A,B,C,E)) )
+                            & ( k1_waybel_0(A,B,C,D) = k1_waybel_0(A,B,C,E)
+                             => r2_hidden(k7_yellow_3(A,A,D,E),k1_dickson(A)) ) ) ) ) )
+               => v1_wellfnd1(k5_dickson(A)) ) ) ) ) ).
+
+fof(d8_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => ( C = k6_dickson(A,B)
+              <=> ! [D] :
+                    ( r2_hidden(D,C)
+                  <=> ? [E] :
+                        ( m1_subset_1(E,u1_struct_0(k5_dickson(A)))
+                        & r4_waybel_4(B,E,u1_orders_2(k5_dickson(A)))
+                        & D = k5_subset_1(u1_struct_0(A),k6_eqrel_1(u1_struct_0(A),k1_dickson(A),E),B) ) ) ) ) ) ) ).
+
+fof(t20_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( ( v3_dickson(A)
+                & r2_hidden(C,k6_dickson(A,B)) )
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k5_dickson(A)))
+                 => ( r2_hidden(D,C)
+                   => r4_waybel_4(B,D,u1_orders_2(k5_dickson(A))) ) ) ) ) ) ).
+
+fof(t21_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( v1_wellfnd1(k5_dickson(A))
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+           => ~ ( B != k1_xboole_0
+                & ! [C] : ~ r2_hidden(C,k6_dickson(A,B)) ) ) ) ) ).
+
+fof(t22_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k5_dickson(A)))
+             => ~ ( r4_waybel_4(B,C,u1_orders_2(k5_dickson(A)))
+                  & v1_xboole_0(k6_dickson(A,B)) ) ) ) ) ).
+
+fof(t23_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ~ ( v3_dickson(A)
+                & r2_hidden(C,k6_dickson(A,B))
+                & v1_xboole_0(C) ) ) ) ).
+
+fof(t24_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( v3_dickson(A)
+       => ( ( v16_waybel_0(A)
+            & v1_wellfnd1(k5_dickson(A)) )
+        <=> ! [B] :
+              ( ( ~ v1_xboole_0(B)
+                & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+             => k1_card_1(k6_dickson(A,B)) = np__1 ) ) ) ) ).
+
+fof(t25_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ( r2_wellord1(u1_orders_2(A),u1_struct_0(A))
+      <=> ! [B] :
+            ( ( ~ v1_xboole_0(B)
+              & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+           => k1_card_1(k6_dickson(A,B)) = np__1 ) ) ) ).
+
+fof(d9_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( r1_dickson(A,B,C)
+            <=> ( r1_tarski(C,B)
+                & ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ~ ( r2_hidden(D,B)
+                        & ! [E] :
+                            ( m1_subset_1(E,u1_struct_0(A))
+                           => ~ ( r2_hidden(E,C)
+                                & r1_orders_2(A,E,D) ) ) ) ) ) ) ) ) ).
+
+fof(t26_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => r1_dickson(A,k1_subset_1(u1_struct_0(A)),k1_xboole_0) ) ).
+
+fof(t27_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ! [C] :
+              ~ ( r1_dickson(A,B,C)
+                & v1_xboole_0(C) ) ) ) ).
+
+fof(d10_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v4_dickson(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+           => ? [C] :
+                ( r1_dickson(A,B,C)
+                & v1_finset_1(C) ) ) ) ) ).
+
+fof(t28_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( ( v1_wellfnd1(k5_dickson(A))
+          & v16_waybel_0(A) )
+       => v4_dickson(A) ) ) ).
+
+fof(t29_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( l1_orders_2(B)
+         => ( ( r1_tarski(u1_orders_2(A),u1_orders_2(B))
+              & v4_dickson(A)
+              & u1_struct_0(A) = u1_struct_0(B) )
+           => v4_dickson(B) ) ) ) ).
+
+fof(d11_dickson,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( k1_relat_1(A) = k5_numbers
+            & r2_hidden(B,k2_relat_1(A)) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( C = k7_dickson(A,B)
+              <=> ( k1_funct_1(A,C) = B
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( k1_funct_1(A,D) = B
+                       => r1_xreal_0(C,D) ) ) ) ) ) ) ) ).
+
+fof(d12_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_struct_0(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C,D] :
+              ( m2_subset_1(D,k1_numbers,k5_numbers)
+             => ( ? [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                    & ~ r1_xreal_0(E,D)
+                    & k2_normsp_1(A,B,E) = C )
+               => ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => ( E = k8_dickson(A,B,C,D)
+                    <=> ( k2_normsp_1(A,B,E) = C
+                        & ~ r1_xreal_0(E,D)
+                        & ! [F] :
+                            ( m2_subset_1(F,k1_numbers,k5_numbers)
+                           => ( k2_normsp_1(A,B,F) = C
+                             => ( r1_xreal_0(F,D)
+                                | r1_xreal_0(E,F) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t30_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( ( v3_dickson(A)
+          & v4_dickson(A) )
+       => ! [B] :
+            ( ( v1_funct_1(B)
+              & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+              & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+           => ? [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+                & ? [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                    & ~ r1_xreal_0(D,C)
+                    & r1_orders_2(A,k2_normsp_1(A,B,C),k2_normsp_1(A,B,D)) ) ) ) ) ) ).
+
+fof(t31_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k5_dickson(A)))
+             => ( ( v3_dickson(A)
+                  & r2_hidden(C,B)
+                  & r1_tarski(k3_xboole_0(k1_wellord1(u1_orders_2(A),C),B),k6_eqrel_1(u1_struct_0(A),k1_dickson(A),C)) )
+               => r4_waybel_4(B,C,u1_orders_2(k5_dickson(A))) ) ) ) ) ).
+
+fof(t32_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( ( v3_dickson(A)
+          & ! [B] :
+              ( ( v1_funct_1(B)
+                & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+             => ? [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                  & ? [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                      & ~ r1_xreal_0(D,C)
+                      & r1_orders_2(A,k2_normsp_1(A,B,C),k2_normsp_1(A,B,D)) ) ) ) )
+       => ! [B] :
+            ( ( ~ v1_xboole_0(B)
+              & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+           => ( v1_finset_1(k6_dickson(A,B))
+              & ~ v1_xboole_0(k6_dickson(A,B)) ) ) ) ) ).
+
+fof(t33_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( ( v3_dickson(A)
+          & ! [B] :
+              ( ( ~ v1_xboole_0(B)
+                & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+             => ( v1_finset_1(k6_dickson(A,B))
+                & ~ v1_xboole_0(k6_dickson(A,B)) ) ) )
+       => v4_dickson(A) ) ) ).
+
+fof(t34_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( ( v3_dickson(A)
+          & v4_dickson(A) )
+       => v1_wellfnd1(k5_dickson(A)) ) ) ).
+
+fof(t35_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ~ ( v4_dickson(A)
+              & ! [C] :
+                  ~ ( r1_dickson(A,B,C)
+                    & ! [D] :
+                        ( r1_dickson(A,B,D)
+                       => r1_tarski(C,D) ) ) ) ) ) ).
+
+fof(d13_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v4_dickson(A)
+           => ! [C] :
+                ( ( ~ v1_xboole_0(C)
+                  & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A)))) )
+               => ( C = k9_dickson(A,B)
+                <=> ! [D] :
+                      ( r2_hidden(D,C)
+                    <=> r1_dickson(A,B,D) ) ) ) ) ) ) ).
+
+fof(t36_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ~ ( v4_dickson(A)
+              & ! [C] :
+                  ( ( v1_funct_1(C)
+                    & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                    & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+                 => ~ ( m1_bhsp_3(C,A,B)
+                      & v2_dickson(C,A) ) ) ) ) ) ).
+
+fof(t37_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v3_struct_0(A)
+       => v4_dickson(A) ) ) ).
+
+fof(t38_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( l1_orders_2(B)
+         => ( ( v4_dickson(A)
+              & v4_dickson(B)
+              & v3_dickson(A)
+              & v3_dickson(B) )
+           => ( v3_dickson(k3_yellow_3(A,B))
+              & v4_dickson(k3_yellow_3(A,B)) ) ) ) ) ).
+
+fof(t39_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( l1_orders_2(B)
+         => ( ( r5_waybel_1(A,B)
+              & v4_dickson(A)
+              & v3_dickson(A) )
+           => ( v3_dickson(B)
+              & v4_dickson(B) ) ) ) ) ).
+
+fof(t40_dickson,axiom,
+    ! [A] :
+      ( ( v1_yellow_1(A)
+        & m1_pboole(A,np__1) )
+     => ! [B] :
+          ( m1_subset_1(B,np__1)
+         => r5_waybel_1(k4_yellow_1(np__1,A,B),k5_yellow_1(np__1,A)) ) ) ).
+
+fof(t41_dickson,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m2_subset_1(A,k1_numbers,k5_numbers) )
+     => ! [B] :
+          ( ( v1_yellow_1(B)
+            & m1_pboole(B,A) )
+         => ( ~ v3_struct_0(k5_yellow_1(A,B))
+          <=> v4_waybel_3(B) ) ) ) ).
+
+fof(t42_dickson,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m2_subset_1(A,k1_numbers,k5_numbers) )
+     => ! [B] :
+          ( ( v1_yellow_1(B)
+            & m1_pboole(B,k1_nat_1(A,np__1)) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_nat_1(A,np__1)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_nat_1(A,np__1))
+                 => ( ( C = A
+                      & D = A )
+                   => r5_waybel_1(k3_yellow_3(k5_yellow_1(C,k3_pre_circ(k1_nat_1(A,np__1),B,C)),k4_yellow_1(k1_nat_1(A,np__1),B,D)),k5_yellow_1(k1_nat_1(A,np__1),B)) ) ) ) ) ) ).
+
+fof(t43_dickson,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m2_subset_1(A,k1_numbers,k5_numbers) )
+     => ! [B] :
+          ( ( v1_yellow_1(B)
+            & m1_pboole(B,A) )
+         => ( ! [C] :
+                ( m1_subset_1(C,A)
+               => ( v4_dickson(k4_yellow_1(A,B,C))
+                  & v3_dickson(k4_yellow_1(A,B,C)) ) )
+           => ( v3_dickson(k5_yellow_1(A,B))
+              & v4_dickson(k5_yellow_1(A,B)) ) ) ) ) ).
+
+fof(t44_dickson,axiom,
+    r1_relat_2(k10_dickson,k5_numbers) ).
+
+fof(t45_dickson,axiom,
+    r4_relat_2(k10_dickson,k5_numbers) ).
+
+fof(t46_dickson,axiom,
+    r7_relat_2(k10_dickson,k5_numbers) ).
+
+fof(t47_dickson,axiom,
+    r8_relat_2(k10_dickson,k5_numbers) ).
+
+fof(d15_dickson,axiom,
+    k11_dickson = g1_orders_2(k5_numbers,k10_dickson) ).
+
+fof(t48_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( v4_dickson(A)
+          & v3_dickson(A) )
+       => ( v3_dickson(k3_yellow_3(A,k11_dickson))
+          & v4_dickson(k3_yellow_3(A,k11_dickson)) ) ) ) ).
+
+fof(t49_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l1_orders_2(B) )
+         => ( ( v4_dickson(A)
+              & v3_dickson(A)
+              & v3_dickson(B)
+              & r1_tarski(u1_orders_2(A),u1_orders_2(B))
+              & u1_struct_0(A) = u1_struct_0(B) )
+           => v1_wellfnd1(k5_dickson(B)) ) ) ) ).
+
+fof(t50_dickson,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( v3_dickson(A)
+       => ( v4_dickson(A)
+        <=> ! [B] :
+              ( ( ~ v3_struct_0(B)
+                & l1_orders_2(B) )
+             => ( ( v3_dickson(B)
+                  & r1_tarski(u1_orders_2(A),u1_orders_2(B))
+                  & u1_struct_0(A) = u1_struct_0(B) )
+               => v1_wellfnd1(k5_dickson(B)) ) ) ) ) ) ).
+
+fof(dt_k1_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_partfun1(k1_dickson(A),u1_struct_0(A),u1_struct_0(A))
+        & v3_relat_2(k1_dickson(A))
+        & v8_relat_2(k1_dickson(A))
+        & m2_relset_1(k1_dickson(A),u1_struct_0(A),u1_struct_0(A)) ) ) ).
+
+fof(dt_k2_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => m2_relset_1(k2_dickson(A),k8_eqrel_1(u1_struct_0(A),k1_dickson(A)),k8_eqrel_1(u1_struct_0(A),k1_dickson(A))) ) ).
+
+fof(dt_k3_dickson,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => v1_relat_1(k3_dickson(A)) ) ).
+
+fof(dt_k4_dickson,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,A,A)
+     => m2_relset_1(k4_dickson(A,B),A,A) ) ).
+
+fof(redefinition_k4_dickson,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,A,A)
+     => k4_dickson(A,B) = k3_dickson(B) ) ).
+
+fof(dt_k5_dickson,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_orders_2(k5_dickson(A))
+        & l1_orders_2(k5_dickson(A)) ) ) ).
+
+fof(dt_k6_dickson,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => m1_subset_1(k6_dickson(A,B),k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A)))) ) ).
+
+fof(dt_k7_dickson,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => m2_subset_1(k7_dickson(A,B),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k8_dickson,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & l1_struct_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+        & m1_relset_1(B,k5_numbers,u1_struct_0(A))
+        & m1_subset_1(D,k5_numbers) )
+     => m2_subset_1(k8_dickson(A,B,C,D),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k9_dickson,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( ~ v1_xboole_0(k9_dickson(A,B))
+        & m1_subset_1(k9_dickson(A,B),k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A)))) ) ) ).
+
+fof(dt_k10_dickson,axiom,
+    m2_relset_1(k10_dickson,k5_numbers,k5_numbers) ).
+
+fof(dt_k11_dickson,axiom,
+    ( ~ v3_struct_0(k11_dickson)
+    & l1_orders_2(k11_dickson) ) ).
+
+fof(d14_dickson,axiom,
+    k10_dickson = a_0_0_dickson ).
+
+fof(s1_dickson,axiom,
+    v1_finset_1(a_0_1_dickson) ).
+
+fof(fraenkel_a_0_0_dickson,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_0_dickson)
+    <=> ? [B,C] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+          & m2_subset_1(C,k1_numbers,k5_numbers)
+          & A = k1_domain_1(k5_numbers,k5_numbers,B,C)
+          & r1_xreal_0(B,C) ) ) ).
+
+fof(fraenkel_a_0_1_dickson,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_1_dickson)
+    <=> ? [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+          & A = f3_s1_dickson(B)
+          & ~ r1_xreal_0(B,f1_s1_dickson)
+          & r1_xreal_0(B,f2_s1_dickson)
+          & p1_s1_dickson(B) ) ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,629 @@
+%------------------------------------------------------------------------------
+% File     : ITP124+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : nets+2.ax [Gau20]
+%          : HL4124+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   43 (   1 unt;   0 def)
+%            Number of atoms       :  323 (  17 equ)
+%            Maximal formula atoms :   21 (   7 avg)
+%            Number of connectives :  285 (   5   ~;   0   |;  48   &)
+%                                         (  11 <=>; 221  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   27 (  12 avg)
+%            Maximal term depth    :    8 (   2 avg)
+%            Number of predicates  :    4 (   3 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   42 (  42 usr;  16 con; 0-3 aty)
+%            Number of variables   :  212 ( 196   !;  16   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(mem_c_2Enets_2Ebounded,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => mem(c_2Enets_2Ebounded(A_27a,A_27b),arr(ty_2Epair_2Eprod(ty_2Emetric_2Emetric(A_27a),arr(A_27b,arr(A_27b,bool))),arr(arr(A_27b,A_27a),bool))) ) ) ).
+
+fof(mem_c_2Enets_2Edorder,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => mem(c_2Enets_2Edorder(A_27a),arr(arr(A_27a,arr(A_27a,bool)),bool)) ) ).
+
+fof(mem_c_2Enets_2Etends,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => mem(c_2Enets_2Etends(A_27a,A_27b),arr(arr(A_27b,A_27a),arr(A_27a,arr(ty_2Epair_2Eprod(ty_2Etopology_2Etopology(A_27a),arr(A_27b,arr(A_27b,bool))),bool)))) ) ) ).
+
+fof(mem_c_2Enets_2Etendsto,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => mem(c_2Enets_2Etendsto(A_27a),arr(ty_2Epair_2Eprod(ty_2Emetric_2Emetric(A_27a),A_27a),arr(A_27a,arr(A_27a,bool)))) ) ).
+
+fof(ax_thm_2Enets_2Edorder,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+          <=> ! [V1x] :
+                ( mem(V1x,A_27a)
+               => ! [V2y] :
+                    ( mem(V2y,A_27a)
+                   => ( ( p(ap(ap(V0g,V1x),V1x))
+                        & p(ap(ap(V0g,V2y),V2y)) )
+                     => ? [V3z] :
+                          ( mem(V3z,A_27a)
+                          & p(ap(ap(V0g,V3z),V3z))
+                          & ! [V4w] :
+                              ( mem(V4w,A_27a)
+                             => ( p(ap(ap(V0g,V4w),V3z))
+                               => ( p(ap(ap(V0g,V4w),V1x))
+                                  & p(ap(ap(V0g,V4w),V2y)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(ax_thm_2Enets_2Etends,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0s] :
+              ( mem(V0s,arr(A_27b,A_27a))
+             => ! [V1l] :
+                  ( mem(V1l,A_27a)
+                 => ! [V2top] :
+                      ( mem(V2top,ty_2Etopology_2Etopology(A_27a))
+                     => ! [V3g] :
+                          ( mem(V3g,arr(A_27b,arr(A_27b,bool)))
+                         => ( p(ap(ap(ap(c_2Enets_2Etends(A_27a,A_27b),V0s),V1l),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(A_27a),arr(A_27b,arr(A_27b,bool))),V2top),V3g)))
+                          <=> ! [V4N] :
+                                ( mem(V4N,arr(A_27a,bool))
+                               => ( p(ap(ap(c_2Etopology_2Eneigh(A_27a),V2top),ap(ap(c_2Epair_2E_2C(arr(A_27a,bool),A_27a),V4N),V1l)))
+                                 => ? [V5n] :
+                                      ( mem(V5n,A_27b)
+                                      & p(ap(ap(V3g,V5n),V5n))
+                                      & ! [V6m] :
+                                          ( mem(V6m,A_27b)
+                                         => ( p(ap(ap(V3g,V6m),V5n))
+                                           => p(ap(V4N,ap(V0s,V6m))) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(ax_thm_2Enets_2Ebounded,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0m] :
+              ( mem(V0m,ty_2Emetric_2Emetric(A_27a))
+             => ! [V1g] :
+                  ( mem(V1g,arr(A_27b,arr(A_27b,bool)))
+                 => ! [V2f] :
+                      ( mem(V2f,arr(A_27b,A_27a))
+                     => ( p(ap(ap(c_2Enets_2Ebounded(A_27a,A_27b),ap(ap(c_2Epair_2E_2C(ty_2Emetric_2Emetric(A_27a),arr(A_27b,arr(A_27b,bool))),V0m),V1g)),V2f))
+                      <=> ? [V3k] :
+                            ( mem(V3k,ty_2Erealax_2Ereal)
+                            & ? [V4x] :
+                                ( mem(V4x,A_27a)
+                                & ? [V5N] :
+                                    ( mem(V5N,A_27b)
+                                    & p(ap(ap(V1g,V5N),V5N))
+                                    & ! [V6n] :
+                                        ( mem(V6n,A_27b)
+                                       => ( p(ap(ap(V1g,V6n),V5N))
+                                         => p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Emetric_2Edist(A_27a),V0m),ap(ap(c_2Epair_2E_2C(A_27a,A_27a),ap(V2f,V6n)),V4x))),V3k)) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(ax_thm_2Enets_2Etendsto,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0m] :
+          ( mem(V0m,ty_2Emetric_2Emetric(A_27a))
+         => ! [V1x] :
+              ( mem(V1x,A_27a)
+             => ! [V2y] :
+                  ( mem(V2y,A_27a)
+                 => ! [V3z] :
+                      ( mem(V3z,A_27a)
+                     => ( p(ap(ap(ap(c_2Enets_2Etendsto(A_27a),ap(ap(c_2Epair_2E_2C(ty_2Emetric_2Emetric(A_27a),A_27a),V0m),V1x)),V2y),V3z))
+                      <=> ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Emetric_2Edist(A_27a),V0m),ap(ap(c_2Epair_2E_2C(A_27a,A_27a),V1x),V2y))))
+                          & p(ap(ap(c_2Ereal_2Ereal__lte,ap(ap(c_2Emetric_2Edist(A_27a),V0m),ap(ap(c_2Epair_2E_2C(A_27a,A_27a),V1x),V2y))),ap(ap(c_2Emetric_2Edist(A_27a),V0m),ap(ap(c_2Epair_2E_2C(A_27a,A_27a),V1x),V3z)))) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2EDORDER__LEMMA,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+           => ! [V1P] :
+                ( mem(V1P,arr(A_27a,bool))
+               => ! [V2Q] :
+                    ( mem(V2Q,arr(A_27a,bool))
+                   => ( ( ? [V3n] :
+                            ( mem(V3n,A_27a)
+                            & p(ap(ap(V0g,V3n),V3n))
+                            & ! [V4m] :
+                                ( mem(V4m,A_27a)
+                               => ( p(ap(ap(V0g,V4m),V3n))
+                                 => p(ap(V1P,V4m)) ) ) )
+                        & ? [V5n] :
+                            ( mem(V5n,A_27a)
+                            & p(ap(ap(V0g,V5n),V5n))
+                            & ! [V6m] :
+                                ( mem(V6m,A_27a)
+                               => ( p(ap(ap(V0g,V6m),V5n))
+                                 => p(ap(V2Q,V6m)) ) ) ) )
+                     => ? [V7n] :
+                          ( mem(V7n,A_27a)
+                          & p(ap(ap(V0g,V7n),V7n))
+                          & ! [V8m] :
+                              ( mem(V8m,A_27a)
+                             => ( p(ap(ap(V0g,V8m),V7n))
+                               => ( p(ap(V1P,V8m))
+                                  & p(ap(V2Q,V8m)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2EDORDER__NGE,axiom,
+    p(ap(c_2Enets_2Edorder(ty_2Enum_2Enum),c_2Earithmetic_2E_3E_3D)) ).
+
+fof(conj_thm_2Enets_2EDORDER__TENDSTO,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0m] :
+          ( mem(V0m,ty_2Emetric_2Emetric(A_27a))
+         => ! [V1x] :
+              ( mem(V1x,A_27a)
+             => p(ap(c_2Enets_2Edorder(A_27a),ap(c_2Enets_2Etendsto(A_27a),ap(ap(c_2Epair_2E_2C(ty_2Emetric_2Emetric(A_27a),A_27a),V0m),V1x)))) ) ) ) ).
+
+fof(conj_thm_2Enets_2EMTOP__TENDS,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0d] :
+              ( mem(V0d,ty_2Emetric_2Emetric(A_27a))
+             => ! [V1g] :
+                  ( mem(V1g,arr(A_27b,arr(A_27b,bool)))
+                 => ! [V2x] :
+                      ( mem(V2x,arr(A_27b,A_27a))
+                     => ! [V3x0] :
+                          ( mem(V3x0,A_27a)
+                         => ( p(ap(ap(ap(c_2Enets_2Etends(A_27a,A_27b),V2x),V3x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(A_27a),arr(A_27b,arr(A_27b,bool))),ap(c_2Emetric_2Emtop(A_27a),V0d)),V1g)))
+                          <=> ! [V4e] :
+                                ( mem(V4e,ty_2Erealax_2Ereal)
+                               => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V4e))
+                                 => ? [V5n] :
+                                      ( mem(V5n,A_27b)
+                                      & p(ap(ap(V1g,V5n),V5n))
+                                      & ! [V6m] :
+                                          ( mem(V6m,A_27b)
+                                         => ( p(ap(ap(V1g,V6m),V5n))
+                                           => p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Emetric_2Edist(A_27a),V0d),ap(ap(c_2Epair_2E_2C(A_27a,A_27a),ap(V2x,V6m)),V3x0))),V4e)) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2EMTOP__TENDS__UNIQ,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0x] :
+              ( mem(V0x,arr(A_27b,A_27a))
+             => ! [V1x0] :
+                  ( mem(V1x0,A_27a)
+                 => ! [V2x1] :
+                      ( mem(V2x1,A_27a)
+                     => ! [V3g] :
+                          ( mem(V3g,arr(A_27b,arr(A_27b,bool)))
+                         => ! [V4d] :
+                              ( mem(V4d,ty_2Emetric_2Emetric(A_27a))
+                             => ( p(ap(c_2Enets_2Edorder(A_27b),V3g))
+                               => ( ( p(ap(ap(ap(c_2Enets_2Etends(A_27a,A_27b),V0x),V1x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(A_27a),arr(A_27b,arr(A_27b,bool))),ap(c_2Emetric_2Emtop(A_27a),V4d)),V3g)))
+                                    & p(ap(ap(ap(c_2Enets_2Etends(A_27a,A_27b),V0x),V2x1),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(A_27a),arr(A_27b,arr(A_27b,bool))),ap(c_2Emetric_2Emtop(A_27a),V4d)),V3g))) )
+                                 => V1x0 = V2x1 ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2ESEQ__TENDS,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0d] :
+          ( mem(V0d,ty_2Emetric_2Emetric(A_27a))
+         => ! [V1x] :
+              ( mem(V1x,arr(ty_2Enum_2Enum,A_27a))
+             => ! [V2x0] :
+                  ( mem(V2x0,A_27a)
+                 => ( p(ap(ap(ap(c_2Enets_2Etends(A_27a,ty_2Enum_2Enum),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(A_27a),arr(ty_2Enum_2Enum,arr(ty_2Enum_2Enum,bool))),ap(c_2Emetric_2Emtop(A_27a),V0d)),c_2Earithmetic_2E_3E_3D)))
+                  <=> ! [V3e] :
+                        ( mem(V3e,ty_2Erealax_2Ereal)
+                       => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V3e))
+                         => ? [V4N] :
+                              ( mem(V4N,ty_2Enum_2Enum)
+                              & ! [V5n] :
+                                  ( mem(V5n,ty_2Enum_2Enum)
+                                 => ( p(ap(ap(c_2Earithmetic_2E_3E_3D,V5n),V4N))
+                                   => p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Emetric_2Edist(A_27a),V0d),ap(ap(c_2Epair_2E_2C(A_27a,A_27a),ap(V1x,V5n)),V2x0))),V3e)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2ELIM__TENDS,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0m1] :
+              ( mem(V0m1,ty_2Emetric_2Emetric(A_27a))
+             => ! [V1m2] :
+                  ( mem(V1m2,ty_2Emetric_2Emetric(A_27b))
+                 => ! [V2f] :
+                      ( mem(V2f,arr(A_27a,A_27b))
+                     => ! [V3x0] :
+                          ( mem(V3x0,A_27a)
+                         => ! [V4y0] :
+                              ( mem(V4y0,A_27b)
+                             => ( p(ap(ap(ap(c_2Etopology_2Elimpt(A_27a),ap(c_2Emetric_2Emtop(A_27a),V0m1)),V3x0),c_2Epred__set_2EUNIV(A_27a)))
+                               => ( p(ap(ap(ap(c_2Enets_2Etends(A_27b,A_27a),V2f),V4y0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(A_27b),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(A_27b),V1m2)),ap(c_2Enets_2Etendsto(A_27a),ap(ap(c_2Epair_2E_2C(ty_2Emetric_2Emetric(A_27a),A_27a),V0m1),V3x0)))))
+                                <=> ! [V5e] :
+                                      ( mem(V5e,ty_2Erealax_2Ereal)
+                                     => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V5e))
+                                       => ? [V6d] :
+                                            ( mem(V6d,ty_2Erealax_2Ereal)
+                                            & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V6d))
+                                            & ! [V7x] :
+                                                ( mem(V7x,A_27a)
+                                               => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Emetric_2Edist(A_27a),V0m1),ap(ap(c_2Epair_2E_2C(A_27a,A_27a),V7x),V3x0))))
+                                                    & p(ap(ap(c_2Ereal_2Ereal__lte,ap(ap(c_2Emetric_2Edist(A_27a),V0m1),ap(ap(c_2Epair_2E_2C(A_27a,A_27a),V7x),V3x0))),V6d)) )
+                                                 => p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Emetric_2Edist(A_27b),V1m2),ap(ap(c_2Epair_2E_2C(A_27b,A_27b),ap(V2f,V7x)),V4y0))),V5e)) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2ELIM__TENDS2,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0m1] :
+              ( mem(V0m1,ty_2Emetric_2Emetric(A_27a))
+             => ! [V1m2] :
+                  ( mem(V1m2,ty_2Emetric_2Emetric(A_27b))
+                 => ! [V2f] :
+                      ( mem(V2f,arr(A_27a,A_27b))
+                     => ! [V3x0] :
+                          ( mem(V3x0,A_27a)
+                         => ! [V4y0] :
+                              ( mem(V4y0,A_27b)
+                             => ( p(ap(ap(ap(c_2Etopology_2Elimpt(A_27a),ap(c_2Emetric_2Emtop(A_27a),V0m1)),V3x0),c_2Epred__set_2EUNIV(A_27a)))
+                               => ( p(ap(ap(ap(c_2Enets_2Etends(A_27b,A_27a),V2f),V4y0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(A_27b),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(A_27b),V1m2)),ap(c_2Enets_2Etendsto(A_27a),ap(ap(c_2Epair_2E_2C(ty_2Emetric_2Emetric(A_27a),A_27a),V0m1),V3x0)))))
+                                <=> ! [V5e] :
+                                      ( mem(V5e,ty_2Erealax_2Ereal)
+                                     => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V5e))
+                                       => ? [V6d] :
+                                            ( mem(V6d,ty_2Erealax_2Ereal)
+                                            & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V6d))
+                                            & ! [V7x] :
+                                                ( mem(V7x,A_27a)
+                                               => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Emetric_2Edist(A_27a),V0m1),ap(ap(c_2Epair_2E_2C(A_27a,A_27a),V7x),V3x0))))
+                                                    & p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Emetric_2Edist(A_27a),V0m1),ap(ap(c_2Epair_2E_2C(A_27a,A_27a),V7x),V3x0))),V6d)) )
+                                                 => p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Emetric_2Edist(A_27b),V1m2),ap(ap(c_2Epair_2E_2C(A_27b,A_27b),ap(V2f,V7x)),V4y0))),V5e)) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2EMR1__BOUNDED,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ! [V1f] :
+              ( mem(V1f,arr(A_27a,ty_2Erealax_2Ereal))
+             => ( p(ap(ap(c_2Enets_2Ebounded(ty_2Erealax_2Ereal,A_27a),ap(ap(c_2Epair_2E_2C(ty_2Emetric_2Emetric(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),c_2Emetric_2Emr1),V0g)),V1f))
+              <=> ? [V2k] :
+                    ( mem(V2k,ty_2Erealax_2Ereal)
+                    & ? [V3N] :
+                        ( mem(V3N,A_27a)
+                        & p(ap(ap(V0g,V3N),V3N))
+                        & ! [V4n] :
+                            ( mem(V4n,A_27a)
+                           => ( p(ap(ap(V0g,V4n),V3N))
+                             => p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(V1f,V4n))),V2k)) ) ) ) ) ) ) ) ) ).
+
+fof(lameq_f2753,axiom,
+    ! [A_27a,V1x] :
+      ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V2x0] :
+          ( mem(V2x0,ty_2Erealax_2Ereal)
+         => ! [V3n] : ap(f2753(A_27a,V1x,V2x0),V3n) = ap(ap(c_2Ereal_2Ereal__sub,ap(V1x,V3n)),V2x0) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__NULL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ! [V1x] :
+              ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+             => ! [V2x0] :
+                  ( mem(V2x0,ty_2Erealax_2Ereal)
+                 => ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                  <=> p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2753(A_27a,V1x,V2x0)),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__CONV__BOUNDED,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ! [V1x] :
+              ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+             => ! [V2x0] :
+                  ( mem(V2x0,ty_2Erealax_2Ereal)
+                 => ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                   => p(ap(ap(c_2Enets_2Ebounded(ty_2Erealax_2Ereal,A_27a),ap(ap(c_2Epair_2E_2C(ty_2Emetric_2Emetric(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),c_2Emetric_2Emr1),V0g)),V1x)) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__CONV__NZ,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ! [V1x] :
+              ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+             => ! [V2x0] :
+                  ( mem(V2x0,ty_2Erealax_2Ereal)
+                 => ( ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                      & V2x0 != ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) )
+                   => ? [V3N] :
+                        ( mem(V3N,A_27a)
+                        & p(ap(ap(V0g,V3N),V3N))
+                        & ! [V4n] :
+                            ( mem(V4n,A_27a)
+                           => ( p(ap(ap(V0g,V4n),V3N))
+                             => ap(V1x,V4n) != ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) ) ) ) ) ) ) ) ) ).
+
+fof(lameq_f2754,axiom,
+    ! [A_27a,V1x] :
+      ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V3n] : ap(f2754(A_27a,V1x),V3n) = ap(c_2Erealax_2Einv,ap(V1x,V3n)) ) ).
+
+fof(conj_thm_2Enets_2ENET__CONV__IBOUNDED,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ! [V1x] :
+              ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+             => ! [V2x0] :
+                  ( mem(V2x0,ty_2Erealax_2Ereal)
+                 => ( ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                      & V2x0 != ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) )
+                   => p(ap(ap(c_2Enets_2Ebounded(ty_2Erealax_2Ereal,A_27a),ap(ap(c_2Epair_2E_2C(ty_2Emetric_2Emetric(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),c_2Emetric_2Emr1),V0g)),f2754(A_27a,V1x))) ) ) ) ) ) ).
+
+fof(lameq_f2755,axiom,
+    ! [A_27a,V1x] :
+      ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V2y] :
+          ( mem(V2y,arr(A_27a,ty_2Erealax_2Ereal))
+         => ! [V3n] : ap(f2755(A_27a,V1x,V2y),V3n) = ap(ap(c_2Erealax_2Ereal__add,ap(V1x,V3n)),ap(V2y,V3n)) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__NULL__ADD,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+           => ! [V1x] :
+                ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+               => ! [V2y] :
+                    ( mem(V2y,arr(A_27a,ty_2Erealax_2Ereal))
+                   => ( ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                        & p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V2y),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) )
+                     => p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2755(A_27a,V1x,V2y)),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ) ).
+
+fof(lameq_f2756,axiom,
+    ! [A_27a,V1x] :
+      ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V2y] :
+          ( mem(V2y,arr(A_27a,ty_2Erealax_2Ereal))
+         => ! [V3n] : ap(f2756(A_27a,V1x,V2y),V3n) = ap(ap(c_2Erealax_2Ereal__mul,ap(V1x,V3n)),ap(V2y,V3n)) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__NULL__MUL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+           => ! [V1x] :
+                ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+               => ! [V2y] :
+                    ( mem(V2y,arr(A_27a,ty_2Erealax_2Ereal))
+                   => ( ( p(ap(ap(c_2Enets_2Ebounded(ty_2Erealax_2Ereal,A_27a),ap(ap(c_2Epair_2E_2C(ty_2Emetric_2Emetric(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),c_2Emetric_2Emr1),V0g)),V1x))
+                        & p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V2y),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) )
+                     => p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2756(A_27a,V1x,V2y)),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ) ).
+
+fof(lameq_f2757,axiom,
+    ! [A_27a,V2x] :
+      ( mem(V2x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V1k] :
+          ( mem(V1k,ty_2Erealax_2Ereal)
+         => ! [V3n] : ap(f2757(A_27a,V2x,V1k),V3n) = ap(ap(c_2Erealax_2Ereal__mul,V1k),ap(V2x,V3n)) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__NULL__CMUL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ! [V1k] :
+              ( mem(V1k,ty_2Erealax_2Ereal)
+             => ! [V2x] :
+                  ( mem(V2x,arr(A_27a,ty_2Erealax_2Ereal))
+                 => ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V2x),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                   => p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2757(A_27a,V2x,V1k)),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ).
+
+fof(lameq_f2758,axiom,
+    ! [A_27a,V1x] :
+      ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V3y] :
+          ( mem(V3y,arr(A_27a,ty_2Erealax_2Ereal))
+         => ! [V5n] : ap(f2758(A_27a,V1x,V3y),V5n) = ap(ap(c_2Erealax_2Ereal__add,ap(V1x,V5n)),ap(V3y,V5n)) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__ADD,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+           => ! [V1x] :
+                ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+               => ! [V2x0] :
+                    ( mem(V2x0,ty_2Erealax_2Ereal)
+                   => ! [V3y] :
+                        ( mem(V3y,arr(A_27a,ty_2Erealax_2Ereal))
+                       => ! [V4y0] :
+                            ( mem(V4y0,ty_2Erealax_2Ereal)
+                           => ( ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                                & p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V3y),V4y0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) )
+                             => p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2758(A_27a,V1x,V3y)),ap(ap(c_2Erealax_2Ereal__add,V2x0),V4y0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ) ) ) ).
+
+fof(lameq_f2759,axiom,
+    ! [A_27a,V1x] :
+      ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V3n] : ap(f2759(A_27a,V1x),V3n) = ap(c_2Erealax_2Ereal__neg,ap(V1x,V3n)) ) ).
+
+fof(conj_thm_2Enets_2ENET__NEG,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+           => ! [V1x] :
+                ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+               => ! [V2x0] :
+                    ( mem(V2x0,ty_2Erealax_2Ereal)
+                   => ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                    <=> p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2759(A_27a,V1x)),ap(c_2Erealax_2Ereal__neg,V2x0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ) ).
+
+fof(lameq_f2760,axiom,
+    ! [A_27a,V1x] :
+      ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V3y] :
+          ( mem(V3y,arr(A_27a,ty_2Erealax_2Ereal))
+         => ! [V5n] : ap(f2760(A_27a,V1x,V3y),V5n) = ap(ap(c_2Ereal_2Ereal__sub,ap(V1x,V5n)),ap(V3y,V5n)) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__SUB,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+           => ! [V1x] :
+                ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+               => ! [V2x0] :
+                    ( mem(V2x0,ty_2Erealax_2Ereal)
+                   => ! [V3y] :
+                        ( mem(V3y,arr(A_27a,ty_2Erealax_2Ereal))
+                       => ! [V4y0] :
+                            ( mem(V4y0,ty_2Erealax_2Ereal)
+                           => ( ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                                & p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V3y),V4y0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) )
+                             => p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2760(A_27a,V1x,V3y)),ap(ap(c_2Ereal_2Ereal__sub,V2x0),V4y0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ) ) ) ).
+
+fof(lameq_f2761,axiom,
+    ! [A_27a,V1x] :
+      ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V2y] :
+          ( mem(V2y,arr(A_27a,ty_2Erealax_2Ereal))
+         => ! [V5n] : ap(f2761(A_27a,V1x,V2y),V5n) = ap(ap(c_2Erealax_2Ereal__mul,ap(V1x,V5n)),ap(V2y,V5n)) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__MUL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+           => ! [V1x] :
+                ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+               => ! [V2y] :
+                    ( mem(V2y,arr(A_27a,ty_2Erealax_2Ereal))
+                   => ! [V3x0] :
+                        ( mem(V3x0,ty_2Erealax_2Ereal)
+                       => ! [V4y0] :
+                            ( mem(V4y0,ty_2Erealax_2Ereal)
+                           => ( ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V3x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                                & p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V2y),V4y0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) )
+                             => p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2761(A_27a,V1x,V2y)),ap(ap(c_2Erealax_2Ereal__mul,V3x0),V4y0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__INV,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+           => ! [V1x] :
+                ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+               => ! [V2x0] :
+                    ( mem(V2x0,ty_2Erealax_2Ereal)
+                   => ( ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                        & V2x0 != ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) )
+                     => p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2754(A_27a,V1x)),ap(c_2Erealax_2Einv,V2x0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ) ).
+
+fof(lameq_f2762,axiom,
+    ! [A_27a,V1x] :
+      ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V3y] :
+          ( mem(V3y,arr(A_27a,ty_2Erealax_2Ereal))
+         => ! [V5n] : ap(f2762(A_27a,V1x,V3y),V5n) = ap(ap(c_2Ereal_2E_2F,ap(V1x,V5n)),ap(V3y,V5n)) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__DIV,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+           => ! [V1x] :
+                ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+               => ! [V2x0] :
+                    ( mem(V2x0,ty_2Erealax_2Ereal)
+                   => ! [V3y] :
+                        ( mem(V3y,arr(A_27a,ty_2Erealax_2Ereal))
+                       => ! [V4y0] :
+                            ( mem(V4y0,ty_2Erealax_2Ereal)
+                           => ( ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                                & p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V3y),V4y0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                                & V4y0 != ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) )
+                             => p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2762(A_27a,V1x,V3y)),ap(ap(c_2Ereal_2E_2F,V2x0),V4y0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ) ) ) ).
+
+fof(lameq_f2763,axiom,
+    ! [A_27a,V1x] :
+      ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+     => ! [V3n] : ap(f2763(A_27a,V1x),V3n) = ap(c_2Ereal_2Eabs,ap(V1x,V3n)) ) ).
+
+fof(conj_thm_2Enets_2ENET__ABS,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ! [V1x] :
+              ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+             => ! [V2x0] :
+                  ( mem(V2x0,ty_2Erealax_2Ereal)
+                 => ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                   => p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),f2763(A_27a,V1x)),ap(c_2Ereal_2Eabs,V2x0)),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g))) ) ) ) ) ) ).
+
+fof(conj_thm_2Enets_2ENET__LE,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0g] :
+          ( mem(V0g,arr(A_27a,arr(A_27a,bool)))
+         => ( p(ap(c_2Enets_2Edorder(A_27a),V0g))
+           => ! [V1x] :
+                ( mem(V1x,arr(A_27a,ty_2Erealax_2Ereal))
+               => ! [V2x0] :
+                    ( mem(V2x0,ty_2Erealax_2Ereal)
+                   => ! [V3y] :
+                        ( mem(V3y,arr(A_27a,ty_2Erealax_2Ereal))
+                       => ! [V4y0] :
+                            ( mem(V4y0,ty_2Erealax_2Ereal)
+                           => ( ( p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V1x),V2x0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                                & p(ap(ap(ap(c_2Enets_2Etends(ty_2Erealax_2Ereal,A_27a),V3y),V4y0),ap(ap(c_2Epair_2E_2C(ty_2Etopology_2Etopology(ty_2Erealax_2Ereal),arr(A_27a,arr(A_27a,bool))),ap(c_2Emetric_2Emtop(ty_2Erealax_2Ereal),c_2Emetric_2Emr1)),V0g)))
+                                & ? [V5N] :
+                                    ( mem(V5N,A_27a)
+                                    & p(ap(ap(V0g,V5N),V5N))
+                                    & ! [V6n] :
+                                        ( mem(V6n,A_27a)
+                                       => ( p(ap(ap(V0g,V6n),V5N))
+                                         => p(ap(ap(c_2Ereal_2Ereal__lte,ap(V1x,V6n)),ap(V3y,V6n))) ) ) ) )
+                             => p(ap(ap(c_2Ereal_2Ereal__lte,V2x0),V4y0)) ) ) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

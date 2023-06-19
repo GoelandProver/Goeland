@@ -1,0 +1,528 @@
+%------------------------------------------------------------------------------
+% File     : SET007+234 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : The Lattice of Real Numbers. The Lattice of Real Functions
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : real_lat [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   68 (  23 unt;   0 def)
+%            Number of atoms       :  253 (  70 equ)
+%            Maximal formula atoms :   11 (   3 avg)
+%            Number of connectives :  219 (  34   ~;   0   |;  75   &)
+%                                         (   4 <=>; 106  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   5 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   21 (  19 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   18 (  18 usr;   4 con; 0-6 aty)
+%            Number of variables   :  107 ( 107   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_real_lat,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_real_lat))
+     => v1_xreal_0(A) ) ).
+
+fof(fc1_real_lat,axiom,
+    ( ~ v3_struct_0(k3_real_lat)
+    & v3_lattices(k3_real_lat) ) ).
+
+fof(fc2_real_lat,axiom,
+    ( ~ v3_struct_0(k3_real_lat)
+    & v3_lattices(k3_real_lat)
+    & v4_lattices(k3_real_lat)
+    & v5_lattices(k3_real_lat)
+    & v6_lattices(k3_real_lat)
+    & v7_lattices(k3_real_lat)
+    & v8_lattices(k3_real_lat)
+    & v9_lattices(k3_real_lat)
+    & v10_lattices(k3_real_lat) ) ).
+
+fof(fc3_real_lat,axiom,
+    ( ~ v3_struct_0(k3_real_lat)
+    & v3_lattices(k3_real_lat)
+    & v4_lattices(k3_real_lat)
+    & v5_lattices(k3_real_lat)
+    & v6_lattices(k3_real_lat)
+    & v7_lattices(k3_real_lat)
+    & v8_lattices(k3_real_lat)
+    & v9_lattices(k3_real_lat)
+    & v10_lattices(k3_real_lat)
+    & v11_lattices(k3_real_lat)
+    & v12_lattices(k3_real_lat) ) ).
+
+fof(d1_real_lat,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k2_zfmisc_1(k1_numbers,k1_numbers),k1_numbers)
+        & m2_relset_1(A,k2_zfmisc_1(k1_numbers,k1_numbers),k1_numbers) )
+     => ( A = k1_real_lat
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ! [C] :
+                ( m1_subset_1(C,k1_numbers)
+               => k2_binop_1(k1_numbers,k1_numbers,k1_numbers,A,B,C) = k3_square_1(B,C) ) ) ) ) ).
+
+fof(d2_real_lat,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k2_zfmisc_1(k1_numbers,k1_numbers),k1_numbers)
+        & m2_relset_1(A,k2_zfmisc_1(k1_numbers,k1_numbers),k1_numbers) )
+     => ( A = k2_real_lat
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ! [C] :
+                ( m1_subset_1(C,k1_numbers)
+               => k2_binop_1(k1_numbers,k1_numbers,k1_numbers,A,B,C) = k4_square_1(B,C) ) ) ) ) ).
+
+fof(d3_real_lat,axiom,
+    $true ).
+
+fof(d4_real_lat,axiom,
+    k3_real_lat = g3_lattices(k1_numbers,k2_real_lat,k1_real_lat) ).
+
+fof(t1_real_lat,axiom,
+    $true ).
+
+fof(t2_real_lat,axiom,
+    $true ).
+
+fof(t3_real_lat,axiom,
+    $true ).
+
+fof(t4_real_lat,axiom,
+    $true ).
+
+fof(t5_real_lat,axiom,
+    $true ).
+
+fof(t6_real_lat,axiom,
+    $true ).
+
+fof(t7_real_lat,axiom,
+    $true ).
+
+fof(t8_real_lat,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_real_lat))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k3_real_lat))
+         => k1_binop_1(k2_real_lat,A,B) = k1_binop_1(k2_real_lat,B,A) ) ) ).
+
+fof(t9_real_lat,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_real_lat))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k3_real_lat))
+         => k1_binop_1(k1_real_lat,A,B) = k1_binop_1(k1_real_lat,B,A) ) ) ).
+
+fof(t10_real_lat,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_real_lat))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k3_real_lat))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k3_real_lat))
+             => ( k1_binop_1(k2_real_lat,A,k1_binop_1(k2_real_lat,B,C)) = k1_binop_1(k2_real_lat,k1_binop_1(k2_real_lat,B,C),A)
+                & k1_binop_1(k2_real_lat,A,k1_binop_1(k2_real_lat,B,C)) = k1_binop_1(k2_real_lat,k1_binop_1(k2_real_lat,A,B),C)
+                & k1_binop_1(k2_real_lat,A,k1_binop_1(k2_real_lat,B,C)) = k1_binop_1(k2_real_lat,k1_binop_1(k2_real_lat,B,A),C)
+                & k1_binop_1(k2_real_lat,A,k1_binop_1(k2_real_lat,B,C)) = k1_binop_1(k2_real_lat,k1_binop_1(k2_real_lat,C,A),B)
+                & k1_binop_1(k2_real_lat,A,k1_binop_1(k2_real_lat,B,C)) = k1_binop_1(k2_real_lat,k1_binop_1(k2_real_lat,C,B),A)
+                & k1_binop_1(k2_real_lat,A,k1_binop_1(k2_real_lat,B,C)) = k1_binop_1(k2_real_lat,k1_binop_1(k2_real_lat,A,C),B) ) ) ) ) ).
+
+fof(t11_real_lat,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_real_lat))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k3_real_lat))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k3_real_lat))
+             => ( k1_binop_1(k1_real_lat,A,k1_binop_1(k1_real_lat,B,C)) = k1_binop_1(k1_real_lat,k1_binop_1(k1_real_lat,B,C),A)
+                & k1_binop_1(k1_real_lat,A,k1_binop_1(k1_real_lat,B,C)) = k1_binop_1(k1_real_lat,k1_binop_1(k1_real_lat,A,B),C)
+                & k1_binop_1(k1_real_lat,A,k1_binop_1(k1_real_lat,B,C)) = k1_binop_1(k1_real_lat,k1_binop_1(k1_real_lat,B,A),C)
+                & k1_binop_1(k1_real_lat,A,k1_binop_1(k1_real_lat,B,C)) = k1_binop_1(k1_real_lat,k1_binop_1(k1_real_lat,C,A),B)
+                & k1_binop_1(k1_real_lat,A,k1_binop_1(k1_real_lat,B,C)) = k1_binop_1(k1_real_lat,k1_binop_1(k1_real_lat,C,B),A)
+                & k1_binop_1(k1_real_lat,A,k1_binop_1(k1_real_lat,B,C)) = k1_binop_1(k1_real_lat,k1_binop_1(k1_real_lat,A,C),B) ) ) ) ) ).
+
+fof(t12_real_lat,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_real_lat))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k3_real_lat))
+         => ( k1_binop_1(k2_real_lat,k1_binop_1(k1_real_lat,A,B),B) = B
+            & k1_binop_1(k2_real_lat,B,k1_binop_1(k1_real_lat,A,B)) = B
+            & k1_binop_1(k2_real_lat,B,k1_binop_1(k1_real_lat,B,A)) = B
+            & k1_binop_1(k2_real_lat,k1_binop_1(k1_real_lat,B,A),B) = B ) ) ) ).
+
+fof(t13_real_lat,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_real_lat))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k3_real_lat))
+         => ( k1_binop_1(k1_real_lat,A,k1_binop_1(k2_real_lat,A,B)) = A
+            & k1_binop_1(k1_real_lat,k1_binop_1(k2_real_lat,B,A),A) = A
+            & k1_binop_1(k1_real_lat,A,k1_binop_1(k2_real_lat,B,A)) = A
+            & k1_binop_1(k1_real_lat,k1_binop_1(k2_real_lat,A,B),A) = A ) ) ) ).
+
+fof(t14_real_lat,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_real_lat))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k3_real_lat))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k3_real_lat))
+             => k1_binop_1(k1_real_lat,A,k1_binop_1(k2_real_lat,B,C)) = k1_binop_1(k2_real_lat,k1_binop_1(k1_real_lat,A,B),k1_binop_1(k1_real_lat,A,C)) ) ) ) ).
+
+fof(d5_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers))
+            & m2_relset_1(B,k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers)) )
+         => ( B = k4_real_lat(A)
+          <=> ! [C] :
+                ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+               => ! [D] :
+                    ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                   => k1_funcsdom(A,k1_numbers,B,C,D) = k4_funcsdom(k1_numbers,A,k2_real_lat,C,D) ) ) ) ) ) ).
+
+fof(d6_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers))
+            & m2_relset_1(B,k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers)) )
+         => ( B = k5_real_lat(A)
+          <=> ! [C] :
+                ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+               => ! [D] :
+                    ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                   => k1_funcsdom(A,k1_numbers,B,C,D) = k4_funcsdom(k1_numbers,A,k1_real_lat,C,D) ) ) ) ) ) ).
+
+fof(t15_real_lat,axiom,
+    $true ).
+
+fof(t16_real_lat,axiom,
+    $true ).
+
+fof(t17_real_lat,axiom,
+    $true ).
+
+fof(t18_real_lat,axiom,
+    $true ).
+
+fof(t19_real_lat,axiom,
+    $true ).
+
+fof(t20_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k4_real_lat(A),B,C) = k1_funcsdom(A,k1_numbers,k4_real_lat(A),C,B) ) ) ) ).
+
+fof(t21_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,C) = k1_funcsdom(A,k1_numbers,k5_real_lat(A),C,B) ) ) ) ).
+
+fof(t22_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => ! [D] :
+                  ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                 => k1_funcsdom(A,k1_numbers,k4_real_lat(A),k1_funcsdom(A,k1_numbers,k4_real_lat(A),B,C),D) = k1_funcsdom(A,k1_numbers,k4_real_lat(A),B,k1_funcsdom(A,k1_numbers,k4_real_lat(A),C,D)) ) ) ) ) ).
+
+fof(t23_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => ! [D] :
+                  ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                 => k1_funcsdom(A,k1_numbers,k5_real_lat(A),k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,C),D) = k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,k1_funcsdom(A,k1_numbers,k5_real_lat(A),C,D)) ) ) ) ) ).
+
+fof(t24_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k4_real_lat(A),B,k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,C)) = B ) ) ) ).
+
+fof(t25_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k4_real_lat(A),k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,C),B) = B ) ) ) ).
+
+fof(t26_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k4_real_lat(A),k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,C),C) = C ) ) ) ).
+
+fof(t27_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k4_real_lat(A),B,k1_funcsdom(A,k1_numbers,k5_real_lat(A),C,B)) = B ) ) ) ).
+
+fof(t28_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,k1_funcsdom(A,k1_numbers,k4_real_lat(A),B,C)) = B ) ) ) ).
+
+fof(t29_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,k1_funcsdom(A,k1_numbers,k4_real_lat(A),C,B)) = B ) ) ) ).
+
+fof(t30_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k5_real_lat(A),k1_funcsdom(A,k1_numbers,k4_real_lat(A),B,C),C) = C ) ) ) ).
+
+fof(t31_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k5_real_lat(A),k1_funcsdom(A,k1_numbers,k4_real_lat(A),B,C),B) = B ) ) ) ).
+
+fof(t32_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => ! [D] :
+                  ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                 => k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,k1_funcsdom(A,k1_numbers,k4_real_lat(A),C,D)) = k1_funcsdom(A,k1_numbers,k4_real_lat(A),k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,C),k1_funcsdom(A,k1_numbers,k5_real_lat(A),B,D)) ) ) ) ) ).
+
+fof(d7_real_lat,axiom,
+    $true ).
+
+fof(d8_real_lat,axiom,
+    $true ).
+
+fof(d9_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(g3_lattices(k1_fraenkel(A,k1_numbers),k4_real_lat(A),k5_real_lat(A))))
+         => k6_real_lat(A,B) = B ) ) ).
+
+fof(d10_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k7_real_lat(A) = g3_lattices(k1_fraenkel(A,k1_numbers),k4_real_lat(A),k5_real_lat(A)) ) ).
+
+fof(t33_real_lat,axiom,
+    $true ).
+
+fof(t34_real_lat,axiom,
+    $true ).
+
+fof(t35_real_lat,axiom,
+    $true ).
+
+fof(t36_real_lat,axiom,
+    $true ).
+
+fof(t37_real_lat,axiom,
+    $true ).
+
+fof(t38_real_lat,axiom,
+    $true ).
+
+fof(t39_real_lat,axiom,
+    $true ).
+
+fof(t40_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k7_real_lat(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k7_real_lat(A)))
+             => k1_binop_1(k4_real_lat(A),B,C) = k1_binop_1(k4_real_lat(A),C,B) ) ) ) ).
+
+fof(t41_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k7_real_lat(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k7_real_lat(A)))
+             => k1_binop_1(k5_real_lat(A),B,C) = k1_binop_1(k5_real_lat(A),C,B) ) ) ) ).
+
+fof(t42_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k7_real_lat(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k7_real_lat(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k7_real_lat(A)))
+                 => ( k1_binop_1(k4_real_lat(A),B,k1_binop_1(k4_real_lat(A),C,D)) = k1_binop_1(k4_real_lat(A),k1_binop_1(k4_real_lat(A),C,D),B)
+                    & k1_binop_1(k4_real_lat(A),B,k1_binop_1(k4_real_lat(A),C,D)) = k1_binop_1(k4_real_lat(A),k1_binop_1(k4_real_lat(A),B,C),D)
+                    & k1_binop_1(k4_real_lat(A),B,k1_binop_1(k4_real_lat(A),C,D)) = k1_binop_1(k4_real_lat(A),k1_binop_1(k4_real_lat(A),C,B),D)
+                    & k1_binop_1(k4_real_lat(A),B,k1_binop_1(k4_real_lat(A),C,D)) = k1_binop_1(k4_real_lat(A),k1_binop_1(k4_real_lat(A),D,B),C)
+                    & k1_binop_1(k4_real_lat(A),B,k1_binop_1(k4_real_lat(A),C,D)) = k1_binop_1(k4_real_lat(A),k1_binop_1(k4_real_lat(A),D,C),B)
+                    & k1_binop_1(k4_real_lat(A),B,k1_binop_1(k4_real_lat(A),C,D)) = k1_binop_1(k4_real_lat(A),k1_binop_1(k4_real_lat(A),B,D),C) ) ) ) ) ) ).
+
+fof(t43_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k7_real_lat(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k7_real_lat(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k7_real_lat(A)))
+                 => ( k1_binop_1(k5_real_lat(A),B,k1_binop_1(k5_real_lat(A),C,D)) = k1_binop_1(k5_real_lat(A),k1_binop_1(k5_real_lat(A),C,D),B)
+                    & k1_binop_1(k5_real_lat(A),B,k1_binop_1(k5_real_lat(A),C,D)) = k1_binop_1(k5_real_lat(A),k1_binop_1(k5_real_lat(A),B,C),D)
+                    & k1_binop_1(k5_real_lat(A),B,k1_binop_1(k5_real_lat(A),C,D)) = k1_binop_1(k5_real_lat(A),k1_binop_1(k5_real_lat(A),C,B),D)
+                    & k1_binop_1(k5_real_lat(A),B,k1_binop_1(k5_real_lat(A),C,D)) = k1_binop_1(k5_real_lat(A),k1_binop_1(k5_real_lat(A),D,B),C)
+                    & k1_binop_1(k5_real_lat(A),B,k1_binop_1(k5_real_lat(A),C,D)) = k1_binop_1(k5_real_lat(A),k1_binop_1(k5_real_lat(A),D,C),B)
+                    & k1_binop_1(k5_real_lat(A),B,k1_binop_1(k5_real_lat(A),C,D)) = k1_binop_1(k5_real_lat(A),k1_binop_1(k5_real_lat(A),B,D),C) ) ) ) ) ) ).
+
+fof(t44_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k7_real_lat(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k7_real_lat(A)))
+             => ( k1_binop_1(k4_real_lat(A),k1_binop_1(k5_real_lat(A),B,C),C) = C
+                & k1_binop_1(k4_real_lat(A),C,k1_binop_1(k5_real_lat(A),B,C)) = C
+                & k1_binop_1(k4_real_lat(A),C,k1_binop_1(k5_real_lat(A),C,B)) = C
+                & k1_binop_1(k4_real_lat(A),k1_binop_1(k5_real_lat(A),C,B),C) = C ) ) ) ) ).
+
+fof(t45_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k7_real_lat(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k7_real_lat(A)))
+             => ( k1_binop_1(k5_real_lat(A),B,k1_binop_1(k4_real_lat(A),B,C)) = B
+                & k1_binop_1(k5_real_lat(A),k1_binop_1(k4_real_lat(A),C,B),B) = B
+                & k1_binop_1(k5_real_lat(A),B,k1_binop_1(k4_real_lat(A),C,B)) = B
+                & k1_binop_1(k5_real_lat(A),k1_binop_1(k4_real_lat(A),B,C),B) = B ) ) ) ) ).
+
+fof(t46_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k7_real_lat(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k7_real_lat(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k7_real_lat(A)))
+                 => k1_binop_1(k5_real_lat(A),B,k1_binop_1(k4_real_lat(A),C,D)) = k1_binop_1(k4_real_lat(A),k1_binop_1(k5_real_lat(A),B,C),k1_binop_1(k5_real_lat(A),B,D)) ) ) ) ) ).
+
+fof(t47_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k7_real_lat(A))
+        & v10_lattices(k7_real_lat(A))
+        & v11_lattices(k7_real_lat(A))
+        & l3_lattices(k7_real_lat(A)) ) ) ).
+
+fof(dt_k1_real_lat,axiom,
+    ( v1_funct_1(k1_real_lat)
+    & v1_funct_2(k1_real_lat,k2_zfmisc_1(k1_numbers,k1_numbers),k1_numbers)
+    & m2_relset_1(k1_real_lat,k2_zfmisc_1(k1_numbers,k1_numbers),k1_numbers) ) ).
+
+fof(dt_k2_real_lat,axiom,
+    ( v1_funct_1(k2_real_lat)
+    & v1_funct_2(k2_real_lat,k2_zfmisc_1(k1_numbers,k1_numbers),k1_numbers)
+    & m2_relset_1(k2_real_lat,k2_zfmisc_1(k1_numbers,k1_numbers),k1_numbers) ) ).
+
+fof(dt_k3_real_lat,axiom,
+    ( v3_lattices(k3_real_lat)
+    & l3_lattices(k3_real_lat) ) ).
+
+fof(dt_k4_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v1_funct_1(k4_real_lat(A))
+        & v1_funct_2(k4_real_lat(A),k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers))
+        & m2_relset_1(k4_real_lat(A),k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers)) ) ) ).
+
+fof(dt_k5_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v1_funct_1(k5_real_lat(A))
+        & v1_funct_2(k5_real_lat(A),k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers))
+        & m2_relset_1(k5_real_lat(A),k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers)) ) ) ).
+
+fof(dt_k6_real_lat,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,u1_struct_0(g3_lattices(k1_fraenkel(A,k1_numbers),k4_real_lat(A),k5_real_lat(A)))) )
+     => m2_fraenkel(k6_real_lat(A,B),A,k1_numbers,k1_fraenkel(A,k1_numbers)) ) ).
+
+fof(dt_k7_real_lat,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k7_real_lat(A))
+        & v3_lattices(k7_real_lat(A))
+        & v10_lattices(k7_real_lat(A))
+        & l3_lattices(k7_real_lat(A)) ) ) ).
+
+%------------------------------------------------------------------------------

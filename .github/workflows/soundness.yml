@@ -17,12 +17,4 @@ jobs:
           go-version: '>=1.18.0'
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
-      - run: wget https://tptp.org/TPTP/Distribution/TPTP-v8.1.2.tgz
-      - run: tar -zxf TPTP-v8.1.2.tgz
-      - run: rm TPTP-v8.1.2.tgz
-      - run: mkdir soundness_test
-      - run: mv TPTP-v8.1.2/Axioms soundness_test
-      - run: python3 external_scripts/fof_tff_countersat.py TPTP-v8.1.2 soundness_test/problems
-      - run: python3 external_scripts/add_include.py ${{ inputs.folder }}/
-      - run: rm -rf TPTP-v8.1.2
-      - run: python3 external_scripts/run_soundness_test.py ${{ inputs.folder }}_INCLUDE 120
+      - run: cd tests && python3 ../external_scripts/run_soundness_test.py SOUNDNESS/${{ inputs.folder }} 120

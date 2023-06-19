@@ -1,0 +1,391 @@
+%------------------------------------------------------------------------------
+% File     : SET007+194 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Properties of the Trigonometric Function
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : sin_cos2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   68 (  25 unt;   0 def)
+%            Number of atoms       :  170 (  61 equ)
+%            Maximal formula atoms :    6 (   2 avg)
+%            Number of connectives :  106 (   4   ~;   0   |;  49   &)
+%                                         (   3 <=>;  50  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    7 (   3 avg)
+%            Maximal term depth    :    6 (   2 avg)
+%            Number of predicates  :   18 (  16 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   36 (  36 usr;  13 con; 0-4 aty)
+%            Number of variables   :   61 (  61   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(k2_sin_cos2(A))
+      & v1_xreal_0(k2_sin_cos2(A)) ) ).
+
+fof(fc2_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(k5_sin_cos2(A))
+      & v1_xreal_0(k5_sin_cos2(A)) ) ).
+
+fof(fc3_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(k8_sin_cos2(A))
+      & v1_xreal_0(k8_sin_cos2(A)) ) ).
+
+fof(fc4_sin_cos2,axiom,
+    ( v1_relat_1(k1_sin_cos2)
+    & v1_funct_1(k1_sin_cos2)
+    & v1_seq_1(k1_sin_cos2)
+    & v1_partfun1(k1_sin_cos2,k1_numbers,k1_numbers) ) ).
+
+fof(fc5_sin_cos2,axiom,
+    ( v1_relat_1(k4_sin_cos2)
+    & v1_funct_1(k4_sin_cos2)
+    & v1_seq_1(k4_sin_cos2)
+    & v1_partfun1(k4_sin_cos2,k1_numbers,k1_numbers) ) ).
+
+fof(fc6_sin_cos2,axiom,
+    ( v1_relat_1(k7_sin_cos2)
+    & v1_funct_1(k7_sin_cos2)
+    & v1_seq_1(k7_sin_cos2)
+    & v1_partfun1(k7_sin_cos2,k1_numbers,k1_numbers) ) ).
+
+fof(t1_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( ( r1_xreal_0(np__0,A)
+              & r1_xreal_0(np__0,B) )
+           => r1_xreal_0(k3_xcmplx_0(np__2,k8_square_1(k3_xcmplx_0(A,B))),k2_xcmplx_0(A,B)) ) ) ) ).
+
+fof(t2_sin_cos2,axiom,
+    r1_rfunct_2(k18_sin_cos,k2_rcomp_1(np__0,k12_binop_2(k32_sin_cos,np__2))) ).
+
+fof(t3_sin_cos2,axiom,
+    r2_rfunct_2(k18_sin_cos,k2_rcomp_1(k12_binop_2(k32_sin_cos,np__2),k32_sin_cos)) ).
+
+fof(t4_sin_cos2,axiom,
+    r2_rfunct_2(k21_sin_cos,k2_rcomp_1(np__0,k12_binop_2(k32_sin_cos,np__2))) ).
+
+fof(t5_sin_cos2,axiom,
+    r2_rfunct_2(k21_sin_cos,k2_rcomp_1(k12_binop_2(k32_sin_cos,np__2),k32_sin_cos)) ).
+
+fof(t6_sin_cos2,axiom,
+    r2_rfunct_2(k18_sin_cos,k2_rcomp_1(k32_sin_cos,k11_binop_2(k12_binop_2(np__3,np__2),k32_sin_cos))) ).
+
+fof(t7_sin_cos2,axiom,
+    r1_rfunct_2(k18_sin_cos,k2_rcomp_1(k11_binop_2(k12_binop_2(np__3,np__2),k32_sin_cos),k11_binop_2(np__2,k32_sin_cos))) ).
+
+fof(t8_sin_cos2,axiom,
+    r1_rfunct_2(k21_sin_cos,k2_rcomp_1(k32_sin_cos,k11_binop_2(k12_binop_2(np__3,np__2),k32_sin_cos))) ).
+
+fof(t9_sin_cos2,axiom,
+    r1_rfunct_2(k21_sin_cos,k2_rcomp_1(k11_binop_2(k12_binop_2(np__3,np__2),k32_sin_cos),k11_binop_2(np__2,k32_sin_cos))) ).
+
+fof(t10_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k2_seq_1(k1_numbers,k1_numbers,k18_sin_cos,A) = k2_seq_1(k1_numbers,k1_numbers,k18_sin_cos,k2_xcmplx_0(k11_binop_2(k11_binop_2(np__2,k32_sin_cos),B),A)) ) ) ).
+
+fof(t11_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k2_seq_1(k1_numbers,k1_numbers,k21_sin_cos,A) = k2_seq_1(k1_numbers,k1_numbers,k21_sin_cos,k2_xcmplx_0(k11_binop_2(k11_binop_2(np__2,k32_sin_cos),B),A)) ) ) ).
+
+fof(d1_sin_cos2,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & m2_relset_1(A,k1_numbers,k1_numbers) )
+     => ( A = k1_sin_cos2
+      <=> ( k1_relat_1(A) = k1_numbers
+          & ! [B] :
+              ( v1_xreal_0(B)
+             => k2_seq_1(k1_numbers,k1_numbers,A,B) = k12_binop_2(k10_binop_2(k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,B),k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,k4_xcmplx_0(B))),np__2) ) ) ) ) ).
+
+fof(d2_sin_cos2,axiom,
+    ! [A] : k2_sin_cos2(A) = k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A) ).
+
+fof(d3_sin_cos2,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & m2_relset_1(A,k1_numbers,k1_numbers) )
+     => ( A = k4_sin_cos2
+      <=> ( k1_relat_1(A) = k1_numbers
+          & ! [B] :
+              ( v1_xreal_0(B)
+             => k2_seq_1(k1_numbers,k1_numbers,A,B) = k12_binop_2(k9_binop_2(k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,B),k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,k4_xcmplx_0(B))),np__2) ) ) ) ) ).
+
+fof(d4_sin_cos2,axiom,
+    ! [A] : k5_sin_cos2(A) = k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A) ).
+
+fof(d5_sin_cos2,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & m2_relset_1(A,k1_numbers,k1_numbers) )
+     => ( A = k7_sin_cos2
+      <=> ( k1_relat_1(A) = k1_numbers
+          & ! [B] :
+              ( v1_xreal_0(B)
+             => k2_seq_1(k1_numbers,k1_numbers,A,B) = k12_binop_2(k10_binop_2(k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,B),k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,k4_xcmplx_0(B))),k9_binop_2(k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,B),k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,k4_xcmplx_0(B)))) ) ) ) ) ).
+
+fof(d6_sin_cos2,axiom,
+    ! [A] : k8_sin_cos2(A) = k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A) ).
+
+fof(t12_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,k2_xcmplx_0(A,B)) = k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,A),k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,B)) ) ) ).
+
+fof(t13_sin_cos2,axiom,
+    k2_seq_1(k1_numbers,k1_numbers,k26_sin_cos,np__0) = np__1 ).
+
+fof(t14_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( k10_binop_2(k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A)),k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A))) = np__1
+        & k10_binop_2(k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A)),k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A))) = np__1 ) ) ).
+
+fof(t15_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A) != np__0
+        & ~ r1_xreal_0(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),np__0)
+        & k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,np__0) = np__1 ) ) ).
+
+fof(t16_sin_cos2,axiom,
+    k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,np__0) = np__0 ).
+
+fof(t17_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A) = k12_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A)) ) ).
+
+fof(t18_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A)) = k11_binop_2(k12_binop_2(np__1,np__2),k10_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k3_xcmplx_0(np__2,A)),np__1))
+        & k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A)) = k11_binop_2(k12_binop_2(np__1,np__2),k9_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k3_xcmplx_0(np__2,A)),np__1)) ) ) ).
+
+fof(t19_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k4_xcmplx_0(A)) = k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A)
+        & k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k4_xcmplx_0(A)) = k7_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A))
+        & k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,k4_xcmplx_0(A)) = k7_binop_2(k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A)) ) ) ).
+
+fof(t20_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k2_xcmplx_0(A,B)) = k9_binop_2(k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B)),k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,B)))
+            & k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k6_xcmplx_0(A,B)) = k10_binop_2(k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B)),k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,B))) ) ) ) ).
+
+fof(t21_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k2_xcmplx_0(A,B)) = k9_binop_2(k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B)),k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,B)))
+            & k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k6_xcmplx_0(A,B)) = k10_binop_2(k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B)),k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,B))) ) ) ) ).
+
+fof(t22_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,k2_xcmplx_0(A,B)) = k12_binop_2(k9_binop_2(k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,B)),k9_binop_2(np__1,k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,B))))
+            & k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,k6_xcmplx_0(A,B)) = k12_binop_2(k10_binop_2(k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,B)),k10_binop_2(np__1,k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,B)))) ) ) ) ).
+
+fof(t23_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k3_xcmplx_0(np__2,A)) = k11_binop_2(k11_binop_2(np__2,k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A)),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A))
+        & k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k3_xcmplx_0(np__2,A)) = k10_binop_2(k11_binop_2(np__2,k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A))),np__1)
+        & k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,k3_xcmplx_0(np__2,A)) = k12_binop_2(k11_binop_2(np__2,k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A)),k9_binop_2(np__1,k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A)))) ) ) ).
+
+fof(t24_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k10_binop_2(k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A)),k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,B))) = k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k2_xcmplx_0(A,B)),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k6_xcmplx_0(A,B)))
+            & k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k2_xcmplx_0(A,B)),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k6_xcmplx_0(A,B))) = k10_binop_2(k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A)),k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B)))
+            & k10_binop_2(k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A)),k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,B))) = k10_binop_2(k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A)),k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B))) ) ) ) ).
+
+fof(t25_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k9_binop_2(k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A)),k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B))) = k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k2_xcmplx_0(A,B)),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k6_xcmplx_0(A,B)))
+            & k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k2_xcmplx_0(A,B)),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k6_xcmplx_0(A,B))) = k9_binop_2(k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A)),k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,B)))
+            & k9_binop_2(k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A)),k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B))) = k9_binop_2(k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A)),k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,B))) ) ) ) ).
+
+fof(t26_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k9_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,B)) = k11_binop_2(k11_binop_2(np__2,k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k2_xcmplx_0(k7_xcmplx_0(A,np__2),k7_xcmplx_0(B,np__2)))),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k6_xcmplx_0(k7_xcmplx_0(A,np__2),k7_xcmplx_0(B,np__2))))
+            & k10_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,B)) = k11_binop_2(k11_binop_2(np__2,k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k6_xcmplx_0(k7_xcmplx_0(A,np__2),k7_xcmplx_0(B,np__2)))),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k2_xcmplx_0(k7_xcmplx_0(A,np__2),k7_xcmplx_0(B,np__2)))) ) ) ) ).
+
+fof(t27_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k9_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B)) = k11_binop_2(k11_binop_2(np__2,k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k2_xcmplx_0(k7_xcmplx_0(A,np__2),k7_xcmplx_0(B,np__2)))),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k6_xcmplx_0(k7_xcmplx_0(A,np__2),k7_xcmplx_0(B,np__2))))
+            & k10_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B)) = k11_binop_2(k11_binop_2(np__2,k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k6_xcmplx_0(k7_xcmplx_0(A,np__2),k7_xcmplx_0(B,np__2)))),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k2_xcmplx_0(k7_xcmplx_0(A,np__2),k7_xcmplx_0(B,np__2)))) ) ) ) ).
+
+fof(t28_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k9_binop_2(k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,B)) = k12_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k2_xcmplx_0(A,B)),k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B)))
+            & k10_binop_2(k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,B)) = k12_binop_2(k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k6_xcmplx_0(A,B)),k11_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,B))) ) ) ) ).
+
+fof(t29_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k3_prepower(k9_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A)),B) = k9_binop_2(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,k3_xcmplx_0(B,A)),k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,k3_xcmplx_0(B,A))) ) ) ).
+
+fof(t30_sin_cos2,axiom,
+    ( k1_relat_1(k1_sin_cos2) = k1_numbers
+    & k1_relat_1(k4_sin_cos2) = k1_numbers
+    & k1_relat_1(k7_sin_cos2) = k1_numbers ) ).
+
+fof(t31_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( r1_fdiff_1(k1_sin_cos2,A)
+        & k1_fdiff_1(k1_sin_cos2,A) = k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A) ) ) ).
+
+fof(t32_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( r1_fdiff_1(k4_sin_cos2,A)
+        & k1_fdiff_1(k4_sin_cos2,A) = k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A) ) ) ).
+
+fof(t33_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( r1_fdiff_1(k7_sin_cos2,A)
+        & k1_fdiff_1(k7_sin_cos2,A) = k12_binop_2(np__1,k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A))) ) ) ).
+
+fof(t34_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( r2_fdiff_1(k1_sin_cos2,k1_numbers)
+        & k1_fdiff_1(k1_sin_cos2,A) = k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A) ) ) ).
+
+fof(t35_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( r2_fdiff_1(k4_sin_cos2,k1_numbers)
+        & k1_fdiff_1(k4_sin_cos2,A) = k2_seq_1(k1_numbers,k1_numbers,k1_sin_cos2,A) ) ) ).
+
+fof(t36_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( r2_fdiff_1(k7_sin_cos2,k1_numbers)
+        & k1_fdiff_1(k7_sin_cos2,A) = k12_binop_2(np__1,k7_square_1(k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A))) ) ) ).
+
+fof(t37_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => r1_xreal_0(np__1,k2_seq_1(k1_numbers,k1_numbers,k4_sin_cos2,A)) ) ).
+
+fof(t38_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => r1_fcont_1(k1_sin_cos2,A) ) ).
+
+fof(t39_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => r1_fcont_1(k4_sin_cos2,A) ) ).
+
+fof(t40_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => r1_fcont_1(k7_sin_cos2,A) ) ).
+
+fof(t41_sin_cos2,axiom,
+    r2_fcont_1(k1_sin_cos2,k1_numbers) ).
+
+fof(t42_sin_cos2,axiom,
+    r2_fcont_1(k4_sin_cos2,k1_numbers) ).
+
+fof(t43_sin_cos2,axiom,
+    r2_fcont_1(k7_sin_cos2,k1_numbers) ).
+
+fof(t44_sin_cos2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( ~ r1_xreal_0(np__1,k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A))
+        & ~ r1_xreal_0(k2_seq_1(k1_numbers,k1_numbers,k7_sin_cos2,A),k7_binop_2(np__1)) ) ) ).
+
+fof(dt_k1_sin_cos2,axiom,
+    ( v1_funct_1(k1_sin_cos2)
+    & m2_relset_1(k1_sin_cos2,k1_numbers,k1_numbers) ) ).
+
+fof(dt_k2_sin_cos2,axiom,
+    $true ).
+
+fof(dt_k3_sin_cos2,axiom,
+    ! [A] : m1_subset_1(k3_sin_cos2(A),k1_numbers) ).
+
+fof(redefinition_k3_sin_cos2,axiom,
+    ! [A] : k3_sin_cos2(A) = k2_sin_cos2(A) ).
+
+fof(dt_k4_sin_cos2,axiom,
+    ( v1_funct_1(k4_sin_cos2)
+    & m2_relset_1(k4_sin_cos2,k1_numbers,k1_numbers) ) ).
+
+fof(dt_k5_sin_cos2,axiom,
+    $true ).
+
+fof(dt_k6_sin_cos2,axiom,
+    ! [A] : m1_subset_1(k6_sin_cos2(A),k1_numbers) ).
+
+fof(redefinition_k6_sin_cos2,axiom,
+    ! [A] : k6_sin_cos2(A) = k5_sin_cos2(A) ).
+
+fof(dt_k7_sin_cos2,axiom,
+    ( v1_funct_1(k7_sin_cos2)
+    & m2_relset_1(k7_sin_cos2,k1_numbers,k1_numbers) ) ).
+
+fof(dt_k8_sin_cos2,axiom,
+    $true ).
+
+fof(dt_k9_sin_cos2,axiom,
+    ! [A] : m1_subset_1(k9_sin_cos2(A),k1_numbers) ).
+
+fof(redefinition_k9_sin_cos2,axiom,
+    ! [A] : k9_sin_cos2(A) = k8_sin_cos2(A) ).
+
+%------------------------------------------------------------------------------

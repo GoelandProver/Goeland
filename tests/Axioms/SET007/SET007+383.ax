@@ -1,0 +1,1121 @@
+%------------------------------------------------------------------------------
+% File     : SET007+383 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : On Defining Functions on Trees
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : dtconstr [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  103 (   4 unt;   0 def)
+%            Number of atoms       :  668 ( 133 equ)
+%            Maximal formula atoms :   25 (   6 avg)
+%            Number of connectives :  639 (  74   ~;   5   |; 294   &)
+%                                         (  33 <=>; 233  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   25 (   8 avg)
+%            Maximal term depth    :    9 (   2 avg)
+%            Number of predicates  :   38 (  36 usr;   1 prp; 0-4 aty)
+%            Number of functors    :  113 ( 113 usr;  36 con; 0-6 aty)
+%            Number of variables   :  276 ( 238   !;  38   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_dtconstr,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k3_finseq_2(A))
+     => v1_finseq_1(B) ) ).
+
+fof(cc2_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m4_trees_3(B,A) )
+     => ! [C] :
+          ( m1_finseq_1(C,B)
+         => v6_trees_3(C) ) ) ).
+
+fof(fc1_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_relset_1(B,A,k3_finseq_2(A)) )
+     => ( ~ v3_struct_0(g1_lang1(A,B))
+        & v1_lang1(g1_lang1(A,B)) ) ) ).
+
+fof(rc1_dtconstr,axiom,
+    ? [A] :
+      ( l1_lang1(A)
+      & ~ v3_struct_0(A)
+      & v1_lang1(A)
+      & v1_dtconstr(A)
+      & v2_dtconstr(A)
+      & v3_dtconstr(A) ) ).
+
+fof(fc2_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_dtconstr(A)
+        & l1_lang1(A) )
+     => ( ~ v1_xboole_0(k4_dtconstr(A))
+        & v3_trees_3(k4_dtconstr(A)) ) ) ).
+
+fof(fc3_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_dtconstr(A)
+        & l1_lang1(A) )
+     => ( ~ v1_xboole_0(k4_dtconstr(A))
+        & v3_trees_3(k4_dtconstr(A)) ) ) ).
+
+fof(fc4_dtconstr,axiom,
+    ( ~ v3_struct_0(k5_dtconstr)
+    & v1_lang1(k5_dtconstr)
+    & v1_dtconstr(k5_dtconstr)
+    & v2_dtconstr(k5_dtconstr)
+    & v3_dtconstr(k5_dtconstr) ) ).
+
+fof(t1_dtconstr,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k5_trees_3(A))
+         => m2_finseq_1(B,k4_trees_3(A)) ) ) ).
+
+fof(t2_dtconstr,axiom,
+    ! [A,B,C] :
+      ( m2_finseq_1(C,A)
+     => ( r2_hidden(B,k5_finsop_1(C))
+       => r2_hidden(k1_funct_1(C,B),A) ) ) ).
+
+fof(t3_dtconstr,axiom,
+    k16_trees_3(k1_xboole_0) = k1_xboole_0 ).
+
+fof(t4_dtconstr,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v3_trees_2(A) )
+     => k16_trees_3(k9_finseq_1(A)) = k9_finseq_1(k1_funct_1(A,k1_xboole_0)) ) ).
+
+fof(t5_dtconstr,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k5_trees_3(A)))
+         => ! [C] :
+              ( m1_trees_4(C,k5_trees_3(A),B)
+             => ~ ( k3_finseq_1(k1_dtconstr(A,k5_trees_3(A),C)) = np__1
+                  & ! [D] :
+                      ( m5_trees_3(D,A,k5_trees_3(A))
+                     => ~ ( C = k3_lang1(k5_trees_3(A),D)
+                          & r2_hidden(D,B) ) ) ) ) ) ) ).
+
+fof(t6_dtconstr,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v3_trees_2(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v3_trees_2(B) )
+         => k16_trees_3(k10_finseq_1(A,B)) = k10_finseq_1(k1_funct_1(A,k1_xboole_0),k1_funct_1(B,k1_xboole_0)) ) ) ).
+
+fof(t7_dtconstr,axiom,
+    ( k15_mcart_1(k1_xboole_0) = k1_xboole_0
+    & k16_mcart_1(k1_xboole_0) = k1_xboole_0 ) ).
+
+fof(t8_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A) )
+     => r1_xboole_0(k5_lang1(A),k6_lang1(A)) ) ).
+
+fof(d1_dtconstr,axiom,
+    $true ).
+
+fof(d2_dtconstr,axiom,
+    $true ).
+
+fof(d3_dtconstr,axiom,
+    $true ).
+
+fof(d4_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k5_trees_3(u1_struct_0(A))))
+         => ( B = k4_dtconstr(A)
+          <=> ( ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ( r2_hidden(C,k5_lang1(A))
+                   => r2_hidden(k2_trees_4(u1_struct_0(A),C),B) ) )
+              & ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m1_trees_4(D,k5_trees_3(u1_struct_0(A)),B)
+                     => ( r1_lang1(A,C,k1_dtconstr(u1_struct_0(A),k5_trees_3(u1_struct_0(A)),D))
+                       => r2_hidden(k12_trees_4(u1_struct_0(A),C,D),B) ) ) )
+              & ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(k5_trees_3(u1_struct_0(A))))
+                 => ( ( ! [D] :
+                          ( m1_subset_1(D,u1_struct_0(A))
+                         => ( r2_hidden(D,k5_lang1(A))
+                           => r2_hidden(k2_trees_4(u1_struct_0(A),D),C) ) )
+                      & ! [D] :
+                          ( m1_subset_1(D,u1_struct_0(A))
+                         => ! [E] :
+                              ( m1_trees_4(E,k5_trees_3(u1_struct_0(A)),C)
+                             => ( r1_lang1(A,D,k1_dtconstr(u1_struct_0(A),k5_trees_3(u1_struct_0(A)),E))
+                               => r2_hidden(k12_trees_4(u1_struct_0(A),D,E),C) ) ) ) )
+                   => r1_tarski(B,C) ) ) ) ) ) ) ).
+
+fof(d5_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lang1(A)
+        & l1_lang1(A) )
+     => ( A = k5_dtconstr
+      <=> ( u1_struct_0(A) = k7_domain_1(k5_numbers,np__0,np__1)
+          & ! [B] :
+              ( m1_subset_1(B,u1_struct_0(A))
+             => ! [C] :
+                  ( m2_finseq_1(C,u1_struct_0(A))
+                 => ( r1_lang1(A,B,C)
+                  <=> ( B = np__1
+                      & ( C = k3_lang1(k5_numbers,np__0)
+                        | C = k3_lang1(k5_numbers,np__1) ) ) ) ) ) ) ) ) ).
+
+fof(d6_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A) )
+     => ( v1_dtconstr(A)
+      <=> k5_lang1(A) != k1_xboole_0 ) ) ).
+
+fof(d7_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A) )
+     => ( v2_dtconstr(A)
+      <=> k6_lang1(A) != k1_xboole_0 ) ) ).
+
+fof(d8_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A) )
+     => ( v3_dtconstr(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ~ ( r2_hidden(B,k6_lang1(A))
+                & ! [C] :
+                    ( m1_trees_4(C,k5_trees_3(u1_struct_0(A)),k4_dtconstr(A))
+                   => ~ r1_lang1(A,B,k1_dtconstr(u1_struct_0(A),k5_trees_3(u1_struct_0(A)),C)) ) ) ) ) ) ).
+
+fof(d9_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & v3_dtconstr(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( m1_struct_0(B,A,k7_dtconstr(A))
+         => ! [C] :
+              ( m1_trees_4(C,k5_trees_3(u1_struct_0(A)),k4_dtconstr(A))
+             => ( m2_dtconstr(C,A,B)
+              <=> r1_lang1(A,B,k1_dtconstr(u1_struct_0(A),k5_trees_3(u1_struct_0(A)),C)) ) ) ) ) ).
+
+fof(t9_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_dtconstr(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(A),k5_trees_3(u1_struct_0(A)),k4_dtconstr(A))
+         => ! [C] :
+              ( m1_struct_0(C,A,k6_dtconstr(A))
+             => ( k1_funct_1(B,k1_xboole_0) = C
+               => B = k8_dtconstr(A,C) ) ) ) ) ).
+
+fof(t10_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_dtconstr(A)
+        & v2_dtconstr(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(A),k5_trees_3(u1_struct_0(A)),k4_dtconstr(A))
+         => ! [C] :
+              ( m1_struct_0(C,A,k7_dtconstr(A))
+             => ~ ( k1_funct_1(B,k1_xboole_0) = C
+                  & ! [D] :
+                      ( m1_trees_4(D,k5_trees_3(u1_struct_0(A)),k4_dtconstr(A))
+                     => ~ ( B = k12_trees_4(u1_struct_0(A),C,D)
+                          & r1_lang1(A,C,k1_dtconstr(u1_struct_0(A),k5_trees_3(u1_struct_0(A)),D)) ) ) ) ) ) ) ).
+
+fof(d10_dtconstr,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k5_numbers)
+     => ( A != k1_xboole_0
+       => ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ( B = k11_dtconstr(A)
+            <=> ? [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                  & B = k1_nat_1(C,np__1)
+                  & k1_funct_1(A,np__1) = C ) ) ) ) ) ).
+
+fof(d11_dtconstr,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_dtconstr(k5_dtconstr),k5_numbers)
+        & m2_relset_1(A,k4_dtconstr(k5_dtconstr),k5_numbers) )
+     => ( A = k12_dtconstr
+      <=> ( ! [B] :
+              ( m1_subset_1(B,u1_struct_0(k5_dtconstr))
+             => ( r2_hidden(B,k6_dtconstr(k5_dtconstr))
+               => k1_funct_1(A,k2_trees_4(u1_struct_0(k5_dtconstr),B)) = np__0 ) )
+          & ! [B] :
+              ( m1_subset_1(B,u1_struct_0(k5_dtconstr))
+             => ! [C] :
+                  ( m1_trees_4(C,k5_trees_3(u1_struct_0(k5_dtconstr)),k4_dtconstr(k5_dtconstr))
+                 => ( r1_lang1(k5_dtconstr,B,k1_dtconstr(u1_struct_0(k5_dtconstr),k5_trees_3(u1_struct_0(k5_dtconstr)),C))
+                   => k1_funct_1(A,k12_trees_4(u1_struct_0(k5_dtconstr),B,C)) = k11_dtconstr(k5_finseqop(k4_dtconstr(k5_dtconstr),k5_numbers,C,A)) ) ) ) ) ) ) ).
+
+fof(d12_dtconstr,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k5_dtconstr),k5_trees_3(u1_struct_0(k5_dtconstr)),k4_dtconstr(k5_dtconstr))
+     => k13_dtconstr(A) = k4_trees_4(np__1,k3_lang1(k4_dtconstr(k5_dtconstr),A)) ) ).
+
+fof(d13_dtconstr,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,k4_dtconstr(k5_dtconstr))
+        & m2_relset_1(A,k5_numbers,k4_dtconstr(k5_dtconstr)) )
+     => ( A = k14_dtconstr
+      <=> ( k8_funct_2(k5_numbers,k4_dtconstr(k5_dtconstr),A,np__0) = k2_trees_4(k5_numbers,np__0)
+          & ! [B] :
+              ( m2_subset_1(B,k1_numbers,k5_numbers)
+             => k8_funct_2(k5_numbers,k4_dtconstr(k5_dtconstr),A,k1_nat_1(B,np__1)) = k13_dtconstr(k8_funct_2(k5_numbers,k4_dtconstr(k5_dtconstr),A,B)) ) ) ) ) ).
+
+fof(t11_dtconstr,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k5_dtconstr),k5_trees_3(u1_struct_0(k5_dtconstr)),k4_dtconstr(k5_dtconstr))
+     => A = k8_funct_2(k5_numbers,k4_dtconstr(k5_dtconstr),k14_dtconstr,k8_funct_2(k4_dtconstr(k5_dtconstr),k5_numbers,k12_dtconstr,A)) ) ).
+
+fof(t12_dtconstr,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => A = k8_funct_2(k4_dtconstr(k5_dtconstr),k5_numbers,k12_dtconstr,k8_funct_2(k5_numbers,k4_dtconstr(k5_dtconstr),k14_dtconstr,A)) ) ).
+
+fof(d14_dtconstr,axiom,
+    ! [A,B] :
+      ( m2_finseq_1(B,k3_finseq_2(A))
+     => ! [C] :
+          ( m2_finseq_2(C,A,k3_finseq_2(A))
+         => ( C = k15_dtconstr(A,B)
+          <=> ? [D] :
+                ( v1_funct_1(D)
+                & v1_funct_2(D,k2_zfmisc_1(k3_finseq_2(A),k3_finseq_2(A)),k3_finseq_2(A))
+                & m2_relset_1(D,k2_zfmisc_1(k3_finseq_2(A),k3_finseq_2(A)),k3_finseq_2(A))
+                & ! [E] :
+                    ( m2_finseq_2(E,A,k3_finseq_2(A))
+                   => ! [F] :
+                        ( m2_finseq_2(F,A,k3_finseq_2(A))
+                       => k2_binop_1(k3_finseq_2(A),k3_finseq_2(A),k3_finseq_2(A),D,E,F) = k1_lang1(A,E,F) ) )
+                & C = k2_finsop_1(k3_finseq_2(A),B,D) ) ) ) ) ).
+
+fof(t13_dtconstr,axiom,
+    ! [A,B] :
+      ( m2_finseq_2(B,A,k3_finseq_2(A))
+     => k15_dtconstr(A,k3_lang1(k3_finseq_2(A),B)) = B ) ).
+
+fof(d15_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v3_trees_2(B)
+            & m3_trees_2(B,u1_struct_0(A)) )
+         => ( r2_hidden(B,k4_dtconstr(A))
+           => ! [C] :
+                ( m2_finseq_1(C,k5_lang1(A))
+               => ( C = k16_dtconstr(A,B)
+                <=> ? [D] :
+                      ( v1_funct_1(D)
+                      & v1_funct_2(D,k4_dtconstr(A),k3_finseq_2(k5_lang1(A)))
+                      & m2_relset_1(D,k4_dtconstr(A),k3_finseq_2(k5_lang1(A)))
+                      & C = k1_funct_1(D,B)
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ( r2_hidden(E,k5_lang1(A))
+                           => k1_funct_1(D,k2_trees_4(u1_struct_0(A),E)) = k3_lang1(u1_struct_0(A),E) ) )
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( m1_trees_4(F,k5_trees_3(u1_struct_0(A)),k4_dtconstr(A))
+                             => ( r1_lang1(A,E,k1_dtconstr(u1_struct_0(A),k5_trees_3(u1_struct_0(A)),F))
+                               => k1_funct_1(D,k12_trees_4(u1_struct_0(A),E,F)) = k15_dtconstr(k5_lang1(A),k5_finseqop(k4_dtconstr(A),k3_finseq_2(k5_lang1(A)),F,D)) ) ) ) ) ) ) ) ) ) ).
+
+fof(d16_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v3_trees_2(B)
+            & m3_trees_2(B,u1_struct_0(A)) )
+         => ( r2_hidden(B,k4_dtconstr(A))
+           => ! [C] :
+                ( m2_finseq_1(C,u1_struct_0(A))
+               => ( C = k17_dtconstr(A,B)
+                <=> ? [D] :
+                      ( v1_funct_1(D)
+                      & v1_funct_2(D,k4_dtconstr(A),k3_finseq_2(u1_struct_0(A)))
+                      & m2_relset_1(D,k4_dtconstr(A),k3_finseq_2(u1_struct_0(A)))
+                      & C = k1_funct_1(D,B)
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ( r2_hidden(E,k5_lang1(A))
+                           => k1_funct_1(D,k2_trees_4(u1_struct_0(A),E)) = k3_lang1(u1_struct_0(A),E) ) )
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( m1_trees_4(F,k5_trees_3(u1_struct_0(A)),k4_dtconstr(A))
+                             => ! [G] :
+                                  ( ( v1_relat_1(G)
+                                    & v1_funct_1(G)
+                                    & v1_finseq_1(G) )
+                                 => ( ( G = k1_dtconstr(u1_struct_0(A),k5_trees_3(u1_struct_0(A)),F)
+                                      & r1_lang1(A,E,G) )
+                                   => ! [H] :
+                                        ( m2_finseq_1(H,k3_finseq_2(u1_struct_0(A)))
+                                       => ( H = k5_finseqop(k4_dtconstr(A),k3_finseq_2(u1_struct_0(A)),F,D)
+                                         => k1_funct_1(D,k12_trees_4(u1_struct_0(A),E,F)) = k1_lang1(u1_struct_0(A),k3_lang1(u1_struct_0(A),E),k15_dtconstr(u1_struct_0(A),H)) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d17_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v3_trees_2(B)
+            & m3_trees_2(B,u1_struct_0(A)) )
+         => ( r2_hidden(B,k4_dtconstr(A))
+           => ! [C] :
+                ( m2_finseq_1(C,u1_struct_0(A))
+               => ( C = k18_dtconstr(A,B)
+                <=> ? [D] :
+                      ( v1_funct_1(D)
+                      & v1_funct_2(D,k4_dtconstr(A),k3_finseq_2(u1_struct_0(A)))
+                      & m2_relset_1(D,k4_dtconstr(A),k3_finseq_2(u1_struct_0(A)))
+                      & C = k1_funct_1(D,B)
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ( r2_hidden(E,k5_lang1(A))
+                           => k1_funct_1(D,k2_trees_4(u1_struct_0(A),E)) = k3_lang1(u1_struct_0(A),E) ) )
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( m1_trees_4(F,k5_trees_3(u1_struct_0(A)),k4_dtconstr(A))
+                             => ! [G] :
+                                  ( ( v1_relat_1(G)
+                                    & v1_funct_1(G)
+                                    & v1_finseq_1(G) )
+                                 => ( ( G = k1_dtconstr(u1_struct_0(A),k5_trees_3(u1_struct_0(A)),F)
+                                      & r1_lang1(A,E,G) )
+                                   => ! [H] :
+                                        ( m2_finseq_1(H,k3_finseq_2(u1_struct_0(A)))
+                                       => ( H = k5_finseqop(k4_dtconstr(A),k3_finseq_2(u1_struct_0(A)),F,D)
+                                         => k1_funct_1(D,k12_trees_4(u1_struct_0(A),E,F)) = k1_lang1(u1_struct_0(A),k15_dtconstr(u1_struct_0(A),H),k3_lang1(u1_struct_0(A),E)) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t14_dtconstr,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v3_trees_2(A)
+        & m3_trees_2(A,u1_struct_0(k5_dtconstr)) )
+     => ( r2_hidden(A,k4_dtconstr(k5_dtconstr))
+       => k16_dtconstr(k5_dtconstr,A) = k3_lang1(k5_numbers,np__0) ) ) ).
+
+fof(t15_dtconstr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k5_dtconstr))
+     => k19_dtconstr(k5_dtconstr,A) = k6_domain_1(k3_finseq_2(k5_numbers),k3_lang1(k5_numbers,np__0)) ) ).
+
+fof(t16_dtconstr,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k5_dtconstr),k5_trees_3(u1_struct_0(k5_dtconstr)),k4_dtconstr(k5_dtconstr))
+     => k17_dtconstr(k5_dtconstr,A) = k8_finseq_1(k5_numbers,k4_finseqop(k5_numbers,k6_trees_1(k1_relat_1(A)),np__1),k3_lang1(k5_numbers,np__0)) ) ).
+
+fof(t18_dtconstr,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k5_dtconstr),k5_trees_3(u1_struct_0(k5_dtconstr)),k4_dtconstr(k5_dtconstr))
+     => k18_dtconstr(k5_dtconstr,A) = k8_finseq_1(k5_numbers,k3_lang1(k5_numbers,np__0),k4_finseqop(k5_numbers,k6_trees_1(k1_relat_1(A)),np__1)) ) ).
+
+fof(s1_dtconstr,axiom,
+    ? [A] :
+      ( ~ v3_struct_0(A)
+      & v1_lang1(A)
+      & l1_lang1(A)
+      & u1_struct_0(A) = f1_s1_dtconstr
+      & ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_finseq_1(C,u1_struct_0(A))
+             => ( r1_lang1(A,B,C)
+              <=> p1_s1_dtconstr(B,C) ) ) ) ) ).
+
+fof(s2_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lang1(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_lang1(B)
+            & l1_lang1(B) )
+         => ( ( u1_struct_0(A) = f1_s2_dtconstr
+              & ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m2_finseq_1(D,u1_struct_0(A))
+                     => ( r1_lang1(A,C,D)
+                      <=> p1_s2_dtconstr(C,D) ) ) )
+              & u1_struct_0(B) = f1_s2_dtconstr
+              & ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(B))
+                 => ! [D] :
+                      ( m2_finseq_1(D,u1_struct_0(B))
+                     => ( r1_lang1(B,C,D)
+                      <=> p1_s2_dtconstr(C,D) ) ) ) )
+           => A = B ) ) ) ).
+
+fof(s7_dtconstr,axiom,
+    ( ( ! [A] :
+          ( m1_subset_1(A,u1_struct_0(f1_s7_dtconstr))
+         => ( r2_hidden(A,k5_lang1(f1_s7_dtconstr))
+           => p1_s7_dtconstr(k2_trees_4(u1_struct_0(f1_s7_dtconstr),A)) ) )
+      & ! [A] :
+          ( m1_subset_1(A,u1_struct_0(f1_s7_dtconstr))
+         => ! [B] :
+              ( m1_trees_4(B,k5_trees_3(u1_struct_0(f1_s7_dtconstr)),k4_dtconstr(f1_s7_dtconstr))
+             => ( ( r1_lang1(f1_s7_dtconstr,A,k1_dtconstr(u1_struct_0(f1_s7_dtconstr),k5_trees_3(u1_struct_0(f1_s7_dtconstr)),B))
+                  & ! [C] :
+                      ( ( v1_funct_1(C)
+                        & v3_trees_2(C)
+                        & m3_trees_2(C,u1_struct_0(f1_s7_dtconstr)) )
+                     => ( r2_hidden(C,k2_relat_1(B))
+                       => p1_s7_dtconstr(C) ) ) )
+               => p1_s7_dtconstr(k12_trees_4(u1_struct_0(f1_s7_dtconstr),A,B)) ) ) ) )
+   => ! [A] :
+        ( ( v1_funct_1(A)
+          & v3_trees_2(A)
+          & m3_trees_2(A,u1_struct_0(f1_s7_dtconstr)) )
+       => ( r2_hidden(A,k4_dtconstr(f1_s7_dtconstr))
+         => p1_s7_dtconstr(A) ) ) ) ).
+
+fof(s8_dtconstr,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k4_dtconstr(f1_s8_dtconstr),f2_s8_dtconstr)
+      & m2_relset_1(A,k4_dtconstr(f1_s8_dtconstr),f2_s8_dtconstr)
+      & ! [B] :
+          ( m1_subset_1(B,u1_struct_0(f1_s8_dtconstr))
+         => ( r2_hidden(B,k5_lang1(f1_s8_dtconstr))
+           => k1_funct_1(A,k2_trees_4(u1_struct_0(f1_s8_dtconstr),B)) = f3_s8_dtconstr(B) ) )
+      & ! [B] :
+          ( m1_subset_1(B,u1_struct_0(f1_s8_dtconstr))
+         => ! [C] :
+              ( m1_trees_4(C,k5_trees_3(u1_struct_0(f1_s8_dtconstr)),k4_dtconstr(f1_s8_dtconstr))
+             => ( r1_lang1(f1_s8_dtconstr,B,k1_dtconstr(u1_struct_0(f1_s8_dtconstr),k5_trees_3(u1_struct_0(f1_s8_dtconstr)),C))
+               => k1_funct_1(A,k12_trees_4(u1_struct_0(f1_s8_dtconstr),B,C)) = f4_s8_dtconstr(B,k1_dtconstr(u1_struct_0(f1_s8_dtconstr),k5_trees_3(u1_struct_0(f1_s8_dtconstr)),C),k5_finseqop(k4_dtconstr(f1_s8_dtconstr),f2_s8_dtconstr,C,A)) ) ) ) ) ).
+
+fof(s9_dtconstr,axiom,
+    ( ( ! [A] :
+          ( m1_subset_1(A,u1_struct_0(f1_s9_dtconstr))
+         => ( r2_hidden(A,k5_lang1(f1_s9_dtconstr))
+           => k1_funct_1(f5_s9_dtconstr,k2_trees_4(u1_struct_0(f1_s9_dtconstr),A)) = f3_s9_dtconstr(A) ) )
+      & ! [A] :
+          ( m1_subset_1(A,u1_struct_0(f1_s9_dtconstr))
+         => ! [B] :
+              ( m1_trees_4(B,k5_trees_3(u1_struct_0(f1_s9_dtconstr)),k4_dtconstr(f1_s9_dtconstr))
+             => ( r1_lang1(f1_s9_dtconstr,A,k1_dtconstr(u1_struct_0(f1_s9_dtconstr),k5_trees_3(u1_struct_0(f1_s9_dtconstr)),B))
+               => k1_funct_1(f5_s9_dtconstr,k12_trees_4(u1_struct_0(f1_s9_dtconstr),A,B)) = f4_s9_dtconstr(A,k1_dtconstr(u1_struct_0(f1_s9_dtconstr),k5_trees_3(u1_struct_0(f1_s9_dtconstr)),B),k5_finseqop(k4_dtconstr(f1_s9_dtconstr),f2_s9_dtconstr,B,f5_s9_dtconstr)) ) ) )
+      & ! [A] :
+          ( m1_subset_1(A,u1_struct_0(f1_s9_dtconstr))
+         => ( r2_hidden(A,k5_lang1(f1_s9_dtconstr))
+           => k1_funct_1(f6_s9_dtconstr,k2_trees_4(u1_struct_0(f1_s9_dtconstr),A)) = f3_s9_dtconstr(A) ) )
+      & ! [A] :
+          ( m1_subset_1(A,u1_struct_0(f1_s9_dtconstr))
+         => ! [B] :
+              ( m1_trees_4(B,k5_trees_3(u1_struct_0(f1_s9_dtconstr)),k4_dtconstr(f1_s9_dtconstr))
+             => ( r1_lang1(f1_s9_dtconstr,A,k1_dtconstr(u1_struct_0(f1_s9_dtconstr),k5_trees_3(u1_struct_0(f1_s9_dtconstr)),B))
+               => k1_funct_1(f6_s9_dtconstr,k12_trees_4(u1_struct_0(f1_s9_dtconstr),A,B)) = f4_s9_dtconstr(A,k1_dtconstr(u1_struct_0(f1_s9_dtconstr),k5_trees_3(u1_struct_0(f1_s9_dtconstr)),B),k5_finseqop(k4_dtconstr(f1_s9_dtconstr),f2_s9_dtconstr,B,f6_s9_dtconstr)) ) ) ) )
+   => f5_s9_dtconstr = f6_s9_dtconstr ) ).
+
+fof(dt_m1_dtconstr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m4_trees_3(B,A)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(C,k1_zfmisc_1(B)) )
+     => ! [D] :
+          ( m1_dtconstr(D,A,B,C)
+         => m5_trees_3(D,A,B) ) ) ).
+
+fof(existence_m1_dtconstr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m4_trees_3(B,A)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(C,k1_zfmisc_1(B)) )
+     => ? [D] : m1_dtconstr(D,A,B,C) ) ).
+
+fof(redefinition_m1_dtconstr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m4_trees_3(B,A)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(C,k1_zfmisc_1(B)) )
+     => ! [D] :
+          ( m1_dtconstr(D,A,B,C)
+        <=> m1_subset_1(D,C) ) ) ).
+
+fof(dt_m2_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & v3_dtconstr(A)
+        & l1_lang1(A)
+        & m1_subset_1(B,k7_dtconstr(A)) )
+     => ! [C] :
+          ( m2_dtconstr(C,A,B)
+         => m1_trees_4(C,k5_trees_3(u1_struct_0(A)),k4_dtconstr(A)) ) ) ).
+
+fof(existence_m2_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & v3_dtconstr(A)
+        & l1_lang1(A)
+        & m1_subset_1(B,k7_dtconstr(A)) )
+     => ? [C] : m2_dtconstr(C,A,B) ) ).
+
+fof(dt_k1_dtconstr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m4_trees_3(B,A)
+        & m1_finseq_1(C,B) )
+     => m2_finseq_1(k1_dtconstr(A,B,C),A) ) ).
+
+fof(redefinition_k1_dtconstr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m4_trees_3(B,A)
+        & m1_finseq_1(C,B) )
+     => k1_dtconstr(A,B,C) = k16_trees_3(C) ) ).
+
+fof(dt_k2_dtconstr,axiom,
+    ! [A,B,C] :
+      ( m1_finseq_1(C,k2_zfmisc_1(A,B))
+     => m2_finseq_1(k2_dtconstr(A,B,C),A) ) ).
+
+fof(redefinition_k2_dtconstr,axiom,
+    ! [A,B,C] :
+      ( m1_finseq_1(C,k2_zfmisc_1(A,B))
+     => k2_dtconstr(A,B,C) = k15_mcart_1(C) ) ).
+
+fof(dt_k3_dtconstr,axiom,
+    ! [A,B,C] :
+      ( m1_finseq_1(C,k2_zfmisc_1(A,B))
+     => m2_finseq_1(k3_dtconstr(A,B,C),B) ) ).
+
+fof(redefinition_k3_dtconstr,axiom,
+    ! [A,B,C] :
+      ( m1_finseq_1(C,k2_zfmisc_1(A,B))
+     => k3_dtconstr(A,B,C) = k16_mcart_1(C) ) ).
+
+fof(dt_k4_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A) )
+     => m1_subset_1(k4_dtconstr(A),k1_zfmisc_1(k5_trees_3(u1_struct_0(A)))) ) ).
+
+fof(dt_k5_dtconstr,axiom,
+    ( ~ v3_struct_0(k5_dtconstr)
+    & v1_lang1(k5_dtconstr)
+    & l1_lang1(k5_dtconstr) ) ).
+
+fof(dt_k6_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_dtconstr(A)
+        & l1_lang1(A) )
+     => ( ~ v1_xboole_0(k6_dtconstr(A))
+        & m1_subset_1(k6_dtconstr(A),k1_zfmisc_1(u1_struct_0(A))) ) ) ).
+
+fof(redefinition_k6_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_dtconstr(A)
+        & l1_lang1(A) )
+     => k6_dtconstr(A) = k5_lang1(A) ) ).
+
+fof(dt_k7_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & l1_lang1(A) )
+     => ( ~ v1_xboole_0(k7_dtconstr(A))
+        & m1_subset_1(k7_dtconstr(A),k1_zfmisc_1(u1_struct_0(A))) ) ) ).
+
+fof(redefinition_k7_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & l1_lang1(A) )
+     => k7_dtconstr(A) = k6_lang1(A) ) ).
+
+fof(dt_k8_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v1_dtconstr(A)
+        & l1_lang1(A)
+        & m1_subset_1(B,k6_dtconstr(A)) )
+     => m1_dtconstr(k8_dtconstr(A,B),u1_struct_0(A),k5_trees_3(u1_struct_0(A)),k4_dtconstr(A)) ) ).
+
+fof(redefinition_k8_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v1_dtconstr(A)
+        & l1_lang1(A)
+        & m1_subset_1(B,k6_dtconstr(A)) )
+     => k8_dtconstr(A,B) = k1_trees_4(B) ) ).
+
+fof(dt_k9_dtconstr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & v3_dtconstr(A)
+        & l1_lang1(A)
+        & m1_subset_1(B,k7_dtconstr(A))
+        & m2_dtconstr(C,A,B) )
+     => m1_dtconstr(k9_dtconstr(A,B,C),u1_struct_0(A),k5_trees_3(u1_struct_0(A)),k4_dtconstr(A)) ) ).
+
+fof(redefinition_k9_dtconstr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & v3_dtconstr(A)
+        & l1_lang1(A)
+        & m1_subset_1(B,k7_dtconstr(A))
+        & m2_dtconstr(C,A,B) )
+     => k9_dtconstr(A,B,C) = k4_trees_4(B,C) ) ).
+
+fof(dt_k10_dtconstr,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k7_dtconstr(k5_dtconstr))
+        & m1_subset_1(B,k4_dtconstr(k5_dtconstr)) )
+     => m1_dtconstr(k10_dtconstr(A,B),u1_struct_0(k5_dtconstr),k5_trees_3(u1_struct_0(k5_dtconstr)),k4_dtconstr(k5_dtconstr)) ) ).
+
+fof(redefinition_k10_dtconstr,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k7_dtconstr(k5_dtconstr))
+        & m1_subset_1(B,k4_dtconstr(k5_dtconstr)) )
+     => k10_dtconstr(A,B) = k5_trees_4(A,B) ) ).
+
+fof(dt_k11_dtconstr,axiom,
+    ! [A] :
+      ( m1_finseq_1(A,k5_numbers)
+     => m2_subset_1(k11_dtconstr(A),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k12_dtconstr,axiom,
+    ( v1_funct_1(k12_dtconstr)
+    & v1_funct_2(k12_dtconstr,k4_dtconstr(k5_dtconstr),k5_numbers)
+    & m2_relset_1(k12_dtconstr,k4_dtconstr(k5_dtconstr),k5_numbers) ) ).
+
+fof(dt_k13_dtconstr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_dtconstr(k5_dtconstr))
+     => m1_dtconstr(k13_dtconstr(A),u1_struct_0(k5_dtconstr),k5_trees_3(u1_struct_0(k5_dtconstr)),k4_dtconstr(k5_dtconstr)) ) ).
+
+fof(dt_k14_dtconstr,axiom,
+    ( v1_funct_1(k14_dtconstr)
+    & v1_funct_2(k14_dtconstr,k5_numbers,k4_dtconstr(k5_dtconstr))
+    & m2_relset_1(k14_dtconstr,k5_numbers,k4_dtconstr(k5_dtconstr)) ) ).
+
+fof(dt_k15_dtconstr,axiom,
+    ! [A,B] :
+      ( m1_finseq_1(B,k3_finseq_2(A))
+     => m2_finseq_2(k15_dtconstr(A,B),A,k3_finseq_2(A)) ) ).
+
+fof(dt_k16_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A)
+        & v1_funct_1(B)
+        & v3_trees_2(B)
+        & m3_trees_2(B,u1_struct_0(A)) )
+     => m2_finseq_1(k16_dtconstr(A,B),k5_lang1(A)) ) ).
+
+fof(dt_k17_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A)
+        & v1_funct_1(B)
+        & v3_trees_2(B)
+        & m3_trees_2(B,u1_struct_0(A)) )
+     => m2_finseq_1(k17_dtconstr(A,B),u1_struct_0(A)) ) ).
+
+fof(dt_k18_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lang1(A)
+        & v1_funct_1(B)
+        & v3_trees_2(B)
+        & m3_trees_2(B,u1_struct_0(A)) )
+     => m2_finseq_1(k18_dtconstr(A,B),u1_struct_0(A)) ) ).
+
+fof(dt_k19_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & l1_lang1(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => m1_subset_1(k19_dtconstr(A,B),k1_zfmisc_1(k3_finseq_2(k5_lang1(A)))) ) ).
+
+fof(dt_k20_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & l1_lang1(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => m1_subset_1(k20_dtconstr(A,B),k1_zfmisc_1(k3_finseq_2(u1_struct_0(A)))) ) ).
+
+fof(dt_k21_dtconstr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & l1_lang1(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => m1_subset_1(k21_dtconstr(A,B),k1_zfmisc_1(k3_finseq_2(u1_struct_0(A)))) ) ).
+
+fof(d18_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k19_dtconstr(A,B) = a_2_0_dtconstr(A,B) ) ) ).
+
+fof(d19_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k20_dtconstr(A,B) = a_2_1_dtconstr(A,B) ) ) ).
+
+fof(d20_dtconstr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_dtconstr(A)
+        & l1_lang1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k21_dtconstr(A,B) = a_2_2_dtconstr(A,B) ) ) ).
+
+fof(t17_dtconstr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k5_dtconstr))
+     => ( ( A = np__0
+         => k20_dtconstr(k5_dtconstr,A) = k6_domain_1(k3_finseq_2(k5_numbers),k3_lang1(k5_numbers,np__0)) )
+        & ( A = np__1
+         => k20_dtconstr(k5_dtconstr,A) = a_0_0_dtconstr ) ) ) ).
+
+fof(t19_dtconstr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k5_dtconstr))
+     => ( ( A = np__0
+         => k21_dtconstr(k5_dtconstr,A) = k6_domain_1(k3_finseq_2(k5_numbers),k3_lang1(k5_numbers,np__0)) )
+        & ( A = np__1
+         => k21_dtconstr(k5_dtconstr,A) = a_0_1_dtconstr ) ) ) ).
+
+fof(s3_dtconstr,axiom,
+    ( ( k1_relat_1(f1_s3_dtconstr) = k5_numbers
+      & k1_funct_1(f1_s3_dtconstr,np__0) = a_0_2_dtconstr
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k1_funct_1(f1_s3_dtconstr,k1_nat_1(A,np__1)) = k2_xboole_0(k1_funct_1(f1_s3_dtconstr,A),a_1_0_dtconstr(A)) ) )
+   => ? [A] :
+        ( m1_subset_1(A,k1_zfmisc_1(k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr))))
+        & A = k3_card_3(f1_s3_dtconstr)
+        & ! [B] :
+            ( m1_subset_1(B,u1_struct_0(f2_s3_dtconstr))
+           => ( r2_hidden(B,k5_lang1(f2_s3_dtconstr))
+             => r2_hidden(k2_trees_4(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k1_domain_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,B,f4_s3_dtconstr(B))),A) ) )
+        & ! [B] :
+            ( m1_subset_1(B,u1_struct_0(f2_s3_dtconstr))
+           => ! [C] :
+                ( m1_trees_4(C,k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr)),A)
+               => ( r1_lang1(f2_s3_dtconstr,B,k2_dtconstr(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,k1_dtconstr(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr)),C)))
+                 => r2_hidden(k12_trees_4(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k1_domain_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,B,f5_s3_dtconstr(B,k2_dtconstr(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,k1_dtconstr(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr)),C)),k3_dtconstr(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,k1_dtconstr(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr)),C)))),C),A) ) ) )
+        & ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr))))
+           => ( ( ! [C] :
+                    ( m1_subset_1(C,u1_struct_0(f2_s3_dtconstr))
+                   => ( r2_hidden(C,k5_lang1(f2_s3_dtconstr))
+                     => r2_hidden(k2_trees_4(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k1_domain_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,C,f4_s3_dtconstr(C))),B) ) )
+                & ! [C] :
+                    ( m1_subset_1(C,u1_struct_0(f2_s3_dtconstr))
+                   => ! [D] :
+                        ( m1_trees_4(D,k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr)),B)
+                       => ( r1_lang1(f2_s3_dtconstr,C,k2_dtconstr(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,k1_dtconstr(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr)),D)))
+                         => r2_hidden(k12_trees_4(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k1_domain_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,C,f5_s3_dtconstr(C,k2_dtconstr(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,k1_dtconstr(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr)),D)),k3_dtconstr(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,k1_dtconstr(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr)),D)))),D),B) ) ) ) )
+             => r1_tarski(A,B) ) ) ) ) ).
+
+fof(s4_dtconstr,axiom,
+    ( ( k1_relat_1(f1_s4_dtconstr) = k5_numbers
+      & k1_funct_1(f1_s4_dtconstr,np__0) = a_0_3_dtconstr
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k1_funct_1(f1_s4_dtconstr,k1_nat_1(A,np__1)) = k2_xboole_0(k1_funct_1(f1_s4_dtconstr,A),a_1_1_dtconstr(A)) ) )
+   => ? [A] :
+        ( m1_subset_1(A,k1_zfmisc_1(k5_trees_3(u1_struct_0(f2_s4_dtconstr))))
+        & A = a_0_4_dtconstr
+        & ! [B] :
+            ( m1_subset_1(B,u1_struct_0(f2_s4_dtconstr))
+           => ( r2_hidden(B,k5_lang1(f2_s4_dtconstr))
+             => r2_hidden(k2_trees_4(u1_struct_0(f2_s4_dtconstr),B),A) ) )
+        & ! [B] :
+            ( m1_subset_1(B,u1_struct_0(f2_s4_dtconstr))
+           => ! [C] :
+                ( m1_trees_4(C,k5_trees_3(u1_struct_0(f2_s4_dtconstr)),A)
+               => ( r1_lang1(f2_s4_dtconstr,B,k1_dtconstr(u1_struct_0(f2_s4_dtconstr),k5_trees_3(u1_struct_0(f2_s4_dtconstr)),C))
+                 => r2_hidden(k12_trees_4(u1_struct_0(f2_s4_dtconstr),B,C),A) ) ) )
+        & ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(k5_trees_3(u1_struct_0(f2_s4_dtconstr))))
+           => ( ( ! [C] :
+                    ( m1_subset_1(C,u1_struct_0(f2_s4_dtconstr))
+                   => ( r2_hidden(C,k5_lang1(f2_s4_dtconstr))
+                     => r2_hidden(k2_trees_4(u1_struct_0(f2_s4_dtconstr),C),B) ) )
+                & ! [C] :
+                    ( m1_subset_1(C,u1_struct_0(f2_s4_dtconstr))
+                   => ! [D] :
+                        ( m1_trees_4(D,k5_trees_3(u1_struct_0(f2_s4_dtconstr)),B)
+                       => ( r1_lang1(f2_s4_dtconstr,C,k1_dtconstr(u1_struct_0(f2_s4_dtconstr),k5_trees_3(u1_struct_0(f2_s4_dtconstr)),D))
+                         => r2_hidden(k12_trees_4(u1_struct_0(f2_s4_dtconstr),C,D),B) ) ) ) )
+             => r1_tarski(A,B) ) ) ) ) ).
+
+fof(s5_dtconstr,axiom,
+    ( ( k1_relat_1(f1_s5_dtconstr) = k5_numbers
+      & k1_funct_1(f1_s5_dtconstr,np__0) = a_0_5_dtconstr
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k1_funct_1(f1_s5_dtconstr,k1_nat_1(A,np__1)) = k2_xboole_0(k1_funct_1(f1_s5_dtconstr,A),a_1_2_dtconstr(A)) ) )
+   => ! [A] :
+        ( m2_subset_1(A,k1_numbers,k5_numbers)
+       => ! [B] :
+            ( m5_trees_3(B,k2_zfmisc_1(u1_struct_0(f2_s5_dtconstr),f3_s5_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s5_dtconstr),f3_s5_dtconstr)))
+           => ( r2_hidden(B,k3_card_3(f1_s5_dtconstr))
+             => ( r2_hidden(B,k1_funct_1(f1_s5_dtconstr,A))
+              <=> r1_xreal_0(k6_trees_1(k1_relat_1(B)),A) ) ) ) ) ) ).
+
+fof(s6_dtconstr,axiom,
+    ( ( k1_relat_1(f1_s6_dtconstr) = k5_numbers
+      & k1_funct_1(f1_s6_dtconstr,np__0) = a_0_6_dtconstr
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k1_funct_1(f1_s6_dtconstr,k1_nat_1(A,np__1)) = k2_xboole_0(k1_funct_1(f1_s6_dtconstr,A),a_1_3_dtconstr(A)) ) )
+   => ! [A] :
+        ( ( v1_funct_1(A)
+          & v3_trees_2(A)
+          & m3_trees_2(A,k2_zfmisc_1(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr)) )
+       => ! [B] :
+            ( ( v1_funct_1(B)
+              & v3_trees_2(B)
+              & m3_trees_2(B,k2_zfmisc_1(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr)) )
+           => ( ( r2_hidden(A,k3_card_3(f1_s6_dtconstr))
+                & r2_hidden(B,k3_card_3(f1_s6_dtconstr))
+                & k10_trees_3(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr,A) = k10_trees_3(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr,B) )
+             => A = B ) ) ) ) ).
+
+fof(fraenkel_a_2_0_dtconstr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v2_dtconstr(B)
+        & l1_lang1(B)
+        & m1_subset_1(C,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_2_0_dtconstr(B,C))
+      <=> ? [D] :
+            ( m5_trees_3(D,u1_struct_0(B),k5_trees_3(u1_struct_0(B)))
+            & A = k16_dtconstr(B,D)
+            & r2_hidden(D,k4_dtconstr(B))
+            & k1_funct_1(D,k1_xboole_0) = C ) ) ) ).
+
+fof(fraenkel_a_2_1_dtconstr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v2_dtconstr(B)
+        & l1_lang1(B)
+        & m1_subset_1(C,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_2_1_dtconstr(B,C))
+      <=> ? [D] :
+            ( m5_trees_3(D,u1_struct_0(B),k5_trees_3(u1_struct_0(B)))
+            & A = k17_dtconstr(B,D)
+            & r2_hidden(D,k4_dtconstr(B))
+            & k1_funct_1(D,k1_xboole_0) = C ) ) ) ).
+
+fof(fraenkel_a_2_2_dtconstr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v2_dtconstr(B)
+        & l1_lang1(B)
+        & m1_subset_1(C,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_2_2_dtconstr(B,C))
+      <=> ? [D] :
+            ( m5_trees_3(D,u1_struct_0(B),k5_trees_3(u1_struct_0(B)))
+            & A = k18_dtconstr(B,D)
+            & r2_hidden(D,k4_dtconstr(B))
+            & k1_funct_1(D,k1_xboole_0) = C ) ) ) ).
+
+fof(fraenkel_a_0_0_dtconstr,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_0_dtconstr)
+    <=> ? [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+          & A = k8_finseq_1(k5_numbers,k4_finseqop(k5_numbers,B,np__1),k3_lang1(k5_numbers,np__0))
+          & B != np__0 ) ) ).
+
+fof(fraenkel_a_0_1_dtconstr,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_1_dtconstr)
+    <=> ? [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+          & A = k8_finseq_1(k5_numbers,k3_lang1(k5_numbers,np__0),k4_finseqop(k5_numbers,B,np__1))
+          & B != np__0 ) ) ).
+
+fof(fraenkel_a_0_2_dtconstr,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_2_dtconstr)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,u1_struct_0(f2_s3_dtconstr))
+          & m1_subset_1(C,f3_s3_dtconstr)
+          & A = k2_trees_4(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k1_domain_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,B,C))
+          & ( ( r2_hidden(B,k5_lang1(f2_s3_dtconstr))
+              & C = f4_s3_dtconstr(B) )
+            | ( r1_lang1(f2_s3_dtconstr,B,k1_xboole_0)
+              & C = f5_s3_dtconstr(B,k1_xboole_0,k1_xboole_0) ) ) ) ) ).
+
+fof(fraenkel_a_1_0_dtconstr,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_0_dtconstr(B))
+      <=> ? [C,D] :
+            ( m1_subset_1(C,u1_struct_0(f2_s3_dtconstr))
+            & m2_finseq_2(D,k1_funct_1(f1_s3_dtconstr,B),k3_finseq_2(k1_funct_1(f1_s3_dtconstr,B)))
+            & A = k4_trees_4(k1_domain_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,C,f5_s3_dtconstr(C,k15_mcart_1(k16_trees_3(D)),k16_mcart_1(k16_trees_3(D)))),D)
+            & ? [E] :
+                ( m2_finseq_1(E,k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr)))
+                & D = E
+                & r1_lang1(f2_s3_dtconstr,C,k2_dtconstr(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr,k1_dtconstr(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s3_dtconstr),f3_s3_dtconstr)),E))) ) ) ) ) ).
+
+fof(fraenkel_a_0_3_dtconstr,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_3_dtconstr)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,u1_struct_0(f2_s4_dtconstr))
+          & m1_subset_1(C,f3_s4_dtconstr)
+          & A = k2_trees_4(k2_zfmisc_1(u1_struct_0(f2_s4_dtconstr),f3_s4_dtconstr),k1_domain_1(u1_struct_0(f2_s4_dtconstr),f3_s4_dtconstr,B,C))
+          & ( ( r2_hidden(B,k5_lang1(f2_s4_dtconstr))
+              & C = f4_s4_dtconstr(B) )
+            | ( r1_lang1(f2_s4_dtconstr,B,k1_xboole_0)
+              & C = f5_s4_dtconstr(B,k1_xboole_0,k1_xboole_0) ) ) ) ) ).
+
+fof(fraenkel_a_1_1_dtconstr,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_1_dtconstr(B))
+      <=> ? [C,D] :
+            ( m1_subset_1(C,u1_struct_0(f2_s4_dtconstr))
+            & m2_finseq_2(D,k1_funct_1(f1_s4_dtconstr,B),k3_finseq_2(k1_funct_1(f1_s4_dtconstr,B)))
+            & A = k4_trees_4(k1_domain_1(u1_struct_0(f2_s4_dtconstr),f3_s4_dtconstr,C,f5_s4_dtconstr(C,k15_mcart_1(k16_trees_3(D)),k16_mcart_1(k16_trees_3(D)))),D)
+            & ? [E] :
+                ( m2_finseq_1(E,k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s4_dtconstr),f3_s4_dtconstr)))
+                & D = E
+                & r1_lang1(f2_s4_dtconstr,C,k2_dtconstr(u1_struct_0(f2_s4_dtconstr),f3_s4_dtconstr,k1_dtconstr(k2_zfmisc_1(u1_struct_0(f2_s4_dtconstr),f3_s4_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s4_dtconstr),f3_s4_dtconstr)),E))) ) ) ) ) ).
+
+fof(fraenkel_a_0_4_dtconstr,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_4_dtconstr)
+    <=> ? [B] :
+          ( m5_trees_3(B,k2_zfmisc_1(u1_struct_0(f2_s4_dtconstr),f3_s4_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s4_dtconstr),f3_s4_dtconstr)))
+          & A = k10_trees_3(u1_struct_0(f2_s4_dtconstr),f3_s4_dtconstr,B)
+          & r2_hidden(B,k3_card_3(f1_s4_dtconstr)) ) ) ).
+
+fof(fraenkel_a_0_5_dtconstr,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_5_dtconstr)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,u1_struct_0(f2_s5_dtconstr))
+          & m1_subset_1(C,f3_s5_dtconstr)
+          & A = k2_trees_4(k2_zfmisc_1(u1_struct_0(f2_s5_dtconstr),f3_s5_dtconstr),k1_domain_1(u1_struct_0(f2_s5_dtconstr),f3_s5_dtconstr,B,C))
+          & ( ( r2_hidden(B,k5_lang1(f2_s5_dtconstr))
+              & C = f4_s5_dtconstr(B) )
+            | ( r1_lang1(f2_s5_dtconstr,B,k1_xboole_0)
+              & C = f5_s5_dtconstr(B,k1_xboole_0,k1_xboole_0) ) ) ) ) ).
+
+fof(fraenkel_a_1_2_dtconstr,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_2_dtconstr(B))
+      <=> ? [C,D] :
+            ( m1_subset_1(C,u1_struct_0(f2_s5_dtconstr))
+            & m2_finseq_2(D,k1_funct_1(f1_s5_dtconstr,B),k3_finseq_2(k1_funct_1(f1_s5_dtconstr,B)))
+            & A = k4_trees_4(k1_domain_1(u1_struct_0(f2_s5_dtconstr),f3_s5_dtconstr,C,f5_s5_dtconstr(C,k15_mcart_1(k16_trees_3(D)),k16_mcart_1(k16_trees_3(D)))),D)
+            & ? [E] :
+                ( m2_finseq_1(E,k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s5_dtconstr),f3_s5_dtconstr)))
+                & D = E
+                & r1_lang1(f2_s5_dtconstr,C,k2_dtconstr(u1_struct_0(f2_s5_dtconstr),f3_s5_dtconstr,k1_dtconstr(k2_zfmisc_1(u1_struct_0(f2_s5_dtconstr),f3_s5_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s5_dtconstr),f3_s5_dtconstr)),E))) ) ) ) ) ).
+
+fof(fraenkel_a_0_6_dtconstr,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_6_dtconstr)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,u1_struct_0(f2_s6_dtconstr))
+          & m1_subset_1(C,f3_s6_dtconstr)
+          & A = k2_trees_4(k2_zfmisc_1(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr),k1_domain_1(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr,B,C))
+          & ( ( r2_hidden(B,k5_lang1(f2_s6_dtconstr))
+              & C = f4_s6_dtconstr(B) )
+            | ( r1_lang1(f2_s6_dtconstr,B,k1_xboole_0)
+              & C = f5_s6_dtconstr(B,k1_xboole_0,k1_xboole_0) ) ) ) ) ).
+
+fof(fraenkel_a_1_3_dtconstr,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_3_dtconstr(B))
+      <=> ? [C,D] :
+            ( m1_subset_1(C,u1_struct_0(f2_s6_dtconstr))
+            & m2_finseq_2(D,k1_funct_1(f1_s6_dtconstr,B),k3_finseq_2(k1_funct_1(f1_s6_dtconstr,B)))
+            & A = k4_trees_4(k1_domain_1(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr,C,f5_s6_dtconstr(C,k15_mcart_1(k16_trees_3(D)),k16_mcart_1(k16_trees_3(D)))),D)
+            & ? [E] :
+                ( m2_finseq_1(E,k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr)))
+                & D = E
+                & r1_lang1(f2_s6_dtconstr,C,k2_dtconstr(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr,k1_dtconstr(k2_zfmisc_1(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr),k5_trees_3(k2_zfmisc_1(u1_struct_0(f2_s6_dtconstr),f3_s6_dtconstr)),E))) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

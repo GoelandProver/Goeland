@@ -1,0 +1,755 @@
+%------------------------------------------------------------------------------
+% File     : ITP009^4 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : num.ax [Gau19]
+%          : HL4009^4.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  183 (  67 unt; 103 typ;   0 def)
+%            Number of atoms       :  119 (  73 equ;   4 cnn)
+%            Maximal formula atoms :    3 (   0 avg)
+%            Number of connectives :  947 (   4   ~;   1   |;   5   &; 920   @)
+%                                         (  10 <=>;   7  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   17 (   4 avg; 920 nst)
+%            Number of types       :    6 (   5 usr)
+%            Number of type conns  :  217 ( 217   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :  100 (  98 usr;  30 con; 0-3 aty)
+%            Number of variables   :  130 (   0   ^ 128   !;   2   ?; 130   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(u,type,
+    u: $tType ).
+
+thf(d,type,
+    d: $tType ).
+
+thf(du,type,
+    du: $tType ).
+
+thf(mono_2Etyop_2Emin_2Eind,type,
+    mono_2Etyop_2Emin_2Eind: $tType ).
+
+thf(mono_2Etyop_2Enum_2Enum,type,
+    mono_2Etyop_2Enum_2Enum: $tType ).
+
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: d ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: d > d > d ).
+
+thf(tyop_2Emin_2Eind,type,
+    tyop_2Emin_2Eind: d ).
+
+thf(tyop_2Enum_2Enum,type,
+    tyop_2Enum_2Enum: d ).
+
+thf(s,type,
+    s: d > u > du ).
+
+thf(app_2E2,type,
+    app_2E2: du > du > u ).
+
+thf(combin_i_2E0,type,
+    combin_i_2E0: u ).
+
+thf(combin_k_2E0,type,
+    combin_k_2E0: u ).
+
+thf(combin_s_2E0,type,
+    combin_s_2E0: u ).
+
+thf(c_2Ebool_2E_21_2E0,type,
+    c_2Ebool_2E_21_2E0: u ).
+
+thf(c_2Ebool_2E_21_2E1,type,
+    c_2Ebool_2E_21_2E1: du > u ).
+
+thf(c_2Ebool_2E_2F_5C_2E0,type,
+    c_2Ebool_2E_2F_5C_2E0: u ).
+
+thf(c_2Ebool_2E_2F_5C_2E2,type,
+    c_2Ebool_2E_2F_5C_2E2: du > du > u ).
+
+thf(c_2Enum_2E0_2E0,type,
+    c_2Enum_2E0_2E0: u ).
+
+thf(c_2Emin_2E_3D_2E0,type,
+    c_2Emin_2E_3D_2E0: u ).
+
+thf(c_2Emin_2E_3D_2E2,type,
+    c_2Emin_2E_3D_2E2: du > du > u ).
+
+thf(c_2Emin_2E_3D_3D_3E_2E0,type,
+    c_2Emin_2E_3D_3D_3E_2E0: u ).
+
+thf(c_2Emin_2E_3D_3D_3E_2E2,type,
+    c_2Emin_2E_3D_3D_3E_2E2: du > du > u ).
+
+thf(c_2Ebool_2E_3F_2E0,type,
+    c_2Ebool_2E_3F_2E0: u ).
+
+thf(c_2Ebool_2E_3F_2E1,type,
+    c_2Ebool_2E_3F_2E1: du > u ).
+
+thf(c_2Enum_2EABS__num_2E0,type,
+    c_2Enum_2EABS__num_2E0: u ).
+
+thf(c_2Enum_2EABS__num_2E1,type,
+    c_2Enum_2EABS__num_2E1: du > u ).
+
+thf(c_2Ebool_2EF_2E0,type,
+    c_2Ebool_2EF_2E0: u ).
+
+thf(c_2Enum_2EIS__NUM__REP_2E0,type,
+    c_2Enum_2EIS__NUM__REP_2E0: u ).
+
+thf(c_2Enum_2EIS__NUM__REP_2E1,type,
+    c_2Enum_2EIS__NUM__REP_2E1: du > u ).
+
+thf(c_2Ebool_2EONE__ONE_2E0,type,
+    c_2Ebool_2EONE__ONE_2E0: u ).
+
+thf(c_2Ebool_2EONE__ONE_2E1,type,
+    c_2Ebool_2EONE__ONE_2E1: du > u ).
+
+thf(c_2Ebool_2EONTO_2E0,type,
+    c_2Ebool_2EONTO_2E0: u ).
+
+thf(c_2Ebool_2EONTO_2E1,type,
+    c_2Ebool_2EONTO_2E1: du > u ).
+
+thf(c_2Enum_2EREP__num_2E0,type,
+    c_2Enum_2EREP__num_2E0: u ).
+
+thf(c_2Enum_2EREP__num_2E1,type,
+    c_2Enum_2EREP__num_2E1: du > u ).
+
+thf(c_2Enum_2ESUC_2E0,type,
+    c_2Enum_2ESUC_2E0: u ).
+
+thf(c_2Enum_2ESUC_2E1,type,
+    c_2Enum_2ESUC_2E1: du > u ).
+
+thf(c_2Enum_2ESUC__REP_2E0,type,
+    c_2Enum_2ESUC__REP_2E0: u ).
+
+thf(c_2Enum_2ESUC__REP_2E1,type,
+    c_2Enum_2ESUC__REP_2E1: du > u ).
+
+thf(c_2Ebool_2ET_2E0,type,
+    c_2Ebool_2ET_2E0: u ).
+
+thf(c_2Ebool_2ETYPE__DEFINITION_2E0,type,
+    c_2Ebool_2ETYPE__DEFINITION_2E0: u ).
+
+thf(c_2Ebool_2ETYPE__DEFINITION_2E2,type,
+    c_2Ebool_2ETYPE__DEFINITION_2E2: du > du > u ).
+
+thf(c_2Enum_2EZERO__REP_2E0,type,
+    c_2Enum_2EZERO__REP_2E0: u ).
+
+thf(c_2Ebool_2E_5C_2F_2E0,type,
+    c_2Ebool_2E_5C_2F_2E0: u ).
+
+thf(c_2Ebool_2E_5C_2F_2E2,type,
+    c_2Ebool_2E_5C_2F_2E2: du > du > u ).
+
+thf(c_2Ebool_2E_7E_2E0,type,
+    c_2Ebool_2E_7E_2E0: u ).
+
+thf(c_2Ebool_2E_7E_2E1,type,
+    c_2Ebool_2E_7E_2E1: du > u ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Emin_2Ebool_20mono_2Etyop_2Emin_2Ebool,type,
+    mono_2Eapp_2Emono_2Etyop_2Emin_2Ebool_20mono_2Etyop_2Emin_2Ebool: ( $o > $o ) > $o > $o ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Emin_2Ebool_20mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29,type,
+    mono_2Eapp_2Emono_2Etyop_2Emin_2Ebool_20mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29: ( $o > $o > $o ) > $o > $o > $o ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_20mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,type,
+    mono_2Eapp_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_20mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29: ( ( mono_2Etyop_2Emin_2Eind > $o ) > ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o ) > ( mono_2Etyop_2Emin_2Eind > $o ) > ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_20mono_2Etyop_2Emin_2Ebool,type,
+    mono_2Eapp_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_20mono_2Etyop_2Emin_2Ebool: ( ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > $o ) > ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > $o ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_20mono_2Etyop_2Emin_2Ebool,type,
+    mono_2Eapp_2Emono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_20mono_2Etyop_2Emin_2Ebool: ( ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o ) > ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Ebool,type,
+    mono_2Eapp_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Ebool: ( mono_2Etyop_2Emin_2Eind > $o ) > mono_2Etyop_2Emin_2Eind > $o ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind,type,
+    mono_2Eapp_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind: ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum,type,
+    mono_2Eapp_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum: ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Enum_2Enum ) > mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Enum_2Enum ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Emin_2Ebool,type,
+    mono_2Eapp_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Emin_2Ebool: ( mono_2Etyop_2Enum_2Enum > $o ) > mono_2Etyop_2Enum_2Enum > $o ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Emin_2Eind,type,
+    mono_2Eapp_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Emin_2Eind: ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ).
+
+thf(mono_2Eapp_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Enum_2Enum,type,
+    mono_2Eapp_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Enum_2Enum: ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Enum_2Enum ) > mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Enum_2Enum ).
+
+thf(mono_2Ec_2Ebool_2E_2F_5C,type,
+    mono_2Ec_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(mono_2Ec_2Enum_2E0,type,
+    mono_2Ec_2Enum_2E0: mono_2Etyop_2Enum_2Enum ).
+
+thf(mono_2Ec_2Emin_2E_3D_3D_3E,type,
+    mono_2Ec_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(mono_2Ec_2Enum_2EABS__num,type,
+    mono_2Ec_2Enum_2EABS__num: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Enum_2Enum ).
+
+thf(mono_2Ec_2Ebool_2EF,type,
+    mono_2Ec_2Ebool_2EF: $o ).
+
+thf(mono_2Ec_2Enum_2EIS__NUM__REP,type,
+    mono_2Ec_2Enum_2EIS__NUM__REP: mono_2Etyop_2Emin_2Eind > $o ).
+
+thf(mono_2Ec_2Ebool_2EONE__ONE_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind,type,
+    mono_2Ec_2Ebool_2EONE__ONE_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind: ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > $o ).
+
+thf(mono_2Ec_2Ebool_2EONTO_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind,type,
+    mono_2Ec_2Ebool_2EONTO_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind: ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > $o ).
+
+thf(mono_2Ec_2Enum_2EREP__num,type,
+    mono_2Ec_2Enum_2EREP__num: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ).
+
+thf(mono_2Ec_2Enum_2ESUC,type,
+    mono_2Ec_2Enum_2ESUC: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Enum_2Enum ).
+
+thf(mono_2Ec_2Enum_2ESUC__REP,type,
+    mono_2Ec_2Enum_2ESUC__REP: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ).
+
+thf(mono_2Ec_2Ebool_2ET,type,
+    mono_2Ec_2Ebool_2ET: $o ).
+
+thf(mono_2Ec_2Ebool_2ETYPE__DEFINITION_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum,type,
+    mono_2Ec_2Ebool_2ETYPE__DEFINITION_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum: ( mono_2Etyop_2Emin_2Eind > $o ) > ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o ).
+
+thf(mono_2Ec_2Enum_2EZERO__REP,type,
+    mono_2Ec_2Enum_2EZERO__REP: mono_2Etyop_2Emin_2Eind ).
+
+thf(mono_2Ec_2Ebool_2E_5C_2F,type,
+    mono_2Ec_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(mono_2Ec_2Ebool_2E_7E,type,
+    mono_2Ec_2Ebool_2E_7E: $o > $o ).
+
+thf(i_mono_2Etyop_2Emin_2Ebool,type,
+    i_mono_2Etyop_2Emin_2Ebool: $o > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29: ( $o > $o ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29: ( $o > $o > $o ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29: ( ( mono_2Etyop_2Emin_2Eind > $o ) > ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29: ( ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > $o ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29: ( ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29: ( mono_2Etyop_2Emin_2Eind > $o ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29: ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29: ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Enum_2Enum ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29: ( mono_2Etyop_2Enum_2Enum > $o ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29: ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29,type,
+    i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29: ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Enum_2Enum ) > u ).
+
+thf(i_mono_2Etyop_2Emin_2Eind,type,
+    i_mono_2Etyop_2Emin_2Eind: mono_2Etyop_2Emin_2Eind > u ).
+
+thf(i_mono_2Etyop_2Enum_2Enum,type,
+    i_mono_2Etyop_2Enum_2Enum: mono_2Etyop_2Enum_2Enum > u ).
+
+thf(j_mono_2Etyop_2Emin_2Ebool,type,
+    j_mono_2Etyop_2Emin_2Ebool: du > $o ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29: du > $o > $o ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29: du > $o > $o > $o ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29: du > ( mono_2Etyop_2Emin_2Eind > $o ) > ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29: du > ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > $o ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29: du > ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29: du > mono_2Etyop_2Emin_2Eind > $o ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29: du > mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29: du > mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Enum_2Enum ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29: du > mono_2Etyop_2Enum_2Enum > $o ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29: du > mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ).
+
+thf(j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29,type,
+    j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29: du > mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Enum_2Enum ).
+
+thf(j_mono_2Etyop_2Emin_2Eind,type,
+    j_mono_2Etyop_2Emin_2Eind: du > mono_2Etyop_2Emin_2Eind ).
+
+thf(j_mono_2Etyop_2Enum_2Enum,type,
+    j_mono_2Etyop_2Enum_2Enum: du > mono_2Etyop_2Enum_2Enum ).
+
+thf(reserved_2Eho_2Eeq__ext,axiom,
+    ! [A_27a: d,A_27b: d,V0f_2E0: u,V1g_2E0: u] :
+      ( ! [V2x_2E0: u] :
+          ( ( s @ A_27b @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ A_27b ) @ V0f_2E0 ) @ ( s @ A_27a @ V2x_2E0 ) ) )
+          = ( s @ A_27b @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ A_27b ) @ V1g_2E0 ) @ ( s @ A_27a @ V2x_2E0 ) ) ) )
+     => ( ( s @ ( tyop_2Emin_2Efun @ A_27a @ A_27b ) @ V0f_2E0 )
+        = ( s @ ( tyop_2Emin_2Efun @ A_27a @ A_27b ) @ V1g_2E0 ) ) ) ).
+
+thf(reserved_2Eho_2Ei__thm,axiom,
+    ! [A_27a: d,V0x_2E0: u] :
+      ( ( s @ A_27a @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ A_27a ) @ combin_i_2E0 ) @ ( s @ A_27a @ V0x_2E0 ) ) )
+      = ( s @ A_27a @ V0x_2E0 ) ) ).
+
+thf(reserved_2Eho_2Ek__thm,axiom,
+    ! [A_27a: d,A_27b: d,V0x_2E0: u,V1y_2E0: u] :
+      ( ( s @ A_27a @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27b @ A_27a ) @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ ( tyop_2Emin_2Efun @ A_27b @ A_27a ) ) @ combin_k_2E0 ) @ ( s @ A_27a @ V0x_2E0 ) ) ) @ ( s @ A_27b @ V1y_2E0 ) ) )
+      = ( s @ A_27a @ V0x_2E0 ) ) ).
+
+thf(reserved_2Eho_2Es__thm,axiom,
+    ! [A_27a: d,A_27b: d,A_27c: d,V0f_2E0: u,V1g_2E0: u,V2x_2E0: u] :
+      ( ( s @ A_27c @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ A_27c ) @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ A_27a @ A_27b ) @ ( tyop_2Emin_2Efun @ A_27a @ A_27c ) ) @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ A_27a @ ( tyop_2Emin_2Efun @ A_27b @ A_27c ) ) @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ A_27a @ A_27b ) @ ( tyop_2Emin_2Efun @ A_27a @ A_27c ) ) ) @ combin_s_2E0 ) @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ ( tyop_2Emin_2Efun @ A_27b @ A_27c ) ) @ V0f_2E0 ) ) ) @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ A_27b ) @ V1g_2E0 ) ) ) @ ( s @ A_27a @ V2x_2E0 ) ) )
+      = ( s @ A_27c @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27b @ A_27c ) @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ ( tyop_2Emin_2Efun @ A_27b @ A_27c ) ) @ V0f_2E0 ) @ ( s @ A_27a @ V2x_2E0 ) ) ) @ ( s @ A_27b @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ A_27b ) @ V1g_2E0 ) @ ( s @ A_27a @ V2x_2E0 ) ) ) ) ) ) ).
+
+thf(reserved_2Elogic_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( mono_2Ec_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(reserved_2Elogic_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( mono_2Ec_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(reserved_2Elogic_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( mono_2Ec_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(reserved_2Elogic_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( mono_2Ec_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(reserved_2Elogic_2E_3D,axiom,
+    ! [A_27a: d,V0_2E0: u,V1_2E0: u] :
+      ( ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( c_2Emin_2E_3D_2E2 @ ( s @ A_27a @ V0_2E0 ) @ ( s @ A_27a @ V1_2E0 ) ) ) )
+    <=> ( ( s @ A_27a @ V0_2E0 )
+        = ( s @ A_27a @ V1_2E0 ) ) ) ).
+
+thf(reserved_2Equant_2E_21,axiom,
+    ! [A_27a: d,V0f_2E0: u] :
+      ( ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( c_2Ebool_2E_21_2E1 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ V0f_2E0 ) ) ) )
+    <=> ! [V1x_2E0: u] : ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ V0f_2E0 ) @ ( s @ A_27a @ V1x_2E0 ) ) ) ) ) ).
+
+thf(reserved_2Equant_2E_3F,axiom,
+    ! [A_27a: d,V0f_2E0: u] :
+      ( ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( c_2Ebool_2E_3F_2E1 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ V0f_2E0 ) ) ) )
+    <=> ? [V1x_2E0: u] : ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ V0f_2E0 ) @ ( s @ A_27a @ V1x_2E0 ) ) ) ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ V0_2E0 ) ) ) )
+      = ( s @ tyop_2Emin_2Ebool @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Enum_2Enum ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Enum_2Enum ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Enum_2Enum ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Ebool ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Ebool ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Enum_2Enum ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29 @ ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Enum_2Enum ) @ V0_2E0 ) ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Enum_2Enum ) @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Emin_2Eind,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ tyop_2Emin_2Eind @ ( i_mono_2Etyop_2Emin_2Eind @ ( j_mono_2Etyop_2Emin_2Eind @ ( s @ tyop_2Emin_2Eind @ V0_2E0 ) ) ) )
+      = ( s @ tyop_2Emin_2Eind @ V0_2E0 ) ) ).
+
+thf(ij_2Emono_2Etyop_2Enum_2Enum,axiom,
+    ! [V0_2E0: u] :
+      ( ( s @ tyop_2Enum_2Enum @ ( i_mono_2Etyop_2Enum_2Enum @ ( j_mono_2Etyop_2Enum_2Enum @ ( s @ tyop_2Enum_2Enum @ V0_2E0 ) ) ) )
+      = ( s @ tyop_2Enum_2Enum @ V0_2E0 ) ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: $o] :
+      ( ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0: $o > $o] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29,axiom,
+    ! [V0: $o > $o > $o] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29,axiom,
+    ! [V0: ( mono_2Etyop_2Emin_2Eind > $o ) > ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0: ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > $o] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0: ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > $o] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Enum_2Enum] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Enum_2Enum ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0: mono_2Etyop_2Enum_2Enum > $o] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29,axiom,
+    ! [V0: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29,axiom,
+    ! [V0: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Enum_2Enum] :
+      ( ( j_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Enum_2Enum ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29 @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Emin_2Eind,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind] :
+      ( ( j_mono_2Etyop_2Emin_2Eind @ ( s @ tyop_2Emin_2Eind @ ( i_mono_2Etyop_2Emin_2Eind @ V0 ) ) )
+      = V0 ) ).
+
+thf(ji_2Emono_2Etyop_2Enum_2Enum,axiom,
+    ! [V0: mono_2Etyop_2Enum_2Enum] :
+      ( ( j_mono_2Etyop_2Enum_2Enum @ ( s @ tyop_2Enum_2Enum @ ( i_mono_2Etyop_2Enum_2Enum @ V0 ) ) )
+      = V0 ) ).
+
+thf(arityeq1_2Ec_2Ebool_2E_21_2E1_2Emono_2EA_27a,axiom,
+    ! [A_27a: d,X0_2E0: u] :
+      ( ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( c_2Ebool_2E_21_2E1 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ X0_2E0 ) ) ) )
+      = ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ tyop_2Emin_2Ebool ) @ c_2Ebool_2E_21_2E0 ) @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ X0_2E0 ) ) ) ) ) ).
+
+thf(arityeq2_2Ec_2Emin_2E_3D_2E2_2Emono_2EA_27a,axiom,
+    ! [A_27a: d,X0_2E0: u,X1_2E0: u] :
+      ( ( ( s @ A_27a @ X0_2E0 )
+        = ( s @ A_27a @ X1_2E0 ) )
+    <=> ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) ) @ c_2Emin_2E_3D_2E0 ) @ ( s @ A_27a @ X0_2E0 ) ) ) @ ( s @ A_27a @ X1_2E0 ) ) ) ) ) ).
+
+thf(arityeq1_2Ec_2Ebool_2E_3F_2E1_2Emono_2EA_27a,axiom,
+    ! [A_27a: d,X0_2E0: u] :
+      ( ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( c_2Ebool_2E_3F_2E1 @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ X0_2E0 ) ) ) )
+      = ( j_mono_2Etyop_2Emin_2Ebool @ ( s @ tyop_2Emin_2Ebool @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ tyop_2Emin_2Ebool ) @ c_2Ebool_2E_3F_2E0 ) @ ( s @ ( tyop_2Emin_2Efun @ A_27a @ tyop_2Emin_2Ebool ) @ X0_2E0 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Emin_2Ebool_20mono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: $o > $o,V1: $o] :
+      ( ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ ( V0 @ V1 ) ) )
+      = ( s @ tyop_2Emin_2Ebool @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) @ ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Emin_2Ebool_20mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0: $o > $o > $o,V1: $o] :
+      ( ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29 @ ( V0 @ V1 ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Ebool @ tyop_2Emin_2Ebool ) ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29_29 @ V0 ) ) @ ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_20mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0: ( mono_2Etyop_2Emin_2Eind > $o ) > ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o,V1: mono_2Etyop_2Emin_2Eind > $o] :
+      ( ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ ( V0 @ V1 ) ) )
+      = ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29 @ V0 ) ) @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29 @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_20mono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > $o,V1: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind] :
+      ( ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ ( V0 @ V1 ) ) )
+      = ( s @ tyop_2Emin_2Ebool @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29 @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_20mono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o,V1: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind] :
+      ( ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ ( V0 @ V1 ) ) )
+      = ( s @ tyop_2Emin_2Ebool @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29 @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > $o,V1: mono_2Etyop_2Emin_2Eind] :
+      ( ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ ( V0 @ V1 ) ) )
+      = ( s @ tyop_2Emin_2Ebool @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) @ ( s @ tyop_2Emin_2Eind @ ( i_mono_2Etyop_2Emin_2Eind @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind,V1: mono_2Etyop_2Emin_2Eind] :
+      ( ( s @ tyop_2Emin_2Eind @ ( i_mono_2Etyop_2Emin_2Eind @ ( V0 @ V1 ) ) )
+      = ( s @ tyop_2Emin_2Eind @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29 @ V0 ) ) @ ( s @ tyop_2Emin_2Eind @ ( i_mono_2Etyop_2Emin_2Eind @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Enum_2Enum,V1: mono_2Etyop_2Emin_2Eind] :
+      ( ( s @ tyop_2Enum_2Enum @ ( i_mono_2Etyop_2Enum_2Enum @ ( V0 @ V1 ) ) )
+      = ( s @ tyop_2Enum_2Enum @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Enum_2Enum ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Enum_2Enum_29 @ V0 ) ) @ ( s @ tyop_2Emin_2Eind @ ( i_mono_2Etyop_2Emin_2Eind @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: mono_2Etyop_2Enum_2Enum > $o,V1: mono_2Etyop_2Enum_2Enum] :
+      ( ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ ( V0 @ V1 ) ) )
+      = ( s @ tyop_2Emin_2Ebool @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) @ ( s @ tyop_2Enum_2Enum @ ( i_mono_2Etyop_2Enum_2Enum @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Emin_2Eind,axiom,
+    ! [V0: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind,V1: mono_2Etyop_2Enum_2Enum] :
+      ( ( s @ tyop_2Emin_2Eind @ ( i_mono_2Etyop_2Emin_2Eind @ ( V0 @ V1 ) ) )
+      = ( s @ tyop_2Emin_2Eind @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29 @ V0 ) ) @ ( s @ tyop_2Enum_2Enum @ ( i_mono_2Etyop_2Enum_2Enum @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Eapp_2E2_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Enum_2Enum,axiom,
+    ! [V0: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Enum_2Enum,V1: mono_2Etyop_2Enum_2Enum] :
+      ( ( s @ tyop_2Enum_2Enum @ ( i_mono_2Etyop_2Enum_2Enum @ ( V0 @ V1 ) ) )
+      = ( s @ tyop_2Enum_2Enum @ ( app_2E2 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Enum_2Enum ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Enum_2Enum_29 @ V0 ) ) @ ( s @ tyop_2Enum_2Enum @ ( i_mono_2Etyop_2Enum_2Enum @ V1 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Ec_2Ebool_2EONE__ONE_2E0_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind,axiom,
+    ( ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ mono_2Ec_2Ebool_2EONE__ONE_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind ) )
+    = ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ c_2Ebool_2EONE__ONE_2E0 ) ) ).
+
+thf(monoeq_2Emono_2Ec_2Ebool_2EONE__ONE_2E1_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind] :
+      ( ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ ( mono_2Ec_2Ebool_2EONE__ONE_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind @ V0 ) ) )
+      = ( s @ tyop_2Emin_2Ebool @ ( c_2Ebool_2EONE__ONE_2E1 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29 @ V0 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Ec_2Ebool_2EONTO_2E0_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind,axiom,
+    ( ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29 @ mono_2Ec_2Ebool_2EONTO_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind ) )
+    = ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) @ c_2Ebool_2EONTO_2E0 ) ) ).
+
+thf(monoeq_2Emono_2Ec_2Ebool_2EONTO_2E1_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind] :
+      ( ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ ( mono_2Ec_2Ebool_2EONTO_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind @ V0 ) ) )
+      = ( s @ tyop_2Emin_2Ebool @ ( c_2Ebool_2EONTO_2E1 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29 @ V0 ) ) ) ) ) ).
+
+thf(monoeq_2Emono_2Ec_2Ebool_2ETYPE__DEFINITION_2E0_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum,axiom,
+    ( ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_2Ctyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29_29 @ mono_2Ec_2Ebool_2ETYPE__DEFINITION_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum ) )
+    = ( s @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( tyop_2Emin_2Efun @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ tyop_2Emin_2Ebool ) ) @ c_2Ebool_2ETYPE__DEFINITION_2E0 ) ) ).
+
+thf(monoeq_2Emono_2Ec_2Ebool_2ETYPE__DEFINITION_2E2_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > $o,V1: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind] :
+      ( ( s @ tyop_2Emin_2Ebool @ ( i_mono_2Etyop_2Emin_2Ebool @ ( mono_2Ec_2Ebool_2ETYPE__DEFINITION_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum @ V0 @ V1 ) ) )
+      = ( s @ tyop_2Emin_2Ebool @ ( c_2Ebool_2ETYPE__DEFINITION_2E2 @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Emin_2Eind @ tyop_2Emin_2Ebool ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29 @ V0 ) ) @ ( s @ ( tyop_2Emin_2Efun @ tyop_2Enum_2Enum @ tyop_2Emin_2Eind ) @ ( i_mono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29 @ V1 ) ) ) ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Emin_2Ebool_20mono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: $o > $o,V1: $o] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Emin_2Ebool_20mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Ebool_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0: $o > $o > $o,V1: $o] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Ebool_29_20mono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_2Ctyop_2Emin_2Ebool_29,axiom,
+    ! [V0: ( mono_2Etyop_2Emin_2Eind > $o ) > ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o,V1: mono_2Etyop_2Emin_2Eind > $o] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Emin_2Efun_28tyop_2Emin_2Eind_2Ctyop_2Emin_2Eind_29_20mono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: ( mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind ) > $o,V1: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Emin_2Efun_28tyop_2Enum_2Enum_2Ctyop_2Emin_2Eind_29_20mono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: ( mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind ) > $o,V1: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > $o,V1: mono_2Etyop_2Emin_2Eind] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Emin_2Eind,V1: mono_2Etyop_2Emin_2Eind] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum,axiom,
+    ! [V0: mono_2Etyop_2Emin_2Eind > mono_2Etyop_2Enum_2Enum,V1: mono_2Etyop_2Emin_2Eind] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Emin_2Ebool,axiom,
+    ! [V0: mono_2Etyop_2Enum_2Enum > $o,V1: mono_2Etyop_2Enum_2Enum] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Emin_2Eind,axiom,
+    ! [V0: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind,V1: mono_2Etyop_2Enum_2Enum] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(monoapp_2Emono_2Eapp_2Emono_2Etyop_2Enum_2Enum_20mono_2Etyop_2Enum_2Enum,axiom,
+    ! [V0: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Enum_2Enum,V1: mono_2Etyop_2Enum_2Enum] :
+      ( ( V0 @ V1 )
+      = ( V0 @ V1 ) ) ).
+
+thf(thm_2Enum_2ESUC__REP__DEF,axiom,
+    ( ( mono_2Ec_2Ebool_2EONE__ONE_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind @ mono_2Ec_2Enum_2ESUC__REP )
+    & ( (~) @ ( mono_2Ec_2Ebool_2EONTO_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Emin_2Eind @ mono_2Ec_2Enum_2ESUC__REP ) ) ) ).
+
+thf(thm_2Enum_2EZERO__REP__DEF,axiom,
+    ! [V0y: mono_2Etyop_2Emin_2Eind] :
+      ( (~)
+      @ ( mono_2Ec_2Enum_2EZERO__REP
+        = ( mono_2Ec_2Enum_2ESUC__REP @ V0y ) ) ) ).
+
+thf(thm_2Enum_2EIS__NUM__REP,axiom,
+    ! [V0m: mono_2Etyop_2Emin_2Eind] :
+      ( ( mono_2Ec_2Enum_2EIS__NUM__REP @ V0m )
+    <=> ! [V1P: mono_2Etyop_2Emin_2Eind > $o] :
+          ( ( ( V1P @ mono_2Ec_2Enum_2EZERO__REP )
+            & ! [V2n: mono_2Etyop_2Emin_2Eind] :
+                ( ( V1P @ V2n )
+               => ( V1P @ ( mono_2Ec_2Enum_2ESUC__REP @ V2n ) ) ) )
+         => ( V1P @ V0m ) ) ) ).
+
+thf(thm_2Enum_2Enum__TY__DEF,axiom,
+    ? [V0rep: mono_2Etyop_2Enum_2Enum > mono_2Etyop_2Emin_2Eind] : ( mono_2Ec_2Ebool_2ETYPE__DEFINITION_2Emono_2Etyop_2Emin_2Eind_20mono_2Etyop_2Enum_2Enum @ mono_2Ec_2Enum_2EIS__NUM__REP @ V0rep ) ).
+
+thf(thm_2Enum_2Enum__ISO__DEF,axiom,
+    ( ! [V0a: mono_2Etyop_2Enum_2Enum] :
+        ( ( mono_2Ec_2Enum_2EABS__num @ ( mono_2Ec_2Enum_2EREP__num @ V0a ) )
+        = V0a )
+    & ! [V1r: mono_2Etyop_2Emin_2Eind] :
+        ( ( mono_2Ec_2Enum_2EIS__NUM__REP @ V1r )
+      <=> ( ( mono_2Ec_2Enum_2EREP__num @ ( mono_2Ec_2Enum_2EABS__num @ V1r ) )
+          = V1r ) ) ) ).
+
+thf(thm_2Enum_2EZERO__DEF,axiom,
+    ( mono_2Ec_2Enum_2E0
+    = ( mono_2Ec_2Enum_2EABS__num @ mono_2Ec_2Enum_2EZERO__REP ) ) ).
+
+thf(thm_2Enum_2ESUC__DEF,axiom,
+    ! [V0m: mono_2Etyop_2Enum_2Enum] :
+      ( ( mono_2Ec_2Enum_2ESUC @ V0m )
+      = ( mono_2Ec_2Enum_2EABS__num @ ( mono_2Ec_2Enum_2ESUC__REP @ ( mono_2Ec_2Enum_2EREP__num @ V0m ) ) ) ) ).
+
+thf(thm_2Enum_2ENOT__SUC,axiom,
+    ! [V0n: mono_2Etyop_2Enum_2Enum] :
+      ( (~)
+      @ ( ( mono_2Ec_2Enum_2ESUC @ V0n )
+        = mono_2Ec_2Enum_2E0 ) ) ).
+
+thf(thm_2Enum_2EINV__SUC,axiom,
+    ! [V0m: mono_2Etyop_2Enum_2Enum,V1n: mono_2Etyop_2Enum_2Enum] :
+      ( ( ( mono_2Ec_2Enum_2ESUC @ V0m )
+        = ( mono_2Ec_2Enum_2ESUC @ V1n ) )
+     => ( V0m = V1n ) ) ).
+
+thf(thm_2Enum_2EINDUCTION,axiom,
+    ! [V0P: mono_2Etyop_2Enum_2Enum > $o] :
+      ( ( ( V0P @ mono_2Ec_2Enum_2E0 )
+        & ! [V1n: mono_2Etyop_2Enum_2Enum] :
+            ( ( V0P @ V1n )
+           => ( V0P @ ( mono_2Ec_2Enum_2ESUC @ V1n ) ) ) )
+     => ! [V2n: mono_2Etyop_2Enum_2Enum] : ( V0P @ V2n ) ) ).
+
+%------------------------------------------------------------------------------

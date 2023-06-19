@@ -1,0 +1,1354 @@
+%------------------------------------------------------------------------------
+% File     : SET007+412 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Categorial Categories and Slice Categories
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : cat_5 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   99 (   0 unt;   0 def)
+%            Number of atoms       :  807 ( 135 equ)
+%            Maximal formula atoms :   62 (   8 avg)
+%            Number of connectives :  744 (  36   ~;   0   |; 359   &)
+%                                         (  17 <=>; 332  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   30 (   9 avg)
+%            Maximal term depth    :    6 (   1 avg)
+%            Number of predicates  :   19 (  18 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   68 (  68 usr;   6 con; 0-6 aty)
+%            Number of variables   :  379 ( 351   !;  28   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_cat_5,axiom,
+    ? [A] :
+      ( l1_cat_1(A)
+      & v1_cat_1(A)
+      & v2_cat_1(A)
+      & v1_cat_5(A) ) ).
+
+fof(rc2_cat_5,axiom,
+    ? [A] :
+      ( ~ v1_xboole_0(A)
+      & v2_cat_5(A) ) ).
+
+fof(cc1_cat_5,axiom,
+    ! [A] :
+      ( l1_cat_1(A)
+     => ( ( v2_cat_1(A)
+          & v3_cat_5(A) )
+       => ( v2_cat_1(A)
+          & v1_cat_5(A) ) ) ) ).
+
+fof(rc3_cat_5,axiom,
+    ? [A] :
+      ( l1_cat_1(A)
+      & v1_cat_1(A)
+      & v2_cat_1(A)
+      & v1_cat_5(A)
+      & v3_cat_5(A) ) ).
+
+fof(cc2_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m3_cat_2(B,A)
+         => v3_cat_5(B) ) ) ).
+
+fof(rc4_cat_5,axiom,
+    ? [A] :
+      ( l1_cat_1(A)
+      & v1_cat_1(A)
+      & v2_cat_1(A)
+      & v1_cat_5(A)
+      & v3_cat_5(A)
+      & v4_cat_5(A) ) ).
+
+fof(fc1_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A)) )
+     => ~ v1_xboole_0(k12_cat_5(A,B)) ) ).
+
+fof(fc2_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A)) )
+     => ~ v1_xboole_0(k13_cat_5(A,B)) ) ).
+
+fof(t1_cat_5,axiom,
+    ! [A] :
+      ( l1_cat_1(A)
+     => ! [B] :
+          ( l1_cat_1(B)
+         => ( ( g1_cat_1(u1_cat_1(A),u2_cat_1(A),u3_cat_1(A),u4_cat_1(A),u5_cat_1(A),u6_cat_1(A)) = g1_cat_1(u1_cat_1(B),u2_cat_1(B),u3_cat_1(B),u4_cat_1(B),u5_cat_1(B),u6_cat_1(B))
+              & v2_cat_1(A) )
+           => v2_cat_1(B) ) ) ) ).
+
+fof(d1_cat_5,axiom,
+    ! [A] :
+      ( l1_cat_1(A)
+     => ( v1_cat_5(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u2_cat_1(A))
+           => ? [C] : B = k4_tarski(k1_domain_1(u1_cat_1(A),u1_cat_1(A),k2_cat_1(A,B),k3_cat_1(A,B)),C) ) ) ) ).
+
+fof(t2_cat_5,axiom,
+    ! [A] :
+      ( ( v1_cat_5(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u2_cat_1(A))
+         => ( k2_cat_1(A,B) = k17_mcart_1(B)
+            & k3_cat_1(A,B) = k18_mcart_1(B)
+            & B = k4_tarski(k1_domain_1(u1_cat_1(A),u1_cat_1(A),k2_cat_1(A,B),k3_cat_1(A,B)),k2_mcart_1(B)) ) ) ) ).
+
+fof(t3_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m3_cat_2(B,A)
+         => ( m3_cat_2(A,B)
+           => g1_cat_1(u1_cat_1(A),u2_cat_1(A),u3_cat_1(A),u4_cat_1(A),u5_cat_1(A),u6_cat_1(A)) = g1_cat_1(u1_cat_1(B),u2_cat_1(B),u3_cat_1(B),u4_cat_1(B),u5_cat_1(B),u6_cat_1(B)) ) ) ) ).
+
+fof(t4_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m3_cat_2(B,A)
+         => ! [C] :
+              ( m3_cat_2(C,B)
+             => m3_cat_2(C,A) ) ) ) ).
+
+fof(d2_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & l1_cat_1(B) )
+         => ~ ( ? [C] :
+                  ( v2_cat_1(C)
+                  & l1_cat_1(C)
+                  & m3_cat_2(A,C)
+                  & m3_cat_2(B,C) )
+              & ? [C] :
+                  ( m1_subset_1(C,u1_cat_1(A))
+                  & m1_subset_1(C,u1_cat_1(B)) )
+              & ~ ! [C] :
+                    ( ( v1_cat_1(C)
+                      & v2_cat_1(C)
+                      & l1_cat_1(C) )
+                   => ( C = k6_cat_5(A,B)
+                    <=> ( u1_cat_1(C) = k3_xboole_0(u1_cat_1(A),u1_cat_1(B))
+                        & u2_cat_1(C) = k3_xboole_0(u2_cat_1(A),u2_cat_1(B))
+                        & u3_cat_1(C) = k2_partfun1(u2_cat_1(A),u1_cat_1(A),u3_cat_1(A),u2_cat_1(B))
+                        & u4_cat_1(C) = k2_partfun1(u2_cat_1(A),u1_cat_1(A),u4_cat_1(A),u2_cat_1(B))
+                        & u5_cat_1(C) = k1_realset1(u5_cat_1(A),u2_cat_1(B))
+                        & u6_cat_1(C) = k2_partfun1(u1_cat_1(A),u2_cat_1(A),u6_cat_1(A),u1_cat_1(B)) ) ) ) ) ) ) ).
+
+fof(t5_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m3_cat_2(B,A)
+         => ! [C] :
+              ( m3_cat_2(C,A)
+             => ( ~ r2_subset_1(u1_cat_1(B),u1_cat_1(C))
+               => k6_cat_5(B,C) = k6_cat_5(C,B) ) ) ) ) ).
+
+fof(t6_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m3_cat_2(B,A)
+         => ! [C] :
+              ( m3_cat_2(C,A)
+             => ( ~ r2_subset_1(u1_cat_1(B),u1_cat_1(C))
+               => ( m3_cat_2(k6_cat_5(B,C),B)
+                  & m3_cat_2(k6_cat_5(B,C),C) ) ) ) ) ) ).
+
+fof(d3_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & l1_cat_1(B) )
+         => ! [C] :
+              ( m2_cat_1(C,A,B)
+             => ! [D] :
+                  ( ( v1_cat_1(D)
+                    & m3_cat_2(D,B) )
+                 => ( D = k7_cat_5(A,B,C)
+                  <=> ( u1_cat_1(D) = k2_relat_1(k12_cat_1(A,B,C))
+                      & r1_tarski(k2_relat_1(C),u2_cat_1(D))
+                      & ! [E] :
+                          ( m3_cat_2(E,B)
+                         => ( ( u1_cat_1(E) = k2_relat_1(k12_cat_1(A,B,C))
+                              & r1_tarski(k2_relat_1(C),u2_cat_1(E)) )
+                           => m3_cat_2(D,E) ) ) ) ) ) ) ) ) ).
+
+fof(t7_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & l1_cat_1(B) )
+         => ! [C] :
+              ( m3_cat_2(C,B)
+             => ! [D] :
+                  ( m2_cat_1(D,A,B)
+                 => ( r1_tarski(k2_relat_1(D),u2_cat_1(C))
+                   => m2_cat_1(D,A,C) ) ) ) ) ) ).
+
+fof(t8_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & l1_cat_1(B) )
+         => ! [C] :
+              ( m2_cat_1(C,A,B)
+             => m2_cat_1(C,A,k7_cat_5(A,B,C)) ) ) ) ).
+
+fof(t9_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & l1_cat_1(B) )
+         => ! [C] :
+              ( m3_cat_2(C,B)
+             => ! [D] :
+                  ( m2_cat_1(D,A,C)
+                 => ! [E] :
+                      ( m2_cat_1(E,A,B)
+                     => ( D = E
+                       => k7_cat_5(A,C,D) = k7_cat_5(A,B,E) ) ) ) ) ) ) ).
+
+fof(d4_cat_5,axiom,
+    ! [A] :
+      ( v2_cat_5(A)
+    <=> ! [B] :
+          ( r2_hidden(B,A)
+         => ( v2_cat_1(B)
+            & l1_cat_1(B) ) ) ) ).
+
+fof(d5_cat_5,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v2_cat_5(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,A)
+           => ( v2_cat_1(B)
+              & l1_cat_1(B) ) ) ) ) ).
+
+fof(d6_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ( v3_cat_5(A)
+      <=> ( v2_cat_5(u1_cat_1(A))
+          & ! [B] :
+              ( m1_subset_1(B,u1_cat_1(A))
+             => ! [C] :
+                  ( ( v2_cat_1(C)
+                    & l1_cat_1(C) )
+                 => ( B = C
+                   => k10_cat_1(A,B) = k4_tarski(k4_tarski(C,C),k15_cat_1(C)) ) ) )
+          & ! [B] :
+              ( m1_subset_1(B,u2_cat_1(A))
+             => ! [C] :
+                  ( ( v2_cat_1(C)
+                    & l1_cat_1(C) )
+                 => ! [D] :
+                      ( ( v2_cat_1(D)
+                        & l1_cat_1(D) )
+                     => ~ ( C = k2_cat_1(A,B)
+                          & D = k3_cat_1(A,B)
+                          & ! [E] :
+                              ( m2_cat_1(E,C,D)
+                             => B != k4_tarski(k4_tarski(C,D),E) ) ) ) ) )
+          & ! [B] :
+              ( m1_subset_1(B,u2_cat_1(A))
+             => ! [C] :
+                  ( m1_subset_1(C,u2_cat_1(A))
+                 => ! [D] :
+                      ( ( v2_cat_1(D)
+                        & l1_cat_1(D) )
+                     => ! [E] :
+                          ( ( v2_cat_1(E)
+                            & l1_cat_1(E) )
+                         => ! [F] :
+                              ( ( v2_cat_1(F)
+                                & l1_cat_1(F) )
+                             => ! [G] :
+                                  ( m2_cat_1(G,D,E)
+                                 => ! [H] :
+                                      ( m2_cat_1(H,E,F)
+                                     => ( ( B = k4_tarski(k4_tarski(D,E),G)
+                                          & C = k4_tarski(k4_tarski(E,F),H) )
+                                       => k4_cat_1(A,B,C) = k4_tarski(k4_tarski(D,F),k14_cat_1(D,E,F,G,H)) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t10_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & l1_cat_1(B) )
+         => ( ( g1_cat_1(u1_cat_1(A),u2_cat_1(A),u3_cat_1(A),u4_cat_1(A),u5_cat_1(A),u6_cat_1(A)) = g1_cat_1(u1_cat_1(B),u2_cat_1(B),u3_cat_1(B),u4_cat_1(B),u5_cat_1(B),u6_cat_1(B))
+              & v3_cat_5(A) )
+           => v3_cat_5(B) ) ) ) ).
+
+fof(t11_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => v3_cat_5(k8_cat_1(A,k4_tarski(k4_tarski(A,A),k15_cat_1(A)))) ) ).
+
+fof(t12_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ( v2_cat_1(B)
+            & l1_cat_1(B) ) ) ) ).
+
+fof(t13_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u2_cat_1(A))
+         => ( k2_cat_1(A,B) = k4_cat_5(A,B)
+            & k3_cat_1(A,B) = k5_cat_5(A,B) ) ) ) ).
+
+fof(t14_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & v3_cat_5(B)
+            & l1_cat_1(B) )
+         => ( ( u1_cat_1(A) = u1_cat_1(B)
+              & u2_cat_1(A) = u2_cat_1(B) )
+           => g1_cat_1(u1_cat_1(A),u2_cat_1(A),u3_cat_1(A),u4_cat_1(A),u5_cat_1(A),u6_cat_1(A)) = g1_cat_1(u1_cat_1(B),u2_cat_1(B),u3_cat_1(B),u4_cat_1(B),u5_cat_1(B),u6_cat_1(B)) ) ) ) ).
+
+fof(t15_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & v3_cat_5(B)
+            & l1_cat_1(B) )
+         => ( r1_tarski(u2_cat_1(A),u2_cat_1(B))
+           => m3_cat_2(A,B) ) ) ) ).
+
+fof(d7_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => k10_cat_5(A) = A ) ).
+
+fof(t16_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => k10_cat_5(B) = B ) ) ).
+
+fof(t17_cat_5,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_cat_5(A) )
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ~ ( ! [C] :
+                  ( m1_cat_5(C,A)
+                 => ! [D] :
+                      ( m1_cat_5(D,A)
+                     => ! [E] :
+                          ( m1_cat_5(E,A)
+                         => ! [F] :
+                              ( m2_cat_1(F,C,D)
+                             => ! [G] :
+                                  ( m2_cat_1(G,D,E)
+                                 => ( ( r2_hidden(F,B)
+                                      & r2_hidden(G,B) )
+                                   => r2_hidden(k14_cat_1(C,D,E,F,G),B) ) ) ) ) ) )
+              & ! [C] :
+                  ( m1_cat_5(C,A)
+                 => r2_hidden(k15_cat_1(C),B) )
+              & ! [C] :
+                  ( ( v1_cat_1(C)
+                    & v2_cat_1(C)
+                    & v3_cat_5(C)
+                    & l1_cat_1(C) )
+                 => ~ ( u1_cat_1(C) = A
+                      & ! [D] :
+                          ( m1_cat_5(D,A)
+                         => ! [E] :
+                              ( m1_cat_5(E,A)
+                             => ! [F] :
+                                  ( m2_cat_1(F,D,E)
+                                 => ( m1_subset_1(k1_domain_1(k2_zfmisc_1(A,A),k1_zfmisc_1(k2_zfmisc_1(u2_cat_1(D),u2_cat_1(E))),k1_domain_1(A,A,D,E),F),u2_cat_1(C))
+                                  <=> r2_hidden(F,B) ) ) ) ) ) ) ) ) ) ).
+
+fof(t18_cat_5,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_cat_5(A) )
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_cat_1(C)
+                & v2_cat_1(C)
+                & v3_cat_5(C)
+                & l1_cat_1(C) )
+             => ! [D] :
+                  ( ( v1_cat_1(D)
+                    & v2_cat_1(D)
+                    & v3_cat_5(D)
+                    & l1_cat_1(D) )
+                 => ( ( u1_cat_1(C) = A
+                      & ! [E] :
+                          ( m1_cat_5(E,A)
+                         => ! [F] :
+                              ( m1_cat_5(F,A)
+                             => ! [G] :
+                                  ( m2_cat_1(G,E,F)
+                                 => ( m1_subset_1(k1_domain_1(k2_zfmisc_1(A,A),k1_zfmisc_1(k2_zfmisc_1(u2_cat_1(E),u2_cat_1(F))),k1_domain_1(A,A,E,F),G),u2_cat_1(C))
+                                  <=> r2_hidden(G,B) ) ) ) )
+                      & u1_cat_1(D) = A
+                      & ! [E] :
+                          ( m1_cat_5(E,A)
+                         => ! [F] :
+                              ( m1_cat_5(F,A)
+                             => ! [G] :
+                                  ( m2_cat_1(G,E,F)
+                                 => ( m1_subset_1(k1_domain_1(k2_zfmisc_1(A,A),k1_zfmisc_1(k2_zfmisc_1(u2_cat_1(E),u2_cat_1(F))),k1_domain_1(A,A,E,F),G),u2_cat_1(D))
+                                  <=> r2_hidden(G,B) ) ) ) ) )
+                   => C = D ) ) ) ) ) ).
+
+fof(d8_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A) )
+     => ( v4_cat_5(A)
+      <=> ! [B] :
+            ( ( v2_cat_1(B)
+              & l1_cat_1(B) )
+           => ! [C] :
+                ( ( v2_cat_1(C)
+                  & l1_cat_1(C) )
+               => ( ( m1_subset_1(B,u1_cat_1(A))
+                    & m1_subset_1(C,u1_cat_1(A)) )
+                 => ! [D] :
+                      ( m2_cat_1(D,B,C)
+                     => m1_subset_1(k4_tarski(k4_tarski(B,C),D),u2_cat_1(A)) ) ) ) ) ) ) ).
+
+fof(t19_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & v4_cat_5(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & v3_cat_5(B)
+            & v4_cat_5(B)
+            & l1_cat_1(B) )
+         => ( u1_cat_1(A) = u1_cat_1(B)
+           => g1_cat_1(u1_cat_1(A),u2_cat_1(A),u3_cat_1(A),u4_cat_1(A),u5_cat_1(A),u6_cat_1(A)) = g1_cat_1(u1_cat_1(B),u2_cat_1(B),u3_cat_1(B),u4_cat_1(B),u5_cat_1(B),u6_cat_1(B)) ) ) ) ).
+
+fof(t20_cat_5,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_cat_5(A) )
+     => ? [B] :
+          ( v1_cat_1(B)
+          & v2_cat_1(B)
+          & v3_cat_5(B)
+          & v4_cat_5(B)
+          & l1_cat_1(B)
+          & u1_cat_1(B) = A ) ) ).
+
+fof(t21_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & v3_cat_5(B)
+            & v4_cat_5(B)
+            & l1_cat_1(B) )
+         => ( r1_tarski(u1_cat_1(A),u1_cat_1(B))
+           => m3_cat_2(A,B) ) ) ) ).
+
+fof(t22_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( ( v2_cat_1(B)
+            & v3_cat_5(B)
+            & l1_cat_1(B) )
+         => ! [C] :
+              ( ( v2_cat_1(C)
+                & v3_cat_5(C)
+                & l1_cat_1(C) )
+             => ! [D] :
+                  ( m2_cat_1(D,A,B)
+                 => ! [E] :
+                      ( m2_cat_1(E,A,C)
+                     => ( D = E
+                       => k7_cat_5(A,B,D) = k7_cat_5(A,C,E) ) ) ) ) ) ) ).
+
+fof(d9_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => k12_cat_5(A,B) = k3_funct_2(u2_cat_1(A),u1_cat_1(A),u4_cat_1(A),k6_domain_1(u1_cat_1(A),B)) ) ) ).
+
+fof(d10_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => k13_cat_5(A,B) = k3_funct_2(u2_cat_1(A),u1_cat_1(A),u3_cat_1(A),k6_domain_1(u1_cat_1(A),B)) ) ) ).
+
+fof(t23_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,u2_cat_1(A))
+             => ( r2_hidden(C,k12_cat_5(A,B))
+              <=> k3_cat_1(A,C) = B ) ) ) ) ).
+
+fof(t24_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,u2_cat_1(A))
+             => ( r2_hidden(C,k13_cat_5(A,B))
+              <=> k2_cat_1(A,C) = B ) ) ) ) ).
+
+fof(t25_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_cat_1(A))
+             => k6_cat_1(A,B,C) = k5_subset_1(u2_cat_1(A),k13_cat_5(A,B),k12_cat_5(A,C)) ) ) ) ).
+
+fof(t26_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u2_cat_1(A))
+         => ( r2_hidden(B,k13_cat_5(A,k2_cat_1(A,B)))
+            & r2_hidden(B,k12_cat_5(A,k3_cat_1(A,B))) ) ) ) ).
+
+fof(t27_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u2_cat_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,u2_cat_1(A),k12_cat_5(A,k2_cat_1(A,B)))
+             => r2_hidden(k4_cat_1(A,C,B),k12_cat_5(A,k3_cat_1(A,B))) ) ) ) ).
+
+fof(t28_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u2_cat_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,u2_cat_1(A),k13_cat_5(A,k3_cat_1(A,B)))
+             => r2_hidden(k4_cat_1(A,B,C),k13_cat_5(A,k2_cat_1(A,B))) ) ) ) ).
+
+fof(d11_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( ( v1_cat_1(C)
+                & v2_cat_1(C)
+                & v1_cat_5(C)
+                & l1_cat_1(C) )
+             => ( C = k14_cat_5(A,B)
+              <=> ( u1_cat_1(C) = k12_cat_5(A,B)
+                  & ! [D] :
+                      ( m2_subset_1(D,u2_cat_1(A),k12_cat_5(A,B))
+                     => ! [E] :
+                          ( m2_subset_1(E,u2_cat_1(A),k12_cat_5(A,B))
+                         => ! [F] :
+                              ( m1_subset_1(F,u2_cat_1(A))
+                             => ( ( k2_cat_1(A,E) = k3_cat_1(A,F)
+                                  & D = k4_cat_1(A,F,E) )
+                               => m1_subset_1(k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,D,E),F),u2_cat_1(C)) ) ) ) )
+                  & ! [D] :
+                      ( m1_subset_1(D,u2_cat_1(C))
+                     => ? [E] :
+                          ( m2_subset_1(E,u2_cat_1(A),k12_cat_5(A,B))
+                          & ? [F] :
+                              ( m2_subset_1(F,u2_cat_1(A),k12_cat_5(A,B))
+                              & ? [G] :
+                                  ( m1_subset_1(G,u2_cat_1(A))
+                                  & D = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,E,F),G)
+                                  & k2_cat_1(A,F) = k3_cat_1(A,G)
+                                  & E = k4_cat_1(A,G,F) ) ) ) )
+                  & ! [D] :
+                      ( m1_subset_1(D,u2_cat_1(C))
+                     => ! [E] :
+                          ( m1_subset_1(E,u2_cat_1(C))
+                         => ! [F] :
+                              ( m2_subset_1(F,u2_cat_1(A),k12_cat_5(A,B))
+                             => ! [G] :
+                                  ( m2_subset_1(G,u2_cat_1(A),k12_cat_5(A,B))
+                                 => ! [H] :
+                                      ( m2_subset_1(H,u2_cat_1(A),k12_cat_5(A,B))
+                                     => ! [I] :
+                                          ( m1_subset_1(I,u2_cat_1(A))
+                                         => ! [J] :
+                                              ( m1_subset_1(J,u2_cat_1(A))
+                                             => ( ( D = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,F,G),I)
+                                                  & E = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,G,H),J) )
+                                               => k4_cat_1(C,D,E) = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,F,H),k4_cat_1(A,I,J)) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d12_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( ( v1_cat_1(C)
+                & v2_cat_1(C)
+                & v1_cat_5(C)
+                & l1_cat_1(C) )
+             => ( C = k15_cat_5(A,B)
+              <=> ( u1_cat_1(C) = k13_cat_5(A,B)
+                  & ! [D] :
+                      ( m2_subset_1(D,u2_cat_1(A),k13_cat_5(A,B))
+                     => ! [E] :
+                          ( m2_subset_1(E,u2_cat_1(A),k13_cat_5(A,B))
+                         => ! [F] :
+                              ( m1_subset_1(F,u2_cat_1(A))
+                             => ( ( k2_cat_1(A,F) = k3_cat_1(A,D)
+                                  & k4_cat_1(A,D,F) = E )
+                               => m1_subset_1(k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,D,E),F),u2_cat_1(C)) ) ) ) )
+                  & ! [D] :
+                      ( m1_subset_1(D,u2_cat_1(C))
+                     => ? [E] :
+                          ( m2_subset_1(E,u2_cat_1(A),k13_cat_5(A,B))
+                          & ? [F] :
+                              ( m2_subset_1(F,u2_cat_1(A),k13_cat_5(A,B))
+                              & ? [G] :
+                                  ( m1_subset_1(G,u2_cat_1(A))
+                                  & D = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,E,F),G)
+                                  & k2_cat_1(A,G) = k3_cat_1(A,E)
+                                  & k4_cat_1(A,E,G) = F ) ) ) )
+                  & ! [D] :
+                      ( m1_subset_1(D,u2_cat_1(C))
+                     => ! [E] :
+                          ( m1_subset_1(E,u2_cat_1(C))
+                         => ! [F] :
+                              ( m2_subset_1(F,u2_cat_1(A),k13_cat_5(A,B))
+                             => ! [G] :
+                                  ( m2_subset_1(G,u2_cat_1(A),k13_cat_5(A,B))
+                                 => ! [H] :
+                                      ( m2_subset_1(H,u2_cat_1(A),k13_cat_5(A,B))
+                                     => ! [I] :
+                                          ( m1_subset_1(I,u2_cat_1(A))
+                                         => ! [J] :
+                                              ( m1_subset_1(J,u2_cat_1(A))
+                                             => ( ( D = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,F,G),I)
+                                                  & E = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,G,H),J) )
+                                               => k4_cat_1(C,D,E) = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,F,H),k4_cat_1(A,I,J)) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t29_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,u2_cat_1(k14_cat_5(A,B)))
+             => ( C = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,k17_cat_5(A,B,C),k18_cat_5(A,B,C)),k16_cat_5(A,B,C))
+                & k2_cat_1(A,k18_cat_5(A,B,C)) = k3_cat_1(A,k16_cat_5(A,B,C))
+                & k17_cat_5(A,B,C) = k4_cat_1(A,k16_cat_5(A,B,C),k18_cat_5(A,B,C))
+                & k2_cat_1(k14_cat_5(A,B),C) = k17_cat_5(A,B,C)
+                & k3_cat_1(k14_cat_5(A,B),C) = k18_cat_5(A,B,C) ) ) ) ) ).
+
+fof(t30_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,u2_cat_1(A),k12_cat_5(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_cat_1(k14_cat_5(A,B)))
+                 => ( D = C
+                   => k10_cat_1(k14_cat_5(A,B),D) = k1_domain_1(u1_cat_1(k11_cat_2(k14_cat_5(A,B),k14_cat_5(A,B))),u2_cat_1(A),k12_cat_2(k14_cat_5(A,B),k14_cat_5(A,B),D,D),k10_cat_1(A,k2_cat_1(A,C))) ) ) ) ) ) ).
+
+fof(t31_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,u2_cat_1(k15_cat_5(A,B)))
+             => ( C = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,k20_cat_5(A,B,C),k21_cat_5(A,B,C)),k19_cat_5(A,B,C))
+                & k2_cat_1(A,k19_cat_5(A,B,C)) = k3_cat_1(A,k20_cat_5(A,B,C))
+                & k4_cat_1(A,k20_cat_5(A,B,C),k19_cat_5(A,B,C)) = k21_cat_5(A,B,C)
+                & k2_cat_1(k15_cat_5(A,B),C) = k20_cat_5(A,B,C)
+                & k3_cat_1(k15_cat_5(A,B),C) = k21_cat_5(A,B,C) ) ) ) ) ).
+
+fof(t32_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,u2_cat_1(A),k13_cat_5(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_cat_1(k15_cat_5(A,B)))
+                 => ( D = C
+                   => k10_cat_1(k15_cat_5(A,B),D) = k1_domain_1(u1_cat_1(k11_cat_2(k15_cat_5(A,B),k15_cat_5(A,B))),u2_cat_1(A),k12_cat_2(k15_cat_5(A,B),k15_cat_5(A,B),D,D),k10_cat_1(A,k3_cat_1(A,C))) ) ) ) ) ) ).
+
+fof(d13_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u2_cat_1(A))
+         => ! [C] :
+              ( m2_cat_1(C,k14_cat_5(A,k2_cat_1(A,B)),k14_cat_5(A,k3_cat_1(A,B)))
+             => ( C = k22_cat_5(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u2_cat_1(k14_cat_5(A,k2_cat_1(A,B))))
+                   => k8_funct_2(u2_cat_1(k14_cat_5(A,k2_cat_1(A,B))),u2_cat_1(k14_cat_5(A,k3_cat_1(A,B))),C,D) = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,k4_cat_1(A,k17_cat_5(A,k2_cat_1(A,B),D),B),k4_cat_1(A,k18_cat_5(A,k2_cat_1(A,B),D),B)),k16_cat_5(A,k2_cat_1(A,B),D)) ) ) ) ) ) ).
+
+fof(d14_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u2_cat_1(A))
+         => ! [C] :
+              ( m2_cat_1(C,k15_cat_5(A,k3_cat_1(A,B)),k15_cat_5(A,k2_cat_1(A,B)))
+             => ( C = k23_cat_5(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u2_cat_1(k15_cat_5(A,k3_cat_1(A,B))))
+                   => k8_funct_2(u2_cat_1(k15_cat_5(A,k3_cat_1(A,B))),u2_cat_1(k15_cat_5(A,k2_cat_1(A,B))),C,D) = k13_cat_2(k11_cat_2(A,A),A,k13_cat_2(A,A,k4_cat_1(A,B,k20_cat_5(A,k3_cat_1(A,B),D)),k4_cat_1(A,B,k21_cat_5(A,k3_cat_1(A,B),D))),k19_cat_5(A,k3_cat_1(A,B),D)) ) ) ) ) ) ).
+
+fof(t33_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u2_cat_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,u2_cat_1(A))
+             => ( k2_cat_1(A,C) = k3_cat_1(A,B)
+               => k22_cat_5(A,k4_cat_1(A,B,C)) = k1_partfun1(u2_cat_1(k14_cat_5(A,k2_cat_1(A,B))),u2_cat_1(k14_cat_5(A,k3_cat_1(A,B))),u2_cat_1(k14_cat_5(A,k2_cat_1(A,C))),u2_cat_1(k14_cat_5(A,k3_cat_1(A,C))),k22_cat_5(A,B),k22_cat_5(A,C)) ) ) ) ) ).
+
+fof(t34_cat_5,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u2_cat_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,u2_cat_1(A))
+             => ( k2_cat_1(A,C) = k3_cat_1(A,B)
+               => k23_cat_5(A,k4_cat_1(A,B,C)) = k1_partfun1(u2_cat_1(k15_cat_5(A,k3_cat_1(A,C))),u2_cat_1(k15_cat_5(A,k2_cat_1(A,C))),u2_cat_1(k15_cat_5(A,k3_cat_1(A,B))),u2_cat_1(k15_cat_5(A,k2_cat_1(A,B))),k23_cat_5(A,C),k23_cat_5(A,B)) ) ) ) ) ).
+
+fof(s1_cat_5,axiom,
+    ( ( ! [A] :
+          ( m1_subset_1(A,f1_s1_cat_5)
+         => ! [B] :
+              ( m1_subset_1(B,f1_s1_cat_5)
+             => ! [C] :
+                  ( m1_subset_1(C,f1_s1_cat_5)
+                 => ! [D] :
+                      ( m1_subset_1(D,f2_s1_cat_5)
+                     => ! [E] :
+                          ( m1_subset_1(E,f2_s1_cat_5)
+                         => ( ( p1_s1_cat_5(A,B,D)
+                              & p1_s1_cat_5(B,C,E) )
+                           => ( r2_hidden(f3_s1_cat_5(E,D),f2_s1_cat_5)
+                              & p1_s1_cat_5(A,C,f3_s1_cat_5(E,D)) ) ) ) ) ) ) )
+      & ! [A] :
+          ( m1_subset_1(A,f1_s1_cat_5)
+         => ? [B] :
+              ( m1_subset_1(B,f2_s1_cat_5)
+              & p1_s1_cat_5(A,A,B)
+              & ! [C] :
+                  ( m1_subset_1(C,f1_s1_cat_5)
+                 => ! [D] :
+                      ( m1_subset_1(D,f2_s1_cat_5)
+                     => ( ( p1_s1_cat_5(A,C,D)
+                         => f3_s1_cat_5(D,B) = D )
+                        & ( p1_s1_cat_5(C,A,D)
+                         => f3_s1_cat_5(B,D) = D ) ) ) ) ) )
+      & ! [A] :
+          ( m1_subset_1(A,f1_s1_cat_5)
+         => ! [B] :
+              ( m1_subset_1(B,f1_s1_cat_5)
+             => ! [C] :
+                  ( m1_subset_1(C,f1_s1_cat_5)
+                 => ! [D] :
+                      ( m1_subset_1(D,f1_s1_cat_5)
+                     => ! [E] :
+                          ( m1_subset_1(E,f2_s1_cat_5)
+                         => ! [F] :
+                              ( m1_subset_1(F,f2_s1_cat_5)
+                             => ! [G] :
+                                  ( m1_subset_1(G,f2_s1_cat_5)
+                                 => ( ( p1_s1_cat_5(A,B,E)
+                                      & p1_s1_cat_5(B,C,F)
+                                      & p1_s1_cat_5(C,D,G) )
+                                   => f3_s1_cat_5(G,f3_s1_cat_5(F,E)) = f3_s1_cat_5(f3_s1_cat_5(G,F),E) ) ) ) ) ) ) ) ) )
+   => ? [A] :
+        ( v1_cat_1(A)
+        & v2_cat_1(A)
+        & v1_cat_5(A)
+        & l1_cat_1(A)
+        & u1_cat_1(A) = f1_s1_cat_5
+        & ! [B] :
+            ( m1_subset_1(B,f1_s1_cat_5)
+           => ! [C] :
+                ( m1_subset_1(C,f1_s1_cat_5)
+               => ! [D] :
+                    ( m1_subset_1(D,f2_s1_cat_5)
+                   => ( p1_s1_cat_5(B,C,D)
+                     => m1_subset_1(k1_domain_1(k2_zfmisc_1(f1_s1_cat_5,f1_s1_cat_5),f2_s1_cat_5,k1_domain_1(f1_s1_cat_5,f1_s1_cat_5,B,C),D),u2_cat_1(A)) ) ) ) )
+        & ! [B] :
+            ( m1_subset_1(B,u2_cat_1(A))
+           => ? [C] :
+                ( m1_subset_1(C,f1_s1_cat_5)
+                & ? [D] :
+                    ( m1_subset_1(D,f1_s1_cat_5)
+                    & ? [E] :
+                        ( m1_subset_1(E,f2_s1_cat_5)
+                        & B = k1_domain_1(k2_zfmisc_1(f1_s1_cat_5,f1_s1_cat_5),f2_s1_cat_5,k1_domain_1(f1_s1_cat_5,f1_s1_cat_5,C,D),E)
+                        & p1_s1_cat_5(C,D,E) ) ) ) )
+        & ! [B] :
+            ( m1_subset_1(B,u2_cat_1(A))
+           => ! [C] :
+                ( m1_subset_1(C,u2_cat_1(A))
+               => ! [D] :
+                    ( m1_subset_1(D,f1_s1_cat_5)
+                   => ! [E] :
+                        ( m1_subset_1(E,f1_s1_cat_5)
+                       => ! [F] :
+                            ( m1_subset_1(F,f1_s1_cat_5)
+                           => ! [G] :
+                                ( m1_subset_1(G,f2_s1_cat_5)
+                               => ! [H] :
+                                    ( m1_subset_1(H,f2_s1_cat_5)
+                                   => ( ( B = k1_domain_1(k2_zfmisc_1(f1_s1_cat_5,f1_s1_cat_5),f2_s1_cat_5,k1_domain_1(f1_s1_cat_5,f1_s1_cat_5,D,E),G)
+                                        & C = k1_domain_1(k2_zfmisc_1(f1_s1_cat_5,f1_s1_cat_5),f2_s1_cat_5,k1_domain_1(f1_s1_cat_5,f1_s1_cat_5,E,F),H) )
+                                     => k4_cat_1(A,B,C) = k4_tarski(k1_domain_1(f1_s1_cat_5,f1_s1_cat_5,D,F),f3_s1_cat_5(H,G)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(s2_cat_5,axiom,
+    ( ! [A] :
+        ( m1_subset_1(A,f1_s2_cat_5)
+       => ? [B] :
+            ( m1_subset_1(B,f2_s2_cat_5)
+            & p1_s2_cat_5(A,A,B)
+            & ! [C] :
+                ( m1_subset_1(C,f1_s2_cat_5)
+               => ! [D] :
+                    ( m1_subset_1(D,f2_s2_cat_5)
+                   => ( ( p1_s2_cat_5(A,C,D)
+                       => f3_s2_cat_5(D,B) = D )
+                      & ( p1_s2_cat_5(C,A,D)
+                       => f3_s2_cat_5(B,D) = D ) ) ) ) ) )
+   => ! [A] :
+        ( ( v1_cat_1(A)
+          & v2_cat_1(A)
+          & v1_cat_5(A)
+          & l1_cat_1(A) )
+       => ! [B] :
+            ( ( v1_cat_1(B)
+              & v2_cat_1(B)
+              & v1_cat_5(B)
+              & l1_cat_1(B) )
+           => ( ( u1_cat_1(A) = f1_s2_cat_5
+                & ! [C] :
+                    ( m1_subset_1(C,f1_s2_cat_5)
+                   => ! [D] :
+                        ( m1_subset_1(D,f1_s2_cat_5)
+                       => ! [E] :
+                            ( m1_subset_1(E,f2_s2_cat_5)
+                           => ( p1_s2_cat_5(C,D,E)
+                             => m1_subset_1(k1_domain_1(k2_zfmisc_1(f1_s2_cat_5,f1_s2_cat_5),f2_s2_cat_5,k1_domain_1(f1_s2_cat_5,f1_s2_cat_5,C,D),E),u2_cat_1(A)) ) ) ) )
+                & ! [C] :
+                    ( m1_subset_1(C,u2_cat_1(A))
+                   => ? [D] :
+                        ( m1_subset_1(D,f1_s2_cat_5)
+                        & ? [E] :
+                            ( m1_subset_1(E,f1_s2_cat_5)
+                            & ? [F] :
+                                ( m1_subset_1(F,f2_s2_cat_5)
+                                & C = k1_domain_1(k2_zfmisc_1(f1_s2_cat_5,f1_s2_cat_5),f2_s2_cat_5,k1_domain_1(f1_s2_cat_5,f1_s2_cat_5,D,E),F)
+                                & p1_s2_cat_5(D,E,F) ) ) ) )
+                & ! [C] :
+                    ( m1_subset_1(C,u2_cat_1(A))
+                   => ! [D] :
+                        ( m1_subset_1(D,u2_cat_1(A))
+                       => ! [E] :
+                            ( m1_subset_1(E,f1_s2_cat_5)
+                           => ! [F] :
+                                ( m1_subset_1(F,f1_s2_cat_5)
+                               => ! [G] :
+                                    ( m1_subset_1(G,f1_s2_cat_5)
+                                   => ! [H] :
+                                        ( m1_subset_1(H,f2_s2_cat_5)
+                                       => ! [I] :
+                                            ( m1_subset_1(I,f2_s2_cat_5)
+                                           => ( ( C = k1_domain_1(k2_zfmisc_1(f1_s2_cat_5,f1_s2_cat_5),f2_s2_cat_5,k1_domain_1(f1_s2_cat_5,f1_s2_cat_5,E,F),H)
+                                                & D = k1_domain_1(k2_zfmisc_1(f1_s2_cat_5,f1_s2_cat_5),f2_s2_cat_5,k1_domain_1(f1_s2_cat_5,f1_s2_cat_5,F,G),I) )
+                                             => k4_cat_1(A,C,D) = k4_tarski(k1_domain_1(f1_s2_cat_5,f1_s2_cat_5,E,G),f3_s2_cat_5(I,H)) ) ) ) ) ) ) ) )
+                & u1_cat_1(B) = f1_s2_cat_5
+                & ! [C] :
+                    ( m1_subset_1(C,f1_s2_cat_5)
+                   => ! [D] :
+                        ( m1_subset_1(D,f1_s2_cat_5)
+                       => ! [E] :
+                            ( m1_subset_1(E,f2_s2_cat_5)
+                           => ( p1_s2_cat_5(C,D,E)
+                             => m1_subset_1(k1_domain_1(k2_zfmisc_1(f1_s2_cat_5,f1_s2_cat_5),f2_s2_cat_5,k1_domain_1(f1_s2_cat_5,f1_s2_cat_5,C,D),E),u2_cat_1(B)) ) ) ) )
+                & ! [C] :
+                    ( m1_subset_1(C,u2_cat_1(B))
+                   => ? [D] :
+                        ( m1_subset_1(D,f1_s2_cat_5)
+                        & ? [E] :
+                            ( m1_subset_1(E,f1_s2_cat_5)
+                            & ? [F] :
+                                ( m1_subset_1(F,f2_s2_cat_5)
+                                & C = k1_domain_1(k2_zfmisc_1(f1_s2_cat_5,f1_s2_cat_5),f2_s2_cat_5,k1_domain_1(f1_s2_cat_5,f1_s2_cat_5,D,E),F)
+                                & p1_s2_cat_5(D,E,F) ) ) ) )
+                & ! [C] :
+                    ( m1_subset_1(C,u2_cat_1(B))
+                   => ! [D] :
+                        ( m1_subset_1(D,u2_cat_1(B))
+                       => ! [E] :
+                            ( m1_subset_1(E,f1_s2_cat_5)
+                           => ! [F] :
+                                ( m1_subset_1(F,f1_s2_cat_5)
+                               => ! [G] :
+                                    ( m1_subset_1(G,f1_s2_cat_5)
+                                   => ! [H] :
+                                        ( m1_subset_1(H,f2_s2_cat_5)
+                                       => ! [I] :
+                                            ( m1_subset_1(I,f2_s2_cat_5)
+                                           => ( ( C = k1_domain_1(k2_zfmisc_1(f1_s2_cat_5,f1_s2_cat_5),f2_s2_cat_5,k1_domain_1(f1_s2_cat_5,f1_s2_cat_5,E,F),H)
+                                                & D = k1_domain_1(k2_zfmisc_1(f1_s2_cat_5,f1_s2_cat_5),f2_s2_cat_5,k1_domain_1(f1_s2_cat_5,f1_s2_cat_5,F,G),I) )
+                                             => k4_cat_1(B,C,D) = k4_tarski(k1_domain_1(f1_s2_cat_5,f1_s2_cat_5,E,G),f3_s2_cat_5(I,H)) ) ) ) ) ) ) ) ) )
+             => A = B ) ) ) ) ).
+
+fof(s3_cat_5,axiom,
+    ( ( ! [A] :
+          ( m1_subset_1(A,u2_cat_1(f1_s3_cat_5))
+         => ( m1_subset_1(f4_s3_cat_5(A),u2_cat_1(f2_s3_cat_5))
+            & ! [B] :
+                ( m1_subset_1(B,u2_cat_1(f2_s3_cat_5))
+               => ( B = f4_s3_cat_5(A)
+                 => ( k2_cat_1(f2_s3_cat_5,B) = f3_s3_cat_5(k2_cat_1(f1_s3_cat_5,A))
+                    & k3_cat_1(f2_s3_cat_5,B) = f3_s3_cat_5(k3_cat_1(f1_s3_cat_5,A)) ) ) ) ) )
+      & ! [A] :
+          ( m1_subset_1(A,u1_cat_1(f1_s3_cat_5))
+         => f4_s3_cat_5(k10_cat_1(f1_s3_cat_5,A)) = k10_cat_1(f2_s3_cat_5,f3_s3_cat_5(A)) )
+      & ! [A] :
+          ( m1_subset_1(A,u2_cat_1(f1_s3_cat_5))
+         => ! [B] :
+              ( m1_subset_1(B,u2_cat_1(f1_s3_cat_5))
+             => ! [C] :
+                  ( m1_subset_1(C,u2_cat_1(f2_s3_cat_5))
+                 => ! [D] :
+                      ( m1_subset_1(D,u2_cat_1(f2_s3_cat_5))
+                     => ( ( C = f4_s3_cat_5(A)
+                          & D = f4_s3_cat_5(B)
+                          & k2_cat_1(f1_s3_cat_5,B) = k3_cat_1(f1_s3_cat_5,A) )
+                       => f4_s3_cat_5(k4_cat_1(f1_s3_cat_5,A,B)) = k4_cat_1(f2_s3_cat_5,C,D) ) ) ) ) ) )
+   => ? [A] :
+        ( m2_cat_1(A,f1_s3_cat_5,f2_s3_cat_5)
+        & ! [B] :
+            ( m1_subset_1(B,u2_cat_1(f1_s3_cat_5))
+           => k8_funct_2(u2_cat_1(f1_s3_cat_5),u2_cat_1(f2_s3_cat_5),A,B) = f4_s3_cat_5(B) ) ) ) ).
+
+fof(dt_m1_cat_5,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_cat_5(A) )
+     => ! [B] :
+          ( m1_cat_5(B,A)
+         => ( v2_cat_1(B)
+            & l1_cat_1(B) ) ) ) ).
+
+fof(existence_m1_cat_5,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_cat_5(A) )
+     => ? [B] : m1_cat_5(B,A) ) ).
+
+fof(redefinition_m1_cat_5,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_cat_5(A) )
+     => ! [B] :
+          ( m1_cat_5(B,A)
+        <=> m1_subset_1(B,A) ) ) ).
+
+fof(dt_k1_cat_5,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(D,k2_zfmisc_1(k2_zfmisc_1(A,B),C)) )
+     => m1_subset_1(k1_cat_5(A,B,C,D),A) ) ).
+
+fof(redefinition_k1_cat_5,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(D,k2_zfmisc_1(k2_zfmisc_1(A,B),C)) )
+     => k1_cat_5(A,B,C,D) = k17_mcart_1(D) ) ).
+
+fof(dt_k2_cat_5,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(D,k2_zfmisc_1(k2_zfmisc_1(A,B),C)) )
+     => m1_subset_1(k2_cat_5(A,B,C,D),B) ) ).
+
+fof(redefinition_k2_cat_5,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(D,k2_zfmisc_1(k2_zfmisc_1(A,B),C)) )
+     => k2_cat_5(A,B,C,D) = k18_mcart_1(D) ) ).
+
+fof(dt_k3_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B)) )
+     => m1_subset_1(k3_cat_5(A,B,C),B) ) ).
+
+fof(redefinition_k3_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B)) )
+     => k3_cat_5(A,B,C) = k2_mcart_1(C) ) ).
+
+fof(dt_k4_cat_5,axiom,
+    ! [A,B] :
+      ( ( v1_cat_5(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => m1_subset_1(k4_cat_5(A,B),u1_cat_1(A)) ) ).
+
+fof(redefinition_k4_cat_5,axiom,
+    ! [A,B] :
+      ( ( v1_cat_5(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => k4_cat_5(A,B) = k17_mcart_1(B) ) ).
+
+fof(dt_k5_cat_5,axiom,
+    ! [A,B] :
+      ( ( v1_cat_5(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => m1_subset_1(k5_cat_5(A,B),u1_cat_1(A)) ) ).
+
+fof(redefinition_k5_cat_5,axiom,
+    ! [A,B] :
+      ( ( v1_cat_5(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => k5_cat_5(A,B) = k18_mcart_1(B) ) ).
+
+fof(dt_k6_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & v2_cat_1(B)
+        & l1_cat_1(B) )
+     => ( v1_cat_1(k6_cat_5(A,B))
+        & v2_cat_1(k6_cat_5(A,B))
+        & l1_cat_1(k6_cat_5(A,B)) ) ) ).
+
+fof(dt_k7_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & v2_cat_1(B)
+        & l1_cat_1(B)
+        & m2_cat_1(C,A,B) )
+     => ( v1_cat_1(k7_cat_5(A,B,C))
+        & m3_cat_2(k7_cat_5(A,B,C),B) ) ) ).
+
+fof(dt_k8_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => ( v2_cat_1(k8_cat_5(A,B))
+        & l1_cat_1(k8_cat_5(A,B)) ) ) ).
+
+fof(redefinition_k8_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => k8_cat_5(A,B) = k17_mcart_1(B) ) ).
+
+fof(dt_k9_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => ( v2_cat_1(k9_cat_5(A,B))
+        & l1_cat_1(k9_cat_5(A,B)) ) ) ).
+
+fof(redefinition_k9_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => k9_cat_5(A,B) = k18_mcart_1(B) ) ).
+
+fof(dt_k10_cat_5,axiom,
+    ! [A] :
+      ( v2_cat_1(k10_cat_5(A))
+      & l1_cat_1(k10_cat_5(A)) ) ).
+
+fof(dt_k11_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => m2_cat_1(k11_cat_5(A,B),k10_cat_5(k2_cat_1(A,B)),k10_cat_5(k3_cat_1(A,B))) ) ).
+
+fof(redefinition_k11_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & v3_cat_5(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => k11_cat_5(A,B) = k2_mcart_1(B) ) ).
+
+fof(dt_k12_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A)) )
+     => m1_subset_1(k12_cat_5(A,B),k1_zfmisc_1(u2_cat_1(A))) ) ).
+
+fof(dt_k13_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A)) )
+     => m1_subset_1(k13_cat_5(A,B),k1_zfmisc_1(u2_cat_1(A))) ) ).
+
+fof(dt_k14_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A)) )
+     => ( v1_cat_1(k14_cat_5(A,B))
+        & v2_cat_1(k14_cat_5(A,B))
+        & v1_cat_5(k14_cat_5(A,B))
+        & l1_cat_1(k14_cat_5(A,B)) ) ) ).
+
+fof(dt_k15_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A)) )
+     => ( v1_cat_1(k15_cat_5(A,B))
+        & v2_cat_1(k15_cat_5(A,B))
+        & v1_cat_5(k15_cat_5(A,B))
+        & l1_cat_1(k15_cat_5(A,B)) ) ) ).
+
+fof(dt_k16_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k14_cat_5(A,B))) )
+     => m1_subset_1(k16_cat_5(A,B,C),u2_cat_1(A)) ) ).
+
+fof(redefinition_k16_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k14_cat_5(A,B))) )
+     => k16_cat_5(A,B,C) = k2_mcart_1(C) ) ).
+
+fof(dt_k17_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k14_cat_5(A,B))) )
+     => m2_subset_1(k17_cat_5(A,B,C),u2_cat_1(A),k12_cat_5(A,B)) ) ).
+
+fof(redefinition_k17_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k14_cat_5(A,B))) )
+     => k17_cat_5(A,B,C) = k17_mcart_1(C) ) ).
+
+fof(dt_k18_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k14_cat_5(A,B))) )
+     => m2_subset_1(k18_cat_5(A,B,C),u2_cat_1(A),k12_cat_5(A,B)) ) ).
+
+fof(redefinition_k18_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k14_cat_5(A,B))) )
+     => k18_cat_5(A,B,C) = k18_mcart_1(C) ) ).
+
+fof(dt_k19_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k15_cat_5(A,B))) )
+     => m1_subset_1(k19_cat_5(A,B,C),u2_cat_1(A)) ) ).
+
+fof(redefinition_k19_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k15_cat_5(A,B))) )
+     => k19_cat_5(A,B,C) = k2_mcart_1(C) ) ).
+
+fof(dt_k20_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k15_cat_5(A,B))) )
+     => m2_subset_1(k20_cat_5(A,B,C),u2_cat_1(A),k13_cat_5(A,B)) ) ).
+
+fof(redefinition_k20_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k15_cat_5(A,B))) )
+     => k20_cat_5(A,B,C) = k17_mcart_1(C) ) ).
+
+fof(dt_k21_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k15_cat_5(A,B))) )
+     => m2_subset_1(k21_cat_5(A,B,C),u2_cat_1(A),k13_cat_5(A,B)) ) ).
+
+fof(redefinition_k21_cat_5,axiom,
+    ! [A,B,C] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u1_cat_1(A))
+        & m1_subset_1(C,u2_cat_1(k15_cat_5(A,B))) )
+     => k21_cat_5(A,B,C) = k18_mcart_1(C) ) ).
+
+fof(dt_k22_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => m2_cat_1(k22_cat_5(A,B),k14_cat_5(A,k2_cat_1(A,B)),k14_cat_5(A,k3_cat_1(A,B))) ) ).
+
+fof(dt_k23_cat_5,axiom,
+    ! [A,B] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A)
+        & m1_subset_1(B,u2_cat_1(A)) )
+     => m2_cat_1(k23_cat_5(A,B),k15_cat_5(A,k3_cat_1(A,B)),k15_cat_5(A,k2_cat_1(A,B))) ) ).
+
+%------------------------------------------------------------------------------

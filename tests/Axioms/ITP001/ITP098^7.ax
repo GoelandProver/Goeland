@@ -1,0 +1,1479 @@
+%------------------------------------------------------------------------------
+% File     : ITP098^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : enumeral.ax [Gau19]
+%          : HL4098^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  220 (  32 unt; 110 typ;   0 def)
+%            Number of atoms       :  454 ( 174 equ;   5 cnn)
+%            Maximal formula atoms :   16 (   2 avg)
+%            Number of connectives : 3686 (   5   ~;   9   |; 117   &;3474   @)
+%                                         (  24 <=>;  57  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   38 (  10 avg;3474 nst)
+%            Number of types       :    4 (   3 usr)
+%            Number of type conns  :  390 ( 390   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :  109 ( 107 usr;   8 con; 0-6 aty)
+%            Number of variables   :  817 (  44   ^ 663   !;  19   ?; 817   :)
+%                                         (  91  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Eenumeral_2Ebl,type,
+    tyop_2Eenumeral_2Ebl: $tType > $tType ).
+
+thf(tyop_2Eenumeral_2Ebt,type,
+    tyop_2Eenumeral_2Ebt: $tType > $tType ).
+
+thf(tyop_2Eind__type_2Erecspace,type,
+    tyop_2Eind__type_2Erecspace: $tType > $tType ).
+
+thf(tyop_2Elist_2Elist,type,
+    tyop_2Elist_2Elist: $tType > $tType ).
+
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Enum_2Enum,type,
+    tyop_2Enum_2Enum: $tType ).
+
+thf(tyop_2Eoption_2Eoption,type,
+    tyop_2Eoption_2Eoption: $tType > $tType ).
+
+thf(tyop_2Epair_2Eprod,type,
+    tyop_2Epair_2Eprod: $tType > $tType > $tType ).
+
+thf(tyop_2EternaryComparisons_2Eordering,type,
+    tyop_2EternaryComparisons_2Eordering: $tType ).
+
+thf(tyop_2Etoto_2Etoto,type,
+    tyop_2Etoto_2Etoto: $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Earithmetic_2E_2B,type,
+    c_2Earithmetic_2E_2B: tyop_2Enum_2Enum > tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Epair_2E_2C,type,
+    c_2Epair_2E_2C: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > A_27b > ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Enum_2E0,type,
+    c_2Enum_2E0: tyop_2Enum_2Enum ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Emin_2E_40,type,
+    c_2Emin_2E_40: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > A_27a ) ).
+
+thf(c_2Elist_2EAPPEND,type,
+    c_2Elist_2EAPPEND: 
+      !>[A_27a: $tType] : ( ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Ebool_2EARB,type,
+    c_2Ebool_2EARB: 
+      !>[A_27a: $tType] : A_27a ).
+
+thf(c_2Earithmetic_2EBIT1,type,
+    c_2Earithmetic_2EBIT1: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Earithmetic_2EBIT2,type,
+    c_2Earithmetic_2EBIT2: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Eenumeral_2EBL__ACCUM,type,
+    c_2Eenumeral_2EBL__ACCUM: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2EBL__CONS,type,
+    c_2Eenumeral_2EBL__CONS: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) ) ).
+
+thf(c_2Eind__type_2EBOTTOM,type,
+    c_2Eind__type_2EBOTTOM: 
+      !>[A_27a: $tType] : ( tyop_2Eind__type_2Erecspace @ A_27a ) ).
+
+thf(c_2Ebool_2ECOND,type,
+    c_2Ebool_2ECOND: 
+      !>[A_27a: $tType] : ( $o > A_27a > A_27a > A_27a ) ).
+
+thf(c_2Elist_2ECONS,type,
+    c_2Elist_2ECONS: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eind__type_2ECONSTR,type,
+    c_2Eind__type_2ECONSTR: 
+      !>[A_27a: $tType] : ( tyop_2Enum_2Enum > A_27a > ( tyop_2Enum_2Enum > ( tyop_2Eind__type_2Erecspace @ A_27a ) ) > ( tyop_2Eind__type_2Erecspace @ A_27a ) ) ).
+
+thf(c_2Ebool_2EDATATYPE,type,
+    c_2Ebool_2EDATATYPE: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Epred__set_2EDIFF,type,
+    c_2Epred__set_2EDIFF: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EEMPTY,type,
+    c_2Epred__set_2EEMPTY: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Eenumeral_2EENUMERAL,type,
+    c_2Eenumeral_2EENUMERAL: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > $o ) ).
+
+thf(c_2EternaryComparisons_2EEQUAL,type,
+    c_2EternaryComparisons_2EEQUAL: tyop_2EternaryComparisons_2Eordering ).
+
+thf(c_2Ebool_2EF,type,
+    c_2Ebool_2EF: $o ).
+
+thf(c_2Eind__type_2EFCONS,type,
+    c_2Eind__type_2EFCONS: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Enum_2Enum > A_27a ) > tyop_2Enum_2Enum > A_27a ) ).
+
+thf(c_2EternaryComparisons_2EGREATER,type,
+    c_2EternaryComparisons_2EGREATER: tyop_2EternaryComparisons_2Eordering ).
+
+thf(c_2Epred__set_2EGSPEC,type,
+    c_2Epred__set_2EGSPEC: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27b > ( tyop_2Epair_2Eprod @ A_27a @ $o ) ) > A_27a > $o ) ).
+
+thf(c_2Ecombin_2EI,type,
+    c_2Ecombin_2EI: 
+      !>[A_27a: $tType] : ( A_27a > A_27a ) ).
+
+thf(c_2Ebool_2EIN,type,
+    c_2Ebool_2EIN: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EINSERT,type,
+    c_2Epred__set_2EINSERT: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EINTER,type,
+    c_2Epred__set_2EINTER: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Eenumeral_2EK2,type,
+    c_2Eenumeral_2EK2: 
+      !>[A_27a: $tType] : ( A_27a > tyop_2Enum_2Enum ) ).
+
+thf(c_2EternaryComparisons_2ELESS,type,
+    c_2EternaryComparisons_2ELESS: tyop_2EternaryComparisons_2Eordering ).
+
+thf(c_2Eenumeral_2ELESS__ALL,type,
+    c_2Eenumeral_2ELESS__ALL: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > A_27a > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Elist_2ELIST__TO__SET,type,
+    c_2Elist_2ELIST__TO__SET: 
+      !>[A_27a: $tType] : ( ( tyop_2Elist_2Elist @ A_27a ) > A_27a > $o ) ).
+
+thf(c_2Elist_2ENIL,type,
+    c_2Elist_2ENIL: 
+      !>[A_27a: $tType] : ( tyop_2Elist_2Elist @ A_27a ) ).
+
+thf(c_2Eoption_2ENONE,type,
+    c_2Eoption_2ENONE: 
+      !>[A_27a: $tType] : ( tyop_2Eoption_2Eoption @ A_27a ) ).
+
+thf(c_2Earithmetic_2ENUMERAL,type,
+    c_2Earithmetic_2ENUMERAL: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Eenumeral_2EOL,type,
+    c_2Eenumeral_2EOL: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > $o ) ).
+
+thf(c_2Eenumeral_2EOL__bt,type,
+    c_2Eenumeral_2EOL__bt: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) > $o ) ).
+
+thf(c_2Eenumeral_2EOL__bt__lb,type,
+    c_2Eenumeral_2EOL__bt__lb: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > $o ) ).
+
+thf(c_2Eenumeral_2EOL__bt__lb__ub,type,
+    c_2Eenumeral_2EOL__bt__lb__ub: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > $o ) ).
+
+thf(c_2Eenumeral_2EOL__bt__ub,type,
+    c_2Eenumeral_2EOL__bt__ub: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > $o ) ).
+
+thf(c_2Eenumeral_2EOL__sublists,type,
+    c_2Eenumeral_2EOL__sublists: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > $o ) ).
+
+thf(c_2Eenumeral_2EOU,type,
+    c_2Eenumeral_2EOU: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Eenumeral_2EOWL,type,
+    c_2Eenumeral_2EOWL: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( A_27a > $o ) > ( tyop_2Elist_2Elist @ A_27a ) > $o ) ).
+
+thf(c_2Eoption_2ESOME,type,
+    c_2Eoption_2ESOME: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Eoption_2Eoption @ A_27a ) ) ).
+
+thf(c_2Enum_2ESUC,type,
+    c_2Enum_2ESUC: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2ET,type,
+    c_2Ebool_2ET: $o ).
+
+thf(c_2Ebool_2ETYPE__DEFINITION,type,
+    c_2Ebool_2ETYPE__DEFINITION: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > $o ) > ( A_27b > A_27a ) > $o ) ).
+
+thf(c_2Epred__set_2EUNION,type,
+    c_2Epred__set_2EUNION: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Eenumeral_2EUO,type,
+    c_2Eenumeral_2EUO: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Erelation_2EWF,type,
+    c_2Erelation_2EWF: 
+      !>[A_27a: $tType] : ( ( A_27a > A_27a > $o ) > $o ) ).
+
+thf(c_2Erelation_2EWFREC,type,
+    c_2Erelation_2EWFREC: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > A_27a > $o ) > ( ( A_27a > A_27b ) > A_27a > A_27b ) > A_27a > A_27b ) ).
+
+thf(c_2Earithmetic_2EZERO,type,
+    c_2Earithmetic_2EZERO: tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Etoto_2Eapto,type,
+    c_2Etoto_2Eapto: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > A_27a > A_27a > tyop_2EternaryComparisons_2Eordering ) ).
+
+thf(c_2Eenumeral_2Ebl__CASE,type,
+    c_2Eenumeral_2Ebl__CASE: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b > ( ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b ) > ( A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b ) > A_27b ) ).
+
+thf(c_2Eenumeral_2Ebl__rev,type,
+    c_2Eenumeral_2Ebl__rev: 
+      !>[A_27a: $tType] : ( ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebl__size,type,
+    c_2Eenumeral_2Ebl__size: 
+      !>[A_27a: $tType] : ( ( A_27a > tyop_2Enum_2Enum ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > tyop_2Enum_2Enum ) ).
+
+thf(c_2Eenumeral_2Ebl__to__bt,type,
+    c_2Eenumeral_2Ebl__to__bt: 
+      !>[A_27a: $tType] : ( ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebl__to__set,type,
+    c_2Eenumeral_2Ebl__to__set: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27a > $o ) ).
+
+thf(c_2Eenumeral_2Ebt__CASE,type,
+    c_2Eenumeral_2Ebt__CASE: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27b > ( ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27b ) > A_27b ) ).
+
+thf(c_2Eenumeral_2Ebt__rev,type,
+    c_2Eenumeral_2Ebt__rev: 
+      !>[A_27a: $tType] : ( ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__size,type,
+    c_2Eenumeral_2Ebt__size: 
+      !>[A_27a: $tType] : ( ( A_27a > tyop_2Enum_2Enum ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) > tyop_2Enum_2Enum ) ).
+
+thf(c_2Eenumeral_2Ebt__to__bl,type,
+    c_2Eenumeral_2Ebt__to__bl: 
+      !>[A_27a: $tType] : ( ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__list,type,
+    c_2Eenumeral_2Ebt__to__list: 
+      !>[A_27a: $tType] : ( ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__list__ac,type,
+    c_2Eenumeral_2Ebt__to__list__ac: 
+      !>[A_27a: $tType] : ( ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__ol,type,
+    c_2Eenumeral_2Ebt__to__ol: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__ol__ac,type,
+    c_2Eenumeral_2Ebt__to__ol__ac: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__ol__lb,type,
+    c_2Eenumeral_2Ebt__to__ol__lb: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__ol__lb__ac,type,
+    c_2Eenumeral_2Ebt__to__ol__lb__ac: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__ol__lb__ub,type,
+    c_2Eenumeral_2Ebt__to__ol__lb__ub: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__ol__lb__ub__ac,type,
+    c_2Eenumeral_2Ebt__to__ol__lb__ub__ac: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__ol__ub,type,
+    c_2Eenumeral_2Ebt__to__ol__ub: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__ol__ub__ac,type,
+    c_2Eenumeral_2Ebt__to__ol__ub__ac: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ebt__to__set__lb,type,
+    c_2Eenumeral_2Ebt__to__set__lb: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > $o ) ).
+
+thf(c_2Eenumeral_2Ebt__to__set__lb__ub,type,
+    c_2Eenumeral_2Ebt__to__set__lb__ub: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > A_27a > $o ) ).
+
+thf(c_2Eenumeral_2Ebt__to__set__ub,type,
+    c_2Eenumeral_2Ebt__to__set__ub: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > A_27a > $o ) ).
+
+thf(c_2Eenumeral_2Eincr__sbuild,type,
+    c_2Eenumeral_2Eincr__sbuild: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) ) ).
+
+thf(c_2Eenumeral_2Eincr__smerge,type,
+    c_2Eenumeral_2Eincr__smerge: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) ) ).
+
+thf(c_2Eenumeral_2Eincr__ssort,type,
+    c_2Eenumeral_2Eincr__ssort: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Elist_2Elist__CASE,type,
+    c_2Elist_2Elist__CASE: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Elist_2Elist @ A_27a ) > A_27b > ( A_27a > ( tyop_2Elist_2Elist @ A_27a ) > A_27b ) > A_27b ) ).
+
+thf(c_2Eenumeral_2Elist__to__bl,type,
+    c_2Eenumeral_2Elist__to__bl: 
+      !>[A_27a: $tType] : ( ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Elist__to__bt,type,
+    c_2Eenumeral_2Elist__to__bt: 
+      !>[A_27c: $tType] : ( ( tyop_2Elist_2Elist @ A_27c ) > ( tyop_2Eenumeral_2Ebt @ A_27c ) ) ).
+
+thf(c_2Eenumeral_2Elol__set,type,
+    c_2Eenumeral_2Elol__set: 
+      !>[A_27a: $tType] : ( ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > A_27a > $o ) ).
+
+thf(c_2Eenumeral_2Enbl,type,
+    c_2Eenumeral_2Enbl: 
+      !>[A_27a: $tType] : ( tyop_2Eenumeral_2Ebl @ A_27a ) ).
+
+thf(c_2Eenumeral_2Enode,type,
+    c_2Eenumeral_2Enode: 
+      !>[A_27a: $tType] : ( ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ent,type,
+    c_2Eenumeral_2Ent: 
+      !>[A_27a: $tType] : ( tyop_2Eenumeral_2Ebt @ A_27a ) ).
+
+thf(c_2Eenumeral_2Eonebl,type,
+    c_2Eenumeral_2Eonebl: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) ) ).
+
+thf(c_2Eoption_2Eoption__CASE,type,
+    c_2Eoption_2Eoption__CASE: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Eoption_2Eoption @ A_27a ) > A_27b > ( A_27a > A_27b ) > A_27b ) ).
+
+thf(c_2EternaryComparisons_2Eordering__CASE,type,
+    c_2EternaryComparisons_2Eordering__CASE: 
+      !>[A_27a: $tType] : ( tyop_2EternaryComparisons_2Eordering > A_27a > A_27a > A_27a > A_27a ) ).
+
+thf(c_2Eenumeral_2Esdiff,type,
+    c_2Eenumeral_2Esdiff: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Esinter,type,
+    c_2Eenumeral_2Esinter: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Esmerge,type,
+    c_2Eenumeral_2Esmerge: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Esmerge__out,type,
+    c_2Eenumeral_2Esmerge__out: 
+      !>[A_27a: $tType] : ( ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Eenumeral_2Ezerbl,type,
+    c_2Eenumeral_2Ezerbl: 
+      !>[A_27a: $tType] : ( ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) ) ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__TY__DEF,axiom,
+    ! [A_27a: $tType] :
+    ? [V0rep: ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) )] :
+      ( c_2Ebool_2ETYPE__DEFINITION @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) @ ( tyop_2Eenumeral_2Ebl @ A_27a )
+      @ ^ [V1a0_27: tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) )] :
+          ( c_2Ebool_2E_21 @ ( ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) > $o )
+          @ ^ [V2_27bl_27: ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) > $o] :
+              ( c_2Emin_2E_3D_3D_3E
+              @ ( c_2Ebool_2E_21 @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) )
+                @ ^ [V3a0_27: tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) )] :
+                    ( c_2Emin_2E_3D_3D_3E
+                    @ ( c_2Ebool_2E_5C_2F
+                      @ ( c_2Emin_2E_3D @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) @ V3a0_27
+                        @ ( c_2Eind__type_2ECONSTR @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) @ c_2Enum_2E0 @ ( c_2Epair_2E_2C @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) @ ( c_2Ebool_2EARB @ A_27a ) @ ( c_2Ebool_2EARB @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) )
+                          @ ^ [V4n: tyop_2Enum_2Enum] : ( c_2Eind__type_2EBOTTOM @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) ) )
+                      @ ( c_2Ebool_2E_5C_2F
+                        @ ( c_2Ebool_2E_3F @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) )
+                          @ ^ [V5a: tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) )] :
+                              ( c_2Ebool_2E_2F_5C
+                              @ ( c_2Emin_2E_3D @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) @ V3a0_27
+                                @ ( ^ [V6a: tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) )] :
+                                      ( c_2Eind__type_2ECONSTR @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) @ ( c_2Enum_2ESUC @ c_2Enum_2E0 ) @ ( c_2Epair_2E_2C @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) @ ( c_2Ebool_2EARB @ A_27a ) @ ( c_2Ebool_2EARB @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) )
+                                      @ ( c_2Eind__type_2EFCONS @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) @ V6a
+                                        @ ^ [V7n: tyop_2Enum_2Enum] : ( c_2Eind__type_2EBOTTOM @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) ) )
+                                  @ V5a ) )
+                              @ ( V2_27bl_27 @ V5a ) ) )
+                        @ ( c_2Ebool_2E_3F @ A_27a
+                          @ ^ [V8a0: A_27a] :
+                              ( c_2Ebool_2E_3F @ ( tyop_2Eenumeral_2Ebt @ A_27a )
+                              @ ^ [V9a1: tyop_2Eenumeral_2Ebt @ A_27a] :
+                                  ( c_2Ebool_2E_3F @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) )
+                                  @ ^ [V10a2: tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) )] :
+                                      ( c_2Ebool_2E_2F_5C
+                                      @ ( c_2Emin_2E_3D @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) @ V3a0_27
+                                        @ ( ^ [V11a0: A_27a,V12a1: tyop_2Eenumeral_2Ebt @ A_27a,V13a2: tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) )] :
+                                              ( c_2Eind__type_2ECONSTR @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) @ ( c_2Enum_2ESUC @ ( c_2Enum_2ESUC @ c_2Enum_2E0 ) ) @ ( c_2Epair_2E_2C @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) @ V11a0 @ V12a1 )
+                                              @ ( c_2Eind__type_2EFCONS @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) @ V13a2
+                                                @ ^ [V14n: tyop_2Enum_2Enum] : ( c_2Eind__type_2EBOTTOM @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Eenumeral_2Ebt @ A_27a ) ) ) ) )
+                                          @ V8a0
+                                          @ V9a1
+                                          @ V10a2 ) )
+                                      @ ( V2_27bl_27 @ V10a2 ) ) ) ) ) ) )
+                    @ ( V2_27bl_27 @ V3a0_27 ) ) )
+              @ ( V2_27bl_27 @ V1a0_27 ) ) )
+      @ V0rep ) ).
+
+thf(thm_2Eenumeral_2Ebl__case__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ! [V0v: A_27b,V1f: ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b,V2f1: A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b] :
+          ( ( c_2Eenumeral_2Ebl__CASE @ A_27a @ A_27b @ ( c_2Eenumeral_2Enbl @ A_27a ) @ V0v @ V1f @ V2f1 )
+          = V0v )
+      & ! [V3a: tyop_2Eenumeral_2Ebl @ A_27a,V4v: A_27b,V5f: ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b,V6f1: A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b] :
+          ( ( c_2Eenumeral_2Ebl__CASE @ A_27a @ A_27b @ ( c_2Eenumeral_2Ezerbl @ A_27a @ V3a ) @ V4v @ V5f @ V6f1 )
+          = ( V5f @ V3a ) )
+      & ! [V7a0: A_27a,V8a1: tyop_2Eenumeral_2Ebt @ A_27a,V9a2: tyop_2Eenumeral_2Ebl @ A_27a,V10v: A_27b,V11f: ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b,V12f1: A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b] :
+          ( ( c_2Eenumeral_2Ebl__CASE @ A_27a @ A_27b @ ( c_2Eenumeral_2Eonebl @ A_27a @ V7a0 @ V8a1 @ V9a2 ) @ V10v @ V11f @ V12f1 )
+          = ( V12f1 @ V7a0 @ V8a1 @ V9a2 ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__size__def,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0f: A_27a > tyop_2Enum_2Enum] :
+          ( ( c_2Eenumeral_2Ebl__size @ A_27a @ V0f @ ( c_2Eenumeral_2Enbl @ A_27a ) )
+          = c_2Enum_2E0 )
+      & ! [V1f: A_27a > tyop_2Enum_2Enum,V2a: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( c_2Eenumeral_2Ebl__size @ A_27a @ V1f @ ( c_2Eenumeral_2Ezerbl @ A_27a @ V2a ) )
+          = ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ ( c_2Eenumeral_2Ebl__size @ A_27a @ V1f @ V2a ) ) )
+      & ! [V3f: A_27a > tyop_2Enum_2Enum,V4a0: A_27a,V5a1: tyop_2Eenumeral_2Ebt @ A_27a,V6a2: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( c_2Eenumeral_2Ebl__size @ A_27a @ V3f @ ( c_2Eenumeral_2Eonebl @ A_27a @ V4a0 @ V5a1 @ V6a2 ) )
+          = ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ ( c_2Earithmetic_2E_2B @ ( V3f @ V4a0 ) @ ( c_2Earithmetic_2E_2B @ ( c_2Eenumeral_2Ebt__size @ A_27a @ V3f @ V5a1 ) @ ( c_2Eenumeral_2Ebl__size @ A_27a @ V3f @ V6a2 ) ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__TY__DEF,axiom,
+    ! [A_27a: $tType] :
+    ? [V0rep: ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eind__type_2Erecspace @ A_27a )] :
+      ( c_2Ebool_2ETYPE__DEFINITION @ ( tyop_2Eind__type_2Erecspace @ A_27a ) @ ( tyop_2Eenumeral_2Ebt @ A_27a )
+      @ ^ [V1a0_27: tyop_2Eind__type_2Erecspace @ A_27a] :
+          ( c_2Ebool_2E_21 @ ( ( tyop_2Eind__type_2Erecspace @ A_27a ) > $o )
+          @ ^ [V2_27bt_27: ( tyop_2Eind__type_2Erecspace @ A_27a ) > $o] :
+              ( c_2Emin_2E_3D_3D_3E
+              @ ( c_2Ebool_2E_21 @ ( tyop_2Eind__type_2Erecspace @ A_27a )
+                @ ^ [V3a0_27: tyop_2Eind__type_2Erecspace @ A_27a] :
+                    ( c_2Emin_2E_3D_3D_3E
+                    @ ( c_2Ebool_2E_5C_2F
+                      @ ( c_2Emin_2E_3D @ ( tyop_2Eind__type_2Erecspace @ A_27a ) @ V3a0_27
+                        @ ( c_2Eind__type_2ECONSTR @ A_27a @ c_2Enum_2E0 @ ( c_2Ebool_2EARB @ A_27a )
+                          @ ^ [V4n: tyop_2Enum_2Enum] : ( c_2Eind__type_2EBOTTOM @ A_27a ) ) )
+                      @ ( c_2Ebool_2E_3F @ ( tyop_2Eind__type_2Erecspace @ A_27a )
+                        @ ^ [V5a0: tyop_2Eind__type_2Erecspace @ A_27a] :
+                            ( c_2Ebool_2E_3F @ A_27a
+                            @ ^ [V6a1: A_27a] :
+                                ( c_2Ebool_2E_3F @ ( tyop_2Eind__type_2Erecspace @ A_27a )
+                                @ ^ [V7a2: tyop_2Eind__type_2Erecspace @ A_27a] :
+                                    ( c_2Ebool_2E_2F_5C
+                                    @ ( c_2Emin_2E_3D @ ( tyop_2Eind__type_2Erecspace @ A_27a ) @ V3a0_27
+                                      @ ( ^ [V8a0: tyop_2Eind__type_2Erecspace @ A_27a,V9a1: A_27a,V10a2: tyop_2Eind__type_2Erecspace @ A_27a] :
+                                            ( c_2Eind__type_2ECONSTR @ A_27a @ ( c_2Enum_2ESUC @ c_2Enum_2E0 ) @ V9a1
+                                            @ ( c_2Eind__type_2EFCONS @ ( tyop_2Eind__type_2Erecspace @ A_27a ) @ V8a0
+                                              @ ( c_2Eind__type_2EFCONS @ ( tyop_2Eind__type_2Erecspace @ A_27a ) @ V10a2
+                                                @ ^ [V11n: tyop_2Enum_2Enum] : ( c_2Eind__type_2EBOTTOM @ A_27a ) ) ) )
+                                        @ V5a0
+                                        @ V6a1
+                                        @ V7a2 ) )
+                                    @ ( c_2Ebool_2E_2F_5C @ ( V2_27bt_27 @ V5a0 ) @ ( V2_27bt_27 @ V7a2 ) ) ) ) ) ) )
+                    @ ( V2_27bt_27 @ V3a0_27 ) ) )
+              @ ( V2_27bt_27 @ V1a0_27 ) ) )
+      @ V0rep ) ).
+
+thf(thm_2Eenumeral_2Ebt__size__def,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0f: A_27a > tyop_2Enum_2Enum] :
+          ( ( c_2Eenumeral_2Ebt__size @ A_27a @ V0f @ ( c_2Eenumeral_2Ent @ A_27a ) )
+          = c_2Enum_2E0 )
+      & ! [V1f: A_27a > tyop_2Enum_2Enum,V2a0: tyop_2Eenumeral_2Ebt @ A_27a,V3a1: A_27a,V4a2: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__size @ A_27a @ V1f @ ( c_2Eenumeral_2Enode @ A_27a @ V2a0 @ V3a1 @ V4a2 ) )
+          = ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ ( c_2Earithmetic_2E_2B @ ( c_2Eenumeral_2Ebt__size @ A_27a @ V1f @ V2a0 ) @ ( c_2Earithmetic_2E_2B @ ( V1f @ V3a1 ) @ ( c_2Eenumeral_2Ebt__size @ A_27a @ V1f @ V4a2 ) ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EBL__ACCUM,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0a: A_27a,V1ac: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( ( c_2Eenumeral_2EBL__ACCUM @ A_27a @ V0a @ V1ac @ ( c_2Eenumeral_2Enbl @ A_27a ) )
+          = ( c_2Eenumeral_2Eonebl @ A_27a @ V0a @ V1ac @ ( c_2Eenumeral_2Enbl @ A_27a ) ) )
+      & ! [V2a: A_27a,V3ac: tyop_2Eenumeral_2Ebt @ A_27a,V4bl: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( c_2Eenumeral_2EBL__ACCUM @ A_27a @ V2a @ V3ac @ ( c_2Eenumeral_2Ezerbl @ A_27a @ V4bl ) )
+          = ( c_2Eenumeral_2Eonebl @ A_27a @ V2a @ V3ac @ V4bl ) )
+      & ! [V5a: A_27a,V6ac: tyop_2Eenumeral_2Ebt @ A_27a,V7r: A_27a,V8rft: tyop_2Eenumeral_2Ebt @ A_27a,V9bl: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( c_2Eenumeral_2EBL__ACCUM @ A_27a @ V5a @ V6ac @ ( c_2Eenumeral_2Eonebl @ A_27a @ V7r @ V8rft @ V9bl ) )
+          = ( c_2Eenumeral_2Ezerbl @ A_27a @ ( c_2Eenumeral_2EBL__ACCUM @ A_27a @ V5a @ ( c_2Eenumeral_2Enode @ A_27a @ V6ac @ V7r @ V8rft ) @ V9bl ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EBL__CONS,axiom,
+    ! [A_27a: $tType,V0a: A_27a,V1bl: tyop_2Eenumeral_2Ebl @ A_27a] :
+      ( ( c_2Eenumeral_2EBL__CONS @ A_27a @ V0a @ V1bl )
+      = ( c_2Eenumeral_2EBL__ACCUM @ A_27a @ V0a @ ( c_2Eenumeral_2Ent @ A_27a ) @ V1bl ) ) ).
+
+thf(thm_2Eenumeral_2Elist__to__bl,axiom,
+    ! [A_27a: $tType] :
+      ( ( ( c_2Eenumeral_2Elist__to__bl @ A_27a @ ( c_2Elist_2ENIL @ A_27a ) )
+        = ( c_2Eenumeral_2Enbl @ A_27a ) )
+      & ! [V0a: A_27a,V1l: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Elist__to__bl @ A_27a @ ( c_2Elist_2ECONS @ A_27a @ V0a @ V1l ) )
+          = ( c_2Eenumeral_2EBL__CONS @ A_27a @ V0a @ ( c_2Eenumeral_2Elist__to__bl @ A_27a @ V1l ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__list,axiom,
+    ! [A_27a: $tType] :
+      ( ( ( c_2Eenumeral_2Ebt__to__list @ A_27a @ ( c_2Eenumeral_2Ent @ A_27a ) )
+        = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V0l: tyop_2Eenumeral_2Ebt @ A_27a,V1x: A_27a,V2r: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__list @ A_27a @ ( c_2Eenumeral_2Enode @ A_27a @ V0l @ V1x @ V2r ) )
+          = ( c_2Elist_2EAPPEND @ A_27a @ ( c_2Elist_2EAPPEND @ A_27a @ ( c_2Eenumeral_2Ebt__to__list @ A_27a @ V0l ) @ ( c_2Elist_2ECONS @ A_27a @ V1x @ ( c_2Elist_2ENIL @ A_27a ) ) ) @ ( c_2Eenumeral_2Ebt__to__list @ A_27a @ V2r ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__list__ac,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__list__ac @ A_27a @ ( c_2Eenumeral_2Ent @ A_27a ) @ V0m )
+          = V0m )
+      & ! [V1l: tyop_2Eenumeral_2Ebt @ A_27a,V2x: A_27a,V3r: tyop_2Eenumeral_2Ebt @ A_27a,V4m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__list__ac @ A_27a @ ( c_2Eenumeral_2Enode @ A_27a @ V1l @ V2x @ V3r ) @ V4m )
+          = ( c_2Eenumeral_2Ebt__to__list__ac @ A_27a @ V1l @ ( c_2Elist_2ECONS @ A_27a @ V2x @ ( c_2Eenumeral_2Ebt__to__list__ac @ A_27a @ V3r @ V4m ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__rev,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0bl: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__rev @ A_27a @ ( c_2Eenumeral_2Ent @ A_27a ) @ V0bl )
+          = V0bl )
+      & ! [V1lft: tyop_2Eenumeral_2Ebt @ A_27a,V2r: A_27a,V3rft: tyop_2Eenumeral_2Ebt @ A_27a,V4bl: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__rev @ A_27a @ ( c_2Eenumeral_2Enode @ A_27a @ V1lft @ V2r @ V3rft ) @ V4bl )
+          = ( c_2Eenumeral_2Ebt__rev @ A_27a @ V1lft @ ( c_2Eenumeral_2Eonebl @ A_27a @ V2r @ V3rft @ V4bl ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EK2,axiom,
+    ! [A_27a: $tType,V0a: A_27a] :
+      ( ( c_2Eenumeral_2EK2 @ A_27a @ V0a )
+      = ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__rev,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0ft: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( ( c_2Eenumeral_2Ebl__rev @ A_27a @ V0ft @ ( c_2Eenumeral_2Enbl @ A_27a ) )
+          = V0ft )
+      & ! [V1ft: tyop_2Eenumeral_2Ebt @ A_27a,V2b: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( c_2Eenumeral_2Ebl__rev @ A_27a @ V1ft @ ( c_2Eenumeral_2Ezerbl @ A_27a @ V2b ) )
+          = ( c_2Eenumeral_2Ebl__rev @ A_27a @ V1ft @ V2b ) )
+      & ! [V3ft: tyop_2Eenumeral_2Ebt @ A_27a,V4a: A_27a,V5f: tyop_2Eenumeral_2Ebt @ A_27a,V6b: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( c_2Eenumeral_2Ebl__rev @ A_27a @ V3ft @ ( c_2Eenumeral_2Eonebl @ A_27a @ V4a @ V5f @ V6b ) )
+          = ( c_2Eenumeral_2Ebl__rev @ A_27a @ ( c_2Eenumeral_2Enode @ A_27a @ V3ft @ V4a @ V5f ) @ V6b ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__to__bt,axiom,
+    ! [A_27a: $tType] :
+      ( ( c_2Eenumeral_2Ebl__to__bt @ A_27a )
+      = ( c_2Eenumeral_2Ebl__rev @ A_27a @ ( c_2Eenumeral_2Ent @ A_27a ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__bl,axiom,
+    ! [A_27a: $tType,V0t: tyop_2Eenumeral_2Ebt @ A_27a] :
+      ( ( c_2Eenumeral_2Ebt__to__bl @ A_27a @ V0t )
+      = ( c_2Eenumeral_2Ebt__rev @ A_27a @ V0t @ ( c_2Eenumeral_2Enbl @ A_27a ) ) ) ).
+
+thf(thm_2Eenumeral_2Elist__to__bt,axiom,
+    ! [A_27c: $tType,V0l: tyop_2Elist_2Elist @ A_27c] :
+      ( ( c_2Eenumeral_2Elist__to__bt @ A_27c @ V0l )
+      = ( c_2Eenumeral_2Ebl__to__bt @ A_27c @ ( c_2Eenumeral_2Elist__to__bl @ A_27c @ V0l ) ) ) ).
+
+thf(thm_2Eenumeral_2EOL,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ ( c_2Elist_2ENIL @ A_27a ) )
+          = c_2Ebool_2ET )
+      & ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a,V2a: A_27a,V3l: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2EOL @ A_27a @ V1cmp @ ( c_2Elist_2ECONS @ A_27a @ V2a @ V3l ) )
+        <=> ( ( c_2Eenumeral_2EOL @ A_27a @ V1cmp @ V3l )
+            & ! [V4p: A_27a] :
+                ( ( c_2Ebool_2EIN @ A_27a @ V4p @ ( c_2Elist_2ELIST__TO__SET @ A_27a @ V3l ) )
+               => ( ( c_2Etoto_2Eapto @ A_27a @ V1cmp @ V2a @ V4p )
+                  = c_2EternaryComparisons_2ELESS ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Elol__set__primitive,axiom,
+    ! [A_27a: $tType] :
+      ( ( c_2Eenumeral_2Elol__set @ A_27a )
+      = ( c_2Erelation_2EWFREC @ ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) @ ( A_27a > $o )
+        @ ( c_2Emin_2E_40 @ ( ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > $o )
+          @ ^ [V0R: ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > $o] :
+              ( c_2Ebool_2E_2F_5C @ ( c_2Erelation_2EWF @ ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) @ V0R )
+              @ ( c_2Ebool_2E_2F_5C
+                @ ( c_2Ebool_2E_21 @ ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) )
+                  @ ^ [V1lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] : ( V0R @ V1lol @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Elist_2Elist @ A_27a ) ) @ V1lol ) ) )
+                @ ( c_2Ebool_2E_21 @ ( tyop_2Elist_2Elist @ A_27a )
+                  @ ^ [V2m: tyop_2Elist_2Elist @ A_27a] :
+                      ( c_2Ebool_2E_21 @ ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) )
+                      @ ^ [V3lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] : ( V0R @ V3lol @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V2m ) @ V3lol ) ) ) ) ) ) )
+        @ ^ [V4lol__set: ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > A_27a > $o,V5a: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+            ( c_2Elist_2Elist__CASE @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( A_27a > $o ) @ V5a @ ( c_2Ecombin_2EI @ ( A_27a > $o ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) )
+            @ ^ [V6v: tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ),V7lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+                ( c_2Eoption_2Eoption__CASE @ ( tyop_2Elist_2Elist @ A_27a ) @ ( A_27a > $o ) @ V6v @ ( c_2Ecombin_2EI @ ( A_27a > $o ) @ ( V4lol__set @ V7lol ) )
+                @ ^ [V8m: tyop_2Elist_2Elist @ A_27a] : ( c_2Ecombin_2EI @ ( A_27a > $o ) @ ( c_2Epred__set_2EUNION @ A_27a @ ( c_2Elist_2ELIST__TO__SET @ A_27a @ V8m ) @ ( V4lol__set @ V7lol ) ) ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Eincr__sbuild,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Eincr__sbuild @ A_27a @ V0cmp @ ( c_2Elist_2ENIL @ A_27a ) )
+          = ( c_2Elist_2ENIL @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) )
+      & ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a,V2x: A_27a,V3l: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Eincr__sbuild @ A_27a @ V1cmp @ ( c_2Elist_2ECONS @ A_27a @ V2x @ V3l ) )
+          = ( c_2Eenumeral_2Eincr__smerge @ A_27a @ V1cmp @ ( c_2Elist_2ECONS @ A_27a @ V2x @ ( c_2Elist_2ENIL @ A_27a ) ) @ ( c_2Eenumeral_2Eincr__sbuild @ A_27a @ V1cmp @ V3l ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Eincr__ssort,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1l: tyop_2Elist_2Elist @ A_27a] :
+      ( ( c_2Eenumeral_2Eincr__ssort @ A_27a @ V0cmp @ V1l )
+      = ( c_2Eenumeral_2Esmerge__out @ A_27a @ V0cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Eenumeral_2Eincr__sbuild @ A_27a @ V0cmp @ V1l ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__set,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ent @ A_27a ) )
+          = ( c_2Epred__set_2EEMPTY @ A_27a ) )
+      & ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a,V2l: tyop_2Eenumeral_2Ebt @ A_27a,V3x: A_27a,V4r: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( ( c_2Eenumeral_2EENUMERAL @ A_27a @ V1cmp @ ( c_2Eenumeral_2Enode @ A_27a @ V2l @ V3x @ V4r ) )
+          = ( c_2Epred__set_2EUNION @ A_27a
+            @ ( c_2Epred__set_2EUNION @ A_27a
+              @ ( c_2Epred__set_2EGSPEC @ A_27a @ A_27a
+                @ ^ [V5y: A_27a] : ( c_2Epair_2E_2C @ A_27a @ $o @ V5y @ ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2EIN @ A_27a @ V5y @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V1cmp @ V2l ) ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V1cmp @ V5y @ V3x ) @ c_2EternaryComparisons_2ELESS ) ) ) )
+              @ ( c_2Epred__set_2EINSERT @ A_27a @ V3x @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) )
+            @ ( c_2Epred__set_2EGSPEC @ A_27a @ A_27a
+              @ ^ [V6z: A_27a] : ( c_2Epair_2E_2C @ A_27a @ $o @ V6z @ ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2EIN @ A_27a @ V6z @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V1cmp @ V4r ) ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V1cmp @ V3x @ V6z ) @ c_2EternaryComparisons_2ELESS ) ) ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__set__lb,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1lb: A_27a,V2t: tyop_2Eenumeral_2Ebt @ A_27a] :
+      ( ( c_2Eenumeral_2Ebt__to__set__lb @ A_27a @ V0cmp @ V1lb @ V2t )
+      = ( c_2Epred__set_2EGSPEC @ A_27a @ A_27a
+        @ ^ [V3x: A_27a] : ( c_2Epair_2E_2C @ A_27a @ $o @ V3x @ ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2EIN @ A_27a @ V3x @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ V2t ) ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V1lb @ V3x ) @ c_2EternaryComparisons_2ELESS ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__set__ub,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1t: tyop_2Eenumeral_2Ebt @ A_27a,V2ub: A_27a] :
+      ( ( c_2Eenumeral_2Ebt__to__set__ub @ A_27a @ V0cmp @ V1t @ V2ub )
+      = ( c_2Epred__set_2EGSPEC @ A_27a @ A_27a
+        @ ^ [V3x: A_27a] : ( c_2Epair_2E_2C @ A_27a @ $o @ V3x @ ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2EIN @ A_27a @ V3x @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ V1t ) ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V3x @ V2ub ) @ c_2EternaryComparisons_2ELESS ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__set__lb__ub,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1lb: A_27a,V2t: tyop_2Eenumeral_2Ebt @ A_27a,V3ub: A_27a] :
+      ( ( c_2Eenumeral_2Ebt__to__set__lb__ub @ A_27a @ V0cmp @ V1lb @ V2t @ V3ub )
+      = ( c_2Epred__set_2EGSPEC @ A_27a @ A_27a
+        @ ^ [V4x: A_27a] : ( c_2Epair_2E_2C @ A_27a @ $o @ V4x @ ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2EIN @ A_27a @ V4x @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ V2t ) ) @ ( c_2Ebool_2E_2F_5C @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V1lb @ V4x ) @ c_2EternaryComparisons_2ELESS ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V4x @ V3ub ) @ c_2EternaryComparisons_2ELESS ) ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__ol__lb__ub,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1lb: A_27a,V2ub: A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__lb__ub @ A_27a @ V0cmp @ V1lb @ ( c_2Eenumeral_2Ent @ A_27a ) @ V2ub )
+          = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V3cmp: tyop_2Etoto_2Etoto @ A_27a,V4lb: A_27a,V5l: tyop_2Eenumeral_2Ebt @ A_27a,V6x: A_27a,V7r: tyop_2Eenumeral_2Ebt @ A_27a,V8ub: A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__lb__ub @ A_27a @ V3cmp @ V4lb @ ( c_2Eenumeral_2Enode @ A_27a @ V5l @ V6x @ V7r ) @ V8ub )
+          = ( c_2Ebool_2ECOND @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V3cmp @ V4lb @ V6x ) @ c_2EternaryComparisons_2ELESS ) @ ( c_2Ebool_2ECOND @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V3cmp @ V6x @ V8ub ) @ c_2EternaryComparisons_2ELESS ) @ ( c_2Elist_2EAPPEND @ A_27a @ ( c_2Elist_2EAPPEND @ A_27a @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub @ A_27a @ V3cmp @ V4lb @ V5l @ V6x ) @ ( c_2Elist_2ECONS @ A_27a @ V6x @ ( c_2Elist_2ENIL @ A_27a ) ) ) @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub @ A_27a @ V3cmp @ V6x @ V7r @ V8ub ) ) @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub @ A_27a @ V3cmp @ V4lb @ V5l @ V8ub ) ) @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub @ A_27a @ V3cmp @ V4lb @ V7r @ V8ub ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__ol__lb,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1lb: A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__lb @ A_27a @ V0cmp @ V1lb @ ( c_2Eenumeral_2Ent @ A_27a ) )
+          = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V2cmp: tyop_2Etoto_2Etoto @ A_27a,V3lb: A_27a,V4l: tyop_2Eenumeral_2Ebt @ A_27a,V5x: A_27a,V6r: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__lb @ A_27a @ V2cmp @ V3lb @ ( c_2Eenumeral_2Enode @ A_27a @ V4l @ V5x @ V6r ) )
+          = ( c_2Ebool_2ECOND @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V2cmp @ V3lb @ V5x ) @ c_2EternaryComparisons_2ELESS ) @ ( c_2Elist_2EAPPEND @ A_27a @ ( c_2Elist_2EAPPEND @ A_27a @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub @ A_27a @ V2cmp @ V3lb @ V4l @ V5x ) @ ( c_2Elist_2ECONS @ A_27a @ V5x @ ( c_2Elist_2ENIL @ A_27a ) ) ) @ ( c_2Eenumeral_2Ebt__to__ol__lb @ A_27a @ V2cmp @ V5x @ V6r ) ) @ ( c_2Eenumeral_2Ebt__to__ol__lb @ A_27a @ V2cmp @ V3lb @ V6r ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__ol__ub,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1ub: A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__ub @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ent @ A_27a ) @ V1ub )
+          = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V2cmp: tyop_2Etoto_2Etoto @ A_27a,V3l: tyop_2Eenumeral_2Ebt @ A_27a,V4x: A_27a,V5r: tyop_2Eenumeral_2Ebt @ A_27a,V6ub: A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__ub @ A_27a @ V2cmp @ ( c_2Eenumeral_2Enode @ A_27a @ V3l @ V4x @ V5r ) @ V6ub )
+          = ( c_2Ebool_2ECOND @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V2cmp @ V4x @ V6ub ) @ c_2EternaryComparisons_2ELESS ) @ ( c_2Elist_2EAPPEND @ A_27a @ ( c_2Elist_2EAPPEND @ A_27a @ ( c_2Eenumeral_2Ebt__to__ol__ub @ A_27a @ V2cmp @ V3l @ V4x ) @ ( c_2Elist_2ECONS @ A_27a @ V4x @ ( c_2Elist_2ENIL @ A_27a ) ) ) @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub @ A_27a @ V2cmp @ V4x @ V5r @ V6ub ) ) @ ( c_2Eenumeral_2Ebt__to__ol__ub @ A_27a @ V2cmp @ V3l @ V6ub ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__ol,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ent @ A_27a ) )
+          = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a,V2l: tyop_2Eenumeral_2Ebt @ A_27a,V3x: A_27a,V4r: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol @ A_27a @ V1cmp @ ( c_2Eenumeral_2Enode @ A_27a @ V2l @ V3x @ V4r ) )
+          = ( c_2Elist_2EAPPEND @ A_27a @ ( c_2Elist_2EAPPEND @ A_27a @ ( c_2Eenumeral_2Ebt__to__ol__ub @ A_27a @ V1cmp @ V2l @ V3x ) @ ( c_2Elist_2ECONS @ A_27a @ V3x @ ( c_2Elist_2ENIL @ A_27a ) ) ) @ ( c_2Eenumeral_2Ebt__to__ol__lb @ A_27a @ V1cmp @ V3x @ V4r ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__ol__lb__ub__ac,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1lb: A_27a,V2ub: A_27a,V3m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__lb__ub__ac @ A_27a @ V0cmp @ V1lb @ ( c_2Eenumeral_2Ent @ A_27a ) @ V2ub @ V3m )
+          = V3m )
+      & ! [V4cmp: tyop_2Etoto_2Etoto @ A_27a,V5lb: A_27a,V6l: tyop_2Eenumeral_2Ebt @ A_27a,V7x: A_27a,V8r: tyop_2Eenumeral_2Ebt @ A_27a,V9ub: A_27a,V10m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__lb__ub__ac @ A_27a @ V4cmp @ V5lb @ ( c_2Eenumeral_2Enode @ A_27a @ V6l @ V7x @ V8r ) @ V9ub @ V10m )
+          = ( c_2Ebool_2ECOND @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V4cmp @ V5lb @ V7x ) @ c_2EternaryComparisons_2ELESS ) @ ( c_2Ebool_2ECOND @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V4cmp @ V7x @ V9ub ) @ c_2EternaryComparisons_2ELESS ) @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub__ac @ A_27a @ V4cmp @ V5lb @ V6l @ V7x @ ( c_2Elist_2ECONS @ A_27a @ V7x @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub__ac @ A_27a @ V4cmp @ V7x @ V8r @ V9ub @ V10m ) ) ) @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub__ac @ A_27a @ V4cmp @ V5lb @ V6l @ V9ub @ V10m ) ) @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub__ac @ A_27a @ V4cmp @ V5lb @ V8r @ V9ub @ V10m ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__ol__lb__ac,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1lb: A_27a,V2m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__lb__ac @ A_27a @ V0cmp @ V1lb @ ( c_2Eenumeral_2Ent @ A_27a ) @ V2m )
+          = V2m )
+      & ! [V3cmp: tyop_2Etoto_2Etoto @ A_27a,V4lb: A_27a,V5l: tyop_2Eenumeral_2Ebt @ A_27a,V6x: A_27a,V7r: tyop_2Eenumeral_2Ebt @ A_27a,V8m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__lb__ac @ A_27a @ V3cmp @ V4lb @ ( c_2Eenumeral_2Enode @ A_27a @ V5l @ V6x @ V7r ) @ V8m )
+          = ( c_2Ebool_2ECOND @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V3cmp @ V4lb @ V6x ) @ c_2EternaryComparisons_2ELESS ) @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub__ac @ A_27a @ V3cmp @ V4lb @ V5l @ V6x @ ( c_2Elist_2ECONS @ A_27a @ V6x @ ( c_2Eenumeral_2Ebt__to__ol__lb__ac @ A_27a @ V3cmp @ V6x @ V7r @ V8m ) ) ) @ ( c_2Eenumeral_2Ebt__to__ol__lb__ac @ A_27a @ V3cmp @ V4lb @ V7r @ V8m ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__ol__ub__ac,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1ub: A_27a,V2m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__ub__ac @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ent @ A_27a ) @ V1ub @ V2m )
+          = V2m )
+      & ! [V3cmp: tyop_2Etoto_2Etoto @ A_27a,V4l: tyop_2Eenumeral_2Ebt @ A_27a,V5x: A_27a,V6r: tyop_2Eenumeral_2Ebt @ A_27a,V7ub: A_27a,V8m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__ub__ac @ A_27a @ V3cmp @ ( c_2Eenumeral_2Enode @ A_27a @ V4l @ V5x @ V6r ) @ V7ub @ V8m )
+          = ( c_2Ebool_2ECOND @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V3cmp @ V5x @ V7ub ) @ c_2EternaryComparisons_2ELESS ) @ ( c_2Eenumeral_2Ebt__to__ol__ub__ac @ A_27a @ V3cmp @ V4l @ V5x @ ( c_2Elist_2ECONS @ A_27a @ V5x @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub__ac @ A_27a @ V3cmp @ V5x @ V6r @ V7ub @ V8m ) ) ) @ ( c_2Eenumeral_2Ebt__to__ol__ub__ac @ A_27a @ V3cmp @ V4l @ V7ub @ V8m ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__ol__ac,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__ac @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ent @ A_27a ) @ V1m )
+          = V1m )
+      & ! [V2cmp: tyop_2Etoto_2Etoto @ A_27a,V3l: tyop_2Eenumeral_2Ebt @ A_27a,V4x: A_27a,V5r: tyop_2Eenumeral_2Ebt @ A_27a,V6m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2Ebt__to__ol__ac @ A_27a @ V2cmp @ ( c_2Eenumeral_2Enode @ A_27a @ V3l @ V4x @ V5r ) @ V6m )
+          = ( c_2Eenumeral_2Ebt__to__ol__ub__ac @ A_27a @ V2cmp @ V3l @ V4x @ ( c_2Elist_2ECONS @ A_27a @ V4x @ ( c_2Eenumeral_2Ebt__to__ol__lb__ac @ A_27a @ V2cmp @ V4x @ V5r @ V6m ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EOWL,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1s: A_27a > $o,V2l: tyop_2Elist_2Elist @ A_27a] :
+      ( ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ V1s @ V2l )
+    <=> ( ( V1s
+          = ( c_2Elist_2ELIST__TO__SET @ A_27a @ V2l ) )
+        & ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V2l ) ) ) ).
+
+thf(thm_2Eenumeral_2EOU,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1t: A_27a > $o,V2u: A_27a > $o] :
+      ( ( c_2Eenumeral_2EOU @ A_27a @ V0cmp @ V1t @ V2u )
+      = ( c_2Epred__set_2EUNION @ A_27a
+        @ ( c_2Epred__set_2EGSPEC @ A_27a @ A_27a
+          @ ^ [V3x: A_27a] :
+              ( c_2Epair_2E_2C @ A_27a @ $o @ V3x
+              @ ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2EIN @ A_27a @ V3x @ V1t )
+                @ ( c_2Ebool_2E_21 @ A_27a
+                  @ ^ [V4z: A_27a] : ( c_2Emin_2E_3D_3D_3E @ ( c_2Ebool_2EIN @ A_27a @ V4z @ V2u ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V3x @ V4z ) @ c_2EternaryComparisons_2ELESS ) ) ) ) ) )
+        @ V2u ) ) ).
+
+thf(thm_2Eenumeral_2EUO,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( c_2Eenumeral_2EUO @ A_27a @ V0cmp @ V1s @ V2t )
+      = ( c_2Epred__set_2EUNION @ A_27a @ V1s
+        @ ( c_2Epred__set_2EGSPEC @ A_27a @ A_27a
+          @ ^ [V3y: A_27a] :
+              ( c_2Epair_2E_2C @ A_27a @ $o @ V3y
+              @ ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2EIN @ A_27a @ V3y @ V2t )
+                @ ( c_2Ebool_2E_21 @ A_27a
+                  @ ^ [V4z: A_27a] : ( c_2Emin_2E_3D_3D_3E @ ( c_2Ebool_2EIN @ A_27a @ V4z @ V1s ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V4z @ V3y ) @ c_2EternaryComparisons_2ELESS ) ) ) ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2ELESS__ALL,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1x: A_27a,V2s: A_27a > $o] :
+      ( ( c_2Eenumeral_2ELESS__ALL @ A_27a @ V0cmp @ V1x @ V2s )
+    <=> ! [V3y: A_27a] :
+          ( ( c_2Ebool_2EIN @ A_27a @ V3y @ V2s )
+         => ( ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V1x @ V3y )
+            = c_2EternaryComparisons_2ELESS ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__to__set,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Ebl__to__set @ A_27a @ V0cmp @ ( c_2Eenumeral_2Enbl @ A_27a ) )
+          = ( c_2Epred__set_2EEMPTY @ A_27a ) )
+      & ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a,V2b: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( c_2Eenumeral_2Ebl__to__set @ A_27a @ V1cmp @ ( c_2Eenumeral_2Ezerbl @ A_27a @ V2b ) )
+          = ( c_2Eenumeral_2Ebl__to__set @ A_27a @ V1cmp @ V2b ) )
+      & ! [V3cmp: tyop_2Etoto_2Etoto @ A_27a,V4x: A_27a,V5t: tyop_2Eenumeral_2Ebt @ A_27a,V6b: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( c_2Eenumeral_2Ebl__to__set @ A_27a @ V3cmp @ ( c_2Eenumeral_2Eonebl @ A_27a @ V4x @ V5t @ V6b ) )
+          = ( c_2Eenumeral_2EOU @ A_27a @ V3cmp
+            @ ( c_2Epred__set_2EUNION @ A_27a @ ( c_2Epred__set_2EINSERT @ A_27a @ V4x @ ( c_2Epred__set_2EEMPTY @ A_27a ) )
+              @ ( c_2Epred__set_2EGSPEC @ A_27a @ A_27a
+                @ ^ [V7y: A_27a] : ( c_2Epair_2E_2C @ A_27a @ $o @ V7y @ ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2EIN @ A_27a @ V7y @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V3cmp @ V5t ) ) @ ( c_2Emin_2E_3D @ tyop_2EternaryComparisons_2Eordering @ ( c_2Etoto_2Eapto @ A_27a @ V3cmp @ V4x @ V7y ) @ c_2EternaryComparisons_2ELESS ) ) ) ) )
+            @ ( c_2Eenumeral_2Ebl__to__set @ A_27a @ V3cmp @ V6b ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EOL__bt__lb__ub,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1lb: A_27a,V2ub: A_27a] :
+          ( ( c_2Eenumeral_2EOL__bt__lb__ub @ A_27a @ V0cmp @ V1lb @ ( c_2Eenumeral_2Ent @ A_27a ) @ V2ub )
+        <=> ( ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V1lb @ V2ub )
+            = c_2EternaryComparisons_2ELESS ) )
+      & ! [V3cmp: tyop_2Etoto_2Etoto @ A_27a,V4lb: A_27a,V5l: tyop_2Eenumeral_2Ebt @ A_27a,V6x: A_27a,V7r: tyop_2Eenumeral_2Ebt @ A_27a,V8ub: A_27a] :
+          ( ( c_2Eenumeral_2EOL__bt__lb__ub @ A_27a @ V3cmp @ V4lb @ ( c_2Eenumeral_2Enode @ A_27a @ V5l @ V6x @ V7r ) @ V8ub )
+        <=> ( ( c_2Eenumeral_2EOL__bt__lb__ub @ A_27a @ V3cmp @ V4lb @ V5l @ V6x )
+            & ( c_2Eenumeral_2EOL__bt__lb__ub @ A_27a @ V3cmp @ V6x @ V7r @ V8ub ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EOL__bt__lb,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1lb: A_27a] :
+          ( ( c_2Eenumeral_2EOL__bt__lb @ A_27a @ V0cmp @ V1lb @ ( c_2Eenumeral_2Ent @ A_27a ) )
+          = c_2Ebool_2ET )
+      & ! [V2cmp: tyop_2Etoto_2Etoto @ A_27a,V3lb: A_27a,V4l: tyop_2Eenumeral_2Ebt @ A_27a,V5x: A_27a,V6r: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( ( c_2Eenumeral_2EOL__bt__lb @ A_27a @ V2cmp @ V3lb @ ( c_2Eenumeral_2Enode @ A_27a @ V4l @ V5x @ V6r ) )
+        <=> ( ( c_2Eenumeral_2EOL__bt__lb__ub @ A_27a @ V2cmp @ V3lb @ V4l @ V5x )
+            & ( c_2Eenumeral_2EOL__bt__lb @ A_27a @ V2cmp @ V5x @ V6r ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EOL__bt__ub,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1ub: A_27a] :
+          ( ( c_2Eenumeral_2EOL__bt__ub @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ent @ A_27a ) @ V1ub )
+          = c_2Ebool_2ET )
+      & ! [V2cmp: tyop_2Etoto_2Etoto @ A_27a,V3l: tyop_2Eenumeral_2Ebt @ A_27a,V4x: A_27a,V5r: tyop_2Eenumeral_2Ebt @ A_27a,V6ub: A_27a] :
+          ( ( c_2Eenumeral_2EOL__bt__ub @ A_27a @ V2cmp @ ( c_2Eenumeral_2Enode @ A_27a @ V3l @ V4x @ V5r ) @ V6ub )
+        <=> ( ( c_2Eenumeral_2EOL__bt__ub @ A_27a @ V2cmp @ V3l @ V4x )
+            & ( c_2Eenumeral_2EOL__bt__lb__ub @ A_27a @ V2cmp @ V4x @ V5r @ V6ub ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EOL__bt,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2EOL__bt @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ent @ A_27a ) )
+          = c_2Ebool_2ET )
+      & ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a,V2l: tyop_2Eenumeral_2Ebt @ A_27a,V3x: A_27a,V4r: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( ( c_2Eenumeral_2EOL__bt @ A_27a @ V1cmp @ ( c_2Eenumeral_2Enode @ A_27a @ V2l @ V3x @ V4r ) )
+        <=> ( ( c_2Eenumeral_2EOL__bt__ub @ A_27a @ V1cmp @ V2l @ V3x )
+            & ( c_2Eenumeral_2EOL__bt__lb @ A_27a @ V1cmp @ V3x @ V4r ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__distinct,axiom,
+    ! [A_27a: $tType,V0a2: tyop_2Eenumeral_2Ebt @ A_27a,V1a1: A_27a,V2a0: tyop_2Eenumeral_2Ebt @ A_27a] :
+      ( (~)
+      @ ( ( c_2Eenumeral_2Ent @ A_27a )
+        = ( c_2Eenumeral_2Enode @ A_27a @ V2a0 @ V1a1 @ V0a2 ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__nchotomy,axiom,
+    ! [A_27a: $tType,V0bb: tyop_2Eenumeral_2Ebt @ A_27a] :
+      ( ( V0bb
+        = ( c_2Eenumeral_2Ent @ A_27a ) )
+      | ? [V1b: tyop_2Eenumeral_2Ebt @ A_27a,V2a: A_27a,V3b0: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( V0bb
+          = ( c_2Eenumeral_2Enode @ A_27a @ V1b @ V2a @ V3b0 ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__Axiom,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f0: A_27b,V1f1: A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27b > A_27b > A_27b] :
+    ? [V2fn: ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27b] :
+      ( ( ( V2fn @ ( c_2Eenumeral_2Ent @ A_27a ) )
+        = V0f0 )
+      & ! [V3a0: tyop_2Eenumeral_2Ebt @ A_27a,V4a1: A_27a,V5a2: tyop_2Eenumeral_2Ebt @ A_27a] :
+          ( ( V2fn @ ( c_2Eenumeral_2Enode @ A_27a @ V3a0 @ V4a1 @ V5a2 ) )
+          = ( V1f1 @ V4a1 @ V3a0 @ V5a2 @ ( V2fn @ V3a0 ) @ ( V2fn @ V5a2 ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__induction,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Eenumeral_2Ebt @ A_27a ) > $o] :
+      ( ( ( V0P @ ( c_2Eenumeral_2Ent @ A_27a ) )
+        & ! [V1b: tyop_2Eenumeral_2Ebt @ A_27a,V2b0: tyop_2Eenumeral_2Ebt @ A_27a] :
+            ( ( ( V0P @ V1b )
+              & ( V0P @ V2b0 ) )
+           => ! [V3a: A_27a] : ( V0P @ ( c_2Eenumeral_2Enode @ A_27a @ V1b @ V3a @ V2b0 ) ) ) )
+     => ! [V4b: tyop_2Eenumeral_2Ebt @ A_27a] : ( V0P @ V4b ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__case__cong,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0v_27: A_27b,V1f_27: ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27b,V2M: tyop_2Eenumeral_2Ebt @ A_27a,V3M_27: tyop_2Eenumeral_2Ebt @ A_27a,V4v: A_27b,V5f: ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27b] :
+      ( ( ( V2M = V3M_27 )
+        & ( ( V3M_27
+            = ( c_2Eenumeral_2Ent @ A_27a ) )
+         => ( V4v = V0v_27 ) )
+        & ! [V6a0: tyop_2Eenumeral_2Ebt @ A_27a,V7a1: A_27a,V8a2: tyop_2Eenumeral_2Ebt @ A_27a] :
+            ( ( V3M_27
+              = ( c_2Eenumeral_2Enode @ A_27a @ V6a0 @ V7a1 @ V8a2 ) )
+           => ( ( V5f @ V6a0 @ V7a1 @ V8a2 )
+              = ( V1f_27 @ V6a0 @ V7a1 @ V8a2 ) ) ) )
+     => ( ( c_2Eenumeral_2Ebt__CASE @ A_27a @ A_27b @ V2M @ V4v @ V5f )
+        = ( c_2Eenumeral_2Ebt__CASE @ A_27a @ A_27b @ V3M_27 @ V0v_27 @ V1f_27 ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__case__eq,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0x: tyop_2Eenumeral_2Ebt @ A_27a,V1v_27: A_27b,V2v: A_27b,V3f: ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27b] :
+      ( ( ( c_2Eenumeral_2Ebt__CASE @ A_27a @ A_27b @ V0x @ V2v @ V3f )
+        = V1v_27 )
+    <=> ( ( ( V0x
+            = ( c_2Eenumeral_2Ent @ A_27a ) )
+          & ( V2v = V1v_27 ) )
+        | ? [V4b: tyop_2Eenumeral_2Ebt @ A_27a,V5a: A_27a,V6b0: tyop_2Eenumeral_2Ebt @ A_27a] :
+            ( ( V0x
+              = ( c_2Eenumeral_2Enode @ A_27a @ V4b @ V5a @ V6b0 ) )
+            & ( ( V3f @ V4b @ V5a @ V6b0 )
+              = V1v_27 ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Edatatype__bl,axiom,
+    ! [A_27a: $tType,V0bl: ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) ) > ( A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) ) > $o] : ( c_2Ebool_2EDATATYPE @ $o @ ( V0bl @ ( c_2Eenumeral_2Enbl @ A_27a ) @ ( c_2Eenumeral_2Ezerbl @ A_27a ) @ ( c_2Eenumeral_2Eonebl @ A_27a ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__11,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0a: tyop_2Eenumeral_2Ebl @ A_27a,V1a_27: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( ( c_2Eenumeral_2Ezerbl @ A_27a @ V0a )
+            = ( c_2Eenumeral_2Ezerbl @ A_27a @ V1a_27 ) )
+        <=> ( V0a = V1a_27 ) )
+      & ! [V2a0: A_27a,V3a1: tyop_2Eenumeral_2Ebt @ A_27a,V4a2: tyop_2Eenumeral_2Ebl @ A_27a,V5a0_27: A_27a,V6a1_27: tyop_2Eenumeral_2Ebt @ A_27a,V7a2_27: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( ( c_2Eenumeral_2Eonebl @ A_27a @ V2a0 @ V3a1 @ V4a2 )
+            = ( c_2Eenumeral_2Eonebl @ A_27a @ V5a0_27 @ V6a1_27 @ V7a2_27 ) )
+        <=> ( ( V2a0 = V5a0_27 )
+            & ( V3a1 = V6a1_27 )
+            & ( V4a2 = V7a2_27 ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__distinct,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0a: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( (~)
+          @ ( ( c_2Eenumeral_2Enbl @ A_27a )
+            = ( c_2Eenumeral_2Ezerbl @ A_27a @ V0a ) ) )
+      & ! [V1a2: tyop_2Eenumeral_2Ebl @ A_27a,V2a1: tyop_2Eenumeral_2Ebt @ A_27a,V3a0: A_27a] :
+          ( (~)
+          @ ( ( c_2Eenumeral_2Enbl @ A_27a )
+            = ( c_2Eenumeral_2Eonebl @ A_27a @ V3a0 @ V2a1 @ V1a2 ) ) )
+      & ! [V4a2: tyop_2Eenumeral_2Ebl @ A_27a,V5a1: tyop_2Eenumeral_2Ebt @ A_27a,V6a0: A_27a,V7a: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( (~)
+          @ ( ( c_2Eenumeral_2Ezerbl @ A_27a @ V7a )
+            = ( c_2Eenumeral_2Eonebl @ A_27a @ V6a0 @ V5a1 @ V4a2 ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__nchotomy,axiom,
+    ! [A_27a: $tType,V0bb: tyop_2Eenumeral_2Ebl @ A_27a] :
+      ( ( V0bb
+        = ( c_2Eenumeral_2Enbl @ A_27a ) )
+      | ? [V1b: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( V0bb
+          = ( c_2Eenumeral_2Ezerbl @ A_27a @ V1b ) )
+      | ? [V2a: A_27a,V3b0: tyop_2Eenumeral_2Ebt @ A_27a,V4b: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( V0bb
+          = ( c_2Eenumeral_2Eonebl @ A_27a @ V2a @ V3b0 @ V4b ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__Axiom,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f0: A_27b,V1f1: ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b > A_27b,V2f2: A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b > A_27b] :
+    ? [V3fn: ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b] :
+      ( ( ( V3fn @ ( c_2Eenumeral_2Enbl @ A_27a ) )
+        = V0f0 )
+      & ! [V4a: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( V3fn @ ( c_2Eenumeral_2Ezerbl @ A_27a @ V4a ) )
+          = ( V1f1 @ V4a @ ( V3fn @ V4a ) ) )
+      & ! [V5a0: A_27a,V6a1: tyop_2Eenumeral_2Ebt @ A_27a,V7a2: tyop_2Eenumeral_2Ebl @ A_27a] :
+          ( ( V3fn @ ( c_2Eenumeral_2Eonebl @ A_27a @ V5a0 @ V6a1 @ V7a2 ) )
+          = ( V2f2 @ V5a0 @ V6a1 @ V7a2 @ ( V3fn @ V7a2 ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__induction,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Eenumeral_2Ebl @ A_27a ) > $o] :
+      ( ( ( V0P @ ( c_2Eenumeral_2Enbl @ A_27a ) )
+        & ! [V1b: tyop_2Eenumeral_2Ebl @ A_27a] :
+            ( ( V0P @ V1b )
+           => ( V0P @ ( c_2Eenumeral_2Ezerbl @ A_27a @ V1b ) ) )
+        & ! [V2b: tyop_2Eenumeral_2Ebl @ A_27a] :
+            ( ( V0P @ V2b )
+           => ! [V3b0: tyop_2Eenumeral_2Ebt @ A_27a,V4a: A_27a] : ( V0P @ ( c_2Eenumeral_2Eonebl @ A_27a @ V4a @ V3b0 @ V2b ) ) ) )
+     => ! [V5b: tyop_2Eenumeral_2Ebl @ A_27a] : ( V0P @ V5b ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__case__cong,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0v_27: A_27b,V1f1_27: A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b,V2f_27: ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b,V3M: tyop_2Eenumeral_2Ebl @ A_27a,V4M_27: tyop_2Eenumeral_2Ebl @ A_27a,V5v: A_27b,V6f: ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b,V7f1: A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b] :
+      ( ( ( V3M = V4M_27 )
+        & ( ( V4M_27
+            = ( c_2Eenumeral_2Enbl @ A_27a ) )
+         => ( V5v = V0v_27 ) )
+        & ! [V8a: tyop_2Eenumeral_2Ebl @ A_27a] :
+            ( ( V4M_27
+              = ( c_2Eenumeral_2Ezerbl @ A_27a @ V8a ) )
+           => ( ( V6f @ V8a )
+              = ( V2f_27 @ V8a ) ) )
+        & ! [V9a0: A_27a,V10a1: tyop_2Eenumeral_2Ebt @ A_27a,V11a2: tyop_2Eenumeral_2Ebl @ A_27a] :
+            ( ( V4M_27
+              = ( c_2Eenumeral_2Eonebl @ A_27a @ V9a0 @ V10a1 @ V11a2 ) )
+           => ( ( V7f1 @ V9a0 @ V10a1 @ V11a2 )
+              = ( V1f1_27 @ V9a0 @ V10a1 @ V11a2 ) ) ) )
+     => ( ( c_2Eenumeral_2Ebl__CASE @ A_27a @ A_27b @ V3M @ V5v @ V6f @ V7f1 )
+        = ( c_2Eenumeral_2Ebl__CASE @ A_27a @ A_27b @ V4M_27 @ V0v_27 @ V2f_27 @ V1f1_27 ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebl__case__eq,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0x: tyop_2Eenumeral_2Ebl @ A_27a,V1v_27: A_27b,V2v: A_27b,V3f1: A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b,V4f: ( tyop_2Eenumeral_2Ebl @ A_27a ) > A_27b] :
+      ( ( ( c_2Eenumeral_2Ebl__CASE @ A_27a @ A_27b @ V0x @ V2v @ V4f @ V3f1 )
+        = V1v_27 )
+    <=> ( ( ( V0x
+            = ( c_2Eenumeral_2Enbl @ A_27a ) )
+          & ( V2v = V1v_27 ) )
+        | ? [V5b: tyop_2Eenumeral_2Ebl @ A_27a] :
+            ( ( V0x
+              = ( c_2Eenumeral_2Ezerbl @ A_27a @ V5b ) )
+            & ( ( V4f @ V5b )
+              = V1v_27 ) )
+        | ? [V6a: A_27a,V7b0: tyop_2Eenumeral_2Ebt @ A_27a,V8b: tyop_2Eenumeral_2Ebl @ A_27a] :
+            ( ( V0x
+              = ( c_2Eenumeral_2Eonebl @ A_27a @ V6a @ V7b0 @ V8b ) )
+            & ( ( V3f1 @ V6a @ V7b0 @ V8b )
+              = V1v_27 ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__11,axiom,
+    ! [A_27a: $tType,V0a0: tyop_2Eenumeral_2Ebt @ A_27a,V1a1: A_27a,V2a2: tyop_2Eenumeral_2Ebt @ A_27a,V3a0_27: tyop_2Eenumeral_2Ebt @ A_27a,V4a1_27: A_27a,V5a2_27: tyop_2Eenumeral_2Ebt @ A_27a] :
+      ( ( ( c_2Eenumeral_2Enode @ A_27a @ V0a0 @ V1a1 @ V2a2 )
+        = ( c_2Eenumeral_2Enode @ A_27a @ V3a0_27 @ V4a1_27 @ V5a2_27 ) )
+    <=> ( ( V0a0 = V3a0_27 )
+        & ( V1a1 = V4a1_27 )
+        & ( V2a2 = V5a2_27 ) ) ) ).
+
+thf(thm_2Eenumeral_2Edatatype__bt,axiom,
+    ! [A_27a: $tType,V0bt: ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > ( tyop_2Eenumeral_2Ebt @ A_27a ) ) > $o] : ( c_2Ebool_2EDATATYPE @ $o @ ( V0bt @ ( c_2Eenumeral_2Ent @ A_27a ) @ ( c_2Eenumeral_2Enode @ A_27a ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__case__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ! [V0v: A_27b,V1f: ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27b] :
+          ( ( c_2Eenumeral_2Ebt__CASE @ A_27a @ A_27b @ ( c_2Eenumeral_2Ent @ A_27a ) @ V0v @ V1f )
+          = V0v )
+      & ! [V2a0: tyop_2Eenumeral_2Ebt @ A_27a,V3a1: A_27a,V4a2: tyop_2Eenumeral_2Ebt @ A_27a,V5v: A_27b,V6f: ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27a > ( tyop_2Eenumeral_2Ebt @ A_27a ) > A_27b] :
+          ( ( c_2Eenumeral_2Ebt__CASE @ A_27a @ A_27b @ ( c_2Eenumeral_2Enode @ A_27a @ V2a0 @ V3a1 @ V4a2 ) @ V5v @ V6f )
+          = ( V6f @ V2a0 @ V3a1 @ V4a2 ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__list__thm,axiom,
+    ! [A_27a: $tType,V0t: tyop_2Eenumeral_2Ebt @ A_27a] :
+      ( ( c_2Eenumeral_2Ebt__to__list @ A_27a @ V0t )
+      = ( c_2Eenumeral_2Ebt__to__list__ac @ A_27a @ V0t @ ( c_2Elist_2ENIL @ A_27a ) ) ) ).
+
+thf(thm_2Eenumeral_2Esmerge__ind,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > $o] :
+      ( ( ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a] : ( V0P @ V1cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ENIL @ A_27a ) )
+        & ! [V2cmp: tyop_2Etoto_2Etoto @ A_27a,V3x: A_27a,V4l: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V2cmp @ ( c_2Elist_2ECONS @ A_27a @ V3x @ V4l ) @ ( c_2Elist_2ENIL @ A_27a ) )
+        & ! [V5cmp: tyop_2Etoto_2Etoto @ A_27a,V6y: A_27a,V7m: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V5cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ECONS @ A_27a @ V6y @ V7m ) )
+        & ! [V8cmp: tyop_2Etoto_2Etoto @ A_27a,V9x: A_27a,V10l: tyop_2Elist_2Elist @ A_27a,V11y: A_27a,V12m: tyop_2Elist_2Elist @ A_27a] :
+            ( ( ( ( ( c_2Etoto_2Eapto @ A_27a @ V8cmp @ V9x @ V11y )
+                  = c_2EternaryComparisons_2EEQUAL )
+               => ( V0P @ V8cmp @ V10l @ V12m ) )
+              & ( ( ( c_2Etoto_2Eapto @ A_27a @ V8cmp @ V9x @ V11y )
+                  = c_2EternaryComparisons_2EGREATER )
+               => ( V0P @ V8cmp @ ( c_2Elist_2ECONS @ A_27a @ V9x @ V10l ) @ V12m ) )
+              & ( ( ( c_2Etoto_2Eapto @ A_27a @ V8cmp @ V9x @ V11y )
+                  = c_2EternaryComparisons_2ELESS )
+               => ( V0P @ V8cmp @ V10l @ ( c_2Elist_2ECONS @ A_27a @ V11y @ V12m ) ) ) )
+           => ( V0P @ V8cmp @ ( c_2Elist_2ECONS @ A_27a @ V9x @ V10l ) @ ( c_2Elist_2ECONS @ A_27a @ V11y @ V12m ) ) ) )
+     => ! [V13v: tyop_2Etoto_2Etoto @ A_27a,V14v1: tyop_2Elist_2Elist @ A_27a,V15v2: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V13v @ V14v1 @ V15v2 ) ) ).
+
+thf(thm_2Eenumeral_2Esmerge,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esmerge @ A_27a @ V0cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ENIL @ A_27a ) )
+          = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V1x: A_27a,V2l: tyop_2Elist_2Elist @ A_27a,V3cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esmerge @ A_27a @ V3cmp @ ( c_2Elist_2ECONS @ A_27a @ V1x @ V2l ) @ ( c_2Elist_2ENIL @ A_27a ) )
+          = ( c_2Elist_2ECONS @ A_27a @ V1x @ V2l ) )
+      & ! [V4y: A_27a,V5m: tyop_2Elist_2Elist @ A_27a,V6cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esmerge @ A_27a @ V6cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ECONS @ A_27a @ V4y @ V5m ) )
+          = ( c_2Elist_2ECONS @ A_27a @ V4y @ V5m ) )
+      & ! [V7y: A_27a,V8x: A_27a,V9m: tyop_2Elist_2Elist @ A_27a,V10l: tyop_2Elist_2Elist @ A_27a,V11cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esmerge @ A_27a @ V11cmp @ ( c_2Elist_2ECONS @ A_27a @ V8x @ V10l ) @ ( c_2Elist_2ECONS @ A_27a @ V7y @ V9m ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Etoto_2Eapto @ A_27a @ V11cmp @ V8x @ V7y ) @ ( c_2Elist_2ECONS @ A_27a @ V8x @ ( c_2Eenumeral_2Esmerge @ A_27a @ V11cmp @ V10l @ ( c_2Elist_2ECONS @ A_27a @ V7y @ V9m ) ) ) @ ( c_2Elist_2ECONS @ A_27a @ V8x @ ( c_2Eenumeral_2Esmerge @ A_27a @ V11cmp @ V10l @ V9m ) ) @ ( c_2Elist_2ECONS @ A_27a @ V7y @ ( c_2Eenumeral_2Esmerge @ A_27a @ V11cmp @ ( c_2Elist_2ECONS @ A_27a @ V8x @ V10l ) @ V9m ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Esmerge__nil,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1l: tyop_2Elist_2Elist @ A_27a] :
+      ( ( ( c_2Eenumeral_2Esmerge @ A_27a @ V0cmp @ V1l @ ( c_2Elist_2ENIL @ A_27a ) )
+        = V1l )
+      & ( ( c_2Eenumeral_2Esmerge @ A_27a @ V0cmp @ ( c_2Elist_2ENIL @ A_27a ) @ V1l )
+        = V1l ) ) ).
+
+thf(thm_2Eenumeral_2Esmerge__OL,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1l: tyop_2Elist_2Elist @ A_27a,V2m: tyop_2Elist_2Elist @ A_27a] :
+      ( ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V1l )
+        & ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V2m ) )
+     => ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Esmerge @ A_27a @ V0cmp @ V1l @ V2m ) ) ) ).
+
+thf(thm_2Eenumeral_2EOL__sublists__ind,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > $o] :
+      ( ( ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a] : ( V0P @ V1cmp @ ( c_2Elist_2ENIL @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) )
+        & ! [V2cmp: tyop_2Etoto_2Etoto @ A_27a,V3lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+            ( ( V0P @ V2cmp @ V3lol )
+           => ( V0P @ V2cmp @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Elist_2Elist @ A_27a ) ) @ V3lol ) ) )
+        & ! [V4cmp: tyop_2Etoto_2Etoto @ A_27a,V5m: tyop_2Elist_2Elist @ A_27a,V6lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+            ( ( V0P @ V4cmp @ V6lol )
+           => ( V0P @ V4cmp @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V5m ) @ V6lol ) ) ) )
+     => ! [V7v: tyop_2Etoto_2Etoto @ A_27a,V8v1: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] : ( V0P @ V7v @ V8v1 ) ) ).
+
+thf(thm_2Eenumeral_2EOL__sublists,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2EOL__sublists @ A_27a @ V0cmp @ ( c_2Elist_2ENIL @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) )
+          = c_2Ebool_2ET )
+      & ! [V1lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ),V2cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2EOL__sublists @ A_27a @ V2cmp @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Elist_2Elist @ A_27a ) ) @ V1lol ) )
+          = ( c_2Eenumeral_2EOL__sublists @ A_27a @ V2cmp @ V1lol ) )
+      & ! [V3m: tyop_2Elist_2Elist @ A_27a,V4lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ),V5cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2EOL__sublists @ A_27a @ V5cmp @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V3m ) @ V4lol ) )
+        <=> ( ( c_2Eenumeral_2EOL @ A_27a @ V5cmp @ V3m )
+            & ( c_2Eenumeral_2EOL__sublists @ A_27a @ V5cmp @ V4lol ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Elol__set__ind,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > $o] :
+      ( ( ( V0P @ ( c_2Elist_2ENIL @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) )
+        & ! [V1lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+            ( ( V0P @ V1lol )
+           => ( V0P @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Elist_2Elist @ A_27a ) ) @ V1lol ) ) )
+        & ! [V2m: tyop_2Elist_2Elist @ A_27a,V3lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+            ( ( V0P @ V3lol )
+           => ( V0P @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V2m ) @ V3lol ) ) ) )
+     => ! [V4v: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] : ( V0P @ V4v ) ) ).
+
+thf(thm_2Eenumeral_2Elol__set,axiom,
+    ! [A_27a: $tType] :
+      ( ( ( c_2Eenumeral_2Elol__set @ A_27a @ ( c_2Elist_2ENIL @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) )
+        = ( c_2Epred__set_2EEMPTY @ A_27a ) )
+      & ! [V0lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+          ( ( c_2Eenumeral_2Elol__set @ A_27a @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Elist_2Elist @ A_27a ) ) @ V0lol ) )
+          = ( c_2Eenumeral_2Elol__set @ A_27a @ V0lol ) )
+      & ! [V1m: tyop_2Elist_2Elist @ A_27a,V2lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+          ( ( c_2Eenumeral_2Elol__set @ A_27a @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V1m ) @ V2lol ) )
+          = ( c_2Epred__set_2EUNION @ A_27a @ ( c_2Elist_2ELIST__TO__SET @ A_27a @ V1m ) @ ( c_2Eenumeral_2Elol__set @ A_27a @ V2lol ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Eincr__smerge__ind,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > $o] :
+      ( ( ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a,V2l: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V1cmp @ V2l @ ( c_2Elist_2ENIL @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) )
+        & ! [V3cmp: tyop_2Etoto_2Etoto @ A_27a,V4l: tyop_2Elist_2Elist @ A_27a,V5lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] : ( V0P @ V3cmp @ V4l @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Elist_2Elist @ A_27a ) ) @ V5lol ) )
+        & ! [V6cmp: tyop_2Etoto_2Etoto @ A_27a,V7l: tyop_2Elist_2Elist @ A_27a,V8m: tyop_2Elist_2Elist @ A_27a,V9lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+            ( ( V0P @ V6cmp @ ( c_2Eenumeral_2Esmerge @ A_27a @ V6cmp @ V7l @ V8m ) @ V9lol )
+           => ( V0P @ V6cmp @ V7l @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V8m ) @ V9lol ) ) ) )
+     => ! [V10v: tyop_2Etoto_2Etoto @ A_27a,V11v1: tyop_2Elist_2Elist @ A_27a,V12v2: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] : ( V0P @ V10v @ V11v1 @ V12v2 ) ) ).
+
+thf(thm_2Eenumeral_2Eincr__smerge,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0l: tyop_2Elist_2Elist @ A_27a,V1cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Eincr__smerge @ A_27a @ V1cmp @ V0l @ ( c_2Elist_2ENIL @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) )
+          = ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V0l ) @ ( c_2Elist_2ENIL @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) ) )
+      & ! [V2lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ),V3l: tyop_2Elist_2Elist @ A_27a,V4cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Eincr__smerge @ A_27a @ V4cmp @ V3l @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Elist_2Elist @ A_27a ) ) @ V2lol ) )
+          = ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V3l ) @ V2lol ) )
+      & ! [V5m: tyop_2Elist_2Elist @ A_27a,V6lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ),V7l: tyop_2Elist_2Elist @ A_27a,V8cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Eincr__smerge @ A_27a @ V8cmp @ V7l @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V5m ) @ V6lol ) )
+          = ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eenumeral_2Eincr__smerge @ A_27a @ V8cmp @ ( c_2Eenumeral_2Esmerge @ A_27a @ V8cmp @ V7l @ V5m ) @ V6lol ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Eincr__smerge__OL,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ),V2l: tyop_2Elist_2Elist @ A_27a] :
+      ( ( ( c_2Eenumeral_2EOL__sublists @ A_27a @ V0cmp @ V1lol )
+        & ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V2l ) )
+     => ( c_2Eenumeral_2EOL__sublists @ A_27a @ V0cmp @ ( c_2Eenumeral_2Eincr__smerge @ A_27a @ V0cmp @ V2l @ V1lol ) ) ) ).
+
+thf(thm_2Eenumeral_2Esmerge__out__ind,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) > $o] :
+      ( ( ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a,V2l: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V1cmp @ V2l @ ( c_2Elist_2ENIL @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) )
+        & ! [V3cmp: tyop_2Etoto_2Etoto @ A_27a,V4l: tyop_2Elist_2Elist @ A_27a,V5lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+            ( ( V0P @ V3cmp @ V4l @ V5lol )
+           => ( V0P @ V3cmp @ V4l @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Elist_2Elist @ A_27a ) ) @ V5lol ) ) )
+        & ! [V6cmp: tyop_2Etoto_2Etoto @ A_27a,V7l: tyop_2Elist_2Elist @ A_27a,V8m: tyop_2Elist_2Elist @ A_27a,V9lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] :
+            ( ( V0P @ V6cmp @ ( c_2Eenumeral_2Esmerge @ A_27a @ V6cmp @ V7l @ V8m ) @ V9lol )
+           => ( V0P @ V6cmp @ V7l @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V8m ) @ V9lol ) ) ) )
+     => ! [V10v: tyop_2Etoto_2Etoto @ A_27a,V11v1: tyop_2Elist_2Elist @ A_27a,V12v2: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) )] : ( V0P @ V10v @ V11v1 @ V12v2 ) ) ).
+
+thf(thm_2Eenumeral_2Esmerge__out,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0l: tyop_2Elist_2Elist @ A_27a,V1cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esmerge__out @ A_27a @ V1cmp @ V0l @ ( c_2Elist_2ENIL @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) ) )
+          = V0l )
+      & ! [V2lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ),V3l: tyop_2Elist_2Elist @ A_27a,V4cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esmerge__out @ A_27a @ V4cmp @ V3l @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Elist_2Elist @ A_27a ) ) @ V2lol ) )
+          = ( c_2Eenumeral_2Esmerge__out @ A_27a @ V4cmp @ V3l @ V2lol ) )
+      & ! [V5m: tyop_2Elist_2Elist @ A_27a,V6lol: tyop_2Elist_2Elist @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ),V7l: tyop_2Elist_2Elist @ A_27a,V8cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esmerge__out @ A_27a @ V8cmp @ V7l @ ( c_2Elist_2ECONS @ ( tyop_2Eoption_2Eoption @ ( tyop_2Elist_2Elist @ A_27a ) ) @ ( c_2Eoption_2ESOME @ ( tyop_2Elist_2Elist @ A_27a ) @ V5m ) @ V6lol ) )
+          = ( c_2Eenumeral_2Esmerge__out @ A_27a @ V8cmp @ ( c_2Eenumeral_2Esmerge @ A_27a @ V8cmp @ V7l @ V5m ) @ V6lol ) ) ) ).
+
+thf(thm_2Eenumeral_2EIN__bt__to__set,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1y: A_27a] :
+          ( ( c_2Ebool_2EIN @ A_27a @ V1y @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ent @ A_27a ) ) )
+          = c_2Ebool_2EF )
+      & ! [V2cmp: tyop_2Etoto_2Etoto @ A_27a,V3l: tyop_2Eenumeral_2Ebt @ A_27a,V4x: A_27a,V5r: tyop_2Eenumeral_2Ebt @ A_27a,V6y: A_27a] :
+          ( ( c_2Ebool_2EIN @ A_27a @ V6y @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V2cmp @ ( c_2Eenumeral_2Enode @ A_27a @ V3l @ V4x @ V5r ) ) )
+        <=> ( ( ( c_2Ebool_2EIN @ A_27a @ V6y @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V2cmp @ V3l ) )
+              & ( ( c_2Etoto_2Eapto @ A_27a @ V2cmp @ V6y @ V4x )
+                = c_2EternaryComparisons_2ELESS ) )
+            | ( V6y = V4x )
+            | ( ( c_2Ebool_2EIN @ A_27a @ V6y @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V2cmp @ V5r ) )
+              & ( ( c_2Etoto_2Eapto @ A_27a @ V2cmp @ V4x @ V6y )
+                = c_2EternaryComparisons_2ELESS ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2ENOT__IN__nt,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1y: A_27a] :
+      ( ( c_2Ebool_2EIN @ A_27a @ V1y @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ent @ A_27a ) ) )
+      = c_2Ebool_2EF ) ).
+
+thf(thm_2Eenumeral_2EIN__node,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1x: A_27a,V2l: tyop_2Eenumeral_2Ebt @ A_27a,V3y: A_27a,V4r: tyop_2Eenumeral_2Ebt @ A_27a] :
+      ( ( c_2Ebool_2EIN @ A_27a @ V1x @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Enode @ A_27a @ V2l @ V3y @ V4r ) ) )
+      = ( c_2EternaryComparisons_2Eordering__CASE @ $o @ ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V1x @ V3y ) @ ( c_2Ebool_2EIN @ A_27a @ V1x @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ V2l ) ) @ c_2Ebool_2ET @ ( c_2Ebool_2EIN @ A_27a @ V1x @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ V4r ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Eol__set,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1t: tyop_2Eenumeral_2Ebt @ A_27a] :
+      ( ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ V1t )
+      = ( c_2Elist_2ELIST__TO__SET @ A_27a @ ( c_2Eenumeral_2Ebt__to__ol @ A_27a @ V0cmp @ V1t ) ) ) ).
+
+thf(thm_2Eenumeral_2EOL__bt__to__ol__lb__ub,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1t: tyop_2Eenumeral_2Ebt @ A_27a,V2lb: A_27a,V3ub: A_27a] : ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ebt__to__ol__lb__ub @ A_27a @ V0cmp @ V2lb @ V1t @ V3ub ) ) ).
+
+thf(thm_2Eenumeral_2EOL__bt__to__ol__lb,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1t: tyop_2Eenumeral_2Ebt @ A_27a,V2lb: A_27a] : ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ebt__to__ol__lb @ A_27a @ V0cmp @ V2lb @ V1t ) ) ).
+
+thf(thm_2Eenumeral_2EOL__bt__to__ol__ub,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1t: tyop_2Eenumeral_2Ebt @ A_27a,V2ub: A_27a] : ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ebt__to__ol__ub @ A_27a @ V0cmp @ V1t @ V2ub ) ) ).
+
+thf(thm_2Eenumeral_2EOL__bt__to__ol,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1t: tyop_2Eenumeral_2Ebt @ A_27a] : ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Ebt__to__ol @ A_27a @ V0cmp @ V1t ) ) ).
+
+thf(thm_2Eenumeral_2EOWL__bt__to__ol,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1t: tyop_2Eenumeral_2Ebt @ A_27a] : ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ V1t ) @ ( c_2Eenumeral_2Ebt__to__ol @ A_27a @ V0cmp @ V1t ) ) ).
+
+thf(thm_2Eenumeral_2EEMPTY__OU,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1sl: A_27a > $o] :
+      ( ( c_2Eenumeral_2EOU @ A_27a @ V0cmp @ ( c_2Epred__set_2EEMPTY @ A_27a ) @ V1sl )
+      = V1sl ) ).
+
+thf(thm_2Eenumeral_2EOU__EMPTY,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1t: A_27a > $o] :
+      ( ( c_2Eenumeral_2EOU @ A_27a @ V0cmp @ V1t @ ( c_2Epred__set_2EEMPTY @ A_27a ) )
+      = V1t ) ).
+
+thf(thm_2Eenumeral_2ELESS__UO__LEM,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1x: A_27a,V2y: A_27a,V3s: A_27a > $o] :
+      ( ! [V4z: A_27a] :
+          ( ( c_2Ebool_2EIN @ A_27a @ V4z @ ( c_2Eenumeral_2EUO @ A_27a @ V0cmp @ ( c_2Epred__set_2EINSERT @ A_27a @ V1x @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) @ V3s ) )
+         => ( ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V2y @ V4z )
+            = c_2EternaryComparisons_2ELESS ) )
+    <=> ( ( c_2Etoto_2Eapto @ A_27a @ V0cmp @ V2y @ V1x )
+        = c_2EternaryComparisons_2ELESS ) ) ).
+
+thf(thm_2Eenumeral_2ELESS__ALL__OU,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1x: A_27a,V2u: A_27a > $o,V3v: A_27a > $o] :
+      ( ( c_2Eenumeral_2ELESS__ALL @ A_27a @ V0cmp @ V1x @ ( c_2Eenumeral_2EOU @ A_27a @ V0cmp @ V2u @ V3v ) )
+    <=> ( ( c_2Eenumeral_2ELESS__ALL @ A_27a @ V0cmp @ V1x @ V2u )
+        & ( c_2Eenumeral_2ELESS__ALL @ A_27a @ V0cmp @ V1x @ V3v ) ) ) ).
+
+thf(thm_2Eenumeral_2EOU__ASSOC,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1a: A_27a > $o,V2b: A_27a > $o,V3c: A_27a > $o] :
+      ( ( c_2Eenumeral_2EOU @ A_27a @ V0cmp @ V1a @ ( c_2Eenumeral_2EOU @ A_27a @ V0cmp @ V2b @ V3c ) )
+      = ( c_2Eenumeral_2EOU @ A_27a @ V0cmp @ ( c_2Eenumeral_2EOU @ A_27a @ V0cmp @ V1a @ V2b ) @ V3c ) ) ).
+
+thf(thm_2Eenumeral_2ELESS__ALL__UO__LEM,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1a: A_27a,V2s: A_27a > $o] :
+      ( ( c_2Eenumeral_2ELESS__ALL @ A_27a @ V0cmp @ V1a @ V2s )
+     => ( ( c_2Eenumeral_2EUO @ A_27a @ V0cmp @ ( c_2Epred__set_2EINSERT @ A_27a @ V1a @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) @ V2s )
+        = ( c_2Epred__set_2EINSERT @ A_27a @ V1a @ V2s ) ) ) ).
+
+thf(thm_2Eenumeral_2ELESS__ALL__OU__UO__LEM,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1a: A_27a,V2s: A_27a > $o,V3t: A_27a > $o] :
+      ( ( ( c_2Eenumeral_2ELESS__ALL @ A_27a @ V0cmp @ V1a @ V2s )
+        & ( c_2Eenumeral_2ELESS__ALL @ A_27a @ V0cmp @ V1a @ V3t ) )
+     => ( ( c_2Eenumeral_2EOU @ A_27a @ V0cmp @ ( c_2Eenumeral_2EUO @ A_27a @ V0cmp @ ( c_2Epred__set_2EINSERT @ A_27a @ V1a @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) @ V2s ) @ V3t )
+        = ( c_2Epred__set_2EINSERT @ A_27a @ V1a @ ( c_2Eenumeral_2EOU @ A_27a @ V0cmp @ V2s @ V3t ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebt__to__ol__ID__IMP,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1l: tyop_2Elist_2Elist @ A_27a] :
+      ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V1l )
+     => ( ( c_2Eenumeral_2Ebt__to__ol @ A_27a @ V0cmp @ ( c_2Eenumeral_2Elist__to__bt @ A_27a @ V1l ) )
+        = V1l ) ) ).
+
+thf(thm_2Eenumeral_2EOL__UNION__IMP,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1l: tyop_2Elist_2Elist @ A_27a] :
+      ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V1l )
+     => ! [V2m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V2m )
+         => ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Esmerge @ A_27a @ V0cmp @ V1l @ V2m ) )
+            & ( ( c_2Elist_2ELIST__TO__SET @ A_27a @ ( c_2Eenumeral_2Esmerge @ A_27a @ V0cmp @ V1l @ V2m ) )
+              = ( c_2Epred__set_2EUNION @ A_27a @ ( c_2Elist_2ELIST__TO__SET @ A_27a @ V1l ) @ ( c_2Elist_2ELIST__TO__SET @ A_27a @ V2m ) ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Esinter__ind,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > $o] :
+      ( ( ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a] : ( V0P @ V1cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ENIL @ A_27a ) )
+        & ! [V2cmp: tyop_2Etoto_2Etoto @ A_27a,V3x: A_27a,V4l: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V2cmp @ ( c_2Elist_2ECONS @ A_27a @ V3x @ V4l ) @ ( c_2Elist_2ENIL @ A_27a ) )
+        & ! [V5cmp: tyop_2Etoto_2Etoto @ A_27a,V6y: A_27a,V7m: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V5cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ECONS @ A_27a @ V6y @ V7m ) )
+        & ! [V8cmp: tyop_2Etoto_2Etoto @ A_27a,V9x: A_27a,V10l: tyop_2Elist_2Elist @ A_27a,V11y: A_27a,V12m: tyop_2Elist_2Elist @ A_27a] :
+            ( ( ( ( ( c_2Etoto_2Eapto @ A_27a @ V8cmp @ V9x @ V11y )
+                  = c_2EternaryComparisons_2EEQUAL )
+               => ( V0P @ V8cmp @ V10l @ V12m ) )
+              & ( ( ( c_2Etoto_2Eapto @ A_27a @ V8cmp @ V9x @ V11y )
+                  = c_2EternaryComparisons_2EGREATER )
+               => ( V0P @ V8cmp @ ( c_2Elist_2ECONS @ A_27a @ V9x @ V10l ) @ V12m ) )
+              & ( ( ( c_2Etoto_2Eapto @ A_27a @ V8cmp @ V9x @ V11y )
+                  = c_2EternaryComparisons_2ELESS )
+               => ( V0P @ V8cmp @ V10l @ ( c_2Elist_2ECONS @ A_27a @ V11y @ V12m ) ) ) )
+           => ( V0P @ V8cmp @ ( c_2Elist_2ECONS @ A_27a @ V9x @ V10l ) @ ( c_2Elist_2ECONS @ A_27a @ V11y @ V12m ) ) ) )
+     => ! [V13v: tyop_2Etoto_2Etoto @ A_27a,V14v1: tyop_2Elist_2Elist @ A_27a,V15v2: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V13v @ V14v1 @ V15v2 ) ) ).
+
+thf(thm_2Eenumeral_2Esinter,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esinter @ A_27a @ V0cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ENIL @ A_27a ) )
+          = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V1x: A_27a,V2l: tyop_2Elist_2Elist @ A_27a,V3cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esinter @ A_27a @ V3cmp @ ( c_2Elist_2ECONS @ A_27a @ V1x @ V2l ) @ ( c_2Elist_2ENIL @ A_27a ) )
+          = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V4y: A_27a,V5m: tyop_2Elist_2Elist @ A_27a,V6cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esinter @ A_27a @ V6cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ECONS @ A_27a @ V4y @ V5m ) )
+          = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V7y: A_27a,V8x: A_27a,V9m: tyop_2Elist_2Elist @ A_27a,V10l: tyop_2Elist_2Elist @ A_27a,V11cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esinter @ A_27a @ V11cmp @ ( c_2Elist_2ECONS @ A_27a @ V8x @ V10l ) @ ( c_2Elist_2ECONS @ A_27a @ V7y @ V9m ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Etoto_2Eapto @ A_27a @ V11cmp @ V8x @ V7y ) @ ( c_2Eenumeral_2Esinter @ A_27a @ V11cmp @ V10l @ ( c_2Elist_2ECONS @ A_27a @ V7y @ V9m ) ) @ ( c_2Elist_2ECONS @ A_27a @ V8x @ ( c_2Eenumeral_2Esinter @ A_27a @ V11cmp @ V10l @ V9m ) ) @ ( c_2Eenumeral_2Esinter @ A_27a @ V11cmp @ ( c_2Elist_2ECONS @ A_27a @ V8x @ V10l ) @ V9m ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EOL__INTER__IMP,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1l: tyop_2Elist_2Elist @ A_27a] :
+      ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V1l )
+     => ! [V2m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V2m )
+         => ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Esinter @ A_27a @ V0cmp @ V1l @ V2m ) )
+            & ( ( c_2Elist_2ELIST__TO__SET @ A_27a @ ( c_2Eenumeral_2Esinter @ A_27a @ V0cmp @ V1l @ V2m ) )
+              = ( c_2Epred__set_2EINTER @ A_27a @ ( c_2Elist_2ELIST__TO__SET @ A_27a @ V1l ) @ ( c_2Elist_2ELIST__TO__SET @ A_27a @ V2m ) ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Esdiff__ind,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Etoto_2Etoto @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > $o] :
+      ( ( ! [V1cmp: tyop_2Etoto_2Etoto @ A_27a] : ( V0P @ V1cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ENIL @ A_27a ) )
+        & ! [V2cmp: tyop_2Etoto_2Etoto @ A_27a,V3x: A_27a,V4l: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V2cmp @ ( c_2Elist_2ECONS @ A_27a @ V3x @ V4l ) @ ( c_2Elist_2ENIL @ A_27a ) )
+        & ! [V5cmp: tyop_2Etoto_2Etoto @ A_27a,V6y: A_27a,V7m: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V5cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ECONS @ A_27a @ V6y @ V7m ) )
+        & ! [V8cmp: tyop_2Etoto_2Etoto @ A_27a,V9x: A_27a,V10l: tyop_2Elist_2Elist @ A_27a,V11y: A_27a,V12m: tyop_2Elist_2Elist @ A_27a] :
+            ( ( ( ( ( c_2Etoto_2Eapto @ A_27a @ V8cmp @ V9x @ V11y )
+                  = c_2EternaryComparisons_2EEQUAL )
+               => ( V0P @ V8cmp @ V10l @ V12m ) )
+              & ( ( ( c_2Etoto_2Eapto @ A_27a @ V8cmp @ V9x @ V11y )
+                  = c_2EternaryComparisons_2EGREATER )
+               => ( V0P @ V8cmp @ ( c_2Elist_2ECONS @ A_27a @ V9x @ V10l ) @ V12m ) )
+              & ( ( ( c_2Etoto_2Eapto @ A_27a @ V8cmp @ V9x @ V11y )
+                  = c_2EternaryComparisons_2ELESS )
+               => ( V0P @ V8cmp @ V10l @ ( c_2Elist_2ECONS @ A_27a @ V11y @ V12m ) ) ) )
+           => ( V0P @ V8cmp @ ( c_2Elist_2ECONS @ A_27a @ V9x @ V10l ) @ ( c_2Elist_2ECONS @ A_27a @ V11y @ V12m ) ) ) )
+     => ! [V13v: tyop_2Etoto_2Etoto @ A_27a,V14v1: tyop_2Elist_2Elist @ A_27a,V15v2: tyop_2Elist_2Elist @ A_27a] : ( V0P @ V13v @ V14v1 @ V15v2 ) ) ).
+
+thf(thm_2Eenumeral_2Esdiff,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esdiff @ A_27a @ V0cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ENIL @ A_27a ) )
+          = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V1x: A_27a,V2l: tyop_2Elist_2Elist @ A_27a,V3cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esdiff @ A_27a @ V3cmp @ ( c_2Elist_2ECONS @ A_27a @ V1x @ V2l ) @ ( c_2Elist_2ENIL @ A_27a ) )
+          = ( c_2Elist_2ECONS @ A_27a @ V1x @ V2l ) )
+      & ! [V4y: A_27a,V5m: tyop_2Elist_2Elist @ A_27a,V6cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esdiff @ A_27a @ V6cmp @ ( c_2Elist_2ENIL @ A_27a ) @ ( c_2Elist_2ECONS @ A_27a @ V4y @ V5m ) )
+          = ( c_2Elist_2ENIL @ A_27a ) )
+      & ! [V7y: A_27a,V8x: A_27a,V9m: tyop_2Elist_2Elist @ A_27a,V10l: tyop_2Elist_2Elist @ A_27a,V11cmp: tyop_2Etoto_2Etoto @ A_27a] :
+          ( ( c_2Eenumeral_2Esdiff @ A_27a @ V11cmp @ ( c_2Elist_2ECONS @ A_27a @ V8x @ V10l ) @ ( c_2Elist_2ECONS @ A_27a @ V7y @ V9m ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Etoto_2Eapto @ A_27a @ V11cmp @ V8x @ V7y ) @ ( c_2Elist_2ECONS @ A_27a @ V8x @ ( c_2Eenumeral_2Esdiff @ A_27a @ V11cmp @ V10l @ ( c_2Elist_2ECONS @ A_27a @ V7y @ V9m ) ) ) @ ( c_2Eenumeral_2Esdiff @ A_27a @ V11cmp @ V10l @ V9m ) @ ( c_2Eenumeral_2Esdiff @ A_27a @ V11cmp @ ( c_2Elist_2ECONS @ A_27a @ V8x @ V10l ) @ V9m ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EOL__DIFF__IMP,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1l: tyop_2Elist_2Elist @ A_27a] :
+      ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V1l )
+     => ! [V2m: tyop_2Elist_2Elist @ A_27a] :
+          ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V2m )
+         => ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Esdiff @ A_27a @ V0cmp @ V1l @ V2m ) )
+            & ( ( c_2Elist_2ELIST__TO__SET @ A_27a @ ( c_2Eenumeral_2Esdiff @ A_27a @ V0cmp @ V1l @ V2m ) )
+              = ( c_2Epred__set_2EDIFF @ A_27a @ ( c_2Elist_2ELIST__TO__SET @ A_27a @ V1l ) @ ( c_2Elist_2ELIST__TO__SET @ A_27a @ V2m ) ) ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EENUMERAL__set,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1l: tyop_2Elist_2Elist @ A_27a] :
+      ( ( c_2Elist_2ELIST__TO__SET @ A_27a @ V1l )
+      = ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Elist__to__bt @ A_27a @ ( c_2Eenumeral_2Eincr__ssort @ A_27a @ V0cmp @ V1l ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EOL__ENUMERAL,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1l: tyop_2Elist_2Elist @ A_27a] :
+      ( ( c_2Eenumeral_2EOL @ A_27a @ V0cmp @ V1l )
+     => ( ( c_2Elist_2ELIST__TO__SET @ A_27a @ V1l )
+        = ( c_2Eenumeral_2EENUMERAL @ A_27a @ V0cmp @ ( c_2Eenumeral_2Elist__to__bt @ A_27a @ V1l ) ) ) ) ).
+
+thf(thm_2Eenumeral_2EOWL__UNION__THM,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1s: A_27a > $o,V2l: tyop_2Elist_2Elist @ A_27a,V3t: A_27a > $o,V4m: tyop_2Elist_2Elist @ A_27a] :
+      ( ( ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ V1s @ V2l )
+        & ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ V3t @ V4m ) )
+     => ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ ( c_2Epred__set_2EUNION @ A_27a @ V1s @ V3t ) @ ( c_2Eenumeral_2Esmerge @ A_27a @ V0cmp @ V2l @ V4m ) ) ) ).
+
+thf(thm_2Eenumeral_2EOWL__INTER__THM,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1s: A_27a > $o,V2l: tyop_2Elist_2Elist @ A_27a,V3t: A_27a > $o,V4m: tyop_2Elist_2Elist @ A_27a] :
+      ( ( ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ V1s @ V2l )
+        & ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ V3t @ V4m ) )
+     => ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ ( c_2Epred__set_2EINTER @ A_27a @ V1s @ V3t ) @ ( c_2Eenumeral_2Esinter @ A_27a @ V0cmp @ V2l @ V4m ) ) ) ).
+
+thf(thm_2Eenumeral_2EOWL__DIFF__THM,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1s: A_27a > $o,V2l: tyop_2Elist_2Elist @ A_27a,V3t: A_27a > $o,V4m: tyop_2Elist_2Elist @ A_27a] :
+      ( ( ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ V1s @ V2l )
+        & ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ V3t @ V4m ) )
+     => ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ ( c_2Epred__set_2EDIFF @ A_27a @ V1s @ V3t ) @ ( c_2Eenumeral_2Esdiff @ A_27a @ V0cmp @ V2l @ V4m ) ) ) ).
+
+thf(thm_2Eenumeral_2Ebetter__bt__to__ol,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1t: tyop_2Eenumeral_2Ebt @ A_27a] :
+      ( ( c_2Eenumeral_2Ebt__to__ol @ A_27a @ V0cmp @ V1t )
+      = ( c_2Ebool_2ECOND @ ( tyop_2Elist_2Elist @ A_27a ) @ ( c_2Eenumeral_2EOL__bt @ A_27a @ V0cmp @ V1t ) @ ( c_2Eenumeral_2Ebt__to__list__ac @ A_27a @ V1t @ ( c_2Elist_2ENIL @ A_27a ) ) @ ( c_2Eenumeral_2Ebt__to__ol__ac @ A_27a @ V0cmp @ V1t @ ( c_2Elist_2ENIL @ A_27a ) ) ) ) ).
+
+thf(thm_2Eenumeral_2Eset__OWL__thm,axiom,
+    ! [A_27a: $tType,V0cmp: tyop_2Etoto_2Etoto @ A_27a,V1l: tyop_2Elist_2Elist @ A_27a] : ( c_2Eenumeral_2EOWL @ A_27a @ V0cmp @ ( c_2Elist_2ELIST__TO__SET @ A_27a @ V1l ) @ ( c_2Eenumeral_2Eincr__ssort @ A_27a @ V0cmp @ V1l ) ) ).
+
+%------------------------------------------------------------------------------

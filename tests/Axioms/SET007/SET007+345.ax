@@ -1,0 +1,338 @@
+%------------------------------------------------------------------------------
+% File     : SET007+345 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : On Paracompactness of Metrizable Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : pcomps_2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   29 (   7 unt;   0 def)
+%            Number of atoms       :  191 (  19 equ)
+%            Maximal formula atoms :   16 (   6 avg)
+%            Number of connectives :  183 (  21   ~;   0   |; 102   &)
+%                                         (   8 <=>;  52  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   22 (   8 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   38 (  36 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   46 (  46 usr;  11 con; 0-4 aty)
+%            Number of variables   :   75 (  65   !;  10   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_pcomps_2,axiom,
+    $true ).
+
+fof(t2_pcomps_2,axiom,
+    $true ).
+
+fof(t3_pcomps_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ~ ( ~ r1_xreal_0(A,np__0)
+              & ~ r1_xreal_0(B,np__0)
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ~ r1_xreal_0(k7_xcmplx_0(B,k3_newton(np__2,C)),A) ) ) ) ) ).
+
+fof(t4_pcomps_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_xreal_0(C,B)
+                  & r1_xreal_0(np__1,A) )
+               => r1_xreal_0(k2_newton(A,C),k2_newton(A,B)) ) ) ) ) ).
+
+fof(t5_pcomps_2,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r2_wellord1(A,B)
+         => ( r2_wellord1(k2_wellord1(A,B),B)
+            & B = k3_relat_1(k2_wellord1(A,B)) ) ) ) ).
+
+fof(d1_pcomps_2,axiom,
+    ! [A,B] :
+      ( v1_relat_1(B)
+     => ! [C] :
+          ( m1_subset_1(C,A)
+         => k1_pcomps_2(A,B,C) = k3_tarski(k1_wellord1(B,C)) ) ) ).
+
+fof(d2_pcomps_2,axiom,
+    ! [A,B] :
+      ( v1_relat_1(B)
+     => ! [C] :
+          ( C = k2_pcomps_2(A,B)
+        <=> ! [D] :
+              ( r2_hidden(D,C)
+            <=> ? [E] :
+                  ( m1_subset_1(E,A)
+                  & r2_hidden(E,A)
+                  & D = k4_xboole_0(E,k1_pcomps_2(A,B,E)) ) ) ) ) ).
+
+fof(d3_pcomps_2,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_pcomps_1(A))
+            & m2_relset_1(C,k5_numbers,k1_pcomps_1(A)) )
+         => k3_pcomps_2(A,B,C) = k3_tarski(k9_relat_1(C,k4_xboole_0(k2_finseq_1(B),k1_tarski(B)))) ) ) ).
+
+fof(t6_pcomps_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( v4_compts_1(A)
+       => ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+           => ~ ( r1_pre_topc(A,B)
+                & v1_tops_2(B,A)
+                & ! [C] :
+                    ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+                   => ~ ( v1_tops_2(C,A)
+                        & r1_pre_topc(A,C)
+                        & ! [D] :
+                            ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                           => ~ ( r2_hidden(D,C)
+                                & ! [E] :
+                                    ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                                   => ~ ( r2_hidden(E,B)
+                                        & r1_tarski(k6_pre_topc(A,D),E) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t7_pcomps_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ~ ( v3_compts_1(A)
+              & v2_pcomps_1(A)
+              & r1_pre_topc(A,B)
+              & v1_tops_2(B,A)
+              & ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+                 => ~ ( v1_tops_2(C,A)
+                      & r1_pre_topc(A,C)
+                      & r1_setfam_1(k3_pcomps_1(A,C),B)
+                      & v1_pcomps_1(C,A) ) ) ) ) ) ).
+
+fof(t8_pcomps_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v6_metric_1(B)
+            & v7_metric_1(B)
+            & v8_metric_1(B)
+            & v9_metric_1(B)
+            & l1_metric_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),k1_numbers)
+                & m2_relset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),k1_numbers) )
+             => ( ( r1_pcomps_1(u1_struct_0(A),C)
+                  & B = k6_pcomps_1(u1_struct_0(A),C) )
+               => u1_struct_0(B) = u1_struct_0(A) ) ) ) ) ).
+
+fof(t9_pcomps_2,axiom,
+    $true ).
+
+fof(t10_pcomps_2,axiom,
+    $true ).
+
+fof(t11_pcomps_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v6_metric_1(B)
+            & v7_metric_1(B)
+            & v8_metric_1(B)
+            & v9_metric_1(B)
+            & l1_metric_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),k1_numbers)
+                    & m2_relset_1(D,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),k1_numbers) )
+                 => ( ( r1_pcomps_1(u1_struct_0(A),D)
+                      & B = k6_pcomps_1(u1_struct_0(A),D) )
+                   => ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+                    <=> m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(B)))) ) ) ) ) ) ) ).
+
+fof(t12_pcomps_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( v3_pcomps_1(A)
+       => ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+           => ~ ( r1_pre_topc(A,B)
+                & v1_tops_2(B,A)
+                & ! [C] :
+                    ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+                   => ~ ( v1_tops_2(C,A)
+                        & r1_pre_topc(A,C)
+                        & r1_setfam_1(C,B)
+                        & v1_pcomps_1(C,A) ) ) ) ) ) ) ).
+
+fof(t13_pcomps_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( v3_pcomps_1(A)
+       => v2_pcomps_1(A) ) ) ).
+
+fof(s1_pcomps_2,axiom,
+    ( ( r2_wellord1(f2_s1_pcomps_2,f1_s1_pcomps_2)
+      & ? [A] :
+          ( r2_hidden(A,f1_s1_pcomps_2)
+          & p1_s1_pcomps_2(A) ) )
+   => ? [A] :
+        ( r2_hidden(A,f1_s1_pcomps_2)
+        & p1_s1_pcomps_2(A)
+        & ! [B] :
+            ( ( r2_hidden(B,f1_s1_pcomps_2)
+              & p1_s1_pcomps_2(B) )
+           => r2_hidden(k4_tarski(A,B),f2_s1_pcomps_2) ) ) ) ).
+
+fof(dt_k1_pcomps_2,axiom,
+    $true ).
+
+fof(dt_k2_pcomps_2,axiom,
+    $true ).
+
+fof(dt_k3_pcomps_2,axiom,
+    $true ).
+
+fof(dt_k4_pcomps_2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k3_finseq_2(k1_pcomps_1(k1_pcomps_1(A))))
+        & m1_relset_1(B,k5_numbers,k3_finseq_2(k1_pcomps_1(k1_pcomps_1(A))))
+        & m1_subset_1(C,k5_numbers) )
+     => m2_finseq_1(k4_pcomps_2(A,B,C),k1_pcomps_1(k1_pcomps_1(A))) ) ).
+
+fof(redefinition_k4_pcomps_2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k3_finseq_2(k1_pcomps_1(k1_pcomps_1(A))))
+        & m1_relset_1(B,k5_numbers,k3_finseq_2(k1_pcomps_1(k1_pcomps_1(A))))
+        & m1_subset_1(C,k5_numbers) )
+     => k4_pcomps_2(A,B,C) = k1_funct_1(B,C) ) ).
+
+fof(s2_pcomps_2,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s2_pcomps_2)))
+      & m2_relset_1(A,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s2_pcomps_2)))
+      & k8_funct_2(k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s2_pcomps_2)),A,np__0) = f2_s2_pcomps_2
+      & ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s2_pcomps_2)),A,k1_nat_1(B,np__1)) = a_2_0_pcomps_2(A,B) ) ) ).
+
+fof(s3_pcomps_2,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)))
+      & m2_relset_1(A,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)))
+      & k8_funct_2(k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)),A,np__0) = f2_s3_pcomps_2
+      & ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)),A,k1_nat_1(B,np__1)) = a_2_1_pcomps_2(A,B) ) ) ).
+
+fof(fraenkel_a_2_0_pcomps_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s2_pcomps_2)))
+        & m2_relset_1(B,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s2_pcomps_2)))
+        & m2_subset_1(C,k1_numbers,k5_numbers) )
+     => ( r2_hidden(A,a_2_0_pcomps_2(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(f1_s2_pcomps_2))
+            & A = k3_tarski(a_3_0_pcomps_2(B,C,D))
+            & p1_s2_pcomps_2(D) ) ) ) ).
+
+fof(fraenkel_a_3_0_pcomps_2,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s2_pcomps_2)))
+        & m2_relset_1(B,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s2_pcomps_2)))
+        & m2_subset_1(C,k1_numbers,k5_numbers)
+        & m1_subset_1(D,k1_zfmisc_1(f1_s2_pcomps_2)) )
+     => ( r2_hidden(A,a_3_0_pcomps_2(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,f1_s2_pcomps_2)
+            & A = f3_s2_pcomps_2(E,C)
+            & ! [F] :
+                ( m1_subset_1(F,k1_zfmisc_1(k1_zfmisc_1(f1_s2_pcomps_2)))
+               => ! [G] :
+                    ( m2_subset_1(G,k1_numbers,k5_numbers)
+                   => ( ( r1_xreal_0(G,C)
+                        & F = k8_funct_2(k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s2_pcomps_2)),B,G) )
+                     => p2_s2_pcomps_2(E,D,C,F) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_1_pcomps_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)))
+        & m2_relset_1(B,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)))
+        & m2_subset_1(C,k1_numbers,k5_numbers) )
+     => ( r2_hidden(A,a_2_1_pcomps_2(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(f1_s3_pcomps_2))
+            & A = k3_tarski(a_3_1_pcomps_2(B,C,D))
+            & p1_s3_pcomps_2(D) ) ) ) ).
+
+fof(fraenkel_a_3_1_pcomps_2,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)))
+        & m2_relset_1(B,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)))
+        & m2_subset_1(C,k1_numbers,k5_numbers)
+        & m1_subset_1(D,k1_zfmisc_1(f1_s3_pcomps_2)) )
+     => ( r2_hidden(A,a_3_1_pcomps_2(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,f1_s3_pcomps_2)
+            & A = f3_s3_pcomps_2(E,C)
+            & p2_s3_pcomps_2(E,D,C)
+            & ~ r2_hidden(E,k3_tarski(a_2_2_pcomps_2(B,C))) ) ) ) ).
+
+fof(fraenkel_a_2_2_pcomps_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)))
+        & m2_relset_1(B,k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)))
+        & m2_subset_1(C,k1_numbers,k5_numbers) )
+     => ( r2_hidden(A,a_2_2_pcomps_2(B,C))
+      <=> ? [D] :
+            ( m2_subset_1(D,k1_numbers,k5_numbers)
+            & A = k5_setfam_1(f1_s3_pcomps_2,k8_funct_2(k5_numbers,k1_pcomps_1(k1_pcomps_1(f1_s3_pcomps_2)),B,D))
+            & r1_xreal_0(D,C) ) ) ) ).
+
+%------------------------------------------------------------------------------

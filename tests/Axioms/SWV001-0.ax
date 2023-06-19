@@ -1,0 +1,74 @@
+%--------------------------------------------------------------------------
+% File     : SWV001-0 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Software Verification
+% Axioms   : Program verification axioms
+% Version  : [MOW76] axioms.
+% English  :
+
+% Refs     : [MOW76] McCharen et al. (1976), Problems and Experiments for a
+% Source   : [MOW76]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   12 (   5 unt;   1 nHn;   7 RR)
+%            Number of literals    :   23 (   9 equ;  11 neg)
+%            Maximal clause size   :    3 (   1 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    2 (   1 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    2 (   2 usr;   0 con; 1-1 aty)
+%            Number of variables   :   22 (   0 sgn)
+% SPC      : 
+
+% Comments : Only reflexivity is specified from equality, i.e. no symmetry
+%            or transitivity.
+%          : These axioms were contributed to [MOW76] in private
+%            correspondance from G. Ernst.
+%--------------------------------------------------------------------------
+cnf(predecessor_successor,axiom,
+    predecessor(successor(X)) = X ).
+
+cnf(successor_predecessor,axiom,
+    successor(predecessor(X)) = X ).
+
+cnf(well_defined_predecessor,axiom,
+    ( X = Y
+    | predecessor(X) != predecessor(Y) ) ).
+
+cnf(well_defined_successor,axiom,
+    ( X = Y
+    | successor(X) != successor(Y) ) ).
+
+cnf(predecessor_less_than,axiom,
+    less_than(predecessor(X),X) ).
+
+cnf(less_than_successor,axiom,
+    less_than(X,successor(X)) ).
+
+cnf(transitivity_of_less_than,axiom,
+    ( less_than(X,Z)
+    | ~ less_than(X,Y)
+    | ~ less_than(Y,Z) ) ).
+
+cnf(all_related,axiom,
+    ( less_than(X,Y)
+    | less_than(Y,X)
+    | X = Y ) ).
+
+cnf(x_not_less_than_x,axiom,
+    ~ less_than(X,X) ).
+
+cnf(anti_symmetry_of_less_than,axiom,
+    ( ~ less_than(X,Y)
+    | ~ less_than(Y,X) ) ).
+
+cnf(equal_and_less_than_transitivity1,axiom,
+    ( less_than(Y,Z)
+    | X != Y
+    | ~ less_than(X,Z) ) ).
+
+cnf(equal_and_less_than_transitivity2,axiom,
+    ( less_than(Z,Y)
+    | X != Y
+    | ~ less_than(Z,X) ) ).
+
+%--------------------------------------------------------------------------

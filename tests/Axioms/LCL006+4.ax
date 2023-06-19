@@ -1,0 +1,65 @@
+%------------------------------------------------------------------------------
+% File     : LCL006+4 : TPTP v8.1.2. Released v3.3.0.
+% Domain   : Logic Calculi (Propositional)
+% Axioms   : Principia's axiomatization of propositional logic
+% Version  : [RW10] axioms.
+% English  :
+
+% Refs     : [RW10]  Russell & Whitehead (1910), Principia Mathmatica
+%          : [Hal]   Halleck (URL), John Halleck's Logic Systems
+%          : [She06] Shen (2006), Automated Proofs of Equivalence of Modal
+% Source   : [Hal]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   10 (  10 unt;   0 def)
+%            Number of atoms       :   10 (   0 equ)
+%            Maximal formula atoms :    1 (   1 avg)
+%            Number of connectives :    0 (   0   ~;   0   |;   0   &)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    1 (   1 avg)
+%            Maximal term depth    :    0 (   0 avg)
+%            Number of predicates  :   10 (  10 usr;  10 prp; 0-0 aty)
+%            Number of functors    :    0 (   0 usr;   0 con; --- aty)
+%            Number of variables   :    0 (   0   !;   0   ?)
+% SPC      : 
+
+% Comments : Requires LCL006+0, LCL006+1
+%------------------------------------------------------------------------------
+%----Operator definitions to reduce everything to and & not
+fof(principia_op_implies_or,axiom,
+    op_implies_or ).
+
+fof(principia_op_and,axiom,
+    op_and ).
+
+fof(principia_op_equiv,axiom,
+    op_equiv ).
+
+%----The one explicit rule
+fof(principia_modus_ponens,axiom,
+    modus_ponens ).
+
+%----The axioms
+fof(principia_r1,axiom,
+    r1 ).
+
+fof(principia_r2,axiom,
+    r2 ).
+
+fof(principia_r3,axiom,
+    r3 ).
+
+%----This is the redundant axiom in Principia
+fof(principia_r4,axiom,
+    r4 ).
+
+fof(principia_r5,axiom,
+    r5 ).
+
+%----Admissible but not required for completeness. With it much more can
+%----be done.
+fof(substitution_of_equivalents,axiom,
+    substitution_of_equivalents ).
+
+%------------------------------------------------------------------------------

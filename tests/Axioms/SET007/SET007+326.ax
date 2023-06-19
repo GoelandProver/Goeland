@@ -1,0 +1,172 @@
+%------------------------------------------------------------------------------
+% File     : SET007+326 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : The Topological Space E^2_T.  Simple Closed Curves
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : topreal2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   10 (   1 unt;   0 def)
+%            Number of atoms       :   89 (  13 equ)
+%            Maximal formula atoms :   21 (   8 avg)
+%            Number of connectives :  103 (  24   ~;   0   |;  51   &)
+%                                         (   3 <=>;  25  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   21 (  11 avg)
+%            Maximal term depth    :    4 (   2 avg)
+%            Number of predicates  :   11 (  10 usr;   0 prp; 1-4 aty)
+%            Number of functors    :   10 (  10 usr;   2 con; 0-3 aty)
+%            Number of variables   :   30 (  22   !;   8   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_topreal2,axiom,
+    ( ~ v1_xboole_0(k2_topreal1)
+    & v1_topreal2(k2_topreal1) ) ).
+
+fof(rc1_topreal2,axiom,
+    ? [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+      & v1_topreal2(A) ) ).
+
+fof(cc1_topreal2,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+     => ( v1_topreal2(A)
+       => ( ~ v1_xboole_0(A)
+          & v6_compts_1(A,k15_euclid(np__2)) ) ) ) ).
+
+fof(t1_topreal2,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k15_euclid(np__2)))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ~ ( A != B
+              & r2_hidden(A,k2_topreal1)
+              & r2_hidden(B,k2_topreal1)
+              & ! [C] :
+                  ( ( ~ v1_xboole_0(C)
+                    & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+                 => ! [D] :
+                      ( ( ~ v1_xboole_0(D)
+                        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+                     => ~ ( r1_topreal1(k15_euclid(np__2),A,B,C)
+                          & r1_topreal1(k15_euclid(np__2),A,B,D)
+                          & k2_topreal1 = k4_subset_1(u1_struct_0(k15_euclid(np__2)),C,D)
+                          & k5_subset_1(u1_struct_0(k15_euclid(np__2)),C,D) = k2_struct_0(k15_euclid(np__2),A,B) ) ) ) ) ) ) ).
+
+fof(t2_topreal2,axiom,
+    v6_compts_1(k2_topreal1,k15_euclid(np__2)) ).
+
+fof(t3_topreal2,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k15_euclid(np__2)))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+             => ! [D] :
+                  ( ( ~ v1_xboole_0(D)
+                    & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,u1_struct_0(k3_pre_topc(k15_euclid(np__2),C)),u1_struct_0(k3_pre_topc(k15_euclid(np__2),D)))
+                        & m2_relset_1(E,u1_struct_0(k3_pre_topc(k15_euclid(np__2),C)),u1_struct_0(k3_pre_topc(k15_euclid(np__2),D))) )
+                     => ( ( v3_tops_2(E,k3_pre_topc(k15_euclid(np__2),C),k3_pre_topc(k15_euclid(np__2),D))
+                          & r1_topreal1(k15_euclid(np__2),A,B,C) )
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(k15_euclid(np__2)))
+                           => ! [G] :
+                                ( m1_subset_1(G,u1_struct_0(k15_euclid(np__2)))
+                               => ( ( F = k1_funct_1(E,A)
+                                    & G = k1_funct_1(E,B) )
+                                 => r1_topreal1(k15_euclid(np__2),F,G,D) ) ) ) ) ) ) ) ) ) ).
+
+fof(d1_topreal2,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+     => ( v1_topreal2(A)
+      <=> ? [B] :
+            ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(k3_pre_topc(k15_euclid(np__2),k2_topreal1)),u1_struct_0(k3_pre_topc(k15_euclid(np__2),A)))
+            & m2_relset_1(B,u1_struct_0(k3_pre_topc(k15_euclid(np__2),k2_topreal1)),u1_struct_0(k3_pre_topc(k15_euclid(np__2),A)))
+            & v3_tops_2(B,k3_pre_topc(k15_euclid(np__2),k2_topreal1),k3_pre_topc(k15_euclid(np__2),A)) ) ) ) ).
+
+fof(t4_topreal2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ~ ( v1_topreal2(A)
+          & ! [B] :
+              ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+             => ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+                 => ~ ( B != C
+                      & r2_hidden(B,A)
+                      & r2_hidden(C,A) ) ) ) ) ) ).
+
+fof(t5_topreal2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ( v1_topreal2(A)
+      <=> ( ? [B] :
+              ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+              & ? [C] :
+                  ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+                  & B != C
+                  & r2_hidden(B,A)
+                  & r2_hidden(C,A) ) )
+          & ! [B] :
+              ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+             => ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+                 => ~ ( B != C
+                      & r2_hidden(B,A)
+                      & r2_hidden(C,A)
+                      & ! [D] :
+                          ( ( ~ v1_xboole_0(D)
+                            & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+                         => ! [E] :
+                              ( ( ~ v1_xboole_0(E)
+                                & m1_subset_1(E,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+                             => ~ ( r1_topreal1(k15_euclid(np__2),B,C,D)
+                                  & r1_topreal1(k15_euclid(np__2),B,C,E)
+                                  & A = k4_subset_1(u1_struct_0(k15_euclid(np__2)),D,E)
+                                  & k5_subset_1(u1_struct_0(k15_euclid(np__2)),D,E) = k2_struct_0(k15_euclid(np__2),B,C) ) ) ) ) ) ) ) ) ) ).
+
+fof(t6_topreal2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ( v1_topreal2(A)
+      <=> ? [B] :
+            ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+            & ? [C] :
+                ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+                & ? [D] :
+                    ( ~ v1_xboole_0(D)
+                    & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+                    & ? [E] :
+                        ( ~ v1_xboole_0(E)
+                        & m1_subset_1(E,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+                        & B != C
+                        & r2_hidden(B,A)
+                        & r2_hidden(C,A)
+                        & r1_topreal1(k15_euclid(np__2),B,C,D)
+                        & r1_topreal1(k15_euclid(np__2),B,C,E)
+                        & A = k4_subset_1(u1_struct_0(k15_euclid(np__2)),D,E)
+                        & k5_subset_1(u1_struct_0(k15_euclid(np__2)),D,E) = k2_struct_0(k15_euclid(np__2),B,C) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,106 @@
+%------------------------------------------------------------------------------
+% File     : SWV008^0 : TPTP v8.1.2. Released v3.6.0.
+% Domain   : Software Verification (Security)
+% Axioms   : ICL logic based upon modal logic based upon simple type theory
+% Version  : [Ben08] axioms.
+% English  :
+
+% Refs     : [GA08]  Garg & Abadi (2008), A Modal Deconstruction of Access
+%          : [Ben08] Benzmueller (2008), Automating Access Control Logics i
+%          : [BP09]  Benzmueller & Paulson (2009), Exploring Properties of
+% Source   : [Ben08]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   19 (   9 unt;  10 typ;   9 def)
+%            Number of atoms       :   31 (   9 equ;   0 cnn)
+%            Maximal formula atoms :    1 (   1 avg)
+%            Number of connectives :   15 (   0   ~;   0   |;   0   &;  15   @)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    1 (   1 avg;  15 nst)
+%            Number of types       :    2 (   0 usr)
+%            Number of type conns  :   43 (  43   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   18 (  17 usr;   7 con; 0-3 aty)
+%            Number of variables   :   11 (  11   ^   0   !;   0   ?;  11   :)
+% SPC      : 
+
+% Comments : Requires LCL008^0.ax
+%          : THF0 syntax
+%------------------------------------------------------------------------------
+%----The encoding of ICL logic employs only one accessibility relation which
+%----introduce here as a constant 'rel'; we don't need multimodal logic.
+thf(rel_type,type,
+    rel: $i > $i > $o ).
+
+%----ICL logic distiguishes between atoms and principals; for this we introduce
+%----a predicate 'icl_atom' ...
+thf(icl_atom_type,type,
+    icl_atom: ( $i > $o ) > $i > $o ).
+
+thf(icl_atom,definition,
+    ( icl_atom
+    = ( ^ [P: $i > $o] : ( mbox @ rel @ P ) ) ) ).
+
+%---- ... and also a predicate 'icl_princ'
+thf(icl_princ_type,type,
+    icl_princ: ( $i > $o ) > $i > $o ).
+
+thf(icl_princ,definition,
+    ( icl_princ
+    = ( ^ [P: $i > $o] : P ) ) ).
+
+%----ICL and connective
+thf(icl_and_type,type,
+    icl_and: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(icl_and,definition,
+    ( icl_and
+    = ( ^ [A: $i > $o,B: $i > $o] : ( mand @ A @ B ) ) ) ).
+
+%----ICL or connective
+thf(icl_or_type,type,
+    icl_or: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(icl_or,definition,
+    ( icl_or
+    = ( ^ [A: $i > $o,B: $i > $o] : ( mor @ A @ B ) ) ) ).
+
+%----ICL implication connective
+thf(icl_impl_type,type,
+    icl_impl: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(icl_impl,definition,
+    ( icl_impl
+    = ( ^ [A: $i > $o,B: $i > $o] : ( mbox @ rel @ ( mimpl @ A @ B ) ) ) ) ).
+
+%----ICL true connective
+thf(icl_true_type,type,
+    icl_true: $i > $o ).
+
+thf(icl_true,definition,
+    icl_true = mtrue ).
+
+%----ICL false connective
+thf(icl_false_type,type,
+    icl_false: $i > $o ).
+
+thf(icl_false,definition,
+    icl_false = mfalse ).
+
+%----ICL says connective
+thf(icl_says_type,type,
+    icl_says: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(icl_says,definition,
+    ( icl_says
+    = ( ^ [A: $i > $o,S: $i > $o] : ( mbox @ rel @ ( mor @ A @ S ) ) ) ) ).
+
+%----An ICL formula is K-valid if its translation into modal logic is valid
+thf(iclval_decl_type,type,
+    iclval: ( $i > $o ) > $o ).
+
+thf(icl_s4_valid,definition,
+    ( iclval
+    = ( ^ [X: $i > $o] : ( mvalid @ X ) ) ) ).
+
+%------------------------------------------------------------------------------

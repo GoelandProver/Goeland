@@ -1,0 +1,72 @@
+%------------------------------------------------------------------------------
+% File     : LAT006-1 : TPTP v8.1.2. Released v3.2.0.
+% Domain   : Lattice Theory
+% Axioms   : Tarski's fixed point theorem GLB (equality) axioms
+% Version  : [Pau06] (equality) axioms.
+% English  :
+
+% Refs     : [Pau06] Paulson (2006), Email to G. Sutcliffe
+% Source   : [Pau06]
+% Names    : Tarski__glb.ax [Pau06]
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   13 (   7 unt;   0 nHn;  11 RR)
+%            Number of literals    :   22 (   4 equ;   9 neg)
+%            Maximal clause size   :    5 (   1 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    6 (   5 usr;   0 prp; 2-3 aty)
+%            Number of functors    :   16 (  16 usr;   7 con; 0-4 aty)
+%            Number of variables   :   23 (   0 sgn)
+% SPC      : 
+
+% Comments :
+%------------------------------------------------------------------------------
+cnf(cls_Tarski_OA_A_61_61_Apset_Acl_0,axiom,
+    v_A = c_Tarski_Opotype_Opset(v_cl,t_a,tc_Product__Type_Ounit) ).
+
+cnf(cls_Tarski_OCL_Olub__upper_0,axiom,
+    ( ~ c_in(V_x,V_S,T_a)
+    | ~ c_in(V_cl,c_Tarski_OCompleteLattice,tc_Tarski_Opotype_Opotype__ext__type(T_a,tc_Product__Type_Ounit))
+    | ~ c_in(V_cl,c_Tarski_OPartialOrder,tc_Tarski_Opotype_Opotype__ext__type(T_a,tc_Product__Type_Ounit))
+    | ~ c_lessequals(V_S,c_Tarski_Opotype_Opset(V_cl,T_a,tc_Product__Type_Ounit),tc_set(T_a))
+    | c_in(c_Pair(V_x,c_Tarski_Olub(V_S,V_cl,T_a),T_a,T_a),c_Tarski_Opotype_Oorder(V_cl,T_a,tc_Product__Type_Ounit),tc_prod(T_a,T_a)) ) ).
+
+cnf(cls_Tarski_O_Ix1_M_Ay1_J_A_58_Aorder_A_Idual_Acl_J_A_61_61_A_Iy1_M_Ax1_J_A_58_Aorder_Acl_0,axiom,
+    ( ~ c_in(c_Pair(V_x,V_y,T_a,T_a),c_Tarski_Opotype_Oorder(c_Tarski_Odual(V_cl,T_a),T_a,tc_Product__Type_Ounit),tc_prod(T_a,T_a))
+    | c_in(c_Pair(V_y,V_x,T_a,T_a),c_Tarski_Opotype_Oorder(V_cl,T_a,tc_Product__Type_Ounit),tc_prod(T_a,T_a)) ) ).
+
+cnf(cls_Tarski_O_Ix1_M_Ay1_J_A_58_Aorder_A_Idual_Acl_J_A_61_61_A_Iy1_M_Ax1_J_A_58_Aorder_Acl_1,axiom,
+    ( ~ c_in(c_Pair(V_y,V_x,T_a,T_a),c_Tarski_Opotype_Oorder(V_cl,T_a,tc_Product__Type_Ounit),tc_prod(T_a,T_a))
+    | c_in(c_Pair(V_x,V_y,T_a,T_a),c_Tarski_Opotype_Oorder(c_Tarski_Odual(V_cl,T_a),T_a,tc_Product__Type_Ounit),tc_prod(T_a,T_a)) ) ).
+
+cnf(cls_Tarski_Ocl1_A_58_ACompleteLattice_A_61_61_62_Aantisym_A_Iorder_Acl1_J_A_61_61_ATrue_0,axiom,
+    ( ~ c_in(V_cl,c_Tarski_OCompleteLattice,tc_Tarski_Opotype_Opotype__ext__type(T_a,tc_Product__Type_Ounit))
+    | c_Relation_Oantisym(c_Tarski_Opotype_Oorder(V_cl,T_a,tc_Product__Type_Ounit),T_a) ) ).
+
+cnf(cls_Tarski_Ocl1_A_58_ACompleteLattice_A_61_61_62_Arefl_A_Ipset_Acl1_J_A_Iorder_Acl1_J_A_61_61_ATrue_0,axiom,
+    ( ~ c_in(V_cl,c_Tarski_OCompleteLattice,tc_Tarski_Opotype_Opotype__ext__type(T_a,tc_Product__Type_Ounit))
+    | c_Relation_Orefl(c_Tarski_Opotype_Opset(V_cl,T_a,tc_Product__Type_Ounit),c_Tarski_Opotype_Oorder(V_cl,T_a,tc_Product__Type_Ounit),T_a) ) ).
+
+cnf(cls_Tarski_Ocl1_A_58_ACompleteLattice_A_61_61_62_Atrans_A_Iorder_Acl1_J_A_61_61_ATrue_0,axiom,
+    ( ~ c_in(V_cl,c_Tarski_OCompleteLattice,tc_Tarski_Opotype_Opotype__ext__type(T_a,tc_Product__Type_Ounit))
+    | c_Relation_Otrans(c_Tarski_Opotype_Oorder(V_cl,T_a,tc_Product__Type_Ounit),T_a) ) ).
+
+cnf(cls_Tarski_Ocl_A_58_ACompleteLattice_A_61_61_ATrue_0,axiom,
+    c_in(v_cl,c_Tarski_OCompleteLattice,tc_Tarski_Opotype_Opotype__ext__type(t_a,tc_Product__Type_Ounit)) ).
+
+cnf(cls_Tarski_Odual_Acl_A_58_ACompleteLattice_0,axiom,
+    c_in(c_Tarski_Odual(v_cl,t_a),c_Tarski_OCompleteLattice,tc_Tarski_Opotype_Opotype__ext__type(t_a,tc_Product__Type_Ounit)) ).
+
+cnf(cls_Tarski_Odual_Acl_A_58_APartialOrder_0,axiom,
+    c_in(c_Tarski_Odual(v_cl,t_a),c_Tarski_OPartialOrder,tc_Tarski_Opotype_Opotype__ext__type(t_a,tc_Product__Type_Ounit)) ).
+
+cnf(cls_Tarski_Oglb__dual__lub_0,axiom,
+    c_Tarski_Oglb(V_S,V_cl,T_a) = c_Tarski_Olub(V_S,c_Tarski_Odual(V_cl,T_a),T_a) ).
+
+cnf(cls_Tarski_Opset_A_Idual_Acl_J_A_61_61_Apset_Acl_0,axiom,
+    c_Tarski_Opotype_Opset(c_Tarski_Odual(V_cl,T_a),T_a,tc_Product__Type_Ounit) = c_Tarski_Opotype_Opset(V_cl,T_a,tc_Product__Type_Ounit) ).
+
+cnf(cls_Tarski_Or_A_61_61_Aorder_Acl_0,axiom,
+    v_r = c_Tarski_Opotype_Oorder(v_cl,t_a,tc_Product__Type_Ounit) ).
+
+%------------------------------------------------------------------------------

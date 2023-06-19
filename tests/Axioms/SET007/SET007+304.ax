@@ -1,0 +1,102 @@
+%------------------------------------------------------------------------------
+% File     : SET007+304 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Fix Point Theorem for Compact Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : ali2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    5 (   1 unt;   0 def)
+%            Number of atoms       :   47 (   3 equ)
+%            Maximal formula atoms :   16 (   9 avg)
+%            Number of connectives :   50 (   8   ~;   0   |;  29   &)
+%                                         (   1 <=>;  12  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   9 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   15 (  13 usr;   1 prp; 0-3 aty)
+%            Number of functors    :    8 (   8 usr;   3 con; 0-4 aty)
+%            Number of variables   :   13 (  11   !;   2   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(d1_ali2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),u1_struct_0(A))
+            & m2_relset_1(B,u1_struct_0(A),u1_struct_0(A)) )
+         => ( m1_ali2(B,A)
+          <=> ? [C] :
+                ( m1_subset_1(C,k1_numbers)
+                & ~ r1_xreal_0(C,np__0)
+                & ~ r1_xreal_0(np__1,C)
+                & ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => r1_xreal_0(k4_metric_1(A,k8_funct_2(u1_struct_0(A),u1_struct_0(A),B,D),k8_funct_2(u1_struct_0(A),u1_struct_0(A),B,E)),k4_real_1(C,k4_metric_1(A,D,E))) ) ) ) ) ) ) ).
+
+fof(t1_ali2,axiom,
+    $true ).
+
+fof(t2_ali2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_ali2(B,A)
+         => ~ ( v2_compts_1(k5_pcomps_1(A))
+              & ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ~ ( k8_funct_2(u1_struct_0(A),u1_struct_0(A),B,C) = C
+                      & ! [D] :
+                          ( m1_subset_1(D,u1_struct_0(A))
+                         => ( k8_funct_2(u1_struct_0(A),u1_struct_0(A),B,D) = D
+                           => D = C ) ) ) ) ) ) ) ).
+
+fof(dt_m1_ali2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_ali2(B,A)
+         => ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),u1_struct_0(A))
+            & m2_relset_1(B,u1_struct_0(A),u1_struct_0(A)) ) ) ) ).
+
+fof(existence_m1_ali2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ? [B] : m1_ali2(B,A) ) ).
+
+%------------------------------------------------------------------------------

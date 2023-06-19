@@ -1,0 +1,1319 @@
+%------------------------------------------------------------------------------
+% File     : SET007+59 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Partially Ordered Sets
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : orders_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  215 ( 108 unt;   0 def)
+%            Number of atoms       :  635 (  40 equ)
+%            Maximal formula atoms :   28 (   2 avg)
+%            Number of connectives :  495 (  75   ~;   4   |; 202   &)
+%                                         (  22 <=>; 192  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   4 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :   39 (  37 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   21 (  21 usr;   3 con; 0-3 aty)
+%            Number of variables   :  260 ( 254   !;   6   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_orders_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ~ v1_xboole_0(k1_orders_1(A)) ) ).
+
+fof(d1_orders_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ r2_hidden(k1_xboole_0,A)
+       => ! [B] :
+            ( ( v1_funct_1(B)
+              & v1_funct_2(B,A,k3_tarski(A))
+              & m2_relset_1(B,A,k3_tarski(A)) )
+           => ( m1_orders_1(B,A)
+            <=> ! [C] :
+                  ( r2_hidden(C,A)
+                 => r2_hidden(k1_funct_1(B,C),C) ) ) ) ) ) ).
+
+fof(d2_orders_1,axiom,
+    ! [A] : k1_orders_1(A) = k4_xboole_0(k1_zfmisc_1(A),k1_tarski(k1_xboole_0)) ).
+
+fof(t1_orders_1,axiom,
+    $true ).
+
+fof(t2_orders_1,axiom,
+    $true ).
+
+fof(t3_orders_1,axiom,
+    $true ).
+
+fof(t4_orders_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ~ r2_hidden(k1_xboole_0,k1_orders_1(A)) ) ).
+
+fof(t5_orders_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ( r1_tarski(A,B)
+          <=> r2_hidden(A,k1_orders_1(B)) ) ) ) ).
+
+fof(t6_orders_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ( m1_subset_1(A,k1_zfmisc_1(B))
+          <=> r2_hidden(A,k1_orders_1(B)) ) ) ) ).
+
+fof(t7_orders_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => r2_hidden(A,k1_orders_1(A)) ) ).
+
+fof(t8_orders_1,axiom,
+    $true ).
+
+fof(t9_orders_1,axiom,
+    $true ).
+
+fof(t10_orders_1,axiom,
+    $true ).
+
+fof(t11_orders_1,axiom,
+    $true ).
+
+fof(t12_orders_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_2(C)
+        & v4_relat_2(C)
+        & v8_relat_2(C)
+        & v1_partfun1(C,A,A)
+        & m2_relset_1(C,A,A) )
+     => ( r2_hidden(B,A)
+       => r2_hidden(k4_tarski(B,B),C) ) ) ).
+
+fof(t13_orders_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_relat_2(D)
+        & v4_relat_2(D)
+        & v8_relat_2(D)
+        & v1_partfun1(D,A,A)
+        & m2_relset_1(D,A,A) )
+     => ( ( r2_hidden(B,A)
+          & r2_hidden(C,A)
+          & r2_hidden(k4_tarski(B,C),D)
+          & r2_hidden(k4_tarski(C,B),D) )
+       => B = C ) ) ).
+
+fof(t14_orders_1,axiom,
+    ! [A,B,C,D,E] :
+      ( ( v1_relat_2(E)
+        & v4_relat_2(E)
+        & v8_relat_2(E)
+        & v1_partfun1(E,A,A)
+        & m2_relset_1(E,A,A) )
+     => ( ( r2_hidden(B,A)
+          & r2_hidden(C,A)
+          & r2_hidden(D,A)
+          & r2_hidden(k4_tarski(B,C),E)
+          & r2_hidden(k4_tarski(C,D),E) )
+       => r2_hidden(k4_tarski(B,D),E) ) ) ).
+
+fof(t15_orders_1,axiom,
+    $true ).
+
+fof(t16_orders_1,axiom,
+    $true ).
+
+fof(t17_orders_1,axiom,
+    $true ).
+
+fof(t18_orders_1,axiom,
+    $true ).
+
+fof(t19_orders_1,axiom,
+    $true ).
+
+fof(t20_orders_1,axiom,
+    $true ).
+
+fof(t21_orders_1,axiom,
+    $true ).
+
+fof(t22_orders_1,axiom,
+    $true ).
+
+fof(t23_orders_1,axiom,
+    $true ).
+
+fof(t24_orders_1,axiom,
+    $true ).
+
+fof(t25_orders_1,axiom,
+    $true ).
+
+fof(t26_orders_1,axiom,
+    $true ).
+
+fof(t27_orders_1,axiom,
+    $true ).
+
+fof(t28_orders_1,axiom,
+    $true ).
+
+fof(t29_orders_1,axiom,
+    $true ).
+
+fof(t30_orders_1,axiom,
+    $true ).
+
+fof(t31_orders_1,axiom,
+    $true ).
+
+fof(t32_orders_1,axiom,
+    $true ).
+
+fof(t33_orders_1,axiom,
+    $true ).
+
+fof(t34_orders_1,axiom,
+    $true ).
+
+fof(t35_orders_1,axiom,
+    $true ).
+
+fof(t36_orders_1,axiom,
+    $true ).
+
+fof(t37_orders_1,axiom,
+    $true ).
+
+fof(t38_orders_1,axiom,
+    $true ).
+
+fof(t39_orders_1,axiom,
+    $true ).
+
+fof(t40_orders_1,axiom,
+    $true ).
+
+fof(t41_orders_1,axiom,
+    $true ).
+
+fof(t42_orders_1,axiom,
+    $true ).
+
+fof(t43_orders_1,axiom,
+    $true ).
+
+fof(t44_orders_1,axiom,
+    $true ).
+
+fof(t45_orders_1,axiom,
+    $true ).
+
+fof(t46_orders_1,axiom,
+    $true ).
+
+fof(t47_orders_1,axiom,
+    $true ).
+
+fof(t48_orders_1,axiom,
+    $true ).
+
+fof(t49_orders_1,axiom,
+    $true ).
+
+fof(t50_orders_1,axiom,
+    $true ).
+
+fof(t51_orders_1,axiom,
+    $true ).
+
+fof(t52_orders_1,axiom,
+    $true ).
+
+fof(t53_orders_1,axiom,
+    $true ).
+
+fof(t54_orders_1,axiom,
+    $true ).
+
+fof(t55_orders_1,axiom,
+    $true ).
+
+fof(t56_orders_1,axiom,
+    $true ).
+
+fof(t57_orders_1,axiom,
+    $true ).
+
+fof(t58_orders_1,axiom,
+    $true ).
+
+fof(t59_orders_1,axiom,
+    $true ).
+
+fof(t60_orders_1,axiom,
+    $true ).
+
+fof(t61_orders_1,axiom,
+    $true ).
+
+fof(t62_orders_1,axiom,
+    $true ).
+
+fof(t63_orders_1,axiom,
+    $true ).
+
+fof(t64_orders_1,axiom,
+    $true ).
+
+fof(t65_orders_1,axiom,
+    $true ).
+
+fof(t66_orders_1,axiom,
+    $true ).
+
+fof(t67_orders_1,axiom,
+    $true ).
+
+fof(t68_orders_1,axiom,
+    $true ).
+
+fof(t69_orders_1,axiom,
+    $true ).
+
+fof(t70_orders_1,axiom,
+    $true ).
+
+fof(t71_orders_1,axiom,
+    $true ).
+
+fof(t72_orders_1,axiom,
+    $true ).
+
+fof(t73_orders_1,axiom,
+    $true ).
+
+fof(t74_orders_1,axiom,
+    $true ).
+
+fof(t75_orders_1,axiom,
+    $true ).
+
+fof(t76_orders_1,axiom,
+    $true ).
+
+fof(t77_orders_1,axiom,
+    $true ).
+
+fof(t78_orders_1,axiom,
+    $true ).
+
+fof(t79_orders_1,axiom,
+    $true ).
+
+fof(t80_orders_1,axiom,
+    $true ).
+
+fof(t81_orders_1,axiom,
+    $true ).
+
+fof(t82_orders_1,axiom,
+    $true ).
+
+fof(t83_orders_1,axiom,
+    $true ).
+
+fof(t84_orders_1,axiom,
+    $true ).
+
+fof(t85_orders_1,axiom,
+    $true ).
+
+fof(t86_orders_1,axiom,
+    $true ).
+
+fof(t87_orders_1,axiom,
+    $true ).
+
+fof(t88_orders_1,axiom,
+    $true ).
+
+fof(t89_orders_1,axiom,
+    $true ).
+
+fof(t90_orders_1,axiom,
+    $true ).
+
+fof(t91_orders_1,axiom,
+    ! [A] :
+      ( ~ ( ? [B] :
+              ( B != k1_xboole_0
+              & r2_hidden(B,A) )
+          & k3_tarski(A) = k1_xboole_0 )
+      & ~ ( k3_tarski(A) != k1_xboole_0
+          & ! [B] :
+              ~ ( B != k1_xboole_0
+                & r2_hidden(B,A) ) ) ) ).
+
+fof(t92_orders_1,axiom,
+    ! [A,B] :
+      ( v1_relat_1(B)
+     => ( r7_relat_2(B,A)
+      <=> ( r1_relat_2(B,A)
+          & r6_relat_2(B,A) ) ) ) ).
+
+fof(t93_orders_1,axiom,
+    ! [A,B,C] :
+      ( v1_relat_1(C)
+     => ( ( r1_relat_2(C,A)
+          & r1_tarski(B,A) )
+       => r1_relat_2(C,B) ) ) ).
+
+fof(t94_orders_1,axiom,
+    ! [A,B,C] :
+      ( v1_relat_1(C)
+     => ( ( r4_relat_2(C,A)
+          & r1_tarski(B,A) )
+       => r4_relat_2(C,B) ) ) ).
+
+fof(t95_orders_1,axiom,
+    ! [A,B,C] :
+      ( v1_relat_1(C)
+     => ( ( r8_relat_2(C,A)
+          & r1_tarski(B,A) )
+       => r8_relat_2(C,B) ) ) ).
+
+fof(t96_orders_1,axiom,
+    ! [A,B,C] :
+      ( v1_relat_1(C)
+     => ( ( r7_relat_2(C,A)
+          & r1_tarski(B,A) )
+       => r7_relat_2(C,B) ) ) ).
+
+fof(t97_orders_1,axiom,
+    ! [A,B] :
+      ( ( v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => k3_relat_1(B) = A ) ).
+
+fof(t98_orders_1,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,A,A)
+     => ( r1_relat_2(B,A)
+       => ( k4_relset_1(A,A,B) = A
+          & k3_relat_1(B) = A ) ) ) ).
+
+fof(t99_orders_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v4_relat_2(B)
+        & v8_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ( k4_relset_1(A,A,B) = A
+        & k5_relset_1(A,A,B) = A ) ) ).
+
+fof(t100_orders_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v4_relat_2(B)
+        & v8_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => k3_relat_1(B) = A ) ).
+
+fof(d3_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v1_orders_1(A)
+      <=> ( v1_relat_2(A)
+          & v8_relat_2(A) ) ) ) ).
+
+fof(d4_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v2_orders_1(A)
+      <=> ( v1_relat_2(A)
+          & v8_relat_2(A)
+          & v4_relat_2(A) ) ) ) ).
+
+fof(d5_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v3_orders_1(A)
+      <=> ( v1_relat_2(A)
+          & v8_relat_2(A)
+          & v4_relat_2(A)
+          & v6_relat_2(A) ) ) ) ).
+
+fof(t101_orders_1,axiom,
+    $true ).
+
+fof(t102_orders_1,axiom,
+    $true ).
+
+fof(t103_orders_1,axiom,
+    $true ).
+
+fof(t104_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v1_orders_1(A)
+       => v1_orders_1(k4_relat_1(A)) ) ) ).
+
+fof(t105_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v2_orders_1(A)
+       => v2_orders_1(k4_relat_1(A)) ) ) ).
+
+fof(t106_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v3_orders_1(A)
+       => v3_orders_1(k4_relat_1(A)) ) ) ).
+
+fof(t107_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v2_wellord1(A)
+       => ( v1_orders_1(A)
+          & v2_orders_1(A)
+          & v3_orders_1(A) ) ) ) ).
+
+fof(t108_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v3_orders_1(A)
+       => ( v1_orders_1(A)
+          & v2_orders_1(A) ) ) ) ).
+
+fof(t109_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v2_orders_1(A)
+       => v1_orders_1(A) ) ) ).
+
+fof(t110_orders_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v4_relat_2(B)
+        & v8_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => v2_orders_1(B) ) ).
+
+fof(t111_orders_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v4_relat_2(B)
+        & v8_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => v1_orders_1(B) ) ).
+
+fof(t112_orders_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v4_relat_2(B)
+        & v8_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ( v6_relat_2(B)
+       => v3_orders_1(B) ) ) ).
+
+fof(t113_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( v1_orders_1(A)
+         => v1_orders_1(k2_wellord1(A,B)) ) ) ).
+
+fof(t114_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( v2_orders_1(A)
+         => v2_orders_1(k2_wellord1(A,B)) ) ) ).
+
+fof(t115_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( v3_orders_1(A)
+         => v3_orders_1(k2_wellord1(A,B)) ) ) ).
+
+fof(t116_orders_1,axiom,
+    $true ).
+
+fof(t117_orders_1,axiom,
+    $true ).
+
+fof(t118_orders_1,axiom,
+    $true ).
+
+fof(t119_orders_1,axiom,
+    ( v1_orders_1(k1_xboole_0)
+    & v2_orders_1(k1_xboole_0)
+    & v3_orders_1(k1_xboole_0)
+    & v2_wellord1(k1_xboole_0) ) ).
+
+fof(t120_orders_1,axiom,
+    ! [A] :
+      ( v1_orders_1(k6_partfun1(A))
+      & v2_orders_1(k6_partfun1(A)) ) ).
+
+fof(d6_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r1_orders_1(A,B)
+        <=> ( r1_relat_2(A,B)
+            & r8_relat_2(A,B) ) ) ) ).
+
+fof(d7_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r2_orders_1(A,B)
+        <=> ( r1_relat_2(A,B)
+            & r8_relat_2(A,B)
+            & r4_relat_2(A,B) ) ) ) ).
+
+fof(d8_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r3_orders_1(A,B)
+        <=> ( r1_relat_2(A,B)
+            & r8_relat_2(A,B)
+            & r4_relat_2(A,B)
+            & r6_relat_2(A,B) ) ) ) ).
+
+fof(t121_orders_1,axiom,
+    $true ).
+
+fof(t122_orders_1,axiom,
+    $true ).
+
+fof(t123_orders_1,axiom,
+    $true ).
+
+fof(t124_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r2_wellord1(A,B)
+         => ( r1_orders_1(A,B)
+            & r2_orders_1(A,B)
+            & r3_orders_1(A,B) ) ) ) ).
+
+fof(t125_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r3_orders_1(A,B)
+         => ( r1_orders_1(A,B)
+            & r2_orders_1(A,B) ) ) ) ).
+
+fof(t126_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r2_orders_1(A,B)
+         => r1_orders_1(A,B) ) ) ).
+
+fof(t127_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v1_orders_1(A)
+       => r1_orders_1(A,k3_relat_1(A)) ) ) ).
+
+fof(t128_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B,C] :
+          ( ( r1_orders_1(A,B)
+            & r1_tarski(C,B) )
+         => r1_orders_1(A,C) ) ) ).
+
+fof(t129_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r1_orders_1(A,B)
+         => v1_orders_1(k2_wellord1(A,B)) ) ) ).
+
+fof(t130_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v2_orders_1(A)
+       => r2_orders_1(A,k3_relat_1(A)) ) ) ).
+
+fof(t131_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B,C] :
+          ( ( r2_orders_1(A,B)
+            & r1_tarski(C,B) )
+         => r2_orders_1(A,C) ) ) ).
+
+fof(t132_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r2_orders_1(A,B)
+         => v2_orders_1(k2_wellord1(A,B)) ) ) ).
+
+fof(t133_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v3_orders_1(A)
+       => r3_orders_1(A,k3_relat_1(A)) ) ) ).
+
+fof(t134_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B,C] :
+          ( ( r3_orders_1(A,B)
+            & r1_tarski(C,B) )
+         => r3_orders_1(A,C) ) ) ).
+
+fof(t135_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r3_orders_1(A,B)
+         => v3_orders_1(k2_wellord1(A,B)) ) ) ).
+
+fof(t136_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r1_orders_1(A,B)
+         => r1_orders_1(k4_relat_1(A),B) ) ) ).
+
+fof(t137_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r2_orders_1(A,B)
+         => r2_orders_1(k4_relat_1(A),B) ) ) ).
+
+fof(t138_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r3_orders_1(A,B)
+         => r3_orders_1(k4_relat_1(A),B) ) ) ).
+
+fof(t139_orders_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v4_relat_2(B)
+        & v8_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => r1_orders_1(B,A) ) ).
+
+fof(t140_orders_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v4_relat_2(B)
+        & v8_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => r2_orders_1(B,A) ) ).
+
+fof(t141_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r2_orders_1(A,B)
+         => ( v1_relat_2(k2_wellord1(A,B))
+            & v4_relat_2(k2_wellord1(A,B))
+            & v8_relat_2(k2_wellord1(A,B))
+            & v1_partfun1(k2_wellord1(A,B),B,B)
+            & m2_relset_1(k2_wellord1(A,B),B,B) ) ) ) ).
+
+fof(t142_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r3_orders_1(A,B)
+         => ( v1_relat_2(k2_wellord1(A,B))
+            & v4_relat_2(k2_wellord1(A,B))
+            & v8_relat_2(k2_wellord1(A,B))
+            & v1_partfun1(k2_wellord1(A,B),B,B)
+            & m2_relset_1(k2_wellord1(A,B),B,B) ) ) ) ).
+
+fof(t143_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r2_wellord1(A,B)
+         => ( v1_relat_2(k2_wellord1(A,B))
+            & v4_relat_2(k2_wellord1(A,B))
+            & v8_relat_2(k2_wellord1(A,B))
+            & v1_partfun1(k2_wellord1(A,B),B,B)
+            & m2_relset_1(k2_wellord1(A,B),B,B) ) ) ) ).
+
+fof(t144_orders_1,axiom,
+    $true ).
+
+fof(t145_orders_1,axiom,
+    $true ).
+
+fof(t146_orders_1,axiom,
+    ! [A] :
+      ( r1_orders_1(k6_partfun1(A),A)
+      & r2_orders_1(k6_partfun1(A),A) ) ).
+
+fof(d9_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r4_orders_1(A,B)
+        <=> ! [C] :
+              ~ ( r1_tarski(C,B)
+                & v3_orders_1(k2_wellord1(A,C))
+                & ! [D] :
+                    ~ ( r2_hidden(D,B)
+                      & ! [E] :
+                          ( r2_hidden(E,C)
+                         => r2_hidden(k4_tarski(E,D),A) ) ) ) ) ) ).
+
+fof(d10_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r5_orders_1(A,B)
+        <=> ! [C] :
+              ~ ( r1_tarski(C,B)
+                & v3_orders_1(k2_wellord1(A,C))
+                & ! [D] :
+                    ~ ( r2_hidden(D,B)
+                      & ! [E] :
+                          ( r2_hidden(E,C)
+                         => r2_hidden(k4_tarski(D,E),A) ) ) ) ) ) ).
+
+fof(t147_orders_1,axiom,
+    $true ).
+
+fof(t148_orders_1,axiom,
+    $true ).
+
+fof(t149_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ~ ( r4_orders_1(A,B)
+            & B = k1_xboole_0 ) ) ).
+
+fof(t150_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ~ ( r5_orders_1(A,B)
+            & B = k1_xboole_0 ) ) ).
+
+fof(t151_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r4_orders_1(A,B)
+        <=> r5_orders_1(k4_relat_1(A),B) ) ) ).
+
+fof(t152_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r4_orders_1(k4_relat_1(A),B)
+        <=> r5_orders_1(A,B) ) ) ).
+
+fof(d11_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r6_orders_1(A,B)
+        <=> ( r2_hidden(B,k3_relat_1(A))
+            & ! [C] :
+                ~ ( r2_hidden(C,k3_relat_1(A))
+                  & C != B
+                  & r2_hidden(k4_tarski(B,C),A) ) ) ) ) ).
+
+fof(d12_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r7_orders_1(A,B)
+        <=> ( r2_hidden(B,k3_relat_1(A))
+            & ! [C] :
+                ~ ( r2_hidden(C,k3_relat_1(A))
+                  & C != B
+                  & r2_hidden(k4_tarski(C,B),A) ) ) ) ) ).
+
+fof(d13_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r8_orders_1(A,B)
+        <=> ( r2_hidden(B,k3_relat_1(A))
+            & ! [C] :
+                ( r2_hidden(C,k3_relat_1(A))
+               => ( C = B
+                  | r2_hidden(k4_tarski(C,B),A) ) ) ) ) ) ).
+
+fof(d14_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r9_orders_1(A,B)
+        <=> ( r2_hidden(B,k3_relat_1(A))
+            & ! [C] :
+                ( r2_hidden(C,k3_relat_1(A))
+               => ( C = B
+                  | r2_hidden(k4_tarski(B,C),A) ) ) ) ) ) ).
+
+fof(t153_orders_1,axiom,
+    $true ).
+
+fof(t154_orders_1,axiom,
+    $true ).
+
+fof(t155_orders_1,axiom,
+    $true ).
+
+fof(t156_orders_1,axiom,
+    $true ).
+
+fof(t157_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( ( r9_orders_1(A,B)
+            & v4_relat_2(A) )
+         => r7_orders_1(A,B) ) ) ).
+
+fof(t158_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( ( r8_orders_1(A,B)
+            & v4_relat_2(A) )
+         => r6_orders_1(A,B) ) ) ).
+
+fof(t159_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( ( r7_orders_1(A,B)
+            & v6_relat_2(A) )
+         => r9_orders_1(A,B) ) ) ).
+
+fof(t160_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( ( r6_orders_1(A,B)
+            & v6_relat_2(A) )
+         => r8_orders_1(A,B) ) ) ).
+
+fof(t161_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B,C] :
+          ( ( r2_hidden(B,C)
+            & r8_orders_1(A,B)
+            & r1_tarski(C,k3_relat_1(A))
+            & v1_relat_2(A) )
+         => r4_orders_1(A,C) ) ) ).
+
+fof(t162_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B,C] :
+          ( ( r2_hidden(B,C)
+            & r9_orders_1(A,B)
+            & r1_tarski(C,k3_relat_1(A))
+            & v1_relat_2(A) )
+         => r5_orders_1(A,C) ) ) ).
+
+fof(t163_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r7_orders_1(A,B)
+        <=> r6_orders_1(k4_relat_1(A),B) ) ) ).
+
+fof(t164_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r7_orders_1(k4_relat_1(A),B)
+        <=> r6_orders_1(A,B) ) ) ).
+
+fof(t165_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r9_orders_1(A,B)
+        <=> r8_orders_1(k4_relat_1(A),B) ) ) ).
+
+fof(t166_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r9_orders_1(k4_relat_1(A),B)
+        <=> r8_orders_1(A,B) ) ) ).
+
+fof(t167_orders_1,axiom,
+    $true ).
+
+fof(t168_orders_1,axiom,
+    $true ).
+
+fof(t169_orders_1,axiom,
+    $true ).
+
+fof(t170_orders_1,axiom,
+    $true ).
+
+fof(t171_orders_1,axiom,
+    $true ).
+
+fof(t172_orders_1,axiom,
+    $true ).
+
+fof(t173_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ~ ( r2_orders_1(A,B)
+            & k3_relat_1(A) = B
+            & r4_orders_1(A,B)
+            & ! [C] : ~ r6_orders_1(A,C) ) ) ).
+
+fof(t174_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ~ ( r2_orders_1(A,B)
+            & k3_relat_1(A) = B
+            & r5_orders_1(A,B)
+            & ! [C] : ~ r7_orders_1(A,C) ) ) ).
+
+fof(t175_orders_1,axiom,
+    ! [A] :
+      ~ ( A != k1_xboole_0
+        & ! [B] :
+            ~ ( r1_tarski(B,A)
+              & v6_ordinal1(B)
+              & ! [C] :
+                  ~ ( r2_hidden(C,A)
+                    & ! [D] :
+                        ( r2_hidden(D,B)
+                       => r1_tarski(D,C) ) ) )
+        & ! [B] :
+            ~ ( r2_hidden(B,A)
+              & ! [C] :
+                  ~ ( r2_hidden(C,A)
+                    & C != B
+                    & r1_tarski(B,C) ) ) ) ).
+
+fof(t176_orders_1,axiom,
+    ! [A] :
+      ~ ( A != k1_xboole_0
+        & ! [B] :
+            ~ ( r1_tarski(B,A)
+              & v6_ordinal1(B)
+              & ! [C] :
+                  ~ ( r2_hidden(C,A)
+                    & ! [D] :
+                        ( r2_hidden(D,B)
+                       => r1_tarski(C,D) ) ) )
+        & ! [B] :
+            ~ ( r2_hidden(B,A)
+              & ! [C] :
+                  ~ ( r2_hidden(C,A)
+                    & C != B
+                    & r1_tarski(C,B) ) ) ) ).
+
+fof(t177_orders_1,axiom,
+    ! [A] :
+      ~ ( A != k1_xboole_0
+        & ! [B] :
+            ( ( r1_tarski(B,A)
+              & v6_ordinal1(B) )
+           => ( B = k1_xboole_0
+              | r2_hidden(k3_tarski(B),A) ) )
+        & ! [B] :
+            ~ ( r2_hidden(B,A)
+              & ! [C] :
+                  ~ ( r2_hidden(C,A)
+                    & C != B
+                    & r1_tarski(B,C) ) ) ) ).
+
+fof(t178_orders_1,axiom,
+    ! [A] :
+      ~ ( A != k1_xboole_0
+        & ! [B] :
+            ( ( r1_tarski(B,A)
+              & v6_ordinal1(B) )
+           => ( B = k1_xboole_0
+              | r2_hidden(k1_setfam_1(B),A) ) )
+        & ! [B] :
+            ~ ( r2_hidden(B,A)
+              & ! [C] :
+                  ~ ( r2_hidden(C,A)
+                    & C != B
+                    & r1_tarski(C,B) ) ) ) ).
+
+fof(t179_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ~ ( r2_orders_1(A,B)
+            & k3_relat_1(A) = B
+            & ! [C] :
+                ( v1_relat_1(C)
+               => ~ ( r1_tarski(A,C)
+                    & r3_orders_1(C,B)
+                    & k3_relat_1(C) = B ) ) ) ) ).
+
+fof(t180_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => r1_tarski(A,k2_zfmisc_1(k3_relat_1(A),k3_relat_1(A))) ) ).
+
+fof(t181_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( ( v1_relat_2(A)
+            & r1_tarski(B,k3_relat_1(A)) )
+         => k3_relat_1(k2_wellord1(A,B)) = B ) ) ).
+
+fof(t182_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r1_relat_2(A,B)
+         => v1_relat_2(k2_wellord1(A,B)) ) ) ).
+
+fof(t183_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r8_relat_2(A,B)
+         => v8_relat_2(k2_wellord1(A,B)) ) ) ).
+
+fof(t184_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r4_relat_2(A,B)
+         => v4_relat_2(k2_wellord1(A,B)) ) ) ).
+
+fof(t185_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r6_relat_2(A,B)
+         => v6_relat_2(k2_wellord1(A,B)) ) ) ).
+
+fof(t186_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B,C] :
+          ( ( r6_relat_2(A,B)
+            & r1_tarski(C,B) )
+         => r6_relat_2(A,C) ) ) ).
+
+fof(t187_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B,C] :
+          ( ( r2_wellord1(A,B)
+            & r1_tarski(C,B) )
+         => r2_wellord1(A,C) ) ) ).
+
+fof(t188_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( v6_relat_2(A)
+       => v6_relat_2(k4_relat_1(A)) ) ) ).
+
+fof(t189_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r1_relat_2(A,B)
+         => r1_relat_2(k4_relat_1(A),B) ) ) ).
+
+fof(t190_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r8_relat_2(A,B)
+         => r8_relat_2(k4_relat_1(A),B) ) ) ).
+
+fof(t191_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r4_relat_2(A,B)
+         => r4_relat_2(k4_relat_1(A),B) ) ) ).
+
+fof(t192_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r6_relat_2(A,B)
+         => r6_relat_2(k4_relat_1(A),B) ) ) ).
+
+fof(t193_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] : k4_relat_1(k2_wellord1(A,B)) = k2_wellord1(k4_relat_1(A),B) ) ).
+
+fof(t194_orders_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => k2_wellord1(A,k1_xboole_0) = k1_xboole_0 ) ).
+
+fof(t195_orders_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ~ ( v1_finset_1(B)
+            & r1_tarski(B,k2_relat_1(A))
+            & ! [C] :
+                ~ ( r1_tarski(C,k1_relat_1(A))
+                  & v1_finset_1(C)
+                  & k9_relat_1(A,C) = B ) ) ) ).
+
+fof(s1_orders_1,axiom,
+    ( ( ! [A] :
+          ( m1_subset_1(A,f1_s1_orders_1)
+         => p1_s1_orders_1(A,A) )
+      & ! [A] :
+          ( m1_subset_1(A,f1_s1_orders_1)
+         => ! [B] :
+              ( m1_subset_1(B,f1_s1_orders_1)
+             => ( ( p1_s1_orders_1(A,B)
+                  & p1_s1_orders_1(B,A) )
+               => A = B ) ) )
+      & ! [A] :
+          ( m1_subset_1(A,f1_s1_orders_1)
+         => ! [B] :
+              ( m1_subset_1(B,f1_s1_orders_1)
+             => ! [C] :
+                  ( m1_subset_1(C,f1_s1_orders_1)
+                 => ( ( p1_s1_orders_1(A,B)
+                      & p1_s1_orders_1(B,C) )
+                   => p1_s1_orders_1(A,C) ) ) ) )
+      & ! [A] :
+          ~ ( r1_tarski(A,f1_s1_orders_1)
+            & ! [B] :
+                ( m1_subset_1(B,f1_s1_orders_1)
+               => ! [C] :
+                    ( m1_subset_1(C,f1_s1_orders_1)
+                   => ~ ( r2_hidden(B,A)
+                        & r2_hidden(C,A)
+                        & ~ p1_s1_orders_1(B,C)
+                        & ~ p1_s1_orders_1(C,B) ) ) )
+            & ! [B] :
+                ( m1_subset_1(B,f1_s1_orders_1)
+               => ? [C] :
+                    ( m1_subset_1(C,f1_s1_orders_1)
+                    & r2_hidden(C,A)
+                    & ~ p1_s1_orders_1(C,B) ) ) ) )
+   => ? [A] :
+        ( m1_subset_1(A,f1_s1_orders_1)
+        & ! [B] :
+            ( m1_subset_1(B,f1_s1_orders_1)
+           => ~ ( A != B
+                & p1_s1_orders_1(A,B) ) ) ) ) ).
+
+fof(s2_orders_1,axiom,
+    ( ( ! [A] :
+          ( m1_subset_1(A,f1_s2_orders_1)
+         => p1_s2_orders_1(A,A) )
+      & ! [A] :
+          ( m1_subset_1(A,f1_s2_orders_1)
+         => ! [B] :
+              ( m1_subset_1(B,f1_s2_orders_1)
+             => ( ( p1_s2_orders_1(A,B)
+                  & p1_s2_orders_1(B,A) )
+               => A = B ) ) )
+      & ! [A] :
+          ( m1_subset_1(A,f1_s2_orders_1)
+         => ! [B] :
+              ( m1_subset_1(B,f1_s2_orders_1)
+             => ! [C] :
+                  ( m1_subset_1(C,f1_s2_orders_1)
+                 => ( ( p1_s2_orders_1(A,B)
+                      & p1_s2_orders_1(B,C) )
+                   => p1_s2_orders_1(A,C) ) ) ) )
+      & ! [A] :
+          ~ ( r1_tarski(A,f1_s2_orders_1)
+            & ! [B] :
+                ( m1_subset_1(B,f1_s2_orders_1)
+               => ! [C] :
+                    ( m1_subset_1(C,f1_s2_orders_1)
+                   => ~ ( r2_hidden(B,A)
+                        & r2_hidden(C,A)
+                        & ~ p1_s2_orders_1(B,C)
+                        & ~ p1_s2_orders_1(C,B) ) ) )
+            & ! [B] :
+                ( m1_subset_1(B,f1_s2_orders_1)
+               => ? [C] :
+                    ( m1_subset_1(C,f1_s2_orders_1)
+                    & r2_hidden(C,A)
+                    & ~ p1_s2_orders_1(B,C) ) ) ) )
+   => ? [A] :
+        ( m1_subset_1(A,f1_s2_orders_1)
+        & ! [B] :
+            ( m1_subset_1(B,f1_s2_orders_1)
+           => ~ ( A != B
+                & p1_s2_orders_1(B,A) ) ) ) ) ).
+
+fof(dt_m1_orders_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_orders_1(B,A)
+         => ( v1_funct_1(B)
+            & v1_funct_2(B,A,k3_tarski(A))
+            & m2_relset_1(B,A,k3_tarski(A)) ) ) ) ).
+
+fof(existence_m1_orders_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ? [B] : m1_orders_1(B,A) ) ).
+
+fof(dt_k1_orders_1,axiom,
+    $true ).
+
+%------------------------------------------------------------------------------

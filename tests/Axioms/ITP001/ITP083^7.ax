@@ -1,0 +1,502 @@
+%------------------------------------------------------------------------------
+% File     : ITP083^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : fmaptree.ax [Gau19]
+%          : HL4083^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   80 (  17 unt;  45 typ;   0 def)
+%            Number of atoms       :  129 (  31 equ;   1 cnn)
+%            Maximal formula atoms :    7 (   1 avg)
+%            Number of connectives : 1342 (   1   ~;   1   |;  15   &;1288   @)
+%                                         (  11 <=>;  26  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   23 (  10 avg;1288 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :  180 ( 180   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   46 (  44 usr;   1 con; 0-6 aty)
+%            Number of variables   :  262 (  24   ^ 169   !;  10   ?; 262   :)
+%                                         (  59  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Efinite__map_2Efmap,type,
+    tyop_2Efinite__map_2Efmap: $tType > $tType > $tType ).
+
+thf(tyop_2Efmaptree_2Efmaptree,type,
+    tyop_2Efmaptree_2Efmaptree: $tType > $tType > $tType ).
+
+thf(tyop_2Elist_2Elist,type,
+    tyop_2Elist_2Elist: $tType > $tType ).
+
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Eoption_2Eoption,type,
+    tyop_2Eoption_2Eoption: $tType > $tType ).
+
+thf(tyop_2Epair_2Eprod,type,
+    tyop_2Epair_2Eprod: $tType > $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epair_2E_2C,type,
+    c_2Epair_2E_2C: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > A_27b > ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Emin_2E_40,type,
+    c_2Emin_2E_40: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > A_27a ) ).
+
+thf(c_2Elist_2EAPPEND,type,
+    c_2Elist_2EAPPEND: 
+      !>[A_27a: $tType] : ( ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Ebool_2ECOND,type,
+    c_2Ebool_2ECOND: 
+      !>[A_27a: $tType] : ( $o > A_27a > A_27a > A_27a ) ).
+
+thf(c_2Elist_2ECONS,type,
+    c_2Elist_2ECONS: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Efinite__map_2EFAPPLY,type,
+    c_2Efinite__map_2EFAPPLY: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Efinite__map_2Efmap @ A_27a @ A_27b ) > A_27a > A_27b ) ).
+
+thf(c_2Efinite__map_2EFDOM,type,
+    c_2Efinite__map_2EFDOM: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Efinite__map_2Efmap @ A_27a @ A_27b ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EFINITE,type,
+    c_2Epred__set_2EFINITE: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Efinite__map_2EFLOOKUP,type,
+    c_2Efinite__map_2EFLOOKUP: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Efinite__map_2Efmap @ A_27a @ A_27b ) > A_27a > ( tyop_2Eoption_2Eoption @ A_27b ) ) ).
+
+thf(c_2Efmaptree_2EFTNode,type,
+    c_2Efmaptree_2EFTNode: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27b > ( tyop_2Efinite__map_2Efmap @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) > ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) ).
+
+thf(c_2Efinite__map_2EFUPDATE,type,
+    c_2Efinite__map_2EFUPDATE: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Efinite__map_2Efmap @ A_27a @ A_27b ) > ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) > ( tyop_2Efinite__map_2Efmap @ A_27a @ A_27b ) ) ).
+
+thf(c_2Epred__set_2EGSPEC,type,
+    c_2Epred__set_2EGSPEC: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27b > ( tyop_2Epair_2Eprod @ A_27a @ $o ) ) > A_27a > $o ) ).
+
+thf(c_2Ebool_2EIN,type,
+    c_2Ebool_2EIN: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Elist_2ENIL,type,
+    c_2Elist_2ENIL: 
+      !>[A_27a: $tType] : ( tyop_2Elist_2Elist @ A_27a ) ).
+
+thf(c_2Eoption_2ENONE,type,
+    c_2Eoption_2ENONE: 
+      !>[A_27a: $tType] : ( tyop_2Eoption_2Eoption @ A_27a ) ).
+
+thf(c_2Eoption_2ESOME,type,
+    c_2Eoption_2ESOME: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Eoption_2Eoption @ A_27a ) ) ).
+
+thf(c_2Ebool_2ETYPE__DEFINITION,type,
+    c_2Ebool_2ETYPE__DEFINITION: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > $o ) > ( A_27b > A_27a ) > $o ) ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Efmaptree_2Eapply__path,type,
+    c_2Efmaptree_2Eapply__path: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) > ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) ) ).
+
+thf(c_2Efmaptree_2Econstruct,type,
+    c_2Efmaptree_2Econstruct: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > ( tyop_2Efinite__map_2Efmap @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) ) > ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) ).
+
+thf(c_2Efmaptree_2Efmtreerec,type,
+    c_2Efmaptree_2Efmtreerec: 
+      !>[A_27a: $tType,A_27b: $tType,A_27c: $tType] : ( ( A_27b > ( tyop_2Efinite__map_2Efmap @ A_27c @ A_27a ) > ( tyop_2Efinite__map_2Efmap @ A_27c @ ( tyop_2Efmaptree_2Efmaptree @ A_27c @ A_27b ) ) > A_27a ) > ( tyop_2Efmaptree_2Efmaptree @ A_27c @ A_27b ) > A_27a ) ).
+
+thf(c_2Efmaptree_2EfromF,type,
+    c_2Efmaptree_2EfromF: 
+      !>[A_27key: $tType,A_27value: $tType] : ( ( ( tyop_2Elist_2Elist @ A_27key ) > ( tyop_2Eoption_2Eoption @ A_27value ) ) > ( tyop_2Efmaptree_2Efmaptree @ A_27key @ A_27value ) ) ).
+
+thf(c_2Efmaptree_2Efupd__at__path,type,
+    c_2Efmaptree_2Efupd__at__path: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Elist_2Elist @ A_27a ) > ( ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) > ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) ) > ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) > ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) ) ).
+
+thf(c_2Efmaptree_2Eitem,type,
+    c_2Efmaptree_2Eitem: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) > A_27b ) ).
+
+thf(c_2Elist_2Elist__CASE,type,
+    c_2Elist_2Elist__CASE: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Elist_2Elist @ A_27a ) > A_27b > ( A_27a > ( tyop_2Elist_2Elist @ A_27a ) > A_27b ) > A_27b ) ).
+
+thf(c_2Efmaptree_2Emap,type,
+    c_2Efmaptree_2Emap: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) > ( tyop_2Efinite__map_2Efmap @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) ) ).
+
+thf(c_2Efinite__map_2Eo__f,type,
+    c_2Efinite__map_2Eo__f: 
+      !>[A_27a: $tType,A_27b: $tType,A_27c: $tType] : ( ( A_27b > A_27c ) > ( tyop_2Efinite__map_2Efmap @ A_27a @ A_27b ) > ( tyop_2Efinite__map_2Efmap @ A_27a @ A_27c ) ) ).
+
+thf(c_2Eoption_2Eoption__CASE,type,
+    c_2Eoption_2Eoption__CASE: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Eoption_2Eoption @ A_27a ) > A_27b > ( A_27a > A_27b ) > A_27b ) ).
+
+thf(c_2Efmaptree_2Erelrec,type,
+    c_2Efmaptree_2Erelrec: 
+      !>[A_27a: $tType,A_27b: $tType,A_27c: $tType] : ( ( A_27a > ( tyop_2Efinite__map_2Efmap @ A_27b @ A_27c ) > ( tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) ) > A_27c ) > ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) > A_27c > $o ) ).
+
+thf(c_2Efmaptree_2EtoF,type,
+    c_2Efmaptree_2EtoF: 
+      !>[A_27key: $tType,A_27value: $tType] : ( ( tyop_2Efmaptree_2Efmaptree @ A_27key @ A_27value ) > ( tyop_2Elist_2Elist @ A_27key ) > ( tyop_2Eoption_2Eoption @ A_27value ) ) ).
+
+thf(c_2Efmaptree_2Eupdate__at__path,type,
+    c_2Efmaptree_2Eupdate__at__path: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Elist_2Elist @ A_27a ) > A_27b > ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) > ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) ) ).
+
+thf(c_2Efmaptree_2Ewf,type,
+    c_2Efmaptree_2Ewf: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) > $o ) ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2Efmaptree_2Econstruct__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0a: A_27a,V1kfm: tyop_2Efinite__map_2Efmap @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ),V2kl: tyop_2Elist_2Elist @ A_27b] :
+      ( ( c_2Efmaptree_2Econstruct @ A_27a @ A_27b @ V0a @ V1kfm @ V2kl )
+      = ( c_2Elist_2Elist__CASE @ A_27b @ ( tyop_2Eoption_2Eoption @ A_27a ) @ V2kl @ ( c_2Eoption_2ESOME @ A_27a @ V0a )
+        @ ^ [V3h: A_27b,V4t: tyop_2Elist_2Elist @ A_27b] : ( c_2Ebool_2ECOND @ ( tyop_2Eoption_2Eoption @ A_27a ) @ ( c_2Ebool_2EIN @ A_27b @ V3h @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V1kfm ) ) @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V1kfm @ V3h @ V4t ) @ ( c_2Eoption_2ENONE @ A_27a ) ) ) ) ).
+
+thf(thm_2Efmaptree_2Ewf__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ( c_2Efmaptree_2Ewf @ A_27a @ A_27b )
+      = ( ^ [V0a0: ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a )] :
+            ( c_2Ebool_2E_21 @ ( ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) > $o )
+            @ ^ [V1wf_27: ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) > $o] :
+                ( c_2Emin_2E_3D_3D_3E
+                @ ( c_2Ebool_2E_21 @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) )
+                  @ ^ [V2a0: ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a )] :
+                      ( c_2Emin_2E_3D_3D_3E
+                      @ ( c_2Ebool_2E_3F @ A_27a
+                        @ ^ [V3a: A_27a] :
+                            ( c_2Ebool_2E_3F @ ( tyop_2Efinite__map_2Efmap @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) )
+                            @ ^ [V4fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) )] :
+                                ( c_2Ebool_2E_2F_5C @ ( c_2Emin_2E_3D @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V2a0 @ ( c_2Efmaptree_2Econstruct @ A_27a @ A_27b @ V3a @ V4fm ) )
+                                @ ( c_2Ebool_2E_21 @ A_27b
+                                  @ ^ [V5k: A_27b] : ( c_2Emin_2E_3D_3D_3E @ ( c_2Ebool_2EIN @ A_27b @ V5k @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V4fm ) ) @ ( V1wf_27 @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V4fm @ V5k ) ) ) ) ) ) )
+                      @ ( V1wf_27 @ V2a0 ) ) )
+                @ ( V1wf_27 @ V0a0 ) ) ) ) ) ).
+
+thf(thm_2Efmaptree_2Efmaptree__TY__DEF,axiom,
+    ! [A_27key: $tType,A_27value: $tType] :
+    ? [V0rep: ( tyop_2Efmaptree_2Efmaptree @ A_27key @ A_27value ) > ( tyop_2Elist_2Elist @ A_27key ) > ( tyop_2Eoption_2Eoption @ A_27value )] : ( c_2Ebool_2ETYPE__DEFINITION @ ( ( tyop_2Elist_2Elist @ A_27key ) > ( tyop_2Eoption_2Eoption @ A_27value ) ) @ ( tyop_2Efmaptree_2Efmaptree @ A_27key @ A_27value ) @ ( c_2Efmaptree_2Ewf @ A_27value @ A_27key ) @ V0rep ) ).
+
+thf(thm_2Efmaptree_2Efmap__bij__thm,axiom,
+    ! [A_27key: $tType,A_27value: $tType] :
+      ( ! [V0a: tyop_2Efmaptree_2Efmaptree @ A_27key @ A_27value] :
+          ( ( c_2Efmaptree_2EfromF @ A_27key @ A_27value @ ( c_2Efmaptree_2EtoF @ A_27key @ A_27value @ V0a ) )
+          = V0a )
+      & ! [V1r: ( tyop_2Elist_2Elist @ A_27key ) > ( tyop_2Eoption_2Eoption @ A_27value )] :
+          ( ( c_2Efmaptree_2Ewf @ A_27value @ A_27key @ V1r )
+        <=> ( ( c_2Efmaptree_2EtoF @ A_27key @ A_27value @ ( c_2Efmaptree_2EfromF @ A_27key @ A_27value @ V1r ) )
+            = V1r ) ) ) ).
+
+thf(thm_2Efmaptree_2EFTNode__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0i: A_27b,V1fm: tyop_2Efinite__map_2Efmap @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b )] :
+      ( ( c_2Efmaptree_2EFTNode @ A_27a @ A_27b @ V0i @ V1fm )
+      = ( c_2Efmaptree_2EfromF @ A_27a @ A_27b @ ( c_2Efmaptree_2Econstruct @ A_27b @ A_27a @ V0i @ ( c_2Efinite__map_2Eo__f @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Eoption_2Eoption @ A_27b ) ) @ ( c_2Efmaptree_2EtoF @ A_27a @ A_27b ) @ V1fm ) ) ) ) ).
+
+thf(thm_2Efmaptree_2Eitem__map__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] :
+      ( V0ft
+      = ( c_2Efmaptree_2EFTNode @ A_27a @ A_27b @ ( c_2Efmaptree_2Eitem @ A_27a @ A_27b @ V0ft ) @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V0ft ) ) ) ).
+
+thf(thm_2Efmaptree_2Eapply__path__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ! [V0ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] :
+          ( ( c_2Efmaptree_2Eapply__path @ A_27a @ A_27b @ ( c_2Elist_2ENIL @ A_27a ) @ V0ft )
+          = ( c_2Eoption_2ESOME @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ V0ft ) )
+      & ! [V1h: A_27a,V2t: tyop_2Elist_2Elist @ A_27a,V3ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] :
+          ( ( c_2Efmaptree_2Eapply__path @ A_27a @ A_27b @ ( c_2Elist_2ECONS @ A_27a @ V1h @ V2t ) @ V3ft )
+          = ( c_2Ebool_2ECOND @ ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) @ ( c_2Ebool_2EIN @ A_27a @ V1h @ ( c_2Efinite__map_2EFDOM @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V3ft ) ) ) @ ( c_2Efmaptree_2Eapply__path @ A_27a @ A_27b @ V2t @ ( c_2Efinite__map_2EFAPPLY @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V3ft ) @ V1h ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) ) ) ) ).
+
+thf(thm_2Efmaptree_2Eupdate__at__path__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ! [V0a: A_27b,V1ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] :
+          ( ( c_2Efmaptree_2Eupdate__at__path @ A_27a @ A_27b @ ( c_2Elist_2ENIL @ A_27a ) @ V0a @ V1ft )
+          = ( c_2Eoption_2ESOME @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2EFTNode @ A_27a @ A_27b @ V0a @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V1ft ) ) ) )
+      & ! [V2h: A_27a,V3t: tyop_2Elist_2Elist @ A_27a,V4a: A_27b,V5ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] :
+          ( ( c_2Efmaptree_2Eupdate__at__path @ A_27a @ A_27b @ ( c_2Elist_2ECONS @ A_27a @ V2h @ V3t ) @ V4a @ V5ft )
+          = ( c_2Ebool_2ECOND @ ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) @ ( c_2Ebool_2EIN @ A_27a @ V2h @ ( c_2Efinite__map_2EFDOM @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V5ft ) ) )
+            @ ( c_2Eoption_2Eoption__CASE @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) @ ( c_2Efmaptree_2Eupdate__at__path @ A_27a @ A_27b @ V3t @ V4a @ ( c_2Efinite__map_2EFAPPLY @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V5ft ) @ V2h ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) )
+              @ ^ [V6ft_27: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] : ( c_2Eoption_2ESOME @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2EFTNode @ A_27a @ A_27b @ ( c_2Efmaptree_2Eitem @ A_27a @ A_27b @ V5ft ) @ ( c_2Efinite__map_2EFUPDATE @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V5ft ) @ ( c_2Epair_2E_2C @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ V2h @ V6ft_27 ) ) ) ) )
+            @ ( c_2Eoption_2ENONE @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) ) ) ) ).
+
+thf(thm_2Efmaptree_2Efupd__at__path__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ! [V0f: ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) > ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ),V1ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] :
+          ( ( c_2Efmaptree_2Efupd__at__path @ A_27a @ A_27b @ ( c_2Elist_2ENIL @ A_27a ) @ V0f @ V1ft )
+          = ( V0f @ V1ft ) )
+      & ! [V2h: A_27a,V3t: tyop_2Elist_2Elist @ A_27a,V4f: ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) > ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ),V5ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] :
+          ( ( c_2Efmaptree_2Efupd__at__path @ A_27a @ A_27b @ ( c_2Elist_2ECONS @ A_27a @ V2h @ V3t ) @ V4f @ V5ft )
+          = ( c_2Ebool_2ECOND @ ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) @ ( c_2Ebool_2EIN @ A_27a @ V2h @ ( c_2Efinite__map_2EFDOM @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V5ft ) ) )
+            @ ( c_2Eoption_2Eoption__CASE @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) @ ( c_2Efmaptree_2Efupd__at__path @ A_27a @ A_27b @ V3t @ V4f @ ( c_2Efinite__map_2EFAPPLY @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V5ft ) @ V2h ) ) @ ( c_2Eoption_2ENONE @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) )
+              @ ^ [V6ft_27: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] : ( c_2Eoption_2ESOME @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2EFTNode @ A_27a @ A_27b @ ( c_2Efmaptree_2Eitem @ A_27a @ A_27b @ V5ft ) @ ( c_2Efinite__map_2EFUPDATE @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V5ft ) @ ( c_2Epair_2E_2C @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ V2h @ V6ft_27 ) ) ) ) )
+            @ ( c_2Eoption_2ENONE @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) ) ) ) ).
+
+thf(thm_2Efmaptree_2Erelrec__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType] :
+      ( ( c_2Efmaptree_2Erelrec @ A_27a @ A_27b @ A_27c )
+      = ( ^ [V0h: A_27a > ( tyop_2Efinite__map_2Efmap @ A_27b @ A_27c ) > ( tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) ) > A_27c,V1a0: tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a,V2a1: A_27c] :
+            ( c_2Ebool_2E_21 @ ( ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) > A_27c > $o )
+            @ ^ [V3relrec_27: ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) > A_27c > $o] :
+                ( c_2Emin_2E_3D_3D_3E
+                @ ( c_2Ebool_2E_21 @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a )
+                  @ ^ [V4a0: tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a] :
+                      ( c_2Ebool_2E_21 @ A_27c
+                      @ ^ [V5a1: A_27c] :
+                          ( c_2Emin_2E_3D_3D_3E
+                          @ ( c_2Ebool_2E_3F @ A_27a
+                            @ ^ [V6i: A_27a] :
+                                ( c_2Ebool_2E_3F @ ( tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) )
+                                @ ^ [V7fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a )] :
+                                    ( c_2Ebool_2E_3F @ ( tyop_2Efinite__map_2Efmap @ A_27b @ A_27c )
+                                    @ ^ [V8rfm: tyop_2Efinite__map_2Efmap @ A_27b @ A_27c] :
+                                        ( c_2Ebool_2E_2F_5C @ ( c_2Emin_2E_3D @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V4a0 @ ( c_2Efmaptree_2EFTNode @ A_27b @ A_27a @ V6i @ V7fm ) )
+                                        @ ( c_2Ebool_2E_2F_5C @ ( c_2Emin_2E_3D @ A_27c @ V5a1 @ ( V0h @ V6i @ V8rfm @ V7fm ) )
+                                          @ ( c_2Ebool_2E_2F_5C @ ( c_2Emin_2E_3D @ ( A_27b > $o ) @ ( c_2Efinite__map_2EFDOM @ A_27b @ A_27c @ V8rfm ) @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V7fm ) )
+                                            @ ( c_2Ebool_2E_21 @ A_27b
+                                              @ ^ [V9d: A_27b] : ( c_2Emin_2E_3D_3D_3E @ ( c_2Ebool_2EIN @ A_27b @ V9d @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V7fm ) ) @ ( V3relrec_27 @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V7fm @ V9d ) @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ A_27c @ V8rfm @ V9d ) ) ) ) ) ) ) ) ) )
+                          @ ( V3relrec_27 @ V4a0 @ V5a1 ) ) ) )
+                @ ( V3relrec_27 @ V1a0 @ V2a1 ) ) ) ) ) ).
+
+thf(thm_2Efmaptree_2Efmtreerec__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0h: A_27b > ( tyop_2Efinite__map_2Efmap @ A_27c @ A_27a ) > ( tyop_2Efinite__map_2Efmap @ A_27c @ ( tyop_2Efmaptree_2Efmaptree @ A_27c @ A_27b ) ) > A_27a,V1ft: tyop_2Efmaptree_2Efmaptree @ A_27c @ A_27b] :
+      ( ( c_2Efmaptree_2Efmtreerec @ A_27a @ A_27b @ A_27c @ V0h @ V1ft )
+      = ( c_2Emin_2E_40 @ A_27a
+        @ ^ [V2r: A_27a] : ( c_2Efmaptree_2Erelrec @ A_27b @ A_27c @ A_27a @ V0h @ V1ft @ V2r ) ) ) ).
+
+thf(thm_2Efmaptree_2Ewf__rules,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0a: A_27a,V1fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) )] :
+      ( ! [V2k: A_27b] :
+          ( ( c_2Ebool_2EIN @ A_27b @ V2k @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V1fm ) )
+         => ( c_2Efmaptree_2Ewf @ A_27a @ A_27b @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V1fm @ V2k ) ) )
+     => ( c_2Efmaptree_2Ewf @ A_27a @ A_27b @ ( c_2Efmaptree_2Econstruct @ A_27a @ A_27b @ V0a @ V1fm ) ) ) ).
+
+thf(thm_2Efmaptree_2Ewf__ind,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0wf_27: ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) > $o] :
+      ( ! [V1a: A_27a,V2fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) )] :
+          ( ! [V3k: A_27b] :
+              ( ( c_2Ebool_2EIN @ A_27b @ V3k @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V2fm ) )
+             => ( V0wf_27 @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V2fm @ V3k ) ) )
+         => ( V0wf_27 @ ( c_2Efmaptree_2Econstruct @ A_27a @ A_27b @ V1a @ V2fm ) ) )
+     => ! [V4a0: ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a )] :
+          ( ( c_2Efmaptree_2Ewf @ A_27a @ A_27b @ V4a0 )
+         => ( V0wf_27 @ V4a0 ) ) ) ).
+
+thf(thm_2Efmaptree_2Ewf__strongind,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0wf_27: ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) > $o] :
+      ( ! [V1a: A_27a,V2fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) )] :
+          ( ! [V3k: A_27b] :
+              ( ( c_2Ebool_2EIN @ A_27b @ V3k @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V2fm ) )
+             => ( ( c_2Efmaptree_2Ewf @ A_27a @ A_27b @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V2fm @ V3k ) )
+                & ( V0wf_27 @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V2fm @ V3k ) ) ) )
+         => ( V0wf_27 @ ( c_2Efmaptree_2Econstruct @ A_27a @ A_27b @ V1a @ V2fm ) ) )
+     => ! [V4a0: ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a )] :
+          ( ( c_2Efmaptree_2Ewf @ A_27a @ A_27b @ V4a0 )
+         => ( V0wf_27 @ V4a0 ) ) ) ).
+
+thf(thm_2Efmaptree_2Ewf__cases,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0a0: ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a )] :
+      ( ( c_2Efmaptree_2Ewf @ A_27a @ A_27b @ V0a0 )
+    <=> ? [V1a: A_27a,V2fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) )] :
+          ( ( V0a0
+            = ( c_2Efmaptree_2Econstruct @ A_27a @ A_27b @ V1a @ V2fm ) )
+          & ! [V3k: A_27b] :
+              ( ( c_2Ebool_2EIN @ A_27b @ V3k @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V2fm ) )
+             => ( c_2Efmaptree_2Ewf @ A_27a @ A_27b @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( ( tyop_2Elist_2Elist @ A_27b ) > ( tyop_2Eoption_2Eoption @ A_27a ) ) @ V2fm @ V3k ) ) ) ) ) ).
+
+thf(thm_2Efmaptree_2EFTNode__11,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0i2: A_27b,V1i1: A_27b,V2f2: tyop_2Efinite__map_2Efmap @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ),V3f1: tyop_2Efinite__map_2Efmap @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b )] :
+      ( ( ( c_2Efmaptree_2EFTNode @ A_27a @ A_27b @ V1i1 @ V3f1 )
+        = ( c_2Efmaptree_2EFTNode @ A_27a @ A_27b @ V0i2 @ V2f2 ) )
+    <=> ( ( V1i1 = V0i2 )
+        & ( V3f1 = V2f2 ) ) ) ).
+
+thf(thm_2Efmaptree_2Efmaptree__nchotomy,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] :
+    ? [V1i: A_27b,V2fm: tyop_2Efinite__map_2Efmap @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b )] :
+      ( V0ft
+      = ( c_2Efmaptree_2EFTNode @ A_27a @ A_27b @ V1i @ V2fm ) ) ).
+
+thf(thm_2Efmaptree_2Eitem__thm,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0i: A_27a,V1fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a )] :
+      ( ( c_2Efmaptree_2Eitem @ A_27b @ A_27a @ ( c_2Efmaptree_2EFTNode @ A_27b @ A_27a @ V0i @ V1fm ) )
+      = V0i ) ).
+
+thf(thm_2Efmaptree_2Emap__thm,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0i: A_27a,V1fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a )] :
+      ( ( c_2Efmaptree_2Emap @ A_27b @ A_27a @ ( c_2Efmaptree_2EFTNode @ A_27b @ A_27a @ V0i @ V1fm ) )
+      = V1fm ) ).
+
+thf(thm_2Efmaptree_2Eft__ind,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0P: ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) > $o] :
+      ( ! [V1a: A_27b,V2fm: tyop_2Efinite__map_2Efmap @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b )] :
+          ( ! [V3k: A_27a] :
+              ( ( c_2Ebool_2EIN @ A_27a @ V3k @ ( c_2Efinite__map_2EFDOM @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ V2fm ) )
+             => ( V0P @ ( c_2Efinite__map_2EFAPPLY @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ V2fm @ V3k ) ) )
+         => ( V0P @ ( c_2Efmaptree_2EFTNode @ A_27a @ A_27b @ V1a @ V2fm ) ) )
+     => ! [V4ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] : ( V0P @ V4ft ) ) ).
+
+thf(thm_2Efmaptree_2Eapplicable__paths__FINITE,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] :
+      ( c_2Epred__set_2EFINITE @ ( tyop_2Elist_2Elist @ A_27a )
+      @ ( c_2Epred__set_2EGSPEC @ ( tyop_2Elist_2Elist @ A_27a ) @ ( tyop_2Elist_2Elist @ A_27a )
+        @ ^ [V1p: tyop_2Elist_2Elist @ A_27a] :
+            ( c_2Epair_2E_2C @ ( tyop_2Elist_2Elist @ A_27a ) @ $o @ V1p
+            @ ( c_2Ebool_2E_3F @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b )
+              @ ^ [V2ft_27: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] : ( c_2Emin_2E_3D @ ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) @ ( c_2Efmaptree_2Eapply__path @ A_27a @ A_27b @ V1p @ V0ft ) @ ( c_2Eoption_2ESOME @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ V2ft_27 ) ) ) ) ) ) ).
+
+thf(thm_2Efmaptree_2Eapply__path__SNOC,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0ft: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b,V1x: A_27a,V2p: tyop_2Elist_2Elist @ A_27a] :
+      ( ( c_2Efmaptree_2Eapply__path @ A_27a @ A_27b @ ( c_2Elist_2EAPPEND @ A_27a @ V2p @ ( c_2Elist_2ECONS @ A_27a @ V1x @ ( c_2Elist_2ENIL @ A_27a ) ) ) @ V0ft )
+      = ( c_2Eoption_2Eoption__CASE @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( tyop_2Eoption_2Eoption @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) ) @ ( c_2Efmaptree_2Eapply__path @ A_27a @ A_27b @ V2p @ V0ft ) @ ( c_2Eoption_2ENONE @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) )
+        @ ^ [V3ft_27: tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b] : ( c_2Efinite__map_2EFLOOKUP @ A_27a @ ( tyop_2Efmaptree_2Efmaptree @ A_27a @ A_27b ) @ ( c_2Efmaptree_2Emap @ A_27a @ A_27b @ V3ft_27 ) @ V1x ) ) ) ).
+
+thf(thm_2Efmaptree_2Erelrec__rules,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0h: A_27a > ( tyop_2Efinite__map_2Efmap @ A_27b @ A_27c ) > ( tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) ) > A_27c,V1i: A_27a,V2fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ),V3rfm: tyop_2Efinite__map_2Efmap @ A_27b @ A_27c] :
+      ( ( ( ( c_2Efinite__map_2EFDOM @ A_27b @ A_27c @ V3rfm )
+          = ( c_2Efinite__map_2EFDOM @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V2fm ) )
+        & ! [V4d: A_27b] :
+            ( ( c_2Ebool_2EIN @ A_27b @ V4d @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V2fm ) )
+           => ( c_2Efmaptree_2Erelrec @ A_27a @ A_27b @ A_27c @ V0h @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V2fm @ V4d ) @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ A_27c @ V3rfm @ V4d ) ) ) )
+     => ( c_2Efmaptree_2Erelrec @ A_27a @ A_27b @ A_27c @ V0h @ ( c_2Efmaptree_2EFTNode @ A_27b @ A_27a @ V1i @ V2fm ) @ ( V0h @ V1i @ V3rfm @ V2fm ) ) ) ).
+
+thf(thm_2Efmaptree_2Erelrec__ind,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0h: A_27a > ( tyop_2Efinite__map_2Efmap @ A_27b @ A_27c ) > ( tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) ) > A_27c,V1relrec_27: ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) > A_27c > $o] :
+      ( ! [V2i: A_27a,V3fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ),V4rfm: tyop_2Efinite__map_2Efmap @ A_27b @ A_27c] :
+          ( ( ( ( c_2Efinite__map_2EFDOM @ A_27b @ A_27c @ V4rfm )
+              = ( c_2Efinite__map_2EFDOM @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V3fm ) )
+            & ! [V5d: A_27b] :
+                ( ( c_2Ebool_2EIN @ A_27b @ V5d @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V3fm ) )
+               => ( V1relrec_27 @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V3fm @ V5d ) @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ A_27c @ V4rfm @ V5d ) ) ) )
+         => ( V1relrec_27 @ ( c_2Efmaptree_2EFTNode @ A_27b @ A_27a @ V2i @ V3fm ) @ ( V0h @ V2i @ V4rfm @ V3fm ) ) )
+     => ! [V6a0: tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a,V7a1: A_27c] :
+          ( ( c_2Efmaptree_2Erelrec @ A_27a @ A_27b @ A_27c @ V0h @ V6a0 @ V7a1 )
+         => ( V1relrec_27 @ V6a0 @ V7a1 ) ) ) ).
+
+thf(thm_2Efmaptree_2Erelrec__strongind,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0h: A_27a > ( tyop_2Efinite__map_2Efmap @ A_27b @ A_27c ) > ( tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) ) > A_27c,V1relrec_27: ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) > A_27c > $o] :
+      ( ! [V2i: A_27a,V3fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ),V4rfm: tyop_2Efinite__map_2Efmap @ A_27b @ A_27c] :
+          ( ( ( ( c_2Efinite__map_2EFDOM @ A_27b @ A_27c @ V4rfm )
+              = ( c_2Efinite__map_2EFDOM @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V3fm ) )
+            & ! [V5d: A_27b] :
+                ( ( c_2Ebool_2EIN @ A_27b @ V5d @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V3fm ) )
+               => ( ( c_2Efmaptree_2Erelrec @ A_27a @ A_27b @ A_27c @ V0h @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V3fm @ V5d ) @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ A_27c @ V4rfm @ V5d ) )
+                  & ( V1relrec_27 @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V3fm @ V5d ) @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ A_27c @ V4rfm @ V5d ) ) ) ) )
+         => ( V1relrec_27 @ ( c_2Efmaptree_2EFTNode @ A_27b @ A_27a @ V2i @ V3fm ) @ ( V0h @ V2i @ V4rfm @ V3fm ) ) )
+     => ! [V6a0: tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a,V7a1: A_27c] :
+          ( ( c_2Efmaptree_2Erelrec @ A_27a @ A_27b @ A_27c @ V0h @ V6a0 @ V7a1 )
+         => ( V1relrec_27 @ V6a0 @ V7a1 ) ) ) ).
+
+thf(thm_2Efmaptree_2Erelrec__cases,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0h: A_27a > ( tyop_2Efinite__map_2Efmap @ A_27b @ A_27c ) > ( tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) ) > A_27c,V1a0: tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a,V2a1: A_27c] :
+      ( ( c_2Efmaptree_2Erelrec @ A_27a @ A_27b @ A_27c @ V0h @ V1a0 @ V2a1 )
+    <=> ? [V3i: A_27a,V4fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ),V5rfm: tyop_2Efinite__map_2Efmap @ A_27b @ A_27c] :
+          ( ( V1a0
+            = ( c_2Efmaptree_2EFTNode @ A_27b @ A_27a @ V3i @ V4fm ) )
+          & ( V2a1
+            = ( V0h @ V3i @ V5rfm @ V4fm ) )
+          & ( ( c_2Efinite__map_2EFDOM @ A_27b @ A_27c @ V5rfm )
+            = ( c_2Efinite__map_2EFDOM @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V4fm ) )
+          & ! [V6d: A_27b] :
+              ( ( c_2Ebool_2EIN @ A_27b @ V6d @ ( c_2Efinite__map_2EFDOM @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V4fm ) )
+             => ( c_2Efmaptree_2Erelrec @ A_27a @ A_27b @ A_27c @ V0h @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ V4fm @ V6d ) @ ( c_2Efinite__map_2EFAPPLY @ A_27b @ A_27c @ V5rfm @ V6d ) ) ) ) ) ).
+
+thf(thm_2Efmaptree_2Efmtreerec__thm,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0i: A_27b,V1h: A_27b > ( tyop_2Efinite__map_2Efmap @ A_27c @ A_27a ) > ( tyop_2Efinite__map_2Efmap @ A_27c @ ( tyop_2Efmaptree_2Efmaptree @ A_27c @ A_27b ) ) > A_27a,V2fm: tyop_2Efinite__map_2Efmap @ A_27c @ ( tyop_2Efmaptree_2Efmaptree @ A_27c @ A_27b )] :
+      ( ( c_2Efmaptree_2Efmtreerec @ A_27a @ A_27b @ A_27c @ V1h @ ( c_2Efmaptree_2EFTNode @ A_27c @ A_27b @ V0i @ V2fm ) )
+      = ( V1h @ V0i @ ( c_2Efinite__map_2Eo__f @ A_27c @ ( tyop_2Efmaptree_2Efmaptree @ A_27c @ A_27b ) @ A_27a @ ( c_2Efmaptree_2Efmtreerec @ A_27a @ A_27b @ A_27c @ V1h ) @ V2fm ) @ V2fm ) ) ).
+
+thf(thm_2Efmaptree_2Efmtree__Axiom,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0h: A_27a > ( tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) ) > ( tyop_2Efinite__map_2Efmap @ A_27b @ A_27c ) > A_27c] :
+    ? [V1f: ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) > A_27c] :
+    ! [V2i: A_27a,V3fm: tyop_2Efinite__map_2Efmap @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a )] :
+      ( ( V1f @ ( c_2Efmaptree_2EFTNode @ A_27b @ A_27a @ V2i @ V3fm ) )
+      = ( V0h @ V2i @ V3fm @ ( c_2Efinite__map_2Eo__f @ A_27b @ ( tyop_2Efmaptree_2Efmaptree @ A_27b @ A_27a ) @ A_27c @ V1f @ V3fm ) ) ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,1332 @@
+%------------------------------------------------------------------------------
+% File     : SET007+837 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Exponential Function on Complex Banach Algebra
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : clopban4 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   60 (   0 unt;   0 def)
+%            Number of atoms       :  991 (  69 equ)
+%            Maximal formula atoms :   23 (  16 avg)
+%            Number of connectives :  998 (  67   ~;   0   |; 705   &)
+%                                         (   8 <=>; 218  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   19 (  14 avg)
+%            Maximal term depth    :    7 (   1 avg)
+%            Number of predicates  :   27 (  26 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   53 (  53 usr;   7 con; 0-4 aty)
+%            Number of variables   :  206 ( 204   !;   2   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_clopban4,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => ( v1_relat_1(k1_clopban4(A,B))
+        & v1_funct_1(k1_clopban4(A,B))
+        & v1_funct_2(k1_clopban4(A,B),k5_numbers,u1_struct_0(A))
+        & v6_clvect_1(k1_clopban4(A,B),A)
+        & v1_clopban3(k1_clopban4(A,B),A)
+        & v2_clopban3(k1_clopban4(A,B),A) ) ) ).
+
+fof(d1_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_clopban4(A,B,C)
+              <=> k1_group_1(A,B,C) = k1_group_1(A,C,B) ) ) ) ) ).
+
+fof(t1_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( ( v6_clvect_1(B,A)
+                  & v6_clvect_1(C,A)
+                  & k11_clvect_1(A,k7_clvect_1(A,B,C)) = k1_rlvect_1(A) )
+               => k11_clvect_1(A,B) = k11_clvect_1(A,C) ) ) ) ) ).
+
+fof(t2_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => k2_normsp_1(A,B,D) = C )
+               => k11_clvect_1(A,B) = C ) ) ) ) ).
+
+fof(t3_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( ( v6_clvect_1(B,A)
+                  & v6_clvect_1(C,A) )
+               => v6_clvect_1(k6_clopban3(A,B,C),A) ) ) ) ) ).
+
+fof(t4_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( v6_clvect_1(C,A)
+               => v6_clvect_1(k4_clopban3(A,C,B),A) ) ) ) ) ).
+
+fof(t5_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( v6_clvect_1(C,A)
+               => v6_clvect_1(k5_clopban3(A,C,B),A) ) ) ) ) ).
+
+fof(t6_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( v6_clvect_1(C,A)
+               => k11_clvect_1(A,k4_clopban3(A,C,B)) = k1_group_1(A,B,k11_clvect_1(A,C)) ) ) ) ) ).
+
+fof(t7_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( v6_clvect_1(C,A)
+               => k11_clvect_1(A,k5_clopban3(A,C,B)) = k1_group_1(A,k11_clvect_1(A,C),B) ) ) ) ) ).
+
+fof(t8_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( ( v6_clvect_1(B,A)
+                  & v6_clvect_1(C,A) )
+               => k11_clvect_1(A,k6_clopban3(A,B,C)) = k1_group_1(A,k11_clvect_1(A,B),k11_clvect_1(A,C)) ) ) ) ) ).
+
+fof(t9_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( k1_clopban3(A,k4_clopban3(A,C,B)) = k4_clopban3(A,k1_clopban3(A,C),B)
+                & k1_clopban3(A,k5_clopban3(A,C,B)) = k5_clopban3(A,k1_clopban3(A,C),B) ) ) ) ) ).
+
+fof(t10_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => r1_xreal_0(k5_clvect_1(A,k2_normsp_1(A,k1_clopban3(A,C),B)),k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k10_clvect_1(A,C)),B)) ) ) ) ).
+
+fof(t11_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k5_numbers,u1_struct_0(A))
+                    & m2_relset_1(D,k5_numbers,u1_struct_0(A)) )
+                 => ( ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => ( r1_xreal_0(E,B)
+                         => k2_normsp_1(A,C,E) = k2_normsp_1(A,D,E) ) )
+                   => k2_normsp_1(A,k1_clopban3(A,C),B) = k2_normsp_1(A,k1_clopban3(A,D),B) ) ) ) ) ) ).
+
+fof(t12_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,k1_numbers)
+                & m2_relset_1(C,k5_numbers,k1_numbers) )
+             => ( ( ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => r1_xreal_0(k5_clvect_1(A,k2_normsp_1(A,B,D)),k2_seq_1(k5_numbers,k1_numbers,C,D)) )
+                  & v4_seq_2(C)
+                  & k2_seq_2(C) = np__0 )
+               => ( v6_clvect_1(B,A)
+                  & k11_clvect_1(A,B) = k1_rlvect_1(A) ) ) ) ) ) ).
+
+fof(d2_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( C = k1_clopban4(A,B)
+              <=> ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => k2_normsp_1(A,C,D) = k1_clvect_1(A,k9_clopban3(A,B,D),k13_complex1(k6_complex1,k4_sin_cos(D))) ) ) ) ) ) ).
+
+fof(d3_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( C = k2_clopban4(A,B)
+              <=> ( k2_normsp_1(A,C,np__0) = k1_rlvect_1(A)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => k2_normsp_1(A,C,k1_nat_1(D,np__1)) = k2_normsp_1(A,B,D) ) ) ) ) ) ) ).
+
+fof(d4_clopban4,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v4_group_1(B)
+            & v2_clvect_1(B)
+            & v5_clvect_1(B)
+            & v2_cfuncdom(B)
+            & v5_clopban2(B)
+            & l1_clopban2(B) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k5_numbers,u1_struct_0(B))
+                        & m2_relset_1(E,k5_numbers,u1_struct_0(B)) )
+                     => ( E = k3_clopban4(A,B,C,D)
+                      <=> ! [F] :
+                            ( m2_subset_1(F,k1_numbers,k5_numbers)
+                           => ( ( r1_xreal_0(F,A)
+                               => k2_normsp_1(B,E,F) = k1_group_1(B,k1_clvect_1(B,k9_clopban3(B,C,F),k8_funct_2(k5_numbers,k2_numbers,k8_sin_cos(A),F)),k9_clopban3(B,D,k5_binarith(A,F))) )
+                              & ( ~ r1_xreal_0(F,A)
+                               => k2_normsp_1(B,E,F) = k1_rlvect_1(B) ) ) ) ) ) ) ) ) ) ).
+
+fof(d5_clopban4,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v4_group_1(B)
+            & v2_clvect_1(B)
+            & v5_clvect_1(B)
+            & v2_cfuncdom(B)
+            & v5_clopban2(B)
+            & l1_clopban2(B) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k5_numbers,u1_struct_0(B))
+                        & m2_relset_1(E,k5_numbers,u1_struct_0(B)) )
+                     => ( E = k4_clopban4(A,B,C,D)
+                      <=> ! [F] :
+                            ( m2_subset_1(F,k1_numbers,k5_numbers)
+                           => ( ( r1_xreal_0(F,A)
+                               => k2_normsp_1(B,E,F) = k1_group_1(B,k1_clvect_1(B,k9_clopban3(B,C,F),k8_funct_2(k5_numbers,k2_numbers,k9_sin_cos(A),F)),k9_clopban3(B,D,k5_binarith(A,F))) )
+                              & ( ~ r1_xreal_0(F,A)
+                               => k2_normsp_1(B,E,F) = k1_rlvect_1(B) ) ) ) ) ) ) ) ) ) ).
+
+fof(d6_clopban4,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v4_group_1(B)
+            & v2_clvect_1(B)
+            & v5_clvect_1(B)
+            & v2_cfuncdom(B)
+            & v5_clopban2(B)
+            & l1_clopban2(B) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k5_numbers,u1_struct_0(B))
+                        & m2_relset_1(E,k5_numbers,u1_struct_0(B)) )
+                     => ( E = k5_clopban4(A,B,C,D)
+                      <=> ! [F] :
+                            ( m2_subset_1(F,k1_numbers,k5_numbers)
+                           => ( ( r1_xreal_0(F,A)
+                               => k2_normsp_1(B,E,F) = k1_group_1(B,k2_normsp_1(B,k1_clopban4(B,C),F),k2_normsp_1(B,k1_clopban3(B,k1_clopban4(B,D)),k5_binarith(A,F))) )
+                              & ( ~ r1_xreal_0(F,A)
+                               => k2_normsp_1(B,E,F) = k1_rlvect_1(B) ) ) ) ) ) ) ) ) ) ).
+
+fof(d7_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k5_numbers,u1_struct_0(A))
+                        & m2_relset_1(E,k5_numbers,u1_struct_0(A)) )
+                     => ( E = k6_clopban4(A,B,C,D)
+                      <=> ! [F] :
+                            ( m2_subset_1(F,k1_numbers,k5_numbers)
+                           => ( ( r1_xreal_0(F,D)
+                               => k2_normsp_1(A,E,F) = k1_group_1(A,k2_normsp_1(A,k1_clopban4(A,B),F),k6_rlvect_1(A,k2_normsp_1(A,k1_clopban3(A,k1_clopban4(A,C)),D),k2_normsp_1(A,k1_clopban3(A,k1_clopban4(A,C)),k5_binarith(D,F)))) )
+                              & ( ~ r1_xreal_0(F,D)
+                               => k2_normsp_1(A,E,F) = k1_rlvect_1(A) ) ) ) ) ) ) ) ) ) ).
+
+fof(t13_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( k2_normsp_1(A,k1_clopban4(A,B),k1_nat_1(C,np__1)) = k1_group_1(A,k1_clvect_1(A,B,k13_complex1(k6_complex1,k5_arytm_0(k1_nat_1(C,np__1),np__0))),k2_normsp_1(A,k1_clopban4(A,B),C))
+                & k2_normsp_1(A,k1_clopban4(A,B),np__0) = k2_group_1(A)
+                & r1_xreal_0(k5_clvect_1(A,k2_normsp_1(A,k1_clopban4(A,B),C)),k2_seq_1(k5_numbers,k1_numbers,k7_sin_cos(k5_clvect_1(A,B)),C)) ) ) ) ) ).
+
+fof(t14_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( ~ r1_xreal_0(B,np__0)
+               => k2_normsp_1(A,k2_clopban4(A,C),B) = k2_normsp_1(A,C,k5_binarith(B,np__1)) ) ) ) ) ).
+
+fof(t15_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => k2_normsp_1(A,k1_clopban3(A,C),B) = k4_rlvect_1(A,k2_normsp_1(A,k1_clopban3(A,k2_clopban4(A,C)),B),k2_normsp_1(A,C,B)) ) ) ) ).
+
+fof(t16_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_clopban4(A,C,D)
+                   => k9_clopban3(A,k4_rlvect_1(A,C,D),B) = k2_normsp_1(A,k1_clopban3(A,k3_clopban4(B,A,C,D)),B) ) ) ) ) ) ).
+
+fof(t17_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k4_clopban4(D,A,B,C) = k9_clvect_1(A,k3_clopban4(D,A,B,C),k13_complex1(k6_complex1,k4_sin_cos(D))) ) ) ) ) ).
+
+fof(t18_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_clopban4(A,C,D)
+                   => k1_clvect_1(A,k9_clopban3(A,k4_rlvect_1(A,C,D),B),k13_complex1(k6_complex1,k4_sin_cos(B))) = k2_normsp_1(A,k1_clopban3(A,k4_clopban4(B,A,C,D)),B) ) ) ) ) ) ).
+
+fof(t19_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ( v2_clopban3(k1_clopban4(A,k1_rlvect_1(A)),A)
+        & k2_clopban3(A,k1_clopban4(A,k1_rlvect_1(A))) = k2_group_1(A) ) ) ).
+
+fof(t20_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( k2_normsp_1(A,k1_clopban4(A,B),np__0) = k2_group_1(A)
+                & k2_normsp_1(A,k3_clopban4(np__0,A,B,C),np__0) = k2_group_1(A) ) ) ) ) ).
+
+fof(t21_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( r1_xreal_0(D,E)
+                       => k2_normsp_1(A,k5_clopban4(k1_nat_1(E,np__1),A,B,C),D) = k4_rlvect_1(A,k2_normsp_1(A,k5_clopban4(E,A,B,C),D),k2_normsp_1(A,k4_clopban4(k1_nat_1(E,np__1),A,B,C),D)) ) ) ) ) ) ) ).
+
+fof(t22_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k2_normsp_1(A,k1_clopban3(A,k5_clopban4(k1_nat_1(D,np__1),A,B,C)),D) = k4_rlvect_1(A,k2_normsp_1(A,k1_clopban3(A,k5_clopban4(D,A,B,C)),D),k2_normsp_1(A,k1_clopban3(A,k4_clopban4(k1_nat_1(D,np__1),A,B,C)),D)) ) ) ) ) ).
+
+fof(t23_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k2_normsp_1(A,k1_clopban4(A,B),D) = k2_normsp_1(A,k4_clopban4(D,A,B,C),D) ) ) ) ) ).
+
+fof(t24_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_clopban4(A,C,D)
+                   => k2_normsp_1(A,k1_clopban3(A,k1_clopban4(A,k4_rlvect_1(A,C,D))),B) = k2_normsp_1(A,k1_clopban3(A,k5_clopban4(B,A,C,D)),B) ) ) ) ) ) ).
+
+fof(t25_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_clopban4(A,C,D)
+                   => k6_rlvect_1(A,k1_group_1(A,k2_normsp_1(A,k1_clopban3(A,k1_clopban4(A,C)),B),k2_normsp_1(A,k1_clopban3(A,k1_clopban4(A,D)),B)),k2_normsp_1(A,k1_clopban3(A,k1_clopban4(A,k4_rlvect_1(A,C,D))),B)) = k2_normsp_1(A,k1_clopban3(A,k6_clopban4(A,C,D,B)),B) ) ) ) ) ) ).
+
+fof(t26_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => r1_xreal_0(np__0,k2_seq_1(k5_numbers,k1_numbers,k7_sin_cos(k5_clvect_1(A,B)),C)) ) ) ) ).
+
+fof(t27_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( r1_xreal_0(k5_clvect_1(A,k2_normsp_1(A,k1_clopban3(A,k1_clopban4(A,B)),C)),k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k7_sin_cos(k5_clvect_1(A,B))),C))
+                & r1_xreal_0(k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k7_sin_cos(k5_clvect_1(A,B))),C),k2_series_1(k7_sin_cos(k5_clvect_1(A,B))))
+                & r1_xreal_0(k5_clvect_1(A,k2_normsp_1(A,k1_clopban3(A,k1_clopban4(A,B)),C)),k2_series_1(k7_sin_cos(k5_clvect_1(A,B)))) ) ) ) ) ).
+
+fof(t28_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => r1_xreal_0(np__1,k2_series_1(k7_sin_cos(k5_clvect_1(A,B)))) ) ) ).
+
+fof(t29_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( k18_complex1(k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k7_sin_cos(k5_clvect_1(A,B))),C)) = k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k7_sin_cos(k5_clvect_1(A,B))),C)
+                    & ( r1_xreal_0(C,D)
+                     => k18_complex1(k5_real_1(k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k7_sin_cos(k5_clvect_1(A,B))),D),k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k7_sin_cos(k5_clvect_1(A,B))),C))) = k5_real_1(k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k7_sin_cos(k5_clvect_1(A,B))),D),k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k7_sin_cos(k5_clvect_1(A,B))),C)) ) ) ) ) ) ) ).
+
+fof(t30_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => k18_complex1(k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k10_clvect_1(A,k6_clopban4(A,B,C,D))),E)) = k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k10_clvect_1(A,k6_clopban4(A,B,C,D))),E) ) ) ) ) ) ).
+
+fof(t31_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ~ ( ~ r1_xreal_0(D,np__0)
+                      & ! [E] :
+                          ( m2_subset_1(E,k1_numbers,k5_numbers)
+                         => ? [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                              & r1_xreal_0(E,F)
+                              & r1_xreal_0(D,k18_complex1(k2_seq_1(k5_numbers,k1_numbers,k1_series_1(k10_clvect_1(A,k6_clopban4(A,B,C,F))),F))) ) ) ) ) ) ) ) ).
+
+fof(t32_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k5_numbers,u1_struct_0(A))
+                    & m2_relset_1(D,k5_numbers,u1_struct_0(A)) )
+                 => ( ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => k2_normsp_1(A,D,E) = k2_normsp_1(A,k1_clopban3(A,k6_clopban4(A,B,C,E)),E) )
+                   => ( v6_clvect_1(D,A)
+                      & k11_clvect_1(A,D) = k1_rlvect_1(A) ) ) ) ) ) ) ).
+
+fof(d8_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),u1_struct_0(A))
+            & m2_relset_1(B,u1_struct_0(A),u1_struct_0(A)) )
+         => ( B = k7_clopban4(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => k8_funct_2(u1_struct_0(A),u1_struct_0(A),B,C) = k2_clopban3(A,k1_clopban4(A,C)) ) ) ) ) ).
+
+fof(d9_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k8_clopban4(A,B) = k8_funct_2(u1_struct_0(A),u1_struct_0(A),k7_clopban4(A),B) ) ) ).
+
+fof(t33_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k8_clopban4(A,B) = k2_clopban3(A,k1_clopban4(A,B)) ) ) ).
+
+fof(t34_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_clopban4(A,B,C)
+               => ( k8_clopban4(A,k4_rlvect_1(A,B,C)) = k1_group_1(A,k8_clopban4(A,B),k8_clopban4(A,C))
+                  & k8_clopban4(A,k4_rlvect_1(A,C,B)) = k1_group_1(A,k8_clopban4(A,C),k8_clopban4(A,B))
+                  & k8_clopban4(A,k4_rlvect_1(A,B,C)) = k8_clopban4(A,k4_rlvect_1(A,C,B))
+                  & r1_clopban4(A,k8_clopban4(A,B),k8_clopban4(A,C)) ) ) ) ) ) ).
+
+fof(t35_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_clopban4(A,B,C)
+               => k1_group_1(A,B,k8_clopban4(A,C)) = k1_group_1(A,k8_clopban4(A,C),B) ) ) ) ) ).
+
+fof(t36_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => k8_clopban4(A,k1_rlvect_1(A)) = k2_group_1(A) ) ).
+
+fof(t37_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( k1_group_1(A,k8_clopban4(A,B),k8_clopban4(A,k5_rlvect_1(A,B))) = k2_group_1(A)
+            & k1_group_1(A,k8_clopban4(A,k5_rlvect_1(A,B)),k8_clopban4(A,B)) = k2_group_1(A) ) ) ) ).
+
+fof(t38_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v4_lopban_3(k8_clopban4(A,B),A)
+            & k7_clopban3(A,k8_clopban4(A,B)) = k8_clopban4(A,k5_rlvect_1(A,B))
+            & v4_lopban_3(k8_clopban4(A,k5_rlvect_1(A,B)),A)
+            & k7_clopban3(A,k8_clopban4(A,k5_rlvect_1(A,B))) = k8_clopban4(A,B) ) ) ) ).
+
+fof(t39_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => r1_clopban4(A,k1_clvect_1(A,B,C),k1_clvect_1(A,B,D)) ) ) ) ) ).
+
+fof(t40_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ( k1_group_1(A,k8_clopban4(A,k1_clvect_1(A,B,C)),k8_clopban4(A,k1_clvect_1(A,B,D))) = k8_clopban4(A,k1_clvect_1(A,B,k8_complex1(C,D)))
+                    & k1_group_1(A,k8_clopban4(A,k1_clvect_1(A,B,D)),k8_clopban4(A,k1_clvect_1(A,B,C))) = k8_clopban4(A,k1_clvect_1(A,B,k8_complex1(D,C)))
+                    & k8_clopban4(A,k1_clvect_1(A,B,k8_complex1(C,D))) = k8_clopban4(A,k1_clvect_1(A,B,k8_complex1(D,C)))
+                    & r1_clopban4(A,k8_clopban4(A,k1_clvect_1(A,B,C)),k8_clopban4(A,k1_clvect_1(A,B,D))) ) ) ) ) ) ).
+
+fof(s1_clopban4,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ? [B] :
+          ( v1_funct_1(B)
+          & v1_funct_2(B,k5_numbers,u1_struct_0(f1_s1_clopban4))
+          & m2_relset_1(B,k5_numbers,u1_struct_0(f1_s1_clopban4))
+          & ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_xreal_0(C,A)
+                 => k2_normsp_1(f1_s1_clopban4,B,C) = f2_s1_clopban4(A,C) )
+                & ( ~ r1_xreal_0(C,A)
+                 => k2_normsp_1(f1_s1_clopban4,B,C) = k1_rlvect_1(f1_s1_clopban4) ) ) ) ) ) ).
+
+fof(symmetry_r1_clopban4,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_clopban2(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => ( r1_clopban4(A,B,C)
+       => r1_clopban4(A,C,B) ) ) ).
+
+fof(dt_k1_clopban4,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => ( v1_funct_1(k1_clopban4(A,B))
+        & v1_funct_2(k1_clopban4(A,B),k5_numbers,u1_struct_0(A))
+        & m2_relset_1(k1_clopban4(A,B),k5_numbers,u1_struct_0(A)) ) ) ).
+
+fof(dt_k2_clopban4,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+        & m1_relset_1(B,k5_numbers,u1_struct_0(A)) )
+     => ( v1_funct_1(k2_clopban4(A,B))
+        & v1_funct_2(k2_clopban4(A,B),k5_numbers,u1_struct_0(A))
+        & m2_relset_1(k2_clopban4(A,B),k5_numbers,u1_struct_0(A)) ) ) ).
+
+fof(dt_k3_clopban4,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & ~ v3_struct_0(B)
+        & v3_rlvect_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v4_group_1(B)
+        & v2_clvect_1(B)
+        & v5_clvect_1(B)
+        & v2_cfuncdom(B)
+        & v5_clopban2(B)
+        & l1_clopban2(B)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(B)) )
+     => ( v1_funct_1(k3_clopban4(A,B,C,D))
+        & v1_funct_2(k3_clopban4(A,B,C,D),k5_numbers,u1_struct_0(B))
+        & m2_relset_1(k3_clopban4(A,B,C,D),k5_numbers,u1_struct_0(B)) ) ) ).
+
+fof(dt_k4_clopban4,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & ~ v3_struct_0(B)
+        & v3_rlvect_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v4_group_1(B)
+        & v2_clvect_1(B)
+        & v5_clvect_1(B)
+        & v2_cfuncdom(B)
+        & v5_clopban2(B)
+        & l1_clopban2(B)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(B)) )
+     => ( v1_funct_1(k4_clopban4(A,B,C,D))
+        & v1_funct_2(k4_clopban4(A,B,C,D),k5_numbers,u1_struct_0(B))
+        & m2_relset_1(k4_clopban4(A,B,C,D),k5_numbers,u1_struct_0(B)) ) ) ).
+
+fof(dt_k5_clopban4,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & ~ v3_struct_0(B)
+        & v3_rlvect_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v4_group_1(B)
+        & v2_clvect_1(B)
+        & v5_clvect_1(B)
+        & v2_cfuncdom(B)
+        & v5_clopban2(B)
+        & l1_clopban2(B)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(B)) )
+     => ( v1_funct_1(k5_clopban4(A,B,C,D))
+        & v1_funct_2(k5_clopban4(A,B,C,D),k5_numbers,u1_struct_0(B))
+        & m2_relset_1(k5_clopban4(A,B,C,D),k5_numbers,u1_struct_0(B)) ) ) ).
+
+fof(dt_k6_clopban4,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A))
+        & m1_subset_1(D,k5_numbers) )
+     => ( v1_funct_1(k6_clopban4(A,B,C,D))
+        & v1_funct_2(k6_clopban4(A,B,C,D),k5_numbers,u1_struct_0(A))
+        & m2_relset_1(k6_clopban4(A,B,C,D),k5_numbers,u1_struct_0(A)) ) ) ).
+
+fof(dt_k7_clopban4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A) )
+     => ( v1_funct_1(k7_clopban4(A))
+        & v1_funct_2(k7_clopban4(A),u1_struct_0(A),u1_struct_0(A))
+        & m2_relset_1(k7_clopban4(A),u1_struct_0(A),u1_struct_0(A)) ) ) ).
+
+fof(dt_k8_clopban4,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v2_clvect_1(A)
+        & v5_clvect_1(A)
+        & v2_cfuncdom(A)
+        & v5_clopban2(A)
+        & l1_clopban2(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => m1_subset_1(k8_clopban4(A,B),u1_struct_0(A)) ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,2181 @@
+%------------------------------------------------------------------------------
+% File     : SET007+905 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Lines on Planes in n-Dimensional Euclidean Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : euclidlp [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  153 (   0 unt;   0 def)
+%            Number of atoms       : 1177 ( 157 equ)
+%            Maximal formula atoms :   20 (   7 avg)
+%            Number of connectives : 1137 ( 113   ~;  17   |; 315   &)
+%                                         (  20 <=>; 672  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   35 (  13 avg)
+%            Maximal term depth    :    6 (   1 avg)
+%            Number of predicates  :   19 (  18 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   30 (  30 usr;   4 con; 0-4 aty)
+%            Number of variables   :  700 ( 660   !;  40   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ~ v1_xboole_0(k1_euclidlp(A)) ) ).
+
+fof(fc2_euclidlp,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_euclid(A))
+        & m1_subset_1(C,k1_euclid(A))
+        & m1_subset_1(D,k1_euclid(A)) )
+     => ~ v1_xboole_0(k4_euclidlp(A,B,C,D)) ) ).
+
+fof(fc3_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ~ v1_xboole_0(k5_euclidlp(A)) ) ).
+
+fof(t1_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(D))
+                     => ( k9_euclid(D,k6_real_1(A,B),k9_euclid(D,C,E)) = k9_euclid(D,k6_real_1(k4_real_1(A,C),B),E)
+                        & k9_euclid(D,k6_real_1(np__1,B),k9_euclid(D,C,E)) = k9_euclid(D,k6_real_1(C,B),E) ) ) ) ) ) ) ).
+
+fof(t2_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => k7_euclid(A,B,k7_euclid(A,C,D)) = k7_euclid(A,k7_euclid(A,B,C),D) ) ) ) ) ).
+
+fof(t3_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => k8_euclid(A,B,k5_euclid(A)) = B ) ) ).
+
+fof(t4_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => k8_euclid(A,k5_euclid(A),B) = k6_euclid(A,B) ) ) ).
+
+fof(t5_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => k8_euclid(A,B,k7_euclid(A,C,D)) = k8_euclid(A,k8_euclid(A,B,C),D) ) ) ) ) ).
+
+fof(t6_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => k8_euclid(A,B,C) = k7_euclid(A,B,k6_euclid(A,C)) ) ) ) ).
+
+fof(t7_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ( k8_euclid(A,B,B) = k5_euclid(A)
+            & k7_euclid(A,B,k6_euclid(A,B)) = k5_euclid(A) ) ) ) ).
+
+fof(t8_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(B))
+             => ( k6_euclid(B,k9_euclid(B,A,C)) = k9_euclid(B,k1_real_1(A),C)
+                & k6_euclid(B,k9_euclid(B,A,C)) = k9_euclid(B,A,k6_euclid(B,C)) ) ) ) ) ).
+
+fof(t9_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => k8_euclid(A,B,k8_euclid(A,C,D)) = k7_euclid(A,k8_euclid(A,B,C),D) ) ) ) ) ).
+
+fof(t10_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => k7_euclid(A,B,k8_euclid(A,C,D)) = k8_euclid(A,k7_euclid(A,B,C),D) ) ) ) ) ).
+
+fof(t11_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ( B = k7_euclid(A,C,D)
+                  <=> C = k8_euclid(A,B,D) ) ) ) ) ) ).
+
+fof(t12_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ( B = k7_euclid(A,k7_euclid(A,C,D),E)
+                      <=> k8_euclid(A,B,C) = k7_euclid(A,D,E) ) ) ) ) ) ) ).
+
+fof(t13_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => k6_euclid(A,k7_euclid(A,k7_euclid(A,B,C),D)) = k7_euclid(A,k7_euclid(A,k6_euclid(A,B),k6_euclid(A,C)),k6_euclid(A,D)) ) ) ) ) ).
+
+fof(t14_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ( B = C
+              <=> k8_euclid(A,B,C) = k5_euclid(A) ) ) ) ) ).
+
+fof(t15_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(B))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(B))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(B))
+                     => ~ ( k8_euclid(B,C,D) = k9_euclid(B,A,E)
+                          & C != D
+                          & A = np__0 ) ) ) ) ) ) ).
+
+fof(t16_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(C))
+                 => ( k9_euclid(C,k5_real_1(A,B),D) = k7_euclid(C,k9_euclid(C,A,D),k9_euclid(C,k1_real_1(B),D))
+                    & k9_euclid(C,k5_real_1(A,B),D) = k7_euclid(C,k9_euclid(C,A,D),k6_euclid(C,k9_euclid(C,B,D)))
+                    & k9_euclid(C,k5_real_1(A,B),D) = k8_euclid(C,k9_euclid(C,A,D),k9_euclid(C,B,D)) ) ) ) ) ) ).
+
+fof(t17_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(B))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(B))
+                 => ( k9_euclid(B,A,k8_euclid(B,C,D)) = k7_euclid(B,k9_euclid(B,A,C),k6_euclid(B,k9_euclid(B,A,D)))
+                    & k9_euclid(B,A,k8_euclid(B,C,D)) = k7_euclid(B,k9_euclid(B,A,C),k9_euclid(B,k1_real_1(A),D))
+                    & k9_euclid(B,A,k8_euclid(B,C,D)) = k8_euclid(B,k9_euclid(B,A,C),k9_euclid(B,A,D)) ) ) ) ) ) ).
+
+fof(t18_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(D))
+                     => k9_euclid(D,k5_real_1(k5_real_1(A,B),C),E) = k8_euclid(D,k8_euclid(D,k9_euclid(D,A,E),k9_euclid(D,B,E)),k9_euclid(D,C,E)) ) ) ) ) ) ).
+
+fof(t19_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(D))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(D))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(D))
+                             => ! [H] :
+                                  ( m2_finseq_2(H,k1_numbers,k1_euclid(D))
+                                 => k8_euclid(D,E,k7_euclid(D,k7_euclid(D,k9_euclid(D,A,F),k9_euclid(D,B,G)),k9_euclid(D,C,H))) = k7_euclid(D,E,k7_euclid(D,k7_euclid(D,k9_euclid(D,k1_real_1(A),F),k9_euclid(D,k1_real_1(B),G)),k9_euclid(D,k1_real_1(C),H))) ) ) ) ) ) ) ) ) ).
+
+fof(t20_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(D))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(D))
+                         => k8_euclid(D,E,k9_euclid(D,k3_real_1(k3_real_1(A,B),C),F)) = k7_euclid(D,k7_euclid(D,k7_euclid(D,E,k9_euclid(D,k1_real_1(A),F)),k9_euclid(D,k1_real_1(B),F)),k9_euclid(D,k1_real_1(C),F)) ) ) ) ) ) ) ).
+
+fof(t21_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => k7_euclid(A,k7_euclid(A,B,C),k7_euclid(A,D,E)) = k7_euclid(A,k7_euclid(A,B,D),k7_euclid(A,C,E)) ) ) ) ) ) ).
+
+fof(t22_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(A))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(A))
+                             => k7_euclid(A,k7_euclid(A,k7_euclid(A,B,C),D),k7_euclid(A,k7_euclid(A,E,F),G)) = k7_euclid(A,k7_euclid(A,k7_euclid(A,B,E),k7_euclid(A,C,F)),k7_euclid(A,D,G)) ) ) ) ) ) ) ) ).
+
+fof(t23_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => k8_euclid(A,k7_euclid(A,B,C),k7_euclid(A,D,E)) = k7_euclid(A,k8_euclid(A,B,D),k8_euclid(A,C,E)) ) ) ) ) ) ).
+
+fof(t24_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(A))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(A))
+                             => k8_euclid(A,k7_euclid(A,k7_euclid(A,B,C),D),k7_euclid(A,k7_euclid(A,E,F),G)) = k7_euclid(A,k7_euclid(A,k8_euclid(A,B,E),k8_euclid(A,C,F)),k8_euclid(A,D,G)) ) ) ) ) ) ) ) ).
+
+fof(t25_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(B))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(B))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(B))
+                     => k9_euclid(B,A,k7_euclid(B,k7_euclid(B,C,D),E)) = k7_euclid(B,k7_euclid(B,k9_euclid(B,A,C),k9_euclid(B,A,D)),k9_euclid(B,A,E)) ) ) ) ) ) ).
+
+fof(t26_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(D))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(D))
+                         => k9_euclid(D,A,k7_euclid(D,k9_euclid(D,B,E),k9_euclid(D,C,F))) = k7_euclid(D,k9_euclid(D,k4_real_1(A,B),E),k9_euclid(D,k4_real_1(A,C),F)) ) ) ) ) ) ) ).
+
+fof(t27_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(E))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(E))
+                             => ! [H] :
+                                  ( m2_finseq_2(H,k1_numbers,k1_euclid(E))
+                                 => k9_euclid(E,A,k7_euclid(E,k7_euclid(E,k9_euclid(E,B,F),k9_euclid(E,C,G)),k9_euclid(E,D,H))) = k7_euclid(E,k7_euclid(E,k9_euclid(E,k4_real_1(A,B),F),k9_euclid(E,k4_real_1(A,C),G)),k9_euclid(E,k4_real_1(A,D),H)) ) ) ) ) ) ) ) ) ).
+
+fof(t28_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(E))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(E))
+                             => k7_euclid(E,k7_euclid(E,k9_euclid(E,A,F),k9_euclid(E,B,G)),k7_euclid(E,k9_euclid(E,C,F),k9_euclid(E,D,G))) = k7_euclid(E,k9_euclid(E,k3_real_1(A,C),F),k9_euclid(E,k3_real_1(B,D),G)) ) ) ) ) ) ) ) ).
+
+fof(t29_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ! [G] :
+                              ( m2_subset_1(G,k1_numbers,k5_numbers)
+                             => ! [H] :
+                                  ( m2_finseq_2(H,k1_numbers,k1_euclid(G))
+                                 => ! [I] :
+                                      ( m2_finseq_2(I,k1_numbers,k1_euclid(G))
+                                     => ! [J] :
+                                          ( m2_finseq_2(J,k1_numbers,k1_euclid(G))
+                                         => k7_euclid(G,k7_euclid(G,k7_euclid(G,k9_euclid(G,A,H),k9_euclid(G,B,I)),k9_euclid(G,C,J)),k7_euclid(G,k7_euclid(G,k9_euclid(G,D,H),k9_euclid(G,E,I)),k9_euclid(G,F,J))) = k7_euclid(G,k7_euclid(G,k9_euclid(G,k3_real_1(A,D),H),k9_euclid(G,k3_real_1(B,E),I)),k9_euclid(G,k3_real_1(C,F),J)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t30_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(E))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(E))
+                             => k8_euclid(E,k7_euclid(E,k9_euclid(E,A,F),k9_euclid(E,B,G)),k7_euclid(E,k9_euclid(E,C,F),k9_euclid(E,D,G))) = k7_euclid(E,k9_euclid(E,k5_real_1(A,C),F),k9_euclid(E,k5_real_1(B,D),G)) ) ) ) ) ) ) ) ).
+
+fof(t31_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ! [G] :
+                              ( m2_subset_1(G,k1_numbers,k5_numbers)
+                             => ! [H] :
+                                  ( m2_finseq_2(H,k1_numbers,k1_euclid(G))
+                                 => ! [I] :
+                                      ( m2_finseq_2(I,k1_numbers,k1_euclid(G))
+                                     => ! [J] :
+                                          ( m2_finseq_2(J,k1_numbers,k1_euclid(G))
+                                         => k8_euclid(G,k7_euclid(G,k7_euclid(G,k9_euclid(G,A,H),k9_euclid(G,B,I)),k9_euclid(G,C,J)),k7_euclid(G,k7_euclid(G,k9_euclid(G,D,H),k9_euclid(G,E,I)),k9_euclid(G,F,J))) = k7_euclid(G,k7_euclid(G,k9_euclid(G,k5_real_1(A,D),H),k9_euclid(G,k5_real_1(B,E),I)),k9_euclid(G,k5_real_1(C,F),J)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t32_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(D))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(D))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(D))
+                             => ( k3_real_1(k3_real_1(A,B),C) = np__1
+                               => k7_euclid(D,k7_euclid(D,k9_euclid(D,A,E),k9_euclid(D,B,F)),k9_euclid(D,C,G)) = k7_euclid(D,k7_euclid(D,E,k9_euclid(D,B,k8_euclid(D,F,E))),k9_euclid(D,C,k8_euclid(D,G,E))) ) ) ) ) ) ) ) ) ).
+
+fof(t33_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(C))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(C))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(C))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(C))
+                             => ~ ( D = k7_euclid(C,k7_euclid(C,E,k9_euclid(C,A,k8_euclid(C,F,E))),k9_euclid(C,B,k8_euclid(C,G,E)))
+                                  & ! [H] :
+                                      ( m1_subset_1(H,k1_numbers)
+                                     => ~ ( D = k7_euclid(C,k7_euclid(C,k9_euclid(C,H,E),k9_euclid(C,A,F)),k9_euclid(C,B,G))
+                                          & k3_real_1(k3_real_1(H,A),B) = np__1 ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t34_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ~ ( r1_xreal_0(np__1,A)
+          & k4_jordan2c(A) = k5_euclid(A) ) ) ).
+
+fof(t35_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_euclid(A)))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ( ( v1_euclid_4(B,A)
+                      & r2_hidden(C,B)
+                      & r2_hidden(D,B) )
+                   => ( C = D
+                      | B = k2_euclid_4(A,C,D) ) ) ) ) ) ) ).
+
+fof(t36_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ~ ( r2_hidden(B,k2_euclid_4(A,D,E))
+                          & r2_hidden(C,k2_euclid_4(A,D,E))
+                          & ! [F] :
+                              ( m1_subset_1(F,k1_numbers)
+                             => k8_euclid(A,C,B) != k9_euclid(A,F,k8_euclid(A,E,D)) ) ) ) ) ) ) ) ).
+
+fof(d1_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ( r1_euclidlp(A,B,C)
+              <=> ( B != k5_euclid(A)
+                  & C != k5_euclid(A)
+                  & ? [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                      & B = k9_euclid(A,D,C) ) ) ) ) ) ) ).
+
+fof(t37_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ~ ( r1_euclidlp(A,B,C)
+                  & ! [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                     => ~ ( D != np__0
+                          & B = k9_euclid(A,D,C) ) ) ) ) ) ) ).
+
+fof(t38_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ( ( r2_euclidlp(A,B,C)
+                      & r2_euclidlp(A,C,D) )
+                   => r2_euclidlp(A,B,D) ) ) ) ) ) ).
+
+fof(d2_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ( r3_euclidlp(A,B,C)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k1_numbers)
+                   => ! [E] :
+                        ( m1_subset_1(E,k1_numbers)
+                       => ( k7_euclid(A,k9_euclid(A,D,B),k9_euclid(A,E,C)) = k5_euclid(A)
+                         => ( D = np__0
+                            & E = np__0 ) ) ) ) ) ) ) ) ).
+
+fof(t39_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ( r3_euclidlp(A,B,C)
+               => ( B != k5_euclid(A)
+                  & C != k5_euclid(A) ) ) ) ) ) ).
+
+fof(t40_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(E))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(E))
+                             => ( ( r3_euclidlp(E,F,G)
+                                  & k7_euclid(E,k9_euclid(E,A,F),k9_euclid(E,B,G)) = k7_euclid(E,k9_euclid(E,C,F),k9_euclid(E,D,G)) )
+                               => ( A = C
+                                  & B = D ) ) ) ) ) ) ) ) ) ).
+
+fof(t41_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(E))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(E))
+                             => ! [H] :
+                                  ( m2_finseq_2(H,k1_numbers,k1_euclid(E))
+                                 => ! [I] :
+                                      ( m2_finseq_2(I,k1_numbers,k1_euclid(E))
+                                     => ! [J] :
+                                          ( m2_finseq_2(J,k1_numbers,k1_euclid(E))
+                                         => ~ ( r3_euclidlp(E,J,F)
+                                              & J = k7_euclid(E,k9_euclid(E,A,G),k9_euclid(E,B,H))
+                                              & F = k7_euclid(E,k9_euclid(E,C,G),k9_euclid(E,D,H))
+                                              & ! [K] :
+                                                  ( m1_subset_1(K,k1_numbers)
+                                                 => ! [L] :
+                                                      ( m1_subset_1(L,k1_numbers)
+                                                     => ! [M] :
+                                                          ( m1_subset_1(M,k1_numbers)
+                                                         => ! [N] :
+                                                              ( m1_subset_1(N,k1_numbers)
+                                                             => ~ ( G = k7_euclid(E,k9_euclid(E,K,J),k9_euclid(E,L,F))
+                                                                  & H = k7_euclid(E,k9_euclid(E,M,J),k9_euclid(E,N,F)) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t42_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ~ ( r3_euclidlp(A,B,C)
+                  & B = C ) ) ) ) ).
+
+fof(t43_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ~ ( r3_euclidlp(A,k8_euclid(A,B,C),k8_euclid(A,D,C))
+                      & B = D ) ) ) ) ) ).
+
+fof(t44_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(B))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(B))
+                 => ( r3_euclidlp(B,C,D)
+                   => r3_euclidlp(B,k7_euclid(B,C,k9_euclid(B,A,D)),D) ) ) ) ) ) ).
+
+fof(t45_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(A))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(A))
+                             => ! [H] :
+                                  ( m2_finseq_2(H,k1_numbers,k1_euclid(A))
+                                 => ! [I] :
+                                      ( m2_finseq_2(I,k1_numbers,k1_euclid(A))
+                                     => ( ( r3_euclidlp(A,k8_euclid(A,B,C),k8_euclid(A,D,E))
+                                          & r2_hidden(F,k2_euclid_4(A,C,B))
+                                          & r2_hidden(G,k2_euclid_4(A,C,B))
+                                          & r2_hidden(H,k2_euclid_4(A,E,D))
+                                          & r2_hidden(I,k2_euclid_4(A,E,D)) )
+                                       => ( F = G
+                                          | H = I
+                                          | r3_euclidlp(A,k8_euclid(A,G,F),k8_euclid(A,I,H)) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t46_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ( r2_euclidlp(A,B,C)
+               => ( ~ r3_euclidlp(A,B,C)
+                  & B != k5_euclid(A)
+                  & C != k5_euclid(A) ) ) ) ) ) ).
+
+fof(t47_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ~ ( ~ r3_euclidlp(A,B,C)
+                  & B != k5_euclid(A)
+                  & C != k5_euclid(A)
+                  & ~ r2_euclidlp(A,B,C) ) ) ) ) ).
+
+fof(t48_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ? [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                      & r2_hidden(E,k2_euclid_4(A,B,C))
+                      & r1_euclid_4(A,k8_euclid(A,B,C),k8_euclid(A,D,E)) ) ) ) ) ) ).
+
+fof(d3_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ( r4_euclidlp(A,B,C)
+              <=> ( B != k5_euclid(A)
+                  & C != k5_euclid(A)
+                  & r1_euclid_4(A,B,C) ) ) ) ) ) ).
+
+fof(t49_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ( ( r4_euclidlp(A,B,C)
+                      & r2_euclidlp(A,C,D) )
+                   => r4_euclidlp(A,B,D) ) ) ) ) ) ).
+
+fof(t50_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ( r4_euclidlp(A,B,C)
+               => r3_euclidlp(A,B,C) ) ) ) ) ).
+
+fof(t51_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ~ ( r2_euclidlp(A,B,C)
+                  & r4_euclidlp(A,B,C) ) ) ) ) ).
+
+fof(t52_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ~ ( r4_euclidlp(A,B,C)
+                  & r2_euclidlp(A,B,C) ) ) ) ) ).
+
+fof(t53_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => r2_hidden(k2_euclid_4(A,B,C),k1_euclidlp(A)) ) ) ) ).
+
+fof(t54_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ( ( r2_hidden(B,D)
+                      & r2_hidden(C,D) )
+                   => r1_tarski(k2_euclid_4(A,B,C),D) ) ) ) ) ) ).
+
+fof(t55_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( ~ ( ~ r1_xboole_0(B,C)
+                    & ! [D] :
+                        ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                       => ~ ( r2_hidden(D,B)
+                            & r2_hidden(D,C) ) ) )
+                & ~ ( ? [D] :
+                        ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                        & r2_hidden(D,B)
+                        & r2_hidden(D,C) )
+                    & r1_xboole_0(B,C) ) ) ) ) ) ).
+
+fof(t56_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ~ ( r1_xboole_0(C,D)
+                      & r2_hidden(B,C)
+                      & r2_hidden(B,D) ) ) ) ) ) ).
+
+fof(t57_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ? [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+              & ? [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                  & B = k2_euclid_4(A,C,D) ) ) ) ) ).
+
+fof(t58_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ? [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+              & r2_hidden(C,B) ) ) ) ).
+
+fof(t59_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( r2_hidden(B,C)
+                  & v1_euclid_4(C,A)
+                  & ! [D] :
+                      ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                     => ~ ( D != B
+                          & r2_hidden(D,C) ) ) ) ) ) ) ).
+
+fof(t60_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( ~ r2_hidden(B,C)
+                  & v1_euclid_4(C,A)
+                  & ! [D] :
+                      ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                     => ! [E] :
+                          ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                         => ~ ( C = k2_euclid_4(A,D,E)
+                              & r4_euclidlp(A,k8_euclid(A,B,D),k8_euclid(A,E,D)) ) ) ) ) ) ) ) ).
+
+fof(t61_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( ~ r2_hidden(B,C)
+                  & v1_euclid_4(C,A)
+                  & ! [D] :
+                      ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                     => ! [E] :
+                          ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                         => ~ ( C = k2_euclid_4(A,D,E)
+                              & r3_euclidlp(A,k8_euclid(A,B,D),k8_euclid(A,E,D)) ) ) ) ) ) ) ) ).
+
+fof(d6_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => k3_euclidlp(A,B,C) = k5_seq_4(k2_euclidlp(A,B,C)) ) ) ) ).
+
+fof(t63_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ? [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                  & r2_hidden(D,C)
+                  & k4_euclid_4(A,k8_euclid(A,B,D)) = k3_euclidlp(A,B,C) ) ) ) ) ).
+
+fof(t64_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => r1_xreal_0(np__0,k3_euclidlp(A,B,C)) ) ) ) ).
+
+fof(t65_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( r2_hidden(B,C)
+              <=> k3_euclidlp(A,B,C) = np__0 ) ) ) ) ).
+
+fof(d7_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( r5_euclidlp(A,B,C)
+              <=> ? [D] :
+                    ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                    & ? [E] :
+                        ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                        & ? [F] :
+                            ( m2_finseq_2(F,k1_numbers,k1_euclid(A))
+                            & ? [G] :
+                                ( m2_finseq_2(G,k1_numbers,k1_euclid(A))
+                                & B = k2_euclid_4(A,D,E)
+                                & C = k2_euclid_4(A,F,G)
+                                & r2_euclidlp(A,k8_euclid(A,E,D),k8_euclid(A,G,F)) ) ) ) ) ) ) ) ) ).
+
+fof(t66_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ( ( r5_euclidlp(A,B,C)
+                      & r5_euclidlp(A,C,D) )
+                   => r5_euclidlp(A,B,D) ) ) ) ) ) ).
+
+fof(d8_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( r6_euclidlp(A,B,C)
+              <=> ? [D] :
+                    ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                    & ? [E] :
+                        ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                        & ? [F] :
+                            ( m2_finseq_2(F,k1_numbers,k1_euclid(A))
+                            & ? [G] :
+                                ( m2_finseq_2(G,k1_numbers,k1_euclid(A))
+                                & B = k2_euclid_4(A,D,E)
+                                & C = k2_euclid_4(A,F,G)
+                                & r4_euclidlp(A,k8_euclid(A,E,D),k8_euclid(A,G,F)) ) ) ) ) ) ) ) ) ).
+
+fof(t67_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ( ( r6_euclidlp(A,B,C)
+                      & r5_euclidlp(A,C,D) )
+                   => r6_euclidlp(A,B,D) ) ) ) ) ) ).
+
+fof(t68_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( ~ r2_hidden(B,C)
+                  & v1_euclid_4(C,A)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                     => ~ ( r2_hidden(B,D)
+                          & r6_euclidlp(A,D,C)
+                          & ~ r1_xboole_0(D,C) ) ) ) ) ) ) ).
+
+fof(t69_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( r1_xboole_0(B,C)
+                  & ! [D] :
+                      ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                     => ~ ( r2_hidden(D,B)
+                          & ~ r2_hidden(D,C) ) ) ) ) ) ) ).
+
+fof(t70_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ( ( r2_hidden(B,D)
+                      & r2_hidden(C,D) )
+                   => ( B = C
+                      | ( k2_euclid_4(A,B,C) = D
+                        & v1_euclid_4(D,A) ) ) ) ) ) ) ) ).
+
+fof(t71_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( ( v1_euclid_4(B,A)
+                  & v1_euclid_4(C,A)
+                  & B = C )
+               => r5_euclidlp(A,B,C) ) ) ) ) ).
+
+fof(t72_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( r5_euclidlp(A,B,C)
+               => ( v1_euclid_4(B,A)
+                  & v1_euclid_4(C,A) ) ) ) ) ) ).
+
+fof(t73_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( r6_euclidlp(A,B,C)
+               => ( v1_euclid_4(B,A)
+                  & v1_euclid_4(C,A) ) ) ) ) ) ).
+
+fof(t74_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(B))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(B)),k1_euclidlp(B))
+                 => ( ( r2_hidden(C,D)
+                      & r2_hidden(k9_euclid(B,A,C),D) )
+                   => ( A = np__1
+                      | r2_hidden(k5_euclid(B),D) ) ) ) ) ) ) ).
+
+fof(t75_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(B))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(B))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(B)),k1_euclidlp(B))
+                     => ~ ( r2_hidden(C,E)
+                          & r2_hidden(D,E)
+                          & ! [F] :
+                              ( m2_finseq_2(F,k1_numbers,k1_euclid(B))
+                             => ~ ( r2_hidden(F,E)
+                                  & k8_euclid(B,F,C) = k9_euclid(B,A,k8_euclid(B,D,C)) ) ) ) ) ) ) ) ) ).
+
+fof(t76_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                     => ~ ( r2_hidden(B,E)
+                          & r2_hidden(C,E)
+                          & r2_hidden(D,E)
+                          & B != C
+                          & ! [F] :
+                              ( m1_subset_1(F,k1_numbers)
+                             => k8_euclid(A,D,B) != k9_euclid(A,F,k8_euclid(A,C,B)) ) ) ) ) ) ) ) ).
+
+fof(t77_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( r5_euclidlp(A,B,C)
+               => ( B = C
+                  | r1_xboole_0(B,C) ) ) ) ) ) ).
+
+fof(t78_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( r5_euclidlp(A,B,C)
+                  & B != C
+                  & ~ r1_xboole_0(B,C) ) ) ) ) ).
+
+fof(t79_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( r5_euclidlp(A,B,C)
+               => ( r1_xboole_0(B,C)
+                  | B = C ) ) ) ) ) ).
+
+fof(t80_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( v1_euclid_4(C,A)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                     => ~ ( r2_hidden(B,D)
+                          & r5_euclidlp(A,D,C) ) ) ) ) ) ) ).
+
+fof(t81_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( ~ r2_hidden(B,C)
+                  & v1_euclid_4(C,A)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                     => ~ ( r2_hidden(B,D)
+                          & r5_euclidlp(A,D,C)
+                          & D != C ) ) ) ) ) ) ).
+
+fof(t82_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                         => ! [G] :
+                              ( m2_subset_1(G,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                             => ( ( r2_hidden(B,F)
+                                  & r2_hidden(C,F)
+                                  & r2_hidden(D,G)
+                                  & r2_hidden(E,G)
+                                  & r6_euclidlp(A,F,G) )
+                               => ( B = C
+                                  | D = E
+                                  | r4_euclidlp(A,k8_euclid(A,C,B),k8_euclid(A,E,D)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t83_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( r6_euclidlp(A,B,C)
+                  & B = C ) ) ) ) ).
+
+fof(t84_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ~ ( v1_euclid_4(D,A)
+                      & D = k2_euclid_4(A,B,C)
+                      & B = C ) ) ) ) ) ).
+
+fof(t85_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                         => ! [G] :
+                              ( m2_subset_1(G,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                             => ( ( r2_hidden(B,F)
+                                  & r2_hidden(C,F)
+                                  & r2_hidden(D,G)
+                                  & r2_hidden(E,G)
+                                  & r5_euclidlp(A,F,G) )
+                               => ( B = C
+                                  | D = E
+                                  | r2_euclidlp(A,k8_euclid(A,C,B),k8_euclid(A,E,D)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t86_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(A))
+                         => ! [G] :
+                              ( m2_subset_1(G,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                             => ! [H] :
+                                  ( m2_subset_1(H,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                                 => ( ( r3_euclidlp(A,k8_euclid(A,B,C),k8_euclid(A,D,C))
+                                      & r2_hidden(E,k2_euclid_4(A,C,B))
+                                      & r2_hidden(F,k2_euclid_4(A,C,D))
+                                      & G = k2_euclid_4(A,B,D)
+                                      & H = k2_euclid_4(A,E,F) )
+                                   => ( r5_euclidlp(A,G,H)
+                                    <=> ? [I] :
+                                          ( m1_subset_1(I,k1_numbers)
+                                          & I != np__0
+                                          & k8_euclid(A,E,C) = k9_euclid(A,I,k8_euclid(A,B,C))
+                                          & k8_euclid(A,F,C) = k9_euclid(A,I,k8_euclid(A,D,C)) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t87_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( v1_euclid_4(B,A)
+                  & v1_euclid_4(C,A)
+                  & B != C
+                  & ! [D] :
+                      ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                     => ~ ( r2_hidden(D,B)
+                          & ~ r2_hidden(D,C) ) ) ) ) ) ) ).
+
+fof(t88_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ~ ( r6_euclidlp(A,C,D)
+                      & r2_hidden(B,D)
+                      & ! [E] :
+                          ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                         => ~ ( r2_hidden(B,E)
+                              & r6_euclidlp(A,E,D)
+                              & r5_euclidlp(A,E,C) ) ) ) ) ) ) ) ).
+
+fof(t89_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ~ ( r2_hidden(B,C)
+                      & r2_hidden(B,D)
+                      & r6_euclidlp(A,C,D)
+                      & ! [E] :
+                          ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                         => ~ ( B != E
+                              & r2_hidden(E,C)
+                              & ~ r2_hidden(E,D) ) ) ) ) ) ) ) ).
+
+fof(d10_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_euclid(A)))
+         => ( v1_euclidlp(B,A)
+          <=> ? [C] :
+                ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+                & ? [D] :
+                    ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                    & ? [E] :
+                        ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                        & r3_euclidlp(A,k8_euclid(A,D,C),k8_euclid(A,E,C))
+                        & B = k4_euclidlp(A,C,D,E) ) ) ) ) ) ) ).
+
+fof(t90_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ( r2_hidden(B,k4_euclidlp(A,B,C,D))
+                    & r2_hidden(C,k4_euclidlp(A,B,C,D))
+                    & r2_hidden(D,k4_euclidlp(A,B,C,D)) ) ) ) ) ) ).
+
+fof(t91_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(A))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(A))
+                             => ( ( r2_hidden(B,k4_euclidlp(A,C,D,E))
+                                  & r2_hidden(F,k4_euclidlp(A,C,D,E))
+                                  & r2_hidden(G,k4_euclidlp(A,C,D,E)) )
+                               => r1_tarski(k4_euclidlp(A,B,F,G),k4_euclidlp(A,C,D,E)) ) ) ) ) ) ) ) ) ).
+
+fof(t92_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_euclid(A)))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(A))
+                         => ( r2_hidden(C,k4_euclidlp(A,D,E,F))
+                           => ( ! [G] :
+                                  ( m1_subset_1(G,k1_numbers)
+                                 => ! [H] :
+                                      ( m1_subset_1(H,k1_numbers)
+                                     => ! [I] :
+                                          ( m1_subset_1(I,k1_numbers)
+                                         => ~ ( k3_real_1(k3_real_1(G,H),I) = np__0
+                                              & C = k7_euclid(A,k7_euclid(A,k9_euclid(A,G,D),k9_euclid(A,H,E)),k9_euclid(A,I,F)) ) ) ) )
+                              | r2_hidden(k5_euclid(A),k4_euclidlp(A,D,E,F)) ) ) ) ) ) ) ) ) ).
+
+fof(t93_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(A))
+                         => ( ( r2_hidden(B,k4_euclidlp(A,C,D,E))
+                              & r2_hidden(F,k4_euclidlp(A,C,D,E)) )
+                           => r1_tarski(k2_euclid_4(A,B,F),k4_euclidlp(A,C,D,E)) ) ) ) ) ) ) ) ).
+
+fof(t94_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_euclid(A)))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ( ( v1_euclidlp(B,A)
+                  & r2_hidden(C,B) )
+               => ( ! [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                     => ~ ( D != np__1
+                          & r2_hidden(k9_euclid(A,D,C),B) ) )
+                  | r2_hidden(k5_euclid(A),B) ) ) ) ) ) ).
+
+fof(t95_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(D))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k1_numbers,k1_euclid(D))
+                         => ! [G] :
+                              ( m2_finseq_2(G,k1_numbers,k1_euclid(D))
+                             => ! [H] :
+                                  ( m2_finseq_2(H,k1_numbers,k1_euclid(D))
+                                 => ~ ( r3_euclidlp(D,k8_euclid(D,E,E),k8_euclid(D,F,E))
+                                      & r2_hidden(G,k4_euclidlp(D,E,H,F))
+                                      & G = k7_euclid(D,k7_euclid(D,k9_euclid(D,A,E),k9_euclid(D,B,H)),k9_euclid(D,C,F))
+                                      & k3_real_1(k3_real_1(A,B),C) != np__1
+                                      & ~ r2_hidden(k5_euclid(D),k4_euclidlp(D,E,H,F)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t96_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ( r2_hidden(B,k4_euclidlp(A,C,D,E))
+                      <=> ? [F] :
+                            ( m1_subset_1(F,k1_numbers)
+                            & ? [G] :
+                                ( m1_subset_1(G,k1_numbers)
+                                & ? [H] :
+                                    ( m1_subset_1(H,k1_numbers)
+                                    & k3_real_1(k3_real_1(F,G),H) = np__1
+                                    & B = k7_euclid(A,k7_euclid(A,k9_euclid(A,F,C),k9_euclid(A,G,D)),k9_euclid(A,H,E)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t97_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ! [G] :
+                              ( m2_subset_1(G,k1_numbers,k5_numbers)
+                             => ! [H] :
+                                  ( m2_finseq_2(H,k1_numbers,k1_euclid(G))
+                                 => ! [I] :
+                                      ( m2_finseq_2(I,k1_numbers,k1_euclid(G))
+                                     => ! [J] :
+                                          ( m2_finseq_2(J,k1_numbers,k1_euclid(G))
+                                         => ! [K] :
+                                              ( m2_finseq_2(K,k1_numbers,k1_euclid(G))
+                                             => ( ( r3_euclidlp(G,k8_euclid(G,H,I),k8_euclid(G,J,I))
+                                                  & r2_hidden(K,k4_euclidlp(G,I,H,J))
+                                                  & k3_real_1(k3_real_1(A,B),C) = np__1
+                                                  & K = k7_euclid(G,k7_euclid(G,k9_euclid(G,A,I),k9_euclid(G,B,H)),k9_euclid(G,C,J))
+                                                  & k3_real_1(k3_real_1(D,E),F) = np__1
+                                                  & K = k7_euclid(G,k7_euclid(G,k9_euclid(G,D,I),k9_euclid(G,E,H)),k9_euclid(G,F,J)) )
+                                               => ( A = D
+                                                  & B = E
+                                                  & C = F ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t98_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => r2_hidden(k4_euclidlp(A,B,C,D),k5_euclidlp(A)) ) ) ) ) ).
+
+fof(t99_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ( ( r2_hidden(B,E)
+                          & r2_hidden(C,E)
+                          & r2_hidden(D,E) )
+                       => r1_tarski(k4_euclidlp(A,B,C,D),E) ) ) ) ) ) ) ).
+
+fof(t100_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ( ( r2_hidden(B,E)
+                          & r2_hidden(C,E)
+                          & r2_hidden(D,E)
+                          & r3_euclidlp(A,k8_euclid(A,C,B),k8_euclid(A,D,B)) )
+                       => E = k4_euclidlp(A,B,C,D) ) ) ) ) ) ) ).
+
+fof(t101_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+             => ( ( v1_euclidlp(B,A)
+                  & r1_tarski(B,C) )
+               => B = C ) ) ) ) ).
+
+fof(t102_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ( r1_tarski(k2_euclid_4(A,B,C),k4_euclidlp(A,B,C,D))
+                    & r1_tarski(k2_euclid_4(A,C,D),k4_euclidlp(A,B,C,D))
+                    & r1_tarski(k2_euclid_4(A,D,B),k4_euclidlp(A,B,C,D)) ) ) ) ) ) ).
+
+fof(t103_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                 => ( ( r2_hidden(B,D)
+                      & r2_hidden(C,D) )
+                   => r1_tarski(k2_euclid_4(A,B,C),D) ) ) ) ) ) ).
+
+fof(d12_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( r7_euclidlp(A,B,C)
+              <=> ? [D] :
+                    ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                    & ? [E] :
+                        ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                        & ? [F] :
+                            ( m2_finseq_2(F,k1_numbers,k1_euclid(A))
+                            & r1_tarski(B,k4_euclidlp(A,D,E,F))
+                            & r1_tarski(C,k4_euclidlp(A,D,E,F)) ) ) ) ) ) ) ) ).
+
+fof(t104_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( r7_euclidlp(A,B,C)
+              <=> ? [D] :
+                    ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                    & r1_tarski(B,D)
+                    & r1_tarski(C,D) ) ) ) ) ) ).
+
+fof(t105_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( r5_euclidlp(A,B,C)
+               => r7_euclidlp(A,B,C) ) ) ) ) ).
+
+fof(t106_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( v1_euclid_4(B,A)
+                  & v1_euclid_4(C,A)
+                  & r7_euclidlp(A,B,C)
+                  & r1_xboole_0(B,C)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ~ ( r1_tarski(B,D)
+                          & r1_tarski(C,D)
+                          & v1_euclidlp(D,A) ) ) ) ) ) ) ).
+
+fof(t107_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ? [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                  & r2_hidden(B,D)
+                  & r1_tarski(C,D) ) ) ) ) ).
+
+fof(t108_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( ~ r2_hidden(B,C)
+                  & v1_euclid_4(C,A)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ~ ( r2_hidden(B,D)
+                          & r1_tarski(C,D)
+                          & v1_euclidlp(D,A) ) ) ) ) ) ) ).
+
+fof(t109_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                 => ( ( r2_hidden(B,D)
+                      & r1_tarski(C,D)
+                      & v1_euclid_4(C,A) )
+                   => ( r2_hidden(B,C)
+                      | v1_euclidlp(D,A) ) ) ) ) ) ) ).
+
+fof(t110_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ( ( v1_euclid_4(C,A)
+                          & r2_hidden(B,D)
+                          & r1_tarski(C,D)
+                          & r2_hidden(B,E)
+                          & r1_tarski(C,E) )
+                       => ( r2_hidden(B,C)
+                          | D = E ) ) ) ) ) ) ) ).
+
+fof(t111_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( v1_euclid_4(B,A)
+                  & v1_euclid_4(C,A)
+                  & r7_euclidlp(A,B,C)
+                  & B != C
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ~ ( r1_tarski(B,D)
+                          & r1_tarski(C,D)
+                          & v1_euclidlp(D,A) ) ) ) ) ) ) ).
+
+fof(t112_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( v1_euclid_4(B,A)
+                  & v1_euclid_4(C,A)
+                  & B != C
+                  & ~ r1_xboole_0(B,C)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ~ ( r1_tarski(B,D)
+                          & r1_tarski(C,D)
+                          & v1_euclidlp(D,A) ) ) ) ) ) ) ).
+
+fof(t113_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ( ( v1_euclid_4(B,A)
+                          & v1_euclid_4(C,A)
+                          & r1_tarski(B,D)
+                          & r1_tarski(C,D)
+                          & r1_tarski(B,E)
+                          & r1_tarski(C,E) )
+                       => ( B = C
+                          | r1_xboole_0(B,C)
+                          | D = E ) ) ) ) ) ) ) ).
+
+fof(t114_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( r5_euclidlp(A,B,C)
+                  & B != C
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ~ ( r1_tarski(B,D)
+                          & r1_tarski(C,D)
+                          & v1_euclidlp(D,A) ) ) ) ) ) ) ).
+
+fof(t115_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( r6_euclidlp(A,B,C)
+                  & ~ r1_xboole_0(B,C)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ~ ( v1_euclidlp(D,A)
+                          & r1_tarski(B,D)
+                          & r1_tarski(C,D) ) ) ) ) ) ) ).
+
+fof(t116_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                         => ( ( r1_tarski(C,F)
+                              & r1_tarski(D,F)
+                              & r1_tarski(E,F)
+                              & r2_hidden(B,C)
+                              & r2_hidden(B,D)
+                              & r2_hidden(B,E)
+                              & r6_euclidlp(A,C,E)
+                              & r6_euclidlp(A,D,E) )
+                           => C = D ) ) ) ) ) ) ) ).
+
+fof(t117_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ~ ( r7_euclidlp(A,B,C)
+                  & r6_euclidlp(A,B,C)
+                  & r1_xboole_0(B,C) ) ) ) ) ).
+
+fof(t118_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                         => ( ( r1_tarski(C,F)
+                              & r1_tarski(D,F)
+                              & r6_euclidlp(A,C,D)
+                              & r2_hidden(B,F)
+                              & r5_euclidlp(A,E,D)
+                              & r2_hidden(B,E) )
+                           => ( r1_tarski(E,F)
+                              & r6_euclidlp(A,E,C) ) ) ) ) ) ) ) ) ).
+
+fof(t119_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                     => ( ( r1_tarski(B,E)
+                          & r1_tarski(C,E)
+                          & r1_tarski(D,E)
+                          & r6_euclidlp(A,B,C)
+                          & r6_euclidlp(A,B,D) )
+                       => r5_euclidlp(A,C,D) ) ) ) ) ) ) ).
+
+fof(t120_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                         => ~ ( r1_tarski(B,F)
+                              & r1_tarski(C,F)
+                              & r1_tarski(D,F)
+                              & r5_euclidlp(A,B,C)
+                              & r5_euclidlp(A,C,D)
+                              & B != C
+                              & C != D
+                              & D != B
+                              & ~ r1_xboole_0(E,B)
+                              & ~ r1_xboole_0(E,C)
+                              & r1_xboole_0(E,D) ) ) ) ) ) ) ) ).
+
+fof(t121_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => ( ( r7_euclidlp(A,B,C)
+                  & v1_euclid_4(B,A)
+                  & v1_euclid_4(C,A)
+                  & r1_xboole_0(B,C) )
+               => r5_euclidlp(A,B,C) ) ) ) ) ).
+
+fof(t122_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k1_numbers,k1_euclid(A))
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_zfmisc_1(k1_euclid(A)),k5_euclidlp(A))
+                         => ~ ( r2_hidden(B,F)
+                              & r2_hidden(C,F)
+                              & r2_hidden(D,F)
+                              & r2_hidden(E,F)
+                              & r3_euclidlp(A,k8_euclid(A,C,B),k8_euclid(A,E,D))
+                              & r1_xboole_0(k2_euclid_4(A,B,C),k2_euclid_4(A,D,E)) ) ) ) ) ) ) ) ).
+
+fof(symmetry_r2_euclidlp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_euclid(A))
+        & m1_subset_1(C,k1_euclid(A)) )
+     => ( r2_euclidlp(A,B,C)
+       => r2_euclidlp(A,C,B) ) ) ).
+
+fof(redefinition_r2_euclidlp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_euclid(A))
+        & m1_subset_1(C,k1_euclid(A)) )
+     => ( r2_euclidlp(A,B,C)
+      <=> r1_euclidlp(A,B,C) ) ) ).
+
+fof(symmetry_r3_euclidlp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_euclid(A))
+        & m1_subset_1(C,k1_euclid(A)) )
+     => ( r3_euclidlp(A,B,C)
+       => r3_euclidlp(A,C,B) ) ) ).
+
+fof(symmetry_r4_euclidlp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_euclid(A))
+        & m1_subset_1(C,k1_euclid(A)) )
+     => ( r4_euclidlp(A,B,C)
+       => r4_euclidlp(A,C,B) ) ) ).
+
+fof(symmetry_r5_euclidlp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_euclidlp(A))
+        & m1_subset_1(C,k1_euclidlp(A)) )
+     => ( r5_euclidlp(A,B,C)
+       => r5_euclidlp(A,C,B) ) ) ).
+
+fof(symmetry_r6_euclidlp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_euclidlp(A))
+        & m1_subset_1(C,k1_euclidlp(A)) )
+     => ( r6_euclidlp(A,B,C)
+       => r6_euclidlp(A,C,B) ) ) ).
+
+fof(dt_k1_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m1_subset_1(k1_euclidlp(A),k1_zfmisc_1(k1_zfmisc_1(k1_euclid(A)))) ) ).
+
+fof(dt_k2_euclidlp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_euclid(A))
+        & m1_subset_1(C,k1_euclidlp(A)) )
+     => m1_subset_1(k2_euclidlp(A,B,C),k1_zfmisc_1(k1_numbers)) ) ).
+
+fof(dt_k3_euclidlp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_euclid(A))
+        & m1_subset_1(C,k1_euclidlp(A)) )
+     => m1_subset_1(k3_euclidlp(A,B,C),k1_numbers) ) ).
+
+fof(dt_k4_euclidlp,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_euclid(A))
+        & m1_subset_1(C,k1_euclid(A))
+        & m1_subset_1(D,k1_euclid(A)) )
+     => m1_subset_1(k4_euclidlp(A,B,C,D),k1_zfmisc_1(k1_euclid(A))) ) ).
+
+fof(dt_k5_euclidlp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m1_subset_1(k5_euclidlp(A),k1_zfmisc_1(k1_zfmisc_1(k1_euclid(A)))) ) ).
+
+fof(d4_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k1_euclidlp(A) = a_1_0_euclidlp(A) ) ).
+
+fof(d5_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+             => k2_euclidlp(A,B,C) = a_3_0_euclidlp(A,B,C) ) ) ) ).
+
+fof(t62_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(k1_euclid(A)),k1_euclidlp(A))
+                     => ( E = k2_euclid_4(A,B,C)
+                       => a_4_0_euclidlp(A,B,C,D) = k2_euclidlp(A,D,E) ) ) ) ) ) ) ).
+
+fof(d9_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k1_numbers,k1_euclid(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                 => k4_euclidlp(A,B,C,D) = a_4_1_euclidlp(A,B,C,D) ) ) ) ) ).
+
+fof(d11_euclidlp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k5_euclidlp(A) = a_1_1_euclidlp(A) ) ).
+
+fof(fraenkel_a_1_0_euclidlp,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_0_euclidlp(B))
+      <=> ? [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(k1_euclid(B)))
+            & A = C
+            & ? [D] :
+                ( m2_finseq_2(D,k1_numbers,k1_euclid(B))
+                & ? [E] :
+                    ( m2_finseq_2(E,k1_numbers,k1_euclid(B))
+                    & C = k2_euclid_4(B,D,E) ) ) ) ) ) ).
+
+fof(fraenkel_a_3_0_euclidlp,axiom,
+    ! [A,B,C,D] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m2_finseq_2(C,k1_numbers,k1_euclid(B))
+        & m2_subset_1(D,k1_zfmisc_1(k1_euclid(B)),k1_euclidlp(B)) )
+     => ( r2_hidden(A,a_3_0_euclidlp(B,C,D))
+      <=> ? [E] :
+            ( m2_finseq_2(E,k1_numbers,k1_euclid(B))
+            & A = k4_euclid_4(B,k8_euclid(B,C,E))
+            & r2_hidden(E,D) ) ) ) ).
+
+fof(fraenkel_a_4_0_euclidlp,axiom,
+    ! [A,B,C,D,E] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m2_finseq_2(C,k1_numbers,k1_euclid(B))
+        & m2_finseq_2(D,k1_numbers,k1_euclid(B))
+        & m2_finseq_2(E,k1_numbers,k1_euclid(B)) )
+     => ( r2_hidden(A,a_4_0_euclidlp(B,C,D,E))
+      <=> ? [F] :
+            ( m2_finseq_2(F,k1_numbers,k1_euclid(B))
+            & A = k4_euclid_4(B,k8_euclid(B,E,F))
+            & r2_hidden(F,k2_euclid_4(B,C,D)) ) ) ) ).
+
+fof(fraenkel_a_4_1_euclidlp,axiom,
+    ! [A,B,C,D,E] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m2_finseq_2(C,k1_numbers,k1_euclid(B))
+        & m2_finseq_2(D,k1_numbers,k1_euclid(B))
+        & m2_finseq_2(E,k1_numbers,k1_euclid(B)) )
+     => ( r2_hidden(A,a_4_1_euclidlp(B,C,D,E))
+      <=> ? [F] :
+            ( m2_finseq_2(F,k1_numbers,k1_euclid(B))
+            & A = F
+            & ? [G] :
+                ( m1_subset_1(G,k1_numbers)
+                & ? [H] :
+                    ( m1_subset_1(H,k1_numbers)
+                    & ? [I] :
+                        ( m1_subset_1(I,k1_numbers)
+                        & k3_real_1(k3_real_1(G,H),I) = np__1
+                        & F = k7_euclid(B,k7_euclid(B,k9_euclid(B,G,C),k9_euclid(B,H,D)),k9_euclid(B,I,E)) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_1_1_euclidlp,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_1_euclidlp(B))
+      <=> ? [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(k1_euclid(B)))
+            & A = C
+            & ? [D] :
+                ( m2_finseq_2(D,k1_numbers,k1_euclid(B))
+                & ? [E] :
+                    ( m2_finseq_2(E,k1_numbers,k1_euclid(B))
+                    & ? [F] :
+                        ( m2_finseq_2(F,k1_numbers,k1_euclid(B))
+                        & C = k4_euclidlp(B,D,E,F) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

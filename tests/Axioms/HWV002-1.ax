@@ -1,0 +1,78 @@
+%--------------------------------------------------------------------------
+% File     : HWV002-1 : TPTP v8.1.2. Released .0.
+% Domain   : Hardware Verification
+% Axioms   : Half-adder.
+% Version  : [Gei96] axioms.
+% English  :
+
+% Refs     : [Gei96] Geisler (1996), Email to G. Sutcliffe
+% Source   : [Gei96]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   13 (   0 unt;   0 nHn;  13 RR)
+%            Number of literals    :   26 (   0 equ;  13 neg)
+%            Maximal clause size   :    2 (   2 avg)
+%            Maximal term depth    :    3 (   2 avg)
+%            Number of predicates  :    5 (   5 usr;   0 prp; 1-2 aty)
+%            Number of functors    :    9 (   9 usr;   0 con; 1-1 aty)
+%            Number of variables   :   13 (   0 sgn)
+% SPC      : 
+
+% Comments : Requires HWV002-0.ax
+%--------------------------------------------------------------------------
+%----Composition of halfadder
+cnf(halfadder_and1,axiom,
+    ( ~ halfadder(X)
+    | logic_and(and1(X)) ) ).
+
+cnf(halfadder_and2,axiom,
+    ( ~ halfadder(X)
+    | logic_and(and2(X)) ) ).
+
+cnf(halfadder_not1,axiom,
+    ( ~ halfadder(X)
+    | logic_not(not1(X)) ) ).
+
+cnf(halfadder_or1,axiom,
+    ( ~ halfadder(X)
+    | logic_or(or1(X)) ) ).
+
+%----Connections of halfadder
+cnf(halfadder_connection_in1_in1or1,axiom,
+    ( ~ halfadder(X)
+    | connection(in1(X),in1(or1(X))) ) ).
+
+cnf(halfadder_connection_in2_in2or1,axiom,
+    ( ~ halfadder(X)
+    | connection(in2(X),in2(or1(X))) ) ).
+
+cnf(halfadder_connection_in1_in1and2,axiom,
+    ( ~ halfadder(X)
+    | connection(in1(X),in1(and2(X))) ) ).
+
+cnf(halfadder_connection_in2_in2and2,axiom,
+    ( ~ halfadder(X)
+    | connection(in2(X),in2(and2(X))) ) ).
+
+cnf(halfadder_connection_outs_out1and1,axiom,
+    ( ~ halfadder(X)
+    | connection(outs(X),out1(and1(X))) ) ).
+
+cnf(halfadder_connection_outc_out1and2,axiom,
+    ( ~ halfadder(X)
+    | connection(outc(X),out1(and2(X))) ) ).
+
+cnf(halfadder_connection_out1or1_in1_and1,axiom,
+    ( ~ halfadder(X)
+    | connection(out1(or1(X)),in1(and1(X))) ) ).
+
+cnf(halfadder_connection_out1and2_in1not1,axiom,
+    ( ~ halfadder(X)
+    | connection(out1(and2(X)),in1(not1(X))) ) ).
+
+cnf(halfadder_connection_out1not1_in2and1,axiom,
+    ( ~ halfadder(X)
+    | connection(out1(not1(X)),in2(and1(X))) ) ).
+
+%--------------------------------------------------------------------------

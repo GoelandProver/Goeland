@@ -1,0 +1,657 @@
+%------------------------------------------------------------------------------
+% File     : SET007+75 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Consequences of the Reflection Theorem
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : zfrefle1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   56 (   5 unt;   0 def)
+%            Number of atoms       :  378 (  46 equ)
+%            Maximal formula atoms :   21 (   6 avg)
+%            Number of connectives :  413 (  91   ~;   9   |; 141   &)
+%                                         (  14 <=>; 158  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   20 (   9 avg)
+%            Maximal term depth    :    7 (   1 avg)
+%            Number of predicates  :   36 (  34 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   48 (  48 usr;  17 con; 0-4 aty)
+%            Number of variables   :  142 ( 139   !;   3   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(d1_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k9_zf_lang))
+         => ( r1_zfrefle1(A,B)
+          <=> ! [C] :
+                ( ( v1_zf_lang(C)
+                  & m2_finseq_1(C,k5_numbers) )
+               => ( r2_hidden(C,B)
+                 => r2_zf_model(A,C) ) ) ) ) ) ).
+
+fof(d2_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ( r2_zfrefle1(A,B)
+          <=> ! [C] :
+                ( ( v1_zf_lang(C)
+                  & m2_finseq_1(C,k5_numbers) )
+               => ( k2_zf_model(C) = k1_xboole_0
+                 => ( r2_zf_model(A,C)
+                  <=> r2_zf_model(B,C) ) ) ) ) ) ) ).
+
+fof(d3_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ( r3_zfrefle1(A,B)
+          <=> ( r1_tarski(A,B)
+              & ! [C] :
+                  ( ( v1_zf_lang(C)
+                    & m2_finseq_1(C,k5_numbers) )
+                 => ! [D] :
+                      ( ( v1_funct_1(D)
+                        & v1_funct_2(D,k1_zf_lang,A)
+                        & m2_relset_1(D,k1_zf_lang,A) )
+                     => ( r1_zf_model(A,D,C)
+                      <=> r1_zf_model(B,k2_zf_lang1(k1_zf_lang,A,B,D),C) ) ) ) ) ) ) ) ).
+
+fof(d4_zfrefle1,axiom,
+    ! [A] :
+      ( A = k1_zfrefle1
+    <=> ! [B] :
+          ( r2_hidden(B,A)
+        <=> ( r2_hidden(B,k9_zf_lang)
+            & ~ ( B != k6_zf_model
+                & B != k7_zf_model
+                & B != k8_zf_model
+                & B != k9_zf_model
+                & B != k10_zf_model
+                & ! [C] :
+                    ( ( v1_zf_lang(C)
+                      & m2_finseq_1(C,k5_numbers) )
+                   => ~ ( r1_xboole_0(k1_enumset1(k2_zf_lang(np__0),k2_zf_lang(np__1),k2_zf_lang(np__2)),k2_zf_model(C))
+                        & B = k11_zf_model(C) ) ) ) ) ) ) ).
+
+fof(t1_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => r1_zfrefle1(A,k1_subset_1(k9_zf_lang)) ) ).
+
+fof(t2_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k9_zf_lang))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k9_zf_lang))
+             => ( ( r1_tarski(B,C)
+                  & r1_zfrefle1(A,C) )
+               => r1_zfrefle1(A,B) ) ) ) ) ).
+
+fof(t3_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k9_zf_lang))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k9_zf_lang))
+             => ( ( r1_zfrefle1(A,B)
+                  & r1_zfrefle1(A,C) )
+               => r1_zfrefle1(A,k4_subset_1(k9_zf_lang,B,C)) ) ) ) ) ).
+
+fof(t4_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v1_zf_model(A)
+       => r1_zfrefle1(A,k2_zfrefle1) ) ) ).
+
+fof(t5_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ( r1_zfrefle1(A,k2_zfrefle1)
+          & v1_ordinal1(A) )
+       => v1_zf_model(A) ) ) ).
+
+fof(t6_zfrefle1,axiom,
+    ! [A] :
+      ( ( v1_zf_lang(A)
+        & m2_finseq_1(A,k5_numbers) )
+     => ? [B] :
+          ( v1_zf_lang(B)
+          & m2_finseq_1(B,k5_numbers)
+          & k2_zf_model(B) = k1_xboole_0
+          & ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ( r2_zf_model(C,B)
+              <=> r2_zf_model(C,A) ) ) ) ) ).
+
+fof(t7_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ( r2_zfrefle1(A,B)
+          <=> ! [C] :
+                ( ( v1_zf_lang(C)
+                  & m2_finseq_1(C,k5_numbers) )
+               => ( r2_zf_model(A,C)
+                <=> r2_zf_model(B,C) ) ) ) ) ) ).
+
+fof(t8_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ( r2_zfrefle1(A,B)
+          <=> ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(k9_zf_lang))
+               => ( r1_zfrefle1(A,C)
+                <=> r1_zfrefle1(B,C) ) ) ) ) ) ).
+
+fof(t9_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ( r3_zfrefle1(A,B)
+           => r2_zfrefle1(A,B) ) ) ) ).
+
+fof(t10_zfrefle1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ( ( v1_zf_model(A)
+              & r2_zfrefle1(A,B)
+              & v1_ordinal1(B) )
+           => v1_zf_model(B) ) ) ) ).
+
+fof(t11_zfrefle1,axiom,
+    $true ).
+
+fof(t12_zfrefle1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_classes2(B) )
+         => ( ( r2_hidden(k1_relat_1(A),B)
+              & r1_tarski(k2_relat_1(A),B) )
+           => r2_hidden(k2_relat_1(A),B) ) ) ) ).
+
+fof(t13_zfrefle1,axiom,
+    ! [A,B] :
+      ( ( r2_wellord2(A,B)
+        | k1_card_1(A) = k1_card_1(B) )
+     => ( r2_wellord2(k1_zfmisc_1(A),k1_zfmisc_1(B))
+        & k1_card_1(k1_zfmisc_1(A)) = k1_card_1(k1_zfmisc_1(B)) ) ) ).
+
+fof(t14_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,B,k1_funct_2(k2_ordinal2(A),k2_ordinal2(A)))
+                & m2_relset_1(C,B,k1_funct_2(k2_ordinal2(A),k2_ordinal2(A))) )
+             => ~ ( r2_hidden(k1_card_1(B),k1_card_1(A))
+                  & ! [D] :
+                      ( m2_ordinal4(D,A)
+                     => ~ ( v2_ordinal2(D)
+                          & v3_ordinal2(D)
+                          & k4_ordinal4(A,D,k2_ordinal4(A)) = k2_ordinal4(A)
+                          & ! [E] :
+                              ( m1_ordinal4(E,A)
+                             => k4_ordinal4(A,D,k6_ordinal4(A,E)) = k7_ordinal2(k2_xboole_0(k1_tarski(k4_ordinal4(A,D,E)),k9_relat_1(k4_funct_5(C),k2_zfmisc_1(B,k1_tarski(k6_ordinal4(A,E)))))) )
+                          & ! [E] :
+                              ( m1_ordinal4(E,A)
+                             => ( v4_ordinal1(E)
+                               => ( E = k2_ordinal4(A)
+                                  | k4_ordinal4(A,D,E) = k8_ordinal2(k2_ordinal1(D,E)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t15_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v5_ordinal1(B)
+            & v1_ordinal2(B) )
+         => ( v2_ordinal2(B)
+           => v2_ordinal2(k1_ordinal3(A,B)) ) ) ) ).
+
+fof(t16_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C)
+                & v5_ordinal1(C)
+                & v1_ordinal2(C) )
+             => k2_ordinal1(k1_ordinal3(A,C),B) = k1_ordinal3(A,k2_ordinal1(C,B)) ) ) ) ).
+
+fof(t17_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v5_ordinal1(B)
+            & v1_ordinal2(B) )
+         => ( ( v2_ordinal2(B)
+              & v3_ordinal2(B) )
+           => v3_ordinal2(k1_ordinal3(A,B)) ) ) ) ).
+
+fof(d5_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ( r4_zfrefle1(A,B)
+          <=> ? [C] :
+                ( v1_relat_1(C)
+                & v1_funct_1(C)
+                & v5_ordinal1(C)
+                & v1_ordinal2(C)
+                & k1_relat_1(C) = B
+                & r1_tarski(k2_relat_1(C),A)
+                & v2_ordinal2(C)
+                & A = k8_ordinal2(C) ) ) ) ) ).
+
+fof(t18_zfrefle1,axiom,
+    $true ).
+
+fof(t19_zfrefle1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B)
+        & v5_ordinal1(B)
+        & v1_ordinal2(B) )
+     => ( r2_hidden(A,k2_relat_1(B))
+       => v3_ordinal1(A) ) ) ).
+
+fof(t20_zfrefle1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v5_ordinal1(A)
+        & v1_ordinal2(A) )
+     => r1_tarski(k2_relat_1(A),k8_ordinal2(A)) ) ).
+
+fof(t21_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ! [C] :
+              ( v3_ordinal1(C)
+             => ( ( r4_zfrefle1(A,B)
+                  & r4_zfrefle1(B,C) )
+               => r4_zfrefle1(A,C) ) ) ) ) ).
+
+fof(t22_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ( r4_zfrefle1(A,B)
+           => r1_tarski(B,A) ) ) ) ).
+
+fof(t23_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ( ( r4_zfrefle1(A,B)
+              & r4_zfrefle1(B,A) )
+           => A = B ) ) ) ).
+
+fof(t24_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v5_ordinal1(B)
+            & v1_ordinal2(B) )
+         => ( ( v4_ordinal1(k1_relat_1(B))
+              & v2_ordinal2(B)
+              & r1_ordinal2(A,B) )
+           => ( k1_relat_1(B) = k1_xboole_0
+              | r4_zfrefle1(A,k1_relat_1(B)) ) ) ) ) ).
+
+fof(t25_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => r4_zfrefle1(k1_ordinal1(A),k4_ordinal2) ) ).
+
+fof(t26_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ~ ( r4_zfrefle1(A,k1_ordinal1(B))
+              & ! [C] :
+                  ( v3_ordinal1(C)
+                 => A != k1_ordinal1(C) ) ) ) ) ).
+
+fof(t27_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ( r4_zfrefle1(A,B)
+           => ( v4_ordinal1(A)
+            <=> v4_ordinal1(B) ) ) ) ) ).
+
+fof(t28_zfrefle1,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ( r4_zfrefle1(A,k1_xboole_0)
+       => A = k1_xboole_0 ) ) ).
+
+fof(t29_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( m1_ordinal4(B,A)
+         => ~ r4_zfrefle1(k2_ordinal2(A),B) ) ) ).
+
+fof(t30_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( m1_ordinal4(B,A)
+         => ! [C] :
+              ( m2_ordinal4(C,A)
+             => ~ ( r2_hidden(k5_ordinal2,A)
+                  & v2_ordinal2(C)
+                  & v3_ordinal2(C)
+                  & ! [D] :
+                      ( m1_ordinal4(D,A)
+                     => ~ ( r2_hidden(B,D)
+                          & k4_ordinal4(A,C,D) = D ) ) ) ) ) ) ).
+
+fof(t31_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( m1_ordinal4(B,A)
+         => ! [C] :
+              ( m2_ordinal4(C,A)
+             => ~ ( r2_hidden(k5_ordinal2,A)
+                  & v2_ordinal2(C)
+                  & v3_ordinal2(C)
+                  & ! [D] :
+                      ( m1_ordinal4(D,A)
+                     => ~ ( r2_hidden(B,D)
+                          & k4_ordinal4(A,C,D) = D
+                          & r4_zfrefle1(D,k5_ordinal2) ) ) ) ) ) ) ).
+
+fof(t32_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & v1_zf_refle(B,A)
+            & m1_ordinal1(B,A) )
+         => ~ ( r2_hidden(k5_ordinal2,A)
+              & ! [C] :
+                  ( m1_ordinal4(C,A)
+                 => ! [D] :
+                      ( m1_ordinal4(D,A)
+                     => ( r2_hidden(C,D)
+                       => r1_tarski(k5_zf_refle(A,B,C),k5_zf_refle(A,B,D)) ) ) )
+              & ! [C] :
+                  ( m1_ordinal4(C,A)
+                 => ( v4_ordinal1(C)
+                   => ( C = k1_xboole_0
+                      | k5_zf_refle(A,B,C) = k3_card_3(k2_ordinal1(B,C)) ) ) )
+              & ! [C] :
+                  ( m2_ordinal4(C,A)
+                 => ~ ( v2_ordinal2(C)
+                      & v3_ordinal2(C)
+                      & ! [D] :
+                          ( m1_ordinal4(D,A)
+                         => ( k4_ordinal4(A,C,D) = D
+                           => ( k1_xboole_0 = D
+                              | r3_zfrefle1(k5_zf_refle(A,B,D),k4_zf_refle(A,B)) ) ) ) ) ) ) ) ) ).
+
+fof(t33_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( m1_ordinal4(B,A)
+         => r2_hidden(k4_classes1(B),A) ) ) ).
+
+fof(t34_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( m1_ordinal4(B,A)
+         => ( B != k1_xboole_0
+           => ( ~ v1_xboole_0(k4_classes1(B))
+              & m1_subset_1(k4_classes1(B),A) ) ) ) ) ).
+
+fof(t35_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ~ ( r2_hidden(k5_ordinal2,A)
+          & ! [B] :
+              ( m2_ordinal4(B,A)
+             => ~ ( v2_ordinal2(B)
+                  & v3_ordinal2(B)
+                  & ! [C] :
+                      ( m1_ordinal4(C,A)
+                     => ! [D] :
+                          ( ~ v1_xboole_0(D)
+                         => ( ( k4_ordinal4(A,B,C) = C
+                              & D = k4_classes1(C) )
+                           => ( k1_xboole_0 = C
+                              | r3_zfrefle1(D,A) ) ) ) ) ) ) ) ) ).
+
+fof(t36_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( m1_ordinal4(B,A)
+         => ~ ( r2_hidden(k5_ordinal2,A)
+              & ! [C] :
+                  ( m1_ordinal4(C,A)
+                 => ! [D] :
+                      ( ~ v1_xboole_0(D)
+                     => ~ ( r2_hidden(B,C)
+                          & D = k4_classes1(C)
+                          & r3_zfrefle1(D,A) ) ) ) ) ) ) ).
+
+fof(t37_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ~ ( r2_hidden(k5_ordinal2,A)
+          & ! [B] :
+              ( m1_ordinal4(B,A)
+             => ! [C] :
+                  ( ~ v1_xboole_0(C)
+                 => ~ ( r4_zfrefle1(B,k5_ordinal2)
+                      & C = k4_classes1(B)
+                      & r3_zfrefle1(C,A) ) ) ) ) ) ).
+
+fof(t38_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & v1_zf_refle(B,A)
+            & m1_ordinal1(B,A) )
+         => ~ ( r2_hidden(k5_ordinal2,A)
+              & ! [C] :
+                  ( m1_ordinal4(C,A)
+                 => ! [D] :
+                      ( m1_ordinal4(D,A)
+                     => ( r2_hidden(C,D)
+                       => r1_tarski(k5_zf_refle(A,B,C),k5_zf_refle(A,B,D)) ) ) )
+              & ! [C] :
+                  ( m1_ordinal4(C,A)
+                 => ( v4_ordinal1(C)
+                   => ( C = k1_xboole_0
+                      | k5_zf_refle(A,B,C) = k3_card_3(k2_ordinal1(B,C)) ) ) )
+              & ! [C] :
+                  ( m2_ordinal4(C,A)
+                 => ~ ( v2_ordinal2(C)
+                      & v3_ordinal2(C)
+                      & ! [D] :
+                          ( m1_ordinal4(D,A)
+                         => ( k4_ordinal4(A,C,D) = D
+                           => ( k1_xboole_0 = D
+                              | r2_zfrefle1(k5_zf_refle(A,B,D),k4_zf_refle(A,B)) ) ) ) ) ) ) ) ) ).
+
+fof(t39_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ~ ( r2_hidden(k5_ordinal2,A)
+          & ! [B] :
+              ( m2_ordinal4(B,A)
+             => ~ ( v2_ordinal2(B)
+                  & v3_ordinal2(B)
+                  & ! [C] :
+                      ( m1_ordinal4(C,A)
+                     => ! [D] :
+                          ( ~ v1_xboole_0(D)
+                         => ( ( k4_ordinal4(A,B,C) = C
+                              & D = k4_classes1(C) )
+                           => ( k1_xboole_0 = C
+                              | r2_zfrefle1(D,A) ) ) ) ) ) ) ) ) ).
+
+fof(t40_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( m1_ordinal4(B,A)
+         => ~ ( r2_hidden(k5_ordinal2,A)
+              & ! [C] :
+                  ( m1_ordinal4(C,A)
+                 => ! [D] :
+                      ( ~ v1_xboole_0(D)
+                     => ~ ( r2_hidden(B,C)
+                          & D = k4_classes1(C)
+                          & r2_zfrefle1(D,A) ) ) ) ) ) ) ).
+
+fof(t41_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ~ ( r2_hidden(k5_ordinal2,A)
+          & ! [B] :
+              ( m1_ordinal4(B,A)
+             => ! [C] :
+                  ( ~ v1_xboole_0(C)
+                 => ~ ( r4_zfrefle1(B,k5_ordinal2)
+                      & C = k4_classes1(B)
+                      & r2_zfrefle1(C,A) ) ) ) ) ) ).
+
+fof(t42_zfrefle1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ~ ( r2_hidden(k5_ordinal2,A)
+          & ! [B] :
+              ( m1_ordinal4(B,A)
+             => ! [C] :
+                  ( ~ v1_xboole_0(C)
+                 => ~ ( r4_zfrefle1(B,k5_ordinal2)
+                      & C = k4_classes1(B)
+                      & v1_zf_model(C) ) ) ) ) ) ).
+
+fof(t43_zfrefle1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_classes2(B) )
+     => ~ ( r2_hidden(k5_ordinal2,B)
+          & r2_hidden(A,B)
+          & ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ~ ( r2_hidden(A,C)
+                  & r2_hidden(C,B)
+                  & v1_zf_model(C) ) ) ) ) ).
+
+fof(s1_zfrefle1,axiom,
+    ( ! [A] :
+        ~ ( r2_hidden(A,f1_s1_zfrefle1)
+          & ! [B] : ~ p1_s1_zfrefle1(A,B) )
+   => ? [A] :
+        ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & k1_relat_1(A) = f1_s1_zfrefle1
+        & ! [B] :
+            ( r2_hidden(B,f1_s1_zfrefle1)
+           => p1_s1_zfrefle1(B,k1_funct_1(A,B)) ) ) ) ).
+
+fof(symmetry_r2_zfrefle1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B) )
+     => ( r2_zfrefle1(A,B)
+       => r2_zfrefle1(B,A) ) ) ).
+
+fof(reflexivity_r2_zfrefle1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B) )
+     => r2_zfrefle1(A,A) ) ).
+
+fof(reflexivity_r3_zfrefle1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B) )
+     => r3_zfrefle1(A,A) ) ).
+
+fof(reflexivity_r4_zfrefle1,axiom,
+    ! [A,B] :
+      ( ( v3_ordinal1(A)
+        & v3_ordinal1(B) )
+     => r4_zfrefle1(A,A) ) ).
+
+fof(dt_k1_zfrefle1,axiom,
+    $true ).
+
+fof(dt_k2_zfrefle1,axiom,
+    m1_subset_1(k2_zfrefle1,k1_zfmisc_1(k9_zf_lang)) ).
+
+fof(redefinition_k2_zfrefle1,axiom,
+    k2_zfrefle1 = k1_zfrefle1 ).
+
+%------------------------------------------------------------------------------

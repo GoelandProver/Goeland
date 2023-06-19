@@ -1,0 +1,337 @@
+%------------------------------------------------------------------------------
+% File     : SET007+30 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Non-Negative Real Numbers. Part II
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : arytm_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   32 (   1 unt;   0 def)
+%            Number of atoms       :  161 (  38 equ)
+%            Maximal formula atoms :    9 (   5 avg)
+%            Number of connectives :  145 (  16   ~;   4   |;  18   &)
+%                                         (   3 <=>; 104  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   11 (   8 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :    4 (   2 usr;   1 prp; 0-2 aty)
+%            Number of functors    :    7 (   7 usr;   2 con; 0-2 aty)
+%            Number of variables   :   80 (  80   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ( k7_arytm_2(A,B) = B
+           => A = k1_xboole_0 ) ) ) ).
+
+fof(t2_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ~ ( k8_arytm_2(A,B) = k1_xboole_0
+              & A != k1_xboole_0
+              & B != k1_xboole_0 ) ) ) ).
+
+fof(t3_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( ( r1_arytm_2(A,B)
+                  & r1_arytm_2(B,C) )
+               => r1_arytm_2(A,C) ) ) ) ) ).
+
+fof(t4_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ( ( r1_arytm_2(A,B)
+              & r1_arytm_2(B,A) )
+           => A = B ) ) ) ).
+
+fof(t5_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ( ( r1_arytm_2(A,B)
+              & B = k1_xboole_0 )
+           => A = k1_xboole_0 ) ) ) ).
+
+fof(t6_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ( A = k1_xboole_0
+           => r1_arytm_2(A,B) ) ) ) ).
+
+fof(t7_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( r1_arytm_2(A,B)
+              <=> r1_arytm_2(k7_arytm_2(A,C),k7_arytm_2(B,C)) ) ) ) ) ).
+
+fof(t8_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( r1_arytm_2(A,B)
+               => r1_arytm_2(k8_arytm_2(A,C),k8_arytm_2(B,C)) ) ) ) ) ).
+
+fof(d1_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( ( r1_arytm_2(B,A)
+                 => ( C = k1_arytm_1(A,B)
+                  <=> k7_arytm_2(C,B) = A ) )
+                & ( ~ r1_arytm_2(B,A)
+                 => ( C = k1_arytm_1(A,B)
+                  <=> C = k1_xboole_0 ) ) ) ) ) ) ).
+
+fof(t9_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ~ ( ~ r1_arytm_2(A,B)
+              & k1_arytm_1(A,B) = k1_xboole_0 ) ) ) ).
+
+fof(t10_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ( ( r1_arytm_2(A,B)
+              & k1_arytm_1(B,A) = k1_xboole_0 )
+           => A = B ) ) ) ).
+
+fof(t11_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => r1_arytm_2(k1_arytm_1(A,B),A) ) ) ).
+
+fof(t12_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( ( r1_arytm_2(A,B)
+                  & r1_arytm_2(A,C) )
+               => k7_arytm_2(B,k1_arytm_1(C,A)) = k7_arytm_2(k1_arytm_1(B,A),C) ) ) ) ) ).
+
+fof(t13_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( r1_arytm_2(A,B)
+               => k7_arytm_2(C,k1_arytm_1(B,A)) = k1_arytm_1(k7_arytm_2(C,B),A) ) ) ) ) ).
+
+fof(t14_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( ( r1_arytm_2(A,B)
+                  & r1_arytm_2(C,A) )
+               => k7_arytm_2(k1_arytm_1(B,A),C) = k1_arytm_1(B,k1_arytm_1(A,C)) ) ) ) ) ).
+
+fof(t15_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( ( r1_arytm_2(A,B)
+                  & r1_arytm_2(A,C) )
+               => k7_arytm_2(k1_arytm_1(C,A),B) = k7_arytm_2(k1_arytm_1(B,A),C) ) ) ) ) ).
+
+fof(t16_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( r1_arytm_2(A,B)
+               => r1_arytm_2(k1_arytm_1(C,B),k1_arytm_1(C,A)) ) ) ) ) ).
+
+fof(t17_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( r1_arytm_2(A,B)
+               => r1_arytm_2(k1_arytm_1(A,C),k1_arytm_1(B,C)) ) ) ) ) ).
+
+fof(d2_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ( ( r1_arytm_2(B,A)
+             => k2_arytm_1(A,B) = k1_arytm_1(A,B) )
+            & ( ~ r1_arytm_2(B,A)
+             => k2_arytm_1(A,B) = k4_tarski(k1_xboole_0,k1_arytm_1(B,A)) ) ) ) ) ).
+
+fof(t18_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => k2_arytm_1(A,A) = k1_xboole_0 ) ).
+
+fof(t19_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ( A = k1_xboole_0
+           => ( B = k1_xboole_0
+              | k2_arytm_1(A,B) = k4_tarski(k1_xboole_0,B) ) ) ) ) ).
+
+fof(t20_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( r1_arytm_2(A,B)
+               => k7_arytm_2(C,k1_arytm_1(B,A)) = k2_arytm_1(k7_arytm_2(C,B),A) ) ) ) ) ).
+
+fof(t21_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( ~ r1_arytm_2(A,B)
+               => k2_arytm_1(C,k1_arytm_1(A,B)) = k2_arytm_1(k7_arytm_2(C,B),A) ) ) ) ) ).
+
+fof(t22_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( r1_arytm_2(A,B)
+               => ( r1_arytm_2(A,C)
+                  | k2_arytm_1(B,k1_arytm_1(A,C)) = k7_arytm_2(k1_arytm_1(B,A),C) ) ) ) ) ) ).
+
+fof(t23_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ~ ( ~ r1_arytm_2(A,B)
+                  & ~ r1_arytm_2(A,C)
+                  & k2_arytm_1(B,k1_arytm_1(A,C)) != k2_arytm_1(C,k1_arytm_1(A,B)) ) ) ) ) ).
+
+fof(t24_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( r1_arytm_2(A,B)
+               => k2_arytm_1(B,k7_arytm_2(A,C)) = k2_arytm_1(k1_arytm_1(B,A),C) ) ) ) ) ).
+
+fof(t25_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( ( r1_arytm_2(A,B)
+                  & r1_arytm_2(C,B) )
+               => k2_arytm_1(k1_arytm_1(B,C),A) = k2_arytm_1(k1_arytm_1(B,A),C) ) ) ) ) ).
+
+fof(t26_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( r1_arytm_2(A,B)
+               => k8_arytm_2(C,k1_arytm_1(B,A)) = k2_arytm_1(k8_arytm_2(C,B),k8_arytm_2(C,A)) ) ) ) ) ).
+
+fof(t27_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ~ ( ~ r1_arytm_2(A,B)
+                  & C != k1_xboole_0
+                  & k4_tarski(k1_xboole_0,k8_arytm_2(C,k1_arytm_1(A,B))) != k2_arytm_1(k8_arytm_2(C,B),k8_arytm_2(C,A)) ) ) ) ) ).
+
+fof(t28_arytm_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_arytm_2)
+     => ! [B] :
+          ( m1_subset_1(B,k2_arytm_2)
+         => ! [C] :
+              ( m1_subset_1(C,k2_arytm_2)
+             => ( r1_arytm_2(B,A)
+               => ( k1_arytm_1(A,B) = k1_xboole_0
+                  | C = k1_xboole_0
+                  | k2_arytm_1(k8_arytm_2(C,B),k8_arytm_2(C,A)) = k4_tarski(k1_xboole_0,k8_arytm_2(C,k1_arytm_1(A,B))) ) ) ) ) ) ).
+
+fof(dt_k1_arytm_1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k2_arytm_2)
+        & m1_subset_1(B,k2_arytm_2) )
+     => m1_subset_1(k1_arytm_1(A,B),k2_arytm_2) ) ).
+
+fof(dt_k2_arytm_1,axiom,
+    $true ).
+
+%------------------------------------------------------------------------------

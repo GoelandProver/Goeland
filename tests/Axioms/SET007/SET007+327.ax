@@ -1,0 +1,1870 @@
+%------------------------------------------------------------------------------
+% File     : SET007+327 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Separated and Weakly Separated Subspaces of Topological Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : tsep_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  117 (   9 unt;   0 def)
+%            Number of atoms       : 1210 (  61 equ)
+%            Maximal formula atoms :   26 (  10 avg)
+%            Number of connectives : 1387 ( 294   ~;  10   |; 614   &)
+%                                         (  43 <=>; 426  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   28 (  11 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   20 (  18 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   14 (  14 usr;   0 con; 1-3 aty)
+%            Number of variables   :  407 ( 372   !;  35   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ? [B] :
+          ( m1_pre_topc(B,A)
+          & v1_pre_topc(B)
+          & v2_pre_topc(B)
+          & v1_tsep_1(B,A) ) ) ).
+
+fof(rc2_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ? [B] :
+          ( m1_pre_topc(B,A)
+          & ~ v3_struct_0(B)
+          & v1_pre_topc(B)
+          & v2_pre_topc(B)
+          & v1_tsep_1(B,A) ) ) ).
+
+fof(t1_tsep_1,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => m1_subset_1(u1_struct_0(B),k1_zfmisc_1(u1_struct_0(A))) ) ) ).
+
+fof(t2_tsep_1,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => m1_pre_topc(A,A) ) ).
+
+fof(t3_tsep_1,axiom,
+    ! [A] :
+      ( ( v1_pre_topc(A)
+        & l1_pre_topc(A) )
+     => k3_pre_topc(A,k2_pre_topc(A)) = A ) ).
+
+fof(t4_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_pre_topc(C,A)
+             => ( r1_tarski(u1_struct_0(B),u1_struct_0(C))
+              <=> m1_pre_topc(B,C) ) ) ) ) ).
+
+fof(t5_tsep_1,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_pre_topc(C,A)
+             => ( u1_struct_0(B) = u1_struct_0(C)
+               => g1_pre_topc(u1_struct_0(B),u1_pre_topc(B)) = g1_pre_topc(u1_struct_0(C),u1_pre_topc(C)) ) ) ) ) ).
+
+fof(t6_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_pre_topc(C,A)
+             => ( ( m1_pre_topc(B,C)
+                  & m1_pre_topc(C,B) )
+               => g1_pre_topc(u1_struct_0(B),u1_pre_topc(B)) = g1_pre_topc(u1_struct_0(C),u1_pre_topc(C)) ) ) ) ) ).
+
+fof(t7_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_pre_topc(C,B)
+             => m1_pre_topc(C,A) ) ) ) ).
+
+fof(t8_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(B)))
+                     => ( ( v4_pre_topc(C,A)
+                          & r1_tarski(C,u1_struct_0(B))
+                          & r1_tarski(D,C)
+                          & D = E )
+                       => ( v4_pre_topc(E,B)
+                        <=> v4_pre_topc(D,A) ) ) ) ) ) ) ) ).
+
+fof(t9_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(B)))
+                     => ( ( v3_pre_topc(C,A)
+                          & r1_tarski(C,u1_struct_0(B))
+                          & r1_tarski(D,C)
+                          & D = E )
+                       => ( v3_pre_topc(E,B)
+                        <=> v3_pre_topc(D,A) ) ) ) ) ) ) ) ).
+
+fof(t10_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ? [C] :
+              ( ~ v3_struct_0(C)
+              & v1_pre_topc(C)
+              & m1_pre_topc(C,A)
+              & B = u1_struct_0(C) ) ) ) ).
+
+fof(t11_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( C = u1_struct_0(B)
+               => ( ( v1_borsuk_1(B,A)
+                    & m1_pre_topc(B,A) )
+                <=> v4_pre_topc(C,A) ) ) ) ) ) ).
+
+fof(t12_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v1_borsuk_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B)))
+                 => ( C = D
+                   => ( v4_pre_topc(D,B)
+                    <=> v4_pre_topc(C,A) ) ) ) ) ) ) ).
+
+fof(t13_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v1_borsuk_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( v1_borsuk_1(C,B)
+                & m1_pre_topc(C,B) )
+             => ( v1_borsuk_1(C,A)
+                & m1_pre_topc(C,A) ) ) ) ) ).
+
+fof(t14_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_borsuk_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( r1_tarski(u1_struct_0(B),u1_struct_0(C))
+               => ( ~ v3_struct_0(B)
+                  & v1_borsuk_1(B,C)
+                  & m1_pre_topc(B,C) ) ) ) ) ) ).
+
+fof(t15_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ~ ( v4_pre_topc(B,A)
+              & ! [C] :
+                  ( ( ~ v3_struct_0(C)
+                    & v1_pre_topc(C)
+                    & v1_borsuk_1(C,A)
+                    & m1_pre_topc(C,A) )
+                 => B != u1_struct_0(C) ) ) ) ) ).
+
+fof(d1_tsep_1,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ( v1_tsep_1(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( C = u1_struct_0(B)
+                 => v3_pre_topc(C,A) ) ) ) ) ) ).
+
+fof(t16_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( C = u1_struct_0(B)
+               => ( ( v1_tsep_1(B,A)
+                    & m1_pre_topc(B,A) )
+                <=> v3_pre_topc(C,A) ) ) ) ) ) ).
+
+fof(t17_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v1_tsep_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B)))
+                 => ( C = D
+                   => ( v3_pre_topc(D,B)
+                    <=> v3_pre_topc(C,A) ) ) ) ) ) ) ).
+
+fof(t18_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v1_tsep_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( v1_tsep_1(C,B)
+                & m1_pre_topc(C,B) )
+             => ( v1_tsep_1(C,A)
+                & m1_pre_topc(C,A) ) ) ) ) ).
+
+fof(t19_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v1_tsep_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( r1_tarski(u1_struct_0(B),u1_struct_0(C))
+               => ( v1_tsep_1(B,C)
+                  & m1_pre_topc(B,C) ) ) ) ) ) ).
+
+fof(t20_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ~ ( v3_pre_topc(B,A)
+              & ! [C] :
+                  ( ( ~ v3_struct_0(C)
+                    & v1_pre_topc(C)
+                    & v1_tsep_1(C,A)
+                    & m1_pre_topc(C,A) )
+                 => B != u1_struct_0(C) ) ) ) ) ).
+
+fof(d2_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & v1_pre_topc(D)
+                    & m1_pre_topc(D,A) )
+                 => ( D = k1_tsep_1(A,B,C)
+                  <=> u1_struct_0(D) = k2_xboole_0(u1_struct_0(B),u1_struct_0(C)) ) ) ) ) ) ).
+
+fof(t21_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => k1_tsep_1(A,k1_tsep_1(A,B,C),D) = k1_tsep_1(A,B,k1_tsep_1(A,C,D)) ) ) ) ) ).
+
+fof(t22_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => m1_pre_topc(B,k1_tsep_1(A,B,C)) ) ) ) ).
+
+fof(t23_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( m1_pre_topc(B,C)
+              <=> k1_tsep_1(A,B,C) = g1_pre_topc(u1_struct_0(C),u1_pre_topc(C)) ) ) ) ) ).
+
+fof(t24_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_borsuk_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v1_borsuk_1(C,A)
+                & m1_pre_topc(C,A) )
+             => ( v1_borsuk_1(k1_tsep_1(A,B,C),A)
+                & m1_pre_topc(k1_tsep_1(A,B,C),A) ) ) ) ) ).
+
+fof(t25_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_tsep_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v1_tsep_1(C,A)
+                & m1_pre_topc(C,A) )
+             => ( v1_tsep_1(k1_tsep_1(A,B,C),A)
+                & m1_pre_topc(k1_tsep_1(A,B,C),A) ) ) ) ) ).
+
+fof(d3_tsep_1,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_pre_topc(C,A)
+             => ( r1_tsep_1(A,B,C)
+              <=> r1_xboole_0(u1_struct_0(B),u1_struct_0(C)) ) ) ) ) ).
+
+fof(d4_tsep_1,axiom,
+    $true ).
+
+fof(d5_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ~ r1_tsep_1(A,B,C)
+               => ! [D] :
+                    ( ( ~ v3_struct_0(D)
+                      & v1_pre_topc(D)
+                      & m1_pre_topc(D,A) )
+                   => ( D = k2_tsep_1(A,B,C)
+                    <=> u1_struct_0(D) = k3_xboole_0(u1_struct_0(B),u1_struct_0(C)) ) ) ) ) ) ) ).
+
+fof(t26_tsep_1,axiom,
+    $true ).
+
+fof(t27_tsep_1,axiom,
+    $true ).
+
+fof(t28_tsep_1,axiom,
+    $true ).
+
+fof(t29_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => ( ( ~ r1_tsep_1(A,B,C)
+                     => k2_tsep_1(A,B,C) = k2_tsep_1(A,C,B) )
+                    & ( ( ( ~ r1_tsep_1(A,B,C)
+                          & ~ r1_tsep_1(A,k2_tsep_1(A,B,C),D) )
+                        | ( ~ r1_tsep_1(A,C,D)
+                          & ~ r1_tsep_1(A,B,k2_tsep_1(A,C,D)) ) )
+                     => k2_tsep_1(A,k2_tsep_1(A,B,C),D) = k2_tsep_1(A,B,k2_tsep_1(A,C,D)) ) ) ) ) ) ) ).
+
+fof(t30_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ~ r1_tsep_1(A,B,C)
+               => ( m1_pre_topc(k2_tsep_1(A,B,C),B)
+                  & m1_pre_topc(k2_tsep_1(A,B,C),C) ) ) ) ) ) ).
+
+fof(t31_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ~ r1_tsep_1(A,B,C)
+               => ( ( m1_pre_topc(B,C)
+                   => k2_tsep_1(A,B,C) = g1_pre_topc(u1_struct_0(B),u1_pre_topc(B)) )
+                  & ( k2_tsep_1(A,B,C) = g1_pre_topc(u1_struct_0(B),u1_pre_topc(B))
+                   => m1_pre_topc(B,C) )
+                  & ( m1_pre_topc(C,B)
+                   => k2_tsep_1(A,B,C) = g1_pre_topc(u1_struct_0(C),u1_pre_topc(C)) )
+                  & ( k2_tsep_1(A,B,C) = g1_pre_topc(u1_struct_0(C),u1_pre_topc(C))
+                   => m1_pre_topc(C,B) ) ) ) ) ) ) ).
+
+fof(t32_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_borsuk_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v1_borsuk_1(C,A)
+                & m1_pre_topc(C,A) )
+             => ( ~ r1_tsep_1(A,B,C)
+               => ( v1_borsuk_1(k2_tsep_1(A,B,C),A)
+                  & m1_pre_topc(k2_tsep_1(A,B,C),A) ) ) ) ) ) ).
+
+fof(t33_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_tsep_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v1_tsep_1(C,A)
+                & m1_pre_topc(C,A) )
+             => ( ~ r1_tsep_1(A,B,C)
+               => ( v1_tsep_1(k2_tsep_1(A,B,C),A)
+                  & m1_pre_topc(k2_tsep_1(A,B,C),A) ) ) ) ) ) ).
+
+fof(t34_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ~ r1_tsep_1(A,B,C)
+               => m1_pre_topc(k2_tsep_1(A,B,C),k1_tsep_1(A,B,C)) ) ) ) ) ).
+
+fof(t35_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => ~ ( ~ r1_tsep_1(A,B,D)
+                      & ~ r1_tsep_1(A,D,C)
+                      & ~ ( k2_tsep_1(A,k1_tsep_1(A,B,C),D) = k1_tsep_1(A,k2_tsep_1(A,B,D),k2_tsep_1(A,C,D))
+                          & k2_tsep_1(A,D,k1_tsep_1(A,B,C)) = k1_tsep_1(A,k2_tsep_1(A,D,B),k2_tsep_1(A,D,C)) ) ) ) ) ) ) ).
+
+fof(t36_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => ( ~ r1_tsep_1(A,B,C)
+                   => ( k1_tsep_1(A,k2_tsep_1(A,B,C),D) = k2_tsep_1(A,k1_tsep_1(A,B,D),k1_tsep_1(A,C,D))
+                      & k1_tsep_1(A,D,k2_tsep_1(A,B,C)) = k2_tsep_1(A,k1_tsep_1(A,D,B),k1_tsep_1(A,D,C)) ) ) ) ) ) ) ).
+
+fof(t37_tsep_1,axiom,
+    $true ).
+
+fof(t38_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v4_pre_topc(B,A)
+                  & v4_pre_topc(C,A) )
+               => ( r1_xboole_0(B,C)
+                <=> r1_connsp_1(A,B,C) ) ) ) ) ) ).
+
+fof(t39_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v4_pre_topc(k4_subset_1(u1_struct_0(A),B,C),A)
+                  & r1_connsp_1(A,B,C) )
+               => ( v4_pre_topc(B,A)
+                  & v4_pre_topc(C,A) ) ) ) ) ) ).
+
+fof(t40_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( r1_xboole_0(B,C)
+                  & v3_pre_topc(B,A) )
+               => r1_xboole_0(B,k6_pre_topc(A,C)) ) ) ) ) ).
+
+fof(t41_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v3_pre_topc(B,A)
+                  & v3_pre_topc(C,A) )
+               => ( r1_xboole_0(B,C)
+                <=> r1_connsp_1(A,B,C) ) ) ) ) ) ).
+
+fof(t42_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v3_pre_topc(k4_subset_1(u1_struct_0(A),B,C),A)
+                  & r1_connsp_1(A,B,C) )
+               => ( v3_pre_topc(B,A)
+                  & v3_pre_topc(C,A) ) ) ) ) ) ).
+
+fof(t43_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( r1_connsp_1(A,B,C)
+                   => r1_connsp_1(A,k5_subset_1(u1_struct_0(A),B,D),k5_subset_1(u1_struct_0(A),C,D)) ) ) ) ) ) ).
+
+fof(t44_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( r1_connsp_1(A,B,D)
+                      | r1_connsp_1(A,C,D) )
+                   => r1_connsp_1(A,k5_subset_1(u1_struct_0(A),B,C),D) ) ) ) ) ) ).
+
+fof(t45_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( r1_connsp_1(A,B,D)
+                      & r1_connsp_1(A,C,D) )
+                  <=> r1_connsp_1(A,k4_subset_1(u1_struct_0(A),B,C),D) ) ) ) ) ) ).
+
+fof(t46_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_connsp_1(A,B,C)
+              <=> ? [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                    & ? [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                        & r1_tarski(B,D)
+                        & r1_tarski(C,E)
+                        & r1_xboole_0(D,C)
+                        & r1_xboole_0(E,B)
+                        & v4_pre_topc(D,A)
+                        & v4_pre_topc(E,A) ) ) ) ) ) ) ).
+
+fof(t47_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_connsp_1(A,B,C)
+              <=> ? [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                    & ? [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                        & r1_tarski(B,D)
+                        & r1_tarski(C,E)
+                        & r1_xboole_0(k5_subset_1(u1_struct_0(A),D,E),k4_subset_1(u1_struct_0(A),B,C))
+                        & v4_pre_topc(D,A)
+                        & v4_pre_topc(E,A) ) ) ) ) ) ) ).
+
+fof(t48_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_connsp_1(A,B,C)
+              <=> ? [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                    & ? [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                        & r1_tarski(B,D)
+                        & r1_tarski(C,E)
+                        & r1_xboole_0(D,C)
+                        & r1_xboole_0(E,B)
+                        & v3_pre_topc(D,A)
+                        & v3_pre_topc(E,A) ) ) ) ) ) ) ).
+
+fof(t49_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_connsp_1(A,B,C)
+              <=> ? [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                    & ? [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                        & r1_tarski(B,D)
+                        & r1_tarski(C,E)
+                        & r1_xboole_0(k5_subset_1(u1_struct_0(A),D,E),k4_subset_1(u1_struct_0(A),B,C))
+                        & v3_pre_topc(D,A)
+                        & v3_pre_topc(E,A) ) ) ) ) ) ) ).
+
+fof(d6_tsep_1,axiom,
+    $true ).
+
+fof(d7_tsep_1,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r2_tsep_1(A,B,C)
+              <=> r1_connsp_1(A,k6_subset_1(u1_struct_0(A),B,C),k6_subset_1(u1_struct_0(A),C,B)) ) ) ) ) ).
+
+fof(t50_tsep_1,axiom,
+    $true ).
+
+fof(t51_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( r1_xboole_0(B,C)
+                  & r2_tsep_1(A,B,C) )
+              <=> r1_connsp_1(A,B,C) ) ) ) ) ).
+
+fof(t52_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_tarski(B,C)
+               => r2_tsep_1(A,B,C) ) ) ) ) ).
+
+fof(t53_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v4_pre_topc(B,A)
+                  & v4_pre_topc(C,A) )
+               => r2_tsep_1(A,B,C) ) ) ) ) ).
+
+fof(t54_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v3_pre_topc(B,A)
+                  & v3_pre_topc(C,A) )
+               => r2_tsep_1(A,B,C) ) ) ) ) ).
+
+fof(t55_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( r2_tsep_1(A,B,C)
+                   => r2_tsep_1(A,k4_subset_1(u1_struct_0(A),B,D),k4_subset_1(u1_struct_0(A),C,D)) ) ) ) ) ) ).
+
+fof(t56_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                     => ( ( r1_tarski(D,B)
+                          & r1_tarski(E,C)
+                          & r2_tsep_1(A,C,B) )
+                       => r2_tsep_1(A,k4_subset_1(u1_struct_0(A),C,D),k4_subset_1(u1_struct_0(A),B,E)) ) ) ) ) ) ) ).
+
+fof(t57_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( r2_tsep_1(A,B,D)
+                      & r2_tsep_1(A,C,D) )
+                   => r2_tsep_1(A,k5_subset_1(u1_struct_0(A),B,C),D) ) ) ) ) ) ).
+
+fof(t58_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( r2_tsep_1(A,B,D)
+                      & r2_tsep_1(A,C,D) )
+                   => r2_tsep_1(A,k4_subset_1(u1_struct_0(A),B,C),D) ) ) ) ) ) ).
+
+fof(t59_tsep_1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r2_tsep_1(A,B,C)
+              <=> ? [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                    & ? [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                        & ? [F] :
+                            ( m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A)))
+                            & r1_tarski(k5_subset_1(u1_struct_0(A),D,k4_subset_1(u1_struct_0(A),B,C)),B)
+                            & r1_tarski(k5_subset_1(u1_struct_0(A),E,k4_subset_1(u1_struct_0(A),B,C)),C)
+                            & r1_tarski(k5_subset_1(u1_struct_0(A),F,k4_subset_1(u1_struct_0(A),B,C)),k5_subset_1(u1_struct_0(A),B,C))
+                            & u1_struct_0(A) = k4_subset_1(u1_struct_0(A),k4_subset_1(u1_struct_0(A),D,E),F)
+                            & v4_pre_topc(D,A)
+                            & v4_pre_topc(E,A)
+                            & v3_pre_topc(F,A) ) ) ) ) ) ) ) ).
+
+fof(t60_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ~ ( r2_tsep_1(A,B,C)
+                  & ~ r1_tarski(B,C)
+                  & ~ r1_tarski(C,B)
+                  & ! [D] :
+                      ( ( ~ v1_xboole_0(D)
+                        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A))) )
+                     => ! [E] :
+                          ( ( ~ v1_xboole_0(E)
+                            & m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A))) )
+                         => ~ ( v4_pre_topc(D,A)
+                              & v4_pre_topc(E,A)
+                              & r1_tarski(k5_subset_1(u1_struct_0(A),D,k4_subset_1(u1_struct_0(A),B,C)),B)
+                              & r1_tarski(k5_subset_1(u1_struct_0(A),E,k4_subset_1(u1_struct_0(A),B,C)),C)
+                              & ~ ( ~ r1_tarski(k4_subset_1(u1_struct_0(A),B,C),k4_subset_1(u1_struct_0(A),D,E))
+                                  & ! [F] :
+                                      ( ( ~ v1_xboole_0(F)
+                                        & m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A))) )
+                                     => ~ ( v3_pre_topc(F,A)
+                                          & r1_tarski(k5_subset_1(u1_struct_0(A),F,k4_subset_1(u1_struct_0(A),B,C)),k5_subset_1(u1_struct_0(A),B,C))
+                                          & u1_struct_0(A) = k4_subset_1(u1_struct_0(A),k4_subset_1(u1_struct_0(A),D,E),F) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t61_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( k4_subset_1(u1_struct_0(A),B,C) = u1_struct_0(A)
+               => ( r2_tsep_1(A,B,C)
+                <=> ? [D] :
+                      ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                      & ? [E] :
+                          ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                          & ? [F] :
+                              ( m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A)))
+                              & k4_subset_1(u1_struct_0(A),B,C) = k4_subset_1(u1_struct_0(A),k4_subset_1(u1_struct_0(A),D,E),F)
+                              & r1_tarski(D,B)
+                              & r1_tarski(E,C)
+                              & r1_tarski(F,k5_subset_1(u1_struct_0(A),B,C))
+                              & v4_pre_topc(D,A)
+                              & v4_pre_topc(E,A)
+                              & v3_pre_topc(F,A) ) ) ) ) ) ) ) ) ).
+
+fof(t62_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ~ ( k4_subset_1(u1_struct_0(A),B,C) = u1_struct_0(A)
+                  & r2_tsep_1(A,B,C)
+                  & ~ r1_tarski(B,C)
+                  & ~ r1_tarski(C,B)
+                  & ! [D] :
+                      ( ( ~ v1_xboole_0(D)
+                        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A))) )
+                     => ! [E] :
+                          ( ( ~ v1_xboole_0(E)
+                            & m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A))) )
+                         => ~ ( v4_pre_topc(D,A)
+                              & v4_pre_topc(E,A)
+                              & r1_tarski(D,B)
+                              & r1_tarski(E,C)
+                              & ~ ( k4_subset_1(u1_struct_0(A),B,C) != k4_subset_1(u1_struct_0(A),D,E)
+                                  & ! [F] :
+                                      ( ( ~ v1_xboole_0(F)
+                                        & m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A))) )
+                                     => ~ ( k4_subset_1(u1_struct_0(A),B,C) = k4_subset_1(u1_struct_0(A),k4_subset_1(u1_struct_0(A),D,E),F)
+                                          & r1_tarski(F,k5_subset_1(u1_struct_0(A),B,C))
+                                          & v3_pre_topc(F,A) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t63_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r2_tsep_1(A,B,C)
+              <=> ? [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                    & ? [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                        & ? [F] :
+                            ( m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A)))
+                            & r1_tarski(k5_subset_1(u1_struct_0(A),D,k4_subset_1(u1_struct_0(A),B,C)),B)
+                            & r1_tarski(k5_subset_1(u1_struct_0(A),E,k4_subset_1(u1_struct_0(A),B,C)),C)
+                            & r1_tarski(k5_subset_1(u1_struct_0(A),F,k4_subset_1(u1_struct_0(A),B,C)),k5_subset_1(u1_struct_0(A),B,C))
+                            & u1_struct_0(A) = k4_subset_1(u1_struct_0(A),k4_subset_1(u1_struct_0(A),D,E),F)
+                            & v3_pre_topc(D,A)
+                            & v3_pre_topc(E,A)
+                            & v4_pre_topc(F,A) ) ) ) ) ) ) ) ).
+
+fof(t64_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ~ ( r2_tsep_1(A,B,C)
+                  & ~ r1_tarski(B,C)
+                  & ~ r1_tarski(C,B)
+                  & ! [D] :
+                      ( ( ~ v1_xboole_0(D)
+                        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A))) )
+                     => ! [E] :
+                          ( ( ~ v1_xboole_0(E)
+                            & m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A))) )
+                         => ~ ( v3_pre_topc(D,A)
+                              & v3_pre_topc(E,A)
+                              & r1_tarski(k5_subset_1(u1_struct_0(A),D,k4_subset_1(u1_struct_0(A),B,C)),B)
+                              & r1_tarski(k5_subset_1(u1_struct_0(A),E,k4_subset_1(u1_struct_0(A),B,C)),C)
+                              & ~ ( ~ r1_tarski(k4_subset_1(u1_struct_0(A),B,C),k4_subset_1(u1_struct_0(A),D,E))
+                                  & ! [F] :
+                                      ( ( ~ v1_xboole_0(F)
+                                        & m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A))) )
+                                     => ~ ( v4_pre_topc(F,A)
+                                          & r1_tarski(k5_subset_1(u1_struct_0(A),F,k4_subset_1(u1_struct_0(A),B,C)),k5_subset_1(u1_struct_0(A),B,C))
+                                          & u1_struct_0(A) = k4_subset_1(u1_struct_0(A),k4_subset_1(u1_struct_0(A),D,E),F) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t65_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( k4_subset_1(u1_struct_0(A),B,C) = u1_struct_0(A)
+               => ( r2_tsep_1(A,B,C)
+                <=> ? [D] :
+                      ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                      & ? [E] :
+                          ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                          & ? [F] :
+                              ( m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A)))
+                              & k4_subset_1(u1_struct_0(A),B,C) = k4_subset_1(u1_struct_0(A),k4_subset_1(u1_struct_0(A),D,E),F)
+                              & r1_tarski(D,B)
+                              & r1_tarski(E,C)
+                              & r1_tarski(F,k5_subset_1(u1_struct_0(A),B,C))
+                              & v3_pre_topc(D,A)
+                              & v3_pre_topc(E,A)
+                              & v4_pre_topc(F,A) ) ) ) ) ) ) ) ) ).
+
+fof(t66_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ~ ( k4_subset_1(u1_struct_0(A),B,C) = u1_struct_0(A)
+                  & r2_tsep_1(A,B,C)
+                  & ~ r1_tarski(B,C)
+                  & ~ r1_tarski(C,B)
+                  & ! [D] :
+                      ( ( ~ v1_xboole_0(D)
+                        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A))) )
+                     => ! [E] :
+                          ( ( ~ v1_xboole_0(E)
+                            & m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A))) )
+                         => ~ ( v3_pre_topc(D,A)
+                              & v3_pre_topc(E,A)
+                              & r1_tarski(D,B)
+                              & r1_tarski(E,C)
+                              & ~ ( k4_subset_1(u1_struct_0(A),B,C) != k4_subset_1(u1_struct_0(A),D,E)
+                                  & ! [F] :
+                                      ( ( ~ v1_xboole_0(F)
+                                        & m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A))) )
+                                     => ~ ( k4_subset_1(u1_struct_0(A),B,C) = k4_subset_1(u1_struct_0(A),k4_subset_1(u1_struct_0(A),D,E),F)
+                                          & r1_tarski(F,k5_subset_1(u1_struct_0(A),B,C))
+                                          & v4_pre_topc(F,A) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t67_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_connsp_1(A,B,C)
+              <=> ? [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                    & ? [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                        & r2_tsep_1(A,D,E)
+                        & r1_tarski(B,D)
+                        & r1_tarski(C,E)
+                        & r1_xboole_0(k5_subset_1(u1_struct_0(A),D,E),k4_subset_1(u1_struct_0(A),B,C)) ) ) ) ) ) ) ).
+
+fof(d8_tsep_1,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_pre_topc(C,A)
+             => ( r3_tsep_1(A,B,C)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                   => ! [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                       => ( ( D = u1_struct_0(B)
+                            & E = u1_struct_0(C) )
+                         => r1_connsp_1(A,D,E) ) ) ) ) ) ) ) ).
+
+fof(t68_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( r3_tsep_1(A,B,C)
+               => r1_tsep_1(A,B,C) ) ) ) ) ).
+
+fof(t69_tsep_1,axiom,
+    $true ).
+
+fof(t70_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_borsuk_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v1_borsuk_1(C,A)
+                & m1_pre_topc(C,A) )
+             => ( r1_tsep_1(A,B,C)
+              <=> r3_tsep_1(A,B,C) ) ) ) ) ).
+
+fof(t71_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ( A = k1_tsep_1(A,B,C)
+                  & r3_tsep_1(A,B,C) )
+               => ( v1_borsuk_1(B,A)
+                  & m1_pre_topc(B,A) ) ) ) ) ) ).
+
+fof(t72_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ( v1_borsuk_1(k1_tsep_1(A,B,C),A)
+                  & m1_pre_topc(k1_tsep_1(A,B,C),A)
+                  & r3_tsep_1(A,B,C) )
+               => ( v1_borsuk_1(B,A)
+                  & m1_pre_topc(B,A) ) ) ) ) ) ).
+
+fof(t73_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_tsep_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v1_tsep_1(C,A)
+                & m1_pre_topc(C,A) )
+             => ( r1_tsep_1(A,B,C)
+              <=> r3_tsep_1(A,B,C) ) ) ) ) ).
+
+fof(t74_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ( A = k1_tsep_1(A,B,C)
+                  & r3_tsep_1(A,B,C) )
+               => ( v1_tsep_1(B,A)
+                  & m1_pre_topc(B,A) ) ) ) ) ) ).
+
+fof(t75_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ( v1_tsep_1(k1_tsep_1(A,B,C),A)
+                  & m1_pre_topc(k1_tsep_1(A,B,C),A)
+                  & r3_tsep_1(A,B,C) )
+               => ( v1_tsep_1(B,A)
+                  & m1_pre_topc(B,A) ) ) ) ) ) ).
+
+fof(t76_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => ( r3_tsep_1(A,C,D)
+                   => ( r1_tsep_1(A,C,B)
+                      | r1_tsep_1(A,D,B)
+                      | ( r3_tsep_1(A,k2_tsep_1(A,C,B),k2_tsep_1(A,D,B))
+                        & r3_tsep_1(A,k2_tsep_1(A,B,C),k2_tsep_1(A,B,D)) ) ) ) ) ) ) ) ).
+
+fof(t77_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( m1_pre_topc(D,A)
+                 => ! [E] :
+                      ( m1_pre_topc(E,A)
+                     => ( ( m1_pre_topc(D,B)
+                          & m1_pre_topc(E,C)
+                          & r3_tsep_1(A,B,C) )
+                       => r3_tsep_1(A,D,E) ) ) ) ) ) ) ).
+
+fof(t78_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => ( r3_tsep_1(A,B,D)
+                   => ( r1_tsep_1(A,B,C)
+                      | r3_tsep_1(A,k2_tsep_1(A,B,C),D) ) ) ) ) ) ) ).
+
+fof(t79_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => ( ( r3_tsep_1(A,B,D)
+                      & r3_tsep_1(A,C,D) )
+                  <=> r3_tsep_1(A,k1_tsep_1(A,B,C),D) ) ) ) ) ) ).
+
+fof(t80_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( r3_tsep_1(A,B,C)
+              <=> ? [D] :
+                    ( ~ v3_struct_0(D)
+                    & v1_borsuk_1(D,A)
+                    & m1_pre_topc(D,A)
+                    & ? [E] :
+                        ( ~ v3_struct_0(E)
+                        & v1_borsuk_1(E,A)
+                        & m1_pre_topc(E,A)
+                        & m1_pre_topc(B,D)
+                        & m1_pre_topc(C,E)
+                        & r1_tsep_1(A,D,C)
+                        & r1_tsep_1(A,E,B) ) ) ) ) ) ) ).
+
+fof(t81_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( r3_tsep_1(A,B,C)
+              <=> ? [D] :
+                    ( ~ v3_struct_0(D)
+                    & v1_borsuk_1(D,A)
+                    & m1_pre_topc(D,A)
+                    & ? [E] :
+                        ( ~ v3_struct_0(E)
+                        & v1_borsuk_1(E,A)
+                        & m1_pre_topc(E,A)
+                        & m1_pre_topc(B,D)
+                        & m1_pre_topc(C,E)
+                        & ( r1_tsep_1(A,D,E)
+                          | r1_tsep_1(A,k2_tsep_1(A,D,E),k1_tsep_1(A,B,C)) ) ) ) ) ) ) ) ).
+
+fof(t82_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( r3_tsep_1(A,B,C)
+              <=> ? [D] :
+                    ( ~ v3_struct_0(D)
+                    & v1_tsep_1(D,A)
+                    & m1_pre_topc(D,A)
+                    & ? [E] :
+                        ( ~ v3_struct_0(E)
+                        & v1_tsep_1(E,A)
+                        & m1_pre_topc(E,A)
+                        & m1_pre_topc(B,D)
+                        & m1_pre_topc(C,E)
+                        & r1_tsep_1(A,D,C)
+                        & r1_tsep_1(A,E,B) ) ) ) ) ) ) ).
+
+fof(t83_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( r3_tsep_1(A,B,C)
+              <=> ? [D] :
+                    ( ~ v3_struct_0(D)
+                    & v1_tsep_1(D,A)
+                    & m1_pre_topc(D,A)
+                    & ? [E] :
+                        ( ~ v3_struct_0(E)
+                        & v1_tsep_1(E,A)
+                        & m1_pre_topc(E,A)
+                        & m1_pre_topc(B,D)
+                        & m1_pre_topc(C,E)
+                        & ( r1_tsep_1(A,D,E)
+                          | r1_tsep_1(A,k2_tsep_1(A,D,E),k1_tsep_1(A,B,C)) ) ) ) ) ) ) ) ).
+
+fof(d9_tsep_1,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ! [B] :
+          ( m1_pre_topc(B,A)
+         => ! [C] :
+              ( m1_pre_topc(C,A)
+             => ( r4_tsep_1(A,B,C)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                   => ! [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                       => ( ( D = u1_struct_0(B)
+                            & E = u1_struct_0(C) )
+                         => r2_tsep_1(A,D,E) ) ) ) ) ) ) ) ).
+
+fof(t84_tsep_1,axiom,
+    $true ).
+
+fof(t85_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ( r1_tsep_1(A,B,C)
+                  & r4_tsep_1(A,B,C) )
+              <=> r3_tsep_1(A,B,C) ) ) ) ) ).
+
+fof(t86_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( m1_pre_topc(B,C)
+               => r4_tsep_1(A,B,C) ) ) ) ) ).
+
+fof(t87_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v1_borsuk_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( v1_borsuk_1(C,A)
+                & m1_pre_topc(C,A) )
+             => r4_tsep_1(A,B,C) ) ) ) ).
+
+fof(t88_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v1_tsep_1(B,A)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( v1_tsep_1(C,A)
+                & m1_pre_topc(C,A) )
+             => r4_tsep_1(A,B,C) ) ) ) ).
+
+fof(t89_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => ( r4_tsep_1(A,B,C)
+                   => r4_tsep_1(A,k1_tsep_1(A,B,D),k1_tsep_1(A,C,D)) ) ) ) ) ) ).
+
+fof(t90_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => ! [E] :
+                      ( ( ~ v3_struct_0(E)
+                        & m1_pre_topc(E,A) )
+                     => ( ( m1_pre_topc(D,B)
+                          & m1_pre_topc(E,C)
+                          & r4_tsep_1(A,C,B) )
+                       => ( r4_tsep_1(A,k1_tsep_1(A,C,D),k1_tsep_1(A,B,E))
+                          & r4_tsep_1(A,k1_tsep_1(A,D,C),k1_tsep_1(A,E,B)) ) ) ) ) ) ) ) ).
+
+fof(t91_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => ( ~ r1_tsep_1(A,C,D)
+                   => ( ( ( r4_tsep_1(A,C,B)
+                          & r4_tsep_1(A,D,B) )
+                       => r4_tsep_1(A,k2_tsep_1(A,C,D),B) )
+                      & ( ( r4_tsep_1(A,B,C)
+                          & r4_tsep_1(A,B,D) )
+                       => r4_tsep_1(A,B,k2_tsep_1(A,C,D)) ) ) ) ) ) ) ) ).
+
+fof(t92_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ! [D] :
+                  ( ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A) )
+                 => ( ( ( r4_tsep_1(A,B,D)
+                        & r4_tsep_1(A,C,D) )
+                     => r4_tsep_1(A,k1_tsep_1(A,B,C),D) )
+                    & ( ( r4_tsep_1(A,D,B)
+                        & r4_tsep_1(A,D,C) )
+                     => r4_tsep_1(A,D,k1_tsep_1(A,B,C)) ) ) ) ) ) ) ).
+
+fof(t93_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ~ r1_tsep_1(A,B,C)
+               => ( r4_tsep_1(A,B,C)
+                <=> ~ ( ~ m1_pre_topc(B,C)
+                      & ~ m1_pre_topc(C,B)
+                      & ! [D] :
+                          ( ( ~ v3_struct_0(D)
+                            & v1_borsuk_1(D,A)
+                            & m1_pre_topc(D,A) )
+                         => ! [E] :
+                              ( ( ~ v3_struct_0(E)
+                                & v1_borsuk_1(E,A)
+                                & m1_pre_topc(E,A) )
+                             => ~ ( m1_pre_topc(k2_tsep_1(A,D,k1_tsep_1(A,B,C)),B)
+                                  & m1_pre_topc(k2_tsep_1(A,E,k1_tsep_1(A,B,C)),C)
+                                  & ~ ( ~ m1_pre_topc(k1_tsep_1(A,B,C),k1_tsep_1(A,D,E))
+                                      & ! [F] :
+                                          ( ( ~ v3_struct_0(F)
+                                            & v1_tsep_1(F,A)
+                                            & m1_pre_topc(F,A) )
+                                         => ~ ( g1_pre_topc(u1_struct_0(A),u1_pre_topc(A)) = k1_tsep_1(A,k1_tsep_1(A,D,E),F)
+                                              & m1_pre_topc(k2_tsep_1(A,F,k1_tsep_1(A,B,C)),k2_tsep_1(A,B,C)) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t94_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( A = k1_tsep_1(A,B,C)
+               => ( r1_tsep_1(A,B,C)
+                  | ( r4_tsep_1(A,B,C)
+                  <=> ~ ( ~ m1_pre_topc(B,C)
+                        & ~ m1_pre_topc(C,B)
+                        & ! [D] :
+                            ( ( ~ v3_struct_0(D)
+                              & v1_borsuk_1(D,A)
+                              & m1_pre_topc(D,A) )
+                           => ! [E] :
+                                ( ( ~ v3_struct_0(E)
+                                  & v1_borsuk_1(E,A)
+                                  & m1_pre_topc(E,A) )
+                               => ~ ( m1_pre_topc(D,B)
+                                    & m1_pre_topc(E,C)
+                                    & ~ ( A != k1_tsep_1(A,D,E)
+                                        & ! [F] :
+                                            ( ( ~ v3_struct_0(F)
+                                              & v1_tsep_1(F,A)
+                                              & m1_pre_topc(F,A) )
+                                           => ~ ( A = k1_tsep_1(A,k1_tsep_1(A,D,E),F)
+                                                & m1_pre_topc(F,k2_tsep_1(A,B,C)) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t95_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ( A = k1_tsep_1(A,B,C)
+                  & r1_tsep_1(A,B,C) )
+               => ( r4_tsep_1(A,B,C)
+                <=> ( v1_borsuk_1(B,A)
+                    & m1_pre_topc(B,A)
+                    & v1_borsuk_1(C,A)
+                    & m1_pre_topc(C,A) ) ) ) ) ) ) ).
+
+fof(t96_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ~ r1_tsep_1(A,B,C)
+               => ( r4_tsep_1(A,B,C)
+                <=> ~ ( ~ m1_pre_topc(B,C)
+                      & ~ m1_pre_topc(C,B)
+                      & ! [D] :
+                          ( ( ~ v3_struct_0(D)
+                            & v1_tsep_1(D,A)
+                            & m1_pre_topc(D,A) )
+                         => ! [E] :
+                              ( ( ~ v3_struct_0(E)
+                                & v1_tsep_1(E,A)
+                                & m1_pre_topc(E,A) )
+                             => ~ ( m1_pre_topc(k2_tsep_1(A,D,k1_tsep_1(A,B,C)),B)
+                                  & m1_pre_topc(k2_tsep_1(A,E,k1_tsep_1(A,B,C)),C)
+                                  & ~ ( ~ m1_pre_topc(k1_tsep_1(A,B,C),k1_tsep_1(A,D,E))
+                                      & ! [F] :
+                                          ( ( ~ v3_struct_0(F)
+                                            & v1_borsuk_1(F,A)
+                                            & m1_pre_topc(F,A) )
+                                         => ~ ( g1_pre_topc(u1_struct_0(A),u1_pre_topc(A)) = k1_tsep_1(A,k1_tsep_1(A,D,E),F)
+                                              & m1_pre_topc(k2_tsep_1(A,F,k1_tsep_1(A,B,C)),k2_tsep_1(A,B,C)) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t97_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( A = k1_tsep_1(A,B,C)
+               => ( r1_tsep_1(A,B,C)
+                  | ( r4_tsep_1(A,B,C)
+                  <=> ~ ( ~ m1_pre_topc(B,C)
+                        & ~ m1_pre_topc(C,B)
+                        & ! [D] :
+                            ( ( ~ v3_struct_0(D)
+                              & v1_tsep_1(D,A)
+                              & m1_pre_topc(D,A) )
+                           => ! [E] :
+                                ( ( ~ v3_struct_0(E)
+                                  & v1_tsep_1(E,A)
+                                  & m1_pre_topc(E,A) )
+                               => ~ ( m1_pre_topc(D,B)
+                                    & m1_pre_topc(E,C)
+                                    & ~ ( A != k1_tsep_1(A,D,E)
+                                        & ! [F] :
+                                            ( ( ~ v3_struct_0(F)
+                                              & v1_borsuk_1(F,A)
+                                              & m1_pre_topc(F,A) )
+                                           => ~ ( A = k1_tsep_1(A,k1_tsep_1(A,D,E),F)
+                                                & m1_pre_topc(F,k2_tsep_1(A,B,C)) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t98_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( ( A = k1_tsep_1(A,B,C)
+                  & r1_tsep_1(A,B,C) )
+               => ( r4_tsep_1(A,B,C)
+                <=> ( v1_tsep_1(B,A)
+                    & m1_pre_topc(B,A)
+                    & v1_tsep_1(C,A)
+                    & m1_pre_topc(C,A) ) ) ) ) ) ) ).
+
+fof(t99_tsep_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_pre_topc(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m1_pre_topc(C,A) )
+             => ( r3_tsep_1(A,B,C)
+              <=> ? [D] :
+                    ( ~ v3_struct_0(D)
+                    & m1_pre_topc(D,A)
+                    & ? [E] :
+                        ( ~ v3_struct_0(E)
+                        & m1_pre_topc(E,A)
+                        & r4_tsep_1(A,D,E)
+                        & m1_pre_topc(B,D)
+                        & m1_pre_topc(C,E)
+                        & ( r1_tsep_1(A,D,E)
+                          | r1_tsep_1(A,k2_tsep_1(A,D,E),k1_tsep_1(A,B,C)) ) ) ) ) ) ) ) ).
+
+fof(symmetry_r1_tsep_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_pre_topc(A)
+        & m1_pre_topc(B,A)
+        & m1_pre_topc(C,A) )
+     => ( r1_tsep_1(A,B,C)
+       => r1_tsep_1(A,C,B) ) ) ).
+
+fof(symmetry_r2_tsep_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_pre_topc(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( r2_tsep_1(A,B,C)
+       => r2_tsep_1(A,C,B) ) ) ).
+
+fof(symmetry_r3_tsep_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_pre_topc(A)
+        & m1_pre_topc(B,A)
+        & m1_pre_topc(C,A) )
+     => ( r3_tsep_1(A,B,C)
+       => r3_tsep_1(A,C,B) ) ) ).
+
+fof(symmetry_r4_tsep_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_pre_topc(A)
+        & m1_pre_topc(B,A)
+        & m1_pre_topc(C,A) )
+     => ( r4_tsep_1(A,B,C)
+       => r4_tsep_1(A,C,B) ) ) ).
+
+fof(dt_k1_tsep_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A)
+        & ~ v3_struct_0(B)
+        & m1_pre_topc(B,A)
+        & ~ v3_struct_0(C)
+        & m1_pre_topc(C,A) )
+     => ( ~ v3_struct_0(k1_tsep_1(A,B,C))
+        & v1_pre_topc(k1_tsep_1(A,B,C))
+        & m1_pre_topc(k1_tsep_1(A,B,C),A) ) ) ).
+
+fof(commutativity_k1_tsep_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A)
+        & ~ v3_struct_0(B)
+        & m1_pre_topc(B,A)
+        & ~ v3_struct_0(C)
+        & m1_pre_topc(C,A) )
+     => k1_tsep_1(A,B,C) = k1_tsep_1(A,C,B) ) ).
+
+fof(dt_k2_tsep_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A)
+        & ~ v3_struct_0(B)
+        & m1_pre_topc(B,A)
+        & ~ v3_struct_0(C)
+        & m1_pre_topc(C,A) )
+     => ( ~ v3_struct_0(k2_tsep_1(A,B,C))
+        & v1_pre_topc(k2_tsep_1(A,B,C))
+        & m1_pre_topc(k2_tsep_1(A,B,C),A) ) ) ).
+
+%------------------------------------------------------------------------------

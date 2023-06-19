@@ -1,0 +1,771 @@
+%------------------------------------------------------------------------------
+% File     : SET007+254 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Desargues Theorem In Projective 3-Space
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : projdes1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   30 (   5 unt;   0 def)
+%            Number of atoms       :  518 (  26 equ)
+%            Maximal formula atoms :   39 (  17 avg)
+%            Number of connectives :  587 (  99   ~;  22   |; 292   &)
+%                                         (   2 <=>; 172  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   47 (  17 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of predicates  :   15 (  13 usr;   1 prp; 0-5 aty)
+%            Number of functors    :    1 (   1 usr;   0 con; 1-1 aty)
+%            Number of variables   :  160 ( 159   !;   1   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_projdes1,axiom,
+    ! [A] :
+      ( l1_collsp(A)
+     => ( ( ~ v3_struct_0(A)
+          & v2_collsp(A)
+          & v3_collsp(A)
+          & v4_collsp(A)
+          & v2_anproj_2(A)
+          & v3_anproj_2(A)
+          & ~ v7_anproj_2(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_collsp(A)
+          & v3_collsp(A)
+          & v4_collsp(A)
+          & v2_anproj_2(A)
+          & v3_anproj_2(A)
+          & v5_anproj_2(A)
+          & ~ v7_anproj_2(A) ) ) ) ).
+
+fof(t1_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_collsp(A,B,C,D)
+                   => ( r1_collsp(A,C,D,B)
+                      & r1_collsp(A,D,B,C)
+                      & r1_collsp(A,C,B,D)
+                      & r1_collsp(A,B,D,C)
+                      & r1_collsp(A,D,C,B) ) ) ) ) ) ) ).
+
+fof(t2_projdes1,axiom,
+    $true ).
+
+fof(t3_projdes1,axiom,
+    $true ).
+
+fof(t4_projdes1,axiom,
+    $true ).
+
+fof(t5_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ~ ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => r1_collsp(A,B,C,D) ) ) ) ) ).
+
+fof(t6_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ~ ( ~ r1_collsp(A,B,C,D)
+                          & r1_collsp(A,B,C,E)
+                          & B != E
+                          & r1_collsp(A,B,E,D) ) ) ) ) ) ) ).
+
+fof(t7_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( ( r1_collsp(A,B,C,E)
+                          & r1_collsp(A,B,D,E) )
+                       => ( r1_collsp(A,B,C,D)
+                          | B = E ) ) ) ) ) ) ) ).
+
+fof(t8_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ~ ( ~ r1_collsp(A,B,C,D)
+                                  & r1_collsp(A,B,D,E)
+                                  & r1_collsp(A,C,D,F)
+                                  & D != E
+                                  & r1_collsp(A,G,E,F)
+                                  & r1_collsp(A,B,C,G)
+                                  & B != G
+                                  & F = D ) ) ) ) ) ) ) ) ).
+
+fof(d1_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r1_projdes1(A,B,C,D,E)
+                      <=> ? [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                            & r1_collsp(A,B,C,F)
+                            & r1_collsp(A,D,E,F) ) ) ) ) ) ) ) ).
+
+fof(t9_projdes1,axiom,
+    $true ).
+
+fof(t10_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( ~ ( ~ r1_collsp(A,B,C,D)
+                            & ~ r1_collsp(A,C,D,E)
+                            & ~ r1_collsp(A,D,E,B)
+                            & ~ r1_collsp(A,E,B,C) )
+                       => r1_projdes1(A,B,C,D,E) ) ) ) ) ) ) ).
+
+fof(t11_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r1_projdes1(A,B,C,D,E)
+                       => ( r1_projdes1(A,C,D,E,B)
+                          & r1_projdes1(A,D,E,B,C)
+                          & r1_projdes1(A,E,B,C,D)
+                          & r1_projdes1(A,C,B,D,E)
+                          & r1_projdes1(A,D,C,E,B)
+                          & r1_projdes1(A,E,D,B,C)
+                          & r1_projdes1(A,B,E,C,D)
+                          & r1_projdes1(A,B,D,E,C)
+                          & r1_projdes1(A,C,E,B,D)
+                          & r1_projdes1(A,D,B,C,E)
+                          & r1_projdes1(A,E,C,D,B)
+                          & r1_projdes1(A,D,B,E,C)
+                          & r1_projdes1(A,E,C,B,D)
+                          & r1_projdes1(A,B,D,C,E)
+                          & r1_projdes1(A,C,E,D,B)
+                          & r1_projdes1(A,B,C,E,D)
+                          & r1_projdes1(A,B,E,D,C)
+                          & r1_projdes1(A,C,D,B,E)
+                          & r1_projdes1(A,C,B,E,D)
+                          & r1_projdes1(A,D,C,B,E)
+                          & r1_projdes1(A,D,E,C,B)
+                          & r1_projdes1(A,E,B,D,C)
+                          & r1_projdes1(A,E,D,C,B) ) ) ) ) ) ) ) ).
+
+fof(t12_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ( ( r1_projdes1(A,B,C,D,E)
+                                      & r1_projdes1(A,B,C,D,F)
+                                      & r1_projdes1(A,B,C,D,G)
+                                      & r1_projdes1(A,B,C,D,H) )
+                                   => ( r1_collsp(A,B,C,D)
+                                      | r1_projdes1(A,E,F,G,H) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t13_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ( ( r1_projdes1(A,E,F,G,B)
+                                      & r1_projdes1(A,E,F,G,D)
+                                      & r1_projdes1(A,E,F,G,C)
+                                      & r1_projdes1(A,B,C,D,H) )
+                                   => ( r1_collsp(A,B,C,D)
+                                      | r1_projdes1(A,E,F,G,H) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t14_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( ( r1_collsp(A,B,C,D)
+                                  & r1_projdes1(A,E,F,G,B)
+                                  & r1_projdes1(A,E,F,G,C) )
+                               => ( B = C
+                                  | r1_projdes1(A,E,F,G,D) ) ) ) ) ) ) ) ) ) ).
+
+fof(t15_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ~ ( ~ r1_collsp(A,B,C,D)
+                                      & r1_projdes1(A,B,C,D,E)
+                                      & r1_projdes1(A,B,C,D,F)
+                                      & r1_projdes1(A,B,C,D,G)
+                                      & r1_projdes1(A,B,C,D,H)
+                                      & ! [I] :
+                                          ( m1_subset_1(I,u1_struct_0(A))
+                                         => ~ ( r1_collsp(A,E,F,I)
+                                              & r1_collsp(A,G,H,I) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t16_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ~ ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => r1_projdes1(A,B,C,D,E) ) ) ) ) ) ).
+
+fof(t17_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ~ ( ~ r1_collsp(A,B,C,D)
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => r1_projdes1(A,B,C,D,E) ) ) ) ) ) ) ).
+
+fof(t18_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( ~ ( B != C
+                            & B != D
+                            & C != D
+                            & B != E
+                            & C != E
+                            & E != D )
+                       => r1_projdes1(A,B,C,D,E) ) ) ) ) ) ) ).
+
+fof(t19_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ~ ( ~ r1_projdes1(A,B,C,D,E)
+                              & r1_collsp(A,E,B,F)
+                              & B != F
+                              & r1_projdes1(A,B,C,D,F) ) ) ) ) ) ) ) ).
+
+fof(t20_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(A))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(A))
+                                         => ( ( r1_projdes1(A,B,C,D,H)
+                                              & r1_projdes1(A,B,C,D,I)
+                                              & r1_projdes1(A,B,C,D,J)
+                                              & r1_projdes1(A,E,F,G,H)
+                                              & r1_projdes1(A,E,F,G,I)
+                                              & r1_projdes1(A,E,F,G,J) )
+                                           => ( r1_collsp(A,B,C,D)
+                                              | r1_collsp(A,E,F,G)
+                                              | r1_projdes1(A,B,C,D,E)
+                                              | r1_collsp(A,H,I,J) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t21_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(A))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(A))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(A))
+                                             => ( ( r1_collsp(A,D,B,C)
+                                                  & r1_collsp(A,B,E,I)
+                                                  & r1_collsp(A,C,G,I)
+                                                  & r1_collsp(A,E,F,J)
+                                                  & r1_collsp(A,G,H,J)
+                                                  & r1_collsp(A,B,F,K)
+                                                  & r1_collsp(A,C,H,K) )
+                                               => ( B = C
+                                                  | r1_projdes1(A,B,E,F,D)
+                                                  | r1_collsp(A,C,G,H)
+                                                  | r1_collsp(A,I,J,K) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t22_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ~ ( ~ r1_projdes1(A,B,C,D,E)
+                              & r1_projdes1(A,B,C,D,F)
+                              & ~ r1_collsp(A,B,C,F)
+                              & r1_projdes1(A,B,C,E,F) ) ) ) ) ) ) ) ).
+
+fof(t23_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ( ( r1_collsp(A,E,B,F)
+                                      & r1_collsp(A,E,C,G)
+                                      & r1_collsp(A,E,D,H) )
+                                   => ( r1_projdes1(A,B,C,D,E)
+                                      | E = F
+                                      | E = G
+                                      | E = H
+                                      | ( ~ r1_collsp(A,F,G,H)
+                                        & ~ r1_projdes1(A,F,G,H,E) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t24_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(A))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(A))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(A))
+                                             => ! [L] :
+                                                  ( m1_subset_1(L,u1_struct_0(A))
+                                                 => ! [M] :
+                                                      ( m1_subset_1(M,u1_struct_0(A))
+                                                     => ~ ( r1_projdes1(A,B,C,D,E)
+                                                          & ~ r1_projdes1(A,B,C,D,F)
+                                                          & ~ r1_projdes1(A,B,C,F,E)
+                                                          & ~ r1_projdes1(A,C,D,F,E)
+                                                          & ~ r1_projdes1(A,B,D,F,E)
+                                                          & r1_collsp(A,E,F,G)
+                                                          & r1_collsp(A,E,B,H)
+                                                          & r1_collsp(A,E,C,I)
+                                                          & r1_collsp(A,E,D,J)
+                                                          & r1_collsp(A,B,F,K)
+                                                          & r1_collsp(A,H,G,K)
+                                                          & r1_collsp(A,C,F,L)
+                                                          & r1_collsp(A,I,G,L)
+                                                          & r1_collsp(A,D,F,M)
+                                                          & E != H
+                                                          & E != G
+                                                          & F != G
+                                                          & E != I
+                                                          & r1_collsp(A,K,L,M) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d2_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r2_projdes1(A,B,C,D,E)
+                      <=> ( ~ r1_collsp(A,C,D,E)
+                          & ~ r1_collsp(A,B,C,D)
+                          & ~ r1_collsp(A,B,D,E)
+                          & ~ r1_collsp(A,B,E,C) ) ) ) ) ) ) ) ).
+
+fof(t25_projdes1,axiom,
+    $true ).
+
+fof(t26_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(A))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(A))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(A))
+                                             => ( ( r1_collsp(A,B,C,F)
+                                                  & r1_collsp(A,B,D,G)
+                                                  & r1_collsp(A,B,E,H)
+                                                  & r1_collsp(A,C,D,I)
+                                                  & r1_collsp(A,F,G,I)
+                                                  & r1_collsp(A,D,E,J)
+                                                  & r1_collsp(A,G,H,J)
+                                                  & r1_collsp(A,C,E,K)
+                                                  & r1_collsp(A,F,H,K) )
+                                               => ( r1_collsp(A,B,C,D)
+                                                  | r1_collsp(A,B,D,E)
+                                                  | r1_collsp(A,B,C,E)
+                                                  | C = F
+                                                  | D = G
+                                                  | B = F
+                                                  | B = G
+                                                  | B = H
+                                                  | r1_collsp(A,J,K,I) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t27_projdes1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_collsp(A)
+        & v3_collsp(A)
+        & v4_collsp(A)
+        & v2_anproj_2(A)
+        & v3_anproj_2(A)
+        & ~ v7_anproj_2(A)
+        & l1_collsp(A) )
+     => v5_anproj_2(A) ) ).
+
+%------------------------------------------------------------------------------

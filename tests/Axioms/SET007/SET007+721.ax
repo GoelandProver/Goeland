@@ -1,0 +1,204 @@
+%------------------------------------------------------------------------------
+% File     : SET007+721 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Fibonacci Numbers
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : fib_num [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   18 (   4 unt;   0 def)
+%            Number of atoms       :   97 (  19 equ)
+%            Maximal formula atoms :   16 (   5 avg)
+%            Number of connectives :   89 (  10   ~;   2   |;  27   &)
+%                                         (   1 <=>;  49  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   6 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   11 (  10 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   28 (  28 usr;   8 con; 0-4 aty)
+%            Number of variables   :   38 (  38   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_fib_num,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k6_nat_1(A,B) = k6_nat_1(A,k1_nat_1(B,A)) ) ) ).
+
+fof(t2_fib_num,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( k6_nat_1(A,B) = np__1
+               => k6_nat_1(A,k2_nat_1(B,C)) = k6_nat_1(A,C) ) ) ) ) ).
+
+fof(t3_fib_num,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ~ ( ~ r1_xreal_0(A,np__0)
+          & ! [B] :
+              ( m2_subset_1(B,k1_numbers,k5_numbers)
+             => ~ ( ~ r1_xreal_0(B,np__0)
+                  & ~ r1_xreal_0(k7_xcmplx_0(np__1,B),np__0)
+                  & r1_xreal_0(k7_xcmplx_0(np__1,B),A) ) ) ) ) ).
+
+fof(t4_fib_num,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k3_pre_ff(k1_nat_1(A,k1_nat_1(B,np__1))) = k1_nat_1(k2_nat_1(k3_pre_ff(B),k3_pre_ff(A)),k2_nat_1(k3_pre_ff(k1_nat_1(B,np__1)),k3_pre_ff(k1_nat_1(A,np__1)))) ) ) ).
+
+fof(t5_fib_num,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k6_nat_1(k3_pre_ff(A),k3_pre_ff(B)) = k3_pre_ff(k6_nat_1(A,B)) ) ) ).
+
+fof(t6_fib_num,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ( r1_xreal_0(np__0,k1_quin_1(B,C,D))
+                   => ( B = np__0
+                      | ( k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(B,k5_square_1(A)),k3_xcmplx_0(C,A)),D) = np__0
+                      <=> ( A = k7_xcmplx_0(k6_xcmplx_0(k4_xcmplx_0(C),k8_square_1(k1_quin_1(B,C,D))),k3_xcmplx_0(np__2,B))
+                          | A = k7_xcmplx_0(k2_xcmplx_0(k4_xcmplx_0(C),k8_square_1(k1_quin_1(B,C,D))),k3_xcmplx_0(np__2,B)) ) ) ) ) ) ) ) ) ).
+
+fof(d1_fib_num,axiom,
+    k1_fib_num = k7_xcmplx_0(k2_xcmplx_0(np__1,k9_square_1(np__5)),np__2) ).
+
+fof(d2_fib_num,axiom,
+    k2_fib_num = k7_xcmplx_0(k6_xcmplx_0(np__1,k9_square_1(np__5)),np__2) ).
+
+fof(t7_fib_num,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k3_pre_ff(A) = k7_xcmplx_0(k6_xcmplx_0(k3_power(k1_fib_num,A),k3_power(k2_fib_num,A)),k9_square_1(np__5)) ) ).
+
+fof(t8_fib_num,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ~ r1_xreal_0(np__1,k18_complex1(k6_xcmplx_0(k3_pre_ff(A),k7_xcmplx_0(k3_power(k1_fib_num,A),k9_square_1(np__5))))) ) ).
+
+fof(t9_fib_num,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,k1_numbers)
+        & m2_relset_1(A,k5_numbers,k1_numbers) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,k1_numbers)
+            & m2_relset_1(B,k5_numbers,k1_numbers) )
+         => ( ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => k2_seq_1(k5_numbers,k1_numbers,A,C) = k2_seq_1(k5_numbers,k1_numbers,B,C) )
+           => A = B ) ) ) ).
+
+fof(t10_fib_num,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,k1_numbers)
+        & m2_relset_1(A,k5_numbers,k1_numbers) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,k1_numbers)
+            & m2_relset_1(B,k5_numbers,k1_numbers) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,k1_numbers)
+                & m2_relset_1(C,k5_numbers,k1_numbers) )
+             => ( v2_relat_1(B)
+               => k11_seq_1(k19_seq_1(A,B),k19_seq_1(B,C)) = k19_seq_1(A,C) ) ) ) ) ).
+
+fof(t11_fib_num,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,k1_numbers)
+        & m2_relset_1(A,k5_numbers,k1_numbers) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,k1_numbers)
+            & m2_relset_1(B,k5_numbers,k1_numbers) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( k2_seq_1(k5_numbers,k1_numbers,k19_seq_1(A,B),C) = k7_xcmplx_0(k2_seq_1(k5_numbers,k1_numbers,A,C),k2_seq_1(k5_numbers,k1_numbers,B,C))
+                & k2_seq_1(k5_numbers,k1_numbers,k19_seq_1(A,B),C) = k3_xcmplx_0(k2_seq_1(k5_numbers,k1_numbers,A,C),k5_xcmplx_0(k2_seq_1(k5_numbers,k1_numbers,B,C))) ) ) ) ) ).
+
+fof(t12_fib_num,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,k1_numbers)
+        & m2_relset_1(A,k5_numbers,k1_numbers) )
+     => ( ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => k2_seq_1(k5_numbers,k1_numbers,A,B) = k7_xcmplx_0(k3_pre_ff(k1_nat_1(B,np__1)),k3_pre_ff(B)) )
+       => ( v4_seq_2(A)
+          & k2_seq_2(A) = k1_fib_num ) ) ) ).
+
+fof(s1_fib_num,axiom,
+    ( ( p1_s1_fib_num(np__0)
+      & p1_s1_fib_num(np__1)
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => ( ( p1_s1_fib_num(A)
+              & p1_s1_fib_num(k1_nat_1(A,np__1)) )
+           => p1_s1_fib_num(k1_nat_1(A,np__2)) ) ) )
+   => ! [A] :
+        ( m2_subset_1(A,k1_numbers,k5_numbers)
+       => p1_s1_fib_num(A) ) ) ).
+
+fof(s2_fib_num,axiom,
+    ( ( ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => ! [B] :
+              ( m2_subset_1(B,k1_numbers,k5_numbers)
+             => ( p1_s2_fib_num(A,B)
+               => p1_s2_fib_num(B,A) ) ) )
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => ( ! [B] :
+                ( m2_subset_1(B,k1_numbers,k5_numbers)
+               => ! [C] :
+                    ( m2_subset_1(C,k1_numbers,k5_numbers)
+                   => ~ ( ~ r1_xreal_0(A,B)
+                        & ~ r1_xreal_0(A,C)
+                        & ~ p1_s2_fib_num(B,C) ) ) )
+           => ! [B] :
+                ( m2_subset_1(B,k1_numbers,k5_numbers)
+               => ( r1_xreal_0(B,A)
+                 => p1_s2_fib_num(A,B) ) ) ) ) )
+   => ! [A] :
+        ( m2_subset_1(A,k1_numbers,k5_numbers)
+       => ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => p1_s2_fib_num(A,B) ) ) ) ).
+
+fof(dt_k1_fib_num,axiom,
+    v1_xreal_0(k1_fib_num) ).
+
+fof(dt_k2_fib_num,axiom,
+    v1_xreal_0(k2_fib_num) ).
+
+%------------------------------------------------------------------------------

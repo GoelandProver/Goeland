@@ -1,0 +1,107 @@
+%------------------------------------------------------------------------------
+% File     : SET007+41 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Basic Properties of Real Numbers - Requirements
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : real [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    8 (   0 unt;   0 def)
+%            Number of atoms       :   42 (   0 equ)
+%            Maximal formula atoms :    6 (   5 avg)
+%            Number of connectives :   46 (  12   ~;   4   |;  10   &)
+%                                         (   0 <=>;  20  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    9 (   8 avg)
+%            Maximal term depth    :    1 (   1 avg)
+%            Number of predicates  :    5 (   5 usr;   0 prp; 1-2 aty)
+%            Number of functors    :    0 (   0 usr;   0 con; --- aty)
+%            Number of variables   :   16 (  16   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_real,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( ( r1_xreal_0(A,B)
+              & v2_xreal_0(A) )
+           => v2_xreal_0(B) ) ) ) ).
+
+fof(t2_real,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( ( r1_xreal_0(A,B)
+              & v3_xreal_0(B) )
+           => v3_xreal_0(A) ) ) ) ).
+
+fof(t3_real,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ~ ( r1_xreal_0(A,B)
+              & ~ v3_xreal_0(A)
+              & v3_xreal_0(B) ) ) ) ).
+
+fof(t4_real,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ~ ( r1_xreal_0(A,B)
+              & ~ v2_xreal_0(B)
+              & v2_xreal_0(A) ) ) ) ).
+
+fof(t5_real,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( r1_xreal_0(A,B)
+           => ( v1_xboole_0(B)
+              | v3_xreal_0(A)
+              | v2_xreal_0(B) ) ) ) ) ).
+
+fof(t6_real,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( r1_xreal_0(A,B)
+           => ( v1_xboole_0(A)
+              | v2_xreal_0(B)
+              | v3_xreal_0(A) ) ) ) ) ).
+
+fof(t7_real,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ~ ( ~ r1_xreal_0(A,B)
+              & ~ v2_xreal_0(A)
+              & ~ v3_xreal_0(B) ) ) ) ).
+
+fof(t8_real,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ~ ( ~ r1_xreal_0(A,B)
+              & ~ v3_xreal_0(B)
+              & ~ v2_xreal_0(A) ) ) ) ).
+
+%------------------------------------------------------------------------------

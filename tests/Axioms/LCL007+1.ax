@@ -1,0 +1,45 @@
+%------------------------------------------------------------------------------
+% File     : LCL007+1 : TPTP v8.1.2. Released v3.3.0.
+% Domain   : Logic Calculi (Propositional modal)
+% Axioms   : Propositional modal logic definitions
+% Version  : [She06] axioms.
+% English  :
+
+% Refs     : [Hal]   Halleck (URL), John Halleck's Logic Systems
+%          : [She06] Shen (2006), Automated Proofs of Equivalence of Modal
+% Source   : [She06]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    4 (   0 unt;   0 def)
+%            Number of atoms       :    8 (   4 equ)
+%            Maximal formula atoms :    2 (   2 avg)
+%            Number of connectives :    4 (   0   ~;   0   |;   0   &)
+%                                         (   0 <=>;   4  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    4 (   4 avg)
+%            Maximal term depth    :    4 (   2 avg)
+%            Number of predicates  :    5 (   4 usr;   4 prp; 0-2 aty)
+%            Number of functors    :    7 (   7 usr;   0 con; 1-2 aty)
+%            Number of variables   :    6 (   6   !;   0   ?)
+% SPC      : 
+
+% Comments :
+%------------------------------------------------------------------------------
+%----Definitions
+fof(op_possibly,axiom,
+    ( op_possibly
+   => ! [X] : possibly(X) = not(necessarily(not(X))) ) ).
+
+fof(op_necessarily,axiom,
+    ( op_necessarily
+   => ! [X] : necessarily(X) = not(possibly(not(X))) ) ).
+
+fof(op_strict_implies,axiom,
+    ( op_strict_implies
+   => ! [X,Y] : strict_implies(X,Y) = necessarily(implies(X,Y)) ) ).
+
+fof(op_strict_equiv,axiom,
+    ( op_strict_equiv
+   => ! [X,Y] : strict_equiv(X,Y) = and(strict_implies(X,Y),strict_implies(Y,X)) ) ).
+
+%------------------------------------------------------------------------------

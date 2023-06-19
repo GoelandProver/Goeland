@@ -1,0 +1,916 @@
+%------------------------------------------------------------------------------
+% File     : SET007+807 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Solving Roots of Polynomial Equations
+% Version  : [Urb08] axioms.
+% English  : Solving Roots of Polynomial Equations of Degree 2 and 3 with
+%            Complex Coefficients
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : polyeq_3 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   85 (   5 unt;   0 def)
+%            Number of atoms       :  492 ( 207 equ)
+%            Maximal formula atoms :   18 (   5 avg)
+%            Number of connectives :  529 ( 122   ~;  14   |; 148   &)
+%                                         (   1 <=>; 244  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   26 (   9 avg)
+%            Maximal term depth    :   15 (   2 avg)
+%            Number of predicates  :    8 (   6 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   58 (  58 usr;  17 con; 0-5 aty)
+%            Number of variables   :  246 ( 245   !;   1   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(d1_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => k3_polyeq_3(A) = k2_polyeq_3(k5_real_1(k7_square_1(k3_complex1(A)),k7_square_1(k4_complex1(A))),k1_polyeq_3(k4_real_1(np__2,k4_real_1(k3_complex1(A),k4_complex1(A))),k7_complex1)) ) ).
+
+fof(t1_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => k9_complex1(k2_polyeq_3(A,k1_polyeq_3(B,k7_complex1)),k2_polyeq_3(C,k1_polyeq_3(D,k7_complex1))) = k2_polyeq_3(k5_real_1(k4_real_1(A,C),k4_real_1(B,D)),k1_polyeq_3(k3_real_1(k4_real_1(A,D),k4_real_1(C,B)),k7_complex1)) ) ) ) ) ).
+
+fof(t2_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => k3_polyeq_3(k5_arytm_0(A,B)) = k2_polyeq_3(k5_real_1(k7_square_1(A),k7_square_1(B)),k1_polyeq_3(k4_real_1(k4_real_1(np__2,A),B),k7_complex1)) ) ) ).
+
+fof(t3_polyeq_3,axiom,
+    $true ).
+
+fof(t4_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ~ ( A != np__0
+                      & r1_xreal_0(np__0,k2_quin_1(A,B,C))
+                      & k4_polyeq_3(A,B,C,D) = np__0
+                      & D != k6_real_1(k3_real_1(k1_real_1(B),k9_square_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A))
+                      & D != k6_real_1(k5_real_1(k1_real_1(B),k9_square_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A))
+                      & D != k1_real_1(k6_real_1(B,k4_real_1(np__2,A))) ) ) ) ) ) ).
+
+fof(t5_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ~ ( A != np__0
+                      & ~ r1_xreal_0(np__0,k2_quin_1(A,B,C))
+                      & k4_polyeq_3(A,B,C,D) = np__0
+                      & D != k2_polyeq_3(k1_real_1(k6_real_1(B,k4_real_1(np__2,A))),k1_polyeq_3(k6_real_1(k9_square_1(k1_real_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A)),k7_complex1))
+                      & D != k2_polyeq_3(k1_real_1(k6_real_1(B,k4_real_1(np__2,A))),k1_polyeq_3(k1_real_1(k6_real_1(k9_square_1(k1_real_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A))),k7_complex1)) ) ) ) ) ) ).
+
+fof(t6_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ( ! [D] :
+                    ( m1_subset_1(D,k2_numbers)
+                   => k4_polyeq_3(np__0,A,B,D) = np__0 )
+               => ( A = np__0
+                  | C = k1_real_1(k6_real_1(B,A)) ) ) ) ) ) ).
+
+fof(t7_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( v1_xcmplx_0(D)
+                 => ! [E] :
+                      ( v1_xcmplx_0(E)
+                     => ! [F] :
+                          ( v1_xcmplx_0(F)
+                         => ( ! [G] :
+                                ( v1_xcmplx_0(G)
+                               => k3_polyeq_1(A,B,C,G) = k5_polyeq_1(A,G,E,F) )
+                           => ( A = np__0
+                              | ( k6_real_1(B,A) = k4_xcmplx_0(k2_xcmplx_0(E,F))
+                                & k6_real_1(C,A) = k3_xcmplx_0(E,F) ) ) ) ) ) ) ) ) ) ).
+
+fof(d2_polyeq_3,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(A)
+     => k5_polyeq_3(A) = k3_xcmplx_0(k5_square_1(A),A) ) ).
+
+fof(d3_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( v1_xcmplx_0(E)
+                     => k6_polyeq_3(A,B,C,D,E) = k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k1_polyeq_3(A,k5_polyeq_3(E)),k3_xcmplx_0(B,k5_square_1(E))),k3_xcmplx_0(C,E)),D) ) ) ) ) ) ).
+
+fof(t8_polyeq_3,axiom,
+    k5_polyeq_3(k5_complex1) = np__0 ).
+
+fof(t9_polyeq_3,axiom,
+    k5_polyeq_3(np__1) = np__1 ).
+
+fof(t10_polyeq_3,axiom,
+    k5_polyeq_3(k1_real_1(np__1)) = k1_real_1(np__1) ).
+
+fof(t11_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ( k3_complex1(k5_polyeq_3(A)) = k5_real_1(k3_prepower(k3_complex1(A),np__3),k4_real_1(k4_real_1(np__3,k3_complex1(A)),k7_square_1(k4_complex1(A))))
+        & k4_complex1(k5_polyeq_3(A)) = k3_real_1(k1_real_1(k3_prepower(k4_complex1(A),np__3)),k4_real_1(k4_real_1(np__3,k7_square_1(k3_complex1(A))),k4_complex1(A))) ) ) ).
+
+fof(t12_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ! [G] :
+                              ( m1_subset_1(G,k1_numbers)
+                             => ! [H] :
+                                  ( m1_subset_1(H,k1_numbers)
+                                 => ( ! [I] :
+                                        ( v1_xcmplx_0(I)
+                                       => k6_polyeq_3(A,B,C,D,I) = k6_polyeq_3(E,F,G,H,I) )
+                                   => ( A = E
+                                      & B = F
+                                      & C = G
+                                      & D = H ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t13_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => k5_polyeq_3(k8_complex1(A,B)) = k8_complex1(k8_complex1(k8_complex1(k5_polyeq_3(A),k9_complex1(k1_polyeq_3(np__3,B),k3_polyeq_3(A))),k9_complex1(k1_polyeq_3(np__3,k3_polyeq_3(B)),A)),k5_polyeq_3(B)) ) ) ).
+
+fof(t14_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => k5_polyeq_3(k9_complex1(A,B)) = k9_complex1(k5_polyeq_3(A),k5_polyeq_3(B)) ) ) ).
+
+fof(t15_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ~ ( A != np__0
+                      & k6_polyeq_3(np__0,A,B,C,D) = np__0
+                      & r1_xreal_0(np__0,k2_quin_1(A,B,C))
+                      & D != k6_real_1(k3_real_1(k1_real_1(B),k9_square_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A))
+                      & D != k6_real_1(k5_real_1(k1_real_1(B),k9_square_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A))
+                      & D != k1_real_1(k6_real_1(B,k4_real_1(np__2,A))) ) ) ) ) ) ).
+
+fof(t16_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ~ ( A != np__0
+                      & k6_polyeq_3(np__0,A,B,C,D) = np__0
+                      & ~ r1_xreal_0(np__0,k2_quin_1(A,B,C))
+                      & D != k2_polyeq_3(k1_real_1(k6_real_1(B,k4_real_1(np__2,A))),k1_polyeq_3(k6_real_1(k9_square_1(k1_real_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A)),k7_complex1))
+                      & D != k2_polyeq_3(k1_real_1(k6_real_1(B,k4_real_1(np__2,A))),k1_polyeq_3(k1_real_1(k6_real_1(k9_square_1(k1_real_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A))),k7_complex1)) ) ) ) ) ) ).
+
+fof(t17_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ~ ( A != np__0
+                  & k6_polyeq_3(A,np__0,B,np__0,C) = np__0
+                  & r1_xreal_0(k4_real_1(k4_real_1(np__4,A),B),np__0)
+                  & C != k6_real_1(k9_square_1(k1_real_1(k4_real_1(k4_real_1(np__4,A),B))),k4_real_1(np__2,A))
+                  & C != k6_real_1(k1_real_1(k9_square_1(k1_real_1(k4_real_1(k4_real_1(np__4,A),B)))),k4_real_1(np__2,A))
+                  & C != np__0 ) ) ) ) ).
+
+fof(t18_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ~ ( A != np__0
+                      & k6_polyeq_3(A,B,C,np__0,D) = np__0
+                      & r1_xreal_0(np__0,k2_quin_1(A,B,C))
+                      & D != k6_real_1(k3_real_1(k1_real_1(B),k9_square_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A))
+                      & D != k6_real_1(k5_real_1(k1_real_1(B),k9_square_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A))
+                      & D != k1_real_1(k6_real_1(B,k4_real_1(np__2,A)))
+                      & D != np__0 ) ) ) ) ) ).
+
+fof(t19_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ~ ( A != np__0
+                      & k6_polyeq_3(A,B,C,np__0,D) = np__0
+                      & ~ r1_xreal_0(np__0,k2_quin_1(A,B,C))
+                      & D != k2_polyeq_3(k1_real_1(k6_real_1(B,k4_real_1(np__2,A))),k1_polyeq_3(k6_real_1(k9_square_1(k1_real_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A)),k7_complex1))
+                      & D != k2_polyeq_3(k1_real_1(k6_real_1(B,k4_real_1(np__2,A))),k1_polyeq_3(k1_real_1(k6_real_1(k9_square_1(k1_real_1(k2_quin_1(A,B,C))),k4_real_1(np__2,A))),k7_complex1))
+                      & D != np__0 ) ) ) ) ) ).
+
+fof(t20_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ~ ( k7_square_1(A) = B
+              & A != k9_square_1(B)
+              & A != k1_real_1(k9_square_1(B)) ) ) ) ).
+
+fof(t21_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ( ( k6_polyeq_3(A,np__0,B,C,D) = np__0
+                      & k4_complex1(D) = np__0 )
+                   => ( A = np__0
+                      | ! [E] :
+                          ( m1_subset_1(E,k1_numbers)
+                         => ! [F] :
+                              ( m1_subset_1(F,k1_numbers)
+                             => ~ ( k3_complex1(D) = k3_real_1(E,F)
+                                  & k3_real_1(k4_real_1(k4_real_1(np__3,F),E),k6_real_1(B,A)) = np__0
+                                  & D != k3_real_1(k2_power(np__3,k3_real_1(k1_real_1(k6_real_1(C,k4_real_1(np__2,A))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(C),k4_real_1(np__4,k7_square_1(A))),k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3))))),k2_power(np__3,k5_real_1(k1_real_1(k6_real_1(C,k4_real_1(np__2,A))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(C),k4_real_1(np__4,k7_square_1(A))),k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3))))))
+                                  & D != k3_real_1(k2_power(np__3,k3_real_1(k1_real_1(k6_real_1(C,k4_real_1(np__2,A))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(C),k4_real_1(np__4,k7_square_1(A))),k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3))))),k2_power(np__3,k3_real_1(k1_real_1(k6_real_1(C,k4_real_1(np__2,A))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(C),k4_real_1(np__4,k7_square_1(A))),k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3))))))
+                                  & D != k3_real_1(k2_power(np__3,k5_real_1(k1_real_1(k6_real_1(C,k4_real_1(np__2,A))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(C),k4_real_1(np__4,k7_square_1(A))),k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3))))),k2_power(np__3,k5_real_1(k1_real_1(k6_real_1(C,k4_real_1(np__2,A))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(C),k4_real_1(np__4,k7_square_1(A))),k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)))))) ) ) ) ) ) ) ) ) ) ).
+
+fof(t22_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ( k6_polyeq_3(A,np__0,B,C,D) = np__0
+                   => ( A = np__0
+                      | k4_complex1(D) = np__0
+                      | ! [E] :
+                          ( m1_subset_1(E,k1_numbers)
+                         => ! [F] :
+                              ( m1_subset_1(F,k1_numbers)
+                             => ~ ( k3_complex1(D) = k3_real_1(E,F)
+                                  & k3_real_1(k4_real_1(k4_real_1(np__3,F),E),k6_real_1(B,k4_real_1(np__4,A))) = np__0
+                                  & r1_xreal_0(np__0,k6_real_1(B,A))
+                                  & D != k2_polyeq_3(k3_real_1(k2_power(np__3,k3_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3))))),k2_power(np__3,k5_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))),k1_polyeq_3(k9_square_1(k3_real_1(k4_real_1(np__3,k7_square_1(k3_real_1(k2_power(np__3,k3_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3))))),k2_power(np__3,k5_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))))),k6_real_1(B,A))),k7_complex1))
+                                  & D != k6_xcmplx_0(k3_real_1(k2_power(np__3,k3_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3))))),k2_power(np__3,k5_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))),k1_polyeq_3(k9_square_1(k3_real_1(k4_real_1(np__3,k7_square_1(k3_real_1(k2_power(np__3,k3_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3))))),k2_power(np__3,k5_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))))),k6_real_1(B,A))),k7_complex1))
+                                  & D != k2_polyeq_3(k4_real_1(np__2,k2_power(np__3,k3_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))),k1_polyeq_3(k9_square_1(k3_real_1(k4_real_1(np__3,k7_square_1(k4_real_1(np__2,k2_power(np__3,k3_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))))),k6_real_1(B,A))),k7_complex1))
+                                  & D != k6_xcmplx_0(k4_real_1(np__2,k2_power(np__3,k3_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))),k1_polyeq_3(k9_square_1(k3_real_1(k4_real_1(np__3,k7_square_1(k4_real_1(np__2,k2_power(np__3,k3_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))))),k6_real_1(B,A))),k7_complex1))
+                                  & D != k2_polyeq_3(k4_real_1(np__2,k2_power(np__3,k5_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))),k1_polyeq_3(k9_square_1(k3_real_1(k4_real_1(np__3,k7_square_1(k4_real_1(np__2,k2_power(np__3,k5_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))))),k6_real_1(B,A))),k7_complex1))
+                                  & D != k6_xcmplx_0(k4_real_1(np__2,k2_power(np__3,k5_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))),k1_polyeq_3(k9_square_1(k3_real_1(k4_real_1(np__3,k7_square_1(k4_real_1(np__2,k2_power(np__3,k5_real_1(k6_real_1(C,k4_real_1(np__16,A)),k9_square_1(k3_real_1(k7_square_1(k6_real_1(C,k4_real_1(np__16,A))),k3_prepower(k6_real_1(B,k4_real_1(np__12,A)),np__3)))))))),k6_real_1(B,A))),k7_complex1)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t23_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_numbers)
+                     => ( ( k6_polyeq_3(A,B,C,D,E) = np__0
+                          & k4_complex1(E) = np__0 )
+                       => ( A = np__0
+                          | ! [F] :
+                              ( m1_subset_1(F,k1_numbers)
+                             => ! [G] :
+                                  ( m1_subset_1(G,k1_numbers)
+                                 => ! [H] :
+                                      ( m1_subset_1(H,k1_numbers)
+                                     => ~ ( H = k3_real_1(k3_complex1(E),k6_real_1(B,k4_real_1(np__3,A)))
+                                          & k3_complex1(E) = k5_real_1(k3_real_1(F,G),k6_real_1(B,k4_real_1(np__3,A)))
+                                          & k3_real_1(k4_real_1(k4_real_1(np__3,F),G),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),C),k7_square_1(B)),k4_real_1(np__3,k7_square_1(A)))) = np__0
+                                          & E != k2_polyeq_3(k5_real_1(k3_real_1(k2_power(np__3,k3_real_1(k5_real_1(k1_real_1(k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__6,k7_square_1(A)))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(k3_real_1(k4_real_1(np__2,k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__3,k7_square_1(A))))),np__4),k3_prepower(k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),C),k7_square_1(B)),k4_real_1(np__9,k7_square_1(A))),np__3))))),k2_power(np__3,k5_real_1(k5_real_1(k1_real_1(k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__6,k7_square_1(A)))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(k3_real_1(k4_real_1(np__2,k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__3,k7_square_1(A))))),np__4),k3_prepower(k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),C),k7_square_1(B)),k4_real_1(np__9,k7_square_1(A))),np__3)))))),k6_real_1(B,k4_real_1(np__3,A))),k1_polyeq_3(np__0,k7_complex1))
+                                          & E != k2_polyeq_3(k5_real_1(k3_real_1(k2_power(np__3,k3_real_1(k5_real_1(k1_real_1(k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__6,k7_square_1(A)))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(k3_real_1(k4_real_1(np__2,k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__3,k7_square_1(A))))),np__4),k3_prepower(k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),C),k7_square_1(B)),k4_real_1(np__9,k7_square_1(A))),np__3))))),k2_power(np__3,k3_real_1(k5_real_1(k1_real_1(k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__6,k7_square_1(A)))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(k3_real_1(k4_real_1(np__2,k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__3,k7_square_1(A))))),np__4),k3_prepower(k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),C),k7_square_1(B)),k4_real_1(np__9,k7_square_1(A))),np__3)))))),k6_real_1(B,k4_real_1(np__3,A))),k1_polyeq_3(np__0,k7_complex1))
+                                          & E != k2_polyeq_3(k5_real_1(k3_real_1(k2_power(np__3,k5_real_1(k5_real_1(k1_real_1(k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__6,k7_square_1(A)))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(k3_real_1(k4_real_1(np__2,k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__3,k7_square_1(A))))),np__4),k3_prepower(k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),C),k7_square_1(B)),k4_real_1(np__9,k7_square_1(A))),np__3))))),k2_power(np__3,k5_real_1(k5_real_1(k1_real_1(k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__6,k7_square_1(A)))),k9_square_1(k3_real_1(k6_real_1(k7_square_1(k3_real_1(k4_real_1(np__2,k3_prepower(k6_real_1(B,k4_real_1(np__3,A)),np__3)),k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),D),k4_real_1(B,C)),k4_real_1(np__3,k7_square_1(A))))),np__4),k3_prepower(k6_real_1(k5_real_1(k4_real_1(k4_real_1(np__3,A),C),k7_square_1(B)),k4_real_1(np__9,k7_square_1(A))),np__3)))))),k6_real_1(B,k4_real_1(np__3,A))),k1_polyeq_3(np__0,k7_complex1)) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t24_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ( k1_polyeq_1(A,B,C) = np__0
+               => ( A = np__0
+                  | C = k10_complex1(k13_complex1(B,A)) ) ) ) ) ) ).
+
+fof(t25_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ( A != np__0
+       => ! [B] :
+            ( m1_subset_1(B,k2_numbers)
+           => k1_polyeq_1(np__0,A,B) != np__0 ) ) ) ).
+
+fof(d4_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => k7_polyeq_3(A,B,C,D) = k8_complex1(k8_complex1(k9_complex1(A,k3_polyeq_3(D)),k9_complex1(B,D)),C) ) ) ) ) ).
+
+fof(t26_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k2_numbers)
+                         => ( ! [G] :
+                                ( m1_subset_1(G,k2_numbers)
+                               => k7_polyeq_3(A,B,C,G) = k7_polyeq_3(D,E,F,G) )
+                           => ( A = D
+                              & B = E
+                              & C = F ) ) ) ) ) ) ) ) ).
+
+fof(t27_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( r1_xreal_0(np__0,k6_real_1(k3_real_1(k1_real_1(A),k9_square_1(k3_real_1(k7_square_1(A),k7_square_1(B)))),np__2))
+            & r1_xreal_0(np__0,k6_real_1(k3_real_1(A,k9_square_1(k3_real_1(k7_square_1(A),k7_square_1(B)))),np__2)) ) ) ) ).
+
+fof(t28_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ~ ( k3_polyeq_3(A) = B
+              & r1_xreal_0(np__0,k4_complex1(B))
+              & A != k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(B),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2)),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(B)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2)),k7_complex1))
+              & A != k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(B),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2))),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(B)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2))),k7_complex1)) ) ) ) ).
+
+fof(t29_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ~ ( k3_polyeq_3(A) = B
+              & k4_complex1(B) = np__0
+              & ~ r1_xreal_0(k3_complex1(B),np__0)
+              & A != k9_square_1(k3_complex1(B))
+              & A != k1_real_1(k9_square_1(k3_complex1(B))) ) ) ) ).
+
+fof(t30_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ~ ( k3_polyeq_3(A) = B
+              & k4_complex1(B) = np__0
+              & ~ r1_xreal_0(np__0,k3_complex1(B))
+              & A != k1_polyeq_3(k9_square_1(k1_real_1(k3_complex1(B))),k7_complex1)
+              & A != k10_complex1(k1_polyeq_3(k9_square_1(k1_real_1(k3_complex1(B))),k7_complex1)) ) ) ) ).
+
+fof(t31_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ~ ( k3_polyeq_3(A) = B
+              & ~ r1_xreal_0(np__0,k4_complex1(B))
+              & A != k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(B),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2)),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(B)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2))),k7_complex1))
+              & A != k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(B),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2))),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(B)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2)),k7_complex1)) ) ) ) ).
+
+fof(t32_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ~ ( k3_polyeq_3(A) = B
+              & A != k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(B),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2)),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(B)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2)),k7_complex1))
+              & A != k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(B),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2))),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(B)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2))),k7_complex1))
+              & A != k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(B),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2)),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(B)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2))),k7_complex1))
+              & A != k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(B),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2))),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(B)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(B)),k7_square_1(k4_complex1(B))))),np__2)),k7_complex1)) ) ) ) ).
+
+fof(t33_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => k7_polyeq_3(k5_complex1,k5_complex1,k5_complex1,A) = np__0 ) ).
+
+fof(t34_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ( k7_polyeq_3(A,k5_complex1,k5_complex1,B) = np__0
+           => ( A = np__0
+              | B = np__0 ) ) ) ) ).
+
+fof(t35_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ~ ( A != np__0
+                  & k7_polyeq_3(A,B,k5_complex1,C) = np__0
+                  & C != k10_complex1(k13_complex1(B,A))
+                  & C != np__0 ) ) ) ) ).
+
+fof(t36_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ( k7_polyeq_3(A,k5_complex1,B,C) = np__0
+               => ( A = np__0
+                  | ! [D] :
+                      ( m1_subset_1(D,k2_numbers)
+                     => ~ ( D = k10_complex1(k13_complex1(B,A))
+                          & C != k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(D),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2)),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(D)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2)),k7_complex1))
+                          & C != k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(D),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2))),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(D)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2))),k7_complex1))
+                          & C != k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(D),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2)),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(D)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2))),k7_complex1))
+                          & C != k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(D),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2))),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(D)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2)),k7_complex1)) ) ) ) ) ) ) ) ).
+
+fof(t37_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ( k7_polyeq_3(A,B,C,D) = np__0
+                   => ( A = np__0
+                      | ! [E] :
+                          ( m1_subset_1(E,k2_numbers)
+                         => ! [F] :
+                              ( m1_subset_1(F,k2_numbers)
+                             => ~ ( E = k11_complex1(k3_polyeq_3(k13_complex1(B,k1_polyeq_3(np__2,A))),k13_complex1(C,A))
+                                  & F = k13_complex1(B,k1_polyeq_3(np__2,A))
+                                  & D != k11_complex1(k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(E),k9_square_1(k3_real_1(k7_square_1(k3_complex1(E)),k7_square_1(k4_complex1(E))))),np__2)),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(E)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(E)),k7_square_1(k4_complex1(E))))),np__2)),k7_complex1)),F)
+                                  & D != k11_complex1(k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(E),k9_square_1(k3_real_1(k7_square_1(k3_complex1(E)),k7_square_1(k4_complex1(E))))),np__2))),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(E)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(E)),k7_square_1(k4_complex1(E))))),np__2))),k7_complex1)),F)
+                                  & D != k11_complex1(k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(E),k9_square_1(k3_real_1(k7_square_1(k3_complex1(E)),k7_square_1(k4_complex1(E))))),np__2)),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(E)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(E)),k7_square_1(k4_complex1(E))))),np__2))),k7_complex1)),F)
+                                  & D != k11_complex1(k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(E),k9_square_1(k3_real_1(k7_square_1(k3_complex1(E)),k7_square_1(k4_complex1(E))))),np__2))),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(E)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(E)),k7_square_1(k4_complex1(E))))),np__2)),k7_complex1)),F) ) ) ) ) ) ) ) ) ) ).
+
+fof(d5_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_numbers)
+                     => k8_polyeq_3(A,B,C,D,E) = k8_complex1(k8_complex1(k8_complex1(k9_complex1(A,k5_polyeq_3(E)),k9_complex1(B,k3_polyeq_3(E))),k9_complex1(C,E)),D) ) ) ) ) ) ).
+
+fof(t38_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ~ ( k3_polyeq_3(A) = np__1
+          & A != np__1
+          & A != k1_real_1(np__1) ) ) ).
+
+fof(t39_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ( k2_comseq_3(A,np__3) = k9_complex1(k9_complex1(A,A),A)
+        & k2_comseq_3(A,np__3) = k9_complex1(k3_polyeq_3(A),A)
+        & k2_comseq_3(A,np__3) = k5_polyeq_3(A) ) ) ).
+
+fof(t40_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ~ ( A != np__0
+                  & k8_polyeq_3(A,B,k5_complex1,k5_complex1,C) = np__0
+                  & C != k10_complex1(k13_complex1(B,A))
+                  & C != np__0 ) ) ) ) ).
+
+fof(t41_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ( k8_polyeq_3(A,k5_complex1,B,k5_complex1,C) = np__0
+               => ( A = np__0
+                  | ! [D] :
+                      ( m1_subset_1(D,k2_numbers)
+                     => ~ ( D = k10_complex1(k13_complex1(B,A))
+                          & C != np__0
+                          & C != k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(D),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2)),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(D)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2)),k7_complex1))
+                          & C != k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(D),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2))),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(D)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2))),k7_complex1))
+                          & C != k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(D),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2)),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(D)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2))),k7_complex1))
+                          & C != k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(D),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2))),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(D)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(D)),k7_square_1(k4_complex1(D))))),np__2)),k7_complex1)) ) ) ) ) ) ) ) ).
+
+fof(t42_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ( k8_polyeq_3(A,B,C,k5_complex1,D) = np__0
+                   => ( A = np__0
+                      | ! [E] :
+                          ( m1_subset_1(E,k2_numbers)
+                         => ! [F] :
+                              ( m1_subset_1(F,k2_numbers)
+                             => ! [G] :
+                                  ( m1_subset_1(G,k2_numbers)
+                                 => ~ ( E = k10_complex1(k13_complex1(C,A))
+                                      & F = k11_complex1(k3_polyeq_3(k13_complex1(B,k1_polyeq_3(np__2,A))),k13_complex1(C,A))
+                                      & G = k13_complex1(B,k1_polyeq_3(np__2,A))
+                                      & D != np__0
+                                      & D != k11_complex1(k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(F),k9_square_1(k3_real_1(k7_square_1(k3_complex1(F)),k7_square_1(k4_complex1(F))))),np__2)),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(F)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(F)),k7_square_1(k4_complex1(F))))),np__2)),k7_complex1)),G)
+                                      & D != k11_complex1(k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(F),k9_square_1(k3_real_1(k7_square_1(k3_complex1(F)),k7_square_1(k4_complex1(F))))),np__2))),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(F)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(F)),k7_square_1(k4_complex1(F))))),np__2))),k7_complex1)),G)
+                                      & D != k11_complex1(k2_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k3_complex1(F),k9_square_1(k3_real_1(k7_square_1(k3_complex1(F)),k7_square_1(k4_complex1(F))))),np__2)),k1_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(F)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(F)),k7_square_1(k4_complex1(F))))),np__2))),k7_complex1)),G)
+                                      & D != k11_complex1(k2_polyeq_3(k1_real_1(k9_square_1(k6_real_1(k3_real_1(k3_complex1(F),k9_square_1(k3_real_1(k7_square_1(k3_complex1(F)),k7_square_1(k4_complex1(F))))),np__2))),k1_polyeq_3(k9_square_1(k6_real_1(k3_real_1(k1_real_1(k3_complex1(F)),k9_square_1(k3_real_1(k7_square_1(k3_complex1(F)),k7_square_1(k4_complex1(F))))),np__2)),k7_complex1)),G) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t43_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => k3_polyeq_3(k11_complex1(A,k1_polyeq_3(k6_real_1(np__1,np__3),B))) = k8_complex1(k8_complex1(k3_polyeq_3(A),k9_complex1(k1_polyeq_3(k1_real_1(k6_real_1(np__2,np__3)),B),A)),k1_polyeq_3(k6_real_1(np__1,np__9),k3_polyeq_3(B))) ) ) ).
+
+fof(t44_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ( A = k11_complex1(B,k1_polyeq_3(k6_real_1(np__1,np__3),C))
+               => k5_polyeq_3(A) = k11_complex1(k8_complex1(k11_complex1(k5_polyeq_3(B),k9_complex1(C,k3_polyeq_3(B))),k9_complex1(k1_polyeq_3(k6_real_1(np__1,np__3),k3_polyeq_3(C)),B)),k1_polyeq_3(k6_real_1(np__1,np__27),k5_polyeq_3(C))) ) ) ) ) ).
+
+fof(t45_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ( k8_polyeq_3(k6_complex1,A,B,C,D) = np__0
+                   => ! [E] :
+                        ( m1_subset_1(E,k2_numbers)
+                       => ! [F] :
+                            ( m1_subset_1(F,k2_numbers)
+                           => ! [G] :
+                                ( m1_subset_1(G,k2_numbers)
+                               => ( ( D = k11_complex1(G,k1_polyeq_3(k6_real_1(np__1,np__3),A))
+                                    & E = k8_complex1(k10_complex1(k1_polyeq_3(k6_real_1(np__1,np__3),k3_polyeq_3(A))),B)
+                                    & F = k8_complex1(k11_complex1(k1_polyeq_3(k6_real_1(np__2,np__27),k5_polyeq_3(A)),k9_complex1(k1_polyeq_3(k6_real_1(np__1,np__3),A),B)),C) )
+                                 => k8_polyeq_3(k6_complex1,k5_complex1,E,F,G) = np__0 ) ) ) ) ) ) ) ) ) ).
+
+fof(t46_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => k5_arytm_0(k4_real_1(k17_complex1(A),k23_sin_cos(k1_comptrig(A))),k4_real_1(k17_complex1(A),k20_sin_cos(k1_comptrig(A)))) = k9_complex1(k5_arytm_0(k17_complex1(A),np__0),k5_arytm_0(k23_sin_cos(k1_comptrig(A)),k20_sin_cos(k1_comptrig(A)))) ) ).
+
+fof(t47_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k2_comseq_3(A,k1_nat_1(B,np__1)) = k9_complex1(k2_comseq_3(A,B),A) ) ) ).
+
+fof(t48_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => k2_comseq_3(A,np__1) = A ) ).
+
+fof(t49_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => k2_comseq_3(A,np__2) = k9_complex1(A,A) ) ).
+
+fof(t50_polyeq_3,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( ~ r1_xreal_0(A,np__0)
+       => k2_comseq_3(k5_complex1,A) = np__0 ) ) ).
+
+fof(t51_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k2_comseq_3(k9_complex1(A,B),C) = k9_complex1(k2_comseq_3(A,C),k2_comseq_3(B,C)) ) ) ) ).
+
+fof(t52_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ( ~ r1_xreal_0(A,np__0)
+       => ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => k2_comseq_3(k5_arytm_0(A,np__0),B) = k4_power(A,B) ) ) ) ).
+
+fof(t53_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k2_comseq_3(k5_arytm_0(k23_sin_cos(A),k20_sin_cos(A)),B) = k2_polyeq_3(k23_sin_cos(k4_real_1(B,A)),k1_polyeq_3(k20_sin_cos(k4_real_1(B,A)),k7_complex1)) ) ) ).
+
+fof(t54_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ~ ( A = np__0
+                & r1_xreal_0(B,np__0) )
+           => k2_comseq_3(A,B) = k2_polyeq_3(k4_real_1(k4_power(k17_complex1(A),B),k23_sin_cos(k4_real_1(B,k1_comptrig(A)))),k1_polyeq_3(k4_real_1(k4_power(k17_complex1(A),B),k20_sin_cos(k4_real_1(B,k1_comptrig(A)))),k7_complex1)) ) ) ) ).
+
+fof(t55_polyeq_3,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ( A != np__0
+               => k2_comseq_3(k5_arytm_0(k23_sin_cos(k6_real_1(k3_real_1(C,k4_real_1(k4_real_1(np__2,k32_sin_cos),B)),A)),k20_sin_cos(k6_real_1(k3_real_1(C,k4_real_1(k4_real_1(np__2,k32_sin_cos),B)),A))),A) = k2_polyeq_3(k23_sin_cos(C),k1_polyeq_3(k20_sin_cos(C),k7_complex1)) ) ) ) ) ).
+
+fof(t56_polyeq_3,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( B != np__0
+               => A = k2_comseq_3(k5_arytm_0(k4_real_1(k2_power(B,k17_complex1(A)),k23_sin_cos(k6_real_1(k3_real_1(k1_comptrig(A),k4_real_1(k4_real_1(np__2,k32_sin_cos),C)),B))),k4_real_1(k2_power(B,k17_complex1(A)),k20_sin_cos(k6_real_1(k3_real_1(k1_comptrig(A),k4_real_1(k4_real_1(np__2,k32_sin_cos),C)),B)))),B) ) ) ) ) ).
+
+fof(d6_polyeq_3,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m2_subset_1(B,k1_numbers,k5_numbers) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ( m1_polyeq_3(C,A,B)
+              <=> k2_comseq_3(C,B) = A ) ) ) ) ).
+
+fof(t57_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m2_subset_1(B,k1_numbers,k5_numbers) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => m1_polyeq_3(k5_arytm_0(k4_real_1(k2_power(B,k17_complex1(A)),k23_sin_cos(k6_real_1(k3_real_1(k1_comptrig(A),k4_real_1(k4_real_1(np__2,k32_sin_cos),C)),B))),k4_real_1(k2_power(B,k17_complex1(A)),k20_sin_cos(k6_real_1(k3_real_1(k1_comptrig(A),k4_real_1(k4_real_1(np__2,k32_sin_cos),C)),B)))),A,B) ) ) ) ).
+
+fof(t58_polyeq_3,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(A)
+     => ! [B] :
+          ( m1_polyeq_3(B,A,np__1)
+         => B = A ) ) ).
+
+fof(t59_polyeq_3,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m2_subset_1(A,k1_numbers,k5_numbers) )
+     => ! [B] :
+          ( m1_polyeq_3(B,np__0,A)
+         => B = np__0 ) ) ).
+
+fof(t60_polyeq_3,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m2_subset_1(A,k1_numbers,k5_numbers) )
+     => ! [B] :
+          ( v1_xcmplx_0(B)
+         => ! [C] :
+              ( m1_polyeq_3(C,B,A)
+             => ( C = np__0
+               => B = np__0 ) ) ) ) ).
+
+fof(t61_polyeq_3,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m2_subset_1(A,k1_numbers,k5_numbers) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => m1_polyeq_3(k2_polyeq_3(k23_sin_cos(k6_real_1(k4_real_1(k4_real_1(np__2,k32_sin_cos),B),A)),k1_polyeq_3(k20_sin_cos(k6_real_1(k4_real_1(k4_real_1(np__2,k32_sin_cos),B),A)),k7_complex1)),np__1,A) ) ) ).
+
+fof(t62_polyeq_3,axiom,
+    $true ).
+
+fof(t63_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_xreal_0(np__1,C)
+                  & k2_comseq_3(B,C) = k2_comseq_3(A,C) )
+               => ( B = np__0
+                  | A = np__0
+                  | k17_complex1(B) = k17_complex1(A) ) ) ) ) ) ).
+
+fof(dt_m1_polyeq_3,axiom,
+    ! [A,B] :
+      ( ( v1_xcmplx_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k5_numbers) )
+     => ! [C] :
+          ( m1_polyeq_3(C,A,B)
+         => m1_subset_1(C,k2_numbers) ) ) ).
+
+fof(existence_m1_polyeq_3,axiom,
+    ! [A,B] :
+      ( ( v1_xcmplx_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k5_numbers) )
+     => ? [C] : m1_polyeq_3(C,A,B) ) ).
+
+fof(dt_k1_polyeq_3,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k1_numbers)
+        & m1_subset_1(B,k2_numbers) )
+     => m1_subset_1(k1_polyeq_3(A,B),k2_numbers) ) ).
+
+fof(commutativity_k1_polyeq_3,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k1_numbers)
+        & m1_subset_1(B,k2_numbers) )
+     => k1_polyeq_3(A,B) = k1_polyeq_3(B,A) ) ).
+
+fof(redefinition_k1_polyeq_3,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k1_numbers)
+        & m1_subset_1(B,k2_numbers) )
+     => k1_polyeq_3(A,B) = k3_xcmplx_0(A,B) ) ).
+
+fof(dt_k2_polyeq_3,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k1_numbers)
+        & m1_subset_1(B,k2_numbers) )
+     => m1_subset_1(k2_polyeq_3(A,B),k2_numbers) ) ).
+
+fof(commutativity_k2_polyeq_3,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k1_numbers)
+        & m1_subset_1(B,k2_numbers) )
+     => k2_polyeq_3(A,B) = k2_polyeq_3(B,A) ) ).
+
+fof(redefinition_k2_polyeq_3,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k1_numbers)
+        & m1_subset_1(B,k2_numbers) )
+     => k2_polyeq_3(A,B) = k2_xcmplx_0(A,B) ) ).
+
+fof(dt_k3_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => m1_subset_1(k3_polyeq_3(A),k2_numbers) ) ).
+
+fof(redefinition_k3_polyeq_3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => k3_polyeq_3(A) = k5_square_1(A) ) ).
+
+fof(dt_k4_polyeq_3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k1_numbers)
+        & m1_subset_1(B,k1_numbers)
+        & m1_subset_1(C,k1_numbers)
+        & m1_subset_1(D,k2_numbers) )
+     => m1_subset_1(k4_polyeq_3(A,B,C,D),k2_numbers) ) ).
+
+fof(redefinition_k4_polyeq_3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k1_numbers)
+        & m1_subset_1(B,k1_numbers)
+        & m1_subset_1(C,k1_numbers)
+        & m1_subset_1(D,k2_numbers) )
+     => k4_polyeq_3(A,B,C,D) = k3_polyeq_1(A,B,C,D) ) ).
+
+fof(dt_k5_polyeq_3,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(A)
+     => m1_subset_1(k5_polyeq_3(A),k2_numbers) ) ).
+
+fof(dt_k6_polyeq_3,axiom,
+    ! [A,B,C,D,E] :
+      ( ( m1_subset_1(A,k1_numbers)
+        & m1_subset_1(B,k1_numbers)
+        & m1_subset_1(C,k1_numbers)
+        & m1_subset_1(D,k1_numbers)
+        & v1_xcmplx_0(E) )
+     => m1_subset_1(k6_polyeq_3(A,B,C,D,E),k2_numbers) ) ).
+
+fof(dt_k7_polyeq_3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k2_numbers)
+        & m1_subset_1(B,k2_numbers)
+        & m1_subset_1(C,k2_numbers)
+        & m1_subset_1(D,k2_numbers) )
+     => m1_subset_1(k7_polyeq_3(A,B,C,D),k2_numbers) ) ).
+
+fof(dt_k8_polyeq_3,axiom,
+    ! [A,B,C,D,E] :
+      ( ( m1_subset_1(A,k2_numbers)
+        & m1_subset_1(B,k2_numbers)
+        & m1_subset_1(C,k2_numbers)
+        & m1_subset_1(D,k2_numbers)
+        & m1_subset_1(E,k2_numbers) )
+     => m1_subset_1(k8_polyeq_3(A,B,C,D,E),k2_numbers) ) ).
+
+%------------------------------------------------------------------------------

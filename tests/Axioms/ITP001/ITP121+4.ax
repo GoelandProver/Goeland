@@ -1,0 +1,372 @@
+%------------------------------------------------------------------------------
+% File     : ITP121+4 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : metric.ax [Gau19]
+%          : HL4121+4.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   79 (  47 unt;   0 def)
+%            Number of atoms       :  136 (  63 equ)
+%            Maximal formula atoms :    6 (   1 avg)
+%            Number of connectives :   62 (   5   ~;   3   |;  10   &)
+%                                         (  21 <=>;  23  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   13 (   4 avg)
+%            Maximal term depth    :   12 (   2 avg)
+%            Number of predicates  :    2 (   1 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   71 (  71 usr;  37 con; 0-3 aty)
+%            Number of variables   :  218 ( 212   !;   6   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(reserved_2Eho_2Eboolext,axiom,
+    ! [V0_2E0,V1_2E0] :
+      ( ( p(s(tyop_2Emin_2Ebool,V0_2E0))
+      <=> p(s(tyop_2Emin_2Ebool,V1_2E0)) )
+     => s(tyop_2Emin_2Ebool,V0_2E0) = s(tyop_2Emin_2Ebool,V1_2E0) ) ).
+
+fof(reserved_2Eho_2Etruth,axiom,
+    p(s(tyop_2Emin_2Ebool,c_2Ebool_2ET_2E0)) ).
+
+fof(reserved_2Eho_2Enotfalse,axiom,
+    ~ p(s(tyop_2Emin_2Ebool,c_2Ebool_2EF_2E0)) ).
+
+fof(reserved_2Eho_2Ebool__cases__ax,axiom,
+    ! [V0t_2E0] :
+      ( s(tyop_2Emin_2Ebool,V0t_2E0) = s(tyop_2Emin_2Ebool,c_2Ebool_2ET_2E0)
+      | s(tyop_2Emin_2Ebool,V0t_2E0) = s(tyop_2Emin_2Ebool,c_2Ebool_2EF_2E0) ) ).
+
+fof(reserved_2Eho_2Ei__thm,axiom,
+    ! [A_27a,V0x_2E0] : s(A_27a,app_2E2(s(tyop_2Emin_2Efun(A_27a,A_27a),combin_i_2E0),s(A_27a,V0x_2E0))) = s(A_27a,V0x_2E0) ).
+
+fof(reserved_2Eho_2Ek__thm,axiom,
+    ! [A_27a,A_27b,V0x_2E0,V1y_2E0] : s(A_27a,app_2E2(s(tyop_2Emin_2Efun(A_27b,A_27a),app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Efun(A_27b,A_27a)),combin_k_2E0),s(A_27a,V0x_2E0))),s(A_27b,V1y_2E0))) = s(A_27a,V0x_2E0) ).
+
+fof(reserved_2Eho_2Es__thm,axiom,
+    ! [A_27a,A_27b,A_27c,V0f_2E0,V1g_2E0,V2x_2E0] : s(A_27c,app_2E2(s(tyop_2Emin_2Efun(A_27a,A_27c),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,A_27b),tyop_2Emin_2Efun(A_27a,A_27c)),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Efun(A_27b,A_27c)),tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,A_27b),tyop_2Emin_2Efun(A_27a,A_27c))),combin_s_2E0),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Efun(A_27b,A_27c)),V0f_2E0))),s(tyop_2Emin_2Efun(A_27a,A_27b),V1g_2E0))),s(A_27a,V2x_2E0))) = s(A_27c,app_2E2(s(tyop_2Emin_2Efun(A_27b,A_27c),app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Efun(A_27b,A_27c)),V0f_2E0),s(A_27a,V2x_2E0))),s(A_27b,app_2E2(s(tyop_2Emin_2Efun(A_27a,A_27b),V1g_2E0),s(A_27a,V2x_2E0))))) ).
+
+fof(reserved_2Elogic_2E_2F_5C,axiom,
+    ! [V0_2E0,V1_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Ebool_2E_2F_5C_2E2(s(tyop_2Emin_2Ebool,V0_2E0),s(tyop_2Emin_2Ebool,V1_2E0))))
+    <=> ( p(s(tyop_2Emin_2Ebool,V0_2E0))
+        & p(s(tyop_2Emin_2Ebool,V1_2E0)) ) ) ).
+
+fof(reserved_2Elogic_2E_5C_2F,axiom,
+    ! [V0_2E0,V1_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Ebool_2E_5C_2F_2E2(s(tyop_2Emin_2Ebool,V0_2E0),s(tyop_2Emin_2Ebool,V1_2E0))))
+    <=> ( p(s(tyop_2Emin_2Ebool,V0_2E0))
+        | p(s(tyop_2Emin_2Ebool,V1_2E0)) ) ) ).
+
+fof(reserved_2Elogic_2E_7E,axiom,
+    ! [V0_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Ebool_2E_7E_2E1(s(tyop_2Emin_2Ebool,V0_2E0))))
+    <=> ~ p(s(tyop_2Emin_2Ebool,V0_2E0)) ) ).
+
+fof(reserved_2Elogic_2E_3D_3D_3E,axiom,
+    ! [V0_2E0,V1_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Emin_2E_3D_3D_3E_2E2(s(tyop_2Emin_2Ebool,V0_2E0),s(tyop_2Emin_2Ebool,V1_2E0))))
+    <=> ( p(s(tyop_2Emin_2Ebool,V0_2E0))
+       => p(s(tyop_2Emin_2Ebool,V1_2E0)) ) ) ).
+
+fof(reserved_2Elogic_2E_3D,axiom,
+    ! [A_27a,V0_2E0,V1_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Emin_2E_3D_2E2(s(A_27a,V0_2E0),s(A_27a,V1_2E0))))
+    <=> s(A_27a,V0_2E0) = s(A_27a,V1_2E0) ) ).
+
+fof(reserved_2Equant_2E_21,axiom,
+    ! [A_27a,V0f_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Ebool_2E_21_2E1(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V0f_2E0))))
+    <=> ! [V1x_2E0] : p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V0f_2E0),s(A_27a,V1x_2E0)))) ) ).
+
+fof(reserved_2Equant_2E_3F,axiom,
+    ! [A_27a,V0f_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Ebool_2E_3F_2E1(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V0f_2E0))))
+    <=> ? [V1x_2E0] : p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V0f_2E0),s(A_27a,V1x_2E0)))) ) ).
+
+fof(arityeq2_2Ec_2Ebool_2E_2F_5C_2E2,axiom,
+    ! [X0_2E0,X1_2E0] :
+      ( ( p(s(tyop_2Emin_2Ebool,X0_2E0))
+        & p(s(tyop_2Emin_2Ebool,X1_2E0)) )
+    <=> p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Ebool,tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Ebool,tyop_2Emin_2Efun(tyop_2Emin_2Ebool,tyop_2Emin_2Ebool)),c_2Ebool_2E_2F_5C_2E0),s(tyop_2Emin_2Ebool,X0_2E0))),s(tyop_2Emin_2Ebool,X1_2E0)))) ) ).
+
+fof(arityeq2_2Ec_2Ebool_2E_5C_2F_2E2,axiom,
+    ! [X0_2E0,X1_2E0] :
+      ( ( p(s(tyop_2Emin_2Ebool,X0_2E0))
+        | p(s(tyop_2Emin_2Ebool,X1_2E0)) )
+    <=> p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Ebool,tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Ebool,tyop_2Emin_2Efun(tyop_2Emin_2Ebool,tyop_2Emin_2Ebool)),c_2Ebool_2E_5C_2F_2E0),s(tyop_2Emin_2Ebool,X0_2E0))),s(tyop_2Emin_2Ebool,X1_2E0)))) ) ).
+
+fof(arityeq1_2Ec_2Ebool_2E_7E_2E1,axiom,
+    ! [X0_2E0] :
+      ( ~ p(s(tyop_2Emin_2Ebool,X0_2E0))
+    <=> p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Ebool,tyop_2Emin_2Ebool),c_2Ebool_2E_7E_2E0),s(tyop_2Emin_2Ebool,X0_2E0)))) ) ).
+
+fof(arityeq2_2Ec_2Emin_2E_3D_3D_3E_2E2,axiom,
+    ! [X0_2E0,X1_2E0] :
+      ( ( p(s(tyop_2Emin_2Ebool,X0_2E0))
+       => p(s(tyop_2Emin_2Ebool,X1_2E0)) )
+    <=> p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Ebool,tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Ebool,tyop_2Emin_2Efun(tyop_2Emin_2Ebool,tyop_2Emin_2Ebool)),c_2Emin_2E_3D_3D_3E_2E0),s(tyop_2Emin_2Ebool,X0_2E0))),s(tyop_2Emin_2Ebool,X1_2E0)))) ) ).
+
+fof(arityeq2_2Ec_2Emin_2E_3D_2E2_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0,X1_2E0] :
+      ( s(A_27a,X0_2E0) = s(A_27a,X1_2E0)
+    <=> p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool)),c_2Emin_2E_3D_2E0),s(A_27a,X0_2E0))),s(A_27a,X1_2E0)))) ) ).
+
+fof(arityeq1_2Ec_2Ebool_2E_21_2E1_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0] : s(tyop_2Emin_2Ebool,c_2Ebool_2E_21_2E1(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),X0_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),c_2Ebool_2E_21_2E0),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Ebool_2E_3F_2E1_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0] : s(tyop_2Emin_2Ebool,c_2Ebool_2E_3F_2E1(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),X0_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),c_2Ebool_2E_3F_2E0),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Ereal_2Eabs_2E1,axiom,
+    ! [X0_2E0] : s(tyop_2Erealax_2Ereal,c_2Ereal_2Eabs_2E1(s(tyop_2Erealax_2Ereal,X0_2E0))) = s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),c_2Ereal_2Eabs_2E0),s(tyop_2Erealax_2Ereal,X0_2E0))) ).
+
+fof(arityeq2_2Ec_2Ereal_2Ereal__sub_2E2,axiom,
+    ! [X0_2E0,X1_2E0] : s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__sub_2E2(s(tyop_2Erealax_2Ereal,X0_2E0),s(tyop_2Erealax_2Ereal,X1_2E0))) = s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal)),c_2Ereal_2Ereal__sub_2E0),s(tyop_2Erealax_2Ereal,X0_2E0))),s(tyop_2Erealax_2Ereal,X1_2E0))) ).
+
+fof(arityeq1_2Ec_2Emetric_2Edist_2E1_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0] : s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),c_2Emetric_2Edist_2E1(s(tyop_2Emetric_2Emetric(A_27a),X0_2E0))) = s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal)),c_2Emetric_2Edist_2E0),s(tyop_2Emetric_2Emetric(A_27a),X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Emetric_2Emetric_2E1_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0] : s(tyop_2Emetric_2Emetric(A_27a),c_2Emetric_2Emetric_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),X0_2E0))) = s(tyop_2Emetric_2Emetric(A_27a),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),tyop_2Emetric_2Emetric(A_27a)),c_2Emetric_2Emetric_2E0),s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Emetric_2Eismet_2E1_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0] : s(tyop_2Emin_2Ebool,c_2Emetric_2Eismet_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),X0_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),tyop_2Emin_2Ebool),c_2Emetric_2Eismet_2E0),s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Epair_2EUNCURRY_2E1_2Emono_2Etyop_2Erealax_2Ereal_20mono_2Etyop_2Erealax_2Ereal_20mono_2Etyop_2Erealax_2Ereal,axiom,
+    ! [X0_2E0] : s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),c_2Epair_2EUNCURRY_2E1(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal)),X0_2E0))) = s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal)),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal)),c_2Epair_2EUNCURRY_2E0),s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal)),X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Emetric_2Eismet_2E1_2Emono_2Etyop_2Erealax_2Ereal,axiom,
+    ! [X0_2E0] : s(tyop_2Emin_2Ebool,c_2Emetric_2Eismet_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),X0_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),tyop_2Emin_2Ebool),c_2Emetric_2Eismet_2E0),s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Etopology_2Eistopology_2E1_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0] : s(tyop_2Emin_2Ebool,c_2Etopology_2Eistopology_2E1(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),X0_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),c_2Etopology_2Eistopology_2E0),s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Emetric_2Emetric_2E1_2Emono_2Etyop_2Erealax_2Ereal,axiom,
+    ! [X0_2E0] : s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emetric_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),X0_2E0))) = s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal)),c_2Emetric_2Emetric_2E0),s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Emetric_2Emtop_2E1_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0] : s(tyop_2Etopology_2Etopology(A_27a),c_2Emetric_2Emtop_2E1(s(tyop_2Emetric_2Emetric(A_27a),X0_2E0))) = s(tyop_2Etopology_2Etopology(A_27a),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Etopology_2Etopology(A_27a)),c_2Emetric_2Emtop_2E0),s(tyop_2Emetric_2Emetric(A_27a),X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Ereal_2Ereal__of__num_2E1,axiom,
+    ! [X0_2E0] : s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,X0_2E0))) = s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Enum_2Enum,tyop_2Erealax_2Ereal),c_2Ereal_2Ereal__of__num_2E0),s(tyop_2Enum_2Enum,X0_2E0))) ).
+
+fof(arityeq1_2Ec_2Etopology_2Etopology_2E1_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0] : s(tyop_2Etopology_2Etopology(A_27a),c_2Etopology_2Etopology_2E1(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),X0_2E0))) = s(tyop_2Etopology_2Etopology(A_27a),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),tyop_2Etopology_2Etopology(A_27a)),c_2Etopology_2Etopology_2E0),s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),X0_2E0))) ).
+
+fof(arityeq2_2Ec_2Epair_2E_2C_2E2_2Emono_2EA_27a_20mono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0,X1_2E0] : s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,X0_2E0),s(A_27a,X1_2E0))) = s(tyop_2Epair_2Eprod(A_27a,A_27a),app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Epair_2Eprod(A_27a,A_27a)),app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Efun(A_27a,tyop_2Epair_2Eprod(A_27a,A_27a))),c_2Epair_2E_2C_2E0),s(A_27a,X0_2E0))),s(A_27a,X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Ebool_2ETYPE__DEFINITION_2E2_2Emono_2Etyop_2Emin_2Efun_28tyop_2Epair_2Eprod_28A_27a_2CA_27a_29_2Ctyop_2Erealax_2Ereal_29_20mono_2Etyop_2Emetric_2Emetric_28A_27a_29,axiom,
+    ! [A_27a,X0_2E0,X1_2E0] : s(tyop_2Emin_2Ebool,c_2Ebool_2ETYPE__DEFINITION_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),tyop_2Emin_2Ebool),X0_2E0),s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal)),X1_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal)),tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),tyop_2Emin_2Ebool),tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal)),tyop_2Emin_2Ebool)),c_2Ebool_2ETYPE__DEFINITION_2E0),s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),tyop_2Emin_2Ebool),X0_2E0))),s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal)),X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Emetric_2Edist_2E2_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0,X1_2E0] : s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),X0_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),X1_2E0))) = s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal)),c_2Emetric_2Edist_2E0),s(tyop_2Emetric_2Emetric(A_27a),X0_2E0))),s(tyop_2Epair_2Eprod(A_27a,A_27a),X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Epair_2E_2C_2E2_2Emono_2Etyop_2Erealax_2Ereal_20mono_2Etyop_2Erealax_2Ereal,axiom,
+    ! [X0_2E0,X1_2E0] : s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(tyop_2Erealax_2Ereal,X0_2E0),s(tyop_2Erealax_2Ereal,X1_2E0))) = s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal)),app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal))),c_2Epair_2E_2C_2E0),s(tyop_2Erealax_2Ereal,X0_2E0))),s(tyop_2Erealax_2Ereal,X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Emetric_2Edist_2E2_2Emono_2Etyop_2Erealax_2Ereal,axiom,
+    ! [X0_2E0,X1_2E0] : s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),X0_2E0),s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),X1_2E0))) = s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal)),c_2Emetric_2Edist_2E0),s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),X0_2E0))),s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Erealax_2Ereal__add_2E2,axiom,
+    ! [X0_2E0,X1_2E0] : s(tyop_2Erealax_2Ereal,c_2Erealax_2Ereal__add_2E2(s(tyop_2Erealax_2Ereal,X0_2E0),s(tyop_2Erealax_2Ereal,X1_2E0))) = s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal)),c_2Erealax_2Ereal__add_2E0),s(tyop_2Erealax_2Ereal,X0_2E0))),s(tyop_2Erealax_2Ereal,X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Epair_2E_2C_2E2_2Emono_2EA_27a_20mono_2Etyop_2Erealax_2Ereal,axiom,
+    ! [A_27a,X0_2E0,X1_2E0] : s(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(A_27a,X0_2E0),s(tyop_2Erealax_2Ereal,X1_2E0))) = s(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal)),app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal))),c_2Epair_2E_2C_2E0),s(A_27a,X0_2E0))),s(tyop_2Erealax_2Ereal,X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Epair_2E_2C_2E2_2Emono_2Etyop_2Emin_2Efun_28A_27a_2Ctyop_2Emin_2Ebool_29_20mono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0,X1_2E0] : s(tyop_2Epair_2Eprod(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),A_27a),c_2Epair_2E_2C_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),X0_2E0),s(A_27a,X1_2E0))) = s(tyop_2Epair_2Eprod(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),A_27a),app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Epair_2Eprod(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),A_27a)),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Efun(A_27a,tyop_2Epair_2Eprod(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),A_27a))),c_2Epair_2E_2C_2E0),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),X0_2E0))),s(A_27a,X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Emetric_2EB_2E2_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0,X1_2E0] : s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),c_2Emetric_2EB_2E2(s(tyop_2Emetric_2Emetric(A_27a),X0_2E0),s(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),X1_2E0))) = s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool)),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool))),c_2Emetric_2EB_2E0),s(tyop_2Emetric_2Emetric(A_27a),X0_2E0))),s(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Etopology_2Eneigh_2E2_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0,X1_2E0] : s(tyop_2Emin_2Ebool,c_2Etopology_2Eneigh_2E2(s(tyop_2Etopology_2Etopology(A_27a),X0_2E0),s(tyop_2Epair_2Eprod(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),A_27a),X1_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),A_27a),tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Etopology_2Etopology(A_27a),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),A_27a),tyop_2Emin_2Ebool)),c_2Etopology_2Eneigh_2E0),s(tyop_2Etopology_2Etopology(A_27a),X0_2E0))),s(tyop_2Epair_2Eprod(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),A_27a),X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Etopology_2Eopen__in_2E2_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0,X1_2E0] : s(tyop_2Emin_2Ebool,c_2Etopology_2Eopen__in_2E2(s(tyop_2Etopology_2Etopology(A_27a),X0_2E0),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),X1_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Etopology_2Etopology(A_27a),tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool)),c_2Etopology_2Eopen__in_2E0),s(tyop_2Etopology_2Etopology(A_27a),X0_2E0))),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Erealax_2Ereal__lt_2E2,axiom,
+    ! [X0_2E0,X1_2E0] : s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,X0_2E0),s(tyop_2Erealax_2Ereal,X1_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Ebool)),c_2Erealax_2Ereal__lt_2E0),s(tyop_2Erealax_2Ereal,X0_2E0))),s(tyop_2Erealax_2Ereal,X1_2E0))) ).
+
+fof(arityeq2_2Ec_2Ereal_2Ereal__lte_2E2,axiom,
+    ! [X0_2E0,X1_2E0] : s(tyop_2Emin_2Ebool,c_2Ereal_2Ereal__lte_2E2(s(tyop_2Erealax_2Ereal,X0_2E0),s(tyop_2Erealax_2Ereal,X1_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Ebool)),c_2Ereal_2Ereal__lte_2E0),s(tyop_2Erealax_2Ereal,X0_2E0))),s(tyop_2Erealax_2Ereal,X1_2E0))) ).
+
+fof(arityeq3_2Ec_2Emetric_2EB_2E3_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0,X1_2E0,X2_2E0] : s(tyop_2Emin_2Ebool,c_2Emetric_2EB_2E3(s(tyop_2Emetric_2Emetric(A_27a),X0_2E0),s(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),X1_2E0),s(A_27a,X2_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool)),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool))),c_2Emetric_2EB_2E0),s(tyop_2Emetric_2Emetric(A_27a),X0_2E0))),s(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),X1_2E0))),s(A_27a,X2_2E0))) ).
+
+fof(arityeq3_2Ec_2Etopology_2Elimpt_2E3_2Emono_2EA_27a,axiom,
+    ! [A_27a,X0_2E0,X1_2E0,X2_2E0] : s(tyop_2Emin_2Ebool,c_2Etopology_2Elimpt_2E3(s(tyop_2Etopology_2Etopology(A_27a),X0_2E0),s(A_27a,X1_2E0),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),X2_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool)),app_2E2(s(tyop_2Emin_2Efun(tyop_2Etopology_2Etopology(A_27a),tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool))),c_2Etopology_2Elimpt_2E0),s(tyop_2Etopology_2Etopology(A_27a),X0_2E0))),s(A_27a,X1_2E0))),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),X2_2E0))) ).
+
+fof(arityeq3_2Ec_2Etopology_2Elimpt_2E3_2Emono_2Etyop_2Erealax_2Ereal,axiom,
+    ! [X0_2E0,X1_2E0,X2_2E0] : s(tyop_2Emin_2Ebool,c_2Etopology_2Elimpt_2E3(s(tyop_2Etopology_2Etopology(tyop_2Erealax_2Ereal),X0_2E0),s(tyop_2Erealax_2Ereal,X1_2E0),s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Ebool),X2_2E0))) = s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool)),app_2E2(s(tyop_2Emin_2Efun(tyop_2Etopology_2Etopology(tyop_2Erealax_2Ereal),tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool))),c_2Etopology_2Elimpt_2E0),s(tyop_2Etopology_2Etopology(tyop_2Erealax_2Ereal),X0_2E0))),s(tyop_2Erealax_2Ereal,X1_2E0))),s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Ebool),X2_2E0))) ).
+
+fof(arityeq1_2Ec_2Emetric_2Emtop_2E1_2Emono_2Etyop_2Erealax_2Ereal,axiom,
+    ! [X0_2E0] : s(tyop_2Etopology_2Etopology(tyop_2Erealax_2Ereal),c_2Emetric_2Emtop_2E1(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),X0_2E0))) = s(tyop_2Etopology_2Etopology(tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),tyop_2Etopology_2Etopology(tyop_2Erealax_2Ereal)),c_2Emetric_2Emtop_2E0),s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),X0_2E0))) ).
+
+fof(thm_2Emetric_2Eismet,axiom,
+    ! [A_27a,V0m_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Emetric_2Eismet_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),V0m_2E0))))
+    <=> ( ! [V1x_2E0,V2y_2E0] :
+            ( s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(A_27a,V2y_2E0))))) = s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0)))
+          <=> s(A_27a,V1x_2E0) = s(A_27a,V2y_2E0) )
+        & ! [V3x_2E0,V4y_2E0,V5z_2E0] : p(s(tyop_2Emin_2Ebool,c_2Ereal_2Ereal__lte_2E2(s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V4y_2E0),s(A_27a,V5z_2E0))))),s(tyop_2Erealax_2Ereal,c_2Erealax_2Ereal__add_2E2(s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V3x_2E0),s(A_27a,V4y_2E0))))),s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V3x_2E0),s(A_27a,V5z_2E0)))))))))) ) ) ).
+
+fof(thm_2Emetric_2Emetric__TY__DEF,axiom,
+    ! [A_27a] :
+    ? [V0rep_2E0] : p(s(tyop_2Emin_2Ebool,c_2Ebool_2ETYPE__DEFINITION_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),tyop_2Emin_2Ebool),c_2Emetric_2Eismet_2E0),s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal)),V0rep_2E0)))) ).
+
+fof(thm_2Emetric_2Emetric__tybij,axiom,
+    ! [A_27a] :
+      ( ! [V0a_2E0] : s(tyop_2Emetric_2Emetric(A_27a),c_2Emetric_2Emetric_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),c_2Emetric_2Edist_2E1(s(tyop_2Emetric_2Emetric(A_27a),V0a_2E0))))) = s(tyop_2Emetric_2Emetric(A_27a),V0a_2E0)
+      & ! [V1r_2E0] :
+          ( p(s(tyop_2Emin_2Ebool,c_2Emetric_2Eismet_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),V1r_2E0))))
+        <=> s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),c_2Emetric_2Edist_2E1(s(tyop_2Emetric_2Emetric(A_27a),c_2Emetric_2Emetric_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),V1r_2E0))))) = s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),V1r_2E0) ) ) ).
+
+fof(thm_2Emetric_2Emtop,axiom,
+    ! [A_27a,F0_2E0] :
+      ( ! [V0m_2E0,V1S_27_2E0] :
+          ( p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool)),F0_2E0),s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0))),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V1S_27_2E0))))
+        <=> ! [V2x_2E0] :
+              ( p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V1S_27_2E0),s(A_27a,V2x_2E0))))
+             => ? [V3e_2E0] :
+                  ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,V3e_2E0))))
+                  & ! [V4y_2E0] :
+                      ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V2x_2E0),s(A_27a,V4y_2E0))))),s(tyop_2Erealax_2Ereal,V3e_2E0))))
+                     => p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V1S_27_2E0),s(A_27a,V4y_2E0)))) ) ) ) )
+     => ! [V0m_2E0] : s(tyop_2Etopology_2Etopology(A_27a),c_2Emetric_2Emtop_2E1(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0))) = s(tyop_2Etopology_2Etopology(A_27a),c_2Etopology_2Etopology_2E1(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool)),F0_2E0),s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0))))) ) ).
+
+fof(thm_2Emetric_2Eball,axiom,
+    ! [A_27a,V0m_2E0,V1x_2E0,V2e_2E0,V3x_27_2E0] : s(tyop_2Emin_2Ebool,c_2Emetric_2EB_2E3(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(tyop_2Erealax_2Ereal,V2e_2E0))),s(A_27a,V3x_27_2E0))) = s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(A_27a,V3x_27_2E0))))),s(tyop_2Erealax_2Ereal,V2e_2E0))) ).
+
+fof(thm_2Emetric_2Emr1,axiom,
+    ! [F0_2E0] :
+      ( ! [V0x_2E0,V1y_2E0] : s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal)),F0_2E0),s(tyop_2Erealax_2Ereal,V0x_2E0))),s(tyop_2Erealax_2Ereal,V1y_2E0))) = s(tyop_2Erealax_2Ereal,c_2Ereal_2Eabs_2E1(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__sub_2E2(s(tyop_2Erealax_2Ereal,V1y_2E0),s(tyop_2Erealax_2Ereal,V0x_2E0)))))
+     => s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emr1_2E0) = s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emetric_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),c_2Epair_2EUNCURRY_2E1(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal)),F0_2E0))))) ) ).
+
+fof(thm_2Emetric_2EMETRIC__ISMET,axiom,
+    ! [A_27a,V0m_2E0] : p(s(tyop_2Emin_2Ebool,c_2Emetric_2Eismet_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(A_27a,A_27a),tyop_2Erealax_2Ereal),c_2Emetric_2Edist_2E1(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0)))))) ).
+
+fof(thm_2Emetric_2EMETRIC__ZERO,axiom,
+    ! [A_27a,V0m_2E0,V1x_2E0,V2y_2E0] :
+      ( s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(A_27a,V2y_2E0))))) = s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0)))
+    <=> s(A_27a,V1x_2E0) = s(A_27a,V2y_2E0) ) ).
+
+fof(thm_2Emetric_2EMETRIC__SAME,axiom,
+    ! [A_27a,V0m_2E0,V1x_2E0] : s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(A_27a,V1x_2E0))))) = s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))) ).
+
+fof(thm_2Emetric_2EMETRIC__POS,axiom,
+    ! [A_27a,V0m_2E0,V1x_2E0,V2y_2E0] : p(s(tyop_2Emin_2Ebool,c_2Ereal_2Ereal__lte_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(A_27a,V2y_2E0)))))))) ).
+
+fof(thm_2Emetric_2EMETRIC__SYM,axiom,
+    ! [A_27a,V0m_2E0,V1x_2E0,V2y_2E0] : s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(A_27a,V2y_2E0))))) = s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V2y_2E0),s(A_27a,V1x_2E0))))) ).
+
+fof(thm_2Emetric_2EMETRIC__TRIANGLE,axiom,
+    ! [A_27a,V0m_2E0,V1x_2E0,V2y_2E0,V3z_2E0] : p(s(tyop_2Emin_2Ebool,c_2Ereal_2Ereal__lte_2E2(s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(A_27a,V3z_2E0))))),s(tyop_2Erealax_2Ereal,c_2Erealax_2Ereal__add_2E2(s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(A_27a,V2y_2E0))))),s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V2y_2E0),s(A_27a,V3z_2E0)))))))))) ).
+
+fof(thm_2Emetric_2EMETRIC__NZ,axiom,
+    ! [A_27a,V0m_2E0,V1x_2E0,V2y_2E0] :
+      ( s(A_27a,V1x_2E0) != s(A_27a,V2y_2E0)
+     => p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(A_27a,V2y_2E0)))))))) ) ).
+
+fof(thm_2Emetric_2Emtop__istopology,axiom,
+    ! [A_27a,F0_2E0] :
+      ( ! [V0m_2E0,V1S_27_2E0] :
+          ( p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool)),F0_2E0),s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0))),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V1S_27_2E0))))
+        <=> ! [V2x_2E0] :
+              ( p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V1S_27_2E0),s(A_27a,V2x_2E0))))
+             => ? [V3e_2E0] :
+                  ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,V3e_2E0))))
+                  & ! [V4y_2E0] :
+                      ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V2x_2E0),s(A_27a,V4y_2E0))))),s(tyop_2Erealax_2Ereal,V3e_2E0))))
+                     => p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V1S_27_2E0),s(A_27a,V4y_2E0)))) ) ) ) )
+     => ! [V0m_2E0] : p(s(tyop_2Emin_2Ebool,c_2Etopology_2Eistopology_2E1(s(tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool),app_2E2(s(tyop_2Emin_2Efun(tyop_2Emetric_2Emetric(A_27a),tyop_2Emin_2Efun(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),tyop_2Emin_2Ebool)),F0_2E0),s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0)))))) ) ).
+
+fof(thm_2Emetric_2EMTOP__OPEN,axiom,
+    ! [A_27a,V0S_27_2E0,V1m_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Etopology_2Eopen__in_2E2(s(tyop_2Etopology_2Etopology(A_27a),c_2Emetric_2Emtop_2E1(s(tyop_2Emetric_2Emetric(A_27a),V1m_2E0))),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V0S_27_2E0))))
+    <=> ! [V2x_2E0] :
+          ( p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V0S_27_2E0),s(A_27a,V2x_2E0))))
+         => ? [V3e_2E0] :
+              ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,V3e_2E0))))
+              & ! [V4y_2E0] :
+                  ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V1m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V2x_2E0),s(A_27a,V4y_2E0))))),s(tyop_2Erealax_2Ereal,V3e_2E0))))
+                 => p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V0S_27_2E0),s(A_27a,V4y_2E0)))) ) ) ) ) ).
+
+fof(thm_2Emetric_2EBALL__OPEN,axiom,
+    ! [A_27a,V0m_2E0,V1x_2E0,V2e_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,V2e_2E0))))
+     => p(s(tyop_2Emin_2Ebool,c_2Etopology_2Eopen__in_2E2(s(tyop_2Etopology_2Etopology(A_27a),c_2Emetric_2Emtop_2E1(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0))),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),c_2Emetric_2EB_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(tyop_2Erealax_2Ereal,V2e_2E0)))))))) ) ).
+
+fof(thm_2Emetric_2EBALL__NEIGH,axiom,
+    ! [A_27a,V0m_2E0,V1x_2E0,V2e_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,V2e_2E0))))
+     => p(s(tyop_2Emin_2Ebool,c_2Etopology_2Eneigh_2E2(s(tyop_2Etopology_2Etopology(A_27a),c_2Emetric_2Emtop_2E1(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0))),s(tyop_2Epair_2Eprod(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),A_27a),c_2Epair_2E_2C_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),c_2Emetric_2EB_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(tyop_2Erealax_2Ereal,V2e_2E0))))),s(A_27a,V1x_2E0)))))) ) ).
+
+fof(thm_2Emetric_2EMTOP__LIMPT,axiom,
+    ! [A_27a,V0m_2E0,V1x_2E0,V2S_27_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Etopology_2Elimpt_2E3(s(tyop_2Etopology_2Etopology(A_27a),c_2Emetric_2Emtop_2E1(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0))),s(A_27a,V1x_2E0),s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V2S_27_2E0))))
+    <=> ! [V3e_2E0] :
+          ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,V3e_2E0))))
+         => ? [V4y_2E0] :
+              ( s(A_27a,V1x_2E0) != s(A_27a,V4y_2E0)
+              & p(s(tyop_2Emin_2Ebool,app_2E2(s(tyop_2Emin_2Efun(A_27a,tyop_2Emin_2Ebool),V2S_27_2E0),s(A_27a,V4y_2E0))))
+              & p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(A_27a),V0m_2E0),s(tyop_2Epair_2Eprod(A_27a,A_27a),c_2Epair_2E_2C_2E2(s(A_27a,V1x_2E0),s(A_27a,V4y_2E0))))),s(tyop_2Erealax_2Ereal,V3e_2E0)))) ) ) ) ).
+
+fof(thm_2Emetric_2EISMET__R1,axiom,
+    ! [F0_2E0] :
+      ( ! [V0x_2E0,V1y_2E0] : s(tyop_2Erealax_2Ereal,app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),app_2E2(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal)),F0_2E0),s(tyop_2Erealax_2Ereal,V0x_2E0))),s(tyop_2Erealax_2Ereal,V1y_2E0))) = s(tyop_2Erealax_2Ereal,c_2Ereal_2Eabs_2E1(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__sub_2E2(s(tyop_2Erealax_2Ereal,V1y_2E0),s(tyop_2Erealax_2Ereal,V0x_2E0)))))
+     => p(s(tyop_2Emin_2Ebool,c_2Emetric_2Eismet_2E1(s(tyop_2Emin_2Efun(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),tyop_2Erealax_2Ereal),c_2Epair_2EUNCURRY_2E1(s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal)),F0_2E0)))))) ) ).
+
+fof(thm_2Emetric_2EMR1__DEF,axiom,
+    ! [V0x_2E0,V1y_2E0] : s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emr1_2E0),s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,V1y_2E0))))) = s(tyop_2Erealax_2Ereal,c_2Ereal_2Eabs_2E1(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__sub_2E2(s(tyop_2Erealax_2Ereal,V1y_2E0),s(tyop_2Erealax_2Ereal,V0x_2E0))))) ).
+
+fof(thm_2Emetric_2EMR1__ADD,axiom,
+    ! [V0x_2E0,V1d_2E0] : s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emr1_2E0),s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,c_2Erealax_2Ereal__add_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,V1d_2E0))))))) = s(tyop_2Erealax_2Ereal,c_2Ereal_2Eabs_2E1(s(tyop_2Erealax_2Ereal,V1d_2E0))) ).
+
+fof(thm_2Emetric_2EMR1__SUB,axiom,
+    ! [V0x_2E0,V1d_2E0] : s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emr1_2E0),s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__sub_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,V1d_2E0))))))) = s(tyop_2Erealax_2Ereal,c_2Ereal_2Eabs_2E1(s(tyop_2Erealax_2Ereal,V1d_2E0))) ).
+
+fof(thm_2Emetric_2EMR1__ADD__POS,axiom,
+    ! [V0x_2E0,V1d_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Ereal_2Ereal__lte_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,V1d_2E0))))
+     => s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emr1_2E0),s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,c_2Erealax_2Ereal__add_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,V1d_2E0))))))) = s(tyop_2Erealax_2Ereal,V1d_2E0) ) ).
+
+fof(thm_2Emetric_2EMR1__SUB__LE,axiom,
+    ! [V0x_2E0,V1d_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Ereal_2Ereal__lte_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,V1d_2E0))))
+     => s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emr1_2E0),s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__sub_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,V1d_2E0))))))) = s(tyop_2Erealax_2Ereal,V1d_2E0) ) ).
+
+fof(thm_2Emetric_2EMR1__ADD__LT,axiom,
+    ! [V0x_2E0,V1d_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,V1d_2E0))))
+     => s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emr1_2E0),s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,c_2Erealax_2Ereal__add_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,V1d_2E0))))))) = s(tyop_2Erealax_2Ereal,V1d_2E0) ) ).
+
+fof(thm_2Emetric_2EMR1__SUB__LT,axiom,
+    ! [V0x_2E0,V1d_2E0] :
+      ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__of__num_2E1(s(tyop_2Enum_2Enum,c_2Enum_2E0_2E0))),s(tyop_2Erealax_2Ereal,V1d_2E0))))
+     => s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emr1_2E0),s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__sub_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,V1d_2E0))))))) = s(tyop_2Erealax_2Ereal,V1d_2E0) ) ).
+
+fof(thm_2Emetric_2EMR1__BETWEEN1,axiom,
+    ! [V0x_2E0,V1y_2E0,V2z_2E0] :
+      ( ( p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,V2z_2E0))))
+        & p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,c_2Emetric_2Edist_2E2(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emr1_2E0),s(tyop_2Epair_2Eprod(tyop_2Erealax_2Ereal,tyop_2Erealax_2Ereal),c_2Epair_2E_2C_2E2(s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Erealax_2Ereal,V1y_2E0))))),s(tyop_2Erealax_2Ereal,c_2Ereal_2Ereal__sub_2E2(s(tyop_2Erealax_2Ereal,V2z_2E0),s(tyop_2Erealax_2Ereal,V0x_2E0)))))) )
+     => p(s(tyop_2Emin_2Ebool,c_2Erealax_2Ereal__lt_2E2(s(tyop_2Erealax_2Ereal,V1y_2E0),s(tyop_2Erealax_2Ereal,V2z_2E0)))) ) ).
+
+fof(thm_2Emetric_2EMR1__LIMPT,axiom,
+    ! [V0x_2E0] : p(s(tyop_2Emin_2Ebool,c_2Etopology_2Elimpt_2E3(s(tyop_2Etopology_2Etopology(tyop_2Erealax_2Ereal),c_2Emetric_2Emtop_2E1(s(tyop_2Emetric_2Emetric(tyop_2Erealax_2Ereal),c_2Emetric_2Emr1_2E0))),s(tyop_2Erealax_2Ereal,V0x_2E0),s(tyop_2Emin_2Efun(tyop_2Erealax_2Ereal,tyop_2Emin_2Ebool),c_2Epred__set_2EUNIV_2E0)))) ).
+
+fof(reserved_2Eho_2Eeq__ext,axiom,
+    ! [A_27a,A_27b,V0f_2E0,V1g_2E0] :
+      ( ! [V2x_2E0] : s(A_27b,app_2E2(s(tyop_2Emin_2Efun(A_27a,A_27b),V0f_2E0),s(A_27a,V2x_2E0))) = s(A_27b,app_2E2(s(tyop_2Emin_2Efun(A_27a,A_27b),V1g_2E0),s(A_27a,V2x_2E0)))
+     => s(tyop_2Emin_2Efun(A_27a,A_27b),V0f_2E0) = s(tyop_2Emin_2Efun(A_27a,A_27b),V1g_2E0) ) ).
+
+%------------------------------------------------------------------------------

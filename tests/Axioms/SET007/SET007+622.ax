@@ -1,0 +1,540 @@
+%------------------------------------------------------------------------------
+% File     : SET007+622 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Radix-2^k Signed-Digit Number and its Adder Algorithm
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : radix_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   60 (   5 unt;   0 def)
+%            Number of atoms       :  264 (  47 equ)
+%            Maximal formula atoms :    9 (   4 avg)
+%            Number of connectives :  222 (  18   ~;   1   |;  50   &)
+%                                         (   6 <=>; 147  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   15 (   7 avg)
+%            Maximal term depth    :    7 (   1 avg)
+%            Number of predicates  :   12 (  10 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   41 (  41 usr;   6 con; 0-5 aty)
+%            Number of variables   :  149 ( 148   !;   1   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_radix_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ~ v1_xboole_0(k2_radix_1(A)) ) ).
+
+fof(t1_radix_1,axiom,
+    $true ).
+
+fof(t2_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( k4_nat_1(A,B) = k6_xcmplx_0(B,np__1)
+           => k4_nat_1(k1_nat_1(A,np__1),B) = np__0 ) ) ) ).
+
+fof(t3_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( A != np__0
+              & ~ r1_xreal_0(k6_xcmplx_0(A,np__1),k4_nat_1(B,A))
+              & k4_nat_1(k1_nat_1(B,np__1),A) != k1_nat_1(k4_nat_1(B,A),np__1) ) ) ) ).
+
+fof(t4_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( A != np__0
+               => k4_nat_1(k4_nat_1(B,k2_nat_1(A,C)),C) = k4_nat_1(B,C) ) ) ) ) ).
+
+fof(t5_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( A != np__0
+              & k4_nat_1(k1_nat_1(B,np__1),A) != np__0
+              & k4_nat_1(k1_nat_1(B,np__1),A) != k1_nat_1(k4_nat_1(B,A),np__1) ) ) ) ).
+
+fof(t6_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( A != np__0
+                  & B != np__0
+                  & r1_xreal_0(A,k3_nat_1(k4_nat_1(C,k2_wsierp_1(A,B)),k2_wsierp_1(A,k5_binarith(B,np__1)))) ) ) ) ) ).
+
+fof(t7_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( r1_xreal_0(A,B)
+               => r1_nat_1(k2_wsierp_1(C,A),k2_wsierp_1(C,B)) ) ) ) ) ).
+
+fof(t8_radix_1,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( r1_xreal_0(np__0,B)
+               => ( r1_xreal_0(A,np__0)
+                  | k6_int_1(k6_int_1(C,k3_xcmplx_0(A,B)),B) = k6_int_1(C,B) ) ) ) ) ) ).
+
+fof(d1_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k1_radix_1(A) = k4_power(np__2,A) ) ).
+
+fof(t9_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k1_radix_1(A) != np__0 ) ).
+
+fof(t10_radix_1,axiom,
+    ! [A] :
+      ( r2_hidden(A,k2_radix_1(np__0))
+    <=> A = np__0 ) ).
+
+fof(t11_radix_1,axiom,
+    k2_radix_1(np__0) = k1_tarski(np__0) ).
+
+fof(t12_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => r1_tarski(k2_radix_1(A),k2_radix_1(k1_nat_1(A,np__1))) ) ).
+
+fof(t13_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( r2_hidden(B,k2_radix_1(A))
+         => v1_int_1(B) ) ) ).
+
+fof(t14_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => r1_tarski(k2_radix_1(A),k6_wsierp_1) ) ).
+
+fof(t15_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ( r2_hidden(B,k2_radix_1(A))
+           => ( r1_xreal_0(B,k6_xcmplx_0(k1_radix_1(A),np__1))
+              & r1_xreal_0(k2_xcmplx_0(k4_xcmplx_0(k1_radix_1(A)),np__1),B) ) ) ) ) ).
+
+fof(t16_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => r2_hidden(np__0,k2_radix_1(A)) ) ).
+
+fof(t17_radix_1,axiom,
+    $true ).
+
+fof(t18_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k3_radix_1(C),k4_finseq_2(B,k3_radix_1(C)))
+                 => ( r2_hidden(A,k2_finseq_1(B))
+                   => m2_subset_1(k1_funct_1(D,A),k6_wsierp_1,k3_radix_1(C)) ) ) ) ) ) ).
+
+fof(d3_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k3_radix_1(B),k4_finseq_2(C,k3_radix_1(B)))
+                 => ( ( r2_hidden(A,k2_finseq_1(C))
+                     => k4_radix_1(A,B,C,D) = k1_funct_1(D,A) )
+                    & ( A = np__0
+                     => k4_radix_1(A,B,C,D) = np__0 ) ) ) ) ) ) ).
+
+fof(d4_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k3_radix_1(B),k4_finseq_2(C,k3_radix_1(B)))
+                 => k5_radix_1(A,B,C,D) = k4_radix_1(A,B,C,D) ) ) ) ) ).
+
+fof(t19_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k3_radix_1(C),k4_finseq_2(B,k3_radix_1(C)))
+                 => ( r2_hidden(A,k2_finseq_1(B))
+                   => m2_subset_1(k4_radix_1(A,C,B,D),k6_wsierp_1,k3_radix_1(C)) ) ) ) ) ) ).
+
+fof(t20_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k6_wsierp_1,k4_finseq_2(np__1,k6_wsierp_1))
+         => ( k4_finseq_4(k5_numbers,k6_wsierp_1,B,np__1) = A
+           => B = k13_binarith(k1_numbers,A) ) ) ) ).
+
+fof(d5_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k3_radix_1(B),k4_finseq_2(C,k3_radix_1(B)))
+                 => k6_radix_1(A,B,C,D) = k3_xcmplx_0(k2_wsierp_1(k1_radix_1(B),k5_binarith(A,np__1)),k5_radix_1(A,B,C,D)) ) ) ) ) ).
+
+fof(d6_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k3_radix_1(B),k4_finseq_2(A,k3_radix_1(B)))
+             => ! [D] :
+                  ( m2_finseq_2(D,k6_wsierp_1,k4_finseq_2(A,k6_wsierp_1))
+                 => ( D = k7_radix_1(A,B,C)
+                  <=> ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => ( r2_hidden(E,k2_finseq_1(A))
+                         => k4_finseq_4(k5_numbers,k6_wsierp_1,D,E) = k6_radix_1(E,B,A,C) ) ) ) ) ) ) ) ).
+
+fof(d7_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k3_radix_1(B),k4_finseq_2(A,k3_radix_1(B)))
+             => k8_radix_1(A,B,C) = k7_wsierp_1(k7_radix_1(A,B,C)) ) ) ) ).
+
+fof(d8_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k9_radix_1(A,B,C) = k3_nat_1(k4_nat_1(C,k2_wsierp_1(k1_radix_1(B),A)),k2_wsierp_1(k1_radix_1(B),k5_binarith(A,np__1))) ) ) ) ).
+
+fof(d9_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k3_radix_1(A),k4_finseq_2(B,k3_radix_1(A)))
+                 => ( D = k10_radix_1(A,B,C)
+                  <=> ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => ( r2_hidden(E,k2_finseq_1(B))
+                         => k4_radix_1(E,A,B,D) = k9_radix_1(E,A,C) ) ) ) ) ) ) ) ).
+
+fof(d10_radix_1,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ( ( ~ r1_xreal_0(A,np__2)
+         => k11_radix_1(A) = np__1 )
+        & ( ~ r1_xreal_0(k4_xcmplx_0(np__2),A)
+         => k11_radix_1(A) = k4_xcmplx_0(np__1) )
+        & ( ( r1_xreal_0(A,np__2)
+            & r1_xreal_0(k4_xcmplx_0(np__2),A) )
+         => k11_radix_1(A) = np__0 ) ) ) ).
+
+fof(t21_radix_1,axiom,
+    k11_radix_1(np__0) = np__0 ).
+
+fof(d11_radix_1,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k12_radix_1(A,B) = k6_xcmplx_0(A,k3_xcmplx_0(k11_radix_1(A),k1_radix_1(B))) ) ) ).
+
+fof(t22_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k12_radix_1(np__0,A) = np__0 ) ).
+
+fof(t23_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( ( r1_xreal_0(np__2,A)
+                  & r2_hidden(B,k3_radix_1(A))
+                  & r2_hidden(C,k3_radix_1(A)) )
+               => ( r1_xreal_0(k2_xcmplx_0(k4_xcmplx_0(k1_radix_1(A)),np__2),k12_radix_1(k2_xcmplx_0(B,C),A))
+                  & r1_xreal_0(k12_radix_1(k2_xcmplx_0(B,C),A),k6_xcmplx_0(k1_radix_1(A),np__2)) ) ) ) ) ) ).
+
+fof(d12_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( r1_radix_1(A,B,C)
+              <=> ~ r1_xreal_0(k2_wsierp_1(k1_radix_1(C),A),B) ) ) ) ) ).
+
+fof(t24_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_radix_1(np__1,A,B)
+           => k4_radix_1(np__1,B,np__1,k10_radix_1(B,np__1,A)) = A ) ) ) ).
+
+fof(t25_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_xreal_0(np__1,B)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => ( r1_radix_1(B,C,A)
+                 => C = k8_radix_1(B,A,k10_radix_1(A,B,C)) ) ) ) ) ) ).
+
+fof(t26_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_xreal_0(np__2,A)
+                  & r1_radix_1(np__1,B,A)
+                  & r1_radix_1(np__1,C,A) )
+               => k11_radix_1(k2_xcmplx_0(k4_radix_1(np__1,A,np__1,k10_radix_1(A,np__1,B)),k4_radix_1(np__1,A,np__1,k10_radix_1(A,np__1,C)))) = k11_radix_1(k1_nat_1(B,C)) ) ) ) ) ).
+
+fof(t27_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( r1_radix_1(k1_nat_1(B,np__1),A,C)
+               => k4_radix_1(k1_nat_1(B,np__1),C,k1_nat_1(B,np__1),k10_radix_1(C,k1_nat_1(B,np__1),A)) = k3_nat_1(A,k2_wsierp_1(k1_radix_1(C),B)) ) ) ) ) ).
+
+fof(d13_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k3_radix_1(A),k4_finseq_2(C,k3_radix_1(A)))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k3_radix_1(A),k4_finseq_2(C,k3_radix_1(A)))
+                     => ( ( r2_hidden(B,k2_finseq_1(C))
+                          & r1_xreal_0(np__2,A) )
+                       => k13_radix_1(A,B,C,D,E) = k2_xcmplx_0(k12_radix_1(k2_xcmplx_0(k4_radix_1(B,A,C,D),k4_radix_1(B,A,C,E)),A),k11_radix_1(k2_xcmplx_0(k4_radix_1(k5_binarith(B,np__1),A,C,D),k4_radix_1(k5_binarith(B,np__1),A,C,E)))) ) ) ) ) ) ) ).
+
+fof(d14_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k3_radix_1(B),k4_finseq_2(A,k3_radix_1(B)))
+             => ! [D] :
+                  ( m2_finseq_2(D,k3_radix_1(B),k4_finseq_2(A,k3_radix_1(B)))
+                 => ! [E] :
+                      ( m2_finseq_2(E,k3_radix_1(B),k4_finseq_2(A,k3_radix_1(B)))
+                     => ( E = k14_radix_1(A,B,C,D)
+                      <=> ! [F] :
+                            ( m2_subset_1(F,k1_numbers,k5_numbers)
+                           => ( r2_hidden(F,k2_finseq_1(A))
+                             => k4_radix_1(F,B,A,E) = k13_radix_1(B,F,A,C,D) ) ) ) ) ) ) ) ) ).
+
+fof(t28_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_xreal_0(np__2,A)
+                  & r1_radix_1(np__1,B,A)
+                  & r1_radix_1(np__1,C,A) )
+               => k8_radix_1(np__1,A,k14_radix_1(np__1,A,k10_radix_1(A,np__1,B),k10_radix_1(A,np__1,C))) = k12_radix_1(k1_nat_1(B,C),A) ) ) ) ) ).
+
+fof(t29_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( r1_xreal_0(np__1,A)
+       => ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => ( ( r1_xreal_0(np__2,B)
+                        & r1_radix_1(A,C,B)
+                        & r1_radix_1(A,D,B) )
+                     => k1_nat_1(C,D) = k2_xcmplx_0(k8_radix_1(A,B,k14_radix_1(A,B,k10_radix_1(B,A,C),k10_radix_1(B,A,D))),k3_xcmplx_0(k2_wsierp_1(k1_radix_1(B),A),k11_radix_1(k2_xcmplx_0(k4_radix_1(A,B,A,k10_radix_1(B,A,C)),k4_radix_1(A,B,A,k10_radix_1(B,A,D)))))) ) ) ) ) ) ) ).
+
+fof(dt_k1_radix_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m2_subset_1(k1_radix_1(A),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k2_radix_1,axiom,
+    $true ).
+
+fof(dt_k3_radix_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( ~ v1_xboole_0(k3_radix_1(A))
+        & m1_subset_1(k3_radix_1(A),k1_zfmisc_1(k6_wsierp_1)) ) ) ).
+
+fof(redefinition_k3_radix_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => k3_radix_1(A) = k2_radix_1(A) ) ).
+
+fof(dt_k4_radix_1,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k5_numbers)
+        & m1_subset_1(D,k4_finseq_2(C,k3_radix_1(B))) )
+     => v1_int_1(k4_radix_1(A,B,C,D)) ) ).
+
+fof(dt_k5_radix_1,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k5_numbers)
+        & m1_subset_1(D,k4_finseq_2(C,k3_radix_1(B))) )
+     => m2_subset_1(k5_radix_1(A,B,C,D),k1_numbers,k6_wsierp_1) ) ).
+
+fof(dt_k6_radix_1,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k5_numbers)
+        & m1_subset_1(D,k4_finseq_2(C,k3_radix_1(B))) )
+     => m2_subset_1(k6_radix_1(A,B,C,D),k1_numbers,k6_wsierp_1) ) ).
+
+fof(dt_k7_radix_1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k4_finseq_2(A,k3_radix_1(B))) )
+     => m2_finseq_2(k7_radix_1(A,B,C),k6_wsierp_1,k4_finseq_2(A,k6_wsierp_1)) ) ).
+
+fof(dt_k8_radix_1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k4_finseq_2(A,k3_radix_1(B))) )
+     => v1_int_1(k8_radix_1(A,B,C)) ) ).
+
+fof(dt_k9_radix_1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k5_numbers) )
+     => m2_subset_1(k9_radix_1(A,B,C),k6_wsierp_1,k3_radix_1(B)) ) ).
+
+fof(dt_k10_radix_1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k5_numbers) )
+     => m2_finseq_2(k10_radix_1(A,B,C),k3_radix_1(A),k4_finseq_2(B,k3_radix_1(A))) ) ).
+
+fof(dt_k11_radix_1,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => v1_int_1(k11_radix_1(A)) ) ).
+
+fof(dt_k12_radix_1,axiom,
+    ! [A,B] :
+      ( ( v1_int_1(A)
+        & m1_subset_1(B,k5_numbers) )
+     => v1_int_1(k12_radix_1(A,B)) ) ).
+
+fof(dt_k13_radix_1,axiom,
+    ! [A,B,C,D,E] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k5_numbers)
+        & m1_subset_1(D,k4_finseq_2(C,k3_radix_1(A)))
+        & m1_subset_1(E,k4_finseq_2(C,k3_radix_1(A))) )
+     => m2_subset_1(k13_radix_1(A,B,C,D,E),k6_wsierp_1,k3_radix_1(A)) ) ).
+
+fof(dt_k14_radix_1,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k4_finseq_2(A,k3_radix_1(B)))
+        & m1_subset_1(D,k4_finseq_2(A,k3_radix_1(B))) )
+     => m2_finseq_2(k14_radix_1(A,B,C,D),k3_radix_1(B),k4_finseq_2(A,k3_radix_1(B))) ) ).
+
+fof(d2_radix_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k2_radix_1(A) = a_1_0_radix_1(A) ) ).
+
+fof(fraenkel_a_1_0_radix_1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_0_radix_1(B))
+      <=> ? [C] :
+            ( m2_subset_1(C,k1_numbers,k6_wsierp_1)
+            & A = C
+            & r1_xreal_0(C,k6_xcmplx_0(k1_radix_1(B),np__1))
+            & r1_xreal_0(k2_xcmplx_0(k4_xcmplx_0(k1_radix_1(B)),np__1),C) ) ) ) ).
+
+%------------------------------------------------------------------------------

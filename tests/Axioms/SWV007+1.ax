@@ -1,0 +1,87 @@
+%------------------------------------------------------------------------------
+% File     : SWV007+1 : TPTP v8.1.2. Released v3.3.0.
+% Domain   : Software Verification
+% Axioms   : Priority queue checker: priority queues
+% Version  : [dNP05] axioms.
+% English  : Priority queues are inductively defined.
+
+% Refs     : [Pis06] Piskac (2006), Email to Geoff Sutcliffe
+%          : [dNP05] de Nivelle & Piskac (2005), Verification of an Off-Lin
+% Source   : [Pis06]
+% Names    :
+
+% Status   : Satisfiable
+% Rating   : <Don't worry about this one - we'll do it automatically>
+% Syntax   : Number of formulae    :   12 (   5 unt;   0 def)
+%            Number of atoms       :   26 (   9 equ)
+%            Maximal formula atoms :    3 (   2 avg)
+%            Number of connectives :   17 (   3   ~;   1   |;   5   &)
+%                                         (   2 <=>;   6  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    7 (   5 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    5 (   4 usr;   0 prp; 1-2 aty)
+%            Number of functors    :    7 (   7 usr;   1 con; 0-2 aty)
+%            Number of variables   :   25 (  25   !;   0   ?)
+% SPC      : 
+
+% Comments : Requires SWV007+0
+%------------------------------------------------------------------------------
+fof(ax6,axiom,
+    ~ isnonempty_pq(create_pq) ).
+
+fof(ax7,axiom,
+    ! [U,V] : isnonempty_pq(insert_pq(U,V)) ).
+
+fof(ax8,axiom,
+    ! [U] : ~ contains_pq(create_pq,U) ).
+
+fof(ax9,axiom,
+    ! [U,V,W] :
+      ( contains_pq(insert_pq(U,V),W)
+    <=> ( contains_pq(U,W)
+        | V = W ) ) ).
+
+fof(ax10,axiom,
+    ! [U,V] :
+      ( issmallestelement_pq(U,V)
+    <=> ! [W] :
+          ( contains_pq(U,W)
+         => less_than(V,W) ) ) ).
+
+fof(ax11,axiom,
+    ! [U,V] : remove_pq(insert_pq(U,V),V) = U ).
+
+fof(ax12,axiom,
+    ! [U,V,W] :
+      ( ( contains_pq(U,W)
+        & V != W )
+     => remove_pq(insert_pq(U,V),W) = insert_pq(remove_pq(U,W),V) ) ).
+
+fof(ax13,axiom,
+    ! [U,V] :
+      ( ( contains_pq(U,V)
+        & issmallestelement_pq(U,V) )
+     => findmin_pq_eff(U,V) = U ) ).
+
+fof(ax14,axiom,
+    ! [U,V] :
+      ( ( contains_pq(U,V)
+        & issmallestelement_pq(U,V) )
+     => findmin_pq_res(U,V) = V ) ).
+
+fof(ax15,axiom,
+    ! [U,V] :
+      ( ( contains_pq(U,V)
+        & issmallestelement_pq(U,V) )
+     => removemin_pq_eff(U,V) = remove_pq(U,V) ) ).
+
+fof(ax16,axiom,
+    ! [U,V] :
+      ( ( contains_pq(U,V)
+        & issmallestelement_pq(U,V) )
+     => removemin_pq_res(U,V) = V ) ).
+
+fof(ax17,axiom,
+    ! [U,V,W] : insert_pq(insert_pq(U,V),W) = insert_pq(insert_pq(U,W),V) ).
+
+%------------------------------------------------------------------------------

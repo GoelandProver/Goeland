@@ -1,0 +1,888 @@
+%------------------------------------------------------------------------------
+% File     : SET007+602 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Properties of Left and Right Components
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : gobrd14 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   61 (   0 unt;   0 def)
+%            Number of atoms       :  597 (  43 equ)
+%            Maximal formula atoms :   23 (   9 avg)
+%            Number of connectives :  655 ( 119   ~;   4   |; 375   &)
+%                                         (   4 <=>; 153  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   29 (  11 avg)
+%            Maximal term depth    :    8 (   2 avg)
+%            Number of predicates  :   42 (  41 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   58 (  58 usr;   9 con; 0-5 aty)
+%            Number of variables   :  140 ( 138   !;   2   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_gobrd14,axiom,
+    ! [A] :
+      ( ( v4_pre_topc(A,k15_euclid(np__2))
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => v3_pre_topc(k1_jordan2c(np__2,A),k15_euclid(np__2)) ) ).
+
+fof(fc2_gobrd14,axiom,
+    ! [A] :
+      ( ( v4_pre_topc(A,k15_euclid(np__2))
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => v3_pre_topc(k2_jordan2c(np__2,A),k15_euclid(np__2)) ) ).
+
+fof(fc3_gobrd14,axiom,
+    ! [A] :
+      ( ( v6_compts_1(A,k15_euclid(np__2))
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => v2_connsp_1(k2_jordan2c(np__2,A),k15_euclid(np__2)) ) ).
+
+fof(fc4_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m1_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ( ~ v1_xboole_0(k5_topreal1(np__2,A))
+        & v6_compts_1(k5_topreal1(np__2,A),k15_euclid(np__2))
+        & v2_connsp_1(k5_topreal1(np__2,A),k15_euclid(np__2))
+        & v2_jordan1(k5_topreal1(np__2,A))
+        & v1_jordan2c(k5_topreal1(np__2,A),np__2)
+        & ~ v1_sppol_1(k5_topreal1(np__2,A))
+        & ~ v2_sppol_1(k5_topreal1(np__2,A))
+        & v1_topreal2(k5_topreal1(np__2,A))
+        & v2_tops_1(k5_topreal1(np__2,A),k15_euclid(np__2)) ) ) ).
+
+fof(t1_gobrd14,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r4_connsp_1(A,B,C)
+               => v2_connsp_1(C,A) ) ) ) ) ).
+
+fof(t2_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( r1_jordan2c(A,B,C)
+               => v2_connsp_1(C,k15_euclid(A)) ) ) ) ) ).
+
+fof(t3_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( r2_jordan2c(A,B,C)
+               => v2_connsp_1(C,k15_euclid(A)) ) ) ) ) ).
+
+fof(t4_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( r4_connsp_1(k15_euclid(A),k3_subset_1(u1_struct_0(k15_euclid(A)),B),C)
+               => r1_xboole_0(B,C) ) ) ) ) ).
+
+fof(t5_gobrd14,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+             => ( ( r2_jordan2c(np__2,B,A)
+                  & r1_jordan2c(np__2,B,C) )
+               => r1_xboole_0(A,C) ) ) ) ) ).
+
+fof(t6_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( r1_xreal_0(np__2,A)
+       => ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+               => ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                   => ( ( v1_jordan2c(D,A)
+                        & r2_jordan2c(A,D,B)
+                        & r2_jordan2c(A,D,C) )
+                     => B = C ) ) ) ) ) ) ).
+
+fof(t7_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k14_euclid(np__2)))
+             => ~ ( C = k16_euclid(np__2)
+                  & r2_jordan2c(np__2,k5_topreal1(np__2,A),B)
+                  & ! [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                     => ~ ( ~ r1_xreal_0(D,np__0)
+                          & r1_tarski(k3_subset_1(u1_struct_0(k14_euclid(np__2)),k9_metric_1(k14_euclid(np__2),C,D)),B) ) ) ) ) ) ) ).
+
+fof(t8_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_1(B,u1_struct_0(k15_euclid(A)))
+         => ( k5_topreal1(A,B) != k1_xboole_0
+           => r1_xreal_0(np__2,k3_finseq_1(B)) ) ) ) ).
+
+fof(d1_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ( D = k1_gobrd14(A,B,C)
+                  <=> ? [E] :
+                        ( m1_subset_1(E,u1_struct_0(k14_euclid(A)))
+                        & ? [F] :
+                            ( m1_subset_1(F,u1_struct_0(k14_euclid(A)))
+                            & E = B
+                            & F = C
+                            & D = k4_metric_1(k14_euclid(A),E,F) ) ) ) ) ) ) ) ).
+
+fof(t9_gobrd14,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k15_euclid(np__2)))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => k1_gobrd14(np__2,A,B) = k9_square_1(k3_real_1(k7_square_1(k5_real_1(k21_euclid(A),k21_euclid(B))),k7_square_1(k5_real_1(k22_euclid(A),k22_euclid(B))))) ) ) ).
+
+fof(t10_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(A)))
+         => k1_gobrd14(A,B,B) = np__0 ) ) ).
+
+fof(t11_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => r1_xreal_0(k1_gobrd14(A,B,D),k3_real_1(k1_gobrd14(A,B,C),k1_gobrd14(A,C,D))) ) ) ) ) ).
+
+fof(t12_gobrd14,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(k15_euclid(np__2)))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(k15_euclid(np__2)))
+                         => ( ( r1_xreal_0(A,k21_euclid(E))
+                              & r1_xreal_0(k21_euclid(E),B)
+                              & r1_xreal_0(C,k22_euclid(E))
+                              & r1_xreal_0(k22_euclid(E),D)
+                              & r1_xreal_0(A,k21_euclid(F))
+                              & r1_xreal_0(k21_euclid(F),B)
+                              & r1_xreal_0(C,k22_euclid(F))
+                              & r1_xreal_0(k22_euclid(F),D) )
+                           => r1_xreal_0(k1_gobrd14(np__2,E,F),k2_xcmplx_0(k6_xcmplx_0(B,A),k6_xcmplx_0(D,C))) ) ) ) ) ) ) ) ).
+
+fof(t13_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( ~ v3_relat_1(C)
+                & v1_matrix_1(C)
+                & v3_goboard1(C)
+                & v4_goboard1(C)
+                & v5_goboard1(C)
+                & v6_goboard1(C)
+                & m2_finseq_1(C,k3_finseq_2(u1_struct_0(k15_euclid(np__2)))) )
+             => ( ( r1_xreal_0(np__1,A)
+                  & r1_xreal_0(np__1,B) )
+               => ( r1_xreal_0(k3_finseq_1(C),A)
+                  | r1_xreal_0(k1_matrix_1(C),B)
+                  | k3_goboard5(C,A,B) = k4_card_3(k5_funct_4(k1_zfmisc_1(k1_numbers),np__1,np__2,k1_rcomp_1(k21_euclid(k3_matrix_1(u1_struct_0(k15_euclid(np__2)),C,A,np__1)),k21_euclid(k3_matrix_1(u1_struct_0(k15_euclid(np__2)),C,k1_nat_1(A,np__1),np__1))),k1_rcomp_1(k22_euclid(k3_matrix_1(u1_struct_0(k15_euclid(np__2)),C,np__1,B)),k22_euclid(k3_matrix_1(u1_struct_0(k15_euclid(np__2)),C,np__1,k1_nat_1(B,np__1)))))) ) ) ) ) ) ).
+
+fof(t14_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( ~ v3_relat_1(C)
+                & v1_matrix_1(C)
+                & v3_goboard1(C)
+                & v4_goboard1(C)
+                & v5_goboard1(C)
+                & v6_goboard1(C)
+                & m2_finseq_1(C,k3_finseq_2(u1_struct_0(k15_euclid(np__2)))) )
+             => ( ( r1_xreal_0(np__1,A)
+                  & r1_xreal_0(np__1,B) )
+               => ( r1_xreal_0(k3_finseq_1(C),A)
+                  | r1_xreal_0(k1_matrix_1(C),B)
+                  | v6_compts_1(k3_goboard5(C,A,B),k15_euclid(np__2)) ) ) ) ) ) ).
+
+fof(t15_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( ( ~ v3_relat_1(D)
+                    & v1_matrix_1(D)
+                    & v3_goboard1(D)
+                    & v4_goboard1(D)
+                    & v5_goboard1(D)
+                    & v6_goboard1(D)
+                    & m2_finseq_1(D,k3_finseq_2(u1_struct_0(k15_euclid(np__2)))) )
+                 => ( ( r2_hidden(k4_tarski(A,B),k2_matrix_1(D))
+                      & r2_hidden(k4_tarski(k1_nat_1(A,C),B),k2_matrix_1(D)) )
+                   => k1_gobrd14(np__2,k3_matrix_1(u1_struct_0(k15_euclid(np__2)),D,A,B),k3_matrix_1(u1_struct_0(k15_euclid(np__2)),D,k1_nat_1(A,C),B)) = k5_real_1(k21_euclid(k3_matrix_1(u1_struct_0(k15_euclid(np__2)),D,k1_nat_1(A,C),B)),k21_euclid(k3_matrix_1(u1_struct_0(k15_euclid(np__2)),D,A,B))) ) ) ) ) ) ).
+
+fof(t16_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( ( ~ v3_relat_1(D)
+                    & v1_matrix_1(D)
+                    & v3_goboard1(D)
+                    & v4_goboard1(D)
+                    & v5_goboard1(D)
+                    & v6_goboard1(D)
+                    & m2_finseq_1(D,k3_finseq_2(u1_struct_0(k15_euclid(np__2)))) )
+                 => ( ( r2_hidden(k4_tarski(A,B),k2_matrix_1(D))
+                      & r2_hidden(k4_tarski(A,k1_nat_1(B,C)),k2_matrix_1(D)) )
+                   => k1_gobrd14(np__2,k3_matrix_1(u1_struct_0(k15_euclid(np__2)),D,A,B),k3_matrix_1(u1_struct_0(k15_euclid(np__2)),D,A,k1_nat_1(B,C))) = k5_real_1(k22_euclid(k3_matrix_1(u1_struct_0(k15_euclid(np__2)),D,A,k1_nat_1(B,C))),k22_euclid(k3_matrix_1(u1_struct_0(k15_euclid(np__2)),D,A,B))) ) ) ) ) ) ).
+
+fof(t17_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( v6_compts_1(B,k15_euclid(np__2))
+            & ~ v1_sppol_1(B)
+            & ~ v2_sppol_1(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+         => r1_xreal_0(np__3,k5_binarith(k3_finseq_1(k1_jordan8(B,A)),np__1)) ) ) ).
+
+fof(t18_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v6_compts_1(C,k15_euclid(np__2))
+                & ~ v1_sppol_1(C)
+                & ~ v2_sppol_1(C)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+             => ( r1_xreal_0(A,B)
+               => ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => ~ ( r1_xreal_0(np__2,D)
+                            & r1_xreal_0(D,k5_real_1(k3_finseq_1(k1_jordan8(C,A)),np__1))
+                            & r1_xreal_0(np__2,E)
+                            & r1_xreal_0(E,k5_real_1(k3_finseq_1(k1_jordan8(C,A)),np__1))
+                            & ! [F] :
+                                ( m2_subset_1(F,k1_numbers,k5_numbers)
+                               => ! [G] :
+                                    ( m2_subset_1(G,k1_numbers,k5_numbers)
+                                   => ~ ( r1_xreal_0(np__2,F)
+                                        & r1_xreal_0(F,k5_real_1(k3_finseq_1(k1_jordan8(C,B)),np__1))
+                                        & r1_xreal_0(np__2,G)
+                                        & r1_xreal_0(G,k5_real_1(k3_finseq_1(k1_jordan8(C,B)),np__1))
+                                        & r2_hidden(k4_tarski(F,G),k2_matrix_1(k1_jordan8(C,B)))
+                                        & k3_matrix_1(u1_struct_0(k15_euclid(np__2)),k1_jordan8(C,A),D,E) = k3_matrix_1(u1_struct_0(k15_euclid(np__2)),k1_jordan8(C,B),F,G)
+                                        & F = k1_nat_1(np__2,k2_nat_1(k1_card_4(np__2,k5_binarith(B,A)),k5_binarith(D,np__2)))
+                                        & G = k1_nat_1(np__2,k2_nat_1(k1_card_4(np__2,k5_binarith(B,A)),k5_binarith(E,np__2))) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t19_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( ( v6_compts_1(D,k15_euclid(np__2))
+                    & ~ v1_sppol_1(D)
+                    & ~ v2_sppol_1(D)
+                    & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+                 => ( ( r2_hidden(k4_tarski(A,B),k2_matrix_1(k1_jordan8(D,C)))
+                      & r2_hidden(k4_tarski(A,k1_nat_1(B,np__1)),k2_matrix_1(k1_jordan8(D,C))) )
+                   => k1_gobrd14(np__2,k3_matrix_1(u1_struct_0(k15_euclid(np__2)),k1_jordan8(D,C),A,B),k3_matrix_1(u1_struct_0(k15_euclid(np__2)),k1_jordan8(D,C),A,k1_nat_1(B,np__1))) = k6_real_1(k5_real_1(k19_pscomp_1(D),k21_pscomp_1(D)),k1_card_4(np__2,C)) ) ) ) ) ) ).
+
+fof(t20_gobrd14,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( ( v6_compts_1(D,k15_euclid(np__2))
+                    & ~ v1_sppol_1(D)
+                    & ~ v2_sppol_1(D)
+                    & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+                 => ( ( r2_hidden(k4_tarski(A,B),k2_matrix_1(k1_jordan8(D,C)))
+                      & r2_hidden(k4_tarski(k1_nat_1(A,np__1),B),k2_matrix_1(k1_jordan8(D,C))) )
+                   => k1_gobrd14(np__2,k3_matrix_1(u1_struct_0(k15_euclid(np__2)),k1_jordan8(D,C),A,B),k3_matrix_1(u1_struct_0(k15_euclid(np__2)),k1_jordan8(D,C),k1_nat_1(A,np__1),B)) = k6_real_1(k5_real_1(k20_pscomp_1(D),k18_pscomp_1(D)),k1_card_4(np__2,C)) ) ) ) ) ) ).
+
+fof(t21_gobrd14,axiom,
+    ! [A] :
+      ( ( v6_compts_1(A,k15_euclid(np__2))
+        & ~ v1_sppol_1(A)
+        & ~ v2_sppol_1(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ~ ( ~ r1_xreal_0(B,np__0)
+                  & ~ r1_xreal_0(C,np__0)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ~ ( ~ r1_xreal_0(D,np__1)
+                          & ~ r1_xreal_0(B,k1_gobrd14(np__2,k3_matrix_1(u1_struct_0(k15_euclid(np__2)),k1_jordan8(A,D),np__1,np__1),k3_matrix_1(u1_struct_0(k15_euclid(np__2)),k1_jordan8(A,D),np__1,np__2)))
+                          & ~ r1_xreal_0(C,k1_gobrd14(np__2,k3_matrix_1(u1_struct_0(k15_euclid(np__2)),k1_jordan8(A,D),np__1,np__1),k3_matrix_1(u1_struct_0(k15_euclid(np__2)),k1_jordan8(A,D),np__2,np__1))) ) ) ) ) ) ) ).
+
+fof(t22_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k3_pre_topc(k15_euclid(np__2),k3_subset_1(u1_struct_0(k15_euclid(np__2)),k5_topreal1(np__2,A))))))
+         => ~ ( r3_connsp_1(k3_pre_topc(k15_euclid(np__2),k3_subset_1(u1_struct_0(k15_euclid(np__2)),k5_topreal1(np__2,A))),B)
+              & B != k3_goboard9(A)
+              & B != k2_goboard9(A) ) ) ) ).
+
+fof(t23_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+             => ~ ( k3_subset_1(u1_struct_0(k15_euclid(np__2)),k5_topreal1(np__2,A)) = k4_subset_1(u1_struct_0(k15_euclid(np__2)),B,C)
+                  & r1_xboole_0(B,C)
+                  & ! [D] :
+                      ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k3_pre_topc(k15_euclid(np__2),k3_subset_1(u1_struct_0(k15_euclid(np__2)),k5_topreal1(np__2,A))))))
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(k3_pre_topc(k15_euclid(np__2),k3_subset_1(u1_struct_0(k15_euclid(np__2)),k5_topreal1(np__2,A))))))
+                         => ( ( D = B
+                              & E = C )
+                           => ( r3_connsp_1(k3_pre_topc(k15_euclid(np__2),k3_subset_1(u1_struct_0(k15_euclid(np__2)),k5_topreal1(np__2,A))),D)
+                              & r3_connsp_1(k3_pre_topc(k15_euclid(np__2),k3_subset_1(u1_struct_0(k15_euclid(np__2)),k5_topreal1(np__2,A))),E) ) ) ) )
+                  & ~ ( B = k3_goboard9(A)
+                      & C = k2_goboard9(A) )
+                  & ~ ( B = k2_goboard9(A)
+                      & C = k3_goboard9(A) ) ) ) ) ) ).
+
+fof(t24_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => r1_subset_1(k2_goboard9(A),k3_goboard9(A)) ) ).
+
+fof(t25_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k4_subset_1(u1_struct_0(k15_euclid(np__2)),k4_subset_1(u1_struct_0(k15_euclid(np__2)),k5_topreal1(np__2,A),k3_goboard9(A)),k2_goboard9(A)) = u1_struct_0(k15_euclid(np__2)) ) ).
+
+fof(t26_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( r2_hidden(B,k5_topreal1(np__2,A))
+          <=> ( ~ r2_hidden(B,k2_goboard9(A))
+              & ~ r2_hidden(B,k3_goboard9(A)) ) ) ) ) ).
+
+fof(t27_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( r2_hidden(B,k2_goboard9(A))
+          <=> ( ~ r2_hidden(B,k5_topreal1(np__2,A))
+              & ~ r2_hidden(B,k3_goboard9(A)) ) ) ) ) ).
+
+fof(t28_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( r2_hidden(B,k3_goboard9(A))
+          <=> ( ~ r2_hidden(B,k5_topreal1(np__2,A))
+              & ~ r2_hidden(B,k2_goboard9(A)) ) ) ) ) ).
+
+fof(t29_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k5_topreal1(np__2,A) = k6_subset_1(u1_struct_0(k15_euclid(np__2)),k6_pre_topc(k15_euclid(np__2),k3_goboard9(A)),k3_goboard9(A)) ) ).
+
+fof(t30_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k5_topreal1(np__2,A) = k6_subset_1(u1_struct_0(k15_euclid(np__2)),k6_pre_topc(k15_euclid(np__2),k2_goboard9(A)),k2_goboard9(A)) ) ).
+
+fof(t31_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k6_pre_topc(k15_euclid(np__2),k3_goboard9(A)) = k4_subset_1(u1_struct_0(k15_euclid(np__2)),k3_goboard9(A),k5_topreal1(np__2,A)) ) ).
+
+fof(t32_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k6_pre_topc(k15_euclid(np__2),k2_goboard9(A)) = k4_subset_1(u1_struct_0(k15_euclid(np__2)),k2_goboard9(A),k5_topreal1(np__2,A)) ) ).
+
+fof(t33_gobrd14,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k15_euclid(np__2)))
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & ~ v5_seqm_3(B)
+            & v1_topreal1(B)
+            & v2_topreal1(B)
+            & v1_finseq_6(B,u1_struct_0(k15_euclid(np__2)))
+            & v1_goboard5(B)
+            & v2_goboard5(B)
+            & v1_sprect_2(B)
+            & m2_finseq_1(B,u1_struct_0(k15_euclid(np__2))) )
+         => ~ ( r2_hidden(A,k3_goboard9(B))
+              & r1_xreal_0(k21_euclid(A),k18_pscomp_1(k5_topreal1(np__2,B))) ) ) ) ).
+
+fof(t34_gobrd14,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k15_euclid(np__2)))
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & ~ v5_seqm_3(B)
+            & v1_topreal1(B)
+            & v2_topreal1(B)
+            & v1_finseq_6(B,u1_struct_0(k15_euclid(np__2)))
+            & v1_goboard5(B)
+            & v2_goboard5(B)
+            & v1_sprect_2(B)
+            & m2_finseq_1(B,u1_struct_0(k15_euclid(np__2))) )
+         => ~ ( r2_hidden(A,k3_goboard9(B))
+              & r1_xreal_0(k20_pscomp_1(k5_topreal1(np__2,B)),k21_euclid(A)) ) ) ) ).
+
+fof(t35_gobrd14,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k15_euclid(np__2)))
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & ~ v5_seqm_3(B)
+            & v1_topreal1(B)
+            & v2_topreal1(B)
+            & v1_finseq_6(B,u1_struct_0(k15_euclid(np__2)))
+            & v1_goboard5(B)
+            & v2_goboard5(B)
+            & v1_sprect_2(B)
+            & m2_finseq_1(B,u1_struct_0(k15_euclid(np__2))) )
+         => ~ ( r2_hidden(A,k3_goboard9(B))
+              & r1_xreal_0(k19_pscomp_1(k5_topreal1(np__2,B)),k22_euclid(A)) ) ) ) ).
+
+fof(t36_gobrd14,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k15_euclid(np__2)))
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & ~ v5_seqm_3(B)
+            & v1_topreal1(B)
+            & v2_topreal1(B)
+            & v1_finseq_6(B,u1_struct_0(k15_euclid(np__2)))
+            & v1_goboard5(B)
+            & v2_goboard5(B)
+            & v1_sprect_2(B)
+            & m2_finseq_1(B,u1_struct_0(k15_euclid(np__2))) )
+         => ~ ( r2_hidden(A,k3_goboard9(B))
+              & r1_xreal_0(k22_euclid(A),k21_pscomp_1(k5_topreal1(np__2,B))) ) ) ) ).
+
+fof(t37_gobrd14,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k15_euclid(np__2)))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & ~ v5_seqm_3(C)
+                & v1_topreal1(C)
+                & v2_topreal1(C)
+                & v1_finseq_6(C,u1_struct_0(k15_euclid(np__2)))
+                & v1_goboard5(C)
+                & v2_goboard5(C)
+                & v1_sprect_2(C)
+                & m2_finseq_1(C,u1_struct_0(k15_euclid(np__2))) )
+             => ~ ( r2_hidden(A,k3_goboard9(C))
+                  & r2_hidden(B,k2_goboard9(C))
+                  & r2_subset_1(k3_topreal1(np__2,A,B),k5_topreal1(np__2,C)) ) ) ) ) ).
+
+fof(t38_gobrd14,axiom,
+    ! [A] :
+      ( ( v6_compts_1(A,k15_euclid(np__2))
+        & ~ v1_sppol_1(A)
+        & ~ v2_sppol_1(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => k6_pre_topc(k15_euclid(np__2),k3_goboard9(k1_sprect_1(A))) = k4_card_3(k5_funct_4(k1_zfmisc_1(k1_numbers),np__1,np__2,k1_rcomp_1(k18_pscomp_1(k5_topreal1(np__2,k1_sprect_1(A))),k20_pscomp_1(k5_topreal1(np__2,k1_sprect_1(A)))),k1_rcomp_1(k21_pscomp_1(k5_topreal1(np__2,k1_sprect_1(A))),k19_pscomp_1(k5_topreal1(np__2,k1_sprect_1(A)))))) ) ).
+
+fof(t39_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k2_funct_2(u1_struct_0(k15_euclid(np__2)),k1_numbers,k16_pscomp_1,k6_pre_topc(k15_euclid(np__2),k3_goboard9(A))) = k2_funct_2(u1_struct_0(k15_euclid(np__2)),k1_numbers,k16_pscomp_1,k5_topreal1(np__2,A)) ) ).
+
+fof(t40_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k2_funct_2(u1_struct_0(k15_euclid(np__2)),k1_numbers,k17_pscomp_1,k6_pre_topc(k15_euclid(np__2),k3_goboard9(A))) = k2_funct_2(u1_struct_0(k15_euclid(np__2)),k1_numbers,k17_pscomp_1,k5_topreal1(np__2,A)) ) ).
+
+fof(t41_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => r1_tarski(k3_goboard9(A),k3_goboard9(k1_sprect_1(k5_topreal1(np__2,A)))) ) ).
+
+fof(t42_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => v6_compts_1(k6_pre_topc(k15_euclid(np__2),k3_goboard9(A)),k15_euclid(np__2)) ) ).
+
+fof(t43_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ~ v1_jordan2c(k2_goboard9(A),np__2) ) ).
+
+fof(t44_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => r2_jordan2c(np__2,k5_topreal1(np__2,A),k2_goboard9(A)) ) ).
+
+fof(t45_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => r1_jordan2c(np__2,k5_topreal1(np__2,A),k3_goboard9(A)) ) ).
+
+fof(t46_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k2_jordan2c(np__2,k5_topreal1(np__2,A)) = k2_goboard9(A) ) ).
+
+fof(t47_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k1_jordan2c(np__2,k5_topreal1(np__2,A)) = k3_goboard9(A) ) ).
+
+fof(t48_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+         => ( r2_jordan2c(np__2,k5_topreal1(np__2,A),B)
+           => B = k2_goboard9(A) ) ) ) ).
+
+fof(t49_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+         => ~ ( r1_jordan2c(np__2,k5_topreal1(np__2,A),B)
+              & r1_xboole_0(B,k3_goboard9(A)) ) ) ) ).
+
+fof(t50_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+         => ( r1_jordan2c(np__2,k5_topreal1(np__2,A),B)
+           => B = k1_jordan2c(np__2,k5_topreal1(np__2,A)) ) ) ) ).
+
+fof(t51_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k18_pscomp_1(k5_topreal1(np__2,A)) = k18_pscomp_1(k3_goboard9(A)) ) ).
+
+fof(t52_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k20_pscomp_1(k5_topreal1(np__2,A)) = k20_pscomp_1(k3_goboard9(A)) ) ).
+
+fof(t53_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k19_pscomp_1(k5_topreal1(np__2,A)) = k19_pscomp_1(k3_goboard9(A)) ) ).
+
+fof(t54_gobrd14,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & v1_sprect_2(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k21_pscomp_1(k5_topreal1(np__2,A)) = k21_pscomp_1(k3_goboard9(A)) ) ).
+
+fof(dt_k1_gobrd14,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,u1_struct_0(k15_euclid(A)))
+        & m1_subset_1(C,u1_struct_0(k15_euclid(A))) )
+     => m1_subset_1(k1_gobrd14(A,B,C),k1_numbers) ) ).
+
+fof(commutativity_k1_gobrd14,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,u1_struct_0(k15_euclid(A)))
+        & m1_subset_1(C,u1_struct_0(k15_euclid(A))) )
+     => k1_gobrd14(A,B,C) = k1_gobrd14(A,C,B) ) ).
+
+%------------------------------------------------------------------------------

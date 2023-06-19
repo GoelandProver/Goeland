@@ -1,0 +1,184 @@
+%------------------------------------------------------------------------------
+% File     : SWV004-0 : TPTP v8.1.2. Released v3.2.0.
+% Domain   : Software Verification
+% Axioms   : Cryptographic protocol axioms for messages
+% Version  : [Pau06] axioms.
+% English  :
+
+% Refs     : [Pau06] Paulson (2006), Email to G. Sutcliffe
+% Source   : [Pau06]
+% Names    : Message.ax [Pau06]
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   40 (   9 unt;   6 nHn;  38 RR)
+%            Number of literals    :   80 (  26 equ;  41 neg)
+%            Maximal clause size   :    3 (   2 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    2 (   1 usr;   0 prp; 2-3 aty)
+%            Number of functors    :   17 (  17 usr;   4 con; 0-3 aty)
+%            Number of variables   :   91 (  21 sgn)
+% SPC      : 
+
+% Comments : Requires MSC001-0.ax, MSC001-2.ax
+%------------------------------------------------------------------------------
+cnf(cls_Message_OCrypt__synth_0,axiom,
+    ( ~ c_in(c_Message_Omsg_OCrypt(V_K,V_X),c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(c_Message_Omsg_OCrypt(V_K,V_X),V_H,tc_Message_Omsg)
+    | c_in(c_Message_Omsg_OKey(V_K),V_H,tc_Message_Omsg) ) ).
+
+cnf(cls_Message_OCrypt__synth_1,axiom,
+    ( ~ c_in(c_Message_Omsg_OCrypt(V_K,V_X),c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(V_X,c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(c_Message_Omsg_OCrypt(V_K,V_X),V_H,tc_Message_Omsg) ) ).
+
+cnf(cls_Message_OHash__synth_0,axiom,
+    ( ~ c_in(c_Message_Omsg_OHash(V_X),c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(V_X,c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(c_Message_Omsg_OHash(V_X),V_H,tc_Message_Omsg) ) ).
+
+cnf(cls_Message_OKey__synth_0,axiom,
+    ( ~ c_in(c_Message_Omsg_OKey(V_K),c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(c_Message_Omsg_OKey(V_K),V_H,tc_Message_Omsg) ) ).
+
+cnf(cls_Message_OMPair__analz_0,axiom,
+    ( ~ c_in(c_Message_Omsg_OMPair(V_X,V_Y),c_Message_Oanalz(V_H),tc_Message_Omsg)
+    | c_in(V_Y,c_Message_Oanalz(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_OMPair__analz_1,axiom,
+    ( ~ c_in(c_Message_Omsg_OMPair(V_X,V_Y),c_Message_Oanalz(V_H),tc_Message_Omsg)
+    | c_in(V_X,c_Message_Oanalz(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_OMPair__parts_0,axiom,
+    ( ~ c_in(c_Message_Omsg_OMPair(V_X,V_Y),c_Message_Oparts(V_H),tc_Message_Omsg)
+    | c_in(V_Y,c_Message_Oparts(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_OMPair__parts_1,axiom,
+    ( ~ c_in(c_Message_Omsg_OMPair(V_X,V_Y),c_Message_Oparts(V_H),tc_Message_Omsg)
+    | c_in(V_X,c_Message_Oparts(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_OMPair__synth_0,axiom,
+    ( ~ c_in(c_Message_Omsg_OMPair(V_X,V_Y),c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(V_Y,c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(c_Message_Omsg_OMPair(V_X,V_Y),V_H,tc_Message_Omsg) ) ).
+
+cnf(cls_Message_OMPair__synth_1,axiom,
+    ( ~ c_in(c_Message_Omsg_OMPair(V_X,V_Y),c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(V_X,c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(c_Message_Omsg_OMPair(V_X,V_Y),V_H,tc_Message_Omsg) ) ).
+
+cnf(cls_Message_ONonce__synth_0,axiom,
+    ( ~ c_in(c_Message_Omsg_ONonce(V_n),c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(c_Message_Omsg_ONonce(V_n),V_H,tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Oagent_Odistinct__1__iff1_0,axiom,
+    c_Message_Oagent_OServer != c_Message_Oagent_OFriend(V_nat_H) ).
+
+cnf(cls_Message_Oagent_Odistinct__2__iff1_0,axiom,
+    c_Message_Oagent_OFriend(V_nat_H) != c_Message_Oagent_OServer ).
+
+cnf(cls_Message_Oagent_Odistinct__3__iff1_0,axiom,
+    c_Message_Oagent_OServer != c_Message_Oagent_OSpy ).
+
+cnf(cls_Message_Oagent_Odistinct__4__iff1_0,axiom,
+    c_Message_Oagent_OSpy != c_Message_Oagent_OServer ).
+
+cnf(cls_Message_Oagent_Odistinct__5__iff1_0,axiom,
+    c_Message_Oagent_OFriend(V_nat) != c_Message_Oagent_OSpy ).
+
+cnf(cls_Message_Oagent_Odistinct__6__iff1_0,axiom,
+    c_Message_Oagent_OSpy != c_Message_Oagent_OFriend(V_nat) ).
+
+cnf(cls_Message_Oagent_Oinject__iff1_0,axiom,
+    ( c_Message_Oagent_OFriend(V_nat) != c_Message_Oagent_OFriend(V_nat_H)
+    | V_nat = V_nat_H ) ).
+
+cnf(cls_Message_Oanalz_ODecrypt__dest_0,axiom,
+    ( ~ c_in(c_Message_Omsg_OCrypt(V_K,V_X),c_Message_Oanalz(V_H),tc_Message_Omsg)
+    | ~ c_in(c_Message_Omsg_OKey(c_Message_OinvKey(V_K)),c_Message_Oanalz(V_H),tc_Message_Omsg)
+    | c_in(V_X,c_Message_Oanalz(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Oanalz_OInj_0,axiom,
+    ( ~ c_in(V_X,V_H,tc_Message_Omsg)
+    | c_in(V_X,c_Message_Oanalz(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Oanalz__analzD__dest_0,axiom,
+    ( ~ c_in(V_X,c_Message_Oanalz(c_Message_Oanalz(V_H)),tc_Message_Omsg)
+    | c_in(V_X,c_Message_Oanalz(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Oin__parts__UnE_0,axiom,
+    ( ~ c_in(V_c,c_Message_Oparts(c_union(V_G,V_H,tc_Message_Omsg)),tc_Message_Omsg)
+    | c_in(V_c,c_Message_Oparts(V_H),tc_Message_Omsg)
+    | c_in(V_c,c_Message_Oparts(V_G),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Omsg_Oinject__1__iff1_0,axiom,
+    ( c_Message_Omsg_OAgent(V_agent) != c_Message_Omsg_OAgent(V_agent_H)
+    | V_agent = V_agent_H ) ).
+
+cnf(cls_Message_Omsg_Oinject__2__iff1_0,axiom,
+    ( c_Message_Omsg_ONumber(V_nat) != c_Message_Omsg_ONumber(V_nat_H)
+    | V_nat = V_nat_H ) ).
+
+cnf(cls_Message_Omsg_Oinject__3__iff1_0,axiom,
+    ( c_Message_Omsg_ONonce(V_nat) != c_Message_Omsg_ONonce(V_nat_H)
+    | V_nat = V_nat_H ) ).
+
+cnf(cls_Message_Omsg_Oinject__4__iff1_0,axiom,
+    ( c_Message_Omsg_OKey(V_nat) != c_Message_Omsg_OKey(V_nat_H)
+    | V_nat = V_nat_H ) ).
+
+cnf(cls_Message_Omsg_Oinject__5__iff1_0,axiom,
+    ( c_Message_Omsg_OHash(V_msg) != c_Message_Omsg_OHash(V_msg_H)
+    | V_msg = V_msg_H ) ).
+
+cnf(cls_Message_Omsg_Oinject__6__iff1_0,axiom,
+    ( c_Message_Omsg_OMPair(V_msg1,V_msg2) != c_Message_Omsg_OMPair(V_msg1_H,V_msg2_H)
+    | V_msg1 = V_msg1_H ) ).
+
+cnf(cls_Message_Omsg_Oinject__6__iff1_1,axiom,
+    ( c_Message_Omsg_OMPair(V_msg1,V_msg2) != c_Message_Omsg_OMPair(V_msg1_H,V_msg2_H)
+    | V_msg2 = V_msg2_H ) ).
+
+cnf(cls_Message_Omsg_Oinject__7__iff1_0,axiom,
+    ( c_Message_Omsg_OCrypt(V_nat,V_msg) != c_Message_Omsg_OCrypt(V_nat_H,V_msg_H)
+    | V_nat = V_nat_H ) ).
+
+cnf(cls_Message_Omsg_Oinject__7__iff1_1,axiom,
+    ( c_Message_Omsg_OCrypt(V_nat,V_msg) != c_Message_Omsg_OCrypt(V_nat_H,V_msg_H)
+    | V_msg = V_msg_H ) ).
+
+cnf(cls_Message_Oparts_OInj_0,axiom,
+    ( ~ c_in(V_X,V_H,tc_Message_Omsg)
+    | c_in(V_X,c_Message_Oparts(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Oparts__emptyE_0,axiom,
+    ~ c_in(V_X,c_Message_Oparts(c_emptyset),tc_Message_Omsg) ).
+
+cnf(cls_Message_Oparts__partsD__dest_0,axiom,
+    ( ~ c_in(V_X,c_Message_Oparts(c_Message_Oparts(V_H)),tc_Message_Omsg)
+    | c_in(V_X,c_Message_Oparts(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Osynth_OAgent_0,axiom,
+    c_in(c_Message_Omsg_OAgent(V_agt),c_Message_Osynth(V_H),tc_Message_Omsg) ).
+
+cnf(cls_Message_Osynth_OCrypt_0,axiom,
+    ( ~ c_in(V_X,c_Message_Osynth(V_H),tc_Message_Omsg)
+    | ~ c_in(c_Message_Omsg_OKey(V_K),V_H,tc_Message_Omsg)
+    | c_in(c_Message_Omsg_OCrypt(V_K,V_X),c_Message_Osynth(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Osynth_OHash_0,axiom,
+    ( ~ c_in(V_X,c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(c_Message_Omsg_OHash(V_X),c_Message_Osynth(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Osynth_OInj_0,axiom,
+    ( ~ c_in(V_X,V_H,tc_Message_Omsg)
+    | c_in(V_X,c_Message_Osynth(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Osynth_OMPair_0,axiom,
+    ( ~ c_in(V_Y,c_Message_Osynth(V_H),tc_Message_Omsg)
+    | ~ c_in(V_X,c_Message_Osynth(V_H),tc_Message_Omsg)
+    | c_in(c_Message_Omsg_OMPair(V_X,V_Y),c_Message_Osynth(V_H),tc_Message_Omsg) ) ).
+
+cnf(cls_Message_Osynth_ONumber_0,axiom,
+    c_in(c_Message_Omsg_ONumber(V_n),c_Message_Osynth(V_H),tc_Message_Omsg) ).
+
+%------------------------------------------------------------------------------

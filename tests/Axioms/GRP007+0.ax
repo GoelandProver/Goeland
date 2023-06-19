@@ -1,0 +1,40 @@
+%------------------------------------------------------------------------------
+% File     : GRP007+0 : TPTP v8.1.2. Released v2.0.0.
+% Domain   : Group Theory (Named Semigroups)
+% Axioms   : Group theory (Named Semigroups) axioms
+% Version  : [Gol93] axioms.
+% English  :
+
+% Refs     : [Gol93] Goller (1993), Anwendung des Theorembeweisers SETHEO a
+% Source   : [Gol93]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    2 (   0 unt;   0 def)
+%            Number of atoms       :    7 (   1 equ)
+%            Maximal formula atoms :    4 (   3 avg)
+%            Number of connectives :    5 (   0   ~;   0   |;   3   &)
+%                                         (   0 <=>;   2  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    8 (   7 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    2 (   1 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    1 (   1 usr;   0 con; 3-3 aty)
+%            Number of variables   :    7 (   7   !;   0   ?)
+% SPC      : 
+
+% Comments :
+%------------------------------------------------------------------------------
+fof(total_function,axiom,
+    ! [G,X,Y] :
+      ( ( group_member(X,G)
+        & group_member(Y,G) )
+     => group_member(multiply(G,X,Y),G) ) ).
+
+fof(associativity,axiom,
+    ! [G,X,Y,Z] :
+      ( ( group_member(X,G)
+        & group_member(Y,G)
+        & group_member(Z,G) )
+     => multiply(G,multiply(G,X,Y),Z) = multiply(G,X,multiply(G,Y,Z)) ) ).
+
+%------------------------------------------------------------------------------

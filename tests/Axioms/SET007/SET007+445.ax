@@ -1,0 +1,667 @@
+%------------------------------------------------------------------------------
+% File     : SET007+445 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : On the Concept of the Triangulation
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : triang_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   64 (   6 unt;   0 def)
+%            Number of atoms       :  394 (  38 equ)
+%            Maximal formula atoms :   21 (   6 avg)
+%            Number of connectives :  387 (  57   ~;   3   |; 197   &)
+%                                         (  11 <=>; 119  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   19 (   7 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   40 (  38 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   48 (  48 usr;   9 con; 0-4 aty)
+%            Number of variables   :  148 ( 134   !;  14   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_triang_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( ~ v1_xboole_0(k1_finseq_1(k1_nat_1(A,np__1)))
+        & v1_finset_1(k1_finseq_1(k1_nat_1(A,np__1))) ) ) ).
+
+fof(fc2_triang_1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_relat_2(B)
+        & v4_relat_2(B)
+        & v8_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m1_relset_1(B,A,A) )
+     => ( ~ v3_struct_0(g1_orders_2(A,B))
+        & v1_orders_2(g1_orders_2(A,B))
+        & v2_orders_2(g1_orders_2(A,B))
+        & v3_orders_2(g1_orders_2(A,B))
+        & v4_orders_2(g1_orders_2(A,B)) ) ) ).
+
+fof(rc1_triang_1,axiom,
+    ! [A] :
+    ? [B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k5_finsub_1(A)))
+      & ~ v1_xboole_0(B) ) ).
+
+fof(rc2_triang_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ? [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k5_finsub_1(A)))
+          & ~ v1_xboole_0(B)
+          & v1_setfam_1(B) ) ) ).
+
+fof(rc3_triang_1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_setfam_1(B)
+        & m1_subset_1(B,k1_zfmisc_1(k5_finsub_1(A))) )
+     => ? [C] :
+          ( m1_subset_1(C,B)
+          & ~ v1_xboole_0(C) ) ) ).
+
+fof(rc4_triang_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ? [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k5_finsub_1(A)))
+          & ~ v1_xboole_0(B)
+          & ~ v2_setfam_1(B) ) ) ).
+
+fof(rc5_triang_1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v2_setfam_1(B)
+        & m1_subset_1(B,k1_zfmisc_1(k5_finsub_1(A))) )
+     => ? [C] :
+          ( m1_subset_1(C,B)
+          & ~ v1_xboole_0(C)
+          & v1_finset_1(C) ) ) ).
+
+fof(fc3_triang_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A)
+        & ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => v1_finset_1(k3_orders_2(A,B,C)) ) ).
+
+fof(fc4_triang_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ( ~ v1_xboole_0(k3_triang_1(A))
+        & ~ v2_setfam_1(k3_triang_1(A)) ) ) ).
+
+fof(cc1_triang_1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k5_finsub_1(A))) )
+     => ! [C] :
+          ( m1_subset_1(C,B)
+         => v1_finset_1(C) ) ) ).
+
+fof(rc6_triang_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ? [B] :
+          ( m1_subset_1(B,k3_triang_1(A))
+          & ~ v1_xboole_0(B)
+          & v1_finset_1(B) ) ) ).
+
+fof(rc7_triang_1,axiom,
+    ? [A] :
+      ( m1_pboole(A,k5_numbers)
+      & v1_relat_1(A)
+      & v1_funct_1(A)
+      & v1_triang_1(A) ) ).
+
+fof(fc5_triang_1,axiom,
+    ! [A,B] :
+      ( ( v1_triang_1(A)
+        & m1_pboole(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ~ v1_xboole_0(k1_funct_1(k4_triang_1(A),B)) ) ).
+
+fof(fc6_triang_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ~ v1_xboole_0(k1_funct_1(k6_triang_1,A)) ) ).
+
+fof(cc2_triang_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_funct_1(k6_triang_1,A))
+         => ( v1_relat_1(B)
+            & v1_funct_1(B) ) ) ) ).
+
+fof(rc8_triang_1,axiom,
+    ? [A] :
+      ( l1_triang_1(A)
+      & v2_triang_1(A) ) ).
+
+fof(rc9_triang_1,axiom,
+    ? [A] :
+      ( l1_triang_1(A)
+      & v2_triang_1(A)
+      & v3_triang_1(A) ) ).
+
+fof(fc7_triang_1,axiom,
+    ! [A] :
+      ( ( v3_triang_1(A)
+        & l1_triang_1(A) )
+     => ( v1_relat_1(u1_triang_1(A))
+        & v1_funct_1(u1_triang_1(A))
+        & v1_triang_1(u1_triang_1(A)) ) ) ).
+
+fof(fc8_triang_1,axiom,
+    ! [A,B] :
+      ( ( v1_triang_1(A)
+        & m1_pboole(A,k5_numbers)
+        & m3_pboole(B,k5_numbers,k6_triang_1,k4_triang_1(A)) )
+     => ( v2_triang_1(g1_triang_1(A,B))
+        & v3_triang_1(g1_triang_1(A,B)) ) ) ).
+
+fof(t1_triang_1,axiom,
+    ! [A] : k1_toler_1(k1_xboole_0,A) = k1_xboole_0 ).
+
+fof(t2_triang_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ~ ( v1_finset_1(B)
+              & B != k1_xboole_0
+              & ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ~ ( r2_hidden(C,B)
+                          & r2_hidden(D,B)
+                          & ~ r3_orders_2(A,C,D)
+                          & ~ r3_orders_2(A,D,C) ) ) )
+              & ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ~ ( r2_hidden(C,B)
+                      & ! [D] :
+                          ( m1_subset_1(D,u1_struct_0(A))
+                         => ( r2_hidden(D,B)
+                           => r3_orders_2(A,C,D) ) ) ) ) ) ) ) ).
+
+fof(t3_triang_1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( v1_finset_1(B)
+         => ( ( r1_tarski(A,B)
+              & k4_card_1(A) = k4_card_1(B) )
+           => A = B ) ) ) ).
+
+fof(d1_triang_1,axiom,
+    $true ).
+
+fof(d2_triang_1,axiom,
+    ! [A,B] :
+      ( ( v1_finset_1(B)
+        & m1_subset_1(B,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_relat_2(C)
+            & v4_relat_2(C)
+            & v8_relat_2(C)
+            & v1_partfun1(C,A,A)
+            & m2_relset_1(C,A,A) )
+         => ( r3_orders_1(C,B)
+           => ! [D] :
+                ( m2_finseq_1(D,A)
+               => ( D = k2_triang_1(A,B,C)
+                <=> ( k2_relat_1(D) = B
+                    & ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => ! [F] :
+                            ( m2_subset_1(F,k1_numbers,k5_numbers)
+                           => ( ( r2_hidden(E,k4_finseq_1(D))
+                                & r2_hidden(F,k4_finseq_1(D)) )
+                             => ( r1_xreal_0(F,E)
+                                | ( k4_finseq_4(k5_numbers,A,D,E) != k4_finseq_4(k5_numbers,A,D,F)
+                                  & r2_hidden(k4_tarski(k4_finseq_4(k5_numbers,A,D,E),k4_finseq_4(k5_numbers,A,D,F)),C) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t4_triang_1,axiom,
+    ! [A,B] :
+      ( ( v1_finset_1(B)
+        & m1_subset_1(B,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_relat_2(C)
+            & v4_relat_2(C)
+            & v8_relat_2(C)
+            & v1_partfun1(C,A,A)
+            & m2_relset_1(C,A,A) )
+         => ! [D] :
+              ( m2_finseq_1(D,A)
+             => ( ( k2_relat_1(D) = B
+                  & ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( ( r2_hidden(E,k4_finseq_1(D))
+                              & r2_hidden(F,k4_finseq_1(D)) )
+                           => ( r1_xreal_0(F,E)
+                              | ( k4_finseq_4(k5_numbers,A,D,E) != k4_finseq_4(k5_numbers,A,D,F)
+                                & r2_hidden(k4_tarski(k4_finseq_4(k5_numbers,A,D,E),k4_finseq_4(k5_numbers,A,D,F)),C) ) ) ) ) ) )
+               => D = k2_triang_1(A,B,C) ) ) ) ) ).
+
+fof(t5_triang_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => r2_hidden(k1_struct_0(A,B),k3_triang_1(A)) ) ) ).
+
+fof(t6_triang_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => r2_hidden(k1_xboole_0,k3_triang_1(A)) ) ).
+
+fof(t7_triang_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B,C] :
+          ( ( r1_tarski(B,C)
+            & r2_hidden(C,k3_triang_1(A)) )
+         => r2_hidden(B,k3_triang_1(A)) ) ) ).
+
+fof(t8_triang_1,axiom,
+    ! [A,B] :
+      ( ( v1_finset_1(B)
+        & m1_subset_1(B,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_relat_2(C)
+            & v4_relat_2(C)
+            & v8_relat_2(C)
+            & v1_partfun1(C,A,A)
+            & m2_relset_1(C,A,A) )
+         => ( r3_orders_1(C,B)
+           => v2_funct_1(k2_triang_1(A,B,C)) ) ) ) ).
+
+fof(t9_triang_1,axiom,
+    ! [A,B] :
+      ( ( v1_finset_1(B)
+        & m1_subset_1(B,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_relat_2(C)
+            & v4_relat_2(C)
+            & v8_relat_2(C)
+            & v1_partfun1(C,A,A)
+            & m2_relset_1(C,A,A) )
+         => ( r3_orders_1(C,B)
+           => k3_finseq_1(k2_triang_1(A,B,C)) = k1_card_1(B) ) ) ) ).
+
+fof(t10_triang_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & m1_triang_1(C,u1_struct_0(B),k3_triang_1(B)) )
+             => ( k1_card_1(C) = A
+               => k4_finseq_1(k2_triang_1(u1_struct_0(B),C,u1_orders_2(B))) = k2_finseq_1(A) ) ) ) ) ).
+
+fof(d4_triang_1,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( v1_triang_1(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ( ~ v1_xboole_0(k1_funct_1(A,B))
+             => ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ~ ( ~ r1_xreal_0(B,C)
+                      & v1_xboole_0(k1_funct_1(A,C)) ) ) ) ) ) ) ).
+
+fof(d5_triang_1,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ! [B] :
+          ( m1_pboole(B,k5_numbers)
+         => ( B = k4_triang_1(A)
+          <=> ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => k1_funct_1(B,C) = k1_funct_2(k1_funct_1(A,k1_nat_1(C,np__1)),k1_funct_1(A,C)) ) ) ) ) ).
+
+fof(d6_triang_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_fraenkel(B,k2_finseq_1(A),k2_finseq_1(k1_nat_1(A,np__1)),k1_fraenkel(k2_finseq_1(A),k2_finseq_1(k1_nat_1(A,np__1))))
+         => k5_triang_1(A,B) = B ) ) ).
+
+fof(d8_triang_1,axiom,
+    $true ).
+
+fof(d9_triang_1,axiom,
+    ! [A] :
+      ( l1_triang_1(A)
+     => ( v3_triang_1(A)
+      <=> v1_triang_1(u1_triang_1(A)) ) ) ).
+
+fof(d10_triang_1,axiom,
+    ! [A] :
+      ( ( v3_triang_1(A)
+        & l1_triang_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_funct_1(u1_triang_1(A),k1_nat_1(B,np__1)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_funct_1(k6_triang_1,B))
+                 => ( k1_funct_1(u1_triang_1(A),k1_nat_1(B,np__1)) != k1_xboole_0
+                   => ! [E] :
+                        ( m1_subset_1(E,k1_funct_1(u1_triang_1(A),B))
+                       => ( E = k7_triang_1(A,B,C,D)
+                        <=> ! [F] :
+                              ( ( v1_relat_1(F)
+                                & v1_funct_1(F) )
+                             => ! [G] :
+                                  ( ( v1_relat_1(G)
+                                    & v1_funct_1(G) )
+                                 => ( ( F = k1_funct_1(u2_triang_1(A),B)
+                                      & G = k1_funct_1(F,D) )
+                                   => E = k1_funct_1(G,C) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(s1_triang_1,axiom,
+    ( ( p1_s1_triang_1(f1_s1_triang_1)
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => ( p1_s1_triang_1(k1_nat_1(A,np__1))
+           => ( r1_xreal_0(f1_s1_triang_1,A)
+              | p1_s1_triang_1(A) ) ) ) )
+   => ! [A] :
+        ( m2_subset_1(A,k1_numbers,k5_numbers)
+       => ( r1_xreal_0(A,f1_s1_triang_1)
+         => p1_s1_triang_1(A) ) ) ) ).
+
+fof(s2_triang_1,axiom,
+    ( ( v1_finset_1(f2_s2_triang_1)
+      & p1_s2_triang_1(k1_subset_1(f1_s2_triang_1))
+      & ! [A] :
+          ( m1_subset_1(A,f1_s2_triang_1)
+         => ! [B] :
+              ( m1_subset_1(B,k1_zfmisc_1(f1_s2_triang_1))
+             => ( ( r2_hidden(A,f2_s2_triang_1)
+                  & r1_tarski(B,f2_s2_triang_1)
+                  & p1_s2_triang_1(B) )
+               => p1_s2_triang_1(k2_xboole_0(B,k1_tarski(A))) ) ) ) )
+   => p1_s2_triang_1(f2_s2_triang_1) ) ).
+
+fof(dt_m1_triang_1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k5_finsub_1(A))) )
+     => ! [C] :
+          ( m1_triang_1(C,A,B)
+         => m1_subset_1(C,k1_zfmisc_1(A)) ) ) ).
+
+fof(existence_m1_triang_1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k5_finsub_1(A))) )
+     => ? [C] : m1_triang_1(C,A,B) ) ).
+
+fof(redefinition_m1_triang_1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k5_finsub_1(A))) )
+     => ! [C] :
+          ( m1_triang_1(C,A,B)
+        <=> m1_subset_1(C,B) ) ) ).
+
+fof(dt_l1_triang_1,axiom,
+    $true ).
+
+fof(existence_l1_triang_1,axiom,
+    ? [A] : l1_triang_1(A) ).
+
+fof(abstractness_v2_triang_1,axiom,
+    ! [A] :
+      ( l1_triang_1(A)
+     => ( v2_triang_1(A)
+       => A = g1_triang_1(u1_triang_1(A),u2_triang_1(A)) ) ) ).
+
+fof(dt_k1_triang_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_relat_2(B)
+        & v4_relat_2(B)
+        & v8_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m1_relset_1(B,A,A)
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => ( v1_relat_2(k1_triang_1(A,B,C))
+        & v4_relat_2(k1_triang_1(A,B,C))
+        & v8_relat_2(k1_triang_1(A,B,C))
+        & v1_partfun1(k1_triang_1(A,B,C),C,C)
+        & m2_relset_1(k1_triang_1(A,B,C),C,C) ) ) ).
+
+fof(redefinition_k1_triang_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_relat_2(B)
+        & v4_relat_2(B)
+        & v8_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m1_relset_1(B,A,A)
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => k1_triang_1(A,B,C) = k2_wellord1(B,C) ) ).
+
+fof(dt_k2_triang_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_finset_1(B)
+        & m1_subset_1(B,k1_zfmisc_1(A))
+        & v1_relat_2(C)
+        & v4_relat_2(C)
+        & v8_relat_2(C)
+        & v1_partfun1(C,A,A)
+        & m1_relset_1(C,A,A) )
+     => m2_finseq_1(k2_triang_1(A,B,C),A) ) ).
+
+fof(dt_k3_triang_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => m1_subset_1(k3_triang_1(A),k1_zfmisc_1(k5_finsub_1(u1_struct_0(A)))) ) ).
+
+fof(dt_k4_triang_1,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => m1_pboole(k4_triang_1(A),k5_numbers) ) ).
+
+fof(dt_k5_triang_1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_fraenkel(k2_finseq_1(A),k2_finseq_1(k1_nat_1(A,np__1)))) )
+     => m2_finseq_1(k5_triang_1(A,B),k1_numbers) ) ).
+
+fof(dt_k6_triang_1,axiom,
+    m1_pboole(k6_triang_1,k5_numbers) ).
+
+fof(dt_k7_triang_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v3_triang_1(A)
+        & l1_triang_1(A)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k1_funct_1(u1_triang_1(A),k1_nat_1(B,np__1)))
+        & m1_subset_1(D,k1_funct_1(k6_triang_1,B)) )
+     => m1_subset_1(k7_triang_1(A,B,C,D),k1_funct_1(u1_triang_1(A),B)) ) ).
+
+fof(dt_k8_triang_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ( v2_triang_1(k8_triang_1(A))
+        & v3_triang_1(k8_triang_1(A))
+        & l1_triang_1(k8_triang_1(A)) ) ) ).
+
+fof(dt_u1_triang_1,axiom,
+    ! [A] :
+      ( l1_triang_1(A)
+     => m1_pboole(u1_triang_1(A),k5_numbers) ) ).
+
+fof(dt_u2_triang_1,axiom,
+    ! [A] :
+      ( l1_triang_1(A)
+     => m3_pboole(u2_triang_1(A),k5_numbers,k6_triang_1,k4_triang_1(u1_triang_1(A))) ) ).
+
+fof(dt_g1_triang_1,axiom,
+    ! [A,B] :
+      ( ( m1_pboole(A,k5_numbers)
+        & m3_pboole(B,k5_numbers,k6_triang_1,k4_triang_1(A)) )
+     => ( v2_triang_1(g1_triang_1(A,B))
+        & l1_triang_1(g1_triang_1(A,B)) ) ) ).
+
+fof(free_g1_triang_1,axiom,
+    ! [A,B] :
+      ( ( m1_pboole(A,k5_numbers)
+        & m3_pboole(B,k5_numbers,k6_triang_1,k4_triang_1(A)) )
+     => ! [C,D] :
+          ( g1_triang_1(A,B) = g1_triang_1(C,D)
+         => ( A = C
+            & B = D ) ) ) ).
+
+fof(d3_triang_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => k3_triang_1(A) = a_1_0_triang_1(A) ) ).
+
+fof(d7_triang_1,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( A = k6_triang_1
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => k1_funct_1(A,B) = a_1_1_triang_1(B) ) ) ) ).
+
+fof(d11_triang_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v2_triang_1(B)
+            & v3_triang_1(B)
+            & l1_triang_1(B) )
+         => ( B = k8_triang_1(A)
+          <=> ( k1_funct_1(u1_triang_1(B),np__0) = k1_tarski(k1_xboole_0)
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ( ~ r1_xreal_0(C,np__0)
+                   => k1_funct_1(u1_triang_1(B),C) = a_2_0_triang_1(A,C) ) )
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ! [D] :
+                      ( m1_subset_1(D,k1_funct_1(k6_triang_1,C))
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_funct_1(u1_triang_1(B),k1_nat_1(C,np__1)))
+                         => ( r2_hidden(E,k1_funct_1(u1_triang_1(B),k1_nat_1(C,np__1)))
+                           => ! [F] :
+                                ( ( ~ v1_xboole_0(F)
+                                  & m1_triang_1(F,u1_struct_0(A),k3_triang_1(A)) )
+                               => ( k2_triang_1(u1_struct_0(A),F,u1_orders_2(A)) = E
+                                 => k7_triang_1(B,C,E,D) = k5_relat_1(D,k2_triang_1(u1_struct_0(A),F,u1_orders_2(A))) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_1_0_triang_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & l1_orders_2(B) )
+     => ( r2_hidden(A,a_1_0_triang_1(B))
+      <=> ? [C] :
+            ( m1_subset_1(C,k5_finsub_1(u1_struct_0(B)))
+            & A = C
+            & r3_orders_1(u1_orders_2(B),C) ) ) ) ).
+
+fof(fraenkel_a_1_1_triang_1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_1_triang_1(B))
+      <=> ? [C] :
+            ( m2_fraenkel(C,k2_finseq_1(B),k2_finseq_1(k1_nat_1(B,np__1)),k1_fraenkel(k2_finseq_1(B),k2_finseq_1(k1_nat_1(B,np__1))))
+            & A = C
+            & v1_goboard1(k5_triang_1(B,C)) ) ) ) ).
+
+fof(fraenkel_a_2_0_triang_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & l1_orders_2(B)
+        & m2_subset_1(C,k1_numbers,k5_numbers) )
+     => ( r2_hidden(A,a_2_0_triang_1(B,C))
+      <=> ? [D] :
+            ( ~ v1_xboole_0(D)
+            & m1_triang_1(D,u1_struct_0(B),k3_triang_1(B))
+            & A = k2_triang_1(u1_struct_0(B),D,u1_orders_2(B))
+            & k1_card_1(D) = C ) ) ) ).
+
+%------------------------------------------------------------------------------

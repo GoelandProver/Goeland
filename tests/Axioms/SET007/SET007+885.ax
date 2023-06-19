@@ -1,0 +1,1678 @@
+%------------------------------------------------------------------------------
+% File     : SET007+885 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Formalization of Ortholattices via~Orthoposets
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : robbins3 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  133 (   8 unt;   0 def)
+%            Number of atoms       : 1181 (  67 equ)
+%            Maximal formula atoms :   37 (   8 avg)
+%            Number of connectives : 1188 ( 140   ~;   0   |; 815   &)
+%                                         (  14 <=>; 219  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   37 (  10 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   85 (  84 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   34 (  34 usr;   6 con; 0-5 aty)
+%            Number of variables   :  250 ( 224   !;  26   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_robbins3,axiom,
+    ! [A] :
+      ( l3_lattices(A)
+     => ( ( ~ v3_struct_0(A)
+          & v10_lattices(A) )
+       => ( ~ v3_struct_0(A)
+          & v8_lattices(A)
+          & v9_lattices(A)
+          & v1_robbins3(A)
+          & v2_robbins3(A) ) ) ) ).
+
+fof(cc2_robbins3,axiom,
+    ! [A] :
+      ( l3_lattices(A)
+     => ( ( ~ v3_struct_0(A)
+          & v9_lattices(A)
+          & v1_robbins3(A)
+          & v2_robbins3(A)
+          & v3_robbins3(A) )
+       => ( ~ v3_struct_0(A)
+          & v4_lattices(A)
+          & v5_lattices(A)
+          & v6_lattices(A)
+          & v7_lattices(A)
+          & v8_lattices(A)
+          & v9_lattices(A)
+          & v10_lattices(A) ) ) ) ).
+
+fof(cc3_robbins3,axiom,
+    ! [A] :
+      ( l1_oposet_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v14_oposet_1(A)
+          & v19_oposet_1(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_orders_2(A)
+          & v4_orders_2(A)
+          & v3_oposet_1(A)
+          & v7_oposet_1(A)
+          & v9_oposet_1(A)
+          & v13_oposet_1(A)
+          & v14_oposet_1(A) ) ) ) ).
+
+fof(rc1_robbins3,axiom,
+    ? [A] :
+      ( l1_oposet_1(A)
+      & ~ v3_struct_0(A)
+      & v2_orders_2(A)
+      & v3_orders_2(A)
+      & v4_orders_2(A)
+      & v1_lattice3(A)
+      & v2_lattice3(A)
+      & v1_oposet_1(A)
+      & v3_oposet_1(A)
+      & v7_oposet_1(A)
+      & v9_oposet_1(A)
+      & v13_oposet_1(A)
+      & v14_oposet_1(A)
+      & v15_oposet_1(A)
+      & v19_oposet_1(A) ) ).
+
+fof(rc2_robbins3,axiom,
+    ? [A] :
+      ( l1_robbins3(A)
+      & v4_robbins3(A) ) ).
+
+fof(rc3_robbins3,axiom,
+    ? [A] :
+      ( l2_robbins3(A)
+      & v5_robbins3(A) ) ).
+
+fof(rc4_robbins3,axiom,
+    ? [A] :
+      ( l3_robbins3(A)
+      & v6_robbins3(A) ) ).
+
+fof(fc1_robbins3,axiom,
+    ( ~ v3_struct_0(k1_robbins3)
+    & v4_lattices(k1_robbins3)
+    & v5_lattices(k1_robbins3)
+    & v6_lattices(k1_robbins3)
+    & v7_lattices(k1_robbins3)
+    & v8_lattices(k1_robbins3)
+    & v9_lattices(k1_robbins3)
+    & v10_lattices(k1_robbins3)
+    & v11_lattices(k1_robbins3)
+    & v12_lattices(k1_robbins3)
+    & v13_lattices(k1_robbins3)
+    & v14_lattices(k1_robbins3)
+    & v15_lattices(k1_robbins3)
+    & v16_lattices(k1_robbins3)
+    & v17_lattices(k1_robbins3)
+    & v3_realset2(k1_robbins3)
+    & v1_sheffer1(k1_robbins3)
+    & v2_sheffer1(k1_robbins3)
+    & v3_sheffer1(k1_robbins3)
+    & v4_sheffer1(k1_robbins3)
+    & v1_robbins3(k1_robbins3)
+    & v2_robbins3(k1_robbins3) ) ).
+
+fof(rc5_robbins3,axiom,
+    ? [A] :
+      ( l1_robbins3(A)
+      & ~ v3_struct_0(A) ) ).
+
+fof(rc6_robbins3,axiom,
+    ? [A] :
+      ( l2_robbins3(A)
+      & ~ v3_struct_0(A) ) ).
+
+fof(rc7_robbins3,axiom,
+    ? [A] :
+      ( l3_robbins3(A)
+      & ~ v3_struct_0(A) ) ).
+
+fof(fc2_robbins3,axiom,
+    ( ~ v3_struct_0(k1_robbins3)
+    & v4_lattices(k1_robbins3)
+    & v5_lattices(k1_robbins3)
+    & v6_lattices(k1_robbins3)
+    & v7_lattices(k1_robbins3)
+    & v8_lattices(k1_robbins3)
+    & v9_lattices(k1_robbins3)
+    & v10_lattices(k1_robbins3)
+    & v11_lattices(k1_robbins3)
+    & v12_lattices(k1_robbins3)
+    & v13_lattices(k1_robbins3)
+    & v14_lattices(k1_robbins3)
+    & v15_lattices(k1_robbins3)
+    & v16_lattices(k1_robbins3)
+    & v17_lattices(k1_robbins3)
+    & v2_orders_2(k1_robbins3)
+    & v3_orders_2(k1_robbins3)
+    & v4_orders_2(k1_robbins3)
+    & v1_lattice3(k1_robbins3)
+    & v2_lattice3(k1_robbins3)
+    & v3_lattice3(k1_robbins3)
+    & v3_realset2(k1_robbins3)
+    & v1_yellow_0(k1_robbins3)
+    & v2_yellow_0(k1_robbins3)
+    & v3_yellow_0(k1_robbins3)
+    & v1_sheffer1(k1_robbins3)
+    & v2_sheffer1(k1_robbins3)
+    & v3_sheffer1(k1_robbins3)
+    & v4_sheffer1(k1_robbins3)
+    & v1_robbins3(k1_robbins3)
+    & v2_robbins3(k1_robbins3) ) ).
+
+fof(rc8_robbins3,axiom,
+    ? [A] :
+      ( l3_robbins3(A)
+      & v2_orders_2(A)
+      & v3_orders_2(A)
+      & v4_orders_2(A)
+      & v1_lattice3(A)
+      & v2_lattice3(A) ) ).
+
+fof(fc3_robbins3,axiom,
+    ( ~ v3_struct_0(k1_robbins3)
+    & v4_lattices(k1_robbins3)
+    & v5_lattices(k1_robbins3)
+    & v6_lattices(k1_robbins3)
+    & v7_lattices(k1_robbins3)
+    & v8_lattices(k1_robbins3)
+    & v9_lattices(k1_robbins3)
+    & v10_lattices(k1_robbins3)
+    & v11_lattices(k1_robbins3)
+    & v12_lattices(k1_robbins3)
+    & v13_lattices(k1_robbins3)
+    & v14_lattices(k1_robbins3)
+    & v15_lattices(k1_robbins3)
+    & v16_lattices(k1_robbins3)
+    & v17_lattices(k1_robbins3)
+    & v2_orders_2(k1_robbins3)
+    & v3_orders_2(k1_robbins3)
+    & v4_orders_2(k1_robbins3)
+    & v1_lattice3(k1_robbins3)
+    & v2_lattice3(k1_robbins3)
+    & v3_lattice3(k1_robbins3)
+    & v3_realset2(k1_robbins3)
+    & v1_yellow_0(k1_robbins3)
+    & v2_yellow_0(k1_robbins3)
+    & v3_yellow_0(k1_robbins3)
+    & v1_sheffer1(k1_robbins3)
+    & v2_sheffer1(k1_robbins3)
+    & v3_sheffer1(k1_robbins3)
+    & v4_sheffer1(k1_robbins3)
+    & v1_robbins3(k1_robbins3)
+    & v2_robbins3(k1_robbins3)
+    & v3_robbins3(k1_robbins3) ) ).
+
+fof(rc9_robbins3,axiom,
+    ? [A] :
+      ( l3_robbins3(A)
+      & ~ v3_struct_0(A)
+      & v4_lattices(A)
+      & v5_lattices(A)
+      & v6_lattices(A)
+      & v7_lattices(A)
+      & v8_lattices(A)
+      & v9_lattices(A)
+      & v10_lattices(A)
+      & v1_robbins3(A)
+      & v2_robbins3(A) ) ).
+
+fof(rc10_robbins3,axiom,
+    ? [A] :
+      ( l4_robbins3(A)
+      & v7_robbins3(A) ) ).
+
+fof(fc4_robbins3,axiom,
+    ( ~ v3_struct_0(k2_robbins1)
+    & v4_lattices(k2_robbins1)
+    & v5_lattices(k2_robbins1)
+    & v6_lattices(k2_robbins1)
+    & v7_lattices(k2_robbins1)
+    & v8_lattices(k2_robbins1)
+    & v9_lattices(k2_robbins1)
+    & v10_lattices(k2_robbins1)
+    & v11_lattices(k2_robbins1)
+    & v12_lattices(k2_robbins1)
+    & v13_lattices(k2_robbins1)
+    & v14_lattices(k2_robbins1)
+    & v15_lattices(k2_robbins1)
+    & v16_lattices(k2_robbins1)
+    & v17_lattices(k2_robbins1)
+    & v3_robbins1(k2_robbins1)
+    & v4_robbins1(k2_robbins1)
+    & v5_robbins1(k2_robbins1)
+    & v6_robbins1(k2_robbins1)
+    & v7_robbins1(k2_robbins1)
+    & v9_robbins1(k2_robbins1)
+    & v3_realset2(k2_robbins1)
+    & v1_sheffer1(k2_robbins1)
+    & v2_sheffer1(k2_robbins1)
+    & v3_sheffer1(k2_robbins1)
+    & v4_sheffer1(k2_robbins1)
+    & v1_robbins3(k2_robbins1)
+    & v2_robbins3(k2_robbins1)
+    & v8_robbins3(k2_robbins1)
+    & v9_robbins3(k2_robbins1) ) ).
+
+fof(fc5_robbins3,axiom,
+    ( ~ v3_struct_0(k3_robbins3)
+    & v4_lattices(k3_robbins3)
+    & v5_lattices(k3_robbins3)
+    & v6_lattices(k3_robbins3)
+    & v7_lattices(k3_robbins3)
+    & v8_lattices(k3_robbins3)
+    & v9_lattices(k3_robbins3)
+    & v10_lattices(k3_robbins3)
+    & v11_lattices(k3_robbins3)
+    & v12_lattices(k3_robbins3)
+    & v13_lattices(k3_robbins3)
+    & v14_lattices(k3_robbins3)
+    & v15_lattices(k3_robbins3)
+    & v16_lattices(k3_robbins3)
+    & v17_lattices(k3_robbins3)
+    & v3_realset2(k3_robbins3)
+    & v1_sheffer1(k3_robbins3)
+    & v2_sheffer1(k3_robbins3)
+    & v3_sheffer1(k3_robbins3)
+    & v4_sheffer1(k3_robbins3)
+    & v1_robbins3(k3_robbins3)
+    & v2_robbins3(k3_robbins3) ) ).
+
+fof(fc6_robbins3,axiom,
+    ( ~ v3_struct_0(k3_robbins3)
+    & v4_lattices(k3_robbins3)
+    & v5_lattices(k3_robbins3)
+    & v6_lattices(k3_robbins3)
+    & v7_lattices(k3_robbins3)
+    & v8_lattices(k3_robbins3)
+    & v9_lattices(k3_robbins3)
+    & v10_lattices(k3_robbins3)
+    & v11_lattices(k3_robbins3)
+    & v12_lattices(k3_robbins3)
+    & v13_lattices(k3_robbins3)
+    & v14_lattices(k3_robbins3)
+    & v15_lattices(k3_robbins3)
+    & v16_lattices(k3_robbins3)
+    & v17_lattices(k3_robbins3)
+    & v2_orders_2(k3_robbins3)
+    & v3_orders_2(k3_robbins3)
+    & v4_orders_2(k3_robbins3)
+    & v1_lattice3(k3_robbins3)
+    & v2_lattice3(k3_robbins3)
+    & v3_lattice3(k3_robbins3)
+    & v7_oposet_1(k3_robbins3)
+    & v9_oposet_1(k3_robbins3)
+    & v13_oposet_1(k3_robbins3)
+    & v14_oposet_1(k3_robbins3)
+    & v3_realset2(k3_robbins3)
+    & v1_yellow_0(k3_robbins3)
+    & v2_yellow_0(k3_robbins3)
+    & v3_yellow_0(k3_robbins3)
+    & v1_sheffer1(k3_robbins3)
+    & v2_sheffer1(k3_robbins3)
+    & v3_sheffer1(k3_robbins3)
+    & v4_sheffer1(k3_robbins3)
+    & v1_robbins3(k3_robbins3)
+    & v2_robbins3(k3_robbins3) ) ).
+
+fof(fc7_robbins3,axiom,
+    ( ~ v3_struct_0(k3_robbins3)
+    & v4_lattices(k3_robbins3)
+    & v5_lattices(k3_robbins3)
+    & v6_lattices(k3_robbins3)
+    & v7_lattices(k3_robbins3)
+    & v8_lattices(k3_robbins3)
+    & v9_lattices(k3_robbins3)
+    & v10_lattices(k3_robbins3)
+    & v11_lattices(k3_robbins3)
+    & v12_lattices(k3_robbins3)
+    & v13_lattices(k3_robbins3)
+    & v14_lattices(k3_robbins3)
+    & v15_lattices(k3_robbins3)
+    & v16_lattices(k3_robbins3)
+    & v17_lattices(k3_robbins3)
+    & v2_orders_2(k3_robbins3)
+    & v3_orders_2(k3_robbins3)
+    & v4_orders_2(k3_robbins3)
+    & v1_lattice3(k3_robbins3)
+    & v2_lattice3(k3_robbins3)
+    & v3_lattice3(k3_robbins3)
+    & v7_oposet_1(k3_robbins3)
+    & v9_oposet_1(k3_robbins3)
+    & v13_oposet_1(k3_robbins3)
+    & v14_oposet_1(k3_robbins3)
+    & v3_realset2(k3_robbins3)
+    & v1_yellow_0(k3_robbins3)
+    & v2_yellow_0(k3_robbins3)
+    & v3_yellow_0(k3_robbins3)
+    & v1_sheffer1(k3_robbins3)
+    & v2_sheffer1(k3_robbins3)
+    & v3_sheffer1(k3_robbins3)
+    & v4_sheffer1(k3_robbins3)
+    & v1_robbins3(k3_robbins3)
+    & v2_robbins3(k3_robbins3)
+    & v8_robbins3(k3_robbins3)
+    & v9_robbins3(k3_robbins3) ) ).
+
+fof(rc11_robbins3,axiom,
+    ? [A] :
+      ( l3_robbins1(A)
+      & ~ v3_struct_0(A)
+      & v4_lattices(A)
+      & v5_lattices(A)
+      & v6_lattices(A)
+      & v7_lattices(A)
+      & v8_lattices(A)
+      & v9_lattices(A)
+      & v10_lattices(A)
+      & v9_robbins1(A)
+      & v1_robbins3(A)
+      & v2_robbins3(A)
+      & v8_robbins3(A)
+      & v9_robbins3(A) ) ).
+
+fof(cc4_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( m2_robbins3(B,A)
+         => ~ v3_struct_0(B) ) ) ).
+
+fof(cc5_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v7_lattices(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( m2_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v7_lattices(B) ) ) ) ).
+
+fof(cc6_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v5_lattices(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( m2_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v5_lattices(B) ) ) ) ).
+
+fof(cc7_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_lattices(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( m2_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v6_lattices(B) ) ) ) ).
+
+fof(cc8_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_lattices(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( m2_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v4_lattices(B) ) ) ) ).
+
+fof(cc9_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v9_lattices(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( m2_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v9_lattices(B) ) ) ) ).
+
+fof(cc10_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v8_lattices(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( m2_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v8_lattices(B) ) ) ) ).
+
+fof(rc12_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & l3_lattices(A) )
+     => ? [B] :
+          ( m2_robbins3(B,A)
+          & ~ v3_struct_0(B)
+          & v4_lattices(B)
+          & v5_lattices(B)
+          & v6_lattices(B)
+          & v7_lattices(B)
+          & v8_lattices(B)
+          & v9_lattices(B)
+          & v10_lattices(B)
+          & v1_robbins3(B)
+          & v2_robbins3(B)
+          & v10_robbins3(B)
+          & v11_robbins3(B) ) ) ).
+
+fof(rc13_robbins3,axiom,
+    ? [A] :
+      ( l3_robbins3(A)
+      & ~ v3_struct_0(A)
+      & v4_lattices(A)
+      & v5_lattices(A)
+      & v6_lattices(A)
+      & v7_lattices(A)
+      & v8_lattices(A)
+      & v9_lattices(A)
+      & v10_lattices(A)
+      & v11_lattices(A)
+      & v12_lattices(A)
+      & v13_lattices(A)
+      & v14_lattices(A)
+      & v15_lattices(A)
+      & v16_lattices(A)
+      & v17_lattices(A)
+      & v2_orders_2(A)
+      & v3_orders_2(A)
+      & v4_orders_2(A)
+      & v1_lattice3(A)
+      & v2_lattice3(A)
+      & v3_lattice3(A)
+      & v3_realset2(A)
+      & v1_yellow_0(A)
+      & v2_yellow_0(A)
+      & v3_yellow_0(A)
+      & v1_sheffer1(A)
+      & v2_sheffer1(A)
+      & v3_sheffer1(A)
+      & v4_sheffer1(A)
+      & v1_robbins3(A)
+      & v2_robbins3(A) ) ).
+
+fof(rc14_robbins3,axiom,
+    ? [A] :
+      ( l4_robbins3(A)
+      & ~ v3_struct_0(A)
+      & v4_lattices(A)
+      & v5_lattices(A)
+      & v6_lattices(A)
+      & v7_lattices(A)
+      & v8_lattices(A)
+      & v9_lattices(A)
+      & v10_lattices(A)
+      & v11_lattices(A)
+      & v12_lattices(A)
+      & v13_lattices(A)
+      & v14_lattices(A)
+      & v15_lattices(A)
+      & v16_lattices(A)
+      & v17_lattices(A)
+      & v2_orders_2(A)
+      & v3_orders_2(A)
+      & v4_orders_2(A)
+      & v1_lattice3(A)
+      & v2_lattice3(A)
+      & v3_lattice3(A)
+      & v7_oposet_1(A)
+      & v9_oposet_1(A)
+      & v13_oposet_1(A)
+      & v14_oposet_1(A)
+      & v3_realset2(A)
+      & v1_yellow_0(A)
+      & v2_yellow_0(A)
+      & v3_yellow_0(A)
+      & v1_sheffer1(A)
+      & v2_sheffer1(A)
+      & v3_sheffer1(A)
+      & v4_sheffer1(A)
+      & v1_robbins3(A)
+      & v2_robbins3(A) ) ).
+
+fof(rc15_robbins3,axiom,
+    ? [A] :
+      ( l1_oposet_1(A)
+      & ~ v3_struct_0(A)
+      & v2_orders_2(A)
+      & v3_orders_2(A)
+      & v4_orders_2(A)
+      & v1_lattice3(A)
+      & v2_lattice3(A)
+      & v3_lattice3(A)
+      & v7_oposet_1(A)
+      & v9_oposet_1(A)
+      & v13_oposet_1(A)
+      & v14_oposet_1(A)
+      & v3_realset2(A)
+      & v1_yellow_0(A)
+      & v2_yellow_0(A)
+      & v3_yellow_0(A) ) ).
+
+fof(cc11_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v3_realset2(A) )
+       => ( ~ v3_struct_0(A)
+          & v7_robbins1(A)
+          & v9_robbins1(A)
+          & v8_robbins3(A)
+          & v9_robbins3(A) ) ) ) ).
+
+fof(cc12_robbins3,axiom,
+    ! [A] :
+      ( l1_oposet_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_realset2(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_orders_2(A)
+          & v4_orders_2(A)
+          & v3_oposet_1(A)
+          & v7_oposet_1(A)
+          & v9_oposet_1(A)
+          & v13_oposet_1(A)
+          & v14_oposet_1(A)
+          & v15_oposet_1(A)
+          & v19_oposet_1(A) ) ) ) ).
+
+fof(cc13_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins3(A)
+     => ( ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_realset2(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v10_robbins3(A)
+          & v11_robbins3(A) ) ) ) ).
+
+fof(rc16_robbins3,axiom,
+    ? [A] :
+      ( l4_robbins3(A)
+      & ~ v3_struct_0(A)
+      & v4_lattices(A)
+      & v5_lattices(A)
+      & v6_lattices(A)
+      & v7_lattices(A)
+      & v8_lattices(A)
+      & v9_lattices(A)
+      & v10_lattices(A)
+      & v2_orders_2(A)
+      & v3_orders_2(A)
+      & v4_orders_2(A)
+      & v1_lattice3(A)
+      & v2_lattice3(A)
+      & v9_robbins1(A)
+      & v3_oposet_1(A)
+      & v7_oposet_1(A)
+      & v9_oposet_1(A)
+      & v13_oposet_1(A)
+      & v14_oposet_1(A)
+      & v15_oposet_1(A)
+      & v19_oposet_1(A)
+      & v1_robbins3(A)
+      & v2_robbins3(A)
+      & v10_robbins3(A)
+      & v11_robbins3(A) ) ).
+
+fof(rc17_robbins3,axiom,
+    ? [A] :
+      ( l3_robbins3(A)
+      & ~ v3_struct_0(A)
+      & v4_lattices(A)
+      & v5_lattices(A)
+      & v6_lattices(A)
+      & v7_lattices(A)
+      & v8_lattices(A)
+      & v9_lattices(A)
+      & v10_lattices(A)
+      & v1_lattice3(A)
+      & v2_lattice3(A)
+      & v1_robbins3(A)
+      & v2_robbins3(A)
+      & v10_robbins3(A)
+      & v11_robbins3(A) ) ).
+
+fof(cc14_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins3(A)
+     => ( ( ~ v3_struct_0(A)
+          & v10_lattices(A)
+          & v10_robbins3(A) )
+       => ( ~ v3_struct_0(A)
+          & v1_lattice3(A)
+          & v2_lattice3(A) ) ) ) ).
+
+fof(cc15_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ~ v3_struct_0(B) ) ) ).
+
+fof(cc16_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v7_lattices(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v7_lattices(B) ) ) ) ).
+
+fof(cc17_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v5_lattices(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v5_lattices(B) ) ) ) ).
+
+fof(cc18_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_lattices(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v6_lattices(B) ) ) ) ).
+
+fof(cc19_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_lattices(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v4_lattices(B) ) ) ) ).
+
+fof(cc20_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v8_lattices(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v8_lattices(B) ) ) ) ).
+
+fof(cc21_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v9_lattices(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v9_lattices(B) ) ) ) ).
+
+fof(cc22_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v9_robbins3(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v9_robbins3(B) ) ) ) ).
+
+fof(rc18_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & v9_robbins1(A)
+        & v8_robbins3(A)
+        & v9_robbins3(A)
+        & l3_robbins1(A) )
+     => ? [B] :
+          ( m3_robbins3(B,A)
+          & ~ v3_struct_0(B)
+          & v4_lattices(B)
+          & v5_lattices(B)
+          & v6_lattices(B)
+          & v7_lattices(B)
+          & v8_lattices(B)
+          & v9_lattices(B)
+          & v10_lattices(B)
+          & v1_lattice3(B)
+          & v2_lattice3(B)
+          & v1_robbins3(B)
+          & v2_robbins3(B)
+          & v9_robbins3(B)
+          & v10_robbins3(B)
+          & v11_robbins3(B) ) ) ).
+
+fof(rc19_robbins3,axiom,
+    ? [A] :
+      ( l4_robbins3(A)
+      & ~ v3_struct_0(A)
+      & v4_lattices(A)
+      & v5_lattices(A)
+      & v6_lattices(A)
+      & v7_lattices(A)
+      & v8_lattices(A)
+      & v9_lattices(A)
+      & v10_lattices(A)
+      & v1_lattice3(A)
+      & v2_lattice3(A)
+      & v7_robbins1(A)
+      & v9_robbins1(A)
+      & v1_robbins3(A)
+      & v2_robbins3(A)
+      & v8_robbins3(A)
+      & v9_robbins3(A)
+      & v10_robbins3(A) ) ).
+
+fof(cc23_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins3(A)
+     => ( ( ~ v3_struct_0(A)
+          & v6_lattices(A)
+          & v8_lattices(A)
+          & v9_lattices(A)
+          & v10_robbins3(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_orders_2(A) ) ) ) ).
+
+fof(cc24_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins3(A)
+     => ( ( ~ v3_struct_0(A)
+          & v5_lattices(A)
+          & v10_robbins3(A) )
+       => ( ~ v3_struct_0(A)
+          & v3_orders_2(A) ) ) ) ).
+
+fof(cc25_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins3(A)
+     => ( ( ~ v3_struct_0(A)
+          & v4_lattices(A)
+          & v10_robbins3(A) )
+       => ( ~ v3_struct_0(A)
+          & v4_orders_2(A) ) ) ) ).
+
+fof(cc26_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & v9_robbins1(A)
+        & v8_robbins3(A)
+        & v9_robbins3(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v4_lattices(B)
+            & v5_lattices(B)
+            & v6_lattices(B)
+            & v7_lattices(B)
+            & v8_lattices(B)
+            & v9_lattices(B)
+            & v10_lattices(B)
+            & v1_robbins3(B)
+            & v2_robbins3(B)
+            & v8_robbins3(B)
+            & v9_robbins3(B) ) ) ) ).
+
+fof(cc27_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & v9_robbins1(A)
+        & v8_robbins3(A)
+        & v9_robbins3(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ( ~ v3_struct_0(B)
+            & v4_lattices(B)
+            & v5_lattices(B)
+            & v6_lattices(B)
+            & v7_lattices(B)
+            & v8_lattices(B)
+            & v9_lattices(B)
+            & v10_lattices(B)
+            & v9_robbins1(B)
+            & v1_robbins3(B)
+            & v2_robbins3(B)
+            & v8_robbins3(B)
+            & v9_robbins3(B) ) ) ) ).
+
+fof(cc28_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & v9_robbins1(A)
+        & v8_robbins3(A)
+        & v9_robbins3(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => ( v10_robbins3(B)
+           => ( ~ v3_struct_0(B)
+              & v4_lattices(B)
+              & v5_lattices(B)
+              & v6_lattices(B)
+              & v7_lattices(B)
+              & v8_lattices(B)
+              & v9_lattices(B)
+              & v10_lattices(B)
+              & v2_orders_2(B)
+              & v3_orders_2(B)
+              & v4_orders_2(B)
+              & v1_lattice3(B)
+              & v2_lattice3(B)
+              & v9_robbins1(B)
+              & v7_oposet_1(B)
+              & v9_oposet_1(B)
+              & v13_oposet_1(B)
+              & v14_oposet_1(B)
+              & v21_oposet_1(B)
+              & v1_robbins3(B)
+              & v2_robbins3(B)
+              & v8_robbins3(B)
+              & v9_robbins3(B)
+              & v10_robbins3(B) ) ) ) ) ).
+
+fof(cc29_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v10_lattices(A)
+          & v17_lattices(A)
+          & v7_robbins1(A) )
+       => ( ~ v3_struct_0(A)
+          & v9_robbins1(A)
+          & v8_robbins3(A)
+          & v9_robbins3(A) ) ) ) ).
+
+fof(d1_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_lattices(A) )
+     => ( v1_robbins3(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => k1_lattices(A,B,k1_lattices(A,C,D)) = k1_lattices(A,C,k1_lattices(A,B,D)) ) ) ) ) ) ).
+
+fof(d2_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lattices(A) )
+     => ( v2_robbins3(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => k2_lattices(A,B,k2_lattices(A,C,D)) = k2_lattices(A,C,k2_lattices(A,B,D)) ) ) ) ) ) ).
+
+fof(d3_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ( v3_robbins3(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => k1_lattices(A,B,k2_lattices(A,B,C)) = B ) ) ) ) ).
+
+fof(t1_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ( ( v2_robbins3(A)
+          & v1_robbins3(A)
+          & v3_robbins3(A)
+          & v9_lattices(A) )
+       => ( v5_sheffer1(A)
+          & v6_robbins1(A) ) ) ) ).
+
+fof(t2_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ( ( v2_robbins3(A)
+          & v1_robbins3(A)
+          & v3_robbins3(A)
+          & v9_lattices(A) )
+       => ( v6_lattices(A)
+          & v4_lattices(A) ) ) ) ).
+
+fof(t3_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ( ( v2_robbins3(A)
+          & v1_robbins3(A)
+          & v3_robbins3(A)
+          & v9_lattices(A) )
+       => v8_lattices(A) ) ) ).
+
+fof(t4_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ( ( v2_robbins3(A)
+          & v1_robbins3(A)
+          & v3_robbins3(A)
+          & v9_lattices(A) )
+       => ( v7_lattices(A)
+          & v5_lattices(A) ) ) ) ).
+
+fof(t5_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ( v10_lattices(A)
+      <=> ( v2_robbins3(A)
+          & v1_robbins3(A)
+          & v3_robbins3(A)
+          & v9_lattices(A) ) ) ) ).
+
+fof(t6_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_oposet_1(A)
+        & l1_oposet_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k3_robbins1(A,k3_robbins1(A,B)) = B ) ) ).
+
+fof(t7_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v14_oposet_1(A)
+        & v19_oposet_1(A)
+        & l1_oposet_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r3_orders_2(A,B,C)
+               => r3_orders_2(A,k3_robbins1(A,C),k3_robbins1(A,B)) ) ) ) ) ).
+
+fof(d4_robbins3,axiom,
+    k1_robbins3 = g3_robbins3(k1_tarski(k1_xboole_0),k2_midsp_1,k2_midsp_1,k6_partfun1(k1_tarski(k1_xboole_0))) ).
+
+fof(t8_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ( ( r1_relat_2(u1_orders_2(A),u1_struct_0(A))
+          & v4_relat_2(u1_orders_2(A))
+          & v8_relat_2(u1_orders_2(A)) )
+       => ( v2_orders_2(A)
+          & v4_orders_2(A)
+          & v3_orders_2(A) ) ) ) ).
+
+fof(d5_robbins3,axiom,
+    k3_robbins3 = g4_robbins3(k1_tarski(k1_xboole_0),k2_midsp_1,k2_midsp_1,k6_partfun1(k1_tarski(k1_xboole_0)),k7_vectsp_2) ).
+
+fof(d6_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_robbins1(A) )
+     => ( v8_robbins3(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => k3_robbins1(A,k3_robbins1(A,B)) = B ) ) ) ).
+
+fof(d7_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_robbins1(A) )
+     => ( v9_robbins3(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => k1_lattices(A,B,k3_robbins1(A,B)) = k1_lattices(A,C,k3_robbins1(A,C)) ) ) ) ) ).
+
+fof(t9_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_lattices(B) )
+         => ( ( g3_lattices(u1_struct_0(A),u2_lattices(A),u1_lattices(A)) = g3_lattices(u1_struct_0(B),u2_lattices(B),u1_lattices(B))
+              & v4_lattices(A) )
+           => v4_lattices(B) ) ) ) ).
+
+fof(t10_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_lattices(B) )
+         => ( ( g3_lattices(u1_struct_0(A),u2_lattices(A),u1_lattices(A)) = g3_lattices(u1_struct_0(B),u2_lattices(B),u1_lattices(B))
+              & v6_lattices(A) )
+           => v6_lattices(B) ) ) ) ).
+
+fof(t11_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_lattices(B) )
+         => ( ( g3_lattices(u1_struct_0(A),u2_lattices(A),u1_lattices(A)) = g3_lattices(u1_struct_0(B),u2_lattices(B),u1_lattices(B))
+              & v5_lattices(A) )
+           => v5_lattices(B) ) ) ) ).
+
+fof(t12_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_lattices(B) )
+         => ( ( g3_lattices(u1_struct_0(A),u2_lattices(A),u1_lattices(A)) = g3_lattices(u1_struct_0(B),u2_lattices(B),u1_lattices(B))
+              & v7_lattices(A) )
+           => v7_lattices(B) ) ) ) ).
+
+fof(t13_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_lattices(B) )
+         => ( ( g3_lattices(u1_struct_0(A),u2_lattices(A),u1_lattices(A)) = g3_lattices(u1_struct_0(B),u2_lattices(B),u1_lattices(B))
+              & v9_lattices(A) )
+           => v9_lattices(B) ) ) ) ).
+
+fof(t14_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_lattices(B) )
+         => ( ( g3_lattices(u1_struct_0(A),u2_lattices(A),u1_lattices(A)) = g3_lattices(u1_struct_0(B),u2_lattices(B),u1_lattices(B))
+              & v8_lattices(A) )
+           => v8_lattices(B) ) ) ) ).
+
+fof(t15_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_lattices(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_lattices(B) )
+         => ( ( g3_lattices(u1_struct_0(A),u2_lattices(A),u1_lattices(A)) = g3_lattices(u1_struct_0(B),u2_lattices(B),u1_lattices(B))
+              & v10_lattices(A) )
+           => v10_lattices(B) ) ) ) ).
+
+fof(t16_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_lattices(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l2_lattices(B) )
+         => ( g2_lattices(u1_struct_0(A),u2_lattices(A)) = g2_lattices(u1_struct_0(B),u2_lattices(B))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(B))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(B))
+                           => ( ( C = E
+                                & D = F )
+                             => k1_lattices(A,C,D) = k1_lattices(B,E,F) ) ) ) ) ) ) ) ) ).
+
+fof(t17_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_lattices(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l1_lattices(B) )
+         => ( g1_lattices(u1_struct_0(A),u1_lattices(A)) = g1_lattices(u1_struct_0(B),u1_lattices(B))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(B))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(B))
+                           => ( ( C = E
+                                & D = F )
+                             => k2_lattices(A,C,D) = k2_lattices(B,E,F) ) ) ) ) ) ) ) ) ).
+
+fof(t18_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_robbins1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l1_robbins1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ( ( u1_robbins1(A) = u1_robbins1(B)
+                      & C = D )
+                   => k3_robbins1(A,C) = k3_robbins1(B,D) ) ) ) ) ) ).
+
+fof(t19_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_robbins1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l2_robbins1(B) )
+         => ( ( g2_robbins1(u1_struct_0(A),u2_lattices(A),u1_robbins1(A)) = g2_robbins1(u1_struct_0(B),u2_lattices(B),u1_robbins1(B))
+              & v9_robbins3(A) )
+           => v9_robbins3(B) ) ) ) ).
+
+fof(t20_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_robbins1(B) )
+         => ( ( g3_robbins1(u1_struct_0(A),u2_lattices(A),u1_lattices(A),u1_robbins1(A)) = g3_robbins1(u1_struct_0(B),u2_lattices(B),u1_lattices(B),u1_robbins1(B))
+              & v9_robbins1(A) )
+           => v9_robbins1(B) ) ) ) ).
+
+fof(t21_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_robbins1(B) )
+         => ( ( g3_robbins1(u1_struct_0(A),u2_lattices(A),u1_lattices(A),u1_robbins1(A)) = g3_robbins1(u1_struct_0(B),u2_lattices(B),u1_lattices(B),u1_robbins1(B))
+              & v8_robbins3(A) )
+           => v8_robbins3(B) ) ) ) ).
+
+fof(d8_robbins3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( l3_robbins3(B)
+         => ( m1_robbins3(B,A)
+          <=> g1_orders_2(u1_struct_0(B),u1_orders_2(B)) = g1_orders_2(u1_struct_0(A),u1_orders_2(A)) ) ) ) ).
+
+fof(d9_robbins3,axiom,
+    ! [A] :
+      ( l3_lattices(A)
+     => ! [B] :
+          ( l3_robbins3(B)
+         => ( m2_robbins3(B,A)
+          <=> g3_lattices(u1_struct_0(B),u2_lattices(B),u1_lattices(B)) = g3_lattices(u1_struct_0(A),u2_lattices(A),u1_lattices(A)) ) ) ) ).
+
+fof(d10_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_robbins3(A) )
+     => ( v10_robbins3(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ( r1_orders_2(A,B,C)
+                <=> k1_lattices(A,B,C) = C ) ) ) ) ) ).
+
+fof(d11_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_robbins3(A) )
+     => ( v11_robbins3(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ( r1_orders_2(A,B,C)
+                <=> k2_lattices(A,B,C) = B ) ) ) ) ) ).
+
+fof(t22_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_robbins3(A)
+        & l3_robbins3(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_orders_2(A,B,C)
+              <=> r1_lattices(A,B,C) ) ) ) ) ).
+
+fof(t23_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & v10_robbins3(A)
+        & l3_robbins3(A) )
+     => g1_orders_2(u1_struct_0(A),u1_orders_2(A)) = k3_lattice3(A) ) ).
+
+fof(d12_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins1(A)
+     => ! [B] :
+          ( l4_robbins3(B)
+         => ( m3_robbins3(B,A)
+          <=> g3_robbins1(u1_struct_0(B),u2_lattices(B),u1_lattices(B),u1_robbins1(B)) = g3_robbins1(u1_struct_0(A),u2_lattices(A),u1_lattices(A),u1_robbins1(A)) ) ) ) ).
+
+fof(t24_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v14_oposet_1(A)
+        & l1_oposet_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r3_orders_2(A,B,C)
+               => ( C = k10_lattice3(A,B,C)
+                  & B = k11_lattice3(A,B,C) ) ) ) ) ) ).
+
+fof(t25_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v10_robbins3(A)
+        & l4_robbins3(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k10_lattice3(A,B,C) = k5_robbins3(A,B,C) ) ) ) ).
+
+fof(t26_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v10_robbins3(A)
+        & l4_robbins3(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k11_lattice3(A,B,C) = k4_robbins3(A,B,C) ) ) ) ).
+
+fof(t27_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v14_oposet_1(A)
+        & v19_oposet_1(A)
+        & v10_robbins3(A)
+        & v11_robbins3(A)
+        & l4_robbins3(A) )
+     => v9_robbins1(A) ) ).
+
+fof(t28_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l4_robbins3(A) )
+     => ( ( v8_robbins3(A)
+          & v9_robbins3(A)
+          & v9_robbins1(A)
+          & v10_lattices(A)
+          & v10_robbins3(A) )
+       => ( v21_oposet_1(A)
+          & v14_oposet_1(A) ) ) ) ).
+
+fof(t29_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & v9_robbins1(A)
+        & v8_robbins3(A)
+        & v9_robbins3(A)
+        & l3_robbins1(A) )
+     => ! [B] :
+          ( ( v10_robbins3(B)
+            & m3_robbins3(B,A) )
+         => v21_oposet_1(B) ) ) ).
+
+fof(t30_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_robbins1(A) )
+     => ( ( v17_lattices(A)
+          & v7_robbins1(A)
+          & v10_lattices(A) )
+       => ( ~ v3_struct_0(A)
+          & v10_lattices(A)
+          & v9_robbins1(A)
+          & v8_robbins3(A)
+          & v9_robbins3(A)
+          & l3_robbins1(A) ) ) ) ).
+
+fof(dt_m1_robbins3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( m1_robbins3(B,A)
+         => l3_robbins3(B) ) ) ).
+
+fof(existence_m1_robbins3,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ? [B] : m1_robbins3(B,A) ) ).
+
+fof(dt_m2_robbins3,axiom,
+    ! [A] :
+      ( l3_lattices(A)
+     => ! [B] :
+          ( m2_robbins3(B,A)
+         => l3_robbins3(B) ) ) ).
+
+fof(existence_m2_robbins3,axiom,
+    ! [A] :
+      ( l3_lattices(A)
+     => ? [B] : m2_robbins3(B,A) ) ).
+
+fof(dt_m3_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins1(A)
+     => ! [B] :
+          ( m3_robbins3(B,A)
+         => l4_robbins3(B) ) ) ).
+
+fof(existence_m3_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins1(A)
+     => ? [B] : m3_robbins3(B,A) ) ).
+
+fof(dt_l1_robbins3,axiom,
+    ! [A] :
+      ( l1_robbins3(A)
+     => ( l2_lattices(A)
+        & l1_orders_2(A) ) ) ).
+
+fof(existence_l1_robbins3,axiom,
+    ? [A] : l1_robbins3(A) ).
+
+fof(dt_l2_robbins3,axiom,
+    ! [A] :
+      ( l2_robbins3(A)
+     => ( l1_lattices(A)
+        & l1_orders_2(A) ) ) ).
+
+fof(existence_l2_robbins3,axiom,
+    ? [A] : l2_robbins3(A) ).
+
+fof(dt_l3_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins3(A)
+     => ( l2_robbins3(A)
+        & l1_robbins3(A)
+        & l3_lattices(A) ) ) ).
+
+fof(existence_l3_robbins3,axiom,
+    ? [A] : l3_robbins3(A) ).
+
+fof(dt_l4_robbins3,axiom,
+    ! [A] :
+      ( l4_robbins3(A)
+     => ( l3_robbins3(A)
+        & l3_robbins1(A)
+        & l1_oposet_1(A) ) ) ).
+
+fof(existence_l4_robbins3,axiom,
+    ? [A] : l4_robbins3(A) ).
+
+fof(abstractness_v4_robbins3,axiom,
+    ! [A] :
+      ( l1_robbins3(A)
+     => ( v4_robbins3(A)
+       => A = g1_robbins3(u1_struct_0(A),u2_lattices(A),u1_orders_2(A)) ) ) ).
+
+fof(abstractness_v5_robbins3,axiom,
+    ! [A] :
+      ( l2_robbins3(A)
+     => ( v5_robbins3(A)
+       => A = g2_robbins3(u1_struct_0(A),u1_lattices(A),u1_orders_2(A)) ) ) ).
+
+fof(abstractness_v6_robbins3,axiom,
+    ! [A] :
+      ( l3_robbins3(A)
+     => ( v6_robbins3(A)
+       => A = g3_robbins3(u1_struct_0(A),u2_lattices(A),u1_lattices(A),u1_orders_2(A)) ) ) ).
+
+fof(abstractness_v7_robbins3,axiom,
+    ! [A] :
+      ( l4_robbins3(A)
+     => ( v7_robbins3(A)
+       => A = g4_robbins3(u1_struct_0(A),u2_lattices(A),u1_lattices(A),u1_orders_2(A),u1_robbins1(A)) ) ) ).
+
+fof(dt_k1_robbins3,axiom,
+    l3_robbins3(k1_robbins3) ).
+
+fof(dt_k2_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & l3_lattices(A) )
+     => ( v1_relat_2(k2_robbins3(A))
+        & v4_relat_2(k2_robbins3(A))
+        & v8_relat_2(k2_robbins3(A))
+        & v1_partfun1(k2_robbins3(A),u1_struct_0(A),u1_struct_0(A))
+        & m2_relset_1(k2_robbins3(A),u1_struct_0(A),u1_struct_0(A)) ) ) ).
+
+fof(redefinition_k2_robbins3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_lattices(A)
+        & l3_lattices(A) )
+     => k2_robbins3(A) = k9_filter_1(A) ) ).
+
+fof(dt_k3_robbins3,axiom,
+    l4_robbins3(k3_robbins3) ).
+
+fof(dt_k4_robbins3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v6_lattices(A)
+        & l1_lattices(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k4_robbins3(A,B,C),u1_struct_0(A)) ) ).
+
+fof(commutativity_k4_robbins3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v6_lattices(A)
+        & l1_lattices(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k4_robbins3(A,B,C) = k4_robbins3(A,C,B) ) ).
+
+fof(redefinition_k4_robbins3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v6_lattices(A)
+        & l1_lattices(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k4_robbins3(A,B,C) = k2_lattices(A,B,C) ) ).
+
+fof(dt_k5_robbins3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v4_lattices(A)
+        & l2_lattices(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k5_robbins3(A,B,C),u1_struct_0(A)) ) ).
+
+fof(commutativity_k5_robbins3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v4_lattices(A)
+        & l2_lattices(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k5_robbins3(A,B,C) = k5_robbins3(A,C,B) ) ).
+
+fof(redefinition_k5_robbins3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v4_lattices(A)
+        & l2_lattices(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k5_robbins3(A,B,C) = k1_lattices(A,B,C) ) ).
+
+fof(dt_g1_robbins3,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,A,A) )
+     => ( v4_robbins3(g1_robbins3(A,B,C))
+        & l1_robbins3(g1_robbins3(A,B,C)) ) ) ).
+
+fof(free_g1_robbins3,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,A,A) )
+     => ! [D,E,F] :
+          ( g1_robbins3(A,B,C) = g1_robbins3(D,E,F)
+         => ( A = D
+            & B = E
+            & C = F ) ) ) ).
+
+fof(dt_g2_robbins3,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,A,A) )
+     => ( v5_robbins3(g2_robbins3(A,B,C))
+        & l2_robbins3(g2_robbins3(A,B,C)) ) ) ).
+
+fof(free_g2_robbins3,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,A,A) )
+     => ! [D,E,F] :
+          ( g2_robbins3(A,B,C) = g2_robbins3(D,E,F)
+         => ( A = D
+            & B = E
+            & C = F ) ) ) ).
+
+fof(dt_g3_robbins3,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,A,A) )
+     => ( v6_robbins3(g3_robbins3(A,B,C,D))
+        & l3_robbins3(g3_robbins3(A,B,C,D)) ) ) ).
+
+fof(free_g3_robbins3,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,A,A) )
+     => ! [E,F,G,H] :
+          ( g3_robbins3(A,B,C,D) = g3_robbins3(E,F,G,H)
+         => ( A = E
+            & B = F
+            & C = G
+            & D = H ) ) ) ).
+
+fof(dt_g4_robbins3,axiom,
+    ! [A,B,C,D,E] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,A,A)
+        & v1_funct_1(E)
+        & v1_funct_2(E,A,A)
+        & m1_relset_1(E,A,A) )
+     => ( v7_robbins3(g4_robbins3(A,B,C,D,E))
+        & l4_robbins3(g4_robbins3(A,B,C,D,E)) ) ) ).
+
+fof(free_g4_robbins3,axiom,
+    ! [A,B,C,D,E] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,A,A)
+        & v1_funct_1(E)
+        & v1_funct_2(E,A,A)
+        & m1_relset_1(E,A,A) )
+     => ! [F,G,H,I,J] :
+          ( g4_robbins3(A,B,C,D,E) = g4_robbins3(F,G,H,I,J)
+         => ( A = F
+            & B = G
+            & C = H
+            & D = I
+            & E = J ) ) ) ).
+
+%------------------------------------------------------------------------------
