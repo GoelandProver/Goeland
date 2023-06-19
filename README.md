@@ -56,6 +56,7 @@ The parameters must be passed *before* the problem file. The available parameter
 | -presko | Only useful if -dmt is activated. Preskolemises rewrited formulas if possible. |
 | -pretty | Use pretty connectives and quantifiers when printing formulas (default: **false**). Can be used in combination with `-proof` to have a pretty proof. | 
 | -type_proof | Generate a sequent-style proof of the well-typedness of the problem in a json (default: **false**). Visualisation of the proof can be done with the [visualisation module](visualization/). |
+| -assisted | Disable the automatic prover to let the user choose the rules to apply (default: **false**). |
 
 ### Result values
 

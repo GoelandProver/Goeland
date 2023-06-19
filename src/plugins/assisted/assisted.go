@@ -45,6 +45,13 @@ var ruleList = map[string]string{
 	"G":     "G",
 	"γ":     "G",
 	"g":     "G",
+
+	"MetaGen": "M",
+	"M":       "M",
+	"m":       "M",
+	"MG":      "M",
+	"mg":      "M",
+	"Meta":    "M",
 }
 
 /** WINDOW ASSETS NOTES : 06/16/2023
@@ -89,16 +96,26 @@ func ChooseRule(st complextypes.State) string {
 	var rule string
 	for checker < 1 {
 		fmt.Scanf("%s", &rule)
-		if ruleList[rule] == "X" || ruleList[rule] == "A" || ruleList[rule] == "B" || ruleList[rule] == "D" || ruleList[rule] == "G" {
-			rule = ruleList[rule]
-			if rule == "X" && len(st.GetAtomic()) == 0 || rule == "A" && len(st.GetAlpha()) == 0 || rule == "B" && len(st.GetBeta()) == 0 || rule == "D" && len(st.GetDelta()) == 0 || rule == "G" && len(st.GetGamma()) == 0 {
-				fmt.Printf("Error, %s rule does not have any formula. Please select another.\n", rule)
-			} else {
+		if ruleList[rule] == "M" {
+			if st.CanReintroduce() && len(st.GetMetaGen()) > 0 {
+				rule = "M"
 				fmt.Printf("%s rule selected. Please choose a formula for the rule to apply.\n", rule)
 				checker = 1
+			} else {
+				fmt.Printf("Error, M rule is empty or cannot reintroduce\n")
 			}
 		} else {
-			fmt.Printf("Error, select a valid rule to apply.\n")
+			if ruleList[rule] == "X" || ruleList[rule] == "A" || ruleList[rule] == "B" || ruleList[rule] == "D" || ruleList[rule] == "G" {
+				rule = ruleList[rule]
+				if rule == "X" && len(st.GetAtomic()) == 0 || rule == "A" && len(st.GetAlpha()) == 0 || rule == "B" && len(st.GetBeta()) == 0 || rule == "D" && len(st.GetDelta()) == 0 || rule == "G" && len(st.GetGamma()) == 0 {
+					fmt.Printf("Error, %s rule does not have any formula. Please select another.\n", rule)
+				} else {
+					fmt.Printf("%s rule selected. Please choose a formula for the rule to apply.\n", rule)
+					checker = 1
+				}
+			} else {
+				fmt.Printf("Error, select a valid rule to apply.\n")
+			}
 		}
 	}
 	return rule
@@ -118,6 +135,15 @@ func ChooseFormulae(rule string, st complextypes.State) basictypes.FormAndTermsL
 		chosenFormulae = st.GetDelta()
 	case "G":
 		chosenFormulae = st.GetGamma()
+	case "M":
+		list := st.GetMetaGen()
+		var listeLaVraie basictypes.FormAndTermsList
+
+		for _, UwU := range list {
+			listeLaVraie = append(listeLaVraie, UwU.GetForm())
+		}
+
+		chosenFormulae = listeLaVraie
 	}
 
 	return chosenFormulae
@@ -350,6 +376,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 			st_copy.SetBeta(state1.GetBeta()[1:])
 			st_copy.SetLF(fl.GetFL())
 			child_id_list = append(child_id_list, fl.GetI())
+
 			if global.IsDestructive() {
 				c_child := search.Communication{Quit: make(chan bool), Result: make(chan search.Result)}
 				chan_tab = append(chan_tab, c_child)
@@ -406,5 +433,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		state1.SetProof(append(state1.GetProof(), state1.GetCurrentProof()))
 
 		search.ProofSearch(father_id, state1, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{}, chFyne)
+	case "M":
+		fmt.Printf("case M\n")
 	}
 }
