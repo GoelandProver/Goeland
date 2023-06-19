@@ -1,0 +1,77 @@
+%------------------------------------------------------------------------------
+% File     : ITP001+2 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, bushy and chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+% Source   : [BG+19]
+% Names    : HL4001+2.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    8 (   2 unt;   0 def)
+%            Number of atoms       :   22 (   5 equ)
+%            Maximal formula atoms :    5 (   2 avg)
+%            Number of connectives :   14 (   0   ~;   0   |;   0   &)
+%                                         (   1 <=>;  13  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   10 (   5 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    4 (   3 usr;   0 prp; 1-2 aty)
+%            Number of functors    :    6 (   6 usr;   2 con; 0-2 aty)
+%            Number of variables   :   18 (  18   !;   0   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(bool_ne,axiom,
+    ne(bool) ).
+
+fof(ind_ne,axiom,
+    ne(ind) ).
+
+fof(arr_ne,axiom,
+    ! [A] :
+      ( ne(A)
+     => ! [B] :
+          ( ne(B)
+         => ne(arr(A,B)) ) ) ).
+
+fof(ap_tp,axiom,
+    ! [A,B,F] :
+      ( mem(F,arr(A,B))
+     => ! [X] :
+          ( mem(X,A)
+         => mem(ap(F,X),B) ) ) ).
+
+fof(boolext,axiom,
+    ! [Q] :
+      ( mem(Q,bool)
+     => ! [R] :
+          ( mem(R,bool)
+         => ( ( p(Q)
+            <=> p(R) )
+           => Q = R ) ) ) ).
+
+fof(funcext,axiom,
+    ! [A,B,F] :
+      ( mem(F,arr(A,B))
+     => ! [G] :
+          ( mem(G,arr(A,B))
+         => ( ! [X] :
+                ( mem(X,A)
+               => ap(F,X) = ap(G,X) )
+           => F = G ) ) ) ).
+
+fof(kbeta,axiom,
+    ! [A,Y,X] :
+      ( mem(X,A)
+     => ap(k(A,Y),X) = Y ) ).
+
+fof(ibeta,axiom,
+    ! [A,X] :
+      ( mem(X,A)
+     => ap(i(A),X) = X ) ).
+
+%------------------------------------------------------------------------------

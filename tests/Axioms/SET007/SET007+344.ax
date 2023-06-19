@@ -1,0 +1,1419 @@
+%------------------------------------------------------------------------------
+% File     : SET007+344 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Completeness of the Lattices of Domains of a Topological Space
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : tdlat_2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  122 (   0 unt;   0 def)
+%            Number of atoms       :  827 ( 100 equ)
+%            Maximal formula atoms :   15 (   6 avg)
+%            Number of connectives :  797 (  92   ~;   3   |; 293   &)
+%                                         (  23 <=>; 386  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   8 avg)
+%            Maximal term depth    :    6 (   2 avg)
+%            Number of predicates  :   22 (  21 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   33 (  33 usr;   1 con; 0-3 aty)
+%            Number of variables   :  328 ( 312   !;  16   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( r1_tarski(k1_tops_1(A,k6_pre_topc(A,k1_tops_1(A,B))),k1_tops_1(A,k6_pre_topc(A,B)))
+            & r1_tarski(k1_tops_1(A,k6_pre_topc(A,k1_tops_1(A,B))),k6_pre_topc(A,k1_tops_1(A,B))) ) ) ) ).
+
+fof(t2_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( r1_tarski(k6_pre_topc(A,k1_tops_1(A,B)),k6_pre_topc(A,k1_tops_1(A,k6_pre_topc(A,B))))
+            & r1_tarski(k1_tops_1(A,k6_pre_topc(A,B)),k6_pre_topc(A,k1_tops_1(A,k6_pre_topc(A,B)))) ) ) ) ).
+
+fof(t3_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v4_pre_topc(C,A)
+                  & k6_pre_topc(A,k1_tops_1(A,k5_subset_1(u1_struct_0(A),B,C))) = B )
+               => r1_tarski(B,C) ) ) ) ) ).
+
+fof(t4_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v3_pre_topc(B,A)
+                  & k1_tops_1(A,k6_pre_topc(A,k4_subset_1(u1_struct_0(A),B,C))) = C )
+               => r1_tarski(B,C) ) ) ) ) ).
+
+fof(t5_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( r1_tarski(B,k6_pre_topc(A,k1_tops_1(A,B)))
+           => r1_tarski(k4_subset_1(u1_struct_0(A),B,k1_tops_1(A,k6_pre_topc(A,B))),k6_pre_topc(A,k1_tops_1(A,k4_subset_1(u1_struct_0(A),B,k1_tops_1(A,k6_pre_topc(A,B)))))) ) ) ) ).
+
+fof(t6_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( r1_tarski(k1_tops_1(A,k6_pre_topc(A,B)),B)
+           => r1_tarski(k1_tops_1(A,k6_pre_topc(A,k5_subset_1(u1_struct_0(A),B,k6_pre_topc(A,k1_tops_1(A,B))))),k5_subset_1(u1_struct_0(A),B,k6_pre_topc(A,k1_tops_1(A,B)))) ) ) ) ).
+
+fof(t8_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => k3_pcomps_1(A,B) = k3_pcomps_1(A,k3_pcomps_1(A,B)) ) ) ).
+
+fof(t9_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( B = k1_xboole_0
+          <=> k3_pcomps_1(A,B) = k1_xboole_0 ) ) ) ).
+
+fof(t10_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => r1_tarski(k3_pcomps_1(A,k5_subset_1(k1_zfmisc_1(u1_struct_0(A)),B,C)),k5_subset_1(k1_zfmisc_1(u1_struct_0(A)),k3_pcomps_1(A,B),k3_pcomps_1(A,C))) ) ) ) ).
+
+fof(t11_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => r1_tarski(k6_subset_1(k1_zfmisc_1(u1_struct_0(A)),k3_pcomps_1(A,B),k3_pcomps_1(A,C)),k3_pcomps_1(A,k6_subset_1(k1_zfmisc_1(u1_struct_0(A)),B,C))) ) ) ) ).
+
+fof(t12_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r2_hidden(C,B)
+               => ( r1_tarski(k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,B)),k6_pre_topc(A,C))
+                  & r1_tarski(k6_pre_topc(A,C),k5_setfam_1(u1_struct_0(A),k3_pcomps_1(A,B))) ) ) ) ) ) ).
+
+fof(t13_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_setfam_1(u1_struct_0(A),B),k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,B))) ) ) ).
+
+fof(t14_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_pre_topc(A,k6_setfam_1(u1_struct_0(A),B)),k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,B))) ) ) ).
+
+fof(t15_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k3_pcomps_1(A,B)),k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B))) ) ) ).
+
+fof(d1_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => ( C = k1_tdlat_2(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                   => ( r2_hidden(D,C)
+                    <=> ? [E] :
+                          ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                          & D = k1_tops_1(A,E)
+                          & r2_hidden(E,B) ) ) ) ) ) ) ) ).
+
+fof(t17_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => k1_tdlat_2(A,B) = k1_tdlat_2(A,k1_tdlat_2(A,B)) ) ) ).
+
+fof(t18_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => v1_tops_2(k1_tdlat_2(A,B),A) ) ) ).
+
+fof(t19_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( B = k1_xboole_0
+          <=> k1_tdlat_2(A,B) = k1_xboole_0 ) ) ) ).
+
+fof(t20_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => ( C = k1_tarski(B)
+               => k1_tdlat_2(A,C) = k1_tarski(k1_tops_1(A,B)) ) ) ) ) ).
+
+fof(t21_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => ( r1_tarski(B,C)
+               => r1_tarski(k1_tdlat_2(A,B),k1_tdlat_2(A,C)) ) ) ) ) ).
+
+fof(t22_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => k1_tdlat_2(A,k4_subset_1(k1_zfmisc_1(u1_struct_0(A)),B,C)) = k4_subset_1(k1_zfmisc_1(u1_struct_0(A)),k1_tdlat_2(A,B),k1_tdlat_2(A,C)) ) ) ) ).
+
+fof(t23_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => r1_tarski(k1_tdlat_2(A,k5_subset_1(k1_zfmisc_1(u1_struct_0(A)),B,C)),k5_subset_1(k1_zfmisc_1(u1_struct_0(A)),k1_tdlat_2(A,B),k1_tdlat_2(A,C))) ) ) ) ).
+
+fof(t24_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => r1_tarski(k6_subset_1(k1_zfmisc_1(u1_struct_0(A)),k1_tdlat_2(A,B),k1_tdlat_2(A,C)),k1_tdlat_2(A,k6_subset_1(k1_zfmisc_1(u1_struct_0(A)),B,C))) ) ) ) ).
+
+fof(t25_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r2_hidden(C,B)
+               => ( r1_tarski(k1_tops_1(A,C),k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,B)))
+                  & r1_tarski(k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,B)),k1_tops_1(A,C)) ) ) ) ) ) ).
+
+fof(t26_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,B)),k5_setfam_1(u1_struct_0(A),B)) ) ) ).
+
+fof(t27_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,B)),k6_setfam_1(u1_struct_0(A),B)) ) ) ).
+
+fof(t28_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,B)),k1_tops_1(A,k5_setfam_1(u1_struct_0(A),B))) ) ) ).
+
+fof(t29_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)),k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,B))) ) ) ).
+
+fof(t30_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v1_finset_1(B)
+           => k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)) = k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,B)) ) ) ) ).
+
+fof(t35_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,B)))) = k3_pcomps_1(A,k1_tdlat_2(A,B)) ) ) ).
+
+fof(t36_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,B)))) = k1_tdlat_2(A,k3_pcomps_1(A,B)) ) ) ).
+
+fof(t37_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,B))),k5_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,B))))) ) ) ).
+
+fof(t38_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,B))),k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,B))))) ) ) ).
+
+fof(t39_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,B))),k5_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,B))))) ) ) ).
+
+fof(t40_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,B))),k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,B))))) ) ) ).
+
+fof(t41_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,B)))),k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,B)))) ) ) ).
+
+fof(t42_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,B)))),k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,B)))) ) ) ).
+
+fof(t43_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,B)))),k5_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,B)))) ) ) ).
+
+fof(t44_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,B)))),k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,B)))) ) ) ).
+
+fof(t45_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,B)))),k5_setfam_1(u1_struct_0(A),k3_pcomps_1(A,B))) ) ) ).
+
+fof(t46_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,B)))),k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,B))) ) ) ).
+
+fof(t47_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,B)),k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,B))))) ) ) ).
+
+fof(t48_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,B)),k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,B))))) ) ) ).
+
+fof(t49_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,B))),k6_pre_topc(A,k1_tops_1(A,k5_setfam_1(u1_struct_0(A),B)))) ) ) ).
+
+fof(t50_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B))),k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,B)))) ) ) ).
+
+fof(t51_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,B))),k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)))) ) ) ).
+
+fof(t52_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k1_tops_1(A,k6_pre_topc(A,k6_setfam_1(u1_struct_0(A),B))),k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,B)))) ) ) ).
+
+fof(t53_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,B)))),k6_pre_topc(A,k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B))))) ) ) ).
+
+fof(t54_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k6_pre_topc(A,k1_tops_1(A,k6_pre_topc(A,k6_setfam_1(u1_struct_0(A),B)))),k6_setfam_1(u1_struct_0(A),k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,B))))) ) ) ).
+
+fof(t55_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k5_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,B)))),k1_tops_1(A,k6_pre_topc(A,k1_tops_1(A,k5_setfam_1(u1_struct_0(A),B))))) ) ) ).
+
+fof(t56_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => r1_tarski(k1_tops_1(A,k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)))),k6_setfam_1(u1_struct_0(A),k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,B))))) ) ) ).
+
+fof(t57_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( r2_hidden(C,B)
+                 => r1_tarski(C,k6_pre_topc(A,k1_tops_1(A,C))) ) )
+           => ( r1_tarski(k5_setfam_1(u1_struct_0(A),B),k6_pre_topc(A,k1_tops_1(A,k5_setfam_1(u1_struct_0(A),B))))
+              & k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)) = k6_pre_topc(A,k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)))) ) ) ) ) ).
+
+fof(t58_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( r2_hidden(C,B)
+                 => r1_tarski(k1_tops_1(A,k6_pre_topc(A,C)),C) ) )
+           => ( r1_tarski(k1_tops_1(A,k6_pre_topc(A,k6_setfam_1(u1_struct_0(A),B))),k6_setfam_1(u1_struct_0(A),B))
+              & k1_tops_1(A,k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)))) = k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)) ) ) ) ) ).
+
+fof(t59_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( v4_tops_1(C,A)
+               => ( k4_subset_1(u1_struct_0(A),k1_tops_1(A,k6_pre_topc(A,k4_subset_1(u1_struct_0(A),B,C))),k4_subset_1(u1_struct_0(A),B,C)) = C
+                <=> r1_tarski(B,C) ) ) ) ) ) ).
+
+fof(t60_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( v4_tops_1(B,A)
+               => ( k5_subset_1(u1_struct_0(A),k6_pre_topc(A,k1_tops_1(A,k5_subset_1(u1_struct_0(A),B,C))),k5_subset_1(u1_struct_0(A),B,C)) = B
+                <=> r1_tarski(B,C) ) ) ) ) ) ).
+
+fof(t61_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v5_tops_1(B,A)
+                  & v5_tops_1(C,A) )
+               => ( r1_tarski(k1_tops_1(A,B),k1_tops_1(A,C))
+                <=> r1_tarski(B,C) ) ) ) ) ) ).
+
+fof(t62_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v6_tops_1(B,A)
+                  & v6_tops_1(C,A) )
+               => ( r1_tarski(k6_pre_topc(A,B),k6_pre_topc(A,C))
+                <=> r1_tarski(B,C) ) ) ) ) ) ).
+
+fof(t63_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v5_tops_1(B,A)
+                  & r1_tarski(B,C) )
+               => k6_pre_topc(A,k1_tops_1(A,k5_subset_1(u1_struct_0(A),B,C))) = B ) ) ) ) ).
+
+fof(t64_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v6_tops_1(C,A)
+                  & r1_tarski(B,C) )
+               => k1_tops_1(A,k6_pre_topc(A,k4_subset_1(u1_struct_0(A),B,C))) = C ) ) ) ) ).
+
+fof(d2_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v1_tdlat_2(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( r2_hidden(C,B)
+                 => v4_tops_1(C,A) ) ) ) ) ) ).
+
+fof(t65_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( r1_tarski(B,k1_tdlat_1(A))
+          <=> v1_tdlat_2(B,A) ) ) ) ).
+
+fof(t66_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v1_tdlat_2(B,A)
+           => ( r1_tarski(k5_setfam_1(u1_struct_0(A),B),k6_pre_topc(A,k1_tops_1(A,k5_setfam_1(u1_struct_0(A),B))))
+              & k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)) = k6_pre_topc(A,k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)))) ) ) ) ) ).
+
+fof(t67_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v1_tdlat_2(B,A)
+           => ( r1_tarski(k1_tops_1(A,k6_pre_topc(A,k6_setfam_1(u1_struct_0(A),B))),k6_setfam_1(u1_struct_0(A),B))
+              & k1_tops_1(A,k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)))) = k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)) ) ) ) ) ).
+
+fof(t68_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v1_tdlat_2(B,A)
+           => v4_tops_1(k4_subset_1(u1_struct_0(A),k5_setfam_1(u1_struct_0(A),B),k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)))),A) ) ) ) ).
+
+fof(t69_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( r2_hidden(C,B)
+                 => r1_tarski(C,k4_subset_1(u1_struct_0(A),k5_setfam_1(u1_struct_0(A),B),k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B))))) ) )
+            & ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( ( v4_tops_1(C,A)
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                       => ( r2_hidden(D,B)
+                         => r1_tarski(D,C) ) ) )
+                 => r1_tarski(k4_subset_1(u1_struct_0(A),k5_setfam_1(u1_struct_0(A),B),k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)))),C) ) ) ) ) ) ).
+
+fof(t70_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v1_tdlat_2(B,A)
+           => v4_tops_1(k5_subset_1(u1_struct_0(A),k6_setfam_1(u1_struct_0(A),B),k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)))),A) ) ) ) ).
+
+fof(t71_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( r2_hidden(C,B)
+                 => r1_tarski(k5_subset_1(u1_struct_0(A),k6_setfam_1(u1_struct_0(A),B),k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)))),C) ) )
+            & ( B = k1_xboole_0
+              | ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( v4_tops_1(C,A)
+                      & ! [D] :
+                          ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                         => ( r2_hidden(D,B)
+                           => r1_tarski(C,D) ) ) )
+                   => r1_tarski(C,k5_subset_1(u1_struct_0(A),k6_setfam_1(u1_struct_0(A),B),k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B))))) ) ) ) ) ) ) ).
+
+fof(d3_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v2_tdlat_2(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( r2_hidden(C,B)
+                 => v5_tops_1(C,A) ) ) ) ) ) ).
+
+fof(t72_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( r1_tarski(B,k5_tdlat_1(A))
+          <=> v2_tdlat_2(B,A) ) ) ) ).
+
+fof(t73_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v2_tdlat_2(B,A)
+           => v1_tdlat_2(B,A) ) ) ) ).
+
+fof(t74_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v2_tdlat_2(B,A)
+           => v2_tops_2(B,A) ) ) ) ).
+
+fof(t75_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v1_tdlat_2(B,A)
+           => v2_tdlat_2(k3_pcomps_1(A,B),A) ) ) ) ).
+
+fof(t76_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v2_tdlat_2(B,A)
+           => ( v5_tops_1(k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)),A)
+              & v5_tops_1(k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B))),A) ) ) ) ) ).
+
+fof(t77_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( r2_hidden(C,B)
+                 => r1_tarski(C,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B))) ) )
+            & ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( ( v5_tops_1(C,A)
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                       => ( r2_hidden(D,B)
+                         => r1_tarski(D,C) ) ) )
+                 => r1_tarski(k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)),C) ) ) ) ) ) ).
+
+fof(t78_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( ( v2_tops_2(B,A)
+             => ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( r2_hidden(C,B)
+                   => r1_tarski(k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B))),C) ) ) )
+            & ( B = k1_xboole_0
+              | ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( v5_tops_1(C,A)
+                      & ! [D] :
+                          ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                         => ( r2_hidden(D,B)
+                           => r1_tarski(C,D) ) ) )
+                   => r1_tarski(C,k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)))) ) ) ) ) ) ) ).
+
+fof(d4_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v3_tdlat_2(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( r2_hidden(C,B)
+                 => v6_tops_1(C,A) ) ) ) ) ) ).
+
+fof(t79_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( r1_tarski(B,k9_tdlat_1(A))
+          <=> v3_tdlat_2(B,A) ) ) ) ).
+
+fof(t80_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v3_tdlat_2(B,A)
+           => v1_tdlat_2(B,A) ) ) ) ).
+
+fof(t81_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v3_tdlat_2(B,A)
+           => v1_tops_2(B,A) ) ) ) ).
+
+fof(t82_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v1_tdlat_2(B,A)
+           => v3_tdlat_2(k1_tdlat_2(A,B),A) ) ) ) ).
+
+fof(t83_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v3_tdlat_2(B,A)
+           => ( v6_tops_1(k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)),A)
+              & v6_tops_1(k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B))),A) ) ) ) ) ).
+
+fof(t84_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( ( v1_tops_2(B,A)
+             => ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( r2_hidden(C,B)
+                   => r1_tarski(C,k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)))) ) ) )
+            & ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( ( v6_tops_1(C,A)
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                       => ( r2_hidden(D,B)
+                         => r1_tarski(D,C) ) ) )
+                 => r1_tarski(k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B))),C) ) ) ) ) ) ).
+
+fof(t85_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( r2_hidden(C,B)
+                 => r1_tarski(k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)),C) ) )
+            & ( B = k1_xboole_0
+              | ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( v6_tops_1(C,A)
+                      & ! [D] :
+                          ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                         => ( r2_hidden(D,B)
+                           => r1_tarski(C,D) ) ) )
+                   => r1_tarski(C,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B))) ) ) ) ) ) ) ).
+
+fof(t86_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => u1_struct_0(k4_tdlat_1(A)) = k1_tdlat_1(A) ) ).
+
+fof(t87_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k4_tdlat_1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k4_tdlat_1(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(u1_struct_0(A)),k1_tdlat_1(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(u1_struct_0(A)),k1_tdlat_1(A))
+                     => ( ( B = D
+                          & C = E )
+                       => ( k1_lattices(k4_tdlat_1(A),B,C) = k4_subset_1(u1_struct_0(A),k1_tops_1(A,k6_pre_topc(A,k4_subset_1(u1_struct_0(A),D,E))),k4_subset_1(u1_struct_0(A),D,E))
+                          & k2_lattices(k4_tdlat_1(A),B,C) = k5_subset_1(u1_struct_0(A),k6_pre_topc(A,k1_tops_1(A,k5_subset_1(u1_struct_0(A),D,E))),k5_subset_1(u1_struct_0(A),D,E)) ) ) ) ) ) ) ) ).
+
+fof(t88_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( k5_lattices(k4_tdlat_1(A)) = k1_pre_topc(A)
+        & k6_lattices(k4_tdlat_1(A)) = k2_pre_topc(A) ) ) ).
+
+fof(t89_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k4_tdlat_1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k4_tdlat_1(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(u1_struct_0(A)),k1_tdlat_1(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(u1_struct_0(A)),k1_tdlat_1(A))
+                     => ( ( B = D
+                          & C = E )
+                       => ( r1_lattices(k4_tdlat_1(A),B,C)
+                        <=> r1_tarski(D,E) ) ) ) ) ) ) ) ).
+
+fof(t90_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k4_tdlat_1(A))))
+         => ? [C] :
+              ( m1_subset_1(C,u1_struct_0(k4_tdlat_1(A)))
+              & r4_lattice3(k4_tdlat_1(A),C,B)
+              & ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k4_tdlat_1(A)))
+                 => ( r4_lattice3(k4_tdlat_1(A),D,B)
+                   => r1_lattices(k4_tdlat_1(A),C,D) ) ) ) ) ) ).
+
+fof(t91_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => v4_lattice3(k4_tdlat_1(A)) ) ).
+
+fof(t92_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v1_tdlat_2(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k4_tdlat_1(A))))
+               => ( C = B
+                 => k15_lattice3(k4_tdlat_1(A),C) = k4_subset_1(u1_struct_0(A),k5_setfam_1(u1_struct_0(A),B),k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)))) ) ) ) ) ) ).
+
+fof(t93_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v1_tdlat_2(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k4_tdlat_1(A))))
+               => ( C = B
+                 => ( ( C != k1_xboole_0
+                     => k16_lattice3(k4_tdlat_1(A),C) = k5_subset_1(u1_struct_0(A),k6_setfam_1(u1_struct_0(A),B),k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)))) )
+                    & ( C = k1_xboole_0
+                     => k16_lattice3(k4_tdlat_1(A),C) = k2_pre_topc(A) ) ) ) ) ) ) ) ).
+
+fof(t94_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => u1_struct_0(k8_tdlat_1(A)) = k5_tdlat_1(A) ) ).
+
+fof(t95_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k8_tdlat_1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k8_tdlat_1(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(u1_struct_0(A)),k5_tdlat_1(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(u1_struct_0(A)),k5_tdlat_1(A))
+                     => ( ( B = D
+                          & C = E )
+                       => ( k1_lattices(k8_tdlat_1(A),B,C) = k4_subset_1(u1_struct_0(A),D,E)
+                          & k2_lattices(k8_tdlat_1(A),B,C) = k6_pre_topc(A,k1_tops_1(A,k5_subset_1(u1_struct_0(A),D,E))) ) ) ) ) ) ) ) ).
+
+fof(t96_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( k5_lattices(k8_tdlat_1(A)) = k1_pre_topc(A)
+        & k6_lattices(k8_tdlat_1(A)) = k2_pre_topc(A) ) ) ).
+
+fof(t97_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k8_tdlat_1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k8_tdlat_1(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(u1_struct_0(A)),k5_tdlat_1(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(u1_struct_0(A)),k5_tdlat_1(A))
+                     => ( ( B = D
+                          & C = E )
+                       => ( r1_lattices(k8_tdlat_1(A),B,C)
+                        <=> r1_tarski(D,E) ) ) ) ) ) ) ) ).
+
+fof(t98_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k8_tdlat_1(A))))
+         => ? [C] :
+              ( m1_subset_1(C,u1_struct_0(k8_tdlat_1(A)))
+              & r4_lattice3(k8_tdlat_1(A),C,B)
+              & ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k8_tdlat_1(A)))
+                 => ( r4_lattice3(k8_tdlat_1(A),D,B)
+                   => r1_lattices(k8_tdlat_1(A),C,D) ) ) ) ) ) ).
+
+fof(t99_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => v4_lattice3(k8_tdlat_1(A)) ) ).
+
+fof(t100_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v2_tdlat_2(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k8_tdlat_1(A))))
+               => ( C = B
+                 => k15_lattice3(k8_tdlat_1(A),C) = k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B)) ) ) ) ) ) ).
+
+fof(t101_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v2_tdlat_2(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k8_tdlat_1(A))))
+               => ( C = B
+                 => ( ( C != k1_xboole_0
+                     => k16_lattice3(k8_tdlat_1(A),C) = k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B))) )
+                    & ( C = k1_xboole_0
+                     => k16_lattice3(k8_tdlat_1(A),C) = k2_pre_topc(A) ) ) ) ) ) ) ) ).
+
+fof(t102_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v2_tdlat_2(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k4_tdlat_1(A))))
+               => ( C = B
+                 => ( ( C != k1_xboole_0
+                     => k16_lattice3(k4_tdlat_1(A),C) = k6_pre_topc(A,k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B))) )
+                    & ( C = k1_xboole_0
+                     => k16_lattice3(k4_tdlat_1(A),C) = k2_pre_topc(A) ) ) ) ) ) ) ) ).
+
+fof(t103_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => u1_struct_0(k12_tdlat_1(A)) = k9_tdlat_1(A) ) ).
+
+fof(t104_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k12_tdlat_1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k12_tdlat_1(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(u1_struct_0(A)),k9_tdlat_1(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(u1_struct_0(A)),k9_tdlat_1(A))
+                     => ( ( B = D
+                          & C = E )
+                       => ( k1_lattices(k12_tdlat_1(A),B,C) = k1_tops_1(A,k6_pre_topc(A,k4_subset_1(u1_struct_0(A),D,E)))
+                          & k2_lattices(k12_tdlat_1(A),B,C) = k5_subset_1(u1_struct_0(A),D,E) ) ) ) ) ) ) ) ).
+
+fof(t105_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( k5_lattices(k12_tdlat_1(A)) = k1_pre_topc(A)
+        & k6_lattices(k12_tdlat_1(A)) = k2_pre_topc(A) ) ) ).
+
+fof(t106_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k12_tdlat_1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k12_tdlat_1(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(u1_struct_0(A)),k9_tdlat_1(A))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(u1_struct_0(A)),k9_tdlat_1(A))
+                     => ( ( B = D
+                          & C = E )
+                       => ( r1_lattices(k12_tdlat_1(A),B,C)
+                        <=> r1_tarski(D,E) ) ) ) ) ) ) ) ).
+
+fof(t107_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k12_tdlat_1(A))))
+         => ? [C] :
+              ( m1_subset_1(C,u1_struct_0(k12_tdlat_1(A)))
+              & r4_lattice3(k12_tdlat_1(A),C,B)
+              & ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k12_tdlat_1(A)))
+                 => ( r4_lattice3(k12_tdlat_1(A),D,B)
+                   => r1_lattices(k12_tdlat_1(A),C,D) ) ) ) ) ) ).
+
+fof(t108_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => v4_lattice3(k12_tdlat_1(A)) ) ).
+
+fof(t109_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v3_tdlat_2(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k12_tdlat_1(A))))
+               => ( C = B
+                 => k15_lattice3(k12_tdlat_1(A),C) = k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B))) ) ) ) ) ) ).
+
+fof(t110_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v3_tdlat_2(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k12_tdlat_1(A))))
+               => ( C = B
+                 => ( ( C != k1_xboole_0
+                     => k16_lattice3(k12_tdlat_1(A),C) = k1_tops_1(A,k6_setfam_1(u1_struct_0(A),B)) )
+                    & ( C = k1_xboole_0
+                     => k16_lattice3(k12_tdlat_1(A),C) = k2_pre_topc(A) ) ) ) ) ) ) ) ).
+
+fof(t111_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( v3_tdlat_2(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k4_tdlat_1(A))))
+               => ( C = B
+                 => k15_lattice3(k4_tdlat_1(A),C) = k1_tops_1(A,k6_pre_topc(A,k5_setfam_1(u1_struct_0(A),B))) ) ) ) ) ) ).
+
+fof(dt_k1_tdlat_2,axiom,
+    ! [A,B] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A)))) )
+     => m1_subset_1(k1_tdlat_2(A,B),k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A)))) ) ).
+
+fof(t7_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => k3_pcomps_1(A,B) = a_2_0_tdlat_2(A,B) ) ) ).
+
+fof(t16_tdlat_2,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => k1_tdlat_2(A,B) = a_2_1_tdlat_2(A,B) ) ) ).
+
+fof(t31_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => k3_pcomps_1(A,k1_tdlat_2(A,B)) = a_2_2_tdlat_2(A,B) ) ) ).
+
+fof(t32_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => k1_tdlat_2(A,k3_pcomps_1(A,B)) = a_2_3_tdlat_2(A,B) ) ) ).
+
+fof(t33_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => k3_pcomps_1(A,k1_tdlat_2(A,k3_pcomps_1(A,B))) = a_2_4_tdlat_2(A,B) ) ) ).
+
+fof(t34_tdlat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => k1_tdlat_2(A,k3_pcomps_1(A,k1_tdlat_2(A,B))) = a_2_5_tdlat_2(A,B) ) ) ).
+
+fof(fraenkel_a_2_0_tdlat_2,axiom,
+    ! [A,B,C] :
+      ( ( v2_pre_topc(B)
+        & l1_pre_topc(B)
+        & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(B)))) )
+     => ( r2_hidden(A,a_2_0_tdlat_2(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B)))
+            & A = D
+            & ? [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(B)))
+                & D = k6_pre_topc(B,E)
+                & r2_hidden(E,C) ) ) ) ) ).
+
+fof(fraenkel_a_2_1_tdlat_2,axiom,
+    ! [A,B,C] :
+      ( ( v2_pre_topc(B)
+        & l1_pre_topc(B)
+        & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(B)))) )
+     => ( r2_hidden(A,a_2_1_tdlat_2(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B)))
+            & A = D
+            & ? [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(B)))
+                & D = k1_tops_1(B,E)
+                & r2_hidden(E,C) ) ) ) ) ).
+
+fof(fraenkel_a_2_2_tdlat_2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v2_pre_topc(B)
+        & l1_pre_topc(B)
+        & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(B)))) )
+     => ( r2_hidden(A,a_2_2_tdlat_2(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B)))
+            & A = D
+            & ? [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(B)))
+                & D = k6_pre_topc(B,k1_tops_1(B,E))
+                & r2_hidden(E,C) ) ) ) ) ).
+
+fof(fraenkel_a_2_3_tdlat_2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v2_pre_topc(B)
+        & l1_pre_topc(B)
+        & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(B)))) )
+     => ( r2_hidden(A,a_2_3_tdlat_2(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B)))
+            & A = D
+            & ? [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(B)))
+                & D = k1_tops_1(B,k6_pre_topc(B,E))
+                & r2_hidden(E,C) ) ) ) ) ).
+
+fof(fraenkel_a_2_4_tdlat_2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v2_pre_topc(B)
+        & l1_pre_topc(B)
+        & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(B)))) )
+     => ( r2_hidden(A,a_2_4_tdlat_2(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B)))
+            & A = D
+            & ? [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(B)))
+                & D = k6_pre_topc(B,k1_tops_1(B,k6_pre_topc(B,E)))
+                & r2_hidden(E,C) ) ) ) ) ).
+
+fof(fraenkel_a_2_5_tdlat_2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v2_pre_topc(B)
+        & l1_pre_topc(B)
+        & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(B)))) )
+     => ( r2_hidden(A,a_2_5_tdlat_2(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B)))
+            & A = D
+            & ? [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(B)))
+                & D = k1_tops_1(B,k6_pre_topc(B,k1_tops_1(B,E)))
+                & r2_hidden(E,C) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

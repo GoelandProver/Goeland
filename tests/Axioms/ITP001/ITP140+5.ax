@@ -1,0 +1,715 @@
+%------------------------------------------------------------------------------
+% File     : ITP140+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : lift_ieee+2.ax [Gau20]
+%          : HL4140+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   52 (   2 unt;   0 def)
+%            Number of atoms       :  386 (  33 equ)
+%            Maximal formula atoms :   13 (   7 avg)
+%            Number of connectives :  347 (  13   ~;   0   |;  97   &)
+%                                         (   7 <=>; 230  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (  11 avg)
+%            Maximal term depth    :   10 (   2 avg)
+%            Number of predicates  :    4 (   3 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   72 (  72 usr;  27 con; 0-2 aty)
+%            Number of variables   :  201 ( 191   !;  10   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(mem_c_2Elift__ieee_2Eerror,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => mem(c_2Elift__ieee_2Eerror(A_27t,A_27w),arr(ty_2Ebool_2Eitself(ty_2Epair_2Eprod(A_27t,A_27w)),arr(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal))) ) ) ).
+
+fof(mem_c_2Elift__ieee_2Enormalizes,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => mem(c_2Elift__ieee_2Enormalizes(A_27t,A_27w),arr(ty_2Ebool_2Eitself(ty_2Epair_2Eprod(A_27t,A_27w)),arr(ty_2Erealax_2Ereal,bool))) ) ) ).
+
+fof(ax_thm_2Elift__ieee_2Eerror__def,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Erealax_2Ereal)
+             => ap(ap(c_2Elift__ieee_2Eerror(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),V0x) = ap(ap(c_2Ereal_2Ereal__sub,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(ap(c_2Ebinary__ieee_2Eround(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0x))),V0x) ) ) ) ).
+
+fof(ax_thm_2Elift__ieee_2Enormalizes__def,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Erealax_2Ereal)
+             => ( p(ap(ap(c_2Elift__ieee_2Enormalizes(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),V0x))
+              <=> ( p(ap(ap(c_2Eprim__rec_2E_3C,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO))),ap(c_2Ewords_2EINT__MAX(A_27w),c_2Ebool_2Ethe__value(A_27w))))
+                  & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Erealax_2Einv,ap(ap(c_2Ereal_2Epow,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),ap(ap(c_2Earithmetic_2E_2D,ap(c_2Ewords_2EINT__MAX(A_27w),c_2Ebool_2Ethe__value(A_27w))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))))),ap(c_2Ereal_2Eabs,V0x)))
+                  & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,V0x)),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__lt,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+             => ! [V1y] :
+                  ( mem(V1y,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V0x))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V1y)) )
+                   => ( p(ap(ap(c_2Ebinary__ieee_2Efloat__less__than(A_27a,A_27b),V0x),V1y))
+                    <=> p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V0x)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V1y))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__le,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+             => ! [V1y] :
+                  ( mem(V1y,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V0x))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V1y)) )
+                   => ( p(ap(ap(c_2Ebinary__ieee_2Efloat__less__equal(A_27a,A_27b),V0x),V1y))
+                    <=> p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V0x)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V1y))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__gt,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+             => ! [V1y] :
+                  ( mem(V1y,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V0x))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V1y)) )
+                   => ( p(ap(ap(c_2Ebinary__ieee_2Efloat__greater__than(A_27a,A_27b),V0x),V1y))
+                    <=> p(ap(ap(c_2Ereal_2Ereal__gt,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V0x)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V1y))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__ge,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+             => ! [V1y] :
+                  ( mem(V1y,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V0x))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V1y)) )
+                   => ( p(ap(ap(c_2Ebinary__ieee_2Efloat__greater__equal(A_27a,A_27b),V0x),V1y))
+                    <=> p(ap(ap(c_2Ereal_2Ereal__ge,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V0x)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V1y))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__eq,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+             => ! [V1y] :
+                  ( mem(V1y,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V0x))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V1y)) )
+                   => ( p(ap(ap(c_2Ebinary__ieee_2Efloat__equal(A_27a,A_27b),V0x),V1y))
+                    <=> ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V0x) = ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V1y) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__eq__refl,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+             => ( p(ap(ap(c_2Ebinary__ieee_2Efloat__equal(A_27a,A_27b),V0x),V0x))
+              <=> ~ p(ap(c_2Ebinary__ieee_2Efloat__is__nan(A_27a,A_27b),V0x)) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Eis__closest__exits,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Erealax_2Ereal)
+             => ! [V1s] :
+                  ( mem(V1s,arr(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),bool))
+                 => ( p(ap(c_2Epred__set_2EFINITE(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b)),V1s))
+                   => ( V1s != c_2Epred__set_2EEMPTY(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                     => ? [V2a] :
+                          ( mem(V2a,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                          & p(ap(ap(ap(c_2Ebinary__ieee_2Eis__closest(A_27a,A_27b),V1s),V0x),V2a)) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Eclosest__is__everything,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0p] :
+              ( mem(V0p,arr(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),bool))
+             => ! [V1s] :
+                  ( mem(V1s,arr(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),bool))
+                 => ! [V2x] :
+                      ( mem(V2x,ty_2Erealax_2Ereal)
+                     => ( p(ap(c_2Epred__set_2EFINITE(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b)),V1s))
+                       => ( V1s != c_2Epred__set_2EEMPTY(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                         => ( p(ap(ap(ap(c_2Ebinary__ieee_2Eis__closest(A_27a,A_27b),V1s),V2x),ap(ap(ap(c_2Ebinary__ieee_2Eclosest__such(A_27a,A_27b),V0p),V1s),V2x)))
+                            & ( ? [V3b] :
+                                  ( mem(V3b,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                                  & p(ap(ap(ap(c_2Ebinary__ieee_2Eis__closest(A_27a,A_27b),V1s),V2x),V3b))
+                                  & p(ap(V0p,V3b)) )
+                             => p(ap(V0p,ap(ap(ap(c_2Ebinary__ieee_2Eclosest__such(A_27a,A_27b),V0p),V1s),V2x))) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Eclosest__in__set,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0p] :
+              ( mem(V0p,arr(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),bool))
+             => ! [V1s] :
+                  ( mem(V1s,arr(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),bool))
+                 => ! [V2x] :
+                      ( mem(V2x,ty_2Erealax_2Ereal)
+                     => ( p(ap(c_2Epred__set_2EFINITE(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b)),V1s))
+                       => ( V1s != c_2Epred__set_2EEMPTY(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                         => p(ap(ap(c_2Ebool_2EIN(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b)),ap(ap(ap(c_2Ebinary__ieee_2Eclosest__such(A_27a,A_27b),V0p),V1s),V2x)),V1s)) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Eclosest__is__closest,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0p] :
+              ( mem(V0p,arr(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),bool))
+             => ! [V1s] :
+                  ( mem(V1s,arr(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),bool))
+                 => ! [V2x] :
+                      ( mem(V2x,ty_2Erealax_2Ereal)
+                     => ( p(ap(c_2Epred__set_2EFINITE(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b)),V1s))
+                       => ( V1s != c_2Epred__set_2EEMPTY(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+                         => p(ap(ap(ap(c_2Ebinary__ieee_2Eis__closest(A_27a,A_27b),V1s),V2x),ap(ap(ap(c_2Ebinary__ieee_2Eclosest__such(A_27a,A_27b),V0p),V1s),V2x))) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__finite,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => p(ap(c_2Epred__set_2EFINITE(ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),c_2Epred__set_2EUNIV(ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)))) ) ) ).
+
+fof(lameq_f3133,axiom,
+    ! [A_27a,A_27b,V0a] : ap(f3133(A_27a,A_27b),V0a) = ap(ap(c_2Epair_2E_2C(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),bool),V0a),ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V0a)) ).
+
+fof(conj_thm_2Elift__ieee_2Eis__finite__finite,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => p(ap(c_2Epred__set_2EFINITE(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b)),ap(c_2Epred__set_2EGSPEC(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),ty_2Ebinary__ieee_2Efloat(A_27a,A_27b)),f3133(A_27a,A_27b)))) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Eis__finite__nonempty,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ap(c_2Epred__set_2EGSPEC(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),ty_2Ebinary__ieee_2Efloat(A_27a,A_27b)),f3133(A_27a,A_27b)) != c_2Epred__set_2EEMPTY(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b)) ) ) ).
+
+fof(lameq_f3134,axiom,
+    ! [A_27a,A_27b,V2a] : ap(f3134(A_27a,A_27b),V2a) = ap(ap(c_2Epair_2E_2C(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),bool),V2a),ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V2a)) ).
+
+fof(conj_thm_2Elift__ieee_2Eis__finite__closest,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0p] :
+              ( mem(V0p,arr(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),bool))
+             => ! [V1x] :
+                  ( mem(V1x,ty_2Erealax_2Ereal)
+                 => p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),ap(ap(ap(c_2Ebinary__ieee_2Eclosest__such(A_27a,A_27b),V0p),ap(c_2Epred__set_2EGSPEC(ty_2Ebinary__ieee_2Efloat(A_27a,A_27b),ty_2Ebinary__ieee_2Efloat(A_27a,A_27b)),f3134(A_27a,A_27b))),V1x))) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__to__real__finite,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0x))
+               => p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Eabs,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0x))),ap(c_2Ebinary__ieee_2Elargest(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__to__real__threshold,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0x))
+               => p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0x))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Eerror__at__worst__lemma,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1x] :
+                  ( mem(V1x,ty_2Erealax_2Ereal)
+                 => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,V1x)),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w)))))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a)) )
+                   => p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Eabs,ap(ap(c_2Elift__ieee_2Eerror(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),V1x))),ap(c_2Ereal_2Eabs,ap(ap(c_2Ereal_2Ereal__sub,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),V1x)))) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Eerror__is__zero,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1x] :
+                  ( mem(V1x,ty_2Erealax_2Ereal)
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a) = V1x )
+                   => ap(ap(c_2Elift__ieee_2Eerror(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),V1x) = ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Erelative__error,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Erealax_2Ereal)
+             => ( p(ap(ap(c_2Elift__ieee_2Enormalizes(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),V0x))
+               => ? [V1e] :
+                    ( mem(V1e,ty_2Erealax_2Ereal)
+                    & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Eabs,V1e)),ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(ap(c_2Ereal_2Epow,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Efcp_2Edimindex(A_27t),c_2Ebool_2Ethe__value(A_27t))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))))))
+                    & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(ap(c_2Ebinary__ieee_2Eround(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0x)) = ap(ap(c_2Erealax_2Ereal__mul,V0x),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V1e)) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__round__finite,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0b] :
+              ( mem(V0b,bool)
+             => ! [V1x] :
+                  ( mem(V1x,ty_2Erealax_2Ereal)
+                 => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,V1x)),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w)))))
+                   => p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(ap(ap(c_2Ebinary__ieee_2Efloat__round(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0b),V1x))) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__add,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                   => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__add(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))))
+                      & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__add(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))) = ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(ap(c_2Elift__ieee_2Eerror(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__sub,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Ereal_2Ereal__sub,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                   => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__sub(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))))
+                      & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__sub(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))) = ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Ereal_2Ereal__sub,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(ap(c_2Elift__ieee_2Eerror(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Ereal_2Ereal__sub,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__mul,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                   => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))))
+                      & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))) = ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(ap(c_2Elift__ieee_2Eerror(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__div,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & ~ p(ap(c_2Ebinary__ieee_2Efloat__is__zero(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Ereal_2E_2F,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                   => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__div(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))))
+                      & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__div(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))) = ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Ereal_2E_2F,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(ap(c_2Elift__ieee_2Eerror(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Ereal_2E_2F,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__sqrt,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                  & ap(c_2Ebinary__ieee_2Efloat__Sign(A_27t,A_27w),V0a) = ap(c_2Ewords_2En2w(ty_2Eone_2Eone),c_2Enum_2E0)
+                  & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(c_2Etransc_2Esqrt,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+               => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(c_2Ebinary__ieee_2Efloat__sqrt(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a))))
+                  & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(c_2Ebinary__ieee_2Efloat__sqrt(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a))) = ap(ap(c_2Erealax_2Ereal__add,ap(c_2Etransc_2Esqrt,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a))),ap(ap(c_2Elift__ieee_2Eerror(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(c_2Etransc_2Esqrt,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)))) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__mul__add,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ! [V2c] :
+                      ( mem(V2c,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                     => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V2c))
+                          & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                       => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul__add(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b),V2c))))
+                          & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul__add(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b),V2c))) = ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c))),ap(ap(c_2Elift__ieee_2Eerror(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c)))) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__mul__sub,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ! [V2c] :
+                      ( mem(V2c,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                     => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V2c))
+                          & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Ereal_2Ereal__sub,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                       => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul__sub(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b),V2c))))
+                          & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul__sub(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b),V2c))) = ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Ereal_2Ereal__sub,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c))),ap(ap(c_2Elift__ieee_2Eerror(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Ereal_2Ereal__sub,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c)))) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__add__finite,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                   => p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__add(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b)))) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__sub__finite,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Ereal_2Ereal__sub,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                   => p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__sub(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b)))) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__mul__finite,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                   => p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b)))) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__div__finite,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & ~ p(ap(c_2Ebinary__ieee_2Efloat__is__zero(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Ereal_2E_2F,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                   => p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__div(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b)))) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__sqrt__finite,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                  & ap(c_2Ebinary__ieee_2Efloat__Sign(A_27t,A_27w),V0a) = ap(c_2Ewords_2En2w(ty_2Eone_2Eone),c_2Enum_2E0)
+                  & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(c_2Etransc_2Esqrt,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+               => p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(c_2Ebinary__ieee_2Efloat__sqrt(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a)))) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__mul__add__finite,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ! [V2c] :
+                      ( mem(V2c,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                     => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V2c))
+                          & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                       => p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul__add(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b),V2c)))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__mul__sub__finite,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ! [V2c] :
+                      ( mem(V2c,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                     => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V2c))
+                          & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Eabs,ap(ap(c_2Ereal_2Ereal__sub,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c)))),ap(c_2Ebinary__ieee_2Ethreshold(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))))) )
+                       => p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul__sub(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b),V2c)))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__add__relative,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Elift__ieee_2Enormalizes(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))) )
+                   => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__add(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))))
+                      & ? [V2e] :
+                          ( mem(V2e,ty_2Erealax_2Ereal)
+                          & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Eabs,V2e)),ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(ap(c_2Ereal_2Epow,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Efcp_2Edimindex(A_27t),c_2Ebool_2Ethe__value(A_27t))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))))))
+                          & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__add(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))) = ap(ap(c_2Erealax_2Ereal__mul,ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V2e)) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__sub__relative,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Elift__ieee_2Enormalizes(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Ereal_2Ereal__sub,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))) )
+                   => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__sub(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))))
+                      & ? [V2e] :
+                          ( mem(V2e,ty_2Erealax_2Ereal)
+                          & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Eabs,V2e)),ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(ap(c_2Ereal_2Epow,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Efcp_2Edimindex(A_27t),c_2Ebool_2Ethe__value(A_27t))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))))))
+                          & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__sub(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))) = ap(ap(c_2Erealax_2Ereal__mul,ap(ap(c_2Ereal_2Ereal__sub,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V2e)) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__mul__relative,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Elift__ieee_2Enormalizes(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))) )
+                   => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))))
+                      & ? [V2e] :
+                          ( mem(V2e,ty_2Erealax_2Ereal)
+                          & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Eabs,V2e)),ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(ap(c_2Ereal_2Epow,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Efcp_2Edimindex(A_27t),c_2Ebool_2Ethe__value(A_27t))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))))))
+                          & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))) = ap(ap(c_2Erealax_2Ereal__mul,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V2e)) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__div__relative,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                      & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                      & ~ p(ap(c_2Ebinary__ieee_2Efloat__is__zero(A_27t,A_27w),V1b))
+                      & p(ap(ap(c_2Elift__ieee_2Enormalizes(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Ereal_2E_2F,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b)))) )
+                   => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__div(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))))
+                      & ? [V2e] :
+                          ( mem(V2e,ty_2Erealax_2Ereal)
+                          & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Eabs,V2e)),ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(ap(c_2Ereal_2Epow,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Efcp_2Edimindex(A_27t),c_2Ebool_2Ethe__value(A_27t))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))))))
+                          & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(c_2Ebinary__ieee_2Efloat__div(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b))) = ap(ap(c_2Erealax_2Ereal__mul,ap(ap(c_2Ereal_2E_2F,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V2e)) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__sqrt__relative,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                  & ap(c_2Ebinary__ieee_2Efloat__Sign(A_27t,A_27w),V0a) = ap(c_2Ewords_2En2w(ty_2Eone_2Eone),c_2Enum_2E0)
+                  & p(ap(ap(c_2Elift__ieee_2Enormalizes(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(c_2Etransc_2Esqrt,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)))) )
+               => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(c_2Ebinary__ieee_2Efloat__sqrt(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a))))
+                  & ? [V1e] :
+                      ( mem(V1e,ty_2Erealax_2Ereal)
+                      & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Eabs,V1e)),ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(ap(c_2Ereal_2Epow,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Efcp_2Edimindex(A_27t),c_2Ebool_2Ethe__value(A_27t))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))))))
+                      & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(c_2Ebinary__ieee_2Efloat__sqrt(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a))) = ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Etransc_2Esqrt,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a))),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V1e)) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__mul__add__relative,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ! [V2c] :
+                      ( mem(V2c,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                     => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V2c))
+                          & p(ap(ap(c_2Elift__ieee_2Enormalizes(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c)))) )
+                       => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul__add(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b),V2c))))
+                          & ? [V3e] :
+                              ( mem(V3e,ty_2Erealax_2Ereal)
+                              & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Eabs,V3e)),ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(ap(c_2Ereal_2Epow,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Efcp_2Edimindex(A_27t),c_2Ebool_2Ethe__value(A_27t))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))))))
+                              & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul__add(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b),V2c))) = ap(ap(c_2Erealax_2Ereal__mul,ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c))),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V3e)) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__mul__sub__relative,axiom,
+    ! [A_27t] :
+      ( ne(A_27t)
+     => ! [A_27w] :
+          ( ne(A_27w)
+         => ! [V0a] :
+              ( mem(V0a,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+             => ! [V1b] :
+                  ( mem(V1b,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                 => ! [V2c] :
+                      ( mem(V2c,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w))
+                     => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V0a))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V1b))
+                          & p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),V2c))
+                          & p(ap(ap(c_2Elift__ieee_2Enormalizes(A_27t,A_27w),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27t,A_27w))),ap(ap(c_2Ereal_2Ereal__sub,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c)))) )
+                       => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul__sub(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b),V2c))))
+                          & ? [V3e] :
+                              ( mem(V3e,ty_2Erealax_2Ereal)
+                              & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Eabs,V3e)),ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(ap(c_2Ereal_2Epow,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Efcp_2Edimindex(A_27t),c_2Ebool_2Ethe__value(A_27t))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))))))
+                              & ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),ap(c_2Epair_2ESND(ty_2Ebinary__ieee_2Eflags,ty_2Ebinary__ieee_2Efloat(A_27t,A_27w)),ap(ap(ap(ap(c_2Ebinary__ieee_2Efloat__mul__sub(A_27t,A_27w),c_2Ebinary__ieee_2EroundTiesToEven),V0a),V1b),V2c))) = ap(ap(c_2Erealax_2Ereal__mul,ap(ap(c_2Ereal_2Ereal__sub,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V0a)),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V1b))),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27t,A_27w),V2c))),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V3e)) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efinite__float__within__threshold,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0f] :
+              ( mem(V0f,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+             => ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V0f))
+               => ( ~ p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V0f)),ap(c_2Erealax_2Ereal__neg,ap(c_2Ebinary__ieee_2Ethreshold(A_27a,A_27b),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27a,A_27b))))))
+                  & ~ p(ap(ap(c_2Ereal_2Ereal__ge,ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V0f)),ap(c_2Ebinary__ieee_2Ethreshold(A_27a,A_27b),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27a,A_27b))))) ) ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Eround__finite__normal__float__id,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0f] :
+              ( mem(V0f,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+             => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V0f))
+                  & ~ p(ap(c_2Ebinary__ieee_2Efloat__is__zero(A_27a,A_27b),V0f)) )
+               => ap(ap(c_2Ebinary__ieee_2Eround(A_27a,A_27b),c_2Ebinary__ieee_2EroundTiesToEven),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V0f)) = V0f ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Ereal__to__float__finite__normal__id,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0f] :
+              ( mem(V0f,ty_2Ebinary__ieee_2Efloat(A_27a,A_27b))
+             => ( ( p(ap(c_2Ebinary__ieee_2Efloat__is__finite(A_27a,A_27b),V0f))
+                  & ~ p(ap(c_2Ebinary__ieee_2Efloat__is__zero(A_27a,A_27b),V0f)) )
+               => ap(ap(c_2Ebinary__ieee_2Ereal__to__float(A_27a,A_27b),c_2Ebinary__ieee_2EroundTiesToEven),ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),V0f)) = V0f ) ) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Efloat__to__real__real__to__float__zero__id,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),ap(ap(c_2Ebinary__ieee_2Ereal__to__float(A_27a,A_27b),c_2Ebinary__ieee_2EroundTiesToEven),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0))) = ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) ) ) ).
+
+fof(conj_thm_2Elift__ieee_2Enon__representable__float__is__zero,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0ff] :
+              ( mem(V0ff,ty_2Erealax_2Ereal)
+             => ! [V1P] :
+                  ( mem(V1P,bool)
+                 => ( p(ap(ap(c_2Ereal_2Ereal__lte,ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),ap(c_2Ereal_2Eabs,V0ff))),ap(c_2Ebinary__ieee_2Eulp(A_27a,A_27b),c_2Ebool_2Ethe__value(ty_2Epair_2Eprod(A_27a,A_27b)))))
+                   => ap(c_2Ebinary__ieee_2Efloat__to__real(A_27a,A_27b),ap(ap(ap(c_2Ebinary__ieee_2Efloat__round(A_27a,A_27b),c_2Ebinary__ieee_2EroundTiesToEven),V1P),V0ff)) = ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

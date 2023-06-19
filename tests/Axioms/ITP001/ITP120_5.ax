@@ -1,0 +1,195 @@
+%------------------------------------------------------------------------------
+% File     : ITP120_5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : intreal_2.ax [Gau20]
+%          : HL4120_5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   43 (  21 unt;  11 typ;   0 def)
+%            Number of atoms       :  656 (  32 equ)
+%            Maximal formula atoms :    6 (  15 avg)
+%            Number of connectives :   21 (   0   ~;   0   |;  12   &)
+%                                         (   6 <=>;   3  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    8 (   3 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of FOOLs       :  603 ( 603 fml;   0 var)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :    7 (   7   >;   0   *;   0   +;   0  <<)
+%            Number of predicates  :   45 (  44 usr;  31 prp; 0-2 aty)
+%            Number of functors    :   11 (  11 usr;   4 con; 0-1 aty)
+%            Number of variables   :   46 (  46   !;   0   ?;  46   :)
+% SPC      : TF0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+tff(tp_c_2Eintreal_2EINT__CEILING,type,
+    c_2Eintreal_2EINT__CEILING: $i ).
+
+tff(mem_c_2Eintreal_2EINT__CEILING,axiom,
+    mem(c_2Eintreal_2EINT__CEILING,arr(ty_2Erealax_2Ereal,ty_2Einteger_2Eint)) ).
+
+tff(stp_fo_c_2Eintreal_2EINT__CEILING,type,
+    fo__c_2Eintreal_2EINT__CEILING: tp__ty_2Erealax_2Ereal > tp__ty_2Einteger_2Eint ).
+
+tff(stp_eq_fo_c_2Eintreal_2EINT__CEILING,axiom,
+    ! [X0: tp__ty_2Erealax_2Ereal] : ( inj__ty_2Einteger_2Eint(fo__c_2Eintreal_2EINT__CEILING(X0)) = ap(c_2Eintreal_2EINT__CEILING,inj__ty_2Erealax_2Ereal(X0)) ) ).
+
+tff(tp_c_2Eintreal_2EINT__FLOOR,type,
+    c_2Eintreal_2EINT__FLOOR: $i ).
+
+tff(mem_c_2Eintreal_2EINT__FLOOR,axiom,
+    mem(c_2Eintreal_2EINT__FLOOR,arr(ty_2Erealax_2Ereal,ty_2Einteger_2Eint)) ).
+
+tff(stp_fo_c_2Eintreal_2EINT__FLOOR,type,
+    fo__c_2Eintreal_2EINT__FLOOR: tp__ty_2Erealax_2Ereal > tp__ty_2Einteger_2Eint ).
+
+tff(stp_eq_fo_c_2Eintreal_2EINT__FLOOR,axiom,
+    ! [X0: tp__ty_2Erealax_2Ereal] : ( inj__ty_2Einteger_2Eint(fo__c_2Eintreal_2EINT__FLOOR(X0)) = ap(c_2Eintreal_2EINT__FLOOR,inj__ty_2Erealax_2Ereal(X0)) ) ).
+
+tff(tp_c_2Eintreal_2Eis__int,type,
+    c_2Eintreal_2Eis__int: $i ).
+
+tff(mem_c_2Eintreal_2Eis__int,axiom,
+    mem(c_2Eintreal_2Eis__int,arr(ty_2Erealax_2Ereal,bool)) ).
+
+tff(stp_fo_c_2Eintreal_2Eis__int,type,
+    fo__c_2Eintreal_2Eis__int: tp__ty_2Erealax_2Ereal > tp__o ).
+
+tff(stp_eq_fo_c_2Eintreal_2Eis__int,axiom,
+    ! [X0: tp__ty_2Erealax_2Ereal] : ( inj__o(fo__c_2Eintreal_2Eis__int(X0)) = ap(c_2Eintreal_2Eis__int,inj__ty_2Erealax_2Ereal(X0)) ) ).
+
+tff(tp_c_2Eintreal_2Ereal__of__int,type,
+    c_2Eintreal_2Ereal__of__int: $i ).
+
+tff(mem_c_2Eintreal_2Ereal__of__int,axiom,
+    mem(c_2Eintreal_2Ereal__of__int,arr(ty_2Einteger_2Eint,ty_2Erealax_2Ereal)) ).
+
+tff(stp_fo_c_2Eintreal_2Ereal__of__int,type,
+    fo__c_2Eintreal_2Ereal__of__int: tp__ty_2Einteger_2Eint > tp__ty_2Erealax_2Ereal ).
+
+tff(stp_eq_fo_c_2Eintreal_2Ereal__of__int,axiom,
+    ! [X0: tp__ty_2Einteger_2Eint] : ( inj__ty_2Erealax_2Ereal(fo__c_2Eintreal_2Ereal__of__int(X0)) = ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(X0)) ) ).
+
+tff(ax_thm_2Eintreal_2Ereal__of__int,axiom,
+    ! [V0i: tp__ty_2Einteger_2Eint] : ( surj__ty_2Erealax_2Ereal(ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V0i))) = surj__ty_2Erealax_2Ereal(ap(ap(ap(c_2Ebool_2ECOND(ty_2Erealax_2Ereal),ap(ap(c_2Einteger_2Eint__lt,inj__ty_2Einteger_2Eint(V0i)),ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)))),ap(c_2Erealax_2Ereal__neg,ap(c_2Ereal_2Ereal__of__num,ap(c_2Einteger_2ENum,ap(c_2Einteger_2Eint__neg,inj__ty_2Einteger_2Eint(V0i)))))),ap(c_2Ereal_2Ereal__of__num,ap(c_2Einteger_2ENum,inj__ty_2Einteger_2Eint(V0i))))) ) ).
+
+tff(conj_thm_2Eintreal_2Ereal__of__int__def,axiom,
+    ! [V0i: tp__ty_2Einteger_2Eint] : ( surj__ty_2Erealax_2Ereal(ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V0i))) = surj__ty_2Erealax_2Ereal(ap(ap(ap(c_2Ebool_2ECOND(ty_2Erealax_2Ereal),ap(ap(c_2Einteger_2Eint__lt,inj__ty_2Einteger_2Eint(V0i)),ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)))),ap(c_2Erealax_2Ereal__neg,ap(c_2Ereal_2Ereal__of__num,ap(c_2Einteger_2ENum,ap(c_2Einteger_2Eint__neg,inj__ty_2Einteger_2Eint(V0i)))))),ap(c_2Ereal_2Ereal__of__num,ap(c_2Einteger_2ENum,inj__ty_2Einteger_2Eint(V0i))))) ) ).
+
+tff(lamtp_f2741,type,
+    f2741: tp__ty_2Erealax_2Ereal > $i ).
+
+tff(lameq_f2741,axiom,
+    ! [V0x: tp__ty_2Erealax_2Ereal,V1i: tp__ty_2Einteger_2Eint] : ( ap(f2741(V0x),inj__ty_2Einteger_2Eint(V1i)) = ap(ap(c_2Erealax_2Ereal__lt,inj__ty_2Erealax_2Ereal(V0x)),ap(c_2Eintreal_2Ereal__of__int,ap(ap(c_2Einteger_2Eint__add,inj__ty_2Einteger_2Eint(V1i)),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))))))) ) ).
+
+tff(ax_thm_2Eintreal_2EINT__FLOOR__def,axiom,
+    ! [V0x: tp__ty_2Erealax_2Ereal] : ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,inj__ty_2Erealax_2Ereal(V0x))) = surj__ty_2Einteger_2Eint(ap(c_2Einteger_2ELEAST__INT,f2741(V0x))) ) ).
+
+tff(lamtp_f2742,type,
+    f2742: tp__ty_2Erealax_2Ereal > $i ).
+
+tff(lameq_f2742,axiom,
+    ! [V0x: tp__ty_2Erealax_2Ereal,V1i: tp__ty_2Einteger_2Eint] : ( ap(f2742(V0x),inj__ty_2Einteger_2Eint(V1i)) = ap(ap(c_2Ereal_2Ereal__lte,inj__ty_2Erealax_2Ereal(V0x)),ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1i))) ) ).
+
+tff(ax_thm_2Eintreal_2EINT__CEILING__def,axiom,
+    ! [V0x: tp__ty_2Erealax_2Ereal] : ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__CEILING,inj__ty_2Erealax_2Ereal(V0x))) = surj__ty_2Einteger_2Eint(ap(c_2Einteger_2ELEAST__INT,f2742(V0x))) ) ).
+
+tff(ax_thm_2Eintreal_2Eis__int__def,axiom,
+    ! [V0x: tp__ty_2Erealax_2Ereal] :
+      ( p(ap(c_2Eintreal_2Eis__int,inj__ty_2Erealax_2Ereal(V0x)))
+    <=> ( V0x = surj__ty_2Erealax_2Ereal(ap(c_2Eintreal_2Ereal__of__int,ap(c_2Eintreal_2EINT__FLOOR,inj__ty_2Erealax_2Ereal(V0x)))) ) ) ).
+
+tff(conj_thm_2Eintreal_2Ereal__of__int__monotonic,axiom,
+    ! [V0i: tp__ty_2Einteger_2Eint,V1j: tp__ty_2Einteger_2Eint] :
+      ( p(ap(ap(c_2Einteger_2Eint__lt,inj__ty_2Einteger_2Eint(V0i)),inj__ty_2Einteger_2Eint(V1j)))
+     => p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V0i))),ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1j)))) ) ).
+
+tff(conj_thm_2Eintreal_2EINT__FLOOR__BOUNDS,axiom,
+    ! [V0r: tp__ty_2Erealax_2Ereal] :
+      ( p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Eintreal_2Ereal__of__int,ap(c_2Eintreal_2EINT__FLOOR,inj__ty_2Erealax_2Ereal(V0r)))),inj__ty_2Erealax_2Ereal(V0r)))
+      & p(ap(ap(c_2Erealax_2Ereal__lt,inj__ty_2Erealax_2Ereal(V0r)),ap(c_2Eintreal_2Ereal__of__int,ap(ap(c_2Einteger_2Eint__add,ap(c_2Eintreal_2EINT__FLOOR,inj__ty_2Erealax_2Ereal(V0r))),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))))))) ) ).
+
+tff(conj_thm_2Eintreal_2EINT__FLOOR,axiom,
+    ! [V0r: tp__ty_2Erealax_2Ereal,V1i: tp__ty_2Einteger_2Eint] :
+      ( ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,inj__ty_2Erealax_2Ereal(V0r))) = V1i )
+    <=> ( p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1i))),inj__ty_2Erealax_2Ereal(V0r)))
+        & p(ap(ap(c_2Erealax_2Ereal__lt,inj__ty_2Erealax_2Ereal(V0r)),ap(c_2Eintreal_2Ereal__of__int,ap(ap(c_2Einteger_2Eint__add,inj__ty_2Einteger_2Eint(V1i)),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))))))) ) ) ).
+
+tff(lamtp_f2743,type,
+    f2743: tp__ty_2Erealax_2Ereal > $i ).
+
+tff(lameq_f2743,axiom,
+    ! [V0r: tp__ty_2Erealax_2Ereal,V1i: tp__ty_2Einteger_2Eint] : ( ap(f2743(V0r),inj__ty_2Einteger_2Eint(V1i)) = ap(ap(ap(c_2Ebool_2ECOND(ty_2Einteger_2Eint),ap(ap(c_2Emin_2E_3D(ty_2Erealax_2Ereal),ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1i))),inj__ty_2Erealax_2Ereal(V0r))),inj__ty_2Einteger_2Eint(V1i)),ap(ap(c_2Einteger_2Eint__add,inj__ty_2Einteger_2Eint(V1i)),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))))) ) ).
+
+tff(conj_thm_2Eintreal_2EINT__CEILING__INT__FLOOR,axiom,
+    ! [V0r: tp__ty_2Erealax_2Ereal] : ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__CEILING,inj__ty_2Erealax_2Ereal(V0r))) = surj__ty_2Einteger_2Eint(ap(ap(c_2Ebool_2ELET(ty_2Einteger_2Eint,ty_2Einteger_2Eint),f2743(V0r)),ap(c_2Eintreal_2EINT__FLOOR,inj__ty_2Erealax_2Ereal(V0r)))) ) ).
+
+tff(conj_thm_2Eintreal_2EINT__CEILING__BOUNDS,axiom,
+    ! [V0r: tp__ty_2Erealax_2Ereal] :
+      ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Eintreal_2Ereal__of__int,ap(ap(c_2Einteger_2Eint__sub,ap(c_2Eintreal_2EINT__CEILING,inj__ty_2Erealax_2Ereal(V0r))),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))))))),inj__ty_2Erealax_2Ereal(V0r)))
+      & p(ap(ap(c_2Ereal_2Ereal__lte,inj__ty_2Erealax_2Ereal(V0r)),ap(c_2Eintreal_2Ereal__of__int,ap(c_2Eintreal_2EINT__CEILING,inj__ty_2Erealax_2Ereal(V0r))))) ) ).
+
+tff(conj_thm_2Eintreal_2EINT__CEILING,axiom,
+    ! [V0r: tp__ty_2Erealax_2Ereal,V1i: tp__ty_2Einteger_2Eint] :
+      ( ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__CEILING,inj__ty_2Erealax_2Ereal(V0r))) = V1i )
+    <=> ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Eintreal_2Ereal__of__int,ap(ap(c_2Einteger_2Eint__sub,inj__ty_2Einteger_2Eint(V1i)),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))))))),inj__ty_2Erealax_2Ereal(V0r)))
+        & p(ap(ap(c_2Ereal_2Ereal__lte,inj__ty_2Erealax_2Ereal(V0r)),ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1i)))) ) ) ).
+
+tff(conj_thm_2Eintreal_2EINT__FLOOR__EQNS,axiom,
+    ( ! [V0n: tp__ty_2Enum_2Enum] : ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V0n)))) = surj__ty_2Einteger_2Eint(ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0n))) )
+    & ! [V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,ap(c_2Erealax_2Ereal__neg,ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V1n))))) = surj__ty_2Einteger_2Eint(ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V1n)))) )
+    & ! [V2n: tp__ty_2Enum_2Enum,V3m: tp__ty_2Enum_2Enum] :
+        ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),inj__ty_2Enum_2Enum(V3m)))
+       => ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V2n))),ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V3m))))) = surj__ty_2Einteger_2Eint(ap(ap(c_2Einteger_2Eint__div,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V2n))),ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V3m)))) ) )
+    & ! [V4n: tp__ty_2Enum_2Enum,V5m: tp__ty_2Enum_2Enum] :
+        ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),inj__ty_2Enum_2Enum(V5m)))
+       => ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,ap(ap(c_2Ereal_2E_2F,ap(c_2Erealax_2Ereal__neg,ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V4n)))),ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V5m))))) = surj__ty_2Einteger_2Eint(ap(ap(c_2Einteger_2Eint__div,ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V4n)))),ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V5m)))) ) ) ) ).
+
+tff(conj_thm_2Eintreal_2EINT__FLOOR__compute,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum,V1m: tp__ty_2Enum_2Enum] :
+      ( ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V0n)))) = surj__ty_2Einteger_2Eint(ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0n))) )
+      & ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,ap(c_2Erealax_2Ereal__neg,ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V0n))))) = surj__ty_2Einteger_2Eint(ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0n)))) )
+      & ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V0n))),ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V1m))))))) = surj__ty_2Einteger_2Eint(ap(ap(c_2Einteger_2Eint__div,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0n))),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V1m)))))) )
+      & ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V0n))),ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V1m))))))) = surj__ty_2Einteger_2Eint(ap(ap(c_2Einteger_2Eint__div,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0n))),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V1m)))))) )
+      & ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,ap(ap(c_2Ereal_2E_2F,ap(c_2Erealax_2Ereal__neg,ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V0n)))),ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V1m))))))) = surj__ty_2Einteger_2Eint(ap(ap(c_2Einteger_2Eint__div,ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0n)))),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V1m)))))) )
+      & ( surj__ty_2Einteger_2Eint(ap(c_2Eintreal_2EINT__FLOOR,ap(ap(c_2Ereal_2E_2F,ap(c_2Erealax_2Ereal__neg,ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V0n)))),ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V1m))))))) = surj__ty_2Einteger_2Eint(ap(ap(c_2Einteger_2Eint__div,ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0n)))),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V1m)))))) ) ) ).
+
+tff(conj_thm_2Eintreal_2Ereal__of__int__num,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : ( surj__ty_2Erealax_2Ereal(ap(c_2Eintreal_2Ereal__of__int,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0n)))) = surj__ty_2Erealax_2Ereal(ap(c_2Ereal_2Ereal__of__num,inj__ty_2Enum_2Enum(V0n))) ) ).
+
+tff(conj_thm_2Eintreal_2Ereal__of__int__add,axiom,
+    ! [V0m: tp__ty_2Einteger_2Eint,V1n: tp__ty_2Einteger_2Eint] : ( surj__ty_2Erealax_2Ereal(ap(c_2Eintreal_2Ereal__of__int,ap(ap(c_2Einteger_2Eint__add,inj__ty_2Einteger_2Eint(V0m)),inj__ty_2Einteger_2Eint(V1n)))) = surj__ty_2Erealax_2Ereal(ap(ap(c_2Erealax_2Ereal__add,ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V0m))),ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1n)))) ) ).
+
+tff(conj_thm_2Eintreal_2Ereal__of__int__neg,axiom,
+    ! [V0m: tp__ty_2Einteger_2Eint] : ( surj__ty_2Erealax_2Ereal(ap(c_2Eintreal_2Ereal__of__int,ap(c_2Einteger_2Eint__neg,inj__ty_2Einteger_2Eint(V0m)))) = surj__ty_2Erealax_2Ereal(ap(c_2Erealax_2Ereal__neg,ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V0m)))) ) ).
+
+tff(conj_thm_2Eintreal_2Ereal__of__int__sub,axiom,
+    ! [V0m: tp__ty_2Einteger_2Eint,V1n: tp__ty_2Einteger_2Eint] : ( surj__ty_2Erealax_2Ereal(ap(c_2Eintreal_2Ereal__of__int,ap(ap(c_2Einteger_2Eint__sub,inj__ty_2Einteger_2Eint(V0m)),inj__ty_2Einteger_2Eint(V1n)))) = surj__ty_2Erealax_2Ereal(ap(ap(c_2Ereal_2Ereal__sub,ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V0m))),ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1n)))) ) ).
+
+tff(conj_thm_2Eintreal_2Ereal__of__int__mul,axiom,
+    ! [V0m: tp__ty_2Einteger_2Eint,V1n: tp__ty_2Einteger_2Eint] : ( surj__ty_2Erealax_2Ereal(ap(c_2Eintreal_2Ereal__of__int,ap(ap(c_2Einteger_2Eint__mul,inj__ty_2Einteger_2Eint(V0m)),inj__ty_2Einteger_2Eint(V1n)))) = surj__ty_2Erealax_2Ereal(ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V0m))),ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1n)))) ) ).
+
+tff(conj_thm_2Eintreal_2Ereal__of__int__lt,axiom,
+    ! [V0m: tp__ty_2Einteger_2Eint,V1n: tp__ty_2Einteger_2Eint] :
+      ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V0m))),ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1n))))
+    <=> p(ap(ap(c_2Einteger_2Eint__lt,inj__ty_2Einteger_2Eint(V0m)),inj__ty_2Einteger_2Eint(V1n))) ) ).
+
+tff(conj_thm_2Eintreal_2Ereal__of__int__11,axiom,
+    ! [V0m: tp__ty_2Einteger_2Eint,V1n: tp__ty_2Einteger_2Eint] :
+      ( ( surj__ty_2Erealax_2Ereal(ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V0m))) = surj__ty_2Erealax_2Ereal(ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1n))) )
+    <=> ( V0m = V1n ) ) ).
+
+tff(conj_thm_2Eintreal_2Ereal__of__int__le,axiom,
+    ! [V0m: tp__ty_2Einteger_2Eint,V1n: tp__ty_2Einteger_2Eint] :
+      ( p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V0m))),ap(c_2Eintreal_2Ereal__of__int,inj__ty_2Einteger_2Eint(V1n))))
+    <=> p(ap(ap(c_2Einteger_2Eint__le,inj__ty_2Einteger_2Eint(V0m)),inj__ty_2Einteger_2Eint(V1n))) ) ).
+
+%------------------------------------------------------------------------------

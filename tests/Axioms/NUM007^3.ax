@@ -1,0 +1,2591 @@
+%------------------------------------------------------------------------------
+% File     : NUM007^3 : TPTP v8.1.2. Released v7.1.0.
+% Domain   : Number Theory
+% Axioms   : Grundlagen chapter 3
+% Version  : [Bro17] axioms : Especial.
+% English  :
+
+% Refs     : [Bro17] Brown (2017), Email to G. Sutcliffe
+% Source   : [Bro17]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  378 ( 117 unt; 117 typ; 117 def)
+%            Number of atoms       : 1926 ( 117 equ;   0 cnn)
+%            Maximal formula atoms :   20 (   5 avg)
+%            Number of connectives : 3227 (   0   ~;   0   |;   0   &;3065   @)
+%                                         (   0 <=>; 162  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   21 (   7 avg;3065 nst)
+%            Number of types       :    2 (   0 usr)
+%            Number of type conns  :  209 ( 209   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :  176 ( 175 usr;  68 con; 0-5 aty)
+%            Number of variables   :  953 ( 950   ^   3   !;   0   ?; 953   :)
+% SPC      :
+
+% Comments :
+%------------------------------------------------------------------------------
+thf(typ_rp_is,type,
+    rp_is: $i > $i > $o ).
+
+thf(def_rp_is,definition,
+    ( rp_is
+    = ( e_is @ cut ) ) ).
+
+thf(typ_rp_nis,type,
+    rp_nis: $i > $i > $o ).
+
+thf(def_rp_nis,definition,
+    ( rp_nis
+    = ( ^ [X0: $i,X1: $i] : ( d_not @ ( rp_is @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_cutof,type,
+    cutof: $i > $i ).
+
+thf(def_cutof,definition,
+    ( cutof
+    = ( out @ ( power @ rat ) @ cutprop ) ) ).
+
+thf(typ_rp_all,type,
+    rp_all: ( $i > $o ) > $o ).
+
+thf(def_rp_all,definition,
+    ( rp_all
+    = ( all @ cut ) ) ).
+
+thf(typ_rp_some,type,
+    rp_some: ( $i > $o ) > $o ).
+
+thf(def_rp_some,definition,
+    ( rp_some
+    = ( l_some @ cut ) ) ).
+
+thf(typ_rp_one,type,
+    rp_one: ( $i > $o ) > $o ).
+
+thf(def_rp_one,definition,
+    ( rp_one
+    = ( one @ cut ) ) ).
+
+thf(satz116,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] : ( rp_is @ X0 @ X0 ) ) ).
+
+thf(satz117,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_is @ X0 @ X1 )
+           => ( rp_is @ X1 @ X0 ) ) ) ) ).
+
+thf(satz118,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_is @ X0 @ X1 )
+               => ( ( rp_is @ X1 @ X2 )
+                 => ( rp_is @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(satz119,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( urt @ X0 @ X1 )
+           => ( all_of
+              @ ^ [X2: $i] : ( in @ X2 @ rat )
+              @ ^ [X2: $i] :
+                  ( ( rt_more @ X2 @ X1 )
+                 => ( urt @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(satz119a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( urt @ X0 @ X1 )
+           => ( all_of
+              @ ^ [X2: $i] : ( in @ X2 @ rat )
+              @ ^ [X2: $i] :
+                  ( ( rt_less @ X1 @ X2 )
+                 => ( urt @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(satz120,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( lrt @ X0 @ X1 )
+           => ( all_of
+              @ ^ [X2: $i] : ( in @ X2 @ rat )
+              @ ^ [X2: $i] :
+                  ( ( rt_less @ X2 @ X1 )
+                 => ( lrt @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(satz120a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( lrt @ X0 @ X1 )
+           => ( all_of
+              @ ^ [X2: $i] : ( in @ X2 @ rat )
+              @ ^ [X2: $i] :
+                  ( ( rt_more @ X1 @ X2 )
+                 => ( lrt @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(typ_rp_more,type,
+    rp_more: $i > $i > $o ).
+
+thf(def_rp_more,definition,
+    ( rp_more
+    = ( ^ [X0: $i,X1: $i] :
+          ( rt_some
+          @ ^ [X2: $i] : ( d_and @ ( lrt @ X0 @ X2 ) @ ( urt @ X1 @ X2 ) ) ) ) ) ).
+
+thf(typ_rp_less,type,
+    rp_less: $i > $i > $o ).
+
+thf(def_rp_less,definition,
+    ( rp_less
+    = ( ^ [X0: $i,X1: $i] :
+          ( rt_some
+          @ ^ [X2: $i] : ( d_and @ ( urt @ X0 @ X2 ) @ ( lrt @ X1 @ X2 ) ) ) ) ) ).
+
+thf(satz121,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_more @ X0 @ X1 )
+           => ( rp_less @ X1 @ X0 ) ) ) ) ).
+
+thf(satz122,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_less @ X0 @ X1 )
+           => ( rp_more @ X1 @ X0 ) ) ) ) ).
+
+thf(satz123,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( orec3 @ ( rp_is @ X0 @ X1 ) @ ( rp_more @ X0 @ X1 ) @ ( rp_less @ X0 @ X1 ) ) ) ) ).
+
+thf(k_satz123a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( or3 @ ( rp_is @ X0 @ X1 ) @ ( rp_more @ X0 @ X1 ) @ ( rp_less @ X0 @ X1 ) ) ) ) ).
+
+thf(k_satz123b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( ec3 @ ( rp_is @ X0 @ X1 ) @ ( rp_more @ X0 @ X1 ) @ ( rp_less @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_rp_moreis,type,
+    rp_moreis: $i > $i > $o ).
+
+thf(def_rp_moreis,definition,
+    ( rp_moreis
+    = ( ^ [X0: $i,X1: $i] : ( l_or @ ( rp_more @ X0 @ X1 ) @ ( rp_is @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_rp_lessis,type,
+    rp_lessis: $i > $i > $o ).
+
+thf(def_rp_lessis,definition,
+    ( rp_lessis
+    = ( ^ [X0: $i,X1: $i] : ( l_or @ ( rp_less @ X0 @ X1 ) @ ( rp_is @ X0 @ X1 ) ) ) ) ).
+
+thf(satz124,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_moreis @ X0 @ X1 )
+           => ( rp_lessis @ X1 @ X0 ) ) ) ) ).
+
+thf(satz125,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_lessis @ X0 @ X1 )
+           => ( rp_moreis @ X1 @ X0 ) ) ) ) ).
+
+thf(satz123c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_moreis @ X0 @ X1 )
+           => ( d_not @ ( rp_less @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz123d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_lessis @ X0 @ X1 )
+           => ( d_not @ ( rp_more @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz123e,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( d_not @ ( rp_more @ X0 @ X1 ) )
+           => ( rp_lessis @ X0 @ X1 ) ) ) ) ).
+
+thf(satz123f,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( d_not @ ( rp_less @ X0 @ X1 ) )
+           => ( rp_moreis @ X0 @ X1 ) ) ) ) ).
+
+thf(satz123g,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_more @ X0 @ X1 )
+           => ( d_not @ ( rp_lessis @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz123h,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_less @ X0 @ X1 )
+           => ( d_not @ ( rp_moreis @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz123j,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( d_not @ ( rp_moreis @ X0 @ X1 ) )
+           => ( rp_less @ X0 @ X1 ) ) ) ) ).
+
+thf(satz123k,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( d_not @ ( rp_lessis @ X0 @ X1 ) )
+           => ( rp_more @ X0 @ X1 ) ) ) ) ).
+
+thf(satz126,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_less @ X0 @ X1 )
+               => ( ( rp_less @ X1 @ X2 )
+                 => ( rp_less @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(satz127a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_lessis @ X0 @ X1 )
+               => ( ( rp_less @ X1 @ X2 )
+                 => ( rp_less @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(satz127b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_less @ X0 @ X1 )
+               => ( ( rp_lessis @ X1 @ X2 )
+                 => ( rp_less @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(satz127c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_moreis @ X0 @ X1 )
+               => ( ( rp_more @ X1 @ X2 )
+                 => ( rp_more @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(satz127d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ X0 @ X1 )
+               => ( ( rp_moreis @ X1 @ X2 )
+                 => ( rp_more @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(satz128,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_lessis @ X0 @ X1 )
+               => ( ( rp_lessis @ X1 @ X2 )
+                 => ( rp_lessis @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(typ_sumprop1,type,
+    sumprop1: $i > $i > $i > $i > $i > $o ).
+
+thf(def_sumprop1,definition,
+    ( sumprop1
+    = ( ^ [X0: $i,X1: $i,X2: $i,X3: $i,X4: $i] : ( and3 @ ( lrt @ X0 @ X3 ) @ ( lrt @ X1 @ X4 ) @ ( rt_is @ X2 @ ( rt_pl @ X3 @ X4 ) ) ) ) ) ).
+
+thf(typ_sumprop,type,
+    sumprop: $i > $i > $i > $o ).
+
+thf(def_sumprop,definition,
+    ( sumprop
+    = ( ^ [X0: $i,X1: $i,X2: $i] :
+          ( rt_some
+          @ ^ [X3: $i] : ( rt_some @ ( sumprop1 @ X0 @ X1 @ X2 @ X3 ) ) ) ) ) ).
+
+thf(typ_sum,type,
+    sum: $i > $i > $i ).
+
+thf(def_sum,definition,
+    ( sum
+    = ( ^ [X0: $i,X1: $i] : ( d_Sep @ rat @ ( sumprop @ X0 @ X1 ) ) ) ) ).
+
+thf(satz129a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ rat )
+            @ ^ [X2: $i] :
+                ( ( urt @ X0 @ X2 )
+               => ( all_of
+                  @ ^ [X3: $i] : ( in @ X3 @ rat )
+                  @ ^ [X3: $i] :
+                      ( ( urt @ X1 @ X3 )
+                     => ( d_not @ ( rt_in @ ( rt_pl @ X2 @ X3 ) @ ( sum @ X0 @ X1 ) ) ) ) ) ) ) ) ) ).
+
+thf(typ_d_3129_z1,type,
+    d_3129_z1: $i > $i > $i > $i ).
+
+thf(def_d_3129_z1,definition,
+    ( d_3129_z1
+    = ( ^ [X0: $i,X1: $i,X2: $i] : ( rt_ov @ X0 @ ( rt_pl @ X1 @ X2 ) ) ) ) ).
+
+thf(satz129,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( cutprop @ ( sum @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_rp_pl,type,
+    rp_pl: $i > $i > $i ).
+
+thf(def_rp_pl,definition,
+    ( rp_pl
+    = ( ^ [X0: $i,X1: $i] : ( cutof @ ( sum @ X0 @ X1 ) ) ) ) ).
+
+thf(satz130,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( rp_is @ ( rp_pl @ X0 @ X1 ) @ ( rp_pl @ X1 @ X0 ) ) ) ) ).
+
+thf(satz131,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] : ( rp_is @ ( rp_pl @ ( rp_pl @ X0 @ X1 ) @ X2 ) @ ( rp_pl @ X0 @ ( rp_pl @ X1 @ X2 ) ) ) ) ) ) ).
+
+thf(typ_d_3132_prop1,type,
+    d_3132_prop1: $i > $i > $i > $o ).
+
+thf(def_d_3132_prop1,definition,
+    ( d_3132_prop1
+    = ( ^ [X0: $i,X1: $i,X2: $i] : ( d_and @ ( lrt @ X0 @ X1 ) @ ( urt @ X0 @ X2 ) ) ) ) ).
+
+thf(typ_d_3132_prop2,type,
+    d_3132_prop2: $i > $i > $i > $i > $o ).
+
+thf(def_d_3132_prop2,definition,
+    ( d_3132_prop2
+    = ( ^ [X0: $i,X1: $i,X2: $i,X3: $i] : ( rt_is @ ( rt_mn @ X3 @ X2 ) @ X1 ) ) ) ).
+
+thf(typ_d_3132_prop3,type,
+    d_3132_prop3: $i > $i > $i > $i > $o ).
+
+thf(def_d_3132_prop3,definition,
+    ( d_3132_prop3
+    = ( ^ [X0: $i,X1: $i,X2: $i,X3: $i] :
+          ( d_and @ ( d_3132_prop1 @ X0 @ X2 @ X3 )
+          @ ( ( d_3132_prop1 @ X0 @ X2 @ X3 )
+           => ( d_3132_prop2 @ X0 @ X1 @ X2 @ X3 ) ) ) ) ) ).
+
+thf(typ_d_3132_prop4,type,
+    d_3132_prop4: $i > $i > $o ).
+
+thf(def_d_3132_prop4,definition,
+    ( d_3132_prop4
+    = ( ^ [X0: $i,X1: $i] :
+          ( rt_some
+          @ ^ [X2: $i] : ( rt_some @ ( d_3132_prop3 @ X0 @ X1 @ X2 ) ) ) ) ) ).
+
+thf(typ_d_3132_u0,type,
+    d_3132_u0: $i > $i > $i ).
+
+thf(def_d_3132_u0,definition,
+    ( d_3132_u0
+    = ( ^ [X0: $i,X1: $i] : ( rt_pl @ X1 @ X0 ) ) ) ).
+
+thf(typ_um10,type,
+    um10: $i > $i ).
+
+thf(def_um10,definition,
+    ( um10
+    = ( ^ [X0: $i] : ( rt_mn @ ( rtofn @ X0 ) @ d_1rt ) ) ) ).
+
+thf(typ_um1,type,
+    um1: $i > $i ).
+
+thf(def_um1,definition,
+    ( um1
+    = ( ^ [X0: $i] : ( nofrt @ ( um10 @ X0 ) ) ) ) ).
+
+thf(typ_d_3132_v0,type,
+    d_3132_v0: $i > $i > $i > $i ).
+
+thf(def_d_3132_v0,definition,
+    ( d_3132_v0
+    = ( ^ [X0: $i,X1: $i,X2: $i] : ( rt_pl @ X1 @ ( rt_ts @ ( um10 @ X2 ) @ X0 ) ) ) ) ).
+
+thf(typ_d_3132_w0,type,
+    d_3132_w0: $i > $i > $i > $i ).
+
+thf(def_d_3132_w0,definition,
+    ( d_3132_w0
+    = ( ^ [X0: $i,X1: $i,X2: $i] : ( rt_pl @ X1 @ ( rt_ts @ ( rtofn @ X2 ) @ X0 ) ) ) ) ).
+
+thf(satz132,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( rt_some
+            @ ^ [X2: $i] :
+                ( rt_some
+                @ ^ [X3: $i] :
+                    ( d_and @ ( d_and @ ( lrt @ X0 @ X2 ) @ ( urt @ X0 @ X3 ) )
+                    @ ( ( d_and @ ( lrt @ X0 @ X2 ) @ ( urt @ X0 @ X3 ) )
+                     => ( rt_is @ ( rt_mn @ X3 @ X2 ) @ X1 ) ) ) ) ) ) ) ).
+
+thf(satz132app,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+      ! [X1: $o] :
+        ( all_of
+        @ ^ [X2: $i] : ( in @ X2 @ rat )
+        @ ^ [X2: $i] :
+            ( ( all_of
+              @ ^ [X3: $i] : ( in @ X3 @ rat )
+              @ ^ [X3: $i] :
+                  ( ( lrt @ X0 @ X3 )
+                 => ( all_of
+                    @ ^ [X4: $i] : ( in @ X4 @ rat )
+                    @ ^ [X4: $i] :
+                        ( ( urt @ X0 @ X4 )
+                       => ( ( rt_is @ ( rt_mn @ X4 @ X3 ) @ X2 )
+                         => X1 ) ) ) ) )
+           => X1 ) ) ) ).
+
+thf(satz133,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( rp_more @ ( rp_pl @ X0 @ X1 ) @ X0 ) ) ) ).
+
+thf(satz133a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( rp_less @ X0 @ ( rp_pl @ X0 @ X1 ) ) ) ) ).
+
+thf(satz134,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ X0 @ X1 )
+               => ( rp_more @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X2 ) ) ) ) ) ) ).
+
+thf(satz135b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_is @ X0 @ X1 )
+               => ( rp_is @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X2 ) ) ) ) ) ) ).
+
+thf(satz135c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_less @ X0 @ X1 )
+               => ( rp_less @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X2 ) ) ) ) ) ) ).
+
+thf(satz135d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ X0 @ X1 )
+               => ( rp_more @ ( rp_pl @ X2 @ X0 ) @ ( rp_pl @ X2 @ X1 ) ) ) ) ) ) ).
+
+thf(satz135e,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_is @ X0 @ X1 )
+               => ( rp_is @ ( rp_pl @ X2 @ X0 ) @ ( rp_pl @ X2 @ X1 ) ) ) ) ) ) ).
+
+thf(satz135f,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_less @ X0 @ X1 )
+               => ( rp_less @ ( rp_pl @ X2 @ X0 ) @ ( rp_pl @ X2 @ X1 ) ) ) ) ) ) ).
+
+thf(satz135g,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_is @ X0 @ X1 )
+                   => ( ( rp_more @ X2 @ X3 )
+                     => ( rp_more @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz135h,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_is @ X0 @ X1 )
+                   => ( ( rp_more @ X2 @ X3 )
+                     => ( rp_more @ ( rp_pl @ X2 @ X0 ) @ ( rp_pl @ X3 @ X1 ) ) ) ) ) ) ) ) ).
+
+thf(satz135j,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_is @ X0 @ X1 )
+                   => ( ( rp_less @ X2 @ X3 )
+                     => ( rp_less @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz135k,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_is @ X0 @ X1 )
+                   => ( ( rp_less @ X2 @ X3 )
+                     => ( rp_less @ ( rp_pl @ X2 @ X0 ) @ ( rp_pl @ X3 @ X1 ) ) ) ) ) ) ) ) ).
+
+thf(satz136a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X2 ) )
+               => ( rp_more @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz136b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_is @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X2 ) )
+               => ( rp_is @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz136c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_less @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X2 ) )
+               => ( rp_less @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz136d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ ( rp_pl @ X2 @ X0 ) @ ( rp_pl @ X2 @ X1 ) )
+               => ( rp_more @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz136e,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_is @ ( rp_pl @ X2 @ X0 ) @ ( rp_pl @ X2 @ X1 ) )
+               => ( rp_is @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz136f,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_less @ ( rp_pl @ X2 @ X0 ) @ ( rp_pl @ X2 @ X1 ) )
+               => ( rp_less @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz137,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_more @ X0 @ X1 )
+                   => ( ( rp_more @ X2 @ X3 )
+                     => ( rp_more @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz137a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_less @ X0 @ X1 )
+                   => ( ( rp_less @ X2 @ X3 )
+                     => ( rp_less @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz138a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_moreis @ X0 @ X1 )
+                   => ( ( rp_more @ X2 @ X3 )
+                     => ( rp_more @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz138b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_more @ X0 @ X1 )
+                   => ( ( rp_moreis @ X2 @ X3 )
+                     => ( rp_more @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz138c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_lessis @ X0 @ X1 )
+                   => ( ( rp_less @ X2 @ X3 )
+                     => ( rp_less @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz138d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_less @ X0 @ X1 )
+                   => ( ( rp_lessis @ X2 @ X3 )
+                     => ( rp_less @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz139,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_moreis @ X0 @ X1 )
+                   => ( ( rp_moreis @ X2 @ X3 )
+                     => ( rp_moreis @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz139a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_lessis @ X0 @ X1 )
+                   => ( ( rp_lessis @ X2 @ X3 )
+                     => ( rp_lessis @ ( rp_pl @ X0 @ X2 ) @ ( rp_pl @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz140b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_is @ ( rp_pl @ X1 @ X2 ) @ X0 )
+                   => ( ( rp_is @ ( rp_pl @ X1 @ X3 ) @ X0 )
+                     => ( rp_is @ X2 @ X3 ) ) ) ) ) ) ) ).
+
+thf(typ_diffprop1,type,
+    diffprop1: $i > $i > $i > $o ).
+
+thf(def_diffprop1,definition,
+    ( diffprop1
+    = ( ^ [X0: $i,X1: $i,X2: $i] :
+          ( d_and @ ( rt_more @ X1 @ X2 )
+          @ ( ( rt_more @ X1 @ X2 )
+           => ( rt_is @ X0 @ ( rt_mn @ X1 @ X2 ) ) ) ) ) ) ).
+
+thf(typ_diffprop2,type,
+    diffprop2: $i > $i > $i > $i > $i > $o ).
+
+thf(def_diffprop2,definition,
+    ( diffprop2
+    = ( ^ [X0: $i,X1: $i,X2: $i,X3: $i,X4: $i] : ( and3 @ ( lrt @ X0 @ X3 ) @ ( urt @ X1 @ X4 ) @ ( diffprop1 @ X2 @ X3 @ X4 ) ) ) ) ).
+
+thf(typ_rp_diffprop,type,
+    rp_diffprop: $i > $i > $i > $o ).
+
+thf(def_rp_diffprop,definition,
+    ( rp_diffprop
+    = ( ^ [X0: $i,X1: $i,X2: $i] :
+          ( rt_some
+          @ ^ [X3: $i] : ( rt_some @ ( diffprop2 @ X0 @ X1 @ X2 @ X3 ) ) ) ) ) ).
+
+thf(typ_diff,type,
+    diff: $i > $i > $i ).
+
+thf(def_diff,definition,
+    ( diff
+    = ( ^ [X0: $i,X1: $i] : ( d_Sep @ rat @ ( rp_diffprop @ X0 @ X1 ) ) ) ) ).
+
+thf(satz140h,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_more @ X0 @ X1 )
+           => ( cutprop @ ( diff @ X0 @ X1 ) ) ) ) ) ).
+
+thf(typ_chi,type,
+    chi: $i > $i > $i ).
+
+thf(def_chi,definition,
+    ( chi
+    = ( ^ [X0: $i,X1: $i] : ( cutof @ ( diff @ X0 @ X1 ) ) ) ) ).
+
+thf(satz140a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_more @ X0 @ X1 )
+           => ( rp_some
+              @ ^ [X2: $i] : ( rp_is @ ( rp_pl @ X1 @ X2 ) @ X0 ) ) ) ) ) ).
+
+thf(satz140,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_more @ X0 @ X1 )
+           => ( rp_one
+              @ ^ [X2: $i] : ( rp_is @ ( rp_pl @ X1 @ X2 ) @ X0 ) ) ) ) ) ).
+
+thf(typ_rp_mn,type,
+    rp_mn: $i > $i > $i ).
+
+thf(def_rp_mn,definition,
+    ( rp_mn
+    = ( ^ [X0: $i,X1: $i] :
+          ( ind @ cut
+          @ ^ [X2: $i] : ( rp_is @ ( rp_pl @ X1 @ X2 ) @ X0 ) ) ) ) ).
+
+thf(satz140c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_more @ X0 @ X1 )
+           => ( rp_is @ ( rp_pl @ X1 @ ( rp_mn @ X0 @ X1 ) ) @ X0 ) ) ) ) ).
+
+thf(satz140d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_more @ X0 @ X1 )
+           => ( rp_is @ X0 @ ( rp_pl @ X1 @ ( rp_mn @ X0 @ X1 ) ) ) ) ) ) ).
+
+thf(satz140e,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_more @ X0 @ X1 )
+           => ( rp_is @ ( rp_pl @ ( rp_mn @ X0 @ X1 ) @ X1 ) @ X0 ) ) ) ) ).
+
+thf(satz140f,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_more @ X0 @ X1 )
+           => ( rp_is @ X0 @ ( rp_pl @ ( rp_mn @ X0 @ X1 ) @ X1 ) ) ) ) ) ).
+
+thf(satz140g,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ X0 @ X1 )
+               => ( ( rp_is @ ( rp_pl @ X1 @ X2 ) @ X0 )
+                 => ( rp_is @ X2 @ ( rp_mn @ X0 @ X1 ) ) ) ) ) ) ) ).
+
+thf(typ_prodprop1,type,
+    prodprop1: $i > $i > $i > $i > $i > $o ).
+
+thf(def_prodprop1,definition,
+    ( prodprop1
+    = ( ^ [X0: $i,X1: $i,X2: $i,X3: $i,X4: $i] : ( and3 @ ( lrt @ X0 @ X3 ) @ ( lrt @ X1 @ X4 ) @ ( rt_is @ X2 @ ( rt_ts @ X3 @ X4 ) ) ) ) ) ).
+
+thf(typ_prodprop,type,
+    prodprop: $i > $i > $i > $o ).
+
+thf(def_prodprop,definition,
+    ( prodprop
+    = ( ^ [X0: $i,X1: $i,X2: $i] :
+          ( rt_some
+          @ ^ [X3: $i] : ( rt_some @ ( prodprop1 @ X0 @ X1 @ X2 @ X3 ) ) ) ) ) ).
+
+thf(typ_prod,type,
+    prod: $i > $i > $i ).
+
+thf(def_prod,definition,
+    ( prod
+    = ( ^ [X0: $i,X1: $i] : ( d_Sep @ rat @ ( prodprop @ X0 @ X1 ) ) ) ) ).
+
+thf(satz141a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ rat )
+            @ ^ [X2: $i] :
+                ( ( urt @ X0 @ X2 )
+               => ( all_of
+                  @ ^ [X3: $i] : ( in @ X3 @ rat )
+                  @ ^ [X3: $i] :
+                      ( ( urt @ X1 @ X3 )
+                     => ( d_not @ ( rt_in @ ( rt_ts @ X2 @ X3 ) @ ( prod @ X0 @ X1 ) ) ) ) ) ) ) ) ) ).
+
+thf(typ_d_4141_v0,type,
+    d_4141_v0: $i > $i > $i ).
+
+thf(def_d_4141_v0,definition,
+    ( d_4141_v0
+    = ( ^ [X0: $i,X1: $i] : ( rt_ts @ ( rt_ov @ d_1rt @ X1 ) @ X0 ) ) ) ).
+
+thf(satz141b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] : ( rt_is @ ( rt_ts @ ( rt_ov @ d_1rt @ X1 ) @ X0 ) @ ( rt_ov @ X0 @ X1 ) ) ) ) ).
+
+thf(satz141c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] : ( rt_is @ ( rt_ov @ X0 @ X1 ) @ ( rt_ts @ ( rt_ov @ d_1rt @ X1 ) @ X0 ) ) ) ) ).
+
+thf(satz141,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( cutprop @ ( prod @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_rp_ts,type,
+    rp_ts: $i > $i > $i ).
+
+thf(def_rp_ts,definition,
+    ( rp_ts
+    = ( ^ [X0: $i,X1: $i] : ( cutof @ ( prod @ X0 @ X1 ) ) ) ) ).
+
+thf(satz142,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( rp_is @ ( rp_ts @ X0 @ X1 ) @ ( rp_ts @ X1 @ X0 ) ) ) ) ).
+
+thf(satz143,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] : ( rp_is @ ( rp_ts @ ( rp_ts @ X0 @ X1 ) @ X2 ) @ ( rp_ts @ X0 @ ( rp_ts @ X1 @ X2 ) ) ) ) ) ) ).
+
+thf(typ_d_4144_x2,type,
+    d_4144_x2: $i > $i > $i ).
+
+thf(def_d_4144_x2,definition,
+    ( d_4144_x2
+    = ( ^ [X0: $i,X1: $i] : ( ite @ ( rt_moreis @ X0 @ X1 ) @ rat @ X0 @ X1 ) ) ) ).
+
+thf(satz144,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] : ( rp_is @ ( rp_ts @ X0 @ ( rp_pl @ X1 @ X2 ) ) @ ( rp_pl @ ( rp_ts @ X0 @ X1 ) @ ( rp_ts @ X0 @ X2 ) ) ) ) ) ) ).
+
+thf(satz145a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ X0 @ X1 )
+               => ( rp_more @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X2 ) ) ) ) ) ) ).
+
+thf(satz145b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_is @ X0 @ X1 )
+               => ( rp_is @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X2 ) ) ) ) ) ) ).
+
+thf(satz145c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_less @ X0 @ X1 )
+               => ( rp_less @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X2 ) ) ) ) ) ) ).
+
+thf(satz145d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ X0 @ X1 )
+               => ( rp_more @ ( rp_ts @ X2 @ X0 ) @ ( rp_ts @ X2 @ X1 ) ) ) ) ) ) ).
+
+thf(satz145e,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_is @ X0 @ X1 )
+               => ( rp_is @ ( rp_ts @ X2 @ X0 ) @ ( rp_ts @ X2 @ X1 ) ) ) ) ) ) ).
+
+thf(satz145f,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_less @ X0 @ X1 )
+               => ( rp_less @ ( rp_ts @ X2 @ X0 ) @ ( rp_ts @ X2 @ X1 ) ) ) ) ) ) ).
+
+thf(satz145g,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_is @ X0 @ X1 )
+                   => ( ( rp_more @ X2 @ X3 )
+                     => ( rp_more @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz145h,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_is @ X0 @ X1 )
+                   => ( ( rp_more @ X2 @ X3 )
+                     => ( rp_more @ ( rp_ts @ X2 @ X0 ) @ ( rp_ts @ X3 @ X1 ) ) ) ) ) ) ) ) ).
+
+thf(satz145j,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_is @ X0 @ X1 )
+                   => ( ( rp_less @ X2 @ X3 )
+                     => ( rp_less @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz145k,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_is @ X0 @ X1 )
+                   => ( ( rp_less @ X2 @ X3 )
+                     => ( rp_less @ ( rp_ts @ X2 @ X0 ) @ ( rp_ts @ X3 @ X1 ) ) ) ) ) ) ) ) ).
+
+thf(satz146a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X2 ) )
+               => ( rp_more @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz146b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_is @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X2 ) )
+               => ( rp_is @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz146c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_less @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X2 ) )
+               => ( rp_less @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz146d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ ( rp_ts @ X2 @ X0 ) @ ( rp_ts @ X2 @ X1 ) )
+               => ( rp_more @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz146e,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_is @ ( rp_ts @ X2 @ X0 ) @ ( rp_ts @ X2 @ X1 ) )
+               => ( rp_is @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz146f,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_less @ ( rp_ts @ X2 @ X0 ) @ ( rp_ts @ X2 @ X1 ) )
+               => ( rp_less @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz147,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_more @ X0 @ X1 )
+                   => ( ( rp_more @ X2 @ X3 )
+                     => ( rp_more @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz147a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_less @ X0 @ X1 )
+                   => ( ( rp_less @ X2 @ X3 )
+                     => ( rp_less @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz148a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_moreis @ X0 @ X1 )
+                   => ( ( rp_more @ X2 @ X3 )
+                     => ( rp_more @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz148b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_more @ X0 @ X1 )
+                   => ( ( rp_moreis @ X2 @ X3 )
+                     => ( rp_more @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz148c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_lessis @ X0 @ X1 )
+                   => ( ( rp_less @ X2 @ X3 )
+                     => ( rp_less @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz148d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_less @ X0 @ X1 )
+                   => ( ( rp_lessis @ X2 @ X3 )
+                     => ( rp_less @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz149,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_moreis @ X0 @ X1 )
+                   => ( ( rp_moreis @ X2 @ X3 )
+                     => ( rp_moreis @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(satz149a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_lessis @ X0 @ X1 )
+                   => ( ( rp_lessis @ X2 @ X3 )
+                     => ( rp_lessis @ ( rp_ts @ X0 @ X2 ) @ ( rp_ts @ X1 @ X3 ) ) ) ) ) ) ) ) ).
+
+thf(typ_ratset,type,
+    ratset: $i > $i ).
+
+thf(def_ratset,definition,
+    ( ratset
+    = ( ^ [X0: $i] :
+          ( d_Sep @ rat
+          @ ^ [X1: $i] : ( rt_less @ X1 @ X0 ) ) ) ) ).
+
+thf(satz150,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] : ( cutprop @ ( ratset @ X0 ) ) ) ).
+
+thf(typ_rpofrt,type,
+    rpofrt: $i > $i ).
+
+thf(def_rpofrt,definition,
+    ( rpofrt
+    = ( ^ [X0: $i] : ( cutof @ ( ratset @ X0 ) ) ) ) ).
+
+thf(typ_d_1rp,type,
+    d_1rp: $i ).
+
+thf(def_d_1rp,definition,
+    ( d_1rp
+    = ( rpofrt @ d_1rt ) ) ).
+
+thf(satz151,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] : ( rp_is @ ( rp_ts @ X0 @ d_1rp ) @ X0 ) ) ).
+
+thf(satz151a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] : ( rp_is @ X0 @ ( rp_ts @ X0 @ d_1rp ) ) ) ).
+
+thf(satz151b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] : ( rp_is @ ( rp_ts @ d_1rp @ X0 ) @ X0 ) ) ).
+
+thf(satz151c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] : ( rp_is @ X0 @ ( rp_ts @ d_1rp @ X0 ) ) ) ).
+
+thf(typ_invprop1,type,
+    invprop1: $i > $i > $i > $o ).
+
+thf(def_invprop1,definition,
+    ( invprop1
+    = ( ^ [X0: $i,X1: $i,X2: $i] : ( d_and @ ( urt @ X0 @ X2 ) @ ( rt_less @ X2 @ X1 ) ) ) ) ).
+
+thf(typ_invprop2,type,
+    invprop2: $i > $i > $i > $o ).
+
+thf(def_invprop2,definition,
+    ( invprop2
+    = ( ^ [X0: $i,X1: $i,X2: $i] : ( and3 @ ( urt @ X0 @ X2 ) @ ( rt_some @ ( invprop1 @ X0 @ X2 ) ) @ ( rt_is @ X1 @ ( rt_ov @ d_1rt @ X2 ) ) ) ) ) ).
+
+thf(typ_invprop,type,
+    invprop: $i > $i > $o ).
+
+thf(def_invprop,definition,
+    ( invprop
+    = ( ^ [X0: $i,X1: $i] : ( rt_some @ ( invprop2 @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_inv,type,
+    inv: $i > $i ).
+
+thf(def_inv,definition,
+    ( inv
+    = ( ^ [X0: $i] : ( d_Sep @ rat @ ( invprop @ X0 ) ) ) ) ).
+
+thf(typ_d_2x0,type,
+    d_2x0: $i > $i ).
+
+thf(def_d_2x0,definition,
+    ( d_2x0
+    = ( ^ [X0: $i] : ( rt_pl @ X0 @ X0 ) ) ) ).
+
+thf(typ_d_4152_chi,type,
+    d_4152_chi: $i > $i ).
+
+thf(def_d_4152_chi,definition,
+    ( d_4152_chi
+    = ( ^ [X0: $i] : ( cutof @ ( inv @ X0 ) ) ) ) ).
+
+thf(satz152,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( rp_some
+        @ ^ [X1: $i] : ( rp_is @ ( rp_ts @ X0 @ X1 ) @ d_1rp ) ) ) ).
+
+thf(satz153b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( all_of
+                @ ^ [X3: $i] : ( in @ X3 @ cut )
+                @ ^ [X3: $i] :
+                    ( ( rp_is @ ( rp_ts @ X1 @ X2 ) @ X0 )
+                   => ( ( rp_is @ ( rp_ts @ X1 @ X3 ) @ X0 )
+                     => ( rp_is @ X2 @ X3 ) ) ) ) ) ) ) ).
+
+thf(typ_d_4153_chi,type,
+    d_4153_chi: $i > $i > $i ).
+
+thf(def_d_4153_chi,definition,
+    ( d_4153_chi
+    = ( ^ [X0: $i,X1: $i] : ( rp_ts @ X1 @ X0 ) ) ) ).
+
+thf(satz153a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( rp_some
+            @ ^ [X2: $i] : ( rp_is @ ( rp_ts @ X1 @ X2 ) @ X0 ) ) ) ) ).
+
+thf(satz153,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( rp_one
+            @ ^ [X2: $i] : ( rp_is @ ( rp_ts @ X1 @ X2 ) @ X0 ) ) ) ) ).
+
+thf(typ_rp_ov,type,
+    rp_ov: $i > $i > $i ).
+
+thf(def_rp_ov,definition,
+    ( rp_ov
+    = ( ^ [X0: $i,X1: $i] :
+          ( ind @ cut
+          @ ^ [X2: $i] : ( rp_is @ ( rp_ts @ X1 @ X2 ) @ X0 ) ) ) ) ).
+
+thf(satz153c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( rp_is @ ( rp_ts @ X1 @ ( rp_ov @ X0 @ X1 ) ) @ X0 ) ) ) ).
+
+thf(satz153d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( rp_is @ X0 @ ( rp_ts @ X1 @ ( rp_ov @ X0 @ X1 ) ) ) ) ) ).
+
+thf(satz153e,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( rp_is @ ( rp_ts @ ( rp_ov @ X0 @ X1 ) @ X1 ) @ X0 ) ) ) ).
+
+thf(satz153f,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] : ( rp_is @ X0 @ ( rp_ts @ ( rp_ov @ X0 @ X1 ) @ X1 ) ) ) ) ).
+
+thf(satz153g,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ cut )
+            @ ^ [X2: $i] :
+                ( ( rp_is @ ( rp_ts @ X1 @ X2 ) @ X0 )
+               => ( rp_is @ X2 @ ( rp_ov @ X0 @ X1 ) ) ) ) ) ) ).
+
+thf(typ_ratrp,type,
+    ratrp: $i > $o ).
+
+thf(def_ratrp,definition,
+    ( ratrp
+    = ( image @ rat @ cut @ ( d_Sigma @ rat @ rpofrt ) ) ) ).
+
+thf(typ_rpofnt,type,
+    rpofnt: $i > $i ).
+
+thf(def_rpofnt,definition,
+    ( rpofnt
+    = ( ^ [X0: $i] : ( rpofrt @ ( rtofn @ X0 ) ) ) ) ).
+
+thf(typ_natrp,type,
+    natrp: $i > $o ).
+
+thf(def_natrp,definition,
+    ( natrp
+    = ( image @ nat @ cut @ ( d_Sigma @ nat @ rpofnt ) ) ) ).
+
+thf(satz154a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( rt_more @ X0 @ X1 )
+           => ( rp_more @ ( rpofrt @ X0 ) @ ( rpofrt @ X1 ) ) ) ) ) ).
+
+thf(satz154b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( rt_is @ X0 @ X1 )
+           => ( rp_is @ ( rpofrt @ X0 ) @ ( rpofrt @ X1 ) ) ) ) ) ).
+
+thf(satz154c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( rt_less @ X0 @ X1 )
+           => ( rp_less @ ( rpofrt @ X0 ) @ ( rpofrt @ X1 ) ) ) ) ) ).
+
+thf(satz154d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( rp_more @ ( rpofrt @ X0 ) @ ( rpofrt @ X1 ) )
+           => ( rt_more @ X0 @ X1 ) ) ) ) ).
+
+thf(satz154e,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( rp_is @ ( rpofrt @ X0 ) @ ( rpofrt @ X1 ) )
+           => ( rt_is @ X0 @ X1 ) ) ) ) ).
+
+thf(satz154f,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( rp_less @ ( rpofrt @ X0 ) @ ( rpofrt @ X1 ) )
+           => ( rt_less @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_rtofrp,type,
+    rtofrp: $i > $i ).
+
+thf(def_rtofrp,definition,
+    ( rtofrp
+    = ( soft @ rat @ cut @ ( d_Sigma @ rat @ rpofrt ) ) ) ).
+
+thf(typ_ntofrp,type,
+    ntofrp: $i > $i ).
+
+thf(def_ntofrp,definition,
+    ( ntofrp
+    = ( soft @ nat @ cut @ ( d_Sigma @ nat @ rpofnt ) ) ) ).
+
+thf(typ_u01,type,
+    u01: $i > $i > $i > $i ).
+
+thf(def_u01,definition,
+    ( u01
+    = ( ^ [X0: $i,X1: $i,X2: $i] : ( rt_ov @ X2 @ ( rt_pl @ X0 @ X1 ) ) ) ) ).
+
+thf(satz155a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] : ( rp_is @ ( rpofrt @ ( rt_pl @ X0 @ X1 ) ) @ ( rp_pl @ ( rpofrt @ X0 ) @ ( rpofrt @ X1 ) ) ) ) ) ).
+
+thf(satz155b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( rt_more @ X0 @ X1 )
+           => ( rp_is @ ( rpofrt @ ( rt_mn @ X0 @ X1 ) ) @ ( rp_mn @ ( rpofrt @ X0 ) @ ( rpofrt @ X1 ) ) ) ) ) ) ).
+
+thf(satz155c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] : ( rp_is @ ( rpofrt @ ( rt_ts @ X0 @ X1 ) ) @ ( rp_ts @ ( rpofrt @ X0 ) @ ( rpofrt @ X1 ) ) ) ) ) ).
+
+thf(satz155d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ rat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] : ( rp_is @ ( rpofrt @ ( rt_ov @ X0 @ X1 ) ) @ ( rp_ov @ ( rpofrt @ X0 ) @ ( rpofrt @ X1 ) ) ) ) ) ).
+
+thf(satz155e,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ nat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ nat )
+        @ ^ [X1: $i] : ( rp_is @ ( rpofnt @ ( n_pl @ X0 @ X1 ) ) @ ( rp_pl @ ( rpofnt @ X0 ) @ ( rpofnt @ X1 ) ) ) ) ) ).
+
+thf(satz155f,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ nat )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ nat )
+        @ ^ [X1: $i] : ( rp_is @ ( rpofnt @ ( n_ts @ X0 @ X1 ) ) @ ( rp_ts @ ( rpofnt @ X0 ) @ ( rpofnt @ X1 ) ) ) ) ) ).
+
+thf(typ_nt_natt,type,
+    nt_natt: $i ).
+
+thf(def_nt_natt,definition,
+    ( nt_natt
+    = ( d_Sep @ cut @ natrp ) ) ).
+
+thf(typ_nttofrp,type,
+    nttofrp: $i > $i ).
+
+thf(def_nttofrp,definition,
+    ( nttofrp
+    = ( out @ cut @ natrp ) ) ).
+
+thf(typ_rp_nt_is,type,
+    rp_nt_is: $i > $i > $o ).
+
+thf(def_rp_nt_is,definition,
+    ( rp_nt_is
+    = ( e_is @ nt_natt ) ) ).
+
+thf(typ_rp_nt_nis,type,
+    rp_nt_nis: $i > $i > $o ).
+
+thf(def_rp_nt_nis,definition,
+    ( rp_nt_nis
+    = ( ^ [X0: $i,X1: $i] : ( d_not @ ( rp_nt_is @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_rp_nt_all,type,
+    rp_nt_all: ( $i > $o ) > $o ).
+
+thf(def_rp_nt_all,definition,
+    ( rp_nt_all
+    = ( all @ nt_natt ) ) ).
+
+thf(typ_rp_nt_some,type,
+    rp_nt_some: ( $i > $o ) > $o ).
+
+thf(def_rp_nt_some,definition,
+    ( rp_nt_some
+    = ( l_some @ nt_natt ) ) ).
+
+thf(typ_rp_nt_one,type,
+    rp_nt_one: ( $i > $o ) > $o ).
+
+thf(def_rp_nt_one,definition,
+    ( rp_nt_one
+    = ( one @ nt_natt ) ) ).
+
+thf(typ_rp_nt_in,type,
+    rp_nt_in: $i > $i > $o ).
+
+thf(def_rp_nt_in,definition,
+    ( rp_nt_in
+    = ( esti @ nt_natt ) ) ).
+
+thf(typ_rpofntt,type,
+    rpofntt: $i > $i ).
+
+thf(def_rpofntt,definition,
+    ( rpofntt
+    = ( e_in @ cut @ natrp ) ) ).
+
+thf(typ_nttofnt,type,
+    nttofnt: $i > $i ).
+
+thf(def_nttofnt,definition,
+    ( nttofnt
+    = ( ^ [X0: $i] : ( nttofrp @ ( rpofnt @ X0 ) ) ) ) ).
+
+thf(typ_ntofntt,type,
+    ntofntt: $i > $i ).
+
+thf(def_ntofntt,definition,
+    ( ntofntt
+    = ( ^ [X0: $i] : ( ntofrp @ ( rpofntt @ X0 ) ) ) ) ).
+
+thf(typ_rp_nt_1t,type,
+    rp_nt_1t: $i ).
+
+thf(def_rp_nt_1t,definition,
+    ( rp_nt_1t
+    = ( nttofnt @ n_1 ) ) ).
+
+thf(typ_nt_suct,type,
+    nt_suct: $i ).
+
+thf(def_nt_suct,definition,
+    ( nt_suct
+    = ( d_Sigma @ nt_natt
+      @ ^ [X0: $i] : ( nttofnt @ ( ordsucc @ ( ntofntt @ X0 ) ) ) ) ) ).
+
+thf(satz156a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ nt_natt )
+    @ ^ [X0: $i] : ( rp_nt_nis @ ( ap @ nt_suct @ X0 ) @ rp_nt_1t ) ) ).
+
+thf(satz156b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ nt_natt )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ nt_natt )
+        @ ^ [X1: $i] :
+            ( ( rp_nt_is @ ( ap @ nt_suct @ X0 ) @ ( ap @ nt_suct @ X1 ) )
+           => ( rp_nt_is @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_rp_nt_cond1,type,
+    rp_nt_cond1: $i > $o ).
+
+thf(def_rp_nt_cond1,definition,
+    ( rp_nt_cond1
+    = ( rp_nt_in @ rp_nt_1t ) ) ).
+
+thf(typ_rp_nt_cond2,type,
+    rp_nt_cond2: $i > $o ).
+
+thf(def_rp_nt_cond2,definition,
+    ( rp_nt_cond2
+    = ( ^ [X0: $i] :
+          ( rp_nt_all
+          @ ^ [X1: $i] : ( imp @ ( rp_nt_in @ X1 @ X0 ) @ ( rp_nt_in @ ( ap @ nt_suct @ X1 ) @ X0 ) ) ) ) ) ).
+
+thf(typ_d_5156_prop1,type,
+    d_5156_prop1: $i > $i > $o ).
+
+thf(def_d_5156_prop1,definition,
+    ( d_5156_prop1
+    = ( ^ [X0: $i,X1: $i] : ( rp_nt_in @ ( nttofnt @ X1 ) @ X0 ) ) ) ).
+
+thf(satz156c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ ( power @ nt_natt ) )
+    @ ^ [X0: $i] :
+        ( ( rp_nt_cond1 @ X0 )
+       => ( ( rp_nt_cond2 @ X0 )
+         => ( all_of
+            @ ^ [X1: $i] : ( in @ X1 @ nt_natt )
+            @ ^ [X1: $i] : ( rp_nt_in @ X1 @ X0 ) ) ) ) ) ).
+
+thf(typ_ratt,type,
+    ratt: $i ).
+
+thf(def_ratt,definition,
+    ( ratt
+    = ( d_Sep @ cut @ ratrp ) ) ).
+
+thf(typ_rttofrp,type,
+    rttofrp: $i > $i ).
+
+thf(def_rttofrp,definition,
+    ( rttofrp
+    = ( out @ cut @ ratrp ) ) ).
+
+thf(typ_rtt_is,type,
+    rtt_is: $i > $i > $o ).
+
+thf(def_rtt_is,definition,
+    ( rtt_is
+    = ( e_is @ ratt ) ) ).
+
+thf(typ_rtt_nis,type,
+    rtt_nis: $i > $i > $o ).
+
+thf(def_rtt_nis,definition,
+    ( rtt_nis
+    = ( ^ [X0: $i,X1: $i] : ( d_not @ ( rtt_is @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_rtt_all,type,
+    rtt_all: ( $i > $o ) > $o ).
+
+thf(def_rtt_all,definition,
+    ( rtt_all
+    = ( all @ ratt ) ) ).
+
+thf(typ_rtt_some,type,
+    rtt_some: ( $i > $o ) > $o ).
+
+thf(def_rtt_some,definition,
+    ( rtt_some
+    = ( l_some @ ratt ) ) ).
+
+thf(typ_rtt_one,type,
+    rtt_one: ( $i > $o ) > $o ).
+
+thf(def_rtt_one,definition,
+    ( rtt_one
+    = ( one @ ratt ) ) ).
+
+thf(typ_rpofrtt,type,
+    rpofrtt: $i > $i ).
+
+thf(def_rpofrtt,definition,
+    ( rpofrtt
+    = ( e_in @ cut @ ratrp ) ) ).
+
+thf(typ_rttofrt,type,
+    rttofrt: $i > $i ).
+
+thf(def_rttofrt,definition,
+    ( rttofrt
+    = ( ^ [X0: $i] : ( rttofrp @ ( rpofrt @ X0 ) ) ) ) ).
+
+thf(typ_rtofrtt,type,
+    rtofrtt: $i > $i ).
+
+thf(def_rtofrtt,definition,
+    ( rtofrtt
+    = ( ^ [X0: $i] : ( rtofrp @ ( rpofrtt @ X0 ) ) ) ) ).
+
+thf(typ_d_5157_s1,type,
+    d_5157_s1: $i > $i ).
+
+thf(def_d_5157_s1,definition,
+    ( d_5157_s1
+    = ( ^ [X0: $i] : ( d_Sep @ rat @ ( urt @ X0 ) ) ) ) ).
+
+thf(satz157a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( ( ratrp @ X0 )
+       => ( rt_min @ ( d_Sep @ rat @ ( urt @ X0 ) ) @ ( rtofrp @ X0 ) ) ) ) ).
+
+thf(satz157b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( ( ratrp @ X0 )
+       => ( rt_some @ ( rt_min @ ( d_Sep @ rat @ ( urt @ X0 ) ) ) ) ) ) ).
+
+thf(satz157c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( rt_min @ ( d_Sep @ rat @ ( urt @ X0 ) ) @ X1 )
+           => ( rp_is @ X0 @ ( rpofrt @ X1 ) ) ) ) ) ).
+
+thf(satz157d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( ( rt_some @ ( rt_min @ ( d_Sep @ rat @ ( urt @ X0 ) ) ) )
+       => ( ratrp @ X0 ) ) ) ).
+
+thf(satz158a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( lrt @ X0 @ X1 )
+           => ( rp_less @ ( rpofrt @ X1 ) @ X0 ) ) ) ) ).
+
+thf(satz158b,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( urt @ X0 @ X1 )
+           => ( rp_moreis @ ( rpofrt @ X1 ) @ X0 ) ) ) ) ).
+
+thf(satz158c,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( rp_less @ ( rpofrt @ X1 ) @ X0 )
+           => ( lrt @ X0 @ X1 ) ) ) ) ).
+
+thf(satz158d,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ rat )
+        @ ^ [X1: $i] :
+            ( ( rp_moreis @ ( rpofrt @ X1 ) @ X0 )
+           => ( urt @ X0 @ X1 ) ) ) ) ).
+
+thf(satz159,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_less @ X0 @ X1 )
+           => ( rt_some
+              @ ^ [X2: $i] : ( d_and @ ( rp_less @ X0 @ ( rpofrt @ X2 ) ) @ ( rp_less @ ( rpofrt @ X2 ) @ X1 ) ) ) ) ) ) ).
+
+thf(satz159a,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_less @ X0 @ X1 )
+           => ( rp_some
+              @ ^ [X2: $i] : ( and3 @ ( ratrp @ X2 ) @ ( rp_less @ X0 @ X2 ) @ ( rp_less @ X2 @ X1 ) ) ) ) ) ) ).
+
+thf(satz159app,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( ( rp_less @ X0 @ X1 )
+           => ! [X2: $o] :
+                ( ( all_of
+                  @ ^ [X3: $i] : ( in @ X3 @ rat )
+                  @ ^ [X3: $i] :
+                      ( ( rp_less @ X0 @ ( rpofrt @ X3 ) )
+                     => ( ( rp_less @ ( rpofrt @ X3 ) @ X1 )
+                       => X2 ) ) )
+               => X2 ) ) ) ) ).
+
+thf(typ_d_5160_nm,type,
+    d_5160_nm: $i > $i > $i > $i ).
+
+thf(def_d_5160_nm,definition,
+    ( d_5160_nm
+    = ( ^ [X0: $i,X1: $i,X2: $i] : ( rp_mn @ ( rpofrt @ X2 ) @ ( rp_ts @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_d_5160_dn,type,
+    d_5160_dn: $i > $i > $i ).
+
+thf(def_d_5160_dn,definition,
+    ( d_5160_dn
+    = ( ^ [X0: $i,X1: $i] : ( rp_pl @ ( rp_pl @ X0 @ X1 ) @ d_1rp ) ) ) ).
+
+thf(typ_d_5160_fr,type,
+    d_5160_fr: $i > $i > $i > $i ).
+
+thf(def_d_5160_fr,definition,
+    ( d_5160_fr
+    = ( ^ [X0: $i,X1: $i,X2: $i] : ( rp_ov @ ( d_5160_nm @ X0 @ X1 @ X2 ) @ ( d_5160_dn @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_zeta,type,
+    zeta: $i > $i > $i > $i ).
+
+thf(def_zeta,definition,
+    ( zeta
+    = ( ^ [X0: $i,X1: $i,X2: $i] : ( ite @ ( rp_less @ ( d_5160_fr @ X0 @ X1 @ X2 ) @ d_1rp ) @ cut @ ( d_5160_fr @ X0 @ X1 @ X2 ) @ d_1rp ) ) ) ).
+
+thf(typ_d_5160_xr,type,
+    d_5160_xr: $i > $i > $i ).
+
+thf(def_d_5160_xr,definition,
+    ( d_5160_xr
+    = ( ^ [X0: $i,X1: $i] : ( rpofrt @ ( rt_ov @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_d_5160_y0,type,
+    d_5160_y0: $i > $i ).
+
+thf(def_d_5160_y0,definition,
+    ( d_5160_y0
+    = ( ^ [X0: $i] : X0 ) ) ).
+
+thf(typ_d_5160_yr,type,
+    d_5160_yr: $i > $i ).
+
+thf(def_d_5160_yr,definition,
+    ( d_5160_yr
+    = ( ^ [X0: $i] : ( rpofrt @ ( d_5160_y0 @ X0 ) ) ) ) ).
+
+thf(typ_d_5160_prop1,type,
+    d_5160_prop1: $i > $i > $i > $i > $i > $o ).
+
+thf(def_d_5160_prop1,definition,
+    ( d_5160_prop1
+    = ( ^ [X0: $i,X1: $i,X2: $i,X3: $i,X4: $i] : ( and3 @ ( rp_more @ ( rpofrt @ X3 ) @ X0 ) @ ( rp_more @ ( rpofrt @ X4 ) @ X1 ) @ ( rt_is @ ( rt_ts @ X3 @ X4 ) @ X2 ) ) ) ) ).
+
+thf(typ_d_5160_prop2,type,
+    d_5160_prop2: $i > $i > $i > $o ).
+
+thf(def_d_5160_prop2,definition,
+    ( d_5160_prop2
+    = ( ^ [X0: $i,X1: $i,X2: $i] :
+          ( rt_some
+          @ ^ [X3: $i] : ( rt_some @ ( d_5160_prop1 @ X0 @ X1 @ X2 @ X3 ) ) ) ) ) ).
+
+thf(satz160,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ rat )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ ( rpofrt @ X2 ) @ ( rp_ts @ X0 @ X1 ) )
+               => ( rt_some
+                  @ ^ [X3: $i] :
+                      ( rt_some
+                      @ ^ [X4: $i] : ( and3 @ ( rp_more @ ( rpofrt @ X3 ) @ X0 ) @ ( rp_more @ ( rpofrt @ X4 ) @ X1 ) @ ( rt_is @ ( rt_ts @ X3 @ X4 ) @ X2 ) ) ) ) ) ) ) ) ).
+
+thf(satz160app,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( all_of
+        @ ^ [X1: $i] : ( in @ X1 @ cut )
+        @ ^ [X1: $i] :
+            ( all_of
+            @ ^ [X2: $i] : ( in @ X2 @ rat )
+            @ ^ [X2: $i] :
+                ( ( rp_more @ ( rpofrt @ X2 ) @ ( rp_ts @ X0 @ X1 ) )
+               => ! [X3: $o] :
+                    ( ( all_of
+                      @ ^ [X4: $i] : ( in @ X4 @ rat )
+                      @ ^ [X4: $i] :
+                          ( ( rp_more @ ( rpofrt @ X4 ) @ X0 )
+                         => ( all_of
+                            @ ^ [X5: $i] : ( in @ X5 @ rat )
+                            @ ^ [X5: $i] :
+                                ( ( rp_more @ ( rpofrt @ X5 ) @ X1 )
+                               => ( ( rt_is @ ( rt_ts @ X4 @ X5 ) @ X2 )
+                                 => X3 ) ) ) ) )
+                   => X3 ) ) ) ) ) ).
+
+thf(typ_d_5161_min,type,
+    d_5161_min: $i > $i > $i ).
+
+thf(def_d_5161_min,definition,
+    ( d_5161_min
+    = ( ^ [X0: $i,X1: $i] : ( ite @ ( rp_less @ X0 @ X1 ) @ cut @ X0 @ X1 ) ) ) ).
+
+thf(typ_d_5161_max,type,
+    d_5161_max: $i > $i > $i ).
+
+thf(def_d_5161_max,definition,
+    ( d_5161_max
+    = ( ^ [X0: $i,X1: $i] : ( ite @ ( rp_more @ X0 @ X1 ) @ cut @ X0 @ X1 ) ) ) ).
+
+thf(typ_sq1,type,
+    sq1: $i > $i ).
+
+thf(def_sq1,definition,
+    ( sq1
+    = ( ^ [X0: $i] : ( rp_ts @ X0 @ X0 ) ) ) ).
+
+thf(typ_sqrtset,type,
+    sqrtset: $i > $i ).
+
+thf(def_sqrtset,definition,
+    ( sqrtset
+    = ( ^ [X0: $i] :
+          ( d_Sep @ rat
+          @ ^ [X1: $i] : ( rp_less @ ( rp_ts @ ( rpofrt @ X1 ) @ ( rpofrt @ X1 ) ) @ X0 ) ) ) ) ).
+
+thf(typ_d_5161_nm,type,
+    d_5161_nm: $i > $i > $i ).
+
+thf(def_d_5161_nm,definition,
+    ( d_5161_nm
+    = ( ^ [X0: $i,X1: $i] : ( rp_mn @ X0 @ ( rp_ts @ ( rpofrt @ X1 ) @ ( rpofrt @ X1 ) ) ) ) ) ).
+
+thf(typ_d_5161_dn,type,
+    d_5161_dn: $i > $i ).
+
+thf(def_d_5161_dn,definition,
+    ( d_5161_dn
+    = ( ^ [X0: $i] : ( rp_pl @ ( rpofrt @ X0 ) @ ( rp_pl @ ( rpofrt @ X0 ) @ d_1rp ) ) ) ) ).
+
+thf(typ_d_5161_fr,type,
+    d_5161_fr: $i > $i > $i ).
+
+thf(def_d_5161_fr,definition,
+    ( d_5161_fr
+    = ( ^ [X0: $i,X1: $i] : ( rp_ov @ ( d_5161_nm @ X0 @ X1 ) @ ( d_5161_dn @ X1 ) ) ) ) ).
+
+thf(typ_rtc,type,
+    rtc: $i > $i ).
+
+thf(def_rtc,definition,
+    ( rtc
+    = ( ^ [X0: $i] : ( cutof @ ( sqrtset @ X0 ) ) ) ) ).
+
+thf(typ_d_5161_xm,type,
+    d_5161_xm: $i > $i > $i ).
+
+thf(def_d_5161_xm,definition,
+    ( d_5161_xm
+    = ( ^ [X0: $i,X1: $i] : ( ite @ ( rt_more @ X0 @ X1 ) @ rat @ X0 @ X1 ) ) ) ).
+
+thf(typ_xrm,type,
+    xrm: $i > $i > $i ).
+
+thf(def_xrm,definition,
+    ( xrm
+    = ( ^ [X0: $i,X1: $i] : ( rpofrt @ ( d_5161_xm @ X0 @ X1 ) ) ) ) ).
+
+thf(typ_d_5161_ym,type,
+    d_5161_ym: $i > $i > $i ).
+
+thf(def_d_5161_ym,definition,
+    ( d_5161_ym
+    = ( ^ [X0: $i,X1: $i] : ( ite @ ( rt_less @ X0 @ X1 ) @ rat @ X0 @ X1 ) ) ) ).
+
+thf(typ_yrm,type,
+    yrm: $i > $i > $i ).
+
+thf(def_yrm,definition,
+    ( yrm
+    = ( ^ [X0: $i,X1: $i] : ( rpofrt @ ( d_5161_ym @ X0 @ X1 ) ) ) ) ).
+
+thf(satz161,axiom,
+    ( all_of
+    @ ^ [X0: $i] : ( in @ X0 @ cut )
+    @ ^ [X0: $i] :
+        ( rp_one
+        @ ^ [X1: $i] : ( rp_is @ ( rp_ts @ X1 @ X1 ) @ X0 ) ) ) ).
+
+thf(typ_irratrp,type,
+    irratrp: $i > $o ).
+
+thf(def_irratrp,definition,
+    ( irratrp
+    = ( ^ [X0: $i] : ( d_not @ ( ratrp @ X0 ) ) ) ) ).
+
+thf(typ_d_5162_prop1,type,
+    d_5162_prop1: $i > $i > $o ).
+
+thf(def_d_5162_prop1,definition,
+    ( d_5162_prop1
+    = ( ^ [X0: $i,X1: $i] : ( n_eq @ ( n_tf @ ( n_fr @ X1 @ X0 ) @ ( n_fr @ X1 @ X0 ) ) @ ( n_fr @ ( ordsucc @ n_1 ) @ n_1 ) ) ) ) ).
+
+thf(typ_d_5162_prop2,type,
+    d_5162_prop2: $i > $o ).
+
+thf(def_d_5162_prop2,definition,
+    ( d_5162_prop2
+    = ( ^ [X0: $i] : ( n_some @ ( d_5162_prop1 @ X0 ) ) ) ) ).
+
+thf(typ_d_5162_prop3,type,
+    d_5162_prop3: $o ).
+
+thf(def_d_5162_prop3,definition,
+    ( d_5162_prop3
+    = ( n_some @ d_5162_prop2 ) ) ).
+
+thf(typ_d_5162_y,type,
+    d_5162_y: $i ).
+
+thf(def_d_5162_y,definition,
+    ( d_5162_y
+    = ( ind @ nat @ ( min @ d_5162_prop2 ) ) ) ).
+
+thf(typ_ksi,type,
+    ksi: $i ).
+
+thf(def_ksi,definition,
+    ( ksi
+    = ( ind @ cut
+      @ ^ [X0: $i] : ( rp_is @ ( rp_ts @ X0 @ X0 ) @ ( rpofnt @ ( ordsucc @ n_1 ) ) ) ) ) ).
+
+thf(typ_d_5162_x0,type,
+    d_5162_x0: $i ).
+
+thf(def_d_5162_x0,definition,
+    ( d_5162_x0
+    = ( rtofrp @ ksi ) ) ).
+
+thf(satz162,axiom,
+    rp_some @ irratrp ).
+
+thf(typ_sqrt,type,
+    sqrt: $i > $i ).
+
+thf(def_sqrt,definition,
+    ( sqrt
+    = ( ^ [X0: $i] :
+          ( ind @ cut
+          @ ^ [X1: $i] : ( rp_is @ ( rp_ts @ X1 @ X1 ) @ X0 ) ) ) ) ).
+
+thf(typ_iiia_x0,type,
+    iiia_x0: $i > $i ).
+
+thf(def_iiia_x0,definition,
+    ( iiia_x0
+    = ( ^ [X0: $i] : ( rtofn @ ( ntofrp @ X0 ) ) ) ) ).
+
+thf(typ_xpy,type,
+    xpy: $i > $i > $i ).
+
+thf(def_xpy,definition,
+    ( xpy
+    = ( ^ [X0: $i,X1: $i] : ( nofrt @ ( rt_pl @ ( iiia_x0 @ X0 ) @ ( iiia_x0 @ X1 ) ) ) ) ) ).
+
+thf(typ_xty,type,
+    xty: $i > $i > $i ).
+
+thf(def_xty,definition,
+    ( xty
+    = ( ^ [X0: $i,X1: $i] : ( nofrt @ ( rt_ts @ ( iiia_x0 @ X0 ) @ ( iiia_x0 @ X1 ) ) ) ) ) ).
+
+thf(typ_xmy,type,
+    xmy: $i > $i > $i ).
+
+thf(def_xmy,definition,
+    ( xmy
+    = ( ^ [X0: $i,X1: $i] : ( nofrt @ ( rt_mn @ ( iiia_x0 @ X0 ) @ ( iiia_x0 @ X1 ) ) ) ) ) ).
+
+thf(typ_dif,type,
+    dif: $i ).
+
+thf(def_dif,definition,
+    ( dif
+    = ( pair1type @ cut ) ) ).
+
+thf(typ_rp_df,type,
+    rp_df: $i > $i > $i ).
+
+thf(def_rp_df,definition,
+    ( rp_df
+    = ( pair1 @ cut ) ) ).
+
+thf(typ_stm,type,
+    stm: $i > $i ).
+
+thf(def_stm,definition,
+    ( stm
+    = ( first1 @ cut ) ) ).
+
+thf(typ_std,type,
+    std: $i > $i ).
+
+thf(def_std,definition,
+    ( std
+    = ( second1 @ cut ) ) ).
+
+%------------------------------------------------------------------------------

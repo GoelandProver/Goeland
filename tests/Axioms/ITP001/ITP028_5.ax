@@ -1,0 +1,291 @@
+%------------------------------------------------------------------------------
+% File     : ITP028_5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : fixedPoint_2.ax [Gau20]
+%          : HL4028_5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   42 (   9 unt;   9 typ;   0 def)
+%            Number of atoms       :  571 (  14 equ)
+%            Maximal formula atoms :    7 (  13 avg)
+%            Number of connectives :   84 (   0   ~;   0   |;  12   &)
+%                                         (   3 <=>;  69  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   11 (   6 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of FOOLs       :  454 ( 454 fml;   0 var)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :   14 (   9   >;   5   *;   0   +;   0  <<)
+%            Number of predicates  :   17 (  16 usr;   2 prp; 0-2 aty)
+%            Number of functors    :    9 (   9 usr;   0 con; 1-2 aty)
+%            Number of variables   :   95 (  95   !;   0   ?;  95   :)
+% SPC      : TF0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+tff(tp_c_2EfixedPoint_2Eclosed,type,
+    c_2EfixedPoint_2Eclosed: del > $i ).
+
+tff(mem_c_2EfixedPoint_2Eclosed,axiom,
+    ! [A_27a: del] : mem(c_2EfixedPoint_2Eclosed(A_27a),arr(arr(arr(A_27a,bool),arr(A_27a,bool)),arr(arr(A_27a,bool),bool))) ).
+
+tff(tp_c_2EfixedPoint_2Edense,type,
+    c_2EfixedPoint_2Edense: del > $i ).
+
+tff(mem_c_2EfixedPoint_2Edense,axiom,
+    ! [A_27a: del] : mem(c_2EfixedPoint_2Edense(A_27a),arr(arr(arr(A_27a,bool),arr(A_27a,bool)),arr(arr(A_27a,bool),bool))) ).
+
+tff(tp_c_2EfixedPoint_2Eempty,type,
+    c_2EfixedPoint_2Eempty: ( del * del ) > $i ).
+
+tff(mem_c_2EfixedPoint_2Eempty,axiom,
+    ! [A_27a: del,A_27b: del] : mem(c_2EfixedPoint_2Eempty(A_27a,A_27b),arr(A_27a,arr(A_27b,bool))) ).
+
+tff(tp_c_2EfixedPoint_2Efnsum,type,
+    c_2EfixedPoint_2Efnsum: ( del * del ) > $i ).
+
+tff(mem_c_2EfixedPoint_2Efnsum,axiom,
+    ! [A_27a: del,A_27b: del] : mem(c_2EfixedPoint_2Efnsum(A_27a,A_27b),arr(arr(A_27b,arr(A_27a,bool)),arr(arr(A_27b,arr(A_27a,bool)),arr(A_27b,arr(A_27a,bool))))) ).
+
+tff(tp_c_2EfixedPoint_2Egfp,type,
+    c_2EfixedPoint_2Egfp: del > $i ).
+
+tff(mem_c_2EfixedPoint_2Egfp,axiom,
+    ! [A_27a: del] : mem(c_2EfixedPoint_2Egfp(A_27a),arr(arr(arr(A_27a,bool),arr(A_27a,bool)),arr(A_27a,bool))) ).
+
+tff(tp_c_2EfixedPoint_2Elfp,type,
+    c_2EfixedPoint_2Elfp: del > $i ).
+
+tff(mem_c_2EfixedPoint_2Elfp,axiom,
+    ! [A_27a: del] : mem(c_2EfixedPoint_2Elfp(A_27a),arr(arr(arr(A_27a,bool),arr(A_27a,bool)),arr(A_27a,bool))) ).
+
+tff(tp_c_2EfixedPoint_2Emonotone,type,
+    c_2EfixedPoint_2Emonotone: ( del * del ) > $i ).
+
+tff(mem_c_2EfixedPoint_2Emonotone,axiom,
+    ! [A_27a: del,A_27b: del] : mem(c_2EfixedPoint_2Emonotone(A_27a,A_27b),arr(arr(arr(A_27a,bool),arr(A_27b,bool)),bool)) ).
+
+tff(ax_thm_2EfixedPoint_2Emonotone__def,axiom,
+    ! [A_27a: del,A_27b: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27b,bool)))
+     => ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27b),V0f))
+      <=> ! [V1X: $i] :
+            ( mem(V1X,arr(A_27a,bool))
+           => ! [V2Y: $i] :
+                ( mem(V2Y,arr(A_27a,bool))
+               => ( p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1X),V2Y))
+                 => p(ap(ap(c_2Epred__set_2ESUBSET(A_27b),ap(V0f,V1X)),ap(V0f,V2Y))) ) ) ) ) ) ).
+
+tff(lamtp_f310,type,
+    f310: ( del * $i ) > $i ).
+
+tff(lameq_f310,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ! [V1X: $i] : ( ap(f310(A_27a,V0f),V1X) = ap(ap(c_2Epair_2E_2C(arr(A_27a,bool),bool),V1X),ap(ap(c_2Epred__set_2ESUBSET(A_27a),ap(V0f,V1X)),V1X)) ) ) ).
+
+tff(ax_thm_2EfixedPoint_2Elfp__def,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ( ap(c_2EfixedPoint_2Elfp(A_27a),V0f) = ap(c_2Epred__set_2EBIGINTER(A_27a),ap(c_2Epred__set_2EGSPEC(arr(A_27a,bool),arr(A_27a,bool)),f310(A_27a,V0f))) ) ) ).
+
+tff(lamtp_f311,type,
+    f311: ( del * $i ) > $i ).
+
+tff(lameq_f311,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ! [V1X: $i] : ( ap(f311(A_27a,V0f),V1X) = ap(ap(c_2Epair_2E_2C(arr(A_27a,bool),bool),V1X),ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1X),ap(V0f,V1X))) ) ) ).
+
+tff(ax_thm_2EfixedPoint_2Egfp__def,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ( ap(c_2EfixedPoint_2Egfp(A_27a),V0f) = ap(c_2Epred__set_2EBIGUNION(A_27a),ap(c_2Epred__set_2EGSPEC(arr(A_27a,bool),arr(A_27a,bool)),f311(A_27a,V0f))) ) ) ).
+
+tff(ax_thm_2EfixedPoint_2Eclosed__def,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ! [V1X: $i] :
+          ( mem(V1X,arr(A_27a,bool))
+         => ( p(ap(ap(c_2EfixedPoint_2Eclosed(A_27a),V0f),V1X))
+          <=> p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),ap(V0f,V1X)),V1X)) ) ) ) ).
+
+tff(ax_thm_2EfixedPoint_2Edense__def,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ! [V1X: $i] :
+          ( mem(V1X,arr(A_27a,bool))
+         => ( p(ap(ap(c_2EfixedPoint_2Edense(A_27a),V0f),V1X))
+          <=> p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1X),ap(V0f,V1X))) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Elfp__least__closed,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f))
+       => ( p(ap(ap(c_2EfixedPoint_2Eclosed(A_27a),V0f),ap(c_2EfixedPoint_2Elfp(A_27a),V0f)))
+          & ! [V1X: $i] :
+              ( mem(V1X,arr(A_27a,bool))
+             => ( p(ap(ap(c_2EfixedPoint_2Eclosed(A_27a),V0f),V1X))
+               => p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),ap(c_2EfixedPoint_2Elfp(A_27a),V0f)),V1X)) ) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Egfp__greatest__dense,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f))
+       => ( p(ap(ap(c_2EfixedPoint_2Edense(A_27a),V0f),ap(c_2EfixedPoint_2Egfp(A_27a),V0f)))
+          & ! [V1X: $i] :
+              ( mem(V1X,arr(A_27a,bool))
+             => ( p(ap(ap(c_2EfixedPoint_2Edense(A_27a),V0f),V1X))
+               => p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1X),ap(c_2EfixedPoint_2Egfp(A_27a),V0f))) ) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Elfp__fixedpoint,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f))
+       => ( ( ap(c_2EfixedPoint_2Elfp(A_27a),V0f) = ap(V0f,ap(c_2EfixedPoint_2Elfp(A_27a),V0f)) )
+          & ! [V1X: $i] :
+              ( mem(V1X,arr(A_27a,bool))
+             => ( ( V1X = ap(V0f,V1X) )
+               => p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),ap(c_2EfixedPoint_2Elfp(A_27a),V0f)),V1X)) ) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Egfp__greatest__fixedpoint,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f))
+       => ( ( ap(c_2EfixedPoint_2Egfp(A_27a),V0f) = ap(V0f,ap(c_2EfixedPoint_2Egfp(A_27a),V0f)) )
+          & ! [V1X: $i] :
+              ( mem(V1X,arr(A_27a,bool))
+             => ( ( V1X = ap(V0f,V1X) )
+               => p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1X),ap(c_2EfixedPoint_2Egfp(A_27a),V0f))) ) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Elfp__induction,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f))
+       => ! [V1X: $i] :
+            ( mem(V1X,arr(A_27a,bool))
+           => ( p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),ap(V0f,V1X)),V1X))
+             => p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),ap(c_2EfixedPoint_2Elfp(A_27a),V0f)),V1X)) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Egfp__coinduction,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f))
+       => ! [V1X: $i] :
+            ( mem(V1X,arr(A_27a,bool))
+           => ( p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1X),ap(V0f,V1X)))
+             => p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1X),ap(c_2EfixedPoint_2Egfp(A_27a),V0f))) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Elfp__strong__induction,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f))
+       => ! [V1X: $i] :
+            ( mem(V1X,arr(A_27a,bool))
+           => ( p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),ap(V0f,ap(ap(c_2Epred__set_2EINTER(A_27a),V1X),ap(c_2EfixedPoint_2Elfp(A_27a),V0f)))),V1X))
+             => p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),ap(c_2EfixedPoint_2Elfp(A_27a),V0f)),V1X)) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Egfp__strong__coinduction,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f))
+       => ! [V1X: $i] :
+            ( mem(V1X,arr(A_27a,bool))
+           => ( p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1X),ap(V0f,ap(ap(c_2Epred__set_2EUNION(A_27a),V1X),ap(c_2EfixedPoint_2Egfp(A_27a),V0f)))))
+             => p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1X),ap(c_2EfixedPoint_2Egfp(A_27a),V0f))) ) ) ) ) ).
+
+tff(ax_thm_2EfixedPoint_2Efnsum__def,axiom,
+    ! [A_27a: del,A_27b: del,V0f1: $i] :
+      ( mem(V0f1,arr(A_27b,arr(A_27a,bool)))
+     => ! [V1f2: $i] :
+          ( mem(V1f2,arr(A_27b,arr(A_27a,bool)))
+         => ! [V2X: $i] :
+              ( mem(V2X,A_27b)
+             => ( ap(ap(ap(c_2EfixedPoint_2Efnsum(A_27a,A_27b),V0f1),V1f2),V2X) = ap(ap(c_2Epred__set_2EUNION(A_27a),ap(V0f1,V2X)),ap(V1f2,V2X)) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Efnsum__monotone,axiom,
+    ! [A_27a: del,A_27b: del,V0f1: $i] :
+      ( mem(V0f1,arr(arr(A_27a,bool),arr(A_27b,bool)))
+     => ! [V1f2: $i] :
+          ( mem(V1f2,arr(arr(A_27a,bool),arr(A_27b,bool)))
+         => ( ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27b),V0f1))
+              & p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27b),V1f2)) )
+           => p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27b),ap(ap(c_2EfixedPoint_2Efnsum(A_27b,arr(A_27a,bool)),V0f1),V1f2))) ) ) ) ).
+
+tff(ax_thm_2EfixedPoint_2Eempty__def,axiom,
+    ! [A_27a: del,A_27b: del] : ( c_2EfixedPoint_2Eempty(A_27a,A_27b) = k(A_27a,c_2Epred__set_2EEMPTY(A_27b)) ) ).
+
+tff(conj_thm_2EfixedPoint_2Eempty__monotone,axiom,
+    ! [A_27a: del,A_27b: del] : p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27b),c_2EfixedPoint_2Eempty(arr(A_27a,bool),A_27b))) ).
+
+tff(conj_thm_2EfixedPoint_2Efnsum__empty,axiom,
+    ! [A_27a: del,A_27b: del,V0f: $i] :
+      ( mem(V0f,arr(A_27a,arr(A_27b,bool)))
+     => ( ( ap(ap(c_2EfixedPoint_2Efnsum(A_27b,A_27a),V0f),c_2EfixedPoint_2Eempty(A_27a,A_27b)) = V0f )
+        & ( ap(ap(c_2EfixedPoint_2Efnsum(A_27b,A_27a),c_2EfixedPoint_2Eempty(A_27a,A_27b)),V0f) = V0f ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Efnsum__ASSOC,axiom,
+    ! [A_27a: del,A_27b: del,V0f: $i] :
+      ( mem(V0f,arr(A_27a,arr(A_27b,bool)))
+     => ! [V1g: $i] :
+          ( mem(V1g,arr(A_27a,arr(A_27b,bool)))
+         => ! [V2h: $i] :
+              ( mem(V2h,arr(A_27a,arr(A_27b,bool)))
+             => ( ap(ap(c_2EfixedPoint_2Efnsum(A_27b,A_27a),V0f),ap(ap(c_2EfixedPoint_2Efnsum(A_27b,A_27a),V1g),V2h)) = ap(ap(c_2EfixedPoint_2Efnsum(A_27b,A_27a),ap(ap(c_2EfixedPoint_2Efnsum(A_27b,A_27a),V0f),V1g)),V2h) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Efnsum__COMM,axiom,
+    ! [A_27a: del,A_27b: del,V0f: $i] :
+      ( mem(V0f,arr(A_27a,arr(A_27b,bool)))
+     => ! [V1g: $i] :
+          ( mem(V1g,arr(A_27a,arr(A_27b,bool)))
+         => ( ap(ap(c_2EfixedPoint_2Efnsum(A_27b,A_27a),V0f),V1g) = ap(ap(c_2EfixedPoint_2Efnsum(A_27b,A_27a),V1g),V0f) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Efnsum__SUBSET,axiom,
+    ! [A_27a: del,A_27b: del,V0f: $i] :
+      ( mem(V0f,arr(A_27a,arr(A_27b,bool)))
+     => ! [V1g: $i] :
+          ( mem(V1g,arr(A_27a,arr(A_27b,bool)))
+         => ! [V2X: $i] :
+              ( mem(V2X,A_27a)
+             => ( p(ap(ap(c_2Epred__set_2ESUBSET(A_27b),ap(V0f,V2X)),ap(ap(ap(c_2EfixedPoint_2Efnsum(A_27b,A_27a),V0f),V1g),V2X)))
+                & p(ap(ap(c_2Epred__set_2ESUBSET(A_27b),ap(V1g,V2X)),ap(ap(ap(c_2EfixedPoint_2Efnsum(A_27b,A_27a),V0f),V1g),V2X))) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Elfp__fnsum,axiom,
+    ! [A_27a: del,V0f1: $i] :
+      ( mem(V0f1,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ! [V1f2: $i] :
+          ( mem(V1f2,arr(arr(A_27a,bool),arr(A_27a,bool)))
+         => ( ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f1))
+              & p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V1f2)) )
+           => ( p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),ap(c_2EfixedPoint_2Elfp(A_27a),V0f1)),ap(c_2EfixedPoint_2Elfp(A_27a),ap(ap(c_2EfixedPoint_2Efnsum(A_27a,arr(A_27a,bool)),V0f1),V1f2))))
+              & p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),ap(c_2EfixedPoint_2Elfp(A_27a),V1f2)),ap(c_2EfixedPoint_2Elfp(A_27a),ap(ap(c_2EfixedPoint_2Efnsum(A_27a,arr(A_27a,bool)),V0f1),V1f2)))) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Elfp__rule__applied,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ! [V1X: $i] :
+          ( mem(V1X,arr(A_27a,bool))
+         => ! [V2y: $i] :
+              ( mem(V2y,A_27a)
+             => ( ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f))
+                  & p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1X),ap(c_2EfixedPoint_2Elfp(A_27a),V0f)))
+                  & p(ap(ap(c_2Ebool_2EIN(A_27a),V2y),ap(V0f,V1X))) )
+               => p(ap(ap(c_2Ebool_2EIN(A_27a),V2y),ap(c_2EfixedPoint_2Elfp(A_27a),V0f))) ) ) ) ) ).
+
+tff(conj_thm_2EfixedPoint_2Elfp__empty,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(arr(A_27a,bool),arr(A_27a,bool)))
+     => ! [V1x: $i] :
+          ( mem(V1x,A_27a)
+         => ( ( p(ap(c_2EfixedPoint_2Emonotone(A_27a,A_27a),V0f))
+              & p(ap(ap(c_2Ebool_2EIN(A_27a),V1x),ap(V0f,c_2Epred__set_2EEMPTY(A_27a)))) )
+           => p(ap(ap(c_2Ebool_2EIN(A_27a),V1x),ap(c_2EfixedPoint_2Elfp(A_27a),V0f))) ) ) ) ).
+
+%------------------------------------------------------------------------------

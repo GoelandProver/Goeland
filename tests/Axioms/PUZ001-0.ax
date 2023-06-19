@@ -1,0 +1,103 @@
+%------------------------------------------------------------------------------
+% File     : PUZ001-0 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Puzzles (Mars and Venus)
+% Axioms   : Mars and Venus axioms
+% Version  :
+% English  :
+
+% Refs     : [Rap95] Raptis (1995), Email to G. Sutcliffe
+% Source   : [ANL]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   16 (   0 unt;   4 nHn;  12 RR)
+%            Number of literals    :   39 (   1 equ;  23 neg)
+%            Maximal clause size   :    3 (   2 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of predicates  :    9 (   8 usr;   0 prp; 1-2 aty)
+%            Number of functors    :    1 (   1 usr;   0 con; 1-1 aty)
+%            Number of variables   :   20 (   1 sgn)
+% SPC      : 
+
+% Comments : [Rap95] has pointed out that the clause
+%            statements_are_true_or_not is a tautology. Does your ATP
+%            system ignore it?
+%------------------------------------------------------------------------------
+%----Everyone's either from Mars or Venus, male or female, and statements
+%----are true or false
+cnf(from_mars_or_venus,axiom,
+    ( from_mars(X)
+    | from_venus(X) ) ).
+
+cnf(not_from_mars_and_venus,axiom,
+    ( ~ from_mars(X)
+    | ~ from_venus(X) ) ).
+
+cnf(male_or_female,axiom,
+    ( male(X)
+    | female(X) ) ).
+
+cnf(not_male_and_female,axiom,
+    ( ~ male(X)
+    | ~ female(X) ) ).
+
+cnf(truthteller_or_liar,axiom,
+    ( truthteller(X)
+    | liar(X) ) ).
+
+cnf(not_truthteller_and_liar,axiom,
+    ( ~ truthteller(X)
+    | ~ liar(X) ) ).
+
+%----Rules about statements
+cnf(statements_are_true_or_not,axiom,
+    ( ~ says(X,Y)
+    | a_truth(Y)
+    | ~ a_truth(Y) ) ).
+
+cnf(people_say_their_statements,axiom,
+    ( ~ says(X,Y)
+    | Y = statement_by(X) ) ).
+
+cnf(true_statements_made_by_truthtellers,axiom,
+    ( ~ a_truth(statement_by(X))
+    | truthteller(X) ) ).
+
+cnf(false_statements_made_by_liars,axiom,
+    ( a_truth(statement_by(X))
+    | liar(X) ) ).
+
+%----Who's a liar, who's not
+cnf(venusian_female_are_truthtellers,axiom,
+    ( ~ from_venus(X)
+    | ~ female(X)
+    | truthteller(X) ) ).
+
+cnf(venusian_males_are_liars,axiom,
+    ( ~ from_venus(X)
+    | ~ male(X)
+    | liar(X) ) ).
+
+cnf(marsian_males_are_truthtellers,axiom,
+    ( ~ from_mars(X)
+    | ~ male(X)
+    | truthteller(X) ) ).
+
+cnf(marsian_females_are_liars,axiom,
+    ( ~ from_mars(X)
+    | ~ female(X)
+    | liar(X) ) ).
+
+%----what truthtellers say is true, what liars say is false, what
+%----truthtellers say is true, what liars say is false
+cnf(truthtellers_make_true_statements,axiom,
+    ( ~ truthteller(X)
+    | ~ says(X,Y)
+    | a_truth(Y) ) ).
+
+cnf(liars_make_false_statements,axiom,
+    ( ~ liar(X)
+    | ~ says(X,Y)
+    | ~ a_truth(Y) ) ).
+
+%------------------------------------------------------------------------------

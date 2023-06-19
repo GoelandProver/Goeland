@@ -1,0 +1,254 @@
+%------------------------------------------------------------------------------
+% File     : SET007+109 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Average Value Theorems for Real Functions of One Variable
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : rolle [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   12 (   0 unt;   0 def)
+%            Number of atoms       :  143 (  12 equ)
+%            Maximal formula atoms :   18 (  11 avg)
+%            Number of connectives :  164 (  33   ~;   0   |;  55   &)
+%                                         (   0 <=>;  76  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   22 (  16 avg)
+%            Maximal term depth    :    6 (   1 avg)
+%            Number of predicates  :   13 (  12 usr;   0 prp; 1-4 aty)
+%            Number of functors    :   12 (  12 usr;   3 con; 0-4 aty)
+%            Number of variables   :   54 (  53   !;   1   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ~ ( r2_fcont_1(C,k1_rcomp_1(A,B))
+                    & k2_seq_1(k1_numbers,k1_numbers,C,A) = k2_seq_1(k1_numbers,k1_numbers,C,B)
+                    & r2_fdiff_1(C,k2_rcomp_1(A,B))
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                       => ~ ( r2_hidden(D,k2_rcomp_1(A,B))
+                            & k1_fdiff_1(C,D) = np__0 ) ) ) ) ) ) ) ).
+
+fof(t2_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,np__0)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ~ ( r2_fcont_1(C,k1_rcomp_1(A,k3_real_1(A,B)))
+                    & k2_seq_1(k1_numbers,k1_numbers,C,A) = k2_seq_1(k1_numbers,k1_numbers,C,k3_real_1(A,B))
+                    & r2_fdiff_1(C,k2_rcomp_1(A,k3_real_1(A,B)))
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                       => ~ ( ~ r1_xreal_0(D,np__0)
+                            & ~ r1_xreal_0(np__1,D)
+                            & k1_fdiff_1(C,k3_real_1(A,k4_real_1(D,B))) = np__0 ) ) ) ) ) ) ) ).
+
+fof(t3_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ~ ( r2_fcont_1(C,k1_rcomp_1(A,B))
+                    & r2_fdiff_1(C,k2_rcomp_1(A,B))
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                       => ~ ( r2_hidden(D,k2_rcomp_1(A,B))
+                            & k1_fdiff_1(C,D) = k6_real_1(k5_real_1(k2_seq_1(k1_numbers,k1_numbers,C,B),k2_seq_1(k1_numbers,k1_numbers,C,A)),k5_real_1(B,A)) ) ) ) ) ) ) ) ).
+
+fof(t4_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,np__0)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ~ ( r2_fcont_1(C,k1_rcomp_1(A,k3_real_1(A,B)))
+                    & r2_fdiff_1(C,k2_rcomp_1(A,k3_real_1(A,B)))
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                       => ~ ( ~ r1_xreal_0(D,np__0)
+                            & ~ r1_xreal_0(np__1,D)
+                            & k2_seq_1(k1_numbers,k1_numbers,C,k3_real_1(A,B)) = k3_real_1(k2_seq_1(k1_numbers,k1_numbers,C,A),k4_real_1(B,k1_fdiff_1(C,k3_real_1(A,k4_real_1(D,B))))) ) ) ) ) ) ) ) ).
+
+fof(t5_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ! [D] :
+                    ( ( v1_funct_1(D)
+                      & m2_relset_1(D,k1_numbers,k1_numbers) )
+                   => ~ ( r2_fcont_1(C,k1_rcomp_1(A,B))
+                        & r2_fdiff_1(C,k2_rcomp_1(A,B))
+                        & r2_fcont_1(D,k1_rcomp_1(A,B))
+                        & r2_fdiff_1(D,k2_rcomp_1(A,B))
+                        & ! [E] :
+                            ( m1_subset_1(E,k1_numbers)
+                           => ~ ( r2_hidden(E,k2_rcomp_1(A,B))
+                                & k4_real_1(k5_real_1(k2_seq_1(k1_numbers,k1_numbers,C,B),k2_seq_1(k1_numbers,k1_numbers,C,A)),k1_fdiff_1(D,E)) = k4_real_1(k5_real_1(k2_seq_1(k1_numbers,k1_numbers,D,B),k2_seq_1(k1_numbers,k1_numbers,D,A)),k1_fdiff_1(C,E)) ) ) ) ) ) ) ) ) ).
+
+fof(t6_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,np__0)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ! [D] :
+                    ( ( v1_funct_1(D)
+                      & m2_relset_1(D,k1_numbers,k1_numbers) )
+                   => ~ ( r2_fcont_1(C,k1_rcomp_1(A,k3_real_1(A,B)))
+                        & r2_fdiff_1(C,k2_rcomp_1(A,k3_real_1(A,B)))
+                        & r2_fcont_1(D,k1_rcomp_1(A,k3_real_1(A,B)))
+                        & r2_fdiff_1(D,k2_rcomp_1(A,k3_real_1(A,B)))
+                        & ! [E] :
+                            ( m1_subset_1(E,k1_numbers)
+                           => ~ ( r2_hidden(E,k2_rcomp_1(A,k3_real_1(A,B)))
+                                & k1_fdiff_1(D,E) = np__0 ) )
+                        & ! [E] :
+                            ( m1_subset_1(E,k1_numbers)
+                           => ~ ( ~ r1_xreal_0(E,np__0)
+                                & ~ r1_xreal_0(np__1,E)
+                                & k6_real_1(k5_real_1(k2_seq_1(k1_numbers,k1_numbers,C,k3_real_1(A,B)),k2_seq_1(k1_numbers,k1_numbers,C,A)),k5_real_1(k2_seq_1(k1_numbers,k1_numbers,D,k3_real_1(A,B)),k2_seq_1(k1_numbers,k1_numbers,D,A))) = k6_real_1(k1_fdiff_1(C,k3_real_1(A,k4_real_1(E,B))),k1_fdiff_1(D,k3_real_1(A,k4_real_1(E,B)))) ) ) ) ) ) ) ) ) ).
+
+fof(t7_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ( ( r2_fdiff_1(C,k2_rcomp_1(A,B))
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                       => ( r2_hidden(D,k2_rcomp_1(A,B))
+                         => k1_fdiff_1(C,D) = np__0 ) ) )
+                 => r1_partfun2(k1_numbers,k1_numbers,C,k2_rcomp_1(A,B)) ) ) ) ) ) ).
+
+fof(t8_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ! [D] :
+                    ( ( v1_funct_1(D)
+                      & m2_relset_1(D,k1_numbers,k1_numbers) )
+                   => ( ( r2_fdiff_1(C,k2_rcomp_1(A,B))
+                        & r2_fdiff_1(D,k2_rcomp_1(A,B))
+                        & ! [E] :
+                            ( m1_subset_1(E,k1_numbers)
+                           => ( r2_hidden(E,k2_rcomp_1(A,B))
+                             => k1_fdiff_1(C,E) = k1_fdiff_1(D,E) ) ) )
+                     => ( r1_partfun2(k1_numbers,k1_numbers,k7_seq_1(k1_numbers,k1_numbers,C,D),k2_rcomp_1(A,B))
+                        & ? [E] :
+                            ( m1_subset_1(E,k1_numbers)
+                            & ! [F] :
+                                ( m1_subset_1(F,k1_numbers)
+                               => ( r2_hidden(F,k2_rcomp_1(A,B))
+                                 => k2_seq_1(k1_numbers,k1_numbers,C,F) = k3_real_1(k2_seq_1(k1_numbers,k1_numbers,D,F),E) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t9_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ( ( r2_fdiff_1(C,k2_rcomp_1(A,B))
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                       => ~ ( r2_hidden(D,k2_rcomp_1(A,B))
+                            & r1_xreal_0(k1_fdiff_1(C,D),np__0) ) ) )
+                 => r1_rfunct_2(C,k2_rcomp_1(A,B)) ) ) ) ) ) ).
+
+fof(t10_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ( ( r2_fdiff_1(C,k2_rcomp_1(A,B))
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                       => ~ ( r2_hidden(D,k2_rcomp_1(A,B))
+                            & r1_xreal_0(np__0,k1_fdiff_1(C,D)) ) ) )
+                 => r2_rfunct_2(C,k2_rcomp_1(A,B)) ) ) ) ) ) ).
+
+fof(t11_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ( ( r2_fdiff_1(C,k2_rcomp_1(A,B))
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                       => ( r2_hidden(D,k2_rcomp_1(A,B))
+                         => r1_xreal_0(np__0,k1_fdiff_1(C,D)) ) ) )
+                 => r3_rfunct_2(C,k2_rcomp_1(A,B)) ) ) ) ) ) ).
+
+fof(t12_rolle,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ~ r1_xreal_0(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & m2_relset_1(C,k1_numbers,k1_numbers) )
+               => ( ( r2_fdiff_1(C,k2_rcomp_1(A,B))
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                       => ( r2_hidden(D,k2_rcomp_1(A,B))
+                         => r1_xreal_0(k1_fdiff_1(C,D),np__0) ) ) )
+                 => r4_rfunct_2(C,k2_rcomp_1(A,B)) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

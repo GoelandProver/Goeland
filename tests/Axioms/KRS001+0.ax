@@ -1,0 +1,166 @@
+%------------------------------------------------------------------------------
+% File     : KRS001+0 : TPTP v8.1.2. Released v3.6.0.
+% Domain   : Knowledge Representation
+% Axioms   : SZS success ontology nodes
+% Version  : [Sut08] axioms.
+% English  :
+
+% Refs     : [Sut08] Sutcliffe (2008), The SZS Ontologies for Automated Rea
+% Source   : [TPTP]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   19 (   0 unt;   0 def)
+%            Number of atoms       :   70 (   0 equ)
+%            Maximal formula atoms :    7 (   3 avg)
+%            Number of connectives :   63 (  12   ~;   0   |;  24   &)
+%                                         (  22 <=>;   5  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   10 (   7 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of predicates  :    2 (   2 usr;   0 prp; 2-3 aty)
+%            Number of functors    :   20 (  20 usr;  19 con; 0-1 aty)
+%            Number of variables   :   77 (  49   !;  28   ?)
+% SPC      : 
+
+% Comments :
+%------------------------------------------------------------------------------
+fof(unp,axiom,
+    ! [Ax,C] :
+      ( ( ~ ? [I1] : model(I1,Ax)
+       => ~ ? [I2] : model(I2,C) )
+    <=> status(Ax,C,unp) ) ).
+
+fof(sap,axiom,
+    ! [Ax,C] :
+      ( ( ? [I1] : model(I1,Ax)
+       => ? [I2] : model(I2,C) )
+    <=> status(Ax,C,sap) ) ).
+
+fof(esa,axiom,
+    ! [Ax,C] :
+      ( ( ? [I1] : model(I1,Ax)
+      <=> ? [I2] : model(I2,C) )
+    <=> status(Ax,C,esa) ) ).
+
+fof(sat,axiom,
+    ! [Ax,C] :
+      ( ? [I1] :
+          ( model(I1,Ax)
+          & model(I1,C) )
+    <=> status(Ax,C,sat) ) ).
+
+fof(thm,axiom,
+    ! [Ax,C] :
+      ( ! [I1] :
+          ( model(I1,Ax)
+         => model(I1,C) )
+    <=> status(Ax,C,thm) ) ).
+
+fof(eqv,axiom,
+    ! [Ax,C] :
+      ( ( ? [I1] : model(I1,Ax)
+        & ! [I2] :
+            ( model(I2,Ax)
+          <=> model(I2,C) ) )
+    <=> status(Ax,C,eqv) ) ).
+
+fof(tac,axiom,
+    ! [Ax,C] :
+      ( ( ? [I1] : model(I1,Ax)
+        & ! [I2] : model(I2,C) )
+    <=> status(Ax,C,tac) ) ).
+
+fof(wec,axiom,
+    ! [Ax,C] :
+      ( ( ? [I1] : model(I1,Ax)
+        & ! [I2] :
+            ( model(I2,Ax)
+           => model(I2,C) )
+        & ? [I3] :
+            ( model(I3,C)
+            & ~ model(I3,Ax) ) )
+    <=> status(Ax,C,wec) ) ).
+
+fof(eth,axiom,
+    ! [Ax,C] :
+      ( ( ? [I1] : model(I1,Ax)
+        & ? [I2] : ~ model(I2,Ax)
+        & ! [I3] :
+            ( model(I3,Ax)
+          <=> model(I3,C) ) )
+    <=> status(Ax,C,eth) ) ).
+
+fof(tau,axiom,
+    ! [Ax,C] :
+      ( ! [I1] :
+          ( model(I1,Ax)
+          & model(I1,C) )
+    <=> status(Ax,C,tau) ) ).
+
+fof(wtc,axiom,
+    ! [Ax,C] :
+      ( ( ? [I1] : model(I1,Ax)
+        & ? [I2] : ~ model(I2,Ax)
+        & ! [I3] : model(I3,C) )
+    <=> status(Ax,C,wtc) ) ).
+
+fof(wth,axiom,
+    ! [Ax,C] :
+      ( ( ? [I1] : model(I1,Ax)
+        & ! [I2] :
+            ( model(I2,Ax)
+           => model(I2,C) )
+        & ? [I3] :
+            ( model(I3,C)
+            & ~ model(I3,Ax) )
+        & ? [I4] : ~ model(I4,C) )
+    <=> status(Ax,C,wth) ) ).
+
+fof(cax,axiom,
+    ! [Ax,C] :
+      ( ~ ? [I1] : model(I1,Ax)
+    <=> status(Ax,C,cax) ) ).
+
+fof(sca,axiom,
+    ! [Ax,C] :
+      ( ( ~ ? [I1] : model(I1,Ax)
+        & ? [I2] : model(I2,C) )
+    <=> status(Ax,C,sca) ) ).
+
+fof(tca,axiom,
+    ! [Ax,C] :
+      ( ( ~ ? [I1] : model(I1,Ax)
+        & ! [I2] : model(I2,C) )
+    <=> status(Ax,C,tca) ) ).
+
+fof(wca,axiom,
+    ! [Ax,C] :
+      ( ( ~ ? [I1] : model(I1,Ax)
+        & ? [I2] : model(I2,C)
+        & ? [I3] : ~ model(I3,C) )
+    <=> status(Ax,C,wca) ) ).
+
+fof(csa,axiom,
+    ! [Ax,C] :
+      ( ? [I1] :
+          ( model(I1,Ax)
+          & model(I1,not(C)) )
+    <=> status(Ax,C,csa) ) ).
+
+fof(uns,axiom,
+    ! [Ax,C] :
+      ( ( ! [I1] : model(I1,Ax)
+        & ! [I2] : model(I2,not(C)) )
+    <=> status(Ax,C,uns) ) ).
+
+fof(noc,axiom,
+    ! [Ax,C] :
+      ( ( ? [I1] :
+            ( model(I1,Ax)
+            & model(I1,C) )
+        & ? [I2] :
+            ( model(I2,Ax)
+            & model(I2,not(C)) ) )
+    <=> status(Ax,C,noc) ) ).
+
+%------------------------------------------------------------------------------

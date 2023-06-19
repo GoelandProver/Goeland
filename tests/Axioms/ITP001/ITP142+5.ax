@@ -1,0 +1,904 @@
+%------------------------------------------------------------------------------
+% File     : ITP142+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : util_prob+2.ax [Gau20]
+%          : HL4142+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  103 (   6 unt;   0 def)
+%            Number of atoms       :  446 (  64 equ)
+%            Maximal formula atoms :   14 (   4 avg)
+%            Number of connectives :  358 (  15   ~;   1   |;  75   &)
+%                                         (  16 <=>; 251  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   7 avg)
+%            Maximal term depth    :   10 (   2 avg)
+%            Number of predicates  :    5 (   3 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   83 (  83 usr;  35 con; 0-5 aty)
+%            Number of variables   :  257 ( 229   !;  28   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(mem_c_2Eutil__prob_2Edisjoint,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => mem(c_2Eutil__prob_2Edisjoint(A_27a),arr(arr(arr(A_27a,bool),bool),bool)) ) ).
+
+fof(mem_c_2Eutil__prob_2Elg,axiom,
+    mem(c_2Eutil__prob_2Elg,arr(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal)) ).
+
+fof(mem_c_2Eutil__prob_2Elogr,axiom,
+    mem(c_2Eutil__prob_2Elogr,arr(ty_2Erealax_2Ereal,arr(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal))) ).
+
+fof(mem_c_2Eutil__prob_2Eminimal,axiom,
+    mem(c_2Eutil__prob_2Eminimal,arr(arr(ty_2Enum_2Enum,bool),ty_2Enum_2Enum)) ).
+
+fof(mem_c_2Eutil__prob_2Epair,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => mem(c_2Eutil__prob_2Epair(A_27a,A_27b),arr(arr(A_27a,bool),arr(arr(A_27b,bool),arr(ty_2Epair_2Eprod(A_27a,A_27b),bool)))) ) ) ).
+
+fof(mem_c_2Eutil__prob_2Epowr,axiom,
+    mem(c_2Eutil__prob_2Epowr,arr(ty_2Erealax_2Ereal,arr(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal))) ).
+
+fof(mem_c_2Eutil__prob_2Eprod__sets,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => mem(c_2Eutil__prob_2Eprod__sets(A_27a,A_27b),arr(arr(arr(A_27a,bool),bool),arr(arr(arr(A_27b,bool),bool),arr(arr(ty_2Epair_2Eprod(A_27a,A_27b),bool),bool)))) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EEQ__T__IMP,axiom,
+    ! [V0x] :
+      ( mem(V0x,bool)
+     => ( p(V0x)
+      <=> ( $true
+         => p(V0x) ) ) ) ).
+
+fof(lameq_f3153,axiom,
+    ! [A_27a,A_27b,V2x] :
+      ( mem(V2x,A_27a)
+     => ! [V0X] :
+          ( mem(V0X,arr(A_27a,bool))
+         => ! [V1Y] :
+              ( mem(V1Y,arr(A_27b,bool))
+             => ! [V3y] : ap(f3153(A_27a,A_27b,V2x,V0X,V1Y),V3y) = ap(ap(c_2Ebool_2E_2F_5C,ap(ap(c_2Ebool_2EIN(A_27a),V2x),V0X)),ap(ap(c_2Ebool_2EIN(A_27b),V3y),V1Y)) ) ) ) ).
+
+fof(lameq_f3154,axiom,
+    ! [A_27b,A_27a,V0X] :
+      ( mem(V0X,arr(A_27a,bool))
+     => ! [V1Y] :
+          ( mem(V1Y,arr(A_27b,bool))
+         => ! [V2x] : ap(f3154(A_27b,A_27a,V0X,V1Y),V2x) = f3153(A_27a,A_27b,V2x,V0X,V1Y) ) ) ).
+
+fof(ax_thm_2Eutil__prob_2Epair__def,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0X] :
+              ( mem(V0X,arr(A_27a,bool))
+             => ! [V1Y] :
+                  ( mem(V1Y,arr(A_27b,bool))
+                 => ap(ap(c_2Eutil__prob_2Epair(A_27a,A_27b),V0X),V1Y) = ap(c_2Epair_2EUNCURRY(A_27a,A_27b,bool),f3154(A_27b,A_27a,V0X,V1Y)) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EIN__PAIR,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0x] :
+              ( mem(V0x,ty_2Epair_2Eprod(A_27a,A_27b))
+             => ! [V1X] :
+                  ( mem(V1X,arr(A_27a,bool))
+                 => ! [V2Y] :
+                      ( mem(V2Y,arr(A_27b,bool))
+                     => ( p(ap(ap(c_2Ebool_2EIN(ty_2Epair_2Eprod(A_27a,A_27b)),V0x),ap(ap(c_2Eutil__prob_2Epair(A_27a,A_27b),V1X),V2Y)))
+                      <=> ( p(ap(ap(c_2Ebool_2EIN(A_27a),ap(c_2Epair_2EFST(A_27a,A_27b),V0x)),V1X))
+                          & p(ap(ap(c_2Ebool_2EIN(A_27b),ap(c_2Epair_2ESND(A_27a,A_27b),V0x)),V2Y)) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPAIR__UNIV,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ap(ap(c_2Eutil__prob_2Epair(A_27a,A_27b),c_2Epred__set_2EUNIV(A_27a)),c_2Epred__set_2EUNIV(A_27b)) = c_2Epred__set_2EUNIV(ty_2Epair_2Eprod(A_27a,A_27b)) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPAIRED__BETA__THM,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [V0f] :
+                  ( mem(V0f,arr(A_27a,arr(A_27b,A_27c)))
+                 => ! [V1z] :
+                      ( mem(V1z,ty_2Epair_2Eprod(A_27a,A_27b))
+                     => ap(ap(c_2Epair_2EUNCURRY(A_27a,A_27b,A_27c),V0f),V1z) = ap(ap(V0f,ap(c_2Epair_2EFST(A_27a,A_27b),V1z)),ap(c_2Epair_2ESND(A_27a,A_27b),V1z)) ) ) ) ) ) ).
+
+fof(ax_thm_2Eutil__prob_2Epowr__def,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1a] :
+          ( mem(V1a,ty_2Erealax_2Ereal)
+         => ap(ap(c_2Eutil__prob_2Epowr,V0x),V1a) = ap(c_2Etransc_2Eexp,ap(ap(c_2Erealax_2Ereal__mul,V1a),ap(c_2Etransc_2Eln,V0x))) ) ) ).
+
+fof(ax_thm_2Eutil__prob_2Elogr__def,axiom,
+    ! [V0a] :
+      ( mem(V0a,ty_2Erealax_2Ereal)
+     => ! [V1x] :
+          ( mem(V1x,ty_2Erealax_2Ereal)
+         => ap(ap(c_2Eutil__prob_2Elogr,V0a),V1x) = ap(ap(c_2Ereal_2E_2F,ap(c_2Etransc_2Eln,V1x)),ap(c_2Etransc_2Eln,V0a)) ) ) ).
+
+fof(ax_thm_2Eutil__prob_2Elg__def,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ap(c_2Eutil__prob_2Elg,V0x) = ap(ap(c_2Eutil__prob_2Elogr,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),V0x) ) ).
+
+fof(conj_thm_2Eutil__prob_2Elg__1,axiom,
+    ap(c_2Eutil__prob_2Elg,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))) = ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) ).
+
+fof(conj_thm_2Eutil__prob_2Elogr__1,axiom,
+    ! [V0b] :
+      ( mem(V0b,ty_2Erealax_2Ereal)
+     => ap(ap(c_2Eutil__prob_2Elogr,V0b),ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))) = ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) ) ).
+
+fof(conj_thm_2Eutil__prob_2Elg__nonzero,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ( ( V0x != ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)
+          & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0x)) )
+       => ( ap(c_2Eutil__prob_2Elg,V0x) != ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)
+        <=> V0x != ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO))) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Elg__mul,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0x))
+              & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1y)) )
+           => ap(c_2Eutil__prob_2Elg,ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y)) = ap(ap(c_2Erealax_2Ereal__add,ap(c_2Eutil__prob_2Elg,V0x)),ap(c_2Eutil__prob_2Elg,V1y)) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Elogr__mul,axiom,
+    ! [V0b] :
+      ( mem(V0b,ty_2Erealax_2Ereal)
+     => ! [V1x] :
+          ( mem(V1x,ty_2Erealax_2Ereal)
+         => ! [V2y] :
+              ( mem(V2y,ty_2Erealax_2Ereal)
+             => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1x))
+                  & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V2y)) )
+               => ap(ap(c_2Eutil__prob_2Elogr,V0b),ap(ap(c_2Erealax_2Ereal__mul,V1x),V2y)) = ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Eutil__prob_2Elogr,V0b),V1x)),ap(ap(c_2Eutil__prob_2Elogr,V0b),V2y)) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Elg__2,axiom,
+    ap(c_2Eutil__prob_2Elg,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))) = ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO))) ).
+
+fof(conj_thm_2Eutil__prob_2Elg__inv,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0x))
+       => ap(c_2Eutil__prob_2Elg,ap(c_2Erealax_2Einv,V0x)) = ap(c_2Erealax_2Ereal__neg,ap(c_2Eutil__prob_2Elg,V0x)) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Elogr__inv,axiom,
+    ! [V0b] :
+      ( mem(V0b,ty_2Erealax_2Ereal)
+     => ! [V1x] :
+          ( mem(V1x,ty_2Erealax_2Ereal)
+         => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1x))
+           => ap(ap(c_2Eutil__prob_2Elogr,V0b),ap(c_2Erealax_2Einv,V1x)) = ap(c_2Erealax_2Ereal__neg,ap(ap(c_2Eutil__prob_2Elogr,V0b),V1x)) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Elogr__div,axiom,
+    ! [V0b] :
+      ( mem(V0b,ty_2Erealax_2Ereal)
+     => ! [V1x] :
+          ( mem(V1x,ty_2Erealax_2Ereal)
+         => ! [V2y] :
+              ( mem(V2y,ty_2Erealax_2Ereal)
+             => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1x))
+                  & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V2y)) )
+               => ap(ap(c_2Eutil__prob_2Elogr,V0b),ap(ap(c_2Ereal_2E_2F,V1x),V2y)) = ap(ap(c_2Ereal_2Ereal__sub,ap(ap(c_2Eutil__prob_2Elogr,V0b),V1x)),ap(ap(c_2Eutil__prob_2Elogr,V0b),V2y)) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Eneg__lg,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0x))
+       => ap(c_2Erealax_2Ereal__neg,ap(c_2Eutil__prob_2Elg,V0x)) = ap(c_2Eutil__prob_2Elg,ap(c_2Erealax_2Einv,V0x)) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Eneg__logr,axiom,
+    ! [V0b] :
+      ( mem(V0b,ty_2Erealax_2Ereal)
+     => ! [V1x] :
+          ( mem(V1x,ty_2Erealax_2Ereal)
+         => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1x))
+           => ap(c_2Erealax_2Ereal__neg,ap(ap(c_2Eutil__prob_2Elogr,V0b),V1x)) = ap(ap(c_2Eutil__prob_2Elogr,V0b),ap(c_2Erealax_2Einv,V1x)) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Elg__pow,axiom,
+    ! [V0n] :
+      ( mem(V0n,ty_2Enum_2Enum)
+     => ap(c_2Eutil__prob_2Elg,ap(ap(c_2Ereal_2Epow,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO)))),V0n)) = ap(c_2Ereal_2Ereal__of__num,V0n) ) ).
+
+fof(conj_thm_2Eutil__prob_2ENUM__2D__BIJ,axiom,
+    ? [V0f] :
+      ( mem(V0f,arr(ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum),ty_2Enum_2Enum))
+      & p(ap(ap(ap(c_2Epred__set_2EBIJ(ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum),ty_2Enum_2Enum),V0f),ap(ap(c_2Epred__set_2ECROSS(ty_2Enum_2Enum,ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),c_2Epred__set_2EUNIV(ty_2Enum_2Enum))),c_2Epred__set_2EUNIV(ty_2Enum_2Enum))) ) ).
+
+fof(conj_thm_2Eutil__prob_2ENUM__2D__BIJ__INV,axiom,
+    ? [V0f] :
+      ( mem(V0f,arr(ty_2Enum_2Enum,ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum)))
+      & p(ap(ap(ap(c_2Epred__set_2EBIJ(ty_2Enum_2Enum,ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum)),V0f),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2ECROSS(ty_2Enum_2Enum,ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)))) ) ).
+
+fof(conj_thm_2Eutil__prob_2ENUM__2D__BIJ__NZ,axiom,
+    ? [V0f] :
+      ( mem(V0f,arr(ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum),ty_2Enum_2Enum))
+      & p(ap(ap(ap(c_2Epred__set_2EBIJ(ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum),ty_2Enum_2Enum),V0f),ap(ap(c_2Epred__set_2ECROSS(ty_2Enum_2Enum,ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2EDIFF(ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2EINSERT(ty_2Enum_2Enum),c_2Enum_2E0),c_2Epred__set_2EEMPTY(ty_2Enum_2Enum))))),c_2Epred__set_2EUNIV(ty_2Enum_2Enum))) ) ).
+
+fof(conj_thm_2Eutil__prob_2ENUM__2D__BIJ__NZ__INV,axiom,
+    ? [V0f] :
+      ( mem(V0f,arr(ty_2Enum_2Enum,ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum)))
+      & p(ap(ap(ap(c_2Epred__set_2EBIJ(ty_2Enum_2Enum,ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum)),V0f),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2ECROSS(ty_2Enum_2Enum,ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2EDIFF(ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2EINSERT(ty_2Enum_2Enum),c_2Enum_2E0),c_2Epred__set_2EEMPTY(ty_2Enum_2Enum)))))) ) ).
+
+fof(conj_thm_2Eutil__prob_2ENUM__2D__BIJ__NZ__ALT,axiom,
+    ? [V0f] :
+      ( mem(V0f,arr(ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum),ty_2Enum_2Enum))
+      & p(ap(ap(ap(c_2Epred__set_2EBIJ(ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum),ty_2Enum_2Enum),V0f),ap(ap(c_2Epred__set_2ECROSS(ty_2Enum_2Enum,ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),c_2Epred__set_2EUNIV(ty_2Enum_2Enum))),ap(ap(c_2Epred__set_2EDIFF(ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2EINSERT(ty_2Enum_2Enum),c_2Enum_2E0),c_2Epred__set_2EEMPTY(ty_2Enum_2Enum))))) ) ).
+
+fof(conj_thm_2Eutil__prob_2ENUM__2D__BIJ__NZ__ALT__INV,axiom,
+    ? [V0f] :
+      ( mem(V0f,arr(ty_2Enum_2Enum,ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum)))
+      & p(ap(ap(ap(c_2Epred__set_2EBIJ(ty_2Enum_2Enum,ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum)),V0f),ap(ap(c_2Epred__set_2EDIFF(ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2EINSERT(ty_2Enum_2Enum),c_2Enum_2E0),c_2Epred__set_2EEMPTY(ty_2Enum_2Enum)))),ap(ap(c_2Epred__set_2ECROSS(ty_2Enum_2Enum,ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)))) ) ).
+
+fof(conj_thm_2Eutil__prob_2ENUM__2D__BIJ__NZ__ALT2,axiom,
+    ? [V0f] :
+      ( mem(V0f,arr(ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum),ty_2Enum_2Enum))
+      & p(ap(ap(ap(c_2Epred__set_2EBIJ(ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum),ty_2Enum_2Enum),V0f),ap(ap(c_2Epred__set_2ECROSS(ty_2Enum_2Enum,ty_2Enum_2Enum),ap(ap(c_2Epred__set_2EDIFF(ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2EINSERT(ty_2Enum_2Enum),c_2Enum_2E0),c_2Epred__set_2EEMPTY(ty_2Enum_2Enum)))),ap(ap(c_2Epred__set_2EDIFF(ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2EINSERT(ty_2Enum_2Enum),c_2Enum_2E0),c_2Epred__set_2EEMPTY(ty_2Enum_2Enum))))),c_2Epred__set_2EUNIV(ty_2Enum_2Enum))) ) ).
+
+fof(conj_thm_2Eutil__prob_2ENUM__2D__BIJ__NZ__ALT2__INV,axiom,
+    ? [V0f] :
+      ( mem(V0f,arr(ty_2Enum_2Enum,ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum)))
+      & p(ap(ap(ap(c_2Epred__set_2EBIJ(ty_2Enum_2Enum,ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum)),V0f),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2ECROSS(ty_2Enum_2Enum,ty_2Enum_2Enum),ap(ap(c_2Epred__set_2EDIFF(ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2EINSERT(ty_2Enum_2Enum),c_2Enum_2E0),c_2Epred__set_2EEMPTY(ty_2Enum_2Enum)))),ap(ap(c_2Epred__set_2EDIFF(ty_2Enum_2Enum),c_2Epred__set_2EUNIV(ty_2Enum_2Enum)),ap(ap(c_2Epred__set_2EINSERT(ty_2Enum_2Enum),c_2Enum_2E0),c_2Epred__set_2EEMPTY(ty_2Enum_2Enum)))))) ) ).
+
+fof(lameq_f3155,axiom,
+    ! [A_27a,A_27b,V1b] :
+      ( mem(V1b,arr(arr(A_27b,bool),bool))
+     => ! [V0a] :
+          ( mem(V0a,arr(arr(A_27a,bool),bool))
+         => ! [V2s] :
+              ( mem(V2s,arr(A_27a,bool))
+             => ! [V3t] : ap(f3155(A_27a,A_27b,V1b,V0a,V2s),V3t) = ap(ap(c_2Epair_2E_2C(arr(ty_2Epair_2Eprod(A_27a,A_27b),bool),bool),ap(ap(c_2Epred__set_2ECROSS(A_27a,A_27b),V2s),V3t)),ap(ap(c_2Ebool_2E_2F_5C,ap(ap(c_2Ebool_2EIN(arr(A_27a,bool)),V2s),V0a)),ap(ap(c_2Ebool_2EIN(arr(A_27b,bool)),V3t),V1b))) ) ) ) ).
+
+fof(lameq_f3156,axiom,
+    ! [A_27b,A_27a,V1b] :
+      ( mem(V1b,arr(arr(A_27b,bool),bool))
+     => ! [V0a] :
+          ( mem(V0a,arr(arr(A_27a,bool),bool))
+         => ! [V2s] : ap(f3156(A_27b,A_27a,V1b,V0a),V2s) = f3155(A_27a,A_27b,V1b,V0a,V2s) ) ) ).
+
+fof(ax_thm_2Eutil__prob_2Eprod__sets__def,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0a] :
+              ( mem(V0a,arr(arr(A_27a,bool),bool))
+             => ! [V1b] :
+                  ( mem(V1b,arr(arr(A_27b,bool),bool))
+                 => ap(ap(c_2Eutil__prob_2Eprod__sets(A_27a,A_27b),V0a),V1b) = ap(c_2Epred__set_2EGSPEC(arr(ty_2Epair_2Eprod(A_27a,A_27b),bool),ty_2Epair_2Eprod(arr(A_27a,bool),arr(A_27b,bool))),ap(c_2Epair_2EUNCURRY(arr(A_27a,bool),arr(A_27b,bool),ty_2Epair_2Eprod(arr(ty_2Epair_2Eprod(A_27a,A_27b),bool),bool)),f3156(A_27b,A_27a,V1b,V0a))) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EIN__o,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0x] :
+              ( mem(V0x,A_27a)
+             => ! [V1f] :
+                  ( mem(V1f,arr(A_27a,A_27b))
+                 => ! [V2s] :
+                      ( mem(V2s,arr(A_27b,bool))
+                     => ( p(ap(ap(c_2Ebool_2EIN(A_27a),V0x),ap(ap(c_2Ecombin_2Eo(A_27a,bool,A_27b),V2s),V1f)))
+                      <=> p(ap(ap(c_2Ebool_2EIN(A_27b),ap(V1f,V0x)),V2s)) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EIN__PROD__SETS,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0s] :
+              ( mem(V0s,arr(ty_2Epair_2Eprod(A_27a,A_27b),bool))
+             => ! [V1a] :
+                  ( mem(V1a,arr(arr(A_27a,bool),bool))
+                 => ! [V2b] :
+                      ( mem(V2b,arr(arr(A_27b,bool),bool))
+                     => ( p(ap(ap(c_2Ebool_2EIN(arr(ty_2Epair_2Eprod(A_27a,A_27b),bool)),V0s),ap(ap(c_2Eutil__prob_2Eprod__sets(A_27a,A_27b),V1a),V2b)))
+                      <=> ? [V3t] :
+                            ( mem(V3t,arr(A_27a,bool))
+                            & ? [V4u] :
+                                ( mem(V4u,arr(A_27b,bool))
+                                & V0s = ap(ap(c_2Epred__set_2ECROSS(A_27a,A_27b),V3t),V4u)
+                                & p(ap(ap(c_2Ebool_2EIN(arr(A_27a,bool)),V3t),V1a))
+                                & p(ap(ap(c_2Ebool_2EIN(arr(A_27b,bool)),V4u),V2b)) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Efinite__enumeration__of__sets__has__max__non__empty,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0f] :
+          ( mem(V0f,arr(ty_2Enum_2Enum,arr(A_27a,bool)))
+         => ! [V1s] :
+              ( mem(V1s,arr(arr(A_27a,bool),bool))
+             => ( ( p(ap(c_2Epred__set_2EFINITE(arr(A_27a,bool)),V1s))
+                  & ! [V2x] :
+                      ( mem(V2x,ty_2Enum_2Enum)
+                     => p(ap(ap(c_2Ebool_2EIN(arr(A_27a,bool)),ap(V0f,V2x)),V1s)) )
+                  & ! [V3m] :
+                      ( mem(V3m,ty_2Enum_2Enum)
+                     => ! [V4n] :
+                          ( mem(V4n,ty_2Enum_2Enum)
+                         => ( V3m != V4n
+                           => p(ap(ap(c_2Epred__set_2EDISJOINT(A_27a),ap(V0f,V3m)),ap(V0f,V4n))) ) ) ) )
+               => ? [V5N] :
+                    ( mem(V5N,ty_2Enum_2Enum)
+                    & ! [V6n] :
+                        ( mem(V6n,ty_2Enum_2Enum)
+                       => ( p(ap(ap(c_2Earithmetic_2E_3E_3D,V6n),V5N))
+                         => ap(V0f,V6n) = c_2Epred__set_2EEMPTY(A_27a) ) ) ) ) ) ) ) ).
+
+fof(lameq_f3157,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ! [V1x] : ap(f3157(V0c),V1x) = ap(ap(c_2Epair_2E_2C(ty_2Erealax_2Ereal,bool),V1x),ap(ap(c_2Erealax_2Ereal__lt,V0c),V1x)) ) ).
+
+fof(lameq_f3158,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ! [V2x] : ap(f3158(V0c),V2x) = ap(ap(c_2Epair_2E_2C(ty_2Erealax_2Ereal,bool),V2x),ap(ap(c_2Ereal_2Ereal__lte,V2x),V0c)) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPREIMAGE__REAL__COMPL1,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ap(c_2Epred__set_2ECOMPL(ty_2Erealax_2Ereal),ap(c_2Epred__set_2EGSPEC(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal),f3157(V0c))) = ap(c_2Epred__set_2EGSPEC(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal),f3158(V0c)) ) ).
+
+fof(lameq_f3159,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ! [V1x] : ap(f3159(V0c),V1x) = ap(ap(c_2Epair_2E_2C(ty_2Erealax_2Ereal,bool),V1x),ap(ap(c_2Ereal_2Ereal__lte,V0c),V1x)) ) ).
+
+fof(lameq_f3160,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ! [V2x] : ap(f3160(V0c),V2x) = ap(ap(c_2Epair_2E_2C(ty_2Erealax_2Ereal,bool),V2x),ap(ap(c_2Erealax_2Ereal__lt,V2x),V0c)) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPREIMAGE__REAL__COMPL2,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ap(c_2Epred__set_2ECOMPL(ty_2Erealax_2Ereal),ap(c_2Epred__set_2EGSPEC(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal),f3159(V0c))) = ap(c_2Epred__set_2EGSPEC(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal),f3160(V0c)) ) ).
+
+fof(lameq_f3161,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ! [V1x] : ap(f3161(V0c),V1x) = ap(ap(c_2Epair_2E_2C(ty_2Erealax_2Ereal,bool),V1x),ap(ap(c_2Ereal_2Ereal__lte,V1x),V0c)) ) ).
+
+fof(lameq_f3162,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ! [V2x] : ap(f3162(V0c),V2x) = ap(ap(c_2Epair_2E_2C(ty_2Erealax_2Ereal,bool),V2x),ap(ap(c_2Erealax_2Ereal__lt,V0c),V2x)) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPREIMAGE__REAL__COMPL3,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ap(c_2Epred__set_2ECOMPL(ty_2Erealax_2Ereal),ap(c_2Epred__set_2EGSPEC(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal),f3161(V0c))) = ap(c_2Epred__set_2EGSPEC(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal),f3162(V0c)) ) ).
+
+fof(lameq_f3163,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ! [V1x] : ap(f3163(V0c),V1x) = ap(ap(c_2Epair_2E_2C(ty_2Erealax_2Ereal,bool),V1x),ap(ap(c_2Erealax_2Ereal__lt,V1x),V0c)) ) ).
+
+fof(lameq_f3164,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ! [V2x] : ap(f3164(V0c),V2x) = ap(ap(c_2Epair_2E_2C(ty_2Erealax_2Ereal,bool),V2x),ap(ap(c_2Ereal_2Ereal__lte,V0c),V2x)) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPREIMAGE__REAL__COMPL4,axiom,
+    ! [V0c] :
+      ( mem(V0c,ty_2Erealax_2Ereal)
+     => ap(c_2Epred__set_2ECOMPL(ty_2Erealax_2Ereal),ap(c_2Epred__set_2EGSPEC(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal),f3163(V0c))) = ap(c_2Epred__set_2EGSPEC(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal),f3164(V0c)) ) ).
+
+fof(lameq_f3165,axiom,
+    ! [A_27b,A_27c,V3s] :
+      ( mem(V3s,A_27b)
+     => ! [V1p] :
+          ( mem(V1p,arr(A_27b,arr(A_27c,bool)))
+         => ! [V4n] : ap(f3165(A_27b,A_27c,V3s,V1p),V4n) = ap(ap(V1p,V3s),V4n) ) ) ).
+
+fof(lameq_f3166,axiom,
+    ! [A_27c,A_27b,V1p] :
+      ( mem(V1p,arr(A_27b,arr(A_27c,bool)))
+     => ! [V3s] : ap(f3166(A_27c,A_27b,V1p),V3s) = ap(ap(c_2Epair_2E_2C(A_27b,bool),V3s),ap(c_2Ebool_2E_3F(A_27c),f3165(A_27b,A_27c,V3s,V1p))) ) ).
+
+fof(lameq_f3167,axiom,
+    ! [A_27c,A_27b,V5n] :
+      ( mem(V5n,A_27c)
+     => ! [V1p] :
+          ( mem(V1p,arr(A_27b,arr(A_27c,bool)))
+         => ! [V6s] : ap(f3167(A_27c,A_27b,V5n,V1p),V6s) = ap(ap(c_2Epair_2E_2C(A_27b,bool),V6s),ap(ap(V1p,V6s),V5n)) ) ) ).
+
+fof(lameq_f3168,axiom,
+    ! [A_27b,A_27c,V1p] :
+      ( mem(V1p,arr(A_27b,arr(A_27c,bool)))
+     => ! [V5n] : ap(f3168(A_27b,A_27c,V1p),V5n) = ap(c_2Epred__set_2EGSPEC(A_27b,A_27b),f3167(A_27c,A_27b,V5n,V1p)) ) ).
+
+fof(conj_thm_2Eutil__prob_2EGBIGUNION__IMAGE,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [A_27d] :
+                  ( ne(A_27d)
+                 => ! [V0s] :
+                      ( mem(V0s,A_27a)
+                     => ! [V1p] :
+                          ( mem(V1p,arr(A_27b,arr(A_27c,bool)))
+                         => ! [V2n] :
+                              ( mem(V2n,A_27d)
+                             => ap(c_2Epred__set_2EGSPEC(A_27b,A_27b),f3166(A_27c,A_27b,V1p)) = ap(c_2Epred__set_2EBIGUNION(A_27b),ap(ap(c_2Epred__set_2EIMAGE(A_27c,arr(A_27b,bool)),f3168(A_27b,A_27c,V1p)),c_2Epred__set_2EUNIV(A_27c))) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPOW__HALF__POS,axiom,
+    ! [V0n] :
+      ( mem(V0n,ty_2Enum_2Enum)
+     => p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Ereal_2Epow,ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO))))),V0n))) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPOW__HALF__SMALL,axiom,
+    ! [V0e] :
+      ( mem(V0e,ty_2Erealax_2Ereal)
+     => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0e))
+       => ? [V1n] :
+            ( mem(V1n,ty_2Enum_2Enum)
+            & p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Ereal_2Epow,ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO))))),V1n)),V0e)) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPOW__HALF__MONO,axiom,
+    ! [V0m] :
+      ( mem(V0m,ty_2Enum_2Enum)
+     => ! [V1n] :
+          ( mem(V1n,ty_2Enum_2Enum)
+         => ( p(ap(ap(c_2Earithmetic_2E_3C_3D,V0m),V1n))
+           => p(ap(ap(c_2Ereal_2Ereal__lte,ap(ap(c_2Ereal_2Epow,ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO))))),V1n)),ap(ap(c_2Ereal_2Epow,ap(ap(c_2Ereal_2E_2F,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,c_2Earithmetic_2EZERO))))),V0m))) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__LE__LT__MUL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ( p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0x))
+              & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1y)) )
+           => p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y))) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__LT__LE__MUL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0x))
+              & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1y)) )
+           => p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y))) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__MUL__IDEMPOT,axiom,
+    ! [V0r] :
+      ( mem(V0r,ty_2Erealax_2Ereal)
+     => ( ap(ap(c_2Erealax_2Ereal__mul,V0r),V0r) = V0r
+      <=> ( V0r = ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)
+          | V0r = ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO))) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__SUP__LE__X,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V1x] :
+          ( mem(V1x,ty_2Erealax_2Ereal)
+         => ( ( ? [V2r] :
+                  ( mem(V2r,ty_2Erealax_2Ereal)
+                  & p(ap(V0P,V2r)) )
+              & ! [V3r] :
+                  ( mem(V3r,ty_2Erealax_2Ereal)
+                 => ( p(ap(V0P,V3r))
+                   => p(ap(ap(c_2Ereal_2Ereal__lte,V3r),V1x)) ) ) )
+           => p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Esup,V0P)),V1x)) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__X__LE__SUP,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V1x] :
+          ( mem(V1x,ty_2Erealax_2Ereal)
+         => ( ( ? [V2r] :
+                  ( mem(V2r,ty_2Erealax_2Ereal)
+                  & p(ap(V0P,V2r)) )
+              & ? [V3z] :
+                  ( mem(V3z,ty_2Erealax_2Ereal)
+                  & ! [V4r] :
+                      ( mem(V4r,ty_2Erealax_2Ereal)
+                     => ( p(ap(V0P,V4r))
+                       => p(ap(ap(c_2Ereal_2Ereal__lte,V4r),V3z)) ) ) )
+              & ? [V5r] :
+                  ( mem(V5r,ty_2Erealax_2Ereal)
+                  & p(ap(V0P,V5r))
+                  & p(ap(ap(c_2Ereal_2Ereal__lte,V1x),V5r)) ) )
+           => p(ap(ap(c_2Ereal_2Ereal__lte,V1x),ap(c_2Ereal_2Esup,V0P))) ) ) ) ).
+
+fof(lameq_f3169,axiom,
+    ! [V0p] :
+      ( mem(V0p,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V1r] : ap(f3169(V0p),V1r) = ap(ap(c_2Ebool_2EIN(ty_2Erealax_2Ereal),ap(c_2Erealax_2Ereal__neg,V1r)),V0p) ) ).
+
+fof(conj_thm_2Eutil__prob_2EINF__DEF__ALT,axiom,
+    ! [V0p] :
+      ( mem(V0p,arr(ty_2Erealax_2Ereal,bool))
+     => ap(c_2Ereal_2Einf,V0p) = ap(c_2Erealax_2Ereal__neg,ap(c_2Ereal_2Esup,f3169(V0p))) ) ).
+
+fof(conj_thm_2Eutil__prob_2ELE__INF,axiom,
+    ! [V0p] :
+      ( mem(V0p,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V1r] :
+          ( mem(V1r,ty_2Erealax_2Ereal)
+         => ( ( ? [V2x] :
+                  ( mem(V2x,ty_2Erealax_2Ereal)
+                  & p(ap(ap(c_2Ebool_2EIN(ty_2Erealax_2Ereal),V2x),V0p)) )
+              & ! [V3x] :
+                  ( mem(V3x,ty_2Erealax_2Ereal)
+                 => ( p(ap(ap(c_2Ebool_2EIN(ty_2Erealax_2Ereal),V3x),V0p))
+                   => p(ap(ap(c_2Ereal_2Ereal__lte,V1r),V3x)) ) ) )
+           => p(ap(ap(c_2Ereal_2Ereal__lte,V1r),ap(c_2Ereal_2Einf,V0p))) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EINF__LE,axiom,
+    ! [V0p] :
+      ( mem(V0p,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V1r] :
+          ( mem(V1r,ty_2Erealax_2Ereal)
+         => ( ( ? [V2z] :
+                  ( mem(V2z,ty_2Erealax_2Ereal)
+                  & ! [V3x] :
+                      ( mem(V3x,ty_2Erealax_2Ereal)
+                     => ( p(ap(ap(c_2Ebool_2EIN(ty_2Erealax_2Ereal),V3x),V0p))
+                       => p(ap(ap(c_2Ereal_2Ereal__lte,V2z),V3x)) ) ) )
+              & ? [V4x] :
+                  ( mem(V4x,ty_2Erealax_2Ereal)
+                  & p(ap(ap(c_2Ebool_2EIN(ty_2Erealax_2Ereal),V4x),V0p))
+                  & p(ap(ap(c_2Ereal_2Ereal__lte,V4x),V1r)) ) )
+           => p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Einf,V0p)),V1r)) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EINF__GREATER,axiom,
+    ! [V0p] :
+      ( mem(V0p,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V1z] :
+          ( mem(V1z,ty_2Erealax_2Ereal)
+         => ( ( ? [V2x] :
+                  ( mem(V2x,ty_2Erealax_2Ereal)
+                  & p(ap(ap(c_2Ebool_2EIN(ty_2Erealax_2Ereal),V2x),V0p)) )
+              & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Einf,V0p)),V1z)) )
+           => ? [V3x] :
+                ( mem(V3x,ty_2Erealax_2Ereal)
+                & p(ap(ap(c_2Ebool_2EIN(ty_2Erealax_2Ereal),V3x),V0p))
+                & p(ap(ap(c_2Erealax_2Ereal__lt,V3x),V1z)) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EINF__CLOSE,axiom,
+    ! [V0p] :
+      ( mem(V0p,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V1e] :
+          ( mem(V1e,ty_2Erealax_2Ereal)
+         => ( ( ? [V2x] :
+                  ( mem(V2x,ty_2Erealax_2Ereal)
+                  & p(ap(ap(c_2Ebool_2EIN(ty_2Erealax_2Ereal),V2x),V0p)) )
+              & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1e)) )
+           => ? [V3x] :
+                ( mem(V3x,ty_2Erealax_2Ereal)
+                & p(ap(ap(c_2Ebool_2EIN(ty_2Erealax_2Ereal),V3x),V0p))
+                & p(ap(ap(c_2Erealax_2Ereal__lt,V3x),ap(ap(c_2Erealax_2Ereal__add,ap(c_2Ereal_2Einf,V0p)),V1e))) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__NEG__NZ,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ( p(ap(ap(c_2Erealax_2Ereal__lt,V0x),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)))
+       => V0x != ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__LT__LMUL__0__NEG,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y)))
+              & p(ap(ap(c_2Erealax_2Ereal__lt,V0x),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0))) )
+           => p(ap(ap(c_2Erealax_2Ereal__lt,V1y),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0))) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__LT__RMUL__0__NEG,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y)))
+              & p(ap(ap(c_2Erealax_2Ereal__lt,V1y),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0))) )
+           => p(ap(ap(c_2Erealax_2Ereal__lt,V0x),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0))) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__LT__LMUL__NEG__0,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y)),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)))
+              & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0x)) )
+           => p(ap(ap(c_2Erealax_2Ereal__lt,V1y),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0))) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__LT__RMUL__NEG__0,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y)),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)))
+              & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1y)) )
+           => p(ap(ap(c_2Erealax_2Ereal__lt,V0x),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0))) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__LT__LMUL__NEG__0__NEG,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y)),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)))
+              & p(ap(ap(c_2Erealax_2Ereal__lt,V0x),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0))) )
+           => p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1y)) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__LT__RMUL__NEG__0__NEG,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y)),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)))
+              & p(ap(ap(c_2Erealax_2Ereal__lt,V1y),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0))) )
+           => p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0x)) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__LT__RDIV__EQ__NEG,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ! [V2z] :
+              ( mem(V2z,ty_2Erealax_2Ereal)
+             => ( p(ap(ap(c_2Erealax_2Ereal__lt,V2z),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)))
+               => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Ereal_2E_2F,V1y),V2z)),V0x))
+                <=> p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Erealax_2Ereal__mul,V0x),V2z)),V1y)) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EREAL__LE__RDIV__EQ__NEG,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ! [V2z] :
+              ( mem(V2z,ty_2Erealax_2Ereal)
+             => ( p(ap(ap(c_2Erealax_2Ereal__lt,V2z),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)))
+               => ( p(ap(ap(c_2Ereal_2Ereal__lte,ap(ap(c_2Ereal_2E_2F,V1y),V2z)),V0x))
+                <=> p(ap(ap(c_2Ereal_2Ereal__lte,ap(ap(c_2Erealax_2Ereal__mul,V0x),V2z)),V1y)) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPOW__POS__EVEN,axiom,
+    ! [V0n] :
+      ( mem(V0n,ty_2Enum_2Enum)
+     => ! [V1x] :
+          ( mem(V1x,ty_2Erealax_2Ereal)
+         => ( p(ap(ap(c_2Erealax_2Ereal__lt,V1x),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)))
+           => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),ap(ap(c_2Ereal_2Epow,V1x),V0n)))
+            <=> p(ap(c_2Earithmetic_2EEVEN,V0n)) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EPOW__NEG__ODD,axiom,
+    ! [V0n] :
+      ( mem(V0n,ty_2Enum_2Enum)
+     => ! [V1x] :
+          ( mem(V1x,ty_2Erealax_2Ereal)
+         => ( p(ap(ap(c_2Erealax_2Ereal__lt,V1x),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)))
+           => ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Ereal_2Epow,V1x),V0n)),ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)))
+            <=> p(ap(c_2Earithmetic_2EODD,V0n)) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2ELOGR__MONO__LE,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ! [V2b] :
+              ( mem(V2b,ty_2Erealax_2Ereal)
+             => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0x))
+                  & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V1y))
+                  & p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V2b)) )
+               => ( p(ap(ap(c_2Ereal_2Ereal__lte,ap(ap(c_2Eutil__prob_2Elogr,V2b),V0x)),ap(ap(c_2Eutil__prob_2Elogr,V2b),V1y)))
+                <=> p(ap(ap(c_2Ereal_2Ereal__lte,V0x),V1y)) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2ELOGR__MONO__LE__IMP,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ! [V2b] :
+              ( mem(V2b,ty_2Erealax_2Ereal)
+             => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Ereal_2Ereal__of__num,c_2Enum_2E0)),V0x))
+                  & p(ap(ap(c_2Ereal_2Ereal__lte,V0x),V1y))
+                  & p(ap(ap(c_2Ereal_2Ereal__lte,ap(c_2Ereal_2Ereal__of__num,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V2b)) )
+               => p(ap(ap(c_2Ereal_2Ereal__lte,ap(ap(c_2Eutil__prob_2Elogr,V2b),V0x)),ap(ap(c_2Eutil__prob_2Elogr,V2b),V1y))) ) ) ) ) ).
+
+fof(lameq_f3170,axiom,
+    ! [V1n] :
+      ( mem(V1n,ty_2Enum_2Enum)
+     => ! [V0p] :
+          ( mem(V0p,arr(ty_2Enum_2Enum,bool))
+         => ! [V2m] : ap(f3170(V1n,V0p),V2m) = ap(ap(c_2Emin_2E_3D_3D_3E,ap(ap(c_2Eprim__rec_2E_3C,V2m),V1n)),ap(c_2Ebool_2E_7E,ap(V0p,V2m))) ) ) ).
+
+fof(lameq_f3171,axiom,
+    ! [V0p] :
+      ( mem(V0p,arr(ty_2Enum_2Enum,bool))
+     => ! [V1n] : ap(f3171(V0p),V1n) = ap(ap(c_2Ebool_2E_2F_5C,ap(V0p,V1n)),ap(c_2Ebool_2E_21(ty_2Enum_2Enum),f3170(V1n,V0p))) ) ).
+
+fof(ax_thm_2Eutil__prob_2Eminimal__def,axiom,
+    ! [V0p] :
+      ( mem(V0p,arr(ty_2Enum_2Enum,bool))
+     => ap(c_2Eutil__prob_2Eminimal,V0p) = ap(c_2Emin_2E_40(ty_2Enum_2Enum),f3171(V0p)) ) ).
+
+fof(conj_thm_2Eutil__prob_2EMINIMAL__EXISTS0,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Enum_2Enum,bool))
+     => ( ? [V1n] :
+            ( mem(V1n,ty_2Enum_2Enum)
+            & p(ap(V0P,V1n)) )
+      <=> ? [V2n] :
+            ( mem(V2n,ty_2Enum_2Enum)
+            & p(ap(V0P,V2n))
+            & ! [V3m] :
+                ( mem(V3m,ty_2Enum_2Enum)
+               => ( p(ap(ap(c_2Eprim__rec_2E_3C,V3m),V2n))
+                 => ~ p(ap(V0P,V3m)) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EMINIMAL__EXISTS,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Enum_2Enum,bool))
+     => ( ? [V1n] :
+            ( mem(V1n,ty_2Enum_2Enum)
+            & p(ap(V0P,V1n)) )
+      <=> ( p(ap(V0P,ap(c_2Eutil__prob_2Eminimal,V0P)))
+          & ! [V2n] :
+              ( mem(V2n,ty_2Enum_2Enum)
+             => ( p(ap(ap(c_2Eprim__rec_2E_3C,V2n),ap(c_2Eutil__prob_2Eminimal,V0P)))
+               => ~ p(ap(V0P,V2n)) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EMINIMAL__EXISTS__IMP,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Enum_2Enum,bool))
+     => ( ? [V1n] :
+            ( mem(V1n,ty_2Enum_2Enum)
+            & p(ap(V0P,V1n)) )
+       => ? [V2m] :
+            ( mem(V2m,ty_2Enum_2Enum)
+            & p(ap(V0P,V2m))
+            & ! [V3n] :
+                ( mem(V3n,ty_2Enum_2Enum)
+               => ( p(ap(ap(c_2Eprim__rec_2E_3C,V3n),V2m))
+                 => ~ p(ap(V0P,V3n)) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EMINIMAL__EQ__IMP,axiom,
+    ! [V0m] :
+      ( mem(V0m,ty_2Enum_2Enum)
+     => ! [V1p] :
+          ( mem(V1p,arr(ty_2Enum_2Enum,bool))
+         => ( ( p(ap(V1p,V0m))
+              & ! [V2n] :
+                  ( mem(V2n,ty_2Enum_2Enum)
+                 => ( p(ap(ap(c_2Eprim__rec_2E_3C,V2n),V0m))
+                   => ~ p(ap(V1p,V2n)) ) ) )
+           => V0m = ap(c_2Eutil__prob_2Eminimal,V1p) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EMINIMAL__SUC,axiom,
+    ! [V0n] :
+      ( mem(V0n,ty_2Enum_2Enum)
+     => ! [V1p] :
+          ( mem(V1p,arr(ty_2Enum_2Enum,bool))
+         => ( ( ap(c_2Enum_2ESUC,V0n) = ap(c_2Eutil__prob_2Eminimal,V1p)
+              & p(ap(V1p,ap(c_2Enum_2ESUC,V0n))) )
+          <=> ( ~ p(ap(V1p,c_2Enum_2E0))
+              & V0n = ap(c_2Eutil__prob_2Eminimal,ap(ap(c_2Ecombin_2Eo(ty_2Enum_2Enum,bool,ty_2Enum_2Enum),V1p),c_2Enum_2ESUC))
+              & p(ap(V1p,ap(c_2Enum_2ESUC,V0n))) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EMINIMAL__EQ,axiom,
+    ! [V0p] :
+      ( mem(V0p,arr(ty_2Enum_2Enum,bool))
+     => ! [V1m] :
+          ( mem(V1m,ty_2Enum_2Enum)
+         => ( ( p(ap(V0p,V1m))
+              & V1m = ap(c_2Eutil__prob_2Eminimal,V0p) )
+          <=> ( p(ap(V0p,V1m))
+              & ! [V2n] :
+                  ( mem(V2n,ty_2Enum_2Enum)
+                 => ( p(ap(ap(c_2Eprim__rec_2E_3C,V2n),V1m))
+                   => ~ p(ap(V0p,V2n)) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EMINIMAL__SUC__IMP,axiom,
+    ! [V0n] :
+      ( mem(V0n,ty_2Enum_2Enum)
+     => ! [V1p] :
+          ( mem(V1p,arr(ty_2Enum_2Enum,bool))
+         => ( ( p(ap(V1p,ap(c_2Enum_2ESUC,V0n)))
+              & ~ p(ap(V1p,c_2Enum_2E0))
+              & V0n = ap(c_2Eutil__prob_2Eminimal,ap(ap(c_2Ecombin_2Eo(ty_2Enum_2Enum,bool,ty_2Enum_2Enum),V1p),c_2Enum_2ESUC)) )
+           => ap(c_2Enum_2ESUC,V0n) = ap(c_2Eutil__prob_2Eminimal,V1p) ) ) ) ).
+
+fof(ax_thm_2Eutil__prob_2Edisjoint__def,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0A] :
+          ( mem(V0A,arr(arr(A_27a,bool),bool))
+         => ( p(ap(c_2Eutil__prob_2Edisjoint(A_27a),V0A))
+          <=> ! [V1a] :
+                ( mem(V1a,arr(A_27a,bool))
+               => ! [V2b] :
+                    ( mem(V2b,arr(A_27a,bool))
+                   => ( ( p(ap(ap(c_2Ebool_2EIN(arr(A_27a,bool)),V1a),V0A))
+                        & p(ap(ap(c_2Ebool_2EIN(arr(A_27a,bool)),V2b),V0A))
+                        & V1a != V2b )
+                     => p(ap(ap(c_2Epred__set_2EDISJOINT(A_27a),V1a),V2b)) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EdisjointI,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0A] :
+          ( mem(V0A,arr(arr(A_27a,bool),bool))
+         => ( ! [V1a] :
+                ( mem(V1a,arr(A_27a,bool))
+               => ! [V2b] :
+                    ( mem(V2b,arr(A_27a,bool))
+                   => ( p(ap(ap(c_2Ebool_2EIN(arr(A_27a,bool)),V1a),V0A))
+                     => ( p(ap(ap(c_2Ebool_2EIN(arr(A_27a,bool)),V2b),V0A))
+                       => ( V1a != V2b
+                         => p(ap(ap(c_2Epred__set_2EDISJOINT(A_27a),V1a),V2b)) ) ) ) ) )
+           => p(ap(c_2Eutil__prob_2Edisjoint(A_27a),V0A)) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2EdisjointD,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0A] :
+          ( mem(V0A,arr(arr(A_27a,bool),bool))
+         => ! [V1a] :
+              ( mem(V1a,arr(A_27a,bool))
+             => ! [V2b] :
+                  ( mem(V2b,arr(A_27a,bool))
+                 => ( p(ap(c_2Eutil__prob_2Edisjoint(A_27a),V0A))
+                   => ( p(ap(ap(c_2Ebool_2EIN(arr(A_27a,bool)),V1a),V0A))
+                     => ( p(ap(ap(c_2Ebool_2EIN(arr(A_27a,bool)),V2b),V0A))
+                       => ( V1a != V2b
+                         => p(ap(ap(c_2Epred__set_2EDISJOINT(A_27a),V1a),V2b)) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Edisjoint__empty,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => p(ap(c_2Eutil__prob_2Edisjoint(A_27a),c_2Epred__set_2EEMPTY(arr(A_27a,bool)))) ) ).
+
+fof(conj_thm_2Eutil__prob_2Edisjoint__union,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0A] :
+          ( mem(V0A,arr(arr(A_27a,bool),bool))
+         => ! [V1B] :
+              ( mem(V1B,arr(arr(A_27a,bool),bool))
+             => ( ( p(ap(c_2Eutil__prob_2Edisjoint(A_27a),V0A))
+                  & p(ap(c_2Eutil__prob_2Edisjoint(A_27a),V1B))
+                  & ap(ap(c_2Epred__set_2EINTER(A_27a),ap(c_2Epred__set_2EBIGUNION(A_27a),V0A)),ap(c_2Epred__set_2EBIGUNION(A_27a),V1B)) = c_2Epred__set_2EEMPTY(A_27a) )
+               => p(ap(c_2Eutil__prob_2Edisjoint(A_27a),ap(ap(c_2Epred__set_2EUNION(arr(A_27a,bool)),V0A),V1B))) ) ) ) ) ).
+
+fof(conj_thm_2Eutil__prob_2Edisjoint__sing,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0a] :
+          ( mem(V0a,arr(A_27a,bool))
+         => p(ap(c_2Eutil__prob_2Edisjoint(A_27a),ap(ap(c_2Epred__set_2EINSERT(arr(A_27a,bool)),V0a),c_2Epred__set_2EEMPTY(arr(A_27a,bool))))) ) ) ).
+
+%------------------------------------------------------------------------------

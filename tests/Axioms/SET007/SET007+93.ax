@@ -1,0 +1,675 @@
+%------------------------------------------------------------------------------
+% File     : SET007+93 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : N-Tuples and Cartesian Products for n=6
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : mcart_3 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   55 (  15 unt;   0 def)
+%            Number of atoms       :  404 ( 235 equ)
+%            Maximal formula atoms :   21 (   7 avg)
+%            Number of connectives :  484 ( 135   ~;  44   |; 185   &)
+%                                         (   9 <=>; 111  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   37 (  17 avg)
+%            Maximal term depth    :    6 (   1 avg)
+%            Number of predicates  :    6 (   4 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   21 (  21 usr;   1 con; 0-7 aty)
+%            Number of variables   :  510 ( 488   !;  22   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_mcart_3,axiom,
+    ! [A] :
+      ~ ( A != k1_xboole_0
+        & ! [B] :
+            ~ ( r2_hidden(B,A)
+              & ! [C,D,E,F,G,H,I,J] :
+                  ( ( r2_hidden(C,D)
+                    & r2_hidden(D,E)
+                    & r2_hidden(E,F)
+                    & r2_hidden(F,G)
+                    & r2_hidden(G,H)
+                    & r2_hidden(H,I)
+                    & r2_hidden(I,J)
+                    & r2_hidden(J,B) )
+                 => r1_xboole_0(C,A) ) ) ) ).
+
+fof(t2_mcart_3,axiom,
+    ! [A] :
+      ~ ( A != k1_xboole_0
+        & ! [B] :
+            ~ ( r2_hidden(B,A)
+              & ! [C,D,E,F,G,H,I,J,K] :
+                  ( ( r2_hidden(C,D)
+                    & r2_hidden(D,E)
+                    & r2_hidden(E,F)
+                    & r2_hidden(F,G)
+                    & r2_hidden(G,H)
+                    & r2_hidden(H,I)
+                    & r2_hidden(I,J)
+                    & r2_hidden(J,K)
+                    & r2_hidden(K,B) )
+                 => r1_xboole_0(C,A) ) ) ) ).
+
+fof(d1_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k1_mcart_3(A,B,C,D,E,F) = k4_tarski(k1_mcart_2(A,B,C,D,E),F) ).
+
+fof(t3_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k1_mcart_3(A,B,C,D,E,F) = k4_tarski(k4_tarski(k4_tarski(k4_tarski(k4_tarski(A,B),C),D),E),F) ).
+
+fof(t4_mcart_3,axiom,
+    $true ).
+
+fof(t5_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k1_mcart_3(A,B,C,D,E,F) = k3_mcart_1(k4_mcart_1(A,B,C,D),E,F) ).
+
+fof(t6_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k1_mcart_3(A,B,C,D,E,F) = k4_mcart_1(k3_mcart_1(A,B,C),D,E,F) ).
+
+fof(t7_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k1_mcart_3(A,B,C,D,E,F) = k1_mcart_2(k4_tarski(A,B),C,D,E,F) ).
+
+fof(t8_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L] :
+      ( k1_mcart_3(A,B,C,D,E,F) = k1_mcart_3(G,H,I,J,K,L)
+     => ( A = G
+        & B = H
+        & C = I
+        & D = J
+        & E = K
+        & F = L ) ) ).
+
+fof(t9_mcart_3,axiom,
+    ! [A] :
+      ~ ( A != k1_xboole_0
+        & ! [B] :
+            ~ ( r2_hidden(B,A)
+              & ! [C,D,E,F,G,H] :
+                  ~ ( ( r2_hidden(C,A)
+                      | r2_hidden(D,A) )
+                    & B = k1_mcart_3(C,D,E,F,G,H) ) ) ) ).
+
+fof(d2_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k2_mcart_3(A,B,C,D,E,F) = k2_zfmisc_1(k2_mcart_2(A,B,C,D,E),F) ).
+
+fof(t10_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k2_mcart_3(A,B,C,D,E,F) = k2_zfmisc_1(k2_zfmisc_1(k2_zfmisc_1(k2_zfmisc_1(k2_zfmisc_1(A,B),C),D),E),F) ).
+
+fof(t11_mcart_3,axiom,
+    $true ).
+
+fof(t12_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k2_mcart_3(A,B,C,D,E,F) = k3_zfmisc_1(k4_zfmisc_1(A,B,C,D),E,F) ).
+
+fof(t13_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k2_mcart_3(A,B,C,D,E,F) = k4_zfmisc_1(k3_zfmisc_1(A,B,C),D,E,F) ).
+
+fof(t14_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k2_mcart_3(A,B,C,D,E,F) = k2_mcart_2(k2_zfmisc_1(A,B),C,D,E,F) ).
+
+fof(t15_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0 )
+    <=> k2_mcart_3(A,B,C,D,E,F) != k1_xboole_0 ) ).
+
+fof(t16_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L] :
+      ( k2_mcart_3(A,B,C,D,E,F) = k2_mcart_3(G,H,I,J,K,L)
+     => ( A = k1_xboole_0
+        | B = k1_xboole_0
+        | C = k1_xboole_0
+        | D = k1_xboole_0
+        | E = k1_xboole_0
+        | F = k1_xboole_0
+        | ( A = G
+          & B = H
+          & C = I
+          & D = J
+          & E = K
+          & F = L ) ) ) ).
+
+fof(t17_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L] :
+      ( k2_mcart_3(A,B,C,D,E,F) = k2_mcart_3(G,H,I,J,K,L)
+     => ( k2_mcart_3(A,B,C,D,E,F) = k1_xboole_0
+        | ( A = G
+          & B = H
+          & C = I
+          & D = J
+          & E = K
+          & F = L ) ) ) ).
+
+fof(t18_mcart_3,axiom,
+    ! [A,B] :
+      ( k2_mcart_3(A,A,A,A,A,A) = k2_mcart_3(B,B,B,B,B,B)
+     => A = B ) ).
+
+fof(t19_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & ? [G] :
+            ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+            & ! [H] :
+                ( m1_subset_1(H,A)
+               => ! [I] :
+                    ( m1_subset_1(I,B)
+                   => ! [J] :
+                        ( m1_subset_1(J,C)
+                       => ! [K] :
+                            ( m1_subset_1(K,D)
+                           => ! [L] :
+                                ( m1_subset_1(L,E)
+                               => ! [M] :
+                                    ( m1_subset_1(M,F)
+                                   => G != k1_mcart_3(H,I,J,K,L,M) ) ) ) ) ) ) ) ) ).
+
+fof(d3_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & ~ ! [G] :
+              ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+             => ! [H] :
+                  ( m1_subset_1(H,A)
+                 => ( H = k3_mcart_3(A,B,C,D,E,F,G)
+                  <=> ! [I,J,K,L,M,N] :
+                        ( G = k1_mcart_3(I,J,K,L,M,N)
+                       => H = I ) ) ) ) ) ).
+
+fof(d4_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & ~ ! [G] :
+              ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+             => ! [H] :
+                  ( m1_subset_1(H,B)
+                 => ( H = k4_mcart_3(A,B,C,D,E,F,G)
+                  <=> ! [I,J,K,L,M,N] :
+                        ( G = k1_mcart_3(I,J,K,L,M,N)
+                       => H = J ) ) ) ) ) ).
+
+fof(d5_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & ~ ! [G] :
+              ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+             => ! [H] :
+                  ( m1_subset_1(H,C)
+                 => ( H = k5_mcart_3(A,B,C,D,E,F,G)
+                  <=> ! [I,J,K,L,M,N] :
+                        ( G = k1_mcart_3(I,J,K,L,M,N)
+                       => H = K ) ) ) ) ) ).
+
+fof(d6_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & ~ ! [G] :
+              ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+             => ! [H] :
+                  ( m1_subset_1(H,D)
+                 => ( H = k6_mcart_3(A,B,C,D,E,F,G)
+                  <=> ! [I,J,K,L,M,N] :
+                        ( G = k1_mcart_3(I,J,K,L,M,N)
+                       => H = L ) ) ) ) ) ).
+
+fof(d7_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & ~ ! [G] :
+              ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+             => ! [H] :
+                  ( m1_subset_1(H,E)
+                 => ( H = k7_mcart_3(A,B,C,D,E,F,G)
+                  <=> ! [I,J,K,L,M,N] :
+                        ( G = k1_mcart_3(I,J,K,L,M,N)
+                       => H = M ) ) ) ) ) ).
+
+fof(d8_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & ~ ! [G] :
+              ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+             => ! [H] :
+                  ( m1_subset_1(H,F)
+                 => ( H = k8_mcart_3(A,B,C,D,E,F,G)
+                  <=> ! [I,J,K,L,M,N] :
+                        ( G = k1_mcart_3(I,J,K,L,M,N)
+                       => H = N ) ) ) ) ) ).
+
+fof(t20_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & ? [G] :
+            ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+            & ? [H,I,J,K,L,M] :
+                ( G = k1_mcart_3(H,I,J,K,L,M)
+                & ~ ( k3_mcart_3(A,B,C,D,E,F,G) = H
+                    & k4_mcart_3(A,B,C,D,E,F,G) = I
+                    & k5_mcart_3(A,B,C,D,E,F,G) = J
+                    & k6_mcart_3(A,B,C,D,E,F,G) = K
+                    & k7_mcart_3(A,B,C,D,E,F,G) = L
+                    & k8_mcart_3(A,B,C,D,E,F,G) = M ) ) ) ) ).
+
+fof(t21_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & ~ ! [G] :
+              ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+             => G = k1_mcart_3(k3_mcart_3(A,B,C,D,E,F,G),k4_mcart_3(A,B,C,D,E,F,G),k5_mcart_3(A,B,C,D,E,F,G),k6_mcart_3(A,B,C,D,E,F,G),k7_mcart_3(A,B,C,D,E,F,G),k8_mcart_3(A,B,C,D,E,F,G)) ) ) ).
+
+fof(t22_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & ~ ! [G] :
+              ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+             => ( k3_mcart_3(A,B,C,D,E,F,G) = k1_mcart_1(k1_mcart_1(k1_mcart_1(k1_mcart_1(k1_mcart_1(G)))))
+                & k4_mcart_3(A,B,C,D,E,F,G) = k2_mcart_1(k1_mcart_1(k1_mcart_1(k1_mcart_1(k1_mcart_1(G)))))
+                & k5_mcart_3(A,B,C,D,E,F,G) = k2_mcart_1(k1_mcart_1(k1_mcart_1(k1_mcart_1(G))))
+                & k6_mcart_3(A,B,C,D,E,F,G) = k2_mcart_1(k1_mcart_1(k1_mcart_1(G)))
+                & k7_mcart_3(A,B,C,D,E,F,G) = k2_mcart_1(k1_mcart_1(G))
+                & k8_mcart_3(A,B,C,D,E,F,G) = k2_mcart_1(G) ) ) ) ).
+
+fof(t23_mcart_3,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ~ ( ~ r1_tarski(A,k2_mcart_3(A,B,C,D,E,F))
+          & ~ r1_tarski(A,k2_mcart_3(B,C,D,E,F,A))
+          & ~ r1_tarski(A,k2_mcart_3(C,D,E,F,A,B))
+          & ~ r1_tarski(A,k2_mcart_3(D,E,F,A,B,C))
+          & ~ r1_tarski(A,k2_mcart_3(E,F,A,B,C,D))
+          & ~ r1_tarski(A,k2_mcart_3(F,A,B,C,D,E)) )
+     => A = k1_xboole_0 ) ).
+
+fof(t24_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L] :
+      ( ~ r1_xboole_0(k2_mcart_3(A,B,C,D,E,F),k2_mcart_3(G,H,I,J,K,L))
+     => ( ~ r1_xboole_0(A,G)
+        & ~ r1_xboole_0(B,H)
+        & ~ r1_xboole_0(C,I)
+        & ~ r1_xboole_0(D,J)
+        & ~ r1_xboole_0(E,K)
+        & ~ r1_xboole_0(F,L) ) ) ).
+
+fof(t25_mcart_3,axiom,
+    ! [A,B,C,D,E,F] : k2_mcart_3(k1_tarski(A),k1_tarski(B),k1_tarski(C),k1_tarski(D),k1_tarski(E),k1_tarski(F)) = k1_tarski(k1_mcart_3(A,B,C,D,E,F)) ).
+
+fof(t26_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+     => ~ ( A != k1_xboole_0
+          & B != k1_xboole_0
+          & C != k1_xboole_0
+          & D != k1_xboole_0
+          & E != k1_xboole_0
+          & F != k1_xboole_0
+          & ? [H,I,J,K,L,M] :
+              ( G = k1_mcart_3(H,I,J,K,L,M)
+              & ~ ( k3_mcart_3(A,B,C,D,E,F,G) = H
+                  & k4_mcart_3(A,B,C,D,E,F,G) = I
+                  & k5_mcart_3(A,B,C,D,E,F,G) = J
+                  & k6_mcart_3(A,B,C,D,E,F,G) = K
+                  & k7_mcart_3(A,B,C,D,E,F,G) = L
+                  & k8_mcart_3(A,B,C,D,E,F,G) = M ) ) ) ) ).
+
+fof(t27_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( m1_subset_1(H,k2_mcart_3(A,B,C,D,E,F))
+     => ( ! [I] :
+            ( m1_subset_1(I,A)
+           => ! [J] :
+                ( m1_subset_1(J,B)
+               => ! [K] :
+                    ( m1_subset_1(K,C)
+                   => ! [L] :
+                        ( m1_subset_1(L,D)
+                       => ! [M] :
+                            ( m1_subset_1(M,E)
+                           => ! [N] :
+                                ( m1_subset_1(N,F)
+                               => ( H = k1_mcart_3(I,J,K,L,M,N)
+                                 => G = I ) ) ) ) ) ) )
+       => ( A = k1_xboole_0
+          | B = k1_xboole_0
+          | C = k1_xboole_0
+          | D = k1_xboole_0
+          | E = k1_xboole_0
+          | F = k1_xboole_0
+          | G = k3_mcart_3(A,B,C,D,E,F,H) ) ) ) ).
+
+fof(t28_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( m1_subset_1(H,k2_mcart_3(A,B,C,D,E,F))
+     => ( ! [I] :
+            ( m1_subset_1(I,A)
+           => ! [J] :
+                ( m1_subset_1(J,B)
+               => ! [K] :
+                    ( m1_subset_1(K,C)
+                   => ! [L] :
+                        ( m1_subset_1(L,D)
+                       => ! [M] :
+                            ( m1_subset_1(M,E)
+                           => ! [N] :
+                                ( m1_subset_1(N,F)
+                               => ( H = k1_mcart_3(I,J,K,L,M,N)
+                                 => G = J ) ) ) ) ) ) )
+       => ( A = k1_xboole_0
+          | B = k1_xboole_0
+          | C = k1_xboole_0
+          | D = k1_xboole_0
+          | E = k1_xboole_0
+          | F = k1_xboole_0
+          | G = k4_mcart_3(A,B,C,D,E,F,H) ) ) ) ).
+
+fof(t29_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( m1_subset_1(H,k2_mcart_3(A,B,C,D,E,F))
+     => ( ! [I] :
+            ( m1_subset_1(I,A)
+           => ! [J] :
+                ( m1_subset_1(J,B)
+               => ! [K] :
+                    ( m1_subset_1(K,C)
+                   => ! [L] :
+                        ( m1_subset_1(L,D)
+                       => ! [M] :
+                            ( m1_subset_1(M,E)
+                           => ! [N] :
+                                ( m1_subset_1(N,F)
+                               => ( H = k1_mcart_3(I,J,K,L,M,N)
+                                 => G = K ) ) ) ) ) ) )
+       => ( A = k1_xboole_0
+          | B = k1_xboole_0
+          | C = k1_xboole_0
+          | D = k1_xboole_0
+          | E = k1_xboole_0
+          | F = k1_xboole_0
+          | G = k5_mcart_3(A,B,C,D,E,F,H) ) ) ) ).
+
+fof(t30_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( m1_subset_1(H,k2_mcart_3(A,B,C,D,E,F))
+     => ( ! [I] :
+            ( m1_subset_1(I,A)
+           => ! [J] :
+                ( m1_subset_1(J,B)
+               => ! [K] :
+                    ( m1_subset_1(K,C)
+                   => ! [L] :
+                        ( m1_subset_1(L,D)
+                       => ! [M] :
+                            ( m1_subset_1(M,E)
+                           => ! [N] :
+                                ( m1_subset_1(N,F)
+                               => ( H = k1_mcart_3(I,J,K,L,M,N)
+                                 => G = L ) ) ) ) ) ) )
+       => ( A = k1_xboole_0
+          | B = k1_xboole_0
+          | C = k1_xboole_0
+          | D = k1_xboole_0
+          | E = k1_xboole_0
+          | F = k1_xboole_0
+          | G = k6_mcart_3(A,B,C,D,E,F,H) ) ) ) ).
+
+fof(t31_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( m1_subset_1(H,k2_mcart_3(A,B,C,D,E,F))
+     => ( ! [I] :
+            ( m1_subset_1(I,A)
+           => ! [J] :
+                ( m1_subset_1(J,B)
+               => ! [K] :
+                    ( m1_subset_1(K,C)
+                   => ! [L] :
+                        ( m1_subset_1(L,D)
+                       => ! [M] :
+                            ( m1_subset_1(M,E)
+                           => ! [N] :
+                                ( m1_subset_1(N,F)
+                               => ( H = k1_mcart_3(I,J,K,L,M,N)
+                                 => G = M ) ) ) ) ) ) )
+       => ( A = k1_xboole_0
+          | B = k1_xboole_0
+          | C = k1_xboole_0
+          | D = k1_xboole_0
+          | E = k1_xboole_0
+          | F = k1_xboole_0
+          | G = k7_mcart_3(A,B,C,D,E,F,H) ) ) ) ).
+
+fof(t32_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( m1_subset_1(H,k2_mcart_3(A,B,C,D,E,F))
+     => ( ! [I] :
+            ( m1_subset_1(I,A)
+           => ! [J] :
+                ( m1_subset_1(J,B)
+               => ! [K] :
+                    ( m1_subset_1(K,C)
+                   => ! [L] :
+                        ( m1_subset_1(L,D)
+                       => ! [M] :
+                            ( m1_subset_1(M,E)
+                           => ! [N] :
+                                ( m1_subset_1(N,F)
+                               => ( H = k1_mcart_3(I,J,K,L,M,N)
+                                 => G = N ) ) ) ) ) ) )
+       => ( A = k1_xboole_0
+          | B = k1_xboole_0
+          | C = k1_xboole_0
+          | D = k1_xboole_0
+          | E = k1_xboole_0
+          | F = k1_xboole_0
+          | G = k8_mcart_3(A,B,C,D,E,F,H) ) ) ) ).
+
+fof(t33_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ~ ( r2_hidden(A,k2_mcart_3(B,C,D,E,F,G))
+        & ! [H,I,J,K,L,M] :
+            ~ ( r2_hidden(H,B)
+              & r2_hidden(I,C)
+              & r2_hidden(J,D)
+              & r2_hidden(K,E)
+              & r2_hidden(L,F)
+              & r2_hidden(M,G)
+              & A = k1_mcart_3(H,I,J,K,L,M) ) ) ).
+
+fof(t34_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L] :
+      ( r2_hidden(k1_mcart_3(A,B,C,D,E,F),k2_mcart_3(G,H,I,J,K,L))
+    <=> ( r2_hidden(A,G)
+        & r2_hidden(B,H)
+        & r2_hidden(C,I)
+        & r2_hidden(D,J)
+        & r2_hidden(E,K)
+        & r2_hidden(F,L) ) ) ).
+
+fof(t35_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ( ! [H] :
+          ( r2_hidden(H,A)
+        <=> ? [I,J,K,L,M,N] :
+              ( r2_hidden(I,B)
+              & r2_hidden(J,C)
+              & r2_hidden(K,D)
+              & r2_hidden(L,E)
+              & r2_hidden(M,F)
+              & r2_hidden(N,G)
+              & H = k1_mcart_3(I,J,K,L,M,N) ) )
+     => A = k2_mcart_3(B,C,D,E,F,G) ) ).
+
+fof(t36_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & C != k1_xboole_0
+        & D != k1_xboole_0
+        & E != k1_xboole_0
+        & F != k1_xboole_0
+        & G != k1_xboole_0
+        & H != k1_xboole_0
+        & I != k1_xboole_0
+        & J != k1_xboole_0
+        & K != k1_xboole_0
+        & L != k1_xboole_0
+        & ? [M] :
+            ( m1_subset_1(M,k2_mcart_3(A,B,C,D,E,F))
+            & ? [N] :
+                ( m1_subset_1(N,k2_mcart_3(G,H,I,J,K,L))
+                & M = N
+                & ~ ( k3_mcart_3(A,B,C,D,E,F,M) = k3_mcart_3(G,H,I,J,K,L,N)
+                    & k4_mcart_3(A,B,C,D,E,F,M) = k4_mcart_3(G,H,I,J,K,L,N)
+                    & k5_mcart_3(A,B,C,D,E,F,M) = k5_mcart_3(G,H,I,J,K,L,N)
+                    & k6_mcart_3(A,B,C,D,E,F,M) = k6_mcart_3(G,H,I,J,K,L,N)
+                    & k7_mcart_3(A,B,C,D,E,F,M) = k7_mcart_3(G,H,I,J,K,L,N)
+                    & k8_mcart_3(A,B,C,D,E,F,M) = k8_mcart_3(G,H,I,J,K,L,N) ) ) ) ) ).
+
+fof(t37_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ( m1_subset_1(G,k1_zfmisc_1(A))
+     => ! [H] :
+          ( m1_subset_1(H,k1_zfmisc_1(B))
+         => ! [I] :
+              ( m1_subset_1(I,k1_zfmisc_1(C))
+             => ! [J] :
+                  ( m1_subset_1(J,k1_zfmisc_1(D))
+                 => ! [K] :
+                      ( m1_subset_1(K,k1_zfmisc_1(E))
+                     => ! [L] :
+                          ( m1_subset_1(L,k1_zfmisc_1(F))
+                         => ! [M] :
+                              ( m1_subset_1(M,k2_mcart_3(A,B,C,D,E,F))
+                             => ( r2_hidden(M,k2_mcart_3(G,H,I,J,K,L))
+                               => ( r2_hidden(k3_mcart_3(A,B,C,D,E,F,M),G)
+                                  & r2_hidden(k4_mcart_3(A,B,C,D,E,F,M),H)
+                                  & r2_hidden(k5_mcart_3(A,B,C,D,E,F,M),I)
+                                  & r2_hidden(k6_mcart_3(A,B,C,D,E,F,M),J)
+                                  & r2_hidden(k7_mcart_3(A,B,C,D,E,F,M),K)
+                                  & r2_hidden(k8_mcart_3(A,B,C,D,E,F,M),L) ) ) ) ) ) ) ) ) ) ).
+
+fof(t38_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L] :
+      ( ( r1_tarski(A,B)
+        & r1_tarski(C,D)
+        & r1_tarski(E,F)
+        & r1_tarski(G,H)
+        & r1_tarski(I,J)
+        & r1_tarski(K,L) )
+     => r1_tarski(k2_mcart_3(A,C,E,G,I,K),k2_mcart_3(B,D,F,H,J,L)) ) ).
+
+fof(t39_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ( m1_subset_1(G,k1_zfmisc_1(A))
+     => ! [H] :
+          ( m1_subset_1(H,k1_zfmisc_1(B))
+         => ! [I] :
+              ( m1_subset_1(I,k1_zfmisc_1(C))
+             => ! [J] :
+                  ( m1_subset_1(J,k1_zfmisc_1(D))
+                 => ! [K] :
+                      ( m1_subset_1(K,k1_zfmisc_1(E))
+                     => ! [L] :
+                          ( m1_subset_1(L,k1_zfmisc_1(F))
+                         => m1_subset_1(k2_mcart_3(G,H,I,J,K,L),k1_zfmisc_1(k2_mcart_3(A,B,C,D,E,F))) ) ) ) ) ) ) ).
+
+fof(dt_k1_mcart_3,axiom,
+    $true ).
+
+fof(dt_k2_mcart_3,axiom,
+    $true ).
+
+fof(dt_k3_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+     => m1_subset_1(k3_mcart_3(A,B,C,D,E,F,G),A) ) ).
+
+fof(dt_k4_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+     => m1_subset_1(k4_mcart_3(A,B,C,D,E,F,G),B) ) ).
+
+fof(dt_k5_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+     => m1_subset_1(k5_mcart_3(A,B,C,D,E,F,G),C) ) ).
+
+fof(dt_k6_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+     => m1_subset_1(k6_mcart_3(A,B,C,D,E,F,G),D) ) ).
+
+fof(dt_k7_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+     => m1_subset_1(k7_mcart_3(A,B,C,D,E,F,G),E) ) ).
+
+fof(dt_k8_mcart_3,axiom,
+    ! [A,B,C,D,E,F,G] :
+      ( m1_subset_1(G,k2_mcart_3(A,B,C,D,E,F))
+     => m1_subset_1(k8_mcart_3(A,B,C,D,E,F,G),F) ) ).
+
+%------------------------------------------------------------------------------

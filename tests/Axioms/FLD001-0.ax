@@ -1,0 +1,154 @@
+%--------------------------------------------------------------------------
+% File     : FLD001-0 : TPTP v8.1.2. Released .0.
+% Domain   : Field Theory (Ordered fields)
+% Axioms   : Ordered field axioms (axiom formulation glxx)
+% Version  : [Dra93] axioms : Especial.
+% English  :
+
+% Refs     : [Dra93] Draeger (1993), Anwendung des Theorembeweisers SETHEO
+% Source   : [Dra93]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   27 (   3 unt;   3 nHn;  27 RR)
+%            Number of literals    :   73 (   0 equ;  44 neg)
+%            Maximal clause size   :    4 (   2 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    3 (   3 usr;   0 prp; 1-2 aty)
+%            Number of functors    :    6 (   6 usr;   2 con; 0-2 aty)
+%            Number of variables   :   50 (   0 sgn)
+% SPC      : 
+
+% Comments : The missing equality axioms can be derived.
+%          : Currently it is unknown if this axiomatization is complete.
+%            It is definitely tuned for SETHEO.
+% Bugfixes : .0 - Added different_identities clause.
+%--------------------------------------------------------------------------
+cnf(associativity_addition,axiom,
+    ( equalish(add(X,add(Y,Z)),add(add(X,Y),Z))
+    | ~ defined(X)
+    | ~ defined(Y)
+    | ~ defined(Z) ) ).
+
+cnf(existence_of_identity_addition,axiom,
+    ( equalish(add(additive_identity,X),X)
+    | ~ defined(X) ) ).
+
+cnf(existence_of_inverse_addition,axiom,
+    ( equalish(add(X,additive_inverse(X)),additive_identity)
+    | ~ defined(X) ) ).
+
+cnf(commutativity_addition,axiom,
+    ( equalish(add(X,Y),add(Y,X))
+    | ~ defined(X)
+    | ~ defined(Y) ) ).
+
+cnf(associativity_multiplication,axiom,
+    ( equalish(multiply(X,multiply(Y,Z)),multiply(multiply(X,Y),Z))
+    | ~ defined(X)
+    | ~ defined(Y)
+    | ~ defined(Z) ) ).
+
+cnf(existence_of_identity_multiplication,axiom,
+    ( equalish(multiply(multiplicative_identity,X),X)
+    | ~ defined(X) ) ).
+
+cnf(existence_of_inverse_multiplication,axiom,
+    ( equalish(multiply(X,multiplicative_inverse(X)),multiplicative_identity)
+    | ~ defined(X)
+    | equalish(X,additive_identity) ) ).
+
+cnf(commutativity_multiplication,axiom,
+    ( equalish(multiply(X,Y),multiply(Y,X))
+    | ~ defined(X)
+    | ~ defined(Y) ) ).
+
+cnf(distributivity,axiom,
+    ( equalish(add(multiply(X,Z),multiply(Y,Z)),multiply(add(X,Y),Z))
+    | ~ defined(X)
+    | ~ defined(Y)
+    | ~ defined(Z) ) ).
+
+cnf(well_definedness_of_addition,axiom,
+    ( defined(add(X,Y))
+    | ~ defined(X)
+    | ~ defined(Y) ) ).
+
+cnf(well_definedness_of_additive_identity,axiom,
+    defined(additive_identity) ).
+
+cnf(well_definedness_of_additive_inverse,axiom,
+    ( defined(additive_inverse(X))
+    | ~ defined(X) ) ).
+
+cnf(well_definedness_of_multiplication,axiom,
+    ( defined(multiply(X,Y))
+    | ~ defined(X)
+    | ~ defined(Y) ) ).
+
+cnf(well_definedness_of_multiplicative_identity,axiom,
+    defined(multiplicative_identity) ).
+
+cnf(well_definedness_of_multiplicative_inverse,axiom,
+    ( defined(multiplicative_inverse(X))
+    | ~ defined(X)
+    | equalish(X,additive_identity) ) ).
+
+cnf(antisymmetry_of_order_relation,axiom,
+    ( equalish(X,Y)
+    | ~ less_or_equal(X,Y)
+    | ~ less_or_equal(Y,X) ) ).
+
+cnf(transitivity_of_order_relation,axiom,
+    ( less_or_equal(X,Z)
+    | ~ less_or_equal(X,Y)
+    | ~ less_or_equal(Y,Z) ) ).
+
+cnf(totality_of_order_relation,axiom,
+    ( less_or_equal(X,Y)
+    | less_or_equal(Y,X)
+    | ~ defined(X)
+    | ~ defined(Y) ) ).
+
+cnf(compatibility_of_order_relation_and_addition,axiom,
+    ( less_or_equal(add(X,Z),add(Y,Z))
+    | ~ defined(Z)
+    | ~ less_or_equal(X,Y) ) ).
+
+cnf(compatibility_of_order_relation_and_multiplication,axiom,
+    ( less_or_equal(additive_identity,multiply(Y,Z))
+    | ~ less_or_equal(additive_identity,Y)
+    | ~ less_or_equal(additive_identity,Z) ) ).
+
+cnf(reflexivity_of_equality,axiom,
+    ( equalish(X,X)
+    | ~ defined(X) ) ).
+
+cnf(symmetry_of_equality,axiom,
+    ( equalish(X,Y)
+    | ~ equalish(Y,X) ) ).
+
+cnf(transitivity_of_equality,axiom,
+    ( equalish(X,Z)
+    | ~ equalish(X,Y)
+    | ~ equalish(Y,Z) ) ).
+
+cnf(compatibility_of_equality_and_addition,axiom,
+    ( equalish(add(X,Z),add(Y,Z))
+    | ~ defined(Z)
+    | ~ equalish(X,Y) ) ).
+
+cnf(compatibility_of_equality_and_multiplication,axiom,
+    ( equalish(multiply(X,Z),multiply(Y,Z))
+    | ~ defined(Z)
+    | ~ equalish(X,Y) ) ).
+
+cnf(compatibility_of_equality_and_order_relation,axiom,
+    ( less_or_equal(Y,Z)
+    | ~ less_or_equal(X,Z)
+    | ~ equalish(X,Y) ) ).
+
+cnf(different_identities,axiom,
+    ~ equalish(additive_identity,multiplicative_identity) ).
+
+%--------------------------------------------------------------------------

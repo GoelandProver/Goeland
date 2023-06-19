@@ -1,0 +1,70 @@
+%--------------------------------------------------------------------------
+% File     : NUM002-0 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Number theory
+% Axioms   : Number theory (equality) axioms
+% Version  : [LS74] (equality) axioms : Biased.
+% English  :
+
+% Refs     : [LS74]  Lawrence & Starkey (1974), Experimental Tests of Resol
+% Source   : [SPRFN]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   12 (   7 unt;   0 nHn;   5 RR)
+%            Number of literals    :   22 (   0 equ;  10 neg)
+%            Maximal clause size   :    3 (   1 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    1 (   1 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    2 (   2 usr;   0 con; 2-2 aty)
+%            Number of variables   :   35 (   0 sgn)
+% SPC      : 
+
+% Comments :
+%--------------------------------------------------------------------------
+cnf(reflexivity,axiom,
+    equalish(A,A) ).
+
+cnf(transitivity,axiom,
+    ( ~ equalish(A,B)
+    | ~ equalish(B,C)
+    | equalish(A,C) ) ).
+
+cnf(commutativity_of_addition,axiom,
+    equalish(add(A,B),add(B,A)) ).
+
+cnf(associativity_of_addition,axiom,
+    equalish(add(A,add(B,C)),add(add(A,B),C)) ).
+
+cnf(addition_inverts_subtraction1,axiom,
+    equalish(subtract(add(A,B),B),A) ).
+
+cnf(addition_inverts_subtraction2,axiom,
+    equalish(A,subtract(add(A,B),B)) ).
+
+cnf(commutativity1,axiom,
+    equalish(add(subtract(A,B),C),subtract(add(A,C),B)) ).
+
+cnf(commutativity2,axiom,
+    equalish(subtract(add(A,B),C),add(subtract(A,C),B)) ).
+
+cnf(add_substitution1,axiom,
+    ( ~ equalish(A,B)
+    | ~ equalish(C,add(A,D))
+    | equalish(C,add(B,D)) ) ).
+
+cnf(add_substitution2,axiom,
+    ( ~ equalish(A,B)
+    | ~ equalish(C,add(D,A))
+    | equalish(C,add(D,B)) ) ).
+
+cnf(subtract_substitution1,axiom,
+    ( ~ equalish(A,B)
+    | ~ equalish(C,subtract(A,D))
+    | equalish(C,subtract(B,D)) ) ).
+
+cnf(subtract_substitution2,axiom,
+    ( ~ equalish(A,B)
+    | ~ equalish(C,subtract(D,A))
+    | equalish(C,subtract(D,B)) ) ).
+
+%--------------------------------------------------------------------------

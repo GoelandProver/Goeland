@@ -1,0 +1,363 @@
+%------------------------------------------------------------------------------
+% File     : ITP004_5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : ConseqConv_2.ax [Gau20]
+%          : HL4004_5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   45 (   3 unt;   2 typ;   0 def)
+%            Number of atoms       :  436 (   5 equ)
+%            Maximal formula atoms :   10 (   9 avg)
+%            Number of connectives :  161 (  14   ~;   9   |;  23   &)
+%                                         (  27 <=>;  88  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   10 (   5 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of FOOLs       :  246 ( 246 fml;   0 var)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :    2 (   1   >;   1   *;   0   +;   0  <<)
+%            Number of predicates  :   16 (  13 usr;   7 prp; 0-2 aty)
+%            Number of functors    :    2 (   2 usr;   1 con; 0-2 aty)
+%            Number of variables   :   93 (  91   !;   2   ?;  93   :)
+% SPC      : TF0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+tff(tp_c_2EConseqConv_2EASM__MARKER,type,
+    c_2EConseqConv_2EASM__MARKER: $i ).
+
+tff(mem_c_2EConseqConv_2EASM__MARKER,axiom,
+    mem(c_2EConseqConv_2EASM__MARKER,arr(bool,arr(bool,bool))) ).
+
+tff(stp_fo_c_2EConseqConv_2EASM__MARKER,type,
+    fo__c_2EConseqConv_2EASM__MARKER: ( tp__o * tp__o ) > tp__o ).
+
+tff(stp_eq_fo_c_2EConseqConv_2EASM__MARKER,axiom,
+    ! [X0: tp__o,X1: tp__o] : ( inj__o(fo__c_2EConseqConv_2EASM__MARKER(X0,X1)) = ap(ap(c_2EConseqConv_2EASM__MARKER,inj__o(X0)),inj__o(X1)) ) ).
+
+tff(conj_thm_2EConseqConv_2Eforall__eq__thm,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( mem(V0P,arr(A_27a,bool))
+     => ! [V1Q: $i] :
+          ( mem(V1Q,arr(A_27a,bool))
+         => ( ! [V2s: $i] :
+                ( mem(V2s,A_27a)
+               => ( p(ap(V0P,V2s))
+                <=> p(ap(V1Q,V2s)) ) )
+           => ( ! [V3s: $i] :
+                  ( mem(V3s,A_27a)
+                 => p(ap(V0P,V3s)) )
+            <=> ! [V4s: $i] :
+                  ( mem(V4s,A_27a)
+                 => p(ap(V1Q,V4s)) ) ) ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2Eexists__eq__thm,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( mem(V0P,arr(A_27a,bool))
+     => ! [V1Q: $i] :
+          ( mem(V1Q,arr(A_27a,bool))
+         => ( ! [V2s: $i] :
+                ( mem(V2s,A_27a)
+               => ( p(ap(V0P,V2s))
+                <=> p(ap(V1Q,V2s)) ) )
+           => ( ? [V3s: $i] :
+                  ( mem(V3s,A_27a)
+                  & p(ap(V0P,V3s)) )
+            <=> ? [V4s: $i] :
+                  ( mem(V4s,A_27a)
+                  & p(ap(V1Q,V4s)) ) ) ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2Etrue__imp,axiom,
+    ! [V0t: tp__o] :
+      ( p(inj__o(V0t))
+     => $true ) ).
+
+tff(conj_thm_2EConseqConv_2Efalse__imp,axiom,
+    ! [V0t: tp__o] :
+      ( $false
+     => p(inj__o(V0t)) ) ).
+
+tff(conj_thm_2EConseqConv_2ENOT__CLAUSES__X,axiom,
+    ! [V0t: tp__o] :
+      ( ~ ~ p(inj__o(V0t))
+    <=> p(inj__o(V0t)) ) ).
+
+tff(conj_thm_2EConseqConv_2ENOT__CLAUSES__T,axiom,
+    ( ~ $true
+  <=> $false ) ).
+
+tff(conj_thm_2EConseqConv_2ENOT__CLAUSES__F,axiom,
+    ( ~ $false
+  <=> $true ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CONG__conj__strengthen,axiom,
+    ! [V0x: tp__o,V1x_27: tp__o,V2y: tp__o,V3y_27: tp__o] :
+      ( ( ( p(inj__o(V2y))
+         => ( p(inj__o(V1x_27))
+           => p(inj__o(V0x)) ) )
+        & ( p(inj__o(V1x_27))
+         => ( p(inj__o(V3y_27))
+           => p(inj__o(V2y)) ) ) )
+     => ( ( p(inj__o(V1x_27))
+          & p(inj__o(V3y_27)) )
+       => ( p(inj__o(V0x))
+          & p(inj__o(V2y)) ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CONG__conj__weaken,axiom,
+    ! [V0x: tp__o,V1x_27: tp__o,V2y: tp__o,V3y_27: tp__o] :
+      ( ( ( p(inj__o(V2y))
+         => ( p(inj__o(V0x))
+           => p(inj__o(V1x_27)) ) )
+        & ( p(inj__o(V1x_27))
+         => ( p(inj__o(V2y))
+           => p(inj__o(V3y_27)) ) ) )
+     => ( ( p(inj__o(V0x))
+          & p(inj__o(V2y)) )
+       => ( p(inj__o(V1x_27))
+          & p(inj__o(V3y_27)) ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2EAND__CLAUSES__TX,axiom,
+    ! [V0t: tp__o] :
+      ( ( $true
+        & p(inj__o(V0t)) )
+    <=> p(inj__o(V0t)) ) ).
+
+tff(conj_thm_2EConseqConv_2EAND__CLAUSES__XT,axiom,
+    ! [V0t: tp__o] :
+      ( ( p(inj__o(V0t))
+        & $true )
+    <=> p(inj__o(V0t)) ) ).
+
+tff(conj_thm_2EConseqConv_2EAND__CLAUSES__FX,axiom,
+    ! [V0t: tp__o] :
+      ( ( $false
+        & p(inj__o(V0t)) )
+    <=> $false ) ).
+
+tff(conj_thm_2EConseqConv_2EAND__CLAUSES__XF,axiom,
+    ! [V0t: tp__o] :
+      ( ( p(inj__o(V0t))
+        & $false )
+    <=> $false ) ).
+
+tff(conj_thm_2EConseqConv_2EAND__CLAUSES__XX,axiom,
+    ! [V0t: tp__o] :
+      ( ( p(inj__o(V0t))
+        & p(inj__o(V0t)) )
+    <=> p(inj__o(V0t)) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CONG__disj__strengthen,axiom,
+    ! [V0x: tp__o,V1x_27: tp__o,V2y: tp__o,V3y_27: tp__o] :
+      ( ( ( ~ p(inj__o(V2y))
+         => ( p(inj__o(V1x_27))
+           => p(inj__o(V0x)) ) )
+        & ( ~ p(inj__o(V1x_27))
+         => ( p(inj__o(V3y_27))
+           => p(inj__o(V2y)) ) ) )
+     => ( ( p(inj__o(V1x_27))
+          | p(inj__o(V3y_27)) )
+       => ( p(inj__o(V0x))
+          | p(inj__o(V2y)) ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CONG__disj__weaken,axiom,
+    ! [V0x: tp__o,V1x_27: tp__o,V2y: tp__o,V3y_27: tp__o] :
+      ( ( ( ~ p(inj__o(V2y))
+         => ( p(inj__o(V0x))
+           => p(inj__o(V1x_27)) ) )
+        & ( ~ p(inj__o(V1x_27))
+         => ( p(inj__o(V2y))
+           => p(inj__o(V3y_27)) ) ) )
+     => ( ( p(inj__o(V0x))
+          | p(inj__o(V2y)) )
+       => ( p(inj__o(V1x_27))
+          | p(inj__o(V3y_27)) ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2EOR__CLAUSES__TX,axiom,
+    ! [V0t: tp__o] :
+      ( ( $true
+        | p(inj__o(V0t)) )
+    <=> $true ) ).
+
+tff(conj_thm_2EConseqConv_2EOR__CLAUSES__XT,axiom,
+    ! [V0t: tp__o] :
+      ( ( p(inj__o(V0t))
+        | $true )
+    <=> $true ) ).
+
+tff(conj_thm_2EConseqConv_2EOR__CLAUSES__FX,axiom,
+    ! [V0t: tp__o] :
+      ( ( $false
+        | p(inj__o(V0t)) )
+    <=> p(inj__o(V0t)) ) ).
+
+tff(conj_thm_2EConseqConv_2EOR__CLAUSES__XF,axiom,
+    ! [V0t: tp__o] :
+      ( ( p(inj__o(V0t))
+        | $false )
+    <=> p(inj__o(V0t)) ) ).
+
+tff(conj_thm_2EConseqConv_2EOR__CLAUSES__XX,axiom,
+    ! [V0t: tp__o] :
+      ( ( p(inj__o(V0t))
+        | p(inj__o(V0t)) )
+    <=> p(inj__o(V0t)) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CONG__imp__strengthen,axiom,
+    ! [V0x: tp__o,V1x_27: tp__o,V2y: tp__o,V3y_27: tp__o] :
+      ( ( ( p(inj__o(V0x))
+         => ( p(inj__o(V3y_27))
+           => p(inj__o(V2y)) ) )
+        & ( ~ p(inj__o(V3y_27))
+         => ( p(inj__o(V0x))
+           => p(inj__o(V1x_27)) ) ) )
+     => ( ( p(inj__o(V1x_27))
+         => p(inj__o(V3y_27)) )
+       => ( p(inj__o(V0x))
+         => p(inj__o(V2y)) ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CONG__imp__weaken,axiom,
+    ! [V0x: tp__o,V1x_27: tp__o,V2y: tp__o,V3y_27: tp__o] :
+      ( ( ( p(inj__o(V0x))
+         => ( p(inj__o(V2y))
+           => p(inj__o(V3y_27)) ) )
+        & ( ~ p(inj__o(V3y_27))
+         => ( p(inj__o(V1x_27))
+           => p(inj__o(V0x)) ) ) )
+     => ( ( p(inj__o(V0x))
+         => p(inj__o(V2y)) )
+       => ( p(inj__o(V1x_27))
+         => p(inj__o(V3y_27)) ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CONG__simple__imp__strengthen,axiom,
+    ! [V0x: tp__o,V1x_27: tp__o,V2y: tp__o,V3y_27: tp__o] :
+      ( ( ( p(inj__o(V0x))
+         => p(inj__o(V1x_27)) )
+        & ( p(inj__o(V1x_27))
+         => ( p(inj__o(V3y_27))
+           => p(inj__o(V2y)) ) ) )
+     => ( ( p(inj__o(V1x_27))
+         => p(inj__o(V3y_27)) )
+       => ( p(inj__o(V0x))
+         => p(inj__o(V2y)) ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CONG__simple__imp__weaken,axiom,
+    ! [V0x: tp__o,V1x_27: tp__o,V2y: tp__o,V3y_27: tp__o] :
+      ( ( ( p(inj__o(V1x_27))
+         => p(inj__o(V0x)) )
+        & ( p(inj__o(V1x_27))
+         => ( p(inj__o(V2y))
+           => p(inj__o(V3y_27)) ) ) )
+     => ( ( p(inj__o(V0x))
+         => p(inj__o(V2y)) )
+       => ( p(inj__o(V1x_27))
+         => p(inj__o(V3y_27)) ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CLAUSES__TX,axiom,
+    ! [V0t: tp__o] :
+      ( ( $true
+       => p(inj__o(V0t)) )
+    <=> p(inj__o(V0t)) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CLAUSES__XT,axiom,
+    ! [V0t: tp__o] :
+      ( ( p(inj__o(V0t))
+       => $true )
+    <=> $true ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CLAUSES__FX,axiom,
+    ! [V0t: tp__o] :
+      ( ( $false
+       => p(inj__o(V0t)) )
+    <=> $true ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CLAUSES__XX,axiom,
+    ! [V0t: tp__o] :
+      ( ( p(inj__o(V0t))
+       => p(inj__o(V0t)) )
+    <=> $true ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CLAUSES__XF,axiom,
+    ! [V0t: tp__o] :
+      ( ( p(inj__o(V0t))
+       => $false )
+    <=> ~ p(inj__o(V0t)) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CONG__cond__simple,axiom,
+    ! [V0c: tp__o,V1x: tp__o,V2x_27: tp__o,V3y: tp__o,V4y_27: tp__o] :
+      ( ( ( p(inj__o(V2x_27))
+         => p(inj__o(V1x)) )
+        & ( p(inj__o(V4y_27))
+         => p(inj__o(V3y)) ) )
+     => ( p(ap(ap(ap(c_2Ebool_2ECOND(bool),inj__o(V0c)),inj__o(V2x_27)),inj__o(V4y_27)))
+       => p(ap(ap(ap(c_2Ebool_2ECOND(bool),inj__o(V0c)),inj__o(V1x)),inj__o(V3y))) ) ) ).
+
+tff(conj_thm_2EConseqConv_2EIMP__CONG__cond,axiom,
+    ! [V0c: tp__o,V1x: tp__o,V2x_27: tp__o,V3y: tp__o,V4y_27: tp__o] :
+      ( ( ( p(inj__o(V0c))
+         => ( p(inj__o(V2x_27))
+           => p(inj__o(V1x)) ) )
+        & ( ~ p(inj__o(V0c))
+         => ( p(inj__o(V4y_27))
+           => p(inj__o(V3y)) ) ) )
+     => ( p(ap(ap(ap(c_2Ebool_2ECOND(bool),inj__o(V0c)),inj__o(V2x_27)),inj__o(V4y_27)))
+       => p(ap(ap(ap(c_2Ebool_2ECOND(bool),inj__o(V0c)),inj__o(V1x)),inj__o(V3y))) ) ) ).
+
+tff(conj_thm_2EConseqConv_2ECOND__CLAUSES__CT,axiom,
+    ! [A_27a: del,V0t1: $i] :
+      ( mem(V0t1,A_27a)
+     => ! [V1t2: $i] :
+          ( mem(V1t2,A_27a)
+         => ( ap(ap(ap(c_2Ebool_2ECOND(A_27a),inj__o(fo__c_2Ebool_2ET)),V0t1),V1t2) = V0t1 ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2ECOND__CLAUSES__CF,axiom,
+    ! [A_27a: del,V0t1: $i] :
+      ( mem(V0t1,A_27a)
+     => ! [V1t2: $i] :
+          ( mem(V1t2,A_27a)
+         => ( ap(ap(ap(c_2Ebool_2ECOND(A_27a),inj__o(fo__c_2Ebool_2EF)),V0t1),V1t2) = V1t2 ) ) ) ).
+
+tff(conj_thm_2EConseqConv_2ECOND__CLAUSES__ID,axiom,
+    ! [A_27a: del,V0b: tp__o,V1t: $i] :
+      ( mem(V1t,A_27a)
+     => ( ap(ap(ap(c_2Ebool_2ECOND(A_27a),inj__o(V0b)),V1t),V1t) = V1t ) ) ).
+
+tff(conj_thm_2EConseqConv_2ECOND__CLAUSES__TT,axiom,
+    ! [V0c: tp__o,V1x: tp__o] :
+      ( p(ap(ap(ap(c_2Ebool_2ECOND(bool),inj__o(V0c)),inj__o(fo__c_2Ebool_2ET)),inj__o(V1x)))
+    <=> ( ~ p(inj__o(V0c))
+       => p(inj__o(V1x)) ) ) ).
+
+tff(conj_thm_2EConseqConv_2ECOND__CLAUSES__FT,axiom,
+    ! [V0c: tp__o,V1x: tp__o] :
+      ( p(ap(ap(ap(c_2Ebool_2ECOND(bool),inj__o(V0c)),inj__o(V1x)),inj__o(fo__c_2Ebool_2ET)))
+    <=> ( p(inj__o(V0c))
+       => p(inj__o(V1x)) ) ) ).
+
+tff(conj_thm_2EConseqConv_2ECOND__CLAUSES__TF,axiom,
+    ! [V0c: tp__o,V1x: tp__o] :
+      ( p(ap(ap(ap(c_2Ebool_2ECOND(bool),inj__o(V0c)),inj__o(fo__c_2Ebool_2EF)),inj__o(V1x)))
+    <=> ( ~ p(inj__o(V0c))
+        & p(inj__o(V1x)) ) ) ).
+
+tff(conj_thm_2EConseqConv_2ECOND__CLAUSES__FF,axiom,
+    ! [V0c: tp__o,V1x: tp__o] :
+      ( p(ap(ap(ap(c_2Ebool_2ECOND(bool),inj__o(V0c)),inj__o(V1x)),inj__o(fo__c_2Ebool_2EF)))
+    <=> ( p(inj__o(V0c))
+        & p(inj__o(V1x)) ) ) ).
+
+tff(ax_thm_2EConseqConv_2EASM__MARKER__DEF,axiom,
+    c_2EConseqConv_2EASM__MARKER = k(bool,i(bool)) ).
+
+tff(conj_thm_2EConseqConv_2EASM__MARKER__THM,axiom,
+    ! [V0y: tp__o,V1x: tp__o] :
+      ( p(ap(ap(c_2EConseqConv_2EASM__MARKER,inj__o(V0y)),inj__o(V1x)))
+    <=> p(inj__o(V1x)) ) ).
+
+%------------------------------------------------------------------------------

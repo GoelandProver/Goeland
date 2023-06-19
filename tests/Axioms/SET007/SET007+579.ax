@@ -1,0 +1,633 @@
+%------------------------------------------------------------------------------
+% File     : SET007+579 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Public-Key Cryptography and Pepin's Test
+% Version  : [Urb08] axioms.
+% English  : Public-Key Cryptography and Pepin's Test for the Primality of
+%            Fermat Numbers
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : pepin [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   77 (  14 unt;   0 def)
+%            Number of atoms       :  315 (  66 equ)
+%            Maximal formula atoms :   14 (   4 avg)
+%            Number of connectives :  285 (  47   ~;  20   |;  47   &)
+%                                         (   6 <=>; 165  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   6 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   13 (  11 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   32 (  32 usr;  11 con; 0-3 aty)
+%            Number of variables   :  133 ( 133   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => r2_int_2(A,k1_nat_1(A,np__1)) ) ).
+
+fof(t2_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( v1_int_2(A)
+              & ~ r2_int_2(B,A)
+              & k6_nat_1(B,A) != A ) ) ) ).
+
+fof(t3_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_nat_1(A,k2_nat_1(B,C))
+                  & r2_int_2(B,A) )
+               => r1_nat_1(A,C) ) ) ) ) ).
+
+fof(t4_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_nat_1(A,B)
+                  & r1_nat_1(C,B)
+                  & r2_int_2(A,C) )
+               => r1_nat_1(k2_nat_1(A,C),B) ) ) ) ) ).
+
+fof(t5_pepin,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ( ~ r1_xreal_0(A,np__1)
+       => k6_int_1(np__1,A) = np__1 ) ) ).
+
+fof(t6_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( B != np__0
+           => ( r1_nat_1(B,A)
+            <=> k4_nat_1(A,B) = np__0 ) ) ) ) ).
+
+fof(t7_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_nat_1(A,k4_nat_1(B,A))
+           => ( A = np__0
+              | r1_nat_1(A,B) ) ) ) ) ).
+
+fof(t8_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( k4_nat_1(B,A) = C
+               => ( r1_xreal_0(A,np__0)
+                  | r2_int_1(A,k6_xcmplx_0(B,C)) ) ) ) ) ) ).
+
+fof(t9_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( v1_int_2(B)
+               => ( k2_nat_1(A,B) = np__0
+                  | r1_xreal_0(B,k4_nat_1(C,k2_nat_1(A,B)))
+                  | k4_nat_1(C,k2_nat_1(A,B)) = k4_nat_1(C,B) ) ) ) ) ) ).
+
+fof(t10_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( v1_int_1(B)
+         => k6_int_1(k2_xcmplx_0(k3_xcmplx_0(B,A),np__1),A) = k4_nat_1(np__1,A) ) ) ).
+
+fof(t11_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( k4_nat_1(k2_nat_1(B,C),A) = k4_nat_1(C,A)
+                  & r2_int_2(C,A) )
+               => ( r1_xreal_0(A,np__1)
+                  | k4_nat_1(B,A) = np__1 ) ) ) ) ) ).
+
+fof(t12_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k4_nat_1(k3_euler_2(A,B),C) = k4_nat_1(k3_euler_2(k4_nat_1(A,C),B),C) ) ) ) ).
+
+fof(t13_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( A != np__0
+       => k4_nat_1(k1_pepin(A),k1_nat_1(A,np__1)) = np__1 ) ) ).
+
+fof(t14_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( k4_nat_1(C,B) = A
+               => ( r1_xreal_0(B,k1_pepin(A))
+                  | k4_nat_1(k1_pepin(C),B) = k1_pepin(A) ) ) ) ) ) ).
+
+fof(t15_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ( v1_int_2(A)
+              & k4_nat_1(B,A) = k4_xcmplx_0(np__1) )
+           => k4_nat_1(k1_pepin(B),A) = np__1 ) ) ) ).
+
+fof(t16_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ~ ( v1_abian(A)
+          & v1_abian(k1_nat_1(A,np__1)) ) ) ).
+
+fof(t17_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ~ ( ~ r1_xreal_0(A,np__2)
+          & v1_int_2(A)
+          & v1_abian(A) ) ) ).
+
+fof(t18_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( ~ r1_xreal_0(A,np__0)
+       => v1_abian(k3_series_1(np__2,A)) ) ) ).
+
+fof(t19_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( ~ v1_abian(A)
+              & ~ v1_abian(B)
+              & v1_abian(k2_nat_1(A,B)) ) ) ) ).
+
+fof(t20_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( ~ v1_abian(A)
+              & v1_abian(k3_euler_2(A,B)) ) ) ) ).
+
+fof(t21_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( v1_abian(B)
+           => ( r1_xreal_0(A,np__0)
+              | v1_abian(k3_euler_2(B,A)) ) ) ) ) ).
+
+fof(t22_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( r1_nat_1(np__2,A)
+      <=> v1_abian(A) ) ) ).
+
+fof(t23_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( v1_abian(k2_nat_1(A,B))
+              & ~ v1_abian(A)
+              & ~ v1_abian(B) ) ) ) ).
+
+fof(t24_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k3_euler_2(A,np__2) = k1_pepin(A) ) ).
+
+fof(t25_pepin,axiom,
+    $true ).
+
+fof(t26_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( ~ r1_xreal_0(A,np__1)
+              & ~ r1_xreal_0(B,np__0)
+              & r1_xreal_0(k3_euler_2(A,B),np__1) ) ) ) ).
+
+fof(t27_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( A != np__0
+              & B != np__0
+              & k3_euler_2(A,B) != k2_nat_1(A,k3_euler_2(A,k5_binarith(B,np__1))) ) ) ) ).
+
+fof(t28_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( k4_nat_1(B,np__2) = np__0
+           => k1_pepin(k3_euler_2(A,k3_nat_1(B,np__2))) = k3_euler_2(A,B) ) ) ) ).
+
+fof(t29_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_xreal_0(np__1,B)
+           => ( A = np__0
+              | k3_nat_1(k3_euler_2(A,B),A) = k3_euler_2(A,k5_binarith(B,np__1)) ) ) ) ) ).
+
+fof(t30_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k3_euler_2(np__2,k1_nat_1(A,np__1)) = k1_nat_1(k3_euler_2(np__2,A),k3_euler_2(np__2,A)) ) ).
+
+fof(t31_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( k3_euler_2(A,B) = k3_euler_2(A,C)
+               => ( r1_xreal_0(A,np__1)
+                  | B = C ) ) ) ) ) ).
+
+fof(t32_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_xreal_0(A,B)
+          <=> r1_nat_1(k3_euler_2(np__2,A),k3_euler_2(np__2,B)) ) ) ) ).
+
+fof(t33_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( v1_int_2(A)
+                  & r1_nat_1(B,k3_euler_2(A,C))
+                  & B != np__1
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => B != k2_nat_1(A,D) ) ) ) ) ) ).
+
+fof(t34_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( v1_int_2(A)
+               => ( C = np__0
+                  | r1_xreal_0(k3_euler_2(A,k1_nat_1(B,np__1)),C)
+                  | ( r1_nat_1(C,k3_euler_2(A,k1_nat_1(B,np__1)))
+                  <=> r1_nat_1(C,k3_euler_2(A,B)) ) ) ) ) ) ) ).
+
+fof(t35_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( v1_int_2(A)
+                  & r1_nat_1(B,k3_euler_2(A,C))
+                  & B != np__0
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ~ ( B = k3_euler_2(A,D)
+                          & r1_xreal_0(D,C) ) ) ) ) ) ) ).
+
+fof(t36_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( k4_nat_1(B,A) = np__1
+               => ( r1_xreal_0(A,np__1)
+                  | k4_nat_1(k3_euler_2(B,C),A) = np__1 ) ) ) ) ) ).
+
+fof(t37_pepin,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( ~ r1_xreal_0(A,np__0)
+           => k4_nat_1(k2_newton(B,A),B) = np__0 ) ) ) ).
+
+fof(t38_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ( v1_int_2(A)
+              & r2_int_2(B,A) )
+           => k4_nat_1(k3_euler_2(B,k5_binarith(A,np__1)),A) = np__1 ) ) ) ).
+
+fof(t39_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( v1_int_2(A)
+                  & r1_nat_1(B,k3_euler_2(A,C)) )
+               => ( r1_xreal_0(B,np__1)
+                  | r1_nat_1(B,k3_nat_1(k3_euler_2(A,C),A))
+                  | B = k3_euler_2(A,C) ) ) ) ) ) ).
+
+fof(t40_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ~ r1_xreal_0(B,np__1)
+           => ( k4_nat_1(A,B) = np__1
+            <=> r1_int_1(A,np__1,B) ) ) ) ) ).
+
+fof(t41_pepin,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( r1_int_1(A,B,C)
+               => r1_int_1(k2_pepin(A),k2_pepin(B),C) ) ) ) ) ).
+
+fof(t42_pepin,axiom,
+    $true ).
+
+fof(t43_pepin,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ! [D] :
+                  ( v1_int_1(D)
+                 => ( ( r1_int_1(A,B,C)
+                      & r1_int_1(A,D,C) )
+                   => r1_int_1(B,D,C) ) ) ) ) ) ).
+
+fof(t44_pepin,axiom,
+    v1_int_2(np__3) ).
+
+fof(t45_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ~ ( A != np__0
+          & k1_euler_1(A) = np__0 ) ) ).
+
+fof(t46_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ~ ( A != np__0
+          & r1_xreal_0(A,k4_xcmplx_0(A)) ) ) ).
+
+fof(t47_pepin,axiom,
+    $true ).
+
+fof(t48_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( A != np__0
+       => k3_nat_1(A,A) = np__1 ) ) ).
+
+fof(d1_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k3_pepin(A,B,C) = k4_nat_1(k3_euler_2(B,A),C) ) ) ) ).
+
+fof(t49_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( ( v1_int_2(A)
+                          & v1_int_2(B)
+                          & C = k2_nat_1(A,B)
+                          & r2_int_2(D,k1_euler_1(C))
+                          & k4_nat_1(k2_nat_1(D,E),k1_euler_1(C)) = np__1 )
+                       => ( A = B
+                          | ! [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                             => ( ~ r1_xreal_0(C,F)
+                               => k3_pepin(E,k3_pepin(D,F,C),C) = F ) ) ) ) ) ) ) ) ) ).
+
+fof(d2_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r2_int_2(A,B)
+           => ( r1_xreal_0(B,np__1)
+              | ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ( C = k4_pepin(A,B)
+                  <=> ( ~ r1_xreal_0(C,np__0)
+                      & k4_nat_1(k3_euler_2(A,C),B) = np__1
+                      & ! [D] :
+                          ( m2_subset_1(D,k1_numbers,k5_numbers)
+                         => ( k4_nat_1(k3_euler_2(A,D),B) = np__1
+                           => ( r1_xreal_0(D,np__0)
+                              | ( ~ r1_xreal_0(C,np__0)
+                                & r1_xreal_0(C,D) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t50_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( ~ r1_xreal_0(A,np__1)
+       => k4_pepin(np__1,A) = np__1 ) ) ).
+
+fof(t51_pepin,axiom,
+    $true ).
+
+fof(t52_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( k4_nat_1(k3_euler_2(C,B),A) = np__1
+                  & r2_int_2(C,A) )
+               => ( r1_xreal_0(A,np__1)
+                  | r1_xreal_0(B,np__0)
+                  | r1_nat_1(k4_pepin(C,A),B) ) ) ) ) ) ).
+
+fof(t53_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r2_int_2(B,A)
+                  & r1_nat_1(k4_pepin(B,A),C) )
+               => ( r1_xreal_0(A,np__1)
+                  | k4_nat_1(k3_euler_2(B,C),A) = np__1 ) ) ) ) ) ).
+
+fof(t54_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ( v1_int_2(A)
+              & r2_int_2(B,A) )
+           => r1_nat_1(k4_pepin(B,A),k5_binarith(A,np__1)) ) ) ) ).
+
+fof(d3_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k5_pepin(A) = k1_nat_1(k3_euler_2(np__2,k3_euler_2(np__2,A)),np__1) ) ).
+
+fof(t55_pepin,axiom,
+    k5_pepin(np__0) = np__3 ).
+
+fof(t56_pepin,axiom,
+    k5_pepin(np__1) = np__5 ).
+
+fof(t57_pepin,axiom,
+    k5_pepin(np__2) = np__17 ).
+
+fof(t58_pepin,axiom,
+    k5_pepin(np__3) = np__257 ).
+
+fof(t59_pepin,axiom,
+    k5_pepin(np__4) = k1_nat_1(k2_nat_1(np__256,np__256),np__1) ).
+
+fof(t60_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ~ r1_xreal_0(k5_pepin(A),np__2) ) ).
+
+fof(t61_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( v1_int_2(A)
+              & ~ r1_xreal_0(A,np__2)
+              & r1_nat_1(A,k5_pepin(B))
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => A != k1_nat_1(k2_nat_1(C,k3_euler_2(np__2,k1_nat_1(B,np__1))),np__1) ) ) ) ) ).
+
+fof(t62_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( A != np__0
+       => r2_int_2(np__3,k5_pepin(A)) ) ) ).
+
+fof(t63_pepin,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( r1_int_1(k3_euler_2(np__3,k3_nat_1(k5_binarith(k5_pepin(A),np__1),np__2)),k4_xcmplx_0(np__1),k5_pepin(A))
+       => v1_int_2(k5_pepin(A)) ) ) ).
+
+fof(t64_pepin,axiom,
+    v1_int_2(np__5) ).
+
+fof(t65_pepin,axiom,
+    v1_int_2(np__17) ).
+
+fof(t66_pepin,axiom,
+    v1_int_2(np__257) ).
+
+fof(t67_pepin,axiom,
+    v1_int_2(k1_nat_1(k2_nat_1(np__256,np__256),np__1)) ).
+
+fof(dt_k1_pepin,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m2_subset_1(k1_pepin(A),k1_numbers,k5_numbers) ) ).
+
+fof(redefinition_k1_pepin,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => k1_pepin(A) = k5_square_1(A) ) ).
+
+fof(dt_k2_pepin,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => m2_subset_1(k2_pepin(A),k1_numbers,k5_numbers) ) ).
+
+fof(redefinition_k2_pepin,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => k2_pepin(A) = k5_square_1(A) ) ).
+
+fof(dt_k3_pepin,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k5_numbers) )
+     => m2_subset_1(k3_pepin(A,B,C),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k4_pepin,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => m2_subset_1(k4_pepin(A,B),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k5_pepin,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m2_subset_1(k5_pepin(A),k1_numbers,k5_numbers) ) ).
+
+%------------------------------------------------------------------------------

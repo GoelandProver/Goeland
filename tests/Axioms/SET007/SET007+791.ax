@@ -1,0 +1,779 @@
+%------------------------------------------------------------------------------
+% File     : SET007+791 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : On the Segmentation of a Simple Closed Curve
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : jordan_a [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   61 (   0 unt;   0 def)
+%            Number of atoms       :  460 (  49 equ)
+%            Maximal formula atoms :   30 (   7 avg)
+%            Number of connectives :  450 (  51   ~;  15   |; 199   &)
+%                                         (  12 <=>; 173  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   24 (   9 avg)
+%            Maximal term depth    :    6 (   2 avg)
+%            Number of predicates  :   32 (  31 usr;   0 prp; 1-4 aty)
+%            Number of functors    :   52 (  52 usr;   6 con; 0-5 aty)
+%            Number of variables   :  190 ( 172   !;  18   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_jordan_a,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ? [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+          & ~ v1_xboole_0(B)
+          & v6_compts_1(B,A) ) ) ).
+
+fof(fc1_jordan_a,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( v1_relat_1(k1_jordan_a(A))
+        & v1_funct_1(k1_jordan_a(A))
+        & v1_funct_2(k1_jordan_a(A),u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers)
+        & v9_pscomp_1(k1_jordan_a(A),k6_borsuk_1(k15_euclid(A),k15_euclid(A))) ) ) ).
+
+fof(cc1_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ( ~ v1_xboole_0(B)
+            & v1_relat_1(B)
+            & ~ v1_realset1(B) ) ) ) ).
+
+fof(fc2_jordan_a,axiom,
+    ! [A,B,C] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+        & m1_jordan_a(B,A)
+        & m1_subset_1(C,k5_numbers) )
+     => ( ~ v1_xboole_0(k2_jordan_a(A,C,B))
+        & v6_compts_1(k2_jordan_a(A,C,B),k15_euclid(np__2)) ) ) ).
+
+fof(t1_jordan_a,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & m1_subset_1(A,k1_zfmisc_1(k1_numbers)) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B)
+            & m1_subset_1(B,k1_zfmisc_1(k1_numbers)) )
+         => k3_seq_4(k4_subset_1(k1_numbers,A,B)) = k1_square_1(k3_seq_4(A),k3_seq_4(B)) ) ) ).
+
+fof(t2_jordan_a,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),k1_numbers)
+            & v9_pscomp_1(B,A)
+            & m2_relset_1(B,u1_struct_0(A),k1_numbers) )
+         => ! [C] :
+              ( ( v6_compts_1(C,A)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+             => v1_rcomp_1(k2_funct_2(u1_struct_0(A),k1_numbers,B,C)) ) ) ) ).
+
+fof(t3_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_rcomp_1(A)
+        & m1_subset_1(A,k1_zfmisc_1(k1_numbers)) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k1_numbers)) )
+         => ( r1_tarski(B,A)
+           => r2_hidden(k4_pscomp_1(B),A) ) ) ) ).
+
+fof(t6_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( r2_hidden(B,k9_jordan6(A))
+           => ( B = k30_pscomp_1(A)
+              | r1_jordan6(A,k34_pscomp_1(A),B) ) ) ) ) ).
+
+fof(t7_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( r2_hidden(B,k8_jordan6(A))
+           => r1_jordan6(A,B,k34_pscomp_1(A)) ) ) ) ).
+
+fof(d1_jordan_a,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers)
+            & m2_relset_1(B,u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers) )
+         => ( B = k1_jordan_a(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(k15_euclid(A)))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                   => k1_binop_1(B,C,D) = k5_toprns_1(A,k20_euclid(A,C,D)) ) ) ) ) ) ).
+
+fof(d2_jordan_a,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),k1_numbers)
+            & m2_relset_1(B,u1_struct_0(A),k1_numbers) )
+         => ( v9_pscomp_1(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_rcomp_1(D,k8_funct_2(u1_struct_0(A),k1_numbers,B,C))
+                   => ? [E] :
+                        ( m1_connsp_2(E,A,C)
+                        & r1_tarski(k2_funct_2(u1_struct_0(A),k1_numbers,B,E),D) ) ) ) ) ) ) ).
+
+fof(t8_jordan_a,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v6_compts_1(B,k15_euclid(A))
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v6_compts_1(C,k15_euclid(A))
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+             => ~ ( r1_subset_1(B,C)
+                  & r1_xreal_0(k4_jordan1k(A,B,C),np__0) ) ) ) ) ).
+
+fof(t9_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+             => ( ( r1_jordan6(A,B,C)
+                  & r1_jordan6(A,C,k34_pscomp_1(A)) )
+               => ( B = C
+                  | k1_jordan7(A,B,C) = k5_jordan6(k8_jordan6(A),k30_pscomp_1(A),k34_pscomp_1(A),B,C) ) ) ) ) ) ).
+
+fof(t10_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( r1_jordan6(A,k34_pscomp_1(A),B)
+           => k1_jordan7(A,k34_pscomp_1(A),B) = k5_jordan6(k9_jordan6(A),k34_pscomp_1(A),k30_pscomp_1(A),k34_pscomp_1(A),B) ) ) ) ).
+
+fof(t11_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( r1_jordan6(A,k34_pscomp_1(A),B)
+           => k1_jordan7(A,B,k30_pscomp_1(A)) = k5_jordan6(k9_jordan6(A),k34_pscomp_1(A),k30_pscomp_1(A),B,k30_pscomp_1(A)) ) ) ) ).
+
+fof(t12_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+             => ( ( r1_jordan6(A,B,C)
+                  & r1_jordan6(A,k34_pscomp_1(A),B) )
+               => k1_jordan7(A,B,C) = k5_jordan6(k9_jordan6(A),k34_pscomp_1(A),k30_pscomp_1(A),B,C) ) ) ) ) ).
+
+fof(t13_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+             => ( ( r1_jordan6(A,B,k34_pscomp_1(A))
+                  & r1_jordan6(A,k34_pscomp_1(A),C) )
+               => k1_jordan7(A,B,C) = k4_subset_1(u1_struct_0(k15_euclid(np__2)),k4_jordan6(k8_jordan6(A),k30_pscomp_1(A),k34_pscomp_1(A),B),k3_jordan6(k9_jordan6(A),k34_pscomp_1(A),k30_pscomp_1(A),C)) ) ) ) ) ).
+
+fof(t14_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( r1_jordan6(A,B,k34_pscomp_1(A))
+           => k1_jordan7(A,B,k30_pscomp_1(A)) = k4_subset_1(u1_struct_0(k15_euclid(np__2)),k4_jordan6(k8_jordan6(A),k30_pscomp_1(A),k34_pscomp_1(A),B),k3_jordan6(k9_jordan6(A),k34_pscomp_1(A),k30_pscomp_1(A),k30_pscomp_1(A))) ) ) ) ).
+
+fof(t15_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => k4_jordan6(k8_jordan6(A),k30_pscomp_1(A),k34_pscomp_1(A),B) = k5_jordan6(k8_jordan6(A),k30_pscomp_1(A),k34_pscomp_1(A),B,k34_pscomp_1(A)) ) ) ).
+
+fof(t16_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => k3_jordan6(k9_jordan6(A),k34_pscomp_1(A),k30_pscomp_1(A),B) = k5_jordan6(k9_jordan6(A),k34_pscomp_1(A),k30_pscomp_1(A),k34_pscomp_1(A),B) ) ) ).
+
+fof(t17_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( r2_hidden(B,A)
+           => ( B = k30_pscomp_1(A)
+              | r1_topreal1(k15_euclid(np__2),B,k30_pscomp_1(A),k1_jordan7(A,B,k30_pscomp_1(A))) ) ) ) ) ).
+
+fof(t18_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+             => ( r1_jordan6(A,B,C)
+               => ( B = C
+                  | r1_topreal1(k15_euclid(np__2),B,C,k1_jordan7(A,B,C)) ) ) ) ) ) ).
+
+fof(t19_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => A = k1_jordan7(A,k30_pscomp_1(A),k30_pscomp_1(A)) ) ).
+
+fof(t20_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( r2_hidden(B,A)
+           => v6_compts_1(k1_jordan7(A,B,k30_pscomp_1(A)),k15_euclid(np__2)) ) ) ) ).
+
+fof(t21_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+             => ( r1_jordan6(A,B,C)
+               => v6_compts_1(k1_jordan7(A,B,C),k15_euclid(np__2)) ) ) ) ) ).
+
+fof(d3_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m2_finseq_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( m1_jordan_a(B,A)
+          <=> ( k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,np__1) = k30_pscomp_1(A)
+              & v2_funct_1(B)
+              & r1_xreal_0(np__8,k3_finseq_1(B))
+              & r1_tarski(k2_relat_1(B),A)
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ( r1_xreal_0(np__1,C)
+                   => ( r1_xreal_0(k3_finseq_1(B),C)
+                      | r1_jordan6(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,C),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k1_nat_1(C,np__1))) ) ) )
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ( r1_xreal_0(np__1,C)
+                   => ( r1_xreal_0(k3_finseq_1(B),k1_nat_1(C,np__1))
+                      | k5_subset_1(u1_struct_0(k15_euclid(np__2)),k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,C),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k1_nat_1(C,np__1))),k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k1_nat_1(C,np__1)),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k1_nat_1(C,np__2)))) = k1_struct_0(k15_euclid(np__2),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k1_nat_1(C,np__1))) ) ) )
+              & k5_subset_1(u1_struct_0(k15_euclid(np__2)),k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k3_finseq_1(B)),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,np__1)),k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,np__1),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,np__2))) = k1_struct_0(k15_euclid(np__2),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,np__1))
+              & k5_subset_1(u1_struct_0(k15_euclid(np__2)),k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k5_binarith(k3_finseq_1(B),np__1)),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k3_finseq_1(B))),k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k3_finseq_1(B)),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,np__1))) = k1_struct_0(k15_euclid(np__2),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k3_finseq_1(B)))
+              & r1_xboole_0(k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k5_binarith(k3_finseq_1(B),np__1)),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k3_finseq_1(B))),k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,np__1),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,np__2)))
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( r1_xreal_0(np__1,C)
+                       => ( r1_xreal_0(D,C)
+                          | r1_xreal_0(k3_finseq_1(B),D)
+                          | r1_gobrd10(C,D)
+                          | r1_xboole_0(k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,C),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k1_nat_1(C,np__1))),k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,D),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k1_nat_1(D,np__1)))) ) ) ) )
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ~ ( ~ r1_xreal_0(C,np__1)
+                      & ~ r1_xreal_0(k3_finseq_1(B),k1_nat_1(C,np__1))
+                      & ~ r1_xboole_0(k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k3_finseq_1(B)),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,np__1)),k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,C),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k1_nat_1(C,np__1)))) ) ) ) ) ) ) ).
+
+fof(t22_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_xreal_0(np__1,C)
+                  & r1_xreal_0(C,k3_finseq_1(B)) )
+               => r2_hidden(k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,C),A) ) ) ) ) ).
+
+fof(d4_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ! [C] :
+              ( m1_jordan_a(C,A)
+             => ( ( r1_xreal_0(np__1,B)
+                 => ( r1_xreal_0(k3_finseq_1(C),B)
+                    | k2_jordan_a(A,B,C) = k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),C,B),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),C,k2_xcmplx_0(B,np__1))) ) )
+                & ( ~ ( r1_xreal_0(np__1,B)
+                      & ~ r1_xreal_0(k3_finseq_1(C),B) )
+                 => k2_jordan_a(A,B,C) = k1_jordan7(A,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),C,k3_finseq_1(C)),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),C,np__1)) ) ) ) ) ) ).
+
+fof(t23_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_jordan_a(C,A)
+             => ( r2_hidden(B,k4_finseq_1(C))
+               => r1_tarski(k2_jordan_a(A,B,C),A) ) ) ) ) ).
+
+fof(t24_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+             => ~ ( r2_hidden(C,A)
+                  & ! [D] :
+                      ( v4_ordinal2(D)
+                     => ~ ( r2_hidden(D,k4_finseq_1(B))
+                          & r2_hidden(C,k2_jordan_a(A,D,B)) ) ) ) ) ) ) ).
+
+fof(t25_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( r1_xreal_0(np__1,C)
+                   => ( r1_xreal_0(D,C)
+                      | r1_xreal_0(k3_finseq_1(B),D)
+                      | r1_gobrd10(C,D)
+                      | r1_subset_1(k2_jordan_a(A,C,B),k2_jordan_a(A,D,B)) ) ) ) ) ) ) ).
+
+fof(t26_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( ~ r1_xreal_0(C,np__1)
+                  & ~ r1_xreal_0(k5_binarith(k3_finseq_1(B),np__1),C)
+                  & ~ r1_subset_1(k2_jordan_a(A,k3_finseq_1(B),B),k2_jordan_a(A,C,B)) ) ) ) ) ).
+
+fof(t27_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( ( r1_xreal_0(np__1,C)
+                      & r1_gobrd10(C,D) )
+                   => ( r1_xreal_0(D,C)
+                      | r1_xreal_0(k3_finseq_1(B),D)
+                      | k5_subset_1(u1_struct_0(k15_euclid(np__2)),k2_jordan_a(A,C,B),k2_jordan_a(A,D,B)) = k1_struct_0(k15_euclid(np__2),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k1_nat_1(C,np__1))) ) ) ) ) ) ) ).
+
+fof(t28_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ~ ( r1_xreal_0(np__1,C)
+                      & ~ r1_xreal_0(D,C)
+                      & ~ r1_xreal_0(k3_finseq_1(B),D)
+                      & r1_gobrd10(C,D)
+                      & r2_subset_1(k2_jordan_a(A,C,B),k2_jordan_a(A,D,B)) ) ) ) ) ) ).
+
+fof(t29_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => k5_subset_1(u1_struct_0(k15_euclid(np__2)),k2_jordan_a(A,k3_finseq_1(B),B),k2_jordan_a(A,np__1,B)) = k1_struct_0(k15_euclid(np__2),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,np__1)) ) ) ).
+
+fof(t30_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ~ r2_subset_1(k2_jordan_a(A,k3_finseq_1(B),B),k2_jordan_a(A,np__1,B)) ) ) ).
+
+fof(t31_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => k5_subset_1(u1_struct_0(k15_euclid(np__2)),k2_jordan_a(A,k3_finseq_1(B),B),k2_jordan_a(A,k5_binarith(k3_finseq_1(B),np__1),B)) = k1_struct_0(k15_euclid(np__2),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),B,k3_finseq_1(B))) ) ) ).
+
+fof(t32_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ~ r2_subset_1(k2_jordan_a(A,k3_finseq_1(B),B),k2_jordan_a(A,k5_binarith(k3_finseq_1(B),np__1),B)) ) ) ).
+
+fof(d5_jordan_a,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ( C = k3_jordan_a(A,B)
+              <=> ? [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k14_euclid(A))))
+                    & D = B
+                    & C = k2_tbsp_1(k14_euclid(A),D) ) ) ) ) ) ).
+
+fof(t33_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => r1_xreal_0(k3_jordan_a(np__2,k2_jordan_a(A,C,B)),k4_jordan_a(A,B)) ) ) ) ).
+
+fof(t34_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ~ ( ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ~ r1_xreal_0(C,k3_jordan_a(np__2,k2_jordan_a(A,D,B))) )
+                  & r1_xreal_0(C,k4_jordan_a(A,B)) ) ) ) ) ).
+
+fof(t35_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ~ ( ~ r1_xreal_0(B,np__0)
+              & ! [C] :
+                  ( m1_jordan_a(C,A)
+                 => r1_xreal_0(B,k4_jordan_a(A,C)) ) ) ) ) ).
+
+fof(t37_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ~ r1_xreal_0(k5_jordan_a(A,B),np__0) ) ) ).
+
+fof(dt_m1_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => m2_finseq_1(B,u1_struct_0(k15_euclid(np__2))) ) ) ).
+
+fof(existence_m1_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ? [B] : m1_jordan_a(B,A) ) ).
+
+fof(dt_k1_jordan_a,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( v1_funct_1(k1_jordan_a(A))
+        & v1_funct_2(k1_jordan_a(A),u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers)
+        & m2_relset_1(k1_jordan_a(A),u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers) ) ) ).
+
+fof(dt_k2_jordan_a,axiom,
+    ! [A,B,C] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+        & v4_ordinal2(B)
+        & m1_jordan_a(C,A) )
+     => m1_subset_1(k2_jordan_a(A,B,C),k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) ) ).
+
+fof(dt_k3_jordan_a,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+     => m1_subset_1(k3_jordan_a(A,B),k1_numbers) ) ).
+
+fof(dt_k4_jordan_a,axiom,
+    ! [A,B] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+        & m1_jordan_a(B,A) )
+     => m1_subset_1(k4_jordan_a(A,B),k1_numbers) ) ).
+
+fof(dt_k5_jordan_a,axiom,
+    ! [A,B] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+        & m1_jordan_a(B,A) )
+     => m1_subset_1(k5_jordan_a(A,B),k1_numbers) ) ).
+
+fof(t4_jordan_a,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v6_compts_1(B,k15_euclid(A))
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v6_compts_1(C,k15_euclid(A))
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers)
+                    & v9_pscomp_1(D,k6_borsuk_1(k15_euclid(A),k15_euclid(A)))
+                    & m2_relset_1(D,u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,u1_struct_0(k15_euclid(A)),k1_numbers)
+                        & m2_relset_1(E,u1_struct_0(k15_euclid(A)),k1_numbers) )
+                     => ( ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(k15_euclid(A)))
+                           => ? [G] :
+                                ( m1_subset_1(G,k1_zfmisc_1(k1_numbers))
+                                & G = a_4_0_jordan_a(A,C,D,F)
+                                & k8_funct_2(u1_struct_0(k15_euclid(A)),k1_numbers,E,F) = k4_pscomp_1(G) ) )
+                       => k4_pscomp_1(k2_funct_2(u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers,D,k7_borsuk_1(k15_euclid(A),k15_euclid(A),B,C))) = k4_pscomp_1(k2_funct_2(u1_struct_0(k15_euclid(A)),k1_numbers,E,B)) ) ) ) ) ) ) ).
+
+fof(t5_jordan_a,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v6_compts_1(B,k15_euclid(A))
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v6_compts_1(C,k15_euclid(A))
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers)
+                    & v9_pscomp_1(D,k6_borsuk_1(k15_euclid(A),k15_euclid(A)))
+                    & m2_relset_1(D,u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,u1_struct_0(k15_euclid(A)),k1_numbers)
+                        & m2_relset_1(E,u1_struct_0(k15_euclid(A)),k1_numbers) )
+                     => ( ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(k15_euclid(A)))
+                           => ? [G] :
+                                ( m1_subset_1(G,k1_zfmisc_1(k1_numbers))
+                                & G = a_4_1_jordan_a(A,B,D,F)
+                                & k8_funct_2(u1_struct_0(k15_euclid(A)),k1_numbers,E,F) = k4_pscomp_1(G) ) )
+                       => k4_pscomp_1(k2_funct_2(u1_struct_0(k6_borsuk_1(k15_euclid(A),k15_euclid(A))),k1_numbers,D,k7_borsuk_1(k15_euclid(A),k15_euclid(A),B,C))) = k4_pscomp_1(k2_funct_2(u1_struct_0(k15_euclid(A)),k1_numbers,E,C)) ) ) ) ) ) ) ).
+
+fof(d6_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ( C = k4_jordan_a(A,B)
+              <=> ? [D] :
+                    ( ~ v1_xboole_0(D)
+                    & v1_finset_1(D)
+                    & m1_subset_1(D,k1_zfmisc_1(k1_numbers))
+                    & D = a_2_0_jordan_a(A,B)
+                    & C = k1_pre_circ(D) ) ) ) ) ) ).
+
+fof(d7_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ( C = k5_jordan_a(A,B)
+              <=> ? [D] :
+                    ( ~ v1_xboole_0(D)
+                    & v1_finset_1(D)
+                    & m1_subset_1(D,k1_zfmisc_1(k1_numbers))
+                    & ? [E] :
+                        ( ~ v1_xboole_0(E)
+                        & v1_finset_1(E)
+                        & m1_subset_1(E,k1_zfmisc_1(k1_numbers))
+                        & D = a_2_1_jordan_a(A,B)
+                        & E = a_2_2_jordan_a(A,B)
+                        & C = k1_square_1(k3_seq_4(D),k3_seq_4(E)) ) ) ) ) ) ) ).
+
+fof(t36_jordan_a,axiom,
+    ! [A] :
+      ( ( v1_topreal2(A)
+        & m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+     => ! [B] :
+          ( m1_jordan_a(B,A)
+         => ? [C] :
+              ( ~ v1_xboole_0(C)
+              & v1_finset_1(C)
+              & m1_subset_1(C,k1_zfmisc_1(k1_numbers))
+              & C = a_2_3_jordan_a(A,B)
+              & k5_jordan_a(A,B) = k3_seq_4(C) ) ) ) ).
+
+fof(fraenkel_a_4_0_jordan_a,axiom,
+    ! [A,B,C,D,E] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & ~ v1_xboole_0(C)
+        & v6_compts_1(C,k15_euclid(B))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(B))))
+        & v1_funct_1(D)
+        & v1_funct_2(D,u1_struct_0(k6_borsuk_1(k15_euclid(B),k15_euclid(B))),k1_numbers)
+        & v9_pscomp_1(D,k6_borsuk_1(k15_euclid(B),k15_euclid(B)))
+        & m2_relset_1(D,u1_struct_0(k6_borsuk_1(k15_euclid(B),k15_euclid(B))),k1_numbers)
+        & m1_subset_1(E,u1_struct_0(k15_euclid(B))) )
+     => ( r2_hidden(A,a_4_0_jordan_a(B,C,D,E))
+      <=> ? [F] :
+            ( m1_subset_1(F,u1_struct_0(k15_euclid(B)))
+            & A = k1_binop_1(D,E,F)
+            & r2_hidden(F,C) ) ) ) ).
+
+fof(fraenkel_a_4_1_jordan_a,axiom,
+    ! [A,B,C,D,E] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & ~ v1_xboole_0(C)
+        & v6_compts_1(C,k15_euclid(B))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(B))))
+        & v1_funct_1(D)
+        & v1_funct_2(D,u1_struct_0(k6_borsuk_1(k15_euclid(B),k15_euclid(B))),k1_numbers)
+        & v9_pscomp_1(D,k6_borsuk_1(k15_euclid(B),k15_euclid(B)))
+        & m2_relset_1(D,u1_struct_0(k6_borsuk_1(k15_euclid(B),k15_euclid(B))),k1_numbers)
+        & m1_subset_1(E,u1_struct_0(k15_euclid(B))) )
+     => ( r2_hidden(A,a_4_1_jordan_a(B,C,D,E))
+      <=> ? [F] :
+            ( m1_subset_1(F,u1_struct_0(k15_euclid(B)))
+            & A = k1_binop_1(D,F,E)
+            & r2_hidden(F,C) ) ) ) ).
+
+fof(fraenkel_a_2_0_jordan_a,axiom,
+    ! [A,B,C] :
+      ( ( v1_topreal2(B)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+        & m1_jordan_a(C,B) )
+     => ( r2_hidden(A,a_2_0_jordan_a(B,C))
+      <=> ? [D] :
+            ( m2_subset_1(D,k1_numbers,k5_numbers)
+            & A = k3_jordan_a(np__2,k2_jordan_a(B,D,C))
+            & r2_hidden(D,k4_finseq_1(C)) ) ) ) ).
+
+fof(fraenkel_a_2_1_jordan_a,axiom,
+    ! [A,B,C] :
+      ( ( v1_topreal2(B)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+        & m1_jordan_a(C,B) )
+     => ( r2_hidden(A,a_2_1_jordan_a(B,C))
+      <=> ? [D,E] :
+            ( m2_subset_1(D,k1_numbers,k5_numbers)
+            & m2_subset_1(E,k1_numbers,k5_numbers)
+            & A = k4_jordan1k(np__2,k2_jordan_a(B,D,C),k2_jordan_a(B,E,C))
+            & r1_xreal_0(np__1,D)
+            & ~ r1_xreal_0(E,D)
+            & ~ r1_xreal_0(k3_finseq_1(C),E)
+            & ~ r1_gobrd10(D,E) ) ) ) ).
+
+fof(fraenkel_a_2_2_jordan_a,axiom,
+    ! [A,B,C] :
+      ( ( v1_topreal2(B)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+        & m1_jordan_a(C,B) )
+     => ( r2_hidden(A,a_2_2_jordan_a(B,C))
+      <=> ? [D] :
+            ( m2_subset_1(D,k1_numbers,k5_numbers)
+            & A = k4_jordan1k(np__2,k2_jordan_a(B,k3_finseq_1(C),C),k2_jordan_a(B,D,C))
+            & ~ r1_xreal_0(D,np__1)
+            & ~ r1_xreal_0(k5_binarith(k3_finseq_1(C),np__1),D) ) ) ) ).
+
+fof(fraenkel_a_2_3_jordan_a,axiom,
+    ! [A,B,C] :
+      ( ( v1_topreal2(B)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2))))
+        & m1_jordan_a(C,B) )
+     => ( r2_hidden(A,a_2_3_jordan_a(B,C))
+      <=> ? [D,E] :
+            ( m2_subset_1(D,k1_numbers,k5_numbers)
+            & m2_subset_1(E,k1_numbers,k5_numbers)
+            & A = k4_jordan1k(np__2,k2_jordan_a(B,D,C),k2_jordan_a(B,E,C))
+            & r1_xreal_0(np__1,D)
+            & ~ r1_xreal_0(E,D)
+            & r1_xreal_0(E,k3_finseq_1(C))
+            & r1_subset_1(k2_jordan_a(B,D,C),k2_jordan_a(B,E,C)) ) ) ) ).
+
+%------------------------------------------------------------------------------

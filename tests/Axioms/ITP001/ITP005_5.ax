@@ -1,0 +1,216 @@
+%------------------------------------------------------------------------------
+% File     : ITP005_5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : marker_2.ax [Gau20]
+%          : HL4005_5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   35 (  12 unt;  12 typ;   0 def)
+%            Number of atoms       :  259 (   7 equ)
+%            Maximal formula atoms :   16 (   7 avg)
+%            Number of connectives :   68 (   0   ~;  20   |;  29   &)
+%                                         (  17 <=>;   2  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    9 (   4 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of FOOLs       :  168 ( 168 fml;   0 var)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :    8 (   6   >;   2   *;   0   +;   0  <<)
+%            Number of predicates  :   13 (  11 usr;   6 prp; 0-2 aty)
+%            Number of functors    :   12 (  12 usr;   6 con; 0-2 aty)
+%            Number of variables   :   30 (  30   !;   0   ?;  30   :)
+% SPC      : TF0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+tff(tp_c_2Emarker_2E_3A_2D,type,
+    c_2Emarker_2E_3A_2D: $i ).
+
+tff(mem_c_2Emarker_2E_3A_2D,axiom,
+    mem(c_2Emarker_2E_3A_2D,arr(ind,arr(bool,bool))) ).
+
+tff(stp_fo_c_2Emarker_2E_3A_2D,type,
+    fo__c_2Emarker_2E_3A_2D: ( tp__i * tp__o ) > tp__o ).
+
+tff(stp_eq_fo_c_2Emarker_2E_3A_2D,axiom,
+    ! [X0: tp__i,X1: tp__o] : ( inj__o(fo__c_2Emarker_2E_3A_2D(X0,X1)) = ap(ap(c_2Emarker_2E_3A_2D,inj__i(X0)),inj__o(X1)) ) ).
+
+tff(tp_c_2Emarker_2EAC,type,
+    c_2Emarker_2EAC: $i ).
+
+tff(mem_c_2Emarker_2EAC,axiom,
+    mem(c_2Emarker_2EAC,arr(bool,arr(bool,bool))) ).
+
+tff(stp_fo_c_2Emarker_2EAC,type,
+    fo__c_2Emarker_2EAC: ( tp__o * tp__o ) > tp__o ).
+
+tff(stp_eq_fo_c_2Emarker_2EAC,axiom,
+    ! [X0: tp__o,X1: tp__o] : ( inj__o(fo__c_2Emarker_2EAC(X0,X1)) = ap(ap(c_2Emarker_2EAC,inj__o(X0)),inj__o(X1)) ) ).
+
+tff(tp_c_2Emarker_2EAbbrev,type,
+    c_2Emarker_2EAbbrev: $i ).
+
+tff(mem_c_2Emarker_2EAbbrev,axiom,
+    mem(c_2Emarker_2EAbbrev,arr(bool,bool)) ).
+
+tff(stp_fo_c_2Emarker_2EAbbrev,type,
+    fo__c_2Emarker_2EAbbrev: tp__o > tp__o ).
+
+tff(stp_eq_fo_c_2Emarker_2EAbbrev,axiom,
+    ! [X0: tp__o] : ( inj__o(fo__c_2Emarker_2EAbbrev(X0)) = ap(c_2Emarker_2EAbbrev,inj__o(X0)) ) ).
+
+tff(tp_c_2Emarker_2ECong,type,
+    c_2Emarker_2ECong: $i ).
+
+tff(mem_c_2Emarker_2ECong,axiom,
+    mem(c_2Emarker_2ECong,arr(bool,bool)) ).
+
+tff(stp_fo_c_2Emarker_2ECong,type,
+    fo__c_2Emarker_2ECong: tp__o > tp__o ).
+
+tff(stp_eq_fo_c_2Emarker_2ECong,axiom,
+    ! [X0: tp__o] : ( inj__o(fo__c_2Emarker_2ECong(X0)) = ap(c_2Emarker_2ECong,inj__o(X0)) ) ).
+
+tff(tp_c_2Emarker_2EIfCases,type,
+    c_2Emarker_2EIfCases: $i ).
+
+tff(mem_c_2Emarker_2EIfCases,axiom,
+    mem(c_2Emarker_2EIfCases,bool) ).
+
+tff(stp_fo_c_2Emarker_2EIfCases,type,
+    fo__c_2Emarker_2EIfCases: tp__o ).
+
+tff(stp_eq_fo_c_2Emarker_2EIfCases,axiom,
+    inj__o(fo__c_2Emarker_2EIfCases) = c_2Emarker_2EIfCases ).
+
+tff(tp_c_2Emarker_2Estmarker,type,
+    c_2Emarker_2Estmarker: del > $i ).
+
+tff(mem_c_2Emarker_2Estmarker,axiom,
+    ! [A_27a: del] : mem(c_2Emarker_2Estmarker(A_27a),arr(A_27a,A_27a)) ).
+
+tff(tp_c_2Emarker_2Eunint,type,
+    c_2Emarker_2Eunint: del > $i ).
+
+tff(mem_c_2Emarker_2Eunint,axiom,
+    ! [A_27a: del] : mem(c_2Emarker_2Eunint(A_27a),arr(A_27a,A_27a)) ).
+
+tff(ax_thm_2Emarker_2Estmarker__def,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ( ap(c_2Emarker_2Estmarker(A_27a),V0x) = V0x ) ) ).
+
+tff(conj_thm_2Emarker_2Emove__left__conj,axiom,
+    ! [V0p: tp__o,V1q: tp__o,V2m: tp__o] :
+      ( ( ( p(inj__o(V0p))
+          & p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m))) )
+      <=> ( p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          & p(inj__o(V0p)) ) )
+      & ( ( p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          & p(inj__o(V0p))
+          & p(inj__o(V1q)) )
+      <=> ( p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          & p(inj__o(V0p))
+          & p(inj__o(V1q)) ) )
+      & ( ( p(inj__o(V0p))
+          & p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          & p(inj__o(V1q)) )
+      <=> ( p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          & p(inj__o(V0p))
+          & p(inj__o(V1q)) ) ) ) ).
+
+tff(conj_thm_2Emarker_2Emove__right__conj,axiom,
+    ! [V0p: tp__o,V1q: tp__o,V2m: tp__o] :
+      ( ( ( p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          & p(inj__o(V0p)) )
+      <=> ( p(inj__o(V0p))
+          & p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m))) ) )
+      & ( ( p(inj__o(V0p))
+          & p(inj__o(V1q))
+          & p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m))) )
+      <=> ( p(inj__o(V0p))
+          & p(inj__o(V1q))
+          & p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m))) ) )
+      & ( ( p(inj__o(V0p))
+          & p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          & p(inj__o(V1q)) )
+      <=> ( p(inj__o(V0p))
+          & p(inj__o(V1q))
+          & p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m))) ) ) ) ).
+
+tff(conj_thm_2Emarker_2Emove__left__disj,axiom,
+    ! [V0p: tp__o,V1q: tp__o,V2m: tp__o] :
+      ( ( ( p(inj__o(V0p))
+          | p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m))) )
+      <=> ( p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          | p(inj__o(V0p)) ) )
+      & ( ( p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          | p(inj__o(V0p))
+          | p(inj__o(V1q)) )
+      <=> ( p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          | p(inj__o(V0p))
+          | p(inj__o(V1q)) ) )
+      & ( ( p(inj__o(V0p))
+          | p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          | p(inj__o(V1q)) )
+      <=> ( p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          | p(inj__o(V0p))
+          | p(inj__o(V1q)) ) ) ) ).
+
+tff(conj_thm_2Emarker_2Emove__right__disj,axiom,
+    ! [V0p: tp__o,V1q: tp__o,V2m: tp__o] :
+      ( ( ( p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          | p(inj__o(V0p)) )
+      <=> ( p(inj__o(V0p))
+          | p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m))) ) )
+      & ( ( p(inj__o(V0p))
+          | p(inj__o(V1q))
+          | p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m))) )
+      <=> ( p(inj__o(V0p))
+          | p(inj__o(V1q))
+          | p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m))) ) )
+      & ( ( p(inj__o(V0p))
+          | p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m)))
+          | p(inj__o(V1q)) )
+      <=> ( p(inj__o(V0p))
+          | p(inj__o(V1q))
+          | p(ap(c_2Emarker_2Estmarker(bool),inj__o(V2m))) ) ) ) ).
+
+tff(ax_thm_2Emarker_2Eunint__def,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ( ap(c_2Emarker_2Eunint(A_27a),V0x) = V0x ) ) ).
+
+tff(ax_thm_2Emarker_2EAbbrev__def,axiom,
+    ! [V0x: tp__o] :
+      ( p(ap(c_2Emarker_2EAbbrev,inj__o(V0x)))
+    <=> p(inj__o(V0x)) ) ).
+
+tff(ax_thm_2Emarker_2EIfCases__def,axiom,
+    ( p(inj__o(fo__c_2Emarker_2EIfCases))
+  <=> $true ) ).
+
+tff(ax_thm_2Emarker_2EAC__DEF,axiom,
+    ! [V0b1: tp__o,V1b2: tp__o] :
+      ( p(ap(ap(c_2Emarker_2EAC,inj__o(V0b1)),inj__o(V1b2)))
+    <=> ( p(inj__o(V0b1))
+        & p(inj__o(V1b2)) ) ) ).
+
+tff(ax_thm_2Emarker_2ECong__def,axiom,
+    ! [V0x: tp__o] :
+      ( p(ap(c_2Emarker_2ECong,inj__o(V0x)))
+    <=> p(inj__o(V0x)) ) ).
+
+tff(ax_thm_2Emarker_2Elabel__def,axiom,
+    ! [V0lab: tp__i,V1argument: tp__o] :
+      ( p(ap(ap(c_2Emarker_2E_3A_2D,inj__i(V0lab)),inj__o(V1argument)))
+    <=> p(inj__o(V1argument)) ) ).
+
+%------------------------------------------------------------------------------

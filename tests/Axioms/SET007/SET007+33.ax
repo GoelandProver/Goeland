@@ -1,0 +1,1338 @@
+%------------------------------------------------------------------------------
+% File     : SET007+33 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Semilattice Operations on Finite Subsets
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : setwiseo [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  104 (  23 unt;   0 def)
+%            Number of atoms       :  792 ( 100 equ)
+%            Maximal formula atoms :   31 (   7 avg)
+%            Number of connectives :  803 ( 115   ~;  12   |; 313   &)
+%                                         (  12 <=>; 351  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   30 (   9 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   22 (  20 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   36 (  36 usr;   6 con; 0-6 aty)
+%            Number of variables   :  385 ( 378   !;   7   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_setwiseo,axiom,
+    ! [A] :
+    ? [B] :
+      ( m1_subset_1(B,k5_finsub_1(A))
+      & v1_xboole_0(B)
+      & v1_finset_1(B) ) ).
+
+fof(rc2_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ? [B] :
+          ( m1_subset_1(B,k5_finsub_1(A))
+          & ~ v1_xboole_0(B)
+          & v1_finset_1(B) ) ) ).
+
+fof(t1_setwiseo,axiom,
+    $true ).
+
+fof(t2_setwiseo,axiom,
+    $true ).
+
+fof(t3_setwiseo,axiom,
+    ! [A,B,C] : r1_tarski(k1_tarski(A),k1_enumset1(A,B,C)) ).
+
+fof(t4_setwiseo,axiom,
+    ! [A,B,C] : r1_tarski(k2_tarski(A,B),k1_enumset1(A,B,C)) ).
+
+fof(t5_setwiseo,axiom,
+    ! [A,B,C] :
+      ~ ( r1_tarski(A,k2_xboole_0(B,k1_tarski(C)))
+        & ~ r2_hidden(C,A)
+        & ~ r1_tarski(A,B) ) ).
+
+fof(t6_setwiseo,axiom,
+    ! [A,B,C] :
+      ( r2_hidden(A,k2_xboole_0(B,k1_tarski(C)))
+    <=> ( r2_hidden(A,B)
+        | A = C ) ) ).
+
+fof(t7_setwiseo,axiom,
+    $true ).
+
+fof(t8_setwiseo,axiom,
+    ! [A,B,C] :
+      ( r1_tarski(k2_xboole_0(A,k1_tarski(B)),C)
+    <=> ( r2_hidden(B,C)
+        & r1_tarski(A,C) ) ) ).
+
+fof(t9_setwiseo,axiom,
+    $true ).
+
+fof(t10_setwiseo,axiom,
+    $true ).
+
+fof(t11_setwiseo,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => k9_relat_1(C,k4_xboole_0(B,k10_relat_1(C,A))) = k4_xboole_0(k9_relat_1(C,B),A) ) ).
+
+fof(t12_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,B,A)
+                & m2_relset_1(C,B,A) )
+             => ! [D] :
+                  ( m1_subset_1(D,B)
+                 => r2_hidden(D,k3_funct_2(B,A,C,k1_tarski(k8_funct_2(B,A,C,D)))) ) ) ) ) ).
+
+fof(t13_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,B,A)
+                & m2_relset_1(C,B,A) )
+             => ! [D] :
+                  ( m1_subset_1(D,B)
+                 => k2_funct_2(B,A,C,k1_tarski(D)) = k1_tarski(k8_funct_2(B,A,C,D)) ) ) ) ) ).
+
+fof(t14_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k5_finsub_1(A))
+         => ! [C] :
+              ( r2_hidden(C,B)
+             => m1_subset_1(C,A) ) ) ) ).
+
+fof(t15_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( m1_subset_1(C,k5_finsub_1(A))
+             => ! [D,E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,A,B)
+                    & m2_relset_1(E,A,B) )
+                 => ( ! [F] :
+                        ( m1_subset_1(F,A)
+                       => ( r2_hidden(F,C)
+                         => r2_hidden(k8_funct_2(A,B,E,F),D) ) )
+                   => r1_tarski(k2_funct_2(A,B,E,C),D) ) ) ) ) ) ).
+
+fof(t16_setwiseo,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(A))
+     => ! [C] :
+          ( r1_tarski(C,B)
+         => m1_subset_1(C,k5_finsub_1(A)) ) ) ).
+
+fof(t17_setwiseo,axiom,
+    $true ).
+
+fof(t18_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k5_finsub_1(A))
+         => ~ ( B != k1_xboole_0
+              & ! [C] :
+                  ( m1_subset_1(C,A)
+                 => ~ r2_hidden(C,B) ) ) ) ) ).
+
+fof(t19_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,B,A)
+                & m2_relset_1(C,B,A) )
+             => ! [D] :
+                  ( m1_subset_1(D,k5_finsub_1(B))
+                 => ( k2_funct_2(B,A,C,D) = k1_xboole_0
+                   => D = k1_xboole_0 ) ) ) ) ) ).
+
+fof(d1_setwiseo,axiom,
+    ! [A] : k1_setwiseo(A) = k1_xboole_0 ).
+
+fof(d2_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v1_setwiseo(B,A)
+          <=> ? [C] :
+                ( m1_subset_1(C,A)
+                & r3_binop_1(A,C,B) ) ) ) ) ).
+
+fof(t20_setwiseo,axiom,
+    $true ).
+
+fof(t21_setwiseo,axiom,
+    $true ).
+
+fof(t22_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v1_setwiseo(B,A)
+          <=> r3_binop_1(A,k3_binop_1(A,B),B) ) ) ) ).
+
+fof(t23_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v1_setwiseo(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,A)
+               => ( k2_binop_1(A,A,A,B,k3_binop_1(A,B),C) = C
+                  & k2_binop_1(A,A,A,B,C,k3_binop_1(A,B)) = C ) ) ) ) ) ).
+
+fof(d3_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(B,B),B)
+                & m2_relset_1(C,k2_zfmisc_1(B,B),B) )
+             => ! [D] :
+                  ( m1_subset_1(D,k5_finsub_1(A))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,A,B)
+                        & m2_relset_1(E,A,B) )
+                     => ( ( v1_binop_1(C,B)
+                          & v2_binop_1(C,B) )
+                       => ( ( D = k1_xboole_0
+                            & ~ v1_setwiseo(C,B) )
+                          | ! [F] :
+                              ( m1_subset_1(F,B)
+                             => ( F = k7_setwiseo(A,B,C,D,E)
+                              <=> ? [G] :
+                                    ( v1_funct_1(G)
+                                    & v1_funct_2(G,k5_finsub_1(A),B)
+                                    & m2_relset_1(G,k5_finsub_1(A),B)
+                                    & F = k8_funct_2(k5_finsub_1(A),B,G,D)
+                                    & ! [H] :
+                                        ( m1_subset_1(H,B)
+                                       => ( r3_binop_1(B,H,C)
+                                         => k1_funct_1(G,k1_xboole_0) = H ) )
+                                    & ! [H] :
+                                        ( m1_subset_1(H,A)
+                                       => k8_funct_2(k5_finsub_1(A),B,G,k2_setwiseo(A,H)) = k8_funct_2(A,B,E,H) )
+                                    & ! [H] :
+                                        ( m1_subset_1(H,k5_finsub_1(A))
+                                       => ( r1_tarski(H,D)
+                                         => ( H = k1_xboole_0
+                                            | ! [I] :
+                                                ( m1_subset_1(I,A)
+                                               => ( r2_hidden(I,k6_setwiseo(A,D,H))
+                                                 => k8_funct_2(k5_finsub_1(A),B,G,k5_setwiseo(A,H,k2_setwiseo(A,I))) = k2_binop_1(B,B,B,C,k8_funct_2(k5_finsub_1(A),B,G,H),k8_funct_2(A,B,E,I)) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t24_setwiseo,axiom,
+    $true ).
+
+fof(t25_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(B,B),B)
+                & m2_relset_1(C,k2_zfmisc_1(B,B),B) )
+             => ! [D] :
+                  ( m1_subset_1(D,k5_finsub_1(A))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,A,B)
+                        & m2_relset_1(E,A,B) )
+                     => ( ( v3_binop_1(C,B)
+                          & v1_binop_1(C,B)
+                          & v2_binop_1(C,B) )
+                       => ( ( D = k1_xboole_0
+                            & ~ v1_setwiseo(C,B) )
+                          | ! [F] :
+                              ( m1_subset_1(F,B)
+                             => ( F = k7_setwiseo(A,B,C,D,E)
+                              <=> ? [G] :
+                                    ( v1_funct_1(G)
+                                    & v1_funct_2(G,k5_finsub_1(A),B)
+                                    & m2_relset_1(G,k5_finsub_1(A),B)
+                                    & F = k8_funct_2(k5_finsub_1(A),B,G,D)
+                                    & ! [H] :
+                                        ( m1_subset_1(H,B)
+                                       => ( r3_binop_1(B,H,C)
+                                         => k1_funct_1(G,k1_xboole_0) = H ) )
+                                    & ! [H] :
+                                        ( m1_subset_1(H,A)
+                                       => k8_funct_2(k5_finsub_1(A),B,G,k2_setwiseo(A,H)) = k8_funct_2(A,B,E,H) )
+                                    & ! [H] :
+                                        ( m1_subset_1(H,k5_finsub_1(A))
+                                       => ( r1_tarski(H,D)
+                                         => ( H = k1_xboole_0
+                                            | ! [I] :
+                                                ( m1_subset_1(I,A)
+                                               => ( r2_hidden(I,D)
+                                                 => k8_funct_2(k5_finsub_1(A),B,G,k5_setwiseo(A,H,k2_setwiseo(A,I))) = k2_binop_1(B,B,B,C,k8_funct_2(k5_finsub_1(A),B,G,H),k8_funct_2(A,B,E,I)) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t26_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,B,A)
+                    & m2_relset_1(D,B,A) )
+                 => ( ( v1_binop_1(C,A)
+                      & v2_binop_1(C,A) )
+                   => ! [E] :
+                        ( m1_subset_1(E,B)
+                       => k7_setwiseo(B,A,C,k2_setwiseo(B,E),D) = k8_funct_2(B,A,D,E) ) ) ) ) ) ) ).
+
+fof(t27_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,B,A)
+                    & m2_relset_1(D,B,A) )
+                 => ( ( v3_binop_1(C,A)
+                      & v1_binop_1(C,A)
+                      & v2_binop_1(C,A) )
+                   => ! [E] :
+                        ( m1_subset_1(E,B)
+                       => ! [F] :
+                            ( m1_subset_1(F,B)
+                           => k7_setwiseo(B,A,C,k3_setwiseo(B,E,F),D) = k2_binop_1(A,A,A,C,k8_funct_2(B,A,D,E),k8_funct_2(B,A,D,F)) ) ) ) ) ) ) ) ).
+
+fof(t28_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,B,A)
+                    & m2_relset_1(D,B,A) )
+                 => ( ( v3_binop_1(C,A)
+                      & v1_binop_1(C,A)
+                      & v2_binop_1(C,A) )
+                   => ! [E] :
+                        ( m1_subset_1(E,B)
+                       => ! [F] :
+                            ( m1_subset_1(F,B)
+                           => ! [G] :
+                                ( m1_subset_1(G,B)
+                               => k7_setwiseo(B,A,C,k4_setwiseo(B,E,F,G),D) = k2_binop_1(A,A,A,C,k2_binop_1(A,A,A,C,k8_funct_2(B,A,D,E),k8_funct_2(B,A,D,F)),k8_funct_2(B,A,D,G)) ) ) ) ) ) ) ) ) ).
+
+fof(t29_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( m1_subset_1(D,k5_finsub_1(B))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,B,A)
+                        & m2_relset_1(E,B,A) )
+                     => ( ( v3_binop_1(C,A)
+                          & v1_binop_1(C,A)
+                          & v2_binop_1(C,A) )
+                       => ( D = k1_xboole_0
+                          | ! [F] :
+                              ( m1_subset_1(F,B)
+                             => k7_setwiseo(B,A,C,k5_setwiseo(B,D,k2_setwiseo(B,F)),E) = k2_binop_1(A,A,A,C,k7_setwiseo(B,A,C,D,E),k8_funct_2(B,A,E,F)) ) ) ) ) ) ) ) ) ).
+
+fof(t30_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,B,A)
+                    & m2_relset_1(D,B,A) )
+                 => ( ( v3_binop_1(C,A)
+                      & v1_binop_1(C,A)
+                      & v2_binop_1(C,A) )
+                   => ! [E] :
+                        ( m1_subset_1(E,k5_finsub_1(B))
+                       => ! [F] :
+                            ( m1_subset_1(F,k5_finsub_1(B))
+                           => ~ ( E != k1_xboole_0
+                                & F != k1_xboole_0
+                                & k7_setwiseo(B,A,C,k5_setwiseo(B,E,F),D) != k2_binop_1(A,A,A,C,k7_setwiseo(B,A,C,E,D),k7_setwiseo(B,A,C,F,D)) ) ) ) ) ) ) ) ) ).
+
+fof(t31_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( m1_subset_1(D,k5_finsub_1(B))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,B,A)
+                        & m2_relset_1(E,B,A) )
+                     => ( ( v1_binop_1(C,A)
+                          & v2_binop_1(C,A)
+                          & v3_binop_1(C,A) )
+                       => ! [F] :
+                            ( m1_subset_1(F,B)
+                           => ( r2_hidden(F,D)
+                             => k2_binop_1(A,A,A,C,k8_funct_2(B,A,E,F),k7_setwiseo(B,A,C,D,E)) = k7_setwiseo(B,A,C,D,E) ) ) ) ) ) ) ) ) ).
+
+fof(t32_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,B,A)
+                    & m2_relset_1(D,B,A) )
+                 => ( ( v1_binop_1(C,A)
+                      & v2_binop_1(C,A)
+                      & v3_binop_1(C,A) )
+                   => ! [E] :
+                        ( m1_subset_1(E,k5_finsub_1(B))
+                       => ! [F] :
+                            ( m1_subset_1(F,k5_finsub_1(B))
+                           => ( r1_tarski(E,F)
+                             => ( E = k1_xboole_0
+                                | k2_binop_1(A,A,A,C,k7_setwiseo(B,A,C,E,D),k7_setwiseo(B,A,C,F,D)) = k7_setwiseo(B,A,C,F,D) ) ) ) ) ) ) ) ) ) ).
+
+fof(t33_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( m1_subset_1(D,k5_finsub_1(B))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,B,A)
+                        & m2_relset_1(E,B,A) )
+                     => ( ( v1_binop_1(C,A)
+                          & v2_binop_1(C,A)
+                          & v3_binop_1(C,A) )
+                       => ( D = k1_xboole_0
+                          | ! [F] :
+                              ( m1_subset_1(F,A)
+                             => ( ! [G] :
+                                    ( m1_subset_1(G,B)
+                                   => ( r2_hidden(G,D)
+                                     => k8_funct_2(B,A,E,G) = F ) )
+                               => k7_setwiseo(B,A,C,D,E) = F ) ) ) ) ) ) ) ) ) ).
+
+fof(t34_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(B,B),B)
+                & m2_relset_1(C,k2_zfmisc_1(B,B),B) )
+             => ! [D] :
+                  ( m1_subset_1(D,k5_finsub_1(A))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,A,B)
+                        & m2_relset_1(E,A,B) )
+                     => ( ( v1_binop_1(C,B)
+                          & v2_binop_1(C,B)
+                          & v3_binop_1(C,B) )
+                       => ! [F] :
+                            ( m1_subset_1(F,B)
+                           => ( k2_funct_2(A,B,E,D) = k2_setwiseo(B,F)
+                             => k7_setwiseo(A,B,C,D,E) = F ) ) ) ) ) ) ) ) ).
+
+fof(t35_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(B,B),B)
+                & m2_relset_1(C,k2_zfmisc_1(B,B),B) )
+             => ( ( v1_binop_1(C,B)
+                  & v2_binop_1(C,B)
+                  & v3_binop_1(C,B) )
+               => ! [D] :
+                    ( ( v1_funct_1(D)
+                      & v1_funct_2(D,A,B)
+                      & m2_relset_1(D,A,B) )
+                   => ! [E] :
+                        ( ( v1_funct_1(E)
+                          & v1_funct_2(E,A,B)
+                          & m2_relset_1(E,A,B) )
+                       => ! [F] :
+                            ( m1_subset_1(F,k5_finsub_1(A))
+                           => ! [G] :
+                                ( m1_subset_1(G,k5_finsub_1(A))
+                               => ( k2_funct_2(A,B,D,F) = k2_funct_2(A,B,E,G)
+                                 => ( F = k1_xboole_0
+                                    | k7_setwiseo(A,B,C,F,D) = k7_setwiseo(A,B,C,G,E) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t36_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+                    & m2_relset_1(D,k2_zfmisc_1(A,A),A) )
+                 => ( ( v3_binop_1(C,A)
+                      & v1_binop_1(C,A)
+                      & v2_binop_1(C,A)
+                      & r6_binop_1(A,D,C) )
+                   => ! [E] :
+                        ( m1_subset_1(E,k5_finsub_1(B))
+                       => ( E != k1_xboole_0
+                         => ! [F] :
+                              ( ( v1_funct_1(F)
+                                & v1_funct_2(F,B,A)
+                                & m2_relset_1(F,B,A) )
+                             => ! [G] :
+                                  ( m1_subset_1(G,A)
+                                 => k2_binop_1(A,A,A,D,G,k7_setwiseo(B,A,C,E,F)) = k7_setwiseo(B,A,C,E,k8_funcop_1(A,B,D,G,F)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t37_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+                    & m2_relset_1(D,k2_zfmisc_1(A,A),A) )
+                 => ( ( v3_binop_1(C,A)
+                      & v1_binop_1(C,A)
+                      & v2_binop_1(C,A)
+                      & r6_binop_1(A,D,C) )
+                   => ! [E] :
+                        ( m1_subset_1(E,k5_finsub_1(B))
+                       => ( E != k1_xboole_0
+                         => ! [F] :
+                              ( ( v1_funct_1(F)
+                                & v1_funct_2(F,B,A)
+                                & m2_relset_1(F,B,A) )
+                             => ! [G] :
+                                  ( m1_subset_1(G,A)
+                                 => k2_binop_1(A,A,A,D,k7_setwiseo(B,A,C,E,F),G) = k7_setwiseo(B,A,C,E,k7_funcop_1(A,B,D,F,G)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t38_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+                    & m2_relset_1(D,k2_zfmisc_1(A,A),A) )
+                 => ( ( v3_binop_1(D,A)
+                      & v1_binop_1(D,A)
+                      & v2_binop_1(D,A) )
+                   => ! [E] :
+                        ( m1_subset_1(E,k5_finsub_1(B))
+                       => ( E != k1_xboole_0
+                         => ! [F] :
+                              ( ( v1_funct_1(F)
+                                & v1_funct_2(F,B,C)
+                                & m2_relset_1(F,B,C) )
+                             => ! [G] :
+                                  ( ( v1_funct_1(G)
+                                    & v1_funct_2(G,C,A)
+                                    & m2_relset_1(G,C,A) )
+                                 => k7_setwiseo(C,A,D,k8_setwiseo(B,C,F,E),G) = k7_setwiseo(B,A,D,E,k7_funct_2(B,C,A,F,G)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t39_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(B,B),B)
+                & m2_relset_1(C,k2_zfmisc_1(B,B),B) )
+             => ( ( v1_binop_1(C,B)
+                  & v2_binop_1(C,B)
+                  & v3_binop_1(C,B) )
+               => ! [D] :
+                    ( ~ v1_xboole_0(D)
+                   => ! [E] :
+                        ( ( v1_funct_1(E)
+                          & v1_funct_2(E,k2_zfmisc_1(D,D),D)
+                          & m2_relset_1(E,k2_zfmisc_1(D,D),D) )
+                       => ( ( v1_binop_1(E,D)
+                            & v2_binop_1(E,D)
+                            & v3_binop_1(E,D) )
+                         => ! [F] :
+                              ( ( v1_funct_1(F)
+                                & v1_funct_2(F,A,B)
+                                & m2_relset_1(F,A,B) )
+                             => ! [G] :
+                                  ( ( v1_funct_1(G)
+                                    & v1_funct_2(G,B,D)
+                                    & m2_relset_1(G,B,D) )
+                                 => ( ! [H] :
+                                        ( m1_subset_1(H,B)
+                                       => ! [I] :
+                                            ( m1_subset_1(I,B)
+                                           => k8_funct_2(B,D,G,k2_binop_1(B,B,B,C,H,I)) = k2_binop_1(D,D,D,E,k8_funct_2(B,D,G,H),k8_funct_2(B,D,G,I)) ) )
+                                   => ! [H] :
+                                        ( m1_subset_1(H,k5_finsub_1(A))
+                                       => ( H != k1_xboole_0
+                                         => k8_funct_2(B,D,G,k7_setwiseo(A,B,C,H,F)) = k7_setwiseo(A,D,E,H,k7_funct_2(A,B,D,F,G)) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t40_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ( ( v1_binop_1(C,A)
+                  & v2_binop_1(C,A)
+                  & v1_setwiseo(C,A) )
+               => ! [D] :
+                    ( ( v1_funct_1(D)
+                      & v1_funct_2(D,B,A)
+                      & m2_relset_1(D,B,A) )
+                   => k7_setwiseo(B,A,C,k1_setwiseo(B),D) = k3_binop_1(A,C) ) ) ) ) ) ).
+
+fof(t41_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( m1_subset_1(D,k5_finsub_1(B))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,B,A)
+                        & m2_relset_1(E,B,A) )
+                     => ( ( v3_binop_1(C,A)
+                          & v1_binop_1(C,A)
+                          & v2_binop_1(C,A)
+                          & v1_setwiseo(C,A) )
+                       => ! [F] :
+                            ( m1_subset_1(F,B)
+                           => k7_setwiseo(B,A,C,k5_setwiseo(B,D,k2_setwiseo(B,F)),E) = k2_binop_1(A,A,A,C,k7_setwiseo(B,A,C,D,E),k8_funct_2(B,A,E,F)) ) ) ) ) ) ) ) ).
+
+fof(t42_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),A) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,B,A)
+                    & m2_relset_1(D,B,A) )
+                 => ( ( v3_binop_1(C,A)
+                      & v1_binop_1(C,A)
+                      & v2_binop_1(C,A)
+                      & v1_setwiseo(C,A) )
+                   => ! [E] :
+                        ( m1_subset_1(E,k5_finsub_1(B))
+                       => ! [F] :
+                            ( m1_subset_1(F,k5_finsub_1(B))
+                           => k7_setwiseo(B,A,C,k5_setwiseo(B,E,F),D) = k2_binop_1(A,A,A,C,k7_setwiseo(B,A,C,E,D),k7_setwiseo(B,A,C,F,D)) ) ) ) ) ) ) ) ).
+
+fof(t43_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(B,B),B)
+                & m2_relset_1(C,k2_zfmisc_1(B,B),B) )
+             => ( ( v1_binop_1(C,B)
+                  & v2_binop_1(C,B)
+                  & v3_binop_1(C,B)
+                  & v1_setwiseo(C,B) )
+               => ! [D] :
+                    ( ( v1_funct_1(D)
+                      & v1_funct_2(D,A,B)
+                      & m2_relset_1(D,A,B) )
+                   => ! [E] :
+                        ( ( v1_funct_1(E)
+                          & v1_funct_2(E,A,B)
+                          & m2_relset_1(E,A,B) )
+                       => ! [F] :
+                            ( m1_subset_1(F,k5_finsub_1(A))
+                           => ! [G] :
+                                ( m1_subset_1(G,k5_finsub_1(A))
+                               => ( k8_setwiseo(A,B,D,F) = k8_setwiseo(A,B,E,G)
+                                 => k7_setwiseo(A,B,C,F,D) = k7_setwiseo(A,B,C,G,E) ) ) ) ) ) ) ) ) ) ).
+
+fof(t44_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+                    & m2_relset_1(D,k2_zfmisc_1(A,A),A) )
+                 => ( ( v3_binop_1(D,A)
+                      & v1_binop_1(D,A)
+                      & v2_binop_1(D,A)
+                      & v1_setwiseo(D,A) )
+                   => ! [E] :
+                        ( m1_subset_1(E,k5_finsub_1(B))
+                       => ! [F] :
+                            ( ( v1_funct_1(F)
+                              & v1_funct_2(F,B,C)
+                              & m2_relset_1(F,B,C) )
+                           => ! [G] :
+                                ( ( v1_funct_1(G)
+                                  & v1_funct_2(G,C,A)
+                                  & m2_relset_1(G,C,A) )
+                               => k7_setwiseo(C,A,D,k8_setwiseo(B,C,F,E),G) = k7_setwiseo(B,A,D,E,k7_funct_2(B,C,A,F,G)) ) ) ) ) ) ) ) ) ).
+
+fof(t45_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(B,B),B)
+                & m2_relset_1(C,k2_zfmisc_1(B,B),B) )
+             => ( ( v1_binop_1(C,B)
+                  & v2_binop_1(C,B)
+                  & v3_binop_1(C,B)
+                  & v1_setwiseo(C,B) )
+               => ! [D] :
+                    ( ~ v1_xboole_0(D)
+                   => ! [E] :
+                        ( ( v1_funct_1(E)
+                          & v1_funct_2(E,k2_zfmisc_1(D,D),D)
+                          & m2_relset_1(E,k2_zfmisc_1(D,D),D) )
+                       => ( ( v1_binop_1(E,D)
+                            & v2_binop_1(E,D)
+                            & v3_binop_1(E,D)
+                            & v1_setwiseo(E,D) )
+                         => ! [F] :
+                              ( ( v1_funct_1(F)
+                                & v1_funct_2(F,A,B)
+                                & m2_relset_1(F,A,B) )
+                             => ! [G] :
+                                  ( ( v1_funct_1(G)
+                                    & v1_funct_2(G,B,D)
+                                    & m2_relset_1(G,B,D) )
+                                 => ( ( k8_funct_2(B,D,G,k3_binop_1(B,C)) = k3_binop_1(D,E)
+                                      & ! [H] :
+                                          ( m1_subset_1(H,B)
+                                         => ! [I] :
+                                              ( m1_subset_1(I,B)
+                                             => k8_funct_2(B,D,G,k2_binop_1(B,B,B,C,H,I)) = k2_binop_1(D,D,D,E,k8_funct_2(B,D,G,H),k8_funct_2(B,D,G,I)) ) ) )
+                                   => ! [H] :
+                                        ( m1_subset_1(H,k5_finsub_1(A))
+                                       => k8_funct_2(B,D,G,k7_setwiseo(A,B,C,H,F)) = k7_setwiseo(A,D,E,H,k7_funct_2(A,B,D,F,G)) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d4_setwiseo,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k5_finsub_1(A))
+        & m2_relset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k5_finsub_1(A)) )
+     => ( B = k9_setwiseo(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k5_finsub_1(A))
+           => ! [D] :
+                ( m1_subset_1(D,k5_finsub_1(A))
+               => k2_binop_1(k5_finsub_1(A),k5_finsub_1(A),k5_finsub_1(A),B,C,D) = k5_setwiseo(A,C,D) ) ) ) ) ).
+
+fof(t46_setwiseo,axiom,
+    $true ).
+
+fof(t47_setwiseo,axiom,
+    $true ).
+
+fof(t48_setwiseo,axiom,
+    $true ).
+
+fof(t49_setwiseo,axiom,
+    ! [A] : v3_binop_1(k9_setwiseo(A),k5_finsub_1(A)) ).
+
+fof(t50_setwiseo,axiom,
+    ! [A] : v1_binop_1(k9_setwiseo(A),k5_finsub_1(A)) ).
+
+fof(t51_setwiseo,axiom,
+    ! [A] : v2_binop_1(k9_setwiseo(A),k5_finsub_1(A)) ).
+
+fof(t52_setwiseo,axiom,
+    ! [A] : r3_binop_1(k5_finsub_1(A),k1_setwiseo(A),k9_setwiseo(A)) ).
+
+fof(t53_setwiseo,axiom,
+    ! [A] : v1_setwiseo(k9_setwiseo(A),k5_finsub_1(A)) ).
+
+fof(t54_setwiseo,axiom,
+    ! [A] : r3_binop_1(k5_finsub_1(A),k3_binop_1(k5_finsub_1(A),k9_setwiseo(A)),k9_setwiseo(A)) ).
+
+fof(t55_setwiseo,axiom,
+    ! [A] : k3_binop_1(k5_finsub_1(A),k9_setwiseo(A)) = k1_xboole_0 ).
+
+fof(d5_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( m1_subset_1(C,k5_finsub_1(A))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,A,k5_finsub_1(B))
+                & m2_relset_1(D,A,k5_finsub_1(B)) )
+             => k10_setwiseo(A,B,C,D) = k7_setwiseo(A,k5_finsub_1(B),k9_setwiseo(B),C,D) ) ) ) ).
+
+fof(t56_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,A,k5_finsub_1(B))
+            & m2_relset_1(C,A,k5_finsub_1(B)) )
+         => ! [D] :
+              ( m1_subset_1(D,A)
+             => k10_setwiseo(A,B,k2_setwiseo(A,D),C) = k8_funct_2(A,k5_finsub_1(B),C,D) ) ) ) ).
+
+fof(t57_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,A,k5_finsub_1(B))
+            & m2_relset_1(C,A,k5_finsub_1(B)) )
+         => ! [D] :
+              ( m1_subset_1(D,A)
+             => ! [E] :
+                  ( m1_subset_1(E,A)
+                 => k10_setwiseo(A,B,k3_setwiseo(A,D,E),C) = k5_setwiseo(B,k8_funct_2(A,k5_finsub_1(B),C,D),k8_funct_2(A,k5_finsub_1(B),C,E)) ) ) ) ) ).
+
+fof(t58_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,A,k5_finsub_1(B))
+            & m2_relset_1(C,A,k5_finsub_1(B)) )
+         => ! [D] :
+              ( m1_subset_1(D,A)
+             => ! [E] :
+                  ( m1_subset_1(E,A)
+                 => ! [F] :
+                      ( m1_subset_1(F,A)
+                     => k10_setwiseo(A,B,k4_setwiseo(A,D,E,F),C) = k5_setwiseo(B,k5_setwiseo(B,k8_funct_2(A,k5_finsub_1(B),C,D),k8_funct_2(A,k5_finsub_1(B),C,E)),k8_funct_2(A,k5_finsub_1(B),C,F)) ) ) ) ) ) ).
+
+fof(t59_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,A,k5_finsub_1(B))
+            & m2_relset_1(C,A,k5_finsub_1(B)) )
+         => k10_setwiseo(A,B,k1_setwiseo(A),C) = k1_xboole_0 ) ) ).
+
+fof(t60_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,A,k5_finsub_1(B))
+            & m2_relset_1(C,A,k5_finsub_1(B)) )
+         => ! [D] :
+              ( m1_subset_1(D,A)
+             => ! [E] :
+                  ( m1_subset_1(E,k5_finsub_1(A))
+                 => k10_setwiseo(A,B,k5_setwiseo(A,E,k2_setwiseo(A,D)),C) = k5_setwiseo(B,k10_setwiseo(A,B,E,C),k8_funct_2(A,k5_finsub_1(B),C,D)) ) ) ) ) ).
+
+fof(t61_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,A,k5_finsub_1(B))
+            & m2_relset_1(C,A,k5_finsub_1(B)) )
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(A))
+             => k10_setwiseo(A,B,D,C) = k3_tarski(k8_setwiseo(A,k5_finsub_1(B),C,D)) ) ) ) ).
+
+fof(t62_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,A,k5_finsub_1(B))
+            & m2_relset_1(C,A,k5_finsub_1(B)) )
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(A))
+             => ! [E] :
+                  ( m1_subset_1(E,k5_finsub_1(A))
+                 => k10_setwiseo(A,B,k5_setwiseo(A,D,E),C) = k5_setwiseo(B,k10_setwiseo(A,B,D,C),k10_setwiseo(A,B,E,C)) ) ) ) ) ).
+
+fof(t63_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C,D] :
+              ( m1_subset_1(D,k5_finsub_1(A))
+             => ! [E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,A,B)
+                    & m2_relset_1(E,A,B) )
+                 => ! [F] :
+                      ( ( v1_funct_1(F)
+                        & v1_funct_2(F,B,k5_finsub_1(C))
+                        & m2_relset_1(F,B,k5_finsub_1(C)) )
+                     => k10_setwiseo(B,C,k8_setwiseo(A,B,E,D),F) = k10_setwiseo(A,C,D,k7_funct_2(A,B,k5_finsub_1(C),E,F)) ) ) ) ) ) ).
+
+fof(t64_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C,D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+                & m2_relset_1(D,k2_zfmisc_1(A,A),A) )
+             => ( ( v1_binop_1(D,A)
+                  & v2_binop_1(D,A)
+                  & v3_binop_1(D,A) )
+               => ! [E] :
+                    ( m1_subset_1(E,k5_finsub_1(B))
+                   => ( E != k1_xboole_0
+                     => ! [F] :
+                          ( ( v1_funct_1(F)
+                            & v1_funct_2(F,B,k5_finsub_1(C))
+                            & m2_relset_1(F,B,k5_finsub_1(C)) )
+                         => ! [G] :
+                              ( ( v1_funct_1(G)
+                                & v1_funct_2(G,k5_finsub_1(C),A)
+                                & m2_relset_1(G,k5_finsub_1(C),A) )
+                             => ( ! [H] :
+                                    ( m1_subset_1(H,k5_finsub_1(C))
+                                   => ! [I] :
+                                        ( m1_subset_1(I,k5_finsub_1(C))
+                                       => k8_funct_2(k5_finsub_1(C),A,G,k5_setwiseo(C,H,I)) = k2_binop_1(A,A,A,D,k8_funct_2(k5_finsub_1(C),A,G,H),k8_funct_2(k5_finsub_1(C),A,G,I)) ) )
+                               => k8_funct_2(k5_finsub_1(C),A,G,k10_setwiseo(B,C,E,F)) = k7_setwiseo(B,A,D,E,k7_funct_2(B,k5_finsub_1(C),A,F,G)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t65_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C,D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k2_zfmisc_1(B,B),B)
+                & m2_relset_1(D,k2_zfmisc_1(B,B),B) )
+             => ( ( v1_binop_1(D,B)
+                  & v2_binop_1(D,B)
+                  & v3_binop_1(D,B)
+                  & v1_setwiseo(D,B) )
+               => ! [E] :
+                    ( ( v1_funct_1(E)
+                      & v1_funct_2(E,A,k5_finsub_1(C))
+                      & m2_relset_1(E,A,k5_finsub_1(C)) )
+                   => ! [F] :
+                        ( ( v1_funct_1(F)
+                          & v1_funct_2(F,k5_finsub_1(C),B)
+                          & m2_relset_1(F,k5_finsub_1(C),B) )
+                       => ( ( k8_funct_2(k5_finsub_1(C),B,F,k1_setwiseo(C)) = k3_binop_1(B,D)
+                            & ! [G] :
+                                ( m1_subset_1(G,k5_finsub_1(C))
+                               => ! [H] :
+                                    ( m1_subset_1(H,k5_finsub_1(C))
+                                   => k8_funct_2(k5_finsub_1(C),B,F,k5_setwiseo(C,G,H)) = k2_binop_1(B,B,B,D,k8_funct_2(k5_finsub_1(C),B,F,G),k8_funct_2(k5_finsub_1(C),B,F,H)) ) ) )
+                         => ! [G] :
+                              ( m1_subset_1(G,k5_finsub_1(A))
+                             => k8_funct_2(k5_finsub_1(C),B,F,k10_setwiseo(A,C,G,E)) = k7_setwiseo(A,B,D,G,k7_funct_2(A,k5_finsub_1(C),B,E,F)) ) ) ) ) ) ) ) ) ).
+
+fof(d6_setwiseo,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,A,k5_finsub_1(A))
+        & m2_relset_1(B,A,k5_finsub_1(A)) )
+     => ( B = k11_setwiseo(A)
+      <=> ! [C] :
+            ( r2_hidden(C,A)
+           => k1_funct_1(B,C) = k1_tarski(C) ) ) ) ).
+
+fof(t66_setwiseo,axiom,
+    $true ).
+
+fof(t67_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,A,k5_finsub_1(A))
+            & m2_relset_1(B,A,k5_finsub_1(A)) )
+         => ( B = k11_setwiseo(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,A)
+               => k8_funct_2(A,k5_finsub_1(A),B,C) = k2_setwiseo(A,C) ) ) ) ) ).
+
+fof(t68_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( m1_subset_1(C,A)
+         => ( r2_hidden(B,k8_funct_2(A,k5_finsub_1(A),k11_setwiseo(A),C))
+          <=> B = C ) ) ) ).
+
+fof(t69_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,A)
+             => ! [D] :
+                  ( m1_subset_1(D,A)
+                 => ( ( r2_hidden(B,k8_funct_2(A,k5_finsub_1(A),k11_setwiseo(A),D))
+                      & r2_hidden(C,k8_funct_2(A,k5_finsub_1(A),k11_setwiseo(A),D)) )
+                   => B = C ) ) ) ) ) ).
+
+fof(t70_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,A,k5_finsub_1(B))
+            & m2_relset_1(C,A,k5_finsub_1(B)) )
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(A))
+             => ! [E] :
+                  ( r2_hidden(E,k10_setwiseo(A,B,D,C))
+                <=> ? [F] :
+                      ( m1_subset_1(F,A)
+                      & r2_hidden(F,D)
+                      & r2_hidden(E,k8_funct_2(A,k5_finsub_1(B),C,F)) ) ) ) ) ) ).
+
+fof(t71_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k5_finsub_1(A))
+         => k10_setwiseo(A,A,B,k11_setwiseo(A)) = B ) ) ).
+
+fof(t72_setwiseo,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C,D] :
+          ( ( v1_funct_1(D)
+            & v1_funct_2(D,A,k5_finsub_1(B))
+            & m2_relset_1(D,A,k5_finsub_1(B)) )
+         => ! [E] :
+              ( ( v1_funct_1(E)
+                & v1_funct_2(E,k5_finsub_1(B),k5_finsub_1(C))
+                & m2_relset_1(E,k5_finsub_1(B),k5_finsub_1(C)) )
+             => ( ( k8_funct_2(k5_finsub_1(B),k5_finsub_1(C),E,k1_setwiseo(B)) = k1_setwiseo(C)
+                  & ! [F] :
+                      ( m1_subset_1(F,k5_finsub_1(B))
+                     => ! [G] :
+                          ( m1_subset_1(G,k5_finsub_1(B))
+                         => k8_funct_2(k5_finsub_1(B),k5_finsub_1(C),E,k5_setwiseo(B,F,G)) = k5_setwiseo(C,k8_funct_2(k5_finsub_1(B),k5_finsub_1(C),E,F),k8_funct_2(k5_finsub_1(B),k5_finsub_1(C),E,G)) ) ) )
+               => ! [F] :
+                    ( m1_subset_1(F,k5_finsub_1(A))
+                   => k8_funct_2(k5_finsub_1(B),k5_finsub_1(C),E,k10_setwiseo(A,B,F,D)) = k10_setwiseo(A,C,F,k7_funct_2(A,k5_finsub_1(B),k5_finsub_1(C),D,E)) ) ) ) ) ) ).
+
+fof(s1_setwiseo,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,f1_s1_setwiseo,k5_finsub_1(f1_s1_setwiseo))
+      & m2_relset_1(A,f1_s1_setwiseo,k5_finsub_1(f1_s1_setwiseo))
+      & ! [B] :
+          ( m1_subset_1(B,f1_s1_setwiseo)
+         => ! [C] :
+              ( m1_subset_1(C,f1_s1_setwiseo)
+             => ( r2_hidden(C,k8_funct_2(f1_s1_setwiseo,k5_finsub_1(f1_s1_setwiseo),A,B))
+              <=> ( r2_hidden(C,f2_s1_setwiseo)
+                  & p1_s1_setwiseo(C,B) ) ) ) ) ) ).
+
+fof(s2_setwiseo,axiom,
+    ( ( p1_s2_setwiseo(k1_setwiseo(f1_s2_setwiseo))
+      & ! [A] :
+          ( m1_subset_1(A,k5_finsub_1(f1_s2_setwiseo))
+         => ! [B] :
+              ( m1_subset_1(B,f1_s2_setwiseo)
+             => ( p1_s2_setwiseo(A)
+               => ( r2_hidden(B,A)
+                  | p1_s2_setwiseo(k5_setwiseo(f1_s2_setwiseo,A,k2_setwiseo(f1_s2_setwiseo,B))) ) ) ) ) )
+   => ! [A] :
+        ( m1_subset_1(A,k5_finsub_1(f1_s2_setwiseo))
+       => p1_s2_setwiseo(A) ) ) ).
+
+fof(s3_setwiseo,axiom,
+    ( ( ! [A] :
+          ( m1_subset_1(A,f1_s3_setwiseo)
+         => p1_s3_setwiseo(k2_setwiseo(f1_s3_setwiseo,A)) )
+      & ! [A] :
+          ( m1_subset_1(A,k5_finsub_1(f1_s3_setwiseo))
+         => ! [B] :
+              ( m1_subset_1(B,k5_finsub_1(f1_s3_setwiseo))
+             => ( ( p1_s3_setwiseo(A)
+                  & p1_s3_setwiseo(B) )
+               => ( A = k1_xboole_0
+                  | B = k1_xboole_0
+                  | p1_s3_setwiseo(k5_setwiseo(f1_s3_setwiseo,A,B)) ) ) ) ) )
+   => ! [A] :
+        ( m1_subset_1(A,k5_finsub_1(f1_s3_setwiseo))
+       => ( A != k1_xboole_0
+         => p1_s3_setwiseo(A) ) ) ) ).
+
+fof(s4_setwiseo,axiom,
+    ( ( p1_s4_setwiseo(k1_setwiseo(f1_s4_setwiseo))
+      & ! [A] :
+          ( m1_subset_1(A,k5_finsub_1(f1_s4_setwiseo))
+         => ! [B] :
+              ( m1_subset_1(B,f1_s4_setwiseo)
+             => ( p1_s4_setwiseo(A)
+               => p1_s4_setwiseo(k5_setwiseo(f1_s4_setwiseo,A,k2_setwiseo(f1_s4_setwiseo,B))) ) ) ) )
+   => ! [A] :
+        ( m1_subset_1(A,k5_finsub_1(f1_s4_setwiseo))
+       => p1_s4_setwiseo(A) ) ) ).
+
+fof(dt_k1_setwiseo,axiom,
+    ! [A] :
+      ( v1_xboole_0(k1_setwiseo(A))
+      & m1_subset_1(k1_setwiseo(A),k5_finsub_1(A)) ) ).
+
+fof(dt_k2_setwiseo,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,A) )
+     => m1_subset_1(k2_setwiseo(A,B),k5_finsub_1(A)) ) ).
+
+fof(redefinition_k2_setwiseo,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,A) )
+     => k2_setwiseo(A,B) = k1_tarski(B) ) ).
+
+fof(dt_k3_setwiseo,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k3_setwiseo(A,B,C),k5_finsub_1(A)) ) ).
+
+fof(commutativity_k3_setwiseo,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k3_setwiseo(A,B,C) = k3_setwiseo(A,C,B) ) ).
+
+fof(redefinition_k3_setwiseo,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k3_setwiseo(A,B,C) = k2_tarski(B,C) ) ).
+
+fof(dt_k4_setwiseo,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A)
+        & m1_subset_1(D,A) )
+     => m1_subset_1(k4_setwiseo(A,B,C,D),k5_finsub_1(A)) ) ).
+
+fof(redefinition_k4_setwiseo,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A)
+        & m1_subset_1(D,A) )
+     => k4_setwiseo(A,B,C,D) = k1_enumset1(B,C,D) ) ).
+
+fof(dt_k5_setwiseo,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k5_finsub_1(A))
+        & m1_subset_1(C,k5_finsub_1(A)) )
+     => m1_subset_1(k5_setwiseo(A,B,C),k5_finsub_1(A)) ) ).
+
+fof(commutativity_k5_setwiseo,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k5_finsub_1(A))
+        & m1_subset_1(C,k5_finsub_1(A)) )
+     => k5_setwiseo(A,B,C) = k5_setwiseo(A,C,B) ) ).
+
+fof(idempotence_k5_setwiseo,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k5_finsub_1(A))
+        & m1_subset_1(C,k5_finsub_1(A)) )
+     => k5_setwiseo(A,B,B) = B ) ).
+
+fof(redefinition_k5_setwiseo,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k5_finsub_1(A))
+        & m1_subset_1(C,k5_finsub_1(A)) )
+     => k5_setwiseo(A,B,C) = k2_xboole_0(B,C) ) ).
+
+fof(dt_k6_setwiseo,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k5_finsub_1(A))
+        & m1_subset_1(C,k5_finsub_1(A)) )
+     => m1_subset_1(k6_setwiseo(A,B,C),k5_finsub_1(A)) ) ).
+
+fof(redefinition_k6_setwiseo,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k5_finsub_1(A))
+        & m1_subset_1(C,k5_finsub_1(A)) )
+     => k6_setwiseo(A,B,C) = k4_xboole_0(B,C) ) ).
+
+fof(dt_k7_setwiseo,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(B,B),B)
+        & m1_relset_1(C,k2_zfmisc_1(B,B),B)
+        & m1_subset_1(D,k5_finsub_1(A))
+        & v1_funct_1(E)
+        & v1_funct_2(E,A,B)
+        & m1_relset_1(E,A,B) )
+     => m1_subset_1(k7_setwiseo(A,B,C,D,E),B) ) ).
+
+fof(dt_k8_setwiseo,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,B)
+        & m1_relset_1(C,A,B)
+        & m1_subset_1(D,k5_finsub_1(A)) )
+     => m1_subset_1(k8_setwiseo(A,B,C,D),k5_finsub_1(B)) ) ).
+
+fof(redefinition_k8_setwiseo,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,B)
+        & m1_relset_1(C,A,B)
+        & m1_subset_1(D,k5_finsub_1(A)) )
+     => k8_setwiseo(A,B,C,D) = k9_relat_1(C,D) ) ).
+
+fof(dt_k9_setwiseo,axiom,
+    ! [A] :
+      ( v1_funct_1(k9_setwiseo(A))
+      & v1_funct_2(k9_setwiseo(A),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k5_finsub_1(A))
+      & m2_relset_1(k9_setwiseo(A),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k5_finsub_1(A)) ) ).
+
+fof(dt_k10_setwiseo,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(C,k5_finsub_1(A))
+        & v1_funct_1(D)
+        & v1_funct_2(D,A,k5_finsub_1(B))
+        & m1_relset_1(D,A,k5_finsub_1(B)) )
+     => m1_subset_1(k10_setwiseo(A,B,C,D),k5_finsub_1(B)) ) ).
+
+fof(dt_k11_setwiseo,axiom,
+    ! [A] :
+      ( v1_funct_1(k11_setwiseo(A))
+      & v1_funct_2(k11_setwiseo(A),A,k5_finsub_1(A))
+      & m2_relset_1(k11_setwiseo(A),A,k5_finsub_1(A)) ) ).
+
+%------------------------------------------------------------------------------

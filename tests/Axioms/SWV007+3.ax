@@ -1,0 +1,142 @@
+%------------------------------------------------------------------------------
+% File     : SWV007+3 : TPTP v8.1.2. Released v3.3.0.
+% Domain   : Software Verification
+% Axioms   : Priority queue checker: checked priority queues
+% Version  : [dNP05] axioms.
+% English  : This axiom set fully describes checked priority queues. Checked
+%            priority queues are defined as triples of a "priority queue
+%            pretender", a system of lower bounds and Boolean value that keep
+%            track of errors.
+
+% Refs     : [Pis06] Piskac (2006), Email to Geoff Sutcliffe
+%          : [dNP05] de Nivelle & Piskac (2005), Verification of an Off-Lin
+% Source   : [Pis06]
+% Names    :
+
+% Status   : Satisfiable
+% Rating   : <Don't worry about this one - we'll do it automatically>
+% Syntax   : Number of formulae    :   23 (   7 unt;   0 def)
+%            Number of atoms       :   48 (  17 equ)
+%            Maximal formula atoms :    4 (   2 avg)
+%            Number of connectives :   32 (   7   ~;   0   |;   7   &)
+%                                         (   4 <=>;  14  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    8 (   5 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :    9 (   7 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   18 (  18 usr;   3 con; 0-3 aty)
+%            Number of variables   :   70 (  70   !;   0   ?)
+% SPC      : 
+
+% Comments : Requires SWV007+0 SWV007+2
+%------------------------------------------------------------------------------
+fof(ax31,axiom,
+    ! [U] : succ_cpq(U,U) ).
+
+fof(ax32,axiom,
+    ! [U,V,W] :
+      ( succ_cpq(U,V)
+     => succ_cpq(U,insert_cpq(V,W)) ) ).
+
+fof(ax33,axiom,
+    ! [U,V,W] :
+      ( succ_cpq(U,V)
+     => succ_cpq(U,remove_cpq(V,W)) ) ).
+
+fof(ax34,axiom,
+    ! [U,V] :
+      ( succ_cpq(U,V)
+     => succ_cpq(U,findmin_cpq_eff(V)) ) ).
+
+fof(ax35,axiom,
+    ! [U,V] :
+      ( succ_cpq(U,V)
+     => succ_cpq(U,removemin_cpq_eff(V)) ) ).
+
+fof(ax36,axiom,
+    ! [U,V] : check_cpq(triple(U,create_slb,V)) ).
+
+fof(ax37,axiom,
+    ! [U,V,W,X,Y] :
+      ( less_than(Y,X)
+     => ( check_cpq(triple(U,insert_slb(V,pair(X,Y)),W))
+      <=> check_cpq(triple(U,V,W)) ) ) ).
+
+fof(ax38,axiom,
+    ! [U,V,W,X,Y] :
+      ( strictly_less_than(X,Y)
+     => ( check_cpq(triple(U,insert_slb(V,pair(X,Y)),W))
+      <=> $false ) ) ).
+
+fof(ax39,axiom,
+    ! [U,V,W,X] :
+      ( contains_cpq(triple(U,V,W),X)
+    <=> contains_slb(V,X) ) ).
+
+fof(ax40,axiom,
+    ! [U,V] :
+      ( ok(triple(U,V,bad))
+    <=> $false ) ).
+
+fof(ax41,axiom,
+    ! [U,V,W] :
+      ( ~ ok(triple(U,V,W))
+     => W = bad ) ).
+
+fof(ax42,axiom,
+    ! [U,V,W,X] : insert_cpq(triple(U,V,W),X) = triple(insert_pqp(U,X),insert_slb(V,pair(X,bottom)),W) ).
+
+fof(ax43,axiom,
+    ! [U,V,W,X] :
+      ( ~ contains_slb(V,X)
+     => remove_cpq(triple(U,V,W),X) = triple(U,V,bad) ) ).
+
+fof(ax44,axiom,
+    ! [U,V,W,X] :
+      ( ( contains_slb(V,X)
+        & less_than(lookup_slb(V,X),X) )
+     => remove_cpq(triple(U,V,W),X) = triple(remove_pqp(U,X),remove_slb(V,X),W) ) ).
+
+fof(ax45,axiom,
+    ! [U,V,W,X] :
+      ( ( contains_slb(V,X)
+        & strictly_less_than(X,lookup_slb(V,X)) )
+     => remove_cpq(triple(U,V,W),X) = triple(remove_pqp(U,X),remove_slb(V,X),bad) ) ).
+
+fof(ax46,axiom,
+    ! [U,V] : findmin_cpq_eff(triple(U,create_slb,V)) = triple(U,create_slb,bad) ).
+
+fof(ax47,axiom,
+    ! [U,V,W,X] :
+      ( ( V != create_slb
+        & ~ contains_slb(V,findmin_pqp_res(U)) )
+     => findmin_cpq_eff(triple(U,V,W)) = triple(U,update_slb(V,findmin_pqp_res(U)),bad) ) ).
+
+fof(ax48,axiom,
+    ! [U,V,W,X] :
+      ( ( V != create_slb
+        & contains_slb(V,findmin_pqp_res(U))
+        & strictly_less_than(findmin_pqp_res(U),lookup_slb(V,findmin_pqp_res(U))) )
+     => findmin_cpq_eff(triple(U,V,W)) = triple(U,update_slb(V,findmin_pqp_res(U)),bad) ) ).
+
+fof(ax49,axiom,
+    ! [U,V,W,X] :
+      ( ( V != create_slb
+        & contains_slb(V,findmin_pqp_res(U))
+        & less_than(lookup_slb(V,findmin_pqp_res(U)),findmin_pqp_res(U)) )
+     => findmin_cpq_eff(triple(U,V,W)) = triple(U,update_slb(V,findmin_pqp_res(U)),W) ) ).
+
+fof(ax50,axiom,
+    ! [U,V] : findmin_cpq_res(triple(U,create_slb,V)) = bottom ).
+
+fof(ax51,axiom,
+    ! [U,V,W,X] :
+      ( V != create_slb
+     => findmin_cpq_res(triple(U,V,W)) = findmin_pqp_res(U) ) ).
+
+fof(ax52,axiom,
+    ! [U] : removemin_cpq_eff(U) = remove_cpq(findmin_cpq_eff(U),findmin_cpq_res(U)) ).
+
+fof(ax53,axiom,
+    ! [U] : removemin_cpq_res(U) = findmin_cpq_res(U) ).
+
+%------------------------------------------------------------------------------

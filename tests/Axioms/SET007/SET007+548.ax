@@ -1,0 +1,583 @@
+%------------------------------------------------------------------------------
+% File     : SET007+548 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : First-countable, Sequential, and Frechet Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : frechet [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   56 (  10 unt;   0 def)
+%            Number of atoms       :  339 (  32 equ)
+%            Maximal formula atoms :   19 (   6 avg)
+%            Number of connectives :  336 (  53   ~;   5   |; 149   &)
+%                                         (  14 <=>; 115  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   25 (   7 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   33 (  31 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   41 (  41 usr;   9 con; 0-4 aty)
+%            Number of variables   :  122 ( 114   !;   8   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_frechet,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => ! [C] :
+          ( m1_yellow_8(C,A,B)
+         => ~ v1_xboole_0(C) ) ) ).
+
+fof(fc1_frechet,axiom,
+    ( ~ v3_struct_0(k3_topmetr)
+    & v1_pre_topc(k3_topmetr)
+    & v2_pre_topc(k3_topmetr)
+    & v1_frechet(k3_topmetr) ) ).
+
+fof(cc2_frechet,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ( ( ~ v3_struct_0(A)
+          & v2_pre_topc(A)
+          & v1_frechet(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_pre_topc(A)
+          & v3_frechet(A) ) ) ) ).
+
+fof(cc3_frechet,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ( ( ~ v3_struct_0(A)
+          & v2_pre_topc(A)
+          & v3_frechet(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_pre_topc(A)
+          & v4_frechet(A) ) ) ) ).
+
+fof(t1_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_struct_0(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => m1_subset_1(k2_relat_1(B),k1_zfmisc_1(u1_struct_0(A))) ) ) ).
+
+fof(t2_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_struct_0(A) )
+     => ! [B] :
+          ( l1_struct_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( r1_tarski(k1_frechet(A,C),u1_struct_0(B))
+               => ( v1_funct_1(C)
+                  & v1_funct_2(C,k5_numbers,u1_struct_0(B))
+                  & m2_relset_1(C,k5_numbers,u1_struct_0(B)) ) ) ) ) ) ).
+
+fof(t3_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_yellow_8(C,A,B)
+             => C != k1_xboole_0 ) ) ) ).
+
+fof(t4_frechet,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v3_pre_topc(B,A)
+                  & v4_pre_topc(C,A) )
+               => v3_pre_topc(k6_subset_1(u1_struct_0(A),B,C),A) ) ) ) ) ).
+
+fof(t5_frechet,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ( ( v4_pre_topc(k1_pre_topc(A),A)
+          & v4_pre_topc(k2_pre_topc(A),A)
+          & ! [B] :
+              ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( v4_pre_topc(B,A)
+                      & v4_pre_topc(C,A) )
+                   => v4_pre_topc(k4_subset_1(u1_struct_0(A),B,C),A) ) ) )
+          & ! [B] :
+              ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => ( v2_tops_2(B,A)
+               => v4_pre_topc(k6_setfam_1(u1_struct_0(A),B),A) ) ) )
+       => ( v2_pre_topc(A)
+          & l1_pre_topc(A) ) ) ) ).
+
+fof(t6_frechet,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l1_pre_topc(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B)))
+                   => ( v4_pre_topc(D,B)
+                    <=> v4_pre_topc(k5_pre_topc(A,B,C,D),A) ) )
+               => ( v2_pre_topc(B)
+                  & l1_pre_topc(B) ) ) ) ) ) ).
+
+fof(t7_frechet,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k8_metric_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ( B = A
+               => ( r1_xreal_0(C,np__0)
+                  | k9_metric_1(k8_metric_1,A,C) = k2_rcomp_1(k5_real_1(B,C),k3_real_1(B,C)) ) ) ) ) ) ).
+
+fof(t8_frechet,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k3_topmetr)))
+     => ( v3_pre_topc(A,k3_topmetr)
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ~ ( r2_hidden(B,A)
+                & ! [C] :
+                    ( m1_subset_1(C,k1_numbers)
+                   => ~ ( ~ r1_xreal_0(C,np__0)
+                        & r1_tarski(k2_rcomp_1(k5_real_1(B,C),k3_real_1(B,C)),A) ) ) ) ) ) ) ).
+
+fof(t9_frechet,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,u1_struct_0(k3_topmetr))
+        & m2_relset_1(A,k5_numbers,u1_struct_0(k3_topmetr)) )
+     => ( ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => r2_hidden(k8_funct_2(k5_numbers,u1_struct_0(k3_topmetr),A,B),k2_rcomp_1(k5_real_1(B,k6_real_1(np__1,np__4)),k3_real_1(B,k6_real_1(np__1,np__4)))) )
+       => v4_pre_topc(k1_frechet(k3_topmetr,A),k3_topmetr) ) ) ).
+
+fof(t10_frechet,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k3_topmetr)))
+     => ( A = k5_numbers
+       => v4_pre_topc(A,k3_topmetr) ) ) ).
+
+fof(t12_frechet,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => k2_relat_1(k1_funct_4(A,B)) = k2_xboole_0(k9_relat_1(A,k4_xboole_0(k1_relat_1(A),k1_relat_1(B))),k2_relat_1(B)) ) ) ).
+
+fof(t13_frechet,axiom,
+    ! [A,B] :
+      ( r1_tarski(B,A)
+     => k9_relat_1(k6_relat_1(A),B) = B ) ).
+
+fof(t14_frechet,axiom,
+    $true ).
+
+fof(t15_frechet,axiom,
+    ! [A,B,C] : k1_relat_1(k1_funct_4(k6_relat_1(A),k2_funcop_1(B,C))) = k2_xboole_0(A,B) ).
+
+fof(t16_frechet,axiom,
+    ! [A,B,C] :
+      ( B != k1_xboole_0
+     => k2_relat_1(k1_funct_4(k6_relat_1(A),k2_funcop_1(B,C))) = k2_xboole_0(k4_xboole_0(A,B),k1_tarski(C)) ) ).
+
+fof(t17_frechet,axiom,
+    ! [A,B,C,D] :
+      ( r1_tarski(C,A)
+     => k10_relat_1(k1_funct_4(k6_relat_1(A),k2_funcop_1(B,D)),k4_xboole_0(C,k1_tarski(D))) = k4_xboole_0(k4_xboole_0(C,B),k1_tarski(D)) ) ).
+
+fof(t18_frechet,axiom,
+    ! [A,B,C] :
+      ( ~ r2_hidden(C,A)
+     => k10_relat_1(k1_funct_4(k6_relat_1(A),k2_funcop_1(B,C)),k1_tarski(C)) = B ) ).
+
+fof(t19_frechet,axiom,
+    ! [A,B,C,D] :
+      ( r1_tarski(C,A)
+     => ( r2_hidden(D,A)
+        | k10_relat_1(k1_funct_4(k6_relat_1(A),k2_funcop_1(B,D)),k2_xboole_0(C,k1_tarski(D))) = k2_xboole_0(C,B) ) ) ).
+
+fof(t20_frechet,axiom,
+    ! [A,B,C,D] :
+      ( r1_tarski(C,A)
+     => ( r2_hidden(D,A)
+        | k10_relat_1(k1_funct_4(k6_relat_1(A),k2_funcop_1(B,D)),k4_xboole_0(C,k1_tarski(D))) = k4_xboole_0(C,B) ) ) ).
+
+fof(d1_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A) )
+     => ( v1_frechet(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ? [C] :
+                ( m1_yellow_8(C,A,B)
+                & v1_card_4(C) ) ) ) ) ).
+
+fof(t21_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => v1_frechet(k5_pcomps_1(A)) ) ).
+
+fof(t22_frechet,axiom,
+    v1_frechet(k3_topmetr) ).
+
+fof(d2_frechet,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_frechet(A,B,C)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                   => ~ ( v3_pre_topc(D,A)
+                        & r2_hidden(C,D)
+                        & ! [E] :
+                            ( m2_subset_1(E,k1_numbers,k5_numbers)
+                           => ? [F] :
+                                ( m2_subset_1(F,k1_numbers,k5_numbers)
+                                & r1_xreal_0(E,F)
+                                & ~ r2_hidden(k8_funct_2(k5_numbers,u1_struct_0(A),B,F),D) ) ) ) ) ) ) ) ) ).
+
+fof(t23_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( C = k2_funcop_1(k5_numbers,B)
+               => r1_frechet(A,C,B) ) ) ) ) ).
+
+fof(d3_frechet,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ( v2_frechet(B,A)
+          <=> ? [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+                & r1_frechet(A,B,C) ) ) ) ) ).
+
+fof(d4_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( C = k2_frechet(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ( r2_hidden(D,C)
+                    <=> r1_frechet(A,B,D) ) ) ) ) ) ) ).
+
+fof(d5_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A) )
+     => ( v3_frechet(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ~ ( r2_hidden(C,k6_pre_topc(A,B))
+                    & ! [D] :
+                        ( ( v1_funct_1(D)
+                          & v1_funct_2(D,k5_numbers,u1_struct_0(A))
+                          & m2_relset_1(D,k5_numbers,u1_struct_0(A)) )
+                       => ~ ( r1_tarski(k1_frechet(A,D),B)
+                            & r2_hidden(C,k2_frechet(A,D)) ) ) ) ) ) ) ) ).
+
+fof(d6_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A) )
+     => ( v4_frechet(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+           => ( v4_pre_topc(B,A)
+            <=> ! [C] :
+                  ( ( v1_funct_1(C)
+                    & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                    & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+                 => ( ( v2_frechet(C,A)
+                      & r1_tarski(k1_frechet(A,C),B) )
+                   => r1_tarski(k2_frechet(A,C),B) ) ) ) ) ) ) ).
+
+fof(t24_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( v1_frechet(A)
+       => v3_frechet(A) ) ) ).
+
+fof(t25_frechet,axiom,
+    $true ).
+
+fof(t26_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v4_pre_topc(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                  & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+               => ( ( v2_frechet(C,A)
+                    & r1_tarski(k1_frechet(A,C),B) )
+                 => r1_tarski(k2_frechet(A,C),B) ) ) ) ) ) ).
+
+fof(t27_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+           => ( ! [C] :
+                  ( ( v1_funct_1(C)
+                    & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                    & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+                 => ( ( v2_frechet(C,A)
+                      & r1_tarski(k1_frechet(A,C),B) )
+                   => r1_tarski(k2_frechet(A,C),B) ) )
+             => v4_pre_topc(B,A) ) )
+       => v4_frechet(A) ) ) ).
+
+fof(t28_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( v3_frechet(A)
+       => v4_frechet(A) ) ) ).
+
+fof(d7_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_pre_topc(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( A = k3_frechet
+      <=> ( u1_struct_0(A) = k2_xboole_0(k4_xboole_0(k1_numbers,k5_numbers),k1_tarski(k1_numbers))
+          & ? [B] :
+              ( v1_funct_1(B)
+              & v1_funct_2(B,u1_struct_0(k3_topmetr),u1_struct_0(A))
+              & m2_relset_1(B,u1_struct_0(k3_topmetr),u1_struct_0(A))
+              & B = k1_funct_4(k6_relat_1(k1_numbers),k2_funcop_1(k5_numbers,k1_numbers))
+              & ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( v4_pre_topc(C,A)
+                  <=> v4_pre_topc(k5_pre_topc(k3_topmetr,A,B,C),k3_topmetr) ) ) ) ) ) ) ).
+
+fof(t29_frechet,axiom,
+    $true ).
+
+fof(t30_frechet,axiom,
+    m1_subset_1(k1_numbers,u1_struct_0(k3_frechet)) ).
+
+fof(t31_frechet,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k3_frechet)))
+     => ( ( v3_pre_topc(A,k3_frechet)
+          & r2_hidden(k1_numbers,A) )
+      <=> ? [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k3_topmetr)))
+            & v3_pre_topc(B,k3_topmetr)
+            & r1_tarski(k5_numbers,B)
+            & A = k2_xboole_0(k4_xboole_0(B,k5_numbers),k1_tarski(k1_numbers)) ) ) ) ).
+
+fof(t32_frechet,axiom,
+    ! [A] :
+      ( ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k3_frechet)))
+       => ( r2_hidden(k1_numbers,A)
+          | ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k3_topmetr)))
+            & k3_xboole_0(k5_numbers,A) = k1_xboole_0 ) ) )
+      & ( ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k3_topmetr)))
+          & k3_xboole_0(k5_numbers,A) = k1_xboole_0 )
+       => ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k3_frechet)))
+          & ~ r2_hidden(k1_numbers,A) ) ) ) ).
+
+fof(t33_frechet,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k3_topmetr)))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k3_frechet)))
+         => ( A = B
+           => ( ( ( k3_xboole_0(k5_numbers,A) = k1_xboole_0
+                  & v3_pre_topc(A,k3_topmetr) )
+               => ( ~ r2_hidden(k1_numbers,B)
+                  & v3_pre_topc(B,k3_frechet) ) )
+              & ( v3_pre_topc(B,k3_frechet)
+               => ( r2_hidden(k1_numbers,B)
+                  | ( k3_xboole_0(k5_numbers,A) = k1_xboole_0
+                    & v3_pre_topc(A,k3_topmetr) ) ) ) ) ) ) ) ).
+
+fof(t34_frechet,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(u1_struct_0(k3_frechet)))
+     => ( A = k1_tarski(k1_numbers)
+       => v4_pre_topc(A,k3_frechet) ) ) ).
+
+fof(t35_frechet,axiom,
+    ~ v1_frechet(k3_frechet) ).
+
+fof(t36_frechet,axiom,
+    v3_frechet(k3_frechet) ).
+
+fof(t37_frechet,axiom,
+    ? [A] :
+      ( ~ v3_struct_0(A)
+      & v2_pre_topc(A)
+      & l1_pre_topc(A)
+      & v3_frechet(A)
+      & ~ v1_frechet(A) ) ).
+
+fof(t38_frechet,axiom,
+    $true ).
+
+fof(t39_frechet,axiom,
+    $true ).
+
+fof(t40_frechet,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ~ ( ~ r1_xreal_0(A,np__0)
+          & ! [B] :
+              ( m2_subset_1(B,k1_numbers,k5_numbers)
+             => ~ ( ~ r1_xreal_0(A,k6_real_1(np__1,B))
+                  & ~ r1_xreal_0(B,np__0) ) ) ) ) ).
+
+fof(dt_k1_frechet,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_struct_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+        & m1_relset_1(B,k5_numbers,u1_struct_0(A)) )
+     => m1_subset_1(k1_frechet(A,B),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(redefinition_k1_frechet,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_struct_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+        & m1_relset_1(B,k5_numbers,u1_struct_0(A)) )
+     => k1_frechet(A,B) = k2_relat_1(B) ) ).
+
+fof(dt_k2_frechet,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+        & m1_relset_1(B,k5_numbers,u1_struct_0(A)) )
+     => m1_subset_1(k2_frechet(A,B),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k3_frechet,axiom,
+    ( ~ v3_struct_0(k3_frechet)
+    & v1_pre_topc(k3_frechet)
+    & v2_pre_topc(k3_frechet)
+    & l1_pre_topc(k3_frechet) ) ).
+
+fof(t11_frechet,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k5_pcomps_1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ~ ( B = C
+                  & ! [D] :
+                      ( m1_yellow_8(D,k5_pcomps_1(A),B)
+                     => ~ ( D = a_2_0_frechet(A,C)
+                          & v1_card_4(D)
+                          & ? [E] :
+                              ( v1_funct_1(E)
+                              & v1_funct_2(E,k5_numbers,D)
+                              & m2_relset_1(E,k5_numbers,D)
+                              & ! [F] :
+                                  ~ ( r2_hidden(F,k5_numbers)
+                                    & ! [G] :
+                                        ( m2_subset_1(G,k1_numbers,k5_numbers)
+                                       => ~ ( F = G
+                                            & k1_funct_1(E,F) = k9_metric_1(A,C,k6_real_1(np__1,k1_nat_1(G,np__1))) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_0_frechet,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v6_metric_1(B)
+        & v7_metric_1(B)
+        & v8_metric_1(B)
+        & v9_metric_1(B)
+        & l1_metric_1(B)
+        & m1_subset_1(C,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_2_0_frechet(B,C))
+      <=> ? [D] :
+            ( m2_subset_1(D,k1_numbers,k5_numbers)
+            & A = k9_metric_1(B,C,k6_real_1(np__1,D))
+            & D != np__0 ) ) ) ).
+
+%------------------------------------------------------------------------------

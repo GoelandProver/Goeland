@@ -1,0 +1,609 @@
+%------------------------------------------------------------------------------
+% File     : SET007+571 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Real Linear-Metric Space and Isometric Functions
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : vectmetr [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   45 (   2 unt;   0 def)
+%            Number of atoms       :  382 (  43 equ)
+%            Maximal formula atoms :   25 (   8 avg)
+%            Number of connectives :  384 (  47   ~;   0   |; 221   &)
+%                                         (  11 <=>; 105  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   30 (  10 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   43 (  41 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   51 (  51 usr;   4 con; 0-5 aty)
+%            Number of variables   :  124 ( 116   !;   8   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_vectmetr,axiom,
+    ! [A] :
+      ( l1_metric_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v6_metric_1(A)
+          & v7_metric_1(A)
+          & v8_metric_1(A)
+          & v9_metric_1(A)
+          & v1_vectmetr(A) )
+       => ( ~ v3_struct_0(A)
+          & v6_metric_1(A)
+          & v7_metric_1(A)
+          & v8_metric_1(A)
+          & v9_metric_1(A)
+          & v2_vectmetr(A) ) ) ) ).
+
+fof(rc1_vectmetr,axiom,
+    ? [A] :
+      ( l1_metric_1(A)
+      & ~ v3_struct_0(A)
+      & v6_metric_1(A)
+      & v7_metric_1(A)
+      & v8_metric_1(A)
+      & v9_metric_1(A)
+      & v1_vectmetr(A)
+      & v2_vectmetr(A) ) ).
+
+fof(cc2_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_relset_1(B,u1_struct_0(A),u1_struct_0(A))
+         => ( ( v1_funct_1(B)
+              & v1_funct_2(B,u1_struct_0(A),u1_struct_0(A))
+              & v3_vectmetr(B,A) )
+           => ( ~ v1_xboole_0(B)
+              & v1_funct_1(B)
+              & v2_funct_1(B)
+              & v1_funct_2(B,u1_struct_0(A),u1_struct_0(A))
+              & v1_partfun1(B,u1_struct_0(A),u1_struct_0(A)) ) ) ) ) ).
+
+fof(rc2_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ? [B] :
+          ( m1_relset_1(B,u1_struct_0(A),u1_struct_0(A))
+          & ~ v1_xboole_0(B)
+          & v1_relat_1(B)
+          & v1_funct_1(B)
+          & v1_funct_2(B,u1_struct_0(A),u1_struct_0(A))
+          & v1_partfun1(B,u1_struct_0(A),u1_struct_0(A))
+          & v3_vectmetr(B,A) ) ) ).
+
+fof(fc1_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ~ v1_xboole_0(k1_vectmetr(A)) ) ).
+
+fof(rc3_vectmetr,axiom,
+    ? [A] :
+      ( l1_vectmetr(A)
+      & v4_vectmetr(A) ) ).
+
+fof(rc4_vectmetr,axiom,
+    ? [A] :
+      ( l1_vectmetr(A)
+      & ~ v3_struct_0(A)
+      & v4_vectmetr(A) ) ).
+
+fof(fc2_vectmetr,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),k1_numbers)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),k1_numbers)
+        & m1_subset_1(C,A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(E)
+        & v1_funct_2(E,k2_zfmisc_1(k1_numbers,A),A)
+        & m1_relset_1(E,k2_zfmisc_1(k1_numbers,A),A) )
+     => ( ~ v3_struct_0(g1_vectmetr(A,B,C,D,E))
+        & v4_vectmetr(g1_vectmetr(A,B,C,D,E)) ) ) ).
+
+fof(rc5_vectmetr,axiom,
+    ? [A] :
+      ( l1_vectmetr(A)
+      & ~ v3_struct_0(A)
+      & v3_rlvect_1(A)
+      & v4_rlvect_1(A)
+      & v5_rlvect_1(A)
+      & v6_rlvect_1(A)
+      & v7_rlvect_1(A)
+      & v6_metric_1(A)
+      & v7_metric_1(A)
+      & v8_metric_1(A)
+      & v9_metric_1(A)
+      & v4_vectmetr(A)
+      & v5_vectmetr(A)
+      & v6_vectmetr(A) ) ).
+
+fof(fc3_vectmetr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( ~ v3_struct_0(k5_vectmetr(A))
+        & v1_group_1(k5_vectmetr(A)) ) ) ).
+
+fof(fc4_vectmetr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( ~ v3_struct_0(k5_vectmetr(A))
+        & v1_group_1(k5_vectmetr(A))
+        & v2_group_1(k5_vectmetr(A))
+        & v3_group_1(k5_vectmetr(A))
+        & v4_group_1(k5_vectmetr(A)) ) ) ).
+
+fof(fc5_vectmetr,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_group_2(B,k5_vectmetr(A)) )
+     => ( v1_relat_1(k6_vectmetr(A,B))
+        & v3_relat_2(k6_vectmetr(A,B))
+        & v8_relat_2(k6_vectmetr(A,B))
+        & v1_partfun1(k6_vectmetr(A,B),u1_struct_0(k4_vectmetr(A)),u1_struct_0(k4_vectmetr(A))) ) ) ).
+
+fof(d1_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ( v1_vectmetr(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,k1_numbers)
+                   => ~ ( r1_xreal_0(np__0,D)
+                        & r1_xreal_0(D,np__1)
+                        & ! [E] :
+                            ( m1_subset_1(E,u1_struct_0(A))
+                           => ~ ( k2_metric_1(A,B,E) = k4_real_1(D,k2_metric_1(A,B,C))
+                                & k2_metric_1(A,E,C) = k4_real_1(k5_real_1(np__1,D),k2_metric_1(A,B,C)) ) ) ) ) ) ) ) ) ).
+
+fof(d2_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ( v2_vectmetr(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,k1_numbers)
+                   => ! [E] :
+                        ( m1_subset_1(E,k1_numbers)
+                       => ~ ( ~ r1_xreal_0(D,np__0)
+                            & ~ r1_xreal_0(E,np__0)
+                            & ! [F] :
+                                ( m2_finseq_1(F,u1_struct_0(A))
+                               => ~ ( k4_finseq_4(k5_numbers,u1_struct_0(A),F,np__1) = B
+                                    & k4_finseq_4(k5_numbers,u1_struct_0(A),F,k3_finseq_1(F)) = C
+                                    & ! [G] :
+                                        ( m2_subset_1(G,k1_numbers,k5_numbers)
+                                       => ~ ( r1_xreal_0(np__1,G)
+                                            & r1_xreal_0(G,k5_real_1(k3_finseq_1(F),np__1))
+                                            & r1_xreal_0(D,k2_metric_1(A,k4_finseq_4(k5_numbers,u1_struct_0(A),F,G),k4_finseq_4(k5_numbers,u1_struct_0(A),F,k1_nat_1(G,np__1)))) ) )
+                                    & ! [G] :
+                                        ( m2_finseq_1(G,k1_numbers)
+                                       => ~ ( k3_finseq_1(G) = k5_real_1(k3_finseq_1(F),np__1)
+                                            & ! [H] :
+                                                ( m2_subset_1(H,k1_numbers,k5_numbers)
+                                               => ( ( r1_xreal_0(np__1,H)
+                                                    & r1_xreal_0(H,k3_finseq_1(G)) )
+                                                 => k4_finseq_4(k5_numbers,k1_numbers,G,H) = k2_metric_1(A,k4_finseq_4(k5_numbers,u1_struct_0(A),F,H),k4_finseq_4(k5_numbers,u1_struct_0(A),F,k1_nat_1(H,np__1))) ) )
+                                            & r1_xreal_0(E,k18_complex1(k5_real_1(k2_metric_1(A,B,C),k15_rvsum_1(G)))) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t1_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ( v1_vectmetr(A)
+       => ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,k1_numbers)
+                   => ~ ( ~ r1_xreal_0(D,np__0)
+                        & ! [E] :
+                            ( m2_finseq_1(E,u1_struct_0(A))
+                           => ~ ( k4_finseq_4(k5_numbers,u1_struct_0(A),E,np__1) = B
+                                & k4_finseq_4(k5_numbers,u1_struct_0(A),E,k3_finseq_1(E)) = C
+                                & ! [F] :
+                                    ( m2_subset_1(F,k1_numbers,k5_numbers)
+                                   => ~ ( r1_xreal_0(np__1,F)
+                                        & r1_xreal_0(F,k5_real_1(k3_finseq_1(E),np__1))
+                                        & r1_xreal_0(D,k4_metric_1(A,k4_finseq_4(k5_numbers,u1_struct_0(A),E,F),k4_finseq_4(k5_numbers,u1_struct_0(A),E,k1_nat_1(F,np__1)))) ) )
+                                & ! [F] :
+                                    ( m2_finseq_1(F,k1_numbers)
+                                   => ( ( k3_finseq_1(F) = k5_real_1(k3_finseq_1(E),np__1)
+                                        & ! [G] :
+                                            ( m2_subset_1(G,k1_numbers,k5_numbers)
+                                           => ( ( r1_xreal_0(np__1,G)
+                                                & r1_xreal_0(G,k3_finseq_1(F)) )
+                                             => k4_finseq_4(k5_numbers,k1_numbers,F,G) = k4_metric_1(A,k4_finseq_4(k5_numbers,u1_struct_0(A),E,G),k4_finseq_4(k5_numbers,u1_struct_0(A),E,k1_nat_1(G,np__1))) ) ) )
+                                     => k4_metric_1(A,B,C) = k15_rvsum_1(F) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d3_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),u1_struct_0(A))
+            & m2_relset_1(B,u1_struct_0(A),u1_struct_0(A)) )
+         => ( v3_vectmetr(B,A)
+          <=> ( k2_relat_1(B) = u1_struct_0(A)
+              & ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => k2_metric_1(A,C,D) = k2_metric_1(A,k8_funct_2(u1_struct_0(A),u1_struct_0(A),B,C),k8_funct_2(u1_struct_0(A),u1_struct_0(A),B,D)) ) ) ) ) ) ) ).
+
+fof(d4_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( B = k1_vectmetr(A)
+        <=> ! [C] :
+              ( r2_hidden(C,B)
+            <=> ? [D] :
+                  ( v1_funct_1(D)
+                  & v1_funct_2(D,u1_struct_0(A),u1_struct_0(A))
+                  & m2_relset_1(D,u1_struct_0(A),u1_struct_0(A))
+                  & D = C
+                  & v3_vectmetr(D,A) ) ) ) ) ).
+
+fof(t2_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),u1_struct_0(A))
+            & m2_relset_1(B,u1_struct_0(A),u1_struct_0(A)) )
+         => ( v3_vectmetr(B,A)
+           => v2_funct_1(B) ) ) ) ).
+
+fof(t3_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),u1_struct_0(A))
+            & v3_vectmetr(B,A)
+            & m2_relset_1(B,u1_struct_0(A),u1_struct_0(A)) )
+         => v3_vectmetr(k2_tops_2(A,A,B),A) ) ) ).
+
+fof(t4_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),u1_struct_0(A))
+            & v3_vectmetr(B,A)
+            & m2_relset_1(B,u1_struct_0(A),u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(A))
+                & v3_vectmetr(C,A)
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(A)) )
+             => v3_vectmetr(k7_funct_2(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),C,B),A) ) ) ) ).
+
+fof(t5_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => v3_vectmetr(k7_grcat_1(A),A) ) ).
+
+fof(d5_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_vectmetr(A) )
+     => ( v5_vectmetr(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => k2_metric_1(A,k3_rlvect_1(A,C,B),k3_rlvect_1(A,D,B)) = k4_real_1(k18_complex1(B),k2_metric_1(A,C,D)) ) ) ) ) ) ).
+
+fof(d6_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_vectmetr(A) )
+     => ( v6_vectmetr(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => k2_metric_1(A,D,C) = k2_metric_1(A,k2_rlvect_1(A,D,B),k2_rlvect_1(A,C,B)) ) ) ) ) ) ).
+
+fof(d7_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_vectmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k3_vectmetr(A,B) = k2_metric_1(A,k1_rlvect_1(A),B) ) ) ).
+
+fof(t6_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v5_vectmetr(A)
+        & l1_vectmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k3_vectmetr(A,k3_rlvect_1(A,C,B)) = k4_real_1(k18_complex1(B),k3_vectmetr(A,C)) ) ) ) ).
+
+fof(t7_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v9_metric_1(A)
+        & v6_vectmetr(A)
+        & l1_vectmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r1_xreal_0(k3_vectmetr(A,k4_rlvect_1(A,B,C)),k3_real_1(k3_vectmetr(A,B),k3_vectmetr(A,C))) ) ) ) ).
+
+fof(t8_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v6_vectmetr(A)
+        & l1_vectmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k2_metric_1(A,B,C) = k3_vectmetr(A,k6_rlvect_1(A,C,B)) ) ) ) ).
+
+fof(d8_vectmetr,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v7_rlvect_1(B)
+            & v6_metric_1(B)
+            & v7_metric_1(B)
+            & v8_metric_1(B)
+            & v9_metric_1(B)
+            & v4_vectmetr(B)
+            & v5_vectmetr(B)
+            & v6_vectmetr(B)
+            & l1_vectmetr(B) )
+         => ( B = k4_vectmetr(A)
+          <=> ( u1_struct_0(B) = k1_euclid(A)
+              & u1_metric_1(B) = k13_euclid(A)
+              & u2_struct_0(B) = k5_euclid(A)
+              & ! [C] :
+                  ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+                 => ! [D] :
+                      ( m2_finseq_2(D,k1_numbers,k1_euclid(A))
+                     => k1_binop_1(u1_rlvect_1(B),C,D) = k7_euclid(A,C,D) ) )
+              & ! [C] :
+                  ( m2_finseq_2(C,k1_numbers,k1_euclid(A))
+                 => ! [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                     => k1_binop_1(u2_rlvect_1(B),D,C) = k9_euclid(A,D,C) ) ) ) ) ) ) ).
+
+fof(t9_vectmetr,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(k4_vectmetr(A)),u1_struct_0(k4_vectmetr(A)))
+            & v3_vectmetr(B,k4_vectmetr(A))
+            & m2_relset_1(B,u1_struct_0(k4_vectmetr(A)),u1_struct_0(k4_vectmetr(A))) )
+         => k2_relat_1(B) = k1_euclid(A) ) ) ).
+
+fof(d9_vectmetr,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( v1_group_1(B)
+            & l1_group_1(B) )
+         => ( B = k5_vectmetr(A)
+          <=> ( u1_struct_0(B) = k2_vectmetr(k4_vectmetr(A))
+              & ! [C] :
+                  ( ( v1_relat_1(C)
+                    & v1_funct_1(C) )
+                 => ! [D] :
+                      ( ( v1_relat_1(D)
+                        & v1_funct_1(D) )
+                     => ( ( r2_hidden(C,k2_vectmetr(k4_vectmetr(A)))
+                          & r2_hidden(D,k2_vectmetr(k4_vectmetr(A))) )
+                       => k1_binop_1(u1_group_1(B),C,D) = k5_relat_1(D,C) ) ) ) ) ) ) ) ).
+
+fof(t10_vectmetr,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k2_group_1(k5_vectmetr(A)) = k7_grcat_1(k4_vectmetr(A)) ) ).
+
+fof(t11_vectmetr,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k5_vectmetr(A)))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(k4_vectmetr(A)),u1_struct_0(k4_vectmetr(A)))
+                & m2_relset_1(C,u1_struct_0(k4_vectmetr(A)),u1_struct_0(k4_vectmetr(A))) )
+             => ( B = C
+               => k3_group_1(k5_vectmetr(A),B) = k2_tops_2(k4_vectmetr(A),k4_vectmetr(A),C) ) ) ) ) ).
+
+fof(d10_vectmetr,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_group_2(B,k5_vectmetr(A))
+         => ! [C] :
+              ( m2_relset_1(C,u1_struct_0(k4_vectmetr(A)),u1_struct_0(k4_vectmetr(A)))
+             => ( C = k6_vectmetr(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(k4_vectmetr(A)))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(k4_vectmetr(A)))
+                       => ( r2_hidden(k1_domain_1(u1_struct_0(k4_vectmetr(A)),u1_struct_0(k4_vectmetr(A)),D,E),C)
+                        <=> ? [F] :
+                              ( v1_relat_1(F)
+                              & v1_funct_1(F)
+                              & r2_hidden(F,u1_struct_0(B))
+                              & k1_funct_1(F,D) = E ) ) ) ) ) ) ) ) ).
+
+fof(dt_l1_vectmetr,axiom,
+    ! [A] :
+      ( l1_vectmetr(A)
+     => ( l2_rlvect_1(A)
+        & l1_metric_1(A) ) ) ).
+
+fof(existence_l1_vectmetr,axiom,
+    ? [A] : l1_vectmetr(A) ).
+
+fof(abstractness_v4_vectmetr,axiom,
+    ! [A] :
+      ( l1_vectmetr(A)
+     => ( v4_vectmetr(A)
+       => A = g1_vectmetr(u1_struct_0(A),u1_metric_1(A),u2_struct_0(A),u1_rlvect_1(A),u2_rlvect_1(A)) ) ) ).
+
+fof(dt_k1_vectmetr,axiom,
+    $true ).
+
+fof(dt_k2_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => m1_subset_1(k2_vectmetr(A),k1_zfmisc_1(k1_funct_2(u1_struct_0(A),u1_struct_0(A)))) ) ).
+
+fof(redefinition_k2_vectmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => k2_vectmetr(A) = k1_vectmetr(A) ) ).
+
+fof(dt_k3_vectmetr,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_vectmetr(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => m1_subset_1(k3_vectmetr(A,B),k1_numbers) ) ).
+
+fof(dt_k4_vectmetr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( ~ v3_struct_0(k4_vectmetr(A))
+        & v3_rlvect_1(k4_vectmetr(A))
+        & v4_rlvect_1(k4_vectmetr(A))
+        & v5_rlvect_1(k4_vectmetr(A))
+        & v6_rlvect_1(k4_vectmetr(A))
+        & v7_rlvect_1(k4_vectmetr(A))
+        & v6_metric_1(k4_vectmetr(A))
+        & v7_metric_1(k4_vectmetr(A))
+        & v8_metric_1(k4_vectmetr(A))
+        & v9_metric_1(k4_vectmetr(A))
+        & v4_vectmetr(k4_vectmetr(A))
+        & v5_vectmetr(k4_vectmetr(A))
+        & v6_vectmetr(k4_vectmetr(A))
+        & l1_vectmetr(k4_vectmetr(A)) ) ) ).
+
+fof(dt_k5_vectmetr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( v1_group_1(k5_vectmetr(A))
+        & l1_group_1(k5_vectmetr(A)) ) ) ).
+
+fof(dt_k6_vectmetr,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_group_2(B,k5_vectmetr(A)) )
+     => m2_relset_1(k6_vectmetr(A,B),u1_struct_0(k4_vectmetr(A)),u1_struct_0(k4_vectmetr(A))) ) ).
+
+fof(dt_g1_vectmetr,axiom,
+    ! [A,B,C,D,E] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),k1_numbers)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),k1_numbers)
+        & m1_subset_1(C,A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(E)
+        & v1_funct_2(E,k2_zfmisc_1(k1_numbers,A),A)
+        & m1_relset_1(E,k2_zfmisc_1(k1_numbers,A),A) )
+     => ( v4_vectmetr(g1_vectmetr(A,B,C,D,E))
+        & l1_vectmetr(g1_vectmetr(A,B,C,D,E)) ) ) ).
+
+fof(free_g1_vectmetr,axiom,
+    ! [A,B,C,D,E] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),k1_numbers)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),k1_numbers)
+        & m1_subset_1(C,A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(E)
+        & v1_funct_2(E,k2_zfmisc_1(k1_numbers,A),A)
+        & m1_relset_1(E,k2_zfmisc_1(k1_numbers,A),A) )
+     => ! [F,G,H,I,J] :
+          ( g1_vectmetr(A,B,C,D,E) = g1_vectmetr(F,G,H,I,J)
+         => ( A = F
+            & B = G
+            & C = H
+            & D = I
+            & E = J ) ) ) ).
+
+%------------------------------------------------------------------------------

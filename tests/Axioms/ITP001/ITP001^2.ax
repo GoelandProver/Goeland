@@ -1,0 +1,100 @@
+%------------------------------------------------------------------------------
+% File     : ITP001^2 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, bushy and chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+% Source   : [BG+19]
+% Names    : HL4001^2.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   16 (   2 unt;   9 typ;   0 def)
+%            Number of atoms       :   19 (   5 equ;   0 cnn)
+%            Maximal formula atoms :    5 (   1 avg)
+%            Number of connectives :   61 (   0   ~;   0   |;   0   &;  51   @)
+%                                         (   0 <=>;  10  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   12 (   7 avg;  51 nst)
+%            Number of types       :    3 (   1 usr)
+%            Number of type conns  :   13 (  13   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :    9 (   8 usr;   2 con; 0-2 aty)
+%            Number of variables   :   19 (   0   ^  19   !;   0   ?;  19   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments : 
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(del_tp,type,
+    del: $tType ).
+
+thf(bool,type,
+    bool: del ).
+
+thf(ind,type,
+    ind: del ).
+
+thf(arr,type,
+    arr: del > del > del ).
+
+thf(mem,type,
+    mem: $i > del > $o ).
+
+thf(ap,type,
+    ap: $i > $i > $i ).
+
+thf(lam,type,
+    lam: del > ( $i > $i ) > $i ).
+
+thf(p,type,
+    p: $i > $o ).
+
+thf(stp_inj_o,type,
+    inj__o: $o > $i ).
+
+thf(stp_inj_surj_o,axiom,
+    ! [X: $o] :
+      ( ( p @ ( inj__o @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_o,axiom,
+    ! [X: $o] : ( mem @ ( inj__o @ X ) @ bool ) ).
+
+thf(stp_iso_mem_o,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ bool )
+     => ( X
+        = ( inj__o @ ( p @ X ) ) ) ) ).
+
+thf(ap_tp,axiom,
+    ! [A: del,B: del,F: $i] :
+      ( ( mem @ F @ ( arr @ A @ B ) )
+     => ! [X: $i] :
+          ( ( mem @ X @ A )
+         => ( mem @ ( ap @ F @ X ) @ B ) ) ) ).
+
+thf(lam_tp,axiom,
+    ! [A: del,B: del,F: $i > $i] :
+      ( ! [X: $i] :
+          ( ( mem @ X @ A )
+         => ( mem @ ( F @ X ) @ B ) )
+     => ( mem @ ( lam @ A @ F ) @ ( arr @ A @ B ) ) ) ).
+
+thf(funcext,axiom,
+    ! [A: del,B: del,F: $i] :
+      ( ( mem @ F @ ( arr @ A @ B ) )
+     => ! [G: $i] :
+          ( ( mem @ G @ ( arr @ A @ B ) )
+         => ( ! [X: $i] :
+                ( ( mem @ X @ A )
+               => ( ( ap @ F @ X )
+                  = ( ap @ G @ X ) ) )
+           => ( F = G ) ) ) ) ).
+
+thf(beta,axiom,
+    ! [A: del,F: $i > $i,X: $i] :
+      ( ( mem @ X @ A )
+     => ( ( ap @ ( lam @ A @ F ) @ X )
+        = ( F @ X ) ) ) ).
+
+%------------------------------------------------------------------------------

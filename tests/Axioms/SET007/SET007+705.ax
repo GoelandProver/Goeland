@@ -1,0 +1,391 @@
+%------------------------------------------------------------------------------
+% File     : SET007+705 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Pythagorean Triples
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : pythtrip [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   39 (   2 unt;   0 def)
+%            Number of atoms       :  208 (  21 equ)
+%            Maximal formula atoms :   12 (   5 avg)
+%            Number of connectives :  197 (  28   ~;   1   |;  95   &)
+%                                         (  12 <=>;  61  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   19 (   8 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   22 (  21 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   21 (  21 usr;   9 con; 0-4 aty)
+%            Number of variables   :   75 (  58   !;  17   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_pythtrip,axiom,
+    ! [A] :
+      ( v1_pythtrip(A)
+     => ( v4_ordinal2(A)
+        & v1_xcmplx_0(A)
+        & v1_xreal_0(A)
+        & v1_int_1(A) ) ) ).
+
+fof(fc1_pythtrip,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( v4_ordinal2(k5_square_1(A))
+        & v1_xcmplx_0(k5_square_1(A))
+        & v1_xreal_0(k5_square_1(A))
+        & v1_int_1(k5_square_1(A))
+        & v1_pythtrip(k5_square_1(A)) ) ) ).
+
+fof(rc1_pythtrip,axiom,
+    ? [A] :
+      ( m1_subset_1(A,k5_numbers)
+      & v1_ordinal1(A)
+      & v2_ordinal1(A)
+      & v3_ordinal1(A)
+      & v4_ordinal2(A)
+      & v1_xcmplx_0(A)
+      & v1_abian(A)
+      & v1_xreal_0(A)
+      & ~ v3_xreal_0(A)
+      & v1_int_1(A)
+      & v1_pythtrip(A) ) ).
+
+fof(rc2_pythtrip,axiom,
+    ? [A] :
+      ( m1_subset_1(A,k5_numbers)
+      & v1_ordinal1(A)
+      & v2_ordinal1(A)
+      & v3_ordinal1(A)
+      & v4_ordinal2(A)
+      & v1_xcmplx_0(A)
+      & ~ v1_abian(A)
+      & v1_xreal_0(A)
+      & ~ v3_xreal_0(A)
+      & v1_int_1(A)
+      & v1_pythtrip(A) ) ).
+
+fof(rc3_pythtrip,axiom,
+    ? [A] :
+      ( v4_ordinal2(A)
+      & v1_xcmplx_0(A)
+      & v1_abian(A)
+      & v1_xreal_0(A)
+      & v1_int_1(A)
+      & v1_pythtrip(A) ) ).
+
+fof(rc4_pythtrip,axiom,
+    ? [A] :
+      ( v4_ordinal2(A)
+      & v1_xcmplx_0(A)
+      & ~ v1_abian(A)
+      & v1_xreal_0(A)
+      & v1_int_1(A)
+      & v1_pythtrip(A) ) ).
+
+fof(fc2_pythtrip,axiom,
+    ! [A,B] :
+      ( ( v1_pythtrip(A)
+        & v1_pythtrip(B) )
+     => ( v4_ordinal2(k3_xcmplx_0(A,B))
+        & v1_xcmplx_0(k3_xcmplx_0(A,B))
+        & v1_xreal_0(k3_xcmplx_0(A,B))
+        & v1_int_1(k3_xcmplx_0(A,B))
+        & v1_pythtrip(k3_xcmplx_0(A,B)) ) ) ).
+
+fof(fc3_pythtrip,axiom,
+    ! [A] :
+      ( ( v1_abian(A)
+        & v1_int_1(A) )
+     => v1_abian(k5_square_1(A)) ) ).
+
+fof(fc4_pythtrip,axiom,
+    ! [A] :
+      ( ( ~ v1_abian(A)
+        & v1_int_1(A) )
+     => ~ v1_abian(k5_square_1(A)) ) ).
+
+fof(fc5_pythtrip,axiom,
+    ! [A,B] :
+      ( ( ~ v1_abian(A)
+        & v1_pythtrip(A)
+        & ~ v1_abian(B)
+        & v1_pythtrip(B) )
+     => ( v1_xcmplx_0(k2_xcmplx_0(A,B))
+        & v1_abian(k2_xcmplx_0(A,B))
+        & v1_xreal_0(k2_xcmplx_0(A,B))
+        & v1_int_1(k2_xcmplx_0(A,B))
+        & ~ v1_pythtrip(k2_xcmplx_0(A,B)) ) ) ).
+
+fof(cc2_pythtrip,axiom,
+    ! [A] :
+      ( m1_pythtrip(A)
+     => v1_finset_1(A) ) ).
+
+fof(rc5_pythtrip,axiom,
+    ? [A] :
+      ( m1_pythtrip(A)
+      & v1_finset_1(A)
+      & ~ v2_pythtrip(A)
+      & v3_pythtrip(A) ) ).
+
+fof(d1_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r2_int_2(A,B)
+          <=> ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => ( ( r1_nat_1(C,A)
+                    & r1_nat_1(C,B) )
+                 => C = np__1 ) ) ) ) ) ).
+
+fof(d2_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r2_int_2(A,B)
+          <=> ! [C] :
+                ( ( v1_int_2(C)
+                  & m2_subset_1(C,k1_numbers,k5_numbers) )
+               => ~ ( r1_nat_1(C,A)
+                    & r1_nat_1(C,B) ) ) ) ) ) ).
+
+fof(d3_pythtrip,axiom,
+    ! [A] :
+      ( v1_pythtrip(A)
+    <=> ? [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+          & A = k2_pepin(B) ) ) ).
+
+fof(t1_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ( v1_pythtrip(k2_nat_1(A,B))
+              & r2_int_2(A,B) )
+           => ( v1_pythtrip(A)
+              & v1_pythtrip(B) ) ) ) ) ).
+
+fof(t2_pythtrip,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ( v1_abian(A)
+      <=> v1_abian(k2_pepin(A)) ) ) ).
+
+fof(t3_pythtrip,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ( v1_abian(A)
+       => k4_nat_1(k2_pepin(A),np__4) = np__0 ) ) ).
+
+fof(t4_pythtrip,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ( ~ v1_abian(A)
+       => k4_nat_1(k2_pepin(A),np__4) = np__1 ) ) ).
+
+fof(t5_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( k2_pepin(A) = k2_pepin(B)
+           => A = B ) ) ) ).
+
+fof(t6_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_nat_1(A,B)
+          <=> r1_nat_1(k2_pepin(A),k2_pepin(B)) ) ) ) ).
+
+fof(t7_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_nat_1(A,B)
+                  | C = np__0 )
+              <=> r1_nat_1(k2_nat_1(C,A),k2_nat_1(C,B)) ) ) ) ) ).
+
+fof(t8_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k6_nat_1(k2_nat_1(A,B),k2_nat_1(A,C)) = k2_nat_1(A,k6_nat_1(B,C)) ) ) ) ).
+
+fof(t9_pythtrip,axiom,
+    ! [A] :
+      ~ ( ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ? [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+                & r1_xreal_0(B,C)
+                & r2_hidden(C,A) ) )
+        & v1_finset_1(A) ) ).
+
+fof(t10_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( r2_int_2(A,B)
+              & v1_abian(A)
+              & v1_abian(B) ) ) ) ).
+
+fof(t11_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( k1_nat_1(k2_pepin(A),k2_pepin(B)) = k2_pepin(C)
+                  & r2_int_2(A,B)
+                  & ~ v1_abian(A)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ! [E] :
+                          ( m2_subset_1(E,k1_numbers,k5_numbers)
+                         => ~ ( r1_xreal_0(D,E)
+                              & A = k5_real_1(k2_pepin(E),k2_pepin(D))
+                              & B = k2_nat_1(k2_nat_1(np__2,D),E)
+                              & C = k1_nat_1(k2_pepin(E),k2_pepin(D)) ) ) ) ) ) ) ) ).
+
+fof(t12_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( ( A = k5_real_1(k2_pepin(B),k2_pepin(C))
+                          & D = k2_nat_1(k2_nat_1(np__2,C),B)
+                          & E = k1_nat_1(k2_pepin(B),k2_pepin(C)) )
+                       => k1_nat_1(k2_pepin(A),k2_pepin(D)) = k2_pepin(E) ) ) ) ) ) ) ).
+
+fof(d4_pythtrip,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k5_numbers))
+     => ( m1_pythtrip(A)
+      <=> ? [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+            & ? [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+                & ? [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                    & k1_nat_1(k2_pepin(B),k2_pepin(C)) = k2_pepin(D)
+                    & A = k8_domain_1(k5_numbers,B,C,D) ) ) ) ) ) ).
+
+fof(d5_pythtrip,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k5_numbers))
+     => ( m1_pythtrip(A)
+      <=> ? [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+            & ? [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+                & ? [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                    & r1_xreal_0(C,D)
+                    & A = k8_domain_1(k1_numbers,k4_real_1(B,k5_real_1(k2_pepin(D),k2_pepin(C))),k2_nat_1(B,k2_nat_1(k2_nat_1(np__2,C),D)),k2_nat_1(B,k1_nat_1(k2_pepin(D),k2_pepin(C)))) ) ) ) ) ) ).
+
+fof(d6_pythtrip,axiom,
+    ! [A] :
+      ( m1_pythtrip(A)
+     => ( v2_pythtrip(A)
+      <=> r2_hidden(np__0,A) ) ) ).
+
+fof(t13_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ~ ( ~ r1_xreal_0(A,np__2)
+          & ! [B] :
+              ( m1_pythtrip(B)
+             => ~ ( ~ v2_pythtrip(B)
+                  & r2_hidden(A,B) ) ) ) ) ).
+
+fof(d7_pythtrip,axiom,
+    ! [A] :
+      ( m1_pythtrip(A)
+     => ( v3_pythtrip(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ( ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ( r2_hidden(C,A)
+                   => r1_nat_1(B,C) ) )
+             => B = np__1 ) ) ) ) ).
+
+fof(d8_pythtrip,axiom,
+    ! [A] :
+      ( m1_pythtrip(A)
+     => ( v3_pythtrip(A)
+      <=> ? [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+            & ? [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+                & r2_hidden(B,A)
+                & r2_hidden(C,A)
+                & r2_int_2(B,C) ) ) ) ) ).
+
+fof(t14_pythtrip,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ~ ( ~ r1_xreal_0(A,np__0)
+          & ! [B] :
+              ( m1_pythtrip(B)
+             => ~ ( ~ v2_pythtrip(B)
+                  & v3_pythtrip(B)
+                  & r2_hidden(k2_nat_1(np__4,A),B) ) ) ) ) ).
+
+fof(t15_pythtrip,axiom,
+    ( ~ v2_pythtrip(k8_domain_1(k5_numbers,np__3,np__4,np__5))
+    & v3_pythtrip(k8_domain_1(k5_numbers,np__3,np__4,np__5))
+    & m1_pythtrip(k8_domain_1(k5_numbers,np__3,np__4,np__5)) ) ).
+
+fof(dt_m1_pythtrip,axiom,
+    ! [A] :
+      ( m1_pythtrip(A)
+     => m1_subset_1(A,k1_zfmisc_1(k5_numbers)) ) ).
+
+fof(existence_m1_pythtrip,axiom,
+    ? [A] : m1_pythtrip(A) ).
+
+fof(t16_pythtrip,axiom,
+    ~ v1_finset_1(a_0_0_pythtrip) ).
+
+fof(fraenkel_a_0_0_pythtrip,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_0_pythtrip)
+    <=> ? [B] :
+          ( m1_pythtrip(B)
+          & A = B
+          & ~ v2_pythtrip(B)
+          & v3_pythtrip(B) ) ) ).
+
+%------------------------------------------------------------------------------

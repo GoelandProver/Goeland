@@ -1,0 +1,510 @@
+%------------------------------------------------------------------------------
+% File     : SET007+291 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Algebra of Normal Forms Is a Heyting Algebra
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : heyting1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   65 (  11 unt;   0 def)
+%            Number of atoms       :  246 (  42 equ)
+%            Maximal formula atoms :   14 (   3 avg)
+%            Number of connectives :  201 (  20   ~;   0   |;  68   &)
+%                                         (  11 <=>; 102  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   19 (   6 avg)
+%            Maximal term depth    :    6 (   2 avg)
+%            Number of predicates  :   27 (  25 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   50 (  50 usr;   1 con; 0-6 aty)
+%            Number of variables   :  159 ( 154   !;   5   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_heyting1,axiom,
+    ! [A] :
+    ? [B] :
+      ( m1_subset_1(B,k8_normform(A))
+      & ~ v1_xboole_0(B) ) ).
+
+fof(fc1_heyting1,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k12_normform(A))
+      & v3_lattices(k12_normform(A))
+      & v4_lattices(k12_normform(A))
+      & v5_lattices(k12_normform(A))
+      & v6_lattices(k12_normform(A))
+      & v7_lattices(k12_normform(A))
+      & v8_lattices(k12_normform(A))
+      & v9_lattices(k12_normform(A))
+      & v10_lattices(k12_normform(A))
+      & v11_lattices(k12_normform(A))
+      & v12_lattices(k12_normform(A))
+      & v13_lattices(k12_normform(A))
+      & v3_filter_0(k12_normform(A)) ) ).
+
+fof(t1_heyting1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,A,B)
+                    & m2_relset_1(D,A,B) )
+                 => ( ! [E] :
+                        ( m1_subset_1(E,A)
+                       => r2_hidden(k8_funct_2(A,B,D,E),C) )
+                   => ( v1_funct_1(D)
+                      & v1_funct_2(D,A,C)
+                      & m2_relset_1(D,A,C) ) ) ) ) ) ) ).
+
+fof(d1_heyting1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k5_finsub_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k5_finsub_1(A))
+             => ( r1_heyting1(A,B,C)
+              <=> ! [D] :
+                    ( m1_subset_1(D,A)
+                   => ( r2_hidden(D,B)
+                     => r2_hidden(D,C) ) ) ) ) ) ) ).
+
+fof(d2_heyting1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k1_heyting1(A) = A ) ).
+
+fof(t2_heyting1,axiom,
+    $true ).
+
+fof(t3_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ( B = k1_xboole_0
+       => k9_normform(A,B) = k1_xboole_0 ) ) ).
+
+fof(d3_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => k3_heyting1(A,B) = B ) ).
+
+fof(t4_heyting1,axiom,
+    $true ).
+
+fof(t5_heyting1,axiom,
+    $true ).
+
+fof(t6_heyting1,axiom,
+    $true ).
+
+fof(t7_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k5_finsub_1(k7_normform(A)),k8_normform(A))
+     => k9_normform(A,k10_normform(A,B,B)) = B ) ).
+
+fof(t8_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k5_finsub_1(k7_normform(A)),k8_normform(A))
+     => ! [C] :
+          ( r1_tarski(C,B)
+         => r2_hidden(C,k8_normform(A)) ) ) ).
+
+fof(t9_heyting1,axiom,
+    $true ).
+
+fof(t10_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => ! [C] :
+          ( r1_tarski(C,B)
+         => m1_subset_1(C,u1_struct_0(k12_normform(A))) ) ) ).
+
+fof(d4_heyting1,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k7_normform(A),u1_struct_0(k12_normform(A)))
+        & m2_relset_1(B,k7_normform(A),u1_struct_0(k12_normform(A))) )
+     => ( B = k4_heyting1(A)
+      <=> ! [C] :
+            ( m2_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+           => k8_funct_2(k7_normform(A),u1_struct_0(k12_normform(A)),B,C) = k2_heyting1(A,C) ) ) ) ).
+
+fof(t11_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m2_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+         => ( r2_hidden(B,k8_funct_2(k7_normform(A),u1_struct_0(k12_normform(A)),k4_heyting1(A),C))
+           => B = C ) ) ) ).
+
+fof(t12_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => r2_hidden(B,k8_funct_2(k7_normform(A),u1_struct_0(k12_normform(A)),k4_heyting1(A),B)) ) ).
+
+fof(t13_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => k8_funct_2(k7_normform(A),u1_struct_0(k12_normform(A)),k4_heyting1(A),B) = k8_funct_2(k7_normform(A),k5_finsub_1(k7_normform(A)),k11_setwiseo(k7_normform(A)),B) ) ).
+
+fof(t14_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k5_finsub_1(k7_normform(A)),k8_normform(A))
+     => k2_lattice2(k7_normform(A),k12_normform(A),B,k4_heyting1(A)) = k10_setwiseo(k7_normform(A),k7_normform(A),B,k11_setwiseo(k7_normform(A))) ) ).
+
+fof(t15_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => B = k2_lattice2(k7_normform(A),k12_normform(A),k3_heyting1(A,B),k4_heyting1(A)) ) ).
+
+fof(d5_heyting1,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+        & m2_relset_1(B,k2_zfmisc_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))) )
+     => ( B = k5_heyting1(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+           => ! [D] :
+                ( m1_subset_1(D,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+               => k2_binop_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),B,C,D) = k3_normform(k5_finsub_1(A),k5_finsub_1(A),C,D) ) ) ) ) ).
+
+fof(t17_heyting1,axiom,
+    ! [A] : m2_subset_1(k4_tarski(k1_xboole_0,k1_xboole_0),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A)) ).
+
+fof(t18_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k5_finsub_1(k7_normform(A)),k8_normform(A))
+     => ( B = k1_xboole_0
+       => k6_heyting1(A,B) = k1_tarski(k4_tarski(k1_xboole_0,k1_xboole_0)) ) ) ).
+
+fof(t19_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k5_finsub_1(k7_normform(A)),k8_normform(A))
+     => ! [C] :
+          ( m2_subset_1(C,k5_finsub_1(k7_normform(A)),k8_normform(A))
+         => ( ( B = k1_xboole_0
+              & C = k1_xboole_0 )
+           => k7_heyting1(A,B,C) = k1_tarski(k4_tarski(k1_xboole_0,k1_xboole_0)) ) ) ) ).
+
+fof(t20_heyting1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k2_zfmisc_1(k5_finsub_1(k1_xboole_0),k5_finsub_1(k1_xboole_0)),k7_normform(k1_xboole_0))
+     => A = k4_tarski(k1_xboole_0,k1_xboole_0) ) ).
+
+fof(t21_heyting1,axiom,
+    k7_normform(k1_xboole_0) = k1_tarski(k4_tarski(k1_xboole_0,k1_xboole_0)) ).
+
+fof(t22_heyting1,axiom,
+    ! [A] : m2_subset_1(k1_tarski(k4_tarski(k1_xboole_0,k1_xboole_0)),k5_finsub_1(k7_normform(A)),k8_normform(A)) ).
+
+fof(t23_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => ! [D] :
+              ( m2_subset_1(D,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+             => ~ ( r2_hidden(D,k7_heyting1(A,B,C))
+                  & ! [E] :
+                      ( m2_fraenkel(E,k7_normform(A),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k1_fraenkel(k7_normform(A),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))))
+                     => ~ ( r1_tarski(k8_setwiseo(k7_normform(A),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),E,B),C)
+                          & D = k6_normform(k7_normform(A),A,B,k6_funcop_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A),k5_heyting1(A),E,k6_funct_3(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A)))) ) ) ) ) ) ) ).
+
+fof(t24_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m2_subset_1(C,k5_finsub_1(k7_normform(A)),k8_normform(A))
+         => ~ ( k10_normform(A,C,k2_heyting1(A,B)) = k1_xboole_0
+              & ! [D] :
+                  ( m2_subset_1(D,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                 => ~ ( r2_hidden(D,k6_heyting1(A,C))
+                      & r1_normform(k5_finsub_1(A),k5_finsub_1(A),D,B) ) ) ) ) ) ).
+
+fof(t25_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m1_subset_1(C,u1_struct_0(k12_normform(A)))
+         => ! [D] :
+              ( m1_subset_1(D,u1_struct_0(k12_normform(A)))
+             => ~ ( ! [E] :
+                      ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                     => ( r2_hidden(E,C)
+                       => r2_hidden(k1_normform(k5_finsub_1(A),k5_finsub_1(A),E,B),k7_normform(A)) ) )
+                  & ! [E] :
+                      ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                     => ~ ( r2_hidden(E,C)
+                          & ! [F] :
+                              ( m2_subset_1(F,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                             => ~ ( r2_hidden(F,D)
+                                  & r1_normform(k5_finsub_1(A),k5_finsub_1(A),F,k1_normform(k5_finsub_1(A),k5_finsub_1(A),E,B)) ) ) ) )
+                  & ! [E] :
+                      ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                     => ~ ( r2_hidden(E,k7_heyting1(A,k3_heyting1(A,C),k3_heyting1(A,D)))
+                          & r1_normform(k5_finsub_1(A),k5_finsub_1(A),E,B) ) ) ) ) ) ) ).
+
+fof(t26_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k5_finsub_1(k7_normform(A)),k8_normform(A))
+     => k10_normform(A,B,k6_heyting1(A,B)) = k1_xboole_0 ) ).
+
+fof(d8_heyting1,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)))
+        & m2_relset_1(B,u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A))) )
+     => ( B = k8_heyting1(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,u1_struct_0(k12_normform(A)))
+           => k8_funct_2(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),B,C) = k9_normform(A,k6_heyting1(A,k3_heyting1(A,C))) ) ) ) ).
+
+fof(d9_heyting1,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A))),u1_struct_0(k12_normform(A)))
+        & m2_relset_1(B,k2_zfmisc_1(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A))),u1_struct_0(k12_normform(A))) )
+     => ( B = k9_heyting1(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,u1_struct_0(k12_normform(A)))
+           => ! [D] :
+                ( m1_subset_1(D,u1_struct_0(k12_normform(A)))
+               => k2_binop_1(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),B,C,D) = k9_normform(A,k7_heyting1(A,k3_heyting1(A,C),k3_heyting1(A,D))) ) ) ) ) ).
+
+fof(d10_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => k10_heyting1(A,B) = k1_zfmisc_1(B) ) ).
+
+fof(d11_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)))
+            & m2_relset_1(C,u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A))) )
+         => ( C = k11_heyting1(A,B)
+          <=> ! [D] :
+                ( m1_subset_1(D,u1_struct_0(k12_normform(A)))
+               => k8_funct_2(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),C,D) = k4_xboole_0(B,D) ) ) ) ) ).
+
+fof(t27_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,u1_struct_0(k12_normform(A)))
+         => r3_lattices(k12_normform(A),k8_funct_2(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),k11_heyting1(A,B),C),B) ) ) ).
+
+fof(t28_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => k4_lattices(k12_normform(A),B,k8_funct_2(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),k8_heyting1(A),B)) = k5_lattices(k12_normform(A)) ) ).
+
+fof(t29_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,u1_struct_0(k12_normform(A)))
+         => r3_lattices(k12_normform(A),k4_lattices(k12_normform(A),B,k2_binop_1(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),k9_heyting1(A),B,C)),C) ) ) ).
+
+fof(t30_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m1_subset_1(C,u1_struct_0(k12_normform(A)))
+         => ( k10_normform(A,k3_heyting1(A,C),k2_heyting1(A,B)) = k1_xboole_0
+           => r3_lattices(k12_normform(A),k8_funct_2(k7_normform(A),u1_struct_0(k12_normform(A)),k4_heyting1(A),B),k8_funct_2(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),k8_heyting1(A),C)) ) ) ) ).
+
+fof(t31_heyting1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m1_subset_1(C,u1_struct_0(k12_normform(A)))
+         => ! [D] :
+              ( m1_subset_1(D,u1_struct_0(k12_normform(A)))
+             => ( ( ! [E] :
+                      ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                     => ( r2_hidden(E,C)
+                       => r2_hidden(k1_normform(k5_finsub_1(A),k5_finsub_1(A),E,B),k7_normform(A)) ) )
+                  & r3_lattices(k12_normform(A),k4_lattices(k12_normform(A),C,k8_funct_2(k7_normform(A),u1_struct_0(k12_normform(A)),k4_heyting1(A),B)),D) )
+               => r3_lattices(k12_normform(A),k8_funct_2(k7_normform(A),u1_struct_0(k12_normform(A)),k4_heyting1(A),B),k2_binop_1(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),k9_heyting1(A),C,D)) ) ) ) ) ).
+
+fof(t32_heyting1,axiom,
+    $true ).
+
+fof(t33_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,u1_struct_0(k12_normform(A)))
+         => k4_filter_0(k12_normform(A),B,C) = k2_lattice2(u1_struct_0(k12_normform(A)),k12_normform(A),k10_heyting1(A,B),k6_funcop_1(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),u1_lattices(k12_normform(A)),k8_heyting1(A),k7_funcop_1(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)),k9_heyting1(A),k11_heyting1(A,B),C))) ) ) ).
+
+fof(t34_heyting1,axiom,
+    ! [A] : k6_lattices(k12_normform(A)) = k1_tarski(k4_tarski(k1_xboole_0,k1_xboole_0)) ).
+
+fof(reflexivity_r1_heyting1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,k5_finsub_1(A))
+        & m1_subset_1(C,k5_finsub_1(A)) )
+     => r1_heyting1(A,B,B) ) ).
+
+fof(redefinition_r1_heyting1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,k5_finsub_1(A))
+        & m1_subset_1(C,k5_finsub_1(A)) )
+     => ( r1_heyting1(A,B,C)
+      <=> r1_tarski(B,C) ) ) ).
+
+fof(dt_k1_heyting1,axiom,
+    ! [A] : ~ v1_xboole_0(k1_heyting1(A)) ).
+
+fof(dt_k2_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k7_normform(A))
+     => m2_subset_1(k2_heyting1(A,B),k5_finsub_1(k7_normform(A)),k8_normform(A)) ) ).
+
+fof(redefinition_k2_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k7_normform(A))
+     => k2_heyting1(A,B) = k1_tarski(B) ) ).
+
+fof(dt_k3_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => m2_subset_1(k3_heyting1(A,B),k5_finsub_1(k7_normform(A)),k8_normform(A)) ) ).
+
+fof(dt_k4_heyting1,axiom,
+    ! [A] :
+      ( v1_funct_1(k4_heyting1(A))
+      & v1_funct_2(k4_heyting1(A),k7_normform(A),u1_struct_0(k12_normform(A)))
+      & m2_relset_1(k4_heyting1(A),k7_normform(A),u1_struct_0(k12_normform(A))) ) ).
+
+fof(dt_k5_heyting1,axiom,
+    ! [A] :
+      ( v1_funct_1(k5_heyting1(A))
+      & v1_funct_2(k5_heyting1(A),k2_zfmisc_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+      & m2_relset_1(k5_heyting1(A),k2_zfmisc_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))) ) ).
+
+fof(dt_k6_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => m1_subset_1(k6_heyting1(A,B),k5_finsub_1(k7_normform(A))) ) ).
+
+fof(dt_k7_heyting1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+        & m1_subset_1(C,k5_finsub_1(k7_normform(A))) )
+     => m1_subset_1(k7_heyting1(A,B,C),k5_finsub_1(k7_normform(A))) ) ).
+
+fof(dt_k8_heyting1,axiom,
+    ! [A] :
+      ( v1_funct_1(k8_heyting1(A))
+      & v1_funct_2(k8_heyting1(A),u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)))
+      & m2_relset_1(k8_heyting1(A),u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A))) ) ).
+
+fof(dt_k9_heyting1,axiom,
+    ! [A] :
+      ( v1_funct_1(k9_heyting1(A))
+      & v1_funct_2(k9_heyting1(A),k2_zfmisc_1(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A))),u1_struct_0(k12_normform(A)))
+      & m2_relset_1(k9_heyting1(A),k2_zfmisc_1(u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A))),u1_struct_0(k12_normform(A))) ) ).
+
+fof(dt_k10_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => m1_subset_1(k10_heyting1(A,B),k5_finsub_1(u1_struct_0(k12_normform(A)))) ) ).
+
+fof(dt_k11_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k12_normform(A)))
+     => ( v1_funct_1(k11_heyting1(A,B))
+        & v1_funct_2(k11_heyting1(A,B),u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A)))
+        & m2_relset_1(k11_heyting1(A,B),u1_struct_0(k12_normform(A)),u1_struct_0(k12_normform(A))) ) ) ).
+
+fof(d6_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => k6_heyting1(A,B) = k3_xboole_0(k7_normform(A),a_2_0_heyting1(A,B)) ) ).
+
+fof(d7_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => k7_heyting1(A,B,C) = k3_xboole_0(k7_normform(A),a_3_2_heyting1(A,B,C)) ) ) ).
+
+fof(t16_heyting1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m2_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+         => ~ ( r2_hidden(C,k6_heyting1(A,B))
+              & ! [D] :
+                  ( m2_fraenkel(D,k7_normform(A),k1_heyting1(A),k1_fraenkel(k7_normform(A),k1_heyting1(A)))
+                 => ~ ( ! [E] :
+                          ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                         => ( r2_hidden(E,B)
+                           => r2_hidden(k8_funct_2(k7_normform(A),k1_heyting1(A),D,E),k5_setwiseo(A,k2_domain_1(k5_finsub_1(A),k5_finsub_1(A),E),k3_domain_1(k5_finsub_1(A),k5_finsub_1(A),E))) ) )
+                      & C = k4_tarski(a_3_0_heyting1(A,B,D),a_3_1_heyting1(A,B,D)) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_0_heyting1,axiom,
+    ! [A,B,C] :
+      ( m1_subset_1(C,k5_finsub_1(k7_normform(B)))
+     => ( r2_hidden(A,a_2_0_heyting1(B,C))
+      <=> ? [D] :
+            ( m2_fraenkel(D,k7_normform(B),k1_heyting1(B),k1_fraenkel(k7_normform(B),k1_heyting1(B)))
+            & A = k4_tarski(a_3_0_heyting1(B,C,D),a_3_1_heyting1(B,C,D))
+            & ! [E] :
+                ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B))
+               => ( r2_hidden(E,C)
+                 => r2_hidden(k8_funct_2(k7_normform(B),k1_heyting1(B),D,E),k5_setwiseo(B,k2_domain_1(k5_finsub_1(B),k5_finsub_1(B),E),k3_domain_1(k5_finsub_1(B),k5_finsub_1(B),E))) ) ) ) ) ) ).
+
+fof(fraenkel_a_3_0_heyting1,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(C,k5_finsub_1(k7_normform(B)))
+        & m2_fraenkel(D,k7_normform(B),k1_heyting1(B),k1_fraenkel(k7_normform(B),k1_heyting1(B))) )
+     => ( r2_hidden(A,a_3_0_heyting1(B,C,D))
+      <=> ? [E] :
+            ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B))
+            & A = k8_funct_2(k7_normform(B),k1_heyting1(B),D,E)
+            & r2_hidden(k8_funct_2(k7_normform(B),k1_heyting1(B),D,E),k3_domain_1(k5_finsub_1(B),k5_finsub_1(B),E))
+            & r2_hidden(E,C) ) ) ) ).
+
+fof(fraenkel_a_3_1_heyting1,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(C,k5_finsub_1(k7_normform(B)))
+        & m2_fraenkel(D,k7_normform(B),k1_heyting1(B),k1_fraenkel(k7_normform(B),k1_heyting1(B))) )
+     => ( r2_hidden(A,a_3_1_heyting1(B,C,D))
+      <=> ? [E] :
+            ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B))
+            & A = k8_funct_2(k7_normform(B),k1_heyting1(B),D,E)
+            & r2_hidden(k8_funct_2(k7_normform(B),k1_heyting1(B),D,E),k2_domain_1(k5_finsub_1(B),k5_finsub_1(B),E))
+            & r2_hidden(E,C) ) ) ) ).
+
+fof(fraenkel_a_3_2_heyting1,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(C,k5_finsub_1(k7_normform(B)))
+        & m1_subset_1(D,k5_finsub_1(k7_normform(B))) )
+     => ( r2_hidden(A,a_3_2_heyting1(B,C,D))
+      <=> ? [E] :
+            ( m2_fraenkel(E,k7_normform(B),k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k1_fraenkel(k7_normform(B),k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B))))
+            & A = k6_normform(k7_normform(B),B,C,k6_funcop_1(k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B),k5_heyting1(B),E,k6_funct_3(k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B))))
+            & r1_tarski(k8_setwiseo(k7_normform(B),k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),E,C),D) ) ) ) ).
+
+%------------------------------------------------------------------------------

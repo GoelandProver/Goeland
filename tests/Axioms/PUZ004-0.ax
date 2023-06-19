@@ -1,0 +1,188 @@
+%------------------------------------------------------------------------------
+% File     : PUZ004-0 : TPTP v8.1.2. Released v2.4.0.
+% Domain   : Puzzles (Quo Vadis)
+% Axioms   : Quo vadis axioms
+% Version  :
+% English  :
+
+% Refs     :
+% Source   : [TPTP]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   41 (   0 unt;   0 nHn;  41 RR)
+%            Number of literals    :   82 (   0 equ;  41 neg)
+%            Maximal clause size   :    2 (   2 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :    1 (   1 usr;   0 prp; 12-12 aty)
+%            Number of functors    :   13 (  13 usr;   0 con; 1-2 aty)
+%            Number of variables   :  480 (   0 sgn)
+% SPC      : 
+
+% Comments : Contributed by Christian Suttner
+%------------------------------------------------------------------------------
+cnf(s1_right,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,s1(X,Y),S2,S3,S4,e1(X,s(Y)),E2)
+    | state(B,V1,V2,V3,V4,H,s1(X,s(Y)),S2,S3,S4,e1(X,Y),E2) ) ).
+
+cnf(s1_left,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,s1(X,s(Y)),S2,S3,S4,e1(X,Y),E2)
+    | state(B,V1,V2,V3,V4,H,s1(X,Y),S2,S3,S4,e1(X,s(Y)),E2) ) ).
+
+cnf(s1_down,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,s1(X,Y),S2,S3,S4,e1(s(X),Y),E2)
+    | state(B,V1,V2,V3,V4,H,s1(s(X),Y),S2,S3,S4,e1(X,Y),E2) ) ).
+
+cnf(s1_up,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,s1(s(X),Y),S2,S3,S4,e1(X,Y),E2)
+    | state(B,V1,V2,V3,V4,H,s1(X,Y),S2,S3,S4,e1(s(X),Y),E2) ) ).
+
+cnf(s2_right,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,s2(X,Y),S3,S4,e1(X,s(Y)),E2)
+    | state(B,V1,V2,V3,V4,H,S1,s2(X,s(Y)),S3,S4,e1(X,Y),E2) ) ).
+
+cnf(s2_left,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,s2(X,s(Y)),S3,S4,e1(X,Y),E2)
+    | state(B,V1,V2,V3,V4,H,S1,s2(X,Y),S3,S4,e1(X,s(Y)),E2) ) ).
+
+cnf(s2_down,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,s2(X,Y),S3,S4,e1(s(X),Y),E2)
+    | state(B,V1,V2,V3,V4,H,S1,s2(s(X),Y),S3,S4,e1(X,Y),E2) ) ).
+
+cnf(s2_up,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,s2(s(X),Y),S3,S4,e1(X,Y),E2)
+    | state(B,V1,V2,V3,V4,H,S1,s2(X,Y),S3,S4,e1(s(X),Y),E2) ) ).
+
+cnf(s3_right,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,S2,s3(X,Y),S4,e1(X,s(Y)),E2)
+    | state(B,V1,V2,V3,V4,H,S1,S2,s3(X,s(Y)),S4,e1(X,Y),E2) ) ).
+
+cnf(s3_left,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,S2,s3(X,s(Y)),S4,e1(X,Y),E2)
+    | state(B,V1,V2,V3,V4,H,S1,S2,s3(X,Y),S4,e1(X,s(Y)),E2) ) ).
+
+cnf(s3_down,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,S2,s3(X,Y),S4,e1(s(X),Y),E2)
+    | state(B,V1,V2,V3,V4,H,S1,S2,s3(s(X),Y),S4,e1(X,Y),E2) ) ).
+
+cnf(s3_up,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,S2,s3(s(X),Y),S4,e1(X,Y),E2)
+    | state(B,V1,V2,V3,V4,H,S1,S2,s3(X,Y),S4,e1(s(X),Y),E2) ) ).
+
+cnf(s4_right,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,S2,S3,s4(X,Y),e1(X,s(Y)),E2)
+    | state(B,V1,V2,V3,V4,H,S1,S2,S3,s4(X,s(Y)),e1(X,Y),E2) ) ).
+
+cnf(s4_left,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,S2,S3,s4(X,s(Y)),e1(X,Y),E2)
+    | state(B,V1,V2,V3,V4,H,S1,S2,S3,s4(X,Y),e1(X,s(Y)),E2) ) ).
+
+cnf(s4_down,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,S2,S3,s4(X,Y),e1(s(X),Y),E2)
+    | state(B,V1,V2,V3,V4,H,S1,S2,S3,s4(s(X),Y),e1(X,Y),E2) ) ).
+
+cnf(s4_up,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,S2,S3,s4(s(X),Y),e1(X,Y),E2)
+    | state(B,V1,V2,V3,V4,H,S1,S2,S3,s4(X,Y),e1(s(X),Y),E2) ) ).
+
+cnf(v1_right,axiom,
+    ( ~ state(B,v1(X,Y),V2,V3,V4,H,S1,S2,S3,S4,e1(X,s(Y)),e2(s(X),s(Y)))
+    | state(B,v1(X,s(Y)),V2,V3,V4,H,S1,S2,S3,S4,e1(X,Y),e2(s(X),Y)) ) ).
+
+cnf(v1_left,axiom,
+    ( ~ state(B,v1(X,s(Y)),V2,V3,V4,H,S1,S2,S3,S4,e1(X,Y),e2(s(X),Y))
+    | state(B,v1(X,Y),V2,V3,V4,H,S1,S2,S3,S4,e1(X,s(Y)),e2(s(X),s(Y))) ) ).
+
+cnf(v1_down,axiom,
+    ( ~ state(B,v1(X,Y),V2,V3,V4,H,S1,S2,S3,S4,e1(s(s(X)),Y),E2)
+    | state(B,v1(s(X),Y),V2,V3,V4,H,S1,S2,S3,S4,e1(X,Y),E2) ) ).
+
+cnf(v1_up,axiom,
+    ( ~ state(B,v1(s(X),Y),V2,V3,V4,H,S1,S2,S3,S4,e1(X,Y),E2)
+    | state(B,v1(X,Y),V2,V3,V4,H,S1,S2,S3,S4,e1(s(s(X)),Y),E2) ) ).
+
+cnf(v2_right,axiom,
+    ( ~ state(B,V1,v2(X,Y),V3,V4,H,S1,S2,S3,S4,e1(X,s(Y)),e2(s(X),s(Y)))
+    | state(B,V1,v2(X,s(Y)),V3,V4,H,S1,S2,S3,S4,e1(X,Y),e2(s(X),Y)) ) ).
+
+cnf(v2_left,axiom,
+    ( ~ state(B,V1,v2(X,s(Y)),V3,V4,H,S1,S2,S3,S4,e1(X,Y),e2(s(X),Y))
+    | state(B,V1,v2(X,Y),V3,V4,H,S1,S2,S3,S4,e1(X,s(Y)),e2(s(X),s(Y))) ) ).
+
+cnf(v2_down,axiom,
+    ( ~ state(B,V1,v2(X,Y),V3,V4,H,S1,S2,S3,S4,e1(s(s(X)),Y),E2)
+    | state(B,V1,v2(s(X),Y),V3,V4,H,S1,S2,S3,S4,e1(X,Y),E2) ) ).
+
+cnf(v2_up,axiom,
+    ( ~ state(B,V1,v2(s(X),Y),V3,V4,H,S1,S2,S3,S4,e1(X,Y),E2)
+    | state(B,V1,v2(X,Y),V3,V4,H,S1,S2,S3,S4,e1(s(s(X)),Y),E2) ) ).
+
+cnf(v3_right,axiom,
+    ( ~ state(B,V1,V2,v3(X,Y),V4,H,S1,S2,S3,S4,e1(X,s(Y)),e2(s(X),s(Y)))
+    | state(B,V1,V2,v3(X,s(Y)),V4,H,S1,S2,S3,S4,e1(X,Y),e2(s(X),Y)) ) ).
+
+cnf(v3_left,axiom,
+    ( ~ state(B,V1,V2,v3(X,s(Y)),V4,H,S1,S2,S3,S4,e1(X,Y),e2(s(X),Y))
+    | state(B,V1,V2,v3(X,Y),V4,H,S1,S2,S3,S4,e1(X,s(Y)),e2(s(X),s(Y))) ) ).
+
+cnf(v3_down,axiom,
+    ( ~ state(B,V1,V2,v3(X,Y),V4,H,S1,S2,S3,S4,e1(s(s(X)),Y),E2)
+    | state(B,V1,V2,v3(s(X),Y),V4,H,S1,S2,S3,S4,e1(X,Y),E2) ) ).
+
+cnf(v3_up,axiom,
+    ( ~ state(B,V1,V2,v3(s(X),Y),V4,H,S1,S2,S3,S4,e1(X,Y),E2)
+    | state(B,V1,V2,v3(X,Y),V4,H,S1,S2,S3,S4,e1(s(s(X)),Y),E2) ) ).
+
+cnf(v4_right,axiom,
+    ( ~ state(B,V1,V2,V3,v4(X,Y),H,S1,S2,S3,S4,e1(X,s(Y)),e2(s(X),s(Y)))
+    | state(B,V1,V2,V3,v4(X,s(Y)),H,S1,S2,S3,S4,e1(X,Y),e2(s(X),Y)) ) ).
+
+cnf(v4_left,axiom,
+    ( ~ state(B,V1,V2,V3,v4(X,s(Y)),H,S1,S2,S3,S4,e1(X,Y),e2(s(X),Y))
+    | state(B,V1,V2,V3,v4(X,Y),H,S1,S2,S3,S4,e1(X,s(Y)),e2(s(X),s(Y))) ) ).
+
+cnf(v4_down,axiom,
+    ( ~ state(B,V1,V2,V3,v4(X,Y),H,S1,S2,S3,S4,e1(s(s(X)),Y),E2)
+    | state(B,V1,V2,V3,v4(s(X),Y),H,S1,S2,S3,S4,e1(X,Y),E2) ) ).
+
+cnf(v4_up,axiom,
+    ( ~ state(B,V1,V2,V3,v4(s(X),Y),H,S1,S2,S3,S4,e1(X,Y),E2)
+    | state(B,V1,V2,V3,v4(X,Y),H,S1,S2,S3,S4,e1(s(s(X)),Y),E2) ) ).
+
+cnf(h_right,axiom,
+    ( ~ state(B,V1,V2,V3,V4,h(X,Y),S1,S2,S3,S4,e1(X,s(s(Y))),E2)
+    | state(B,V1,V2,V3,V4,h(X,s(Y)),S1,S2,S3,S4,e1(X,Y),E2) ) ).
+
+cnf(h_left,axiom,
+    ( ~ state(B,V1,V2,V3,V4,h(X,s(Y)),S1,S2,S3,S4,e1(X,Y),E2)
+    | state(B,V1,V2,V3,V4,h(X,Y),S1,S2,S3,S4,e1(X,s(s(Y))),E2) ) ).
+
+cnf(h_down,axiom,
+    ( ~ state(B,V1,V2,V3,V4,h(X,Y),S1,S2,S3,S4,e1(s(X),Y),e2(s(X),s(Y)))
+    | state(B,V1,V2,V3,V4,h(s(X),Y),S1,S2,S3,S4,e1(X,Y),e2(X,s(Y))) ) ).
+
+cnf(h_up,axiom,
+    ( ~ state(B,V1,V2,V3,V4,h(s(X),Y),S1,S2,S3,S4,e1(X,Y),e2(X,s(Y)))
+    | state(B,V1,V2,V3,V4,h(X,Y),S1,S2,S3,S4,e1(s(X),Y),e2(s(X),s(Y))) ) ).
+
+cnf(b_right,axiom,
+    ( ~ state(bb(X,Y),V1,V2,V3,V4,H,S1,S2,S3,S4,e1(X,s(s(Y))),e2(s(X),s(s(Y))))
+    | state(bb(X,s(Y)),V1,V2,V3,V4,H,S1,S2,S3,S4,e1(X,Y),e2(s(X),Y)) ) ).
+
+cnf(b_left,axiom,
+    ( ~ state(bb(X,s(Y)),V1,V2,V3,V4,H,S1,S2,S3,S4,e1(X,Y),e2(s(X),Y))
+    | state(bb(X,Y),V1,V2,V3,V4,H,S1,S2,S3,S4,e1(X,s(s(Y))),e2(s(X),s(s(Y)))) ) ).
+
+cnf(b_down,axiom,
+    ( ~ state(bb(X,Y),V1,V2,V3,V4,H,S1,S2,S3,S4,e1(s(s(X)),Y),e2(s(s(X)),s(Y)))
+    | state(bb(s(X),Y),V1,V2,V3,V4,H,S1,S2,S3,S4,e1(X,Y),e2(X,s(Y))) ) ).
+
+cnf(b_up,axiom,
+    ( ~ state(bb(s(X),Y),V1,V2,V3,V4,H,S1,S2,S3,S4,e1(X,Y),e2(X,s(Y)))
+    | state(bb(X,Y),V1,V2,V3,V4,H,S1,S2,S3,S4,e1(s(s(X)),Y),e2(s(s(X)),s(Y))) ) ).
+
+cnf(swap_blanks,axiom,
+    ( ~ state(B,V1,V2,V3,V4,H,S1,S2,S3,S4,e1(X,Y),e2(Q,W))
+    | state(B,V1,V2,V3,V4,H,S1,S2,S3,S4,e1(Q,W),e2(X,Y)) ) ).
+
+%------------------------------------------------------------------------------

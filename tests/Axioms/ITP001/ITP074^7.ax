@@ -1,0 +1,810 @@
+%------------------------------------------------------------------------------
+% File     : ITP074^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : ring.ax [Gau19]
+%          : HL4074^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  100 (  23 unt;  44 typ;   0 def)
+%            Number of atoms       :  180 ( 144 equ;   1 cnn)
+%            Maximal formula atoms :   25 (   1 avg)
+%            Number of connectives : 2514 (   1   ~;   1   |;  95   &;2385   @)
+%                                         (  14 <=>;  18  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   46 (  10 avg;2385 nst)
+%            Number of types       :    3 (   2 usr)
+%            Number of type conns  :  952 ( 952   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   44 (  42 usr;   3 con; 0-6 aty)
+%            Number of variables   :  558 (  14   ^ 486   !;  24   ?; 558   :)
+%                                         (  34  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Eind__type_2Erecspace,type,
+    tyop_2Eind__type_2Erecspace: $tType > $tType ).
+
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Enum_2Enum,type,
+    tyop_2Enum_2Enum: $tType ).
+
+thf(tyop_2Epair_2Eprod,type,
+    tyop_2Epair_2Eprod: $tType > $tType > $tType ).
+
+thf(tyop_2Ering_2Ering,type,
+    tyop_2Ering_2Ering: $tType > $tType ).
+
+thf(tyop_2Esemi__ring_2Esemi__ring,type,
+    tyop_2Esemi__ring_2Esemi__ring: $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Earithmetic_2E_2B,type,
+    c_2Earithmetic_2E_2B: tyop_2Enum_2Enum > tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Epair_2E_2C,type,
+    c_2Epair_2E_2C: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > A_27b > ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Enum_2E0,type,
+    c_2Enum_2E0: tyop_2Enum_2Enum ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2EARB,type,
+    c_2Ebool_2EARB: 
+      !>[A_27a: $tType] : A_27a ).
+
+thf(c_2Earithmetic_2EBIT1,type,
+    c_2Earithmetic_2EBIT1: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Eind__type_2EBOTTOM,type,
+    c_2Eind__type_2EBOTTOM: 
+      !>[A_27a: $tType] : ( tyop_2Eind__type_2Erecspace @ A_27a ) ).
+
+thf(c_2Eind__type_2ECONSTR,type,
+    c_2Eind__type_2ECONSTR: 
+      !>[A_27a: $tType] : ( tyop_2Enum_2Enum > A_27a > ( tyop_2Enum_2Enum > ( tyop_2Eind__type_2Erecspace @ A_27a ) ) > ( tyop_2Eind__type_2Erecspace @ A_27a ) ) ).
+
+thf(c_2Ebool_2EDATATYPE,type,
+    c_2Ebool_2EDATATYPE: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Ecombin_2EK,type,
+    c_2Ecombin_2EK: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > A_27b > A_27a ) ).
+
+thf(c_2Earithmetic_2ENUMERAL,type,
+    c_2Earithmetic_2ENUMERAL: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2ETYPE__DEFINITION,type,
+    c_2Ebool_2ETYPE__DEFINITION: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > $o ) > ( A_27b > A_27a ) > $o ) ).
+
+thf(c_2Earithmetic_2EZERO,type,
+    c_2Earithmetic_2EZERO: tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Ering_2Eis__ring,type,
+    c_2Ering_2Eis__ring: 
+      !>[A_27a: $tType] : ( ( tyop_2Ering_2Ering @ A_27a ) > $o ) ).
+
+thf(c_2Esemi__ring_2Eis__semi__ring,type,
+    c_2Esemi__ring_2Eis__semi__ring: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > $o ) ).
+
+thf(c_2Ecombin_2Eo,type,
+    c_2Ecombin_2Eo: 
+      !>[A_27a: $tType,A_27b: $tType,A_27c: $tType] : ( ( A_27c > A_27b ) > ( A_27a > A_27c ) > A_27a > A_27b ) ).
+
+thf(c_2Ering_2Erecordtype_2Ering,type,
+    c_2Ering_2Erecordtype_2Ering: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) ) ).
+
+thf(c_2Esemi__ring_2Erecordtype_2Esemi__ring,type,
+    c_2Esemi__ring_2Erecordtype_2Esemi__ring: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a > A_27a ) > ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) ) ).
+
+thf(c_2Ering_2Ering__CASE,type,
+    c_2Ering_2Ering__CASE: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Ering_2Ering @ A_27a ) > ( A_27a > A_27a > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a ) > A_27b ) > A_27b ) ).
+
+thf(c_2Ering_2Ering__R0,type,
+    c_2Ering_2Ering__R0: 
+      !>[A_27a: $tType] : ( ( tyop_2Ering_2Ering @ A_27a ) > A_27a ) ).
+
+thf(c_2Ering_2Ering__R0__fupd,type,
+    c_2Ering_2Ering__R0__fupd: 
+      !>[A_27a: $tType] : ( ( A_27a > A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) ) ).
+
+thf(c_2Ering_2Ering__R1,type,
+    c_2Ering_2Ering__R1: 
+      !>[A_27a: $tType] : ( ( tyop_2Ering_2Ering @ A_27a ) > A_27a ) ).
+
+thf(c_2Ering_2Ering__R1__fupd,type,
+    c_2Ering_2Ering__R1__fupd: 
+      !>[A_27a: $tType] : ( ( A_27a > A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) ) ).
+
+thf(c_2Ering_2Ering__RM,type,
+    c_2Ering_2Ering__RM: 
+      !>[A_27a: $tType] : ( ( tyop_2Ering_2Ering @ A_27a ) > A_27a > A_27a > A_27a ) ).
+
+thf(c_2Ering_2Ering__RM__fupd,type,
+    c_2Ering_2Ering__RM__fupd: 
+      !>[A_27a: $tType] : ( ( ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) ) ).
+
+thf(c_2Ering_2Ering__RN,type,
+    c_2Ering_2Ering__RN: 
+      !>[A_27a: $tType] : ( ( tyop_2Ering_2Ering @ A_27a ) > A_27a > A_27a ) ).
+
+thf(c_2Ering_2Ering__RN__fupd,type,
+    c_2Ering_2Ering__RN__fupd: 
+      !>[A_27a: $tType] : ( ( ( A_27a > A_27a ) > A_27a > A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) ) ).
+
+thf(c_2Ering_2Ering__RP,type,
+    c_2Ering_2Ering__RP: 
+      !>[A_27a: $tType] : ( ( tyop_2Ering_2Ering @ A_27a ) > A_27a > A_27a > A_27a ) ).
+
+thf(c_2Ering_2Ering__RP__fupd,type,
+    c_2Ering_2Ering__RP__fupd: 
+      !>[A_27a: $tType] : ( ( ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) > ( tyop_2Ering_2Ering @ A_27a ) ) ).
+
+thf(c_2Ering_2Ering__size,type,
+    c_2Ering_2Ering__size: 
+      !>[A_27a: $tType] : ( ( A_27a > tyop_2Enum_2Enum ) > ( tyop_2Ering_2Ering @ A_27a ) > tyop_2Enum_2Enum ) ).
+
+thf(c_2Ering_2Esemi__ring__of,type,
+    c_2Ering_2Esemi__ring__of: 
+      !>[A_27a: $tType] : ( ( tyop_2Ering_2Ering @ A_27a ) > ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) ) ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2Ering_2Ering__TY__DEF,axiom,
+    ! [A_27a: $tType] :
+    ? [V0rep: ( tyop_2Ering_2Ering @ A_27a ) > ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) ) )] :
+      ( c_2Ebool_2ETYPE__DEFINITION @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) ) ) @ ( tyop_2Ering_2Ering @ A_27a )
+      @ ^ [V1a0_27: tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) )] :
+          ( c_2Ebool_2E_21 @ ( ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) ) ) > $o )
+          @ ^ [V2_27ring_27: ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) ) ) > $o] :
+              ( c_2Emin_2E_3D_3D_3E
+              @ ( c_2Ebool_2E_21 @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) ) )
+                @ ^ [V3a0_27: tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) )] :
+                    ( c_2Emin_2E_3D_3D_3E
+                    @ ( c_2Ebool_2E_3F @ A_27a
+                      @ ^ [V4a0: A_27a] :
+                          ( c_2Ebool_2E_3F @ A_27a
+                          @ ^ [V5a1: A_27a] :
+                              ( c_2Ebool_2E_3F @ ( A_27a > A_27a > A_27a )
+                              @ ^ [V6a2: A_27a > A_27a > A_27a] :
+                                  ( c_2Ebool_2E_3F @ ( A_27a > A_27a > A_27a )
+                                  @ ^ [V7a3: A_27a > A_27a > A_27a] :
+                                      ( c_2Ebool_2E_3F @ ( A_27a > A_27a )
+                                      @ ^ [V8a4: A_27a > A_27a] :
+                                          ( c_2Emin_2E_3D @ ( tyop_2Eind__type_2Erecspace @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) ) ) @ V3a0_27
+                                          @ ( ^ [V9a0: A_27a,V10a1: A_27a,V11a2: A_27a > A_27a > A_27a,V12a3: A_27a > A_27a > A_27a,V13a4: A_27a > A_27a] :
+                                                ( c_2Eind__type_2ECONSTR @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) ) @ c_2Enum_2E0 @ ( c_2Epair_2E_2C @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) @ V9a0 @ ( c_2Epair_2E_2C @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) @ V10a1 @ ( c_2Epair_2E_2C @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) @ V11a2 @ ( c_2Epair_2E_2C @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) @ V12a3 @ V13a4 ) ) ) )
+                                                @ ^ [V14n: tyop_2Enum_2Enum] : ( c_2Eind__type_2EBOTTOM @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ A_27a @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( tyop_2Epair_2Eprod @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a ) ) ) ) ) ) )
+                                            @ V4a0
+                                            @ V5a1
+                                            @ V6a2
+                                            @ V7a3
+                                            @ V8a4 ) ) ) ) ) ) )
+                    @ ( V2_27ring_27 @ V3a0_27 ) ) )
+              @ ( V2_27ring_27 @ V1a0_27 ) ) )
+      @ V0rep ) ).
+
+thf(thm_2Ering_2Ering__case__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0a0: A_27a,V1a1: A_27a,V2a2: A_27a > A_27a > A_27a,V3a3: A_27a > A_27a > A_27a,V4a4: A_27a > A_27a,V5f: A_27a > A_27a > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a ) > A_27b] :
+      ( ( c_2Ering_2Ering__CASE @ A_27a @ A_27b @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V0a0 @ V1a1 @ V2a2 @ V3a3 @ V4a4 ) @ V5f )
+      = ( V5f @ V0a0 @ V1a1 @ V2a2 @ V3a3 @ V4a4 ) ) ).
+
+thf(thm_2Ering_2Ering__size__def,axiom,
+    ! [A_27a: $tType,V0f: A_27a > tyop_2Enum_2Enum,V1a0: A_27a,V2a1: A_27a,V3a2: A_27a > A_27a > A_27a,V4a3: A_27a > A_27a > A_27a,V5a4: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__size @ A_27a @ V0f @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a0 @ V2a1 @ V3a2 @ V4a3 @ V5a4 ) )
+      = ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ ( c_2Earithmetic_2E_2B @ ( V0f @ V1a0 ) @ ( V0f @ V2a1 ) ) ) ) ).
+
+thf(thm_2Ering_2Ering__R0,axiom,
+    ! [A_27a: $tType,V0a: A_27a,V1a0: A_27a,V2f: A_27a > A_27a > A_27a,V3f0: A_27a > A_27a > A_27a,V4f1: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__R0 @ A_27a @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V0a @ V1a0 @ V2f @ V3f0 @ V4f1 ) )
+      = V0a ) ).
+
+thf(thm_2Ering_2Ering__R1,axiom,
+    ! [A_27a: $tType,V0a: A_27a,V1a0: A_27a,V2f: A_27a > A_27a > A_27a,V3f0: A_27a > A_27a > A_27a,V4f1: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__R1 @ A_27a @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V0a @ V1a0 @ V2f @ V3f0 @ V4f1 ) )
+      = V1a0 ) ).
+
+thf(thm_2Ering_2Ering__RP,axiom,
+    ! [A_27a: $tType,V0a: A_27a,V1a0: A_27a,V2f: A_27a > A_27a > A_27a,V3f0: A_27a > A_27a > A_27a,V4f1: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__RP @ A_27a @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V0a @ V1a0 @ V2f @ V3f0 @ V4f1 ) )
+      = V2f ) ).
+
+thf(thm_2Ering_2Ering__RM,axiom,
+    ! [A_27a: $tType,V0a: A_27a,V1a0: A_27a,V2f: A_27a > A_27a > A_27a,V3f0: A_27a > A_27a > A_27a,V4f1: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__RM @ A_27a @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V0a @ V1a0 @ V2f @ V3f0 @ V4f1 ) )
+      = V3f0 ) ).
+
+thf(thm_2Ering_2Ering__RN,axiom,
+    ! [A_27a: $tType,V0a: A_27a,V1a0: A_27a,V2f: A_27a > A_27a > A_27a,V3f0: A_27a > A_27a > A_27a,V4f1: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__RN @ A_27a @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V0a @ V1a0 @ V2f @ V3f0 @ V4f1 ) )
+      = V4f1 ) ).
+
+thf(thm_2Ering_2Ering__R0__fupd,axiom,
+    ! [A_27a: $tType,V0f2: A_27a > A_27a,V1a: A_27a,V2a0: A_27a,V3f: A_27a > A_27a > A_27a,V4f0: A_27a > A_27a > A_27a,V5f1: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__R0__fupd @ A_27a @ V0f2 @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ V3f @ V4f0 @ V5f1 ) )
+      = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ ( V0f2 @ V1a ) @ V2a0 @ V3f @ V4f0 @ V5f1 ) ) ).
+
+thf(thm_2Ering_2Ering__R1__fupd,axiom,
+    ! [A_27a: $tType,V0f2: A_27a > A_27a,V1a: A_27a,V2a0: A_27a,V3f: A_27a > A_27a > A_27a,V4f0: A_27a > A_27a > A_27a,V5f1: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__R1__fupd @ A_27a @ V0f2 @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ V3f @ V4f0 @ V5f1 ) )
+      = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ ( V0f2 @ V2a0 ) @ V3f @ V4f0 @ V5f1 ) ) ).
+
+thf(thm_2Ering_2Ering__RP__fupd,axiom,
+    ! [A_27a: $tType,V0f2: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V1a: A_27a,V2a0: A_27a,V3f: A_27a > A_27a > A_27a,V4f0: A_27a > A_27a > A_27a,V5f1: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__RP__fupd @ A_27a @ V0f2 @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ V3f @ V4f0 @ V5f1 ) )
+      = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ ( V0f2 @ V3f ) @ V4f0 @ V5f1 ) ) ).
+
+thf(thm_2Ering_2Ering__RM__fupd,axiom,
+    ! [A_27a: $tType,V0f2: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V1a: A_27a,V2a0: A_27a,V3f: A_27a > A_27a > A_27a,V4f0: A_27a > A_27a > A_27a,V5f1: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__RM__fupd @ A_27a @ V0f2 @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ V3f @ V4f0 @ V5f1 ) )
+      = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ V3f @ ( V0f2 @ V4f0 ) @ V5f1 ) ) ).
+
+thf(thm_2Ering_2Ering__RN__fupd,axiom,
+    ! [A_27a: $tType,V0f2: ( A_27a > A_27a ) > A_27a > A_27a,V1a: A_27a,V2a0: A_27a,V3f: A_27a > A_27a > A_27a,V4f0: A_27a > A_27a > A_27a,V5f1: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__RN__fupd @ A_27a @ V0f2 @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ V3f @ V4f0 @ V5f1 ) )
+      = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ V3f @ V4f0 @ ( V0f2 @ V5f1 ) ) ) ).
+
+thf(thm_2Ering_2Eis__ring__def,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+    <=> ( ! [V1n: A_27a,V2m: A_27a] :
+            ( ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V1n @ V2m )
+            = ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V2m @ V1n ) )
+        & ! [V3n: A_27a,V4m: A_27a,V5p: A_27a] :
+            ( ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V3n @ ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V4m @ V5p ) )
+            = ( c_2Ering_2Ering__RP @ A_27a @ V0r @ ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V3n @ V4m ) @ V5p ) )
+        & ! [V6n: A_27a,V7m: A_27a] :
+            ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V6n @ V7m )
+            = ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V7m @ V6n ) )
+        & ! [V8n: A_27a,V9m: A_27a,V10p: A_27a] :
+            ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V8n @ ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V9m @ V10p ) )
+            = ( c_2Ering_2Ering__RM @ A_27a @ V0r @ ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V8n @ V9m ) @ V10p ) )
+        & ! [V11n: A_27a] :
+            ( ( c_2Ering_2Ering__RP @ A_27a @ V0r @ ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) @ V11n )
+            = V11n )
+        & ! [V12n: A_27a] :
+            ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ ( c_2Ering_2Ering__R1 @ A_27a @ V0r ) @ V12n )
+            = V12n )
+        & ! [V13n: A_27a] :
+            ( ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V13n @ ( c_2Ering_2Ering__RN @ A_27a @ V0r @ V13n ) )
+            = ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) )
+        & ! [V14n: A_27a,V15m: A_27a,V16p: A_27a] :
+            ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V14n @ V15m ) @ V16p )
+            = ( c_2Ering_2Ering__RP @ A_27a @ V0r @ ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V14n @ V16p ) @ ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V15m @ V16p ) ) ) ) ) ).
+
+thf(thm_2Ering_2Esemi__ring__of__def,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Esemi__ring__of @ A_27a @ V0r )
+      = ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ A_27a @ ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) @ ( c_2Ering_2Ering__R1 @ A_27a @ V0r ) @ ( c_2Ering_2Ering__RP @ A_27a @ V0r ) @ ( c_2Ering_2Ering__RM @ A_27a @ V0r ) ) ) ).
+
+thf(thm_2Ering_2Ering__accessors,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0a: A_27a,V1a0: A_27a,V2f: A_27a > A_27a > A_27a,V3f0: A_27a > A_27a > A_27a,V4f1: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R0 @ A_27a @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V0a @ V1a0 @ V2f @ V3f0 @ V4f1 ) )
+          = V0a )
+      & ! [V5a: A_27a,V6a0: A_27a,V7f: A_27a > A_27a > A_27a,V8f0: A_27a > A_27a > A_27a,V9f1: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R1 @ A_27a @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V5a @ V6a0 @ V7f @ V8f0 @ V9f1 ) )
+          = V6a0 )
+      & ! [V10a: A_27a,V11a0: A_27a,V12f: A_27a > A_27a > A_27a,V13f0: A_27a > A_27a > A_27a,V14f1: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V10a @ V11a0 @ V12f @ V13f0 @ V14f1 ) )
+          = V12f )
+      & ! [V15a: A_27a,V16a0: A_27a,V17f: A_27a > A_27a > A_27a,V18f0: A_27a > A_27a > A_27a,V19f1: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V15a @ V16a0 @ V17f @ V18f0 @ V19f1 ) )
+          = V18f0 )
+      & ! [V20a: A_27a,V21a0: A_27a,V22f: A_27a > A_27a > A_27a,V23f0: A_27a > A_27a > A_27a,V24f1: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN @ A_27a @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V20a @ V21a0 @ V22f @ V23f0 @ V24f1 ) )
+          = V24f1 ) ) ).
+
+thf(thm_2Ering_2Ering__fn__updates,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0f2: A_27a > A_27a,V1a: A_27a,V2a0: A_27a,V3f: A_27a > A_27a > A_27a,V4f0: A_27a > A_27a > A_27a,V5f1: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R0__fupd @ A_27a @ V0f2 @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ V3f @ V4f0 @ V5f1 ) )
+          = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ ( V0f2 @ V1a ) @ V2a0 @ V3f @ V4f0 @ V5f1 ) )
+      & ! [V6f2: A_27a > A_27a,V7a: A_27a,V8a0: A_27a,V9f: A_27a > A_27a > A_27a,V10f0: A_27a > A_27a > A_27a,V11f1: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R1__fupd @ A_27a @ V6f2 @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V7a @ V8a0 @ V9f @ V10f0 @ V11f1 ) )
+          = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V7a @ ( V6f2 @ V8a0 ) @ V9f @ V10f0 @ V11f1 ) )
+      & ! [V12f2: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V13a: A_27a,V14a0: A_27a,V15f: A_27a > A_27a > A_27a,V16f0: A_27a > A_27a > A_27a,V17f1: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RP__fupd @ A_27a @ V12f2 @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V13a @ V14a0 @ V15f @ V16f0 @ V17f1 ) )
+          = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V13a @ V14a0 @ ( V12f2 @ V15f ) @ V16f0 @ V17f1 ) )
+      & ! [V18f2: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V19a: A_27a,V20a0: A_27a,V21f: A_27a > A_27a > A_27a,V22f0: A_27a > A_27a > A_27a,V23f1: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM__fupd @ A_27a @ V18f2 @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V19a @ V20a0 @ V21f @ V22f0 @ V23f1 ) )
+          = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V19a @ V20a0 @ V21f @ ( V18f2 @ V22f0 ) @ V23f1 ) )
+      & ! [V24f2: ( A_27a > A_27a ) > A_27a > A_27a,V25a: A_27a,V26a0: A_27a,V27f: A_27a > A_27a > A_27a,V28f0: A_27a > A_27a > A_27a,V29f1: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN__fupd @ A_27a @ V24f2 @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V25a @ V26a0 @ V27f @ V28f0 @ V29f1 ) )
+          = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V25a @ V26a0 @ V27f @ V28f0 @ ( V24f2 @ V29f1 ) ) ) ) ).
+
+thf(thm_2Ering_2Ering__accfupds,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0r: tyop_2Ering_2Ering @ A_27a,V1f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R0 @ A_27a @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V1f @ V0r ) )
+          = ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) )
+      & ! [V2r: tyop_2Ering_2Ering @ A_27a,V3f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R0 @ A_27a @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V3f @ V2r ) )
+          = ( c_2Ering_2Ering__R0 @ A_27a @ V2r ) )
+      & ! [V4r: tyop_2Ering_2Ering @ A_27a,V5f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R0 @ A_27a @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V5f @ V4r ) )
+          = ( c_2Ering_2Ering__R0 @ A_27a @ V4r ) )
+      & ! [V6r: tyop_2Ering_2Ering @ A_27a,V7f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R0 @ A_27a @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V7f @ V6r ) )
+          = ( c_2Ering_2Ering__R0 @ A_27a @ V6r ) )
+      & ! [V8r: tyop_2Ering_2Ering @ A_27a,V9f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R1 @ A_27a @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V9f @ V8r ) )
+          = ( c_2Ering_2Ering__R1 @ A_27a @ V8r ) )
+      & ! [V10r: tyop_2Ering_2Ering @ A_27a,V11f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R1 @ A_27a @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V11f @ V10r ) )
+          = ( c_2Ering_2Ering__R1 @ A_27a @ V10r ) )
+      & ! [V12r: tyop_2Ering_2Ering @ A_27a,V13f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R1 @ A_27a @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V13f @ V12r ) )
+          = ( c_2Ering_2Ering__R1 @ A_27a @ V12r ) )
+      & ! [V14r: tyop_2Ering_2Ering @ A_27a,V15f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R1 @ A_27a @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V15f @ V14r ) )
+          = ( c_2Ering_2Ering__R1 @ A_27a @ V14r ) )
+      & ! [V16r: tyop_2Ering_2Ering @ A_27a,V17f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V17f @ V16r ) )
+          = ( c_2Ering_2Ering__RP @ A_27a @ V16r ) )
+      & ! [V18r: tyop_2Ering_2Ering @ A_27a,V19f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V19f @ V18r ) )
+          = ( c_2Ering_2Ering__RP @ A_27a @ V18r ) )
+      & ! [V20r: tyop_2Ering_2Ering @ A_27a,V21f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V21f @ V20r ) )
+          = ( c_2Ering_2Ering__RP @ A_27a @ V20r ) )
+      & ! [V22r: tyop_2Ering_2Ering @ A_27a,V23f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V23f @ V22r ) )
+          = ( c_2Ering_2Ering__RP @ A_27a @ V22r ) )
+      & ! [V24r: tyop_2Ering_2Ering @ A_27a,V25f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V25f @ V24r ) )
+          = ( c_2Ering_2Ering__RM @ A_27a @ V24r ) )
+      & ! [V26r: tyop_2Ering_2Ering @ A_27a,V27f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V27f @ V26r ) )
+          = ( c_2Ering_2Ering__RM @ A_27a @ V26r ) )
+      & ! [V28r: tyop_2Ering_2Ering @ A_27a,V29f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V29f @ V28r ) )
+          = ( c_2Ering_2Ering__RM @ A_27a @ V28r ) )
+      & ! [V30r: tyop_2Ering_2Ering @ A_27a,V31f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V31f @ V30r ) )
+          = ( c_2Ering_2Ering__RM @ A_27a @ V30r ) )
+      & ! [V32r: tyop_2Ering_2Ering @ A_27a,V33f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN @ A_27a @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V33f @ V32r ) )
+          = ( c_2Ering_2Ering__RN @ A_27a @ V32r ) )
+      & ! [V34r: tyop_2Ering_2Ering @ A_27a,V35f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN @ A_27a @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V35f @ V34r ) )
+          = ( c_2Ering_2Ering__RN @ A_27a @ V34r ) )
+      & ! [V36r: tyop_2Ering_2Ering @ A_27a,V37f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN @ A_27a @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V37f @ V36r ) )
+          = ( c_2Ering_2Ering__RN @ A_27a @ V36r ) )
+      & ! [V38r: tyop_2Ering_2Ering @ A_27a,V39f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN @ A_27a @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V39f @ V38r ) )
+          = ( c_2Ering_2Ering__RN @ A_27a @ V38r ) )
+      & ! [V40r: tyop_2Ering_2Ering @ A_27a,V41f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R0 @ A_27a @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V41f @ V40r ) )
+          = ( V41f @ ( c_2Ering_2Ering__R0 @ A_27a @ V40r ) ) )
+      & ! [V42r: tyop_2Ering_2Ering @ A_27a,V43f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R1 @ A_27a @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V43f @ V42r ) )
+          = ( V43f @ ( c_2Ering_2Ering__R1 @ A_27a @ V42r ) ) )
+      & ! [V44r: tyop_2Ering_2Ering @ A_27a,V45f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V45f @ V44r ) )
+          = ( V45f @ ( c_2Ering_2Ering__RP @ A_27a @ V44r ) ) )
+      & ! [V46r: tyop_2Ering_2Ering @ A_27a,V47f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V47f @ V46r ) )
+          = ( V47f @ ( c_2Ering_2Ering__RM @ A_27a @ V46r ) ) )
+      & ! [V48r: tyop_2Ering_2Ering @ A_27a,V49f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN @ A_27a @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V49f @ V48r ) )
+          = ( V49f @ ( c_2Ering_2Ering__RN @ A_27a @ V48r ) ) ) ) ).
+
+thf(thm_2Ering_2Ering__fupdfupds,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0r: tyop_2Ering_2Ering @ A_27a,V1g: A_27a > A_27a,V2f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R0__fupd @ A_27a @ V2f @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V1g @ V0r ) )
+          = ( c_2Ering_2Ering__R0__fupd @ A_27a @ ( c_2Ecombin_2Eo @ A_27a @ A_27a @ A_27a @ V2f @ V1g ) @ V0r ) )
+      & ! [V3r: tyop_2Ering_2Ering @ A_27a,V4g: A_27a > A_27a,V5f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R1__fupd @ A_27a @ V5f @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V4g @ V3r ) )
+          = ( c_2Ering_2Ering__R1__fupd @ A_27a @ ( c_2Ecombin_2Eo @ A_27a @ A_27a @ A_27a @ V5f @ V4g ) @ V3r ) )
+      & ! [V6r: tyop_2Ering_2Ering @ A_27a,V7g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V8f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RP__fupd @ A_27a @ V8f @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V7g @ V6r ) )
+          = ( c_2Ering_2Ering__RP__fupd @ A_27a @ ( c_2Ecombin_2Eo @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V8f @ V7g ) @ V6r ) )
+      & ! [V9r: tyop_2Ering_2Ering @ A_27a,V10g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V11f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM__fupd @ A_27a @ V11f @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V10g @ V9r ) )
+          = ( c_2Ering_2Ering__RM__fupd @ A_27a @ ( c_2Ecombin_2Eo @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V11f @ V10g ) @ V9r ) )
+      & ! [V12r: tyop_2Ering_2Ering @ A_27a,V13g: ( A_27a > A_27a ) > A_27a > A_27a,V14f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN__fupd @ A_27a @ V14f @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V13g @ V12r ) )
+          = ( c_2Ering_2Ering__RN__fupd @ A_27a @ ( c_2Ecombin_2Eo @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ V14f @ V13g ) @ V12r ) ) ) ).
+
+thf(thm_2Ering_2Ering__fupdfupds__comp,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ! [V0g: A_27a > A_27a,V1f: A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V1f ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V0g ) )
+          = ( c_2Ering_2Ering__R0__fupd @ A_27a @ ( c_2Ecombin_2Eo @ A_27a @ A_27a @ A_27a @ V1f @ V0g ) ) )
+      & ! [V2h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V3g: A_27a > A_27a,V4f: A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V4f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V3g ) @ V2h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ ( c_2Ecombin_2Eo @ A_27a @ A_27a @ A_27a @ V4f @ V3g ) ) @ V2h ) )
+      & ! [V5g: A_27a > A_27a,V6f: A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V6f ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V5g ) )
+          = ( c_2Ering_2Ering__R1__fupd @ A_27a @ ( c_2Ecombin_2Eo @ A_27a @ A_27a @ A_27a @ V6f @ V5g ) ) )
+      & ! [V7h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V8g: A_27a > A_27a,V9f: A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V9f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V8g ) @ V7h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ ( c_2Ecombin_2Eo @ A_27a @ A_27a @ A_27a @ V9f @ V8g ) ) @ V7h ) )
+      & ! [V10g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V11f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V11f ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V10g ) )
+          = ( c_2Ering_2Ering__RP__fupd @ A_27a @ ( c_2Ecombin_2Eo @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V11f @ V10g ) ) )
+      & ! [V12h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V13g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V14f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V14f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V13g ) @ V12h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ ( c_2Ecombin_2Eo @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V14f @ V13g ) ) @ V12h ) )
+      & ! [V15g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V16f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V16f ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V15g ) )
+          = ( c_2Ering_2Ering__RM__fupd @ A_27a @ ( c_2Ecombin_2Eo @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V16f @ V15g ) ) )
+      & ! [V17h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V18g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V19f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V19f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V18g ) @ V17h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ ( c_2Ecombin_2Eo @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V19f @ V18g ) ) @ V17h ) )
+      & ! [V20g: ( A_27a > A_27a ) > A_27a > A_27a,V21f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V21f ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V20g ) )
+          = ( c_2Ering_2Ering__RN__fupd @ A_27a @ ( c_2Ecombin_2Eo @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ V21f @ V20g ) ) )
+      & ! [V22h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V23g: ( A_27a > A_27a ) > A_27a > A_27a,V24f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V24f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V23g ) @ V22h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ ( c_2Ecombin_2Eo @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ V24f @ V23g ) ) @ V22h ) ) ) ).
+
+thf(thm_2Ering_2Ering__fupdcanon,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0r: tyop_2Ering_2Ering @ A_27a,V1g: A_27a > A_27a,V2f: A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__R1__fupd @ A_27a @ V2f @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V1g @ V0r ) )
+          = ( c_2Ering_2Ering__R0__fupd @ A_27a @ V1g @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V2f @ V0r ) ) )
+      & ! [V3r: tyop_2Ering_2Ering @ A_27a,V4g: A_27a > A_27a,V5f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RP__fupd @ A_27a @ V5f @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V4g @ V3r ) )
+          = ( c_2Ering_2Ering__R0__fupd @ A_27a @ V4g @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V5f @ V3r ) ) )
+      & ! [V6r: tyop_2Ering_2Ering @ A_27a,V7g: A_27a > A_27a,V8f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RP__fupd @ A_27a @ V8f @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V7g @ V6r ) )
+          = ( c_2Ering_2Ering__R1__fupd @ A_27a @ V7g @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V8f @ V6r ) ) )
+      & ! [V9r: tyop_2Ering_2Ering @ A_27a,V10g: A_27a > A_27a,V11f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM__fupd @ A_27a @ V11f @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V10g @ V9r ) )
+          = ( c_2Ering_2Ering__R0__fupd @ A_27a @ V10g @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V11f @ V9r ) ) )
+      & ! [V12r: tyop_2Ering_2Ering @ A_27a,V13g: A_27a > A_27a,V14f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM__fupd @ A_27a @ V14f @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V13g @ V12r ) )
+          = ( c_2Ering_2Ering__R1__fupd @ A_27a @ V13g @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V14f @ V12r ) ) )
+      & ! [V15r: tyop_2Ering_2Ering @ A_27a,V16g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V17f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RM__fupd @ A_27a @ V17f @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V16g @ V15r ) )
+          = ( c_2Ering_2Ering__RP__fupd @ A_27a @ V16g @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V17f @ V15r ) ) )
+      & ! [V18r: tyop_2Ering_2Ering @ A_27a,V19g: A_27a > A_27a,V20f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN__fupd @ A_27a @ V20f @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V19g @ V18r ) )
+          = ( c_2Ering_2Ering__R0__fupd @ A_27a @ V19g @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V20f @ V18r ) ) )
+      & ! [V21r: tyop_2Ering_2Ering @ A_27a,V22g: A_27a > A_27a,V23f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN__fupd @ A_27a @ V23f @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V22g @ V21r ) )
+          = ( c_2Ering_2Ering__R1__fupd @ A_27a @ V22g @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V23f @ V21r ) ) )
+      & ! [V24r: tyop_2Ering_2Ering @ A_27a,V25g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V26f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN__fupd @ A_27a @ V26f @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V25g @ V24r ) )
+          = ( c_2Ering_2Ering__RP__fupd @ A_27a @ V25g @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V26f @ V24r ) ) )
+      & ! [V27r: tyop_2Ering_2Ering @ A_27a,V28g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V29f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ering_2Ering__RN__fupd @ A_27a @ V29f @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V28g @ V27r ) )
+          = ( c_2Ering_2Ering__RM__fupd @ A_27a @ V28g @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V29f @ V27r ) ) ) ) ).
+
+thf(thm_2Ering_2Ering__fupdcanon__comp,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ! [V0g: A_27a > A_27a,V1f: A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V1f ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V0g ) )
+          = ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V0g ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V1f ) ) )
+      & ! [V2h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V3g: A_27a > A_27a,V4f: A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V4f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V3g ) @ V2h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V3g ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V4f ) @ V2h ) ) )
+      & ! [V5g: A_27a > A_27a,V6f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V6f ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V5g ) )
+          = ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V5g ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V6f ) ) )
+      & ! [V7h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V8g: A_27a > A_27a,V9f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V9f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V8g ) @ V7h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V8g ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V9f ) @ V7h ) ) )
+      & ! [V10g: A_27a > A_27a,V11f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V11f ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V10g ) )
+          = ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V10g ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V11f ) ) )
+      & ! [V12h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V13g: A_27a > A_27a,V14f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V14f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V13g ) @ V12h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V13g ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V14f ) @ V12h ) ) )
+      & ! [V15g: A_27a > A_27a,V16f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V16f ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V15g ) )
+          = ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V15g ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V16f ) ) )
+      & ! [V17h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V18g: A_27a > A_27a,V19f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V19f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V18g ) @ V17h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V18g ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V19f ) @ V17h ) ) )
+      & ! [V20g: A_27a > A_27a,V21f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V21f ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V20g ) )
+          = ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V20g ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V21f ) ) )
+      & ! [V22h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V23g: A_27a > A_27a,V24f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V24f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V23g ) @ V22h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V23g ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V24f ) @ V22h ) ) )
+      & ! [V25g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V26f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V26f ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V25g ) )
+          = ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V25g ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V26f ) ) )
+      & ! [V27h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V28g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V29f: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V29f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V28g ) @ V27h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V28g ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V29f ) @ V27h ) ) )
+      & ! [V30g: A_27a > A_27a,V31f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V31f ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V30g ) )
+          = ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V30g ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V31f ) ) )
+      & ! [V32h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V33g: A_27a > A_27a,V34f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V34f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V33g ) @ V32h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ V33g ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V34f ) @ V32h ) ) )
+      & ! [V35g: A_27a > A_27a,V36f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V36f ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V35g ) )
+          = ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V35g ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V36f ) ) )
+      & ! [V37h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V38g: A_27a > A_27a,V39f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V39f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V38g ) @ V37h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ V38g ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V39f ) @ V37h ) ) )
+      & ! [V40g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V41f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V41f ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V40g ) )
+          = ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V40g ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V41f ) ) )
+      & ! [V42h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V43g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V44f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V44f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V43g ) @ V42h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ V43g ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V44f ) @ V42h ) ) )
+      & ! [V45g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V46f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V46f ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V45g ) )
+          = ( c_2Ecombin_2Eo @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V45g ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V46f ) ) )
+      & ! [V47h: A_27b > ( tyop_2Ering_2Ering @ A_27a ),V48g: ( A_27a > A_27a > A_27a ) > A_27a > A_27a > A_27a,V49f: ( A_27a > A_27a ) > A_27a > A_27a] :
+          ( ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V49f ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V48g ) @ V47h ) )
+          = ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ V48g ) @ ( c_2Ecombin_2Eo @ A_27b @ ( tyop_2Ering_2Ering @ A_27a ) @ ( tyop_2Ering_2Ering @ A_27a ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ V49f ) @ V47h ) ) ) ) ).
+
+thf(thm_2Ering_2Ering__component__equality,axiom,
+    ! [A_27a: $tType,V0r1: tyop_2Ering_2Ering @ A_27a,V1r2: tyop_2Ering_2Ering @ A_27a] :
+      ( ( V0r1 = V1r2 )
+    <=> ( ( ( c_2Ering_2Ering__R0 @ A_27a @ V0r1 )
+          = ( c_2Ering_2Ering__R0 @ A_27a @ V1r2 ) )
+        & ( ( c_2Ering_2Ering__R1 @ A_27a @ V0r1 )
+          = ( c_2Ering_2Ering__R1 @ A_27a @ V1r2 ) )
+        & ( ( c_2Ering_2Ering__RP @ A_27a @ V0r1 )
+          = ( c_2Ering_2Ering__RP @ A_27a @ V1r2 ) )
+        & ( ( c_2Ering_2Ering__RM @ A_27a @ V0r1 )
+          = ( c_2Ering_2Ering__RM @ A_27a @ V1r2 ) )
+        & ( ( c_2Ering_2Ering__RN @ A_27a @ V0r1 )
+          = ( c_2Ering_2Ering__RN @ A_27a @ V1r2 ) ) ) ) ).
+
+thf(thm_2Ering_2Ering__updates__eq__literal,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a,V1a0: A_27a,V2a: A_27a,V3f1: A_27a > A_27a > A_27a,V4f0: A_27a > A_27a > A_27a,V5f: A_27a > A_27a] :
+      ( ( c_2Ering_2Ering__R0__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V1a0 ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V2a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V3f1 ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V4f0 ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ V5f ) @ V0r ) ) ) ) )
+      = ( c_2Ering_2Ering__R0__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V1a0 ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V2a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V3f1 ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V4f0 ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ V5f ) @ ( c_2Ebool_2EARB @ ( tyop_2Ering_2Ering @ A_27a ) ) ) ) ) ) ) ) ).
+
+thf(thm_2Ering_2Ering__literal__nchotomy,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+    ? [V1a0: A_27a,V2a: A_27a,V3f1: A_27a > A_27a > A_27a,V4f0: A_27a > A_27a > A_27a,V5f: A_27a > A_27a] :
+      ( V0r
+      = ( c_2Ering_2Ering__R0__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V1a0 ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V2a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V3f1 ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V4f0 ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ V5f ) @ ( c_2Ebool_2EARB @ ( tyop_2Ering_2Ering @ A_27a ) ) ) ) ) ) ) ) ).
+
+thf(thm_2Ering_2EFORALL__ring,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Ering_2Ering @ A_27a ) > $o] :
+      ( ! [V1r: tyop_2Ering_2Ering @ A_27a] : ( V0P @ V1r )
+    <=> ! [V2a0: A_27a,V3a: A_27a,V4f1: A_27a > A_27a > A_27a,V5f0: A_27a > A_27a > A_27a,V6f: A_27a > A_27a] : ( V0P @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V2a0 ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V3a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V4f1 ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V5f0 ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ V6f ) @ ( c_2Ebool_2EARB @ ( tyop_2Ering_2Ering @ A_27a ) ) ) ) ) ) ) ) ) ).
+
+thf(thm_2Ering_2EEXISTS__ring,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Ering_2Ering @ A_27a ) > $o] :
+      ( ? [V1r: tyop_2Ering_2Ering @ A_27a] : ( V0P @ V1r )
+    <=> ? [V2a0: A_27a,V3a: A_27a,V4f1: A_27a > A_27a > A_27a,V5f0: A_27a > A_27a > A_27a,V6f: A_27a > A_27a] : ( V0P @ ( c_2Ering_2Ering__R0__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V2a0 ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V3a ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V4f1 ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V5f0 ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ V6f ) @ ( c_2Ebool_2EARB @ ( tyop_2Ering_2Ering @ A_27a ) ) ) ) ) ) ) ) ) ).
+
+thf(thm_2Ering_2Ering__literal__11,axiom,
+    ! [A_27a: $tType,V0a01: A_27a,V1a1: A_27a,V2f11: A_27a > A_27a > A_27a,V3f01: A_27a > A_27a > A_27a,V4f1: A_27a > A_27a,V5a02: A_27a,V6a2: A_27a,V7f12: A_27a > A_27a > A_27a,V8f02: A_27a > A_27a > A_27a,V9f2: A_27a > A_27a] :
+      ( ( ( c_2Ering_2Ering__R0__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V0a01 ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V1a1 ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V2f11 ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V3f01 ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ V4f1 ) @ ( c_2Ebool_2EARB @ ( tyop_2Ering_2Ering @ A_27a ) ) ) ) ) ) )
+        = ( c_2Ering_2Ering__R0__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V5a02 ) @ ( c_2Ering_2Ering__R1__fupd @ A_27a @ ( c_2Ecombin_2EK @ A_27a @ A_27a @ V6a2 ) @ ( c_2Ering_2Ering__RP__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V7f12 ) @ ( c_2Ering_2Ering__RM__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a > A_27a ) @ ( A_27a > A_27a > A_27a ) @ V8f02 ) @ ( c_2Ering_2Ering__RN__fupd @ A_27a @ ( c_2Ecombin_2EK @ ( A_27a > A_27a ) @ ( A_27a > A_27a ) @ V9f2 ) @ ( c_2Ebool_2EARB @ ( tyop_2Ering_2Ering @ A_27a ) ) ) ) ) ) ) )
+    <=> ( ( V0a01 = V5a02 )
+        & ( V1a1 = V6a2 )
+        & ( V2f11 = V7f12 )
+        & ( V3f01 = V8f02 )
+        & ( V4f1 = V9f2 ) ) ) ).
+
+thf(thm_2Ering_2Edatatype__ring,axiom,
+    ! [A_27a: $tType,V0ring: tyop_2Ering_2Ering @ A_27a,V1record: ( tyop_2Ering_2Ering @ A_27a ) > A_27a > A_27a > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a ) > $o,V2RP: A_27a > A_27a > A_27a,V3RN: A_27a > A_27a,V4RM: A_27a > A_27a > A_27a,V5R1: A_27a,V6R0: A_27a] : ( c_2Ebool_2EDATATYPE @ $o @ ( V1record @ V0ring @ V6R0 @ V5R1 @ V2RP @ V4RM @ V3RN ) ) ).
+
+thf(thm_2Ering_2Ering__11,axiom,
+    ! [A_27a: $tType,V0a0: A_27a,V1a1: A_27a,V2a2: A_27a > A_27a > A_27a,V3a3: A_27a > A_27a > A_27a,V4a4: A_27a > A_27a,V5a0_27: A_27a,V6a1_27: A_27a,V7a2_27: A_27a > A_27a > A_27a,V8a3_27: A_27a > A_27a > A_27a,V9a4_27: A_27a > A_27a] :
+      ( ( ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V0a0 @ V1a1 @ V2a2 @ V3a3 @ V4a4 )
+        = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V5a0_27 @ V6a1_27 @ V7a2_27 @ V8a3_27 @ V9a4_27 ) )
+    <=> ( ( V0a0 = V5a0_27 )
+        & ( V1a1 = V6a1_27 )
+        & ( V2a2 = V7a2_27 )
+        & ( V3a3 = V8a3_27 )
+        & ( V4a4 = V9a4_27 ) ) ) ).
+
+thf(thm_2Ering_2Ering__nchotomy,axiom,
+    ! [A_27a: $tType,V0rr: tyop_2Ering_2Ering @ A_27a] :
+    ? [V1a: A_27a,V2a0: A_27a,V3f: A_27a > A_27a > A_27a,V4f0: A_27a > A_27a > A_27a,V5f1: A_27a > A_27a] :
+      ( V0rr
+      = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ V3f @ V4f0 @ V5f1 ) ) ).
+
+thf(thm_2Ering_2Ering__Axiom,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: A_27a > A_27a > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a ) > A_27b] :
+    ? [V1fn: ( tyop_2Ering_2Ering @ A_27a ) > A_27b] :
+    ! [V2a0: A_27a,V3a1: A_27a,V4a2: A_27a > A_27a > A_27a,V5a3: A_27a > A_27a > A_27a,V6a4: A_27a > A_27a] :
+      ( ( V1fn @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V2a0 @ V3a1 @ V4a2 @ V5a3 @ V6a4 ) )
+      = ( V0f @ V2a0 @ V3a1 @ V4a2 @ V5a3 @ V6a4 ) ) ).
+
+thf(thm_2Ering_2Ering__induction,axiom,
+    ! [A_27a: $tType,V0P: ( tyop_2Ering_2Ering @ A_27a ) > $o] :
+      ( ! [V1a: A_27a,V2a0: A_27a,V3f: A_27a > A_27a > A_27a,V4f0: A_27a > A_27a > A_27a,V5f1: A_27a > A_27a] : ( V0P @ ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V1a @ V2a0 @ V3f @ V4f0 @ V5f1 ) )
+     => ! [V6r: tyop_2Ering_2Ering @ A_27a] : ( V0P @ V6r ) ) ).
+
+thf(thm_2Ering_2Ering__case__cong,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f_27: A_27a > A_27a > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a ) > A_27b,V1M: tyop_2Ering_2Ering @ A_27a,V2M_27: tyop_2Ering_2Ering @ A_27a,V3f: A_27a > A_27a > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a ) > A_27b] :
+      ( ( ( V1M = V2M_27 )
+        & ! [V4a0: A_27a,V5a1: A_27a,V6a2: A_27a > A_27a > A_27a,V7a3: A_27a > A_27a > A_27a,V8a4: A_27a > A_27a] :
+            ( ( V2M_27
+              = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V4a0 @ V5a1 @ V6a2 @ V7a3 @ V8a4 ) )
+           => ( ( V3f @ V4a0 @ V5a1 @ V6a2 @ V7a3 @ V8a4 )
+              = ( V0f_27 @ V4a0 @ V5a1 @ V6a2 @ V7a3 @ V8a4 ) ) ) )
+     => ( ( c_2Ering_2Ering__CASE @ A_27a @ A_27b @ V1M @ V3f )
+        = ( c_2Ering_2Ering__CASE @ A_27a @ A_27b @ V2M_27 @ V0f_27 ) ) ) ).
+
+thf(thm_2Ering_2Ering__case__eq,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0x: tyop_2Ering_2Ering @ A_27a,V1v: A_27b,V2f: A_27a > A_27a > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a ) > A_27b] :
+      ( ( ( c_2Ering_2Ering__CASE @ A_27a @ A_27b @ V0x @ V2f )
+        = V1v )
+    <=> ? [V3a: A_27a,V4a0: A_27a,V5f_27: A_27a > A_27a > A_27a,V6f0: A_27a > A_27a > A_27a,V7f1: A_27a > A_27a] :
+          ( ( V0x
+            = ( c_2Ering_2Erecordtype_2Ering @ A_27a @ V3a @ V4a0 @ V5f_27 @ V6f0 @ V7f1 ) )
+          & ( ( V2f @ V3a @ V4a0 @ V5f_27 @ V6f0 @ V7f1 )
+            = V1v ) ) ) ).
+
+thf(thm_2Ering_2Eplus__sym,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a,V2m: A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V1n @ V2m )
+          = ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V2m @ V1n ) ) ) ).
+
+thf(thm_2Ering_2Eplus__assoc,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a,V2m: A_27a,V3p: A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V1n @ ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V2m @ V3p ) )
+          = ( c_2Ering_2Ering__RP @ A_27a @ V0r @ ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V1n @ V2m ) @ V3p ) ) ) ).
+
+thf(thm_2Ering_2Emult__sym,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a,V2m: A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V1n @ V2m )
+          = ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V2m @ V1n ) ) ) ).
+
+thf(thm_2Ering_2Emult__assoc,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a,V2m: A_27a,V3p: A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V1n @ ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V2m @ V3p ) )
+          = ( c_2Ering_2Ering__RM @ A_27a @ V0r @ ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V1n @ V2m ) @ V3p ) ) ) ).
+
+thf(thm_2Ering_2Eplus__zero__left,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ V0r @ ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) @ V1n )
+          = V1n ) ) ).
+
+thf(thm_2Ering_2Emult__one__left,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ ( c_2Ering_2Ering__R1 @ A_27a @ V0r ) @ V1n )
+          = V1n ) ) ).
+
+thf(thm_2Ering_2Eopp__def,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V1n @ ( c_2Ering_2Ering__RN @ A_27a @ V0r @ V1n ) )
+          = ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) ) ) ).
+
+thf(thm_2Ering_2Edistr__left,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a,V2m: A_27a,V3p: A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V1n @ V2m ) @ V3p )
+          = ( c_2Ering_2Ering__RP @ A_27a @ V0r @ ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V1n @ V3p ) @ ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V2m @ V3p ) ) ) ) ).
+
+thf(thm_2Ering_2Eplus__zero__right,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a] :
+          ( ( c_2Ering_2Ering__RP @ A_27a @ V0r @ V1n @ ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) )
+          = V1n ) ) ).
+
+thf(thm_2Ering_2Emult__zero__left,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) @ V1n )
+          = ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) ) ) ).
+
+thf(thm_2Ering_2Emult__zero__right,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V1n @ ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) )
+          = ( c_2Ering_2Ering__R0 @ A_27a @ V0r ) ) ) ).
+
+thf(thm_2Ering_2Ering__is__semi__ring,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ( c_2Esemi__ring_2Eis__semi__ring @ A_27a @ ( c_2Ering_2Esemi__ring__of @ A_27a @ V0r ) ) ) ).
+
+thf(thm_2Ering_2Emult__one__right,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1n: A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V1n @ ( c_2Ering_2Ering__R1 @ A_27a @ V0r ) )
+          = V1n ) ) ).
+
+thf(thm_2Ering_2Eneg__mult,axiom,
+    ! [A_27a: $tType,V0r: tyop_2Ering_2Ering @ A_27a] :
+      ( ( c_2Ering_2Eis__ring @ A_27a @ V0r )
+     => ! [V1a: A_27a,V2b: A_27a] :
+          ( ( c_2Ering_2Ering__RM @ A_27a @ V0r @ ( c_2Ering_2Ering__RN @ A_27a @ V0r @ V1a ) @ V2b )
+          = ( c_2Ering_2Ering__RN @ A_27a @ V0r @ ( c_2Ering_2Ering__RM @ A_27a @ V0r @ V1a @ V2b ) ) ) ) ).
+
+%------------------------------------------------------------------------------

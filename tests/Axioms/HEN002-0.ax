@@ -1,0 +1,56 @@
+%--------------------------------------------------------------------------
+% File     : HEN002-0 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Henkin Models
+% Axioms   : Henkin model axioms
+% Version  : [MOW76] axioms.
+% English  :
+
+% Refs     : [MOW76] McCharen et al. (1976), Problems and Experiments for a
+% Source   : [ANL]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :    7 (   4 unt;   0 nHn;   3 RR)
+%            Number of literals    :   11 (   3 equ;   4 neg)
+%            Maximal clause size   :    3 (   1 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    2 (   1 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    3 (   3 usr;   2 con; 0-2 aty)
+%            Number of variables   :   13 (   3 sgn)
+% SPC      : 
+
+% Comments :
+%--------------------------------------------------------------------------
+%----A0: Definition of less_equal
+cnf(quotient_less_equal1,axiom,
+    ( ~ less_equal(X,Y)
+    | divide(X,Y) = zero ) ).
+
+cnf(quotient_less_equal2,axiom,
+    ( divide(X,Y) != zero
+    | less_equal(X,Y) ) ).
+
+%----A1: x/y <= x
+cnf(quotient_smaller_than_numerator,axiom,
+    less_equal(divide(X,Y),X) ).
+
+%----A2: (x/z) / (y/z) <= (x/y) / z
+cnf(quotient_property,axiom,
+    less_equal(divide(divide(X,Z),divide(Y,Z)),divide(divide(X,Y),Z)) ).
+
+%----A3: 0<=x
+cnf(zero_is_smallest,axiom,
+    less_equal(zero,X) ).
+
+%----A4: x <= y and y <= x implies that x = y
+cnf(less_equal_and_equal,axiom,
+    ( ~ less_equal(X,Y)
+    | ~ less_equal(Y,X)
+    | X = Y ) ).
+
+%----A5: x <= identity (Thus an implicative model with unit )
+cnf(identity_is_largest,axiom,
+    less_equal(X,identity) ).
+
+%----Implicit in equality formulation: '/' is well defined
+%--------------------------------------------------------------------------

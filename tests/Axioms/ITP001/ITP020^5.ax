@@ -1,0 +1,123 @@
+%------------------------------------------------------------------------------
+% File     : ITP020^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : basicSize^2.ax [Gau20]
+%          : HL4020^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   17 (   2 unt;   6 typ;   0 def)
+%            Number of atoms       :  124 (   8 equ;   0 cnn)
+%            Maximal formula atoms :   16 (   7 avg)
+%            Number of connectives :  192 (   0   ~;   0   |;   2   &; 178   @)
+%                                         (   0 <=>;  12  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   12 (   7 avg; 178 nst)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :    6 (   6   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   31 (  30 usr;  26 con; 0-2 aty)
+%            Number of variables   :   26 (   2   ^  24   !;   0   ?;  26   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tp_c_2EbasicSize_2Ebool__size,type,
+    c_2EbasicSize_2Ebool__size: $i ).
+
+thf(mem_c_2EbasicSize_2Ebool__size,axiom,
+    mem @ c_2EbasicSize_2Ebool__size @ ( arr @ bool @ ty_2Enum_2Enum ) ).
+
+thf(tp_c_2EbasicSize_2Eone__size,type,
+    c_2EbasicSize_2Eone__size: $i ).
+
+thf(mem_c_2EbasicSize_2Eone__size,axiom,
+    mem @ c_2EbasicSize_2Eone__size @ ( arr @ ty_2Eone_2Eone @ ty_2Enum_2Enum ) ).
+
+thf(stp_fo_c_2EbasicSize_2Eone__size,type,
+    fo__c_2EbasicSize_2Eone__size: tp__ty_2Eone_2Eone > tp__ty_2Enum_2Enum ).
+
+thf(stp_eq_fo_c_2EbasicSize_2Eone__size,axiom,
+    ! [X0: tp__ty_2Eone_2Eone] :
+      ( ( inj__ty_2Enum_2Enum @ ( fo__c_2EbasicSize_2Eone__size @ X0 ) )
+      = ( ap @ c_2EbasicSize_2Eone__size @ ( inj__ty_2Eone_2Eone @ X0 ) ) ) ).
+
+thf(tp_c_2EbasicSize_2Eoption__size,type,
+    c_2EbasicSize_2Eoption__size: del > $i ).
+
+thf(mem_c_2EbasicSize_2Eoption__size,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2EbasicSize_2Eoption__size @ A_27a ) @ ( arr @ ( arr @ A_27a @ ty_2Enum_2Enum ) @ ( arr @ ( ty_2Eoption_2Eoption @ A_27a ) @ ty_2Enum_2Enum ) ) ) ).
+
+thf(tp_c_2EbasicSize_2Epair__size,type,
+    c_2EbasicSize_2Epair__size: del > del > $i ).
+
+thf(mem_c_2EbasicSize_2Epair__size,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2EbasicSize_2Epair__size @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ty_2Enum_2Enum ) @ ( arr @ ( arr @ A_27b @ ty_2Enum_2Enum ) @ ( arr @ ( ty_2Epair_2Eprod @ A_27a @ A_27b ) @ ty_2Enum_2Enum ) ) ) ) ).
+
+thf(tp_c_2EbasicSize_2Esum__size,type,
+    c_2EbasicSize_2Esum__size: del > del > $i ).
+
+thf(mem_c_2EbasicSize_2Esum__size,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2EbasicSize_2Esum__size @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ty_2Enum_2Enum ) @ ( arr @ ( arr @ A_27b @ ty_2Enum_2Enum ) @ ( arr @ ( ty_2Esum_2Esum @ A_27a @ A_27b ) @ ty_2Enum_2Enum ) ) ) ) ).
+
+thf(ax_thm_2EbasicSize_2Ebool__size__def,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ bool )
+     => ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EbasicSize_2Ebool__size @ V0b ) )
+        = fo__c_2Enum_2E0 ) ) ).
+
+thf(ax_thm_2EbasicSize_2Epair__size__def,axiom,
+    ! [A_27a: del,A_27b: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27a @ ty_2Enum_2Enum ) )
+     => ! [V1g: $i] :
+          ( ( mem @ V1g @ ( arr @ A_27b @ ty_2Enum_2Enum ) )
+         => ( ( ap @ ( ap @ ( c_2EbasicSize_2Epair__size @ A_27a @ A_27b ) @ V0f ) @ V1g )
+            = ( ap @ ( c_2Epair_2EUNCURRY @ A_27a @ A_27b @ ty_2Enum_2Enum )
+              @ ( lam @ A_27a
+                @ ^ [V2x: $i] :
+                    ( lam @ A_27b
+                    @ ^ [V3y: $i] : ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( ap @ V0f @ V2x ) ) @ ( ap @ V1g @ V3y ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2EbasicSize_2Eone__size__def,axiom,
+    ! [V0x: tp__ty_2Eone_2Eone] :
+      ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EbasicSize_2Eone__size @ ( inj__ty_2Eone_2Eone @ V0x ) ) )
+      = fo__c_2Enum_2E0 ) ).
+
+thf(ax_thm_2EbasicSize_2Esum__size__def,axiom,
+    ! [A_27a: del,A_27b: del] :
+      ( ! [V0f: $i] :
+          ( ( mem @ V0f @ ( arr @ A_27a @ ty_2Enum_2Enum ) )
+         => ! [V1g: $i] :
+              ( ( mem @ V1g @ ( arr @ A_27b @ ty_2Enum_2Enum ) )
+             => ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( ( surj__ty_2Enum_2Enum @ ( ap @ ( ap @ ( ap @ ( c_2EbasicSize_2Esum__size @ A_27a @ A_27b ) @ V0f ) @ V1g ) @ ( ap @ ( c_2Esum_2EINL @ A_27a @ A_27b ) @ V2x ) ) )
+                    = ( surj__ty_2Enum_2Enum @ ( ap @ V0f @ V2x ) ) ) ) ) )
+      & ! [V3f: $i] :
+          ( ( mem @ V3f @ ( arr @ A_27a @ ty_2Enum_2Enum ) )
+         => ! [V4g: $i] :
+              ( ( mem @ V4g @ ( arr @ A_27b @ ty_2Enum_2Enum ) )
+             => ! [V5y: $i] :
+                  ( ( mem @ V5y @ A_27b )
+                 => ( ( surj__ty_2Enum_2Enum @ ( ap @ ( ap @ ( ap @ ( c_2EbasicSize_2Esum__size @ A_27a @ A_27b ) @ V3f ) @ V4g ) @ ( ap @ ( c_2Esum_2EINR @ A_27a @ A_27b ) @ V5y ) ) )
+                    = ( surj__ty_2Enum_2Enum @ ( ap @ V4g @ V5y ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2EbasicSize_2Eoption__size__def,axiom,
+    ! [A_27a: del] :
+      ( ! [V0f: $i] :
+          ( ( mem @ V0f @ ( arr @ A_27a @ ty_2Enum_2Enum ) )
+         => ( ( surj__ty_2Enum_2Enum @ ( ap @ ( ap @ ( c_2EbasicSize_2Eoption__size @ A_27a ) @ V0f ) @ ( c_2Eoption_2ENONE @ A_27a ) ) )
+            = fo__c_2Enum_2E0 ) )
+      & ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ ty_2Enum_2Enum ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ( ( surj__ty_2Enum_2Enum @ ( ap @ ( ap @ ( c_2EbasicSize_2Eoption__size @ A_27a ) @ V1f ) @ ( ap @ ( c_2Eoption_2ESOME @ A_27a ) @ V2x ) ) )
+                = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Enum_2ESUC @ ( ap @ V1f @ V2x ) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

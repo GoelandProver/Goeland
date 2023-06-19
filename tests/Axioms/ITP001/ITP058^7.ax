@@ -1,0 +1,293 @@
+%------------------------------------------------------------------------------
+% File     : ITP058^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : wot.ax [Gau19]
+%          : HL4058^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   56 (  10 unt;  36 typ;   0 def)
+%            Number of atoms       :   59 (   7 equ;   2 cnn)
+%            Maximal formula atoms :    6 (   1 avg)
+%            Number of connectives :  166 (   2   ~;   2   |;   8   &; 134   @)
+%                                         (  14 <=>;   6  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   7 avg; 134 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :  129 ( 129   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   37 (  35 usr;   1 con; 0-4 aty)
+%            Number of variables   :   82 (   1   ^  47   !;   3   ?;  82   :)
+%                                         (  31  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Epair_2Eprod,type,
+    tyop_2Epair_2Eprod: $tType > $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epair_2E_2C,type,
+    c_2Epair_2E_2C: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > A_27b > ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EBIGUNION,type,
+    c_2Epred__set_2EBIGUNION: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2ECHOICE,type,
+    c_2Epred__set_2ECHOICE: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > A_27a ) ).
+
+thf(c_2Epred__set_2ECOMPL,type,
+    c_2Epred__set_2ECOMPL: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EEMPTY,type,
+    c_2Epred__set_2EEMPTY: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Epred__set_2EGSPEC,type,
+    c_2Epred__set_2EGSPEC: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27b > ( tyop_2Epair_2Eprod @ A_27a @ $o ) ) > A_27a > $o ) ).
+
+thf(c_2Ebool_2EIN,type,
+    c_2Ebool_2EIN: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EINSERT,type,
+    c_2Epred__set_2EINSERT: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Erelation_2ESTRORD,type,
+    c_2Erelation_2ESTRORD: 
+      !>[A_27a: $tType] : ( ( A_27a > A_27a > $o ) > A_27a > A_27a > $o ) ).
+
+thf(c_2Epred__set_2ESUBSET,type,
+    c_2Epred__set_2ESUBSET: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Erelation_2EStrongLinearOrder,type,
+    c_2Erelation_2EStrongLinearOrder: 
+      !>[A_27a: $tType] : ( ( A_27a > A_27a > $o ) > $o ) ).
+
+thf(c_2Ewot_2EStrongWellOrder,type,
+    c_2Ewot_2EStrongWellOrder: 
+      !>[A_27a: $tType] : ( ( A_27a > A_27a > $o ) > $o ) ).
+
+thf(c_2Erelation_2EWF,type,
+    c_2Erelation_2EWF: 
+      !>[A_27a: $tType] : ( ( A_27a > A_27a > $o ) > $o ) ).
+
+thf(c_2Erelation_2EWeakOrder,type,
+    c_2Erelation_2EWeakOrder: 
+      !>[A_27g: $tType] : ( ( A_27g > A_27g > $o ) > $o ) ).
+
+thf(c_2Ewot_2EWeakWellOrder,type,
+    c_2Ewot_2EWeakWellOrder: 
+      !>[A_27a: $tType] : ( ( A_27a > A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Ewot_2Echain,type,
+    c_2Ewot_2Echain: 
+      !>[A_27x: $tType] : ( ( ( A_27x > $o ) > $o ) > $o ) ).
+
+thf(c_2Ewot_2Ecpl,type,
+    c_2Ewot_2Ecpl: 
+      !>[A_27x: $tType] : ( ( A_27x > $o ) > ( A_27x > $o ) > $o ) ).
+
+thf(c_2Ewot_2Emex,type,
+    c_2Ewot_2Emex: 
+      !>[A_27x: $tType] : ( ( A_27x > $o ) > A_27x ) ).
+
+thf(c_2Ewot_2Emex__less,type,
+    c_2Ewot_2Emex__less: 
+      !>[A_27x: $tType] : ( A_27x > A_27x > $o ) ).
+
+thf(c_2Ewot_2Emex__less__eq,type,
+    c_2Ewot_2Emex__less__eq: 
+      !>[A_27x: $tType] : ( A_27x > A_27x > $o ) ).
+
+thf(c_2Ewot_2Epreds,type,
+    c_2Ewot_2Epreds: 
+      !>[A_27x: $tType] : ( A_27x > A_27x > $o ) ).
+
+thf(c_2Ewot_2Epreds__image,type,
+    c_2Ewot_2Epreds__image: 
+      !>[A_27x: $tType] : ( ( A_27x > $o ) > ( A_27x > $o ) > $o ) ).
+
+thf(c_2Ewot_2Esetsuc,type,
+    c_2Ewot_2Esetsuc: 
+      !>[A_27x: $tType] : ( ( A_27x > $o ) > A_27x > $o ) ).
+
+thf(c_2Ewot_2Esuccl,type,
+    c_2Ewot_2Esuccl: 
+      !>[A_27x: $tType] : ( ( ( A_27x > $o ) > $o ) > $o ) ).
+
+thf(c_2Ewot_2Etower,type,
+    c_2Ewot_2Etower: 
+      !>[A_27x: $tType] : ( ( ( A_27x > $o ) > $o ) > $o ) ).
+
+thf(c_2Ewot_2Euncl,type,
+    c_2Ewot_2Euncl: 
+      !>[A_27x: $tType] : ( ( ( A_27x > $o ) > $o ) > $o ) ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2Ewot_2Ecpl__def,axiom,
+    ! [A_27x: $tType,V0A: A_27x > $o,V1B: A_27x > $o] :
+      ( ( c_2Ewot_2Ecpl @ A_27x @ V0A @ V1B )
+    <=> ( ( c_2Epred__set_2ESUBSET @ A_27x @ V0A @ V1B )
+        | ( c_2Epred__set_2ESUBSET @ A_27x @ V1B @ V0A ) ) ) ).
+
+thf(thm_2Ewot_2Echain__def,axiom,
+    ! [A_27x: $tType,V0C: ( A_27x > $o ) > $o] :
+      ( ( c_2Ewot_2Echain @ A_27x @ V0C )
+    <=> ! [V1a: A_27x > $o,V2b: A_27x > $o] :
+          ( ( ( c_2Ebool_2EIN @ ( A_27x > $o ) @ V1a @ V0C )
+            & ( c_2Ebool_2EIN @ ( A_27x > $o ) @ V2b @ V0C ) )
+         => ( c_2Ewot_2Ecpl @ A_27x @ V1a @ V2b ) ) ) ).
+
+thf(thm_2Ewot_2Emex__def,axiom,
+    ! [A_27x: $tType,V0s: A_27x > $o] :
+      ( ( c_2Ewot_2Emex @ A_27x @ V0s )
+      = ( c_2Epred__set_2ECHOICE @ A_27x @ ( c_2Epred__set_2ECOMPL @ A_27x @ V0s ) ) ) ).
+
+thf(thm_2Ewot_2Esetsuc__def,axiom,
+    ! [A_27x: $tType,V0s: A_27x > $o] :
+      ( ( c_2Ewot_2Esetsuc @ A_27x @ V0s )
+      = ( c_2Epred__set_2EINSERT @ A_27x @ ( c_2Ewot_2Emex @ A_27x @ V0s ) @ V0s ) ) ).
+
+thf(thm_2Ewot_2Esuccl__def,axiom,
+    ! [A_27x: $tType,V0c: ( A_27x > $o ) > $o] :
+      ( ( c_2Ewot_2Esuccl @ A_27x @ V0c )
+    <=> ! [V1s: A_27x > $o] :
+          ( ( c_2Ebool_2EIN @ ( A_27x > $o ) @ V1s @ V0c )
+         => ( c_2Ebool_2EIN @ ( A_27x > $o ) @ ( c_2Ewot_2Esetsuc @ A_27x @ V1s ) @ V0c ) ) ) ).
+
+thf(thm_2Ewot_2Euncl__def,axiom,
+    ! [A_27x: $tType,V0c: ( A_27x > $o ) > $o] :
+      ( ( c_2Ewot_2Euncl @ A_27x @ V0c )
+    <=> ! [V1w: ( A_27x > $o ) > $o] :
+          ( ( ( c_2Epred__set_2ESUBSET @ ( A_27x > $o ) @ V1w @ V0c )
+            & ( c_2Ewot_2Echain @ A_27x @ V1w ) )
+         => ( c_2Ebool_2EIN @ ( A_27x > $o ) @ ( c_2Epred__set_2EBIGUNION @ A_27x @ V1w ) @ V0c ) ) ) ).
+
+thf(thm_2Ewot_2Etower__def,axiom,
+    ! [A_27x: $tType,V0A: ( A_27x > $o ) > $o] :
+      ( ( c_2Ewot_2Etower @ A_27x @ V0A )
+    <=> ( ( c_2Ewot_2Esuccl @ A_27x @ V0A )
+        & ( c_2Ewot_2Euncl @ A_27x @ V0A ) ) ) ).
+
+thf(thm_2Ewot_2Emex__less__eq__def,axiom,
+    ! [A_27x: $tType,V0a: A_27x,V1b: A_27x] :
+      ( ( c_2Ewot_2Emex__less__eq @ A_27x @ V0a @ V1b )
+      = ( c_2Epred__set_2ESUBSET @ A_27x @ ( c_2Ewot_2Epreds @ A_27x @ V0a ) @ ( c_2Ewot_2Epreds @ A_27x @ V1b ) ) ) ).
+
+thf(thm_2Ewot_2Emex__less__def,axiom,
+    ! [A_27x: $tType] :
+      ( ( c_2Ewot_2Emex__less @ A_27x )
+      = ( c_2Erelation_2ESTRORD @ A_27x @ ( c_2Ewot_2Emex__less__eq @ A_27x ) ) ) ).
+
+thf(thm_2Ewot_2EWeakWellOrder__def,axiom,
+    ! [A_27a: $tType,V0R: A_27a > A_27a > $o] :
+      ( ( c_2Ewot_2EWeakWellOrder @ A_27a @ V0R )
+    <=> ( ( c_2Erelation_2EWeakOrder @ A_27a @ V0R )
+        & ! [V1B: A_27a > $o] :
+            ( ( (~)
+              @ ( V1B
+                = ( c_2Epred__set_2EEMPTY @ A_27a ) ) )
+           => ? [V2m: A_27a] :
+                ( ( c_2Ebool_2EIN @ A_27a @ V2m @ V1B )
+                & ! [V3b: A_27a] :
+                    ( ( c_2Ebool_2EIN @ A_27a @ V3b @ V1B )
+                   => ( V0R @ V2m @ V3b ) ) ) ) ) ) ).
+
+thf(thm_2Ewot_2Epreds__image__def,axiom,
+    ! [A_27x: $tType,V0X: A_27x > $o] :
+      ( ( c_2Ewot_2Epreds__image @ A_27x @ V0X )
+      = ( c_2Epred__set_2EGSPEC @ ( A_27x > $o ) @ A_27x
+        @ ^ [V1x: A_27x] : ( c_2Epair_2E_2C @ ( A_27x > $o ) @ $o @ ( c_2Ewot_2Epreds @ A_27x @ V1x ) @ ( c_2Ebool_2EIN @ A_27x @ V1x @ V0X ) ) ) ) ).
+
+thf(thm_2Ewot_2EStrongWellOrder__def,axiom,
+    ! [A_27a: $tType,V0R: A_27a > A_27a > $o] :
+      ( ( c_2Ewot_2EStrongWellOrder @ A_27a @ V0R )
+    <=> ( ( c_2Erelation_2EStrongLinearOrder @ A_27a @ V0R )
+        & ( c_2Erelation_2EWF @ A_27a @ V0R ) ) ) ).
+
+thf(thm_2Ewot_2EStrongWellOrderExists,axiom,
+    ! [A_27a: $tType] :
+    ? [V0R: A_27a > A_27a > $o] :
+      ( ( c_2Erelation_2EStrongLinearOrder @ A_27a @ V0R )
+      & ( c_2Erelation_2EWF @ A_27a @ V0R ) ) ).
+
+%------------------------------------------------------------------------------

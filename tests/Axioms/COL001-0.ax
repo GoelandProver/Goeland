@@ -1,0 +1,56 @@
+%------------------------------------------------------------------------------
+% File     : COL001-0 : TPTP v8.1.2. Bugfixed v1.2.0.
+% Domain   : Combinatory Logic
+% Axioms   : Type-respecting combinators
+% Version  : [Jec95] (equality) axioms.
+% English  :
+
+% Refs     : [Jec95] Jech (1995), Otter Experiments in a System of Combinat
+% Source   : [Jec95]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   10 (   8 unt;   1 nHn;   2 RR)
+%            Number of literals    :   12 (  12 equ;   2 neg)
+%            Maximal clause size   :    2 (   1 avg)
+%            Maximal term depth    :    4 (   2 avg)
+%            Number of predicates  :    1 (   0 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    8 (   8 usr;   4 con; 0-2 aty)
+%            Number of variables   :   18 (   3 sgn)
+% SPC      : 
+
+% Comments :
+%------------------------------------------------------------------------------
+cnf(k_definition,axiom,
+    apply(k(X),Y) = X ).
+
+cnf(projection1,axiom,
+    apply(projection1,pair(X,Y)) = X ).
+
+cnf(projection2,axiom,
+    apply(projection2,pair(X,Y)) = Y ).
+
+cnf(pairing,axiom,
+    pair(apply(projection1,X),apply(projection2,X)) = X ).
+
+cnf(pairwise_application,axiom,
+    apply(pair(X,Y),Z) = pair(apply(X,Z),apply(Y,Z)) ).
+
+cnf(abstraction,axiom,
+    apply(apply(apply(abstraction,X),Y),Z) = apply(apply(X,k(Z)),apply(Y,Z)) ).
+
+cnf(equality,axiom,
+    apply(eq,pair(X,X)) = projection1 ).
+
+cnf(extensionality1,axiom,
+    ( X = Y
+    | apply(eq,pair(X,Y)) = projection2 ) ).
+
+cnf(extensionality2,axiom,
+    ( X = Y
+    | apply(X,n(X,Y)) != apply(Y,n(X,Y)) ) ).
+
+cnf(different_projections,axiom,
+    projection1 != projection2 ).
+
+%------------------------------------------------------------------------------

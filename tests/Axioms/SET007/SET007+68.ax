@@ -1,0 +1,956 @@
+%------------------------------------------------------------------------------
+% File     : SET007+68 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Universal Classes
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : classes2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  134 (  22 unt;   0 def)
+%            Number of atoms       :  515 (  56 equ)
+%            Maximal formula atoms :   16 (   3 avg)
+%            Number of connectives :  477 (  96   ~;   5   |; 229   &)
+%                                         (   5 <=>; 142  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   17 (   5 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   21 (  19 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   44 (  44 usr;   6 con; 0-3 aty)
+%            Number of variables   :  225 ( 222   !;   3   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_classes2,axiom,
+    ! [A] :
+      ( v2_classes1(A)
+     => v1_classes1(A) ) ).
+
+fof(fc1_classes2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(k1_classes1(A))
+      & v1_classes1(k1_classes1(A))
+      & v2_classes1(k1_classes1(A)) ) ).
+
+fof(cc2_classes2,axiom,
+    ! [A] :
+      ( v1_classes2(A)
+     => ( v1_ordinal1(A)
+        & v1_classes1(A)
+        & v2_classes1(A) ) ) ).
+
+fof(cc3_classes2,axiom,
+    ! [A] :
+      ( ( v1_ordinal1(A)
+        & v2_classes1(A) )
+     => v1_classes2(A) ) ).
+
+fof(rc1_classes2,axiom,
+    ? [A] :
+      ( v1_ordinal1(A)
+      & ~ v1_xboole_0(A)
+      & v1_classes1(A)
+      & v2_classes1(A)
+      & v1_classes2(A) ) ).
+
+fof(fc2_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ( v1_ordinal1(k2_ordinal2(A))
+        & v2_ordinal1(k2_ordinal2(A))
+        & v3_ordinal1(k2_ordinal2(A)) ) ) ).
+
+fof(fc3_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ( v1_ordinal1(k1_classes1(A))
+        & ~ v1_xboole_0(k1_classes1(A))
+        & v1_classes1(k1_classes1(A))
+        & v2_classes1(k1_classes1(A))
+        & v1_classes2(k1_classes1(A)) ) ) ).
+
+fof(fc4_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ( v1_ordinal1(k1_classes1(A))
+        & ~ v1_xboole_0(k1_classes1(A))
+        & v1_classes1(k1_classes1(A))
+        & v2_classes1(k1_classes1(A))
+        & v1_classes2(k1_classes1(A)) ) ) ).
+
+fof(rc2_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ? [B] :
+          ( m1_subset_1(B,A)
+          & ~ v1_xboole_0(B) ) ) ).
+
+fof(fc5_classes2,axiom,
+    ! [A] : v1_ordinal1(k5_classes1(A)) ).
+
+fof(fc6_classes2,axiom,
+    ! [A] :
+      ( v1_ordinal1(A)
+     => ( v1_ordinal1(k1_classes1(A))
+        & ~ v1_xboole_0(k1_classes1(A))
+        & v1_classes1(k1_classes1(A))
+        & v2_classes1(k1_classes1(A))
+        & v1_classes2(k1_classes1(A)) ) ) ).
+
+fof(fc7_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => v1_ordinal1(k4_classes1(A)) ) ).
+
+fof(fc8_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ( v1_ordinal1(k16_classes2(A))
+        & ~ v1_xboole_0(k16_classes2(A))
+        & v1_classes1(k16_classes2(A))
+        & v2_classes1(k16_classes2(A))
+        & v1_classes2(k16_classes2(A)) ) ) ).
+
+fof(t1_classes2,axiom,
+    ! [A,B] :
+      ( ( v1_classes1(A)
+        & r2_hidden(B,A) )
+     => ( ~ r2_wellord2(B,A)
+        & r2_hidden(k1_card_1(B),k1_card_1(A)) ) ) ).
+
+fof(t2_classes2,axiom,
+    $true ).
+
+fof(t3_classes2,axiom,
+    ! [A,B,C] :
+      ( ( v2_classes1(A)
+        & r2_hidden(B,A)
+        & r2_hidden(C,A) )
+     => ( r2_hidden(k1_tarski(B),A)
+        & r2_hidden(k2_tarski(B,C),A) ) ) ).
+
+fof(t4_classes2,axiom,
+    ! [A,B,C] :
+      ( ( v2_classes1(A)
+        & r2_hidden(B,A)
+        & r2_hidden(C,A) )
+     => r2_hidden(k4_tarski(B,C),A) ) ).
+
+fof(t5_classes2,axiom,
+    ! [A,B] :
+      ( ( v2_classes1(A)
+        & r2_hidden(B,A) )
+     => r1_tarski(k1_classes1(B),A) ) ).
+
+fof(t6_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( ( v2_classes1(B)
+            & r2_hidden(A,B) )
+         => ( r2_hidden(k1_ordinal1(A),B)
+            & r1_tarski(A,B) ) ) ) ).
+
+fof(t7_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( r2_hidden(A,k1_classes1(B))
+         => ( r2_hidden(k1_ordinal1(A),k1_classes1(B))
+            & r1_tarski(A,k1_classes1(B)) ) ) ) ).
+
+fof(t8_classes2,axiom,
+    ! [A,B] :
+      ( ( v1_classes1(A)
+        & v1_ordinal1(B)
+        & r2_hidden(B,A) )
+     => r1_tarski(B,A) ) ).
+
+fof(t9_classes2,axiom,
+    ! [A,B] :
+      ( ( v1_ordinal1(A)
+        & r2_hidden(A,k1_classes1(B)) )
+     => r1_tarski(A,k1_classes1(B)) ) ).
+
+fof(t10_classes2,axiom,
+    ! [A] :
+      ( v2_classes1(A)
+     => k2_ordinal2(A) = k1_card_1(A) ) ).
+
+fof(t11_classes2,axiom,
+    ! [A] : k2_ordinal2(k1_classes1(A)) = k1_card_1(k1_classes1(A)) ).
+
+fof(t12_classes2,axiom,
+    ! [A,B] :
+      ( ( v2_classes1(A)
+        & r2_hidden(B,A) )
+     => r2_hidden(k1_card_1(B),A) ) ).
+
+fof(t13_classes2,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,k1_classes1(B))
+     => r2_hidden(k1_card_1(A),k1_classes1(B)) ) ).
+
+fof(t14_classes2,axiom,
+    ! [A,B] :
+      ( ( v2_classes1(A)
+        & r2_hidden(B,k1_card_1(A)) )
+     => r2_hidden(B,A) ) ).
+
+fof(t15_classes2,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,k1_card_1(k1_classes1(B)))
+     => r2_hidden(A,k1_classes1(B)) ) ).
+
+fof(t16_classes2,axiom,
+    ! [A] :
+      ( v1_card_1(A)
+     => ! [B] :
+          ( ( v2_classes1(B)
+            & r2_hidden(A,k1_card_1(B)) )
+         => r2_hidden(A,B) ) ) ).
+
+fof(t17_classes2,axiom,
+    ! [A] :
+      ( v1_card_1(A)
+     => ! [B] :
+          ( r2_hidden(A,k1_card_1(k1_classes1(B)))
+         => r2_hidden(A,k1_classes1(B)) ) ) ).
+
+fof(t18_classes2,axiom,
+    ! [A] :
+      ( v1_card_1(A)
+     => ! [B] :
+          ( ( v2_classes1(B)
+            & r2_hidden(A,B) )
+         => r1_tarski(A,B) ) ) ).
+
+fof(t19_classes2,axiom,
+    ! [A] :
+      ( v1_card_1(A)
+     => ! [B] :
+          ( r2_hidden(A,k1_classes1(B))
+         => r1_tarski(A,k1_classes1(B)) ) ) ).
+
+fof(t20_classes2,axiom,
+    ! [A] :
+      ( v2_classes1(A)
+     => v4_ordinal1(k1_card_1(A)) ) ).
+
+fof(t21_classes2,axiom,
+    ! [A] :
+      ( v2_classes1(A)
+     => ( A = k1_xboole_0
+        | ( k1_card_1(A) != np__0
+          & k1_card_1(A) != k1_xboole_0
+          & v4_ordinal1(k1_card_1(A)) ) ) ) ).
+
+fof(t22_classes2,axiom,
+    ! [A] :
+      ( k1_card_1(k1_classes1(A)) != np__0
+      & k1_card_1(k1_classes1(A)) != k1_xboole_0
+      & v4_ordinal1(k1_card_1(k1_classes1(A))) ) ).
+
+fof(t23_classes2,axiom,
+    ! [A,B] :
+      ( v2_classes1(A)
+     => ( ( ~ ( r2_hidden(B,A)
+              & v1_ordinal1(A) )
+          & ~ ( r2_hidden(B,A)
+              & r1_tarski(B,A) )
+          & ~ ( r2_hidden(k1_card_1(B),k1_card_1(A))
+              & r1_tarski(B,A) ) )
+        | r1_tarski(k1_funct_2(B,A),A) ) ) ).
+
+fof(t24_classes2,axiom,
+    ! [A,B] :
+      ( ~ ( ~ ( r2_hidden(A,k1_classes1(B))
+              & v1_ordinal1(B) )
+          & ~ ( r2_hidden(A,k1_classes1(B))
+              & r1_tarski(A,k1_classes1(B)) )
+          & ~ ( r2_hidden(k1_card_1(A),k1_card_1(k1_classes1(B)))
+              & r1_tarski(A,k1_classes1(B)) ) )
+     => r1_tarski(k1_funct_2(A,k1_classes1(B)),k1_classes1(B)) ) ).
+
+fof(t25_classes2,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v5_ordinal1(A) )
+     => ( ( v4_ordinal1(k1_relat_1(A))
+          & ! [B] :
+              ( v3_ordinal1(B)
+             => ( r2_hidden(B,k1_relat_1(A))
+               => k1_funct_1(A,B) = k4_classes1(B) ) ) )
+       => k4_classes1(k1_relat_1(A)) = k3_card_3(A) ) ) ).
+
+fof(t26_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( ( v2_classes1(B)
+            & r2_hidden(A,k2_ordinal2(B)) )
+         => ( r2_hidden(k1_card_1(k4_classes1(A)),k1_card_1(B))
+            & r2_hidden(k4_classes1(A),B) ) ) ) ).
+
+fof(t27_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( r2_hidden(A,k2_ordinal2(k1_classes1(B)))
+         => ( r2_hidden(k1_card_1(k4_classes1(A)),k1_card_1(k1_classes1(B)))
+            & r2_hidden(k4_classes1(A),k1_classes1(B)) ) ) ) ).
+
+fof(t28_classes2,axiom,
+    ! [A] :
+      ( v2_classes1(A)
+     => r1_tarski(k4_classes1(k1_card_1(A)),A) ) ).
+
+fof(t29_classes2,axiom,
+    ! [A] : r1_tarski(k4_classes1(k1_card_1(k1_classes1(A))),k1_classes1(A)) ).
+
+fof(t30_classes2,axiom,
+    ! [A,B] :
+      ( ( v2_classes1(A)
+        & v1_ordinal1(A)
+        & r2_hidden(B,A) )
+     => r2_hidden(k6_classes1(B),A) ) ).
+
+fof(t31_classes2,axiom,
+    ! [A] :
+      ( ( v2_classes1(A)
+        & v1_ordinal1(A) )
+     => r1_tarski(A,k4_classes1(k1_card_1(A))) ) ).
+
+fof(t32_classes2,axiom,
+    ! [A] :
+      ( ( v2_classes1(A)
+        & v1_ordinal1(A) )
+     => k4_classes1(k1_card_1(A)) = A ) ).
+
+fof(t33_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( ( v2_classes1(B)
+            & r2_hidden(A,k2_ordinal2(B)) )
+         => r1_tarski(k1_card_1(k4_classes1(A)),k1_card_1(B)) ) ) ).
+
+fof(t34_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( r2_hidden(A,k2_ordinal2(k1_classes1(B)))
+         => r1_tarski(k1_card_1(k4_classes1(A)),k1_card_1(k1_classes1(B))) ) ) ).
+
+fof(t35_classes2,axiom,
+    ! [A] :
+      ( v2_classes1(A)
+     => k1_card_1(A) = k1_card_1(k4_classes1(k1_card_1(A))) ) ).
+
+fof(t36_classes2,axiom,
+    ! [A] : k1_card_1(k1_classes1(A)) = k1_card_1(k4_classes1(k1_card_1(k1_classes1(A)))) ).
+
+fof(t37_classes2,axiom,
+    ! [A,B] :
+      ~ ( v2_classes1(A)
+        & r1_tarski(B,k4_classes1(k1_card_1(A)))
+        & ~ r2_wellord2(B,k4_classes1(k1_card_1(A)))
+        & ~ r2_hidden(B,k4_classes1(k1_card_1(A))) ) ).
+
+fof(t38_classes2,axiom,
+    ! [A,B] :
+      ~ ( r1_tarski(A,k4_classes1(k1_card_1(k1_classes1(B))))
+        & ~ r2_wellord2(A,k4_classes1(k1_card_1(k1_classes1(B))))
+        & ~ r2_hidden(A,k4_classes1(k1_card_1(k1_classes1(B)))) ) ).
+
+fof(t39_classes2,axiom,
+    ! [A] :
+      ( v2_classes1(A)
+     => v2_classes1(k4_classes1(k1_card_1(A))) ) ).
+
+fof(t40_classes2,axiom,
+    ! [A] : v2_classes1(k4_classes1(k1_card_1(k1_classes1(A)))) ).
+
+fof(t41_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ~ ( v1_ordinal1(B)
+            & r2_hidden(A,k6_classes1(B))
+            & ! [C] :
+                ~ ( r2_hidden(C,B)
+                  & k6_classes1(C) = A ) ) ) ).
+
+fof(t42_classes2,axiom,
+    ! [A] :
+      ( v1_ordinal1(A)
+     => r1_tarski(k1_card_1(k6_classes1(A)),k1_card_1(A)) ) ).
+
+fof(t43_classes2,axiom,
+    ! [A,B] :
+      ( ( v2_classes1(A)
+        & v1_ordinal1(B)
+        & r2_hidden(B,A) )
+     => r2_hidden(B,k4_classes1(k1_card_1(A))) ) ).
+
+fof(t44_classes2,axiom,
+    ! [A,B] :
+      ( ( v1_ordinal1(A)
+        & r2_hidden(A,k1_classes1(B)) )
+     => r2_hidden(A,k4_classes1(k1_card_1(k1_classes1(B)))) ) ).
+
+fof(t45_classes2,axiom,
+    ! [A] :
+      ( v1_ordinal1(A)
+     => r1_classes1(A,k4_classes1(k1_card_1(k1_classes1(A)))) ) ).
+
+fof(t46_classes2,axiom,
+    ! [A] :
+      ( v1_ordinal1(A)
+     => k4_classes1(k1_card_1(k1_classes1(A))) = k1_classes1(A) ) ).
+
+fof(d1_classes2,axiom,
+    ! [A] :
+      ( v1_classes2(A)
+    <=> ( v1_ordinal1(A)
+        & v2_classes1(A) ) ) ).
+
+fof(t47_classes2,axiom,
+    $true ).
+
+fof(t48_classes2,axiom,
+    $true ).
+
+fof(t49_classes2,axiom,
+    $true ).
+
+fof(t50_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => v3_ordinal1(k2_ordinal2(A)) ) ).
+
+fof(t51_classes2,axiom,
+    ! [A] :
+      ( v1_ordinal1(A)
+     => v1_classes2(k1_classes1(A)) ) ).
+
+fof(t52_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ( ~ v1_xboole_0(k1_classes1(A))
+        & v1_classes2(k1_classes1(A)) ) ) ).
+
+fof(t53_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => v1_classes2(k1_classes1(A)) ) ).
+
+fof(t54_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => A = k4_classes1(k2_ordinal2(A)) ) ).
+
+fof(t55_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ( k2_ordinal2(A) != k1_xboole_0
+        & v4_ordinal1(k2_ordinal2(A)) ) ) ).
+
+fof(t56_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_classes2(B) )
+         => ~ ( ~ r2_hidden(A,B)
+              & A != B
+              & ~ r2_hidden(B,A) ) ) ) ).
+
+fof(t57_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_classes2(B) )
+         => ( r1_tarski(A,B)
+            | r2_hidden(B,A) ) ) ) ).
+
+fof(t58_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_classes2(B) )
+         => r3_xboole_0(A,B) ) ) ).
+
+fof(t59_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_classes2(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_classes2(C) )
+             => ( ( r2_hidden(A,B)
+                  & r2_hidden(B,C) )
+               => r2_hidden(A,C) ) ) ) ) ).
+
+fof(t60_classes2,axiom,
+    $true ).
+
+fof(t61_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_classes2(B) )
+         => ( ~ v1_xboole_0(k2_xboole_0(A,B))
+            & v1_classes2(k2_xboole_0(A,B))
+            & ~ v1_xboole_0(k3_xboole_0(A,B))
+            & v1_classes2(k3_xboole_0(A,B)) ) ) ) ).
+
+fof(t62_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => r2_hidden(k1_xboole_0,A) ) ).
+
+fof(t63_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_classes2(B) )
+     => ( r2_hidden(A,B)
+       => r2_hidden(k1_tarski(A),B) ) ) ).
+
+fof(t64_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(C)
+        & v1_classes2(C) )
+     => ( ( r2_hidden(A,C)
+          & r2_hidden(B,C) )
+       => ( r2_hidden(k2_tarski(A,B),C)
+          & r2_hidden(k4_tarski(A,B),C) ) ) ) ).
+
+fof(t65_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_classes2(B) )
+     => ( r2_hidden(A,B)
+       => ( r2_hidden(k1_zfmisc_1(A),B)
+          & r2_hidden(k3_tarski(A),B)
+          & r2_hidden(k1_setfam_1(A),B) ) ) ) ).
+
+fof(t66_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(C)
+        & v1_classes2(C) )
+     => ( ( r2_hidden(A,C)
+          & r2_hidden(B,C) )
+       => ( r2_hidden(k2_xboole_0(A,B),C)
+          & r2_hidden(k3_xboole_0(A,B),C)
+          & r2_hidden(k4_xboole_0(A,B),C)
+          & r2_hidden(k5_xboole_0(A,B),C) ) ) ) ).
+
+fof(t67_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(C)
+        & v1_classes2(C) )
+     => ( ( r2_hidden(A,C)
+          & r2_hidden(B,C) )
+       => ( r2_hidden(k2_zfmisc_1(A,B),C)
+          & r2_hidden(k1_funct_2(A,B),C) ) ) ) ).
+
+fof(d2_classes2,axiom,
+    k13_classes2 = k1_classes1(k1_xboole_0) ).
+
+fof(t68_classes2,axiom,
+    $true ).
+
+fof(t69_classes2,axiom,
+    k1_card_1(k4_classes1(k5_ordinal2)) = k1_card_1(k5_ordinal2) ).
+
+fof(t70_classes2,axiom,
+    v2_classes1(k4_classes1(k5_ordinal2)) ).
+
+fof(t71_classes2,axiom,
+    k13_classes2 = k4_classes1(k5_ordinal2) ).
+
+fof(d3_classes2,axiom,
+    k14_classes2 = k1_classes1(k13_classes2) ).
+
+fof(d4_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_classes2(B) )
+     => ( B = k15_classes2(A)
+      <=> ( r1_tarski(A,B)
+          & ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_classes2(C) )
+             => ( r1_tarski(A,C)
+               => r1_tarski(B,C) ) ) ) ) ) ).
+
+fof(d5_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( B = k16_classes2(A)
+        <=> ? [C] :
+              ( v1_relat_1(C)
+              & v1_funct_1(C)
+              & v5_ordinal1(C)
+              & B = k1_ordinal2(C)
+              & k1_relat_1(C) = k1_ordinal1(A)
+              & k1_funct_1(C,k1_xboole_0) = k13_classes2
+              & ! [D] :
+                  ( v3_ordinal1(D)
+                 => ( r2_hidden(k1_ordinal1(D),k1_ordinal1(A))
+                   => k1_funct_1(C,k1_ordinal1(D)) = k1_classes1(k1_funct_1(C,D)) ) )
+              & ! [D] :
+                  ( v3_ordinal1(D)
+                 => ( ( r2_hidden(D,k1_ordinal1(A))
+                      & v4_ordinal1(D) )
+                   => ( D = k1_xboole_0
+                      | k1_funct_1(C,D) = k15_classes2(k3_card_3(k2_ordinal1(C,D))) ) ) ) ) ) ) ).
+
+fof(t72_classes2,axiom,
+    $true ).
+
+fof(t73_classes2,axiom,
+    $true ).
+
+fof(t74_classes2,axiom,
+    $true ).
+
+fof(t75_classes2,axiom,
+    k16_classes2(k1_xboole_0) = k13_classes2 ).
+
+fof(t76_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => k16_classes2(k1_ordinal1(A)) = k1_classes1(k16_classes2(A)) ) ).
+
+fof(t77_classes2,axiom,
+    k16_classes2(k4_ordinal2) = k14_classes2 ).
+
+fof(t78_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v5_ordinal1(B) )
+         => ( ( v4_ordinal1(A)
+              & k1_relat_1(B) = A
+              & ! [C] :
+                  ( v3_ordinal1(C)
+                 => ( r2_hidden(C,A)
+                   => k1_funct_1(B,C) = k16_classes2(C) ) ) )
+           => ( A = k1_xboole_0
+              | k16_classes2(A) = k15_classes2(k3_card_3(B)) ) ) ) ) ).
+
+fof(t79_classes2,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A) )
+     => ( r1_tarski(k13_classes2,A)
+        & r1_tarski(k1_classes1(k1_xboole_0),A)
+        & r1_tarski(k16_classes2(k1_xboole_0),A) ) ) ).
+
+fof(t80_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ( r2_hidden(A,B)
+          <=> r2_hidden(k16_classes2(A),k16_classes2(B)) ) ) ) ).
+
+fof(t81_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ( k16_classes2(A) = k16_classes2(B)
+           => A = B ) ) ) ).
+
+fof(t82_classes2,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ( r1_ordinal1(A,B)
+          <=> r1_tarski(k16_classes2(A),k16_classes2(B)) ) ) ) ).
+
+fof(dt_k1_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A) )
+     => m1_subset_1(k1_classes2(A,B),A) ) ).
+
+fof(redefinition_k1_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A) )
+     => k1_classes2(A,B) = k1_tarski(B) ) ).
+
+fof(dt_k2_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A) )
+     => ( ~ v1_xboole_0(k2_classes2(A,B))
+        & m1_subset_1(k2_classes2(A,B),A) ) ) ).
+
+fof(redefinition_k2_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A) )
+     => k2_classes2(A,B) = k1_zfmisc_1(B) ) ).
+
+fof(dt_k3_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A) )
+     => m1_subset_1(k3_classes2(A,B),A) ) ).
+
+fof(redefinition_k3_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A) )
+     => k3_classes2(A,B) = k3_tarski(B) ) ).
+
+fof(dt_k4_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A) )
+     => m1_subset_1(k4_classes2(A,B),A) ) ).
+
+fof(redefinition_k4_classes2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A) )
+     => k4_classes2(A,B) = k1_setfam_1(B) ) ).
+
+fof(dt_k5_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k5_classes2(A,B,C),A) ) ).
+
+fof(commutativity_k5_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k5_classes2(A,B,C) = k5_classes2(A,C,B) ) ).
+
+fof(redefinition_k5_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k5_classes2(A,B,C) = k2_tarski(B,C) ) ).
+
+fof(dt_k6_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k6_classes2(A,B,C),A) ) ).
+
+fof(redefinition_k6_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k6_classes2(A,B,C) = k4_tarski(B,C) ) ).
+
+fof(dt_k7_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k7_classes2(A,B,C),A) ) ).
+
+fof(commutativity_k7_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k7_classes2(A,B,C) = k7_classes2(A,C,B) ) ).
+
+fof(idempotence_k7_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k7_classes2(A,B,B) = B ) ).
+
+fof(redefinition_k7_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k7_classes2(A,B,C) = k2_xboole_0(B,C) ) ).
+
+fof(dt_k8_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k8_classes2(A,B,C),A) ) ).
+
+fof(commutativity_k8_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k8_classes2(A,B,C) = k8_classes2(A,C,B) ) ).
+
+fof(idempotence_k8_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k8_classes2(A,B,B) = B ) ).
+
+fof(redefinition_k8_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k8_classes2(A,B,C) = k3_xboole_0(B,C) ) ).
+
+fof(dt_k9_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k9_classes2(A,B,C),A) ) ).
+
+fof(redefinition_k9_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k9_classes2(A,B,C) = k4_xboole_0(B,C) ) ).
+
+fof(dt_k10_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k10_classes2(A,B,C),A) ) ).
+
+fof(commutativity_k10_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k10_classes2(A,B,C) = k10_classes2(A,C,B) ) ).
+
+fof(redefinition_k10_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k10_classes2(A,B,C) = k5_xboole_0(B,C) ) ).
+
+fof(dt_k11_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k11_classes2(A,B,C),A) ) ).
+
+fof(redefinition_k11_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k11_classes2(A,B,C) = k2_zfmisc_1(B,C) ) ).
+
+fof(dt_k12_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k12_classes2(A,B,C),A) ) ).
+
+fof(redefinition_k12_classes2,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes2(A)
+        & m1_subset_1(B,A)
+        & m1_subset_1(C,A) )
+     => k12_classes2(A,B,C) = k1_funct_2(B,C) ) ).
+
+fof(dt_k13_classes2,axiom,
+    ( ~ v1_xboole_0(k13_classes2)
+    & v1_classes2(k13_classes2) ) ).
+
+fof(dt_k14_classes2,axiom,
+    ( ~ v1_xboole_0(k14_classes2)
+    & v1_classes2(k14_classes2) ) ).
+
+fof(dt_k15_classes2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(k15_classes2(A))
+      & v1_classes2(k15_classes2(A)) ) ).
+
+fof(dt_k16_classes2,axiom,
+    $true ).
+
+%------------------------------------------------------------------------------

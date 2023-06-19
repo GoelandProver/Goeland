@@ -1,0 +1,882 @@
+%------------------------------------------------------------------------------
+% File     : ITP113+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : realax+2.ax [Gau20]
+%          : HL4113+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  124 (  35 unt;   0 def)
+%            Number of atoms       :  402 (  60 equ)
+%            Maximal formula atoms :   16 (   3 avg)
+%            Number of connectives :  291 (  13   ~;   4   |;  33   &)
+%                                         (  17 <=>; 224  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   12 (   5 avg)
+%            Maximal term depth    :   11 (   2 avg)
+%            Number of predicates  :    4 (   3 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   51 (  51 usr;  35 con; 0-2 aty)
+%            Number of variables   :  210 ( 198   !;  12   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(ne_ty_2Erealax_2Ereal,axiom,
+    ne(ty_2Erealax_2Ereal) ).
+
+fof(mem_c_2Erealax_2Ehreal__of__real,axiom,
+    mem(c_2Erealax_2Ehreal__of__real,arr(ty_2Erealax_2Ereal,ty_2Ehreal_2Ehreal)) ).
+
+fof(mem_c_2Erealax_2Ehreal__of__treal,axiom,
+    mem(c_2Erealax_2Ehreal__of__treal,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ty_2Ehreal_2Ehreal)) ).
+
+fof(mem_c_2Erealax_2Einv,axiom,
+    mem(c_2Erealax_2Einv,arr(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal)) ).
+
+fof(mem_c_2Erealax_2Ereal__0,axiom,
+    mem(c_2Erealax_2Ereal__0,ty_2Erealax_2Ereal) ).
+
+fof(mem_c_2Erealax_2Ereal__1,axiom,
+    mem(c_2Erealax_2Ereal__1,ty_2Erealax_2Ereal) ).
+
+fof(mem_c_2Erealax_2Ereal__ABS,axiom,
+    mem(c_2Erealax_2Ereal__ABS,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ty_2Erealax_2Ereal)) ).
+
+fof(mem_c_2Erealax_2Ereal__ABS__CLASS,axiom,
+    mem(c_2Erealax_2Ereal__ABS__CLASS,arr(arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool),ty_2Erealax_2Ereal)) ).
+
+fof(mem_c_2Erealax_2Ereal__REP,axiom,
+    mem(c_2Erealax_2Ereal__REP,arr(ty_2Erealax_2Ereal,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))) ).
+
+fof(mem_c_2Erealax_2Ereal__REP__CLASS,axiom,
+    mem(c_2Erealax_2Ereal__REP__CLASS,arr(ty_2Erealax_2Ereal,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool))) ).
+
+fof(mem_c_2Erealax_2Ereal__add,axiom,
+    mem(c_2Erealax_2Ereal__add,arr(ty_2Erealax_2Ereal,arr(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal))) ).
+
+fof(mem_c_2Erealax_2Ereal__lt,axiom,
+    mem(c_2Erealax_2Ereal__lt,arr(ty_2Erealax_2Ereal,arr(ty_2Erealax_2Ereal,bool))) ).
+
+fof(mem_c_2Erealax_2Ereal__mul,axiom,
+    mem(c_2Erealax_2Ereal__mul,arr(ty_2Erealax_2Ereal,arr(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal))) ).
+
+fof(mem_c_2Erealax_2Ereal__neg,axiom,
+    mem(c_2Erealax_2Ereal__neg,arr(ty_2Erealax_2Ereal,ty_2Erealax_2Ereal)) ).
+
+fof(mem_c_2Erealax_2Ereal__of__hreal,axiom,
+    mem(c_2Erealax_2Ereal__of__hreal,arr(ty_2Ehreal_2Ehreal,ty_2Erealax_2Ereal)) ).
+
+fof(mem_c_2Erealax_2Etreal__0,axiom,
+    mem(c_2Erealax_2Etreal__0,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal)) ).
+
+fof(mem_c_2Erealax_2Etreal__1,axiom,
+    mem(c_2Erealax_2Etreal__1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal)) ).
+
+fof(mem_c_2Erealax_2Etreal__add,axiom,
+    mem(c_2Erealax_2Etreal__add,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal)))) ).
+
+fof(mem_c_2Erealax_2Etreal__eq,axiom,
+    mem(c_2Erealax_2Etreal__eq,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool))) ).
+
+fof(mem_c_2Erealax_2Etreal__inv,axiom,
+    mem(c_2Erealax_2Etreal__inv,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))) ).
+
+fof(mem_c_2Erealax_2Etreal__lt,axiom,
+    mem(c_2Erealax_2Etreal__lt,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool))) ).
+
+fof(mem_c_2Erealax_2Etreal__mul,axiom,
+    mem(c_2Erealax_2Etreal__mul,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal)))) ).
+
+fof(mem_c_2Erealax_2Etreal__neg,axiom,
+    mem(c_2Erealax_2Etreal__neg,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))) ).
+
+fof(mem_c_2Erealax_2Etreal__of__hreal,axiom,
+    mem(c_2Erealax_2Etreal__of__hreal,arr(ty_2Ehreal_2Ehreal,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))) ).
+
+fof(conj_thm_2Erealax_2EHREAL__RDISTRIB,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => ! [V2z] :
+              ( mem(V2z,ty_2Ehreal_2Ehreal)
+             => ap(ap(c_2Ehreal_2Ehreal__mul,ap(ap(c_2Ehreal_2Ehreal__add,V0x),V1y)),V2z) = ap(ap(c_2Ehreal_2Ehreal__add,ap(ap(c_2Ehreal_2Ehreal__mul,V0x),V2z)),ap(ap(c_2Ehreal_2Ehreal__mul,V1y),V2z)) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EHREAL__EQ__ADDR,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => ap(ap(c_2Ehreal_2Ehreal__add,V0x),V1y) != V0x ) ) ).
+
+fof(conj_thm_2Erealax_2EHREAL__EQ__ADDL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => V0x != ap(ap(c_2Ehreal_2Ehreal__add,V0x),V1y) ) ) ).
+
+fof(conj_thm_2Erealax_2EHREAL__EQ__LADD,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => ! [V2z] :
+              ( mem(V2z,ty_2Ehreal_2Ehreal)
+             => ( ap(ap(c_2Ehreal_2Ehreal__add,V0x),V1y) = ap(ap(c_2Ehreal_2Ehreal__add,V0x),V2z)
+              <=> V1y = V2z ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EHREAL__LT__REFL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ~ p(ap(ap(c_2Ehreal_2Ehreal__lt,V0x),V0x)) ) ).
+
+fof(conj_thm_2Erealax_2EHREAL__LT__ADDL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => p(ap(ap(c_2Ehreal_2Ehreal__lt,V0x),ap(ap(c_2Ehreal_2Ehreal__add,V0x),V1y))) ) ) ).
+
+fof(conj_thm_2Erealax_2EHREAL__LT__NE,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => ( p(ap(ap(c_2Ehreal_2Ehreal__lt,V0x),V1y))
+           => V0x != V1y ) ) ) ).
+
+fof(conj_thm_2Erealax_2EHREAL__LT__ADDR,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => ~ p(ap(ap(c_2Ehreal_2Ehreal__lt,ap(ap(c_2Ehreal_2Ehreal__add,V0x),V1y)),V0x)) ) ) ).
+
+fof(conj_thm_2Erealax_2EHREAL__LT__GT,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => ( p(ap(ap(c_2Ehreal_2Ehreal__lt,V0x),V1y))
+           => ~ p(ap(ap(c_2Ehreal_2Ehreal__lt,V1y),V0x)) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EHREAL__LT__ADD2,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Ehreal_2Ehreal)
+     => ! [V1x2] :
+          ( mem(V1x2,ty_2Ehreal_2Ehreal)
+         => ! [V2y1] :
+              ( mem(V2y1,ty_2Ehreal_2Ehreal)
+             => ! [V3y2] :
+                  ( mem(V3y2,ty_2Ehreal_2Ehreal)
+                 => ( ( p(ap(ap(c_2Ehreal_2Ehreal__lt,V0x1),V2y1))
+                      & p(ap(ap(c_2Ehreal_2Ehreal__lt,V1x2),V3y2)) )
+                   => p(ap(ap(c_2Ehreal_2Ehreal__lt,ap(ap(c_2Ehreal_2Ehreal__add,V0x1),V1x2)),ap(ap(c_2Ehreal_2Ehreal__add,V2y1),V3y2))) ) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EHREAL__LT__LADD,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => ! [V2z] :
+              ( mem(V2z,ty_2Ehreal_2Ehreal)
+             => ( p(ap(ap(c_2Ehreal_2Ehreal__lt,ap(ap(c_2Ehreal_2Ehreal__add,V0x),V1y)),ap(ap(c_2Ehreal_2Ehreal__add,V0x),V2z)))
+              <=> p(ap(ap(c_2Ehreal_2Ehreal__lt,V1y),V2z)) ) ) ) ) ).
+
+fof(ax_thm_2Erealax_2Etreal__0,axiom,
+    c_2Erealax_2Etreal__0 = ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),c_2Ehreal_2Ehreal__1),c_2Ehreal_2Ehreal__1) ).
+
+fof(ax_thm_2Erealax_2Etreal__1,axiom,
+    c_2Erealax_2Etreal__1 = ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ap(ap(c_2Ehreal_2Ehreal__add,c_2Ehreal_2Ehreal__1),c_2Ehreal_2Ehreal__1)),c_2Ehreal_2Ehreal__1) ).
+
+fof(ax_thm_2Erealax_2Etreal__neg,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => ap(c_2Erealax_2Etreal__neg,ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V0x),V1y)) = ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V1y),V0x) ) ) ).
+
+fof(ax_thm_2Erealax_2Etreal__add,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Ehreal_2Ehreal)
+     => ! [V1y1] :
+          ( mem(V1y1,ty_2Ehreal_2Ehreal)
+         => ! [V2x2] :
+              ( mem(V2x2,ty_2Ehreal_2Ehreal)
+             => ! [V3y2] :
+                  ( mem(V3y2,ty_2Ehreal_2Ehreal)
+                 => ap(ap(c_2Erealax_2Etreal__add,ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V0x1),V1y1)),ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V2x2),V3y2)) = ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ap(ap(c_2Ehreal_2Ehreal__add,V0x1),V2x2)),ap(ap(c_2Ehreal_2Ehreal__add,V1y1),V3y2)) ) ) ) ) ).
+
+fof(ax_thm_2Erealax_2Etreal__mul,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Ehreal_2Ehreal)
+     => ! [V1y1] :
+          ( mem(V1y1,ty_2Ehreal_2Ehreal)
+         => ! [V2x2] :
+              ( mem(V2x2,ty_2Ehreal_2Ehreal)
+             => ! [V3y2] :
+                  ( mem(V3y2,ty_2Ehreal_2Ehreal)
+                 => ap(ap(c_2Erealax_2Etreal__mul,ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V0x1),V1y1)),ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V2x2),V3y2)) = ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ap(ap(c_2Ehreal_2Ehreal__add,ap(ap(c_2Ehreal_2Ehreal__mul,V0x1),V2x2)),ap(ap(c_2Ehreal_2Ehreal__mul,V1y1),V3y2))),ap(ap(c_2Ehreal_2Ehreal__add,ap(ap(c_2Ehreal_2Ehreal__mul,V0x1),V3y2)),ap(ap(c_2Ehreal_2Ehreal__mul,V1y1),V2x2))) ) ) ) ) ).
+
+fof(ax_thm_2Erealax_2Etreal__lt,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Ehreal_2Ehreal)
+     => ! [V1y1] :
+          ( mem(V1y1,ty_2Ehreal_2Ehreal)
+         => ! [V2x2] :
+              ( mem(V2x2,ty_2Ehreal_2Ehreal)
+             => ! [V3y2] :
+                  ( mem(V3y2,ty_2Ehreal_2Ehreal)
+                 => ( p(ap(ap(c_2Erealax_2Etreal__lt,ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V0x1),V1y1)),ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V2x2),V3y2)))
+                  <=> p(ap(ap(c_2Ehreal_2Ehreal__lt,ap(ap(c_2Ehreal_2Ehreal__add,V0x1),V3y2)),ap(ap(c_2Ehreal_2Ehreal__add,V2x2),V1y1))) ) ) ) ) ) ).
+
+fof(ax_thm_2Erealax_2Etreal__inv,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => ap(c_2Erealax_2Etreal__inv,ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V0x),V1y)) = ap(ap(ap(c_2Ebool_2ECOND(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal)),ap(ap(c_2Emin_2E_3D(ty_2Ehreal_2Ehreal),V0x),V1y)),c_2Erealax_2Etreal__0),ap(ap(ap(c_2Ebool_2ECOND(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal)),ap(ap(c_2Ehreal_2Ehreal__lt,V1y),V0x)),ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ap(ap(c_2Ehreal_2Ehreal__add,ap(c_2Ehreal_2Ehreal__inv,ap(ap(c_2Ehreal_2Ehreal__sub,V0x),V1y))),c_2Ehreal_2Ehreal__1)),c_2Ehreal_2Ehreal__1)),ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),c_2Ehreal_2Ehreal__1),ap(ap(c_2Ehreal_2Ehreal__add,ap(c_2Ehreal_2Ehreal__inv,ap(ap(c_2Ehreal_2Ehreal__sub,V1y),V0x))),c_2Ehreal_2Ehreal__1)))) ) ) ).
+
+fof(ax_thm_2Erealax_2Etreal__eq,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Ehreal_2Ehreal)
+     => ! [V1y1] :
+          ( mem(V1y1,ty_2Ehreal_2Ehreal)
+         => ! [V2x2] :
+              ( mem(V2x2,ty_2Ehreal_2Ehreal)
+             => ! [V3y2] :
+                  ( mem(V3y2,ty_2Ehreal_2Ehreal)
+                 => ( p(ap(ap(c_2Erealax_2Etreal__eq,ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V0x1),V1y1)),ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V2x2),V3y2)))
+                  <=> ap(ap(c_2Ehreal_2Ehreal__add,V0x1),V3y2) = ap(ap(c_2Ehreal_2Ehreal__add,V2x2),V1y1) ) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__EQ__REFL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => p(ap(ap(c_2Erealax_2Etreal__eq,V0x),V0x)) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__EQ__SYM,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x),V1y))
+          <=> p(ap(ap(c_2Erealax_2Etreal__eq,V1y),V0x)) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__EQ__TRANS,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2z] :
+              ( mem(V2z,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ( ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x),V1y))
+                  & p(ap(ap(c_2Erealax_2Etreal__eq,V1y),V2z)) )
+               => p(ap(ap(c_2Erealax_2Etreal__eq,V0x),V2z)) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__EQ__EQUIV,axiom,
+    ! [V0p] :
+      ( mem(V0p,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1q] :
+          ( mem(V1q,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ( p(ap(ap(c_2Erealax_2Etreal__eq,V0p),V1q))
+          <=> ap(c_2Erealax_2Etreal__eq,V0p) = ap(c_2Erealax_2Etreal__eq,V1q) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__EQ__AP,axiom,
+    ! [V0p] :
+      ( mem(V0p,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1q] :
+          ( mem(V1q,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ( V0p = V1q
+           => p(ap(ap(c_2Erealax_2Etreal__eq,V0p),V1q)) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__10,axiom,
+    ~ p(ap(ap(c_2Erealax_2Etreal__eq,c_2Erealax_2Etreal__1),c_2Erealax_2Etreal__0)) ).
+
+fof(conj_thm_2Erealax_2ETREAL__ADD__SYM,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ap(ap(c_2Erealax_2Etreal__add,V0x),V1y) = ap(ap(c_2Erealax_2Etreal__add,V1y),V0x) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__MUL__SYM,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ap(ap(c_2Erealax_2Etreal__mul,V0x),V1y) = ap(ap(c_2Erealax_2Etreal__mul,V1y),V0x) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__ADD__ASSOC,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2z] :
+              ( mem(V2z,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ap(ap(c_2Erealax_2Etreal__add,V0x),ap(ap(c_2Erealax_2Etreal__add,V1y),V2z)) = ap(ap(c_2Erealax_2Etreal__add,ap(ap(c_2Erealax_2Etreal__add,V0x),V1y)),V2z) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__MUL__ASSOC,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2z] :
+              ( mem(V2z,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ap(ap(c_2Erealax_2Etreal__mul,V0x),ap(ap(c_2Erealax_2Etreal__mul,V1y),V2z)) = ap(ap(c_2Erealax_2Etreal__mul,ap(ap(c_2Erealax_2Etreal__mul,V0x),V1y)),V2z) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__LDISTRIB,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2z] :
+              ( mem(V2z,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ap(ap(c_2Erealax_2Etreal__mul,V0x),ap(ap(c_2Erealax_2Etreal__add,V1y),V2z)) = ap(ap(c_2Erealax_2Etreal__add,ap(ap(c_2Erealax_2Etreal__mul,V0x),V1y)),ap(ap(c_2Erealax_2Etreal__mul,V0x),V2z)) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__ADD__LID,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => p(ap(ap(c_2Erealax_2Etreal__eq,ap(ap(c_2Erealax_2Etreal__add,c_2Erealax_2Etreal__0),V0x)),V0x)) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__MUL__LID,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => p(ap(ap(c_2Erealax_2Etreal__eq,ap(ap(c_2Erealax_2Etreal__mul,c_2Erealax_2Etreal__1),V0x)),V0x)) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__ADD__LINV,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => p(ap(ap(c_2Erealax_2Etreal__eq,ap(ap(c_2Erealax_2Etreal__add,ap(c_2Erealax_2Etreal__neg,V0x)),V0x)),c_2Erealax_2Etreal__0)) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__INV__0,axiom,
+    p(ap(ap(c_2Erealax_2Etreal__eq,ap(c_2Erealax_2Etreal__inv,c_2Erealax_2Etreal__0)),c_2Erealax_2Etreal__0)) ).
+
+fof(conj_thm_2Erealax_2ETREAL__MUL__LINV,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ( ~ p(ap(ap(c_2Erealax_2Etreal__eq,V0x),c_2Erealax_2Etreal__0))
+       => p(ap(ap(c_2Erealax_2Etreal__eq,ap(ap(c_2Erealax_2Etreal__mul,ap(c_2Erealax_2Etreal__inv,V0x)),V0x)),c_2Erealax_2Etreal__1)) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__LT__TOTAL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x),V1y))
+            | p(ap(ap(c_2Erealax_2Etreal__lt,V0x),V1y))
+            | p(ap(ap(c_2Erealax_2Etreal__lt,V1y),V0x)) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__LT__REFL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ~ p(ap(ap(c_2Erealax_2Etreal__lt,V0x),V0x)) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__LT__TRANS,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2z] :
+              ( mem(V2z,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ( ( p(ap(ap(c_2Erealax_2Etreal__lt,V0x),V1y))
+                  & p(ap(ap(c_2Erealax_2Etreal__lt,V1y),V2z)) )
+               => p(ap(ap(c_2Erealax_2Etreal__lt,V0x),V2z)) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__LT__ADD,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2z] :
+              ( mem(V2z,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ( p(ap(ap(c_2Erealax_2Etreal__lt,V1y),V2z))
+               => p(ap(ap(c_2Erealax_2Etreal__lt,ap(ap(c_2Erealax_2Etreal__add,V0x),V1y)),ap(ap(c_2Erealax_2Etreal__add,V0x),V2z))) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__LT__MUL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ( ( p(ap(ap(c_2Erealax_2Etreal__lt,c_2Erealax_2Etreal__0),V0x))
+              & p(ap(ap(c_2Erealax_2Etreal__lt,c_2Erealax_2Etreal__0),V1y)) )
+           => p(ap(ap(c_2Erealax_2Etreal__lt,c_2Erealax_2Etreal__0),ap(ap(c_2Erealax_2Etreal__mul,V0x),V1y))) ) ) ) ).
+
+fof(ax_thm_2Erealax_2Etreal__of__hreal,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ap(c_2Erealax_2Etreal__of__hreal,V0x) = ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ap(ap(c_2Ehreal_2Ehreal__add,V0x),c_2Ehreal_2Ehreal__1)),c_2Ehreal_2Ehreal__1) ) ).
+
+fof(lameq_f2705,axiom,
+    ! [V1y] :
+      ( mem(V1y,ty_2Ehreal_2Ehreal)
+     => ! [V0x] :
+          ( mem(V0x,ty_2Ehreal_2Ehreal)
+         => ! [V2d] : ap(f2705(V1y,V0x),V2d) = ap(ap(c_2Emin_2E_3D(ty_2Ehreal_2Ehreal),V0x),ap(ap(c_2Ehreal_2Ehreal__add,V1y),V2d)) ) ) ).
+
+fof(ax_thm_2Erealax_2Ehreal__of__treal,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Ehreal_2Ehreal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Ehreal_2Ehreal)
+         => ap(c_2Erealax_2Ehreal__of__treal,ap(ap(c_2Epair_2E_2C(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),V0x),V1y)) = ap(c_2Emin_2E_40(ty_2Ehreal_2Ehreal),f2705(V1y,V0x)) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__BIJ,axiom,
+    ( ! [V0h] :
+        ( mem(V0h,ty_2Ehreal_2Ehreal)
+       => ap(c_2Erealax_2Ehreal__of__treal,ap(c_2Erealax_2Etreal__of__hreal,V0h)) = V0h )
+    & ! [V1r] :
+        ( mem(V1r,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+       => ( p(ap(ap(c_2Erealax_2Etreal__lt,c_2Erealax_2Etreal__0),V1r))
+        <=> p(ap(ap(c_2Erealax_2Etreal__eq,ap(c_2Erealax_2Etreal__of__hreal,ap(c_2Erealax_2Ehreal__of__treal,V1r))),V1r)) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__ISO,axiom,
+    ! [V0h] :
+      ( mem(V0h,ty_2Ehreal_2Ehreal)
+     => ! [V1i] :
+          ( mem(V1i,ty_2Ehreal_2Ehreal)
+         => ( p(ap(ap(c_2Ehreal_2Ehreal__lt,V0h),V1i))
+           => p(ap(ap(c_2Erealax_2Etreal__lt,ap(c_2Erealax_2Etreal__of__hreal,V0h)),ap(c_2Erealax_2Etreal__of__hreal,V1i))) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__BIJ__WELLDEF,axiom,
+    ! [V0h] :
+      ( mem(V0h,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1i] :
+          ( mem(V1i,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ( p(ap(ap(c_2Erealax_2Etreal__eq,V0h),V1i))
+           => ap(c_2Erealax_2Ehreal__of__treal,V0h) = ap(c_2Erealax_2Ehreal__of__treal,V1i) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__NEG__WELLDEF,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1x2] :
+          ( mem(V1x2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x1),V1x2))
+           => p(ap(ap(c_2Erealax_2Etreal__eq,ap(c_2Erealax_2Etreal__neg,V0x1)),ap(c_2Erealax_2Etreal__neg,V1x2))) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__ADD__WELLDEFR,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1x2] :
+          ( mem(V1x2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2y] :
+              ( mem(V2y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x1),V1x2))
+               => p(ap(ap(c_2Erealax_2Etreal__eq,ap(ap(c_2Erealax_2Etreal__add,V0x1),V2y)),ap(ap(c_2Erealax_2Etreal__add,V1x2),V2y))) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__ADD__WELLDEF,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1x2] :
+          ( mem(V1x2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2y1] :
+              ( mem(V2y1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ! [V3y2] :
+                  ( mem(V3y2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+                 => ( ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x1),V1x2))
+                      & p(ap(ap(c_2Erealax_2Etreal__eq,V2y1),V3y2)) )
+                   => p(ap(ap(c_2Erealax_2Etreal__eq,ap(ap(c_2Erealax_2Etreal__add,V0x1),V2y1)),ap(ap(c_2Erealax_2Etreal__add,V1x2),V3y2))) ) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__MUL__WELLDEFR,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1x2] :
+          ( mem(V1x2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2y] :
+              ( mem(V2y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x1),V1x2))
+               => p(ap(ap(c_2Erealax_2Etreal__eq,ap(ap(c_2Erealax_2Etreal__mul,V0x1),V2y)),ap(ap(c_2Erealax_2Etreal__mul,V1x2),V2y))) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__MUL__WELLDEF,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1x2] :
+          ( mem(V1x2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2y1] :
+              ( mem(V2y1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ! [V3y2] :
+                  ( mem(V3y2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+                 => ( ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x1),V1x2))
+                      & p(ap(ap(c_2Erealax_2Etreal__eq,V2y1),V3y2)) )
+                   => p(ap(ap(c_2Erealax_2Etreal__eq,ap(ap(c_2Erealax_2Etreal__mul,V0x1),V2y1)),ap(ap(c_2Erealax_2Etreal__mul,V1x2),V3y2))) ) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__LT__WELLDEFR,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1x2] :
+          ( mem(V1x2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2y] :
+              ( mem(V2y,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x1),V1x2))
+               => ( p(ap(ap(c_2Erealax_2Etreal__lt,V0x1),V2y))
+                <=> p(ap(ap(c_2Erealax_2Etreal__lt,V1x2),V2y)) ) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__LT__WELLDEFL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1y1] :
+          ( mem(V1y1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2y2] :
+              ( mem(V2y2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ( p(ap(ap(c_2Erealax_2Etreal__eq,V1y1),V2y2))
+               => ( p(ap(ap(c_2Erealax_2Etreal__lt,V0x),V1y1))
+                <=> p(ap(ap(c_2Erealax_2Etreal__lt,V0x),V2y2)) ) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__LT__WELLDEF,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1x2] :
+          ( mem(V1x2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ! [V2y1] :
+              ( mem(V2y1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+             => ! [V3y2] :
+                  ( mem(V3y2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+                 => ( ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x1),V1x2))
+                      & p(ap(ap(c_2Erealax_2Etreal__eq,V2y1),V3y2)) )
+                   => ( p(ap(ap(c_2Erealax_2Etreal__lt,V0x1),V2y1))
+                    <=> p(ap(ap(c_2Erealax_2Etreal__lt,V1x2),V3y2)) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ETREAL__INV__WELLDEF,axiom,
+    ! [V0x1] :
+      ( mem(V0x1,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ! [V1x2] :
+          ( mem(V1x2,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+         => ( p(ap(ap(c_2Erealax_2Etreal__eq,V0x1),V1x2))
+           => p(ap(ap(c_2Erealax_2Etreal__eq,ap(c_2Erealax_2Etreal__inv,V0x1)),ap(c_2Erealax_2Etreal__inv,V1x2))) ) ) ) ).
+
+fof(lameq_f2706,axiom,
+    ! [V1c] :
+      ( mem(V1c,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool))
+     => ! [V2r] : ap(f2706(V1c),V2r) = ap(ap(c_2Ebool_2E_2F_5C,ap(ap(c_2Erealax_2Etreal__eq,V2r),V2r)),ap(ap(c_2Emin_2E_3D(arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool)),V1c),ap(c_2Erealax_2Etreal__eq,V2r))) ) ).
+
+fof(lameq_f2707,axiom,
+    ! [V1c] : ap(f2707,V1c) = ap(c_2Ebool_2E_3F(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal)),f2706(V1c)) ).
+
+fof(ax_thm_2Erealax_2Ereal__TY__DEF,axiom,
+    ? [V0rep] :
+      ( mem(V0rep,arr(ty_2Erealax_2Ereal,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool)))
+      & p(ap(ap(c_2Ebool_2ETYPE__DEFINITION(arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool),ty_2Erealax_2Ereal),f2707),V0rep)) ) ).
+
+fof(lameq_f2708,axiom,
+    ! [V2c] :
+      ( mem(V2c,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool))
+     => ! [V3r] : ap(f2708(V2c),V3r) = ap(ap(c_2Ebool_2E_2F_5C,ap(ap(c_2Erealax_2Etreal__eq,V3r),V3r)),ap(ap(c_2Emin_2E_3D(arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool)),V2c),ap(c_2Erealax_2Etreal__eq,V3r))) ) ).
+
+fof(lameq_f2709,axiom,
+    ! [V2c] : ap(f2709,V2c) = ap(c_2Ebool_2E_3F(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal)),f2708(V2c)) ).
+
+fof(ax_thm_2Erealax_2Ereal__bijections,axiom,
+    ( ! [V0a] :
+        ( mem(V0a,ty_2Erealax_2Ereal)
+       => ap(c_2Erealax_2Ereal__ABS__CLASS,ap(c_2Erealax_2Ereal__REP__CLASS,V0a)) = V0a )
+    & ! [V1r] :
+        ( mem(V1r,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool))
+       => ( p(ap(f2709,V1r))
+        <=> ap(c_2Erealax_2Ereal__REP__CLASS,ap(c_2Erealax_2Ereal__ABS__CLASS,V1r)) = V1r ) ) ) ).
+
+fof(conj_thm_2Erealax_2Ereal__ABS__REP__CLASS,axiom,
+    ( ! [V0a] :
+        ( mem(V0a,ty_2Erealax_2Ereal)
+       => ap(c_2Erealax_2Ereal__ABS__CLASS,ap(c_2Erealax_2Ereal__REP__CLASS,V0a)) = V0a )
+    & ! [V1c] :
+        ( mem(V1c,arr(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),bool))
+       => ( ? [V2r] :
+              ( mem(V2r,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+              & p(ap(ap(c_2Erealax_2Etreal__eq,V2r),V2r))
+              & V1c = ap(c_2Erealax_2Etreal__eq,V2r) )
+        <=> ap(c_2Erealax_2Ereal__REP__CLASS,ap(c_2Erealax_2Ereal__ABS__CLASS,V1c)) = V1c ) ) ) ).
+
+fof(ax_thm_2Erealax_2Ereal__REP__def,axiom,
+    ! [V0a] :
+      ( mem(V0a,ty_2Erealax_2Ereal)
+     => ap(c_2Erealax_2Ereal__REP,V0a) = ap(c_2Emin_2E_40(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal)),ap(c_2Erealax_2Ereal__REP__CLASS,V0a)) ) ).
+
+fof(ax_thm_2Erealax_2Ereal__ABS__def,axiom,
+    ! [V0r] :
+      ( mem(V0r,ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal))
+     => ap(c_2Erealax_2Ereal__ABS,V0r) = ap(c_2Erealax_2Ereal__ABS__CLASS,ap(c_2Erealax_2Etreal__eq,V0r)) ) ).
+
+fof(conj_thm_2Erealax_2Ereal__QUOTIENT,axiom,
+    p(ap(ap(ap(c_2Equotient_2EQUOTIENT(ty_2Epair_2Eprod(ty_2Ehreal_2Ehreal,ty_2Ehreal_2Ehreal),ty_2Erealax_2Ereal),c_2Erealax_2Etreal__eq),c_2Erealax_2Ereal__ABS),c_2Erealax_2Ereal__REP)) ).
+
+fof(ax_thm_2Erealax_2Ereal__0,axiom,
+    c_2Erealax_2Ereal__0 = ap(c_2Erealax_2Ereal__ABS,c_2Erealax_2Etreal__0) ).
+
+fof(ax_thm_2Erealax_2Ereal__1,axiom,
+    c_2Erealax_2Ereal__1 = ap(c_2Erealax_2Ereal__ABS,c_2Erealax_2Etreal__1) ).
+
+fof(ax_thm_2Erealax_2Ereal__neg,axiom,
+    ! [V0T1] :
+      ( mem(V0T1,ty_2Erealax_2Ereal)
+     => ap(c_2Erealax_2Ereal__neg,V0T1) = ap(c_2Erealax_2Ereal__ABS,ap(c_2Erealax_2Etreal__neg,ap(c_2Erealax_2Ereal__REP,V0T1))) ) ).
+
+fof(ax_thm_2Erealax_2Ereal__inv,axiom,
+    ! [V0T1] :
+      ( mem(V0T1,ty_2Erealax_2Ereal)
+     => ap(c_2Erealax_2Einv,V0T1) = ap(c_2Erealax_2Ereal__ABS,ap(c_2Erealax_2Etreal__inv,ap(c_2Erealax_2Ereal__REP,V0T1))) ) ).
+
+fof(ax_thm_2Erealax_2Ereal__add,axiom,
+    ! [V0T1] :
+      ( mem(V0T1,ty_2Erealax_2Ereal)
+     => ! [V1T2] :
+          ( mem(V1T2,ty_2Erealax_2Ereal)
+         => ap(ap(c_2Erealax_2Ereal__add,V0T1),V1T2) = ap(c_2Erealax_2Ereal__ABS,ap(ap(c_2Erealax_2Etreal__add,ap(c_2Erealax_2Ereal__REP,V0T1)),ap(c_2Erealax_2Ereal__REP,V1T2))) ) ) ).
+
+fof(ax_thm_2Erealax_2Ereal__mul,axiom,
+    ! [V0T1] :
+      ( mem(V0T1,ty_2Erealax_2Ereal)
+     => ! [V1T2] :
+          ( mem(V1T2,ty_2Erealax_2Ereal)
+         => ap(ap(c_2Erealax_2Ereal__mul,V0T1),V1T2) = ap(c_2Erealax_2Ereal__ABS,ap(ap(c_2Erealax_2Etreal__mul,ap(c_2Erealax_2Ereal__REP,V0T1)),ap(c_2Erealax_2Ereal__REP,V1T2))) ) ) ).
+
+fof(ax_thm_2Erealax_2Ereal__lt,axiom,
+    ! [V0T1] :
+      ( mem(V0T1,ty_2Erealax_2Ereal)
+     => ! [V1T2] :
+          ( mem(V1T2,ty_2Erealax_2Ereal)
+         => ( p(ap(ap(c_2Erealax_2Ereal__lt,V0T1),V1T2))
+          <=> p(ap(ap(c_2Erealax_2Etreal__lt,ap(c_2Erealax_2Ereal__REP,V0T1)),ap(c_2Erealax_2Ereal__REP,V1T2))) ) ) ) ).
+
+fof(ax_thm_2Erealax_2Ereal__of__hreal,axiom,
+    ! [V0T1] :
+      ( mem(V0T1,ty_2Ehreal_2Ehreal)
+     => ap(c_2Erealax_2Ereal__of__hreal,V0T1) = ap(c_2Erealax_2Ereal__ABS,ap(c_2Erealax_2Etreal__of__hreal,V0T1)) ) ).
+
+fof(ax_thm_2Erealax_2Ehreal__of__real,axiom,
+    ! [V0T1] :
+      ( mem(V0T1,ty_2Erealax_2Ereal)
+     => ap(c_2Erealax_2Ehreal__of__real,V0T1) = ap(c_2Erealax_2Ehreal__of__treal,ap(c_2Erealax_2Ereal__REP,V0T1)) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__ISO__EQ,axiom,
+    ! [V0h] :
+      ( mem(V0h,ty_2Ehreal_2Ehreal)
+     => ! [V1i] :
+          ( mem(V1i,ty_2Ehreal_2Ehreal)
+         => ( p(ap(ap(c_2Ehreal_2Ehreal__lt,V0h),V1i))
+          <=> p(ap(ap(c_2Erealax_2Ereal__lt,ap(c_2Erealax_2Ereal__of__hreal,V0h)),ap(c_2Erealax_2Ereal__of__hreal,V1i))) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__POS,axiom,
+    ! [V0X] :
+      ( mem(V0X,ty_2Ehreal_2Ehreal)
+     => p(ap(ap(c_2Erealax_2Ereal__lt,c_2Erealax_2Ereal__0),ap(c_2Erealax_2Ereal__of__hreal,V0X))) ) ).
+
+fof(conj_thm_2Erealax_2ESUP__ALLPOS__LEMMA1,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ! [V2x] :
+                ( mem(V2x,ty_2Erealax_2Ereal)
+               => ( p(ap(V0P,V2x))
+                 => p(ap(ap(c_2Erealax_2Ereal__lt,c_2Erealax_2Ereal__0),V2x)) ) )
+           => ( ? [V3x] :
+                  ( mem(V3x,ty_2Erealax_2Ereal)
+                  & p(ap(V0P,V3x))
+                  & p(ap(ap(c_2Erealax_2Ereal__lt,V1y),V3x)) )
+            <=> ? [V4X] :
+                  ( mem(V4X,ty_2Ehreal_2Ehreal)
+                  & p(ap(V0P,ap(c_2Erealax_2Ereal__of__hreal,V4X)))
+                  & p(ap(ap(c_2Erealax_2Ereal__lt,V1y),ap(c_2Erealax_2Ereal__of__hreal,V4X))) ) ) ) ) ) ).
+
+fof(lameq_f2710,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V2h] : ap(f2710(V0P),V2h) = ap(V0P,ap(c_2Erealax_2Ereal__of__hreal,V2h)) ) ).
+
+fof(conj_thm_2Erealax_2ESUP__ALLPOS__LEMMA2,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V1X] :
+          ( mem(V1X,ty_2Ehreal_2Ehreal)
+         => ( p(ap(V0P,ap(c_2Erealax_2Ereal__of__hreal,V1X)))
+          <=> p(ap(f2710(V0P),V1X)) ) ) ) ).
+
+fof(lameq_f2711,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V6h] : ap(f2711(V0P),V6h) = ap(V0P,ap(c_2Erealax_2Ereal__of__hreal,V6h)) ) ).
+
+fof(lameq_f2712,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Erealax_2Ereal,bool))
+     => ! [V9h] : ap(f2712(V0P),V9h) = ap(V0P,ap(c_2Erealax_2Ereal__of__hreal,V9h)) ) ).
+
+fof(conj_thm_2Erealax_2ESUP__ALLPOS__LEMMA3,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Erealax_2Ereal,bool))
+     => ( ( ! [V1x] :
+              ( mem(V1x,ty_2Erealax_2Ereal)
+             => ( p(ap(V0P,V1x))
+               => p(ap(ap(c_2Erealax_2Ereal__lt,c_2Erealax_2Ereal__0),V1x)) ) )
+          & ? [V2x] :
+              ( mem(V2x,ty_2Erealax_2Ereal)
+              & p(ap(V0P,V2x)) )
+          & ? [V3z] :
+              ( mem(V3z,ty_2Erealax_2Ereal)
+              & ! [V4x] :
+                  ( mem(V4x,ty_2Erealax_2Ereal)
+                 => ( p(ap(V0P,V4x))
+                   => p(ap(ap(c_2Erealax_2Ereal__lt,V4x),V3z)) ) ) ) )
+       => ( ? [V5X] :
+              ( mem(V5X,ty_2Ehreal_2Ehreal)
+              & p(ap(f2711(V0P),V5X)) )
+          & ? [V7Y] :
+              ( mem(V7Y,ty_2Ehreal_2Ehreal)
+              & ! [V8X] :
+                  ( mem(V8X,ty_2Ehreal_2Ehreal)
+                 => ( p(ap(f2712(V0P),V8X))
+                   => p(ap(ap(c_2Ehreal_2Ehreal__lt,V8X),V7Y)) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2ESUP__ALLPOS__LEMMA4,axiom,
+    ! [V0y] :
+      ( mem(V0y,ty_2Erealax_2Ereal)
+     => ( ~ p(ap(ap(c_2Erealax_2Ereal__lt,c_2Erealax_2Ereal__0),V0y))
+       => ! [V1x] :
+            ( mem(V1x,ty_2Ehreal_2Ehreal)
+           => p(ap(ap(c_2Erealax_2Ereal__lt,V0y),ap(c_2Erealax_2Ereal__of__hreal,V1x))) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__SUP__ALLPOS,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Erealax_2Ereal,bool))
+     => ( ( ! [V1x] :
+              ( mem(V1x,ty_2Erealax_2Ereal)
+             => ( p(ap(V0P,V1x))
+               => p(ap(ap(c_2Erealax_2Ereal__lt,c_2Erealax_2Ereal__0),V1x)) ) )
+          & ? [V2x] :
+              ( mem(V2x,ty_2Erealax_2Ereal)
+              & p(ap(V0P,V2x)) )
+          & ? [V3z] :
+              ( mem(V3z,ty_2Erealax_2Ereal)
+              & ! [V4x] :
+                  ( mem(V4x,ty_2Erealax_2Ereal)
+                 => ( p(ap(V0P,V4x))
+                   => p(ap(ap(c_2Erealax_2Ereal__lt,V4x),V3z)) ) ) ) )
+       => ? [V5s] :
+            ( mem(V5s,ty_2Erealax_2Ereal)
+            & ! [V6y] :
+                ( mem(V6y,ty_2Erealax_2Ereal)
+               => ( ? [V7x] :
+                      ( mem(V7x,ty_2Erealax_2Ereal)
+                      & p(ap(V0P,V7x))
+                      & p(ap(ap(c_2Erealax_2Ereal__lt,V6y),V7x)) )
+                <=> p(ap(ap(c_2Erealax_2Ereal__lt,V6y),V5s)) ) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__10,axiom,
+    c_2Erealax_2Ereal__1 != c_2Erealax_2Ereal__0 ).
+
+fof(conj_thm_2Erealax_2EREAL__ADD__SYM,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ap(ap(c_2Erealax_2Ereal__add,V0x),V1y) = ap(ap(c_2Erealax_2Ereal__add,V1y),V0x) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__MUL__SYM,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y) = ap(ap(c_2Erealax_2Ereal__mul,V1y),V0x) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__ADD__ASSOC,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ! [V2z] :
+              ( mem(V2z,ty_2Erealax_2Ereal)
+             => ap(ap(c_2Erealax_2Ereal__add,V0x),ap(ap(c_2Erealax_2Ereal__add,V1y),V2z)) = ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__add,V0x),V1y)),V2z) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__MUL__ASSOC,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ! [V2z] :
+              ( mem(V2z,ty_2Erealax_2Ereal)
+             => ap(ap(c_2Erealax_2Ereal__mul,V0x),ap(ap(c_2Erealax_2Ereal__mul,V1y),V2z)) = ap(ap(c_2Erealax_2Ereal__mul,ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y)),V2z) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__LDISTRIB,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ! [V2z] :
+              ( mem(V2z,ty_2Erealax_2Ereal)
+             => ap(ap(c_2Erealax_2Ereal__mul,V0x),ap(ap(c_2Erealax_2Ereal__add,V1y),V2z)) = ap(ap(c_2Erealax_2Ereal__add,ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y)),ap(ap(c_2Erealax_2Ereal__mul,V0x),V2z)) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__ADD__LID,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ap(ap(c_2Erealax_2Ereal__add,c_2Erealax_2Ereal__0),V0x) = V0x ) ).
+
+fof(conj_thm_2Erealax_2EREAL__MUL__LID,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ap(ap(c_2Erealax_2Ereal__mul,c_2Erealax_2Ereal__1),V0x) = V0x ) ).
+
+fof(conj_thm_2Erealax_2EREAL__ADD__LINV,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ap(ap(c_2Erealax_2Ereal__add,ap(c_2Erealax_2Ereal__neg,V0x)),V0x) = c_2Erealax_2Ereal__0 ) ).
+
+fof(conj_thm_2Erealax_2EREAL__MUL__LINV,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ( V0x != c_2Erealax_2Ereal__0
+       => ap(ap(c_2Erealax_2Ereal__mul,ap(c_2Erealax_2Einv,V0x)),V0x) = c_2Erealax_2Ereal__1 ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__LT__TOTAL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( V0x = V1y
+            | p(ap(ap(c_2Erealax_2Ereal__lt,V0x),V1y))
+            | p(ap(ap(c_2Erealax_2Ereal__lt,V1y),V0x)) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__LT__REFL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ~ p(ap(ap(c_2Erealax_2Ereal__lt,V0x),V0x)) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__LT__TRANS,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ! [V2z] :
+              ( mem(V2z,ty_2Erealax_2Ereal)
+             => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,V0x),V1y))
+                  & p(ap(ap(c_2Erealax_2Ereal__lt,V1y),V2z)) )
+               => p(ap(ap(c_2Erealax_2Ereal__lt,V0x),V2z)) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__LT__IADD,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ! [V2z] :
+              ( mem(V2z,ty_2Erealax_2Ereal)
+             => ( p(ap(ap(c_2Erealax_2Ereal__lt,V1y),V2z))
+               => p(ap(ap(c_2Erealax_2Ereal__lt,ap(ap(c_2Erealax_2Ereal__add,V0x),V1y)),ap(ap(c_2Erealax_2Ereal__add,V0x),V2z))) ) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__LT__MUL,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Erealax_2Ereal)
+     => ! [V1y] :
+          ( mem(V1y,ty_2Erealax_2Ereal)
+         => ( ( p(ap(ap(c_2Erealax_2Ereal__lt,c_2Erealax_2Ereal__0),V0x))
+              & p(ap(ap(c_2Erealax_2Ereal__lt,c_2Erealax_2Ereal__0),V1y)) )
+           => p(ap(ap(c_2Erealax_2Ereal__lt,c_2Erealax_2Ereal__0),ap(ap(c_2Erealax_2Ereal__mul,V0x),V1y))) ) ) ) ).
+
+fof(conj_thm_2Erealax_2EREAL__INV__0,axiom,
+    ap(c_2Erealax_2Einv,c_2Erealax_2Ereal__0) = c_2Erealax_2Ereal__0 ).
+
+%------------------------------------------------------------------------------

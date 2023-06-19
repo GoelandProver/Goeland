@@ -1,0 +1,268 @@
+%------------------------------------------------------------------------------
+% File     : SET007+58 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : The Contraction Lemma
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : zf_colla [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   21 (   3 unt;   0 def)
+%            Number of atoms       :  132 (  20 equ)
+%            Maximal formula atoms :   16 (   6 avg)
+%            Number of connectives :  140 (  29   ~;   0   |;  52   &)
+%                                         (   9 <=>;  50  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   9 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   16 (  14 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   15 (  15 usr;   2 con; 0-3 aty)
+%            Number of variables   :   71 (  60   !;  11   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t2_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ( ! [C] :
+                ( m1_subset_1(C,A)
+               => ~ r2_hidden(C,B) )
+          <=> r2_hidden(B,k1_zf_colla(A,k1_xboole_0)) ) ) ) ).
+
+fof(t3_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ! [C] :
+              ( m1_subset_1(C,A)
+             => ( r1_tarski(k3_xboole_0(C,A),k1_zf_colla(A,B))
+              <=> r2_hidden(C,k1_zf_colla(A,k1_ordinal1(B))) ) ) ) ) ).
+
+fof(t4_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ! [C] :
+              ( v3_ordinal1(C)
+             => ( r1_ordinal1(B,C)
+               => r1_tarski(k1_zf_colla(A,B),k1_zf_colla(A,C)) ) ) ) ) ).
+
+fof(t5_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ? [C] :
+              ( v3_ordinal1(C)
+              & r2_hidden(B,k1_zf_colla(A,C)) ) ) ) ).
+
+fof(t6_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ! [C] :
+              ( m1_subset_1(C,A)
+             => ! [D] :
+                  ( m1_subset_1(D,A)
+                 => ( ( r2_hidden(C,D)
+                      & r2_hidden(D,k1_zf_colla(A,B)) )
+                   => ( r2_hidden(C,k1_zf_colla(A,B))
+                      & ? [E] :
+                          ( v3_ordinal1(E)
+                          & r2_hidden(E,B)
+                          & r2_hidden(C,k1_zf_colla(A,E)) ) ) ) ) ) ) ) ).
+
+fof(t7_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => r1_tarski(k1_zf_colla(A,B),A) ) ) ).
+
+fof(t8_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ? [B] :
+          ( v3_ordinal1(B)
+          & A = k1_zf_colla(A,B) ) ) ).
+
+fof(t9_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ? [B] :
+          ( v1_relat_1(B)
+          & v1_funct_1(B)
+          & k1_relat_1(B) = A
+          & ! [C] :
+              ( m1_subset_1(C,A)
+             => k1_funct_1(B,C) = k9_relat_1(B,C) ) ) ) ).
+
+fof(d2_zf_colla,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B,C] :
+          ( r1_zf_colla(A,B,C)
+        <=> ( k1_relat_1(A) = B
+            & k2_relat_1(A) = C
+            & v2_funct_1(A)
+            & ! [D,E] :
+                ( ( r2_hidden(D,B)
+                  & r2_hidden(E,B) )
+               => ( ~ ( ? [F] :
+                          ( F = E
+                          & r2_hidden(D,F) )
+                      & ! [F] :
+                          ~ ( k1_funct_1(A,E) = F
+                            & r2_hidden(k1_funct_1(A,D),F) ) )
+                  & ~ ( ? [F] :
+                          ( k1_funct_1(A,E) = F
+                          & r2_hidden(k1_funct_1(A,D),F) )
+                      & ! [F] :
+                          ~ ( F = E
+                            & r2_hidden(D,F) ) ) ) ) ) ) ) ).
+
+fof(d3_zf_colla,axiom,
+    ! [A,B] :
+      ( r2_zf_colla(A,B)
+    <=> ? [C] :
+          ( v1_relat_1(C)
+          & v1_funct_1(C)
+          & r1_zf_colla(C,A,B) ) ) ).
+
+fof(t10_zf_colla,axiom,
+    $true ).
+
+fof(t11_zf_colla,axiom,
+    $true ).
+
+fof(t12_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( ( k1_relat_1(B) = A
+              & ! [C] :
+                  ( m1_subset_1(C,A)
+                 => k1_funct_1(B,C) = k9_relat_1(B,C) ) )
+           => v1_ordinal1(k2_relat_1(B)) ) ) ) ).
+
+fof(t13_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( r2_zf_model(A,k6_zf_model)
+       => ! [B] :
+            ( m1_subset_1(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,A)
+               => ( ! [D] :
+                      ( m1_subset_1(D,A)
+                     => ( r2_hidden(D,B)
+                      <=> r2_hidden(D,C) ) )
+                 => B = C ) ) ) ) ) ).
+
+fof(t14_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ~ ( r2_zf_model(A,k6_zf_model)
+          & ! [B] :
+              ~ ( v1_ordinal1(B)
+                & r2_zf_colla(A,B) ) ) ) ).
+
+fof(dt_k1_zf_colla,axiom,
+    $true ).
+
+fof(d1_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ! [C] :
+              ( C = k1_zf_colla(A,B)
+            <=> ? [D] :
+                  ( v1_relat_1(D)
+                  & v1_funct_1(D)
+                  & v5_ordinal1(D)
+                  & C = a_2_0_zf_colla(A,D)
+                  & k1_relat_1(D) = B
+                  & ! [E] :
+                      ( v3_ordinal1(E)
+                     => ( r2_hidden(E,B)
+                       => k1_funct_1(D,E) = a_3_0_zf_colla(A,D,E) ) ) ) ) ) ) ).
+
+fof(t1_zf_colla,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => k1_zf_colla(A,B) = a_2_1_zf_colla(A,B) ) ) ).
+
+fof(fraenkel_a_2_0_zf_colla,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_relat_1(C)
+        & v1_funct_1(C)
+        & v5_ordinal1(C) )
+     => ( r2_hidden(A,a_2_0_zf_colla(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,B)
+            & A = D
+            & ! [E] :
+                ( m1_subset_1(E,B)
+               => ~ ( r2_hidden(E,D)
+                    & ! [F] :
+                        ( v3_ordinal1(F)
+                       => ~ ( r2_hidden(F,k1_relat_1(C))
+                            & r2_hidden(E,k3_tarski(k1_tarski(k1_funct_1(C,F)))) ) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_3_0_zf_colla,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_relat_1(C)
+        & v1_funct_1(C)
+        & v5_ordinal1(C)
+        & v3_ordinal1(D) )
+     => ( r2_hidden(A,a_3_0_zf_colla(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,B)
+            & A = E
+            & ! [F] :
+                ( m1_subset_1(F,B)
+               => ~ ( r2_hidden(F,E)
+                    & ! [G] :
+                        ( v3_ordinal1(G)
+                       => ~ ( r2_hidden(G,k1_relat_1(k2_ordinal1(C,D)))
+                            & r2_hidden(F,k3_tarski(k1_tarski(k1_funct_1(k2_ordinal1(C,D),G)))) ) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_1_zf_colla,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v3_ordinal1(C) )
+     => ( r2_hidden(A,a_2_1_zf_colla(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,B)
+            & A = D
+            & ! [E] :
+                ( m1_subset_1(E,B)
+               => ~ ( r2_hidden(E,D)
+                    & ! [F] :
+                        ( v3_ordinal1(F)
+                       => ~ ( r2_hidden(F,C)
+                            & r2_hidden(E,k1_zf_colla(B,F)) ) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

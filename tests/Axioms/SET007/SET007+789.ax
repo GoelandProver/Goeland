@@ -1,0 +1,935 @@
+%------------------------------------------------------------------------------
+% File     : SET007+789 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Lattice of Fuzzy Sets
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : lfuzzy_0 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   82 (   2 unt;   0 def)
+%            Number of atoms       :  575 (  53 equ)
+%            Maximal formula atoms :   24 (   7 avg)
+%            Number of connectives :  566 (  73   ~;   0   |; 312   &)
+%                                         (  26 <=>; 155  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   22 (   9 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   49 (  48 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   72 (  72 usr;  26 con; 0-7 aty)
+%            Number of variables   :  211 ( 183   !;  28   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v2_lfuzzy_0(A)
+       => ( ~ v3_struct_0(A)
+          & v1_lfuzzy_0(A) ) ) ) ).
+
+fof(cc2_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v3_struct_0(A)
+       => v1_lfuzzy_0(A) ) ) ).
+
+fof(rc1_lfuzzy_0,axiom,
+    ? [A] :
+      ( l1_orders_2(A)
+      & ~ v3_struct_0(A)
+      & v1_orders_2(A)
+      & v1_lfuzzy_0(A)
+      & v2_lfuzzy_0(A) ) ).
+
+fof(cc3_lfuzzy_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v1_xcmplx_0(B)
+            & v1_xreal_0(B) ) ) ) ).
+
+fof(fc1_lfuzzy_0,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k1_numbers)) )
+     => ( ~ v3_struct_0(k1_lfuzzy_0(A))
+        & v1_orders_2(k1_lfuzzy_0(A))
+        & v1_lfuzzy_0(k1_lfuzzy_0(A)) ) ) ).
+
+fof(cc4_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_lfuzzy_0(A)
+       => ( v2_orders_2(A)
+          & v3_orders_2(A)
+          & v4_orders_2(A) ) ) ) ).
+
+fof(cc5_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( ~ v3_struct_0(A)
+          & v1_lfuzzy_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_orders_2(A)
+          & v4_orders_2(A)
+          & v16_waybel_0(A)
+          & v1_lattice3(A)
+          & v2_lattice3(A)
+          & v1_lfuzzy_0(A) ) ) ) ).
+
+fof(cc6_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( ~ v3_struct_0(A)
+          & v1_lfuzzy_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_orders_2(A)
+          & v4_orders_2(A)
+          & v16_waybel_0(A)
+          & v1_lattice3(A)
+          & v2_lattice3(A)
+          & v1_lfuzzy_0(A) ) ) ) ).
+
+fof(cc7_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( ~ v3_struct_0(A)
+          & v2_lfuzzy_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v3_yellow_0(A) ) ) ) ).
+
+fof(cc8_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( ~ v3_struct_0(A)
+          & v2_lfuzzy_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_orders_2(A)
+          & v4_orders_2(A)
+          & v3_yellow_0(A)
+          & v16_waybel_0(A)
+          & v1_lattice3(A)
+          & v2_lattice3(A)
+          & v3_lattice3(A)
+          & v2_waybel_3(A)
+          & v1_lfuzzy_0(A)
+          & v2_lfuzzy_0(A) ) ) ) ).
+
+fof(cc9_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_orders_2(A)
+          & v4_orders_2(A)
+          & v16_waybel_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_orders_2(A)
+          & v4_orders_2(A)
+          & v16_waybel_0(A)
+          & v1_lattice3(A)
+          & v2_lattice3(A)
+          & v2_waybel_1(A) ) ) ) ).
+
+fof(cc10_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( ~ v3_struct_0(A)
+          & v2_lfuzzy_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_orders_2(A)
+          & v3_orders_2(A)
+          & v4_orders_2(A)
+          & v2_yellow_0(A)
+          & v3_yellow_0(A)
+          & v16_waybel_0(A)
+          & v24_waybel_0(A)
+          & ~ v1_yellow_3(A)
+          & v1_waybel_2(A)
+          & v2_waybel_2(A)
+          & v1_lattice3(A)
+          & v2_lattice3(A)
+          & v3_lattice3(A)
+          & v2_waybel_1(A)
+          & v9_waybel_1(A)
+          & v2_waybel_3(A)
+          & v1_lfuzzy_0(A)
+          & v2_lfuzzy_0(A) ) ) ) ).
+
+fof(fc2_lfuzzy_0,axiom,
+    ( ~ v1_xboole_0(k1_rcomp_1(np__0,np__1))
+    & v1_membered(k1_rcomp_1(np__0,np__1))
+    & v2_membered(k1_rcomp_1(np__0,np__1)) ) ).
+
+fof(fc3_lfuzzy_0,axiom,
+    ( ~ v3_struct_0(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v1_orders_2(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v2_orders_2(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v3_orders_2(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v4_orders_2(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v2_yellow_0(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v3_yellow_0(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v16_waybel_0(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v24_waybel_0(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & ~ v1_yellow_3(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v1_waybel_2(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v2_waybel_2(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v1_lattice3(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v2_lattice3(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v3_lattice3(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v2_waybel_1(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v9_waybel_1(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v2_waybel_3(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v1_lfuzzy_0(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))
+    & v2_lfuzzy_0(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1))) ) ).
+
+fof(fc4_lfuzzy_0,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & v3_lattice3(B)
+        & v9_waybel_1(B)
+        & l1_orders_2(B) )
+     => ( ~ v3_struct_0(k6_yellow_1(A,B))
+        & v1_orders_2(k6_yellow_1(A,B))
+        & v2_orders_2(k6_yellow_1(A,B))
+        & v3_orders_2(k6_yellow_1(A,B))
+        & v4_orders_2(k6_yellow_1(A,B))
+        & v2_yellow_0(k6_yellow_1(A,B))
+        & v24_waybel_0(k6_yellow_1(A,B))
+        & ~ v1_yellow_3(k6_yellow_1(A,B))
+        & v1_waybel_2(k6_yellow_1(A,B))
+        & v2_waybel_2(k6_yellow_1(A,B))
+        & v1_lattice3(k6_yellow_1(A,B))
+        & v2_lattice3(k6_yellow_1(A,B))
+        & v3_lattice3(k6_yellow_1(A,B))
+        & v2_waybel_1(k6_yellow_1(A,B))
+        & v9_waybel_1(k6_yellow_1(A,B)) ) ) ).
+
+fof(fc5_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k4_lfuzzy_0(A))
+        & v2_orders_2(k4_lfuzzy_0(A))
+        & v3_orders_2(k4_lfuzzy_0(A))
+        & v4_orders_2(k4_lfuzzy_0(A))
+        & v2_yellow_0(k4_lfuzzy_0(A))
+        & v24_waybel_0(k4_lfuzzy_0(A))
+        & ~ v1_yellow_3(k4_lfuzzy_0(A))
+        & v1_waybel_2(k4_lfuzzy_0(A))
+        & v2_waybel_2(k4_lfuzzy_0(A))
+        & v1_lattice3(k4_lfuzzy_0(A))
+        & v2_lattice3(k4_lfuzzy_0(A))
+        & v3_lattice3(k4_lfuzzy_0(A))
+        & v2_waybel_1(k4_lfuzzy_0(A))
+        & v9_waybel_1(k4_lfuzzy_0(A))
+        & v1_monoid_0(k4_lfuzzy_0(A)) ) ) ).
+
+fof(d1_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_lfuzzy_0(A)
+      <=> ( r1_tarski(u1_struct_0(A),k1_numbers)
+          & ! [B] :
+              ( v1_xreal_0(B)
+             => ! [C] :
+                  ( v1_xreal_0(C)
+                 => ( ( r2_hidden(B,u1_struct_0(A))
+                      & r2_hidden(C,u1_struct_0(A)) )
+                   => ( r2_hidden(k4_tarski(B,C),u1_orders_2(A))
+                    <=> r1_xreal_0(B,C) ) ) ) ) ) ) ) ).
+
+fof(d2_lfuzzy_0,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v2_lfuzzy_0(A)
+      <=> ( v1_lfuzzy_0(A)
+          & ? [B] :
+              ( v1_xreal_0(B)
+              & ? [C] :
+                  ( v1_xreal_0(C)
+                  & r1_xreal_0(B,C)
+                  & u1_struct_0(A) = k1_rcomp_1(B,C) ) ) ) ) ) ).
+
+fof(t1_lfuzzy_0,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ? [B] :
+          ( v1_orders_2(B)
+          & l1_orders_2(B)
+          & u1_struct_0(B) = A
+          & v1_lfuzzy_0(B) ) ) ).
+
+fof(t2_lfuzzy_0,axiom,
+    ! [A] :
+      ( ( v1_lfuzzy_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v1_lfuzzy_0(B)
+            & l1_orders_2(B) )
+         => ( u1_struct_0(A) = u1_struct_0(B)
+           => g1_orders_2(u1_struct_0(A),u1_orders_2(A)) = g1_orders_2(u1_struct_0(B),u1_orders_2(B)) ) ) ) ).
+
+fof(d3_lfuzzy_0,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ! [B] :
+          ( ( v1_orders_2(B)
+            & v1_lfuzzy_0(B)
+            & l1_orders_2(B) )
+         => ( B = k1_lfuzzy_0(A)
+          <=> u1_struct_0(B) = A ) ) ) ).
+
+fof(t3_lfuzzy_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_xreal_0(B,C)
+              <=> r1_orders_2(A,B,C) ) ) ) ) ).
+
+fof(t4_lfuzzy_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k13_lattice3(A,B,C) = k2_lfuzzy_0(A,B,C) ) ) ) ).
+
+fof(t5_lfuzzy_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k12_lattice3(A,B,C) = k3_lfuzzy_0(A,B,C) ) ) ) ).
+
+fof(t6_lfuzzy_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A) )
+     => ( ? [B] :
+            ( v1_xreal_0(B)
+            & r2_hidden(B,u1_struct_0(A))
+            & ! [C] :
+                ( v1_xreal_0(C)
+               => ( r2_hidden(C,u1_struct_0(A))
+                 => r1_xreal_0(B,C) ) ) )
+      <=> v1_yellow_0(A) ) ) ).
+
+fof(t7_lfuzzy_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A) )
+     => ( ? [B] :
+            ( v1_xreal_0(B)
+            & r2_hidden(B,u1_struct_0(A))
+            & ! [C] :
+                ( v1_xreal_0(C)
+               => ( r2_hidden(C,u1_struct_0(A))
+                 => r1_xreal_0(C,B) ) ) )
+      <=> v2_yellow_0(A) ) ) ).
+
+fof(t8_lfuzzy_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_lfuzzy_0(A)
+        & l1_orders_2(A) )
+     => ! [B] : r1_yellow_0(A,B) ) ).
+
+fof(t9_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_yellow_1(B)
+            & v4_waybel_3(B)
+            & v5_waybel_3(B)
+            & m1_pboole(B,A) )
+         => ( ! [C] :
+                ( m1_subset_1(C,A)
+               => ( v2_orders_2(k6_waybel_3(A,B,C))
+                  & v3_orders_2(k6_waybel_3(A,B,C))
+                  & v4_orders_2(k6_waybel_3(A,B,C))
+                  & v1_lattice3(k6_waybel_3(A,B,C))
+                  & l1_orders_2(k6_waybel_3(A,B,C)) ) )
+           => v1_lattice3(k5_yellow_1(A,B)) ) ) ) ).
+
+fof(t10_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_yellow_1(B)
+            & v4_waybel_3(B)
+            & v5_waybel_3(B)
+            & m1_pboole(B,A) )
+         => ( ! [C] :
+                ( m1_subset_1(C,A)
+               => ( v2_orders_2(k6_waybel_3(A,B,C))
+                  & v3_orders_2(k6_waybel_3(A,B,C))
+                  & v4_orders_2(k6_waybel_3(A,B,C))
+                  & v2_lattice3(k6_waybel_3(A,B,C))
+                  & l1_orders_2(k6_waybel_3(A,B,C)) ) )
+           => v2_lattice3(k5_yellow_1(A,B)) ) ) ) ).
+
+fof(t11_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_yellow_1(B)
+            & v4_waybel_3(B)
+            & v5_waybel_3(B)
+            & m1_pboole(B,A) )
+         => ( ! [C] :
+                ( m1_subset_1(C,A)
+               => ( v2_orders_2(k6_waybel_3(A,B,C))
+                  & v3_orders_2(k6_waybel_3(A,B,C))
+                  & v4_orders_2(k6_waybel_3(A,B,C))
+                  & v2_lattice3(k6_waybel_3(A,B,C))
+                  & l1_orders_2(k6_waybel_3(A,B,C)) ) )
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(k5_yellow_1(A,B)))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(k5_yellow_1(A,B)))
+                   => ! [E] :
+                        ( m1_subset_1(E,A)
+                       => k7_waybel_3(A,B,k11_lattice3(k5_yellow_1(A,B),C,D),E) = k11_lattice3(k6_waybel_3(A,B,E),k7_waybel_3(A,B,C,E),k7_waybel_3(A,B,D,E)) ) ) ) ) ) ) ).
+
+fof(t12_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_yellow_1(B)
+            & v4_waybel_3(B)
+            & v5_waybel_3(B)
+            & m1_pboole(B,A) )
+         => ( ! [C] :
+                ( m1_subset_1(C,A)
+               => ( v2_orders_2(k6_waybel_3(A,B,C))
+                  & v3_orders_2(k6_waybel_3(A,B,C))
+                  & v4_orders_2(k6_waybel_3(A,B,C))
+                  & v1_lattice3(k6_waybel_3(A,B,C))
+                  & l1_orders_2(k6_waybel_3(A,B,C)) ) )
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(k5_yellow_1(A,B)))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(k5_yellow_1(A,B)))
+                   => ! [E] :
+                        ( m1_subset_1(E,A)
+                       => k7_waybel_3(A,B,k10_lattice3(k5_yellow_1(A,B),C,D),E) = k10_lattice3(k6_waybel_3(A,B,E),k7_waybel_3(A,B,C,E),k7_waybel_3(A,B,D,E)) ) ) ) ) ) ) ).
+
+fof(t13_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_yellow_1(B)
+            & v4_waybel_3(B)
+            & v5_waybel_3(B)
+            & m1_pboole(B,A) )
+         => ( ! [C] :
+                ( m1_subset_1(C,A)
+               => ( v2_orders_2(k6_waybel_3(A,B,C))
+                  & v3_orders_2(k6_waybel_3(A,B,C))
+                  & v4_orders_2(k6_waybel_3(A,B,C))
+                  & v1_lattice3(k6_waybel_3(A,B,C))
+                  & v2_lattice3(k6_waybel_3(A,B,C))
+                  & v3_lattice3(k6_waybel_3(A,B,C))
+                  & v9_waybel_1(k6_waybel_3(A,B,C))
+                  & l1_orders_2(k6_waybel_3(A,B,C)) ) )
+           => ( v3_lattice3(k5_yellow_1(A,B))
+              & v9_waybel_1(k5_yellow_1(A,B)) ) ) ) ) ).
+
+fof(d4_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k4_lfuzzy_0(A) = k6_yellow_1(A,k1_lfuzzy_0(k1_rcomp_1(np__0,np__1))) ) ).
+
+fof(t14_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => u1_struct_0(k4_lfuzzy_0(A)) = k1_funct_2(A,k1_rcomp_1(np__0,np__1)) ) ).
+
+fof(d5_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k4_lfuzzy_0(A)))
+         => k5_lfuzzy_0(A,B) = B ) ) ).
+
+fof(d6_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_fuzzy_1(B,A)
+         => k6_lfuzzy_0(A,B) = B ) ) ).
+
+fof(t16_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_fuzzy_1(B,A)
+         => ! [C] :
+              ( m1_fuzzy_1(C,A)
+             => ( ! [D] :
+                    ( m1_subset_1(D,A)
+                   => r1_xreal_0(k7_lfuzzy_0(A,B,D),k7_lfuzzy_0(A,C,D)) )
+              <=> r1_orders_2(k4_lfuzzy_0(A),k6_lfuzzy_0(A,B),k6_lfuzzy_0(A,C)) ) ) ) ) ).
+
+fof(t17_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k4_lfuzzy_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k4_lfuzzy_0(A)))
+             => ( r1_orders_2(k4_lfuzzy_0(A),B,C)
+              <=> ! [D] :
+                    ( m1_subset_1(D,A)
+                   => r1_xreal_0(k7_lfuzzy_0(A,k5_lfuzzy_0(A,B),D),k7_lfuzzy_0(A,k5_lfuzzy_0(A,C),D)) ) ) ) ) ) ).
+
+fof(t18_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_fuzzy_1(B,A)
+         => ! [C] :
+              ( m1_fuzzy_1(C,A)
+             => k2_fuzzy_1(A,B,C) = k13_lattice3(k4_lfuzzy_0(A),k6_lfuzzy_0(A,B),k6_lfuzzy_0(A,C)) ) ) ) ).
+
+fof(t19_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k4_lfuzzy_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k4_lfuzzy_0(A)))
+             => k13_lattice3(k4_lfuzzy_0(A),B,C) = k2_fuzzy_1(A,k5_lfuzzy_0(A,B),k5_lfuzzy_0(A,C)) ) ) ) ).
+
+fof(t20_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_fuzzy_1(B,A)
+         => ! [C] :
+              ( m1_fuzzy_1(C,A)
+             => k1_fuzzy_1(A,B,C) = k12_lattice3(k4_lfuzzy_0(A),k6_lfuzzy_0(A,B),k6_lfuzzy_0(A,C)) ) ) ) ).
+
+fof(t21_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k4_lfuzzy_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k4_lfuzzy_0(A)))
+             => k12_lattice3(k4_lfuzzy_0(A),B,C) = k1_fuzzy_1(A,k5_lfuzzy_0(A,B),k5_lfuzzy_0(A,C)) ) ) ) ).
+
+fof(t23_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( ~ v1_xboole_0(D)
+                 => ! [E] :
+                      ( m1_fuzzy_1(E,k2_zfmisc_1(A,B))
+                     => ! [F] :
+                          ( m1_fuzzy_1(F,k2_zfmisc_1(B,C))
+                         => ! [G] :
+                              ( m1_fuzzy_1(G,k2_zfmisc_1(C,D))
+                             => k3_fuzzy_4(A,C,D,k3_fuzzy_4(A,B,C,E,F),G) = k3_fuzzy_4(A,B,D,E,k3_fuzzy_4(B,C,D,F,G)) ) ) ) ) ) ) ) ).
+
+fof(dt_k1_lfuzzy_0,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ( v1_orders_2(k1_lfuzzy_0(A))
+        & v1_lfuzzy_0(k1_lfuzzy_0(A))
+        & l1_orders_2(k1_lfuzzy_0(A)) ) ) ).
+
+fof(dt_k2_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k2_lfuzzy_0(A,B,C),u1_struct_0(A)) ) ).
+
+fof(commutativity_k2_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k2_lfuzzy_0(A,B,C) = k2_lfuzzy_0(A,C,B) ) ).
+
+fof(idempotence_k2_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k2_lfuzzy_0(A,B,B) = B ) ).
+
+fof(redefinition_k2_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k2_lfuzzy_0(A,B,C) = k2_square_1(B,C) ) ).
+
+fof(dt_k3_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k3_lfuzzy_0(A,B,C),u1_struct_0(A)) ) ).
+
+fof(commutativity_k3_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k3_lfuzzy_0(A,B,C) = k3_lfuzzy_0(A,C,B) ) ).
+
+fof(idempotence_k3_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k3_lfuzzy_0(A,B,B) = B ) ).
+
+fof(redefinition_k3_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lfuzzy_0(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k3_lfuzzy_0(A,B,C) = k1_square_1(B,C) ) ).
+
+fof(dt_k4_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v2_orders_2(k4_lfuzzy_0(A))
+        & v3_orders_2(k4_lfuzzy_0(A))
+        & v4_orders_2(k4_lfuzzy_0(A))
+        & v1_lattice3(k4_lfuzzy_0(A))
+        & v2_lattice3(k4_lfuzzy_0(A))
+        & v3_lattice3(k4_lfuzzy_0(A))
+        & v9_waybel_1(k4_lfuzzy_0(A))
+        & l1_orders_2(k4_lfuzzy_0(A)) ) ) ).
+
+fof(dt_k5_lfuzzy_0,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,u1_struct_0(k4_lfuzzy_0(A))) )
+     => m1_fuzzy_1(k5_lfuzzy_0(A,B),A) ) ).
+
+fof(dt_k6_lfuzzy_0,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_fuzzy_1(B,A) )
+     => m1_subset_1(k6_lfuzzy_0(A,B),u1_struct_0(k4_lfuzzy_0(A))) ) ).
+
+fof(dt_k7_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_fuzzy_1(B,A)
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k7_lfuzzy_0(A,B,C),u1_struct_0(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))) ) ).
+
+fof(redefinition_k7_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_fuzzy_1(B,A)
+        & m1_subset_1(C,A) )
+     => k7_lfuzzy_0(A,B,C) = k1_funct_1(B,C) ) ).
+
+fof(dt_k8_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,u1_struct_0(k4_lfuzzy_0(A)))
+        & m1_subset_1(C,A) )
+     => m1_subset_1(k8_lfuzzy_0(A,B,C),u1_struct_0(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)))) ) ).
+
+fof(redefinition_k8_lfuzzy_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,u1_struct_0(k4_lfuzzy_0(A)))
+        & m1_subset_1(C,A) )
+     => k8_lfuzzy_0(A,B,C) = k1_funct_1(B,C) ) ).
+
+fof(t15_lfuzzy_0,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_lattice3(A)
+        & v9_waybel_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k12_lattice3(A,k1_yellow_0(A,B),C) = k1_yellow_0(A,a_3_0_lfuzzy_0(A,B,C)) ) ) ) ).
+
+fof(t22_lfuzzy_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( m1_fuzzy_1(D,k2_zfmisc_1(A,B))
+                 => ! [E] :
+                      ( m1_fuzzy_1(E,k2_zfmisc_1(B,C))
+                     => ! [F] :
+                          ( m1_subset_1(F,A)
+                         => ! [G] :
+                              ( m1_subset_1(G,C)
+                             => k7_lfuzzy_0(k2_zfmisc_1(A,C),k3_fuzzy_4(A,B,C,D,E),k1_domain_1(A,C,F,G)) = k1_yellow_0(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)),a_7_0_lfuzzy_0(A,B,C,D,E,F,G)) ) ) ) ) ) ) ) ).
+
+fof(s1_lfuzzy_0,axiom,
+    k1_yellow_0(f1_s1_lfuzzy_0,a_0_0_lfuzzy_0) = k1_yellow_0(f1_s1_lfuzzy_0,a_0_1_lfuzzy_0) ).
+
+fof(s2_lfuzzy_0,axiom,
+    k1_yellow_0(f1_s2_lfuzzy_0,a_0_2_lfuzzy_0) = k1_yellow_0(f1_s2_lfuzzy_0,a_0_3_lfuzzy_0) ).
+
+fof(s3_lfuzzy_0,axiom,
+    ( ! [A] :
+        ( m1_subset_1(A,f1_s3_lfuzzy_0)
+       => ! [B] :
+            ( m1_subset_1(B,f2_s3_lfuzzy_0)
+           => ( p1_s3_lfuzzy_0(A,B)
+             => f3_s3_lfuzzy_0(A,B) = f4_s3_lfuzzy_0(A,B) ) ) )
+   => a_0_4_lfuzzy_0 = a_0_5_lfuzzy_0 ) ).
+
+fof(s4_lfuzzy_0,axiom,
+    ( ( ! [A] :
+          ( m1_subset_1(A,f1_s4_lfuzzy_0)
+         => ! [B] :
+              ( m1_subset_1(B,f2_s4_lfuzzy_0)
+             => ( p1_s4_lfuzzy_0(A,B)
+              <=> p2_s4_lfuzzy_0(A,B) ) ) )
+      & ! [A] :
+          ( m1_subset_1(A,f1_s4_lfuzzy_0)
+         => ! [B] :
+              ( m1_subset_1(B,f2_s4_lfuzzy_0)
+             => ( p1_s4_lfuzzy_0(A,B)
+               => f3_s4_lfuzzy_0(A,B) = f4_s4_lfuzzy_0(A,B) ) ) ) )
+   => a_0_6_lfuzzy_0 = a_0_7_lfuzzy_0 ) ).
+
+fof(s5_lfuzzy_0,axiom,
+    ( ! [A] :
+        ( m1_subset_1(A,f2_s5_lfuzzy_0)
+       => ! [B] :
+            ( m1_subset_1(B,f3_s5_lfuzzy_0)
+           => ( ( p1_s5_lfuzzy_0(A)
+                & p2_s5_lfuzzy_0(B) )
+             => f4_s5_lfuzzy_0(A,B) = f5_s5_lfuzzy_0(A,B) ) ) )
+   => k1_yellow_0(f1_s5_lfuzzy_0,a_0_8_lfuzzy_0) = k1_yellow_0(f1_s5_lfuzzy_0,a_0_9_lfuzzy_0) ) ).
+
+fof(fraenkel_a_3_0_lfuzzy_0,axiom,
+    ! [A,B,C,D] :
+      ( ( v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & v3_lattice3(B)
+        & v9_waybel_1(B)
+        & l1_orders_2(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B)))
+        & m1_subset_1(D,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_3_0_lfuzzy_0(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(B))
+            & A = k12_lattice3(B,E,D)
+            & r2_hidden(E,C) ) ) ) ).
+
+fof(fraenkel_a_7_0_lfuzzy_0,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( ( ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & ~ v1_xboole_0(D)
+        & m1_fuzzy_1(E,k2_zfmisc_1(B,C))
+        & m1_fuzzy_1(F,k2_zfmisc_1(C,D))
+        & m1_subset_1(G,B)
+        & m1_subset_1(H,D) )
+     => ( r2_hidden(A,a_7_0_lfuzzy_0(B,C,D,E,F,G,H))
+      <=> ? [I] :
+            ( m1_subset_1(I,C)
+            & A = k12_lattice3(k1_lfuzzy_0(k1_rcomp_1(np__0,np__1)),k7_lfuzzy_0(k2_zfmisc_1(B,C),E,k1_domain_1(B,C,G,I)),k7_lfuzzy_0(k2_zfmisc_1(C,D),F,k1_domain_1(C,D,I,H))) ) ) ) ).
+
+fof(fraenkel_a_0_0_lfuzzy_0,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_0_lfuzzy_0)
+    <=> ? [B] :
+          ( m1_subset_1(B,f2_s1_lfuzzy_0)
+          & A = k1_yellow_0(f1_s1_lfuzzy_0,a_1_0_lfuzzy_0(B))
+          & p1_s1_lfuzzy_0(B) ) ) ).
+
+fof(fraenkel_a_1_0_lfuzzy_0,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,f2_s1_lfuzzy_0)
+     => ( r2_hidden(A,a_1_0_lfuzzy_0(B))
+      <=> ? [C] :
+            ( m1_subset_1(C,f3_s1_lfuzzy_0)
+            & A = f4_s1_lfuzzy_0(B,C)
+            & p2_s1_lfuzzy_0(C) ) ) ) ).
+
+fof(fraenkel_a_0_1_lfuzzy_0,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_1_lfuzzy_0)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,f2_s1_lfuzzy_0)
+          & m1_subset_1(C,f3_s1_lfuzzy_0)
+          & A = f4_s1_lfuzzy_0(B,C)
+          & p1_s1_lfuzzy_0(B)
+          & p2_s1_lfuzzy_0(C) ) ) ).
+
+fof(fraenkel_a_0_2_lfuzzy_0,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_2_lfuzzy_0)
+    <=> ? [B] :
+          ( m1_subset_1(B,f3_s2_lfuzzy_0)
+          & A = k1_yellow_0(f1_s2_lfuzzy_0,a_1_1_lfuzzy_0(B))
+          & p2_s2_lfuzzy_0(B) ) ) ).
+
+fof(fraenkel_a_1_1_lfuzzy_0,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,f3_s2_lfuzzy_0)
+     => ( r2_hidden(A,a_1_1_lfuzzy_0(B))
+      <=> ? [C] :
+            ( m1_subset_1(C,f2_s2_lfuzzy_0)
+            & A = f4_s2_lfuzzy_0(C,B)
+            & p1_s2_lfuzzy_0(C) ) ) ) ).
+
+fof(fraenkel_a_0_3_lfuzzy_0,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_3_lfuzzy_0)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,f2_s2_lfuzzy_0)
+          & m1_subset_1(C,f3_s2_lfuzzy_0)
+          & A = f4_s2_lfuzzy_0(B,C)
+          & p1_s2_lfuzzy_0(B)
+          & p2_s2_lfuzzy_0(C) ) ) ).
+
+fof(fraenkel_a_0_4_lfuzzy_0,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_4_lfuzzy_0)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,f1_s3_lfuzzy_0)
+          & m1_subset_1(C,f2_s3_lfuzzy_0)
+          & A = f3_s3_lfuzzy_0(B,C)
+          & p1_s3_lfuzzy_0(B,C) ) ) ).
+
+fof(fraenkel_a_0_5_lfuzzy_0,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_5_lfuzzy_0)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,f1_s3_lfuzzy_0)
+          & m1_subset_1(C,f2_s3_lfuzzy_0)
+          & A = f4_s3_lfuzzy_0(B,C)
+          & p1_s3_lfuzzy_0(B,C) ) ) ).
+
+fof(fraenkel_a_0_6_lfuzzy_0,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_6_lfuzzy_0)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,f1_s4_lfuzzy_0)
+          & m1_subset_1(C,f2_s4_lfuzzy_0)
+          & A = f3_s4_lfuzzy_0(B,C)
+          & p1_s4_lfuzzy_0(B,C) ) ) ).
+
+fof(fraenkel_a_0_7_lfuzzy_0,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_7_lfuzzy_0)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,f1_s4_lfuzzy_0)
+          & m1_subset_1(C,f2_s4_lfuzzy_0)
+          & A = f4_s4_lfuzzy_0(B,C)
+          & p2_s4_lfuzzy_0(B,C) ) ) ).
+
+fof(fraenkel_a_0_8_lfuzzy_0,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_8_lfuzzy_0)
+    <=> ? [B] :
+          ( m1_subset_1(B,f2_s5_lfuzzy_0)
+          & A = k1_yellow_0(f1_s5_lfuzzy_0,a_1_2_lfuzzy_0(B))
+          & p1_s5_lfuzzy_0(B) ) ) ).
+
+fof(fraenkel_a_1_2_lfuzzy_0,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,f2_s5_lfuzzy_0)
+     => ( r2_hidden(A,a_1_2_lfuzzy_0(B))
+      <=> ? [C] :
+            ( m1_subset_1(C,f3_s5_lfuzzy_0)
+            & A = f4_s5_lfuzzy_0(B,C)
+            & p2_s5_lfuzzy_0(C) ) ) ) ).
+
+fof(fraenkel_a_0_9_lfuzzy_0,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_9_lfuzzy_0)
+    <=> ? [B] :
+          ( m1_subset_1(B,f3_s5_lfuzzy_0)
+          & A = k1_yellow_0(f1_s5_lfuzzy_0,a_1_3_lfuzzy_0(B))
+          & p2_s5_lfuzzy_0(B) ) ) ).
+
+fof(fraenkel_a_1_3_lfuzzy_0,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,f3_s5_lfuzzy_0)
+     => ( r2_hidden(A,a_1_3_lfuzzy_0(B))
+      <=> ? [C] :
+            ( m1_subset_1(C,f2_s5_lfuzzy_0)
+            & A = f5_s5_lfuzzy_0(C,B)
+            & p1_s5_lfuzzy_0(C) ) ) ) ).
+
+%------------------------------------------------------------------------------

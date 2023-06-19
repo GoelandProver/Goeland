@@ -1,0 +1,533 @@
+%------------------------------------------------------------------------------
+% File     : ITP015_5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : prim_rec_2.ax [Gau20]
+%          : HL4015_5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  100 (  28 unt;  27 typ;   0 def)
+%            Number of atoms       :  883 (  49 equ)
+%            Maximal formula atoms :   13 (   8 avg)
+%            Number of connectives :  119 (   8   ~;   3   |;  23   &)
+%                                         (  10 <=>;  75  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   16 (   5 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of FOOLs       :  699 ( 699 fml;   0 var)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :   43 (  22   >;  21   *;   0   +;   0  <<)
+%            Number of predicates  :   27 (  26 usr;   8 prp; 0-2 aty)
+%            Number of functors    :   27 (  27 usr;   5 con; 0-5 aty)
+%            Number of variables   :  182 ( 175   !;   7   ?; 182   :)
+% SPC      : TF0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+tff(tp_c_2Eprim__rec_2E_3C,type,
+    c_2Eprim__rec_2E_3C: $i ).
+
+tff(mem_c_2Eprim__rec_2E_3C,axiom,
+    mem(c_2Eprim__rec_2E_3C,arr(ty_2Enum_2Enum,arr(ty_2Enum_2Enum,bool))) ).
+
+tff(stp_fo_c_2Eprim__rec_2E_3C,type,
+    fo__c_2Eprim__rec_2E_3C: ( tp__ty_2Enum_2Enum * tp__ty_2Enum_2Enum ) > tp__o ).
+
+tff(stp_eq_fo_c_2Eprim__rec_2E_3C,axiom,
+    ! [X0: tp__ty_2Enum_2Enum,X1: tp__ty_2Enum_2Enum] : ( inj__o(fo__c_2Eprim__rec_2E_3C(X0,X1)) = ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(X0)),inj__ty_2Enum_2Enum(X1)) ) ).
+
+tff(tp_c_2Eprim__rec_2EPRE,type,
+    c_2Eprim__rec_2EPRE: $i ).
+
+tff(mem_c_2Eprim__rec_2EPRE,axiom,
+    mem(c_2Eprim__rec_2EPRE,arr(ty_2Enum_2Enum,ty_2Enum_2Enum)) ).
+
+tff(stp_fo_c_2Eprim__rec_2EPRE,type,
+    fo__c_2Eprim__rec_2EPRE: tp__ty_2Enum_2Enum > tp__ty_2Enum_2Enum ).
+
+tff(stp_eq_fo_c_2Eprim__rec_2EPRE,axiom,
+    ! [X0: tp__ty_2Enum_2Enum] : ( inj__ty_2Enum_2Enum(fo__c_2Eprim__rec_2EPRE(X0)) = ap(c_2Eprim__rec_2EPRE,inj__ty_2Enum_2Enum(X0)) ) ).
+
+tff(tp_c_2Eprim__rec_2EPRIM__REC,type,
+    c_2Eprim__rec_2EPRIM__REC: del > $i ).
+
+tff(mem_c_2Eprim__rec_2EPRIM__REC,axiom,
+    ! [A_27a: del] : mem(c_2Eprim__rec_2EPRIM__REC(A_27a),arr(A_27a,arr(arr(A_27a,arr(ty_2Enum_2Enum,A_27a)),arr(ty_2Enum_2Enum,A_27a)))) ).
+
+tff(tp_c_2Eprim__rec_2EPRIM__REC__FUN,type,
+    c_2Eprim__rec_2EPRIM__REC__FUN: del > $i ).
+
+tff(mem_c_2Eprim__rec_2EPRIM__REC__FUN,axiom,
+    ! [A_27a: del] : mem(c_2Eprim__rec_2EPRIM__REC__FUN(A_27a),arr(A_27a,arr(arr(A_27a,arr(ty_2Enum_2Enum,A_27a)),arr(ty_2Enum_2Enum,arr(ty_2Enum_2Enum,A_27a))))) ).
+
+tff(tp_c_2Eprim__rec_2ESIMP__REC,type,
+    c_2Eprim__rec_2ESIMP__REC: del > $i ).
+
+tff(mem_c_2Eprim__rec_2ESIMP__REC,axiom,
+    ! [A_27a: del] : mem(c_2Eprim__rec_2ESIMP__REC(A_27a),arr(A_27a,arr(arr(A_27a,A_27a),arr(ty_2Enum_2Enum,A_27a)))) ).
+
+tff(tp_c_2Eprim__rec_2ESIMP__REC__REL,type,
+    c_2Eprim__rec_2ESIMP__REC__REL: del > $i ).
+
+tff(mem_c_2Eprim__rec_2ESIMP__REC__REL,axiom,
+    ! [A_27a: del] : mem(c_2Eprim__rec_2ESIMP__REC__REL(A_27a),arr(arr(ty_2Enum_2Enum,A_27a),arr(A_27a,arr(arr(A_27a,A_27a),arr(ty_2Enum_2Enum,bool))))) ).
+
+tff(tp_c_2Eprim__rec_2Emeasure,type,
+    c_2Eprim__rec_2Emeasure: del > $i ).
+
+tff(mem_c_2Eprim__rec_2Emeasure,axiom,
+    ! [A_27a: del] : mem(c_2Eprim__rec_2Emeasure(A_27a),arr(arr(A_27a,ty_2Enum_2Enum),arr(A_27a,arr(A_27a,bool)))) ).
+
+tff(tp_c_2Eprim__rec_2Ewellfounded,type,
+    c_2Eprim__rec_2Ewellfounded: del > $i ).
+
+tff(mem_c_2Eprim__rec_2Ewellfounded,axiom,
+    ! [A_27a: del] : mem(c_2Eprim__rec_2Ewellfounded(A_27a),arr(arr(A_27a,arr(A_27a,bool)),bool)) ).
+
+tff(ax_thm_2Eprim__rec_2ELESS__DEF,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n)))
+    <=> ? [V2P: $i] :
+          ( mem(V2P,arr(ty_2Enum_2Enum,bool))
+          & ! [V3n: tp__ty_2Enum_2Enum] :
+              ( p(ap(V2P,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V3n))))
+             => p(ap(V2P,inj__ty_2Enum_2Enum(V3n))) )
+          & p(ap(V2P,inj__ty_2Enum_2Enum(V0m)))
+          & ~ p(ap(V2P,inj__ty_2Enum_2Enum(V1n))) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2EINV__SUC__EQ,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0m))) = surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n))) )
+    <=> ( V0m = V1n ) ) ).
+
+tff(lamtp_f149,type,
+    f149: tp__ty_2Enum_2Enum > $i ).
+
+tff(lameq_f149,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( ap(f149(V0m),inj__ty_2Enum_2Enum(V1n)) = ap(ap(c_2Emin_2E_3D(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V0m)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n))) ) ).
+
+tff(ax_thm_2Eprim__rec_2EPRE__DEF,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(c_2Eprim__rec_2EPRE,inj__ty_2Enum_2Enum(V0m))) = surj__ty_2Enum_2Enum(ap(ap(ap(c_2Ebool_2ECOND(ty_2Enum_2Enum),ap(ap(c_2Emin_2E_3D(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Emin_2E_40(ty_2Enum_2Enum),f149(V0m)))) ) ).
+
+tff(conj_thm_2Eprim__rec_2EPRE,axiom,
+    ( ( surj__ty_2Enum_2Enum(ap(c_2Eprim__rec_2EPRE,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))) = fo__c_2Enum_2E0 )
+    & ! [V0m: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(c_2Eprim__rec_2EPRE,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0m)))) = V0m ) ) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__REFL,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : ~ p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0n)),inj__ty_2Enum_2Enum(V0n))) ).
+
+tff(conj_thm_2Eprim__rec_2ESUC__LESS,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0m))),inj__ty_2Enum_2Enum(V1n)))
+     => p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) ) ).
+
+tff(conj_thm_2Eprim__rec_2ENOT__LESS__0,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : ~ p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0n)),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__0,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0n)))) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__0__0,axiom,
+    p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)))) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__MONO,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n)))
+     => p(ap(ap(c_2Eprim__rec_2E_3C,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0m))),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n)))) ) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__MONO__REV,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0m))),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n))))
+     => p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) ) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__MONO__EQ,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0m))),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n))))
+    <=> p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) ) ).
+
+tff(lamtp_f150,type,
+    f150: tp__ty_2Enum_2Enum > $i ).
+
+tff(lameq_f150,axiom,
+    ! [V2x: tp__ty_2Enum_2Enum,V3y: tp__ty_2Enum_2Enum] : ( ap(f150(V2x),inj__ty_2Enum_2Enum(V3y)) = ap(ap(c_2Emin_2E_3D(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V3y)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V2x))) ) ).
+
+tff(lamtp_f151,type,
+    f151: $i ).
+
+tff(lameq_f151,axiom,
+    ! [V2x: tp__ty_2Enum_2Enum] : ( ap(f151,inj__ty_2Enum_2Enum(V2x)) = f150(V2x) ) ).
+
+tff(lamtp_f152,type,
+    f152: tp__ty_2Enum_2Enum > $i ).
+
+tff(lameq_f152,axiom,
+    ! [V4x: tp__ty_2Enum_2Enum,V5y: tp__ty_2Enum_2Enum] : ( ap(f152(V4x),inj__ty_2Enum_2Enum(V5y)) = ap(ap(c_2Emin_2E_3D(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V5y)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V4x))) ) ).
+
+tff(lamtp_f153,type,
+    f153: $i ).
+
+tff(lameq_f153,axiom,
+    ! [V4x: tp__ty_2Enum_2Enum] : ( ap(f153,inj__ty_2Enum_2Enum(V4x)) = f152(V4x) ) ).
+
+tff(conj_thm_2Eprim__rec_2ETC__IM__RTC__SUC,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(ap(c_2Erelation_2ETC(ty_2Enum_2Enum),f151),inj__ty_2Enum_2Enum(V0m)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n))))
+    <=> p(ap(ap(ap(c_2Erelation_2ERTC(ty_2Enum_2Enum),f153),inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) ) ).
+
+tff(lamtp_f154,type,
+    f154: ( del * $i * $i ) > $i ).
+
+tff(lameq_f154,axiom,
+    ! [A_27a: del,V3x: $i] :
+      ( mem(V3x,A_27a)
+     => ! [V0f: $i] :
+          ( mem(V0f,arr(A_27a,A_27a))
+         => ! [V4y: $i] : ( ap(f154(A_27a,V3x,V0f),V4y) = ap(ap(c_2Emin_2E_3D(A_27a),V4y),ap(V0f,V3x)) ) ) ) ).
+
+tff(lamtp_f155,type,
+    f155: ( del * $i ) > $i ).
+
+tff(lameq_f155,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(A_27a,A_27a))
+     => ! [V3x: $i] : ( ap(f155(A_27a,V0f),V3x) = f154(A_27a,V3x,V0f) ) ) ).
+
+tff(lamtp_f156,type,
+    f156: ( del * $i * $i ) > $i ).
+
+tff(lameq_f156,axiom,
+    ! [A_27a: del,V5x: $i] :
+      ( mem(V5x,A_27a)
+     => ! [V0f: $i] :
+          ( mem(V0f,arr(A_27a,A_27a))
+         => ! [V6y: $i] : ( ap(f156(A_27a,V5x,V0f),V6y) = ap(ap(c_2Emin_2E_3D(A_27a),V6y),ap(V0f,V5x)) ) ) ) ).
+
+tff(lamtp_f157,type,
+    f157: ( del * $i ) > $i ).
+
+tff(lameq_f157,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(A_27a,A_27a))
+     => ! [V5x: $i] : ( ap(f157(A_27a,V0f),V5x) = f156(A_27a,V5x,V0f) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2ERTC__IM__TC,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(A_27a,A_27a))
+     => ! [V1m: $i] :
+          ( mem(V1m,A_27a)
+         => ! [V2n: $i] :
+              ( mem(V2n,A_27a)
+             => ( p(ap(ap(ap(c_2Erelation_2ERTC(A_27a),f155(A_27a,V0f)),ap(V0f,V1m)),V2n))
+              <=> p(ap(ap(ap(c_2Erelation_2ETC(A_27a),f157(A_27a,V0f)),V1m),V2n)) ) ) ) ) ).
+
+tff(lamtp_f158,type,
+    f158: tp__ty_2Enum_2Enum > $i ).
+
+tff(lameq_f158,axiom,
+    ! [V0x: tp__ty_2Enum_2Enum,V1y: tp__ty_2Enum_2Enum] : ( ap(f158(V0x),inj__ty_2Enum_2Enum(V1y)) = ap(ap(c_2Emin_2E_3D(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V1y)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0x))) ) ).
+
+tff(lamtp_f159,type,
+    f159: $i ).
+
+tff(lameq_f159,axiom,
+    ! [V0x: tp__ty_2Enum_2Enum] : ( ap(f159,inj__ty_2Enum_2Enum(V0x)) = f158(V0x) ) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__ALT,axiom,
+    c_2Eprim__rec_2E_3C = ap(c_2Erelation_2ETC(ty_2Enum_2Enum),f159) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__SUC__REFL,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0n)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0n)))) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__SUC,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n)))
+     => p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n)))) ) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__LEMMA1,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n))))
+     => ( ( V0m = V1n )
+        | p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__LEMMA2,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( ( V0m = V1n )
+        | p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) )
+     => p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n)))) ) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__THM,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n))))
+    <=> ( ( V0m = V1n )
+        | p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__SUC__IMP,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V1n))))
+     => ( ( V0m != V1n )
+       => p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2EEQ__LESS,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0m))) = V1n )
+     => p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) ) ).
+
+tff(conj_thm_2Eprim__rec_2ESUC__ID,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0n))) != V0n ) ).
+
+tff(conj_thm_2Eprim__rec_2ENOT__LESS__EQ,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( V0m = V1n )
+     => ~ p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) ) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__NOT__EQ,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n)))
+     => ( V0m != V1n ) ) ).
+
+tff(ax_thm_2Eprim__rec_2ESIMP__REC__REL,axiom,
+    ! [A_27a: del,V0fun: $i] :
+      ( mem(V0fun,arr(ty_2Enum_2Enum,A_27a))
+     => ! [V1x: $i] :
+          ( mem(V1x,A_27a)
+         => ! [V2f: $i] :
+              ( mem(V2f,arr(A_27a,A_27a))
+             => ! [V3n: tp__ty_2Enum_2Enum] :
+                  ( p(ap(ap(ap(ap(c_2Eprim__rec_2ESIMP__REC__REL(A_27a),V0fun),V1x),V2f),inj__ty_2Enum_2Enum(V3n)))
+                <=> ( ( ap(V0fun,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)) = V1x )
+                    & ! [V4m: tp__ty_2Enum_2Enum] :
+                        ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V4m)),inj__ty_2Enum_2Enum(V3n)))
+                       => ( ap(V0fun,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V4m))) = ap(V2f,ap(V0fun,inj__ty_2Enum_2Enum(V4m))) ) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2ESIMP__REC__EXISTS,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,A_27a))
+         => ! [V2n: tp__ty_2Enum_2Enum] :
+            ? [V3fun: $i] :
+              ( mem(V3fun,arr(ty_2Enum_2Enum,A_27a))
+              & p(ap(ap(ap(ap(c_2Eprim__rec_2ESIMP__REC__REL(A_27a),V3fun),V0x),V1f),inj__ty_2Enum_2Enum(V2n))) ) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2ESIMP__REC__REL__UNIQUE,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,A_27a))
+         => ! [V2g1: $i] :
+              ( mem(V2g1,arr(ty_2Enum_2Enum,A_27a))
+             => ! [V3g2: $i] :
+                  ( mem(V3g2,arr(ty_2Enum_2Enum,A_27a))
+                 => ! [V4m1: tp__ty_2Enum_2Enum,V5m2: tp__ty_2Enum_2Enum] :
+                      ( ( p(ap(ap(ap(ap(c_2Eprim__rec_2ESIMP__REC__REL(A_27a),V2g1),V0x),V1f),inj__ty_2Enum_2Enum(V4m1)))
+                        & p(ap(ap(ap(ap(c_2Eprim__rec_2ESIMP__REC__REL(A_27a),V3g2),V0x),V1f),inj__ty_2Enum_2Enum(V5m2))) )
+                     => ! [V6n: tp__ty_2Enum_2Enum] :
+                          ( ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V6n)),inj__ty_2Enum_2Enum(V4m1)))
+                            & p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V6n)),inj__ty_2Enum_2Enum(V5m2))) )
+                         => ( ap(V2g1,inj__ty_2Enum_2Enum(V6n)) = ap(V3g2,inj__ty_2Enum_2Enum(V6n)) ) ) ) ) ) ) ) ).
+
+tff(lamtp_f160,type,
+    f160: ( del * $i * $i * tp__ty_2Enum_2Enum * $i ) > $i ).
+
+tff(lameq_f160,axiom,
+    ! [A_27a: del,V1f: $i] :
+      ( mem(V1f,arr(A_27a,A_27a))
+     => ! [V0x: $i] :
+          ( mem(V0x,A_27a)
+         => ! [V2n: tp__ty_2Enum_2Enum,V3y: $i] :
+              ( mem(V3y,A_27a)
+             => ! [V4g: $i] : ( ap(f160(A_27a,V1f,V0x,V2n,V3y),V4g) = ap(ap(c_2Ebool_2E_2F_5C,ap(ap(ap(ap(c_2Eprim__rec_2ESIMP__REC__REL(A_27a),V4g),V0x),V1f),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V2n)))),ap(ap(c_2Emin_2E_3D(A_27a),V3y),ap(V4g,inj__ty_2Enum_2Enum(V2n)))) ) ) ) ) ).
+
+tff(lamtp_f161,type,
+    f161: ( del * tp__ty_2Enum_2Enum * $i * $i ) > $i ).
+
+tff(lameq_f161,axiom,
+    ! [A_27a: del,V2n: tp__ty_2Enum_2Enum,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,A_27a))
+         => ! [V3y: $i] : ( ap(f161(A_27a,V2n,V0x,V1f),V3y) = ap(c_2Ebool_2E_3F(arr(ty_2Enum_2Enum,A_27a)),f160(A_27a,V1f,V0x,V2n,V3y)) ) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2ESIMP__REC__REL__UNIQUE__RESULT,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,A_27a))
+         => ! [V2n: tp__ty_2Enum_2Enum] : p(ap(c_2Ebool_2E_3F_21(A_27a),f161(A_27a,V2n,V0x,V1f))) ) ) ).
+
+tff(ax_thm_2Eprim__rec_2ESIMP__REC,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ! [V1f_27: $i] :
+          ( mem(V1f_27,arr(A_27a,A_27a))
+         => ! [V2n: tp__ty_2Enum_2Enum] :
+            ? [V3g: $i] :
+              ( mem(V3g,arr(ty_2Enum_2Enum,A_27a))
+              & p(ap(ap(ap(ap(c_2Eprim__rec_2ESIMP__REC__REL(A_27a),V3g),V0x),V1f_27),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V2n))))
+              & ( ap(ap(ap(c_2Eprim__rec_2ESIMP__REC(A_27a),V0x),V1f_27),inj__ty_2Enum_2Enum(V2n)) = ap(V3g,inj__ty_2Enum_2Enum(V2n)) ) ) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2ELESS__SUC__SUC,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum] :
+      ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0m))))
+      & p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0m)),ap(c_2Enum_2ESUC,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0m))))) ) ).
+
+tff(conj_thm_2Eprim__rec_2ESIMP__REC__THM,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,A_27a))
+         => ( ( ap(ap(ap(c_2Eprim__rec_2ESIMP__REC(A_27a),V0x),V1f),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)) = V0x )
+            & ! [V2m: tp__ty_2Enum_2Enum] : ( ap(ap(ap(c_2Eprim__rec_2ESIMP__REC(A_27a),V0x),V1f),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V2m))) = ap(V1f,ap(ap(ap(c_2Eprim__rec_2ESIMP__REC(A_27a),V0x),V1f),inj__ty_2Enum_2Enum(V2m))) ) ) ) ) ).
+
+tff(lamtp_f162,type,
+    f162: ( del * $i * $i ) > $i ).
+
+tff(lameq_f162,axiom,
+    ! [A_27a: del,V1f: $i] :
+      ( mem(V1f,arr(A_27a,arr(ty_2Enum_2Enum,A_27a)))
+     => ! [V3fun: $i] :
+          ( mem(V3fun,arr(ty_2Enum_2Enum,A_27a))
+         => ! [V4n: tp__ty_2Enum_2Enum] : ( ap(f162(A_27a,V1f,V3fun),inj__ty_2Enum_2Enum(V4n)) = ap(ap(V1f,ap(V3fun,ap(c_2Eprim__rec_2EPRE,inj__ty_2Enum_2Enum(V4n)))),inj__ty_2Enum_2Enum(V4n)) ) ) ) ).
+
+tff(lamtp_f163,type,
+    f163: ( del * $i ) > $i ).
+
+tff(lameq_f163,axiom,
+    ! [A_27a: del,V1f: $i] :
+      ( mem(V1f,arr(A_27a,arr(ty_2Enum_2Enum,A_27a)))
+     => ! [V3fun: $i] : ( ap(f163(A_27a,V1f),V3fun) = f162(A_27a,V1f,V3fun) ) ) ).
+
+tff(ax_thm_2Eprim__rec_2EPRIM__REC__FUN,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,arr(ty_2Enum_2Enum,A_27a)))
+         => ( ap(ap(c_2Eprim__rec_2EPRIM__REC__FUN(A_27a),V0x),V1f) = ap(ap(c_2Eprim__rec_2ESIMP__REC(arr(ty_2Enum_2Enum,A_27a)),k(ty_2Enum_2Enum,V0x)),f163(A_27a,V1f)) ) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2EPRIM__REC__EQN,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,arr(ty_2Enum_2Enum,A_27a)))
+         => ( ! [V2n: tp__ty_2Enum_2Enum] : ( ap(ap(ap(ap(c_2Eprim__rec_2EPRIM__REC__FUN(A_27a),V0x),V1f),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),inj__ty_2Enum_2Enum(V2n)) = V0x )
+            & ! [V3m: tp__ty_2Enum_2Enum,V4n: tp__ty_2Enum_2Enum] : ( ap(ap(ap(ap(c_2Eprim__rec_2EPRIM__REC__FUN(A_27a),V0x),V1f),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V3m))),inj__ty_2Enum_2Enum(V4n)) = ap(ap(V1f,ap(ap(ap(ap(c_2Eprim__rec_2EPRIM__REC__FUN(A_27a),V0x),V1f),inj__ty_2Enum_2Enum(V3m)),ap(c_2Eprim__rec_2EPRE,inj__ty_2Enum_2Enum(V4n)))),inj__ty_2Enum_2Enum(V4n)) ) ) ) ) ).
+
+tff(ax_thm_2Eprim__rec_2EPRIM__REC,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,arr(ty_2Enum_2Enum,A_27a)))
+         => ! [V2m: tp__ty_2Enum_2Enum] : ( ap(ap(ap(c_2Eprim__rec_2EPRIM__REC(A_27a),V0x),V1f),inj__ty_2Enum_2Enum(V2m)) = ap(ap(ap(ap(c_2Eprim__rec_2EPRIM__REC__FUN(A_27a),V0x),V1f),inj__ty_2Enum_2Enum(V2m)),ap(c_2Eprim__rec_2EPRE,inj__ty_2Enum_2Enum(V2m))) ) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2EPRIM__REC__THM,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( mem(V0x,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,arr(ty_2Enum_2Enum,A_27a)))
+         => ( ( ap(ap(ap(c_2Eprim__rec_2EPRIM__REC(A_27a),V0x),V1f),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)) = V0x )
+            & ! [V2m: tp__ty_2Enum_2Enum] : ( ap(ap(ap(c_2Eprim__rec_2EPRIM__REC(A_27a),V0x),V1f),ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V2m))) = ap(ap(V1f,ap(ap(ap(c_2Eprim__rec_2EPRIM__REC(A_27a),V0x),V1f),inj__ty_2Enum_2Enum(V2m))),inj__ty_2Enum_2Enum(V2m)) ) ) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2EDC,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( mem(V0P,arr(A_27a,bool))
+     => ! [V1R: $i] :
+          ( mem(V1R,arr(A_27a,arr(A_27a,bool)))
+         => ! [V2a: $i] :
+              ( mem(V2a,A_27a)
+             => ( ( p(ap(V0P,V2a))
+                  & ! [V3x: $i] :
+                      ( mem(V3x,A_27a)
+                     => ( p(ap(V0P,V3x))
+                       => ? [V4y: $i] :
+                            ( mem(V4y,A_27a)
+                            & p(ap(V0P,V4y))
+                            & p(ap(ap(V1R,V3x),V4y)) ) ) ) )
+               => ? [V5f: $i] :
+                    ( mem(V5f,arr(ty_2Enum_2Enum,A_27a))
+                    & ( ap(V5f,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)) = V2a )
+                    & ! [V6n: tp__ty_2Enum_2Enum] :
+                        ( p(ap(V0P,ap(V5f,inj__ty_2Enum_2Enum(V6n))))
+                        & p(ap(ap(V1R,ap(V5f,inj__ty_2Enum_2Enum(V6n))),ap(V5f,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V6n))))) ) ) ) ) ) ) ).
+
+tff(lamtp_f164,type,
+    f164: ( del * $i * $i ) > $i ).
+
+tff(lameq_f164,axiom,
+    ! [A_27a: del,V1f: $i] :
+      ( mem(V1f,arr(A_27a,arr(ty_2Enum_2Enum,A_27a)))
+     => ! [V2fn1: $i] :
+          ( mem(V2fn1,arr(ty_2Enum_2Enum,A_27a))
+         => ! [V3n: tp__ty_2Enum_2Enum] : ( ap(f164(A_27a,V1f,V2fn1),inj__ty_2Enum_2Enum(V3n)) = ap(ap(c_2Emin_2E_3D(A_27a),ap(V2fn1,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V3n)))),ap(ap(V1f,ap(V2fn1,inj__ty_2Enum_2Enum(V3n))),inj__ty_2Enum_2Enum(V3n))) ) ) ) ).
+
+tff(lamtp_f165,type,
+    f165: ( del * $i * $i ) > $i ).
+
+tff(lameq_f165,axiom,
+    ! [A_27a: del,V0e: $i] :
+      ( mem(V0e,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,arr(ty_2Enum_2Enum,A_27a)))
+         => ! [V2fn1: $i] : ( ap(f165(A_27a,V0e,V1f),V2fn1) = ap(ap(c_2Ebool_2E_2F_5C,ap(ap(c_2Emin_2E_3D(A_27a),ap(V2fn1,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))),V0e)),ap(c_2Ebool_2E_21(ty_2Enum_2Enum),f164(A_27a,V1f,V2fn1))) ) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2Enum__Axiom__old,axiom,
+    ! [A_27a: del,V0e: $i] :
+      ( mem(V0e,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,arr(ty_2Enum_2Enum,A_27a)))
+         => p(ap(c_2Ebool_2E_3F_21(arr(ty_2Enum_2Enum,A_27a)),f165(A_27a,V0e,V1f))) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2Enum__Axiom,axiom,
+    ! [A_27a: del,V0e: $i] :
+      ( mem(V0e,A_27a)
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(ty_2Enum_2Enum,arr(A_27a,A_27a)))
+         => ? [V2fn: $i] :
+              ( mem(V2fn,arr(ty_2Enum_2Enum,A_27a))
+              & ( ap(V2fn,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)) = V0e )
+              & ! [V3n: tp__ty_2Enum_2Enum] : ( ap(V2fn,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V3n))) = ap(ap(V1f,inj__ty_2Enum_2Enum(V3n)),ap(V2fn,inj__ty_2Enum_2Enum(V3n))) ) ) ) ) ).
+
+tff(ax_thm_2Eprim__rec_2Ewellfounded__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( mem(V0R,arr(A_27a,arr(A_27a,bool)))
+     => ( p(ap(c_2Eprim__rec_2Ewellfounded(A_27a),V0R))
+      <=> ~ ? [V1f: $i] :
+              ( mem(V1f,arr(ty_2Enum_2Enum,A_27a))
+              & ! [V2n: tp__ty_2Enum_2Enum] : p(ap(ap(V0R,ap(V1f,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V2n)))),ap(V1f,inj__ty_2Enum_2Enum(V2n)))) ) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2EWF__IFF__WELLFOUNDED,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( mem(V0R,arr(A_27a,arr(A_27a,bool)))
+     => ( p(ap(c_2Erelation_2EWF(A_27a),V0R))
+      <=> p(ap(c_2Eprim__rec_2Ewellfounded(A_27a),V0R)) ) ) ).
+
+tff(conj_thm_2Eprim__rec_2EWF__PRED,axiom,
+    p(ap(c_2Erelation_2EWF(ty_2Enum_2Enum),f159)) ).
+
+tff(conj_thm_2Eprim__rec_2EWF__LESS,axiom,
+    p(ap(c_2Erelation_2EWF(ty_2Enum_2Enum),c_2Eprim__rec_2E_3C)) ).
+
+tff(ax_thm_2Eprim__rec_2Emeasure__def,axiom,
+    ! [A_27a: del] : ( c_2Eprim__rec_2Emeasure(A_27a) = ap(c_2Erelation_2Einv__image(A_27a,ty_2Enum_2Enum),c_2Eprim__rec_2E_3C) ) ).
+
+tff(conj_thm_2Eprim__rec_2EWF__measure,axiom,
+    ! [A_27a: del,V0m: $i] :
+      ( mem(V0m,arr(A_27a,ty_2Enum_2Enum))
+     => p(ap(c_2Erelation_2EWF(A_27a),ap(c_2Eprim__rec_2Emeasure(A_27a),V0m))) ) ).
+
+tff(conj_thm_2Eprim__rec_2Emeasure__thm,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( mem(V0f,arr(A_27a,ty_2Enum_2Enum))
+     => ! [V1x: $i] :
+          ( mem(V1x,A_27a)
+         => ! [V2y: $i] :
+              ( mem(V2y,A_27a)
+             => ( p(ap(ap(ap(c_2Eprim__rec_2Emeasure(A_27a),V0f),V1x),V2y))
+              <=> p(ap(ap(c_2Eprim__rec_2E_3C,ap(V0f,V1x)),ap(V0f,V2y))) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

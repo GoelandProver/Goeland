@@ -1,0 +1,122 @@
+%------------------------------------------------------------------------------
+% File     : ITP111_5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : intto_2.ax [Gau20]
+%          : HL4111_5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   29 (  22 unt;   6 typ;   0 def)
+%            Number of atoms       :  234 (  20 equ)
+%            Maximal formula atoms :    2 (   8 avg)
+%            Number of connectives :    3 (   2   ~;   0   |;   0   &)
+%                                         (   0 <=>;   1  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    3 (   2 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of FOOLs       :  210 ( 210 fml;   0 var)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :    4 (   3   >;   1   *;   0   +;   0  <<)
+%            Number of predicates  :   29 (  28 usr;  16 prp; 0-2 aty)
+%            Number of functors    :    5 (   5 usr;   2 con; 0-2 aty)
+%            Number of variables   :   27 (  27   !;   0   ?;  27   :)
+% SPC      : TF0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+tff(tp_c_2Eintto_2EintOrd,type,
+    c_2Eintto_2EintOrd: $i ).
+
+tff(mem_c_2Eintto_2EintOrd,axiom,
+    mem(c_2Eintto_2EintOrd,arr(ty_2Einteger_2Eint,arr(ty_2Einteger_2Eint,ty_2EternaryComparisons_2Eordering))) ).
+
+tff(stp_fo_c_2Eintto_2EintOrd,type,
+    fo__c_2Eintto_2EintOrd: ( tp__ty_2Einteger_2Eint * tp__ty_2Einteger_2Eint ) > tp__ty_2EternaryComparisons_2Eordering ).
+
+tff(stp_eq_fo_c_2Eintto_2EintOrd,axiom,
+    ! [X0: tp__ty_2Einteger_2Eint,X1: tp__ty_2Einteger_2Eint] : ( inj__ty_2EternaryComparisons_2Eordering(fo__c_2Eintto_2EintOrd(X0,X1)) = ap(ap(c_2Eintto_2EintOrd,inj__ty_2Einteger_2Eint(X0)),inj__ty_2Einteger_2Eint(X1)) ) ).
+
+tff(stp_c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint,type,
+    tp__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint: $tType ).
+
+tff(stp_inj_c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint,type,
+    inj__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint: tp__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint > $i ).
+
+tff(stp_surj_c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint,type,
+    surj__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint: $i > tp__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint ).
+
+tff(stp_inj_surj_c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint,axiom,
+    ! [X: tp__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint] : ( surj__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint(inj__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint(X)) = X ) ).
+
+tff(stp_inj_mem_c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint,axiom,
+    ! [X: tp__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint] : mem(inj__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint(X),ty_2Etoto_2Etoto(ty_2Einteger_2Eint)) ).
+
+tff(stp_iso_mem_c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint,axiom,
+    ! [X: $i] :
+      ( mem(X,ty_2Etoto_2Etoto(ty_2Einteger_2Eint))
+     => ( X = inj__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint(surj__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint(X)) ) ) ).
+
+tff(tp_c_2Eintto_2Eintto,type,
+    c_2Eintto_2Eintto: $i ).
+
+tff(mem_c_2Eintto_2Eintto,axiom,
+    mem(c_2Eintto_2Eintto,ty_2Etoto_2Etoto(ty_2Einteger_2Eint)) ).
+
+tff(ax_thm_2Eintto_2EintOrd,axiom,
+    c_2Eintto_2EintOrd = ap(c_2Etoto_2ETO__of__LinearOrder(ty_2Einteger_2Eint),c_2Einteger_2Eint__lt) ).
+
+tff(ax_thm_2Eintto_2Eintto,axiom,
+    surj__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint(c_2Eintto_2Eintto) = surj__c_ty_2Etoto_2Etoto_ty_2Einteger_2Eint(ap(c_2Etoto_2ETO(ty_2Einteger_2Eint),c_2Eintto_2EintOrd)) ).
+
+tff(conj_thm_2Eintto_2Eapintto__thm,axiom,
+    ap(c_2Etoto_2Eapto(ty_2Einteger_2Eint),c_2Eintto_2Eintto) = c_2Eintto_2EintOrd ).
+
+tff(conj_thm_2Eintto_2Epos__pos__thm,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0m))),ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V1n)))) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Etoto_2EnumOrd,inj__ty_2Enum_2Enum(V0m)),inj__ty_2Enum_2Enum(V1n))) ) ).
+
+tff(conj_thm_2Eintto_2Eneg__neg__thm,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0m)))),ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V1n))))) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Etoto_2EnumOrd,inj__ty_2Enum_2Enum(V1n)),inj__ty_2Enum_2Enum(V0m))) ) ).
+
+tff(conj_thm_2Eintto_2EBIT1__nz,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V0n))) != fo__c_2Enum_2E0 ) ).
+
+tff(conj_thm_2Eintto_2EBIT2__nz,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V0n))) != fo__c_2Enum_2E0 ) ).
+
+tff(conj_thm_2Eintto_2Eneg__lt__BIT1__thm,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0m)))),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V1n))))) = fo__c_2EternaryComparisons_2ELESS ) ).
+
+tff(conj_thm_2Eintto_2Eneg__lt__BIT2__thm,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0m)))),ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V1n))))) = fo__c_2EternaryComparisons_2ELESS ) ).
+
+tff(conj_thm_2Eintto_2Eneg__BIT1__lt__thm,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V0m))))),ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V1n)))) = fo__c_2EternaryComparisons_2ELESS ) ).
+
+tff(conj_thm_2Eintto_2Eneg__BIT2__lt__thm,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V0m))))),ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V1n)))) = fo__c_2EternaryComparisons_2ELESS ) ).
+
+tff(conj_thm_2Eintto_2Eneg__ZERO__eq__ZERO__thm,axiom,
+    surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))) = fo__c_2EternaryComparisons_2EEQUAL ).
+
+tff(conj_thm_2Eintto_2EBIT1__gt__neg__thm,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V0m)))),ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V1n))))) = fo__c_2EternaryComparisons_2EGREATER ) ).
+
+tff(conj_thm_2Eintto_2EBIT2__gt__neg__thm,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V0m)))),ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V1n))))) = fo__c_2EternaryComparisons_2EGREATER ) ).
+
+tff(conj_thm_2Eintto_2Egt__neg__BIT1__thm,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0m))),ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V1n)))))) = fo__c_2EternaryComparisons_2EGREATER ) ).
+
+tff(conj_thm_2Eintto_2Egt__neg__BIT2__thm,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(V0m))),ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V1n)))))) = fo__c_2EternaryComparisons_2EGREATER ) ).
+
+tff(conj_thm_2Eintto_2EZERO__eq__neg__ZERO__thm,axiom,
+    surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2Eintto_2EintOrd,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))),ap(c_2Einteger_2Eint__neg,ap(c_2Einteger_2Eint__of__num,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))))) = fo__c_2EternaryComparisons_2EEQUAL ).
+
+%------------------------------------------------------------------------------

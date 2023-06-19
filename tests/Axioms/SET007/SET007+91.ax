@@ -1,0 +1,418 @@
+%------------------------------------------------------------------------------
+% File     : SET007+91 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Three-Argument Operations and Four-Argument Operations
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : multop_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   24 (   4 unt;   0 def)
+%            Number of atoms       :  229 (  20 equ)
+%            Maximal formula atoms :   17 (   9 avg)
+%            Number of connectives :  243 (  38   ~;   0   |;  99   &)
+%                                         (   0 <=>; 106  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   24 (  14 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :   14 (  12 usr;   1 prp; 0-5 aty)
+%            Number of functors    :   41 (  41 usr;  25 con; 0-10 aty)
+%            Number of variables   :  159 ( 147   !;  12   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(d1_multop_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B,C,D] : k1_multop_1(A,B,C,D) = k1_funct_1(A,k3_mcart_1(B,C,D)) ) ).
+
+fof(t1_multop_1,axiom,
+    $true ).
+
+fof(t2_multop_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C,D,E] :
+          ( ( v1_funct_1(E)
+            & v1_funct_2(E,k3_zfmisc_1(B,C,D),A)
+            & m2_relset_1(E,k3_zfmisc_1(B,C,D),A) )
+         => ! [F] :
+              ( ( v1_funct_1(F)
+                & v1_funct_2(F,k3_zfmisc_1(B,C,D),A)
+                & m2_relset_1(F,k3_zfmisc_1(B,C,D),A) )
+             => ( ! [G,H,I] :
+                    ( ( r2_hidden(G,B)
+                      & r2_hidden(H,C)
+                      & r2_hidden(I,D) )
+                   => k1_funct_1(E,k3_mcart_1(G,H,I)) = k1_funct_1(F,k3_mcart_1(G,H,I)) )
+               => E = F ) ) ) ) ).
+
+fof(t3_multop_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( ~ v1_xboole_0(D)
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k3_zfmisc_1(A,B,C),D)
+                        & m2_relset_1(E,k3_zfmisc_1(A,B,C),D) )
+                     => ! [F] :
+                          ( ( v1_funct_1(F)
+                            & v1_funct_2(F,k3_zfmisc_1(A,B,C),D)
+                            & m2_relset_1(F,k3_zfmisc_1(A,B,C),D) )
+                         => ( ! [G] :
+                                ( m1_subset_1(G,A)
+                               => ! [H] :
+                                    ( m1_subset_1(H,B)
+                                   => ! [I] :
+                                        ( m1_subset_1(I,C)
+                                       => k8_funct_2(k3_zfmisc_1(A,B,C),D,E,k4_domain_1(A,B,C,G,H,I)) = k8_funct_2(k3_zfmisc_1(A,B,C),D,F,k4_domain_1(A,B,C,G,H,I)) ) ) )
+                           => E = F ) ) ) ) ) ) ) ).
+
+fof(t4_multop_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( ~ v1_xboole_0(D)
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k3_zfmisc_1(A,B,C),D)
+                        & m2_relset_1(E,k3_zfmisc_1(A,B,C),D) )
+                     => ! [F] :
+                          ( ( v1_funct_1(F)
+                            & v1_funct_2(F,k3_zfmisc_1(A,B,C),D)
+                            & m2_relset_1(F,k3_zfmisc_1(A,B,C),D) )
+                         => ( ! [G] :
+                                ( m1_subset_1(G,A)
+                               => ! [H] :
+                                    ( m1_subset_1(H,B)
+                                   => ! [I] :
+                                        ( m1_subset_1(I,C)
+                                       => k2_multop_1(A,B,C,D,E,G,H,I) = k2_multop_1(A,B,C,D,F,G,H,I) ) ) )
+                           => E = F ) ) ) ) ) ) ) ).
+
+fof(d2_multop_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B,C,D,E] : k3_multop_1(A,B,C,D,E) = k1_funct_1(A,k4_mcart_1(B,C,D,E)) ) ).
+
+fof(t5_multop_1,axiom,
+    $true ).
+
+fof(t6_multop_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C,D,E,F] :
+          ( ( v1_funct_1(F)
+            & v1_funct_2(F,k4_zfmisc_1(B,C,D,E),A)
+            & m2_relset_1(F,k4_zfmisc_1(B,C,D,E),A) )
+         => ! [G] :
+              ( ( v1_funct_1(G)
+                & v1_funct_2(G,k4_zfmisc_1(B,C,D,E),A)
+                & m2_relset_1(G,k4_zfmisc_1(B,C,D,E),A) )
+             => ( ! [H,I,J,K] :
+                    ( ( r2_hidden(H,B)
+                      & r2_hidden(I,C)
+                      & r2_hidden(J,D)
+                      & r2_hidden(K,E) )
+                   => k1_funct_1(F,k4_mcart_1(H,I,J,K)) = k1_funct_1(G,k4_mcart_1(H,I,J,K)) )
+               => F = G ) ) ) ) ).
+
+fof(t7_multop_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( ~ v1_xboole_0(D)
+                 => ! [E] :
+                      ( ~ v1_xboole_0(E)
+                     => ! [F] :
+                          ( ( v1_funct_1(F)
+                            & v1_funct_2(F,k4_zfmisc_1(A,B,C,D),E)
+                            & m2_relset_1(F,k4_zfmisc_1(A,B,C,D),E) )
+                         => ! [G] :
+                              ( ( v1_funct_1(G)
+                                & v1_funct_2(G,k4_zfmisc_1(A,B,C,D),E)
+                                & m2_relset_1(G,k4_zfmisc_1(A,B,C,D),E) )
+                             => ( ! [H] :
+                                    ( m1_subset_1(H,A)
+                                   => ! [I] :
+                                        ( m1_subset_1(I,B)
+                                       => ! [J] :
+                                            ( m1_subset_1(J,C)
+                                           => ! [K] :
+                                                ( m1_subset_1(K,D)
+                                               => k8_funct_2(k4_zfmisc_1(A,B,C,D),E,F,k5_domain_1(A,B,C,D,H,I,J,K)) = k8_funct_2(k4_zfmisc_1(A,B,C,D),E,G,k5_domain_1(A,B,C,D,H,I,J,K)) ) ) ) )
+                               => F = G ) ) ) ) ) ) ) ) ).
+
+fof(t8_multop_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( ~ v1_xboole_0(D)
+                 => ! [E] :
+                      ( ~ v1_xboole_0(E)
+                     => ! [F] :
+                          ( ( v1_funct_1(F)
+                            & v1_funct_2(F,k4_zfmisc_1(A,B,C,D),E)
+                            & m2_relset_1(F,k4_zfmisc_1(A,B,C,D),E) )
+                         => ! [G] :
+                              ( ( v1_funct_1(G)
+                                & v1_funct_2(G,k4_zfmisc_1(A,B,C,D),E)
+                                & m2_relset_1(G,k4_zfmisc_1(A,B,C,D),E) )
+                             => ( ! [H] :
+                                    ( m1_subset_1(H,A)
+                                   => ! [I] :
+                                        ( m1_subset_1(I,B)
+                                       => ! [J] :
+                                            ( m1_subset_1(J,C)
+                                           => ! [K] :
+                                                ( m1_subset_1(K,D)
+                                               => k4_multop_1(A,B,C,D,E,F,H,I,J,K) = k4_multop_1(A,B,C,D,E,G,H,I,J,K) ) ) ) )
+                               => F = G ) ) ) ) ) ) ) ) ).
+
+fof(s1_multop_1,axiom,
+    ( ! [A] :
+        ( m1_subset_1(A,f1_s1_multop_1)
+       => ! [B] :
+            ( m1_subset_1(B,f2_s1_multop_1)
+           => ! [C] :
+                ( m1_subset_1(C,f3_s1_multop_1)
+               => ? [D] :
+                    ( m1_subset_1(D,f4_s1_multop_1)
+                    & p1_s1_multop_1(A,B,C,D) ) ) ) )
+   => ? [A] :
+        ( v1_funct_1(A)
+        & v1_funct_2(A,k3_zfmisc_1(f1_s1_multop_1,f2_s1_multop_1,f3_s1_multop_1),f4_s1_multop_1)
+        & m2_relset_1(A,k3_zfmisc_1(f1_s1_multop_1,f2_s1_multop_1,f3_s1_multop_1),f4_s1_multop_1)
+        & ! [B] :
+            ( m1_subset_1(B,f1_s1_multop_1)
+           => ! [C] :
+                ( m1_subset_1(C,f2_s1_multop_1)
+               => ! [D] :
+                    ( m1_subset_1(D,f3_s1_multop_1)
+                   => p1_s1_multop_1(B,C,D,k8_funct_2(k3_zfmisc_1(f1_s1_multop_1,f2_s1_multop_1,f3_s1_multop_1),f4_s1_multop_1,A,k4_domain_1(f1_s1_multop_1,f2_s1_multop_1,f3_s1_multop_1,B,C,D))) ) ) ) ) ) ).
+
+fof(s2_multop_1,axiom,
+    ( ! [A] :
+        ( m1_subset_1(A,f1_s2_multop_1)
+       => ! [B] :
+            ( m1_subset_1(B,f1_s2_multop_1)
+           => ! [C] :
+                ( m1_subset_1(C,f1_s2_multop_1)
+               => ? [D] :
+                    ( m1_subset_1(D,f1_s2_multop_1)
+                    & p1_s2_multop_1(A,B,C,D) ) ) ) )
+   => ? [A] :
+        ( v1_funct_1(A)
+        & v1_funct_2(A,k3_zfmisc_1(f1_s2_multop_1,f1_s2_multop_1,f1_s2_multop_1),f1_s2_multop_1)
+        & m2_relset_1(A,k3_zfmisc_1(f1_s2_multop_1,f1_s2_multop_1,f1_s2_multop_1),f1_s2_multop_1)
+        & ! [B] :
+            ( m1_subset_1(B,f1_s2_multop_1)
+           => ! [C] :
+                ( m1_subset_1(C,f1_s2_multop_1)
+               => ! [D] :
+                    ( m1_subset_1(D,f1_s2_multop_1)
+                   => p1_s2_multop_1(B,C,D,k2_multop_1(f1_s2_multop_1,f1_s2_multop_1,f1_s2_multop_1,f1_s2_multop_1,A,B,C,D)) ) ) ) ) ) ).
+
+fof(s3_multop_1,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k3_zfmisc_1(f1_s3_multop_1,f2_s3_multop_1,f3_s3_multop_1),f4_s3_multop_1)
+      & m2_relset_1(A,k3_zfmisc_1(f1_s3_multop_1,f2_s3_multop_1,f3_s3_multop_1),f4_s3_multop_1)
+      & ! [B] :
+          ( m1_subset_1(B,f1_s3_multop_1)
+         => ! [C] :
+              ( m1_subset_1(C,f2_s3_multop_1)
+             => ! [D] :
+                  ( m1_subset_1(D,f3_s3_multop_1)
+                 => k8_funct_2(k3_zfmisc_1(f1_s3_multop_1,f2_s3_multop_1,f3_s3_multop_1),f4_s3_multop_1,A,k4_domain_1(f1_s3_multop_1,f2_s3_multop_1,f3_s3_multop_1,B,C,D)) = f5_s3_multop_1(B,C,D) ) ) ) ) ).
+
+fof(s4_multop_1,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k3_zfmisc_1(f1_s4_multop_1,f2_s4_multop_1,f3_s4_multop_1),f4_s4_multop_1)
+      & m2_relset_1(A,k3_zfmisc_1(f1_s4_multop_1,f2_s4_multop_1,f3_s4_multop_1),f4_s4_multop_1)
+      & ! [B] :
+          ( m1_subset_1(B,f1_s4_multop_1)
+         => ! [C] :
+              ( m1_subset_1(C,f2_s4_multop_1)
+             => ! [D] :
+                  ( m1_subset_1(D,f3_s4_multop_1)
+                 => k2_multop_1(f1_s4_multop_1,f2_s4_multop_1,f3_s4_multop_1,f4_s4_multop_1,A,B,C,D) = f5_s4_multop_1(B,C,D) ) ) ) ) ).
+
+fof(s5_multop_1,axiom,
+    ( ! [A] :
+        ( m1_subset_1(A,f1_s5_multop_1)
+       => ! [B] :
+            ( m1_subset_1(B,f2_s5_multop_1)
+           => ! [C] :
+                ( m1_subset_1(C,f3_s5_multop_1)
+               => ! [D] :
+                    ( m1_subset_1(D,f4_s5_multop_1)
+                   => ? [E] :
+                        ( m1_subset_1(E,f5_s5_multop_1)
+                        & p1_s5_multop_1(A,B,C,D,E) ) ) ) ) )
+   => ? [A] :
+        ( v1_funct_1(A)
+        & v1_funct_2(A,k4_zfmisc_1(f1_s5_multop_1,f2_s5_multop_1,f3_s5_multop_1,f4_s5_multop_1),f5_s5_multop_1)
+        & m2_relset_1(A,k4_zfmisc_1(f1_s5_multop_1,f2_s5_multop_1,f3_s5_multop_1,f4_s5_multop_1),f5_s5_multop_1)
+        & ! [B] :
+            ( m1_subset_1(B,f1_s5_multop_1)
+           => ! [C] :
+                ( m1_subset_1(C,f2_s5_multop_1)
+               => ! [D] :
+                    ( m1_subset_1(D,f3_s5_multop_1)
+                   => ! [E] :
+                        ( m1_subset_1(E,f4_s5_multop_1)
+                       => p1_s5_multop_1(B,C,D,E,k8_funct_2(k4_zfmisc_1(f1_s5_multop_1,f2_s5_multop_1,f3_s5_multop_1,f4_s5_multop_1),f5_s5_multop_1,A,k5_domain_1(f1_s5_multop_1,f2_s5_multop_1,f3_s5_multop_1,f4_s5_multop_1,B,C,D,E))) ) ) ) ) ) ) ).
+
+fof(s6_multop_1,axiom,
+    ( ! [A] :
+        ( m1_subset_1(A,f1_s6_multop_1)
+       => ! [B] :
+            ( m1_subset_1(B,f1_s6_multop_1)
+           => ! [C] :
+                ( m1_subset_1(C,f1_s6_multop_1)
+               => ! [D] :
+                    ( m1_subset_1(D,f1_s6_multop_1)
+                   => ? [E] :
+                        ( m1_subset_1(E,f1_s6_multop_1)
+                        & p1_s6_multop_1(A,B,C,D,E) ) ) ) ) )
+   => ? [A] :
+        ( v1_funct_1(A)
+        & v1_funct_2(A,k4_zfmisc_1(f1_s6_multop_1,f1_s6_multop_1,f1_s6_multop_1,f1_s6_multop_1),f1_s6_multop_1)
+        & m2_relset_1(A,k4_zfmisc_1(f1_s6_multop_1,f1_s6_multop_1,f1_s6_multop_1,f1_s6_multop_1),f1_s6_multop_1)
+        & ! [B] :
+            ( m1_subset_1(B,f1_s6_multop_1)
+           => ! [C] :
+                ( m1_subset_1(C,f1_s6_multop_1)
+               => ! [D] :
+                    ( m1_subset_1(D,f1_s6_multop_1)
+                   => ! [E] :
+                        ( m1_subset_1(E,f1_s6_multop_1)
+                       => p1_s6_multop_1(B,C,D,E,k4_multop_1(f1_s6_multop_1,f1_s6_multop_1,f1_s6_multop_1,f1_s6_multop_1,f1_s6_multop_1,A,B,C,D,E)) ) ) ) ) ) ) ).
+
+fof(s7_multop_1,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k4_zfmisc_1(f1_s7_multop_1,f2_s7_multop_1,f3_s7_multop_1,f4_s7_multop_1),f5_s7_multop_1)
+      & m2_relset_1(A,k4_zfmisc_1(f1_s7_multop_1,f2_s7_multop_1,f3_s7_multop_1,f4_s7_multop_1),f5_s7_multop_1)
+      & ! [B] :
+          ( m1_subset_1(B,f1_s7_multop_1)
+         => ! [C] :
+              ( m1_subset_1(C,f2_s7_multop_1)
+             => ! [D] :
+                  ( m1_subset_1(D,f3_s7_multop_1)
+                 => ! [E] :
+                      ( m1_subset_1(E,f4_s7_multop_1)
+                     => k8_funct_2(k4_zfmisc_1(f1_s7_multop_1,f2_s7_multop_1,f3_s7_multop_1,f4_s7_multop_1),f5_s7_multop_1,A,k5_domain_1(f1_s7_multop_1,f2_s7_multop_1,f3_s7_multop_1,f4_s7_multop_1,B,C,D,E)) = f6_s7_multop_1(B,C,D,E) ) ) ) ) ) ).
+
+fof(s8_multop_1,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k4_zfmisc_1(f1_s8_multop_1,f1_s8_multop_1,f1_s8_multop_1,f1_s8_multop_1),f1_s8_multop_1)
+      & m2_relset_1(A,k4_zfmisc_1(f1_s8_multop_1,f1_s8_multop_1,f1_s8_multop_1,f1_s8_multop_1),f1_s8_multop_1)
+      & ! [B] :
+          ( m1_subset_1(B,f1_s8_multop_1)
+         => ! [C] :
+              ( m1_subset_1(C,f1_s8_multop_1)
+             => ! [D] :
+                  ( m1_subset_1(D,f1_s8_multop_1)
+                 => ! [E] :
+                      ( m1_subset_1(E,f1_s8_multop_1)
+                     => k4_multop_1(f1_s8_multop_1,f1_s8_multop_1,f1_s8_multop_1,f1_s8_multop_1,f1_s8_multop_1,A,B,C,D,E) = f2_s8_multop_1(B,C,D,E) ) ) ) ) ) ).
+
+fof(dt_k1_multop_1,axiom,
+    $true ).
+
+fof(dt_k2_multop_1,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & ~ v1_xboole_0(D)
+        & v1_funct_1(E)
+        & v1_funct_2(E,k3_zfmisc_1(A,B,C),D)
+        & m1_relset_1(E,k3_zfmisc_1(A,B,C),D)
+        & m1_subset_1(F,A)
+        & m1_subset_1(G,B)
+        & m1_subset_1(H,C) )
+     => m1_subset_1(k2_multop_1(A,B,C,D,E,F,G,H),D) ) ).
+
+fof(redefinition_k2_multop_1,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & ~ v1_xboole_0(D)
+        & v1_funct_1(E)
+        & v1_funct_2(E,k3_zfmisc_1(A,B,C),D)
+        & m1_relset_1(E,k3_zfmisc_1(A,B,C),D)
+        & m1_subset_1(F,A)
+        & m1_subset_1(G,B)
+        & m1_subset_1(H,C) )
+     => k2_multop_1(A,B,C,D,E,F,G,H) = k1_multop_1(E,F,G,H) ) ).
+
+fof(dt_k3_multop_1,axiom,
+    $true ).
+
+fof(dt_k4_multop_1,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & ~ v1_xboole_0(D)
+        & ~ v1_xboole_0(E)
+        & v1_funct_1(F)
+        & v1_funct_2(F,k4_zfmisc_1(A,B,C,D),E)
+        & m1_relset_1(F,k4_zfmisc_1(A,B,C,D),E)
+        & m1_subset_1(G,A)
+        & m1_subset_1(H,B)
+        & m1_subset_1(I,C)
+        & m1_subset_1(J,D) )
+     => m1_subset_1(k4_multop_1(A,B,C,D,E,F,G,H,I,J),E) ) ).
+
+fof(redefinition_k4_multop_1,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & ~ v1_xboole_0(D)
+        & ~ v1_xboole_0(E)
+        & v1_funct_1(F)
+        & v1_funct_2(F,k4_zfmisc_1(A,B,C,D),E)
+        & m1_relset_1(F,k4_zfmisc_1(A,B,C,D),E)
+        & m1_subset_1(G,A)
+        & m1_subset_1(H,B)
+        & m1_subset_1(I,C)
+        & m1_subset_1(J,D) )
+     => k4_multop_1(A,B,C,D,E,F,G,H,I,J) = k3_multop_1(F,G,H,I,J) ) ).
+
+%------------------------------------------------------------------------------

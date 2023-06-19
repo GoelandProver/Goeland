@@ -1,0 +1,1110 @@
+%------------------------------------------------------------------------------
+% File     : SET007+887 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Preliminaries to Mathematical Morphology and Its Properties
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : mathmorp [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  105 (   0 unt;   0 def)
+%            Number of atoms       :  534 (  78 equ)
+%            Maximal formula atoms :   11 (   5 avg)
+%            Number of connectives :  433 (   4   ~;   2   |;  63   &)
+%                                         (   8 <=>; 356  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   16 (   9 avg)
+%            Maximal term depth    :    6 (   2 avg)
+%            Number of predicates  :    9 (   8 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   38 (  38 usr;   6 con; 0-4 aty)
+%            Number of variables   :  370 ( 364   !;   6   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => k2_mathmorp(A,k2_mathmorp(A,B)) = B ) ) ).
+
+fof(t2_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(A)))
+         => k1_mathmorp(A,B,k1_struct_0(k15_euclid(A),k16_euclid(A))) = k1_struct_0(k15_euclid(A),B) ) ) ).
+
+fof(t3_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => ( r1_tarski(B,C)
+                   => r1_tarski(k1_mathmorp(A,D,B),k1_mathmorp(A,D,C)) ) ) ) ) ) ).
+
+fof(t4_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( C = k1_xboole_0
+               => k1_mathmorp(A,B,C) = k1_xboole_0 ) ) ) ) ).
+
+fof(t5_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => k3_mathmorp(A,B,k1_struct_0(k15_euclid(A),k16_euclid(A))) = B ) ) ).
+
+fof(t6_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => k4_mathmorp(A,B,k1_struct_0(k15_euclid(A),k16_euclid(A))) = B ) ) ).
+
+fof(t7_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(A)))
+             => k4_mathmorp(A,B,k1_struct_0(k15_euclid(A),C)) = k1_mathmorp(A,C,B) ) ) ) ).
+
+fof(t8_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( C = k1_xboole_0
+               => k3_mathmorp(A,B,C) = k1_euclid(A) ) ) ) ) ).
+
+fof(t9_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( r1_tarski(B,C)
+                   => ( r1_tarski(k3_mathmorp(A,B,D),k3_mathmorp(A,C,D))
+                      & r1_tarski(k4_mathmorp(A,B,D),k4_mathmorp(A,C,D)) ) ) ) ) ) ) ).
+
+fof(t10_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( r1_tarski(B,C)
+                   => ( r1_tarski(k3_mathmorp(A,D,C),k3_mathmorp(A,D,B))
+                      & r1_tarski(k4_mathmorp(A,D,B),k4_mathmorp(A,D,C)) ) ) ) ) ) ) ).
+
+fof(t11_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( r2_hidden(k16_euclid(A),B)
+               => ( r1_tarski(k3_mathmorp(A,C,B),C)
+                  & r1_tarski(C,k4_mathmorp(A,C,B)) ) ) ) ) ) ).
+
+fof(t12_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k4_mathmorp(A,B,C) = k4_mathmorp(A,C,B) ) ) ) ).
+
+fof(t13_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(k15_euclid(A)))
+                     => ( r1_tarski(k1_mathmorp(A,D,B),k1_mathmorp(A,E,C))
+                      <=> r1_tarski(k1_mathmorp(A,k20_euclid(A,D,E),B),C) ) ) ) ) ) ) ).
+
+fof(t14_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => k3_mathmorp(A,k1_mathmorp(A,D,B),C) = k1_mathmorp(A,D,k3_mathmorp(A,B,C)) ) ) ) ) ).
+
+fof(t15_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => k4_mathmorp(A,k1_mathmorp(A,D,B),C) = k1_mathmorp(A,D,k4_mathmorp(A,B,C)) ) ) ) ) ).
+
+fof(t16_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => k1_mathmorp(A,D,k1_mathmorp(A,C,B)) = k1_mathmorp(A,k17_euclid(A,C,D),B) ) ) ) ) ).
+
+fof(t17_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => k3_mathmorp(A,B,k1_mathmorp(A,D,C)) = k1_mathmorp(A,k19_euclid(A,D),k3_mathmorp(A,B,C)) ) ) ) ) ).
+
+fof(t18_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => k4_mathmorp(A,B,k1_mathmorp(A,D,C)) = k1_mathmorp(A,D,k4_mathmorp(A,B,C)) ) ) ) ) ).
+
+fof(t19_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => ( r2_hidden(D,B)
+                   => r1_tarski(k1_mathmorp(A,D,C),k4_mathmorp(A,C,B)) ) ) ) ) ) ).
+
+fof(t20_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => r1_tarski(B,k3_mathmorp(A,k4_mathmorp(A,B,C),C)) ) ) ) ).
+
+fof(t21_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => k1_mathmorp(A,k16_euclid(A),B) = B ) ) ).
+
+fof(t22_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(A)))
+             => k3_mathmorp(A,B,k1_struct_0(k15_euclid(A),C)) = k1_mathmorp(A,k19_euclid(A,C),B) ) ) ) ).
+
+fof(t23_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k3_mathmorp(A,B,k4_mathmorp(A,C,D)) = k3_mathmorp(A,k3_mathmorp(A,B,C),D) ) ) ) ) ).
+
+fof(t24_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k3_mathmorp(A,B,k4_mathmorp(A,C,D)) = k3_mathmorp(A,k3_mathmorp(A,B,D),C) ) ) ) ) ).
+
+fof(t25_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => r1_tarski(k4_mathmorp(A,B,k3_mathmorp(A,C,D)),k3_mathmorp(A,k4_mathmorp(A,B,C),D)) ) ) ) ) ).
+
+fof(t26_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k4_mathmorp(A,B,k4_mathmorp(A,C,D)) = k4_mathmorp(A,k4_mathmorp(A,B,C),D) ) ) ) ) ).
+
+fof(t27_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => k1_mathmorp(A,D,k4_subset_1(u1_struct_0(k15_euclid(A)),B,C)) = k4_subset_1(u1_struct_0(k15_euclid(A)),k1_mathmorp(A,D,B),k1_mathmorp(A,D,C)) ) ) ) ) ).
+
+fof(t28_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => k1_mathmorp(A,D,k5_subset_1(u1_struct_0(k15_euclid(A)),B,C)) = k5_subset_1(u1_struct_0(k15_euclid(A)),k1_mathmorp(A,D,B),k1_mathmorp(A,D,C)) ) ) ) ) ).
+
+fof(t29_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k3_mathmorp(A,B,k4_subset_1(u1_struct_0(k15_euclid(A)),C,D)) = k5_subset_1(u1_struct_0(k15_euclid(A)),k3_mathmorp(A,B,C),k3_mathmorp(A,B,D)) ) ) ) ) ).
+
+fof(t30_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k4_mathmorp(A,B,k4_subset_1(u1_struct_0(k15_euclid(A)),C,D)) = k4_subset_1(u1_struct_0(k15_euclid(A)),k4_mathmorp(A,B,C),k4_mathmorp(A,B,D)) ) ) ) ) ).
+
+fof(t31_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => r1_tarski(k4_subset_1(u1_struct_0(k15_euclid(A)),k3_mathmorp(A,B,C),k3_mathmorp(A,D,C)),k3_mathmorp(A,k4_subset_1(u1_struct_0(k15_euclid(A)),B,D),C)) ) ) ) ) ).
+
+fof(t32_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k4_mathmorp(A,k4_subset_1(u1_struct_0(k15_euclid(A)),B,C),D) = k4_subset_1(u1_struct_0(k15_euclid(A)),k4_mathmorp(A,B,D),k4_mathmorp(A,C,D)) ) ) ) ) ).
+
+fof(t33_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k3_mathmorp(A,k5_subset_1(u1_struct_0(k15_euclid(A)),B,C),D) = k5_subset_1(u1_struct_0(k15_euclid(A)),k3_mathmorp(A,B,D),k3_mathmorp(A,C,D)) ) ) ) ) ).
+
+fof(t34_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => r1_tarski(k4_mathmorp(A,k5_subset_1(u1_struct_0(k15_euclid(A)),B,C),D),k5_subset_1(u1_struct_0(k15_euclid(A)),k4_mathmorp(A,B,D),k4_mathmorp(A,C,D))) ) ) ) ) ).
+
+fof(t35_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => r1_tarski(k4_mathmorp(A,B,k5_subset_1(u1_struct_0(k15_euclid(A)),C,D)),k5_subset_1(u1_struct_0(k15_euclid(A)),k4_mathmorp(A,B,C),k4_mathmorp(A,B,D))) ) ) ) ) ).
+
+fof(t36_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => r1_tarski(k4_subset_1(u1_struct_0(k15_euclid(A)),k3_mathmorp(A,B,C),k3_mathmorp(A,B,D)),k3_mathmorp(A,B,k5_subset_1(u1_struct_0(k15_euclid(A)),C,D))) ) ) ) ) ).
+
+fof(t37_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k3_subset_1(u1_struct_0(k15_euclid(A)),k3_mathmorp(A,k3_subset_1(u1_struct_0(k15_euclid(A)),B),C)) = k4_mathmorp(A,B,k2_mathmorp(A,C)) ) ) ) ).
+
+fof(t38_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k3_subset_1(u1_struct_0(k15_euclid(A)),k3_mathmorp(A,B,C)) = k4_mathmorp(A,k3_subset_1(u1_struct_0(k15_euclid(A)),B),k2_mathmorp(A,C)) ) ) ) ).
+
+fof(d5_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k5_mathmorp(A,B,C) = k4_mathmorp(A,k3_mathmorp(A,B,C),C) ) ) ) ).
+
+fof(d6_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k6_mathmorp(A,B,C) = k3_mathmorp(A,k4_mathmorp(A,B,C),C) ) ) ) ).
+
+fof(t39_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k3_subset_1(u1_struct_0(k15_euclid(A)),k5_mathmorp(A,k3_subset_1(u1_struct_0(k15_euclid(A)),B),k2_mathmorp(A,C))) = k6_mathmorp(A,B,C) ) ) ) ).
+
+fof(t40_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k3_subset_1(u1_struct_0(k15_euclid(A)),k6_mathmorp(A,k3_subset_1(u1_struct_0(k15_euclid(A)),B),k2_mathmorp(A,C))) = k5_mathmorp(A,B,C) ) ) ) ).
+
+fof(t41_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( r1_tarski(k5_mathmorp(A,B,C),B)
+                & r1_tarski(B,k6_mathmorp(A,B,C)) ) ) ) ) ).
+
+fof(t42_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => k5_mathmorp(A,B,B) = B ) ) ).
+
+fof(t43_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( r1_tarski(k3_mathmorp(A,k5_mathmorp(A,B,C),C),k3_mathmorp(A,B,C))
+                & r1_tarski(k4_mathmorp(A,k5_mathmorp(A,B,C),C),k4_mathmorp(A,B,C)) ) ) ) ) ).
+
+fof(t44_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( r1_tarski(k3_mathmorp(A,B,C),k3_mathmorp(A,k6_mathmorp(A,B,C),C))
+                & r1_tarski(k4_mathmorp(A,B,C),k4_mathmorp(A,k6_mathmorp(A,B,C),C)) ) ) ) ) ).
+
+fof(t45_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( r1_tarski(B,C)
+                   => ( r1_tarski(k5_mathmorp(A,B,D),k5_mathmorp(A,C,D))
+                      & r1_tarski(k6_mathmorp(A,B,D),k6_mathmorp(A,C,D)) ) ) ) ) ) ) ).
+
+fof(t46_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => k5_mathmorp(A,k1_mathmorp(A,D,B),C) = k1_mathmorp(A,D,k5_mathmorp(A,B,C)) ) ) ) ) ).
+
+fof(t47_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                 => k6_mathmorp(A,k1_mathmorp(A,D,B),C) = k1_mathmorp(A,D,k6_mathmorp(A,B,C)) ) ) ) ) ).
+
+fof(t48_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( r1_tarski(B,C)
+                   => r1_tarski(k5_mathmorp(A,D,C),k4_mathmorp(A,k3_mathmorp(A,D,B),C)) ) ) ) ) ) ).
+
+fof(t49_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( r1_tarski(B,C)
+                   => r1_tarski(k6_mathmorp(A,D,B),k3_mathmorp(A,k4_mathmorp(A,D,C),B)) ) ) ) ) ) ).
+
+fof(t50_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( k4_mathmorp(A,B,C) = k4_mathmorp(A,k6_mathmorp(A,B,C),C)
+                & k3_mathmorp(A,B,C) = k3_mathmorp(A,k5_mathmorp(A,B,C),C) ) ) ) ) ).
+
+fof(t51_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( k4_mathmorp(A,B,C) = k5_mathmorp(A,k4_mathmorp(A,B,C),C)
+                & k3_mathmorp(A,B,C) = k6_mathmorp(A,k3_mathmorp(A,B,C),C) ) ) ) ) ).
+
+fof(t52_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k5_mathmorp(A,k5_mathmorp(A,B,C),C) = k5_mathmorp(A,B,C) ) ) ) ).
+
+fof(t53_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k6_mathmorp(A,k6_mathmorp(A,B,C),C) = k6_mathmorp(A,B,C) ) ) ) ).
+
+fof(t54_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => r1_tarski(k5_mathmorp(A,B,C),k5_mathmorp(A,k4_subset_1(u1_struct_0(k15_euclid(A)),B,D),C)) ) ) ) ) ).
+
+fof(t55_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( B = k5_mathmorp(A,B,C)
+                   => r1_tarski(k5_mathmorp(A,D,B),k5_mathmorp(A,D,C)) ) ) ) ) ) ).
+
+fof(t56_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ( B = k1_xboole_0
+           => k7_mathmorp(np__0,A,B) = k1_xboole_0 ) ) ) ).
+
+fof(t57_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+         => k7_mathmorp(np__0,A,B) = k1_struct_0(k15_euclid(A),k16_euclid(A)) ) ) ).
+
+fof(t58_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => k7_mathmorp(np__1,A,B) = B ) ) ).
+
+fof(t59_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => r1_tarski(k7_mathmorp(np__2,A,B),k4_mathmorp(A,B,B)) ) ) ).
+
+fof(t60_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => k7_mathmorp(k3_xcmplx_0(C,D),A,B) = k7_mathmorp(C,A,k7_mathmorp(D,A,B)) ) ) ) ) ).
+
+fof(t61_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ( r1_tarski(B,C)
+                   => r1_tarski(k7_mathmorp(D,A,B),k7_mathmorp(D,A,C)) ) ) ) ) ) ).
+
+fof(t62_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(A)))
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => k7_mathmorp(D,A,k1_mathmorp(A,C,B)) = k1_mathmorp(A,k18_euclid(D,A,C),k7_mathmorp(D,A,B)) ) ) ) ) ).
+
+fof(t63_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => k7_mathmorp(D,A,k4_mathmorp(A,B,C)) = k4_mathmorp(A,k7_mathmorp(D,A,B),k7_mathmorp(D,A,C)) ) ) ) ) ).
+
+fof(t64_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ( D != np__0
+                   => k7_mathmorp(D,A,k3_mathmorp(A,B,C)) = k3_mathmorp(A,k7_mathmorp(D,A,B),k7_mathmorp(D,A,C)) ) ) ) ) ) ).
+
+fof(t65_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ( D != np__0
+                   => k7_mathmorp(D,A,k5_mathmorp(A,B,C)) = k5_mathmorp(A,k7_mathmorp(D,A,B),k7_mathmorp(D,A,C)) ) ) ) ) ) ).
+
+fof(t66_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ( D != np__0
+                   => k7_mathmorp(D,A,k6_mathmorp(A,B,C)) = k6_mathmorp(A,k7_mathmorp(D,A,B),k7_mathmorp(D,A,C)) ) ) ) ) ) ).
+
+fof(d8_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k8_mathmorp(A,B,C,D) = k5_subset_1(u1_struct_0(k15_euclid(A)),k3_mathmorp(A,B,C),k3_mathmorp(A,k3_subset_1(u1_struct_0(k15_euclid(A)),B),D)) ) ) ) ) ).
+
+fof(d9_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k9_mathmorp(A,B,C,D) = k4_subset_1(u1_struct_0(k15_euclid(A)),B,k8_mathmorp(A,B,C,D)) ) ) ) ) ).
+
+fof(d10_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k10_mathmorp(A,B,C,D) = k6_subset_1(u1_struct_0(k15_euclid(A)),B,k8_mathmorp(A,B,C,D)) ) ) ) ) ).
+
+fof(t67_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( B = k1_xboole_0
+                   => k8_mathmorp(A,C,B,D) = k3_mathmorp(A,k3_subset_1(u1_struct_0(k15_euclid(A)),C),D) ) ) ) ) ) ).
+
+fof(t68_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( B = k1_xboole_0
+                   => k8_mathmorp(A,C,D,B) = k3_mathmorp(A,C,D) ) ) ) ) ) ).
+
+fof(t69_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( r2_hidden(k16_euclid(A),B)
+                   => r1_tarski(k8_mathmorp(A,C,B,D),C) ) ) ) ) ) ).
+
+fof(t70_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( r2_hidden(k16_euclid(A),B)
+                   => k5_subset_1(u1_struct_0(k15_euclid(A)),k8_mathmorp(A,C,D,B),C) = k1_xboole_0 ) ) ) ) ) ).
+
+fof(t71_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( r2_hidden(k16_euclid(A),B)
+                   => k9_mathmorp(A,C,B,D) = C ) ) ) ) ) ).
+
+fof(t72_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => ( r2_hidden(k16_euclid(A),B)
+                   => k10_mathmorp(A,C,D,B) = C ) ) ) ) ) ).
+
+fof(t73_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k9_mathmorp(A,B,C,D) = k3_subset_1(u1_struct_0(k15_euclid(A)),k10_mathmorp(A,k3_subset_1(u1_struct_0(k15_euclid(A)),B),D,C)) ) ) ) ) ).
+
+fof(t74_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+                 => k10_mathmorp(A,B,C,D) = k3_subset_1(u1_struct_0(k15_euclid(A)),k9_mathmorp(A,k3_subset_1(u1_struct_0(k15_euclid(A)),B),D,C)) ) ) ) ) ).
+
+fof(t75_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ( v1_jordan1(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(k15_euclid(A)))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                   => ! [E] :
+                        ( v1_xreal_0(E)
+                       => ( ( r1_xreal_0(np__0,E)
+                            & r1_xreal_0(E,np__1)
+                            & r2_hidden(C,B)
+                            & r2_hidden(D,B) )
+                         => r2_hidden(k17_euclid(A,k18_euclid(E,A,C),k18_euclid(k6_xcmplx_0(np__1,E),A,D)),B) ) ) ) ) ) ) ) ).
+
+fof(d11_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ( v1_jordan1(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(k15_euclid(A)))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(k15_euclid(A)))
+                   => ! [E] :
+                        ( v1_xreal_0(E)
+                       => ( ( r1_xreal_0(np__0,E)
+                            & r1_xreal_0(E,np__1)
+                            & r2_hidden(C,B)
+                            & r2_hidden(D,B) )
+                         => r2_hidden(k17_euclid(A,k18_euclid(E,A,C),k18_euclid(k6_xcmplx_0(np__1,E),A,D)),B) ) ) ) ) ) ) ) ).
+
+fof(t76_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ( v1_jordan1(B,A)
+           => v1_jordan1(k2_mathmorp(A,B),A) ) ) ) ).
+
+fof(t77_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( ( v1_jordan1(B,A)
+                  & v1_jordan1(C,A) )
+               => ( v1_jordan1(k4_mathmorp(A,B,C),A)
+                  & v1_jordan1(k3_mathmorp(A,B,C),A) ) ) ) ) ) ).
+
+fof(t78_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => ( ( v1_jordan1(B,A)
+                  & v1_jordan1(C,A) )
+               => ( v1_jordan1(k5_mathmorp(A,B,C),A)
+                  & v1_jordan1(k6_mathmorp(A,B,C),A) ) ) ) ) ) ).
+
+fof(t79_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ( v1_jordan1(B,A)
+                   => ( r1_xreal_0(C,np__0)
+                      | r1_xreal_0(D,np__0)
+                      | k7_mathmorp(k2_xcmplx_0(D,C),A,B) = k4_mathmorp(A,k7_mathmorp(D,A,B),k7_mathmorp(C,A,B)) ) ) ) ) ) ) ).
+
+fof(dt_k1_mathmorp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,u1_struct_0(k15_euclid(A)))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+     => m1_subset_1(k1_mathmorp(A,B,C),k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) ) ).
+
+fof(dt_k2_mathmorp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+     => m1_subset_1(k2_mathmorp(A,B),k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) ) ).
+
+fof(dt_k3_mathmorp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+     => m1_subset_1(k3_mathmorp(A,B,C),k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) ) ).
+
+fof(dt_k4_mathmorp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+     => m1_subset_1(k4_mathmorp(A,B,C),k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) ) ).
+
+fof(dt_k5_mathmorp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+     => m1_subset_1(k5_mathmorp(A,B,C),k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) ) ).
+
+fof(dt_k6_mathmorp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+     => m1_subset_1(k6_mathmorp(A,B,C),k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) ) ).
+
+fof(dt_k7_mathmorp,axiom,
+    ! [A,B,C] :
+      ( ( v1_xreal_0(A)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(B)))) )
+     => m1_subset_1(k7_mathmorp(A,B,C),k1_zfmisc_1(u1_struct_0(k15_euclid(B)))) ) ).
+
+fof(dt_k8_mathmorp,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+     => m1_subset_1(k8_mathmorp(A,B,C,D),k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) ) ).
+
+fof(dt_k9_mathmorp,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+     => m1_subset_1(k9_mathmorp(A,B,C,D),k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) ) ).
+
+fof(dt_k10_mathmorp,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) )
+     => m1_subset_1(k10_mathmorp(A,B,C,D),k1_zfmisc_1(u1_struct_0(k15_euclid(A)))) ) ).
+
+fof(d1_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k1_mathmorp(A,B,C) = a_3_0_mathmorp(A,B,C) ) ) ) ).
+
+fof(d2_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => k2_mathmorp(A,B) = a_2_0_mathmorp(A,B) ) ) ).
+
+fof(d3_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k3_mathmorp(A,B,C) = a_3_1_mathmorp(A,B,C) ) ) ) ).
+
+fof(d4_mathmorp,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(A))))
+             => k4_mathmorp(A,B,C) = a_3_2_mathmorp(A,B,C) ) ) ) ).
+
+fof(d7_mathmorp,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(B))))
+             => k7_mathmorp(A,B,C) = a_3_3_mathmorp(A,B,C) ) ) ) ).
+
+fof(fraenkel_a_3_0_mathmorp,axiom,
+    ! [A,B,C,D] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m1_subset_1(C,u1_struct_0(k15_euclid(B)))
+        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(B)))) )
+     => ( r2_hidden(A,a_3_0_mathmorp(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(k15_euclid(B)))
+            & A = k17_euclid(B,E,C)
+            & r2_hidden(E,D) ) ) ) ).
+
+fof(fraenkel_a_2_0_mathmorp,axiom,
+    ! [A,B,C] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(B)))) )
+     => ( r2_hidden(A,a_2_0_mathmorp(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u1_struct_0(k15_euclid(B)))
+            & A = k19_euclid(B,D)
+            & r2_hidden(D,C) ) ) ) ).
+
+fof(fraenkel_a_3_1_mathmorp,axiom,
+    ! [A,B,C,D] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(B))))
+        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(B)))) )
+     => ( r2_hidden(A,a_3_1_mathmorp(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(k15_euclid(B)))
+            & A = E
+            & r1_tarski(k1_mathmorp(B,E,D),C) ) ) ) ).
+
+fof(fraenkel_a_3_2_mathmorp,axiom,
+    ! [A,B,C,D] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k15_euclid(B))))
+        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(B)))) )
+     => ( r2_hidden(A,a_3_2_mathmorp(B,C,D))
+      <=> ? [E,F] :
+            ( m1_subset_1(E,u1_struct_0(k15_euclid(B)))
+            & m1_subset_1(F,u1_struct_0(k15_euclid(B)))
+            & A = k17_euclid(B,E,F)
+            & r2_hidden(E,C)
+            & r2_hidden(F,D) ) ) ) ).
+
+fof(fraenkel_a_3_3_mathmorp,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_xreal_0(B)
+        & m2_subset_1(C,k1_numbers,k5_numbers)
+        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(k15_euclid(C)))) )
+     => ( r2_hidden(A,a_3_3_mathmorp(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(k15_euclid(C)))
+            & A = k18_euclid(B,C,E)
+            & r2_hidden(E,D) ) ) ) ).
+
+%------------------------------------------------------------------------------

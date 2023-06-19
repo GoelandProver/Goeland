@@ -1,0 +1,167 @@
+%--------------------------------------------------------------------------
+% File     : HWV002-0 : TPTP v8.1.2. Released .0.
+% Domain   : Hardware Verification
+% Axioms   : Connections, faults, and gates.
+% Version  : [Gei96] axioms.
+% English  :
+
+% Refs     : [Gei96] Geisler (1996), Email to G. Sutcliffe
+% Source   : [Gei96]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   27 (   0 unt;   5 nHn;  27 RR)
+%            Number of literals    :   81 (   0 equ;  53 neg)
+%            Maximal clause size   :    4 (   3 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of predicates  :   10 (  10 usr;   0 prp; 1-2 aty)
+%            Number of functors    :    3 (   3 usr;   0 con; 1-1 aty)
+%            Number of variables   :   31 (   0 sgn)
+% SPC      : 
+
+% Comments :
+% Bugfixes : v2.7.0 - Fixed clause not_ok_or_abnormal
+%--------------------------------------------------------------------------
+%----Properties of connections and values
+cnf(value_propagation_zero1,axiom,
+    ( ~ connection(P1,P2)
+    | ~ zero(P1)
+    | zero(P2) ) ).
+
+cnf(value_propagation_one1,axiom,
+    ( ~ connection(P1,P2)
+    | ~ one(P1)
+    | one(P2) ) ).
+
+cnf(value_propagation_zero2,axiom,
+    ( ~ connection(P1,P2)
+    | ~ zero(P2)
+    | zero(P1) ) ).
+
+cnf(value_propagation_one2,axiom,
+    ( ~ connection(P1,P2)
+    | ~ one(P2)
+    | one(P1) ) ).
+
+cnf(unique_value,axiom,
+    ( ~ zero(P)
+    | ~ one(P) ) ).
+
+%----AND gate
+cnf(and_0x_0,axiom,
+    ( ~ and_ok(K)
+    | ~ zero(in1(K))
+    | zero(out1(K)) ) ).
+
+cnf(and_x0_0,axiom,
+    ( ~ and_ok(K)
+    | ~ zero(in2(K))
+    | zero(out1(K)) ) ).
+
+cnf(and_11_1,axiom,
+    ( ~ and_ok(K)
+    | ~ one(in1(K))
+    | ~ one(in2(K))
+    | one(out1(K)) ) ).
+
+cnf(and_0_00,axiom,
+    ( ~ and_ok(K)
+    | ~ zero(out1(K))
+    | zero(in1(K))
+    | zero(in2(K)) ) ).
+
+cnf(and_1_1x,axiom,
+    ( ~ and_ok(K)
+    | ~ one(out1(K))
+    | one(in1(K)) ) ).
+
+cnf(and_1_x1,axiom,
+    ( ~ and_ok(K)
+    | ~ one(out1(K))
+    | one(in2(K)) ) ).
+
+%----Fault model for AND
+cnf(not_and_ok_and_abnormal,axiom,
+    ( ~ and_ok(K)
+    | ~ abnormal(K) ) ).
+
+cnf(and_ok_or_abnormal,axiom,
+    ( ~ logic_and(K)
+    | and_ok(K)
+    | abnormal(K) ) ).
+
+%----OR gate
+cnf(or_1x_1,axiom,
+    ( ~ or_ok(K)
+    | ~ one(in1(K))
+    | one(out1(K)) ) ).
+
+cnf(or_x1_1,axiom,
+    ( ~ or_ok(K)
+    | ~ one(in2(K))
+    | one(out1(K)) ) ).
+
+cnf(or_00_0,axiom,
+    ( ~ or_ok(K)
+    | ~ zero(in1(K))
+    | ~ zero(in2(K))
+    | zero(out1(K)) ) ).
+
+cnf(or_1_11,axiom,
+    ( ~ or_ok(K)
+    | ~ one(out1(K))
+    | one(in1(K))
+    | one(in2(K)) ) ).
+
+cnf(or_0_0x,axiom,
+    ( ~ or_ok(K)
+    | ~ zero(out1(K))
+    | zero(in1(K)) ) ).
+
+cnf(or_0_01,axiom,
+    ( ~ or_ok(K)
+    | ~ zero(out1(K))
+    | zero(in2(K)) ) ).
+
+%----Fault model for OR
+cnf(not_or_ok_and_abnormal,axiom,
+    ( ~ or_ok(K)
+    | ~ abnormal(K) ) ).
+
+cnf(or_ok_or_abnormal,axiom,
+    ( ~ logic_or(K)
+    | or_ok(K)
+    | abnormal(K) ) ).
+
+%----NOT gate
+cnf(not_0_1_fw,axiom,
+    ( ~ not_ok(K)
+    | ~ zero(in1(K))
+    | one(out1(K)) ) ).
+
+cnf(not_1_0_fw,axiom,
+    ( ~ not_ok(K)
+    | ~ one(in1(K))
+    | zero(out1(K)) ) ).
+
+cnf(not_0_1_bw,axiom,
+    ( ~ not_ok(K)
+    | ~ zero(out1(K))
+    | one(in1(K)) ) ).
+
+cnf(not_1_0_bw,axiom,
+    ( ~ not_ok(K)
+    | ~ one(out1(K))
+    | zero(in1(K)) ) ).
+
+%----Fault model for NOT
+cnf(not__not_ok_and_abnormal,axiom,
+    ( ~ not_ok(K)
+    | ~ abnormal(K) ) ).
+
+cnf(not_ok_or_abnormal,axiom,
+    ( ~ logic_not(K)
+    | not_ok(K)
+    | abnormal(K) ) ).
+
+%--------------------------------------------------------------------------

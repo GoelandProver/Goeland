@@ -1,0 +1,398 @@
+%------------------------------------------------------------------------------
+% File     : SET007+428 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Extensions of Mappings on Generator Set
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : extens_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   28 (   3 unt;   0 def)
+%            Number of atoms       :  209 (   6 equ)
+%            Maximal formula atoms :   18 (   7 avg)
+%            Number of connectives :  198 (  17   ~;   0   |;  61   &)
+%                                         (   4 <=>; 116  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   20 (  10 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   27 (  25 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   16 (  16 usr;   0 con; 1-6 aty)
+%            Number of variables   :  118 ( 117   !;   1   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_extens_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A)
+        & v5_msualg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => ? [C] :
+          ( m1_msafree(C,A,B)
+          & v1_relat_1(C)
+          & v2_relat_1(C)
+          & ~ v3_relat_1(C)
+          & v1_funct_1(C) ) ) ).
+
+fof(t1_extens_1,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B,C] :
+          ( r1_tarski(B,C)
+         => k9_relat_1(k7_relat_1(A,C),B) = k9_relat_1(A,B) ) ) ).
+
+fof(t2_extens_1,axiom,
+    $true ).
+
+fof(t3_extens_1,axiom,
+    $true ).
+
+fof(t4_extens_1,axiom,
+    $true ).
+
+fof(t5_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ( v2_relat_1(C)
+            & m1_pboole(C,A) )
+         => ! [D] :
+              ( m3_pboole(D,A,B,C)
+             => ! [E] :
+                  ( m4_pboole(E,A,B)
+                 => ( r2_pboole(A,B,E)
+                   => r6_pboole(A,k1_msafree(A,B,C,E,D),D) ) ) ) ) ) ).
+
+fof(t6_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m4_pboole(D,A,B)
+             => ! [E] :
+                  ( m3_pboole(E,A,B,C)
+                 => r2_pboole(A,k14_pboole(A,D,E),k14_pboole(A,B,E)) ) ) ) ) ).
+
+fof(t7_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ( v2_relat_1(C)
+            & m1_pboole(C,A) )
+         => ! [D] :
+              ( m3_pboole(D,A,B,C)
+             => ! [E] :
+                  ( m4_pboole(E,A,B)
+                 => ! [F] :
+                      ( m4_pboole(F,A,B)
+                     => ( r2_pboole(A,E,F)
+                       => r6_pboole(A,k14_pboole(A,E,k1_msafree(A,B,C,F,D)),k14_pboole(A,E,D)) ) ) ) ) ) ) ).
+
+fof(t8_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ( v2_relat_1(C)
+            & m1_pboole(C,A) )
+         => ! [D] :
+              ( ( v2_relat_1(D)
+                & m1_pboole(D,A) )
+             => ! [E] :
+                  ( m3_pboole(E,A,B,C)
+                 => ! [F] :
+                      ( m3_pboole(F,A,C,D)
+                     => ! [G] :
+                          ( m4_pboole(G,A,B)
+                         => r6_pboole(A,k1_msafree(A,B,D,G,k3_msualg_3(A,B,C,D,E,F)),k3_msualg_3(A,G,C,D,k1_msafree(A,B,C,G,E),F)) ) ) ) ) ) ) ).
+
+fof(t9_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r1_pzfmisc1(A,B,C)
+           => ! [D] :
+                ( m3_pboole(D,A,B,C)
+               => ! [E] :
+                    ( m1_pboole(E,A)
+                   => ( m4_pboole(C,A,E)
+                     => m3_pboole(D,A,B,E) ) ) ) ) ) ) ).
+
+fof(t10_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ( v2_relat_1(C)
+            & m1_pboole(C,A) )
+         => ! [D] :
+              ( m3_pboole(D,A,B,C)
+             => ! [E] :
+                  ( m4_pboole(E,A,B)
+                 => ( v1_msualg_3(D)
+                   => v1_msualg_3(k1_msafree(A,B,C,E,D)) ) ) ) ) ) ).
+
+fof(t11_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ( v2_relat_1(C)
+            & m1_pboole(C,A) )
+         => ! [D] :
+              ( m3_pboole(D,A,B,C)
+             => ! [E] :
+                  ( m4_pboole(E,A,B)
+                 => r2_pboole(A,k1_extens_1(A,k1_msafree(A,B,C,E,D)),k1_extens_1(A,D)) ) ) ) ) ).
+
+fof(t12_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ( v2_relat_1(C)
+            & m1_pboole(C,A) )
+         => ! [D] :
+              ( m3_pboole(D,A,B,C)
+             => ! [E] :
+                  ( m4_pboole(E,A,B)
+                 => r2_pboole(A,k2_extens_1(A,k1_msafree(A,B,C,E,D)),k2_extens_1(A,D)) ) ) ) ) ).
+
+fof(t13_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m3_pboole(D,A,B,C)
+             => ( v2_msualg_3(D,A,B,C)
+              <=> r6_pboole(A,k2_extens_1(A,D),C) ) ) ) ) ).
+
+fof(t14_extens_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => r6_pboole(u1_struct_0(A),k2_extens_1(u1_struct_0(A),k15_msafree(A,B)),B) ) ) ).
+
+fof(t15_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ( v2_relat_1(C)
+            & m1_pboole(C,A) )
+         => ! [D] :
+              ( ( v2_relat_1(D)
+                & m1_pboole(D,A) )
+             => ! [E] :
+                  ( m3_pboole(E,A,B,C)
+                 => ! [F] :
+                      ( m3_pboole(F,A,C,D)
+                     => ! [G] :
+                          ( ( v2_relat_1(G)
+                            & m4_pboole(G,A,C) )
+                         => ( r2_pboole(A,k2_extens_1(A,E),G)
+                           => k13_pboole(E,k1_msafree(A,C,D,G,F)) = k3_msualg_3(A,B,C,D,E,F) ) ) ) ) ) ) ) ).
+
+fof(t16_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ( v2_relat_1(C)
+            & m1_pboole(C,A) )
+         => ! [D] :
+              ( m3_pboole(D,A,B,C)
+             => ( v2_msualg_3(D,A,B,C)
+              <=> ! [E] :
+                    ( ( v2_relat_1(E)
+                      & m1_pboole(E,A) )
+                   => ! [F] :
+                        ( m3_pboole(F,A,C,E)
+                       => ! [G] :
+                            ( m3_pboole(G,A,C,E)
+                           => ( r6_pboole(A,k3_msualg_3(A,B,C,E,D,F),k3_msualg_3(A,B,C,E,D,G))
+                             => r6_pboole(A,F,G) ) ) ) ) ) ) ) ) ).
+
+fof(t17_extens_1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ( v2_relat_1(C)
+            & m1_pboole(C,A) )
+         => ! [D] :
+              ( m3_pboole(D,A,B,C)
+             => ( ( v2_relat_1(B)
+                  & v2_relat_1(C) )
+               => ( v1_msualg_3(D)
+                <=> ! [E] :
+                      ( m1_pboole(E,A)
+                     => ! [F] :
+                          ( m3_pboole(F,A,E,B)
+                         => ! [G] :
+                              ( m3_pboole(G,A,E,B)
+                             => ( k13_pboole(F,D) = k13_pboole(G,D)
+                               => r6_pboole(A,F,G) ) ) ) ) ) ) ) ) ) ).
+
+fof(t18_extens_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( ( v2_relat_1(C)
+                & m1_pboole(C,u1_struct_0(A)) )
+             => ! [D] :
+                  ( m3_pboole(D,u1_struct_0(A),u4_msualg_1(A,k11_msafree(A,C)),u4_msualg_1(A,B))
+                 => ! [E] :
+                      ( m3_pboole(E,u1_struct_0(A),u4_msualg_1(A,k11_msafree(A,C)),u4_msualg_1(A,B))
+                     => ( ( r1_msualg_3(A,k11_msafree(A,C),B,D)
+                          & r1_msualg_3(A,k11_msafree(A,C),B,E)
+                          & r6_pboole(u1_struct_0(A),k1_msafree(u1_struct_0(A),u4_msualg_1(A,k11_msafree(A,C)),u4_msualg_1(A,B),k13_msafree(A,C),D),k1_msafree(u1_struct_0(A),u4_msualg_1(A,k11_msafree(A,C)),u4_msualg_1(A,B),k13_msafree(A,C),E)) )
+                       => r6_pboole(u1_struct_0(A),D,E) ) ) ) ) ) ) ).
+
+fof(t19_extens_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( ( v5_msualg_1(C,A)
+                & l3_msualg_1(C,A) )
+             => ! [D] :
+                  ( m3_pboole(D,u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,C))
+                 => ( ( r1_msualg_3(A,B,C,D)
+                      & r2_msualg_3(A,B,C,D) )
+                   => ! [E] :
+                        ( ( v5_msualg_1(E,A)
+                          & l3_msualg_1(E,A) )
+                       => ! [F] :
+                            ( m3_pboole(F,u1_struct_0(A),u4_msualg_1(A,C),u4_msualg_1(A,E))
+                           => ! [G] :
+                                ( m3_pboole(G,u1_struct_0(A),u4_msualg_1(A,C),u4_msualg_1(A,E))
+                               => ( ( r1_msualg_3(A,C,E,F)
+                                    & r1_msualg_3(A,C,E,G)
+                                    & r6_pboole(u1_struct_0(A),k3_msualg_3(u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,C),u4_msualg_1(A,E),D,F),k3_msualg_3(u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,C),u4_msualg_1(A,E),D,G)) )
+                                 => r6_pboole(u1_struct_0(A),F,G) ) ) ) ) ) ) ) ) ) ).
+
+fof(t20_extens_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( ( v5_msualg_1(C,A)
+                & l3_msualg_1(C,A) )
+             => ! [D] :
+                  ( m3_pboole(D,u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,C))
+                 => ( r1_msualg_3(A,B,C,D)
+                   => ( r3_msualg_3(A,B,C,D)
+                    <=> ! [E] :
+                          ( ( v5_msualg_1(E,A)
+                            & l3_msualg_1(E,A) )
+                         => ! [F] :
+                              ( m3_pboole(F,u1_struct_0(A),u4_msualg_1(A,E),u4_msualg_1(A,B))
+                             => ! [G] :
+                                  ( m3_pboole(G,u1_struct_0(A),u4_msualg_1(A,E),u4_msualg_1(A,B))
+                                 => ( ( r1_msualg_3(A,E,B,F)
+                                      & r1_msualg_3(A,E,B,G)
+                                      & r6_pboole(u1_struct_0(A),k3_msualg_3(u1_struct_0(A),u4_msualg_1(A,E),u4_msualg_1(A,B),u4_msualg_1(A,C),F,D),k3_msualg_3(u1_struct_0(A),u4_msualg_1(A,E),u4_msualg_1(A,B),u4_msualg_1(A,C),G,D)) )
+                                   => r6_pboole(u1_struct_0(A),F,G) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t21_extens_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( l3_msualg_1(B,A)
+         => ! [C] :
+              ( m4_pboole(C,u1_struct_0(A),u4_msualg_1(A,B))
+             => ! [D] :
+                  ( m4_pboole(D,u1_struct_0(A),u4_msualg_1(A,B))
+                 => ( m4_pboole(C,u1_struct_0(A),D)
+                   => m1_msualg_2(k12_msualg_2(A,B,C),A,k12_msualg_2(A,B,D)) ) ) ) ) ) ).
+
+fof(t22_extens_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( l3_msualg_1(B,A)
+         => ! [C] :
+              ( m1_msualg_2(C,A,B)
+             => ! [D] :
+                  ( m4_pboole(D,u1_struct_0(A),u4_msualg_1(A,B))
+                 => ! [E] :
+                      ( m4_pboole(E,u1_struct_0(A),u4_msualg_1(A,C))
+                     => ( r6_pboole(u1_struct_0(A),D,E)
+                       => k12_msualg_2(A,B,D) = k12_msualg_2(A,C,E) ) ) ) ) ) ) ).
+
+fof(t23_extens_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v4_msualg_1(B,A)
+            & v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( ( v5_msualg_1(C,A)
+                & l3_msualg_1(C,A) )
+             => ! [D] :
+                  ( m1_msafree(D,A,B)
+                 => ! [E] :
+                      ( m3_pboole(E,u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,C))
+                     => ! [F] :
+                          ( m3_pboole(F,u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,C))
+                         => ( ( r1_msualg_3(A,B,C,E)
+                              & r1_msualg_3(A,B,C,F)
+                              & r6_pboole(u1_struct_0(A),k1_msafree(u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,C),D,E),k1_msafree(u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,C),D,F)) )
+                           => r6_pboole(u1_struct_0(A),E,F) ) ) ) ) ) ) ) ).
+
+fof(dt_k1_extens_1,axiom,
+    ! [A,B] :
+      ( ( v1_funcop_1(B)
+        & m1_pboole(B,A) )
+     => m1_pboole(k1_extens_1(A,B),A) ) ).
+
+fof(redefinition_k1_extens_1,axiom,
+    ! [A,B] :
+      ( ( v1_funcop_1(B)
+        & m1_pboole(B,A) )
+     => k1_extens_1(A,B) = k2_funct_6(B) ) ).
+
+fof(dt_k2_extens_1,axiom,
+    ! [A,B] :
+      ( ( v1_funcop_1(B)
+        & m1_pboole(B,A) )
+     => m1_pboole(k2_extens_1(A,B),A) ) ).
+
+fof(redefinition_k2_extens_1,axiom,
+    ! [A,B] :
+      ( ( v1_funcop_1(B)
+        & m1_pboole(B,A) )
+     => k2_extens_1(A,B) = k3_funct_6(B) ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,550 @@
+%------------------------------------------------------------------------------
+% File     : ITP109^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : int_bitwise^2.ax [Gau20]
+%          : HL4109^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   78 (  22 unt;  24 typ;   0 def)
+%            Number of atoms       : 1366 (  34 equ;   0 cnn)
+%            Maximal formula atoms :  166 (  17 avg)
+%            Number of connectives : 1924 (   3   ~;   1   |;  12   &;1834   @)
+%                                         (  12 <=>;  62  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   37 (   7 avg;1834 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :   18 (  18   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   89 (  88 usr;  77 con; 0-3 aty)
+%            Number of variables   :  147 (  25   ^ 122   !;   0   ?; 147   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tp_c_2Eint__bitwise_2Ebits__bitwise,type,
+    c_2Eint__bitwise_2Ebits__bitwise: del > del > del > $i ).
+
+thf(mem_c_2Eint__bitwise_2Ebits__bitwise,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del] : ( mem @ ( c_2Eint__bitwise_2Ebits__bitwise @ A_27a @ A_27b @ A_27c ) @ ( arr @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) ) ) ) ) ).
+
+thf(stp_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o,type,
+    tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o: $tType ).
+
+thf(stp_inj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o,type,
+    inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o > $i ).
+
+thf(stp_surj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o,type,
+    surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o: $i > tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o ).
+
+thf(stp_inj_surj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o] :
+      ( ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o] : ( mem @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ X ) @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ bool ) @ bool ) ) ).
+
+thf(stp_iso_mem_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ bool ) @ bool ) )
+     => ( X
+        = ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ X ) ) ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Ebits__of__int,type,
+    c_2Eint__bitwise_2Ebits__of__int: $i ).
+
+thf(mem_c_2Eint__bitwise_2Ebits__of__int,axiom,
+    mem @ c_2Eint__bitwise_2Ebits__of__int @ ( arr @ ty_2Einteger_2Eint @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ bool ) @ bool ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Ebits__of__num,type,
+    c_2Eint__bitwise_2Ebits__of__num: $i ).
+
+thf(mem_c_2Eint__bitwise_2Ebits__of__num,axiom,
+    mem @ c_2Eint__bitwise_2Ebits__of__num @ ( arr @ ty_2Enum_2Enum @ ( ty_2Elist_2Elist @ bool ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Eint__and,type,
+    c_2Eint__bitwise_2Eint__and: $i ).
+
+thf(mem_c_2Eint__bitwise_2Eint__and,axiom,
+    mem @ c_2Eint__bitwise_2Eint__and @ ( arr @ ty_2Einteger_2Eint @ ( arr @ ty_2Einteger_2Eint @ ty_2Einteger_2Eint ) ) ).
+
+thf(stp_fo_c_2Eint__bitwise_2Eint__and,type,
+    fo__c_2Eint__bitwise_2Eint__and: tp__ty_2Einteger_2Eint > tp__ty_2Einteger_2Eint > tp__ty_2Einteger_2Eint ).
+
+thf(stp_eq_fo_c_2Eint__bitwise_2Eint__and,axiom,
+    ! [X0: tp__ty_2Einteger_2Eint,X1: tp__ty_2Einteger_2Eint] :
+      ( ( inj__ty_2Einteger_2Eint @ ( fo__c_2Eint__bitwise_2Eint__and @ X0 @ X1 ) )
+      = ( ap @ ( ap @ c_2Eint__bitwise_2Eint__and @ ( inj__ty_2Einteger_2Eint @ X0 ) ) @ ( inj__ty_2Einteger_2Eint @ X1 ) ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Eint__bit,type,
+    c_2Eint__bitwise_2Eint__bit: $i ).
+
+thf(mem_c_2Eint__bitwise_2Eint__bit,axiom,
+    mem @ c_2Eint__bitwise_2Eint__bit @ ( arr @ ty_2Enum_2Enum @ ( arr @ ty_2Einteger_2Eint @ bool ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Eint__bitwise,type,
+    c_2Eint__bitwise_2Eint__bitwise: $i ).
+
+thf(mem_c_2Eint__bitwise_2Eint__bitwise,axiom,
+    mem @ c_2Eint__bitwise_2Eint__bitwise @ ( arr @ ( arr @ bool @ ( arr @ bool @ bool ) ) @ ( arr @ ty_2Einteger_2Eint @ ( arr @ ty_2Einteger_2Eint @ ty_2Einteger_2Eint ) ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Eint__not,type,
+    c_2Eint__bitwise_2Eint__not: $i ).
+
+thf(mem_c_2Eint__bitwise_2Eint__not,axiom,
+    mem @ c_2Eint__bitwise_2Eint__not @ ( arr @ ty_2Einteger_2Eint @ ty_2Einteger_2Eint ) ).
+
+thf(stp_fo_c_2Eint__bitwise_2Eint__not,type,
+    fo__c_2Eint__bitwise_2Eint__not: tp__ty_2Einteger_2Eint > tp__ty_2Einteger_2Eint ).
+
+thf(stp_eq_fo_c_2Eint__bitwise_2Eint__not,axiom,
+    ! [X0: tp__ty_2Einteger_2Eint] :
+      ( ( inj__ty_2Einteger_2Eint @ ( fo__c_2Eint__bitwise_2Eint__not @ X0 ) )
+      = ( ap @ c_2Eint__bitwise_2Eint__not @ ( inj__ty_2Einteger_2Eint @ X0 ) ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Eint__of__bits,type,
+    c_2Eint__bitwise_2Eint__of__bits: $i ).
+
+thf(mem_c_2Eint__bitwise_2Eint__of__bits,axiom,
+    mem @ c_2Eint__bitwise_2Eint__of__bits @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ty_2Einteger_2Eint ) ).
+
+thf(stp_fo_c_2Eint__bitwise_2Eint__of__bits,type,
+    fo__c_2Eint__bitwise_2Eint__of__bits: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o > tp__ty_2Einteger_2Eint ).
+
+thf(stp_eq_fo_c_2Eint__bitwise_2Eint__of__bits,axiom,
+    ! [X0: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o] :
+      ( ( inj__ty_2Einteger_2Eint @ ( fo__c_2Eint__bitwise_2Eint__of__bits @ X0 ) )
+      = ( ap @ c_2Eint__bitwise_2Eint__of__bits @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ X0 ) ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Eint__or,type,
+    c_2Eint__bitwise_2Eint__or: $i ).
+
+thf(mem_c_2Eint__bitwise_2Eint__or,axiom,
+    mem @ c_2Eint__bitwise_2Eint__or @ ( arr @ ty_2Einteger_2Eint @ ( arr @ ty_2Einteger_2Eint @ ty_2Einteger_2Eint ) ) ).
+
+thf(stp_fo_c_2Eint__bitwise_2Eint__or,type,
+    fo__c_2Eint__bitwise_2Eint__or: tp__ty_2Einteger_2Eint > tp__ty_2Einteger_2Eint > tp__ty_2Einteger_2Eint ).
+
+thf(stp_eq_fo_c_2Eint__bitwise_2Eint__or,axiom,
+    ! [X0: tp__ty_2Einteger_2Eint,X1: tp__ty_2Einteger_2Eint] :
+      ( ( inj__ty_2Einteger_2Eint @ ( fo__c_2Eint__bitwise_2Eint__or @ X0 @ X1 ) )
+      = ( ap @ ( ap @ c_2Eint__bitwise_2Eint__or @ ( inj__ty_2Einteger_2Eint @ X0 ) ) @ ( inj__ty_2Einteger_2Eint @ X1 ) ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Eint__shift__left,type,
+    c_2Eint__bitwise_2Eint__shift__left: $i ).
+
+thf(mem_c_2Eint__bitwise_2Eint__shift__left,axiom,
+    mem @ c_2Eint__bitwise_2Eint__shift__left @ ( arr @ ty_2Enum_2Enum @ ( arr @ ty_2Einteger_2Eint @ ty_2Einteger_2Eint ) ) ).
+
+thf(stp_fo_c_2Eint__bitwise_2Eint__shift__left,type,
+    fo__c_2Eint__bitwise_2Eint__shift__left: tp__ty_2Enum_2Enum > tp__ty_2Einteger_2Eint > tp__ty_2Einteger_2Eint ).
+
+thf(stp_eq_fo_c_2Eint__bitwise_2Eint__shift__left,axiom,
+    ! [X0: tp__ty_2Enum_2Enum,X1: tp__ty_2Einteger_2Eint] :
+      ( ( inj__ty_2Einteger_2Eint @ ( fo__c_2Eint__bitwise_2Eint__shift__left @ X0 @ X1 ) )
+      = ( ap @ ( ap @ c_2Eint__bitwise_2Eint__shift__left @ ( inj__ty_2Enum_2Enum @ X0 ) ) @ ( inj__ty_2Einteger_2Eint @ X1 ) ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Eint__shift__right,type,
+    c_2Eint__bitwise_2Eint__shift__right: $i ).
+
+thf(mem_c_2Eint__bitwise_2Eint__shift__right,axiom,
+    mem @ c_2Eint__bitwise_2Eint__shift__right @ ( arr @ ty_2Enum_2Enum @ ( arr @ ty_2Einteger_2Eint @ ty_2Einteger_2Eint ) ) ).
+
+thf(stp_fo_c_2Eint__bitwise_2Eint__shift__right,type,
+    fo__c_2Eint__bitwise_2Eint__shift__right: tp__ty_2Enum_2Enum > tp__ty_2Einteger_2Eint > tp__ty_2Einteger_2Eint ).
+
+thf(stp_eq_fo_c_2Eint__bitwise_2Eint__shift__right,axiom,
+    ! [X0: tp__ty_2Enum_2Enum,X1: tp__ty_2Einteger_2Eint] :
+      ( ( inj__ty_2Einteger_2Eint @ ( fo__c_2Eint__bitwise_2Eint__shift__right @ X0 @ X1 ) )
+      = ( ap @ ( ap @ c_2Eint__bitwise_2Eint__shift__right @ ( inj__ty_2Enum_2Enum @ X0 ) ) @ ( inj__ty_2Einteger_2Eint @ X1 ) ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Eint__xor,type,
+    c_2Eint__bitwise_2Eint__xor: $i ).
+
+thf(mem_c_2Eint__bitwise_2Eint__xor,axiom,
+    mem @ c_2Eint__bitwise_2Eint__xor @ ( arr @ ty_2Einteger_2Eint @ ( arr @ ty_2Einteger_2Eint @ ty_2Einteger_2Eint ) ) ).
+
+thf(stp_fo_c_2Eint__bitwise_2Eint__xor,type,
+    fo__c_2Eint__bitwise_2Eint__xor: tp__ty_2Einteger_2Eint > tp__ty_2Einteger_2Eint > tp__ty_2Einteger_2Eint ).
+
+thf(stp_eq_fo_c_2Eint__bitwise_2Eint__xor,axiom,
+    ! [X0: tp__ty_2Einteger_2Eint,X1: tp__ty_2Einteger_2Eint] :
+      ( ( inj__ty_2Einteger_2Eint @ ( fo__c_2Eint__bitwise_2Eint__xor @ X0 @ X1 ) )
+      = ( ap @ ( ap @ c_2Eint__bitwise_2Eint__xor @ ( inj__ty_2Einteger_2Eint @ X0 ) ) @ ( inj__ty_2Einteger_2Eint @ X1 ) ) ) ).
+
+thf(tp_c_2Eint__bitwise_2Enum__of__bits,type,
+    c_2Eint__bitwise_2Enum__of__bits: $i ).
+
+thf(mem_c_2Eint__bitwise_2Enum__of__bits,axiom,
+    mem @ c_2Eint__bitwise_2Enum__of__bits @ ( arr @ ( ty_2Elist_2Elist @ bool ) @ ty_2Enum_2Enum ) ).
+
+thf(stp_fo_c_2Eint__bitwise_2Enum__of__bits,type,
+    fo__c_2Eint__bitwise_2Enum__of__bits: tp__c_ty_2Elist_2Elist_o > tp__ty_2Enum_2Enum ).
+
+thf(stp_eq_fo_c_2Eint__bitwise_2Enum__of__bits,axiom,
+    ! [X0: tp__c_ty_2Elist_2Elist_o] :
+      ( ( inj__ty_2Enum_2Enum @ ( fo__c_2Eint__bitwise_2Enum__of__bits @ X0 ) )
+      = ( ap @ c_2Eint__bitwise_2Enum__of__bits @ ( inj__c_ty_2Elist_2Elist_o @ X0 ) ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Eint__not__def,axiom,
+    ! [V0i: tp__ty_2Einteger_2Eint] :
+      ( ( surj__ty_2Einteger_2Eint @ ( ap @ c_2Eint__bitwise_2Eint__not @ ( inj__ty_2Einteger_2Eint @ V0i ) ) )
+      = ( surj__ty_2Einteger_2Eint @ ( ap @ ( ap @ c_2Einteger_2Eint__sub @ ( ap @ ( ap @ c_2Einteger_2Eint__sub @ ( ap @ c_2Einteger_2Eint__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ ( inj__ty_2Einteger_2Eint @ V0i ) ) ) @ ( ap @ c_2Einteger_2Eint__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__not__not,axiom,
+    ! [V0i: tp__ty_2Einteger_2Eint] :
+      ( ( surj__ty_2Einteger_2Eint @ ( ap @ c_2Eint__bitwise_2Eint__not @ ( ap @ c_2Eint__bitwise_2Eint__not @ ( inj__ty_2Einteger_2Eint @ V0i ) ) ) )
+      = V0i ) ).
+
+thf(ax_thm_2Eint__bitwise_2Eint__bit__def,axiom,
+    ! [V0b: tp__ty_2Enum_2Enum,V1i: tp__ty_2Einteger_2Eint] :
+      ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V0b ) ) @ ( inj__ty_2Einteger_2Eint @ V1i ) ) )
+    <=> ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ ( ap @ ( ap @ c_2Einteger_2Eint__lt @ ( inj__ty_2Einteger_2Eint @ V1i ) ) @ ( ap @ c_2Einteger_2Eint__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ ( ap @ c_2Ebit_2EBIT @ ( inj__ty_2Enum_2Enum @ V0b ) ) @ ( ap @ c_2Einteger_2ENum @ ( ap @ c_2Eint__bitwise_2Eint__not @ ( inj__ty_2Einteger_2Eint @ V1i ) ) ) ) ) ) @ ( ap @ ( ap @ c_2Ebit_2EBIT @ ( inj__ty_2Enum_2Enum @ V0b ) ) @ ( ap @ c_2Einteger_2ENum @ ( inj__ty_2Einteger_2Eint @ V1i ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__bit__not,axiom,
+    ! [V0b: tp__ty_2Enum_2Enum,V1i: tp__ty_2Einteger_2Eint] :
+      ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V0b ) ) @ ( ap @ c_2Eint__bitwise_2Eint__not @ ( inj__ty_2Einteger_2Eint @ V1i ) ) ) )
+    <=> ~ ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V0b ) ) @ ( inj__ty_2Einteger_2Eint @ V1i ) ) ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Ebits__of__num__primitive__def,axiom,
+    ( c_2Eint__bitwise_2Ebits__of__num
+    = ( ap
+      @ ( ap @ ( c_2Erelation_2EWFREC @ ty_2Enum_2Enum @ ( ty_2Elist_2Elist @ bool ) )
+        @ ( ap @ ( c_2Emin_2E_40 @ ( arr @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) )
+          @ ( lam @ ( arr @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) )
+            @ ^ [V0R: $i] :
+                ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( c_2Erelation_2EWF @ ty_2Enum_2Enum ) @ V0R ) )
+                @ ( ap @ ( c_2Ebool_2E_21 @ ty_2Enum_2Enum )
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V1n: $i] : ( ap @ ( ap @ c_2Emin_2E_3D_3D_3E @ ( ap @ c_2Ebool_2E_7E @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ V1n ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) @ ( ap @ ( ap @ V0R @ ( ap @ ( ap @ c_2Earithmetic_2EDIV @ V1n ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) @ V1n ) ) ) ) ) ) ) )
+      @ ( lam @ ( arr @ ty_2Enum_2Enum @ ( ty_2Elist_2Elist @ bool ) )
+        @ ^ [V2bits__of__num: $i] :
+            ( lam @ ty_2Enum_2Enum
+            @ ^ [V3a: $i] : ( ap @ ( c_2Ecombin_2EI @ ( ty_2Elist_2Elist @ bool ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ( ty_2Elist_2Elist @ bool ) ) @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ V3a ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ ( c_2Elist_2ENIL @ bool ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ bool ) @ ( ap @ c_2Earithmetic_2EODD @ V3a ) ) @ ( ap @ V2bits__of__num @ ( ap @ ( ap @ c_2Earithmetic_2EDIV @ V3a ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Ebits__of__num__ind,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ! [V1n: tp__ty_2Enum_2Enum] :
+            ( ( ( V1n != fo__c_2Enum_2E0 )
+             => ( p @ ( ap @ V0P @ ( ap @ ( ap @ c_2Earithmetic_2EDIV @ ( inj__ty_2Enum_2Enum @ V1n ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) )
+           => ( p @ ( ap @ V0P @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+       => ! [V2v: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V0P @ ( inj__ty_2Enum_2Enum @ V2v ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Ebits__of__num__def,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Elist_2Elist_o @ ( ap @ c_2Eint__bitwise_2Ebits__of__num @ ( inj__ty_2Enum_2Enum @ V0n ) ) )
+      = ( surj__c_ty_2Elist_2Elist_o @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ( ty_2Elist_2Elist @ bool ) ) @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ ( c_2Elist_2ENIL @ bool ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ bool ) @ ( ap @ c_2Earithmetic_2EODD @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) @ ( ap @ c_2Eint__bitwise_2Ebits__of__num @ ( ap @ ( ap @ c_2Earithmetic_2EDIV @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Ebits__of__int__def,axiom,
+    ! [V0i: tp__ty_2Einteger_2Eint] :
+      ( ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ ( ap @ c_2Eint__bitwise_2Ebits__of__int @ ( inj__ty_2Einteger_2Eint @ V0i ) ) )
+      = ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ bool ) @ bool ) ) @ ( ap @ ( ap @ c_2Einteger_2Eint__lt @ ( inj__ty_2Einteger_2Eint @ V0i ) ) @ ( ap @ c_2Einteger_2Eint__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ( ap @ ( ap @ ( c_2Elist_2EMAP @ bool @ bool ) @ c_2Ebool_2E_7E ) @ ( ap @ c_2Eint__bitwise_2Ebits__of__num @ ( ap @ c_2Einteger_2ENum @ ( ap @ c_2Eint__bitwise_2Eint__not @ ( inj__ty_2Einteger_2Eint @ V0i ) ) ) ) ) ) @ c_2Ebool_2ET ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ( ap @ c_2Eint__bitwise_2Ebits__of__num @ ( ap @ c_2Einteger_2ENum @ ( inj__ty_2Einteger_2Eint @ V0i ) ) ) ) @ c_2Ebool_2EF ) ) ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Enum__of__bits__primitive__def,axiom,
+    ( c_2Eint__bitwise_2Enum__of__bits
+    = ( ap
+      @ ( ap @ ( c_2Erelation_2EWFREC @ ( ty_2Elist_2Elist @ bool ) @ ty_2Enum_2Enum )
+        @ ( ap @ ( c_2Emin_2E_40 @ ( arr @ ( ty_2Elist_2Elist @ bool ) @ ( arr @ ( ty_2Elist_2Elist @ bool ) @ bool ) ) )
+          @ ( lam @ ( arr @ ( ty_2Elist_2Elist @ bool ) @ ( arr @ ( ty_2Elist_2Elist @ bool ) @ bool ) )
+            @ ^ [V0R: $i] :
+                ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( c_2Erelation_2EWF @ ( ty_2Elist_2Elist @ bool ) ) @ V0R ) )
+                @ ( ap
+                  @ ( ap @ c_2Ebool_2E_2F_5C
+                    @ ( ap @ ( c_2Ebool_2E_21 @ ( ty_2Elist_2Elist @ bool ) )
+                      @ ( lam @ ( ty_2Elist_2Elist @ bool )
+                        @ ^ [V1bs: $i] : ( ap @ ( ap @ V0R @ V1bs ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ bool ) @ c_2Ebool_2EF ) @ V1bs ) ) ) ) )
+                  @ ( ap @ ( c_2Ebool_2E_21 @ ( ty_2Elist_2Elist @ bool ) )
+                    @ ( lam @ ( ty_2Elist_2Elist @ bool )
+                      @ ^ [V2bs: $i] : ( ap @ ( ap @ V0R @ V2bs ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ bool ) @ c_2Ebool_2ET ) @ V2bs ) ) ) ) ) ) ) ) )
+      @ ( lam @ ( arr @ ( ty_2Elist_2Elist @ bool ) @ ty_2Enum_2Enum )
+        @ ^ [V3num__of__bits: $i] :
+            ( lam @ ( ty_2Elist_2Elist @ bool )
+            @ ^ [V4a: $i] :
+                ( ap @ ( ap @ ( ap @ ( c_2Elist_2Elist__CASE @ bool @ ty_2Enum_2Enum ) @ V4a ) @ ( ap @ ( c_2Ecombin_2EI @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) )
+                @ ( lam @ bool
+                  @ ^ [V5v: $i] :
+                      ( lam @ ( ty_2Elist_2Elist @ bool )
+                      @ ^ [V6bs: $i] : ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ty_2Enum_2Enum ) @ V5v ) @ ( ap @ ( c_2Ecombin_2EI @ ty_2Enum_2Enum ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) @ ( ap @ V3num__of__bits @ V6bs ) ) ) ) ) @ ( ap @ ( c_2Ecombin_2EI @ ty_2Enum_2Enum ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) @ ( ap @ V3num__of__bits @ V6bs ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Enum__of__bits__ind,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ( ty_2Elist_2Elist @ bool ) @ bool ) )
+     => ( ( ( p @ ( ap @ V0P @ ( c_2Elist_2ENIL @ bool ) ) )
+          & ! [V1bs: tp__c_ty_2Elist_2Elist_o] :
+              ( ( p @ ( ap @ V0P @ ( inj__c_ty_2Elist_2Elist_o @ V1bs ) ) )
+             => ( p @ ( ap @ V0P @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ bool ) @ c_2Ebool_2EF ) @ ( inj__c_ty_2Elist_2Elist_o @ V1bs ) ) ) ) )
+          & ! [V2bs: tp__c_ty_2Elist_2Elist_o] :
+              ( ( p @ ( ap @ V0P @ ( inj__c_ty_2Elist_2Elist_o @ V2bs ) ) )
+             => ( p @ ( ap @ V0P @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ bool ) @ c_2Ebool_2ET ) @ ( inj__c_ty_2Elist_2Elist_o @ V2bs ) ) ) ) ) )
+       => ! [V3v: tp__c_ty_2Elist_2Elist_o] : ( p @ ( ap @ V0P @ ( inj__c_ty_2Elist_2Elist_o @ V3v ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Enum__of__bits__def,axiom,
+    ( ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Eint__bitwise_2Enum__of__bits @ ( c_2Elist_2ENIL @ bool ) ) )
+      = fo__c_2Enum_2E0 )
+    & ! [V0bs: tp__c_ty_2Elist_2Elist_o] :
+        ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Eint__bitwise_2Enum__of__bits @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ bool ) @ c_2Ebool_2EF ) @ ( inj__c_ty_2Elist_2Elist_o @ V0bs ) ) ) )
+        = ( surj__ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) @ ( ap @ c_2Eint__bitwise_2Enum__of__bits @ ( inj__c_ty_2Elist_2Elist_o @ V0bs ) ) ) ) )
+    & ! [V1bs: tp__c_ty_2Elist_2Elist_o] :
+        ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Eint__bitwise_2Enum__of__bits @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ bool ) @ c_2Ebool_2ET ) @ ( inj__c_ty_2Elist_2Elist_o @ V1bs ) ) ) )
+        = ( surj__ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) @ ( ap @ c_2Eint__bitwise_2Enum__of__bits @ ( inj__c_ty_2Elist_2Elist_o @ V1bs ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Eint__of__bits__def,axiom,
+    ! [V0bs: tp__c_ty_2Elist_2Elist_o,V1rest: $i] :
+      ( ( mem @ V1rest @ bool )
+     => ( ( surj__ty_2Einteger_2Eint @ ( ap @ c_2Eint__bitwise_2Eint__of__bits @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ( inj__c_ty_2Elist_2Elist_o @ V0bs ) ) @ V1rest ) ) )
+        = ( surj__ty_2Einteger_2Eint @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ty_2Einteger_2Eint ) @ V1rest ) @ ( ap @ c_2Eint__bitwise_2Eint__not @ ( ap @ c_2Einteger_2Eint__of__num @ ( ap @ c_2Eint__bitwise_2Enum__of__bits @ ( ap @ ( ap @ ( c_2Elist_2EMAP @ bool @ bool ) @ c_2Ebool_2E_7E ) @ ( inj__c_ty_2Elist_2Elist_o @ V0bs ) ) ) ) ) ) @ ( ap @ c_2Einteger_2Eint__of__num @ ( ap @ c_2Eint__bitwise_2Enum__of__bits @ ( inj__c_ty_2Elist_2Elist_o @ V0bs ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Ebits__bitwise__ind,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ bool ) ) ) )
+     => ( ( ! [V1f: $i] :
+              ( ( mem @ V1f @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) )
+             => ! [V2r1: $i] :
+                  ( ( mem @ V2r1 @ A_27b )
+                 => ! [V3r2: $i] :
+                      ( ( mem @ V3r2 @ A_27c )
+                     => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V1f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( c_2Elist_2ENIL @ A_27b ) ) @ V2r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( c_2Elist_2ENIL @ A_27c ) ) @ V3r2 ) ) ) ) ) )
+          & ! [V4f: $i] :
+              ( ( mem @ V4f @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) )
+             => ! [V5r1: $i] :
+                  ( ( mem @ V5r1 @ A_27b )
+                 => ! [V6b2: $i] :
+                      ( ( mem @ V6b2 @ A_27c )
+                     => ! [V7bs2: $i] :
+                          ( ( mem @ V7bs2 @ ( ty_2Elist_2Elist @ A_27c ) )
+                         => ! [V8r2: $i] :
+                              ( ( mem @ V8r2 @ A_27c )
+                             => ( ( p @ ( ap @ ( ap @ ( ap @ V0P @ V4f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( c_2Elist_2ENIL @ A_27b ) ) @ V5r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ V7bs2 ) @ V8r2 ) ) )
+                               => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V4f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( c_2Elist_2ENIL @ A_27b ) ) @ V5r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27c ) @ V6b2 ) @ V7bs2 ) ) @ V8r2 ) ) ) ) ) ) ) ) )
+          & ! [V9f: $i] :
+              ( ( mem @ V9f @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) )
+             => ! [V10b1: $i] :
+                  ( ( mem @ V10b1 @ A_27b )
+                 => ! [V11bs1: $i] :
+                      ( ( mem @ V11bs1 @ ( ty_2Elist_2Elist @ A_27b ) )
+                     => ! [V12r1: $i] :
+                          ( ( mem @ V12r1 @ A_27b )
+                         => ! [V13r2: $i] :
+                              ( ( mem @ V13r2 @ A_27c )
+                             => ( ( p @ ( ap @ ( ap @ ( ap @ V0P @ V9f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ V11bs1 ) @ V12r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( c_2Elist_2ENIL @ A_27c ) ) @ V13r2 ) ) )
+                               => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V9f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27b ) @ V10b1 ) @ V11bs1 ) ) @ V12r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( c_2Elist_2ENIL @ A_27c ) ) @ V13r2 ) ) ) ) ) ) ) ) )
+          & ! [V14f: $i] :
+              ( ( mem @ V14f @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) )
+             => ! [V15b1: $i] :
+                  ( ( mem @ V15b1 @ A_27b )
+                 => ! [V16bs1: $i] :
+                      ( ( mem @ V16bs1 @ ( ty_2Elist_2Elist @ A_27b ) )
+                     => ! [V17r1: $i] :
+                          ( ( mem @ V17r1 @ A_27b )
+                         => ! [V18b2: $i] :
+                              ( ( mem @ V18b2 @ A_27c )
+                             => ! [V19bs2: $i] :
+                                  ( ( mem @ V19bs2 @ ( ty_2Elist_2Elist @ A_27c ) )
+                                 => ! [V20r2: $i] :
+                                      ( ( mem @ V20r2 @ A_27c )
+                                     => ( ( p @ ( ap @ ( ap @ ( ap @ V0P @ V14f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ V16bs1 ) @ V17r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ V19bs2 ) @ V20r2 ) ) )
+                                       => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V14f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27b ) @ V15b1 ) @ V16bs1 ) ) @ V17r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27c ) @ V18b2 ) @ V19bs2 ) ) @ V20r2 ) ) ) ) ) ) ) ) ) ) ) )
+       => ! [V21v: $i] :
+            ( ( mem @ V21v @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) )
+           => ! [V22v1: $i] :
+                ( ( mem @ V22v1 @ ( ty_2Elist_2Elist @ A_27b ) )
+               => ! [V23v2: $i] :
+                    ( ( mem @ V23v2 @ A_27b )
+                   => ! [V24v3: $i] :
+                        ( ( mem @ V24v3 @ ( ty_2Elist_2Elist @ A_27c ) )
+                       => ! [V25v4: $i] :
+                            ( ( mem @ V25v4 @ A_27c )
+                           => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V21v ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ V22v1 ) @ V23v2 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ V24v3 ) @ V25v4 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Ebits__bitwise__def,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del] :
+      ( ! [V0r2: $i] :
+          ( ( mem @ V0r2 @ A_27c )
+         => ! [V1r1: $i] :
+              ( ( mem @ V1r1 @ A_27b )
+             => ! [V2f: $i] :
+                  ( ( mem @ V2f @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) )
+                 => ( ( ap @ ( ap @ ( ap @ ( c_2Eint__bitwise_2Ebits__bitwise @ A_27a @ A_27b @ A_27c ) @ V2f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( c_2Elist_2ENIL @ A_27b ) ) @ V1r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( c_2Elist_2ENIL @ A_27c ) ) @ V0r2 ) )
+                    = ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) @ ( c_2Elist_2ENIL @ A_27a ) ) @ ( ap @ ( ap @ V2f @ V1r1 ) @ V0r2 ) ) ) ) ) )
+      & ! [V3r2: $i] :
+          ( ( mem @ V3r2 @ A_27c )
+         => ! [V4r1: $i] :
+              ( ( mem @ V4r1 @ A_27b )
+             => ! [V5f: $i] :
+                  ( ( mem @ V5f @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) )
+                 => ! [V6bs2: $i] :
+                      ( ( mem @ V6bs2 @ ( ty_2Elist_2Elist @ A_27c ) )
+                     => ! [V7b2: $i] :
+                          ( ( mem @ V7b2 @ A_27c )
+                         => ( ( ap @ ( ap @ ( ap @ ( c_2Eint__bitwise_2Ebits__bitwise @ A_27a @ A_27b @ A_27c ) @ V5f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( c_2Elist_2ENIL @ A_27b ) ) @ V4r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27c ) @ V7b2 ) @ V6bs2 ) ) @ V3r2 ) )
+                            = ( ap
+                              @ ( ap @ ( c_2Ebool_2ELET @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) )
+                                @ ( ap @ ( c_2Epair_2EUNCURRY @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) )
+                                  @ ( lam @ ( ty_2Elist_2Elist @ A_27a )
+                                    @ ^ [V8bs: $i] :
+                                        ( lam @ A_27a
+                                        @ ^ [V9r: $i] : ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ ( ap @ ( ap @ V5f @ V4r1 ) @ V7b2 ) ) @ V8bs ) ) @ V9r ) ) ) ) )
+                              @ ( ap @ ( ap @ ( ap @ ( c_2Eint__bitwise_2Ebits__bitwise @ A_27a @ A_27b @ A_27c ) @ V5f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( c_2Elist_2ENIL @ A_27b ) ) @ V4r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ V6bs2 ) @ V3r2 ) ) ) ) ) ) ) ) )
+      & ! [V10r2: $i] :
+          ( ( mem @ V10r2 @ A_27c )
+         => ! [V11r1: $i] :
+              ( ( mem @ V11r1 @ A_27b )
+             => ! [V12f: $i] :
+                  ( ( mem @ V12f @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) )
+                 => ! [V13bs1: $i] :
+                      ( ( mem @ V13bs1 @ ( ty_2Elist_2Elist @ A_27b ) )
+                     => ! [V14b1: $i] :
+                          ( ( mem @ V14b1 @ A_27b )
+                         => ( ( ap @ ( ap @ ( ap @ ( c_2Eint__bitwise_2Ebits__bitwise @ A_27a @ A_27b @ A_27c ) @ V12f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27b ) @ V14b1 ) @ V13bs1 ) ) @ V11r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( c_2Elist_2ENIL @ A_27c ) ) @ V10r2 ) )
+                            = ( ap
+                              @ ( ap @ ( c_2Ebool_2ELET @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) )
+                                @ ( ap @ ( c_2Epair_2EUNCURRY @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) )
+                                  @ ( lam @ ( ty_2Elist_2Elist @ A_27a )
+                                    @ ^ [V15bs: $i] :
+                                        ( lam @ A_27a
+                                        @ ^ [V16r: $i] : ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ ( ap @ ( ap @ V12f @ V14b1 ) @ V10r2 ) ) @ V15bs ) ) @ V16r ) ) ) ) )
+                              @ ( ap @ ( ap @ ( ap @ ( c_2Eint__bitwise_2Ebits__bitwise @ A_27a @ A_27b @ A_27c ) @ V12f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ V13bs1 ) @ V11r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( c_2Elist_2ENIL @ A_27c ) ) @ V10r2 ) ) ) ) ) ) ) ) )
+      & ! [V17r2: $i] :
+          ( ( mem @ V17r2 @ A_27c )
+         => ! [V18r1: $i] :
+              ( ( mem @ V18r1 @ A_27b )
+             => ! [V19f: $i] :
+                  ( ( mem @ V19f @ ( arr @ A_27b @ ( arr @ A_27c @ A_27a ) ) )
+                 => ! [V20bs2: $i] :
+                      ( ( mem @ V20bs2 @ ( ty_2Elist_2Elist @ A_27c ) )
+                     => ! [V21bs1: $i] :
+                          ( ( mem @ V21bs1 @ ( ty_2Elist_2Elist @ A_27b ) )
+                         => ! [V22b2: $i] :
+                              ( ( mem @ V22b2 @ A_27c )
+                             => ! [V23b1: $i] :
+                                  ( ( mem @ V23b1 @ A_27b )
+                                 => ( ( ap @ ( ap @ ( ap @ ( c_2Eint__bitwise_2Ebits__bitwise @ A_27a @ A_27b @ A_27c ) @ V19f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27b ) @ V23b1 ) @ V21bs1 ) ) @ V18r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27c ) @ V22b2 ) @ V20bs2 ) ) @ V17r2 ) )
+                                    = ( ap
+                                      @ ( ap @ ( c_2Ebool_2ELET @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) )
+                                        @ ( ap @ ( c_2Epair_2EUNCURRY @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) )
+                                          @ ( lam @ ( ty_2Elist_2Elist @ A_27a )
+                                            @ ^ [V24bs: $i] :
+                                                ( lam @ A_27a
+                                                @ ^ [V25r: $i] : ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27a ) @ A_27a ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ ( ap @ ( ap @ V19f @ V23b1 ) @ V22b2 ) ) @ V24bs ) ) @ V25r ) ) ) ) )
+                                      @ ( ap @ ( ap @ ( ap @ ( c_2Eint__bitwise_2Ebits__bitwise @ A_27a @ A_27b @ A_27c ) @ V19f ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27b ) @ A_27b ) @ V21bs1 ) @ V18r1 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ A_27c ) @ A_27c ) @ V20bs2 ) @ V17r2 ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Eint__bitwise__def,axiom,
+    ! [V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ bool @ ( arr @ bool @ bool ) ) )
+     => ! [V1i: tp__ty_2Einteger_2Eint,V2j: tp__ty_2Einteger_2Eint] :
+          ( ( surj__ty_2Einteger_2Eint @ ( ap @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bitwise @ V0f ) @ ( inj__ty_2Einteger_2Eint @ V1i ) ) @ ( inj__ty_2Einteger_2Eint @ V2j ) ) )
+          = ( surj__ty_2Einteger_2Eint @ ( ap @ c_2Eint__bitwise_2Eint__of__bits @ ( ap @ ( ap @ ( ap @ ( c_2Eint__bitwise_2Ebits__bitwise @ bool @ bool @ bool ) @ V0f ) @ ( ap @ c_2Eint__bitwise_2Ebits__of__int @ ( inj__ty_2Einteger_2Eint @ V1i ) ) ) @ ( ap @ c_2Eint__bitwise_2Ebits__of__int @ ( inj__ty_2Einteger_2Eint @ V2j ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Eint__and__def,axiom,
+    ( c_2Eint__bitwise_2Eint__and
+    = ( ap @ c_2Eint__bitwise_2Eint__bitwise @ c_2Ebool_2E_2F_5C ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Eint__or__def,axiom,
+    ( c_2Eint__bitwise_2Eint__or
+    = ( ap @ c_2Eint__bitwise_2Eint__bitwise @ c_2Ebool_2E_5C_2F ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Eint__xor__def,axiom,
+    ( c_2Eint__bitwise_2Eint__xor
+    = ( ap @ c_2Eint__bitwise_2Eint__bitwise
+      @ ( lam @ bool
+        @ ^ [V0x: $i] :
+            ( lam @ bool
+            @ ^ [V1y: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ bool ) @ V0x ) @ V1y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__not,axiom,
+    ( c_2Eint__bitwise_2Eint__not
+    = ( ap
+      @ ( ap @ c_2Eint__bitwise_2Eint__bitwise
+        @ ( lam @ bool
+          @ ^ [V0x: $i] :
+              ( lam @ bool
+              @ ^ [V1y: $i] : ( ap @ c_2Ebool_2E_7E @ V1y ) ) ) )
+      @ ( ap @ c_2Einteger_2Eint__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Eint__shift__left__def,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum,V1i: tp__ty_2Einteger_2Eint] :
+      ( ( surj__ty_2Einteger_2Eint @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__shift__left @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( inj__ty_2Einteger_2Eint @ V1i ) ) )
+      = ( surj__ty_2Einteger_2Eint
+        @ ( ap
+          @ ( ap @ ( c_2Ebool_2ELET @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ty_2Einteger_2Eint )
+            @ ( ap @ ( c_2Epair_2EUNCURRY @ ( ty_2Elist_2Elist @ bool ) @ bool @ ty_2Einteger_2Eint )
+              @ ( lam @ ( ty_2Elist_2Elist @ bool )
+                @ ^ [V2bs: $i] :
+                    ( lam @ bool
+                    @ ^ [V3r: $i] : ( ap @ c_2Eint__bitwise_2Eint__of__bits @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ bool ) @ ( ap @ ( ap @ ( c_2Elist_2EGENLIST @ bool ) @ ( ap @ ( c_2Ecombin_2EK @ bool @ ty_2Enum_2Enum ) @ c_2Ebool_2EF ) ) @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) @ V2bs ) ) @ V3r ) ) ) ) ) )
+          @ ( ap @ c_2Eint__bitwise_2Ebits__of__int @ ( inj__ty_2Einteger_2Eint @ V1i ) ) ) ) ) ).
+
+thf(ax_thm_2Eint__bitwise_2Eint__shift__right__def,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum,V1i: tp__ty_2Einteger_2Eint] :
+      ( ( surj__ty_2Einteger_2Eint @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__shift__right @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( inj__ty_2Einteger_2Eint @ V1i ) ) )
+      = ( surj__ty_2Einteger_2Eint
+        @ ( ap
+          @ ( ap @ ( c_2Ebool_2ELET @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ty_2Einteger_2Eint )
+            @ ( ap @ ( c_2Epair_2EUNCURRY @ ( ty_2Elist_2Elist @ bool ) @ bool @ ty_2Einteger_2Eint )
+              @ ( lam @ ( ty_2Elist_2Elist @ bool )
+                @ ^ [V2bs: $i] :
+                    ( lam @ bool
+                    @ ^ [V3r: $i] : ( ap @ c_2Eint__bitwise_2Eint__of__bits @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ( ap @ ( ap @ ( c_2Elist_2EDROP @ bool ) @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ V2bs ) ) @ V3r ) ) ) ) ) )
+          @ ( ap @ c_2Eint__bitwise_2Ebits__of__int @ ( inj__ty_2Einteger_2Eint @ V1i ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__bit__int__of__bits,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum,V1b: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o] :
+      ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( ap @ c_2Eint__bitwise_2Eint__of__bits @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ V1b ) ) ) )
+    <=> ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( ap @ ( c_2Elist_2ELENGTH @ bool ) @ ( ap @ ( c_2Epair_2EFST @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ V1b ) ) ) ) ) @ ( ap @ ( ap @ ( c_2Elist_2EEL @ bool ) @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( ap @ ( c_2Epair_2EFST @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ V1b ) ) ) ) @ ( ap @ ( c_2Epair_2ESND @ ( ty_2Elist_2Elist @ bool ) @ bool ) @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_o_o @ V1b ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__of__bits__bits__of__int,axiom,
+    ! [V0i: tp__ty_2Einteger_2Eint] :
+      ( ( surj__ty_2Einteger_2Eint @ ( ap @ c_2Eint__bitwise_2Eint__of__bits @ ( ap @ c_2Eint__bitwise_2Ebits__of__int @ ( inj__ty_2Einteger_2Eint @ V0i ) ) ) )
+      = V0i ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__bit__bitwise,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum,V1f: $i] :
+      ( ( mem @ V1f @ ( arr @ bool @ ( arr @ bool @ bool ) ) )
+     => ! [V2i: tp__ty_2Einteger_2Eint,V3j: tp__ty_2Einteger_2Eint] :
+          ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( ap @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bitwise @ V1f ) @ ( inj__ty_2Einteger_2Eint @ V2i ) ) @ ( inj__ty_2Einteger_2Eint @ V3j ) ) ) )
+        <=> ( p @ ( ap @ ( ap @ V1f @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( inj__ty_2Einteger_2Eint @ V2i ) ) ) @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( inj__ty_2Einteger_2Eint @ V3j ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__bit__and,axiom,
+    ! [V0j: tp__ty_2Einteger_2Eint,V1i: tp__ty_2Einteger_2Eint,V2n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__and @ ( inj__ty_2Einteger_2Eint @ V1i ) ) @ ( inj__ty_2Einteger_2Eint @ V0j ) ) ) )
+    <=> ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( inj__ty_2Einteger_2Eint @ V1i ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( inj__ty_2Einteger_2Eint @ V0j ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__bit__or,axiom,
+    ! [V0j: tp__ty_2Einteger_2Eint,V1i: tp__ty_2Einteger_2Eint,V2n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__or @ ( inj__ty_2Einteger_2Eint @ V1i ) ) @ ( inj__ty_2Einteger_2Eint @ V0j ) ) ) )
+    <=> ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( inj__ty_2Einteger_2Eint @ V1i ) ) )
+        | ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( inj__ty_2Einteger_2Eint @ V0j ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__bit__xor,axiom,
+    ! [V0j: tp__ty_2Einteger_2Eint,V1i: tp__ty_2Einteger_2Eint,V2n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__xor @ ( inj__ty_2Einteger_2Eint @ V1i ) ) @ ( inj__ty_2Einteger_2Eint @ V0j ) ) ) )
+    <=> ~ ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( inj__ty_2Einteger_2Eint @ V1i ) ) )
+        <=> ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( inj__ty_2Einteger_2Eint @ V0j ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__bit__equiv,axiom,
+    ! [V0i: tp__ty_2Einteger_2Eint,V1j: tp__ty_2Einteger_2Eint] :
+      ( ( V0i = V1j )
+    <=> ! [V2n: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( inj__ty_2Einteger_2Eint @ V0i ) ) )
+        <=> ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( inj__ty_2Einteger_2Eint @ V1j ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__bit__shift__left,axiom,
+    ! [V0b: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum,V2i: tp__ty_2Einteger_2Eint] :
+      ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V0b ) ) @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__shift__left @ ( inj__ty_2Enum_2Enum @ V1n ) ) @ ( inj__ty_2Einteger_2Eint @ V2i ) ) ) )
+    <=> ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V1n ) ) @ ( inj__ty_2Enum_2Enum @ V0b ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( ap @ ( ap @ c_2Earithmetic_2E_2D @ ( inj__ty_2Enum_2Enum @ V0b ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) @ ( inj__ty_2Einteger_2Eint @ V2i ) ) ) ) ) ).
+
+thf(conj_thm_2Eint__bitwise_2Eint__bit__shift__right,axiom,
+    ! [V0b: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum,V2i: tp__ty_2Einteger_2Eint] :
+      ( ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( inj__ty_2Enum_2Enum @ V0b ) ) @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__shift__right @ ( inj__ty_2Enum_2Enum @ V1n ) ) @ ( inj__ty_2Einteger_2Eint @ V2i ) ) ) )
+    <=> ( p @ ( ap @ ( ap @ c_2Eint__bitwise_2Eint__bit @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V0b ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) @ ( inj__ty_2Einteger_2Eint @ V2i ) ) ) ) ).
+
+%------------------------------------------------------------------------------

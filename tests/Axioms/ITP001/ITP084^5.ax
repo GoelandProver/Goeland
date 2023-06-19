@@ -1,0 +1,472 @@
+%------------------------------------------------------------------------------
+% File     : ITP084^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : hrat^2.ax [Gau20]
+%          : HL4084^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  101 (  31 unt;  25 typ;   0 def)
+%            Number of atoms       :  844 (  45 equ;   0 cnn)
+%            Maximal formula atoms :   45 (   8 avg)
+%            Number of connectives : 1249 (   2   ~;   4   |;  10   &;1218   @)
+%                                         (   5 <=>;  10  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   23 (   7 avg;1218 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :    9 (   9   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   52 (  51 usr;  44 con; 0-2 aty)
+%            Number of variables   :  124 (   4   ^ 110   !;  10   ?; 124   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tp_ty_2Ehrat_2Ehrat,type,
+    ty_2Ehrat_2Ehrat: del ).
+
+thf(stp_ty_2Ehrat_2Ehrat,type,
+    tp__ty_2Ehrat_2Ehrat: $tType ).
+
+thf(stp_inj_ty_2Ehrat_2Ehrat,type,
+    inj__ty_2Ehrat_2Ehrat: tp__ty_2Ehrat_2Ehrat > $i ).
+
+thf(stp_surj_ty_2Ehrat_2Ehrat,type,
+    surj__ty_2Ehrat_2Ehrat: $i > tp__ty_2Ehrat_2Ehrat ).
+
+thf(stp_inj_surj_ty_2Ehrat_2Ehrat,axiom,
+    ! [X: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( inj__ty_2Ehrat_2Ehrat @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_ty_2Ehrat_2Ehrat,axiom,
+    ! [X: tp__ty_2Ehrat_2Ehrat] : ( mem @ ( inj__ty_2Ehrat_2Ehrat @ X ) @ ty_2Ehrat_2Ehrat ) ).
+
+thf(stp_iso_mem_ty_2Ehrat_2Ehrat,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ty_2Ehrat_2Ehrat )
+     => ( X
+        = ( inj__ty_2Ehrat_2Ehrat @ ( surj__ty_2Ehrat_2Ehrat @ X ) ) ) ) ).
+
+thf(tp_c_2Ehrat_2Ehrat__1,type,
+    c_2Ehrat_2Ehrat__1: $i ).
+
+thf(mem_c_2Ehrat_2Ehrat__1,axiom,
+    mem @ c_2Ehrat_2Ehrat__1 @ ty_2Ehrat_2Ehrat ).
+
+thf(stp_fo_c_2Ehrat_2Ehrat__1,type,
+    fo__c_2Ehrat_2Ehrat__1: tp__ty_2Ehrat_2Ehrat ).
+
+thf(stp_eq_fo_c_2Ehrat_2Ehrat__1,axiom,
+    ( ( inj__ty_2Ehrat_2Ehrat @ fo__c_2Ehrat_2Ehrat__1 )
+    = c_2Ehrat_2Ehrat__1 ) ).
+
+thf(tp_c_2Ehrat_2Ehrat__ABS,type,
+    c_2Ehrat_2Ehrat__ABS: $i ).
+
+thf(mem_c_2Ehrat_2Ehrat__ABS,axiom,
+    mem @ c_2Ehrat_2Ehrat__ABS @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ty_2Ehrat_2Ehrat ) ).
+
+thf(stp_fo_c_2Ehrat_2Ehrat__ABS,type,
+    fo__c_2Ehrat_2Ehrat__ABS: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum > tp__ty_2Ehrat_2Ehrat ).
+
+thf(stp_eq_fo_c_2Ehrat_2Ehrat__ABS,axiom,
+    ! [X0: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( inj__ty_2Ehrat_2Ehrat @ ( fo__c_2Ehrat_2Ehrat__ABS @ X0 ) )
+      = ( ap @ c_2Ehrat_2Ehrat__ABS @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ X0 ) ) ) ).
+
+thf(tp_c_2Ehrat_2Ehrat__ABS__CLASS,type,
+    c_2Ehrat_2Ehrat__ABS__CLASS: $i ).
+
+thf(mem_c_2Ehrat_2Ehrat__ABS__CLASS,axiom,
+    mem @ c_2Ehrat_2Ehrat__ABS__CLASS @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool ) @ ty_2Ehrat_2Ehrat ) ).
+
+thf(tp_c_2Ehrat_2Ehrat__REP,type,
+    c_2Ehrat_2Ehrat__REP: $i ).
+
+thf(mem_c_2Ehrat_2Ehrat__REP,axiom,
+    mem @ c_2Ehrat_2Ehrat__REP @ ( arr @ ty_2Ehrat_2Ehrat @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) ).
+
+thf(tp_c_2Ehrat_2Ehrat__REP__CLASS,type,
+    c_2Ehrat_2Ehrat__REP__CLASS: $i ).
+
+thf(mem_c_2Ehrat_2Ehrat__REP__CLASS,axiom,
+    mem @ c_2Ehrat_2Ehrat__REP__CLASS @ ( arr @ ty_2Ehrat_2Ehrat @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool ) ) ).
+
+thf(tp_c_2Ehrat_2Ehrat__add,type,
+    c_2Ehrat_2Ehrat__add: $i ).
+
+thf(mem_c_2Ehrat_2Ehrat__add,axiom,
+    mem @ c_2Ehrat_2Ehrat__add @ ( arr @ ty_2Ehrat_2Ehrat @ ( arr @ ty_2Ehrat_2Ehrat @ ty_2Ehrat_2Ehrat ) ) ).
+
+thf(stp_fo_c_2Ehrat_2Ehrat__add,type,
+    fo__c_2Ehrat_2Ehrat__add: tp__ty_2Ehrat_2Ehrat > tp__ty_2Ehrat_2Ehrat > tp__ty_2Ehrat_2Ehrat ).
+
+thf(stp_eq_fo_c_2Ehrat_2Ehrat__add,axiom,
+    ! [X0: tp__ty_2Ehrat_2Ehrat,X1: tp__ty_2Ehrat_2Ehrat] :
+      ( ( inj__ty_2Ehrat_2Ehrat @ ( fo__c_2Ehrat_2Ehrat__add @ X0 @ X1 ) )
+      = ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ X0 ) ) @ ( inj__ty_2Ehrat_2Ehrat @ X1 ) ) ) ).
+
+thf(tp_c_2Ehrat_2Ehrat__inv,type,
+    c_2Ehrat_2Ehrat__inv: $i ).
+
+thf(mem_c_2Ehrat_2Ehrat__inv,axiom,
+    mem @ c_2Ehrat_2Ehrat__inv @ ( arr @ ty_2Ehrat_2Ehrat @ ty_2Ehrat_2Ehrat ) ).
+
+thf(stp_fo_c_2Ehrat_2Ehrat__inv,type,
+    fo__c_2Ehrat_2Ehrat__inv: tp__ty_2Ehrat_2Ehrat > tp__ty_2Ehrat_2Ehrat ).
+
+thf(stp_eq_fo_c_2Ehrat_2Ehrat__inv,axiom,
+    ! [X0: tp__ty_2Ehrat_2Ehrat] :
+      ( ( inj__ty_2Ehrat_2Ehrat @ ( fo__c_2Ehrat_2Ehrat__inv @ X0 ) )
+      = ( ap @ c_2Ehrat_2Ehrat__inv @ ( inj__ty_2Ehrat_2Ehrat @ X0 ) ) ) ).
+
+thf(tp_c_2Ehrat_2Ehrat__mul,type,
+    c_2Ehrat_2Ehrat__mul: $i ).
+
+thf(mem_c_2Ehrat_2Ehrat__mul,axiom,
+    mem @ c_2Ehrat_2Ehrat__mul @ ( arr @ ty_2Ehrat_2Ehrat @ ( arr @ ty_2Ehrat_2Ehrat @ ty_2Ehrat_2Ehrat ) ) ).
+
+thf(stp_fo_c_2Ehrat_2Ehrat__mul,type,
+    fo__c_2Ehrat_2Ehrat__mul: tp__ty_2Ehrat_2Ehrat > tp__ty_2Ehrat_2Ehrat > tp__ty_2Ehrat_2Ehrat ).
+
+thf(stp_eq_fo_c_2Ehrat_2Ehrat__mul,axiom,
+    ! [X0: tp__ty_2Ehrat_2Ehrat,X1: tp__ty_2Ehrat_2Ehrat] :
+      ( ( inj__ty_2Ehrat_2Ehrat @ ( fo__c_2Ehrat_2Ehrat__mul @ X0 @ X1 ) )
+      = ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ X0 ) ) @ ( inj__ty_2Ehrat_2Ehrat @ X1 ) ) ) ).
+
+thf(tp_c_2Ehrat_2Ehrat__sucint,type,
+    c_2Ehrat_2Ehrat__sucint: $i ).
+
+thf(mem_c_2Ehrat_2Ehrat__sucint,axiom,
+    mem @ c_2Ehrat_2Ehrat__sucint @ ( arr @ ty_2Enum_2Enum @ ty_2Ehrat_2Ehrat ) ).
+
+thf(stp_fo_c_2Ehrat_2Ehrat__sucint,type,
+    fo__c_2Ehrat_2Ehrat__sucint: tp__ty_2Enum_2Enum > tp__ty_2Ehrat_2Ehrat ).
+
+thf(stp_eq_fo_c_2Ehrat_2Ehrat__sucint,axiom,
+    ! [X0: tp__ty_2Enum_2Enum] :
+      ( ( inj__ty_2Ehrat_2Ehrat @ ( fo__c_2Ehrat_2Ehrat__sucint @ X0 ) )
+      = ( ap @ c_2Ehrat_2Ehrat__sucint @ ( inj__ty_2Enum_2Enum @ X0 ) ) ) ).
+
+thf(tp_c_2Ehrat_2Etrat__1,type,
+    c_2Ehrat_2Etrat__1: $i ).
+
+thf(mem_c_2Ehrat_2Etrat__1,axiom,
+    mem @ c_2Ehrat_2Etrat__1 @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ).
+
+thf(tp_c_2Ehrat_2Etrat__add,type,
+    c_2Ehrat_2Etrat__add: $i ).
+
+thf(mem_c_2Ehrat_2Etrat__add,axiom,
+    mem @ c_2Ehrat_2Etrat__add @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) ) ).
+
+thf(tp_c_2Ehrat_2Etrat__eq,type,
+    c_2Ehrat_2Etrat__eq: $i ).
+
+thf(mem_c_2Ehrat_2Etrat__eq,axiom,
+    mem @ c_2Ehrat_2Etrat__eq @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool ) ) ).
+
+thf(tp_c_2Ehrat_2Etrat__inv,type,
+    c_2Ehrat_2Etrat__inv: $i ).
+
+thf(mem_c_2Ehrat_2Etrat__inv,axiom,
+    mem @ c_2Ehrat_2Etrat__inv @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) ).
+
+thf(tp_c_2Ehrat_2Etrat__mul,type,
+    c_2Ehrat_2Etrat__mul: $i ).
+
+thf(mem_c_2Ehrat_2Etrat__mul,axiom,
+    mem @ c_2Ehrat_2Etrat__mul @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) ) ).
+
+thf(tp_c_2Ehrat_2Etrat__sucint,type,
+    c_2Ehrat_2Etrat__sucint: $i ).
+
+thf(mem_c_2Ehrat_2Etrat__sucint,axiom,
+    mem @ c_2Ehrat_2Etrat__sucint @ ( arr @ ty_2Enum_2Enum @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) ).
+
+thf(ax_thm_2Ehrat_2Etrat__1,axiom,
+    ( ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ c_2Ehrat_2Etrat__1 )
+    = ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Etrat__inv,axiom,
+    ! [V0x: tp__ty_2Enum_2Enum,V1y: tp__ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ c_2Ehrat_2Etrat__inv @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V0x ) ) @ ( inj__ty_2Enum_2Enum @ V1y ) ) ) )
+      = ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V1y ) ) @ ( inj__ty_2Enum_2Enum @ V0x ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Etrat__add,axiom,
+    ! [V0x: tp__ty_2Enum_2Enum,V1y: tp__ty_2Enum_2Enum,V2x_27: tp__ty_2Enum_2Enum,V3y_27: tp__ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V0x ) ) @ ( inj__ty_2Enum_2Enum @ V1y ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V2x_27 ) ) @ ( inj__ty_2Enum_2Enum @ V3y_27 ) ) ) )
+      = ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( ap @ c_2Eprim__rec_2EPRE @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0x ) ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V3y_27 ) ) ) ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V2x_27 ) ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1y ) ) ) ) ) ) @ ( ap @ c_2Eprim__rec_2EPRE @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1y ) ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V3y_27 ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Etrat__mul,axiom,
+    ! [V0x: tp__ty_2Enum_2Enum,V1y: tp__ty_2Enum_2Enum,V2x_27: tp__ty_2Enum_2Enum,V3y_27: tp__ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V0x ) ) @ ( inj__ty_2Enum_2Enum @ V1y ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V2x_27 ) ) @ ( inj__ty_2Enum_2Enum @ V3y_27 ) ) ) )
+      = ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( ap @ c_2Eprim__rec_2EPRE @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0x ) ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V2x_27 ) ) ) ) ) @ ( ap @ c_2Eprim__rec_2EPRE @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1y ) ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V3y_27 ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Etrat__sucint,axiom,
+    ( ( ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ c_2Ehrat_2Etrat__sucint @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) )
+      = ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ c_2Ehrat_2Etrat__1 ) )
+    & ! [V0n: tp__ty_2Enum_2Enum] :
+        ( ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ c_2Ehrat_2Etrat__sucint @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) )
+        = ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( ap @ c_2Ehrat_2Etrat__sucint @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) @ c_2Ehrat_2Etrat__1 ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Etrat__eq,axiom,
+    ! [V0x: tp__ty_2Enum_2Enum,V1y: tp__ty_2Enum_2Enum,V2x_27: tp__ty_2Enum_2Enum,V3y_27: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V0x ) ) @ ( inj__ty_2Enum_2Enum @ V1y ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V2x_27 ) ) @ ( inj__ty_2Enum_2Enum @ V3y_27 ) ) ) )
+    <=> ( ( surj__ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0x ) ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V3y_27 ) ) ) )
+        = ( surj__ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Earithmetic_2E_2A @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V2x_27 ) ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__EQ__REFL,axiom,
+    ! [V0p: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__EQ__SYM,axiom,
+    ! [V0p: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1q: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) )
+    <=> ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__EQ__TRANS,axiom,
+    ! [V0p: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1q: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V2r: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2r ) ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2r ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__EQ__AP,axiom,
+    ! [V0p: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1q: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( V0p = V1q )
+     => ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__ADD__SYM__EQ,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1i: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) )
+      = ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__MUL__SYM__EQ,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1i: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) )
+      = ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__INV__WELLDEFINED,axiom,
+    ! [V0p: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1q: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ c_2Ehrat_2Etrat__inv @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) ) @ ( ap @ c_2Ehrat_2Etrat__inv @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__ADD__WELLDEFINED,axiom,
+    ! [V0p: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1q: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V2r: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2r ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2r ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__ADD__WELLDEFINED2,axiom,
+    ! [V0p1: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1p2: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V2q1: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V3q2: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p1 ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1p2 ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2q1 ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V3q2 ) ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p1 ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2q1 ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1p2 ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V3q2 ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__MUL__WELLDEFINED,axiom,
+    ! [V0p: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1q: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V2r: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2r ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2r ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__MUL__WELLDEFINED2,axiom,
+    ! [V0p1: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1p2: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V2q1: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V3q2: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p1 ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1p2 ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2q1 ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V3q2 ) ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p1 ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2q1 ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1p2 ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V3q2 ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__ADD__SYM,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1i: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__ADD__ASSOC,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1i: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V2j: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2j ) ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2j ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__MUL__SYM,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1i: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__MUL__ASSOC,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1i: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V2j: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2j ) ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2j ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__LDISTRIB,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1i: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V2j: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2j ) ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2j ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__MUL__LID,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ c_2Ehrat_2Etrat__1 ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__MUL__LINV,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( ap @ c_2Ehrat_2Etrat__inv @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) ) @ c_2Ehrat_2Etrat__1 ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__NOZERO,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1i: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ~ ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__ADD__TOTAL,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1i: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) )
+      | ? [V2d: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2d ) ) ) )
+      | ? [V3d: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1i ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V3d ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__SUCINT__0,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ c_2Ehrat_2Etrat__sucint @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__ARCH,axiom,
+    ! [V0h: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+    ? [V1n: tp__ty_2Enum_2Enum,V2d: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ c_2Ehrat_2Etrat__sucint @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0h ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2d ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__SUCINT,axiom,
+    ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ c_2Ehrat_2Etrat__sucint @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ c_2Ehrat_2Etrat__1 ) )
+    & ! [V0n: tp__ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( ap @ c_2Ehrat_2Etrat__sucint @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( ap @ c_2Ehrat_2Etrat__sucint @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) @ c_2Ehrat_2Etrat__1 ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2ETRAT__EQ__EQUIV,axiom,
+    ! [V0p: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,V1q: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) )
+    <=> ( ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0p ) )
+        = ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V1q ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Ehrat__TY__DEF,axiom,
+    ? [V0rep: $i] :
+      ( ( mem @ V0rep @ ( arr @ ty_2Ehrat_2Ehrat @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool ) ) )
+      & ( p
+        @ ( ap
+          @ ( ap @ ( c_2Ebool_2ETYPE__DEFINITION @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool ) @ ty_2Ehrat_2Ehrat )
+            @ ( lam @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool )
+              @ ^ [V1c: $i] :
+                  ( ap @ ( c_2Ebool_2E_3F @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) )
+                  @ ( lam @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum )
+                    @ ^ [V2r: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ V2r ) @ V2r ) ) @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool ) ) @ V1c ) @ ( ap @ c_2Ehrat_2Etrat__eq @ V2r ) ) ) ) ) ) )
+          @ V0rep ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Ehrat__bijections,axiom,
+    ( ! [V0a: tp__ty_2Ehrat_2Ehrat] :
+        ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__ABS__CLASS @ ( ap @ c_2Ehrat_2Ehrat__REP__CLASS @ ( inj__ty_2Ehrat_2Ehrat @ V0a ) ) ) )
+        = V0a )
+    & ! [V1r: $i] :
+        ( ( mem @ V1r @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool ) )
+       => ( ( p
+            @ ( ap
+              @ ( lam @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool )
+                @ ^ [V2c: $i] :
+                    ( ap @ ( c_2Ebool_2E_3F @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) )
+                    @ ( lam @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum )
+                      @ ^ [V3r: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ V3r ) @ V3r ) ) @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool ) ) @ V2c ) @ ( ap @ c_2Ehrat_2Etrat__eq @ V3r ) ) ) ) ) )
+              @ V1r ) )
+        <=> ( ( ap @ c_2Ehrat_2Ehrat__REP__CLASS @ ( ap @ c_2Ehrat_2Ehrat__ABS__CLASS @ V1r ) )
+            = V1r ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2Ehrat__ABS__REP__CLASS,axiom,
+    ( ! [V0a: tp__ty_2Ehrat_2Ehrat] :
+        ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__ABS__CLASS @ ( ap @ c_2Ehrat_2Ehrat__REP__CLASS @ ( inj__ty_2Ehrat_2Ehrat @ V0a ) ) ) )
+        = V0a )
+    & ! [V1c: $i] :
+        ( ( mem @ V1c @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ bool ) )
+       => ( ? [V2r: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2r ) ) @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2r ) ) )
+              & ( V1c
+                = ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V2r ) ) ) )
+        <=> ( ( ap @ c_2Ehrat_2Ehrat__REP__CLASS @ ( ap @ c_2Ehrat_2Ehrat__ABS__CLASS @ V1c ) )
+            = V1c ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Ehrat__REP__def,axiom,
+    ! [V0a: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ c_2Ehrat_2Ehrat__REP @ ( inj__ty_2Ehrat_2Ehrat @ V0a ) ) )
+      = ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( ap @ ( c_2Emin_2E_40 @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) @ ( ap @ c_2Ehrat_2Ehrat__REP__CLASS @ ( inj__ty_2Ehrat_2Ehrat @ V0a ) ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Ehrat__ABS__def,axiom,
+    ! [V0r: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__ABS @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0r ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__ABS__CLASS @ ( ap @ c_2Ehrat_2Etrat__eq @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ V0r ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2Ehrat__QUOTIENT,axiom,
+    p @ ( ap @ ( ap @ ( ap @ ( c_2Equotient_2EQUOTIENT @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ty_2Ehrat_2Ehrat ) @ c_2Ehrat_2Etrat__eq ) @ c_2Ehrat_2Ehrat__ABS ) @ c_2Ehrat_2Ehrat__REP ) ).
+
+thf(ax_thm_2Ehrat_2Ehrat__1,axiom,
+    ( fo__c_2Ehrat_2Ehrat__1
+    = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__ABS @ c_2Ehrat_2Etrat__1 ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Ehrat__inv,axiom,
+    ! [V0T1: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__inv @ ( inj__ty_2Ehrat_2Ehrat @ V0T1 ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__ABS @ ( ap @ c_2Ehrat_2Etrat__inv @ ( ap @ c_2Ehrat_2Ehrat__REP @ ( inj__ty_2Ehrat_2Ehrat @ V0T1 ) ) ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Ehrat__add,axiom,
+    ! [V0T1: tp__ty_2Ehrat_2Ehrat,V1T2: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V0T1 ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V1T2 ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__ABS @ ( ap @ ( ap @ c_2Ehrat_2Etrat__add @ ( ap @ c_2Ehrat_2Ehrat__REP @ ( inj__ty_2Ehrat_2Ehrat @ V0T1 ) ) ) @ ( ap @ c_2Ehrat_2Ehrat__REP @ ( inj__ty_2Ehrat_2Ehrat @ V1T2 ) ) ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Ehrat__mul,axiom,
+    ! [V0T1: tp__ty_2Ehrat_2Ehrat,V1T2: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ V0T1 ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V1T2 ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__ABS @ ( ap @ ( ap @ c_2Ehrat_2Etrat__mul @ ( ap @ c_2Ehrat_2Ehrat__REP @ ( inj__ty_2Ehrat_2Ehrat @ V0T1 ) ) ) @ ( ap @ c_2Ehrat_2Ehrat__REP @ ( inj__ty_2Ehrat_2Ehrat @ V1T2 ) ) ) ) ) ) ).
+
+thf(ax_thm_2Ehrat_2Ehrat__sucint,axiom,
+    ! [V0T1: tp__ty_2Enum_2Enum] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__sucint @ ( inj__ty_2Enum_2Enum @ V0T1 ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__ABS @ ( ap @ c_2Ehrat_2Etrat__sucint @ ( inj__ty_2Enum_2Enum @ V0T1 ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__ADD__SYM,axiom,
+    ! [V0h: tp__ty_2Ehrat_2Ehrat,V1i: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__ADD__ASSOC,axiom,
+    ! [V0h: tp__ty_2Ehrat_2Ehrat,V1i: tp__ty_2Ehrat_2Ehrat,V2j: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V2j ) ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V2j ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__MUL__SYM,axiom,
+    ! [V0h: tp__ty_2Ehrat_2Ehrat,V1i: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__MUL__ASSOC,axiom,
+    ! [V0h: tp__ty_2Ehrat_2Ehrat,V1i: tp__ty_2Ehrat_2Ehrat,V2j: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V2j ) ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V2j ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__LDISTRIB,axiom,
+    ! [V0h: tp__ty_2Ehrat_2Ehrat,V1i: tp__ty_2Ehrat_2Ehrat,V2j: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V2j ) ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) ) @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V2j ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__MUL__LID,axiom,
+    ! [V0h: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( inj__ty_2Ehrat_2Ehrat @ fo__c_2Ehrat_2Ehrat__1 ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) )
+      = V0h ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__MUL__LINV,axiom,
+    ! [V0h: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__mul @ ( ap @ c_2Ehrat_2Ehrat__inv @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) )
+      = fo__c_2Ehrat_2Ehrat__1 ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__NOZERO,axiom,
+    ! [V0h: tp__ty_2Ehrat_2Ehrat,V1i: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) )
+     != V0h ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__ADD__TOTAL,axiom,
+    ! [V0h: tp__ty_2Ehrat_2Ehrat,V1i: tp__ty_2Ehrat_2Ehrat] :
+      ( ( V0h = V1i )
+      | ? [V2d: tp__ty_2Ehrat_2Ehrat] :
+          ( V0h
+          = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V1i ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V2d ) ) ) )
+      | ? [V3d: tp__ty_2Ehrat_2Ehrat] :
+          ( V1i
+          = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V3d ) ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__ARCH,axiom,
+    ! [V0h: tp__ty_2Ehrat_2Ehrat] :
+    ? [V1n: tp__ty_2Enum_2Enum,V2d: tp__ty_2Ehrat_2Ehrat] :
+      ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__sucint @ ( inj__ty_2Enum_2Enum @ V1n ) ) )
+      = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( inj__ty_2Ehrat_2Ehrat @ V0h ) ) @ ( inj__ty_2Ehrat_2Ehrat @ V2d ) ) ) ) ).
+
+thf(conj_thm_2Ehrat_2EHRAT__SUCINT,axiom,
+    ( ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__sucint @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) )
+      = fo__c_2Ehrat_2Ehrat__1 )
+    & ! [V0n: tp__ty_2Enum_2Enum] :
+        ( ( surj__ty_2Ehrat_2Ehrat @ ( ap @ c_2Ehrat_2Ehrat__sucint @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) )
+        = ( surj__ty_2Ehrat_2Ehrat @ ( ap @ ( ap @ c_2Ehrat_2Ehrat__add @ ( ap @ c_2Ehrat_2Ehrat__sucint @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) @ ( inj__ty_2Ehrat_2Ehrat @ fo__c_2Ehrat_2Ehrat__1 ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

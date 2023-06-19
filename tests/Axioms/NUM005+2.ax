@@ -1,0 +1,447 @@
+%------------------------------------------------------------------------------
+% File     : NUM005+2 : TPTP v8.1.2. Released v3.1.0.
+% Domain   : Number Theory
+% Axioms   : Sum in RDN format
+% Version  : Especial.
+% English  : Impements a "human style" addition using RDN format.
+
+% Refs     :
+% Source   : [TPTP]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  115 ( 100 unt;   0 def)
+%            Number of atoms       :  164 (   3 equ)
+%            Maximal formula atoms :    8 (   1 avg)
+%            Number of connectives :   49 (   0   ~;   0   |;  34   &)
+%                                         (   1 <=>;  14  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   19 (   2 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    8 (   7 usr;   0 prp; 1-4 aty)
+%            Number of functors    :   14 (  14 usr;  10 con; 0-2 aty)
+%            Number of variables   :   86 (  86   !;   0   ?)
+% SPC      : 
+
+% Comments : Requires NUM005+0.ax NUM005+1.ax
+%------------------------------------------------------------------------------
+%----Addition entry points
+%----pos(X) + pos(Y)
+fof(sum_entry_point_pos_pos,axiom,
+    ! [X,Y,Z,RDN_X,RDN_Y,RDN_Z] :
+      ( ( rdn_translate(X,rdn_pos(RDN_X))
+        & rdn_translate(Y,rdn_pos(RDN_Y))
+        & rdn_add_with_carry(rdnn(n0),RDN_X,RDN_Y,RDN_Z)
+        & rdn_translate(Z,rdn_pos(RDN_Z)) )
+     => sum(X,Y,Z) ) ).
+
+%----neg(X) + neg(Y)
+fof(sum_entry_point_neg_neg,axiom,
+    ! [X,Y,Z,RDN_X,RDN_Y,RDN_Z] :
+      ( ( rdn_translate(X,rdn_neg(RDN_X))
+        & rdn_translate(Y,rdn_neg(RDN_Y))
+        & rdn_add_with_carry(rdnn(n0),RDN_X,RDN_Y,RDN_Z)
+        & rdn_translate(Z,rdn_neg(RDN_Z)) )
+     => sum(X,Y,Z) ) ).
+
+%----pos(X) + neg(Y), X < Y
+fof(sum_entry_point_pos_neg_1,axiom,
+    ! [X,Y,Z,RDN_X,RDN_Y,RDN_Z] :
+      ( ( rdn_translate(X,rdn_pos(RDN_X))
+        & rdn_translate(Y,rdn_neg(RDN_Y))
+        & rdn_positive_less(RDN_X,RDN_Y)
+        & rdn_add_with_carry(rdnn(n0),RDN_X,RDN_Z,RDN_Y)
+        & rdn_translate(Z,rdn_neg(RDN_Z)) )
+     => sum(X,Y,Z) ) ).
+
+%----pos(X) + neg(Y), X > Y
+fof(sum_entry_point_pos_neg_2,axiom,
+    ! [X,Y,Z,RDN_X,RDN_Y,RDN_Z] :
+      ( ( rdn_translate(X,rdn_pos(RDN_X))
+        & rdn_translate(Y,rdn_neg(RDN_Y))
+        & rdn_positive_less(RDN_Y,RDN_X)
+        & rdn_add_with_carry(rdnn(n0),RDN_Y,RDN_Z,RDN_X)
+        & rdn_translate(Z,rdn_pos(RDN_Z)) )
+     => sum(X,Y,Z) ) ).
+
+%----pos(X) + neg(X), X + -X = n0
+fof(sum_entry_point_posx_negx,axiom,
+    ! [POS_X,NEG_X,RDN_X] :
+      ( ( rdn_translate(POS_X,rdn_pos(RDN_X))
+        & rdn_translate(NEG_X,rdn_neg(RDN_X)) )
+     => sum(POS_X,NEG_X,n0) ) ).
+
+%----neg + pos
+fof(sum_entry_point_neg_pos,axiom,
+    ! [X,Y,Z,RDN_X,RDN_Y] :
+      ( ( rdn_translate(X,rdn_neg(RDN_X))
+        & rdn_translate(Y,rdn_pos(RDN_Y))
+        & sum(Y,X,Z) )
+     => sum(X,Y,Z) ) ).
+
+%----Sum is unique
+fof(unique_sum,axiom,
+    ! [X,Y,Z1,Z2] :
+      ( ( sum(X,Y,Z1)
+        & sum(X,Y,Z2) )
+     => Z1 = Z2 ) ).
+
+%----Operands are unique
+fof(unique_LHS,axiom,
+    ! [X1,X2,Y,Z] :
+      ( ( sum(X1,Y,Z)
+        & sum(X2,Y,Z) )
+     => X1 = X2 ) ).
+
+fof(unique_RHS,axiom,
+    ! [X,Y1,Y2,Z] :
+      ( ( sum(X,Y1,Z)
+        & sum(X,Y2,Z) )
+     => Y1 = Y2 ) ).
+
+%----Difference is just sum in reverse
+fof(minus_entry_point,axiom,
+    ! [X,Y,Z] :
+      ( sum(Y,Z,X)
+    <=> difference(X,Y,Z) ) ).
+
+%----Addition of positive RDN numbers
+fof(add_digit_digit_digit,axiom,
+    ! [C,D1,D2,RD,ID] :
+      ( ( rdn_digit_add(rdnn(D1),rdnn(D2),rdnn(ID),rdnn(n0))
+        & rdn_digit_add(rdnn(ID),rdnn(C),rdnn(RD),rdnn(n0)) )
+     => rdn_add_with_carry(rdnn(C),rdnn(D1),rdnn(D2),rdnn(RD)) ) ).
+
+fof(add_digit_digit_rdn,axiom,
+    ! [C,D1,D2,ID,RD,IC1,IC2] :
+      ( ( rdn_digit_add(rdnn(D1),rdnn(D2),rdnn(ID),rdnn(IC1))
+        & rdn_digit_add(rdnn(ID),rdnn(C),rdnn(RD),rdnn(IC2))
+        & rdn_digit_add(rdnn(IC1),rdnn(IC2),rdnn(n1),rdnn(n0)) )
+     => rdn_add_with_carry(rdnn(C),rdnn(D1),rdnn(D2),rdn(rdnn(RD),rdnn(n1))) ) ).
+
+fof(add_digit_rdn_rdn,axiom,
+    ! [C,D1,D2,O2,RD,RO,ID,IC1,IC2,NC] :
+      ( ( rdn_digit_add(rdnn(D1),rdnn(D2),rdnn(ID),rdnn(IC1))
+        & rdn_digit_add(rdnn(ID),rdnn(C),rdnn(RD),rdnn(IC2))
+        & rdn_digit_add(rdnn(IC1),rdnn(IC2),rdnn(NC),rdnn(n0))
+        & rdn_add_with_carry(rdnn(NC),rdnn(n0),O2,RO)
+        & rdn_non_zero(O2)
+        & rdn_non_zero(RO) )
+     => rdn_add_with_carry(rdnn(C),rdnn(D1),rdn(rdnn(D2),O2),rdn(rdnn(RD),RO)) ) ).
+
+fof(add_rdn_rdn_rdn,axiom,
+    ! [C,D1,O1,D2,O2,RD,RO,ID,IC1,IC2,RC] :
+      ( ( rdn_digit_add(rdnn(D1),rdnn(D2),rdnn(ID),rdnn(IC1))
+        & rdn_digit_add(rdnn(ID),rdnn(C),rdnn(RD),rdnn(IC2))
+        & rdn_digit_add(rdnn(IC1),rdnn(IC2),rdnn(RC),rdnn(n0))
+        & rdn_add_with_carry(rdnn(RC),O1,O2,RO)
+        & rdn_non_zero(O1)
+        & rdn_non_zero(O2)
+        & rdn_non_zero(RO) )
+     => rdn_add_with_carry(rdnn(C),rdn(rdnn(D1),O1),rdn(rdnn(D2),O2),rdn(rdnn(RD),RO)) ) ).
+
+fof(add_rdn_digit_rdn,axiom,
+    ! [C,D1,O1,D2,RD,RO] :
+      ( rdn_add_with_carry(rdnn(C),rdnn(D2),rdn(rdnn(D1),O1),rdn(rdnn(RD),RO))
+     => rdn_add_with_carry(rdnn(C),rdn(rdnn(D1),O1),rdnn(D2),rdn(rdnn(RD),RO)) ) ).
+
+fof(rdn_digit_add_n0_n0_n0_n0,axiom,
+    rdn_digit_add(rdnn(n0),rdnn(n0),rdnn(n0),rdnn(n0)) ).
+
+fof(rdn_digit_add_n0_n1_n1_n0,axiom,
+    rdn_digit_add(rdnn(n0),rdnn(n1),rdnn(n1),rdnn(n0)) ).
+
+fof(rdn_digit_add_n0_n2_n2_n0,axiom,
+    rdn_digit_add(rdnn(n0),rdnn(n2),rdnn(n2),rdnn(n0)) ).
+
+fof(rdn_digit_add_n0_n3_n3_n0,axiom,
+    rdn_digit_add(rdnn(n0),rdnn(n3),rdnn(n3),rdnn(n0)) ).
+
+fof(rdn_digit_add_n0_n4_n4_n0,axiom,
+    rdn_digit_add(rdnn(n0),rdnn(n4),rdnn(n4),rdnn(n0)) ).
+
+fof(rdn_digit_add_n0_n5_n5_n0,axiom,
+    rdn_digit_add(rdnn(n0),rdnn(n5),rdnn(n5),rdnn(n0)) ).
+
+fof(rdn_digit_add_n0_n6_n6_n0,axiom,
+    rdn_digit_add(rdnn(n0),rdnn(n6),rdnn(n6),rdnn(n0)) ).
+
+fof(rdn_digit_add_n0_n7_n7_n0,axiom,
+    rdn_digit_add(rdnn(n0),rdnn(n7),rdnn(n7),rdnn(n0)) ).
+
+fof(rdn_digit_add_n0_n8_n8_n0,axiom,
+    rdn_digit_add(rdnn(n0),rdnn(n8),rdnn(n8),rdnn(n0)) ).
+
+fof(rdn_digit_add_n0_n9_n9_n0,axiom,
+    rdn_digit_add(rdnn(n0),rdnn(n9),rdnn(n9),rdnn(n0)) ).
+
+fof(rdn_digit_add_n1_n0_n1_n0,axiom,
+    rdn_digit_add(rdnn(n1),rdnn(n0),rdnn(n1),rdnn(n0)) ).
+
+fof(rdn_digit_add_n1_n1_n2_n0,axiom,
+    rdn_digit_add(rdnn(n1),rdnn(n1),rdnn(n2),rdnn(n0)) ).
+
+fof(rdn_digit_add_n1_n2_n3_n0,axiom,
+    rdn_digit_add(rdnn(n1),rdnn(n2),rdnn(n3),rdnn(n0)) ).
+
+fof(rdn_digit_add_n1_n3_n4_n0,axiom,
+    rdn_digit_add(rdnn(n1),rdnn(n3),rdnn(n4),rdnn(n0)) ).
+
+fof(rdn_digit_add_n1_n4_n5_n0,axiom,
+    rdn_digit_add(rdnn(n1),rdnn(n4),rdnn(n5),rdnn(n0)) ).
+
+fof(rdn_digit_add_n1_n5_n6_n0,axiom,
+    rdn_digit_add(rdnn(n1),rdnn(n5),rdnn(n6),rdnn(n0)) ).
+
+fof(rdn_digit_add_n1_n6_n7_n0,axiom,
+    rdn_digit_add(rdnn(n1),rdnn(n6),rdnn(n7),rdnn(n0)) ).
+
+fof(rdn_digit_add_n1_n7_n8_n0,axiom,
+    rdn_digit_add(rdnn(n1),rdnn(n7),rdnn(n8),rdnn(n0)) ).
+
+fof(rdn_digit_add_n1_n8_n9_n0,axiom,
+    rdn_digit_add(rdnn(n1),rdnn(n8),rdnn(n9),rdnn(n0)) ).
+
+fof(rdn_digit_add_n1_n9_n0_n1,axiom,
+    rdn_digit_add(rdnn(n1),rdnn(n9),rdnn(n0),rdnn(n1)) ).
+
+fof(rdn_digit_add_n2_n0_n2_n0,axiom,
+    rdn_digit_add(rdnn(n2),rdnn(n0),rdnn(n2),rdnn(n0)) ).
+
+fof(rdn_digit_add_n2_n1_n3_n0,axiom,
+    rdn_digit_add(rdnn(n2),rdnn(n1),rdnn(n3),rdnn(n0)) ).
+
+fof(rdn_digit_add_n2_n2_n4_n0,axiom,
+    rdn_digit_add(rdnn(n2),rdnn(n2),rdnn(n4),rdnn(n0)) ).
+
+fof(rdn_digit_add_n2_n3_n5_n0,axiom,
+    rdn_digit_add(rdnn(n2),rdnn(n3),rdnn(n5),rdnn(n0)) ).
+
+fof(rdn_digit_add_n2_n4_n6_n0,axiom,
+    rdn_digit_add(rdnn(n2),rdnn(n4),rdnn(n6),rdnn(n0)) ).
+
+fof(rdn_digit_add_n2_n5_n7_n0,axiom,
+    rdn_digit_add(rdnn(n2),rdnn(n5),rdnn(n7),rdnn(n0)) ).
+
+fof(rdn_digit_add_n2_n6_n8_n0,axiom,
+    rdn_digit_add(rdnn(n2),rdnn(n6),rdnn(n8),rdnn(n0)) ).
+
+fof(rdn_digit_add_n2_n7_n9_n0,axiom,
+    rdn_digit_add(rdnn(n2),rdnn(n7),rdnn(n9),rdnn(n0)) ).
+
+fof(rdn_digit_add_n2_n8_n0_n1,axiom,
+    rdn_digit_add(rdnn(n2),rdnn(n8),rdnn(n0),rdnn(n1)) ).
+
+fof(rdn_digit_add_n2_n9_n1_n1,axiom,
+    rdn_digit_add(rdnn(n2),rdnn(n9),rdnn(n1),rdnn(n1)) ).
+
+fof(rdn_digit_add_n3_n0_n3_n0,axiom,
+    rdn_digit_add(rdnn(n3),rdnn(n0),rdnn(n3),rdnn(n0)) ).
+
+fof(rdn_digit_add_n3_n1_n4_n0,axiom,
+    rdn_digit_add(rdnn(n3),rdnn(n1),rdnn(n4),rdnn(n0)) ).
+
+fof(rdn_digit_add_n3_n2_n5_n0,axiom,
+    rdn_digit_add(rdnn(n3),rdnn(n2),rdnn(n5),rdnn(n0)) ).
+
+fof(rdn_digit_add_n3_n3_n6_n0,axiom,
+    rdn_digit_add(rdnn(n3),rdnn(n3),rdnn(n6),rdnn(n0)) ).
+
+fof(rdn_digit_add_n3_n4_n7_n0,axiom,
+    rdn_digit_add(rdnn(n3),rdnn(n4),rdnn(n7),rdnn(n0)) ).
+
+fof(rdn_digit_add_n3_n5_n8_n0,axiom,
+    rdn_digit_add(rdnn(n3),rdnn(n5),rdnn(n8),rdnn(n0)) ).
+
+fof(rdn_digit_add_n3_n6_n9_n0,axiom,
+    rdn_digit_add(rdnn(n3),rdnn(n6),rdnn(n9),rdnn(n0)) ).
+
+fof(rdn_digit_add_n3_n7_n0_n1,axiom,
+    rdn_digit_add(rdnn(n3),rdnn(n7),rdnn(n0),rdnn(n1)) ).
+
+fof(rdn_digit_add_n3_n8_n1_n1,axiom,
+    rdn_digit_add(rdnn(n3),rdnn(n8),rdnn(n1),rdnn(n1)) ).
+
+fof(rdn_digit_add_n3_n9_n2_n1,axiom,
+    rdn_digit_add(rdnn(n3),rdnn(n9),rdnn(n2),rdnn(n1)) ).
+
+fof(rdn_digit_add_n4_n0_n4_n0,axiom,
+    rdn_digit_add(rdnn(n4),rdnn(n0),rdnn(n4),rdnn(n0)) ).
+
+fof(rdn_digit_add_n4_n1_n5_n0,axiom,
+    rdn_digit_add(rdnn(n4),rdnn(n1),rdnn(n5),rdnn(n0)) ).
+
+fof(rdn_digit_add_n4_n2_n6_n0,axiom,
+    rdn_digit_add(rdnn(n4),rdnn(n2),rdnn(n6),rdnn(n0)) ).
+
+fof(rdn_digit_add_n4_n3_n7_n0,axiom,
+    rdn_digit_add(rdnn(n4),rdnn(n3),rdnn(n7),rdnn(n0)) ).
+
+fof(rdn_digit_add_n4_n4_n8_n0,axiom,
+    rdn_digit_add(rdnn(n4),rdnn(n4),rdnn(n8),rdnn(n0)) ).
+
+fof(rdn_digit_add_n4_n5_n9_n0,axiom,
+    rdn_digit_add(rdnn(n4),rdnn(n5),rdnn(n9),rdnn(n0)) ).
+
+fof(rdn_digit_add_n4_n6_n0_n1,axiom,
+    rdn_digit_add(rdnn(n4),rdnn(n6),rdnn(n0),rdnn(n1)) ).
+
+fof(rdn_digit_add_n4_n7_n1_n1,axiom,
+    rdn_digit_add(rdnn(n4),rdnn(n7),rdnn(n1),rdnn(n1)) ).
+
+fof(rdn_digit_add_n4_n8_n2_n1,axiom,
+    rdn_digit_add(rdnn(n4),rdnn(n8),rdnn(n2),rdnn(n1)) ).
+
+fof(rdn_digit_add_n4_n9_n3_n1,axiom,
+    rdn_digit_add(rdnn(n4),rdnn(n9),rdnn(n3),rdnn(n1)) ).
+
+fof(rdn_digit_add_n5_n0_n5_n0,axiom,
+    rdn_digit_add(rdnn(n5),rdnn(n0),rdnn(n5),rdnn(n0)) ).
+
+fof(rdn_digit_add_n5_n1_n6_n0,axiom,
+    rdn_digit_add(rdnn(n5),rdnn(n1),rdnn(n6),rdnn(n0)) ).
+
+fof(rdn_digit_add_n5_n2_n7_n0,axiom,
+    rdn_digit_add(rdnn(n5),rdnn(n2),rdnn(n7),rdnn(n0)) ).
+
+fof(rdn_digit_add_n5_n3_n8_n0,axiom,
+    rdn_digit_add(rdnn(n5),rdnn(n3),rdnn(n8),rdnn(n0)) ).
+
+fof(rdn_digit_add_n5_n4_n9_n0,axiom,
+    rdn_digit_add(rdnn(n5),rdnn(n4),rdnn(n9),rdnn(n0)) ).
+
+fof(rdn_digit_add_n5_n5_n0_n1,axiom,
+    rdn_digit_add(rdnn(n5),rdnn(n5),rdnn(n0),rdnn(n1)) ).
+
+fof(rdn_digit_add_n5_n6_n1_n1,axiom,
+    rdn_digit_add(rdnn(n5),rdnn(n6),rdnn(n1),rdnn(n1)) ).
+
+fof(rdn_digit_add_n5_n7_n2_n1,axiom,
+    rdn_digit_add(rdnn(n5),rdnn(n7),rdnn(n2),rdnn(n1)) ).
+
+fof(rdn_digit_add_n5_n8_n3_n1,axiom,
+    rdn_digit_add(rdnn(n5),rdnn(n8),rdnn(n3),rdnn(n1)) ).
+
+fof(rdn_digit_add_n5_n9_n4_n1,axiom,
+    rdn_digit_add(rdnn(n5),rdnn(n9),rdnn(n4),rdnn(n1)) ).
+
+fof(rdn_digit_add_n6_n0_n6_n0,axiom,
+    rdn_digit_add(rdnn(n6),rdnn(n0),rdnn(n6),rdnn(n0)) ).
+
+fof(rdn_digit_add_n6_n1_n7_n0,axiom,
+    rdn_digit_add(rdnn(n6),rdnn(n1),rdnn(n7),rdnn(n0)) ).
+
+fof(rdn_digit_add_n6_n2_n8_n0,axiom,
+    rdn_digit_add(rdnn(n6),rdnn(n2),rdnn(n8),rdnn(n0)) ).
+
+fof(rdn_digit_add_n6_n3_n9_n0,axiom,
+    rdn_digit_add(rdnn(n6),rdnn(n3),rdnn(n9),rdnn(n0)) ).
+
+fof(rdn_digit_add_n6_n4_n0_n1,axiom,
+    rdn_digit_add(rdnn(n6),rdnn(n4),rdnn(n0),rdnn(n1)) ).
+
+fof(rdn_digit_add_n6_n5_n1_n1,axiom,
+    rdn_digit_add(rdnn(n6),rdnn(n5),rdnn(n1),rdnn(n1)) ).
+
+fof(rdn_digit_add_n6_n6_n2_n1,axiom,
+    rdn_digit_add(rdnn(n6),rdnn(n6),rdnn(n2),rdnn(n1)) ).
+
+fof(rdn_digit_add_n6_n7_n3_n1,axiom,
+    rdn_digit_add(rdnn(n6),rdnn(n7),rdnn(n3),rdnn(n1)) ).
+
+fof(rdn_digit_add_n6_n8_n4_n1,axiom,
+    rdn_digit_add(rdnn(n6),rdnn(n8),rdnn(n4),rdnn(n1)) ).
+
+fof(rdn_digit_add_n6_n9_n5_n1,axiom,
+    rdn_digit_add(rdnn(n6),rdnn(n9),rdnn(n5),rdnn(n1)) ).
+
+fof(rdn_digit_add_n7_n0_n7_n0,axiom,
+    rdn_digit_add(rdnn(n7),rdnn(n0),rdnn(n7),rdnn(n0)) ).
+
+fof(rdn_digit_add_n7_n1_n8_n0,axiom,
+    rdn_digit_add(rdnn(n7),rdnn(n1),rdnn(n8),rdnn(n0)) ).
+
+fof(rdn_digit_add_n7_n2_n9_n0,axiom,
+    rdn_digit_add(rdnn(n7),rdnn(n2),rdnn(n9),rdnn(n0)) ).
+
+fof(rdn_digit_add_n7_n3_n0_n1,axiom,
+    rdn_digit_add(rdnn(n7),rdnn(n3),rdnn(n0),rdnn(n1)) ).
+
+fof(rdn_digit_add_n7_n4_n1_n1,axiom,
+    rdn_digit_add(rdnn(n7),rdnn(n4),rdnn(n1),rdnn(n1)) ).
+
+fof(rdn_digit_add_n7_n5_n2_n1,axiom,
+    rdn_digit_add(rdnn(n7),rdnn(n5),rdnn(n2),rdnn(n1)) ).
+
+fof(rdn_digit_add_n7_n6_n3_n1,axiom,
+    rdn_digit_add(rdnn(n7),rdnn(n6),rdnn(n3),rdnn(n1)) ).
+
+fof(rdn_digit_add_n7_n7_n4_n1,axiom,
+    rdn_digit_add(rdnn(n7),rdnn(n7),rdnn(n4),rdnn(n1)) ).
+
+fof(rdn_digit_add_n7_n8_n5_n1,axiom,
+    rdn_digit_add(rdnn(n7),rdnn(n8),rdnn(n5),rdnn(n1)) ).
+
+fof(rdn_digit_add_n7_n9_n6_n1,axiom,
+    rdn_digit_add(rdnn(n7),rdnn(n9),rdnn(n6),rdnn(n1)) ).
+
+fof(rdn_digit_add_n8_n0_n8_n0,axiom,
+    rdn_digit_add(rdnn(n8),rdnn(n0),rdnn(n8),rdnn(n0)) ).
+
+fof(rdn_digit_add_n8_n1_n9_n0,axiom,
+    rdn_digit_add(rdnn(n8),rdnn(n1),rdnn(n9),rdnn(n0)) ).
+
+fof(rdn_digit_add_n8_n2_n0_n1,axiom,
+    rdn_digit_add(rdnn(n8),rdnn(n2),rdnn(n0),rdnn(n1)) ).
+
+fof(rdn_digit_add_n8_n3_n1_n1,axiom,
+    rdn_digit_add(rdnn(n8),rdnn(n3),rdnn(n1),rdnn(n1)) ).
+
+fof(rdn_digit_add_n8_n4_n2_n1,axiom,
+    rdn_digit_add(rdnn(n8),rdnn(n4),rdnn(n2),rdnn(n1)) ).
+
+fof(rdn_digit_add_n8_n5_n3_n1,axiom,
+    rdn_digit_add(rdnn(n8),rdnn(n5),rdnn(n3),rdnn(n1)) ).
+
+fof(rdn_digit_add_n8_n6_n4_n1,axiom,
+    rdn_digit_add(rdnn(n8),rdnn(n6),rdnn(n4),rdnn(n1)) ).
+
+fof(rdn_digit_add_n8_n7_n5_n1,axiom,
+    rdn_digit_add(rdnn(n8),rdnn(n7),rdnn(n5),rdnn(n1)) ).
+
+fof(rdn_digit_add_n8_n8_n6_n1,axiom,
+    rdn_digit_add(rdnn(n8),rdnn(n8),rdnn(n6),rdnn(n1)) ).
+
+fof(rdn_digit_add_n8_n9_n7_n1,axiom,
+    rdn_digit_add(rdnn(n8),rdnn(n9),rdnn(n7),rdnn(n1)) ).
+
+fof(rdn_digit_add_n9_n0_n9_n0,axiom,
+    rdn_digit_add(rdnn(n9),rdnn(n0),rdnn(n9),rdnn(n0)) ).
+
+fof(rdn_digit_add_n9_n1_n0_n1,axiom,
+    rdn_digit_add(rdnn(n9),rdnn(n1),rdnn(n0),rdnn(n1)) ).
+
+fof(rdn_digit_add_n9_n2_n1_n1,axiom,
+    rdn_digit_add(rdnn(n9),rdnn(n2),rdnn(n1),rdnn(n1)) ).
+
+fof(rdn_digit_add_n9_n3_n2_n1,axiom,
+    rdn_digit_add(rdnn(n9),rdnn(n3),rdnn(n2),rdnn(n1)) ).
+
+fof(rdn_digit_add_n9_n4_n3_n1,axiom,
+    rdn_digit_add(rdnn(n9),rdnn(n4),rdnn(n3),rdnn(n1)) ).
+
+fof(rdn_digit_add_n9_n5_n4_n1,axiom,
+    rdn_digit_add(rdnn(n9),rdnn(n5),rdnn(n4),rdnn(n1)) ).
+
+fof(rdn_digit_add_n9_n6_n5_n1,axiom,
+    rdn_digit_add(rdnn(n9),rdnn(n6),rdnn(n5),rdnn(n1)) ).
+
+fof(rdn_digit_add_n9_n7_n6_n1,axiom,
+    rdn_digit_add(rdnn(n9),rdnn(n7),rdnn(n6),rdnn(n1)) ).
+
+fof(rdn_digit_add_n9_n8_n7_n1,axiom,
+    rdn_digit_add(rdnn(n9),rdnn(n8),rdnn(n7),rdnn(n1)) ).
+
+fof(rdn_digit_add_n9_n9_n8_n1,axiom,
+    rdn_digit_add(rdnn(n9),rdnn(n9),rdnn(n8),rdnn(n1)) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,46 @@
+%--------------------------------------------------------------------------
+% File     : LAT001-1 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Lattice Theory
+% Axioms   : Lattice theory modularity (equality) axioms
+% Version  : [McC88] (equality) axioms.
+% English  :
+
+% Refs     : [Bum65] Bumcroft (1965), Proceedings of the Glasgow Mathematic
+%          : [McC88] McCune (1988), Challenge Equality Problems in Lattice
+%          : [Wos88] Wos (1988), Automated Reasoning - 33 Basic Research Pr
+% Source   : [McC88]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :    5 (   4 unt;   0 nHn;   0 RR)
+%            Number of literals    :    6 (   6 equ;   1 neg)
+%            Maximal clause size   :    2 (   1 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    1 (   0 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    4 (   4 usr;   2 con; 0-2 aty)
+%            Number of variables   :    7 (   2 sgn)
+% SPC      : 
+
+% Comments : Requires LAT001-0.ax
+%          : These axioms, with 4 extra redundant axioms about 0 & 1, are
+%            used in [Wos88] p.217.
+%--------------------------------------------------------------------------
+%----Include 1 and 0 in the lattice
+cnf(x_meet_0,axiom,
+    meet(X,n0) = n0 ).
+
+cnf(x_join_0,axiom,
+    join(X,n0) = X ).
+
+cnf(x_meet_1,axiom,
+    meet(X,n1) = X ).
+
+cnf(x_join_1,axiom,
+    join(X,n1) = n1 ).
+
+%----Require the lattice to be modular
+cnf(modular,axiom,
+    ( meet(X,Z) != X
+    | meet(Z,join(X,Y)) = join(X,meet(Y,Z)) ) ).
+
+%--------------------------------------------------------------------------
