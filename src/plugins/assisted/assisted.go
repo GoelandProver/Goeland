@@ -69,8 +69,8 @@ func SendChMain(chMain chan bool) {
 
 // Prints formulae relative to rules from a State. For terminal uses.
 func PrintFormListFromState(st complextypes.State) {
-	fmt.Printf("Here are the formula lists :\n")
-	fmt.Printf(" │ ⦾ FoundSubs : \n")
+	fmt.Printf("Here is the content of the state :\n")
+	fmt.Printf(" │ FoundSubs : \n")
 	SubstsFound := st.GetSubstsFound()
 	for _, s := range SubstsFound {
 		fmt.Printf("	└ %s\n", s.ToString())
@@ -79,7 +79,8 @@ func PrintFormListFromState(st complextypes.State) {
 	fmt.Printf(" │ α Alpha : %s\n", st.GetAlpha().ToString())
 	fmt.Printf(" │ β Beta : %s\n", st.GetBeta().ToString())
 	fmt.Printf(" │ δ Delta : %s\n", st.GetDelta().ToString())
-	fmt.Printf(" └ γ Gamma : %s\n", st.GetGamma().ToString())
+	fmt.Printf(" │ γ Gamma : %s\n", st.GetGamma().ToString())
+	fmt.Printf(" └ MetaGen : %s\n", basictypes.MetaGenListToString(st.GetMetaGen()))
 }
 
 // Selects a rule with formulae applicable.
@@ -241,7 +242,6 @@ func WindowForms(char byte, st complextypes.State) {
 	MainWindow.SetContent(scrollContainer)
 
 }
-*/
 
 // Mmh subject to changes.
 func initRuleList(st complextypes.State) []string {
@@ -250,28 +250,24 @@ func initRuleList(st complextypes.State) []string {
 	if len(st.GetAtomic()) > 0 {
 		str = "X Atomic : "
 		str = concatenateFormsToString(str, st.GetAtomic())
-		items = append(items, str)
 	}
 	if len(st.GetAlpha()) > 0 {
 		str = "A Alpha : "
 		str = concatenateFormsToString(str, st.GetAlpha())
-		items = append(items, str)
 	}
 	if len(st.GetBeta()) > 0 {
 		str = "B Beta : "
 		str = concatenateFormsToString(str, st.GetBeta())
-		items = append(items, str)
 	}
 	if len(st.GetDelta()) > 0 {
 		str = "D Delta : "
 		str = concatenateFormsToString(str, st.GetDelta())
-		items = append(items, str)
 	}
 	if len(st.GetGamma()) > 0 {
 		str = "G Gamma : "
 		str = concatenateFormsToString(str, st.GetGamma())
-		items = append(items, str)
 	}
+	items = append(items, str)
 	return items
 }
 
@@ -281,6 +277,7 @@ func concatenateFormsToString(str string, forms basictypes.FormAndTermsList) str
 	}
 	return str
 }
+*/
 
 // Function to apply tabeau rules as we want, given string rule and int choice.
 func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
@@ -292,16 +289,16 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 
 	// Prints the state to the terminal
 	PrintFormListFromState(state1)
-	fmt.Printf("Which rule would you like to apply ?\n")
-	rule := ChooseRule(state1)
-	choice := ChooseFormula(ChooseFormulae(rule, state1))
+	fmt.Printf("Please, choose a rule you would like to apply (X, A, B, D, G)...\n")
+	ruleVeritable := ChooseRule(state1)
+	choice := ChooseFormula(ChooseFormulae(ruleVeritable, state1))
 	lock_choices.Unlock()
 
 	// Attends le choix fait par la fenetre
 	//rule := <-chRule
 	//choice := <-chFormula
 
-	switch rule {
+	switch ruleVeritable {
 	case "X":
 		/**
 		* Not yet complete for Atomics and reintroduction.

@@ -98,7 +98,6 @@ func main() {
 	form, bound := mainA()
 
 	if global.GetAssisted() {
-		fmt.Printf("AZE\n")
 		// Initialisation
 		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
 		/*
@@ -109,6 +108,7 @@ func main() {
 
 			assisted.MainWindow = myWindow
 		*/
+		fmt.Printf("This problem has formula %s\n", form.ToString())
 		go mainB(form, bound, chFyne)
 
 		//myApp.Run()
