@@ -1,0 +1,1903 @@
+%------------------------------------------------------------------------------
+% File     : SET007+355 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : A Mathematical Model of CPU
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : ami_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  173 (  26 unt;   0 def)
+%            Number of atoms       : 1181 ( 100 equ)
+%            Maximal formula atoms :   20 (   6 avg)
+%            Number of connectives : 1187 ( 179   ~;   0   |; 624   &)
+%                                         (  29 <=>; 355  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   26 (   8 avg)
+%            Maximal term depth    :    7 (   1 avg)
+%            Number of predicates  :   39 (  37 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   59 (  59 usr;   6 con; 0-8 aty)
+%            Number of variables   :  503 ( 478   !;  25   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_ami_1,axiom,
+    ! [A] :
+    ? [B] :
+      ( l1_ami_1(B,A)
+      & v1_ami_1(B,A) ) ).
+
+fof(fc1_ami_1,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k1_ami_1(A))
+      & v1_ami_1(k1_ami_1(A),A)
+      & ~ v2_ami_1(k1_ami_1(A),A) ) ).
+
+fof(rc2_ami_1,axiom,
+    ! [A] :
+    ? [B] :
+      ( l1_ami_1(B,A)
+      & ~ v3_struct_0(B)
+      & ~ v2_ami_1(B,A) ) ).
+
+fof(fc2_ami_1,axiom,
+    ! [A,B] :
+      ( ( ~ v2_ami_1(B,A)
+        & l1_ami_1(B,A) )
+     => ~ v1_xboole_0(u2_ami_1(A,B)) ) ).
+
+fof(fc3_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => v1_fraenkel(k4_card_3(A)) ) ).
+
+fof(fc4_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_setfam_1(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,B)
+        & m1_relset_1(C,A,B) )
+     => ( ~ v1_xboole_0(k4_card_3(C))
+        & v1_fraenkel(k4_card_3(C)) ) ) ).
+
+fof(fc5_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ( ~ v3_struct_0(k1_ami_1(A))
+        & v1_ami_1(k1_ami_1(A),A)
+        & ~ v2_ami_1(k1_ami_1(A),A)
+        & v4_ami_1(k1_ami_1(A),A) ) ) ).
+
+fof(rc3_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ? [B] :
+          ( l1_ami_1(B,A)
+          & ~ v2_ami_1(B,A)
+          & v4_ami_1(B,A) ) ) ).
+
+fof(rc4_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_setfam_1(A)
+        & ~ v2_ami_1(B,A)
+        & v4_ami_1(B,A)
+        & l1_ami_1(B,A) )
+     => ? [C] :
+          ( m1_subset_1(C,u4_ami_1(A,B))
+          & v3_ami_1(C,A,B) ) ) ).
+
+fof(fc6_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_setfam_1(A)
+        & ~ v2_ami_1(B,A)
+        & v4_ami_1(B,A)
+        & l1_ami_1(B,A) )
+     => v3_ami_1(k5_ami_1(A,B),A,B) ) ).
+
+fof(fc7_ami_1,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k1_ami_1(A))
+      & v1_ami_1(k1_ami_1(A),A)
+      & ~ v2_ami_1(k1_ami_1(A),A)
+      & v6_ami_1(k1_ami_1(A),A) ) ).
+
+fof(fc8_ami_1,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k1_ami_1(A))
+      & v1_ami_1(k1_ami_1(A),A)
+      & ~ v2_ami_1(k1_ami_1(A),A)
+      & v5_ami_1(k1_ami_1(A),A)
+      & v6_ami_1(k1_ami_1(A),A)
+      & v8_ami_1(k1_ami_1(A),A) ) ).
+
+fof(fc9_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ( ~ v3_struct_0(k1_ami_1(A))
+        & v1_ami_1(k1_ami_1(A),A)
+        & ~ v2_ami_1(k1_ami_1(A),A)
+        & v4_ami_1(k1_ami_1(A),A)
+        & v5_ami_1(k1_ami_1(A),A)
+        & v6_ami_1(k1_ami_1(A),A)
+        & v7_ami_1(k1_ami_1(A),A)
+        & v8_ami_1(k1_ami_1(A),A) ) ) ).
+
+fof(rc5_ami_1,axiom,
+    ! [A] :
+    ? [B] :
+      ( l1_ami_1(B,A)
+      & v1_ami_1(B,A)
+      & v6_ami_1(B,A) ) ).
+
+fof(rc6_ami_1,axiom,
+    ! [A] :
+    ? [B] :
+      ( l1_ami_1(B,A)
+      & ~ v3_struct_0(B)
+      & v1_ami_1(B,A)
+      & ~ v2_ami_1(B,A)
+      & v5_ami_1(B,A)
+      & v6_ami_1(B,A)
+      & v8_ami_1(B,A) ) ).
+
+fof(rc7_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ? [B] :
+          ( l1_ami_1(B,A)
+          & ~ v3_struct_0(B)
+          & v1_ami_1(B,A)
+          & ~ v2_ami_1(B,A)
+          & v4_ami_1(B,A)
+          & v5_ami_1(B,A)
+          & v6_ami_1(B,A)
+          & v7_ami_1(B,A)
+          & v8_ami_1(B,A) ) ) ).
+
+fof(fc10_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( ~ v1_xboole_0(k7_ami_1(A))
+        & v1_fraenkel(k7_ami_1(A)) ) ) ).
+
+fof(fc11_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,u1_struct_0(B)) )
+     => ~ v1_xboole_0(k3_ami_1(A,B,C)) ) ).
+
+fof(fc12_ami_1,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k1_ami_1(A))
+      & v1_ami_1(k1_ami_1(A),A)
+      & ~ v2_ami_1(k1_ami_1(A),A)
+      & v5_ami_1(k1_ami_1(A),A)
+      & v6_ami_1(k1_ami_1(A),A)
+      & v8_ami_1(k1_ami_1(A),A)
+      & v10_ami_1(k1_ami_1(A),A) ) ).
+
+fof(fc13_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ( ~ v3_struct_0(k1_ami_1(A))
+        & v1_ami_1(k1_ami_1(A),A)
+        & ~ v2_ami_1(k1_ami_1(A),A)
+        & v4_ami_1(k1_ami_1(A),A)
+        & v5_ami_1(k1_ami_1(A),A)
+        & v6_ami_1(k1_ami_1(A),A)
+        & v7_ami_1(k1_ami_1(A),A)
+        & v8_ami_1(k1_ami_1(A),A)
+        & v10_ami_1(k1_ami_1(A),A)
+        & v13_ami_1(k1_ami_1(A),A) ) ) ).
+
+fof(rc8_ami_1,axiom,
+    ! [A] :
+    ? [B] :
+      ( l1_ami_1(B,A)
+      & v1_ami_1(B,A)
+      & v6_ami_1(B,A)
+      & v10_ami_1(B,A) ) ).
+
+fof(rc9_ami_1,axiom,
+    ! [A] :
+    ? [B] :
+      ( l1_ami_1(B,A)
+      & ~ v3_struct_0(B)
+      & v1_ami_1(B,A)
+      & ~ v2_ami_1(B,A)
+      & v5_ami_1(B,A)
+      & v6_ami_1(B,A)
+      & v8_ami_1(B,A)
+      & v10_ami_1(B,A) ) ).
+
+fof(rc10_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ? [B] :
+          ( l1_ami_1(B,A)
+          & ~ v3_struct_0(B)
+          & v1_ami_1(B,A)
+          & ~ v2_ami_1(B,A)
+          & v4_ami_1(B,A)
+          & v5_ami_1(B,A)
+          & v6_ami_1(B,A)
+          & v7_ami_1(B,A)
+          & v8_ami_1(B,A)
+          & v10_ami_1(B,A)
+          & v13_ami_1(B,A) ) ) ).
+
+fof(rc11_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & v13_ami_1(B,A)
+        & l1_ami_1(B,A) )
+     => ? [C] :
+          ( m1_ami_1(C,A,B)
+          & ~ v1_xboole_0(C)
+          & v1_relat_1(C)
+          & v1_funct_1(C)
+          & v11_ami_1(C,A,B) ) ) ).
+
+fof(rc12_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v4_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & v10_ami_1(B,A)
+        & l1_ami_1(B,A) )
+     => ? [C] :
+          ( m1_ami_1(C,A,B)
+          & v1_relat_1(C)
+          & v1_funct_1(C)
+          & v11_ami_1(C,A,B)
+          & v12_ami_1(C,A,B) ) ) ).
+
+fof(t1_ami_1,axiom,
+    $true ).
+
+fof(t2_ami_1,axiom,
+    ! [A,B] : np__1 != k4_tarski(A,B) ).
+
+fof(t3_ami_1,axiom,
+    ! [A,B] : np__2 != k4_tarski(A,B) ).
+
+fof(t4_ami_1,axiom,
+    $true ).
+
+fof(t5_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( A != B
+     => k4_card_3(k4_funct_4(A,B,k1_tarski(C),k1_tarski(D))) = k1_tarski(k4_funct_4(A,B,C,D)) ) ).
+
+fof(d1_ami_1,axiom,
+    $true ).
+
+fof(d2_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_ami_1(B,A)
+        & l1_ami_1(B,A) )
+     => ( B = k1_ami_1(A)
+      <=> ( u1_struct_0(B) = k2_tarski(np__0,np__1)
+          & u1_ami_1(A,B) = np__0
+          & u2_ami_1(A,B) = k1_tarski(np__1)
+          & u3_ami_1(A,B) = k1_tarski(np__0)
+          & u4_ami_1(A,B) = k1_tarski(k4_tarski(np__0,k1_xboole_0))
+          & u5_ami_1(A,B) = k4_funct_4(np__0,np__1,k1_tarski(np__1),k1_tarski(k4_tarski(np__0,k1_xboole_0)))
+          & u6_ami_1(A,B) = k3_cqc_lang(k4_tarski(np__0,k1_xboole_0),k6_partfun1(k4_card_3(k4_funct_4(np__0,np__1,k1_tarski(np__1),k1_tarski(k4_tarski(np__0,k1_xboole_0)))))) ) ) ) ).
+
+fof(d3_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ( v2_ami_1(B,A)
+      <=> v1_xboole_0(u2_ami_1(A,B)) ) ) ).
+
+fof(d4_ami_1,axiom,
+    $true ).
+
+fof(d5_ami_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & l1_ami_1(B,A) )
+     => k2_ami_1(A,B) = u1_ami_1(A,B) ) ).
+
+fof(d6_ami_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & l1_ami_1(B,A) )
+     => ! [C] :
+          ( m1_subset_1(C,u1_struct_0(B))
+         => k3_ami_1(A,B,C) = k8_funct_2(u1_struct_0(B),k2_xboole_0(A,k2_tarski(u4_ami_1(A,B),u2_ami_1(A,B))),u5_ami_1(A,B),C) ) ) ).
+
+fof(d7_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v2_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))),u4_ami_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u5_ami_1(A,B)))
+                 => k4_ami_1(A,B,C,D) = k1_funct_1(k8_funct_2(u4_ami_1(A,B),k1_funct_2(k4_card_3(u5_ami_1(A,B)),k4_card_3(u5_ami_1(A,B))),u6_ami_1(A,B),C),D) ) ) ) ) ).
+
+fof(d8_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v2_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))),u4_ami_1(A,B))
+             => ( v3_ami_1(C,A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k4_card_3(u5_ami_1(A,B)))
+                   => k4_ami_1(A,B,C,D) = D ) ) ) ) ) ).
+
+fof(d9_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v2_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ( v4_ami_1(B,A)
+          <=> ? [C] :
+                ( m2_subset_1(C,k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))),u4_ami_1(A,B))
+                & v3_ami_1(C,A,B)
+                & ! [D] :
+                    ( m2_subset_1(D,k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))),u4_ami_1(A,B))
+                   => ( v3_ami_1(D,A,B)
+                     => C = D ) ) ) ) ) ) ).
+
+fof(t6_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => v4_ami_1(k1_ami_1(A),A) ) ).
+
+fof(d10_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))),u4_ami_1(A,B))
+             => ( C = k5_ami_1(A,B)
+              <=> ( v3_ami_1(C,A,B)
+                  & m2_subset_1(C,k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))),u4_ami_1(A,B)) ) ) ) ) ) ).
+
+fof(d11_ami_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & l1_ami_1(B,A) )
+     => ( v5_ami_1(B,A)
+      <=> k3_ami_1(A,B,k2_ami_1(A,B)) = u2_ami_1(A,B) ) ) ).
+
+fof(d12_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ( v6_ami_1(B,A)
+      <=> r1_tarski(k3_funct_2(u1_struct_0(B),k2_xboole_0(A,k2_tarski(u4_ami_1(A,B),u2_ami_1(A,B))),u5_ami_1(A,B),k1_tarski(u4_ami_1(A,B))),u2_ami_1(A,B)) ) ) ).
+
+fof(d13_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ( v7_ami_1(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+               => ! [D] :
+                    ( m2_subset_1(D,k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))),u4_ami_1(A,B))
+                   => ! [E] :
+                        ( m1_struct_0(E,B,u2_ami_1(A,B))
+                       => k1_funct_1(k4_ami_1(A,B,D,C),E) = k1_funct_1(C,E) ) ) ) ) ) ) ).
+
+fof(d14_ami_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & l1_ami_1(B,A) )
+     => ( v8_ami_1(B,A)
+      <=> ! [C] :
+            ( m1_struct_0(C,B,u2_ami_1(A,B))
+           => k3_ami_1(A,B,C) = u4_ami_1(A,B) ) ) ) ).
+
+fof(t7_ami_1,axiom,
+    ! [A] : v5_ami_1(k1_ami_1(A),A) ).
+
+fof(t8_ami_1,axiom,
+    ! [A] : v6_ami_1(k1_ami_1(A),A) ).
+
+fof(t9_ami_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k4_card_3(u5_ami_1(A,k1_ami_1(A))))
+     => ! [C] :
+          ( m1_subset_1(C,k4_card_3(u5_ami_1(A,k1_ami_1(A))))
+         => B = C ) ) ).
+
+fof(t10_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => v7_ami_1(k1_ami_1(A),A) ) ).
+
+fof(t11_ami_1,axiom,
+    ! [A] : v8_ami_1(k1_ami_1(A),A) ).
+
+fof(d15_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => k6_ami_1(A,B,C) = k1_funct_1(C,k2_ami_1(A,B)) ) ) ) ).
+
+fof(t12_ami_1,axiom,
+    $true ).
+
+fof(t13_ami_1,axiom,
+    $true ).
+
+fof(t14_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_relat_1(D)
+        & v1_funct_1(D) )
+     => ! [E] :
+          ( ( v1_relat_1(E)
+            & v1_funct_1(E) )
+         => ( ( r1_partfun1(D,E)
+              & r2_hidden(k4_tarski(A,B),D)
+              & r2_hidden(k4_tarski(A,C),E) )
+           => B = C ) ) ) ).
+
+fof(t15_ami_1,axiom,
+    ! [A] :
+      ( ( ! [B] :
+            ( r2_hidden(B,A)
+           => ( v1_relat_1(B)
+              & v1_funct_1(B) ) )
+        & ! [B] :
+            ( ( v1_relat_1(B)
+              & v1_funct_1(B) )
+           => ! [C] :
+                ( ( v1_relat_1(C)
+                  & v1_funct_1(C) )
+               => ( ( r2_hidden(B,A)
+                    & r2_hidden(C,A) )
+                 => r1_partfun1(B,C) ) ) ) )
+     => ( v1_relat_1(k3_tarski(A))
+        & v1_funct_1(k3_tarski(A)) ) ) ).
+
+fof(t16_ami_1,axiom,
+    $true ).
+
+fof(t17_ami_1,axiom,
+    $true ).
+
+fof(t18_ami_1,axiom,
+    ! [A,B,C,D] : k4_funct_4(A,B,C,D) = k1_funct_4(k3_cqc_lang(A,C),k3_cqc_lang(B,D)) ).
+
+fof(t19_ami_1,axiom,
+    ! [A,B] : k3_cqc_lang(A,B) = k1_tarski(k4_tarski(A,B)) ).
+
+fof(t20_ami_1,axiom,
+    ! [A,B,C] : k4_funct_4(A,A,B,C) = k3_cqc_lang(A,C) ).
+
+fof(t21_ami_1,axiom,
+    $true ).
+
+fof(t22_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B) )
+     => ( r2_hidden(A,k4_card_3(B))
+       => ( v1_relat_1(A)
+          & v1_funct_1(A) ) ) ) ).
+
+fof(d16_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( B = k7_ami_1(A)
+        <=> ! [C] :
+              ( r2_hidden(C,B)
+            <=> ? [D] :
+                  ( v1_relat_1(D)
+                  & v1_funct_1(D)
+                  & C = D
+                  & r1_tarski(k1_relat_1(D),k1_relat_1(A))
+                  & ! [E] :
+                      ( r2_hidden(E,k1_relat_1(D))
+                     => r2_hidden(k1_funct_1(D,E),k1_funct_1(A,E)) ) ) ) ) ) ).
+
+fof(t23_ami_1,axiom,
+    $true ).
+
+fof(t24_ami_1,axiom,
+    $true ).
+
+fof(t25_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( r2_hidden(A,k7_ami_1(B))
+           => ( r1_tarski(k1_relat_1(A),k1_relat_1(B))
+              & ! [C] :
+                  ( r2_hidden(C,k1_relat_1(A))
+                 => r2_hidden(k1_funct_1(A,C),k1_funct_1(B,C)) ) ) ) ) ) ).
+
+fof(t26_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => r2_hidden(k1_xboole_0,k7_ami_1(A)) ) ).
+
+fof(t27_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => r1_tarski(k4_card_3(A),k7_ami_1(A)) ) ).
+
+fof(t28_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B) )
+     => ( r2_hidden(A,k7_ami_1(B))
+       => ( v1_funct_1(A)
+          & m2_relset_1(A,k1_relat_1(B),k3_tarski(k2_relat_1(B))) ) ) ) ).
+
+fof(t29_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ( ( r2_hidden(A,k4_card_3(B))
+                  & r2_hidden(C,k7_ami_1(B)) )
+               => r2_hidden(k1_funct_4(A,C),k4_card_3(B)) ) ) ) ) ).
+
+fof(t30_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( k4_card_3(A) != k1_xboole_0
+           => ( r2_hidden(B,k7_ami_1(A))
+            <=> ? [C] :
+                  ( v1_relat_1(C)
+                  & v1_funct_1(C)
+                  & r2_hidden(C,k4_card_3(A))
+                  & r1_tarski(B,C) ) ) ) ) ) ).
+
+fof(t31_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => r1_tarski(k7_ami_1(A),k4_partfun1(k1_relat_1(A),k3_tarski(k2_relat_1(A)))) ) ).
+
+fof(t32_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( r1_tarski(A,B)
+           => r1_tarski(k7_ami_1(A),k7_ami_1(B)) ) ) ) ).
+
+fof(t33_ami_1,axiom,
+    k7_ami_1(k1_xboole_0) = k1_tarski(k1_xboole_0) ).
+
+fof(t34_ami_1,axiom,
+    ! [A,B] : k4_partfun1(A,B) = k7_ami_1(k2_funcop_1(A,B)) ).
+
+fof(t36_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( ( r2_hidden(A,k1_relat_1(C))
+          & r2_hidden(B,k1_funct_1(C,A)) )
+       => r2_hidden(k3_cqc_lang(A,B),k7_ami_1(C)) ) ) ).
+
+fof(t37_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( k7_ami_1(A) = k1_tarski(k1_xboole_0)
+      <=> ! [B] :
+            ( r2_hidden(B,k1_relat_1(A))
+           => k1_funct_1(A,B) = k1_xboole_0 ) ) ) ).
+
+fof(t38_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B) )
+     => ( ( r1_tarski(A,k7_ami_1(B))
+          & ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ! [D] :
+                  ( ( v1_relat_1(D)
+                    & v1_funct_1(D) )
+                 => ( ( r2_hidden(C,A)
+                      & r2_hidden(D,A) )
+                   => r1_partfun1(C,D) ) ) ) )
+       => r2_hidden(k3_tarski(A),k7_ami_1(B)) ) ) ).
+
+fof(t39_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ( ( r1_partfun1(A,B)
+                  & r2_hidden(A,k7_ami_1(C))
+                  & r2_hidden(B,k7_ami_1(C)) )
+               => r2_hidden(k2_xboole_0(A,B),k7_ami_1(C)) ) ) ) ) ).
+
+fof(t40_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ( ( r1_tarski(A,B)
+                  & r2_hidden(B,k7_ami_1(C)) )
+               => r2_hidden(A,k7_ami_1(C)) ) ) ) ) ).
+
+fof(t41_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B) )
+     => ! [C] :
+          ( ( v1_relat_1(C)
+            & v1_funct_1(C) )
+         => ( r2_hidden(B,k7_ami_1(C))
+           => r2_hidden(k7_relat_1(B,A),k7_ami_1(C)) ) ) ) ).
+
+fof(t42_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B) )
+     => ! [C] :
+          ( ( v1_relat_1(C)
+            & v1_funct_1(C) )
+         => ( r2_hidden(B,k7_ami_1(C))
+           => r2_hidden(k7_relat_1(B,A),k7_ami_1(k7_relat_1(C,A))) ) ) ) ).
+
+fof(t43_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ~ ( r2_hidden(A,k7_ami_1(k1_funct_4(B,C)))
+                  & ! [D] :
+                      ( ( v1_relat_1(D)
+                        & v1_funct_1(D) )
+                     => ! [E] :
+                          ( ( v1_relat_1(E)
+                            & v1_funct_1(E) )
+                         => ~ ( r2_hidden(D,k7_ami_1(B))
+                              & r2_hidden(E,k7_ami_1(C))
+                              & A = k1_funct_4(D,E) ) ) ) ) ) ) ) ).
+
+fof(t44_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ! [D] :
+                  ( ( v1_relat_1(D)
+                    & v1_funct_1(D) )
+                 => ( ( r1_xboole_0(k1_relat_1(A),k4_xboole_0(k1_relat_1(C),k1_relat_1(D)))
+                      & r2_hidden(C,k7_ami_1(B))
+                      & r2_hidden(D,k7_ami_1(A)) )
+                   => r2_hidden(k1_funct_4(C,D),k7_ami_1(k1_funct_4(B,A))) ) ) ) ) ) ).
+
+fof(t45_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ! [D] :
+                  ( ( v1_relat_1(D)
+                    & v1_funct_1(D) )
+                 => ( ( r1_xboole_0(k1_relat_1(C),k4_xboole_0(k1_relat_1(A),k1_relat_1(D)))
+                      & r2_hidden(C,k7_ami_1(B))
+                      & r2_hidden(D,k7_ami_1(A)) )
+                   => r2_hidden(k1_funct_4(C,D),k7_ami_1(k1_funct_4(B,A))) ) ) ) ) ) ).
+
+fof(t46_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ( ( r2_hidden(A,k7_ami_1(B))
+                  & r2_hidden(C,k7_ami_1(B)) )
+               => r2_hidden(k1_funct_4(A,C),k7_ami_1(B)) ) ) ) ) ).
+
+fof(t47_ami_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B,C,D,E] :
+          ( ( r2_hidden(B,k1_relat_1(A))
+            & r2_hidden(D,k1_funct_1(A,B))
+            & r2_hidden(C,k1_relat_1(A))
+            & r2_hidden(E,k1_funct_1(A,C)) )
+         => r2_hidden(k4_funct_4(B,C,D,E),k7_ami_1(A)) ) ) ).
+
+fof(d17_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => k8_ami_1(A,B,C) = k1_funct_1(C,k6_ami_1(A,B,C)) ) ) ) ).
+
+fof(d18_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => k9_ami_1(A,B,C) = k4_ami_1(A,B,k8_ami_1(A,B,C),C) ) ) ) ).
+
+fof(d19_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k5_numbers,k4_card_3(u5_ami_1(A,B)))
+                    & m2_relset_1(D,k5_numbers,k4_card_3(u5_ami_1(A,B))) )
+                 => ( D = k10_ami_1(A,B,C)
+                  <=> ( k8_funct_2(k5_numbers,k4_card_3(u5_ami_1(A,B)),D,np__0) = C
+                      & ! [E] :
+                          ( m2_subset_1(E,k1_numbers,k5_numbers)
+                         => k8_funct_2(k5_numbers,k4_card_3(u5_ami_1(A,B)),D,k1_nat_1(E,np__1)) = k9_ami_1(A,B,k8_funct_2(k5_numbers,k4_card_3(u5_ami_1(A,B)),D,E)) ) ) ) ) ) ) ) ).
+
+fof(d20_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => ( v9_ami_1(C,A,B)
+              <=> ? [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                    & k8_ami_1(A,B,k11_ami_1(A,B,k10_ami_1(A,B,C),D)) = k5_ami_1(A,B) ) ) ) ) ) ).
+
+fof(d21_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ( v10_ami_1(B,A)
+      <=> u4_ami_1(A,B) != u2_ami_1(A,B) ) ) ).
+
+fof(t48_ami_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A) )
+     => ( v10_ami_1(B,A)
+       => ! [C] :
+            ( m1_struct_0(C,B,u2_ami_1(A,B))
+           => k2_ami_1(A,B) != C ) ) ) ).
+
+fof(t49_ami_1,axiom,
+    $true ).
+
+fof(t50_ami_1,axiom,
+    $true ).
+
+fof(t51_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & ~ v2_ami_1(C,A)
+                & v5_ami_1(C,A)
+                & v8_ami_1(C,A)
+                & l1_ami_1(C,A) )
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u5_ami_1(A,C)))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => k11_ami_1(A,C,k10_ami_1(A,C,D),k1_nat_1(B,E)) = k11_ami_1(A,C,k10_ami_1(A,C,k11_ami_1(A,C,k10_ami_1(A,C,D),B)),E) ) ) ) ) ) ).
+
+fof(t52_ami_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_xreal_0(A,B)
+           => ! [C] :
+                ( v1_setfam_1(C)
+               => ! [D] :
+                    ( ( ~ v3_struct_0(D)
+                      & ~ v2_ami_1(D,C)
+                      & v4_ami_1(D,C)
+                      & v5_ami_1(D,C)
+                      & v8_ami_1(D,C)
+                      & l1_ami_1(D,C) )
+                   => ! [E] :
+                        ( m1_subset_1(E,k4_card_3(u5_ami_1(C,D)))
+                       => ( k8_ami_1(C,D,k11_ami_1(C,D,k10_ami_1(C,D,E),A)) = k5_ami_1(C,D)
+                         => k11_ami_1(C,D,k10_ami_1(C,D,E),B) = k11_ami_1(C,D,k10_ami_1(C,D,E),A) ) ) ) ) ) ) ) ).
+
+fof(d22_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => ( v9_ami_1(C,A,B)
+               => ! [D] :
+                    ( m1_subset_1(D,k4_card_3(u5_ami_1(A,B)))
+                   => ( D = k12_ami_1(A,B,C)
+                    <=> ? [E] :
+                          ( m2_subset_1(E,k1_numbers,k5_numbers)
+                          & D = k11_ami_1(A,B,k10_ami_1(A,B,C),E)
+                          & k8_ami_1(A,B,D) = k5_ami_1(A,B) ) ) ) ) ) ) ) ).
+
+fof(t53_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v7_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => ! [D] :
+                  ( m1_struct_0(D,B,u2_ami_1(A,B))
+                 => k1_funct_1(C,D) = k1_funct_1(k9_ami_1(A,B,C),D) ) ) ) ) ).
+
+fof(t54_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v7_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => ! [D] :
+                  ( m1_struct_0(D,B,u2_ami_1(A,B))
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => k13_ami_1(A,B,C,D) = k13_ami_1(A,B,k11_ami_1(A,B,k10_ami_1(A,B,C),E),D) ) ) ) ) ) ).
+
+fof(t55_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & ~ v2_ami_1(C,A)
+                & v5_ami_1(C,A)
+                & v7_ami_1(C,A)
+                & v8_ami_1(C,A)
+                & l1_ami_1(C,A) )
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u5_ami_1(A,C)))
+                 => k11_ami_1(A,C,k10_ami_1(A,C,D),k1_nat_1(B,np__1)) = k4_ami_1(A,C,k13_ami_1(A,C,D,k6_ami_1(A,C,k11_ami_1(A,C,k10_ami_1(A,C,D),B))),k11_ami_1(A,C,k10_ami_1(A,C,D),B)) ) ) ) ) ).
+
+fof(t56_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v7_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( k13_ami_1(A,B,C,k6_ami_1(A,B,k11_ami_1(A,B,k10_ami_1(A,B,C),D))) = k5_ami_1(A,B)
+                   => k12_ami_1(A,B,C) = k11_ami_1(A,B,k10_ami_1(A,B,C),D) ) ) ) ) ) ).
+
+fof(t57_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v7_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => ( ? [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                    & k13_ami_1(A,B,C,k6_ami_1(A,B,k11_ami_1(A,B,k10_ami_1(A,B,C),D))) = k5_ami_1(A,B) )
+               => ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => k12_ami_1(A,B,C) = k12_ami_1(A,B,k11_ami_1(A,B,k10_ami_1(A,B,C),D)) ) ) ) ) ) ).
+
+fof(d24_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ! [C] :
+          ( m1_subset_1(C,k7_ami_1(u5_ami_1(A,B)))
+         => ( m1_ami_1(C,A,B)
+          <=> v1_finset_1(C) ) ) ) ).
+
+fof(d25_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_ami_1(C,A,B)
+             => ( v11_ami_1(C,A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k4_card_3(u5_ami_1(A,B)))
+                   => ! [E] :
+                        ( m1_subset_1(E,k4_card_3(u5_ami_1(A,B)))
+                       => ( ( r1_tarski(C,D)
+                            & r1_tarski(C,E) )
+                         => ! [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                             => k7_relat_1(k11_ami_1(A,B,k10_ami_1(A,B,D),F),k1_relat_1(C)) = k7_relat_1(k11_ami_1(A,B,k10_ami_1(A,B,E),F),k1_relat_1(C)) ) ) ) ) ) ) ) ) ).
+
+fof(d26_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_ami_1(C,A,B)
+             => ( v12_ami_1(C,A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k4_card_3(u5_ami_1(A,B)))
+                   => ( r1_tarski(C,D)
+                     => v9_ami_1(D,A,B) ) ) ) ) ) ) ).
+
+fof(d27_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ( v13_ami_1(B,A)
+          <=> ? [C] :
+                ( m1_ami_1(C,A,B)
+                & ~ v1_xboole_0(C)
+                & v11_ami_1(C,A,B) ) ) ) ) ).
+
+fof(t58_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C,D,E] :
+              ( m1_subset_1(E,u1_struct_0(B))
+             => ! [F] :
+                  ( m1_subset_1(F,u1_struct_0(B))
+                 => ( ( k3_ami_1(A,B,E) = C
+                      & k3_ami_1(A,B,F) = D )
+                   => ! [G] :
+                        ( m1_subset_1(G,C)
+                       => ! [H] :
+                            ( m1_subset_1(H,D)
+                           => m1_ami_1(k4_funct_4(E,F,G,H),A,B) ) ) ) ) ) ) ) ).
+
+fof(t59_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C,D] :
+              ( m1_subset_1(D,u1_struct_0(B))
+             => ( k3_ami_1(A,B,D) = C
+               => ! [E] :
+                    ( m1_subset_1(E,C)
+                   => m1_ami_1(k3_cqc_lang(D,E),A,B) ) ) ) ) ) ).
+
+fof(t60_ami_1,axiom,
+    ! [A] : v10_ami_1(k1_ami_1(A),A) ).
+
+fof(t61_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => v13_ami_1(k1_ami_1(A),A) ) ).
+
+fof(t62_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v2_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+             => ! [D] :
+                  ( m1_ami_1(D,A,B)
+                 => m1_ami_1(k7_relat_1(C,k1_relat_1(D)),A,B) ) ) ) ) ).
+
+fof(t63_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => m1_ami_1(k1_xboole_0,A,B) ) ).
+
+fof(t64_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_struct_0(C,B,u2_ami_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k3_ami_1(A,B,k2_ami_1(A,B)))
+                 => ( D = C
+                   => ! [E] :
+                        ( m1_subset_1(E,k3_ami_1(A,B,C))
+                       => ( E = k5_ami_1(A,B)
+                         => ! [F] :
+                              ( m1_subset_1(F,k4_card_3(u5_ami_1(A,B)))
+                             => ( r1_tarski(k16_ami_1(A,B,k2_ami_1(A,B),C,D,E),F)
+                               => k8_ami_1(A,B,F) = k5_ami_1(A,B) ) ) ) ) ) ) ) ) ) ).
+
+fof(t65_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_struct_0(C,B,u2_ami_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k3_ami_1(A,B,k2_ami_1(A,B)))
+                 => ( D = C
+                   => ! [E] :
+                        ( m1_subset_1(E,k3_ami_1(A,B,C))
+                       => ( E = k5_ami_1(A,B)
+                         => v12_ami_1(k16_ami_1(A,B,k2_ami_1(A,B),C,D,E),A,B) ) ) ) ) ) ) ) ).
+
+fof(t66_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_struct_0(C,B,u2_ami_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k3_ami_1(A,B,k2_ami_1(A,B)))
+                 => ( D = C
+                   => ! [E] :
+                        ( m1_subset_1(E,k3_ami_1(A,B,C))
+                       => ( E = k5_ami_1(A,B)
+                         => ! [F] :
+                              ( m1_subset_1(F,k4_card_3(u5_ami_1(A,B)))
+                             => ( r1_tarski(k16_ami_1(A,B,k2_ami_1(A,B),C,D,E),F)
+                               => ! [G] :
+                                    ( m2_subset_1(G,k1_numbers,k5_numbers)
+                                   => k11_ami_1(A,B,k10_ami_1(A,B,F),G) = F ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t67_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_struct_0(C,B,u2_ami_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k3_ami_1(A,B,k2_ami_1(A,B)))
+                 => ( D = C
+                   => ! [E] :
+                        ( m1_subset_1(E,k3_ami_1(A,B,C))
+                       => ( E = k5_ami_1(A,B)
+                         => v11_ami_1(k16_ami_1(A,B,k2_ami_1(A,B),C,D,E),A,B) ) ) ) ) ) ) ) ).
+
+fof(d28_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_ami_1(C,A,B)
+             => ( ( v11_ami_1(C,A,B)
+                  & v12_ami_1(C,A,B)
+                  & m1_ami_1(C,A,B) )
+               => ! [D] :
+                    ( m1_ami_1(D,A,B)
+                   => ( D = k18_ami_1(A,B,C)
+                    <=> ! [E] :
+                          ( m1_subset_1(E,k4_card_3(u5_ami_1(A,B)))
+                         => ( r1_tarski(C,E)
+                           => D = k7_relat_1(k12_ami_1(A,B,E),k1_relat_1(C)) ) ) ) ) ) ) ) ) ).
+
+fof(d29_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_ami_1(C,A,B)
+             => ! [D] :
+                  ( ( v1_relat_1(D)
+                    & v1_funct_1(D) )
+                 => ( r1_ami_1(A,B,C,D)
+                  <=> ! [E] :
+                        ~ ( r2_hidden(E,k1_relat_1(D))
+                          & ! [F] :
+                              ( m1_ami_1(F,A,B)
+                             => ~ ( E = F
+                                  & v11_ami_1(k17_ami_1(A,B,C,F),A,B)
+                                  & v12_ami_1(k17_ami_1(A,B,C,F),A,B)
+                                  & m1_ami_1(k17_ami_1(A,B,C,F),A,B)
+                                  & r1_tarski(k1_funct_1(D,F),k18_ami_1(A,B,k17_ami_1(A,B,C,F))) ) ) ) ) ) ) ) ) ).
+
+fof(t68_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_ami_1(C,A,B)
+             => r1_ami_1(A,B,C,k1_xboole_0) ) ) ) ).
+
+fof(t69_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_ami_1(C,A,B)
+             => ( ( v11_ami_1(C,A,B)
+                  & v12_ami_1(C,A,B)
+                  & m1_ami_1(C,A,B) )
+              <=> r1_ami_1(A,B,C,k3_cqc_lang(k1_xboole_0,k18_ami_1(A,B,C))) ) ) ) ) ).
+
+fof(t70_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( m1_ami_1(C,A,B)
+             => ( ( v11_ami_1(C,A,B)
+                  & v12_ami_1(C,A,B)
+                  & m1_ami_1(C,A,B) )
+              <=> r1_ami_1(A,B,C,k3_cqc_lang(k1_xboole_0,k1_xboole_0)) ) ) ) ) ).
+
+fof(d30_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,k14_ami_1(A,B),k14_ami_1(A,B)) )
+             => ( v14_ami_1(C,A,B)
+              <=> ? [D] :
+                    ( m1_ami_1(D,A,B)
+                    & r1_ami_1(A,B,D,C) ) ) ) ) ) ).
+
+fof(t71_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,k14_ami_1(A,B),k14_ami_1(A,B)) )
+             => ( C = k1_xboole_0
+               => v14_ami_1(C,A,B) ) ) ) ) ).
+
+fof(t72_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,k14_ami_1(A,B),k14_ami_1(A,B)) )
+             => ( C = k3_cqc_lang(k1_xboole_0,k1_xboole_0)
+               => v14_ami_1(C,A,B) ) ) ) ) ).
+
+fof(t73_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( ( v11_ami_1(C,A,B)
+                & v12_ami_1(C,A,B)
+                & m1_ami_1(C,A,B) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,k14_ami_1(A,B),k14_ami_1(A,B)) )
+                 => ( D = k3_cqc_lang(k1_xboole_0,k18_ami_1(A,B,C))
+                   => v14_ami_1(D,A,B) ) ) ) ) ) ).
+
+fof(d31_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,k14_ami_1(A,B),k14_ami_1(A,B)) )
+             => ( v14_ami_1(C,A,B)
+               => ! [D] :
+                    ( m1_ami_1(D,A,B)
+                   => ( m2_ami_1(D,A,B,C)
+                    <=> r1_ami_1(A,B,D,C) ) ) ) ) ) ) ).
+
+fof(t74_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,k14_ami_1(A,B),k14_ami_1(A,B)) )
+             => ( C = k1_xboole_0
+               => ! [D] :
+                    ( m1_ami_1(D,A,B)
+                   => m2_ami_1(D,A,B,C) ) ) ) ) ) ).
+
+fof(t75_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,k14_ami_1(A,B),k14_ami_1(A,B)) )
+             => ( C = k3_cqc_lang(k1_xboole_0,k1_xboole_0)
+               => ! [D] :
+                    ( ( v11_ami_1(D,A,B)
+                      & v12_ami_1(D,A,B)
+                      & m1_ami_1(D,A,B) )
+                   => m2_ami_1(D,A,B,C) ) ) ) ) ) ).
+
+fof(t76_ami_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v2_ami_1(B,A)
+            & v4_ami_1(B,A)
+            & v5_ami_1(B,A)
+            & v8_ami_1(B,A)
+            & v10_ami_1(B,A)
+            & l1_ami_1(B,A) )
+         => ! [C] :
+              ( ( v11_ami_1(C,A,B)
+                & v12_ami_1(C,A,B)
+                & m1_ami_1(C,A,B) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,k14_ami_1(A,B),k14_ami_1(A,B)) )
+                 => ( D = k3_cqc_lang(k1_xboole_0,k18_ami_1(A,B,C))
+                   => m2_ami_1(C,A,B,D) ) ) ) ) ) ).
+
+fof(dt_m1_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ! [C] :
+          ( m1_ami_1(C,A,B)
+         => m1_subset_1(C,k7_ami_1(u5_ami_1(A,B))) ) ) ).
+
+fof(existence_m1_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ? [C] : m1_ami_1(C,A,B) ) ).
+
+fof(dt_m2_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v4_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & v10_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & v1_funct_1(C)
+        & m1_relset_1(C,k14_ami_1(A,B),k14_ami_1(A,B)) )
+     => ! [D] :
+          ( m2_ami_1(D,A,B,C)
+         => m1_ami_1(D,A,B) ) ) ).
+
+fof(existence_m2_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v4_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & v10_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & v1_funct_1(C)
+        & m1_relset_1(C,k14_ami_1(A,B),k14_ami_1(A,B)) )
+     => ? [D] : m2_ami_1(D,A,B,C) ) ).
+
+fof(dt_l1_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => l1_struct_0(B) ) ).
+
+fof(existence_l1_ami_1,axiom,
+    ! [A] :
+    ? [B] : l1_ami_1(B,A) ).
+
+fof(abstractness_v1_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ( v1_ami_1(B,A)
+       => B = g1_ami_1(A,u1_struct_0(B),u1_ami_1(A,B),u2_ami_1(A,B),u3_ami_1(A,B),u4_ami_1(A,B),u5_ami_1(A,B),u6_ami_1(A,B)) ) ) ).
+
+fof(dt_k1_ami_1,axiom,
+    ! [A] :
+      ( v1_ami_1(k1_ami_1(A),A)
+      & l1_ami_1(k1_ami_1(A),A) ) ).
+
+fof(dt_k2_ami_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & l1_ami_1(B,A) )
+     => m1_subset_1(k2_ami_1(A,B),u1_struct_0(B)) ) ).
+
+fof(dt_k3_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,u1_struct_0(B)) )
+     => m1_subset_1(k3_ami_1(A,B,C),k2_xboole_0(A,k2_tarski(u4_ami_1(A,B),u2_ami_1(A,B)))) ) ).
+
+fof(dt_k4_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_setfam_1(A)
+        & ~ v2_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,u4_ami_1(A,B))
+        & m1_subset_1(D,k4_card_3(u5_ami_1(A,B))) )
+     => m1_subset_1(k4_ami_1(A,B,C,D),k4_card_3(u5_ami_1(A,B))) ) ).
+
+fof(dt_k5_ami_1,axiom,
+    ! [A,B] :
+      ( ( v1_setfam_1(A)
+        & ~ v2_ami_1(B,A)
+        & v4_ami_1(B,A)
+        & l1_ami_1(B,A) )
+     => m2_subset_1(k5_ami_1(A,B),k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))),u4_ami_1(A,B)) ) ).
+
+fof(dt_k6_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,k4_card_3(u5_ami_1(A,B))) )
+     => m1_struct_0(k6_ami_1(A,B,C),B,u2_ami_1(A,B)) ) ).
+
+fof(dt_k7_ami_1,axiom,
+    $true ).
+
+fof(dt_k8_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,k4_card_3(u5_ami_1(A,B))) )
+     => m2_subset_1(k8_ami_1(A,B,C),k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))),u4_ami_1(A,B)) ) ).
+
+fof(dt_k9_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,k4_card_3(u5_ami_1(A,B))) )
+     => m1_subset_1(k9_ami_1(A,B,C),k4_card_3(u5_ami_1(A,B))) ) ).
+
+fof(dt_k10_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,k4_card_3(u5_ami_1(A,B))) )
+     => ( v1_funct_1(k10_ami_1(A,B,C))
+        & v1_funct_2(k10_ami_1(A,B,C),k5_numbers,k4_card_3(u5_ami_1(A,B)))
+        & m2_relset_1(k10_ami_1(A,B,C),k5_numbers,k4_card_3(u5_ami_1(A,B))) ) ) ).
+
+fof(dt_k11_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_setfam_1(A)
+        & ~ v2_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,k4_card_3(u5_ami_1(A,B)))
+        & m1_relset_1(C,k5_numbers,k4_card_3(u5_ami_1(A,B)))
+        & m1_subset_1(D,k5_numbers) )
+     => m1_subset_1(k11_ami_1(A,B,C,D),k4_card_3(u5_ami_1(A,B))) ) ).
+
+fof(redefinition_k11_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_setfam_1(A)
+        & ~ v2_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,k4_card_3(u5_ami_1(A,B)))
+        & m1_relset_1(C,k5_numbers,k4_card_3(u5_ami_1(A,B)))
+        & m1_subset_1(D,k5_numbers) )
+     => k11_ami_1(A,B,C,D) = k1_funct_1(C,D) ) ).
+
+fof(dt_k12_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v4_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,k4_card_3(u5_ami_1(A,B))) )
+     => m1_subset_1(k12_ami_1(A,B,C),k4_card_3(u5_ami_1(A,B))) ) ).
+
+fof(dt_k13_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+        & m1_subset_1(D,u2_ami_1(A,B)) )
+     => m2_subset_1(k13_ami_1(A,B,C,D),k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))),u4_ami_1(A,B)) ) ).
+
+fof(redefinition_k13_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,k4_card_3(u5_ami_1(A,B)))
+        & m1_subset_1(D,u2_ami_1(A,B)) )
+     => k13_ami_1(A,B,C,D) = k1_funct_1(C,D) ) ).
+
+fof(dt_k14_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => m1_subset_1(k14_ami_1(A,B),k1_zfmisc_1(k7_ami_1(u5_ami_1(A,B)))) ) ).
+
+fof(dt_k15_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,k3_ami_1(A,B,C)) )
+     => m1_ami_1(k15_ami_1(A,B,C,D),A,B) ) ).
+
+fof(redefinition_k15_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,k3_ami_1(A,B,C)) )
+     => k15_ami_1(A,B,C,D) = k3_cqc_lang(C,D) ) ).
+
+fof(dt_k16_ami_1,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(B))
+        & m1_subset_1(E,k3_ami_1(A,B,C))
+        & m1_subset_1(F,k3_ami_1(A,B,D)) )
+     => m1_ami_1(k16_ami_1(A,B,C,D,E,F),A,B) ) ).
+
+fof(redefinition_k16_ami_1,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(B))
+        & m1_subset_1(E,k3_ami_1(A,B,C))
+        & m1_subset_1(F,k3_ami_1(A,B,D)) )
+     => k16_ami_1(A,B,C,D,E,F) = k4_funct_4(C,D,E,F) ) ).
+
+fof(dt_k17_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( l1_ami_1(B,A)
+        & m1_ami_1(C,A,B)
+        & m1_ami_1(D,A,B) )
+     => m1_ami_1(k17_ami_1(A,B,C,D),A,B) ) ).
+
+fof(idempotence_k17_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( l1_ami_1(B,A)
+        & m1_ami_1(C,A,B)
+        & m1_ami_1(D,A,B) )
+     => k17_ami_1(A,B,C,C) = C ) ).
+
+fof(redefinition_k17_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( l1_ami_1(B,A)
+        & m1_ami_1(C,A,B)
+        & m1_ami_1(D,A,B) )
+     => k17_ami_1(A,B,C,D) = k1_funct_4(C,D) ) ).
+
+fof(dt_k18_ami_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_setfam_1(A)
+        & ~ v3_struct_0(B)
+        & ~ v2_ami_1(B,A)
+        & v4_ami_1(B,A)
+        & v5_ami_1(B,A)
+        & v8_ami_1(B,A)
+        & v10_ami_1(B,A)
+        & l1_ami_1(B,A)
+        & m1_ami_1(C,A,B) )
+     => m1_ami_1(k18_ami_1(A,B,C),A,B) ) ).
+
+fof(dt_u1_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => m1_subset_1(u1_ami_1(A,B),u1_struct_0(B)) ) ).
+
+fof(dt_u2_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => m1_subset_1(u2_ami_1(A,B),k1_zfmisc_1(u1_struct_0(B))) ) ).
+
+fof(dt_u3_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ~ v1_xboole_0(u3_ami_1(A,B)) ) ).
+
+fof(dt_u4_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ( ~ v1_xboole_0(u4_ami_1(A,B))
+        & m1_subset_1(u4_ami_1(A,B),k1_zfmisc_1(k2_zfmisc_1(u3_ami_1(A,B),k13_finseq_1(k2_xboole_0(k3_tarski(A),u1_struct_0(B)))))) ) ) ).
+
+fof(dt_u5_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ( v1_funct_1(u5_ami_1(A,B))
+        & v1_funct_2(u5_ami_1(A,B),u1_struct_0(B),k2_xboole_0(A,k2_tarski(u4_ami_1(A,B),u2_ami_1(A,B))))
+        & m2_relset_1(u5_ami_1(A,B),u1_struct_0(B),k2_xboole_0(A,k2_tarski(u4_ami_1(A,B),u2_ami_1(A,B)))) ) ) ).
+
+fof(dt_u6_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => ( v1_funct_1(u6_ami_1(A,B))
+        & v1_funct_2(u6_ami_1(A,B),u4_ami_1(A,B),k1_funct_2(k4_card_3(u5_ami_1(A,B)),k4_card_3(u5_ami_1(A,B))))
+        & m2_relset_1(u6_ami_1(A,B),u4_ami_1(A,B),k1_funct_2(k4_card_3(u5_ami_1(A,B)),k4_card_3(u5_ami_1(A,B)))) ) ) ).
+
+fof(dt_g1_ami_1,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( ( m1_subset_1(C,B)
+        & m1_subset_1(D,k1_zfmisc_1(B))
+        & ~ v1_xboole_0(E)
+        & ~ v1_xboole_0(F)
+        & m1_subset_1(F,k1_zfmisc_1(k2_zfmisc_1(E,k13_finseq_1(k2_xboole_0(k3_tarski(A),B)))))
+        & v1_funct_1(G)
+        & v1_funct_2(G,B,k2_xboole_0(A,k2_tarski(F,D)))
+        & m1_relset_1(G,B,k2_xboole_0(A,k2_tarski(F,D)))
+        & v1_funct_1(H)
+        & v1_funct_2(H,F,k1_funct_2(k4_card_3(G),k4_card_3(G)))
+        & m1_relset_1(H,F,k1_funct_2(k4_card_3(G),k4_card_3(G))) )
+     => ( v1_ami_1(g1_ami_1(A,B,C,D,E,F,G,H),A)
+        & l1_ami_1(g1_ami_1(A,B,C,D,E,F,G,H),A) ) ) ).
+
+fof(free_g1_ami_1,axiom,
+    ! [A,B,C,D,E,F,G,H] :
+      ( ( m1_subset_1(C,B)
+        & m1_subset_1(D,k1_zfmisc_1(B))
+        & ~ v1_xboole_0(E)
+        & ~ v1_xboole_0(F)
+        & m1_subset_1(F,k1_zfmisc_1(k2_zfmisc_1(E,k13_finseq_1(k2_xboole_0(k3_tarski(A),B)))))
+        & v1_funct_1(G)
+        & v1_funct_2(G,B,k2_xboole_0(A,k2_tarski(F,D)))
+        & m1_relset_1(G,B,k2_xboole_0(A,k2_tarski(F,D)))
+        & v1_funct_1(H)
+        & v1_funct_2(H,F,k1_funct_2(k4_card_3(G),k4_card_3(G)))
+        & m1_relset_1(H,F,k1_funct_2(k4_card_3(G),k4_card_3(G))) )
+     => ! [I,J,K,L,M,N,O,P] :
+          ( g1_ami_1(A,B,C,D,E,F,G,H) = g1_ami_1(I,J,K,L,M,N,O,P)
+         => ( A = I
+            & B = J
+            & C = K
+            & D = L
+            & E = M
+            & F = N
+            & G = O
+            & H = P ) ) ) ).
+
+fof(t35_ami_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,A,B)
+                & m2_relset_1(C,A,B) )
+             => k7_ami_1(C) = k7_ami_1(k2_partfun1(A,B,C,a_3_0_ami_1(A,B,C))) ) ) ) ).
+
+fof(d23_ami_1,axiom,
+    ! [A,B] :
+      ( l1_ami_1(B,A)
+     => k14_ami_1(A,B) = a_2_0_ami_1(A,B) ) ).
+
+fof(fraenkel_a_3_0_ami_1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & v1_funct_1(D)
+        & v1_funct_2(D,B,C)
+        & m2_relset_1(D,B,C) )
+     => ( r2_hidden(A,a_3_0_ami_1(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,B)
+            & A = E
+            & k8_funct_2(B,C,D,E) != k1_xboole_0 ) ) ) ).
+
+fof(fraenkel_a_2_0_ami_1,axiom,
+    ! [A,B,C] :
+      ( l1_ami_1(C,B)
+     => ( r2_hidden(A,a_2_0_ami_1(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k7_ami_1(u5_ami_1(B,C)))
+            & A = D
+            & v1_finset_1(D) ) ) ) ).
+
+%------------------------------------------------------------------------------

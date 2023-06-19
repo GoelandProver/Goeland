@@ -1,0 +1,42 @@
+%------------------------------------------------------------------------------
+% File     : LCL016^1 : TPTP v8.1.2. Released .0.
+% Domain   : Logic Calculi (Second Order Modal Logic)
+% Axioms   : Embedding of second order modal logic in simple type theory
+% Version  : [Ben13] axioms.
+% English  : Extends K to KB by adding symmetric of rel.
+
+% Refs     : [Ben13] Benzmueller (2009), Email to Geoff Sutcliffe
+%          : [BP13]  Benzmueller & Paulson (2013), Quantified Multimodal Lo
+% Source   : [Ben13]
+% Names    : 
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    3 (   1 unt;   1 typ;   1 def)
+%            Number of atoms       :    4 (   1 equ;   0 cnn)
+%            Maximal formula atoms :    2 (   1 avg)
+%            Number of connectives :    6 (   0   ~;   0   |;   0   &;   5   @)
+%                                         (   0 <=>;   1  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    2 (   2 avg;   5 nst)
+%            Number of types       :    2 (   0 usr)
+%            Number of type conns  :    5 (   5   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :    3 (   2 usr;   1 con; 0-2 aty)
+%            Number of variables   :    3 (   1   ^   2   !;   0   ?;   3   :)
+% SPC      : TH0_SAT_EQU
+
+% Comments : Requires LCL016^0.ax.
+%------------------------------------------------------------------------------
+%----Definition of properties of accessibility relations
+thf(msymmetric_type,type,
+    msymmetric: ( $i > $i > $o ) > $o ).
+
+thf(msymmetric,definition,
+    ( msymmetric
+    = ( ^ [R: $i > $i > $o] :
+        ! [S: $i,T: $i] :
+          ( ( R @ S @ T )
+         => ( R @ T @ S ) ) ) ) ).
+
+thf(sym,axiom,
+    msymmetric @ rel ).
+
+%------------------------------------------------------------------------------

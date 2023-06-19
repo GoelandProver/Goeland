@@ -1,0 +1,260 @@
+%------------------------------------------------------------------------------
+% File     : ITP105+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : veblen+2.ax [Gau20]
+%          : HL4105+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   23 (   0 unt;   0 def)
+%            Number of atoms       :  119 (   6 equ)
+%            Maximal formula atoms :   14 (   5 avg)
+%            Number of connectives :  101 (   5   ~;   0   |;  12   &)
+%                                         (   5 <=>;  79  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   17 (   8 avg)
+%            Maximal term depth    :    7 (   2 avg)
+%            Number of predicates  :    4 (   3 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   34 (  34 usr;   6 con; 0-2 aty)
+%            Number of variables   :   75 (  74   !;   1   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(mem_c_2Eveblen_2Eclosed,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => mem(c_2Eveblen_2Eclosed(A_27a),arr(arr(ty_2Eordinal_2Eordinal(A_27a),bool),bool)) ) ).
+
+fof(mem_c_2Eveblen_2Eclub,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => mem(c_2Eveblen_2Eclub(A_27a),arr(arr(ty_2Eordinal_2Eordinal(A_27a),bool),bool)) ) ).
+
+fof(mem_c_2Eveblen_2Econtinuous,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => mem(c_2Eveblen_2Econtinuous(A_27a,A_27b),arr(arr(ty_2Eordinal_2Eordinal(A_27a),ty_2Eordinal_2Eordinal(A_27b)),bool)) ) ) ).
+
+fof(mem_c_2Eveblen_2Estrict__mono,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => mem(c_2Eveblen_2Estrict__mono(A_27a,A_27b),arr(arr(ty_2Eordinal_2Eordinal(A_27a),ty_2Eordinal_2Eordinal(A_27b)),bool)) ) ) ).
+
+fof(mem_c_2Eveblen_2Eunbounded,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => mem(c_2Eveblen_2Eunbounded(A_27a),arr(arr(ty_2Eordinal_2Eordinal(A_27a),bool),bool)) ) ).
+
+fof(conj_thm_2Eveblen_2Ebetter__induction,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(ty_2Eordinal_2Eordinal(A_27a),bool))
+         => ( ( p(ap(V0P,ap(c_2Eordinal_2EfromNat(A_27a),c_2Enum_2E0)))
+              & ! [V1a] :
+                  ( mem(V1a,ty_2Eordinal_2Eordinal(A_27a))
+                 => ( p(ap(V0P,V1a))
+                   => p(ap(V0P,ap(c_2Eordinal_2EordSUC(A_27a),V1a))) ) )
+              & ! [V2a] :
+                  ( mem(V2a,ty_2Eordinal_2Eordinal(A_27a))
+                 => ( ( p(ap(ap(c_2Eordinal_2Eordlt(A_27a),ap(c_2Eordinal_2EfromNat(A_27a),c_2Enum_2E0)),V2a))
+                      & ! [V3b] :
+                          ( mem(V3b,ty_2Eordinal_2Eordinal(A_27a))
+                         => ( p(ap(ap(c_2Eordinal_2Eordlt(A_27a),V3b),V2a))
+                           => p(ap(V0P,V3b)) ) ) )
+                   => p(ap(V0P,ap(c_2Eordinal_2Esup(A_27a),ap(c_2Eordinal_2Epreds(A_27a),V2a)))) ) ) )
+           => ! [V4a] :
+                ( mem(V4a,ty_2Eordinal_2Eordinal(A_27a))
+               => p(ap(V0P,V4a)) ) ) ) ) ).
+
+fof(lameq_f2516,axiom,
+    ! [A_27a,V1g] :
+      ( mem(V1g,arr(ty_2Enum_2Enum,ty_2Eordinal_2Eordinal(A_27a)))
+     => ! [V3n] : ap(f2516(A_27a,V1g),V3n) = ap(ap(c_2Epair_2E_2C(ty_2Eordinal_2Eordinal(A_27a),bool),ap(V1g,V3n)),c_2Ebool_2ET) ) ).
+
+fof(ax_thm_2Eveblen_2Eclosed__def,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0A] :
+          ( mem(V0A,arr(ty_2Eordinal_2Eordinal(A_27a),bool))
+         => ( p(ap(c_2Eveblen_2Eclosed(A_27a),V0A))
+          <=> ! [V1g] :
+                ( mem(V1g,arr(ty_2Enum_2Enum,ty_2Eordinal_2Eordinal(A_27a)))
+               => ( ! [V2n] :
+                      ( mem(V2n,ty_2Enum_2Enum)
+                     => p(ap(ap(c_2Ebool_2EIN(ty_2Eordinal_2Eordinal(A_27a)),ap(V1g,V2n)),V0A)) )
+                 => p(ap(ap(c_2Ebool_2EIN(ty_2Eordinal_2Eordinal(A_27a)),ap(c_2Eordinal_2Esup(A_27a),ap(c_2Epred__set_2EGSPEC(ty_2Eordinal_2Eordinal(A_27a),ty_2Enum_2Enum),f2516(A_27a,V1g)))),V0A)) ) ) ) ) ) ).
+
+fof(ax_thm_2Eveblen_2Eunbounded__def,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0A] :
+          ( mem(V0A,arr(ty_2Eordinal_2Eordinal(A_27a),bool))
+         => ( p(ap(c_2Eveblen_2Eunbounded(A_27a),V0A))
+          <=> ! [V1a] :
+                ( mem(V1a,ty_2Eordinal_2Eordinal(A_27a))
+               => ? [V2b] :
+                    ( mem(V2b,ty_2Eordinal_2Eordinal(A_27a))
+                    & p(ap(ap(c_2Ebool_2EIN(ty_2Eordinal_2Eordinal(A_27a)),V2b),V0A))
+                    & p(ap(ap(c_2Eordinal_2Eordlt(A_27a),V1a),V2b)) ) ) ) ) ) ).
+
+fof(ax_thm_2Eveblen_2Eclub__def,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0A] :
+          ( mem(V0A,arr(ty_2Eordinal_2Eordinal(A_27a),bool))
+         => ( p(ap(c_2Eveblen_2Eclub(A_27a),V0A))
+          <=> ( p(ap(c_2Eveblen_2Eclosed(A_27a),V0A))
+              & p(ap(c_2Eveblen_2Eunbounded(A_27a),V0A)) ) ) ) ) ).
+
+fof(ax_thm_2Eveblen_2Econtinuous__def,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0f] :
+              ( mem(V0f,arr(ty_2Eordinal_2Eordinal(A_27a),ty_2Eordinal_2Eordinal(A_27b)))
+             => ( p(ap(c_2Eveblen_2Econtinuous(A_27a,A_27b),V0f))
+              <=> ! [V1A] :
+                    ( mem(V1A,arr(ty_2Eordinal_2Eordinal(A_27a),bool))
+                   => ( p(ap(ap(c_2Ecardinal_2Ecardleq(ty_2Eordinal_2Eordinal(A_27a),ty_2Esum_2Esum(ty_2Enum_2Enum,A_27a)),V1A),c_2Epred__set_2EUNIV(ty_2Esum_2Esum(ty_2Enum_2Enum,A_27a))))
+                     => ap(V0f,ap(c_2Eordinal_2Esup(A_27a),V1A)) = ap(c_2Eordinal_2Esup(A_27b),ap(ap(c_2Epred__set_2EIMAGE(ty_2Eordinal_2Eordinal(A_27a),ty_2Eordinal_2Eordinal(A_27b)),V0f),V1A)) ) ) ) ) ) ) ).
+
+fof(ax_thm_2Eveblen_2Estrict__mono__def,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0f] :
+              ( mem(V0f,arr(ty_2Eordinal_2Eordinal(A_27a),ty_2Eordinal_2Eordinal(A_27b)))
+             => ( p(ap(c_2Eveblen_2Estrict__mono(A_27a,A_27b),V0f))
+              <=> ! [V1x] :
+                    ( mem(V1x,ty_2Eordinal_2Eordinal(A_27a))
+                   => ! [V2y] :
+                        ( mem(V2y,ty_2Eordinal_2Eordinal(A_27a))
+                       => ( p(ap(ap(c_2Eordinal_2Eordlt(A_27a),V1x),V2y))
+                         => p(ap(ap(c_2Eordinal_2Eordlt(A_27b),ap(V0f,V1x)),ap(V0f,V2y))) ) ) ) ) ) ) ) ).
+
+fof(lameq_f2517,axiom,
+    ! [A_27b,V0f] :
+      ( mem(V0f,arr(ty_2Enum_2Enum,A_27b))
+     => ! [V1n] : ap(f2517(A_27b,V0f),V1n) = ap(ap(c_2Epair_2E_2C(A_27b,bool),ap(V0f,V1n)),c_2Ebool_2ET) ) ).
+
+fof(conj_thm_2Eveblen_2Enrange__IN__Uinf,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0f] :
+              ( mem(V0f,arr(ty_2Enum_2Enum,A_27b))
+             => p(ap(ap(c_2Ecardinal_2Ecardleq(A_27b,ty_2Esum_2Esum(ty_2Enum_2Enum,A_27a)),ap(c_2Epred__set_2EGSPEC(A_27b,ty_2Enum_2Enum),f2517(A_27b,V0f))),c_2Epred__set_2EUNIV(ty_2Esum_2Esum(ty_2Enum_2Enum,A_27a)))) ) ) ) ).
+
+fof(conj_thm_2Eveblen_2Eincreasing,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0f] :
+          ( mem(V0f,arr(ty_2Eordinal_2Eordinal(A_27a),ty_2Eordinal_2Eordinal(A_27a)))
+         => ! [V1x] :
+              ( mem(V1x,ty_2Eordinal_2Eordinal(A_27a))
+             => ( ( p(ap(c_2Eveblen_2Estrict__mono(A_27a,A_27a),V0f))
+                  & p(ap(c_2Eveblen_2Econtinuous(A_27a,A_27a),V0f)) )
+               => ~ p(ap(ap(c_2Eordinal_2Eordlt(A_27a),ap(V0f,V1x)),V1x)) ) ) ) ) ).
+
+fof(conj_thm_2Eveblen_2Eclubs__exist,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0f] :
+          ( mem(V0f,arr(ty_2Eordinal_2Eordinal(A_27a),ty_2Eordinal_2Eordinal(A_27a)))
+         => ( ( p(ap(c_2Eveblen_2Estrict__mono(A_27a,A_27a),V0f))
+              & p(ap(c_2Eveblen_2Econtinuous(A_27a,A_27a),V0f)) )
+           => p(ap(c_2Eveblen_2Eclub(A_27a),ap(ap(c_2Epred__set_2EIMAGE(ty_2Eordinal_2Eordinal(A_27a),ty_2Eordinal_2Eordinal(A_27a)),V0f),c_2Epred__set_2EUNIV(ty_2Eordinal_2Eordinal(A_27a))))) ) ) ) ).
+
+fof(conj_thm_2Eveblen_2Emono__natI,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0f] :
+          ( mem(V0f,arr(ty_2Enum_2Enum,ty_2Eordinal_2Eordinal(A_27a)))
+         => ( ! [V1n] :
+                ( mem(V1n,ty_2Enum_2Enum)
+               => ~ p(ap(ap(c_2Eordinal_2Eordlt(A_27a),ap(V0f,ap(c_2Enum_2ESUC,V1n))),ap(V0f,V1n))) )
+           => ! [V2m] :
+                ( mem(V2m,ty_2Enum_2Enum)
+               => ! [V3n] :
+                    ( mem(V3n,ty_2Enum_2Enum)
+                   => ( p(ap(ap(c_2Earithmetic_2E_3C_3D,V2m),V3n))
+                     => ~ p(ap(ap(c_2Eordinal_2Eordlt(A_27a),ap(V0f,V3n)),ap(V0f,V2m))) ) ) ) ) ) ) ).
+
+fof(lameq_f2518,axiom,
+    ! [A_27a,V1f] :
+      ( mem(V1f,arr(ty_2Enum_2Enum,ty_2Eordinal_2Eordinal(A_27a)))
+     => ! [V7n] : ap(f2518(A_27a,V1f),V7n) = ap(ap(c_2Epair_2E_2C(ty_2Eordinal_2Eordinal(A_27a),bool),ap(V1f,V7n)),c_2Ebool_2ET) ) ).
+
+fof(lameq_f2519,axiom,
+    ! [A_27a,V0A] :
+      ( mem(V0A,arr(ty_2Enum_2Enum,arr(ty_2Eordinal_2Eordinal(A_27a),bool)))
+     => ! [V8n] : ap(f2519(A_27a,V0A),V8n) = ap(ap(c_2Epair_2E_2C(arr(ty_2Eordinal_2Eordinal(A_27a),bool),bool),ap(V0A,V8n)),c_2Ebool_2ET) ) ).
+
+fof(conj_thm_2Eveblen_2Esup__mem__INTER,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0A] :
+          ( mem(V0A,arr(ty_2Enum_2Enum,arr(ty_2Eordinal_2Eordinal(A_27a),bool)))
+         => ! [V1f] :
+              ( mem(V1f,arr(ty_2Enum_2Enum,ty_2Eordinal_2Eordinal(A_27a)))
+             => ( ( ! [V2n] :
+                      ( mem(V2n,ty_2Enum_2Enum)
+                     => p(ap(c_2Eveblen_2Eclub(A_27a),ap(V0A,V2n))) )
+                  & ! [V3n] :
+                      ( mem(V3n,ty_2Enum_2Enum)
+                     => p(ap(ap(c_2Epred__set_2ESUBSET(ty_2Eordinal_2Eordinal(A_27a)),ap(V0A,ap(c_2Enum_2ESUC,V3n))),ap(V0A,V3n))) )
+                  & ! [V4n] :
+                      ( mem(V4n,ty_2Enum_2Enum)
+                     => p(ap(ap(c_2Ebool_2EIN(ty_2Eordinal_2Eordinal(A_27a)),ap(V1f,V4n)),ap(V0A,V4n))) )
+                  & ! [V5m] :
+                      ( mem(V5m,ty_2Enum_2Enum)
+                     => ! [V6n] :
+                          ( mem(V6n,ty_2Enum_2Enum)
+                         => ( p(ap(ap(c_2Earithmetic_2E_3C_3D,V5m),V6n))
+                           => ~ p(ap(ap(c_2Eordinal_2Eordlt(A_27a),ap(V1f,V6n)),ap(V1f,V5m))) ) ) ) )
+               => p(ap(ap(c_2Ebool_2EIN(ty_2Eordinal_2Eordinal(A_27a)),ap(c_2Eordinal_2Esup(A_27a),ap(c_2Epred__set_2EGSPEC(ty_2Eordinal_2Eordinal(A_27a),ty_2Enum_2Enum),f2518(A_27a,V1f)))),ap(c_2Epred__set_2EBIGINTER(ty_2Eordinal_2Eordinal(A_27a)),ap(c_2Epred__set_2EGSPEC(arr(ty_2Eordinal_2Eordinal(A_27a),bool),ty_2Enum_2Enum),f2519(A_27a,V0A))))) ) ) ) ) ).
+
+fof(conj_thm_2Eveblen_2Eoleast__leq,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(ty_2Eordinal_2Eordinal(A_27a),bool))
+         => ! [V1a] :
+              ( mem(V1a,ty_2Eordinal_2Eordinal(A_27a))
+             => ( p(ap(V0P,V1a))
+               => ~ p(ap(ap(c_2Eordinal_2Eordlt(A_27a),V1a),ap(c_2Eordinal_2Eoleast(A_27a),V0P))) ) ) ) ) ).
+
+fof(lameq_f2520,axiom,
+    ! [A_27a,V0A] :
+      ( mem(V0A,arr(ty_2Enum_2Enum,arr(ty_2Eordinal_2Eordinal(A_27a),bool)))
+     => ! [V3n] : ap(f2520(A_27a,V0A),V3n) = ap(ap(c_2Epair_2E_2C(arr(ty_2Eordinal_2Eordinal(A_27a),bool),bool),ap(V0A,V3n)),c_2Ebool_2ET) ) ).
+
+fof(conj_thm_2Eveblen_2Eclub__INTER,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0A] :
+          ( mem(V0A,arr(ty_2Enum_2Enum,arr(ty_2Eordinal_2Eordinal(A_27a),bool)))
+         => ( ( ! [V1n] :
+                  ( mem(V1n,ty_2Enum_2Enum)
+                 => p(ap(c_2Eveblen_2Eclub(A_27a),ap(V0A,V1n))) )
+              & ! [V2n] :
+                  ( mem(V2n,ty_2Enum_2Enum)
+                 => p(ap(ap(c_2Epred__set_2ESUBSET(ty_2Eordinal_2Eordinal(A_27a)),ap(V0A,ap(c_2Enum_2ESUC,V2n))),ap(V0A,V2n))) ) )
+           => p(ap(c_2Eveblen_2Eclub(A_27a),ap(c_2Epred__set_2EBIGINTER(ty_2Eordinal_2Eordinal(A_27a)),ap(c_2Epred__set_2EGSPEC(arr(ty_2Eordinal_2Eordinal(A_27a),bool),ty_2Enum_2Enum),f2520(A_27a,V0A))))) ) ) ) ).
+
+%------------------------------------------------------------------------------

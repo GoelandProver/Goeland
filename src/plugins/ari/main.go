@@ -372,8 +372,8 @@ func main() {
 		}
 		cpt := 0
 		cpt2 := 0
-		for k, _ := range tableau {
-			for kk, _ := range tableau[0] {
+		for k := range tableau {
+			for kk := range tableau[0] {
 				var a float64
 				if cpt == 0 {
 					fmt.Println("veuillez saisir la ligne :", cpt2+1)
@@ -392,7 +392,7 @@ func main() {
 
 		fmt.Println("veuillez saisir les contraintes une à une :")
 		var tab_cont = make([]*big.Rat, l)
-		for j, _ := range tab_cont {
+		for j := range tab_cont {
 			var a float64
 			fmt.Scanln(&a)
 			tab_cont[j] = new(big.Rat).SetFloat64(a)
@@ -443,8 +443,8 @@ func main() {
 		}
 		cpt := 0
 		cpt2 := 0
-		for k, _ := range tableau {
-			for kk, _ := range tableau[0] {
+		for k := range tableau {
+			for kk := range tableau[0] {
 				var aa float64
 				if cpt == 0 {
 					fmt.Println("veuillez saisir la ligne :", cpt2+1)
@@ -463,7 +463,7 @@ func main() {
 
 		fmt.Println("veuillez saisir les contraintes une à une :")
 		var tab_cont = make([]*big.Rat, ligne)
-		for j, _ := range tab_cont {
+		for j := range tab_cont {
 			var aa float64
 			fmt.Scanln(&aa)
 			tab_cont[j] = new(big.Rat).SetFloat64(aa)
@@ -738,7 +738,7 @@ func create_pos_var_tab(tab_coef [][]*big.Rat, tab_nom_var []string) []string {
 	return pos_var_tab
 }
 
-//Remplace = par >= avec bool pour savoir si ce n'étais pas déja une inequation
+// Remplace = par >= avec bool pour savoir si ce n'étais pas déja une inequation
 func remplaceEgal(eq string) (string, bool) {
 	tab_ascii := []rune(eq)
 	for index, ascii := range tab_ascii {
@@ -750,7 +750,7 @@ func remplaceEgal(eq string) (string, bool) {
 	return eq, false
 }
 
-//Retourne le négatif d'une inéquation
+// Retourne le négatif d'une inéquation
 func negEq(eq string) string {
 	tab_ascii := []rune(eq)
 
@@ -790,7 +790,7 @@ func negEq(eq string) string {
 	return string(tab_ascii)
 }
 
-//Retourne les inequations correspondante au equation d'entré
+// Retourne les inequations correspondante au equation d'entré
 func getIneq(eq string) []string {
 	ineq, verif := remplaceEgal(eq)
 	if verif {

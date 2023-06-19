@@ -1,0 +1,748 @@
+%------------------------------------------------------------------------------
+% File     : ITP076^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : ternaryComparisons^2.ax [Gau20]
+%          : HL4076^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   96 (  20 unt;  30 typ;   0 def)
+%            Number of atoms       : 1060 ( 101 equ;   0 cnn)
+%            Maximal formula atoms :   88 (  11 avg)
+%            Number of connectives : 1813 (   4   ~;   4   |;  59   &;1601   @)
+%                                         (  17 <=>; 128  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   29 (   8 avg;1601 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :   22 (  22   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   69 (  66 usr;  54 con; 0-4 aty)
+%            Number of variables   :  185 (   3   ^ 178   !;   4   ?; 185   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tp_ty_2EternaryComparisons_2Eordering,type,
+    ty_2EternaryComparisons_2Eordering: del ).
+
+thf(stp_ty_2EternaryComparisons_2Eordering,type,
+    tp__ty_2EternaryComparisons_2Eordering: $tType ).
+
+thf(stp_inj_ty_2EternaryComparisons_2Eordering,type,
+    inj__ty_2EternaryComparisons_2Eordering: tp__ty_2EternaryComparisons_2Eordering > $i ).
+
+thf(stp_surj_ty_2EternaryComparisons_2Eordering,type,
+    surj__ty_2EternaryComparisons_2Eordering: $i > tp__ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_inj_surj_ty_2EternaryComparisons_2Eordering,axiom,
+    ! [X: tp__ty_2EternaryComparisons_2Eordering] :
+      ( ( surj__ty_2EternaryComparisons_2Eordering @ ( inj__ty_2EternaryComparisons_2Eordering @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_ty_2EternaryComparisons_2Eordering,axiom,
+    ! [X: tp__ty_2EternaryComparisons_2Eordering] : ( mem @ ( inj__ty_2EternaryComparisons_2Eordering @ X ) @ ty_2EternaryComparisons_2Eordering ) ).
+
+thf(stp_iso_mem_ty_2EternaryComparisons_2Eordering,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ty_2EternaryComparisons_2Eordering )
+     => ( X
+        = ( inj__ty_2EternaryComparisons_2Eordering @ ( surj__ty_2EternaryComparisons_2Eordering @ X ) ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2EEQUAL,type,
+    c_2EternaryComparisons_2EEQUAL: $i ).
+
+thf(mem_c_2EternaryComparisons_2EEQUAL,axiom,
+    mem @ c_2EternaryComparisons_2EEQUAL @ ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_fo_c_2EternaryComparisons_2EEQUAL,type,
+    fo__c_2EternaryComparisons_2EEQUAL: tp__ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_eq_fo_c_2EternaryComparisons_2EEQUAL,axiom,
+    ( ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EEQUAL )
+    = c_2EternaryComparisons_2EEQUAL ) ).
+
+thf(tp_c_2EternaryComparisons_2EGREATER,type,
+    c_2EternaryComparisons_2EGREATER: $i ).
+
+thf(mem_c_2EternaryComparisons_2EGREATER,axiom,
+    mem @ c_2EternaryComparisons_2EGREATER @ ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_fo_c_2EternaryComparisons_2EGREATER,type,
+    fo__c_2EternaryComparisons_2EGREATER: tp__ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_eq_fo_c_2EternaryComparisons_2EGREATER,axiom,
+    ( ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER )
+    = c_2EternaryComparisons_2EGREATER ) ).
+
+thf(tp_c_2EternaryComparisons_2ELESS,type,
+    c_2EternaryComparisons_2ELESS: $i ).
+
+thf(mem_c_2EternaryComparisons_2ELESS,axiom,
+    mem @ c_2EternaryComparisons_2ELESS @ ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_fo_c_2EternaryComparisons_2ELESS,type,
+    fo__c_2EternaryComparisons_2ELESS: tp__ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_eq_fo_c_2EternaryComparisons_2ELESS,axiom,
+    ( ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS )
+    = c_2EternaryComparisons_2ELESS ) ).
+
+thf(tp_c_2EternaryComparisons_2Ebool__compare,type,
+    c_2EternaryComparisons_2Ebool__compare: $i ).
+
+thf(mem_c_2EternaryComparisons_2Ebool__compare,axiom,
+    mem @ c_2EternaryComparisons_2Ebool__compare @ ( arr @ bool @ ( arr @ bool @ ty_2EternaryComparisons_2Eordering ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Echar__compare,type,
+    c_2EternaryComparisons_2Echar__compare: $i ).
+
+thf(mem_c_2EternaryComparisons_2Echar__compare,axiom,
+    mem @ c_2EternaryComparisons_2Echar__compare @ ( arr @ ty_2Estring_2Echar @ ( arr @ ty_2Estring_2Echar @ ty_2EternaryComparisons_2Eordering ) ) ).
+
+thf(stp_fo_c_2EternaryComparisons_2Echar__compare,type,
+    fo__c_2EternaryComparisons_2Echar__compare: tp__ty_2Estring_2Echar > tp__ty_2Estring_2Echar > tp__ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_eq_fo_c_2EternaryComparisons_2Echar__compare,axiom,
+    ! [X0: tp__ty_2Estring_2Echar,X1: tp__ty_2Estring_2Echar] :
+      ( ( inj__ty_2EternaryComparisons_2Eordering @ ( fo__c_2EternaryComparisons_2Echar__compare @ X0 @ X1 ) )
+      = ( ap @ ( ap @ c_2EternaryComparisons_2Echar__compare @ ( inj__ty_2Estring_2Echar @ X0 ) ) @ ( inj__ty_2Estring_2Echar @ X1 ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Einvert__comparison,type,
+    c_2EternaryComparisons_2Einvert__comparison: $i ).
+
+thf(mem_c_2EternaryComparisons_2Einvert__comparison,axiom,
+    mem @ c_2EternaryComparisons_2Einvert__comparison @ ( arr @ ty_2EternaryComparisons_2Eordering @ ty_2EternaryComparisons_2Eordering ) ).
+
+thf(stp_fo_c_2EternaryComparisons_2Einvert__comparison,type,
+    fo__c_2EternaryComparisons_2Einvert__comparison: tp__ty_2EternaryComparisons_2Eordering > tp__ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_eq_fo_c_2EternaryComparisons_2Einvert__comparison,axiom,
+    ! [X0: tp__ty_2EternaryComparisons_2Eordering] :
+      ( ( inj__ty_2EternaryComparisons_2Eordering @ ( fo__c_2EternaryComparisons_2Einvert__comparison @ X0 ) )
+      = ( ap @ c_2EternaryComparisons_2Einvert__comparison @ ( inj__ty_2EternaryComparisons_2Eordering @ X0 ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Elist__compare,type,
+    c_2EternaryComparisons_2Elist__compare: del > del > $i ).
+
+thf(mem_c_2EternaryComparisons_2Elist__compare,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2EternaryComparisons_2Elist__compare @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) @ ( arr @ ( ty_2Elist_2Elist @ A_27a ) @ ( arr @ ( ty_2Elist_2Elist @ A_27b ) @ ty_2EternaryComparisons_2Eordering ) ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Elist__merge,type,
+    c_2EternaryComparisons_2Elist__merge: del > $i ).
+
+thf(mem_c_2EternaryComparisons_2Elist__merge,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2EternaryComparisons_2Elist__merge @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ ( ty_2Elist_2Elist @ A_27a ) @ ( arr @ ( ty_2Elist_2Elist @ A_27a ) @ ( ty_2Elist_2Elist @ A_27a ) ) ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Enum2ordering,type,
+    c_2EternaryComparisons_2Enum2ordering: $i ).
+
+thf(mem_c_2EternaryComparisons_2Enum2ordering,axiom,
+    mem @ c_2EternaryComparisons_2Enum2ordering @ ( arr @ ty_2Enum_2Enum @ ty_2EternaryComparisons_2Eordering ) ).
+
+thf(stp_fo_c_2EternaryComparisons_2Enum2ordering,type,
+    fo__c_2EternaryComparisons_2Enum2ordering: tp__ty_2Enum_2Enum > tp__ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_eq_fo_c_2EternaryComparisons_2Enum2ordering,axiom,
+    ! [X0: tp__ty_2Enum_2Enum] :
+      ( ( inj__ty_2EternaryComparisons_2Eordering @ ( fo__c_2EternaryComparisons_2Enum2ordering @ X0 ) )
+      = ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( inj__ty_2Enum_2Enum @ X0 ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Enum__compare,type,
+    c_2EternaryComparisons_2Enum__compare: $i ).
+
+thf(mem_c_2EternaryComparisons_2Enum__compare,axiom,
+    mem @ c_2EternaryComparisons_2Enum__compare @ ( arr @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ ty_2EternaryComparisons_2Eordering ) ) ).
+
+thf(stp_fo_c_2EternaryComparisons_2Enum__compare,type,
+    fo__c_2EternaryComparisons_2Enum__compare: tp__ty_2Enum_2Enum > tp__ty_2Enum_2Enum > tp__ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_eq_fo_c_2EternaryComparisons_2Enum__compare,axiom,
+    ! [X0: tp__ty_2Enum_2Enum,X1: tp__ty_2Enum_2Enum] :
+      ( ( inj__ty_2EternaryComparisons_2Eordering @ ( fo__c_2EternaryComparisons_2Enum__compare @ X0 @ X1 ) )
+      = ( ap @ ( ap @ c_2EternaryComparisons_2Enum__compare @ ( inj__ty_2Enum_2Enum @ X0 ) ) @ ( inj__ty_2Enum_2Enum @ X1 ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Eoption__compare,type,
+    c_2EternaryComparisons_2Eoption__compare: del > del > $i ).
+
+thf(mem_c_2EternaryComparisons_2Eoption__compare,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2EternaryComparisons_2Eoption__compare @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) @ ( arr @ ( ty_2Eoption_2Eoption @ A_27a ) @ ( arr @ ( ty_2Eoption_2Eoption @ A_27b ) @ ty_2EternaryComparisons_2Eordering ) ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Eordering2num,type,
+    c_2EternaryComparisons_2Eordering2num: $i ).
+
+thf(mem_c_2EternaryComparisons_2Eordering2num,axiom,
+    mem @ c_2EternaryComparisons_2Eordering2num @ ( arr @ ty_2EternaryComparisons_2Eordering @ ty_2Enum_2Enum ) ).
+
+thf(stp_fo_c_2EternaryComparisons_2Eordering2num,type,
+    fo__c_2EternaryComparisons_2Eordering2num: tp__ty_2EternaryComparisons_2Eordering > tp__ty_2Enum_2Enum ).
+
+thf(stp_eq_fo_c_2EternaryComparisons_2Eordering2num,axiom,
+    ! [X0: tp__ty_2EternaryComparisons_2Eordering] :
+      ( ( inj__ty_2Enum_2Enum @ ( fo__c_2EternaryComparisons_2Eordering2num @ X0 ) )
+      = ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ X0 ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Eordering__CASE,type,
+    c_2EternaryComparisons_2Eordering__CASE: del > $i ).
+
+thf(mem_c_2EternaryComparisons_2Eordering__CASE,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2EternaryComparisons_2Eordering__CASE @ A_27a ) @ ( arr @ ty_2EternaryComparisons_2Eordering @ ( arr @ A_27a @ ( arr @ A_27a @ ( arr @ A_27a @ A_27a ) ) ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Eordering__size,type,
+    c_2EternaryComparisons_2Eordering__size: $i ).
+
+thf(mem_c_2EternaryComparisons_2Eordering__size,axiom,
+    mem @ c_2EternaryComparisons_2Eordering__size @ ( arr @ ty_2EternaryComparisons_2Eordering @ ty_2Enum_2Enum ) ).
+
+thf(stp_fo_c_2EternaryComparisons_2Eordering__size,type,
+    fo__c_2EternaryComparisons_2Eordering__size: tp__ty_2EternaryComparisons_2Eordering > tp__ty_2Enum_2Enum ).
+
+thf(stp_eq_fo_c_2EternaryComparisons_2Eordering__size,axiom,
+    ! [X0: tp__ty_2EternaryComparisons_2Eordering] :
+      ( ( inj__ty_2Enum_2Enum @ ( fo__c_2EternaryComparisons_2Eordering__size @ X0 ) )
+      = ( ap @ c_2EternaryComparisons_2Eordering__size @ ( inj__ty_2EternaryComparisons_2Eordering @ X0 ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Epair__compare,type,
+    c_2EternaryComparisons_2Epair__compare: del > del > del > del > $i ).
+
+thf(mem_c_2EternaryComparisons_2Epair__compare,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del] : ( mem @ ( c_2EternaryComparisons_2Epair__compare @ A_27a @ A_27b @ A_27c @ A_27d ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) @ ( arr @ ( arr @ A_27c @ ( arr @ A_27d @ ty_2EternaryComparisons_2Eordering ) ) @ ( arr @ ( ty_2Epair_2Eprod @ A_27a @ A_27c ) @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27d ) @ ty_2EternaryComparisons_2Eordering ) ) ) ) ) ).
+
+thf(tp_c_2EternaryComparisons_2Estring__compare,type,
+    c_2EternaryComparisons_2Estring__compare: $i ).
+
+thf(mem_c_2EternaryComparisons_2Estring__compare,axiom,
+    mem @ c_2EternaryComparisons_2Estring__compare @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ty_2EternaryComparisons_2Eordering ) ) ).
+
+thf(stp_fo_c_2EternaryComparisons_2Estring__compare,type,
+    fo__c_2EternaryComparisons_2Estring__compare: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar > tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar > tp__ty_2EternaryComparisons_2Eordering ).
+
+thf(stp_eq_fo_c_2EternaryComparisons_2Estring__compare,axiom,
+    ! [X0: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,X1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( inj__ty_2EternaryComparisons_2Eordering @ ( fo__c_2EternaryComparisons_2Estring__compare @ X0 @ X1 ) )
+      = ( ap @ ( ap @ c_2EternaryComparisons_2Estring__compare @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X0 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X1 ) ) ) ).
+
+thf(ax_thm_2EternaryComparisons_2Eordering__TY__DEF,axiom,
+    ? [V0rep: $i] :
+      ( ( mem @ V0rep @ ( arr @ ty_2EternaryComparisons_2Eordering @ ty_2Enum_2Enum ) )
+      & ( p
+        @ ( ap
+          @ ( ap @ ( c_2Ebool_2ETYPE__DEFINITION @ ty_2Enum_2Enum @ ty_2EternaryComparisons_2Eordering )
+            @ ( lam @ ty_2Enum_2Enum
+              @ ^ [V1n: $i] : ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ V1n ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) )
+          @ V0rep ) ) ) ).
+
+thf(ax_thm_2EternaryComparisons_2Eordering__BIJ,axiom,
+    ( ! [V0a: tp__ty_2EternaryComparisons_2Eordering] :
+        ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ V0a ) ) ) )
+        = V0a )
+    & ! [V1r: tp__ty_2Enum_2Enum] :
+        ( ( p
+          @ ( ap
+            @ ( lam @ ty_2Enum_2Enum
+              @ ^ [V2n: $i] : ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ V2n ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) )
+            @ ( inj__ty_2Enum_2Enum @ V1r ) ) )
+      <=> ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( inj__ty_2Enum_2Enum @ V1r ) ) ) )
+          = V1r ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Enum2ordering__ordering2num,axiom,
+    ! [V0a: tp__ty_2EternaryComparisons_2Eordering] :
+      ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ V0a ) ) ) )
+      = V0a ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering2num__num2ordering,axiom,
+    ! [V0r: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0r ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) )
+    <=> ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( inj__ty_2Enum_2Enum @ V0r ) ) ) )
+        = V0r ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Enum2ordering__11,axiom,
+    ! [V0r: tp__ty_2Enum_2Enum,V1r_27: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0r ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) )
+     => ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V1r_27 ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) )
+       => ( ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( inj__ty_2Enum_2Enum @ V0r ) ) )
+            = ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( inj__ty_2Enum_2Enum @ V1r_27 ) ) ) )
+        <=> ( V0r = V1r_27 ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering2num__11,axiom,
+    ! [V0a: tp__ty_2EternaryComparisons_2Eordering,V1a_27: tp__ty_2EternaryComparisons_2Eordering] :
+      ( ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ V0a ) ) )
+        = ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ V1a_27 ) ) ) )
+    <=> ( V0a = V1a_27 ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Enum2ordering__ONTO,axiom,
+    ! [V0a: tp__ty_2EternaryComparisons_2Eordering] :
+    ? [V1r: tp__ty_2Enum_2Enum] :
+      ( ( V0a
+        = ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( inj__ty_2Enum_2Enum @ V1r ) ) ) )
+      & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V1r ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering2num__ONTO,axiom,
+    ! [V0r: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0r ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) )
+    <=> ? [V1a: tp__ty_2EternaryComparisons_2Eordering] :
+          ( V0r
+          = ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ V1a ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Enum2ordering__thm,axiom,
+    ( ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) )
+      = fo__c_2EternaryComparisons_2ELESS )
+    & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) )
+      = fo__c_2EternaryComparisons_2EEQUAL )
+    & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) )
+      = fo__c_2EternaryComparisons_2EGREATER ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering2num__thm,axiom,
+    ( ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS ) ) )
+      = fo__c_2Enum_2E0 )
+    & ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EEQUAL ) ) )
+      = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) )
+    & ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER ) ) )
+      = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering__EQ__ordering,axiom,
+    ! [V0a: tp__ty_2EternaryComparisons_2Eordering,V1a_27: tp__ty_2EternaryComparisons_2Eordering] :
+      ( ( V0a = V1a_27 )
+    <=> ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ V0a ) ) )
+        = ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ V1a_27 ) ) ) ) ) ).
+
+thf(ax_thm_2EternaryComparisons_2Eordering__size__def,axiom,
+    ! [V0x: tp__ty_2EternaryComparisons_2Eordering] :
+      ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering__size @ ( inj__ty_2EternaryComparisons_2Eordering @ V0x ) ) )
+      = fo__c_2Enum_2E0 ) ).
+
+thf(ax_thm_2EternaryComparisons_2Eordering__CASE,axiom,
+    ! [A_27a: del,V0x: tp__ty_2EternaryComparisons_2Eordering,V1v0: $i] :
+      ( ( mem @ V1v0 @ A_27a )
+     => ! [V2v1: $i] :
+          ( ( mem @ V2v1 @ A_27a )
+         => ! [V3v2: $i] :
+              ( ( mem @ V3v2 @ A_27a )
+             => ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eordering__CASE @ A_27a ) @ ( inj__ty_2EternaryComparisons_2Eordering @ V0x ) ) @ V1v0 ) @ V2v1 ) @ V3v2 )
+                = ( ap
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V4m: $i] : ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ A_27a ) @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ V4m ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) @ V1v0 ) @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ A_27a ) @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ V4m ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) @ V2v1 ) @ V3v2 ) ) )
+                  @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ V0x ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering__case__def,axiom,
+    ! [A_27a: del] :
+      ( ! [V0v0: $i] :
+          ( ( mem @ V0v0 @ A_27a )
+         => ! [V1v1: $i] :
+              ( ( mem @ V1v1 @ A_27a )
+             => ! [V2v2: $i] :
+                  ( ( mem @ V2v2 @ A_27a )
+                 => ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eordering__CASE @ A_27a ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS ) ) @ V0v0 ) @ V1v1 ) @ V2v2 )
+                    = V0v0 ) ) ) )
+      & ! [V3v0: $i] :
+          ( ( mem @ V3v0 @ A_27a )
+         => ! [V4v1: $i] :
+              ( ( mem @ V4v1 @ A_27a )
+             => ! [V5v2: $i] :
+                  ( ( mem @ V5v2 @ A_27a )
+                 => ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eordering__CASE @ A_27a ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EEQUAL ) ) @ V3v0 ) @ V4v1 ) @ V5v2 )
+                    = V4v1 ) ) ) )
+      & ! [V6v0: $i] :
+          ( ( mem @ V6v0 @ A_27a )
+         => ! [V7v1: $i] :
+              ( ( mem @ V7v1 @ A_27a )
+             => ! [V8v2: $i] :
+                  ( ( mem @ V8v2 @ A_27a )
+                 => ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eordering__CASE @ A_27a ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER ) ) @ V6v0 ) @ V7v1 ) @ V8v2 )
+                    = V8v2 ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Edatatype__ordering,axiom,
+    ! [V0ordering: $i] :
+      ( ( mem @ V0ordering @ ( arr @ ty_2EternaryComparisons_2Eordering @ ( arr @ ty_2EternaryComparisons_2Eordering @ ( arr @ ty_2EternaryComparisons_2Eordering @ bool ) ) ) )
+     => ( p @ ( ap @ ( c_2Ebool_2EDATATYPE @ bool ) @ ( ap @ ( ap @ ( ap @ V0ordering @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS ) ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EEQUAL ) ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering__distinct,axiom,
+    ( ( fo__c_2EternaryComparisons_2ELESS != fo__c_2EternaryComparisons_2EEQUAL )
+    & ( fo__c_2EternaryComparisons_2ELESS != fo__c_2EternaryComparisons_2EGREATER )
+    & ( fo__c_2EternaryComparisons_2EEQUAL != fo__c_2EternaryComparisons_2EGREATER ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering__nchotomy,axiom,
+    ! [V0a: tp__ty_2EternaryComparisons_2Eordering] :
+      ( ( V0a = fo__c_2EternaryComparisons_2ELESS )
+      | ( V0a = fo__c_2EternaryComparisons_2EEQUAL )
+      | ( V0a = fo__c_2EternaryComparisons_2EGREATER ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering__Axiom,axiom,
+    ! [A_27a: del,V0x0: $i] :
+      ( ( mem @ V0x0 @ A_27a )
+     => ! [V1x1: $i] :
+          ( ( mem @ V1x1 @ A_27a )
+         => ! [V2x2: $i] :
+              ( ( mem @ V2x2 @ A_27a )
+             => ? [V3f: $i] :
+                  ( ( mem @ V3f @ ( arr @ ty_2EternaryComparisons_2Eordering @ A_27a ) )
+                  & ( ( ap @ V3f @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS ) )
+                    = V0x0 )
+                  & ( ( ap @ V3f @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EEQUAL ) )
+                    = V1x1 )
+                  & ( ( ap @ V3f @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER ) )
+                    = V2x2 ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering__induction,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ty_2EternaryComparisons_2Eordering @ bool ) )
+     => ( ( ( p @ ( ap @ V0P @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EEQUAL ) ) )
+          & ( p @ ( ap @ V0P @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER ) ) )
+          & ( p @ ( ap @ V0P @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS ) ) ) )
+       => ! [V1a: tp__ty_2EternaryComparisons_2Eordering] : ( p @ ( ap @ V0P @ ( inj__ty_2EternaryComparisons_2Eordering @ V1a ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering__case__cong,axiom,
+    ! [A_27a: del,V0v0_27: $i] :
+      ( ( mem @ V0v0_27 @ A_27a )
+     => ! [V1v1_27: $i] :
+          ( ( mem @ V1v1_27 @ A_27a )
+         => ! [V2v2_27: $i] :
+              ( ( mem @ V2v2_27 @ A_27a )
+             => ! [V3M: tp__ty_2EternaryComparisons_2Eordering,V4M_27: tp__ty_2EternaryComparisons_2Eordering,V5v0: $i] :
+                  ( ( mem @ V5v0 @ A_27a )
+                 => ! [V6v1: $i] :
+                      ( ( mem @ V6v1 @ A_27a )
+                     => ! [V7v2: $i] :
+                          ( ( mem @ V7v2 @ A_27a )
+                         => ( ( ( V3M = V4M_27 )
+                              & ( ( V4M_27 = fo__c_2EternaryComparisons_2ELESS )
+                               => ( V5v0 = V0v0_27 ) )
+                              & ( ( V4M_27 = fo__c_2EternaryComparisons_2EEQUAL )
+                               => ( V6v1 = V1v1_27 ) )
+                              & ( ( V4M_27 = fo__c_2EternaryComparisons_2EGREATER )
+                               => ( V7v2 = V2v2_27 ) ) )
+                           => ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eordering__CASE @ A_27a ) @ ( inj__ty_2EternaryComparisons_2Eordering @ V3M ) ) @ V5v0 ) @ V6v1 ) @ V7v2 )
+                              = ( ap @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eordering__CASE @ A_27a ) @ ( inj__ty_2EternaryComparisons_2Eordering @ V4M_27 ) ) @ V0v0_27 ) @ V1v1_27 ) @ V2v2_27 ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering__case__eq,axiom,
+    ! [A_27a: del,V0x: tp__ty_2EternaryComparisons_2Eordering,V1v0: $i] :
+      ( ( mem @ V1v0 @ A_27a )
+     => ! [V2v1: $i] :
+          ( ( mem @ V2v1 @ A_27a )
+         => ! [V3v2: $i] :
+              ( ( mem @ V3v2 @ A_27a )
+             => ! [V4v: $i] :
+                  ( ( mem @ V4v @ A_27a )
+                 => ( ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eordering__CASE @ A_27a ) @ ( inj__ty_2EternaryComparisons_2Eordering @ V0x ) ) @ V1v0 ) @ V2v1 ) @ V3v2 )
+                      = V4v )
+                  <=> ( ( ( V0x = fo__c_2EternaryComparisons_2ELESS )
+                        & ( V1v0 = V4v ) )
+                      | ( ( V0x = fo__c_2EternaryComparisons_2EEQUAL )
+                        & ( V2v1 = V4v ) )
+                      | ( ( V0x = fo__c_2EternaryComparisons_2EGREATER )
+                        & ( V3v2 = V4v ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eordering__eq__dec,axiom,
+    ( ! [V0x: tp__ty_2EternaryComparisons_2Eordering] :
+        ( ( V0x = V0x )
+      <=> $true )
+    & ( ( fo__c_2EternaryComparisons_2ELESS = fo__c_2EternaryComparisons_2EEQUAL )
+    <=> $false )
+    & ( ( fo__c_2EternaryComparisons_2ELESS = fo__c_2EternaryComparisons_2EGREATER )
+    <=> $false )
+    & ( ( fo__c_2EternaryComparisons_2EEQUAL = fo__c_2EternaryComparisons_2EGREATER )
+    <=> $false )
+    & ( ( fo__c_2EternaryComparisons_2EEQUAL = fo__c_2EternaryComparisons_2ELESS )
+    <=> $false )
+    & ( ( fo__c_2EternaryComparisons_2EGREATER = fo__c_2EternaryComparisons_2ELESS )
+    <=> $false )
+    & ( ( fo__c_2EternaryComparisons_2EGREATER = fo__c_2EternaryComparisons_2EEQUAL )
+    <=> $false )
+    & ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS ) ) )
+      = fo__c_2Enum_2E0 )
+    & ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EEQUAL ) ) )
+      = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) )
+    & ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2EternaryComparisons_2Eordering2num @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER ) ) )
+      = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) )
+    & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) )
+      = fo__c_2EternaryComparisons_2ELESS )
+    & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) )
+      = fo__c_2EternaryComparisons_2EEQUAL )
+    & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Enum2ordering @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) )
+      = fo__c_2EternaryComparisons_2EGREATER ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Ebool__compare__ind,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ bool @ ( arr @ bool @ bool ) ) )
+     => ( ( ( p @ ( ap @ ( ap @ V0P @ c_2Ebool_2ET ) @ c_2Ebool_2ET ) )
+          & ( p @ ( ap @ ( ap @ V0P @ c_2Ebool_2EF ) @ c_2Ebool_2EF ) )
+          & ( p @ ( ap @ ( ap @ V0P @ c_2Ebool_2ET ) @ c_2Ebool_2EF ) )
+          & ( p @ ( ap @ ( ap @ V0P @ c_2Ebool_2EF ) @ c_2Ebool_2ET ) ) )
+       => ! [V1v: $i] :
+            ( ( mem @ V1v @ bool )
+           => ! [V2v1: $i] :
+                ( ( mem @ V2v1 @ bool )
+               => ( p @ ( ap @ ( ap @ V0P @ V1v ) @ V2v1 ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Ebool__compare__def,axiom,
+    ( ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ c_2EternaryComparisons_2Ebool__compare @ c_2Ebool_2ET ) @ c_2Ebool_2ET ) )
+      = fo__c_2EternaryComparisons_2EEQUAL )
+    & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ c_2EternaryComparisons_2Ebool__compare @ c_2Ebool_2EF ) @ c_2Ebool_2EF ) )
+      = fo__c_2EternaryComparisons_2EEQUAL )
+    & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ c_2EternaryComparisons_2Ebool__compare @ c_2Ebool_2ET ) @ c_2Ebool_2EF ) )
+      = fo__c_2EternaryComparisons_2EGREATER )
+    & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ c_2EternaryComparisons_2Ebool__compare @ c_2Ebool_2EF ) @ c_2Ebool_2ET ) )
+      = fo__c_2EternaryComparisons_2ELESS ) ) ).
+
+thf(ax_thm_2EternaryComparisons_2Epair__compare__def,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del,V0c1: $i] :
+      ( ( mem @ V0c1 @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+     => ! [V1c2: $i] :
+          ( ( mem @ V1c2 @ ( arr @ A_27c @ ( arr @ A_27d @ ty_2EternaryComparisons_2Eordering ) ) )
+         => ! [V2a: $i] :
+              ( ( mem @ V2a @ A_27a )
+             => ! [V3b: $i] :
+                  ( ( mem @ V3b @ A_27c )
+                 => ! [V4x: $i] :
+                      ( ( mem @ V4x @ A_27b )
+                     => ! [V5y: $i] :
+                          ( ( mem @ V5y @ A_27d )
+                         => ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Epair__compare @ A_27a @ A_27b @ A_27c @ A_27d ) @ V0c1 ) @ V1c2 ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ A_27a @ A_27c ) @ V2a ) @ V3b ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ A_27b @ A_27d ) @ V4x ) @ V5y ) ) )
+                            = ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eordering__CASE @ ty_2EternaryComparisons_2Eordering ) @ ( ap @ ( ap @ V0c1 @ V2a ) @ V4x ) ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS ) ) @ ( ap @ ( ap @ V1c2 @ V3b ) @ V5y ) ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eoption__compare__ind,axiom,
+    ! [A_27a: del,A_27b: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) @ ( arr @ ( ty_2Eoption_2Eoption @ A_27a ) @ ( arr @ ( ty_2Eoption_2Eoption @ A_27b ) @ bool ) ) ) )
+     => ( ( ! [V1c: $i] :
+              ( ( mem @ V1c @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+             => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V1c ) @ ( c_2Eoption_2ENONE @ A_27a ) ) @ ( c_2Eoption_2ENONE @ A_27b ) ) ) )
+          & ! [V2c: $i] :
+              ( ( mem @ V2c @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+             => ! [V3v0: $i] :
+                  ( ( mem @ V3v0 @ A_27b )
+                 => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V2c ) @ ( c_2Eoption_2ENONE @ A_27a ) ) @ ( ap @ ( c_2Eoption_2ESOME @ A_27b ) @ V3v0 ) ) ) ) )
+          & ! [V4c: $i] :
+              ( ( mem @ V4c @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+             => ! [V5v3: $i] :
+                  ( ( mem @ V5v3 @ A_27a )
+                 => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V4c ) @ ( ap @ ( c_2Eoption_2ESOME @ A_27a ) @ V5v3 ) ) @ ( c_2Eoption_2ENONE @ A_27b ) ) ) ) )
+          & ! [V6c: $i] :
+              ( ( mem @ V6c @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+             => ! [V7v1: $i] :
+                  ( ( mem @ V7v1 @ A_27a )
+                 => ! [V8v2: $i] :
+                      ( ( mem @ V8v2 @ A_27b )
+                     => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V6c ) @ ( ap @ ( c_2Eoption_2ESOME @ A_27a ) @ V7v1 ) ) @ ( ap @ ( c_2Eoption_2ESOME @ A_27b ) @ V8v2 ) ) ) ) ) ) )
+       => ! [V9v: $i] :
+            ( ( mem @ V9v @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+           => ! [V10v1: $i] :
+                ( ( mem @ V10v1 @ ( ty_2Eoption_2Eoption @ A_27a ) )
+               => ! [V11v2: $i] :
+                    ( ( mem @ V11v2 @ ( ty_2Eoption_2Eoption @ A_27b ) )
+                   => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V9v ) @ V10v1 ) @ V11v2 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Eoption__compare__def,axiom,
+    ! [A_27a: del,A_27b: del,V0c: $i] :
+      ( ( mem @ V0c @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+     => ! [V1v0: $i] :
+          ( ( mem @ V1v0 @ A_27b )
+         => ! [V2v3: $i] :
+              ( ( mem @ V2v3 @ A_27a )
+             => ! [V3v1: $i] :
+                  ( ( mem @ V3v1 @ A_27a )
+                 => ! [V4v2: $i] :
+                      ( ( mem @ V4v2 @ A_27b )
+                     => ( ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eoption__compare @ A_27a @ A_27b ) @ V0c ) @ ( c_2Eoption_2ENONE @ A_27a ) ) @ ( c_2Eoption_2ENONE @ A_27b ) ) )
+                          = fo__c_2EternaryComparisons_2EEQUAL )
+                        & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eoption__compare @ A_27a @ A_27b ) @ V0c ) @ ( c_2Eoption_2ENONE @ A_27a ) ) @ ( ap @ ( c_2Eoption_2ESOME @ A_27b ) @ V1v0 ) ) )
+                          = fo__c_2EternaryComparisons_2ELESS )
+                        & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eoption__compare @ A_27a @ A_27b ) @ V0c ) @ ( ap @ ( c_2Eoption_2ESOME @ A_27a ) @ V2v3 ) ) @ ( c_2Eoption_2ENONE @ A_27b ) ) )
+                          = fo__c_2EternaryComparisons_2EGREATER )
+                        & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eoption__compare @ A_27a @ A_27b ) @ V0c ) @ ( ap @ ( c_2Eoption_2ESOME @ A_27a ) @ V3v1 ) ) @ ( ap @ ( c_2Eoption_2ESOME @ A_27b ) @ V4v2 ) ) )
+                          = ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ V0c @ V3v1 ) @ V4v2 ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2EternaryComparisons_2Enum__compare__def,axiom,
+    ! [V0n1: tp__ty_2Enum_2Enum,V1n2: tp__ty_2Enum_2Enum] :
+      ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ c_2EternaryComparisons_2Enum__compare @ ( inj__ty_2Enum_2Enum @ V0n1 ) ) @ ( inj__ty_2Enum_2Enum @ V1n2 ) ) )
+      = ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ty_2EternaryComparisons_2Eordering ) @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V0n1 ) ) @ ( inj__ty_2Enum_2Enum @ V1n2 ) ) ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EEQUAL ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ty_2EternaryComparisons_2Eordering ) @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0n1 ) ) @ ( inj__ty_2Enum_2Enum @ V1n2 ) ) ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS ) ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER ) ) ) ) ) ).
+
+thf(ax_thm_2EternaryComparisons_2Echar__compare__def,axiom,
+    ! [V0c1: tp__ty_2Estring_2Echar,V1c2: tp__ty_2Estring_2Echar] :
+      ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ c_2EternaryComparisons_2Echar__compare @ ( inj__ty_2Estring_2Echar @ V0c1 ) ) @ ( inj__ty_2Estring_2Echar @ V1c2 ) ) )
+      = ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ c_2EternaryComparisons_2Enum__compare @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c1 ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V1c2 ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Elist__compare__ind,axiom,
+    ! [A_27a: del,A_27b: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) @ ( arr @ ( ty_2Elist_2Elist @ A_27a ) @ ( arr @ ( ty_2Elist_2Elist @ A_27b ) @ bool ) ) ) )
+     => ( ( ! [V1cmp: $i] :
+              ( ( mem @ V1cmp @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+             => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V1cmp ) @ ( c_2Elist_2ENIL @ A_27a ) ) @ ( c_2Elist_2ENIL @ A_27b ) ) ) )
+          & ! [V2cmp: $i] :
+              ( ( mem @ V2cmp @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+             => ! [V3v8: $i] :
+                  ( ( mem @ V3v8 @ A_27b )
+                 => ! [V4v9: $i] :
+                      ( ( mem @ V4v9 @ ( ty_2Elist_2Elist @ A_27b ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V2cmp ) @ ( c_2Elist_2ENIL @ A_27a ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27b ) @ V3v8 ) @ V4v9 ) ) ) ) ) )
+          & ! [V5cmp: $i] :
+              ( ( mem @ V5cmp @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+             => ! [V6v4: $i] :
+                  ( ( mem @ V6v4 @ A_27a )
+                 => ! [V7v5: $i] :
+                      ( ( mem @ V7v5 @ ( ty_2Elist_2Elist @ A_27a ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V5cmp ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V6v4 ) @ V7v5 ) ) @ ( c_2Elist_2ENIL @ A_27b ) ) ) ) ) )
+          & ! [V8cmp: $i] :
+              ( ( mem @ V8cmp @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+             => ! [V9x: $i] :
+                  ( ( mem @ V9x @ A_27a )
+                 => ! [V10l1: $i] :
+                      ( ( mem @ V10l1 @ ( ty_2Elist_2Elist @ A_27a ) )
+                     => ! [V11y: $i] :
+                          ( ( mem @ V11y @ A_27b )
+                         => ! [V12l2: $i] :
+                              ( ( mem @ V12l2 @ ( ty_2Elist_2Elist @ A_27b ) )
+                             => ( ( ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ V8cmp @ V9x ) @ V11y ) )
+                                    = fo__c_2EternaryComparisons_2EEQUAL )
+                                 => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V8cmp ) @ V10l1 ) @ V12l2 ) ) )
+                               => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V8cmp ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V9x ) @ V10l1 ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27b ) @ V11y ) @ V12l2 ) ) ) ) ) ) ) ) ) )
+       => ! [V13v: $i] :
+            ( ( mem @ V13v @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+           => ! [V14v1: $i] :
+                ( ( mem @ V14v1 @ ( ty_2Elist_2Elist @ A_27a ) )
+               => ! [V15v2: $i] :
+                    ( ( mem @ V15v2 @ ( ty_2Elist_2Elist @ A_27b ) )
+                   => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V13v ) @ V14v1 ) @ V15v2 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Elist__compare__def,axiom,
+    ! [A_27a: del,A_27b: del] :
+      ( ! [V0cmp: $i] :
+          ( ( mem @ V0cmp @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+         => ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__compare @ A_27a @ A_27b ) @ V0cmp ) @ ( c_2Elist_2ENIL @ A_27a ) ) @ ( c_2Elist_2ENIL @ A_27b ) ) )
+            = fo__c_2EternaryComparisons_2EEQUAL ) )
+      & ! [V1v9: $i] :
+          ( ( mem @ V1v9 @ ( ty_2Elist_2Elist @ A_27b ) )
+         => ! [V2v8: $i] :
+              ( ( mem @ V2v8 @ A_27b )
+             => ! [V3cmp: $i] :
+                  ( ( mem @ V3cmp @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+                 => ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__compare @ A_27a @ A_27b ) @ V3cmp ) @ ( c_2Elist_2ENIL @ A_27a ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27b ) @ V2v8 ) @ V1v9 ) ) )
+                    = fo__c_2EternaryComparisons_2ELESS ) ) ) )
+      & ! [V4v5: $i] :
+          ( ( mem @ V4v5 @ ( ty_2Elist_2Elist @ A_27a ) )
+         => ! [V5v4: $i] :
+              ( ( mem @ V5v4 @ A_27a )
+             => ! [V6cmp: $i] :
+                  ( ( mem @ V6cmp @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+                 => ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__compare @ A_27a @ A_27b ) @ V6cmp ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V5v4 ) @ V4v5 ) ) @ ( c_2Elist_2ENIL @ A_27b ) ) )
+                    = fo__c_2EternaryComparisons_2EGREATER ) ) ) )
+      & ! [V7y: $i] :
+          ( ( mem @ V7y @ A_27b )
+         => ! [V8x: $i] :
+              ( ( mem @ V8x @ A_27a )
+             => ! [V9l2: $i] :
+                  ( ( mem @ V9l2 @ ( ty_2Elist_2Elist @ A_27b ) )
+                 => ! [V10l1: $i] :
+                      ( ( mem @ V10l1 @ ( ty_2Elist_2Elist @ A_27a ) )
+                     => ! [V11cmp: $i] :
+                          ( ( mem @ V11cmp @ ( arr @ A_27a @ ( arr @ A_27b @ ty_2EternaryComparisons_2Eordering ) ) )
+                         => ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__compare @ A_27a @ A_27b ) @ V11cmp ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V8x ) @ V10l1 ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27b ) @ V7y ) @ V9l2 ) ) )
+                            = ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Eordering__CASE @ ty_2EternaryComparisons_2Eordering ) @ ( ap @ ( ap @ V11cmp @ V8x ) @ V7y ) ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS ) ) @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__compare @ A_27a @ A_27b ) @ V11cmp ) @ V10l1 ) @ V9l2 ) ) @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2EternaryComparisons_2Estring__compare__def,axiom,
+    ( c_2EternaryComparisons_2Estring__compare
+    = ( ap @ ( c_2EternaryComparisons_2Elist__compare @ ty_2Estring_2Echar @ ty_2Estring_2Echar ) @ c_2EternaryComparisons_2Echar__compare ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Ecompare__equal,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( ( mem @ V0cmp @ ( arr @ A_27a @ ( arr @ A_27a @ ty_2EternaryComparisons_2Eordering ) ) )
+     => ( ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ( ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ V0cmp @ V1x ) @ V2y ) )
+                    = fo__c_2EternaryComparisons_2EEQUAL )
+                <=> ( V1x = V2y ) ) ) )
+       => ! [V3l1: $i] :
+            ( ( mem @ V3l1 @ ( ty_2Elist_2Elist @ A_27a ) )
+           => ! [V4l2: $i] :
+                ( ( mem @ V4l2 @ ( ty_2Elist_2Elist @ A_27a ) )
+               => ( ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__compare @ A_27a @ A_27a ) @ V0cmp ) @ V3l1 ) @ V4l2 ) )
+                    = fo__c_2EternaryComparisons_2EEQUAL )
+                <=> ( V3l1 = V4l2 ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Elist__merge__ind,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ ( ty_2Elist_2Elist @ A_27a ) @ ( arr @ ( ty_2Elist_2Elist @ A_27a ) @ bool ) ) ) )
+     => ( ( ! [V1a__lt: $i] :
+              ( ( mem @ V1a__lt @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+             => ! [V2l1: $i] :
+                  ( ( mem @ V2l1 @ ( ty_2Elist_2Elist @ A_27a ) )
+                 => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V1a__lt ) @ V2l1 ) @ ( c_2Elist_2ENIL @ A_27a ) ) ) ) )
+          & ! [V3a__lt: $i] :
+              ( ( mem @ V3a__lt @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+             => ! [V4v4: $i] :
+                  ( ( mem @ V4v4 @ A_27a )
+                 => ! [V5v5: $i] :
+                      ( ( mem @ V5v5 @ ( ty_2Elist_2Elist @ A_27a ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V3a__lt ) @ ( c_2Elist_2ENIL @ A_27a ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V4v4 ) @ V5v5 ) ) ) ) ) )
+          & ! [V6a__lt: $i] :
+              ( ( mem @ V6a__lt @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+             => ! [V7x: $i] :
+                  ( ( mem @ V7x @ A_27a )
+                 => ! [V8l1: $i] :
+                      ( ( mem @ V8l1 @ ( ty_2Elist_2Elist @ A_27a ) )
+                     => ! [V9y: $i] :
+                          ( ( mem @ V9y @ A_27a )
+                         => ! [V10l2: $i] :
+                              ( ( mem @ V10l2 @ ( ty_2Elist_2Elist @ A_27a ) )
+                             => ( ( ( ~ ( p @ ( ap @ ( ap @ V6a__lt @ V7x ) @ V9y ) )
+                                   => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V6a__lt ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V7x ) @ V8l1 ) ) @ V10l2 ) ) )
+                                  & ( ( p @ ( ap @ ( ap @ V6a__lt @ V7x ) @ V9y ) )
+                                   => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V6a__lt ) @ V8l1 ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V9y ) @ V10l2 ) ) ) ) )
+                               => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V6a__lt ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V7x ) @ V8l1 ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V9y ) @ V10l2 ) ) ) ) ) ) ) ) ) )
+       => ! [V11v: $i] :
+            ( ( mem @ V11v @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+           => ! [V12v1: $i] :
+                ( ( mem @ V12v1 @ ( ty_2Elist_2Elist @ A_27a ) )
+               => ! [V13v2: $i] :
+                    ( ( mem @ V13v2 @ ( ty_2Elist_2Elist @ A_27a ) )
+                   => ( p @ ( ap @ ( ap @ ( ap @ V0P @ V11v ) @ V12v1 ) @ V13v2 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Elist__merge__def,axiom,
+    ! [A_27a: del] :
+      ( ! [V0l1: $i] :
+          ( ( mem @ V0l1 @ ( ty_2Elist_2Elist @ A_27a ) )
+         => ! [V1a__lt: $i] :
+              ( ( mem @ V1a__lt @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+             => ( ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__merge @ A_27a ) @ V1a__lt ) @ V0l1 ) @ ( c_2Elist_2ENIL @ A_27a ) )
+                = V0l1 ) ) )
+      & ! [V2v5: $i] :
+          ( ( mem @ V2v5 @ ( ty_2Elist_2Elist @ A_27a ) )
+         => ! [V3v4: $i] :
+              ( ( mem @ V3v4 @ A_27a )
+             => ! [V4a__lt: $i] :
+                  ( ( mem @ V4a__lt @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+                 => ( ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__merge @ A_27a ) @ V4a__lt ) @ ( c_2Elist_2ENIL @ A_27a ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V3v4 ) @ V2v5 ) )
+                    = ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V3v4 ) @ V2v5 ) ) ) ) )
+      & ! [V5y: $i] :
+          ( ( mem @ V5y @ A_27a )
+         => ! [V6x: $i] :
+              ( ( mem @ V6x @ A_27a )
+             => ! [V7l2: $i] :
+                  ( ( mem @ V7l2 @ ( ty_2Elist_2Elist @ A_27a ) )
+                 => ! [V8l1: $i] :
+                      ( ( mem @ V8l1 @ ( ty_2Elist_2Elist @ A_27a ) )
+                     => ! [V9a__lt: $i] :
+                          ( ( mem @ V9a__lt @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+                         => ( ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__merge @ A_27a ) @ V9a__lt ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V6x ) @ V8l1 ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V5y ) @ V7l2 ) )
+                            = ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ( ty_2Elist_2Elist @ A_27a ) ) @ ( ap @ ( ap @ V9a__lt @ V6x ) @ V5y ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V6x ) @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__merge @ A_27a ) @ V9a__lt ) @ V8l1 ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V5y ) @ V7l2 ) ) ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V5y ) @ ( ap @ ( ap @ ( ap @ ( c_2EternaryComparisons_2Elist__merge @ A_27a ) @ V9a__lt ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ A_27a ) @ V6x ) @ V8l1 ) ) @ V7l2 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2EternaryComparisons_2Einvert__comparison__def,axiom,
+    ( ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Einvert__comparison @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EGREATER ) ) )
+      = fo__c_2EternaryComparisons_2ELESS )
+    & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Einvert__comparison @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2ELESS ) ) )
+      = fo__c_2EternaryComparisons_2EGREATER )
+    & ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Einvert__comparison @ ( inj__ty_2EternaryComparisons_2Eordering @ fo__c_2EternaryComparisons_2EEQUAL ) ) )
+      = fo__c_2EternaryComparisons_2EEQUAL ) ) ).
+
+thf(conj_thm_2EternaryComparisons_2Einvert__eq__EQUAL,axiom,
+    ! [V0x: tp__ty_2EternaryComparisons_2Eordering] :
+      ( ( ( surj__ty_2EternaryComparisons_2Eordering @ ( ap @ c_2EternaryComparisons_2Einvert__comparison @ ( inj__ty_2EternaryComparisons_2Eordering @ V0x ) ) )
+        = fo__c_2EternaryComparisons_2EEQUAL )
+    <=> ( V0x = fo__c_2EternaryComparisons_2EEQUAL ) ) ).
+
+%------------------------------------------------------------------------------

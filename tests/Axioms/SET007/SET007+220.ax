@@ -1,0 +1,1418 @@
+%------------------------------------------------------------------------------
+% File     : SET007+220 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Midpoint Algebras
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : midsp_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  149 (  34 unt;   0 def)
+%            Number of atoms       :  785 ( 107 equ)
+%            Maximal formula atoms :   20 (   5 avg)
+%            Number of connectives :  748 ( 112   ~;   0   |; 317   &)
+%                                         (  16 <=>; 303  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   21 (   7 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   24 (  22 usr;   1 prp; 0-5 aty)
+%            Number of functors    :   38 (  38 usr;   3 con; 0-6 aty)
+%            Number of variables   :  342 ( 316   !;  26   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_midsp_1,axiom,
+    ? [A] :
+      ( l1_midsp_1(A)
+      & v1_midsp_1(A) ) ).
+
+fof(rc2_midsp_1,axiom,
+    ? [A] :
+      ( l1_midsp_1(A)
+      & ~ v3_struct_0(A) ) ).
+
+fof(fc1_midsp_1,axiom,
+    ( ~ v3_struct_0(k3_midsp_1)
+    & v1_midsp_1(k3_midsp_1) ) ).
+
+fof(rc3_midsp_1,axiom,
+    ? [A] :
+      ( l1_midsp_1(A)
+      & ~ v3_struct_0(A)
+      & v1_midsp_1(A)
+      & v2_midsp_1(A) ) ).
+
+fof(fc2_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) )
+     => ( v1_relat_1(k8_midsp_1(A,B))
+        & ~ v1_xboole_0(k8_midsp_1(A,B)) ) ) ).
+
+fof(fc3_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ~ v1_xboole_0(k14_midsp_1(A)) ) ).
+
+fof(fc4_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ( ~ v3_struct_0(k19_midsp_1(A))
+        & v1_rlvect_1(k19_midsp_1(A)) ) ) ).
+
+fof(d1_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k1_midsp_1(A,B,C) = k2_binop_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),u1_midsp_1(A),B,C) ) ) ) ).
+
+fof(d2_midsp_1,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k2_zfmisc_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0)),k1_tarski(k1_xboole_0))
+        & m2_relset_1(A,k2_zfmisc_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0)),k1_tarski(k1_xboole_0)) )
+     => A = k2_midsp_1 ) ).
+
+fof(d3_midsp_1,axiom,
+    k3_midsp_1 = g1_midsp_1(k1_tarski(k1_xboole_0),k2_midsp_1) ).
+
+fof(t1_midsp_1,axiom,
+    $true ).
+
+fof(t2_midsp_1,axiom,
+    $true ).
+
+fof(t3_midsp_1,axiom,
+    $true ).
+
+fof(t4_midsp_1,axiom,
+    $true ).
+
+fof(t5_midsp_1,axiom,
+    u1_struct_0(k3_midsp_1) = k1_tarski(k1_xboole_0) ).
+
+fof(t6_midsp_1,axiom,
+    u1_midsp_1(k3_midsp_1) = k2_midsp_1 ).
+
+fof(t7_midsp_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_midsp_1))
+     => A = k1_xboole_0 ) ).
+
+fof(t8_midsp_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_midsp_1))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k3_midsp_1))
+         => k1_midsp_1(k3_midsp_1,A,B) = k1_binop_1(k2_midsp_1,A,B) ) ) ).
+
+fof(t9_midsp_1,axiom,
+    $true ).
+
+fof(t10_midsp_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k3_midsp_1))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k3_midsp_1))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k3_midsp_1))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k3_midsp_1))
+                 => ( k1_midsp_1(k3_midsp_1,A,A) = A
+                    & k1_midsp_1(k3_midsp_1,A,B) = k1_midsp_1(k3_midsp_1,B,A)
+                    & k1_midsp_1(k3_midsp_1,k1_midsp_1(k3_midsp_1,A,B),k1_midsp_1(k3_midsp_1,C,D)) = k1_midsp_1(k3_midsp_1,k1_midsp_1(k3_midsp_1,A,C),k1_midsp_1(k3_midsp_1,B,D))
+                    & ? [E] :
+                        ( m1_subset_1(E,u1_struct_0(k3_midsp_1))
+                        & k1_midsp_1(k3_midsp_1,E,A) = B ) ) ) ) ) ) ).
+
+fof(d4_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_midsp_1(A) )
+     => ( v2_midsp_1(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ( k1_midsp_1(A,B,B) = B
+                          & k1_midsp_1(A,B,C) = k1_midsp_1(A,C,B)
+                          & k1_midsp_1(A,k1_midsp_1(A,B,C),k1_midsp_1(A,D,E)) = k1_midsp_1(A,k1_midsp_1(A,B,D),k1_midsp_1(A,C,E))
+                          & ? [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                              & k1_midsp_1(A,F,B) = C ) ) ) ) ) ) ) ) ).
+
+fof(t11_midsp_1,axiom,
+    $true ).
+
+fof(t12_midsp_1,axiom,
+    $true ).
+
+fof(t13_midsp_1,axiom,
+    $true ).
+
+fof(t14_midsp_1,axiom,
+    $true ).
+
+fof(t15_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => k4_midsp_1(A,k4_midsp_1(A,B,C),D) = k4_midsp_1(A,k4_midsp_1(A,B,D),k4_midsp_1(A,C,D)) ) ) ) ) ).
+
+fof(t16_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => k4_midsp_1(A,B,k4_midsp_1(A,C,D)) = k4_midsp_1(A,k4_midsp_1(A,B,C),k4_midsp_1(A,B,D)) ) ) ) ) ).
+
+fof(t17_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( k4_midsp_1(A,B,C) = B
+               => B = C ) ) ) ) ).
+
+fof(t18_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( k4_midsp_1(A,B,C) = k4_midsp_1(A,D,C)
+                   => B = D ) ) ) ) ) ).
+
+fof(t19_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( k4_midsp_1(A,B,C) = k4_midsp_1(A,B,D)
+                   => C = D ) ) ) ) ) ).
+
+fof(d5_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r1_midsp_1(A,B,C,D,E)
+                      <=> k4_midsp_1(A,B,E) = k4_midsp_1(A,C,D) ) ) ) ) ) ) ).
+
+fof(t20_midsp_1,axiom,
+    $true ).
+
+fof(t21_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r1_midsp_1(A,B,B,C,C) ) ) ) ).
+
+fof(t22_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r1_midsp_1(A,B,C,D,E)
+                       => r1_midsp_1(A,D,E,B,C) ) ) ) ) ) ) ).
+
+fof(t23_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_midsp_1(A,B,B,C,D)
+                   => C = D ) ) ) ) ) ).
+
+fof(t24_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_midsp_1(A,B,C,D,D)
+                   => B = C ) ) ) ) ) ).
+
+fof(t25_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r1_midsp_1(A,B,C,B,C) ) ) ) ).
+
+fof(t26_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ? [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                      & r1_midsp_1(A,B,C,D,E) ) ) ) ) ) ).
+
+fof(t27_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ( ( r1_midsp_1(A,B,C,D,E)
+                              & r1_midsp_1(A,B,C,D,F) )
+                           => E = F ) ) ) ) ) ) ) ).
+
+fof(t28_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( ( r1_midsp_1(A,B,C,D,E)
+                                  & r1_midsp_1(A,B,C,F,G) )
+                               => r1_midsp_1(A,D,E,F,G) ) ) ) ) ) ) ) ) ).
+
+fof(t29_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( ( r1_midsp_1(A,B,C,D,E)
+                                  & r1_midsp_1(A,C,F,E,G) )
+                               => r1_midsp_1(A,B,F,D,G) ) ) ) ) ) ) ) ) ).
+
+fof(d6_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+             => ( r2_midsp_1(A,B,C)
+              <=> r1_midsp_1(A,k5_midsp_1(A,B),k6_midsp_1(A,B),k5_midsp_1(A,C),k6_midsp_1(A,C)) ) ) ) ) ).
+
+fof(t30_midsp_1,axiom,
+    $true ).
+
+fof(t31_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r1_midsp_1(A,B,C,D,E)
+                       => r2_midsp_1(A,k7_midsp_1(A,B,C),k7_midsp_1(A,D,E)) ) ) ) ) ) ) ).
+
+fof(t32_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r2_midsp_1(A,k7_midsp_1(A,B,C),k7_midsp_1(A,D,E))
+                       => r1_midsp_1(A,B,C,D,E) ) ) ) ) ) ) ).
+
+fof(t33_midsp_1,axiom,
+    $true ).
+
+fof(t34_midsp_1,axiom,
+    $true ).
+
+fof(t35_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                 => ( ( r2_midsp_1(A,B,C)
+                      & r2_midsp_1(A,B,D) )
+                   => r2_midsp_1(A,C,D) ) ) ) ) ) ).
+
+fof(t36_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                 => ( ( r2_midsp_1(A,B,C)
+                      & r2_midsp_1(A,D,C) )
+                   => r2_midsp_1(A,B,D) ) ) ) ) ) ).
+
+fof(t37_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                 => ( ( r2_midsp_1(A,B,C)
+                      & r2_midsp_1(A,C,D) )
+                   => r2_midsp_1(A,B,D) ) ) ) ) ) ).
+
+fof(t38_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                 => ( r2_midsp_1(A,B,C)
+                   => ( r2_midsp_1(A,D,B)
+                    <=> r2_midsp_1(A,D,C) ) ) ) ) ) ) ).
+
+fof(t40_midsp_1,axiom,
+    $true ).
+
+fof(t41_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+             => ( r2_hidden(B,k8_midsp_1(A,C))
+              <=> r2_midsp_1(A,B,C) ) ) ) ) ).
+
+fof(t42_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+             => ( r2_midsp_1(A,B,C)
+               => k8_midsp_1(A,B) = k8_midsp_1(A,C) ) ) ) ) ).
+
+fof(t43_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+             => ( k8_midsp_1(A,B) = k8_midsp_1(A,C)
+               => r2_midsp_1(A,B,C) ) ) ) ) ).
+
+fof(t44_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( k8_midsp_1(A,k7_midsp_1(A,B,C)) = k8_midsp_1(A,k7_midsp_1(A,D,E))
+                       => k4_midsp_1(A,B,E) = k4_midsp_1(A,C,D) ) ) ) ) ) ) ).
+
+fof(t45_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => r2_hidden(B,k8_midsp_1(A,B)) ) ) ).
+
+fof(d8_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))) )
+         => ( m1_midsp_1(B,A)
+          <=> ? [C] :
+                ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                & B = k8_midsp_1(A,C) ) ) ) ) ).
+
+fof(t46_midsp_1,axiom,
+    $true ).
+
+fof(t47_midsp_1,axiom,
+    $true ).
+
+fof(t48_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ? [B] :
+          ( m1_midsp_1(B,A)
+          & ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+             => ( r2_hidden(C,B)
+              <=> k5_midsp_1(A,C) = k6_midsp_1(A,C) ) ) ) ) ).
+
+fof(t49_midsp_1,axiom,
+    $true ).
+
+fof(t50_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k10_midsp_1(A) = k9_midsp_1(A,k7_midsp_1(A,B,B)) ) ) ).
+
+fof(t51_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+         => ! [C] :
+              ( m1_midsp_1(C,A)
+             => ? [D] :
+                  ( m1_midsp_1(D,A)
+                  & ? [E] :
+                      ( m1_subset_1(E,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                      & ? [F] :
+                          ( m1_subset_1(F,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                          & B = k9_midsp_1(A,E)
+                          & C = k9_midsp_1(A,F)
+                          & k6_midsp_1(A,E) = k5_midsp_1(A,F)
+                          & D = k9_midsp_1(A,k7_midsp_1(A,k5_midsp_1(A,E),k6_midsp_1(A,F))) ) ) ) ) ) ) ).
+
+fof(t52_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+         => ! [C] :
+              ( m1_midsp_1(C,A)
+             => ! [D] :
+                  ( m1_midsp_1(D,A)
+                 => ! [E] :
+                      ( m1_midsp_1(E,A)
+                     => ~ ( ? [F] :
+                              ( m1_subset_1(F,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                              & ? [G] :
+                                  ( m1_subset_1(G,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                                  & B = k9_midsp_1(A,F)
+                                  & C = k9_midsp_1(A,G)
+                                  & k6_midsp_1(A,F) = k5_midsp_1(A,G)
+                                  & D = k9_midsp_1(A,k7_midsp_1(A,k5_midsp_1(A,F),k6_midsp_1(A,G))) ) )
+                          & ? [F] :
+                              ( m1_subset_1(F,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                              & ? [G] :
+                                  ( m1_subset_1(G,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                                  & B = k9_midsp_1(A,F)
+                                  & C = k9_midsp_1(A,G)
+                                  & k6_midsp_1(A,F) = k5_midsp_1(A,G)
+                                  & E = k9_midsp_1(A,k7_midsp_1(A,k5_midsp_1(A,F),k6_midsp_1(A,G))) ) )
+                          & D != E ) ) ) ) ) ) ).
+
+fof(d10_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+         => ! [C] :
+              ( m1_midsp_1(C,A)
+             => ! [D] :
+                  ( m1_midsp_1(D,A)
+                 => ( D = k11_midsp_1(A,B,C)
+                  <=> ? [E] :
+                        ( m1_subset_1(E,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                        & ? [F] :
+                            ( m1_subset_1(F,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                            & B = k9_midsp_1(A,E)
+                            & C = k9_midsp_1(A,F)
+                            & k6_midsp_1(A,E) = k5_midsp_1(A,F)
+                            & D = k9_midsp_1(A,k7_midsp_1(A,k5_midsp_1(A,E),k6_midsp_1(A,F))) ) ) ) ) ) ) ) ).
+
+fof(t53_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_midsp_1(C,A)
+             => ? [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                  & C = k9_midsp_1(A,k7_midsp_1(A,B,D)) ) ) ) ) ).
+
+fof(d11_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k12_midsp_1(A,B,C) = k9_midsp_1(A,k7_midsp_1(A,B,C)) ) ) ) ).
+
+fof(t54_midsp_1,axiom,
+    $true ).
+
+fof(t55_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_midsp_1(C,A)
+             => ? [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                  & C = k12_midsp_1(A,B,D) ) ) ) ) ).
+
+fof(t56_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r2_midsp_1(A,k7_midsp_1(A,B,C),k7_midsp_1(A,D,E))
+                       => k12_midsp_1(A,B,C) = k12_midsp_1(A,D,E) ) ) ) ) ) ) ).
+
+fof(t57_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( k12_midsp_1(A,B,C) = k12_midsp_1(A,D,E)
+                       => k4_midsp_1(A,B,E) = k4_midsp_1(A,C,D) ) ) ) ) ) ) ).
+
+fof(t58_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k10_midsp_1(A) = k12_midsp_1(A,B,B) ) ) ).
+
+fof(t59_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( k12_midsp_1(A,B,C) = k12_midsp_1(A,B,D)
+                   => C = D ) ) ) ) ) ).
+
+fof(t60_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => k11_midsp_1(A,k12_midsp_1(A,B,C),k12_midsp_1(A,C,D)) = k12_midsp_1(A,B,D) ) ) ) ) ).
+
+fof(t61_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r2_midsp_1(A,k7_midsp_1(A,B,k4_midsp_1(A,B,C)),k7_midsp_1(A,k4_midsp_1(A,B,C),C)) ) ) ) ).
+
+fof(t62_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k11_midsp_1(A,k12_midsp_1(A,B,k4_midsp_1(A,B,C)),k12_midsp_1(A,B,k4_midsp_1(A,B,C))) = k12_midsp_1(A,B,C) ) ) ) ).
+
+fof(t63_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+         => ! [C] :
+              ( m1_midsp_1(C,A)
+             => ! [D] :
+                  ( m1_midsp_1(D,A)
+                 => k11_midsp_1(A,k11_midsp_1(A,B,C),D) = k11_midsp_1(A,B,k11_midsp_1(A,C,D)) ) ) ) ) ).
+
+fof(t64_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+         => k11_midsp_1(A,B,k10_midsp_1(A)) = B ) ) ).
+
+fof(t65_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+         => ? [C] :
+              ( m1_midsp_1(C,A)
+              & k11_midsp_1(A,B,C) = k10_midsp_1(A) ) ) ) ).
+
+fof(t66_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+         => ! [C] :
+              ( m1_midsp_1(C,A)
+             => k11_midsp_1(A,B,C) = k11_midsp_1(A,C,B) ) ) ) ).
+
+fof(t67_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+         => ! [C] :
+              ( m1_midsp_1(C,A)
+             => ! [D] :
+                  ( m1_midsp_1(D,A)
+                 => ( k11_midsp_1(A,B,C) = k11_midsp_1(A,B,D)
+                   => C = D ) ) ) ) ) ).
+
+fof(d12_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+         => ! [C] :
+              ( m1_midsp_1(C,A)
+             => ( C = k13_midsp_1(A,B)
+              <=> k11_midsp_1(A,B,C) = k10_midsp_1(A) ) ) ) ) ).
+
+fof(t68_midsp_1,axiom,
+    $true ).
+
+fof(t69_midsp_1,axiom,
+    $true ).
+
+fof(t70_midsp_1,axiom,
+    $true ).
+
+fof(t71_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+        <=> r2_hidden(B,k14_midsp_1(A)) ) ) ).
+
+fof(d14_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k14_midsp_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k14_midsp_1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k14_midsp_1(A))
+                 => ( D = k15_midsp_1(A,B,C)
+                  <=> ! [E] :
+                        ( m1_midsp_1(E,A)
+                       => ! [F] :
+                            ( m1_midsp_1(F,A)
+                           => ( ( B = E
+                                & C = F )
+                             => D = k11_midsp_1(A,E,F) ) ) ) ) ) ) ) ) ).
+
+fof(t72_midsp_1,axiom,
+    $true ).
+
+fof(t73_midsp_1,axiom,
+    $true ).
+
+fof(t74_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k14_midsp_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k14_midsp_1(A))
+             => k15_midsp_1(A,B,C) = k15_midsp_1(A,C,B) ) ) ) ).
+
+fof(t75_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k14_midsp_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k14_midsp_1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k14_midsp_1(A))
+                 => k15_midsp_1(A,k15_midsp_1(A,B,C),D) = k15_midsp_1(A,B,k15_midsp_1(A,C,D)) ) ) ) ) ).
+
+fof(d15_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(k14_midsp_1(A),k14_midsp_1(A)),k14_midsp_1(A))
+            & m2_relset_1(B,k2_zfmisc_1(k14_midsp_1(A),k14_midsp_1(A)),k14_midsp_1(A)) )
+         => ( B = k16_midsp_1(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k14_midsp_1(A))
+               => ! [D] :
+                    ( m1_subset_1(D,k14_midsp_1(A))
+                   => k2_binop_1(k14_midsp_1(A),k14_midsp_1(A),k14_midsp_1(A),B,C,D) = k15_midsp_1(A,C,D) ) ) ) ) ) ).
+
+fof(t76_midsp_1,axiom,
+    $true ).
+
+fof(t77_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k14_midsp_1(A))
+         => ? [C] :
+              ( m1_subset_1(C,k14_midsp_1(A))
+              & k15_midsp_1(A,B,C) = k10_midsp_1(A) ) ) ) ).
+
+fof(t78_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k14_midsp_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k14_midsp_1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k14_midsp_1(A))
+                 => ( ( k15_midsp_1(A,B,C) = k10_midsp_1(A)
+                      & k15_midsp_1(A,B,D) = k10_midsp_1(A) )
+                   => C = D ) ) ) ) ) ).
+
+fof(d16_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k14_midsp_1(A),k14_midsp_1(A))
+            & m2_relset_1(B,k14_midsp_1(A),k14_midsp_1(A)) )
+         => ( B = k17_midsp_1(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k14_midsp_1(A))
+               => k15_midsp_1(A,C,k8_funct_2(k14_midsp_1(A),k14_midsp_1(A),B,C)) = k10_midsp_1(A) ) ) ) ) ).
+
+fof(d17_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => k18_midsp_1(A) = k10_midsp_1(A) ) ).
+
+fof(d18_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => k19_midsp_1(A) = g1_rlvect_1(k14_midsp_1(A),k16_midsp_1(A),k18_midsp_1(A)) ) ).
+
+fof(t79_midsp_1,axiom,
+    $true ).
+
+fof(t80_midsp_1,axiom,
+    $true ).
+
+fof(t81_midsp_1,axiom,
+    $true ).
+
+fof(t82_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => u1_struct_0(k19_midsp_1(A)) = k14_midsp_1(A) ) ).
+
+fof(t83_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => u1_rlvect_1(k19_midsp_1(A)) = k16_midsp_1(A) ) ).
+
+fof(t84_midsp_1,axiom,
+    $true ).
+
+fof(t85_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => u2_struct_0(k19_midsp_1(A)) = k18_midsp_1(A) ) ).
+
+fof(t86_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ( v4_rlvect_1(k19_midsp_1(A))
+        & v5_rlvect_1(k19_midsp_1(A))
+        & v6_rlvect_1(k19_midsp_1(A))
+        & v3_rlvect_1(k19_midsp_1(A)) ) ) ).
+
+fof(dt_m1_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_midsp_1(B,A)
+         => ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))) ) ) ) ).
+
+fof(existence_m1_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ? [B] : m1_midsp_1(B,A) ) ).
+
+fof(dt_l1_midsp_1,axiom,
+    ! [A] :
+      ( l1_midsp_1(A)
+     => l1_struct_0(A) ) ).
+
+fof(existence_l1_midsp_1,axiom,
+    ? [A] : l1_midsp_1(A) ).
+
+fof(abstractness_v1_midsp_1,axiom,
+    ! [A] :
+      ( l1_midsp_1(A)
+     => ( v1_midsp_1(A)
+       => A = g1_midsp_1(u1_struct_0(A),u1_midsp_1(A)) ) ) ).
+
+fof(symmetry_r2_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+        & m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) )
+     => ( r2_midsp_1(A,B,C)
+       => r2_midsp_1(A,C,B) ) ) ).
+
+fof(reflexivity_r2_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+        & m1_subset_1(C,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) )
+     => r2_midsp_1(A,B,B) ) ).
+
+fof(dt_k1_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k1_midsp_1(A,B,C),u1_struct_0(A)) ) ).
+
+fof(dt_k2_midsp_1,axiom,
+    ( v1_funct_1(k2_midsp_1)
+    & v1_funct_2(k2_midsp_1,k2_zfmisc_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0)),k1_tarski(k1_xboole_0))
+    & m2_relset_1(k2_midsp_1,k2_zfmisc_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0)),k1_tarski(k1_xboole_0)) ) ).
+
+fof(dt_k3_midsp_1,axiom,
+    l1_midsp_1(k3_midsp_1) ).
+
+fof(dt_k4_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k4_midsp_1(A,B,C),u1_struct_0(A)) ) ).
+
+fof(commutativity_k4_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k4_midsp_1(A,B,C) = k4_midsp_1(A,C,B) ) ).
+
+fof(redefinition_k4_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k4_midsp_1(A,B,C) = k1_midsp_1(A,B,C) ) ).
+
+fof(dt_k5_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) )
+     => m1_subset_1(k5_midsp_1(A,B),u1_struct_0(A)) ) ).
+
+fof(redefinition_k5_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) )
+     => k5_midsp_1(A,B) = k1_mcart_1(B) ) ).
+
+fof(dt_k6_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) )
+     => m1_subset_1(k6_midsp_1(A,B),u1_struct_0(A)) ) ).
+
+fof(redefinition_k6_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) )
+     => k6_midsp_1(A,B) = k2_mcart_1(B) ) ).
+
+fof(dt_k7_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k7_midsp_1(A,B,C),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) ) ).
+
+fof(redefinition_k7_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k7_midsp_1(A,B,C) = k4_tarski(B,C) ) ).
+
+fof(dt_k8_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) )
+     => m1_subset_1(k8_midsp_1(A,B),k1_zfmisc_1(k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))) ) ).
+
+fof(dt_k9_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) )
+     => m1_midsp_1(k9_midsp_1(A,B),A) ) ).
+
+fof(redefinition_k9_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) )
+     => k9_midsp_1(A,B) = k8_midsp_1(A,B) ) ).
+
+fof(dt_k10_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => m1_midsp_1(k10_midsp_1(A),A) ) ).
+
+fof(dt_k11_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_midsp_1(B,A)
+        & m1_midsp_1(C,A) )
+     => m1_midsp_1(k11_midsp_1(A,B,C),A) ) ).
+
+fof(dt_k12_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_midsp_1(k12_midsp_1(A,B,C),A) ) ).
+
+fof(dt_k13_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_midsp_1(B,A) )
+     => m1_midsp_1(k13_midsp_1(A,B),A) ) ).
+
+fof(dt_k14_midsp_1,axiom,
+    $true ).
+
+fof(dt_k15_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A)
+        & m1_subset_1(B,k14_midsp_1(A))
+        & m1_subset_1(C,k14_midsp_1(A)) )
+     => m1_subset_1(k15_midsp_1(A,B,C),k14_midsp_1(A)) ) ).
+
+fof(dt_k16_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ( v1_funct_1(k16_midsp_1(A))
+        & v1_funct_2(k16_midsp_1(A),k2_zfmisc_1(k14_midsp_1(A),k14_midsp_1(A)),k14_midsp_1(A))
+        & m2_relset_1(k16_midsp_1(A),k2_zfmisc_1(k14_midsp_1(A),k14_midsp_1(A)),k14_midsp_1(A)) ) ) ).
+
+fof(dt_k17_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ( v1_funct_1(k17_midsp_1(A))
+        & v1_funct_2(k17_midsp_1(A),k14_midsp_1(A),k14_midsp_1(A))
+        & m2_relset_1(k17_midsp_1(A),k14_midsp_1(A),k14_midsp_1(A)) ) ) ).
+
+fof(dt_k18_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => m1_subset_1(k18_midsp_1(A),k14_midsp_1(A)) ) ).
+
+fof(dt_k19_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => l1_rlvect_1(k19_midsp_1(A)) ) ).
+
+fof(dt_u1_midsp_1,axiom,
+    ! [A] :
+      ( l1_midsp_1(A)
+     => ( v1_funct_1(u1_midsp_1(A))
+        & v1_funct_2(u1_midsp_1(A),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),u1_struct_0(A))
+        & m2_relset_1(u1_midsp_1(A),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),u1_struct_0(A)) ) ) ).
+
+fof(dt_g1_midsp_1,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A) )
+     => ( v1_midsp_1(g1_midsp_1(A,B))
+        & l1_midsp_1(g1_midsp_1(A,B)) ) ) ).
+
+fof(free_g1_midsp_1,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A) )
+     => ! [C,D] :
+          ( g1_midsp_1(A,B) = g1_midsp_1(C,D)
+         => ( A = C
+            & B = D ) ) ) ).
+
+fof(t39_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => ( ~ v1_xboole_0(a_2_0_midsp_1(A,B))
+            & m1_subset_1(a_2_0_midsp_1(A,B),k1_zfmisc_1(k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))) ) ) ) ).
+
+fof(d7_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+         => k8_midsp_1(A,B) = a_2_0_midsp_1(A,B) ) ) ).
+
+fof(d9_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => k10_midsp_1(A) = a_1_0_midsp_1(A) ) ).
+
+fof(d13_midsp_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_midsp_1(A)
+        & l1_midsp_1(A) )
+     => k14_midsp_1(A) = a_1_1_midsp_1(A) ) ).
+
+fof(fraenkel_a_2_0_midsp_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v2_midsp_1(B)
+        & l1_midsp_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(u1_struct_0(B),u1_struct_0(B))) )
+     => ( r2_hidden(A,a_2_0_midsp_1(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k2_zfmisc_1(u1_struct_0(B),u1_struct_0(B)))
+            & A = D
+            & r2_midsp_1(B,D,C) ) ) ) ).
+
+fof(fraenkel_a_1_0_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & v2_midsp_1(B)
+        & l1_midsp_1(B) )
+     => ( r2_hidden(A,a_1_0_midsp_1(B))
+      <=> ? [C] :
+            ( m1_subset_1(C,k2_zfmisc_1(u1_struct_0(B),u1_struct_0(B)))
+            & A = C
+            & k5_midsp_1(B,C) = k6_midsp_1(B,C) ) ) ) ).
+
+fof(fraenkel_a_1_1_midsp_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & v2_midsp_1(B)
+        & l1_midsp_1(B) )
+     => ( r2_hidden(A,a_1_1_midsp_1(B))
+      <=> ? [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(k2_zfmisc_1(u1_struct_0(B),u1_struct_0(B))))
+            & A = C
+            & m1_midsp_1(C,B) ) ) ) ).
+
+%------------------------------------------------------------------------------

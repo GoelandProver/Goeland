@@ -12,6 +12,7 @@ print(f"Create folder : {out_folder}")
 
 for parent, dirnames, filenames in sorted(os.walk(folder)): 
     for fn in filenames:
+        if not "ARI" in fn:
             if fn.split(".")[-1].lower() == "p" and ("+" in fn or "_" in fn):
                 with open(os.path.join(parent, fn), 'r+') as f:
                     content = f.read()

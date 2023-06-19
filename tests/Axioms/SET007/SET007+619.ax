@@ -1,0 +1,370 @@
+%------------------------------------------------------------------------------
+% File     : SET007+619 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Predicate Calculus for Boolean Valued Functions. Part III
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : bvfunc11 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   27 (   2 unt;   0 def)
+%            Number of atoms       :  165 (  13 equ)
+%            Maximal formula atoms :   10 (   6 avg)
+%            Number of connectives :  164 (  26   ~;   3   |;   5   &)
+%                                         (   0 <=>; 130  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   16 (  10 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   12 (  10 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   15 (  15 usr;   1 con; 0-4 aty)
+%            Number of variables   :  119 ( 119   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ! [C] :
+              ( m1_eqrel_1(C,A)
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ( r1_setfam_1(C,D)
+                   => r1_tarski(k22_bvfunc_1(A,B,C),k22_bvfunc_1(A,B,D)) ) ) ) ) ) ).
+
+fof(t2_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ! [C] :
+              ( m1_eqrel_1(C,A)
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => r1_tarski(k22_bvfunc_1(A,B,C),k22_bvfunc_1(A,B,k3_partit1(A,C,D))) ) ) ) ) ).
+
+fof(t3_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ! [C] :
+              ( m1_eqrel_1(C,A)
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => r1_tarski(k22_bvfunc_1(A,B,k2_partit1(A,C,D)),k22_bvfunc_1(A,B,C)) ) ) ) ) ).
+
+fof(t4_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ! [C] :
+              ( m1_eqrel_1(C,A)
+             => ( r1_tarski(k22_bvfunc_1(A,B,C),k22_bvfunc_1(A,B,k6_partit1(A)))
+                & r1_tarski(k22_bvfunc_1(A,B,k3_pua2mss1(A)),k22_bvfunc_1(A,B,C)) ) ) ) ) ).
+
+fof(t5_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_bvfunc_2(A)))
+         => ! [C] :
+              ( m1_eqrel_1(C,A)
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ( ( v2_bvfunc_2(B,A)
+                      & B = k2_tarski(C,D) )
+                   => ( C = D
+                      | ! [E,F] :
+                          ~ ( r2_hidden(E,C)
+                            & r2_hidden(F,D)
+                            & r1_xboole_0(E,F) ) ) ) ) ) ) ) ).
+
+fof(t6_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_bvfunc_2(A)))
+         => ! [C] :
+              ( m1_eqrel_1(C,A)
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ( ( v2_bvfunc_2(B,A)
+                      & B = k2_tarski(C,D) )
+                   => ( C = D
+                      | k2_bvfunc_2(A,B) = k2_partit1(A,C,D) ) ) ) ) ) ) ).
+
+fof(t7_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_bvfunc_2(A)))
+         => ! [C] :
+              ( m1_eqrel_1(C,A)
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ( B = k2_tarski(C,D)
+                   => ( C = D
+                      | k5_bvfunc_2(A,C,B) = D ) ) ) ) ) ) ).
+
+fof(t8_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k1_bvfunc_2(A)))
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( r1_bvfunc_1(A,B,C)
+                       => r1_bvfunc_1(A,k6_bvfunc_2(A,B,D,E),k7_bvfunc_2(A,C,D,E)) ) ) ) ) ) ) ).
+
+fof(t9_bvfunc11,axiom,
+    $true ).
+
+fof(t10_bvfunc11,axiom,
+    $true ).
+
+fof(t11_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => r1_bvfunc_1(A,k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E),k7_bvfunc_2(A,k6_bvfunc_2(A,B,C,E),C,D)) ) ) ) ) ) ) ).
+
+fof(t12_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => r1_bvfunc_1(A,k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E),k7_bvfunc_2(A,k7_bvfunc_2(A,B,C,E),C,D)) ) ) ) ) ) ).
+
+fof(t13_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => r1_bvfunc_1(A,k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E),k6_bvfunc_2(A,k7_bvfunc_2(A,B,C,E),C,D)) ) ) ) ) ) ) ).
+
+fof(t14_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => r1_bvfunc_1(A,k6_bvfunc_2(A,k7_bvfunc_2(A,B,C,D),C,E),k7_bvfunc_2(A,k7_bvfunc_2(A,B,C,E),C,D)) ) ) ) ) ) ).
+
+fof(t15_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => r1_bvfunc_1(A,k5_valuat_1(A,k7_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E)),k7_bvfunc_2(A,k7_bvfunc_2(A,k5_valuat_1(A,B),C,E),C,D)) ) ) ) ) ) ).
+
+fof(t16_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => r1_bvfunc_1(A,k7_bvfunc_2(A,k5_valuat_1(A,k6_bvfunc_2(A,B,C,D)),C,E),k7_bvfunc_2(A,k7_bvfunc_2(A,k5_valuat_1(A,B),C,E),C,D)) ) ) ) ) ) ) ).
+
+fof(t17_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => k5_valuat_1(A,k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E)) = k7_bvfunc_2(A,k5_valuat_1(A,k6_bvfunc_2(A,B,C,E)),C,D) ) ) ) ) ) ) ).
+
+fof(t18_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => r1_bvfunc_1(A,k6_bvfunc_2(A,k5_valuat_1(A,k6_bvfunc_2(A,B,C,D)),C,E),k7_bvfunc_2(A,k7_bvfunc_2(A,k5_valuat_1(A,B),C,E),C,D)) ) ) ) ) ) ) ).
+
+fof(t19_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => k5_valuat_1(A,k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E)) = k7_bvfunc_2(A,k7_bvfunc_2(A,k5_valuat_1(A,B),C,E),C,D) ) ) ) ) ) ) ).
+
+fof(t20_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => r1_bvfunc_1(A,k5_valuat_1(A,k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E)),k7_bvfunc_2(A,k7_bvfunc_2(A,k5_valuat_1(A,B),C,D),C,E)) ) ) ) ) ) ) ).
+
+fof(t21_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => k5_valuat_1(A,k6_bvfunc_2(A,k7_bvfunc_2(A,B,C,D),C,E)) = k7_bvfunc_2(A,k6_bvfunc_2(A,k5_valuat_1(A,B),C,D),C,E) ) ) ) ) ) ).
+
+fof(t22_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => k5_valuat_1(A,k7_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E)) = k6_bvfunc_2(A,k7_bvfunc_2(A,k5_valuat_1(A,B),C,D),C,E) ) ) ) ) ) ).
+
+fof(t23_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => k5_valuat_1(A,k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E)) = k7_bvfunc_2(A,k7_bvfunc_2(A,k5_valuat_1(A,B),C,D),C,E) ) ) ) ) ) ).
+
+fof(t24_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => r1_bvfunc_1(A,k7_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E),k7_bvfunc_2(A,k7_bvfunc_2(A,B,C,E),C,D)) ) ) ) ) ) ) ).
+
+fof(t25_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => r1_bvfunc_1(A,k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E),k6_bvfunc_2(A,k7_bvfunc_2(A,B,C,D),C,E)) ) ) ) ) ) ).
+
+fof(t26_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => r1_bvfunc_1(A,k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E),k7_bvfunc_2(A,k7_bvfunc_2(A,B,C,D),C,E)) ) ) ) ) ) ).
+
+fof(t27_bvfunc11,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => r1_bvfunc_1(A,k7_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E),k7_bvfunc_2(A,k7_bvfunc_2(A,B,C,D),C,E)) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

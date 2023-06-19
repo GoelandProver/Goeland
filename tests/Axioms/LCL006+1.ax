@@ -1,0 +1,49 @@
+%------------------------------------------------------------------------------
+% File     : LCL006+1 : TPTP v8.1.2. Released v3.3.0.
+% Domain   : Logic Calculi (Propositional)
+% Axioms   : Propositional logic definitions
+% Version  : [She06] axioms.
+% English  :
+
+% Refs     : [Hal]   Halleck (URL), John Halleck's Logic Systems
+%          : [She06] Shen (2006), Automated Proofs of Equivalence of Modal
+% Source   : [She06]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    5 (   0 unt;   0 def)
+%            Number of atoms       :   10 (   5 equ)
+%            Maximal formula atoms :    2 (   2 avg)
+%            Number of connectives :    5 (   0   ~;   0   |;   0   &)
+%                                         (   0 <=>;   5  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    4 (   4 avg)
+%            Maximal term depth    :    4 (   2 avg)
+%            Number of predicates  :    6 (   5 usr;   5 prp; 0-2 aty)
+%            Number of functors    :    5 (   5 usr;   0 con; 1-2 aty)
+%            Number of variables   :   10 (  10   !;   0   ?)
+% SPC      : 
+
+% Comments :
+%------------------------------------------------------------------------------
+%----Definitions
+fof(op_or,axiom,
+    ( op_or
+   => ! [X,Y] : or(X,Y) = not(and(not(X),not(Y))) ) ).
+
+fof(op_and,axiom,
+    ( op_and
+   => ! [X,Y] : and(X,Y) = not(or(not(X),not(Y))) ) ).
+
+fof(op_implies_and,axiom,
+    ( op_implies_and
+   => ! [X,Y] : implies(X,Y) = not(and(X,not(Y))) ) ).
+
+fof(op_implies_or,axiom,
+    ( op_implies_or
+   => ! [X,Y] : implies(X,Y) = or(not(X),Y) ) ).
+
+fof(op_equiv,axiom,
+    ( op_equiv
+   => ! [X,Y] : equiv(X,Y) = and(implies(X,Y),implies(Y,X)) ) ).
+
+%------------------------------------------------------------------------------

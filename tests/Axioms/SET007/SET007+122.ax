@@ -1,0 +1,141 @@
+%------------------------------------------------------------------------------
+% File     : SET007+122 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Schemes
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : schems_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   16 (   0 unt;   0 def)
+%            Number of atoms       :   50 (   0 equ)
+%            Maximal formula atoms :    4 (   3 avg)
+%            Number of connectives :   43 (   9   ~;   3   |;   9   &)
+%                                         (   2 <=>;  20  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    7 (   5 avg)
+%            Maximal term depth    :    1 (   1 avg)
+%            Number of predicates  :   25 (  25 usr;   1 prp; 0-2 aty)
+%            Number of functors    :    0 (   0 usr;   0 con; --- aty)
+%            Number of variables   :   55 (  35   !;  20   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(s1_schems_1,axiom,
+    ( ! [A] : p1_s1_schems_1(A)
+   => ? [A] : p1_s1_schems_1(A) ) ).
+
+fof(s2_schems_1,axiom,
+    ( ? [A] :
+      ! [B] : p1_s2_schems_1(A,B)
+   => ! [A] :
+      ? [B] : p1_s2_schems_1(B,A) ) ).
+
+fof(s3_schems_1,axiom,
+    ( ! [A] :
+        ( p1_s3_schems_1(A)
+       => p2_s3_schems_1(A) )
+   => ( ! [A] : p1_s3_schems_1(A)
+     => ! [A] : p2_s3_schems_1(A) ) ) ).
+
+fof(s4_schems_1,axiom,
+    ( ! [A] :
+        ( p1_s4_schems_1(A)
+      <=> p2_s4_schems_1(A) )
+   => ( ! [A] : p1_s4_schems_1(A)
+    <=> ! [A] : p2_s4_schems_1(A) ) ) ).
+
+fof(s5_schems_1,axiom,
+    ( ! [A] :
+        ( p1_s5_schems_1(A)
+       => p2_s5_schems_1 )
+   => ( ! [A] : p1_s5_schems_1(A)
+     => p2_s5_schems_1 ) ) ).
+
+fof(s6_schems_1,axiom,
+    ( ~ ( ! [A] : ~ p1_s6_schems_1(A)
+        & ~ ! [A] : p2_s6_schems_1(A) )
+   => ? [A] :
+      ! [B] :
+        ( p1_s6_schems_1(A)
+        | p2_s6_schems_1(B) ) ) ).
+
+fof(s7_schems_1,axiom,
+    ( ? [A] :
+      ! [B] :
+        ( p1_s7_schems_1(A)
+        | p2_s7_schems_1(B) )
+   => ~ ( ! [A] : ~ p1_s7_schems_1(A)
+        & ~ ! [A] : p2_s7_schems_1(A) ) ) ).
+
+fof(s8_schems_1,axiom,
+    ( ! [A] :
+        ~ ! [B] :
+            ( ~ p1_s8_schems_1(B)
+            & ~ p2_s8_schems_1(A) )
+   => ? [A] :
+      ! [B] :
+        ( p1_s8_schems_1(A)
+        | p2_s8_schems_1(B) ) ) ).
+
+fof(s9_schems_1,axiom,
+    ( ( ? [A] : p1_s9_schems_1(A)
+      & ! [A] : p2_s9_schems_1(A) )
+   => ! [A] :
+      ? [B] :
+        ( p1_s9_schems_1(B)
+        & p2_s9_schems_1(A) ) ) ).
+
+fof(s10_schems_1,axiom,
+    ( ! [A] :
+      ? [B] :
+        ( p1_s10_schems_1(B)
+        & p2_s10_schems_1(A) )
+   => ( ? [A] : p1_s10_schems_1(A)
+      & ! [A] : p2_s10_schems_1(A) ) ) ).
+
+fof(s11_schems_1,axiom,
+    ( ! [A] :
+      ? [B] :
+        ( p1_s11_schems_1(B)
+        & p2_s11_schems_1(A) )
+   => ? [A] :
+      ! [B] :
+        ( p1_s11_schems_1(A)
+        & p2_s11_schems_1(B) ) ) ).
+
+fof(s12_schems_1,axiom,
+    ( ! [A,B] : p1_s12_schems_1(A,B)
+   => ? [A] :
+      ! [B] : p1_s12_schems_1(B,A) ) ).
+
+fof(s13_schems_1,axiom,
+    ( ? [A] :
+      ! [B] : p1_s13_schems_1(A,B)
+   => ? [A] : p1_s13_schems_1(A,A) ) ).
+
+fof(s14_schems_1,axiom,
+    ( ! [A] : p1_s14_schems_1(A,A)
+   => ! [A] :
+      ? [B] : p1_s14_schems_1(B,A) ) ).
+
+fof(s15_schems_1,axiom,
+    ( ! [A] : p1_s15_schems_1(A,A)
+   => ! [A] :
+      ? [B] : p1_s15_schems_1(A,B) ) ).
+
+fof(s16_schems_1,axiom,
+    ( ! [A] :
+      ? [B] : p1_s16_schems_1(B,A)
+   => ? [A,B] : p1_s16_schems_1(A,B) ) ).
+
+%------------------------------------------------------------------------------

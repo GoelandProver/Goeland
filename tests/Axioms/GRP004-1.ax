@@ -1,0 +1,38 @@
+%--------------------------------------------------------------------------
+% File     : GRP004-1 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Group Theory (Subgroups)
+% Axioms   : Subgroup (equality) axioms
+% Version  : [MOW76] (equality) axioms :
+%            Reduced > Complete.
+% English  :
+
+% Refs     : [MOW76] McCharen et al. (1976), Problems and Experiments for a
+% Source   : [ANL]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :    2 (   0 unt;   0 nHn;   2 RR)
+%            Number of literals    :    6 (   1 equ;   4 neg)
+%            Maximal clause size   :    4 (   3 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of predicates  :    2 (   1 usr;   0 prp; 1-2 aty)
+%            Number of functors    :    2 (   2 usr;   0 con; 1-2 aty)
+%            Number of variables   :    4 (   0 sgn)
+% SPC      : 
+
+% Comments : Requires GRP004-0.ax
+%          : The redundant axiom that states that the identity element is in
+%            the subgroup, present in the [MOW76] presentation, is omitted
+%            here.
+%--------------------------------------------------------------------------
+cnf(closure_of_inverse,axiom,
+    ( ~ subgroup_member(X)
+    | subgroup_member(inverse(X)) ) ).
+
+cnf(closure_of_multiply,axiom,
+    ( ~ subgroup_member(X)
+    | ~ subgroup_member(Y)
+    | multiply(X,Y) != Z
+    | subgroup_member(Z) ) ).
+
+%--------------------------------------------------------------------------

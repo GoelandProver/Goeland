@@ -1,0 +1,37 @@
+%------------------------------------------------------------------------------
+% File     : SWV008^1 : TPTP v8.1.2. Released v3.6.0.
+% Domain   : Software Verification (Security)
+% Axioms   : ICL notions of validity wrt S4
+% Version  : [Ben08] axioms.
+% English  :
+
+% Refs     : [GA08]  Garg & Abadi (2008), A Modal Deconstruction of Access
+%          : [Ben08] Benzmueller (2008), Automating Access Control Logics i
+%          : [BP09]  Benzmueller & Paulson (2009), Exploring Properties of
+% Source   : [Ben08]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    2 (   0 unt;   0 typ;   0 def)
+%            Number of atoms       :   12 (   0 equ;   0 cnn)
+%            Maximal formula atoms :    8 (   6 avg)
+%            Number of connectives :   14 (   0   ~;   0   |;   0   &;  14   @)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    7 (   7 avg;  14 nst)
+%            Number of types       :    2 (   0 usr)
+%            Number of type conns  :    2 (   2   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :    4 (   4 usr;   4 con; 0-0 aty)
+%            Number of variables   :    2 (   0   ^   2   !;   0   ?;   2   :)
+% SPC      : 
+
+% Comments : Requires LCL008^0.ax SWV008^0.ax
+%          : THF0 syntax
+%------------------------------------------------------------------------------
+%----We add the reflexivity and the transitivity axiom to obtain S4.
+thf(refl_axiom,axiom,
+    ! [A: $i > $o] : ( mvalid @ ( mimpl @ ( mbox @ rel @ A ) @ A ) ) ).
+
+thf(trans_axiom,axiom,
+    ! [B: $i > $o] : ( mvalid @ ( mimpl @ ( mbox @ rel @ B ) @ ( mbox @ rel @ ( mbox @ rel @ B ) ) ) ) ).
+
+%------------------------------------------------------------------------------

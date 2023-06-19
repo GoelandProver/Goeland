@@ -1,0 +1,129 @@
+%------------------------------------------------------------------------------
+% File     : ITP006^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : normalForms.ax [Gau19]
+%          : HL4006^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   22 (   5 unt;  11 typ;   0 def)
+%            Number of atoms       :   13 (   5 equ;   1 cnn)
+%            Maximal formula atoms :    2 (   0 avg)
+%            Number of connectives :   60 (   1   ~;   1   |;   1   &;  45   @)
+%                                         (   9 <=>;   3  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    8 (   6 avg;  45 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :   29 (  29   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   12 (  10 usr;   1 con; 0-4 aty)
+%            Number of variables   :   36 (   0   ^  29   !;   1   ?;  36   :)
+%                                         (   6  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2EnormalForms_2EEXT__POINT,type,
+    c_2EnormalForms_2EEXT__POINT: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > A_27b ) > ( A_27a > A_27b ) > A_27a ) ).
+
+thf(c_2EnormalForms_2EUNIV__POINT,type,
+    c_2EnormalForms_2EUNIV__POINT: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > A_27a ) ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2EnormalForms_2EEXT__POINT__DEF,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: A_27a > A_27b,V1g: A_27a > A_27b] :
+      ( ( ( V0f @ ( c_2EnormalForms_2EEXT__POINT @ A_27a @ A_27b @ V0f @ V1g ) )
+        = ( V1g @ ( c_2EnormalForms_2EEXT__POINT @ A_27a @ A_27b @ V0f @ V1g ) ) )
+     => ( V0f = V1g ) ) ).
+
+thf(thm_2EnormalForms_2EUNIV__POINT__DEF,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o] :
+      ( ( V0p @ ( c_2EnormalForms_2EUNIV__POINT @ A_27a @ V0p ) )
+     => ! [V1x: A_27a] : ( V0p @ V1x ) ) ).
+
+thf(thm_2EnormalForms_2EEXT__POINT,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: A_27a > A_27b,V1g: A_27a > A_27b] :
+      ( ( ( V0f @ ( c_2EnormalForms_2EEXT__POINT @ A_27a @ A_27b @ V0f @ V1g ) )
+        = ( V1g @ ( c_2EnormalForms_2EEXT__POINT @ A_27a @ A_27b @ V0f @ V1g ) ) )
+    <=> ( V0f = V1g ) ) ).
+
+thf(thm_2EnormalForms_2EUNIV__POINT,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o] :
+      ( ( V0p @ ( c_2EnormalForms_2EUNIV__POINT @ A_27a @ V0p ) )
+    <=> ! [V1x: A_27a] : ( V0p @ V1x ) ) ).
+
+%------------------------------------------------------------------------------

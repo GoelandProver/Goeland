@@ -1,0 +1,118 @@
+%------------------------------------------------------------------------------
+% File     : SWV010^0 : TPTP v8.1.2. Released v3.7.0.
+% Domain   : Software Verification (Security)
+% Axioms   : Translation from Binder Logic (BL) to CS4
+% Version  : [Gar08] axioms.
+% English  :
+
+% Refs     : [AM+01] Alechina et al. (2001), Categorical and Kripke Semanti
+%          : [Gar08] Garg (2008), Principal-Centric Reasoning in Constructi
+%          : [Gar09] Garg (2009), Email to Geoff Sutcliffe
+% Source   : [Gar09]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   23 (  10 unt;  12 typ;  10 def)
+%            Number of atoms       :   38 (  10 equ;   0 cnn)
+%            Maximal formula atoms :    5 (   1 avg)
+%            Number of connectives :   20 (   0   ~;   0   |;   0   &;  20   @)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    7 (   2 avg;  20 nst)
+%            Number of types       :    2 (   0 usr)
+%            Number of type conns  :   46 (  46   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   24 (  23 usr;  12 con; 0-3 aty)
+%            Number of variables   :   12 (  12   ^   0   !;   0   ?;  12   :)
+% SPC      : 
+
+% Comments : Requires LCL008^0.ax LCL009^0.ax
+%          : This translation is not perfectly correct, because BL does not
+%            admit the Barcan formula, but its translation to BM4 does. That
+%            will not make a difference to the policies, however.
+%          : THF0 syntax
+%------------------------------------------------------------------------------
+%----We now introduce one predicate for each connective of BL, and define the
+%----predicates.
+%----An injection from principals to formulas. Has no definition, it's symbolic.
+thf(princ_inj,type,
+    princ_inj: individuals > $i > $o ).
+
+thf(bl_atom_decl,type,
+    bl_atom: ( $i > $o ) > $i > $o ).
+
+thf(bl_princ_decl,type,
+    bl_princ: ( $i > $o ) > $i > $o ).
+
+thf(bl_and_decl,type,
+    bl_and: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(bl_or_decl,type,
+    bl_or: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(bl_impl_decl,type,
+    bl_impl: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(bl_all_decl,type,
+    bl_all: ( individuals > $i > $o ) > $i > $o ).
+
+thf(bl_true_decl,type,
+    bl_true: $i > $o ).
+
+thf(bl_false_decl,type,
+    bl_false: $i > $o ).
+
+thf(bl_says_decl,type,
+    bl_says: individuals > ( $i > $o ) > $i > $o ).
+
+thf(bl_atom,definition,
+    ( bl_atom
+    = ( ^ [P: $i > $o] : ( cs4_atom @ P ) ) ) ).
+
+thf(bl_princ,definition,
+    ( bl_princ
+    = ( ^ [P: $i > $o] : ( cs4_atom @ P ) ) ) ).
+
+thf(bl_and,definition,
+    ( bl_and
+    = ( ^ [A: $i > $o,B: $i > $o] : ( cs4_and @ A @ B ) ) ) ).
+
+thf(bl_or,definition,
+    ( bl_or
+    = ( ^ [A: $i > $o,B: $i > $o] : ( cs4_or @ A @ B ) ) ) ).
+
+thf(bl_impl,definition,
+    ( bl_impl
+    = ( ^ [A: $i > $o,B: $i > $o] : ( cs4_impl @ A @ B ) ) ) ).
+
+thf(bl_all,definition,
+    ( bl_all
+    = ( ^ [A: individuals > $i > $o] : ( cs4_all @ A ) ) ) ).
+
+thf(bl_true,definition,
+    bl_true = cs4_true ).
+
+thf(bl_false,definition,
+    bl_false = cs4_false ).
+
+thf(bl_says,definition,
+    ( bl_says
+    = ( ^ [K: individuals,A: $i > $o] : ( cs4_box @ ( cs4_impl @ ( bl_princ @ ( princ_inj @ K ) ) @ A ) ) ) ) ).
+
+%----Validity in BL
+thf(bl_valid_decl,type,
+    bl_valid: ( $i > $o ) > $o ).
+
+thf(bl_valid_def,definition,
+    bl_valid = mvalid ).
+
+%----Local authority (loca) - the strongest principal.
+thf(loca_decl,type,
+    loca: individuals ).
+
+%----Every principal must entail loca, this makes loca the strongest principal.
+%----This is done by adding the CS4 axiom: forall K. [] (K => loca).
+thf(loca_strength,axiom,
+    ( cs4_valid
+    @ ( cs4_all
+      @ ^ [K: individuals] : ( cs4_impl @ ( princ_inj @ K ) @ ( princ_inj @ loca ) ) ) ) ).
+
+%------------------------------------------------------------------------------

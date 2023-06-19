@@ -1,0 +1,2390 @@
+%------------------------------------------------------------------------------
+% File     : ITP044^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : Temporal_Logic^2.ax [Gau20]
+%          : HL4044^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  176 (   0 unt;  11 typ;   0 def)
+%            Number of atoms       : 5119 ( 132 equ;   0 cnn)
+%            Maximal formula atoms :  115 (  29 avg)
+%            Number of connectives : 7021 (  55   ~;  27   |; 160   &;6345   @)
+%                                         (  88 <=>; 346  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   24 (  12 avg;6345 nst)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :    0 (   0   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   44 (  41 usr;  43 con; 0-2 aty)
+%            Number of variables   :  655 ( 191   ^ 423   !;  41   ?; 655   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tp_c_2ETemporal__Logic_2EALWAYS,type,
+    c_2ETemporal__Logic_2EALWAYS: $i ).
+
+thf(mem_c_2ETemporal__Logic_2EALWAYS,axiom,
+    mem @ c_2ETemporal__Logic_2EALWAYS @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ).
+
+thf(tp_c_2ETemporal__Logic_2EBEFORE,type,
+    c_2ETemporal__Logic_2EBEFORE: $i ).
+
+thf(mem_c_2ETemporal__Logic_2EBEFORE,axiom,
+    mem @ c_2ETemporal__Logic_2EBEFORE @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) ).
+
+thf(tp_c_2ETemporal__Logic_2EEVENTUAL,type,
+    c_2ETemporal__Logic_2EEVENTUAL: $i ).
+
+thf(mem_c_2ETemporal__Logic_2EEVENTUAL,axiom,
+    mem @ c_2ETemporal__Logic_2EEVENTUAL @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ).
+
+thf(tp_c_2ETemporal__Logic_2ENEXT,type,
+    c_2ETemporal__Logic_2ENEXT: $i ).
+
+thf(mem_c_2ETemporal__Logic_2ENEXT,axiom,
+    mem @ c_2ETemporal__Logic_2ENEXT @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ).
+
+thf(tp_c_2ETemporal__Logic_2ESBEFORE,type,
+    c_2ETemporal__Logic_2ESBEFORE: $i ).
+
+thf(mem_c_2ETemporal__Logic_2ESBEFORE,axiom,
+    mem @ c_2ETemporal__Logic_2ESBEFORE @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) ).
+
+thf(tp_c_2ETemporal__Logic_2ESUNTIL,type,
+    c_2ETemporal__Logic_2ESUNTIL: $i ).
+
+thf(mem_c_2ETemporal__Logic_2ESUNTIL,axiom,
+    mem @ c_2ETemporal__Logic_2ESUNTIL @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) ).
+
+thf(tp_c_2ETemporal__Logic_2ESWHEN,type,
+    c_2ETemporal__Logic_2ESWHEN: $i ).
+
+thf(mem_c_2ETemporal__Logic_2ESWHEN,axiom,
+    mem @ c_2ETemporal__Logic_2ESWHEN @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) ).
+
+thf(tp_c_2ETemporal__Logic_2EUNTIL,type,
+    c_2ETemporal__Logic_2EUNTIL: $i ).
+
+thf(mem_c_2ETemporal__Logic_2EUNTIL,axiom,
+    mem @ c_2ETemporal__Logic_2EUNTIL @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) ).
+
+thf(tp_c_2ETemporal__Logic_2EUPTO,type,
+    c_2ETemporal__Logic_2EUPTO: $i ).
+
+thf(mem_c_2ETemporal__Logic_2EUPTO,axiom,
+    mem @ c_2ETemporal__Logic_2EUPTO @ ( arr @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) @ bool ) ).
+
+thf(tp_c_2ETemporal__Logic_2EWATCH,type,
+    c_2ETemporal__Logic_2EWATCH: $i ).
+
+thf(mem_c_2ETemporal__Logic_2EWATCH,axiom,
+    mem @ c_2ETemporal__Logic_2EWATCH @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) ).
+
+thf(tp_c_2ETemporal__Logic_2EWHEN,type,
+    c_2ETemporal__Logic_2EWHEN: $i ).
+
+thf(mem_c_2ETemporal__Logic_2EWHEN,axiom,
+    mem @ c_2ETemporal__Logic_2EWHEN @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ( arr @ ty_2Enum_2Enum @ bool ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2ENEXT,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2ENEXT @ V0P )
+        = ( lam @ ty_2Enum_2Enum
+          @ ^ [V1t: $i] : ( ap @ V0P @ ( ap @ c_2Enum_2ESUC @ V1t ) ) ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2EALWAYS,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0P ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ! [V2t: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V0P @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V2t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2EEVENTUAL,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0P ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ? [V2t: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V0P @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V2t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2EWATCH,axiom,
+    ! [V0q: $i] :
+      ( ( mem @ V0q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V0q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3t: tp__ty_2Enum_2Enum] :
+                  ( ( ( p @ ( ap @ V0q @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  <=> $false )
+                  & ( ( p @ ( ap @ V0q @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                  <=> ( ( p @ ( ap @ V0q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      | ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2EUPTO,axiom,
+    ! [V0t0: tp__ty_2Enum_2Enum,V1t1: tp__ty_2Enum_2Enum,V2a: $i] :
+      ( ( mem @ V2a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( p @ ( ap @ c_2ETemporal__Logic_2EUPTO @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) @ ( inj__ty_2Enum_2Enum @ V0t0 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) @ ( inj__ty_2Enum_2Enum @ V1t1 ) ) @ V2a ) ) ) )
+      <=> ! [V3t2: tp__ty_2Enum_2Enum] :
+            ( ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V0t0 ) ) @ ( inj__ty_2Enum_2Enum @ V3t2 ) ) )
+              & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V3t2 ) ) @ ( inj__ty_2Enum_2Enum @ V1t1 ) ) ) )
+           => ( p @ ( ap @ V2a @ ( inj__ty_2Enum_2Enum @ V3t2 ) ) ) ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2EWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ! [V4t: tp__ty_2Enum_2Enum] :
+                      ( ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      | ( ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                       => ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2EUNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ! [V4t: tp__ty_2Enum_2Enum] :
+                      ( ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      | ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      | ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2EBEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ( ? [V4t: tp__ty_2Enum_2Enum] :
+                        ( ~ ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                    | ! [V5t: tp__ty_2Enum_2Enum] :
+                        ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2ESWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ? [V4t: tp__ty_2Enum_2Enum] :
+                      ( ~ ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      & ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      & ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2ESUNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ! [V4t: tp__ty_2Enum_2Enum] :
+                      ( ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      | ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      | ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                  & ? [V5t: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2ETemporal__Logic_2ESBEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ? [V4t: tp__ty_2Enum_2Enum] :
+                      ( ~ ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      & ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      & ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWATCH__EXISTS,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+        ? [V2q: $i] :
+          ( ( mem @ V2q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+          & ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V2q ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWELL__ORDER,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ? [V1n: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V0P @ ( inj__ty_2Enum_2Enum @ V1n ) ) )
+      <=> ? [V2m: tp__ty_2Enum_2Enum] :
+            ( ( p @ ( ap @ V0P @ ( inj__ty_2Enum_2Enum @ V2m ) ) )
+            & ! [V3n: tp__ty_2Enum_2Enum] :
+                ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V3n ) ) @ ( inj__ty_2Enum_2Enum @ V2m ) ) )
+               => ~ ( p @ ( ap @ V0P @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWELL__ORDER__UNIQUE,axiom,
+    ! [V0m2: tp__ty_2Enum_2Enum,V1m1: tp__ty_2Enum_2Enum,V2P: $i] :
+      ( ( mem @ V2P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ( p @ ( ap @ V2P @ ( inj__ty_2Enum_2Enum @ V1m1 ) ) )
+          & ! [V3n: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V3n ) ) @ ( inj__ty_2Enum_2Enum @ V1m1 ) ) )
+             => ~ ( p @ ( ap @ V2P @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) )
+          & ( p @ ( ap @ V2P @ ( inj__ty_2Enum_2Enum @ V0m2 ) ) )
+          & ! [V4n: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V4n ) ) @ ( inj__ty_2Enum_2Enum @ V0m2 ) ) )
+             => ~ ( p @ ( ap @ V2P @ ( inj__ty_2Enum_2Enum @ V4n ) ) ) ) )
+       => ( V1m1 = V0m2 ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EDELTA__CASES,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ? [V2d: tp__ty_2Enum_2Enum] :
+              ( ! [V3t: tp__ty_2Enum_2Enum] :
+                  ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V2d ) ) )
+                 => ~ ( p @ ( ap @ V0b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) )
+              & ( p @ ( ap @ V0b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V2d ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) )
+          | ! [V4d: tp__ty_2Enum_2Enum] :
+              ~ ( p @ ( ap @ V0b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4d ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__IMP,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                   => ! [V4t: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        | ( ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                         => ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__IMP,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                   => ! [V4t: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        | ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        | ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__IMP,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                   => ( ? [V4t: tp__ty_2Enum_2Enum] :
+                          ( ~ ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                          & ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                          & ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                      | ! [V5t: tp__ty_2Enum_2Enum] :
+                          ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__IMP,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                   => ? [V4t: tp__ty_2Enum_2Enum] :
+                        ( ~ ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__IMP,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                   => ( ! [V4t: tp__ty_2Enum_2Enum] :
+                          ( ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                          | ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                          | ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                      & ? [V5t: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__IMP,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                   => ? [V4t: tp__ty_2Enum_2Enum] :
+                        ( ~ ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__SIGNAL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ! [V2t: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V2t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__SIGNAL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ? [V2t: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V2t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWATCH__SIGNAL,axiom,
+    ! [V0q: $i] :
+      ( ( mem @ V0q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V0q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( ( ! [V3t: tp__ty_2Enum_2Enum] :
+                      ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                 => ! [V4t: tp__ty_2Enum_2Enum] :
+                      ~ ( p @ ( ap @ V0q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                & ! [V5d: tp__ty_2Enum_2Enum] :
+                    ( ( ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      & ! [V6t: tp__ty_2Enum_2Enum] :
+                          ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V6t ) ) @ ( inj__ty_2Enum_2Enum @ V5d ) ) )
+                         => ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V6t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) )
+                   => ( ! [V7t: tp__ty_2Enum_2Enum] :
+                          ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V5d ) ) )
+                         => ~ ( p @ ( ap @ V0q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                      & ! [V8t: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V0q @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V8t ) ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__SIGNAL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3delta: tp__ty_2Enum_2Enum] :
+                  ( ( ! [V4t: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V3delta ) ) )
+                       => ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                    & ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3delta ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                 => ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3delta ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__SIGNAL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( ( ! [V3t: tp__ty_2Enum_2Enum] :
+                      ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                 => ! [V4t: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                & ! [V5d: tp__ty_2Enum_2Enum] :
+                    ( ( ! [V6t: tp__ty_2Enum_2Enum] :
+                          ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V6t ) ) @ ( inj__ty_2Enum_2Enum @ V5d ) ) )
+                         => ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V6t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                      & ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                   => ! [V7t: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V5d ) ) )
+                       => ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__SIGNAL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3delta: tp__ty_2Enum_2Enum] :
+                  ( ( ! [V4t: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V3delta ) ) )
+                       => ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                    & ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3delta ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                 => ? [V5t: tp__ty_2Enum_2Enum] :
+                      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V5t ) ) @ ( inj__ty_2Enum_2Enum @ V3delta ) ) )
+                      & ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__SIGNAL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3delta: tp__ty_2Enum_2Enum] :
+                  ( ! [V4t: tp__ty_2Enum_2Enum] :
+                      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V3delta ) ) )
+                     => ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                  & ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3delta ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                  & ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3delta ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__SIGNAL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3delta: tp__ty_2Enum_2Enum] :
+                  ( ! [V4t: tp__ty_2Enum_2Enum] :
+                      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V3delta ) ) )
+                     => ( ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) )
+                  & ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3delta ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__SIGNAL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3delta: tp__ty_2Enum_2Enum] :
+                  ( ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3delta ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                  & ! [V4t: tp__ty_2Enum_2Enum] :
+                      ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V3delta ) ) )
+                     => ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENEXT__LINORD,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0a ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ? [V2t1: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) @ ( inj__ty_2Enum_2Enum @ V2t1 ) ) )
+              & ! [V3t3: tp__ty_2Enum_2Enum] :
+                  ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) @ ( inj__ty_2Enum_2Enum @ V3t3 ) ) )
+                 => ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V2t1 ) ) @ ( inj__ty_2Enum_2Enum @ V3t3 ) ) ) )
+              & ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V2t1 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__LINORD,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ! [V2t1: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) @ ( inj__ty_2Enum_2Enum @ V2t1 ) ) )
+             => ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V2t1 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__LINORD,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ? [V2t1: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) @ ( inj__ty_2Enum_2Enum @ V2t1 ) ) )
+              & ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V2t1 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__LINORD,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3t1: tp__ty_2Enum_2Enum] :
+                  ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                  & ( p @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                  & ( p @ ( ap @ c_2ETemporal__Logic_2EUPTO @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) @ V0a ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__LINORD,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3t1: tp__ty_2Enum_2Enum] :
+                  ( ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                    & ~ ( p @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                    & ( p
+                      @ ( ap @ c_2ETemporal__Logic_2EUPTO
+                        @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) )
+                          @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) )
+                            @ ( lam @ ty_2Enum_2Enum
+                              @ ^ [V4t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V4t ) ) ) ) ) ) ) )
+                 => ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__LINORD,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3t1: tp__ty_2Enum_2Enum] :
+                  ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                  & ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                  & ~ ( p @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                  & ( p
+                    @ ( ap @ c_2ETemporal__Logic_2EUPTO
+                      @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) )
+                        @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) )
+                          @ ( lam @ ty_2Enum_2Enum
+                            @ ^ [V4t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V4t ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__LINORD,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3t1: tp__ty_2Enum_2Enum] :
+                  ( ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                    & ( p
+                      @ ( ap @ c_2ETemporal__Logic_2EUPTO
+                        @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) )
+                          @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) )
+                            @ ( lam @ ty_2Enum_2Enum
+                              @ ^ [V4t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V4t ) ) ) ) ) ) ) )
+                 => ~ ( p @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__LINORD,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3t1: tp__ty_2Enum_2Enum] :
+                  ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                  & ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                  & ( p @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                  & ( p
+                    @ ( ap @ c_2ETemporal__Logic_2EUPTO
+                      @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) )
+                        @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) )
+                          @ ( lam @ ty_2Enum_2Enum
+                            @ ^ [V4t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V4t ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__LINORD,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ! [V3t1: tp__ty_2Enum_2Enum] :
+                  ( ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                    & ( p @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) )
+                    & ( p
+                      @ ( ap @ c_2ETemporal__Logic_2EUPTO
+                        @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) )
+                          @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) @ ( inj__ty_2Enum_2Enum @ V3t1 ) )
+                            @ ( lam @ ty_2Enum_2Enum
+                              @ ^ [V4t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V4t ) ) ) ) ) ) ) )
+                 => ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V3t1 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__AS__WHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a )
+        = ( ap
+          @ ( ap @ c_2ETemporal__Logic_2EWHEN
+            @ ( lam @ ty_2Enum_2Enum
+              @ ^ [V1t: $i] : c_2Ebool_2EF ) )
+          @ ( lam @ ty_2Enum_2Enum
+            @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V2t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__AS__WHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a )
+        = ( lam @ ty_2Enum_2Enum
+          @ ^ [V1t: $i] :
+              ( ap @ c_2Ebool_2E_7E
+              @ ( ap
+                @ ( ap
+                  @ ( ap @ c_2ETemporal__Logic_2EWHEN
+                    @ ( lam @ ty_2Enum_2Enum
+                      @ ^ [V2t: $i] : c_2Ebool_2EF ) )
+                  @ V0a )
+                @ V1t ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__AS__WHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V1b )
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Emin_2E_3D_3D_3E @ ( ap @ V0a @ V2t ) ) @ ( ap @ V1b @ V2t ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__AS__WHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b )
+            = ( ap
+              @ ( ap @ c_2ETemporal__Logic_2EWHEN
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V2t ) ) ) )
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ V0a @ V3t ) ) @ ( ap @ V1b @ V3t ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__AS__WHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) @ V2t0 ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V1b ) @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__AS__NOT__WHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ~ ( p
+                  @ ( ap
+                    @ ( ap
+                      @ ( ap @ c_2ETemporal__Logic_2EWHEN
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                      @ V1b )
+                    @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__AS__WHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_2F_5C
+                    @ ( ap
+                      @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V1b )
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Emin_2E_3D_3D_3E @ ( ap @ V0a @ V3t ) ) @ ( ap @ V1b @ V3t ) ) ) )
+                      @ V2t ) )
+                  @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V1b ) @ V2t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__AS__WHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_2F_5C
+                    @ ( ap
+                      @ ( ap
+                        @ ( ap @ c_2ETemporal__Logic_2EWHEN
+                          @ ( lam @ ty_2Enum_2Enum
+                            @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V3t ) ) ) )
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V4t: $i] : ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ V0a @ V4t ) ) @ ( ap @ V1b @ V4t ) ) ) )
+                      @ V2t0 ) )
+                  @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a ) @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__AS__WHEN__UNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_2F_5C
+                    @ ( ap
+                      @ ( ap
+                        @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                          @ ( lam @ ty_2Enum_2Enum
+                            @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V3t ) ) ) )
+                        @ V0a )
+                      @ V2t ) )
+                  @ ( ap
+                    @ ( ap
+                      @ ( ap @ c_2ETemporal__Logic_2EWHEN
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V4t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V4t ) ) ) )
+                      @ V0a )
+                    @ V2t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__HW,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3q: $i] :
+                  ( ( mem @ V3q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V3q ) @ V0a ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ! [V4t: tp__ty_2Enum_2Enum] :
+                      ( ( p @ ( ap @ V3q @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                      | ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__AS__UNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a )
+        = ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a )
+          @ ( lam @ ty_2Enum_2Enum
+            @ ^ [V1t: $i] : c_2Ebool_2EF ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__AS__UNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a )
+        = ( lam @ ty_2Enum_2Enum
+          @ ^ [V1t: $i] :
+              ( ap @ c_2Ebool_2E_7E
+              @ ( ap
+                @ ( ap
+                  @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                    @ ( lam @ ty_2Enum_2Enum
+                      @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V2t ) ) ) )
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V3t: $i] : c_2Ebool_2EF ) )
+                @ V1t ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__AS__UNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b )
+            = ( ap
+              @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V2t ) ) ) )
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V3t ) ) @ ( ap @ V1b @ V3t ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__AS__UNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_5C_2F
+                    @ ( ap @ c_2Ebool_2E_7E
+                      @ ( ap
+                        @ ( ap
+                          @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                            @ ( lam @ ty_2Enum_2Enum
+                              @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                          @ V1b )
+                        @ V2t0 ) ) )
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2EALWAYS
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V4t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V4t ) ) ) )
+                    @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__AS__UNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_2F_5C
+                    @ ( ap
+                      @ ( ap
+                        @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                          @ ( lam @ ty_2Enum_2Enum
+                            @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V3t ) ) ) )
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V4t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V4t ) ) @ ( ap @ V1b @ V4t ) ) ) )
+                      @ V2t ) )
+                  @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V1b ) @ V2t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__AS__UNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) @ V2t0 ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V1b ) @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__AS__UNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap @ c_2Ebool_2E_7E
+                  @ ( ap
+                    @ ( ap
+                      @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                      @ V1b )
+                    @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__AS__BEFORE,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0b )
+        = ( ap
+          @ ( ap @ c_2ETemporal__Logic_2EBEFORE
+            @ ( lam @ ty_2Enum_2Enum
+              @ ^ [V1t: $i] : c_2Ebool_2EF ) )
+          @ ( lam @ ty_2Enum_2Enum
+            @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0b @ V2t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__AS__BEFORE,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0b )
+        = ( lam @ ty_2Enum_2Enum
+          @ ^ [V1t0: $i] :
+              ( ap @ c_2Ebool_2E_7E
+              @ ( ap
+                @ ( ap
+                  @ ( ap @ c_2ETemporal__Logic_2EBEFORE
+                    @ ( lam @ ty_2Enum_2Enum
+                      @ ^ [V2t: $i] : c_2Ebool_2EF ) )
+                  @ V0b )
+                @ V1t0 ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__AS__BEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_5C_2F
+                    @ ( ap @ c_2Ebool_2E_7E
+                      @ ( ap
+                        @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V1b )
+                          @ ( lam @ ty_2Enum_2Enum
+                            @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V3t ) ) @ ( ap @ V1b @ V3t ) ) ) )
+                        @ V2t0 ) ) )
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2EALWAYS
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V4t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V4t ) ) ) )
+                    @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__AS__BEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_5C_2F
+                    @ ( ap @ c_2Ebool_2E_7E
+                      @ ( ap
+                        @ ( ap
+                          @ ( ap @ c_2ETemporal__Logic_2EBEFORE
+                            @ ( lam @ ty_2Enum_2Enum
+                              @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                          @ V1b )
+                        @ V2t0 ) ) )
+                  @ ( ap @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a ) @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__AS__BEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap @ c_2Ebool_2E_7E
+                  @ ( ap
+                    @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V1b )
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V3t ) ) @ ( ap @ V1b @ V3t ) ) ) )
+                    @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__AS__BEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap @ c_2Ebool_2E_7E
+                  @ ( ap
+                    @ ( ap
+                      @ ( ap @ c_2ETemporal__Logic_2EBEFORE
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                      @ V1b )
+                    @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__AS__BEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) @ V2t0 ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a ) @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__SWHEN__LEMMA,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( p
+            @ ( ap
+              @ ( ap
+                @ ( ap @ ( c_2Ebool_2ECOND @ bool )
+                  @ ( ap @ ( c_2Ebool_2E_21 @ ty_2Enum_2Enum )
+                    @ ( lam @ ty_2Enum_2Enum
+                      @ ^ [V2t1: $i] :
+                          ( ap @ ( c_2Ebool_2E_3F @ ty_2Enum_2Enum )
+                          @ ( lam @ ty_2Enum_2Enum
+                            @ ^ [V3t2: $i] : ( ap @ V0b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ V3t2 ) @ V2t1 ) ) ) ) ) ) )
+                @ ( ap @ ( c_2Ebool_2E_21 @ ty_2Enum_2Enum )
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V4t0: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ bool ) @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V1a ) @ V0b ) @ V4t0 ) ) @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V1a ) @ V0b ) @ V4t0 ) ) ) ) )
+              @ ( ap @ ( c_2Ebool_2E_3F @ ty_2Enum_2Enum )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V5t1: $i] :
+                      ( ap @ ( c_2Ebool_2E_21 @ ty_2Enum_2Enum )
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V6t2: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V1a ) @ V0b ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ V6t2 ) @ V5t1 ) ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V1a ) @ V0b ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ V6t2 ) @ V5t1 ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__AS__SWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a )
+        = ( lam @ ty_2Enum_2Enum
+          @ ^ [V1t: $i] :
+              ( ap @ c_2Ebool_2E_7E
+              @ ( ap
+                @ ( ap
+                  @ ( ap @ c_2ETemporal__Logic_2ESWHEN
+                    @ ( lam @ ty_2Enum_2Enum
+                      @ ^ [V2t: $i] : c_2Ebool_2ET ) )
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                @ V1t ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__AS__SWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a )
+        = ( ap
+          @ ( ap @ c_2ETemporal__Logic_2ESWHEN
+            @ ( lam @ ty_2Enum_2Enum
+              @ ^ [V1t: $i] : c_2Ebool_2ET ) )
+          @ V0a ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__AS__SWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t: $i] :
+                  ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) @ V2t ) )
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2EALWAYS
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V3t ) ) ) )
+                    @ V2t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__AS__NOT__SWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ~ ( p
+                  @ ( ap
+                    @ ( ap
+                      @ ( ap @ c_2ETemporal__Logic_2ESWHEN
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                      @ V1b )
+                    @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__AS__SWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_5C_2F
+                    @ ( ap
+                      @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V1b )
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Emin_2E_3D_3D_3E @ ( ap @ V0a @ V3t ) ) @ ( ap @ V1b @ V3t ) ) ) )
+                      @ V2t ) )
+                  @ ( ap @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a ) @ V2t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__AS__SWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_5C_2F
+                    @ ( ap
+                      @ ( ap
+                        @ ( ap @ c_2ETemporal__Logic_2ESWHEN
+                          @ ( lam @ ty_2Enum_2Enum
+                            @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V3t ) ) ) )
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V4t: $i] : ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ V0a @ V4t ) ) @ ( ap @ V1b @ V4t ) ) ) )
+                      @ V2t0 ) )
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2EALWAYS
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V5t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V5t ) ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V5t ) ) ) ) )
+                    @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__AS__NOT__SWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap @ c_2Ebool_2E_7E
+                  @ ( ap
+                    @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V1b )
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ V0a @ V3t ) ) @ ( ap @ V1b @ V3t ) ) ) )
+                    @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__AS__SWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V1b )
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Emin_2E_3D_3D_3E @ ( ap @ V0a @ V2t ) ) @ ( ap @ V1b @ V2t ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__AS__SWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b )
+            = ( ap
+              @ ( ap @ c_2ETemporal__Logic_2ESWHEN
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V2t ) ) ) )
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ V0a @ V3t ) ) @ ( ap @ V1b @ V3t ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__AS__SUNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a )
+        = ( lam @ ty_2Enum_2Enum
+          @ ^ [V1t: $i] :
+              ( ap @ c_2Ebool_2E_7E
+              @ ( ap
+                @ ( ap
+                  @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+                    @ ( lam @ ty_2Enum_2Enum
+                      @ ^ [V2t: $i] : c_2Ebool_2ET ) )
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                @ V1t ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__AS__SUNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a )
+        = ( ap
+          @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+            @ ( lam @ ty_2Enum_2Enum
+              @ ^ [V1t: $i] : c_2Ebool_2ET ) )
+          @ V0a ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__AS__SUNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_5C_2F
+                    @ ( ap
+                      @ ( ap
+                        @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+                          @ ( lam @ ty_2Enum_2Enum
+                            @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V3t ) ) ) )
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V4t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V4t ) ) @ ( ap @ V1b @ V4t ) ) ) )
+                      @ V2t ) )
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2EALWAYS
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V5t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V5t ) ) ) )
+                    @ V2t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__AS__SUNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) @ V2t ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a ) @ V2t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__AS__SUNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t: $i] :
+                  ( ap @ c_2Ebool_2E_7E
+                  @ ( ap
+                    @ ( ap
+                      @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                      @ V1b )
+                    @ V2t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__AS__SUNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b )
+            = ( ap
+              @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V2t ) ) ) )
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V3t ) ) @ ( ap @ V1b @ V3t ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__AS__SUNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_2F_5C
+                    @ ( ap @ c_2Ebool_2E_7E
+                      @ ( ap
+                        @ ( ap
+                          @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+                            @ ( lam @ ty_2Enum_2Enum
+                              @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                          @ V1b )
+                        @ V2t0 ) ) )
+                  @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a ) @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__AS__SBEFORE,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0b )
+        = ( lam @ ty_2Enum_2Enum
+          @ ^ [V1t0: $i] :
+              ( ap @ c_2Ebool_2E_7E
+              @ ( ap
+                @ ( ap
+                  @ ( ap @ c_2ETemporal__Logic_2ESBEFORE
+                    @ ( lam @ ty_2Enum_2Enum
+                      @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0b @ V2t ) ) ) )
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V3t: $i] : c_2Ebool_2EF ) )
+                @ V1t0 ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__AS__SBEFORE,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0b )
+        = ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0b )
+          @ ( lam @ ty_2Enum_2Enum
+            @ ^ [V1t: $i] : c_2Ebool_2EF ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__AS__SBEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_5C_2F
+                    @ ( ap
+                      @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V1b )
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) @ ( ap @ V1b @ V3t ) ) ) )
+                      @ V2t0 ) )
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2EALWAYS
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V4t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V4t ) ) ) )
+                    @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__AS__SBEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap @ c_2Ebool_2E_7E
+                  @ ( ap
+                    @ ( ap
+                      @ ( ap @ c_2ETemporal__Logic_2ESBEFORE
+                        @ ( lam @ ty_2Enum_2Enum
+                          @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                      @ V1b )
+                    @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__AS__SBEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V1b )
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V2t ) ) ) @ ( ap @ V1b @ V2t ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__AS__SBEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap
+                  @ ( ap @ c_2Ebool_2E_2F_5C
+                    @ ( ap @ c_2Ebool_2E_7E
+                      @ ( ap
+                        @ ( ap
+                          @ ( ap @ c_2ETemporal__Logic_2ESBEFORE
+                            @ ( lam @ ty_2Enum_2Enum
+                              @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                          @ V1b )
+                        @ V2t0 ) ) )
+                  @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V1b ) @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__AS__SBEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V2t0: $i] :
+                  ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) @ V2t0 ) )
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2EALWAYS
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V3t ) ) ) )
+                    @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__SIMP,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2EWHEN
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V2t: $i] : c_2Ebool_2EF ) )
+                @ V0b )
+              = ( ap @ c_2ETemporal__Logic_2EALWAYS
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0b @ V3t ) ) ) ) )
+            & ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2EWHEN
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V4t: $i] : c_2Ebool_2ET ) )
+                @ V0b )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V5t: $i] : c_2Ebool_2ET ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V6t: $i] : c_2Ebool_2EF ) )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V7t: $i] : c_2Ebool_2ET ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V8t: $i] : c_2Ebool_2ET ) )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V9t: $i] : ( ap @ V1a @ V9t ) ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V1a ) @ V1a )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V10t: $i] : c_2Ebool_2ET ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__SIMP,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V2t: $i] : c_2Ebool_2EF ) )
+                @ V0b )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V3t: $i] : ( ap @ V0b @ V3t ) ) )
+            & ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V4t: $i] : c_2Ebool_2ET ) )
+                @ V0b )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V5t: $i] : c_2Ebool_2ET ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V6t: $i] : c_2Ebool_2EF ) )
+              = ( ap @ c_2ETemporal__Logic_2EALWAYS @ V1a ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V7t: $i] : c_2Ebool_2ET ) )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V8t: $i] : c_2Ebool_2ET ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V1a ) @ V1a )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V9t: $i] : ( ap @ V1a @ V9t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__SIMP,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2EBEFORE
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V2t: $i] : c_2Ebool_2EF ) )
+                @ V0b )
+              = ( ap @ c_2ETemporal__Logic_2EALWAYS
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0b @ V3t ) ) ) ) )
+            & ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2EBEFORE
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V4t: $i] : c_2Ebool_2ET ) )
+                @ V0b )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V5t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0b @ V5t ) ) ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V6t: $i] : c_2Ebool_2EF ) )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V7t: $i] : c_2Ebool_2ET ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V8t: $i] : c_2Ebool_2ET ) )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V9t: $i] : c_2Ebool_2EF ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V1a ) @ V1a )
+              = ( ap @ c_2ETemporal__Logic_2EALWAYS
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V10t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V1a @ V10t ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__SIMP,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2ESWHEN
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V2t: $i] : c_2Ebool_2EF ) )
+                @ V0b )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V3t: $i] : c_2Ebool_2EF ) )
+            & ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2ESWHEN
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V4t: $i] : c_2Ebool_2ET ) )
+                @ V0b )
+              = ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0b ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V5t: $i] : c_2Ebool_2EF ) )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V6t: $i] : c_2Ebool_2EF ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V7t: $i] : c_2Ebool_2ET ) )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V8t: $i] : ( ap @ V1a @ V8t ) ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V1a ) @ V1a )
+              = ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V1a ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__SIMP,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V2t: $i] : c_2Ebool_2EF ) )
+                @ V0b )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V3t: $i] : ( ap @ V0b @ V3t ) ) )
+            & ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V4t: $i] : c_2Ebool_2ET ) )
+                @ V0b )
+              = ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0b ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V5t: $i] : c_2Ebool_2EF ) )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V6t: $i] : c_2Ebool_2EF ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V7t: $i] : c_2Ebool_2ET ) )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V8t: $i] : c_2Ebool_2ET ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V1a ) @ V1a )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V9t: $i] : ( ap @ V1a @ V9t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__SIMP,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2ESBEFORE
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V2t: $i] : c_2Ebool_2EF ) )
+                @ V0b )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V3t: $i] : c_2Ebool_2EF ) )
+            & ( ( ap
+                @ ( ap @ c_2ETemporal__Logic_2ESBEFORE
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V4t: $i] : c_2Ebool_2ET ) )
+                @ V0b )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V5t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0b @ V5t ) ) ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V6t: $i] : c_2Ebool_2EF ) )
+              = ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V1a ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V1a )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V7t: $i] : c_2Ebool_2ET ) )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V8t: $i] : c_2Ebool_2EF ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V1a ) @ V1a )
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V9t: $i] : c_2Ebool_2EF ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__EVENT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b )
+            = ( ap
+              @ ( ap @ c_2ETemporal__Logic_2EWHEN
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V2t ) ) @ ( ap @ V1b @ V2t ) ) ) )
+              @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__EVENT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b )
+            = ( ap
+              @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V2t ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V2t ) ) ) ) )
+              @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__EVENT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b )
+            = ( ap
+              @ ( ap @ c_2ETemporal__Logic_2EBEFORE
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V2t ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V2t ) ) ) ) )
+              @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__EVENT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b )
+            = ( ap
+              @ ( ap @ c_2ETemporal__Logic_2ESWHEN
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V2t ) ) @ ( ap @ V1b @ V2t ) ) ) )
+              @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__EVENT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b )
+            = ( ap
+              @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V2t ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V2t ) ) ) ) )
+              @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__EVENT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b )
+            = ( ap
+              @ ( ap @ c_2ETemporal__Logic_2ESBEFORE
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V2t ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V2t ) ) ) ) )
+              @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EIMMEDIATE__EVENT,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ V0b @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+         => ( ! [V2a: $i] :
+                ( ( mem @ V2a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V2a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> ( p @ ( ap @ V2a @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) )
+            & ! [V3a: $i] :
+                ( ( mem @ V3a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V3a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> $true ) )
+            & ! [V4a: $i] :
+                ( ( mem @ V4a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V4a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> $false ) )
+            & ! [V5a: $i] :
+                ( ( mem @ V5a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V5a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> ( p @ ( ap @ V5a @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) )
+            & ! [V6a: $i] :
+                ( ( mem @ V6a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V6a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> $true ) )
+            & ! [V7a: $i] :
+                ( ( mem @ V7a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V7a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> $false ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENO__EVENT,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p
+            @ ( ap
+              @ ( ap @ c_2ETemporal__Logic_2EALWAYS
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0b @ V2t ) ) ) )
+              @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+         => ( ! [V3a: $i] :
+                ( ( mem @ V3a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V3a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> $true ) )
+            & ! [V4a: $i] :
+                ( ( mem @ V4a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V4a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V4a ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) )
+            & ! [V5a: $i] :
+                ( ( mem @ V5a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V5a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> $true ) )
+            & ! [V6a: $i] :
+                ( ( mem @ V6a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V6a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> $false ) )
+            & ! [V7a: $i] :
+                ( ( mem @ V7a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V7a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> $false ) )
+            & ! [V8a: $i] :
+                ( ( mem @ V8a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V8a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V8a ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESOME__EVENT,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+          <=> ! [V2a: $i] :
+                ( ( mem @ V2a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V2a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V2a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) )
+          & ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+          <=> ! [V3a: $i] :
+                ( ( mem @ V3a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V3a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V3a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) )
+          & ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+          <=> ! [V4a: $i] :
+                ( ( mem @ V4a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V4a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+                <=> ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V4a ) @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EMORE__EVENT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b )
+              = ( ap
+                @ ( ap @ c_2ETemporal__Logic_2EWHEN
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V2t ) ) @ ( ap @ V1b @ V2t ) ) ) )
+                @ V1b ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b )
+              = ( ap
+                @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V3t ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V3t ) ) ) ) )
+                @ V1b ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b )
+              = ( ap
+                @ ( ap @ c_2ETemporal__Logic_2EBEFORE
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V4t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V4t ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V4t ) ) ) ) )
+                @ V1b ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b )
+              = ( ap
+                @ ( ap @ c_2ETemporal__Logic_2ESWHEN
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V5t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V5t ) ) @ ( ap @ V1b @ V5t ) ) ) )
+                @ V1b ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b )
+              = ( ap
+                @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V6t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V6t ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V6t ) ) ) ) )
+                @ V1b ) )
+            & ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b )
+              = ( ap
+                @ ( ap @ c_2ETemporal__Logic_2ESBEFORE
+                  @ ( lam @ ty_2Enum_2Enum
+                    @ ^ [V7t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V0a @ V7t ) ) @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V7t ) ) ) ) )
+                @ V1b ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENOT__NEXT,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2ENEXT
+          @ ( lam @ ty_2Enum_2Enum
+            @ ^ [V1t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0P @ V1t ) ) ) )
+        = ( lam @ ty_2Enum_2Enum
+          @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0P ) @ V2t ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EAND__NEXT,axiom,
+    ! [V0Q: $i] :
+      ( ( mem @ V0Q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ c_2ETemporal__Logic_2ENEXT
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V1P @ V2t ) ) @ ( ap @ V0Q @ V2t ) ) ) )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V1P ) @ V3t ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0Q ) @ V3t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EOR__NEXT,axiom,
+    ! [V0Q: $i] :
+      ( ( mem @ V0Q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ c_2ETemporal__Logic_2ENEXT
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ V1P @ V2t ) ) @ ( ap @ V0Q @ V2t ) ) ) )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V1P ) @ V3t ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0Q ) @ V3t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EIMP__NEXT,axiom,
+    ! [V0Q: $i] :
+      ( ( mem @ V0Q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ c_2ETemporal__Logic_2ENEXT
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Emin_2E_3D_3D_3E @ ( ap @ V1P @ V2t ) ) @ ( ap @ V0Q @ V2t ) ) ) )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Emin_2E_3D_3D_3E @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V1P ) @ V3t ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0Q ) @ V3t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEQUIV__NEXT,axiom,
+    ! [V0Q: $i] :
+      ( ( mem @ V0Q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ c_2ETemporal__Logic_2ENEXT
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V2t: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ bool ) @ ( ap @ V1P @ V2t ) ) @ ( ap @ V0Q @ V2t ) ) ) )
+            = ( lam @ ty_2Enum_2Enum
+              @ ^ [V3t: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ bool ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V1P ) @ V3t ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0Q ) @ V3t ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__NEXT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a ) )
+        = ( ap @ c_2ETemporal__Logic_2EALWAYS @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0a ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__NEXT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a ) )
+        = ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0a ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__NEXT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0a ) ) @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__NEXT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0a ) ) @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__NEXT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0a ) ) @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__NEXT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0a ) ) @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__NEXT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0a ) ) @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__NEXT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V0a ) ) @ ( ap @ c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__REC,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0P ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ( ( p @ ( ap @ V0P @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+            & ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0P ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__REC,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0P ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ( ( p @ ( ap @ V0P @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+            | ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0P ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWATCH__REC,axiom,
+    ! [V0q: $i] :
+      ( ( mem @ V0q @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V0q ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( ~ ( p @ ( ap @ V0q @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0q ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWATCH @ V0q ) @ V1b ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__REC,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__REC,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( ~ ( p @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+               => ( ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__REC,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( ~ ( p @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                & ( ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  | ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__REC,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__REC,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( ~ ( p @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+               => ( ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__REC,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( ~ ( p @ ( ap @ V1b @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                & ( ( p @ ( ap @ V0a @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  | ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2ENEXT @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__FIX,axiom,
+    ! [V0y: $i] :
+      ( ( mem @ V0y @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( V0y
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V1a @ V2t ) ) @ ( ap @ V0y @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ V2t ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) )
+          <=> ( ( V0y
+                = ( ap @ c_2ETemporal__Logic_2EALWAYS @ V1a ) )
+              | ( V0y
+                = ( lam @ ty_2Enum_2Enum
+                  @ ^ [V3t: $i] : c_2Ebool_2EF ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__FIX,axiom,
+    ! [V0y: $i] :
+      ( ( mem @ V0y @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( V0y
+              = ( lam @ ty_2Enum_2Enum
+                @ ^ [V2t: $i] : ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ V1a @ V2t ) ) @ ( ap @ V0y @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ V2t ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) )
+          <=> ( ( V0y
+                = ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V1a ) )
+              | ( V0y
+                = ( lam @ ty_2Enum_2Enum
+                  @ ^ [V3t: $i] : c_2Ebool_2ET ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__FIX,axiom,
+    ! [V0y: $i] :
+      ( ( mem @ V0y @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2a: $i] :
+              ( ( mem @ V2a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+             => ( ( V0y
+                  = ( lam @ ty_2Enum_2Enum
+                    @ ^ [V3t: $i] : ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ ( ap @ V1b @ V3t ) ) @ ( ap @ V2a @ V3t ) ) @ ( ap @ V0y @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ V3t ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) )
+              <=> ( ( V0y
+                    = ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V2a ) @ V1b ) )
+                  | ( V0y
+                    = ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V2a ) @ V1b ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__FIX,axiom,
+    ! [V0y: $i] :
+      ( ( mem @ V0y @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2a: $i] :
+              ( ( mem @ V2a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+             => ( ( V0y
+                  = ( lam @ ty_2Enum_2Enum
+                    @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Emin_2E_3D_3D_3E @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V1b @ V3t ) ) ) @ ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ V2a @ V3t ) ) @ ( ap @ V0y @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ V3t ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) )
+              <=> ( ( V0y
+                    = ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V2a ) @ V1b ) )
+                  | ( V0y
+                    = ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V2a ) @ V1b ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__FIX,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ ( arr @ ty_2Enum_2Enum @ bool ) )
+             => ( ( V2y
+                  = ( lam @ ty_2Enum_2Enum
+                    @ ^ [V3t: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ c_2Ebool_2E_7E @ ( ap @ V0b @ V3t ) ) ) @ ( ap @ ( ap @ c_2Ebool_2E_5C_2F @ ( ap @ V1a @ V3t ) ) @ ( ap @ V2y @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ V3t ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) )
+              <=> ( ( V2y
+                    = ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V1a ) @ V0b ) )
+                  | ( V2y
+                    = ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V1a ) @ V0b ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__INVARIANT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3J: $i] :
+                  ( ( mem @ V3J @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                  & ( p @ ( ap @ V3J @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ! [V4t: tp__ty_2Enum_2Enum] :
+                      ( ( ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ( p @ ( ap @ V3J @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                     => ( p @ ( ap @ V3J @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) )
+                  & ! [V5d: tp__ty_2Enum_2Enum] :
+                      ( ( ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ( p @ ( ap @ V3J @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                     => ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__INVARIANT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3J: $i] :
+                  ( ( mem @ V3J @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                  & ( p @ ( ap @ V3J @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ! [V4t: tp__ty_2Enum_2Enum] :
+                      ( ( ( p @ ( ap @ V3J @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                     => ( ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ( p @ ( ap @ V3J @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__INVARIANT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ? [V3J: $i] :
+                  ( ( mem @ V3J @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                  & ( p @ ( ap @ V3J @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                  & ! [V4t: tp__ty_2Enum_2Enum] :
+                      ( ( ( p @ ( ap @ V3J @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                        & ~ ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                     => ( p @ ( ap @ V3J @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) )
+                  & ! [V5d: tp__ty_2Enum_2Enum] :
+                      ( ( p @ ( ap @ V3J @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                     => ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__INVARIANT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ? [V2J: $i] :
+              ( ( mem @ V2J @ ( arr @ ty_2Enum_2Enum @ bool ) )
+              & ( p @ ( ap @ V2J @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+              & ! [V3t: tp__ty_2Enum_2Enum] :
+                  ( ( p @ ( ap @ V2J @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) )
+                 => ( ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) )
+                    & ( p @ ( ap @ V2J @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__INVARIANT,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0b ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ? [V2J: $i] :
+              ( ( mem @ V2J @ ( arr @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) )
+              & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( ap @ V2J @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) )
+              & ! [V3t: tp__ty_2Enum_2Enum] :
+                  ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ V2J @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) @ ( ap @ V2J @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) )
+                  | ( ( surj__ty_2Enum_2Enum @ ( ap @ V2J @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V3t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) )
+                    = fo__c_2Enum_2E0 ) )
+              & ! [V4t: tp__ty_2Enum_2Enum] :
+                  ( ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( ap @ V2J @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) )
+                    & ( ( surj__ty_2Enum_2Enum @ ( ap @ V2J @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) )
+                      = fo__c_2Enum_2E0 ) )
+                 => ( p @ ( ap @ V0b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__INVARIANT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( ? [V3J1: $i] :
+                    ( ( mem @ V3J1 @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                    & ( p @ ( ap @ V3J1 @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                    & ! [V4t: tp__ty_2Enum_2Enum] :
+                        ( ( ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                          & ( p @ ( ap @ V3J1 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                       => ( p @ ( ap @ V3J1 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) )
+                    & ! [V5d: tp__ty_2Enum_2Enum] :
+                        ( ( ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                          & ( p @ ( ap @ V3J1 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                       => ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) )
+                & ? [V6J2: $i] :
+                    ( ( mem @ V6J2 @ ( arr @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) )
+                    & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( ap @ V6J2 @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                    & ! [V7t: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ V6J2 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) @ ( ap @ V6J2 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                        | ( ( surj__ty_2Enum_2Enum @ ( ap @ V6J2 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                          = fo__c_2Enum_2E0 ) )
+                    & ! [V8t: tp__ty_2Enum_2Enum] :
+                        ( ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( ap @ V6J2 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V8t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                          & ( ( surj__ty_2Enum_2Enum @ ( ap @ V6J2 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V8t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                            = fo__c_2Enum_2E0 ) )
+                       => ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V8t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__INVARIANT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( ? [V3J1: $i] :
+                    ( ( mem @ V3J1 @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                    & ( p @ ( ap @ V3J1 @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                    & ! [V4t: tp__ty_2Enum_2Enum] :
+                        ( ( ( p @ ( ap @ V3J1 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                          & ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                       => ( ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                          & ( p @ ( ap @ V3J1 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) )
+                & ? [V5J2: $i] :
+                    ( ( mem @ V5J2 @ ( arr @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) )
+                    & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( ap @ V5J2 @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                    & ! [V6t: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ V5J2 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V6t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) @ ( ap @ V5J2 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V6t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                        | ( ( surj__ty_2Enum_2Enum @ ( ap @ V5J2 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V6t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                          = fo__c_2Enum_2E0 ) )
+                    & ! [V7t: tp__ty_2Enum_2Enum] :
+                        ( ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( ap @ V5J2 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                          & ( ( surj__ty_2Enum_2Enum @ ( ap @ V5J2 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                            = fo__c_2Enum_2E0 ) )
+                       => ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__INVARIANT,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( ? [V3J1: $i] :
+                    ( ( mem @ V3J1 @ ( arr @ ty_2Enum_2Enum @ bool ) )
+                    & ( p @ ( ap @ V3J1 @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+                    & ! [V4t: tp__ty_2Enum_2Enum] :
+                        ( ( ( p @ ( ap @ V3J1 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                          & ~ ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                       => ( p @ ( ap @ V3J1 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V4t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) )
+                    & ! [V5d: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ V3J1 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                       => ~ ( p @ ( ap @ V1b @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V5d ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) )
+                & ? [V6J2: $i] :
+                    ( ( mem @ V6J2 @ ( arr @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) )
+                    & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( ap @ V6J2 @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) )
+                    & ! [V7t: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ V6J2 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) @ ( ap @ V6J2 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                        | ( ( surj__ty_2Enum_2Enum @ ( ap @ V6J2 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V7t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                          = fo__c_2Enum_2E0 ) )
+                    & ! [V8t: tp__ty_2Enum_2Enum] :
+                        ( ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( ap @ V6J2 @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V8t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                          & ( ( surj__ty_2Enum_2Enum @ ( ap @ V6J2 @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V8t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) )
+                            = fo__c_2Enum_2E0 ) )
+                       => ( p @ ( ap @ V0a @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( inj__ty_2Enum_2Enum @ V8t ) ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EALWAYS__IDEM,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a )
+        = ( ap @ c_2ETemporal__Logic_2EALWAYS @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EEVENTUAL__IDEM,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ( ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a )
+        = ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EWHEN__IDEM,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) ) @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EUNTIL__IDEM,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) ) @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2EBEFORE__IDEM,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) ) @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESWHEN__IDEM,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) ) @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESUNTIL__IDEM,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) ) @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ESBEFORE__IDEM,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ( ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b )
+            = ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) ) @ V1b ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENOT__ALWAYS,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ~ ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EALWAYS @ V0a ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ( p
+            @ ( ap
+              @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V2t ) ) ) )
+              @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENOT__EVENTUAL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1t0: tp__ty_2Enum_2Enum] :
+          ( ~ ( p @ ( ap @ ( ap @ c_2ETemporal__Logic_2EEVENTUAL @ V0a ) @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) )
+        <=> ( p
+            @ ( ap
+              @ ( ap @ c_2ETemporal__Logic_2EALWAYS
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V2t ) ) ) )
+              @ ( inj__ty_2Enum_2Enum @ V1t0 ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENOT__WHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ~ ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( p
+                @ ( ap
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2ESWHEN
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                    @ V1b )
+                  @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENOT__UNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ~ ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( p
+                @ ( ap
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2ESBEFORE
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                    @ V1b )
+                  @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENOT__BEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ~ ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2EBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( p
+                @ ( ap
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2ESUNTIL
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                    @ V1b )
+                  @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENOT__SWHEN,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ~ ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESWHEN @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( p
+                @ ( ap
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2EWHEN
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                    @ V1b )
+                  @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENOT__SUNTIL,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ~ ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESUNTIL @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( p
+                @ ( ap
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2EBEFORE
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                    @ V1b )
+                  @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2ETemporal__Logic_2ENOT__SBEFORE,axiom,
+    ! [V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ ty_2Enum_2Enum @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ty_2Enum_2Enum @ bool ) )
+         => ! [V2t0: tp__ty_2Enum_2Enum] :
+              ( ~ ( p @ ( ap @ ( ap @ ( ap @ c_2ETemporal__Logic_2ESBEFORE @ V0a ) @ V1b ) @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) )
+            <=> ( p
+                @ ( ap
+                  @ ( ap
+                    @ ( ap @ c_2ETemporal__Logic_2EUNTIL
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3t: $i] : ( ap @ c_2Ebool_2E_7E @ ( ap @ V0a @ V3t ) ) ) )
+                    @ V1b )
+                  @ ( inj__ty_2Enum_2Enum @ V2t0 ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

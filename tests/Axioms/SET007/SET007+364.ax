@@ -1,0 +1,971 @@
+%------------------------------------------------------------------------------
+% File     : SET007+364 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Coherent Space
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : coh_sp [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  133 (  35 unt;   0 def)
+%            Number of atoms       :  508 ( 108 equ)
+%            Maximal formula atoms :   12 (   3 avg)
+%            Number of connectives :  409 (  34   ~;   2   |; 206   &)
+%                                         (  32 <=>; 135  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   5 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   20 (  18 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   56 (  56 usr;   1 con; 0-6 aty)
+%            Number of variables   :  285 ( 258   !;  27   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_coh_sp,axiom,
+    ? [A] :
+      ( ~ v1_xboole_0(A)
+      & v1_classes1(A)
+      & v1_coh_sp(A) ) ).
+
+fof(fc1_coh_sp,axiom,
+    ! [A] : ~ v1_xboole_0(k3_coh_sp(A)) ).
+
+fof(cc1_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k3_coh_sp(A))
+     => ( ~ v1_xboole_0(B)
+        & v1_classes1(B)
+        & v1_coh_sp(B) ) ) ).
+
+fof(fc2_coh_sp,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(k4_coh_sp(A))
+      & v1_fraenkel(k4_coh_sp(A)) ) ).
+
+fof(fc3_coh_sp,axiom,
+    ! [A] : ~ v1_xboole_0(k5_coh_sp(A)) ).
+
+fof(fc4_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => ( v1_relat_1(k2_mcart_1(B))
+        & v1_funct_1(k2_mcart_1(B)) ) ) ).
+
+fof(fc5_coh_sp,axiom,
+    ! [A] : ~ v1_xboole_0(k15_coh_sp(A)) ).
+
+fof(fc6_coh_sp,axiom,
+    ! [A] : ~ v1_xboole_0(k16_coh_sp(A)) ).
+
+fof(fc7_coh_sp,axiom,
+    ! [A] : ~ v1_xboole_0(k17_coh_sp(A)) ).
+
+fof(fc8_coh_sp,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(k20_coh_sp(A))
+      & v1_fraenkel(k20_coh_sp(A)) ) ).
+
+fof(fc9_coh_sp,axiom,
+    ! [A] : ~ v1_xboole_0(k21_coh_sp(A)) ).
+
+fof(fc10_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => ( v1_relat_1(k2_mcart_1(B))
+        & v1_funct_1(k2_mcart_1(B)) ) ) ).
+
+fof(d1_coh_sp,axiom,
+    $true ).
+
+fof(d2_coh_sp,axiom,
+    ! [A] :
+      ( v1_coh_sp(A)
+    <=> ! [B] :
+          ( ( r1_tarski(B,A)
+            & ! [C,D] :
+                ( ( r2_hidden(C,B)
+                  & r2_hidden(D,B) )
+               => r2_hidden(k2_xboole_0(C,D),A) ) )
+         => r2_hidden(k3_tarski(B),A) ) ) ).
+
+fof(t1_coh_sp,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes1(A)
+        & v1_coh_sp(A) )
+     => r2_hidden(k1_xboole_0,A) ) ).
+
+fof(t2_coh_sp,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(k1_zfmisc_1(A))
+      & v1_classes1(k1_zfmisc_1(A))
+      & v1_coh_sp(k1_zfmisc_1(A)) ) ).
+
+fof(t3_coh_sp,axiom,
+    ( ~ v1_xboole_0(k1_tarski(k1_xboole_0))
+    & v1_classes1(k1_tarski(k1_xboole_0))
+    & v1_coh_sp(k1_tarski(k1_xboole_0)) ) ).
+
+fof(t4_coh_sp,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_classes1(B)
+        & v1_coh_sp(B) )
+     => ( r2_hidden(A,k3_tarski(B))
+       => r2_hidden(k1_tarski(A),B) ) ) ).
+
+fof(d3_coh_sp,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes1(A)
+        & v1_coh_sp(A) )
+     => ! [B] :
+          ( ( v1_relat_2(B)
+            & v3_relat_2(B)
+            & v1_partfun1(B,k3_tarski(A),k3_tarski(A))
+            & m2_relset_1(B,k3_tarski(A),k3_tarski(A)) )
+         => ( B = k1_coh_sp(A)
+          <=> ! [C,D] :
+                ( r2_hidden(k4_tarski(C,D),B)
+              <=> ? [E] :
+                    ( r2_hidden(E,A)
+                    & r2_hidden(C,E)
+                    & r2_hidden(D,E) ) ) ) ) ) ).
+
+fof(t5_coh_sp,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes1(A)
+        & v1_coh_sp(A) )
+     => ! [B] :
+          ( ( v1_relat_2(B)
+            & v3_relat_2(B)
+            & v1_partfun1(B,k3_tarski(A),k3_tarski(A))
+            & m2_relset_1(B,k3_tarski(A),k3_tarski(A)) )
+         => ( B = k1_coh_sp(A)
+          <=> ! [C,D] :
+                ( r2_hidden(k4_tarski(C,D),B)
+              <=> r2_hidden(k2_tarski(C,D),A) ) ) ) ) ).
+
+fof(t6_coh_sp,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_classes1(B)
+        & v1_coh_sp(B) )
+     => ( r2_hidden(A,B)
+      <=> ! [C,D] :
+            ( ( r2_hidden(C,A)
+              & r2_hidden(D,A) )
+           => r2_hidden(k2_tarski(C,D),B) ) ) ) ).
+
+fof(t7_coh_sp,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_classes1(B)
+        & v1_coh_sp(B) )
+     => ( r2_hidden(A,B)
+      <=> ! [C,D] :
+            ( ( r2_hidden(C,A)
+              & r2_hidden(D,A) )
+           => r2_hidden(k4_tarski(C,D),k1_coh_sp(B)) ) ) ) ).
+
+fof(t8_coh_sp,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_classes1(B)
+        & v1_coh_sp(B) )
+     => ( ! [C,D] :
+            ( ( r2_hidden(C,A)
+              & r2_hidden(D,A) )
+           => r2_hidden(k2_tarski(C,D),B) )
+       => r1_tarski(A,k3_tarski(B)) ) ) ).
+
+fof(t9_coh_sp,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes1(A)
+        & v1_coh_sp(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_classes1(B)
+            & v1_coh_sp(B) )
+         => ( k1_coh_sp(A) = k1_coh_sp(B)
+           => A = B ) ) ) ).
+
+fof(t10_coh_sp,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes1(A)
+        & v1_coh_sp(A) )
+     => ( r2_hidden(k3_tarski(A),A)
+       => A = k1_zfmisc_1(k3_tarski(A)) ) ) ).
+
+fof(t11_coh_sp,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes1(A)
+        & v1_coh_sp(A) )
+     => ( A = k1_zfmisc_1(k3_tarski(A))
+       => k1_coh_sp(A) = k1_eqrel_1(k3_tarski(A)) ) ) ).
+
+fof(d4_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( ( ~ v1_xboole_0(C)
+            & v1_classes1(C)
+            & v1_coh_sp(C) )
+         => ( C = k2_coh_sp(A,B)
+          <=> ! [D] :
+                ( r2_hidden(D,C)
+              <=> ! [E,F] :
+                    ( ( r2_hidden(E,D)
+                      & r2_hidden(F,D) )
+                   => r2_hidden(k4_tarski(E,F),B) ) ) ) ) ) ).
+
+fof(t12_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => k1_coh_sp(k2_coh_sp(A,B)) = B ) ).
+
+fof(t13_coh_sp,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes1(A)
+        & v1_coh_sp(A) )
+     => k2_coh_sp(k3_tarski(A),k1_coh_sp(A)) = A ) ).
+
+fof(t14_coh_sp,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_2(C)
+        & v3_relat_2(C)
+        & v1_partfun1(C,A,A)
+        & m2_relset_1(C,A,A) )
+     => ( r2_hidden(B,k2_coh_sp(A,C))
+      <=> m1_toler_1(B,A,C) ) ) ).
+
+fof(t15_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => k2_coh_sp(A,B) = k3_toler_1(A,B) ) ).
+
+fof(t16_coh_sp,axiom,
+    ! [A,B,C,D] :
+      ( m1_subset_1(D,k3_coh_sp(A))
+     => ( r2_hidden(k2_tarski(B,C),D)
+       => ( r2_hidden(B,k3_tarski(D))
+          & r2_hidden(C,k3_tarski(D)) ) ) ) ).
+
+fof(d6_coh_sp,axiom,
+    $true ).
+
+fof(t17_coh_sp,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,k4_coh_sp(B))
+    <=> ? [C] :
+          ( m1_subset_1(C,k3_coh_sp(B))
+          & ? [D] :
+              ( m1_subset_1(D,k3_coh_sp(B))
+              & ( k3_tarski(D) = k1_xboole_0
+               => k3_tarski(C) = k1_xboole_0 )
+              & v1_funct_1(A)
+              & v1_funct_2(A,k3_tarski(C),k3_tarski(D))
+              & m2_relset_1(A,k3_tarski(C),k3_tarski(D)) ) ) ) ).
+
+fof(t18_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => ? [C] :
+          ( m1_subset_1(C,k4_coh_sp(A))
+          & ? [D] :
+              ( m1_subset_1(D,k3_coh_sp(A))
+              & ? [E] :
+                  ( m1_subset_1(E,k3_coh_sp(A))
+                  & B = k4_tarski(k4_tarski(D,E),C)
+                  & ( k3_tarski(E) = k1_xboole_0
+                   => k3_tarski(D) = k1_xboole_0 )
+                  & v1_funct_1(C)
+                  & v1_funct_2(C,k3_tarski(D),k3_tarski(E))
+                  & m2_relset_1(C,k3_tarski(D),k3_tarski(E))
+                  & ! [F,G] :
+                      ( r2_hidden(k2_tarski(F,G),D)
+                     => r2_hidden(k2_tarski(k1_funct_1(C,F),k1_funct_1(C,G)),E) ) ) ) ) ) ).
+
+fof(t19_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k3_coh_sp(A))
+     => ! [C] :
+          ( m1_subset_1(C,k3_coh_sp(A))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k3_tarski(B),k3_tarski(C))
+                & m2_relset_1(D,k3_tarski(B),k3_tarski(C)) )
+             => ( ! [E,F] :
+                    ( r2_hidden(k2_tarski(E,F),B)
+                   => r2_hidden(k2_tarski(k1_funct_1(D,E),k1_funct_1(D,F)),C) )
+               => ( ( k3_tarski(C) = k1_xboole_0
+                    & k3_tarski(B) != k1_xboole_0 )
+                  | r2_hidden(k4_tarski(k4_tarski(B,C),D),k5_coh_sp(A)) ) ) ) ) ) ).
+
+fof(d9_coh_sp,axiom,
+    $true ).
+
+fof(d10_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => k6_coh_sp(A,B) = k1_mcart_1(k1_mcart_1(B)) ) ).
+
+fof(d11_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => k7_coh_sp(A,B) = k2_mcart_1(k1_mcart_1(B)) ) ).
+
+fof(t20_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => B = k4_tarski(k4_tarski(k6_coh_sp(A,B),k7_coh_sp(A,B)),k2_mcart_1(B)) ) ).
+
+fof(d12_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k3_coh_sp(A))
+     => k8_coh_sp(A,B) = k4_tarski(k4_tarski(B,B),k6_partfun1(k3_tarski(B))) ) ).
+
+fof(t21_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => ( ~ ( k3_tarski(k7_coh_sp(A,B)) = k1_xboole_0
+            & k3_tarski(k6_coh_sp(A,B)) != k1_xboole_0 )
+        & v1_funct_1(k2_mcart_1(B))
+        & v1_funct_2(k2_mcart_1(B),k3_tarski(k6_coh_sp(A,B)),k3_tarski(k7_coh_sp(A,B)))
+        & m2_relset_1(k2_mcart_1(B),k3_tarski(k6_coh_sp(A,B)),k3_tarski(k7_coh_sp(A,B)))
+        & ! [C,D] :
+            ( r2_hidden(k2_tarski(C,D),k6_coh_sp(A,B))
+           => r2_hidden(k2_tarski(k1_funct_1(k2_mcart_1(B),C),k1_funct_1(k2_mcart_1(B),D)),k7_coh_sp(A,B)) ) ) ) ).
+
+fof(d13_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => ! [C] :
+          ( m1_subset_1(C,k5_coh_sp(A))
+         => ( k7_coh_sp(A,B) = k6_coh_sp(A,C)
+           => k9_coh_sp(A,B,C) = k4_tarski(k4_tarski(k6_coh_sp(A,B),k7_coh_sp(A,C)),k5_relat_1(k2_mcart_1(B),k2_mcart_1(C))) ) ) ) ).
+
+fof(t22_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => ! [C] :
+          ( m1_subset_1(C,k5_coh_sp(A))
+         => ( k6_coh_sp(A,B) = k7_coh_sp(A,C)
+           => ( k2_mcart_1(k9_coh_sp(A,C,B)) = k5_relat_1(k2_mcart_1(C),k2_mcart_1(B))
+              & k6_coh_sp(A,k9_coh_sp(A,C,B)) = k6_coh_sp(A,C)
+              & k7_coh_sp(A,k9_coh_sp(A,C,B)) = k7_coh_sp(A,B) ) ) ) ) ).
+
+fof(t23_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => ! [C] :
+          ( m1_subset_1(C,k5_coh_sp(A))
+         => ! [D] :
+              ( m1_subset_1(D,k5_coh_sp(A))
+             => ( ( k6_coh_sp(A,B) = k7_coh_sp(A,C)
+                  & k6_coh_sp(A,D) = k7_coh_sp(A,B) )
+               => k9_coh_sp(A,k9_coh_sp(A,C,B),D) = k9_coh_sp(A,C,k9_coh_sp(A,B,D)) ) ) ) ) ).
+
+fof(t24_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k3_coh_sp(A))
+     => ( k2_mcart_1(k8_coh_sp(A,B)) = k6_partfun1(k3_tarski(B))
+        & k6_coh_sp(A,k8_coh_sp(A,B)) = B
+        & k7_coh_sp(A,k8_coh_sp(A,B)) = B ) ) ).
+
+fof(t25_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => ( k9_coh_sp(A,k8_coh_sp(A,k6_coh_sp(A,B)),B) = B
+        & k9_coh_sp(A,B,k8_coh_sp(A,k7_coh_sp(A,B))) = B ) ) ).
+
+fof(d14_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_coh_sp(A),k3_coh_sp(A))
+        & m2_relset_1(B,k5_coh_sp(A),k3_coh_sp(A)) )
+     => ( B = k10_coh_sp(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k5_coh_sp(A))
+           => k8_funct_2(k5_coh_sp(A),k3_coh_sp(A),B,C) = k6_coh_sp(A,C) ) ) ) ).
+
+fof(d15_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_coh_sp(A),k3_coh_sp(A))
+        & m2_relset_1(B,k5_coh_sp(A),k3_coh_sp(A)) )
+     => ( B = k11_coh_sp(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k5_coh_sp(A))
+           => k8_funct_2(k5_coh_sp(A),k3_coh_sp(A),B,C) = k7_coh_sp(A,C) ) ) ) ).
+
+fof(d16_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & m2_relset_1(B,k2_zfmisc_1(k5_coh_sp(A),k5_coh_sp(A)),k5_coh_sp(A)) )
+     => ( B = k12_coh_sp(A)
+      <=> ( ! [C] :
+              ( m1_subset_1(C,k5_coh_sp(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k5_coh_sp(A))
+                 => ( r2_hidden(k4_tarski(C,D),k4_relset_1(k2_zfmisc_1(k5_coh_sp(A),k5_coh_sp(A)),k5_coh_sp(A),B))
+                  <=> k6_coh_sp(A,C) = k7_coh_sp(A,D) ) ) )
+          & ! [C] :
+              ( m1_subset_1(C,k5_coh_sp(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k5_coh_sp(A))
+                 => ( k6_coh_sp(A,C) = k7_coh_sp(A,D)
+                   => k1_funct_1(B,k4_tarski(C,D)) = k9_coh_sp(A,D,C) ) ) ) ) ) ) ).
+
+fof(d17_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k3_coh_sp(A),k5_coh_sp(A))
+        & m2_relset_1(B,k3_coh_sp(A),k5_coh_sp(A)) )
+     => ( B = k13_coh_sp(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k3_coh_sp(A))
+           => k8_funct_2(k3_coh_sp(A),k5_coh_sp(A),B,C) = k8_coh_sp(A,C) ) ) ) ).
+
+fof(t26_coh_sp,axiom,
+    ! [A] :
+      ( v2_cat_1(g1_cat_1(k3_coh_sp(A),k5_coh_sp(A),k10_coh_sp(A),k11_coh_sp(A),k12_coh_sp(A),k13_coh_sp(A)))
+      & l1_cat_1(g1_cat_1(k3_coh_sp(A),k5_coh_sp(A),k10_coh_sp(A),k11_coh_sp(A),k12_coh_sp(A),k13_coh_sp(A))) ) ).
+
+fof(d18_coh_sp,axiom,
+    ! [A] : k14_coh_sp(A) = g1_cat_1(k3_coh_sp(A),k5_coh_sp(A),k10_coh_sp(A),k11_coh_sp(A),k12_coh_sp(A),k13_coh_sp(A)) ).
+
+fof(d19_coh_sp,axiom,
+    ! [A,B] :
+      ( B = k15_coh_sp(A)
+    <=> ! [C] :
+          ( r2_hidden(C,B)
+        <=> ( v1_relat_2(C)
+            & v3_relat_2(C)
+            & v1_partfun1(C,A,A)
+            & m2_relset_1(C,A,A) ) ) ) ).
+
+fof(t27_coh_sp,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,k16_coh_sp(B))
+    <=> ? [C] :
+          ( r1_tarski(C,B)
+          & v1_relat_2(A)
+          & v3_relat_2(A)
+          & v1_partfun1(A,C,C)
+          & m2_relset_1(A,C,C) ) ) ).
+
+fof(t28_coh_sp,axiom,
+    ! [A] : r2_hidden(k1_eqrel_1(A),k15_coh_sp(A)) ).
+
+fof(t29_coh_sp,axiom,
+    $true ).
+
+fof(t30_coh_sp,axiom,
+    ! [A] : r2_hidden(k1_xboole_0,k16_coh_sp(A)) ).
+
+fof(t31_coh_sp,axiom,
+    ! [A,B] :
+      ( r1_tarski(A,B)
+     => r2_hidden(k1_eqrel_1(A),k16_coh_sp(B)) ) ).
+
+fof(t32_coh_sp,axiom,
+    ! [A,B] :
+      ( r1_tarski(A,B)
+     => r2_hidden(k6_partfun1(A),k16_coh_sp(B)) ) ).
+
+fof(t33_coh_sp,axiom,
+    ! [A] : r2_hidden(k1_eqrel_1(A),k16_coh_sp(A)) ).
+
+fof(t34_coh_sp,axiom,
+    ! [A] : r2_hidden(k6_partfun1(A),k16_coh_sp(A)) ).
+
+fof(t35_coh_sp,axiom,
+    ! [A] : r2_hidden(k4_tarski(k1_xboole_0,k1_xboole_0),k17_coh_sp(A)) ).
+
+fof(t36_coh_sp,axiom,
+    ! [A,B] :
+      ( r1_tarski(A,B)
+     => r2_hidden(k4_tarski(k6_partfun1(A),A),k17_coh_sp(B)) ) ).
+
+fof(t37_coh_sp,axiom,
+    ! [A,B] :
+      ( r1_tarski(A,B)
+     => r2_hidden(k4_tarski(k1_eqrel_1(A),A),k17_coh_sp(B)) ) ).
+
+fof(t38_coh_sp,axiom,
+    ! [A] : r2_hidden(k4_tarski(k6_partfun1(A),A),k17_coh_sp(A)) ).
+
+fof(t39_coh_sp,axiom,
+    ! [A] : r2_hidden(k4_tarski(k1_eqrel_1(A),A),k17_coh_sp(A)) ).
+
+fof(t40_coh_sp,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,k20_coh_sp(B))
+    <=> ? [C] :
+          ( m1_subset_1(C,k17_coh_sp(B))
+          & ? [D] :
+              ( m1_subset_1(D,k17_coh_sp(B))
+              & ( k18_coh_sp(B,D) = k1_xboole_0
+               => k18_coh_sp(B,C) = k1_xboole_0 )
+              & v1_funct_1(A)
+              & v1_funct_2(A,k18_coh_sp(B,C),k18_coh_sp(B,D))
+              & m2_relset_1(A,k18_coh_sp(B,C),k18_coh_sp(B,D)) ) ) ) ).
+
+fof(t41_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => ? [C] :
+          ( m1_subset_1(C,k20_coh_sp(A))
+          & ? [D] :
+              ( m1_subset_1(D,k17_coh_sp(A))
+              & ? [E] :
+                  ( m1_subset_1(E,k17_coh_sp(A))
+                  & B = k4_tarski(k4_tarski(D,E),C)
+                  & ( k18_coh_sp(A,E) = k1_xboole_0
+                   => k18_coh_sp(A,D) = k1_xboole_0 )
+                  & v1_funct_1(C)
+                  & v1_funct_2(C,k18_coh_sp(A,D),k18_coh_sp(A,E))
+                  & m2_relset_1(C,k18_coh_sp(A,D),k18_coh_sp(A,E))
+                  & ! [F,G] :
+                      ( r2_hidden(k4_tarski(F,G),k19_coh_sp(A,D))
+                     => r2_hidden(k4_tarski(k1_funct_1(C,F),k1_funct_1(C,G)),k19_coh_sp(A,E)) ) ) ) ) ) ).
+
+fof(t42_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k17_coh_sp(A))
+     => ! [C] :
+          ( m1_subset_1(C,k17_coh_sp(A))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k18_coh_sp(A,B),k18_coh_sp(A,C))
+                & m2_relset_1(D,k18_coh_sp(A,B),k18_coh_sp(A,C)) )
+             => ( ! [E,F] :
+                    ( r2_hidden(k4_tarski(E,F),k19_coh_sp(A,B))
+                   => r2_hidden(k4_tarski(k1_funct_1(D,E),k1_funct_1(D,F)),k19_coh_sp(A,C)) )
+               => ( ( k18_coh_sp(A,C) = k1_xboole_0
+                    & k18_coh_sp(A,B) != k1_xboole_0 )
+                  | r2_hidden(k4_tarski(k4_tarski(B,C),D),k21_coh_sp(A)) ) ) ) ) ) ).
+
+fof(d24_coh_sp,axiom,
+    $true ).
+
+fof(d25_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => k22_coh_sp(A,B) = k1_mcart_1(k1_mcart_1(B)) ) ).
+
+fof(d26_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => k23_coh_sp(A,B) = k2_mcart_1(k1_mcart_1(B)) ) ).
+
+fof(t43_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => B = k4_tarski(k4_tarski(k22_coh_sp(A,B),k23_coh_sp(A,B)),k2_mcart_1(B)) ) ).
+
+fof(d27_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k17_coh_sp(A))
+     => k24_coh_sp(A,B) = k4_tarski(k4_tarski(B,B),k6_partfun1(k18_coh_sp(A,B))) ) ).
+
+fof(t44_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => ( ~ ( k18_coh_sp(A,k23_coh_sp(A,B)) = k1_xboole_0
+            & k18_coh_sp(A,k22_coh_sp(A,B)) != k1_xboole_0 )
+        & v1_funct_1(k2_mcart_1(B))
+        & v1_funct_2(k2_mcart_1(B),k18_coh_sp(A,k22_coh_sp(A,B)),k18_coh_sp(A,k23_coh_sp(A,B)))
+        & m2_relset_1(k2_mcart_1(B),k18_coh_sp(A,k22_coh_sp(A,B)),k18_coh_sp(A,k23_coh_sp(A,B)))
+        & ! [C,D] :
+            ( r2_hidden(k4_tarski(C,D),k19_coh_sp(A,k22_coh_sp(A,B)))
+           => r2_hidden(k4_tarski(k1_funct_1(k2_mcart_1(B),C),k1_funct_1(k2_mcart_1(B),D)),k19_coh_sp(A,k23_coh_sp(A,B))) ) ) ) ).
+
+fof(d28_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => ! [C] :
+          ( m1_subset_1(C,k21_coh_sp(A))
+         => ( k23_coh_sp(A,B) = k22_coh_sp(A,C)
+           => k25_coh_sp(A,B,C) = k4_tarski(k4_tarski(k22_coh_sp(A,B),k23_coh_sp(A,C)),k5_relat_1(k2_mcart_1(B),k2_mcart_1(C))) ) ) ) ).
+
+fof(t45_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => ! [C] :
+          ( m1_subset_1(C,k21_coh_sp(A))
+         => ( k22_coh_sp(A,B) = k23_coh_sp(A,C)
+           => ( k2_mcart_1(k25_coh_sp(A,C,B)) = k5_relat_1(k2_mcart_1(C),k2_mcart_1(B))
+              & k22_coh_sp(A,k25_coh_sp(A,C,B)) = k22_coh_sp(A,C)
+              & k23_coh_sp(A,k25_coh_sp(A,C,B)) = k23_coh_sp(A,B) ) ) ) ) ).
+
+fof(t46_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => ! [C] :
+          ( m1_subset_1(C,k21_coh_sp(A))
+         => ! [D] :
+              ( m1_subset_1(D,k21_coh_sp(A))
+             => ( ( k22_coh_sp(A,B) = k23_coh_sp(A,C)
+                  & k22_coh_sp(A,D) = k23_coh_sp(A,B) )
+               => k25_coh_sp(A,k25_coh_sp(A,C,B),D) = k25_coh_sp(A,C,k25_coh_sp(A,B,D)) ) ) ) ) ).
+
+fof(t47_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k17_coh_sp(A))
+     => ( k2_mcart_1(k24_coh_sp(A,B)) = k6_partfun1(k18_coh_sp(A,B))
+        & k22_coh_sp(A,k24_coh_sp(A,B)) = B
+        & k23_coh_sp(A,k24_coh_sp(A,B)) = B ) ) ).
+
+fof(t48_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => ( k25_coh_sp(A,k24_coh_sp(A,k22_coh_sp(A,B)),B) = B
+        & k25_coh_sp(A,B,k24_coh_sp(A,k23_coh_sp(A,B))) = B ) ) ).
+
+fof(d29_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k21_coh_sp(A),k17_coh_sp(A))
+        & m2_relset_1(B,k21_coh_sp(A),k17_coh_sp(A)) )
+     => ( B = k26_coh_sp(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k21_coh_sp(A))
+           => k8_funct_2(k21_coh_sp(A),k17_coh_sp(A),B,C) = k22_coh_sp(A,C) ) ) ) ).
+
+fof(d30_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k21_coh_sp(A),k17_coh_sp(A))
+        & m2_relset_1(B,k21_coh_sp(A),k17_coh_sp(A)) )
+     => ( B = k27_coh_sp(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k21_coh_sp(A))
+           => k8_funct_2(k21_coh_sp(A),k17_coh_sp(A),B,C) = k23_coh_sp(A,C) ) ) ) ).
+
+fof(d31_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & m2_relset_1(B,k2_zfmisc_1(k21_coh_sp(A),k21_coh_sp(A)),k21_coh_sp(A)) )
+     => ( B = k28_coh_sp(A)
+      <=> ( ! [C] :
+              ( m1_subset_1(C,k21_coh_sp(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k21_coh_sp(A))
+                 => ( r2_hidden(k4_tarski(C,D),k4_relset_1(k2_zfmisc_1(k21_coh_sp(A),k21_coh_sp(A)),k21_coh_sp(A),B))
+                  <=> k22_coh_sp(A,C) = k23_coh_sp(A,D) ) ) )
+          & ! [C] :
+              ( m1_subset_1(C,k21_coh_sp(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k21_coh_sp(A))
+                 => ( k22_coh_sp(A,C) = k23_coh_sp(A,D)
+                   => k1_funct_1(B,k4_tarski(C,D)) = k25_coh_sp(A,D,C) ) ) ) ) ) ) ).
+
+fof(d32_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k17_coh_sp(A),k21_coh_sp(A))
+        & m2_relset_1(B,k17_coh_sp(A),k21_coh_sp(A)) )
+     => ( B = k29_coh_sp(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k17_coh_sp(A))
+           => k8_funct_2(k17_coh_sp(A),k21_coh_sp(A),B,C) = k24_coh_sp(A,C) ) ) ) ).
+
+fof(t49_coh_sp,axiom,
+    ! [A] :
+      ( v2_cat_1(g1_cat_1(k17_coh_sp(A),k21_coh_sp(A),k26_coh_sp(A),k27_coh_sp(A),k28_coh_sp(A),k29_coh_sp(A)))
+      & l1_cat_1(g1_cat_1(k17_coh_sp(A),k21_coh_sp(A),k26_coh_sp(A),k27_coh_sp(A),k28_coh_sp(A),k29_coh_sp(A))) ) ).
+
+fof(d33_coh_sp,axiom,
+    ! [A] : k30_coh_sp(A) = g1_cat_1(k17_coh_sp(A),k21_coh_sp(A),k26_coh_sp(A),k27_coh_sp(A),k28_coh_sp(A),k29_coh_sp(A)) ).
+
+fof(dt_k1_coh_sp,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_classes1(A)
+        & v1_coh_sp(A) )
+     => ( v1_relat_2(k1_coh_sp(A))
+        & v3_relat_2(k1_coh_sp(A))
+        & v1_partfun1(k1_coh_sp(A),k3_tarski(A),k3_tarski(A))
+        & m2_relset_1(k1_coh_sp(A),k3_tarski(A),k3_tarski(A)) ) ) ).
+
+fof(dt_k2_coh_sp,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m1_relset_1(B,A,A) )
+     => ( ~ v1_xboole_0(k2_coh_sp(A,B))
+        & v1_classes1(k2_coh_sp(A,B))
+        & v1_coh_sp(k2_coh_sp(A,B)) ) ) ).
+
+fof(dt_k3_coh_sp,axiom,
+    $true ).
+
+fof(dt_k4_coh_sp,axiom,
+    $true ).
+
+fof(dt_k5_coh_sp,axiom,
+    $true ).
+
+fof(dt_k6_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => m1_subset_1(k6_coh_sp(A,B),k3_coh_sp(A)) ) ).
+
+fof(dt_k7_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_coh_sp(A))
+     => m1_subset_1(k7_coh_sp(A,B),k3_coh_sp(A)) ) ).
+
+fof(dt_k8_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k3_coh_sp(A))
+     => m1_subset_1(k8_coh_sp(A,B),k5_coh_sp(A)) ) ).
+
+fof(dt_k9_coh_sp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k5_coh_sp(A))
+        & m1_subset_1(C,k5_coh_sp(A)) )
+     => m1_subset_1(k9_coh_sp(A,B,C),k5_coh_sp(A)) ) ).
+
+fof(dt_k10_coh_sp,axiom,
+    ! [A] :
+      ( v1_funct_1(k10_coh_sp(A))
+      & v1_funct_2(k10_coh_sp(A),k5_coh_sp(A),k3_coh_sp(A))
+      & m2_relset_1(k10_coh_sp(A),k5_coh_sp(A),k3_coh_sp(A)) ) ).
+
+fof(dt_k11_coh_sp,axiom,
+    ! [A] :
+      ( v1_funct_1(k11_coh_sp(A))
+      & v1_funct_2(k11_coh_sp(A),k5_coh_sp(A),k3_coh_sp(A))
+      & m2_relset_1(k11_coh_sp(A),k5_coh_sp(A),k3_coh_sp(A)) ) ).
+
+fof(dt_k12_coh_sp,axiom,
+    ! [A] :
+      ( v1_funct_1(k12_coh_sp(A))
+      & m2_relset_1(k12_coh_sp(A),k2_zfmisc_1(k5_coh_sp(A),k5_coh_sp(A)),k5_coh_sp(A)) ) ).
+
+fof(dt_k13_coh_sp,axiom,
+    ! [A] :
+      ( v1_funct_1(k13_coh_sp(A))
+      & v1_funct_2(k13_coh_sp(A),k3_coh_sp(A),k5_coh_sp(A))
+      & m2_relset_1(k13_coh_sp(A),k3_coh_sp(A),k5_coh_sp(A)) ) ).
+
+fof(dt_k14_coh_sp,axiom,
+    ! [A] :
+      ( v2_cat_1(k14_coh_sp(A))
+      & l1_cat_1(k14_coh_sp(A)) ) ).
+
+fof(dt_k15_coh_sp,axiom,
+    $true ).
+
+fof(dt_k16_coh_sp,axiom,
+    $true ).
+
+fof(dt_k17_coh_sp,axiom,
+    $true ).
+
+fof(dt_k18_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k17_coh_sp(A))
+     => m1_subset_1(k18_coh_sp(A,B),k1_zfmisc_1(A)) ) ).
+
+fof(redefinition_k18_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k17_coh_sp(A))
+     => k18_coh_sp(A,B) = k2_mcart_1(B) ) ).
+
+fof(dt_k19_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k17_coh_sp(A))
+     => ( v1_relat_2(k19_coh_sp(A,B))
+        & v3_relat_2(k19_coh_sp(A,B))
+        & v1_partfun1(k19_coh_sp(A,B),k2_mcart_1(B),k2_mcart_1(B))
+        & m2_relset_1(k19_coh_sp(A,B),k2_mcart_1(B),k2_mcart_1(B)) ) ) ).
+
+fof(redefinition_k19_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k17_coh_sp(A))
+     => k19_coh_sp(A,B) = k1_mcart_1(B) ) ).
+
+fof(dt_k20_coh_sp,axiom,
+    $true ).
+
+fof(dt_k21_coh_sp,axiom,
+    $true ).
+
+fof(dt_k22_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => m1_subset_1(k22_coh_sp(A,B),k17_coh_sp(A)) ) ).
+
+fof(dt_k23_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k21_coh_sp(A))
+     => m1_subset_1(k23_coh_sp(A,B),k17_coh_sp(A)) ) ).
+
+fof(dt_k24_coh_sp,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k17_coh_sp(A))
+     => m1_subset_1(k24_coh_sp(A,B),k21_coh_sp(A)) ) ).
+
+fof(dt_k25_coh_sp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k21_coh_sp(A))
+        & m1_subset_1(C,k21_coh_sp(A)) )
+     => m1_subset_1(k25_coh_sp(A,B,C),k21_coh_sp(A)) ) ).
+
+fof(dt_k26_coh_sp,axiom,
+    ! [A] :
+      ( v1_funct_1(k26_coh_sp(A))
+      & v1_funct_2(k26_coh_sp(A),k21_coh_sp(A),k17_coh_sp(A))
+      & m2_relset_1(k26_coh_sp(A),k21_coh_sp(A),k17_coh_sp(A)) ) ).
+
+fof(dt_k27_coh_sp,axiom,
+    ! [A] :
+      ( v1_funct_1(k27_coh_sp(A))
+      & v1_funct_2(k27_coh_sp(A),k21_coh_sp(A),k17_coh_sp(A))
+      & m2_relset_1(k27_coh_sp(A),k21_coh_sp(A),k17_coh_sp(A)) ) ).
+
+fof(dt_k28_coh_sp,axiom,
+    ! [A] :
+      ( v1_funct_1(k28_coh_sp(A))
+      & m2_relset_1(k28_coh_sp(A),k2_zfmisc_1(k21_coh_sp(A),k21_coh_sp(A)),k21_coh_sp(A)) ) ).
+
+fof(dt_k29_coh_sp,axiom,
+    ! [A] :
+      ( v1_funct_1(k29_coh_sp(A))
+      & v1_funct_2(k29_coh_sp(A),k17_coh_sp(A),k21_coh_sp(A))
+      & m2_relset_1(k29_coh_sp(A),k17_coh_sp(A),k21_coh_sp(A)) ) ).
+
+fof(dt_k30_coh_sp,axiom,
+    ! [A] :
+      ( v2_cat_1(k30_coh_sp(A))
+      & l1_cat_1(k30_coh_sp(A)) ) ).
+
+fof(d5_coh_sp,axiom,
+    ! [A] : k3_coh_sp(A) = a_1_0_coh_sp(A) ).
+
+fof(d7_coh_sp,axiom,
+    ! [A] : k4_coh_sp(A) = k3_tarski(a_1_1_coh_sp(A)) ).
+
+fof(d8_coh_sp,axiom,
+    ! [A] : k5_coh_sp(A) = a_1_2_coh_sp(A) ).
+
+fof(d20_coh_sp,axiom,
+    ! [A] : k16_coh_sp(A) = k3_tarski(a_1_3_coh_sp(A)) ).
+
+fof(d21_coh_sp,axiom,
+    ! [A] : k17_coh_sp(A) = a_1_4_coh_sp(A) ).
+
+fof(d22_coh_sp,axiom,
+    ! [A] : k20_coh_sp(A) = k3_tarski(a_1_5_coh_sp(A)) ).
+
+fof(d23_coh_sp,axiom,
+    ! [A] : k21_coh_sp(A) = a_1_6_coh_sp(A) ).
+
+fof(fraenkel_a_1_0_coh_sp,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,a_1_0_coh_sp(B))
+    <=> ? [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(B)))
+          & A = C
+          & ~ v1_xboole_0(C)
+          & v1_classes1(C)
+          & v1_coh_sp(C) ) ) ).
+
+fof(fraenkel_a_1_1_coh_sp,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,a_1_1_coh_sp(B))
+    <=> ? [C,D] :
+          ( m1_subset_1(C,k3_coh_sp(B))
+          & m1_subset_1(D,k3_coh_sp(B))
+          & A = k1_funct_2(k3_tarski(C),k3_tarski(D)) ) ) ).
+
+fof(fraenkel_a_1_2_coh_sp,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,a_1_2_coh_sp(B))
+    <=> ? [C,D,E] :
+          ( m1_subset_1(C,k3_coh_sp(B))
+          & m1_subset_1(D,k3_coh_sp(B))
+          & m1_subset_1(E,k4_coh_sp(B))
+          & A = k4_tarski(k4_tarski(C,D),E)
+          & ( k3_tarski(D) = k1_xboole_0
+           => k3_tarski(C) = k1_xboole_0 )
+          & v1_funct_1(E)
+          & v1_funct_2(E,k3_tarski(C),k3_tarski(D))
+          & m2_relset_1(E,k3_tarski(C),k3_tarski(D))
+          & ! [F,G] :
+              ( r2_hidden(k2_tarski(F,G),C)
+             => r2_hidden(k2_tarski(k1_funct_1(E,F),k1_funct_1(E,G)),D) ) ) ) ).
+
+fof(fraenkel_a_1_3_coh_sp,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,a_1_3_coh_sp(B))
+    <=> ? [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+          & A = k15_coh_sp(C) ) ) ).
+
+fof(fraenkel_a_1_4_coh_sp,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,a_1_4_coh_sp(B))
+    <=> ? [C,D] :
+          ( m1_subset_1(C,k16_coh_sp(B))
+          & m1_subset_1(D,k1_zfmisc_1(B))
+          & A = k4_tarski(C,D)
+          & v1_relat_2(C)
+          & v3_relat_2(C)
+          & v1_partfun1(C,D,D)
+          & m2_relset_1(C,D,D) ) ) ).
+
+fof(fraenkel_a_1_5_coh_sp,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,a_1_5_coh_sp(B))
+    <=> ? [C,D] :
+          ( m1_subset_1(C,k17_coh_sp(B))
+          & m1_subset_1(D,k17_coh_sp(B))
+          & A = k1_funct_2(k18_coh_sp(B,C),k18_coh_sp(B,D)) ) ) ).
+
+fof(fraenkel_a_1_6_coh_sp,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,a_1_6_coh_sp(B))
+    <=> ? [C,D,E] :
+          ( m1_subset_1(C,k17_coh_sp(B))
+          & m1_subset_1(D,k17_coh_sp(B))
+          & m1_subset_1(E,k20_coh_sp(B))
+          & A = k4_tarski(k4_tarski(C,D),E)
+          & ( k18_coh_sp(B,D) = k1_xboole_0
+           => k18_coh_sp(B,C) = k1_xboole_0 )
+          & v1_funct_1(E)
+          & v1_funct_2(E,k18_coh_sp(B,C),k18_coh_sp(B,D))
+          & m2_relset_1(E,k18_coh_sp(B,C),k18_coh_sp(B,D))
+          & ! [F,G] :
+              ( r2_hidden(k4_tarski(F,G),k19_coh_sp(B,C))
+             => r2_hidden(k4_tarski(k1_funct_1(E,F),k1_funct_1(E,G)),k19_coh_sp(B,D)) ) ) ) ).
+
+%------------------------------------------------------------------------------

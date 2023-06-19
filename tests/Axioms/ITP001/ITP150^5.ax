@@ -1,0 +1,1588 @@
+%------------------------------------------------------------------------------
+% File     : ITP150^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : probability^2.ax [Gau20]
+%          : HL4150^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  146 (   4 unt;  21 typ;   0 def)
+%            Number of atoms       : 5838 ( 108 equ;   0 cnn)
+%            Maximal formula atoms :  149 (  39 avg)
+%            Number of connectives : 9172 (  13   ~;   4   |; 157   &;8581   @)
+%                                         (  15 <=>; 402  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   36 (  18 avg;8581 nst)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :   37 (  37   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :  112 ( 111 usr;  90 con; 0-4 aty)
+%            Number of variables   :  544 (  29   ^ 515   !;   0   ?; 544   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tp_c_2Eprobability_2Econditional__distribution,type,
+    c_2Eprobability_2Econditional__distribution: del > del > del > $i ).
+
+thf(mem_c_2Eprobability_2Econditional__distribution,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del] : ( mem @ ( c_2Eprobability_2Econditional__distribution @ A_27a @ A_27b @ A_27c ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ A_27c ) @ ( arr @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27c @ bool ) @ ty_2Erealax_2Ereal ) ) ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Econditional__expectation,type,
+    c_2Eprobability_2Econditional__expectation: del > $i ).
+
+thf(mem_c_2Eprobability_2Econditional__expectation,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Econditional__expectation @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) @ ( arr @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Econditional__prob,type,
+    c_2Eprobability_2Econditional__prob: del > $i ).
+
+thf(mem_c_2Eprobability_2Econditional__prob,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Econditional__prob @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ bool ) @ ( arr @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Edistribution,type,
+    c_2Eprobability_2Edistribution: del > del > $i ).
+
+thf(mem_c_2Eprobability_2Edistribution,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Eprobability_2Edistribution @ A_27a @ A_27b ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27b @ A_27a ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Eevents,type,
+    c_2Eprobability_2Eevents: del > $i ).
+
+thf(mem_c_2Eprobability_2Eevents,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Eevents @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) ) ) ).
+
+thf(tp_c_2Eprobability_2Eexpectation,type,
+    c_2Eprobability_2Eexpectation: del > $i ).
+
+thf(mem_c_2Eprobability_2Eexpectation,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Eexpectation @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) @ ty_2Eextreal_2Eextreal ) ) ) ).
+
+thf(tp_c_2Eprobability_2Eindep,type,
+    c_2Eprobability_2Eindep: del > $i ).
+
+thf(mem_c_2Eprobability_2Eindep,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Eindep @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Eindep__families,type,
+    c_2Eprobability_2Eindep__families: del > $i ).
+
+thf(mem_c_2Eprobability_2Eindep__families,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Eindep__families @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ bool ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Eindep__function,type,
+    c_2Eprobability_2Eindep__function: del > del > $i ).
+
+thf(mem_c_2Eprobability_2Eindep__function,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Eprobability_2Eindep__function @ A_27a @ A_27b ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27a ) ) @ bool ) ) ) ).
+
+thf(tp_c_2Eprobability_2Eindep__rv,type,
+    c_2Eprobability_2Eindep__rv: del > del > del > $i ).
+
+thf(mem_c_2Eprobability_2Eindep__rv,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del] : ( mem @ ( c_2Eprobability_2Eindep__rv @ A_27a @ A_27b @ A_27c ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ A_27c ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27c @ bool ) @ ( arr @ ( arr @ A_27c @ bool ) @ bool ) ) @ bool ) ) ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Ejoint__distribution,type,
+    c_2Eprobability_2Ejoint__distribution: del > del > del > $i ).
+
+thf(mem_c_2Eprobability_2Ejoint__distribution,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del] : ( mem @ ( c_2Eprobability_2Ejoint__distribution @ A_27a @ A_27b @ A_27c ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27c @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27c @ bool ) @ bool ) @ ( arr @ ( arr @ A_27c @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27c @ A_27a ) @ ( arr @ ( arr @ A_27c @ A_27b ) @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27a @ A_27b ) @ bool ) @ ty_2Erealax_2Ereal ) ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Ejoint__distribution3,type,
+    c_2Eprobability_2Ejoint__distribution3: del > del > del > del > $i ).
+
+thf(mem_c_2Eprobability_2Ejoint__distribution3,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del] : ( mem @ ( c_2Eprobability_2Ejoint__distribution3 @ A_27a @ A_27b @ A_27c @ A_27d ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27d @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27d @ bool ) @ bool ) @ ( arr @ ( arr @ A_27d @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27d @ A_27a ) @ ( arr @ ( arr @ A_27d @ A_27b ) @ ( arr @ ( arr @ A_27d @ A_27c ) @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) @ bool ) @ ty_2Erealax_2Ereal ) ) ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Ep__space,type,
+    c_2Eprobability_2Ep__space: del > $i ).
+
+thf(mem_c_2Eprobability_2Ep__space,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Ep__space @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ A_27a @ bool ) ) ) ).
+
+thf(tp_c_2Eprobability_2Epossibly,type,
+    c_2Eprobability_2Epossibly: del > $i ).
+
+thf(mem_c_2Eprobability_2Epossibly,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Epossibly @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) ) ) ).
+
+thf(tp_c_2Eprobability_2Eprob,type,
+    c_2Eprobability_2Eprob: del > $i ).
+
+thf(mem_c_2Eprobability_2Eprob,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Eprob @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) ).
+
+thf(tp_c_2Eprobability_2Eprob__space,type,
+    c_2Eprobability_2Eprob__space: del > $i ).
+
+thf(mem_c_2Eprobability_2Eprob__space,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ bool ) ) ).
+
+thf(tp_c_2Eprobability_2Eprobably,type,
+    c_2Eprobability_2Eprobably: del > $i ).
+
+thf(mem_c_2Eprobability_2Eprobably,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Eprobably @ A_27a ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) ) ) ).
+
+thf(tp_c_2Eprobability_2Erandom__variable,type,
+    c_2Eprobability_2Erandom__variable: del > del > $i ).
+
+thf(mem_c_2Eprobability_2Erandom__variable,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) @ bool ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Ereal__random__variable,type,
+    c_2Eprobability_2Ereal__random__variable: del > $i ).
+
+thf(mem_c_2Eprobability_2Ereal__random__variable,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprobability_2Ereal__random__variable @ A_27a ) @ ( arr @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ bool ) ) ) ).
+
+thf(tp_c_2Eprobability_2Erv__conditional__expectation,type,
+    c_2Eprobability_2Erv__conditional__expectation: del > del > $i ).
+
+thf(mem_c_2Eprobability_2Erv__conditional__expectation,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Eprobability_2Erv__conditional__expectation @ A_27a @ A_27b ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) @ ( arr @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) ) ) ) ) ) ).
+
+thf(tp_c_2Eprobability_2Euniform__distribution,type,
+    c_2Eprobability_2Euniform__distribution: del > del > del > del > $i ).
+
+thf(mem_c_2Eprobability_2Euniform__distribution,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del] : ( mem @ ( c_2Eprobability_2Euniform__distribution @ A_27a @ A_27b @ A_27c @ A_27d ) @ ( arr @ A_27b @ ( arr @ A_27c @ ( arr @ ( ty_2Epair_2Eprod @ ( arr @ A_27d @ bool ) @ ( arr @ ( arr @ A_27d @ bool ) @ bool ) ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Ep__space__def,axiom,
+    ! [A_27a: del] :
+      ( ( c_2Eprobability_2Ep__space @ A_27a )
+      = ( c_2Emeasure_2Em__space @ A_27a ) ) ).
+
+thf(ax_thm_2Eprobability_2Eevents__def,axiom,
+    ! [A_27a: del] :
+      ( ( c_2Eprobability_2Eevents @ A_27a )
+      = ( c_2Emeasure_2Emeasurable__sets @ A_27a ) ) ).
+
+thf(ax_thm_2Eprobability_2Eprob__def,axiom,
+    ! [A_27a: del] :
+      ( ( c_2Eprobability_2Eprob @ A_27a )
+      = ( c_2Emeasure_2Emeasure @ A_27a ) ) ).
+
+thf(ax_thm_2Eprobability_2Eprob__space__def,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+      <=> ( ( p @ ( ap @ ( c_2Emeasure_2Emeasure__space @ A_27a ) @ V0p ) )
+          & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Emeasure_2Emeasure @ A_27a ) @ V0p ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+            = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Eindep__def,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ A_27a @ bool ) )
+         => ! [V2b: $i] :
+              ( ( mem @ V2b @ ( arr @ A_27a @ bool ) )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep @ A_27a ) @ V0p ) @ V1a ) @ V2b ) )
+              <=> ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1a ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2b ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ V1a ) @ V2b ) ) )
+                    = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ c_2Erealax_2Ereal__mul @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1a ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2b ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Eindep__families__def,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) )
+         => ! [V2r: $i] :
+              ( ( mem @ V2r @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep__families @ A_27a ) @ V0p ) @ V1q ) @ V2r ) )
+              <=> ! [V3s: $i] :
+                    ( ( mem @ V3s @ ( arr @ A_27a @ bool ) )
+                   => ! [V4t: $i] :
+                        ( ( mem @ V4t @ ( arr @ A_27a @ bool ) )
+                       => ( ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V3s ) @ V1q ) )
+                            & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V4t ) @ V2r ) ) )
+                         => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep @ A_27a ) @ V0p ) @ V3s ) @ V4t ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Eindep__function__def,axiom,
+    ! [A_27a: del,A_27b: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( ap @ ( c_2Eprobability_2Eindep__function @ A_27a @ A_27b ) @ V0p )
+        = ( ap @ ( c_2Epred__set_2EGSPEC @ ( arr @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27a ) ) @ ( arr @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27a ) ) )
+          @ ( lam @ ( arr @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27a ) )
+            @ ^ [V1f: $i] : ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27a ) ) @ bool ) @ V1f ) @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep__families @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ( arr @ A_27b @ bool ) @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27a @ A_27b ) @ ( ap @ ( ap @ ( c_2Ecombin_2Eo @ A_27a @ A_27b @ ( ty_2Epair_2Eprod @ A_27b @ A_27a ) ) @ ( c_2Epair_2EFST @ A_27b @ A_27a ) ) @ V1f ) ) ) @ ( c_2Epred__set_2EUNIV @ ( arr @ A_27b @ bool ) ) ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ( arr @ A_27a @ bool ) @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27a @ A_27a ) @ ( ap @ ( ap @ ( c_2Ecombin_2Eo @ A_27a @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27a ) ) @ ( c_2Epair_2ESND @ A_27b @ A_27a ) ) @ V1f ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Eprobably__def,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1e: $i] :
+          ( ( mem @ V1e @ ( arr @ A_27a @ bool ) )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Eprobability_2Eprobably @ A_27a ) @ V0p ) @ V1e ) )
+          <=> ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1e ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+              & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1e ) )
+                = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Epossibly__def,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1e: $i] :
+          ( ( mem @ V1e @ ( arr @ A_27a @ bool ) )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Eprobability_2Epossibly @ A_27a ) @ V0p ) @ V1e ) )
+          <=> ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1e ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+              & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1e ) )
+               != ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Erandom__variable__def,axiom,
+    ! [A_27a: del,A_27b: del,V0X: $i] :
+      ( ( mem @ V0X @ ( arr @ A_27a @ A_27b ) )
+     => ! [V1p: $i] :
+          ( ( mem @ V1p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+         => ! [V2s: $i] :
+              ( ( mem @ V2s @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27b ) @ V0X ) @ V1p ) @ V2s ) )
+              <=> ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V1p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ A_27b ) ) @ V0X ) @ ( ap @ ( ap @ ( c_2Emeasure_2Emeasurable @ A_27a @ A_27b ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27a @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V1p ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V1p ) ) ) @ V2s ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Ereal__random__variable__def,axiom,
+    ! [A_27a: del,V0X: $i] :
+      ( ( mem @ V0X @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) )
+     => ! [V1p: $i] :
+          ( ( mem @ V1p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Eprobability_2Ereal__random__variable @ A_27a ) @ V0X ) @ V1p ) )
+          <=> ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V1p ) )
+              & ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V2x ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V1p ) ) )
+                   => ( ( ( surj__ty_2Eextreal_2Eextreal @ ( ap @ V0X @ V2x ) )
+                       != fo__c_2Eextreal_2ENegInf )
+                      & ( ( surj__ty_2Eextreal_2Eextreal @ ( ap @ V0X @ V2x ) )
+                       != fo__c_2Eextreal_2EPosInf ) ) ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) ) @ V0X ) @ ( ap @ ( ap @ ( c_2Emeasure_2Emeasurable @ A_27a @ ty_2Eextreal_2Eextreal ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27a @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V1p ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V1p ) ) ) @ c_2Emeasure_2EBorel ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Edistribution__def,axiom,
+    ! [A_27a: del,A_27b: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27b @ A_27a ) )
+         => ( ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27a @ A_27b ) @ V0p ) @ V1X )
+            = ( lam @ ( arr @ A_27a @ bool )
+              @ ^ [V2s: $i] : ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27b ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27b ) @ ( ap @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27b @ A_27a ) @ V1X ) @ V2s ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27b ) @ V0p ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Ejoint__distribution__def,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27c @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27c @ bool ) @ bool ) @ ( arr @ ( arr @ A_27c @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27c @ A_27a ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27c @ A_27b ) )
+             => ( ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27a @ A_27b @ A_27c ) @ V0p ) @ V1X ) @ V2Y )
+                = ( lam @ ( arr @ ( ty_2Epair_2Eprod @ A_27a @ A_27b ) @ bool )
+                  @ ^ [V3a: $i] :
+                      ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27c ) @ V0p )
+                      @ ( ap
+                        @ ( ap @ ( c_2Epred__set_2EINTER @ A_27c )
+                          @ ( ap
+                            @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27c @ ( ty_2Epair_2Eprod @ A_27a @ A_27b ) )
+                              @ ( lam @ A_27c
+                                @ ^ [V4x: $i] : ( ap @ ( ap @ ( c_2Epair_2E_2C @ A_27a @ A_27b ) @ ( ap @ V1X @ V4x ) ) @ ( ap @ V2Y @ V4x ) ) ) )
+                            @ V3a ) )
+                        @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27c ) @ V0p ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Ejoint__distribution3__def,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27d @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27d @ bool ) @ bool ) @ ( arr @ ( arr @ A_27d @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27d @ A_27a ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27d @ A_27b ) )
+             => ! [V3Z: $i] :
+                  ( ( mem @ V3Z @ ( arr @ A_27d @ A_27c ) )
+                 => ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution3 @ A_27a @ A_27b @ A_27c @ A_27d ) @ V0p ) @ V1X ) @ V2Y ) @ V3Z )
+                    = ( lam @ ( arr @ ( ty_2Epair_2Eprod @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) @ bool )
+                      @ ^ [V4a: $i] :
+                          ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27d ) @ V0p )
+                          @ ( ap
+                            @ ( ap @ ( c_2Epred__set_2EINTER @ A_27d )
+                              @ ( ap
+                                @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27d @ ( ty_2Epair_2Eprod @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) )
+                                  @ ( lam @ A_27d
+                                    @ ^ [V5x: $i] : ( ap @ ( ap @ ( c_2Epair_2E_2C @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) @ ( ap @ V1X @ V5x ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ A_27b @ A_27c ) @ ( ap @ V2Y @ V5x ) ) @ ( ap @ V3Z @ V5x ) ) ) ) )
+                                @ V4a ) )
+                            @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27d ) @ V0p ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Econditional__distribution__def,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3a: $i] :
+                  ( ( mem @ V3a @ ( arr @ A_27b @ bool ) )
+                 => ! [V4b: $i] :
+                      ( ( mem @ V4b @ ( arr @ A_27c @ bool ) )
+                     => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Econditional__distribution @ A_27a @ A_27b @ A_27c ) @ V0p ) @ V1X ) @ V2Y ) @ V3a ) @ V4b ) )
+                        = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ c_2Ereal_2E_2F @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ V3a ) @ V4b ) ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27c @ A_27a ) @ V0p ) @ V2Y ) @ V4b ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Eexpectation__def,axiom,
+    ! [A_27a: del] :
+      ( ( c_2Eprobability_2Eexpectation @ A_27a )
+      = ( c_2Elebesgue_2Eintegral @ A_27a ) ) ).
+
+thf(ax_thm_2Eprobability_2Econditional__expectation__def,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) )
+         => ! [V2s: $i] :
+              ( ( mem @ V2s @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) )
+             => ( ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Econditional__expectation @ A_27a ) @ V0p ) @ V1X ) @ V2s )
+                = ( ap @ ( c_2Emin_2E_40 @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) )
+                  @ ( lam @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal )
+                    @ ^ [V3f: $i] :
+                        ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ ( c_2Eprobability_2Ereal__random__variable @ A_27a ) @ V3f ) @ V0p ) )
+                        @ ( ap @ ( c_2Ebool_2E_21 @ ( arr @ A_27a @ bool ) )
+                          @ ( lam @ ( arr @ A_27a @ bool )
+                            @ ^ [V4g: $i] :
+                                ( ap @ ( ap @ c_2Emin_2E_3D_3D_3E @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V4g ) @ V2s ) )
+                                @ ( ap
+                                  @ ( ap @ ( c_2Emin_2E_3D @ ty_2Eextreal_2Eextreal )
+                                    @ ( ap @ ( ap @ ( c_2Elebesgue_2Eintegral @ A_27a ) @ V0p )
+                                      @ ( lam @ A_27a
+                                        @ ^ [V5x: $i] : ( ap @ ( ap @ c_2Eextreal_2Eextreal__mul @ ( ap @ V3f @ V5x ) ) @ ( ap @ ( ap @ ( c_2Emeasure_2Eindicator__fn @ A_27a ) @ V4g ) @ V5x ) ) ) ) )
+                                  @ ( ap @ ( ap @ ( c_2Elebesgue_2Eintegral @ A_27a ) @ V0p )
+                                    @ ( lam @ A_27a
+                                      @ ^ [V6x: $i] : ( ap @ ( ap @ c_2Eextreal_2Eextreal__mul @ ( ap @ V1X @ V6x ) ) @ ( ap @ ( ap @ ( c_2Emeasure_2Eindicator__fn @ A_27a ) @ V4g ) @ V6x ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Econditional__prob__def,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1e1: $i] :
+          ( ( mem @ V1e1 @ ( arr @ A_27a @ bool ) )
+         => ! [V2e2: $i] :
+              ( ( mem @ V2e2 @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) )
+             => ( ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Econditional__prob @ A_27a ) @ V0p ) @ V1e1 ) @ V2e2 )
+                = ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Econditional__expectation @ A_27a ) @ V0p ) @ ( ap @ ( c_2Emeasure_2Eindicator__fn @ A_27a ) @ V1e1 ) ) @ V2e2 ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Erv__conditional__expectation__def,axiom,
+    ! [A_27a: del,A_27b: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) )
+         => ! [V2X: $i] :
+              ( ( mem @ V2X @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) )
+             => ! [V3Y: $i] :
+                  ( ( mem @ V3Y @ ( arr @ A_27a @ A_27b ) )
+                 => ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erv__conditional__expectation @ A_27a @ A_27b ) @ V0p ) @ V1s ) @ V2X ) @ V3Y )
+                    = ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Econditional__expectation @ A_27a ) @ V0p ) @ V2X )
+                      @ ( ap
+                        @ ( ap @ ( c_2Epred__set_2EIMAGE @ ( arr @ A_27b @ bool ) @ ( arr @ A_27a @ bool ) )
+                          @ ( lam @ ( arr @ A_27b @ bool )
+                            @ ^ [V4a: $i] : ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27a @ A_27b ) @ V3Y ) @ V4a ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                        @ ( ap @ ( c_2Emeasure_2Esubsets @ A_27b ) @ V1s ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Eindep__rv__def,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3s: $i] :
+                  ( ( mem @ V3s @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) )
+                 => ! [V4t: $i] :
+                      ( ( mem @ V4t @ ( ty_2Epair_2Eprod @ ( arr @ A_27c @ bool ) @ ( arr @ ( arr @ A_27c @ bool ) @ bool ) ) )
+                     => ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep__rv @ A_27a @ A_27b @ A_27c ) @ V0p ) @ V1X ) @ V2Y ) @ V3s ) @ V4t ) )
+                      <=> ! [V5A: $i] :
+                            ( ( mem @ V5A @ ( arr @ A_27b @ bool ) )
+                           => ! [V6B: $i] :
+                                ( ( mem @ V6B @ ( arr @ A_27c @ bool ) )
+                               => ( ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27b @ bool ) ) @ V5A ) @ ( ap @ ( c_2Emeasure_2Esubsets @ A_27b ) @ V3s ) ) )
+                                    & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27c @ bool ) ) @ V6B ) @ ( ap @ ( c_2Emeasure_2Esubsets @ A_27c ) @ V4t ) ) ) )
+                                 => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27a @ A_27b ) @ V1X ) @ V5A ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27a @ A_27c ) @ V2Y ) @ V6B ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprobability_2Euniform__distribution__def,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del,V0p: $i] :
+      ( ( mem @ V0p @ A_27b )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ A_27c )
+         => ! [V2s: $i] :
+              ( ( mem @ V2s @ ( ty_2Epair_2Eprod @ ( arr @ A_27d @ bool ) @ ( arr @ ( arr @ A_27d @ bool ) @ bool ) ) )
+             => ( ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Euniform__distribution @ A_27a @ A_27b @ A_27c @ A_27d ) @ V0p ) @ V1X ) @ V2s )
+                = ( lam @ ( arr @ A_27a @ bool )
+                  @ ^ [V3a: $i] : ( ap @ ( ap @ c_2Ereal_2E_2F @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ ( c_2Epred__set_2ECARD @ A_27a ) @ V3a ) ) ) @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ ( c_2Epred__set_2ECARD @ A_27d ) @ ( ap @ ( c_2Emeasure_2Espace @ A_27d ) @ V2s ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPOSITIVE__PROB,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Emeasure_2Epositive @ A_27a ) @ V0p ) )
+      <=> ( ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) )
+            = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) )
+          & ! [V1s: $i] :
+              ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+             => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+               => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EINCREASING__PROB,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Emeasure_2Eincreasing @ A_27a ) @ V0p ) )
+      <=> ! [V1s: $i] :
+            ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+           => ! [V2t: $i] :
+                ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+               => ( ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                    & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                    & ( p @ ( ap @ ( ap @ ( c_2Epred__set_2ESUBSET @ A_27a ) @ V1s ) @ V2t ) ) )
+                 => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2t ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EADDITIVE__PROB,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Emeasure_2Eadditive @ A_27a ) @ V0p ) )
+      <=> ! [V1s: $i] :
+            ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+           => ! [V2t: $i] :
+                ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+               => ( ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                    & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                    & ( p @ ( ap @ ( ap @ ( c_2Epred__set_2EDISJOINT @ A_27a ) @ V1s ) @ V2t ) ) )
+                 => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EUNION @ A_27a ) @ V1s ) @ V2t ) ) )
+                    = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ c_2Erealax_2Ereal__add @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2t ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2ECOUNTABLY__ADDITIVE__PROB,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Emeasure_2Ecountably__additive @ A_27a ) @ V0p ) )
+      <=> ! [V1f: $i] :
+            ( ( mem @ V1f @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) )
+           => ( ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) ) @ V1f ) @ ( ap @ ( ap @ ( c_2Epred__set_2EFUNSET @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+                & ! [V2m: tp__ty_2Enum_2Enum,V3n: tp__ty_2Enum_2Enum] :
+                    ( ( V2m != V3n )
+                   => ( p @ ( ap @ ( ap @ ( c_2Epred__set_2EDISJOINT @ A_27a ) @ ( ap @ V1f @ ( inj__ty_2Enum_2Enum @ V2m ) ) ) @ ( ap @ V1f @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) ) )
+                & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ V1f ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+             => ( p @ ( ap @ ( ap @ c_2Eseq_2Esums @ ( ap @ ( ap @ ( c_2Ecombin_2Eo @ ty_2Enum_2Enum @ ty_2Erealax_2Ereal @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) ) @ V1f ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ V1f ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__SPACE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+      <=> ( ( p @ ( ap @ ( c_2Emeasure_2Esigma__algebra @ A_27a ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27a @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+          & ( p @ ( ap @ ( c_2Emeasure_2Epositive @ A_27a ) @ V0p ) )
+          & ( p @ ( ap @ ( c_2Emeasure_2Ecountably__additive @ A_27a ) @ V0p ) )
+          & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+            = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS__SIGMA__ALGEBRA,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+       => ( p @ ( ap @ ( c_2Emeasure_2Esigma__algebra @ A_27a ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27a @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS__ALGEBRA,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+       => ( p @ ( ap @ ( c_2Emeasure_2Ealgebra @ A_27a ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27a @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__EMPTY,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+       => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) )
+          = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__UNIV,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+       => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+          = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__SPACE__POSITIVE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+       => ( p @ ( ap @ ( c_2Emeasure_2Epositive @ A_27a ) @ V0p ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__SPACE__COUNTABLY__ADDITIVE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+       => ( p @ ( ap @ ( c_2Emeasure_2Ecountably__additive @ A_27a ) @ V0p ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__SPACE__ADDITIVE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+       => ( p @ ( ap @ ( c_2Emeasure_2Eadditive @ A_27a ) @ V0p ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__SPACE__INCREASING,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+       => ( p @ ( ap @ ( c_2Emeasure_2Eincreasing @ A_27a ) @ V0p ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__POSITIVE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+           => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__INCREASING,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2t: $i] :
+              ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Epred__set_2ESUBSET @ A_27a ) @ V1s ) @ V2t ) ) )
+               => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2t ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__ADDITIVE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2t: $i] :
+              ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+             => ! [V3u: $i] :
+                  ( ( mem @ V3u @ ( arr @ A_27a @ bool ) )
+                 => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                      & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                      & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                      & ( p @ ( ap @ ( ap @ ( c_2Epred__set_2EDISJOINT @ A_27a ) @ V1s ) @ V2t ) )
+                      & ( V3u
+                        = ( ap @ ( ap @ ( c_2Epred__set_2EUNION @ A_27a ) @ V1s ) @ V2t ) ) )
+                   => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V3u ) )
+                      = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ c_2Erealax_2Ereal__add @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2t ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__COUNTABLY__ADDITIVE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2f: $i] :
+              ( ( mem @ V2f @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) ) @ V2f ) @ ( ap @ ( ap @ ( c_2Epred__set_2EFUNSET @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+                  & ! [V3m: tp__ty_2Enum_2Enum,V4n: tp__ty_2Enum_2Enum] :
+                      ( ( V3m != V4n )
+                     => ( p @ ( ap @ ( ap @ ( c_2Epred__set_2EDISJOINT @ A_27a ) @ ( ap @ V2f @ ( inj__ty_2Enum_2Enum @ V3m ) ) ) @ ( ap @ V2f @ ( inj__ty_2Enum_2Enum @ V4n ) ) ) ) )
+                  & ( V1s
+                    = ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ V2f ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) ) ) )
+               => ( p @ ( ap @ ( ap @ c_2Eseq_2Esums @ ( ap @ ( ap @ ( c_2Ecombin_2Eo @ ty_2Enum_2Enum @ ty_2Erealax_2Ereal @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) ) @ V2f ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__COMPL,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+           => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EDIFF @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ V1s ) ) )
+              = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ c_2Ereal_2Ereal__sub @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__INDEP,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2t: $i] :
+              ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+             => ! [V3u: $i] :
+                  ( ( mem @ V3u @ ( arr @ A_27a @ bool ) )
+                 => ( ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep @ A_27a ) @ V0p ) @ V1s ) @ V2t ) )
+                      & ( V3u
+                        = ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ V1s ) @ V2t ) ) )
+                   => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V3u ) )
+                      = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ c_2Erealax_2Ereal__mul @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2t ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPSPACE,axiom,
+    ! [A_27a: del,V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ A_27a @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) )
+         => ! [V2c: $i] :
+              ( ( mem @ V2c @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) )
+             => ( ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ V0a ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) @ V1b ) @ V2c ) ) )
+                = V0a ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS,axiom,
+    ! [A_27a: del,V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ A_27a @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) )
+         => ! [V2c: $i] :
+              ( ( mem @ V2c @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) )
+             => ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ V0a ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) @ V1b ) @ V2c ) ) )
+                = V1b ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB,axiom,
+    ! [A_27a: del,V0a: $i] :
+      ( ( mem @ V0a @ ( arr @ A_27a @ bool ) )
+     => ! [V1b: $i] :
+          ( ( mem @ V1b @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) )
+         => ! [V2c: $i] :
+              ( ( mem @ V2c @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) )
+             => ( ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ V0a ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) @ V1b ) @ V2c ) ) )
+                = V2c ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS__INTER,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2t: $i] :
+              ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+               => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ V1s ) @ V2t ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS__EMPTY,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+       => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS__SPACE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+       => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS__UNION,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2t: $i] :
+              ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+               => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EUNION @ A_27a ) @ V1s ) @ V2t ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EINDEP__EMPTY,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+           => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep @ A_27a ) @ V0p ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) @ V1s ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EINTER__PSPACE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+           => ( ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ V1s )
+              = V1s ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EINDEP__SPACE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+           => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep @ A_27a ) @ V0p ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ V1s ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS__DIFF,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2t: $i] :
+              ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+               => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EDIFF @ A_27a ) @ V1s ) @ V2t ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS__COMPL,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+           => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EDIFF @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ V1s ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS__COUNTABLE__UNION,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1c: $i] :
+          ( ( mem @ V1c @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Epred__set_2ESUBSET @ ( arr @ A_27a @ bool ) ) @ V1c ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+              & ( p @ ( ap @ ( c_2Epred__set_2Ecountable @ ( arr @ A_27a @ bool ) ) @ V1c ) ) )
+           => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ V1c ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__ZERO__UNION,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2t: $i] :
+              ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2t ) )
+                    = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) )
+               => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EUNION @ A_27a ) @ V1s ) @ V2t ) ) )
+                  = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__EQ__COMPL,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2t: $i] :
+              ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EDIFF @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ V1s ) ) )
+                    = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EDIFF @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ V2t ) ) ) ) )
+               => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) )
+                  = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2t ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__ONE__INTER,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2t: $i] :
+              ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                  & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2t ) )
+                    = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) )
+               => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ V1s ) @ V2t ) ) )
+                  = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EEVENTS__COUNTABLE__INTER,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1c: $i] :
+          ( ( mem @ V1c @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Epred__set_2ESUBSET @ ( arr @ A_27a @ bool ) ) @ V1c ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+              & ( p @ ( ap @ ( c_2Epred__set_2Ecountable @ ( arr @ A_27a @ bool ) ) @ V1c ) )
+              & ( V1c
+               != ( c_2Epred__set_2EEMPTY @ ( arr @ A_27a @ bool ) ) ) )
+           => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Epred__set_2EBIGINTER @ A_27a ) @ V1c ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EABS__PROB,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+           => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Eabs @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) )
+              = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__COMPL__LE1,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2r: tp__ty_2Erealax_2Ereal] :
+              ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+             => ( ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EDIFF @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) @ V1s ) ) ) @ ( inj__ty_2Erealax_2Ereal @ V2r ) ) )
+              <=> ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ c_2Ereal_2Ereal__sub @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) @ ( inj__ty_2Erealax_2Ereal @ V2r ) ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__LE__1,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+           => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__EQ__BIGUNION__IMAGE,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1g: $i] :
+          ( ( mem @ V1g @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2p: $i] :
+              ( ( mem @ V2p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V2p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) ) @ V0f ) @ ( ap @ ( ap @ ( c_2Epred__set_2EFUNSET @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V2p ) ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) ) @ V1g ) @ ( ap @ ( ap @ ( c_2Epred__set_2EFUNSET @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V2p ) ) ) )
+                  & ! [V3m: tp__ty_2Enum_2Enum,V4n: tp__ty_2Enum_2Enum] :
+                      ( ( V3m != V4n )
+                     => ( p @ ( ap @ ( ap @ ( c_2Epred__set_2EDISJOINT @ A_27a ) @ ( ap @ V0f @ ( inj__ty_2Enum_2Enum @ V3m ) ) ) @ ( ap @ V0f @ ( inj__ty_2Enum_2Enum @ V4n ) ) ) ) )
+                  & ! [V5m: tp__ty_2Enum_2Enum,V6n: tp__ty_2Enum_2Enum] :
+                      ( ( V5m != V6n )
+                     => ( p @ ( ap @ ( ap @ ( c_2Epred__set_2EDISJOINT @ A_27a ) @ ( ap @ V1g @ ( inj__ty_2Enum_2Enum @ V5m ) ) ) @ ( ap @ V1g @ ( inj__ty_2Enum_2Enum @ V6n ) ) ) ) )
+                  & ! [V7n: tp__ty_2Enum_2Enum] :
+                      ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V2p ) @ ( ap @ V0f @ ( inj__ty_2Enum_2Enum @ V7n ) ) ) )
+                      = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V2p ) @ ( ap @ V1g @ ( inj__ty_2Enum_2Enum @ V7n ) ) ) ) ) )
+               => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V2p ) @ ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ V0f ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) ) ) )
+                  = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V2p ) @ ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ V1g ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__FINITELY__ADDITIVE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2f: $i] :
+              ( ( mem @ V2f @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) )
+             => ! [V3n: tp__ty_2Enum_2Enum] :
+                  ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                    & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) ) @ V2f ) @ ( ap @ ( ap @ ( c_2Epred__set_2EFUNSET @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ ( ap @ c_2Epred__set_2Ecount @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+                    & ! [V4a: tp__ty_2Enum_2Enum,V5b: tp__ty_2Enum_2Enum] :
+                        ( ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V4a ) ) @ ( inj__ty_2Enum_2Enum @ V3n ) ) )
+                          & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V5b ) ) @ ( inj__ty_2Enum_2Enum @ V3n ) ) )
+                          & ( V4a != V5b ) )
+                       => ( p @ ( ap @ ( ap @ ( c_2Epred__set_2EDISJOINT @ A_27a ) @ ( ap @ V2f @ ( inj__ty_2Enum_2Enum @ V4a ) ) ) @ ( ap @ V2f @ ( inj__ty_2Enum_2Enum @ V5b ) ) ) ) )
+                    & ( V1s
+                      = ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ V2f ) @ ( ap @ c_2Epred__set_2Ecount @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) ) ) )
+                 => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ c_2Ereal_2Esum @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) @ ( ap @ ( ap @ ( c_2Ecombin_2Eo @ ty_2Enum_2Enum @ ty_2Erealax_2Ereal @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) ) @ V2f ) ) )
+                    = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EABS__1__MINUS__PROB,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+              & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) )
+               != ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) )
+           => ( p @ ( ap @ ( ap @ c_2Erealax_2Ereal__lt @ ( ap @ c_2Ereal_2Eabs @ ( ap @ ( ap @ c_2Ereal_2Ereal__sub @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__INCREASING__UNION,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2f: $i] :
+              ( ( mem @ V2f @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) ) @ V2f ) @ ( ap @ ( ap @ ( c_2Epred__set_2EFUNSET @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+                  & ! [V3n: tp__ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ ( c_2Epred__set_2ESUBSET @ A_27a ) @ ( ap @ V2f @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) @ ( ap @ V2f @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) ) )
+                  & ( V1s
+                    = ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ V2f ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) ) ) )
+               => ( p @ ( ap @ ( ap @ c_2Eseq_2E_2D_2D_3E @ ( ap @ ( ap @ ( c_2Ecombin_2Eo @ ty_2Enum_2Enum @ ty_2Erealax_2Ereal @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) ) @ V2f ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__SUBADDITIVE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2t: $i] :
+              ( ( mem @ V2t @ ( arr @ A_27a @ bool ) )
+             => ! [V3u: $i] :
+                  ( ( mem @ V3u @ ( arr @ A_27a @ bool ) )
+                 => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                      & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2t ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                      & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V3u ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                      & ( V1s
+                        = ( ap @ ( ap @ ( c_2Epred__set_2EUNION @ A_27a ) @ V2t ) @ V3u ) ) )
+                   => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) ) @ ( ap @ ( ap @ c_2Erealax_2Ereal__add @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2t ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V3u ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__COUNTABLY__SUBADDITIVE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Epred__set_2ESUBSET @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ V1f ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+              & ( p @ ( ap @ c_2Eseq_2Esummable @ ( ap @ ( ap @ ( c_2Ecombin_2Eo @ ty_2Enum_2Enum @ ty_2Erealax_2Ereal @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) ) @ V1f ) ) ) )
+           => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ ty_2Enum_2Enum @ ( arr @ A_27a @ bool ) ) @ V1f ) @ ( c_2Epred__set_2EUNIV @ ty_2Enum_2Enum ) ) ) ) ) @ ( ap @ c_2Eseq_2Esuminf @ ( ap @ ( ap @ ( c_2Ecombin_2Eo @ ty_2Enum_2Enum @ ty_2Erealax_2Ereal @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) ) @ V1f ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__COUNTABLY__ZERO,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1c: $i] :
+          ( ( mem @ V1c @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( c_2Epred__set_2Ecountable @ ( arr @ A_27a @ bool ) ) @ V1c ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Epred__set_2ESUBSET @ ( arr @ A_27a @ bool ) ) @ V1c ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+              & ! [V2x: $i] :
+                  ( ( mem @ V2x @ ( arr @ A_27a @ bool ) )
+                 => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2x ) @ V1c ) )
+                   => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2x ) )
+                      = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ) ) )
+           => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ V1c ) ) )
+              = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EINDEP__SYM,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ A_27a @ bool ) )
+         => ! [V2b: $i] :
+              ( ( mem @ V2b @ ( arr @ A_27a @ bool ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep @ A_27a ) @ V0p ) @ V1a ) @ V2b ) ) )
+               => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep @ A_27a ) @ V0p ) @ V2b ) @ V1a ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EINDEP__REFL,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1a ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) )
+           => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Eindep @ A_27a ) @ V0p ) @ V1a ) @ V1a ) )
+            <=> ( ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1a ) )
+                  = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) )
+                | ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1a ) )
+                  = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__REAL__SUM__IMAGE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+              & ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V2x ) @ V1s ) )
+                   => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V2x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) )
+              & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ V1s ) ) )
+           => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) )
+              = ( surj__ty_2Erealax_2Ereal
+                @ ( ap
+                  @ ( ap @ ( c_2Ereal__sigma_2EREAL__SUM__IMAGE @ A_27a )
+                    @ ( lam @ A_27a
+                      @ ^ [V3x: $i] : ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V3x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) ) )
+                  @ V1s ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__EQUIPROBABLE__FINITE__UNIONS,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V1s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+              & ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V2x ) @ V1s ) )
+                   => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V2x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) )
+              & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ V1s ) )
+              & ! [V3x: $i] :
+                  ( ( mem @ V3x @ A_27a )
+                 => ! [V4y: $i] :
+                      ( ( mem @ V4y @ A_27a )
+                     => ( ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V3x ) @ V1s ) )
+                          & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V4y ) @ V1s ) ) )
+                       => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V3x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) )
+                          = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V4y ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) ) ) ) ) ) )
+           => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V1s ) )
+              = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ c_2Erealax_2Ereal__mul @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ ( c_2Epred__set_2ECARD @ A_27a ) @ V1s ) ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ ( ap @ ( c_2Epred__set_2ECHOICE @ A_27a ) @ V1s ) ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__REAL__SUM__IMAGE__FN,axiom,
+    ! [A_27a: del,A_27b: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27b @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2e: $i] :
+              ( ( mem @ V2e @ ( arr @ A_27a @ bool ) )
+             => ! [V3s: $i] :
+                  ( ( mem @ V3s @ ( arr @ A_27b @ bool ) )
+                 => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                      & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2e ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                      & ! [V4x: $i] :
+                          ( ( mem @ V4x @ A_27b )
+                         => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27b ) @ V4x ) @ V3s ) )
+                           => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ V2e ) @ ( ap @ V1f @ V4x ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) )
+                      & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27b ) @ V3s ) )
+                      & ! [V5x: $i] :
+                          ( ( mem @ V5x @ A_27b )
+                         => ! [V6y: $i] :
+                              ( ( mem @ V6y @ A_27b )
+                             => ( ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27b ) @ V5x ) @ V3s ) )
+                                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27b ) @ V6y ) @ V3s ) )
+                                  & ( V5x != V6y ) )
+                               => ( p @ ( ap @ ( ap @ ( c_2Epred__set_2EDISJOINT @ A_27a ) @ ( ap @ V1f @ V5x ) ) @ ( ap @ V1f @ V6y ) ) ) ) ) )
+                      & ( ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ ( ap @ ( c_2Epred__set_2EBIGUNION @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27b @ ( arr @ A_27a @ bool ) ) @ V1f ) @ V3s ) ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) )
+                        = ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+                   => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ V2e ) )
+                      = ( surj__ty_2Erealax_2Ereal
+                        @ ( ap
+                          @ ( ap @ ( c_2Ereal__sigma_2EREAL__SUM__IMAGE @ A_27b )
+                            @ ( lam @ A_27b
+                              @ ^ [V7x: $i] : ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ V2e ) @ ( ap @ V1f @ V7x ) ) ) ) )
+                          @ V3s ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__REAL__SUM__IMAGE__SPACE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+          & ! [V1x: $i] :
+              ( ( mem @ V1x @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V1x ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+               => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V1x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) )
+          & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+       => ( ( surj__ty_2Erealax_2Ereal
+            @ ( ap
+              @ ( ap @ ( c_2Ereal__sigma_2EREAL__SUM__IMAGE @ A_27a )
+                @ ( lam @ A_27a
+                  @ ^ [V2x: $i] : ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V2x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) ) )
+              @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+          = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__DISCRETE__EVENTS,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+          & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+          & ! [V1x: $i] :
+              ( ( mem @ V1x @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V1x ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+               => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V1x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) )
+       => ! [V2s: $i] :
+            ( ( mem @ V2s @ ( arr @ A_27a @ bool ) )
+           => ( ( p @ ( ap @ ( ap @ ( c_2Epred__set_2ESUBSET @ A_27a ) @ V2s ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+             => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2EPROB__DISCRETE__EVENTS__COUNTABLE,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+          & ( p @ ( ap @ ( c_2Epred__set_2Ecountable @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+          & ! [V1x: $i] :
+              ( ( mem @ V1x @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V1x ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+               => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V1x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) )
+       => ! [V2s: $i] :
+            ( ( mem @ V2s @ ( arr @ A_27a @ bool ) )
+           => ( ( p @ ( ap @ ( ap @ ( c_2Epred__set_2ESUBSET @ A_27a ) @ V2s ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+             => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ V2s ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Emarginal__joint__zero,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3s: $i] :
+                  ( ( mem @ V3s @ ( arr @ A_27b @ bool ) )
+                 => ! [V4t: $i] :
+                      ( ( mem @ V4t @ ( arr @ A_27c @ bool ) )
+                     => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                          & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                            = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+                          & ( ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V0p ) @ V1X ) @ V3s ) )
+                              = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) )
+                            | ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27c @ A_27a ) @ V0p ) @ V2Y ) @ V4t ) )
+                              = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ) )
+                       => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ V3s ) @ V4t ) ) )
+                          = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Emarginal__joint__zero3,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3Z: $i] :
+                  ( ( mem @ V3Z @ ( arr @ A_27a @ A_27d ) )
+                 => ! [V4s: $i] :
+                      ( ( mem @ V4s @ ( arr @ A_27b @ bool ) )
+                     => ! [V5t: $i] :
+                          ( ( mem @ V5t @ ( arr @ A_27c @ bool ) )
+                         => ! [V6u: $i] :
+                              ( ( mem @ V6u @ ( arr @ A_27d @ bool ) )
+                             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                                  & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                                    = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+                                  & ( ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V0p ) @ V1X ) @ V4s ) )
+                                      = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) )
+                                    | ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27c @ A_27a ) @ V0p ) @ V2Y ) @ V5t ) )
+                                      = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) )
+                                    | ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27d @ A_27a ) @ V0p ) @ V3Z ) @ V6u ) )
+                                      = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ) )
+                               => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution3 @ A_27b @ A_27c @ A_27d @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ V3Z ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ ( ty_2Epair_2Eprod @ A_27c @ A_27d ) ) @ V4s ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27c @ A_27d ) @ V5t ) @ V6u ) ) ) )
+                                  = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Edistribution__prob__space,axiom,
+    ! [A_27a: del,A_27b: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2s: $i] :
+              ( ( mem @ V2s @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27b ) @ V1X ) @ V0p ) @ V2s ) )
+               => ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27b ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27b @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( ap @ ( c_2Emeasure_2Espace @ A_27b ) @ V2s ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ ty_2Erealax_2Ereal ) ) @ ( ap @ ( c_2Emeasure_2Esubsets @ A_27b ) @ V2s ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V0p ) @ V1X ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Euniform__distribution__prob__space,axiom,
+    ! [A_27a: del,A_27b: del,V0X: $i] :
+      ( ( mem @ V0X @ ( arr @ A_27a @ A_27b ) )
+     => ! [V1p: $i] :
+          ( ( mem @ V1p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+         => ! [V2s: $i] :
+              ( ( mem @ V2s @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) )
+             => ( ( ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V1p ) ) )
+                  & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27b ) @ ( ap @ ( c_2Emeasure_2Espace @ A_27b ) @ V2s ) ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27b ) @ V0X ) @ V1p ) @ V2s ) ) )
+               => ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27b ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27b @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( ap @ ( c_2Emeasure_2Espace @ A_27b ) @ V2s ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ ty_2Erealax_2Ereal ) ) @ ( ap @ ( c_2Emeasure_2Esubsets @ A_27b ) @ V2s ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Euniform__distribution @ A_27b @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( arr @ A_27a @ A_27b ) @ A_27b ) @ V1p ) @ V0X ) @ V2s ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Edistribution__partition,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V2x ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+                   => ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V2x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) ) ) )
+              & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+              & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ ty_2Eextreal_2Eextreal ) @ V1X ) @ V0p ) @ c_2Emeasure_2EBorel ) ) )
+           => ( ( surj__ty_2Erealax_2Ereal
+                @ ( ap
+                  @ ( ap @ ( c_2Ereal__sigma_2EREAL__SUM__IMAGE @ ty_2Eextreal_2Eextreal )
+                    @ ( lam @ ty_2Eextreal_2Eextreal
+                      @ ^ [V3x: $i] : ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ ty_2Eextreal_2Eextreal @ A_27a ) @ V0p ) @ V1X ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ ty_2Eextreal_2Eextreal ) @ V3x ) @ ( c_2Epred__set_2EEMPTY @ ty_2Eextreal_2Eextreal ) ) ) ) )
+                  @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ ty_2Eextreal_2Eextreal ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+              = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Edistribution__lebesgue__thm1,axiom,
+    ! [A_27a: del,A_27b: del,V0X: $i] :
+      ( ( mem @ V0X @ ( arr @ A_27a @ A_27b ) )
+     => ! [V1p: $i] :
+          ( ( mem @ V1p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+         => ! [V2s: $i] :
+              ( ( mem @ V2s @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) )
+             => ! [V3A: $i] :
+                  ( ( mem @ V3A @ ( arr @ A_27b @ bool ) )
+                 => ( ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27b ) @ V0X ) @ V1p ) @ V2s ) )
+                      & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27b @ bool ) ) @ V3A ) @ ( ap @ ( c_2Emeasure_2Esubsets @ A_27b ) @ V2s ) ) ) )
+                   => ( ( surj__ty_2Eextreal_2Eextreal @ ( ap @ c_2Eextreal_2ENormal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V1p ) @ V0X ) @ V3A ) ) )
+                      = ( surj__ty_2Eextreal_2Eextreal @ ( ap @ ( ap @ ( c_2Elebesgue_2Eintegral @ A_27a ) @ V1p ) @ ( ap @ ( c_2Emeasure_2Eindicator__fn @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27a @ A_27b ) @ V0X ) @ V3A ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V1p ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Edistribution__lebesgue__thm2,axiom,
+    ! [A_27a: del,A_27b: del,V0X: $i] :
+      ( ( mem @ V0X @ ( arr @ A_27a @ A_27b ) )
+     => ! [V1p: $i] :
+          ( ( mem @ V1p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+         => ! [V2s: $i] :
+              ( ( mem @ V2s @ ( ty_2Epair_2Eprod @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) )
+             => ! [V3A: $i] :
+                  ( ( mem @ V3A @ ( arr @ A_27b @ bool ) )
+                 => ( ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27b ) @ V0X ) @ V1p ) @ V2s ) )
+                      & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27b @ bool ) ) @ V3A ) @ ( ap @ ( c_2Emeasure_2Esubsets @ A_27b ) @ V2s ) ) ) )
+                   => ( ( surj__ty_2Eextreal_2Eextreal @ ( ap @ c_2Eextreal_2ENormal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V1p ) @ V0X ) @ V3A ) ) )
+                      = ( surj__ty_2Eextreal_2Eextreal @ ( ap @ ( ap @ ( c_2Elebesgue_2Eintegral @ A_27b ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27b @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( ap @ ( c_2Emeasure_2Espace @ A_27b ) @ V2s ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ ty_2Erealax_2Ereal ) ) @ ( ap @ ( c_2Emeasure_2Esubsets @ A_27b ) @ V2s ) ) @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V1p ) @ V0X ) ) ) ) @ ( ap @ ( c_2Emeasure_2Eindicator__fn @ A_27b ) @ V3A ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Efinite__expectation1,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) )
+         => ( ( ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Eprobability_2Ereal__random__variable @ A_27a ) @ V1X ) @ V0p ) ) )
+           => ( ( surj__ty_2Eextreal_2Eextreal @ ( ap @ ( ap @ ( c_2Eprobability_2Eexpectation @ A_27a ) @ V0p ) @ V1X ) )
+              = ( surj__ty_2Eextreal_2Eextreal
+                @ ( ap
+                  @ ( ap @ ( c_2Eextreal_2EEXTREAL__SUM__IMAGE @ ty_2Eextreal_2Eextreal )
+                    @ ( lam @ ty_2Eextreal_2Eextreal
+                      @ ^ [V2r: $i] : ( ap @ ( ap @ c_2Eextreal_2Eextreal__mul @ V2r ) @ ( ap @ c_2Eextreal_2ENormal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27a @ ty_2Eextreal_2Eextreal ) @ V1X ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ ty_2Eextreal_2Eextreal ) @ V2r ) @ ( c_2Epred__set_2EEMPTY @ ty_2Eextreal_2Eextreal ) ) ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) ) )
+                  @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ ty_2Eextreal_2Eextreal ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Efinite__expectation2,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) )
+         => ( ( ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ ty_2Eextreal_2Eextreal ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ ty_2Eextreal_2Eextreal ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Eprobability_2Ereal__random__variable @ A_27a ) @ V1X ) @ V0p ) ) )
+           => ( ( surj__ty_2Eextreal_2Eextreal @ ( ap @ ( ap @ ( c_2Eprobability_2Eexpectation @ A_27a ) @ V0p ) @ V1X ) )
+              = ( surj__ty_2Eextreal_2Eextreal
+                @ ( ap
+                  @ ( ap @ ( c_2Eextreal_2EEXTREAL__SUM__IMAGE @ ty_2Eextreal_2Eextreal )
+                    @ ( lam @ ty_2Eextreal_2Eextreal
+                      @ ^ [V2r: $i] : ( ap @ ( ap @ c_2Eextreal_2Eextreal__mul @ V2r ) @ ( ap @ c_2Eextreal_2ENormal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27a @ ty_2Eextreal_2Eextreal ) @ V1X ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ ty_2Eextreal_2Eextreal ) @ V2r ) @ ( c_2Epred__set_2EEMPTY @ ty_2Eextreal_2Eextreal ) ) ) ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) ) )
+                  @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ ty_2Eextreal_2Eextreal ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Efinite__expectation,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) )
+         => ( ( ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Eprobability_2Ereal__random__variable @ A_27a ) @ V1X ) @ V0p ) ) )
+           => ( ( surj__ty_2Eextreal_2Eextreal @ ( ap @ ( ap @ ( c_2Eprobability_2Eexpectation @ A_27a ) @ V0p ) @ V1X ) )
+              = ( surj__ty_2Eextreal_2Eextreal
+                @ ( ap
+                  @ ( ap @ ( c_2Eextreal_2EEXTREAL__SUM__IMAGE @ ty_2Eextreal_2Eextreal )
+                    @ ( lam @ ty_2Eextreal_2Eextreal
+                      @ ^ [V2r: $i] : ( ap @ ( ap @ c_2Eextreal_2Eextreal__mul @ V2r ) @ ( ap @ c_2Eextreal_2ENormal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ ty_2Eextreal_2Eextreal @ A_27a ) @ V0p ) @ V1X ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ ty_2Eextreal_2Eextreal ) @ V2r ) @ ( c_2Epred__set_2EEMPTY @ ty_2Eextreal_2Eextreal ) ) ) ) ) ) )
+                  @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ ty_2Eextreal_2Eextreal ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Efinite__support__expectation,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ ty_2Eextreal_2Eextreal ) )
+         => ( ( ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ ty_2Eextreal_2Eextreal ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ ty_2Eextreal_2Eextreal ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Eprobability_2Ereal__random__variable @ A_27a ) @ V1X ) @ V0p ) ) )
+           => ( ( surj__ty_2Eextreal_2Eextreal @ ( ap @ ( ap @ ( c_2Eprobability_2Eexpectation @ A_27a ) @ V0p ) @ V1X ) )
+              = ( surj__ty_2Eextreal_2Eextreal
+                @ ( ap
+                  @ ( ap @ ( c_2Eextreal_2EEXTREAL__SUM__IMAGE @ ty_2Eextreal_2Eextreal )
+                    @ ( lam @ ty_2Eextreal_2Eextreal
+                      @ ^ [V2r: $i] : ( ap @ ( ap @ c_2Eextreal_2Eextreal__mul @ V2r ) @ ( ap @ c_2Eextreal_2ENormal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ ty_2Eextreal_2Eextreal @ A_27a ) @ V0p ) @ V1X ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ ty_2Eextreal_2Eextreal ) @ V2r ) @ ( c_2Epred__set_2EEMPTY @ ty_2Eextreal_2Eextreal ) ) ) ) ) ) )
+                  @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ ty_2Eextreal_2Eextreal ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Efinite__marginal__product__space__POW,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ( ( ( ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) )
+                    = ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27b ) @ V1X ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27b ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) @ ( ap @ ( c_2Epred__set_2EPOW @ A_27b ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27b ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27c ) @ V2Y ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27c @ bool ) @ ( arr @ ( arr @ A_27c @ bool ) @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27c ) @ V2Y ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) @ ( ap @ ( c_2Epred__set_2EPOW @ A_27c ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27c ) @ V2Y ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) )
+                  & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+               => ( p
+                  @ ( ap @ ( c_2Emeasure_2Emeasure__space @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) )
+                    @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) @ bool ) @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27b ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27c ) @ V2Y ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                      @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) @ bool ) @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) @ ty_2Erealax_2Ereal ) ) @ ( ap @ ( c_2Epred__set_2EPOW @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27b ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27c ) @ V2Y ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) )
+                        @ ( lam @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool )
+                          @ ^ [V3a: $i] :
+                              ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p )
+                              @ ( ap
+                                @ ( ap @ ( c_2Epred__set_2EINTER @ A_27a )
+                                  @ ( ap
+                                    @ ( ap @ ( c_2Epred__set_2EPREIMAGE @ A_27a @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) )
+                                      @ ( lam @ A_27a
+                                        @ ^ [V4x: $i] : ( ap @ ( ap @ ( c_2Epair_2E_2C @ A_27b @ A_27c ) @ ( ap @ V1X @ V4x ) ) @ ( ap @ V2Y @ V4x ) ) ) )
+                                    @ V3a ) )
+                                @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Efinite__marginal__product__space__POW2,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s1: $i] :
+          ( ( mem @ V1s1 @ ( arr @ A_27b @ bool ) )
+         => ! [V2s2: $i] :
+              ( ( mem @ V2s2 @ ( arr @ A_27c @ bool ) )
+             => ! [V3X: $i] :
+                  ( ( mem @ V3X @ ( arr @ A_27a @ A_27b ) )
+                 => ! [V4Y: $i] :
+                      ( ( mem @ V4Y @ ( arr @ A_27a @ A_27c ) )
+                     => ( ( ( ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) )
+                            = ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) )
+                          & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27b ) @ V3X ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) @ V1s1 ) @ ( ap @ ( c_2Epred__set_2EPOW @ A_27b ) @ V1s1 ) ) ) )
+                          & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27c ) @ V4Y ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27c @ bool ) @ ( arr @ ( arr @ A_27c @ bool ) @ bool ) ) @ V2s2 ) @ ( ap @ ( c_2Epred__set_2EPOW @ A_27c ) @ V2s2 ) ) ) )
+                          & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+                          & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27b ) @ V1s1 ) )
+                          & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27c ) @ V2s2 ) ) )
+                       => ( p @ ( ap @ ( c_2Emeasure_2Emeasure__space @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) @ bool ) @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ V1s1 ) @ V2s2 ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) @ bool ) @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) @ ty_2Erealax_2Ereal ) ) @ ( ap @ ( c_2Epred__set_2EPOW @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ V1s1 ) @ V2s2 ) ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V3X ) @ V4Y ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Efinite__marginal__product__space__POW3,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1s1: $i] :
+          ( ( mem @ V1s1 @ ( arr @ A_27b @ bool ) )
+         => ! [V2s2: $i] :
+              ( ( mem @ V2s2 @ ( arr @ A_27c @ bool ) )
+             => ! [V3s3: $i] :
+                  ( ( mem @ V3s3 @ ( arr @ A_27d @ bool ) )
+                 => ! [V4X: $i] :
+                      ( ( mem @ V4X @ ( arr @ A_27a @ A_27b ) )
+                     => ! [V5Y: $i] :
+                          ( ( mem @ V5Y @ ( arr @ A_27a @ A_27c ) )
+                         => ! [V6Z: $i] :
+                              ( ( mem @ V6Z @ ( arr @ A_27a @ A_27d ) )
+                             => ( ( ( ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) )
+                                    = ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) )
+                                  & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27b ) @ V4X ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) @ V1s1 ) @ ( ap @ ( c_2Epred__set_2EPOW @ A_27b ) @ V1s1 ) ) ) )
+                                  & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27c ) @ V5Y ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27c @ bool ) @ ( arr @ ( arr @ A_27c @ bool ) @ bool ) ) @ V2s2 ) @ ( ap @ ( c_2Epred__set_2EPOW @ A_27c ) @ V2s2 ) ) ) )
+                                  & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27d ) @ V6Z ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27d @ bool ) @ ( arr @ ( arr @ A_27d @ bool ) @ bool ) ) @ V3s3 ) @ ( ap @ ( c_2Epred__set_2EPOW @ A_27d ) @ V3s3 ) ) ) )
+                                  & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+                                  & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27b ) @ V1s1 ) )
+                                  & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27c ) @ V2s2 ) )
+                                  & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27d ) @ V3s3 ) ) )
+                               => ( p @ ( ap @ ( c_2Emeasure_2Emeasure__space @ ( ty_2Epair_2Eprod @ A_27b @ ( ty_2Epair_2Eprod @ A_27c @ A_27d ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ ( ty_2Epair_2Eprod @ A_27c @ A_27d ) ) @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ ( ty_2Epair_2Eprod @ A_27c @ A_27d ) ) @ bool ) @ bool ) @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ ( ty_2Epair_2Eprod @ A_27c @ A_27d ) ) @ bool ) @ ty_2Erealax_2Ereal ) ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ ( ty_2Epair_2Eprod @ A_27c @ A_27d ) ) @ V1s1 ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27c @ A_27d ) @ V2s2 ) @ V3s3 ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ ( ty_2Epair_2Eprod @ A_27c @ A_27d ) ) @ bool ) @ bool ) @ ( arr @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ ( ty_2Epair_2Eprod @ A_27c @ A_27d ) ) @ bool ) @ ty_2Erealax_2Ereal ) ) @ ( ap @ ( c_2Epred__set_2EPOW @ ( ty_2Epair_2Eprod @ A_27b @ ( ty_2Epair_2Eprod @ A_27c @ A_27d ) ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ ( ty_2Epair_2Eprod @ A_27c @ A_27d ) ) @ V1s1 ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27c @ A_27d ) @ V2s2 ) @ V3s3 ) ) ) ) @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution3 @ A_27b @ A_27c @ A_27d @ A_27a ) @ V0p ) @ V4X ) @ V5Y ) @ V6Z ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Eprob__x__eq__1__imp__prob__y__eq__0,axiom,
+    ! [A_27a: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V1x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+              & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V1x ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) )
+                = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ( ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ ( arr @ A_27a @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V2y ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) @ ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p ) ) )
+                    & ( V2y != V1x ) )
+                 => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( c_2Eprobability_2Eprob @ A_27a ) @ V0p ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27a ) @ V2y ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) )
+                    = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Edistribution__x__eq__1__imp__distribution__y__eq__0,axiom,
+    ! [A_27a: del,A_27b: del,V0X: $i] :
+      ( ( mem @ V0X @ ( arr @ A_27a @ A_27b ) )
+     => ! [V1p: $i] :
+          ( ( mem @ V1p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27b )
+             => ( ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Erandom__variable @ A_27a @ A_27b ) @ V0X ) @ V1p ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( arr @ A_27b @ bool ) @ ( arr @ ( arr @ A_27b @ bool ) @ bool ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27b ) @ V0X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V1p ) ) ) @ ( ap @ ( c_2Epred__set_2EPOW @ A_27b ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27b ) @ V0X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V1p ) ) ) ) ) )
+                  & ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V1p ) @ V0X ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27b ) @ V2x ) @ ( c_2Epred__set_2EEMPTY @ A_27b ) ) ) )
+                    = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27b )
+                   => ( ( V3y != V2x )
+                     => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V1p ) @ V0X ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27b ) @ V3y ) @ ( c_2Epred__set_2EEMPTY @ A_27b ) ) ) )
+                        = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Ejoint__distribution__sym,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3a: $i] :
+                  ( ( mem @ V3a @ ( arr @ A_27b @ bool ) )
+                 => ! [V4b: $i] :
+                      ( ( mem @ V4b @ ( arr @ A_27c @ bool ) )
+                     => ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                       => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ V3a ) @ V4b ) ) )
+                          = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27c @ A_27b @ A_27a ) @ V0p ) @ V2Y ) @ V1X ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27c @ A_27b ) @ V4b ) @ V3a ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Ejoint__distribution__pos,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3a: $i] :
+                  ( ( mem @ V3a @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) )
+                 => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                      & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                        = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                   => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ V3a ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Ejoint__distribution__le__1,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3a: $i] :
+                  ( ( mem @ V3a @ ( arr @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) @ bool ) )
+                 => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                      & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                        = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                   => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ V3a ) ) @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Ejoint__distribution__le,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3a: $i] :
+                  ( ( mem @ V3a @ ( arr @ A_27b @ bool ) )
+                 => ! [V4b: $i] :
+                      ( ( mem @ V4b @ ( arr @ A_27c @ bool ) )
+                     => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                          & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                            = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                       => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ V3a ) @ V4b ) ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V0p ) @ V1X ) @ V3a ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Ejoint__distribution__le2,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3a: $i] :
+                  ( ( mem @ V3a @ ( arr @ A_27b @ bool ) )
+                 => ! [V4b: $i] :
+                      ( ( mem @ V4b @ ( arr @ A_27c @ bool ) )
+                     => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                          & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                            = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                       => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ V3a ) @ V4b ) ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27c @ A_27a ) @ V0p ) @ V2Y ) @ V4b ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Ejoint__conditional,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3a: $i] :
+                  ( ( mem @ V3a @ ( arr @ A_27b @ bool ) )
+                 => ! [V4b: $i] :
+                      ( ( mem @ V4b @ ( arr @ A_27c @ bool ) )
+                     => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                          & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                            = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                       => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ V3a ) @ V4b ) ) )
+                          = ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ c_2Erealax_2Ereal__mul @ ( ap @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Econditional__distribution @ A_27a @ A_27c @ A_27b ) @ V0p ) @ V2Y ) @ V1X ) @ V4b ) @ V3a ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V0p ) @ V1X ) @ V3a ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Edistribution__pos,axiom,
+    ! [A_27a: del,A_27b: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2a: $i] :
+              ( ( mem @ V2a @ ( arr @ A_27b @ bool ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                    = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+               => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V0p ) @ V1X ) @ V2a ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Econditional__distribution__pos,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3a: $i] :
+                  ( ( mem @ V3a @ ( arr @ A_27b @ bool ) )
+                 => ! [V4b: $i] :
+                      ( ( mem @ V4b @ ( arr @ A_27c @ bool ) )
+                     => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                          & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                            = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                       => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ c_2Ereal_2Ereal__of__num @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ ( ap @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Econditional__distribution @ A_27a @ A_27b @ A_27c ) @ V0p ) @ V1X ) @ V2Y ) @ V3a ) @ V4b ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Econditional__distribution__le__1,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3a: $i] :
+                  ( ( mem @ V3a @ ( arr @ A_27b @ bool ) )
+                 => ! [V4b: $i] :
+                      ( ( mem @ V4b @ ( arr @ A_27c @ bool ) )
+                     => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                          & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                            = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                       => ( p @ ( ap @ ( ap @ c_2Ereal_2Ereal__lte @ ( ap @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Econditional__distribution @ A_27a @ A_27b @ A_27c ) @ V0p ) @ V1X ) @ V2Y ) @ V3a ) @ V4b ) ) @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Emarginal__distribution1,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3a: $i] :
+                  ( ( mem @ V3a @ ( arr @ A_27b @ bool ) )
+                 => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                      & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+                      & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                        = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                   => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V0p ) @ V1X ) @ V3a ) )
+                      = ( surj__ty_2Erealax_2Ereal
+                        @ ( ap
+                          @ ( ap @ ( c_2Ereal__sigma_2EREAL__SUM__IMAGE @ A_27c )
+                            @ ( lam @ A_27c
+                              @ ^ [V4x: $i] : ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ V3a ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27c ) @ V4x ) @ ( c_2Epred__set_2EEMPTY @ A_27c ) ) ) ) ) )
+                          @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27c ) @ V2Y ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Emarginal__distribution2,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3b: $i] :
+                  ( ( mem @ V3b @ ( arr @ A_27c @ bool ) )
+                 => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                      & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+                      & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                        = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                   => ( ( surj__ty_2Erealax_2Ereal @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27c @ A_27a ) @ V0p ) @ V2Y ) @ V3b ) )
+                      = ( surj__ty_2Erealax_2Ereal
+                        @ ( ap
+                          @ ( ap @ ( c_2Ereal__sigma_2EREAL__SUM__IMAGE @ A_27b )
+                            @ ( lam @ A_27b
+                              @ ^ [V4x: $i] : ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27b ) @ V4x ) @ ( c_2Epred__set_2EEMPTY @ A_27b ) ) ) @ V3b ) ) ) )
+                          @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27b ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Ejoint__distribution__sums__1,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                  & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+                  & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                    = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+               => ( ( surj__ty_2Erealax_2Ereal
+                    @ ( ap
+                      @ ( ap @ ( c_2Ereal__sigma_2EREAL__SUM__IMAGE @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) )
+                        @ ( ap @ ( c_2Epair_2EUNCURRY @ A_27b @ A_27c @ ty_2Erealax_2Ereal )
+                          @ ( lam @ A_27b
+                            @ ^ [V3x: $i] :
+                                ( lam @ A_27c
+                                @ ^ [V4y: $i] : ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ A_27b @ A_27c ) @ V3x ) @ V4y ) ) @ ( c_2Epred__set_2EEMPTY @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) ) ) ) ) ) )
+                      @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27b ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27c ) @ V2Y ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) )
+                  = ( surj__ty_2Erealax_2Ereal @ ( ap @ c_2Ereal_2Ereal__of__num @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprobability_2Ejoint__distribution__sum__mul1,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0p: $i] :
+      ( ( mem @ V0p @ ( ty_2Epair_2Eprod @ ( arr @ A_27a @ bool ) @ ( ty_2Epair_2Eprod @ ( arr @ ( arr @ A_27a @ bool ) @ bool ) @ ( arr @ ( arr @ A_27a @ bool ) @ ty_2Erealax_2Ereal ) ) ) )
+     => ! [V1X: $i] :
+          ( ( mem @ V1X @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2Y: $i] :
+              ( ( mem @ V2Y @ ( arr @ A_27a @ A_27c ) )
+             => ! [V3f: $i] :
+                  ( ( mem @ V3f @ ( arr @ A_27b @ ty_2Erealax_2Ereal ) )
+                 => ( ( ( p @ ( ap @ ( c_2Eprobability_2Eprob__space @ A_27a ) @ V0p ) )
+                      & ( p @ ( ap @ ( c_2Epred__set_2EFINITE @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) )
+                      & ( ( ap @ ( c_2Eprobability_2Eevents @ A_27a ) @ V0p )
+                        = ( ap @ ( c_2Epred__set_2EPOW @ A_27a ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) )
+                   => ( ( surj__ty_2Erealax_2Ereal
+                        @ ( ap
+                          @ ( ap @ ( c_2Ereal__sigma_2EREAL__SUM__IMAGE @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) )
+                            @ ( ap @ ( c_2Epair_2EUNCURRY @ A_27b @ A_27c @ ty_2Erealax_2Ereal )
+                              @ ( lam @ A_27b
+                                @ ^ [V4x: $i] :
+                                    ( lam @ A_27c
+                                    @ ^ [V5y: $i] : ( ap @ ( ap @ c_2Erealax_2Ereal__mul @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Ejoint__distribution @ A_27b @ A_27c @ A_27a ) @ V0p ) @ V1X ) @ V2Y ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ A_27b @ A_27c ) @ V4x ) @ V5y ) ) @ ( c_2Epred__set_2EEMPTY @ ( ty_2Epair_2Eprod @ A_27b @ A_27c ) ) ) ) ) @ ( ap @ V3f @ V4x ) ) ) ) ) )
+                          @ ( ap @ ( ap @ ( c_2Epred__set_2ECROSS @ A_27b @ A_27c ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27b ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27c ) @ V2Y ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) )
+                      = ( surj__ty_2Erealax_2Ereal
+                        @ ( ap
+                          @ ( ap @ ( c_2Ereal__sigma_2EREAL__SUM__IMAGE @ A_27b )
+                            @ ( lam @ A_27b
+                              @ ^ [V6x: $i] : ( ap @ ( ap @ c_2Erealax_2Ereal__mul @ ( ap @ ( ap @ ( ap @ ( c_2Eprobability_2Edistribution @ A_27b @ A_27a ) @ V0p ) @ V1X ) @ ( ap @ ( ap @ ( c_2Epred__set_2EINSERT @ A_27b ) @ V6x ) @ ( c_2Epred__set_2EEMPTY @ A_27b ) ) ) ) @ ( ap @ V3f @ V6x ) ) ) )
+                          @ ( ap @ ( ap @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27b ) @ V1X ) @ ( ap @ ( c_2Eprobability_2Ep__space @ A_27a ) @ V0p ) ) ) ) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

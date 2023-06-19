@@ -1,0 +1,79 @@
+%------------------------------------------------------------------------------
+% File     : SWV005-5 : TPTP v8.1.2. Released v3.2.0.
+% Domain   : Software Verification
+% Axioms   : Cryptographic protocol axioms for Yahalom
+% Version  : [Pau06] axioms.
+% English  :
+
+% Refs     : [Pau06] Paulson (2006), Email to G. Sutcliffe
+% Source   : [Pau06]
+% Names    : Yahalom.ax [Pau06]
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   12 (   1 unt;   3 nHn;   8 RR)
+%            Number of literals    :   30 (   2 equ;  16 neg)
+%            Maximal clause size   :    4 (   2 avg)
+%            Maximal term depth    :    9 (   2 avg)
+%            Number of predicates  :    3 (   2 usr;   0 prp; 2-3 aty)
+%            Number of functors    :   29 (  29 usr;   9 con; 0-4 aty)
+%            Number of variables   :   63 (  23 sgn)
+% SPC      : 
+
+% Comments : Requires MSC001-0.ax, MSC001-1.ax, SWV005-0.ax, SWV005-2.ax,
+%            SWV005-3.ax, SWV005-4.ax
+%------------------------------------------------------------------------------
+cnf(cls_Yahalom_OA__trusts__YM3_0,axiom,
+    ( ~ c_in(V_evs,c_Yahalom_Oyahalom,tc_List_Olist(tc_Event_Oevent))
+    | ~ c_in(c_Message_Omsg_OCrypt(c_Public_OshrK(V_A),c_Message_Omsg_OMPair(c_Message_Omsg_OAgent(V_B),c_Message_Omsg_OMPair(c_Message_Omsg_OKey(V_K),c_Message_Omsg_OMPair(V_na,V_nb)))),c_Message_Oparts(c_Event_Oknows(c_Message_Oagent_OSpy,V_evs)),tc_Message_Omsg)
+    | c_in(V_A,c_Event_Obad,tc_Message_Oagent)
+    | c_in(c_Event_Oevent_OSays(c_Message_Oagent_OServer,V_A,c_Message_Omsg_OMPair(c_Message_Omsg_OCrypt(c_Public_OshrK(V_A),c_Message_Omsg_OMPair(c_Message_Omsg_OAgent(V_B),c_Message_Omsg_OMPair(c_Message_Omsg_OKey(V_K),c_Message_Omsg_OMPair(V_na,V_nb)))),c_Message_Omsg_OCrypt(c_Public_OshrK(V_B),c_Message_Omsg_OMPair(c_Message_Omsg_OAgent(V_A),c_Message_Omsg_OKey(V_K))))),c_List_Oset(V_evs,tc_Event_Oevent),tc_Event_Oevent) ) ).
+
+cnf(cls_Yahalom_OGets__imp__Says_0,axiom,
+    ( ~ c_in(V_evs,c_Yahalom_Oyahalom,tc_List_Olist(tc_Event_Oevent))
+    | ~ c_in(c_Event_Oevent_OGets(V_B,V_X),c_List_Oset(V_evs,tc_Event_Oevent),tc_Event_Oevent)
+    | c_in(c_Event_Oevent_OSays(v_sko__wPE(V_B,V_X,V_evs),V_B,V_X),c_List_Oset(V_evs,tc_Event_Oevent),tc_Event_Oevent) ) ).
+
+cnf(cls_Yahalom_OKeyWithNonce__Gets_0,axiom,
+    ( ~ c_Yahalom_OKeyWithNonce(V_K,V_NB,c_List_Olist_OCons(c_Event_Oevent_OGets(V_A,V_X),V_evs,tc_Event_Oevent))
+    | c_Yahalom_OKeyWithNonce(V_K,V_NB,V_evs) ) ).
+
+cnf(cls_Yahalom_OKeyWithNonce__Gets_1,axiom,
+    ( ~ c_Yahalom_OKeyWithNonce(V_K,V_NB,V_evs)
+    | c_Yahalom_OKeyWithNonce(V_K,V_NB,c_List_Olist_OCons(c_Event_Oevent_OGets(V_A,V_X),V_evs,tc_Event_Oevent)) ) ).
+
+cnf(cls_Yahalom_OKeyWithNonce__Notes_0,axiom,
+    ( ~ c_Yahalom_OKeyWithNonce(V_K,V_NB,c_List_Olist_OCons(c_Event_Oevent_ONotes(V_A,V_X),V_evs,tc_Event_Oevent))
+    | c_Yahalom_OKeyWithNonce(V_K,V_NB,V_evs) ) ).
+
+cnf(cls_Yahalom_OKeyWithNonce__Notes_1,axiom,
+    ( ~ c_Yahalom_OKeyWithNonce(V_K,V_NB,V_evs)
+    | c_Yahalom_OKeyWithNonce(V_K,V_NB,c_List_Olist_OCons(c_Event_Oevent_ONotes(V_A,V_X),V_evs,tc_Event_Oevent)) ) ).
+
+cnf(cls_Yahalom_OKeyWithNonce__Says_0,axiom,
+    ( ~ c_Yahalom_OKeyWithNonce(V_K,V_NB,c_List_Olist_OCons(c_Event_Oevent_OSays(V_S,V_A,V_X),V_evs,tc_Event_Oevent))
+    | c_Yahalom_OKeyWithNonce(V_K,V_NB,V_evs)
+    | c_Message_Oagent_OServer = V_S ) ).
+
+cnf(cls_Yahalom_OKeyWithNonce__Says_1,axiom,
+    ( ~ c_Yahalom_OKeyWithNonce(V_K,V_NB,c_List_Olist_OCons(c_Event_Oevent_OSays(V_S,V_A,V_X),V_evs,tc_Event_Oevent))
+    | c_Yahalom_OKeyWithNonce(V_K,V_NB,V_evs)
+    | V_X = c_Message_Omsg_OMPair(c_Message_Omsg_OCrypt(c_Public_OshrK(V_A),c_Message_Omsg_OMPair(c_Message_Omsg_OAgent(v_sko__2VZ(V_A,V_K,V_NB,V_X)),c_Message_Omsg_OMPair(c_Message_Omsg_OKey(V_K),c_Message_Omsg_OMPair(v_sko__2Va(V_A,V_K,V_NB,V_X),c_Message_Omsg_ONonce(V_NB))))),v_sko__2Vb(V_A,V_K,V_NB,V_X)) ) ).
+
+cnf(cls_Yahalom_OKeyWithNonce__Says_2,axiom,
+    c_Yahalom_OKeyWithNonce(V_K,V_NB,c_List_Olist_OCons(c_Event_Oevent_OSays(c_Message_Oagent_OServer,V_A,c_Message_Omsg_OMPair(c_Message_Omsg_OCrypt(c_Public_OshrK(V_A),c_Message_Omsg_OMPair(c_Message_Omsg_OAgent(V_U),c_Message_Omsg_OMPair(c_Message_Omsg_OKey(V_K),c_Message_Omsg_OMPair(V_V,c_Message_Omsg_ONonce(V_NB))))),V_W)),V_evs,tc_Event_Oevent)) ).
+
+cnf(cls_Yahalom_OKeyWithNonce__Says_3,axiom,
+    ( ~ c_Yahalom_OKeyWithNonce(V_K,V_NB,V_evs)
+    | c_Yahalom_OKeyWithNonce(V_K,V_NB,c_List_Olist_OCons(c_Event_Oevent_OSays(V_S,V_A,V_X),V_evs,tc_Event_Oevent)) ) ).
+
+cnf(cls_Yahalom_OSays__Server__not__shrK_0,axiom,
+    ( ~ c_in(V_evs,c_Yahalom_Oyahalom,tc_List_Olist(tc_Event_Oevent))
+    | ~ c_in(c_Event_Oevent_OSays(c_Message_Oagent_OServer,V_A,c_Message_Omsg_OMPair(c_Message_Omsg_OCrypt(c_Public_OshrK(V_A),c_Message_Omsg_OMPair(c_Message_Omsg_OAgent(V_B),c_Message_Omsg_OMPair(c_Message_Omsg_OKey(c_Public_OshrK(V_x)),c_Message_Omsg_OMPair(V_na,V_nb)))),V_X)),c_List_Oset(V_evs,tc_Event_Oevent),tc_Event_Oevent) ) ).
+
+cnf(cls_Yahalom_Onew__keys__not__used_0,axiom,
+    ( ~ c_in(V_K,c_Message_OkeysFor(c_Message_Oparts(c_Event_Oknows(c_Message_Oagent_OSpy,V_evs))),tc_nat)
+    | ~ c_in(V_K,c_Message_OsymKeys,tc_nat)
+    | ~ c_in(V_evs,c_Yahalom_Oyahalom,tc_List_Olist(tc_Event_Oevent))
+    | c_in(c_Message_Omsg_OKey(V_K),c_Event_Oused(V_evs),tc_Message_Omsg) ) ).
+
+%------------------------------------------------------------------------------

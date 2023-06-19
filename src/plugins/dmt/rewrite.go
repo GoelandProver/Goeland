@@ -44,6 +44,7 @@ import (
 	"fmt"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -93,7 +94,7 @@ func addRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif treetypes.Mat
 	useful_subst := ctypes.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas())
 	meta_search := atomic.GetMetas()
 	if !checkMetaAreFromSearch(meta_search, useful_subst) {
-		fmt.Printf("[DMT] Error : There is at least one meta in final subst which is not from search : %v - %v - %v\n", useful_subst.ToString(), atomic.ToString(), unif.GetForm().ToString())
+		global.PrintError("DMT", fmt.Sprintf("There is at least one meta in final subst which is not from search : %v - %v - %v", useful_subst.ToString(), atomic.ToString(), unif.GetForm().ToString()))
 	}
 	filteredUnif := treetypes.MakeMatchingSubstitutions(
 		unif.GetForm(),

@@ -45,6 +45,7 @@ package basictypes
 import (
 	"strings"
 
+	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -69,6 +70,7 @@ func (p Pred) GetTypeVars() []typing.TypeApp { return typing.CopyTypeAppList(p.t
 
 func (p Pred) GetType() typing.TypeScheme { return p.typeHint }
 func (p Pred) RenameVariables() Form      { return p }
+func (p Pred) CleanFormula() Form         { return p }
 
 func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
@@ -86,7 +88,7 @@ func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 	// Defined infix: =
 	if p.GetID().GetName() == "=" {
 		if len(p.GetArgs()) != 2 {
-			panic("= should only have 2 arguments")
+			global.PrintPanic("Pred", "infix '=' should only have 2 arguments")
 		}
 		return "(" + p.GetArgs()[0].ToMappedString(map_, type_) + " = " + p.GetArgs()[1].ToMappedString(map_, type_) + ")"
 	}
@@ -111,7 +113,7 @@ func (p Pred) Copy() Form {
 	return MakePred(p.GetIndex(), p.GetID(), p.GetArgs(), typing.CopyTypeAppList(p.GetTypeVars()), p.GetType())
 }
 
-func (p Pred) Equals(f Form) bool {
+func (p Pred) Equals(f any) bool {
 	oth, isPred := f.(Pred)
 	return isPred &&
 		oth.GetID().Equals(p.GetID()) &&

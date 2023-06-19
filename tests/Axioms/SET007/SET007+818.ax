@@ -1,0 +1,488 @@
+%------------------------------------------------------------------------------
+% File     : SET007+818 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Recursive Definitions. Part II
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : recdef_2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   48 (  12 unt;   0 def)
+%            Number of atoms       :  274 ( 155 equ)
+%            Maximal formula atoms :   30 (   5 avg)
+%            Number of connectives :  244 (  18   ~;   0   |; 139   &)
+%                                         (  12 <=>;  75  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   15 (   8 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   17 (  15 usr;   1 prp; 0-5 aty)
+%            Number of functors    :  108 ( 108 usr;  67 con; 0-5 aty)
+%            Number of variables   :  209 ( 135   !;  74   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(d1_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D] : A = k3_mcart_1(B,C,D)
+     => ! [B] :
+          ( B = k1_recdef_2(A)
+        <=> ! [C,D,E] :
+              ( A = k3_mcart_1(C,D,E)
+             => B = C ) ) ) ).
+
+fof(d2_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D] : A = k3_mcart_1(B,C,D)
+     => ! [B] :
+          ( B = k2_recdef_2(A)
+        <=> ! [C,D,E] :
+              ( A = k3_mcart_1(C,D,E)
+             => B = D ) ) ) ).
+
+fof(d3_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D] : A = k3_mcart_1(B,C,D)
+     => ! [B] :
+          ( B = k3_recdef_2(A)
+        <=> ! [C,D,E] :
+              ( A = k3_mcart_1(C,D,E)
+             => B = E ) ) ) ).
+
+fof(t1_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D] : A = k3_mcart_1(B,C,D)
+     => A = k3_mcart_1(k1_recdef_2(A),k2_recdef_2(A),k3_recdef_2(A)) ) ).
+
+fof(t2_recdef_2,axiom,
+    ! [A,B,C,D] :
+      ( r2_hidden(A,k3_zfmisc_1(B,C,D))
+     => ( r2_hidden(k1_recdef_2(A),B)
+        & r2_hidden(k2_recdef_2(A),C)
+        & r2_hidden(k3_recdef_2(A),D) ) ) ).
+
+fof(t3_recdef_2,axiom,
+    ! [A,B,C,D] :
+      ( r2_hidden(A,k3_zfmisc_1(B,C,D))
+     => A = k3_mcart_1(k1_recdef_2(A),k2_recdef_2(A),k3_recdef_2(A)) ) ).
+
+fof(d4_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E] : A = k4_mcart_1(B,C,D,E)
+     => ! [B] :
+          ( B = k4_recdef_2(A)
+        <=> ! [C,D,E,F] :
+              ( A = k4_mcart_1(C,D,E,F)
+             => B = C ) ) ) ).
+
+fof(d5_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E] : A = k4_mcart_1(B,C,D,E)
+     => ! [B] :
+          ( B = k5_recdef_2(A)
+        <=> ! [C,D,E,F] :
+              ( A = k4_mcart_1(C,D,E,F)
+             => B = D ) ) ) ).
+
+fof(d6_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E] : A = k4_mcart_1(B,C,D,E)
+     => ! [B] :
+          ( B = k6_recdef_2(A)
+        <=> ! [C,D,E,F] :
+              ( A = k4_mcart_1(C,D,E,F)
+             => B = E ) ) ) ).
+
+fof(d7_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E] : A = k4_mcart_1(B,C,D,E)
+     => ! [B] :
+          ( B = k7_recdef_2(A)
+        <=> ! [C,D,E,F] :
+              ( A = k4_mcart_1(C,D,E,F)
+             => B = F ) ) ) ).
+
+fof(t4_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E] : A = k4_mcart_1(B,C,D,E)
+     => A = k4_mcart_1(k4_recdef_2(A),k5_recdef_2(A),k6_recdef_2(A),k7_recdef_2(A)) ) ).
+
+fof(t5_recdef_2,axiom,
+    ! [A,B,C,D,E] :
+      ( r2_hidden(A,k4_zfmisc_1(B,C,D,E))
+     => ( r2_hidden(k4_recdef_2(A),B)
+        & r2_hidden(k5_recdef_2(A),C)
+        & r2_hidden(k6_recdef_2(A),D)
+        & r2_hidden(k7_recdef_2(A),E) ) ) ).
+
+fof(t6_recdef_2,axiom,
+    ! [A,B,C,D,E] :
+      ( r2_hidden(A,k4_zfmisc_1(B,C,D,E))
+     => A = k4_mcart_1(k4_recdef_2(A),k5_recdef_2(A),k6_recdef_2(A),k7_recdef_2(A)) ) ).
+
+fof(d8_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E,F] : A = k1_mcart_2(B,C,D,E,F)
+     => ! [B] :
+          ( B = k8_recdef_2(A)
+        <=> ! [C,D,E,F,G] :
+              ( A = k1_mcart_2(C,D,E,F,G)
+             => B = C ) ) ) ).
+
+fof(d9_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E,F] : A = k1_mcart_2(B,C,D,E,F)
+     => ! [B] :
+          ( B = k9_recdef_2(A)
+        <=> ! [C,D,E,F,G] :
+              ( A = k1_mcart_2(C,D,E,F,G)
+             => B = D ) ) ) ).
+
+fof(d10_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E,F] : A = k1_mcart_2(B,C,D,E,F)
+     => ! [B] :
+          ( B = k10_recdef_2(A)
+        <=> ! [C,D,E,F,G] :
+              ( A = k1_mcart_2(C,D,E,F,G)
+             => B = E ) ) ) ).
+
+fof(d11_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E,F] : A = k1_mcart_2(B,C,D,E,F)
+     => ! [B] :
+          ( B = k11_recdef_2(A)
+        <=> ! [C,D,E,F,G] :
+              ( A = k1_mcart_2(C,D,E,F,G)
+             => B = F ) ) ) ).
+
+fof(d12_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E,F] : A = k1_mcart_2(B,C,D,E,F)
+     => ! [B] :
+          ( B = k12_recdef_2(A)
+        <=> ! [C,D,E,F,G] :
+              ( A = k1_mcart_2(C,D,E,F,G)
+             => B = G ) ) ) ).
+
+fof(t7_recdef_2,axiom,
+    ! [A] :
+      ( ? [B,C,D,E,F] : A = k1_mcart_2(B,C,D,E,F)
+     => A = k1_mcart_2(k8_recdef_2(A),k9_recdef_2(A),k10_recdef_2(A),k11_recdef_2(A),k12_recdef_2(A)) ) ).
+
+fof(t8_recdef_2,axiom,
+    ! [A,B,C,D,E,F] :
+      ( r2_hidden(A,k2_mcart_2(B,C,D,E,F))
+     => ( r2_hidden(k8_recdef_2(A),B)
+        & r2_hidden(k9_recdef_2(A),C)
+        & r2_hidden(k10_recdef_2(A),D)
+        & r2_hidden(k11_recdef_2(A),E)
+        & r2_hidden(k12_recdef_2(A),F) ) ) ).
+
+fof(t9_recdef_2,axiom,
+    ! [A,B,C,D,E,F] :
+      ( r2_hidden(A,k2_mcart_2(B,C,D,E,F))
+     => A = k1_mcart_2(k8_recdef_2(A),k9_recdef_2(A),k10_recdef_2(A),k11_recdef_2(A),k12_recdef_2(A)) ) ).
+
+fof(s1_recdef_2,axiom,
+    ( ( ! [A] :
+          ( r2_hidden(A,f1_s1_recdef_2)
+         => ( ~ ( p1_s1_recdef_2(A)
+                & p2_s1_recdef_2(A) )
+            & ~ ( p1_s1_recdef_2(A)
+                & p3_s1_recdef_2(A) )
+            & ~ ( p2_s1_recdef_2(A)
+                & p3_s1_recdef_2(A) ) ) )
+      & ! [A] :
+          ~ ( r2_hidden(A,f1_s1_recdef_2)
+            & ~ p1_s1_recdef_2(A)
+            & ~ p2_s1_recdef_2(A)
+            & ~ p3_s1_recdef_2(A) ) )
+   => ? [A] :
+        ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & k1_relat_1(A) = f1_s1_recdef_2
+        & ! [B] :
+            ( r2_hidden(B,f1_s1_recdef_2)
+           => ( ( p1_s1_recdef_2(B)
+               => k1_funct_1(A,B) = f2_s1_recdef_2(B) )
+              & ( p2_s1_recdef_2(B)
+               => k1_funct_1(A,B) = f3_s1_recdef_2(B) )
+              & ( p3_s1_recdef_2(B)
+               => k1_funct_1(A,B) = f4_s1_recdef_2(B) ) ) ) ) ) ).
+
+fof(s2_recdef_2,axiom,
+    ( ( ! [A] :
+          ( r2_hidden(A,f1_s2_recdef_2)
+         => ( ~ ( p1_s2_recdef_2(A)
+                & p2_s2_recdef_2(A) )
+            & ~ ( p1_s2_recdef_2(A)
+                & p3_s2_recdef_2(A) )
+            & ~ ( p1_s2_recdef_2(A)
+                & p4_s2_recdef_2(A) )
+            & ~ ( p2_s2_recdef_2(A)
+                & p3_s2_recdef_2(A) )
+            & ~ ( p2_s2_recdef_2(A)
+                & p4_s2_recdef_2(A) )
+            & ~ ( p3_s2_recdef_2(A)
+                & p4_s2_recdef_2(A) ) ) )
+      & ! [A] :
+          ~ ( r2_hidden(A,f1_s2_recdef_2)
+            & ~ p1_s2_recdef_2(A)
+            & ~ p2_s2_recdef_2(A)
+            & ~ p3_s2_recdef_2(A)
+            & ~ p4_s2_recdef_2(A) ) )
+   => ? [A] :
+        ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & k1_relat_1(A) = f1_s2_recdef_2
+        & ! [B] :
+            ( r2_hidden(B,f1_s2_recdef_2)
+           => ( ( p1_s2_recdef_2(B)
+               => k1_funct_1(A,B) = f2_s2_recdef_2(B) )
+              & ( p2_s2_recdef_2(B)
+               => k1_funct_1(A,B) = f3_s2_recdef_2(B) )
+              & ( p3_s2_recdef_2(B)
+               => k1_funct_1(A,B) = f4_s2_recdef_2(B) )
+              & ( p4_s2_recdef_2(B)
+               => k1_funct_1(A,B) = f5_s2_recdef_2(B) ) ) ) ) ) ).
+
+fof(s3_recdef_2,axiom,
+    ( ! [A] :
+        ( m1_subset_1(A,k5_numbers)
+       => ! [B] :
+            ( m1_subset_1(B,f1_s3_recdef_2)
+           => ! [C] :
+                ( m1_subset_1(C,f2_s3_recdef_2)
+               => ? [D] :
+                    ( m1_subset_1(D,f1_s3_recdef_2)
+                    & ? [E] :
+                        ( m1_subset_1(E,f2_s3_recdef_2)
+                        & p1_s3_recdef_2(A,B,C,D,E) ) ) ) ) )
+   => ? [A] :
+        ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,f1_s3_recdef_2)
+        & m2_relset_1(A,k5_numbers,f1_s3_recdef_2)
+        & ? [B] :
+            ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,f2_s3_recdef_2)
+            & m2_relset_1(B,k5_numbers,f2_s3_recdef_2)
+            & k8_funct_2(k5_numbers,f1_s3_recdef_2,A,np__0) = f3_s3_recdef_2
+            & k8_funct_2(k5_numbers,f2_s3_recdef_2,B,np__0) = f4_s3_recdef_2
+            & ! [C] :
+                ( m1_subset_1(C,k5_numbers)
+               => p1_s3_recdef_2(C,k8_funct_2(k5_numbers,f1_s3_recdef_2,A,C),k8_funct_2(k5_numbers,f2_s3_recdef_2,B,C),k8_funct_2(k5_numbers,f1_s3_recdef_2,A,k1_nat_1(C,np__1)),k8_funct_2(k5_numbers,f2_s3_recdef_2,B,k1_nat_1(C,np__1))) ) ) ) ) ).
+
+fof(s4_recdef_2,axiom,
+    ? [A] :
+      ( v1_relat_1(A)
+      & v1_funct_1(A)
+      & k1_relat_1(A) = k5_numbers
+      & k1_funct_1(A,np__0) = f1_s4_recdef_2
+      & k1_funct_1(A,np__1) = f2_s4_recdef_2
+      & ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k1_funct_1(A,k1_nat_1(B,np__2)) = f3_s4_recdef_2(B,k1_funct_1(A,B),k1_funct_1(A,k1_nat_1(B,np__1))) ) ) ).
+
+fof(s5_recdef_2,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k5_numbers,f1_s5_recdef_2)
+      & m2_relset_1(A,k5_numbers,f1_s5_recdef_2)
+      & k8_funct_2(k5_numbers,f1_s5_recdef_2,A,np__0) = f2_s5_recdef_2
+      & k8_funct_2(k5_numbers,f1_s5_recdef_2,A,np__1) = f3_s5_recdef_2
+      & ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,f1_s5_recdef_2,A,k1_nat_1(B,np__2)) = f4_s5_recdef_2(B,k8_funct_2(k5_numbers,f1_s5_recdef_2,A,B),k8_funct_2(k5_numbers,f1_s5_recdef_2,A,k1_nat_1(B,np__1))) ) ) ).
+
+fof(s6_recdef_2,axiom,
+    ( ( k1_relat_1(f3_s6_recdef_2) = k5_numbers
+      & k1_funct_1(f3_s6_recdef_2,np__0) = f1_s6_recdef_2
+      & k1_funct_1(f3_s6_recdef_2,np__1) = f2_s6_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k1_funct_1(f3_s6_recdef_2,k1_nat_1(A,np__2)) = f5_s6_recdef_2(A,k1_funct_1(f3_s6_recdef_2,A),k1_funct_1(f3_s6_recdef_2,k1_nat_1(A,np__1))) )
+      & k1_relat_1(f4_s6_recdef_2) = k5_numbers
+      & k1_funct_1(f4_s6_recdef_2,np__0) = f1_s6_recdef_2
+      & k1_funct_1(f4_s6_recdef_2,np__1) = f2_s6_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k1_funct_1(f4_s6_recdef_2,k1_nat_1(A,np__2)) = f5_s6_recdef_2(A,k1_funct_1(f4_s6_recdef_2,A),k1_funct_1(f4_s6_recdef_2,k1_nat_1(A,np__1))) ) )
+   => f3_s6_recdef_2 = f4_s6_recdef_2 ) ).
+
+fof(s7_recdef_2,axiom,
+    ( ( k8_funct_2(k5_numbers,f1_s7_recdef_2,f4_s7_recdef_2,np__0) = f2_s7_recdef_2
+      & k8_funct_2(k5_numbers,f1_s7_recdef_2,f4_s7_recdef_2,np__1) = f3_s7_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,f1_s7_recdef_2,f4_s7_recdef_2,k1_nat_1(A,np__2)) = f6_s7_recdef_2(A,k8_funct_2(k5_numbers,f1_s7_recdef_2,f4_s7_recdef_2,A),k8_funct_2(k5_numbers,f1_s7_recdef_2,f4_s7_recdef_2,k1_nat_1(A,np__1))) )
+      & k8_funct_2(k5_numbers,f1_s7_recdef_2,f5_s7_recdef_2,np__0) = f2_s7_recdef_2
+      & k8_funct_2(k5_numbers,f1_s7_recdef_2,f5_s7_recdef_2,np__1) = f3_s7_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,f1_s7_recdef_2,f5_s7_recdef_2,k1_nat_1(A,np__2)) = f6_s7_recdef_2(A,k8_funct_2(k5_numbers,f1_s7_recdef_2,f5_s7_recdef_2,A),k8_funct_2(k5_numbers,f1_s7_recdef_2,f5_s7_recdef_2,k1_nat_1(A,np__1))) ) )
+   => f4_s7_recdef_2 = f5_s7_recdef_2 ) ).
+
+fof(s8_recdef_2,axiom,
+    ? [A] :
+      ( v1_relat_1(A)
+      & v1_funct_1(A)
+      & k1_relat_1(A) = k5_numbers
+      & k1_funct_1(A,np__0) = f1_s8_recdef_2
+      & k1_funct_1(A,np__1) = f2_s8_recdef_2
+      & k1_funct_1(A,np__2) = f3_s8_recdef_2
+      & ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k1_funct_1(A,k1_nat_1(B,np__3)) = f4_s8_recdef_2(B,k1_funct_1(A,B),k1_funct_1(A,k1_nat_1(B,np__1)),k1_funct_1(A,k1_nat_1(B,np__2))) ) ) ).
+
+fof(s9_recdef_2,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k5_numbers,f1_s9_recdef_2)
+      & m2_relset_1(A,k5_numbers,f1_s9_recdef_2)
+      & k8_funct_2(k5_numbers,f1_s9_recdef_2,A,np__0) = f2_s9_recdef_2
+      & k8_funct_2(k5_numbers,f1_s9_recdef_2,A,np__1) = f3_s9_recdef_2
+      & k8_funct_2(k5_numbers,f1_s9_recdef_2,A,np__2) = f4_s9_recdef_2
+      & ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,f1_s9_recdef_2,A,k1_nat_1(B,np__3)) = f5_s9_recdef_2(B,k8_funct_2(k5_numbers,f1_s9_recdef_2,A,B),k8_funct_2(k5_numbers,f1_s9_recdef_2,A,k1_nat_1(B,np__1)),k8_funct_2(k5_numbers,f1_s9_recdef_2,A,k1_nat_1(B,np__2))) ) ) ).
+
+fof(s10_recdef_2,axiom,
+    ( ( k1_relat_1(f4_s10_recdef_2) = k5_numbers
+      & k1_funct_1(f4_s10_recdef_2,np__0) = f1_s10_recdef_2
+      & k1_funct_1(f4_s10_recdef_2,np__1) = f2_s10_recdef_2
+      & k1_funct_1(f4_s10_recdef_2,np__2) = f3_s10_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k1_funct_1(f4_s10_recdef_2,k1_nat_1(A,np__3)) = f6_s10_recdef_2(A,k1_funct_1(f4_s10_recdef_2,A),k1_funct_1(f4_s10_recdef_2,k1_nat_1(A,np__1)),k1_funct_1(f4_s10_recdef_2,k1_nat_1(A,np__2))) )
+      & k1_relat_1(f5_s10_recdef_2) = k5_numbers
+      & k1_funct_1(f5_s10_recdef_2,np__0) = f1_s10_recdef_2
+      & k1_funct_1(f5_s10_recdef_2,np__1) = f2_s10_recdef_2
+      & k1_funct_1(f5_s10_recdef_2,np__2) = f3_s10_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k1_funct_1(f5_s10_recdef_2,k1_nat_1(A,np__3)) = f6_s10_recdef_2(A,k1_funct_1(f5_s10_recdef_2,A),k1_funct_1(f5_s10_recdef_2,k1_nat_1(A,np__1)),k1_funct_1(f5_s10_recdef_2,k1_nat_1(A,np__2))) ) )
+   => f4_s10_recdef_2 = f5_s10_recdef_2 ) ).
+
+fof(s11_recdef_2,axiom,
+    ( ( k8_funct_2(k5_numbers,f1_s11_recdef_2,f5_s11_recdef_2,np__0) = f2_s11_recdef_2
+      & k8_funct_2(k5_numbers,f1_s11_recdef_2,f5_s11_recdef_2,np__1) = f3_s11_recdef_2
+      & k8_funct_2(k5_numbers,f1_s11_recdef_2,f5_s11_recdef_2,np__2) = f4_s11_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,f1_s11_recdef_2,f5_s11_recdef_2,k1_nat_1(A,np__3)) = f7_s11_recdef_2(A,k8_funct_2(k5_numbers,f1_s11_recdef_2,f5_s11_recdef_2,A),k8_funct_2(k5_numbers,f1_s11_recdef_2,f5_s11_recdef_2,k1_nat_1(A,np__1)),k8_funct_2(k5_numbers,f1_s11_recdef_2,f5_s11_recdef_2,k1_nat_1(A,np__2))) )
+      & k8_funct_2(k5_numbers,f1_s11_recdef_2,f6_s11_recdef_2,np__0) = f2_s11_recdef_2
+      & k8_funct_2(k5_numbers,f1_s11_recdef_2,f6_s11_recdef_2,np__1) = f3_s11_recdef_2
+      & k8_funct_2(k5_numbers,f1_s11_recdef_2,f6_s11_recdef_2,np__2) = f4_s11_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,f1_s11_recdef_2,f6_s11_recdef_2,k1_nat_1(A,np__3)) = f7_s11_recdef_2(A,k8_funct_2(k5_numbers,f1_s11_recdef_2,f6_s11_recdef_2,A),k8_funct_2(k5_numbers,f1_s11_recdef_2,f6_s11_recdef_2,k1_nat_1(A,np__1)),k8_funct_2(k5_numbers,f1_s11_recdef_2,f6_s11_recdef_2,k1_nat_1(A,np__2))) ) )
+   => f5_s11_recdef_2 = f6_s11_recdef_2 ) ).
+
+fof(s12_recdef_2,axiom,
+    ? [A] :
+      ( v1_relat_1(A)
+      & v1_funct_1(A)
+      & k1_relat_1(A) = k5_numbers
+      & k1_funct_1(A,np__0) = f1_s12_recdef_2
+      & k1_funct_1(A,np__1) = f2_s12_recdef_2
+      & k1_funct_1(A,np__2) = f3_s12_recdef_2
+      & k1_funct_1(A,np__3) = f4_s12_recdef_2
+      & ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k1_funct_1(A,k1_nat_1(B,np__4)) = f5_s12_recdef_2(B,k1_funct_1(A,B),k1_funct_1(A,k1_nat_1(B,np__1)),k1_funct_1(A,k1_nat_1(B,np__2)),k1_funct_1(A,k1_nat_1(B,np__3))) ) ) ).
+
+fof(s13_recdef_2,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k5_numbers,f1_s13_recdef_2)
+      & m2_relset_1(A,k5_numbers,f1_s13_recdef_2)
+      & k8_funct_2(k5_numbers,f1_s13_recdef_2,A,np__0) = f2_s13_recdef_2
+      & k8_funct_2(k5_numbers,f1_s13_recdef_2,A,np__1) = f3_s13_recdef_2
+      & k8_funct_2(k5_numbers,f1_s13_recdef_2,A,np__2) = f4_s13_recdef_2
+      & k8_funct_2(k5_numbers,f1_s13_recdef_2,A,np__3) = f5_s13_recdef_2
+      & ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,f1_s13_recdef_2,A,k1_nat_1(B,np__4)) = f6_s13_recdef_2(B,k8_funct_2(k5_numbers,f1_s13_recdef_2,A,B),k8_funct_2(k5_numbers,f1_s13_recdef_2,A,k1_nat_1(B,np__1)),k8_funct_2(k5_numbers,f1_s13_recdef_2,A,k1_nat_1(B,np__2)),k8_funct_2(k5_numbers,f1_s13_recdef_2,A,k1_nat_1(B,np__3))) ) ) ).
+
+fof(s14_recdef_2,axiom,
+    ( ( k1_relat_1(f5_s14_recdef_2) = k5_numbers
+      & k1_funct_1(f5_s14_recdef_2,np__0) = f1_s14_recdef_2
+      & k1_funct_1(f5_s14_recdef_2,np__1) = f2_s14_recdef_2
+      & k1_funct_1(f5_s14_recdef_2,np__2) = f3_s14_recdef_2
+      & k1_funct_1(f5_s14_recdef_2,np__3) = f4_s14_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k1_funct_1(f5_s14_recdef_2,k1_nat_1(A,np__4)) = f7_s14_recdef_2(A,k1_funct_1(f5_s14_recdef_2,A),k1_funct_1(f5_s14_recdef_2,k1_nat_1(A,np__1)),k1_funct_1(f5_s14_recdef_2,k1_nat_1(A,np__2)),k1_funct_1(f5_s14_recdef_2,k1_nat_1(A,np__3))) )
+      & k1_relat_1(f6_s14_recdef_2) = k5_numbers
+      & k1_funct_1(f6_s14_recdef_2,np__0) = f1_s14_recdef_2
+      & k1_funct_1(f6_s14_recdef_2,np__1) = f2_s14_recdef_2
+      & k1_funct_1(f6_s14_recdef_2,np__2) = f3_s14_recdef_2
+      & k1_funct_1(f6_s14_recdef_2,np__3) = f4_s14_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k1_funct_1(f6_s14_recdef_2,k1_nat_1(A,np__4)) = f7_s14_recdef_2(A,k1_funct_1(f6_s14_recdef_2,A),k1_funct_1(f6_s14_recdef_2,k1_nat_1(A,np__1)),k1_funct_1(f6_s14_recdef_2,k1_nat_1(A,np__2)),k1_funct_1(f6_s14_recdef_2,k1_nat_1(A,np__3))) ) )
+   => f5_s14_recdef_2 = f6_s14_recdef_2 ) ).
+
+fof(s15_recdef_2,axiom,
+    ( ( k8_funct_2(k5_numbers,f1_s15_recdef_2,f6_s15_recdef_2,np__0) = f2_s15_recdef_2
+      & k8_funct_2(k5_numbers,f1_s15_recdef_2,f6_s15_recdef_2,np__1) = f3_s15_recdef_2
+      & k8_funct_2(k5_numbers,f1_s15_recdef_2,f6_s15_recdef_2,np__2) = f4_s15_recdef_2
+      & k8_funct_2(k5_numbers,f1_s15_recdef_2,f6_s15_recdef_2,np__3) = f5_s15_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,f1_s15_recdef_2,f6_s15_recdef_2,k1_nat_1(A,np__4)) = f8_s15_recdef_2(A,k8_funct_2(k5_numbers,f1_s15_recdef_2,f6_s15_recdef_2,A),k8_funct_2(k5_numbers,f1_s15_recdef_2,f6_s15_recdef_2,k1_nat_1(A,np__1)),k8_funct_2(k5_numbers,f1_s15_recdef_2,f6_s15_recdef_2,k1_nat_1(A,np__2)),k8_funct_2(k5_numbers,f1_s15_recdef_2,f6_s15_recdef_2,k1_nat_1(A,np__3))) )
+      & k8_funct_2(k5_numbers,f1_s15_recdef_2,f7_s15_recdef_2,np__0) = f2_s15_recdef_2
+      & k8_funct_2(k5_numbers,f1_s15_recdef_2,f7_s15_recdef_2,np__1) = f3_s15_recdef_2
+      & k8_funct_2(k5_numbers,f1_s15_recdef_2,f7_s15_recdef_2,np__2) = f4_s15_recdef_2
+      & k8_funct_2(k5_numbers,f1_s15_recdef_2,f7_s15_recdef_2,np__3) = f5_s15_recdef_2
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => k8_funct_2(k5_numbers,f1_s15_recdef_2,f7_s15_recdef_2,k1_nat_1(A,np__4)) = f8_s15_recdef_2(A,k8_funct_2(k5_numbers,f1_s15_recdef_2,f7_s15_recdef_2,A),k8_funct_2(k5_numbers,f1_s15_recdef_2,f7_s15_recdef_2,k1_nat_1(A,np__1)),k8_funct_2(k5_numbers,f1_s15_recdef_2,f7_s15_recdef_2,k1_nat_1(A,np__2)),k8_funct_2(k5_numbers,f1_s15_recdef_2,f7_s15_recdef_2,k1_nat_1(A,np__3))) ) )
+   => f6_s15_recdef_2 = f7_s15_recdef_2 ) ).
+
+fof(dt_k1_recdef_2,axiom,
+    $true ).
+
+fof(dt_k2_recdef_2,axiom,
+    $true ).
+
+fof(dt_k3_recdef_2,axiom,
+    $true ).
+
+fof(dt_k4_recdef_2,axiom,
+    $true ).
+
+fof(dt_k5_recdef_2,axiom,
+    $true ).
+
+fof(dt_k6_recdef_2,axiom,
+    $true ).
+
+fof(dt_k7_recdef_2,axiom,
+    $true ).
+
+fof(dt_k8_recdef_2,axiom,
+    $true ).
+
+fof(dt_k9_recdef_2,axiom,
+    $true ).
+
+fof(dt_k10_recdef_2,axiom,
+    $true ).
+
+fof(dt_k11_recdef_2,axiom,
+    $true ).
+
+fof(dt_k12_recdef_2,axiom,
+    $true ).
+
+%------------------------------------------------------------------------------

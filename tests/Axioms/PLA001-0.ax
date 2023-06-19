@@ -1,0 +1,77 @@
+%--------------------------------------------------------------------------
+% File     : PLA001-0 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Planning (Blocks world)
+% Axioms   : Blocks world axioms
+% Version  : [SE94] axioms.
+% English  :
+
+% Refs     : [Sus73] Sussman (1973), A Computational Model of Skill Acquisi
+%          : [SE94]  Segre & Elkan (1994), A High-Performance Explanation-B
+% Source   : [SE94]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   10 (   0 unt;   0 nHn;   8 RR)
+%            Number of literals    :   31 (   0 equ;  21 neg)
+%            Maximal clause size   :    4 (   3 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    2 (   2 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    9 (   9 usr;   2 con; 0-2 aty)
+%            Number of variables   :   33 (   3 sgn)
+% SPC      : 
+
+% Comments : The axioms are a reconstruction of the situation calculus
+%            blocks world as in [Sus73].
+%--------------------------------------------------------------------------
+cnf(and_definition,axiom,
+    ( holds(and(X,Y),State)
+    | ~ holds(X,State)
+    | ~ holds(Y,State) ) ).
+
+cnf(pickup_1,axiom,
+    ( holds(holding(X),do(pickup(X),State))
+    | ~ holds(empty,State)
+    | ~ holds(clear(X),State)
+    | ~ differ(X,table) ) ).
+
+cnf(pickup_2,axiom,
+    ( holds(clear(Y),do(pickup(X),State))
+    | ~ holds(on(X,Y),State)
+    | ~ holds(clear(X),State)
+    | ~ holds(empty,State) ) ).
+
+cnf(pickup_3,axiom,
+    ( holds(on(X,Y),do(pickup(Z),State))
+    | ~ holds(on(X,Y),State)
+    | ~ differ(X,Z) ) ).
+
+cnf(pickup_4,axiom,
+    ( holds(clear(X),do(pickup(Z),State))
+    | ~ holds(clear(X),State)
+    | ~ differ(X,Z) ) ).
+
+cnf(putdown_1,axiom,
+    ( holds(empty,do(putdown(X,Y),State))
+    | ~ holds(holding(X),State)
+    | ~ holds(clear(Y),State) ) ).
+
+cnf(putdown_2,axiom,
+    ( holds(on(X,Y),do(putdown(X,Y),State))
+    | ~ holds(holding(X),State)
+    | ~ holds(clear(Y),State) ) ).
+
+cnf(putdown_3,axiom,
+    ( holds(clear(X),do(putdown(X,Y),State))
+    | ~ holds(holding(X),State)
+    | ~ holds(clear(Y),State) ) ).
+
+cnf(putdown_4,axiom,
+    ( holds(on(X,Y),do(putdown(Z,W),State))
+    | ~ holds(on(X,Y),State) ) ).
+
+cnf(putdown_5,axiom,
+    ( holds(clear(Z),do(putdown(X,Y),State))
+    | ~ holds(clear(Z),State)
+    | ~ differ(Z,Y) ) ).
+
+%--------------------------------------------------------------------------

@@ -1,0 +1,37 @@
+%--------------------------------------------------------------------------
+% File     : NUM001-2 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Number Theory
+% Axioms   : Number theory div axioms
+% Version  : [LS74] axioms.
+% English  :
+
+% Refs     : [LS74]  Lawrence & Starkey (1974), Experimental Tests of Resol
+% Source   : [SPRFN]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :    3 (   0 unt;   1 nHn;   3 RR)
+%            Number of literals    :    7 (   0 equ;   3 neg)
+%            Maximal clause size   :    3 (   2 avg)
+%            Maximal term depth    :    1 (   1 avg)
+%            Number of predicates  :    3 (   3 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    0 (   0 usr;   0 con; --- aty)
+%            Number of variables   :    6 (   0 sgn)
+% SPC      : 
+
+% Comments : Requires NUM001-0.ax NUM001-1.ax
+%--------------------------------------------------------------------------
+cnf(divides_only_less_or_equal,axiom,
+    ( ~ divides(A,B)
+    | less(A,B)
+    | equalish(A,B) ) ).
+
+cnf(divides_if_less,axiom,
+    ( ~ less(A,B)
+    | divides(A,B) ) ).
+
+cnf(divides_if_equal,axiom,
+    ( ~ equalish(A,B)
+    | divides(A,B) ) ).
+
+%--------------------------------------------------------------------------

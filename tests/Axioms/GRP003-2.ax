@@ -1,0 +1,33 @@
+%--------------------------------------------------------------------------
+% File     : GRP003-2 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Group Theory (Subgroups)
+% Axioms   : Subgroup axioms for the GRP003 group theory axioms
+% Version  : [Wos65] axioms.
+% English  :
+
+% Refs     : [Wos65] Wos (1965), Unpublished Note
+% Source   : [SPRFN]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :    1 (   0 unt;   0 nHn;   1 RR)
+%            Number of literals    :    4 (   0 equ;   3 neg)
+%            Maximal clause size   :    4 (   4 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of predicates  :    2 (   2 usr;   0 prp; 1-3 aty)
+%            Number of functors    :    1 (   1 usr;   0 con; 1-1 aty)
+%            Number of variables   :    3 (   0 sgn)
+% SPC      : 
+
+% Comments : Requires GRP003-0.ax
+%            The closure_of_product_and_inverse axiom is derived from the
+%            two basic subgroup axioms - closure of product and
+%            closure_of_inverse - by resolution.
+%--------------------------------------------------------------------------
+cnf(closure_of_product_and_inverse,axiom,
+    ( ~ subgroup_member(A)
+    | ~ subgroup_member(B)
+    | ~ product(A,inverse(B),C)
+    | subgroup_member(C) ) ).
+
+%--------------------------------------------------------------------------

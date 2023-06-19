@@ -1,0 +1,500 @@
+%------------------------------------------------------------------------------
+% File     : SET007+516 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Birkhoff Theorem for Many Sorted Algebras
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : birkhoff [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   15 (   0 unt;   0 def)
+%            Number of atoms       :  329 (   7 equ)
+%            Maximal formula atoms :   43 (  21 avg)
+%            Number of connectives :  346 (  32   ~;   0   |; 169   &)
+%                                         (   4 <=>; 141  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   25 (  16 avg)
+%            Maximal term depth    :    7 (   1 avg)
+%            Number of predicates  :   42 (  41 usr;   0 prp; 1-4 aty)
+%            Number of functors    :   55 (  55 usr;  38 con; 0-6 aty)
+%            Number of variables   :  116 ( 109   !;   7   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(d1_birkhoff,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v5_msualg_1(C,A)
+                & l3_msualg_1(C,A) )
+             => ! [D] :
+                  ( m3_pboole(D,u1_struct_0(A),B,u4_msualg_1(A,C))
+                 => ! [E] :
+                      ( m3_pboole(E,u1_struct_0(A),u4_msualg_1(A,k11_msafree(A,B)),u4_msualg_1(A,C))
+                     => ( E = k1_birkhoff(A,B,C,D)
+                      <=> ( r1_msualg_3(A,k11_msafree(A,B),C,E)
+                          & r6_pboole(u1_struct_0(A),k1_msafree(u1_struct_0(A),u4_msualg_1(A,k11_msafree(A,B)),u4_msualg_1(A,C),k13_msafree(A,B),E),k3_msualg_3(u1_struct_0(A),k13_msafree(A,B),B,u4_msualg_1(A,C),k15_msafree(A,B),D)) ) ) ) ) ) ) ) ).
+
+fof(t1_birkhoff,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( ( v2_relat_1(C)
+                & m1_pboole(C,u1_struct_0(A)) )
+             => ! [D] :
+                  ( m3_pboole(D,u1_struct_0(A),C,u4_msualg_1(A,B))
+                 => r2_pboole(u1_struct_0(A),k2_mssubfam(u1_struct_0(A),D),k2_mssubfam(u1_struct_0(A),k1_birkhoff(A,C,B,D))) ) ) ) ) ).
+
+fof(s1_birkhoff,axiom,
+    ( ( ! [A] :
+          ( ( v5_msualg_1(A,f1_s1_birkhoff)
+            & l3_msualg_1(A,f1_s1_birkhoff) )
+         => ! [B] :
+              ( ( v5_msualg_1(B,f1_s1_birkhoff)
+                & l3_msualg_1(B,f1_s1_birkhoff) )
+             => ( ( r6_msualg_3(f1_s1_birkhoff,A,B)
+                  & p1_s1_birkhoff(A) )
+               => p1_s1_birkhoff(B) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s1_birkhoff)
+            & l3_msualg_1(A,f1_s1_birkhoff) )
+         => ! [B] :
+              ( ( v4_msualg_1(B,f1_s1_birkhoff)
+                & v5_msualg_1(B,f1_s1_birkhoff)
+                & m1_msualg_2(B,f1_s1_birkhoff,A) )
+             => ( p1_s1_birkhoff(A)
+               => p1_s1_birkhoff(B) ) ) )
+      & ! [A,B] :
+          ( m2_pralg_2(B,A,f1_s1_birkhoff)
+         => ( ! [C] :
+                ~ ( r2_hidden(C,A)
+                  & ! [D] :
+                      ( l3_msualg_1(D,f1_s1_birkhoff)
+                     => ~ ( D = k1_funct_1(B,C)
+                          & p1_s1_birkhoff(D) ) ) )
+           => p1_s1_birkhoff(k15_pralg_2(A,f1_s1_birkhoff,B)) ) ) )
+   => ? [A] :
+        ( v4_msualg_1(A,f1_s1_birkhoff)
+        & v5_msualg_1(A,f1_s1_birkhoff)
+        & l3_msualg_1(A,f1_s1_birkhoff)
+        & ? [B] :
+            ( m3_pboole(B,u1_struct_0(f1_s1_birkhoff),u4_msualg_1(f1_s1_birkhoff,f2_s1_birkhoff),u4_msualg_1(f1_s1_birkhoff,A))
+            & p1_s1_birkhoff(A)
+            & r2_msualg_3(f1_s1_birkhoff,f2_s1_birkhoff,A,B)
+            & ! [C] :
+                ( ( v5_msualg_1(C,f1_s1_birkhoff)
+                  & l3_msualg_1(C,f1_s1_birkhoff) )
+               => ! [D] :
+                    ( m3_pboole(D,u1_struct_0(f1_s1_birkhoff),u4_msualg_1(f1_s1_birkhoff,f2_s1_birkhoff),u4_msualg_1(f1_s1_birkhoff,C))
+                   => ~ ( r1_msualg_3(f1_s1_birkhoff,f2_s1_birkhoff,C,D)
+                        & p1_s1_birkhoff(C)
+                        & ! [E] :
+                            ( m3_pboole(E,u1_struct_0(f1_s1_birkhoff),u4_msualg_1(f1_s1_birkhoff,A),u4_msualg_1(f1_s1_birkhoff,C))
+                           => ~ ( r1_msualg_3(f1_s1_birkhoff,A,C,E)
+                                & r6_pboole(u1_struct_0(f1_s1_birkhoff),k3_msualg_3(u1_struct_0(f1_s1_birkhoff),u4_msualg_1(f1_s1_birkhoff,f2_s1_birkhoff),u4_msualg_1(f1_s1_birkhoff,A),u4_msualg_1(f1_s1_birkhoff,C),B,E),D)
+                                & ! [F] :
+                                    ( m3_pboole(F,u1_struct_0(f1_s1_birkhoff),u4_msualg_1(f1_s1_birkhoff,A),u4_msualg_1(f1_s1_birkhoff,C))
+                                   => ( r6_pboole(u1_struct_0(f1_s1_birkhoff),k3_msualg_3(u1_struct_0(f1_s1_birkhoff),u4_msualg_1(f1_s1_birkhoff,f2_s1_birkhoff),u4_msualg_1(f1_s1_birkhoff,A),u4_msualg_1(f1_s1_birkhoff,C),B,F),D)
+                                     => r6_pboole(u1_struct_0(f1_s1_birkhoff),E,F) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(s2_birkhoff,axiom,
+    ( ( ! [A] :
+          ( ( v5_msualg_1(A,f1_s2_birkhoff)
+            & l3_msualg_1(A,f1_s2_birkhoff) )
+         => ! [B] :
+              ( ( v5_msualg_1(B,f1_s2_birkhoff)
+                & l3_msualg_1(B,f1_s2_birkhoff) )
+             => ( ( r6_msualg_3(f1_s2_birkhoff,A,B)
+                  & p1_s2_birkhoff(A) )
+               => p1_s2_birkhoff(B) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s2_birkhoff)
+            & l3_msualg_1(A,f1_s2_birkhoff) )
+         => ! [B] :
+              ( ( v4_msualg_1(B,f1_s2_birkhoff)
+                & v5_msualg_1(B,f1_s2_birkhoff)
+                & m1_msualg_2(B,f1_s2_birkhoff,A) )
+             => ( p1_s2_birkhoff(A)
+               => p1_s2_birkhoff(B) ) ) )
+      & ! [A,B] :
+          ( m2_pralg_2(B,A,f1_s2_birkhoff)
+         => ( ! [C] :
+                ~ ( r2_hidden(C,A)
+                  & ! [D] :
+                      ( l3_msualg_1(D,f1_s2_birkhoff)
+                     => ~ ( D = k1_funct_1(B,C)
+                          & p1_s2_birkhoff(D) ) ) )
+           => p1_s2_birkhoff(k15_pralg_2(A,f1_s2_birkhoff,B)) ) ) )
+   => ? [A] :
+        ( v4_msualg_1(A,f1_s2_birkhoff)
+        & v5_msualg_1(A,f1_s2_birkhoff)
+        & l3_msualg_1(A,f1_s2_birkhoff)
+        & ? [B] :
+            ( m3_pboole(B,u1_struct_0(f1_s2_birkhoff),f2_s2_birkhoff,u4_msualg_1(f1_s2_birkhoff,A))
+            & p1_s2_birkhoff(A)
+            & ! [C] :
+                ( ( v5_msualg_1(C,f1_s2_birkhoff)
+                  & l3_msualg_1(C,f1_s2_birkhoff) )
+               => ! [D] :
+                    ( m3_pboole(D,u1_struct_0(f1_s2_birkhoff),f2_s2_birkhoff,u4_msualg_1(f1_s2_birkhoff,C))
+                   => ~ ( p1_s2_birkhoff(C)
+                        & ! [E] :
+                            ( m3_pboole(E,u1_struct_0(f1_s2_birkhoff),u4_msualg_1(f1_s2_birkhoff,A),u4_msualg_1(f1_s2_birkhoff,C))
+                           => ~ ( r1_msualg_3(f1_s2_birkhoff,A,C,E)
+                                & r6_pboole(u1_struct_0(f1_s2_birkhoff),k3_msualg_3(u1_struct_0(f1_s2_birkhoff),f2_s2_birkhoff,u4_msualg_1(f1_s2_birkhoff,A),u4_msualg_1(f1_s2_birkhoff,C),B,E),D)
+                                & ! [F] :
+                                    ( m3_pboole(F,u1_struct_0(f1_s2_birkhoff),u4_msualg_1(f1_s2_birkhoff,A),u4_msualg_1(f1_s2_birkhoff,C))
+                                   => ( ( r1_msualg_3(f1_s2_birkhoff,A,C,F)
+                                        & r6_pboole(u1_struct_0(f1_s2_birkhoff),k3_msualg_3(u1_struct_0(f1_s2_birkhoff),f2_s2_birkhoff,u4_msualg_1(f1_s2_birkhoff,A),u4_msualg_1(f1_s2_birkhoff,C),B,F),D) )
+                                     => r6_pboole(u1_struct_0(f1_s2_birkhoff),E,F) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(s3_birkhoff,axiom,
+    ( ( p1_s3_birkhoff(f3_s3_birkhoff)
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s3_birkhoff)
+            & l3_msualg_1(A,f1_s3_birkhoff) )
+         => ! [B] :
+              ( m3_pboole(B,u1_struct_0(f1_s3_birkhoff),k2_pre_circ(u1_struct_0(f1_s3_birkhoff),k5_numbers),u4_msualg_1(f1_s3_birkhoff,A))
+             => ~ ( p1_s3_birkhoff(A)
+                  & ! [C] :
+                      ( m3_pboole(C,u1_struct_0(f1_s3_birkhoff),u4_msualg_1(f1_s3_birkhoff,f2_s3_birkhoff),u4_msualg_1(f1_s3_birkhoff,A))
+                     => ~ ( r1_msualg_3(f1_s3_birkhoff,f2_s3_birkhoff,A,C)
+                          & r6_pboole(u1_struct_0(f1_s3_birkhoff),B,k3_msualg_3(u1_struct_0(f1_s3_birkhoff),k2_pre_circ(u1_struct_0(f1_s3_birkhoff),k5_numbers),u4_msualg_1(f1_s3_birkhoff,f2_s3_birkhoff),u4_msualg_1(f1_s3_birkhoff,A),f4_s3_birkhoff,C)) ) ) ) ) ) )
+   => ? [A] :
+        ( m3_pboole(A,u1_struct_0(f1_s3_birkhoff),u4_msualg_1(f1_s3_birkhoff,f2_s3_birkhoff),u4_msualg_1(f1_s3_birkhoff,f3_s3_birkhoff))
+        & r1_msualg_3(f1_s3_birkhoff,f2_s3_birkhoff,f3_s3_birkhoff,A)
+        & r6_pboole(u1_struct_0(f1_s3_birkhoff),k1_birkhoff(f1_s3_birkhoff,k2_pre_circ(u1_struct_0(f1_s3_birkhoff),k5_numbers),f3_s3_birkhoff,f5_s3_birkhoff),k3_msualg_3(u1_struct_0(f1_s3_birkhoff),u4_msualg_1(f1_s3_birkhoff,k11_msafree(f1_s3_birkhoff,k2_pre_circ(u1_struct_0(f1_s3_birkhoff),k5_numbers))),u4_msualg_1(f1_s3_birkhoff,f2_s3_birkhoff),u4_msualg_1(f1_s3_birkhoff,f3_s3_birkhoff),k1_birkhoff(f1_s3_birkhoff,k2_pre_circ(u1_struct_0(f1_s3_birkhoff),k5_numbers),f2_s3_birkhoff,f4_s3_birkhoff),A)) ) ) ).
+
+fof(s4_birkhoff,axiom,
+    ( ( k1_funct_1(k1_msualg_3(u1_struct_0(f1_s4_birkhoff),u4_msualg_1(f1_s4_birkhoff,k11_msafree(f1_s4_birkhoff,k2_pre_circ(u1_struct_0(f1_s4_birkhoff),k5_numbers))),u4_msualg_1(f1_s4_birkhoff,f2_s4_birkhoff),k1_birkhoff(f1_s4_birkhoff,k2_pre_circ(u1_struct_0(f1_s4_birkhoff),k5_numbers),f2_s4_birkhoff,f3_s4_birkhoff),f4_s4_birkhoff),f5_s4_birkhoff) = k1_funct_1(k1_msualg_3(u1_struct_0(f1_s4_birkhoff),u4_msualg_1(f1_s4_birkhoff,k11_msafree(f1_s4_birkhoff,k2_pre_circ(u1_struct_0(f1_s4_birkhoff),k5_numbers))),u4_msualg_1(f1_s4_birkhoff,f2_s4_birkhoff),k1_birkhoff(f1_s4_birkhoff,k2_pre_circ(u1_struct_0(f1_s4_birkhoff),k5_numbers),f2_s4_birkhoff,f3_s4_birkhoff),f4_s4_birkhoff),f6_s4_birkhoff)
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s4_birkhoff)
+            & l3_msualg_1(A,f1_s4_birkhoff) )
+         => ! [B] :
+              ( m3_pboole(B,u1_struct_0(f1_s4_birkhoff),k2_pre_circ(u1_struct_0(f1_s4_birkhoff),k5_numbers),u4_msualg_1(f1_s4_birkhoff,A))
+             => ~ ( p1_s4_birkhoff(A)
+                  & ! [C] :
+                      ( m3_pboole(C,u1_struct_0(f1_s4_birkhoff),u4_msualg_1(f1_s4_birkhoff,f2_s4_birkhoff),u4_msualg_1(f1_s4_birkhoff,A))
+                     => ~ ( r1_msualg_3(f1_s4_birkhoff,f2_s4_birkhoff,A,C)
+                          & r6_pboole(u1_struct_0(f1_s4_birkhoff),B,k3_msualg_3(u1_struct_0(f1_s4_birkhoff),k2_pre_circ(u1_struct_0(f1_s4_birkhoff),k5_numbers),u4_msualg_1(f1_s4_birkhoff,f2_s4_birkhoff),u4_msualg_1(f1_s4_birkhoff,A),f3_s4_birkhoff,C)) ) ) ) ) ) )
+   => ! [A] :
+        ( ( v5_msualg_1(A,f1_s4_birkhoff)
+          & l3_msualg_1(A,f1_s4_birkhoff) )
+       => ( p1_s4_birkhoff(A)
+         => r1_equation(f1_s4_birkhoff,A,f4_s4_birkhoff,k5_equation(f1_s4_birkhoff,f4_s4_birkhoff,f5_s4_birkhoff,f6_s4_birkhoff)) ) ) ) ).
+
+fof(s5_birkhoff,axiom,
+    ( ( ! [A] :
+          ( ( v5_msualg_1(A,f1_s5_birkhoff)
+            & l3_msualg_1(A,f1_s5_birkhoff) )
+         => ! [B] :
+              ( m3_pboole(B,u1_struct_0(f1_s5_birkhoff),f2_s5_birkhoff,u4_msualg_1(f1_s5_birkhoff,A))
+             => ~ ( p1_s5_birkhoff(A)
+                  & ! [C] :
+                      ( m3_pboole(C,u1_struct_0(f1_s5_birkhoff),u4_msualg_1(f1_s5_birkhoff,f3_s5_birkhoff),u4_msualg_1(f1_s5_birkhoff,A))
+                     => ~ ( r1_msualg_3(f1_s5_birkhoff,f3_s5_birkhoff,A,C)
+                          & r6_pboole(u1_struct_0(f1_s5_birkhoff),k3_msualg_3(u1_struct_0(f1_s5_birkhoff),f2_s5_birkhoff,u4_msualg_1(f1_s5_birkhoff,f3_s5_birkhoff),u4_msualg_1(f1_s5_birkhoff,A),f4_s5_birkhoff,C),B)
+                          & ! [D] :
+                              ( m3_pboole(D,u1_struct_0(f1_s5_birkhoff),u4_msualg_1(f1_s5_birkhoff,f3_s5_birkhoff),u4_msualg_1(f1_s5_birkhoff,A))
+                             => ( ( r1_msualg_3(f1_s5_birkhoff,f3_s5_birkhoff,A,D)
+                                  & r6_pboole(u1_struct_0(f1_s5_birkhoff),k3_msualg_3(u1_struct_0(f1_s5_birkhoff),f2_s5_birkhoff,u4_msualg_1(f1_s5_birkhoff,f3_s5_birkhoff),u4_msualg_1(f1_s5_birkhoff,A),f4_s5_birkhoff,D),B) )
+                               => r6_pboole(u1_struct_0(f1_s5_birkhoff),C,D) ) ) ) ) ) ) )
+      & p1_s5_birkhoff(f3_s5_birkhoff)
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s5_birkhoff)
+            & l3_msualg_1(A,f1_s5_birkhoff) )
+         => ! [B] :
+              ( ( v4_msualg_1(B,f1_s5_birkhoff)
+                & v5_msualg_1(B,f1_s5_birkhoff)
+                & m1_msualg_2(B,f1_s5_birkhoff,A) )
+             => ( p1_s5_birkhoff(A)
+               => p1_s5_birkhoff(B) ) ) ) )
+   => ( v2_relat_1(k14_pboole(u1_struct_0(f1_s5_birkhoff),f2_s5_birkhoff,f4_s5_birkhoff))
+      & m1_msafree(k14_pboole(u1_struct_0(f1_s5_birkhoff),f2_s5_birkhoff,f4_s5_birkhoff),f1_s5_birkhoff,f3_s5_birkhoff) ) ) ).
+
+fof(s6_birkhoff,axiom,
+    ( ( ! [A] :
+          ( ( v5_msualg_1(A,f1_s6_birkhoff)
+            & l3_msualg_1(A,f1_s6_birkhoff) )
+         => ! [B] :
+              ( m3_pboole(B,u1_struct_0(f1_s6_birkhoff),k2_pre_circ(u1_struct_0(f1_s6_birkhoff),k5_numbers),u4_msualg_1(f1_s6_birkhoff,A))
+             => ~ ( p1_s6_birkhoff(A)
+                  & ! [C] :
+                      ( m3_pboole(C,u1_struct_0(f1_s6_birkhoff),u4_msualg_1(f1_s6_birkhoff,f2_s6_birkhoff),u4_msualg_1(f1_s6_birkhoff,A))
+                     => ~ ( r1_msualg_3(f1_s6_birkhoff,f2_s6_birkhoff,A,C)
+                          & r6_pboole(u1_struct_0(f1_s6_birkhoff),k3_msualg_3(u1_struct_0(f1_s6_birkhoff),k2_pre_circ(u1_struct_0(f1_s6_birkhoff),k5_numbers),u4_msualg_1(f1_s6_birkhoff,f2_s6_birkhoff),u4_msualg_1(f1_s6_birkhoff,A),f3_s6_birkhoff,C),B)
+                          & ! [D] :
+                              ( m3_pboole(D,u1_struct_0(f1_s6_birkhoff),u4_msualg_1(f1_s6_birkhoff,f2_s6_birkhoff),u4_msualg_1(f1_s6_birkhoff,A))
+                             => ( ( r1_msualg_3(f1_s6_birkhoff,f2_s6_birkhoff,A,D)
+                                  & r6_pboole(u1_struct_0(f1_s6_birkhoff),k3_msualg_3(u1_struct_0(f1_s6_birkhoff),k2_pre_circ(u1_struct_0(f1_s6_birkhoff),k5_numbers),u4_msualg_1(f1_s6_birkhoff,f2_s6_birkhoff),u4_msualg_1(f1_s6_birkhoff,A),f3_s6_birkhoff,D),B) )
+                               => r6_pboole(u1_struct_0(f1_s6_birkhoff),C,D) ) ) ) ) ) ) )
+      & p1_s6_birkhoff(f2_s6_birkhoff)
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s6_birkhoff)
+            & l3_msualg_1(A,f1_s6_birkhoff) )
+         => ! [B] :
+              ( ( v4_msualg_1(B,f1_s6_birkhoff)
+                & v5_msualg_1(B,f1_s6_birkhoff)
+                & m1_msualg_2(B,f1_s6_birkhoff,A) )
+             => ( p1_s6_birkhoff(A)
+               => p1_s6_birkhoff(B) ) ) ) )
+   => r2_msualg_3(f1_s6_birkhoff,k11_msafree(f1_s6_birkhoff,k2_pre_circ(u1_struct_0(f1_s6_birkhoff),k5_numbers)),f2_s6_birkhoff,k1_birkhoff(f1_s6_birkhoff,k2_pre_circ(u1_struct_0(f1_s6_birkhoff),k5_numbers),f2_s6_birkhoff,f3_s6_birkhoff)) ) ).
+
+fof(s7_birkhoff,axiom,
+    ( ( p2_s7_birkhoff(f2_s7_birkhoff)
+      & p1_s7_birkhoff(f3_s7_birkhoff)
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s7_birkhoff)
+            & l3_msualg_1(A,f1_s7_birkhoff) )
+         => ! [B] :
+              ( m3_pboole(B,u1_struct_0(f1_s7_birkhoff),k2_pre_circ(u1_struct_0(f1_s7_birkhoff),k5_numbers),u4_msualg_1(f1_s7_birkhoff,A))
+             => ~ ( p2_s7_birkhoff(A)
+                  & ! [C] :
+                      ( m3_pboole(C,u1_struct_0(f1_s7_birkhoff),u4_msualg_1(f1_s7_birkhoff,f3_s7_birkhoff),u4_msualg_1(f1_s7_birkhoff,A))
+                     => ~ ( r1_msualg_3(f1_s7_birkhoff,f3_s7_birkhoff,A,C)
+                          & r6_pboole(u1_struct_0(f1_s7_birkhoff),B,k3_msualg_3(u1_struct_0(f1_s7_birkhoff),k2_pre_circ(u1_struct_0(f1_s7_birkhoff),k5_numbers),u4_msualg_1(f1_s7_birkhoff,f3_s7_birkhoff),u4_msualg_1(f1_s7_birkhoff,A),f4_s7_birkhoff,C)) ) ) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s7_birkhoff)
+            & l3_msualg_1(A,f1_s7_birkhoff) )
+         => ! [B] :
+              ( ( v5_msualg_1(B,f1_s7_birkhoff)
+                & l3_msualg_1(B,f1_s7_birkhoff) )
+             => ( ( r6_msualg_3(f1_s7_birkhoff,A,B)
+                  & p1_s7_birkhoff(A) )
+               => p1_s7_birkhoff(B) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s7_birkhoff)
+            & l3_msualg_1(A,f1_s7_birkhoff) )
+         => ! [B] :
+              ( ( v3_msualg_4(B,f1_s7_birkhoff,A)
+                & v4_msualg_4(B,f1_s7_birkhoff,A)
+                & m1_msualg_4(B,u1_struct_0(f1_s7_birkhoff),u4_msualg_1(f1_s7_birkhoff,A),u4_msualg_1(f1_s7_birkhoff,A)) )
+             => ( p1_s7_birkhoff(A)
+               => p1_s7_birkhoff(k14_msualg_4(f1_s7_birkhoff,A,B)) ) ) ) )
+   => p1_s7_birkhoff(f2_s7_birkhoff) ) ).
+
+fof(s8_birkhoff,axiom,
+    ( ( ? [A] :
+          ( m3_pboole(A,u1_struct_0(f1_s8_birkhoff),u4_msualg_1(f1_s8_birkhoff,f2_s8_birkhoff),u4_msualg_1(f1_s8_birkhoff,f3_s8_birkhoff))
+          & r2_msualg_3(f1_s8_birkhoff,f2_s8_birkhoff,f3_s8_birkhoff,A) )
+      & p1_s8_birkhoff(f2_s8_birkhoff)
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s8_birkhoff)
+            & l3_msualg_1(A,f1_s8_birkhoff) )
+         => ! [B] :
+              ( ( v5_msualg_1(B,f1_s8_birkhoff)
+                & l3_msualg_1(B,f1_s8_birkhoff) )
+             => ( ( r6_msualg_3(f1_s8_birkhoff,A,B)
+                  & p1_s8_birkhoff(A) )
+               => p1_s8_birkhoff(B) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s8_birkhoff)
+            & l3_msualg_1(A,f1_s8_birkhoff) )
+         => ! [B] :
+              ( ( v3_msualg_4(B,f1_s8_birkhoff,A)
+                & v4_msualg_4(B,f1_s8_birkhoff,A)
+                & m1_msualg_4(B,u1_struct_0(f1_s8_birkhoff),u4_msualg_1(f1_s8_birkhoff,A),u4_msualg_1(f1_s8_birkhoff,A)) )
+             => ( p1_s8_birkhoff(A)
+               => p1_s8_birkhoff(k14_msualg_4(f1_s8_birkhoff,A,B)) ) ) ) )
+   => p1_s8_birkhoff(f3_s8_birkhoff) ) ).
+
+fof(s9_birkhoff,axiom,
+    ( ( ! [A] :
+          ( ( v4_msualg_1(A,f1_s9_birkhoff)
+            & v5_msualg_1(A,f1_s9_birkhoff)
+            & v3_msafree2(A,f1_s9_birkhoff)
+            & m1_msualg_2(A,f1_s9_birkhoff,f2_s9_birkhoff) )
+         => p1_s9_birkhoff(A) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s9_birkhoff)
+            & l3_msualg_1(A,f1_s9_birkhoff) )
+         => ! [B] :
+              ( ( v5_msualg_1(B,f1_s9_birkhoff)
+                & l3_msualg_1(B,f1_s9_birkhoff) )
+             => ( ( r6_msualg_3(f1_s9_birkhoff,A,B)
+                  & p1_s9_birkhoff(A) )
+               => p1_s9_birkhoff(B) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s9_birkhoff)
+            & l3_msualg_1(A,f1_s9_birkhoff) )
+         => ! [B] :
+              ( ( v4_msualg_1(B,f1_s9_birkhoff)
+                & v5_msualg_1(B,f1_s9_birkhoff)
+                & m1_msualg_2(B,f1_s9_birkhoff,A) )
+             => ( p1_s9_birkhoff(A)
+               => p1_s9_birkhoff(B) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s9_birkhoff)
+            & l3_msualg_1(A,f1_s9_birkhoff) )
+         => ! [B] :
+              ( ( v3_msualg_4(B,f1_s9_birkhoff,A)
+                & v4_msualg_4(B,f1_s9_birkhoff,A)
+                & m1_msualg_4(B,u1_struct_0(f1_s9_birkhoff),u4_msualg_1(f1_s9_birkhoff,A),u4_msualg_1(f1_s9_birkhoff,A)) )
+             => ( p1_s9_birkhoff(A)
+               => p1_s9_birkhoff(k14_msualg_4(f1_s9_birkhoff,A,B)) ) ) )
+      & ! [A,B] :
+          ( m2_pralg_2(B,A,f1_s9_birkhoff)
+         => ( ! [C] :
+                ~ ( r2_hidden(C,A)
+                  & ! [D] :
+                      ( l3_msualg_1(D,f1_s9_birkhoff)
+                     => ~ ( D = k1_funct_1(B,C)
+                          & p1_s9_birkhoff(D) ) ) )
+           => p1_s9_birkhoff(k15_pralg_2(A,f1_s9_birkhoff,B)) ) ) )
+   => p1_s9_birkhoff(f2_s9_birkhoff) ) ).
+
+fof(s10_birkhoff,axiom,
+    ( ( ! [A] :
+          ( ( v5_msualg_1(A,f1_s10_birkhoff)
+            & l3_msualg_1(A,f1_s10_birkhoff) )
+         => ( p2_s10_birkhoff(A)
+          <=> ! [B] :
+                ( m1_subset_1(B,u1_struct_0(f1_s10_birkhoff))
+               => ! [C] :
+                    ( m1_subset_1(C,k1_funct_1(k4_equation(f1_s10_birkhoff),B))
+                   => ( ! [D] :
+                          ( ( v5_msualg_1(D,f1_s10_birkhoff)
+                            & l3_msualg_1(D,f1_s10_birkhoff) )
+                         => ( p1_s10_birkhoff(D)
+                           => r1_equation(f1_s10_birkhoff,D,B,C) ) )
+                     => r1_equation(f1_s10_birkhoff,A,B,C) ) ) ) ) )
+      & p1_s10_birkhoff(f2_s10_birkhoff) )
+   => p2_s10_birkhoff(f2_s10_birkhoff) ) ).
+
+fof(s11_birkhoff,axiom,
+    ( ( ! [A] :
+          ( ( v5_msualg_1(A,f1_s11_birkhoff)
+            & l3_msualg_1(A,f1_s11_birkhoff) )
+         => ( p2_s11_birkhoff(A)
+          <=> ! [B] :
+                ( m1_subset_1(B,u1_struct_0(f1_s11_birkhoff))
+               => ! [C] :
+                    ( m1_subset_1(C,k1_funct_1(k4_equation(f1_s11_birkhoff),B))
+                   => ( ! [D] :
+                          ( ( v5_msualg_1(D,f1_s11_birkhoff)
+                            & l3_msualg_1(D,f1_s11_birkhoff) )
+                         => ( p1_s11_birkhoff(D)
+                           => r1_equation(f1_s11_birkhoff,D,B,C) ) )
+                     => r1_equation(f1_s11_birkhoff,A,B,C) ) ) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s11_birkhoff)
+            & l3_msualg_1(A,f1_s11_birkhoff) )
+         => ! [B] :
+              ( m3_pboole(B,u1_struct_0(f1_s11_birkhoff),k2_pre_circ(u1_struct_0(f1_s11_birkhoff),k5_numbers),u4_msualg_1(f1_s11_birkhoff,A))
+             => ~ ( p2_s11_birkhoff(A)
+                  & ! [C] :
+                      ( m3_pboole(C,u1_struct_0(f1_s11_birkhoff),u4_msualg_1(f1_s11_birkhoff,f2_s11_birkhoff),u4_msualg_1(f1_s11_birkhoff,A))
+                     => ~ ( r1_msualg_3(f1_s11_birkhoff,f2_s11_birkhoff,A,C)
+                          & r6_pboole(u1_struct_0(f1_s11_birkhoff),k3_msualg_3(u1_struct_0(f1_s11_birkhoff),k2_pre_circ(u1_struct_0(f1_s11_birkhoff),k5_numbers),u4_msualg_1(f1_s11_birkhoff,f2_s11_birkhoff),u4_msualg_1(f1_s11_birkhoff,A),f3_s11_birkhoff,C),B)
+                          & ! [D] :
+                              ( m3_pboole(D,u1_struct_0(f1_s11_birkhoff),u4_msualg_1(f1_s11_birkhoff,f2_s11_birkhoff),u4_msualg_1(f1_s11_birkhoff,A))
+                             => ( ( r1_msualg_3(f1_s11_birkhoff,f2_s11_birkhoff,A,D)
+                                  & r6_pboole(u1_struct_0(f1_s11_birkhoff),k3_msualg_3(u1_struct_0(f1_s11_birkhoff),k2_pre_circ(u1_struct_0(f1_s11_birkhoff),k5_numbers),u4_msualg_1(f1_s11_birkhoff,f2_s11_birkhoff),u4_msualg_1(f1_s11_birkhoff,A),f3_s11_birkhoff,D),B) )
+                               => r6_pboole(u1_struct_0(f1_s11_birkhoff),C,D) ) ) ) ) ) ) )
+      & p2_s11_birkhoff(f2_s11_birkhoff)
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s11_birkhoff)
+            & l3_msualg_1(A,f1_s11_birkhoff) )
+         => ! [B] :
+              ( ( v5_msualg_1(B,f1_s11_birkhoff)
+                & l3_msualg_1(B,f1_s11_birkhoff) )
+             => ( ( r6_msualg_3(f1_s11_birkhoff,A,B)
+                  & p1_s11_birkhoff(A) )
+               => p1_s11_birkhoff(B) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s11_birkhoff)
+            & l3_msualg_1(A,f1_s11_birkhoff) )
+         => ! [B] :
+              ( ( v4_msualg_1(B,f1_s11_birkhoff)
+                & v5_msualg_1(B,f1_s11_birkhoff)
+                & m1_msualg_2(B,f1_s11_birkhoff,A) )
+             => ( p1_s11_birkhoff(A)
+               => p1_s11_birkhoff(B) ) ) )
+      & ! [A,B] :
+          ( m2_pralg_2(B,A,f1_s11_birkhoff)
+         => ( ! [C] :
+                ~ ( r2_hidden(C,A)
+                  & ! [D] :
+                      ( l3_msualg_1(D,f1_s11_birkhoff)
+                     => ~ ( D = k1_funct_1(B,C)
+                          & p1_s11_birkhoff(D) ) ) )
+           => p1_s11_birkhoff(k15_pralg_2(A,f1_s11_birkhoff,B)) ) ) )
+   => p1_s11_birkhoff(f2_s11_birkhoff) ) ).
+
+fof(s12_birkhoff,axiom,
+    ( ( ! [A] :
+          ( ( v5_msualg_1(A,f1_s12_birkhoff)
+            & l3_msualg_1(A,f1_s12_birkhoff) )
+         => ! [B] :
+              ( ( v5_msualg_1(B,f1_s12_birkhoff)
+                & l3_msualg_1(B,f1_s12_birkhoff) )
+             => ( ( r6_msualg_3(f1_s12_birkhoff,A,B)
+                  & p1_s12_birkhoff(A) )
+               => p1_s12_birkhoff(B) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s12_birkhoff)
+            & l3_msualg_1(A,f1_s12_birkhoff) )
+         => ! [B] :
+              ( ( v4_msualg_1(B,f1_s12_birkhoff)
+                & v5_msualg_1(B,f1_s12_birkhoff)
+                & m1_msualg_2(B,f1_s12_birkhoff,A) )
+             => ( p1_s12_birkhoff(A)
+               => p1_s12_birkhoff(B) ) ) )
+      & ! [A] :
+          ( ( v5_msualg_1(A,f1_s12_birkhoff)
+            & l3_msualg_1(A,f1_s12_birkhoff) )
+         => ! [B] :
+              ( ( v3_msualg_4(B,f1_s12_birkhoff,A)
+                & v4_msualg_4(B,f1_s12_birkhoff,A)
+                & m1_msualg_4(B,u1_struct_0(f1_s12_birkhoff),u4_msualg_1(f1_s12_birkhoff,A),u4_msualg_1(f1_s12_birkhoff,A)) )
+             => ( p1_s12_birkhoff(A)
+               => p1_s12_birkhoff(k14_msualg_4(f1_s12_birkhoff,A,B)) ) ) )
+      & ! [A,B] :
+          ( m2_pralg_2(B,A,f1_s12_birkhoff)
+         => ( ! [C] :
+                ~ ( r2_hidden(C,A)
+                  & ! [D] :
+                      ( l3_msualg_1(D,f1_s12_birkhoff)
+                     => ~ ( D = k1_funct_1(B,C)
+                          & p1_s12_birkhoff(D) ) ) )
+           => p1_s12_birkhoff(k15_pralg_2(A,f1_s12_birkhoff,B)) ) ) )
+   => ? [A] :
+        ( m4_pboole(A,u1_struct_0(f1_s12_birkhoff),k4_equation(f1_s12_birkhoff))
+        & ! [B] :
+            ( ( v5_msualg_1(B,f1_s12_birkhoff)
+              & l3_msualg_1(B,f1_s12_birkhoff) )
+           => ( p1_s12_birkhoff(B)
+            <=> r2_equation(f1_s12_birkhoff,B,A) ) ) ) ) ).
+
+fof(dt_k1_birkhoff,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & v5_msualg_1(C,A)
+        & l3_msualg_1(C,A)
+        & m3_pboole(D,u1_struct_0(A),B,u4_msualg_1(A,C)) )
+     => m3_pboole(k1_birkhoff(A,B,C,D),u1_struct_0(A),u4_msualg_1(A,k11_msafree(A,B)),u4_msualg_1(A,C)) ) ).
+
+%------------------------------------------------------------------------------

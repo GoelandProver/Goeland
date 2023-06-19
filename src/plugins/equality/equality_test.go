@@ -242,14 +242,14 @@ func TestMain(m *testing.M) {
 	basictypes.Init()
 	InitPlugin()
 	initTestVariable()
-	global.SetDebug(true)
+	global.SetDebugTerminal(true)
 	code := m.Run()
 	os.Exit(code)
 }
 
 /** Tests equality problem ***/
 func TestEQ1(t *testing.T) {
-	global.SetDebug(true)
+	global.SetDebugTerminal(true)
 	/**
 	* Eq :
 	* fa = a
@@ -262,9 +262,9 @@ func TestEQ1(t *testing.T) {
 
 	lf := basictypes.FormList{eq_fa_a, eq_ggx_x, neq_gggx_x}
 	tp, tn = initCodeTreesTests(lf)
-	fmt.Printf("##### TP #####\n")
+	global.PrintInfo("EQ", "##### TP #####")
 	tp.Print()
-	fmt.Printf("##### TN #####\n")
+	global.PrintInfo("EQ", "##### TN #####")
 	tn.Print()
 	res, subst := EqualityReasoning(tp, tn, lf)
 
@@ -544,10 +544,10 @@ func TestAS(t *testing.T) {
 	s.Set(y, a)
 	new_ep := ep.applySubstitution(s)
 
-	global.SetDebug(true)
+	global.SetDebugTerminal(true)
 	global.PrintDebug("TEST_AS", fmt.Sprintf("Current EP : %v", new_ep.toString()))
 	global.PrintDebug("TEST_AS", fmt.Sprintf("Expected : %v", expected_ep.toString()))
-	global.SetDebug(false)
+	global.SetDebugTerminal(false)
 }
 
 /*** Test constraints ***/

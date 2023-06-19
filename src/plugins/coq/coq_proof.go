@@ -265,7 +265,6 @@ func proofOneStep(p proof.ProofStruct, formulasIntroduced *ctps.IntAndFormList, 
 		} else {
 			result = "auto."
 		}
-		//result = fmt.Sprintf("apply H%d. assumption.", proof.GetFormula().GetIndex())
 	case "ALPHA_NOT_NOT":
 		get_res, _ := get(p.GetFormula().GetForm(), *formulasIntroduced)
 		result = fmt.Sprintf("apply %s. goeland_intro H%d.", get_res, introduce(p.GetResultFormulas()[0].GetFL().ExtractForms()[0], formulasIntroduced))
@@ -371,7 +370,7 @@ func get(form btps.Form, formulasIntroduced ctps.IntAndFormList) (string, int) {
 			return fmt.Sprintf("goeland_axiom_%d", ax.GetIndex()), -1
 		}
 	}
-	fmt.Printf("[%v] RETURN ERROR : %v \n", global.GetGID(), form.ToString())
+	global.PrintError("COQ", fmt.Sprintf("RETURN ERROR : %v", form.ToString()))
 	return "error", -1
 }
 
@@ -381,6 +380,7 @@ func introduce(form btps.Form, formulasIntroduced *ctps.IntAndFormList) int {
 	result := cpt_hypothesis
 	cpt_hypothesis++
 	mutex_hypothesis.Unlock()
+	hypos[fmt.Sprintf("H%v", result)] = 0
 	*formulasIntroduced = append(*formulasIntroduced, ctps.MakeIntAndForm(result, form))
 	return result
 }
@@ -393,11 +393,16 @@ func applyNTimes(command, start string, end int, vars []string) string {
 		if i == len(vars)-1 {
 			result += fmt.Sprintf(command, hypo, var_, fmt.Sprintf("%d", end))
 		} else {
-			nextHypo := fmt.Sprintf("%s_%d", start, i)
-			if nextHypo[0] != 'H' {
-				nextHypo = "H" + nextHypo
+			baseHypo := start
+			if baseHypo[0] != 'H' {
+				baseHypo = "H" + baseHypo
 			}
+
+			nextHypo := fmt.Sprintf("%s_%d", baseHypo, hypos[baseHypo])
+			hypos[baseHypo] = hypos[baseHypo] + 1
+
 			result += fmt.Sprintf(command, hypo, var_, nextHypo[1:]) + " "
+
 			hypo = nextHypo
 		}
 	}
@@ -451,7 +456,7 @@ func instanciate(form, resultForm btps.Form, constantsCreated *btps.TermList) []
 	return result
 }
 
-/* Gets the term corresponding to the variables in the right order. */
+/* Gets the term corresponding to the variables. */
 func inOneButNotInOther(form1, form2 btps.Form) btps.TermList {
 	// Normalize
 	if not, isNot := form1.(btps.Not); isNot {
@@ -481,11 +486,12 @@ func inOneButNotInOther(form1, form2 btps.Form) btps.TermList {
 	mapping := getSubtermsOf(form2, subterms)
 
 	// Returns a list of terms ordered properly
-	result := make(btps.TermList, len(varList))
+	result := []btps.Term{}
+
 	for _, map_ := range mapping {
-		for i, var_ := range varList {
+		for _, var_ := range varList {
 			if var_.Equals(map_.var_) {
-				result[i] = map_.term
+				result = append(result, map_.term)
 			}
 		}
 	}

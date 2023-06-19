@@ -1,0 +1,411 @@
+%------------------------------------------------------------------------------
+% File     : ITP004^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : ConseqConv.ax [Gau19]
+%          : HL4004^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   61 (  25 unt;  13 typ;   0 def)
+%            Number of atoms       :   63 (   8 equ;  15 cnn)
+%            Maximal formula atoms :    3 (   1 avg)
+%            Number of connectives :  239 (  15   ~;  10   |;  22   &;  85   @)
+%                                         (  31 <=>;  76  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   12 (   6 avg;  85 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :   26 (  26   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   14 (  12 usr;   3 con; 0-4 aty)
+%            Number of variables   :  113 (   2   ^ 104   !;   3   ?; 113   :)
+%                                         (   4  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2EConseqConv_2EASM__MARKER,type,
+    c_2EConseqConv_2EASM__MARKER: $o > $o > $o ).
+
+thf(c_2Ebool_2ECOND,type,
+    c_2Ebool_2ECOND: 
+      !>[A_27a: $tType] : ( $o > A_27a > A_27a > A_27a ) ).
+
+thf(c_2Ebool_2EF,type,
+    c_2Ebool_2EF: $o ).
+
+thf(c_2Ebool_2ET,type,
+    c_2Ebool_2ET: $o ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2EConseqConv_2EASM__MARKER__DEF,axiom,
+    ( c_2EConseqConv_2EASM__MARKER
+    = ( ^ [V0y: $o,V1x: $o] : V1x ) ) ).
+
+thf(thm_2EConseqConv_2Eforall__eq__thm,axiom,
+    ! [A_27a: $tType,V0Q: A_27a > $o,V1P: A_27a > $o] :
+      ( ! [V2s: A_27a] :
+          ( ( V1P @ V2s )
+          = ( V0Q @ V2s ) )
+     => ( ! [V3s: A_27a] : ( V1P @ V3s )
+      <=> ! [V4s: A_27a] : ( V0Q @ V4s ) ) ) ).
+
+thf(thm_2EConseqConv_2Eexists__eq__thm,axiom,
+    ! [A_27a: $tType,V0Q: A_27a > $o,V1P: A_27a > $o] :
+      ( ! [V2s: A_27a] :
+          ( ( V1P @ V2s )
+          = ( V0Q @ V2s ) )
+     => ( ? [V3s: A_27a] : ( V1P @ V3s )
+      <=> ? [V4s: A_27a] : ( V0Q @ V4s ) ) ) ).
+
+thf(thm_2EConseqConv_2Etrue__imp,axiom,
+    ! [V0t: $o] :
+      ( V0t
+     => c_2Ebool_2ET ) ).
+
+thf(thm_2EConseqConv_2Efalse__imp,axiom,
+    ! [V0t: $o] :
+      ( c_2Ebool_2EF
+     => V0t ) ).
+
+thf(thm_2EConseqConv_2ENOT__CLAUSES__X,axiom,
+    ! [V0t: $o] :
+      ( ( (~) @ ( (~) @ V0t ) )
+    <=> V0t ) ).
+
+thf(thm_2EConseqConv_2ENOT__CLAUSES__T,axiom,
+    ( ( (~) @ c_2Ebool_2ET )
+  <=> c_2Ebool_2EF ) ).
+
+thf(thm_2EConseqConv_2ENOT__CLAUSES__F,axiom,
+    ( ( (~) @ c_2Ebool_2EF )
+  <=> c_2Ebool_2ET ) ).
+
+thf(thm_2EConseqConv_2EIMP__CONG__conj__strengthen,axiom,
+    ! [V0x: $o,V1x_27: $o,V2y: $o,V3y_27: $o] :
+      ( ( ( V2y
+         => ( V1x_27
+           => V0x ) )
+        & ( V1x_27
+         => ( V3y_27
+           => V2y ) ) )
+     => ( ( V1x_27
+          & V3y_27 )
+       => ( V0x
+          & V2y ) ) ) ).
+
+thf(thm_2EConseqConv_2EIMP__CONG__conj__weaken,axiom,
+    ! [V0x: $o,V1x_27: $o,V2y: $o,V3y_27: $o] :
+      ( ( ( V2y
+         => ( V0x
+           => V1x_27 ) )
+        & ( V1x_27
+         => ( V2y
+           => V3y_27 ) ) )
+     => ( ( V0x
+          & V2y )
+       => ( V1x_27
+          & V3y_27 ) ) ) ).
+
+thf(thm_2EConseqConv_2EAND__CLAUSES__TX,axiom,
+    ! [V0t: $o] :
+      ( ( c_2Ebool_2ET
+        & V0t )
+    <=> V0t ) ).
+
+thf(thm_2EConseqConv_2EAND__CLAUSES__XT,axiom,
+    ! [V0t: $o] :
+      ( ( V0t
+        & c_2Ebool_2ET )
+    <=> V0t ) ).
+
+thf(thm_2EConseqConv_2EAND__CLAUSES__FX,axiom,
+    ! [V0t: $o] :
+      ( ( c_2Ebool_2EF
+        & V0t )
+    <=> c_2Ebool_2EF ) ).
+
+thf(thm_2EConseqConv_2EAND__CLAUSES__XF,axiom,
+    ! [V0t: $o] :
+      ( ( V0t
+        & c_2Ebool_2EF )
+    <=> c_2Ebool_2EF ) ).
+
+thf(thm_2EConseqConv_2EAND__CLAUSES__XX,axiom,
+    ! [V0t: $o] :
+      ( ( V0t
+        & V0t )
+    <=> V0t ) ).
+
+thf(thm_2EConseqConv_2EIMP__CONG__disj__strengthen,axiom,
+    ! [V0x: $o,V1x_27: $o,V2y: $o,V3y_27: $o] :
+      ( ( ( ( (~) @ V2y )
+         => ( V1x_27
+           => V0x ) )
+        & ( ( (~) @ V1x_27 )
+         => ( V3y_27
+           => V2y ) ) )
+     => ( ( V1x_27
+          | V3y_27 )
+       => ( V0x
+          | V2y ) ) ) ).
+
+thf(thm_2EConseqConv_2EIMP__CONG__disj__weaken,axiom,
+    ! [V0x: $o,V1x_27: $o,V2y: $o,V3y_27: $o] :
+      ( ( ( ( (~) @ V2y )
+         => ( V0x
+           => V1x_27 ) )
+        & ( ( (~) @ V1x_27 )
+         => ( V2y
+           => V3y_27 ) ) )
+     => ( ( V0x
+          | V2y )
+       => ( V1x_27
+          | V3y_27 ) ) ) ).
+
+thf(thm_2EConseqConv_2EOR__CLAUSES__TX,axiom,
+    ! [V0t: $o] :
+      ( ( c_2Ebool_2ET
+        | V0t )
+    <=> c_2Ebool_2ET ) ).
+
+thf(thm_2EConseqConv_2EOR__CLAUSES__XT,axiom,
+    ! [V0t: $o] :
+      ( ( V0t
+        | c_2Ebool_2ET )
+    <=> c_2Ebool_2ET ) ).
+
+thf(thm_2EConseqConv_2EOR__CLAUSES__FX,axiom,
+    ! [V0t: $o] :
+      ( ( c_2Ebool_2EF
+        | V0t )
+    <=> V0t ) ).
+
+thf(thm_2EConseqConv_2EOR__CLAUSES__XF,axiom,
+    ! [V0t: $o] :
+      ( ( V0t
+        | c_2Ebool_2EF )
+    <=> V0t ) ).
+
+thf(thm_2EConseqConv_2EOR__CLAUSES__XX,axiom,
+    ! [V0t: $o] :
+      ( ( V0t
+        | V0t )
+    <=> V0t ) ).
+
+thf(thm_2EConseqConv_2EIMP__CONG__imp__strengthen,axiom,
+    ! [V0x: $o,V1x_27: $o,V2y: $o,V3y_27: $o] :
+      ( ( ( V0x
+         => ( V3y_27
+           => V2y ) )
+        & ( ( (~) @ V3y_27 )
+         => ( V0x
+           => V1x_27 ) ) )
+     => ( ( V1x_27
+         => V3y_27 )
+       => ( V0x
+         => V2y ) ) ) ).
+
+thf(thm_2EConseqConv_2EIMP__CONG__imp__weaken,axiom,
+    ! [V0x: $o,V1x_27: $o,V2y: $o,V3y_27: $o] :
+      ( ( ( V0x
+         => ( V2y
+           => V3y_27 ) )
+        & ( ( (~) @ V3y_27 )
+         => ( V1x_27
+           => V0x ) ) )
+     => ( ( V0x
+         => V2y )
+       => ( V1x_27
+         => V3y_27 ) ) ) ).
+
+thf(thm_2EConseqConv_2EIMP__CONG__simple__imp__strengthen,axiom,
+    ! [V0x: $o,V1x_27: $o,V2y: $o,V3y_27: $o] :
+      ( ( ( V0x
+         => V1x_27 )
+        & ( V1x_27
+         => ( V3y_27
+           => V2y ) ) )
+     => ( ( V1x_27
+         => V3y_27 )
+       => ( V0x
+         => V2y ) ) ) ).
+
+thf(thm_2EConseqConv_2EIMP__CONG__simple__imp__weaken,axiom,
+    ! [V0x: $o,V1x_27: $o,V2y: $o,V3y_27: $o] :
+      ( ( ( V1x_27
+         => V0x )
+        & ( V1x_27
+         => ( V2y
+           => V3y_27 ) ) )
+     => ( ( V0x
+         => V2y )
+       => ( V1x_27
+         => V3y_27 ) ) ) ).
+
+thf(thm_2EConseqConv_2EIMP__CLAUSES__TX,axiom,
+    ! [V0t: $o] :
+      ( ( c_2Ebool_2ET
+       => V0t )
+    <=> V0t ) ).
+
+thf(thm_2EConseqConv_2EIMP__CLAUSES__XT,axiom,
+    ! [V0t: $o] :
+      ( ( V0t
+       => c_2Ebool_2ET )
+    <=> c_2Ebool_2ET ) ).
+
+thf(thm_2EConseqConv_2EIMP__CLAUSES__FX,axiom,
+    ! [V0t: $o] :
+      ( ( c_2Ebool_2EF
+       => V0t )
+    <=> c_2Ebool_2ET ) ).
+
+thf(thm_2EConseqConv_2EIMP__CLAUSES__XX,axiom,
+    ! [V0t: $o] :
+      ( ( V0t
+       => V0t )
+    <=> c_2Ebool_2ET ) ).
+
+thf(thm_2EConseqConv_2EIMP__CLAUSES__XF,axiom,
+    ! [V0t: $o] :
+      ( ( V0t
+       => c_2Ebool_2EF )
+    <=> ( (~) @ V0t ) ) ).
+
+thf(thm_2EConseqConv_2EIMP__CONG__cond__simple,axiom,
+    ! [V0c: $o,V1x: $o,V2x_27: $o,V3y: $o,V4y_27: $o] :
+      ( ( ( V2x_27
+         => V1x )
+        & ( V4y_27
+         => V3y ) )
+     => ( ( c_2Ebool_2ECOND @ $o @ V0c @ V2x_27 @ V4y_27 )
+       => ( c_2Ebool_2ECOND @ $o @ V0c @ V1x @ V3y ) ) ) ).
+
+thf(thm_2EConseqConv_2EIMP__CONG__cond,axiom,
+    ! [V0c: $o,V1x: $o,V2x_27: $o,V3y: $o,V4y_27: $o] :
+      ( ( ( V0c
+         => ( V2x_27
+           => V1x ) )
+        & ( ( (~) @ V0c )
+         => ( V4y_27
+           => V3y ) ) )
+     => ( ( c_2Ebool_2ECOND @ $o @ V0c @ V2x_27 @ V4y_27 )
+       => ( c_2Ebool_2ECOND @ $o @ V0c @ V1x @ V3y ) ) ) ).
+
+thf(thm_2EConseqConv_2ECOND__CLAUSES__CT,axiom,
+    ! [A_27a: $tType,V0t1: A_27a,V1t2: A_27a] :
+      ( ( c_2Ebool_2ECOND @ A_27a @ c_2Ebool_2ET @ V0t1 @ V1t2 )
+      = V0t1 ) ).
+
+thf(thm_2EConseqConv_2ECOND__CLAUSES__CF,axiom,
+    ! [A_27a: $tType,V0t1: A_27a,V1t2: A_27a] :
+      ( ( c_2Ebool_2ECOND @ A_27a @ c_2Ebool_2EF @ V0t1 @ V1t2 )
+      = V1t2 ) ).
+
+thf(thm_2EConseqConv_2ECOND__CLAUSES__ID,axiom,
+    ! [A_27a: $tType,V0b: $o,V1t: A_27a] :
+      ( ( c_2Ebool_2ECOND @ A_27a @ V0b @ V1t @ V1t )
+      = V1t ) ).
+
+thf(thm_2EConseqConv_2ECOND__CLAUSES__TT,axiom,
+    ! [V0c: $o,V1x: $o] :
+      ( ( c_2Ebool_2ECOND @ $o @ V0c @ c_2Ebool_2ET @ V1x )
+    <=> ( ( (~) @ V0c )
+       => V1x ) ) ).
+
+thf(thm_2EConseqConv_2ECOND__CLAUSES__FT,axiom,
+    ! [V0c: $o,V1x: $o] :
+      ( ( c_2Ebool_2ECOND @ $o @ V0c @ V1x @ c_2Ebool_2ET )
+    <=> ( V0c
+       => V1x ) ) ).
+
+thf(thm_2EConseqConv_2ECOND__CLAUSES__TF,axiom,
+    ! [V0c: $o,V1x: $o] :
+      ( ( c_2Ebool_2ECOND @ $o @ V0c @ c_2Ebool_2EF @ V1x )
+    <=> ( ( (~) @ V0c )
+        & V1x ) ) ).
+
+thf(thm_2EConseqConv_2ECOND__CLAUSES__FF,axiom,
+    ! [V0c: $o,V1x: $o] :
+      ( ( c_2Ebool_2ECOND @ $o @ V0c @ V1x @ c_2Ebool_2EF )
+    <=> ( V0c
+        & V1x ) ) ).
+
+thf(thm_2EConseqConv_2EASM__MARKER__THM,axiom,
+    ! [V0y: $o,V1x: $o] :
+      ( ( c_2EConseqConv_2EASM__MARKER @ V0y @ V1x )
+      = V1x ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,653 @@
+%------------------------------------------------------------------------------
+% File     : SET007+661 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Correctness of the Fibonacci Sequence and the Euclide Algorithm
+% Version  : [Urb08] axioms.
+% English  : Justifying the Correctness of the Fibonacci Sequence and the
+%            Euclide Algorithm by Loop-Invariant
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : scpinvar [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   38 (   2 unt;   0 def)
+%            Number of atoms       :  424 ( 117 equ)
+%            Maximal formula atoms :   46 (  11 avg)
+%            Number of connectives :  406 (  20   ~;  24   |; 199   &)
+%                                         (   5 <=>; 158  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   41 (  12 avg)
+%            Maximal term depth    :    8 (   2 avg)
+%            Number of predicates  :   29 (  28 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   89 (  89 usr;  33 con; 0-4 aty)
+%            Number of variables   :  126 ( 123   !;   3   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_scpinvar,axiom,
+    ! [A,B,C] :
+      ( ( v1_ami_3(A,k1_tarski(k4_numbers),k1_scmpds_2)
+        & v1_scmpds_3(A)
+        & v3_scmpds_4(A)
+        & m1_ami_1(A,k1_tarski(k4_numbers),k1_scmpds_2)
+        & m1_scmpds_2(B)
+        & v1_int_1(C) )
+     => ( v1_relat_1(k3_scpinvar(B,C,A))
+        & v1_funct_1(k3_scpinvar(B,C,A))
+        & v1_finset_1(k3_scpinvar(B,C,A))
+        & v1_ami_3(k3_scpinvar(B,C,A),k1_tarski(k4_numbers),k1_scmpds_2)
+        & v1_scmpds_3(k3_scpinvar(B,C,A))
+        & v3_scmpds_4(k3_scpinvar(B,C,A)) ) ) ).
+
+fof(fc2_scpinvar,axiom,
+    ! [A,B,C] :
+      ( ( v1_ami_3(A,k1_tarski(k4_numbers),k1_scmpds_2)
+        & v1_scmpds_3(A)
+        & v3_scmpds_5(A)
+        & m1_ami_1(A,k1_tarski(k4_numbers),k1_scmpds_2)
+        & m1_scmpds_2(B)
+        & v1_int_1(C) )
+     => ( v1_relat_1(k3_scpinvar(B,C,A))
+        & v1_funct_1(k3_scpinvar(B,C,A))
+        & v1_finset_1(k3_scpinvar(B,C,A))
+        & v1_ami_3(k3_scpinvar(B,C,A),k1_tarski(k4_numbers),k1_scmpds_2)
+        & v1_scmpds_3(k3_scpinvar(B,C,A))
+        & v3_scmpds_5(k3_scpinvar(B,C,A)) ) ) ).
+
+fof(t1_scpinvar,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_nat_1(A,B)
+                  & r1_nat_1(A,C) )
+               => r2_int_1(A,k6_xcmplx_0(B,C)) ) ) ) ) ).
+
+fof(t2_scpinvar,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_nat_1(A,B)
+          <=> r2_int_1(A,B) ) ) ) ).
+
+fof(t3_scpinvar,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k6_nat_1(A,B) = k6_nat_1(A,k1_int_2(k6_xcmplx_0(B,A))) ) ) ).
+
+fof(t4_scpinvar,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ( ( r1_xreal_0(np__0,A)
+              & r1_xreal_0(np__0,B) )
+           => k3_int_2(A,B) = k3_int_2(A,k6_xcmplx_0(B,A)) ) ) ) ).
+
+fof(t5_scpinvar,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k2_zfmisc_1(u3_ami_1(k1_tarski(k4_numbers),k1_scmpds_2),k13_finseq_1(k2_xboole_0(k3_tarski(k1_tarski(k4_numbers)),u1_struct_0(k1_scmpds_2)))),u4_ami_1(k1_tarski(k4_numbers),k1_scmpds_2))
+     => ! [B] :
+          ( m2_subset_1(B,k2_zfmisc_1(u3_ami_1(k1_tarski(k4_numbers),k1_scmpds_2),k13_finseq_1(k2_xboole_0(k3_tarski(k1_tarski(k4_numbers)),u1_struct_0(k1_scmpds_2)))),u4_ami_1(k1_tarski(k4_numbers),k1_scmpds_2))
+         => ! [C] :
+              ( ( v1_ami_3(C,k1_tarski(k4_numbers),k1_scmpds_2)
+                & v1_scmpds_3(C)
+                & m1_ami_1(C,k1_tarski(k4_numbers),k1_scmpds_2) )
+             => ( k1_funct_1(k3_scmpds_4(k6_scmpds_4(A,B),C),k2_scmpds_3(np__0)) = A
+                & k1_funct_1(k3_scmpds_4(k6_scmpds_4(A,B),C),k2_scmpds_3(np__1)) = B ) ) ) ) ).
+
+fof(t6_scpinvar,axiom,
+    ! [A] :
+      ( m1_scmpds_2(A)
+     => ! [B] :
+          ( m1_scmpds_2(B)
+         => ? [C] :
+              ( v1_funct_1(C)
+              & v1_funct_2(C,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)),k5_numbers)
+              & m2_relset_1(C,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)),k5_numbers)
+              & ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+                 => ( ( k2_scmpds_2(D,A) = k2_scmpds_2(D,B)
+                     => k8_funct_2(k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)),k5_numbers,C,D) = np__0 )
+                    & ( k2_scmpds_2(D,A) != k2_scmpds_2(D,B)
+                     => k8_funct_2(k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)),k5_numbers,C,D) = k4_square_1(k1_int_2(k2_scmpds_2(D,A)),k1_int_2(k2_scmpds_2(D,B))) ) ) ) ) ) ) ).
+
+fof(t7_scpinvar,axiom,
+    ! [A] :
+      ( m1_scmpds_2(A)
+     => ? [B] :
+          ( v1_funct_1(B)
+          & v1_funct_2(B,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)),k5_numbers)
+          & m2_relset_1(B,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)),k5_numbers)
+          & ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+             => ( ( r1_xreal_0(np__0,k2_scmpds_2(C,A))
+                 => k8_funct_2(k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)),k5_numbers,B,C) = np__0 )
+                & ( ~ r1_xreal_0(np__0,k2_scmpds_2(C,A))
+                 => k8_funct_2(k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)),k5_numbers,B,C) = k4_xcmplx_0(k2_scmpds_2(C,A)) ) ) ) ) ) ).
+
+fof(d1_scpinvar,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k1_scpinvar(A,B) = k3_scmpds_4(k5_scmpds_4(k5_scmpds_4(k6_scmpds_4(k6_scmpds_2(k2_scmp_gcd,np__0),k6_scmpds_2(k1_scmp_gcd(np__1),np__0)),k6_scmpds_2(k1_scmp_gcd(np__2),k4_xcmplx_0(A))),k6_scmpds_2(k1_scmp_gcd(np__3),k1_nat_1(B,np__1))),k2_scmpds_8(k2_scmp_gcd,np__2,k5_scmpds_4(k6_scmpds_4(k13_scmpds_2(k2_scmp_gcd,k1_scmp_gcd(np__3),np__1,np__0),k12_scmpds_2(k2_scmp_gcd,np__2,np__1)),k12_scmpds_2(k2_scmp_gcd,np__3,np__1)))) ) ) ).
+
+fof(t8_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( ( v1_ami_3(B,k1_tarski(k4_numbers),k1_scmpds_2)
+            & v1_scmpds_3(B)
+            & v3_scmpds_4(B)
+            & v3_scmpds_5(B)
+            & m1_ami_1(B,k1_tarski(k4_numbers),k1_scmpds_2) )
+         => ! [C] :
+              ( m1_scmpds_2(C)
+             => ! [D] :
+                  ( m1_scmpds_2(D)
+                 => ! [E] :
+                      ( m1_scmpds_2(E)
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ! [G] :
+                              ( m2_subset_1(G,k1_numbers,k5_numbers)
+                             => ! [H] :
+                                  ( m2_subset_1(H,k1_numbers,k5_numbers)
+                                 => ! [I] :
+                                      ( m1_trees_4(I,k1_numbers,k6_wsierp_1)
+                                     => ( ( r1_scpisort(I,A,H)
+                                          & k3_finseq_1(I) = F
+                                          & k2_scmpds_2(A,D) = np__0
+                                          & k2_scmpds_2(A,C) = np__0
+                                          & k2_scmpds_2(A,k1_scmp_gcd(G)) = k4_xcmplx_0(F)
+                                          & k2_scmpds_2(A,E) = k1_nat_1(H,np__1)
+                                          & ! [J] :
+                                              ( m1_subset_1(J,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+                                             => ( ( k2_scmpds_2(J,C) = np__0
+                                                  & ! [K] :
+                                                      ( m2_subset_1(K,k1_numbers,k5_numbers)
+                                                     => ( ~ r1_xreal_0(K,H)
+                                                       => k2_scmpds_2(J,k1_scmp_gcd(K)) = k2_scmpds_2(A,k1_scmp_gcd(K)) ) ) )
+                                               => ( ! [K] :
+                                                      ( m1_trees_4(K,k1_numbers,k6_wsierp_1)
+                                                     => ~ ( r1_scpisort(K,A,H)
+                                                          & k3_finseq_1(K) = k2_xcmplx_0(k2_scmpds_2(J,k1_scmp_gcd(G)),F)
+                                                          & k2_scmpds_2(J,D) = k7_wsierp_1(K)
+                                                          & k2_scmpds_2(J,E) = k1_nat_1(k1_nat_1(H,np__1),k3_finseq_1(K)) ) )
+                                                  | r1_xreal_0(np__0,k2_scmpds_2(J,k1_scmp_gcd(G)))
+                                                  | ( k2_scmpds_2(k9_scmpds_4(B,J),C) = np__0
+                                                    & r1_scmpds_6(B,J)
+                                                    & r2_scmpds_6(B,J)
+                                                    & k2_scmpds_2(k9_scmpds_4(B,J),k1_scmp_gcd(G)) = k2_xcmplx_0(k2_scmpds_2(J,k1_scmp_gcd(G)),np__1)
+                                                    & ? [K] :
+                                                        ( m1_trees_4(K,k1_numbers,k6_wsierp_1)
+                                                        & r1_scpisort(K,A,H)
+                                                        & k3_finseq_1(K) = k2_xcmplx_0(k2_xcmplx_0(k2_scmpds_2(J,k1_scmp_gcd(G)),F),np__1)
+                                                        & k2_scmpds_2(k9_scmpds_4(B,J),E) = k1_nat_1(k1_nat_1(H,np__1),k3_finseq_1(K))
+                                                        & k2_scmpds_2(k9_scmpds_4(B,J),D) = k7_wsierp_1(K) )
+                                                    & ! [K] :
+                                                        ( m2_subset_1(K,k1_numbers,k5_numbers)
+                                                       => ( ~ r1_xreal_0(K,H)
+                                                         => k2_scmpds_2(k9_scmpds_4(B,J),k1_scmp_gcd(K)) = k2_scmpds_2(A,k1_scmp_gcd(K)) ) ) ) ) ) ) )
+                                       => ( r1_xreal_0(k4_card_1(B),np__0)
+                                          | ( k2_scmpds_2(k9_scmpds_4(k2_scmpds_8(C,G,B),A),D) = k7_wsierp_1(I)
+                                            & r1_scmpds_6(k2_scmpds_8(C,G,B),A)
+                                            & r2_scmpds_6(k2_scmpds_8(C,G,B),A) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t9_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m1_trees_4(D,k1_numbers,k6_wsierp_1)
+                 => ( ( r1_xreal_0(np__3,C)
+                      & r1_scpisort(D,A,C)
+                      & k3_finseq_1(D) = B )
+                   => ( k2_scmpds_2(k9_scmpds_4(k1_scpinvar(B,C),A),k1_scmp_gcd(np__1)) = k7_wsierp_1(D)
+                      & v2_scmpds_4(k1_scpinvar(B,C)) ) ) ) ) ) ) ).
+
+fof(d2_scpinvar,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k2_scpinvar(A) = k3_scmpds_4(k5_scmpds_4(k5_scmpds_4(k6_scmpds_4(k6_scmpds_2(k2_scmp_gcd,np__0),k6_scmpds_2(k1_scmp_gcd(np__1),np__0)),k6_scmpds_2(k1_scmp_gcd(np__2),np__1)),k6_scmpds_2(k1_scmp_gcd(np__3),A)),k3_scmpds_8(k2_scmp_gcd,np__3,k5_scmpds_4(k5_scmpds_4(k6_scmpds_4(k17_scmpds_2(k2_scmp_gcd,k2_scmp_gcd,np__4,np__2),k13_scmpds_2(k2_scmp_gcd,k2_scmp_gcd,np__2,np__1)),k17_scmpds_2(k2_scmp_gcd,k2_scmp_gcd,np__1,np__4)),k12_scmpds_2(k2_scmp_gcd,np__3,k4_xcmplx_0(np__1))))) ) ).
+
+fof(t10_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( ( v1_ami_3(B,k1_tarski(k4_numbers),k1_scmpds_2)
+            & v1_scmpds_3(B)
+            & v3_scmpds_4(B)
+            & v3_scmpds_5(B)
+            & m1_ami_1(B,k1_tarski(k4_numbers),k1_scmpds_2) )
+         => ! [C] :
+              ( m1_scmpds_2(C)
+             => ! [D] :
+                  ( m1_scmpds_2(D)
+                 => ! [E] :
+                      ( m1_scmpds_2(E)
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ! [G] :
+                              ( m2_subset_1(G,k1_numbers,k5_numbers)
+                             => ( ( k2_scmpds_2(A,C) = np__0
+                                  & k2_scmpds_2(A,D) = np__0
+                                  & k2_scmpds_2(A,E) = np__1
+                                  & k2_scmpds_2(A,k1_scmp_gcd(G)) = F
+                                  & ! [H] :
+                                      ( m1_subset_1(H,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+                                     => ! [I] :
+                                          ( m2_subset_1(I,k1_numbers,k5_numbers)
+                                         => ( ( F = k2_xcmplx_0(k2_scmpds_2(H,k1_scmp_gcd(G)),I)
+                                              & k2_scmpds_2(H,D) = k3_pre_ff(I)
+                                              & k2_scmpds_2(H,E) = k3_pre_ff(k1_nat_1(I,np__1))
+                                              & k2_scmpds_2(H,C) = np__0 )
+                                           => ( r1_xreal_0(k2_scmpds_2(H,k1_scmp_gcd(G)),np__0)
+                                              | ( k2_scmpds_2(k9_scmpds_4(B,H),C) = np__0
+                                                & r1_scmpds_6(B,H)
+                                                & r2_scmpds_6(B,H)
+                                                & k2_scmpds_2(k9_scmpds_4(B,H),k1_scmp_gcd(G)) = k6_xcmplx_0(k2_scmpds_2(H,k1_scmp_gcd(G)),np__1)
+                                                & k2_scmpds_2(k9_scmpds_4(B,H),D) = k3_pre_ff(k1_nat_1(I,np__1))
+                                                & k2_scmpds_2(k9_scmpds_4(B,H),E) = k3_pre_ff(k1_nat_1(k1_nat_1(I,np__1),np__1)) ) ) ) ) ) )
+                               => ( r1_xreal_0(k4_card_1(B),np__0)
+                                  | ( k2_scmpds_2(k9_scmpds_4(k3_scmpds_8(C,G,B),A),D) = k3_pre_ff(F)
+                                    & k2_scmpds_2(k9_scmpds_4(k3_scmpds_8(C,G,B),A),E) = k3_pre_ff(k1_nat_1(F,np__1))
+                                    & r1_scmpds_6(k3_scmpds_8(C,G,B),A)
+                                    & r2_scmpds_6(k3_scmpds_8(C,G,B),A) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t11_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( k2_scmpds_2(k9_scmpds_4(k2_scpinvar(B),A),k1_scmp_gcd(np__1)) = k3_pre_ff(B)
+            & k2_scmpds_2(k9_scmpds_4(k2_scpinvar(B),A),k1_scmp_gcd(np__2)) = k3_pre_ff(k1_nat_1(B,np__1))
+            & v2_scmpds_4(k2_scpinvar(B)) ) ) ) ).
+
+fof(d3_scpinvar,axiom,
+    ! [A] :
+      ( m1_scmpds_2(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( ( v1_ami_3(C,k1_tarski(k4_numbers),k1_scmpds_2)
+                & v1_scmpds_3(C)
+                & m1_ami_1(C,k1_tarski(k4_numbers),k1_scmpds_2) )
+             => k3_scpinvar(A,B,C) = k5_scmpds_4(k3_scmpds_4(k6_scmpds_4(k8_scmpds_2(A,B,np__2),k4_scmpds_2(k1_nat_1(k4_card_1(C),np__2))),C),k4_scmpds_2(k4_xcmplx_0(k1_nat_1(k4_card_1(C),np__2)))) ) ) ) ).
+
+fof(t12_scpinvar,axiom,
+    ! [A] :
+      ( m1_scmpds_2(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( ( v1_ami_3(C,k1_tarski(k4_numbers),k1_scmpds_2)
+                & v1_scmpds_3(C)
+                & m1_ami_1(C,k1_tarski(k4_numbers),k1_scmpds_2) )
+             => k4_card_1(k3_scpinvar(A,B,C)) = k1_nat_1(k4_card_1(C),np__3) ) ) ) ).
+
+fof(t13_scpinvar,axiom,
+    ! [A] :
+      ( m1_scmpds_2(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( ( v1_ami_3(D,k1_tarski(k4_numbers),k1_scmpds_2)
+                    & v1_scmpds_3(D)
+                    & m1_ami_1(D,k1_tarski(k4_numbers),k1_scmpds_2) )
+                 => ( ~ r1_xreal_0(k1_nat_1(k4_card_1(D),np__3),C)
+                  <=> r2_hidden(k2_scmpds_3(C),k1_relat_1(k3_scpinvar(A,B,D))) ) ) ) ) ) ).
+
+fof(t14_scpinvar,axiom,
+    ! [A] :
+      ( m1_scmpds_2(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( ( v1_ami_3(C,k1_tarski(k4_numbers),k1_scmpds_2)
+                & v1_scmpds_3(C)
+                & m1_ami_1(C,k1_tarski(k4_numbers),k1_scmpds_2) )
+             => ( r2_hidden(k2_scmpds_3(np__0),k1_relat_1(k3_scpinvar(A,B,C)))
+                & r2_hidden(k2_scmpds_3(np__1),k1_relat_1(k3_scpinvar(A,B,C))) ) ) ) ) ).
+
+fof(t15_scpinvar,axiom,
+    ! [A] :
+      ( m1_scmpds_2(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( ( v1_ami_3(C,k1_tarski(k4_numbers),k1_scmpds_2)
+                & v1_scmpds_3(C)
+                & m1_ami_1(C,k1_tarski(k4_numbers),k1_scmpds_2) )
+             => ( k1_funct_1(k3_scpinvar(A,B,C),k2_scmpds_3(np__0)) = k8_scmpds_2(A,B,np__2)
+                & k1_funct_1(k3_scpinvar(A,B,C),k2_scmpds_3(np__1)) = k4_scmpds_2(k1_nat_1(k4_card_1(C),np__2))
+                & k1_funct_1(k3_scpinvar(A,B,C),k2_scmpds_3(k1_nat_1(k4_card_1(C),np__2))) = k4_scmpds_2(k4_xcmplx_0(k1_nat_1(k4_card_1(C),np__2))) ) ) ) ) ).
+
+fof(t16_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( ( v1_ami_3(B,k1_tarski(k4_numbers),k1_scmpds_2)
+            & v1_scmpds_3(B)
+            & m1_ami_1(B,k1_tarski(k4_numbers),k1_scmpds_2) )
+         => ! [C] :
+              ( m1_scmpds_2(C)
+             => ! [D] :
+                  ( v1_int_1(D)
+                 => ( k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(A,C),D)) = np__0
+                   => ( r1_scmpds_6(k3_scpinvar(C,D,B),A)
+                      & r2_scmpds_6(k3_scpinvar(C,D,B),A) ) ) ) ) ) ) ).
+
+fof(t17_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( ( v1_ami_3(B,k1_tarski(k4_numbers),k1_scmpds_2)
+            & v1_scmpds_3(B)
+            & m1_ami_1(B,k1_tarski(k4_numbers),k1_scmpds_2) )
+         => ! [C] :
+              ( m1_scmpds_2(C)
+             => ! [D] :
+                  ( m1_scmpds_2(D)
+                 => ! [E] :
+                      ( v1_int_1(E)
+                     => ( k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(A,C),E)) = np__0
+                       => k9_scmpds_4(k3_scpinvar(C,E,B),A) = k8_ami_5(k1_tarski(k4_numbers),k1_scmpds_2,A,k12_ami_3(k1_tarski(k4_numbers),k1_scmpds_2,k2_scmpds_3(k1_nat_1(k4_card_1(B),np__3)))) ) ) ) ) ) ) ).
+
+fof(t18_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( ( v1_ami_3(B,k1_tarski(k4_numbers),k1_scmpds_2)
+            & v1_scmpds_3(B)
+            & m1_ami_1(B,k1_tarski(k4_numbers),k1_scmpds_2) )
+         => ! [C] :
+              ( m1_scmpds_2(C)
+             => ! [D] :
+                  ( v1_int_1(D)
+                 => ( k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(A,C),D)) = np__0
+                   => k6_ami_1(k1_tarski(k4_numbers),k1_scmpds_2,k9_scmpds_4(k3_scpinvar(C,D,B),A)) = k2_scmpds_3(k1_nat_1(k4_card_1(B),np__3)) ) ) ) ) ) ).
+
+fof(t19_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( ( v1_ami_3(B,k1_tarski(k4_numbers),k1_scmpds_2)
+            & v1_scmpds_3(B)
+            & m1_ami_1(B,k1_tarski(k4_numbers),k1_scmpds_2) )
+         => ! [C] :
+              ( m1_scmpds_2(C)
+             => ! [D] :
+                  ( m1_scmpds_2(D)
+                 => ! [E] :
+                      ( v1_int_1(E)
+                     => ( k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(A,C),E)) = np__0
+                       => k2_scmpds_2(k9_scmpds_4(k3_scpinvar(C,E,B),A),D) = k2_scmpds_2(A,D) ) ) ) ) ) ) ).
+
+fof(t20_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( ( v1_ami_3(B,k1_tarski(k4_numbers),k1_scmpds_2)
+            & v1_scmpds_3(B)
+            & v3_scmpds_4(B)
+            & v3_scmpds_5(B)
+            & m1_ami_1(B,k1_tarski(k4_numbers),k1_scmpds_2) )
+         => ! [C] :
+              ( m1_scmpds_2(C)
+             => ! [D] :
+                  ( m1_scmpds_2(D)
+                 => ! [E] :
+                      ( m1_scmpds_2(E)
+                     => ! [F] :
+                          ( v1_int_1(F)
+                         => ! [G] :
+                              ( v1_int_1(G)
+                             => ( ( k2_scmpds_2(A,C) = G
+                                  & k2_scmpds_2(A,k3_scmpds_2(G,F)) = k6_xcmplx_0(k2_scmpds_2(A,D),k2_scmpds_2(A,E))
+                                  & ! [H] :
+                                      ( m1_subset_1(H,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+                                     => ( ( k2_scmpds_2(H,C) = G
+                                          & k2_scmpds_2(H,k3_scmpds_2(G,F)) = k6_xcmplx_0(k2_scmpds_2(H,D),k2_scmpds_2(H,E)) )
+                                       => ( r1_xreal_0(k2_scmpds_2(H,D),np__0)
+                                          | r1_xreal_0(k2_scmpds_2(H,E),np__0)
+                                          | k2_scmpds_2(H,D) = k2_scmpds_2(H,E)
+                                          | ( k2_scmpds_2(k9_scmpds_4(B,H),C) = G
+                                            & r1_scmpds_6(B,H)
+                                            & r2_scmpds_6(B,H)
+                                            & ( ~ r1_xreal_0(k2_scmpds_2(H,D),k2_scmpds_2(H,E))
+                                             => ( k2_scmpds_2(k9_scmpds_4(B,H),D) = k6_xcmplx_0(k2_scmpds_2(H,D),k2_scmpds_2(H,E))
+                                                & k2_scmpds_2(k9_scmpds_4(B,H),E) = k2_scmpds_2(H,E) ) )
+                                            & ( r1_xreal_0(k2_scmpds_2(H,D),k2_scmpds_2(H,E))
+                                             => ( k2_scmpds_2(k9_scmpds_4(B,H),E) = k6_xcmplx_0(k2_scmpds_2(H,E),k2_scmpds_2(H,D))
+                                                & k2_scmpds_2(k9_scmpds_4(B,H),D) = k2_scmpds_2(H,D) ) )
+                                            & k2_scmpds_2(k9_scmpds_4(B,H),k3_scmpds_2(G,F)) = k6_xcmplx_0(k2_scmpds_2(k9_scmpds_4(B,H),D),k2_scmpds_2(k9_scmpds_4(B,H),E)) ) ) ) ) )
+                               => ( r1_xreal_0(k4_card_1(B),np__0)
+                                  | r1_xreal_0(k2_scmpds_2(A,D),np__0)
+                                  | r1_xreal_0(k2_scmpds_2(A,E),np__0)
+                                  | ( r1_scmpds_6(k3_scpinvar(C,F,B),A)
+                                    & r2_scmpds_6(k3_scpinvar(C,F,B),A)
+                                    & ( k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(A,C),F)) != np__0
+                                     => k9_scmpds_4(k3_scpinvar(C,F,B),A) = k9_scmpds_4(k3_scpinvar(C,F,B),k9_scmpds_4(B,A)) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d4_scpinvar,axiom,
+    k4_scpinvar = k3_scmpds_4(k5_scmpds_4(k6_scmpds_4(k6_scmpds_2(k2_scmp_gcd,np__0),k17_scmpds_2(k2_scmp_gcd,k2_scmp_gcd,np__3,np__1)),k14_scmpds_2(k2_scmp_gcd,k2_scmp_gcd,np__3,np__2)),k3_scpinvar(k2_scmp_gcd,np__3,k5_scmpds_4(k5_scmpds_4(k3_scmpds_6(k2_scmp_gcd,np__3,k1_scmpds_4(k14_scmpds_2(k2_scmp_gcd,k2_scmp_gcd,np__1,np__2)),k1_scmpds_4(k14_scmpds_2(k2_scmp_gcd,k2_scmp_gcd,np__2,np__1))),k17_scmpds_2(k2_scmp_gcd,k2_scmp_gcd,np__3,np__1)),k14_scmpds_2(k2_scmp_gcd,k2_scmp_gcd,np__3,np__2)))) ).
+
+fof(t21_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( ( v1_ami_3(B,k1_tarski(k4_numbers),k1_scmpds_2)
+            & v1_scmpds_3(B)
+            & v3_scmpds_4(B)
+            & v3_scmpds_5(B)
+            & m1_ami_1(B,k1_tarski(k4_numbers),k1_scmpds_2) )
+         => ! [C] :
+              ( m1_scmpds_2(C)
+             => ! [D] :
+                  ( m1_scmpds_2(D)
+                 => ! [E] :
+                      ( m1_scmpds_2(E)
+                     => ! [F] :
+                          ( v1_int_1(F)
+                         => ! [G] :
+                              ( v1_int_1(G)
+                             => ( ( k2_scmpds_2(A,C) = G
+                                  & k2_scmpds_2(A,k3_scmpds_2(G,F)) = k6_xcmplx_0(k2_scmpds_2(A,D),k2_scmpds_2(A,E))
+                                  & ! [H] :
+                                      ( m1_subset_1(H,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+                                     => ( ( k2_scmpds_2(H,C) = G
+                                          & k2_scmpds_2(H,k3_scmpds_2(G,F)) = k6_xcmplx_0(k2_scmpds_2(H,D),k2_scmpds_2(H,E)) )
+                                       => ( r1_xreal_0(k2_scmpds_2(H,D),np__0)
+                                          | r1_xreal_0(k2_scmpds_2(H,E),np__0)
+                                          | k2_scmpds_2(H,D) = k2_scmpds_2(H,E)
+                                          | ( k2_scmpds_2(k9_scmpds_4(B,H),C) = G
+                                            & r1_scmpds_6(B,H)
+                                            & r2_scmpds_6(B,H)
+                                            & ( ~ r1_xreal_0(k2_scmpds_2(H,D),k2_scmpds_2(H,E))
+                                             => ( k2_scmpds_2(k9_scmpds_4(B,H),D) = k6_xcmplx_0(k2_scmpds_2(H,D),k2_scmpds_2(H,E))
+                                                & k2_scmpds_2(k9_scmpds_4(B,H),E) = k2_scmpds_2(H,E) ) )
+                                            & ( r1_xreal_0(k2_scmpds_2(H,D),k2_scmpds_2(H,E))
+                                             => ( k2_scmpds_2(k9_scmpds_4(B,H),E) = k6_xcmplx_0(k2_scmpds_2(H,E),k2_scmpds_2(H,D))
+                                                & k2_scmpds_2(k9_scmpds_4(B,H),D) = k2_scmpds_2(H,D) ) )
+                                            & k2_scmpds_2(k9_scmpds_4(B,H),k3_scmpds_2(G,F)) = k6_xcmplx_0(k2_scmpds_2(k9_scmpds_4(B,H),D),k2_scmpds_2(k9_scmpds_4(B,H),E)) ) ) ) ) )
+                               => ( r1_xreal_0(k4_card_1(B),np__0)
+                                  | r1_xreal_0(k2_scmpds_2(A,D),np__0)
+                                  | r1_xreal_0(k2_scmpds_2(A,E),np__0)
+                                  | ( k2_scmpds_2(k9_scmpds_4(k3_scpinvar(C,F,B),A),D) = k3_int_2(k2_scmpds_2(A,D),k2_scmpds_2(A,E))
+                                    & k2_scmpds_2(k9_scmpds_4(k3_scpinvar(C,F,B),A),E) = k3_int_2(k2_scmpds_2(A,D),k2_scmpds_2(A,E)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t22_scpinvar,axiom,
+    k4_card_1(k4_scpinvar) = np__12 ).
+
+fof(t23_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( ( k2_scmpds_2(A,k1_scmp_gcd(np__1)) = B
+                  & k2_scmpds_2(A,k1_scmp_gcd(np__2)) = C )
+               => ( r1_xreal_0(B,np__0)
+                  | r1_xreal_0(C,np__0)
+                  | ( k2_scmpds_2(k9_scmpds_4(k4_scpinvar,A),k1_scmp_gcd(np__1)) = k3_int_2(B,C)
+                    & k2_scmpds_2(k9_scmpds_4(k4_scpinvar,A),k1_scmp_gcd(np__2)) = k3_int_2(B,C)
+                    & r1_scmpds_6(k4_scpinvar,A)
+                    & r2_scmpds_6(k4_scpinvar,A) ) ) ) ) ) ) ).
+
+fof(s1_scpinvar,axiom,
+    ( ( ~ r1_xreal_0(k4_card_1(f3_s1_scpinvar),np__0)
+      & ! [A] :
+          ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+         => ( p1_s1_scpinvar(k1_scmpds_8(A))
+           => ( f1_s1_scpinvar(k1_scmpds_8(A)) = np__0
+            <=> r1_xreal_0(np__0,k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(f2_s1_scpinvar,f4_s1_scpinvar),f5_s1_scpinvar))) ) ) )
+      & p1_s1_scpinvar(k1_scmpds_8(f2_s1_scpinvar))
+      & ! [A] :
+          ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+         => ( ( p1_s1_scpinvar(k1_scmpds_8(A))
+              & k2_scmpds_2(A,f4_s1_scpinvar) = k2_scmpds_2(f2_s1_scpinvar,f4_s1_scpinvar) )
+           => ( r1_xreal_0(np__0,k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(f2_s1_scpinvar,f4_s1_scpinvar),f5_s1_scpinvar)))
+              | ( k2_scmpds_2(k9_scmpds_4(f3_s1_scpinvar,A),f4_s1_scpinvar) = k2_scmpds_2(A,f4_s1_scpinvar)
+                & r1_scmpds_6(f3_s1_scpinvar,A)
+                & r2_scmpds_6(f3_s1_scpinvar,A)
+                & ~ r1_xreal_0(f1_s1_scpinvar(k1_scmpds_8(A)),f1_s1_scpinvar(k1_scmpds_8(k9_scmpds_4(f3_s1_scpinvar,A))))
+                & p1_s1_scpinvar(k1_scmpds_8(k9_scmpds_4(f3_s1_scpinvar,A))) ) ) ) ) )
+   => ( f1_s1_scpinvar(k1_scmpds_8(k9_scmpds_4(k2_scmpds_8(f4_s1_scpinvar,f5_s1_scpinvar,f3_s1_scpinvar),f2_s1_scpinvar))) = np__0
+      & p1_s1_scpinvar(k1_scmpds_8(k9_scmpds_4(k2_scmpds_8(f4_s1_scpinvar,f5_s1_scpinvar,f3_s1_scpinvar),f2_s1_scpinvar))) ) ) ).
+
+fof(s2_scpinvar,axiom,
+    ( ( ~ r1_xreal_0(k4_card_1(f3_s2_scpinvar),np__0)
+      & ! [A] :
+          ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+         => ( p1_s2_scpinvar(k1_scmpds_8(A))
+           => ( f1_s2_scpinvar(k1_scmpds_8(A)) = np__0
+            <=> r1_xreal_0(k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(f2_s2_scpinvar,f4_s2_scpinvar),f5_s2_scpinvar)),np__0) ) ) )
+      & p1_s2_scpinvar(k1_scmpds_8(f2_s2_scpinvar))
+      & ! [A] :
+          ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+         => ( ( p1_s2_scpinvar(k1_scmpds_8(A))
+              & k2_scmpds_2(A,f4_s2_scpinvar) = k2_scmpds_2(f2_s2_scpinvar,f4_s2_scpinvar) )
+           => ( r1_xreal_0(k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(f2_s2_scpinvar,f4_s2_scpinvar),f5_s2_scpinvar)),np__0)
+              | ( k2_scmpds_2(k9_scmpds_4(f3_s2_scpinvar,A),f4_s2_scpinvar) = k2_scmpds_2(A,f4_s2_scpinvar)
+                & r1_scmpds_6(f3_s2_scpinvar,A)
+                & r2_scmpds_6(f3_s2_scpinvar,A)
+                & ~ r1_xreal_0(f1_s2_scpinvar(k1_scmpds_8(A)),f1_s2_scpinvar(k1_scmpds_8(k9_scmpds_4(f3_s2_scpinvar,A))))
+                & p1_s2_scpinvar(k1_scmpds_8(k9_scmpds_4(f3_s2_scpinvar,A))) ) ) ) ) )
+   => ( f1_s2_scpinvar(k1_scmpds_8(k9_scmpds_4(k3_scmpds_8(f4_s2_scpinvar,f5_s2_scpinvar,f3_s2_scpinvar),f2_s2_scpinvar))) = np__0
+      & p1_s2_scpinvar(k1_scmpds_8(k9_scmpds_4(k3_scmpds_8(f4_s2_scpinvar,f5_s2_scpinvar,f3_s2_scpinvar),f2_s2_scpinvar))) ) ) ).
+
+fof(s3_scpinvar,axiom,
+    ( ( ~ r1_xreal_0(k4_card_1(f3_s3_scpinvar),np__0)
+      & ! [A] :
+          ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+         => ( ( p1_s3_scpinvar(k1_scmpds_8(A))
+              & f1_s3_scpinvar(k1_scmpds_8(A)) = np__0 )
+           => k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(f2_s3_scpinvar,f4_s3_scpinvar),f5_s3_scpinvar)) = np__0 ) )
+      & p1_s3_scpinvar(k1_scmpds_8(f2_s3_scpinvar))
+      & ! [A] :
+          ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+         => ( ( p1_s3_scpinvar(k1_scmpds_8(A))
+              & k2_scmpds_2(A,f4_s3_scpinvar) = k2_scmpds_2(f2_s3_scpinvar,f4_s3_scpinvar) )
+           => ( k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(f2_s3_scpinvar,f4_s3_scpinvar),f5_s3_scpinvar)) = np__0
+              | ( k2_scmpds_2(k9_scmpds_4(f3_s3_scpinvar,A),f4_s3_scpinvar) = k2_scmpds_2(A,f4_s3_scpinvar)
+                & r1_scmpds_6(f3_s3_scpinvar,A)
+                & r2_scmpds_6(f3_s3_scpinvar,A)
+                & ~ r1_xreal_0(f1_s3_scpinvar(k1_scmpds_8(A)),f1_s3_scpinvar(k1_scmpds_8(k9_scmpds_4(f3_s3_scpinvar,A))))
+                & p1_s3_scpinvar(k1_scmpds_8(k9_scmpds_4(f3_s3_scpinvar,A))) ) ) ) ) )
+   => ( r1_scmpds_6(k3_scpinvar(f4_s3_scpinvar,f5_s3_scpinvar,f3_s3_scpinvar),f2_s3_scpinvar)
+      & r2_scmpds_6(k3_scpinvar(f4_s3_scpinvar,f5_s3_scpinvar,f3_s3_scpinvar),f2_s3_scpinvar) ) ) ).
+
+fof(s4_scpinvar,axiom,
+    ( ( ~ r1_xreal_0(k4_card_1(f3_s4_scpinvar),np__0)
+      & k2_scmpds_2(f2_s4_scpinvar,k3_scmpds_2(k2_scmpds_2(f2_s4_scpinvar,f4_s4_scpinvar),f5_s4_scpinvar)) != np__0
+      & ! [A] :
+          ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+         => ( ( p1_s4_scpinvar(k1_scmpds_8(A))
+              & f1_s4_scpinvar(k1_scmpds_8(A)) = np__0 )
+           => k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(f2_s4_scpinvar,f4_s4_scpinvar),f5_s4_scpinvar)) = np__0 ) )
+      & p1_s4_scpinvar(k1_scmpds_8(f2_s4_scpinvar))
+      & ! [A] :
+          ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+         => ( ( p1_s4_scpinvar(k1_scmpds_8(A))
+              & k2_scmpds_2(A,f4_s4_scpinvar) = k2_scmpds_2(f2_s4_scpinvar,f4_s4_scpinvar) )
+           => ( k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(f2_s4_scpinvar,f4_s4_scpinvar),f5_s4_scpinvar)) = np__0
+              | ( k2_scmpds_2(k9_scmpds_4(f3_s4_scpinvar,A),f4_s4_scpinvar) = k2_scmpds_2(A,f4_s4_scpinvar)
+                & r1_scmpds_6(f3_s4_scpinvar,A)
+                & r2_scmpds_6(f3_s4_scpinvar,A)
+                & ~ r1_xreal_0(f1_s4_scpinvar(k1_scmpds_8(A)),f1_s4_scpinvar(k1_scmpds_8(k9_scmpds_4(f3_s4_scpinvar,A))))
+                & p1_s4_scpinvar(k1_scmpds_8(k9_scmpds_4(f3_s4_scpinvar,A))) ) ) ) ) )
+   => k9_scmpds_4(k3_scpinvar(f4_s4_scpinvar,f5_s4_scpinvar,f3_s4_scpinvar),f2_s4_scpinvar) = k9_scmpds_4(k3_scpinvar(f4_s4_scpinvar,f5_s4_scpinvar,f3_s4_scpinvar),k9_scmpds_4(f3_s4_scpinvar,f2_s4_scpinvar)) ) ).
+
+fof(s5_scpinvar,axiom,
+    ( ( ~ r1_xreal_0(k4_card_1(f3_s5_scpinvar),np__0)
+      & ! [A] :
+          ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+         => ( p1_s5_scpinvar(k1_scmpds_8(A))
+           => ( f1_s5_scpinvar(k1_scmpds_8(A)) = np__0
+            <=> k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(f2_s5_scpinvar,f4_s5_scpinvar),f5_s5_scpinvar)) = np__0 ) ) )
+      & p1_s5_scpinvar(k1_scmpds_8(f2_s5_scpinvar))
+      & ! [A] :
+          ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_scmpds_2)))
+         => ( ( p1_s5_scpinvar(k1_scmpds_8(A))
+              & k2_scmpds_2(A,f4_s5_scpinvar) = k2_scmpds_2(f2_s5_scpinvar,f4_s5_scpinvar) )
+           => ( k2_scmpds_2(A,k3_scmpds_2(k2_scmpds_2(f2_s5_scpinvar,f4_s5_scpinvar),f5_s5_scpinvar)) = np__0
+              | ( k2_scmpds_2(k9_scmpds_4(f3_s5_scpinvar,A),f4_s5_scpinvar) = k2_scmpds_2(A,f4_s5_scpinvar)
+                & r1_scmpds_6(f3_s5_scpinvar,A)
+                & r2_scmpds_6(f3_s5_scpinvar,A)
+                & ~ r1_xreal_0(f1_s5_scpinvar(k1_scmpds_8(A)),f1_s5_scpinvar(k1_scmpds_8(k9_scmpds_4(f3_s5_scpinvar,A))))
+                & p1_s5_scpinvar(k1_scmpds_8(k9_scmpds_4(f3_s5_scpinvar,A))) ) ) ) ) )
+   => ( f1_s5_scpinvar(k1_scmpds_8(k9_scmpds_4(k3_scpinvar(f4_s5_scpinvar,f5_s5_scpinvar,f3_s5_scpinvar),f2_s5_scpinvar))) = np__0
+      & p1_s5_scpinvar(k1_scmpds_8(k9_scmpds_4(k3_scpinvar(f4_s5_scpinvar,f5_s5_scpinvar,f3_s5_scpinvar),f2_s5_scpinvar))) ) ) ).
+
+fof(dt_k1_scpinvar,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_ami_3(k1_scpinvar(A,B),k1_tarski(k4_numbers),k1_scmpds_2)
+        & v1_scmpds_3(k1_scpinvar(A,B))
+        & m1_ami_1(k1_scpinvar(A,B),k1_tarski(k4_numbers),k1_scmpds_2) ) ) ).
+
+fof(dt_k2_scpinvar,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( v1_ami_3(k2_scpinvar(A),k1_tarski(k4_numbers),k1_scmpds_2)
+        & v1_scmpds_3(k2_scpinvar(A))
+        & m1_ami_1(k2_scpinvar(A),k1_tarski(k4_numbers),k1_scmpds_2) ) ) ).
+
+fof(dt_k3_scpinvar,axiom,
+    ! [A,B,C] :
+      ( ( m1_scmpds_2(A)
+        & v1_int_1(B)
+        & v1_ami_3(C,k1_tarski(k4_numbers),k1_scmpds_2)
+        & v1_scmpds_3(C)
+        & m1_ami_1(C,k1_tarski(k4_numbers),k1_scmpds_2) )
+     => ( v1_ami_3(k3_scpinvar(A,B,C),k1_tarski(k4_numbers),k1_scmpds_2)
+        & v1_scmpds_3(k3_scpinvar(A,B,C))
+        & m1_ami_1(k3_scpinvar(A,B,C),k1_tarski(k4_numbers),k1_scmpds_2) ) ) ).
+
+fof(dt_k4_scpinvar,axiom,
+    ( v1_ami_3(k4_scpinvar,k1_tarski(k4_numbers),k1_scmpds_2)
+    & v1_scmpds_3(k4_scpinvar)
+    & m1_ami_1(k4_scpinvar,k1_tarski(k4_numbers),k1_scmpds_2) ) ).
+
+%------------------------------------------------------------------------------

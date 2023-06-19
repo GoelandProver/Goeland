@@ -1,0 +1,493 @@
+%------------------------------------------------------------------------------
+% File     : ITP015^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : prim_rec^2.ax [Gau20]
+%          : HL4015^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   64 (   5 unt;   9 typ;   0 def)
+%            Number of atoms       :  824 (  31 equ;   0 cnn)
+%            Maximal formula atoms :   38 (  12 avg)
+%            Number of connectives : 1236 (   8   ~;   3   |;  23   &;1135   @)
+%                                         (  10 <=>;  57  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   26 (  10 avg;1135 nst)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :    7 (   7   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   34 (  33 usr;  26 con; 0-2 aty)
+%            Number of variables   :  149 (  20   ^ 122   !;   7   ?; 149   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tp_c_2Eprim__rec_2E_3C,type,
+    c_2Eprim__rec_2E_3C: $i ).
+
+thf(mem_c_2Eprim__rec_2E_3C,axiom,
+    mem @ c_2Eprim__rec_2E_3C @ ( arr @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ bool ) ) ).
+
+thf(tp_c_2Eprim__rec_2EPRE,type,
+    c_2Eprim__rec_2EPRE: $i ).
+
+thf(mem_c_2Eprim__rec_2EPRE,axiom,
+    mem @ c_2Eprim__rec_2EPRE @ ( arr @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ).
+
+thf(stp_fo_c_2Eprim__rec_2EPRE,type,
+    fo__c_2Eprim__rec_2EPRE: tp__ty_2Enum_2Enum > tp__ty_2Enum_2Enum ).
+
+thf(stp_eq_fo_c_2Eprim__rec_2EPRE,axiom,
+    ! [X0: tp__ty_2Enum_2Enum] :
+      ( ( inj__ty_2Enum_2Enum @ ( fo__c_2Eprim__rec_2EPRE @ X0 ) )
+      = ( ap @ c_2Eprim__rec_2EPRE @ ( inj__ty_2Enum_2Enum @ X0 ) ) ) ).
+
+thf(tp_c_2Eprim__rec_2EPRIM__REC,type,
+    c_2Eprim__rec_2EPRIM__REC: del > $i ).
+
+thf(mem_c_2Eprim__rec_2EPRIM__REC,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprim__rec_2EPRIM__REC @ A_27a ) @ ( arr @ A_27a @ ( arr @ ( arr @ A_27a @ ( arr @ ty_2Enum_2Enum @ A_27a ) ) @ ( arr @ ty_2Enum_2Enum @ A_27a ) ) ) ) ).
+
+thf(tp_c_2Eprim__rec_2EPRIM__REC__FUN,type,
+    c_2Eprim__rec_2EPRIM__REC__FUN: del > $i ).
+
+thf(mem_c_2Eprim__rec_2EPRIM__REC__FUN,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprim__rec_2EPRIM__REC__FUN @ A_27a ) @ ( arr @ A_27a @ ( arr @ ( arr @ A_27a @ ( arr @ ty_2Enum_2Enum @ A_27a ) ) @ ( arr @ ty_2Enum_2Enum @ ( arr @ ty_2Enum_2Enum @ A_27a ) ) ) ) ) ).
+
+thf(tp_c_2Eprim__rec_2ESIMP__REC,type,
+    c_2Eprim__rec_2ESIMP__REC: del > $i ).
+
+thf(mem_c_2Eprim__rec_2ESIMP__REC,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprim__rec_2ESIMP__REC @ A_27a ) @ ( arr @ A_27a @ ( arr @ ( arr @ A_27a @ A_27a ) @ ( arr @ ty_2Enum_2Enum @ A_27a ) ) ) ) ).
+
+thf(tp_c_2Eprim__rec_2ESIMP__REC__REL,type,
+    c_2Eprim__rec_2ESIMP__REC__REL: del > $i ).
+
+thf(mem_c_2Eprim__rec_2ESIMP__REC__REL,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprim__rec_2ESIMP__REC__REL @ A_27a ) @ ( arr @ ( arr @ ty_2Enum_2Enum @ A_27a ) @ ( arr @ A_27a @ ( arr @ ( arr @ A_27a @ A_27a ) @ ( arr @ ty_2Enum_2Enum @ bool ) ) ) ) ) ).
+
+thf(tp_c_2Eprim__rec_2Emeasure,type,
+    c_2Eprim__rec_2Emeasure: del > $i ).
+
+thf(mem_c_2Eprim__rec_2Emeasure,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprim__rec_2Emeasure @ A_27a ) @ ( arr @ ( arr @ A_27a @ ty_2Enum_2Enum ) @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) ) ).
+
+thf(tp_c_2Eprim__rec_2Ewellfounded,type,
+    c_2Eprim__rec_2Ewellfounded: del > $i ).
+
+thf(mem_c_2Eprim__rec_2Ewellfounded,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Eprim__rec_2Ewellfounded @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(ax_thm_2Eprim__rec_2ELESS__DEF,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) )
+    <=> ? [V2P: $i] :
+          ( ( mem @ V2P @ ( arr @ ty_2Enum_2Enum @ bool ) )
+          & ! [V3n: tp__ty_2Enum_2Enum] :
+              ( ( p @ ( ap @ V2P @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) )
+             => ( p @ ( ap @ V2P @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) )
+          & ( p @ ( ap @ V2P @ ( inj__ty_2Enum_2Enum @ V0m ) ) )
+          & ~ ( p @ ( ap @ V2P @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2EINV__SUC__EQ,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0m ) ) )
+        = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+    <=> ( V0m = V1n ) ) ).
+
+thf(ax_thm_2Eprim__rec_2EPRE__DEF,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum] :
+      ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Eprim__rec_2EPRE @ ( inj__ty_2Enum_2Enum @ V0m ) ) )
+      = ( surj__ty_2Enum_2Enum
+        @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ty_2Enum_2Enum ) @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) )
+          @ ( ap @ ( c_2Emin_2E_40 @ ty_2Enum_2Enum )
+            @ ( lam @ ty_2Enum_2Enum
+              @ ^ [V1n: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( ap @ c_2Enum_2ESUC @ V1n ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2EPRE,axiom,
+    ( ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Eprim__rec_2EPRE @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) )
+      = fo__c_2Enum_2E0 )
+    & ! [V0m: tp__ty_2Enum_2Enum] :
+        ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Eprim__rec_2EPRE @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0m ) ) ) )
+        = V0m ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__REFL,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] :
+      ~ ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ESUC__LESS,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0m ) ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ENOT__LESS__0,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] :
+      ~ ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__0,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__0__0,axiom,
+    p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__MONO,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0m ) ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__MONO__REV,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0m ) ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__MONO__EQ,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0m ) ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+    <=> ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ETC__IM__RTC__SUC,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p
+        @ ( ap
+          @ ( ap
+            @ ( ap @ ( c_2Erelation_2ETC @ ty_2Enum_2Enum )
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V2x: $i] :
+                    ( lam @ ty_2Enum_2Enum
+                    @ ^ [V3y: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ V3y ) @ ( ap @ c_2Enum_2ESUC @ V2x ) ) ) ) )
+            @ ( inj__ty_2Enum_2Enum @ V0m ) )
+          @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+    <=> ( p
+        @ ( ap
+          @ ( ap
+            @ ( ap @ ( c_2Erelation_2ERTC @ ty_2Enum_2Enum )
+              @ ( lam @ ty_2Enum_2Enum
+                @ ^ [V4x: $i] :
+                    ( lam @ ty_2Enum_2Enum
+                    @ ^ [V5y: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ V5y ) @ ( ap @ c_2Enum_2ESUC @ V4x ) ) ) ) )
+            @ ( inj__ty_2Enum_2Enum @ V0m ) )
+          @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ERTC__IM__TC,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27a @ A_27a ) )
+     => ! [V1m: $i] :
+          ( ( mem @ V1m @ A_27a )
+         => ! [V2n: $i] :
+              ( ( mem @ V2n @ A_27a )
+             => ( ( p
+                  @ ( ap
+                    @ ( ap
+                      @ ( ap @ ( c_2Erelation_2ERTC @ A_27a )
+                        @ ( lam @ A_27a
+                          @ ^ [V3x: $i] :
+                              ( lam @ A_27a
+                              @ ^ [V4y: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ A_27a ) @ V4y ) @ ( ap @ V0f @ V3x ) ) ) ) )
+                      @ ( ap @ V0f @ V1m ) )
+                    @ V2n ) )
+              <=> ( p
+                  @ ( ap
+                    @ ( ap
+                      @ ( ap @ ( c_2Erelation_2ETC @ A_27a )
+                        @ ( lam @ A_27a
+                          @ ^ [V5x: $i] :
+                              ( lam @ A_27a
+                              @ ^ [V6y: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ A_27a ) @ V6y ) @ ( ap @ V0f @ V5x ) ) ) ) )
+                      @ V1m )
+                    @ V2n ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__ALT,axiom,
+    ( c_2Eprim__rec_2E_3C
+    = ( ap @ ( c_2Erelation_2ETC @ ty_2Enum_2Enum )
+      @ ( lam @ ty_2Enum_2Enum
+        @ ^ [V0x: $i] :
+            ( lam @ ty_2Enum_2Enum
+            @ ^ [V1y: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ V1y ) @ ( ap @ c_2Enum_2ESUC @ V0x ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__SUC__REFL,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0n ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0n ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__SUC,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__LEMMA1,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+     => ( ( V0m = V1n )
+        | ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__LEMMA2,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( ( V0m = V1n )
+        | ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__THM,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+    <=> ( ( V0m = V1n )
+        | ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__SUC__IMP,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+     => ( ( V0m != V1n )
+       => ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2EEQ__LESS,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0m ) ) )
+        = V1n )
+     => ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ESUC__ID,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] :
+      ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0n ) ) )
+     != V0n ) ).
+
+thf(conj_thm_2Eprim__rec_2ENOT__LESS__EQ,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( V0m = V1n )
+     => ~ ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__NOT__EQ,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum,V1n: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) )
+     => ( V0m != V1n ) ) ).
+
+thf(ax_thm_2Eprim__rec_2ESIMP__REC__REL,axiom,
+    ! [A_27a: del,V0fun: $i] :
+      ( ( mem @ V0fun @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2f: $i] :
+              ( ( mem @ V2f @ ( arr @ A_27a @ A_27a ) )
+             => ! [V3n: tp__ty_2Enum_2Enum] :
+                  ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC__REL @ A_27a ) @ V0fun ) @ V1x ) @ V2f ) @ ( inj__ty_2Enum_2Enum @ V3n ) ) )
+                <=> ( ( ( ap @ V0fun @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) )
+                      = V1x )
+                    & ! [V4m: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V4m ) ) @ ( inj__ty_2Enum_2Enum @ V3n ) ) )
+                       => ( ( ap @ V0fun @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V4m ) ) )
+                          = ( ap @ V2f @ ( ap @ V0fun @ ( inj__ty_2Enum_2Enum @ V4m ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ESIMP__REC__EXISTS,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27a ) )
+         => ! [V2n: tp__ty_2Enum_2Enum] :
+            ? [V3fun: $i] :
+              ( ( mem @ V3fun @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+              & ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC__REL @ A_27a ) @ V3fun ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ V2n ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ESIMP__REC__REL__UNIQUE,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27a ) )
+         => ! [V2g1: $i] :
+              ( ( mem @ V2g1 @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+             => ! [V3g2: $i] :
+                  ( ( mem @ V3g2 @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+                 => ! [V4m1: tp__ty_2Enum_2Enum,V5m2: tp__ty_2Enum_2Enum] :
+                      ( ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC__REL @ A_27a ) @ V2g1 ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ V4m1 ) ) )
+                        & ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC__REL @ A_27a ) @ V3g2 ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ V5m2 ) ) ) )
+                     => ! [V6n: tp__ty_2Enum_2Enum] :
+                          ( ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V6n ) ) @ ( inj__ty_2Enum_2Enum @ V4m1 ) ) )
+                            & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V6n ) ) @ ( inj__ty_2Enum_2Enum @ V5m2 ) ) ) )
+                         => ( ( ap @ V2g1 @ ( inj__ty_2Enum_2Enum @ V6n ) )
+                            = ( ap @ V3g2 @ ( inj__ty_2Enum_2Enum @ V6n ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ESIMP__REC__REL__UNIQUE__RESULT,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27a ) )
+         => ! [V2n: tp__ty_2Enum_2Enum] :
+              ( p
+              @ ( ap @ ( c_2Ebool_2E_3F_21 @ A_27a )
+                @ ( lam @ A_27a
+                  @ ^ [V3y: $i] :
+                      ( ap @ ( c_2Ebool_2E_3F @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+                      @ ( lam @ ( arr @ ty_2Enum_2Enum @ A_27a )
+                        @ ^ [V4g: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC__REL @ A_27a ) @ V4g ) @ V0x ) @ V1f ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V2n ) ) ) ) @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ A_27a ) @ V3y ) @ ( ap @ V4g @ ( inj__ty_2Enum_2Enum @ V2n ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprim__rec_2ESIMP__REC,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1f_27: $i] :
+          ( ( mem @ V1f_27 @ ( arr @ A_27a @ A_27a ) )
+         => ! [V2n: tp__ty_2Enum_2Enum] :
+            ? [V3g: $i] :
+              ( ( mem @ V3g @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+              & ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC__REL @ A_27a ) @ V3g ) @ V0x ) @ V1f_27 ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V2n ) ) ) )
+              & ( ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC @ A_27a ) @ V0x ) @ V1f_27 ) @ ( inj__ty_2Enum_2Enum @ V2n ) )
+                = ( ap @ V3g @ ( inj__ty_2Enum_2Enum @ V2n ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ELESS__SUC__SUC,axiom,
+    ! [V0m: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0m ) ) ) )
+      & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0m ) ) @ ( ap @ c_2Enum_2ESUC @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V0m ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2ESIMP__REC__THM,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27a ) )
+         => ( ( ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC @ A_27a ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) )
+              = V0x )
+            & ! [V2m: tp__ty_2Enum_2Enum] :
+                ( ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC @ A_27a ) @ V0x ) @ V1f ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V2m ) ) )
+                = ( ap @ V1f @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC @ A_27a ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ V2m ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprim__rec_2EPRIM__REC__FUN,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ ( arr @ ty_2Enum_2Enum @ A_27a ) ) )
+         => ( ( ap @ ( ap @ ( c_2Eprim__rec_2EPRIM__REC__FUN @ A_27a ) @ V0x ) @ V1f )
+            = ( ap
+              @ ( ap @ ( c_2Eprim__rec_2ESIMP__REC @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+                @ ( lam @ ty_2Enum_2Enum
+                  @ ^ [V2n: $i] : V0x ) )
+              @ ( lam @ ( arr @ ty_2Enum_2Enum @ A_27a )
+                @ ^ [V3fun: $i] :
+                    ( lam @ ty_2Enum_2Enum
+                    @ ^ [V4n: $i] : ( ap @ ( ap @ V1f @ ( ap @ V3fun @ ( ap @ c_2Eprim__rec_2EPRE @ V4n ) ) ) @ V4n ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2EPRIM__REC__EQN,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ ( arr @ ty_2Enum_2Enum @ A_27a ) ) )
+         => ( ! [V2n: tp__ty_2Enum_2Enum] :
+                ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2EPRIM__REC__FUN @ A_27a ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) @ ( inj__ty_2Enum_2Enum @ V2n ) )
+                = V0x )
+            & ! [V3m: tp__ty_2Enum_2Enum,V4n: tp__ty_2Enum_2Enum] :
+                ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2EPRIM__REC__FUN @ A_27a ) @ V0x ) @ V1f ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V3m ) ) ) @ ( inj__ty_2Enum_2Enum @ V4n ) )
+                = ( ap @ ( ap @ V1f @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2EPRIM__REC__FUN @ A_27a ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ V3m ) ) @ ( ap @ c_2Eprim__rec_2EPRE @ ( inj__ty_2Enum_2Enum @ V4n ) ) ) ) @ ( inj__ty_2Enum_2Enum @ V4n ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprim__rec_2EPRIM__REC,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ ( arr @ ty_2Enum_2Enum @ A_27a ) ) )
+         => ! [V2m: tp__ty_2Enum_2Enum] :
+              ( ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2EPRIM__REC @ A_27a ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ V2m ) )
+              = ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2EPRIM__REC__FUN @ A_27a ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ V2m ) ) @ ( ap @ c_2Eprim__rec_2EPRE @ ( inj__ty_2Enum_2Enum @ V2m ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2EPRIM__REC__THM,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ ( arr @ ty_2Enum_2Enum @ A_27a ) ) )
+         => ( ( ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2EPRIM__REC @ A_27a ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) )
+              = V0x )
+            & ! [V2m: tp__ty_2Enum_2Enum] :
+                ( ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2EPRIM__REC @ A_27a ) @ V0x ) @ V1f ) @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V2m ) ) )
+                = ( ap @ ( ap @ V1f @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2EPRIM__REC @ A_27a ) @ V0x ) @ V1f ) @ ( inj__ty_2Enum_2Enum @ V2m ) ) ) @ ( inj__ty_2Enum_2Enum @ V2m ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2EDC,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ A_27a @ bool ) )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2a: $i] :
+              ( ( mem @ V2a @ A_27a )
+             => ( ( ( p @ ( ap @ V0P @ V2a ) )
+                  & ! [V3x: $i] :
+                      ( ( mem @ V3x @ A_27a )
+                     => ( ( p @ ( ap @ V0P @ V3x ) )
+                       => ? [V4y: $i] :
+                            ( ( mem @ V4y @ A_27a )
+                            & ( p @ ( ap @ V0P @ V4y ) )
+                            & ( p @ ( ap @ ( ap @ V1R @ V3x ) @ V4y ) ) ) ) ) )
+               => ? [V5f: $i] :
+                    ( ( mem @ V5f @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+                    & ( ( ap @ V5f @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) )
+                      = V2a )
+                    & ! [V6n: tp__ty_2Enum_2Enum] :
+                        ( ( p @ ( ap @ V0P @ ( ap @ V5f @ ( inj__ty_2Enum_2Enum @ V6n ) ) ) )
+                        & ( p @ ( ap @ ( ap @ V1R @ ( ap @ V5f @ ( inj__ty_2Enum_2Enum @ V6n ) ) ) @ ( ap @ V5f @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V6n ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2Enum__Axiom__old,axiom,
+    ! [A_27a: del,V0e: $i] :
+      ( ( mem @ V0e @ A_27a )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ ( arr @ ty_2Enum_2Enum @ A_27a ) ) )
+         => ( p
+            @ ( ap @ ( c_2Ebool_2E_3F_21 @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+              @ ( lam @ ( arr @ ty_2Enum_2Enum @ A_27a )
+                @ ^ [V2fn1: $i] :
+                    ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ A_27a ) @ ( ap @ V2fn1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) ) ) @ V0e ) )
+                    @ ( ap @ ( c_2Ebool_2E_21 @ ty_2Enum_2Enum )
+                      @ ( lam @ ty_2Enum_2Enum
+                        @ ^ [V3n: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ A_27a ) @ ( ap @ V2fn1 @ ( ap @ c_2Enum_2ESUC @ V3n ) ) ) @ ( ap @ ( ap @ V1f @ ( ap @ V2fn1 @ V3n ) ) @ V3n ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2Enum__Axiom,axiom,
+    ! [A_27a: del,V0e: $i] :
+      ( ( mem @ V0e @ A_27a )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ ty_2Enum_2Enum @ ( arr @ A_27a @ A_27a ) ) )
+         => ? [V2fn: $i] :
+              ( ( mem @ V2fn @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+              & ( ( ap @ V2fn @ ( inj__ty_2Enum_2Enum @ fo__c_2Enum_2E0 ) )
+                = V0e )
+              & ! [V3n: tp__ty_2Enum_2Enum] :
+                  ( ( ap @ V2fn @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V3n ) ) )
+                  = ( ap @ ( ap @ V1f @ ( inj__ty_2Enum_2Enum @ V3n ) ) @ ( ap @ V2fn @ ( inj__ty_2Enum_2Enum @ V3n ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Eprim__rec_2Ewellfounded__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Eprim__rec_2Ewellfounded @ A_27a ) @ V0R ) )
+      <=> ~ ? [V1f: $i] :
+              ( ( mem @ V1f @ ( arr @ ty_2Enum_2Enum @ A_27a ) )
+              & ! [V2n: tp__ty_2Enum_2Enum] : ( p @ ( ap @ ( ap @ V0R @ ( ap @ V1f @ ( ap @ c_2Enum_2ESUC @ ( inj__ty_2Enum_2Enum @ V2n ) ) ) ) @ ( ap @ V1f @ ( inj__ty_2Enum_2Enum @ V2n ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2EWF__IFF__WELLFOUNDED,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+      <=> ( p @ ( ap @ ( c_2Eprim__rec_2Ewellfounded @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2EWF__PRED,axiom,
+    ( p
+    @ ( ap @ ( c_2Erelation_2EWF @ ty_2Enum_2Enum )
+      @ ( lam @ ty_2Enum_2Enum
+        @ ^ [V0x: $i] :
+            ( lam @ ty_2Enum_2Enum
+            @ ^ [V1y: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Enum_2Enum ) @ V1y ) @ ( ap @ c_2Enum_2ESUC @ V0x ) ) ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2EWF__LESS,axiom,
+    p @ ( ap @ ( c_2Erelation_2EWF @ ty_2Enum_2Enum ) @ c_2Eprim__rec_2E_3C ) ).
+
+thf(ax_thm_2Eprim__rec_2Emeasure__def,axiom,
+    ! [A_27a: del] :
+      ( ( c_2Eprim__rec_2Emeasure @ A_27a )
+      = ( ap @ ( c_2Erelation_2Einv__image @ A_27a @ ty_2Enum_2Enum ) @ c_2Eprim__rec_2E_3C ) ) ).
+
+thf(conj_thm_2Eprim__rec_2EWF__measure,axiom,
+    ! [A_27a: del,V0m: $i] :
+      ( ( mem @ V0m @ ( arr @ A_27a @ ty_2Enum_2Enum ) )
+     => ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ ( ap @ ( c_2Eprim__rec_2Emeasure @ A_27a ) @ V0m ) ) ) ) ).
+
+thf(conj_thm_2Eprim__rec_2Emeasure__thm,axiom,
+    ! [A_27a: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27a @ ty_2Enum_2Enum ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Eprim__rec_2Emeasure @ A_27a ) @ V0f ) @ V1x ) @ V2y ) )
+              <=> ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ V0f @ V1x ) ) @ ( ap @ V0f @ V2y ) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

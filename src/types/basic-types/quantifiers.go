@@ -76,7 +76,7 @@ func (e Ex) Copy() Form {
 	return MakeEx(e.GetIndex(), copyVarList(e.GetVarList()), e.GetForm())
 }
 
-func (e Ex) Equals(f Form) bool {
+func (e Ex) Equals(f any) bool {
 	oth, isEx := f.(Ex)
 	return isEx &&
 		AreEqualsVarList(e.GetVarList(), oth.GetVarList()) &&
@@ -95,6 +95,17 @@ func (e Ex) RenameVariables() Form {
 	newVarList, newForm := renameVariable(e.GetForm(), e.GetVarList())
 	return MakeEx(e.GetIndex(), newVarList, newForm)
 }
+
+func (e Ex) CleanFormula() Form {
+	e.var_list, e.f = cleanQuantifiedFormula(&e)
+
+	if len(e.var_list) > 0 {
+		return e
+	} else {
+		return e.f
+	}
+}
+
 func (e Ex) GetSubTerms() TermList {
 	return e.GetForm().GetSubTerms()
 }
@@ -127,7 +138,7 @@ func (a All) Copy() Form {
 	return MakeAll(a.GetIndex(), copyVarList(a.GetVarList()), a.GetForm())
 }
 
-func (a All) Equals(f Form) bool {
+func (a All) Equals(f any) bool {
 	oth, isAll := f.(All)
 	return isAll &&
 		AreEqualsVarList(a.GetVarList(), oth.GetVarList()) &&
@@ -145,6 +156,16 @@ func (a All) ReplaceVarByTerm(old Var, new Term) Form {
 func (a All) RenameVariables() Form {
 	newVarList, newForm := renameVariable(a.GetForm(), a.GetVarList())
 	return MakeAll(a.GetIndex(), newVarList, newForm)
+}
+
+func (a All) CleanFormula() Form {
+	a.var_list, a.f = cleanQuantifiedFormula(&a)
+
+	if len(a.var_list) > 0 {
+		return a
+	} else {
+		return a.f
+	}
 }
 
 func (a All) GetSubTerms() TermList {
@@ -188,7 +209,7 @@ func (a AllType) Copy() Form {
 	}
 }
 
-func (a AllType) Equals(f Form) bool {
+func (a AllType) Equals(f any) bool {
 	oth, isAll := f.(AllType)
 	return isAll &&
 		AreEqualsTypeVarList(a.GetVarList(), oth.GetVarList()) &&
@@ -205,6 +226,31 @@ func (a AllType) ReplaceVarByTerm(old Var, new Term) Form {
 
 func (a AllType) RenameVariables() Form {
 	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
+}
+
+func (a AllType) CleanFormula() Form {
+	a.form = a.form.CleanFormula()
+
+	areSeen := make([]bool, len(a.tvList))
+
+	terms := a.GetVarList()
+
+	for i, v := range a.tvList {
+		for _, term := range terms {
+			if term.Equals(v) {
+				areSeen[i] = true
+			}
+		}
+	}
+
+	for i, seen := range areSeen {
+		if !seen {
+			a.tvList = append(a.tvList[:i], a.tvList[i+1:]...)
+			i--
+		}
+	}
+
+	return a
 }
 
 func (a AllType) GetSubTerms() TermList {
@@ -259,4 +305,46 @@ func toMappedString(quant string, map_ MapString, varList []Var, form Form, disp
 	}
 
 	return "(" + quant + " " + strings.Join(varStrings, " ") + map_[QuantVarSep] + " (" + form.ToMappedString(map_, displayTypes) + "))"
+}
+
+type QuantifiedForm interface {
+	GetForm() Form
+	GetSubTerms() TermList
+	GetVarList() []Var
+}
+
+func cleanQuantifiedFormula(qf QuantifiedForm) ([]Var, Form) {
+	f := qf.GetForm().CleanFormula()
+
+	varList := qf.GetVarList()
+	terms := qf.GetSubTerms()
+
+	areSeen := checkSeenVars(varList, terms)
+	newList := getSeenVars(areSeen, varList)
+
+	return newList, f
+}
+
+func checkSeenVars(varList []Var, terms TermList) []bool {
+	areSeen := make([]bool, len(varList))
+
+	for i, v := range varList {
+		for _, term := range terms {
+			if term.Equals(v) {
+				areSeen[i] = true
+			}
+		}
+	}
+	return areSeen
+}
+
+func getSeenVars(areSeen []bool, varList []Var) []Var {
+	newList := []Var{}
+
+	for i, seen := range areSeen {
+		if seen {
+			newList = append(newList, varList[i])
+		}
+	}
+	return newList
 }

@@ -93,10 +93,10 @@ func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 	switch f := (state.consequence.f).(type) {
 	case btypes.And:
 		root.appliedRule = "∧"
-		formList = f.GetLF()
+		formList = f.FormList
 	case btypes.Or:
 		root.appliedRule = "∨"
-		formList = f.GetLF()
+		formList = f.FormList
 	}
 
 	// Construct children with all the formulas

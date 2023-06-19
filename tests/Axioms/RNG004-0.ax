@@ -1,0 +1,90 @@
+%--------------------------------------------------------------------------
+% File     : RNG004-0 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Ring Theory (Alternative)
+% Axioms   : Alternative ring theory (equality) axioms
+% Version  : [AH90] (equality) axioms.
+% English  :
+
+% Refs     : [AH90]  Anantharaman & Hsiang (1990), Automated Proofs of the
+% Source   : [AH90]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   17 (  15 unt;   0 nHn;   3 RR)
+%            Number of literals    :   19 (  19 equ;   2 neg)
+%            Maximal clause size   :    2 (   1 avg)
+%            Maximal term depth    :    3 (   2 avg)
+%            Number of predicates  :    1 (   0 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    4 (   4 usr;   1 con; 0-2 aty)
+%            Number of variables   :   32 (   2 sgn)
+% SPC      : 
+
+% Comments :
+%--------------------------------------------------------------------------
+%----There exists an additive identity element [1]
+cnf(left_additive_identity,axiom,
+    add(additive_identity,X) = X ).
+
+%----Multiplicative identity [2] & [3]
+cnf(left_multiplicative_zero,axiom,
+    multiply(additive_identity,X) = additive_identity ).
+
+cnf(right_multiplicative_zero,axiom,
+    multiply(X,additive_identity) = additive_identity ).
+
+%----Addition of inverse [4]
+cnf(add_inverse,axiom,
+    add(additive_inverse(X),X) = additive_identity ).
+
+%----Sum of inverses [5]
+cnf(sum_of_inverses,axiom,
+    additive_inverse(add(X,Y)) = add(additive_inverse(X),additive_inverse(Y)) ).
+
+%----Inverse of additive_inverse of X is X [6]
+cnf(additive_inverse_additive_inverse,axiom,
+    additive_inverse(additive_inverse(X)) = X ).
+
+%----Distribution of multiply over add [7] & [8]
+cnf(multiply_over_add1,axiom,
+    multiply(X,add(Y,Z)) = add(multiply(X,Y),multiply(X,Z)) ).
+
+cnf(multiply_over_add2,axiom,
+    multiply(add(X,Y),Z) = add(multiply(X,Z),multiply(Y,Z)) ).
+
+%----Right alternative law [9]
+cnf(right_alternative,axiom,
+    multiply(multiply(X,Y),Y) = multiply(X,multiply(Y,Y)) ).
+
+%----Left alternative law [10]
+cnf(left_alternative,axiom,
+    multiply(multiply(X,X),Y) = multiply(X,multiply(X,Y)) ).
+
+%----Inverse and product [11] & [12]
+cnf(inverse_product1,axiom,
+    multiply(additive_inverse(X),Y) = additive_inverse(multiply(X,Y)) ).
+
+cnf(inverse_product2,axiom,
+    multiply(X,additive_inverse(Y)) = additive_inverse(multiply(X,Y)) ).
+
+%----Inverse of additive identity [13]
+cnf(inverse_additive_identity,axiom,
+    additive_inverse(additive_identity) = additive_identity ).
+
+%----Commutativity for addition
+cnf(commutativity_for_addition,axiom,
+    add(X,Y) = add(Y,X) ).
+
+%----Associativity for addition
+cnf(associativity_for_addition,axiom,
+    add(X,add(Y,Z)) = add(add(X,Y),Z) ).
+
+%----Left and right cancellation for addition
+cnf(left_cancellation_for_addition,axiom,
+    ( add(X,Z) != add(Y,Z)
+    | X = Y ) ).
+
+cnf(right_cancellation_for_addition,axiom,
+    ( add(Z,X) != add(Z,Y)
+    | X = Y ) ).
+
+%--------------------------------------------------------------------------

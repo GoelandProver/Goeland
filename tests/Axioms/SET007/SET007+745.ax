@@ -1,0 +1,1557 @@
+%------------------------------------------------------------------------------
+% File     : SET007+745 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Armstrong's Axioms
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : armstrng [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  163 (  15 unt;   0 def)
+%            Number of atoms       :  866 (  99 equ)
+%            Maximal formula atoms :   15 (   5 avg)
+%            Number of connectives :  780 (  77   ~;   8   |; 324   &)
+%                                         (  54 <=>; 317  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   19 (   8 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   50 (  48 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   71 (  71 usr;  10 con; 0-4 aty)
+%            Number of variables   :  476 ( 422   !;  54   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_armstrng,axiom,
+    ? [A] :
+      ( v1_relat_1(A)
+      & ~ v1_xboole_0(A)
+      & v1_relat_2(A)
+      & v4_relat_2(A)
+      & v8_relat_2(A) ) ).
+
+fof(rc2_armstrng,axiom,
+    ! [A] :
+    ? [B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+      & v2_finsub_1(B)
+      & v1_armstrng(B,A) ) ).
+
+fof(cc1_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(C,k5_numbers) )
+     => ! [D] :
+          ( m1_relset_1(D,A,k4_finseq_2(C,B))
+         => ( ( v1_funct_1(D)
+              & v1_funct_2(D,A,k4_finseq_2(C,B)) )
+           => ( v1_funct_1(D)
+              & v1_funct_2(D,A,k4_finseq_2(C,B))
+              & v1_matrlin(D) ) ) ) ) ).
+
+fof(fc1_armstrng,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_matrlin(A) )
+     => ( v1_relat_1(k1_funct_1(A,B))
+        & v1_funct_1(k1_funct_1(A,B))
+        & v1_finset_1(k1_funct_1(A,B))
+        & v1_finseq_1(k1_funct_1(A,B)) ) ) ).
+
+fof(rc3_armstrng,axiom,
+    ? [A] :
+      ( l1_armstrng(A)
+      & v2_armstrng(A) ) ).
+
+fof(rc4_armstrng,axiom,
+    ! [A] :
+    ? [B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+      & v1_relat_1(B)
+      & ~ v1_xboole_0(B)
+      & v1_finset_1(B) ) ).
+
+fof(fc2_armstrng,axiom,
+    ! [A] :
+      ( v1_relat_1(k4_armstrng(A))
+      & ~ v1_xboole_0(k4_armstrng(A)) ) ).
+
+fof(fc3_armstrng,axiom,
+    ! [A] :
+      ( v1_relat_1(k7_armstrng(A))
+      & ~ v1_xboole_0(k7_armstrng(A)) ) ).
+
+fof(fc4_armstrng,axiom,
+    ! [A] :
+      ( v1_relat_1(k7_armstrng(A))
+      & v1_relat_2(k7_armstrng(A))
+      & v4_relat_2(k7_armstrng(A))
+      & v8_relat_2(k7_armstrng(A))
+      & v1_partfun1(k7_armstrng(A),k4_armstrng(A),k4_armstrng(A)) ) ).
+
+fof(rc5_armstrng,axiom,
+    ! [A] :
+    ? [B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+      & v1_relat_1(B)
+      & ~ v1_xboole_0(B)
+      & v8_relat_2(B)
+      & v3_armstrng(B,A)
+      & v4_armstrng(B,A)
+      & v5_armstrng(B,A) ) ).
+
+fof(rc6_armstrng,axiom,
+    ! [A] :
+    ? [B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+      & v1_relat_1(B)
+      & v6_armstrng(B,A) ) ).
+
+fof(rc7_armstrng,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ? [B] :
+          ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+          & v1_relat_1(B)
+          & v1_finset_1(B)
+          & v6_armstrng(B,A) ) ) ).
+
+fof(cc2_armstrng,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => v1_finset_1(B) ) ) ).
+
+fof(cc3_armstrng,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v6_armstrng(B,A)
+       => ( v8_relat_2(B)
+          & v3_armstrng(B,A)
+          & v4_armstrng(B,A)
+          & v5_armstrng(B,A) ) ) ) ).
+
+fof(cc4_armstrng,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( ( v8_relat_2(B)
+          & v3_armstrng(B,A)
+          & v4_armstrng(B,A)
+          & v5_armstrng(B,A) )
+       => v6_armstrng(B,A) ) ) ).
+
+fof(cc5_armstrng,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( ( v3_armstrng(B,A)
+          & v4_armstrng(B,A) )
+       => v7_armstrng(B,A) ) ) ).
+
+fof(cc6_armstrng,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( ( v8_relat_2(B)
+          & v7_armstrng(B,A) )
+       => ( v3_armstrng(B,A)
+          & v4_armstrng(B,A) ) ) ) ).
+
+fof(rc8_armstrng,axiom,
+    ! [A] :
+    ? [B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+      & v1_relat_1(B)
+      & ~ v1_xboole_0(B)
+      & v8_relat_2(B)
+      & v3_armstrng(B,A)
+      & v4_armstrng(B,A)
+      & v5_armstrng(B,A)
+      & v6_armstrng(B,A)
+      & v7_armstrng(B,A) ) ).
+
+fof(cc7_armstrng,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v3_armstrng(B,A)
+       => ~ v1_xboole_0(B) ) ) ).
+
+fof(fc5_armstrng,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v6_armstrng(B,A)
+        & m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+     => ( v1_relat_1(k8_armstrng(A,B))
+        & ~ v1_xboole_0(k8_armstrng(A,B))
+        & v1_finset_1(k8_armstrng(A,B)) ) ) ).
+
+fof(fc6_armstrng,axiom,
+    ! [A,B] :
+      ( ( v1_finset_1(B)
+        & m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+     => v1_finset_1(k9_armstrng(A,B)) ) ).
+
+fof(t1_armstrng,axiom,
+    ! [A] :
+      ( v2_finsub_1(A)
+     => ! [B,C] :
+          ( ( v1_finset_1(C)
+            & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(B))) )
+         => ( ( r2_hidden(B,A)
+              & r1_tarski(C,A) )
+           => r2_hidden(k8_setfam_1(B,C),A) ) ) ) ).
+
+fof(t2_armstrng,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & ~ v1_xboole_0(A)
+        & v4_relat_2(A)
+        & v8_relat_2(A) )
+     => ! [B] :
+          ( ( v1_finset_1(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_relat_1(A))) )
+         => ~ ( B != k1_xboole_0
+              & ! [C] :
+                  ( m1_subset_1(C,B)
+                 => ~ r2_waybel_4(B,C,A) ) ) ) ) ).
+
+fof(d1_armstrng,axiom,
+    ! [A,B] :
+      ( v1_relat_1(B)
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(A))
+         => ( C = k1_armstrng(A,B)
+          <=> ! [D] :
+                ( r2_hidden(D,C)
+              <=> r2_waybel_4(A,D,B) ) ) ) ) ).
+
+fof(d2_armstrng,axiom,
+    ! [A,B] :
+      ( r1_armstrng(A,B)
+    <=> ( r2_hidden(A,B)
+        & ! [C,D] :
+            ~ ( r2_hidden(C,B)
+              & r2_hidden(D,B)
+              & A = k3_xboole_0(C,D)
+              & A != C
+              & A != D ) ) ) ).
+
+fof(d3_armstrng,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(A))
+         => ( B = k2_armstrng(A)
+          <=> ! [C] :
+                ( r2_hidden(C,B)
+              <=> r1_armstrng(C,A) ) ) ) ) ).
+
+fof(t3_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ? [C] :
+              ( ~ v1_xboole_0(C)
+              & m1_subset_1(C,k1_zfmisc_1(A))
+              & B = k1_setfam_1(C)
+              & ! [D] :
+                  ( r2_hidden(D,C)
+                 => r1_armstrng(D,A) ) ) ) ) ).
+
+fof(d4_armstrng,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ( v1_armstrng(B,A)
+      <=> r2_hidden(A,B) ) ) ).
+
+fof(t4_armstrng,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ( v2_finsub_1(B)
+       => ! [C] :
+            ( m2_subset_1(C,k1_zfmisc_1(A),B)
+           => ( r1_armstrng(C,B)
+             => ( C = A
+                | ! [D] :
+                    ( ( v1_finset_1(D)
+                      & m1_subset_1(D,k1_zfmisc_1(k1_zfmisc_1(A))) )
+                   => ( ( r1_tarski(D,B)
+                        & C = k8_setfam_1(A,D) )
+                     => r2_hidden(C,D) ) ) ) ) ) ) ) ).
+
+fof(d5_armstrng,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k6_margrel1,k4_finseq_2(A,k6_margrel1))
+         => ! [C] :
+              ( m2_finseq_2(C,k6_margrel1,k4_finseq_2(A,k6_margrel1))
+             => ! [D] :
+                  ( m2_finseq_2(D,k6_margrel1,k4_finseq_2(A,k6_margrel1))
+                 => ( D = k3_armstrng(A,B,C)
+                  <=> ! [E] :
+                        ( r2_hidden(E,k2_finseq_1(A))
+                       => k1_funct_1(D,E) = k12_margrel1(k4_finseq_4(k5_numbers,k6_margrel1,B,E),k4_finseq_4(k5_numbers,k6_margrel1,C,E)) ) ) ) ) ) ) ).
+
+fof(t5_armstrng,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k6_margrel1,k4_finseq_2(A,k6_margrel1))
+         => k3_armstrng(A,k1_binari_3(A,np__0),B) = k1_binari_3(A,np__0) ) ) ).
+
+fof(t6_armstrng,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k6_margrel1,k4_finseq_2(A,k6_margrel1))
+         => k3_armstrng(A,k6_binarith(A,k1_binari_3(A,np__0)),B) = B ) ) ).
+
+fof(t7_armstrng,axiom,
+    $true ).
+
+fof(t8_armstrng,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ~ r1_xreal_0(A,B)
+           => ( k1_funct_1(k1_binari_3(A,k3_series_1(np__2,B)),k1_nat_1(B,np__1)) = np__1
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ( r2_hidden(C,k2_finseq_1(A))
+                   => ( C = k1_nat_1(B,np__1)
+                      | k1_funct_1(k1_binari_3(A,k3_series_1(np__2,B)),C) = np__0 ) ) ) ) ) ) ) ).
+
+fof(d6_armstrng,axiom,
+    $true ).
+
+fof(d7_armstrng,axiom,
+    ! [A] : k4_armstrng(A) = k2_zfmisc_1(k1_zfmisc_1(A),k1_zfmisc_1(A)) ).
+
+fof(t9_armstrng,axiom,
+    ! [A,B] :
+      ( r2_hidden(B,k4_armstrng(A))
+    <=> ? [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(A))
+          & ? [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(A))
+              & B = k4_tarski(C,D) ) ) ) ).
+
+fof(t10_armstrng,axiom,
+    ! [A,B,C] :
+      ( m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ~ ( r2_hidden(B,C)
+          & ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(A))
+             => ! [E] :
+                  ( m1_subset_1(E,k1_zfmisc_1(A))
+                 => B != k4_tarski(D,E) ) ) ) ) ).
+
+fof(d8_armstrng,axiom,
+    ! [A] :
+      ( l1_armstrng(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_armstrng(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_armstrng(A)))
+             => ( r2_armstrng(A,B,C)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u3_armstrng(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u3_armstrng(A))
+                       => ( k7_relat_1(D,B) = k7_relat_1(E,B)
+                         => k7_relat_1(D,C) = k7_relat_1(E,C) ) ) ) ) ) ) ) ).
+
+fof(t11_armstrng,axiom,
+    $true ).
+
+fof(t12_armstrng,axiom,
+    ! [A] :
+      ( l1_armstrng(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_armstrng(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_armstrng(A)))
+             => ( r2_hidden(k4_tarski(B,C),k5_armstrng(A))
+              <=> r2_armstrng(A,B,C) ) ) ) ) ).
+
+fof(d10_armstrng,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k4_armstrng(A))
+     => ! [C] :
+          ( m1_subset_1(C,k4_armstrng(A))
+         => ( r3_armstrng(A,B,C)
+          <=> ( r1_tarski(k1_mcart_1(B),k1_mcart_1(C))
+              & r1_tarski(k2_mcart_1(C),k2_mcart_1(B)) ) ) ) ) ).
+
+fof(t13_armstrng,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k4_armstrng(A))
+     => ! [C] :
+          ( m1_subset_1(C,k4_armstrng(A))
+         => ( ( r3_armstrng(A,C,B)
+              & r3_armstrng(A,B,C) )
+           => B = C ) ) ) ).
+
+fof(t14_armstrng,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k4_armstrng(A))
+     => ! [C] :
+          ( m1_subset_1(C,k4_armstrng(A))
+         => ! [D] :
+              ( m1_subset_1(D,k4_armstrng(A))
+             => ( ( r3_armstrng(A,C,B)
+                  & r3_armstrng(A,D,C) )
+               => r3_armstrng(A,D,B) ) ) ) ) ).
+
+fof(t15_armstrng,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(A))
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(A))
+             => ! [E] :
+                  ( m1_subset_1(E,k1_zfmisc_1(A))
+                 => ( r3_armstrng(A,k6_armstrng(A,B,C),k6_armstrng(A,D,E))
+                  <=> ( r1_tarski(B,D)
+                      & r1_tarski(E,C) ) ) ) ) ) ) ).
+
+fof(t16_armstrng,axiom,
+    ! [A,B] :
+      ( r2_hidden(B,k7_armstrng(A))
+    <=> ? [C] :
+          ( m1_subset_1(C,k4_armstrng(A))
+          & ? [D] :
+              ( m1_subset_1(D,k4_armstrng(A))
+              & B = k4_tarski(C,D)
+              & r3_armstrng(A,D,C) ) ) ) ).
+
+fof(t17_armstrng,axiom,
+    ! [A] : k4_relset_1(k4_armstrng(A),k4_armstrng(A),k7_armstrng(A)) = k2_zfmisc_1(k1_zfmisc_1(A),k1_zfmisc_1(A)) ).
+
+fof(t18_armstrng,axiom,
+    ! [A] : k5_relset_1(k4_armstrng(A),k4_armstrng(A),k7_armstrng(A)) = k2_zfmisc_1(k1_zfmisc_1(A),k1_zfmisc_1(A)) ).
+
+fof(t19_armstrng,axiom,
+    ! [A] : k3_relat_1(k7_armstrng(A)) = k2_zfmisc_1(k1_zfmisc_1(A),k1_zfmisc_1(A)) ).
+
+fof(d12_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v3_armstrng(B,A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => r2_hidden(k6_armstrng(A,C,C),B) ) ) ) ).
+
+fof(t20_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v8_relat_2(B)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ! [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                   => ( ( r2_hidden(k6_armstrng(A,C,D),B)
+                        & r2_hidden(k6_armstrng(A,D,E),B) )
+                     => r2_hidden(k6_armstrng(A,C,E),B) ) ) ) ) ) ) ).
+
+fof(d13_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v4_armstrng(B,A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ! [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                   => ! [F] :
+                        ( m1_subset_1(F,k1_zfmisc_1(A))
+                       => ( ( r2_hidden(k6_armstrng(A,C,D),B)
+                            & r3_armstrng(A,k6_armstrng(A,C,D),k6_armstrng(A,E,F)) )
+                         => r2_hidden(k6_armstrng(A,E,F),B) ) ) ) ) ) ) ) ).
+
+fof(d14_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v5_armstrng(B,A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ! [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                   => ! [F] :
+                        ( m1_subset_1(F,k1_zfmisc_1(A))
+                       => ( ( r2_hidden(k6_armstrng(A,C,D),B)
+                            & r2_hidden(k6_armstrng(A,E,F),B) )
+                         => r2_hidden(k6_armstrng(A,k4_subset_1(A,C,E),k4_subset_1(A,D,F)),B) ) ) ) ) ) ) ) ).
+
+fof(t21_armstrng,axiom,
+    ! [A] :
+      ( v3_armstrng(k4_armstrng(A),A)
+      & v8_relat_2(k4_armstrng(A))
+      & v4_armstrng(k4_armstrng(A),A)
+      & v5_armstrng(k4_armstrng(A),A) ) ).
+
+fof(d15_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v6_armstrng(B,A)
+      <=> ( v3_armstrng(B,A)
+          & v8_relat_2(B)
+          & v4_armstrng(B,A)
+          & v5_armstrng(B,A) ) ) ) ).
+
+fof(t22_armstrng,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => v1_finset_1(B) ) ) ).
+
+fof(d16_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v7_armstrng(B,A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ( r1_tarski(D,C)
+                 => r2_hidden(k6_armstrng(A,C,D),B) ) ) ) ) ) ).
+
+fof(t23_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( ( v7_armstrng(B,A)
+          & v8_relat_2(B) )
+       => ( v3_armstrng(B,A)
+          & v4_armstrng(B,A) ) ) ) ).
+
+fof(t24_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( ( v3_armstrng(B,A)
+          & v4_armstrng(B,A) )
+       => v7_armstrng(B,A) ) ) ).
+
+fof(t25_armstrng,axiom,
+    ! [A] :
+      ( l1_armstrng(A)
+     => v6_armstrng(k5_armstrng(A),u1_armstrng(A)) ) ).
+
+fof(d17_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => k8_armstrng(A,B) = k1_armstrng(B,k7_armstrng(A)) ) ).
+
+fof(t27_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => r1_tarski(k8_armstrng(A,B),B) ) ).
+
+fof(d18_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ! [C,D] :
+          ( r4_armstrng(A,B,C,D)
+        <=> r2_hidden(k4_tarski(C,D),k8_armstrng(A,B)) ) ) ).
+
+fof(t28_armstrng,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k4_armstrng(A))
+         => ! [C] :
+              ( m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A))
+             => ~ ( r2_hidden(B,C)
+                  & ! [D] :
+                      ( m1_subset_1(D,k1_zfmisc_1(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_zfmisc_1(A))
+                         => ~ ( r2_hidden(k6_armstrng(A,D,E),k8_armstrng(A,C))
+                              & r3_armstrng(A,k6_armstrng(A,D,E),B) ) ) ) ) ) ) ) ).
+
+fof(t29_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(A))
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(A))
+             => ( r4_armstrng(A,B,C,D)
+              <=> ( r2_hidden(k6_armstrng(A,C,D),B)
+                  & ! [E] :
+                      ( m1_subset_1(E,k1_zfmisc_1(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_zfmisc_1(A))
+                         => ~ ( r2_hidden(k6_armstrng(A,E,F),B)
+                              & ~ ( C = E
+                                  & D = F )
+                              & r3_armstrng(A,k6_armstrng(A,E,F),k6_armstrng(A,C,D)) ) ) ) ) ) ) ) ) ).
+
+fof(d19_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v8_armstrng(B,A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => ? [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+                & ? [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                    & r3_armstrng(A,k6_armstrng(A,D,E),k6_armstrng(A,C,C))
+                    & r2_hidden(k6_armstrng(A,D,E),B) ) ) ) ) ) ).
+
+fof(d20_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v9_armstrng(B,A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ! [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                   => ! [F] :
+                        ( m1_subset_1(F,k1_zfmisc_1(A))
+                       => ( ( r2_hidden(k6_armstrng(A,C,D),B)
+                            & r2_hidden(k6_armstrng(A,E,F),B)
+                            & r3_armstrng(A,k6_armstrng(A,C,D),k6_armstrng(A,E,F)) )
+                         => ( C = E
+                            & D = F ) ) ) ) ) ) ) ) ).
+
+fof(d21_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v10_armstrng(B,A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ! [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                   => ! [F] :
+                        ( m1_subset_1(F,k1_zfmisc_1(A))
+                       => ( ( r2_hidden(k6_armstrng(A,C,D),B)
+                            & r2_hidden(k6_armstrng(A,E,F),B)
+                            & r1_tarski(E,D) )
+                         => r1_tarski(F,D) ) ) ) ) ) ) ) ).
+
+fof(t30_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v6_armstrng(B,A)
+            & m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+         => ( v8_armstrng(k8_armstrng(A,B),A)
+            & v9_armstrng(k8_armstrng(A,B),A)
+            & v10_armstrng(k8_armstrng(A,B),A) ) ) ) ).
+
+fof(t33_armstrng,axiom,
+    ! [A,B,C] :
+      ( m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( r2_hidden(B,k9_armstrng(A,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(A))
+            & ? [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(A))
+                & B = D
+                & r4_armstrng(A,C,E,D) ) ) ) ) ).
+
+fof(t34_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v6_armstrng(B,A)
+            & m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+         => ( v1_armstrng(k9_armstrng(A,B),A)
+            & v2_finsub_1(k9_armstrng(A,B)) ) ) ) ).
+
+fof(t35_armstrng,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ! [C] :
+          ( m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => v6_armstrng(k10_armstrng(A,B),A) ) ) ).
+
+fof(t36_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => r1_tarski(B,k9_armstrng(A,k10_armstrng(A,B))) ) ) ).
+
+fof(t37_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ( ( v1_armstrng(B,A)
+              & v2_finsub_1(B) )
+           => ( B = k9_armstrng(A,k10_armstrng(A,B))
+              & ! [C] :
+                  ( ( v6_armstrng(C,A)
+                    & m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+                 => ( B = k9_armstrng(A,C)
+                   => C = k10_armstrng(A,B) ) ) ) ) ) ) ).
+
+fof(t38_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ( v1_armstrng(k11_armstrng(A,B),A)
+            & v2_finsub_1(k11_armstrng(A,B)) ) ) ) ).
+
+fof(t39_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ( r1_tarski(B,k10_armstrng(A,k11_armstrng(A,B)))
+            & ! [C] :
+                ( m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A))
+               => ( ( r1_tarski(B,C)
+                    & v6_armstrng(C,A) )
+                 => r1_tarski(k10_armstrng(A,k11_armstrng(A,B)),C) ) ) ) ) ) ).
+
+fof(d25_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ! [C] :
+              ( ( v6_armstrng(C,A)
+                & m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+             => ( C = k12_armstrng(A,B)
+              <=> ( r1_tarski(B,C)
+                  & ! [D] :
+                      ( m2_relset_1(D,k1_zfmisc_1(A),k1_zfmisc_1(A))
+                     => ( ( r1_tarski(B,D)
+                          & v6_armstrng(D,A) )
+                       => r1_tarski(C,D) ) ) ) ) ) ) ) ).
+
+fof(t40_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => k12_armstrng(A,B) = k10_armstrng(A,k11_armstrng(A,B)) ) ) ).
+
+fof(t44_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => r5_armstrng(A,B,k9_armstrng(A,k10_armstrng(A,B))) ) ) ).
+
+fof(t45_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v6_armstrng(B,A)
+            & m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+         => ? [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+              & r5_armstrng(A,C,k9_armstrng(A,B))
+              & B = k10_armstrng(A,C) ) ) ) ).
+
+fof(t46_armstrng,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ( ( v1_armstrng(B,A)
+          & v2_finsub_1(B) )
+       => r5_armstrng(A,k2_armstrng(B),B) ) ) ).
+
+fof(t47_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(C)
+        & v1_finset_1(C)
+        & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ( ( v1_armstrng(C,A)
+          & v2_finsub_1(C)
+          & r5_armstrng(A,B,C) )
+       => r1_tarski(k2_armstrng(C),k2_xboole_0(B,k1_tarski(A))) ) ) ).
+
+fof(t48_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v6_armstrng(B,A)
+            & m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+         => ? [C] :
+              ( l1_armstrng(C)
+              & u1_armstrng(C) = A
+              & ! [D] :
+                  ( m1_subset_1(D,A)
+                 => k1_funct_1(u2_armstrng(C),D) = k4_numbers )
+              & B = k5_armstrng(C) ) ) ) ).
+
+fof(d28_armstrng,axiom,
+    ! [A] :
+      ( v11_armstrng(A)
+    <=> ! [B,C] :
+          ( ( r2_hidden(B,A)
+            & r2_hidden(C,A)
+            & r1_tarski(B,C) )
+         => B = C ) ) ).
+
+fof(t50_armstrng,axiom,
+    ! [A] :
+      ( l1_armstrng(A)
+     => ( ~ v1_xboole_0(k13_armstrng(u1_armstrng(A),k5_armstrng(A)))
+        & v11_armstrng(k13_armstrng(u1_armstrng(A),k5_armstrng(A))) ) ) ).
+
+fof(t51_armstrng,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ~ ( ~ v1_xboole_0(B)
+              & v11_armstrng(B)
+              & ! [C] :
+                  ( ( v6_armstrng(C,A)
+                    & m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+                 => B != k13_armstrng(A,C) ) ) ) ) ).
+
+fof(t53_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ~ ( ~ v1_xboole_0(B)
+              & v11_armstrng(B)
+              & ! [C] :
+                  ( l1_armstrng(C)
+                 => ~ ( u1_armstrng(C) = A
+                      & B = k13_armstrng(u1_armstrng(C),k5_armstrng(C)) ) ) ) ) ) ).
+
+fof(d29_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v12_armstrng(B,A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ! [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                   => ( ( r2_hidden(k6_armstrng(A,C,D),B)
+                        & r2_hidden(k6_armstrng(A,C,E),B) )
+                     => r2_hidden(k6_armstrng(A,C,k4_subset_1(A,D,E)),B) ) ) ) ) ) ) ).
+
+fof(d30_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v13_armstrng(B,A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ! [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                   => ! [F] :
+                        ( m1_subset_1(F,k1_zfmisc_1(A))
+                       => ( ( r2_hidden(k6_armstrng(A,C,D),B)
+                            & r2_hidden(k6_armstrng(A,k4_subset_1(A,D,E),F),B) )
+                         => r2_hidden(k6_armstrng(A,k4_subset_1(A,C,E),F),B) ) ) ) ) ) ) ) ).
+
+fof(d31_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( v14_armstrng(B,A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(A))
+           => ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ! [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                   => ( r2_hidden(k6_armstrng(A,C,D),B)
+                     => r2_hidden(k6_armstrng(A,k4_subset_1(A,C,E),D),B) ) ) ) ) ) ) ).
+
+fof(t54_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( ( ( v3_armstrng(B,A)
+            & v8_relat_2(B)
+            & v4_armstrng(B,A)
+            & v5_armstrng(B,A) )
+         => ( v8_relat_2(B)
+            & v7_armstrng(B,A)
+            & v5_armstrng(B,A) ) )
+        & ( ( v8_relat_2(B)
+            & v7_armstrng(B,A)
+            & v5_armstrng(B,A) )
+         => ( v3_armstrng(B,A)
+            & v8_relat_2(B)
+            & v4_armstrng(B,A)
+            & v5_armstrng(B,A) ) ) ) ) ).
+
+fof(t55_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( ( ( v3_armstrng(B,A)
+            & v8_relat_2(B)
+            & v4_armstrng(B,A)
+            & v5_armstrng(B,A) )
+         => ( v8_relat_2(B)
+            & v7_armstrng(B,A)
+            & v12_armstrng(B,A) ) )
+        & ( ( v8_relat_2(B)
+            & v7_armstrng(B,A)
+            & v12_armstrng(B,A) )
+         => ( v3_armstrng(B,A)
+            & v8_relat_2(B)
+            & v4_armstrng(B,A)
+            & v5_armstrng(B,A) ) ) ) ) ).
+
+fof(t56_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( ( ( v3_armstrng(B,A)
+            & v8_relat_2(B)
+            & v4_armstrng(B,A)
+            & v5_armstrng(B,A) )
+         => ( v3_armstrng(B,A)
+            & v13_armstrng(B,A)
+            & v14_armstrng(B,A) ) )
+        & ( ( v3_armstrng(B,A)
+            & v13_armstrng(B,A)
+            & v14_armstrng(B,A) )
+         => ( v3_armstrng(B,A)
+            & v8_relat_2(B)
+            & v4_armstrng(B,A)
+            & v5_armstrng(B,A) ) ) ) ) ).
+
+fof(t57_armstrng,axiom,
+    ! [A,B,C] :
+      ( m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( r2_hidden(B,k14_armstrng(A,C))
+       => ( m1_subset_1(B,k1_zfmisc_1(A))
+          & ? [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(A))
+              & ? [E] :
+                  ( m1_subset_1(E,k1_zfmisc_1(A))
+                  & r2_hidden(k6_armstrng(A,D,E),C)
+                  & r1_tarski(D,B)
+                  & ~ r1_tarski(E,B) ) ) ) ) ) ).
+
+fof(t58_armstrng,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ( ? [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+                & ? [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                    & r2_hidden(k6_armstrng(A,D,E),C)
+                    & r1_tarski(D,B)
+                    & ~ r1_tarski(E,B) ) )
+           => r2_hidden(B,k14_armstrng(A,C)) ) ) ) ).
+
+fof(t59_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ( ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(A))
+               => ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(A))
+                   => ( r2_hidden(k6_armstrng(A,C,D),k12_armstrng(A,B))
+                    <=> ! [E] :
+                          ( m1_subset_1(E,k1_zfmisc_1(A))
+                         => ( r1_tarski(C,E)
+                           => ( r1_tarski(D,E)
+                              | r2_hidden(E,k14_armstrng(A,B)) ) ) ) ) ) )
+            & k9_armstrng(A,k12_armstrng(A,B)) = k4_xboole_0(k1_zfmisc_1(A),k14_armstrng(A,B)) ) ) ) ).
+
+fof(t60_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A))
+             => ( k14_armstrng(A,B) = k14_armstrng(A,C)
+               => k12_armstrng(A,B) = k12_armstrng(A,C) ) ) ) ) ).
+
+fof(t61_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => k14_armstrng(A,B) = k14_armstrng(A,k12_armstrng(A,B)) ) ) ).
+
+fof(d33_armstrng,axiom,
+    ! [A,B,C] :
+      ( m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => ( r6_armstrng(A,B,C)
+      <=> ( ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(A))
+             => ( r1_tarski(B,D)
+               => ( D = A
+                  | r2_hidden(D,k14_armstrng(A,C)) ) ) )
+          & ! [D] :
+              ~ ( r2_xboole_0(D,B)
+                & ! [E] :
+                    ( m1_subset_1(E,k1_zfmisc_1(A))
+                   => ~ ( r1_tarski(D,E)
+                        & E != A
+                        & ~ r2_hidden(E,k14_armstrng(A,C)) ) ) ) ) ) ) ).
+
+fof(t62_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(A))
+             => ( r2_hidden(C,k13_armstrng(A,k12_armstrng(A,B)))
+              <=> r6_armstrng(A,C,B) ) ) ) ) ).
+
+fof(s1_armstrng,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(f1_s1_armstrng))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(f1_s1_armstrng))
+         => ( ( ! [C] :
+                  ( r2_hidden(C,A)
+                <=> p1_s1_armstrng(C) )
+              & ! [C] :
+                  ( r2_hidden(C,B)
+                <=> p1_s1_armstrng(C) ) )
+           => A = B ) ) ) ).
+
+fof(s2_armstrng,axiom,
+    ( ( ! [A] :
+          ( r1_armstrng(A,f1_s2_armstrng)
+         => p1_s2_armstrng(A) )
+      & ! [A,B] :
+          ( ( r2_hidden(A,f1_s2_armstrng)
+            & r2_hidden(B,f1_s2_armstrng)
+            & p1_s2_armstrng(A)
+            & p1_s2_armstrng(B) )
+         => p1_s2_armstrng(k3_xboole_0(A,B)) ) )
+   => ! [A] :
+        ( r2_hidden(A,f1_s2_armstrng)
+       => p1_s2_armstrng(A) ) ) ).
+
+fof(dt_m1_armstrng,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( m1_armstrng(C,A,B)
+         => m1_subset_1(C,k4_armstrng(A)) ) ) ).
+
+fof(existence_m1_armstrng,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+     => ? [C] : m1_armstrng(C,A,B) ) ).
+
+fof(redefinition_m1_armstrng,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( m1_armstrng(C,A,B)
+        <=> m1_subset_1(C,B) ) ) ).
+
+fof(dt_l1_armstrng,axiom,
+    $true ).
+
+fof(existence_l1_armstrng,axiom,
+    ? [A] : l1_armstrng(A) ).
+
+fof(abstractness_v2_armstrng,axiom,
+    ! [A] :
+      ( l1_armstrng(A)
+     => ( v2_armstrng(A)
+       => A = g1_armstrng(u1_armstrng(A),u2_armstrng(A),u3_armstrng(A)) ) ) ).
+
+fof(reflexivity_r3_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k4_armstrng(A))
+        & m1_subset_1(C,k4_armstrng(A)) )
+     => r3_armstrng(A,B,B) ) ).
+
+fof(dt_k1_armstrng,axiom,
+    ! [A,B] :
+      ( v1_relat_1(B)
+     => m1_subset_1(k1_armstrng(A,B),k1_zfmisc_1(A)) ) ).
+
+fof(dt_k2_armstrng,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => m1_subset_1(k2_armstrng(A),k1_zfmisc_1(A)) ) ).
+
+fof(dt_k3_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k4_finseq_2(A,k6_margrel1))
+        & m1_subset_1(C,k4_finseq_2(A,k6_margrel1)) )
+     => m2_finseq_2(k3_armstrng(A,B,C),k6_margrel1,k4_finseq_2(A,k6_margrel1)) ) ).
+
+fof(commutativity_k3_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k4_finseq_2(A,k6_margrel1))
+        & m1_subset_1(C,k4_finseq_2(A,k6_margrel1)) )
+     => k3_armstrng(A,B,C) = k3_armstrng(A,C,B) ) ).
+
+fof(dt_k4_armstrng,axiom,
+    ! [A] : m2_relset_1(k4_armstrng(A),k1_zfmisc_1(A),k1_zfmisc_1(A)) ).
+
+fof(dt_k5_armstrng,axiom,
+    ! [A] :
+      ( l1_armstrng(A)
+     => m2_relset_1(k5_armstrng(A),k1_zfmisc_1(u1_armstrng(A)),k1_zfmisc_1(u1_armstrng(A))) ) ).
+
+fof(dt_k6_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => m1_subset_1(k6_armstrng(A,B,C),k4_armstrng(A)) ) ).
+
+fof(redefinition_k6_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => k6_armstrng(A,B,C) = k4_tarski(B,C) ) ).
+
+fof(dt_k7_armstrng,axiom,
+    ! [A] : m2_relset_1(k7_armstrng(A),k4_armstrng(A),k4_armstrng(A)) ).
+
+fof(dt_k8_armstrng,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => m2_relset_1(k8_armstrng(A,B),k1_zfmisc_1(A),k1_zfmisc_1(A)) ) ).
+
+fof(dt_k9_armstrng,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => m1_subset_1(k9_armstrng(A,B),k1_zfmisc_1(k1_zfmisc_1(A))) ) ).
+
+fof(dt_k10_armstrng,axiom,
+    ! [A,B] : m2_relset_1(k10_armstrng(A,B),k1_zfmisc_1(A),k1_zfmisc_1(A)) ).
+
+fof(dt_k11_armstrng,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => m1_subset_1(k11_armstrng(A,B),k1_zfmisc_1(k1_zfmisc_1(A))) ) ).
+
+fof(dt_k12_armstrng,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+     => ( v6_armstrng(k12_armstrng(A,B),A)
+        & m2_relset_1(k12_armstrng(A,B),k1_zfmisc_1(A),k1_zfmisc_1(A)) ) ) ).
+
+fof(dt_k13_armstrng,axiom,
+    ! [A,B] :
+      ( m1_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => m1_subset_1(k13_armstrng(A,B),k1_zfmisc_1(k1_zfmisc_1(A))) ) ).
+
+fof(dt_k14_armstrng,axiom,
+    $true ).
+
+fof(dt_u1_armstrng,axiom,
+    ! [A] :
+      ( l1_armstrng(A)
+     => ( ~ v1_xboole_0(u1_armstrng(A))
+        & v1_finset_1(u1_armstrng(A)) ) ) ).
+
+fof(dt_u2_armstrng,axiom,
+    ! [A] :
+      ( l1_armstrng(A)
+     => ( v2_relat_1(u2_armstrng(A))
+        & m1_pboole(u2_armstrng(A),u1_armstrng(A)) ) ) ).
+
+fof(dt_u3_armstrng,axiom,
+    ! [A] :
+      ( l1_armstrng(A)
+     => m1_subset_1(u3_armstrng(A),k1_zfmisc_1(k4_card_3(u2_armstrng(A)))) ) ).
+
+fof(dt_g1_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k4_card_3(B))) )
+     => ( v2_armstrng(g1_armstrng(A,B,C))
+        & l1_armstrng(g1_armstrng(A,B,C)) ) ) ).
+
+fof(free_g1_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k4_card_3(B))) )
+     => ! [D,E,F] :
+          ( g1_armstrng(A,B,C) = g1_armstrng(D,E,F)
+         => ( A = D
+            & B = E
+            & C = F ) ) ) ).
+
+fof(d9_armstrng,axiom,
+    ! [A] :
+      ( l1_armstrng(A)
+     => k5_armstrng(A) = a_1_0_armstrng(A) ) ).
+
+fof(d11_armstrng,axiom,
+    ! [A] : k7_armstrng(A) = a_1_1_armstrng(A) ).
+
+fof(t26_armstrng,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ( v6_armstrng(a_2_0_armstrng(A,B),A)
+        & m2_relset_1(a_2_0_armstrng(A,B),k1_zfmisc_1(A),k1_zfmisc_1(A)) ) ) ).
+
+fof(t31_armstrng,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_relset_1(C,k1_zfmisc_1(A),k1_zfmisc_1(A))
+             => ( ( v8_armstrng(B,A)
+                  & v9_armstrng(B,A)
+                  & v10_armstrng(B,A)
+                  & C = a_2_1_armstrng(A,B) )
+               => ( B = k8_armstrng(A,C)
+                  & v6_armstrng(C,A)
+                  & ! [D] :
+                      ( ( v6_armstrng(D,A)
+                        & m2_relset_1(D,k1_zfmisc_1(A),k1_zfmisc_1(A)) )
+                     => ( B = k8_armstrng(A,D)
+                       => D = C ) ) ) ) ) ) ) ).
+
+fof(t32_armstrng,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(A))
+             => ( B = a_2_2_armstrng(A,C)
+               => k2_xboole_0(k1_tarski(k4_tarski(C,A)),a_2_3_armstrng(A,C)) = k8_armstrng(A,B) ) ) ) ) ).
+
+fof(d22_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => k9_armstrng(A,B) = a_2_4_armstrng(A,B) ) ).
+
+fof(d23_armstrng,axiom,
+    ! [A,B] : k10_armstrng(A,B) = a_2_5_armstrng(A,B) ).
+
+fof(d24_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => k11_armstrng(A,B) = a_2_6_armstrng(A,B) ) ).
+
+fof(t41_armstrng,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ( C = k2_xboole_0(k1_tarski(A),a_2_7_armstrng(A,B))
+           => ( v1_armstrng(C,A)
+              & v2_finsub_1(C) ) ) ) ) ).
+
+fof(t42_armstrng,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(A))
+             => ( B = a_2_8_armstrng(A,C)
+               => k2_xboole_0(k1_tarski(A),a_2_9_armstrng(A,C)) = k9_armstrng(A,B) ) ) ) ) ).
+
+fof(t43_armstrng,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(A))
+             => ( B = a_2_2_armstrng(A,C)
+               => k2_xboole_0(k1_tarski(A),a_2_10_armstrng(A,C)) = k9_armstrng(A,B) ) ) ) ) ).
+
+fof(d26_armstrng,axiom,
+    ! [A,B,C] :
+      ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ( r5_armstrng(A,B,C)
+      <=> ( r1_tarski(B,C)
+          & C = a_2_11_armstrng(A,B) ) ) ) ).
+
+fof(d27_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => k13_armstrng(A,B) = a_2_12_armstrng(A,B) ) ).
+
+fof(t49_armstrng,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(A))
+             => ( B = a_2_2_armstrng(A,C)
+               => k13_armstrng(A,B) = k1_tarski(C) ) ) ) ) ).
+
+fof(t52_armstrng,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ! [C] :
+              ( ( v11_armstrng(B)
+                & C = a_2_13_armstrng(A,B) )
+             => ( v1_xboole_0(B)
+                | B = k13_armstrng(A,k10_armstrng(A,C)) ) ) ) ) ).
+
+fof(d32_armstrng,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,k1_zfmisc_1(A),k1_zfmisc_1(A))
+     => k14_armstrng(A,B) = a_2_14_armstrng(A,B) ) ).
+
+fof(fraenkel_a_1_0_armstrng,axiom,
+    ! [A,B] :
+      ( l1_armstrng(B)
+     => ( r2_hidden(A,a_1_0_armstrng(B))
+      <=> ? [C,D] :
+            ( m1_subset_1(C,k1_zfmisc_1(u1_armstrng(B)))
+            & m1_subset_1(D,k1_zfmisc_1(u1_armstrng(B)))
+            & A = k4_tarski(C,D)
+            & r2_armstrng(B,C,D) ) ) ) ).
+
+fof(fraenkel_a_1_1_armstrng,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,a_1_1_armstrng(B))
+    <=> ? [C,D] :
+          ( m1_subset_1(C,k4_armstrng(B))
+          & m1_subset_1(D,k4_armstrng(B))
+          & A = k4_tarski(C,D)
+          & r3_armstrng(B,D,C) ) ) ).
+
+fof(fraenkel_a_2_0_armstrng,axiom,
+    ! [A,B,C] :
+      ( m1_subset_1(C,k1_zfmisc_1(B))
+     => ( r2_hidden(A,a_2_0_armstrng(B,C))
+      <=> ? [D,E] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & m1_subset_1(E,k1_zfmisc_1(B))
+            & A = k6_armstrng(B,D,E)
+            & ( r1_tarski(C,D)
+              | r1_tarski(E,D) ) ) ) ) ).
+
+fof(fraenkel_a_2_1_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( v1_finset_1(B)
+        & m2_relset_1(C,k1_zfmisc_1(B),k1_zfmisc_1(B)) )
+     => ( r2_hidden(A,a_2_1_armstrng(B,C))
+      <=> ? [D,E] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & m1_subset_1(E,k1_zfmisc_1(B))
+            & A = k6_armstrng(B,D,E)
+            & ? [F] :
+                ( m1_subset_1(F,k1_zfmisc_1(B))
+                & ? [G] :
+                    ( m1_subset_1(G,k1_zfmisc_1(B))
+                    & r3_armstrng(B,k6_armstrng(B,F,G),k6_armstrng(B,D,E))
+                    & r2_hidden(k6_armstrng(B,F,G),C) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_2_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( v1_finset_1(B)
+        & m1_subset_1(C,k1_zfmisc_1(B)) )
+     => ( r2_hidden(A,a_2_2_armstrng(B,C))
+      <=> ? [D,E] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & m1_subset_1(E,k1_zfmisc_1(B))
+            & A = k6_armstrng(B,D,E)
+            & ( r1_tarski(C,D)
+              | r1_tarski(E,D) ) ) ) ) ).
+
+fof(fraenkel_a_2_3_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( v1_finset_1(B)
+        & m1_subset_1(C,k1_zfmisc_1(B)) )
+     => ( r2_hidden(A,a_2_3_armstrng(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & A = k6_armstrng(B,D,D)
+            & ~ r1_tarski(C,D) ) ) ) ).
+
+fof(fraenkel_a_2_4_armstrng,axiom,
+    ! [A,B,C] :
+      ( m2_relset_1(C,k1_zfmisc_1(B),k1_zfmisc_1(B))
+     => ( r2_hidden(A,a_2_4_armstrng(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & A = D
+            & ? [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(B))
+                & r4_armstrng(B,C,E,D) ) ) ) ) ).
+
+fof(fraenkel_a_2_5_armstrng,axiom,
+    ! [A,B,C] :
+      ( r2_hidden(A,a_2_5_armstrng(B,C))
+    <=> ? [D,E] :
+          ( m1_subset_1(D,k1_zfmisc_1(B))
+          & m1_subset_1(E,k1_zfmisc_1(B))
+          & A = k6_armstrng(B,D,E)
+          & ! [F] :
+              ( ( r2_hidden(F,C)
+                & r1_tarski(D,F) )
+             => r1_tarski(E,F) ) ) ) ).
+
+fof(fraenkel_a_2_6_armstrng,axiom,
+    ! [A,B,C] :
+      ( m2_relset_1(C,k1_zfmisc_1(B),k1_zfmisc_1(B))
+     => ( r2_hidden(A,a_2_6_armstrng(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & A = D
+            & ! [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(B))
+               => ! [F] :
+                    ( m1_subset_1(F,k1_zfmisc_1(B))
+                   => ( ( r2_hidden(k6_armstrng(B,E,F),C)
+                        & r1_tarski(E,D) )
+                     => r1_tarski(F,D) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_7_armstrng,axiom,
+    ! [A,B,C] :
+      ( m1_subset_1(C,k1_zfmisc_1(B))
+     => ( r2_hidden(A,a_2_7_armstrng(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & A = D
+            & ~ r1_tarski(C,D) ) ) ) ).
+
+fof(fraenkel_a_2_8_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & m1_subset_1(C,k1_zfmisc_1(B)) )
+     => ( r2_hidden(A,a_2_8_armstrng(B,C))
+      <=> ? [D,E] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & m1_subset_1(E,k1_zfmisc_1(B))
+            & A = k6_armstrng(B,D,E)
+            & ( r1_tarski(C,D)
+              | r1_tarski(E,D) ) ) ) ) ).
+
+fof(fraenkel_a_2_9_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & m1_subset_1(C,k1_zfmisc_1(B)) )
+     => ( r2_hidden(A,a_2_9_armstrng(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & A = D
+            & ~ r1_tarski(C,D) ) ) ) ).
+
+fof(fraenkel_a_2_10_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( v1_finset_1(B)
+        & m1_subset_1(C,k1_zfmisc_1(B)) )
+     => ( r2_hidden(A,a_2_10_armstrng(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & A = D
+            & ~ r1_tarski(C,D) ) ) ) ).
+
+fof(fraenkel_a_2_11_armstrng,axiom,
+    ! [A,B,C] :
+      ( r2_hidden(A,a_2_11_armstrng(B,C))
+    <=> ? [D] :
+          ( m1_subset_1(D,k1_zfmisc_1(k1_zfmisc_1(B)))
+          & A = k8_setfam_1(B,D)
+          & r1_tarski(D,C) ) ) ).
+
+fof(fraenkel_a_2_12_armstrng,axiom,
+    ! [A,B,C] :
+      ( m2_relset_1(C,k1_zfmisc_1(B),k1_zfmisc_1(B))
+     => ( r2_hidden(A,a_2_12_armstrng(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & A = D
+            & r2_hidden(k4_tarski(D,B),k8_armstrng(B,C)) ) ) ) ).
+
+fof(fraenkel_a_2_13_armstrng,axiom,
+    ! [A,B,C] :
+      ( ( v1_finset_1(B)
+        & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(B))) )
+     => ( r2_hidden(A,a_2_13_armstrng(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & A = D
+            & ! [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(B))
+               => ~ ( r2_hidden(E,C)
+                    & r1_tarski(E,D) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_14_armstrng,axiom,
+    ! [A,B,C] :
+      ( m2_relset_1(C,k1_zfmisc_1(B),k1_zfmisc_1(B))
+     => ( r2_hidden(A,a_2_14_armstrng(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,k1_zfmisc_1(B))
+            & A = D
+            & ? [E] :
+                ( m1_subset_1(E,k1_zfmisc_1(B))
+                & ? [F] :
+                    ( m1_subset_1(F,k1_zfmisc_1(B))
+                    & r2_hidden(k6_armstrng(B,E,F),C)
+                    & r1_tarski(E,D)
+                    & ~ r1_tarski(F,D) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

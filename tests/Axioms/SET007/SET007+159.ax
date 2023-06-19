@@ -1,0 +1,696 @@
+%------------------------------------------------------------------------------
+% File     : SET007+159 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Relations of Tolerance
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : toler_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   92 (  43 unt;   0 def)
+%            Number of atoms       :  388 (  16 equ)
+%            Maximal formula atoms :   17 (   4 avg)
+%            Number of connectives :  304 (   8   ~;   0   |; 199   &)
+%                                         (  15 <=>;  82  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   15 (   5 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :   24 (  22 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   19 (  19 usr;   2 con; 0-6 aty)
+%            Number of variables   :  161 ( 154   !;   7   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_toler_1,axiom,
+    ( v1_relat_1(k1_xboole_0)
+    & v3_relat_1(k1_xboole_0)
+    & v1_relat_2(k1_xboole_0)
+    & v2_relat_2(k1_xboole_0)
+    & v3_relat_2(k1_xboole_0)
+    & v4_relat_2(k1_xboole_0)
+    & v5_relat_2(k1_xboole_0)
+    & v6_relat_2(k1_xboole_0)
+    & v7_relat_2(k1_xboole_0)
+    & v8_relat_2(k1_xboole_0)
+    & v1_xboole_0(k1_xboole_0) ) ).
+
+fof(rc1_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m1_relset_1(B,A,A) )
+     => ? [C] :
+          ( m1_toler_1(C,A,B)
+          & v1_toler_1(C,A,B) ) ) ).
+
+fof(t1_toler_1,axiom,
+    k3_relat_1(k1_xboole_0) = k1_xboole_0 ).
+
+fof(t2_toler_1,axiom,
+    v1_relat_2(k1_xboole_0) ).
+
+fof(t3_toler_1,axiom,
+    v3_relat_2(k1_xboole_0) ).
+
+fof(t4_toler_1,axiom,
+    v2_relat_2(k1_xboole_0) ).
+
+fof(t5_toler_1,axiom,
+    v4_relat_2(k1_xboole_0) ).
+
+fof(t6_toler_1,axiom,
+    v5_relat_2(k1_xboole_0) ).
+
+fof(t7_toler_1,axiom,
+    v6_relat_2(k1_xboole_0) ).
+
+fof(t8_toler_1,axiom,
+    v7_relat_2(k1_xboole_0) ).
+
+fof(t9_toler_1,axiom,
+    v8_relat_2(k1_xboole_0) ).
+
+fof(t10_toler_1,axiom,
+    $true ).
+
+fof(t11_toler_1,axiom,
+    $true ).
+
+fof(t12_toler_1,axiom,
+    $true ).
+
+fof(t13_toler_1,axiom,
+    ! [A] : k5_relset_1(A,A,k1_eqrel_1(A)) = A ).
+
+fof(t14_toler_1,axiom,
+    $true ).
+
+fof(t15_toler_1,axiom,
+    ! [A,B,C] :
+      ( ( r2_hidden(B,A)
+        & r2_hidden(C,A) )
+     => r2_hidden(k4_tarski(B,C),k1_eqrel_1(A)) ) ).
+
+fof(t16_toler_1,axiom,
+    ! [A,B,C] :
+      ( ( r2_hidden(B,k3_relat_1(k1_eqrel_1(A)))
+        & r2_hidden(C,k3_relat_1(k1_eqrel_1(A))) )
+     => r2_hidden(k4_tarski(B,C),k1_eqrel_1(A)) ) ).
+
+fof(t17_toler_1,axiom,
+    $true ).
+
+fof(t18_toler_1,axiom,
+    $true ).
+
+fof(t19_toler_1,axiom,
+    ! [A] : v7_relat_2(k1_eqrel_1(A)) ).
+
+fof(t20_toler_1,axiom,
+    $true ).
+
+fof(t21_toler_1,axiom,
+    ! [A] : v6_relat_2(k1_eqrel_1(A)) ).
+
+fof(t22_toler_1,axiom,
+    $true ).
+
+fof(t23_toler_1,axiom,
+    $true ).
+
+fof(t24_toler_1,axiom,
+    $true ).
+
+fof(t25_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => k5_relset_1(A,A,B) = A ) ).
+
+fof(t26_toler_1,axiom,
+    $true ).
+
+fof(t27_toler_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_2(C)
+        & v1_partfun1(C,A,A)
+        & m2_relset_1(C,A,A) )
+     => ( r2_hidden(B,A)
+      <=> r2_hidden(k4_tarski(B,B),C) ) ) ).
+
+fof(t28_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => r1_relat_2(B,A) ) ).
+
+fof(t29_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => r3_relat_2(B,A) ) ).
+
+fof(t30_toler_1,axiom,
+    $true ).
+
+fof(t31_toler_1,axiom,
+    $true ).
+
+fof(t32_toler_1,axiom,
+    ! [A,B,C,D] :
+      ( m2_relset_1(D,A,B)
+     => ( v3_relat_2(D)
+       => v3_relat_2(k1_toler_1(D,C)) ) ) ).
+
+fof(t33_toler_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_2(C)
+        & v3_relat_2(C)
+        & v1_partfun1(C,B,B)
+        & m2_relset_1(C,B,B) )
+     => ( r1_tarski(A,B)
+       => ( v1_relat_2(k1_toler_1(C,A))
+          & v3_relat_2(k1_toler_1(C,A))
+          & v1_partfun1(k1_toler_1(C,A),A,A)
+          & m2_relset_1(k1_toler_1(C,A),A,A) ) ) ) ).
+
+fof(d1_toler_1,axiom,
+    $true ).
+
+fof(d2_toler_1,axiom,
+    $true ).
+
+fof(d3_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( m1_toler_1(C,A,B)
+        <=> ! [D,E] :
+              ( ( r2_hidden(D,C)
+                & r2_hidden(E,C) )
+             => r2_hidden(k4_tarski(D,E),B) ) ) ) ).
+
+fof(t34_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => m1_toler_1(k1_xboole_0,A,B) ) ).
+
+fof(d4_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( m1_toler_1(C,A,B)
+         => ( v1_toler_1(C,A,B)
+          <=> ! [D] :
+                ~ ( ~ r2_hidden(D,C)
+                  & r2_hidden(D,A)
+                  & ! [E] :
+                      ~ ( r2_hidden(E,C)
+                        & ~ r2_hidden(k4_tarski(D,E),B) ) ) ) ) ) ).
+
+fof(t35_toler_1,axiom,
+    $true ).
+
+fof(t36_toler_1,axiom,
+    $true ).
+
+fof(t37_toler_1,axiom,
+    $true ).
+
+fof(t38_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ( ( v1_toler_1(k1_xboole_0,A,B)
+          & m1_toler_1(k1_xboole_0,A,B) )
+       => B = k1_xboole_0 ) ) ).
+
+fof(t39_toler_1,axiom,
+    ( v1_relat_2(k1_xboole_0)
+    & v3_relat_2(k1_xboole_0)
+    & v1_partfun1(k1_xboole_0,k1_xboole_0,k1_xboole_0)
+    & m2_relset_1(k1_xboole_0,k1_xboole_0,k1_xboole_0) ) ).
+
+fof(t40_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C,D] :
+          ( r2_hidden(k4_tarski(C,D),B)
+         => m1_toler_1(k2_tarski(C,D),A,B) ) ) ).
+
+fof(t41_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( r2_hidden(C,A)
+         => m1_toler_1(k1_tarski(C),A,B) ) ) ).
+
+fof(t42_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C,D] :
+          ( ( m1_toler_1(C,A,B)
+            & m1_toler_1(D,A,B) )
+         => m1_toler_1(k3_xboole_0(C,D),A,B) ) ) ).
+
+fof(t43_toler_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_2(C)
+        & v3_relat_2(C)
+        & v1_partfun1(C,B,B)
+        & m2_relset_1(C,B,B) )
+     => ( m1_toler_1(A,B,C)
+       => r1_tarski(A,B) ) ) ).
+
+fof(t44_toler_1,axiom,
+    $true ).
+
+fof(t45_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( m1_toler_1(C,A,B)
+         => ? [D] :
+              ( v1_toler_1(D,A,B)
+              & m1_toler_1(D,A,B)
+              & r1_tarski(C,D) ) ) ) ).
+
+fof(t46_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C,D] :
+          ~ ( r2_hidden(k4_tarski(C,D),B)
+            & ! [E] :
+                ( ( v1_toler_1(E,A,B)
+                  & m1_toler_1(E,A,B) )
+               => ~ ( r2_hidden(C,E)
+                    & r2_hidden(D,E) ) ) ) ) ).
+
+fof(t47_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ~ ( r2_hidden(C,A)
+            & ! [D] :
+                ( ( v1_toler_1(D,A,B)
+                  & m1_toler_1(D,A,B) )
+               => ~ r2_hidden(C,D) ) ) ) ).
+
+fof(t48_toler_1,axiom,
+    $true ).
+
+fof(t49_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => r1_tarski(B,k1_eqrel_1(A)) ) ).
+
+fof(t50_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => r1_tarski(k6_partfun1(A),B) ) ).
+
+fof(t51_toler_1,axiom,
+    ! [A] :
+    ? [B] :
+      ( v1_relat_2(B)
+      & v3_relat_2(B)
+      & v1_partfun1(B,k3_tarski(A),k3_tarski(A))
+      & m2_relset_1(B,k3_tarski(A),k3_tarski(A))
+      & ! [C] :
+          ( r2_hidden(C,A)
+         => m1_toler_1(C,k3_tarski(A),B) ) ) ).
+
+fof(t52_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,k3_tarski(A),k3_tarski(A))
+        & m2_relset_1(B,k3_tarski(A),k3_tarski(A)) )
+     => ! [C] :
+          ( ( v1_relat_2(C)
+            & v3_relat_2(C)
+            & v1_partfun1(C,k3_tarski(A),k3_tarski(A))
+            & m2_relset_1(C,k3_tarski(A),k3_tarski(A)) )
+         => ( ( ! [D,E] :
+                  ( r2_hidden(k4_tarski(D,E),B)
+                <=> ? [F] :
+                      ( r2_hidden(F,A)
+                      & r2_hidden(D,F)
+                      & r2_hidden(E,F) ) )
+              & ! [D,E] :
+                  ( r2_hidden(k4_tarski(D,E),C)
+                <=> ? [F] :
+                      ( r2_hidden(F,A)
+                      & r2_hidden(D,F)
+                      & r2_hidden(E,F) ) ) )
+           => B = C ) ) ) ).
+
+fof(t53_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( ( v1_relat_2(C)
+            & v3_relat_2(C)
+            & v1_partfun1(C,A,A)
+            & m2_relset_1(C,A,A) )
+         => ( ! [D] :
+                ( ( v1_toler_1(D,A,B)
+                  & m1_toler_1(D,A,B) )
+              <=> ( v1_toler_1(D,A,C)
+                  & m1_toler_1(D,A,C) ) )
+           => B = C ) ) ) ).
+
+fof(t54_toler_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_2(C)
+        & v3_relat_2(C)
+        & v1_partfun1(C,A,A)
+        & m2_relset_1(C,A,A) )
+     => ! [D] :
+          ( r2_hidden(D,k6_eqrel_1(A,C,B))
+        <=> r2_hidden(k4_tarski(B,D),C) ) ) ).
+
+fof(t55_toler_1,axiom,
+    $true ).
+
+fof(t56_toler_1,axiom,
+    $true ).
+
+fof(t57_toler_1,axiom,
+    $true ).
+
+fof(t58_toler_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_2(C)
+        & v3_relat_2(C)
+        & v1_partfun1(C,A,A)
+        & m2_relset_1(C,A,A) )
+     => ! [D] :
+          ( ! [E] :
+              ( r2_hidden(E,D)
+            <=> ( r2_hidden(B,E)
+                & v1_toler_1(E,A,C)
+                & m1_toler_1(E,A,C) ) )
+         => k6_eqrel_1(A,C,B) = k3_tarski(D) ) ) ).
+
+fof(t59_toler_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_2(C)
+        & v3_relat_2(C)
+        & v1_partfun1(C,A,A)
+        & m2_relset_1(C,A,A) )
+     => ! [D] :
+          ( ! [E] :
+              ( r2_hidden(E,D)
+            <=> ( r2_hidden(B,E)
+                & m1_toler_1(E,A,C) ) )
+         => k6_eqrel_1(A,C,B) = k3_tarski(D) ) ) ).
+
+fof(d5_toler_1,axiom,
+    $true ).
+
+fof(d6_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( C = k3_toler_1(A,B)
+        <=> ! [D] :
+              ( r2_hidden(D,C)
+            <=> m1_toler_1(D,A,B) ) ) ) ).
+
+fof(d7_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( C = k4_toler_1(A,B)
+        <=> ! [D] :
+              ( r2_hidden(D,C)
+            <=> ( v1_toler_1(D,A,B)
+                & m1_toler_1(D,A,B) ) ) ) ) ).
+
+fof(t60_toler_1,axiom,
+    $true ).
+
+fof(t61_toler_1,axiom,
+    $true ).
+
+fof(t62_toler_1,axiom,
+    $true ).
+
+fof(t63_toler_1,axiom,
+    $true ).
+
+fof(t64_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( ( v1_relat_2(C)
+            & v3_relat_2(C)
+            & v1_partfun1(C,A,A)
+            & m2_relset_1(C,A,A) )
+         => ( r1_tarski(k4_toler_1(A,B),k4_toler_1(A,C))
+           => r1_tarski(B,C) ) ) ) ).
+
+fof(t65_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( ( v1_relat_2(C)
+            & v3_relat_2(C)
+            & v1_partfun1(C,A,A)
+            & m2_relset_1(C,A,A) )
+         => ( k4_toler_1(A,B) = k4_toler_1(A,C)
+           => B = C ) ) ) ).
+
+fof(t66_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => k3_tarski(k4_toler_1(A,B)) = A ) ).
+
+fof(t67_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => k3_tarski(k3_toler_1(A,B)) = A ) ).
+
+fof(t68_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ( ! [C] :
+            ( r2_hidden(C,A)
+           => m1_toler_1(k6_eqrel_1(A,B,C),A,B) )
+       => v8_relat_2(B) ) ) ).
+
+fof(t69_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ( v8_relat_2(B)
+       => ! [C] :
+            ( r2_hidden(C,A)
+           => ( v1_toler_1(k6_eqrel_1(A,B,C),A,B)
+              & m1_toler_1(k6_eqrel_1(A,B,C),A,B) ) ) ) ) ).
+
+fof(t70_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C,D] :
+          ( ( v1_toler_1(D,A,B)
+            & m1_toler_1(D,A,B) )
+         => ( r2_hidden(C,D)
+           => r1_tarski(D,k6_eqrel_1(A,B,C)) ) ) ) ).
+
+fof(t71_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( ( v1_relat_2(C)
+            & v3_relat_2(C)
+            & v1_partfun1(C,A,A)
+            & m2_relset_1(C,A,A) )
+         => ( r1_tarski(k3_toler_1(A,B),k3_toler_1(A,C))
+          <=> r1_tarski(B,C) ) ) ) ).
+
+fof(t72_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => r1_tarski(k4_toler_1(A,B),k3_toler_1(A,B)) ) ).
+
+fof(t73_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => ! [C] :
+          ( ( v1_relat_2(C)
+            & v3_relat_2(C)
+            & v1_partfun1(C,A,A)
+            & m2_relset_1(C,A,A) )
+         => ( ! [D] :
+                ( r2_hidden(D,A)
+               => r1_tarski(k6_eqrel_1(A,B,D),k6_eqrel_1(A,C,D)) )
+           => r1_tarski(B,C) ) ) ) ).
+
+fof(t74_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => r1_tarski(B,k7_relset_1(A,A,A,A,B,B)) ) ).
+
+fof(s1_toler_1,axiom,
+    ( ( ! [A] :
+          ( r2_hidden(A,f1_s1_toler_1)
+         => p1_s1_toler_1(A,A) )
+      & ! [A,B] :
+          ( ( r2_hidden(A,f1_s1_toler_1)
+            & r2_hidden(B,f1_s1_toler_1)
+            & p1_s1_toler_1(A,B) )
+         => p1_s1_toler_1(B,A) ) )
+   => ? [A] :
+        ( v1_relat_2(A)
+        & v3_relat_2(A)
+        & v1_partfun1(A,f1_s1_toler_1,f1_s1_toler_1)
+        & m2_relset_1(A,f1_s1_toler_1,f1_s1_toler_1)
+        & ! [B,C] :
+            ( ( r2_hidden(B,f1_s1_toler_1)
+              & r2_hidden(C,f1_s1_toler_1) )
+           => ( r2_hidden(k4_tarski(B,C),A)
+            <=> p1_s1_toler_1(B,C) ) ) ) ) ).
+
+fof(dt_m1_toler_1,axiom,
+    $true ).
+
+fof(existence_m1_toler_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m1_relset_1(B,A,A) )
+     => ? [C] : m1_toler_1(C,A,B) ) ).
+
+fof(dt_k1_toler_1,axiom,
+    ! [A,B] :
+      ( v1_relat_1(A)
+     => m2_relset_1(k1_toler_1(A,B),B,B) ) ).
+
+fof(redefinition_k1_toler_1,axiom,
+    ! [A,B] :
+      ( v1_relat_1(A)
+     => k1_toler_1(A,B) = k2_wellord1(A,B) ) ).
+
+fof(dt_k2_toler_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m1_relset_1(B,A,A)
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => ( v1_relat_2(k2_toler_1(A,B,C))
+        & v3_relat_2(k2_toler_1(A,B,C))
+        & v1_partfun1(k2_toler_1(A,B,C),C,C)
+        & m2_relset_1(k2_toler_1(A,B,C),C,C) ) ) ).
+
+fof(redefinition_k2_toler_1,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_2(B)
+        & v3_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m1_relset_1(B,A,A)
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => k2_toler_1(A,B,C) = k2_wellord1(B,C) ) ).
+
+fof(dt_k3_toler_1,axiom,
+    $true ).
+
+fof(dt_k4_toler_1,axiom,
+    $true ).
+
+%------------------------------------------------------------------------------

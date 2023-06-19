@@ -115,31 +115,24 @@ func (fr FormulaRole) ToString() string {
 	return res
 }
 
-// %----"axiom"s are accepted, without proof. There is no guarantee that the
-// %----axioms of a problem are consistent.
-// %----"hypothesis"s are assumed to be true for a particular problem, and are
-// %----used like "axiom"s.
-// %----"definition"s are intended to define symbols. They are either universally
-// %----quantified equations, or universally quantified equivalences with an
-// %----atomic lefthand side. They can be treated like "axiom"s.
-// %----"assumption"s can be used like axioms, but must be discharged before a
-// %----derivation is complete.
-// %----"lemma"s and "theorem"s have been proven from the "axiom"s. They can be
-// %----used like "axiom"s in problems, and a problem containing a non-redundant
-// %----"lemma" or theorem" is ill-formed. They can also appear in derivations.
-// %----"theorem"s are more important than "lemma"s from the user perspective.
-// %----"conjecture"s are to be proven from the "axiom"(-like) formulae. A problem
-// %----is solved only when all "conjecture"s are proven.
-// %----"negated_conjecture"s are formed from negation of a "conjecture" (usually
-// %----in a FOF to CNF conversion).
-// %----"plain"s have no specified user semantics.
-// %----"fi_domain", "fi_functors", and "fi_predicates" are used to record the
-// %----domain, interpretation of functors, and interpretation of predicates, for
-// %----a finite interpretation.
-// %----"type" defines the type globally for one symbol; treat as $true.
-// %----"unknown"s have unknown role, and this is an error situation.
-func MakeFormulaRoleFromString(arg string) FormulaRole {
-	switch arg {
+/*
+A function to get a FormulaRole from a String
+  - "axiom"s are accepted, without proof. There is no guarantee that the axioms of a problem are consistent.
+  - "hypothesis"s are assumed to be true for a particular problem, and are used like "axiom"s.
+  - "definition"s are intended to define symbols. They are either universally quantified equations, or universally quantified equivalences with an atomic lefthand side. They can be treated like "axiom"s.
+  - "assumption"s can be used like axioms, but must be discharged before a derivation is complete.
+  - "lemma"s and "theorem"s have been proven from the "axiom"s. They can be used like "axiom"s in problems, and a problem containing a non-redundant
+  - "lemma" or theorem" is ill-formed. They can also appear in derivations.
+  - "theorem"s are more important than "lemma"s from the user perspective.
+  - "conjecture"s are to be proven from the "axiom"(-like) formulae. A problem is solved only when all "conjecture"s are proven.
+  - "negated_conjecture"s are formed from negation of a "conjecture" (usually in a FOF to CNF conversion).
+  - "plain"s have no specified user semantics.
+  - "fi_domain", "fi_functors", and "fi_predicates" are used to record the domain, interpretation of functors, and interpretation of predicates, for a finite interpretation.
+  - "type" defines the type globally for one symbol; treat as $true.
+  - "unknown"s have unknown role, and this is an error situation.
+*/
+func MakeFormulaRoleFromString(role string) FormulaRole {
+	switch role {
 	case "axiom", "hypothesis", "definition", "assumption", "lemma", "theorem":
 		return Axiom
 	case "conjecture":
@@ -153,25 +146,25 @@ func MakeFormulaRoleFromString(arg string) FormulaRole {
 	}
 }
 
-func (stm Statement) ToString() string {
-	switch stm.GetRole() {
+func (statement Statement) ToString() string {
+	switch statement.GetRole() {
 	case Include:
-		return stm.GetRole().ToString() + " " + stm.GetName()
+		return statement.GetRole().ToString() + " " + statement.GetName()
 	case Axiom, Conjecture:
-		return stm.GetRole().ToString() + " " + stm.GetName() + " " + stm.GetForm().ToString()
+		return statement.GetRole().ToString() + " " + statement.GetName() + " " + statement.GetForm().ToString()
 	case Type:
-		if stm.atomTyping.Ts != nil {
-			return stm.GetRole().ToString() + " " + stm.GetName() + " " + stm.atomTyping.Literal.ToString() + ": " + stm.atomTyping.Ts.ToString()
+		if statement.atomTyping.Ts != nil {
+			return statement.GetRole().ToString() + " " + statement.GetName() + " " + statement.atomTyping.Literal.ToString() + ": " + statement.atomTyping.Ts.ToString()
 		}
 	}
 	return "Unknown"
 }
 
-func StatementListToString(lstm []Statement) string {
+func StatementListToString(statements []Statement) string {
 	res := ""
-	for i, s := range lstm {
+	for i, s := range statements {
 		res += s.ToString()
-		if i < len(lstm)-1 {
+		if i < len(statements)-1 {
 			res += ", "
 		}
 	}

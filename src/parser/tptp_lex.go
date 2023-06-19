@@ -33,10 +33,11 @@
 package parser
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"unicode"
 
+	"github.com/GoelandProver/Goeland/global"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -775,7 +776,7 @@ func (lexer TPTPLex) isNumeric() bool {
 }
 
 func (lexer TPTPLex) Error(s string) {
-	log.Fatalf("Syntax error, line %d: %s\n", yylineno, s)
+	global.PrintFatal("PARSE", fmt.Sprintf("Syntax error, line %d: %s", yylineno, s))
 }
 
 func (lexer *TPTPLex) Lex(yylval *TPTPSymType) int {
@@ -826,14 +827,14 @@ func (lexer *TPTPLex) Lex(yylval *TPTPSymType) int {
 func ParseTPTPFile(filename string) ([]btypes.Statement, int) {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Fatalf("Lexing error: %v \n", r)
+			global.PrintFatal("PARSE", fmt.Sprintf("Lexing error: %v", r))
 		}
 	}()
 
 	data, err := os.ReadFile(filename)
 
 	if err != nil {
-		log.Fatal(err)
+		global.PrintFatal("PARSE", err.Error())
 	}
 
 	TPTPParse(&TPTPLex{s: string(data)})

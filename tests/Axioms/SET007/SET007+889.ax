@@ -1,0 +1,2745 @@
+%------------------------------------------------------------------------------
+% File     : SET007+889 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Alternative Graph Structures
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : glib_000 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  284 (  16 unt;   0 def)
+%            Number of atoms       : 1661 ( 204 equ)
+%            Maximal formula atoms :   21 (   5 avg)
+%            Number of connectives : 1448 (  71   ~;   7   |; 779   &)
+%                                         (  64 <=>; 527  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   20 (   7 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   50 (  48 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   73 (  73 usr;  14 con; 0-5 aty)
+%            Number of variables   :  669 ( 647   !;  22   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_glib_000,axiom,
+    ? [A] :
+      ( m1_glib_000(A)
+      & v1_relat_1(A)
+      & v1_funct_1(A)
+      & v1_finset_1(A)
+      & v1_glib_000(A) ) ).
+
+fof(fc1_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ~ v1_xboole_0(k6_glib_000(A)) ) ).
+
+fof(fc2_glib_000,axiom,
+    ! [A,B] :
+      ( v1_relat_1(k3_cqc_lang(A,B))
+      & v1_funct_1(k3_cqc_lang(A,B))
+      & v1_finset_1(k3_cqc_lang(A,B)) ) ).
+
+fof(fc3_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v1_relat_1(k14_glib_000(A,k5_glib_000))
+        & v1_funct_1(k14_glib_000(A,k5_glib_000))
+        & v1_finset_1(k14_glib_000(A,k5_glib_000))
+        & v1_glib_000(k14_glib_000(A,k5_glib_000)) ) ) ).
+
+fof(cc1_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( ( v1_glib_000(A)
+          & v5_glib_000(A) )
+       => ( v1_glib_000(A)
+          & v6_glib_000(A) ) ) ) ).
+
+fof(cc2_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( ( v1_glib_000(A)
+          & v7_glib_000(A) )
+       => ( v1_glib_000(A)
+          & v3_glib_000(A)
+          & v5_glib_000(A) ) ) ) ).
+
+fof(cc3_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( ( v1_glib_000(A)
+          & v3_glib_000(A)
+          & v5_glib_000(A) )
+       => ( v1_glib_000(A)
+          & v7_glib_000(A) ) ) ) ).
+
+fof(cc4_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( ( v1_glib_000(A)
+          & v3_glib_000(A)
+          & v6_glib_000(A) )
+       => ( v1_glib_000(A)
+          & v8_glib_000(A) ) ) ) ).
+
+fof(cc5_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( ( v1_glib_000(A)
+          & v8_glib_000(A) )
+       => ( v1_glib_000(A)
+          & v3_glib_000(A)
+          & v6_glib_000(A) ) ) ) ).
+
+fof(cc6_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( ( v1_glib_000(A)
+          & v3_glib_000(A)
+          & v4_glib_000(A) )
+       => ( v1_glib_000(A)
+          & v2_glib_000(A) ) ) ) ).
+
+fof(cc7_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( ( v1_glib_000(A)
+          & v4_glib_000(A)
+          & v6_glib_000(A) )
+       => ( v1_glib_000(A)
+          & v2_glib_000(A) ) ) ) ).
+
+fof(rc2_glib_000,axiom,
+    ? [A] :
+      ( m1_glib_000(A)
+      & v1_relat_1(A)
+      & v1_funct_1(A)
+      & v1_finset_1(A)
+      & v1_glib_000(A)
+      & v2_glib_000(A)
+      & v3_glib_000(A)
+      & v4_glib_000(A)
+      & v5_glib_000(A)
+      & v6_glib_000(A)
+      & v7_glib_000(A)
+      & v8_glib_000(A) ) ).
+
+fof(rc3_glib_000,axiom,
+    ? [A] :
+      ( m1_glib_000(A)
+      & v1_relat_1(A)
+      & v1_funct_1(A)
+      & v1_finset_1(A)
+      & v1_glib_000(A)
+      & v2_glib_000(A)
+      & v3_glib_000(A)
+      & ~ v4_glib_000(A)
+      & v5_glib_000(A)
+      & v6_glib_000(A)
+      & v7_glib_000(A)
+      & v8_glib_000(A) ) ).
+
+fof(fc4_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ( ~ v1_xboole_0(k6_glib_000(A))
+        & v1_finset_1(k6_glib_000(A)) ) ) ).
+
+fof(fc5_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => v1_finset_1(k7_glib_000(A)) ) ).
+
+fof(fc6_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v4_glib_000(A)
+        & m1_glib_000(A) )
+     => ( ~ v1_xboole_0(k6_glib_000(A))
+        & v1_finset_1(k6_glib_000(A)) ) ) ).
+
+fof(fc7_glib_000,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v1_finset_1(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,B,A)
+        & m1_relset_1(C,B,A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,B,A)
+        & m1_relset_1(D,B,A) )
+     => ( v1_relat_1(k12_glib_000(A,B,C,D))
+        & v1_funct_1(k12_glib_000(A,B,C,D))
+        & v1_finset_1(k12_glib_000(A,B,C,D))
+        & v1_glib_000(k12_glib_000(A,B,C,D))
+        & v2_glib_000(k12_glib_000(A,B,C,D)) ) ) ).
+
+fof(fc8_glib_000,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,B,A)
+        & m1_relset_1(C,B,A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,B,A)
+        & m1_relset_1(D,B,A) )
+     => ( v1_relat_1(k12_glib_000(A,B,C,D))
+        & v1_funct_1(k12_glib_000(A,B,C,D))
+        & v1_finset_1(k12_glib_000(A,B,C,D))
+        & v1_glib_000(k12_glib_000(A,B,C,D))
+        & v3_glib_000(k12_glib_000(A,B,C,D))
+        & v5_glib_000(k12_glib_000(A,B,C,D))
+        & v6_glib_000(k12_glib_000(A,B,C,D))
+        & v7_glib_000(k12_glib_000(A,B,C,D))
+        & v8_glib_000(k12_glib_000(A,B,C,D)) ) ) ).
+
+fof(fc9_glib_000,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_funct_1(C)
+        & v1_funct_2(C,B,k1_tarski(A))
+        & m1_relset_1(C,B,k1_tarski(A))
+        & v1_funct_1(D)
+        & v1_funct_2(D,B,k1_tarski(A))
+        & m1_relset_1(D,B,k1_tarski(A)) )
+     => ( v1_relat_1(k12_glib_000(k1_tarski(A),B,C,D))
+        & v1_funct_1(k12_glib_000(k1_tarski(A),B,C,D))
+        & v1_finset_1(k12_glib_000(k1_tarski(A),B,C,D))
+        & v1_glib_000(k12_glib_000(k1_tarski(A),B,C,D))
+        & v4_glib_000(k12_glib_000(k1_tarski(A),B,C,D)) ) ) ).
+
+fof(rc4_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ? [B] :
+          ( m2_glib_000(B,A)
+          & v1_relat_1(B)
+          & v1_funct_1(B)
+          & v1_finset_1(B)
+          & v1_glib_000(B)
+          & v2_glib_000(B)
+          & v3_glib_000(B)
+          & v4_glib_000(B)
+          & v5_glib_000(B)
+          & v6_glib_000(B)
+          & v7_glib_000(B)
+          & v8_glib_000(B) ) ) ).
+
+fof(cc8_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => v2_glib_000(B) ) ) ).
+
+fof(cc9_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v3_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => v3_glib_000(B) ) ) ).
+
+fof(cc10_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v4_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => v4_glib_000(B) ) ) ).
+
+fof(cc11_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v5_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => v5_glib_000(B) ) ) ).
+
+fof(rc5_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ? [B] :
+          ( m2_glib_000(B,A)
+          & v1_relat_1(B)
+          & v1_funct_1(B)
+          & v1_finset_1(B)
+          & v1_glib_000(B)
+          & v9_glib_000(B,A) ) ) ).
+
+fof(cc12_glib_000,axiom,
+    ! [A,B,C] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & m1_subset_1(B,k1_zfmisc_1(k6_glib_000(A)))
+        & v1_finset_1(C)
+        & m1_subset_1(C,k1_zfmisc_1(k22_glib_000(A,B))) )
+     => ! [D] :
+          ( m3_glib_000(D,A,B,C)
+         => v2_glib_000(D) ) ) ).
+
+fof(cc13_glib_000,axiom,
+    ! [A,B,C] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A))
+        & m1_subset_1(C,k1_zfmisc_1(k22_glib_000(A,k6_domain_1(k6_glib_000(A),B)))) )
+     => ! [D] :
+          ( m3_glib_000(D,A,k6_domain_1(k6_glib_000(A),B),C)
+         => v4_glib_000(D) ) ) ).
+
+fof(cc14_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => ! [C] :
+          ( m3_glib_000(C,A,k6_domain_1(k6_glib_000(A),B),k1_xboole_0)
+         => ( v2_glib_000(C)
+            & v4_glib_000(C) ) ) ) ).
+
+fof(cc15_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k6_glib_000(A))) )
+     => ! [C] :
+          ( m3_glib_000(C,A,B,k1_xboole_0)
+         => v7_glib_000(C) ) ) ).
+
+fof(cc16_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k1_zfmisc_1(k7_glib_000(A))) )
+     => ! [C] :
+          ( m3_glib_000(C,A,k6_glib_000(A),B)
+         => v9_glib_000(C,A) ) ) ).
+
+fof(cc17_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m3_glib_000(B,A,k6_glib_000(A),k1_xboole_0)
+         => v9_glib_000(B,A) ) ) ).
+
+fof(cc18_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [C] :
+          ( m3_glib_000(C,A,k6_glib_000(A),k1_card_fil(k7_glib_000(A),k1_tarski(B)))
+         => v9_glib_000(C,A) ) ) ).
+
+fof(cc19_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [C] :
+          ( m3_glib_000(C,A,k6_glib_000(A),k1_card_fil(k7_glib_000(A),B))
+         => v9_glib_000(C,A) ) ) ).
+
+fof(rc6_glib_000,axiom,
+    ? [A] :
+      ( m1_pboole(A,k5_numbers)
+      & v1_relat_1(A)
+      & v1_funct_1(A)
+      & v12_glib_000(A) ) ).
+
+fof(rc7_glib_000,axiom,
+    ? [A] :
+      ( m1_pboole(A,k5_numbers)
+      & v1_relat_1(A)
+      & v1_funct_1(A)
+      & v12_glib_000(A)
+      & v13_glib_000(A)
+      & v14_glib_000(A)
+      & v15_glib_000(A)
+      & v16_glib_000(A)
+      & v18_glib_000(A)
+      & v19_glib_000(A)
+      & v20_glib_000(A)
+      & v21_glib_000(A) ) ).
+
+fof(rc8_glib_000,axiom,
+    ? [A] :
+      ( m1_pboole(A,k5_numbers)
+      & v1_relat_1(A)
+      & v1_funct_1(A)
+      & v12_glib_000(A)
+      & v13_glib_000(A)
+      & v14_glib_000(A)
+      & v15_glib_000(A)
+      & v17_glib_000(A)
+      & v18_glib_000(A)
+      & v19_glib_000(A)
+      & v20_glib_000(A)
+      & v21_glib_000(A) ) ).
+
+fof(fc10_glib_000,axiom,
+    ! [A,B] :
+      ( ( v12_glib_000(A)
+        & v14_glib_000(A)
+        & m1_pboole(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k42_glib_000(A,B))
+        & v1_funct_1(k42_glib_000(A,B))
+        & v1_finset_1(k42_glib_000(A,B))
+        & v1_glib_000(k42_glib_000(A,B))
+        & v2_glib_000(k42_glib_000(A,B)) ) ) ).
+
+fof(fc11_glib_000,axiom,
+    ! [A,B] :
+      ( ( v12_glib_000(A)
+        & v15_glib_000(A)
+        & m1_pboole(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k42_glib_000(A,B))
+        & v1_funct_1(k42_glib_000(A,B))
+        & v1_finset_1(k42_glib_000(A,B))
+        & v1_glib_000(k42_glib_000(A,B))
+        & v3_glib_000(k42_glib_000(A,B)) ) ) ).
+
+fof(fc12_glib_000,axiom,
+    ! [A,B] :
+      ( ( v12_glib_000(A)
+        & v16_glib_000(A)
+        & m1_pboole(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k42_glib_000(A,B))
+        & v1_funct_1(k42_glib_000(A,B))
+        & v1_finset_1(k42_glib_000(A,B))
+        & v1_glib_000(k42_glib_000(A,B))
+        & v4_glib_000(k42_glib_000(A,B)) ) ) ).
+
+fof(fc13_glib_000,axiom,
+    ! [A,B] :
+      ( ( v12_glib_000(A)
+        & v17_glib_000(A)
+        & m1_pboole(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k42_glib_000(A,B))
+        & v1_funct_1(k42_glib_000(A,B))
+        & v1_finset_1(k42_glib_000(A,B))
+        & v1_glib_000(k42_glib_000(A,B))
+        & ~ v4_glib_000(k42_glib_000(A,B)) ) ) ).
+
+fof(fc14_glib_000,axiom,
+    ! [A,B] :
+      ( ( v12_glib_000(A)
+        & v18_glib_000(A)
+        & m1_pboole(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k42_glib_000(A,B))
+        & v1_funct_1(k42_glib_000(A,B))
+        & v1_finset_1(k42_glib_000(A,B))
+        & v1_glib_000(k42_glib_000(A,B))
+        & v5_glib_000(k42_glib_000(A,B))
+        & v6_glib_000(k42_glib_000(A,B)) ) ) ).
+
+fof(fc15_glib_000,axiom,
+    ! [A,B] :
+      ( ( v12_glib_000(A)
+        & v19_glib_000(A)
+        & m1_pboole(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k42_glib_000(A,B))
+        & v1_funct_1(k42_glib_000(A,B))
+        & v1_finset_1(k42_glib_000(A,B))
+        & v1_glib_000(k42_glib_000(A,B))
+        & v6_glib_000(k42_glib_000(A,B)) ) ) ).
+
+fof(fc16_glib_000,axiom,
+    ! [A,B] :
+      ( ( v12_glib_000(A)
+        & v20_glib_000(A)
+        & m1_pboole(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k42_glib_000(A,B))
+        & v1_funct_1(k42_glib_000(A,B))
+        & v1_finset_1(k42_glib_000(A,B))
+        & v1_glib_000(k42_glib_000(A,B))
+        & v3_glib_000(k42_glib_000(A,B))
+        & v5_glib_000(k42_glib_000(A,B))
+        & v6_glib_000(k42_glib_000(A,B))
+        & v7_glib_000(k42_glib_000(A,B))
+        & v8_glib_000(k42_glib_000(A,B)) ) ) ).
+
+fof(fc17_glib_000,axiom,
+    ! [A,B] :
+      ( ( v12_glib_000(A)
+        & v21_glib_000(A)
+        & m1_pboole(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k42_glib_000(A,B))
+        & v1_funct_1(k42_glib_000(A,B))
+        & v1_finset_1(k42_glib_000(A,B))
+        & v1_glib_000(k42_glib_000(A,B))
+        & v3_glib_000(k42_glib_000(A,B))
+        & v6_glib_000(k42_glib_000(A,B))
+        & v8_glib_000(k42_glib_000(A,B)) ) ) ).
+
+fof(cc20_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( ( v12_glib_000(A)
+          & v18_glib_000(A) )
+       => ( v12_glib_000(A)
+          & v19_glib_000(A) ) ) ) ).
+
+fof(cc21_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( ( v12_glib_000(A)
+          & v20_glib_000(A) )
+       => ( v12_glib_000(A)
+          & v15_glib_000(A)
+          & v18_glib_000(A)
+          & v19_glib_000(A) ) ) ) ).
+
+fof(cc22_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( ( v12_glib_000(A)
+          & v15_glib_000(A)
+          & v18_glib_000(A) )
+       => ( v12_glib_000(A)
+          & v15_glib_000(A)
+          & v18_glib_000(A)
+          & v19_glib_000(A)
+          & v20_glib_000(A) ) ) ) ).
+
+fof(cc23_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( ( v12_glib_000(A)
+          & v15_glib_000(A)
+          & v19_glib_000(A) )
+       => ( v12_glib_000(A)
+          & v21_glib_000(A) ) ) ) ).
+
+fof(cc24_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( ( v12_glib_000(A)
+          & v21_glib_000(A) )
+       => ( v12_glib_000(A)
+          & v15_glib_000(A)
+          & v19_glib_000(A)
+          & v21_glib_000(A) ) ) ) ).
+
+fof(cc25_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( ( v12_glib_000(A)
+          & v15_glib_000(A)
+          & v16_glib_000(A) )
+       => ( v12_glib_000(A)
+          & v14_glib_000(A) ) ) ) ).
+
+fof(cc26_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( ( v12_glib_000(A)
+          & v16_glib_000(A)
+          & v19_glib_000(A) )
+       => ( v12_glib_000(A)
+          & v14_glib_000(A) ) ) ) ).
+
+fof(d1_glib_000,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finset_1(A) )
+     => ( m1_glib_000(A)
+      <=> r1_tarski(k1_relat_1(A),k5_numbers) ) ) ).
+
+fof(d2_glib_000,axiom,
+    k1_glib_000 = np__1 ).
+
+fof(d3_glib_000,axiom,
+    k2_glib_000 = np__2 ).
+
+fof(d4_glib_000,axiom,
+    k3_glib_000 = np__3 ).
+
+fof(d5_glib_000,axiom,
+    k4_glib_000 = np__4 ).
+
+fof(d6_glib_000,axiom,
+    k5_glib_000 = k9_domain_1(k5_numbers,k1_glib_000,k2_glib_000,k3_glib_000,k4_glib_000) ).
+
+fof(d7_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => k6_glib_000(A) = k1_funct_1(A,k1_glib_000) ) ).
+
+fof(d8_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => k7_glib_000(A) = k1_funct_1(A,k2_glib_000) ) ).
+
+fof(d9_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => k8_glib_000(A) = k1_funct_1(A,k3_glib_000) ) ).
+
+fof(d10_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => k9_glib_000(A) = k1_funct_1(A,k4_glib_000) ) ).
+
+fof(d11_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( v1_glib_000(A)
+      <=> ( r2_hidden(k1_glib_000,k1_relat_1(A))
+          & r2_hidden(k2_glib_000,k1_relat_1(A))
+          & r2_hidden(k3_glib_000,k1_relat_1(A))
+          & r2_hidden(k4_glib_000,k1_relat_1(A))
+          & ~ v1_xboole_0(k6_glib_000(A))
+          & v1_funct_1(k8_glib_000(A))
+          & v1_funct_2(k8_glib_000(A),k7_glib_000(A),k6_glib_000(A))
+          & m2_relset_1(k8_glib_000(A),k7_glib_000(A),k6_glib_000(A))
+          & v1_funct_1(k9_glib_000(A))
+          & v1_funct_2(k9_glib_000(A),k7_glib_000(A),k6_glib_000(A))
+          & m2_relset_1(k9_glib_000(A),k7_glib_000(A),k6_glib_000(A)) ) ) ) ).
+
+fof(d12_glib_000,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,B,A)
+            & m2_relset_1(C,B,A) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,B,A)
+                & m2_relset_1(D,B,A) )
+             => k12_glib_000(A,B,C,D) = k1_scmpds_1(A,B,C,D) ) ) ) ).
+
+fof(d13_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] : k13_glib_000(A,B,C) = k1_funct_4(A,k3_cqc_lang(B,C)) ) ) ).
+
+fof(d14_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ! [B] : k14_glib_000(A,B) = k7_relat_1(A,B) ) ).
+
+fof(d15_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( r1_glib_000(A,B,C,D)
+        <=> ( r2_hidden(D,k7_glib_000(A))
+            & ( ( k1_funct_1(k10_glib_000(A),D) = B
+                & k1_funct_1(k11_glib_000(A),D) = C )
+              | ( k1_funct_1(k10_glib_000(A),D) = C
+                & k1_funct_1(k11_glib_000(A),D) = B ) ) ) ) ) ).
+
+fof(d16_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( r2_glib_000(A,B,C,D)
+        <=> ( r2_hidden(D,k7_glib_000(A))
+            & k1_funct_1(k10_glib_000(A),D) = B
+            & k1_funct_1(k11_glib_000(A),D) = C ) ) ) ).
+
+fof(d17_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( r3_glib_000(A,B,C,D)
+        <=> ( r2_hidden(D,k7_glib_000(A))
+            & ( ( r2_hidden(k1_funct_1(k10_glib_000(A),D),B)
+                & r2_hidden(k1_funct_1(k11_glib_000(A),D),C) )
+              | ( r2_hidden(k1_funct_1(k10_glib_000(A),D),C)
+                & r2_hidden(k1_funct_1(k11_glib_000(A),D),B) ) ) ) ) ) ).
+
+fof(d18_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( r4_glib_000(A,B,C,D)
+        <=> ( r2_hidden(D,k7_glib_000(A))
+            & r2_hidden(k1_funct_1(k10_glib_000(A),D),B)
+            & r2_hidden(k1_funct_1(k11_glib_000(A),D),C) ) ) ) ).
+
+fof(d19_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v2_glib_000(A)
+      <=> ( v1_finset_1(k6_glib_000(A))
+          & v1_finset_1(k7_glib_000(A)) ) ) ) ).
+
+fof(d20_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v3_glib_000(A)
+      <=> ! [B] :
+            ~ ( r2_hidden(B,k7_glib_000(A))
+              & k1_funct_1(k10_glib_000(A),B) = k1_funct_1(k11_glib_000(A),B) ) ) ) ).
+
+fof(d21_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v4_glib_000(A)
+      <=> k1_card_1(k6_glib_000(A)) = k4_ordinal2 ) ) ).
+
+fof(d22_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v5_glib_000(A)
+      <=> ! [B,C,D,E] :
+            ( ( r1_glib_000(A,D,E,B)
+              & r1_glib_000(A,D,E,C) )
+           => B = C ) ) ) ).
+
+fof(d23_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v6_glib_000(A)
+      <=> ! [B,C,D,E] :
+            ( ( r2_glib_000(A,D,E,B)
+              & r2_glib_000(A,D,E,C) )
+           => B = C ) ) ) ).
+
+fof(d24_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v7_glib_000(A)
+      <=> ( v3_glib_000(A)
+          & v5_glib_000(A) ) ) ) ).
+
+fof(d25_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v8_glib_000(A)
+      <=> ( v3_glib_000(A)
+          & v6_glib_000(A) ) ) ) ).
+
+fof(d26_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => k15_glib_000(A) = k1_card_1(k6_glib_000(A)) ) ).
+
+fof(d27_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => k17_glib_000(A) = k1_card_1(k7_glib_000(A)) ) ).
+
+fof(d28_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k7_glib_000(A)))
+         => ( C = k19_glib_000(A,B)
+          <=> ! [D] :
+                ( r2_hidden(D,C)
+              <=> ( r2_hidden(D,k7_glib_000(A))
+                  & r2_hidden(k1_funct_1(k11_glib_000(A),D),B) ) ) ) ) ) ).
+
+fof(d29_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k7_glib_000(A)))
+         => ( C = k20_glib_000(A,B)
+          <=> ! [D] :
+                ( r2_hidden(D,C)
+              <=> ( r2_hidden(D,k7_glib_000(A))
+                  & r2_hidden(k1_funct_1(k10_glib_000(A),D),B) ) ) ) ) ) ).
+
+fof(d30_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] : k21_glib_000(A,B) = k4_subset_1(k7_glib_000(A),k19_glib_000(A,B),k20_glib_000(A,B)) ) ).
+
+fof(d31_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] : k22_glib_000(A,B) = k5_subset_1(k7_glib_000(A),k19_glib_000(A,B),k20_glib_000(A,B)) ) ).
+
+fof(d32_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( m1_subset_1(D,k1_zfmisc_1(k7_glib_000(A)))
+         => ( D = k23_glib_000(A,B,C)
+          <=> ! [E] :
+                ( r2_hidden(E,D)
+              <=> r3_glib_000(A,B,C,E) ) ) ) ) ).
+
+fof(d33_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( m1_subset_1(D,k1_zfmisc_1(k7_glib_000(A)))
+         => ( D = k24_glib_000(A,B,C)
+          <=> ! [E] :
+                ( r2_hidden(E,D)
+              <=> r4_glib_000(A,B,C,E) ) ) ) ) ).
+
+fof(d34_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ( m2_glib_000(B,A)
+          <=> ( r1_tarski(k6_glib_000(B),k6_glib_000(A))
+              & r1_tarski(k7_glib_000(B),k7_glib_000(A))
+              & ! [C] :
+                  ( r2_hidden(C,k7_glib_000(B))
+                 => ( k1_funct_1(k10_glib_000(B),C) = k1_funct_1(k10_glib_000(A),C)
+                    & k1_funct_1(k11_glib_000(B),C) = k1_funct_1(k11_glib_000(A),C) ) ) ) ) ) ) ).
+
+fof(d35_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ( v9_glib_000(B,A)
+          <=> k25_glib_000(A,B) = k6_glib_000(A) ) ) ) ).
+
+fof(d36_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ( r5_glib_000(A,B)
+          <=> ( k6_glib_000(A) = k6_glib_000(B)
+              & k7_glib_000(A) = k7_glib_000(B)
+              & k10_glib_000(A) = k10_glib_000(B)
+              & k11_glib_000(A) = k11_glib_000(B) ) ) ) ) ).
+
+fof(d37_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ( r6_glib_000(A,B)
+          <=> m2_glib_000(A,B) ) ) ) ).
+
+fof(d38_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ( r7_glib_000(A,B)
+          <=> ( r6_glib_000(A,B)
+              & ~ r5_glib_000(A,B) ) ) ) ) ).
+
+fof(d39_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( m2_glib_000(D,A)
+         => ( ( ( ~ v1_xboole_0(B)
+                & m1_subset_1(B,k1_zfmisc_1(k6_glib_000(A)))
+                & r1_tarski(C,k22_glib_000(A,B)) )
+             => ( m3_glib_000(D,A,B,C)
+              <=> ( k25_glib_000(A,D) = B
+                  & k26_glib_000(A,D) = C ) ) )
+            & ( ~ ( ~ v1_xboole_0(B)
+                  & m1_subset_1(B,k1_zfmisc_1(k6_glib_000(A)))
+                  & r1_tarski(C,k22_glib_000(A,B)) )
+             => ( m3_glib_000(D,A,B,C)
+              <=> r5_glib_000(D,A) ) ) ) ) ) ).
+
+fof(d40_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k27_glib_000(A,B) = k19_glib_000(A,k6_domain_1(k6_glib_000(A),B)) ) ) ).
+
+fof(d41_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k28_glib_000(A,B) = k20_glib_000(A,k6_domain_1(k6_glib_000(A),B)) ) ) ).
+
+fof(d42_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k29_glib_000(A,B) = k21_glib_000(A,k6_domain_1(k6_glib_000(A),B)) ) ) ).
+
+fof(d43_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => ! [C] :
+              ( ( ( r2_hidden(C,k7_glib_000(A))
+                  & k1_funct_1(k11_glib_000(A),C) = B )
+               => k30_glib_000(A,B,C) = k1_funct_1(k10_glib_000(A),C) )
+              & ( ( r2_hidden(C,k7_glib_000(A))
+                  & k1_funct_1(k10_glib_000(A),C) = B )
+               => ( k1_funct_1(k11_glib_000(A),C) = B
+                  | k30_glib_000(A,B,C) = k1_funct_1(k11_glib_000(A),C) ) )
+              & ~ ( ~ ( r2_hidden(C,k7_glib_000(A))
+                      & k1_funct_1(k11_glib_000(A),C) = B )
+                  & ~ ( r2_hidden(C,k7_glib_000(A))
+                      & k1_funct_1(k10_glib_000(A),C) = B
+                      & k1_funct_1(k11_glib_000(A),C) != B )
+                  & k30_glib_000(A,B,C) != B ) ) ) ) ).
+
+fof(d44_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k31_glib_000(A,B) = k1_card_1(k27_glib_000(A,B)) ) ) ).
+
+fof(d45_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k32_glib_000(A,B) = k1_card_1(k28_glib_000(A,B)) ) ) ).
+
+fof(d46_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k35_glib_000(A,B) = k1_card_2(k31_glib_000(A,B),k32_glib_000(A,B)) ) ) ).
+
+fof(d47_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k36_glib_000(A,B) = k1_nat_1(k33_glib_000(A,B),k34_glib_000(A,B)) ) ) ).
+
+fof(d48_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k37_glib_000(A,B) = k2_funct_2(k7_glib_000(A),k6_glib_000(A),k10_glib_000(A),k27_glib_000(A,B)) ) ) ).
+
+fof(d49_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k38_glib_000(A,B) = k2_funct_2(k7_glib_000(A),k6_glib_000(A),k11_glib_000(A),k28_glib_000(A,B)) ) ) ).
+
+fof(d50_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k39_glib_000(A,B) = k4_subset_1(k6_glib_000(A),k37_glib_000(A,B),k38_glib_000(A,B)) ) ) ).
+
+fof(d51_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => ( v10_glib_000(B,A)
+          <=> k29_glib_000(A,B) = k1_xboole_0 ) ) ) ).
+
+fof(d52_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => ( v10_glib_000(B,A)
+          <=> k36_glib_000(A,B) = np__0 ) ) ) ).
+
+fof(d53_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => ( v11_glib_000(B,A)
+          <=> ? [C] :
+                ( k29_glib_000(A,B) = k1_tarski(C)
+                & ~ r1_glib_000(A,B,B,C) ) ) ) ) ).
+
+fof(d54_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => ( v11_glib_000(B,A)
+          <=> k36_glib_000(A,B) = np__1 ) ) ) ).
+
+fof(d55_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( v12_glib_000(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ( v1_glib_000(k1_funct_1(A,B))
+              & m1_glib_000(k1_funct_1(A,B)) ) ) ) ) ).
+
+fof(d56_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ( v13_glib_000(A)
+      <=> ? [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+            & k1_funct_1(A,B) = k1_funct_1(A,k1_nat_1(B,np__1)) ) ) ) ).
+
+fof(d57_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ( v13_glib_000(A)
+             => ( B = k40_glib_000(A)
+              <=> ( k1_funct_1(A,B) = k1_funct_1(A,k1_nat_1(B,np__1))
+                  & ! [C] :
+                      ( m2_subset_1(C,k1_numbers,k5_numbers)
+                     => ( k1_funct_1(A,C) = k1_funct_1(A,k1_nat_1(C,np__1))
+                       => r1_xreal_0(B,C) ) ) ) ) )
+            & ( ~ v13_glib_000(A)
+             => ( B = k40_glib_000(A)
+              <=> B = np__0 ) ) ) ) ) ).
+
+fof(d58_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => k41_glib_000(A) = k1_funct_1(A,k40_glib_000(A)) ) ).
+
+fof(d59_glib_000,axiom,
+    ! [A] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k42_glib_000(A,B) = k1_funct_1(A,B) ) ) ).
+
+fof(d60_glib_000,axiom,
+    ! [A] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers) )
+     => ( v14_glib_000(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => v2_glib_000(k42_glib_000(A,B)) ) ) ) ).
+
+fof(d61_glib_000,axiom,
+    ! [A] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers) )
+     => ( v15_glib_000(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => v3_glib_000(k42_glib_000(A,B)) ) ) ) ).
+
+fof(d62_glib_000,axiom,
+    ! [A] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers) )
+     => ( v16_glib_000(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => v4_glib_000(k42_glib_000(A,B)) ) ) ) ).
+
+fof(d63_glib_000,axiom,
+    ! [A] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers) )
+     => ( v17_glib_000(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ~ v4_glib_000(k42_glib_000(A,B)) ) ) ) ).
+
+fof(d64_glib_000,axiom,
+    ! [A] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers) )
+     => ( v18_glib_000(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => v5_glib_000(k42_glib_000(A,B)) ) ) ) ).
+
+fof(d65_glib_000,axiom,
+    ! [A] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers) )
+     => ( v19_glib_000(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => v6_glib_000(k42_glib_000(A,B)) ) ) ) ).
+
+fof(d66_glib_000,axiom,
+    ! [A] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers) )
+     => ( v20_glib_000(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => v7_glib_000(k42_glib_000(A,B)) ) ) ) ).
+
+fof(d67_glib_000,axiom,
+    ! [A] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers) )
+     => ( v21_glib_000(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => v8_glib_000(k42_glib_000(A,B)) ) ) ) ).
+
+fof(d68_glib_000,axiom,
+    ! [A] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers) )
+     => ( v13_glib_000(A)
+      <=> ? [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+            & k42_glib_000(A,B) = k42_glib_000(A,k1_nat_1(B,np__1)) ) ) ) ).
+
+fof(t1_glib_000,axiom,
+    ( k1_glib_000 = np__1
+    & k2_glib_000 = np__2
+    & k3_glib_000 = np__3
+    & k4_glib_000 = np__4 ) ).
+
+fof(t2_glib_000,axiom,
+    ! [A] :
+      ( r2_hidden(A,k5_glib_000)
+    <=> ~ ( A != k1_glib_000
+          & A != k2_glib_000
+          & A != k3_glib_000
+          & A != k4_glib_000 ) ) ).
+
+fof(t3_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => r1_tarski(k5_glib_000,k1_relat_1(A)) ) ).
+
+fof(t4_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( k6_glib_000(A) = k1_funct_1(A,k1_glib_000)
+        & k7_glib_000(A) = k1_funct_1(A,k2_glib_000)
+        & k8_glib_000(A) = k1_funct_1(A,k3_glib_000)
+        & k9_glib_000(A) = k1_funct_1(A,k4_glib_000) ) ) ).
+
+fof(t5_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( k4_relset_1(k7_glib_000(A),k6_glib_000(A),k10_glib_000(A)) = k7_glib_000(A)
+        & k4_relset_1(k7_glib_000(A),k6_glib_000(A),k11_glib_000(A)) = k7_glib_000(A)
+        & r1_tarski(k1_pscomp_1(k7_glib_000(A),k6_glib_000(A),k10_glib_000(A)),k6_glib_000(A))
+        & r1_tarski(k1_pscomp_1(k7_glib_000(A),k6_glib_000(A),k11_glib_000(A)),k6_glib_000(A)) ) ) ).
+
+fof(t6_glib_000,axiom,
+    $true ).
+
+fof(t7_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( v1_glib_000(A)
+      <=> ( r1_tarski(k5_glib_000,k1_relat_1(A))
+          & ~ v1_xboole_0(k6_glib_000(A))
+          & v1_funct_1(k8_glib_000(A))
+          & v1_funct_2(k8_glib_000(A),k7_glib_000(A),k6_glib_000(A))
+          & m2_relset_1(k8_glib_000(A),k7_glib_000(A),k6_glib_000(A))
+          & v1_funct_1(k9_glib_000(A))
+          & v1_funct_2(k9_glib_000(A),k7_glib_000(A),k6_glib_000(A))
+          & m2_relset_1(k9_glib_000(A),k7_glib_000(A),k6_glib_000(A)) ) ) ) ).
+
+fof(t8_glib_000,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,B,A)
+            & m2_relset_1(C,B,A) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,B,A)
+                & m2_relset_1(D,B,A) )
+             => ( k6_glib_000(k12_glib_000(A,B,C,D)) = A
+                & k7_glib_000(k12_glib_000(A,B,C,D)) = B
+                & k10_glib_000(k12_glib_000(A,B,C,D)) = C
+                & k11_glib_000(k12_glib_000(A,B,C,D)) = D ) ) ) ) ).
+
+fof(t9_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ! [B,C] :
+          ( m2_subset_1(C,k1_numbers,k5_numbers)
+         => k1_relat_1(k13_glib_000(A,C,B)) = k2_xboole_0(k1_relat_1(A),k6_domain_1(k5_numbers,C)) ) ) ).
+
+fof(t10_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ! [B,C] :
+          ( m2_subset_1(C,k1_numbers,k5_numbers)
+         => r1_tarski(k1_relat_1(A),k1_relat_1(k13_glib_000(A,C,B))) ) ) ).
+
+fof(t11_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ! [B,C] :
+          ( m2_subset_1(C,k1_numbers,k5_numbers)
+         => k1_funct_1(k13_glib_000(A,C,B),C) = B ) ) ).
+
+fof(t12_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ! [B,C] :
+          ( m2_subset_1(C,k1_numbers,k5_numbers)
+         => ! [D] :
+              ( m2_subset_1(D,k1_numbers,k5_numbers)
+             => ( C != D
+               => k1_funct_1(A,D) = k1_funct_1(k13_glib_000(A,C,B),D) ) ) ) ) ).
+
+fof(t13_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m2_subset_1(C,k1_numbers,k5_numbers)
+         => ( ~ r2_hidden(C,k5_glib_000)
+           => ( k6_glib_000(A) = k6_glib_000(k13_glib_000(A,C,B))
+              & k7_glib_000(A) = k7_glib_000(k13_glib_000(A,C,B))
+              & k10_glib_000(A) = k8_glib_000(k13_glib_000(A,C,B))
+              & k11_glib_000(A) = k9_glib_000(k13_glib_000(A,C,B))
+              & v1_glib_000(k13_glib_000(A,C,B))
+              & m1_glib_000(k13_glib_000(A,C,B)) ) ) ) ) ).
+
+fof(t14_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ! [B] :
+          ( k6_glib_000(k13_glib_000(A,k1_glib_000,B)) = B
+          & k7_glib_000(k13_glib_000(A,k2_glib_000,B)) = B
+          & k8_glib_000(k13_glib_000(A,k3_glib_000,B)) = B
+          & k9_glib_000(k13_glib_000(A,k4_glib_000,B)) = B ) ) ).
+
+fof(t15_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ! [B,C,D] :
+          ( m2_subset_1(D,k1_numbers,k5_numbers)
+         => ! [E] :
+              ( m2_subset_1(E,k1_numbers,k5_numbers)
+             => ( D != E
+               => ( r2_hidden(D,k1_relat_1(k13_glib_000(k13_glib_000(A,D,B),E,C)))
+                  & r2_hidden(E,k1_relat_1(k13_glib_000(k13_glib_000(A,D,B),E,C)))
+                  & k1_funct_1(k13_glib_000(k13_glib_000(A,D,B),E,C),D) = B
+                  & k1_funct_1(k13_glib_000(k13_glib_000(A,D,B),E,C),E) = C ) ) ) ) ) ).
+
+fof(t16_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( r1_glib_000(A,C,D,B)
+         => ( r2_hidden(C,k6_glib_000(A))
+            & r2_hidden(D,k6_glib_000(A)) ) ) ) ).
+
+fof(t17_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( r1_glib_000(A,C,D,B)
+         => r1_glib_000(A,D,C,B) ) ) ).
+
+fof(t18_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D,E,F] :
+          ~ ( r1_glib_000(A,C,D,B)
+            & r1_glib_000(A,E,F,B)
+            & ~ ( C = E
+                & D = F )
+            & ~ ( C = F
+                & D = E ) ) ) ).
+
+fof(t19_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( r1_glib_000(A,C,D,B)
+        <=> ( r2_glib_000(A,C,D,B)
+            | r2_glib_000(A,D,C,B) ) ) ) ).
+
+fof(t20_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D,E,F] :
+          ( r1_glib_000(A,C,D,B)
+         => ( ( ~ ( r2_hidden(C,E)
+                  & r2_hidden(D,F) )
+              & ~ ( r2_hidden(C,F)
+                  & r2_hidden(D,E) ) )
+            | r3_glib_000(A,E,F,B) ) ) ) ).
+
+fof(t21_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v3_glib_000(A)
+      <=> ! [B,C] : ~ r1_glib_000(A,B,B,C) ) ) ).
+
+fof(t22_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & v3_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k36_glib_000(A,B) = k4_card_1(k29_glib_000(A,B)) ) ) ).
+
+fof(t23_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & ~ v4_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => ~ v1_xboole_0(k1_card_fil(k6_glib_000(A),k6_domain_1(k6_glib_000(A),B))) ) ) ).
+
+fof(t24_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & ~ v4_glib_000(A)
+        & m1_glib_000(A) )
+     => ~ ! [B] :
+            ( m1_subset_1(B,k6_glib_000(A))
+           => ! [C] :
+                ( m1_subset_1(C,k6_glib_000(A))
+               => B = C ) ) ) ).
+
+fof(t25_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v4_glib_000(A)
+        & m1_glib_000(A) )
+     => ? [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+          & k6_glib_000(A) = k6_domain_1(k6_glib_000(A),B) ) ) ).
+
+fof(t26_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v3_glib_000(A)
+        & v4_glib_000(A)
+        & m1_glib_000(A) )
+     => k7_glib_000(A) = k1_xboole_0 ) ).
+
+fof(t27_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( k7_glib_000(A) = k1_xboole_0
+       => v7_glib_000(A) ) ) ).
+
+fof(t28_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => r1_xreal_0(np__1,k16_glib_000(A)) ) ).
+
+fof(t29_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ( k16_glib_000(A) = np__1
+      <=> v4_glib_000(A) ) ) ).
+
+fof(t30_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ( k16_glib_000(A) = np__1
+      <=> ? [B] :
+            ( m1_subset_1(B,k6_glib_000(A))
+            & k6_glib_000(A) = k6_domain_1(k6_glib_000(A),B) ) ) ) ).
+
+fof(t31_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( ( r2_hidden(B,k7_glib_000(A))
+            & ( r2_hidden(k1_funct_1(k10_glib_000(A),B),C)
+              | r2_hidden(k1_funct_1(k11_glib_000(A),B),C) ) )
+        <=> r2_hidden(B,k21_glib_000(A,C)) ) ) ).
+
+fof(t32_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( r1_tarski(k19_glib_000(A,B),k21_glib_000(A,B))
+          & r1_tarski(k20_glib_000(A,B),k21_glib_000(A,B)) ) ) ).
+
+fof(t33_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => k7_glib_000(A) = k21_glib_000(A,k6_glib_000(A)) ) ).
+
+fof(t34_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( ( r2_hidden(B,k7_glib_000(A))
+            & r2_hidden(k1_funct_1(k10_glib_000(A),B),C)
+            & r2_hidden(k1_funct_1(k11_glib_000(A),B),C) )
+        <=> r2_hidden(B,k22_glib_000(A,C)) ) ) ).
+
+fof(t35_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D,E] :
+          ( ( r2_hidden(B,C)
+            & r2_hidden(D,C)
+            & r1_glib_000(A,B,D,E) )
+         => r2_hidden(E,k22_glib_000(A,C)) ) ) ).
+
+fof(t36_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] : r1_tarski(k22_glib_000(A,B),k21_glib_000(A,B)) ) ).
+
+fof(t37_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => k7_glib_000(A) = k22_glib_000(A,k6_glib_000(A)) ) ).
+
+fof(t38_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] : k1_card_fil(k7_glib_000(A),k21_glib_000(A,B)) = k22_glib_000(A,k1_card_fil(k6_glib_000(A),B)) ) ).
+
+fof(t39_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( r1_tarski(B,C)
+         => r1_tarski(k22_glib_000(A,B),k22_glib_000(A,C)) ) ) ).
+
+fof(t40_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D,E] :
+          ( ( r1_tarski(B,C)
+            & r1_tarski(D,E) )
+         => r1_tarski(k23_glib_000(A,B,D),k23_glib_000(A,C,E)) ) ) ).
+
+fof(t41_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D,E] :
+          ( ( r1_tarski(B,C)
+            & r1_tarski(D,E) )
+         => r1_tarski(k24_glib_000(A,B,D),k24_glib_000(A,C,E)) ) ) ).
+
+fof(t42_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => ( k27_glib_000(A,B) = k24_glib_000(A,k6_glib_000(A),k6_domain_1(k6_glib_000(A),B))
+            & k28_glib_000(A,B) = k24_glib_000(A,k6_domain_1(k6_glib_000(A),B),k6_glib_000(A)) ) ) ) ).
+
+fof(t43_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => m2_glib_000(A,A) ) ).
+
+fof(t44_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ( ( ( m2_glib_000(A,B)
+                & m2_glib_000(B,A) )
+             => ( k6_glib_000(A) = k6_glib_000(B)
+                & k7_glib_000(A) = k7_glib_000(B)
+                & k10_glib_000(A) = k10_glib_000(B)
+                & k11_glib_000(A) = k11_glib_000(B) ) )
+            & ( ( k6_glib_000(A) = k6_glib_000(B)
+                & k7_glib_000(A) = k7_glib_000(B)
+                & k10_glib_000(A) = k10_glib_000(B)
+                & k11_glib_000(A) = k11_glib_000(B) )
+             => ( m2_glib_000(A,B)
+                & m2_glib_000(B,A) ) ) ) ) ) ).
+
+fof(t45_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( ( r2_hidden(C,k25_glib_000(A,B))
+               => r2_hidden(C,k6_glib_000(A)) )
+              & ( r2_hidden(C,k26_glib_000(A,B))
+               => r2_hidden(C,k7_glib_000(A)) ) ) ) ) ).
+
+fof(t46_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m2_glib_000(C,B)
+             => m2_glib_000(C,A) ) ) ) ).
+
+fof(t47_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m2_glib_000(C,A)
+             => ( ( r1_tarski(k25_glib_000(A,B),k25_glib_000(A,C))
+                  & r1_tarski(k26_glib_000(A,B),k26_glib_000(A,C)) )
+               => m2_glib_000(B,C) ) ) ) ) ).
+
+fof(t48_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ( k10_glib_000(B) = k8_relset_1(k7_glib_000(A),k6_glib_000(A),k10_glib_000(A),k26_glib_000(A,B))
+            & k11_glib_000(B) = k8_relset_1(k7_glib_000(A),k6_glib_000(A),k11_glib_000(A),k26_glib_000(A,B)) ) ) ) ).
+
+fof(t49_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D,E,F] :
+          ( m3_glib_000(F,A,B,D)
+         => ! [G] :
+              ( m3_glib_000(G,A,C,E)
+             => ( ( r1_tarski(C,B)
+                  & r1_tarski(E,D)
+                  & ~ v1_xboole_0(C)
+                  & m1_subset_1(C,k1_zfmisc_1(k6_glib_000(A)))
+                  & r1_tarski(E,k22_glib_000(A,C)) )
+               => m2_glib_000(G,F) ) ) ) ) ).
+
+fof(t50_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & ~ v4_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => ! [C] :
+              ( m3_glib_000(C,A,k1_card_fil(k6_glib_000(A),k1_tarski(B)),k22_glib_000(A,k1_card_fil(k6_glib_000(A),k1_tarski(B))))
+             => ( k25_glib_000(A,C) = k1_card_fil(k6_glib_000(A),k6_domain_1(k6_glib_000(A),B))
+                & k26_glib_000(A,C) = k22_glib_000(A,k1_card_fil(k6_glib_000(A),k6_domain_1(k6_glib_000(A),B))) ) ) ) ) ).
+
+fof(t51_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & ~ v4_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => ! [C] :
+              ( m3_glib_000(C,A,k1_card_fil(k6_glib_000(A),k1_tarski(B)),k22_glib_000(A,k1_card_fil(k6_glib_000(A),k1_tarski(B))))
+             => ( k1_nat_1(k16_glib_000(C),np__1) = k16_glib_000(A)
+                & k1_nat_1(k18_glib_000(C),k4_card_1(k29_glib_000(A,B))) = k18_glib_000(A) ) ) ) ) ).
+
+fof(t52_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m3_glib_000(C,A,k1_card_fil(k6_glib_000(A),B),k22_glib_000(A,k1_card_fil(k6_glib_000(A),B)))
+         => ( r2_xboole_0(B,k6_glib_000(A))
+           => ( k25_glib_000(A,C) = k1_card_fil(k6_glib_000(A),B)
+              & k26_glib_000(A,C) = k22_glib_000(A,k1_card_fil(k6_glib_000(A),B)) ) ) ) ) ).
+
+fof(t53_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k6_glib_000(A)))
+         => ! [C] :
+              ( m3_glib_000(C,A,k1_card_fil(k6_glib_000(A),B),k22_glib_000(A,k1_card_fil(k6_glib_000(A),B)))
+             => ( B != k6_glib_000(A)
+               => ( k1_nat_1(k16_glib_000(C),k4_card_1(B)) = k16_glib_000(A)
+                  & k1_nat_1(k18_glib_000(C),k4_card_1(k21_glib_000(A,B))) = k18_glib_000(A) ) ) ) ) ) ).
+
+fof(t54_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m3_glib_000(C,A,k6_glib_000(A),k1_card_fil(k7_glib_000(A),k1_tarski(B)))
+         => ( k25_glib_000(A,C) = k6_glib_000(A)
+            & k26_glib_000(A,C) = k1_card_fil(k7_glib_000(A),k1_tarski(B)) ) ) ) ).
+
+fof(t55_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m3_glib_000(C,A,k6_glib_000(A),k1_card_fil(k7_glib_000(A),k1_tarski(B)))
+         => ( k16_glib_000(A) = k16_glib_000(C)
+            & ( r2_hidden(B,k7_glib_000(A))
+             => k1_nat_1(k18_glib_000(C),np__1) = k18_glib_000(A) ) ) ) ) ).
+
+fof(t56_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m3_glib_000(C,A,k6_glib_000(A),k1_card_fil(k7_glib_000(A),B))
+         => ( k25_glib_000(A,C) = k6_glib_000(A)
+            & k26_glib_000(A,C) = k1_card_fil(k7_glib_000(A),B) ) ) ) ).
+
+fof(t57_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m3_glib_000(C,A,k6_glib_000(A),k1_card_fil(k7_glib_000(A),B))
+         => k16_glib_000(A) = k16_glib_000(C) ) ) ).
+
+fof(t58_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k7_glib_000(A)))
+         => ! [C] :
+              ( m3_glib_000(C,A,k6_glib_000(A),k1_card_fil(k7_glib_000(A),B))
+             => k1_nat_1(k18_glib_000(C),k4_card_1(B)) = k18_glib_000(A) ) ) ) ).
+
+fof(t59_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ( r2_hidden(B,k27_glib_000(A,C))
+          <=> ( r2_hidden(B,k7_glib_000(A))
+              & k1_funct_1(k11_glib_000(A),B) = C ) ) ) ) ).
+
+fof(t60_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ( r2_hidden(B,k27_glib_000(A,C))
+          <=> ? [D] : r2_glib_000(A,D,C,B) ) ) ) ).
+
+fof(t61_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ( r2_hidden(B,k28_glib_000(A,C))
+          <=> ( r2_hidden(B,k7_glib_000(A))
+              & k1_funct_1(k10_glib_000(A),B) = C ) ) ) ) ).
+
+fof(t62_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ( r2_hidden(B,k28_glib_000(A,C))
+          <=> ? [D] : r2_glib_000(A,C,D,B) ) ) ) ).
+
+fof(t63_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k6_glib_000(A))
+         => k29_glib_000(A,B) = k4_subset_1(k7_glib_000(A),k27_glib_000(A,B),k28_glib_000(A,B)) ) ) ).
+
+fof(t64_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ( r2_hidden(B,k29_glib_000(A,C))
+          <=> ( r2_hidden(B,k7_glib_000(A))
+              & ( k1_funct_1(k10_glib_000(A),B) = C
+                | k1_funct_1(k11_glib_000(A),B) = C ) ) ) ) ) ).
+
+fof(t65_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( m1_subset_1(D,k6_glib_000(A))
+         => ( r1_glib_000(A,D,C,B)
+           => r2_hidden(B,k29_glib_000(A,D)) ) ) ) ).
+
+fof(t66_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ! [D] :
+              ( m1_subset_1(D,k6_glib_000(A))
+             => ~ ( r1_glib_000(A,C,D,B)
+                  & ~ ( r2_hidden(B,k27_glib_000(A,C))
+                      & r2_hidden(B,k28_glib_000(A,D)) )
+                  & ~ ( r2_hidden(B,k27_glib_000(A,D))
+                      & r2_hidden(B,k28_glib_000(A,C)) ) ) ) ) ) ).
+
+fof(t67_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ( r2_hidden(B,k29_glib_000(A,C))
+          <=> ? [D] :
+                ( m1_subset_1(D,k6_glib_000(A))
+                & r1_glib_000(A,C,D,B) ) ) ) ) ).
+
+fof(t68_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D,E] :
+          ( m1_subset_1(E,k6_glib_000(A))
+         => ~ ( r2_hidden(B,k29_glib_000(A,E))
+              & r1_glib_000(A,C,D,B)
+              & E != C
+              & E != D ) ) ) ).
+
+fof(t69_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ! [D] :
+              ( m1_subset_1(D,k6_glib_000(A))
+             => ( r1_glib_000(A,C,D,B)
+               => ( k30_glib_000(A,C,B) = D
+                  & k30_glib_000(A,D,B) = C ) ) ) ) ) ).
+
+fof(t70_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ( r2_hidden(B,k29_glib_000(A,C))
+          <=> r1_glib_000(A,C,k30_glib_000(A,C,B),B) ) ) ) ).
+
+fof(t71_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ! [D] :
+              ( m1_subset_1(D,k6_glib_000(A))
+             => ( r1_glib_000(A,C,D,B)
+               => ( r1_xreal_0(np__1,k36_glib_000(A,C))
+                  & r1_xreal_0(np__1,k36_glib_000(A,D)) ) ) ) ) ) ).
+
+fof(t72_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ( r2_hidden(B,k37_glib_000(A,C))
+          <=> ? [D] : r2_glib_000(A,B,C,D) ) ) ) ).
+
+fof(t73_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ( r2_hidden(B,k38_glib_000(A,C))
+          <=> ? [D] : r2_glib_000(A,C,B,D) ) ) ) ).
+
+fof(t74_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C] :
+          ( m1_subset_1(C,k6_glib_000(A))
+         => ( r2_hidden(B,k39_glib_000(A,C))
+          <=> ? [D] : r1_glib_000(A,C,B,D) ) ) ) ).
+
+fof(t75_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C,D,E] :
+              ( ( r1_glib_000(B,C,D,E)
+               => r1_glib_000(A,C,D,E) )
+              & ( r2_glib_000(B,C,D,E)
+               => r2_glib_000(A,C,D,E) )
+              & ( r3_glib_000(B,C,D,E)
+               => r3_glib_000(A,C,D,E) )
+              & ( r4_glib_000(B,C,D,E)
+               => r4_glib_000(A,C,D,E) ) ) ) ) ).
+
+fof(t76_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C,D,E] :
+              ( r2_hidden(E,k26_glib_000(A,B))
+             => ( ( r1_glib_000(A,C,D,E)
+                 => r1_glib_000(B,C,D,E) )
+                & ( r2_glib_000(A,C,D,E)
+                 => r2_glib_000(B,C,D,E) )
+                & ( r3_glib_000(A,C,D,E)
+                 => r3_glib_000(B,C,D,E) )
+                & ( r4_glib_000(A,C,D,E)
+                 => r4_glib_000(B,C,D,E) ) ) ) ) ) ).
+
+fof(t77_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v9_glib_000(B,A)
+            & m2_glib_000(B,A) )
+         => ! [C] :
+              ( ( v9_glib_000(C,B)
+                & m2_glib_000(C,B) )
+             => ( v9_glib_000(C,A)
+                & m2_glib_000(C,A) ) ) ) ) ).
+
+fof(t78_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ( r1_xreal_0(k16_glib_000(B),k16_glib_000(A))
+            & r1_xreal_0(k18_glib_000(B),k18_glib_000(A)) ) ) ) ).
+
+fof(t79_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( r1_tarski(k19_glib_000(B,C),k19_glib_000(A,C))
+              & r1_tarski(k20_glib_000(B,C),k20_glib_000(A,C))
+              & r1_tarski(k21_glib_000(B,C),k21_glib_000(A,C))
+              & r1_tarski(k22_glib_000(B,C),k22_glib_000(A,C)) ) ) ) ).
+
+fof(t80_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C,D] :
+              ( r1_tarski(k23_glib_000(B,C,D),k23_glib_000(A,C,D))
+              & r1_tarski(k24_glib_000(B,C,D),k24_glib_000(A,C,D)) ) ) ) ).
+
+fof(t81_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k6_glib_000(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k6_glib_000(B))
+                 => ( C = D
+                   => ( r1_tarski(k27_glib_000(B,D),k27_glib_000(A,C))
+                      & r1_tarski(k28_glib_000(B,D),k28_glib_000(A,C))
+                      & r1_tarski(k29_glib_000(B,D),k29_glib_000(A,C)) ) ) ) ) ) ) ).
+
+fof(t82_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k6_glib_000(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k6_glib_000(B))
+                 => ( C = D
+                   => ( k27_glib_000(B,D) = k5_subset_1(k7_glib_000(A),k27_glib_000(A,C),k26_glib_000(A,B))
+                      & k28_glib_000(B,D) = k5_subset_1(k7_glib_000(A),k28_glib_000(A,C),k26_glib_000(A,B))
+                      & k29_glib_000(B,D) = k5_subset_1(k7_glib_000(A),k29_glib_000(A,C),k26_glib_000(A,B)) ) ) ) ) ) ) ).
+
+fof(t83_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k6_glib_000(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k6_glib_000(B))
+                 => ! [E] :
+                      ( ( C = D
+                        & r2_hidden(E,k26_glib_000(A,B)) )
+                     => k30_glib_000(A,C,E) = k30_glib_000(B,D,E) ) ) ) ) ) ).
+
+fof(t84_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k6_glib_000(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k6_glib_000(B))
+                 => ( C = D
+                   => ( r1_xreal_0(k33_glib_000(B,D),k33_glib_000(A,C))
+                      & r1_xreal_0(k34_glib_000(B,D),k34_glib_000(A,C))
+                      & r1_xreal_0(k36_glib_000(B,D),k36_glib_000(A,C)) ) ) ) ) ) ) ).
+
+fof(t85_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k6_glib_000(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k6_glib_000(B))
+                 => ( C = D
+                   => ( r1_tarski(k37_glib_000(B,D),k37_glib_000(A,C))
+                      & r1_tarski(k38_glib_000(B,D),k38_glib_000(A,C))
+                      & r1_tarski(k39_glib_000(B,D),k39_glib_000(A,C)) ) ) ) ) ) ) ).
+
+fof(t86_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k6_glib_000(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k6_glib_000(B))
+                 => ( ( C = D
+                      & v10_glib_000(C,A) )
+                   => v10_glib_000(D,B) ) ) ) ) ) ).
+
+fof(t87_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k6_glib_000(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k6_glib_000(B))
+                 => ~ ( C = D
+                      & v11_glib_000(C,A)
+                      & ~ v11_glib_000(D,B)
+                      & ~ v10_glib_000(D,B) ) ) ) ) ) ).
+
+fof(t88_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ! [C] :
+              ( ( v1_glib_000(C)
+                & m1_glib_000(C) )
+             => ( ( r5_glib_000(A,B)
+                  & r5_glib_000(B,C) )
+               => r5_glib_000(A,C) ) ) ) ) ).
+
+fof(t89_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m2_glib_000(C,A)
+             => ( ( k25_glib_000(A,B) = k25_glib_000(A,C)
+                  & k26_glib_000(A,B) = k26_glib_000(A,C) )
+               => r5_glib_000(B,C) ) ) ) ) ).
+
+fof(t90_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ( r5_glib_000(A,B)
+          <=> ( m2_glib_000(A,B)
+              & m2_glib_000(B,A) ) ) ) ) ).
+
+fof(t91_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ! [C,D,E,F,G] :
+              ( r5_glib_000(A,B)
+             => ( ( r1_glib_000(A,D,E,C)
+                 => r1_glib_000(B,D,E,C) )
+                & ( r2_glib_000(A,D,E,C)
+                 => r2_glib_000(B,D,E,C) )
+                & ( r3_glib_000(A,F,G,C)
+                 => r3_glib_000(B,F,G,C) )
+                & ( r4_glib_000(A,F,G,C)
+                 => r4_glib_000(B,F,G,C) ) ) ) ) ) ).
+
+fof(t92_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ( r5_glib_000(A,B)
+           => ( ( v2_glib_000(A)
+               => v2_glib_000(B) )
+              & ( v3_glib_000(A)
+               => v3_glib_000(B) )
+              & ( v4_glib_000(A)
+               => v4_glib_000(B) )
+              & ( v5_glib_000(A)
+               => v5_glib_000(B) )
+              & ( v6_glib_000(A)
+               => v6_glib_000(B) )
+              & ( v7_glib_000(A)
+               => v7_glib_000(B) )
+              & ( v8_glib_000(A)
+               => v8_glib_000(B) ) ) ) ) ) ).
+
+fof(t93_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ! [C,D] :
+              ( r5_glib_000(A,B)
+             => ( k15_glib_000(A) = k15_glib_000(B)
+                & k17_glib_000(A) = k17_glib_000(B)
+                & k19_glib_000(A,C) = k19_glib_000(B,C)
+                & k20_glib_000(A,C) = k20_glib_000(B,C)
+                & k21_glib_000(A,C) = k21_glib_000(B,C)
+                & k22_glib_000(A,C) = k22_glib_000(B,C)
+                & k24_glib_000(A,C,D) = k24_glib_000(B,C,D) ) ) ) ) ).
+
+fof(t94_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ! [C] :
+              ( ( v1_glib_000(C)
+                & m1_glib_000(C) )
+             => ( ( r5_glib_000(A,B)
+                  & m2_glib_000(C,A) )
+               => m2_glib_000(C,B) ) ) ) ) ).
+
+fof(t95_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ! [C] :
+              ( ( v1_glib_000(C)
+                & m1_glib_000(C) )
+             => ( ( r5_glib_000(A,B)
+                  & m2_glib_000(A,C) )
+               => m2_glib_000(B,C) ) ) ) ) ).
+
+fof(t96_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B,C,D] :
+          ( m3_glib_000(D,A,B,C)
+         => ! [E] :
+              ( m3_glib_000(E,A,B,C)
+             => r5_glib_000(D,E) ) ) ) ).
+
+fof(t97_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m3_glib_000(B,A,k6_glib_000(A),k22_glib_000(A,k6_glib_000(A)))
+         => r5_glib_000(A,B) ) ) ).
+
+fof(t98_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ! [C,D,E] :
+              ( m3_glib_000(E,A,C,D)
+             => ( r5_glib_000(A,B)
+               => m3_glib_000(E,B,C,D) ) ) ) ) ).
+
+fof(t99_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ! [C,D] :
+              ( m1_subset_1(D,k6_glib_000(A))
+             => ! [E] :
+                  ( m1_subset_1(E,k6_glib_000(B))
+                 => ( ( D = E
+                      & r5_glib_000(A,B) )
+                   => ( k27_glib_000(A,D) = k27_glib_000(B,E)
+                      & k28_glib_000(A,D) = k28_glib_000(B,E)
+                      & k29_glib_000(A,D) = k29_glib_000(B,E)
+                      & k30_glib_000(A,D,C) = k30_glib_000(B,E,C)
+                      & k31_glib_000(A,D) = k31_glib_000(B,E)
+                      & k32_glib_000(A,D) = k32_glib_000(B,E)
+                      & k35_glib_000(A,D) = k35_glib_000(B,E)
+                      & k37_glib_000(A,D) = k37_glib_000(B,E)
+                      & k38_glib_000(A,D) = k38_glib_000(B,E)
+                      & k39_glib_000(A,D) = k39_glib_000(B,E) ) ) ) ) ) ) ).
+
+fof(t100_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( ( v1_glib_000(B)
+            & m1_glib_000(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k6_glib_000(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k6_glib_000(B))
+                 => ( ( C = D
+                      & r5_glib_000(A,B) )
+                   => ( ( v10_glib_000(C,A)
+                       => v10_glib_000(D,B) )
+                      & ( v11_glib_000(C,A)
+                       => v11_glib_000(D,B) ) ) ) ) ) ) ) ).
+
+fof(t101_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m2_glib_000(C,A)
+             => ~ ( r7_glib_000(B,C)
+                  & ~ r2_xboole_0(k25_glib_000(A,B),k25_glib_000(A,C))
+                  & ~ r2_xboole_0(k26_glib_000(A,B),k26_glib_000(A,C)) ) ) ) ) ).
+
+fof(t102_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ! [C] :
+              ( m2_glib_000(C,A)
+             => ~ ( r7_glib_000(B,C)
+                  & ! [D] :
+                      ~ ( r2_hidden(D,k25_glib_000(A,C))
+                        & ~ r2_hidden(D,k25_glib_000(A,B)) )
+                  & ! [D] :
+                      ~ ( r2_hidden(D,k26_glib_000(A,C))
+                        & ~ r2_hidden(D,k26_glib_000(A,B)) ) ) ) ) ) ).
+
+fof(s1_glib_000,axiom,
+    ( ( ! [A] :
+          ( ( v1_glib_000(A)
+            & v2_glib_000(A)
+            & m1_glib_000(A) )
+         => ( k16_glib_000(A) = np__1
+           => p1_s1_glib_000(A) ) )
+      & ! [A] :
+          ( ( ~ v1_xboole_0(A)
+            & m2_subset_1(A,k1_numbers,k5_numbers) )
+         => ( ! [B] :
+                ( ( v1_glib_000(B)
+                  & v2_glib_000(B)
+                  & m1_glib_000(B) )
+               => ( k16_glib_000(B) = A
+                 => p1_s1_glib_000(B) ) )
+           => ! [B] :
+                ( ( v1_glib_000(B)
+                  & v2_glib_000(B)
+                  & m1_glib_000(B) )
+               => ( k16_glib_000(B) = k1_nat_1(A,np__1)
+                 => p1_s1_glib_000(B) ) ) ) ) )
+   => ! [A] :
+        ( ( v1_glib_000(A)
+          & v2_glib_000(A)
+          & m1_glib_000(A) )
+       => p1_s1_glib_000(A) ) ) ).
+
+fof(s2_glib_000,axiom,
+    ( ( ! [A] :
+          ( ( v1_glib_000(A)
+            & v2_glib_000(A)
+            & m1_glib_000(A) )
+         => ( k18_glib_000(A) = np__0
+           => p1_s2_glib_000(A) ) )
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => ( ! [B] :
+                ( ( v1_glib_000(B)
+                  & v2_glib_000(B)
+                  & m1_glib_000(B) )
+               => ( k18_glib_000(B) = A
+                 => p1_s2_glib_000(B) ) )
+           => ! [B] :
+                ( ( v1_glib_000(B)
+                  & v2_glib_000(B)
+                  & m1_glib_000(B) )
+               => ( k18_glib_000(B) = k1_nat_1(A,np__1)
+                 => p1_s2_glib_000(B) ) ) ) ) )
+   => ! [A] :
+        ( ( v1_glib_000(A)
+          & v2_glib_000(A)
+          & m1_glib_000(A) )
+       => p1_s2_glib_000(A) ) ) ).
+
+fof(dt_m1_glib_000,axiom,
+    ! [A] :
+      ( m1_glib_000(A)
+     => ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finset_1(A) ) ) ).
+
+fof(existence_m1_glib_000,axiom,
+    ? [A] : m1_glib_000(A) ).
+
+fof(dt_m2_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [B] :
+          ( m2_glib_000(B,A)
+         => ( v1_glib_000(B)
+            & m1_glib_000(B) ) ) ) ).
+
+fof(existence_m2_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ? [B] : m2_glib_000(B,A) ) ).
+
+fof(dt_m3_glib_000,axiom,
+    ! [A,B,C] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ! [D] :
+          ( m3_glib_000(D,A,B,C)
+         => m2_glib_000(D,A) ) ) ).
+
+fof(existence_m3_glib_000,axiom,
+    ! [A,B,C] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ? [D] : m3_glib_000(D,A,B,C) ) ).
+
+fof(symmetry_r5_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & v1_glib_000(B)
+        & m1_glib_000(B) )
+     => ( r5_glib_000(A,B)
+       => r5_glib_000(B,A) ) ) ).
+
+fof(reflexivity_r5_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & v1_glib_000(B)
+        & m1_glib_000(B) )
+     => r5_glib_000(A,A) ) ).
+
+fof(reflexivity_r6_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & v1_glib_000(B)
+        & m1_glib_000(B) )
+     => r6_glib_000(A,A) ) ).
+
+fof(irreflexivity_r7_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & v1_glib_000(B)
+        & m1_glib_000(B) )
+     => ~ r7_glib_000(A,A) ) ).
+
+fof(dt_k1_glib_000,axiom,
+    m2_subset_1(k1_glib_000,k1_numbers,k5_numbers) ).
+
+fof(dt_k2_glib_000,axiom,
+    m2_subset_1(k2_glib_000,k1_numbers,k5_numbers) ).
+
+fof(dt_k3_glib_000,axiom,
+    m2_subset_1(k3_glib_000,k1_numbers,k5_numbers) ).
+
+fof(dt_k4_glib_000,axiom,
+    m2_subset_1(k4_glib_000,k1_numbers,k5_numbers) ).
+
+fof(dt_k5_glib_000,axiom,
+    ( ~ v1_xboole_0(k5_glib_000)
+    & m1_subset_1(k5_glib_000,k1_zfmisc_1(k5_numbers)) ) ).
+
+fof(dt_k6_glib_000,axiom,
+    $true ).
+
+fof(dt_k7_glib_000,axiom,
+    $true ).
+
+fof(dt_k8_glib_000,axiom,
+    $true ).
+
+fof(dt_k9_glib_000,axiom,
+    $true ).
+
+fof(dt_k10_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v1_funct_1(k10_glib_000(A))
+        & v1_funct_2(k10_glib_000(A),k7_glib_000(A),k6_glib_000(A))
+        & m2_relset_1(k10_glib_000(A),k7_glib_000(A),k6_glib_000(A)) ) ) ).
+
+fof(redefinition_k10_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => k10_glib_000(A) = k8_glib_000(A) ) ).
+
+fof(dt_k11_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => ( v1_funct_1(k11_glib_000(A))
+        & v1_funct_2(k11_glib_000(A),k7_glib_000(A),k6_glib_000(A))
+        & m2_relset_1(k11_glib_000(A),k7_glib_000(A),k6_glib_000(A)) ) ) ).
+
+fof(redefinition_k11_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => k11_glib_000(A) = k9_glib_000(A) ) ).
+
+fof(dt_k12_glib_000,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,B,A)
+        & m1_relset_1(C,B,A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,B,A)
+        & m1_relset_1(D,B,A) )
+     => ( v1_glib_000(k12_glib_000(A,B,C,D))
+        & m1_glib_000(k12_glib_000(A,B,C,D)) ) ) ).
+
+fof(dt_k13_glib_000,axiom,
+    ! [A,B,C] :
+      ( ( m1_glib_000(A)
+        & m1_subset_1(B,k5_numbers) )
+     => m1_glib_000(k13_glib_000(A,B,C)) ) ).
+
+fof(dt_k14_glib_000,axiom,
+    ! [A,B] :
+      ( m1_glib_000(A)
+     => m1_glib_000(k14_glib_000(A,B)) ) ).
+
+fof(dt_k15_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => v1_card_1(k15_glib_000(A)) ) ).
+
+fof(dt_k16_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => ( ~ v1_xboole_0(k16_glib_000(A))
+        & m2_subset_1(k16_glib_000(A),k1_numbers,k5_numbers) ) ) ).
+
+fof(redefinition_k16_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => k16_glib_000(A) = k15_glib_000(A) ) ).
+
+fof(dt_k17_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => v1_card_1(k17_glib_000(A)) ) ).
+
+fof(dt_k18_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => m2_subset_1(k18_glib_000(A),k1_numbers,k5_numbers) ) ).
+
+fof(redefinition_k18_glib_000,axiom,
+    ! [A] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A) )
+     => k18_glib_000(A) = k17_glib_000(A) ) ).
+
+fof(dt_k19_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => m1_subset_1(k19_glib_000(A,B),k1_zfmisc_1(k7_glib_000(A))) ) ).
+
+fof(dt_k20_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => m1_subset_1(k20_glib_000(A,B),k1_zfmisc_1(k7_glib_000(A))) ) ).
+
+fof(dt_k21_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => m1_subset_1(k21_glib_000(A,B),k1_zfmisc_1(k7_glib_000(A))) ) ).
+
+fof(dt_k22_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => m1_subset_1(k22_glib_000(A,B),k1_zfmisc_1(k7_glib_000(A))) ) ).
+
+fof(dt_k23_glib_000,axiom,
+    ! [A,B,C] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => m1_subset_1(k23_glib_000(A,B,C),k1_zfmisc_1(k7_glib_000(A))) ) ).
+
+fof(dt_k24_glib_000,axiom,
+    ! [A,B,C] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A) )
+     => m1_subset_1(k24_glib_000(A,B,C),k1_zfmisc_1(k7_glib_000(A))) ) ).
+
+fof(dt_k25_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m2_glib_000(B,A) )
+     => ( ~ v1_xboole_0(k25_glib_000(A,B))
+        & m1_subset_1(k25_glib_000(A,B),k1_zfmisc_1(k6_glib_000(A))) ) ) ).
+
+fof(redefinition_k25_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m2_glib_000(B,A) )
+     => k25_glib_000(A,B) = k6_glib_000(B) ) ).
+
+fof(dt_k26_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m2_glib_000(B,A) )
+     => m1_subset_1(k26_glib_000(A,B),k1_zfmisc_1(k7_glib_000(A))) ) ).
+
+fof(redefinition_k26_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m2_glib_000(B,A) )
+     => k26_glib_000(A,B) = k7_glib_000(B) ) ).
+
+fof(dt_k27_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => m1_subset_1(k27_glib_000(A,B),k1_zfmisc_1(k7_glib_000(A))) ) ).
+
+fof(dt_k28_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => m1_subset_1(k28_glib_000(A,B),k1_zfmisc_1(k7_glib_000(A))) ) ).
+
+fof(dt_k29_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => m1_subset_1(k29_glib_000(A,B),k1_zfmisc_1(k7_glib_000(A))) ) ).
+
+fof(dt_k30_glib_000,axiom,
+    ! [A,B,C] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => m1_subset_1(k30_glib_000(A,B,C),k6_glib_000(A)) ) ).
+
+fof(dt_k31_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => v1_card_1(k31_glib_000(A,B)) ) ).
+
+fof(dt_k32_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => v1_card_1(k32_glib_000(A,B)) ) ).
+
+fof(dt_k33_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => m2_subset_1(k33_glib_000(A,B),k1_numbers,k5_numbers) ) ).
+
+fof(redefinition_k33_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => k33_glib_000(A,B) = k31_glib_000(A,B) ) ).
+
+fof(dt_k34_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => m2_subset_1(k34_glib_000(A,B),k1_numbers,k5_numbers) ) ).
+
+fof(redefinition_k34_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => k34_glib_000(A,B) = k32_glib_000(A,B) ) ).
+
+fof(dt_k35_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => v1_card_1(k35_glib_000(A,B)) ) ).
+
+fof(dt_k36_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => m2_subset_1(k36_glib_000(A,B),k1_numbers,k5_numbers) ) ).
+
+fof(redefinition_k36_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & v2_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => k36_glib_000(A,B) = k35_glib_000(A,B) ) ).
+
+fof(dt_k37_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => m1_subset_1(k37_glib_000(A,B),k1_zfmisc_1(k6_glib_000(A))) ) ).
+
+fof(dt_k38_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => m1_subset_1(k38_glib_000(A,B),k1_zfmisc_1(k6_glib_000(A))) ) ).
+
+fof(dt_k39_glib_000,axiom,
+    ! [A,B] :
+      ( ( v1_glib_000(A)
+        & m1_glib_000(A)
+        & m1_subset_1(B,k6_glib_000(A)) )
+     => m1_subset_1(k39_glib_000(A,B),k1_zfmisc_1(k6_glib_000(A))) ) ).
+
+fof(dt_k40_glib_000,axiom,
+    ! [A] :
+      ( m1_pboole(A,k5_numbers)
+     => m2_subset_1(k40_glib_000(A),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k41_glib_000,axiom,
+    $true ).
+
+fof(dt_k42_glib_000,axiom,
+    ! [A,B] :
+      ( ( v12_glib_000(A)
+        & m1_pboole(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_glib_000(k42_glib_000(A,B))
+        & m1_glib_000(k42_glib_000(A,B)) ) ) ).
+
+%------------------------------------------------------------------------------

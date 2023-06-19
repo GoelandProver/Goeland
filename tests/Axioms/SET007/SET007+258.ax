@@ -1,0 +1,434 @@
+%------------------------------------------------------------------------------
+% File     : SET007+258 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Finite Sequence over Ring and Left-, Right-, and Bi-Modules
+% Version  : [Urb08] axioms.
+% English  : Finite Sequence over Ring and Left-, Right-, and Bi-Modules over
+%            a Ring
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : algseq_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   49 (  17 unt;   0 def)
+%            Number of atoms       :  233 (  38 equ)
+%            Maximal formula atoms :   15 (   4 avg)
+%            Number of connectives :  211 (  27   ~;   1   |;  96   &)
+%                                         (  11 <=>;  76  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   13 (   6 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   16 (  14 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   26 (  26 usr;   8 con; 0-3 aty)
+%            Number of variables   :   73 (  68   !;   5   ?)
+% SPC      : 
+
+% Comments :  The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ? [B] :
+          ( m1_relset_1(B,k5_numbers,u1_struct_0(A))
+          & v1_relat_1(B)
+          & v1_funct_1(B)
+          & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+          & v1_algseq_1(B,A) ) ) ).
+
+fof(t1_algseq_1,axiom,
+    $true ).
+
+fof(t2_algseq_1,axiom,
+    $true ).
+
+fof(t3_algseq_1,axiom,
+    $true ).
+
+fof(t4_algseq_1,axiom,
+    $true ).
+
+fof(t5_algseq_1,axiom,
+    $true ).
+
+fof(t6_algseq_1,axiom,
+    $true ).
+
+fof(t7_algseq_1,axiom,
+    $true ).
+
+fof(t8_algseq_1,axiom,
+    $true ).
+
+fof(t9_algseq_1,axiom,
+    $true ).
+
+fof(t10_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r2_hidden(A,k2_algseq_1(B))
+          <=> ~ r1_xreal_0(B,A) ) ) ) ).
+
+fof(t11_algseq_1,axiom,
+    ( k2_algseq_1(np__0) = k1_xboole_0
+    & k2_algseq_1(np__1) = k1_tarski(np__0)
+    & k2_algseq_1(np__2) = k2_tarski(np__0,np__1) ) ).
+
+fof(t12_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => r2_hidden(A,k2_algseq_1(k1_nat_1(A,np__1))) ) ).
+
+fof(t13_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_xreal_0(A,B)
+          <=> r1_tarski(k2_algseq_1(A),k2_algseq_1(B)) ) ) ) ).
+
+fof(t14_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( k2_algseq_1(A) = k2_algseq_1(B)
+           => A = B ) ) ) ).
+
+fof(t15_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_xreal_0(A,B)
+           => ( k2_algseq_1(A) = k5_subset_1(k5_numbers,k2_algseq_1(A),k2_algseq_1(B))
+              & k2_algseq_1(A) = k5_subset_1(k5_numbers,k2_algseq_1(B),k2_algseq_1(A)) ) ) ) ) ).
+
+fof(t16_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ( k2_algseq_1(A) = k5_subset_1(k5_numbers,k2_algseq_1(A),k2_algseq_1(B))
+              | k2_algseq_1(A) = k5_subset_1(k5_numbers,k2_algseq_1(B),k2_algseq_1(A)) )
+           => r1_xreal_0(A,B) ) ) ) ).
+
+fof(t17_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k2_xboole_0(k2_algseq_1(A),k1_tarski(A)) = k2_algseq_1(k1_nat_1(A,np__1)) ) ).
+
+fof(d2_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ( v1_algseq_1(B,A)
+          <=> ? [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+                & ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => ( r1_xreal_0(C,D)
+                     => k2_normsp_1(A,B,D) = k1_rlvect_1(A) ) ) ) ) ) ) ).
+
+fof(d3_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & v1_algseq_1(B,A)
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( r1_algseq_1(A,B,C)
+              <=> ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => ( r1_xreal_0(C,D)
+                     => k2_normsp_1(A,B,D) = k1_rlvect_1(A) ) ) ) ) ) ) ).
+
+fof(d4_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & v1_algseq_1(B,A)
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( C = k3_algseq_1(A,B)
+              <=> ( r1_algseq_1(A,B,C)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( r1_algseq_1(A,B,D)
+                       => r1_xreal_0(C,D) ) ) ) ) ) ) ) ).
+
+fof(t18_algseq_1,axiom,
+    $true ).
+
+fof(t19_algseq_1,axiom,
+    $true ).
+
+fof(t20_algseq_1,axiom,
+    $true ).
+
+fof(t21_algseq_1,axiom,
+    $true ).
+
+fof(t22_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l2_struct_0(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(B))
+                & v1_algseq_1(C,B)
+                & m2_relset_1(C,k5_numbers,u1_struct_0(B)) )
+             => ( r1_xreal_0(k3_algseq_1(B,C),A)
+               => k2_normsp_1(B,C,A) = k1_rlvect_1(B) ) ) ) ) ).
+
+fof(t23_algseq_1,axiom,
+    $true ).
+
+fof(t24_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l2_struct_0(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(B))
+                & v1_algseq_1(C,B)
+                & m2_relset_1(C,k5_numbers,u1_struct_0(B)) )
+             => ( ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => ~ ( ~ r1_xreal_0(A,D)
+                        & k2_normsp_1(B,C,D) = k1_rlvect_1(B) ) )
+               => r1_xreal_0(A,k3_algseq_1(B,C)) ) ) ) ) ).
+
+fof(t25_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l2_struct_0(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(B))
+                & v1_algseq_1(C,B)
+                & m2_relset_1(C,k5_numbers,u1_struct_0(B)) )
+             => ~ ( k3_algseq_1(B,C) = k1_nat_1(A,np__1)
+                  & k2_normsp_1(B,C,A) = k1_rlvect_1(B) ) ) ) ) ).
+
+fof(d5_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & v1_algseq_1(B,A)
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => k4_algseq_1(A,B) = k2_algseq_1(k3_algseq_1(A,B)) ) ) ).
+
+fof(t26_algseq_1,axiom,
+    $true ).
+
+fof(t27_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l2_struct_0(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(B))
+                & v1_algseq_1(C,B)
+                & m2_relset_1(C,k5_numbers,u1_struct_0(B)) )
+             => ( A = k3_algseq_1(B,C)
+              <=> k2_algseq_1(A) = k4_algseq_1(B,C) ) ) ) ) ).
+
+fof(t28_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & v1_algseq_1(B,A)
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & v1_algseq_1(C,A)
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( ( k3_algseq_1(A,B) = k3_algseq_1(A,C)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( ~ r1_xreal_0(k3_algseq_1(A,B),D)
+                       => k2_normsp_1(A,B,D) = k2_normsp_1(A,C,D) ) ) )
+               => B = C ) ) ) ) ).
+
+fof(t29_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ( u1_struct_0(A) != k1_struct_0(A,k1_rlvect_1(A))
+       => ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ? [C] :
+                ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & v1_algseq_1(C,A)
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A))
+                & k3_algseq_1(A,C) = B ) ) ) ) ).
+
+fof(d6_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & v1_algseq_1(C,A)
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( C = k5_algseq_1(A,B)
+              <=> ( r1_xreal_0(k3_algseq_1(A,C),np__1)
+                  & k2_normsp_1(A,C,np__0) = B ) ) ) ) ) ).
+
+fof(t30_algseq_1,axiom,
+    $true ).
+
+fof(t31_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & v1_algseq_1(B,A)
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ( B = k5_algseq_1(A,k1_rlvect_1(A))
+          <=> k3_algseq_1(A,B) = np__0 ) ) ) ).
+
+fof(t32_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & v1_algseq_1(B,A)
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ( B = k5_algseq_1(A,k1_rlvect_1(A))
+          <=> k4_algseq_1(A,B) = k1_xboole_0 ) ) ) ).
+
+fof(t33_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l2_struct_0(B) )
+         => k2_normsp_1(B,k5_algseq_1(B,k1_rlvect_1(B)),A) = k1_rlvect_1(B) ) ) ).
+
+fof(t34_algseq_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & v1_algseq_1(B,A)
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ( B = k5_algseq_1(A,k1_rlvect_1(A))
+          <=> k2_relat_1(B) = k1_struct_0(A,k1_rlvect_1(A)) ) ) ) ).
+
+fof(s1_algseq_1,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k5_numbers,u1_struct_0(f1_s1_algseq_1))
+      & v1_algseq_1(A,f1_s1_algseq_1)
+      & m2_relset_1(A,k5_numbers,u1_struct_0(f1_s1_algseq_1))
+      & r1_xreal_0(k3_algseq_1(f1_s1_algseq_1,A),f2_s1_algseq_1)
+      & ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ~ r1_xreal_0(f2_s1_algseq_1,B)
+           => k2_normsp_1(f1_s1_algseq_1,A,B) = f3_s1_algseq_1(B) ) ) ) ).
+
+fof(dt_k1_algseq_1,axiom,
+    $true ).
+
+fof(dt_k2_algseq_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m1_subset_1(k2_algseq_1(A),k1_zfmisc_1(k5_numbers)) ) ).
+
+fof(redefinition_k2_algseq_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => k2_algseq_1(A) = k1_algseq_1(A) ) ).
+
+fof(dt_k3_algseq_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+        & v1_algseq_1(B,A)
+        & m1_relset_1(B,k5_numbers,u1_struct_0(A)) )
+     => m2_subset_1(k3_algseq_1(A,B),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k4_algseq_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+        & v1_algseq_1(B,A)
+        & m1_relset_1(B,k5_numbers,u1_struct_0(A)) )
+     => m1_subset_1(k4_algseq_1(A,B),k1_zfmisc_1(k5_numbers)) ) ).
+
+fof(dt_k5_algseq_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l2_struct_0(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => ( v1_funct_1(k5_algseq_1(A,B))
+        & v1_funct_2(k5_algseq_1(A,B),k5_numbers,u1_struct_0(A))
+        & v1_algseq_1(k5_algseq_1(A,B),A)
+        & m2_relset_1(k5_algseq_1(A,B),k5_numbers,u1_struct_0(A)) ) ) ).
+
+fof(d1_algseq_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k1_algseq_1(A) = a_1_0_algseq_1(A) ) ).
+
+fof(fraenkel_a_1_0_algseq_1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_0_algseq_1(B))
+      <=> ? [C] :
+            ( m2_subset_1(C,k1_numbers,k5_numbers)
+            & A = C
+            & ~ r1_xreal_0(B,C) ) ) ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,2153 @@
+%------------------------------------------------------------------------------
+% File     : SET007+365 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Monoids
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : monoid_0 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  227 (  22 unt;   0 def)
+%            Number of atoms       : 1278 ( 148 equ)
+%            Maximal formula atoms :   21 (   5 avg)
+%            Number of connectives : 1270 ( 219   ~;   3   |; 573   &)
+%                                         (  60 <=>; 415  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   21 (   7 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   65 (  63 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   65 (  65 usr;  25 con; 0-6 aty)
+%            Number of variables   :  442 ( 409   !;  33   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_monoid_0,axiom,
+    ? [A] :
+      ( l1_struct_0(A)
+      & v1_monoid_0(A) ) ).
+
+fof(rc2_monoid_0,axiom,
+    ? [A] :
+      ( l1_struct_0(A)
+      & v2_monoid_0(A) ) ).
+
+fof(cc1_monoid_0,axiom,
+    ! [A] :
+      ( ( v1_monoid_0(A)
+        & l1_struct_0(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v1_relat_1(B)
+            & v1_funct_1(B) ) ) ) ).
+
+fof(cc2_monoid_0,axiom,
+    ! [A] :
+      ( l1_struct_0(A)
+     => ( v2_monoid_0(A)
+       => v1_monoid_0(A) ) ) ).
+
+fof(cc3_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ( v2_monoid_0(A)
+       => v1_monoid_0(A) ) ) ).
+
+fof(cc4_monoid_0,axiom,
+    ! [A] :
+      ( ( v2_monoid_0(A)
+        & l1_struct_0(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finset_1(B)
+            & v1_finseq_1(B) ) ) ) ).
+
+fof(rc3_monoid_0,axiom,
+    ? [A] :
+      ( l1_group_1(A)
+      & ~ v3_struct_0(A)
+      & v1_group_1(A)
+      & v2_group_1(A)
+      & v4_group_1(A)
+      & v7_group_1(A)
+      & v1_monoid_0(A)
+      & v2_monoid_0(A)
+      & v10_monoid_0(A)
+      & v13_monoid_0(A)
+      & v16_monoid_0(A)
+      & v17_monoid_0(A) ) ).
+
+fof(cc5_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v3_group_1(A)
+          & v4_group_1(A) )
+       => ( ~ v3_struct_0(A)
+          & v13_monoid_0(A) ) ) ) ).
+
+fof(cc6_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v4_group_1(A)
+          & v13_monoid_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_group_1(A)
+          & v3_group_1(A) ) ) ) ).
+
+fof(cc7_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v13_monoid_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v11_monoid_0(A)
+          & v12_monoid_0(A) ) ) ) ).
+
+fof(cc8_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v11_monoid_0(A)
+          & v12_monoid_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v13_monoid_0(A) ) ) ) ).
+
+fof(cc9_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v16_monoid_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v14_monoid_0(A)
+          & v15_monoid_0(A) ) ) ) ).
+
+fof(cc10_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v14_monoid_0(A)
+          & v15_monoid_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v16_monoid_0(A) ) ) ) ).
+
+fof(cc11_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v4_group_1(A)
+          & v13_monoid_0(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_group_1(A)
+          & v16_monoid_0(A) ) ) ) ).
+
+fof(cc12_monoid_0,axiom,
+    ! [A] :
+      ( l1_vectsp_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v1_vectsp_2(A) )
+       => ( ~ v3_struct_0(A)
+          & v2_group_1(A)
+          & v6_vectsp_1(A)
+          & v8_vectsp_1(A) ) ) ) ).
+
+fof(fc1_monoid_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & m1_subset_1(C,A) )
+     => ( ~ v3_struct_0(g1_vectsp_1(A,B,C))
+        & v1_vectsp_1(g1_vectsp_1(A,B,C)) ) ) ).
+
+fof(rc4_monoid_0,axiom,
+    ? [A] :
+      ( l1_vectsp_1(A)
+      & ~ v3_struct_0(A)
+      & v2_group_1(A)
+      & v3_group_1(A)
+      & v4_group_1(A)
+      & v7_group_1(A)
+      & v1_vectsp_1(A)
+      & v6_vectsp_1(A)
+      & v8_vectsp_1(A)
+      & v1_vectsp_2(A)
+      & v1_monoid_0(A)
+      & v2_monoid_0(A)
+      & v10_monoid_0(A)
+      & v11_monoid_0(A)
+      & v12_monoid_0(A)
+      & v13_monoid_0(A)
+      & v14_monoid_0(A)
+      & v15_monoid_0(A)
+      & v16_monoid_0(A)
+      & v17_monoid_0(A) ) ).
+
+fof(cc13_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => ~ v3_struct_0(B) ) ) ).
+
+fof(rc5_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ? [B] :
+          ( m1_monoid_0(B,A)
+          & v1_vectsp_1(B) ) ) ).
+
+fof(cc14_monoid_0,axiom,
+    ! [A] :
+      ( ( v1_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => v1_monoid_0(B) ) ) ).
+
+fof(cc15_monoid_0,axiom,
+    ! [A] :
+      ( ( v2_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => ( v1_monoid_0(B)
+            & v2_monoid_0(B) ) ) ) ).
+
+fof(cc16_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+            & v2_group_1(B)
+            & v6_vectsp_1(B)
+            & v8_vectsp_1(B) ) ) ) ).
+
+fof(cc17_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+            & v4_group_1(B) ) ) ) ).
+
+fof(cc18_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v7_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+            & v7_group_1(B) ) ) ) ).
+
+fof(cc19_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v13_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+            & v11_monoid_0(B)
+            & v12_monoid_0(B)
+            & v13_monoid_0(B) ) ) ) ).
+
+fof(cc20_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v16_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+            & v14_monoid_0(B)
+            & v15_monoid_0(B)
+            & v16_monoid_0(B) ) ) ) ).
+
+fof(cc21_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v17_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+            & v17_monoid_0(B) ) ) ) ).
+
+fof(rc6_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & l1_group_1(A) )
+     => ? [B] :
+          ( m1_monoid_0(B,A)
+          & ~ v3_struct_0(B)
+          & v2_group_1(B)
+          & v1_vectsp_1(B)
+          & v6_vectsp_1(B)
+          & v8_vectsp_1(B)
+          & v1_vectsp_2(B) ) ) ).
+
+fof(rc7_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ? [B] :
+          ( m2_monoid_0(B,A)
+          & v1_group_1(B) ) ) ).
+
+fof(rc8_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ? [B] :
+          ( m2_monoid_0(B,A)
+          & ~ v3_struct_0(B)
+          & v1_group_1(B) ) ) ).
+
+fof(rc9_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & l1_group_1(A) )
+     => ? [B] :
+          ( m2_monoid_0(B,A)
+          & ~ v3_struct_0(B)
+          & v1_group_1(B)
+          & v2_group_1(B)
+          & v3_group_1(B)
+          & v4_group_1(B)
+          & v7_group_1(B)
+          & v10_monoid_0(B)
+          & v11_monoid_0(B)
+          & v12_monoid_0(B)
+          & v13_monoid_0(B)
+          & v14_monoid_0(B)
+          & v15_monoid_0(B)
+          & v16_monoid_0(B)
+          & v17_monoid_0(B) ) ) ).
+
+fof(rc10_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ? [B] :
+          ( m3_monoid_0(B,A)
+          & v1_vectsp_1(B) ) ) ).
+
+fof(rc11_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ? [B] :
+          ( m3_monoid_0(B,A)
+          & ~ v3_struct_0(B)
+          & v1_vectsp_1(B) ) ) ).
+
+fof(rc12_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_vectsp_2(A)
+        & l1_vectsp_1(A) )
+     => ? [B] :
+          ( m3_monoid_0(B,A)
+          & ~ v3_struct_0(B)
+          & v2_group_1(B)
+          & v3_group_1(B)
+          & v4_group_1(B)
+          & v7_group_1(B)
+          & v1_vectsp_1(B)
+          & v6_vectsp_1(B)
+          & v8_vectsp_1(B)
+          & v1_vectsp_2(B)
+          & v10_monoid_0(B)
+          & v11_monoid_0(B)
+          & v12_monoid_0(B)
+          & v13_monoid_0(B)
+          & v14_monoid_0(B)
+          & v15_monoid_0(B)
+          & v16_monoid_0(B)
+          & v17_monoid_0(B) ) ) ).
+
+fof(cc22_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m2_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v1_monoid_0(B) ) ) ) ) ).
+
+fof(cc23_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m3_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v1_monoid_0(B) ) ) ) ) ).
+
+fof(cc24_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m2_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v1_monoid_0(B)
+              & v2_monoid_0(B) ) ) ) ) ).
+
+fof(cc25_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m3_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v1_monoid_0(B)
+              & v2_monoid_0(B) ) ) ) ) ).
+
+fof(cc26_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_vectsp_2(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( m3_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v2_group_1(B)
+              & v6_vectsp_1(B)
+              & v8_vectsp_1(B)
+              & v1_vectsp_2(B) ) ) ) ) ).
+
+fof(cc27_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v7_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m2_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v7_group_1(B) ) ) ) ) ).
+
+fof(cc28_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v7_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m3_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v7_group_1(B) ) ) ) ) ).
+
+fof(cc29_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m2_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v4_group_1(B) ) ) ) ) ).
+
+fof(cc30_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m3_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v4_group_1(B) ) ) ) ) ).
+
+fof(cc31_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m2_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v10_monoid_0(B) ) ) ) ) ).
+
+fof(cc32_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m3_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v10_monoid_0(B) ) ) ) ) ).
+
+fof(cc33_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v16_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m2_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v14_monoid_0(B)
+              & v15_monoid_0(B)
+              & v16_monoid_0(B) ) ) ) ) ).
+
+fof(cc34_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v16_monoid_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m3_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v14_monoid_0(B)
+              & v15_monoid_0(B)
+              & v16_monoid_0(B) ) ) ) ) ).
+
+fof(cc35_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_vectsp_2(A)
+        & v17_monoid_0(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( m3_monoid_0(B,A)
+         => ( ~ v3_struct_0(B)
+           => ( ~ v3_struct_0(B)
+              & v2_group_1(B)
+              & v6_vectsp_1(B)
+              & v8_vectsp_1(B)
+              & v1_vectsp_2(B)
+              & v17_monoid_0(B) ) ) ) ) ).
+
+fof(cc36_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m2_monoid_0(B,A)
+         => ( ( ~ v3_struct_0(B)
+              & v4_group_1(B)
+              & v13_monoid_0(B) )
+           => ( ~ v3_struct_0(B)
+              & v2_group_1(B)
+              & v3_group_1(B)
+              & v14_monoid_0(B)
+              & v15_monoid_0(B)
+              & v16_monoid_0(B) ) ) ) ) ).
+
+fof(d1_monoid_0,axiom,
+    ! [A] :
+      ( l1_struct_0(A)
+     => ( v1_monoid_0(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ( v1_relat_1(B)
+              & v1_funct_1(B) ) ) ) ) ).
+
+fof(d2_monoid_0,axiom,
+    ! [A] :
+      ( l1_struct_0(A)
+     => ( v2_monoid_0(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ( v1_relat_1(B)
+              & v1_funct_1(B)
+              & v1_finseq_1(B) ) ) ) ) ).
+
+fof(d3_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v3_monoid_0(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,A)
+               => ! [D] :
+                    ( m1_subset_1(D,A)
+                   => ? [E] :
+                        ( m1_subset_1(E,A)
+                        & k2_binop_1(A,A,A,B,E,C) = D ) ) ) ) ) ) ).
+
+fof(d4_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v4_monoid_0(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,A)
+               => ! [D] :
+                    ( m1_subset_1(D,A)
+                   => ? [E] :
+                        ( m1_subset_1(E,A)
+                        & k2_binop_1(A,A,A,B,C,E) = D ) ) ) ) ) ) ).
+
+fof(d5_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v5_monoid_0(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,A)
+               => ! [D] :
+                    ( m1_subset_1(D,A)
+                   => ? [E] :
+                        ( m1_subset_1(E,A)
+                        & ? [F] :
+                            ( m1_subset_1(F,A)
+                            & k2_binop_1(A,A,A,B,C,E) = D
+                            & k2_binop_1(A,A,A,B,F,C) = D ) ) ) ) ) ) ) ).
+
+fof(d6_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v6_monoid_0(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,A)
+               => ! [D] :
+                    ( m1_subset_1(D,A)
+                   => ! [E] :
+                        ( m1_subset_1(E,A)
+                       => ( k2_binop_1(A,A,A,B,C,D) = k2_binop_1(A,A,A,B,C,E)
+                         => D = E ) ) ) ) ) ) ) ).
+
+fof(d7_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v7_monoid_0(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,A)
+               => ! [D] :
+                    ( m1_subset_1(D,A)
+                   => ! [E] :
+                        ( m1_subset_1(E,A)
+                       => ( k2_binop_1(A,A,A,B,D,C) = k2_binop_1(A,A,A,B,E,C)
+                         => D = E ) ) ) ) ) ) ) ).
+
+fof(d8_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v8_monoid_0(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,A)
+               => ! [D] :
+                    ( m1_subset_1(D,A)
+                   => ! [E] :
+                        ( m1_subset_1(E,A)
+                       => ( ( k2_binop_1(A,A,A,B,C,D) = k2_binop_1(A,A,A,B,C,E)
+                            | k2_binop_1(A,A,A,B,D,C) = k2_binop_1(A,A,A,B,E,C) )
+                         => D = E ) ) ) ) ) ) ) ).
+
+fof(d9_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v9_monoid_0(B,A)
+          <=> ( v1_setwiseo(B,A)
+              & ! [C] :
+                  ( m1_subset_1(C,A)
+                 => ! [D] :
+                      ( m1_subset_1(D,A)
+                     => ( k2_binop_1(A,A,A,B,C,D) = k3_binop_1(A,B)
+                       => ( C = D
+                          & D = k3_binop_1(A,B) ) ) ) ) ) ) ) ) ).
+
+fof(t1_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v5_monoid_0(B,A)
+          <=> ( v3_monoid_0(B,A)
+              & v4_monoid_0(B,A) ) ) ) ) ).
+
+fof(t2_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),A) )
+         => ( v8_monoid_0(B,A)
+          <=> ( v6_monoid_0(B,A)
+              & v7_monoid_0(B,A) ) ) ) ) ).
+
+fof(t3_monoid_0,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(k1_tarski(A),k1_tarski(A)),k1_tarski(A))
+        & m2_relset_1(B,k2_zfmisc_1(k1_tarski(A),k1_tarski(A)),k1_tarski(A)) )
+     => ( B = k2_funcop_1(k1_tarski(k4_tarski(A,A)),A)
+        & v1_setwiseo(B,k1_tarski(A))
+        & v1_binop_1(B,k1_tarski(A))
+        & v2_binop_1(B,k1_tarski(A))
+        & v3_binop_1(B,k1_tarski(A))
+        & v5_monoid_0(B,k1_tarski(A))
+        & v8_monoid_0(B,k1_tarski(A))
+        & v9_monoid_0(B,k1_tarski(A)) ) ) ).
+
+fof(d10_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v2_group_1(A)
+      <=> v1_setwiseo(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(d11_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v7_group_1(A)
+      <=> v1_binop_1(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(d12_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v4_group_1(A)
+      <=> v2_binop_1(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(d13_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v10_monoid_0(A)
+      <=> v3_binop_1(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(d14_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v11_monoid_0(A)
+      <=> v3_monoid_0(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(d15_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v12_monoid_0(A)
+      <=> v4_monoid_0(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(d16_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v13_monoid_0(A)
+      <=> v5_monoid_0(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(d17_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v14_monoid_0(A)
+      <=> v6_monoid_0(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(d18_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v15_monoid_0(A)
+      <=> v7_monoid_0(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(d19_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v16_monoid_0(A)
+      <=> v8_monoid_0(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(d20_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v17_monoid_0(A)
+      <=> v9_monoid_0(u1_group_1(A),u1_struct_0(A)) ) ) ).
+
+fof(t4_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v2_group_1(A)
+       => r3_binop_1(u1_struct_0(A),k3_binop_1(u1_struct_0(A),u1_group_1(A)),u1_group_1(A)) ) ) ).
+
+fof(t5_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v2_group_1(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ( k1_group_1(A,k3_binop_1(u1_struct_0(A),u1_group_1(A)),B) = B
+              & k1_group_1(A,B,k3_binop_1(u1_struct_0(A),u1_group_1(A))) = B ) ) ) ) ).
+
+fof(t6_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v2_group_1(A)
+      <=> ? [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+            & ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ( k1_group_1(A,B,C) = C
+                  & k1_group_1(A,C,B) = C ) ) ) ) ) ).
+
+fof(t7_monoid_0,axiom,
+    $true ).
+
+fof(t8_monoid_0,axiom,
+    $true ).
+
+fof(t9_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v10_monoid_0(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => k1_group_1(A,B,B) = B ) ) ) ).
+
+fof(t10_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v11_monoid_0(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ? [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                    & k1_group_1(A,D,B) = C ) ) ) ) ) ).
+
+fof(t11_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v12_monoid_0(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ? [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                    & k1_group_1(A,B,D) = C ) ) ) ) ) ).
+
+fof(t12_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v13_monoid_0(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ? [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                    & ? [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                        & k1_group_1(A,B,D) = C
+                        & k1_group_1(A,E,B) = C ) ) ) ) ) ) ).
+
+fof(t13_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v14_monoid_0(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ( k1_group_1(A,B,C) = k1_group_1(A,B,D)
+                     => C = D ) ) ) ) ) ) ).
+
+fof(t14_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v15_monoid_0(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ( k1_group_1(A,C,B) = k1_group_1(A,D,B)
+                     => C = D ) ) ) ) ) ) ).
+
+fof(t15_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v16_monoid_0(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ( ( k1_group_1(A,B,C) = k1_group_1(A,B,D)
+                        | k1_group_1(A,C,B) = k1_group_1(A,D,B) )
+                     => C = D ) ) ) ) ) ) ).
+
+fof(t16_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v17_monoid_0(A)
+      <=> ( v1_setwiseo(u1_group_1(A),u1_struct_0(A))
+          & ! [B] :
+              ( m1_subset_1(B,u1_struct_0(A))
+             => ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ( k1_group_1(A,B,C) = k3_binop_1(u1_struct_0(A),u1_group_1(A))
+                   => ( B = C
+                      & C = k3_binop_1(u1_struct_0(A),u1_group_1(A)) ) ) ) ) ) ) ) ).
+
+fof(t17_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ( v4_group_1(A)
+       => ( v13_monoid_0(A)
+        <=> ( v2_group_1(A)
+            & v1_finseqop(u1_group_1(A),u1_struct_0(A)) ) ) ) ) ).
+
+fof(d21_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_vectsp_1(A) )
+     => ( v1_vectsp_2(A)
+      <=> r3_binop_1(u1_struct_0(A),u1_vectsp_1(A),u1_group_1(A)) ) ) ).
+
+fof(t18_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_vectsp_1(A) )
+     => ( v1_vectsp_2(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ( k1_group_1(A,u1_vectsp_1(A),B) = B
+              & k1_group_1(A,B,u1_vectsp_1(A)) = B ) ) ) ) ).
+
+fof(t19_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_vectsp_1(A) )
+     => ( v1_vectsp_2(A)
+       => u1_vectsp_1(A) = k3_binop_1(u1_struct_0(A),u1_group_1(A)) ) ) ).
+
+fof(d22_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ! [B] :
+          ( l1_vectsp_1(B)
+         => ( m1_monoid_0(B,A)
+          <=> g1_group_1(u1_struct_0(B),u1_group_1(B)) = g1_group_1(u1_struct_0(A),u1_group_1(A)) ) ) ) ).
+
+fof(t20_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => ( u1_struct_0(B) = u1_struct_0(A)
+            & u1_group_1(B) = u1_group_1(A)
+            & ! [C] :
+                ( m1_subset_1(C,u1_struct_0(B))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(B))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ( ( C = E
+                                & D = F )
+                             => k1_group_1(B,C,D) = k1_group_1(A,E,F) ) ) ) ) ) ) ) ) ).
+
+fof(t21_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => ( ( v2_group_1(A)
+             => v2_group_1(B) )
+            & ( v7_group_1(A)
+             => v7_group_1(B) )
+            & ( v4_group_1(A)
+             => v4_group_1(B) )
+            & ( v13_monoid_0(A)
+             => v13_monoid_0(B) )
+            & ( v17_monoid_0(A)
+             => v17_monoid_0(B) )
+            & ( v16_monoid_0(A)
+             => v16_monoid_0(B) ) ) ) ) ).
+
+fof(t22_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( v1_vectsp_1(B)
+            & v1_vectsp_2(B)
+            & m1_monoid_0(B,A) )
+         => ! [C] :
+              ( ( v1_vectsp_1(C)
+                & v1_vectsp_2(C)
+                & m1_monoid_0(C,A) )
+             => B = C ) ) ) ).
+
+fof(d23_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ! [B] :
+          ( l1_group_1(B)
+         => ( m2_monoid_0(B,A)
+          <=> r1_tarski(u1_group_1(B),u1_group_1(A)) ) ) ) ).
+
+fof(d24_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ! [B] :
+          ( l1_vectsp_1(B)
+         => ( m3_monoid_0(B,A)
+          <=> ( r1_tarski(u1_group_1(B),u1_group_1(A))
+              & ! [C] :
+                  ( l1_vectsp_1(C)
+                 => ( A = C
+                   => u1_vectsp_1(B) = u1_vectsp_1(C) ) ) ) ) ) ) ).
+
+fof(d25_monoid_0,axiom,
+    ! [A] :
+      ( l1_vectsp_1(A)
+     => ! [B] :
+          ( l1_vectsp_1(B)
+         => ( m3_monoid_0(B,A)
+          <=> ( r1_tarski(u1_group_1(B),u1_group_1(A))
+              & u1_vectsp_1(B) = u1_vectsp_1(A) ) ) ) ) ).
+
+fof(t23_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ! [B] :
+          ( m3_monoid_0(B,A)
+         => m2_monoid_0(B,A) ) ) ).
+
+fof(t24_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l1_vectsp_1(B) )
+         => ( m2_monoid_0(A,A)
+            & m3_monoid_0(B,B) ) ) ) ).
+
+fof(t25_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m3_monoid_0(C,A) )
+             => ( r1_tarski(u1_struct_0(B),u1_struct_0(A))
+                & r1_tarski(u1_struct_0(C),u1_struct_0(A)) ) ) ) ) ).
+
+fof(t26_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => u1_group_1(B) = k1_realset1(u1_group_1(A),u1_struct_0(B)) ) ) ).
+
+fof(t27_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ( ( C = E
+                              & D = F )
+                           => k1_group_1(B,C,D) = k1_group_1(A,E,F) ) ) ) ) ) ) ) ).
+
+fof(t28_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m2_monoid_0(C,A) )
+             => ( u1_struct_0(B) = u1_struct_0(C)
+               => g1_group_1(u1_struct_0(B),u1_group_1(B)) = g1_group_1(u1_struct_0(C),u1_group_1(C)) ) ) ) ) ).
+
+fof(t29_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m3_monoid_0(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m3_monoid_0(C,A) )
+             => ( u1_struct_0(B) = u1_struct_0(C)
+               => g1_vectsp_1(u1_struct_0(B),u1_group_1(B),u1_vectsp_1(B)) = g1_vectsp_1(u1_struct_0(C),u1_group_1(C),u1_vectsp_1(C)) ) ) ) ) ).
+
+fof(t30_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m2_monoid_0(C,A) )
+             => ( r1_tarski(u1_struct_0(B),u1_struct_0(C))
+               => m5_monoid_0(B,A,C) ) ) ) ) ).
+
+fof(t31_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m3_monoid_0(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & m3_monoid_0(C,A) )
+             => ( r1_tarski(u1_struct_0(B),u1_struct_0(C))
+               => m7_monoid_0(B,A,C) ) ) ) ) ).
+
+fof(t32_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => ( ( v2_group_1(A)
+              & r2_hidden(k3_binop_1(u1_struct_0(A),u1_group_1(A)),u1_struct_0(B)) )
+           => ( v2_group_1(B)
+              & k3_binop_1(u1_struct_0(A),u1_group_1(A)) = k3_binop_1(u1_struct_0(B),u1_group_1(B)) ) ) ) ) ).
+
+fof(t33_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_vectsp_2(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m3_monoid_0(B,A) )
+         => v1_vectsp_2(B) ) ) ).
+
+fof(t34_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => ( v7_group_1(A)
+           => v7_group_1(B) ) ) ) ).
+
+fof(t35_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => ( v4_group_1(A)
+           => v4_group_1(B) ) ) ) ).
+
+fof(t36_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => ( v10_monoid_0(A)
+           => v10_monoid_0(B) ) ) ) ).
+
+fof(t37_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => ( v16_monoid_0(A)
+           => v16_monoid_0(B) ) ) ) ).
+
+fof(t38_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,A) )
+         => ( ( r2_hidden(k3_binop_1(u1_struct_0(A),u1_group_1(A)),u1_struct_0(B))
+              & v17_monoid_0(A) )
+           => v17_monoid_0(B) ) ) ) ).
+
+fof(t39_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_vectsp_2(A)
+        & v17_monoid_0(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m3_monoid_0(B,A) )
+         => v17_monoid_0(B) ) ) ).
+
+fof(d26_monoid_0,axiom,
+    k5_monoid_0 = g1_group_1(k1_numbers,k33_binop_2) ).
+
+fof(t40_monoid_0,axiom,
+    ( u1_struct_0(k5_monoid_0) = k1_numbers
+    & u1_group_1(k5_monoid_0) = k33_binop_2
+    & ! [A] :
+        ( m1_subset_1(A,u1_struct_0(k5_monoid_0))
+       => ! [B] :
+            ( m1_subset_1(B,u1_struct_0(k5_monoid_0))
+           => ! [C] :
+                ( m1_subset_1(C,k1_numbers)
+               => ! [D] :
+                    ( m1_subset_1(D,k1_numbers)
+                   => ( ( A = C
+                        & B = D )
+                     => k10_group_1(k5_monoid_0,A,B) = k9_binop_2(C,D) ) ) ) ) ) ) ).
+
+fof(t41_monoid_0,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k5_monoid_0))
+    <=> m1_subset_1(A,k1_numbers) ) ).
+
+fof(t42_monoid_0,axiom,
+    k3_binop_1(u1_struct_0(k5_monoid_0),u1_group_1(k5_monoid_0)) = np__0 ).
+
+fof(t43_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & m2_monoid_0(A,k5_monoid_0) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ( ( B = D
+                          & C = E )
+                       => k10_group_1(A,B,C) = k9_binop_2(D,E) ) ) ) ) ) ) ).
+
+fof(t44_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & m2_monoid_0(A,k5_monoid_0) )
+     => k3_binop_1(u1_struct_0(A),u1_group_1(A)) = np__0 ) ).
+
+fof(t45_monoid_0,axiom,
+    $true ).
+
+fof(t46_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & m2_monoid_0(A,k5_monoid_0) )
+     => ( A = k6_monoid_0
+      <=> u1_struct_0(A) = k4_numbers ) ) ).
+
+fof(t47_monoid_0,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k6_monoid_0))
+    <=> v1_int_1(A) ) ).
+
+fof(d27_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v2_group_1(A)
+        & v17_monoid_0(A)
+        & m5_monoid_0(A,k5_monoid_0,k6_monoid_0) )
+     => ( A = k7_monoid_0
+      <=> u1_struct_0(A) = k5_numbers ) ) ).
+
+fof(d28_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_vectsp_1(A)
+        & v1_vectsp_2(A)
+        & m1_monoid_0(A,k7_monoid_0) )
+     => A = k8_monoid_0 ) ).
+
+fof(d29_monoid_0,axiom,
+    k47_binop_2 = u1_group_1(k7_monoid_0) ).
+
+fof(t48_monoid_0,axiom,
+    $true ).
+
+fof(t49_monoid_0,axiom,
+    k7_monoid_0 = g1_group_1(k5_numbers,k47_binop_2) ).
+
+fof(t50_monoid_0,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k8_monoid_0))
+    <=> m2_subset_1(A,k1_numbers,k5_numbers) ) ).
+
+fof(t51_monoid_0,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k8_monoid_0))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k8_monoid_0))
+                 => ( ( A = C
+                      & B = D )
+                   => k10_group_1(k8_monoid_0,C,D) = k23_binop_2(A,B) ) ) ) ) ) ).
+
+fof(t52_monoid_0,axiom,
+    k8_monoid_0 = g1_vectsp_1(k5_numbers,k47_binop_2,np__0) ).
+
+fof(t53_monoid_0,axiom,
+    ( k47_binop_2 = k1_realset1(k33_binop_2,k5_numbers)
+    & k47_binop_2 = k1_realset1(k44_binop_2,k5_numbers) ) ).
+
+fof(t54_monoid_0,axiom,
+    ( r3_binop_1(k5_numbers,np__0,k47_binop_2)
+    & v9_monoid_0(k47_binop_2,k5_numbers) ) ).
+
+fof(d30_monoid_0,axiom,
+    k9_monoid_0 = g1_group_1(k1_numbers,k35_binop_2) ).
+
+fof(t55_monoid_0,axiom,
+    ( u1_struct_0(k9_monoid_0) = k1_numbers
+    & u1_group_1(k9_monoid_0) = k35_binop_2
+    & ! [A] :
+        ( m1_subset_1(A,u1_struct_0(k9_monoid_0))
+       => ! [B] :
+            ( m1_subset_1(B,u1_struct_0(k9_monoid_0))
+           => ! [C] :
+                ( m1_subset_1(C,k1_numbers)
+               => ! [D] :
+                    ( m1_subset_1(D,k1_numbers)
+                   => ( ( A = C
+                        & B = D )
+                     => k10_group_1(k9_monoid_0,A,B) = k11_binop_2(C,D) ) ) ) ) ) ) ).
+
+fof(t56_monoid_0,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k9_monoid_0))
+    <=> m1_subset_1(A,k1_numbers) ) ).
+
+fof(t57_monoid_0,axiom,
+    k3_binop_1(u1_struct_0(k9_monoid_0),u1_group_1(k9_monoid_0)) = np__1 ).
+
+fof(t58_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & m2_monoid_0(A,k9_monoid_0) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ( ( B = D
+                          & C = E )
+                       => k10_group_1(A,B,C) = k11_binop_2(D,E) ) ) ) ) ) ) ).
+
+fof(t59_monoid_0,axiom,
+    $true ).
+
+fof(t60_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & m2_monoid_0(A,k9_monoid_0) )
+     => ( k3_binop_1(u1_struct_0(A),u1_group_1(A)) = np__0
+        | k3_binop_1(u1_struct_0(A),u1_group_1(A)) = np__1 ) ) ).
+
+fof(d31_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v2_group_1(A)
+        & v17_monoid_0(A)
+        & m2_monoid_0(A,k9_monoid_0) )
+     => ( A = k10_monoid_0
+      <=> u1_struct_0(A) = k5_numbers ) ) ).
+
+fof(d32_monoid_0,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_vectsp_1(A)
+        & v1_vectsp_2(A)
+        & m1_monoid_0(A,k10_monoid_0) )
+     => A = k11_monoid_0 ) ).
+
+fof(d33_monoid_0,axiom,
+    k48_binop_2 = u1_group_1(k10_monoid_0) ).
+
+fof(t61_monoid_0,axiom,
+    k10_monoid_0 = g1_group_1(k5_numbers,k48_binop_2) ).
+
+fof(t62_monoid_0,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k10_monoid_0))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k10_monoid_0))
+                 => ( ( A = C
+                      & B = D )
+                   => k10_group_1(k10_monoid_0,C,D) = k24_binop_2(A,B) ) ) ) ) ) ).
+
+fof(t63_monoid_0,axiom,
+    k3_binop_1(u1_struct_0(k10_monoid_0),u1_group_1(k10_monoid_0)) = np__1 ).
+
+fof(t64_monoid_0,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k11_monoid_0))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k11_monoid_0))
+                 => ( ( A = C
+                      & B = D )
+                   => k10_group_1(k11_monoid_0,C,D) = k24_binop_2(A,B) ) ) ) ) ) ).
+
+fof(t65_monoid_0,axiom,
+    k11_monoid_0 = g1_vectsp_1(k5_numbers,k48_binop_2,np__1) ).
+
+fof(t66_monoid_0,axiom,
+    k48_binop_2 = k1_realset1(k35_binop_2,k5_numbers) ).
+
+fof(t67_monoid_0,axiom,
+    ( r3_binop_1(k5_numbers,np__1,k48_binop_2)
+    & v9_monoid_0(k48_binop_2,k5_numbers) ) ).
+
+fof(d34_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_group_1(B)
+            & v2_group_1(B)
+            & v4_group_1(B)
+            & v2_monoid_0(B)
+            & v16_monoid_0(B)
+            & v17_monoid_0(B)
+            & l1_group_1(B) )
+         => ( B = k12_monoid_0(A)
+          <=> ( u1_struct_0(B) = k3_finseq_2(A)
+              & ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(B))
+                 => ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(B))
+                     => k4_monoid_0(B,C,D) = k7_finseq_1(C,D) ) ) ) ) ) ) ).
+
+fof(d35_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_vectsp_1(B)
+            & v1_vectsp_2(B)
+            & m1_monoid_0(B,k12_monoid_0(A)) )
+         => B = k13_monoid_0(A) ) ) ).
+
+fof(d36_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k14_monoid_0(A) = u1_group_1(k12_monoid_0(A)) ) ).
+
+fof(t68_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k12_monoid_0(A) = g1_group_1(k3_finseq_2(A),k14_monoid_0(A)) ) ).
+
+fof(t69_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k3_binop_1(u1_struct_0(k12_monoid_0(A)),u1_group_1(k12_monoid_0(A))) = k1_xboole_0 ) ).
+
+fof(t70_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( u1_struct_0(k13_monoid_0(A)) = k3_finseq_2(A)
+        & u1_group_1(k13_monoid_0(A)) = k14_monoid_0(A)
+        & u1_vectsp_1(k13_monoid_0(A)) = k1_xboole_0 ) ) ).
+
+fof(t71_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k13_monoid_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k13_monoid_0(A)))
+             => k4_monoid_0(k13_monoid_0(A),B,C) = k7_finseq_1(B,C) ) ) ) ).
+
+fof(t72_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,k12_monoid_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => k4_monoid_0(B,C,D) = k7_finseq_1(C,D) ) ) ) ) ).
+
+fof(t73_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_group_1(B)
+            & m2_monoid_0(B,k12_monoid_0(A)) )
+         => k3_binop_1(u1_struct_0(B),u1_group_1(B)) = k1_xboole_0 ) ) ).
+
+fof(t74_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m2_monoid_0(B,k12_monoid_0(A)) )
+         => ( m1_subset_1(k1_xboole_0,u1_struct_0(B))
+           => ( v2_group_1(B)
+              & k3_binop_1(u1_struct_0(B),u1_group_1(B)) = k1_xboole_0 ) ) ) ) ).
+
+fof(t75_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ( r1_tarski(A,B)
+           => m2_monoid_0(k12_monoid_0(A),k12_monoid_0(B)) ) ) ) ).
+
+fof(t76_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v1_setwiseo(k14_monoid_0(A),k3_finseq_2(A))
+        & k3_binop_1(k3_finseq_2(A),k14_monoid_0(A)) = k1_xboole_0
+        & v2_binop_1(k14_monoid_0(A),k3_finseq_2(A)) ) ) ).
+
+fof(d37_monoid_0,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & v1_group_1(B)
+        & v2_group_1(B)
+        & v4_group_1(B)
+        & v1_monoid_0(B)
+        & l1_group_1(B) )
+     => ( B = k15_monoid_0(A)
+      <=> ( u1_struct_0(B) = k4_partfun1(A,A)
+          & ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => k4_monoid_0(B,C,D) = k5_relat_1(D,C) ) ) ) ) ) ).
+
+fof(d38_monoid_0,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & v1_vectsp_1(B)
+        & v1_vectsp_2(B)
+        & m1_monoid_0(B,k15_monoid_0(A)) )
+     => B = k16_monoid_0(A) ) ).
+
+fof(d39_monoid_0,axiom,
+    ! [A] : k17_monoid_0(A) = u1_group_1(k15_monoid_0(A)) ).
+
+fof(t77_monoid_0,axiom,
+    ! [A,B] :
+      ( m1_subset_1(A,u1_struct_0(k15_monoid_0(B)))
+    <=> ( v1_funct_1(A)
+        & m2_relset_1(A,B,B) ) ) ).
+
+fof(t78_monoid_0,axiom,
+    ! [A] : k3_binop_1(u1_struct_0(k15_monoid_0(A)),u1_group_1(k15_monoid_0(A))) = k6_partfun1(A) ).
+
+fof(t79_monoid_0,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & m2_monoid_0(B,k15_monoid_0(A)) )
+     => ! [C] :
+          ( m1_subset_1(C,u1_struct_0(B))
+         => ! [D] :
+              ( m1_subset_1(D,u1_struct_0(B))
+             => k4_monoid_0(B,C,D) = k5_relat_1(D,C) ) ) ) ).
+
+fof(t80_monoid_0,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & m2_monoid_0(B,k15_monoid_0(A)) )
+     => ( m1_subset_1(k6_partfun1(A),u1_struct_0(B))
+       => ( v2_group_1(B)
+          & k3_binop_1(u1_struct_0(B),u1_group_1(B)) = k6_partfun1(A) ) ) ) ).
+
+fof(t81_monoid_0,axiom,
+    ! [A,B] :
+      ( r1_tarski(A,B)
+     => m2_monoid_0(k15_monoid_0(A),k15_monoid_0(B)) ) ).
+
+fof(d40_monoid_0,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & v1_group_1(B)
+        & v2_group_1(B)
+        & m2_monoid_0(B,k15_monoid_0(A)) )
+     => ( B = k18_monoid_0(A)
+      <=> u1_struct_0(B) = k1_funct_2(A,A) ) ) ).
+
+fof(d41_monoid_0,axiom,
+    ! [A,B] :
+      ( ( v1_vectsp_1(B)
+        & v1_vectsp_2(B)
+        & m1_monoid_0(B,k18_monoid_0(A)) )
+     => B = k19_monoid_0(A) ) ).
+
+fof(t82_monoid_0,axiom,
+    ! [A,B] :
+      ( m1_subset_1(A,u1_struct_0(k18_monoid_0(B)))
+    <=> ( v1_funct_1(A)
+        & v1_funct_2(A,B,B)
+        & m2_relset_1(A,B,B) ) ) ).
+
+fof(t83_monoid_0,axiom,
+    ! [A] : u1_group_1(k18_monoid_0(A)) = k1_realset1(k17_monoid_0(A),k1_funct_2(A,A)) ).
+
+fof(t84_monoid_0,axiom,
+    ! [A] : k3_binop_1(u1_struct_0(k18_monoid_0(A)),u1_group_1(k18_monoid_0(A))) = k6_partfun1(A) ).
+
+fof(t85_monoid_0,axiom,
+    ! [A] :
+      ( u1_struct_0(k19_monoid_0(A)) = k1_funct_2(A,A)
+      & u1_group_1(k19_monoid_0(A)) = k1_realset1(k17_monoid_0(A),k1_funct_2(A,A))
+      & u1_vectsp_1(k19_monoid_0(A)) = k6_partfun1(A) ) ).
+
+fof(d42_monoid_0,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & v1_group_1(B)
+        & v2_group_1(B)
+        & v13_monoid_0(B)
+        & m5_monoid_0(B,k15_monoid_0(A),k18_monoid_0(A)) )
+     => ( B = k20_monoid_0(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,u1_struct_0(k18_monoid_0(A)))
+           => ( r2_hidden(C,u1_struct_0(B))
+            <=> ( v1_funct_1(C)
+                & v1_funct_2(C,A,A)
+                & v3_funct_2(C,A,A)
+                & m2_relset_1(C,A,A) ) ) ) ) ) ).
+
+fof(t86_monoid_0,axiom,
+    ! [A,B] :
+      ( m1_subset_1(A,u1_struct_0(k20_monoid_0(B)))
+    <=> ( v1_funct_1(A)
+        & v1_funct_2(A,B,B)
+        & v3_funct_2(A,B,B)
+        & m2_relset_1(A,B,B) ) ) ).
+
+fof(t87_monoid_0,axiom,
+    ! [A] :
+      ( k3_binop_1(u1_struct_0(k20_monoid_0(A)),u1_group_1(k20_monoid_0(A))) = k6_partfun1(A)
+      & k2_group_1(k20_monoid_0(A)) = k6_partfun1(A) ) ).
+
+fof(t88_monoid_0,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,u1_struct_0(k20_monoid_0(A)))
+     => k3_group_1(k20_monoid_0(A),B) = k2_funct_1(B) ) ).
+
+fof(t89_monoid_0,axiom,
+    ! [A] :
+      ( l1_struct_0(A)
+     => ( v1_fraenkel(u1_struct_0(A))
+       => v1_monoid_0(A) ) ) ).
+
+fof(s1_monoid_0,axiom,
+    ( ! [A] :
+        ( m1_struct_0(A,f1_s1_monoid_0,f2_s1_monoid_0)
+       => ! [B] :
+            ( m1_struct_0(B,f1_s1_monoid_0,f2_s1_monoid_0)
+           => r2_hidden(k1_group_1(f1_s1_monoid_0,A,B),f2_s1_monoid_0) ) )
+   => ? [A] :
+        ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & m2_monoid_0(A,f1_s1_monoid_0)
+        & u1_struct_0(A) = f2_s1_monoid_0 ) ) ).
+
+fof(s2_monoid_0,axiom,
+    ( ( ! [A] :
+          ( m1_subset_1(A,u1_struct_0(f1_s2_monoid_0))
+         => ! [B] :
+              ( m1_subset_1(B,u1_struct_0(f1_s2_monoid_0))
+             => ( ( p1_s2_monoid_0(A)
+                  & p1_s2_monoid_0(B) )
+               => p1_s2_monoid_0(k1_group_1(f1_s2_monoid_0,A,B)) ) ) )
+      & ? [A] :
+          ( m1_subset_1(A,u1_struct_0(f1_s2_monoid_0))
+          & p1_s2_monoid_0(A) ) )
+   => ? [A] :
+        ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & m2_monoid_0(A,f1_s2_monoid_0)
+        & ! [B] :
+            ( m1_subset_1(B,u1_struct_0(f1_s2_monoid_0))
+           => ( r2_hidden(B,u1_struct_0(A))
+            <=> p1_s2_monoid_0(B) ) ) ) ) ).
+
+fof(s3_monoid_0,axiom,
+    ( ( ! [A] :
+          ( m1_struct_0(A,f1_s3_monoid_0,f2_s3_monoid_0)
+         => ! [B] :
+              ( m1_struct_0(B,f1_s3_monoid_0,f2_s3_monoid_0)
+             => r2_hidden(k1_group_1(f1_s3_monoid_0,A,B),f2_s3_monoid_0) ) )
+      & r2_hidden(u1_vectsp_1(f1_s3_monoid_0),f2_s3_monoid_0) )
+   => ? [A] :
+        ( ~ v3_struct_0(A)
+        & v1_vectsp_1(A)
+        & m3_monoid_0(A,f1_s3_monoid_0)
+        & u1_struct_0(A) = f2_s3_monoid_0 ) ) ).
+
+fof(s4_monoid_0,axiom,
+    ( ( ! [A] :
+          ( m1_subset_1(A,u1_struct_0(f1_s4_monoid_0))
+         => ! [B] :
+              ( m1_subset_1(B,u1_struct_0(f1_s4_monoid_0))
+             => ( ( p1_s4_monoid_0(A)
+                  & p1_s4_monoid_0(B) )
+               => p1_s4_monoid_0(k1_group_1(f1_s4_monoid_0,A,B)) ) ) )
+      & p1_s4_monoid_0(u1_vectsp_1(f1_s4_monoid_0)) )
+   => ? [A] :
+        ( ~ v3_struct_0(A)
+        & v1_vectsp_1(A)
+        & m3_monoid_0(A,f1_s4_monoid_0)
+        & ! [B] :
+            ( m1_subset_1(B,u1_struct_0(f1_s4_monoid_0))
+           => ( r2_hidden(B,u1_struct_0(A))
+            <=> p1_s4_monoid_0(B) ) ) ) ) ).
+
+fof(dt_m1_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ! [B] :
+          ( m1_monoid_0(B,A)
+         => l1_vectsp_1(B) ) ) ).
+
+fof(existence_m1_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ? [B] : m1_monoid_0(B,A) ) ).
+
+fof(dt_m2_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ! [B] :
+          ( m2_monoid_0(B,A)
+         => l1_group_1(B) ) ) ).
+
+fof(existence_m2_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ? [B] : m2_monoid_0(B,A) ) ).
+
+fof(dt_m3_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ! [B] :
+          ( m3_monoid_0(B,A)
+         => l1_vectsp_1(B) ) ) ).
+
+fof(existence_m3_monoid_0,axiom,
+    ! [A] :
+      ( l1_group_1(A)
+     => ? [B] : m3_monoid_0(B,A) ) ).
+
+fof(dt_m4_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m1_monoid_0(B,A) )
+     => ! [C] :
+          ( m4_monoid_0(C,A,B)
+         => m2_monoid_0(C,A) ) ) ).
+
+fof(existence_m4_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m1_monoid_0(B,A) )
+     => ? [C] : m4_monoid_0(C,A,B) ) ).
+
+fof(redefinition_m4_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m1_monoid_0(B,A) )
+     => ! [C] :
+          ( m4_monoid_0(C,A,B)
+        <=> m2_monoid_0(C,B) ) ) ).
+
+fof(dt_m5_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m2_monoid_0(B,A) )
+     => ! [C] :
+          ( m5_monoid_0(C,A,B)
+         => m2_monoid_0(C,A) ) ) ).
+
+fof(existence_m5_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m2_monoid_0(B,A) )
+     => ? [C] : m5_monoid_0(C,A,B) ) ).
+
+fof(redefinition_m5_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m2_monoid_0(B,A) )
+     => ! [C] :
+          ( m5_monoid_0(C,A,B)
+        <=> m2_monoid_0(C,B) ) ) ).
+
+fof(dt_m6_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m3_monoid_0(B,A) )
+     => ! [C] :
+          ( m6_monoid_0(C,A,B)
+         => m2_monoid_0(C,A) ) ) ).
+
+fof(existence_m6_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m3_monoid_0(B,A) )
+     => ? [C] : m6_monoid_0(C,A,B) ) ).
+
+fof(redefinition_m6_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m3_monoid_0(B,A) )
+     => ! [C] :
+          ( m6_monoid_0(C,A,B)
+        <=> m2_monoid_0(C,B) ) ) ).
+
+fof(dt_m7_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m3_monoid_0(B,A) )
+     => ! [C] :
+          ( m7_monoid_0(C,A,B)
+         => m3_monoid_0(C,A) ) ) ).
+
+fof(existence_m7_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m3_monoid_0(B,A) )
+     => ? [C] : m7_monoid_0(C,A,B) ) ).
+
+fof(redefinition_m7_monoid_0,axiom,
+    ! [A,B] :
+      ( ( l1_group_1(A)
+        & m3_monoid_0(B,A) )
+     => ! [C] :
+          ( m7_monoid_0(C,A,B)
+        <=> m3_monoid_0(C,B) ) ) ).
+
+fof(dt_k1_monoid_0,axiom,
+    ! [A,B,C] :
+      ( ( m1_finseq_1(B,A)
+        & m1_finseq_1(C,A) )
+     => m2_finseq_2(k1_monoid_0(A,B,C),A,k3_finseq_2(A)) ) ).
+
+fof(redefinition_k1_monoid_0,axiom,
+    ! [A,B,C] :
+      ( ( m1_finseq_1(B,A)
+        & m1_finseq_1(C,A) )
+     => k1_monoid_0(A,B,C) = k7_finseq_1(B,C) ) ).
+
+fof(dt_k2_monoid_0,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,A,A)
+        & m1_relset_1(B,A,A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,A)
+        & m1_relset_1(C,A,A) )
+     => ( v1_funct_1(k2_monoid_0(A,B,C))
+        & v1_funct_2(k2_monoid_0(A,B,C),A,A)
+        & m2_relset_1(k2_monoid_0(A,B,C),A,A) ) ) ).
+
+fof(redefinition_k2_monoid_0,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,A,A)
+        & m1_relset_1(B,A,A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,A)
+        & m1_relset_1(C,A,A) )
+     => k2_monoid_0(A,B,C) = k5_relat_1(B,C) ) ).
+
+fof(dt_k3_monoid_0,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,A,A)
+        & v3_funct_2(B,A,A)
+        & m1_relset_1(B,A,A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,A)
+        & v3_funct_2(C,A,A)
+        & m1_relset_1(C,A,A) )
+     => ( v1_funct_1(k3_monoid_0(A,B,C))
+        & v1_funct_2(k3_monoid_0(A,B,C),A,A)
+        & v3_funct_2(k3_monoid_0(A,B,C),A,A)
+        & m2_relset_1(k3_monoid_0(A,B,C),A,A) ) ) ).
+
+fof(redefinition_k3_monoid_0,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,A,A)
+        & v3_funct_2(B,A,A)
+        & m1_relset_1(B,A,A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,A)
+        & v3_funct_2(C,A,A)
+        & m1_relset_1(C,A,A) )
+     => k3_monoid_0(A,B,C) = k5_relat_1(B,C) ) ).
+
+fof(dt_k4_monoid_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k4_monoid_0(A,B,C),u1_struct_0(A)) ) ).
+
+fof(redefinition_k4_monoid_0,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_group_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k4_monoid_0(A,B,C) = k1_group_1(A,B,C) ) ).
+
+fof(dt_k5_monoid_0,axiom,
+    ( ~ v3_struct_0(k5_monoid_0)
+    & v1_group_1(k5_monoid_0)
+    & v2_group_1(k5_monoid_0)
+    & v4_group_1(k5_monoid_0)
+    & v7_group_1(k5_monoid_0)
+    & v13_monoid_0(k5_monoid_0)
+    & v16_monoid_0(k5_monoid_0)
+    & l1_group_1(k5_monoid_0) ) ).
+
+fof(dt_k6_monoid_0,axiom,
+    ( ~ v3_struct_0(k6_monoid_0)
+    & v1_group_1(k6_monoid_0)
+    & v2_group_1(k6_monoid_0)
+    & v13_monoid_0(k6_monoid_0)
+    & m2_monoid_0(k6_monoid_0,k5_monoid_0) ) ).
+
+fof(redefinition_k6_monoid_0,axiom,
+    k6_monoid_0 = k3_gr_cy_1 ).
+
+fof(dt_k7_monoid_0,axiom,
+    ( ~ v3_struct_0(k7_monoid_0)
+    & v1_group_1(k7_monoid_0)
+    & v2_group_1(k7_monoid_0)
+    & v17_monoid_0(k7_monoid_0)
+    & m5_monoid_0(k7_monoid_0,k5_monoid_0,k6_monoid_0) ) ).
+
+fof(dt_k8_monoid_0,axiom,
+    ( ~ v3_struct_0(k8_monoid_0)
+    & v1_vectsp_1(k8_monoid_0)
+    & v1_vectsp_2(k8_monoid_0)
+    & m1_monoid_0(k8_monoid_0,k7_monoid_0) ) ).
+
+fof(dt_k9_monoid_0,axiom,
+    ( ~ v3_struct_0(k9_monoid_0)
+    & v1_group_1(k9_monoid_0)
+    & v2_group_1(k9_monoid_0)
+    & v4_group_1(k9_monoid_0)
+    & v7_group_1(k9_monoid_0)
+    & l1_group_1(k9_monoid_0) ) ).
+
+fof(dt_k10_monoid_0,axiom,
+    ( ~ v3_struct_0(k10_monoid_0)
+    & v1_group_1(k10_monoid_0)
+    & v2_group_1(k10_monoid_0)
+    & v17_monoid_0(k10_monoid_0)
+    & m2_monoid_0(k10_monoid_0,k9_monoid_0) ) ).
+
+fof(dt_k11_monoid_0,axiom,
+    ( ~ v3_struct_0(k11_monoid_0)
+    & v1_vectsp_1(k11_monoid_0)
+    & v1_vectsp_2(k11_monoid_0)
+    & m1_monoid_0(k11_monoid_0,k10_monoid_0) ) ).
+
+fof(dt_k12_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k12_monoid_0(A))
+        & v1_group_1(k12_monoid_0(A))
+        & v2_group_1(k12_monoid_0(A))
+        & v4_group_1(k12_monoid_0(A))
+        & v2_monoid_0(k12_monoid_0(A))
+        & v16_monoid_0(k12_monoid_0(A))
+        & v17_monoid_0(k12_monoid_0(A))
+        & l1_group_1(k12_monoid_0(A)) ) ) ).
+
+fof(dt_k13_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k13_monoid_0(A))
+        & v1_vectsp_1(k13_monoid_0(A))
+        & v1_vectsp_2(k13_monoid_0(A))
+        & m1_monoid_0(k13_monoid_0(A),k12_monoid_0(A)) ) ) ).
+
+fof(dt_k14_monoid_0,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v1_funct_1(k14_monoid_0(A))
+        & v1_funct_2(k14_monoid_0(A),k2_zfmisc_1(k3_finseq_2(A),k3_finseq_2(A)),k3_finseq_2(A))
+        & m2_relset_1(k14_monoid_0(A),k2_zfmisc_1(k3_finseq_2(A),k3_finseq_2(A)),k3_finseq_2(A)) ) ) ).
+
+fof(dt_k15_monoid_0,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k15_monoid_0(A))
+      & v1_group_1(k15_monoid_0(A))
+      & v2_group_1(k15_monoid_0(A))
+      & v4_group_1(k15_monoid_0(A))
+      & v1_monoid_0(k15_monoid_0(A))
+      & l1_group_1(k15_monoid_0(A)) ) ).
+
+fof(dt_k16_monoid_0,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k16_monoid_0(A))
+      & v1_vectsp_1(k16_monoid_0(A))
+      & v1_vectsp_2(k16_monoid_0(A))
+      & m1_monoid_0(k16_monoid_0(A),k15_monoid_0(A)) ) ).
+
+fof(dt_k17_monoid_0,axiom,
+    ! [A] :
+      ( v1_funct_1(k17_monoid_0(A))
+      & v1_funct_2(k17_monoid_0(A),k2_zfmisc_1(k4_partfun1(A,A),k4_partfun1(A,A)),k4_partfun1(A,A))
+      & m2_relset_1(k17_monoid_0(A),k2_zfmisc_1(k4_partfun1(A,A),k4_partfun1(A,A)),k4_partfun1(A,A)) ) ).
+
+fof(dt_k18_monoid_0,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k18_monoid_0(A))
+      & v1_group_1(k18_monoid_0(A))
+      & v2_group_1(k18_monoid_0(A))
+      & m2_monoid_0(k18_monoid_0(A),k15_monoid_0(A)) ) ).
+
+fof(dt_k19_monoid_0,axiom,
+    ! [A] :
+      ( v1_vectsp_1(k19_monoid_0(A))
+      & v1_vectsp_2(k19_monoid_0(A))
+      & m1_monoid_0(k19_monoid_0(A),k18_monoid_0(A)) ) ).
+
+fof(dt_k20_monoid_0,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k20_monoid_0(A))
+      & v1_group_1(k20_monoid_0(A))
+      & v2_group_1(k20_monoid_0(A))
+      & v13_monoid_0(k20_monoid_0(A))
+      & m5_monoid_0(k20_monoid_0(A),k15_monoid_0(A),k18_monoid_0(A)) ) ).
+
+%------------------------------------------------------------------------------

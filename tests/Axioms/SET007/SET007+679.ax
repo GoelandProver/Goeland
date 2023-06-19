@@ -1,0 +1,1118 @@
+%------------------------------------------------------------------------------
+% File     : SET007+679 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Hilbert Basis Theorem
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : hilbasis [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   57 (   1 unt;   0 def)
+%            Number of atoms       :  806 (  66 equ)
+%            Maximal formula atoms :   35 (  14 avg)
+%            Number of connectives :  846 (  97   ~;   0   |; 558   &)
+%                                         (   6 <=>; 185  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   24 (  12 avg)
+%            Maximal term depth    :    8 (   1 avg)
+%            Number of predicates  :   62 (  60 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   67 (  67 usr;   5 con; 0-5 aty)
+%            Number of variables   :  191 ( 188   !;   3   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_hilbasis,axiom,
+    ! [A,B,C] :
+      ( ( v3_ordinal1(A)
+        & m1_subset_1(B,A)
+        & ~ v3_struct_0(C)
+        & v2_group_1(C)
+        & v4_rlvect_1(C)
+        & v5_rlvect_1(C)
+        & v6_rlvect_1(C)
+        & v4_vectsp_1(C)
+        & ~ v3_realset2(C)
+        & l3_vectsp_1(C) )
+     => ( v1_relat_1(k3_hilbasis(A,B,C))
+        & v1_funct_1(k3_hilbasis(A,B,C))
+        & v1_funct_2(k3_hilbasis(A,B,C),k14_polynom1(A),u1_struct_0(C))
+        & v2_polynom1(k3_hilbasis(A,B,C),k14_polynom1(A),C) ) ) ).
+
+fof(fc2_hilbasis,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k6_hilbasis(A,B))
+        & v1_funct_1(k6_hilbasis(A,B))
+        & v1_funct_2(k6_hilbasis(A,B),u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)))
+        & v1_grcat_1(k6_hilbasis(A,B),k16_polynom3(k30_polynom1(B,A)),k30_polynom1(k1_nat_1(B,np__1),A)) ) ) ).
+
+fof(fc3_hilbasis,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k6_hilbasis(A,B))
+        & v1_funct_1(k6_hilbasis(A,B))
+        & v1_funct_2(k6_hilbasis(A,B),u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)))
+        & v1_group_6(k6_hilbasis(A,B),k16_polynom3(k30_polynom1(B,A)),k30_polynom1(k1_nat_1(B,np__1),A)) ) ) ).
+
+fof(fc4_hilbasis,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k6_hilbasis(A,B))
+        & v1_funct_1(k6_hilbasis(A,B))
+        & v1_funct_2(k6_hilbasis(A,B),u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)))
+        & v1_endalg(k6_hilbasis(A,B),k16_polynom3(k30_polynom1(B,A)),k30_polynom1(k1_nat_1(B,np__1),A)) ) ) ).
+
+fof(fc5_hilbasis,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_relat_1(k6_hilbasis(A,B))
+        & v1_funct_1(k6_hilbasis(A,B))
+        & v2_funct_1(k6_hilbasis(A,B))
+        & v1_funct_2(k6_hilbasis(A,B),u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A))) ) ) ).
+
+fof(fc6_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & v7_ideal_1(A)
+        & l3_vectsp_1(A) )
+     => ( ~ v3_struct_0(k16_polynom3(A))
+        & v2_group_1(k16_polynom3(A))
+        & v4_group_1(k16_polynom3(A))
+        & v7_group_1(k16_polynom3(A))
+        & v3_rlvect_1(k16_polynom3(A))
+        & v4_rlvect_1(k16_polynom3(A))
+        & v5_rlvect_1(k16_polynom3(A))
+        & v6_rlvect_1(k16_polynom3(A))
+        & v3_vectsp_1(k16_polynom3(A))
+        & v4_vectsp_1(k16_polynom3(A))
+        & v5_vectsp_1(k16_polynom3(A))
+        & v6_vectsp_1(k16_polynom3(A))
+        & v7_vectsp_1(k16_polynom3(A))
+        & v8_vectsp_1(k16_polynom3(A))
+        & v1_binom(k16_polynom3(A))
+        & v1_algstr_1(k16_polynom3(A))
+        & v2_algstr_1(k16_polynom3(A))
+        & v3_algstr_1(k16_polynom3(A))
+        & v4_algstr_1(k16_polynom3(A))
+        & v5_algstr_1(k16_polynom3(A))
+        & v6_algstr_1(k16_polynom3(A))
+        & v7_ideal_1(k16_polynom3(A)) ) ) ).
+
+fof(t1_hilbasis,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ~ ( r1_tarski(k2_xboole_0(k2_relat_1(A),k2_relat_1(B)),k1_relat_1(C))
+                  & ! [D] :
+                      ( ( v1_relat_1(D)
+                        & v1_funct_1(D)
+                        & v1_finseq_1(D) )
+                     => ! [E] :
+                          ( ( v1_relat_1(E)
+                            & v1_funct_1(E)
+                            & v1_finseq_1(E) )
+                         => ~ ( D = k5_relat_1(A,C)
+                              & E = k5_relat_1(B,C)
+                              & k5_relat_1(k7_finseq_1(A,B),C) = k7_finseq_1(D,E) ) ) ) ) ) ) ) ).
+
+fof(t2_hilbasis,axiom,
+    ! [A] :
+      ( ( v7_seqm_3(A)
+        & v1_polynom1(A)
+        & m1_pboole(A,np__0) )
+     => k21_polynom1(np__0,A) = k9_finseq_1(k10_finseq_1(k1_xboole_0,k1_xboole_0)) ) ).
+
+fof(t3_hilbasis,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v7_seqm_3(C)
+                & v1_polynom1(C)
+                & m1_pboole(C,B) )
+             => ( r1_xreal_0(A,B)
+               => m1_polynom1(k7_relat_1(C,A),A,k14_polynom1(A)) ) ) ) ) ).
+
+fof(t4_hilbasis,axiom,
+    ! [A,B,C] :
+      ( ( v7_seqm_3(C)
+        & v1_polynom1(C)
+        & m1_pboole(C,B) )
+     => ! [D] :
+          ( ( v7_seqm_3(D)
+            & v1_polynom1(D)
+            & m1_pboole(D,B) )
+         => ! [E] :
+              ( ( v7_seqm_3(E)
+                & v1_polynom1(E)
+                & m1_pboole(E,A) )
+             => ! [F] :
+                  ( ( v7_seqm_3(F)
+                    & v1_polynom1(F)
+                    & m1_pboole(F,A) )
+                 => ( ( E = k7_relat_1(C,A)
+                      & F = k7_relat_1(D,A)
+                      & r3_polynom1(B,C,D) )
+                   => r3_polynom1(A,E,F) ) ) ) ) ) ).
+
+fof(t5_hilbasis,axiom,
+    ! [A,B,C] :
+      ( ( v7_seqm_3(C)
+        & v1_polynom1(C)
+        & m1_pboole(C,B) )
+     => ! [D] :
+          ( ( v7_seqm_3(D)
+            & v1_polynom1(D)
+            & m1_pboole(D,B) )
+         => ! [E] :
+              ( ( v7_seqm_3(E)
+                & v1_polynom1(E)
+                & m1_pboole(E,A) )
+             => ! [F] :
+                  ( ( v7_seqm_3(F)
+                    & v1_polynom1(F)
+                    & m1_pboole(F,A) )
+                 => ( ( E = k7_relat_1(C,A)
+                      & F = k7_relat_1(D,A) )
+                   => ( k7_relat_1(k10_polynom1(B,C,D),A) = k10_polynom1(A,E,F)
+                      & k7_relat_1(k9_polynom1(B,C,D),A) = k9_polynom1(A,E,F) ) ) ) ) ) ) ).
+
+fof(d1_hilbasis,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v7_seqm_3(C)
+                & v1_polynom1(C)
+                & m1_pboole(C,A) )
+             => ! [D] :
+                  ( m1_polynom1(D,k1_nat_1(A,np__1),k14_polynom1(k1_nat_1(A,np__1)))
+                 => ( D = k1_hilbasis(A,B,C)
+                  <=> ( k7_relat_1(D,A) = C
+                      & k8_polynom1(D,A) = B ) ) ) ) ) ) ).
+
+fof(t6_hilbasis,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k16_polynom1(k1_nat_1(A,np__1)) = k1_hilbasis(A,np__0,k16_polynom1(A)) ) ).
+
+fof(t7_hilbasis,axiom,
+    ! [A] :
+      ( v3_ordinal1(A)
+     => ! [B] :
+          ( ( v7_seqm_3(B)
+            & v1_polynom1(B)
+            & m1_pboole(B,A) )
+         => ! [C] :
+              ( ( v7_seqm_3(C)
+                & v1_polynom1(C)
+                & m1_pboole(C,A) )
+             => ( r2_hidden(C,k5_relset_1(k5_numbers,k13_polynom1(A),k20_polynom1(A,B)))
+              <=> r3_polynom1(A,C,B) ) ) ) ) ).
+
+fof(d2_hilbasis,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,A)
+     => k2_hilbasis(A,B) = k2_polynom1(A,k16_polynom1(A),B,np__1) ) ).
+
+fof(t8_hilbasis,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => k1_polynom2(A,k2_hilbasis(A,B)) = k15_cqc_sim1(A,B) ) ) ).
+
+fof(t9_hilbasis,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ( k8_polynom1(k2_hilbasis(A,B),B) = np__1
+            & ! [C] :
+                ( m1_subset_1(C,A)
+               => ( B != C
+                 => k8_polynom1(k2_hilbasis(A,B),C) = np__0 ) ) ) ) ) ).
+
+fof(t10_hilbasis,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,A)
+             => ( k2_hilbasis(A,B) = k2_hilbasis(A,C)
+               => B = C ) ) ) ) ).
+
+fof(t11_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v3_ordinal1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v2_group_1(C)
+                & ~ v3_realset2(C)
+                & l3_vectsp_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,A,u1_struct_0(C))
+                    & m2_relset_1(D,A,u1_struct_0(C)) )
+                 => k3_polynom2(A,k2_hilbasis(A,B),C,D) = k8_funct_2(A,u1_struct_0(C),D,B) ) ) ) ) ).
+
+fof(d3_hilbasis,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,A)
+     => ! [C] :
+          ( ( ~ v3_struct_0(C)
+            & v2_group_1(C)
+            & l2_vectsp_1(C) )
+         => k3_hilbasis(A,B,C) = k1_polynom1(k14_polynom1(A),u1_struct_0(C),k26_polynom1(A,C),k2_hilbasis(A,B),k2_group_1(C)) ) ) ).
+
+fof(t12_hilbasis,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(B)
+        & v2_group_1(B)
+        & ~ v3_realset2(B)
+        & l3_vectsp_1(B) )
+     => ! [C] :
+          ( m1_subset_1(C,A)
+         => ( k15_polynom1(A,B,k3_hilbasis(A,C,B),k2_hilbasis(A,C)) = k2_group_1(B)
+            & ! [D] :
+                ( ( v7_seqm_3(D)
+                  & v1_polynom1(D)
+                  & m1_pboole(D,A) )
+               => ( D != k2_hilbasis(A,C)
+                 => k15_polynom1(A,B,k3_hilbasis(A,C,B),D) = k1_rlvect_1(B) ) ) ) ) ) ).
+
+fof(t13_hilbasis,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,A)
+     => ! [C] :
+          ( ( ~ v3_struct_0(C)
+            & v2_group_1(C)
+            & v4_rlvect_1(C)
+            & v5_rlvect_1(C)
+            & v6_rlvect_1(C)
+            & v4_vectsp_1(C)
+            & ~ v3_realset2(C)
+            & l3_vectsp_1(C) )
+         => k12_polynom1(k14_polynom1(A),C,k3_hilbasis(A,B,C)) = k15_cqc_sim1(k14_polynom1(A),k2_hilbasis(A,B)) ) ) ).
+
+fof(t14_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( m1_subset_1(C,B)
+             => ! [D] :
+                  ( m1_subset_1(D,B)
+                 => ( k3_hilbasis(B,C,A) = k3_hilbasis(B,D,A)
+                   => C = D ) ) ) ) ) ).
+
+fof(t15_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k16_polynom3(A)))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ( B = C
+               => k5_rlvect_1(k16_polynom3(A),B) = k10_polynom3(A,C) ) ) ) ) ).
+
+fof(t16_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k16_polynom3(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k16_polynom3(A)))
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k5_numbers,u1_struct_0(A))
+                    & m2_relset_1(D,k5_numbers,u1_struct_0(A)) )
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k5_numbers,u1_struct_0(A))
+                        & m2_relset_1(E,k5_numbers,u1_struct_0(A)) )
+                     => ( ( B = D
+                          & C = E )
+                       => k6_rlvect_1(k16_polynom3(A),B,C) = k11_polynom3(A,D,E) ) ) ) ) ) ) ).
+
+fof(t17_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k16_polynom3(A)))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & v1_algseq_1(C,A)
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k5_numbers,u1_struct_0(A))
+                    & v1_algseq_1(D,A)
+                    & m2_relset_1(D,k5_numbers,u1_struct_0(A)) )
+                 => ( ( r2_hidden(C,k4_hilbasis(A,B))
+                      & r2_hidden(D,B) )
+                   => ( r2_hidden(C,B)
+                      & r1_xreal_0(k3_algseq_1(A,C),k3_algseq_1(A,D)) ) ) ) ) ) ) ).
+
+fof(d5_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k5_numbers,u1_struct_0(A))
+                    & v1_algseq_1(D,A)
+                    & m2_relset_1(D,k5_numbers,u1_struct_0(A)) )
+                 => ( D = k5_hilbasis(A,B,C)
+                  <=> ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => ( ( E = B
+                           => k8_funct_2(k5_numbers,u1_struct_0(A),D,E) = C )
+                          & ( E != B
+                           => k8_funct_2(k5_numbers,u1_struct_0(A),D,E) = k1_rlvect_1(A) ) ) ) ) ) ) ) ) ).
+
+fof(t18_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( ( C != k1_rlvect_1(A)
+                 => k3_algseq_1(A,k5_hilbasis(A,B,C)) = k1_nat_1(B,np__1) )
+                & ( C = k1_rlvect_1(A)
+                 => k3_algseq_1(A,k5_hilbasis(A,B,C)) = np__0 )
+                & r1_xreal_0(k3_algseq_1(A,k5_hilbasis(A,B,C)),k1_nat_1(B,np__1)) ) ) ) ) ).
+
+fof(t19_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k5_numbers,u1_struct_0(A))
+                        & v1_algseq_1(E,A)
+                        & m2_relset_1(E,k5_numbers,u1_struct_0(A)) )
+                     => k8_funct_2(k5_numbers,u1_struct_0(A),k14_polynom3(A,k5_hilbasis(A,B,D),E),k1_nat_1(C,B)) = k1_group_1(A,D,k8_funct_2(k5_numbers,u1_struct_0(A),E,C)) ) ) ) ) ) ).
+
+fof(t20_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k5_numbers,u1_struct_0(A))
+                        & v1_algseq_1(E,A)
+                        & m2_relset_1(E,k5_numbers,u1_struct_0(A)) )
+                     => k8_funct_2(k5_numbers,u1_struct_0(A),k14_polynom3(A,E,k5_hilbasis(A,B,D)),k1_nat_1(C,B)) = k1_group_1(A,k8_funct_2(k5_numbers,u1_struct_0(A),E,C),D) ) ) ) ) ) ).
+
+fof(t21_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,u1_struct_0(A))
+            & v1_algseq_1(B,A)
+            & m2_relset_1(B,k5_numbers,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,u1_struct_0(A))
+                & v1_algseq_1(C,A)
+                & m2_relset_1(C,k5_numbers,u1_struct_0(A)) )
+             => r1_xreal_0(k3_algseq_1(A,k14_polynom3(A,B,C)),k5_binarith(k1_nat_1(k3_algseq_1(A,B),k3_algseq_1(A,C)),np__1)) ) ) ) ).
+
+fof(t22_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_vectsp_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_ideal_1(C,A)
+                & v2_ideal_1(C,A)
+                & v3_ideal_1(C,A)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,u1_struct_0(A),u1_struct_0(B))
+                    & m2_relset_1(D,u1_struct_0(A),u1_struct_0(B)) )
+                 => ( v4_quofield(D,A,B)
+                   => ( ~ v1_xboole_0(k4_pre_topc(A,B,D,C))
+                      & v1_ideal_1(k4_pre_topc(A,B,D,C),B)
+                      & v2_ideal_1(k4_pre_topc(A,B,D,C),B)
+                      & v3_ideal_1(k4_pre_topc(A,B,D,C),B)
+                      & m1_subset_1(k4_pre_topc(A,B,D,C),k1_zfmisc_1(u1_struct_0(B))) ) ) ) ) ) ) ).
+
+fof(t23_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & l3_vectsp_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( v1_quofield(C,A,B)
+               => k8_funct_2(u1_struct_0(A),u1_struct_0(B),C,k1_rlvect_1(A)) = k1_rlvect_1(B) ) ) ) ) ).
+
+fof(t24_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & l3_vectsp_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+             => ! [D] :
+                  ( ( ~ v1_xboole_0(D)
+                    & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B))) )
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,u1_struct_0(A),u1_struct_0(B))
+                        & m2_relset_1(E,u1_struct_0(A),u1_struct_0(B)) )
+                     => ! [F] :
+                          ( m1_ideal_1(F,A,C)
+                         => ! [G] :
+                              ( m1_ideal_1(G,B,D)
+                             => ! [H] :
+                                  ( m2_finseq_1(H,k3_zfmisc_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A)))
+                                 => ( ( v1_quofield(E,A,B)
+                                      & k3_finseq_1(F) = k3_finseq_1(G)
+                                      & r1_ideal_1(A,C,F,H)
+                                      & ! [I] :
+                                          ( r2_hidden(I,k4_finseq_1(G))
+                                         => k1_funct_1(G,I) = k1_group_1(B,k1_group_1(B,k8_funct_2(u1_struct_0(A),u1_struct_0(B),E,k5_mcart_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),k4_finseq_4(k5_numbers,k3_zfmisc_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A)),H,I))),k8_funct_2(u1_struct_0(A),u1_struct_0(B),E,k6_mcart_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),k4_finseq_4(k5_numbers,k3_zfmisc_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A)),H,I)))),k8_funct_2(u1_struct_0(A),u1_struct_0(B),E,k7_mcart_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),k4_finseq_4(k5_numbers,k3_zfmisc_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A)),H,I)))) ) )
+                                   => k8_funct_2(u1_struct_0(A),u1_struct_0(B),E,k9_rlvect_1(A,F)) = k9_rlvect_1(B,G) ) ) ) ) ) ) ) ) ) ).
+
+fof(t25_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l3_vectsp_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ~ ( v4_quofield(C,A,B)
+                  & ! [D] :
+                      ( ( v1_funct_1(D)
+                        & v1_funct_2(D,u1_struct_0(B),u1_struct_0(A))
+                        & m2_relset_1(D,u1_struct_0(B),u1_struct_0(A)) )
+                     => ~ ( v4_quofield(D,B,A)
+                          & D = k2_tops_2(A,B,C) ) ) ) ) ) ) ).
+
+fof(t26_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_group_1(B)
+            & v4_group_1(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v7_vectsp_1(B)
+            & l3_vectsp_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,u1_struct_0(A),u1_struct_0(B))
+                    & m2_relset_1(D,u1_struct_0(A),u1_struct_0(B)) )
+                 => ( v4_quofield(D,A,B)
+                   => k4_pre_topc(A,B,D,k7_ideal_1(A,C)) = k7_ideal_1(B,k4_pre_topc(A,B,D,C)) ) ) ) ) ) ).
+
+fof(t27_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_group_1(B)
+            & v4_group_1(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v7_vectsp_1(B)
+            & l3_vectsp_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( ( v4_quofield(C,A,B)
+                  & v7_ideal_1(A) )
+               => v7_ideal_1(B) ) ) ) ) ).
+
+fof(t28_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A) )
+     => ? [B] :
+          ( v1_funct_1(B)
+          & v1_funct_2(B,u1_struct_0(A),u1_struct_0(k30_polynom1(np__0,A)))
+          & m2_relset_1(B,u1_struct_0(A),u1_struct_0(k30_polynom1(np__0,A)))
+          & v4_quofield(B,A,k30_polynom1(np__0,A)) ) ) ).
+
+fof(t29_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v7_seqm_3(C)
+                & v1_polynom1(C)
+                & m1_pboole(C,B) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k14_polynom1(B),u1_struct_0(A))
+                    & v2_polynom1(D,k14_polynom1(B),A)
+                    & m2_relset_1(D,k14_polynom1(B),u1_struct_0(A)) )
+                 => ! [E] :
+                      ( m2_finseq_1(E,u1_struct_0(k30_polynom1(B,A)))
+                     => ~ ( D = k9_rlvect_1(k30_polynom1(B,A),E)
+                          & ! [F] :
+                              ( ( v1_funct_1(F)
+                                & v1_funct_2(F,u1_struct_0(k30_polynom1(B,A)),u1_struct_0(A))
+                                & m2_relset_1(F,u1_struct_0(k30_polynom1(B,A)),u1_struct_0(A)) )
+                             => ~ ( ! [G] :
+                                      ( ( v1_funct_1(G)
+                                        & v1_funct_2(G,k14_polynom1(B),u1_struct_0(A))
+                                        & v2_polynom1(G,k14_polynom1(B),A)
+                                        & m2_relset_1(G,k14_polynom1(B),u1_struct_0(A)) )
+                                     => k1_funct_1(F,G) = k15_polynom1(B,A,G,C) )
+                                  & k15_polynom1(B,A,D,C) = k9_rlvect_1(A,k5_finseqop(u1_struct_0(k30_polynom1(B,A)),u1_struct_0(A),E,F)) ) ) ) ) ) ) ) ) ).
+
+fof(d6_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)))
+                & m2_relset_1(C,u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A))) )
+             => ( C = k6_hilbasis(A,B)
+              <=> ! [D] :
+                    ( ( v1_funct_1(D)
+                      & v1_funct_2(D,k5_numbers,u1_struct_0(k30_polynom1(B,A)))
+                      & v1_algseq_1(D,k30_polynom1(B,A))
+                      & m2_relset_1(D,k5_numbers,u1_struct_0(k30_polynom1(B,A))) )
+                   => ! [E] :
+                        ( ( v1_funct_1(E)
+                          & v1_funct_2(E,k14_polynom1(B),u1_struct_0(A))
+                          & v2_polynom1(E,k14_polynom1(B),A)
+                          & m2_relset_1(E,k14_polynom1(B),u1_struct_0(A)) )
+                       => ! [F] :
+                            ( ( v1_funct_1(F)
+                              & v1_funct_2(F,k14_polynom1(k1_nat_1(B,np__1)),u1_struct_0(A))
+                              & v2_polynom1(F,k14_polynom1(k1_nat_1(B,np__1)),A)
+                              & m2_relset_1(F,k14_polynom1(k1_nat_1(B,np__1)),u1_struct_0(A)) )
+                           => ! [G] :
+                                ( ( v7_seqm_3(G)
+                                  & v1_polynom1(G)
+                                  & m1_pboole(G,k1_nat_1(B,np__1)) )
+                               => ( ( F = k1_funct_1(C,D)
+                                    & E = k8_funct_2(k5_numbers,u1_struct_0(k30_polynom1(B,A)),D,k8_polynom1(G,B)) )
+                                 => k15_polynom1(k1_nat_1(B,np__1),A,F,G) = k1_funct_1(E,k7_relat_1(G,B)) ) ) ) ) ) ) ) ) ) ).
+
+fof(d7_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)),u1_struct_0(k16_polynom3(k30_polynom1(B,A))))
+                & m2_relset_1(C,u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)),u1_struct_0(k16_polynom3(k30_polynom1(B,A)))) )
+             => ( C = k7_hilbasis(A,B)
+              <=> ! [D] :
+                    ( ( v1_funct_1(D)
+                      & v1_funct_2(D,k14_polynom1(k1_nat_1(B,np__1)),u1_struct_0(A))
+                      & v2_polynom1(D,k14_polynom1(k1_nat_1(B,np__1)),A)
+                      & m2_relset_1(D,k14_polynom1(k1_nat_1(B,np__1)),u1_struct_0(A)) )
+                   => ! [E] :
+                        ( ( v1_funct_1(E)
+                          & v1_funct_2(E,k14_polynom1(B),u1_struct_0(A))
+                          & v2_polynom1(E,k14_polynom1(B),A)
+                          & m2_relset_1(E,k14_polynom1(B),u1_struct_0(A)) )
+                       => ! [F] :
+                            ( ( v1_funct_1(F)
+                              & v1_funct_2(F,k5_numbers,u1_struct_0(k30_polynom1(B,A)))
+                              & v1_algseq_1(F,k30_polynom1(B,A))
+                              & m2_relset_1(F,k5_numbers,u1_struct_0(k30_polynom1(B,A))) )
+                           => ! [G] :
+                                ( m2_subset_1(G,k1_numbers,k5_numbers)
+                               => ! [H] :
+                                    ( ( v7_seqm_3(H)
+                                      & v1_polynom1(H)
+                                      & m1_pboole(H,B) )
+                                   => ( ( F = k1_funct_1(C,D)
+                                        & E = k8_funct_2(k5_numbers,u1_struct_0(k30_polynom1(B,A)),F,G) )
+                                     => k15_polynom1(B,A,E,H) = k15_polynom1(k1_nat_1(B,np__1),A,D,k1_hilbasis(B,G,H)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t30_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)))
+             => k8_funct_2(u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)),k6_hilbasis(A,B),k8_funct_2(u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)),u1_struct_0(k16_polynom3(k30_polynom1(B,A))),k7_hilbasis(A,B),C)) = C ) ) ) ).
+
+fof(t31_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ? [C] :
+              ( v1_funct_1(C)
+              & v1_funct_2(C,u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)))
+              & m2_relset_1(C,u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)))
+              & v4_quofield(C,k16_polynom3(k30_polynom1(B,A)),k30_polynom1(k1_nat_1(B,np__1),A)) ) ) ) ).
+
+fof(t32_hilbasis,axiom,
+    $true ).
+
+fof(t33_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A) )
+     => ( v7_ideal_1(A)
+       => ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => v7_ideal_1(k30_polynom1(B,A)) ) ) ) ).
+
+fof(t34_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => v7_ideal_1(A) ) ).
+
+fof(t35_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => v7_ideal_1(k30_polynom1(B,A)) ) ) ).
+
+fof(t36_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( v3_ordinal1(B)
+            & ~ v1_finset_1(B) )
+         => ~ v7_ideal_1(k30_polynom1(B,A)) ) ) ).
+
+fof(dt_k1_hilbasis,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers)
+        & v7_seqm_3(C)
+        & v1_polynom1(C)
+        & m1_pboole(C,A) )
+     => m1_polynom1(k1_hilbasis(A,B,C),k1_nat_1(A,np__1),k14_polynom1(k1_nat_1(A,np__1))) ) ).
+
+fof(dt_k2_hilbasis,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,A)
+     => m1_polynom1(k2_hilbasis(A,B),A,k14_polynom1(A)) ) ).
+
+fof(dt_k3_hilbasis,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,A)
+        & ~ v3_struct_0(C)
+        & v2_group_1(C)
+        & l2_vectsp_1(C) )
+     => ( v1_funct_1(k3_hilbasis(A,B,C))
+        & v1_funct_2(k3_hilbasis(A,B,C),k14_polynom1(A),u1_struct_0(C))
+        & m2_relset_1(k3_hilbasis(A,B,C),k14_polynom1(A),u1_struct_0(C)) ) ) ).
+
+fof(dt_k4_hilbasis,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k16_polynom3(A)))) )
+     => ( ~ v1_xboole_0(k4_hilbasis(A,B))
+        & m1_subset_1(k4_hilbasis(A,B),k1_zfmisc_1(B)) ) ) ).
+
+fof(dt_k5_hilbasis,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => ( v1_funct_1(k5_hilbasis(A,B,C))
+        & v1_funct_2(k5_hilbasis(A,B,C),k5_numbers,u1_struct_0(A))
+        & v1_algseq_1(k5_hilbasis(A,B,C),A)
+        & m2_relset_1(k5_hilbasis(A,B,C),k5_numbers,u1_struct_0(A)) ) ) ).
+
+fof(dt_k6_hilbasis,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_funct_1(k6_hilbasis(A,B))
+        & v1_funct_2(k6_hilbasis(A,B),u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)))
+        & m2_relset_1(k6_hilbasis(A,B),u1_struct_0(k16_polynom3(k30_polynom1(B,A))),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A))) ) ) ).
+
+fof(dt_k7_hilbasis,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & ~ v3_realset2(A)
+        & l3_vectsp_1(A)
+        & m1_subset_1(B,k5_numbers) )
+     => ( v1_funct_1(k7_hilbasis(A,B))
+        & v1_funct_2(k7_hilbasis(A,B),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)),u1_struct_0(k16_polynom3(k30_polynom1(B,A))))
+        & m2_relset_1(k7_hilbasis(A,B),u1_struct_0(k30_polynom1(k1_nat_1(B,np__1),A)),u1_struct_0(k16_polynom3(k30_polynom1(B,A)))) ) ) ).
+
+fof(d4_hilbasis,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_group_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k16_polynom3(A)))) )
+         => k4_hilbasis(A,B) = a_2_0_hilbasis(A,B) ) ) ).
+
+fof(fraenkel_a_2_0_hilbasis,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v2_group_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v7_vectsp_1(B)
+        & l3_vectsp_1(B)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(k16_polynom3(B)))) )
+     => ( r2_hidden(A,a_2_0_hilbasis(B,C))
+      <=> ? [D] :
+            ( m1_struct_0(D,k16_polynom3(B),C)
+            & A = D
+            & ! [E] :
+                ( ( v1_funct_1(E)
+                  & v1_funct_2(E,k5_numbers,u1_struct_0(B))
+                  & v1_algseq_1(E,B)
+                  & m2_relset_1(E,k5_numbers,u1_struct_0(B)) )
+               => ! [F] :
+                    ( ( v1_funct_1(F)
+                      & v1_funct_2(F,k5_numbers,u1_struct_0(B))
+                      & v1_algseq_1(F,B)
+                      & m2_relset_1(F,k5_numbers,u1_struct_0(B)) )
+                   => ( ( E = D
+                        & r2_hidden(F,C) )
+                     => r1_xreal_0(k3_algseq_1(B,E),k3_algseq_1(B,F)) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

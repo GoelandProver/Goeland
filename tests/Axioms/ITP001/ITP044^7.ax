@@ -1,0 +1,1642 @@
+%------------------------------------------------------------------------------
+% File     : ITP044^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : Temporal_Logic.ax [Gau19]
+%          : HL4044^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  195 (  85 unt;  34 typ;   0 def)
+%            Number of atoms       :  863 ( 151 equ;  56 cnn)
+%            Maximal formula atoms :   12 (   4 avg)
+%            Number of connectives : 2321 (  56   ~;  28   |; 142   &;1964   @)
+%                                         (  77 <=>;  54  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   17 (   7 avg;1964 nst)
+%            Number of types       :    3 (   2 usr)
+%            Number of type conns  :  405 ( 405   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   34 (  32 usr;   5 con; 0-4 aty)
+%            Number of variables   :  677 ( 191   ^ 438   !;  42   ?; 677   :)
+%                                         (   6  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Enum_2Enum,type,
+    tyop_2Enum_2Enum: $tType ).
+
+thf(tyop_2Epair_2Eprod,type,
+    tyop_2Epair_2Eprod: $tType > $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Earithmetic_2E_2B,type,
+    c_2Earithmetic_2E_2B: tyop_2Enum_2Enum > tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Epair_2E_2C,type,
+    c_2Epair_2E_2C: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > A_27b > ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Enum_2E0,type,
+    c_2Enum_2E0: tyop_2Enum_2Enum ).
+
+thf(c_2Eprim__rec_2E_3C,type,
+    c_2Eprim__rec_2E_3C: tyop_2Enum_2Enum > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Earithmetic_2E_3C_3D,type,
+    c_2Earithmetic_2E_3C_3D: tyop_2Enum_2Enum > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2ETemporal__Logic_2EALWAYS,type,
+    c_2ETemporal__Logic_2EALWAYS: ( tyop_2Enum_2Enum > $o ) > tyop_2Enum_2Enum > $o ).
+
+thf(c_2ETemporal__Logic_2EBEFORE,type,
+    c_2ETemporal__Logic_2EBEFORE: ( tyop_2Enum_2Enum > $o ) > ( tyop_2Enum_2Enum > $o ) > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Earithmetic_2EBIT1,type,
+    c_2Earithmetic_2EBIT1: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2ECOND,type,
+    c_2Ebool_2ECOND: 
+      !>[A_27a: $tType] : ( $o > A_27a > A_27a > A_27a ) ).
+
+thf(c_2ETemporal__Logic_2EEVENTUAL,type,
+    c_2ETemporal__Logic_2EEVENTUAL: ( tyop_2Enum_2Enum > $o ) > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Ebool_2EF,type,
+    c_2Ebool_2EF: $o ).
+
+thf(c_2ETemporal__Logic_2ENEXT,type,
+    c_2ETemporal__Logic_2ENEXT: ( tyop_2Enum_2Enum > $o ) > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Earithmetic_2ENUMERAL,type,
+    c_2Earithmetic_2ENUMERAL: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2ETemporal__Logic_2ESBEFORE,type,
+    c_2ETemporal__Logic_2ESBEFORE: ( tyop_2Enum_2Enum > $o ) > ( tyop_2Enum_2Enum > $o ) > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Enum_2ESUC,type,
+    c_2Enum_2ESUC: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2ETemporal__Logic_2ESUNTIL,type,
+    c_2ETemporal__Logic_2ESUNTIL: ( tyop_2Enum_2Enum > $o ) > ( tyop_2Enum_2Enum > $o ) > tyop_2Enum_2Enum > $o ).
+
+thf(c_2ETemporal__Logic_2ESWHEN,type,
+    c_2ETemporal__Logic_2ESWHEN: ( tyop_2Enum_2Enum > $o ) > ( tyop_2Enum_2Enum > $o ) > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Ebool_2ET,type,
+    c_2Ebool_2ET: $o ).
+
+thf(c_2ETemporal__Logic_2EUNTIL,type,
+    c_2ETemporal__Logic_2EUNTIL: ( tyop_2Enum_2Enum > $o ) > ( tyop_2Enum_2Enum > $o ) > tyop_2Enum_2Enum > $o ).
+
+thf(c_2ETemporal__Logic_2EUPTO,type,
+    c_2ETemporal__Logic_2EUPTO: ( tyop_2Epair_2Eprod @ tyop_2Enum_2Enum @ ( tyop_2Epair_2Eprod @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) ) ) > $o ).
+
+thf(c_2ETemporal__Logic_2EWATCH,type,
+    c_2ETemporal__Logic_2EWATCH: ( tyop_2Enum_2Enum > $o ) > ( tyop_2Enum_2Enum > $o ) > tyop_2Enum_2Enum > $o ).
+
+thf(c_2ETemporal__Logic_2EWHEN,type,
+    c_2ETemporal__Logic_2EWHEN: ( tyop_2Enum_2Enum > $o ) > ( tyop_2Enum_2Enum > $o ) > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Earithmetic_2EZERO,type,
+    c_2Earithmetic_2EZERO: tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENEXT,axiom,
+    ! [V0P: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT @ V0P )
+      = ( ^ [V1t: tyop_2Enum_2Enum] : ( V0P @ ( c_2Enum_2ESUC @ V1t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS,axiom,
+    ! [V0P: tyop_2Enum_2Enum > $o,V1t0: tyop_2Enum_2Enum] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V0P @ V1t0 )
+    <=> ! [V2t: tyop_2Enum_2Enum] : ( V0P @ ( c_2Earithmetic_2E_2B @ V2t @ V1t0 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL,axiom,
+    ! [V0P: tyop_2Enum_2Enum > $o,V1t0: tyop_2Enum_2Enum] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V0P @ V1t0 )
+    <=> ? [V2t: tyop_2Enum_2Enum] : ( V0P @ ( c_2Earithmetic_2E_2B @ V2t @ V1t0 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWATCH,axiom,
+    ! [V0q: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o,V2t0: tyop_2Enum_2Enum] :
+      ( ( c_2ETemporal__Logic_2EWATCH @ V0q @ V1b @ V2t0 )
+    <=> ! [V3t: tyop_2Enum_2Enum] :
+          ( ( ( V0q @ V2t0 )
+            = c_2Ebool_2EF )
+          & ( ( V0q @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V3t @ V2t0 ) ) )
+          <=> ( ( V0q @ ( c_2Earithmetic_2E_2B @ V3t @ V2t0 ) )
+              | ( V1b @ ( c_2Earithmetic_2E_2B @ V3t @ V2t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUPTO,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1t1: tyop_2Enum_2Enum,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUPTO @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Epair_2Eprod @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) ) @ V0t0 @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) @ V1t1 @ V2a ) ) )
+    <=> ! [V3t2: tyop_2Enum_2Enum] :
+          ( ( ( c_2Earithmetic_2E_3C_3D @ V0t0 @ V3t2 )
+            & ( c_2Eprim__rec_2E_3C @ V3t2 @ V1t1 ) )
+         => ( V2a @ V3t2 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o,V2t0: tyop_2Enum_2Enum] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V0a @ V1b @ V2t0 )
+    <=> ? [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V2t0 )
+          & ! [V4t: tyop_2Enum_2Enum] :
+              ( ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) )
+              | ( ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) )
+               => ( V0a @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o,V2t0: tyop_2Enum_2Enum] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V0a @ V1b @ V2t0 )
+    <=> ? [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V2t0 )
+          & ! [V4t: tyop_2Enum_2Enum] :
+              ( ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) )
+              | ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) )
+              | ( V0a @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o,V2t0: tyop_2Enum_2Enum] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V0a @ V1b @ V2t0 )
+    <=> ? [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V2t0 )
+          & ( ? [V4t: tyop_2Enum_2Enum] :
+                ( ( (~) @ ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) )
+                & ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) )
+                & ( V0a @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) )
+            | ! [V5t: tyop_2Enum_2Enum] : ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V5t @ V2t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o,V2t0: tyop_2Enum_2Enum] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V0a @ V1b @ V2t0 )
+    <=> ? [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V2t0 )
+          & ? [V4t: tyop_2Enum_2Enum] :
+              ( ( (~) @ ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) )
+              & ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) )
+              & ( V0a @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o,V2t0: tyop_2Enum_2Enum] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V0a @ V1b @ V2t0 )
+    <=> ? [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V2t0 )
+          & ! [V4t: tyop_2Enum_2Enum] :
+              ( ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) )
+              | ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) )
+              | ( V0a @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) )
+          & ? [V5t: tyop_2Enum_2Enum] : ( V1b @ ( c_2Earithmetic_2E_2B @ V5t @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o,V2t0: tyop_2Enum_2Enum] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V0a @ V1b @ V2t0 )
+    <=> ? [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V2t0 )
+          & ? [V4t: tyop_2Enum_2Enum] :
+              ( ( (~) @ ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) )
+              & ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) )
+              & ( V0a @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWATCH__EXISTS,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1t0: tyop_2Enum_2Enum] :
+    ? [V2q: tyop_2Enum_2Enum > $o] : ( c_2ETemporal__Logic_2EWATCH @ V2q @ V0b @ V1t0 ) ).
+
+thf(thm_2ETemporal__Logic_2EWELL__ORDER,axiom,
+    ! [V0P: tyop_2Enum_2Enum > $o] :
+      ( ? [V1n: tyop_2Enum_2Enum] : ( V0P @ V1n )
+    <=> ? [V2m: tyop_2Enum_2Enum] :
+          ( ( V0P @ V2m )
+          & ! [V3n: tyop_2Enum_2Enum] :
+              ( ( c_2Eprim__rec_2E_3C @ V3n @ V2m )
+             => ( (~) @ ( V0P @ V3n ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWELL__ORDER__UNIQUE,axiom,
+    ! [V0m2: tyop_2Enum_2Enum,V1m1: tyop_2Enum_2Enum,V2P: tyop_2Enum_2Enum > $o] :
+      ( ( ( V2P @ V1m1 )
+        & ! [V3n: tyop_2Enum_2Enum] :
+            ( ( c_2Eprim__rec_2E_3C @ V3n @ V1m1 )
+           => ( (~) @ ( V2P @ V3n ) ) )
+        & ( V2P @ V0m2 )
+        & ! [V4n: tyop_2Enum_2Enum] :
+            ( ( c_2Eprim__rec_2E_3C @ V4n @ V0m2 )
+           => ( (~) @ ( V2P @ V4n ) ) ) )
+     => ( V1m1 = V0m2 ) ) ).
+
+thf(thm_2ETemporal__Logic_2EDELTA__CASES,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o] :
+      ( ? [V2d: tyop_2Enum_2Enum] :
+          ( ! [V3t: tyop_2Enum_2Enum] :
+              ( ( c_2Eprim__rec_2E_3C @ V3t @ V2d )
+             => ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V3t @ V0t0 ) ) ) )
+          & ( V1b @ ( c_2Earithmetic_2E_2B @ V2d @ V0t0 ) ) )
+      | ! [V4d: tyop_2Enum_2Enum] : ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4d @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__IMP,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b @ V0t0 )
+    <=> ! [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V0t0 )
+         => ! [V4t: tyop_2Enum_2Enum] :
+              ( ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+              | ( ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+               => ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__IMP,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V2a @ V1b @ V0t0 )
+    <=> ! [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V0t0 )
+         => ! [V4t: tyop_2Enum_2Enum] :
+              ( ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+              | ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+              | ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__IMP,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ! [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V0t0 )
+         => ( ? [V4t: tyop_2Enum_2Enum] :
+                ( ( (~) @ ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+                & ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+                & ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+            | ! [V5t: tyop_2Enum_2Enum] : ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V5t @ V0t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__IMP,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V2a @ V1b @ V0t0 )
+    <=> ! [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V0t0 )
+         => ? [V4t: tyop_2Enum_2Enum] :
+              ( ( (~) @ ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+              & ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+              & ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__IMP,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V2a @ V1b @ V0t0 )
+    <=> ! [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V0t0 )
+         => ( ! [V4t: tyop_2Enum_2Enum] :
+                ( ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+                | ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+                | ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+            & ? [V5t: tyop_2Enum_2Enum] : ( V1b @ ( c_2Earithmetic_2E_2B @ V5t @ V0t0 ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__IMP,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ! [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V1b @ V0t0 )
+         => ? [V4t: tyop_2Enum_2Enum] :
+              ( ( (~) @ ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+              & ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+              & ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__SIGNAL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V1a @ V0t0 )
+    <=> ! [V2t: tyop_2Enum_2Enum] : ( V1a @ ( c_2Earithmetic_2E_2B @ V2t @ V0t0 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__SIGNAL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V1a @ V0t0 )
+    <=> ? [V2t: tyop_2Enum_2Enum] : ( V1a @ ( c_2Earithmetic_2E_2B @ V2t @ V0t0 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWATCH__SIGNAL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1q: tyop_2Enum_2Enum > $o,V2b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWATCH @ V1q @ V2b @ V0t0 )
+    <=> ( ( ! [V3t: tyop_2Enum_2Enum] : ( (~) @ ( V2b @ ( c_2Earithmetic_2E_2B @ V3t @ V0t0 ) ) )
+         => ! [V4t: tyop_2Enum_2Enum] : ( (~) @ ( V1q @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+        & ! [V5d: tyop_2Enum_2Enum] :
+            ( ( ( V2b @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) )
+              & ! [V6t: tyop_2Enum_2Enum] :
+                  ( ( c_2Eprim__rec_2E_3C @ V6t @ V5d )
+                 => ( (~) @ ( V2b @ ( c_2Earithmetic_2E_2B @ V6t @ V0t0 ) ) ) ) )
+           => ( ! [V7t: tyop_2Enum_2Enum] :
+                  ( ( c_2Earithmetic_2E_3C_3D @ V7t @ V5d )
+                 => ( (~) @ ( V1q @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) ) )
+              & ! [V8t: tyop_2Enum_2Enum] : ( V1q @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V8t @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) ) ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__SIGNAL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b @ V0t0 )
+    <=> ! [V3delta: tyop_2Enum_2Enum] :
+          ( ( ! [V4t: tyop_2Enum_2Enum] :
+                ( ( c_2Eprim__rec_2E_3C @ V4t @ V3delta )
+               => ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+            & ( V1b @ ( c_2Earithmetic_2E_2B @ V3delta @ V0t0 ) ) )
+         => ( V2a @ ( c_2Earithmetic_2E_2B @ V3delta @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__SIGNAL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V2a @ V1b @ V0t0 )
+    <=> ( ( ! [V3t: tyop_2Enum_2Enum] : ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V3t @ V0t0 ) ) )
+         => ! [V4t: tyop_2Enum_2Enum] : ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+        & ! [V5d: tyop_2Enum_2Enum] :
+            ( ( ! [V6t: tyop_2Enum_2Enum] :
+                  ( ( c_2Eprim__rec_2E_3C @ V6t @ V5d )
+                 => ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V6t @ V0t0 ) ) ) )
+              & ( V1b @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) ) )
+           => ! [V7t: tyop_2Enum_2Enum] :
+                ( ( c_2Eprim__rec_2E_3C @ V7t @ V5d )
+               => ( V2a @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__SIGNAL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ! [V3delta: tyop_2Enum_2Enum] :
+          ( ( ! [V4t: tyop_2Enum_2Enum] :
+                ( ( c_2Eprim__rec_2E_3C @ V4t @ V3delta )
+               => ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+            & ( V1b @ ( c_2Earithmetic_2E_2B @ V3delta @ V0t0 ) ) )
+         => ? [V5t: tyop_2Enum_2Enum] :
+              ( ( c_2Eprim__rec_2E_3C @ V5t @ V3delta )
+              & ( V2a @ ( c_2Earithmetic_2E_2B @ V5t @ V0t0 ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__SIGNAL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V2a @ V1b @ V0t0 )
+    <=> ? [V3delta: tyop_2Enum_2Enum] :
+          ( ! [V4t: tyop_2Enum_2Enum] :
+              ( ( c_2Eprim__rec_2E_3C @ V4t @ V3delta )
+             => ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+          & ( V1b @ ( c_2Earithmetic_2E_2B @ V3delta @ V0t0 ) )
+          & ( V2a @ ( c_2Earithmetic_2E_2B @ V3delta @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__SIGNAL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V2a @ V1b @ V0t0 )
+    <=> ? [V3delta: tyop_2Enum_2Enum] :
+          ( ! [V4t: tyop_2Enum_2Enum] :
+              ( ( c_2Eprim__rec_2E_3C @ V4t @ V3delta )
+             => ( ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+                & ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) ) )
+          & ( V1b @ ( c_2Earithmetic_2E_2B @ V3delta @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__SIGNAL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ? [V3delta: tyop_2Enum_2Enum] :
+          ( ( V2a @ ( c_2Earithmetic_2E_2B @ V3delta @ V0t0 ) )
+          & ! [V4t: tyop_2Enum_2Enum] :
+              ( ( c_2Earithmetic_2E_3C_3D @ V4t @ V3delta )
+             => ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENEXT__LINORD,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT @ V1a @ V0t0 )
+    <=> ? [V2t1: tyop_2Enum_2Enum] :
+          ( ( c_2Eprim__rec_2E_3C @ V0t0 @ V2t1 )
+          & ! [V3t3: tyop_2Enum_2Enum] :
+              ( ( c_2Eprim__rec_2E_3C @ V0t0 @ V3t3 )
+             => ( c_2Earithmetic_2E_3C_3D @ V2t1 @ V3t3 ) )
+          & ( V1a @ V2t1 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__LINORD,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V1a @ V0t0 )
+    <=> ! [V2t1: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3C_3D @ V0t0 @ V2t1 )
+         => ( V1a @ V2t1 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__LINORD,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V1a @ V0t0 )
+    <=> ? [V2t1: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3C_3D @ V0t0 @ V2t1 )
+          & ( V1a @ V2t1 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__LINORD,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V2a @ V1b @ V0t0 )
+    <=> ? [V3t1: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3C_3D @ V0t0 @ V3t1 )
+          & ( V1b @ V3t1 )
+          & ( c_2ETemporal__Logic_2EUPTO @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Epair_2Eprod @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) ) @ V0t0 @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) @ V3t1 @ V2a ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__LINORD,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V2a @ V1b @ V0t0 )
+    <=> ! [V3t1: tyop_2Enum_2Enum] :
+          ( ( ( c_2Earithmetic_2E_3C_3D @ V0t0 @ V3t1 )
+            & ( (~) @ ( V1b @ V3t1 ) )
+            & ( c_2ETemporal__Logic_2EUPTO
+              @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Epair_2Eprod @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) ) @ V0t0
+                @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) @ V3t1
+                  @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1b @ V4t ) ) ) ) ) )
+         => ( V2a @ V3t1 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__LINORD,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ? [V3t1: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3C_3D @ V0t0 @ V3t1 )
+          & ( V2a @ V3t1 )
+          & ( (~) @ ( V1b @ V3t1 ) )
+          & ( c_2ETemporal__Logic_2EUPTO
+            @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Epair_2Eprod @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) ) @ V0t0
+              @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) @ V3t1
+                @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1b @ V4t ) ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__LINORD,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ! [V3t1: tyop_2Enum_2Enum] :
+          ( ( ( c_2Earithmetic_2E_3C_3D @ V0t0 @ V3t1 )
+            & ( c_2ETemporal__Logic_2EUPTO
+              @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Epair_2Eprod @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) ) @ V0t0
+                @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) @ V3t1
+                  @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V2a @ V4t ) ) ) ) ) )
+         => ( (~) @ ( V1b @ V3t1 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__LINORD,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V2a @ V1b @ V0t0 )
+    <=> ? [V3t1: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3C_3D @ V0t0 @ V3t1 )
+          & ( V2a @ V3t1 )
+          & ( V1b @ V3t1 )
+          & ( c_2ETemporal__Logic_2EUPTO
+            @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Epair_2Eprod @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) ) @ V0t0
+              @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) @ V3t1
+                @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1b @ V4t ) ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__LINORD,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b @ V0t0 )
+    <=> ! [V3t1: tyop_2Enum_2Enum] :
+          ( ( ( c_2Earithmetic_2E_3C_3D @ V0t0 @ V3t1 )
+            & ( V1b @ V3t1 )
+            & ( c_2ETemporal__Logic_2EUPTO
+              @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Epair_2Eprod @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) ) @ V0t0
+                @ ( c_2Epair_2E_2C @ tyop_2Enum_2Enum @ ( tyop_2Enum_2Enum > $o ) @ V3t1
+                  @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1b @ V4t ) ) ) ) ) )
+         => ( V2a @ V3t1 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__AS__WHEN,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V0a )
+      = ( c_2ETemporal__Logic_2EWHEN
+        @ ^ [V1t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0a @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__AS__WHEN,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V0a )
+      = ( ^ [V1t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2EWHEN
+              @ ^ [V2t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+              @ V0a
+              @ V1t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__AS__WHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2EWHEN @ V0b
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Emin_2E_3D_3D_3E @ ( V1a @ V2t ) @ ( V0b @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__AS__WHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2EWHEN
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V2t ) )
+        @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_5C_2F @ ( V1a @ V3t ) @ ( V0b @ V3t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__AS__WHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b @ V2t0 ) @ ( c_2ETemporal__Logic_2EEVENTUAL @ V0b @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__AS__NOT__WHEN,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V2a @ V1b @ V0t0 )
+    <=> ( (~)
+        @ ( c_2ETemporal__Logic_2EWHEN
+          @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V2a @ V3t ) )
+          @ V1b
+          @ V0t0 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__AS__WHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V0b )
+      = ( ^ [V2t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_2F_5C
+            @ ( c_2ETemporal__Logic_2EWHEN @ V0b
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Emin_2E_3D_3D_3E @ ( V1a @ V3t ) @ ( V0b @ V3t ) )
+              @ V2t )
+            @ ( c_2ETemporal__Logic_2EEVENTUAL @ V0b @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__AS__WHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_2F_5C
+            @ ( c_2ETemporal__Logic_2EWHEN
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V3t ) )
+              @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_5C_2F @ ( V1a @ V4t ) @ ( V0b @ V4t ) )
+              @ V2t0 )
+            @ ( c_2ETemporal__Logic_2EEVENTUAL @ V1a @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__AS__WHEN__UNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b )
+      = ( ^ [V2t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_2F_5C
+            @ ( c_2ETemporal__Logic_2EUNTIL
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V3t ) )
+              @ V1a
+              @ V2t )
+            @ ( c_2ETemporal__Logic_2EWHEN
+              @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V4t ) )
+              @ V1a
+              @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__HW,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ? [V3q: tyop_2Enum_2Enum > $o] :
+          ( ( c_2ETemporal__Logic_2EWATCH @ V3q @ V2a @ V0t0 )
+          & ! [V4t: tyop_2Enum_2Enum] :
+              ( ( V3q @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+              | ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__AS__UNTIL,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V0a )
+      = ( c_2ETemporal__Logic_2EUNTIL @ V0a
+        @ ^ [V1t: tyop_2Enum_2Enum] : c_2Ebool_2EF ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__AS__UNTIL,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V0a )
+      = ( ^ [V1t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2EUNTIL
+              @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0a @ V2t ) )
+              @ ^ [V3t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+              @ V1t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__AS__UNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2EUNTIL
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V2t ) )
+        @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V3t ) @ ( V0b @ V3t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__AS__UNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_5C_2F
+            @ ( c_2Ebool_2E_7E
+              @ ( c_2ETemporal__Logic_2EUNTIL
+                @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V3t ) )
+                @ V0b
+                @ V2t0 ) )
+            @ ( c_2ETemporal__Logic_2EALWAYS
+              @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V4t ) )
+              @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__AS__UNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b )
+      = ( ^ [V2t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_2F_5C
+            @ ( c_2ETemporal__Logic_2EUNTIL
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V3t ) )
+              @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V4t ) @ ( V0b @ V4t ) )
+              @ V2t )
+            @ ( c_2ETemporal__Logic_2EEVENTUAL @ V0b @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__AS__UNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b @ V2t0 ) @ ( c_2ETemporal__Logic_2EEVENTUAL @ V0b @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__AS__UNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2EUNTIL
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V3t ) )
+              @ V0b
+              @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__AS__BEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V0b )
+      = ( c_2ETemporal__Logic_2EBEFORE
+        @ ^ [V1t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__AS__BEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V0b )
+      = ( ^ [V1t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2EBEFORE
+              @ ^ [V2t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+              @ V0b
+              @ V1t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__AS__BEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_5C_2F
+            @ ( c_2Ebool_2E_7E
+              @ ( c_2ETemporal__Logic_2EBEFORE @ V0b
+                @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V3t ) @ ( V0b @ V3t ) )
+                @ V2t0 ) )
+            @ ( c_2ETemporal__Logic_2EALWAYS
+              @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V4t ) )
+              @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__AS__BEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_5C_2F
+            @ ( c_2Ebool_2E_7E
+              @ ( c_2ETemporal__Logic_2EBEFORE
+                @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V3t ) )
+                @ V0b
+                @ V2t0 ) )
+            @ ( c_2ETemporal__Logic_2EALWAYS @ V1a @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__AS__BEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2EBEFORE @ V0b
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V3t ) @ ( V0b @ V3t ) )
+              @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__AS__BEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2EBEFORE
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V3t ) )
+              @ V0b
+              @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__AS__BEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b @ V2t0 ) @ ( c_2ETemporal__Logic_2EEVENTUAL @ V1a @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__SWHEN__LEMMA,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( c_2Ebool_2ECOND @ $o
+      @ ( c_2Ebool_2E_21 @ tyop_2Enum_2Enum
+        @ ^ [V2t1: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_3F @ tyop_2Enum_2Enum
+            @ ^ [V3t2: tyop_2Enum_2Enum] : ( V0b @ ( c_2Earithmetic_2E_2B @ V3t2 @ V2t1 ) ) ) )
+      @ ( c_2Ebool_2E_21 @ tyop_2Enum_2Enum
+        @ ^ [V4t0: tyop_2Enum_2Enum] : ( c_2Emin_2E_3D @ $o @ ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b @ V4t0 ) @ ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b @ V4t0 ) ) )
+      @ ( c_2Ebool_2E_3F @ tyop_2Enum_2Enum
+        @ ^ [V5t1: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_21 @ tyop_2Enum_2Enum
+            @ ^ [V6t2: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b @ ( c_2Earithmetic_2E_2B @ V6t2 @ V5t1 ) ) @ ( c_2Ebool_2E_7E @ ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b @ ( c_2Earithmetic_2E_2B @ V6t2 @ V5t1 ) ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__AS__SWHEN,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V0a )
+      = ( ^ [V1t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2ESWHEN
+              @ ^ [V2t: tyop_2Enum_2Enum] : c_2Ebool_2ET
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0a @ V3t ) )
+              @ V1t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__AS__SWHEN,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V0a )
+      = ( c_2ETemporal__Logic_2ESWHEN
+        @ ^ [V1t: tyop_2Enum_2Enum] : c_2Ebool_2ET
+        @ V0a ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__AS__SWHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b )
+      = ( ^ [V2t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_5C_2F @ ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b @ V2t )
+            @ ( c_2ETemporal__Logic_2EALWAYS
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V3t ) )
+              @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__AS__NOT__SWHEN,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b @ V0t0 )
+    <=> ( (~)
+        @ ( c_2ETemporal__Logic_2ESWHEN
+          @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V2a @ V3t ) )
+          @ V1b
+          @ V0t0 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__AS__SWHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b )
+      = ( ^ [V2t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_5C_2F
+            @ ( c_2ETemporal__Logic_2ESWHEN @ V0b
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Emin_2E_3D_3D_3E @ ( V1a @ V3t ) @ ( V0b @ V3t ) )
+              @ V2t )
+            @ ( c_2ETemporal__Logic_2EALWAYS @ V1a @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__AS__SWHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_5C_2F
+            @ ( c_2ETemporal__Logic_2ESWHEN
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V3t ) )
+              @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_5C_2F @ ( V1a @ V4t ) @ ( V0b @ V4t ) )
+              @ V2t0 )
+            @ ( c_2ETemporal__Logic_2EALWAYS
+              @ ^ [V5t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2E_7E @ ( V1a @ V5t ) ) @ ( c_2Ebool_2E_7E @ ( V0b @ V5t ) ) )
+              @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__AS__NOT__SWHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2ESWHEN @ V0b
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_5C_2F @ ( V1a @ V3t ) @ ( V0b @ V3t ) )
+              @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__AS__SWHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2ESWHEN @ V0b
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Emin_2E_3D_3D_3E @ ( V1a @ V2t ) @ ( V0b @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__AS__SWHEN,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2ESWHEN
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V2t ) )
+        @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_5C_2F @ ( V1a @ V3t ) @ ( V0b @ V3t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__AS__SUNTIL,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V0a )
+      = ( ^ [V1t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2ESUNTIL
+              @ ^ [V2t: tyop_2Enum_2Enum] : c_2Ebool_2ET
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0a @ V3t ) )
+              @ V1t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__AS__SUNTIL,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V0a )
+      = ( c_2ETemporal__Logic_2ESUNTIL
+        @ ^ [V1t: tyop_2Enum_2Enum] : c_2Ebool_2ET
+        @ V0a ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__AS__SUNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b )
+      = ( ^ [V2t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_5C_2F
+            @ ( c_2ETemporal__Logic_2ESUNTIL
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V3t ) )
+              @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V4t ) @ ( V0b @ V4t ) )
+              @ V2t )
+            @ ( c_2ETemporal__Logic_2EALWAYS
+              @ ^ [V5t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V5t ) )
+              @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__AS__SUNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b )
+      = ( ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_5C_2F @ ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V0b @ V2t ) @ ( c_2ETemporal__Logic_2EALWAYS @ V1a @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__AS__SUNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b )
+      = ( ^ [V2t: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2ESUNTIL
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V3t ) )
+              @ V0b
+              @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__AS__SUNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2ESUNTIL
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V2t ) )
+        @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V3t ) @ ( V0b @ V3t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__AS__SUNTIL,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_2F_5C
+            @ ( c_2Ebool_2E_7E
+              @ ( c_2ETemporal__Logic_2ESUNTIL
+                @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V3t ) )
+                @ V0b
+                @ V2t0 ) )
+            @ ( c_2ETemporal__Logic_2EEVENTUAL @ V1a @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__AS__SBEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V0b )
+      = ( ^ [V1t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2ESBEFORE
+              @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V2t ) )
+              @ ^ [V3t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+              @ V1t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__AS__SBEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V0b )
+      = ( c_2ETemporal__Logic_2ESBEFORE @ V0b
+        @ ^ [V1t: tyop_2Enum_2Enum] : c_2Ebool_2EF ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__AS__SBEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_5C_2F
+            @ ( c_2ETemporal__Logic_2ESBEFORE @ V0b
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2E_7E @ ( V1a @ V3t ) ) @ ( V0b @ V3t ) )
+              @ V2t0 )
+            @ ( c_2ETemporal__Logic_2EALWAYS
+              @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V4t ) )
+              @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__AS__SBEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_7E
+            @ ( c_2ETemporal__Logic_2ESBEFORE
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V3t ) )
+              @ V0b
+              @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__AS__SBEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2ESBEFORE @ V0b
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2E_7E @ ( V1a @ V2t ) ) @ ( V0b @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__AS__SBEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_2F_5C
+            @ ( c_2Ebool_2E_7E
+              @ ( c_2ETemporal__Logic_2ESBEFORE
+                @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V3t ) )
+                @ V0b
+                @ V2t0 ) )
+            @ ( c_2ETemporal__Logic_2EEVENTUAL @ V0b @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__AS__SBEFORE,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b )
+      = ( ^ [V2t0: tyop_2Enum_2Enum] :
+            ( c_2Ebool_2E_5C_2F @ ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b @ V2t0 )
+            @ ( c_2ETemporal__Logic_2EALWAYS
+              @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V3t ) )
+              @ V2t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__SIMP,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( ( c_2ETemporal__Logic_2EWHEN
+          @ ^ [V2t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+          @ V0b )
+        = ( c_2ETemporal__Logic_2EALWAYS
+          @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V3t ) ) ) )
+      & ( ( c_2ETemporal__Logic_2EWHEN
+          @ ^ [V4t: tyop_2Enum_2Enum] : c_2Ebool_2ET
+          @ V0b )
+        = ( ^ [V5t: tyop_2Enum_2Enum] : c_2Ebool_2ET ) )
+      & ( ( c_2ETemporal__Logic_2EWHEN @ V1a
+          @ ^ [V6t: tyop_2Enum_2Enum] : c_2Ebool_2EF )
+        = ( ^ [V7t: tyop_2Enum_2Enum] : c_2Ebool_2ET ) )
+      & ( ( c_2ETemporal__Logic_2EWHEN @ V1a
+          @ ^ [V8t: tyop_2Enum_2Enum] : c_2Ebool_2ET )
+        = ( ^ [V9t: tyop_2Enum_2Enum] : ( V1a @ V9t ) ) )
+      & ( ( c_2ETemporal__Logic_2EWHEN @ V1a @ V1a )
+        = ( ^ [V10t: tyop_2Enum_2Enum] : c_2Ebool_2ET ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__SIMP,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( ( c_2ETemporal__Logic_2EUNTIL
+          @ ^ [V2t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+          @ V0b )
+        = ( ^ [V3t: tyop_2Enum_2Enum] : ( V0b @ V3t ) ) )
+      & ( ( c_2ETemporal__Logic_2EUNTIL
+          @ ^ [V4t: tyop_2Enum_2Enum] : c_2Ebool_2ET
+          @ V0b )
+        = ( ^ [V5t: tyop_2Enum_2Enum] : c_2Ebool_2ET ) )
+      & ( ( c_2ETemporal__Logic_2EUNTIL @ V1a
+          @ ^ [V6t: tyop_2Enum_2Enum] : c_2Ebool_2EF )
+        = ( c_2ETemporal__Logic_2EALWAYS @ V1a ) )
+      & ( ( c_2ETemporal__Logic_2EUNTIL @ V1a
+          @ ^ [V7t: tyop_2Enum_2Enum] : c_2Ebool_2ET )
+        = ( ^ [V8t: tyop_2Enum_2Enum] : c_2Ebool_2ET ) )
+      & ( ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V1a )
+        = ( ^ [V9t: tyop_2Enum_2Enum] : ( V1a @ V9t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__SIMP,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( ( c_2ETemporal__Logic_2EBEFORE
+          @ ^ [V2t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+          @ V0b )
+        = ( c_2ETemporal__Logic_2EALWAYS
+          @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V3t ) ) ) )
+      & ( ( c_2ETemporal__Logic_2EBEFORE
+          @ ^ [V4t: tyop_2Enum_2Enum] : c_2Ebool_2ET
+          @ V0b )
+        = ( ^ [V5t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V5t ) ) ) )
+      & ( ( c_2ETemporal__Logic_2EBEFORE @ V1a
+          @ ^ [V6t: tyop_2Enum_2Enum] : c_2Ebool_2EF )
+        = ( ^ [V7t: tyop_2Enum_2Enum] : c_2Ebool_2ET ) )
+      & ( ( c_2ETemporal__Logic_2EBEFORE @ V1a
+          @ ^ [V8t: tyop_2Enum_2Enum] : c_2Ebool_2ET )
+        = ( ^ [V9t: tyop_2Enum_2Enum] : c_2Ebool_2EF ) )
+      & ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V1a )
+        = ( c_2ETemporal__Logic_2EALWAYS
+          @ ^ [V10t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V10t ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__SIMP,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( ( c_2ETemporal__Logic_2ESWHEN
+          @ ^ [V2t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+          @ V0b )
+        = ( ^ [V3t: tyop_2Enum_2Enum] : c_2Ebool_2EF ) )
+      & ( ( c_2ETemporal__Logic_2ESWHEN
+          @ ^ [V4t: tyop_2Enum_2Enum] : c_2Ebool_2ET
+          @ V0b )
+        = ( c_2ETemporal__Logic_2EEVENTUAL @ V0b ) )
+      & ( ( c_2ETemporal__Logic_2ESWHEN @ V1a
+          @ ^ [V5t: tyop_2Enum_2Enum] : c_2Ebool_2EF )
+        = ( ^ [V6t: tyop_2Enum_2Enum] : c_2Ebool_2EF ) )
+      & ( ( c_2ETemporal__Logic_2ESWHEN @ V1a
+          @ ^ [V7t: tyop_2Enum_2Enum] : c_2Ebool_2ET )
+        = ( ^ [V8t: tyop_2Enum_2Enum] : ( V1a @ V8t ) ) )
+      & ( ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V1a )
+        = ( c_2ETemporal__Logic_2EEVENTUAL @ V1a ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__SIMP,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( ( c_2ETemporal__Logic_2ESUNTIL
+          @ ^ [V2t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+          @ V0b )
+        = ( ^ [V3t: tyop_2Enum_2Enum] : ( V0b @ V3t ) ) )
+      & ( ( c_2ETemporal__Logic_2ESUNTIL
+          @ ^ [V4t: tyop_2Enum_2Enum] : c_2Ebool_2ET
+          @ V0b )
+        = ( c_2ETemporal__Logic_2EEVENTUAL @ V0b ) )
+      & ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a
+          @ ^ [V5t: tyop_2Enum_2Enum] : c_2Ebool_2EF )
+        = ( ^ [V6t: tyop_2Enum_2Enum] : c_2Ebool_2EF ) )
+      & ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a
+          @ ^ [V7t: tyop_2Enum_2Enum] : c_2Ebool_2ET )
+        = ( ^ [V8t: tyop_2Enum_2Enum] : c_2Ebool_2ET ) )
+      & ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V1a )
+        = ( ^ [V9t: tyop_2Enum_2Enum] : ( V1a @ V9t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__SIMP,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( ( c_2ETemporal__Logic_2ESBEFORE
+          @ ^ [V2t: tyop_2Enum_2Enum] : c_2Ebool_2EF
+          @ V0b )
+        = ( ^ [V3t: tyop_2Enum_2Enum] : c_2Ebool_2EF ) )
+      & ( ( c_2ETemporal__Logic_2ESBEFORE
+          @ ^ [V4t: tyop_2Enum_2Enum] : c_2Ebool_2ET
+          @ V0b )
+        = ( ^ [V5t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0b @ V5t ) ) ) )
+      & ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a
+          @ ^ [V6t: tyop_2Enum_2Enum] : c_2Ebool_2EF )
+        = ( c_2ETemporal__Logic_2EEVENTUAL @ V1a ) )
+      & ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a
+          @ ^ [V7t: tyop_2Enum_2Enum] : c_2Ebool_2ET )
+        = ( ^ [V8t: tyop_2Enum_2Enum] : c_2Ebool_2EF ) )
+      & ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V1a )
+        = ( ^ [V9t: tyop_2Enum_2Enum] : c_2Ebool_2EF ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__EVENT,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2EWHEN
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V2t ) @ ( V0b @ V2t ) )
+        @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__EVENT,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2EUNTIL
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V2t ) @ ( c_2Ebool_2E_7E @ ( V0b @ V2t ) ) )
+        @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__EVENT,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2EBEFORE
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V2t ) @ ( c_2Ebool_2E_7E @ ( V0b @ V2t ) ) )
+        @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__EVENT,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2ESWHEN
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V2t ) @ ( V0b @ V2t ) )
+        @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__EVENT,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2ESUNTIL
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V2t ) @ ( c_2Ebool_2E_7E @ ( V0b @ V2t ) ) )
+        @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__EVENT,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2ESBEFORE
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V2t ) @ ( c_2Ebool_2E_7E @ ( V0b @ V2t ) ) )
+        @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2EIMMEDIATE__EVENT,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o] :
+      ( ( V1b @ V0t0 )
+     => ( ! [V2a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b @ V0t0 )
+            = ( V2a @ V0t0 ) )
+        & ! [V3a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2EUNTIL @ V3a @ V1b @ V0t0 )
+            = c_2Ebool_2ET )
+        & ! [V4a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2EBEFORE @ V4a @ V1b @ V0t0 )
+            = c_2Ebool_2EF )
+        & ! [V5a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2ESWHEN @ V5a @ V1b @ V0t0 )
+            = ( V5a @ V0t0 ) )
+        & ! [V6a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2ESUNTIL @ V6a @ V1b @ V0t0 )
+            = c_2Ebool_2ET )
+        & ! [V7a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2ESBEFORE @ V7a @ V1b @ V0t0 )
+            = c_2Ebool_2EF ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENO__EVENT,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1b @ V2t ) )
+        @ V0t0 )
+     => ( ! [V3a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2EWHEN @ V3a @ V1b @ V0t0 )
+            = c_2Ebool_2ET )
+        & ! [V4a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2EUNTIL @ V4a @ V1b @ V0t0 )
+            = ( c_2ETemporal__Logic_2EALWAYS @ V4a @ V0t0 ) )
+        & ! [V5a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2EBEFORE @ V5a @ V1b @ V0t0 )
+            = c_2Ebool_2ET )
+        & ! [V6a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2ESWHEN @ V6a @ V1b @ V0t0 )
+            = c_2Ebool_2EF )
+        & ! [V7a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2ESUNTIL @ V7a @ V1b @ V0t0 )
+            = c_2Ebool_2EF )
+        & ! [V8a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2ESBEFORE @ V8a @ V1b @ V0t0 )
+            = ( c_2ETemporal__Logic_2EEVENTUAL @ V8a @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESOME__EVENT,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o] :
+      ( ( ( c_2ETemporal__Logic_2EEVENTUAL @ V1b @ V0t0 )
+      <=> ! [V2a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b @ V0t0 )
+            = ( c_2ETemporal__Logic_2ESWHEN @ V2a @ V1b @ V0t0 ) ) )
+      & ( ( c_2ETemporal__Logic_2EEVENTUAL @ V1b @ V0t0 )
+      <=> ! [V3a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2EUNTIL @ V3a @ V1b @ V0t0 )
+            = ( c_2ETemporal__Logic_2ESUNTIL @ V3a @ V1b @ V0t0 ) ) )
+      & ( ( c_2ETemporal__Logic_2EEVENTUAL @ V1b @ V0t0 )
+      <=> ! [V4a: tyop_2Enum_2Enum > $o] :
+            ( ( c_2ETemporal__Logic_2EBEFORE @ V4a @ V1b @ V0t0 )
+            = ( c_2ETemporal__Logic_2ESBEFORE @ V4a @ V1b @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EMORE__EVENT,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b )
+        = ( c_2ETemporal__Logic_2EWHEN
+          @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V2t ) @ ( V0b @ V2t ) )
+          @ V0b ) )
+      & ( ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b )
+        = ( c_2ETemporal__Logic_2EUNTIL
+          @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V3t ) @ ( c_2Ebool_2E_7E @ ( V0b @ V3t ) ) )
+          @ V0b ) )
+      & ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b )
+        = ( c_2ETemporal__Logic_2EBEFORE
+          @ ^ [V4t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V4t ) @ ( c_2Ebool_2E_7E @ ( V0b @ V4t ) ) )
+          @ V0b ) )
+      & ( ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b )
+        = ( c_2ETemporal__Logic_2ESWHEN
+          @ ^ [V5t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V5t ) @ ( V0b @ V5t ) )
+          @ V0b ) )
+      & ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V0b )
+        = ( c_2ETemporal__Logic_2ESUNTIL
+          @ ^ [V6t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V6t ) @ ( c_2Ebool_2E_7E @ ( V0b @ V6t ) ) )
+          @ V0b ) )
+      & ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b )
+        = ( c_2ETemporal__Logic_2ESBEFORE
+          @ ^ [V7t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V7t ) @ ( c_2Ebool_2E_7E @ ( V0b @ V7t ) ) )
+          @ V0b ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENOT__NEXT,axiom,
+    ! [V0P: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT
+        @ ^ [V1t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V0P @ V1t ) ) )
+      = ( ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( c_2ETemporal__Logic_2ENEXT @ V0P @ V2t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EAND__NEXT,axiom,
+    ! [V0Q: tyop_2Enum_2Enum > $o,V1P: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1P @ V2t ) @ ( V0Q @ V2t ) ) )
+      = ( ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( c_2ETemporal__Logic_2ENEXT @ V1P @ V3t ) @ ( c_2ETemporal__Logic_2ENEXT @ V0Q @ V3t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EOR__NEXT,axiom,
+    ! [V0Q: tyop_2Enum_2Enum > $o,V1P: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_5C_2F @ ( V1P @ V2t ) @ ( V0Q @ V2t ) ) )
+      = ( ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_5C_2F @ ( c_2ETemporal__Logic_2ENEXT @ V1P @ V3t ) @ ( c_2ETemporal__Logic_2ENEXT @ V0Q @ V3t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EIMP__NEXT,axiom,
+    ! [V0Q: tyop_2Enum_2Enum > $o,V1P: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Emin_2E_3D_3D_3E @ ( V1P @ V2t ) @ ( V0Q @ V2t ) ) )
+      = ( ^ [V3t: tyop_2Enum_2Enum] : ( c_2Emin_2E_3D_3D_3E @ ( c_2ETemporal__Logic_2ENEXT @ V1P @ V3t ) @ ( c_2ETemporal__Logic_2ENEXT @ V0Q @ V3t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEQUIV__NEXT,axiom,
+    ! [V0Q: tyop_2Enum_2Enum > $o,V1P: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Emin_2E_3D @ $o @ ( V1P @ V2t ) @ ( V0Q @ V2t ) ) )
+      = ( ^ [V3t: tyop_2Enum_2Enum] : ( c_2Emin_2E_3D @ $o @ ( c_2ETemporal__Logic_2ENEXT @ V1P @ V3t ) @ ( c_2ETemporal__Logic_2ENEXT @ V0Q @ V3t ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__NEXT,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EALWAYS @ V0a ) )
+      = ( c_2ETemporal__Logic_2EALWAYS @ ( c_2ETemporal__Logic_2ENEXT @ V0a ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__NEXT,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EEVENTUAL @ V0a ) )
+      = ( c_2ETemporal__Logic_2EEVENTUAL @ ( c_2ETemporal__Logic_2ENEXT @ V0a ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__NEXT,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EWHEN @ V0a @ V1b ) )
+      = ( c_2ETemporal__Logic_2EWHEN @ ( c_2ETemporal__Logic_2ENEXT @ V0a ) @ ( c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__NEXT,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EUNTIL @ V0a @ V1b ) )
+      = ( c_2ETemporal__Logic_2EUNTIL @ ( c_2ETemporal__Logic_2ENEXT @ V0a ) @ ( c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__NEXT,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EBEFORE @ V0a @ V1b ) )
+      = ( c_2ETemporal__Logic_2EBEFORE @ ( c_2ETemporal__Logic_2ENEXT @ V0a ) @ ( c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__NEXT,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2ESWHEN @ V0a @ V1b ) )
+      = ( c_2ETemporal__Logic_2ESWHEN @ ( c_2ETemporal__Logic_2ENEXT @ V0a ) @ ( c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__NEXT,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2ESUNTIL @ V0a @ V1b ) )
+      = ( c_2ETemporal__Logic_2ESUNTIL @ ( c_2ETemporal__Logic_2ENEXT @ V0a ) @ ( c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__NEXT,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2ESBEFORE @ V0a @ V1b ) )
+      = ( c_2ETemporal__Logic_2ESBEFORE @ ( c_2ETemporal__Logic_2ENEXT @ V0a ) @ ( c_2ETemporal__Logic_2ENEXT @ V1b ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__REC,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1P: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V1P @ V0t0 )
+    <=> ( ( V1P @ V0t0 )
+        & ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EALWAYS @ V1P ) @ V0t0 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__REC,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1P: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V1P @ V0t0 )
+    <=> ( ( V1P @ V0t0 )
+        | ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EEVENTUAL @ V1P ) @ V0t0 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWATCH__REC,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1q: tyop_2Enum_2Enum > $o,V2b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWATCH @ V1q @ V2b @ V0t0 )
+    <=> ( ( (~) @ ( V1q @ V0t0 ) )
+        & ( c_2Ebool_2ECOND @ $o @ ( V2b @ V0t0 ) @ ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EALWAYS @ V1q ) @ V0t0 ) @ ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EWATCH @ V1q @ V2b ) @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__REC,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b @ V0t0 )
+      = ( c_2Ebool_2ECOND @ $o @ ( V1b @ V0t0 ) @ ( V2a @ V0t0 ) @ ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b ) @ V0t0 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__REC,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V2a @ V1b @ V0t0 )
+    <=> ( ( (~) @ ( V1b @ V0t0 ) )
+       => ( ( V2a @ V0t0 )
+          & ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EUNTIL @ V2a @ V1b ) @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__REC,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ( ( (~) @ ( V1b @ V0t0 ) )
+        & ( ( V2a @ V0t0 )
+          | ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2EBEFORE @ V2a @ V1b ) @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__REC,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V2a @ V1b @ V0t0 )
+      = ( c_2Ebool_2ECOND @ $o @ ( V1b @ V0t0 ) @ ( V2a @ V0t0 ) @ ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2ESWHEN @ V2a @ V1b ) @ V0t0 ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__REC,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V2a @ V1b @ V0t0 )
+    <=> ( ( (~) @ ( V1b @ V0t0 ) )
+       => ( ( V2a @ V0t0 )
+          & ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2ESUNTIL @ V2a @ V1b ) @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__REC,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ( ( (~) @ ( V1b @ V0t0 ) )
+        & ( ( V2a @ V0t0 )
+          | ( c_2ETemporal__Logic_2ENEXT @ ( c_2ETemporal__Logic_2ESBEFORE @ V2a @ V1b ) @ V0t0 ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__FIX,axiom,
+    ! [V0y: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( V0y
+        = ( ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( V1a @ V2t ) @ ( V0y @ ( c_2Earithmetic_2E_2B @ V2t @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) ) )
+    <=> ( ( V0y
+          = ( c_2ETemporal__Logic_2EALWAYS @ V1a ) )
+        | ( V0y
+          = ( ^ [V3t: tyop_2Enum_2Enum] : c_2Ebool_2EF ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__FIX,axiom,
+    ! [V0y: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( V0y
+        = ( ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_5C_2F @ ( V1a @ V2t ) @ ( V0y @ ( c_2Earithmetic_2E_2B @ V2t @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) ) )
+    <=> ( ( V0y
+          = ( c_2ETemporal__Logic_2EEVENTUAL @ V1a ) )
+        | ( V0y
+          = ( ^ [V3t: tyop_2Enum_2Enum] : c_2Ebool_2ET ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__FIX,axiom,
+    ! [V0y: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( V0y
+        = ( ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2ECOND @ $o @ ( V1b @ V3t ) @ ( V2a @ V3t ) @ ( V0y @ ( c_2Earithmetic_2E_2B @ V3t @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) ) )
+    <=> ( ( V0y
+          = ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b ) )
+        | ( V0y
+          = ( c_2ETemporal__Logic_2ESWHEN @ V2a @ V1b ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__FIX,axiom,
+    ! [V0y: tyop_2Enum_2Enum > $o,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( V0y
+        = ( ^ [V3t: tyop_2Enum_2Enum] : ( c_2Emin_2E_3D_3D_3E @ ( c_2Ebool_2E_7E @ ( V1b @ V3t ) ) @ ( c_2Ebool_2E_2F_5C @ ( V2a @ V3t ) @ ( V0y @ ( c_2Earithmetic_2E_2B @ V3t @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) ) ) )
+    <=> ( ( V0y
+          = ( c_2ETemporal__Logic_2EUNTIL @ V2a @ V1b ) )
+        | ( V0y
+          = ( c_2ETemporal__Logic_2ESUNTIL @ V2a @ V1b ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__FIX,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o,V2y: tyop_2Enum_2Enum > $o] :
+      ( ( V2y
+        = ( ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2E_7E @ ( V0b @ V3t ) ) @ ( c_2Ebool_2E_5C_2F @ ( V1a @ V3t ) @ ( V2y @ ( c_2Earithmetic_2E_2B @ V3t @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) ) ) )
+    <=> ( ( V2y
+          = ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b ) )
+        | ( V2y
+          = ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__INVARIANT,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b @ V0t0 )
+    <=> ? [V3J: tyop_2Enum_2Enum > $o] :
+          ( ( V3J @ V0t0 )
+          & ! [V4t: tyop_2Enum_2Enum] :
+              ( ( ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+                & ( V3J @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+             => ( V3J @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+          & ! [V5d: tyop_2Enum_2Enum] :
+              ( ( ( V1b @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) )
+                & ( V3J @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) ) )
+             => ( V2a @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__INVARIANT,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o,V2t0: tyop_2Enum_2Enum] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b @ V2t0 )
+    <=> ? [V3J: tyop_2Enum_2Enum > $o] :
+          ( ( V3J @ V2t0 )
+          & ! [V4t: tyop_2Enum_2Enum] :
+              ( ( ( V3J @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) )
+                & ( (~) @ ( V0b @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) ) )
+             => ( ( V1a @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) )
+                & ( V3J @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V4t @ V2t0 ) ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__INVARIANT,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ? [V3J: tyop_2Enum_2Enum > $o] :
+          ( ( V3J @ V0t0 )
+          & ! [V4t: tyop_2Enum_2Enum] :
+              ( ( ( V3J @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+                & ( (~) @ ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+             => ( V3J @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+          & ! [V5d: tyop_2Enum_2Enum] :
+              ( ( V3J @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) )
+             => ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__INVARIANT,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V1a @ V0t0 )
+    <=> ? [V2J: tyop_2Enum_2Enum > $o] :
+          ( ( V2J @ V0t0 )
+          & ! [V3t: tyop_2Enum_2Enum] :
+              ( ( V2J @ ( c_2Earithmetic_2E_2B @ V3t @ V0t0 ) )
+             => ( ( V1a @ ( c_2Earithmetic_2E_2B @ V3t @ V0t0 ) )
+                & ( V2J @ ( c_2Earithmetic_2E_2B @ V3t @ ( c_2Earithmetic_2E_2B @ V0t0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__INVARIANT,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V1b @ V0t0 )
+    <=> ? [V2J: tyop_2Enum_2Enum > tyop_2Enum_2Enum] :
+          ( ( c_2Eprim__rec_2E_3C @ c_2Enum_2E0 @ ( V2J @ V0t0 ) )
+          & ! [V3t: tyop_2Enum_2Enum] :
+              ( ( c_2Eprim__rec_2E_3C @ ( V2J @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V3t @ V0t0 ) ) ) @ ( V2J @ ( c_2Earithmetic_2E_2B @ V3t @ V0t0 ) ) )
+              | ( ( V2J @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V3t @ V0t0 ) ) )
+                = c_2Enum_2E0 ) )
+          & ! [V4t: tyop_2Enum_2Enum] :
+              ( ( ( c_2Eprim__rec_2E_3C @ c_2Enum_2E0 @ ( V2J @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+                & ( ( V2J @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+                  = c_2Enum_2E0 ) )
+             => ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__INVARIANT,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V2a @ V1b @ V0t0 )
+    <=> ( ? [V3J1: tyop_2Enum_2Enum > $o] :
+            ( ( V3J1 @ V0t0 )
+            & ! [V4t: tyop_2Enum_2Enum] :
+                ( ( ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+                  & ( V3J1 @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) )
+               => ( V3J1 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+            & ! [V5d: tyop_2Enum_2Enum] :
+                ( ( ( V1b @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) )
+                  & ( V3J1 @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) ) )
+               => ( V2a @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) ) ) )
+        & ? [V6J2: tyop_2Enum_2Enum > tyop_2Enum_2Enum] :
+            ( ( c_2Eprim__rec_2E_3C @ c_2Enum_2E0 @ ( V6J2 @ V0t0 ) )
+            & ! [V7t: tyop_2Enum_2Enum] :
+                ( ( c_2Eprim__rec_2E_3C @ ( V6J2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) ) @ ( V6J2 @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) )
+                | ( ( V6J2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) )
+                  = c_2Enum_2E0 ) )
+            & ! [V8t: tyop_2Enum_2Enum] :
+                ( ( ( c_2Eprim__rec_2E_3C @ c_2Enum_2E0 @ ( V6J2 @ ( c_2Earithmetic_2E_2B @ V8t @ V0t0 ) ) )
+                  & ( ( V6J2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V8t @ V0t0 ) ) )
+                    = c_2Enum_2E0 ) )
+               => ( V1b @ ( c_2Earithmetic_2E_2B @ V8t @ V0t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__INVARIANT,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V2a @ V1b @ V0t0 )
+    <=> ( ? [V3J1: tyop_2Enum_2Enum > $o] :
+            ( ( V3J1 @ V0t0 )
+            & ! [V4t: tyop_2Enum_2Enum] :
+                ( ( ( V3J1 @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+                  & ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+               => ( ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+                  & ( V3J1 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) ) ) )
+        & ? [V5J2: tyop_2Enum_2Enum > tyop_2Enum_2Enum] :
+            ( ( c_2Eprim__rec_2E_3C @ c_2Enum_2E0 @ ( V5J2 @ V0t0 ) )
+            & ! [V6t: tyop_2Enum_2Enum] :
+                ( ( c_2Eprim__rec_2E_3C @ ( V5J2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V6t @ V0t0 ) ) ) @ ( V5J2 @ ( c_2Earithmetic_2E_2B @ V6t @ V0t0 ) ) )
+                | ( ( V5J2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V6t @ V0t0 ) ) )
+                  = c_2Enum_2E0 ) )
+            & ! [V7t: tyop_2Enum_2Enum] :
+                ( ( ( c_2Eprim__rec_2E_3C @ c_2Enum_2E0 @ ( V5J2 @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) )
+                  & ( ( V5J2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) )
+                    = c_2Enum_2E0 ) )
+               => ( V1b @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__INVARIANT,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V2a @ V1b @ V0t0 )
+    <=> ( ? [V3J1: tyop_2Enum_2Enum > $o] :
+            ( ( V3J1 @ V0t0 )
+            & ! [V4t: tyop_2Enum_2Enum] :
+                ( ( ( V3J1 @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) )
+                  & ( (~) @ ( V2a @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+               => ( V3J1 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V4t @ V0t0 ) ) ) )
+            & ! [V5d: tyop_2Enum_2Enum] :
+                ( ( V3J1 @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) )
+               => ( (~) @ ( V1b @ ( c_2Earithmetic_2E_2B @ V5d @ V0t0 ) ) ) ) )
+        & ? [V6J2: tyop_2Enum_2Enum > tyop_2Enum_2Enum] :
+            ( ( c_2Eprim__rec_2E_3C @ c_2Enum_2E0 @ ( V6J2 @ V0t0 ) )
+            & ! [V7t: tyop_2Enum_2Enum] :
+                ( ( c_2Eprim__rec_2E_3C @ ( V6J2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) ) @ ( V6J2 @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) )
+                | ( ( V6J2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V7t @ V0t0 ) ) )
+                  = c_2Enum_2E0 ) )
+            & ! [V8t: tyop_2Enum_2Enum] :
+                ( ( ( c_2Eprim__rec_2E_3C @ c_2Enum_2E0 @ ( V6J2 @ ( c_2Earithmetic_2E_2B @ V8t @ V0t0 ) ) )
+                  & ( ( V6J2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V8t @ V0t0 ) ) )
+                    = c_2Enum_2E0 ) )
+               => ( V2a @ ( c_2Earithmetic_2E_2B @ V8t @ V0t0 ) ) ) ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EALWAYS__IDEM,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EALWAYS @ V0a )
+      = ( c_2ETemporal__Logic_2EALWAYS @ ( c_2ETemporal__Logic_2EALWAYS @ V0a ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EEVENTUAL__IDEM,axiom,
+    ! [V0a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EEVENTUAL @ V0a )
+      = ( c_2ETemporal__Logic_2EEVENTUAL @ ( c_2ETemporal__Logic_2EEVENTUAL @ V0a ) ) ) ).
+
+thf(thm_2ETemporal__Logic_2EWHEN__IDEM,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2EWHEN @ ( c_2ETemporal__Logic_2EWHEN @ V1a @ V0b ) @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2EUNTIL__IDEM,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2EUNTIL @ ( c_2ETemporal__Logic_2EUNTIL @ V1a @ V0b ) @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2EBEFORE__IDEM,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2EBEFORE @ ( c_2ETemporal__Logic_2EBEFORE @ V1a @ V0b ) @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESWHEN__IDEM,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2ESWHEN @ ( c_2ETemporal__Logic_2ESWHEN @ V1a @ V0b ) @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESUNTIL__IDEM,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2ESUNTIL @ ( c_2ETemporal__Logic_2ESUNTIL @ V1a @ V0b ) @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2ESBEFORE__IDEM,axiom,
+    ! [V0b: tyop_2Enum_2Enum > $o,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b )
+      = ( c_2ETemporal__Logic_2ESBEFORE @ ( c_2ETemporal__Logic_2ESBEFORE @ V1a @ V0b ) @ V0b ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENOT__ALWAYS,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( (~) @ ( c_2ETemporal__Logic_2EALWAYS @ V1a @ V0t0 ) )
+    <=> ( c_2ETemporal__Logic_2EEVENTUAL
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V2t ) )
+        @ V0t0 ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENOT__EVENTUAL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1a: tyop_2Enum_2Enum > $o] :
+      ( ( (~) @ ( c_2ETemporal__Logic_2EEVENTUAL @ V1a @ V0t0 ) )
+    <=> ( c_2ETemporal__Logic_2EALWAYS
+        @ ^ [V2t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V1a @ V2t ) )
+        @ V0t0 ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENOT__WHEN,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( (~) @ ( c_2ETemporal__Logic_2EWHEN @ V2a @ V1b @ V0t0 ) )
+    <=> ( c_2ETemporal__Logic_2ESWHEN
+        @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V2a @ V3t ) )
+        @ V1b
+        @ V0t0 ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENOT__UNTIL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( (~) @ ( c_2ETemporal__Logic_2EUNTIL @ V2a @ V1b @ V0t0 ) )
+    <=> ( c_2ETemporal__Logic_2ESBEFORE
+        @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V2a @ V3t ) )
+        @ V1b
+        @ V0t0 ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENOT__BEFORE,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( (~) @ ( c_2ETemporal__Logic_2EBEFORE @ V2a @ V1b @ V0t0 ) )
+    <=> ( c_2ETemporal__Logic_2ESUNTIL
+        @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V2a @ V3t ) )
+        @ V1b
+        @ V0t0 ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENOT__SWHEN,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( (~) @ ( c_2ETemporal__Logic_2ESWHEN @ V2a @ V1b @ V0t0 ) )
+    <=> ( c_2ETemporal__Logic_2EWHEN
+        @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V2a @ V3t ) )
+        @ V1b
+        @ V0t0 ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENOT__SUNTIL,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( (~) @ ( c_2ETemporal__Logic_2ESUNTIL @ V2a @ V1b @ V0t0 ) )
+    <=> ( c_2ETemporal__Logic_2EBEFORE
+        @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V2a @ V3t ) )
+        @ V1b
+        @ V0t0 ) ) ).
+
+thf(thm_2ETemporal__Logic_2ENOT__SBEFORE,axiom,
+    ! [V0t0: tyop_2Enum_2Enum,V1b: tyop_2Enum_2Enum > $o,V2a: tyop_2Enum_2Enum > $o] :
+      ( ( (~) @ ( c_2ETemporal__Logic_2ESBEFORE @ V2a @ V1b @ V0t0 ) )
+    <=> ( c_2ETemporal__Logic_2EUNTIL
+        @ ^ [V3t: tyop_2Enum_2Enum] : ( c_2Ebool_2E_7E @ ( V2a @ V3t ) )
+        @ V1b
+        @ V0t0 ) ) ).
+
+%------------------------------------------------------------------------------

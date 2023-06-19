@@ -1,0 +1,363 @@
+%------------------------------------------------------------------------------
+% File     : SET007+245 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Finite Sums of Vectors in Vector Space
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : vectsp_3 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   35 (  23 unt;   0 def)
+%            Number of atoms       :  211 (  23 equ)
+%            Maximal formula atoms :   26 (   6 avg)
+%            Number of connectives :  194 (  18   ~;   0   |; 121   &)
+%                                         (   0 <=>;  55  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   19 (   5 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   18 (  16 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   16 (  16 usr;   2 con; 0-4 aty)
+%            Number of variables   :   49 (  49   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_vectsp_3,axiom,
+    $true ).
+
+fof(t2_vectsp_3,axiom,
+    $true ).
+
+fof(t3_vectsp_3,axiom,
+    $true ).
+
+fof(t4_vectsp_3,axiom,
+    $true ).
+
+fof(t5_vectsp_3,axiom,
+    $true ).
+
+fof(t6_vectsp_3,axiom,
+    $true ).
+
+fof(t7_vectsp_3,axiom,
+    $true ).
+
+fof(t8_vectsp_3,axiom,
+    $true ).
+
+fof(t9_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v3_rlvect_1(C)
+                & v4_rlvect_1(C)
+                & v5_rlvect_1(C)
+                & v6_rlvect_1(C)
+                & v12_vectsp_1(C,A)
+                & l4_vectsp_1(C,A) )
+             => ! [D] :
+                  ( m2_finseq_1(D,u1_struct_0(C))
+                 => ! [E] :
+                      ( m2_finseq_1(E,u1_struct_0(C))
+                     => ( ( k3_finseq_1(D) = k3_finseq_1(E)
+                          & ! [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                             => ! [G] :
+                                  ( m1_subset_1(G,u1_struct_0(C))
+                                 => ( ( r2_hidden(F,k1_relat_1(D))
+                                      & G = k1_funct_1(E,F) )
+                                   => k1_funct_1(D,F) = k6_vectsp_1(A,C,B,G) ) ) ) )
+                       => k9_rlvect_1(C,D) = k6_vectsp_1(A,C,B,k9_rlvect_1(C,E)) ) ) ) ) ) ) ).
+
+fof(t10_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v3_rlvect_1(C)
+                & v4_rlvect_1(C)
+                & v5_rlvect_1(C)
+                & v6_rlvect_1(C)
+                & v12_vectsp_1(C,A)
+                & l4_vectsp_1(C,A) )
+             => ! [D] :
+                  ( m2_finseq_1(D,u1_struct_0(C))
+                 => ! [E] :
+                      ( m2_finseq_1(E,u1_struct_0(C))
+                     => ( ( k3_finseq_1(D) = k3_finseq_1(E)
+                          & ! [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                             => ( r2_hidden(F,k1_relat_1(D))
+                               => k1_funct_1(E,F) = k6_vectsp_1(A,C,B,k4_finseq_4(k5_numbers,u1_struct_0(C),D,F)) ) ) )
+                       => k9_rlvect_1(C,E) = k6_vectsp_1(A,C,B,k9_rlvect_1(C,D)) ) ) ) ) ) ) ).
+
+fof(t11_vectsp_3,axiom,
+    $true ).
+
+fof(t12_vectsp_3,axiom,
+    $true ).
+
+fof(t13_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_finseq_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m2_finseq_1(D,u1_struct_0(B))
+                 => ! [E] :
+                      ( m2_finseq_1(E,u1_struct_0(B))
+                     => ( ( k3_finseq_1(C) = k3_finseq_1(D)
+                          & k3_finseq_1(C) = k3_finseq_1(E)
+                          & ! [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                             => ( r2_hidden(F,k1_relat_1(C))
+                               => k1_funct_1(E,F) = k6_rlvect_1(B,k4_finseq_4(k5_numbers,u1_struct_0(B),C,F),k4_finseq_4(k5_numbers,u1_struct_0(B),D,F)) ) ) )
+                       => k9_rlvect_1(B,E) = k6_rlvect_1(B,k9_rlvect_1(B,C),k9_rlvect_1(B,D)) ) ) ) ) ) ) ).
+
+fof(t14_vectsp_3,axiom,
+    $true ).
+
+fof(t15_vectsp_3,axiom,
+    $true ).
+
+fof(t16_vectsp_3,axiom,
+    $true ).
+
+fof(t17_vectsp_3,axiom,
+    $true ).
+
+fof(t18_vectsp_3,axiom,
+    $true ).
+
+fof(t19_vectsp_3,axiom,
+    $true ).
+
+fof(t20_vectsp_3,axiom,
+    $true ).
+
+fof(t21_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v3_rlvect_1(C)
+                & v4_rlvect_1(C)
+                & v5_rlvect_1(C)
+                & v6_rlvect_1(C)
+                & v12_vectsp_1(C,A)
+                & l4_vectsp_1(C,A) )
+             => k6_vectsp_1(A,C,B,k9_rlvect_1(C,k6_finseq_1(u1_struct_0(C)))) = k1_rlvect_1(C) ) ) ) ).
+
+fof(t22_vectsp_3,axiom,
+    $true ).
+
+fof(t23_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v3_rlvect_1(C)
+                & v4_rlvect_1(C)
+                & v5_rlvect_1(C)
+                & v6_rlvect_1(C)
+                & v12_vectsp_1(C,A)
+                & l4_vectsp_1(C,A) )
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(C))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(C))
+                     => k6_vectsp_1(A,C,B,k9_rlvect_1(C,k2_finseq_4(u1_struct_0(C),D,E))) = k4_rlvect_1(C,k6_vectsp_1(A,C,B,D),k6_vectsp_1(A,C,B,E)) ) ) ) ) ) ).
+
+fof(t24_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v3_rlvect_1(C)
+                & v4_rlvect_1(C)
+                & v5_rlvect_1(C)
+                & v6_rlvect_1(C)
+                & v12_vectsp_1(C,A)
+                & l4_vectsp_1(C,A) )
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(C))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(C))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(C))
+                         => k6_vectsp_1(A,C,B,k9_rlvect_1(C,k3_finseq_4(u1_struct_0(C),D,E,F))) = k4_rlvect_1(C,k4_rlvect_1(C,k6_vectsp_1(A,C,B,D),k6_vectsp_1(A,C,B,E)),k6_vectsp_1(A,C,B,F)) ) ) ) ) ) ) ).
+
+fof(t25_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & l1_rlvect_1(A) )
+     => k5_rlvect_1(A,k9_rlvect_1(A,k6_finseq_1(u1_struct_0(A)))) = k1_rlvect_1(A) ) ).
+
+fof(t26_vectsp_3,axiom,
+    $true ).
+
+fof(t27_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & l1_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k5_rlvect_1(A,k9_rlvect_1(A,k2_finseq_4(u1_struct_0(A),B,C))) = k6_rlvect_1(A,k5_rlvect_1(A,B),C) ) ) ) ).
+
+fof(t28_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & l1_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => k5_rlvect_1(A,k9_rlvect_1(A,k3_finseq_4(u1_struct_0(A),B,C,D))) = k6_rlvect_1(A,k6_rlvect_1(A,k5_rlvect_1(A,B),C),D) ) ) ) ) ).
+
+fof(t29_vectsp_3,axiom,
+    $true ).
+
+fof(t30_vectsp_3,axiom,
+    $true ).
+
+fof(t31_vectsp_3,axiom,
+    $true ).
+
+fof(t32_vectsp_3,axiom,
+    $true ).
+
+fof(t33_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & l1_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( k9_rlvect_1(A,k2_finseq_4(u1_struct_0(A),B,k5_rlvect_1(A,B))) = k1_rlvect_1(A)
+            & k9_rlvect_1(A,k2_finseq_4(u1_struct_0(A),k5_rlvect_1(A,B),B)) = k1_rlvect_1(A) ) ) ) ).
+
+fof(t34_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & l1_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( k9_rlvect_1(A,k2_finseq_4(u1_struct_0(A),B,k5_rlvect_1(A,C))) = k6_rlvect_1(A,B,C)
+                & k9_rlvect_1(A,k2_finseq_4(u1_struct_0(A),k5_rlvect_1(A,C),B)) = k6_rlvect_1(A,B,C) ) ) ) ) ).
+
+fof(t35_vectsp_3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & l1_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( k9_rlvect_1(A,k2_finseq_4(u1_struct_0(A),k5_rlvect_1(A,B),k5_rlvect_1(A,C))) = k5_rlvect_1(A,k4_rlvect_1(A,B,C))
+                & k9_rlvect_1(A,k2_finseq_4(u1_struct_0(A),k5_rlvect_1(A,C),k5_rlvect_1(A,B))) = k5_rlvect_1(A,k4_rlvect_1(A,B,C)) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

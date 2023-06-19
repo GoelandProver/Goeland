@@ -1,0 +1,51 @@
+%--------------------------------------------------------------------------
+% File     : LAT001-0 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Lattice Theory
+% Axioms   : Lattice theory (equality) axioms
+% Version  : [McC88] (equality) axioms.
+% English  :
+
+% Refs     : [Bum65] Bumcroft (1965), Proceedings of the Glasgow Mathematic
+%          : [McC88] McCune (1988), Challenge Equality Problems in Lattice
+%          : [Wos88] Wos (1988), Automated Reasoning - 33 Basic Research Pr
+% Source   : [McC88]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :    8 (   8 unt;   0 nHn;   0 RR)
+%            Number of literals    :    8 (   8 equ;   0 neg)
+%            Maximal clause size   :    1 (   1 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    1 (   0 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    2 (   2 usr;   0 con; 2-2 aty)
+%            Number of variables   :   16 (   2 sgn)
+% SPC      : 
+
+% Comments :
+%--------------------------------------------------------------------------
+%----The following 8 clauses characterise lattices
+cnf(idempotence_of_meet,axiom,
+    meet(X,X) = X ).
+
+cnf(idempotence_of_join,axiom,
+    join(X,X) = X ).
+
+cnf(absorption1,axiom,
+    meet(X,join(X,Y)) = X ).
+
+cnf(absorption2,axiom,
+    join(X,meet(X,Y)) = X ).
+
+cnf(commutativity_of_meet,axiom,
+    meet(X,Y) = meet(Y,X) ).
+
+cnf(commutativity_of_join,axiom,
+    join(X,Y) = join(Y,X) ).
+
+cnf(associativity_of_meet,axiom,
+    meet(meet(X,Y),Z) = meet(X,meet(Y,Z)) ).
+
+cnf(associativity_of_join,axiom,
+    join(join(X,Y),Z) = join(X,join(Y,Z)) ).
+
+%--------------------------------------------------------------------------

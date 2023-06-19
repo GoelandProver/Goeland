@@ -1,0 +1,1079 @@
+%------------------------------------------------------------------------------
+% File     : SET007+177 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Definitions and Basic Properties of Measurable Functions
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : mesfunc1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   85 (  10 unt;   0 def)
+%            Number of atoms       :  630 (  73 equ)
+%            Maximal formula atoms :   15 (   7 avg)
+%            Number of connectives :  637 (  92   ~;   0   |; 251   &)
+%                                         (  27 <=>; 267  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   9 avg)
+%            Maximal term depth    :    7 (   1 avg)
+%            Number of predicates  :   26 (  24 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   59 (  59 usr;  14 con; 0-4 aty)
+%            Number of variables   :  296 ( 287   !;   9   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_mesfunc1,axiom,
+    ( ~ v1_xboole_0(k1_mesfunc1)
+    & v1_membered(k1_mesfunc1)
+    & v2_membered(k1_mesfunc1) ) ).
+
+fof(fc2_mesfunc1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( ~ v1_xboole_0(k3_mesfunc1(k1_nat_1(A,np__1)))
+        & v1_membered(k3_mesfunc1(k1_nat_1(A,np__1)))
+        & v2_membered(k3_mesfunc1(k1_nat_1(A,np__1)))
+        & v3_membered(k3_mesfunc1(k1_nat_1(A,np__1))) ) ) ).
+
+fof(d1_mesfunc1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k6_supinf_1))
+     => ( A = k1_mesfunc1
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ( r2_hidden(B,A)
+            <=> ? [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                  & B = k1_real_1(C) ) ) ) ) ) ).
+
+fof(t1_mesfunc1,axiom,
+    r2_tarski(k5_numbers,k1_mesfunc1) ).
+
+fof(t2_mesfunc1,axiom,
+    k4_numbers = k4_subset_1(k1_numbers,k1_mesfunc1,k5_numbers) ).
+
+fof(t3_mesfunc1,axiom,
+    r2_tarski(k5_numbers,k4_numbers) ).
+
+fof(d2_mesfunc1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_numbers))
+         => ( B = k3_mesfunc1(A)
+          <=> ! [C] :
+                ( v1_rat_1(C)
+               => ( r2_hidden(C,B)
+                <=> ? [D] :
+                      ( v1_int_1(D)
+                      & C = k7_xcmplx_0(D,A) ) ) ) ) ) ) ).
+
+fof(t4_mesfunc1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => r2_tarski(k2_mesfunc1,k3_mesfunc1(k1_nat_1(A,np__1))) ) ).
+
+fof(t5_mesfunc1,axiom,
+    r2_tarski(k5_numbers,k3_numbers) ).
+
+fof(d3_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ( D = k5_mesfunc1(A,B,C)
+                  <=> ( k1_relat_1(D) = k4_xboole_0(k3_xboole_0(k1_relat_1(B),k1_relat_1(C)),k4_subset_1(A,k5_subset_1(A,k3_funct_2(A,k3_supinf_1,B,k11_supinf_1(k5_supinf_1)),k3_funct_2(A,k3_supinf_1,C,k11_supinf_1(k4_supinf_1))),k5_subset_1(A,k3_funct_2(A,k3_supinf_1,B,k11_supinf_1(k4_supinf_1)),k3_funct_2(A,k3_supinf_1,C,k11_supinf_1(k5_supinf_1)))))
+                      & ! [E] :
+                          ( m1_subset_1(E,A)
+                         => ( r2_hidden(E,k1_relat_1(D))
+                           => k4_mesfunc1(A,D,E) = k2_supinf_2(k4_mesfunc1(A,B,E),k4_mesfunc1(A,C,E)) ) ) ) ) ) ) ) ) ).
+
+fof(d4_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ( D = k6_mesfunc1(A,B,C)
+                  <=> ( k1_relat_1(D) = k4_xboole_0(k3_xboole_0(k1_relat_1(B),k1_relat_1(C)),k4_subset_1(A,k5_subset_1(A,k3_funct_2(A,k3_supinf_1,B,k11_supinf_1(k4_supinf_1)),k3_funct_2(A,k3_supinf_1,C,k11_supinf_1(k4_supinf_1))),k5_subset_1(A,k3_funct_2(A,k3_supinf_1,B,k11_supinf_1(k5_supinf_1)),k3_funct_2(A,k3_supinf_1,C,k11_supinf_1(k5_supinf_1)))))
+                      & ! [E] :
+                          ( m1_subset_1(E,A)
+                         => ( r2_hidden(E,k1_relat_1(D))
+                           => k4_mesfunc1(A,D,E) = k4_supinf_2(k4_mesfunc1(A,B,E),k4_mesfunc1(A,C,E)) ) ) ) ) ) ) ) ) ).
+
+fof(d5_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ( D = k7_mesfunc1(A,B,C)
+                  <=> ( k1_relat_1(D) = k3_xboole_0(k1_relat_1(B),k1_relat_1(C))
+                      & ! [E] :
+                          ( m1_subset_1(E,A)
+                         => ( r2_hidden(E,k1_relat_1(D))
+                           => k4_mesfunc1(A,D,E) = k2_extreal1(k4_mesfunc1(A,B,E),k4_mesfunc1(A,C,E)) ) ) ) ) ) ) ) ) ).
+
+fof(d6_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ( D = k8_mesfunc1(A,B,C)
+                  <=> ( k1_relat_1(D) = k1_relat_1(B)
+                      & ! [E] :
+                          ( m1_subset_1(E,A)
+                         => ( r2_hidden(E,k1_relat_1(D))
+                           => k4_mesfunc1(A,D,E) = k2_extreal1(k1_measure6(C),k4_mesfunc1(A,B,E)) ) ) ) ) ) ) ) ) ).
+
+fof(t6_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ( C != np__0
+               => ! [D] :
+                    ( m1_subset_1(D,A)
+                   => ( r2_hidden(D,k1_relat_1(k8_mesfunc1(A,B,C)))
+                     => k4_mesfunc1(A,B,D) = k3_extreal1(k4_mesfunc1(A,k8_mesfunc1(A,B,C),D),k1_measure6(C)) ) ) ) ) ) ) ).
+
+fof(d7_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ( C = k9_mesfunc1(A,B)
+              <=> ( k1_relat_1(C) = k1_relat_1(B)
+                  & ! [D] :
+                      ( m1_subset_1(D,A)
+                     => ( r2_hidden(D,k1_relat_1(C))
+                       => k4_mesfunc1(A,C,D) = k3_supinf_2(k4_mesfunc1(A,B,D)) ) ) ) ) ) ) ) ).
+
+fof(d8_mesfunc1,axiom,
+    k10_mesfunc1 = np__1 ).
+
+fof(d9_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ( D = k11_mesfunc1(A,B,C)
+                  <=> ( k1_relat_1(D) = k4_xboole_0(k1_relat_1(B),k3_funct_2(A,k3_supinf_1,B,k11_supinf_1(k1_supinf_2)))
+                      & ! [E] :
+                          ( m1_subset_1(E,A)
+                         => ( r2_hidden(E,k1_relat_1(D))
+                           => k4_mesfunc1(A,D,E) = k3_extreal1(k1_measure6(C),k4_mesfunc1(A,B,E)) ) ) ) ) ) ) ) ) ).
+
+fof(t7_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ( k1_relat_1(k11_mesfunc1(A,B,np__1)) = k4_xboole_0(k1_relat_1(B),k3_funct_2(A,k3_supinf_1,B,k11_supinf_1(k1_supinf_2)))
+            & ! [C] :
+                ( m1_subset_1(C,A)
+               => ( r2_hidden(C,k1_relat_1(k11_mesfunc1(A,B,np__1)))
+                 => k4_mesfunc1(A,k11_mesfunc1(A,B,np__1),C) = k3_extreal1(k10_mesfunc1,k4_mesfunc1(A,B,C)) ) ) ) ) ) ).
+
+fof(d10_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ( C = k12_mesfunc1(A,B)
+              <=> ( k1_relat_1(C) = k1_relat_1(B)
+                  & ! [D] :
+                      ( m1_subset_1(D,A)
+                     => ( r2_hidden(D,k1_relat_1(C))
+                       => k4_mesfunc1(A,C,D) = k4_extreal1(k4_mesfunc1(A,B,D)) ) ) ) ) ) ) ) ).
+
+fof(t8_mesfunc1,axiom,
+    $true ).
+
+fof(t9_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => k5_mesfunc1(A,B,C) = k5_mesfunc1(A,C,B) ) ) ) ).
+
+fof(t10_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => k7_mesfunc1(A,B,C) = k7_mesfunc1(A,C,B) ) ) ) ).
+
+fof(t11_mesfunc1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ? [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+          & r1_xreal_0(A,B) ) ) ).
+
+fof(t12_mesfunc1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ? [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+          & r1_xreal_0(k1_real_1(B),A) ) ) ).
+
+fof(t13_mesfunc1,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ~ ( ~ r1_xreal_0(B,A)
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => r1_xreal_0(k6_xcmplx_0(B,A),k6_real_1(np__1,k1_nat_1(C,np__1))) ) ) ) ) ).
+
+fof(t14_mesfunc1,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r1_xreal_0(k6_xcmplx_0(A,k6_real_1(np__1,k1_nat_1(C,np__1))),B) )
+           => r1_xreal_0(A,B) ) ) ) ).
+
+fof(t15_mesfunc1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ( ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ~ r1_supinf_1(A,k1_measure6(B)) )
+       => A = k4_supinf_1 ) ) ).
+
+fof(t16_mesfunc1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ( ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ~ r1_supinf_1(k1_measure6(B),A) )
+       => A = k5_supinf_1 ) ) ).
+
+fof(d11_mesfunc1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( r1_mesfunc1(A,B,C)
+        <=> r2_hidden(C,B) ) ) ).
+
+fof(t17_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(C)
+        & v1_prob_1(C,A)
+        & v1_measure1(C,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ( r1_mesfunc1(A,C,B)
+      <=> ! [D] :
+            ( m3_measure1(D,A,C)
+           => r2_measure1(A,C,D,B) ) ) ) ).
+
+fof(d12_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(A))
+                 => ( D = k15_mesfunc1(A,B,C)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,A)
+                       => ( r2_hidden(E,D)
+                        <=> ( r2_hidden(E,k1_relat_1(B))
+                            & ? [F] :
+                                ( m1_subset_1(F,k3_supinf_1)
+                                & F = k4_mesfunc1(A,B,E)
+                                & ~ r1_supinf_1(C,F) ) ) ) ) ) ) ) ) ) ).
+
+fof(d13_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(A))
+                 => ( D = k16_mesfunc1(A,B,C)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,A)
+                       => ( r2_hidden(E,D)
+                        <=> ( r2_hidden(E,k1_relat_1(B))
+                            & ? [F] :
+                                ( m1_subset_1(F,k3_supinf_1)
+                                & F = k4_mesfunc1(A,B,E)
+                                & r1_supinf_1(F,C) ) ) ) ) ) ) ) ) ) ).
+
+fof(d14_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(A))
+                 => ( D = k17_mesfunc1(A,B,C)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,A)
+                       => ( r2_hidden(E,D)
+                        <=> ( r2_hidden(E,k1_relat_1(B))
+                            & ? [F] :
+                                ( m1_subset_1(F,k3_supinf_1)
+                                & F = k4_mesfunc1(A,B,E)
+                                & ~ r1_supinf_1(F,C) ) ) ) ) ) ) ) ) ) ).
+
+fof(d15_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(A))
+                 => ( D = k18_mesfunc1(A,B,C)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,A)
+                       => ( r2_hidden(E,D)
+                        <=> ( r2_hidden(E,k1_relat_1(B))
+                            & ? [F] :
+                                ( m1_subset_1(F,k3_supinf_1)
+                                & F = k4_mesfunc1(A,B,E)
+                                & r1_supinf_1(C,F) ) ) ) ) ) ) ) ) ) ).
+
+fof(d16_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(A))
+                 => ( D = k19_mesfunc1(A,B,C)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,A)
+                       => ( r2_hidden(E,D)
+                        <=> ( r2_hidden(E,k1_relat_1(B))
+                            & ? [F] :
+                                ( m1_subset_1(F,k3_supinf_1)
+                                & F = k4_mesfunc1(A,B,E)
+                                & C = F ) ) ) ) ) ) ) ) ) ).
+
+fof(t18_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C,D] :
+              ( m1_subset_1(D,k3_supinf_1)
+             => ( r1_tarski(C,k1_relat_1(B))
+               => k3_xboole_0(C,k18_mesfunc1(A,B,D)) = k4_xboole_0(C,k3_xboole_0(C,k15_mesfunc1(A,B,D))) ) ) ) ) ).
+
+fof(t19_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C,D] :
+              ( m1_subset_1(D,k3_supinf_1)
+             => ( r1_tarski(C,k1_relat_1(B))
+               => k3_xboole_0(C,k17_mesfunc1(A,B,D)) = k4_xboole_0(C,k3_xboole_0(C,k16_mesfunc1(A,B,D))) ) ) ) ) ).
+
+fof(t20_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C,D] :
+              ( m1_subset_1(D,k3_supinf_1)
+             => ( r1_tarski(C,k1_relat_1(B))
+               => k3_xboole_0(C,k16_mesfunc1(A,B,D)) = k4_xboole_0(C,k3_xboole_0(C,k17_mesfunc1(A,B,D))) ) ) ) ) ).
+
+fof(t21_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C,D] :
+              ( m1_subset_1(D,k3_supinf_1)
+             => ( r1_tarski(C,k1_relat_1(B))
+               => k3_xboole_0(C,k15_mesfunc1(A,B,D)) = k4_xboole_0(C,k3_xboole_0(C,k18_mesfunc1(A,B,D))) ) ) ) ) ).
+
+fof(t22_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C,D] :
+              ( m1_subset_1(D,k3_supinf_1)
+             => k3_xboole_0(C,k19_mesfunc1(A,B,D)) = k3_xboole_0(k3_xboole_0(C,k18_mesfunc1(A,B,D)),k16_mesfunc1(A,B,D)) ) ) ) ).
+
+fof(t23_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,B)
+                & m2_relset_1(C,k5_numbers,B) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ! [E,F] :
+                      ( m1_subset_1(F,k1_numbers)
+                     => ( ! [G] :
+                            ( m2_subset_1(G,k1_numbers,k5_numbers)
+                           => k8_funct_2(k5_numbers,B,C,G) = k3_xboole_0(E,k17_mesfunc1(A,D,k1_measure6(k5_real_1(F,k6_real_1(np__1,k1_nat_1(G,np__1)))))) )
+                       => k3_xboole_0(E,k18_mesfunc1(A,D,k1_measure6(F))) = k1_measure2(A,B,k1_measure3(A,B,C)) ) ) ) ) ) ) ).
+
+fof(t24_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_prob_1(C,A)
+                & v1_measure1(C,A)
+                & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A))) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k5_numbers,C)
+                    & m2_relset_1(D,k5_numbers,C) )
+                 => ! [E,F] :
+                      ( v1_xreal_0(F)
+                     => ( ! [G] :
+                            ( m2_subset_1(G,k1_numbers,k5_numbers)
+                           => k8_funct_2(k5_numbers,C,D,G) = k3_xboole_0(E,k15_mesfunc1(A,B,k1_measure6(k2_xcmplx_0(F,k6_real_1(np__1,k1_nat_1(G,np__1)))))) )
+                       => k3_xboole_0(E,k16_mesfunc1(A,B,k1_measure6(F))) = k1_measure2(A,C,k1_measure3(A,C,D)) ) ) ) ) ) ) ).
+
+fof(t25_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & m2_relset_1(B,A,k3_supinf_1) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_prob_1(C,A)
+                & v1_measure1(C,A)
+                & m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A))) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k5_numbers,C)
+                    & m2_relset_1(D,k5_numbers,C) )
+                 => ! [E,F] :
+                      ( v1_xreal_0(F)
+                     => ( ! [G] :
+                            ( m2_subset_1(G,k1_numbers,k5_numbers)
+                           => k8_funct_2(k5_numbers,C,D,G) = k3_xboole_0(E,k16_mesfunc1(A,B,k1_measure6(k6_xcmplx_0(F,k6_real_1(np__1,k1_nat_1(G,np__1)))))) )
+                       => k3_xboole_0(E,k15_mesfunc1(A,B,k1_measure6(F))) = k2_measure2(A,C,k1_measure3(A,C,D)) ) ) ) ) ) ) ).
+
+fof(t26_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,B)
+                & m2_relset_1(C,k5_numbers,B) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ! [E,F] :
+                      ( m1_subset_1(F,k1_numbers)
+                     => ( ! [G] :
+                            ( m2_subset_1(G,k1_numbers,k5_numbers)
+                           => k8_funct_2(k5_numbers,B,C,G) = k3_xboole_0(E,k18_mesfunc1(A,D,k1_measure6(k3_real_1(F,k6_real_1(np__1,k1_nat_1(G,np__1)))))) )
+                       => k3_xboole_0(E,k17_mesfunc1(A,D,k1_measure6(F))) = k2_measure2(A,B,k1_measure3(A,B,C)) ) ) ) ) ) ) ).
+
+fof(t27_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,B)
+                & m2_relset_1(C,k5_numbers,B) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ! [E] :
+                      ( ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => k8_funct_2(k5_numbers,B,C,F) = k3_xboole_0(E,k17_mesfunc1(A,D,k1_measure6(F))) )
+                     => k3_xboole_0(E,k19_mesfunc1(A,D,k4_supinf_1)) = k1_measure2(A,B,k1_measure3(A,B,C)) ) ) ) ) ) ).
+
+fof(t28_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,B)
+                & m2_relset_1(C,k5_numbers,B) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ! [E] :
+                      ( ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => k8_funct_2(k5_numbers,B,C,F) = k3_xboole_0(E,k15_mesfunc1(A,D,k1_measure6(F))) )
+                     => k3_xboole_0(E,k15_mesfunc1(A,D,k4_supinf_1)) = k2_measure2(A,B,k1_measure3(A,B,C)) ) ) ) ) ) ).
+
+fof(t29_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,B)
+                & m2_relset_1(C,k5_numbers,B) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ! [E] :
+                      ( ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => k8_funct_2(k5_numbers,B,C,F) = k3_xboole_0(E,k15_mesfunc1(A,D,k1_measure6(k1_real_1(F)))) )
+                     => k3_xboole_0(E,k19_mesfunc1(A,D,k5_supinf_1)) = k1_measure2(A,B,k1_measure3(A,B,C)) ) ) ) ) ) ).
+
+fof(t30_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,B)
+                & m2_relset_1(C,k5_numbers,B) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ! [E] :
+                      ( ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => k8_funct_2(k5_numbers,B,C,F) = k3_xboole_0(E,k17_mesfunc1(A,D,k1_measure6(k1_real_1(F)))) )
+                     => k3_xboole_0(E,k17_mesfunc1(A,D,k5_supinf_1)) = k2_measure2(A,B,k1_measure3(A,B,C)) ) ) ) ) ) ).
+
+fof(d17_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ( r2_mesfunc1(A,B,C,D)
+                  <=> ! [E] :
+                        ( v1_xreal_0(E)
+                       => r1_mesfunc1(A,B,k5_subset_1(A,D,k15_mesfunc1(A,C,k1_measure6(E)))) ) ) ) ) ) ) ).
+
+fof(t31_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ( r1_tarski(D,k1_relat_1(C))
+                   => ( r2_mesfunc1(A,B,C,D)
+                    <=> ! [E] :
+                          ( v1_xreal_0(E)
+                         => r1_mesfunc1(A,B,k5_subset_1(A,D,k18_mesfunc1(A,C,k1_measure6(E)))) ) ) ) ) ) ) ) ).
+
+fof(t32_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ( r2_mesfunc1(A,B,C,D)
+                  <=> ! [E] :
+                        ( v1_xreal_0(E)
+                       => r1_mesfunc1(A,B,k5_subset_1(A,D,k16_mesfunc1(A,C,k1_measure6(E)))) ) ) ) ) ) ) ).
+
+fof(t33_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ( r1_tarski(D,k1_relat_1(C))
+                   => ( r2_mesfunc1(A,B,C,D)
+                    <=> ! [E] :
+                          ( v1_xreal_0(E)
+                         => r1_mesfunc1(A,B,k5_subset_1(A,D,k17_mesfunc1(A,C,k1_measure6(E)))) ) ) ) ) ) ) ) ).
+
+fof(t34_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(A),B)
+                     => ( ( r1_tarski(E,D)
+                          & r2_mesfunc1(A,B,C,D) )
+                       => r2_mesfunc1(A,B,C,E) ) ) ) ) ) ) ).
+
+fof(t35_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(A),B)
+                     => ( ( r2_mesfunc1(A,B,C,D)
+                          & r2_mesfunc1(A,B,C,E) )
+                       => r2_mesfunc1(A,B,C,k2_measure1(A,B,D,E)) ) ) ) ) ) ) ).
+
+fof(t36_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ( ( r2_mesfunc1(A,B,C,D)
+                              & r1_tarski(D,k1_relat_1(C)) )
+                           => r1_mesfunc1(A,B,k5_subset_1(A,k5_subset_1(A,D,k17_mesfunc1(A,C,k1_measure6(E))),k15_mesfunc1(A,C,k1_measure6(F)))) ) ) ) ) ) ) ) ).
+
+fof(t37_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ( ( r2_mesfunc1(A,B,C,D)
+                      & r1_tarski(D,k1_relat_1(C)) )
+                   => r1_mesfunc1(A,B,k5_subset_1(A,D,k19_mesfunc1(A,C,k4_supinf_1))) ) ) ) ) ) ).
+
+fof(t38_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ( r2_mesfunc1(A,B,C,D)
+                   => r1_mesfunc1(A,B,k5_subset_1(A,D,k19_mesfunc1(A,C,k5_supinf_1))) ) ) ) ) ) ).
+
+fof(t39_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ( ( r2_mesfunc1(A,B,C,D)
+                      & r1_tarski(D,k1_relat_1(C)) )
+                   => r1_mesfunc1(A,B,k5_subset_1(A,k5_subset_1(A,D,k17_mesfunc1(A,C,k5_supinf_1)),k15_mesfunc1(A,C,k4_supinf_1))) ) ) ) ) ) ).
+
+fof(t40_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_zfmisc_1(A),B)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ( ( r2_mesfunc1(A,B,C,E)
+                              & r2_mesfunc1(A,B,D,E)
+                              & r1_tarski(E,k1_relat_1(D)) )
+                           => r1_mesfunc1(A,B,k5_subset_1(A,k5_subset_1(A,E,k15_mesfunc1(A,C,k1_measure6(F))),k17_mesfunc1(A,D,k1_measure6(F)))) ) ) ) ) ) ) ) ).
+
+fof(t41_mesfunc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m2_subset_1(D,k1_zfmisc_1(A),B)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ( ( r2_mesfunc1(A,B,C,D)
+                          & r1_tarski(D,k1_relat_1(C)) )
+                       => r2_mesfunc1(A,B,k8_mesfunc1(A,C,E),D) ) ) ) ) ) ) ).
+
+fof(dt_k1_mesfunc1,axiom,
+    m1_subset_1(k1_mesfunc1,k1_zfmisc_1(k6_supinf_1)) ).
+
+fof(dt_k2_mesfunc1,axiom,
+    m1_subset_1(k2_mesfunc1,k1_zfmisc_1(k6_supinf_1)) ).
+
+fof(redefinition_k2_mesfunc1,axiom,
+    k2_mesfunc1 = k4_numbers ).
+
+fof(dt_k3_mesfunc1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m1_subset_1(k3_mesfunc1(A),k1_zfmisc_1(k3_numbers)) ) ).
+
+fof(dt_k4_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1) )
+     => m1_subset_1(k4_mesfunc1(A,B,C),k3_supinf_1) ) ).
+
+fof(redefinition_k4_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1) )
+     => k4_mesfunc1(A,B,C) = k1_funct_1(B,C) ) ).
+
+fof(dt_k5_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,k3_supinf_1) )
+     => ( v1_funct_1(k5_mesfunc1(A,B,C))
+        & m2_relset_1(k5_mesfunc1(A,B,C),A,k3_supinf_1) ) ) ).
+
+fof(dt_k6_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,k3_supinf_1) )
+     => ( v1_funct_1(k6_mesfunc1(A,B,C))
+        & m2_relset_1(k6_mesfunc1(A,B,C),A,k3_supinf_1) ) ) ).
+
+fof(dt_k7_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,k3_supinf_1) )
+     => ( v1_funct_1(k7_mesfunc1(A,B,C))
+        & m2_relset_1(k7_mesfunc1(A,B,C),A,k3_supinf_1) ) ) ).
+
+fof(dt_k8_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & m1_subset_1(C,k1_numbers) )
+     => ( v1_funct_1(k8_mesfunc1(A,B,C))
+        & m2_relset_1(k8_mesfunc1(A,B,C),A,k3_supinf_1) ) ) ).
+
+fof(dt_k9_mesfunc1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1) )
+     => ( v1_funct_1(k9_mesfunc1(A,B))
+        & m2_relset_1(k9_mesfunc1(A,B),A,k3_supinf_1) ) ) ).
+
+fof(dt_k10_mesfunc1,axiom,
+    m1_subset_1(k10_mesfunc1,k3_supinf_1) ).
+
+fof(dt_k11_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & m1_subset_1(C,k1_numbers) )
+     => ( v1_funct_1(k11_mesfunc1(A,B,C))
+        & m2_relset_1(k11_mesfunc1(A,B,C),A,k3_supinf_1) ) ) ).
+
+fof(dt_k12_mesfunc1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1) )
+     => ( v1_funct_1(k12_mesfunc1(A,B))
+        & m2_relset_1(k12_mesfunc1(A,B),A,k3_supinf_1) ) ) ).
+
+fof(dt_k13_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,k3_supinf_1) )
+     => ( v1_funct_1(k13_mesfunc1(A,B,C))
+        & m2_relset_1(k13_mesfunc1(A,B,C),A,k3_supinf_1) ) ) ).
+
+fof(commutativity_k13_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,k3_supinf_1) )
+     => k13_mesfunc1(A,B,C) = k13_mesfunc1(A,C,B) ) ).
+
+fof(redefinition_k13_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,k3_supinf_1) )
+     => k13_mesfunc1(A,B,C) = k5_mesfunc1(A,B,C) ) ).
+
+fof(dt_k14_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,k3_supinf_1) )
+     => ( v1_funct_1(k14_mesfunc1(A,B,C))
+        & m2_relset_1(k14_mesfunc1(A,B,C),A,k3_supinf_1) ) ) ).
+
+fof(commutativity_k14_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,k3_supinf_1) )
+     => k14_mesfunc1(A,B,C) = k14_mesfunc1(A,C,B) ) ).
+
+fof(redefinition_k14_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,k3_supinf_1) )
+     => k14_mesfunc1(A,B,C) = k7_mesfunc1(A,B,C) ) ).
+
+fof(dt_k15_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & m1_subset_1(C,k3_supinf_1) )
+     => m1_subset_1(k15_mesfunc1(A,B,C),k1_zfmisc_1(A)) ) ).
+
+fof(dt_k16_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & m1_subset_1(C,k3_supinf_1) )
+     => m1_subset_1(k16_mesfunc1(A,B,C),k1_zfmisc_1(A)) ) ).
+
+fof(dt_k17_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & m1_subset_1(C,k3_supinf_1) )
+     => m1_subset_1(k17_mesfunc1(A,B,C),k1_zfmisc_1(A)) ) ).
+
+fof(dt_k18_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & m1_subset_1(C,k3_supinf_1) )
+     => m1_subset_1(k18_mesfunc1(A,B,C),k1_zfmisc_1(A)) ) ).
+
+fof(dt_k19_mesfunc1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & m1_relset_1(B,A,k3_supinf_1)
+        & m1_subset_1(C,k3_supinf_1) )
+     => m1_subset_1(k19_mesfunc1(A,B,C),k1_zfmisc_1(A)) ) ).
+
+%------------------------------------------------------------------------------

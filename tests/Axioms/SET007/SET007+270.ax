@@ -1,0 +1,1127 @@
+%------------------------------------------------------------------------------
+% File     : SET007+270 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Algebra of Normal Forms
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : normform [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  129 (  38 unt;   0 def)
+%            Number of atoms       :  599 (  64 equ)
+%            Maximal formula atoms :   12 (   4 avg)
+%            Number of connectives :  561 (  91   ~;   0   |; 210   &)
+%                                         (  10 <=>; 250  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   17 (   7 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   33 (  31 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   41 (  41 usr;   1 con; 0-6 aty)
+%            Number of variables   :  342 ( 337   !;   5   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_normform,axiom,
+    ! [A] :
+      ( v1_relat_1(k5_normform(A))
+      & v1_funct_1(k5_normform(A))
+      & v1_funct_2(k5_normform(A),k2_zfmisc_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+      & v1_binop_1(k5_normform(A),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+      & v2_binop_1(k5_normform(A),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+      & v3_binop_1(k5_normform(A),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))) ) ).
+
+fof(fc2_normform,axiom,
+    ! [A] :
+      ( v1_relat_1(k7_normform(A))
+      & ~ v1_xboole_0(k7_normform(A)) ) ).
+
+fof(fc3_normform,axiom,
+    ! [A] : ~ v1_xboole_0(k8_normform(A)) ).
+
+fof(fc4_normform,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k12_normform(A))
+      & v3_lattices(k12_normform(A)) ) ).
+
+fof(fc5_normform,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k12_normform(A))
+      & v3_lattices(k12_normform(A))
+      & v4_lattices(k12_normform(A))
+      & v5_lattices(k12_normform(A))
+      & v6_lattices(k12_normform(A))
+      & v7_lattices(k12_normform(A))
+      & v8_lattices(k12_normform(A))
+      & v9_lattices(k12_normform(A))
+      & v10_lattices(k12_normform(A)) ) ).
+
+fof(fc6_normform,axiom,
+    ! [A] :
+      ( ~ v3_struct_0(k12_normform(A))
+      & v3_lattices(k12_normform(A))
+      & v4_lattices(k12_normform(A))
+      & v5_lattices(k12_normform(A))
+      & v6_lattices(k12_normform(A))
+      & v7_lattices(k12_normform(A))
+      & v8_lattices(k12_normform(A))
+      & v9_lattices(k12_normform(A))
+      & v10_lattices(k12_normform(A))
+      & v11_lattices(k12_normform(A))
+      & v12_lattices(k12_normform(A))
+      & v13_lattices(k12_normform(A)) ) ).
+
+fof(d1_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ( r1_normform(A,B,C,D)
+                  <=> ( r1_tarski(k2_domain_1(A,B,C),k2_domain_1(A,B,D))
+                      & r1_tarski(k3_domain_1(A,B,C),k3_domain_1(A,B,D)) ) ) ) ) ) ) ).
+
+fof(d2_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => k1_normform(A,B,C,D) = k1_domain_1(A,B,k1_finsub_1(A,k2_domain_1(A,B,C),k2_domain_1(A,B,D)),k1_finsub_1(B,k3_domain_1(A,B,C),k3_domain_1(A,B,D))) ) ) ) ) ).
+
+fof(d3_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => k2_normform(A,B,C,D) = k1_domain_1(A,B,k3_finsub_1(A,k2_domain_1(A,B,C),k2_domain_1(A,B,D)),k3_finsub_1(B,k3_domain_1(A,B,C),k3_domain_1(A,B,D))) ) ) ) ) ).
+
+fof(d4_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => k3_normform(A,B,C,D) = k1_domain_1(A,B,k2_finsub_1(A,k2_domain_1(A,B,C),k2_domain_1(A,B,D)),k2_finsub_1(B,k3_domain_1(A,B,C),k3_domain_1(A,B,D))) ) ) ) ) ).
+
+fof(d5_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => k4_normform(A,B,C,D) = k1_domain_1(A,B,k4_finsub_1(A,k2_domain_1(A,B,C),k2_domain_1(A,B,D)),k4_finsub_1(B,k3_domain_1(A,B,C),k3_domain_1(A,B,D))) ) ) ) ) ).
+
+fof(t1_normform,axiom,
+    $true ).
+
+fof(t2_normform,axiom,
+    $true ).
+
+fof(t3_normform,axiom,
+    $true ).
+
+fof(t4_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ( ( r1_normform(A,B,C,D)
+                      & r1_normform(A,B,D,C) )
+                   => C = D ) ) ) ) ) ).
+
+fof(t5_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_zfmisc_1(A,B))
+                     => ( ( r1_normform(A,B,C,D)
+                          & r1_normform(A,B,D,E) )
+                       => r1_normform(A,B,C,E) ) ) ) ) ) ) ).
+
+fof(t6_normform,axiom,
+    $true ).
+
+fof(t7_normform,axiom,
+    $true ).
+
+fof(t8_normform,axiom,
+    $true ).
+
+fof(t9_normform,axiom,
+    $true ).
+
+fof(t10_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ( k2_domain_1(A,B,k1_normform(A,B,C,D)) = k1_finsub_1(A,k2_domain_1(A,B,C),k2_domain_1(A,B,D))
+                    & k3_domain_1(A,B,k1_normform(A,B,C,D)) = k1_finsub_1(B,k3_domain_1(A,B,C),k3_domain_1(A,B,D)) ) ) ) ) ) ).
+
+fof(t11_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ( k2_domain_1(A,B,k2_normform(A,B,C,D)) = k3_finsub_1(A,k2_domain_1(A,B,C),k2_domain_1(A,B,D))
+                    & k3_domain_1(A,B,k2_normform(A,B,C,D)) = k3_finsub_1(B,k3_domain_1(A,B,C),k3_domain_1(A,B,D)) ) ) ) ) ) ).
+
+fof(t12_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ( k2_domain_1(A,B,k3_normform(A,B,C,D)) = k2_finsub_1(A,k2_domain_1(A,B,C),k2_domain_1(A,B,D))
+                    & k3_domain_1(A,B,k3_normform(A,B,C,D)) = k2_finsub_1(B,k3_domain_1(A,B,C),k3_domain_1(A,B,D)) ) ) ) ) ) ).
+
+fof(t13_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ( k2_domain_1(A,B,k4_normform(A,B,C,D)) = k4_finsub_1(A,k2_domain_1(A,B,C),k2_domain_1(A,B,D))
+                    & k3_domain_1(A,B,k4_normform(A,B,C,D)) = k4_finsub_1(B,k3_domain_1(A,B,C),k3_domain_1(A,B,D)) ) ) ) ) ) ).
+
+fof(t14_normform,axiom,
+    $true ).
+
+fof(t15_normform,axiom,
+    $true ).
+
+fof(t16_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_zfmisc_1(A,B))
+                     => k1_normform(A,B,k1_normform(A,B,C,D),E) = k1_normform(A,B,C,k1_normform(A,B,D,E)) ) ) ) ) ) ).
+
+fof(t17_normform,axiom,
+    $true ).
+
+fof(t18_normform,axiom,
+    $true ).
+
+fof(t19_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_zfmisc_1(A,B))
+                     => k2_normform(A,B,k2_normform(A,B,C,D),E) = k2_normform(A,B,C,k2_normform(A,B,D,E)) ) ) ) ) ) ).
+
+fof(t20_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_zfmisc_1(A,B))
+                     => k2_normform(A,B,C,k1_normform(A,B,D,E)) = k1_normform(A,B,k2_normform(A,B,C,D),k2_normform(A,B,C,E)) ) ) ) ) ) ).
+
+fof(t21_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => k1_normform(A,B,C,k2_normform(A,B,D,C)) = C ) ) ) ) ).
+
+fof(t22_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => k2_normform(A,B,C,k1_normform(A,B,D,C)) = C ) ) ) ) ).
+
+fof(t23_normform,axiom,
+    $true ).
+
+fof(t24_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_zfmisc_1(A,B))
+                     => k1_normform(A,B,C,k2_normform(A,B,D,E)) = k2_normform(A,B,k1_normform(A,B,C,D),k1_normform(A,B,C,E)) ) ) ) ) ) ).
+
+fof(t25_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_zfmisc_1(A,B))
+                     => ( ( r1_normform(A,B,C,D)
+                          & r1_normform(A,B,E,D) )
+                       => r1_normform(A,B,k1_normform(A,B,C,E),D) ) ) ) ) ) ) ).
+
+fof(t26_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ( r1_normform(A,B,C,k1_normform(A,B,C,D))
+                    & r1_normform(A,B,D,k1_normform(A,B,C,D)) ) ) ) ) ) ).
+
+fof(t27_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ( C = k1_normform(A,B,C,D)
+                   => r1_normform(A,B,D,C) ) ) ) ) ) ).
+
+fof(t28_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_zfmisc_1(A,B))
+                     => ( r1_normform(A,B,C,D)
+                       => ( r1_normform(A,B,k1_normform(A,B,E,C),k1_normform(A,B,E,D))
+                          & r1_normform(A,B,k1_normform(A,B,C,E),k1_normform(A,B,D,E)) ) ) ) ) ) ) ) ).
+
+fof(t29_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => k1_normform(A,B,k3_normform(A,B,C,D),D) = k1_normform(A,B,C,D) ) ) ) ) ).
+
+fof(t30_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_zfmisc_1(A,B))
+                     => ( r1_normform(A,B,k3_normform(A,B,C,D),E)
+                       => r1_normform(A,B,C,k1_normform(A,B,D,E)) ) ) ) ) ) ) ).
+
+fof(t31_normform,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v4_finsub_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,B))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_zfmisc_1(A,B))
+                     => ( r1_normform(A,B,C,k1_normform(A,B,D,E))
+                       => r1_normform(A,B,k3_normform(A,B,C,E),D) ) ) ) ) ) ) ).
+
+fof(d6_normform,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+        & m2_relset_1(B,k2_zfmisc_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))) )
+     => ( B = k5_normform(A)
+      <=> ! [C] :
+            ( m1_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+           => ! [D] :
+                ( m1_subset_1(D,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+               => k2_binop_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),B,C,D) = k1_normform(k5_finsub_1(A),k5_finsub_1(A),C,D) ) ) ) ) ).
+
+fof(d7_normform,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( m1_subset_1(C,k5_finsub_1(A))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,A,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)))
+                & m2_relset_1(D,A,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B))) )
+             => k6_normform(A,B,C,D) = k7_setwiseo(A,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k5_normform(B),C,D) ) ) ) ).
+
+fof(t32_normform,axiom,
+    $true ).
+
+fof(t33_normform,axiom,
+    $true ).
+
+fof(t34_normform,axiom,
+    $true ).
+
+fof(t35_normform,axiom,
+    ! [A,B] :
+      ( ~ v1_xboole_0(B)
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+            & m2_relset_1(C,B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))) )
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(B))
+             => ! [E] :
+                  ( m1_subset_1(E,B)
+                 => ( r2_hidden(E,D)
+                   => r1_normform(k5_finsub_1(A),k5_finsub_1(A),k8_funct_2(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),C,E),k6_normform(B,A,D,C)) ) ) ) ) ) ).
+
+fof(t36_normform,axiom,
+    ! [A] : r3_binop_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k1_domain_1(k5_finsub_1(A),k5_finsub_1(A),k1_setwiseo(A),k1_setwiseo(A)),k5_normform(A)) ).
+
+fof(t37_normform,axiom,
+    ! [A] : v1_setwiseo(k5_normform(A),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))) ).
+
+fof(t38_normform,axiom,
+    ! [A] : k3_binop_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k5_normform(A)) = k1_domain_1(k5_finsub_1(A),k5_finsub_1(A),k1_setwiseo(A),k1_setwiseo(A)) ).
+
+fof(t39_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+     => r1_normform(k5_finsub_1(A),k5_finsub_1(A),k3_binop_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k5_normform(A)),B) ) ).
+
+fof(t40_normform,axiom,
+    ! [A,B] :
+      ( ~ v1_xboole_0(B)
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+            & m2_relset_1(C,B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))) )
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(B))
+             => ! [E] :
+                  ( m1_subset_1(E,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+                 => ( ! [F] :
+                        ( m1_subset_1(F,B)
+                       => ( r2_hidden(F,D)
+                         => r1_normform(k5_finsub_1(A),k5_finsub_1(A),k8_funct_2(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),C,F),E) ) )
+                   => r1_normform(k5_finsub_1(A),k5_finsub_1(A),k6_normform(B,A,D,C),E) ) ) ) ) ) ).
+
+fof(t41_normform,axiom,
+    ! [A,B] :
+      ( ~ v1_xboole_0(B)
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+                & m2_relset_1(D,B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))) )
+             => ! [E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+                    & m2_relset_1(E,B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))) )
+                 => ( k7_relat_1(D,C) = k7_relat_1(E,C)
+                   => k6_normform(B,A,C,D) = k6_normform(B,A,C,E) ) ) ) ) ) ).
+
+fof(t42_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+     => ( r2_hidden(B,k7_normform(A))
+      <=> r1_xboole_0(k2_domain_1(k5_finsub_1(A),k5_finsub_1(A),B),k3_domain_1(k5_finsub_1(A),k5_finsub_1(A),B)) ) ) ).
+
+fof(t43_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+         => ( ( r2_hidden(B,k7_normform(A))
+              & r2_hidden(C,k7_normform(A)) )
+           => ( r2_hidden(k1_normform(k5_finsub_1(A),k5_finsub_1(A),B,C),k7_normform(A))
+            <=> k5_setwiseo(A,k3_finsub_1(k5_finsub_1(A),k2_domain_1(k5_finsub_1(A),k5_finsub_1(A),B),k3_domain_1(k5_finsub_1(A),k5_finsub_1(A),C)),k3_finsub_1(k5_finsub_1(A),k2_domain_1(k5_finsub_1(A),k5_finsub_1(A),C),k3_domain_1(k5_finsub_1(A),k5_finsub_1(A),B))) = k1_xboole_0 ) ) ) ) ).
+
+fof(t44_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => r1_xboole_0(k2_domain_1(k5_finsub_1(A),k5_finsub_1(A),B),k3_domain_1(k5_finsub_1(A),k5_finsub_1(A),B)) ) ).
+
+fof(t45_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+     => ! [C] :
+          ( m2_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+         => ( r1_normform(k5_finsub_1(A),k5_finsub_1(A),B,C)
+           => m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A)) ) ) ) ).
+
+fof(t46_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ~ ( r2_hidden(C,k2_domain_1(k5_finsub_1(A),k5_finsub_1(A),B))
+            & r2_hidden(C,k3_domain_1(k5_finsub_1(A),k5_finsub_1(A),B)) ) ) ).
+
+fof(t47_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m2_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+         => ~ ( ~ r2_hidden(k1_normform(k5_finsub_1(A),k5_finsub_1(A),B,C),k7_normform(A))
+              & ! [D] :
+                  ( m1_subset_1(D,A)
+                 => ( ~ ( r2_hidden(D,k2_domain_1(k5_finsub_1(A),k5_finsub_1(A),B))
+                        & r2_hidden(D,k3_domain_1(k5_finsub_1(A),k5_finsub_1(A),C)) )
+                    & ~ ( r2_hidden(D,k2_domain_1(k5_finsub_1(A),k5_finsub_1(A),C))
+                        & r2_hidden(D,k3_domain_1(k5_finsub_1(A),k5_finsub_1(A),B)) ) ) ) ) ) ) ).
+
+fof(t48_normform,axiom,
+    $true ).
+
+fof(t49_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+     => ( r1_xboole_0(k2_domain_1(k5_finsub_1(A),k5_finsub_1(A),B),k3_domain_1(k5_finsub_1(A),k5_finsub_1(A),B))
+       => m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A)) ) ) ).
+
+fof(t50_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C,D] :
+          ( ( r1_tarski(C,k2_domain_1(k5_finsub_1(A),k5_finsub_1(A),B))
+            & r1_tarski(D,k3_domain_1(k5_finsub_1(A),k5_finsub_1(A),B)) )
+         => m2_subset_1(k4_tarski(C,D),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A)) ) ) ).
+
+fof(t51_normform,axiom,
+    ! [A] : r2_hidden(k1_xboole_0,k8_normform(A)) ).
+
+fof(t52_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m2_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(k7_normform(A)))
+             => ( ( r2_hidden(D,k8_normform(A))
+                  & r2_hidden(B,D)
+                  & r2_hidden(C,D)
+                  & r1_normform(k5_finsub_1(A),k5_finsub_1(A),B,C) )
+               => B = C ) ) ) ) ).
+
+fof(t53_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ( ! [C] :
+            ( m2_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+           => ! [D] :
+                ( m2_subset_1(D,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+               => ( ( r2_hidden(C,B)
+                    & r2_hidden(D,B)
+                    & r1_normform(k5_finsub_1(A),k5_finsub_1(A),C,D) )
+                 => C = D ) ) )
+       => r2_hidden(B,k8_normform(A)) ) ) ).
+
+fof(t54_normform,axiom,
+    $true ).
+
+fof(t55_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(k7_normform(A)))
+             => ~ ( r2_hidden(B,k10_normform(A,C,D))
+                  & ! [E] :
+                      ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                     => ! [F] :
+                          ( m2_subset_1(F,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                         => ~ ( r2_hidden(E,C)
+                              & r2_hidden(F,D)
+                              & B = k1_normform(k5_finsub_1(A),k5_finsub_1(A),E,F) ) ) ) ) ) ) ) ).
+
+fof(t56_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m2_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(k7_normform(A)))
+             => ! [E] :
+                  ( m1_subset_1(E,k5_finsub_1(k7_normform(A)))
+                 => ( ( r2_hidden(B,D)
+                      & r2_hidden(C,E)
+                      & r2_hidden(k1_normform(k5_finsub_1(A),k5_finsub_1(A),B,C),k7_normform(A)) )
+                   => r2_hidden(k1_normform(k5_finsub_1(A),k5_finsub_1(A),B,C),k10_normform(A,D,E)) ) ) ) ) ) ).
+
+fof(t57_normform,axiom,
+    $true ).
+
+fof(t58_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m2_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(k7_normform(A)))
+             => ( r2_hidden(B,k9_normform(A,D))
+               => ( r2_hidden(B,D)
+                  & ( ( r2_hidden(C,D)
+                      & r1_normform(k5_finsub_1(A),k5_finsub_1(A),C,B) )
+                   => C = B ) ) ) ) ) ) ).
+
+fof(t59_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => ( r2_hidden(B,k9_normform(A,C))
+           => r2_hidden(B,C) ) ) ) ).
+
+fof(t60_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m2_subset_1(C,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(k7_normform(A)))
+             => ( ( r2_hidden(B,k9_normform(A,D))
+                  & r2_hidden(C,D)
+                  & r1_normform(k5_finsub_1(A),k5_finsub_1(A),C,B) )
+               => C = B ) ) ) ) ).
+
+fof(t61_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => ( ( r2_hidden(B,C)
+              & ! [D] :
+                  ( m2_subset_1(D,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                 => ( ( r2_hidden(D,C)
+                      & r1_normform(k5_finsub_1(A),k5_finsub_1(A),D,B) )
+                   => D = B ) ) )
+           => r2_hidden(B,k9_normform(A,C)) ) ) ) ).
+
+fof(t62_normform,axiom,
+    $true ).
+
+fof(t63_normform,axiom,
+    $true ).
+
+fof(t64_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => r1_tarski(k9_normform(A,B),B) ) ).
+
+fof(t65_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => ~ ( r2_hidden(B,C)
+              & ! [D] :
+                  ( m2_subset_1(D,k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k7_normform(A))
+                 => ~ ( r1_normform(k5_finsub_1(A),k5_finsub_1(A),D,B)
+                      & r2_hidden(D,k9_normform(A,C)) ) ) ) ) ) ).
+
+fof(t66_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k5_finsub_1(k7_normform(A)),k8_normform(A))
+     => k9_normform(A,B) = B ) ).
+
+fof(t67_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => r1_tarski(k9_normform(A,k5_setwiseo(k7_normform(A),B,C)),k5_setwiseo(k7_normform(A),k9_normform(A,B),C)) ) ) ).
+
+fof(t68_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => k9_normform(A,k5_setwiseo(k7_normform(A),k9_normform(A,B),C)) = k9_normform(A,k5_setwiseo(k7_normform(A),B,C)) ) ) ).
+
+fof(t69_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => k9_normform(A,k5_setwiseo(k7_normform(A),B,k9_normform(A,C))) = k9_normform(A,k5_setwiseo(k7_normform(A),B,C)) ) ) ).
+
+fof(t70_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(k7_normform(A)))
+             => ( r1_tarski(B,C)
+               => r1_tarski(k10_normform(A,B,D),k10_normform(A,C,D)) ) ) ) ) ).
+
+fof(t71_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => r1_tarski(k9_normform(A,k10_normform(A,B,C)),k10_normform(A,k9_normform(A,B),C)) ) ) ).
+
+fof(t72_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => k10_normform(A,B,C) = k10_normform(A,C,B) ) ) ).
+
+fof(t73_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => ! [D] :
+              ( m1_subset_1(D,k5_finsub_1(k7_normform(A)))
+             => ( r1_tarski(B,C)
+               => r1_tarski(k10_normform(A,D,B),k10_normform(A,D,C)) ) ) ) ) ).
+
+fof(t74_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => k9_normform(A,k10_normform(A,k9_normform(A,B),C)) = k9_normform(A,k10_normform(A,B,C)) ) ) ).
+
+fof(t75_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => k9_normform(A,k10_normform(A,B,k9_normform(A,C))) = k9_normform(A,k10_normform(A,B,C)) ) ) ).
+
+fof(t76_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k5_finsub_1(k7_normform(A)),k8_normform(A))
+     => ! [C] :
+          ( m2_subset_1(C,k5_finsub_1(k7_normform(A)),k8_normform(A))
+         => ! [D] :
+              ( m2_subset_1(D,k5_finsub_1(k7_normform(A)),k8_normform(A))
+             => k10_normform(A,B,k10_normform(A,C,D)) = k10_normform(A,k10_normform(A,B,C),D) ) ) ) ).
+
+fof(t77_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k5_finsub_1(k7_normform(A)),k8_normform(A))
+     => ! [C] :
+          ( m2_subset_1(C,k5_finsub_1(k7_normform(A)),k8_normform(A))
+         => ! [D] :
+              ( m2_subset_1(D,k5_finsub_1(k7_normform(A)),k8_normform(A))
+             => k10_normform(A,B,k5_setwiseo(k7_normform(A),C,D)) = k5_setwiseo(k7_normform(A),k10_normform(A,B,C),k10_normform(A,B,D)) ) ) ) ).
+
+fof(t78_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => r1_tarski(B,k10_normform(A,B,B)) ) ).
+
+fof(t79_normform,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k5_finsub_1(k7_normform(A)),k8_normform(A))
+     => k9_normform(A,k10_normform(A,B,B)) = k9_normform(A,B) ) ).
+
+fof(d12_normform,axiom,
+    $true ).
+
+fof(d13_normform,axiom,
+    $true ).
+
+fof(d14_normform,axiom,
+    ! [A,B] :
+      ( ( v3_lattices(B)
+        & l3_lattices(B) )
+     => ( B = k12_normform(A)
+      <=> ( u1_struct_0(B) = k8_normform(A)
+          & ! [C] :
+              ( m2_subset_1(C,k5_finsub_1(k7_normform(A)),k8_normform(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k5_finsub_1(k7_normform(A)),k8_normform(A))
+                 => ( k1_binop_1(u2_lattices(B),C,D) = k9_normform(A,k5_setwiseo(k7_normform(A),C,D))
+                    & k1_binop_1(u1_lattices(B),C,D) = k9_normform(A,k10_normform(A,C,D)) ) ) ) ) ) ) ).
+
+fof(t80_normform,axiom,
+    $true ).
+
+fof(t81_normform,axiom,
+    $true ).
+
+fof(t82_normform,axiom,
+    $true ).
+
+fof(t83_normform,axiom,
+    $true ).
+
+fof(t84_normform,axiom,
+    $true ).
+
+fof(t85_normform,axiom,
+    ! [A] : m1_subset_1(k1_xboole_0,u1_struct_0(k12_normform(A))) ).
+
+fof(t86_normform,axiom,
+    ! [A] : k5_lattices(k12_normform(A)) = k1_xboole_0 ).
+
+fof(reflexivity_r1_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A)
+        & ~ v1_xboole_0(B)
+        & v4_finsub_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B))
+        & m1_subset_1(D,k2_zfmisc_1(A,B)) )
+     => r1_normform(A,B,C,C) ) ).
+
+fof(dt_k1_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A)
+        & ~ v1_xboole_0(B)
+        & v4_finsub_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B))
+        & m1_subset_1(D,k2_zfmisc_1(A,B)) )
+     => m1_subset_1(k1_normform(A,B,C,D),k2_zfmisc_1(A,B)) ) ).
+
+fof(commutativity_k1_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A)
+        & ~ v1_xboole_0(B)
+        & v4_finsub_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B))
+        & m1_subset_1(D,k2_zfmisc_1(A,B)) )
+     => k1_normform(A,B,C,D) = k1_normform(A,B,D,C) ) ).
+
+fof(idempotence_k1_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A)
+        & ~ v1_xboole_0(B)
+        & v4_finsub_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B))
+        & m1_subset_1(D,k2_zfmisc_1(A,B)) )
+     => k1_normform(A,B,C,C) = C ) ).
+
+fof(dt_k2_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A)
+        & ~ v1_xboole_0(B)
+        & v4_finsub_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B))
+        & m1_subset_1(D,k2_zfmisc_1(A,B)) )
+     => m1_subset_1(k2_normform(A,B,C,D),k2_zfmisc_1(A,B)) ) ).
+
+fof(commutativity_k2_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A)
+        & ~ v1_xboole_0(B)
+        & v4_finsub_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B))
+        & m1_subset_1(D,k2_zfmisc_1(A,B)) )
+     => k2_normform(A,B,C,D) = k2_normform(A,B,D,C) ) ).
+
+fof(idempotence_k2_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A)
+        & ~ v1_xboole_0(B)
+        & v4_finsub_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B))
+        & m1_subset_1(D,k2_zfmisc_1(A,B)) )
+     => k2_normform(A,B,C,C) = C ) ).
+
+fof(dt_k3_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A)
+        & ~ v1_xboole_0(B)
+        & v4_finsub_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B))
+        & m1_subset_1(D,k2_zfmisc_1(A,B)) )
+     => m1_subset_1(k3_normform(A,B,C,D),k2_zfmisc_1(A,B)) ) ).
+
+fof(dt_k4_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A)
+        & ~ v1_xboole_0(B)
+        & v4_finsub_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B))
+        & m1_subset_1(D,k2_zfmisc_1(A,B)) )
+     => m1_subset_1(k4_normform(A,B,C,D),k2_zfmisc_1(A,B)) ) ).
+
+fof(commutativity_k4_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v4_finsub_1(A)
+        & ~ v1_xboole_0(B)
+        & v4_finsub_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(A,B))
+        & m1_subset_1(D,k2_zfmisc_1(A,B)) )
+     => k4_normform(A,B,C,D) = k4_normform(A,B,D,C) ) ).
+
+fof(dt_k5_normform,axiom,
+    ! [A] :
+      ( v1_funct_1(k5_normform(A))
+      & v1_funct_2(k5_normform(A),k2_zfmisc_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))
+      & m2_relset_1(k5_normform(A),k2_zfmisc_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))),k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A))) ) ).
+
+fof(dt_k6_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(C,k5_finsub_1(A))
+        & v1_funct_1(D)
+        & v1_funct_2(D,A,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)))
+        & m1_relset_1(D,A,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B))) )
+     => m1_subset_1(k6_normform(A,B,C,D),k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B))) ) ).
+
+fof(dt_k7_normform,axiom,
+    ! [A] : m1_subset_1(k7_normform(A),k1_zfmisc_1(k2_zfmisc_1(k5_finsub_1(A),k5_finsub_1(A)))) ).
+
+fof(dt_k8_normform,axiom,
+    ! [A] : m1_subset_1(k8_normform(A),k1_zfmisc_1(k5_finsub_1(k7_normform(A)))) ).
+
+fof(dt_k9_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => m2_subset_1(k9_normform(A,B),k5_finsub_1(k7_normform(A)),k8_normform(A)) ) ).
+
+fof(dt_k10_normform,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+        & m1_subset_1(C,k5_finsub_1(k7_normform(A))) )
+     => m1_subset_1(k10_normform(A,B,C),k5_finsub_1(k7_normform(A))) ) ).
+
+fof(dt_k11_normform,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(A))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(B,B),B)
+        & m1_relset_1(C,k2_zfmisc_1(B,B),B)
+        & m1_subset_1(D,B)
+        & m1_subset_1(E,B) )
+     => m2_subset_1(k11_normform(A,B,C,D,E),A,B) ) ).
+
+fof(redefinition_k11_normform,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(A))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(B,B),B)
+        & m1_relset_1(C,k2_zfmisc_1(B,B),B)
+        & m1_subset_1(D,B)
+        & m1_subset_1(E,B) )
+     => k11_normform(A,B,C,D,E) = k1_binop_1(C,D,E) ) ).
+
+fof(dt_k12_normform,axiom,
+    ! [A] :
+      ( v3_lattices(k12_normform(A))
+      & l3_lattices(k12_normform(A)) ) ).
+
+fof(d8_normform,axiom,
+    ! [A] : k7_normform(A) = a_1_0_normform(A) ).
+
+fof(d9_normform,axiom,
+    ! [A] : k8_normform(A) = a_1_1_normform(A) ).
+
+fof(d10_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => k9_normform(A,B) = a_2_0_normform(A,B) ) ).
+
+fof(d11_normform,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k5_finsub_1(k7_normform(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(A)))
+         => k10_normform(A,B,C) = k3_xboole_0(k7_normform(A),a_3_0_normform(A,B,C)) ) ) ).
+
+fof(fraenkel_a_1_0_normform,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,a_1_0_normform(B))
+    <=> ? [C] :
+          ( m1_subset_1(C,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)))
+          & A = C
+          & r1_xboole_0(k2_domain_1(k5_finsub_1(B),k5_finsub_1(B),C),k3_domain_1(k5_finsub_1(B),k5_finsub_1(B),C)) ) ) ).
+
+fof(fraenkel_a_1_1_normform,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,a_1_1_normform(B))
+    <=> ? [C] :
+          ( m1_subset_1(C,k5_finsub_1(k7_normform(B)))
+          & A = C
+          & ! [D] :
+              ( m2_subset_1(D,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B))
+             => ! [E] :
+                  ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B))
+                 => ( ( r2_hidden(D,C)
+                      & r2_hidden(E,C)
+                      & r1_normform(k5_finsub_1(B),k5_finsub_1(B),D,E) )
+                   => D = E ) ) ) ) ) ).
+
+fof(fraenkel_a_2_0_normform,axiom,
+    ! [A,B,C] :
+      ( m1_subset_1(C,k5_finsub_1(k7_normform(B)))
+     => ( r2_hidden(A,a_2_0_normform(B,C))
+      <=> ? [D] :
+            ( m2_subset_1(D,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B))
+            & A = D
+            & ! [E] :
+                ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B))
+               => ( ( r2_hidden(E,C)
+                    & r1_normform(k5_finsub_1(B),k5_finsub_1(B),E,D) )
+                <=> E = D ) ) ) ) ) ).
+
+fof(fraenkel_a_3_0_normform,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_subset_1(C,k5_finsub_1(k7_normform(B)))
+        & m1_subset_1(D,k5_finsub_1(k7_normform(B))) )
+     => ( r2_hidden(A,a_3_0_normform(B,C,D))
+      <=> ? [E,F] :
+            ( m2_subset_1(E,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B))
+            & m2_subset_1(F,k2_zfmisc_1(k5_finsub_1(B),k5_finsub_1(B)),k7_normform(B))
+            & A = k1_normform(k5_finsub_1(B),k5_finsub_1(B),E,F)
+            & r2_hidden(E,C)
+            & r2_hidden(F,D) ) ) ) ).
+
+%------------------------------------------------------------------------------

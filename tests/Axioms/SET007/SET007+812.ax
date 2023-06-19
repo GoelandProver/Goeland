@@ -1,0 +1,766 @@
+%------------------------------------------------------------------------------
+% File     : SET007+812 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Some Set Series in Finite Topological Spaces.
+% Version  : [Urb08] axioms.
+% English  : Fundamental Concepts for Image Processing
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : fintopo3 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   71 (   0 unt;   0 def)
+%            Number of atoms       :  401 (  57 equ)
+%            Maximal formula atoms :   12 (   5 avg)
+%            Number of connectives :  405 (  75   ~;   0   |; 116   &)
+%                                         (   8 <=>; 206  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   8 avg)
+%            Maximal term depth    :    6 (   2 avg)
+%            Number of predicates  :   12 (  11 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   29 (  29 usr;   5 con; 0-4 aty)
+%            Number of variables   :  209 ( 208   !;   1   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_fin_topo(A)
+           => r1_tarski(B,k11_fin_topo(A,B)) ) ) ) ).
+
+fof(t2_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r2_hidden(C,k1_fintopo3(A,B))
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ~ ( r2_hidden(D,k3_subset_1(u1_struct_0(A),B))
+                        & r2_hidden(C,k1_fin_topo(A,D)) ) ) ) ) ) ) ).
+
+fof(t3_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_fin_topo(A)
+           => r1_tarski(k1_fintopo3(A,B),B) ) ) ) ).
+
+fof(t4_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k1_fintopo3(A,B) = k3_subset_1(u1_struct_0(A),k11_fin_topo(A,k3_subset_1(u1_struct_0(A),B))) ) ) ).
+
+fof(t5_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_tarski(B,C)
+               => r1_tarski(k11_fin_topo(A,B),k11_fin_topo(A,C)) ) ) ) ) ).
+
+fof(t6_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_tarski(B,C)
+               => r1_tarski(k1_fintopo3(A,B),k1_fintopo3(A,C)) ) ) ) ) ).
+
+fof(t7_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => r1_tarski(k8_fin_topo(A,k5_subset_1(u1_struct_0(A),B,C)),k5_subset_1(u1_struct_0(A),k8_fin_topo(A,B),k8_fin_topo(A,C))) ) ) ) ).
+
+fof(t8_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => k8_fin_topo(A,k4_subset_1(u1_struct_0(A),B,C)) = k4_subset_1(u1_struct_0(A),k8_fin_topo(A,B),k8_fin_topo(A,C)) ) ) ) ).
+
+fof(t9_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => r1_tarski(k4_subset_1(u1_struct_0(A),k7_fin_topo(A,B),k7_fin_topo(A,C)),k7_fin_topo(A,k4_subset_1(u1_struct_0(A),B,C))) ) ) ) ).
+
+fof(t10_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => k5_subset_1(u1_struct_0(A),k7_fin_topo(A,B),k7_fin_topo(A,C)) = k7_fin_topo(A,k5_subset_1(u1_struct_0(A),B,C)) ) ) ) ).
+
+fof(t11_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => k4_subset_1(u1_struct_0(A),k11_fin_topo(A,B),k11_fin_topo(A,C)) = k11_fin_topo(A,k4_subset_1(u1_struct_0(A),B,C)) ) ) ) ).
+
+fof(t12_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => k5_subset_1(u1_struct_0(A),k1_fintopo3(A,B),k1_fintopo3(A,C)) = k1_fintopo3(A,k5_subset_1(u1_struct_0(A),B,C)) ) ) ) ).
+
+fof(d2_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,k1_zfmisc_1(u1_struct_0(A)))
+                & m2_relset_1(C,k5_numbers,k1_zfmisc_1(u1_struct_0(A))) )
+             => ( C = k2_fintopo3(A,B)
+              <=> ( ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                         => ( E = k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,D)
+                           => k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,k1_nat_1(D,np__1)) = k8_fin_topo(A,E) ) ) )
+                  & k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,np__0) = B ) ) ) ) ) ).
+
+fof(d3_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k3_fintopo3(A,B,C) = k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),k2_fintopo3(A,B),C) ) ) ) ).
+
+fof(d4_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,k1_zfmisc_1(u1_struct_0(A)))
+                & m2_relset_1(C,k5_numbers,k1_zfmisc_1(u1_struct_0(A))) )
+             => ( C = k4_fintopo3(A,B)
+              <=> ( ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                         => ( E = k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,D)
+                           => k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,k1_nat_1(D,np__1)) = k7_fin_topo(A,E) ) ) )
+                  & k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,np__0) = B ) ) ) ) ) ).
+
+fof(d5_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k5_fintopo3(A,B,C) = k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),k4_fintopo3(A,B),C) ) ) ) ).
+
+fof(t13_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k3_fintopo3(A,B,k1_nat_1(C,np__1)) = k8_fin_topo(A,k3_fintopo3(A,B,C)) ) ) ) ).
+
+fof(t14_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k3_fintopo3(A,B,np__0) = B ) ) ).
+
+fof(t15_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k3_fintopo3(A,B,np__1) = k8_fin_topo(A,B) ) ) ).
+
+fof(t16_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k3_fintopo3(A,B,np__2) = k8_fin_topo(A,k8_fin_topo(A,B)) ) ) ).
+
+fof(t17_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k3_fintopo3(A,k4_subset_1(u1_struct_0(A),B,C),D) = k4_subset_1(u1_struct_0(A),k3_fintopo3(A,B,D),k3_fintopo3(A,C,D)) ) ) ) ) ).
+
+fof(t18_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k5_fintopo3(A,B,k1_nat_1(C,np__1)) = k7_fin_topo(A,k5_fintopo3(A,B,C)) ) ) ) ).
+
+fof(t19_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k5_fintopo3(A,B,np__0) = B ) ) ).
+
+fof(t20_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k5_fintopo3(A,B,np__1) = k7_fin_topo(A,B) ) ) ).
+
+fof(t21_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k5_fintopo3(A,B,np__2) = k7_fin_topo(A,k7_fin_topo(A,B)) ) ) ).
+
+fof(t22_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k5_fintopo3(A,k5_subset_1(u1_struct_0(A),B,C),D) = k5_subset_1(u1_struct_0(A),k5_fintopo3(A,B,D),k5_fintopo3(A,C,D)) ) ) ) ) ).
+
+fof(t23_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_fin_topo(A)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r1_tarski(B,k3_fintopo3(A,B,C)) ) ) ) ) ).
+
+fof(t24_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_fin_topo(A)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r1_tarski(k5_fintopo3(A,B,C),B) ) ) ) ) ).
+
+fof(t25_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_fin_topo(A)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r1_tarski(k3_fintopo3(A,B,C),k3_fintopo3(A,B,k1_nat_1(C,np__1))) ) ) ) ) ).
+
+fof(t26_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_fin_topo(A)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r1_tarski(k5_fintopo3(A,B,k1_nat_1(C,np__1)),k5_fintopo3(A,B,C)) ) ) ) ) ).
+
+fof(t27_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k3_subset_1(u1_struct_0(A),k5_fintopo3(A,k3_subset_1(u1_struct_0(A),B),C)) = k3_fintopo3(A,B,C) ) ) ) ).
+
+fof(t28_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k3_subset_1(u1_struct_0(A),k3_fintopo3(A,k3_subset_1(u1_struct_0(A),B),C)) = k5_fintopo3(A,B,C) ) ) ) ).
+
+fof(t29_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k4_subset_1(u1_struct_0(A),k3_fintopo3(A,B,D),k3_fintopo3(A,C,D)) = k3_subset_1(u1_struct_0(A),k5_fintopo3(A,k3_subset_1(u1_struct_0(A),k4_subset_1(u1_struct_0(A),B,C)),D)) ) ) ) ) ).
+
+fof(t30_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k5_subset_1(u1_struct_0(A),k5_fintopo3(A,B,D),k5_fintopo3(A,C,D)) = k3_subset_1(u1_struct_0(A),k3_fintopo3(A,k3_subset_1(u1_struct_0(A),k5_subset_1(u1_struct_0(A),B,C)),D)) ) ) ) ) ).
+
+fof(d6_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,k1_zfmisc_1(u1_struct_0(A)))
+                & m2_relset_1(C,k5_numbers,k1_zfmisc_1(u1_struct_0(A))) )
+             => ( C = k6_fintopo3(A,B)
+              <=> ( ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                         => ( E = k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,D)
+                           => k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,k1_nat_1(D,np__1)) = k11_fin_topo(A,E) ) ) )
+                  & k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,np__0) = B ) ) ) ) ) ).
+
+fof(d7_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k7_fintopo3(A,B,C) = k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),k6_fintopo3(A,B),C) ) ) ) ).
+
+fof(d8_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,k1_zfmisc_1(u1_struct_0(A)))
+                & m2_relset_1(C,k5_numbers,k1_zfmisc_1(u1_struct_0(A))) )
+             => ( C = k8_fintopo3(A,B)
+              <=> ( ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                         => ( E = k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,D)
+                           => k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,k1_nat_1(D,np__1)) = k1_fintopo3(A,E) ) ) )
+                  & k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),C,np__0) = B ) ) ) ) ) ).
+
+fof(d9_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k9_fintopo3(A,B,C) = k8_funct_2(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),k8_fintopo3(A,B),C) ) ) ) ).
+
+fof(t31_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k7_fintopo3(A,B,k1_nat_1(C,np__1)) = k11_fin_topo(A,k7_fintopo3(A,B,C)) ) ) ) ).
+
+fof(t32_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k7_fintopo3(A,B,np__0) = B ) ) ).
+
+fof(t33_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k7_fintopo3(A,B,np__1) = k11_fin_topo(A,B) ) ) ).
+
+fof(t34_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k7_fintopo3(A,B,np__2) = k11_fin_topo(A,k11_fin_topo(A,B)) ) ) ).
+
+fof(t35_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k7_fintopo3(A,k4_subset_1(u1_struct_0(A),B,C),D) = k4_subset_1(u1_struct_0(A),k7_fintopo3(A,B,D),k7_fintopo3(A,C,D)) ) ) ) ) ).
+
+fof(t36_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_fin_topo(A)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r1_tarski(B,k7_fintopo3(A,B,C)) ) ) ) ) ).
+
+fof(t37_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_fin_topo(A)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r1_tarski(k7_fintopo3(A,B,C),k7_fintopo3(A,B,k1_nat_1(C,np__1))) ) ) ) ) ).
+
+fof(t38_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k9_fintopo3(A,B,k1_nat_1(C,np__1)) = k1_fintopo3(A,k9_fintopo3(A,B,C)) ) ) ) ).
+
+fof(t39_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k9_fintopo3(A,B,np__0) = B ) ) ).
+
+fof(t40_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k9_fintopo3(A,B,np__1) = k1_fintopo3(A,B) ) ) ).
+
+fof(t41_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k9_fintopo3(A,B,np__2) = k1_fintopo3(A,k1_fintopo3(A,B)) ) ) ).
+
+fof(t42_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k9_fintopo3(A,k5_subset_1(u1_struct_0(A),B,C),D) = k5_subset_1(u1_struct_0(A),k9_fintopo3(A,B,D),k9_fintopo3(A,C,D)) ) ) ) ) ).
+
+fof(t43_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_fin_topo(A)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r1_tarski(k9_fintopo3(A,B,C),B) ) ) ) ) ).
+
+fof(t44_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_fin_topo(A)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r1_tarski(k9_fintopo3(A,B,k1_nat_1(C,np__1)),k9_fintopo3(A,B,C)) ) ) ) ) ).
+
+fof(t45_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k9_fintopo3(A,B,C) = k3_subset_1(u1_struct_0(A),k7_fintopo3(A,k3_subset_1(u1_struct_0(A),B),C)) ) ) ) ).
+
+fof(t46_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k5_subset_1(u1_struct_0(A),k9_fintopo3(A,B,D),k9_fintopo3(A,C,D)) = k3_subset_1(u1_struct_0(A),k7_fintopo3(A,k3_subset_1(u1_struct_0(A),k5_subset_1(u1_struct_0(A),B,C)),D)) ) ) ) ) ).
+
+fof(d10_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k10_fintopo3(A,B,C) = k7_fintopo3(A,k1_fin_topo(A,C),B) ) ) ) ).
+
+fof(t47_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k10_fintopo3(A,np__0,B) = k1_fin_topo(A,B) ) ) ).
+
+fof(t48_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k10_fintopo3(A,k1_nat_1(C,np__1),B) = k11_fin_topo(A,k10_fintopo3(A,C,B)) ) ) ) ).
+
+fof(d11_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l1_fin_topo(B) )
+         => ( r1_fintopo3(A,B)
+          <=> ( u1_struct_0(A) = u1_struct_0(B)
+              & ! [C,D] :
+                  ( ( r2_hidden(C,u1_struct_0(A))
+                    & r2_hidden(D,u1_struct_0(B)) )
+                 => ( r2_hidden(D,k1_funct_1(u1_fin_topo(A),C))
+                  <=> r2_hidden(C,k1_funct_1(u1_fin_topo(B),D)) ) ) ) ) ) ) ).
+
+fof(symmetry_r1_fintopo3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & ~ v3_struct_0(B)
+        & l1_fin_topo(B) )
+     => ( r1_fintopo3(A,B)
+       => r1_fintopo3(B,A) ) ) ).
+
+fof(dt_k1_fintopo3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => m1_subset_1(k1_fintopo3(A,B),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k2_fintopo3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( v1_funct_1(k2_fintopo3(A,B))
+        & v1_funct_2(k2_fintopo3(A,B),k5_numbers,k1_zfmisc_1(u1_struct_0(A)))
+        & m2_relset_1(k2_fintopo3(A,B),k5_numbers,k1_zfmisc_1(u1_struct_0(A))) ) ) ).
+
+fof(dt_k3_fintopo3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k5_numbers) )
+     => m1_subset_1(k3_fintopo3(A,B,C),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k4_fintopo3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( v1_funct_1(k4_fintopo3(A,B))
+        & v1_funct_2(k4_fintopo3(A,B),k5_numbers,k1_zfmisc_1(u1_struct_0(A)))
+        & m2_relset_1(k4_fintopo3(A,B),k5_numbers,k1_zfmisc_1(u1_struct_0(A))) ) ) ).
+
+fof(dt_k5_fintopo3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k5_numbers) )
+     => m1_subset_1(k5_fintopo3(A,B,C),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k6_fintopo3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( v1_funct_1(k6_fintopo3(A,B))
+        & v1_funct_2(k6_fintopo3(A,B),k5_numbers,k1_zfmisc_1(u1_struct_0(A)))
+        & m2_relset_1(k6_fintopo3(A,B),k5_numbers,k1_zfmisc_1(u1_struct_0(A))) ) ) ).
+
+fof(dt_k7_fintopo3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k5_numbers) )
+     => m1_subset_1(k7_fintopo3(A,B,C),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k8_fintopo3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( v1_funct_1(k8_fintopo3(A,B))
+        & v1_funct_2(k8_fintopo3(A,B),k5_numbers,k1_zfmisc_1(u1_struct_0(A)))
+        & m2_relset_1(k8_fintopo3(A,B),k5_numbers,k1_zfmisc_1(u1_struct_0(A))) ) ) ).
+
+fof(dt_k9_fintopo3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k5_numbers) )
+     => m1_subset_1(k9_fintopo3(A,B,C),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k10_fintopo3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A)
+        & m1_subset_1(B,k5_numbers)
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k10_fintopo3(A,B,C),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(d1_fintopo3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_fin_topo(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k1_fintopo3(A,B) = a_2_0_fintopo3(A,B) ) ) ).
+
+fof(fraenkel_a_2_0_fintopo3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & l1_fin_topo(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B))) )
+     => ( r2_hidden(A,a_2_0_fintopo3(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u1_struct_0(B))
+            & A = D
+            & ! [E] :
+                ( m1_subset_1(E,u1_struct_0(B))
+               => ~ ( r2_hidden(E,k3_subset_1(u1_struct_0(B),C))
+                    & r2_hidden(D,k1_fin_topo(B,E)) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

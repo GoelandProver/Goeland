@@ -1,0 +1,296 @@
+%------------------------------------------------------------------------------
+% File     : SET007+577 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Classes of Independent Partitions
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : partit_2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   25 (   2 unt;   0 def)
+%            Number of atoms       :  142 (   9 equ)
+%            Maximal formula atoms :   14 (   5 avg)
+%            Number of connectives :  137 (  20   ~;   0   |;  31   &)
+%                                         (   5 <=>;  81  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   9 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   19 (  17 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   18 (  18 usr;   1 con; 0-6 aty)
+%            Number of variables   :   84 (  82   !;   2   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(d1_partit_2,axiom,
+    ! [A,B,C] :
+      ( m2_relset_1(C,A,B)
+     => ! [D] :
+          ( m2_relset_1(D,A,B)
+         => ( r1_partit_2(A,B,C,D)
+          <=> ! [E] :
+                ( m1_subset_1(E,A)
+               => ! [F] :
+                    ( m1_subset_1(F,B)
+                   => ( r2_hidden(k4_tarski(E,F),C)
+                     => r2_hidden(k4_tarski(E,F),D) ) ) ) ) ) ) ).
+
+fof(t1_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k2_bvfunc_2(A,k1_subset_1(k1_bvfunc_2(A))) = k6_partit1(A) ) ).
+
+fof(t2_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v3_relat_2(B)
+            & v8_relat_2(B)
+            & v1_partfun1(B,A,A)
+            & m2_relset_1(B,A,A) )
+         => ! [C] :
+              ( ( v3_relat_2(C)
+                & v8_relat_2(C)
+                & v1_partfun1(C,A,A)
+                & m2_relset_1(C,A,A) )
+             => r1_partit_2(A,A,k3_eqrel_1(A,B,C),k7_relset_1(A,A,A,A,B,C)) ) ) ) ).
+
+fof(t3_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_relset_1(B,A,A)
+         => r1_partit_2(A,A,B,k1_eqrel_1(A)) ) ) ).
+
+fof(t4_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v3_relat_2(B)
+            & v8_relat_2(B)
+            & v1_partfun1(B,A,A)
+            & m2_relset_1(B,A,A) )
+         => ( k7_relset_1(A,A,A,A,k1_eqrel_1(A),B) = k1_eqrel_1(A)
+            & k7_relset_1(A,A,A,A,B,k1_eqrel_1(A)) = k1_eqrel_1(A) ) ) ) ).
+
+fof(t5_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_eqrel_1(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,A)
+             => ! [D] :
+                  ( m1_subset_1(D,A)
+                 => ( r2_hidden(k4_tarski(C,D),k4_partit1(A,B))
+                  <=> r2_hidden(C,k22_bvfunc_1(A,D,B)) ) ) ) ) ) ).
+
+fof(t6_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_eqrel_1(B,A)
+         => ! [C] :
+              ( m1_eqrel_1(C,A)
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ( k4_partit1(A,D) = k7_relset_1(A,A,A,A,k4_partit1(A,B),k4_partit1(A,C))
+                   => ! [E] :
+                        ( m1_subset_1(E,A)
+                       => ! [F] :
+                            ( m1_subset_1(F,A)
+                           => ( r2_hidden(E,k22_bvfunc_1(A,F,D))
+                            <=> ? [G] :
+                                  ( m1_subset_1(G,A)
+                                  & r2_hidden(E,k22_bvfunc_1(A,G,B))
+                                  & r2_hidden(G,k22_bvfunc_1(A,F,C)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t7_partit_2,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( v1_relat_1(B)
+         => ! [C] :
+              ( ( r1_relat_2(A,C)
+                & r1_relat_2(B,C) )
+             => r1_relat_2(k5_relat_1(A,B),C) ) ) ) ).
+
+fof(t8_partit_2,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ! [B] :
+          ( r1_relat_2(A,B)
+         => r1_tarski(B,k3_relat_1(A)) ) ) ).
+
+fof(t9_partit_2,axiom,
+    ! [A,B] :
+      ( m2_relset_1(B,A,A)
+     => ( r1_relat_2(B,A)
+       => A = k3_relat_1(B) ) ) ).
+
+fof(t10_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v3_relat_2(B)
+            & v8_relat_2(B)
+            & v1_partfun1(B,A,A)
+            & m2_relset_1(B,A,A) )
+         => ! [C] :
+              ( ( v3_relat_2(C)
+                & v8_relat_2(C)
+                & v1_partfun1(C,A,A)
+                & m2_relset_1(C,A,A) )
+             => ( k7_relset_1(A,A,A,A,B,C) = k7_relset_1(A,A,A,A,C,B)
+               => ( v3_relat_2(k7_relset_1(A,A,A,A,B,C))
+                  & v8_relat_2(k7_relset_1(A,A,A,A,B,C))
+                  & v1_partfun1(k7_relset_1(A,A,A,A,B,C),A,A)
+                  & m2_relset_1(k7_relset_1(A,A,A,A,B,C),A,A) ) ) ) ) ) ).
+
+fof(t11_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+             => ( r1_bvfunc_1(A,B,C)
+               => r1_bvfunc_1(A,k5_valuat_1(A,C),k5_valuat_1(A,B)) ) ) ) ) ).
+
+fof(t12_partit_2,axiom,
+    $true ).
+
+fof(t13_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k1_bvfunc_2(A)))
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( r1_bvfunc_1(A,B,C)
+                       => r1_bvfunc_1(A,k6_bvfunc_2(A,B,D,E),k6_bvfunc_2(A,C,D,E)) ) ) ) ) ) ) ).
+
+fof(t14_partit_2,axiom,
+    $true ).
+
+fof(t15_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k1_bvfunc_2(A)))
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( r1_bvfunc_1(A,B,C)
+                       => r1_bvfunc_1(A,k7_bvfunc_2(A,B,D,E),k7_bvfunc_2(A,C,D,E)) ) ) ) ) ) ) ).
+
+fof(t16_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_bvfunc_2(A)))
+         => ( v2_bvfunc_2(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+               => ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(k1_bvfunc_2(A)))
+                   => ( ( r1_tarski(C,B)
+                        & r1_tarski(D,B) )
+                     => k7_relset_1(A,A,A,A,k4_partit1(A,k2_bvfunc_2(A,C)),k4_partit1(A,k2_bvfunc_2(A,D))) = k7_relset_1(A,A,A,A,k4_partit1(A,k2_bvfunc_2(A,D)),k4_partit1(A,k2_bvfunc_2(A,C))) ) ) ) ) ) ) ).
+
+fof(t17_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E) = k6_bvfunc_2(A,k6_bvfunc_2(A,B,C,E),C,D) ) ) ) ) ) ) ).
+
+fof(t18_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => k7_bvfunc_2(A,k7_bvfunc_2(A,B,C,D),C,E) = k7_bvfunc_2(A,k7_bvfunc_2(A,B,C,E),C,D) ) ) ) ) ) ) ).
+
+fof(t19_partit_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k6_margrel1,k1_fraenkel(A,k6_margrel1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_bvfunc_2(A)))
+             => ! [D] :
+                  ( m1_eqrel_1(D,A)
+                 => ! [E] :
+                      ( m1_eqrel_1(E,A)
+                     => ( v2_bvfunc_2(C,A)
+                       => r1_bvfunc_1(A,k7_bvfunc_2(A,k6_bvfunc_2(A,B,C,D),C,E),k6_bvfunc_2(A,k7_bvfunc_2(A,B,C,E),C,D)) ) ) ) ) ) ) ).
+
+fof(dt_m1_partit_2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k1_bvfunc_2(A))) )
+     => ! [C] :
+          ( m1_partit_2(C,A,B)
+         => m1_eqrel_1(C,A) ) ) ).
+
+fof(existence_m1_partit_2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k1_bvfunc_2(A))) )
+     => ? [C] : m1_partit_2(C,A,B) ) ).
+
+fof(redefinition_m1_partit_2,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k1_bvfunc_2(A))) )
+     => ! [C] :
+          ( m1_partit_2(C,A,B)
+        <=> m1_subset_1(C,B) ) ) ).
+
+fof(reflexivity_r1_partit_2,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_relset_1(C,A,B)
+        & m1_relset_1(D,A,B) )
+     => r1_partit_2(A,B,C,C) ) ).
+
+fof(redefinition_r1_partit_2,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_relset_1(C,A,B)
+        & m1_relset_1(D,A,B) )
+     => ( r1_partit_2(A,B,C,D)
+      <=> r1_tarski(C,D) ) ) ).
+
+%------------------------------------------------------------------------------

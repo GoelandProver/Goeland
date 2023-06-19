@@ -1,0 +1,130 @@
+%------------------------------------------------------------------------------
+% File     : LCL014^0 : TPTP v8.1.2. Released .0.
+% Domain   : Logical Calculi
+% Axioms   : Region Connection Calculus
+% Version  : [RCC92] axioms.
+% English  : 
+
+% Refs     : [RCC92] Randell et al. (1992), A Spatial Logic Based on Region
+%          : [Ben10a] Benzmueller (2010), Email to Geoff Sutcliffe
+%          : [Ben10b] Benzmueller (2010), Simple Type Theory as a Framework
+% Source   : [Ben10a]
+% Names    : RCC.ax [Ben10a]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   22 (  10 unt;  11 typ;   9 def)
+%            Number of atoms       :   41 (   9 equ;   0 cnn)
+%            Maximal formula atoms :    2 (   1 avg)
+%            Number of connectives :   64 (   6   ~;   0   |;  10   &;  46   @)
+%                                         (   0 <=>;   2  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    6 (   2 avg;  46 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :   20 (  20   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   11 (  10 usr;   0 con; 2-2 aty)
+%            Number of variables   :   25 (  18   ^   4   !;   3   ?;  25   :)
+% SPC      : 
+
+% Comments : 
+%------------------------------------------------------------------------------
+thf(reg_type,type,
+    reg: $tType ).
+
+thf(c_type,type,
+    c: reg > reg > $o ).
+
+thf(dc_type,type,
+    dc: reg > reg > $o ).
+
+thf(p_type,type,
+    p: reg > reg > $o ).
+
+thf(eq_type,type,
+    eq: reg > reg > $o ).
+
+thf(o_type,type,
+    o: reg > reg > $o ).
+
+thf(po_type,type,
+    po: reg > reg > $o ).
+
+thf(ec_type,type,
+    ec: reg > reg > $o ).
+
+thf(pp_type,type,
+    pp: reg > reg > $o ).
+
+thf(tpp_type,type,
+    tpp: reg > reg > $o ).
+
+thf(ntpp_type,type,
+    ntpp: reg > reg > $o ).
+
+thf(c_reflexive,axiom,
+    ! [X: reg] : ( c @ X @ X ) ).
+
+thf(c_symmetric,axiom,
+    ! [X: reg,Y: reg] :
+      ( ( c @ X @ Y )
+     => ( c @ Y @ X ) ) ).
+
+thf(dc,definition,
+    ( dc
+    = ( ^ [X: reg,Y: reg] :
+          ~ ( c @ X @ Y ) ) ) ).
+
+thf(p,definition,
+    ( p
+    = ( ^ [X: reg,Y: reg] :
+        ! [Z: reg] :
+          ( ( c @ Z @ X )
+         => ( c @ Z @ Y ) ) ) ) ).
+
+thf(eq,definition,
+    ( eq
+    = ( ^ [X: reg,Y: reg] :
+          ( ( p @ X @ Y )
+          & ( p @ Y @ X ) ) ) ) ).
+
+thf(o,definition,
+    ( o
+    = ( ^ [X: reg,Y: reg] :
+        ? [Z: reg] :
+          ( ( p @ Z @ X )
+          & ( p @ Z @ Y ) ) ) ) ).
+
+thf(po,definition,
+    ( po
+    = ( ^ [X: reg,Y: reg] :
+          ( ( o @ X @ Y )
+          & ~ ( p @ X @ Y )
+          & ~ ( p @ Y @ X ) ) ) ) ).
+
+thf(ec,definition,
+    ( ec
+    = ( ^ [X: reg,Y: reg] :
+          ( ( c @ X @ Y )
+          & ~ ( o @ X @ Y ) ) ) ) ).
+
+thf(pp,definition,
+    ( pp
+    = ( ^ [X: reg,Y: reg] :
+          ( ( p @ X @ Y )
+          & ~ ( p @ Y @ X ) ) ) ) ).
+
+thf(tpp,definition,
+    ( tpp
+    = ( ^ [X: reg,Y: reg] :
+          ( ( pp @ X @ Y )
+          & ? [Z: reg] :
+              ( ( ec @ Z @ X )
+              & ( ec @ Z @ Y ) ) ) ) ) ).
+
+thf(ntpp,definition,
+    ( ntpp
+    = ( ^ [X: reg,Y: reg] :
+          ( ( pp @ X @ Y )
+          & ~ ? [Z: reg] :
+                ( ( ec @ Z @ X )
+                & ( ec @ Z @ Y ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

@@ -40,7 +40,6 @@ package global
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 	"runtime"
 	"strconv"
@@ -50,7 +49,6 @@ import (
 )
 
 var ocoq = false
-var debug = false
 var destructive = true
 var nb_gor = 0
 var mutex sync.Mutex
@@ -70,20 +68,27 @@ var dmt_before_eq bool
 var problem_name string
 var core_limit = -1
 var completeness = false
+var isTypeProof = false
+var arithModule = false
+var innerSkolem = false
+var optimisedSkolem = false
+
+var debugTerminal = false
+var debugFile = false
+var showTrace = false
+var logFile string
+var writeLogs = false
+
+var cpuProfile string
+var memProfile string
+
+var isConjectureFound = false
 
 // Executable path
 var current_directory, _ = os.Executable()
 var current_directory_splitted = strings.Split(current_directory, "/")
 var exec_name = current_directory_splitted[len(current_directory_splitted)-1]
 var exec_path = current_directory[:len(current_directory)-len(exec_name)]
-
-/* Prints in debug mode. */
-func PrintDebug(function, message string) {
-	if debug {
-		fmt.Printf("[%.6fs][%v][%v] %v\n", time.Since(start).Seconds(), GetGID(), function, message)
-		//[\033[1;34mDEBUG\033[0m]
-	}
-}
 
 /* incr the  global number of gouroutine lanched */
 func IncrGoRoutine(i int) {
@@ -111,7 +116,27 @@ func GetGID() uint64 {
 
 /* Getters */
 func GetDebug() bool {
-	return debug
+	return debugTerminal || debugFile
+}
+
+func GetDebugTerminal() bool {
+	return debugTerminal
+}
+
+func GetDebugFile() bool {
+	return debugFile
+}
+
+func GetShowTrace() bool {
+	return showTrace
+}
+
+func GetLogFile() string {
+	return logFile
+}
+
+func GetWriteLogs() bool {
+	return writeLogs
 }
 
 func IsDestructive() bool {
@@ -153,13 +178,16 @@ func GetProof() bool {
 func GetExecPath() string {
 	return exec_path
 }
+
 func IsLoaded(s string) bool {
 	// Not locked here because read-only except in main
 	return plugins[s]
 }
+
 func GetCptNode() int {
 	return cpt_node
 }
+
 func IncrCptNode() int {
 	lock_cpt_node.Lock()
 	cpt_node++
@@ -182,16 +210,62 @@ func IsCoqOutput() bool {
 func GetProblemName() string {
 	return problem_name
 }
+
 func GetCoreLimit() int {
 	return core_limit
 }
+
 func GetCompleteness() bool {
 	return completeness
 }
 
+func GetTypeProof() bool {
+	return isTypeProof
+}
+
+func GetArithModule() bool {
+	return arithModule
+}
+
+func GetCpuProfile() string {
+	return cpuProfile
+}
+
+func GetMemProfile() string {
+	return memProfile
+}
+
+func IsConjectureFound() bool {
+	return isConjectureFound
+}
+
+func IsInnerSko() bool {
+	return innerSkolem
+}
+
+func IsOptimisedSko() bool {
+	return optimisedSkolem
+}
+
 /* Setters */
-func SetDebug(b bool) {
-	debug = b
+func SetDebugTerminal(b bool) {
+	debugTerminal = b
+}
+
+func SetDebugFile(b bool) {
+	debugFile = b
+}
+
+func SetShowTrace(b bool) {
+	showTrace = b
+}
+
+func SetLogFile(s string) {
+	logFile = s
+}
+
+func SetWriteLogs(b bool) {
+	writeLogs = b
 }
 
 func SetStart(t time.Time) {
@@ -258,4 +332,32 @@ func SetCoreLimit(i int) {
 
 func SetCompleteness(b bool) {
 	completeness = b
+}
+
+func SetTypeProof(b bool) {
+	isTypeProof = b
+}
+
+func SetArithModule(b bool) {
+	arithModule = b
+}
+
+func SetCpuProfile(s string) {
+	cpuProfile = s
+}
+
+func SetMemProfile(s string) {
+	memProfile = s
+}
+
+func SetConjecture(b bool) {
+	isConjectureFound = b
+}
+
+func SetInnerSko(b bool) {
+	innerSkolem = b
+}
+
+func SetOptimisedSko(b bool) {
+	optimisedSkolem = b
 }

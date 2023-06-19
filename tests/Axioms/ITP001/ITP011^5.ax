@@ -1,0 +1,3139 @@
+%------------------------------------------------------------------------------
+% File     : ITP011^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : relation^2.ax [Gau20]
+%          : HL4011^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  346 (   1 unt;  51 typ;   0 def)
+%            Number of atoms       : 4405 (  93 equ;   0 cnn)
+%            Maximal formula atoms :   61 (  12 avg)
+%            Number of connectives : 9168 (  11   ~;  16   |; 162   &;7935   @)
+%                                         (  92 <=>; 952  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   30 (  14 avg;7935 nst)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :   71 (  71   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   71 (  68 usr;  19 con; 0-3 aty)
+%            Number of variables   : 1127 (  10   ^1098   !;  19   ?;1127   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tp_c_2Erelation_2ECR,type,
+    c_2Erelation_2ECR: del > $i ).
+
+thf(mem_c_2Erelation_2ECR,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2ECR @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2EEMPTY__REL,type,
+    c_2Erelation_2EEMPTY__REL: del > $i ).
+
+thf(mem_c_2Erelation_2EEMPTY__REL,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2EEMPTY__REL @ A_27a ) @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) ).
+
+thf(tp_c_2Erelation_2EEQC,type,
+    c_2Erelation_2EEQC: del > $i ).
+
+thf(mem_c_2Erelation_2EEQC,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2EEQC @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) ) ).
+
+thf(tp_c_2Erelation_2EIDEM,type,
+    c_2Erelation_2EIDEM: del > $i ).
+
+thf(mem_c_2Erelation_2EIDEM,axiom,
+    ! [A_27z: del] : ( mem @ ( c_2Erelation_2EIDEM @ A_27z ) @ ( arr @ ( arr @ A_27z @ A_27z ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2EINDUCTIVE__INVARIANT,type,
+    c_2Erelation_2EINDUCTIVE__INVARIANT: del > del > $i ).
+
+thf(mem_c_2Erelation_2EINDUCTIVE__INVARIANT,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2EINDUCTIVE__INVARIANT @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) @ bool ) ) ) ) ).
+
+thf(tp_c_2Erelation_2EINDUCTIVE__INVARIANT__ON,type,
+    c_2Erelation_2EINDUCTIVE__INVARIANT__ON: del > del > $i ).
+
+thf(mem_c_2Erelation_2EINDUCTIVE__INVARIANT__ON,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2EINDUCTIVE__INVARIANT__ON @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ ( arr @ A_27a @ bool ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) @ bool ) ) ) ) ) ).
+
+thf(tp_c_2Erelation_2EINVOL,type,
+    c_2Erelation_2EINVOL: del > $i ).
+
+thf(mem_c_2Erelation_2EINVOL,axiom,
+    ! [A_27z: del] : ( mem @ ( c_2Erelation_2EINVOL @ A_27z ) @ ( arr @ ( arr @ A_27z @ A_27z ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2ELinearOrder,type,
+    c_2Erelation_2ELinearOrder: del > $i ).
+
+thf(mem_c_2Erelation_2ELinearOrder,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2ELinearOrder @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2EO,type,
+    c_2Erelation_2EO: del > del > del > $i ).
+
+thf(mem_c_2Erelation_2EO,axiom,
+    ! [A_27g: del,A_27h: del,A_27k: del] : ( mem @ ( c_2Erelation_2EO @ A_27g @ A_27h @ A_27k ) @ ( arr @ ( arr @ A_27h @ ( arr @ A_27k @ bool ) ) @ ( arr @ ( arr @ A_27g @ ( arr @ A_27h @ bool ) ) @ ( arr @ A_27g @ ( arr @ A_27k @ bool ) ) ) ) ) ).
+
+thf(tp_c_2Erelation_2EOrder,type,
+    c_2Erelation_2EOrder: del > $i ).
+
+thf(mem_c_2Erelation_2EOrder,axiom,
+    ! [A_27g: del] : ( mem @ ( c_2Erelation_2EOrder @ A_27g ) @ ( arr @ ( arr @ A_27g @ ( arr @ A_27g @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2EPreOrder,type,
+    c_2Erelation_2EPreOrder: del > $i ).
+
+thf(mem_c_2Erelation_2EPreOrder,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2EPreOrder @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2ERC,type,
+    c_2Erelation_2ERC: del > $i ).
+
+thf(mem_c_2Erelation_2ERC,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2ERC @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) ) ).
+
+thf(tp_c_2Erelation_2ERCOMPL,type,
+    c_2Erelation_2ERCOMPL: del > del > $i ).
+
+thf(mem_c_2Erelation_2ERCOMPL,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2ERCOMPL @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) ) ) ).
+
+thf(tp_c_2Erelation_2ERDOM,type,
+    c_2Erelation_2ERDOM: del > del > $i ).
+
+thf(mem_c_2Erelation_2ERDOM,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2ERDOM @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ A_27a @ bool ) ) ) ).
+
+thf(tp_c_2Erelation_2ERDOM__DELETE,type,
+    c_2Erelation_2ERDOM__DELETE: del > del > $i ).
+
+thf(mem_c_2Erelation_2ERDOM__DELETE,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2ERDOM__DELETE @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) ) ) ) ).
+
+thf(tp_c_2Erelation_2ERESTRICT,type,
+    c_2Erelation_2ERESTRICT: del > del > $i ).
+
+thf(mem_c_2Erelation_2ERESTRICT,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2ERESTRICT @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27a @ A_27b ) ) ) ) ) ).
+
+thf(tp_c_2Erelation_2ERINTER,type,
+    c_2Erelation_2ERINTER: del > del > $i ).
+
+thf(mem_c_2Erelation_2ERINTER,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2ERINTER @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) ) ) ) ).
+
+thf(tp_c_2Erelation_2ERRANGE,type,
+    c_2Erelation_2ERRANGE: del > del > $i ).
+
+thf(mem_c_2Erelation_2ERRANGE,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2ERRANGE @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ A_27b @ bool ) ) ) ).
+
+thf(tp_c_2Erelation_2ERRESTRICT,type,
+    c_2Erelation_2ERRESTRICT: del > del > $i ).
+
+thf(mem_c_2Erelation_2ERRESTRICT,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2ERRESTRICT @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ ( arr @ A_27a @ bool ) @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) ) ) ) ).
+
+thf(tp_c_2Erelation_2ERSUBSET,type,
+    c_2Erelation_2ERSUBSET: del > del > $i ).
+
+thf(mem_c_2Erelation_2ERSUBSET,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ bool ) ) ) ).
+
+thf(tp_c_2Erelation_2ERTC,type,
+    c_2Erelation_2ERTC: del > $i ).
+
+thf(mem_c_2Erelation_2ERTC,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2ERTC @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) ) ).
+
+thf(tp_c_2Erelation_2ERUNION,type,
+    c_2Erelation_2ERUNION: del > del > $i ).
+
+thf(mem_c_2Erelation_2ERUNION,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2ERUNION @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) ) ) ) ).
+
+thf(tp_c_2Erelation_2ERUNIV,type,
+    c_2Erelation_2ERUNIV: del > del > $i ).
+
+thf(mem_c_2Erelation_2ERUNIV,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2ERUNIV @ A_27a @ A_27b ) @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) ) ).
+
+thf(tp_c_2Erelation_2ESC,type,
+    c_2Erelation_2ESC: del > $i ).
+
+thf(mem_c_2Erelation_2ESC,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2ESC @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) ) ).
+
+thf(tp_c_2Erelation_2ESN,type,
+    c_2Erelation_2ESN: del > $i ).
+
+thf(mem_c_2Erelation_2ESN,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2ESN @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2ESTRORD,type,
+    c_2Erelation_2ESTRORD: del > $i ).
+
+thf(mem_c_2Erelation_2ESTRORD,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2ESTRORD @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) ) ).
+
+thf(tp_c_2Erelation_2EStrongLinearOrder,type,
+    c_2Erelation_2EStrongLinearOrder: del > $i ).
+
+thf(mem_c_2Erelation_2EStrongLinearOrder,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2EStrongLinearOrder @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2EStrongOrder,type,
+    c_2Erelation_2EStrongOrder: del > $i ).
+
+thf(mem_c_2Erelation_2EStrongOrder,axiom,
+    ! [A_27g: del] : ( mem @ ( c_2Erelation_2EStrongOrder @ A_27g ) @ ( arr @ ( arr @ A_27g @ ( arr @ A_27g @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2ETC,type,
+    c_2Erelation_2ETC: del > $i ).
+
+thf(mem_c_2Erelation_2ETC,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2ETC @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) ) ).
+
+thf(tp_c_2Erelation_2EWCR,type,
+    c_2Erelation_2EWCR: del > $i ).
+
+thf(mem_c_2Erelation_2EWCR,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2EWCR @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2EWF,type,
+    c_2Erelation_2EWF: del > $i ).
+
+thf(mem_c_2Erelation_2EWF,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2EWF @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2EWFP,type,
+    c_2Erelation_2EWFP: del > $i ).
+
+thf(mem_c_2Erelation_2EWFP,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2EWFP @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ A_27a @ bool ) ) ) ).
+
+thf(tp_c_2Erelation_2EWFREC,type,
+    c_2Erelation_2EWFREC: del > del > $i ).
+
+thf(mem_c_2Erelation_2EWFREC,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2EWFREC @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) @ ( arr @ A_27a @ A_27b ) ) ) ) ).
+
+thf(tp_c_2Erelation_2EWeakLinearOrder,type,
+    c_2Erelation_2EWeakLinearOrder: del > $i ).
+
+thf(mem_c_2Erelation_2EWeakLinearOrder,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2EWeakLinearOrder @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2EWeakOrder,type,
+    c_2Erelation_2EWeakOrder: del > $i ).
+
+thf(mem_c_2Erelation_2EWeakOrder,axiom,
+    ! [A_27g: del] : ( mem @ ( c_2Erelation_2EWeakOrder @ A_27g ) @ ( arr @ ( arr @ A_27g @ ( arr @ A_27g @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2Eantisymmetric,type,
+    c_2Erelation_2Eantisymmetric: del > $i ).
+
+thf(mem_c_2Erelation_2Eantisymmetric,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2Eapprox,type,
+    c_2Erelation_2Eapprox: del > del > $i ).
+
+thf(mem_c_2Erelation_2Eapprox,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2Eapprox @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) @ ( arr @ A_27a @ ( arr @ ( arr @ A_27a @ A_27b ) @ bool ) ) ) ) ) ).
+
+thf(tp_c_2Erelation_2Ediag,type,
+    c_2Erelation_2Ediag: del > $i ).
+
+thf(mem_c_2Erelation_2Ediag,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Ediag @ A_27a ) @ ( arr @ ( arr @ A_27a @ bool ) @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) ) ).
+
+thf(tp_c_2Erelation_2Ediamond,type,
+    c_2Erelation_2Ediamond: del > $i ).
+
+thf(mem_c_2Erelation_2Ediamond,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Ediamond @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2Eequivalence,type,
+    c_2Erelation_2Eequivalence: del > $i ).
+
+thf(mem_c_2Erelation_2Eequivalence,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Eequivalence @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2Einv,type,
+    c_2Erelation_2Einv: del > del > $i ).
+
+thf(mem_c_2Erelation_2Einv,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2Einv @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ A_27b @ ( arr @ A_27a @ bool ) ) ) ) ).
+
+thf(tp_c_2Erelation_2Einv__image,type,
+    c_2Erelation_2Einv__image: del > del > $i ).
+
+thf(mem_c_2Erelation_2Einv__image,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2Einv__image @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27b @ ( arr @ A_27b @ bool ) ) @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) ) ) ).
+
+thf(tp_c_2Erelation_2Eirreflexive,type,
+    c_2Erelation_2Eirreflexive: del > $i ).
+
+thf(mem_c_2Erelation_2Eirreflexive,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Eirreflexive @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2Enf,type,
+    c_2Erelation_2Enf: del > del > $i ).
+
+thf(mem_c_2Erelation_2Enf,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2Enf @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) @ ( arr @ A_27a @ bool ) ) ) ).
+
+thf(tp_c_2Erelation_2Ercdiamond,type,
+    c_2Erelation_2Ercdiamond: del > $i ).
+
+thf(mem_c_2Erelation_2Ercdiamond,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Ercdiamond @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2Ereflexive,type,
+    c_2Erelation_2Ereflexive: del > $i ).
+
+thf(mem_c_2Erelation_2Ereflexive,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Ereflexive @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2Esymmetric,type,
+    c_2Erelation_2Esymmetric: del > $i ).
+
+thf(mem_c_2Erelation_2Esymmetric,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Esymmetric @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2Ethe__fun,type,
+    c_2Erelation_2Ethe__fun: del > del > $i ).
+
+thf(mem_c_2Erelation_2Ethe__fun,axiom,
+    ! [A_27a: del,A_27b: del] : ( mem @ ( c_2Erelation_2Ethe__fun @ A_27a @ A_27b ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ ( arr @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) @ ( arr @ A_27a @ ( arr @ A_27a @ A_27b ) ) ) ) ) ).
+
+thf(tp_c_2Erelation_2Etotal,type,
+    c_2Erelation_2Etotal: del > $i ).
+
+thf(mem_c_2Erelation_2Etotal,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Etotal @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2Etransitive,type,
+    c_2Erelation_2Etransitive: del > $i ).
+
+thf(mem_c_2Erelation_2Etransitive,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Etransitive @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(tp_c_2Erelation_2Etrichotomous,type,
+    c_2Erelation_2Etrichotomous: del > $i ).
+
+thf(mem_c_2Erelation_2Etrichotomous,axiom,
+    ! [A_27a: del] : ( mem @ ( c_2Erelation_2Etrichotomous @ A_27a ) @ ( arr @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) @ bool ) ) ).
+
+thf(ax_thm_2Erelation_2Etransitive__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ! [V3z: $i] :
+                    ( ( mem @ V3z @ A_27a )
+                   => ( ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                        & ( p @ ( ap @ ( ap @ V0R @ V2y ) @ V3z ) ) )
+                     => ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V3z ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Ereflexive__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V1x ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Eirreflexive__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Eirreflexive @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ~ ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V1x ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Esymmetric__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                <=> ( p @ ( ap @ ( ap @ V0R @ V2y ) @ V1x ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Eantisymmetric__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ( ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                    & ( p @ ( ap @ ( ap @ V0R @ V2y ) @ V1x ) ) )
+                 => ( V1x = V2y ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Eequivalence__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Eequivalence @ A_27a ) @ V0R ) )
+      <=> ( ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ V0R ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ V0R ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Etotal__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Etotal @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                  | ( p @ ( ap @ ( ap @ V0R @ V2y ) @ V1x ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Etrichotomous,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Etrichotomous @ A_27a ) @ V0R ) )
+      <=> ! [V1a: $i] :
+            ( ( mem @ V1a @ A_27a )
+           => ! [V2b: $i] :
+                ( ( mem @ V2b @ A_27a )
+               => ( ( p @ ( ap @ ( ap @ V0R @ V1a ) @ V2b ) )
+                  | ( p @ ( ap @ ( ap @ V0R @ V2b ) @ V1a ) )
+                  | ( V1a = V2b ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ETC__DEF,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ A_27a )
+         => ! [V2b: $i] :
+              ( ( mem @ V2b @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1a ) @ V2b ) )
+              <=> ! [V3P: $i] :
+                    ( ( mem @ V3P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+                   => ( ( ! [V4x: $i] :
+                            ( ( mem @ V4x @ A_27a )
+                           => ! [V5y: $i] :
+                                ( ( mem @ V5y @ A_27a )
+                               => ( ( p @ ( ap @ ( ap @ V0R @ V4x ) @ V5y ) )
+                                 => ( p @ ( ap @ ( ap @ V3P @ V4x ) @ V5y ) ) ) ) )
+                        & ! [V6x: $i] :
+                            ( ( mem @ V6x @ A_27a )
+                           => ! [V7y: $i] :
+                                ( ( mem @ V7y @ A_27a )
+                               => ! [V8z: $i] :
+                                    ( ( mem @ V8z @ A_27a )
+                                   => ( ( ( p @ ( ap @ ( ap @ V3P @ V6x ) @ V7y ) )
+                                        & ( p @ ( ap @ ( ap @ V3P @ V7y ) @ V8z ) ) )
+                                     => ( p @ ( ap @ ( ap @ V3P @ V6x ) @ V8z ) ) ) ) ) ) )
+                     => ( p @ ( ap @ ( ap @ V3P @ V1a ) @ V2b ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERTC__DEF,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ A_27a )
+         => ! [V2b: $i] :
+              ( ( mem @ V2b @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1a ) @ V2b ) )
+              <=> ! [V3P: $i] :
+                    ( ( mem @ V3P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+                   => ( ( ! [V4x: $i] :
+                            ( ( mem @ V4x @ A_27a )
+                           => ( p @ ( ap @ ( ap @ V3P @ V4x ) @ V4x ) ) )
+                        & ! [V5x: $i] :
+                            ( ( mem @ V5x @ A_27a )
+                           => ! [V6y: $i] :
+                                ( ( mem @ V6y @ A_27a )
+                               => ! [V7z: $i] :
+                                    ( ( mem @ V7z @ A_27a )
+                                   => ( ( ( p @ ( ap @ ( ap @ V0R @ V5x ) @ V6y ) )
+                                        & ( p @ ( ap @ ( ap @ V3P @ V6y ) @ V7z ) ) )
+                                     => ( p @ ( ap @ ( ap @ V3P @ V5x ) @ V7z ) ) ) ) ) ) )
+                     => ( p @ ( ap @ ( ap @ V3P @ V1a ) @ V2b ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERC__DEF,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+              <=> ( ( V1x = V2y )
+                  | ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ESC__DEF,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+              <=> ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                  | ( p @ ( ap @ ( ap @ V0R @ V2y ) @ V1x ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EEQC__DEF,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R )
+        = ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ESC__SYMMETRIC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__TRANSITIVE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__INDUCT,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V2x ) ) )
+              & ! [V3x: $i] :
+                  ( ( mem @ V3x @ A_27a )
+                 => ! [V4y: $i] :
+                      ( ( mem @ V4y @ A_27a )
+                     => ! [V5z: $i] :
+                          ( ( mem @ V5z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V0R @ V3x ) @ V4y ) )
+                              & ( p @ ( ap @ ( ap @ V1P @ V4y ) @ V5z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V3x ) @ V5z ) ) ) ) ) ) )
+           => ! [V6x: $i] :
+                ( ( mem @ V6x @ A_27a )
+               => ! [V7y: $i] :
+                    ( ( mem @ V7y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V6x ) @ V7y ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V6x ) @ V7y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__RULES,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                 => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) )
+        & ! [V3x: $i] :
+            ( ( mem @ V3x @ A_27a )
+           => ! [V4y: $i] :
+                ( ( mem @ V4y @ A_27a )
+               => ! [V5z: $i] :
+                    ( ( mem @ V5z @ A_27a )
+                   => ( ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V3x ) @ V4y ) )
+                        & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V4y ) @ V5z ) ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V3x ) @ V5z ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__RULES,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V1x ) ) )
+        & ! [V2x: $i] :
+            ( ( mem @ V2x @ A_27a )
+           => ! [V3y: $i] :
+                ( ( mem @ V3y @ A_27a )
+               => ! [V4z: $i] :
+                    ( ( mem @ V4z @ A_27a )
+                   => ( ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                        & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V3y ) @ V4z ) ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V2x ) @ V4z ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__REFL,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V1x ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__SINGLE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+               => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__STRONG__INDUCT,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V2x ) ) )
+              & ! [V3x: $i] :
+                  ( ( mem @ V3x @ A_27a )
+                 => ! [V4y: $i] :
+                      ( ( mem @ V4y @ A_27a )
+                     => ! [V5z: $i] :
+                          ( ( mem @ V5z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V0R @ V3x ) @ V4y ) )
+                              & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V4y ) @ V5z ) )
+                              & ( p @ ( ap @ ( ap @ V1P @ V4y ) @ V5z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V3x ) @ V5z ) ) ) ) ) ) )
+           => ! [V6x: $i] :
+                ( ( mem @ V6x @ A_27a )
+               => ! [V7y: $i] :
+                    ( ( mem @ V7y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V6x ) @ V7y ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V6x ) @ V7y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__RTC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+               => ! [V3z: $i] :
+                    ( ( mem @ V3z @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V2y ) @ V3z ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V3z ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__TRANSITIVE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etransitive__RTC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__REFLEXIVE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ereflexive__RTC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__REFLEXIVE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ereflexive__RC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__lifts__monotonicities,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27a ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                     => ( p @ ( ap @ ( ap @ V0R @ ( ap @ V1f @ V2x ) ) @ ( ap @ V1f @ V3y ) ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) @ V4x ) @ V5y ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) @ ( ap @ V1f @ V4x ) ) @ ( ap @ V1f @ V5y ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__MONOTONE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1Q: $i] :
+          ( ( mem @ V1Q @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ A_27a )
+                 => ( ! [V4x: $i] :
+                        ( ( mem @ V4x @ A_27a )
+                       => ! [V5y: $i] :
+                            ( ( mem @ V5y @ A_27a )
+                           => ( ( p @ ( ap @ ( ap @ V0R @ V4x ) @ V5y ) )
+                             => ( p @ ( ap @ ( ap @ V1Q @ V4x ) @ V5y ) ) ) ) )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) @ V2x ) @ V3y ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V1Q ) @ V2x ) @ V3y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__lifts__invariants,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ A_27a @ bool ) )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( ( p @ ( ap @ V0P @ V2x ) )
+                        & ( p @ ( ap @ ( ap @ V1R @ V2x ) @ V3y ) ) )
+                     => ( p @ ( ap @ V0P @ V3y ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( ( p @ ( ap @ V0P @ V4x ) )
+                        & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V1R ) @ V4x ) @ V5y ) ) )
+                     => ( p @ ( ap @ V0P @ V5y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__lifts__equalities,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27b ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                     => ( ( ap @ V1f @ V2x )
+                        = ( ap @ V1f @ V3y ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) @ V4x ) @ V5y ) )
+                     => ( ( ap @ V1f @ V4x )
+                        = ( ap @ V1f @ V5y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ESC__lifts__monotonicities,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27a ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                     => ( p @ ( ap @ ( ap @ V0R @ ( ap @ V1f @ V2x ) ) @ ( ap @ V1f @ V3y ) ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) @ V4x ) @ V5y ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) @ ( ap @ V1f @ V4x ) ) @ ( ap @ V1f @ V5y ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ESC__lifts__equalities,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27b ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                     => ( ( ap @ V1f @ V2x )
+                        = ( ap @ V1f @ V3y ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) @ V4x ) @ V5y ) )
+                     => ( ( ap @ V1f @ V4x )
+                        = ( ap @ V1f @ V5y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ESC__MONOTONE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1Q: $i] :
+          ( ( mem @ V1Q @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ A_27a )
+                 => ( ! [V4x: $i] :
+                        ( ( mem @ V4x @ A_27a )
+                       => ! [V5y: $i] :
+                            ( ( mem @ V5y @ A_27a )
+                           => ( ( p @ ( ap @ ( ap @ V0R @ V4x ) @ V5y ) )
+                             => ( p @ ( ap @ ( ap @ V1Q @ V4x ) @ V5y ) ) ) ) )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) @ V2x ) @ V3y ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V1Q ) @ V2x ) @ V3y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Esymmetric__RC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Eantisymmetric__RC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etransitive__RC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V0R ) )
+       => ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__SUBSET,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+               => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__SUBSET,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+               => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__SUBSET,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+               => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__RTC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+               => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__INDUCT,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V3y ) ) ) ) )
+              & ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ! [V5y: $i] :
+                      ( ( mem @ V5y @ A_27a )
+                     => ! [V6z: $i] :
+                          ( ( mem @ V6z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V5y ) )
+                              & ( p @ ( ap @ ( ap @ V1P @ V5y ) @ V6z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V6z ) ) ) ) ) ) )
+           => ! [V7u: $i] :
+                ( ( mem @ V7u @ A_27a )
+               => ! [V8v: $i] :
+                    ( ( mem @ V8v @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V7u ) @ V8v ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V7u ) @ V8v ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__INDUCT__LEFT1,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V3y ) ) ) ) )
+              & ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ! [V5y: $i] :
+                      ( ( mem @ V5y @ A_27a )
+                     => ! [V6z: $i] :
+                          ( ( mem @ V6z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V0R @ V4x ) @ V5y ) )
+                              & ( p @ ( ap @ ( ap @ V1P @ V5y ) @ V6z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V6z ) ) ) ) ) ) )
+           => ! [V7x: $i] :
+                ( ( mem @ V7x @ A_27a )
+               => ! [V8y: $i] :
+                    ( ( mem @ V8y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V7x ) @ V8y ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V7x ) @ V8y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__INDUCT__RIGHT1,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V3y ) ) ) ) )
+              & ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ! [V5y: $i] :
+                      ( ( mem @ V5y @ A_27a )
+                     => ! [V6z: $i] :
+                          ( ( mem @ V6z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V5y ) )
+                              & ( p @ ( ap @ ( ap @ V0R @ V5y ) @ V6z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V6z ) ) ) ) ) ) )
+           => ! [V7x: $i] :
+                ( ( mem @ V7x @ A_27a )
+               => ! [V8y: $i] :
+                    ( ( mem @ V8y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V7x ) @ V8y ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V7x ) @ V8y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__STRONG__INDUCT,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V3y ) ) ) ) )
+              & ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ! [V5y: $i] :
+                      ( ( mem @ V5y @ A_27a )
+                     => ! [V6z: $i] :
+                          ( ( mem @ V6z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V5y ) )
+                              & ( p @ ( ap @ ( ap @ V1P @ V5y ) @ V6z ) )
+                              & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V4x ) @ V5y ) )
+                              & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V5y ) @ V6z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V6z ) ) ) ) ) ) )
+           => ! [V7u: $i] :
+                ( ( mem @ V7u @ A_27a )
+               => ! [V8v: $i] :
+                    ( ( mem @ V8v @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V7u ) @ V8v ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V7u ) @ V8v ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__STRONG__INDUCT__LEFT1,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V3y ) ) ) ) )
+              & ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ! [V5y: $i] :
+                      ( ( mem @ V5y @ A_27a )
+                     => ! [V6z: $i] :
+                          ( ( mem @ V6z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V0R @ V4x ) @ V5y ) )
+                              & ( p @ ( ap @ ( ap @ V1P @ V5y ) @ V6z ) )
+                              & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V5y ) @ V6z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V6z ) ) ) ) ) ) )
+           => ! [V7u: $i] :
+                ( ( mem @ V7u @ A_27a )
+               => ! [V8v: $i] :
+                    ( ( mem @ V8v @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V7u ) @ V8v ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V7u ) @ V8v ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__STRONG__INDUCT__RIGHT1,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V3y ) ) ) ) )
+              & ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ! [V5y: $i] :
+                      ( ( mem @ V5y @ A_27a )
+                     => ! [V6z: $i] :
+                          ( ( mem @ V6z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V5y ) )
+                              & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V4x ) @ V5y ) )
+                              & ( p @ ( ap @ ( ap @ V0R @ V5y ) @ V6z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V6z ) ) ) ) ) ) )
+           => ! [V7u: $i] :
+                ( ( mem @ V7u @ A_27a )
+               => ! [V8v: $i] :
+                    ( ( mem @ V8v @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V7u ) @ V8v ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V7u ) @ V8v ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__INDUCT__ALT__LEFT,axiom,
+    ! [A_27a: del,V0b: $i] :
+      ( ( mem @ V0b @ A_27a )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2Q: $i] :
+              ( ( mem @ V2Q @ ( arr @ A_27a @ bool ) )
+             => ( ( ! [V3x: $i] :
+                      ( ( mem @ V3x @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V1R @ V3x ) @ V0b ) )
+                       => ( p @ ( ap @ V2Q @ V3x ) ) ) )
+                  & ! [V4x: $i] :
+                      ( ( mem @ V4x @ A_27a )
+                     => ! [V5y: $i] :
+                          ( ( mem @ V5y @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V1R @ V4x ) @ V5y ) )
+                              & ( p @ ( ap @ V2Q @ V5y ) ) )
+                           => ( p @ ( ap @ V2Q @ V4x ) ) ) ) ) )
+               => ! [V6a: $i] :
+                    ( ( mem @ V6a @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V1R ) @ V6a ) @ V0b ) )
+                     => ( p @ ( ap @ V2Q @ V6a ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__INDUCT__ALT__RIGHT,axiom,
+    ! [A_27a: del,V0a: $i] :
+      ( ( mem @ V0a @ A_27a )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2Q: $i] :
+              ( ( mem @ V2Q @ ( arr @ A_27a @ bool ) )
+             => ( ( ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V1R @ V0a ) @ V3y ) )
+                       => ( p @ ( ap @ V2Q @ V3y ) ) ) )
+                  & ! [V4x: $i] :
+                      ( ( mem @ V4x @ A_27a )
+                     => ! [V5y: $i] :
+                          ( ( mem @ V5y @ A_27a )
+                         => ( ( ( p @ ( ap @ V2Q @ V4x ) )
+                              & ( p @ ( ap @ ( ap @ V1R @ V4x ) @ V5y ) ) )
+                           => ( p @ ( ap @ V2Q @ V5y ) ) ) ) ) )
+               => ! [V6b: $i] :
+                    ( ( mem @ V6b @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V1R ) @ V0a ) @ V6b ) )
+                     => ( p @ ( ap @ V2Q @ V6b ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__lifts__monotonicities,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27a ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                     => ( p @ ( ap @ ( ap @ V0R @ ( ap @ V1f @ V2x ) ) @ ( ap @ V1f @ V3y ) ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V4x ) @ V5y ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ ( ap @ V1f @ V4x ) ) @ ( ap @ V1f @ V5y ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__lifts__invariants,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ A_27a @ bool ) )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( ( p @ ( ap @ V0P @ V2x ) )
+                        & ( p @ ( ap @ ( ap @ V1R @ V2x ) @ V3y ) ) )
+                     => ( p @ ( ap @ V0P @ V3y ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( ( p @ ( ap @ V0P @ V4x ) )
+                        & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V1R ) @ V4x ) @ V5y ) ) )
+                     => ( p @ ( ap @ V0P @ V5y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__lifts__equalities,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27b ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                     => ( ( ap @ V1f @ V2x )
+                        = ( ap @ V1f @ V3y ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V4x ) @ V5y ) )
+                     => ( ( ap @ V1f @ V4x )
+                        = ( ap @ V1f @ V5y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__lifts__transitive__relations,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1Q: $i] :
+          ( ( mem @ V1Q @ ( arr @ A_27b @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2f: $i] :
+              ( ( mem @ V2f @ ( arr @ A_27a @ A_27b ) )
+             => ( ( ! [V3x: $i] :
+                      ( ( mem @ V3x @ A_27a )
+                     => ! [V4y: $i] :
+                          ( ( mem @ V4y @ A_27a )
+                         => ( ( p @ ( ap @ ( ap @ V0R @ V3x ) @ V4y ) )
+                           => ( p @ ( ap @ ( ap @ V1Q @ ( ap @ V2f @ V3x ) ) @ ( ap @ V2f @ V4y ) ) ) ) ) )
+                  & ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27b ) @ V1Q ) ) )
+               => ! [V5x: $i] :
+                    ( ( mem @ V5x @ A_27a )
+                   => ! [V6y: $i] :
+                        ( ( mem @ V6y @ A_27a )
+                       => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V5x ) @ V6y ) )
+                         => ( p @ ( ap @ ( ap @ V1Q @ ( ap @ V2f @ V5x ) ) @ ( ap @ V2f @ V6y ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__implies__one__step,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+                  & ( V1x != V2y ) )
+               => ? [V3z: $i] :
+                    ( ( mem @ V3z @ A_27a )
+                    & ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V3z ) )
+                    & ( V1x != V3z ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__RTC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+               => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__TC__RC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+                  | ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__RC__EQNS,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) )
+        & ( ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__ALT__DEF,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ A_27a )
+         => ! [V2b: $i] :
+              ( ( mem @ V2b @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1a ) @ V2b ) )
+              <=> ! [V3Q: $i] :
+                    ( ( mem @ V3Q @ ( arr @ A_27a @ bool ) )
+                   => ( ( ( p @ ( ap @ V3Q @ V2b ) )
+                        & ! [V4x: $i] :
+                            ( ( mem @ V4x @ A_27a )
+                           => ! [V5y: $i] :
+                                ( ( mem @ V5y @ A_27a )
+                               => ( ( ( p @ ( ap @ ( ap @ V0R @ V4x ) @ V5y ) )
+                                    & ( p @ ( ap @ V3Q @ V5y ) ) )
+                                 => ( p @ ( ap @ V3Q @ V4x ) ) ) ) ) )
+                     => ( p @ ( ap @ V3Q @ V1a ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__ALT__INDUCT,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1Q: $i] :
+          ( ( mem @ V1Q @ ( arr @ A_27a @ bool ) )
+         => ! [V2b: $i] :
+              ( ( mem @ V2b @ A_27a )
+             => ( ( ( p @ ( ap @ V1Q @ V2b ) )
+                  & ! [V3x: $i] :
+                      ( ( mem @ V3x @ A_27a )
+                     => ! [V4y: $i] :
+                          ( ( mem @ V4y @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V0R @ V3x ) @ V4y ) )
+                              & ( p @ ( ap @ V1Q @ V4y ) ) )
+                           => ( p @ ( ap @ V1Q @ V3x ) ) ) ) ) )
+               => ! [V5x: $i] :
+                    ( ( mem @ V5x @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V5x ) @ V2b ) )
+                     => ( p @ ( ap @ V1Q @ V5x ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__ALT__RIGHT__DEF,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ A_27a )
+         => ! [V2b: $i] :
+              ( ( mem @ V2b @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1a ) @ V2b ) )
+              <=> ! [V3Q: $i] :
+                    ( ( mem @ V3Q @ ( arr @ A_27a @ bool ) )
+                   => ( ( ( p @ ( ap @ V3Q @ V1a ) )
+                        & ! [V4y: $i] :
+                            ( ( mem @ V4y @ A_27a )
+                           => ! [V5z: $i] :
+                                ( ( mem @ V5z @ A_27a )
+                               => ( ( ( p @ ( ap @ V3Q @ V4y ) )
+                                    & ( p @ ( ap @ ( ap @ V0R @ V4y ) @ V5z ) ) )
+                                 => ( p @ ( ap @ V3Q @ V5z ) ) ) ) ) )
+                     => ( p @ ( ap @ V3Q @ V2b ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__ALT__RIGHT__INDUCT,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1Q: $i] :
+          ( ( mem @ V1Q @ ( arr @ A_27a @ bool ) )
+         => ! [V2a: $i] :
+              ( ( mem @ V2a @ A_27a )
+             => ( ( ( p @ ( ap @ V1Q @ V2a ) )
+                  & ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ! [V4z: $i] :
+                          ( ( mem @ V4z @ A_27a )
+                         => ( ( ( p @ ( ap @ V1Q @ V3y ) )
+                              & ( p @ ( ap @ ( ap @ V0R @ V3y ) @ V4z ) ) )
+                           => ( p @ ( ap @ V1Q @ V4z ) ) ) ) ) )
+               => ! [V5z: $i] :
+                    ( ( mem @ V5z @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V2a ) @ V5z ) )
+                     => ( p @ ( ap @ V1Q @ V5z ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__INDUCT__RIGHT1,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V2x ) ) )
+              & ! [V3x: $i] :
+                  ( ( mem @ V3x @ A_27a )
+                 => ! [V4y: $i] :
+                      ( ( mem @ V4y @ A_27a )
+                     => ! [V5z: $i] :
+                          ( ( mem @ V5z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V1P @ V3x ) @ V4y ) )
+                              & ( p @ ( ap @ ( ap @ V0R @ V4y ) @ V5z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V3x ) @ V5z ) ) ) ) ) ) )
+           => ! [V6x: $i] :
+                ( ( mem @ V6x @ A_27a )
+               => ! [V7y: $i] :
+                    ( ( mem @ V7y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V6x ) @ V7y ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V6x ) @ V7y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__RULES__RIGHT1,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V1x ) ) )
+        & ! [V2x: $i] :
+            ( ( mem @ V2x @ A_27a )
+           => ! [V3y: $i] :
+                ( ( mem @ V3y @ A_27a )
+               => ! [V4z: $i] :
+                    ( ( mem @ V4z @ A_27a )
+                   => ( ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V2x ) @ V3y ) )
+                        & ( p @ ( ap @ ( ap @ V0R @ V3y ) @ V4z ) ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V2x ) @ V4z ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__STRONG__INDUCT__RIGHT1,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V2x ) ) )
+              & ! [V3x: $i] :
+                  ( ( mem @ V3x @ A_27a )
+                 => ! [V4y: $i] :
+                      ( ( mem @ V4y @ A_27a )
+                     => ! [V5z: $i] :
+                          ( ( mem @ V5z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V1P @ V3x ) @ V4y ) )
+                              & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V3x ) @ V4y ) )
+                              & ( p @ ( ap @ ( ap @ V0R @ V4y ) @ V5z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V3x ) @ V5z ) ) ) ) ) ) )
+           => ! [V6x: $i] :
+                ( ( mem @ V6x @ A_27a )
+               => ! [V7y: $i] :
+                    ( ( mem @ V7y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V6x ) @ V7y ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V6x ) @ V7y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEXTEND__RTC__TC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ! [V3z: $i] :
+                  ( ( mem @ V3z @ A_27a )
+                 => ( ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                      & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V2y ) @ V3z ) ) )
+                   => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V3z ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEXTEND__RTC__TC__EQN,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2z: $i] :
+              ( ( mem @ V2z @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2z ) )
+              <=> ? [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                    & ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V3y ) )
+                    & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V3y ) @ V2z ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ereflexive__RC__identity,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ V0R ) )
+       => ( ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R )
+          = V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2Esymmetric__SC__identity,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ V0R ) )
+       => ( ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R )
+          = V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etransitive__TC__identity,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V0R ) )
+       => ( ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R )
+          = V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__IDEM,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) )
+        = ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2ESC__IDEM,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) )
+        = ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__IDEM,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) )
+        = ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__MOVES__OUT,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) ) )
+        & ( ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) )
+        & ( ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Esymmetric__TC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ V0R ) )
+       => ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ereflexive__TC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ V0R ) )
+       => ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEQC__EQUIVALENCE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Eequivalence @ A_27a ) @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEQC__IDEM,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) )
+        = ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__IDEM,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) )
+        = ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__CASES1,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+              <=> ( ( V1x = V2y )
+                  | ? [V3u: $i] :
+                      ( ( mem @ V3u @ A_27a )
+                      & ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V3u ) )
+                      & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V3u ) @ V2y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__CASES__TC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+              <=> ( ( V1x = V2y )
+                  | ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__CASES2,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+              <=> ( ( V1x = V2y )
+                  | ? [V3u: $i] :
+                      ( ( mem @ V3u @ A_27a )
+                      & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V3u ) )
+                      & ( p @ ( ap @ ( ap @ V0R @ V3u ) @ V2y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__CASES__RTC__TWICE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+              <=> ? [V3u: $i] :
+                    ( ( mem @ V3u @ A_27a )
+                    & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V3u ) )
+                    & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V3u ) @ V2y ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__CASES1__E,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2z: $i] :
+              ( ( mem @ V2z @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2z ) )
+               => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2z ) )
+                  | ? [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                      & ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V3y ) )
+                      & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V3y ) @ V2z ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__CASES1,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2z: $i] :
+              ( ( mem @ V2z @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2z ) )
+              <=> ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2z ) )
+                  | ? [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                      & ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V3y ) )
+                      & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V3y ) @ V2z ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__CASES2__E,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2z: $i] :
+              ( ( mem @ V2z @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2z ) )
+               => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2z ) )
+                  | ? [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                      & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V3y ) )
+                      & ( p @ ( ap @ ( ap @ V0R @ V3y ) @ V2z ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__CASES2,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2z: $i] :
+              ( ( mem @ V2z @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2z ) )
+              <=> ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2z ) )
+                  | ? [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                      & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V3y ) )
+                      & ( p @ ( ap @ ( ap @ V0R @ V3y ) @ V2z ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETC__MONOTONE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1Q: $i] :
+          ( ( mem @ V1Q @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ A_27a )
+                 => ( ! [V4x: $i] :
+                        ( ( mem @ V4x @ A_27a )
+                       => ! [V5y: $i] :
+                            ( ( mem @ V5y @ A_27a )
+                           => ( ( p @ ( ap @ ( ap @ V0R @ V4x ) @ V5y ) )
+                             => ( p @ ( ap @ ( ap @ V1Q @ V4x ) @ V5y ) ) ) ) )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V2x ) @ V3y ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V1Q ) @ V2x ) @ V3y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__MONOTONE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1Q: $i] :
+          ( ( mem @ V1Q @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ A_27a )
+                 => ( ! [V4x: $i] :
+                        ( ( mem @ V4x @ A_27a )
+                       => ! [V5y: $i] :
+                            ( ( mem @ V5y @ A_27a )
+                           => ( ( p @ ( ap @ ( ap @ V0R @ V4x ) @ V5y ) )
+                             => ( p @ ( ap @ ( ap @ V1Q @ V4x ) @ V5y ) ) ) ) )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V2x ) @ V3y ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V1Q ) @ V2x ) @ V3y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEQC__INDUCTION,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V3y ) ) ) ) )
+              & ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V4x ) ) )
+              & ! [V5x: $i] :
+                  ( ( mem @ V5x @ A_27a )
+                 => ! [V6y: $i] :
+                      ( ( mem @ V6y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V1P @ V5x ) @ V6y ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V6y ) @ V5x ) ) ) ) )
+              & ! [V7x: $i] :
+                  ( ( mem @ V7x @ A_27a )
+                 => ! [V8y: $i] :
+                      ( ( mem @ V8y @ A_27a )
+                     => ! [V9z: $i] :
+                          ( ( mem @ V9z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V1P @ V7x ) @ V8y ) )
+                              & ( p @ ( ap @ ( ap @ V1P @ V8y ) @ V9z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V7x ) @ V9z ) ) ) ) ) ) )
+           => ! [V10x: $i] :
+                ( ( mem @ V10x @ A_27a )
+               => ! [V11y: $i] :
+                    ( ( mem @ V11y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V10x ) @ V11y ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V10x ) @ V11y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEQC__REFL,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V1x ) @ V1x ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEQC__R,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+               => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEQC__SYM,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+               => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V2y ) @ V1x ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEQC__TRANS,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ! [V3z: $i] :
+                  ( ( mem @ V3z @ A_27a )
+                 => ( ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+                      & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V2y ) @ V3z ) ) )
+                   => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V1x ) @ V3z ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etransitive__EQC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Esymmetric__EQC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ereflexive__EQC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEQC__MOVES__IN,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) )
+        & ( ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) )
+        & ( ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ESTRONG__EQC__INDUCTION,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V3y ) ) ) ) )
+              & ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ( p @ ( ap @ ( ap @ V1P @ V4x ) @ V4x ) ) )
+              & ! [V5x: $i] :
+                  ( ( mem @ V5x @ A_27a )
+                 => ! [V6y: $i] :
+                      ( ( mem @ V6y @ A_27a )
+                     => ( ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V5x ) @ V6y ) )
+                          & ( p @ ( ap @ ( ap @ V1P @ V5x ) @ V6y ) ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V6y ) @ V5x ) ) ) ) )
+              & ! [V7x: $i] :
+                  ( ( mem @ V7x @ A_27a )
+                 => ! [V8y: $i] :
+                      ( ( mem @ V8y @ A_27a )
+                     => ! [V9z: $i] :
+                          ( ( mem @ V9z @ A_27a )
+                         => ( ( ( p @ ( ap @ ( ap @ V1P @ V7x ) @ V8y ) )
+                              & ( p @ ( ap @ ( ap @ V1P @ V8y ) @ V9z ) )
+                              & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V7x ) @ V8y ) )
+                              & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V8y ) @ V9z ) ) )
+                           => ( p @ ( ap @ ( ap @ V1P @ V7x ) @ V9z ) ) ) ) ) ) )
+           => ! [V10x: $i] :
+                ( ( mem @ V10x @ A_27a )
+               => ! [V11y: $i] :
+                    ( ( mem @ V11y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V10x ) @ V11y ) )
+                     => ( p @ ( ap @ ( ap @ V1P @ V10x ) @ V11y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EALT__equivalence,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Eequivalence @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                <=> ( ( ap @ V0R @ V1x )
+                    = ( ap @ V0R @ V2y ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEQC__MONOTONE,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1R_27: $i] :
+          ( ( mem @ V1R_27 @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ A_27a )
+                 => ( ! [V4x: $i] :
+                        ( ( mem @ V4x @ A_27a )
+                       => ! [V5y: $i] :
+                            ( ( mem @ V5y @ A_27a )
+                           => ( ( p @ ( ap @ ( ap @ V0R @ V4x ) @ V5y ) )
+                             => ( p @ ( ap @ ( ap @ V1R_27 @ V4x ) @ V5y ) ) ) ) )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V2x ) @ V3y ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V1R_27 ) @ V2x ) @ V3y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__EQC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+               => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__lifts__monotonicities,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27a ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                     => ( p @ ( ap @ ( ap @ V0R @ ( ap @ V1f @ V2x ) ) @ ( ap @ V1f @ V3y ) ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V4x ) @ V5y ) )
+                     => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ ( ap @ V1f @ V4x ) ) @ ( ap @ V1f @ V5y ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__lifts__reflexive__transitive__relations,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1Q: $i] :
+          ( ( mem @ V1Q @ ( arr @ A_27b @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2f: $i] :
+              ( ( mem @ V2f @ ( arr @ A_27a @ A_27b ) )
+             => ( ( ! [V3x: $i] :
+                      ( ( mem @ V3x @ A_27a )
+                     => ! [V4y: $i] :
+                          ( ( mem @ V4y @ A_27a )
+                         => ( ( p @ ( ap @ ( ap @ V0R @ V3x ) @ V4y ) )
+                           => ( p @ ( ap @ ( ap @ V1Q @ ( ap @ V2f @ V3x ) ) @ ( ap @ V2f @ V4y ) ) ) ) ) )
+                  & ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27b ) @ V1Q ) )
+                  & ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27b ) @ V1Q ) ) )
+               => ! [V5x: $i] :
+                    ( ( mem @ V5x @ A_27a )
+                   => ! [V6y: $i] :
+                        ( ( mem @ V6y @ A_27a )
+                       => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V5x ) @ V6y ) )
+                         => ( p @ ( ap @ ( ap @ V1Q @ ( ap @ V2f @ V5x ) ) @ ( ap @ V2f @ V6y ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__lifts__equalities,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27b ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                     => ( ( ap @ V1f @ V2x )
+                        = ( ap @ V1f @ V3y ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V4x ) @ V5y ) )
+                     => ( ( ap @ V1f @ V4x )
+                        = ( ap @ V1f @ V5y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERTC__lifts__invariants,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ A_27a @ bool ) )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27a )
+                   => ( ( ( p @ ( ap @ V0P @ V2x ) )
+                        & ( p @ ( ap @ ( ap @ V1R @ V2x ) @ V3y ) ) )
+                     => ( p @ ( ap @ V0P @ V3y ) ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ! [V5y: $i] :
+                    ( ( mem @ V5y @ A_27a )
+                   => ( ( ( p @ ( ap @ V0P @ V4x ) )
+                        & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V1R ) @ V4x ) @ V5y ) ) )
+                     => ( p @ ( ap @ V0P @ V5y ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EWF__DEF,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+      <=> ! [V1B: $i] :
+            ( ( mem @ V1B @ ( arr @ A_27a @ bool ) )
+           => ( ? [V2w: $i] :
+                  ( ( mem @ V2w @ A_27a )
+                  & ( p @ ( ap @ V1B @ V2w ) ) )
+             => ? [V3min: $i] :
+                  ( ( mem @ V3min @ A_27a )
+                  & ( p @ ( ap @ V1B @ V3min ) )
+                  & ! [V4b: $i] :
+                      ( ( mem @ V4b @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V0R @ V4b ) @ V3min ) )
+                       => ~ ( p @ ( ap @ V1B @ V4b ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__INDUCTION__THM,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+       => ! [V1P: $i] :
+            ( ( mem @ V1P @ ( arr @ A_27a @ bool ) )
+           => ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( ! [V3y: $i] :
+                        ( ( mem @ V3y @ A_27a )
+                       => ( ( p @ ( ap @ ( ap @ V0R @ V3y ) @ V2x ) )
+                         => ( p @ ( ap @ V1P @ V3y ) ) ) )
+                   => ( p @ ( ap @ V1P @ V2x ) ) ) )
+             => ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ( p @ ( ap @ V1P @ V4x ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EINDUCTION__WF__THM,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ! [V1P: $i] :
+            ( ( mem @ V1P @ ( arr @ A_27a @ bool ) )
+           => ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( ! [V3y: $i] :
+                        ( ( mem @ V3y @ A_27a )
+                       => ( ( p @ ( ap @ ( ap @ V0R @ V3y ) @ V2x ) )
+                         => ( p @ ( ap @ V1P @ V3y ) ) ) )
+                   => ( p @ ( ap @ V1P @ V2x ) ) ) )
+             => ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ( p @ ( ap @ V1P @ V4x ) ) ) ) )
+       => ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__EQ__INDUCTION__THM,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+      <=> ! [V1P: $i] :
+            ( ( mem @ V1P @ ( arr @ A_27a @ bool ) )
+           => ( ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ( ! [V3y: $i] :
+                        ( ( mem @ V3y @ A_27a )
+                       => ( ( p @ ( ap @ ( ap @ V0R @ V3y ) @ V2x ) )
+                         => ( p @ ( ap @ V1P @ V3y ) ) ) )
+                   => ( p @ ( ap @ V1P @ V2x ) ) ) )
+             => ! [V4x: $i] :
+                  ( ( mem @ V4x @ A_27a )
+                 => ( p @ ( ap @ V1P @ V4x ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__NOT__REFL,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+               => ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                 => ( V1x != V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__irreflexive,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+       => ( p @ ( ap @ ( c_2Erelation_2Eirreflexive @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EEMPTY__REL__DEF,axiom,
+    ! [A_27a: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1y: $i] :
+          ( ( mem @ V1y @ A_27a )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2EEMPTY__REL @ A_27a ) @ V0x ) @ V1y ) )
+          <=> $false ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__EMPTY__REL,axiom,
+    ! [A_27a: del] : ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ ( c_2Erelation_2EEMPTY__REL @ A_27a ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__SUBSET,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+              & ! [V2x: $i] :
+                  ( ( mem @ V2x @ A_27a )
+                 => ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V1P @ V2x ) @ V3y ) )
+                       => ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) ) ) ) ) )
+           => ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V1P ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__TC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+       => ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__TC__EQN,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__noloops,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+               => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) @ V1x ) @ V2y ) )
+                 => ( V1x != V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__antisymmetric,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+       => ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Einv__image__def,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27b @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27b ) )
+         => ( ( ap @ ( ap @ ( c_2Erelation_2Einv__image @ A_27a @ A_27b ) @ V0R ) @ V1f )
+            = ( lam @ A_27a
+              @ ^ [V2x: $i] :
+                  ( lam @ A_27a
+                  @ ^ [V3y: $i] : ( ap @ ( ap @ V0R @ ( ap @ V1f @ V2x ) ) @ ( ap @ V1f @ V3y ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__image__thm,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27b @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27b ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ A_27a )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2Einv__image @ A_27a @ A_27b ) @ V0R ) @ V1f ) @ V2x ) @ V3y ) )
+                  <=> ( p @ ( ap @ ( ap @ V0R @ ( ap @ V1f @ V2x ) ) @ ( ap @ V1f @ V3y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__inv__image,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27b @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27a @ A_27b ) )
+         => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27b ) @ V0R ) )
+           => ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ ( ap @ ( ap @ ( c_2Erelation_2Einv__image @ A_27a @ A_27b ) @ V0R ) @ V1f ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etotal__inv__image,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27b @ A_27a ) )
+         => ( ( p @ ( ap @ ( c_2Erelation_2Etotal @ A_27a ) @ V0R ) )
+           => ( p @ ( ap @ ( c_2Erelation_2Etotal @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2Einv__image @ A_27b @ A_27a ) @ V0R ) @ V1f ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ereflexive__inv__image,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27b @ A_27a ) )
+         => ( ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ V0R ) )
+           => ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2Einv__image @ A_27b @ A_27a ) @ V0R ) @ V1f ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Esymmetric__inv__image,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27b @ A_27a ) )
+         => ( ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ V0R ) )
+           => ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2Einv__image @ A_27b @ A_27a ) @ V0R ) @ V1f ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etransitive__inv__image,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1f: $i] :
+          ( ( mem @ V1f @ ( arr @ A_27b @ A_27a ) )
+         => ( ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V0R ) )
+           => ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2Einv__image @ A_27b @ A_27a ) @ V0R ) @ V1f ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERESTRICT__DEF,axiom,
+    ! [A_27a: del,A_27b: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27a @ A_27b ) )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ( ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERESTRICT @ A_27a @ A_27b ) @ V0f ) @ V1R ) @ V2x )
+                = ( lam @ A_27a
+                  @ ^ [V3y: $i] : ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ A_27b ) @ ( ap @ ( ap @ V1R @ V3y ) @ V2x ) ) @ ( ap @ V0f @ V3y ) ) @ ( c_2Ebool_2EARB @ A_27b ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERESTRICT__LEMMA,axiom,
+    ! [A_27a: del,A_27b: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27a @ A_27b ) )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ! [V3z: $i] :
+                  ( ( mem @ V3z @ A_27a )
+                 => ( ( p @ ( ap @ ( ap @ V1R @ V2y ) @ V3z ) )
+                   => ( ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERESTRICT @ A_27a @ A_27b ) @ V0f ) @ V1R ) @ V3z ) @ V2y )
+                      = ( ap @ V0f @ V2y ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Eapprox__def,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1M: $i] :
+          ( ( mem @ V1M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ! [V3f: $i] :
+                  ( ( mem @ V3f @ ( arr @ A_27a @ A_27b ) )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2Eapprox @ A_27a @ A_27b ) @ V0R ) @ V1M ) @ V2x ) @ V3f ) )
+                  <=> ( V3f
+                      = ( ap
+                        @ ( ap
+                          @ ( ap @ ( c_2Erelation_2ERESTRICT @ A_27a @ A_27b )
+                            @ ( lam @ A_27a
+                              @ ^ [V4y: $i] : ( ap @ ( ap @ V1M @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERESTRICT @ A_27a @ A_27b ) @ V3f ) @ V0R ) @ V4y ) ) @ V4y ) ) )
+                          @ V0R )
+                        @ V2x ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Ethe__fun__def,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1M: $i] :
+          ( ( mem @ V1M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ( ( ap @ ( ap @ ( ap @ ( c_2Erelation_2Ethe__fun @ A_27a @ A_27b ) @ V0R ) @ V1M ) @ V2x )
+                = ( ap @ ( c_2Emin_2E_40 @ ( arr @ A_27a @ A_27b ) )
+                  @ ( lam @ ( arr @ A_27a @ A_27b )
+                    @ ^ [V3f: $i] : ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2Eapprox @ A_27a @ A_27b ) @ V0R ) @ V1M ) @ V2x ) @ V3f ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EWFREC__DEF,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1M: $i] :
+          ( ( mem @ V1M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+         => ( ( ap @ ( ap @ ( c_2Erelation_2EWFREC @ A_27a @ A_27b ) @ V0R ) @ V1M )
+            = ( lam @ A_27a
+              @ ^ [V2x: $i] :
+                  ( ap
+                  @ ( ap @ V1M
+                    @ ( ap
+                      @ ( ap
+                        @ ( ap @ ( c_2Erelation_2ERESTRICT @ A_27a @ A_27b )
+                          @ ( ap
+                            @ ( ap @ ( ap @ ( c_2Erelation_2Ethe__fun @ A_27a @ A_27b ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) )
+                              @ ( lam @ ( arr @ A_27a @ A_27b )
+                                @ ^ [V3f: $i] :
+                                    ( lam @ A_27a
+                                    @ ^ [V4v: $i] : ( ap @ ( ap @ V1M @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERESTRICT @ A_27a @ A_27b ) @ V3f ) @ V0R ) @ V4v ) ) @ V4v ) ) ) )
+                            @ V2x ) )
+                        @ V0R )
+                      @ V2x ) )
+                  @ V2x ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWFREC__THM,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1M: $i] :
+          ( ( mem @ V1M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+         => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+           => ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ( ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EWFREC @ A_27a @ A_27b ) @ V0R ) @ V1M ) @ V2x )
+                  = ( ap @ ( ap @ V1M @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERESTRICT @ A_27a @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2EWFREC @ A_27a @ A_27b ) @ V0R ) @ V1M ) ) @ V0R ) @ V2x ) ) @ V2x ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWFREC__COROLLARY,axiom,
+    ! [A_27a: del,A_27b: del,V0M: $i] :
+      ( ( mem @ V0M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2f: $i] :
+              ( ( mem @ V2f @ ( arr @ A_27a @ A_27b ) )
+             => ( ( V2f
+                  = ( ap @ ( ap @ ( c_2Erelation_2EWFREC @ A_27a @ A_27b ) @ V1R ) @ V0M ) )
+               => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V1R ) )
+                 => ! [V3x: $i] :
+                      ( ( mem @ V3x @ A_27a )
+                     => ( ( ap @ V2f @ V3x )
+                        = ( ap @ ( ap @ V0M @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERESTRICT @ A_27a @ A_27b ) @ V2f ) @ V1R ) @ V3x ) ) @ V3x ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__RECURSION__THM,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+       => ! [V1M: $i] :
+            ( ( mem @ V1M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+           => ( p
+              @ ( ap @ ( c_2Ebool_2E_3F_21 @ ( arr @ A_27a @ A_27b ) )
+                @ ( lam @ ( arr @ A_27a @ A_27b )
+                  @ ^ [V2f: $i] :
+                      ( ap @ ( c_2Ebool_2E_21 @ A_27a )
+                      @ ( lam @ A_27a
+                        @ ^ [V3x: $i] : ( ap @ ( ap @ ( c_2Emin_2E_3D @ A_27b ) @ ( ap @ V2f @ V3x ) ) @ ( ap @ ( ap @ V1M @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERESTRICT @ A_27a @ A_27b ) @ V2f ) @ V0R ) @ V3x ) ) @ V3x ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EWFP__DEF,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ A_27a )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2EWFP @ A_27a ) @ V0R ) @ V1a ) )
+          <=> ! [V2P: $i] :
+                ( ( mem @ V2P @ ( arr @ A_27a @ bool ) )
+               => ( ! [V3x: $i] :
+                      ( ( mem @ V3x @ A_27a )
+                     => ( ! [V4y: $i] :
+                            ( ( mem @ V4y @ A_27a )
+                           => ( ( p @ ( ap @ ( ap @ V0R @ V4y ) @ V3x ) )
+                             => ( p @ ( ap @ V2P @ V4y ) ) ) )
+                       => ( p @ ( ap @ V2P @ V3x ) ) ) )
+                 => ( p @ ( ap @ V2P @ V1a ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWFP__RULES,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ( ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ( ( p @ ( ap @ ( ap @ V0R @ V2y ) @ V1x ) )
+                 => ( p @ ( ap @ ( ap @ ( c_2Erelation_2EWFP @ A_27a ) @ V0R ) @ V2y ) ) ) )
+           => ( p @ ( ap @ ( ap @ ( c_2Erelation_2EWFP @ A_27a ) @ V0R ) @ V1x ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWFP__INDUCT,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ bool ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ( ! [V3y: $i] :
+                      ( ( mem @ V3y @ A_27a )
+                     => ( ( p @ ( ap @ ( ap @ V0R @ V3y ) @ V2x ) )
+                       => ( p @ ( ap @ V1P @ V3y ) ) ) )
+                 => ( p @ ( ap @ V1P @ V2x ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2EWFP @ A_27a ) @ V0R ) @ V4x ) )
+                 => ( p @ ( ap @ V1P @ V4x ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWFP__CASES,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2EWFP @ A_27a ) @ V0R ) @ V1x ) )
+          <=> ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ( ( p @ ( ap @ ( ap @ V0R @ V2y ) @ V1x ) )
+                 => ( p @ ( ap @ ( ap @ ( c_2Erelation_2EWFP @ A_27a ) @ V0R ) @ V2y ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWFP__STRONG__INDUCT,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ A_27a @ bool ) )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ( ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2EWFP @ A_27a ) @ V1R ) @ V2x ) )
+                    & ! [V3y: $i] :
+                        ( ( mem @ V3y @ A_27a )
+                       => ( ( p @ ( ap @ ( ap @ V1R @ V3y ) @ V2x ) )
+                         => ( p @ ( ap @ V0P @ V3y ) ) ) ) )
+                 => ( p @ ( ap @ V0P @ V2x ) ) ) )
+           => ! [V4x: $i] :
+                ( ( mem @ V4x @ A_27a )
+               => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2EWFP @ A_27a ) @ V1R ) @ V4x ) )
+                 => ( p @ ( ap @ V0P @ V4x ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWF__EQ__WFP,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ( p @ ( ap @ ( ap @ ( c_2Erelation_2EWFP @ A_27a ) @ V0R ) @ V1x ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EINDUCTIVE__INVARIANT__DEF,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2M: $i] :
+              ( ( mem @ V2M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EINDUCTIVE__INVARIANT @ A_27a @ A_27b ) @ V0R ) @ V1P ) @ V2M ) )
+              <=> ! [V3f: $i] :
+                    ( ( mem @ V3f @ ( arr @ A_27a @ A_27b ) )
+                   => ! [V4x: $i] :
+                        ( ( mem @ V4x @ A_27a )
+                       => ( ! [V5y: $i] :
+                              ( ( mem @ V5y @ A_27a )
+                             => ( ( p @ ( ap @ ( ap @ V0R @ V5y ) @ V4x ) )
+                               => ( p @ ( ap @ ( ap @ V1P @ V5y ) @ ( ap @ V3f @ V5y ) ) ) ) )
+                         => ( p @ ( ap @ ( ap @ V1P @ V4x ) @ ( ap @ ( ap @ V2M @ V3f ) @ V4x ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EINDUCTIVE__INVARIANT__ON__DEF,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1D: $i] :
+          ( ( mem @ V1D @ ( arr @ A_27a @ bool ) )
+         => ! [V2P: $i] :
+              ( ( mem @ V2P @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+             => ! [V3M: $i] :
+                  ( ( mem @ V3M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EINDUCTIVE__INVARIANT__ON @ A_27a @ A_27b ) @ V0R ) @ V1D ) @ V2P ) @ V3M ) )
+                  <=> ! [V4f: $i] :
+                        ( ( mem @ V4f @ ( arr @ A_27a @ A_27b ) )
+                       => ! [V5x: $i] :
+                            ( ( mem @ V5x @ A_27a )
+                           => ( ( ( p @ ( ap @ V1D @ V5x ) )
+                                & ! [V6y: $i] :
+                                    ( ( mem @ V6y @ A_27a )
+                                   => ( ( p @ ( ap @ V1D @ V6y ) )
+                                     => ( ( p @ ( ap @ ( ap @ V0R @ V6y ) @ V5x ) )
+                                       => ( p @ ( ap @ ( ap @ V2P @ V6y ) @ ( ap @ V4f @ V6y ) ) ) ) ) ) )
+                             => ( p @ ( ap @ ( ap @ V2P @ V5x ) @ ( ap @ ( ap @ V3M @ V4f ) @ V5x ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EINDUCTIVE__INVARIANT__WFREC,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2M: $i] :
+              ( ( mem @ V2M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+             => ( ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+                  & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EINDUCTIVE__INVARIANT @ A_27a @ A_27b ) @ V0R ) @ V1P ) @ V2M ) ) )
+               => ! [V3x: $i] :
+                    ( ( mem @ V3x @ A_27a )
+                   => ( p @ ( ap @ ( ap @ V1P @ V3x ) @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EWFREC @ A_27a @ A_27b ) @ V0R ) @ V2M ) @ V3x ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETFL__INDUCTIVE__INVARIANT__WFREC,axiom,
+    ! [A_27a: del,A_27b: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27a @ A_27b ) )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2P: $i] :
+              ( ( mem @ V2P @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+             => ! [V3M: $i] :
+                  ( ( mem @ V3M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+                 => ! [V4x: $i] :
+                      ( ( mem @ V4x @ A_27a )
+                     => ( ( ( V0f
+                            = ( ap @ ( ap @ ( c_2Erelation_2EWFREC @ A_27a @ A_27b ) @ V1R ) @ V3M ) )
+                          & ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V1R ) )
+                          & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EINDUCTIVE__INVARIANT @ A_27a @ A_27b ) @ V1R ) @ V2P ) @ V3M ) ) )
+                       => ( p @ ( ap @ ( ap @ V2P @ V4x ) @ ( ap @ V0f @ V4x ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EINDUCTIVE__INVARIANT__ON__WFREC,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1P: $i] :
+          ( ( mem @ V1P @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2M: $i] :
+              ( ( mem @ V2M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+             => ! [V3D: $i] :
+                  ( ( mem @ V3D @ ( arr @ A_27a @ bool ) )
+                 => ! [V4x: $i] :
+                      ( ( mem @ V4x @ A_27a )
+                     => ( ( ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V0R ) )
+                          & ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EINDUCTIVE__INVARIANT__ON @ A_27a @ A_27b ) @ V0R ) @ V3D ) @ V1P ) @ V2M ) )
+                          & ( p @ ( ap @ V3D @ V4x ) ) )
+                       => ( p @ ( ap @ ( ap @ V1P @ V4x ) @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EWFREC @ A_27a @ A_27b ) @ V0R ) @ V2M ) @ V4x ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ETFL__INDUCTIVE__INVARIANT__ON__WFREC,axiom,
+    ! [A_27a: del,A_27b: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27a @ A_27b ) )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ! [V2D: $i] :
+              ( ( mem @ V2D @ ( arr @ A_27a @ bool ) )
+             => ! [V3P: $i] :
+                  ( ( mem @ V3P @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+                 => ! [V4M: $i] :
+                      ( ( mem @ V4M @ ( arr @ ( arr @ A_27a @ A_27b ) @ ( arr @ A_27a @ A_27b ) ) )
+                     => ! [V5x: $i] :
+                          ( ( mem @ V5x @ A_27a )
+                         => ( ( ( V0f
+                                = ( ap @ ( ap @ ( c_2Erelation_2EWFREC @ A_27a @ A_27b ) @ V1R ) @ V4M ) )
+                              & ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ V1R ) )
+                              & ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EINDUCTIVE__INVARIANT__ON @ A_27a @ A_27b ) @ V1R ) @ V2D ) @ V3P ) @ V4M ) )
+                              & ( p @ ( ap @ V2D @ V5x ) ) )
+                           => ( p @ ( ap @ ( ap @ V3P @ V5x ) @ ( ap @ V0f @ V5x ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Einv__DEF,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27b )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27b ) @ V0R ) @ V1x ) @ V2y ) )
+              <=> ( p @ ( ap @ ( ap @ V0R @ V2y ) @ V1x ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__inv,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2Einv @ A_27b @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27b ) @ V0R ) )
+        = V0R ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__RC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) )
+        = ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__SC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) )
+        & ( ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__TC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) )
+        = ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__EQC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) )
+        & ( ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__MOVES__OUT,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) )
+          = V0R )
+        & ( ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2ESC @ A_27a ) @ V0R ) )
+        & ( ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) )
+        & ( ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) ) )
+        & ( ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) ) )
+        & ( ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) )
+          = ( ap @ ( c_2Erelation_2EEQC @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ereflexive__inv,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Eirreflexive__inv,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Eirreflexive @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Eirreflexive @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Esymmetric__inv,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Eantisymmetric__inv,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etransitive__inv,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Esymmetric__inv__identity,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ V0R ) )
+       => ( ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R )
+          = V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2Eequivalence__inv__identity,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Eequivalence @ A_27a ) @ V0R ) )
+       => ( ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R )
+          = V0R ) ) ) ).
+
+thf(ax_thm_2Erelation_2EINVOL__DEF,axiom,
+    ! [A_27z: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27z @ A_27z ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EINVOL @ A_27z ) @ V0f ) )
+      <=> ( ( ap @ ( ap @ ( c_2Ecombin_2Eo @ A_27z @ A_27z @ A_27z ) @ V0f ) @ V0f )
+          = ( c_2Ecombin_2EI @ A_27z ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EINVOL,axiom,
+    ! [A_27z: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27z @ A_27z ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EINVOL @ A_27z ) @ V0f ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27z )
+           => ( ( ap @ V0f @ ( ap @ V0f @ V1x ) )
+              = V1x ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EINVOL__ONE__ONE,axiom,
+    ! [A_27z: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27z @ A_27z ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EINVOL @ A_27z ) @ V0f ) )
+       => ! [V1a: $i] :
+            ( ( mem @ V1a @ A_27z )
+           => ! [V2b: $i] :
+                ( ( mem @ V2b @ A_27z )
+               => ( ( ( ap @ V0f @ V1a )
+                    = ( ap @ V0f @ V2b ) )
+                <=> ( V1a = V2b ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EINVOL__ONE__ENO,axiom,
+    ! [A_27z: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27z @ A_27z ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EINVOL @ A_27z ) @ V0f ) )
+       => ! [V1a: $i] :
+            ( ( mem @ V1a @ A_27z )
+           => ! [V2b: $i] :
+                ( ( mem @ V2b @ A_27z )
+               => ( ( ( ap @ V0f @ V1a )
+                    = V2b )
+                <=> ( V1a
+                    = ( ap @ V0f @ V2b ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ENOT__INVOL,axiom,
+    p @ ( ap @ ( c_2Erelation_2EINVOL @ bool ) @ c_2Ebool_2E_7E ) ).
+
+thf(ax_thm_2Erelation_2EIDEM__DEF,axiom,
+    ! [A_27z: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27z @ A_27z ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EIDEM @ A_27z ) @ V0f ) )
+      <=> ( ( ap @ ( ap @ ( c_2Ecombin_2Eo @ A_27z @ A_27z @ A_27z ) @ V0f ) @ V0f )
+          = V0f ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIDEM,axiom,
+    ! [A_27z: del,V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ A_27z @ A_27z ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EIDEM @ A_27z ) @ V0f ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27z )
+           => ( ( ap @ V0f @ ( ap @ V0f @ V1x ) )
+              = ( ap @ V0f @ V1x ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__INVOL,axiom,
+    ! [A_27a: del] : ( p @ ( ap @ ( c_2Erelation_2EINVOL @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) ) ) ).
+
+thf(ax_thm_2Erelation_2EO__DEF,axiom,
+    ! [A_27g: del,A_27h: del,A_27k: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27h @ ( arr @ A_27k @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27g @ ( arr @ A_27h @ bool ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27g )
+             => ! [V3z: $i] :
+                  ( ( mem @ V3z @ A_27k )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27g @ A_27h @ A_27k ) @ V0R1 ) @ V1R2 ) @ V2x ) @ V3z ) )
+                  <=> ? [V4y: $i] :
+                        ( ( mem @ V4y @ A_27h )
+                        & ( p @ ( ap @ ( ap @ V1R2 @ V2x ) @ V4y ) )
+                        & ( p @ ( ap @ ( ap @ V0R1 @ V4y ) @ V3z ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__O,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R_27: $i] :
+          ( ( mem @ V1R_27 @ ( arr @ A_27c @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ap @ ( c_2Erelation_2Einv @ A_27c @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27c @ A_27a @ A_27b ) @ V0R ) @ V1R_27 ) )
+            = ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27b @ A_27a @ A_27c ) @ ( ap @ ( c_2Erelation_2Einv @ A_27c @ A_27a ) @ V1R_27 ) ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27b ) @ V0R ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERSUBSET,axiom,
+    ! [A_27a: del,A_27b: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) @ V0R1 ) @ V1R2 ) )
+          <=> ! [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+               => ! [V3y: $i] :
+                    ( ( mem @ V3y @ A_27b )
+                   => ( ( p @ ( ap @ ( ap @ V0R1 @ V2x ) @ V3y ) )
+                     => ( p @ ( ap @ ( ap @ V1R2 @ V2x ) @ V3y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Eirreflexive__RSUBSET,axiom,
+    ! [A_27a: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ( p @ ( ap @ ( c_2Erelation_2Eirreflexive @ A_27a ) @ V1R2 ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27a ) @ V0R1 ) @ V1R2 ) ) )
+           => ( p @ ( ap @ ( c_2Erelation_2Eirreflexive @ A_27a ) @ V0R1 ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERUNION,axiom,
+    ! [A_27a: del,A_27b: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ A_27b )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERUNION @ A_27a @ A_27b ) @ V0R1 ) @ V1R2 ) @ V2x ) @ V3y ) )
+                  <=> ( ( p @ ( ap @ ( ap @ V0R1 @ V2x ) @ V3y ) )
+                      | ( p @ ( ap @ ( ap @ V1R2 @ V2x ) @ V3y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERUNION__COMM,axiom,
+    ! [A_27a: del,A_27b: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ( ( ap @ ( ap @ ( c_2Erelation_2ERUNION @ A_27a @ A_27b ) @ V0R1 ) @ V1R2 )
+            = ( ap @ ( ap @ ( c_2Erelation_2ERUNION @ A_27a @ A_27b ) @ V1R2 ) @ V0R1 ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERUNION__ASSOC,axiom,
+    ! [A_27a: del,A_27b: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2R3: $i] :
+              ( ( mem @ V2R3 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+             => ( ( ap @ ( ap @ ( c_2Erelation_2ERUNION @ A_27a @ A_27b ) @ V0R1 ) @ ( ap @ ( ap @ ( c_2Erelation_2ERUNION @ A_27a @ A_27b ) @ V1R2 ) @ V2R3 ) )
+                = ( ap @ ( ap @ ( c_2Erelation_2ERUNION @ A_27a @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2ERUNION @ A_27a @ A_27b ) @ V0R1 ) @ V1R2 ) ) @ V2R3 ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERINTER,axiom,
+    ! [A_27a: del,A_27b: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ A_27b )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27b ) @ V0R1 ) @ V1R2 ) @ V2x ) @ V3y ) )
+                  <=> ( ( p @ ( ap @ ( ap @ V0R1 @ V2x ) @ V3y ) )
+                      & ( p @ ( ap @ ( ap @ V1R2 @ V2x ) @ V3y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERINTER__COMM,axiom,
+    ! [A_27a: del,A_27b: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ( ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27b ) @ V0R1 ) @ V1R2 )
+            = ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27b ) @ V1R2 ) @ V0R1 ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERINTER__ASSOC,axiom,
+    ! [A_27a: del,A_27b: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2R3: $i] :
+              ( ( mem @ V2R3 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+             => ( ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27b ) @ V0R1 ) @ ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27b ) @ V1R2 ) @ V2R3 ) )
+                = ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27b ) @ V0R1 ) @ V1R2 ) ) @ V2R3 ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Eantisymmetric__RINTER,axiom,
+    ! [A_27a: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ V0R1 ) )
+             => ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27a ) @ V0R1 ) @ V1R2 ) ) ) )
+            & ( ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ V1R2 ) )
+             => ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27a ) @ V0R1 ) @ V1R2 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etransitive__RINTER,axiom,
+    ! [A_27a: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+         => ( ( ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V0R1 ) )
+              & ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V1R2 ) ) )
+           => ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27a ) @ V0R1 ) @ V1R2 ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERCOMPL,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27b )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERCOMPL @ A_27a @ A_27b ) @ V0R ) @ V1x ) @ V2y ) )
+              <=> ~ ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ereflexive__Id__RSUBSET,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ V0R ) )
+      <=> ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27a ) @ ( c_2Emin_2E_3D @ A_27a ) ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Esymmetric__inv__RSUBSET,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Esymmetric @ A_27a ) @ V0R ) )
+      <=> ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etransitive__O__RSUBSET,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V0R ) )
+      <=> ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27a ) @ ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27a @ A_27a @ A_27a ) @ V0R ) @ V0R ) ) @ V0R ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EPreOrder,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EPreOrder @ A_27a ) @ V0R ) )
+      <=> ( ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27a ) @ V0R ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EOrder,axiom,
+    ! [A_27g: del,V0Z: $i] :
+      ( ( mem @ V0Z @ ( arr @ A_27g @ ( arr @ A_27g @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EOrder @ A_27g ) @ V0Z ) )
+      <=> ( ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27g ) @ V0Z ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27g ) @ V0Z ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EWeakOrder,axiom,
+    ! [A_27g: del,V0Z: $i] :
+      ( ( mem @ V0Z @ ( arr @ A_27g @ ( arr @ A_27g @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWeakOrder @ A_27g ) @ V0Z ) )
+      <=> ( ( p @ ( ap @ ( c_2Erelation_2Ereflexive @ A_27g ) @ V0Z ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27g ) @ V0Z ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27g ) @ V0Z ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EStrongOrder,axiom,
+    ! [A_27g: del,V0Z: $i] :
+      ( ( mem @ V0Z @ ( arr @ A_27g @ ( arr @ A_27g @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EStrongOrder @ A_27g ) @ V0Z ) )
+      <=> ( ( p @ ( ap @ ( c_2Erelation_2Eirreflexive @ A_27g ) @ V0Z ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27g ) @ V0Z ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Eirrefl__trans__implies__antisym,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ( p @ ( ap @ ( c_2Erelation_2Eirreflexive @ A_27a ) @ V0R ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Etransitive @ A_27a ) @ V0R ) ) )
+       => ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EStrongOrd__Ord,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EStrongOrder @ A_27a ) @ V0R ) )
+       => ( p @ ( ap @ ( c_2Erelation_2EOrder @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWeakOrd__Ord,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWeakOrder @ A_27a ) @ V0R ) )
+       => ( p @ ( ap @ ( c_2Erelation_2EOrder @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWeakOrder__EQ,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWeakOrder @ A_27a ) @ V0R ) )
+       => ! [V1y: $i] :
+            ( ( mem @ V1y @ A_27a )
+           => ! [V2z: $i] :
+                ( ( mem @ V2z @ A_27a )
+               => ( ( V1y = V2z )
+                <=> ( ( p @ ( ap @ ( ap @ V0R @ V1y ) @ V2z ) )
+                    & ( p @ ( ap @ ( ap @ V0R @ V2z ) @ V1y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERSUBSET__ANTISYM,axiom,
+    ! [A_27a: del,A_27b: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ( ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) @ V0R1 ) @ V1R2 ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) @ V1R2 ) @ V0R1 ) ) )
+           => ( V0R1 = V1R2 ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERSUBSET__antisymmetric,axiom,
+    ! [A_27a: del,A_27b: del] : ( p @ ( ap @ ( c_2Erelation_2Eantisymmetric @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) ) @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERSUBSET__WeakOrder,axiom,
+    ! [A_27a: del,A_27b: del] : ( p @ ( ap @ ( c_2Erelation_2EWeakOrder @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) ) @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) ) ) ).
+
+thf(conj_thm_2Erelation_2EEqIsBothRSUBSET,axiom,
+    ! [A_27a: del,A_27b: del,V0y: $i] :
+      ( ( mem @ V0y @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1z: $i] :
+          ( ( mem @ V1z @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ( ( V0y = V1z )
+          <=> ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) @ V0y ) @ V1z ) )
+              & ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) @ V1z ) @ V0y ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ESTRORD,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ! [V1a: $i] :
+          ( ( mem @ V1a @ A_27a )
+         => ! [V2b: $i] :
+              ( ( mem @ V2b @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ESTRORD @ A_27a ) @ V0R ) @ V1a ) @ V2b ) )
+              <=> ( ( p @ ( ap @ ( ap @ V0R @ V1a ) @ V2b ) )
+                  & ( V1a != V2b ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ESTRORD__AND__NOT__Id,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2ESTRORD @ A_27a ) @ V0R )
+        = ( ap @ ( ap @ ( c_2Erelation_2ERINTER @ A_27a @ A_27a ) @ V0R ) @ ( ap @ ( c_2Erelation_2ERCOMPL @ A_27a @ A_27a ) @ ( c_2Emin_2E_3D @ A_27a ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__OR__Id,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R )
+        = ( ap @ ( ap @ ( c_2Erelation_2ERUNION @ A_27a @ A_27a ) @ V0R ) @ ( c_2Emin_2E_3D @ A_27a ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__Weak,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EOrder @ A_27a ) @ V0R ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2EWeakOrder @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ESTRORD__Strong,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EOrder @ A_27a ) @ V0R ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2EStrongOrder @ A_27a ) @ ( ap @ ( c_2Erelation_2ESTRORD @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ESTRORD__RC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EStrongOrder @ A_27a ) @ V0R ) )
+       => ( ( ap @ ( c_2Erelation_2ESTRORD @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) )
+          = V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERC__STRORD,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWeakOrder @ A_27a ) @ V0R ) )
+       => ( ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ ( ap @ ( c_2Erelation_2ESTRORD @ A_27a ) @ V0R ) )
+          = V0R ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIDEM__STRORD,axiom,
+    ! [A_27a: del] : ( p @ ( ap @ ( c_2Erelation_2EIDEM @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) @ ( c_2Erelation_2ESTRORD @ A_27a ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIDEM__RC,axiom,
+    ! [A_27a: del] : ( p @ ( ap @ ( c_2Erelation_2EIDEM @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) @ ( c_2Erelation_2ERC @ A_27a ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIDEM__SC,axiom,
+    ! [A_27a: del] : ( p @ ( ap @ ( c_2Erelation_2EIDEM @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) @ ( c_2Erelation_2ESC @ A_27a ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIDEM__TC,axiom,
+    ! [A_27a: del] : ( p @ ( ap @ ( c_2Erelation_2EIDEM @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) @ ( c_2Erelation_2ETC @ A_27a ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIDEM__RTC,axiom,
+    ! [A_27a: del] : ( p @ ( ap @ ( c_2Erelation_2EIDEM @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) ) @ ( c_2Erelation_2ERTC @ A_27a ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etrichotomous__STRORD,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Etrichotomous @ A_27a ) @ ( ap @ ( c_2Erelation_2ESTRORD @ A_27a ) @ V0R ) ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Etrichotomous @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Etrichotomous__RC,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Etrichotomous @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Etrichotomous @ A_27a ) @ V0R ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ELinearOrder,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2ELinearOrder @ A_27a ) @ V0R ) )
+      <=> ( ( p @ ( ap @ ( c_2Erelation_2EOrder @ A_27a ) @ V0R ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Etrichotomous @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EStrongLinearOrder,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EStrongLinearOrder @ A_27a ) @ V0R ) )
+      <=> ( ( p @ ( ap @ ( c_2Erelation_2EStrongOrder @ A_27a ) @ V0R ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Etrichotomous @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EWeakLinearOrder,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWeakLinearOrder @ A_27a ) @ V0R ) )
+      <=> ( ( p @ ( ap @ ( c_2Erelation_2EWeakOrder @ A_27a ) @ V0R ) )
+          & ( p @ ( ap @ ( c_2Erelation_2Etrichotomous @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EWeakLinearOrder__dichotomy,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWeakLinearOrder @ A_27a ) @ V0R ) )
+      <=> ( ( p @ ( ap @ ( c_2Erelation_2EWeakOrder @ A_27a ) @ V0R ) )
+          & ! [V1a: $i] :
+              ( ( mem @ V1a @ A_27a )
+             => ! [V2b: $i] :
+                  ( ( mem @ V2b @ A_27a )
+                 => ( ( p @ ( ap @ ( ap @ V0R @ V1a ) @ V2b ) )
+                    | ( p @ ( ap @ ( ap @ V0R @ V2b ) @ V1a ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Ediag__def,axiom,
+    ! [A_27a: del,V0A: $i] :
+      ( ( mem @ V0A @ ( arr @ A_27a @ bool ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2Ediag @ A_27a ) @ V0A ) @ V1x ) @ V2y ) )
+              <=> ( ( V1x = V2y )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V1x ) @ V0A ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EO__ASSOC,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27c @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27d @ ( arr @ A_27c @ bool ) ) )
+         => ! [V2R3: $i] :
+              ( ( mem @ V2R3 @ ( arr @ A_27a @ ( arr @ A_27d @ bool ) ) )
+             => ( ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27a @ A_27c @ A_27b ) @ V0R1 ) @ ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27a @ A_27d @ A_27c ) @ V1R2 ) @ V2R3 ) )
+                = ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27a @ A_27d @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27d @ A_27c @ A_27b ) @ V0R1 ) @ V1R2 ) ) @ V2R3 ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EId__O,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ( ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27a @ A_27b @ A_27b ) @ ( c_2Emin_2E_3D @ A_27b ) ) @ V0R )
+        = V0R ) ) ).
+
+thf(conj_thm_2Erelation_2EO__Id,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ( ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27a @ A_27a @ A_27b ) @ V0R ) @ ( c_2Emin_2E_3D @ A_27a ) )
+        = V0R ) ) ).
+
+thf(conj_thm_2Erelation_2EO__MONO,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0R1: $i] :
+      ( ( mem @ V0R1 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1R2: $i] :
+          ( ( mem @ V1R2 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2S1: $i] :
+              ( ( mem @ V2S1 @ ( arr @ A_27c @ ( arr @ A_27a @ bool ) ) )
+             => ! [V3S2: $i] :
+                  ( ( mem @ V3S2 @ ( arr @ A_27c @ ( arr @ A_27a @ bool ) ) )
+                 => ( ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) @ V0R1 ) @ V1R2 ) )
+                      & ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27c @ A_27a ) @ V2S1 ) @ V3S2 ) ) )
+                   => ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27c @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27c @ A_27a @ A_27b ) @ V0R1 ) @ V2S1 ) ) @ ( ap @ ( ap @ ( c_2Erelation_2EO @ A_27c @ A_27a @ A_27b ) @ V1R2 ) @ V3S2 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__Id,axiom,
+    ! [A_27a: del] :
+      ( ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ ( c_2Emin_2E_3D @ A_27a ) )
+      = ( c_2Emin_2E_3D @ A_27a ) ) ).
+
+thf(conj_thm_2Erelation_2Einv__diag,axiom,
+    ! [A_27a: del,V0A: $i] :
+      ( ( mem @ V0A @ ( arr @ A_27a @ bool ) )
+     => ( ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ ( ap @ ( c_2Erelation_2Ediag @ A_27a ) @ V0A ) )
+        = ( ap @ ( c_2Erelation_2Ediag @ A_27a ) @ V0A ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERDOM__DEF,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERDOM @ A_27a @ A_27b ) @ V0R ) @ V1x ) )
+          <=> ? [V2y: $i] :
+                ( ( mem @ V2y @ A_27b )
+                & ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIN__RDOM,axiom,
+    ! [A_27a: del,A_27b: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V0x ) @ ( ap @ ( c_2Erelation_2ERDOM @ A_27a @ A_27b ) @ V1R ) ) )
+          <=> ? [V2y: $i] :
+                ( ( mem @ V2y @ A_27b )
+                & ( p @ ( ap @ ( ap @ V1R @ V0x ) @ V2y ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERRANGE,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1y: $i] :
+          ( ( mem @ V1y @ A_27b )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERRANGE @ A_27a @ A_27b ) @ V0R ) @ V1y ) )
+          <=> ? [V2x: $i] :
+                ( ( mem @ V2x @ A_27a )
+                & ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V1y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIN__RRANGE,axiom,
+    ! [A_27a: del,A_27b: del,V0y: $i] :
+      ( ( mem @ V0y @ A_27a )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27b @ ( arr @ A_27a @ bool ) ) )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V0y ) @ ( ap @ ( c_2Erelation_2ERRANGE @ A_27b @ A_27a ) @ V1R ) ) )
+          <=> ? [V2x: $i] :
+                ( ( mem @ V2x @ A_27b )
+                & ( p @ ( ap @ ( ap @ V1R @ V2x ) @ V0y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIN__RDOM__RUNION,axiom,
+    ! [A_27a: del,A_27b: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1R1: $i] :
+          ( ( mem @ V1R1 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2R2: $i] :
+              ( ( mem @ V2R2 @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+             => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V0x ) @ ( ap @ ( c_2Erelation_2ERDOM @ A_27a @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2ERUNION @ A_27a @ A_27b ) @ V1R1 ) @ V2R2 ) ) ) )
+              <=> ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V0x ) @ ( ap @ ( c_2Erelation_2ERDOM @ A_27a @ A_27b ) @ V1R1 ) ) )
+                  | ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V0x ) @ ( ap @ ( c_2Erelation_2ERDOM @ A_27a @ A_27b ) @ V2R2 ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERUNIV,axiom,
+    ! [A_27a: del,A_27b: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1y: $i] :
+          ( ( mem @ V1y @ A_27b )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERUNIV @ A_27a @ A_27b ) @ V0x ) @ V1y ) )
+          <=> $true ) ) ) ).
+
+thf(conj_thm_2Erelation_2ERUNIV__SUBSET,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ( ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) @ ( c_2Erelation_2ERUNIV @ A_27a @ A_27b ) ) @ V0R ) )
+        <=> ( V0R
+            = ( c_2Erelation_2ERUNIV @ A_27a @ A_27b ) ) )
+        & ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27b ) @ V0R ) @ ( c_2Erelation_2ERUNIV @ A_27a @ A_27b ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EREMPTY__SUBSET,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27a ) @ ( c_2Erelation_2EEMPTY__REL @ A_27a ) ) @ V0R ) )
+        & ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2ERSUBSET @ A_27a @ A_27a ) @ V0R ) @ ( c_2Erelation_2EEMPTY__REL @ A_27a ) ) )
+        <=> ( V0R
+            = ( c_2Erelation_2EEMPTY__REL @ A_27a ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERRESTRICT__DEF,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1s: $i] :
+          ( ( mem @ V1s @ ( arr @ A_27a @ bool ) )
+         => ! [V2x: $i] :
+              ( ( mem @ V2x @ A_27a )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ A_27b )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERRESTRICT @ A_27a @ A_27b ) @ V0R ) @ V1s ) @ V2x ) @ V3y ) )
+                  <=> ( ( p @ ( ap @ ( ap @ V0R @ V2x ) @ V3y ) )
+                      & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V2x ) @ V1s ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIN__RDOM__RRESTRICT,axiom,
+    ! [A_27a: del,A_27b: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2s: $i] :
+              ( ( mem @ V2s @ ( arr @ A_27a @ bool ) )
+             => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V0x ) @ ( ap @ ( c_2Erelation_2ERDOM @ A_27a @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2ERRESTRICT @ A_27a @ A_27b ) @ V1R ) @ V2s ) ) ) )
+              <=> ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V0x ) @ ( ap @ ( c_2Erelation_2ERDOM @ A_27a @ A_27b ) @ V1R ) ) )
+                  & ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V0x ) @ V2s ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ERDOM__DELETE__DEF,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ! [V2u: $i] :
+              ( ( mem @ V2u @ A_27a )
+             => ! [V3v: $i] :
+                  ( ( mem @ V3v @ A_27b )
+                 => ( ( p @ ( ap @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERDOM__DELETE @ A_27a @ A_27b ) @ V0R ) @ V1x ) @ V2u ) @ V3v ) )
+                  <=> ( ( p @ ( ap @ ( ap @ V0R @ V2u ) @ V3v ) )
+                      & ( V2u != V1x ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2EIN__RDOM__DELETE,axiom,
+    ! [A_27a: del,A_27b: del,V0x: $i] :
+      ( ( mem @ V0x @ A_27a )
+     => ! [V1R: $i] :
+          ( ( mem @ V1R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+         => ! [V2k: $i] :
+              ( ( mem @ V2k @ A_27a )
+             => ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V0x ) @ ( ap @ ( c_2Erelation_2ERDOM @ A_27a @ A_27b ) @ ( ap @ ( ap @ ( c_2Erelation_2ERDOM__DELETE @ A_27a @ A_27b ) @ V1R ) @ V2k ) ) ) )
+              <=> ( ( p @ ( ap @ ( ap @ ( c_2Ebool_2EIN @ A_27a ) @ V0x ) @ ( ap @ ( c_2Erelation_2ERDOM @ A_27a @ A_27b ) @ V1R ) ) )
+                  & ( V0x != V2k ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Ediamond__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Ediamond @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ! [V3z: $i] :
+                    ( ( mem @ V3z @ A_27a )
+                   => ( ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                        & ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V3z ) ) )
+                     => ? [V4u: $i] :
+                          ( ( mem @ V4u @ A_27a )
+                          & ( p @ ( ap @ ( ap @ V0R @ V2y ) @ V4u ) )
+                          & ( p @ ( ap @ ( ap @ V0R @ V3z ) @ V4u ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Ercdiamond__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Ercdiamond @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ! [V3z: $i] :
+                    ( ( mem @ V3z @ A_27a )
+                   => ( ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                        & ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V3z ) ) )
+                     => ? [V4u: $i] :
+                          ( ( mem @ V4u @ A_27a )
+                          & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) @ V2y ) @ V4u ) )
+                          & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) @ V3z ) @ V4u ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ECR__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2ECR @ A_27a ) @ V0R ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Ediamond @ A_27a ) @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2EWCR__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2EWCR @ A_27a ) @ V0R ) )
+      <=> ! [V1x: $i] :
+            ( ( mem @ V1x @ A_27a )
+           => ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27a )
+               => ! [V3z: $i] :
+                    ( ( mem @ V3z @ A_27a )
+                   => ( ( ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) )
+                        & ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V3z ) ) )
+                     => ? [V4u: $i] :
+                          ( ( mem @ V4u @ A_27a )
+                          & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V2y ) @ V4u ) )
+                          & ( p @ ( ap @ ( ap @ ( ap @ ( c_2Erelation_2ERTC @ A_27a ) @ V0R ) @ V3z ) @ V4u ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2ESN__def,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2ESN @ A_27a ) @ V0R ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2EWF @ A_27a ) @ ( ap @ ( c_2Erelation_2Einv @ A_27a @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(ax_thm_2Erelation_2Enf__def,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27b @ bool ) ) )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ A_27a )
+         => ( ( p @ ( ap @ ( ap @ ( c_2Erelation_2Enf @ A_27a @ A_27b ) @ V0R ) @ V1x ) )
+          <=> ! [V2y: $i] :
+                ( ( mem @ V2y @ A_27b )
+               => ~ ( p @ ( ap @ ( ap @ V0R @ V1x ) @ V2y ) ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ercdiamond__diamond,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Ercdiamond @ A_27a ) @ V0R ) )
+      <=> ( p @ ( ap @ ( c_2Erelation_2Ediamond @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ediamond__RC__diamond,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Ediamond @ A_27a ) @ V0R ) )
+       => ( p @ ( ap @ ( c_2Erelation_2Ediamond @ A_27a ) @ ( ap @ ( c_2Erelation_2ERC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Ediamond__TC__diamond,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( p @ ( ap @ ( c_2Erelation_2Ediamond @ A_27a ) @ V0R ) )
+       => ( p @ ( ap @ ( c_2Erelation_2Ediamond @ A_27a ) @ ( ap @ ( c_2Erelation_2ETC @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2Eestablish__CR,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ( p @ ( ap @ ( c_2Erelation_2Ercdiamond @ A_27a ) @ V0R ) )
+         => ( p @ ( ap @ ( c_2Erelation_2ECR @ A_27a ) @ V0R ) ) )
+        & ( ( p @ ( ap @ ( c_2Erelation_2Ediamond @ A_27a ) @ V0R ) )
+         => ( p @ ( ap @ ( c_2Erelation_2ECR @ A_27a ) @ V0R ) ) ) ) ) ).
+
+thf(conj_thm_2Erelation_2ENewmans__lemma,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( ( mem @ V0R @ ( arr @ A_27a @ ( arr @ A_27a @ bool ) ) )
+     => ( ( ( p @ ( ap @ ( c_2Erelation_2EWCR @ A_27a ) @ V0R ) )
+          & ( p @ ( ap @ ( c_2Erelation_2ESN @ A_27a ) @ V0R ) ) )
+       => ( p @ ( ap @ ( c_2Erelation_2ECR @ A_27a ) @ V0R ) ) ) ) ).
+
+%------------------------------------------------------------------------------

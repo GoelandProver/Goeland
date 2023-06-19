@@ -1,0 +1,531 @@
+%------------------------------------------------------------------------------
+% File     : SET007+265 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Submetric Spaces - Part I
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : sub_metr [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   75 (  39 unt;   0 def)
+%            Number of atoms       :  268 (  19 equ)
+%            Maximal formula atoms :   13 (   3 avg)
+%            Number of connectives :  233 (  40   ~;   0   |; 102   &)
+%                                         (   8 <=>;  83  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   4 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   22 (  20 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   26 (  26 usr;   6 con; 0-5 aty)
+%            Number of variables   :   87 (  84   !;   3   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_sub_metr,axiom,
+    ( ~ v3_struct_0(g1_metric_1(k1_tarski(k1_xboole_0),k3_metric_1))
+    & v1_metric_1(g1_metric_1(k1_tarski(k1_xboole_0),k3_metric_1))
+    & v6_metric_1(g1_metric_1(k1_tarski(k1_xboole_0),k3_metric_1))
+    & v8_metric_1(g1_metric_1(k1_tarski(k1_xboole_0),k3_metric_1))
+    & v9_metric_1(g1_metric_1(k1_tarski(k1_xboole_0),k3_metric_1))
+    & v2_sub_metr(g1_metric_1(k1_tarski(k1_xboole_0),k3_metric_1)) ) ).
+
+fof(rc1_sub_metr,axiom,
+    ? [A] :
+      ( l1_metric_1(A)
+      & ~ v3_struct_0(A)
+      & v6_metric_1(A)
+      & v8_metric_1(A)
+      & v9_metric_1(A)
+      & v2_sub_metr(A) ) ).
+
+fof(rc2_sub_metr,axiom,
+    ? [A] :
+      ( l1_metric_1(A)
+      & ~ v3_struct_0(A)
+      & v1_metric_1(A)
+      & v6_metric_1(A)
+      & v8_metric_1(A)
+      & v2_sub_metr(A)
+      & v3_sub_metr(A) ) ).
+
+fof(cc1_sub_metr,axiom,
+    ! [A] :
+      ( l1_metric_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v6_metric_1(A)
+          & v7_metric_1(A)
+          & v8_metric_1(A)
+          & v9_metric_1(A) )
+       => ( ~ v3_struct_0(A)
+          & v6_metric_1(A)
+          & v7_metric_1(A)
+          & v8_metric_1(A)
+          & v9_metric_1(A)
+          & v2_sub_metr(A) ) ) ) ).
+
+fof(cc2_sub_metr,axiom,
+    ! [A] :
+      ( l1_metric_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v6_metric_1(A)
+          & v8_metric_1(A)
+          & v2_sub_metr(A)
+          & v3_sub_metr(A) )
+       => ( ~ v3_struct_0(A)
+          & v6_metric_1(A)
+          & v7_metric_1(A)
+          & v8_metric_1(A)
+          & v9_metric_1(A)
+          & v2_sub_metr(A)
+          & v3_sub_metr(A) ) ) ) ).
+
+fof(fc2_sub_metr,axiom,
+    ( ~ v3_struct_0(k2_sub_metr)
+    & v1_metric_1(k2_sub_metr) ) ).
+
+fof(fc3_sub_metr,axiom,
+    ( ~ v3_struct_0(k2_sub_metr)
+    & v1_metric_1(k2_sub_metr)
+    & v6_metric_1(k2_sub_metr)
+    & v8_metric_1(k2_sub_metr)
+    & v9_metric_1(k2_sub_metr) ) ).
+
+fof(t1_sub_metr,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( ( r1_xreal_0(np__0,A)
+              & r1_xreal_0(np__0,B) )
+           => r1_xreal_0(k2_square_1(A,B),k2_xcmplx_0(A,B)) ) ) ) ).
+
+fof(t2_sub_metr,axiom,
+    ! [A] :
+      ( ( v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ~ ( B != C
+                  & r1_xreal_0(k4_metric_1(A,B,C),np__0) ) ) ) ) ).
+
+fof(t3_sub_metr,axiom,
+    $true ).
+
+fof(t4_sub_metr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_tarski(k1_xboole_0))
+     => k1_metric_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0),k3_metric_1,A,A) = np__0 ) ).
+
+fof(t5_sub_metr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_tarski(k1_xboole_0))
+     => ! [B] :
+          ( m1_subset_1(B,k1_tarski(k1_xboole_0))
+         => ~ ( A != B
+              & r1_xreal_0(k1_metric_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0),k3_metric_1,A,B),np__0) ) ) ) ).
+
+fof(t6_sub_metr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_tarski(k1_xboole_0))
+     => ! [B] :
+          ( m1_subset_1(B,k1_tarski(k1_xboole_0))
+         => k1_metric_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0),k3_metric_1,A,B) = k1_metric_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0),k3_metric_1,B,A) ) ) ).
+
+fof(t7_sub_metr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_tarski(k1_xboole_0))
+     => ! [B] :
+          ( m1_subset_1(B,k1_tarski(k1_xboole_0))
+         => ! [C] :
+              ( m1_subset_1(C,k1_tarski(k1_xboole_0))
+             => r1_xreal_0(k1_metric_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0),k3_metric_1,A,C),k2_xcmplx_0(k1_metric_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0),k3_metric_1,A,B),k1_metric_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0),k3_metric_1,B,C))) ) ) ) ).
+
+fof(t8_sub_metr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_tarski(k1_xboole_0))
+     => ! [B] :
+          ( m1_subset_1(B,k1_tarski(k1_xboole_0))
+         => ! [C] :
+              ( m1_subset_1(C,k1_tarski(k1_xboole_0))
+             => r1_xreal_0(k1_metric_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0),k3_metric_1,A,C),k4_square_1(k1_metric_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0),k3_metric_1,A,B),k1_metric_1(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0),k3_metric_1,B,C))) ) ) ) ).
+
+fof(d1_sub_metr,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(A,A),k1_numbers)
+            & m2_relset_1(B,k2_zfmisc_1(A,A),k1_numbers) )
+         => ( v1_sub_metr(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,A)
+               => ! [D] :
+                    ( m1_subset_1(D,A)
+                   => ~ ( C != D
+                        & r1_xreal_0(k1_metric_1(A,A,B,C,D),np__0) ) ) ) ) ) ) ).
+
+fof(d2_sub_metr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ( v2_sub_metr(A)
+      <=> v1_sub_metr(u1_metric_1(A),u1_struct_0(A)) ) ) ).
+
+fof(t9_sub_metr,axiom,
+    $true ).
+
+fof(t10_sub_metr,axiom,
+    $true ).
+
+fof(t11_sub_metr,axiom,
+    $true ).
+
+fof(t12_sub_metr,axiom,
+    $true ).
+
+fof(t13_sub_metr,axiom,
+    $true ).
+
+fof(t14_sub_metr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ( ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ~ ( B != C
+                    & r1_xreal_0(k2_metric_1(A,B,C),np__0) ) ) )
+      <=> v2_sub_metr(A) ) ) ).
+
+fof(t15_sub_metr,axiom,
+    $true ).
+
+fof(t16_sub_metr,axiom,
+    $true ).
+
+fof(t17_sub_metr,axiom,
+    $true ).
+
+fof(t18_sub_metr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v2_sub_metr(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r1_xreal_0(np__0,k2_metric_1(A,B,C)) ) ) ) ).
+
+fof(t19_sub_metr,axiom,
+    $true ).
+
+fof(t20_sub_metr,axiom,
+    $true ).
+
+fof(t21_sub_metr,axiom,
+    $true ).
+
+fof(t22_sub_metr,axiom,
+    $true ).
+
+fof(t23_sub_metr,axiom,
+    $true ).
+
+fof(t24_sub_metr,axiom,
+    $true ).
+
+fof(t25_sub_metr,axiom,
+    $true ).
+
+fof(d3_sub_metr,axiom,
+    $true ).
+
+fof(d4_sub_metr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ( v3_sub_metr(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => r1_xreal_0(k2_metric_1(A,B,D),k4_square_1(k2_metric_1(A,B,C),k2_metric_1(A,C,D))) ) ) ) ) ) ).
+
+fof(t26_sub_metr,axiom,
+    $true ).
+
+fof(t27_sub_metr,axiom,
+    $true ).
+
+fof(t28_sub_metr,axiom,
+    $true ).
+
+fof(t29_sub_metr,axiom,
+    $true ).
+
+fof(t30_sub_metr,axiom,
+    $true ).
+
+fof(t31_sub_metr,axiom,
+    $true ).
+
+fof(t32_sub_metr,axiom,
+    $true ).
+
+fof(t33_sub_metr,axiom,
+    $true ).
+
+fof(t34_sub_metr,axiom,
+    $true ).
+
+fof(t35_sub_metr,axiom,
+    $true ).
+
+fof(t36_sub_metr,axiom,
+    $true ).
+
+fof(t37_sub_metr,axiom,
+    $true ).
+
+fof(t38_sub_metr,axiom,
+    $true ).
+
+fof(d5_sub_metr,axiom,
+    k1_sub_metr = k2_funcop_1(k2_zfmisc_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0))),np__0) ).
+
+fof(t39_sub_metr,axiom,
+    ( r2_hidden(k4_tarski(k1_xboole_0,k1_xboole_0),k2_zfmisc_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0))))
+    & r2_hidden(k4_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_zfmisc_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0))))
+    & r2_hidden(k4_tarski(k1_tarski(k1_xboole_0),k1_xboole_0),k2_zfmisc_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0))))
+    & r2_hidden(k4_tarski(k1_tarski(k1_xboole_0),k1_tarski(k1_xboole_0)),k2_zfmisc_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)))) ) ).
+
+fof(t40_sub_metr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)))
+     => ! [B] :
+          ( m1_subset_1(B,k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)))
+         => k1_metric_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k1_sub_metr,A,B) = np__0 ) ) ).
+
+fof(t41_sub_metr,axiom,
+    $true ).
+
+fof(t42_sub_metr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)))
+     => ! [B] :
+          ( m1_subset_1(B,k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)))
+         => k1_metric_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k1_sub_metr,A,B) = k1_metric_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k1_sub_metr,B,A) ) ) ).
+
+fof(t43_sub_metr,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)))
+     => ! [B] :
+          ( m1_subset_1(B,k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)))
+         => ! [C] :
+              ( m1_subset_1(C,k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)))
+             => r1_xreal_0(k1_metric_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k1_sub_metr,A,C),k2_xcmplx_0(k1_metric_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k1_sub_metr,A,B),k1_metric_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k1_sub_metr,B,C))) ) ) ) ).
+
+fof(d6_sub_metr,axiom,
+    k2_sub_metr = g1_metric_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k1_sub_metr) ).
+
+fof(d7_sub_metr,axiom,
+    ! [A] :
+      ( l1_metric_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_sub_metr(A,B,C,D)
+                  <=> ( B != C
+                      & B != D
+                      & C != D
+                      & k2_metric_1(A,B,D) = k2_xcmplx_0(k2_metric_1(A,B,C),k2_metric_1(A,C,D)) ) ) ) ) ) ) ).
+
+fof(t44_sub_metr,axiom,
+    $true ).
+
+fof(t45_sub_metr,axiom,
+    $true ).
+
+fof(t46_sub_metr,axiom,
+    $true ).
+
+fof(t47_sub_metr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_sub_metr(A,B,C,D)
+                   => r1_sub_metr(A,D,C,B) ) ) ) ) ) ).
+
+fof(t48_sub_metr,axiom,
+    ! [A] :
+      ( ( v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_sub_metr(A,B,C,D)
+                   => ( ~ r1_sub_metr(A,C,B,D)
+                      & ~ r1_sub_metr(A,B,D,C) ) ) ) ) ) ) ).
+
+fof(t49_sub_metr,axiom,
+    ! [A] :
+      ( ( v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( ( r1_sub_metr(A,B,C,D)
+                          & r1_sub_metr(A,B,D,E) )
+                       => ( r1_sub_metr(A,B,C,E)
+                          & r1_sub_metr(A,C,D,E) ) ) ) ) ) ) ) ).
+
+fof(t50_sub_metr,axiom,
+    $true ).
+
+fof(t51_sub_metr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_metric_1(A)
+        & v7_metric_1(A)
+        & v8_metric_1(A)
+        & v9_metric_1(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r2_hidden(D,k3_sub_metr(A,B,C))
+                  <=> r1_sub_metr(A,B,D,C) ) ) ) ) ) ).
+
+fof(t52_sub_metr,axiom,
+    $true ).
+
+fof(t53_sub_metr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r2_hidden(D,k4_sub_metr(A,B,C))
+                  <=> ~ ( ~ r1_sub_metr(A,B,D,C)
+                        & D != B
+                        & D != C ) ) ) ) ) ) ).
+
+fof(t54_sub_metr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r1_tarski(k3_sub_metr(A,B,C),k4_sub_metr(A,B,C)) ) ) ) ).
+
+fof(dt_k1_sub_metr,axiom,
+    ( v1_funct_1(k1_sub_metr)
+    & v1_funct_2(k1_sub_metr,k2_zfmisc_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0))),k1_numbers)
+    & m2_relset_1(k1_sub_metr,k2_zfmisc_1(k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0)),k2_tarski(k1_xboole_0,k1_tarski(k1_xboole_0))),k1_numbers) ) ).
+
+fof(dt_k2_sub_metr,axiom,
+    l1_metric_1(k2_sub_metr) ).
+
+fof(dt_k3_sub_metr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k3_sub_metr(A,B,C),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k4_sub_metr,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k4_sub_metr(A,B,C),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(d8_sub_metr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k3_sub_metr(A,B,C) = a_3_0_sub_metr(A,B,C) ) ) ) ).
+
+fof(d9_sub_metr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_metric_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k4_sub_metr(A,B,C) = k2_xboole_0(a_3_0_sub_metr(A,B,C),k2_struct_0(A,B,C)) ) ) ) ).
+
+fof(fraenkel_a_3_0_sub_metr,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & l1_metric_1(B)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_3_0_sub_metr(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(B))
+            & A = E
+            & r1_sub_metr(B,C,E,D) ) ) ) ).
+
+%------------------------------------------------------------------------------

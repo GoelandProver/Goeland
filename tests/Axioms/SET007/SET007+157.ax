@@ -1,0 +1,647 @@
+%------------------------------------------------------------------------------
+% File     : SET007+157 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Completeness of the sigma-Additive Measure
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : measure3 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   37 (   1 unt;   0 def)
+%            Number of atoms       :  412 (  43 equ)
+%            Maximal formula atoms :   19 (  11 avg)
+%            Number of connectives :  424 (  49   ~;   7   |; 226   &)
+%                                         (   8 <=>; 134  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   16 (  12 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   22 (  20 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   31 (  31 usr;   9 con; 0-5 aty)
+%            Number of variables   :  171 ( 163   !;   8   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_measure3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+        & m3_measure1(C,A,B) )
+     => ( ~ v1_xboole_0(k2_measure3(A,B,C))
+        & v1_finsub_1(k2_measure3(A,B,C))
+        & v2_finsub_1(k2_measure3(A,B,C))
+        & v1_prob_1(k2_measure3(A,B,C),A)
+        & v1_measure1(k2_measure3(A,B,C),A) ) ) ).
+
+fof(t1_measure3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ~ ( ~ r1_supinf_1(A,k5_supinf_1)
+          & ~ r1_supinf_1(k4_supinf_1,A)
+          & ~ m1_subset_1(A,k1_numbers) ) ) ).
+
+fof(t2_measure3,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ~ ( A != k5_supinf_1
+          & A != k4_supinf_1
+          & ~ m1_subset_1(A,k1_numbers) ) ) ).
+
+fof(t3_measure3,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,k3_supinf_1)
+        & m2_relset_1(A,k5_numbers,k3_supinf_1) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,k3_supinf_1)
+            & m2_relset_1(B,k5_numbers,k3_supinf_1) )
+         => ( ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => r1_supinf_1(k1_measure1(k5_numbers,k18_supinf_2(A),C),k1_measure1(k5_numbers,k18_supinf_2(B),C)) )
+           => r1_supinf_1(k19_supinf_2(A),k19_supinf_2(B)) ) ) ) ).
+
+fof(t4_measure3,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,k3_supinf_1)
+        & m2_relset_1(A,k5_numbers,k3_supinf_1) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k5_numbers,k3_supinf_1)
+            & m2_relset_1(B,k5_numbers,k3_supinf_1) )
+         => ( ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => k1_measure1(k5_numbers,k18_supinf_2(A),C) = k1_measure1(k5_numbers,k18_supinf_2(B),C) )
+           => k19_supinf_2(A) = k19_supinf_2(B) ) ) ) ).
+
+fof(t5_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & m2_relset_1(D,k5_numbers,B) )
+             => ! [E] :
+                  ( m2_subset_1(E,k1_zfmisc_1(A),B)
+                 => ( ( r1_tarski(k1_measure2(A,B,k1_measure3(A,B,D)),E)
+                      & ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => r1_tarski(E,k8_funct_2(k5_numbers,B,D,F)) ) )
+                   => k1_measure1(B,C,E) = k1_measure1(B,C,k1_measure2(A,B,k1_measure3(A,B,D))) ) ) ) ) ) ).
+
+fof(t6_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,B)
+            & m2_relset_1(C,k5_numbers,B) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & m2_relset_1(D,k5_numbers,B) )
+             => ( ( k8_funct_2(k5_numbers,B,C,np__0) = k1_xboole_0
+                  & ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( k8_funct_2(k5_numbers,B,C,k1_nat_1(E,np__1)) = k4_measure1(A,B,k8_funct_2(k5_numbers,B,D,np__0),k8_funct_2(k5_numbers,B,D,E))
+                        & r1_tarski(k8_funct_2(k5_numbers,B,D,k1_nat_1(E,np__1)),k8_funct_2(k5_numbers,B,D,E)) ) ) )
+               => k2_measure2(A,B,k1_measure3(A,B,C)) = k4_measure1(A,B,k8_funct_2(k5_numbers,B,D,np__0),k1_measure2(A,B,k1_measure3(A,B,D))) ) ) ) ) ).
+
+fof(t7_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,B)
+            & m2_relset_1(C,k5_numbers,B) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & m2_relset_1(D,k5_numbers,B) )
+             => ( ( k8_funct_2(k5_numbers,B,C,np__0) = k1_xboole_0
+                  & ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( k8_funct_2(k5_numbers,B,C,k1_nat_1(E,np__1)) = k4_measure1(A,B,k8_funct_2(k5_numbers,B,D,np__0),k8_funct_2(k5_numbers,B,D,E))
+                        & r1_tarski(k8_funct_2(k5_numbers,B,D,k1_nat_1(E,np__1)),k8_funct_2(k5_numbers,B,D,E)) ) ) )
+               => k1_measure2(A,B,k1_measure3(A,B,D)) = k4_measure1(A,B,k8_funct_2(k5_numbers,B,D,np__0),k2_measure2(A,B,k1_measure3(A,B,C))) ) ) ) ) ).
+
+fof(t8_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & m2_relset_1(D,k5_numbers,B) )
+             => ! [E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,k5_numbers,B)
+                    & m2_relset_1(E,k5_numbers,B) )
+                 => ( ( k8_funct_2(k5_numbers,B,D,np__0) = k1_xboole_0
+                      & ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( k8_funct_2(k5_numbers,B,D,k1_nat_1(F,np__1)) = k4_measure1(A,B,k8_funct_2(k5_numbers,B,E,np__0),k8_funct_2(k5_numbers,B,E,F))
+                            & r1_tarski(k8_funct_2(k5_numbers,B,E,k1_nat_1(F,np__1)),k8_funct_2(k5_numbers,B,E,F)) ) ) )
+                   => ( r1_supinf_1(k4_supinf_1,k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)))
+                      | k1_measure1(B,C,k1_measure2(A,B,k1_measure3(A,B,E))) = k4_supinf_2(k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)),k1_measure1(B,C,k2_measure2(A,B,k1_measure3(A,B,D)))) ) ) ) ) ) ) ).
+
+fof(t9_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & m2_relset_1(D,k5_numbers,B) )
+             => ! [E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,k5_numbers,B)
+                    & m2_relset_1(E,k5_numbers,B) )
+                 => ( ( k8_funct_2(k5_numbers,B,D,np__0) = k1_xboole_0
+                      & ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( k8_funct_2(k5_numbers,B,D,k1_nat_1(F,np__1)) = k4_measure1(A,B,k8_funct_2(k5_numbers,B,E,np__0),k8_funct_2(k5_numbers,B,E,F))
+                            & r1_tarski(k8_funct_2(k5_numbers,B,E,k1_nat_1(F,np__1)),k8_funct_2(k5_numbers,B,E,F)) ) ) )
+                   => ( r1_supinf_1(k4_supinf_1,k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)))
+                      | k1_measure1(B,C,k2_measure2(A,B,k1_measure3(A,B,D))) = k4_supinf_2(k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)),k1_measure1(B,C,k1_measure2(A,B,k1_measure3(A,B,E)))) ) ) ) ) ) ) ).
+
+fof(t10_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & m2_relset_1(D,k5_numbers,B) )
+             => ! [E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,k5_numbers,B)
+                    & m2_relset_1(E,k5_numbers,B) )
+                 => ( ( k8_funct_2(k5_numbers,B,D,np__0) = k1_xboole_0
+                      & ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( k8_funct_2(k5_numbers,B,D,k1_nat_1(F,np__1)) = k4_measure1(A,B,k8_funct_2(k5_numbers,B,E,np__0),k8_funct_2(k5_numbers,B,E,F))
+                            & r1_tarski(k8_funct_2(k5_numbers,B,E,k1_nat_1(F,np__1)),k8_funct_2(k5_numbers,B,E,F)) ) ) )
+                   => ( r1_supinf_1(k4_supinf_1,k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)))
+                      | k1_measure1(B,C,k1_measure2(A,B,k1_measure3(A,B,E))) = k4_supinf_2(k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)),k9_supinf_1(k17_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,D,C)))) ) ) ) ) ) ) ).
+
+fof(t11_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & m2_relset_1(D,k5_numbers,B) )
+             => ! [E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,k5_numbers,B)
+                    & m2_relset_1(E,k5_numbers,B) )
+                 => ( ( k8_funct_2(k5_numbers,B,D,np__0) = k1_xboole_0
+                      & ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( k8_funct_2(k5_numbers,B,D,k1_nat_1(F,np__1)) = k4_measure1(A,B,k8_funct_2(k5_numbers,B,E,np__0),k8_funct_2(k5_numbers,B,E,F))
+                            & r1_tarski(k8_funct_2(k5_numbers,B,E,k1_nat_1(F,np__1)),k8_funct_2(k5_numbers,B,E,F)) ) ) )
+                   => ( r1_supinf_1(k4_supinf_1,k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)))
+                      | ( m1_subset_1(k9_supinf_1(k17_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,D,C))),k1_numbers)
+                        & m1_subset_1(k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)),k1_numbers)
+                        & m1_subset_1(k10_supinf_1(k17_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,E,C))),k1_numbers) ) ) ) ) ) ) ) ).
+
+fof(t12_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & m2_relset_1(D,k5_numbers,B) )
+             => ! [E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,k5_numbers,B)
+                    & m2_relset_1(E,k5_numbers,B) )
+                 => ( ( k8_funct_2(k5_numbers,B,D,np__0) = k1_xboole_0
+                      & ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( k8_funct_2(k5_numbers,B,D,k1_nat_1(F,np__1)) = k4_measure1(A,B,k8_funct_2(k5_numbers,B,E,np__0),k8_funct_2(k5_numbers,B,E,F))
+                            & r1_tarski(k8_funct_2(k5_numbers,B,E,k1_nat_1(F,np__1)),k8_funct_2(k5_numbers,B,E,F)) ) ) )
+                   => ( r1_supinf_1(k4_supinf_1,k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)))
+                      | k9_supinf_1(k17_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,D,C))) = k4_supinf_2(k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)),k10_supinf_1(k17_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,E,C)))) ) ) ) ) ) ) ).
+
+fof(t13_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & m2_relset_1(D,k5_numbers,B) )
+             => ! [E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,k5_numbers,B)
+                    & m2_relset_1(E,k5_numbers,B) )
+                 => ( ( k8_funct_2(k5_numbers,B,D,np__0) = k1_xboole_0
+                      & ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( k8_funct_2(k5_numbers,B,D,k1_nat_1(F,np__1)) = k4_measure1(A,B,k8_funct_2(k5_numbers,B,E,np__0),k8_funct_2(k5_numbers,B,E,F))
+                            & r1_tarski(k8_funct_2(k5_numbers,B,E,k1_nat_1(F,np__1)),k8_funct_2(k5_numbers,B,E,F)) ) ) )
+                   => ( r1_supinf_1(k4_supinf_1,k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)))
+                      | k10_supinf_1(k17_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,E,C))) = k4_supinf_2(k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,np__0)),k9_supinf_1(k17_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,D,C)))) ) ) ) ) ) ) ).
+
+fof(t14_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & m2_relset_1(D,k5_numbers,B) )
+             => ( ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => r1_tarski(k8_funct_2(k5_numbers,B,D,k1_nat_1(E,np__1)),k8_funct_2(k5_numbers,B,D,E)) )
+               => ( r1_supinf_1(k4_supinf_1,k1_measure1(B,C,k8_funct_2(k5_numbers,B,D,np__0)))
+                  | k1_measure1(B,C,k1_measure2(A,B,k1_measure3(A,B,D))) = k10_supinf_1(k17_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,D,C))) ) ) ) ) ) ).
+
+fof(t15_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m1_measure1(C,A,B)
+         => ! [D] :
+              ( m1_measure2(D,A,B)
+             => ! [E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,k5_numbers,B)
+                    & v1_prob_2(E)
+                    & m2_relset_1(E,k5_numbers,B) )
+                 => ( D = k1_measure3(A,B,E)
+                   => r1_supinf_1(k19_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,E,C)),k1_measure1(B,C,k2_measure2(A,B,D))) ) ) ) ) ) ).
+
+fof(t16_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m1_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,B)
+                & v1_prob_2(D)
+                & m2_relset_1(D,k5_numbers,B) )
+             => r1_supinf_1(k19_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,D,C)),k1_measure1(B,C,k2_measure2(A,B,k1_measure3(A,B,D)))) ) ) ) ).
+
+fof(t17_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m1_measure1(C,A,B)
+         => ( ! [D] :
+                ( ( v1_funct_1(D)
+                  & v1_funct_2(D,k5_numbers,B)
+                  & v1_prob_2(D)
+                  & m2_relset_1(D,k5_numbers,B) )
+               => r1_supinf_1(k1_measure1(B,C,k2_measure2(A,B,k1_measure3(A,B,D))),k19_supinf_2(k7_funct_2(k5_numbers,B,k3_supinf_1,D,C))) )
+           => m3_measure1(C,A,B) ) ) ) ).
+
+fof(d1_measure3,axiom,
+    $true ).
+
+fof(d2_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ( r1_measure3(A,B,C)
+          <=> ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ! [E] :
+                    ( ( r2_hidden(E,B)
+                      & r1_tarski(D,E)
+                      & k1_funct_1(C,E) = k1_supinf_2 )
+                   => r2_hidden(D,B) ) ) ) ) ) ).
+
+fof(d3_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(A))
+             => ( m1_measure3(D,A,B,C)
+              <=> ? [E] :
+                    ( r2_hidden(E,B)
+                    & r1_tarski(D,E)
+                    & k1_funct_1(C,E) = k1_supinf_2 ) ) ) ) ) ).
+
+fof(d4_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( ~ v1_xboole_0(D)
+                & m1_subset_1(D,k1_zfmisc_1(k1_zfmisc_1(A))) )
+             => ( D = k2_measure3(A,B,C)
+              <=> ! [E] :
+                    ( r2_hidden(E,D)
+                  <=> ? [F] :
+                        ( r2_hidden(F,B)
+                        & ? [G] :
+                            ( m1_measure3(G,A,B,C)
+                            & E = k2_xboole_0(F,G) ) ) ) ) ) ) ) ).
+
+fof(d5_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( m2_subset_1(D,k1_zfmisc_1(A),k2_measure3(A,B,C))
+             => ! [E] :
+                  ( ( ~ v1_xboole_0(E)
+                    & m1_subset_1(E,k1_zfmisc_1(k1_zfmisc_1(A))) )
+                 => ( E = k3_measure3(A,B,C,D)
+                  <=> ! [F] :
+                        ( r2_hidden(F,E)
+                      <=> ( r2_hidden(F,B)
+                          & r1_tarski(F,D)
+                          & m1_measure3(k4_xboole_0(D,F),A,B,C) ) ) ) ) ) ) ) ).
+
+fof(t18_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k2_measure3(A,B,C))
+                & m2_relset_1(D,k5_numbers,k2_measure3(A,B,C)) )
+             => ? [E] :
+                  ( v1_funct_1(E)
+                  & v1_funct_2(E,k5_numbers,B)
+                  & m2_relset_1(E,k5_numbers,B)
+                  & ! [F] :
+                      ( m2_subset_1(F,k1_numbers,k5_numbers)
+                     => r2_hidden(k8_funct_2(k5_numbers,B,E,F),k3_measure3(A,B,C,k8_funct_2(k5_numbers,k2_measure3(A,B,C),D,F))) ) ) ) ) ) ).
+
+fof(t19_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k2_measure3(A,B,C))
+                & m2_relset_1(D,k5_numbers,k2_measure3(A,B,C)) )
+             => ! [E] :
+                  ( ( v1_funct_1(E)
+                    & v1_funct_2(E,k5_numbers,B)
+                    & m2_relset_1(E,k5_numbers,B) )
+                 => ? [F] :
+                      ( v1_funct_1(F)
+                      & v1_funct_2(F,k5_numbers,k1_zfmisc_1(A))
+                      & m2_relset_1(F,k5_numbers,k1_zfmisc_1(A))
+                      & ! [G] :
+                          ( m2_subset_1(G,k1_numbers,k5_numbers)
+                         => k8_funct_2(k5_numbers,k1_zfmisc_1(A),F,G) = k4_xboole_0(k8_funct_2(k5_numbers,k2_measure3(A,B,C),D,G),k8_funct_2(k5_numbers,B,E,G)) ) ) ) ) ) ) ).
+
+fof(t20_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(A))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(A)) )
+             => ~ ( ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => m1_measure3(k8_funct_2(k5_numbers,k1_zfmisc_1(A),D,E),A,B,C) )
+                  & ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k5_numbers,B)
+                        & m2_relset_1(E,k5_numbers,B) )
+                     => ~ ! [F] :
+                            ( m2_subset_1(F,k1_numbers,k5_numbers)
+                           => ( r1_tarski(k8_funct_2(k5_numbers,k1_zfmisc_1(A),D,F),k8_funct_2(k5_numbers,B,E,F))
+                              & k1_measure1(B,C,k8_funct_2(k5_numbers,B,E,F)) = k1_supinf_2 ) ) ) ) ) ) ) ).
+
+fof(t21_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( ( ~ v1_xboole_0(D)
+                & m1_subset_1(D,k1_zfmisc_1(k1_zfmisc_1(A))) )
+             => ( ! [E] :
+                    ( r2_hidden(E,D)
+                  <=> ? [F] :
+                        ( r2_hidden(F,B)
+                        & ? [G] :
+                            ( m1_measure3(G,A,B,C)
+                            & E = k2_xboole_0(F,G) ) ) )
+               => ( ~ v1_xboole_0(D)
+                  & v1_prob_1(D,A)
+                  & v1_measure1(D,A)
+                  & m1_subset_1(D,k1_zfmisc_1(k1_zfmisc_1(A))) ) ) ) ) ) ).
+
+fof(t22_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D,E] :
+              ( ( r2_hidden(D,B)
+                & r2_hidden(E,B) )
+             => ! [F] :
+                  ( m1_measure3(F,A,B,C)
+                 => ! [G] :
+                      ( m1_measure3(G,A,B,C)
+                     => ( k2_xboole_0(D,F) = k2_xboole_0(E,G)
+                       => k1_funct_1(C,D) = k1_funct_1(C,E) ) ) ) ) ) ) ).
+
+fof(d6_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => ! [D] :
+              ( m3_measure1(D,A,k2_measure3(A,B,C))
+             => ( D = k4_measure3(A,B,C)
+              <=> ! [E] :
+                    ( r2_hidden(E,B)
+                   => ! [F] :
+                        ( m1_measure3(F,A,B,C)
+                       => k1_funct_1(D,k2_xboole_0(E,F)) = k1_funct_1(C,E) ) ) ) ) ) ) ).
+
+fof(t23_measure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ! [C] :
+          ( m3_measure1(C,A,B)
+         => r1_measure3(A,k2_measure3(A,B,C),k4_measure3(A,B,C)) ) ) ).
+
+fof(dt_m1_measure3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+        & m3_measure1(C,A,B) )
+     => ! [D] :
+          ( m1_measure3(D,A,B,C)
+         => m1_subset_1(D,k1_zfmisc_1(A)) ) ) ).
+
+fof(existence_m1_measure3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+        & m3_measure1(C,A,B) )
+     => ? [D] : m1_measure3(D,A,B,C) ) ).
+
+fof(dt_k1_measure3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,B)
+        & m1_relset_1(C,k5_numbers,B) )
+     => m1_measure2(k1_measure3(A,B,C),A,B) ) ).
+
+fof(redefinition_k1_measure3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,B)
+        & m1_relset_1(C,k5_numbers,B) )
+     => k1_measure3(A,B,C) = k2_relat_1(C) ) ).
+
+fof(dt_k2_measure3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+        & m3_measure1(C,A,B) )
+     => ( ~ v1_xboole_0(k2_measure3(A,B,C))
+        & m1_subset_1(k2_measure3(A,B,C),k1_zfmisc_1(k1_zfmisc_1(A))) ) ) ).
+
+fof(dt_k3_measure3,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+        & m3_measure1(C,A,B)
+        & m1_subset_1(D,k2_measure3(A,B,C)) )
+     => ( ~ v1_xboole_0(k3_measure3(A,B,C,D))
+        & m1_subset_1(k3_measure3(A,B,C,D),k1_zfmisc_1(k1_zfmisc_1(A))) ) ) ).
+
+fof(dt_k4_measure3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_prob_1(B,A)
+        & v1_measure1(B,A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+        & m3_measure1(C,A,B) )
+     => m3_measure1(k4_measure3(A,B,C),A,k2_measure3(A,B,C)) ) ).
+
+%------------------------------------------------------------------------------

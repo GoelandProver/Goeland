@@ -1,0 +1,1288 @@
+%------------------------------------------------------------------------------
+% File     : ITP054^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : string^2.ax [Gau20]
+%          : HL4054^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  240 (  40 unt;  74 typ;   0 def)
+%            Number of atoms       : 2507 ( 141 equ;   0 cnn)
+%            Maximal formula atoms :  124 (  10 avg)
+%            Number of connectives : 3858 (   9   ~;  10   |;  57   &;3684   @)
+%                                         (  48 <=>;  50  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   34 (   7 avg;3684 nst)
+%            Number of types       :   11 (  10 usr)
+%            Number of type conns  :   27 (  27   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :  128 ( 125 usr; 100 con; 0-2 aty)
+%            Number of variables   :  288 (  32   ^ 248   !;   8   ?; 288   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tp_ty_2Estring_2Echar,type,
+    ty_2Estring_2Echar: del ).
+
+thf(stp_ty_2Estring_2Echar,type,
+    tp__ty_2Estring_2Echar: $tType ).
+
+thf(stp_inj_ty_2Estring_2Echar,type,
+    inj__ty_2Estring_2Echar: tp__ty_2Estring_2Echar > $i ).
+
+thf(stp_surj_ty_2Estring_2Echar,type,
+    surj__ty_2Estring_2Echar: $i > tp__ty_2Estring_2Echar ).
+
+thf(stp_inj_surj_ty_2Estring_2Echar,axiom,
+    ! [X: tp__ty_2Estring_2Echar] :
+      ( ( surj__ty_2Estring_2Echar @ ( inj__ty_2Estring_2Echar @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_ty_2Estring_2Echar,axiom,
+    ! [X: tp__ty_2Estring_2Echar] : ( mem @ ( inj__ty_2Estring_2Echar @ X ) @ ty_2Estring_2Echar ) ).
+
+thf(stp_iso_mem_ty_2Estring_2Echar,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ty_2Estring_2Echar )
+     => ( X
+        = ( inj__ty_2Estring_2Echar @ ( surj__ty_2Estring_2Echar @ X ) ) ) ) ).
+
+thf(tp_c_2Estring_2ECHR,type,
+    c_2Estring_2ECHR: $i ).
+
+thf(mem_c_2Estring_2ECHR,axiom,
+    mem @ c_2Estring_2ECHR @ ( arr @ ty_2Enum_2Enum @ ty_2Estring_2Echar ) ).
+
+thf(stp_fo_c_2Estring_2ECHR,type,
+    fo__c_2Estring_2ECHR: tp__ty_2Enum_2Enum > tp__ty_2Estring_2Echar ).
+
+thf(stp_eq_fo_c_2Estring_2ECHR,axiom,
+    ! [X0: tp__ty_2Enum_2Enum] :
+      ( ( inj__ty_2Estring_2Echar @ ( fo__c_2Estring_2ECHR @ X0 ) )
+      = ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ X0 ) ) ) ).
+
+thf(stp_c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    tp__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar: $tType ).
+
+thf(stp_inj_c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    inj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar: tp__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar > $i ).
+
+thf(stp_surj_c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar: $i > tp__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar ).
+
+thf(stp_inj_surj_c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: tp__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( inj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: tp__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( mem @ ( inj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) @ ( ty_2Eoption_2Eoption @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) ).
+
+thf(stp_iso_mem_c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ( ty_2Eoption_2Eoption @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) )
+     => ( X
+        = ( inj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) ) ) ) ).
+
+thf(stp_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    tp__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar: $tType ).
+
+thf(stp_inj_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    inj__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar: tp__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar > $i ).
+
+thf(stp_surj_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    surj__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar: $i > tp__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar ).
+
+thf(stp_inj_surj_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( inj__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( mem @ ( inj__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ).
+
+thf(stp_iso_mem_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) )
+     => ( X
+        = ( inj__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( surj__c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) ) ) ) ).
+
+thf(stp_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar: $tType ).
+
+thf(stp_inj_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar > $i ).
+
+thf(stp_surj_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar: $i > tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar ).
+
+thf(stp_inj_surj_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( mem @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ).
+
+thf(stp_iso_mem_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) )
+     => ( X
+        = ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) ) ) ) ).
+
+thf(tp_c_2Estring_2EDEST__STRING,type,
+    c_2Estring_2EDEST__STRING: $i ).
+
+thf(mem_c_2Estring_2EDEST__STRING,axiom,
+    mem @ c_2Estring_2EDEST__STRING @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Eoption_2Eoption @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) ).
+
+thf(tp_c_2Estring_2EEXPLODE,type,
+    c_2Estring_2EEXPLODE: $i ).
+
+thf(mem_c_2Estring_2EEXPLODE,axiom,
+    mem @ c_2Estring_2EEXPLODE @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ).
+
+thf(stp_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,type,
+    tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum: $tType ).
+
+thf(stp_inj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,type,
+    inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum > $i ).
+
+thf(stp_surj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,type,
+    surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum: $i > tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum ).
+
+thf(stp_inj_surj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum] : ( mem @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ X ) @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) ) ).
+
+thf(stp_iso_mem_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) )
+     => ( X
+        = ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ X ) ) ) ) ).
+
+thf(stp_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,type,
+    tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum: $tType ).
+
+thf(stp_inj_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,type,
+    inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum > $i ).
+
+thf(stp_surj_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,type,
+    surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum: $i > tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum ).
+
+thf(stp_inj_surj_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum] : ( mem @ ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ X ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) ).
+
+thf(stp_iso_mem_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) )
+     => ( X
+        = ( inj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ ( surj__c_ty_2Epair_2Eprod_ty_2Enum_2Enum_c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ X ) ) ) ) ).
+
+thf(tp_c_2Estring_2EEXTRACT,type,
+    c_2Estring_2EEXTRACT: $i ).
+
+thf(mem_c_2Estring_2EEXTRACT,axiom,
+    mem @ c_2Estring_2EEXTRACT @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ).
+
+thf(stp_c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    tp__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar: $tType ).
+
+thf(stp_inj_c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    inj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar: tp__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar > $i ).
+
+thf(stp_surj_c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar: $i > tp__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar ).
+
+thf(stp_inj_surj_c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: tp__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( inj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: tp__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( mem @ ( inj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ).
+
+thf(stp_iso_mem_c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) )
+     => ( X
+        = ( inj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) ) ) ) ).
+
+thf(tp_c_2Estring_2EFIELDS,type,
+    c_2Estring_2EFIELDS: $i ).
+
+thf(mem_c_2Estring_2EFIELDS,axiom,
+    mem @ c_2Estring_2EFIELDS @ ( arr @ ( arr @ ty_2Estring_2Echar @ bool ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) ).
+
+thf(tp_c_2Estring_2EIMPLODE,type,
+    c_2Estring_2EIMPLODE: $i ).
+
+thf(mem_c_2Estring_2EIMPLODE,axiom,
+    mem @ c_2Estring_2EIMPLODE @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ).
+
+thf(tp_c_2Estring_2EORD,type,
+    c_2Estring_2EORD: $i ).
+
+thf(mem_c_2Estring_2EORD,axiom,
+    mem @ c_2Estring_2EORD @ ( arr @ ty_2Estring_2Echar @ ty_2Enum_2Enum ) ).
+
+thf(stp_fo_c_2Estring_2EORD,type,
+    fo__c_2Estring_2EORD: tp__ty_2Estring_2Echar > tp__ty_2Enum_2Enum ).
+
+thf(stp_eq_fo_c_2Estring_2EORD,axiom,
+    ! [X0: tp__ty_2Estring_2Echar] :
+      ( ( inj__ty_2Enum_2Enum @ ( fo__c_2Estring_2EORD @ X0 ) )
+      = ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ X0 ) ) ) ).
+
+thf(tp_c_2Estring_2ESTR,type,
+    c_2Estring_2ESTR: $i ).
+
+thf(mem_c_2Estring_2ESTR,axiom,
+    mem @ c_2Estring_2ESTR @ ( arr @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ).
+
+thf(stp_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum,type,
+    tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum: $tType ).
+
+thf(stp_inj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum,type,
+    inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum > $i ).
+
+thf(stp_surj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum,type,
+    surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum: $i > tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum ).
+
+thf(stp_inj_surj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum] : ( mem @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum @ X ) @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ty_2Enum_2Enum ) ) ).
+
+thf(stp_iso_mem_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ty_2Enum_2Enum ) )
+     => ( X
+        = ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum @ ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum @ X ) ) ) ) ).
+
+thf(tp_c_2Estring_2ESUB,type,
+    c_2Estring_2ESUB: $i ).
+
+thf(mem_c_2Estring_2ESUB,axiom,
+    mem @ c_2Estring_2ESUB @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ty_2Enum_2Enum ) @ ty_2Estring_2Echar ) ).
+
+thf(stp_fo_c_2Estring_2ESUB,type,
+    fo__c_2Estring_2ESUB: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum > tp__ty_2Estring_2Echar ).
+
+thf(stp_eq_fo_c_2Estring_2ESUB,axiom,
+    ! [X0: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum] :
+      ( ( inj__ty_2Estring_2Echar @ ( fo__c_2Estring_2ESUB @ X0 ) )
+      = ( ap @ c_2Estring_2ESUB @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_ty_2Enum_2Enum @ X0 ) ) ) ).
+
+thf(stp_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,type,
+    tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum: $tType ).
+
+thf(stp_inj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,type,
+    inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum > $i ).
+
+thf(stp_surj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,type,
+    surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum: $i > tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum ).
+
+thf(stp_inj_surj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum] : ( mem @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ X ) @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) ) ).
+
+thf(stp_iso_mem_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) )
+     => ( X
+        = ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Epair_2Eprod_ty_2Enum_2Enum_ty_2Enum_2Enum @ X ) ) ) ) ).
+
+thf(tp_c_2Estring_2ESUBSTRING,type,
+    c_2Estring_2ESUBSTRING: $i ).
+
+thf(mem_c_2Estring_2ESUBSTRING,axiom,
+    mem @ c_2Estring_2ESUBSTRING @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ).
+
+thf(tp_c_2Estring_2ETOCHAR,type,
+    c_2Estring_2ETOCHAR: $i ).
+
+thf(mem_c_2Estring_2ETOCHAR,axiom,
+    mem @ c_2Estring_2ETOCHAR @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ty_2Estring_2Echar ) ).
+
+thf(stp_fo_c_2Estring_2ETOCHAR,type,
+    fo__c_2Estring_2ETOCHAR: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar > tp__ty_2Estring_2Echar ).
+
+thf(stp_eq_fo_c_2Estring_2ETOCHAR,axiom,
+    ! [X0: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( inj__ty_2Estring_2Echar @ ( fo__c_2Estring_2ETOCHAR @ X0 ) )
+      = ( ap @ c_2Estring_2ETOCHAR @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X0 ) ) ) ).
+
+thf(tp_c_2Estring_2ETOKENS,type,
+    c_2Estring_2ETOKENS: $i ).
+
+thf(mem_c_2Estring_2ETOKENS,axiom,
+    mem @ c_2Estring_2ETOKENS @ ( arr @ ( arr @ ty_2Estring_2Echar @ bool ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) ).
+
+thf(tp_c_2Estring_2ETRANSLATE,type,
+    c_2Estring_2ETRANSLATE: $i ).
+
+thf(mem_c_2Estring_2ETRANSLATE,axiom,
+    mem @ c_2Estring_2ETRANSLATE @ ( arr @ ( arr @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ).
+
+thf(tp_c_2Estring_2Echar__ge,type,
+    c_2Estring_2Echar__ge: $i ).
+
+thf(mem_c_2Estring_2Echar__ge,axiom,
+    mem @ c_2Estring_2Echar__ge @ ( arr @ ty_2Estring_2Echar @ ( arr @ ty_2Estring_2Echar @ bool ) ) ).
+
+thf(tp_c_2Estring_2Echar__gt,type,
+    c_2Estring_2Echar__gt: $i ).
+
+thf(mem_c_2Estring_2Echar__gt,axiom,
+    mem @ c_2Estring_2Echar__gt @ ( arr @ ty_2Estring_2Echar @ ( arr @ ty_2Estring_2Echar @ bool ) ) ).
+
+thf(tp_c_2Estring_2Echar__le,type,
+    c_2Estring_2Echar__le: $i ).
+
+thf(mem_c_2Estring_2Echar__le,axiom,
+    mem @ c_2Estring_2Echar__le @ ( arr @ ty_2Estring_2Echar @ ( arr @ ty_2Estring_2Echar @ bool ) ) ).
+
+thf(tp_c_2Estring_2Echar__lt,type,
+    c_2Estring_2Echar__lt: $i ).
+
+thf(mem_c_2Estring_2Echar__lt,axiom,
+    mem @ c_2Estring_2Echar__lt @ ( arr @ ty_2Estring_2Echar @ ( arr @ ty_2Estring_2Echar @ bool ) ) ).
+
+thf(tp_c_2Estring_2Echar__size,type,
+    c_2Estring_2Echar__size: $i ).
+
+thf(mem_c_2Estring_2Echar__size,axiom,
+    mem @ c_2Estring_2Echar__size @ ( arr @ ty_2Estring_2Echar @ ty_2Enum_2Enum ) ).
+
+thf(stp_fo_c_2Estring_2Echar__size,type,
+    fo__c_2Estring_2Echar__size: tp__ty_2Estring_2Echar > tp__ty_2Enum_2Enum ).
+
+thf(stp_eq_fo_c_2Estring_2Echar__size,axiom,
+    ! [X0: tp__ty_2Estring_2Echar] :
+      ( ( inj__ty_2Enum_2Enum @ ( fo__c_2Estring_2Echar__size @ X0 ) )
+      = ( ap @ c_2Estring_2Echar__size @ ( inj__ty_2Estring_2Echar @ X0 ) ) ) ).
+
+thf(tp_c_2Estring_2EisAlpha,type,
+    c_2Estring_2EisAlpha: $i ).
+
+thf(mem_c_2Estring_2EisAlpha,axiom,
+    mem @ c_2Estring_2EisAlpha @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisAlphaNum,type,
+    c_2Estring_2EisAlphaNum: $i ).
+
+thf(mem_c_2Estring_2EisAlphaNum,axiom,
+    mem @ c_2Estring_2EisAlphaNum @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisAscii,type,
+    c_2Estring_2EisAscii: $i ).
+
+thf(mem_c_2Estring_2EisAscii,axiom,
+    mem @ c_2Estring_2EisAscii @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisCntrl,type,
+    c_2Estring_2EisCntrl: $i ).
+
+thf(mem_c_2Estring_2EisCntrl,axiom,
+    mem @ c_2Estring_2EisCntrl @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisDigit,type,
+    c_2Estring_2EisDigit: $i ).
+
+thf(mem_c_2Estring_2EisDigit,axiom,
+    mem @ c_2Estring_2EisDigit @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisGraph,type,
+    c_2Estring_2EisGraph: $i ).
+
+thf(mem_c_2Estring_2EisGraph,axiom,
+    mem @ c_2Estring_2EisGraph @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisHexDigit,type,
+    c_2Estring_2EisHexDigit: $i ).
+
+thf(mem_c_2Estring_2EisHexDigit,axiom,
+    mem @ c_2Estring_2EisHexDigit @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisLower,type,
+    c_2Estring_2EisLower: $i ).
+
+thf(mem_c_2Estring_2EisLower,axiom,
+    mem @ c_2Estring_2EisLower @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisPrint,type,
+    c_2Estring_2EisPrint: $i ).
+
+thf(mem_c_2Estring_2EisPrint,axiom,
+    mem @ c_2Estring_2EisPrint @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisPunct,type,
+    c_2Estring_2EisPunct: $i ).
+
+thf(mem_c_2Estring_2EisPunct,axiom,
+    mem @ c_2Estring_2EisPunct @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisSpace,type,
+    c_2Estring_2EisSpace: $i ).
+
+thf(mem_c_2Estring_2EisSpace,axiom,
+    mem @ c_2Estring_2EisSpace @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2EisUpper,type,
+    c_2Estring_2EisUpper: $i ).
+
+thf(mem_c_2Estring_2EisUpper,axiom,
+    mem @ c_2Estring_2EisUpper @ ( arr @ ty_2Estring_2Echar @ bool ) ).
+
+thf(tp_c_2Estring_2Estring__ge,type,
+    c_2Estring_2Estring__ge: $i ).
+
+thf(mem_c_2Estring_2Estring__ge,axiom,
+    mem @ c_2Estring_2Estring__ge @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) ) ).
+
+thf(tp_c_2Estring_2Estring__gt,type,
+    c_2Estring_2Estring__gt: $i ).
+
+thf(mem_c_2Estring_2Estring__gt,axiom,
+    mem @ c_2Estring_2Estring__gt @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) ) ).
+
+thf(tp_c_2Estring_2Estring__le,type,
+    c_2Estring_2Estring__le: $i ).
+
+thf(mem_c_2Estring_2Estring__le,axiom,
+    mem @ c_2Estring_2Estring__le @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) ) ).
+
+thf(tp_c_2Estring_2Estring__lt,type,
+    c_2Estring_2Estring__lt: $i ).
+
+thf(mem_c_2Estring_2Estring__lt,axiom,
+    mem @ c_2Estring_2Estring__lt @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) ) ).
+
+thf(tp_c_2Estring_2EtoLower,type,
+    c_2Estring_2EtoLower: $i ).
+
+thf(mem_c_2Estring_2EtoLower,axiom,
+    mem @ c_2Estring_2EtoLower @ ( arr @ ty_2Estring_2Echar @ ty_2Estring_2Echar ) ).
+
+thf(stp_fo_c_2Estring_2EtoLower,type,
+    fo__c_2Estring_2EtoLower: tp__ty_2Estring_2Echar > tp__ty_2Estring_2Echar ).
+
+thf(stp_eq_fo_c_2Estring_2EtoLower,axiom,
+    ! [X0: tp__ty_2Estring_2Echar] :
+      ( ( inj__ty_2Estring_2Echar @ ( fo__c_2Estring_2EtoLower @ X0 ) )
+      = ( ap @ c_2Estring_2EtoLower @ ( inj__ty_2Estring_2Echar @ X0 ) ) ) ).
+
+thf(tp_c_2Estring_2EtoUpper,type,
+    c_2Estring_2EtoUpper: $i ).
+
+thf(mem_c_2Estring_2EtoUpper,axiom,
+    mem @ c_2Estring_2EtoUpper @ ( arr @ ty_2Estring_2Echar @ ty_2Estring_2Echar ) ).
+
+thf(stp_fo_c_2Estring_2EtoUpper,type,
+    fo__c_2Estring_2EtoUpper: tp__ty_2Estring_2Echar > tp__ty_2Estring_2Echar ).
+
+thf(stp_eq_fo_c_2Estring_2EtoUpper,axiom,
+    ! [X0: tp__ty_2Estring_2Echar] :
+      ( ( inj__ty_2Estring_2Echar @ ( fo__c_2Estring_2EtoUpper @ X0 ) )
+      = ( ap @ c_2Estring_2EtoUpper @ ( inj__ty_2Estring_2Echar @ X0 ) ) ) ).
+
+thf(ax_thm_2Estring_2Echar__TY__DEF,axiom,
+    ? [V0rep: $i] :
+      ( ( mem @ V0rep @ ( arr @ ty_2Estring_2Echar @ ty_2Enum_2Enum ) )
+      & ( p
+        @ ( ap
+          @ ( ap @ ( c_2Ebool_2ETYPE__DEFINITION @ ty_2Enum_2Enum @ ty_2Estring_2Echar )
+            @ ( lam @ ty_2Enum_2Enum
+              @ ^ [V1n: $i] : ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ V1n ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) )
+          @ V0rep ) ) ) ).
+
+thf(ax_thm_2Estring_2Echar__BIJ,axiom,
+    ( ! [V0a: tp__ty_2Estring_2Echar] :
+        ( ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2ECHR @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0a ) ) ) )
+        = V0a )
+    & ! [V1r: tp__ty_2Enum_2Enum] :
+        ( ( p
+          @ ( ap
+            @ ( lam @ ty_2Enum_2Enum
+              @ ^ [V2n: $i] : ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ V2n ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) )
+            @ ( inj__ty_2Enum_2Enum @ V1r ) ) )
+      <=> ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2EORD @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V1r ) ) ) )
+          = V1r ) ) ) ).
+
+thf(conj_thm_2Estring_2EORD__11,axiom,
+    ! [V0a: tp__ty_2Estring_2Echar,V1a_27: tp__ty_2Estring_2Echar] :
+      ( ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0a ) ) )
+        = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V1a_27 ) ) ) )
+    <=> ( V0a = V1a_27 ) ) ).
+
+thf(conj_thm_2Estring_2ECHR__11,axiom,
+    ! [V0r: tp__ty_2Enum_2Enum,V1r_27: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0r ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) )
+     => ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V1r_27 ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) )
+       => ( ( ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V0r ) ) )
+            = ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V1r_27 ) ) ) )
+        <=> ( V0r = V1r_27 ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EORD__ONTO,axiom,
+    ! [V0r: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0r ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) )
+    <=> ? [V1a: tp__ty_2Estring_2Echar] :
+          ( V0r
+          = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V1a ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ECHR__ONTO,axiom,
+    ! [V0a: tp__ty_2Estring_2Echar] :
+    ? [V1r: tp__ty_2Enum_2Enum] :
+      ( ( V0a
+        = ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V1r ) ) ) )
+      & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V1r ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ECHR__ORD,axiom,
+    ! [V0a: tp__ty_2Estring_2Echar] :
+      ( ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2ECHR @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0a ) ) ) )
+      = V0a ) ).
+
+thf(conj_thm_2Estring_2EORD__CHR,axiom,
+    ! [V0r: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0r ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) )
+    <=> ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2EORD @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V0r ) ) ) )
+        = V0r ) ) ).
+
+thf(conj_thm_2Estring_2EORD__CHR__RWT,axiom,
+    ! [V0r: tp__ty_2Enum_2Enum] :
+      ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V0r ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) )
+     => ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2EORD @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V0r ) ) ) )
+        = V0r ) ) ).
+
+thf(conj_thm_2Estring_2EORD__CHR__COMPUTE,axiom,
+    ! [V0_3E_20255: $i] :
+      ( ( mem @ V0_3E_20255 @ bool )
+     => ! [V1n: tp__ty_2Enum_2Enum] :
+          ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2EORD @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+          = ( surj__ty_2Enum_2Enum @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ty_2Enum_2Enum ) @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V1n ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Ecombin_2EFAIL @ ( arr @ ty_2Estring_2Echar @ ty_2Enum_2Enum ) @ bool ) @ c_2Estring_2EORD ) @ V0_3E_20255 ) @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EORD__BOUND,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] : ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2Echar__nchotomy,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+    ? [V1n: tp__ty_2Enum_2Enum] :
+      ( V0c
+      = ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) ).
+
+thf(conj_thm_2Estring_2Eranged__char__nchotomy,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+    ? [V1n: tp__ty_2Enum_2Enum] :
+      ( ( V0c
+        = ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+      & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V1n ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisLower__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisLower @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisUpper__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisUpper @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisDigit__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisDigit @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisAlpha__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisAlpha @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( p @ ( ap @ c_2Estring_2EisLower @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+        | ( p @ ( ap @ c_2Estring_2EisUpper @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisHexDigit__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisHexDigit @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) )
+          & ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) )
+        | ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) )
+          & ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) )
+        | ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) )
+          & ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisAlphaNum__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisAlphaNum @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( p @ ( ap @ c_2Estring_2EisAlpha @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+        | ( p @ ( ap @ c_2Estring_2EisDigit @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisPrint__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisPrint @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisSpace__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisSpace @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+          = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) )
+        | ( ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) )
+          & ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT2 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisGraph__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisGraph @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( p @ ( ap @ c_2Estring_2EisPrint @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+        & ~ ( p @ ( ap @ c_2Estring_2EisSpace @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisPunct__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisPunct @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( p @ ( ap @ c_2Estring_2EisGraph @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+        & ~ ( p @ ( ap @ c_2Estring_2EisAlphaNum @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisAscii__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisAscii @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EisCntrl__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ c_2Estring_2EisCntrl @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+    <=> ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) )
+        | ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EtoLower__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2EtoLower @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+      = ( surj__ty_2Estring_2Echar @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ty_2Estring_2Echar ) @ ( ap @ c_2Estring_2EisUpper @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Estring_2ECHR @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EtoUpper__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2EtoUpper @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+      = ( surj__ty_2Estring_2Echar @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ty_2Estring_2Echar ) @ ( ap @ c_2Estring_2EisLower @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Estring_2ECHR @ ( ap @ ( ap @ c_2Earithmetic_2E_2D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) ) ) ).
+
+thf(ax_thm_2Estring_2Echar__lt__def,axiom,
+    ! [V0a: tp__ty_2Estring_2Echar,V1b: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ ( ap @ c_2Estring_2Echar__lt @ ( inj__ty_2Estring_2Echar @ V0a ) ) @ ( inj__ty_2Estring_2Echar @ V1b ) ) )
+    <=> ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0a ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V1b ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2Echar__le__def,axiom,
+    ! [V0a: tp__ty_2Estring_2Echar,V1b: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ ( ap @ c_2Estring_2Echar__le @ ( inj__ty_2Estring_2Echar @ V0a ) ) @ ( inj__ty_2Estring_2Echar @ V1b ) ) )
+    <=> ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3C_3D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0a ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V1b ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2Echar__gt__def,axiom,
+    ! [V0a: tp__ty_2Estring_2Echar,V1b: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ ( ap @ c_2Estring_2Echar__gt @ ( inj__ty_2Estring_2Echar @ V0a ) ) @ ( inj__ty_2Estring_2Echar @ V1b ) ) )
+    <=> ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3E @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0a ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V1b ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2Echar__ge__def,axiom,
+    ! [V0a: tp__ty_2Estring_2Echar,V1b: tp__ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ ( ap @ c_2Estring_2Echar__ge @ ( inj__ty_2Estring_2Echar @ V0a ) ) @ ( inj__ty_2Estring_2Echar @ V1b ) ) )
+    <=> ( p @ ( ap @ ( ap @ c_2Earithmetic_2E_3E_3D @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0a ) ) ) @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V1b ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ECHAR__EQ__THM,axiom,
+    ! [V0c1: tp__ty_2Estring_2Echar,V1c2: tp__ty_2Estring_2Echar] :
+      ( ( V0c1 = V1c2 )
+    <=> ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V0c1 ) ) )
+        = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2EORD @ ( inj__ty_2Estring_2Echar @ V1c2 ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ECHAR__INDUCT__THM,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ty_2Estring_2Echar @ bool ) )
+     => ( ! [V1n: tp__ty_2Enum_2Enum] :
+            ( ( p @ ( ap @ ( ap @ c_2Eprim__rec_2E_3C @ ( inj__ty_2Enum_2Enum @ V1n ) ) @ ( ap @ c_2Earithmetic_2ENUMERAL @ ( ap @ c_2Earithmetic_2EBIT2 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( ap @ c_2Earithmetic_2EBIT1 @ ( inj__ty_2Enum_2Enum @ fo__c_2Earithmetic_2EZERO ) ) ) ) ) ) ) ) ) ) ) )
+           => ( p @ ( ap @ V0P @ ( ap @ c_2Estring_2ECHR @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) ) )
+       => ! [V2c: tp__ty_2Estring_2Echar] : ( p @ ( ap @ V0P @ ( inj__ty_2Estring_2Echar @ V2c ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2Echar__size__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( surj__ty_2Enum_2Enum @ ( ap @ c_2Estring_2Echar__size @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+      = fo__c_2Enum_2E0 ) ).
+
+thf(ax_thm_2Estring_2ESUB__def,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1n: tp__ty_2Enum_2Enum] :
+      ( ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2ESUB @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ty_2Enum_2Enum ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) ) )
+      = ( surj__ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EEL @ ty_2Estring_2Echar ) @ ( inj__ty_2Enum_2Enum @ V1n ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) ) ).
+
+thf(ax_thm_2Estring_2ESTR__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2ESTR @ ( inj__ty_2Estring_2Echar @ V0c ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) ) ).
+
+thf(ax_thm_2Estring_2ETOCHAR__primitive__def,axiom,
+    ( c_2Estring_2ETOCHAR
+    = ( ap
+      @ ( ap @ ( c_2Erelation_2EWFREC @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ty_2Estring_2Echar )
+        @ ( ap @ ( c_2Emin_2E_40 @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) ) )
+          @ ( lam @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) )
+            @ ^ [V0R: $i] : ( ap @ ( c_2Erelation_2EWF @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ V0R ) ) ) )
+      @ ( lam @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ty_2Estring_2Echar )
+        @ ^ [V1TOCHAR: $i] :
+            ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+            @ ^ [V2a: $i] :
+                ( ap @ ( ap @ ( ap @ ( c_2Elist_2Elist__CASE @ ty_2Estring_2Echar @ ty_2Estring_2Echar ) @ V2a ) @ ( c_2Ebool_2EARB @ ty_2Estring_2Echar ) )
+                @ ( lam @ ty_2Estring_2Echar
+                  @ ^ [V3c: $i] :
+                      ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+                      @ ^ [V4v1: $i] :
+                          ( ap @ ( ap @ ( ap @ ( c_2Elist_2Elist__CASE @ ty_2Estring_2Echar @ ty_2Estring_2Echar ) @ V4v1 ) @ ( ap @ ( c_2Ecombin_2EI @ ty_2Estring_2Echar ) @ V3c ) )
+                          @ ( lam @ ty_2Estring_2Echar
+                            @ ^ [V5v2: $i] :
+                                ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+                                @ ^ [V6v3: $i] : ( c_2Ebool_2EARB @ ty_2Estring_2Echar ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ETOCHAR__ind,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) )
+     => ( ( ! [V1c: tp__ty_2Estring_2Echar] : ( p @ ( ap @ V0P @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V1c ) ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) )
+          & ( p @ ( ap @ V0P @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+          & ! [V2v6: tp__ty_2Estring_2Echar,V3v4: tp__ty_2Estring_2Echar,V4v5: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( p @ ( ap @ V0P @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V2v6 ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V3v4 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4v5 ) ) ) ) ) )
+       => ! [V5v: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( p @ ( ap @ V0P @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V5v ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ETOCHAR__def,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar] :
+      ( ( surj__ty_2Estring_2Echar @ ( ap @ c_2Estring_2ETOCHAR @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) )
+      = V0c ) ).
+
+thf(ax_thm_2Estring_2ESUBSTRING__def,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1i: tp__ty_2Enum_2Enum,V2n: tp__ty_2Enum_2Enum] :
+      ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2ESUBSTRING @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V1i ) ) @ ( inj__ty_2Enum_2Enum @ V2n ) ) ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( ap @ ( c_2Erich__list_2ESEG @ ty_2Estring_2Echar ) @ ( inj__ty_2Enum_2Enum @ V2n ) ) @ ( inj__ty_2Enum_2Enum @ V1i ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) ) ).
+
+thf(ax_thm_2Estring_2ETRANSLATE__def,axiom,
+    ! [V0f: $i] :
+      ( ( mem @ V0f @ ( arr @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) )
+     => ! [V1s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+          ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ c_2Estring_2ETRANSLATE @ V0f ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( c_2Elist_2EFLAT @ ty_2Estring_2Echar ) @ ( ap @ ( ap @ ( c_2Elist_2EMAP @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ V0f ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) ) ) ) ) ).
+
+thf(stp_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar: $tType ).
+
+thf(stp_inj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar > $i ).
+
+thf(stp_surj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,type,
+    surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar: $i > tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar ).
+
+thf(stp_inj_surj_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) )
+      = X ) ).
+
+thf(stp_inj_mem_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: tp__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( mem @ ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ).
+
+thf(stp_iso_mem_c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar,axiom,
+    ! [X: $i] :
+      ( ( mem @ X @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) )
+     => ( X
+        = ( inj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ X ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ETOKENS__ind,axiom,
+    ! [V0P_27: $i] :
+      ( ( mem @ V0P_27 @ ( arr @ ( arr @ ty_2Estring_2Echar @ bool ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) ) )
+     => ( ( ! [V1P: $i] :
+              ( ( mem @ V1P @ ( arr @ ty_2Estring_2Echar @ bool ) )
+             => ( p @ ( ap @ ( ap @ V0P_27 @ V1P ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) )
+          & ! [V2P: $i] :
+              ( ( mem @ V2P @ ( arr @ ty_2Estring_2Echar @ bool ) )
+             => ! [V3h: tp__ty_2Estring_2Echar,V4t: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+                  ( ( ! [V5l: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V6r: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+                        ( ( ( ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V5l ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V6r ) ) )
+                            = ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Erich__list_2ESPLITP @ ty_2Estring_2Echar ) @ V2P ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V3h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4t ) ) ) ) )
+                          & ( p @ ( ap @ ( c_2Elist_2ENULL @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V5l ) ) ) )
+                       => ( p @ ( ap @ ( ap @ V0P_27 @ V2P ) @ ( ap @ ( c_2Elist_2ETL @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V6r ) ) ) ) )
+                    & ! [V7l: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V8r: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+                        ( ( ( ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V7l ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V8r ) ) )
+                            = ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Erich__list_2ESPLITP @ ty_2Estring_2Echar ) @ V2P ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V3h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4t ) ) ) ) )
+                          & ~ ( p @ ( ap @ ( c_2Elist_2ENULL @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V7l ) ) ) )
+                       => ( p @ ( ap @ ( ap @ V0P_27 @ V2P ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V8r ) ) ) ) )
+                 => ( p @ ( ap @ ( ap @ V0P_27 @ V2P ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V3h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4t ) ) ) ) ) ) )
+       => ! [V9v: $i] :
+            ( ( mem @ V9v @ ( arr @ ty_2Estring_2Echar @ bool ) )
+           => ! [V10v1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( p @ ( ap @ ( ap @ V0P_27 @ V9v ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V10v1 ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ETOKENS__def,axiom,
+    ( ! [V0P: $i] :
+        ( ( mem @ V0P @ ( arr @ ty_2Estring_2Echar @ bool ) )
+       => ( ( surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ c_2Estring_2ETOKENS @ V0P ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+          = ( surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) )
+    & ! [V1t: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2h: tp__ty_2Estring_2Echar,V3P: $i] :
+        ( ( mem @ V3P @ ( arr @ ty_2Estring_2Echar @ bool ) )
+       => ( ( surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ c_2Estring_2ETOKENS @ V3P ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V2h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) ) )
+          = ( surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar
+            @ ( ap
+              @ ( ap @ ( c_2Ebool_2ELET @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) )
+                @ ( ap @ ( c_2Epair_2EUNCURRY @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) )
+                  @ ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+                    @ ^ [V4l: $i] :
+                        ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+                        @ ^ [V5r: $i] : ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) @ ( ap @ ( c_2Elist_2ENULL @ ty_2Estring_2Echar ) @ V4l ) ) @ ( ap @ ( ap @ c_2Estring_2ETOKENS @ V3P ) @ ( ap @ ( c_2Elist_2ETL @ ty_2Estring_2Echar ) @ V5r ) ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ V4l ) @ ( ap @ ( ap @ c_2Estring_2ETOKENS @ V3P ) @ V5r ) ) ) ) ) ) )
+              @ ( ap @ ( ap @ ( c_2Erich__list_2ESPLITP @ ty_2Estring_2Echar ) @ V3P ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V2h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EFIELDS__ind,axiom,
+    ! [V0P_27: $i] :
+      ( ( mem @ V0P_27 @ ( arr @ ( arr @ ty_2Estring_2Echar @ bool ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) ) )
+     => ( ( ! [V1P: $i] :
+              ( ( mem @ V1P @ ( arr @ ty_2Estring_2Echar @ bool ) )
+             => ( p @ ( ap @ ( ap @ V0P_27 @ V1P ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) )
+          & ! [V2P: $i] :
+              ( ( mem @ V2P @ ( arr @ ty_2Estring_2Echar @ bool ) )
+             => ! [V3h: tp__ty_2Estring_2Echar,V4t: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+                  ( ( ! [V5l: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V6r: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+                        ( ( ( ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V5l ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V6r ) ) )
+                            = ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Erich__list_2ESPLITP @ ty_2Estring_2Echar ) @ V2P ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V3h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4t ) ) ) ) )
+                          & ( p @ ( ap @ ( c_2Elist_2ENULL @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V5l ) ) ) )
+                       => ( p @ ( ap @ ( ap @ V0P_27 @ V2P ) @ ( ap @ ( c_2Elist_2ETL @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V6r ) ) ) ) )
+                    & ! [V7l: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V8r: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+                        ( ( ( ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V7l ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V8r ) ) )
+                            = ( surj__c_ty_2Epair_2Eprod_c_ty_2Elist_2Elist_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Erich__list_2ESPLITP @ ty_2Estring_2Echar ) @ V2P ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V3h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4t ) ) ) ) )
+                          & ~ ( p @ ( ap @ ( c_2Elist_2ENULL @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V7l ) ) )
+                          & ~ ( p @ ( ap @ ( c_2Elist_2ENULL @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V8r ) ) ) )
+                       => ( p @ ( ap @ ( ap @ V0P_27 @ V2P ) @ ( ap @ ( c_2Elist_2ETL @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V8r ) ) ) ) ) )
+                 => ( p @ ( ap @ ( ap @ V0P_27 @ V2P ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V3h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4t ) ) ) ) ) ) )
+       => ! [V9v: $i] :
+            ( ( mem @ V9v @ ( arr @ ty_2Estring_2Echar @ bool ) )
+           => ! [V10v1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( p @ ( ap @ ( ap @ V0P_27 @ V9v ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V10v1 ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EFIELDS__def,axiom,
+    ( ! [V0P: $i] :
+        ( ( mem @ V0P @ ( arr @ ty_2Estring_2Echar @ bool ) )
+       => ( ( surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ c_2Estring_2EFIELDS @ V0P ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+          = ( surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) @ ( c_2Elist_2ENIL @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) ) )
+    & ! [V1t: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2h: tp__ty_2Estring_2Echar,V3P: $i] :
+        ( ( mem @ V3P @ ( arr @ ty_2Estring_2Echar @ bool ) )
+       => ( ( surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ c_2Estring_2EFIELDS @ V3P ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V2h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) ) )
+          = ( surj__c_ty_2Elist_2Elist_c_ty_2Elist_2Elist_ty_2Estring_2Echar
+            @ ( ap
+              @ ( ap @ ( c_2Ebool_2ELET @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) )
+                @ ( ap @ ( c_2Epair_2EUNCURRY @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) )
+                  @ ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+                    @ ^ [V4l: $i] :
+                        ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+                        @ ^ [V5r: $i] : ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) @ ( ap @ ( c_2Elist_2ENULL @ ty_2Estring_2Echar ) @ V4l ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) @ ( ap @ ( ap @ c_2Estring_2EFIELDS @ V3P ) @ ( ap @ ( c_2Elist_2ETL @ ty_2Estring_2Echar ) @ V5r ) ) ) ) @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ ( ty_2Elist_2Elist @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) @ ( ap @ ( c_2Elist_2ENULL @ ty_2Estring_2Echar ) @ V5r ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ V4l ) @ ( c_2Elist_2ENIL @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ V4l ) @ ( ap @ ( ap @ c_2Estring_2EFIELDS @ V3P ) @ ( ap @ ( c_2Elist_2ETL @ ty_2Estring_2Echar ) @ V5r ) ) ) ) ) ) ) ) )
+              @ ( ap @ ( ap @ ( c_2Erich__list_2ESPLITP @ ty_2Estring_2Echar ) @ V3P ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V2h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EIMPLODE__def,axiom,
+    ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+    & ! [V0c: tp__ty_2Estring_2Echar,V1cs: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1cs ) ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1cs ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EEXPLODE__def,axiom,
+    ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+    & ! [V0c: tp__ty_2Estring_2Echar,V1s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EIMPLODE__EXPLODE__I,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) )
+        = V0s )
+      & ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) )
+        = V0s ) ) ).
+
+thf(conj_thm_2Estring_2EIMPLODE__EXPLODE,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) )
+      = V0s ) ).
+
+thf(conj_thm_2Estring_2EEXPLODE__IMPLODE,axiom,
+    ! [V0cs: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0cs ) ) ) )
+      = V0cs ) ).
+
+thf(conj_thm_2Estring_2EEXPLODE__ONTO,axiom,
+    ! [V0cs: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+    ? [V1s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( V0cs
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EIMPLODE__ONTO,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+    ? [V1cs: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( V0s
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1cs ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EEXPLODE__11,axiom,
+    ! [V0s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) ) )
+    <=> ( V0s1 = V1s2 ) ) ).
+
+thf(conj_thm_2Estring_2EIMPLODE__11,axiom,
+    ! [V0cs1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1cs2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0cs1 ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1cs2 ) ) ) )
+    <=> ( V0cs1 = V1cs2 ) ) ).
+
+thf(conj_thm_2Estring_2ESTRING__ACYCLIC,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1c: tp__ty_2Estring_2Echar] :
+      ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V1c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) )
+       != V0s )
+      & ( V0s
+       != ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V1c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EEXTRACT__primitive__def,axiom,
+    ( c_2Estring_2EEXTRACT
+    = ( ap
+      @ ( ap @ ( c_2Erelation_2EWFREC @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) )
+        @ ( ap @ ( c_2Emin_2E_40 @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ bool ) ) )
+          @ ( lam @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ bool ) )
+            @ ^ [V0R: $i] : ( ap @ ( c_2Erelation_2EWF @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) ) @ V0R ) ) ) )
+      @ ( lam @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) )
+        @ ^ [V1EXTRACT: $i] :
+            ( lam @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) )
+            @ ^ [V2a: $i] :
+                ( ap @ ( ap @ ( c_2Epair_2Epair__CASE @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ V2a )
+                @ ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+                  @ ^ [V3s: $i] :
+                      ( lam @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) )
+                      @ ^ [V4v1: $i] :
+                          ( ap @ ( ap @ ( c_2Epair_2Epair__CASE @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) @ V4v1 )
+                          @ ( lam @ ty_2Enum_2Enum
+                            @ ^ [V5i: $i] :
+                                ( lam @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum )
+                                @ ^ [V6v3: $i] :
+                                    ( ap @ ( ap @ ( ap @ ( c_2Eoption_2Eoption__CASE @ ty_2Enum_2Enum @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ V6v3 ) @ ( ap @ ( c_2Ecombin_2EI @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( ap @ c_2Estring_2ESUBSTRING @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) @ V3s ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ V5i ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2D @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ V3s ) ) @ V5i ) ) ) ) ) )
+                                    @ ( lam @ ty_2Enum_2Enum
+                                      @ ^ [V7n: $i] : ( ap @ ( c_2Ecombin_2EI @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( ap @ c_2Estring_2ESUBSTRING @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) @ V3s ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ V5i ) @ V7n ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EEXTRACT__ind,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ( ty_2Epair_2Eprod @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ bool ) )
+     => ( ( ! [V1s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2i: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V0P @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) @ ( inj__ty_2Enum_2Enum @ V2i ) ) @ ( c_2Eoption_2ENONE @ ty_2Enum_2Enum ) ) ) ) )
+          & ! [V3s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V4i: tp__ty_2Enum_2Enum,V5n: tp__ty_2Enum_2Enum] : ( p @ ( ap @ V0P @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V3s ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) @ ( inj__ty_2Enum_2Enum @ V4i ) ) @ ( ap @ ( c_2Eoption_2ESOME @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V5n ) ) ) ) ) ) )
+       => ! [V6v: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V7v1: tp__ty_2Enum_2Enum,V8v2: tp__c_ty_2Eoption_2Eoption_ty_2Enum_2Enum] : ( p @ ( ap @ V0P @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V6v ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) @ ( inj__ty_2Enum_2Enum @ V7v1 ) ) @ ( inj__c_ty_2Eoption_2Eoption_ty_2Enum_2Enum @ V8v2 ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EEXTRACT__def,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1i: tp__ty_2Enum_2Enum,V2n: tp__ty_2Enum_2Enum] :
+      ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXTRACT @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) @ ( inj__ty_2Enum_2Enum @ V1i ) ) @ ( c_2Eoption_2ENONE @ ty_2Enum_2Enum ) ) ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2ESUBSTRING @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V1i ) ) @ ( ap @ ( ap @ c_2Earithmetic_2E_2D @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) @ ( inj__ty_2Enum_2Enum @ V1i ) ) ) ) ) ) )
+      & ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXTRACT @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ( ty_2Eoption_2Eoption @ ty_2Enum_2Enum ) ) @ ( inj__ty_2Enum_2Enum @ V1i ) ) @ ( ap @ ( c_2Eoption_2ESOME @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V2n ) ) ) ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2ESUBSTRING @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( ty_2Epair_2Eprod @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Enum_2Enum @ ty_2Enum_2Enum ) @ ( inj__ty_2Enum_2Enum @ V1i ) ) @ ( inj__ty_2Enum_2Enum @ V2n ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRLEN__EXPLODE__THM,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__ty_2Enum_2Enum @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) )
+      = ( surj__ty_2Enum_2Enum @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2EDEST__STRING__def,axiom,
+    ( ( ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EDEST__STRING @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+      = ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Eoption_2ENONE @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) )
+    & ! [V0c: tp__ty_2Estring_2Echar,V1rst: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EDEST__STRING @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1rst ) ) ) )
+        = ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( c_2Eoption_2ESOME @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1rst ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EDEST__STRING__LEMS,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar,V1t: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EDEST__STRING @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2s ) ) )
+          = ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Eoption_2ENONE @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) )
+      <=> ( V2s
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) )
+      & ( ( ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EDEST__STRING @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2s ) ) )
+          = ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( c_2Eoption_2ESOME @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) ) ) )
+      <=> ( V2s
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EEXPLODE__EQNS,axiom,
+    ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+    & ! [V0c: tp__ty_2Estring_2Echar,V1s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EIMPLODE__EQNS,axiom,
+    ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+    & ! [V0c: tp__ty_2Estring_2Echar,V1cs: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1cs ) ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1cs ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EIMPLODE__EQ__EMPTYSTRING,axiom,
+    ! [V0l: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l ) ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+      <=> ( V0l
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) )
+      & ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l ) ) ) )
+      <=> ( V0l
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EEXPLODE__EQ__NIL,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+      <=> ( V0s
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) )
+      & ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) )
+      <=> ( V0s
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EEXPLODE__EQ__THM,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1h: tp__ty_2Estring_2Echar,V2t: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V1h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2t ) ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) )
+      <=> ( V0s
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V1h ) ) @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2t ) ) ) ) ) )
+      & ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V1h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2t ) ) ) )
+      <=> ( V0s
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V1h ) ) @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2t ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EIMPLODE__EQ__THM,axiom,
+    ! [V0c: tp__ty_2Estring_2Echar,V1s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2l: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2l ) ) ) )
+      <=> ( V2l
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) ) ) ) )
+      & ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2l ) ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) ) )
+      <=> ( V2l
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0c ) ) @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EEXPLODE__DEST__STRING,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar
+        @ ( ap @ ( ap @ ( ap @ ( c_2Eoption_2Eoption__CASE @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( ap @ c_2Estring_2EDEST__STRING @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) )
+          @ ( lam @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) )
+            @ ^ [V1v: $i] :
+                ( ap @ ( ap @ ( c_2Epair_2Epair__CASE @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ V1v )
+                @ ( lam @ ty_2Estring_2Echar
+                  @ ^ [V2c: $i] :
+                      ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+                      @ ^ [V3t: $i] : ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ V2c ) @ ( ap @ c_2Estring_2EEXPLODE @ V3t ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EIMPLODE__STRING,axiom,
+    ! [V0clist: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EIMPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0clist ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( ap @ ( c_2Elist_2EFOLDR @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0clist ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRLEN__EQ__0,axiom,
+    ! [V0l: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( surj__ty_2Enum_2Enum @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l ) ) )
+        = fo__c_2Enum_2E0 )
+    <=> ( V0l
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRLEN__THM,axiom,
+    ( ( ( surj__ty_2Enum_2Enum @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+      = fo__c_2Enum_2E0 )
+    & ! [V0h: tp__ty_2Estring_2Echar,V1t: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( surj__ty_2Enum_2Enum @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) ) )
+        = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRLEN__DEF,axiom,
+    ( ( ( surj__ty_2Enum_2Enum @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+      = fo__c_2Enum_2E0 )
+    & ! [V0h: tp__ty_2Estring_2Echar,V1t: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( surj__ty_2Enum_2Enum @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V0h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) ) )
+        = ( surj__ty_2Enum_2Enum @ ( ap @ c_2Enum_2ESUC @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRCAT__def,axiom,
+    ( ! [V0l: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l ) ) )
+        = V0l )
+    & ! [V1l1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2l2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V3h: tp__ty_2Estring_2Echar] :
+        ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V3h ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1l1 ) ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2l2 ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V3h ) ) @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1l1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2l2 ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRCAT,axiom,
+    ! [V0s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRCAT__EQNS,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1c: tp__ty_2Estring_2Echar,V2s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V3s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) )
+        = V0s )
+      & ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+        = V0s )
+      & ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V1c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2s1 ) ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V3s2 ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V1c ) ) @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V3s2 ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRCAT__ASSOC,axiom,
+    ! [V0l1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1l2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2l3: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l1 ) ) @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1l2 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2l3 ) ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1l2 ) ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2l3 ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRCAT__11,axiom,
+    ( ! [V0l1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1l2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2l3: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1l2 ) ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2l3 ) ) ) )
+      <=> ( V1l2 = V2l3 ) )
+    & ! [V3l1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V4l2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V5l3: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4l2 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V3l1 ) ) )
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V5l3 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V3l1 ) ) ) )
+      <=> ( V4l2 = V5l3 ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRCAT__ACYCLIC,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( V0s
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s1 ) ) ) )
+      <=> ( V1s1
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) )
+      & ( ( V0s
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) )
+      <=> ( V1s1
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRCAT__EXPLODE,axiom,
+    ! [V0s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) )
+      = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( ap @ ( c_2Elist_2EFOLDR @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) @ ( ap @ c_2Estring_2EEXPLODE @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRCAT__EQ__EMPTY,axiom,
+    ! [V0l1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1l2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1l2 ) ) )
+        = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+    <=> ( ( V0l1
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+        & ( V1l2
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2ESTRLEN__CAT,axiom,
+    ! [V0l1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1l2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__ty_2Enum_2Enum @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1l2 ) ) ) )
+      = ( surj__ty_2Enum_2Enum @ ( ap @ ( ap @ c_2Earithmetic_2E_2B @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0l1 ) ) ) @ ( ap @ ( c_2Elist_2ELENGTH @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1l2 ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EisPREFIX__DEF,axiom,
+    ! [V0s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ ( ap @ ( c_2Elist_2EisPREFIX @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) )
+    <=> ( p
+        @ ( ap @ ( ap @ ( c_2Epair_2Epair__CASE @ bool @ ( ty_2Eoption_2Eoption @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) @ ( ty_2Eoption_2Eoption @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ( ty_2Eoption_2Eoption @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) @ ( ty_2Eoption_2Eoption @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) ) @ ( ap @ c_2Estring_2EDEST__STRING @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) ) @ ( ap @ c_2Estring_2EDEST__STRING @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) ) )
+          @ ( lam @ ( ty_2Eoption_2Eoption @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) )
+            @ ^ [V2v: $i] :
+                ( lam @ ( ty_2Eoption_2Eoption @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) )
+                @ ^ [V3v1: $i] :
+                    ( ap @ ( ap @ ( ap @ ( c_2Eoption_2Eoption__CASE @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ bool ) @ V2v ) @ c_2Ebool_2ET )
+                    @ ( lam @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) )
+                      @ ^ [V4v2: $i] :
+                          ( ap @ ( ap @ ( ap @ ( c_2Eoption_2Eoption__CASE @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ bool ) @ V3v1 ) @ c_2Ebool_2EF )
+                          @ ( lam @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) )
+                            @ ^ [V5v3: $i] :
+                                ( ap @ ( ap @ ( c_2Epair_2Epair__CASE @ bool @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ V5v3 )
+                                @ ( lam @ ty_2Estring_2Echar
+                                  @ ^ [V6c2: $i] :
+                                      ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+                                      @ ^ [V7t2: $i] :
+                                          ( ap @ ( ap @ ( c_2Epair_2Epair__CASE @ bool @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ V4v2 )
+                                          @ ( lam @ ty_2Estring_2Echar
+                                            @ ^ [V8c1: $i] :
+                                                ( lam @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar )
+                                                @ ^ [V9t1: $i] : ( ap @ ( ap @ c_2Ebool_2E_2F_5C @ ( ap @ ( ap @ ( c_2Emin_2E_3D @ ty_2Estring_2Echar ) @ V8c1 ) @ V6c2 ) ) @ ( ap @ ( ap @ ( c_2Elist_2EisPREFIX @ ty_2Estring_2Echar ) @ V9t1 ) @ V7t2 ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EisPREFIX__IND,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) ) )
+     => ( ! [V1s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+            ( ! [V3c: tp__ty_2Estring_2Echar,V4t1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V5t2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+                ( ( ( ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EDEST__STRING @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s1 ) ) )
+                    = ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( c_2Eoption_2ESOME @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( inj__ty_2Estring_2Echar @ V3c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4t1 ) ) ) ) )
+                  & ( ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ c_2Estring_2EDEST__STRING @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2s2 ) ) )
+                    = ( surj__c_ty_2Eoption_2Eoption_c_ty_2Epair_2Eprod_ty_2Estring_2Echar_c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( c_2Eoption_2ESOME @ ( ty_2Epair_2Eprod @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) ) @ ( ap @ ( ap @ ( c_2Epair_2E_2C @ ty_2Estring_2Echar @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) ) @ ( inj__ty_2Estring_2Echar @ V3c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V5t2 ) ) ) ) ) )
+               => ( p @ ( ap @ ( ap @ V0P @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4t1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V5t2 ) ) ) )
+           => ( p @ ( ap @ ( ap @ V0P @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2s2 ) ) ) )
+       => ! [V6v: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V7v1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( p @ ( ap @ ( ap @ V0P @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V6v ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V7v1 ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2EisPREFIX__STRCAT,axiom,
+    ! [V0s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ ( ap @ ( c_2Elist_2EisPREFIX @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) )
+    <=> ? [V2s3: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+          ( V1s2
+          = ( surj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ ( ap @ ( ap @ ( c_2Elist_2EAPPEND @ ty_2Estring_2Echar ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2s3 ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2Estring__lt__ind,axiom,
+    ! [V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ ( arr @ ( ty_2Elist_2Elist @ ty_2Estring_2Echar ) @ bool ) ) )
+     => ( ( ! [V1s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( p @ ( ap @ ( ap @ V0P @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+          & ! [V2c: tp__ty_2Estring_2Echar,V3s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( p @ ( ap @ ( ap @ V0P @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V2c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V3s ) ) ) )
+          & ! [V4c1: tp__ty_2Estring_2Echar,V5s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V6c2: tp__ty_2Estring_2Echar,V7s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+              ( ( p @ ( ap @ ( ap @ V0P @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V5s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V7s2 ) ) )
+             => ( p @ ( ap @ ( ap @ V0P @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V4c1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V5s1 ) ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V6c2 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V7s2 ) ) ) ) ) )
+       => ! [V8v: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V9v1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] : ( p @ ( ap @ ( ap @ V0P @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V8v ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V9v1 ) ) ) ) ) ).
+
+thf(conj_thm_2Estring_2Estring__lt__def,axiom,
+    ( ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+        ( ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) )
+      <=> $false )
+    & ! [V1s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2c: tp__ty_2Estring_2Echar] :
+        ( ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( c_2Elist_2ENIL @ ty_2Estring_2Echar ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V2c ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s ) ) ) )
+      <=> $true )
+    & ! [V3s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V4s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V5c2: tp__ty_2Estring_2Echar,V6c1: tp__ty_2Estring_2Echar] :
+        ( ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V6c1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4s1 ) ) ) @ ( ap @ ( ap @ ( c_2Elist_2ECONS @ ty_2Estring_2Echar ) @ ( inj__ty_2Estring_2Echar @ V5c2 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V3s2 ) ) ) )
+      <=> ( ( p @ ( ap @ ( ap @ c_2Estring_2Echar__lt @ ( inj__ty_2Estring_2Echar @ V6c1 ) ) @ ( inj__ty_2Estring_2Echar @ V5c2 ) ) )
+          | ( ( V6c1 = V5c2 )
+            & ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V4s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V3s2 ) ) ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2Estring__le__def,axiom,
+    ! [V0s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ ( ap @ c_2Estring_2Estring__le @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) )
+    <=> ( ( V0s1 = V1s2 )
+        | ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) ) ) ) ).
+
+thf(ax_thm_2Estring_2Estring__gt__def,axiom,
+    ! [V0s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ ( ap @ c_2Estring_2Estring__gt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) )
+    <=> ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) ) ) ).
+
+thf(ax_thm_2Estring_2Estring__ge__def,axiom,
+    ! [V0s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( p @ ( ap @ ( ap @ c_2Estring_2Estring__ge @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) )
+    <=> ( p @ ( ap @ ( ap @ c_2Estring_2Estring__le @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) ) ) ).
+
+thf(conj_thm_2Estring_2Estring__lt__nonrefl,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ~ ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) ).
+
+thf(conj_thm_2Estring_2Estring__lt__antisym,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1t: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ~ ( ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) ) ).
+
+thf(conj_thm_2Estring_2Estring__lt__cases,axiom,
+    ! [V0s: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1t: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( V0s = V1t )
+      | ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) )
+      | ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1t ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s ) ) ) ) ).
+
+thf(conj_thm_2Estring_2Estring__lt__trans,axiom,
+    ! [V0s1: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1s2: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V2s3: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) )
+        & ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V1s2 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2s3 ) ) ) )
+     => ( p @ ( ap @ ( ap @ c_2Estring_2Estring__lt @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V0s1 ) ) @ ( inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar @ V2s3 ) ) ) ) ).
+
+%------------------------------------------------------------------------------

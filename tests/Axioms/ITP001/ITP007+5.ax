@@ -1,0 +1,307 @@
+%------------------------------------------------------------------------------
+% File     : ITP007+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : sat+2.ax [Gau20]
+%          : HL4007+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   24 (   0 unt;   0 def)
+%            Number of atoms       :  182 (   0 equ)
+%            Maximal formula atoms :   21 (   7 avg)
+%            Number of connectives :  209 (  51   ~;  38   |;  19   &)
+%                                         (  22 <=>;  79  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   17 (   9 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :    4 (   2 usr;   2 prp; 0-2 aty)
+%            Number of functors    :    3 (   3 usr;   1 con; 0-2 aty)
+%            Number of variables   :   47 (  47   !;   0   ?)
+% SPC      : FOF_SAT_RFO_NEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(conj_thm_2Esat_2EAND__IMP,axiom,
+    ! [V0A] :
+      ( mem(V0A,bool)
+     => ! [V1B] :
+          ( mem(V1B,bool)
+         => ! [V2C] :
+              ( mem(V2C,bool)
+             => ( ( ( p(V0A)
+                    & p(V1B) )
+                 => p(V2C) )
+              <=> ( p(V0A)
+                 => ( p(V1B)
+                   => p(V2C) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Esat_2ENOT__NOT,axiom,
+    ! [V0t] :
+      ( mem(V0t,bool)
+     => ( ~ ~ p(V0t)
+      <=> p(V0t) ) ) ).
+
+fof(conj_thm_2Esat_2EAND__INV,axiom,
+    ! [V0A] :
+      ( mem(V0A,bool)
+     => ( ( ~ p(V0A)
+          & p(V0A) )
+      <=> $false ) ) ).
+
+fof(conj_thm_2Esat_2EAND__INV__IMP,axiom,
+    ! [V0A] :
+      ( mem(V0A,bool)
+     => ( p(V0A)
+       => ( ~ p(V0A)
+         => $false ) ) ) ).
+
+fof(conj_thm_2Esat_2EOR__DUAL,axiom,
+    ! [V0A] :
+      ( mem(V0A,bool)
+     => ! [V1B] :
+          ( mem(V1B,bool)
+         => ( ( ~ ( p(V0A)
+                  | p(V1B) )
+             => $false )
+          <=> ( ~ p(V0A)
+             => ( ~ p(V1B)
+               => $false ) ) ) ) ) ).
+
+fof(conj_thm_2Esat_2EOR__DUAL2,axiom,
+    ! [V0A] :
+      ( mem(V0A,bool)
+     => ! [V1B] :
+          ( mem(V1B,bool)
+         => ( ( ~ ( p(V0A)
+                  | p(V1B) )
+             => $false )
+          <=> ( ( p(V0A)
+               => $false )
+             => ( ~ p(V1B)
+               => $false ) ) ) ) ) ).
+
+fof(conj_thm_2Esat_2EOR__DUAL3,axiom,
+    ! [V0A] :
+      ( mem(V0A,bool)
+     => ! [V1B] :
+          ( mem(V1B,bool)
+         => ( ( ~ ( ~ p(V0A)
+                  | p(V1B) )
+             => $false )
+          <=> ( p(V0A)
+             => ( ~ p(V1B)
+               => $false ) ) ) ) ) ).
+
+fof(conj_thm_2Esat_2EAND__INV2,axiom,
+    ! [V0A] :
+      ( mem(V0A,bool)
+     => ( ( ~ p(V0A)
+         => $false )
+       => ( ( p(V0A)
+           => $false )
+         => $false ) ) ) ).
+
+fof(conj_thm_2Esat_2ENOT__ELIM2,axiom,
+    ! [V0A] :
+      ( mem(V0A,bool)
+     => ( ( ~ p(V0A)
+         => $false )
+      <=> p(V0A) ) ) ).
+
+fof(conj_thm_2Esat_2EEQT__Imp1,axiom,
+    ! [V0b] :
+      ( mem(V0b,bool)
+     => ( p(V0b)
+       => ( p(V0b)
+        <=> $true ) ) ) ).
+
+fof(conj_thm_2Esat_2EEQF__Imp1,axiom,
+    ! [V0b] :
+      ( mem(V0b,bool)
+     => ( ~ p(V0b)
+       => ( p(V0b)
+        <=> $false ) ) ) ).
+
+fof(conj_thm_2Esat_2Edc__eq,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ! [V2r] :
+              ( mem(V2r,bool)
+             => ( ( p(V0p)
+                <=> ( p(V1q)
+                  <=> p(V2r) ) )
+              <=> ( ( p(V0p)
+                    | p(V1q)
+                    | p(V2r) )
+                  & ( p(V0p)
+                    | ~ p(V2r)
+                    | ~ p(V1q) )
+                  & ( p(V1q)
+                    | ~ p(V2r)
+                    | ~ p(V0p) )
+                  & ( p(V2r)
+                    | ~ p(V1q)
+                    | ~ p(V0p) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Esat_2Edc__conj,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ! [V2r] :
+              ( mem(V2r,bool)
+             => ( ( p(V0p)
+                <=> ( p(V1q)
+                    & p(V2r) ) )
+              <=> ( ( p(V0p)
+                    | ~ p(V1q)
+                    | ~ p(V2r) )
+                  & ( p(V1q)
+                    | ~ p(V0p) )
+                  & ( p(V2r)
+                    | ~ p(V0p) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Esat_2Edc__disj,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ! [V2r] :
+              ( mem(V2r,bool)
+             => ( ( p(V0p)
+                <=> ( p(V1q)
+                    | p(V2r) ) )
+              <=> ( ( p(V0p)
+                    | ~ p(V1q) )
+                  & ( p(V0p)
+                    | ~ p(V2r) )
+                  & ( p(V1q)
+                    | p(V2r)
+                    | ~ p(V0p) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Esat_2Edc__imp,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ! [V2r] :
+              ( mem(V2r,bool)
+             => ( ( p(V0p)
+                <=> ( p(V1q)
+                   => p(V2r) ) )
+              <=> ( ( p(V0p)
+                    | p(V1q) )
+                  & ( p(V0p)
+                    | ~ p(V2r) )
+                  & ( ~ p(V1q)
+                    | p(V2r)
+                    | ~ p(V0p) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Esat_2Edc__neg,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ( ( p(V0p)
+            <=> ~ p(V1q) )
+          <=> ( ( p(V0p)
+                | p(V1q) )
+              & ( ~ p(V1q)
+                | ~ p(V0p) ) ) ) ) ) ).
+
+fof(conj_thm_2Esat_2Edc__cond,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ! [V2r] :
+              ( mem(V2r,bool)
+             => ! [V3s] :
+                  ( mem(V3s,bool)
+                 => ( ( p(V0p)
+                    <=> p(ap(ap(ap(c_2Ebool_2ECOND(bool),V1q),V2r),V3s)) )
+                  <=> ( ( p(V0p)
+                        | p(V1q)
+                        | ~ p(V3s) )
+                      & ( p(V0p)
+                        | ~ p(V2r)
+                        | ~ p(V1q) )
+                      & ( p(V0p)
+                        | ~ p(V2r)
+                        | ~ p(V3s) )
+                      & ( ~ p(V1q)
+                        | p(V2r)
+                        | ~ p(V0p) )
+                      & ( p(V1q)
+                        | p(V3s)
+                        | ~ p(V0p) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Esat_2Epth__ni1,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ( ~ ( p(V0p)
+               => p(V1q) )
+           => p(V0p) ) ) ) ).
+
+fof(conj_thm_2Esat_2Epth__ni2,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ( ~ ( p(V0p)
+               => p(V1q) )
+           => ~ p(V1q) ) ) ) ).
+
+fof(conj_thm_2Esat_2Epth__no1,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ( ~ ( p(V0p)
+                | p(V1q) )
+           => ~ p(V0p) ) ) ) ).
+
+fof(conj_thm_2Esat_2Epth__no2,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ( ~ ( p(V0p)
+                | p(V1q) )
+           => ~ p(V1q) ) ) ) ).
+
+fof(conj_thm_2Esat_2Epth__an1,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ( ( p(V0p)
+              & p(V1q) )
+           => p(V0p) ) ) ) ).
+
+fof(conj_thm_2Esat_2Epth__an2,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ! [V1q] :
+          ( mem(V1q,bool)
+         => ( ( p(V0p)
+              & p(V1q) )
+           => p(V1q) ) ) ) ).
+
+fof(conj_thm_2Esat_2Epth__nn,axiom,
+    ! [V0p] :
+      ( mem(V0p,bool)
+     => ( ~ ~ p(V0p)
+       => p(V0p) ) ) ).
+
+%------------------------------------------------------------------------------

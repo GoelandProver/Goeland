@@ -1,0 +1,307 @@
+%------------------------------------------------------------------------------
+% File     : ITP007^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : sat^2.ax [Gau20]
+%          : HL4007^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   24 (   0 unt;   0 typ;   0 def)
+%            Number of atoms       :  234 (   0 equ;   0 cnn)
+%            Maximal formula atoms :   30 (   9 avg)
+%            Number of connectives :  430 (  51   ~;  38   |;  19   &; 221   @)
+%                                         (  22 <=>;  79  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   19 (  10 avg; 221 nst)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :    0 (   0   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :    7 (   5 usr;   7 con; 0-0 aty)
+%            Number of variables   :   47 (   0   ^  47   !;   0   ?;  47   :)
+% SPC      : TH0_SAT_NEQ_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(conj_thm_2Esat_2EAND__IMP,axiom,
+    ! [V0A: $i] :
+      ( ( mem @ V0A @ bool )
+     => ! [V1B: $i] :
+          ( ( mem @ V1B @ bool )
+         => ! [V2C: $i] :
+              ( ( mem @ V2C @ bool )
+             => ( ( ( ( p @ V0A )
+                    & ( p @ V1B ) )
+                 => ( p @ V2C ) )
+              <=> ( ( p @ V0A )
+                 => ( ( p @ V1B )
+                   => ( p @ V2C ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Esat_2ENOT__NOT,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ~ ~ ( p @ V0t )
+      <=> ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2Esat_2EAND__INV,axiom,
+    ! [V0A: $i] :
+      ( ( mem @ V0A @ bool )
+     => ( ( ~ ( p @ V0A )
+          & ( p @ V0A ) )
+      <=> $false ) ) ).
+
+thf(conj_thm_2Esat_2EAND__INV__IMP,axiom,
+    ! [V0A: $i] :
+      ( ( mem @ V0A @ bool )
+     => ( ( p @ V0A )
+       => ( ~ ( p @ V0A )
+         => $false ) ) ) ).
+
+thf(conj_thm_2Esat_2EOR__DUAL,axiom,
+    ! [V0A: $i] :
+      ( ( mem @ V0A @ bool )
+     => ! [V1B: $i] :
+          ( ( mem @ V1B @ bool )
+         => ( ( ~ ( ( p @ V0A )
+                  | ( p @ V1B ) )
+             => $false )
+          <=> ( ~ ( p @ V0A )
+             => ( ~ ( p @ V1B )
+               => $false ) ) ) ) ) ).
+
+thf(conj_thm_2Esat_2EOR__DUAL2,axiom,
+    ! [V0A: $i] :
+      ( ( mem @ V0A @ bool )
+     => ! [V1B: $i] :
+          ( ( mem @ V1B @ bool )
+         => ( ( ~ ( ( p @ V0A )
+                  | ( p @ V1B ) )
+             => $false )
+          <=> ( ( ( p @ V0A )
+               => $false )
+             => ( ~ ( p @ V1B )
+               => $false ) ) ) ) ) ).
+
+thf(conj_thm_2Esat_2EOR__DUAL3,axiom,
+    ! [V0A: $i] :
+      ( ( mem @ V0A @ bool )
+     => ! [V1B: $i] :
+          ( ( mem @ V1B @ bool )
+         => ( ( ~ ( ~ ( p @ V0A )
+                  | ( p @ V1B ) )
+             => $false )
+          <=> ( ( p @ V0A )
+             => ( ~ ( p @ V1B )
+               => $false ) ) ) ) ) ).
+
+thf(conj_thm_2Esat_2EAND__INV2,axiom,
+    ! [V0A: $i] :
+      ( ( mem @ V0A @ bool )
+     => ( ( ~ ( p @ V0A )
+         => $false )
+       => ( ( ( p @ V0A )
+           => $false )
+         => $false ) ) ) ).
+
+thf(conj_thm_2Esat_2ENOT__ELIM2,axiom,
+    ! [V0A: $i] :
+      ( ( mem @ V0A @ bool )
+     => ( ( ~ ( p @ V0A )
+         => $false )
+      <=> ( p @ V0A ) ) ) ).
+
+thf(conj_thm_2Esat_2EEQT__Imp1,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ bool )
+     => ( ( p @ V0b )
+       => ( ( p @ V0b )
+        <=> $true ) ) ) ).
+
+thf(conj_thm_2Esat_2EEQF__Imp1,axiom,
+    ! [V0b: $i] :
+      ( ( mem @ V0b @ bool )
+     => ( ~ ( p @ V0b )
+       => ( ( p @ V0b )
+        <=> $false ) ) ) ).
+
+thf(conj_thm_2Esat_2Edc__eq,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ! [V2r: $i] :
+              ( ( mem @ V2r @ bool )
+             => ( ( ( p @ V0p )
+                <=> ( ( p @ V1q )
+                  <=> ( p @ V2r ) ) )
+              <=> ( ( ( p @ V0p )
+                    | ( p @ V1q )
+                    | ( p @ V2r ) )
+                  & ( ( p @ V0p )
+                    | ~ ( p @ V2r )
+                    | ~ ( p @ V1q ) )
+                  & ( ( p @ V1q )
+                    | ~ ( p @ V2r )
+                    | ~ ( p @ V0p ) )
+                  & ( ( p @ V2r )
+                    | ~ ( p @ V1q )
+                    | ~ ( p @ V0p ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Edc__conj,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ! [V2r: $i] :
+              ( ( mem @ V2r @ bool )
+             => ( ( ( p @ V0p )
+                <=> ( ( p @ V1q )
+                    & ( p @ V2r ) ) )
+              <=> ( ( ( p @ V0p )
+                    | ~ ( p @ V1q )
+                    | ~ ( p @ V2r ) )
+                  & ( ( p @ V1q )
+                    | ~ ( p @ V0p ) )
+                  & ( ( p @ V2r )
+                    | ~ ( p @ V0p ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Edc__disj,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ! [V2r: $i] :
+              ( ( mem @ V2r @ bool )
+             => ( ( ( p @ V0p )
+                <=> ( ( p @ V1q )
+                    | ( p @ V2r ) ) )
+              <=> ( ( ( p @ V0p )
+                    | ~ ( p @ V1q ) )
+                  & ( ( p @ V0p )
+                    | ~ ( p @ V2r ) )
+                  & ( ( p @ V1q )
+                    | ( p @ V2r )
+                    | ~ ( p @ V0p ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Edc__imp,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ! [V2r: $i] :
+              ( ( mem @ V2r @ bool )
+             => ( ( ( p @ V0p )
+                <=> ( ( p @ V1q )
+                   => ( p @ V2r ) ) )
+              <=> ( ( ( p @ V0p )
+                    | ( p @ V1q ) )
+                  & ( ( p @ V0p )
+                    | ~ ( p @ V2r ) )
+                  & ( ~ ( p @ V1q )
+                    | ( p @ V2r )
+                    | ~ ( p @ V0p ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Edc__neg,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ( ( ( p @ V0p )
+            <=> ~ ( p @ V1q ) )
+          <=> ( ( ( p @ V0p )
+                | ( p @ V1q ) )
+              & ( ~ ( p @ V1q )
+                | ~ ( p @ V0p ) ) ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Edc__cond,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ! [V2r: $i] :
+              ( ( mem @ V2r @ bool )
+             => ! [V3s: $i] :
+                  ( ( mem @ V3s @ bool )
+                 => ( ( ( p @ V0p )
+                    <=> ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ V1q ) @ V2r ) @ V3s ) ) )
+                  <=> ( ( ( p @ V0p )
+                        | ( p @ V1q )
+                        | ~ ( p @ V3s ) )
+                      & ( ( p @ V0p )
+                        | ~ ( p @ V2r )
+                        | ~ ( p @ V1q ) )
+                      & ( ( p @ V0p )
+                        | ~ ( p @ V2r )
+                        | ~ ( p @ V3s ) )
+                      & ( ~ ( p @ V1q )
+                        | ( p @ V2r )
+                        | ~ ( p @ V0p ) )
+                      & ( ( p @ V1q )
+                        | ( p @ V3s )
+                        | ~ ( p @ V0p ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Epth__ni1,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ( ~ ( ( p @ V0p )
+               => ( p @ V1q ) )
+           => ( p @ V0p ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Epth__ni2,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ( ~ ( ( p @ V0p )
+               => ( p @ V1q ) )
+           => ~ ( p @ V1q ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Epth__no1,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ( ~ ( ( p @ V0p )
+                | ( p @ V1q ) )
+           => ~ ( p @ V0p ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Epth__no2,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ( ~ ( ( p @ V0p )
+                | ( p @ V1q ) )
+           => ~ ( p @ V1q ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Epth__an1,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ( ( ( p @ V0p )
+              & ( p @ V1q ) )
+           => ( p @ V0p ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Epth__an2,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ! [V1q: $i] :
+          ( ( mem @ V1q @ bool )
+         => ( ( ( p @ V0p )
+              & ( p @ V1q ) )
+           => ( p @ V1q ) ) ) ) ).
+
+thf(conj_thm_2Esat_2Epth__nn,axiom,
+    ! [V0p: $i] :
+      ( ( mem @ V0p @ bool )
+     => ( ~ ~ ( p @ V0p )
+       => ( p @ V0p ) ) ) ).
+
+%------------------------------------------------------------------------------

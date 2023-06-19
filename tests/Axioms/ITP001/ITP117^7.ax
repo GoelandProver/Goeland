@@ -1,0 +1,829 @@
+%------------------------------------------------------------------------------
+% File     : ITP117^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : numRing.ax [Gau19]
+%          : HL4117^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  121 (  22 unt;  95 typ;   0 def)
+%            Number of atoms       :  206 ( 151 equ;   2 cnn)
+%            Maximal formula atoms :   92 (   1 avg)
+%            Number of connectives : 1658 (   2   ~;   1   |; 131   &;1502   @)
+%                                         (  21 <=>;   1  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   65 (   7 avg;1502 nst)
+%            Number of types       :    5 (   4 usr)
+%            Number of type conns  :  184 ( 184   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   93 (  91 usr;   6 con; 0-5 aty)
+%            Number of variables   :  259 (   1   ^ 218   !;   1   ?; 259   :)
+%                                         (  39  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Ecanonical_2Ecanonical__sum,type,
+    tyop_2Ecanonical_2Ecanonical__sum: $tType > $tType ).
+
+thf(tyop_2Ecanonical_2Espolynom,type,
+    tyop_2Ecanonical_2Espolynom: $tType > $tType ).
+
+thf(tyop_2Elist_2Elist,type,
+    tyop_2Elist_2Elist: $tType > $tType ).
+
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Enum_2Enum,type,
+    tyop_2Enum_2Enum: $tType ).
+
+thf(tyop_2Equote_2Eindex,type,
+    tyop_2Equote_2Eindex: $tType ).
+
+thf(tyop_2Equote_2Evarmap,type,
+    tyop_2Equote_2Evarmap: $tType > $tType ).
+
+thf(tyop_2Esemi__ring_2Esemi__ring,type,
+    tyop_2Esemi__ring_2Esemi__ring: $tType > $tType ).
+
+thf(tyop_2EternaryComparisons_2Eordering,type,
+    tyop_2EternaryComparisons_2Eordering: $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Earithmetic_2E_2A,type,
+    c_2Earithmetic_2E_2A: tyop_2Enum_2Enum > tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Earithmetic_2E_2B,type,
+    c_2Earithmetic_2E_2B: tyop_2Enum_2Enum > tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Earithmetic_2E_2D,type,
+    c_2Earithmetic_2E_2D: tyop_2Enum_2Enum > tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Enum_2E0,type,
+    c_2Enum_2E0: tyop_2Enum_2Enum ).
+
+thf(c_2Eprim__rec_2E_3C,type,
+    c_2Eprim__rec_2E_3C: tyop_2Enum_2Enum > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Earithmetic_2E_3C_3D,type,
+    c_2Earithmetic_2E_3C_3D: tyop_2Enum_2Enum > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Earithmetic_2E_3E,type,
+    c_2Earithmetic_2E_3E: tyop_2Enum_2Enum > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Earithmetic_2E_3E_3D,type,
+    c_2Earithmetic_2E_3E_3D: tyop_2Enum_2Enum > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Emin_2E_40,type,
+    c_2Emin_2E_40: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > A_27a ) ).
+
+thf(c_2Earithmetic_2EBIT1,type,
+    c_2Earithmetic_2EBIT1: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Earithmetic_2EBIT2,type,
+    c_2Earithmetic_2EBIT2: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2ECOND,type,
+    c_2Ebool_2ECOND: 
+      !>[A_27a: $tType] : ( $o > A_27a > A_27a > A_27a ) ).
+
+thf(c_2Elist_2ECONS,type,
+    c_2Elist_2ECONS: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2ECons__monom,type,
+    c_2Ecanonical_2ECons__monom: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2ECons__varlist,type,
+    c_2Ecanonical_2ECons__varlist: 
+      !>[A_27a: $tType] : ( ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Earithmetic_2EEVEN,type,
+    c_2Earithmetic_2EEVEN: tyop_2Enum_2Enum > $o ).
+
+thf(c_2Earithmetic_2EEXP,type,
+    c_2Earithmetic_2EEXP: tyop_2Enum_2Enum > tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Equote_2EEmpty__vm,type,
+    c_2Equote_2EEmpty__vm: 
+      !>[A_27a: $tType] : ( tyop_2Equote_2Evarmap @ A_27a ) ).
+
+thf(c_2Equote_2EEnd__idx,type,
+    c_2Equote_2EEnd__idx: tyop_2Equote_2Eindex ).
+
+thf(c_2Ebool_2EF,type,
+    c_2Ebool_2EF: $o ).
+
+thf(c_2Equote_2ELeft__idx,type,
+    c_2Equote_2ELeft__idx: tyop_2Equote_2Eindex > tyop_2Equote_2Eindex ).
+
+thf(c_2Elist_2ENIL,type,
+    c_2Elist_2ENIL: 
+      !>[A_27a: $tType] : ( tyop_2Elist_2Elist @ A_27a ) ).
+
+thf(c_2Earithmetic_2ENUMERAL,type,
+    c_2Earithmetic_2ENUMERAL: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Ecanonical_2ENil__monom,type,
+    c_2Ecanonical_2ENil__monom: 
+      !>[A_27a: $tType] : ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ).
+
+thf(c_2Equote_2ENode__vm,type,
+    c_2Equote_2ENode__vm: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Equote_2Evarmap @ A_27a ) > ( tyop_2Equote_2Evarmap @ A_27a ) > ( tyop_2Equote_2Evarmap @ A_27a ) ) ).
+
+thf(c_2Earithmetic_2EODD,type,
+    c_2Earithmetic_2EODD: tyop_2Enum_2Enum > $o ).
+
+thf(c_2Eprim__rec_2EPRE,type,
+    c_2Eprim__rec_2EPRE: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Equote_2ERight__idx,type,
+    c_2Equote_2ERight__idx: tyop_2Equote_2Eindex > tyop_2Equote_2Eindex ).
+
+thf(c_2Ecanonical_2ESPconst,type,
+    c_2Ecanonical_2ESPconst: 
+      !>[A_27a: $tType] : ( A_27a > ( tyop_2Ecanonical_2Espolynom @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2ESPmult,type,
+    c_2Ecanonical_2ESPmult: 
+      !>[A_27a: $tType] : ( ( tyop_2Ecanonical_2Espolynom @ A_27a ) > ( tyop_2Ecanonical_2Espolynom @ A_27a ) > ( tyop_2Ecanonical_2Espolynom @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2ESPplus,type,
+    c_2Ecanonical_2ESPplus: 
+      !>[A_27a: $tType] : ( ( tyop_2Ecanonical_2Espolynom @ A_27a ) > ( tyop_2Ecanonical_2Espolynom @ A_27a ) > ( tyop_2Ecanonical_2Espolynom @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2ESPvar,type,
+    c_2Ecanonical_2ESPvar: 
+      !>[A_27a: $tType] : ( tyop_2Equote_2Eindex > ( tyop_2Ecanonical_2Espolynom @ A_27a ) ) ).
+
+thf(c_2Enum_2ESUC,type,
+    c_2Enum_2ESUC: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2ET,type,
+    c_2Ebool_2ET: $o ).
+
+thf(c_2Earithmetic_2EZERO,type,
+    c_2Earithmetic_2EZERO: tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Ecanonical_2Ecanonical__sum__merge,type,
+    c_2Ecanonical_2Ecanonical__sum__merge: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2Ecanonical__sum__prod,type,
+    c_2Ecanonical_2Ecanonical__sum__prod: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2Ecanonical__sum__scalar,type,
+    c_2Ecanonical_2Ecanonical__sum__scalar: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > A_27a > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2Ecanonical__sum__scalar2,type,
+    c_2Ecanonical_2Ecanonical__sum__scalar2: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2Ecanonical__sum__scalar3,type,
+    c_2Ecanonical_2Ecanonical__sum__scalar3: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > A_27a > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2Ecanonical__sum__simplify,type,
+    c_2Ecanonical_2Ecanonical__sum__simplify: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Enumeral_2EiDUB,type,
+    c_2Enumeral_2EiDUB: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Enumeral_2EiZ,type,
+    c_2Enumeral_2EiZ: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Ecanonical_2Eics__aux,type,
+    c_2Ecanonical_2Eics__aux: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Equote_2Evarmap @ A_27a ) > A_27a > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > A_27a ) ).
+
+thf(c_2Enumeral_2EiiSUC,type,
+    c_2Enumeral_2EiiSUC: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Equote_2Eindex__compare,type,
+    c_2Equote_2Eindex__compare: tyop_2Equote_2Eindex > tyop_2Equote_2Eindex > tyop_2EternaryComparisons_2Eordering ).
+
+thf(c_2Equote_2Eindex__lt,type,
+    c_2Equote_2Eindex__lt: tyop_2Equote_2Eindex > tyop_2Equote_2Eindex > $o ).
+
+thf(c_2Ecanonical_2Einterp__cs,type,
+    c_2Ecanonical_2Einterp__cs: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Equote_2Evarmap @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > A_27a ) ).
+
+thf(c_2Ecanonical_2Einterp__m,type,
+    c_2Ecanonical_2Einterp__m: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Equote_2Evarmap @ A_27a ) > A_27a > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > A_27a ) ).
+
+thf(c_2Ecanonical_2Einterp__sp,type,
+    c_2Ecanonical_2Einterp__sp: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Equote_2Evarmap @ A_27a ) > ( tyop_2Ecanonical_2Espolynom @ A_27a ) > A_27a ) ).
+
+thf(c_2Ecanonical_2Einterp__vl,type,
+    c_2Ecanonical_2Einterp__vl: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Equote_2Evarmap @ A_27a ) > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > A_27a ) ).
+
+thf(c_2Esemi__ring_2Eis__semi__ring,type,
+    c_2Esemi__ring_2Eis__semi__ring: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > $o ) ).
+
+thf(c_2Ecanonical_2Eivl__aux,type,
+    c_2Ecanonical_2Eivl__aux: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Equote_2Evarmap @ A_27a ) > tyop_2Equote_2Eindex > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > A_27a ) ).
+
+thf(c_2EternaryComparisons_2Elist__compare,type,
+    c_2EternaryComparisons_2Elist__compare: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > A_27b > tyop_2EternaryComparisons_2Eordering ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27b ) > tyop_2EternaryComparisons_2Eordering ) ).
+
+thf(c_2EternaryComparisons_2Elist__merge,type,
+    c_2EternaryComparisons_2Elist__merge: 
+      !>[A_27a: $tType] : ( ( A_27a > A_27a > $o ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) > ( tyop_2Elist_2Elist @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2Emonom__insert,type,
+    c_2Ecanonical_2Emonom__insert: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > A_27a > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2EnumRing_2Enum__canonical__sum__merge,type,
+    c_2EnumRing_2Enum__canonical__sum__merge: ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) ).
+
+thf(c_2EnumRing_2Enum__canonical__sum__prod,type,
+    c_2EnumRing_2Enum__canonical__sum__prod: ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) ).
+
+thf(c_2EnumRing_2Enum__canonical__sum__scalar,type,
+    c_2EnumRing_2Enum__canonical__sum__scalar: tyop_2Enum_2Enum > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) ).
+
+thf(c_2EnumRing_2Enum__canonical__sum__scalar2,type,
+    c_2EnumRing_2Enum__canonical__sum__scalar2: ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) ).
+
+thf(c_2EnumRing_2Enum__canonical__sum__scalar3,type,
+    c_2EnumRing_2Enum__canonical__sum__scalar3: tyop_2Enum_2Enum > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) ).
+
+thf(c_2EnumRing_2Enum__canonical__sum__simplify,type,
+    c_2EnumRing_2Enum__canonical__sum__simplify: ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) ).
+
+thf(c_2EnumRing_2Enum__ics__aux,type,
+    c_2EnumRing_2Enum__ics__aux: ( tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum ) > tyop_2Enum_2Enum > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > tyop_2Enum_2Enum ).
+
+thf(c_2EnumRing_2Enum__interp__cs,type,
+    c_2EnumRing_2Enum__interp__cs: ( tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > tyop_2Enum_2Enum ).
+
+thf(c_2EnumRing_2Enum__interp__m,type,
+    c_2EnumRing_2Enum__interp__m: ( tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum ) > tyop_2Enum_2Enum > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > tyop_2Enum_2Enum ).
+
+thf(c_2EnumRing_2Enum__interp__sp,type,
+    c_2EnumRing_2Enum__interp__sp: ( tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum ) > tyop_2Enum_2Enum ).
+
+thf(c_2EnumRing_2Enum__interp__vl,type,
+    c_2EnumRing_2Enum__interp__vl: ( tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum ) > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > tyop_2Enum_2Enum ).
+
+thf(c_2EnumRing_2Enum__ivl__aux,type,
+    c_2EnumRing_2Enum__ivl__aux: ( tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum ) > tyop_2Equote_2Eindex > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > tyop_2Enum_2Enum ).
+
+thf(c_2EnumRing_2Enum__monom__insert,type,
+    c_2EnumRing_2Enum__monom__insert: tyop_2Enum_2Enum > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) ).
+
+thf(c_2EnumRing_2Enum__spolynom__normalize,type,
+    c_2EnumRing_2Enum__spolynom__normalize: ( tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) ).
+
+thf(c_2EnumRing_2Enum__spolynom__simplify,type,
+    c_2EnumRing_2Enum__spolynom__simplify: ( tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) ).
+
+thf(c_2EnumRing_2Enum__varlist__insert,type,
+    c_2EnumRing_2Enum__varlist__insert: ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) > ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) ).
+
+thf(c_2EternaryComparisons_2Eordering__CASE,type,
+    c_2EternaryComparisons_2Eordering__CASE: 
+      !>[A_27a: $tType] : ( tyop_2EternaryComparisons_2Eordering > A_27a > A_27a > A_27a > A_27a ) ).
+
+thf(c_2Esemi__ring_2Erecordtype_2Esemi__ring,type,
+    c_2Esemi__ring_2Erecordtype_2Esemi__ring: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > ( A_27a > A_27a > A_27a ) > ( A_27a > A_27a > A_27a ) > ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2Espolynom__normalize,type,
+    c_2Ecanonical_2Espolynom__normalize: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Ecanonical_2Espolynom @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2Espolynom__simplify,type,
+    c_2Ecanonical_2Espolynom__simplify: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Ecanonical_2Espolynom @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Ecanonical_2Evarlist__insert,type,
+    c_2Ecanonical_2Evarlist__insert: 
+      !>[A_27a: $tType] : ( ( tyop_2Esemi__ring_2Esemi__ring @ A_27a ) > ( tyop_2Elist_2Elist @ tyop_2Equote_2Eindex ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) > ( tyop_2Ecanonical_2Ecanonical__sum @ A_27a ) ) ).
+
+thf(c_2Equote_2Evarmap__find,type,
+    c_2Equote_2Evarmap__find: 
+      !>[A_27a: $tType] : ( tyop_2Equote_2Eindex > ( tyop_2Equote_2Evarmap @ A_27a ) > A_27a ) ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2EnumRing_2Enum__interp__sp__def,axiom,
+    ( c_2EnumRing_2Enum__interp__sp
+    = ( c_2Ecanonical_2Einterp__sp @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__spolynom__simplify__def,axiom,
+    ( c_2EnumRing_2Enum__spolynom__simplify
+    = ( c_2Ecanonical_2Espolynom__simplify @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__spolynom__normalize__def,axiom,
+    ( c_2EnumRing_2Enum__spolynom__normalize
+    = ( c_2Ecanonical_2Espolynom__normalize @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__interp__cs__def,axiom,
+    ( c_2EnumRing_2Enum__interp__cs
+    = ( c_2Ecanonical_2Einterp__cs @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__ics__aux__def,axiom,
+    ( c_2EnumRing_2Enum__ics__aux
+    = ( c_2Ecanonical_2Eics__aux @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__interp__m__def,axiom,
+    ( c_2EnumRing_2Enum__interp__m
+    = ( c_2Ecanonical_2Einterp__m @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__interp__vl__def,axiom,
+    ( c_2EnumRing_2Enum__interp__vl
+    = ( c_2Ecanonical_2Einterp__vl @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__ivl__aux__def,axiom,
+    ( c_2EnumRing_2Enum__ivl__aux
+    = ( c_2Ecanonical_2Eivl__aux @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__canonical__sum__simplify__def,axiom,
+    ( c_2EnumRing_2Enum__canonical__sum__simplify
+    = ( c_2Ecanonical_2Ecanonical__sum__simplify @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__canonical__sum__prod__def,axiom,
+    ( c_2EnumRing_2Enum__canonical__sum__prod
+    = ( c_2Ecanonical_2Ecanonical__sum__prod @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__canonical__sum__scalar3__def,axiom,
+    ( c_2EnumRing_2Enum__canonical__sum__scalar3
+    = ( c_2Ecanonical_2Ecanonical__sum__scalar3 @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__canonical__sum__scalar2__def,axiom,
+    ( c_2EnumRing_2Enum__canonical__sum__scalar2
+    = ( c_2Ecanonical_2Ecanonical__sum__scalar2 @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__canonical__sum__scalar__def,axiom,
+    ( c_2EnumRing_2Enum__canonical__sum__scalar
+    = ( c_2Ecanonical_2Ecanonical__sum__scalar @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__varlist__insert__def,axiom,
+    ( c_2EnumRing_2Enum__varlist__insert
+    = ( c_2Ecanonical_2Evarlist__insert @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__monom__insert__def,axiom,
+    ( c_2EnumRing_2Enum__monom__insert
+    = ( c_2Ecanonical_2Emonom__insert @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__canonical__sum__merge__def,axiom,
+    ( c_2EnumRing_2Enum__canonical__sum__merge
+    = ( c_2Ecanonical_2Ecanonical__sum__merge @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__semi__ring,axiom,
+    c_2Esemi__ring_2Eis__semi__ring @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) ).
+
+thf(thm_2EnumRing_2Enum__ring__thms,axiom,
+    ! [A_27a: $tType] :
+      ( ( c_2Esemi__ring_2Eis__semi__ring @ tyop_2Enum_2Enum @ ( c_2Esemi__ring_2Erecordtype_2Esemi__ring @ tyop_2Enum_2Enum @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ c_2Earithmetic_2E_2B @ c_2Earithmetic_2E_2A ) )
+      & ! [V0vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V1p: tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__interp__sp @ V0vm @ V1p )
+          = ( c_2EnumRing_2Enum__interp__cs @ V0vm @ ( c_2EnumRing_2Enum__spolynom__simplify @ V1p ) ) )
+      & ! [V2vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V3c: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__interp__sp @ V2vm @ ( c_2Ecanonical_2ESPconst @ tyop_2Enum_2Enum @ V3c ) )
+          = V3c )
+      & ! [V4vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V5i: tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__interp__sp @ V4vm @ ( c_2Ecanonical_2ESPvar @ tyop_2Enum_2Enum @ V5i ) )
+          = ( c_2Equote_2Evarmap__find @ tyop_2Enum_2Enum @ V5i @ V4vm ) )
+      & ! [V6vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V7p1: tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum,V8p2: tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__interp__sp @ V6vm @ ( c_2Ecanonical_2ESPplus @ tyop_2Enum_2Enum @ V7p1 @ V8p2 ) )
+          = ( c_2Earithmetic_2E_2B @ ( c_2EnumRing_2Enum__interp__sp @ V6vm @ V7p1 ) @ ( c_2EnumRing_2Enum__interp__sp @ V6vm @ V8p2 ) ) )
+      & ! [V9vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V10p1: tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum,V11p2: tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__interp__sp @ V9vm @ ( c_2Ecanonical_2ESPmult @ tyop_2Enum_2Enum @ V10p1 @ V11p2 ) )
+          = ( c_2Earithmetic_2E_2A @ ( c_2EnumRing_2Enum__interp__sp @ V9vm @ V10p1 ) @ ( c_2EnumRing_2Enum__interp__sp @ V9vm @ V11p2 ) ) )
+      & ! [V12x: A_27a,V13v2: tyop_2Equote_2Evarmap @ A_27a,V14v1: tyop_2Equote_2Evarmap @ A_27a] :
+          ( ( c_2Equote_2Evarmap__find @ A_27a @ c_2Equote_2EEnd__idx @ ( c_2Equote_2ENode__vm @ A_27a @ V12x @ V14v1 @ V13v2 ) )
+          = V12x )
+      & ! [V15x: A_27a,V16v2: tyop_2Equote_2Evarmap @ A_27a,V17v1: tyop_2Equote_2Evarmap @ A_27a,V18i1: tyop_2Equote_2Eindex] :
+          ( ( c_2Equote_2Evarmap__find @ A_27a @ ( c_2Equote_2ERight__idx @ V18i1 ) @ ( c_2Equote_2ENode__vm @ A_27a @ V15x @ V17v1 @ V16v2 ) )
+          = ( c_2Equote_2Evarmap__find @ A_27a @ V18i1 @ V16v2 ) )
+      & ! [V19x: A_27a,V20v2: tyop_2Equote_2Evarmap @ A_27a,V21v1: tyop_2Equote_2Evarmap @ A_27a,V22i1: tyop_2Equote_2Eindex] :
+          ( ( c_2Equote_2Evarmap__find @ A_27a @ ( c_2Equote_2ELeft__idx @ V22i1 ) @ ( c_2Equote_2ENode__vm @ A_27a @ V19x @ V21v1 @ V20v2 ) )
+          = ( c_2Equote_2Evarmap__find @ A_27a @ V22i1 @ V21v1 ) )
+      & ! [V23i: tyop_2Equote_2Eindex] :
+          ( ( c_2Equote_2Evarmap__find @ A_27a @ V23i @ ( c_2Equote_2EEmpty__vm @ A_27a ) )
+          = ( c_2Emin_2E_40 @ A_27a
+            @ ^ [V24x: A_27a] : c_2Ebool_2ET ) )
+      & ! [V25t2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V26t1: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V27l2: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V28l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V29c2: tyop_2Enum_2Enum,V30c1: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V30c1 @ V28l1 @ V26t1 ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V29c2 @ V27l2 @ V25t2 ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) @ ( c_2EternaryComparisons_2Elist__compare @ tyop_2Equote_2Eindex @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__compare @ V28l1 @ V27l2 ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V30c1 @ V28l1 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ V26t1 @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V29c2 @ V27l2 @ V25t2 ) ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ ( c_2Earithmetic_2E_2B @ V30c1 @ V29c2 ) @ V28l1 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ V26t1 @ V25t2 ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V29c2 @ V27l2 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V30c1 @ V28l1 @ V26t1 ) @ V25t2 ) ) ) )
+      & ! [V31t2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V32t1: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V33l2: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V34l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V35c1: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V35c1 @ V34l1 @ V32t1 ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V33l2 @ V31t2 ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) @ ( c_2EternaryComparisons_2Elist__compare @ tyop_2Equote_2Eindex @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__compare @ V34l1 @ V33l2 ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V35c1 @ V34l1 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ V32t1 @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V33l2 @ V31t2 ) ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ ( c_2Earithmetic_2E_2B @ V35c1 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V34l1 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ V32t1 @ V31t2 ) ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V33l2 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V35c1 @ V34l1 @ V32t1 ) @ V31t2 ) ) ) )
+      & ! [V36t2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V37t1: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V38l2: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V39l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V40c2: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V39l1 @ V37t1 ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V40c2 @ V38l2 @ V36t2 ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) @ ( c_2EternaryComparisons_2Elist__compare @ tyop_2Equote_2Eindex @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__compare @ V39l1 @ V38l2 ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V39l1 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ V37t1 @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V40c2 @ V38l2 @ V36t2 ) ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ V40c2 ) @ V39l1 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ V37t1 @ V36t2 ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V40c2 @ V38l2 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V39l1 @ V37t1 ) @ V36t2 ) ) ) )
+      & ! [V41t2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V42t1: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V43l2: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V44l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V44l1 @ V42t1 ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V43l2 @ V41t2 ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) @ ( c_2EternaryComparisons_2Elist__compare @ tyop_2Equote_2Eindex @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__compare @ V44l1 @ V43l2 ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V44l1 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ V42t1 @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V43l2 @ V41t2 ) ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V44l1 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ V42t1 @ V41t2 ) ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V43l2 @ ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V44l1 @ V42t1 ) @ V41t2 ) ) ) )
+      & ! [V45s1: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__merge @ V45s1 @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+          = V45s1 )
+      & ! [V46v6: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V47v5: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V48v4: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V48v4 @ V47v5 @ V46v6 ) )
+          = ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V48v4 @ V47v5 @ V46v6 ) )
+      & ! [V49v8: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V50v7: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V50v7 @ V49v8 ) )
+          = ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V50v7 @ V49v8 ) )
+      & ! [V51t2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V52l2: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V53l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V54c2: tyop_2Enum_2Enum,V55c1: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__monom__insert @ V55c1 @ V53l1 @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V54c2 @ V52l2 @ V51t2 ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) @ ( c_2EternaryComparisons_2Elist__compare @ tyop_2Equote_2Eindex @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__compare @ V53l1 @ V52l2 ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V55c1 @ V53l1 @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V54c2 @ V52l2 @ V51t2 ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ ( c_2Earithmetic_2E_2B @ V55c1 @ V54c2 ) @ V53l1 @ V51t2 ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V54c2 @ V52l2 @ ( c_2EnumRing_2Enum__monom__insert @ V55c1 @ V53l1 @ V51t2 ) ) ) )
+      & ! [V56t2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V57l2: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V58l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V59c1: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__monom__insert @ V59c1 @ V58l1 @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V57l2 @ V56t2 ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) @ ( c_2EternaryComparisons_2Elist__compare @ tyop_2Equote_2Eindex @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__compare @ V58l1 @ V57l2 ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V59c1 @ V58l1 @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V57l2 @ V56t2 ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ ( c_2Earithmetic_2E_2B @ V59c1 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V58l1 @ V56t2 ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V57l2 @ ( c_2EnumRing_2Enum__monom__insert @ V59c1 @ V58l1 @ V56t2 ) ) ) )
+      & ! [V60l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V61c1: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__monom__insert @ V61c1 @ V60l1 @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+          = ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V61c1 @ V60l1 @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) ) )
+      & ! [V62t2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V63l2: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V64l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V65c2: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__varlist__insert @ V64l1 @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V65c2 @ V63l2 @ V62t2 ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) @ ( c_2EternaryComparisons_2Elist__compare @ tyop_2Equote_2Eindex @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__compare @ V64l1 @ V63l2 ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V64l1 @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V65c2 @ V63l2 @ V62t2 ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ V65c2 ) @ V64l1 @ V62t2 ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V65c2 @ V63l2 @ ( c_2EnumRing_2Enum__varlist__insert @ V64l1 @ V62t2 ) ) ) )
+      & ! [V66t2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V67l2: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V68l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__varlist__insert @ V68l1 @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V67l2 @ V66t2 ) )
+          = ( c_2EternaryComparisons_2Eordering__CASE @ ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) @ ( c_2EternaryComparisons_2Elist__compare @ tyop_2Equote_2Eindex @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__compare @ V68l1 @ V67l2 ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V68l1 @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V67l2 @ V66t2 ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V68l1 @ V66t2 ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V67l2 @ ( c_2EnumRing_2Enum__varlist__insert @ V68l1 @ V66t2 ) ) ) )
+      & ! [V69l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__varlist__insert @ V69l1 @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+          = ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V69l1 @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) ) )
+      & ! [V70c0: tyop_2Enum_2Enum,V71c: tyop_2Enum_2Enum,V72l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V73t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__scalar @ V70c0 @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V71c @ V72l @ V73t ) )
+          = ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ ( c_2Earithmetic_2E_2A @ V70c0 @ V71c ) @ V72l @ ( c_2EnumRing_2Enum__canonical__sum__scalar @ V70c0 @ V73t ) ) )
+      & ! [V74c0: tyop_2Enum_2Enum,V75l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V76t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__scalar @ V74c0 @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V75l @ V76t ) )
+          = ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V74c0 @ V75l @ ( c_2EnumRing_2Enum__canonical__sum__scalar @ V74c0 @ V76t ) ) )
+      & ! [V77c0: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__scalar @ V77c0 @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+          = ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+      & ! [V78l0: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V79c: tyop_2Enum_2Enum,V80l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V81t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__scalar2 @ V78l0 @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V79c @ V80l @ V81t ) )
+          = ( c_2EnumRing_2Enum__monom__insert @ V79c @ ( c_2EternaryComparisons_2Elist__merge @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__lt @ V78l0 @ V80l ) @ ( c_2EnumRing_2Enum__canonical__sum__scalar2 @ V78l0 @ V81t ) ) )
+      & ! [V82l0: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V83l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V84t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__scalar2 @ V82l0 @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V83l @ V84t ) )
+          = ( c_2EnumRing_2Enum__varlist__insert @ ( c_2EternaryComparisons_2Elist__merge @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__lt @ V82l0 @ V83l ) @ ( c_2EnumRing_2Enum__canonical__sum__scalar2 @ V82l0 @ V84t ) ) )
+      & ! [V85l0: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__scalar2 @ V85l0 @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+          = ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+      & ! [V86c0: tyop_2Enum_2Enum,V87l0: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V88c: tyop_2Enum_2Enum,V89l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V90t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__scalar3 @ V86c0 @ V87l0 @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V88c @ V89l @ V90t ) )
+          = ( c_2EnumRing_2Enum__monom__insert @ ( c_2Earithmetic_2E_2A @ V86c0 @ V88c ) @ ( c_2EternaryComparisons_2Elist__merge @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__lt @ V87l0 @ V89l ) @ ( c_2EnumRing_2Enum__canonical__sum__scalar3 @ V86c0 @ V87l0 @ V90t ) ) )
+      & ! [V91c0: tyop_2Enum_2Enum,V92l0: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V93l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V94t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__scalar3 @ V91c0 @ V92l0 @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V93l @ V94t ) )
+          = ( c_2EnumRing_2Enum__monom__insert @ V91c0 @ ( c_2EternaryComparisons_2Elist__merge @ tyop_2Equote_2Eindex @ c_2Equote_2Eindex__lt @ V92l0 @ V93l ) @ ( c_2EnumRing_2Enum__canonical__sum__scalar3 @ V91c0 @ V92l0 @ V94t ) ) )
+      & ! [V95c0: tyop_2Enum_2Enum,V96l0: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__scalar3 @ V95c0 @ V96l0 @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+          = ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+      & ! [V97c1: tyop_2Enum_2Enum,V98l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V99t1: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V100s2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__prod @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V97c1 @ V98l1 @ V99t1 ) @ V100s2 )
+          = ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2EnumRing_2Enum__canonical__sum__scalar3 @ V97c1 @ V98l1 @ V100s2 ) @ ( c_2EnumRing_2Enum__canonical__sum__prod @ V99t1 @ V100s2 ) ) )
+      & ! [V101l1: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V102t1: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum,V103s2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__prod @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V101l1 @ V102t1 ) @ V103s2 )
+          = ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2EnumRing_2Enum__canonical__sum__scalar2 @ V101l1 @ V103s2 ) @ ( c_2EnumRing_2Enum__canonical__sum__prod @ V102t1 @ V103s2 ) ) )
+      & ! [V104s2: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__prod @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) @ V104s2 )
+          = ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+      & ! [V105c: tyop_2Enum_2Enum,V106l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V107t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__simplify @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V105c @ V106l @ V107t ) )
+          = ( c_2Ebool_2ECOND @ ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) @ ( c_2Emin_2E_3D @ tyop_2Enum_2Enum @ V105c @ c_2Enum_2E0 ) @ ( c_2EnumRing_2Enum__canonical__sum__simplify @ V107t ) @ ( c_2Ebool_2ECOND @ ( tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum ) @ ( c_2Emin_2E_3D @ tyop_2Enum_2Enum @ V105c @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V106l @ ( c_2EnumRing_2Enum__canonical__sum__simplify @ V107t ) ) @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V105c @ V106l @ ( c_2EnumRing_2Enum__canonical__sum__simplify @ V107t ) ) ) ) )
+      & ! [V108l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V109t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__canonical__sum__simplify @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V108l @ V109t ) )
+          = ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V108l @ ( c_2EnumRing_2Enum__canonical__sum__simplify @ V109t ) ) )
+      & ( ( c_2EnumRing_2Enum__canonical__sum__simplify @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+        = ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+      & ! [V110vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V111x: tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__ivl__aux @ V110vm @ V111x @ ( c_2Elist_2ENIL @ tyop_2Equote_2Eindex ) )
+          = ( c_2Equote_2Evarmap__find @ tyop_2Enum_2Enum @ V111x @ V110vm ) )
+      & ! [V112vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V113x: tyop_2Equote_2Eindex,V114x_27: tyop_2Equote_2Eindex,V115t_27: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__ivl__aux @ V112vm @ V113x @ ( c_2Elist_2ECONS @ tyop_2Equote_2Eindex @ V114x_27 @ V115t_27 ) )
+          = ( c_2Earithmetic_2E_2A @ ( c_2Equote_2Evarmap__find @ tyop_2Enum_2Enum @ V113x @ V112vm ) @ ( c_2EnumRing_2Enum__ivl__aux @ V112vm @ V114x_27 @ V115t_27 ) ) )
+      & ! [V116vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__interp__vl @ V116vm @ ( c_2Elist_2ENIL @ tyop_2Equote_2Eindex ) )
+          = ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) )
+      & ! [V117vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V118x: tyop_2Equote_2Eindex,V119t: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__interp__vl @ V117vm @ ( c_2Elist_2ECONS @ tyop_2Equote_2Eindex @ V118x @ V119t ) )
+          = ( c_2EnumRing_2Enum__ivl__aux @ V117vm @ V118x @ V119t ) )
+      & ! [V120vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V121c: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__interp__m @ V120vm @ V121c @ ( c_2Elist_2ENIL @ tyop_2Equote_2Eindex ) )
+          = V121c )
+      & ! [V122vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V123c: tyop_2Enum_2Enum,V124x: tyop_2Equote_2Eindex,V125t: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__interp__m @ V122vm @ V123c @ ( c_2Elist_2ECONS @ tyop_2Equote_2Eindex @ V124x @ V125t ) )
+          = ( c_2Earithmetic_2E_2A @ V123c @ ( c_2EnumRing_2Enum__ivl__aux @ V122vm @ V124x @ V125t ) ) )
+      & ! [V126vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V127a: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__ics__aux @ V126vm @ V127a @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+          = V127a )
+      & ! [V128vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V129a: tyop_2Enum_2Enum,V130l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V131t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__ics__aux @ V128vm @ V129a @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V130l @ V131t ) )
+          = ( c_2Earithmetic_2E_2B @ V129a @ ( c_2EnumRing_2Enum__ics__aux @ V128vm @ ( c_2EnumRing_2Enum__interp__vl @ V128vm @ V130l ) @ V131t ) ) )
+      & ! [V132vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V133a: tyop_2Enum_2Enum,V134c: tyop_2Enum_2Enum,V135l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V136t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__ics__aux @ V132vm @ V133a @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V134c @ V135l @ V136t ) )
+          = ( c_2Earithmetic_2E_2B @ V133a @ ( c_2EnumRing_2Enum__ics__aux @ V132vm @ ( c_2EnumRing_2Enum__interp__m @ V132vm @ V134c @ V135l ) @ V136t ) ) )
+      & ! [V137vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__interp__cs @ V137vm @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) )
+          = c_2Enum_2E0 )
+      & ! [V138vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V139l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V140t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__interp__cs @ V138vm @ ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ V139l @ V140t ) )
+          = ( c_2EnumRing_2Enum__ics__aux @ V138vm @ ( c_2EnumRing_2Enum__interp__vl @ V138vm @ V139l ) @ V140t ) )
+      & ! [V141vm: tyop_2Equote_2Evarmap @ tyop_2Enum_2Enum,V142c: tyop_2Enum_2Enum,V143l: tyop_2Elist_2Elist @ tyop_2Equote_2Eindex,V144t: tyop_2Ecanonical_2Ecanonical__sum @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__interp__cs @ V141vm @ ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V142c @ V143l @ V144t ) )
+          = ( c_2EnumRing_2Enum__ics__aux @ V141vm @ ( c_2EnumRing_2Enum__interp__m @ V141vm @ V142c @ V143l ) @ V144t ) )
+      & ! [V145i: tyop_2Equote_2Eindex] :
+          ( ( c_2EnumRing_2Enum__spolynom__normalize @ ( c_2Ecanonical_2ESPvar @ tyop_2Enum_2Enum @ V145i ) )
+          = ( c_2Ecanonical_2ECons__varlist @ tyop_2Enum_2Enum @ ( c_2Elist_2ECONS @ tyop_2Equote_2Eindex @ V145i @ ( c_2Elist_2ENIL @ tyop_2Equote_2Eindex ) ) @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) ) )
+      & ! [V146c: tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__spolynom__normalize @ ( c_2Ecanonical_2ESPconst @ tyop_2Enum_2Enum @ V146c ) )
+          = ( c_2Ecanonical_2ECons__monom @ tyop_2Enum_2Enum @ V146c @ ( c_2Elist_2ENIL @ tyop_2Equote_2Eindex ) @ ( c_2Ecanonical_2ENil__monom @ tyop_2Enum_2Enum ) ) )
+      & ! [V147l: tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum,V148r: tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__spolynom__normalize @ ( c_2Ecanonical_2ESPplus @ tyop_2Enum_2Enum @ V147l @ V148r ) )
+          = ( c_2EnumRing_2Enum__canonical__sum__merge @ ( c_2EnumRing_2Enum__spolynom__normalize @ V147l ) @ ( c_2EnumRing_2Enum__spolynom__normalize @ V148r ) ) )
+      & ! [V149l: tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum,V150r: tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__spolynom__normalize @ ( c_2Ecanonical_2ESPmult @ tyop_2Enum_2Enum @ V149l @ V150r ) )
+          = ( c_2EnumRing_2Enum__canonical__sum__prod @ ( c_2EnumRing_2Enum__spolynom__normalize @ V149l ) @ ( c_2EnumRing_2Enum__spolynom__normalize @ V150r ) ) )
+      & ! [V151x: tyop_2Ecanonical_2Espolynom @ tyop_2Enum_2Enum] :
+          ( ( c_2EnumRing_2Enum__spolynom__simplify @ V151x )
+          = ( c_2EnumRing_2Enum__canonical__sum__simplify @ ( c_2EnumRing_2Enum__spolynom__normalize @ V151x ) ) ) ) ).
+
+thf(thm_2EnumRing_2Enum__rewrites,axiom,
+    ! [V0n: tyop_2Enum_2Enum] :
+      ( ! [V1n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_2B @ c_2Enum_2E0 @ V1n )
+          = V1n )
+      & ! [V2n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_2B @ V2n @ c_2Enum_2E0 )
+          = V2n )
+      & ! [V3n: tyop_2Enum_2Enum,V4m: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2ENUMERAL @ V3n ) @ ( c_2Earithmetic_2ENUMERAL @ V4m ) )
+          = ( c_2Earithmetic_2ENUMERAL @ ( c_2Enumeral_2EiZ @ ( c_2Earithmetic_2E_2B @ V3n @ V4m ) ) ) )
+      & ! [V5n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_2A @ c_2Enum_2E0 @ V5n )
+          = c_2Enum_2E0 )
+      & ! [V6n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_2A @ V6n @ c_2Enum_2E0 )
+          = c_2Enum_2E0 )
+      & ! [V7n: tyop_2Enum_2Enum,V8m: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_2A @ ( c_2Earithmetic_2ENUMERAL @ V7n ) @ ( c_2Earithmetic_2ENUMERAL @ V8m ) )
+          = ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2E_2A @ V7n @ V8m ) ) )
+      & ! [V9n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_2D @ c_2Enum_2E0 @ V9n )
+          = c_2Enum_2E0 )
+      & ! [V10n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_2D @ V10n @ c_2Enum_2E0 )
+          = V10n )
+      & ! [V11n: tyop_2Enum_2Enum,V12m: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_2D @ ( c_2Earithmetic_2ENUMERAL @ V11n ) @ ( c_2Earithmetic_2ENUMERAL @ V12m ) )
+          = ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2E_2D @ V11n @ V12m ) ) )
+      & ! [V13n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2EEXP @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ V13n ) ) )
+          = c_2Enum_2E0 )
+      & ! [V14n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2EEXP @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ V14n ) ) )
+          = c_2Enum_2E0 )
+      & ! [V15n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2EEXP @ V15n @ c_2Enum_2E0 )
+          = ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) )
+      & ! [V16n: tyop_2Enum_2Enum,V17m: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2EEXP @ ( c_2Earithmetic_2ENUMERAL @ V16n ) @ ( c_2Earithmetic_2ENUMERAL @ V17m ) )
+          = ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EEXP @ V16n @ V17m ) ) )
+      & ( ( c_2Enum_2ESUC @ c_2Enum_2E0 )
+        = ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) )
+      & ! [V18n: tyop_2Enum_2Enum] :
+          ( ( c_2Enum_2ESUC @ ( c_2Earithmetic_2ENUMERAL @ V18n ) )
+          = ( c_2Earithmetic_2ENUMERAL @ ( c_2Enum_2ESUC @ V18n ) ) )
+      & ( ( c_2Eprim__rec_2EPRE @ c_2Enum_2E0 )
+        = c_2Enum_2E0 )
+      & ! [V19n: tyop_2Enum_2Enum] :
+          ( ( c_2Eprim__rec_2EPRE @ ( c_2Earithmetic_2ENUMERAL @ V19n ) )
+          = ( c_2Earithmetic_2ENUMERAL @ ( c_2Eprim__rec_2EPRE @ V19n ) ) )
+      & ! [V20n: tyop_2Enum_2Enum] :
+          ( ( ( c_2Earithmetic_2ENUMERAL @ V20n )
+            = c_2Enum_2E0 )
+        <=> ( V20n = c_2Earithmetic_2EZERO ) )
+      & ! [V21n: tyop_2Enum_2Enum] :
+          ( ( c_2Enum_2E0
+            = ( c_2Earithmetic_2ENUMERAL @ V21n ) )
+        <=> ( V21n = c_2Earithmetic_2EZERO ) )
+      & ! [V22n: tyop_2Enum_2Enum,V23m: tyop_2Enum_2Enum] :
+          ( ( ( c_2Earithmetic_2ENUMERAL @ V22n )
+            = ( c_2Earithmetic_2ENUMERAL @ V23m ) )
+        <=> ( V22n = V23m ) )
+      & ! [V24n: tyop_2Enum_2Enum] :
+          ( ( c_2Eprim__rec_2E_3C @ V24n @ c_2Enum_2E0 )
+          = c_2Ebool_2EF )
+      & ! [V25n: tyop_2Enum_2Enum] :
+          ( ( c_2Eprim__rec_2E_3C @ c_2Enum_2E0 @ ( c_2Earithmetic_2ENUMERAL @ V25n ) )
+          = ( c_2Eprim__rec_2E_3C @ c_2Earithmetic_2EZERO @ V25n ) )
+      & ! [V26n: tyop_2Enum_2Enum,V27m: tyop_2Enum_2Enum] :
+          ( ( c_2Eprim__rec_2E_3C @ ( c_2Earithmetic_2ENUMERAL @ V26n ) @ ( c_2Earithmetic_2ENUMERAL @ V27m ) )
+          = ( c_2Eprim__rec_2E_3C @ V26n @ V27m ) )
+      & ! [V28n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3E @ c_2Enum_2E0 @ V28n )
+          = c_2Ebool_2EF )
+      & ! [V29n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3E @ ( c_2Earithmetic_2ENUMERAL @ V29n ) @ c_2Enum_2E0 )
+          = ( c_2Eprim__rec_2E_3C @ c_2Earithmetic_2EZERO @ V29n ) )
+      & ! [V30n: tyop_2Enum_2Enum,V31m: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3E @ ( c_2Earithmetic_2ENUMERAL @ V30n ) @ ( c_2Earithmetic_2ENUMERAL @ V31m ) )
+          = ( c_2Eprim__rec_2E_3C @ V31m @ V30n ) )
+      & ! [V32n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3C_3D @ c_2Enum_2E0 @ V32n )
+          = c_2Ebool_2ET )
+      & ! [V33n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3C_3D @ ( c_2Earithmetic_2ENUMERAL @ V33n ) @ c_2Enum_2E0 )
+          = ( c_2Earithmetic_2E_3C_3D @ V33n @ c_2Earithmetic_2EZERO ) )
+      & ! [V34n: tyop_2Enum_2Enum,V35m: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3C_3D @ ( c_2Earithmetic_2ENUMERAL @ V34n ) @ ( c_2Earithmetic_2ENUMERAL @ V35m ) )
+          = ( c_2Earithmetic_2E_3C_3D @ V34n @ V35m ) )
+      & ! [V36n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3E_3D @ V36n @ c_2Enum_2E0 )
+          = c_2Ebool_2ET )
+      & ! [V37n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3E_3D @ c_2Enum_2E0 @ V37n )
+        <=> ( V37n = c_2Enum_2E0 ) )
+      & ! [V38n: tyop_2Enum_2Enum,V39m: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2E_3E_3D @ ( c_2Earithmetic_2ENUMERAL @ V38n ) @ ( c_2Earithmetic_2ENUMERAL @ V39m ) )
+          = ( c_2Earithmetic_2E_3C_3D @ V39m @ V38n ) )
+      & ! [V40n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2EODD @ ( c_2Earithmetic_2ENUMERAL @ V40n ) )
+          = ( c_2Earithmetic_2EODD @ V40n ) )
+      & ! [V41n: tyop_2Enum_2Enum] :
+          ( ( c_2Earithmetic_2EEVEN @ ( c_2Earithmetic_2ENUMERAL @ V41n ) )
+          = ( c_2Earithmetic_2EEVEN @ V41n ) )
+      & ( (~) @ ( c_2Earithmetic_2EODD @ c_2Enum_2E0 ) )
+      & ( c_2Earithmetic_2EEVEN @ c_2Enum_2E0 )
+      & ! [V42n: tyop_2Enum_2Enum,V43m: tyop_2Enum_2Enum] :
+          ( ( ( c_2Earithmetic_2EZERO
+              = ( c_2Earithmetic_2EBIT1 @ V42n ) )
+          <=> c_2Ebool_2EF )
+          & ( ( ( c_2Earithmetic_2EBIT1 @ V42n )
+              = c_2Earithmetic_2EZERO )
+          <=> c_2Ebool_2EF )
+          & ( ( c_2Earithmetic_2EZERO
+              = ( c_2Earithmetic_2EBIT2 @ V42n ) )
+          <=> c_2Ebool_2EF )
+          & ( ( ( c_2Earithmetic_2EBIT2 @ V42n )
+              = c_2Earithmetic_2EZERO )
+          <=> c_2Ebool_2EF )
+          & ( ( ( c_2Earithmetic_2EBIT1 @ V42n )
+              = ( c_2Earithmetic_2EBIT2 @ V43m ) )
+          <=> c_2Ebool_2EF )
+          & ( ( ( c_2Earithmetic_2EBIT2 @ V42n )
+              = ( c_2Earithmetic_2EBIT1 @ V43m ) )
+          <=> c_2Ebool_2EF )
+          & ( ( ( c_2Earithmetic_2EBIT1 @ V42n )
+              = ( c_2Earithmetic_2EBIT1 @ V43m ) )
+          <=> ( V42n = V43m ) )
+          & ( ( ( c_2Earithmetic_2EBIT2 @ V42n )
+              = ( c_2Earithmetic_2EBIT2 @ V43m ) )
+          <=> ( V42n = V43m ) ) )
+      & ( ( c_2Enum_2ESUC @ c_2Earithmetic_2EZERO )
+        = ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) )
+      & ! [V44n: tyop_2Enum_2Enum] :
+          ( ( c_2Enum_2ESUC @ ( c_2Earithmetic_2EBIT1 @ V44n ) )
+          = ( c_2Earithmetic_2EBIT2 @ V44n ) )
+      & ! [V45n: tyop_2Enum_2Enum] :
+          ( ( c_2Enum_2ESUC @ ( c_2Earithmetic_2EBIT2 @ V45n ) )
+          = ( c_2Earithmetic_2EBIT1 @ ( c_2Enum_2ESUC @ V45n ) ) )
+      & ( ( c_2Enumeral_2EiiSUC @ c_2Earithmetic_2EZERO )
+        = ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) )
+      & ( ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2EBIT1 @ V0n ) )
+        = ( c_2Earithmetic_2EBIT1 @ ( c_2Enum_2ESUC @ V0n ) ) )
+      & ( ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2EBIT2 @ V0n ) )
+        = ( c_2Earithmetic_2EBIT2 @ ( c_2Enum_2ESUC @ V0n ) ) )
+      & ! [V46n: tyop_2Enum_2Enum,V47m: tyop_2Enum_2Enum] :
+          ( ( ( c_2Enumeral_2EiZ @ ( c_2Earithmetic_2E_2B @ c_2Earithmetic_2EZERO @ V46n ) )
+            = V46n )
+          & ( ( c_2Enumeral_2EiZ @ ( c_2Earithmetic_2E_2B @ V46n @ c_2Earithmetic_2EZERO ) )
+            = V46n )
+          & ( ( c_2Enumeral_2EiZ @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT1 @ V46n ) @ ( c_2Earithmetic_2EBIT1 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT2 @ ( c_2Enumeral_2EiZ @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enumeral_2EiZ @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT1 @ V46n ) @ ( c_2Earithmetic_2EBIT2 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT1 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enumeral_2EiZ @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT2 @ V46n ) @ ( c_2Earithmetic_2EBIT1 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT1 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enumeral_2EiZ @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT2 @ V46n ) @ ( c_2Earithmetic_2EBIT2 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ c_2Earithmetic_2EZERO @ V46n ) )
+            = ( c_2Enum_2ESUC @ V46n ) )
+          & ( ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V46n @ c_2Earithmetic_2EZERO ) )
+            = ( c_2Enum_2ESUC @ V46n ) )
+          & ( ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT1 @ V46n ) @ ( c_2Earithmetic_2EBIT1 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT1 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT1 @ V46n ) @ ( c_2Earithmetic_2EBIT2 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT2 @ V46n ) @ ( c_2Earithmetic_2EBIT1 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT2 @ V46n ) @ ( c_2Earithmetic_2EBIT2 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT1 @ ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2E_2B @ c_2Earithmetic_2EZERO @ V46n ) )
+            = ( c_2Enumeral_2EiiSUC @ V46n ) )
+          & ( ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2E_2B @ V46n @ c_2Earithmetic_2EZERO ) )
+            = ( c_2Enumeral_2EiiSUC @ V46n ) )
+          & ( ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT1 @ V46n ) @ ( c_2Earithmetic_2EBIT1 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT2 @ ( c_2Enum_2ESUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT1 @ V46n ) @ ( c_2Earithmetic_2EBIT2 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT1 @ ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT2 @ V46n ) @ ( c_2Earithmetic_2EBIT1 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT1 @ ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) )
+          & ( ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2EBIT2 @ V46n ) @ ( c_2Earithmetic_2EBIT2 @ V47m ) ) )
+            = ( c_2Earithmetic_2EBIT2 @ ( c_2Enumeral_2EiiSUC @ ( c_2Earithmetic_2E_2B @ V46n @ V47m ) ) ) ) )
+      & ! [V48n: tyop_2Enum_2Enum,V49m: tyop_2Enum_2Enum] :
+          ( ( ( c_2Earithmetic_2E_2A @ c_2Earithmetic_2EZERO @ V48n )
+            = c_2Earithmetic_2EZERO )
+          & ( ( c_2Earithmetic_2E_2A @ V48n @ c_2Earithmetic_2EZERO )
+            = c_2Earithmetic_2EZERO )
+          & ( ( c_2Earithmetic_2E_2A @ ( c_2Earithmetic_2EBIT1 @ V48n ) @ V49m )
+            = ( c_2Enumeral_2EiZ @ ( c_2Earithmetic_2E_2B @ ( c_2Enumeral_2EiDUB @ ( c_2Earithmetic_2E_2A @ V48n @ V49m ) ) @ V49m ) ) )
+          & ( ( c_2Earithmetic_2E_2A @ ( c_2Earithmetic_2EBIT2 @ V48n ) @ V49m )
+            = ( c_2Enumeral_2EiDUB @ ( c_2Enumeral_2EiZ @ ( c_2Earithmetic_2E_2B @ ( c_2Earithmetic_2E_2A @ V48n @ V49m ) @ V49m ) ) ) ) )
+      & ! [V50n: tyop_2Enum_2Enum] :
+          ( ( ( c_2Enumeral_2EiDUB @ ( c_2Earithmetic_2EBIT1 @ V50n ) )
+            = ( c_2Earithmetic_2EBIT2 @ ( c_2Enumeral_2EiDUB @ V50n ) ) )
+          & ( ( c_2Enumeral_2EiDUB @ ( c_2Earithmetic_2EBIT2 @ V50n ) )
+            = ( c_2Earithmetic_2EBIT2 @ ( c_2Earithmetic_2EBIT1 @ V50n ) ) )
+          & ( ( c_2Enumeral_2EiDUB @ c_2Earithmetic_2EZERO )
+            = c_2Earithmetic_2EZERO ) )
+      & ( ( c_2Earithmetic_2EZERO = c_2Earithmetic_2EZERO )
+      <=> c_2Ebool_2ET )
+      & ( ( c_2Enum_2E0 = c_2Enum_2E0 )
+      <=> c_2Ebool_2ET ) ) ).
+
+%------------------------------------------------------------------------------

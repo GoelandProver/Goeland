@@ -1,0 +1,888 @@
+%------------------------------------------------------------------------------
+% File     : SET007+518 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : The Steinitz Theorem and the Dimension of a Real Linear Space
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : rlvect_5 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   52 (   2 unt;   0 def)
+%            Number of atoms       :  605 (  47 equ)
+%            Maximal formula atoms :   19 (  11 avg)
+%            Number of connectives :  624 (  71   ~;   0   |; 389   &)
+%                                         (  11 <=>; 153  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   16 (  10 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   33 (  31 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   40 (  40 usr;   6 con; 0-4 aty)
+%            Number of variables   :  146 ( 131   !;  15   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_rlvect_5,axiom,
+    ? [A] :
+      ( l2_rlvect_1(A)
+      & ~ v3_struct_0(A)
+      & v2_rlvect_1(A)
+      & v3_rlvect_1(A)
+      & v4_rlvect_1(A)
+      & v5_rlvect_1(A)
+      & v6_rlvect_1(A)
+      & v7_rlvect_1(A)
+      & v1_rlvect_5(A) ) ).
+
+fof(rc2_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ? [B] :
+          ( m1_rlsub_1(B,A)
+          & ~ v3_struct_0(B)
+          & v2_rlvect_1(B)
+          & v3_rlvect_1(B)
+          & v4_rlvect_1(B)
+          & v5_rlvect_1(B)
+          & v6_rlvect_1(B)
+          & v7_rlvect_1(B)
+          & v1_rlvect_5(B) ) ) ).
+
+fof(cc1_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => v1_rlvect_5(B) ) ) ).
+
+fof(rc3_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ? [B] :
+          ( m1_rlsub_1(B,A)
+          & ~ v3_struct_0(B)
+          & v2_rlvect_1(B)
+          & v3_rlvect_1(B)
+          & v4_rlvect_1(B)
+          & v5_rlvect_1(B)
+          & v6_rlvect_1(B)
+          & v7_rlvect_1(B)
+          & v1_rlvect_5(B) ) ) ).
+
+fof(t1_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ! [C] :
+              ( m1_rlvect_2(C,A)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( v1_rlvect_3(D,A)
+                      & r1_tarski(k10_rlvect_2(A,B),D)
+                      & r1_tarski(k10_rlvect_2(A,C),D)
+                      & k13_rlvect_2(A,B) = k13_rlvect_2(A,C) )
+                   => r1_rlvect_2(A,B,C) ) ) ) ) ) ).
+
+fof(t2_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ~ ( v1_rlvect_3(B,A)
+              & ! [C] :
+                  ( m1_rlvect_3(C,A)
+                 => ~ r1_tarski(B,C) ) ) ) ) ).
+
+fof(t3_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r2_hidden(C,k10_rlvect_2(A,B))
+              <=> ? [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                    & C = D
+                    & k8_funct_2(u1_struct_0(A),k1_numbers,B,D) != np__0 ) ) ) ) ) ).
+
+fof(t4_rlvect_5,axiom,
+    $true ).
+
+fof(t5_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ! [C] :
+              ( m2_finseq_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_finseq_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k4_finseq_1(C),k4_finseq_1(C))
+                        & v3_funct_2(E,k4_finseq_1(C),k4_finseq_1(C))
+                        & m2_relset_1(E,k4_finseq_1(C),k4_finseq_1(C)) )
+                     => ( D = k5_relat_1(E,C)
+                       => k9_rlvect_1(A,k12_rlvect_2(A,C,B)) = k9_rlvect_1(A,k12_rlvect_2(A,D,B)) ) ) ) ) ) ) ).
+
+fof(t6_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ! [C] :
+              ( m2_finseq_1(C,u1_struct_0(A))
+             => ( r1_xboole_0(k10_rlvect_2(A,B),k2_relat_1(C))
+               => k9_rlvect_1(A,k12_rlvect_2(A,C,B)) = k1_rlvect_1(A) ) ) ) ) ).
+
+fof(t7_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m2_finseq_1(B,u1_struct_0(A))
+         => ( v2_funct_1(B)
+           => ! [C] :
+                ( m1_rlvect_2(C,A)
+               => ( r1_tarski(k10_rlvect_2(A,C),k2_relat_1(B))
+                 => k9_rlvect_1(A,k12_rlvect_2(A,B,C)) = k13_rlvect_2(A,C) ) ) ) ) ) ).
+
+fof(t8_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ! [C] :
+              ( m2_finseq_1(C,u1_struct_0(A))
+             => ? [D] :
+                  ( m1_rlvect_2(D,A)
+                  & k10_rlvect_2(A,D) = k3_xboole_0(k2_relat_1(C),k10_rlvect_2(A,B))
+                  & k12_rlvect_2(A,C,B) = k12_rlvect_2(A,C,D) ) ) ) ) ).
+
+fof(t9_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m2_finseq_1(D,u1_struct_0(A))
+                 => ~ ( r1_tarski(k2_relat_1(D),u1_struct_0(k1_rlvect_3(A,C)))
+                      & ! [E] :
+                          ( m2_rlvect_2(E,A,C)
+                         => k9_rlvect_1(A,k12_rlvect_2(A,D,B)) != k13_rlvect_2(A,E) ) ) ) ) ) ) ).
+
+fof(t10_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ~ ( r1_tarski(k10_rlvect_2(A,B),u1_struct_0(k1_rlvect_3(A,C)))
+                  & ! [D] :
+                      ( m2_rlvect_2(D,A,C)
+                     => k13_rlvect_2(A,B) != k13_rlvect_2(A,D) ) ) ) ) ) ).
+
+fof(t11_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_rlvect_2(C,A)
+             => ( r1_tarski(k10_rlvect_2(A,C),u1_struct_0(B))
+               => ! [D] :
+                    ( m1_rlvect_2(D,B)
+                   => ( D = k7_relat_1(C,u1_struct_0(B))
+                     => ( k10_rlvect_2(A,C) = k10_rlvect_2(B,D)
+                        & k13_rlvect_2(A,C) = k13_rlvect_2(B,D) ) ) ) ) ) ) ) ).
+
+fof(t12_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_rlvect_2(C,B)
+             => ? [D] :
+                  ( m1_rlvect_2(D,A)
+                  & k10_rlvect_2(B,C) = k10_rlvect_2(A,D)
+                  & k13_rlvect_2(B,C) = k13_rlvect_2(A,D) ) ) ) ) ).
+
+fof(t13_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_rlvect_2(C,A)
+             => ~ ( r1_tarski(k10_rlvect_2(A,C),u1_struct_0(B))
+                  & ! [D] :
+                      ( m1_rlvect_2(D,B)
+                     => ~ ( k10_rlvect_2(B,D) = k10_rlvect_2(A,C)
+                          & k13_rlvect_2(B,D) = k13_rlvect_2(A,C) ) ) ) ) ) ) ).
+
+fof(t14_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_3(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r1_rlvect_1(k1_rlvect_3(A,B),C) ) ) ) ).
+
+fof(t15_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B)))
+             => ( v1_rlvect_3(C,B)
+               => ( v1_rlvect_3(C,A)
+                  & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) ) ) ) ) ) ).
+
+fof(t16_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v1_rlvect_3(C,A)
+                  & r1_tarski(C,u1_struct_0(B)) )
+               => ( v1_rlvect_3(C,B)
+                  & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B))) ) ) ) ) ) ).
+
+fof(t17_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_rlvect_3(C,B)
+             => ? [D] :
+                  ( m1_rlvect_3(D,A)
+                  & r1_tarski(C,D) ) ) ) ) ).
+
+fof(t18_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v1_rlvect_3(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ( r2_hidden(C,B)
+                 => ! [D] :
+                      ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                     => ~ ( D = k6_subset_1(u1_struct_0(A),B,k7_rlvect_2(A,C))
+                          & r1_rlvect_1(k1_rlvect_3(A,D),C) ) ) ) ) ) ) ) ).
+
+fof(t19_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_3(B,A)
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+             => ( r1_xboole_0(C,B)
+               => ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                   => ~ ( D = k4_subset_1(u1_struct_0(A),B,C)
+                        & v1_rlvect_3(D,A) ) ) ) ) ) ) ).
+
+fof(t20_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_tarski(C,u1_struct_0(B))
+               => m1_rlsub_1(k1_rlvect_3(A,C),B) ) ) ) ) ).
+
+fof(t21_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(B)))
+                 => ( C = D
+                   => k1_rlvect_3(A,C) = k1_rlvect_3(B,D) ) ) ) ) ) ).
+
+fof(t22_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( v1_finset_1(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ! [C] :
+              ( ( v1_finset_1(C)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ~ ( r1_rlvect_1(k1_rlvect_3(A,k2_rlvect_2(A,B,C)),D)
+                      & ~ r1_rlvect_1(k1_rlvect_3(A,C),D)
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ~ ( r2_hidden(E,B)
+                              & r1_rlvect_1(k1_rlvect_3(A,k2_rlvect_2(A,k4_rlvect_2(A,k2_rlvect_2(A,B,C),k7_rlvect_2(A,E)),k7_rlvect_2(A,D))),E) ) ) ) ) ) ) ) ).
+
+fof(t23_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( v1_finset_1(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ! [C] :
+              ( ( v1_finset_1(C)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+             => ( ( g2_rlvect_1(u1_struct_0(A),u2_struct_0(A),u1_rlvect_1(A),u2_rlvect_1(A)) = k1_rlvect_3(A,B)
+                  & v1_rlvect_3(C,A) )
+               => ( r1_xreal_0(k4_card_1(C),k4_card_1(B))
+                  & ? [D] :
+                      ( v1_finset_1(D)
+                      & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                      & r1_tarski(D,B)
+                      & k4_card_1(D) = k5_real_1(k4_card_1(B),k4_card_1(C))
+                      & g2_rlvect_1(u1_struct_0(A),u2_struct_0(A),u1_rlvect_1(A),u2_rlvect_1(A)) = k1_rlvect_3(A,k2_rlvect_2(A,C,D)) ) ) ) ) ) ) ).
+
+fof(d1_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ( v1_rlvect_5(A)
+      <=> ? [B] :
+            ( v1_finset_1(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+            & m1_rlvect_3(B,A) ) ) ) ).
+
+fof(d2_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ( v1_rlvect_5(A)
+      <=> ? [B] :
+            ( v1_finset_1(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+            & m1_rlvect_3(B,A) ) ) ) ).
+
+fof(t24_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ( v1_rlvect_5(A)
+       => ! [B] :
+            ( m1_rlvect_3(B,A)
+           => v1_finset_1(B) ) ) ) ).
+
+fof(t25_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ( v1_rlvect_5(A)
+       => ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+           => ( v1_rlvect_3(B,A)
+             => v1_finset_1(B) ) ) ) ) ).
+
+fof(t26_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ( v1_rlvect_5(A)
+       => ! [B] :
+            ( m1_rlvect_3(B,A)
+           => ! [C] :
+                ( m1_rlvect_3(C,A)
+               => k1_card_1(B) = k1_card_1(C) ) ) ) ) ).
+
+fof(t27_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => v1_rlvect_5(k1_rlsub_1(A)) ) ).
+
+fof(t28_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ( v1_rlvect_5(A)
+           => v1_rlvect_5(B) ) ) ) ).
+
+fof(d3_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ( v1_rlvect_5(A)
+       => ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ( B = k1_rlvect_5(A)
+            <=> ! [C] :
+                  ( m1_rlvect_3(C,A)
+                 => B = k1_card_1(C) ) ) ) ) ) ).
+
+fof(t29_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => r1_xreal_0(k1_rlvect_5(B),k1_rlvect_5(A)) ) ) ).
+
+fof(t30_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v1_rlvect_3(B,A)
+           => k1_card_1(B) = k1_rlvect_5(k1_rlvect_3(A,B)) ) ) ) ).
+
+fof(t31_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => k1_rlvect_5(A) = k1_rlvect_5(k2_rlsub_1(A)) ) ).
+
+fof(t32_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ( k1_rlvect_5(A) = k1_rlvect_5(B)
+          <=> k2_rlsub_1(A) = k2_rlsub_1(B) ) ) ) ).
+
+fof(t33_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ( k1_rlvect_5(A) = np__0
+      <=> k2_rlsub_1(A) = k1_rlsub_1(A) ) ) ).
+
+fof(t34_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ( k1_rlvect_5(A) = np__1
+      <=> ? [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+            & B != k1_rlvect_1(A)
+            & k2_rlsub_1(A) = k1_rlvect_3(A,k7_rlvect_2(A,B)) ) ) ) ).
+
+fof(t35_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ( k1_rlvect_5(A) = np__2
+      <=> ? [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+            & ? [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+                & B != C
+                & v1_rlvect_3(k8_rlvect_2(A,B,C),A)
+                & k2_rlsub_1(A) = k1_rlvect_3(A,k8_rlvect_2(A,B,C)) ) ) ) ) ).
+
+fof(t36_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_rlsub_1(C,A)
+             => k1_nat_1(k1_rlvect_5(k1_rlsub_2(A,B,C)),k1_rlvect_5(k2_rlsub_2(A,B,C))) = k1_nat_1(k1_rlvect_5(B),k1_rlvect_5(C)) ) ) ) ).
+
+fof(t37_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_rlsub_1(C,A)
+             => r1_xreal_0(k5_real_1(k1_nat_1(k1_rlvect_5(B),k1_rlvect_5(C)),k1_rlvect_5(A)),k1_rlvect_5(k2_rlsub_2(A,B,C))) ) ) ) ).
+
+fof(t38_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlsub_1(B,A)
+         => ! [C] :
+              ( m1_rlsub_1(C,A)
+             => ( r1_rlsub_2(A,B,C)
+               => k1_rlvect_5(A) = k1_nat_1(k1_rlvect_5(B),k1_rlvect_5(C)) ) ) ) ) ).
+
+fof(t39_rlvect_5,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v7_rlvect_1(B)
+            & v1_rlvect_5(B)
+            & l2_rlvect_1(B) )
+         => ( r1_xreal_0(A,k1_rlvect_5(B))
+          <=> ? [C] :
+                ( v2_rlvect_1(C)
+                & m1_rlsub_1(C,B)
+                & k1_rlvect_5(C) = A ) ) ) ) ).
+
+fof(d4_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v1_rlvect_5(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( C = k2_rlvect_5(A,B)
+            <=> ! [D] :
+                  ( r2_hidden(D,C)
+                <=> ? [E] :
+                      ( v2_rlvect_1(E)
+                      & m1_rlsub_1(E,A)
+                      & E = D
+                      & k1_rlvect_5(E) = B ) ) ) ) ) ).
+
+fof(t40_rlvect_5,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v7_rlvect_1(B)
+            & v1_rlvect_5(B)
+            & l2_rlvect_1(B) )
+         => ~ ( r1_xreal_0(A,k1_rlvect_5(B))
+              & v1_xboole_0(k2_rlvect_5(B,A)) ) ) ) ).
+
+fof(t41_rlvect_5,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v7_rlvect_1(B)
+            & v1_rlvect_5(B)
+            & l2_rlvect_1(B) )
+         => ( ~ r1_xreal_0(A,k1_rlvect_5(B))
+           => k2_rlvect_5(B,A) = k1_xboole_0 ) ) ) ).
+
+fof(t42_rlvect_5,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v7_rlvect_1(B)
+            & v1_rlvect_5(B)
+            & l2_rlvect_1(B) )
+         => ! [C] :
+              ( m1_rlsub_1(C,B)
+             => r1_tarski(k2_rlvect_5(C,A),k2_rlvect_5(B,A)) ) ) ) ).
+
+fof(dt_k1_rlvect_5,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => m2_subset_1(k1_rlvect_5(A),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k2_rlvect_5,axiom,
+    $true ).
+
+%------------------------------------------------------------------------------

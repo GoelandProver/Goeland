@@ -66,9 +66,9 @@ func secondPassAux(form btypes.Form, vars []btypes.Var, types []typing.TypeApp) 
 		// Real case: classical predicate, it should be given
 		return btypes.MakePred(f.GetIndex(), f.GetID(), terms, typeApps)
 	case btypes.And:
-		return btypes.MakeAnd(f.GetIndex(), nArySecondPass(f.GetLF(), vars, types))
+		return btypes.MakeAnd(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
 	case btypes.Or:
-		return btypes.MakeOr(f.GetIndex(), nArySecondPass(f.GetLF(), vars, types))
+		return btypes.MakeOr(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
 	case btypes.Imp:
 		return btypes.MakeImp(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
 	case btypes.Equ:

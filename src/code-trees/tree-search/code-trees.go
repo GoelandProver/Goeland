@@ -184,6 +184,8 @@ func (n Node) Print() {
 	n.printAux(-1)
 }
 
+//ILL TODO: A Print function should not print, it should return a String that is then printed
+//Why is there a debug print followed by a normal print ?
 /* Auxiliary function to print a CodeTree. */
 func (n Node) printAux(tab int) {
 	// Print current value
