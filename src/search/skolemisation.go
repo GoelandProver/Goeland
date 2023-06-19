@@ -104,6 +104,7 @@ func substAndReturn(args skoArgs, sko basictypes.Term) basictypes.Form {
 }
 
 func (c *class) make(form basictypes.Form, source basictypes.Var) basictypes.Id {
+
 	form = alphaConvert(basictypes.MakerEx([]basictypes.Var{source}, form), 0, make(map[basictypes.Var]basictypes.Var))
 	c.mu.Lock()
 	symbol := c.getSymbol(form, basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", source.GetName(), source.GetIndex())))
@@ -140,7 +141,7 @@ func alphaConvert(form basictypes.Form, k int, substitution map[basictypes.Var]b
 	case basictypes.Top, basictypes.Bot:
 		return form
 	case basictypes.Pred:
-		return basictypes.MakePred(f.GetIndex(), f.GetID(), global.Map(f.GetSubTerms(), func(_ int, t basictypes.Term) basictypes.Term { return alphaConvertTerm(t, substitution) }), f.GetTypeVars(), f.GetType())
+		return basictypes.MakePred(f.GetIndex(), f.GetID(), global.Map(f.GetArgs(), func(_ int, t basictypes.Term) basictypes.Term { return alphaConvertTerm(t, substitution) }), f.GetTypeVars(), f.GetType())
 	case basictypes.Not:
 		return basictypes.MakeNot(f.GetIndex(), alphaConvert(f.GetForm(), k, substitution))
 	case basictypes.Imp:
@@ -180,7 +181,7 @@ func alphaConvertTerm(t basictypes.Term, substitution map[basictypes.Var]basicty
 			return nt
 		}
 	case basictypes.Fun:
-		return basictypes.MakeFun(nt.GetID(), global.Map(nt.GetSubTerms(), func(_ int, t basictypes.Term) basictypes.Term { return alphaConvertTerm(t, substitution) }), nt.GetTypeVars(), nt.GetTypeHint())
+		return basictypes.MakeFun(nt.GetID(), global.Map(nt.GetArgs(), func(_ int, trm basictypes.Term) basictypes.Term { return alphaConvertTerm(trm, substitution) }), nt.GetTypeVars(), nt.GetTypeHint())
 	}
 	return t
 }
