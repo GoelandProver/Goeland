@@ -45,6 +45,7 @@ import (
 	"sync"
 
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/gs3"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	ctps "github.com/GoelandProver/Goeland/types/complex-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
@@ -64,7 +65,7 @@ var contextEnabled bool = false
 // Plugin initialisation and main function to call.
 
 // Section: init
-// Functions: InitFlag, MakeCoqOutput, makeCoqProof
+// Functions: MakeCoqOutput
 // Main functions of the coq module.
 // TODO:
 //	* Write the context for TFF problems
@@ -75,15 +76,20 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 		return ""
 	}
 
+	// Transform tableaux's proof in GS3 proof
+	gs3.MakeGS3Proof(proof)
+
 	resultingString := ""
-	// If output is standalone, then print context
-	if GetContextEnabled() {
-		resultingString += "(* CONTEXT BEGIN *)\n"
-		resultingString += makeContext(proof[0].Formula.GetForm(), meta)
-		resultingString += "\n(* CONTEXT END *)\n"
-	}
-	resultingString += makeCoqProof(proof)
-	resultingString += "(* PROOF END *)\n"
+	// TODO: context + convert GS3 proof to Coq (should be easy)
+	/*
+		// If output is standalone, then print context
+		if GetContextEnabled() {
+			//resultingString += "(* CONTEXT BEGIN *)\n"
+			resultingString += makeContext(proof[0].Formula.GetForm(), meta) gs3Proof.GetContextString()
+			//resultingString += "\n(* CONTEXT END *)\n"
+		}
+		resultingString +=
+		//resultingString += "(* PROOF END *)\n"*/
 	return resultingString
 }
 
