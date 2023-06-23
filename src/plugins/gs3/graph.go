@@ -47,6 +47,10 @@ type Graph[T any] struct {
 	edges    [][]int
 }
 
+// ----------------------------------------------------------------------------
+// Public methods
+// ----------------------------------------------------------------------------
+
 func (g *Graph[T]) AddVertex(u T) {
 	g.vertices = append(g.vertices, u)
 }
@@ -63,8 +67,49 @@ func (g *Graph[T]) AddEdge(u, v T) {
 	}
 
 	g.edges[ux] = append(g.edges[ux], vx)
-	g.edges[vx] = append(g.edges[vx], ux)
 }
+
+func (g Graph[T]) Copy() Graph[T] {
+	oth := Graph[T]{}
+	oth.vertices = make([]T, len(g.vertices))
+	copy(oth.vertices, g.vertices)
+	oth.edges = make([][]int, len(g.edges))
+	for i, ls := range g.edges {
+		oth.edges[i] = make([]int, len(ls))
+		copy(oth.edges[i], ls)
+	}
+	return oth
+}
+
+func (g Graph[T]) DepthFirstSearch(source T) []T {
+	seen := make([]bool, len(g.vertices))
+	g.dfsAux(&seen, g.findVertex(source))
+	elementsSeen := []T{}
+	for i, v := range seen {
+		if v {
+			elementsSeen = append(elementsSeen, g.vertices[i])
+		}
+	}
+	return elementsSeen
+}
+
+func (g *Graph[T]) CleanEdgesFromVertex(u T) {
+	v := g.findVertex(u)
+	g.edges[v] = make([]int, 0)
+
+	for i, neighbors := range g.edges {
+		for j, neighbor := range neighbors {
+			if neighbor == v {
+				g.edges[i] = append(g.edges[i][:j], g.edges[i][j+1:]...)
+				break
+			}
+		}
+	}
+}
+
+// ----------------------------------------------------------------------------
+// Private methods
+// ----------------------------------------------------------------------------
 
 func (g Graph[T]) findVertex(u T) int {
 	index := -1
@@ -86,4 +131,14 @@ func (g Graph[T]) addVertexAndResize(u T) int {
 	}
 
 	return res
+}
+
+func (g Graph[T]) dfsAux(seen *[]bool, src int) {
+	(*seen)[src] = true
+
+	for _, n := range g.edges[src] {
+		if !(*seen)[n] {
+			g.dfsAux(seen, n)
+		}
+	}
 }

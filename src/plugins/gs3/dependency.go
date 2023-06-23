@@ -109,7 +109,7 @@ func getVariablesOccurrencesForm(varList []btps.Var, form btps.Form, currentOcc 
 	switch f := form.(type) {
 	case btps.Pred:
 		for i, term := range f.GetArgs() {
-			currentOcc = getVariablesOccurrencesTerm(varList, term, currentOcc, append(workingPath, i))
+			currentOcc = getVariablesOccurrencesTerm(varList, term, currentOcc, appcp(workingPath, i))
 		}
 	case btps.Not:
 		currentOcc = getUnaryOcc(varList, f.GetForm(), currentOcc, workingPath)
@@ -137,7 +137,7 @@ func getUnaryOcc(varList []btps.Var, form btps.Form, currentOcc []occurrences, p
 
 func getNAryOcc(varList []btps.Var, currentOcc []occurrences, path occurrence, fl btps.FormList) []occurrences {
 	for i, nf := range fl {
-		currentOcc = getVariablesOccurrencesForm(varList, nf, currentOcc, append(path, i))
+		currentOcc = getVariablesOccurrencesForm(varList, nf, currentOcc, appcp(path, i))
 	}
 	return currentOcc
 }
@@ -249,4 +249,10 @@ func getTerm(term btps.Term, occ occurrence) btps.Term {
 		return getTerm(fn.GetArgs()[occ[0]], occ[1:])
 	}
 	return nil
+}
+
+func appcp[T any](arr []T, el ...T) []T {
+	cp := make([]T, len(arr))
+	copy(cp, arr)
+	return append(cp, el...)
 }
