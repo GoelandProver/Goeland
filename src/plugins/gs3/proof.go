@@ -46,15 +46,47 @@ import (
 	tableaux "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-type dependencyMap map[btps.Term][]btps.Form
+type dependencyMap []Pair[btps.Term, []btps.Form]
 
 func (d dependencyMap) Copy() dependencyMap {
-	oth := make(dependencyMap)
-	for k, v := range d {
-		oth[k] = make([]btps.Form, len(v))
-		copy(oth[k], v)
+	oth := make(dependencyMap, len(d))
+	for _, v := range d {
+		p := MakePair(v.Fst.Copy(), make([]btps.Form, len(v.Snd)))
+		copy(p.Snd, v.Snd)
+		oth = append(oth, p)
 	}
 	return oth
+}
+
+func (d dependencyMap) Get(t btps.Term) ([]btps.Form, bool) {
+	for _, v := range d {
+		if v.Fst.Equals(t) {
+			return v.Snd, true
+		}
+	}
+	return []btps.Form{}, false
+}
+
+func (d *dependencyMap) Add(t btps.Term, f btps.Form) {
+	found := false
+	for i, v := range *d {
+		if v.Fst.Equals(t) {
+			(*d)[i] = MakePair(t, append(v.Snd, f))
+			found = true
+		}
+	}
+
+	if !found {
+		*d = append(*d, MakePair(t, []btps.Form{f}))
+	}
+}
+
+func (d *dependencyMap) Set(t btps.Term, fl []btps.Form) {
+	for i, v := range *d {
+		if v.Fst.Equals(t) {
+			(*d)[i] = MakePair(t, fl)
+		}
+	}
 }
 
 // Utilitary struct to build the proof. Keeps everything that's needed on a proofstep.
@@ -68,6 +100,7 @@ type GS3Proof struct {
 
 func MakeGS3Proof(proof []tableaux.ProofStruct) *GS3Sequent {
 	gs3Proof := GS3Proof{}
+	gs3Proof.offspring = MakeGraph[btps.Form]()
 	return gs3Proof.makeProof(proof)
 }
 
@@ -77,23 +110,22 @@ func MakeGS3Proof(proof []tableaux.ProofStruct) *GS3Sequent {
 
 // Makes a GS3 proof from a tableaux proof.
 // TODO: get uninstanciated proof here to put in the offspring graph.
-func (gs GS3Proof) makeProof(proof []tableaux.ProofStruct) *GS3Sequent {
-	var subRoot *GS3Sequent
+func (gs *GS3Proof) makeProof(proof []tableaux.ProofStruct) *GS3Sequent {
+	subRoot := MakeNewSequent()
 	var resultFormulas [][]btps.Form
+	gs.branchForms = append(gs.branchForms, proof[0].Formula.GetForm())
 
 	// For each proofstep, create a node & populate which is a child of the last proofstep.
 	for _, prf := range proof {
 		var node *GS3Sequent
-		node, resultFormulas = gs.makeProofOneStep(prf)
-		if gs.lastNode != nil {
+		node, resultFormulas = gs.makeProofOneStep(prf, subRoot)
+		if gs.lastNode != nil && gs.lastNode != node && node != nil {
 			gs.lastNode.addChild(node)
-		} else {
-			subRoot = gs.lastNode
+			gs.lastNode = node
 		}
 		if len(resultFormulas) == 1 {
 			gs.branchForms = append(gs.branchForms, resultFormulas[0]...)
 		}
-		gs.lastNode = node
 	}
 
 	// The last proofstep is a branching proofstep, so launch makeProof back on each child.
@@ -106,16 +138,18 @@ func (gs GS3Proof) makeProof(proof []tableaux.ProofStruct) *GS3Sequent {
 		for _, f := range resultFormulas[i] {
 			childProof.offspring.AddEdge(proof[len(proof)-1].Formula.GetForm(), f)
 		}
-		gs.lastNode.children = append(gs.lastNode.children, childProof.makeProof(child))
+		gs.lastNode.addChild(childProof.makeProof(child))
 	}
 
 	return subRoot
 }
 
 // Returns a sequent and the result formulas: they can not be
-func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct) (*GS3Sequent, [][]btps.Form) {
-	seq := new(GS3Sequent)
+func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3Sequent) (*GS3Sequent, [][]btps.Form) {
+	seq := MakeNewSequent()
 	seq.setHypotheses(gs.branchForms)
+
+	PrintInfo("MPOS", proofStep.Rule_name)
 
 	rule, _ := proofStructRuleToGS3Rule(proofStep.GetRuleName())
 	form := proofStep.GetFormula().GetForm()
@@ -123,15 +157,20 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct) (*GS3Sequen
 	// TODO: manage reintroduction and rewrite: second return value of proofStructRuleToGS3Rule
 	switch rule {
 	// Immediate, just apply the rule.
-	case NNOT, NOR, NIMP, AND, NAND, NEQU, OR, IMP, EQU:
+	case NNOT, NOR, NIMP, AND, NAND, NEQU, OR, IMP, EQU, AX:
 		seq.setAppliedRule(rule)
 		seq.setAppliedOn(form)
+		if parent.isEmpty() {
+			*parent = *seq
+			seq = parent
+		}
 	// Be careful as one gamma rule may instantiate multiple variables.
 	case ALL, NEX:
-		form, seq = gs.manageGammaStep(proofStep, rule)
+		form, seq = gs.manageGammaStep(proofStep, rule, parent)
 	// Be extra careful as it is a delta-rule
 	case NALL, EX:
-		form, seq = gs.manageDeltaStep(proofStep, rule)
+		// TODO: pass parent to deltastep.
+		form, seq = gs.manageDeltaStep(proofStep, rule, parent)
 	case W:
 		seq = gs.weakenForm(form)
 	}
@@ -163,8 +202,28 @@ func proofStructRuleToGS3Rule(rule string) (int, bool) {
 	r, ok := mapping[rule]
 	return r, ok
 }
+func ruleToTableauxString(rule int) string {
+	mapping := map[int]string{
+		NNOT: "ALPHA_NOT_NOT",
+		NOR:  "ALPHA_NOT_OR",
+		NIMP: "ALPHA_NOT_IMPLY",
+		AND:  "ALPHA_AND",
+		NAND: "ALPHA_NOT_AND",
+		NEQU: "BETA_NOT_EQUIV",
+		OR:   "BETA_OR",
+		IMP:  "BETA_IMPLY",
+		EQU:  "BETA_EQUIV",
+		NEX:  "GAMMA_NOT_EXISTS",
+		ALL:  "GAMMA_FORALL",
+		NALL: "DELTA_NOT_FORALL",
+		EX:   "DELTA_EXISTS",
+		AX:   "CLOSURE",
+		W:    "WEAKEN",
+	}
+	return mapping[rule]
+}
 
-func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule int) (btps.Form, *GS3Sequent) {
+func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule int, seq *GS3Sequent) (btps.Form, *GS3Sequent) {
 	// Manage gamma: add all the gammas except the result formula to the thing
 	resultForm := proofStep.GetResultFormulas()[0].GetForms()[0]
 	// TODO: what happens if the result form doesn't care of what it's instantiated with?
@@ -173,20 +232,20 @@ func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule int) (b
 
 	// Update dependency graph & offspring tree.
 	for i, term := range termsDependency {
-		gs.dependency[term] = append(gs.dependency[term], intermediateForms[i])
+		gs.dependency.Add(term, intermediateForms[i])
 	}
 	for i := 0; i < len(intermediateForms)-1; i++ {
 		gs.offspring.AddEdge(intermediateForms[i], intermediateForms[i+1])
 	}
 
 	// Create all the next sequents needed.
-	seq := gs.createSubSequents(intermediateForms, termsDependency, rule)
+	lastSeq := gs.createSubSequents(intermediateForms, termsDependency, rule, seq)
 
 	// Needed to have the right offspring tree when updating later
-	return intermediateForms[len(intermediateForms)-1], seq
+	return intermediateForms[len(intermediateForms)-1], lastSeq
 }
 
-func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int) (btps.Form, *GS3Sequent) {
+func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int, parent *GS3Sequent) (btps.Form, *GS3Sequent) {
 	resultForm := proofStep.GetResultFormulas()[0].GetForms()[0]
 	intermediateForms, termsGenerated := manageDeltasSkolemisations(proofStep.GetFormula().GetForm(), resultForm)
 
@@ -200,26 +259,29 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int) (b
 		}
 		if atLeastOneDependantForm {
 			rulesApplied, offsprings := gs.getRulesAppliedInOrder(dependantForms)
-			lastSequent := gs.weakenForms(offsprings)
+			lastSequent, escaped := gs.weakenForms(offsprings, intermediateForms[i])
 			deltaSeq = gs.applyDeltaRule(intermediateForms[i], rule, termsGenerated[i])
+			lastSequent.addChild(deltaSeq)
+			if escaped {
+				seq := gs.weakenForm(intermediateForms[i])
+				deltaSeq.addChild(seq)
+				deltaSeq = seq
+				gs.lastNode = deltaSeq
+			}
 			gs.branchForms = append(gs.branchForms, currentResultForm)
-			lastSequent.children = append(lastSequent.children, deltaSeq)
+			// The subroot doesnt need to be added as a child of deltaSeq,
+			// as it is already taken care of
 			subRoot := gs.applyRulesBack(rulesApplied)
-			deltaSeq.children = append(deltaSeq.children, subRoot)
-			deltaSeq = getLastSequent(deltaSeq)
+			deltaSeq = getLastSequent(subRoot)
 		} else {
 			// Just apply the delta-rule.
 			deltaSeq = gs.applyDeltaRule(intermediateForms[i], rule, termsGenerated[i])
 			gs.branchForms = append(gs.branchForms, currentResultForm)
+			gs.lastNode.addChild(deltaSeq)
 		}
-
-		// TODO: see what needs to be done with the next 4 lines.
-		if i < len(intermediateForms)-1 {
-			gs.lastNode.children = append(gs.lastNode.children, deltaSeq)
-			gs.lastNode = deltaSeq
-		}
+		gs.lastNode = deltaSeq
 	}
-	return intermediateForms[len(intermediateForms)-1], deltaSeq
+	return intermediateForms[len(intermediateForms)-1], nil
 }
 
 func (gs *GS3Proof) postTreatment(proofStep tableaux.ProofStruct, rule int, form btps.Form) [][]btps.Form {
@@ -241,34 +303,44 @@ func (gs *GS3Proof) postTreatment(proofStep tableaux.ProofStruct, rule int, form
 	return forms
 }
 
-func (gs *GS3Proof) createSubSequents(intermediateForms []btps.Form, termsGenerated []btps.Term, rule int) *GS3Sequent {
-	var last *GS3Sequent
+func (gs *GS3Proof) createSubSequents(intermediateForms []btps.Form, termsGenerated []btps.Term, rule int, seq *GS3Sequent) *GS3Sequent {
 	for i, form := range intermediateForms {
 		// The first formula should be the one on which the original rule is applied, so there's no need to add it in the branchForms.
 		if i > 0 {
 			gs.branchForms = append(gs.branchForms, form)
 		}
-		current := new(GS3Sequent)
+		current := MakeNewSequent()
 		current.setHypotheses(gs.branchForms)
 		current.setAppliedRule(rule)
 		current.setAppliedOn(form)
 		current.setTermGenerated(termsGenerated[i])
-		if last != nil {
-			last.addChild(current)
-		} else {
+		if i < len(intermediateForms)-1 {
+			gs.rulesApplied = append(gs.rulesApplied, MakePair(rule, makeGammaProofStructFrom(form, intermediateForms[i+1], rule)))
+		}
+		if gs.lastNode != nil {
 			gs.lastNode.addChild(current)
 		}
-		last = current
+		if i == 0 && seq.isEmpty() {
+			*seq = *current
+			current = seq
+		}
+		gs.lastNode = current
 	}
 	// This update is needed as the proof is sequentially updated in makeProof. It is so that the rule matches
 	// with the others rules.
-	gs.lastNode = last
-	gs.rulesApplied = gs.rulesApplied[:len(gs.rulesApplied)-1]
-	return last
+	return gs.lastNode
+}
+
+func makeGammaProofStructFrom(f, nf btps.Form, rule int) tableaux.ProofStruct {
+	proofStruct := tableaux.MakeEmptyProofStruct()
+	proofStruct.Formula = btps.MakeFormAndTerm(f, nil)
+	proofStruct.Result_formulas = []tableaux.IntFormAndTermsList{tableaux.MakeIntFormAndTermsList(0, btps.MakeSingleElementFormAndTermList(btps.MakeFormAndTerm(nf, nil)))}
+	proofStruct.Rule_name = ruleToTableauxString(rule)
+	return proofStruct
 }
 
 func (gs GS3Proof) getFormulasDependantFromTerm(term btps.Term) ([]btps.Form, bool) {
-	fs, ok := gs.dependency[term]
+	fs, ok := gs.dependency.Get(term)
 	return fs, ok
 }
 
@@ -290,21 +362,25 @@ func (gs GS3Proof) getRulesAppliedInOrder(dependantForms []btps.Form) ([]Pair[in
 
 func (gs GS3Proof) getOffspringsOf(form btps.Form) []btps.Form {
 	// TODO: only take the offsprings in which the FV appears (how to know that though?)
-	return gs.offspring.DepthFirstSearch(form)
+	dfs := gs.offspring.DepthFirstSearch(form)
+	return dfs[1:]
 }
 
-func (gs *GS3Proof) weakenForms(forms []btps.Form) *GS3Sequent {
-	var seq *GS3Sequent
+func (gs *GS3Proof) weakenForms(forms []btps.Form, except btps.Form) (*GS3Sequent, bool) {
+	found := false
 	for _, form := range forms {
-		newSeq := gs.weakenForm(form)
-		seq.children = append(seq.children, newSeq)
-		seq = newSeq
+		if !form.Equals(except) {
+			newSeq := gs.weakenForm(form)
+			gs.lastNode.addChild(newSeq)
+			gs.lastNode = newSeq
+			found = true
+		}
 	}
-	return seq
+	return gs.lastNode, found
 }
 
 func (gs *GS3Proof) weakenForm(form btps.Form) *GS3Sequent {
-	seq := new(GS3Sequent)
+	seq := MakeNewSequent()
 	seq.setHypotheses(gs.branchForms)
 	seq.setAppliedRule(W)
 	seq.setAppliedOn(form)
@@ -326,10 +402,11 @@ func (gs *GS3Proof) removeAncestryAndOffsprings(form btps.Form) {
 }
 
 func (gs *GS3Proof) removeDependency(form btps.Form) {
-	for k, v := range gs.dependency {
-		for i, f := range v {
+	for _, v := range gs.dependency {
+		for i, f := range v.Snd {
 			if f.Equals(form) {
-				gs.dependency[k] = append(gs.dependency[k][:i], gs.dependency[k][i+1:]...)
+				ls, _ := gs.dependency.Get(v.Fst)
+				gs.dependency.Set(v.Fst, append(ls[:i], ls[i+1:]...))
 				return
 			}
 		}
@@ -337,7 +414,7 @@ func (gs *GS3Proof) removeDependency(form btps.Form) {
 }
 
 func (gs *GS3Proof) applyDeltaRule(form btps.Form, rule int, term btps.Term) *GS3Sequent {
-	seq := new(GS3Sequent)
+	seq := MakeNewSequent()
 	seq.setHypotheses(gs.branchForms)
 	seq.setAppliedRule(rule)
 	seq.setAppliedOn(form)

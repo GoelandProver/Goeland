@@ -35,6 +35,13 @@ const (
 	NALL
 )
 
+func MakeNewSequent() *GS3Sequent {
+	seq := new(GS3Sequent)
+	seq.hypotheses = make([]btps.Form, 0)
+	seq.children = make([]*GS3Sequent, 0)
+	return seq
+}
+
 func (seq *GS3Sequent) setHypotheses(forms []btps.Form) {
 	seq.hypotheses = make([]btps.Form, len(forms))
 	copy(seq.hypotheses, forms)
@@ -65,8 +72,8 @@ func (seq *GS3Sequent) setTermGenerated(t btps.Term) {
 	seq.termGenerated = t
 }
 
-func (seq *GS3Sequent) addChild(oth *GS3Sequent) {
-	seq.children = append(seq.children, oth)
+func (seq *GS3Sequent) addChild(oth ...*GS3Sequent) {
+	seq.children = append(seq.children, oth...)
 }
 
 func (seq *GS3Sequent) ToString() string {
@@ -80,7 +87,7 @@ func (seq *GS3Sequent) toStringAux(i int) string {
 	for j, child := range seq.children {
 		childrenStrings[j] = child.toStringAux(i + 1)
 	}
-	return identation + status + strings.Join(childrenStrings, "\n")
+	return "\n" + identation + status + strings.Join(childrenStrings, "") + "\n"
 }
 
 func (seq *GS3Sequent) ruleToString(rule int) string {
@@ -102,4 +109,8 @@ func (seq *GS3Sequent) ruleToString(rule int) string {
 		W:    "WEAKEN",
 	}
 	return mapping[rule]
+}
+
+func (seq *GS3Sequent) isEmpty() bool {
+	return len(seq.hypotheses) == 0
 }
