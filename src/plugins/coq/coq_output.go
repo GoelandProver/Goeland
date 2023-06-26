@@ -77,9 +77,8 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 	}
 
 	// Transform tableaux's proof in GS3 proof
-	gs3.MakeGS3Proof(proof)
 
-	resultingString := ""
+	//resultingString := ""
 	// TODO: context + convert GS3 proof to Coq (should be easy)
 	/*
 		// If output is standalone, then print context
@@ -90,7 +89,7 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 		}
 		resultingString +=
 		//resultingString += "(* PROOF END *)\n"*/
-	return resultingString
+	return gs3.MakeGS3Proof(proof).ToString()
 }
 
 func makeCoqProof(proofs []proof.ProofStruct) string {

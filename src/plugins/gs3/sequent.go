@@ -1,6 +1,8 @@
 package gs3
 
 import (
+	"strings"
+
 	. "github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -65,4 +67,39 @@ func (seq *GS3Sequent) setTermGenerated(t btps.Term) {
 
 func (seq *GS3Sequent) addChild(oth *GS3Sequent) {
 	seq.children = append(seq.children, oth)
+}
+
+func (seq *GS3Sequent) ToString() string {
+	return seq.toStringAux(0)
+}
+
+func (seq *GS3Sequent) toStringAux(i int) string {
+	identation := strings.Repeat("\t", i)
+	status := seq.ruleToString(seq.rule) + " on " + seq.hypotheses[seq.appliedOn].ToString()
+	childrenStrings := make([]string, len(seq.children))
+	for j, child := range seq.children {
+		childrenStrings[j] = child.toStringAux(i + 1)
+	}
+	return identation + status + strings.Join(childrenStrings, "\n")
+}
+
+func (seq *GS3Sequent) ruleToString(rule int) string {
+	mapping := map[int]string{
+		NNOT: "NOT_NOT (alpha)",
+		NOR:  "NOT_OR (alpha)",
+		NIMP: "NOT_IMPLY (alpha)",
+		AND:  "AND (alpha)",
+		NAND: "NOT_AND (beta)",
+		NEQU: "NOT_EQUIV (beta)",
+		OR:   "OR (beta)",
+		IMP:  "IMPLY (beta)",
+		EQU:  "EQUIV (beta)",
+		NEX:  "NOT_EXISTS (gamma)",
+		ALL:  "FORALL (gamma)",
+		NALL: "NOT_FORALL (delta)",
+		EX:   "EXISTS (delta)",
+		AX:   "AXIOM",
+		W:    "WEAKEN",
+	}
+	return mapping[rule]
 }
