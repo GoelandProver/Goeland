@@ -618,12 +618,14 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 		manageQuitOrder(quit, c, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce, chFyne)
 	default:
 		// Apply subst if any
-		if !s.IsEmpty() && !global.GetAssisted() {
+		if !s.IsEmpty() {
 			st.SetCurrentProofRule(fmt.Sprintf("Apply substitution : %v", s.GetSubst().ToStringForProof()))
 			global.PrintDebug("PS", fmt.Sprintf("Apply Substitution : %v", s.ToString()))
 			complextypes.ApplySubstitution(&st, s)
 			global.PrintDebug("PS", "Searching contradiction with new atomics")
+		}
 
+		if !global.GetAssisted() {
 			for _, f := range st.GetAtomic() {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 				// Check if exists a contradiction after applying the substitution

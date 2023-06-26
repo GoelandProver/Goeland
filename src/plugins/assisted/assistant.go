@@ -37,12 +37,13 @@ func SetFinishedProof(b bool) {
 		fmt.Println("UNLOCK CHOICE")
 	}*/
 
+var substListAssisted = complextypes.MakeEmptySubstAndForm()
+
 func Assistant() {
 
 	nextStep = make(chan bool)
 
 	index := 0
-	substListAssisted := complextypes.MakeEmptySubstAndForm()
 
 	for <-nextStep {
 		lock_choices.Lock()

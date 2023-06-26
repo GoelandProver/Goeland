@@ -141,13 +141,11 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		meta_to_reintroduce := []int{}
 
 		for _, subst_for_father := range substs_with_mm {
-
 			// Check if subst_for_father is failure
 			if subst_for_father.Equals(treetypes.Failure()) {
 				global.PrintDebug("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().ToString()))
 				fmt.Printf("[MCR] Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().GetSubst().ToString())
 			}
-
 			global.PrintDebug("MCR", fmt.Sprintf("Formula = : %v", f.ToString()))
 
 			// Create substAndForm with the current form and the subst found
@@ -162,11 +160,16 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			meta_to_reintroduce = global.UnionIntList(meta_to_reintroduce, retrieveMetaFromSubst(subst_for_father))
 		}
 
-		global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
+		if global.GetAssisted() {
+			fmt.Printf("Substitutions found, but they can lead to unfair metavariable choice.\nUser, please choose a substitution to apply.\n")
+			fmt.Printf("Substitutions found now : %v\n", complextypes.SubstAndFormListToString(st.GetSubstsFound()))
+		} else {
+			global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
+			global.PrintDebug("MCR", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
+			sort.Ints(meta_to_reintroduce)
+			sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce, chFyne)
+		}
 
-		global.PrintDebug("MCR", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
-		sort.Ints(meta_to_reintroduce)
-		sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce, chFyne)
 	}
 }
 
