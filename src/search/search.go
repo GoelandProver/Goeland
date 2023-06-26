@@ -82,15 +82,20 @@ func retrieveMetaFromSubst(s treetypes.Substitutions) []int {
 * Manage this result, dispatch the subst and recreate data strcutures.
 * Return if the branch is closed without variable from its father
 **/
-func manageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int, chFyne chan complextypes.State) {
+func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int, chFyne chan complextypes.State) {
 
 	mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
 	substs_with_mm, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
 
+	fmt.Printf("Substs : %v et len : %d \n", substs, len(substs))
 	switch {
-
 	case len(substs) == 0:
-		global.PrintDebug("MCR", "Branch closed by ¬⊤ or ⊥ or a litteral and its opposite !")
+		global.PrintDebug("MCR", "Branch closed by ¬⊤ or ⊥ or a litteral and its opposite!")
+
+		if global.GetAssisted() {
+			fmt.Printf("Branch closed by ¬⊤ or ⊥ or a litteral and its opposite!\n")
+		}
+
 		st.SetSubstsFound([]complextypes.SubstAndForm{st.GetAppliedSubst()})
 
 		// Proof
@@ -105,6 +110,12 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 
 	case len(substs_without_mm) > 0:
 		global.PrintDebug("MCR", fmt.Sprintf("Contradiction found (without mm) : %v", treetypes.SubstListToString(substs_without_mm)))
+
+		if global.GetAssisted() {
+			fmt.Printf("The branch can be closed by using a substitution which has no impact elsewhere!\n")
+			fmt.Printf("%d", len(substs_without_mm))
+		}
+
 		st.SetSubstsFound([]complextypes.SubstAndForm{st.GetAppliedSubst()})
 
 		// Proof
@@ -152,6 +163,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		}
 
 		global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
+
 		global.PrintDebug("MCR", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 		sort.Ints(meta_to_reintroduce)
 		sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce, chFyne)

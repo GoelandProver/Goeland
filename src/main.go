@@ -100,6 +100,7 @@ func main() {
 	if global.GetAssisted() {
 		// Initialisation
 		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
+		go assisted.Assistant()
 		/*
 			myApp := app.New()
 			myWindow := myApp.NewWindow("Fenetre test")
@@ -109,6 +110,7 @@ func main() {
 			assisted.MainWindow = myWindow
 		*/
 		fmt.Printf("This problem has formula %s\n", form.ToString())
+		assisted.Counter.Increase()
 		go mainB(form, bound, chFyne)
 
 		//myApp.Run()
@@ -318,6 +320,7 @@ func Search(f basictypes.Form, bound int, chFyne chan complextypes.State) {
 		limit = 2 * limit
 		global.SetNbStep(global.GetNbStep() + 1)
 	}
+	fmt.Printf("StatusIDR \n")
 	PrintResult(res)
 
 }

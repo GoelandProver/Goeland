@@ -618,17 +618,18 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 		manageQuitOrder(quit, c, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce, chFyne)
 	default:
 		// Apply subst if any
-		if !s.IsEmpty() {
+		if !s.IsEmpty() && !global.GetAssisted() {
 			st.SetCurrentProofRule(fmt.Sprintf("Apply substitution : %v", s.GetSubst().ToStringForProof()))
 			global.PrintDebug("PS", fmt.Sprintf("Apply Substitution : %v", s.ToString()))
 			complextypes.ApplySubstitution(&st, s)
 			global.PrintDebug("PS", "Searching contradiction with new atomics")
+
 			for _, f := range st.GetAtomic() {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 				// Check if exists a contradiction after applying the substitution
-				clos_res_after_apply_subst, subst_after_apply_subst := applyClosureRules(f.GetForm(), &st)
+				clos_res_after_apply_subst, subst_after_apply_subst := ApplyClosureRules(f.GetForm(), &st)
 				if clos_res_after_apply_subst {
-					manageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id, chFyne)
+					ManageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id, chFyne)
 					return
 				}
 			}
@@ -650,15 +651,19 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 
 		// Search for a contradiction in LF
 		new_atomics := basictypes.MakeEmptyFormAndTermsList()
+
 		for _, f := range st.GetLF() {
 			if global.IsLoaded("equality") {
 				equality.InsertPred(f.GetForm())
 			}
-			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
-			clos_res, subst := applyClosureRules(f.GetForm(), &st)
-			if clos_res {
-				manageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst), f.Copy(), node_id, original_node_id, chFyne)
-				return
+
+			if !global.GetAssisted() {
+				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
+				clos_res, subst := ApplyClosureRules(f.GetForm(), &st)
+				if clos_res {
+					ManageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst), f.Copy(), node_id, original_node_id, chFyne)
+					return
+				}
 			}
 
 			// Retrieve atomics generated at this step
@@ -688,7 +693,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms())
 				if res_eq {
-					manageClosureRule(father_id, &st, c, subst_eq, basictypes.MakeFormAndTerm(basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{}), basictypes.MakeEmptyTermList()), node_id, original_node_id, chFyne)
+					ManageClosureRule(father_id, &st, c, subst_eq, basictypes.MakeFormAndTerm(basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{}), basictypes.MakeEmptyTermList()), node_id, original_node_id, chFyne)
 					return
 				}
 			}

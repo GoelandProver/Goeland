@@ -289,8 +289,8 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 	for _, f := range st.GetLF() {
 		var substs []treetypes.Substitutions
 		global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
-		closed, substs = applyClosureRules(f.GetForm(), &st)
-		manageClosureRule(father_id, &st, c, substs, f, -1, -1, chFyne)
+		closed, substs = ApplyClosureRules(f.GetForm(), &st)
+		ManageClosureRule(father_id, &st, c, substs, f, -1, -1, chFyne)
 
 		if closed {
 			return

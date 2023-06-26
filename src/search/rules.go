@@ -64,7 +64,7 @@ import (
 *	a boolean, true if a contradiction was found, false otherwise
 *	a substitution, the substitution which make the contradiction (possibly empty)
 **/
-func applyClosureRules(f basictypes.Form, st *complextypes.State) (bool, []treetypes.Substitutions) {
+func ApplyClosureRules(f basictypes.Form, st *complextypes.State) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ACR", "Start ACR")
 	var sl []treetypes.Substitutions
 	res := false
@@ -79,6 +79,7 @@ func applyClosureRules(f basictypes.Form, st *complextypes.State) (bool, []treet
 	if subst_found {
 		res = true
 		sl = append(sl, subst)
+		global.PrintDebug("ACR", fmt.Sprintf("SL size 1 : %v", len(sl)))
 	}
 
 	/* Search contradiction */
@@ -90,6 +91,9 @@ func applyClosureRules(f basictypes.Form, st *complextypes.State) (bool, []treet
 		// Check if the substitution was not tried before
 		for _, s := range msl { // Pour chaque ensemble de substitution
 			global.PrintDebug("ACR", fmt.Sprintf("MSL : %v", s.ToString()))
+			global.PrintDebug("ACR", fmt.Sprintf("Subst : %v", s.GetSubst()))
+			global.PrintDebug("ACR", fmt.Sprintf("Len : %v", len(s.GetSubst())))
+			global.PrintDebug("ACR", fmt.Sprintf("Empty : %v", s.GetSubst().Equals(treetypes.MakeEmptySubstitution())))
 
 			if s.GetSubst().Equals(treetypes.MakeEmptySubstitution()) {
 				res = true
@@ -108,12 +112,18 @@ func applyClosureRules(f basictypes.Form, st *complextypes.State) (bool, []treet
 			}
 
 			if res {
-				global.PrintDebug("ACR", fmt.Sprintf("Subst found between : %v and %v : %v", f.ToString(), s.GetForm().ToString(), s.GetSubst().ToString()))
-				sl = treetypes.AppendIfNotContainsSubst(sl, s.GetSubst())
+				global.PrintDebug("ACR", fmt.Sprintf("Subst found between : %v and %v : %v", f.ToString(), s.GetForm().ToString(), s.GetSubst()))
+				if !s.GetSubst().Equals(treetypes.MakeEmptySubstitution()) {
+					sl = treetypes.AppendIfNotContainsSubst(sl, s.GetSubst())
+					global.PrintDebug("ACR", fmt.Sprintf("SL size 2 : %v", len(sl)))
+				}
+
 			}
 		}
 	}
 
+	global.PrintDebug("ACR", fmt.Sprintf("SL : %v", treetypes.SubstListToString(sl)))
+	global.PrintDebug("ACR", fmt.Sprintf("SL size : %v", len(sl)))
 	return res, sl
 }
 
@@ -252,6 +262,11 @@ func ApplyBetaRules(f basictypes.FormAndTerms, st *complextypes.State) []basicty
 			global.PrintDebug("AR", "Applying β¬⇔...")
 			st.SetCurrentProofRule("β¬⇔")
 			st.SetCurrentProofRuleName("BETA_NOT_EQUIV")
+
+			for i, fl := range res {
+				fmt.Printf("res b4, [%d] : %s\n", i, fl.ToString())
+			}
+
 			res = append(res,
 				basictypes.FormAndTermsList{
 					basictypes.MakeFormAndTerm(basictypes.RefuteForm(nnf.GetF1()), terms),

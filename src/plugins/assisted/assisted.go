@@ -9,6 +9,7 @@ import (
 	// "fyne.io/fyne/v2"
 	// "fyne.io/fyne/v2/container"
 	// "fyne.io/fyne/v2/widget"
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -16,48 +17,11 @@ import (
 )
 
 // Used to lock for display and fmt.Scanf() purposes
-var lock_choices sync.Mutex
-
-// May be outdated with the addition of more prints
-var ruleList = map[string]string{
-	"Atomic": "X",
-	"Axiom":  "X",
-	"X":      "X",
-	"⦾":      "X",
-	"x":      "X",
-
-	"Alpha": "A",
-	"A":     "A",
-	"α":     "A",
-	"a":     "A",
-
-	"Beta": "B",
-	"B":    "B",
-	"β":    "B",
-	"b":    "B",
-
-	"Delta": "D",
-	"D":     "D",
-	"δ":     "D",
-	"d":     "D",
-
-	"Gamma": "G",
-	"G":     "G",
-	"γ":     "G",
-	"g":     "G",
-
-	"MetaGen": "M",
-	"M":       "M",
-	"m":       "M",
-	"MG":      "M",
-	"mg":      "M",
-	"Meta":    "M",
-}
 
 /** WINDOW ASSETS NOTES : 06/16/2023
 * All parts of code related to visual functionnal window has been put into comments, the reason behind that
 * is the time that it would take to create a fully functionnal window, with dynamic tree visualisation, zooming
-* though it and its communication with goroutines would not have been implemented within the time I was given.
+* and its communication with goroutines would not have been implemented within the time I was given.
 *
 * Maybe hello to DymDym that may have to get it done later !
 **/
@@ -75,8 +39,8 @@ func SendChMain(chMain chan bool) {
 */
 
 // Prints formulae relative to rules from a State. For terminal uses.
-func PrintFormListFromState(st complextypes.State) {
-	fmt.Printf("Here is the content of the state :\n")
+func PrintFormListFromState(st complextypes.State, id int) {
+	fmt.Printf("\nHere is the content of the state [%d]:\n", id)
 	fmt.Printf(" │ FoundSubs : \n")
 	SubstsFound := st.GetSubstsFound()
 	for _, s := range SubstsFound {
@@ -110,7 +74,6 @@ func ChooseRule(st complextypes.State) string {
 				if rule == "X" && len(st.GetAtomic()) == 0 || rule == "A" && len(st.GetAlpha()) == 0 || rule == "B" && len(st.GetBeta()) == 0 || rule == "D" && len(st.GetDelta()) == 0 || rule == "G" && len(st.GetGamma()) == 0 {
 					fmt.Printf("Error, %s rule does not have any formula. Please select another.\n", rule)
 				} else {
-					fmt.Printf("%s rule selected. Please choose a formula for the rule to apply.\n", rule)
 					checker = 1
 				}
 			} else {
@@ -158,6 +121,7 @@ func listIndexedForms(forms basictypes.FormAndTermsList) {
 
 // Choose a formula from an indexed formula list.
 func ChooseFormula(forms basictypes.FormAndTermsList) int {
+	fmt.Printf("Rule selected. Please choose a formula for the rule to apply.\n")
 	listIndexedForms(forms)
 
 	checker1 := 0
@@ -305,20 +269,28 @@ func concatenateFormsToString(str string, forms basictypes.FormAndTermsList) str
 }
 */
 
+var lock_choices sync.Mutex
+var status []StatusElement
+
 // Function to apply tabeau rules as we want, given string rule and int choice.
 func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
+
+	ch := make(chan Choice)
+
 	lock_choices.Lock()
+	thisStatus := MakeStatusElem(ch, state1)
+	status = append(status, thisStatus)
+	Counter.Decrease()
+	lock_choices.Unlock()
+	daChoice := <-ch
+	ruleVeritable := daChoice.GetRule()
+	indiceForm := daChoice.GetForm()
+	substitut := daChoice.GetSubst()
+	RemoveStatus(thisStatus.GetId()) //je remove moi meme
 
 	// Updates the window with the current state. Can only be done there because
 	// ApplyRulesAssisted redefines DoCorrectApplyRules in search_destructive.go
 	//Window(state1)
-
-	// Prints the state to the terminal
-	PrintFormListFromState(state1)
-	fmt.Printf("Please, choose a rule you would like to apply (X, A, B, D, G)...\n")
-	ruleVeritable := ChooseRule(state1)
-	choice := ChooseFormula(ChooseFormulae(ruleVeritable, state1))
-	lock_choices.Unlock()
 
 	// Attends le choix fait par la fenetre
 	//rule := <-chRule
@@ -329,19 +301,34 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		/**
 		* Not yet complete for Atomics and reintroduction.
 		**/
-		global.PrintDebug("PS", "User chose Atomic rule")
-		hdf := state1.GetAtomic()[choice]
-		global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
+		foundOne := false
+		for _, f := range state1.GetAtomic() {
+			global.PrintDebug("Assisted", fmt.Sprintf("##### Formula %v #####", f.ToString()))
+			fmt.Printf("Formule du for : %v\n", f.ToString())
+			// Check if exists a contradiction after applying the substitution
+			clos_res_after_apply_subst, subst_after_apply_subst := search.ApplyClosureRules(f.GetForm(), &state1)
+			if clos_res_after_apply_subst {
+				search.ManageClosureRule(father_id, &state1, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id, chFyne)
+				fmt.Printf("Found an obvious closure rule\n")
+				foundOne = true
+			}
+		}
+		if !foundOne {
+			fmt.Printf("No applicable rule in X. Re-adding myself to status as [%d]\n", thisStatus.GetId())
+			status = append(status, thisStatus)
+		}
+		nextStep <- true
 
-		state1.SetAtomic(append(state1.GetAtomic()[:choice], state1.GetAtomic()[choice+1:]...))
+		// state1.SetAtomic(append(state1.GetAtomic()[:indiceForm], state1.GetAtomic()[indiceForm+1:]...))
 		// result_forms := applyAtomicRules(hdf, &state1) ??
 		// state1.SetLF(result_forms)
+		// peut etre Counter.Increase() si reintro
 	case "A":
 		global.PrintDebug("PS", "User chose Alpha rule")
-		hdf := state1.GetAlpha()[choice] // Gets the chosen formula
+		hdf := state1.GetAlpha()[indiceForm] // Gets the chosen formula
 		global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 
-		state1.SetAlpha(append(state1.GetAlpha()[:choice], state1.GetAlpha()[choice+1:]...)) // Cuts the chosen formula from the slice
+		state1.SetAlpha(append(state1.GetAlpha()[:indiceForm], state1.GetAlpha()[indiceForm+1:]...)) // Cuts the chosen formula from the slice
 		result_forms := search.ApplyAlphaRules(hdf, &state1)
 		state1.SetLF(result_forms)
 
@@ -351,15 +338,19 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		state1.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, result_forms)})
 		state1.SetProof(append(state1.GetProof(), state1.GetCurrentProof()))
 
-		search.ProofSearch(father_id, state1, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{}, chFyne)
+		Counter.Increase()
+		search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{}, chFyne)
 	case "B":
 		global.PrintDebug("PS", "User chose Beta rule")
 		hdf := state1.GetBeta()[0]
 		global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
-		reslf := search.ApplyBetaRules(hdf, &state1)
+		reslf := search.ApplyBetaRules(hdf, &state1) // DONC RESLF c'est RES de ApplyBetaRules
 		child_id_list := []int{}
 
+		// JE PRODUIS LES FILS X ET Y
+
 		// Proof
+
 		state1.SetCurrentProofFormula(hdf)
 
 		int_form_list_list := []proof.IntFormAndTermsList{}
@@ -371,6 +362,30 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 
 		// For each child, launch a goroutine, stock its channel, and wait an answer
 		var chan_tab []search.Communication
+
+		// Good or not ?
+		fmt.Printf("This rule branches. They have generated processus :\n")
+		for _, feur := range int_form_list_list {
+			fmt.Printf(" * %s \n", feur.ToString())
+		}
+		fmt.Printf("...Adding them to status list.\n\n")
+
+		/*
+			var branch int
+			checker2 := 0
+			for checker2 < 1 {
+				fmt.Scanf("%d", &branch)
+				if branch < len(int_form_list_list) && branch >= 0 {
+					fmt.Printf("You chose \"%s\" branch.\n", int_form_list_list[branch].ToString())
+					checker2 = 1
+				} else {
+					fmt.Printf("Error, please choose an existing branch.\n")
+				}
+			}*/
+		for _, _ = range int_form_list_list {
+			Counter.Increase()
+		}
+
 		for _, fl := range int_form_list_list {
 			st_copy := state1.Copy()
 			st_copy.SetBeta(state1.GetBeta()[1:])
@@ -380,9 +395,9 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 			if global.IsDestructive() {
 				c_child := search.Communication{Quit: make(chan bool), Result: make(chan search.Result)}
 				chan_tab = append(chan_tab, c_child)
-				go search.ProofSearch(global.GetGID(), st_copy, c_child, complextypes.MakeEmptySubstAndForm(), fl.GetI(), fl.GetI(), []int{}, chFyne)
+				go search.ProofSearch(global.GetGID(), st_copy, c_child, substitut, fl.GetI(), fl.GetI(), []int{}, chFyne)
 			} else {
-				go search.ProofSearch(global.GetGID(), st_copy, c, complextypes.MakeEmptySubstAndForm(), fl.GetI(), fl.GetI(), []int{}, chFyne)
+				go search.ProofSearch(global.GetGID(), st_copy, c, substitut, fl.GetI(), fl.GetI(), []int{}, chFyne)
 			}
 
 			global.IncrGoRoutine(1)
@@ -396,10 +411,10 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		}
 	case "D":
 		global.PrintDebug("PS", "User chose Delta rule")
-		hdf := state1.GetDelta()[choice]
+		hdf := state1.GetDelta()[indiceForm]
 		global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 
-		state1.SetDelta(append(state1.GetDelta()[:choice], state1.GetDelta()[choice+1:]...))
+		state1.SetDelta(append(state1.GetDelta()[:indiceForm], state1.GetDelta()[indiceForm+1:]...))
 		result_forms := search.ApplyDeltaRules(hdf, &state1)
 		state1.SetLF(result_forms)
 
@@ -409,12 +424,13 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		state1.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, result_forms)})
 		state1.SetProof(append(state1.GetProof(), state1.GetCurrentProof()))
 
-		search.ProofSearch(father_id, state1, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{}, chFyne)
+		Counter.Increase()
+		search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{}, chFyne)
 	case "G":
 		global.PrintDebug("PS", "User chose Gamma rule")
-		hdf := state1.GetGamma()[choice]
+		hdf := state1.GetGamma()[indiceForm]
 		global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
-		state1.SetGamma(append(state1.GetGamma()[:choice], state1.GetGamma()[choice+1:]...))
+		state1.SetGamma(append(state1.GetGamma()[:indiceForm], state1.GetGamma()[indiceForm+1:]...))
 
 		// Update MetaGen
 		index, new_meta_gen := basictypes.GetIndexMetaGenList(hdf, state1.GetMetaGen())
@@ -432,8 +448,10 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		state1.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, new_lf)})
 		state1.SetProof(append(state1.GetProof(), state1.GetCurrentProof()))
 
-		search.ProofSearch(father_id, state1, c, complextypes.MakeEmptySubstAndForm(), id_children, original_node_id, []int{}, chFyne)
+		Counter.Increase()
+		search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{}, chFyne)
 	case "M":
 		fmt.Printf("case M\n")
+		// Counter.Increase()
 	}
 }
