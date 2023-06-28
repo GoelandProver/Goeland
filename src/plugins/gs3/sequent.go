@@ -8,11 +8,12 @@ import (
 )
 
 type GS3Sequent struct {
-	hypotheses    []btps.Form
-	rule          int
-	appliedOn     int
-	termGenerated btps.Term
-	children      []*GS3Sequent
+	hypotheses     []btps.Form
+	rule           int
+	appliedOn      int
+	termGenerated  btps.Term
+	formsGenerated [][]btps.Form
+	children       []*GS3Sequent
 }
 
 // Rules
@@ -33,6 +34,7 @@ const (
 	NEQU
 	NEX
 	NALL
+	R
 )
 
 func MakeNewSequent() *GS3Sequent {
@@ -113,4 +115,51 @@ func (seq *GS3Sequent) ruleToString(rule int) string {
 
 func (seq *GS3Sequent) isEmpty() bool {
 	return len(seq.hypotheses) == 0
+}
+
+func (seq *GS3Sequent) setFormsGenerated(forms [][]btps.Form) {
+	seq.formsGenerated = forms
+}
+
+func proofStructRuleToGS3Rule(rule string) (int, bool) {
+	mapping := map[string]int{
+		"ALPHA_NOT_NOT":    NNOT,
+		"ALPHA_NOT_OR":     NOR,
+		"ALPHA_NOT_IMPLY":  NIMP,
+		"ALPHA_AND":        AND,
+		"BETA_NOT_AND":     NAND,
+		"BETA_NOT_EQUIV":   NEQU,
+		"BETA_OR":          OR,
+		"BETA_IMPLY":       IMP,
+		"BETA_EQUIV":       EQU,
+		"GAMMA_NOT_EXISTS": NEX,
+		"GAMMA_FORALL":     ALL,
+		"DELTA_NOT_FORALL": NALL,
+		"DELTA_EXISTS":     EX,
+		"CLOSURE":          AX,
+		"WEAKEN":           W,
+		"Reintroduction":   R,
+	}
+	r, ok := mapping[rule]
+	return r, ok
+}
+func ruleToTableauxString(rule int) string {
+	mapping := map[int]string{
+		NNOT: "ALPHA_NOT_NOT",
+		NOR:  "ALPHA_NOT_OR",
+		NIMP: "ALPHA_NOT_IMPLY",
+		AND:  "ALPHA_AND",
+		NAND: "ALPHA_NOT_AND",
+		NEQU: "BETA_NOT_EQUIV",
+		OR:   "BETA_OR",
+		IMP:  "BETA_IMPLY",
+		EQU:  "BETA_EQUIV",
+		NEX:  "GAMMA_NOT_EXISTS",
+		ALL:  "GAMMA_FORALL",
+		NALL: "DELTA_NOT_FORALL",
+		EX:   "DELTA_EXISTS",
+		AX:   "CLOSURE",
+		W:    "WEAKEN",
+	}
+	return mapping[rule]
 }

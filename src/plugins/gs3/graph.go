@@ -91,8 +91,12 @@ func (g Graph[T]) Copy() Graph[T] {
 }
 
 func (g Graph[T]) DepthFirstSearch(source T) []T {
+	sourceIndex := g.findVertex(source)
+	if sourceIndex == -1 {
+		return []T{}
+	}
 	seen := make([]bool, len(g.vertices))
-	g.dfsAux(&seen, g.findVertex(source))
+	g.dfsAux(&seen, sourceIndex)
 	elementsSeen := []T{}
 	for i, v := range seen {
 		if v {
