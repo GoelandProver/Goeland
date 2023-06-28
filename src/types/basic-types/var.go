@@ -91,5 +91,5 @@ func (v Var) ToMappedString(map_ MapString, type_ bool) string {
 	if type_ {
 		return fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
 	}
-	return fmt.Sprintf("%s_%d", v.GetName(), v.GetIndex())
+	return v.GetName()
 }

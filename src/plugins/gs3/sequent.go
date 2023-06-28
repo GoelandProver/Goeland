@@ -44,6 +44,34 @@ func MakeNewSequent() *GS3Sequent {
 	return seq
 }
 
+// ----------------------------------------------------------------------------
+// Public methods
+// ----------------------------------------------------------------------------
+
+func (seq *GS3Sequent) GetTargetForm() btps.Form {
+	return seq.hypotheses[seq.appliedOn]
+}
+
+func (seq *GS3Sequent) Child(i int) *GS3Sequent {
+	return seq.children[i]
+}
+
+func (seq *GS3Sequent) Children() []*GS3Sequent {
+	return seq.children
+}
+
+func (seq *GS3Sequent) Rule() int {
+	return seq.rule
+}
+
+func (seq *GS3Sequent) GetResultFormulasOfChild(i int) []btps.Form {
+	return seq.formsGenerated[i]
+}
+
+// ----------------------------------------------------------------------------
+// Private methods & functions
+// ----------------------------------------------------------------------------
+
 func (seq *GS3Sequent) setHypotheses(forms []btps.Form) {
 	seq.hypotheses = make([]btps.Form, len(forms))
 	copy(seq.hypotheses, forms)

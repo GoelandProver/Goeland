@@ -52,7 +52,10 @@ import (
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func makeContext(root btps.Form, metaList btps.MetaList) string {
+func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
+	if !GetContextEnabled() {
+		return ""
+	}
 	resultingString := contextPreamble()
 	if typing.EmptyGlobalContext() {
 		// Rewrote functions / predicates to put in the context
@@ -71,7 +74,8 @@ func makeContext(root btps.Form, metaList btps.MetaList) string {
 func contextPreamble() string {
 	str := "Add LoadPath \"" + pathToGoelandCoq() + "\" as Goeland.\n"
 	str += "Require Import Goeland.goeland.\n"
-	str += "Parameter goeland_U : Set. (* individual type *)\n\n"
+	str += "Parameter goeland_U : Set. (* goeland's universe *)\n"
+	str += "Parameter goeland_I : goeland_U. (* an individual in the universe. *)\n\n"
 	return str
 }
 
@@ -150,7 +154,7 @@ func contextualizeMetas(metaList btps.MetaList) []string {
 	for _, meta := range metaList {
 		result = append(
 			result,
-			fmt.Sprintf("Parameter %s : goeland_U.", meta.ToMappedString(coqMapConnectorsCreation(), false)),
+			fmt.Sprintf("Parameters %s : goeland_U.", meta.ToMappedString(coqMapConnectors(), false)),
 		)
 	}
 	return result

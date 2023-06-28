@@ -47,7 +47,6 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
-	ctps "github.com/GoelandProver/Goeland/types/complex-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
@@ -77,10 +76,9 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 	}
 
 	// Transform tableaux's proof in GS3 proof
+	return makeCoqProof(gs3.MakeGS3Proof(proof), meta)
+	/*resultingString := ""
 
-	//resultingString := ""
-	// TODO: context + convert GS3 proof to Coq (should be easy)
-	/*
 		// If output is standalone, then print context
 		if GetContextEnabled() {
 			//resultingString += "(* CONTEXT BEGIN *)\n"
@@ -88,45 +86,71 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 			//resultingString += "\n(* CONTEXT END *)\n"
 		}
 		resultingString +=
-		//resultingString += "(* PROOF END *)\n"*/
-	return gs3.MakeGS3Proof(proof).ToString()
+		//resultingString += "(* PROOF END *)\n"
+	return gs3.MakeGS3Proof(proof).ToString()*/
 }
 
-func makeCoqProof(proofs []proof.ProofStruct) string {
-	resultingString := ""
-	formulasIntroduced := ctps.MakeEmptyIntAndFormList()
-	constantsCreated := btps.MakeEmptyTermList()
-	// Modify first formula to prove validity
-	axioms, firstFormula := processMainFormula(proofs[0].Formula.GetForm())
-	// Prints the theorem to prove
-	resultingString += printTheorem(axioms, firstFormula)
-	// Prints the proof
-	resultingString += "Proof.\n"
-	if isNNPP(firstFormula) {
-		resultingString += "  apply NNPP.\n"
-	} else {
-		preambleString := proofPreamble(firstFormula, &formulasIntroduced)
-		resultingString += preambleString
-		if len(axioms) > 0 {
-			proofs = proofs[1:]
+func makeCoqProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
+	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
+	proofString := makeCoqProofFromGS3(proof)
+	return contextString + proofString
+	/*
+		if GetContextEnabled() {
+
 		}
-		resultingString += coqProofFromGoeland(proofs, 0, true, formulasIntroduced, constantsCreated)
-	}
-	resultingString += "Qed.\n"
-	return removeUnusedAxioms(resultingString)
+		formulasIntroduced := ctps.MakeEmptyIntAndFormList()
+		constantsCreated := btps.MakeEmptyTermList()
+		// Modify first formula to prove validity
+		axioms, firstFormula := processMainFormula(proofs[0].Formula.GetForm())
+		// Prints the theorem to prove
+		resultingString += printTheorem(axioms, firstFormula)
+		// Prints the proof
+		resultingString += "Proof.\n"
+		if isNNPP(firstFormula) {
+			resultingString += "  apply NNPP.\n"
+		} else {
+			preambleString := proofPreamble(firstFormula, &formulasIntroduced)
+			resultingString += preambleString
+			if len(axioms) > 0 {
+				proofs = proofs[1:]
+			}
+			resultingString += coqProofFromGoeland(proofs, 0, true, formulasIntroduced, constantsCreated)
+		}
+		resultingString += "Qed.\n"
+		return removeUnusedAxioms(resultingString)*/
 }
 
-// ----------------------------------------------------------------------------
 // Replace defined symbols by Coq's defined symbols.
-
 func mapDefault(str string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
 }
+func coqMapConnectors() map[btps.FormulaType]string {
+	return map[btps.FormulaType]string{
+		btps.AndConn:        "/\\",
+		btps.OrConn:         "\\/",
+		btps.ImpConn:        "->",
+		btps.EquConn:        "<->",
+		btps.NotConn:        "~",
+		btps.TopType:        "True",
+		btps.BotType:        "False",
+		btps.AllQuant:       "forall",
+		btps.ExQuant:        "exists",
+		btps.AllTypeQuant:   "forall",
+		btps.QuantVarOpen:   "(",
+		btps.QuantVarClose:  ")",
+		btps.QuantVarSep:    ",",
+		btps.PredEmpty:      "",
+		btps.PredTypeVarSep: ",",
+		btps.TypeVarType:    "Type",
+	}
+}
 
+// Context flag utility function
 func GetContextEnabled() bool {
 	return contextEnabled
 }
 
+// Context flag utility function
 func SetContextEnabled(ce bool) {
 	contextEnabled = true
 }

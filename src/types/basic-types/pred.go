@@ -74,7 +74,7 @@ func (p Pred) CleanFormula() Form         { return p }
 
 func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
-		return p.GetID().ToString()
+		return p.GetID().ToMappedString(map_, type_)
 	}
 	args := []string{}
 
@@ -94,7 +94,7 @@ func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 	}
 
 	// strconv.Itoa(p.GetIndex()) + "@"
-	return p.GetID().ToString() + "(" + strings.Join(args, " "+map_[PredTypeVarSep]+" ") + ")"
+	return p.GetID().ToMappedString(map_, type_) + "(" + strings.Join(args, " "+map_[PredTypeVarSep]+" ") + ")"
 }
 
 func (p Pred) ToString() string {
