@@ -110,7 +110,10 @@ func (u Unifier) ToString() string {
 func (u Unifier) GetUnifier() ttps.Substitutions {
 	finalUnifier := u.makeUnifier(0)
 	for i := 1; i < len(u.localUnifiers); i++ {
-		finalUnifier, _ = treesearch.MergeSubstitutions(finalUnifier, u.makeUnifier(i))
+		unif, _ := treesearch.MergeSubstitutions(finalUnifier, u.makeUnifier(i))
+		if !unif.Equals(ttps.Failure()) {
+			finalUnifier = unif
+		}
 	}
 	return finalUnifier
 }
