@@ -7,7 +7,10 @@ import (
 )
 
 var nextStep chan bool
+var needSubst chan bool
 var finishedProof = false
+var chAssistant chan bool
+var recieveSubst chan complextypes.SubstAndForm
 
 func SetFinishedProof(b bool) {
 	nextStep <- !b
@@ -37,20 +40,46 @@ func SetFinishedProof(b bool) {
 		fmt.Println("UNLOCK CHOICE")
 	}*/
 
-var substListAssisted = complextypes.MakeEmptySubstAndForm()
+var substAssisted = complextypes.MakeEmptySubstAndForm()
+var HasChanged = false
 
-func Assistant() {
+func ApplySubstsAssisted(substi complextypes.SubstAndForm) {
+	fmt.Printf("Je passe avant : %v\n", substi.ToString())
+	substAssisted = complextypes.MergeSubstAndForm(substAssisted, substi)
+	fmt.Printf("Je passe après : %v\n", substAssisted.ToString())
+	need = true
+}
 
+var first = true
+var need = false
+
+func Assistant(channel chan bool) {
 	nextStep = make(chan bool)
+	needSubst = make(chan bool)
+	recieveSubst = make(chan complextypes.SubstAndForm)
+
+	chAssistant = channel
 
 	index := 0
 
 	for <-nextStep {
+		fmt.Printf("j'ai commencé nextStep\n")
+		fmt.Printf("HasChanger  %v\n", HasChanged)
+		if HasChanged {
+			for _, elem := range status {
+				_ = elem
+				fmt.Printf("before recieve subst")
+				recieveSubst <- substAssisted
+			}
+			HasChanged = false
+		}
+
+		fmt.Printf("before lock\n")
 		lock_choices.Lock()
 		index = ChooseStatus()
 
 		PrintFormListFromState(status[index].state, status[index].GetId())
-		fmt.Printf("Please, choose a rule you would like to apply (X, A, B, D, G)...\n")
+		fmt.Printf("Please, choose a rule you would like to apply (X, A, B, D, G)...\n~> ")
 
 		ruleVeritable := ChooseRule(status[index].state)
 		indiceChoice := 0
@@ -59,10 +88,13 @@ func Assistant() {
 			indiceChoice = ChooseFormula(ChooseFormulae(ruleVeritable, status[index].state))
 		}
 
-		choice := MakeChoice(ruleVeritable, indiceChoice, substListAssisted)
+		fmt.Printf("J'envoie choice avec : %s, %d, %s", ruleVeritable, indiceChoice, substAssisted.ToString())
+		choice := MakeChoice(ruleVeritable, indiceChoice, substAssisted)
 		status[index].channel <- choice
 		lock_choices.Unlock()
+		fmt.Printf("J'unlock\n")
 	}
+	chAssistant <- true
 }
 
 func ChooseStatus() int {
@@ -78,7 +110,7 @@ func ChooseStatus() int {
 			}
 		}
 
-		fmt.Printf("Status [%d] is not in the list. Please choose another.\n", chosenStatus)
+		fmt.Printf("Status [%d] is not in the list. Please choose another.\n~> ", chosenStatus)
 	}
 
 	return -1

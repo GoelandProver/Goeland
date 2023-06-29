@@ -67,15 +67,18 @@ type SyncCounter struct {
 
 func (sc *SyncCounter) Increase() {
 	sc.mutex.Lock()
+	fmt.Printf("CPT = %d\n", sc.cpt)
 	defer sc.mutex.Unlock()
 	sc.cpt++
 }
 
 func (sc *SyncCounter) Decrease() {
 	sc.mutex.Lock()
+	fmt.Printf("CPT = %d\n", sc.cpt)
 	defer sc.mutex.Unlock()
 	sc.cpt--
 	if sc.cpt == 0 {
+		fmt.Printf("CPT = 0 : %d\n", sc.cpt)
 		nextStep <- true
 	}
 }
@@ -116,6 +119,7 @@ func printStatus() {
 	for _, elem := range status {
 		PrintFormListFromState(elem.state, elem.GetId())
 	}
+	fmt.Printf("~> ")
 }
 
 func (choice Choice) GetForm() int {

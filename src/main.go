@@ -91,7 +91,7 @@ var flag_nb_core = flag.Int("core_limit", -1, "Number of core (default: all)")
 var flag_completeness = flag.Bool("completeness", false, "Completeness mode")
 var flag_assisted = flag.Bool("assisted", false, "Step-by-step mode used to select specific rules to specific formulae")
 
-var chMain chan bool = make(chan bool)
+var chAssistant chan bool = make(chan bool)
 
 func main() {
 	chFyne := make(chan complextypes.State, 1)
@@ -100,7 +100,7 @@ func main() {
 	if global.GetAssisted() {
 		// Initialisation
 		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
-		go assisted.Assistant()
+		go assisted.Assistant(chAssistant)
 		/*
 			myApp := app.New()
 			myWindow := myApp.NewWindow("Fenetre test")
@@ -114,9 +114,11 @@ func main() {
 		go mainB(form, bound, chFyne)
 
 		//myApp.Run()
-		<-chMain
+		<-chAssistant
+		printResultAssisted()
+	} else {
+		mainB(form, bound, chFyne)
 	}
-
 }
 
 // Start solving. Called in a goroutine so that assisted mode can execute a Fyne application in main goroutine.
@@ -135,8 +137,6 @@ func mainB(form basictypes.Form, bound int, chFyne chan complextypes.State) {
 			log.Fatal("could not write memory profile: ", err)
 		}
 	}
-
-	chMain <- true
 }
 
 // Initialization
@@ -196,6 +196,13 @@ func mainA() (basictypes.Form, int) {
 		form = formula
 	}
 	return form, bound
+}
+
+func printResultAssisted() {
+	fmt.Printf("\n\n[%.6fs][%v][Res] %v goroutines created\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), global.GetNbGoroutines())
+	fmt.Printf("======== Result ========\n")
+	fmt.Printf("If you've made it this far, it means you closed all branches with success !\n")
+	fmt.Printf("==== Congrats, USER! ====\n\n")
 }
 
 /* Manage return from search for destructive and non-destructive versions  */
@@ -294,6 +301,7 @@ func Search(f basictypes.Form, bound int, chFyne chan complextypes.State) {
 		node_id := global.IncrCptNode()
 
 		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{}, chFyne)
+		fmt.Printf("End PS\n")
 		global.IncrGoRoutine(1)
 
 		global.PrintDebug("MAIN", "GO")
@@ -320,9 +328,7 @@ func Search(f basictypes.Form, bound int, chFyne chan complextypes.State) {
 		limit = 2 * limit
 		global.SetNbStep(global.GetNbStep() + 1)
 	}
-	fmt.Printf("StatusIDR \n")
 	PrintResult(res)
-
 }
 
 /* Transform a list of statement into a formula */
