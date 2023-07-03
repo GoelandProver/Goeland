@@ -6,6 +6,7 @@ import (
 
 	tsch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	ttps "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
 )
 
@@ -45,13 +46,16 @@ func MergeUnifierList(ls []Unifier) Unifier {
 
 /** Adds the given substitutions to the unifiers if it matches */
 func (u *Unifier) AddSubstitutions(substs []ttps.Substitutions) {
+	if !global.GetProof() {
+		return
+	}
 	for _, subst := range substs {
 		u.mergeWithLocalUnifier(subst)
 	}
 }
 
 func (u *Unifier) PruneSubstitutions(substs []ttps.Substitutions) {
-	if len(substs) == 0 {
+	if len(substs) == 0 || !global.GetProof() {
 		return
 	}
 	// Every substitution that is not compatible with any of the given substs is forgotten.
@@ -100,6 +104,9 @@ func (u Unifier) GetUnifier() ttps.Substitutions {
 }
 
 func (u Unifier) Copy() Unifier {
+	if !global.GetProof() {
+		return MakeUnifier()
+	}
 	newLocalUnifier := make([]substitutions, len(u.localUnifiers))
 	for i, unif := range u.localUnifiers {
 		newLocalUnifier[i] = unif.Copy()
@@ -110,6 +117,9 @@ func (u Unifier) Copy() Unifier {
 }
 
 func (u *Unifier) Merge(other Unifier) {
+	if !global.GetProof() {
+		return
+	}
 	for _, unifier := range other.localUnifiers {
 		u.mergeWithLocalUnifier(unifier)
 	}

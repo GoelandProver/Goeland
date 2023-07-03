@@ -41,12 +41,14 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"path"
 	"runtime"
 	"runtime/pprof"
 	"time"
 
+	"net/http"
 	_ "net/http/pprof"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -65,11 +67,13 @@ func main() {
 		fmt.Printf("%s [options] problem_file\n", os.Args[0])
 		return
 	}
+	go func() {
+		log.Println(http.ListenAndServe("localhost:6060", nil))
+	}()
 
 	initEverything()
 
 	doCPUProfile()
-	defer pprof.StopCPUProfile()
 
 	problem := args[len(args)-1]
 	global.SetProblemName(path.Base(problem))

@@ -44,6 +44,7 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"runtime/pprof"
 	"sort"
 	"time"
 
@@ -75,6 +76,7 @@ func Search(formula basictypes.Form, bound int) {
 	}
 
 	PrintSearchResult(res)
+	pprof.StopCPUProfile()
 }
 
 func doOneStep(limit int, formula basictypes.Form) (bool, int) {
@@ -338,9 +340,15 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			global.PrintDebug("MCR", fmt.Sprintf("SubstAndForm created : %v", subst_and_form_for_father.ToString()))
 
 			// Merge with applied subst (if any)
-			_, subst_and_form_for_father = complextypes.MergeSubstAndForm(subst_and_form_for_father.Copy(), st.GetAppliedSubst())
+			err, subst_and_form_for_father := complextypes.MergeSubstAndForm(subst_and_form_for_father.Copy(), st.GetAppliedSubst())
 
-			st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), subst_and_form_for_father))
+			if err != nil {
+				global.PrintError("MCR", "Contradiction found between applied subst and child subst. What to do?")
+			} else {
+
+				st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), subst_and_form_for_father))
+			}
+
 			meta_to_reintroduce = global.UnionIntList(meta_to_reintroduce, retrieveMetaFromSubst(subst_for_father))
 		}
 
@@ -400,7 +408,7 @@ func manageRewriteRules(fatherId uint64, state complextypes.State, c Communicati
 		// If f is in atomic, that means we couldn't rewrite it, so it's useless to check
 		if !state.GetAtomic().Contains(f) && global.IsLoaded("dmt") {
 			if rewritten, err := dmt.Rewrite(f.GetForm()); err == nil {
-				shouldReturn := tryRewrite(rewritten, f, state, remainingAtomics, fatherId, c, currentNodeId, originalNodeId, metaToReintroduce)
+				shouldReturn := tryRewrite(rewritten, f, &state, remainingAtomics, fatherId, c, currentNodeId, originalNodeId, metaToReintroduce)
 				if shouldReturn {
 					return
 				}
@@ -415,7 +423,7 @@ func manageRewriteRules(fatherId uint64, state complextypes.State, c Communicati
 	ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), currentNodeId, originalNodeId, []int{})
 }
 
-func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTerms, state complextypes.State, remainingAtomics basictypes.FormAndTermsList, fatherId uint64, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) bool {
+func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTerms, state *complextypes.State, remainingAtomics basictypes.FormAndTermsList, fatherId uint64, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) bool {
 	global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.IntSubstAndFormListToString(rewritten)))
 
 	newRewritten := []complextypes.IntSubstAndFormAndTerms{}
@@ -459,7 +467,7 @@ func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTe
 		go ProofSearch(global.GetGID(), otherState, channelChild, choosenRewritten.GetSaf().ToSubstAndForm(), childNode, childNode, []int{})
 		global.PrintDebug("PS", "GO !")
 		global.IncrGoRoutine(1)
-		waitChildren(MakeWcdArgs(fatherId, state, c, []Communication{channelChild}, []complextypes.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
+		waitChildren(MakeWcdArgs(fatherId, *state, c, []Communication{channelChild}, []complextypes.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
 		return true
 	} else {
 		// No rewriting possible

@@ -84,8 +84,6 @@ func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruc
 
 	xchg.WriteExchanges(args.fatherId, args.st, nil, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
-	global.PrintInfo("CCBT", args.st.GetGlobalUnifier().ToString())
-
 	sendSubToFather(args.c, true, false, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
 	return nil
 }
@@ -163,6 +161,7 @@ func passSubstToChildren(args wcdArgs, substs []ctps.SubstAndForm) {
 	args.substsBT = append(args.substsBT, resultingSubsts...)
 	args.st.SetBTOnFormulas(false)
 	args.overwrite = false
+	args.currentSubst = subst
 	waitChildren(args)
 }
 
@@ -254,9 +253,11 @@ func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {
 }
 
 func cleanGlobalUnifier(st ctps.State, substs []ttps.Substitutions) ctps.State {
-	// All remaining substitutions in the global unifier should have at least every substitution of subst.
-	unifier := st.GetGlobalUnifier()
-	unifier.PruneSubstitutions(substs)
-	st.SetGlobalUnifier(unifier)
+	if global.GetProof() {
+		// All remaining substitutions in the global unifier should have at least every substitution of subst.
+		unifier := st.GetGlobalUnifier()
+		unifier.PruneSubstitutions(substs)
+		st.SetGlobalUnifier(unifier)
+	}
 	return st
 }

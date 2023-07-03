@@ -111,7 +111,6 @@ func MakeGS3Proof(proof []tableaux.ProofStruct) *GS3Sequent {
 // ----------------------------------------------------------------------------
 
 // Makes a GS3 proof from a tableaux proof.
-// TODO: get uninstanciated proof here to put in the offspring graph.
 func (gs GS3Proof) makeProof(proof []tableaux.ProofStruct) *GS3Sequent {
 	if len(proof) == 0 {
 		return nil
@@ -175,7 +174,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 		seq = MakeNewSequent()
 	case W:
 		seq = gs.weakenForm(form)
-	case R:
+	case R: // Ignore this rule
 		seq = MakeNewSequent()
 	}
 
@@ -208,6 +207,7 @@ func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule int, se
 
 	// Update dependency graph & offspring tree.
 	for i, term := range termsDependency {
+		// TODO: add intermediate form + its subformulas with free variables
 		gs.dependency.Add(term, intermediateForms[i])
 	}
 	for i := 0; i < len(intermediateForms)-1; i++ {
@@ -227,7 +227,6 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int, pa
 	intermediateForms, termsGenerated := manageDeltasSkolemisations(proofStep.GetFormula().GetForm(), resultForm)
 
 	var deltaSeq *GS3Sequent
-	// TODO: look at the interaction with the last form
 	for i := 0; i < len(intermediateForms); i++ {
 		dependantForms, atLeastOneDependantForm := gs.getFormulasDependantFromTerm(termsGenerated[i])
 		currentResultForm := resultForm
@@ -350,7 +349,7 @@ func (gs GS3Proof) getRulesAppliedInOrder(dependantForms btps.FormList) ([]Pair[
 }
 
 func (gs GS3Proof) getOffspringsOf(form btps.Form) []btps.Form {
-	// TODO: only take the offsprings in which the FV appears (how to know that though?)
+	// TODO: only take the offsprings in which the FV appears: intersection between offspring & dependency
 	dfs := gs.offspring.DepthFirstSearch(form)
 	if len(dfs) == 0 {
 		return dfs

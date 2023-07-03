@@ -280,7 +280,7 @@ func addTermGenerated(constantsCreated []btps.Term, term btps.Term) ([]btps.Term
 		return constantsCreated, fmt.Sprintf("x%d", dummy-1)
 	}
 	constantsCreated = append(constantsCreated, term)
-	return constantsCreated, term.ToMappedString(coqMapConnectors(), false)
+	return constantsCreated, getConstantName(term.(btps.Fun).GetID())
 }
 
 func findInConstants(constantsCreated []btps.Term, term btps.Term) string {
@@ -288,7 +288,7 @@ func findInConstants(constantsCreated []btps.Term, term btps.Term) string {
 	if strings.Contains(term.ToMappedString(coqMapConnectors(), false), "skolem") {
 		for _, t := range constantsCreated {
 			if t.Equals(term) {
-				return term.ToMappedString(coqMapConnectors(), false)
+				return getConstantName(term.(btps.Fun).GetID())
 			}
 		}
 		return name
@@ -316,4 +316,8 @@ func cleanHypotheses(hypotheses []btps.Form, form btps.Form) (string, [][]btps.F
 		result = fmt.Sprintf("clear %s. ", introName(index))
 	}
 	return result, [][]btps.Form{hypotheses}
+}
+
+func getConstantName(id btps.Id) string {
+	return id.ToString()
 }

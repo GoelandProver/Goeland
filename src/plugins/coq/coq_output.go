@@ -42,21 +42,12 @@ package coq
 
 import (
 	"strings"
-	"sync"
 
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
-
-// var constantsCreated btps.TermList
-// var formulasIntroduced btps.FormList
-var axiomsRegistered btps.FormList
-var usedAxioms []int
-var cpt_hypothesis int
-var mutex_hypothesis sync.Mutex
-var hypos map[string]int = make(map[string]int)
 
 var contextEnabled bool = false
 
@@ -77,47 +68,12 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 
 	// Transform tableaux's proof in GS3 proof
 	return makeCoqProof(gs3.MakeGS3Proof(proof), meta)
-	/*resultingString := ""
-
-		// If output is standalone, then print context
-		if GetContextEnabled() {
-			//resultingString += "(* CONTEXT BEGIN *)\n"
-			resultingString += makeContext(proof[0].Formula.GetForm(), meta) gs3Proof.GetContextString()
-			//resultingString += "\n(* CONTEXT END *)\n"
-		}
-		resultingString +=
-		//resultingString += "(* PROOF END *)\n"
-	return gs3.MakeGS3Proof(proof).ToString()*/
 }
 
 func makeCoqProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
 	proofString := makeCoqProofFromGS3(proof)
-	return contextString + proofString
-	/*
-		if GetContextEnabled() {
-
-		}
-		formulasIntroduced := ctps.MakeEmptyIntAndFormList()
-		constantsCreated := btps.MakeEmptyTermList()
-		// Modify first formula to prove validity
-		axioms, firstFormula := processMainFormula(proofs[0].Formula.GetForm())
-		// Prints the theorem to prove
-		resultingString += printTheorem(axioms, firstFormula)
-		// Prints the proof
-		resultingString += "Proof.\n"
-		if isNNPP(firstFormula) {
-			resultingString += "  apply NNPP.\n"
-		} else {
-			preambleString := proofPreamble(firstFormula, &formulasIntroduced)
-			resultingString += preambleString
-			if len(axioms) > 0 {
-				proofs = proofs[1:]
-			}
-			resultingString += coqProofFromGoeland(proofs, 0, true, formulasIntroduced, constantsCreated)
-		}
-		resultingString += "Qed.\n"
-		return removeUnusedAxioms(resultingString)*/
+	return contextString + "\n" + proofString
 }
 
 // Replace defined symbols by Coq's defined symbols.
