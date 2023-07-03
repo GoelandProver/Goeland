@@ -57,7 +57,7 @@ type Fun struct {
 
 func (f Fun) ToMappedString(map_ MapString, type_ bool) string {
 	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
-		return f.GetID().ToString()
+		return f.GetID().ToMappedString(map_, type_)
 	}
 	args := []string{}
 

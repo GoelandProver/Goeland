@@ -155,7 +155,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 	rule, _ := proofStructRuleToGS3Rule(proofStep.GetRuleName())
 	form := proofStep.GetFormula().GetForm()
 
-	// TODO: manage reintroduction and rewrite: second return value of proofStructRuleToGS3Rule
+	// TODO: manage rewrite rules: second return value of proofStructRuleToGS3Rule
 	switch rule {
 	// Immediate, just apply the rule.
 	case NNOT, NOR, NIMP, AND, NAND, NEQU, OR, IMP, EQU, AX:
@@ -166,14 +166,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 			seq = parent
 		}
 	// Be careful as one gamma rule may instantiate multiple variables.
-	case ALL, NEX, R:
-		if rule == R {
-			if _, isAll := form.(btps.All); isAll {
-				rule = ALL
-			} else {
-				rule = NEX
-			}
-		}
+	case ALL, NEX:
 		form = gs.manageGammaStep(proofStep, rule, parent)
 		seq = MakeNewSequent()
 	// Be extra careful as it is a delta-rule
@@ -182,6 +175,8 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 		seq = MakeNewSequent()
 	case W:
 		seq = gs.weakenForm(form)
+	case R:
+		seq = MakeNewSequent()
 	}
 
 	if !seq.isEmpty() {

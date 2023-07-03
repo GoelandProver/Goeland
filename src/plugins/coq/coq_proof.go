@@ -168,7 +168,7 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format 
 		hypoCopy := make([]btps.Form, len(hypotheses))
 		copy(hypoCopy, hypotheses)
 		indices, hypoCopy = introduceList(proof.GetResultFormulasOfChild(i), hypoCopy)
-		introducedNames = append(introducedNames, introNames(indices, "; "))
+		introducedNames = append(introducedNames, "intros "+introNames(indices, " "))
 		resultHyps = append(resultHyps, hypoCopy)
 	}
 
@@ -284,16 +284,22 @@ func addTermGenerated(constantsCreated []btps.Term, term btps.Term) ([]btps.Term
 }
 
 func findInConstants(constantsCreated []btps.Term, term btps.Term) string {
-	if term == nil {
-		return "goeland_I"
-	}
-
-	for _, t := range constantsCreated {
-		if t.Equals(term) {
-			return term.ToMappedString(coqMapConnectors(), false)
+	name := "goeland_I"
+	if strings.Contains(term.ToMappedString(coqMapConnectors(), false), "skolem") {
+		for _, t := range constantsCreated {
+			if t.Equals(term) {
+				return term.ToMappedString(coqMapConnectors(), false)
+			}
 		}
+		return name
 	}
-	return "goeland_I"
+	if term == nil {
+		return name
+	}
+	if _, isVar := term.(btps.Var); isVar {
+		return name
+	}
+	return term.ToMappedString(coqMapConnectors(), false)
 }
 
 func cp[T any](source []T) []T {
