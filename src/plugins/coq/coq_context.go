@@ -111,7 +111,7 @@ func getContextFromFormula(root btps.Form) []string {
 		result = clean(result, getContextFromFormula(nf.GetForm()))
 	case btps.Pred:
 		if !nf.GetID().Equals(btps.Id_eq) {
-			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToString(), nf.GetType().ToString())))
+			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToMappedString(coqMapConnectors(), false), nf.GetType().ToString())))
 		}
 		for _, term := range nf.GetArgs() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
@@ -123,7 +123,7 @@ func getContextFromFormula(root btps.Form) []string {
 func getContextFromTerm(trm btps.Term) []string {
 	result := []string{}
 	if fun, isFun := trm.(btps.Fun); isFun {
-		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToString(), fun.GetTypeHint().ToString())))
+		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToMappedString(coqMapConnectors(), false), fun.GetTypeHint().ToString())))
 		for _, term := range fun.GetArgs() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}

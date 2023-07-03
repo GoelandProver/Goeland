@@ -68,6 +68,10 @@ func (seq *GS3Sequent) GetResultFormulasOfChild(i int) []btps.Form {
 	return seq.formsGenerated[i]
 }
 
+func (seq *GS3Sequent) TermGenerated() btps.Term {
+	return seq.termGenerated
+}
+
 // ----------------------------------------------------------------------------
 // Private methods & functions
 // ----------------------------------------------------------------------------
