@@ -272,7 +272,7 @@ func manageSubstFoundNonDestructive(father_id uint64, st *complextypes.State, c 
 * s : substitution to apply to the current state
 * subst_found : treetypes.Substitutions found by this process
 **/
-func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Communication, chFyne chan complextypes.State) {
+func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Communication) {
 
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v", father_id))
@@ -290,7 +290,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 		var substs []treetypes.Substitutions
 		global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 		closed, substs = ApplyClosureRules(f.GetForm(), &st)
-		ManageClosureRule(father_id, &st, c, substs, f, -1, -1, chFyne)
+		ManageClosureRule(father_id, &st, c, substs, f, -1, -1)
 
 		if closed {
 			return
@@ -310,11 +310,11 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 
 	if form_to_instantiate == -1 {
 		global.PrintDebug("PS", "Let's apply rules !")
-		applyRules(father_id, st, c, basictypes.MakeEmptyFormAndTermsList(), -1, -1, []int{}, chFyne)
+		applyRules(father_id, st, c, basictypes.MakeEmptyFormAndTermsList(), -1, -1, []int{})
 	} else {
 		global.PrintDebug("PS", "Let's instantiate !")
 		instantiate(father_id, &st, c, form_to_instantiate, choosen_subst)
-		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1, -1, []int{}, chFyne)
+		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1, -1, []int{})
 	}
 
 }

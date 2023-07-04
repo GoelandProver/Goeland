@@ -49,9 +49,6 @@ import (
 	"runtime/pprof"
 	"time"
 
-	//"fyne.io/fyne/v2"
-	//"fyne.io/fyne/v2/app"
-
 	"github.com/GoelandProver/Goeland/plugins/assisted"
 
 	_ "net/http/pprof"
@@ -94,37 +91,28 @@ var flag_assisted = flag.Bool("assisted", false, "Step-by-step mode used to sele
 var chAssistant chan bool = make(chan bool)
 
 func main() {
-	chFyne := make(chan complextypes.State, 1)
-	form, bound := mainA()
+	form, bound := presearchLoader()
 
 	if global.GetAssisted() {
 		// Initialisation
 		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
 		go assisted.Assistant(chAssistant)
-		/*
-			myApp := app.New()
-			myWindow := myApp.NewWindow("Fenetre test")
-			myWindow.Resize(fyne.NewSize(800, 560))
-			myWindow.Show()
 
-			assisted.MainWindow = myWindow
-		*/
 		fmt.Printf("This problem has formula %s\n", form.ToString())
 		assisted.Counter.Increase()
-		go mainB(form, bound, chFyne)
+		go startSearch(form, bound)
 
-		//myApp.Run()
 		<-chAssistant
 		printResultAssisted()
 	} else {
-		mainB(form, bound, chFyne)
+		startSearch(form, bound)
 	}
 }
 
 // Start solving. Called in a goroutine so that assisted mode can execute a Fyne application in main goroutine.
-func mainB(form basictypes.Form, bound int, chFyne chan complextypes.State) {
+func startSearch(form basictypes.Form, bound int) {
 	global.PrintDebug("MAIN", "Start search")
-	Search(form, bound, chFyne)
+	Search(form, bound)
 
 	if *memprofile != "" {
 		f, err := os.Create(*memprofile)
@@ -140,7 +128,7 @@ func mainB(form basictypes.Form, bound int, chFyne chan complextypes.State) {
 }
 
 // Initialization
-func mainA() (basictypes.Form, int) {
+func presearchLoader() (basictypes.Form, int) {
 	initFlag()
 	initialization()
 	// go tool pprof -http=localhost:8887 cpu.prof
@@ -160,7 +148,7 @@ func mainA() (basictypes.Form, int) {
 	args := os.Args
 	if len(args) < 2 {
 		fmt.Printf("%s [options] problem_file\n", os.Args[0])
-		os.Exit(1) // replaces the "return ", function type issue. -matthieu
+		os.Exit(1)
 	}
 
 	problem := args[len(args)-1]
@@ -180,17 +168,13 @@ func mainA() (basictypes.Form, int) {
 		os.Exit(1)
 	}
 
-	// if bound != 0 {
-	// 	bound = 2
-	// }
-
 	// If global context is empty, it means that this is not a typed proof.
 	if !typing.EmptyGlobalContext() {
 		formula, err := polymorphism.WellFormedVerification(form, *flag_type_proof)
 		if err != nil {
 			global.PrintDebug("MAIN", fmt.Sprintf("Typing error: %s\n", err.Error()))
 			fmt.Printf("[%.6fs][%v][Type] Error: not well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-			os.Exit(1) // replaces the "return ", function type issue. -matthieu
+			os.Exit(1)
 		}
 		fmt.Printf("[%.6fs][%v][Type] Well typed.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
 		form = formula
@@ -263,7 +247,7 @@ func PrintResult(res bool) {
 }
 
 /* Begin the proof search */
-func Search(f basictypes.Form, bound int, chFyne chan complextypes.State) {
+func Search(f basictypes.Form, bound int) {
 	global.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", f.ToString()))
 
 	res := false
@@ -300,7 +284,7 @@ func Search(f basictypes.Form, bound int, chFyne chan complextypes.State) {
 
 		node_id := global.IncrCptNode()
 
-		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{}, chFyne)
+		go search.ProofSearch(global.GetGID(), st, c, complextypes.MakeEmptySubstAndForm(), node_id, node_id, []int{})
 		fmt.Printf("End PS\n")
 		global.IncrGoRoutine(1)
 

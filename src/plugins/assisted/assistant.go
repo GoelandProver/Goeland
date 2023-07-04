@@ -16,30 +16,6 @@ func SetFinishedProof(b bool) {
 	nextStep <- !b
 }
 
-/*
-	for !finishedProof {
-		<-nextStep
-
-		fmt.Println("LOCK CHOICE")
-		lock_choices.Lock()
-		index = ChooseStatus()
-
-		fmt.Printf("StatusID1 : %d\n", status[index].GetId())
-		PrintFormListFromState(status[index].state)
-		fmt.Printf("Please, choose a rule you would like to apply (X, A, B, D, G)...\n")
-
-		fmt.Printf("index : %d\n", index)
-		ruleVeritable := ChooseRule(status[index].state)
-		indiceChoice := ChooseFormula(ChooseFormulae(ruleVeritable, status[index].state))
-
-		choice := MakeChoice(ruleVeritable, indiceChoice)
-		status[index].channel <- choice
-
-		fmt.Printf("StatusID2 : %d\n", status[index].GetId())
-		lock_choices.Unlock()
-		fmt.Println("UNLOCK CHOICE")
-	}*/
-
 var substAssisted = complextypes.MakeEmptySubstAndForm()
 var HasChanged = false
 
@@ -57,8 +33,6 @@ func Assistant(channel chan bool) {
 	nextStep = make(chan bool)
 	needSubst = make(chan bool)
 	recieveSubst = make(chan complextypes.SubstAndForm)
-
-	chAssistant = channel
 
 	index := 0
 
@@ -94,7 +68,7 @@ func Assistant(channel chan bool) {
 		lock_choices.Unlock()
 		fmt.Printf("J'unlock\n")
 	}
-	chAssistant <- true
+	channel <- true
 }
 
 func ChooseStatus() int {

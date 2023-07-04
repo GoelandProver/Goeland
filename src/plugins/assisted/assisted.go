@@ -6,9 +6,6 @@ import (
 
 	"github.com/GoelandProver/Goeland/search"
 
-	// "fyne.io/fyne/v2"
-	// "fyne.io/fyne/v2/container"
-	// "fyne.io/fyne/v2/widget"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -16,27 +13,10 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-// Used to lock for display and fmt.Scanf() purposes
-
-/** WINDOW ASSETS NOTES : 06/16/2023
-* All parts of code related to visual functionnal window has been put into comments, the reason behind that
-* is the time that it would take to create a fully functionnal window, with dynamic tree visualisation, zooming
-* and its communication with goroutines would not have been implemented within the time I was given.
-*
-* Maybe hello to DymDym that may have to get it done later !
-**/
-
 var chRule = make(chan string, 1)
 var chFormula = make(chan int, 1)
 
-// var MainWindow fyne.Window // Keep the window in a global variable, so that we can update it and no need to pass it through function arguments.
 var state = make(chan complextypes.State)
-
-/*
-func SendChMain(chMain chan bool) {
-	chMain <- true
-}
-*/
 
 // Prints formulae relative to rules from a State. For terminal uses.
 func PrintFormListFromState(st complextypes.State, id int) {
@@ -139,137 +119,6 @@ func ChooseFormula(forms basictypes.FormAndTermsList) int {
 	return choice
 }
 
-/*
-// Updates the window with applicable rules and their formulae.
-func Window(st complextypes.State) {
-	fmt.Printf("Je suis dans Window\n")
-	items := initRuleList(st)
-	fmt.Printf("Je suis dans Window, j'ai créé items %s\n", items)
-	list := widget.NewList(
-		func() int {
-			return len(items)
-		},
-		func() fyne.CanvasObject {
-			return widget.NewLabel("")
-		},
-		func(index int, obj fyne.CanvasObject) {
-			if label, ok := obj.(*widget.Label); ok {
-				label.SetText(items[index])
-			}
-		},
-	)
-
-	list.OnSelected = func(index int) {
-		println("Élément sélectionné :", items[index])
-		WindowForms(items[index][0], st)
-	}
-
-	scrollContainer := container.NewVScroll(list)
-	MainWindow.SetContent(scrollContainer)
-}
-
-// Updates the window with a list of formulae.
-func WindowForms(char byte, st complextypes.State) {
-	global.PrintDebug("SBS", fmt.Sprintf("Entering formula selection"))
-	items := []string{}
-
-	if char == 88 { // X
-		for _, form := range st.GetAtomic() {
-			items = append(items, form.ToString())
-			chRule <- "X"
-		}
-	}
-	if char == 65 { // A
-		for _, form := range st.GetAlpha() {
-			items = append(items, form.ToString())
-			chRule <- "A"
-		}
-	}
-	if char == 66 { // B
-		for _, form := range st.GetBeta() {
-			items = append(items, form.ToString())
-			chRule <- "B"
-		}
-	}
-	if char == 68 { // D
-		for _, form := range st.GetDelta() {
-			items = append(items, form.ToString())
-			chRule <- "D"
-		}
-	}
-	if char == 61 { // G
-		for _, form := range st.GetGamma() {
-			items = append(items, form.ToString())
-			chRule <- "G"
-		}
-	}
-
-	global.PrintDebug("SBS", fmt.Sprintf("Try to modify displayed list..."))
-	list := widget.NewList(
-		func() int {
-			return len(items)
-		},
-		func() fyne.CanvasObject {
-			return widget.NewLabel("")
-		},
-		func(index int, obj fyne.CanvasObject) {
-			if label, ok := obj.(*widget.Label); ok {
-				label.SetText(items[index])
-			}
-		},
-	)
-	global.PrintDebug("SBS", fmt.Sprintf("List modified!"))
-
-	list.OnSelected = func(index int) {
-		println("Formule sélectionnée :", items[index])
-		// Envoyer le choix de la selection au applyRuleAssisted
-		chFormula <- index
-		fmt.Printf("Coucou ! chFormula channel passé\n")
-		// Recuperer le state de début de applyRuleAssisted
-		//search.DoCorrectApplyRules(father_id, st, c, atomics_for_dmt, node_id, original_node_id, meta_to_reintroduce, chFyne)
-	}
-
-	scrollContainer := container.NewVScroll(list)
-	MainWindow.SetContent(scrollContainer)
-
-}
-
-// Mmh subject to changes.
-func initRuleList(st complextypes.State) []string {
-	items := []string{}
-	str := ""
-	if len(st.GetAtomic()) > 0 {
-		str = "X Atomic : "
-		str = concatenateFormsToString(str, st.GetAtomic())
-	}
-	if len(st.GetAlpha()) > 0 {
-		str = "A Alpha : "
-		str = concatenateFormsToString(str, st.GetAlpha())
-	}
-	if len(st.GetBeta()) > 0 {
-		str = "B Beta : "
-		str = concatenateFormsToString(str, st.GetBeta())
-	}
-	if len(st.GetDelta()) > 0 {
-		str = "D Delta : "
-		str = concatenateFormsToString(str, st.GetDelta())
-	}
-	if len(st.GetGamma()) > 0 {
-		str = "G Gamma : "
-		str = concatenateFormsToString(str, st.GetGamma())
-	}
-	items = append(items, str)
-	return items
-}
-
-func concatenateFormsToString(str string, forms basictypes.FormAndTermsList) string {
-	for _, s := range forms {
-		str += s.ToString() + ", "
-	}
-	return str
-}
-*/
-
 // Choose a formula from an indexed formula list.
 func ChooseSubst(substs []complextypes.SubstAndForm) int {
 
@@ -294,12 +143,12 @@ func ChooseSubst(substs []complextypes.SubstAndForm) int {
 	return choice
 }
 
-func receive(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State, ch chan Choice) (ruleVeritable string, indiceForm int, substitut complextypes.SubstAndForm) {
+func receive(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int, ch chan Choice) (ruleVeritable string, indiceForm int, substitut complextypes.SubstAndForm) {
 	select {
 	case cas1 := <-recieveSubst:
 		fmt.Printf("SUBST\n")
 		complextypes.ApplySubstitution(&state1, cas1)
-		receive(father_id, state1, c, new_atomics, node_id, original_node_id, meta_to_reintroduce, chFyne, ch)
+		receive(father_id, state1, c, new_atomics, node_id, original_node_id, meta_to_reintroduce, ch)
 	case daChoice := <-ch:
 		return daChoice.GetRule(), daChoice.GetForm(), daChoice.GetSubst()
 	}
@@ -311,7 +160,7 @@ var status []StatusElement
 var substsTab []complextypes.SubstAndForm
 
 // Function to apply tabeau rules as we want, given string rule and int choice.
-func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
+func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int) {
 
 	ch := make(chan Choice)
 	var ruleVeritable string
@@ -325,15 +174,8 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 	lock_choices.Unlock()
 	Counter.Decrease()
 
-	ruleVeritable, indiceForm, substitut = receive(father_id, state1, c, new_atomics, node_id, original_node_id, meta_to_reintroduce, chFyne, ch)
+	ruleVeritable, indiceForm, substitut = receive(father_id, state1, c, new_atomics, node_id, original_node_id, meta_to_reintroduce, ch)
 	RemoveStatus(thisStatus.GetId())
-	// Updates the window with the current state. Can only be done there because
-	// ApplyRulesAssisted redefines DoCorrectApplyRules in search_destructive.go
-	//Window(state1)
-
-	// Attends le choix fait par la fenetre
-	//rule := <-chRule
-	//choice := <-chFormula
 
 	switch ruleVeritable {
 	case "X":
@@ -348,7 +190,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 			// Check if exists a contradiction after applying the substitution
 			clos_res_after_apply_subst, subst_after_apply_subst := search.ApplyClosureRules(f.GetForm(), &state1)
 			if clos_res_after_apply_subst {
-				boolSubsts, resSubsts := search.ManageClosureRule(father_id, &state1, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id, chFyne)
+				boolSubsts, resSubsts := search.ManageClosureRule(father_id, &state1, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
 				if !boolSubsts {
 					finalBool = false
 				}
@@ -397,7 +239,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		state1.SetProof(append(state1.GetProof(), state1.GetCurrentProof()))
 
 		Counter.Increase()
-		go search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{}, chFyne)
+		go search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{})
 	case "B":
 		global.PrintDebug("PS", "User chose Beta rule")
 		hdf := state1.GetBeta()[0]
@@ -428,18 +270,6 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		}
 		fmt.Printf("...Adding them to status list.\n\n")
 
-		/*
-			var branch int
-			checker2 := 0
-			for checker2 < 1 {
-				fmt.Scanf("%d", &branch)
-				if branch < len(int_form_list_list) && branch >= 0 {
-					fmt.Printf("You chose \"%s\" branch.\n", int_form_list_list[branch].ToString())
-					checker2 = 1
-				} else {
-					fmt.Printf("Error, please choose an existing branch.\n")
-				}
-			}*/
 		for _, _ = range int_form_list_list {
 			Counter.Increase()
 		}
@@ -453,9 +283,9 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 			if global.IsDestructive() {
 				c_child := search.Communication{Quit: make(chan bool), Result: make(chan search.Result)}
 				chan_tab = append(chan_tab, c_child)
-				go search.ProofSearch(global.GetGID(), st_copy, c_child, substitut, fl.GetI(), fl.GetI(), []int{}, chFyne)
+				go search.ProofSearch(global.GetGID(), st_copy, c_child, substitut, fl.GetI(), fl.GetI(), []int{})
 			} else {
-				go search.ProofSearch(global.GetGID(), st_copy, c, substitut, fl.GetI(), fl.GetI(), []int{}, chFyne)
+				go search.ProofSearch(global.GetGID(), st_copy, c, substitut, fl.GetI(), fl.GetI(), []int{})
 			}
 
 			global.IncrGoRoutine(1)
@@ -463,7 +293,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 
 		}
 		if global.IsDestructive() {
-			search.WaitChildren(father_id, state1, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, false, child_id_list, meta_to_reintroduce, chFyne)
+			search.WaitChildren(father_id, state1, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, false, child_id_list, meta_to_reintroduce)
 		} else {
 			global.PrintDebug("PS", "Die")
 		}
@@ -483,7 +313,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		state1.SetProof(append(state1.GetProof(), state1.GetCurrentProof()))
 
 		Counter.Increase()
-		go search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{}, chFyne)
+		go search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{})
 	case "G":
 		global.PrintDebug("PS", "User chose Gamma rule")
 		hdf := state1.GetGamma()[indiceForm]
@@ -507,7 +337,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		state1.SetProof(append(state1.GetProof(), state1.GetCurrentProof()))
 
 		Counter.Increase()
-		go search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{}, chFyne)
+		go search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{})
 	case "M":
 		fmt.Printf("case M\n")
 		// Counter.Increase()

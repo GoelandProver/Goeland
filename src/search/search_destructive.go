@@ -56,7 +56,7 @@ func init() {
 }
 
 /* Manage quit or wait father order. Return true if th eproess is supposed to dia at the end */
-func manageQuitOrder(quit bool, c Communication, father_id uint64, st complextypes.State, children []Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
+func manageQuitOrder(quit bool, c Communication, father_id uint64, st complextypes.State, children []Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
 	if len(children) > 0 {
 		closeChildren(&children, true)
 	}
@@ -65,7 +65,7 @@ func manageQuitOrder(quit bool, c Communication, father_id uint64, st complextyp
 		global.PrintDebug("MQO", "Die")
 	} else {
 		global.PrintDebug("MQO", "Closing order received, let's wait father")
-		waitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce, chFyne)
+		waitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
 	}
 }
 
@@ -312,7 +312,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 * 	children : list of children
 * 	given_substs : subst send by this node to its father
 **/
-func waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
+func waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
 	global.PrintDebug("WF", "Wait father")
 
 	// CLear subst found
@@ -321,7 +321,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 	select {
 	case quit := <-c.Quit:
 		exchanges.WriteExchanges(father_id, st, given_substs, complextypes.SubstAndForm{}, "WaitFather - Die")
-		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce, chFyne)
+		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
 		return
 
 	case answer_father := <-c.Result:
@@ -340,7 +340,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			}
 
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst_for_father})
-			sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce, chFyne)
+			sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
 		} else {
 
 			// Maj forbidden
@@ -369,12 +369,12 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 
 			global.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", answer_father.GetSubstForChildren().GetSubst().ToString()))
 			global.PrintDebug("WF", fmt.Sprintf("Forbidden : %v", treetypes.SubstListToString(st_copy.GetForbiddenSubsts())))
-			go ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren(), node_id, original_node_id, new_meta_to_reintroduce, chFyne)
+			go ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren(), node_id, original_node_id, new_meta_to_reintroduce)
 			global.IncrGoRoutine(1)
 
 			global.PrintDebug("WF", "GO !")
 			st.SetBTOnFormulas(false)
-			WaitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, true, []int{original_node_id}, meta_to_reintroduce, chFyne)
+			WaitChildren(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, true, []int{original_node_id}, meta_to_reintroduce)
 		}
 	}
 }
@@ -391,7 +391,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 * 	current_substitution : the substitution sent by this node to its children at this step
 * 	subst_for_backtrack : list of subst if we need to backtrack
 **/
-func WaitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.IntSubstAndFormAndTerms, node_id int, original_node_id int, overwrite_proof bool, child_order []int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
+func WaitChildren(father_id uint64, st complextypes.State, c Communication, children []Communication, given_substs []complextypes.SubstAndForm, current_subst complextypes.SubstAndForm, substs_for_backtrack []complextypes.SubstAndForm, forms_for_backtrack []complextypes.IntSubstAndFormAndTerms, node_id int, original_node_id int, overwrite_proof bool, child_order []int, meta_to_reintroduce []int) {
 	global.PrintDebug("WC", "Waiting children")
 	global.PrintDebug("WC", fmt.Sprintf("Id : %v, original node id :%v", node_id, original_node_id))
 	global.PrintDebug("WC", fmt.Sprintf("Child order : %v", child_order))
@@ -402,7 +402,7 @@ func WaitChildren(father_id uint64, st complextypes.State, c Communication, chil
 	select {
 	case quit := <-c.Quit:
 		exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die")
-		manageQuitOrder(quit, c, father_id, st, children, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce, chFyne)
+		manageQuitOrder(quit, c, father_id, st, children, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
 		return
 	default:
 		global.PrintDebug("WC", fmt.Sprintf("Current subst : %v", current_subst.GetSubst().ToString()))
@@ -441,7 +441,7 @@ func WaitChildren(father_id uint64, st complextypes.State, c Communication, chil
 
 			exchanges.WriteExchanges(father_id, st, nil, complextypes.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
-			sendSubToFather(c, true, false, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce, chFyne)
+			sendSubToFather(c, true, false, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
 
 		// substs list is for father
 		case 1:
@@ -499,9 +499,9 @@ func WaitChildren(father_id uint64, st complextypes.State, c Communication, chil
 
 			closeChildren(&children, true)
 			if len(st.GetSubstsFound()) == 0 {
-				sendSubToFather(c, true, false, father_id, st, given_substs, node_id, original_node_id, new_meta_to_reintroduce, chFyne)
+				sendSubToFather(c, true, false, father_id, st, given_substs, node_id, original_node_id, new_meta_to_reintroduce)
 			} else {
-				sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, new_meta_to_reintroduce, chFyne)
+				sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, new_meta_to_reintroduce)
 			}
 
 		// substs list is for children
@@ -515,20 +515,20 @@ func WaitChildren(father_id uint64, st complextypes.State, c Communication, chil
 			// TODO : vérifier si la sub n'a pas déjà été vue, si oui renvoyer faux
 			substs_for_backtrack = append(substs_for_backtrack, subst_res...)
 			st.SetBTOnFormulas(false)
-			WaitChildren(father_id, st, c, children, given_substs, s, substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, child_order, meta_to_reintroduce, chFyne)
+			WaitChildren(father_id, st, c, children, given_substs, s, substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, child_order, meta_to_reintroduce)
 
 		// quit order from my father
 		case 3:
 			exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die")
 			global.PrintDebug("WC", "Closing order received")
-			manageQuitOrder(true, c, father_id, st, children, []complextypes.SubstAndForm{}, node_id, original_node_id, child_order, meta_to_reintroduce, chFyne)
+			manageQuitOrder(true, c, father_id, st, children, []complextypes.SubstAndForm{}, node_id, original_node_id, child_order, meta_to_reintroduce)
 
 		// wait my father
 		case 4:
 			exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Wait father")
 			global.PrintDebug("WC", "Closing order received, let's wait father")
 			closeChildren(&children, true)
-			waitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce, chFyne)
+			waitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
 
 		// One of my child can't found a way, tell to the other to wait for me
 		case 5:
@@ -563,17 +563,17 @@ func WaitChildren(father_id uint64, st complextypes.State, c Communication, chil
 
 				st_copy := st.Copy()
 				c_child := Communication{make(chan bool), make(chan Result)}
-				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form.GetSaf().ToSubstAndForm(), child_node, original_node_id, meta_to_reintroduce, chFyne)
+				go ProofSearch(global.GetGID(), st_copy, c_child, next_subst_and_form.GetSaf().ToSubstAndForm(), child_node, original_node_id, meta_to_reintroduce)
 				global.PrintDebug("PS", "GO !")
 				global.IncrGoRoutine(1)
-				WaitChildren(father_id, st, c, []Communication{c_child}, given_substs, next_subst_and_form.GetSaf().ToSubstAndForm(), substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, []int{child_node}, meta_to_reintroduce, chFyne)
+				WaitChildren(father_id, st, c, []Communication{c_child}, given_substs, next_subst_and_form.GetSaf().ToSubstAndForm(), substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, []int{child_node}, meta_to_reintroduce)
 
 			case len(substs_for_backtrack) > 0:
 				global.PrintDebug("WC", "Backtrack on subt")
 				next_subst := tryBTSubstitution(&substs_for_backtrack, st.GetMM(), children)
 				exchanges.WriteExchanges(father_id, st, []complextypes.SubstAndForm{next_subst}, complextypes.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on subst")
 				st.SetBTOnFormulas(false)
-				WaitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, child_order, meta_to_reintroduce, chFyne)
+				WaitChildren(father_id, st, c, children, given_substs, next_subst, substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, child_order, meta_to_reintroduce)
 
 			default:
 				exchanges.WriteExchanges(father_id, st, given_substs, current_subst, "WaitChildren - Die - No more BT available")
@@ -581,12 +581,12 @@ func WaitChildren(father_id uint64, st complextypes.State, c Communication, chil
 				if global.GetCompleteness() && len(children) > 1 && !current_subst.IsEmpty() {
 					global.PrintDebug("WC", "Restart proof without subst")
 					sendForbiddenToChildren(children, st.GetForbiddenSubsts())
-					WaitChildren(father_id, st, c, children, given_substs, complextypes.MakeEmptySubstAndForm(), substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, child_order, meta_to_reintroduce, chFyne)
+					WaitChildren(father_id, st, c, children, given_substs, complextypes.MakeEmptySubstAndForm(), substs_for_backtrack, forms_for_backtrack, node_id, original_node_id, false, child_order, meta_to_reintroduce)
 				} else {
 					closeChildren(&children, true)
 					global.PrintDebug("WC", "Return no solution")
 					// Todo : if subst found, return true ! -> not need because priority order change in apply rules
-					sendSubToFather(c, false, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce, chFyne)
+					sendSubToFather(c, false, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
 				}
 
 			}
@@ -602,8 +602,7 @@ func WaitChildren(father_id uint64, st complextypes.State, c Communication, chil
 * c : channel to send the answer to the father
 * s : substitution to apply to the current state
 **/
-
-func proofSearchDestructive(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int, chFyne chan complextypes.State) {
+func proofSearchDestructive(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v - node id : %v - original node id : %v", father_id, node_id, original_node_id))
 	global.PrintDebug("PS", fmt.Sprintf("Meta to reintroduce: %v", global.IntListToString(meta_to_reintroduce)))
@@ -615,7 +614,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 	// Select to check kill order
 	select {
 	case quit := <-c.Quit:
-		manageQuitOrder(quit, c, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce, chFyne)
+		manageQuitOrder(quit, c, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce)
 	default:
 		// Apply subst if any
 		if !s.IsEmpty() {
@@ -631,7 +630,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				// Check if exists a contradiction after applying the substitution
 				clos_res_after_apply_subst, subst_after_apply_subst := ApplyClosureRules(f.GetForm(), &st)
 				if clos_res_after_apply_subst {
-					ManageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id, chFyne)
+					ManageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
 					return
 				}
 			}
@@ -663,7 +662,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 				clos_res, subst := ApplyClosureRules(f.GetForm(), &st)
 				if clos_res {
-					ManageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst), f.Copy(), node_id, original_node_id, chFyne)
+					ManageClosureRule(father_id, &st, c, treetypes.CopySubstList(subst), f.Copy(), node_id, original_node_id)
 					return
 				}
 			}
@@ -695,7 +694,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms())
 				if res_eq {
-					ManageClosureRule(father_id, &st, c, subst_eq, basictypes.MakeFormAndTerm(basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{}), basictypes.MakeEmptyTermList()), node_id, original_node_id, chFyne)
+					ManageClosureRule(father_id, &st, c, subst_eq, basictypes.MakeFormAndTerm(basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{}), basictypes.MakeEmptyTermList()), node_id, original_node_id)
 					return
 				}
 			}
@@ -705,11 +704,11 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, c Communica
 		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", atomics_for_dmt.ToString()))
 
 		// DoCorrectApplyRules is defined by default as ApplyRules, or to ApplyRulesAssisted if assisted flag is given.
-		go DoCorrectApplyRules(father_id, st, c, atomics_for_dmt, node_id, original_node_id, meta_to_reintroduce, chFyne)
+		go DoCorrectApplyRules(father_id, st, c, atomics_for_dmt, node_id, original_node_id, meta_to_reintroduce)
 	}
 }
 
-var DoCorrectApplyRules func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int, chan complextypes.State)
+var DoCorrectApplyRules func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
 
 func shouldApplyEquality(new_atomics basictypes.FormAndTermsList, st complextypes.State) bool {
 	return len(new_atomics) > 0 || len(st.GetLF()) == 0
