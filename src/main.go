@@ -67,7 +67,6 @@ func main() {
 	form, bound := presearchLoader()
 
 	if global.GetAssisted() {
-		// Initialisation
 		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
 		go assisted.Assistant(chAssistant)
 

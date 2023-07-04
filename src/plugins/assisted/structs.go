@@ -45,6 +45,9 @@ var ruleSynonymList = map[string]string{
 var Counter SyncCounter
 var id = -1
 
+var lockStatus sync.Mutex
+var status []StatusElement
+
 // StatusElement struct : with and id (int) and a channel (search.Communication)
 type StatusElement struct {
 	id      int
@@ -79,6 +82,17 @@ func (sc *SyncCounter) Decrease() {
 	}
 }
 
+func RemoveStatus(a int) {
+	lockStatus.Lock()
+	defer lockStatus.Unlock()
+
+	for i, fl := range status {
+		if fl.GetId() == a {
+			status = append(status[:i], status[i+1:]...)
+		}
+	}
+}
+
 func (se StatusElement) GetId() int {
 	return se.id
 }
@@ -93,19 +107,10 @@ func MakeStatusElement(ch chan Choice, st complextypes.State) StatusElement {
 }
 
 func printStatusIds() {
-	fmt.Printf("Status list : {")
-	for i, elem := range status {
-		if i < len(status)-1 {
-			fmt.Printf("%d, ", elem.GetId())
-		} else {
-			fmt.Printf("%d", elem.GetId())
-		}
-	}
-	fmt.Printf("}\n")
-
 	for _, elem := range status {
 		PrintFormListFromState(elem.state, elem.GetId())
 	}
+	fmt.Println()
 }
 
 func (choice Choice) GetForm() int {

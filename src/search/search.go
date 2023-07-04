@@ -237,7 +237,7 @@ func PrintSearchResult(res bool) {
 
 // Do not change this function, it is the standard output for TPTP files
 func PrintStandardSolution(status string) {
-	fmt.Printf("%s SZS status %v for %v", "%", status, global.GetProblemName())
+	fmt.Printf("%s SZS status %v for %v", "%\n", status, global.GetProblemName())
 }
 
 /**
