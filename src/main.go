@@ -41,14 +41,12 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"path"
 	"runtime"
 	"runtime/pprof"
 	"time"
 
-	"net/http"
 	_ "net/http/pprof"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -67,13 +65,20 @@ func main() {
 		fmt.Printf("%s [options] problem_file\n", os.Args[0])
 		return
 	}
-	go func() {
-		log.Println(http.ListenAndServe("localhost:6060", nil))
-	}()
 
 	initEverything()
 
-	doCPUProfile()
+	if global.GetCpuProfile() != "" {
+		file, err := os.Create(global.GetCpuProfile())
+		if err != nil {
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a CPU profile: %v", err))
+		}
+		defer file.Close()
+
+		if err := pprof.StartCPUProfile(file); err != nil {
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
+		}
+	}
 
 	problem := args[len(args)-1]
 	global.SetProblemName(path.Base(problem))
@@ -97,7 +102,19 @@ func main() {
 
 	search.Search(form, bound)
 
-	doMemProfile()
+	if global.GetMemProfile() != "" {
+		f, err := os.Create(global.GetMemProfile())
+		if err != nil {
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a memory profile: %v", err))
+		}
+		defer f.Close()
+
+		//Calls the garbage collector to get up-to-date statistics
+		runtime.GC()
+		if err := pprof.WriteHeapProfile(f); err != nil {
+			global.PrintFatal("MAIN", fmt.Sprintf("Could not write the memory profile: %v", err))
+		}
+	}
 }
 
 /* Initializes the options, the loggers and some other global variables*/
@@ -113,20 +130,6 @@ func initEverything() {
 	typing.Init()
 
 	basictypes.Init()
-}
-
-func doCPUProfile() {
-	if global.GetCpuProfile() != "" {
-		file, err := os.Create(global.GetCpuProfile())
-		if err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a CPU profile: %v", err))
-		}
-		defer file.Close()
-
-		if err := pprof.StartCPUProfile(file); err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
-		}
-	}
 }
 
 // ILL TODO this function should not have to call the parser. The parser should do it themselves.
@@ -288,20 +291,4 @@ func checkForTypedProof(form basictypes.Form) basictypes.Form {
 	}
 
 	return form
-}
-
-func doMemProfile() {
-	if global.GetMemProfile() != "" {
-		f, err := os.Create(global.GetMemProfile())
-		if err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a memory profile: %v", err))
-		}
-		defer f.Close()
-
-		//Calls the garbage collector to get up-to-date statistics
-		runtime.GC()
-		if err := pprof.WriteHeapProfile(f); err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not write the memory profile: %v", err))
-		}
-	}
 }
