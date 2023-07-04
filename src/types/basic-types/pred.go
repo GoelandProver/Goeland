@@ -57,6 +57,7 @@ type Pred struct {
 	args     TermList
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
+	MetaList
 }
 
 /* Pred attributes getters */
@@ -110,7 +111,13 @@ func (p Pred) ToStringWithSuffixMeta(suffix string) string {
 }
 
 func (p Pred) Copy() Form {
-	return MakePred(p.GetIndex(), p.GetID(), p.GetArgs(), typing.CopyTypeAppList(p.GetTypeVars()), p.GetType())
+	return Pred{index: p.index,
+		id:       p.id,
+		args:     p.GetArgs(),
+		typeVars: typing.CopyTypeAppList(p.GetTypeVars()),
+		typeHint: p.GetType(),
+		MetaList: p.MetaList.Copy(),
+	}
 }
 
 func (p Pred) Equals(f any) bool {
@@ -139,8 +146,9 @@ func (p Pred) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakePred(p.GetIndex(), p.GetID(), replaceTermListTypesByMeta(p.GetArgs(), varList, index), instanciateTypeAppList(p.typeVars, varList, index), p.GetType())
 }
 
-func (p Pred) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakePred(p.GetIndex(), p.GetID(), replaceVarInTermList(p.GetArgs(), old, new), p.GetTypeVars(), p.GetType())
+func (p Pred) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
+	termList, res := replaceVarInTermList(p.GetArgs(), old, new)
+	return MakePred(p.GetIndex(), p.GetID(), termList, p.GetTypeVars(), p.GetType()), res
 }
 
 func (p Pred) GetSubTerms() TermList {
@@ -150,4 +158,16 @@ func (p Pred) GetSubTerms() TermList {
 		res = res.MergeTermList(t.GetSubTerms())
 	}
 	return res
+}
+
+func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
+	f, res := p.ReplaceVarByTerm(old, new)
+	if p, isPred := f.(Pred); isPred && res {
+		return Pred{index: f.GetIndex(), id: p.id, args: p.args, typeVars: p.typeVars, typeHint: p.typeHint, MetaList: append(p.MetaList, new)}
+	}
+	return f
+}
+
+func (p Pred) GetInternalMetas() MetaList {
+	return p.MetaList
 }

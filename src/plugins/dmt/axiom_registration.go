@@ -256,6 +256,7 @@ func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
 // ----------------------------------------------------------------------------
 
 // ...
+// TODO: take the ones from the search component.
 
 /**
  * Skolemizes once the formula f.
@@ -305,7 +306,7 @@ func realSkolemize(f btypes.Form, vars []btypes.Var, terms []btypes.Term) btypes
 			[]typing.TypeApp{},
 			scheme,
 		)
-		f = f.ReplaceVarByTerm(v, skolem)
+		f, _ = f.ReplaceVarByTerm(v, skolem)
 	}
 	return f
 }
@@ -341,7 +342,7 @@ func realInstantiate(form btypes.Form, index int, vars []btypes.Var) (btypes.For
 	for _, v := range vars {
 		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
 		newMm = append(newMm, meta)
-		form = form.ReplaceVarByTerm(v, meta)
+		form, _ = form.ReplaceVarByTerm(v, meta)
 	}
 	return form, newMm
 }

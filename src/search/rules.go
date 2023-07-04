@@ -465,8 +465,12 @@ func realInstantiate(form basictypes.Form, index int, vars []basictypes.Var) (ba
 
 	for _, v := range vars {
 		meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
+		if global.IsInnerSko() || global.IsOptimisedSko() {
+			form = form.SubstituteVarByMeta(v, meta)
+		} else {
+			form, _ = form.ReplaceVarByTerm(v, meta)
+		}
 		newMm = append(newMm, meta)
-		form = form.ReplaceVarByTerm(v, meta)
 	}
 
 	return form, newMm

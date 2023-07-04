@@ -46,17 +46,21 @@ type TermForm struct {
 	t     basictypes.Term
 }
 
-func (tf TermForm) ToMappedString(basictypes.MapString, bool) string                        { return tf.ToString() }
-func (tf TermForm) GetTerm() basictypes.Term                                                { return tf.t.Copy() }
-func (tf TermForm) ToString() string                                                        { return tf.t.ToString() }
-func (t TermForm) ToStringWithSuffixMeta(string) string                                     { return t.ToString() }
-func (t TermForm) Copy() basictypes.Form                                                    { return makeTermForm(t.GetIndex(), t.GetTerm()) }
-func (t TermForm) GetType() typing.TypeScheme                                               { return typing.DefaultFunType(0) }
-func (t TermForm) RenameVariables() basictypes.Form                                         { return t }
-func (t TermForm) CleanFormula() basictypes.Form                                            { return t }
-func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) basictypes.Form                  { return t }
-func (t TermForm) ReplaceVarByTerm(old basictypes.Var, new basictypes.Term) basictypes.Form { return t }
-func (tf TermForm) GetIndex() int                                                           { return tf.index }
+func (tf TermForm) ToMappedString(basictypes.MapString, bool) string       { return tf.ToString() }
+func (tf TermForm) GetTerm() basictypes.Term                               { return tf.t.Copy() }
+func (tf TermForm) ToString() string                                       { return tf.t.ToString() }
+func (t TermForm) ToStringWithSuffixMeta(string) string                    { return t.ToString() }
+func (t TermForm) Copy() basictypes.Form                                   { return makeTermForm(t.GetIndex(), t.GetTerm()) }
+func (t TermForm) GetType() typing.TypeScheme                              { return typing.DefaultFunType(0) }
+func (t TermForm) RenameVariables() basictypes.Form                        { return t }
+func (t TermForm) CleanFormula() basictypes.Form                           { return t }
+func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) basictypes.Form { return t }
+func (t TermForm) ReplaceVarByTerm(basictypes.Var, basictypes.Term) (basictypes.Form, bool) {
+	return t, false
+}
+func (tf TermForm) GetIndex() int                                                      { return tf.index }
+func (t TermForm) SubstituteVarByMeta(basictypes.Var, basictypes.Meta) basictypes.Form { return t }
+func (t TermForm) GetInternalMetas() basictypes.MetaList                               { return basictypes.MetaList{} }
 
 func (t TermForm) Equals(t2 any) bool {
 	switch nt := t2.(type) {

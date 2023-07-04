@@ -52,6 +52,7 @@ type Ex struct {
 	index    int
 	var_list []Var
 	f        Form
+	MetaList
 }
 
 func (e Ex) ToMappedString(map_ MapString, displayTypes bool) string {
@@ -73,7 +74,12 @@ func (e Ex) ToStringWithSuffixMeta(suffix string) string {
 }
 
 func (e Ex) Copy() Form {
-	return MakeEx(e.GetIndex(), copyVarList(e.GetVarList()), e.GetForm())
+	return Ex{
+		index:    e.GetIndex(),
+		var_list: copyVarList(e.GetVarList()),
+		f:        e.GetForm(),
+		MetaList: e.MetaList.Copy(),
+	}
 }
 
 func (e Ex) Equals(f any) bool {
@@ -87,8 +93,9 @@ func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeEx(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceTypeByMeta(varList, index))
 }
 
-func (e Ex) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeEx(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceVarByTerm(old, new))
+func (e Ex) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
+	f, res := e.GetForm().ReplaceVarByTerm(old, new)
+	return MakeEx(e.GetIndex(), e.GetVarList(), f), res
 }
 
 func (e Ex) RenameVariables() Form {
@@ -110,10 +117,23 @@ func (e Ex) GetSubTerms() TermList {
 	return e.GetForm().GetSubTerms()
 }
 
+func (e Ex) SubstituteVarByMeta(old Var, new Meta) Form {
+	f, res := e.ReplaceVarByTerm(old, new)
+	if e, isEx := f.(Ex); isEx && res {
+		return Ex{e.index, e.var_list, e.f, append(e.MetaList, new)}
+	}
+	return f
+}
+
+func (e Ex) GetInternalMetas() MetaList {
+	return e.MetaList
+}
+
 type All struct {
 	index    int
 	var_list []Var
 	f        Form
+	MetaList
 }
 
 func (a All) ToMappedString(map_ MapString, displayTypes bool) string {
@@ -135,7 +155,12 @@ func (a All) ToStringWithSuffixMeta(suffix string) string {
 }
 
 func (a All) Copy() Form {
-	return MakeAll(a.GetIndex(), copyVarList(a.GetVarList()), a.GetForm())
+	return All{
+		index:    a.GetIndex(),
+		var_list: copyVarList(a.GetVarList()),
+		f:        a.GetForm(),
+		MetaList: a.MetaList.Copy(),
+	}
 }
 
 func (a All) Equals(f any) bool {
@@ -149,8 +174,9 @@ func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAll(a.GetIndex(), a.GetVarList(), a.GetForm().ReplaceTypeByMeta(varList, index))
 }
 
-func (a All) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeAll(a.GetIndex(), a.GetVarList(), a.GetForm().ReplaceVarByTerm(old, new))
+func (a All) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
+	f, res := a.GetForm().ReplaceVarByTerm(old, new)
+	return MakeAll(a.GetIndex(), a.GetVarList(), f), res
 }
 
 func (a All) RenameVariables() Form {
@@ -172,11 +198,24 @@ func (a All) GetSubTerms() TermList {
 	return a.GetForm().GetSubTerms()
 }
 
+func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
+	f, res := a.ReplaceVarByTerm(old, new)
+	if a, isAll := f.(All); isAll && res {
+		return All{a.index, a.var_list, a.f, append(a.MetaList, new)}
+	}
+	return f
+}
+
+func (a All) GetInternalMetas() MetaList {
+	return a.MetaList
+}
+
 /* Struct describing a forall with type variables */
 type AllType struct {
 	index  int
 	tvList []typing.TypeVar
 	form   Form
+	MetaList
 }
 
 /* Methods */
@@ -203,9 +242,10 @@ func (a AllType) ToStringWithSuffixMeta(suffix string) string {
 
 func (a AllType) Copy() Form {
 	return AllType{
-		index:  a.index,
-		form:   a.form.Copy(),
-		tvList: copyTypeVarList(a.tvList),
+		index:    a.index,
+		form:     a.form.Copy(),
+		tvList:   copyTypeVarList(a.tvList),
+		MetaList: a.MetaList.Copy(),
 	}
 }
 
@@ -220,8 +260,9 @@ func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAllType(a.GetIndex(), a.tvList, a.GetForm().ReplaceTypeByMeta(varList, index))
 }
 
-func (a AllType) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().ReplaceVarByTerm(old, new))
+func (a AllType) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
+	f, res := a.GetForm().ReplaceVarByTerm(old, new)
+	return MakeAllType(a.GetIndex(), a.GetVarList(), f), res
 }
 
 func (a AllType) RenameVariables() Form {
@@ -257,6 +298,18 @@ func (a AllType) GetSubTerms() TermList {
 	return a.GetForm().GetSubTerms()
 }
 
+func (a AllType) SubstituteVarByMeta(old Var, new Meta) Form {
+	f, res := a.ReplaceVarByTerm(old, new)
+	if a, isAll := f.(AllType); isAll && res {
+		return AllType{a.index, a.tvList, a.form, append(a.MetaList, new)}
+	}
+	return f
+}
+
+func (a AllType) GetInternalMetas() MetaList {
+	return a.MetaList
+}
+
 // ----------------------------------------------------------------------------
 // Utility of quantified forms
 // ----------------------------------------------------------------------------
@@ -269,7 +322,7 @@ func renameVariable(form Form, varList []Var) ([]Var, Form) {
 		newVar := MakerNewVar(v.GetName())
 		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()), v.typeHint)
 		newVL = append(newVL, newVar)
-		newForm = newForm.RenameVariables().ReplaceVarByTerm(v, newVar)
+		newForm, _ = newForm.RenameVariables().ReplaceVarByTerm(v, newVar)
 	}
 
 	return newVL, newForm
