@@ -42,7 +42,6 @@
 package polymorphism
 
 import (
-	"fmt"
 	"strings"
 
 	. "github.com/GoelandProver/Goeland/global"
@@ -134,13 +133,13 @@ func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
 		}
 		if k != len(types) {
 			pMap.lock.Unlock()
-			fmt.Println("[ERROR] Parameterized type can not be instanciated with this number of arguments.")
+			PrintError("PRMTR_TYPE", "Parameterized type can not be instanciated with this number of arguments.")
 			return ParameterizedType{}
 		}
 		types = nextTypes
 	} else {
 		pMap.lock.Unlock()
-		fmt.Println("[ERROR] Parameterized type not found.")
+		PrintError("PRMTR_TYPE", "Parameterized type not found.")
 		return ParameterizedType{}
 	}
 	pMap.lock.Unlock()

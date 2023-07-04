@@ -45,7 +45,7 @@ func Simplexe(system info_system) (info_system, bool) {
 		ligne_pivot := checkCont(system.alpha_tab, system.tab_cont, pos_var_tab_bis)
 		if ligne_pivot == -1 {
 			fmt.Println(" \033[33m La solution est : ")
-			fmt.Println("alpha_tab_bis ", system.alpha_tab, "\n")
+			fmt.Println("alpha_tab_bis ", system.alpha_tab)
 			system.pos_var_tab = pos_var_tab_bis
 			return system, true
 		}
@@ -62,7 +62,7 @@ func Simplexe(system info_system) (info_system, bool) {
 			fmt.Println("tab_coef = ", system.tab_coef)
 			//calcul des nouveaux alpha
 			system = updateAlpha(system, ligne_pivot, pos_var_tab_bis)
-			fmt.Println("alpha_tab = ", system.alpha_tab, "\n")
+			fmt.Println("alpha_tab = ", system.alpha_tab)
 		}
 	}
 	return system, false

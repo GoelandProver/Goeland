@@ -1,0 +1,1090 @@
+%------------------------------------------------------------------------------
+% File     : SET007+71 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Non-contiguous Substrings and One-to-one Finite Sequences
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : finseq_3 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  126 (  24 unt;   0 def)
+%            Number of atoms       :  601 ( 140 equ)
+%            Maximal formula atoms :   17 (   4 avg)
+%            Number of connectives :  522 (  47   ~;  12   |; 216   &)
+%                                         (  24 <=>; 223  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   19 (   6 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   17 (  15 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   48 (  48 usr;  12 con; 0-8 aty)
+%            Number of variables   :  278 ( 276   !;   2   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_finseq_3,axiom,
+    k2_finseq_1(np__3) = k1_enumset1(np__1,np__2,np__3) ).
+
+fof(t2_finseq_3,axiom,
+    k2_finseq_1(np__4) = k2_enumset1(np__1,np__2,np__3,np__4) ).
+
+fof(t3_finseq_3,axiom,
+    k2_finseq_1(np__5) = k3_enumset1(np__1,np__2,np__3,np__4,np__5) ).
+
+fof(t4_finseq_3,axiom,
+    k2_finseq_1(np__6) = k4_enumset1(np__1,np__2,np__3,np__4,np__5,np__6) ).
+
+fof(t5_finseq_3,axiom,
+    k2_finseq_1(np__7) = k5_enumset1(np__1,np__2,np__3,np__4,np__5,np__6,np__7) ).
+
+fof(t6_finseq_3,axiom,
+    k2_finseq_1(np__8) = k6_enumset1(np__1,np__2,np__3,np__4,np__5,np__6,np__7,np__8) ).
+
+fof(t7_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ( k2_finseq_1(A) = k1_xboole_0
+      <=> ~ r2_hidden(A,k2_finseq_1(A)) ) ) ).
+
+fof(t8_finseq_3,axiom,
+    $true ).
+
+fof(t9_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ r2_hidden(k2_xcmplx_0(A,np__1),k2_finseq_1(A)) ) ).
+
+fof(t10_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( A != np__0
+           => r2_hidden(A,k2_finseq_1(k2_xcmplx_0(A,B))) ) ) ) ).
+
+fof(t11_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( r2_hidden(k2_xcmplx_0(A,B),k2_finseq_1(A))
+           => B = np__0 ) ) ) ).
+
+fof(t12_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( ~ r1_xreal_0(B,A)
+           => r2_hidden(k2_xcmplx_0(A,np__1),k2_finseq_1(B)) ) ) ) ).
+
+fof(t13_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ! [C] :
+              ( v4_ordinal2(C)
+             => ( r2_hidden(A,k2_finseq_1(B))
+               => ( r1_xreal_0(A,C)
+                  | r2_hidden(k6_xcmplx_0(A,C),k2_finseq_1(B)) ) ) ) ) ) ).
+
+fof(t14_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( r2_hidden(k6_xcmplx_0(A,B),k2_finseq_1(A))
+          <=> ~ r1_xreal_0(A,B) ) ) ) ).
+
+fof(t15_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => r1_xboole_0(k2_finseq_1(A),k1_tarski(k2_xcmplx_0(A,np__1))) ) ).
+
+fof(t16_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => k6_subset_1(k5_numbers,k2_finseq_1(k2_xcmplx_0(A,np__1)),k2_finseq_1(A)) = k1_tarski(k2_xcmplx_0(A,np__1)) ) ).
+
+fof(t17_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => k2_finseq_1(A) != k2_finseq_1(k2_xcmplx_0(A,np__1)) ) ).
+
+fof(t18_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( k2_finseq_1(A) = k2_finseq_1(k2_xcmplx_0(A,B))
+           => B = np__0 ) ) ) ).
+
+fof(t19_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => r1_tarski(k2_finseq_1(A),k2_finseq_1(k2_xcmplx_0(A,B))) ) ) ).
+
+fof(t20_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => r3_xboole_0(k2_finseq_1(A),k2_finseq_1(B)) ) ) ).
+
+fof(t21_finseq_3,axiom,
+    $true ).
+
+fof(t22_finseq_3,axiom,
+    ! [A,B] :
+      ( v4_ordinal2(B)
+     => ( k2_finseq_1(B) = k1_tarski(A)
+       => ( B = np__1
+          & A = np__1 ) ) ) ).
+
+fof(t23_finseq_3,axiom,
+    ! [A,B,C] :
+      ( v4_ordinal2(C)
+     => ( k2_finseq_1(C) = k2_tarski(A,B)
+       => ( A = B
+          | ( C = np__2
+            & k2_tarski(A,B) = k2_tarski(np__1,np__2) ) ) ) ) ).
+
+fof(t24_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C] :
+              ( r2_hidden(C,k4_finseq_1(A))
+             => r2_hidden(C,k4_finseq_1(k7_finseq_1(A,B))) ) ) ) ).
+
+fof(t25_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( r2_hidden(B,k4_finseq_1(A))
+         => m2_subset_1(B,k1_numbers,k5_numbers) ) ) ).
+
+fof(t26_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ~ ( r2_hidden(B,k4_finseq_1(A))
+            & B = np__0 ) ) ).
+
+fof(t27_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( r2_hidden(B,k4_finseq_1(A))
+          <=> ( r1_xreal_0(np__1,B)
+              & r1_xreal_0(B,k3_finseq_1(A)) ) ) ) ) ).
+
+fof(t28_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( r2_hidden(B,k4_finseq_1(A))
+          <=> ( m2_subset_1(k6_xcmplx_0(B,np__1),k1_numbers,k5_numbers)
+              & m2_subset_1(k6_xcmplx_0(k3_finseq_1(A),B),k1_numbers,k5_numbers) ) ) ) ) ).
+
+fof(t29_finseq_3,axiom,
+    ! [A,B] : k4_finseq_1(k10_finseq_1(A,B)) = k2_finseq_1(np__2) ).
+
+fof(t30_finseq_3,axiom,
+    ! [A,B,C] : k4_finseq_1(k11_finseq_1(A,B,C)) = k2_finseq_1(np__3) ).
+
+fof(t31_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ( k3_finseq_1(A) = k3_finseq_1(B)
+          <=> k4_finseq_1(A) = k4_finseq_1(B) ) ) ) ).
+
+fof(t32_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ( r1_xreal_0(k3_finseq_1(A),k3_finseq_1(B))
+          <=> r1_tarski(k4_finseq_1(A),k4_finseq_1(B)) ) ) ) ).
+
+fof(t33_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( r2_hidden(B,k2_relat_1(A))
+         => r2_hidden(np__1,k4_finseq_1(A)) ) ) ).
+
+fof(t34_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ( k2_relat_1(A) != k1_xboole_0
+       => r2_hidden(np__1,k4_finseq_1(A)) ) ) ).
+
+fof(t35_finseq_3,axiom,
+    $true ).
+
+fof(t36_finseq_3,axiom,
+    $true ).
+
+fof(t37_finseq_3,axiom,
+    $true ).
+
+fof(t38_finseq_3,axiom,
+    ! [A,B] : k1_xboole_0 != k10_finseq_1(A,B) ).
+
+fof(t39_finseq_3,axiom,
+    ! [A,B,C] : k1_xboole_0 != k11_finseq_1(A,B,C) ).
+
+fof(t40_finseq_3,axiom,
+    ! [A,B,C] : k9_finseq_1(A) != k10_finseq_1(B,C) ).
+
+fof(t41_finseq_3,axiom,
+    ! [A,B,C,D] : k9_finseq_1(A) != k11_finseq_1(B,C,D) ).
+
+fof(t42_finseq_3,axiom,
+    ! [A,B,C,D,E] : k10_finseq_1(A,B) != k11_finseq_1(C,D,E) ).
+
+fof(t43_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C)
+                & v1_finseq_1(C) )
+             => ( ( k3_finseq_1(A) = k1_nat_1(k3_finseq_1(B),k3_finseq_1(C))
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( r2_hidden(D,k4_finseq_1(B))
+                       => k1_funct_1(A,D) = k1_funct_1(B,D) ) )
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( r2_hidden(D,k4_finseq_1(C))
+                       => k1_funct_1(A,k1_nat_1(k3_finseq_1(B),D)) = k1_funct_1(C,D) ) ) )
+               => A = k7_finseq_1(B,C) ) ) ) ) ).
+
+fof(t44_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v1_finset_1(B)
+         => ( r1_tarski(B,k2_finseq_1(A))
+           => k3_finseq_1(k14_finseq_1(B)) = k4_card_1(B) ) ) ) ).
+
+fof(t45_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v1_finset_1(B)
+         => ( r1_tarski(B,k2_finseq_1(A))
+           => k4_finseq_1(k14_finseq_1(B)) = k2_finseq_1(k4_card_1(B)) ) ) ) ).
+
+fof(t46_finseq_3,axiom,
+    ! [A,B] :
+      ( v4_ordinal2(B)
+     => ! [C] :
+          ( v4_ordinal2(C)
+         => ! [D] :
+              ( v4_ordinal2(D)
+             => ! [E] :
+                  ( v4_ordinal2(E)
+                 => ! [F] :
+                      ( v4_ordinal2(F)
+                     => ~ ( r1_tarski(A,k2_finseq_1(B))
+                          & ~ r1_xreal_0(D,C)
+                          & r1_xreal_0(np__1,E)
+                          & r1_xreal_0(F,k3_finseq_1(k14_finseq_1(A)))
+                          & k1_funct_1(k14_finseq_1(A),F) = C
+                          & k1_funct_1(k14_finseq_1(A),E) = D
+                          & r1_xreal_0(E,F) ) ) ) ) ) ) ).
+
+fof(t47_finseq_3,axiom,
+    $true ).
+
+fof(t48_finseq_3,axiom,
+    ! [A,B,C] :
+      ( v4_ordinal2(C)
+     => ! [D] :
+          ( v4_ordinal2(D)
+         => ( ( r1_tarski(A,k2_finseq_1(C))
+              & r1_tarski(B,k2_finseq_1(D)) )
+           => ( ! [E] :
+                  ( m2_subset_1(E,k1_numbers,k5_numbers)
+                 => ! [F] :
+                      ( m2_subset_1(F,k1_numbers,k5_numbers)
+                     => ~ ( r2_hidden(E,A)
+                          & r2_hidden(F,B)
+                          & r1_xreal_0(F,E) ) ) )
+            <=> k14_finseq_1(k2_xboole_0(A,B)) = k8_finseq_1(k5_numbers,k14_finseq_1(A),k14_finseq_1(B)) ) ) ) ) ).
+
+fof(t49_finseq_3,axiom,
+    k14_finseq_1(k1_xboole_0) = k1_xboole_0 ).
+
+fof(t50_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ( np__0 != A
+       => k14_finseq_1(k1_tarski(A)) = k9_finseq_1(A) ) ) ).
+
+fof(t51_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ~ ( ~ r1_xreal_0(A,np__0)
+              & ~ r1_xreal_0(B,A)
+              & k14_finseq_1(k2_tarski(A,B)) != k10_finseq_1(A,B) ) ) ) ).
+
+fof(t52_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => k3_finseq_1(k14_finseq_1(k2_finseq_1(A))) = A ) ).
+
+fof(t53_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => k7_relat_1(k14_finseq_1(k2_finseq_1(k2_xcmplx_0(A,B))),k2_finseq_1(A)) = k14_finseq_1(k2_finseq_1(A)) ) ) ).
+
+fof(t54_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => k14_finseq_1(k2_finseq_1(A)) = k1_finseq_2(A) ) ).
+
+fof(t55_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( k7_relat_1(A,k2_finseq_1(B)) = A
+          <=> r1_xreal_0(k3_finseq_1(A),B) ) ) ) ).
+
+fof(t56_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => k7_relat_1(k1_finseq_2(k2_xcmplx_0(A,B)),k2_finseq_1(A)) = k1_finseq_2(A) ) ) ).
+
+fof(t57_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( k7_relat_1(k1_finseq_2(A),k2_finseq_1(B)) = k1_finseq_2(B)
+          <=> r1_xreal_0(B,A) ) ) ) ).
+
+fof(t58_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ( k7_relat_1(k1_finseq_2(A),k2_finseq_1(B)) = k1_finseq_2(A)
+          <=> r1_xreal_0(A,B) ) ) ) ).
+
+fof(t59_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C] :
+              ( v4_ordinal2(C)
+             => ! [D] :
+                  ( v4_ordinal2(D)
+                 => ( ( k3_finseq_1(A) = k2_xcmplx_0(C,D)
+                      & B = k7_relat_1(A,k2_finseq_1(C)) )
+                   => k3_finseq_1(B) = C ) ) ) ) ) ).
+
+fof(t60_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C] :
+              ( v4_ordinal2(C)
+             => ! [D] :
+                  ( v4_ordinal2(D)
+                 => ( ( k3_finseq_1(A) = k2_xcmplx_0(C,D)
+                      & B = k7_relat_1(A,k2_finseq_1(C)) )
+                   => k4_finseq_1(B) = k2_finseq_1(C) ) ) ) ) ) ).
+
+fof(t61_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C] :
+              ( v4_ordinal2(C)
+             => ( ( k3_finseq_1(A) = k2_xcmplx_0(C,np__1)
+                  & B = k7_relat_1(A,k2_finseq_1(C)) )
+               => A = k7_finseq_1(B,k9_finseq_1(k1_funct_1(A,k2_xcmplx_0(C,np__1)))) ) ) ) ) ).
+
+fof(t62_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(k7_relat_1(A,B))
+            & v1_funct_1(k7_relat_1(A,B))
+            & v1_finseq_1(k7_relat_1(A,B)) )
+        <=> ? [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+              & k3_xboole_0(B,k4_finseq_1(A)) = k2_finseq_1(C) ) ) ) ).
+
+fof(t63_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C] : k4_card_1(k10_relat_1(k7_finseq_1(A,B),C)) = k1_nat_1(k4_card_1(k10_relat_1(A,C)),k4_card_1(k10_relat_1(B,C))) ) ) ).
+
+fof(t64_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C] : r1_tarski(k10_relat_1(A,C),k10_relat_1(k7_finseq_1(A,B),C)) ) ) ).
+
+fof(d1_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] : k1_finseq_3(A,B) = k5_relat_1(k14_finseq_1(k4_xboole_0(k4_finseq_1(A),k10_relat_1(A,B))),A) ) ).
+
+fof(t65_finseq_3,axiom,
+    $true ).
+
+fof(t66_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] : k3_finseq_1(k1_finseq_3(A,B)) = k6_xcmplx_0(k3_finseq_1(A),k4_card_1(k10_relat_1(A,B))) ) ).
+
+fof(t67_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] : r1_xreal_0(k3_finseq_1(k1_finseq_3(A,B)),k3_finseq_1(A)) ) ).
+
+fof(t68_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( k3_finseq_1(k1_finseq_3(A,B)) = k3_finseq_1(A)
+         => r1_xboole_0(B,k2_relat_1(A)) ) ) ).
+
+fof(t69_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B,C] :
+          ( v4_ordinal2(C)
+         => ( C = k6_xcmplx_0(k3_finseq_1(A),k4_card_1(k10_relat_1(A,B)))
+           => k4_finseq_1(k1_finseq_3(A,B)) = k2_finseq_1(C) ) ) ) ).
+
+fof(t70_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] : r1_tarski(k4_finseq_1(k1_finseq_3(A,B)),k4_finseq_1(A)) ) ).
+
+fof(t71_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( k4_finseq_1(k1_finseq_3(A,B)) = k4_finseq_1(A)
+         => r1_xboole_0(B,k2_relat_1(A)) ) ) ).
+
+fof(t72_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] : k2_relat_1(k1_finseq_3(A,B)) = k4_xboole_0(k2_relat_1(A),B) ) ).
+
+fof(t73_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] : r1_tarski(k2_relat_1(k1_finseq_3(A,B)),k2_relat_1(A)) ) ).
+
+fof(t74_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( k2_relat_1(k1_finseq_3(A,B)) = k2_relat_1(A)
+         => r1_xboole_0(B,k2_relat_1(A)) ) ) ).
+
+fof(t75_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( k1_finseq_3(A,B) = k1_xboole_0
+        <=> r1_tarski(k2_relat_1(A),B) ) ) ).
+
+fof(t76_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( k1_finseq_3(A,B) = A
+        <=> r1_xboole_0(B,k2_relat_1(A)) ) ) ).
+
+fof(t77_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( k1_finseq_3(A,k1_tarski(B)) = A
+        <=> ~ r2_hidden(B,k2_relat_1(A)) ) ) ).
+
+fof(t78_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => k1_finseq_3(A,k1_xboole_0) = A ) ).
+
+fof(t79_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => k1_finseq_3(A,k2_relat_1(A)) = k1_xboole_0 ) ).
+
+fof(t80_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C] : k1_finseq_3(k7_finseq_1(A,B),C) = k7_finseq_1(k1_finseq_3(A,C),k1_finseq_3(B,C)) ) ) ).
+
+fof(t81_finseq_3,axiom,
+    ! [A] : k1_finseq_3(k1_xboole_0,A) = k1_xboole_0 ).
+
+fof(t82_finseq_3,axiom,
+    ! [A,B] :
+      ( k1_finseq_3(k9_finseq_1(A),B) = k9_finseq_1(A)
+    <=> ~ r2_hidden(A,B) ) ).
+
+fof(t83_finseq_3,axiom,
+    ! [A,B] :
+      ( k1_finseq_3(k9_finseq_1(A),B) = k1_xboole_0
+    <=> r2_hidden(A,B) ) ).
+
+fof(t84_finseq_3,axiom,
+    ! [A,B,C] :
+      ( k1_finseq_3(k10_finseq_1(A,B),C) = k1_xboole_0
+    <=> ( r2_hidden(A,C)
+        & r2_hidden(B,C) ) ) ).
+
+fof(t85_finseq_3,axiom,
+    ! [A,B,C] :
+      ( r2_hidden(A,B)
+     => ( r2_hidden(C,B)
+        | k1_finseq_3(k10_finseq_1(A,C),B) = k9_finseq_1(C) ) ) ).
+
+fof(t86_finseq_3,axiom,
+    ! [A,B,C] :
+      ( k1_finseq_3(k10_finseq_1(A,B),C) = k9_finseq_1(B)
+     => ( A = B
+        | ( r2_hidden(A,C)
+          & ~ r2_hidden(B,C) ) ) ) ).
+
+fof(t87_finseq_3,axiom,
+    ! [A,B,C] :
+      ( r2_hidden(C,B)
+     => ( r2_hidden(A,B)
+        | k1_finseq_3(k10_finseq_1(A,C),B) = k9_finseq_1(A) ) ) ).
+
+fof(t88_finseq_3,axiom,
+    ! [A,B,C] :
+      ( k1_finseq_3(k10_finseq_1(A,B),C) = k9_finseq_1(A)
+     => ( A = B
+        | ( ~ r2_hidden(A,C)
+          & r2_hidden(B,C) ) ) ) ).
+
+fof(t89_finseq_3,axiom,
+    ! [A,B,C] :
+      ( k1_finseq_3(k10_finseq_1(A,B),C) = k10_finseq_1(A,B)
+    <=> ( ~ r2_hidden(A,C)
+        & ~ r2_hidden(B,C) ) ) ).
+
+fof(t90_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C,D] :
+              ( v4_ordinal2(D)
+             => ( ( k3_finseq_1(A) = k2_xcmplx_0(D,np__1)
+                  & B = k7_relat_1(A,k2_finseq_1(D)) )
+               => ( r2_hidden(k1_funct_1(A,k2_xcmplx_0(D,np__1)),C)
+                <=> k1_finseq_3(A,C) = k1_finseq_3(B,C) ) ) ) ) ) ).
+
+fof(t91_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C,D] :
+              ( v4_ordinal2(D)
+             => ( ( k3_finseq_1(A) = k2_xcmplx_0(D,np__1)
+                  & B = k7_relat_1(A,k2_finseq_1(D)) )
+               => ( ~ r2_hidden(k1_funct_1(A,k2_xcmplx_0(D,np__1)),C)
+                <=> k1_finseq_3(A,C) = k7_finseq_1(k1_finseq_3(B,C),k9_finseq_1(k1_funct_1(A,k2_xcmplx_0(D,np__1)))) ) ) ) ) ) ).
+
+fof(t93_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B,C] :
+          ( m2_finseq_1(A,B)
+         => m2_finseq_1(k1_finseq_3(A,C),B) ) ) ).
+
+fof(t94_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( v2_funct_1(A)
+         => v2_funct_1(k1_finseq_3(A,B)) ) ) ).
+
+fof(t95_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( v2_funct_1(A)
+         => k3_finseq_1(k1_finseq_3(A,B)) = k6_xcmplx_0(k3_finseq_1(A),k4_card_1(k3_xboole_0(B,k2_relat_1(A)))) ) ) ).
+
+fof(t96_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( v1_finset_1(B)
+         => ( ( v2_funct_1(A)
+              & r1_tarski(B,k2_relat_1(A)) )
+           => k3_finseq_1(k1_finseq_3(A,B)) = k6_xcmplx_0(k3_finseq_1(A),k4_card_1(B)) ) ) ) ).
+
+fof(t97_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v2_funct_1(A)
+            & r2_hidden(B,k2_relat_1(A)) )
+         => k3_finseq_1(k1_finseq_3(A,k1_tarski(B))) = k6_xcmplx_0(k3_finseq_1(A),np__1) ) ) ).
+
+fof(t98_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ( ( r1_xboole_0(k2_relat_1(A),k2_relat_1(B))
+              & v2_funct_1(A)
+              & v2_funct_1(B) )
+          <=> v2_funct_1(k7_finseq_1(A,B)) ) ) ) ).
+
+fof(t99_finseq_3,axiom,
+    ! [A,B] :
+      ( v4_ordinal2(B)
+     => ( r1_tarski(A,k2_finseq_1(B))
+       => v2_funct_1(k14_finseq_1(A)) ) ) ).
+
+fof(t100_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => v2_funct_1(k1_finseq_2(A)) ) ).
+
+fof(t101_finseq_3,axiom,
+    $true ).
+
+fof(t102_finseq_3,axiom,
+    ! [A] : v2_funct_1(k9_finseq_1(A)) ).
+
+fof(t103_finseq_3,axiom,
+    ! [A,B] :
+      ( A != B
+    <=> v2_funct_1(k10_finseq_1(A,B)) ) ).
+
+fof(t104_finseq_3,axiom,
+    ! [A,B,C] :
+      ( ( A != B
+        & B != C
+        & C != A )
+    <=> v2_funct_1(k11_finseq_1(A,B,C)) ) ).
+
+fof(t105_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v2_funct_1(A)
+            & k2_relat_1(A) = k1_tarski(B) )
+         => k3_finseq_1(A) = np__1 ) ) ).
+
+fof(t106_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( ( v2_funct_1(A)
+            & k2_relat_1(A) = k1_tarski(B) )
+         => A = k9_finseq_1(B) ) ) ).
+
+fof(t107_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B,C] :
+          ( ( v2_funct_1(A)
+            & k2_relat_1(A) = k2_tarski(B,C) )
+         => ( B = C
+            | k3_finseq_1(A) = np__2 ) ) ) ).
+
+fof(t108_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B,C] :
+          ~ ( v2_funct_1(A)
+            & k2_relat_1(A) = k2_tarski(B,C)
+            & B != C
+            & A != k10_finseq_1(B,C)
+            & A != k10_finseq_1(C,B) ) ) ).
+
+fof(t109_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B,C,D] :
+          ( ( v2_funct_1(A)
+            & k2_relat_1(A) = k1_enumset1(B,C,D)
+            & v2_funct_1(k11_finseq_1(B,C,D)) )
+         => k3_finseq_1(A) = np__3 ) ) ).
+
+fof(t110_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B,C,D] :
+          ( ( v2_funct_1(A)
+            & k2_relat_1(A) = k1_enumset1(B,C,D) )
+         => ( B = C
+            | C = D
+            | B = D
+            | k3_finseq_1(A) = np__3 ) ) ) ).
+
+fof(t111_finseq_3,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_finseq_1(B,A)
+         => ~ ( ~ v1_xboole_0(B)
+              & ! [C] :
+                  ( m1_subset_1(C,A)
+                 => ! [D] :
+                      ( m2_finseq_1(D,A)
+                     => ~ ( C = k1_funct_1(B,np__1)
+                          & B = k8_finseq_1(A,k12_finseq_1(A,C),D) ) ) ) ) ) ) ).
+
+fof(t112_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ! [C] :
+              ( r2_hidden(A,k4_finseq_1(B))
+             => k1_funct_1(k7_finseq_1(k9_finseq_1(C),B),k2_xcmplx_0(A,np__1)) = k1_funct_1(B,A) ) ) ) ).
+
+fof(d2_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => k2_finseq_3(A,B) = k5_relat_1(k14_finseq_1(k4_xboole_0(k4_finseq_1(B),k1_tarski(A))),B) ) ) ).
+
+fof(t113_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ( ~ ( r2_hidden(A,k4_finseq_1(B))
+                & ! [C] :
+                    ( m2_subset_1(C,k1_numbers,k5_numbers)
+                   => ~ ( k3_finseq_1(B) = k1_nat_1(C,np__1)
+                        & k3_finseq_1(k2_finseq_3(A,B)) = C ) ) )
+            & ( ~ r2_hidden(A,k4_finseq_1(B))
+             => k2_finseq_3(A,B) = B ) ) ) ) ).
+
+fof(t114_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( m2_finseq_1(C,B)
+             => m2_finseq_1(k2_finseq_3(A,C),B) ) ) ) ).
+
+fof(t115_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => r1_tarski(k2_relat_1(k2_finseq_3(A,B)),k2_relat_1(B)) ) ) ).
+
+fof(t116_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ! [C] :
+              ( v4_ordinal2(C)
+             => ( ( A = k2_xcmplx_0(B,np__1)
+                  & r2_hidden(C,k2_finseq_1(A)) )
+               => k3_finseq_1(k14_finseq_1(k4_xboole_0(k2_finseq_1(A),k1_tarski(C)))) = B ) ) ) ) ).
+
+fof(t117_finseq_3,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( ( D = k1_nat_1(C,np__1)
+                      & r2_hidden(B,k2_finseq_1(D))
+                      & r2_hidden(A,k2_finseq_1(C)) )
+                   => ( ( r1_xreal_0(np__1,A)
+                       => ( r1_xreal_0(B,A)
+                          | k1_funct_1(k14_finseq_1(k4_xboole_0(k2_finseq_1(D),k1_tarski(B))),A) = A ) )
+                      & ( ( r1_xreal_0(B,A)
+                          & r1_xreal_0(A,C) )
+                       => k1_funct_1(k14_finseq_1(k4_xboole_0(k2_finseq_1(D),k1_tarski(B))),A) = k1_nat_1(A,np__1) ) ) ) ) ) ) ) ).
+
+fof(t118_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( v4_ordinal2(B)
+         => ! [C] :
+              ( v4_ordinal2(C)
+             => ( ( k3_finseq_1(A) = k2_xcmplx_0(C,np__1)
+                  & r2_hidden(B,k4_finseq_1(A)) )
+               => k3_finseq_1(k2_finseq_3(B,A)) = C ) ) ) ) ).
+
+fof(t119_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( k3_finseq_1(A) = k1_nat_1(C,np__1)
+                   => ( r1_xreal_0(B,D)
+                      | k1_funct_1(k2_finseq_3(B,A),D) = k1_funct_1(A,D) ) ) ) ) ) ) ).
+
+fof(t120_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( ( k3_finseq_1(A) = k1_nat_1(C,np__1)
+                      & r2_hidden(B,k4_finseq_1(A))
+                      & r1_xreal_0(B,D)
+                      & r1_xreal_0(D,C) )
+                   => k1_funct_1(k2_finseq_3(B,A),D) = k1_funct_1(A,k1_nat_1(D,np__1)) ) ) ) ) ) ).
+
+fof(t121_finseq_3,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ! [B,C] :
+          ( m2_finseq_1(C,B)
+         => ! [D] :
+              ( m2_subset_1(D,k1_numbers,k5_numbers)
+             => ( r1_xreal_0(D,A)
+               => k1_funct_1(k16_finseq_1(B,C,A),D) = k1_funct_1(C,D) ) ) ) ) ).
+
+fof(dt_k1_finseq_3,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ( v1_relat_1(k1_finseq_3(A,B))
+        & v1_funct_1(k1_finseq_3(A,B))
+        & v1_finseq_1(k1_finseq_3(A,B)) ) ) ).
+
+fof(dt_k2_finseq_3,axiom,
+    ! [A,B] :
+      ( ( v4_ordinal2(A)
+        & v1_relat_1(B)
+        & v1_funct_1(B)
+        & v1_finseq_1(B) )
+     => ( v1_relat_1(k2_finseq_3(A,B))
+        & v1_funct_1(k2_finseq_3(A,B))
+        & v1_finseq_1(k2_finseq_3(A,B)) ) ) ).
+
+fof(t92_finseq_3,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B,C] :
+          ( v4_ordinal2(C)
+         => ( r2_hidden(C,k4_finseq_1(A))
+           => ! [D] :
+                ( v1_finset_1(D)
+               => ~ ( D = a_3_0_finseq_3(A,B,C)
+                    & ~ r2_hidden(k1_funct_1(A,C),B)
+                    & k1_funct_1(k1_finseq_3(A,B),k6_xcmplx_0(C,k4_card_1(D))) != k1_funct_1(A,C) ) ) ) ) ) ).
+
+fof(fraenkel_a_3_0_finseq_3,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B)
+        & v1_finseq_1(B)
+        & v4_ordinal2(D) )
+     => ( r2_hidden(A,a_3_0_finseq_3(B,C,D))
+      <=> ? [E] :
+            ( m2_subset_1(E,k1_numbers,k5_numbers)
+            & A = E
+            & r2_hidden(E,k4_finseq_1(B))
+            & r1_xreal_0(E,D)
+            & r2_hidden(k1_funct_1(B,E),C) ) ) ) ).
+
+%------------------------------------------------------------------------------

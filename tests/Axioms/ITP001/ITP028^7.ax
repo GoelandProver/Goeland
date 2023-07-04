@@ -1,0 +1,322 @@
+%------------------------------------------------------------------------------
+% File     : ITP028^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : fixedPoint.ax [Gau19]
+%          : HL4028^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   57 (  13 unt;  26 typ;   0 def)
+%            Number of atoms       :  125 (  15 equ;   1 cnn)
+%            Maximal formula atoms :   10 (   2 avg)
+%            Number of connectives :  382 (   1   ~;   1   |;  13   &; 337   @)
+%                                         (   8 <=>;  22  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   13 (   8 avg; 337 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :  188 ( 188   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   27 (  25 usr;   1 con; 0-6 aty)
+%            Number of variables   :  122 (   3   ^  94   !;   1   ?; 122   :)
+%                                         (  24  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Epair_2Eprod,type,
+    tyop_2Epair_2Eprod: $tType > $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epair_2E_2C,type,
+    c_2Epair_2E_2C: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > A_27b > ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EBIGINTER,type,
+    c_2Epred__set_2EBIGINTER: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EBIGUNION,type,
+    c_2Epred__set_2EBIGUNION: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EEMPTY,type,
+    c_2Epred__set_2EEMPTY: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Epred__set_2EGSPEC,type,
+    c_2Epred__set_2EGSPEC: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27b > ( tyop_2Epair_2Eprod @ A_27a @ $o ) ) > A_27a > $o ) ).
+
+thf(c_2Ebool_2EIN,type,
+    c_2Ebool_2EIN: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EINTER,type,
+    c_2Epred__set_2EINTER: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2ESUBSET,type,
+    c_2Epred__set_2ESUBSET: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EUNION,type,
+    c_2Epred__set_2EUNION: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2EfixedPoint_2Eclosed,type,
+    c_2EfixedPoint_2Eclosed: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > A_27a > $o ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2EfixedPoint_2Edense,type,
+    c_2EfixedPoint_2Edense: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > A_27a > $o ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2EfixedPoint_2Eempty,type,
+    c_2EfixedPoint_2Eempty: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > A_27b > $o ) ).
+
+thf(c_2EfixedPoint_2Efnsum,type,
+    c_2EfixedPoint_2Efnsum: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27b > A_27a > $o ) > ( A_27b > A_27a > $o ) > A_27b > A_27a > $o ) ).
+
+thf(c_2EfixedPoint_2Egfp,type,
+    c_2EfixedPoint_2Egfp: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2EfixedPoint_2Elfp,type,
+    c_2EfixedPoint_2Elfp: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2EfixedPoint_2Emonotone,type,
+    c_2EfixedPoint_2Emonotone: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( ( A_27a > $o ) > A_27b > $o ) > $o ) ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2EfixedPoint_2Emonotone__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: ( A_27a > $o ) > A_27b > $o] :
+      ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27b @ V0f )
+    <=> ! [V1X: A_27a > $o,V2Y: A_27a > $o] :
+          ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1X @ V2Y )
+         => ( c_2Epred__set_2ESUBSET @ A_27b @ ( V0f @ V1X ) @ ( V0f @ V2Y ) ) ) ) ).
+
+thf(thm_2EfixedPoint_2Elfp__def,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o] :
+      ( ( c_2EfixedPoint_2Elfp @ A_27a @ V0f )
+      = ( c_2Epred__set_2EBIGINTER @ A_27a
+        @ ( c_2Epred__set_2EGSPEC @ ( A_27a > $o ) @ ( A_27a > $o )
+          @ ^ [V1X: A_27a > $o] : ( c_2Epair_2E_2C @ ( A_27a > $o ) @ $o @ V1X @ ( c_2Epred__set_2ESUBSET @ A_27a @ ( V0f @ V1X ) @ V1X ) ) ) ) ) ).
+
+thf(thm_2EfixedPoint_2Egfp__def,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o] :
+      ( ( c_2EfixedPoint_2Egfp @ A_27a @ V0f )
+      = ( c_2Epred__set_2EBIGUNION @ A_27a
+        @ ( c_2Epred__set_2EGSPEC @ ( A_27a > $o ) @ ( A_27a > $o )
+          @ ^ [V1X: A_27a > $o] : ( c_2Epair_2E_2C @ ( A_27a > $o ) @ $o @ V1X @ ( c_2Epred__set_2ESUBSET @ A_27a @ V1X @ ( V0f @ V1X ) ) ) ) ) ) ).
+
+thf(thm_2EfixedPoint_2Eclosed__def,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o,V1X: A_27a > $o] :
+      ( ( c_2EfixedPoint_2Eclosed @ A_27a @ V0f @ V1X )
+      = ( c_2Epred__set_2ESUBSET @ A_27a @ ( V0f @ V1X ) @ V1X ) ) ).
+
+thf(thm_2EfixedPoint_2Edense__def,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o,V1X: A_27a > $o] :
+      ( ( c_2EfixedPoint_2Edense @ A_27a @ V0f @ V1X )
+      = ( c_2Epred__set_2ESUBSET @ A_27a @ V1X @ ( V0f @ V1X ) ) ) ).
+
+thf(thm_2EfixedPoint_2Efnsum__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f1: A_27b > A_27a > $o,V1f2: A_27b > A_27a > $o,V2X: A_27b] :
+      ( ( c_2EfixedPoint_2Efnsum @ A_27a @ A_27b @ V0f1 @ V1f2 @ V2X )
+      = ( c_2Epred__set_2EUNION @ A_27a @ ( V0f1 @ V2X ) @ ( V1f2 @ V2X ) ) ) ).
+
+thf(thm_2EfixedPoint_2Eempty__def,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ( c_2EfixedPoint_2Eempty @ A_27a @ A_27b )
+      = ( ^ [V0X: A_27a] : ( c_2Epred__set_2EEMPTY @ A_27b ) ) ) ).
+
+thf(thm_2EfixedPoint_2Elfp__least__closed,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o] :
+      ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f )
+     => ( ( c_2EfixedPoint_2Eclosed @ A_27a @ V0f @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f ) )
+        & ! [V1X: A_27a > $o] :
+            ( ( c_2EfixedPoint_2Eclosed @ A_27a @ V0f @ V1X )
+           => ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f ) @ V1X ) ) ) ) ).
+
+thf(thm_2EfixedPoint_2Egfp__greatest__dense,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o] :
+      ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f )
+     => ( ( c_2EfixedPoint_2Edense @ A_27a @ V0f @ ( c_2EfixedPoint_2Egfp @ A_27a @ V0f ) )
+        & ! [V1X: A_27a > $o] :
+            ( ( c_2EfixedPoint_2Edense @ A_27a @ V0f @ V1X )
+           => ( c_2Epred__set_2ESUBSET @ A_27a @ V1X @ ( c_2EfixedPoint_2Egfp @ A_27a @ V0f ) ) ) ) ) ).
+
+thf(thm_2EfixedPoint_2Elfp__fixedpoint,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o] :
+      ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f )
+     => ( ( ( c_2EfixedPoint_2Elfp @ A_27a @ V0f )
+          = ( V0f @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f ) ) )
+        & ! [V1X: A_27a > $o] :
+            ( ( V1X
+              = ( V0f @ V1X ) )
+           => ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f ) @ V1X ) ) ) ) ).
+
+thf(thm_2EfixedPoint_2Egfp__greatest__fixedpoint,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o] :
+      ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f )
+     => ( ( ( c_2EfixedPoint_2Egfp @ A_27a @ V0f )
+          = ( V0f @ ( c_2EfixedPoint_2Egfp @ A_27a @ V0f ) ) )
+        & ! [V1X: A_27a > $o] :
+            ( ( V1X
+              = ( V0f @ V1X ) )
+           => ( c_2Epred__set_2ESUBSET @ A_27a @ V1X @ ( c_2EfixedPoint_2Egfp @ A_27a @ V0f ) ) ) ) ) ).
+
+thf(thm_2EfixedPoint_2Elfp__induction,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o] :
+      ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f )
+     => ! [V1X: A_27a > $o] :
+          ( ( c_2Epred__set_2ESUBSET @ A_27a @ ( V0f @ V1X ) @ V1X )
+         => ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f ) @ V1X ) ) ) ).
+
+thf(thm_2EfixedPoint_2Egfp__coinduction,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o] :
+      ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f )
+     => ! [V1X: A_27a > $o] :
+          ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1X @ ( V0f @ V1X ) )
+         => ( c_2Epred__set_2ESUBSET @ A_27a @ V1X @ ( c_2EfixedPoint_2Egfp @ A_27a @ V0f ) ) ) ) ).
+
+thf(thm_2EfixedPoint_2Elfp__strong__induction,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o] :
+      ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f )
+     => ! [V1X: A_27a > $o] :
+          ( ( c_2Epred__set_2ESUBSET @ A_27a @ ( V0f @ ( c_2Epred__set_2EINTER @ A_27a @ V1X @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f ) ) ) @ V1X )
+         => ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f ) @ V1X ) ) ) ).
+
+thf(thm_2EfixedPoint_2Egfp__strong__coinduction,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o] :
+      ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f )
+     => ! [V1X: A_27a > $o] :
+          ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1X @ ( V0f @ ( c_2Epred__set_2EUNION @ A_27a @ V1X @ ( c_2EfixedPoint_2Egfp @ A_27a @ V0f ) ) ) )
+         => ( c_2Epred__set_2ESUBSET @ A_27a @ V1X @ ( c_2EfixedPoint_2Egfp @ A_27a @ V0f ) ) ) ) ).
+
+thf(thm_2EfixedPoint_2Efnsum__monotone,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f1: ( A_27a > $o ) > A_27b > $o,V1f2: ( A_27a > $o ) > A_27b > $o] :
+      ( ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27b @ V0f1 )
+        & ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27b @ V1f2 ) )
+     => ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27b @ ( c_2EfixedPoint_2Efnsum @ A_27b @ ( A_27a > $o ) @ V0f1 @ V1f2 ) ) ) ).
+
+thf(thm_2EfixedPoint_2Eempty__monotone,axiom,
+    ! [A_27a: $tType,A_27b: $tType] : ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27b @ ( c_2EfixedPoint_2Eempty @ ( A_27a > $o ) @ A_27b ) ) ).
+
+thf(thm_2EfixedPoint_2Efnsum__empty,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: A_27a > A_27b > $o] :
+      ( ( ( c_2EfixedPoint_2Efnsum @ A_27b @ A_27a @ V0f @ ( c_2EfixedPoint_2Eempty @ A_27a @ A_27b ) )
+        = V0f )
+      & ( ( c_2EfixedPoint_2Efnsum @ A_27b @ A_27a @ ( c_2EfixedPoint_2Eempty @ A_27a @ A_27b ) @ V0f )
+        = V0f ) ) ).
+
+thf(thm_2EfixedPoint_2Efnsum__ASSOC,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: A_27a > A_27b > $o,V1g: A_27a > A_27b > $o,V2h: A_27a > A_27b > $o] :
+      ( ( c_2EfixedPoint_2Efnsum @ A_27b @ A_27a @ V0f @ ( c_2EfixedPoint_2Efnsum @ A_27b @ A_27a @ V1g @ V2h ) )
+      = ( c_2EfixedPoint_2Efnsum @ A_27b @ A_27a @ ( c_2EfixedPoint_2Efnsum @ A_27b @ A_27a @ V0f @ V1g ) @ V2h ) ) ).
+
+thf(thm_2EfixedPoint_2Efnsum__COMM,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: A_27a > A_27b > $o,V1g: A_27a > A_27b > $o] :
+      ( ( c_2EfixedPoint_2Efnsum @ A_27b @ A_27a @ V0f @ V1g )
+      = ( c_2EfixedPoint_2Efnsum @ A_27b @ A_27a @ V1g @ V0f ) ) ).
+
+thf(thm_2EfixedPoint_2Efnsum__SUBSET,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: A_27a > A_27b > $o,V1g: A_27a > A_27b > $o,V2X: A_27a] :
+      ( ( c_2Epred__set_2ESUBSET @ A_27b @ ( V0f @ V2X ) @ ( c_2EfixedPoint_2Efnsum @ A_27b @ A_27a @ V0f @ V1g @ V2X ) )
+      & ( c_2Epred__set_2ESUBSET @ A_27b @ ( V1g @ V2X ) @ ( c_2EfixedPoint_2Efnsum @ A_27b @ A_27a @ V0f @ V1g @ V2X ) ) ) ).
+
+thf(thm_2EfixedPoint_2Elfp__fnsum,axiom,
+    ! [A_27a: $tType,V0f1: ( A_27a > $o ) > A_27a > $o,V1f2: ( A_27a > $o ) > A_27a > $o] :
+      ( ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f1 )
+        & ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V1f2 ) )
+     => ( ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f1 ) @ ( c_2EfixedPoint_2Elfp @ A_27a @ ( c_2EfixedPoint_2Efnsum @ A_27a @ ( A_27a > $o ) @ V0f1 @ V1f2 ) ) )
+        & ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2EfixedPoint_2Elfp @ A_27a @ V1f2 ) @ ( c_2EfixedPoint_2Elfp @ A_27a @ ( c_2EfixedPoint_2Efnsum @ A_27a @ ( A_27a > $o ) @ V0f1 @ V1f2 ) ) ) ) ) ).
+
+thf(thm_2EfixedPoint_2Elfp__rule__applied,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o,V1X: A_27a > $o,V2y: A_27a] :
+      ( ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f )
+        & ( c_2Epred__set_2ESUBSET @ A_27a @ V1X @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f ) )
+        & ( c_2Ebool_2EIN @ A_27a @ V2y @ ( V0f @ V1X ) ) )
+     => ( c_2Ebool_2EIN @ A_27a @ V2y @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f ) ) ) ).
+
+thf(thm_2EfixedPoint_2Elfp__empty,axiom,
+    ! [A_27a: $tType,V0f: ( A_27a > $o ) > A_27a > $o,V1x: A_27a] :
+      ( ( ( c_2EfixedPoint_2Emonotone @ A_27a @ A_27a @ V0f )
+        & ( c_2Ebool_2EIN @ A_27a @ V1x @ ( V0f @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) )
+     => ( c_2Ebool_2EIN @ A_27a @ V1x @ ( c_2EfixedPoint_2Elfp @ A_27a @ V0f ) ) ) ).
+
+%------------------------------------------------------------------------------

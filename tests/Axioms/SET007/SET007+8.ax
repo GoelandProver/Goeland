@@ -1,0 +1,533 @@
+%------------------------------------------------------------------------------
+% File     : SET007+8 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Families of Sets
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : setfam_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   94 (  36 unt;   0 def)
+%            Number of atoms       :  224 (  55 equ)
+%            Maximal formula atoms :    8 (   2 avg)
+%            Number of connectives :  171 (  41   ~;   3   |;  32   &)
+%                                         (  19 <=>;  76  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   11 (   4 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   11 (   9 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   20 (  20 usr;   1 con; 0-3 aty)
+%            Number of variables   :  173 ( 164   !;   9   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_setfam_1,axiom,
+    ! [A,B] :
+      ( ( v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => v1_xboole_0(k7_setfam_1(A,B)) ) ).
+
+fof(rc1_setfam_1,axiom,
+    ? [A] :
+      ( ~ v1_xboole_0(A)
+      & v1_setfam_1(A) ) ).
+
+fof(fc2_setfam_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v1_xboole_0(k1_tarski(A))
+        & v1_setfam_1(k1_tarski(A)) ) ) ).
+
+fof(fc3_setfam_1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B) )
+     => ( ~ v1_xboole_0(k2_tarski(A,B))
+        & v1_setfam_1(k2_tarski(A,B)) ) ) ).
+
+fof(fc4_setfam_1,axiom,
+    ! [A,B] :
+      ( ( v1_setfam_1(A)
+        & v1_setfam_1(B) )
+     => v1_setfam_1(k2_xboole_0(A,B)) ) ).
+
+fof(cc1_setfam_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_setfam_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => ~ v1_xboole_0(B) ) ) ).
+
+fof(rc2_setfam_1,axiom,
+    ? [A] : ~ v2_setfam_1(A) ).
+
+fof(cc2_setfam_1,axiom,
+    ! [A] :
+      ( ~ v2_setfam_1(A)
+     => ~ v1_xboole_0(A) ) ).
+
+fof(rc3_setfam_1,axiom,
+    ! [A] :
+      ( ~ v2_setfam_1(A)
+     => ? [B] :
+          ( m1_subset_1(B,A)
+          & ~ v1_xboole_0(B) ) ) ).
+
+fof(d1_setfam_1,axiom,
+    ! [A,B] :
+      ( ( A != k1_xboole_0
+       => ( B = k1_setfam_1(A)
+        <=> ! [C] :
+              ( r2_hidden(C,B)
+            <=> ! [D] :
+                  ( r2_hidden(D,A)
+                 => r2_hidden(C,D) ) ) ) )
+      & ( A = k1_xboole_0
+       => ( B = k1_setfam_1(A)
+        <=> B = k1_xboole_0 ) ) ) ).
+
+fof(t1_setfam_1,axiom,
+    $true ).
+
+fof(t2_setfam_1,axiom,
+    k1_setfam_1(k1_xboole_0) = k1_xboole_0 ).
+
+fof(t3_setfam_1,axiom,
+    ! [A] : r1_tarski(k1_setfam_1(A),k3_tarski(A)) ).
+
+fof(t4_setfam_1,axiom,
+    ! [A,B] :
+      ( r2_hidden(A,B)
+     => r1_tarski(k1_setfam_1(B),A) ) ).
+
+fof(t5_setfam_1,axiom,
+    ! [A] :
+      ( r2_hidden(k1_xboole_0,A)
+     => k1_setfam_1(A) = k1_xboole_0 ) ).
+
+fof(t6_setfam_1,axiom,
+    ! [A,B] :
+      ( ! [C] :
+          ( r2_hidden(C,A)
+         => r1_tarski(B,C) )
+     => ( A = k1_xboole_0
+        | r1_tarski(B,k1_setfam_1(A)) ) ) ).
+
+fof(t7_setfam_1,axiom,
+    ! [A,B] :
+      ( r1_tarski(A,B)
+     => ( A = k1_xboole_0
+        | r1_tarski(k1_setfam_1(B),k1_setfam_1(A)) ) ) ).
+
+fof(t8_setfam_1,axiom,
+    ! [A,B,C] :
+      ( ( r2_hidden(A,B)
+        & r1_tarski(A,C) )
+     => r1_tarski(k1_setfam_1(B),C) ) ).
+
+fof(t9_setfam_1,axiom,
+    ! [A,B,C] :
+      ( ( r2_hidden(A,B)
+        & r1_xboole_0(A,C) )
+     => r1_xboole_0(k1_setfam_1(B),C) ) ).
+
+fof(t10_setfam_1,axiom,
+    ! [A,B] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & k1_setfam_1(k2_xboole_0(A,B)) != k3_xboole_0(k1_setfam_1(A),k1_setfam_1(B)) ) ).
+
+fof(t11_setfam_1,axiom,
+    ! [A] : k1_setfam_1(k1_tarski(A)) = A ).
+
+fof(t12_setfam_1,axiom,
+    ! [A,B] : k1_setfam_1(k2_tarski(A,B)) = k3_xboole_0(A,B) ).
+
+fof(d2_setfam_1,axiom,
+    ! [A,B] :
+      ( r1_setfam_1(A,B)
+    <=> ! [C] :
+          ~ ( r2_hidden(C,A)
+            & ! [D] :
+                ~ ( r2_hidden(D,B)
+                  & r1_tarski(C,D) ) ) ) ).
+
+fof(d3_setfam_1,axiom,
+    ! [A,B] :
+      ( r2_setfam_1(A,B)
+    <=> ! [C] :
+          ~ ( r2_hidden(C,B)
+            & ! [D] :
+                ~ ( r2_hidden(D,A)
+                  & r1_tarski(D,C) ) ) ) ).
+
+fof(t13_setfam_1,axiom,
+    $true ).
+
+fof(t14_setfam_1,axiom,
+    $true ).
+
+fof(t15_setfam_1,axiom,
+    $true ).
+
+fof(t16_setfam_1,axiom,
+    $true ).
+
+fof(t17_setfam_1,axiom,
+    ! [A,B] :
+      ( r1_tarski(A,B)
+     => r1_setfam_1(A,B) ) ).
+
+fof(t18_setfam_1,axiom,
+    ! [A,B] :
+      ( r1_setfam_1(A,B)
+     => r1_tarski(k3_tarski(A),k3_tarski(B)) ) ).
+
+fof(t19_setfam_1,axiom,
+    ! [A,B] :
+      ( r2_setfam_1(B,A)
+     => ( A = k1_xboole_0
+        | r1_tarski(k1_setfam_1(B),k1_setfam_1(A)) ) ) ).
+
+fof(t20_setfam_1,axiom,
+    ! [A] : r1_setfam_1(k1_xboole_0,A) ).
+
+fof(t21_setfam_1,axiom,
+    ! [A] :
+      ( r1_setfam_1(A,k1_xboole_0)
+     => A = k1_xboole_0 ) ).
+
+fof(t22_setfam_1,axiom,
+    $true ).
+
+fof(t23_setfam_1,axiom,
+    ! [A,B,C] :
+      ( ( r1_setfam_1(A,B)
+        & r1_setfam_1(B,C) )
+     => r1_setfam_1(A,C) ) ).
+
+fof(t24_setfam_1,axiom,
+    ! [A,B] :
+      ( r1_setfam_1(B,k1_tarski(A))
+     => ! [C] :
+          ( r2_hidden(C,B)
+         => r1_tarski(C,A) ) ) ).
+
+fof(t25_setfam_1,axiom,
+    ! [A,B,C] :
+      ( r1_setfam_1(C,k2_tarski(A,B))
+     => ! [D] :
+          ~ ( r2_hidden(D,C)
+            & ~ r1_tarski(D,A)
+            & ~ r1_tarski(D,B) ) ) ).
+
+fof(d4_setfam_1,axiom,
+    ! [A,B,C] :
+      ( C = k2_setfam_1(A,B)
+    <=> ! [D] :
+          ( r2_hidden(D,C)
+        <=> ? [E,F] :
+              ( r2_hidden(E,A)
+              & r2_hidden(F,B)
+              & D = k2_xboole_0(E,F) ) ) ) ).
+
+fof(d5_setfam_1,axiom,
+    ! [A,B,C] :
+      ( C = k3_setfam_1(A,B)
+    <=> ! [D] :
+          ( r2_hidden(D,C)
+        <=> ? [E,F] :
+              ( r2_hidden(E,A)
+              & r2_hidden(F,B)
+              & D = k3_xboole_0(E,F) ) ) ) ).
+
+fof(d6_setfam_1,axiom,
+    ! [A,B,C] :
+      ( C = k4_setfam_1(A,B)
+    <=> ! [D] :
+          ( r2_hidden(D,C)
+        <=> ? [E,F] :
+              ( r2_hidden(E,A)
+              & r2_hidden(F,B)
+              & D = k4_xboole_0(E,F) ) ) ) ).
+
+fof(t26_setfam_1,axiom,
+    $true ).
+
+fof(t27_setfam_1,axiom,
+    $true ).
+
+fof(t28_setfam_1,axiom,
+    $true ).
+
+fof(t29_setfam_1,axiom,
+    ! [A] : r1_setfam_1(A,k2_setfam_1(A,A)) ).
+
+fof(t30_setfam_1,axiom,
+    ! [A] : r1_setfam_1(k3_setfam_1(A,A),A) ).
+
+fof(t31_setfam_1,axiom,
+    ! [A] : r1_setfam_1(k4_setfam_1(A,A),A) ).
+
+fof(t32_setfam_1,axiom,
+    $true ).
+
+fof(t33_setfam_1,axiom,
+    $true ).
+
+fof(t34_setfam_1,axiom,
+    ! [A,B] :
+      ( ~ r1_xboole_0(A,B)
+     => k3_xboole_0(k1_setfam_1(A),k1_setfam_1(B)) = k1_setfam_1(k3_setfam_1(A,B)) ) ).
+
+fof(t35_setfam_1,axiom,
+    ! [A,B] :
+      ( B != k1_xboole_0
+     => k2_xboole_0(A,k1_setfam_1(B)) = k1_setfam_1(k2_setfam_1(k1_tarski(A),B)) ) ).
+
+fof(t36_setfam_1,axiom,
+    ! [A,B] : k3_xboole_0(A,k3_tarski(B)) = k3_tarski(k3_setfam_1(k1_tarski(A),B)) ).
+
+fof(t37_setfam_1,axiom,
+    ! [A,B] :
+      ( B != k1_xboole_0
+     => k4_xboole_0(A,k3_tarski(B)) = k1_setfam_1(k4_setfam_1(k1_tarski(A),B)) ) ).
+
+fof(t38_setfam_1,axiom,
+    ! [A,B] :
+      ( B != k1_xboole_0
+     => k4_xboole_0(A,k1_setfam_1(B)) = k3_tarski(k4_setfam_1(k1_tarski(A),B)) ) ).
+
+fof(t39_setfam_1,axiom,
+    ! [A,B] : k3_tarski(k3_setfam_1(A,B)) = k3_xboole_0(k3_tarski(A),k3_tarski(B)) ).
+
+fof(t40_setfam_1,axiom,
+    ! [A,B] :
+      ~ ( A != k1_xboole_0
+        & B != k1_xboole_0
+        & ~ r1_tarski(k2_xboole_0(k1_setfam_1(A),k1_setfam_1(B)),k1_setfam_1(k2_setfam_1(A,B))) ) ).
+
+fof(t41_setfam_1,axiom,
+    ! [A,B] : r1_tarski(k1_setfam_1(k4_setfam_1(A,B)),k4_xboole_0(k1_setfam_1(A),k1_setfam_1(B))) ).
+
+fof(t42_setfam_1,axiom,
+    $true ).
+
+fof(t43_setfam_1,axiom,
+    $true ).
+
+fof(t44_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ( ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ( r2_hidden(D,B)
+                <=> r2_hidden(D,C) ) )
+           => B = C ) ) ) ).
+
+fof(d7_setfam_1,axiom,
+    $true ).
+
+fof(d8_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ( C = k7_setfam_1(A,B)
+          <=> ! [D] :
+                ( m1_subset_1(D,k1_zfmisc_1(A))
+               => ( r2_hidden(D,C)
+                <=> r2_hidden(k3_subset_1(A,D),B) ) ) ) ) ) ).
+
+fof(t45_setfam_1,axiom,
+    $true ).
+
+fof(t46_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ~ ( B != k1_xboole_0
+          & k7_setfam_1(A,B) = k1_xboole_0 ) ) ).
+
+fof(t47_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ( B != k1_xboole_0
+       => k6_subset_1(A,k2_subset_1(A),k5_setfam_1(A,B)) = k6_setfam_1(A,k7_setfam_1(A,B)) ) ) ).
+
+fof(t48_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ( B != k1_xboole_0
+       => k5_setfam_1(A,k7_setfam_1(A,B)) = k6_subset_1(A,k2_subset_1(A),k6_setfam_1(A,B)) ) ) ).
+
+fof(t49_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(A))
+         => ( r2_hidden(k3_subset_1(A,C),k7_setfam_1(A,B))
+          <=> r2_hidden(C,B) ) ) ) ).
+
+fof(t50_setfam_1,axiom,
+    $true ).
+
+fof(t51_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ( r1_tarski(k7_setfam_1(A,B),k7_setfam_1(A,C))
+           => r1_tarski(B,C) ) ) ) ).
+
+fof(t52_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ( r1_tarski(k7_setfam_1(A,B),C)
+          <=> r1_tarski(B,k7_setfam_1(A,C)) ) ) ) ).
+
+fof(t53_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ( k7_setfam_1(A,B) = k7_setfam_1(A,C)
+           => B = C ) ) ) ).
+
+fof(t54_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => k7_setfam_1(A,k4_subset_1(k1_zfmisc_1(A),B,C)) = k4_subset_1(k1_zfmisc_1(A),k7_setfam_1(A,B),k7_setfam_1(A,C)) ) ) ).
+
+fof(t55_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ( B = k1_tarski(A)
+       => k7_setfam_1(A,B) = k1_tarski(k1_xboole_0) ) ) ).
+
+fof(d9_setfam_1,axiom,
+    ! [A] :
+      ( v1_setfam_1(A)
+    <=> ~ r2_hidden(k1_xboole_0,A) ) ).
+
+fof(t56_setfam_1,axiom,
+    ! [A,B,C] :
+      ( ( r1_tarski(k3_tarski(A),B)
+        & r2_hidden(C,A) )
+     => r1_tarski(C,B) ) ).
+
+fof(t57_setfam_1,axiom,
+    ! [A,B,C] :
+      ( ( r1_tarski(C,k3_tarski(k2_xboole_0(A,B)))
+        & ! [D] :
+            ( r2_hidden(D,B)
+           => r1_xboole_0(D,C) ) )
+     => r1_tarski(C,k3_tarski(A)) ) ).
+
+fof(d10_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ( ( B != k1_xboole_0
+         => k8_setfam_1(A,B) = k6_setfam_1(A,B) )
+        & ( B = k1_xboole_0
+         => k8_setfam_1(A,B) = A ) ) ) ).
+
+fof(t58_setfam_1,axiom,
+    ! [A,B,C] :
+      ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ( r2_hidden(B,A)
+       => ( r2_hidden(B,k8_setfam_1(A,C))
+        <=> ! [D] :
+              ( r2_hidden(D,C)
+             => r2_hidden(B,D) ) ) ) ) ).
+
+fof(t59_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(A)))
+         => ( r1_tarski(B,C)
+           => r1_tarski(k8_setfam_1(A,C),k8_setfam_1(A,B)) ) ) ) ).
+
+fof(d11_setfam_1,axiom,
+    ! [A] :
+      ( v2_setfam_1(A)
+    <=> ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ~ r2_hidden(B,A) ) ) ).
+
+fof(reflexivity_r1_setfam_1,axiom,
+    ! [A,B] : r1_setfam_1(A,A) ).
+
+fof(reflexivity_r2_setfam_1,axiom,
+    ! [A,B] : r2_setfam_1(B,B) ).
+
+fof(dt_k1_setfam_1,axiom,
+    $true ).
+
+fof(dt_k2_setfam_1,axiom,
+    $true ).
+
+fof(commutativity_k2_setfam_1,axiom,
+    ! [A,B] : k2_setfam_1(A,B) = k2_setfam_1(B,A) ).
+
+fof(dt_k3_setfam_1,axiom,
+    $true ).
+
+fof(commutativity_k3_setfam_1,axiom,
+    ! [A,B] : k3_setfam_1(A,B) = k3_setfam_1(B,A) ).
+
+fof(dt_k4_setfam_1,axiom,
+    $true ).
+
+fof(dt_k5_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => m1_subset_1(k5_setfam_1(A,B),k1_zfmisc_1(A)) ) ).
+
+fof(redefinition_k5_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => k5_setfam_1(A,B) = k3_tarski(B) ) ).
+
+fof(dt_k6_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => m1_subset_1(k6_setfam_1(A,B),k1_zfmisc_1(A)) ) ).
+
+fof(redefinition_k6_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => k6_setfam_1(A,B) = k1_setfam_1(B) ) ).
+
+fof(dt_k7_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => m1_subset_1(k7_setfam_1(A,B),k1_zfmisc_1(k1_zfmisc_1(A))) ) ).
+
+fof(involutiveness_k7_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => k7_setfam_1(A,k7_setfam_1(A,B)) = B ) ).
+
+fof(dt_k8_setfam_1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => m1_subset_1(k8_setfam_1(A,B),k1_zfmisc_1(A)) ) ).
+
+%------------------------------------------------------------------------------

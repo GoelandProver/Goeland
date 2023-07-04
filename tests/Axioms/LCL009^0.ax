@@ -1,0 +1,120 @@
+%------------------------------------------------------------------------------
+% File     : LCL009^0 : TPTP v8.1.2. Released v3.7.0.
+% Domain   : Logical Calculi (Modal Logic)
+% Axioms   : Translating constructive S4 (CS4) to bimodal classical S4 (BS4)
+% Version  : [AM+01] axioms.
+% English  :
+
+% Refs     : [AM+01] Alechina et al. (2001), Categorical and Kripke Semanti
+%          : [Gar09] Garg (2009), Email to Geoff Sutcliffe
+% Source   : [Gar09]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   25 (   9 unt;  11 typ;   9 def)
+%            Number of atoms       :   69 (   9 equ;   0 cnn)
+%            Maximal formula atoms :   10 (   2 avg)
+%            Number of connectives :   57 (   0   ~;   0   |;   0   &;  57   @)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    8 (   3 avg;  57 nst)
+%            Number of types       :    2 (   0 usr)
+%            Number of type conns  :   49 (  49   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   21 (  20 usr;   9 con; 0-3 aty)
+%            Number of variables   :   15 (  10   ^   5   !;   0   ?;  15   :)
+% SPC      : 
+
+% Comments : Requires LCL008^0.ax
+%          : THF0 syntax
+%------------------------------------------------------------------------------
+%----To encode constructive S4 into bimodal classical S4, we need two relations
+%----reli to encode intuitionistic accessibility, and relr to encode modal
+%----accessibility.
+thf(reli,type,
+    reli: $i > $i > $o ).
+
+thf(relr,type,
+    relr: $i > $i > $o ).
+
+%----We now introduce one predicate for each connective of CS4, and define the
+%----predicates following [AM+01].
+thf(cs4_atom_decl,type,
+    cs4_atom: ( $i > $o ) > $i > $o ).
+
+thf(cs4_and_decl,type,
+    cs4_and: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(cs4_or_decl,type,
+    cs4_or: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(cs4_impl_decl,type,
+    cs4_impl: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(cs4_true_decl,type,
+    cs4_true: $i > $o ).
+
+thf(cs4_false_decl,type,
+    cs4_false: $i > $o ).
+
+thf(cs4_all_decl,type,
+    cs4_all: ( individuals > $i > $o ) > $i > $o ).
+
+thf(cs4_box_decl,type,
+    cs4_box: ( $i > $o ) > $i > $o ).
+
+thf(cs4_atom,definition,
+    ( cs4_atom
+    = ( ^ [P: $i > $o] : ( mbox @ reli @ P ) ) ) ).
+
+thf(cs4_and,definition,
+    ( cs4_and
+    = ( ^ [A: $i > $o,B: $i > $o] : ( mand @ A @ B ) ) ) ).
+
+thf(cs4_or,definition,
+    ( cs4_or
+    = ( ^ [A: $i > $o,B: $i > $o] : ( mor @ A @ B ) ) ) ).
+
+thf(cs4_impl,definition,
+    ( cs4_impl
+    = ( ^ [A: $i > $o,B: $i > $o] : ( mbox @ reli @ ( mimpl @ A @ B ) ) ) ) ).
+
+thf(cs4_true,definition,
+    cs4_true = mtrue ).
+
+thf(cs4_false,definition,
+    cs4_false = mfalse ).
+
+thf(cs4_all,definition,
+    ( cs4_all
+    = ( ^ [A: individuals > $i > $o] : ( mbox @ reli @ ( mall @ A ) ) ) ) ).
+
+thf(cs4_box,definition,
+    ( cs4_box
+    = ( ^ [A: $i > $o] : ( mbox @ reli @ ( mbox @ relr @ A ) ) ) ) ).
+
+%----Validity in CS4
+thf(cs4_valid_decl,type,
+    cs4_valid: ( $i > $o ) > $o ).
+
+thf(cs4_valid_def,definition,
+    ( cs4_valid
+    = ( ^ [A: $i > $o] : ( mvalid @ A ) ) ) ).
+
+%----Axioms to make the bimodal logic S4xS4.
+thf(refl_axiom_i,axiom,
+    ! [A: $i > $o] : ( mvalid @ ( mimpl @ ( mbox @ reli @ A ) @ A ) ) ).
+
+thf(refl_axiom_r,axiom,
+    ! [A: $i > $o] : ( mvalid @ ( mimpl @ ( mbox @ relr @ A ) @ A ) ) ).
+
+thf(trans_axiom_i,axiom,
+    ! [A: $i > $o] : ( mvalid @ ( mimpl @ ( mbox @ reli @ A ) @ ( mbox @ reli @ ( mbox @ reli @ A ) ) ) ) ).
+
+thf(trans_axiom_r,axiom,
+    ! [A: $i > $o] : ( mvalid @ ( mimpl @ ( mbox @ relr @ A ) @ ( mbox @ relr @ ( mbox @ relr @ A ) ) ) ) ).
+
+%----Finally, we need a commutativity axiom to recover the axiom 4 in the
+%----translation. We need: [i][r] A --> [r][i] A.
+thf(ax_i_r_commute,axiom,
+    ! [A: $i > $o] : ( mvalid @ ( mimpl @ ( mbox @ reli @ ( mbox @ relr @ A ) ) @ ( mbox @ relr @ ( mbox @ reli @ A ) ) ) ) ).
+
+%------------------------------------------------------------------------------

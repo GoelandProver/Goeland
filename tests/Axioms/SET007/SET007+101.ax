@@ -1,0 +1,1068 @@
+%------------------------------------------------------------------------------
+% File     : SET007+101 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : A First-Order Predicate Calculus
+% Version  : [Urb08] axioms.
+% English  : Axiomatics, the Consequence Operation and a Concept of Proof
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : cqc_the1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  127 (  40 unt;   0 def)
+%            Number of atoms       :  570 ( 112 equ)
+%            Maximal formula atoms :   71 (   4 avg)
+%            Number of connectives :  541 (  98   ~;  10   |; 190   &)
+%                                         (  24 <=>; 219  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   32 (   6 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   17 (  15 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   45 (  45 usr;  21 con; 0-3 aty)
+%            Number of variables   :  219 ( 191   !;  28   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_cqc_the1,axiom,
+    ~ v1_xboole_0(k2_cqc_the1) ).
+
+fof(t1_cqc_the1,axiom,
+    $true ).
+
+fof(t2_cqc_the1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__1)
+          & A != np__0
+          & A != np__1 ) ) ).
+
+fof(t3_cqc_the1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__2)
+          & A != np__0
+          & A != np__1
+          & A != np__2 ) ) ).
+
+fof(t4_cqc_the1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__3)
+          & A != np__0
+          & A != np__1
+          & A != np__2
+          & A != np__3 ) ) ).
+
+fof(t5_cqc_the1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__4)
+          & A != np__0
+          & A != np__1
+          & A != np__2
+          & A != np__3
+          & A != np__4 ) ) ).
+
+fof(t6_cqc_the1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__5)
+          & A != np__0
+          & A != np__1
+          & A != np__2
+          & A != np__3
+          & A != np__4
+          & A != np__5 ) ) ).
+
+fof(t7_cqc_the1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__6)
+          & A != np__0
+          & A != np__1
+          & A != np__2
+          & A != np__3
+          & A != np__4
+          & A != np__5
+          & A != np__6 ) ) ).
+
+fof(t8_cqc_the1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__7)
+          & A != np__0
+          & A != np__1
+          & A != np__2
+          & A != np__3
+          & A != np__4
+          & A != np__5
+          & A != np__6
+          & A != np__7 ) ) ).
+
+fof(t9_cqc_the1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__8)
+          & A != np__0
+          & A != np__1
+          & A != np__2
+          & A != np__3
+          & A != np__4
+          & A != np__5
+          & A != np__6
+          & A != np__7
+          & A != np__8 ) ) ).
+
+fof(t10_cqc_the1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__9)
+          & A != np__0
+          & A != np__1
+          & A != np__2
+          & A != np__3
+          & A != np__4
+          & A != np__5
+          & A != np__6
+          & A != np__7
+          & A != np__8
+          & A != np__9 ) ) ).
+
+fof(t13_cqc_the1,axiom,
+    ! [A,B,C] :
+      ~ ( v1_finset_1(A)
+        & r1_tarski(A,k2_zfmisc_1(B,C))
+        & ! [D,E] :
+            ~ ( v1_finset_1(D)
+              & r1_tarski(D,B)
+              & v1_finset_1(E)
+              & r1_tarski(E,C)
+              & r1_tarski(A,k2_zfmisc_1(D,E)) ) ) ).
+
+fof(t14_cqc_the1,axiom,
+    ! [A,B,C] :
+      ~ ( v1_finset_1(A)
+        & v1_finset_1(B)
+        & r1_tarski(A,k2_zfmisc_1(C,B))
+        & ! [D] :
+            ~ ( v1_finset_1(D)
+              & r1_tarski(D,C)
+              & r1_tarski(A,k2_zfmisc_1(D,B)) ) ) ).
+
+fof(d1_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ( v1_cqc_the1(A)
+      <=> ( r2_hidden(k9_cqc_lang,A)
+          & ! [B] :
+              ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+             => ! [C] :
+                  ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+                 => ! [D] :
+                      ( m2_subset_1(D,k8_qc_lang1,k7_cqc_lang)
+                     => ! [E] :
+                          ( m1_subset_1(E,k8_qc_lang1)
+                         => ! [F] :
+                              ( m2_subset_1(F,k1_qc_lang1,k2_qc_lang1)
+                             => ! [G] :
+                                  ( m2_subset_1(G,k1_qc_lang1,k2_qc_lang1)
+                                 => ( r2_hidden(k12_cqc_lang(k12_cqc_lang(k10_cqc_lang(B),B),B),A)
+                                    & r2_hidden(k12_cqc_lang(B,k12_cqc_lang(k10_cqc_lang(B),C)),A)
+                                    & r2_hidden(k12_cqc_lang(k12_cqc_lang(B,C),k12_cqc_lang(k10_cqc_lang(k11_cqc_lang(C,D)),k10_cqc_lang(k11_cqc_lang(B,D)))),A)
+                                    & r2_hidden(k12_cqc_lang(k11_cqc_lang(B,C),k11_cqc_lang(C,B)),A)
+                                    & ( ( r2_hidden(B,A)
+                                        & r2_hidden(k12_cqc_lang(B,C),A) )
+                                     => r2_hidden(C,A) )
+                                    & r2_hidden(k12_cqc_lang(k15_cqc_lang(F,B),B),A)
+                                    & ( r2_hidden(k12_cqc_lang(B,C),A)
+                                     => ( r2_hidden(F,k24_qc_lang1(B))
+                                        | r2_hidden(k12_cqc_lang(B,k15_cqc_lang(F,C)),A) ) )
+                                    & ( ( r2_hidden(k17_cqc_lang(E,F),k7_cqc_lang)
+                                        & r2_hidden(k17_cqc_lang(E,G),k7_cqc_lang)
+                                        & r2_hidden(k17_cqc_lang(E,F),A) )
+                                     => ( r2_hidden(F,k24_qc_lang1(E))
+                                        | r2_hidden(k17_cqc_lang(E,G),A) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t15_cqc_the1,axiom,
+    $true ).
+
+fof(t16_cqc_the1,axiom,
+    $true ).
+
+fof(t17_cqc_the1,axiom,
+    $true ).
+
+fof(t18_cqc_the1,axiom,
+    $true ).
+
+fof(t19_cqc_the1,axiom,
+    $true ).
+
+fof(t20_cqc_the1,axiom,
+    $true ).
+
+fof(t21_cqc_the1,axiom,
+    $true ).
+
+fof(t22_cqc_the1,axiom,
+    $true ).
+
+fof(t23_cqc_the1,axiom,
+    $true ).
+
+fof(t24_cqc_the1,axiom,
+    $true ).
+
+fof(t25_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k7_cqc_lang))
+         => ( ( v1_cqc_the1(A)
+              & v1_cqc_the1(B) )
+           => v1_cqc_the1(k5_subset_1(k7_cqc_lang,A,B)) ) ) ) ).
+
+fof(d2_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k7_cqc_lang))
+         => ( B = k1_cqc_the1(A)
+          <=> ! [C] :
+                ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+               => ( r2_hidden(C,B)
+                <=> ! [D] :
+                      ( m1_subset_1(D,k1_zfmisc_1(k7_cqc_lang))
+                     => ( ( v1_cqc_the1(D)
+                          & r1_tarski(A,D) )
+                       => r2_hidden(C,D) ) ) ) ) ) ) ) ).
+
+fof(t26_cqc_the1,axiom,
+    $true ).
+
+fof(t27_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => r2_hidden(k9_cqc_lang,k1_cqc_the1(A)) ) ).
+
+fof(t28_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => r2_hidden(k12_cqc_lang(k12_cqc_lang(k10_cqc_lang(B),B),B),k1_cqc_the1(A)) ) ) ).
+
+fof(t29_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => r2_hidden(k12_cqc_lang(B,k12_cqc_lang(k10_cqc_lang(B),C)),k1_cqc_the1(A)) ) ) ) ).
+
+fof(t30_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => ! [D] :
+                  ( m2_subset_1(D,k8_qc_lang1,k7_cqc_lang)
+                 => r2_hidden(k12_cqc_lang(k12_cqc_lang(B,C),k12_cqc_lang(k10_cqc_lang(k11_cqc_lang(C,D)),k10_cqc_lang(k11_cqc_lang(B,D)))),k1_cqc_the1(A)) ) ) ) ) ).
+
+fof(t31_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => r2_hidden(k12_cqc_lang(k11_cqc_lang(B,C),k11_cqc_lang(C,B)),k1_cqc_the1(A)) ) ) ) ).
+
+fof(t32_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => ( ( r2_hidden(B,k1_cqc_the1(A))
+                  & r2_hidden(k12_cqc_lang(B,C),k1_cqc_the1(A)) )
+               => r2_hidden(C,k1_cqc_the1(A)) ) ) ) ) ).
+
+fof(t33_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k1_qc_lang1,k2_qc_lang1)
+             => r2_hidden(k12_cqc_lang(k15_cqc_lang(C,B),B),k1_cqc_the1(A)) ) ) ) ).
+
+fof(t34_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_qc_lang1,k2_qc_lang1)
+                 => ( r2_hidden(k12_cqc_lang(B,C),k1_cqc_the1(A))
+                   => ( r2_hidden(D,k24_qc_lang1(B))
+                      | r2_hidden(k12_cqc_lang(B,k15_cqc_lang(D,C)),k1_cqc_the1(A)) ) ) ) ) ) ) ).
+
+fof(t35_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m1_subset_1(B,k8_qc_lang1)
+         => ! [C] :
+              ( m2_subset_1(C,k1_qc_lang1,k2_qc_lang1)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_qc_lang1,k2_qc_lang1)
+                 => ( ( r2_hidden(k17_cqc_lang(B,C),k7_cqc_lang)
+                      & r2_hidden(k17_cqc_lang(B,D),k7_cqc_lang)
+                      & r2_hidden(k17_cqc_lang(B,C),k1_cqc_the1(A)) )
+                   => ( r2_hidden(C,k24_qc_lang1(B))
+                      | r2_hidden(k17_cqc_lang(B,D),k1_cqc_the1(A)) ) ) ) ) ) ) ).
+
+fof(t36_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => v1_cqc_the1(k1_cqc_the1(A)) ) ).
+
+fof(t37_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k7_cqc_lang))
+         => ( ( v1_cqc_the1(A)
+              & r1_tarski(B,A) )
+           => r1_tarski(k1_cqc_the1(B),A) ) ) ) ).
+
+fof(t38_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => r1_tarski(A,k1_cqc_the1(A)) ) ).
+
+fof(t39_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k7_cqc_lang))
+         => ( r1_tarski(A,B)
+           => r1_tarski(k1_cqc_the1(A),k1_cqc_the1(B)) ) ) ) ).
+
+fof(t40_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => k1_cqc_the1(k1_cqc_the1(A)) = k1_cqc_the1(A) ) ).
+
+fof(t41_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ( v1_cqc_the1(A)
+      <=> k1_cqc_the1(A) = A ) ) ).
+
+fof(t42_cqc_the1,axiom,
+    $true ).
+
+fof(t43_cqc_the1,axiom,
+    ( r2_hidden(np__0,k2_cqc_the1)
+    & r2_hidden(np__1,k2_cqc_the1)
+    & r2_hidden(np__2,k2_cqc_the1)
+    & r2_hidden(np__3,k2_cqc_the1)
+    & r2_hidden(np__4,k2_cqc_the1)
+    & r2_hidden(np__5,k2_cqc_the1)
+    & r2_hidden(np__6,k2_cqc_the1)
+    & r2_hidden(np__7,k2_cqc_the1)
+    & r2_hidden(np__8,k2_cqc_the1)
+    & r2_hidden(np__9,k2_cqc_the1) ) ).
+
+fof(t44_cqc_the1,axiom,
+    v1_finset_1(k2_cqc_the1) ).
+
+fof(t45_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_1(B,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+         => ~ ( r1_xreal_0(np__1,A)
+              & r1_xreal_0(A,k3_finseq_1(B))
+              & k2_mcart_1(k1_funct_1(B,A)) != np__0
+              & k2_mcart_1(k1_funct_1(B,A)) != np__1
+              & k2_mcart_1(k1_funct_1(B,A)) != np__2
+              & k2_mcart_1(k1_funct_1(B,A)) != np__3
+              & k2_mcart_1(k1_funct_1(B,A)) != np__4
+              & k2_mcart_1(k1_funct_1(B,A)) != np__5
+              & k2_mcart_1(k1_funct_1(B,A)) != np__6
+              & k2_mcart_1(k1_funct_1(B,A)) != np__7
+              & k2_mcart_1(k1_funct_1(B,A)) != np__8
+              & k2_mcart_1(k1_funct_1(B,A)) != np__9 ) ) ) ).
+
+fof(d4_cqc_the1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k7_cqc_lang))
+             => ( ( k2_mcart_1(k1_funct_1(A,B)) = np__0
+                 => ( r1_cqc_the1(A,B,C)
+                  <=> r2_hidden(k1_mcart_1(k1_funct_1(A,B)),C) ) )
+                & ( k2_mcart_1(k1_funct_1(A,B)) = np__1
+                 => ( r1_cqc_the1(A,B,C)
+                  <=> k1_mcart_1(k1_funct_1(A,B)) = k9_cqc_lang ) )
+                & ( k2_mcart_1(k1_funct_1(A,B)) = np__2
+                 => ( r1_cqc_the1(A,B,C)
+                  <=> ? [D] :
+                        ( m2_subset_1(D,k8_qc_lang1,k7_cqc_lang)
+                        & k1_mcart_1(k1_funct_1(A,B)) = k12_cqc_lang(k12_cqc_lang(k10_cqc_lang(D),D),D) ) ) )
+                & ( k2_mcart_1(k1_funct_1(A,B)) = np__3
+                 => ( r1_cqc_the1(A,B,C)
+                  <=> ? [D] :
+                        ( m2_subset_1(D,k8_qc_lang1,k7_cqc_lang)
+                        & ? [E] :
+                            ( m2_subset_1(E,k8_qc_lang1,k7_cqc_lang)
+                            & k1_mcart_1(k1_funct_1(A,B)) = k12_cqc_lang(D,k12_cqc_lang(k10_cqc_lang(D),E)) ) ) ) )
+                & ( k2_mcart_1(k1_funct_1(A,B)) = np__4
+                 => ( r1_cqc_the1(A,B,C)
+                  <=> ? [D] :
+                        ( m2_subset_1(D,k8_qc_lang1,k7_cqc_lang)
+                        & ? [E] :
+                            ( m2_subset_1(E,k8_qc_lang1,k7_cqc_lang)
+                            & ? [F] :
+                                ( m2_subset_1(F,k8_qc_lang1,k7_cqc_lang)
+                                & k1_mcart_1(k1_funct_1(A,B)) = k12_cqc_lang(k12_cqc_lang(D,E),k12_cqc_lang(k10_cqc_lang(k11_cqc_lang(E,F)),k10_cqc_lang(k11_cqc_lang(D,F)))) ) ) ) ) )
+                & ( k2_mcart_1(k1_funct_1(A,B)) = np__5
+                 => ( r1_cqc_the1(A,B,C)
+                  <=> ? [D] :
+                        ( m2_subset_1(D,k8_qc_lang1,k7_cqc_lang)
+                        & ? [E] :
+                            ( m2_subset_1(E,k8_qc_lang1,k7_cqc_lang)
+                            & k1_mcart_1(k1_funct_1(A,B)) = k12_cqc_lang(k11_cqc_lang(D,E),k11_cqc_lang(E,D)) ) ) ) )
+                & ( k2_mcart_1(k1_funct_1(A,B)) = np__6
+                 => ( r1_cqc_the1(A,B,C)
+                  <=> ? [D] :
+                        ( m2_subset_1(D,k8_qc_lang1,k7_cqc_lang)
+                        & ? [E] :
+                            ( m2_subset_1(E,k1_qc_lang1,k2_qc_lang1)
+                            & k1_mcart_1(k1_funct_1(A,B)) = k12_cqc_lang(k15_cqc_lang(E,D),D) ) ) ) )
+                & ( k2_mcart_1(k1_funct_1(A,B)) = np__7
+                 => ( r1_cqc_the1(A,B,C)
+                  <=> ? [D] :
+                        ( m2_subset_1(D,k1_numbers,k5_numbers)
+                        & ? [E] :
+                            ( m2_subset_1(E,k1_numbers,k5_numbers)
+                            & ? [F] :
+                                ( m2_subset_1(F,k8_qc_lang1,k7_cqc_lang)
+                                & ? [G] :
+                                    ( m2_subset_1(G,k8_qc_lang1,k7_cqc_lang)
+                                    & r1_xreal_0(np__1,D)
+                                    & ~ r1_xreal_0(B,D)
+                                    & r1_xreal_0(np__1,E)
+                                    & ~ r1_xreal_0(D,E)
+                                    & F = k1_mcart_1(k1_funct_1(A,E))
+                                    & G = k1_mcart_1(k1_funct_1(A,B))
+                                    & k1_mcart_1(k1_funct_1(A,D)) = k12_cqc_lang(F,G) ) ) ) ) ) )
+                & ( k2_mcart_1(k1_funct_1(A,B)) = np__8
+                 => ( r1_cqc_the1(A,B,C)
+                  <=> ? [D] :
+                        ( m2_subset_1(D,k1_numbers,k5_numbers)
+                        & ? [E] :
+                            ( m2_subset_1(E,k8_qc_lang1,k7_cqc_lang)
+                            & ? [F] :
+                                ( m2_subset_1(F,k8_qc_lang1,k7_cqc_lang)
+                                & ? [G] :
+                                    ( m2_subset_1(G,k1_qc_lang1,k2_qc_lang1)
+                                    & r1_xreal_0(np__1,D)
+                                    & ~ r1_xreal_0(B,D)
+                                    & k1_mcart_1(k1_funct_1(A,D)) = k12_cqc_lang(E,F)
+                                    & ~ r2_hidden(G,k24_qc_lang1(E))
+                                    & k1_mcart_1(k1_funct_1(A,B)) = k12_cqc_lang(E,k15_cqc_lang(G,F)) ) ) ) ) ) )
+                & ( k2_mcart_1(k1_funct_1(A,B)) = np__9
+                 => ( r1_cqc_the1(A,B,C)
+                  <=> ? [D] :
+                        ( m2_subset_1(D,k1_numbers,k5_numbers)
+                        & ? [E] :
+                            ( m2_subset_1(E,k1_qc_lang1,k2_qc_lang1)
+                            & ? [F] :
+                                ( m2_subset_1(F,k1_qc_lang1,k2_qc_lang1)
+                                & ? [G] :
+                                    ( m1_subset_1(G,k8_qc_lang1)
+                                    & r1_xreal_0(np__1,D)
+                                    & ~ r1_xreal_0(B,D)
+                                    & r2_hidden(k17_cqc_lang(G,E),k7_cqc_lang)
+                                    & r2_hidden(k17_cqc_lang(G,F),k7_cqc_lang)
+                                    & ~ r2_hidden(E,k24_qc_lang1(G))
+                                    & k17_cqc_lang(G,E) = k1_mcart_1(k1_funct_1(A,D))
+                                    & k17_cqc_lang(G,F) = k1_mcart_1(k1_funct_1(A,B)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d5_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_finseq_1(B,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+         => ( r2_cqc_the1(A,B)
+          <=> ( B != k1_xboole_0
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ( ( r1_xreal_0(np__1,C)
+                      & r1_xreal_0(C,k3_finseq_1(B)) )
+                   => r1_cqc_the1(B,C,A) ) ) ) ) ) ) ).
+
+fof(t46_cqc_the1,axiom,
+    $true ).
+
+fof(t47_cqc_the1,axiom,
+    $true ).
+
+fof(t48_cqc_the1,axiom,
+    $true ).
+
+fof(t49_cqc_the1,axiom,
+    $true ).
+
+fof(t50_cqc_the1,axiom,
+    $true ).
+
+fof(t51_cqc_the1,axiom,
+    $true ).
+
+fof(t52_cqc_the1,axiom,
+    $true ).
+
+fof(t53_cqc_the1,axiom,
+    $true ).
+
+fof(t54_cqc_the1,axiom,
+    $true ).
+
+fof(t55_cqc_the1,axiom,
+    $true ).
+
+fof(t56_cqc_the1,axiom,
+    $true ).
+
+fof(t57_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_finseq_1(B,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+         => ~ ( r2_cqc_the1(A,B)
+              & k2_relat_1(B) = k1_xboole_0 ) ) ) ).
+
+fof(t58_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_finseq_1(B,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+         => ( r2_cqc_the1(A,B)
+           => r1_xreal_0(np__1,k3_finseq_1(B)) ) ) ) ).
+
+fof(t59_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_finseq_1(B,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+         => ~ ( r2_cqc_the1(A,B)
+              & k2_mcart_1(k1_funct_1(B,np__1)) != np__0
+              & k2_mcart_1(k1_funct_1(B,np__1)) != np__1
+              & k2_mcart_1(k1_funct_1(B,np__1)) != np__2
+              & k2_mcart_1(k1_funct_1(B,np__1)) != np__3
+              & k2_mcart_1(k1_funct_1(B,np__1)) != np__4
+              & k2_mcart_1(k1_funct_1(B,np__1)) != np__5
+              & k2_mcart_1(k1_funct_1(B,np__1)) != np__6 ) ) ) ).
+
+fof(t60_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k7_cqc_lang))
+         => ! [C] :
+              ( m2_finseq_1(C,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+             => ! [D] :
+                  ( m2_finseq_1(D,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+                 => ( ( r1_xreal_0(np__1,A)
+                      & r1_xreal_0(A,k3_finseq_1(C)) )
+                   => ( r1_cqc_the1(C,A,B)
+                    <=> r1_cqc_the1(k8_finseq_1(k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1),C,D),A,B) ) ) ) ) ) ) ).
+
+fof(t61_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k7_cqc_lang))
+         => ! [C] :
+              ( m2_finseq_1(C,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+             => ! [D] :
+                  ( m2_finseq_1(D,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+                 => ( ( r1_xreal_0(np__1,A)
+                      & r1_xreal_0(A,k3_finseq_1(C))
+                      & r1_cqc_the1(C,A,B) )
+                   => r1_cqc_the1(k8_finseq_1(k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1),D,C),k1_nat_1(A,k3_finseq_1(D)),B) ) ) ) ) ) ).
+
+fof(t62_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_finseq_1(B,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+         => ! [C] :
+              ( m2_finseq_1(C,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+             => ( ( r2_cqc_the1(A,B)
+                  & r2_cqc_the1(A,C) )
+               => r2_cqc_the1(A,k8_finseq_1(k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1),B,C)) ) ) ) ) ).
+
+fof(t63_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k7_cqc_lang))
+         => ! [C] :
+              ( m2_finseq_1(C,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+             => ( ( r2_cqc_the1(A,C)
+                  & r1_tarski(A,B) )
+               => r2_cqc_the1(B,C) ) ) ) ) ).
+
+fof(t64_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k7_cqc_lang))
+         => ! [C] :
+              ( m2_finseq_1(C,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+             => ( ( r2_cqc_the1(B,C)
+                  & r1_xreal_0(np__1,A)
+                  & r1_xreal_0(A,k3_finseq_1(C)) )
+               => r2_hidden(k1_mcart_1(k1_funct_1(C,A)),k1_cqc_the1(B)) ) ) ) ) ).
+
+fof(d6_cqc_the1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+     => ( A != k1_xboole_0
+       => k3_cqc_the1(A) = k1_mcart_1(k1_funct_1(A,k3_finseq_1(A))) ) ) ).
+
+fof(t65_cqc_the1,axiom,
+    $true ).
+
+fof(t66_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_finseq_1(B,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+         => ( r2_cqc_the1(A,B)
+           => r2_hidden(k3_cqc_the1(B),k1_cqc_the1(A)) ) ) ) ).
+
+fof(t70_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ( r2_hidden(B,k1_cqc_the1(A))
+          <=> ? [C] :
+                ( m2_finseq_1(C,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+                & r2_cqc_the1(A,C)
+                & k3_cqc_the1(C) = B ) ) ) ) ).
+
+fof(t71_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ~ ( r2_hidden(B,k1_cqc_the1(A))
+              & ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(k7_cqc_lang))
+                 => ~ ( r1_tarski(C,A)
+                      & v1_finset_1(C)
+                      & r2_hidden(B,k1_cqc_the1(C)) ) ) ) ) ) ).
+
+fof(d7_cqc_the1,axiom,
+    $true ).
+
+fof(d8_cqc_the1,axiom,
+    k4_cqc_the1 = k1_cqc_the1(k1_subset_1(k7_cqc_lang)) ).
+
+fof(t72_cqc_the1,axiom,
+    $true ).
+
+fof(t73_cqc_the1,axiom,
+    $true ).
+
+fof(t74_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ( v1_cqc_the1(A)
+       => r1_tarski(k4_cqc_the1,A) ) ) ).
+
+fof(t75_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => r1_tarski(k4_cqc_the1,k1_cqc_the1(A)) ) ).
+
+fof(t76_cqc_the1,axiom,
+    v1_cqc_the1(k4_cqc_the1) ).
+
+fof(t77_cqc_the1,axiom,
+    r2_hidden(k9_cqc_lang,k4_cqc_the1) ).
+
+fof(t78_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => r2_hidden(k12_cqc_lang(k12_cqc_lang(k10_cqc_lang(A),A),A),k4_cqc_the1) ) ).
+
+fof(t79_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => r2_hidden(k12_cqc_lang(A,k12_cqc_lang(k10_cqc_lang(A),B)),k4_cqc_the1) ) ) ).
+
+fof(t80_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => r2_hidden(k12_cqc_lang(k12_cqc_lang(A,B),k12_cqc_lang(k10_cqc_lang(k11_cqc_lang(B,C)),k10_cqc_lang(k11_cqc_lang(A,C)))),k4_cqc_the1) ) ) ) ).
+
+fof(t81_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => r2_hidden(k12_cqc_lang(k11_cqc_lang(A,B),k11_cqc_lang(B,A)),k4_cqc_the1) ) ) ).
+
+fof(t82_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ( ( r2_hidden(A,k4_cqc_the1)
+              & r2_hidden(k12_cqc_lang(A,B),k4_cqc_the1) )
+           => r2_hidden(B,k4_cqc_the1) ) ) ) ).
+
+fof(t83_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k1_qc_lang1,k2_qc_lang1)
+         => r2_hidden(k12_cqc_lang(k15_cqc_lang(B,A),A),k4_cqc_the1) ) ) ).
+
+fof(t84_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k1_qc_lang1,k2_qc_lang1)
+             => ( r2_hidden(k12_cqc_lang(A,B),k4_cqc_the1)
+               => ( r2_hidden(C,k24_qc_lang1(A))
+                  | r2_hidden(k12_cqc_lang(A,k15_cqc_lang(C,B)),k4_cqc_the1) ) ) ) ) ) ).
+
+fof(t85_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k8_qc_lang1)
+     => ! [B] :
+          ( m2_subset_1(B,k1_qc_lang1,k2_qc_lang1)
+         => ! [C] :
+              ( m2_subset_1(C,k1_qc_lang1,k2_qc_lang1)
+             => ( ( r2_hidden(k17_cqc_lang(A,B),k7_cqc_lang)
+                  & r2_hidden(k17_cqc_lang(A,C),k7_cqc_lang)
+                  & r2_hidden(k17_cqc_lang(A,B),k4_cqc_the1) )
+               => ( r2_hidden(B,k24_qc_lang1(A))
+                  | r2_hidden(k17_cqc_lang(A,C),k4_cqc_the1) ) ) ) ) ) ).
+
+fof(d9_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m1_subset_1(B,k8_qc_lang1)
+         => ( r3_cqc_the1(A,B)
+          <=> r2_hidden(B,k1_cqc_the1(A)) ) ) ) ).
+
+fof(t86_cqc_the1,axiom,
+    $true ).
+
+fof(t87_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => r3_cqc_the1(A,k9_cqc_lang) ) ).
+
+fof(t88_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => r3_cqc_the1(A,k12_cqc_lang(k12_cqc_lang(k10_cqc_lang(B),B),B)) ) ) ).
+
+fof(t89_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => r3_cqc_the1(A,k12_cqc_lang(B,k12_cqc_lang(k10_cqc_lang(B),C))) ) ) ) ).
+
+fof(t90_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => ! [D] :
+                  ( m2_subset_1(D,k8_qc_lang1,k7_cqc_lang)
+                 => r3_cqc_the1(A,k12_cqc_lang(k12_cqc_lang(B,C),k12_cqc_lang(k10_cqc_lang(k11_cqc_lang(C,D)),k10_cqc_lang(k11_cqc_lang(B,D))))) ) ) ) ) ).
+
+fof(t91_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => r3_cqc_the1(A,k12_cqc_lang(k11_cqc_lang(B,C),k11_cqc_lang(C,B))) ) ) ) ).
+
+fof(t92_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => ( ( r3_cqc_the1(A,B)
+                  & r3_cqc_the1(A,k12_cqc_lang(B,C)) )
+               => r3_cqc_the1(A,C) ) ) ) ) ).
+
+fof(t93_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k1_qc_lang1,k2_qc_lang1)
+             => r3_cqc_the1(A,k12_cqc_lang(k15_cqc_lang(C,B),B)) ) ) ) ).
+
+fof(t94_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_qc_lang1,k2_qc_lang1)
+                 => ( r3_cqc_the1(A,k12_cqc_lang(B,C))
+                   => ( r2_hidden(D,k24_qc_lang1(B))
+                      | r3_cqc_the1(A,k12_cqc_lang(B,k15_cqc_lang(D,C))) ) ) ) ) ) ) ).
+
+fof(t95_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m1_subset_1(B,k8_qc_lang1)
+         => ! [C] :
+              ( m2_subset_1(C,k1_qc_lang1,k2_qc_lang1)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_qc_lang1,k2_qc_lang1)
+                 => ( ( r2_hidden(k17_cqc_lang(B,C),k7_cqc_lang)
+                      & r2_hidden(k17_cqc_lang(B,D),k7_cqc_lang)
+                      & r3_cqc_the1(A,k17_cqc_lang(B,C)) )
+                   => ( r2_hidden(C,k24_qc_lang1(B))
+                      | r3_cqc_the1(A,k17_cqc_lang(B,D)) ) ) ) ) ) ) ).
+
+fof(d10_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k8_qc_lang1)
+     => ( v2_cqc_the1(A)
+      <=> r3_cqc_the1(k1_subset_1(k7_cqc_lang),A) ) ) ).
+
+fof(d11_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k8_qc_lang1)
+     => ( v2_cqc_the1(A)
+      <=> r2_hidden(A,k4_cqc_the1) ) ) ).
+
+fof(t96_cqc_the1,axiom,
+    $true ).
+
+fof(t97_cqc_the1,axiom,
+    $true ).
+
+fof(t98_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ( v2_cqc_the1(B)
+           => r3_cqc_the1(A,B) ) ) ) ).
+
+fof(t99_cqc_the1,axiom,
+    v2_cqc_the1(k9_cqc_lang) ).
+
+fof(t100_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => v2_cqc_the1(k12_cqc_lang(k12_cqc_lang(k10_cqc_lang(A),A),A)) ) ).
+
+fof(t101_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => v2_cqc_the1(k12_cqc_lang(A,k12_cqc_lang(k10_cqc_lang(A),B))) ) ) ).
+
+fof(t102_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+             => v2_cqc_the1(k12_cqc_lang(k12_cqc_lang(A,B),k12_cqc_lang(k10_cqc_lang(k11_cqc_lang(B,C)),k10_cqc_lang(k11_cqc_lang(A,C))))) ) ) ) ).
+
+fof(t103_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => v2_cqc_the1(k12_cqc_lang(k11_cqc_lang(A,B),k11_cqc_lang(B,A))) ) ) ).
+
+fof(t104_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ( ( v2_cqc_the1(A)
+              & v2_cqc_the1(k12_cqc_lang(A,B)) )
+           => v2_cqc_the1(B) ) ) ) ).
+
+fof(t105_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k1_qc_lang1,k2_qc_lang1)
+         => v2_cqc_the1(k12_cqc_lang(k15_cqc_lang(B,A),A)) ) ) ).
+
+fof(t106_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k8_qc_lang1,k7_cqc_lang)
+     => ! [B] :
+          ( m2_subset_1(B,k8_qc_lang1,k7_cqc_lang)
+         => ! [C] :
+              ( m2_subset_1(C,k1_qc_lang1,k2_qc_lang1)
+             => ( v2_cqc_the1(k12_cqc_lang(A,B))
+               => ( r2_hidden(C,k24_qc_lang1(A))
+                  | v2_cqc_the1(k12_cqc_lang(A,k15_cqc_lang(C,B))) ) ) ) ) ) ).
+
+fof(t107_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k8_qc_lang1)
+     => ! [B] :
+          ( m2_subset_1(B,k1_qc_lang1,k2_qc_lang1)
+         => ! [C] :
+              ( m2_subset_1(C,k1_qc_lang1,k2_qc_lang1)
+             => ( ( r2_hidden(k17_cqc_lang(A,B),k7_cqc_lang)
+                  & r2_hidden(k17_cqc_lang(A,C),k7_cqc_lang)
+                  & v2_cqc_the1(k17_cqc_lang(A,B)) )
+               => ( r2_hidden(B,k24_qc_lang1(A))
+                  | v2_cqc_the1(k17_cqc_lang(A,C)) ) ) ) ) ) ).
+
+fof(dt_k1_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => m1_subset_1(k1_cqc_the1(A),k1_zfmisc_1(k7_cqc_lang)) ) ).
+
+fof(dt_k2_cqc_the1,axiom,
+    $true ).
+
+fof(dt_k3_cqc_the1,axiom,
+    ! [A] :
+      ( m1_finseq_1(A,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+     => m2_subset_1(k3_cqc_the1(A),k8_qc_lang1,k7_cqc_lang) ) ).
+
+fof(dt_k4_cqc_the1,axiom,
+    m1_subset_1(k4_cqc_the1,k1_zfmisc_1(k7_cqc_lang)) ).
+
+fof(t11_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => a_1_0_cqc_the1(A) = k2_xboole_0(a_1_1_cqc_the1(A),k1_tarski(k1_nat_1(A,np__1))) ) ).
+
+fof(t12_cqc_the1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => v1_finset_1(a_1_1_cqc_the1(A)) ) ).
+
+fof(d3_cqc_the1,axiom,
+    k2_cqc_the1 = a_0_0_cqc_the1 ).
+
+fof(t67_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => r1_tarski(A,a_1_2_cqc_the1(A)) ) ).
+
+fof(t68_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k7_cqc_lang))
+         => ( A = a_1_2_cqc_the1(B)
+           => v1_cqc_the1(A) ) ) ) ).
+
+fof(t69_cqc_the1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k7_cqc_lang))
+     => a_1_2_cqc_the1(A) = k1_cqc_the1(A) ) ).
+
+fof(fraenkel_a_1_0_cqc_the1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_0_cqc_the1(B))
+      <=> ? [C] :
+            ( m2_subset_1(C,k1_numbers,k5_numbers)
+            & A = C
+            & r1_xreal_0(C,k1_nat_1(B,np__1)) ) ) ) ).
+
+fof(fraenkel_a_1_1_cqc_the1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_1_cqc_the1(B))
+      <=> ? [C] :
+            ( m2_subset_1(C,k1_numbers,k5_numbers)
+            & A = C
+            & r1_xreal_0(C,B) ) ) ) ).
+
+fof(fraenkel_a_0_0_cqc_the1,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_0_cqc_the1)
+    <=> ? [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+          & A = B
+          & r1_xreal_0(B,np__9) ) ) ).
+
+fof(fraenkel_a_1_2_cqc_the1,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k7_cqc_lang))
+     => ( r2_hidden(A,a_1_2_cqc_the1(B))
+      <=> ? [C] :
+            ( m2_subset_1(C,k8_qc_lang1,k7_cqc_lang)
+            & A = C
+            & ? [D] :
+                ( m2_finseq_1(D,k2_zfmisc_1(k7_cqc_lang,k2_cqc_the1))
+                & r2_cqc_the1(B,D)
+                & k3_cqc_the1(D) = C ) ) ) ) ).
+
+%------------------------------------------------------------------------------

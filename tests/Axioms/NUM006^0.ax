@@ -1,0 +1,125 @@
+%------------------------------------------------------------------------------
+% File     : NUM006^0 : TPTP v8.1.2. Released v3.6.0.
+% Domain   : Number Theory
+% Axioms   : Church Numerals in Simple Type Theory
+% Version  : [Ben08] axioms : Especial.
+% English  :
+
+% Refs     : [Ben08] Benzmueller (2008), Email to G. Sutcliffe
+% Source   : [Ben08]
+% Names    : CHURCH_NUM [Ben08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   28 (  14 unt;  14 typ;  14 def)
+%            Number of atoms       :   14 (  14 equ;   0 cnn)
+%            Maximal formula atoms :    1 (   0 avg)
+%            Number of connectives :   65 (   0   ~;   0   |;   0   &;  65   @)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    1 (   1 avg;  65 nst)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :   91 (  91   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   15 (  14 usr;   0 con; 2-4 aty)
+%            Number of variables   :   33 (  33   ^   0   !;   0   ?;  33   :)
+% SPC      : 
+
+% Comments :
+%------------------------------------------------------------------------------
+thf(zero,type,
+    zero: ( $i > $i ) > $i > $i ).
+
+thf(one,type,
+    one: ( $i > $i ) > $i > $i ).
+
+thf(two,type,
+    two: ( $i > $i ) > $i > $i ).
+
+thf(three,type,
+    three: ( $i > $i ) > $i > $i ).
+
+thf(four,type,
+    four: ( $i > $i ) > $i > $i ).
+
+thf(five,type,
+    five: ( $i > $i ) > $i > $i ).
+
+thf(six,type,
+    six: ( $i > $i ) > $i > $i ).
+
+thf(seven,type,
+    seven: ( $i > $i ) > $i > $i ).
+
+thf(eight,type,
+    eight: ( $i > $i ) > $i > $i ).
+
+thf(nine,type,
+    nine: ( $i > $i ) > $i > $i ).
+
+thf(ten,type,
+    ten: ( $i > $i ) > $i > $i ).
+
+thf(succ,type,
+    succ: ( ( $i > $i ) > $i > $i ) > ( $i > $i ) > $i > $i ).
+
+thf(plus,type,
+    plus: ( ( $i > $i ) > $i > $i ) > ( ( $i > $i ) > $i > $i ) > ( $i > $i ) > $i > $i ).
+
+thf(mult,type,
+    mult: ( ( $i > $i ) > $i > $i ) > ( ( $i > $i ) > $i > $i ) > ( $i > $i ) > $i > $i ).
+
+thf(zero_ax,definition,
+    ( zero
+    = ( ^ [X: $i > $i,Y: $i] : Y ) ) ).
+
+thf(one_ax,definition,
+    ( one
+    = ( ^ [X: $i > $i,Y: $i] : ( X @ Y ) ) ) ).
+
+thf(two_ax,definition,
+    ( two
+    = ( ^ [X: $i > $i,Y: $i] : ( X @ ( X @ Y ) ) ) ) ).
+
+thf(three_ax,definition,
+    ( three
+    = ( ^ [X: $i > $i,Y: $i] : ( X @ ( X @ ( X @ Y ) ) ) ) ) ).
+
+thf(four_ax,definition,
+    ( four
+    = ( ^ [X: $i > $i,Y: $i] : ( X @ ( X @ ( X @ ( X @ Y ) ) ) ) ) ) ).
+
+thf(five_ax,definition,
+    ( five
+    = ( ^ [X: $i > $i,Y: $i] : ( X @ ( X @ ( X @ ( X @ ( X @ Y ) ) ) ) ) ) ) ).
+
+thf(six_ax,definition,
+    ( six
+    = ( ^ [X: $i > $i,Y: $i] : ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ Y ) ) ) ) ) ) ) ) ).
+
+thf(seven_ax,definition,
+    ( seven
+    = ( ^ [X: $i > $i,Y: $i] : ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ Y ) ) ) ) ) ) ) ) ) ).
+
+thf(eight_ax,definition,
+    ( eight
+    = ( ^ [X: $i > $i,Y: $i] : ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ Y ) ) ) ) ) ) ) ) ) ) ).
+
+thf(nine_ax,definition,
+    ( nine
+    = ( ^ [X: $i > $i,Y: $i] : ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ Y ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(ten_ax,definition,
+    ( ten
+    = ( ^ [X: $i > $i,Y: $i] : ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ ( X @ Y ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+thf(succ_ax,definition,
+    ( succ
+    = ( ^ [N: ( $i > $i ) > $i > $i,X: $i > $i,Y: $i] : ( X @ ( N @ X @ Y ) ) ) ) ).
+
+thf(plus_ax,definition,
+    ( plus
+    = ( ^ [M: ( $i > $i ) > $i > $i,N: ( $i > $i ) > $i > $i,X: $i > $i,Y: $i] : ( M @ X @ ( N @ X @ Y ) ) ) ) ).
+
+thf(mult_ax,definition,
+    ( mult
+    = ( ^ [M: ( $i > $i ) > $i > $i,N: ( $i > $i ) > $i > $i,X: $i > $i,Y: $i] : ( M @ ( N @ X ) @ Y ) ) ) ).
+
+%------------------------------------------------------------------------------

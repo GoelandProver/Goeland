@@ -1,0 +1,240 @@
+%------------------------------------------------------------------------------
+% File     : ITP062+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : bft+2.ax [Gau20]
+%          : HL4062+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   11 (   0 unt;   0 def)
+%            Number of atoms       :  112 (   9 equ)
+%            Maximal formula atoms :   23 (  10 avg)
+%            Number of connectives :  103 (   2   ~;   1   |;  11   &)
+%                                         (   1 <=>;  88  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   26 (  16 avg)
+%            Maximal term depth    :   10 (   2 avg)
+%            Number of predicates  :    4 (   3 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   24 (  24 usr;   2 con; 0-5 aty)
+%            Number of variables   :   76 (  76   !;   0   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(mem_c_2Ebft_2EBFT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => mem(c_2Ebft_2EBFT(A_27a,A_27b),arr(arr(A_27b,ty_2Elist_2Elist(A_27b)),arr(arr(A_27b,arr(A_27a,A_27a)),arr(ty_2Elist_2Elist(A_27b),arr(ty_2Elist_2Elist(A_27b),arr(A_27a,A_27a)))))) ) ) ).
+
+fof(mem_c_2Ebft_2ERel,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [A_27d] :
+                  ( ne(A_27d)
+                 => ! [A_27e] :
+                      ( ne(A_27e)
+                     => mem(c_2Ebft_2ERel(A_27a,A_27b,A_27c,A_27d,A_27e),arr(ty_2Epair_2Eprod(arr(A_27a,ty_2Elist_2Elist(A_27b)),ty_2Epair_2Eprod(A_27c,ty_2Epair_2Eprod(ty_2Elist_2Elist(A_27a),ty_2Epair_2Eprod(ty_2Elist_2Elist(A_27d),A_27e)))),ty_2Epair_2Eprod(ty_2Enum_2Enum,ty_2Enum_2Enum))) ) ) ) ) ) ).
+
+fof(ax_thm_2Ebft_2ERel__def,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [A_27d] :
+                  ( ne(A_27d)
+                 => ! [A_27e] :
+                      ( ne(A_27e)
+                     => ! [V0G] :
+                          ( mem(V0G,arr(A_27a,ty_2Elist_2Elist(A_27b)))
+                         => ! [V1f] :
+                              ( mem(V1f,A_27c)
+                             => ! [V2seen] :
+                                  ( mem(V2seen,ty_2Elist_2Elist(A_27a))
+                                 => ! [V3fringe] :
+                                      ( mem(V3fringe,ty_2Elist_2Elist(A_27d))
+                                     => ! [V4acc] :
+                                          ( mem(V4acc,A_27e)
+                                         => ap(c_2Ebft_2ERel(A_27a,A_27b,A_27c,A_27d,A_27e),ap(ap(c_2Epair_2E_2C(arr(A_27a,ty_2Elist_2Elist(A_27b)),ty_2Epair_2Eprod(A_27c,ty_2Epair_2Eprod(ty_2Elist_2Elist(A_27a),ty_2Epair_2Eprod(ty_2Elist_2Elist(A_27d),A_27e)))),V0G),ap(ap(c_2Epair_2E_2C(A_27c,ty_2Epair_2Eprod(ty_2Elist_2Elist(A_27a),ty_2Epair_2Eprod(ty_2Elist_2Elist(A_27d),A_27e))),V1f),ap(ap(c_2Epair_2E_2C(ty_2Elist_2Elist(A_27a),ty_2Epair_2Eprod(ty_2Elist_2Elist(A_27d),A_27e)),V2seen),ap(ap(c_2Epair_2E_2C(ty_2Elist_2Elist(A_27d),A_27e),V3fringe),V4acc))))) = ap(ap(c_2Epair_2E_2C(ty_2Enum_2Enum,ty_2Enum_2Enum),ap(c_2Epred__set_2ECARD(A_27a),ap(ap(c_2Epred__set_2EDIFF(A_27a),ap(c_2EdirGraph_2EParents(A_27a,A_27b),V0G)),ap(c_2Elist_2ELIST__TO__SET(A_27a),V2seen)))),ap(c_2Elist_2ELENGTH(A_27d),V3fringe)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Ebft_2EBFT__def,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0G] :
+              ( mem(V0G,arr(A_27a,ty_2Elist_2Elist(A_27a)))
+             => ! [V1f] :
+                  ( mem(V1f,arr(A_27a,arr(A_27b,A_27b)))
+                 => ! [V2seen] :
+                      ( mem(V2seen,ty_2Elist_2Elist(A_27a))
+                     => ! [V3acc] :
+                          ( mem(V3acc,A_27b)
+                         => ! [V4h] :
+                              ( mem(V4h,A_27a)
+                             => ! [V5t] :
+                                  ( mem(V5t,ty_2Elist_2Elist(A_27a))
+                                 => ( p(ap(c_2Epred__set_2EFINITE(A_27a),ap(c_2EdirGraph_2EParents(A_27a,A_27a),V0G)))
+                                   => ( ap(ap(ap(ap(ap(c_2Ebft_2EBFT(A_27b,A_27a),V0G),V1f),V2seen),c_2Elist_2ENIL(A_27a)),V3acc) = V3acc
+                                      & ap(ap(ap(ap(ap(c_2Ebft_2EBFT(A_27b,A_27a),V0G),V1f),V2seen),ap(ap(c_2Elist_2ECONS(A_27a),V4h),V5t)),V3acc) = ap(ap(ap(c_2Ebool_2ECOND(A_27b),ap(ap(c_2Ebool_2EIN(A_27a),V4h),ap(c_2Elist_2ELIST__TO__SET(A_27a),V2seen))),ap(ap(ap(ap(ap(c_2Ebft_2EBFT(A_27b,A_27a),V0G),V1f),V2seen),V5t),V3acc)),ap(ap(ap(ap(ap(c_2Ebft_2EBFT(A_27b,A_27a),V0G),V1f),ap(ap(c_2Elist_2ECONS(A_27a),V4h),V2seen)),ap(ap(c_2Elist_2EAPPEND(A_27a),V5t),ap(V0G,V4h))),ap(ap(V1f,V4h),V3acc))) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Ebft_2EBFT__ind,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0P] :
+              ( mem(V0P,arr(arr(A_27a,ty_2Elist_2Elist(A_27a)),arr(arr(A_27a,arr(A_27b,A_27b)),arr(ty_2Elist_2Elist(A_27a),arr(ty_2Elist_2Elist(A_27a),arr(A_27b,bool))))))
+             => ( ! [V1G] :
+                    ( mem(V1G,arr(A_27a,ty_2Elist_2Elist(A_27a)))
+                   => ! [V2f] :
+                        ( mem(V2f,arr(A_27a,arr(A_27b,A_27b)))
+                       => ! [V3seen] :
+                            ( mem(V3seen,ty_2Elist_2Elist(A_27a))
+                           => ! [V4h] :
+                                ( mem(V4h,A_27a)
+                               => ! [V5t] :
+                                    ( mem(V5t,ty_2Elist_2Elist(A_27a))
+                                   => ! [V6acc] :
+                                        ( mem(V6acc,A_27b)
+                                       => ( p(ap(ap(ap(ap(ap(V0P,V1G),V2f),V3seen),c_2Elist_2ENIL(A_27a)),V6acc))
+                                          & ( ( ( ( p(ap(c_2Epred__set_2EFINITE(A_27a),ap(c_2EdirGraph_2EParents(A_27a,A_27a),V1G)))
+                                                  & ~ p(ap(ap(c_2Ebool_2EIN(A_27a),V4h),ap(c_2Elist_2ELIST__TO__SET(A_27a),V3seen))) )
+                                               => p(ap(ap(ap(ap(ap(V0P,V1G),V2f),ap(ap(c_2Elist_2ECONS(A_27a),V4h),V3seen)),ap(ap(c_2Elist_2EAPPEND(A_27a),V5t),ap(V1G,V4h))),ap(ap(V2f,V4h),V6acc))) )
+                                              & ( ( p(ap(c_2Epred__set_2EFINITE(A_27a),ap(c_2EdirGraph_2EParents(A_27a,A_27a),V1G)))
+                                                  & p(ap(ap(c_2Ebool_2EIN(A_27a),V4h),ap(c_2Elist_2ELIST__TO__SET(A_27a),V3seen))) )
+                                               => p(ap(ap(ap(ap(ap(V0P,V1G),V2f),V3seen),V5t),V6acc)) ) )
+                                           => p(ap(ap(ap(ap(ap(V0P,V1G),V2f),V3seen),ap(ap(c_2Elist_2ECONS(A_27a),V4h),V5t)),V6acc)) ) ) ) ) ) ) ) )
+               => ! [V7v] :
+                    ( mem(V7v,arr(A_27a,ty_2Elist_2Elist(A_27a)))
+                   => ! [V8v1] :
+                        ( mem(V8v1,arr(A_27a,arr(A_27b,A_27b)))
+                       => ! [V9v2] :
+                            ( mem(V9v2,ty_2Elist_2Elist(A_27a))
+                           => ! [V10v3] :
+                                ( mem(V10v3,ty_2Elist_2Elist(A_27a))
+                               => ! [V11v4] :
+                                    ( mem(V11v4,A_27b)
+                                   => p(ap(ap(ap(ap(ap(V0P,V7v),V8v1),V9v2),V10v3),V11v4)) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Ebft_2EBFT__CONS,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0G] :
+          ( mem(V0G,arr(A_27a,ty_2Elist_2Elist(A_27a)))
+         => ! [V1f] :
+              ( mem(V1f,arr(A_27a,arr(ty_2Elist_2Elist(A_27a),ty_2Elist_2Elist(A_27a))))
+             => ! [V2seen] :
+                  ( mem(V2seen,ty_2Elist_2Elist(A_27a))
+                 => ! [V3fringe] :
+                      ( mem(V3fringe,ty_2Elist_2Elist(A_27a))
+                     => ! [V4acc] :
+                          ( mem(V4acc,ty_2Elist_2Elist(A_27a))
+                         => ! [V5a] :
+                              ( mem(V5a,ty_2Elist_2Elist(A_27a))
+                             => ! [V6b] :
+                                  ( mem(V6b,ty_2Elist_2Elist(A_27a))
+                                 => ( ( p(ap(c_2Epred__set_2EFINITE(A_27a),ap(c_2EdirGraph_2EParents(A_27a,A_27a),V0G)))
+                                      & V1f = c_2Elist_2ECONS(A_27a)
+                                      & V4acc = ap(ap(c_2Elist_2EAPPEND(A_27a),V5a),V6b) )
+                                   => ap(ap(ap(ap(ap(c_2Ebft_2EBFT(ty_2Elist_2Elist(A_27a),A_27a),V0G),V1f),V2seen),V3fringe),V4acc) = ap(ap(c_2Elist_2EAPPEND(A_27a),ap(ap(ap(ap(ap(c_2Ebft_2EBFT(ty_2Elist_2Elist(A_27a),A_27a),V0G),V1f),V2seen),V3fringe),V5a)),V6b) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Ebft_2EBFT__FOLD,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0G] :
+              ( mem(V0G,arr(A_27a,ty_2Elist_2Elist(A_27a)))
+             => ! [V1f] :
+                  ( mem(V1f,arr(A_27a,arr(A_27b,A_27b)))
+                 => ! [V2seen] :
+                      ( mem(V2seen,ty_2Elist_2Elist(A_27a))
+                     => ! [V3fringe] :
+                          ( mem(V3fringe,ty_2Elist_2Elist(A_27a))
+                         => ! [V4acc] :
+                              ( mem(V4acc,A_27b)
+                             => ( p(ap(c_2Epred__set_2EFINITE(A_27a),ap(c_2EdirGraph_2EParents(A_27a,A_27a),V0G)))
+                               => ap(ap(ap(ap(ap(c_2Ebft_2EBFT(A_27b,A_27a),V0G),V1f),V2seen),V3fringe),V4acc) = ap(ap(ap(c_2Elist_2EFOLDR(A_27a,A_27b),V1f),V4acc),ap(ap(ap(ap(ap(c_2Ebft_2EBFT(ty_2Elist_2Elist(A_27a),A_27a),V0G),c_2Elist_2ECONS(A_27a)),V2seen),V3fringe),c_2Elist_2ENIL(A_27a))) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Ebft_2EBFT__ALL__DISTINCT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0G] :
+          ( mem(V0G,arr(A_27a,ty_2Elist_2Elist(A_27a)))
+         => ! [V1seen] :
+              ( mem(V1seen,ty_2Elist_2Elist(A_27a))
+             => ! [V2fringe] :
+                  ( mem(V2fringe,ty_2Elist_2Elist(A_27a))
+                 => ( p(ap(c_2Epred__set_2EFINITE(A_27a),ap(c_2EdirGraph_2EParents(A_27a,A_27a),V0G)))
+                   => p(ap(c_2Elist_2EALL__DISTINCT(A_27a),ap(ap(ap(ap(ap(c_2Ebft_2EBFT(ty_2Elist_2Elist(A_27a),A_27a),V0G),c_2Elist_2ECONS(A_27a)),V1seen),V2fringe),c_2Elist_2ENIL(A_27a)))) ) ) ) ) ) ).
+
+fof(conj_thm_2Ebft_2EBFT__REACH__1,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0G] :
+          ( mem(V0G,arr(A_27a,ty_2Elist_2Elist(A_27a)))
+         => ! [V1f] :
+              ( mem(V1f,arr(A_27a,arr(ty_2Elist_2Elist(A_27a),ty_2Elist_2Elist(A_27a))))
+             => ! [V2seen] :
+                  ( mem(V2seen,ty_2Elist_2Elist(A_27a))
+                 => ! [V3fringe] :
+                      ( mem(V3fringe,ty_2Elist_2Elist(A_27a))
+                     => ! [V4acc] :
+                          ( mem(V4acc,ty_2Elist_2Elist(A_27a))
+                         => ( ( p(ap(c_2Epred__set_2EFINITE(A_27a),ap(c_2EdirGraph_2EParents(A_27a,A_27a),V0G)))
+                              & V1f = c_2Elist_2ECONS(A_27a) )
+                           => ! [V5x] :
+                                ( mem(V5x,A_27a)
+                               => ( p(ap(ap(c_2Ebool_2EIN(A_27a),V5x),ap(c_2Elist_2ELIST__TO__SET(A_27a),ap(ap(ap(ap(ap(c_2Ebft_2EBFT(ty_2Elist_2Elist(A_27a),A_27a),V0G),V1f),V2seen),V3fringe),V4acc))))
+                                 => ( p(ap(ap(c_2Ebool_2EIN(A_27a),V5x),ap(ap(c_2EdirGraph_2EREACH__LIST(A_27a),V0G),V3fringe)))
+                                    | p(ap(ap(c_2Ebool_2EIN(A_27a),V5x),ap(c_2Elist_2ELIST__TO__SET(A_27a),V4acc))) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Ebft_2EBFT__REACH__2,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0G] :
+          ( mem(V0G,arr(A_27a,ty_2Elist_2Elist(A_27a)))
+         => ! [V1f] :
+              ( mem(V1f,arr(A_27a,arr(ty_2Elist_2Elist(A_27a),ty_2Elist_2Elist(A_27a))))
+             => ! [V2seen] :
+                  ( mem(V2seen,ty_2Elist_2Elist(A_27a))
+                 => ! [V3fringe] :
+                      ( mem(V3fringe,ty_2Elist_2Elist(A_27a))
+                     => ! [V4acc] :
+                          ( mem(V4acc,ty_2Elist_2Elist(A_27a))
+                         => ! [V5x] :
+                              ( mem(V5x,A_27a)
+                             => ( ( p(ap(c_2Epred__set_2EFINITE(A_27a),ap(c_2EdirGraph_2EParents(A_27a,A_27a),V0G)))
+                                  & V1f = c_2Elist_2ECONS(A_27a)
+                                  & p(ap(ap(c_2Ebool_2EIN(A_27a),V5x),ap(ap(c_2EdirGraph_2EREACH__LIST(A_27a),ap(ap(c_2EdirGraph_2EEXCLUDE(A_27a,A_27a),V0G),ap(c_2Elist_2ELIST__TO__SET(A_27a),V2seen))),V3fringe)))
+                                  & ~ p(ap(ap(c_2Ebool_2EIN(A_27a),V5x),ap(c_2Elist_2ELIST__TO__SET(A_27a),V2seen))) )
+                               => p(ap(ap(c_2Ebool_2EIN(A_27a),V5x),ap(c_2Elist_2ELIST__TO__SET(A_27a),ap(ap(ap(ap(ap(c_2Ebft_2EBFT(ty_2Elist_2Elist(A_27a),A_27a),V0G),V1f),V2seen),V3fringe),V4acc)))) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Ebft_2EBFT__REACH__THM,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0G] :
+          ( mem(V0G,arr(A_27a,ty_2Elist_2Elist(A_27a)))
+         => ! [V1fringe] :
+              ( mem(V1fringe,ty_2Elist_2Elist(A_27a))
+             => ( p(ap(c_2Epred__set_2EFINITE(A_27a),ap(c_2EdirGraph_2EParents(A_27a,A_27a),V0G)))
+               => ! [V2x] :
+                    ( mem(V2x,A_27a)
+                   => ( p(ap(ap(c_2Ebool_2EIN(A_27a),V2x),ap(ap(c_2EdirGraph_2EREACH__LIST(A_27a),V0G),V1fringe)))
+                    <=> p(ap(ap(c_2Ebool_2EIN(A_27a),V2x),ap(c_2Elist_2ELIST__TO__SET(A_27a),ap(ap(ap(ap(ap(c_2Ebft_2EBFT(ty_2Elist_2Elist(A_27a),A_27a),V0G),c_2Elist_2ECONS(A_27a)),c_2Elist_2ENIL(A_27a)),V1fringe),c_2Elist_2ENIL(A_27a))))) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

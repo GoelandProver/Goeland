@@ -1,0 +1,291 @@
+%------------------------------------------------------------------------------
+% File     : SET007+53 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Some Properties of Function Modul and Signum
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : absvalue [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   48 (  18 unt;   0 def)
+%            Number of atoms       :  119 (  31 equ)
+%            Maximal formula atoms :    8 (   2 avg)
+%            Number of connectives :   81 (  10   ~;   1   |;  12   &)
+%                                         (   2 <=>;  56  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   11 (   3 avg)
+%            Maximal term depth    :    5 (   2 avg)
+%            Number of predicates  :    6 (   4 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   18 (  18 usr;   3 con; 0-2 aty)
+%            Number of variables   :   43 (  43   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( v1_xcmplx_0(k1_absvalue(A))
+        & v1_xreal_0(k1_absvalue(A)) ) ) ).
+
+fof(d1_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( ( r1_xreal_0(np__0,A)
+         => k16_complex1(A) = A )
+        & ( ~ r1_xreal_0(np__0,A)
+         => k16_complex1(A) = k4_xcmplx_0(A) ) ) ) ).
+
+fof(t1_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( k18_complex1(A) = A
+        | k18_complex1(A) = k4_xcmplx_0(A) ) ) ).
+
+fof(t2_absvalue,axiom,
+    $true ).
+
+fof(t3_absvalue,axiom,
+    $true ).
+
+fof(t4_absvalue,axiom,
+    $true ).
+
+fof(t5_absvalue,axiom,
+    $true ).
+
+fof(t6_absvalue,axiom,
+    $true ).
+
+fof(t7_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( A = np__0
+      <=> k18_complex1(A) = np__0 ) ) ).
+
+fof(t8_absvalue,axiom,
+    $true ).
+
+fof(t9_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ~ ( k18_complex1(A) = k4_xcmplx_0(A)
+          & A != np__0
+          & r1_xreal_0(np__0,A) ) ) ).
+
+fof(t10_absvalue,axiom,
+    $true ).
+
+fof(t11_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( r1_xreal_0(k1_real_1(k18_complex1(A)),A)
+        & r1_xreal_0(A,k18_complex1(A)) ) ) ).
+
+fof(t12_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( ( r1_xreal_0(k4_xcmplx_0(A),B)
+              & r1_xreal_0(B,A) )
+          <=> r1_xreal_0(k18_complex1(B),A) ) ) ) ).
+
+fof(t13_absvalue,axiom,
+    $true ).
+
+fof(t14_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( A != np__0
+       => k4_real_1(k18_complex1(A),k18_complex1(k7_xcmplx_0(np__1,A))) = np__1 ) ) ).
+
+fof(t15_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => k18_complex1(k7_xcmplx_0(np__1,A)) = k6_real_1(np__1,k18_complex1(A)) ) ).
+
+fof(t16_absvalue,axiom,
+    $true ).
+
+fof(t17_absvalue,axiom,
+    $true ).
+
+fof(t18_absvalue,axiom,
+    $true ).
+
+fof(t19_absvalue,axiom,
+    $true ).
+
+fof(t20_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( r1_xreal_0(np__0,k3_xcmplx_0(A,B))
+           => k8_square_1(k3_xcmplx_0(A,B)) = k4_real_1(k9_square_1(k18_complex1(A)),k9_square_1(k18_complex1(B))) ) ) ) ).
+
+fof(t21_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ( ( r1_xreal_0(k18_complex1(A),B)
+                      & r1_xreal_0(k18_complex1(C),D) )
+                   => r1_xreal_0(k18_complex1(k2_xcmplx_0(A,C)),k2_xcmplx_0(B,D)) ) ) ) ) ) ).
+
+fof(t22_absvalue,axiom,
+    $true ).
+
+fof(t23_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( ~ r1_xreal_0(k7_xcmplx_0(A,B),np__0)
+           => k8_square_1(k7_xcmplx_0(A,B)) = k6_real_1(k9_square_1(k18_complex1(A)),k9_square_1(k18_complex1(B))) ) ) ) ).
+
+fof(t24_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( r1_xreal_0(np__0,k3_xcmplx_0(A,B))
+           => k18_complex1(k2_xcmplx_0(A,B)) = k3_real_1(k18_complex1(A),k18_complex1(B)) ) ) ) ).
+
+fof(t25_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k18_complex1(k2_xcmplx_0(A,B)) = k3_real_1(k18_complex1(A),k18_complex1(B))
+           => r1_xreal_0(np__0,k3_xcmplx_0(A,B)) ) ) ) ).
+
+fof(t26_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => r1_xreal_0(k6_real_1(k18_complex1(k2_xcmplx_0(A,B)),k3_real_1(np__1,k18_complex1(k2_xcmplx_0(A,B)))),k3_real_1(k6_real_1(k18_complex1(A),k3_real_1(np__1,k18_complex1(A))),k6_real_1(k18_complex1(B),k3_real_1(np__1,k18_complex1(B))))) ) ) ).
+
+fof(d2_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( ( ~ r1_xreal_0(A,np__0)
+         => k1_absvalue(A) = np__1 )
+        & ( ~ r1_xreal_0(np__0,A)
+         => k1_absvalue(A) = k1_real_1(np__1) )
+        & ( ( r1_xreal_0(A,np__0)
+            & r1_xreal_0(np__0,A) )
+         => k1_absvalue(A) = np__0 ) ) ) ).
+
+fof(t27_absvalue,axiom,
+    $true ).
+
+fof(t28_absvalue,axiom,
+    $true ).
+
+fof(t29_absvalue,axiom,
+    $true ).
+
+fof(t30_absvalue,axiom,
+    $true ).
+
+fof(t31_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ~ ( k1_absvalue(A) = np__1
+          & r1_xreal_0(A,np__0) ) ) ).
+
+fof(t32_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ~ ( k1_absvalue(A) = k1_real_1(np__1)
+          & r1_xreal_0(np__0,A) ) ) ).
+
+fof(t33_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( k1_absvalue(A) = np__0
+       => A = np__0 ) ) ).
+
+fof(t34_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => A = k3_xcmplx_0(k18_complex1(A),k1_absvalue(A)) ) ).
+
+fof(t35_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => k1_absvalue(k3_xcmplx_0(A,B)) = k3_xcmplx_0(k1_absvalue(A),k1_absvalue(B)) ) ) ).
+
+fof(t36_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => k1_absvalue(k1_absvalue(A)) = k1_absvalue(A) ) ).
+
+fof(t37_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => r1_xreal_0(k1_absvalue(k2_xcmplx_0(A,B)),k2_xcmplx_0(k2_xcmplx_0(k1_absvalue(A),k1_absvalue(B)),np__1)) ) ) ).
+
+fof(t38_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( A != np__0
+       => k3_xcmplx_0(k1_absvalue(A),k1_absvalue(k7_xcmplx_0(np__1,A))) = np__1 ) ) ).
+
+fof(t39_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => k7_xcmplx_0(np__1,k1_absvalue(A)) = k1_absvalue(k7_xcmplx_0(np__1,A)) ) ).
+
+fof(t40_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => r1_xreal_0(k6_xcmplx_0(k2_xcmplx_0(k1_absvalue(A),k1_absvalue(B)),np__1),k1_absvalue(k2_xcmplx_0(A,B))) ) ) ).
+
+fof(t41_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => k1_absvalue(A) = k1_absvalue(k7_xcmplx_0(np__1,A)) ) ).
+
+fof(t42_absvalue,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => k1_absvalue(k7_xcmplx_0(A,B)) = k7_xcmplx_0(k1_absvalue(A),k1_absvalue(B)) ) ) ).
+
+fof(dt_k1_absvalue,axiom,
+    $true ).
+
+fof(dt_k2_absvalue,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => m1_subset_1(k2_absvalue(A),k1_numbers) ) ).
+
+fof(redefinition_k2_absvalue,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => k2_absvalue(A) = k1_absvalue(A) ) ).
+
+%------------------------------------------------------------------------------

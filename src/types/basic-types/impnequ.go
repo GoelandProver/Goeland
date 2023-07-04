@@ -66,7 +66,7 @@ func (i Imp) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + i.GetF1().ToStringWithSuffixMeta(suffix) + " " + defaultMap[ImpConn] + " " + i.GetF2().ToStringWithSuffixMeta(suffix) + ")"
 }
 
-func (i Imp) Equals(f Form) bool {
+func (i Imp) Equals(f any) bool {
 	oth, isImp := f.(Imp)
 	return isImp &&
 		i.GetF1().Equals(oth.GetF1()) && i.GetF2().Equals(oth.GetF2())
@@ -82,6 +82,12 @@ func (i Imp) ReplaceVarByTerm(old Var, new Term) Form {
 
 func (i Imp) RenameVariables() Form {
 	return MakeImp(i.GetIndex(), i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
+}
+func (i Imp) CleanFormula() Form {
+	i.f1 = i.f1.CleanFormula()
+	i.f2 = i.f2.CleanFormula()
+
+	return i
 }
 
 func (i Imp) GetSubTerms() TermList {
@@ -110,7 +116,7 @@ func (e Equ) ToStringWithSuffixMeta(suffix string) string {
 	return "(" + e.GetF1().ToStringWithSuffixMeta(suffix) + " " + defaultMap[EquConn] + " " + e.GetF2().ToStringWithSuffixMeta(suffix) + ")"
 }
 
-func (e Equ) Equals(f Form) bool {
+func (e Equ) Equals(f any) bool {
 	oth, isEqu := f.(Equ)
 	return isEqu &&
 		e.GetF1().Equals(oth.GetF1()) && e.GetF2().Equals(oth.GetF2())
@@ -126,6 +132,12 @@ func (e Equ) ReplaceVarByTerm(old Var, new Term) Form {
 
 func (e Equ) RenameVariables() Form {
 	return MakeEqu(e.GetIndex(), e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
+}
+func (e Equ) CleanFormula() Form {
+	e.f1 = e.f1.CleanFormula()
+	e.f2 = e.f2.CleanFormula()
+
+	return e
 }
 
 func (e Equ) GetSubTerms() TermList {

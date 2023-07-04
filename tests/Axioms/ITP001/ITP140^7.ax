@@ -1,0 +1,729 @@
+%------------------------------------------------------------------------------
+% File     : ITP140^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : lift_ieee.ax [Gau19]
+%          : HL4140^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  134 (   7 unt;  79 typ;   0 def)
+%            Number of atoms       :  223 (  36 equ;  14 cnn)
+%            Maximal formula atoms :    8 (   1 avg)
+%            Number of connectives : 2400 (  14   ~;   1   |;  88   &;2241   @)
+%                                         (  10 <=>;  46  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   20 (  13 avg;2241 nst)
+%            Number of types       :    7 (   6 usr)
+%            Number of type conns  :  140 ( 140   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   75 (  73 usr;   4 con; 0-6 aty)
+%            Number of variables   :  281 (   3   ^ 196   !;  11   ?; 281   :)
+%                                         (  71  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Ebinary__ieee_2Eflags,type,
+    tyop_2Ebinary__ieee_2Eflags: $tType ).
+
+thf(tyop_2Ebinary__ieee_2Efloat,type,
+    tyop_2Ebinary__ieee_2Efloat: $tType > $tType > $tType ).
+
+thf(tyop_2Ebinary__ieee_2Erounding,type,
+    tyop_2Ebinary__ieee_2Erounding: $tType ).
+
+thf(tyop_2Ebool_2Eitself,type,
+    tyop_2Ebool_2Eitself: $tType > $tType ).
+
+thf(tyop_2Efcp_2Ecart,type,
+    tyop_2Efcp_2Ecart: $tType > $tType > $tType ).
+
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Enum_2Enum,type,
+    tyop_2Enum_2Enum: $tType ).
+
+thf(tyop_2Eone_2Eone,type,
+    tyop_2Eone_2Eone: $tType ).
+
+thf(tyop_2Epair_2Eprod,type,
+    tyop_2Epair_2Eprod: $tType > $tType > $tType ).
+
+thf(tyop_2Erealax_2Ereal,type,
+    tyop_2Erealax_2Ereal: $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Earithmetic_2E_2B,type,
+    c_2Earithmetic_2E_2B: tyop_2Enum_2Enum > tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Epair_2E_2C,type,
+    c_2Epair_2E_2C: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > A_27b > ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ).
+
+thf(c_2Earithmetic_2E_2D,type,
+    c_2Earithmetic_2E_2D: tyop_2Enum_2Enum > tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Ereal_2E_2F,type,
+    c_2Ereal_2E_2F: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Enum_2E0,type,
+    c_2Enum_2E0: tyop_2Enum_2Enum ).
+
+thf(c_2Eprim__rec_2E_3C,type,
+    c_2Eprim__rec_2E_3C: tyop_2Enum_2Enum > tyop_2Enum_2Enum > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Earithmetic_2EBIT1,type,
+    c_2Earithmetic_2EBIT1: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Earithmetic_2EBIT2,type,
+    c_2Earithmetic_2EBIT2: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Epred__set_2EEMPTY,type,
+    c_2Epred__set_2EEMPTY: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Epred__set_2EFINITE,type,
+    c_2Epred__set_2EFINITE: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EGSPEC,type,
+    c_2Epred__set_2EGSPEC: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27b > ( tyop_2Epair_2Eprod @ A_27a @ $o ) ) > A_27a > $o ) ).
+
+thf(c_2Ebool_2EIN,type,
+    c_2Ebool_2EIN: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ewords_2EINT__MAX,type,
+    c_2Ewords_2EINT__MAX: 
+      !>[A_27a: $tType] : ( ( tyop_2Ebool_2Eitself @ A_27a ) > tyop_2Enum_2Enum ) ).
+
+thf(c_2Earithmetic_2ENUMERAL,type,
+    c_2Earithmetic_2ENUMERAL: tyop_2Enum_2Enum > tyop_2Enum_2Enum ).
+
+thf(c_2Epair_2ESND,type,
+    c_2Epair_2ESND: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) > A_27b ) ).
+
+thf(c_2Epred__set_2EUNIV,type,
+    c_2Epred__set_2EUNIV: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Earithmetic_2EZERO,type,
+    c_2Earithmetic_2EZERO: tyop_2Enum_2Enum ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Ereal_2Eabs,type,
+    c_2Ereal_2Eabs: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal ).
+
+thf(c_2Ebinary__ieee_2Eclosest__such,type,
+    c_2Ebinary__ieee_2Eclosest__such: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o ) > ( ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o ) > tyop_2Erealax_2Ereal > ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) ) ).
+
+thf(c_2Efcp_2Edimindex,type,
+    c_2Efcp_2Edimindex: 
+      !>[A_27a: $tType] : ( ( tyop_2Ebool_2Eitself @ A_27a ) > tyop_2Enum_2Enum ) ).
+
+thf(c_2Elift__ieee_2Eerror,type,
+    c_2Elift__ieee_2Eerror: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebool_2Eitself @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) > tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__Sign,type,
+    c_2Ebinary__ieee_2Efloat__Sign: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Efcp_2Ecart @ $o @ tyop_2Eone_2Eone ) ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__add,type,
+    c_2Ebinary__ieee_2Efloat__add: 
+      !>[A_27t: $tType,A_27w: $tType] : ( tyop_2Ebinary__ieee_2Erounding > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Epair_2Eprod @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) ) ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__div,type,
+    c_2Ebinary__ieee_2Efloat__div: 
+      !>[A_27t: $tType,A_27w: $tType] : ( tyop_2Ebinary__ieee_2Erounding > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Epair_2Eprod @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) ) ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__equal,type,
+    c_2Ebinary__ieee_2Efloat__equal: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > $o ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__greater__equal,type,
+    c_2Ebinary__ieee_2Efloat__greater__equal: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > $o ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__greater__than,type,
+    c_2Ebinary__ieee_2Efloat__greater__than: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > $o ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__is__finite,type,
+    c_2Ebinary__ieee_2Efloat__is__finite: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > $o ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__is__nan,type,
+    c_2Ebinary__ieee_2Efloat__is__nan: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > $o ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__is__zero,type,
+    c_2Ebinary__ieee_2Efloat__is__zero: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > $o ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__less__equal,type,
+    c_2Ebinary__ieee_2Efloat__less__equal: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > $o ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__less__than,type,
+    c_2Ebinary__ieee_2Efloat__less__than: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > $o ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__mul,type,
+    c_2Ebinary__ieee_2Efloat__mul: 
+      !>[A_27t: $tType,A_27w: $tType] : ( tyop_2Ebinary__ieee_2Erounding > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Epair_2Eprod @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) ) ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__mul__add,type,
+    c_2Ebinary__ieee_2Efloat__mul__add: 
+      !>[A_27t: $tType,A_27w: $tType] : ( tyop_2Ebinary__ieee_2Erounding > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Epair_2Eprod @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) ) ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__mul__sub,type,
+    c_2Ebinary__ieee_2Efloat__mul__sub: 
+      !>[A_27t: $tType,A_27w: $tType] : ( tyop_2Ebinary__ieee_2Erounding > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Epair_2Eprod @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) ) ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__round,type,
+    c_2Ebinary__ieee_2Efloat__round: 
+      !>[A_27t: $tType,A_27w: $tType] : ( tyop_2Ebinary__ieee_2Erounding > $o > tyop_2Erealax_2Ereal > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__sqrt,type,
+    c_2Ebinary__ieee_2Efloat__sqrt: 
+      !>[A_27t: $tType,A_27w: $tType] : ( tyop_2Ebinary__ieee_2Erounding > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Epair_2Eprod @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) ) ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__sub,type,
+    c_2Ebinary__ieee_2Efloat__sub: 
+      !>[A_27t: $tType,A_27w: $tType] : ( tyop_2Ebinary__ieee_2Erounding > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > ( tyop_2Epair_2Eprod @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) ) ) ).
+
+thf(c_2Ebinary__ieee_2Efloat__to__real,type,
+    c_2Ebinary__ieee_2Efloat__to__real: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) > tyop_2Erealax_2Ereal ) ).
+
+thf(c_2Erealax_2Einv,type,
+    c_2Erealax_2Einv: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal ).
+
+thf(c_2Ebinary__ieee_2Eis__closest,type,
+    c_2Ebinary__ieee_2Eis__closest: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o ) > tyop_2Erealax_2Ereal > ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o ) ).
+
+thf(c_2Ebinary__ieee_2Elargest,type,
+    c_2Ebinary__ieee_2Elargest: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebool_2Eitself @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) > tyop_2Erealax_2Ereal ) ).
+
+thf(c_2Ewords_2En2w,type,
+    c_2Ewords_2En2w: 
+      !>[A_27a: $tType] : ( tyop_2Enum_2Enum > ( tyop_2Efcp_2Ecart @ $o @ A_27a ) ) ).
+
+thf(c_2Elift__ieee_2Enormalizes,type,
+    c_2Elift__ieee_2Enormalizes: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebool_2Eitself @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) > tyop_2Erealax_2Ereal > $o ) ).
+
+thf(c_2Ereal_2Epow,type,
+    c_2Ereal_2Epow: tyop_2Erealax_2Ereal > tyop_2Enum_2Enum > tyop_2Erealax_2Ereal ).
+
+thf(c_2Erealax_2Ereal__add,type,
+    c_2Erealax_2Ereal__add: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal ).
+
+thf(c_2Ereal_2Ereal__ge,type,
+    c_2Ereal_2Ereal__ge: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal > $o ).
+
+thf(c_2Ereal_2Ereal__gt,type,
+    c_2Ereal_2Ereal__gt: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal > $o ).
+
+thf(c_2Erealax_2Ereal__lt,type,
+    c_2Erealax_2Ereal__lt: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal > $o ).
+
+thf(c_2Ereal_2Ereal__lte,type,
+    c_2Ereal_2Ereal__lte: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal > $o ).
+
+thf(c_2Erealax_2Ereal__mul,type,
+    c_2Erealax_2Ereal__mul: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal ).
+
+thf(c_2Erealax_2Ereal__neg,type,
+    c_2Erealax_2Ereal__neg: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal ).
+
+thf(c_2Ereal_2Ereal__of__num,type,
+    c_2Ereal_2Ereal__of__num: tyop_2Enum_2Enum > tyop_2Erealax_2Ereal ).
+
+thf(c_2Ereal_2Ereal__sub,type,
+    c_2Ereal_2Ereal__sub: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal ).
+
+thf(c_2Ebinary__ieee_2Ereal__to__float,type,
+    c_2Ebinary__ieee_2Ereal__to__float: 
+      !>[A_27a: $tType,A_27b: $tType] : ( tyop_2Ebinary__ieee_2Erounding > tyop_2Erealax_2Ereal > ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) ) ).
+
+thf(c_2Ebinary__ieee_2Eround,type,
+    c_2Ebinary__ieee_2Eround: 
+      !>[A_27t: $tType,A_27w: $tType] : ( tyop_2Ebinary__ieee_2Erounding > tyop_2Erealax_2Ereal > ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) ) ).
+
+thf(c_2Ebinary__ieee_2EroundTiesToEven,type,
+    c_2Ebinary__ieee_2EroundTiesToEven: tyop_2Ebinary__ieee_2Erounding ).
+
+thf(c_2Etransc_2Esqrt,type,
+    c_2Etransc_2Esqrt: tyop_2Erealax_2Ereal > tyop_2Erealax_2Ereal ).
+
+thf(c_2Ebool_2Ethe__value,type,
+    c_2Ebool_2Ethe__value: 
+      !>[A_27a: $tType] : ( tyop_2Ebool_2Eitself @ A_27a ) ).
+
+thf(c_2Ebinary__ieee_2Ethreshold,type,
+    c_2Ebinary__ieee_2Ethreshold: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebool_2Eitself @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) > tyop_2Erealax_2Ereal ) ).
+
+thf(c_2Ebinary__ieee_2Eulp,type,
+    c_2Ebinary__ieee_2Eulp: 
+      !>[A_27t: $tType,A_27w: $tType] : ( ( tyop_2Ebool_2Eitself @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) > tyop_2Erealax_2Ereal ) ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2Elift__ieee_2Eerror__def,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0x: tyop_2Erealax_2Ereal] :
+      ( ( c_2Elift__ieee_2Eerror @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ V0x )
+      = ( c_2Ereal_2Ereal__sub @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Ebinary__ieee_2Eround @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0x ) ) @ V0x ) ) ).
+
+thf(thm_2Elift__ieee_2Enormalizes__def,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0x: tyop_2Erealax_2Ereal] :
+      ( ( c_2Elift__ieee_2Enormalizes @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ V0x )
+    <=> ( ( c_2Eprim__rec_2E_3C @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) @ ( c_2Ewords_2EINT__MAX @ A_27w @ ( c_2Ebool_2Ethe__value @ A_27w ) ) )
+        & ( c_2Ereal_2Ereal__lte @ ( c_2Erealax_2Einv @ ( c_2Ereal_2Epow @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Earithmetic_2E_2D @ ( c_2Ewords_2EINT__MAX @ A_27w @ ( c_2Ebool_2Ethe__value @ A_27w ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) @ ( c_2Ereal_2Eabs @ V0x ) )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ V0x ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__lt,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0x: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b,V1y: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V0x )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V1y ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__less__than @ A_27a @ A_27b @ V0x @ V1y )
+        = ( c_2Erealax_2Ereal__lt @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V0x ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V1y ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__le,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0x: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b,V1y: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V0x )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V1y ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__less__equal @ A_27a @ A_27b @ V0x @ V1y )
+        = ( c_2Ereal_2Ereal__lte @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V0x ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V1y ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__gt,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0x: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b,V1y: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V0x )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V1y ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__greater__than @ A_27a @ A_27b @ V0x @ V1y )
+        = ( c_2Ereal_2Ereal__gt @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V0x ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V1y ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__ge,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0x: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b,V1y: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V0x )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V1y ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__greater__equal @ A_27a @ A_27b @ V0x @ V1y )
+        = ( c_2Ereal_2Ereal__ge @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V0x ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V1y ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__eq,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0x: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b,V1y: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V0x )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V1y ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__equal @ A_27a @ A_27b @ V0x @ V1y )
+      <=> ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V0x )
+          = ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V1y ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__eq__refl,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0x: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] :
+      ( ( c_2Ebinary__ieee_2Efloat__equal @ A_27a @ A_27b @ V0x @ V0x )
+    <=> ( (~) @ ( c_2Ebinary__ieee_2Efloat__is__nan @ A_27a @ A_27b @ V0x ) ) ) ).
+
+thf(thm_2Elift__ieee_2Eis__closest__exits,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0x: tyop_2Erealax_2Ereal,V1s: ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o] :
+      ( ( c_2Epred__set_2EFINITE @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ V1s )
+     => ( ( (~)
+          @ ( V1s
+            = ( c_2Epred__set_2EEMPTY @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) ) ) )
+       => ? [V2a: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] : ( c_2Ebinary__ieee_2Eis__closest @ A_27a @ A_27b @ V1s @ V0x @ V2a ) ) ) ).
+
+thf(thm_2Elift__ieee_2Eclosest__is__everything,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0p: ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o,V1s: ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o,V2x: tyop_2Erealax_2Ereal] :
+      ( ( c_2Epred__set_2EFINITE @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ V1s )
+     => ( ( (~)
+          @ ( V1s
+            = ( c_2Epred__set_2EEMPTY @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) ) ) )
+       => ( ( c_2Ebinary__ieee_2Eis__closest @ A_27a @ A_27b @ V1s @ V2x @ ( c_2Ebinary__ieee_2Eclosest__such @ A_27a @ A_27b @ V0p @ V1s @ V2x ) )
+          & ( ? [V3b: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] :
+                ( ( c_2Ebinary__ieee_2Eis__closest @ A_27a @ A_27b @ V1s @ V2x @ V3b )
+                & ( V0p @ V3b ) )
+           => ( V0p @ ( c_2Ebinary__ieee_2Eclosest__such @ A_27a @ A_27b @ V0p @ V1s @ V2x ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Eclosest__in__set,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0p: ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o,V1s: ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o,V2x: tyop_2Erealax_2Ereal] :
+      ( ( c_2Epred__set_2EFINITE @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ V1s )
+     => ( ( (~)
+          @ ( V1s
+            = ( c_2Epred__set_2EEMPTY @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) ) ) )
+       => ( c_2Ebool_2EIN @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ ( c_2Ebinary__ieee_2Eclosest__such @ A_27a @ A_27b @ V0p @ V1s @ V2x ) @ V1s ) ) ) ).
+
+thf(thm_2Elift__ieee_2Eclosest__is__closest,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0p: ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o,V1s: ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o,V2x: tyop_2Erealax_2Ereal] :
+      ( ( c_2Epred__set_2EFINITE @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ V1s )
+     => ( ( (~)
+          @ ( V1s
+            = ( c_2Epred__set_2EEMPTY @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) ) ) )
+       => ( c_2Ebinary__ieee_2Eis__closest @ A_27a @ A_27b @ V1s @ V2x @ ( c_2Ebinary__ieee_2Eclosest__such @ A_27a @ A_27b @ V0p @ V1s @ V2x ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__finite,axiom,
+    ! [A_27t: $tType,A_27w: $tType] : ( c_2Epred__set_2EFINITE @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Epred__set_2EUNIV @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) ) ) ).
+
+thf(thm_2Elift__ieee_2Eis__finite__finite,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( c_2Epred__set_2EFINITE @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b )
+      @ ( c_2Epred__set_2EGSPEC @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b )
+        @ ^ [V0a: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] : ( c_2Epair_2E_2C @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ $o @ V0a @ ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V0a ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Eis__finite__nonempty,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( (~)
+      @ ( ( c_2Epred__set_2EGSPEC @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b )
+          @ ^ [V0a: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] : ( c_2Epair_2E_2C @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ $o @ V0a @ ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V0a ) ) )
+        = ( c_2Epred__set_2EEMPTY @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Eis__finite__closest,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0p: ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) > $o,V1x: tyop_2Erealax_2Ereal] :
+      ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b
+      @ ( c_2Ebinary__ieee_2Eclosest__such @ A_27a @ A_27b @ V0p
+        @ ( c_2Epred__set_2EGSPEC @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b )
+          @ ^ [V2a: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] : ( c_2Epair_2E_2C @ ( tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b ) @ $o @ V2a @ ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V2a ) ) )
+        @ V1x ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__to__real__finite,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0x: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0x )
+     => ( c_2Ereal_2Ereal__lte @ ( c_2Ereal_2Eabs @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0x ) ) @ ( c_2Ebinary__ieee_2Elargest @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__to__real__threshold,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0x: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0x )
+     => ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0x ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Eerror__at__worst__lemma,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1x: tyop_2Erealax_2Ereal] :
+      ( ( ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ V1x ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a ) )
+     => ( c_2Ereal_2Ereal__lte @ ( c_2Ereal_2Eabs @ ( c_2Elift__ieee_2Eerror @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ V1x ) ) @ ( c_2Ereal_2Eabs @ ( c_2Ereal_2Ereal__sub @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ V1x ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Eerror__is__zero,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1x: tyop_2Erealax_2Ereal] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a )
+          = V1x ) )
+     => ( ( c_2Elift__ieee_2Eerror @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ V1x )
+        = ( c_2Ereal_2Ereal__of__num @ c_2Enum_2E0 ) ) ) ).
+
+thf(thm_2Elift__ieee_2Erelative__error,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0x: tyop_2Erealax_2Ereal] :
+      ( ( c_2Elift__ieee_2Enormalizes @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ V0x )
+     => ? [V1e: tyop_2Erealax_2Ereal] :
+          ( ( c_2Ereal_2Ereal__lte @ ( c_2Ereal_2Eabs @ V1e ) @ ( c_2Ereal_2E_2F @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Ereal_2Epow @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Earithmetic_2E_2B @ ( c_2Efcp_2Edimindex @ A_27t @ ( c_2Ebool_2Ethe__value @ A_27t ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) )
+          & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Ebinary__ieee_2Eround @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0x ) )
+            = ( c_2Erealax_2Ereal__mul @ V0x @ ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V1e ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__round__finite,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0b: $o,V1x: tyop_2Erealax_2Ereal] :
+      ( ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ V1x ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) )
+     => ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Ebinary__ieee_2Efloat__round @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0b @ V1x ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__add,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Erealax_2Ereal__add @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__add @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+        & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__add @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+          = ( c_2Erealax_2Ereal__add @ ( c_2Erealax_2Ereal__add @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Elift__ieee_2Eerror @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__sub,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Ereal_2Ereal__sub @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__sub @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+        & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__sub @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+          = ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2Ereal__sub @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Elift__ieee_2Eerror @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Ereal_2Ereal__sub @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__mul,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+        & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+          = ( c_2Erealax_2Ereal__add @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Elift__ieee_2Eerror @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__div,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( (~) @ ( c_2Ebinary__ieee_2Efloat__is__zero @ A_27t @ A_27w @ V1b ) )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Ereal_2E_2F @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__div @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+        & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__div @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+          = ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2E_2F @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Elift__ieee_2Eerror @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Ereal_2E_2F @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__sqrt,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( ( c_2Ebinary__ieee_2Efloat__Sign @ A_27t @ A_27w @ V0a )
+          = ( c_2Ewords_2En2w @ tyop_2Eone_2Eone @ c_2Enum_2E0 ) )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Etransc_2Esqrt @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__sqrt @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a ) ) )
+        & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__sqrt @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a ) ) )
+          = ( c_2Erealax_2Ereal__add @ ( c_2Etransc_2Esqrt @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) ) @ ( c_2Elift__ieee_2Eerror @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Etransc_2Esqrt @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__mul__add,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V2c: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V2c )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Erealax_2Ereal__add @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul__add @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b @ V2c ) ) )
+        & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul__add @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b @ V2c ) ) )
+          = ( c_2Erealax_2Ereal__add @ ( c_2Erealax_2Ereal__add @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) @ ( c_2Elift__ieee_2Eerror @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__mul__sub,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V2c: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V2c )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Ereal_2Ereal__sub @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul__sub @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b @ V2c ) ) )
+        & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul__sub @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b @ V2c ) ) )
+          = ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2Ereal__sub @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) @ ( c_2Elift__ieee_2Eerror @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Ereal_2Ereal__sub @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__add__finite,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Erealax_2Ereal__add @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__add @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__sub__finite,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Ereal_2Ereal__sub @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__sub @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__mul__finite,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__div__finite,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( (~) @ ( c_2Ebinary__ieee_2Efloat__is__zero @ A_27t @ A_27w @ V1b ) )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Ereal_2E_2F @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__div @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__sqrt__finite,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( ( c_2Ebinary__ieee_2Efloat__Sign @ A_27t @ A_27w @ V0a )
+          = ( c_2Ewords_2En2w @ tyop_2Eone_2Eone @ c_2Enum_2E0 ) )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Etransc_2Esqrt @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__sqrt @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__mul__add__finite,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V2c: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V2c )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Erealax_2Ereal__add @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul__add @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b @ V2c ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__mul__sub__finite,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V2c: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V2c )
+        & ( c_2Erealax_2Ereal__lt @ ( c_2Ereal_2Eabs @ ( c_2Ereal_2Ereal__sub @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) ) ) )
+     => ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul__sub @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b @ V2c ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__add__relative,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Elift__ieee_2Enormalizes @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__add @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+        & ? [V2e: tyop_2Erealax_2Ereal] :
+            ( ( c_2Ereal_2Ereal__lte @ ( c_2Ereal_2Eabs @ V2e ) @ ( c_2Ereal_2E_2F @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Ereal_2Epow @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Earithmetic_2E_2B @ ( c_2Efcp_2Edimindex @ A_27t @ ( c_2Ebool_2Ethe__value @ A_27t ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) )
+            & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__add @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+              = ( c_2Erealax_2Ereal__mul @ ( c_2Erealax_2Ereal__add @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V2e ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__sub__relative,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Elift__ieee_2Enormalizes @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Ereal_2Ereal__sub @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__sub @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+        & ? [V2e: tyop_2Erealax_2Ereal] :
+            ( ( c_2Ereal_2Ereal__lte @ ( c_2Ereal_2Eabs @ V2e ) @ ( c_2Ereal_2E_2F @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Ereal_2Epow @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Earithmetic_2E_2B @ ( c_2Efcp_2Edimindex @ A_27t @ ( c_2Ebool_2Ethe__value @ A_27t ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) )
+            & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__sub @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+              = ( c_2Erealax_2Ereal__mul @ ( c_2Ereal_2Ereal__sub @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V2e ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__mul__relative,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Elift__ieee_2Enormalizes @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+        & ? [V2e: tyop_2Erealax_2Ereal] :
+            ( ( c_2Ereal_2Ereal__lte @ ( c_2Ereal_2Eabs @ V2e ) @ ( c_2Ereal_2E_2F @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Ereal_2Epow @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Earithmetic_2E_2B @ ( c_2Efcp_2Edimindex @ A_27t @ ( c_2Ebool_2Ethe__value @ A_27t ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) )
+            & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+              = ( c_2Erealax_2Ereal__mul @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V2e ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__div__relative,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( (~) @ ( c_2Ebinary__ieee_2Efloat__is__zero @ A_27t @ A_27w @ V1b ) )
+        & ( c_2Elift__ieee_2Enormalizes @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Ereal_2E_2F @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__div @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+        & ? [V2e: tyop_2Erealax_2Ereal] :
+            ( ( c_2Ereal_2Ereal__lte @ ( c_2Ereal_2Eabs @ V2e ) @ ( c_2Ereal_2E_2F @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Ereal_2Epow @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Earithmetic_2E_2B @ ( c_2Efcp_2Edimindex @ A_27t @ ( c_2Ebool_2Ethe__value @ A_27t ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) )
+            & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__div @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b ) ) )
+              = ( c_2Erealax_2Ereal__mul @ ( c_2Ereal_2E_2F @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V2e ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__sqrt__relative,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( ( c_2Ebinary__ieee_2Efloat__Sign @ A_27t @ A_27w @ V0a )
+          = ( c_2Ewords_2En2w @ tyop_2Eone_2Eone @ c_2Enum_2E0 ) )
+        & ( c_2Elift__ieee_2Enormalizes @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Etransc_2Esqrt @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__sqrt @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a ) ) )
+        & ? [V1e: tyop_2Erealax_2Ereal] :
+            ( ( c_2Ereal_2Ereal__lte @ ( c_2Ereal_2Eabs @ V1e ) @ ( c_2Ereal_2E_2F @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Ereal_2Epow @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Earithmetic_2E_2B @ ( c_2Efcp_2Edimindex @ A_27t @ ( c_2Ebool_2Ethe__value @ A_27t ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) )
+            & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__sqrt @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a ) ) )
+              = ( c_2Erealax_2Ereal__mul @ ( c_2Etransc_2Esqrt @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V1e ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__mul__add__relative,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V2c: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V2c )
+        & ( c_2Elift__ieee_2Enormalizes @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul__add @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b @ V2c ) ) )
+        & ? [V3e: tyop_2Erealax_2Ereal] :
+            ( ( c_2Ereal_2Ereal__lte @ ( c_2Ereal_2Eabs @ V3e ) @ ( c_2Ereal_2E_2F @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Ereal_2Epow @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Earithmetic_2E_2B @ ( c_2Efcp_2Edimindex @ A_27t @ ( c_2Ebool_2Ethe__value @ A_27t ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) )
+            & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul__add @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b @ V2c ) ) )
+              = ( c_2Erealax_2Ereal__mul @ ( c_2Erealax_2Ereal__add @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V3e ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__mul__sub__relative,axiom,
+    ! [A_27t: $tType,A_27w: $tType,V0a: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V1b: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w,V2c: tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V0a )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V1b )
+        & ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ V2c )
+        & ( c_2Elift__ieee_2Enormalizes @ A_27t @ A_27w @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27t @ A_27w ) ) @ ( c_2Ereal_2Ereal__sub @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul__sub @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b @ V2c ) ) )
+        & ? [V3e: tyop_2Erealax_2Ereal] :
+            ( ( c_2Ereal_2Ereal__lte @ ( c_2Ereal_2Eabs @ V3e ) @ ( c_2Ereal_2E_2F @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Ereal_2Epow @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Earithmetic_2E_2B @ ( c_2Efcp_2Edimindex @ A_27t @ ( c_2Ebool_2Ethe__value @ A_27t ) ) @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) ) ) )
+            & ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ ( c_2Epair_2ESND @ tyop_2Ebinary__ieee_2Eflags @ ( tyop_2Ebinary__ieee_2Efloat @ A_27t @ A_27w ) @ ( c_2Ebinary__ieee_2Efloat__mul__sub @ A_27t @ A_27w @ c_2Ebinary__ieee_2EroundTiesToEven @ V0a @ V1b @ V2c ) ) )
+              = ( c_2Erealax_2Ereal__mul @ ( c_2Ereal_2Ereal__sub @ ( c_2Erealax_2Ereal__mul @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V0a ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V1b ) ) @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27t @ A_27w @ V2c ) ) @ ( c_2Erealax_2Ereal__add @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT1 @ c_2Earithmetic_2EZERO ) ) ) @ V3e ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Efinite__float__within__threshold,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] :
+      ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V0f )
+     => ( ( (~) @ ( c_2Ereal_2Ereal__lte @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V0f ) @ ( c_2Erealax_2Ereal__neg @ ( c_2Ebinary__ieee_2Ethreshold @ A_27a @ A_27b @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ) ) ) )
+        & ( (~) @ ( c_2Ereal_2Ereal__ge @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V0f ) @ ( c_2Ebinary__ieee_2Ethreshold @ A_27a @ A_27b @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ) ) ) ) ) ).
+
+thf(thm_2Elift__ieee_2Eround__finite__normal__float__id,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V0f )
+        & ( (~) @ ( c_2Ebinary__ieee_2Efloat__is__zero @ A_27a @ A_27b @ V0f ) ) )
+     => ( ( c_2Ebinary__ieee_2Eround @ A_27a @ A_27b @ c_2Ebinary__ieee_2EroundTiesToEven @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V0f ) )
+        = V0f ) ) ).
+
+thf(thm_2Elift__ieee_2Ereal__to__float__finite__normal__id,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0f: tyop_2Ebinary__ieee_2Efloat @ A_27a @ A_27b] :
+      ( ( ( c_2Ebinary__ieee_2Efloat__is__finite @ A_27a @ A_27b @ V0f )
+        & ( (~) @ ( c_2Ebinary__ieee_2Efloat__is__zero @ A_27a @ A_27b @ V0f ) ) )
+     => ( ( c_2Ebinary__ieee_2Ereal__to__float @ A_27a @ A_27b @ c_2Ebinary__ieee_2EroundTiesToEven @ ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ V0f ) )
+        = V0f ) ) ).
+
+thf(thm_2Elift__ieee_2Efloat__to__real__real__to__float__zero__id,axiom,
+    ! [A_27a: $tType,A_27b: $tType] :
+      ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ ( c_2Ebinary__ieee_2Ereal__to__float @ A_27a @ A_27b @ c_2Ebinary__ieee_2EroundTiesToEven @ ( c_2Ereal_2Ereal__of__num @ c_2Enum_2E0 ) ) )
+      = ( c_2Ereal_2Ereal__of__num @ c_2Enum_2E0 ) ) ).
+
+thf(thm_2Elift__ieee_2Enon__representable__float__is__zero,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0ff: tyop_2Erealax_2Ereal,V1P: $o] :
+      ( ( c_2Ereal_2Ereal__lte @ ( c_2Erealax_2Ereal__mul @ ( c_2Ereal_2Ereal__of__num @ ( c_2Earithmetic_2ENUMERAL @ ( c_2Earithmetic_2EBIT2 @ c_2Earithmetic_2EZERO ) ) ) @ ( c_2Ereal_2Eabs @ V0ff ) ) @ ( c_2Ebinary__ieee_2Eulp @ A_27a @ A_27b @ ( c_2Ebool_2Ethe__value @ ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ) )
+     => ( ( c_2Ebinary__ieee_2Efloat__to__real @ A_27a @ A_27b @ ( c_2Ebinary__ieee_2Efloat__round @ A_27a @ A_27b @ c_2Ebinary__ieee_2EroundTiesToEven @ V1P @ V0ff ) )
+        = ( c_2Ereal_2Ereal__of__num @ c_2Enum_2E0 ) ) ) ).
+
+%------------------------------------------------------------------------------

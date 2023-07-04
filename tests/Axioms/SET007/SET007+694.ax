@@ -1,0 +1,1332 @@
+%------------------------------------------------------------------------------
+% File     : SET007+694 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Introduction to Turing Machines
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : turing_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  136 (  10 unt;   0 def)
+%            Number of atoms       :  730 ( 191 equ)
+%            Maximal formula atoms :   20 (   5 avg)
+%            Number of connectives :  656 (  62   ~;   3   |; 256   &)
+%                                         (  15 <=>; 320  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   22 (   8 avg)
+%            Maximal term depth    :   13 (   2 avg)
+%            Number of predicates  :   25 (  23 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   96 (  96 usr;  19 con; 0-6 aty)
+%            Number of variables   :  379 ( 362   !;  17   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_turing_1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ( ~ v1_xboole_0(k3_turing_1(A))
+        & v1_finset_1(k3_turing_1(A)) ) ) ).
+
+fof(rc1_turing_1,axiom,
+    ? [A] :
+      ( l1_turing_1(A)
+      & v1_turing_1(A) ) ).
+
+fof(t1_turing_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r2_hidden(A,k3_turing_1(B))
+          <=> r1_xreal_0(A,B) ) ) ) ).
+
+fof(t2_turing_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B,C,D,E,F] :
+          ( E != B
+         => k1_funct_1(k1_funct_4(A,k3_cqc_lang(k4_tarski(B,C),D)),k4_tarski(E,F)) = k1_funct_1(A,k4_tarski(E,F)) ) ) ).
+
+fof(t3_turing_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B,C,D,E,F] :
+          ( F != C
+         => k1_funct_1(k1_funct_4(A,k3_cqc_lang(k4_tarski(B,C),D)),k4_tarski(E,F)) = k1_funct_1(A,k4_tarski(E,F)) ) ) ).
+
+fof(t4_turing_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k4_numbers)
+         => k2_gr_cy_1(k2_finseq_4(k4_numbers,A,B)) = k2_xcmplx_0(A,B) ) ) ).
+
+fof(t5_turing_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k4_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k4_numbers)
+             => k2_gr_cy_1(k3_finseq_4(k4_numbers,A,B,C)) = k2_xcmplx_0(k2_xcmplx_0(A,B),C) ) ) ) ).
+
+fof(t6_turing_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k4_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k4_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_numbers)
+                 => k2_gr_cy_1(k3_scmpds_1(k4_numbers,A,B,C,D)) = k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(A,B),C),D) ) ) ) ) ).
+
+fof(d2_turing_1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k4_turing_1(A,B) = k7_relat_1(A,k2_finseq_1(B)) ) ) ).
+
+fof(t7_turing_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( k2_gr_cy_1(k4_turing_1(k2_finseq_4(k5_numbers,A,B),np__1)) = A
+            & k2_gr_cy_1(k4_turing_1(k2_finseq_4(k5_numbers,A,B),np__2)) = k1_nat_1(A,B) ) ) ) ).
+
+fof(t8_turing_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( k2_gr_cy_1(k4_turing_1(k3_finseq_4(k5_numbers,A,B,C),np__1)) = A
+                & k2_gr_cy_1(k4_turing_1(k3_finseq_4(k5_numbers,A,B,C),np__2)) = k1_nat_1(A,B)
+                & k2_gr_cy_1(k4_turing_1(k3_finseq_4(k5_numbers,A,B,C),np__3)) = k1_nat_1(k1_nat_1(A,B),C) ) ) ) ) ).
+
+fof(d3_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( v1_int_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,u1_turing_1(A))
+                 => k5_turing_1(A,B,C,D) = k1_funct_4(B,k3_cqc_lang(C,D)) ) ) ) ) ).
+
+fof(d4_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+         => k6_turing_1(A,B) = k7_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),B) ) ) ).
+
+fof(d5_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => k7_turing_1(A,B) = k6_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),B) ) ) ).
+
+fof(d6_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => k8_turing_1(A,B) = k1_funct_1(u3_turing_1(A),k4_tarski(k5_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),B),k1_funct_1(k7_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),B),k7_turing_1(A,B)))) ) ) ).
+
+fof(d7_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => ( ( k5_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),B) != u5_turing_1(A)
+             => k9_turing_1(A,B) = k3_mcart_1(k5_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),k8_turing_1(A,B)),k2_xcmplx_0(k7_turing_1(A,B),k6_turing_1(A,k8_turing_1(A,B))),k5_turing_1(A,k7_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),B),k7_turing_1(A,B),k6_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),k8_turing_1(A,B)))) )
+            & ( k5_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),B) = u5_turing_1(A)
+             => k9_turing_1(A,B) = B ) ) ) ) ).
+
+fof(d8_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+                & m2_relset_1(C,k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)))) )
+             => ( C = k10_turing_1(A,B)
+              <=> ( k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),C,np__0) = B
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),C,k1_nat_1(D,np__1)) = k9_turing_1(A,k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),C,D)) ) ) ) ) ) ) ).
+
+fof(t9_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => ( k5_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),B) = u5_turing_1(A)
+           => B = k9_turing_1(A,B) ) ) ) ).
+
+fof(t10_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),k10_turing_1(A,B),np__0) = B ) ) ).
+
+fof(t11_turing_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k3_zfmisc_1(u2_turing_1(B),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(B))))
+             => k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(B),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(B))),k10_turing_1(B,C),k1_nat_1(A,np__1)) = k9_turing_1(B,k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(B),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(B))),k10_turing_1(B,C),A)) ) ) ) ).
+
+fof(t12_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),k10_turing_1(A,B),np__1) = k9_turing_1(A,B) ) ) ).
+
+fof(t13_turing_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( l1_turing_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))))
+                 => k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))),k10_turing_1(C,D),k1_nat_1(A,B)) = k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))),k10_turing_1(C,k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))),k10_turing_1(C,D),A)),B) ) ) ) ) ).
+
+fof(t14_turing_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( l1_turing_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))))
+                 => ( ( r1_xreal_0(A,B)
+                      & k9_turing_1(C,k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))),k10_turing_1(C,D),A)) = k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))),k10_turing_1(C,D),A) )
+                   => k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))),k10_turing_1(C,D),B) = k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))),k10_turing_1(C,D),A) ) ) ) ) ) ).
+
+fof(t15_turing_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( l1_turing_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))))
+                 => ( ( r1_xreal_0(A,B)
+                      & k5_mcart_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C)),k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))),k10_turing_1(C,D),A)) = u5_turing_1(C) )
+                   => k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))),k10_turing_1(C,D),B) = k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(C),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(C))),k10_turing_1(C,D),A) ) ) ) ) ) ).
+
+fof(d9_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => ( v2_turing_1(B,A)
+          <=> ? [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+                & k5_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),k10_turing_1(A,B),C)) = u5_turing_1(A) ) ) ) ) ).
+
+fof(d10_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => ( v2_turing_1(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+               => ( C = k11_turing_1(A,B)
+                <=> ? [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                      & C = k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),k10_turing_1(A,B),D)
+                      & k5_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),k10_turing_1(A,B),D)) = u5_turing_1(A) ) ) ) ) ) ) ).
+
+fof(t16_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => ~ ( v2_turing_1(B,A)
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ~ ( k5_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),k10_turing_1(A,B),C)) = u5_turing_1(A)
+                      & k11_turing_1(A,B) = k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),k10_turing_1(A,B),C)
+                      & ! [D] :
+                          ( m2_subset_1(D,k1_numbers,k5_numbers)
+                         => ~ ( ~ r1_xreal_0(C,D)
+                              & k5_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),k8_funct_2(k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))),k10_turing_1(A,B),D)) = u5_turing_1(A) ) ) ) ) ) ) ) ).
+
+fof(d11_turing_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( r2_hidden(C,B)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,A,k2_zfmisc_1(A,B))
+                    & m2_relset_1(D,A,k2_zfmisc_1(A,B)) )
+                 => ( D = k12_turing_1(A,B,C)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,A)
+                       => k8_funct_2(A,k2_zfmisc_1(A,B),D,E) = k4_tarski(E,C) ) ) ) ) ) ) ).
+
+fof(d12_turing_1,axiom,
+    k13_turing_1 = k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k12_turing_1(k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__5),k7_domain_1(k5_numbers,np__0,np__1)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),np__0),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__0,np__0),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__0,np__0,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__0,np__1),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__0,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__1,np__1),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__1,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__1,np__0),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__1,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__2,np__1),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__1,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k1_numbers),k1_domain_1(k5_numbers,k5_numbers,np__2,np__0),k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__0,k1_real_1(np__1)))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k1_numbers),k1_domain_1(k5_numbers,k5_numbers,np__3,np__1),k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__4,np__0,k1_real_1(np__1)))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k1_numbers),k1_domain_1(k5_numbers,k5_numbers,np__4,np__1),k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__4,np__1,k1_real_1(np__1)))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__4,np__0),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__5,np__0,np__0))) ).
+
+fof(t17_turing_1,axiom,
+    ( k1_funct_1(k13_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__0,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__0,np__0,np__1)
+    & k1_funct_1(k13_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__0,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__0,np__1)
+    & k1_funct_1(k13_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__1,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__1,np__1)
+    & k1_funct_1(k13_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__1,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__1,np__1)
+    & k1_funct_1(k13_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__2,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__1,np__1)
+    & k1_funct_1(k13_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__2,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__0,k1_real_1(np__1))
+    & k1_funct_1(k13_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__3,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__4,np__0,k1_real_1(np__1))
+    & k1_funct_1(k13_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__4,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__4,np__1,k1_real_1(np__1))
+    & k1_funct_1(k13_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__4,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__5,np__0,np__0) ) ).
+
+fof(d13_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( v1_int_1(C)
+             => ! [D] :
+                  ( v1_int_1(D)
+                 => ( r1_turing_1(A,B,C,D)
+                  <=> ( k1_funct_1(B,C) = np__0
+                      & k1_funct_1(B,D) = np__0
+                      & ! [E] :
+                          ( v1_int_1(E)
+                         => ~ ( ~ r1_xreal_0(E,C)
+                              & ~ r1_xreal_0(D,E)
+                              & k1_funct_1(B,E) != np__1 ) ) ) ) ) ) ) ) ).
+
+fof(d14_turing_1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k5_numbers)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m2_fraenkel(C,k4_numbers,u1_turing_1(B),k1_fraenkel(k4_numbers,u1_turing_1(B)))
+             => ( r2_turing_1(A,B,C)
+              <=> ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => ( r1_xreal_0(np__1,D)
+                     => ( r1_xreal_0(k3_finseq_1(A),D)
+                        | r1_turing_1(B,C,k2_xcmplx_0(k2_gr_cy_1(k4_turing_1(A,D)),k4_real_1(np__2,k5_real_1(D,np__1))),k2_xcmplx_0(k2_gr_cy_1(k4_turing_1(A,k1_nat_1(D,np__1))),k2_nat_1(np__2,D))) ) ) ) ) ) ) ) ).
+
+fof(t18_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( r2_turing_1(k2_finseq_4(k5_numbers,C,D),A,B)
+                   => r1_turing_1(A,B,C,k1_nat_1(k1_nat_1(C,D),np__2)) ) ) ) ) ) ).
+
+fof(t19_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( r1_turing_1(A,B,C,k1_nat_1(k1_nat_1(C,D),np__2))
+                   => r2_turing_1(k2_finseq_4(k5_numbers,C,D),A,B) ) ) ) ) ) ).
+
+fof(t20_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( r2_turing_1(k2_finseq_4(k5_numbers,C,D),A,B)
+                   => ( k1_funct_1(B,C) = np__0
+                      & k1_funct_1(B,k1_nat_1(k1_nat_1(C,D),np__2)) = np__0
+                      & ! [E] :
+                          ( v1_int_1(E)
+                         => ~ ( ~ r1_xreal_0(E,C)
+                              & ~ r1_xreal_0(k1_nat_1(k1_nat_1(C,D),np__2),E)
+                              & k1_funct_1(B,E) != np__1 ) ) ) ) ) ) ) ) ).
+
+fof(t21_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( r2_turing_1(k3_finseq_4(k5_numbers,C,D,E),A,B)
+                       => ( r1_turing_1(A,B,C,k1_nat_1(k1_nat_1(C,D),np__2))
+                          & r1_turing_1(A,B,k1_nat_1(k1_nat_1(C,D),np__2),k1_nat_1(k1_nat_1(k1_nat_1(C,D),E),np__4)) ) ) ) ) ) ) ) ).
+
+fof(t22_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( r2_turing_1(k3_finseq_4(k5_numbers,C,D,E),A,B)
+                       => ( k1_funct_1(B,C) = np__0
+                          & k1_funct_1(B,k1_nat_1(k1_nat_1(C,D),np__2)) = np__0
+                          & k1_funct_1(B,k1_nat_1(k1_nat_1(k1_nat_1(C,D),E),np__4)) = np__0
+                          & ! [F] :
+                              ( v1_int_1(F)
+                             => ~ ( ~ r1_xreal_0(F,C)
+                                  & ~ r1_xreal_0(k1_nat_1(k1_nat_1(C,D),np__2),F)
+                                  & k1_funct_1(B,F) != np__1 ) )
+                          & ! [F] :
+                              ( v1_int_1(F)
+                             => ~ ( ~ r1_xreal_0(F,k1_nat_1(k1_nat_1(C,D),np__2))
+                                  & ~ r1_xreal_0(k1_nat_1(k1_nat_1(k1_nat_1(C,D),E),np__4),F)
+                                  & k1_funct_1(B,F) != np__1 ) ) ) ) ) ) ) ) ) ).
+
+fof(t23_turing_1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_xreal_0(np__1,k3_finseq_1(A))
+           => ( k2_gr_cy_1(k4_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,B),A),np__1)) = B
+              & k2_gr_cy_1(k4_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,B),A),np__2)) = k1_nat_1(B,k4_finseq_4(k5_numbers,k5_numbers,A,np__1)) ) ) ) ) ).
+
+fof(t24_turing_1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_xreal_0(np__3,k3_finseq_1(A))
+           => ( k2_gr_cy_1(k4_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,B),A),np__1)) = B
+              & k2_gr_cy_1(k4_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,B),A),np__2)) = k1_nat_1(B,k4_finseq_4(k5_numbers,k5_numbers,A,np__1))
+              & k2_gr_cy_1(k4_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,B),A),np__3)) = k1_nat_1(k1_nat_1(B,k4_finseq_4(k5_numbers,k5_numbers,A,np__1)),k4_finseq_4(k5_numbers,k5_numbers,A,np__2))
+              & k2_gr_cy_1(k4_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,B),A),np__4)) = k1_nat_1(k1_nat_1(k1_nat_1(B,k4_finseq_4(k5_numbers,k5_numbers,A,np__1)),k4_finseq_4(k5_numbers,k5_numbers,A,np__2)),k4_finseq_4(k5_numbers,k5_numbers,A,np__3)) ) ) ) ) ).
+
+fof(t25_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_1(D,k5_numbers)
+                 => ( ( r1_xreal_0(np__1,k3_finseq_1(D))
+                      & r2_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,C),D),A,B) )
+                   => r1_turing_1(A,B,C,k1_nat_1(k1_nat_1(C,k4_finseq_4(k5_numbers,k5_numbers,D,np__1)),np__2)) ) ) ) ) ) ).
+
+fof(t26_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_1(D,k5_numbers)
+                 => ( ( r1_xreal_0(np__3,k3_finseq_1(D))
+                      & r2_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,C),D),A,B) )
+                   => ( r1_turing_1(A,B,C,k1_nat_1(k1_nat_1(C,k4_finseq_4(k5_numbers,k5_numbers,D,np__1)),np__2))
+                      & r1_turing_1(A,B,k1_nat_1(k1_nat_1(C,k4_finseq_4(k5_numbers,k5_numbers,D,np__1)),np__2),k1_nat_1(k1_nat_1(k1_nat_1(C,k4_finseq_4(k5_numbers,k5_numbers,D,np__1)),k4_finseq_4(k5_numbers,k5_numbers,D,np__2)),np__4))
+                      & r1_turing_1(A,B,k1_nat_1(k1_nat_1(k1_nat_1(C,k4_finseq_4(k5_numbers,k5_numbers,D,np__1)),k4_finseq_4(k5_numbers,k5_numbers,D,np__2)),np__4),k1_nat_1(k1_nat_1(k1_nat_1(k1_nat_1(C,k4_finseq_4(k5_numbers,k5_numbers,D,np__1)),k4_finseq_4(k5_numbers,k5_numbers,D,np__2)),k4_finseq_4(k5_numbers,k5_numbers,D,np__3)),np__6)) ) ) ) ) ) ) ).
+
+fof(d15_turing_1,axiom,
+    ! [A] :
+      ( ( v1_turing_1(A)
+        & l1_turing_1(A) )
+     => ( A = k14_turing_1
+      <=> ( u1_turing_1(A) = k7_domain_1(k5_numbers,np__0,np__1)
+          & u2_turing_1(A) = k3_turing_1(np__5)
+          & u3_turing_1(A) = k13_turing_1
+          & u4_turing_1(A) = np__0
+          & u5_turing_1(A) = np__5 ) ) ) ).
+
+fof(t27_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => ! [C,D,E] :
+              ( B = k3_mcart_1(C,D,E)
+             => k7_turing_1(A,B) = D ) ) ) ).
+
+fof(t28_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( v1_int_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,u1_turing_1(A))
+                 => ( k1_funct_1(B,C) = D
+                   => k5_turing_1(A,B,C,D) = B ) ) ) ) ) ).
+
+fof(t29_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+         => ! [C,D,E] :
+              ( B = k3_mcart_1(C,D,E)
+             => ( C = u5_turing_1(A)
+                | k9_turing_1(A,B) = k3_mcart_1(k5_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),k8_turing_1(A,B)),k2_xcmplx_0(k7_turing_1(A,B),k6_turing_1(A,k8_turing_1(A,B))),k5_turing_1(A,k7_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),B),k7_turing_1(A,B),k6_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),k8_turing_1(A,B)))) ) ) ) ) ).
+
+fof(t30_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+         => ! [C] :
+              ( v1_int_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,u1_turing_1(A))
+                 => ! [E] :
+                      ( k1_funct_1(k5_turing_1(A,B,C,D),C) = D
+                      & ( E != C
+                       => k1_funct_1(k5_turing_1(A,B,C,D),E) = k1_funct_1(B,E) ) ) ) ) ) ) ).
+
+fof(t31_turing_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_zfmisc_1(u2_turing_1(k14_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k14_turing_1))))
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(k14_turing_1),k1_fraenkel(k4_numbers,u1_turing_1(k14_turing_1)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( ( A = k4_domain_1(k5_numbers,k5_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k14_turing_1)),np__0,C,B)
+                          & r2_turing_1(k3_finseq_4(k5_numbers,C,D,E),k14_turing_1,B) )
+                       => ( v2_turing_1(A,k14_turing_1)
+                          & k6_mcart_1(u2_turing_1(k14_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k14_turing_1)),k11_turing_1(k14_turing_1,A)) = k1_nat_1(np__1,C)
+                          & r2_turing_1(k2_finseq_4(k5_numbers,k1_nat_1(np__1,C),k1_nat_1(D,E)),k14_turing_1,k7_mcart_1(u2_turing_1(k14_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k14_turing_1)),k11_turing_1(k14_turing_1,A))) ) ) ) ) ) ) ) ).
+
+fof(d16_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( r3_turing_1(A,B)
+          <=> ! [C] :
+                ( m1_subset_1(C,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+               => ! [D] :
+                    ( m2_fraenkel(D,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+                   => ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => ! [F] :
+                            ( m2_finseq_1(F,k5_numbers)
+                           => ( ( r2_hidden(F,k1_relat_1(B))
+                                & C = k4_domain_1(u2_turing_1(A),k5_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),u4_turing_1(A),E,D)
+                                & r2_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,E),F),A,D) )
+                             => ( v2_turing_1(C,A)
+                                & ? [G] :
+                                    ( m2_subset_1(G,k1_numbers,k5_numbers)
+                                    & ? [H] :
+                                        ( m2_subset_1(H,k1_numbers,k5_numbers)
+                                        & k6_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),k11_turing_1(A,C)) = G
+                                        & H = k1_funct_1(B,F)
+                                        & r2_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,G),k12_finseq_1(k5_numbers,H)),A,k7_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),k11_turing_1(A,C))) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t32_turing_1,axiom,
+    r1_tarski(k1_relat_1(k17_comput_1),k4_finseq_2(np__2,k5_numbers)) ).
+
+fof(t33_turing_1,axiom,
+    r3_turing_1(k14_turing_1,k17_comput_1) ).
+
+fof(d17_turing_1,axiom,
+    k15_turing_1 = k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k12_turing_1(k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__4),k7_domain_1(k5_numbers,np__0,np__1)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),np__0),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__0,np__0),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__0,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__1,np__1),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__1,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__1,np__0),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__1,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k1_numbers),k1_domain_1(k5_numbers,k5_numbers,np__2,np__0),k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__0,k1_real_1(np__1)))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k1_numbers),k1_domain_1(k5_numbers,k5_numbers,np__2,np__1),k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__0,k1_real_1(np__1)))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k1_numbers),k1_domain_1(k5_numbers,k5_numbers,np__3,np__1),k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__1,k1_real_1(np__1)))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__3,np__0),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__4,np__0,np__0))) ).
+
+fof(t34_turing_1,axiom,
+    ( k1_funct_1(k15_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__0,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__0,np__1)
+    & k1_funct_1(k15_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__1,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__1,np__1)
+    & k1_funct_1(k15_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__1,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__1,np__1)
+    & k1_funct_1(k15_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__2,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__0,k1_real_1(np__1))
+    & k1_funct_1(k15_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__2,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__0,k1_real_1(np__1))
+    & k1_funct_1(k15_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__3,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__1,k1_real_1(np__1))
+    & k1_funct_1(k15_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__3,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__4,np__0,np__0) ) ).
+
+fof(d18_turing_1,axiom,
+    ! [A] :
+      ( ( v1_turing_1(A)
+        & l1_turing_1(A) )
+     => ( A = k16_turing_1
+      <=> ( u1_turing_1(A) = k7_domain_1(k5_numbers,np__0,np__1)
+          & u2_turing_1(A) = k3_turing_1(np__4)
+          & u3_turing_1(A) = k15_turing_1
+          & u4_turing_1(A) = np__0
+          & u5_turing_1(A) = np__4 ) ) ) ).
+
+fof(t35_turing_1,axiom,
+    $true ).
+
+fof(t36_turing_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_zfmisc_1(u2_turing_1(k16_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k16_turing_1))))
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(k16_turing_1),k1_fraenkel(k4_numbers,u1_turing_1(k16_turing_1)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( ( A = k4_domain_1(k5_numbers,k5_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k16_turing_1)),np__0,C,B)
+                      & r2_turing_1(k2_finseq_4(k5_numbers,C,D),k16_turing_1,B) )
+                   => ( v2_turing_1(A,k16_turing_1)
+                      & k6_mcart_1(u2_turing_1(k16_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k16_turing_1)),k11_turing_1(k16_turing_1,A)) = C
+                      & r2_turing_1(k2_finseq_4(k5_numbers,C,k1_nat_1(D,np__1)),k16_turing_1,k7_mcart_1(u2_turing_1(k16_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k16_turing_1)),k11_turing_1(k16_turing_1,A))) ) ) ) ) ) ) ).
+
+fof(t37_turing_1,axiom,
+    r3_turing_1(k16_turing_1,k7_comput_1(np__1,np__1)) ).
+
+fof(d19_turing_1,axiom,
+    k17_turing_1 = k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k12_turing_1(k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__4),k7_domain_1(k5_numbers,np__0,np__1)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),np__1),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__0,np__0),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__0,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__1,np__1),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__1,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k1_numbers),k1_domain_1(k5_numbers,k5_numbers,np__2,np__0),k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__0,k1_real_1(np__1)))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k1_numbers),k1_domain_1(k5_numbers,k5_numbers,np__2,np__1),k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__0,k1_real_1(np__1)))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k1_numbers),k1_domain_1(k5_numbers,k5_numbers,np__3,np__1),k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__4,np__1,k1_real_1(np__1)))) ).
+
+fof(t38_turing_1,axiom,
+    ( k1_funct_1(k17_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__0,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__0,np__1)
+    & k1_funct_1(k17_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__1,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__1,np__1)
+    & k1_funct_1(k17_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__2,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__0,k1_real_1(np__1))
+    & k1_funct_1(k17_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__2,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__3,np__0,k1_real_1(np__1))
+    & k1_funct_1(k17_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__3,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k1_numbers,np__4,np__1,k1_real_1(np__1)) ) ).
+
+fof(d20_turing_1,axiom,
+    ! [A] :
+      ( ( v1_turing_1(A)
+        & l1_turing_1(A) )
+     => ( A = k18_turing_1
+      <=> ( u1_turing_1(A) = k7_domain_1(k5_numbers,np__0,np__1)
+          & u2_turing_1(A) = k3_turing_1(np__4)
+          & u3_turing_1(A) = k17_turing_1
+          & u4_turing_1(A) = np__0
+          & u5_turing_1(A) = np__4 ) ) ) ).
+
+fof(t39_turing_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_zfmisc_1(u2_turing_1(k18_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k18_turing_1))))
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(k18_turing_1),k1_fraenkel(k4_numbers,u1_turing_1(k18_turing_1)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_1(D,k5_numbers)
+                 => ( ( r1_xreal_0(np__1,k3_finseq_1(D))
+                      & A = k4_domain_1(k5_numbers,k5_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k18_turing_1)),np__0,C,B)
+                      & r2_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,C),D),k18_turing_1,B) )
+                   => ( v2_turing_1(A,k18_turing_1)
+                      & k6_mcart_1(u2_turing_1(k18_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k18_turing_1)),k11_turing_1(k18_turing_1,A)) = C
+                      & r2_turing_1(k2_finseq_4(k5_numbers,C,np__0),k18_turing_1,k7_mcart_1(u2_turing_1(k18_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k18_turing_1)),k11_turing_1(k18_turing_1,A))) ) ) ) ) ) ) ).
+
+fof(t40_turing_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( r1_xreal_0(np__1,A)
+       => r3_turing_1(k18_turing_1,k6_comput_1(A,np__0)) ) ) ).
+
+fof(d21_turing_1,axiom,
+    k19_turing_1 = k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k1_funct_4(k12_turing_1(k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__3),k7_domain_1(k5_numbers,np__0,np__1)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),np__0),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__0,np__0),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__0,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__1,np__1),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__0,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__1,np__0),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__0,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__2,np__1),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__0,np__1))),k2_turing_1(k2_zfmisc_1(k5_numbers,k5_numbers),k3_zfmisc_1(k5_numbers,k5_numbers,k5_numbers),k1_domain_1(k5_numbers,k5_numbers,np__2,np__0),k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__3,np__0,np__0))) ).
+
+fof(t41_turing_1,axiom,
+    ( k1_funct_1(k19_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__0,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__0,np__1)
+    & k1_funct_1(k19_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__1,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__1,np__0,np__1)
+    & k1_funct_1(k19_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__1,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__0,np__1)
+    & k1_funct_1(k19_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__2,np__1)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__2,np__0,np__1)
+    & k1_funct_1(k19_turing_1,k1_domain_1(k5_numbers,k5_numbers,np__2,np__0)) = k4_domain_1(k5_numbers,k5_numbers,k5_numbers,np__3,np__0,np__0) ) ).
+
+fof(d22_turing_1,axiom,
+    ! [A] :
+      ( ( v1_turing_1(A)
+        & l1_turing_1(A) )
+     => ( A = k20_turing_1
+      <=> ( u1_turing_1(A) = k7_domain_1(k5_numbers,np__0,np__1)
+          & u2_turing_1(A) = k3_turing_1(np__3)
+          & u3_turing_1(A) = k19_turing_1
+          & u4_turing_1(A) = np__0
+          & u5_turing_1(A) = np__3 ) ) ) ).
+
+fof(t42_turing_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_zfmisc_1(u2_turing_1(k20_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k20_turing_1))))
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(k20_turing_1),k1_fraenkel(k4_numbers,u1_turing_1(k20_turing_1)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_finseq_1(D,k5_numbers)
+                 => ( ( r1_xreal_0(np__3,k3_finseq_1(D))
+                      & A = k4_domain_1(k5_numbers,k5_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k20_turing_1)),np__0,C,B)
+                      & r2_turing_1(k8_finseq_1(k5_numbers,k12_finseq_1(k5_numbers,C),D),k20_turing_1,B) )
+                   => ( v2_turing_1(A,k20_turing_1)
+                      & k6_mcart_1(u2_turing_1(k20_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k20_turing_1)),k11_turing_1(k20_turing_1,A)) = k1_nat_1(k1_nat_1(k1_nat_1(C,k4_finseq_4(k5_numbers,k5_numbers,D,np__1)),k4_finseq_4(k5_numbers,k5_numbers,D,np__2)),np__4)
+                      & r2_turing_1(k2_finseq_4(k5_numbers,k1_nat_1(k1_nat_1(k1_nat_1(C,k4_finseq_4(k5_numbers,k5_numbers,D,np__1)),k4_finseq_4(k5_numbers,k5_numbers,D,np__2)),np__4),k4_finseq_4(k5_numbers,k5_numbers,D,np__3)),k20_turing_1,k7_mcart_1(u2_turing_1(k20_turing_1),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k20_turing_1)),k11_turing_1(k20_turing_1,A))) ) ) ) ) ) ) ).
+
+fof(t43_turing_1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( r1_xreal_0(np__3,A)
+       => r3_turing_1(k20_turing_1,k8_comput_1(A,np__3)) ) ) ).
+
+fof(d23_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => k21_turing_1(A,B) = k2_xboole_0(k2_zfmisc_1(u2_turing_1(A),k6_domain_1(u2_turing_1(B),u4_turing_1(B))),k2_zfmisc_1(k6_domain_1(u2_turing_1(A),u5_turing_1(A)),u2_turing_1(B))) ) ) ).
+
+fof(t44_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ( r2_hidden(k1_domain_1(u2_turing_1(A),u2_turing_1(B),u4_turing_1(A),u4_turing_1(B)),k21_turing_1(A,B))
+            & r2_hidden(k1_domain_1(u2_turing_1(A),u2_turing_1(B),u5_turing_1(A),u5_turing_1(B)),k21_turing_1(A,B)) ) ) ) ).
+
+fof(t45_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,u2_turing_1(A))
+             => r2_hidden(k1_domain_1(u2_turing_1(A),u2_turing_1(B),C,u4_turing_1(B)),k21_turing_1(A,B)) ) ) ) ).
+
+fof(t46_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,u2_turing_1(B))
+             => r2_hidden(k1_domain_1(u2_turing_1(A),u2_turing_1(B),u5_turing_1(A),C),k21_turing_1(A,B)) ) ) ) ).
+
+fof(t47_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k21_turing_1(A,B))
+             => ? [D] :
+                  ( m1_subset_1(D,u2_turing_1(A))
+                  & ? [E] :
+                      ( m1_subset_1(E,u2_turing_1(B))
+                      & C = k1_domain_1(u2_turing_1(A),u2_turing_1(B),D,E) ) ) ) ) ) ).
+
+fof(d24_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k3_zfmisc_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+             => k22_turing_1(A,B,C) = k4_domain_1(k2_zfmisc_1(u2_turing_1(A),u2_turing_1(B)),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),k1_domain_1(u2_turing_1(A),u2_turing_1(B),k5_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C),u4_turing_1(B)),k6_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C),k7_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C)) ) ) ) ).
+
+fof(d25_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k3_zfmisc_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+             => k23_turing_1(A,B,C) = k4_domain_1(k2_zfmisc_1(u2_turing_1(A),u2_turing_1(B)),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),k1_domain_1(u2_turing_1(A),u2_turing_1(B),u5_turing_1(A),k5_mcart_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C)),k6_mcart_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C),k7_mcart_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C)) ) ) ) ).
+
+fof(d26_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B))))
+             => k26_turing_1(A,B,C) = k24_turing_1(A,B,k2_domain_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),C)) ) ) ) ).
+
+fof(d27_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B))))
+             => k27_turing_1(A,B,C) = k25_turing_1(A,B,k2_domain_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),C)) ) ) ) ).
+
+fof(d28_turing_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,k2_xboole_0(B,C)))
+                 => ( ? [E,F] :
+                        ( m1_subset_1(F,B)
+                        & D = k4_tarski(E,F) )
+                   => k28_turing_1(A,B,C,D) = k3_domain_1(A,k2_xboole_0(B,C),D) ) ) ) ) ) ).
+
+fof(d29_turing_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_zfmisc_1(A,k2_xboole_0(B,C)))
+                 => ( ? [E,F] :
+                        ( m1_subset_1(F,C)
+                        & D = k4_tarski(E,F) )
+                   => k29_turing_1(A,B,C,D) = k3_domain_1(A,k2_xboole_0(B,C),D) ) ) ) ) ) ).
+
+fof(d30_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B))))
+             => ( ( ? [D] :
+                      ( m1_subset_1(D,u2_turing_1(A))
+                      & ? [E] :
+                          ( m1_subset_1(E,u1_turing_1(A))
+                          & C = k1_domain_1(k2_zfmisc_1(u2_turing_1(A),u2_turing_1(B)),u1_turing_1(A),k1_domain_1(u2_turing_1(A),u2_turing_1(B),D,u4_turing_1(B)),E)
+                          & D != u5_turing_1(A) ) )
+                 => k30_turing_1(A,B,C) = k22_turing_1(A,B,k8_funct_2(k2_zfmisc_1(u2_turing_1(A),u1_turing_1(A)),k3_zfmisc_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)),u3_turing_1(A),k1_domain_1(u2_turing_1(A),u1_turing_1(A),k26_turing_1(A,B,C),k28_turing_1(k21_turing_1(A,B),u1_turing_1(A),u1_turing_1(B),C)))) )
+                & ( ? [D] :
+                      ( m1_subset_1(D,u2_turing_1(B))
+                      & ? [E] :
+                          ( m1_subset_1(E,u1_turing_1(B))
+                          & C = k1_domain_1(k2_zfmisc_1(u2_turing_1(A),u2_turing_1(B)),u1_turing_1(B),k1_domain_1(u2_turing_1(A),u2_turing_1(B),u5_turing_1(A),D),E) ) )
+                 => k30_turing_1(A,B,C) = k23_turing_1(A,B,k8_funct_2(k2_zfmisc_1(u2_turing_1(B),u1_turing_1(B)),k3_zfmisc_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)),u3_turing_1(B),k1_domain_1(u2_turing_1(B),u1_turing_1(B),k27_turing_1(A,B,C),k29_turing_1(k21_turing_1(A,B),u1_turing_1(A),u1_turing_1(B),C)))) )
+                & ( ( ! [D] :
+                        ( m1_subset_1(D,u2_turing_1(A))
+                       => ! [E] :
+                            ( m1_subset_1(E,u1_turing_1(A))
+                           => ~ ( C = k1_domain_1(k2_zfmisc_1(u2_turing_1(A),u2_turing_1(B)),u1_turing_1(A),k1_domain_1(u2_turing_1(A),u2_turing_1(B),D,u4_turing_1(B)),E)
+                                & D != u5_turing_1(A) ) ) )
+                    & ! [D] :
+                        ( m1_subset_1(D,u2_turing_1(B))
+                       => ! [E] :
+                            ( m1_subset_1(E,u1_turing_1(B))
+                           => C != k1_domain_1(k2_zfmisc_1(u2_turing_1(A),u2_turing_1(B)),u1_turing_1(B),k1_domain_1(u2_turing_1(A),u2_turing_1(B),u5_turing_1(A),D),E) ) ) )
+                 => k30_turing_1(A,B,C) = k4_domain_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),k1_numbers,k2_domain_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),C),k3_domain_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),C),k1_real_1(np__1)) ) ) ) ) ) ).
+
+fof(d31_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B))),k3_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+                & m2_relset_1(C,k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B))),k3_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) )
+             => ( C = k31_turing_1(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B))))
+                   => k8_funct_2(k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B))),k3_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)),C,D) = k30_turing_1(A,B,D) ) ) ) ) ) ).
+
+fof(d32_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( ( v1_turing_1(C)
+                & l1_turing_1(C) )
+             => ( C = k32_turing_1(A,B)
+              <=> ( u1_turing_1(C) = k2_xboole_0(u1_turing_1(A),u1_turing_1(B))
+                  & u2_turing_1(C) = k21_turing_1(A,B)
+                  & u3_turing_1(C) = k31_turing_1(A,B)
+                  & u4_turing_1(C) = k1_domain_1(u2_turing_1(A),u2_turing_1(B),u4_turing_1(A),u4_turing_1(B))
+                  & u5_turing_1(C) = k1_domain_1(u2_turing_1(A),u2_turing_1(B),u5_turing_1(A),u5_turing_1(B)) ) ) ) ) ) ).
+
+fof(t48_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k3_zfmisc_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+             => ! [D] :
+                  ( m1_subset_1(D,u2_turing_1(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_turing_1(A))
+                     => ( C = k8_funct_2(k2_zfmisc_1(u2_turing_1(A),u1_turing_1(A)),k3_zfmisc_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)),u3_turing_1(A),k1_domain_1(u2_turing_1(A),u1_turing_1(A),D,E))
+                       => ( D = u5_turing_1(A)
+                          | k1_funct_1(u3_turing_1(k32_turing_1(A,B)),k1_domain_1(k2_zfmisc_1(u2_turing_1(A),u2_turing_1(B)),u1_turing_1(A),k1_domain_1(u2_turing_1(A),u2_turing_1(B),D,u4_turing_1(B)),E)) = k4_domain_1(k2_zfmisc_1(u2_turing_1(A),u2_turing_1(B)),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),k1_domain_1(u2_turing_1(A),u2_turing_1(B),k5_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C),u4_turing_1(B)),k6_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C),k7_mcart_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C)) ) ) ) ) ) ) ) ).
+
+fof(t49_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k3_zfmisc_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+             => ! [D] :
+                  ( m1_subset_1(D,u2_turing_1(B))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_turing_1(B))
+                     => ( C = k8_funct_2(k2_zfmisc_1(u2_turing_1(B),u1_turing_1(B)),k3_zfmisc_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)),u3_turing_1(B),k1_domain_1(u2_turing_1(B),u1_turing_1(B),D,E))
+                       => k1_funct_1(u3_turing_1(k32_turing_1(A,B)),k1_domain_1(k2_zfmisc_1(u2_turing_1(A),u2_turing_1(B)),u1_turing_1(B),k1_domain_1(u2_turing_1(A),u2_turing_1(B),u5_turing_1(A),D),E)) = k4_domain_1(k2_zfmisc_1(u2_turing_1(A),u2_turing_1(B)),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),k1_domain_1(u2_turing_1(A),u2_turing_1(B),u5_turing_1(A),k5_mcart_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C)),k6_mcart_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C),k7_mcart_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1),C)) ) ) ) ) ) ) ).
+
+fof(t50_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_fraenkel(E,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+                     => ! [F] :
+                          ( m1_subset_1(F,k3_zfmisc_1(u2_turing_1(B),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(B))))
+                         => ! [G] :
+                              ( m1_subset_1(G,k3_zfmisc_1(u2_turing_1(k32_turing_1(A,B)),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k32_turing_1(A,B)))))
+                             => ( ( v2_turing_1(C,A)
+                                  & C = k4_domain_1(u2_turing_1(A),k5_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),u4_turing_1(A),D,E)
+                                  & v2_turing_1(F,B)
+                                  & F = k4_domain_1(u2_turing_1(B),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),u4_turing_1(B),k6_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),k11_turing_1(A,C)),k7_mcart_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),k11_turing_1(A,C)))
+                                  & G = k4_domain_1(u2_turing_1(k32_turing_1(A,B)),k5_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)),u4_turing_1(k32_turing_1(A,B)),D,E) )
+                               => ( v2_turing_1(G,k32_turing_1(A,B))
+                                  & k6_mcart_1(u2_turing_1(k32_turing_1(A,B)),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k32_turing_1(A,B))),k11_turing_1(k32_turing_1(A,B),G)) = k6_mcart_1(u2_turing_1(B),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(B)),k11_turing_1(B,F))
+                                  & k7_mcart_1(u2_turing_1(k32_turing_1(A,B)),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k32_turing_1(A,B))),k11_turing_1(k32_turing_1(A,B),G)) = k7_mcart_1(u2_turing_1(B),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(B)),k11_turing_1(B,F)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t51_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m2_fraenkel(C,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+             => ( u1_turing_1(A) = u1_turing_1(B)
+               => m2_fraenkel(C,k4_numbers,u1_turing_1(k32_turing_1(A,B)),k1_fraenkel(k4_numbers,u1_turing_1(k32_turing_1(A,B)))) ) ) ) ) ).
+
+fof(t52_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( m2_fraenkel(C,k4_numbers,u1_turing_1(k32_turing_1(A,B)),k1_fraenkel(k4_numbers,u1_turing_1(k32_turing_1(A,B))))
+             => ( u1_turing_1(A) = u1_turing_1(B)
+               => ( m2_fraenkel(C,k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A)))
+                  & m2_fraenkel(C,k4_numbers,u1_turing_1(B),k1_fraenkel(k4_numbers,u1_turing_1(B))) ) ) ) ) ) ).
+
+fof(t53_turing_1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k5_numbers)
+     => ! [B] :
+          ( l1_turing_1(B)
+         => ! [C] :
+              ( l1_turing_1(C)
+             => ! [D] :
+                  ( m2_fraenkel(D,k4_numbers,u1_turing_1(B),k1_fraenkel(k4_numbers,u1_turing_1(B)))
+                 => ! [E] :
+                      ( m2_fraenkel(E,k4_numbers,u1_turing_1(C),k1_fraenkel(k4_numbers,u1_turing_1(C)))
+                     => ( ( D = E
+                          & r2_turing_1(A,B,D) )
+                       => r2_turing_1(A,C,E) ) ) ) ) ) ) ).
+
+fof(t54_turing_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_zfmisc_1(u2_turing_1(k32_turing_1(k18_turing_1,k16_turing_1)),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k32_turing_1(k18_turing_1,k16_turing_1)))))
+     => ! [B] :
+          ( m2_fraenkel(B,k4_numbers,u1_turing_1(k18_turing_1),k1_fraenkel(k4_numbers,u1_turing_1(k18_turing_1)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( ( A = k4_domain_1(k2_zfmisc_1(k5_numbers,k5_numbers),k5_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k18_turing_1)),k1_domain_1(k5_numbers,k5_numbers,np__0,np__0),C,B)
+                      & r2_turing_1(k2_finseq_4(k5_numbers,C,D),k18_turing_1,B) )
+                   => ( v2_turing_1(A,k32_turing_1(k18_turing_1,k16_turing_1))
+                      & k6_mcart_1(u2_turing_1(k32_turing_1(k18_turing_1,k16_turing_1)),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k32_turing_1(k18_turing_1,k16_turing_1))),k11_turing_1(k32_turing_1(k18_turing_1,k16_turing_1),A)) = C
+                      & r2_turing_1(k2_finseq_4(k5_numbers,C,np__1),k32_turing_1(k18_turing_1,k16_turing_1),k7_mcart_1(u2_turing_1(k32_turing_1(k18_turing_1,k16_turing_1)),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(k32_turing_1(k18_turing_1,k16_turing_1))),k11_turing_1(k32_turing_1(k18_turing_1,k16_turing_1),A))) ) ) ) ) ) ) ).
+
+fof(dt_l1_turing_1,axiom,
+    $true ).
+
+fof(existence_l1_turing_1,axiom,
+    ? [A] : l1_turing_1(A) ).
+
+fof(abstractness_v1_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ( v1_turing_1(A)
+       => A = g1_turing_1(u1_turing_1(A),u2_turing_1(A),u3_turing_1(A),u4_turing_1(A),u5_turing_1(A)) ) ) ).
+
+fof(dt_k1_turing_1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,B)
+        & m1_relset_1(C,A,B)
+        & v1_funct_1(D)
+        & m1_relset_1(D,A,B) )
+     => ( v1_funct_1(k1_turing_1(A,B,C,D))
+        & v1_funct_2(k1_turing_1(A,B,C,D),A,B)
+        & m2_relset_1(k1_turing_1(A,B,C,D),A,B) ) ) ).
+
+fof(idempotence_k1_turing_1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,B)
+        & m1_relset_1(C,A,B)
+        & v1_funct_1(D)
+        & m1_relset_1(D,A,B) )
+     => k1_turing_1(A,B,C,C) = C ) ).
+
+fof(redefinition_k1_turing_1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,B)
+        & m1_relset_1(C,A,B)
+        & v1_funct_1(D)
+        & m1_relset_1(D,A,B) )
+     => k1_turing_1(A,B,C,D) = k1_funct_4(C,D) ) ).
+
+fof(dt_k2_turing_1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(C,A)
+        & m1_subset_1(D,B) )
+     => ( v1_funct_1(k2_turing_1(A,B,C,D))
+        & m2_relset_1(k2_turing_1(A,B,C,D),A,B) ) ) ).
+
+fof(redefinition_k2_turing_1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(C,A)
+        & m1_subset_1(D,B) )
+     => k2_turing_1(A,B,C,D) = k3_cqc_lang(C,D) ) ).
+
+fof(dt_k3_turing_1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => m1_subset_1(k3_turing_1(A),k1_zfmisc_1(k5_numbers)) ) ).
+
+fof(dt_k4_turing_1,axiom,
+    ! [A,B] :
+      ( ( m1_finseq_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => m2_finseq_1(k4_turing_1(A,B),k4_numbers) ) ).
+
+fof(dt_k5_turing_1,axiom,
+    ! [A,B,C,D] :
+      ( ( l1_turing_1(A)
+        & m1_subset_1(B,k1_fraenkel(k4_numbers,u1_turing_1(A)))
+        & v1_int_1(C)
+        & m1_subset_1(D,u1_turing_1(A)) )
+     => m2_fraenkel(k5_turing_1(A,B,C,D),k4_numbers,u1_turing_1(A),k1_fraenkel(k4_numbers,u1_turing_1(A))) ) ).
+
+fof(dt_k6_turing_1,axiom,
+    ! [A,B] :
+      ( ( l1_turing_1(A)
+        & m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) )
+     => v1_int_1(k6_turing_1(A,B)) ) ).
+
+fof(dt_k7_turing_1,axiom,
+    ! [A,B] :
+      ( ( l1_turing_1(A)
+        & m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)))) )
+     => v1_int_1(k7_turing_1(A,B)) ) ).
+
+fof(dt_k8_turing_1,axiom,
+    ! [A,B] :
+      ( ( l1_turing_1(A)
+        & m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)))) )
+     => m1_subset_1(k8_turing_1(A,B),k3_zfmisc_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) ) ).
+
+fof(dt_k9_turing_1,axiom,
+    ! [A,B] :
+      ( ( l1_turing_1(A)
+        & m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)))) )
+     => m1_subset_1(k9_turing_1(A,B),k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)))) ) ).
+
+fof(dt_k10_turing_1,axiom,
+    ! [A,B] :
+      ( ( l1_turing_1(A)
+        & m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)))) )
+     => ( v1_funct_1(k10_turing_1(A,B))
+        & v1_funct_2(k10_turing_1(A,B),k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A))))
+        & m2_relset_1(k10_turing_1(A,B),k5_numbers,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)))) ) ) ).
+
+fof(dt_k11_turing_1,axiom,
+    ! [A,B] :
+      ( ( l1_turing_1(A)
+        & m1_subset_1(B,k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)))) )
+     => m1_subset_1(k11_turing_1(A,B),k3_zfmisc_1(u2_turing_1(A),k4_numbers,k1_fraenkel(k4_numbers,u1_turing_1(A)))) ) ).
+
+fof(dt_k12_turing_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B) )
+     => ( v1_funct_1(k12_turing_1(A,B,C))
+        & v1_funct_2(k12_turing_1(A,B,C),A,k2_zfmisc_1(A,B))
+        & m2_relset_1(k12_turing_1(A,B,C),A,k2_zfmisc_1(A,B)) ) ) ).
+
+fof(dt_k13_turing_1,axiom,
+    ( v1_funct_1(k13_turing_1)
+    & v1_funct_2(k13_turing_1,k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__5),k7_domain_1(k5_numbers,np__0,np__1)),k13_mcart_1(k5_numbers,k5_numbers,k1_numbers,k3_turing_1(np__5),k7_domain_1(k5_numbers,np__0,np__1),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+    & m2_relset_1(k13_turing_1,k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__5),k7_domain_1(k5_numbers,np__0,np__1)),k13_mcart_1(k5_numbers,k5_numbers,k1_numbers,k3_turing_1(np__5),k7_domain_1(k5_numbers,np__0,np__1),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) ) ).
+
+fof(dt_k14_turing_1,axiom,
+    ( v1_turing_1(k14_turing_1)
+    & l1_turing_1(k14_turing_1) ) ).
+
+fof(dt_k15_turing_1,axiom,
+    ( v1_funct_1(k15_turing_1)
+    & v1_funct_2(k15_turing_1,k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__4),k7_domain_1(k5_numbers,np__0,np__1)),k13_mcart_1(k5_numbers,k5_numbers,k1_numbers,k3_turing_1(np__4),k7_domain_1(k5_numbers,np__0,np__1),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+    & m2_relset_1(k15_turing_1,k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__4),k7_domain_1(k5_numbers,np__0,np__1)),k13_mcart_1(k5_numbers,k5_numbers,k1_numbers,k3_turing_1(np__4),k7_domain_1(k5_numbers,np__0,np__1),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) ) ).
+
+fof(dt_k16_turing_1,axiom,
+    ( v1_turing_1(k16_turing_1)
+    & l1_turing_1(k16_turing_1) ) ).
+
+fof(dt_k17_turing_1,axiom,
+    ( v1_funct_1(k17_turing_1)
+    & v1_funct_2(k17_turing_1,k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__4),k7_domain_1(k5_numbers,np__0,np__1)),k13_mcart_1(k5_numbers,k5_numbers,k1_numbers,k3_turing_1(np__4),k7_domain_1(k5_numbers,np__0,np__1),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+    & m2_relset_1(k17_turing_1,k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__4),k7_domain_1(k5_numbers,np__0,np__1)),k13_mcart_1(k5_numbers,k5_numbers,k1_numbers,k3_turing_1(np__4),k7_domain_1(k5_numbers,np__0,np__1),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) ) ).
+
+fof(dt_k18_turing_1,axiom,
+    ( v1_turing_1(k18_turing_1)
+    & l1_turing_1(k18_turing_1) ) ).
+
+fof(dt_k19_turing_1,axiom,
+    ( v1_funct_1(k19_turing_1)
+    & v1_funct_2(k19_turing_1,k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__3),k7_domain_1(k5_numbers,np__0,np__1)),k13_mcart_1(k5_numbers,k5_numbers,k1_numbers,k3_turing_1(np__3),k7_domain_1(k5_numbers,np__0,np__1),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+    & m2_relset_1(k19_turing_1,k12_mcart_1(k5_numbers,k5_numbers,k3_turing_1(np__3),k7_domain_1(k5_numbers,np__0,np__1)),k13_mcart_1(k5_numbers,k5_numbers,k1_numbers,k3_turing_1(np__3),k7_domain_1(k5_numbers,np__0,np__1),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) ) ).
+
+fof(dt_k20_turing_1,axiom,
+    ( v1_turing_1(k20_turing_1)
+    & l1_turing_1(k20_turing_1) ) ).
+
+fof(dt_k21_turing_1,axiom,
+    ! [A,B] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B) )
+     => ( ~ v1_xboole_0(k21_turing_1(A,B))
+        & v1_finset_1(k21_turing_1(A,B)) ) ) ).
+
+fof(dt_k22_turing_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B)
+        & m1_subset_1(C,k3_zfmisc_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) )
+     => m1_subset_1(k22_turing_1(A,B,C),k3_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) ) ).
+
+fof(dt_k23_turing_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B)
+        & m1_subset_1(C,k3_zfmisc_1(u2_turing_1(B),u1_turing_1(B),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) )
+     => m1_subset_1(k23_turing_1(A,B,C),k3_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) ) ).
+
+fof(dt_k24_turing_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B)
+        & m1_subset_1(C,k21_turing_1(A,B)) )
+     => m1_subset_1(k24_turing_1(A,B,C),u2_turing_1(A)) ) ).
+
+fof(redefinition_k24_turing_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B)
+        & m1_subset_1(C,k21_turing_1(A,B)) )
+     => k24_turing_1(A,B,C) = k1_mcart_1(C) ) ).
+
+fof(dt_k25_turing_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B)
+        & m1_subset_1(C,k21_turing_1(A,B)) )
+     => m1_subset_1(k25_turing_1(A,B,C),u2_turing_1(B)) ) ).
+
+fof(redefinition_k25_turing_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B)
+        & m1_subset_1(C,k21_turing_1(A,B)) )
+     => k25_turing_1(A,B,C) = k2_mcart_1(C) ) ).
+
+fof(dt_k26_turing_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)))) )
+     => m1_subset_1(k26_turing_1(A,B,C),u2_turing_1(A)) ) ).
+
+fof(dt_k27_turing_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)))) )
+     => m1_subset_1(k27_turing_1(A,B,C),u2_turing_1(B)) ) ).
+
+fof(dt_k28_turing_1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(D,k2_zfmisc_1(A,k2_xboole_0(B,C))) )
+     => m1_subset_1(k28_turing_1(A,B,C,D),B) ) ).
+
+fof(dt_k29_turing_1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(D,k2_zfmisc_1(A,k2_xboole_0(B,C))) )
+     => m1_subset_1(k29_turing_1(A,B,C,D),C) ) ).
+
+fof(dt_k30_turing_1,axiom,
+    ! [A,B,C] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B)
+        & m1_subset_1(C,k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)))) )
+     => m1_subset_1(k30_turing_1(A,B,C),k3_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) ) ).
+
+fof(dt_k31_turing_1,axiom,
+    ! [A,B] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B) )
+     => ( v1_funct_1(k31_turing_1(A,B))
+        & v1_funct_2(k31_turing_1(A,B),k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B))),k3_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+        & m2_relset_1(k31_turing_1(A,B),k2_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B))),k3_zfmisc_1(k21_turing_1(A,B),k2_xboole_0(u1_turing_1(A),u1_turing_1(B)),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) ) ) ).
+
+fof(dt_k32_turing_1,axiom,
+    ! [A,B] :
+      ( ( l1_turing_1(A)
+        & l1_turing_1(B) )
+     => ( v1_turing_1(k32_turing_1(A,B))
+        & l1_turing_1(k32_turing_1(A,B)) ) ) ).
+
+fof(dt_u1_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ( ~ v1_xboole_0(u1_turing_1(A))
+        & v1_finset_1(u1_turing_1(A)) ) ) ).
+
+fof(dt_u2_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ( ~ v1_xboole_0(u2_turing_1(A))
+        & v1_finset_1(u2_turing_1(A)) ) ) ).
+
+fof(dt_u3_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => ( v1_funct_1(u3_turing_1(A))
+        & v1_funct_2(u3_turing_1(A),k2_zfmisc_1(u2_turing_1(A),u1_turing_1(A)),k3_zfmisc_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+        & m2_relset_1(u3_turing_1(A),k2_zfmisc_1(u2_turing_1(A),u1_turing_1(A)),k3_zfmisc_1(u2_turing_1(A),u1_turing_1(A),k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1))) ) ) ).
+
+fof(dt_u4_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => m1_subset_1(u4_turing_1(A),u2_turing_1(A)) ) ).
+
+fof(dt_u5_turing_1,axiom,
+    ! [A] :
+      ( l1_turing_1(A)
+     => m1_subset_1(u5_turing_1(A),u2_turing_1(A)) ) ).
+
+fof(dt_g1_turing_1,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(B,A),k3_zfmisc_1(B,A,k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+        & m1_relset_1(C,k2_zfmisc_1(B,A),k3_zfmisc_1(B,A,k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+        & m1_subset_1(D,B)
+        & m1_subset_1(E,B) )
+     => ( v1_turing_1(g1_turing_1(A,B,C,D,E))
+        & l1_turing_1(g1_turing_1(A,B,C,D,E)) ) ) ).
+
+fof(free_g1_turing_1,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(B,A),k3_zfmisc_1(B,A,k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+        & m1_relset_1(C,k2_zfmisc_1(B,A),k3_zfmisc_1(B,A,k8_domain_1(k1_numbers,k1_real_1(np__1),np__0,np__1)))
+        & m1_subset_1(D,B)
+        & m1_subset_1(E,B) )
+     => ! [F,G,H,I,J] :
+          ( g1_turing_1(A,B,C,D,E) = g1_turing_1(F,G,H,I,J)
+         => ( A = F
+            & B = G
+            & C = H
+            & D = I
+            & E = J ) ) ) ).
+
+fof(d1_turing_1,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => k3_turing_1(A) = a_1_0_turing_1(A) ) ).
+
+fof(fraenkel_a_1_0_turing_1,axiom,
+    ! [A,B] :
+      ( v4_ordinal2(B)
+     => ( r2_hidden(A,a_1_0_turing_1(B))
+      <=> ? [C] :
+            ( m2_subset_1(C,k1_numbers,k5_numbers)
+            & A = C
+            & r1_xreal_0(C,B) ) ) ) ).
+
+%------------------------------------------------------------------------------

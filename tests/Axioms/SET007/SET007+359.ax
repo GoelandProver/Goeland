@@ -1,0 +1,675 @@
+%------------------------------------------------------------------------------
+% File     : SET007+359 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Basic Petri Net Concepts
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : petri [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   84 (   2 unt;   0 def)
+%            Number of atoms       :  329 (  56 equ)
+%            Maximal formula atoms :   11 (   3 avg)
+%            Number of connectives :  278 (  33   ~;   0   |; 112   &)
+%                                         (  21 <=>; 112  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   6 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   15 (  13 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   41 (  41 usr;   1 con; 0-4 aty)
+%            Number of variables   :  204 ( 173   !;  31   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_petri,axiom,
+    ? [A] :
+      ( l1_petri(A)
+      & v1_petri(A) ) ).
+
+fof(rc2_petri,axiom,
+    ? [A] :
+      ( l1_petri(A)
+      & v3_petri(A) ) ).
+
+fof(rc3_petri,axiom,
+    ? [A] :
+      ( l1_petri(A)
+      & v5_petri(A) ) ).
+
+fof(t2_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => ! [C] :
+              ( r2_hidden(C,k5_petri(A,B))
+            <=> ? [D] :
+                  ( m1_petri(D,u2_petri(A),u1_petri(A),u4_petri(A))
+                  & ? [E] :
+                      ( m1_subset_1(E,u1_petri(A))
+                      & r2_hidden(E,B)
+                      & D = k4_tarski(C,E) ) ) ) ) ) ).
+
+fof(t4_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => ! [C] :
+              ( r2_hidden(C,k6_petri(A,B))
+            <=> ? [D] :
+                  ( m1_petri(D,u1_petri(A),u2_petri(A),u3_petri(A))
+                  & ? [E] :
+                      ( m1_subset_1(E,u1_petri(A))
+                      & r2_hidden(E,B)
+                      & D = k4_tarski(E,C) ) ) ) ) ) ).
+
+fof(t6_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u2_petri(A)))
+         => ! [C] :
+              ( r2_hidden(C,k7_petri(A,B))
+            <=> ? [D] :
+                  ( m1_petri(D,u1_petri(A),u2_petri(A),u3_petri(A))
+                  & ? [E] :
+                      ( m1_subset_1(E,u2_petri(A))
+                      & r2_hidden(E,B)
+                      & D = k4_tarski(C,E) ) ) ) ) ) ).
+
+fof(t8_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u2_petri(A)))
+         => ! [C] :
+              ( r2_hidden(C,k8_petri(A,B))
+            <=> ? [D] :
+                  ( m1_petri(D,u2_petri(A),u1_petri(A),u4_petri(A))
+                  & ? [E] :
+                      ( m1_subset_1(E,u2_petri(A))
+                      & r2_hidden(E,B)
+                      & D = k4_tarski(E,C) ) ) ) ) ) ).
+
+fof(t9_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => k5_petri(A,k1_subset_1(u1_petri(A))) = k1_xboole_0 ) ).
+
+fof(t10_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => k6_petri(A,k1_subset_1(u1_petri(A))) = k1_xboole_0 ) ).
+
+fof(t11_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => k7_petri(A,k1_subset_1(u2_petri(A))) = k1_xboole_0 ) ).
+
+fof(t12_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => k8_petri(A,k1_subset_1(u2_petri(A))) = k1_xboole_0 ) ).
+
+fof(d5_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => ( v2_petri(B,A)
+          <=> m1_subset_1(k5_petri(A,B),k1_zfmisc_1(k6_petri(A,B))) ) ) ) ).
+
+fof(d6_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ( v3_petri(A)
+      <=> ? [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+            & v2_petri(B,A) ) ) ) ).
+
+fof(d7_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => ( v4_petri(B,A)
+          <=> m1_subset_1(k6_petri(A,B),k1_zfmisc_1(k5_petri(A,B))) ) ) ) ).
+
+fof(d8_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ( v5_petri(A)
+      <=> ? [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+            & v4_petri(B,A) ) ) ) ).
+
+fof(d9_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => k10_petri(A) = g1_petri(u1_petri(A),u2_petri(A),k9_petri(u2_petri(A),u1_petri(A),u4_petri(A)),k9_petri(u1_petri(A),u2_petri(A),u3_petri(A))) ) ).
+
+fof(t13_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => k10_petri(k10_petri(A)) = g1_petri(u1_petri(A),u2_petri(A),u3_petri(A),u4_petri(A)) ) ).
+
+fof(t14_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ( u1_petri(A) = u1_petri(k10_petri(A))
+        & u2_petri(A) = u2_petri(k10_petri(A))
+        & k9_petri(u1_petri(A),u2_petri(A),u3_petri(A)) = u4_petri(k10_petri(A))
+        & k9_petri(u2_petri(A),u1_petri(A),u4_petri(A)) = u3_petri(k10_petri(A)) ) ) ).
+
+fof(d10_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => k11_petri(A,B) = B ) ) ).
+
+fof(d11_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_petri(A))
+         => k12_petri(A,B) = B ) ) ).
+
+fof(d12_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(k10_petri(A))))
+         => k13_petri(A,B) = B ) ) ).
+
+fof(d13_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_petri(k10_petri(A)))
+         => k14_petri(A,B) = B ) ) ).
+
+fof(d14_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u2_petri(A)))
+         => k15_petri(A,B) = B ) ) ).
+
+fof(d15_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,u2_petri(A))
+         => k16_petri(A,B) = B ) ) ).
+
+fof(d16_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u2_petri(k10_petri(A))))
+         => k17_petri(A,B) = B ) ) ).
+
+fof(d17_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,u2_petri(k10_petri(A)))
+         => k18_petri(A,B) = B ) ) ).
+
+fof(t15_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => k6_petri(k10_petri(A),k11_petri(A,B)) = k5_petri(A,B) ) ) ).
+
+fof(t16_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => k5_petri(k10_petri(A),k11_petri(A,B)) = k6_petri(A,B) ) ) ).
+
+fof(t17_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => ( v2_petri(B,A)
+          <=> v4_petri(k11_petri(A,B),k10_petri(A)) ) ) ) ).
+
+fof(t18_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => ( v4_petri(B,A)
+          <=> v2_petri(k11_petri(A,B),k10_petri(A)) ) ) ) ).
+
+fof(t19_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,u2_petri(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_petri(A)))
+             => ( r2_hidden(B,k6_petri(A,C))
+              <=> ~ r1_xboole_0(k7_petri(A,k6_domain_1(u2_petri(A),B)),C) ) ) ) ) ).
+
+fof(t20_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,u2_petri(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_petri(A)))
+             => ( r2_hidden(B,k5_petri(A,C))
+              <=> ~ r1_xboole_0(k8_petri(A,k6_domain_1(u2_petri(A),B)),C) ) ) ) ) ).
+
+fof(dt_m1_petri,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_relset_1(C,A,B) )
+     => ! [D] :
+          ( m1_petri(D,A,B,C)
+         => m1_subset_1(D,k2_zfmisc_1(A,B)) ) ) ).
+
+fof(existence_m1_petri,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_relset_1(C,A,B) )
+     => ? [D] : m1_petri(D,A,B,C) ) ).
+
+fof(redefinition_m1_petri,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_relset_1(C,A,B) )
+     => ! [D] :
+          ( m1_petri(D,A,B,C)
+        <=> m1_subset_1(D,C) ) ) ).
+
+fof(dt_l1_petri,axiom,
+    $true ).
+
+fof(existence_l1_petri,axiom,
+    ? [A] : l1_petri(A) ).
+
+fof(abstractness_v1_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ( v1_petri(A)
+       => A = g1_petri(u1_petri(A),u2_petri(A),u3_petri(A),u4_petri(A)) ) ) ).
+
+fof(dt_k1_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u3_petri(A)) )
+     => m1_subset_1(k1_petri(A,B),u1_petri(A)) ) ).
+
+fof(redefinition_k1_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u3_petri(A)) )
+     => k1_petri(A,B) = k1_mcart_1(B) ) ).
+
+fof(dt_k2_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u3_petri(A)) )
+     => m1_subset_1(k2_petri(A,B),u2_petri(A)) ) ).
+
+fof(redefinition_k2_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u3_petri(A)) )
+     => k2_petri(A,B) = k2_mcart_1(B) ) ).
+
+fof(dt_k3_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u4_petri(A)) )
+     => m1_subset_1(k3_petri(A,B),u2_petri(A)) ) ).
+
+fof(redefinition_k3_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u4_petri(A)) )
+     => k3_petri(A,B) = k1_mcart_1(B) ) ).
+
+fof(dt_k4_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u4_petri(A)) )
+     => m1_subset_1(k4_petri(A,B),u1_petri(A)) ) ).
+
+fof(redefinition_k4_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u4_petri(A)) )
+     => k4_petri(A,B) = k2_mcart_1(B) ) ).
+
+fof(dt_k5_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_petri(A))) )
+     => m1_subset_1(k5_petri(A,B),k1_zfmisc_1(u2_petri(A))) ) ).
+
+fof(dt_k6_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_petri(A))) )
+     => m1_subset_1(k6_petri(A,B),k1_zfmisc_1(u2_petri(A))) ) ).
+
+fof(dt_k7_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,k1_zfmisc_1(u2_petri(A))) )
+     => m1_subset_1(k7_petri(A,B),k1_zfmisc_1(u1_petri(A))) ) ).
+
+fof(dt_k8_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,k1_zfmisc_1(u2_petri(A))) )
+     => m1_subset_1(k8_petri(A,B),k1_zfmisc_1(u1_petri(A))) ) ).
+
+fof(dt_k9_petri,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_relset_1(C,A,B) )
+     => ( ~ v1_xboole_0(k9_petri(A,B,C))
+        & m2_relset_1(k9_petri(A,B,C),B,A) ) ) ).
+
+fof(involutiveness_k9_petri,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_relset_1(C,A,B) )
+     => k9_petri(A,B,k9_petri(A,B,C)) = C ) ).
+
+fof(redefinition_k9_petri,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_relset_1(C,A,B) )
+     => k9_petri(A,B,C) = k4_relat_1(C) ) ).
+
+fof(dt_k10_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ( v1_petri(k10_petri(A))
+        & l1_petri(k10_petri(A)) ) ) ).
+
+fof(dt_k11_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_petri(A))) )
+     => m1_subset_1(k11_petri(A,B),k1_zfmisc_1(u1_petri(k10_petri(A)))) ) ).
+
+fof(dt_k12_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u1_petri(A)) )
+     => m1_subset_1(k12_petri(A,B),u1_petri(k10_petri(A))) ) ).
+
+fof(dt_k13_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_petri(k10_petri(A)))) )
+     => m1_subset_1(k13_petri(A,B),k1_zfmisc_1(u1_petri(A))) ) ).
+
+fof(dt_k14_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u1_petri(k10_petri(A))) )
+     => m1_subset_1(k14_petri(A,B),u1_petri(A)) ) ).
+
+fof(dt_k15_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,k1_zfmisc_1(u2_petri(A))) )
+     => m1_subset_1(k15_petri(A,B),k1_zfmisc_1(u2_petri(k10_petri(A)))) ) ).
+
+fof(dt_k16_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u2_petri(A)) )
+     => m1_subset_1(k16_petri(A,B),u2_petri(k10_petri(A))) ) ).
+
+fof(dt_k17_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,k1_zfmisc_1(u2_petri(k10_petri(A)))) )
+     => m1_subset_1(k17_petri(A,B),k1_zfmisc_1(u2_petri(A))) ) ).
+
+fof(dt_k18_petri,axiom,
+    ! [A,B] :
+      ( ( l1_petri(A)
+        & m1_subset_1(B,u2_petri(k10_petri(A))) )
+     => m1_subset_1(k18_petri(A,B),u2_petri(A)) ) ).
+
+fof(dt_u1_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ~ v1_xboole_0(u1_petri(A)) ) ).
+
+fof(dt_u2_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ~ v1_xboole_0(u2_petri(A)) ) ).
+
+fof(dt_u3_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ( ~ v1_xboole_0(u3_petri(A))
+        & m2_relset_1(u3_petri(A),u1_petri(A),u2_petri(A)) ) ) ).
+
+fof(dt_u4_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ( ~ v1_xboole_0(u4_petri(A))
+        & m2_relset_1(u4_petri(A),u2_petri(A),u1_petri(A)) ) ) ).
+
+fof(dt_g1_petri,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_relset_1(C,A,B)
+        & ~ v1_xboole_0(D)
+        & m1_relset_1(D,B,A) )
+     => ( v1_petri(g1_petri(A,B,C,D))
+        & l1_petri(g1_petri(A,B,C,D)) ) ) ).
+
+fof(free_g1_petri,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & m1_relset_1(C,A,B)
+        & ~ v1_xboole_0(D)
+        & m1_relset_1(D,B,A) )
+     => ! [E,F,G,H] :
+          ( g1_petri(A,B,C,D) = g1_petri(E,F,G,H)
+         => ( A = E
+            & B = F
+            & C = G
+            & D = H ) ) ) ).
+
+fof(d1_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => k5_petri(A,B) = a_2_0_petri(A,B) ) ) ).
+
+fof(d2_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => k6_petri(A,B) = a_2_1_petri(A,B) ) ) ).
+
+fof(t1_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => k5_petri(A,B) = a_2_2_petri(A,B) ) ) ).
+
+fof(t3_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_petri(A)))
+         => k6_petri(A,B) = a_2_3_petri(A,B) ) ) ).
+
+fof(d3_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u2_petri(A)))
+         => k7_petri(A,B) = a_2_4_petri(A,B) ) ) ).
+
+fof(d4_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u2_petri(A)))
+         => k8_petri(A,B) = a_2_5_petri(A,B) ) ) ).
+
+fof(t5_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u2_petri(A)))
+         => k7_petri(A,B) = a_2_6_petri(A,B) ) ) ).
+
+fof(t7_petri,axiom,
+    ! [A] :
+      ( l1_petri(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u2_petri(A)))
+         => k8_petri(A,B) = a_2_7_petri(A,B) ) ) ).
+
+fof(fraenkel_a_2_0_petri,axiom,
+    ! [A,B,C] :
+      ( ( l1_petri(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_petri(B))) )
+     => ( r2_hidden(A,a_2_0_petri(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u2_petri(B))
+            & A = D
+            & ? [E] :
+                ( m1_petri(E,u2_petri(B),u1_petri(B),u4_petri(B))
+                & ? [F] :
+                    ( m1_subset_1(F,u1_petri(B))
+                    & r2_hidden(F,C)
+                    & E = k1_domain_1(u2_petri(B),u1_petri(B),D,F) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_1_petri,axiom,
+    ! [A,B,C] :
+      ( ( l1_petri(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_petri(B))) )
+     => ( r2_hidden(A,a_2_1_petri(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u2_petri(B))
+            & A = D
+            & ? [E] :
+                ( m1_petri(E,u1_petri(B),u2_petri(B),u3_petri(B))
+                & ? [F] :
+                    ( m1_subset_1(F,u1_petri(B))
+                    & r2_hidden(F,C)
+                    & E = k1_domain_1(u1_petri(B),u2_petri(B),F,D) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_2_petri,axiom,
+    ! [A,B,C] :
+      ( ( l1_petri(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_petri(B))) )
+     => ( r2_hidden(A,a_2_2_petri(B,C))
+      <=> ? [D] :
+            ( m1_petri(D,u2_petri(B),u1_petri(B),u4_petri(B))
+            & A = k3_petri(B,D)
+            & r2_hidden(k4_petri(B,D),C) ) ) ) ).
+
+fof(fraenkel_a_2_3_petri,axiom,
+    ! [A,B,C] :
+      ( ( l1_petri(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_petri(B))) )
+     => ( r2_hidden(A,a_2_3_petri(B,C))
+      <=> ? [D] :
+            ( m1_petri(D,u1_petri(B),u2_petri(B),u3_petri(B))
+            & A = k2_petri(B,D)
+            & r2_hidden(k1_petri(B,D),C) ) ) ) ).
+
+fof(fraenkel_a_2_4_petri,axiom,
+    ! [A,B,C] :
+      ( ( l1_petri(B)
+        & m1_subset_1(C,k1_zfmisc_1(u2_petri(B))) )
+     => ( r2_hidden(A,a_2_4_petri(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u1_petri(B))
+            & A = D
+            & ? [E] :
+                ( m1_petri(E,u1_petri(B),u2_petri(B),u3_petri(B))
+                & ? [F] :
+                    ( m1_subset_1(F,u2_petri(B))
+                    & r2_hidden(F,C)
+                    & E = k1_domain_1(u1_petri(B),u2_petri(B),D,F) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_5_petri,axiom,
+    ! [A,B,C] :
+      ( ( l1_petri(B)
+        & m1_subset_1(C,k1_zfmisc_1(u2_petri(B))) )
+     => ( r2_hidden(A,a_2_5_petri(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u1_petri(B))
+            & A = D
+            & ? [E] :
+                ( m1_petri(E,u2_petri(B),u1_petri(B),u4_petri(B))
+                & ? [F] :
+                    ( m1_subset_1(F,u2_petri(B))
+                    & r2_hidden(F,C)
+                    & E = k1_domain_1(u2_petri(B),u1_petri(B),F,D) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_6_petri,axiom,
+    ! [A,B,C] :
+      ( ( l1_petri(B)
+        & m1_subset_1(C,k1_zfmisc_1(u2_petri(B))) )
+     => ( r2_hidden(A,a_2_6_petri(B,C))
+      <=> ? [D] :
+            ( m1_petri(D,u1_petri(B),u2_petri(B),u3_petri(B))
+            & A = k1_petri(B,D)
+            & r2_hidden(k2_petri(B,D),C) ) ) ) ).
+
+fof(fraenkel_a_2_7_petri,axiom,
+    ! [A,B,C] :
+      ( ( l1_petri(B)
+        & m1_subset_1(C,k1_zfmisc_1(u2_petri(B))) )
+     => ( r2_hidden(A,a_2_7_petri(B,C))
+      <=> ? [D] :
+            ( m1_petri(D,u2_petri(B),u1_petri(B),u4_petri(B))
+            & A = k4_petri(B,D)
+            & r2_hidden(k3_petri(B,D),C) ) ) ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,480 @@
+%------------------------------------------------------------------------------
+% File     : ITP117_5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : numRing_2.ax [Gau20]
+%          : HL4117_5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   81 (  45 unt;  31 typ;   0 def)
+%            Number of atoms       : 2892 ( 149 equ)
+%            Maximal formula atoms :  104 (  35 avg)
+%            Number of connectives :  170 (   1   ~;   0   |; 130   &)
+%                                         (  27 <=>;  12  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   65 (   4 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of FOOLs       : 2673 (2673 fml;   0 var)
+%            Number of types       :    4 (   3 usr)
+%            Number of type conns  :   21 (  12   >;   9   *;   0   +;   0  <<)
+%            Number of predicates  :   84 (  81 usr;  34 prp; 0-2 aty)
+%            Number of functors    :   28 (  28 usr;  16 con; 0-3 aty)
+%            Number of variables   :  227 ( 227   !;   0   ?; 227   :)
+% SPC      : TF0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+tff(stp_c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,type,
+    tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum: $tType ).
+
+tff(stp_inj_c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,type,
+    inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum > $i ).
+
+tff(stp_surj_c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,type,
+    surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum: $i > tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum ).
+
+tff(stp_inj_surj_c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(X)) = X ) ).
+
+tff(stp_inj_mem_c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : mem(inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(X),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)) ).
+
+tff(stp_iso_mem_c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,axiom,
+    ! [X: $i] :
+      ( mem(X,ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum))
+     => ( X = inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(X)) ) ) ).
+
+tff(tp_c_2EnumRing_2Enum__canonical__sum__merge,type,
+    c_2EnumRing_2Enum__canonical__sum__merge: $i ).
+
+tff(mem_c_2EnumRing_2Enum__canonical__sum__merge,axiom,
+    mem(c_2EnumRing_2Enum__canonical__sum__merge,arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)))) ).
+
+tff(tp_c_2EnumRing_2Enum__canonical__sum__prod,type,
+    c_2EnumRing_2Enum__canonical__sum__prod: $i ).
+
+tff(mem_c_2EnumRing_2Enum__canonical__sum__prod,axiom,
+    mem(c_2EnumRing_2Enum__canonical__sum__prod,arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)))) ).
+
+tff(tp_c_2EnumRing_2Enum__canonical__sum__scalar,type,
+    c_2EnumRing_2Enum__canonical__sum__scalar: $i ).
+
+tff(mem_c_2EnumRing_2Enum__canonical__sum__scalar,axiom,
+    mem(c_2EnumRing_2Enum__canonical__sum__scalar,arr(ty_2Enum_2Enum,arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)))) ).
+
+tff(tp_c_2EnumRing_2Enum__canonical__sum__scalar2,type,
+    c_2EnumRing_2Enum__canonical__sum__scalar2: $i ).
+
+tff(mem_c_2EnumRing_2Enum__canonical__sum__scalar2,axiom,
+    mem(c_2EnumRing_2Enum__canonical__sum__scalar2,arr(ty_2Elist_2Elist(ty_2Equote_2Eindex),arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)))) ).
+
+tff(tp_c_2EnumRing_2Enum__canonical__sum__scalar3,type,
+    c_2EnumRing_2Enum__canonical__sum__scalar3: $i ).
+
+tff(mem_c_2EnumRing_2Enum__canonical__sum__scalar3,axiom,
+    mem(c_2EnumRing_2Enum__canonical__sum__scalar3,arr(ty_2Enum_2Enum,arr(ty_2Elist_2Elist(ty_2Equote_2Eindex),arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum))))) ).
+
+tff(tp_c_2EnumRing_2Enum__canonical__sum__simplify,type,
+    c_2EnumRing_2Enum__canonical__sum__simplify: $i ).
+
+tff(mem_c_2EnumRing_2Enum__canonical__sum__simplify,axiom,
+    mem(c_2EnumRing_2Enum__canonical__sum__simplify,arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum))) ).
+
+tff(stp_c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,type,
+    tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum: $tType ).
+
+tff(stp_inj_c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,type,
+    inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum > $i ).
+
+tff(stp_surj_c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,type,
+    surj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum: $i > tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum ).
+
+tff(stp_inj_surj_c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum] : ( surj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(X)) = X ) ).
+
+tff(stp_inj_mem_c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum] : mem(inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(X),ty_2Equote_2Evarmap(ty_2Enum_2Enum)) ).
+
+tff(stp_iso_mem_c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,axiom,
+    ! [X: $i] :
+      ( mem(X,ty_2Equote_2Evarmap(ty_2Enum_2Enum))
+     => ( X = inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(surj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(X)) ) ) ).
+
+tff(tp_c_2EnumRing_2Enum__ics__aux,type,
+    c_2EnumRing_2Enum__ics__aux: $i ).
+
+tff(mem_c_2EnumRing_2Enum__ics__aux,axiom,
+    mem(c_2EnumRing_2Enum__ics__aux,arr(ty_2Equote_2Evarmap(ty_2Enum_2Enum),arr(ty_2Enum_2Enum,arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),ty_2Enum_2Enum)))) ).
+
+tff(stp_fo_c_2EnumRing_2Enum__ics__aux,type,
+    fo__c_2EnumRing_2Enum__ics__aux: ( tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum * tp__ty_2Enum_2Enum * tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum ) > tp__ty_2Enum_2Enum ).
+
+tff(stp_eq_fo_c_2EnumRing_2Enum__ics__aux,axiom,
+    ! [X0: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,X1: tp__ty_2Enum_2Enum,X2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( inj__ty_2Enum_2Enum(fo__c_2EnumRing_2Enum__ics__aux(X0,X1,X2)) = ap(ap(ap(c_2EnumRing_2Enum__ics__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(X0)),inj__ty_2Enum_2Enum(X1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(X2)) ) ).
+
+tff(tp_c_2EnumRing_2Enum__interp__cs,type,
+    c_2EnumRing_2Enum__interp__cs: $i ).
+
+tff(mem_c_2EnumRing_2Enum__interp__cs,axiom,
+    mem(c_2EnumRing_2Enum__interp__cs,arr(ty_2Equote_2Evarmap(ty_2Enum_2Enum),arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),ty_2Enum_2Enum))) ).
+
+tff(stp_fo_c_2EnumRing_2Enum__interp__cs,type,
+    fo__c_2EnumRing_2Enum__interp__cs: ( tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum * tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum ) > tp__ty_2Enum_2Enum ).
+
+tff(stp_eq_fo_c_2EnumRing_2Enum__interp__cs,axiom,
+    ! [X0: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,X1: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( inj__ty_2Enum_2Enum(fo__c_2EnumRing_2Enum__interp__cs(X0,X1)) = ap(ap(c_2EnumRing_2Enum__interp__cs,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(X0)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(X1)) ) ).
+
+tff(tp_c_2EnumRing_2Enum__interp__m,type,
+    c_2EnumRing_2Enum__interp__m: $i ).
+
+tff(mem_c_2EnumRing_2Enum__interp__m,axiom,
+    mem(c_2EnumRing_2Enum__interp__m,arr(ty_2Equote_2Evarmap(ty_2Enum_2Enum),arr(ty_2Enum_2Enum,arr(ty_2Elist_2Elist(ty_2Equote_2Eindex),ty_2Enum_2Enum)))) ).
+
+tff(stp_fo_c_2EnumRing_2Enum__interp__m,type,
+    fo__c_2EnumRing_2Enum__interp__m: ( tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum * tp__ty_2Enum_2Enum * tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex ) > tp__ty_2Enum_2Enum ).
+
+tff(stp_eq_fo_c_2EnumRing_2Enum__interp__m,axiom,
+    ! [X0: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,X1: tp__ty_2Enum_2Enum,X2: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( inj__ty_2Enum_2Enum(fo__c_2EnumRing_2Enum__interp__m(X0,X1,X2)) = ap(ap(ap(c_2EnumRing_2Enum__interp__m,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(X0)),inj__ty_2Enum_2Enum(X1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(X2)) ) ).
+
+tff(stp_c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum,type,
+    tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum: $tType ).
+
+tff(stp_inj_c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum,type,
+    inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum > $i ).
+
+tff(stp_surj_c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum,type,
+    surj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum: $i > tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum ).
+
+tff(stp_inj_surj_c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(X)) = X ) ).
+
+tff(stp_inj_mem_c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum,axiom,
+    ! [X: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum] : mem(inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(X),ty_2Ecanonical_2Espolynom(ty_2Enum_2Enum)) ).
+
+tff(stp_iso_mem_c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum,axiom,
+    ! [X: $i] :
+      ( mem(X,ty_2Ecanonical_2Espolynom(ty_2Enum_2Enum))
+     => ( X = inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(surj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(X)) ) ) ).
+
+tff(tp_c_2EnumRing_2Enum__interp__sp,type,
+    c_2EnumRing_2Enum__interp__sp: $i ).
+
+tff(mem_c_2EnumRing_2Enum__interp__sp,axiom,
+    mem(c_2EnumRing_2Enum__interp__sp,arr(ty_2Equote_2Evarmap(ty_2Enum_2Enum),arr(ty_2Ecanonical_2Espolynom(ty_2Enum_2Enum),ty_2Enum_2Enum))) ).
+
+tff(stp_fo_c_2EnumRing_2Enum__interp__sp,type,
+    fo__c_2EnumRing_2Enum__interp__sp: ( tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum * tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum ) > tp__ty_2Enum_2Enum ).
+
+tff(stp_eq_fo_c_2EnumRing_2Enum__interp__sp,axiom,
+    ! [X0: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,X1: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum] : ( inj__ty_2Enum_2Enum(fo__c_2EnumRing_2Enum__interp__sp(X0,X1)) = ap(ap(c_2EnumRing_2Enum__interp__sp,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(X0)),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(X1)) ) ).
+
+tff(tp_c_2EnumRing_2Enum__interp__vl,type,
+    c_2EnumRing_2Enum__interp__vl: $i ).
+
+tff(mem_c_2EnumRing_2Enum__interp__vl,axiom,
+    mem(c_2EnumRing_2Enum__interp__vl,arr(ty_2Equote_2Evarmap(ty_2Enum_2Enum),arr(ty_2Elist_2Elist(ty_2Equote_2Eindex),ty_2Enum_2Enum))) ).
+
+tff(stp_fo_c_2EnumRing_2Enum__interp__vl,type,
+    fo__c_2EnumRing_2Enum__interp__vl: ( tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum * tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex ) > tp__ty_2Enum_2Enum ).
+
+tff(stp_eq_fo_c_2EnumRing_2Enum__interp__vl,axiom,
+    ! [X0: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,X1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( inj__ty_2Enum_2Enum(fo__c_2EnumRing_2Enum__interp__vl(X0,X1)) = ap(ap(c_2EnumRing_2Enum__interp__vl,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(X0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(X1)) ) ).
+
+tff(tp_c_2EnumRing_2Enum__ivl__aux,type,
+    c_2EnumRing_2Enum__ivl__aux: $i ).
+
+tff(mem_c_2EnumRing_2Enum__ivl__aux,axiom,
+    mem(c_2EnumRing_2Enum__ivl__aux,arr(ty_2Equote_2Evarmap(ty_2Enum_2Enum),arr(ty_2Equote_2Eindex,arr(ty_2Elist_2Elist(ty_2Equote_2Eindex),ty_2Enum_2Enum)))) ).
+
+tff(stp_fo_c_2EnumRing_2Enum__ivl__aux,type,
+    fo__c_2EnumRing_2Enum__ivl__aux: ( tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum * tp__ty_2Equote_2Eindex * tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex ) > tp__ty_2Enum_2Enum ).
+
+tff(stp_eq_fo_c_2EnumRing_2Enum__ivl__aux,axiom,
+    ! [X0: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,X1: tp__ty_2Equote_2Eindex,X2: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( inj__ty_2Enum_2Enum(fo__c_2EnumRing_2Enum__ivl__aux(X0,X1,X2)) = ap(ap(ap(c_2EnumRing_2Enum__ivl__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(X0)),inj__ty_2Equote_2Eindex(X1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(X2)) ) ).
+
+tff(tp_c_2EnumRing_2Enum__monom__insert,type,
+    c_2EnumRing_2Enum__monom__insert: $i ).
+
+tff(mem_c_2EnumRing_2Enum__monom__insert,axiom,
+    mem(c_2EnumRing_2Enum__monom__insert,arr(ty_2Enum_2Enum,arr(ty_2Elist_2Elist(ty_2Equote_2Eindex),arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum))))) ).
+
+tff(tp_c_2EnumRing_2Enum__spolynom__normalize,type,
+    c_2EnumRing_2Enum__spolynom__normalize: $i ).
+
+tff(mem_c_2EnumRing_2Enum__spolynom__normalize,axiom,
+    mem(c_2EnumRing_2Enum__spolynom__normalize,arr(ty_2Ecanonical_2Espolynom(ty_2Enum_2Enum),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum))) ).
+
+tff(tp_c_2EnumRing_2Enum__spolynom__simplify,type,
+    c_2EnumRing_2Enum__spolynom__simplify: $i ).
+
+tff(mem_c_2EnumRing_2Enum__spolynom__simplify,axiom,
+    mem(c_2EnumRing_2Enum__spolynom__simplify,arr(ty_2Ecanonical_2Espolynom(ty_2Enum_2Enum),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum))) ).
+
+tff(tp_c_2EnumRing_2Enum__varlist__insert,type,
+    c_2EnumRing_2Enum__varlist__insert: $i ).
+
+tff(mem_c_2EnumRing_2Enum__varlist__insert,axiom,
+    mem(c_2EnumRing_2Enum__varlist__insert,arr(ty_2Elist_2Elist(ty_2Equote_2Eindex),arr(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum),ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)))) ).
+
+tff(conj_thm_2EnumRing_2Enum__semi__ring,axiom,
+    p(ap(c_2Esemi__ring_2Eis__semi__ring(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A))) ).
+
+tff(ax_thm_2EnumRing_2Enum__interp__sp__def,axiom,
+    c_2EnumRing_2Enum__interp__sp = ap(c_2Ecanonical_2Einterp__sp(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__spolynom__simplify__def,axiom,
+    c_2EnumRing_2Enum__spolynom__simplify = ap(c_2Ecanonical_2Espolynom__simplify(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__spolynom__normalize__def,axiom,
+    c_2EnumRing_2Enum__spolynom__normalize = ap(c_2Ecanonical_2Espolynom__normalize(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__interp__cs__def,axiom,
+    c_2EnumRing_2Enum__interp__cs = ap(c_2Ecanonical_2Einterp__cs(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__ics__aux__def,axiom,
+    c_2EnumRing_2Enum__ics__aux = ap(c_2Ecanonical_2Eics__aux(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__interp__m__def,axiom,
+    c_2EnumRing_2Enum__interp__m = ap(c_2Ecanonical_2Einterp__m(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__interp__vl__def,axiom,
+    c_2EnumRing_2Enum__interp__vl = ap(c_2Ecanonical_2Einterp__vl(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__ivl__aux__def,axiom,
+    c_2EnumRing_2Enum__ivl__aux = ap(c_2Ecanonical_2Eivl__aux(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__canonical__sum__simplify__def,axiom,
+    c_2EnumRing_2Enum__canonical__sum__simplify = ap(c_2Ecanonical_2Ecanonical__sum__simplify(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__canonical__sum__prod__def,axiom,
+    c_2EnumRing_2Enum__canonical__sum__prod = ap(c_2Ecanonical_2Ecanonical__sum__prod(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__canonical__sum__scalar3__def,axiom,
+    c_2EnumRing_2Enum__canonical__sum__scalar3 = ap(c_2Ecanonical_2Ecanonical__sum__scalar3(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__canonical__sum__scalar2__def,axiom,
+    c_2EnumRing_2Enum__canonical__sum__scalar2 = ap(c_2Ecanonical_2Ecanonical__sum__scalar2(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__canonical__sum__scalar__def,axiom,
+    c_2EnumRing_2Enum__canonical__sum__scalar = ap(c_2Ecanonical_2Ecanonical__sum__scalar(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__varlist__insert__def,axiom,
+    c_2EnumRing_2Enum__varlist__insert = ap(c_2Ecanonical_2Evarlist__insert(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__monom__insert__def,axiom,
+    c_2EnumRing_2Enum__monom__insert = ap(c_2Ecanonical_2Emonom__insert(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(ax_thm_2EnumRing_2Enum__canonical__sum__merge__def,axiom,
+    c_2EnumRing_2Enum__canonical__sum__merge = ap(c_2Ecanonical_2Ecanonical__sum__merge(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)) ).
+
+tff(conj_thm_2EnumRing_2Enum__ring__thms,axiom,
+    ! [A_27a: del] :
+      ( p(ap(c_2Esemi__ring_2Eis__semi__ring(ty_2Enum_2Enum),ap(ap(ap(ap(c_2Esemi__ring_2Erecordtype_2Esemi__ring(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),c_2Earithmetic_2E_2B),c_2Earithmetic_2E_2A)))
+      & ! [V0vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V1p: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__sp,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V0vm)),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V1p))) = surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__cs,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V0vm)),ap(c_2EnumRing_2Enum__spolynom__simplify,inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V1p)))) )
+      & ! [V2vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V3c: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__sp,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V2vm)),ap(c_2Ecanonical_2ESPconst(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V3c)))) = V3c )
+      & ! [V4vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V5i: tp__ty_2Equote_2Eindex] : ( surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__sp,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V4vm)),ap(c_2Ecanonical_2ESPvar(ty_2Enum_2Enum),inj__ty_2Equote_2Eindex(V5i)))) = surj__ty_2Enum_2Enum(ap(ap(c_2Equote_2Evarmap__find(ty_2Enum_2Enum),inj__ty_2Equote_2Eindex(V5i)),inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V4vm))) )
+      & ! [V6vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V7p1: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum,V8p2: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__sp,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V6vm)),ap(ap(c_2Ecanonical_2ESPplus(ty_2Enum_2Enum),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V7p1)),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V8p2)))) = surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2B,ap(ap(c_2EnumRing_2Enum__interp__sp,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V6vm)),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V7p1))),ap(ap(c_2EnumRing_2Enum__interp__sp,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V6vm)),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V8p2)))) )
+      & ! [V9vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V10p1: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum,V11p2: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__sp,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V9vm)),ap(ap(c_2Ecanonical_2ESPmult(ty_2Enum_2Enum),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V10p1)),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V11p2)))) = surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2A,ap(ap(c_2EnumRing_2Enum__interp__sp,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V9vm)),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V10p1))),ap(ap(c_2EnumRing_2Enum__interp__sp,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V9vm)),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V11p2)))) )
+      & ! [V12x: $i] :
+          ( mem(V12x,A_27a)
+         => ! [V13v2: $i] :
+              ( mem(V13v2,ty_2Equote_2Evarmap(A_27a))
+             => ! [V14v1: $i] :
+                  ( mem(V14v1,ty_2Equote_2Evarmap(A_27a))
+                 => ( ap(ap(c_2Equote_2Evarmap__find(A_27a),inj__ty_2Equote_2Eindex(fo__c_2Equote_2EEnd__idx)),ap(ap(ap(c_2Equote_2ENode__vm(A_27a),V12x),V14v1),V13v2)) = V12x ) ) ) )
+      & ! [V15x: $i] :
+          ( mem(V15x,A_27a)
+         => ! [V16v2: $i] :
+              ( mem(V16v2,ty_2Equote_2Evarmap(A_27a))
+             => ! [V17v1: $i] :
+                  ( mem(V17v1,ty_2Equote_2Evarmap(A_27a))
+                 => ! [V18i1: tp__ty_2Equote_2Eindex] : ( ap(ap(c_2Equote_2Evarmap__find(A_27a),ap(c_2Equote_2ERight__idx,inj__ty_2Equote_2Eindex(V18i1))),ap(ap(ap(c_2Equote_2ENode__vm(A_27a),V15x),V17v1),V16v2)) = ap(ap(c_2Equote_2Evarmap__find(A_27a),inj__ty_2Equote_2Eindex(V18i1)),V16v2) ) ) ) )
+      & ! [V19x: $i] :
+          ( mem(V19x,A_27a)
+         => ! [V20v2: $i] :
+              ( mem(V20v2,ty_2Equote_2Evarmap(A_27a))
+             => ! [V21v1: $i] :
+                  ( mem(V21v1,ty_2Equote_2Evarmap(A_27a))
+                 => ! [V22i1: tp__ty_2Equote_2Eindex] : ( ap(ap(c_2Equote_2Evarmap__find(A_27a),ap(c_2Equote_2ELeft__idx,inj__ty_2Equote_2Eindex(V22i1))),ap(ap(ap(c_2Equote_2ENode__vm(A_27a),V19x),V21v1),V20v2)) = ap(ap(c_2Equote_2Evarmap__find(A_27a),inj__ty_2Equote_2Eindex(V22i1)),V21v1) ) ) ) )
+      & ! [V23i: tp__ty_2Equote_2Eindex] : ( ap(ap(c_2Equote_2Evarmap__find(A_27a),inj__ty_2Equote_2Eindex(V23i)),c_2Equote_2EEmpty__vm(A_27a)) = ap(c_2Emin_2E_40(A_27a),k(A_27a,c_2Ebool_2ET)) )
+      & ! [V25t2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V26t1: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V27l2: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V28l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V29c2: tp__ty_2Enum_2Enum,V30c1: tp__ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V30c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V28l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V26t1))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V29c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V27l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V25t2)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)),ap(ap(ap(c_2EternaryComparisons_2Elist__compare(ty_2Equote_2Eindex,ty_2Equote_2Eindex),c_2Equote_2Eindex__compare),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V28l1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V27l2))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V30c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V28l1)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V26t1)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V29c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V27l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V25t2))))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V30c1)),inj__ty_2Enum_2Enum(V29c2))),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V28l1)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V26t1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V25t2)))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V29c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V27l2)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V30c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V28l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V26t1))),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V25t2))))) )
+      & ! [V31t2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V32t1: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V33l2: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V34l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V35c1: tp__ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V35c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V34l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V32t1))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V33l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V31t2)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)),ap(ap(ap(c_2EternaryComparisons_2Elist__compare(ty_2Equote_2Eindex,ty_2Equote_2Eindex),c_2Equote_2Eindex__compare),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V34l1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V33l2))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V35c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V34l1)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V32t1)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V33l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V31t2))))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V35c1)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))))),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V34l1)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V32t1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V31t2)))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V33l2)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V35c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V34l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V32t1))),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V31t2))))) )
+      & ! [V36t2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V37t1: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V38l2: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V39l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V40c2: tp__ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V39l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V37t1))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V40c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V38l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V36t2)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)),ap(ap(ap(c_2EternaryComparisons_2Elist__compare(ty_2Equote_2Eindex,ty_2Equote_2Eindex),c_2Equote_2Eindex__compare),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V39l1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V38l2))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V39l1)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V37t1)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V40c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V38l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V36t2))))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),inj__ty_2Enum_2Enum(V40c2))),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V39l1)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V37t1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V36t2)))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V40c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V38l2)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V39l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V37t1))),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V36t2))))) )
+      & ! [V41t2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V42t1: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V43l2: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V44l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V44l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V42t1))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V43l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V41t2)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)),ap(ap(ap(c_2EternaryComparisons_2Elist__compare(ty_2Equote_2Eindex,ty_2Equote_2Eindex),c_2Equote_2Eindex__compare),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V44l1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V43l2))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V44l1)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V42t1)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V43l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V41t2))))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))))),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V44l1)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V42t1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V41t2)))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V43l2)),ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V44l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V42t1))),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V41t2))))) )
+      & ! [V45s1: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V45s1)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) = V45s1 )
+      & ! [V46v6: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V47v5: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V48v4: tp__ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V48v4)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V47v5)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V46v6)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V48v4)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V47v5)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V46v6))) )
+      & ! [V49v8: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V50v7: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V50v7)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V49v8)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V50v7)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V49v8))) )
+      & ! [V51t2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V52l2: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V53l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V54c2: tp__ty_2Enum_2Enum,V55c1: tp__ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__monom__insert,inj__ty_2Enum_2Enum(V55c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V53l1)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V54c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V52l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V51t2)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)),ap(ap(ap(c_2EternaryComparisons_2Elist__compare(ty_2Equote_2Eindex,ty_2Equote_2Eindex),c_2Equote_2Eindex__compare),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V53l1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V52l2))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V55c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V53l1)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V54c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V52l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V51t2)))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V55c1)),inj__ty_2Enum_2Enum(V54c2))),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V53l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V51t2))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V54c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V52l2)),ap(ap(ap(c_2EnumRing_2Enum__monom__insert,inj__ty_2Enum_2Enum(V55c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V53l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V51t2))))) )
+      & ! [V56t2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V57l2: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V58l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V59c1: tp__ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__monom__insert,inj__ty_2Enum_2Enum(V59c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V58l1)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V57l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V56t2)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)),ap(ap(ap(c_2EternaryComparisons_2Elist__compare(ty_2Equote_2Eindex,ty_2Equote_2Eindex),c_2Equote_2Eindex__compare),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V58l1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V57l2))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V59c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V58l1)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V57l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V56t2)))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V59c1)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))))),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V58l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V56t2))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V57l2)),ap(ap(ap(c_2EnumRing_2Enum__monom__insert,inj__ty_2Enum_2Enum(V59c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V58l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V56t2))))) )
+      & ! [V60l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V61c1: tp__ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__monom__insert,inj__ty_2Enum_2Enum(V61c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V60l1)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V61c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V60l1)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) )
+      & ! [V62t2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V63l2: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V64l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V65c2: tp__ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__varlist__insert,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V64l1)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V65c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V63l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V62t2)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)),ap(ap(ap(c_2EternaryComparisons_2Elist__compare(ty_2Equote_2Eindex,ty_2Equote_2Eindex),c_2Equote_2Eindex__compare),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V64l1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V63l2))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V64l1)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V65c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V63l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V62t2)))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),inj__ty_2Enum_2Enum(V65c2))),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V64l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V62t2))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V65c2)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V63l2)),ap(ap(c_2EnumRing_2Enum__varlist__insert,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V64l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V62t2))))) )
+      & ! [V66t2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V67l2: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V68l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__varlist__insert,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V68l1)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V67l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V66t2)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)),ap(ap(ap(c_2EternaryComparisons_2Elist__compare(ty_2Equote_2Eindex,ty_2Equote_2Eindex),c_2Equote_2Eindex__compare),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V68l1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V67l2))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V68l1)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V67l2)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V66t2)))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))))),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V68l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V66t2))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V67l2)),ap(ap(c_2EnumRing_2Enum__varlist__insert,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V68l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V66t2))))) )
+      & ! [V69l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__varlist__insert,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V69l1)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V69l1)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) )
+      & ! [V70c0: tp__ty_2Enum_2Enum,V71c: tp__ty_2Enum_2Enum,V72l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V73t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar,inj__ty_2Enum_2Enum(V70c0)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V71c)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V72l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V73t)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),ap(ap(c_2Earithmetic_2E_2A,inj__ty_2Enum_2Enum(V70c0)),inj__ty_2Enum_2Enum(V71c))),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V72l)),ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar,inj__ty_2Enum_2Enum(V70c0)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V73t)))) )
+      & ! [V74c0: tp__ty_2Enum_2Enum,V75l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V76t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar,inj__ty_2Enum_2Enum(V74c0)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V75l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V76t)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V74c0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V75l)),ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar,inj__ty_2Enum_2Enum(V74c0)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V76t)))) )
+      & ! [V77c0: tp__ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar,inj__ty_2Enum_2Enum(V77c0)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum)) )
+      & ! [V78l0: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V79c: tp__ty_2Enum_2Enum,V80l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V81t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar2,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V78l0)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V79c)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V80l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V81t)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__monom__insert,inj__ty_2Enum_2Enum(V79c)),ap(ap(ap(c_2EternaryComparisons_2Elist__merge(ty_2Equote_2Eindex),c_2Equote_2Eindex__lt),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V78l0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V80l))),ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar2,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V78l0)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V81t)))) )
+      & ! [V82l0: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V83l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V84t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar2,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V82l0)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V83l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V84t)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__varlist__insert,ap(ap(ap(c_2EternaryComparisons_2Elist__merge(ty_2Equote_2Eindex),c_2Equote_2Eindex__lt),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V82l0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V83l))),ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar2,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V82l0)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V84t)))) )
+      & ! [V85l0: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar2,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V85l0)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum)) )
+      & ! [V86c0: tp__ty_2Enum_2Enum,V87l0: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V88c: tp__ty_2Enum_2Enum,V89l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V90t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar3,inj__ty_2Enum_2Enum(V86c0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V87l0)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V88c)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V89l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V90t)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__monom__insert,ap(ap(c_2Earithmetic_2E_2A,inj__ty_2Enum_2Enum(V86c0)),inj__ty_2Enum_2Enum(V88c))),ap(ap(ap(c_2EternaryComparisons_2Elist__merge(ty_2Equote_2Eindex),c_2Equote_2Eindex__lt),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V87l0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V89l))),ap(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar3,inj__ty_2Enum_2Enum(V86c0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V87l0)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V90t)))) )
+      & ! [V91c0: tp__ty_2Enum_2Enum,V92l0: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V93l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V94t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar3,inj__ty_2Enum_2Enum(V91c0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V92l0)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V93l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V94t)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__monom__insert,inj__ty_2Enum_2Enum(V91c0)),ap(ap(ap(c_2EternaryComparisons_2Elist__merge(ty_2Equote_2Eindex),c_2Equote_2Eindex__lt),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V92l0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V93l))),ap(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar3,inj__ty_2Enum_2Enum(V91c0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V92l0)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V94t)))) )
+      & ! [V95c0: tp__ty_2Enum_2Enum,V96l0: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar3,inj__ty_2Enum_2Enum(V95c0)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V96l0)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum)) )
+      & ! [V97c1: tp__ty_2Enum_2Enum,V98l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V99t1: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V100s2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__prod,ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V97c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V98l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V99t1))),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V100s2))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar3,inj__ty_2Enum_2Enum(V97c1)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V98l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V100s2))),ap(ap(c_2EnumRing_2Enum__canonical__sum__prod,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V99t1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V100s2)))) )
+      & ! [V101l1: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V102t1: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum,V103s2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__prod,ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V101l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V102t1))),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V103s2))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(ap(c_2EnumRing_2Enum__canonical__sum__scalar2,inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V101l1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V103s2))),ap(ap(c_2EnumRing_2Enum__canonical__sum__prod,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V102t1)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V103s2)))) )
+      & ! [V104s2: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__prod,c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V104s2))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum)) )
+      & ! [V105c: tp__ty_2Enum_2Enum,V106l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V107t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(c_2EnumRing_2Enum__canonical__sum__simplify,ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V105c)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V106l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V107t)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2Ebool_2ECOND(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)),ap(ap(c_2Emin_2E_3D(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V105c)),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))),ap(c_2EnumRing_2Enum__canonical__sum__simplify,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V107t))),ap(ap(ap(c_2Ebool_2ECOND(ty_2Ecanonical_2Ecanonical__sum(ty_2Enum_2Enum)),ap(ap(c_2Emin_2E_3D(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V105c)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))))),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V106l)),ap(c_2EnumRing_2Enum__canonical__sum__simplify,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V107t)))),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V105c)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V106l)),ap(c_2EnumRing_2Enum__canonical__sum__simplify,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V107t)))))) )
+      & ! [V108l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V109t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(c_2EnumRing_2Enum__canonical__sum__simplify,ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V108l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V109t)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V108l)),ap(c_2EnumRing_2Enum__canonical__sum__simplify,inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V109t)))) )
+      & ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(c_2EnumRing_2Enum__canonical__sum__simplify,c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum)) )
+      & ! [V110vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V111x: tp__ty_2Equote_2Eindex] : ( surj__ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__ivl__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V110vm)),inj__ty_2Equote_2Eindex(V111x)),c_2Elist_2ENIL(ty_2Equote_2Eindex))) = surj__ty_2Enum_2Enum(ap(ap(c_2Equote_2Evarmap__find(ty_2Enum_2Enum),inj__ty_2Equote_2Eindex(V111x)),inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V110vm))) )
+      & ! [V112vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V113x: tp__ty_2Equote_2Eindex,V114x_27: tp__ty_2Equote_2Eindex,V115t_27: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( surj__ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__ivl__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V112vm)),inj__ty_2Equote_2Eindex(V113x)),ap(ap(c_2Elist_2ECONS(ty_2Equote_2Eindex),inj__ty_2Equote_2Eindex(V114x_27)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V115t_27)))) = surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2A,ap(ap(c_2Equote_2Evarmap__find(ty_2Enum_2Enum),inj__ty_2Equote_2Eindex(V113x)),inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V112vm))),ap(ap(ap(c_2EnumRing_2Enum__ivl__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V112vm)),inj__ty_2Equote_2Eindex(V114x_27)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V115t_27)))) )
+      & ! [V116vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__vl,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V116vm)),c_2Elist_2ENIL(ty_2Equote_2Eindex))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))) )
+      & ! [V117vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V118x: tp__ty_2Equote_2Eindex,V119t: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__vl,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V117vm)),ap(ap(c_2Elist_2ECONS(ty_2Equote_2Eindex),inj__ty_2Equote_2Eindex(V118x)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V119t)))) = surj__ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__ivl__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V117vm)),inj__ty_2Equote_2Eindex(V118x)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V119t))) )
+      & ! [V120vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V121c: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__interp__m,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V120vm)),inj__ty_2Enum_2Enum(V121c)),c_2Elist_2ENIL(ty_2Equote_2Eindex))) = V121c )
+      & ! [V122vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V123c: tp__ty_2Enum_2Enum,V124x: tp__ty_2Equote_2Eindex,V125t: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex] : ( surj__ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__interp__m,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V122vm)),inj__ty_2Enum_2Enum(V123c)),ap(ap(c_2Elist_2ECONS(ty_2Equote_2Eindex),inj__ty_2Equote_2Eindex(V124x)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V125t)))) = surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2A,inj__ty_2Enum_2Enum(V123c)),ap(ap(ap(c_2EnumRing_2Enum__ivl__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V122vm)),inj__ty_2Equote_2Eindex(V124x)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V125t)))) )
+      & ! [V126vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V127a: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__ics__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V126vm)),inj__ty_2Enum_2Enum(V127a)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) = V127a )
+      & ! [V128vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V129a: tp__ty_2Enum_2Enum,V130l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V131t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__ics__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V128vm)),inj__ty_2Enum_2Enum(V129a)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V130l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V131t)))) = surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V129a)),ap(ap(ap(c_2EnumRing_2Enum__ics__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V128vm)),ap(ap(c_2EnumRing_2Enum__interp__vl,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V128vm)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V130l))),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V131t)))) )
+      & ! [V132vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V133a: tp__ty_2Enum_2Enum,V134c: tp__ty_2Enum_2Enum,V135l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V136t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__ics__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V132vm)),inj__ty_2Enum_2Enum(V133a)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V134c)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V135l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V136t)))) = surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V133a)),ap(ap(ap(c_2EnumRing_2Enum__ics__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V132vm)),ap(ap(ap(c_2EnumRing_2Enum__interp__m,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V132vm)),inj__ty_2Enum_2Enum(V134c)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V135l))),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V136t)))) )
+      & ! [V137vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__cs,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V137vm)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) = fo__c_2Enum_2E0 )
+      & ! [V138vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V139l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V140t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__cs,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V138vm)),ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V139l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V140t)))) = surj__ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__ics__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V138vm)),ap(ap(c_2EnumRing_2Enum__interp__vl,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V138vm)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V139l))),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V140t))) )
+      & ! [V141vm: tp__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum,V142c: tp__ty_2Enum_2Enum,V143l: tp__c_ty_2Elist_2Elist_ty_2Equote_2Eindex,V144t: tp__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__interp__cs,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V141vm)),ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V142c)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V143l)),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V144t)))) = surj__ty_2Enum_2Enum(ap(ap(ap(c_2EnumRing_2Enum__ics__aux,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V141vm)),ap(ap(ap(c_2EnumRing_2Enum__interp__m,inj__c_ty_2Equote_2Evarmap_ty_2Enum_2Enum(V141vm)),inj__ty_2Enum_2Enum(V142c)),inj__c_ty_2Elist_2Elist_ty_2Equote_2Eindex(V143l))),inj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(V144t))) )
+      & ! [V145i: tp__ty_2Equote_2Eindex] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(c_2EnumRing_2Enum__spolynom__normalize,ap(c_2Ecanonical_2ESPvar(ty_2Enum_2Enum),inj__ty_2Equote_2Eindex(V145i)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2Ecanonical_2ECons__varlist(ty_2Enum_2Enum),ap(ap(c_2Elist_2ECONS(ty_2Equote_2Eindex),inj__ty_2Equote_2Eindex(V145i)),c_2Elist_2ENIL(ty_2Equote_2Eindex))),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) )
+      & ! [V146c: tp__ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(c_2EnumRing_2Enum__spolynom__normalize,ap(c_2Ecanonical_2ESPconst(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V146c)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(ap(c_2Ecanonical_2ECons__monom(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V146c)),c_2Elist_2ENIL(ty_2Equote_2Eindex)),c_2Ecanonical_2ENil__monom(ty_2Enum_2Enum))) )
+      & ! [V147l: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum,V148r: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(c_2EnumRing_2Enum__spolynom__normalize,ap(ap(c_2Ecanonical_2ESPplus(ty_2Enum_2Enum),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V147l)),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V148r)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__merge,ap(c_2EnumRing_2Enum__spolynom__normalize,inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V147l))),ap(c_2EnumRing_2Enum__spolynom__normalize,inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V148r)))) )
+      & ! [V149l: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum,V150r: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(c_2EnumRing_2Enum__spolynom__normalize,ap(ap(c_2Ecanonical_2ESPmult(ty_2Enum_2Enum),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V149l)),inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V150r)))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(ap(c_2EnumRing_2Enum__canonical__sum__prod,ap(c_2EnumRing_2Enum__spolynom__normalize,inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V149l))),ap(c_2EnumRing_2Enum__spolynom__normalize,inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V150r)))) )
+      & ! [V151x: tp__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum] : ( surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(c_2EnumRing_2Enum__spolynom__simplify,inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V151x))) = surj__c_ty_2Ecanonical_2Ecanonical__sum_ty_2Enum_2Enum(ap(c_2EnumRing_2Enum__canonical__sum__simplify,ap(c_2EnumRing_2Enum__spolynom__normalize,inj__c_ty_2Ecanonical_2Espolynom_ty_2Enum_2Enum(V151x)))) ) ) ).
+
+tff(conj_thm_2EnumRing_2Enum__rewrites,axiom,
+    ! [V0n: tp__ty_2Enum_2Enum] :
+      ( ! [V1n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),inj__ty_2Enum_2Enum(V1n))) = V1n )
+      & ! [V2n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V2n)),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))) = V2n )
+      & ! [V3n: tp__ty_2Enum_2Enum,V4m: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V3n))),ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V4m)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,ap(c_2Enumeral_2EiZ,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V3n)),inj__ty_2Enum_2Enum(V4m))))) )
+      & ! [V5n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2A,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),inj__ty_2Enum_2Enum(V5n))) = fo__c_2Enum_2E0 )
+      & ! [V6n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2A,inj__ty_2Enum_2Enum(V6n)),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))) = fo__c_2Enum_2E0 )
+      & ! [V7n: tp__ty_2Enum_2Enum,V8m: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2A,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V7n))),ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V8m)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,ap(ap(c_2Earithmetic_2E_2A,inj__ty_2Enum_2Enum(V7n)),inj__ty_2Enum_2Enum(V8m)))) )
+      & ! [V9n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2D,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),inj__ty_2Enum_2Enum(V9n))) = fo__c_2Enum_2E0 )
+      & ! [V10n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2D,inj__ty_2Enum_2Enum(V10n)),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))) = V10n )
+      & ! [V11n: tp__ty_2Enum_2Enum,V12m: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2D,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V11n))),ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V12m)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,ap(ap(c_2Earithmetic_2E_2D,inj__ty_2Enum_2Enum(V11n)),inj__ty_2Enum_2Enum(V12m)))) )
+      & ! [V13n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2EEXP,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V13n))))) = fo__c_2Enum_2E0 )
+      & ! [V14n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2EEXP,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V14n))))) = fo__c_2Enum_2E0 )
+      & ! [V15n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2EEXP,inj__ty_2Enum_2Enum(V15n)),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))) )
+      & ! [V16n: tp__ty_2Enum_2Enum,V17m: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2EEXP,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V16n))),ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V17m)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,ap(ap(c_2Earithmetic_2EEXP,inj__ty_2Enum_2Enum(V16n)),inj__ty_2Enum_2Enum(V17m)))) )
+      & ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))) )
+      & ! [V18n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V18n)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V18n)))) )
+      & ( surj__ty_2Enum_2Enum(ap(c_2Eprim__rec_2EPRE,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0))) = fo__c_2Enum_2E0 )
+      & ! [V19n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(c_2Eprim__rec_2EPRE,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V19n)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,ap(c_2Eprim__rec_2EPRE,inj__ty_2Enum_2Enum(V19n)))) )
+      & ! [V20n: tp__ty_2Enum_2Enum] :
+          ( ( surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V20n))) = fo__c_2Enum_2E0 )
+        <=> ( V20n = fo__c_2Earithmetic_2EZERO ) )
+      & ! [V21n: tp__ty_2Enum_2Enum] :
+          ( ( fo__c_2Enum_2E0 = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V21n))) )
+        <=> ( V21n = fo__c_2Earithmetic_2EZERO ) )
+      & ! [V22n: tp__ty_2Enum_2Enum,V23m: tp__ty_2Enum_2Enum] :
+          ( ( surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V22n))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V23m))) )
+        <=> ( V22n = V23m ) )
+      & ! [V24n: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V24n)),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)))
+        <=> $false )
+      & ! [V25n: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V25n))))
+        <=> p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)),inj__ty_2Enum_2Enum(V25n))) )
+      & ! [V26n: tp__ty_2Enum_2Enum,V27m: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Eprim__rec_2E_3C,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V26n))),ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V27m))))
+        <=> p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V26n)),inj__ty_2Enum_2Enum(V27m))) )
+      & ! [V28n: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Earithmetic_2E_3E,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),inj__ty_2Enum_2Enum(V28n)))
+        <=> $false )
+      & ! [V29n: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Earithmetic_2E_3E,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V29n))),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)))
+        <=> p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)),inj__ty_2Enum_2Enum(V29n))) )
+      & ! [V30n: tp__ty_2Enum_2Enum,V31m: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Earithmetic_2E_3E,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V30n))),ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V31m))))
+        <=> p(ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V31m)),inj__ty_2Enum_2Enum(V30n))) )
+      & ! [V32n: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Earithmetic_2E_3C_3D,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),inj__ty_2Enum_2Enum(V32n)))
+        <=> $true )
+      & ! [V33n: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Earithmetic_2E_3C_3D,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V33n))),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)))
+        <=> p(ap(ap(c_2Earithmetic_2E_3C_3D,inj__ty_2Enum_2Enum(V33n)),inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))) )
+      & ! [V34n: tp__ty_2Enum_2Enum,V35m: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Earithmetic_2E_3C_3D,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V34n))),ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V35m))))
+        <=> p(ap(ap(c_2Earithmetic_2E_3C_3D,inj__ty_2Enum_2Enum(V34n)),inj__ty_2Enum_2Enum(V35m))) )
+      & ! [V36n: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Earithmetic_2E_3E_3D,inj__ty_2Enum_2Enum(V36n)),inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)))
+        <=> $true )
+      & ! [V37n: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Earithmetic_2E_3E_3D,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)),inj__ty_2Enum_2Enum(V37n)))
+        <=> ( V37n = fo__c_2Enum_2E0 ) )
+      & ! [V38n: tp__ty_2Enum_2Enum,V39m: tp__ty_2Enum_2Enum] :
+          ( p(ap(ap(c_2Earithmetic_2E_3E_3D,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V38n))),ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V39m))))
+        <=> p(ap(ap(c_2Earithmetic_2E_3C_3D,inj__ty_2Enum_2Enum(V39m)),inj__ty_2Enum_2Enum(V38n))) )
+      & ! [V40n: tp__ty_2Enum_2Enum] :
+          ( p(ap(c_2Earithmetic_2EODD,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V40n))))
+        <=> p(ap(c_2Earithmetic_2EODD,inj__ty_2Enum_2Enum(V40n))) )
+      & ! [V41n: tp__ty_2Enum_2Enum] :
+          ( p(ap(c_2Earithmetic_2EEVEN,ap(c_2Earithmetic_2ENUMERAL,inj__ty_2Enum_2Enum(V41n))))
+        <=> p(ap(c_2Earithmetic_2EEVEN,inj__ty_2Enum_2Enum(V41n))) )
+      & ~ p(ap(c_2Earithmetic_2EODD,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)))
+      & p(ap(c_2Earithmetic_2EEVEN,inj__ty_2Enum_2Enum(fo__c_2Enum_2E0)))
+      & ! [V42n: tp__ty_2Enum_2Enum,V43m: tp__ty_2Enum_2Enum] :
+          ( ( ( fo__c_2Earithmetic_2EZERO = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V42n))) )
+          <=> $false )
+          & ( ( surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V42n))) = fo__c_2Earithmetic_2EZERO )
+          <=> $false )
+          & ( ( fo__c_2Earithmetic_2EZERO = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V42n))) )
+          <=> $false )
+          & ( ( surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V42n))) = fo__c_2Earithmetic_2EZERO )
+          <=> $false )
+          & ( ( surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V42n))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V43m))) )
+          <=> $false )
+          & ( ( surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V42n))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V43m))) )
+          <=> $false )
+          & ( ( surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V42n))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V43m))) )
+          <=> ( V42n = V43m ) )
+          & ( ( surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V42n))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V43m))) )
+          <=> ( V42n = V43m ) ) )
+      & ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))) )
+      & ! [V44n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V44n)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V44n))) )
+      & ! [V45n: tp__ty_2Enum_2Enum] : ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V45n)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V45n)))) )
+      & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))) )
+      & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V0n)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0n)))) )
+      & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V0n)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V0n)))) )
+      & ! [V46n: tp__ty_2Enum_2Enum,V47m: tp__ty_2Enum_2Enum] :
+          ( ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiZ,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)),inj__ty_2Enum_2Enum(V46n)))) = V46n )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiZ,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))) = V46n )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiZ,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,ap(c_2Enumeral_2EiZ,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiZ,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiZ,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiZ,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)),inj__ty_2Enum_2Enum(V46n)))) = surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V46n))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))) = surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,inj__ty_2Enum_2Enum(V46n))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,ap(c_2Enumeral_2EiiSUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)),inj__ty_2Enum_2Enum(V46n)))) = surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,inj__ty_2Enum_2Enum(V46n))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)))) = surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,inj__ty_2Enum_2Enum(V46n))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,ap(c_2Enum_2ESUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,ap(c_2Enumeral_2EiiSUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT1,ap(c_2Enumeral_2EiiSUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiiSUC,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V46n))),ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V47m))))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,ap(c_2Enumeral_2EiiSUC,ap(ap(c_2Earithmetic_2E_2B,inj__ty_2Enum_2Enum(V46n)),inj__ty_2Enum_2Enum(V47m))))) ) )
+      & ! [V48n: tp__ty_2Enum_2Enum,V49m: tp__ty_2Enum_2Enum] :
+          ( ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2A,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO)),inj__ty_2Enum_2Enum(V48n))) = fo__c_2Earithmetic_2EZERO )
+          & ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2A,inj__ty_2Enum_2Enum(V48n)),inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))) = fo__c_2Earithmetic_2EZERO )
+          & ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2A,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V48n))),inj__ty_2Enum_2Enum(V49m))) = surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiZ,ap(ap(c_2Earithmetic_2E_2B,ap(c_2Enumeral_2EiDUB,ap(ap(c_2Earithmetic_2E_2A,inj__ty_2Enum_2Enum(V48n)),inj__ty_2Enum_2Enum(V49m)))),inj__ty_2Enum_2Enum(V49m)))) )
+          & ( surj__ty_2Enum_2Enum(ap(ap(c_2Earithmetic_2E_2A,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V48n))),inj__ty_2Enum_2Enum(V49m))) = surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiDUB,ap(c_2Enumeral_2EiZ,ap(ap(c_2Earithmetic_2E_2B,ap(ap(c_2Earithmetic_2E_2A,inj__ty_2Enum_2Enum(V48n)),inj__ty_2Enum_2Enum(V49m))),inj__ty_2Enum_2Enum(V49m))))) ) )
+      & ! [V50n: tp__ty_2Enum_2Enum] :
+          ( ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiDUB,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V50n)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,ap(c_2Enumeral_2EiDUB,inj__ty_2Enum_2Enum(V50n)))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiDUB,ap(c_2Earithmetic_2EBIT2,inj__ty_2Enum_2Enum(V50n)))) = surj__ty_2Enum_2Enum(ap(c_2Earithmetic_2EBIT2,ap(c_2Earithmetic_2EBIT1,inj__ty_2Enum_2Enum(V50n)))) )
+          & ( surj__ty_2Enum_2Enum(ap(c_2Enumeral_2EiDUB,inj__ty_2Enum_2Enum(fo__c_2Earithmetic_2EZERO))) = fo__c_2Earithmetic_2EZERO ) )
+      & ( ( fo__c_2Earithmetic_2EZERO = fo__c_2Earithmetic_2EZERO )
+      <=> $true )
+      & ( ( fo__c_2Enum_2E0 = fo__c_2Enum_2E0 )
+      <=> $true ) ) ).
+
+%------------------------------------------------------------------------------

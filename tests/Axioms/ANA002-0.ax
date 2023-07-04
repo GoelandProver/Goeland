@@ -1,0 +1,156 @@
+%--------------------------------------------------------------------------
+% File     : ANA002-0 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Analysis (Limits)
+% Axioms   : Analysis (limits) axioms for continuous functions
+% Version  : [Ble90] axioms.
+% English  :
+
+% Refs     : [Ble90] Bledsoe (1990), Challenge Problems in Elementary Calcu
+%          : [Ble92] Bledsoe (1992), Email to G. Sutcliffe
+% Source   : [Ble92]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   26 (  11 unt;   2 nHn;  13 RR)
+%            Number of literals    :   45 (   6 equ;  17 neg)
+%            Maximal clause size   :    3 (   1 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :    2 (   1 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    5 (   5 usr;   1 con; 0-2 aty)
+%            Number of variables   :   59 (   4 sgn)
+% SPC      : 
+
+% Comments : Based on the theorem in calculus that the sum of two continuous
+%            functions is continuous.
+%          : Used some ideas from [SETHEO] to format this.
+%--------------------------------------------------------------------------
+%----|X + Y| <= |X| + |Y|.
+%----Clause 8
+cnf(absolute_sum_less_or_equal_sum_of_absolutes1,axiom,
+    less_or_equal(absolute(add(X,Y)),add(absolute(X),absolute(Y))) ).
+
+%----Clause 8.1
+cnf(absolute_sum_less_or_equal_sum_of_absolutes2,axiom,
+    ( ~ less_or_equal(add(absolute(X),absolute(Y)),Z)
+    | less_or_equal(absolute(add(X,Y)),Z) ) ).
+
+%----Properties of minimum.
+%----Clause 9
+cnf(minimum1,axiom,
+    ( ~ less_or_equal(X,Y)
+    | minimum(X,Y) = X ) ).
+
+%----Clause 9.1
+cnf(minimum2,axiom,
+    less_or_equal(minimum(X,Y),X) ).
+
+%----Clause 9.11
+cnf(minimum3,axiom,
+    ( ~ less_or_equal(Z,minimum(X,Y))
+    | less_or_equal(Z,X) ) ).
+
+%----Clause 9.2
+cnf(minimum4,axiom,
+    ( ~ less_or_equal(X,Y)
+    | less_or_equal(X,minimum(X,Y)) ) ).
+
+%----Clause 10
+cnf(minimum5,axiom,
+    ( ~ less_or_equal(Y,X)
+    | minimum(X,Y) = Y ) ).
+
+%----Clause 10.1
+cnf(minimum6,axiom,
+    less_or_equal(minimum(X,Y),Y) ).
+
+%----Clause 10.11
+cnf(minimum7,axiom,
+    ( ~ less_or_equal(Z,minimum(X,Y))
+    | less_or_equal(Z,Y) ) ).
+
+%----Clause 10.2
+cnf(minimum8,axiom,
+    ( ~ less_or_equal(Y,X)
+    | less_or_equal(Y,minimum(X,Y)) ) ).
+
+%----Clause 10.3
+cnf(minimum9,axiom,
+    ( less_or_equal(X,n0)
+    | less_or_equal(Y,n0)
+    | ~ less_or_equal(minimum(X,Y),n0) ) ).
+
+%----Properties of half.
+%----Clause 11
+cnf(half_plus_half_is_whole,axiom,
+    add(half(X),half(X)) = X ).
+
+%----Clause 11.1
+cnf(half_plus_half_less_or_equal_whole,axiom,
+    less_or_equal(add(half(X),half(X)),X) ).
+
+%----Clause 11.2
+cnf(whole_less_or_equal_half_plus_half,axiom,
+    less_or_equal(X,add(half(X),half(X))) ).
+
+%----Clause 11.3
+cnf(less_or_equal_sum_of_halves,axiom,
+    ( ~ less_or_equal(X,half(Z))
+    | ~ less_or_equal(Y,half(Z))
+    | less_or_equal(add(X,Y),Z) ) ).
+
+%----Clause 12
+cnf(zero_and_half,axiom,
+    ( less_or_equal(X,n0)
+    | ~ less_or_equal(half(X),n0) ) ).
+
+%----Properties of add.
+%----Clause 13
+cnf(add_to_both_sides_of_less_equal1,axiom,
+    ( ~ less_or_equal(X,Y)
+    | less_or_equal(add(X,Z),add(Y,Z)) ) ).
+
+%----Clause 13.1
+cnf(add_to_both_sides_of_less_equal2,axiom,
+    ( ~ less_or_equal(X,Y)
+    | ~ less_or_equal(Z,W)
+    | less_or_equal(add(X,Z),add(Y,W)) ) ).
+
+%----Clause 14
+cnf(commutativity_of_less_or_equal,axiom,
+    ( less_or_equal(X,Y)
+    | less_or_equal(Y,X) ) ).
+
+%----Clause 15
+cnf(transitivity_of_less_or_equal,axiom,
+    ( ~ less_or_equal(X,Y)
+    | ~ less_or_equal(Y,Z)
+    | less_or_equal(X,Z) ) ).
+
+%----Clause 15.1 omitted - it's the same as Clause 15
+
+%----Clause 16
+cnf(commutativity_of_add,axiom,
+    add(X,Y) = add(Y,X) ).
+
+%----Clause 16_1
+cnf(commutativity_of_add_for_less_or_equal,axiom,
+    less_or_equal(add(X,Y),add(Y,X)) ).
+
+%----Clause 17
+cnf(associativity_of_add,axiom,
+    add(add(X,Y),Z) = add(X,add(Y,Z)) ).
+
+%----Clause 17_1
+cnf(associativity_of_add_for_less_or_equal1,axiom,
+    less_or_equal(add(add(X,Y),Z),add(X,add(Y,Z))) ).
+
+%----Clause 17_2
+cnf(associativity_of_add_for_less_or_equal2,axiom,
+    less_or_equal(add(X,add(Y,Z)),add(add(X,Y),Z)) ).
+
+%----Clause 18
+cnf(equal_implies_less_or_equal,axiom,
+    ( X != Y
+    | less_or_equal(X,Y) ) ).
+
+%--------------------------------------------------------------------------

@@ -1,0 +1,501 @@
+%------------------------------------------------------------------------------
+% File     : SET007+131 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : The Divisibility of Integers and Integer Relatively Primes
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : int_2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   65 (  16 unt;   0 def)
+%            Number of atoms       :  246 (  41 equ)
+%            Maximal formula atoms :   18 (   3 avg)
+%            Number of connectives :  201 (  20   ~;   5   |;  47   &)
+%                                         (  12 <=>; 117  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   5 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :   14 (  12 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   20 (  20 usr;   8 con; 0-2 aty)
+%            Number of variables   :   98 (  98   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_int_2,axiom,
+    $true ).
+
+fof(t2_int_2,axiom,
+    $true ).
+
+fof(t3_int_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( r1_nat_1(np__0,A)
+      <=> A = np__0 ) ) ).
+
+fof(t4_int_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ( A = np__0
+              | B = np__0 )
+          <=> k5_nat_1(A,B) = np__0 ) ) ) ).
+
+fof(t5_int_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ( A = np__0
+              & B = np__0 )
+          <=> k6_nat_1(A,B) = np__0 ) ) ) ).
+
+fof(t6_int_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k2_nat_1(A,B) = k2_nat_1(k5_nat_1(A,B),k6_nat_1(A,B)) ) ) ).
+
+fof(t7_int_2,axiom,
+    $true ).
+
+fof(t8_int_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( m2_subset_1(k1_real_1(A),k1_numbers,k5_numbers)
+      <=> A = np__0 ) ) ).
+
+fof(t9_int_2,axiom,
+    ~ m2_subset_1(k1_real_1(np__1),k1_numbers,k5_numbers) ).
+
+fof(t10_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ( r2_int_1(np__0,A)
+      <=> A = np__0 ) ) ).
+
+fof(t11_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ( r2_int_1(A,k4_xcmplx_0(A))
+        & r2_int_1(k4_xcmplx_0(A),A) ) ) ).
+
+fof(t12_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( r2_int_1(A,B)
+               => r2_int_1(A,k3_xcmplx_0(B,C)) ) ) ) ) ).
+
+fof(t13_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( ( r2_int_1(A,B)
+                  & r2_int_1(B,C) )
+               => r2_int_1(A,C) ) ) ) ) ).
+
+fof(t14_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ( ( r2_int_1(A,B)
+             => r2_int_1(A,k4_xcmplx_0(B)) )
+            & ( r2_int_1(A,k4_xcmplx_0(B))
+             => r2_int_1(A,B) )
+            & ( r2_int_1(A,B)
+             => r2_int_1(k4_xcmplx_0(A),B) )
+            & ( r2_int_1(k4_xcmplx_0(A),B)
+             => r2_int_1(A,B) )
+            & ( r2_int_1(A,B)
+             => r2_int_1(k4_xcmplx_0(A),k4_xcmplx_0(B)) )
+            & ( r2_int_1(k4_xcmplx_0(A),k4_xcmplx_0(B))
+             => r2_int_1(A,B) )
+            & ( r2_int_1(A,k4_xcmplx_0(B))
+             => r2_int_1(k4_xcmplx_0(A),B) )
+            & ( r2_int_1(k4_xcmplx_0(A),B)
+             => r2_int_1(A,k4_xcmplx_0(B)) ) ) ) ) ).
+
+fof(t15_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ~ ( r2_int_1(A,B)
+              & r2_int_1(B,A)
+              & A != B
+              & A != k4_xcmplx_0(B) ) ) ) ).
+
+fof(t16_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ( r2_int_1(A,np__0)
+        & r2_int_1(np__1,A)
+        & r2_int_1(k1_real_1(np__1),A) ) ) ).
+
+fof(t17_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ~ ( ( r2_int_1(A,np__1)
+            | r2_int_1(A,k1_real_1(np__1)) )
+          & A != np__1
+          & A != k1_real_1(np__1) ) ) ).
+
+fof(t18_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ( ( A = np__1
+          | A = k1_real_1(np__1) )
+       => ( r2_int_1(A,np__1)
+          & r2_int_1(A,k1_real_1(np__1)) ) ) ) ).
+
+fof(t19_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( r1_int_1(A,B,C)
+              <=> r2_int_1(C,k6_xcmplx_0(A,B)) ) ) ) ) ).
+
+fof(t20_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => m2_subset_1(k1_int_2(A),k1_numbers,k5_numbers) ) ).
+
+fof(t21_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ( r2_int_1(A,B)
+          <=> r1_nat_1(k1_int_2(A),k1_int_2(B)) ) ) ) ).
+
+fof(d1_int_2,axiom,
+    $true ).
+
+fof(d2_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => k2_int_2(A,B) = k5_nat_1(k1_int_2(A),k1_int_2(B)) ) ) ).
+
+fof(t22_int_2,axiom,
+    $true ).
+
+fof(t23_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => m2_subset_1(k2_int_2(A,B),k1_numbers,k5_numbers) ) ) ).
+
+fof(t24_int_2,axiom,
+    $true ).
+
+fof(t25_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => r2_int_1(A,k2_int_2(A,B)) ) ) ).
+
+fof(t26_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => r2_int_1(A,k2_int_2(B,A)) ) ) ).
+
+fof(t27_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( ( r2_int_1(A,C)
+                  & r2_int_1(B,C) )
+               => r2_int_1(k2_int_2(A,B),C) ) ) ) ) ).
+
+fof(d3_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => k3_int_2(A,B) = k6_nat_1(k1_int_2(A),k1_int_2(B)) ) ) ).
+
+fof(t28_int_2,axiom,
+    $true ).
+
+fof(t29_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => m2_subset_1(k3_int_2(A,B),k1_numbers,k5_numbers) ) ) ).
+
+fof(t30_int_2,axiom,
+    $true ).
+
+fof(t31_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => r2_int_1(k3_int_2(A,B),A) ) ) ).
+
+fof(t32_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => r2_int_1(k3_int_2(A,B),B) ) ) ).
+
+fof(t33_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( ( r2_int_1(C,A)
+                  & r2_int_1(C,B) )
+               => r2_int_1(C,k3_int_2(A,B)) ) ) ) ) ).
+
+fof(t34_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ( ( A = np__0
+              | B = np__0 )
+          <=> k2_int_2(A,B) = np__0 ) ) ) ).
+
+fof(t35_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ( ( A = np__0
+              & B = np__0 )
+          <=> k3_int_2(A,B) = np__0 ) ) ) ).
+
+fof(d4_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ( r1_int_2(A,B)
+          <=> k3_int_2(A,B) = np__1 ) ) ) ).
+
+fof(t36_int_2,axiom,
+    $true ).
+
+fof(t37_int_2,axiom,
+    $true ).
+
+fof(t38_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ~ ( ~ ( A = np__0
+                  & B = np__0 )
+              & ! [C] :
+                  ( v1_int_1(C)
+                 => ! [D] :
+                      ( v1_int_1(D)
+                     => ~ ( A = k3_xcmplx_0(k3_int_2(A,B),C)
+                          & B = k3_xcmplx_0(k3_int_2(A,B),D)
+                          & r1_int_2(C,D) ) ) ) ) ) ) ).
+
+fof(t39_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( r1_int_2(A,B)
+               => ( k3_int_2(k3_xcmplx_0(C,A),k3_xcmplx_0(C,B)) = k1_int_2(C)
+                  & k3_int_2(k3_xcmplx_0(C,A),k3_xcmplx_0(B,C)) = k1_int_2(C)
+                  & k3_int_2(k3_xcmplx_0(A,C),k3_xcmplx_0(C,B)) = k1_int_2(C)
+                  & k3_int_2(k3_xcmplx_0(A,C),k3_xcmplx_0(B,C)) = k1_int_2(C) ) ) ) ) ) ).
+
+fof(t40_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( ( r2_int_1(A,k3_xcmplx_0(B,C))
+                  & r1_int_2(B,A) )
+               => r2_int_1(A,C) ) ) ) ) ).
+
+fof(t41_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( ( r1_int_2(A,B)
+                  & r1_int_2(C,B) )
+               => r1_int_2(k3_xcmplx_0(A,C),B) ) ) ) ) ).
+
+fof(d5_int_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( v1_int_2(A)
+      <=> ( ~ r1_xreal_0(A,np__1)
+          & ! [B] :
+              ( m2_subset_1(B,k1_numbers,k5_numbers)
+             => ~ ( r1_nat_1(B,A)
+                  & B != np__1
+                  & B != A ) ) ) ) ) ).
+
+fof(d6_int_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r2_int_2(A,B)
+          <=> k6_nat_1(A,B) = np__1 ) ) ) ).
+
+fof(t42_int_2,axiom,
+    $true ).
+
+fof(t43_int_2,axiom,
+    $true ).
+
+fof(t44_int_2,axiom,
+    v1_int_2(np__2) ).
+
+fof(t45_int_2,axiom,
+    $true ).
+
+fof(t46_int_2,axiom,
+    ~ v1_int_2(np__4) ).
+
+fof(t47_int_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( v1_int_2(A)
+              & v1_int_2(B)
+              & ~ r2_int_2(A,B)
+              & A != B ) ) ) ).
+
+fof(t48_int_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ~ ( r1_xreal_0(np__2,A)
+          & ! [B] :
+              ( m2_subset_1(B,k1_numbers,k5_numbers)
+             => ~ ( v1_int_2(B)
+                  & r1_nat_1(B,A) ) ) ) ) ).
+
+fof(s1_int_2,axiom,
+    ( ( p1_s1_int_2(f1_s1_int_2)
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => ( ( r1_xreal_0(f1_s1_int_2,A)
+              & p1_s1_int_2(A) )
+           => p1_s1_int_2(k1_nat_1(A,np__1)) ) ) )
+   => ! [A] :
+        ( m2_subset_1(A,k1_numbers,k5_numbers)
+       => ( r1_xreal_0(f1_s1_int_2,A)
+         => p1_s1_int_2(A) ) ) ) ).
+
+fof(s2_int_2,axiom,
+    ( ! [A] :
+        ( m2_subset_1(A,k1_numbers,k5_numbers)
+       => ( ( r1_xreal_0(f1_s2_int_2,A)
+            & ! [B] :
+                ( m2_subset_1(B,k1_numbers,k5_numbers)
+               => ( r1_xreal_0(f1_s2_int_2,B)
+                 => ( r1_xreal_0(A,B)
+                    | p1_s2_int_2(B) ) ) ) )
+         => p1_s2_int_2(A) ) )
+   => ! [A] :
+        ( m2_subset_1(A,k1_numbers,k5_numbers)
+       => ( r1_xreal_0(f1_s2_int_2,A)
+         => p1_s2_int_2(A) ) ) ) ).
+
+fof(symmetry_r1_int_2,axiom,
+    ! [A,B] :
+      ( ( v1_int_1(A)
+        & v1_int_1(B) )
+     => ( r1_int_2(A,B)
+       => r1_int_2(B,A) ) ) ).
+
+fof(symmetry_r2_int_2,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k5_numbers) )
+     => ( r2_int_2(A,B)
+       => r2_int_2(B,A) ) ) ).
+
+fof(dt_k1_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => m2_subset_1(k1_int_2(A),k1_numbers,k5_numbers) ) ).
+
+fof(projectivity_k1_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => k1_int_2(k1_int_2(A)) = k1_int_2(A) ) ).
+
+fof(redefinition_k1_int_2,axiom,
+    ! [A] :
+      ( v1_int_1(A)
+     => k1_int_2(A) = k16_complex1(A) ) ).
+
+fof(dt_k2_int_2,axiom,
+    ! [A,B] :
+      ( ( v1_int_1(A)
+        & v1_int_1(B) )
+     => v1_int_1(k2_int_2(A,B)) ) ).
+
+fof(commutativity_k2_int_2,axiom,
+    ! [A,B] :
+      ( ( v1_int_1(A)
+        & v1_int_1(B) )
+     => k2_int_2(A,B) = k2_int_2(B,A) ) ).
+
+fof(dt_k3_int_2,axiom,
+    ! [A,B] :
+      ( ( v1_int_1(A)
+        & v1_int_1(B) )
+     => v1_int_1(k3_int_2(A,B)) ) ).
+
+fof(commutativity_k3_int_2,axiom,
+    ! [A,B] :
+      ( ( v1_int_1(A)
+        & v1_int_1(B) )
+     => k3_int_2(A,B) = k3_int_2(B,A) ) ).
+
+%------------------------------------------------------------------------------

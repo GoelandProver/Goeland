@@ -179,17 +179,17 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 
 	new_subst, same_key := treesearch.MergeSubstitutions(association_subst, st.GetAppliedSubst().GetSubst())
 	if same_key {
-		fmt.Printf("Same key in S2 and S1")
+		global.PrintInfo("PS", "Same key in S2 and S1")
 	}
 	if new_subst.Equals(treetypes.Failure()) {
-		println("[PS] Error : MergeSubstitutions return failure")
+		global.PrintError("PS", "MergeSubstitutions return failure")
 	}
 	new_subst, same_key = treesearch.MergeSubstitutions(new_subst, s.GetSubst())
 	if same_key {
-		fmt.Printf("Same key in S2 and S1")
+		global.PrintInfo("PS", "Same key in S2 and S1")
 	}
 	if new_subst.Equals(treetypes.Failure()) {
-		println("[PS] Error : MergeSubstitutions return failure")
+		global.PrintError("PS", "MergeSubstitutions return failure")
 	}
 
 	// Then associate with the substitution (if possible)
@@ -215,10 +215,10 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 
 	ms, same_key := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), new_subst)
 	if same_key {
-		fmt.Printf("Same key in S2 and S1")
+		global.PrintError("PS", "Same key in S2 and S1")
 	}
 	if ms.Equals(treetypes.Failure()) {
-		println("[MS] Error : MergeSubstitutions return failure")
+		global.PrintError("PS", "MergeSubstitutions return failure")
 	}
 	st.SetAppliedSubst(complextypes.MakeSubstAndForm(ms, s.GetForm()))
 	st.SetLastAppliedSubst(s)

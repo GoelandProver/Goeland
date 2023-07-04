@@ -1,0 +1,470 @@
+%------------------------------------------------------------------------------
+% File     : ITP004^5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : ConseqConv^2.ax [Gau20]
+%          : HL4004^5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   43 (   1 unt;   1 typ;   0 def)
+%            Number of atoms       :  416 (   4 equ;   0 cnn)
+%            Maximal formula atoms :   28 (   9 avg)
+%            Number of connectives :  663 (  14   ~;   9   |;  23   &; 431   @)
+%                                         (  27 <=>; 159  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   21 (   9 avg; 431 nst)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :    0 (   0   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   14 (  11 usr;  13 con; 0-2 aty)
+%            Number of variables   :   93 (   2   ^  89   !;   2   ?;  93   :)
+% SPC      : TH0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tp_c_2EConseqConv_2EASM__MARKER,type,
+    c_2EConseqConv_2EASM__MARKER: $i ).
+
+thf(mem_c_2EConseqConv_2EASM__MARKER,axiom,
+    mem @ c_2EConseqConv_2EASM__MARKER @ ( arr @ bool @ ( arr @ bool @ bool ) ) ).
+
+thf(conj_thm_2EConseqConv_2Eforall__eq__thm,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ A_27a @ bool ) )
+     => ! [V1Q: $i] :
+          ( ( mem @ V1Q @ ( arr @ A_27a @ bool ) )
+         => ( ! [V2s: $i] :
+                ( ( mem @ V2s @ A_27a )
+               => ( ( p @ ( ap @ V0P @ V2s ) )
+                <=> ( p @ ( ap @ V1Q @ V2s ) ) ) )
+           => ( ! [V3s: $i] :
+                  ( ( mem @ V3s @ A_27a )
+                 => ( p @ ( ap @ V0P @ V3s ) ) )
+            <=> ! [V4s: $i] :
+                  ( ( mem @ V4s @ A_27a )
+                 => ( p @ ( ap @ V1Q @ V4s ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2Eexists__eq__thm,axiom,
+    ! [A_27a: del,V0P: $i] :
+      ( ( mem @ V0P @ ( arr @ A_27a @ bool ) )
+     => ! [V1Q: $i] :
+          ( ( mem @ V1Q @ ( arr @ A_27a @ bool ) )
+         => ( ! [V2s: $i] :
+                ( ( mem @ V2s @ A_27a )
+               => ( ( p @ ( ap @ V0P @ V2s ) )
+                <=> ( p @ ( ap @ V1Q @ V2s ) ) ) )
+           => ( ? [V3s: $i] :
+                  ( ( mem @ V3s @ A_27a )
+                  & ( p @ ( ap @ V0P @ V3s ) ) )
+            <=> ? [V4s: $i] :
+                  ( ( mem @ V4s @ A_27a )
+                  & ( p @ ( ap @ V1Q @ V4s ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2Etrue__imp,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( p @ V0t )
+       => $true ) ) ).
+
+thf(conj_thm_2EConseqConv_2Efalse__imp,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( $false
+       => ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2ENOT__CLAUSES__X,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ~ ~ ( p @ V0t )
+      <=> ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2ENOT__CLAUSES__T,axiom,
+    ( ~ $true
+  <=> $false ) ).
+
+thf(conj_thm_2EConseqConv_2ENOT__CLAUSES__F,axiom,
+    ( ~ $false
+  <=> $true ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CONG__conj__strengthen,axiom,
+    ! [V0x: $i] :
+      ( ( mem @ V0x @ bool )
+     => ! [V1x_27: $i] :
+          ( ( mem @ V1x_27 @ bool )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ bool )
+             => ! [V3y_27: $i] :
+                  ( ( mem @ V3y_27 @ bool )
+                 => ( ( ( ( p @ V2y )
+                       => ( ( p @ V1x_27 )
+                         => ( p @ V0x ) ) )
+                      & ( ( p @ V1x_27 )
+                       => ( ( p @ V3y_27 )
+                         => ( p @ V2y ) ) ) )
+                   => ( ( ( p @ V1x_27 )
+                        & ( p @ V3y_27 ) )
+                     => ( ( p @ V0x )
+                        & ( p @ V2y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CONG__conj__weaken,axiom,
+    ! [V0x: $i] :
+      ( ( mem @ V0x @ bool )
+     => ! [V1x_27: $i] :
+          ( ( mem @ V1x_27 @ bool )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ bool )
+             => ! [V3y_27: $i] :
+                  ( ( mem @ V3y_27 @ bool )
+                 => ( ( ( ( p @ V2y )
+                       => ( ( p @ V0x )
+                         => ( p @ V1x_27 ) ) )
+                      & ( ( p @ V1x_27 )
+                       => ( ( p @ V2y )
+                         => ( p @ V3y_27 ) ) ) )
+                   => ( ( ( p @ V0x )
+                        & ( p @ V2y ) )
+                     => ( ( p @ V1x_27 )
+                        & ( p @ V3y_27 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EAND__CLAUSES__TX,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( $true
+          & ( p @ V0t ) )
+      <=> ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EAND__CLAUSES__XT,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( ( p @ V0t )
+          & $true )
+      <=> ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EAND__CLAUSES__FX,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( $false
+          & ( p @ V0t ) )
+      <=> $false ) ) ).
+
+thf(conj_thm_2EConseqConv_2EAND__CLAUSES__XF,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( ( p @ V0t )
+          & $false )
+      <=> $false ) ) ).
+
+thf(conj_thm_2EConseqConv_2EAND__CLAUSES__XX,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( ( p @ V0t )
+          & ( p @ V0t ) )
+      <=> ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CONG__disj__strengthen,axiom,
+    ! [V0x: $i] :
+      ( ( mem @ V0x @ bool )
+     => ! [V1x_27: $i] :
+          ( ( mem @ V1x_27 @ bool )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ bool )
+             => ! [V3y_27: $i] :
+                  ( ( mem @ V3y_27 @ bool )
+                 => ( ( ( ~ ( p @ V2y )
+                       => ( ( p @ V1x_27 )
+                         => ( p @ V0x ) ) )
+                      & ( ~ ( p @ V1x_27 )
+                       => ( ( p @ V3y_27 )
+                         => ( p @ V2y ) ) ) )
+                   => ( ( ( p @ V1x_27 )
+                        | ( p @ V3y_27 ) )
+                     => ( ( p @ V0x )
+                        | ( p @ V2y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CONG__disj__weaken,axiom,
+    ! [V0x: $i] :
+      ( ( mem @ V0x @ bool )
+     => ! [V1x_27: $i] :
+          ( ( mem @ V1x_27 @ bool )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ bool )
+             => ! [V3y_27: $i] :
+                  ( ( mem @ V3y_27 @ bool )
+                 => ( ( ( ~ ( p @ V2y )
+                       => ( ( p @ V0x )
+                         => ( p @ V1x_27 ) ) )
+                      & ( ~ ( p @ V1x_27 )
+                       => ( ( p @ V2y )
+                         => ( p @ V3y_27 ) ) ) )
+                   => ( ( ( p @ V0x )
+                        | ( p @ V2y ) )
+                     => ( ( p @ V1x_27 )
+                        | ( p @ V3y_27 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EOR__CLAUSES__TX,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( $true
+          | ( p @ V0t ) )
+      <=> $true ) ) ).
+
+thf(conj_thm_2EConseqConv_2EOR__CLAUSES__XT,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( ( p @ V0t )
+          | $true )
+      <=> $true ) ) ).
+
+thf(conj_thm_2EConseqConv_2EOR__CLAUSES__FX,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( $false
+          | ( p @ V0t ) )
+      <=> ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EOR__CLAUSES__XF,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( ( p @ V0t )
+          | $false )
+      <=> ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EOR__CLAUSES__XX,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( ( p @ V0t )
+          | ( p @ V0t ) )
+      <=> ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CONG__imp__strengthen,axiom,
+    ! [V0x: $i] :
+      ( ( mem @ V0x @ bool )
+     => ! [V1x_27: $i] :
+          ( ( mem @ V1x_27 @ bool )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ bool )
+             => ! [V3y_27: $i] :
+                  ( ( mem @ V3y_27 @ bool )
+                 => ( ( ( ( p @ V0x )
+                       => ( ( p @ V3y_27 )
+                         => ( p @ V2y ) ) )
+                      & ( ~ ( p @ V3y_27 )
+                       => ( ( p @ V0x )
+                         => ( p @ V1x_27 ) ) ) )
+                   => ( ( ( p @ V1x_27 )
+                       => ( p @ V3y_27 ) )
+                     => ( ( p @ V0x )
+                       => ( p @ V2y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CONG__imp__weaken,axiom,
+    ! [V0x: $i] :
+      ( ( mem @ V0x @ bool )
+     => ! [V1x_27: $i] :
+          ( ( mem @ V1x_27 @ bool )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ bool )
+             => ! [V3y_27: $i] :
+                  ( ( mem @ V3y_27 @ bool )
+                 => ( ( ( ( p @ V0x )
+                       => ( ( p @ V2y )
+                         => ( p @ V3y_27 ) ) )
+                      & ( ~ ( p @ V3y_27 )
+                       => ( ( p @ V1x_27 )
+                         => ( p @ V0x ) ) ) )
+                   => ( ( ( p @ V0x )
+                       => ( p @ V2y ) )
+                     => ( ( p @ V1x_27 )
+                       => ( p @ V3y_27 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CONG__simple__imp__strengthen,axiom,
+    ! [V0x: $i] :
+      ( ( mem @ V0x @ bool )
+     => ! [V1x_27: $i] :
+          ( ( mem @ V1x_27 @ bool )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ bool )
+             => ! [V3y_27: $i] :
+                  ( ( mem @ V3y_27 @ bool )
+                 => ( ( ( ( p @ V0x )
+                       => ( p @ V1x_27 ) )
+                      & ( ( p @ V1x_27 )
+                       => ( ( p @ V3y_27 )
+                         => ( p @ V2y ) ) ) )
+                   => ( ( ( p @ V1x_27 )
+                       => ( p @ V3y_27 ) )
+                     => ( ( p @ V0x )
+                       => ( p @ V2y ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CONG__simple__imp__weaken,axiom,
+    ! [V0x: $i] :
+      ( ( mem @ V0x @ bool )
+     => ! [V1x_27: $i] :
+          ( ( mem @ V1x_27 @ bool )
+         => ! [V2y: $i] :
+              ( ( mem @ V2y @ bool )
+             => ! [V3y_27: $i] :
+                  ( ( mem @ V3y_27 @ bool )
+                 => ( ( ( ( p @ V1x_27 )
+                       => ( p @ V0x ) )
+                      & ( ( p @ V1x_27 )
+                       => ( ( p @ V2y )
+                         => ( p @ V3y_27 ) ) ) )
+                   => ( ( ( p @ V0x )
+                       => ( p @ V2y ) )
+                     => ( ( p @ V1x_27 )
+                       => ( p @ V3y_27 ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CLAUSES__TX,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( $true
+         => ( p @ V0t ) )
+      <=> ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CLAUSES__XT,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( ( p @ V0t )
+         => $true )
+      <=> $true ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CLAUSES__FX,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( $false
+         => ( p @ V0t ) )
+      <=> $true ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CLAUSES__XX,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( ( p @ V0t )
+         => ( p @ V0t ) )
+      <=> $true ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CLAUSES__XF,axiom,
+    ! [V0t: $i] :
+      ( ( mem @ V0t @ bool )
+     => ( ( ( p @ V0t )
+         => $false )
+      <=> ~ ( p @ V0t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CONG__cond__simple,axiom,
+    ! [V0c: $i] :
+      ( ( mem @ V0c @ bool )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ bool )
+         => ! [V2x_27: $i] :
+              ( ( mem @ V2x_27 @ bool )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ bool )
+                 => ! [V4y_27: $i] :
+                      ( ( mem @ V4y_27 @ bool )
+                     => ( ( ( ( p @ V2x_27 )
+                           => ( p @ V1x ) )
+                          & ( ( p @ V4y_27 )
+                           => ( p @ V3y ) ) )
+                       => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ V0c ) @ V2x_27 ) @ V4y_27 ) )
+                         => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ V0c ) @ V1x ) @ V3y ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EIMP__CONG__cond,axiom,
+    ! [V0c: $i] :
+      ( ( mem @ V0c @ bool )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ bool )
+         => ! [V2x_27: $i] :
+              ( ( mem @ V2x_27 @ bool )
+             => ! [V3y: $i] :
+                  ( ( mem @ V3y @ bool )
+                 => ! [V4y_27: $i] :
+                      ( ( mem @ V4y_27 @ bool )
+                     => ( ( ( ( p @ V0c )
+                           => ( ( p @ V2x_27 )
+                             => ( p @ V1x ) ) )
+                          & ( ~ ( p @ V0c )
+                           => ( ( p @ V4y_27 )
+                             => ( p @ V3y ) ) ) )
+                       => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ V0c ) @ V2x_27 ) @ V4y_27 ) )
+                         => ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ V0c ) @ V1x ) @ V3y ) ) ) ) ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2ECOND__CLAUSES__CT,axiom,
+    ! [A_27a: del,V0t1: $i] :
+      ( ( mem @ V0t1 @ A_27a )
+     => ! [V1t2: $i] :
+          ( ( mem @ V1t2 @ A_27a )
+         => ( ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ A_27a ) @ c_2Ebool_2ET ) @ V0t1 ) @ V1t2 )
+            = V0t1 ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2ECOND__CLAUSES__CF,axiom,
+    ! [A_27a: del,V0t1: $i] :
+      ( ( mem @ V0t1 @ A_27a )
+     => ! [V1t2: $i] :
+          ( ( mem @ V1t2 @ A_27a )
+         => ( ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ A_27a ) @ c_2Ebool_2EF ) @ V0t1 ) @ V1t2 )
+            = V1t2 ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2ECOND__CLAUSES__ID,axiom,
+    ! [A_27a: del,V0b: $i] :
+      ( ( mem @ V0b @ bool )
+     => ! [V1t: $i] :
+          ( ( mem @ V1t @ A_27a )
+         => ( ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ A_27a ) @ V0b ) @ V1t ) @ V1t )
+            = V1t ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2ECOND__CLAUSES__TT,axiom,
+    ! [V0c: $i] :
+      ( ( mem @ V0c @ bool )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ bool )
+         => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ V0c ) @ c_2Ebool_2ET ) @ V1x ) )
+          <=> ( ~ ( p @ V0c )
+             => ( p @ V1x ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2ECOND__CLAUSES__FT,axiom,
+    ! [V0c: $i] :
+      ( ( mem @ V0c @ bool )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ bool )
+         => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ V0c ) @ V1x ) @ c_2Ebool_2ET ) )
+          <=> ( ( p @ V0c )
+             => ( p @ V1x ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2ECOND__CLAUSES__TF,axiom,
+    ! [V0c: $i] :
+      ( ( mem @ V0c @ bool )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ bool )
+         => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ V0c ) @ c_2Ebool_2EF ) @ V1x ) )
+          <=> ( ~ ( p @ V0c )
+              & ( p @ V1x ) ) ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2ECOND__CLAUSES__FF,axiom,
+    ! [V0c: $i] :
+      ( ( mem @ V0c @ bool )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ bool )
+         => ( ( p @ ( ap @ ( ap @ ( ap @ ( c_2Ebool_2ECOND @ bool ) @ V0c ) @ V1x ) @ c_2Ebool_2EF ) )
+          <=> ( ( p @ V0c )
+              & ( p @ V1x ) ) ) ) ) ).
+
+thf(ax_thm_2EConseqConv_2EASM__MARKER__DEF,axiom,
+    ( c_2EConseqConv_2EASM__MARKER
+    = ( lam @ bool
+      @ ^ [V0y: $i] :
+          ( lam @ bool
+          @ ^ [V1x: $i] : V1x ) ) ) ).
+
+thf(conj_thm_2EConseqConv_2EASM__MARKER__THM,axiom,
+    ! [V0y: $i] :
+      ( ( mem @ V0y @ bool )
+     => ! [V1x: $i] :
+          ( ( mem @ V1x @ bool )
+         => ( ( p @ ( ap @ ( ap @ c_2EConseqConv_2EASM__MARKER @ V0y ) @ V1x ) )
+          <=> ( p @ V1x ) ) ) ) ).
+
+%------------------------------------------------------------------------------

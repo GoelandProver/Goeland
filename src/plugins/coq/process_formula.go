@@ -64,8 +64,8 @@ func processMainFormula(form btps.Form) (btps.FormList, btps.Form) {
 	case btps.Not:
 		return btps.FormList{}, nf.GetForm()
 	case btps.And:
-		lastForm := nf.GetLF()[len(nf.GetLF())-1].(btps.Not).GetForm()
-		fl := nf.GetLF()[:len(nf.GetLF())-1]
+		lastForm := nf.FormList[len(nf.FormList)-1].(btps.Not).GetForm()
+		fl := nf.FormList[:len(nf.FormList)-1]
 		return fl, lastForm
 	}
 	return btps.FormList{}, form

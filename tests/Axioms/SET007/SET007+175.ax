@@ -1,0 +1,902 @@
+%------------------------------------------------------------------------------
+% File     : SET007+175 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Some Properties of the Intervals
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : measure6 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   84 (  10 unt;   0 def)
+%            Number of atoms       :  520 (  75 equ)
+%            Maximal formula atoms :   18 (   6 avg)
+%            Number of connectives :  532 (  96   ~;  16   |; 183   &)
+%                                         (  12 <=>; 225  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   20 (   8 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :   23 (  21 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   35 (  35 usr;  11 con; 0-3 aty)
+%            Number of variables   :  183 ( 179   !;   4   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_measure6,axiom,
+    ! [A,B] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1))
+        & v1_xreal_0(B) )
+     => ( v5_measure5(k8_measure6(A,B))
+        & v1_membered(k8_measure6(A,B))
+        & v2_membered(k8_measure6(A,B)) ) ) ).
+
+fof(t1_measure6,axiom,
+    ? [A] :
+      ( v1_funct_1(A)
+      & v1_funct_2(A,k5_numbers,k2_zfmisc_1(k5_numbers,k5_numbers))
+      & m2_relset_1(A,k5_numbers,k2_zfmisc_1(k5_numbers,k5_numbers))
+      & v2_funct_1(A)
+      & k1_relat_1(A) = k5_numbers
+      & k2_relat_1(A) = k2_zfmisc_1(k5_numbers,k5_numbers) ) ).
+
+fof(t2_measure6,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,k3_supinf_1)
+        & m2_relset_1(A,k5_numbers,k3_supinf_1) )
+     => ( v6_supinf_2(A,k5_numbers)
+       => r1_supinf_1(k1_supinf_2,k19_supinf_2(A)) ) ) ).
+
+fof(t3_measure6,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,k3_supinf_1)
+        & m2_relset_1(A,k5_numbers,k3_supinf_1) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( v6_supinf_2(A,k5_numbers)
+           => ( ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ~ r1_supinf_1(B,k13_supinf_2(A,C)) )
+              | r1_supinf_1(B,k19_supinf_2(A)) ) ) ) ) ).
+
+fof(t4_measure6,axiom,
+    $true ).
+
+fof(t5_measure6,axiom,
+    $true ).
+
+fof(t6_measure6,axiom,
+    $true ).
+
+fof(t7_measure6,axiom,
+    $true ).
+
+fof(t8_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( m1_subset_1(A,k1_numbers)
+           => ( k2_supinf_2(k4_supinf_2(B,A),A) = B
+              & k4_supinf_2(k2_supinf_2(B,A),A) = B ) ) ) ) ).
+
+fof(t9_measure6,axiom,
+    $true ).
+
+fof(t10_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( r2_hidden(C,k6_supinf_1)
+               => ( r1_supinf_1(A,B)
+                  | k4_supinf_2(k2_supinf_2(C,A),k2_supinf_2(C,B)) = k4_supinf_2(A,B) ) ) ) ) ) ).
+
+fof(t11_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( r2_hidden(C,k6_supinf_1)
+                  & r1_supinf_1(A,B) )
+               => ( r1_supinf_1(k2_supinf_2(C,A),k2_supinf_2(C,B))
+                  & r1_supinf_1(k2_supinf_2(A,C),k2_supinf_2(B,C))
+                  & r1_supinf_1(k4_supinf_2(A,C),k4_supinf_2(B,C)) ) ) ) ) ) ).
+
+fof(t12_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( r2_hidden(C,k6_supinf_1)
+               => ( r1_supinf_1(B,A)
+                  | ( ~ r1_supinf_1(k2_supinf_2(C,B),k2_supinf_2(C,A))
+                    & ~ r1_supinf_1(k2_supinf_2(B,C),k2_supinf_2(A,C))
+                    & ~ r1_supinf_1(k4_supinf_2(B,C),k4_supinf_2(A,C)) ) ) ) ) ) ) ).
+
+fof(d1_measure6,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => k1_measure6(A) = A ) ).
+
+fof(t13_measure6,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( r1_xreal_0(A,B)
+          <=> r1_supinf_1(k1_measure6(A),k1_measure6(B)) ) ) ) ).
+
+fof(t14_measure6,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( ~ ( ~ r1_xreal_0(B,A)
+                & r1_supinf_1(k1_measure6(B),k1_measure6(A)) )
+            & ~ ( ~ r1_supinf_1(k1_measure6(B),k1_measure6(A))
+                & r1_xreal_0(B,A) ) ) ) ) ).
+
+fof(t15_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ~ ( ~ r1_supinf_1(B,A)
+                  & ~ r1_supinf_1(C,B)
+                  & ~ m1_subset_1(B,k1_numbers) ) ) ) ) ).
+
+fof(t16_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( m1_subset_1(A,k1_numbers)
+                  & m1_subset_1(C,k1_numbers)
+                  & r1_supinf_1(A,B)
+                  & r1_supinf_1(B,C) )
+               => m1_subset_1(B,k1_numbers) ) ) ) ) ).
+
+fof(t17_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( m1_subset_1(A,k1_numbers)
+                  & r1_supinf_1(A,B) )
+               => ( r1_supinf_1(C,B)
+                  | m1_subset_1(B,k1_numbers) ) ) ) ) ) ).
+
+fof(t18_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( r1_supinf_1(B,C)
+                  & m1_subset_1(C,k1_numbers) )
+               => ( r1_supinf_1(B,A)
+                  | m1_subset_1(B,k1_numbers) ) ) ) ) ) ).
+
+fof(t19_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ~ ( ~ r1_supinf_1(A,k1_supinf_2)
+              & ~ r1_supinf_1(B,A)
+              & r1_supinf_1(k4_supinf_2(B,A),k1_supinf_2) ) ) ) ).
+
+fof(t20_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ~ ( r1_supinf_1(k1_supinf_2,A)
+                  & r1_supinf_1(k1_supinf_2,C)
+                  & ~ r1_supinf_1(B,k2_supinf_2(C,A))
+                  & r1_supinf_1(k4_supinf_2(B,A),C) ) ) ) ) ).
+
+fof(t21_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => k4_supinf_2(A,k1_supinf_2) = A ) ).
+
+fof(t22_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( r1_supinf_1(k1_supinf_2,A)
+                  & r1_supinf_1(k1_supinf_2,C) )
+               => ( r1_supinf_1(B,k2_supinf_2(C,A))
+                  | r1_supinf_1(C,B) ) ) ) ) ) ).
+
+fof(t23_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ~ ( ~ r1_supinf_1(A,k1_supinf_2)
+          & ! [B] :
+              ( m1_subset_1(B,k3_supinf_1)
+             => ~ ( ~ r1_supinf_1(B,k1_supinf_2)
+                  & ~ r1_supinf_1(A,B) ) ) ) ) ).
+
+fof(t24_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ~ ( ~ r1_supinf_1(A,k1_supinf_2)
+              & ~ r1_supinf_1(B,A)
+              & ! [C] :
+                  ( m1_subset_1(C,k3_supinf_1)
+                 => ~ ( ~ r1_supinf_1(C,k1_supinf_2)
+                      & ~ r1_supinf_1(B,k2_supinf_2(A,C))
+                      & r2_hidden(C,k6_supinf_1) ) ) ) ) ) ).
+
+fof(t25_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ~ ( r1_supinf_1(k1_supinf_2,A)
+              & ~ r1_supinf_1(B,A)
+              & ! [C] :
+                  ( m1_subset_1(C,k3_supinf_1)
+                 => ~ ( ~ r1_supinf_1(C,k1_supinf_2)
+                      & ~ r1_supinf_1(B,k2_supinf_2(A,C))
+                      & r2_hidden(C,k6_supinf_1) ) ) ) ) ) ).
+
+fof(t26_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ~ ( ~ r1_supinf_1(A,k1_supinf_2)
+          & ! [B] :
+              ( m1_subset_1(B,k3_supinf_1)
+             => ~ ( ~ r1_supinf_1(B,k1_supinf_2)
+                  & ~ r1_supinf_1(A,k2_supinf_2(B,B)) ) ) ) ) ).
+
+fof(d2_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ( ~ r1_supinf_1(A,k1_supinf_2)
+       => ! [B] :
+            ( ( ~ v1_xboole_0(B)
+              & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+           => ( B = k2_measure6(A)
+            <=> ! [C] :
+                  ( m1_subset_1(C,k3_supinf_1)
+                 => ( r2_hidden(C,B)
+                  <=> ( ~ r1_supinf_1(C,k1_supinf_2)
+                      & ~ r1_supinf_1(A,k2_supinf_2(C,C)) ) ) ) ) ) ) ) ).
+
+fof(d3_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => k3_measure6(A) = k9_supinf_1(k2_measure6(A)) ) ).
+
+fof(t27_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ~ ( ~ r1_supinf_1(A,k1_supinf_2)
+          & r1_supinf_1(k3_measure6(A),k1_supinf_2) ) ) ).
+
+fof(t28_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ( ~ r1_supinf_1(A,k1_supinf_2)
+       => r1_supinf_1(k3_measure6(A),A) ) ) ).
+
+fof(t29_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ~ ( ~ r1_supinf_1(A,k1_supinf_2)
+          & ~ r1_supinf_1(k4_supinf_1,A)
+          & ~ m1_subset_1(k3_measure6(A),k1_numbers) ) ) ).
+
+fof(t30_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ( ~ r1_supinf_1(A,k1_supinf_2)
+       => r1_supinf_1(k2_supinf_2(k3_measure6(A),k3_measure6(A)),A) ) ) ).
+
+fof(t31_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ~ ( ~ r1_supinf_1(A,k1_supinf_2)
+          & ! [B] :
+              ( ( v1_funct_1(B)
+                & v1_funct_2(B,k5_numbers,k3_supinf_1)
+                & m2_relset_1(B,k5_numbers,k3_supinf_1) )
+             => ~ ( ! [C] :
+                      ( m2_subset_1(C,k1_numbers,k5_numbers)
+                     => ~ r1_supinf_1(k13_supinf_2(B,C),k1_supinf_2) )
+                  & ~ r1_supinf_1(A,k19_supinf_2(B)) ) ) ) ) ).
+
+fof(t32_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ~ ( ~ r1_supinf_1(A,k1_supinf_2)
+              & m1_subset_1(k10_supinf_1(B),k1_numbers)
+              & ! [C] :
+                  ( m1_subset_1(C,k3_supinf_1)
+                 => ~ ( r2_hidden(C,B)
+                      & ~ r1_supinf_1(k2_supinf_2(k10_supinf_1(B),A),C) ) ) ) ) ) ).
+
+fof(t33_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ~ ( ~ r1_supinf_1(A,k1_supinf_2)
+              & m1_subset_1(k9_supinf_1(B),k1_numbers)
+              & ! [C] :
+                  ( m1_subset_1(C,k3_supinf_1)
+                 => ~ ( r2_hidden(C,B)
+                      & ~ r1_supinf_1(C,k4_supinf_2(k9_supinf_1(B),A)) ) ) ) ) ) ).
+
+fof(t34_measure6,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,k3_supinf_1)
+        & m2_relset_1(A,k5_numbers,k3_supinf_1) )
+     => ( v6_supinf_2(A,k5_numbers)
+       => ( r1_supinf_1(k4_supinf_1,k19_supinf_2(A))
+          | ! [B] :
+              ( m2_subset_1(B,k1_numbers,k5_numbers)
+             => r2_hidden(k13_supinf_2(A,B),k6_supinf_1) ) ) ) ) ).
+
+fof(t35_measure6,axiom,
+    ( v5_measure5(k6_supinf_1)
+    & m1_subset_1(k6_supinf_1,k1_zfmisc_1(k6_supinf_1))
+    & k6_supinf_1 = k2_measure5(k4_measure6,k5_measure6)
+    & k6_supinf_1 = k1_measure5(k4_measure6,k5_measure6)
+    & k6_supinf_1 = k4_measure5(k4_measure6,k5_measure6)
+    & k6_supinf_1 = k3_measure5(k4_measure6,k5_measure6) ) ).
+
+fof(t36_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( B = k4_measure6
+           => ( k2_measure5(A,B) = k6_measure5
+              & k1_measure5(A,B) = k6_measure5
+              & k4_measure5(A,B) = k6_measure5
+              & k3_measure5(A,B) = k6_measure5 ) ) ) ) ).
+
+fof(t37_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( A = k5_measure6
+           => ( k2_measure5(A,B) = k6_measure5
+              & k1_measure5(A,B) = k6_measure5
+              & k4_measure5(A,B) = k6_measure5
+              & k3_measure5(A,B) = k6_measure5 ) ) ) ) ).
+
+fof(t38_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ( ( A = k2_measure5(B,C)
+                              & r2_hidden(D,A)
+                              & r2_hidden(E,A)
+                              & r1_xreal_0(D,F)
+                              & r1_xreal_0(F,E) )
+                           => r2_hidden(F,A) ) ) ) ) ) ) ) ).
+
+fof(t39_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ( ( A = k1_measure5(B,C)
+                              & r2_hidden(D,A)
+                              & r2_hidden(E,A)
+                              & r1_xreal_0(D,F)
+                              & r1_xreal_0(F,E) )
+                           => r2_hidden(F,A) ) ) ) ) ) ) ) ).
+
+fof(t40_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ( ( A = k3_measure5(B,C)
+                              & r2_hidden(D,A)
+                              & r2_hidden(E,A)
+                              & r1_xreal_0(D,F)
+                              & r1_xreal_0(F,E) )
+                           => r2_hidden(F,A) ) ) ) ) ) ) ) ).
+
+fof(t41_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ( ( A = k4_measure5(B,C)
+                              & r2_hidden(D,A)
+                              & r2_hidden(E,A)
+                              & r1_xreal_0(D,F)
+                              & r1_xreal_0(F,E) )
+                           => r2_hidden(F,A) ) ) ) ) ) ) ) ).
+
+fof(t42_measure6,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( B = k10_supinf_1(A)
+                  & C = k9_supinf_1(A)
+                  & ! [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_numbers)
+                         => ( ( r2_hidden(D,A)
+                              & r2_hidden(E,A) )
+                           => ! [F] :
+                                ( m1_subset_1(F,k1_numbers)
+                               => ( ( r1_xreal_0(D,F)
+                                    & r1_xreal_0(F,E) )
+                                 => r2_hidden(F,A) ) ) ) ) ) )
+               => ( r2_hidden(B,A)
+                  | r2_hidden(C,A)
+                  | A = k2_measure5(B,C) ) ) ) ) ) ).
+
+fof(t43_measure6,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( B = k10_supinf_1(A)
+                  & C = k9_supinf_1(A)
+                  & ! [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_numbers)
+                         => ( ( r2_hidden(D,A)
+                              & r2_hidden(E,A) )
+                           => ! [F] :
+                                ( m1_subset_1(F,k1_numbers)
+                               => ( ( r1_xreal_0(D,F)
+                                    & r1_xreal_0(F,E) )
+                                 => r2_hidden(F,A) ) ) ) ) )
+                  & r2_hidden(B,A)
+                  & r2_hidden(C,A)
+                  & r1_tarski(A,k6_supinf_1) )
+               => A = k1_measure5(B,C) ) ) ) ) ).
+
+fof(t44_measure6,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( B = k10_supinf_1(A)
+                  & C = k9_supinf_1(A)
+                  & ! [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_numbers)
+                         => ( ( r2_hidden(D,A)
+                              & r2_hidden(E,A) )
+                           => ! [F] :
+                                ( m1_subset_1(F,k1_numbers)
+                               => ( ( r1_xreal_0(D,F)
+                                    & r1_xreal_0(F,E) )
+                                 => r2_hidden(F,A) ) ) ) ) )
+                  & r2_hidden(B,A)
+                  & r1_tarski(A,k6_supinf_1) )
+               => ( r2_hidden(C,A)
+                  | A = k4_measure5(B,C) ) ) ) ) ) ).
+
+fof(t45_measure6,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( B = k10_supinf_1(A)
+                  & C = k9_supinf_1(A)
+                  & ! [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_numbers)
+                         => ( ( r2_hidden(D,A)
+                              & r2_hidden(E,A) )
+                           => ! [F] :
+                                ( m1_subset_1(F,k1_numbers)
+                               => ( ( r1_xreal_0(D,F)
+                                    & r1_xreal_0(F,E) )
+                                 => r2_hidden(F,A) ) ) ) ) )
+                  & r2_hidden(C,A)
+                  & r1_tarski(A,k6_supinf_1) )
+               => ( r2_hidden(B,A)
+                  | A = k3_measure5(B,C) ) ) ) ) ) ).
+
+fof(t46_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k6_supinf_1))
+     => ( ( v5_measure5(A)
+          & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ! [C] :
+                ( m1_subset_1(C,k1_numbers)
+               => ( ( r2_hidden(B,A)
+                    & r2_hidden(C,A) )
+                 => ! [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                     => ( ( r1_xreal_0(B,D)
+                          & r1_xreal_0(D,C) )
+                       => r2_hidden(D,A) ) ) ) ) ) ) ) ).
+
+fof(t47_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( ( v5_measure5(B)
+            & m1_subset_1(B,k1_zfmisc_1(k6_supinf_1)) )
+         => ( ~ r1_xboole_0(A,B)
+           => ( v5_measure5(k4_subset_1(k6_supinf_1,A,B))
+              & m1_subset_1(k4_subset_1(k6_supinf_1,A,B),k1_zfmisc_1(k6_supinf_1)) ) ) ) ) ).
+
+fof(d4_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ( A != k6_measure5
+       => ! [B] :
+            ( m1_subset_1(B,k3_supinf_1)
+           => ( B = k6_measure6(A)
+            <=> ? [C] :
+                  ( m1_subset_1(C,k3_supinf_1)
+                  & r1_supinf_1(B,C)
+                  & ~ ( A != k2_measure5(B,C)
+                      & A != k3_measure5(B,C)
+                      & A != k1_measure5(B,C)
+                      & A != k4_measure5(B,C) ) ) ) ) ) ) ).
+
+fof(d5_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ( A != k6_measure5
+       => ! [B] :
+            ( m1_subset_1(B,k3_supinf_1)
+           => ( B = k7_measure6(A)
+            <=> ? [C] :
+                  ( m1_subset_1(C,k3_supinf_1)
+                  & r1_supinf_1(C,B)
+                  & ~ ( A != k2_measure5(C,B)
+                      & A != k3_measure5(C,B)
+                      & A != k1_measure5(C,B)
+                      & A != k4_measure5(C,B) ) ) ) ) ) ) ).
+
+fof(t48_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ( v1_measure5(A)
+       => ( A = k6_measure5
+          | ( r1_supinf_1(k6_measure6(A),k7_measure6(A))
+            & A = k2_measure5(k6_measure6(A),k7_measure6(A)) ) ) ) ) ).
+
+fof(t49_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ( v2_measure5(A)
+       => ( A = k6_measure5
+          | ( r1_supinf_1(k6_measure6(A),k7_measure6(A))
+            & A = k1_measure5(k6_measure6(A),k7_measure6(A)) ) ) ) ) ).
+
+fof(t50_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ( v3_measure5(A)
+       => ( A = k6_measure5
+          | ( r1_supinf_1(k6_measure6(A),k7_measure6(A))
+            & A = k4_measure5(k6_measure6(A),k7_measure6(A)) ) ) ) ) ).
+
+fof(t51_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ( v4_measure5(A)
+       => ( A = k6_measure5
+          | ( r1_supinf_1(k6_measure6(A),k7_measure6(A))
+            & A = k3_measure5(k6_measure6(A),k7_measure6(A)) ) ) ) ) ).
+
+fof(t52_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ( A != k6_measure5
+       => ( r1_supinf_1(k6_measure6(A),k7_measure6(A))
+          & ~ ( A != k2_measure5(k6_measure6(A),k7_measure6(A))
+              & A != k3_measure5(k6_measure6(A),k7_measure6(A))
+              & A != k1_measure5(k6_measure6(A),k7_measure6(A))
+              & A != k4_measure5(k6_measure6(A),k7_measure6(A)) ) ) ) ) ).
+
+fof(t53_measure6,axiom,
+    $true ).
+
+fof(t54_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( r2_hidden(B,A)
+           => ( r1_supinf_1(k6_measure6(A),k1_measure6(B))
+              & r1_supinf_1(k1_measure6(B),k7_measure6(A)) ) ) ) ) ).
+
+fof(t55_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( ( v5_measure5(B)
+            & m1_subset_1(B,k1_zfmisc_1(k6_supinf_1)) )
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ( ( r2_hidden(C,A)
+                      & r2_hidden(D,B)
+                      & r1_supinf_1(k7_measure6(A),k6_measure6(B)) )
+                   => r1_xreal_0(C,D) ) ) ) ) ) ).
+
+fof(t56_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( r2_hidden(B,A)
+           => ( r1_supinf_1(k6_measure6(A),B)
+              & r1_supinf_1(B,k7_measure6(A)) ) ) ) ) ).
+
+fof(t57_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ( A != k6_measure5
+       => ! [B] :
+            ( m1_subset_1(B,k3_supinf_1)
+           => ~ ( ~ r1_supinf_1(B,k6_measure6(A))
+                & ~ r1_supinf_1(k7_measure6(A),B)
+                & ~ r2_hidden(B,A) ) ) ) ) ).
+
+fof(t58_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( ( v5_measure5(B)
+            & m1_subset_1(B,k1_zfmisc_1(k6_supinf_1)) )
+         => ( k7_measure6(A) = k6_measure6(B)
+           => ( ( ~ r2_hidden(k7_measure6(A),A)
+                & ~ r2_hidden(k6_measure6(B),B) )
+              | ( v5_measure5(k4_subset_1(k6_supinf_1,A,B))
+                & m1_subset_1(k4_subset_1(k6_supinf_1,A,B),k1_zfmisc_1(k6_supinf_1)) ) ) ) ) ) ).
+
+fof(d6_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k6_supinf_1))
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k6_supinf_1))
+             => ( C = k8_measure6(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k1_numbers)
+                   => ( r2_hidden(D,C)
+                    <=> ? [E] :
+                          ( m1_subset_1(E,k1_numbers)
+                          & r2_hidden(E,A)
+                          & D = k2_xcmplx_0(B,E) ) ) ) ) ) ) ) ).
+
+fof(t59_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k6_supinf_1))
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => k8_measure6(k8_measure6(A,B),k4_xcmplx_0(B)) = A ) ) ).
+
+fof(t60_measure6,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k6_supinf_1))
+         => ( B = k6_supinf_1
+           => k8_measure6(B,A) = B ) ) ) ).
+
+fof(t61_measure6,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => k8_measure6(k6_measure5,A) = k6_measure5 ) ).
+
+fof(t62_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( v1_measure5(A)
+          <=> v1_measure5(k8_measure6(A,B)) ) ) ) ).
+
+fof(t63_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( v2_measure5(A)
+          <=> v2_measure5(k8_measure6(A,B)) ) ) ) ).
+
+fof(t64_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( v3_measure5(A)
+          <=> v3_measure5(k8_measure6(A,B)) ) ) ) ).
+
+fof(t65_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( v4_measure5(A)
+          <=> v4_measure5(k8_measure6(A,B)) ) ) ) ).
+
+fof(t66_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( v5_measure5(k8_measure6(A,B))
+            & m1_subset_1(k8_measure6(A,B),k1_zfmisc_1(k6_supinf_1)) ) ) ) ).
+
+fof(t67_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => k5_measure5(A) = k5_measure5(k8_measure6(A,B)) ) ) ).
+
+fof(dt_k1_measure6,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => m1_subset_1(k1_measure6(A),k3_supinf_1) ) ).
+
+fof(dt_k2_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ( ~ v1_xboole_0(k2_measure6(A))
+        & m1_subset_1(k2_measure6(A),k1_zfmisc_1(k3_supinf_1)) ) ) ).
+
+fof(dt_k3_measure6,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => m1_subset_1(k3_measure6(A),k3_supinf_1) ) ).
+
+fof(dt_k4_measure6,axiom,
+    m1_subset_1(k4_measure6,k3_supinf_1) ).
+
+fof(redefinition_k4_measure6,axiom,
+    k4_measure6 = k2_supinf_1 ).
+
+fof(dt_k5_measure6,axiom,
+    m1_subset_1(k5_measure6,k3_supinf_1) ).
+
+fof(redefinition_k5_measure6,axiom,
+    k5_measure6 = k1_supinf_1 ).
+
+fof(dt_k6_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => m1_subset_1(k6_measure6(A),k3_supinf_1) ) ).
+
+fof(dt_k7_measure6,axiom,
+    ! [A] :
+      ( ( v5_measure5(A)
+        & m1_subset_1(A,k1_zfmisc_1(k6_supinf_1)) )
+     => m1_subset_1(k7_measure6(A),k3_supinf_1) ) ).
+
+fof(dt_k8_measure6,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k1_zfmisc_1(k6_supinf_1))
+        & v1_xreal_0(B) )
+     => m1_subset_1(k8_measure6(A,B),k1_zfmisc_1(k6_supinf_1)) ) ).
+
+%------------------------------------------------------------------------------

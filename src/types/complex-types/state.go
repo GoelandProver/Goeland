@@ -66,6 +66,7 @@ type State struct {
 	current_proof                         proof.ProofStruct
 	bt_on_formulas                        bool
 	forbidden                             []treetypes.Substitutions
+	unifier                               Unifier
 }
 
 /***********/
@@ -130,6 +131,9 @@ func (s State) GetBTOnFormulas() bool {
 func (s State) GetForbiddenSubsts() []treetypes.Substitutions {
 	return s.forbidden
 }
+func (s State) GetGlobalUnifier() Unifier {
+	return s.unifier.Copy()
+}
 
 /* Setters */
 
@@ -191,7 +195,7 @@ func (st *State) SetCurrentProof(p proof.ProofStruct) {
 }
 func (st *State) SetCurrentProofFormula(f basictypes.FormAndTerms) {
 	if global.GetProof() {
-		st.current_proof.SetFormulaProof(f.Copy())
+		st.current_proof.SetFormulaProof(f)
 	}
 }
 func (st *State) SetCurrentProofIdDMT(i int) {
@@ -203,7 +207,7 @@ func (st *State) SetCurrentProofResultFormulas(fll []proof.IntFormAndTermsList) 
 	if global.GetProof() {
 		new_fll := []proof.IntFormAndTermsList{}
 		for _, fl := range fll {
-			new_fll = append(new_fll, fl.Copy())
+			new_fll = append(new_fll, proof.MakeIntFormAndTermsList(fl.GetI(), fl.GetFL()))
 		}
 		st.current_proof.SetResultFormulasProof(new_fll)
 	}
@@ -234,6 +238,9 @@ func (st *State) SetBTOnFormulas(b bool) {
 func (st *State) SetForbiddenSubsts(s []treetypes.Substitutions) {
 	st.forbidden = treetypes.CopySubstList(s)
 }
+func (s *State) SetGlobalUnifier(u Unifier) {
+	s.unifier = u.Copy()
+}
 
 /* Maker */
 func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) State {
@@ -246,7 +253,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) St
 	current_proof.SetRuleProof("Initial formula")
 	current_proof.SetFormulaProof(basictypes.MakeFormAndTerm(f.Copy(), basictypes.MakeEmptyTermList()))
 
-	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}}
+	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier()}
 }
 
 /* Print a state */
@@ -339,23 +346,12 @@ func (st State) Copy() State {
 	new_state.SetMM(append(new_state.GetMM(), append(st.GetMM(), st.GetMC()...)...))
 	new_state.SetMC(basictypes.MetaList{})
 
-	if global.IsDestructive() {
-		// Don't need to copy because launched with the subst applied - no need to tell father I found something
-		new_state.SetAppliedSubst(MakeEmptySubstAndForm())
-	} else {
-		new_state.SetAppliedSubst(st.GetAppliedSubst())
-	}
+	new_state.SetAppliedSubst(st.GetAppliedSubst())
+	new_state.SetLastAppliedSubst(st.GetLastAppliedSubst())
+	new_state.SetSubstsFound(st.GetSubstsFound())
+	new_state.SetGlobalUnifier(st.GetGlobalUnifier().Copy())
 
-	new_state.SetLastAppliedSubst(st.GetLastAppliedSubst()) // ND only, destructive dosen't care
-
-	if global.IsDestructive() {
-		// Don't copy in destructive mode beacause we need to discard the subst found when we recieved a wait father order
-		new_state.SetSubstsFound([]SubstAndForm{})
-	} else {
-		new_state.SetSubstsFound(st.GetSubstsFound())
-	}
-
-	// Recréer arbre
+	// Recreate code tree.
 	if global.IsLoaded("dmt") {
 		new_state.SetTreePos(st.tree_pos.MakeDataStruct(st.GetAtomic().ExtractForms(), true))
 		new_state.SetTreeNeg(st.tree_pos.MakeDataStruct(st.GetAtomic().ExtractForms(), false))
@@ -412,28 +408,34 @@ func (st *State) DispatchForm(f basictypes.FormAndTerms) {
 	case basictypes.Gamma:
 		st.SetGamma(st.GetGamma().AppendIfNotContains(f))
 	default:
-		fmt.Println("[ERROR] Formula not recognized")
+		global.PrintError("STATE", "Formula not recognized")
 	}
 }
 
 /** Apply a sbstitution on a state
 * TODO : remove old MM/MC
 **/
-func ApplySubstitution(st *State, saf SubstAndForm) {
-	s := saf.GetSubst()
-	ms := MergeSubstAndForm(st.GetAppliedSubst(), saf.Copy())
+func ApplySubstitution(st *State, saf SubstAndForm) error {
+	err, ms := MergeSubstAndForm(st.GetAppliedSubst(), saf.Copy())
+	if err != nil {
+		return err
+	}
+
 	st.SetAppliedSubst(ms)
 	st.SetLastAppliedSubst(saf)
-	st.SetLF(ApplySubstitutionsOnFormAndTermsList(s, st.GetLF()))
-	st.SetAtomic(ApplySubstitutionsOnFormAndTermsList(s, st.GetAtomic()))
-	st.SetAlpha(ApplySubstitutionsOnFormAndTermsList(s, st.GetAlpha()))
+	atomics := ApplySubstitutionsOnFormAndTermsList(ms.GetSubst(), st.GetAtomic())
+	//st.SetLF(ApplySubstitutionsOnFormAndTermsList(s, st.GetLF()))
+	//st.SetAtomic(ApplySubstitutionsOnFormAndTermsList(s, st.GetAtomic()))
+	/*st.SetAlpha(ApplySubstitutionsOnFormAndTermsList(s, st.GetAlpha()))
 	st.SetBeta(ApplySubstitutionsOnFormAndTermsList(s, st.GetBeta()))
 	st.SetDelta(ApplySubstitutionsOnFormAndTermsList(s, st.GetDelta()))
 	st.SetGamma(ApplySubstitutionsOnFormAndTermsList(s, st.GetGamma()))
-	st.SetMetaGen(ApplySubstitutionOnMetaGenList(s, st.GetMetaGen()))
+	st.SetMetaGen(ApplySubstitutionOnMetaGenList(s, st.GetMetaGen()))*/
 
-	st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().ExtractForms(), true))
-	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().ExtractForms(), false))
+	st.SetTreePos(st.GetTreePos().MakeDataStruct(atomics.ExtractForms(), true))
+	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(atomics.ExtractForms(), false))
+
+	return nil
 }
 
 /* TODO : remove and change - for write proof */

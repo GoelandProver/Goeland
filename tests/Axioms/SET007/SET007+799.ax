@@ -1,0 +1,1310 @@
+%------------------------------------------------------------------------------
+% File     : SET007+799 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Basic Properties of Rough Sets and Rough Membership Function
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : roughs_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  125 (   1 unt;   0 def)
+%            Number of atoms       :  769 (  55 equ)
+%            Maximal formula atoms :   12 (   6 avg)
+%            Number of connectives :  776 ( 132   ~;   0   |; 358   &)
+%                                         (  27 <=>; 259  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   7 avg)
+%            Maximal term depth    :    6 (   1 avg)
+%            Number of predicates  :   45 (  43 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   48 (  48 usr;   5 con; 0-4 aty)
+%            Number of variables   :  305 ( 290   !;  15   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_roughs_1,axiom,
+    ! [A] :
+      ( v1_orders_2(g1_orders_2(A,k6_partfun1(A)))
+      & v2_orders_2(g1_orders_2(A,k6_partfun1(A)))
+      & v3_orders_2(g1_orders_2(A,k6_partfun1(A)))
+      & v4_orders_2(g1_orders_2(A,k6_partfun1(A)))
+      & v1_orders_3(g1_orders_2(A,k6_partfun1(A))) ) ).
+
+fof(fc2_roughs_1,axiom,
+    ! [A] :
+      ( ~ v1_realset1(A)
+     => ( ~ v3_struct_0(g1_orders_2(A,k1_eqrel_1(A)))
+        & v1_orders_2(g1_orders_2(A,k1_eqrel_1(A)))
+        & ~ v1_roughs_1(g1_orders_2(A,k1_eqrel_1(A))) ) ) ).
+
+fof(cc1_roughs_1,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( v2_orders_2(A)
+          & ~ v1_orders_3(A) )
+       => ( ~ v3_realset2(A)
+          & v2_orders_2(A) ) ) ) ).
+
+fof(cc2_roughs_1,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ( v3_realset2(A)
+          & v2_orders_2(A) )
+       => v1_orders_3(A) ) ) ).
+
+fof(cc3_roughs_1,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_orders_3(A)
+       => v1_roughs_1(A) ) ) ).
+
+fof(cc4_roughs_1,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( ~ v1_roughs_1(A)
+       => ~ v1_orders_3(A) ) ) ).
+
+fof(rc1_roughs_1,axiom,
+    ? [A] :
+      ( l1_orders_2(A)
+      & ~ v3_struct_0(A)
+      & ~ v1_orders_3(A)
+      & ~ v1_roughs_1(A) ) ).
+
+fof(cc5_roughs_1,axiom,
+    ! [A] :
+      ( ( v1_xboole_0(A)
+        & v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_prob_2(A) ) ) ).
+
+fof(rc2_roughs_1,axiom,
+    ! [A] :
+    ? [B] :
+      ( m1_finseq_1(B,A)
+      & v1_relat_1(B)
+      & v1_funct_1(B)
+      & v1_finset_1(B)
+      & v1_finseq_1(B)
+      & v1_prob_2(B) ) ).
+
+fof(rc3_roughs_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ? [B] :
+          ( m1_finseq_1(B,A)
+          & ~ v1_xboole_0(B)
+          & v1_relat_1(B)
+          & v1_funct_1(B)
+          & v1_finset_1(B)
+          & v1_finseq_1(B)
+          & v1_prob_2(B) ) ) ).
+
+fof(fc3_roughs_1,axiom,
+    ! [A,B] :
+      ( ( v1_finset_1(A)
+        & m1_relset_1(B,A,A) )
+     => ( v6_group_1(g1_orders_2(A,B))
+        & v1_orders_2(g1_orders_2(A,B)) ) ) ).
+
+fof(cc6_roughs_1,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v2_roughs_1(A)
+       => v3_roughs_1(A) ) ) ).
+
+fof(fc4_roughs_1,axiom,
+    ! [A] :
+      ( v1_orders_2(g1_orders_2(A,k6_partfun1(A)))
+      & v2_orders_2(g1_orders_2(A,k6_partfun1(A)))
+      & v3_orders_2(g1_orders_2(A,k6_partfun1(A)))
+      & v4_orders_2(g1_orders_2(A,k6_partfun1(A)))
+      & v1_orders_3(g1_orders_2(A,k6_partfun1(A)))
+      & v1_roughs_1(g1_orders_2(A,k6_partfun1(A)))
+      & v2_roughs_1(g1_orders_2(A,k6_partfun1(A)))
+      & v3_roughs_1(g1_orders_2(A,k6_partfun1(A))) ) ).
+
+fof(rc4_roughs_1,axiom,
+    ? [A] :
+      ( l1_orders_2(A)
+      & ~ v3_struct_0(A)
+      & v6_group_1(A)
+      & v1_orders_3(A)
+      & v1_roughs_1(A)
+      & v2_roughs_1(A)
+      & v3_roughs_1(A) ) ).
+
+fof(rc5_roughs_1,axiom,
+    ? [A] :
+      ( l1_orders_2(A)
+      & ~ v3_struct_0(A)
+      & v6_group_1(A)
+      & ~ v1_orders_3(A)
+      & ~ v1_roughs_1(A)
+      & v2_roughs_1(A)
+      & v3_roughs_1(A) ) ).
+
+fof(fc5_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ( v1_relat_1(u1_orders_2(A))
+        & v1_relat_2(u1_orders_2(A))
+        & v3_relat_2(u1_orders_2(A))
+        & v1_partfun1(u1_orders_2(A),u1_struct_0(A),u1_struct_0(A)) ) ) ).
+
+fof(fc6_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ( v1_relat_1(u1_orders_2(A))
+        & v1_relat_2(u1_orders_2(A))
+        & v3_relat_2(u1_orders_2(A))
+        & v8_relat_2(u1_orders_2(A))
+        & v1_partfun1(u1_orders_2(A),u1_struct_0(A),u1_struct_0(A)) ) ) ).
+
+fof(rc6_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ? [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+          & ~ v4_roughs_1(B,A) ) ) ).
+
+fof(fc7_roughs_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => ~ v4_roughs_1(k3_roughs_1(A,B),A) ) ).
+
+fof(fc8_roughs_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => ~ v4_roughs_1(k4_roughs_1(A,B),A) ) ).
+
+fof(rc7_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v1_roughs_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ? [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+          & v4_roughs_1(B,A) ) ) ).
+
+fof(fc9_roughs_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => ( ~ v1_xboole_0(k1_card_1(k6_eqrel_1(u1_struct_0(A),u1_orders_2(A),B)))
+        & v1_card_1(k1_card_1(k6_eqrel_1(u1_struct_0(A),u1_orders_2(A),B))) ) ) ).
+
+fof(cc7_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_orders_3(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ~ v4_roughs_1(B,A) ) ) ).
+
+fof(t1_roughs_1,axiom,
+    ! [A] :
+      ( r1_tarski(k1_eqrel_1(A),k6_partfun1(A))
+     => v1_realset1(A) ) ).
+
+fof(d1_roughs_1,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_roughs_1(A)
+      <=> r1_tarski(u1_orders_2(A),k6_partfun1(u1_struct_0(A))) ) ) ).
+
+fof(t2_roughs_1,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & l1_orders_2(A) )
+     => r1_tarski(k6_partfun1(u1_struct_0(A)),u1_orders_2(A)) ) ).
+
+fof(t3_roughs_1,axiom,
+    ! [A,B] :
+      ( ( v1_relat_2(B)
+        & v1_partfun1(B,A,A)
+        & m2_relset_1(B,A,A) )
+     => r1_tarski(k6_partfun1(A),B) ) ).
+
+fof(t4_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v1_roughs_1(A)
+        & l1_orders_2(A) )
+     => ? [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+          & ? [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+              & B != C
+              & r2_hidden(k4_tarski(B,C),u1_orders_2(A)) ) ) ) ).
+
+fof(t5_roughs_1,axiom,
+    ! [A,B] :
+      ( m2_finseq_1(B,A)
+     => ! [C] :
+          ( m2_finseq_1(C,A)
+         => k3_card_3(k8_finseq_1(A,B,C)) = k2_xboole_0(k3_card_3(B),k3_card_3(C)) ) ) ).
+
+fof(t6_roughs_1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( ( v1_prob_2(B)
+              & r1_tarski(A,B) )
+           => v1_prob_2(A) ) ) ) ).
+
+fof(t7_roughs_1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_relat_2(D)
+        & v3_relat_2(D)
+        & v1_partfun1(D,A,A)
+        & m2_relset_1(D,A,A) )
+     => ( r2_hidden(B,k6_eqrel_1(A,D,C))
+       => r2_hidden(C,k6_eqrel_1(A,D,B)) ) ) ).
+
+fof(d2_roughs_1,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v2_roughs_1(A)
+      <=> ( v3_relat_2(u1_orders_2(A))
+          & v8_relat_2(u1_orders_2(A))
+          & v1_partfun1(u1_orders_2(A),u1_struct_0(A),u1_struct_0(A))
+          & m2_relset_1(u1_orders_2(A),u1_struct_0(A),u1_struct_0(A)) ) ) ) ).
+
+fof(d3_roughs_1,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v3_roughs_1(A)
+      <=> ( v1_relat_2(u1_orders_2(A))
+          & v3_relat_2(u1_orders_2(A))
+          & v1_partfun1(u1_orders_2(A),u1_struct_0(A),u1_struct_0(A))
+          & m2_relset_1(u1_orders_2(A),u1_struct_0(A),u1_struct_0(A)) ) ) ) ).
+
+fof(d6_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k5_roughs_1(A,B) = k6_subset_1(u1_struct_0(A),k4_roughs_1(A,B),k3_roughs_1(A,B)) ) ) ).
+
+fof(d7_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v4_roughs_1(B,A)
+          <=> k5_roughs_1(A,B) != k1_xboole_0 ) ) ) ).
+
+fof(t8_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( r2_hidden(C,k3_roughs_1(A,B))
+             => r1_tarski(k6_eqrel_1(u1_struct_0(A),u1_orders_2(A),C),B) ) ) ) ).
+
+fof(t9_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_tarski(k6_eqrel_1(u1_struct_0(A),u1_orders_2(A),C),B)
+               => r2_hidden(C,k3_roughs_1(A,B)) ) ) ) ) ).
+
+fof(t10_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ~ ( r2_hidden(C,k4_roughs_1(A,B))
+                & r1_xboole_0(k6_eqrel_1(u1_struct_0(A),u1_orders_2(A),C),B) ) ) ) ).
+
+fof(t11_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( ~ r1_xboole_0(k6_eqrel_1(u1_struct_0(A),u1_orders_2(A),C),B)
+               => r2_hidden(C,k4_roughs_1(A,B)) ) ) ) ) ).
+
+fof(t12_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => r1_tarski(k3_roughs_1(A,B),B) ) ) ).
+
+fof(t13_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => r1_tarski(B,k4_roughs_1(A,B)) ) ) ).
+
+fof(t14_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => r1_tarski(k3_roughs_1(A,B),k4_roughs_1(A,B)) ) ) ).
+
+fof(t15_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( ~ v4_roughs_1(B,A)
+          <=> k3_roughs_1(A,B) = B ) ) ) ).
+
+fof(t16_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( ~ v4_roughs_1(B,A)
+          <=> k4_roughs_1(A,B) = B ) ) ) ).
+
+fof(t17_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( B = k3_roughs_1(A,B)
+          <=> B = k4_roughs_1(A,B) ) ) ) ).
+
+fof(t18_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => k3_roughs_1(A,k1_pre_topc(A)) = k1_xboole_0 ) ).
+
+fof(t19_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => k4_roughs_1(A,k1_pre_topc(A)) = k1_xboole_0 ) ).
+
+fof(t20_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => k3_roughs_1(A,k2_pre_topc(A)) = k2_pre_topc(A) ) ).
+
+fof(t21_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => k4_roughs_1(A,k2_pre_topc(A)) = k2_pre_topc(A) ) ).
+
+fof(t22_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => k3_roughs_1(A,k5_subset_1(u1_struct_0(A),B,C)) = k5_subset_1(u1_struct_0(A),k3_roughs_1(A,B),k3_roughs_1(A,C)) ) ) ) ).
+
+fof(t23_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => k4_roughs_1(A,k4_subset_1(u1_struct_0(A),B,C)) = k4_subset_1(u1_struct_0(A),k4_roughs_1(A,B),k4_roughs_1(A,C)) ) ) ) ).
+
+fof(t24_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_tarski(B,C)
+               => r1_tarski(k3_roughs_1(A,B),k3_roughs_1(A,C)) ) ) ) ) ).
+
+fof(t25_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_tarski(B,C)
+               => r1_tarski(k4_roughs_1(A,B),k4_roughs_1(A,C)) ) ) ) ) ).
+
+fof(t26_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => r1_tarski(k4_subset_1(u1_struct_0(A),k3_roughs_1(A,B),k3_roughs_1(A,C)),k3_roughs_1(A,k4_subset_1(u1_struct_0(A),B,C))) ) ) ) ).
+
+fof(t27_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => r1_tarski(k4_roughs_1(A,k5_subset_1(u1_struct_0(A),B,C)),k5_subset_1(u1_struct_0(A),k4_roughs_1(A,B),k4_roughs_1(A,C))) ) ) ) ).
+
+fof(t28_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k3_roughs_1(A,k3_subset_1(u1_struct_0(A),B)) = k3_subset_1(u1_struct_0(A),k4_roughs_1(A,B)) ) ) ).
+
+fof(t29_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k4_roughs_1(A,k3_subset_1(u1_struct_0(A),B)) = k3_subset_1(u1_struct_0(A),k3_roughs_1(A,B)) ) ) ).
+
+fof(t30_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k4_roughs_1(A,k3_roughs_1(A,k4_roughs_1(A,B))) = k4_roughs_1(A,B) ) ) ).
+
+fof(t31_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k3_roughs_1(A,k4_roughs_1(A,k3_roughs_1(A,B))) = k3_roughs_1(A,B) ) ) ).
+
+fof(t32_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k5_roughs_1(A,B) = k5_roughs_1(A,k3_subset_1(u1_struct_0(A),B)) ) ) ).
+
+fof(t33_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k3_roughs_1(A,k3_roughs_1(A,B)) = k3_roughs_1(A,B) ) ) ).
+
+fof(t34_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k3_roughs_1(A,k3_roughs_1(A,B)) = k4_roughs_1(A,k3_roughs_1(A,B)) ) ) ).
+
+fof(t35_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k4_roughs_1(A,k4_roughs_1(A,B)) = k4_roughs_1(A,B) ) ) ).
+
+fof(t36_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k4_roughs_1(A,k4_roughs_1(A,B)) = k3_roughs_1(A,k4_roughs_1(A,B)) ) ) ).
+
+fof(t37_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C,D] :
+              ( ( r2_hidden(C,k4_roughs_1(A,B))
+                & r2_hidden(k4_tarski(C,D),u1_orders_2(A)) )
+             => r2_hidden(D,k4_roughs_1(A,B)) ) ) ) ).
+
+fof(d8_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_roughs_1(C,A,B)
+            <=> C = k4_tarski(k3_roughs_1(A,B),k4_roughs_1(A,B)) ) ) ) ).
+
+fof(d9_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),k1_numbers)
+                & m2_relset_1(C,u1_struct_0(A),k1_numbers) )
+             => ( C = k6_roughs_1(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => k8_funct_2(u1_struct_0(A),k1_numbers,C,D) = k6_real_1(k4_card_1(k5_subset_1(u1_struct_0(A),B,k6_eqrel_1(u1_struct_0(A),u1_orders_2(A),D))),k4_card_1(k6_eqrel_1(u1_struct_0(A),u1_orders_2(A),D))) ) ) ) ) ) ).
+
+fof(t38_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),C))
+                & r1_xreal_0(k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),C),np__1) ) ) ) ) ).
+
+fof(t39_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r2_hidden(k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),C),k1_rcomp_1(np__0,np__1)) ) ) ) ).
+
+fof(t40_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),C) = np__1
+              <=> r2_hidden(C,k3_roughs_1(A,B)) ) ) ) ) ).
+
+fof(t41_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),C) = np__0
+              <=> r2_hidden(C,k3_subset_1(u1_struct_0(A),k4_roughs_1(A,B))) ) ) ) ) ).
+
+fof(t42_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( ( ~ r1_xreal_0(k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),C),np__0)
+                  & ~ r1_xreal_0(np__1,k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),C)) )
+              <=> r2_hidden(C,k5_roughs_1(A,B)) ) ) ) ) ).
+
+fof(t43_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_orders_3(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ~ v4_roughs_1(B,A) ) ) ).
+
+fof(t44_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v1_orders_3(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k6_roughs_1(A,B) = k5_funct_3(B,u1_struct_0(A)) ) ) ).
+
+fof(t45_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C,D] :
+              ( r2_hidden(k4_tarski(C,D),u1_orders_2(A))
+             => k1_funct_1(k6_roughs_1(A,B),C) = k1_funct_1(k6_roughs_1(A,B),D) ) ) ) ).
+
+fof(t46_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,k3_subset_1(u1_struct_0(A),B)),C) = k5_real_1(np__1,k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),C)) ) ) ) ).
+
+fof(t47_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_tarski(B,C)
+                   => r1_xreal_0(k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),D),k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,C),D)) ) ) ) ) ) ).
+
+fof(t48_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => r1_xreal_0(k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),D),k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,k4_subset_1(u1_struct_0(A),B,C)),D)) ) ) ) ) ).
+
+fof(t49_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => r1_xreal_0(k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,k5_subset_1(u1_struct_0(A),B,C)),D),k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),D)) ) ) ) ) ).
+
+fof(t50_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => r1_xreal_0(k4_square_1(k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),D),k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,C),D)),k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,k4_subset_1(u1_struct_0(A),B,C)),D)) ) ) ) ) ).
+
+fof(t51_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_xboole_0(B,C)
+                   => k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,k4_subset_1(u1_struct_0(A),B,C)),D) = k3_real_1(k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),D),k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,C),D)) ) ) ) ) ) ).
+
+fof(t52_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => r1_xreal_0(k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,k5_subset_1(u1_struct_0(A),B,C)),D),k3_square_1(k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,B),D),k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,C),D))) ) ) ) ) ).
+
+fof(d10_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_finseq_1(D,k1_numbers)
+                 => ( D = k7_roughs_1(A,B,C)
+                  <=> ( k4_relset_1(k5_numbers,k1_numbers,D) = k4_relset_1(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),B)
+                      & ! [E] :
+                          ( m2_subset_1(E,k1_numbers,k5_numbers)
+                         => ( r2_hidden(E,k4_relset_1(k5_numbers,k1_zfmisc_1(u1_struct_0(A)),B))
+                           => k1_funct_1(D,E) = k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,k1_roughs_1(u1_struct_0(A),B,E)),C) ) ) ) ) ) ) ) ) ).
+
+fof(t53_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => k7_roughs_1(A,k8_finseq_1(k1_zfmisc_1(u1_struct_0(A)),B,k12_finseq_1(k1_zfmisc_1(u1_struct_0(A)),D)),C) = k8_finseq_1(k1_numbers,k7_roughs_1(A,B,C),k12_finseq_1(k1_numbers,k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,D),C))) ) ) ) ) ).
+
+fof(t54_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,k1_pre_topc(A)),B) = np__0 ) ) ).
+
+fof(t55_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( v1_prob_2(C)
+                & m2_finseq_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+             => k8_funct_2(u1_struct_0(A),k1_numbers,k6_roughs_1(A,k2_roughs_1(u1_struct_0(A),C)),B) = k15_rvsum_1(k7_roughs_1(A,C,B)) ) ) ) ).
+
+fof(d11_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r1_roughs_1(A,B,C)
+              <=> r1_tarski(k3_roughs_1(A,B),k3_roughs_1(A,C)) ) ) ) ) ).
+
+fof(d12_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r2_roughs_1(A,B,C)
+              <=> r1_tarski(k4_roughs_1(A,B),k4_roughs_1(A,C)) ) ) ) ) ).
+
+fof(d13_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r3_roughs_1(A,B,C)
+              <=> ( r1_roughs_1(A,B,C)
+                  & r2_roughs_1(A,B,C) ) ) ) ) ) ).
+
+fof(t59_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( r1_roughs_1(A,B,C)
+                      & r1_roughs_1(A,C,D) )
+                   => r1_roughs_1(A,B,D) ) ) ) ) ) ).
+
+fof(t60_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( r2_roughs_1(A,B,C)
+                      & r2_roughs_1(A,C,D) )
+                   => r2_roughs_1(A,B,D) ) ) ) ) ) ).
+
+fof(t61_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ( ( r3_roughs_1(A,B,C)
+                      & r3_roughs_1(A,C,D) )
+                   => r3_roughs_1(A,B,D) ) ) ) ) ) ).
+
+fof(d14_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r4_roughs_1(A,B,C)
+              <=> k3_roughs_1(A,B) = k3_roughs_1(A,C) ) ) ) ) ).
+
+fof(d15_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r5_roughs_1(A,B,C)
+              <=> k4_roughs_1(A,B) = k4_roughs_1(A,C) ) ) ) ) ).
+
+fof(d16_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r6_roughs_1(A,B,C)
+              <=> ( k3_roughs_1(A,B) = k3_roughs_1(A,C)
+                  & k4_roughs_1(A,B) = k4_roughs_1(A,C) ) ) ) ) ) ).
+
+fof(d17_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r4_roughs_1(A,B,C)
+              <=> ( r1_roughs_1(A,B,C)
+                  & r1_roughs_1(A,C,B) ) ) ) ) ) ).
+
+fof(d18_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r5_roughs_1(A,B,C)
+              <=> ( r2_roughs_1(A,B,C)
+                  & r2_roughs_1(A,C,B) ) ) ) ) ) ).
+
+fof(d19_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( r6_roughs_1(A,B,C)
+              <=> ( r4_roughs_1(A,B,C)
+                  & r5_roughs_1(A,B,C) ) ) ) ) ) ).
+
+fof(dt_m1_roughs_1,axiom,
+    $true ).
+
+fof(existence_m1_roughs_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => ? [C] : m1_roughs_1(C,A,B) ) ).
+
+fof(symmetry_r4_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( r4_roughs_1(A,B,C)
+       => r4_roughs_1(A,C,B) ) ) ).
+
+fof(reflexivity_r4_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+     => r4_roughs_1(A,B,B) ) ).
+
+fof(symmetry_r5_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( r5_roughs_1(A,B,C)
+       => r5_roughs_1(A,C,B) ) ) ).
+
+fof(reflexivity_r5_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+     => r5_roughs_1(A,B,B) ) ).
+
+fof(symmetry_r6_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( r6_roughs_1(A,B,C)
+       => r6_roughs_1(A,C,B) ) ) ).
+
+fof(reflexivity_r6_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+     => r6_roughs_1(A,B,B) ) ).
+
+fof(dt_k1_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( m1_finseq_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k5_numbers) )
+     => m1_subset_1(k1_roughs_1(A,B,C),k1_zfmisc_1(A)) ) ).
+
+fof(redefinition_k1_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( m1_finseq_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k5_numbers) )
+     => k1_roughs_1(A,B,C) = k1_funct_1(B,C) ) ).
+
+fof(dt_k2_roughs_1,axiom,
+    ! [A,B] :
+      ( m1_finseq_1(B,k1_zfmisc_1(A))
+     => m1_subset_1(k2_roughs_1(A,B),k1_zfmisc_1(A)) ) ).
+
+fof(redefinition_k2_roughs_1,axiom,
+    ! [A,B] :
+      ( m1_finseq_1(B,k1_zfmisc_1(A))
+     => k2_roughs_1(A,B) = k3_card_3(B) ) ).
+
+fof(dt_k3_roughs_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => m1_subset_1(k3_roughs_1(A,B),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k4_roughs_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => m1_subset_1(k4_roughs_1(A,B),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k5_roughs_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => m1_subset_1(k5_roughs_1(A,B),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k6_roughs_1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( v1_funct_1(k6_roughs_1(A,B))
+        & v1_funct_2(k6_roughs_1(A,B),u1_struct_0(A),k1_numbers)
+        & m2_relset_1(k6_roughs_1(A,B),u1_struct_0(A),k1_numbers) ) ) ).
+
+fof(dt_k7_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A)
+        & m1_finseq_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m2_finseq_1(k7_roughs_1(A,B,C),k1_numbers) ) ).
+
+fof(d4_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k3_roughs_1(A,B) = a_2_0_roughs_1(A,B) ) ) ).
+
+fof(d5_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k4_roughs_1(A,B) = a_2_1_roughs_1(A,B) ) ) ).
+
+fof(t56_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k3_roughs_1(A,B) = a_2_2_roughs_1(A,B) ) ) ).
+
+fof(t57_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k4_roughs_1(A,B) = a_2_3_roughs_1(A,B) ) ) ).
+
+fof(t58_roughs_1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_group_1(A)
+        & v2_roughs_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k5_roughs_1(A,B) = a_2_4_roughs_1(A,B) ) ) ).
+
+fof(fraenkel_a_2_0_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v3_roughs_1(B)
+        & l1_orders_2(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B))) )
+     => ( r2_hidden(A,a_2_0_roughs_1(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u1_struct_0(B))
+            & A = D
+            & r1_tarski(k6_eqrel_1(u1_struct_0(B),u1_orders_2(B),D),C) ) ) ) ).
+
+fof(fraenkel_a_2_1_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v3_roughs_1(B)
+        & l1_orders_2(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B))) )
+     => ( r2_hidden(A,a_2_1_roughs_1(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u1_struct_0(B))
+            & A = D
+            & ~ r1_xboole_0(k6_eqrel_1(u1_struct_0(B),u1_orders_2(B),D),C) ) ) ) ).
+
+fof(fraenkel_a_2_2_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v6_group_1(B)
+        & v2_roughs_1(B)
+        & l1_orders_2(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B))) )
+     => ( r2_hidden(A,a_2_2_roughs_1(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u1_struct_0(B))
+            & A = D
+            & k8_funct_2(u1_struct_0(B),k1_numbers,k6_roughs_1(B,C),D) = np__1 ) ) ) ).
+
+fof(fraenkel_a_2_3_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v6_group_1(B)
+        & v2_roughs_1(B)
+        & l1_orders_2(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B))) )
+     => ( r2_hidden(A,a_2_3_roughs_1(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u1_struct_0(B))
+            & A = D
+            & ~ r1_xreal_0(k8_funct_2(u1_struct_0(B),k1_numbers,k6_roughs_1(B,C),D),np__0) ) ) ) ).
+
+fof(fraenkel_a_2_4_roughs_1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(B)
+        & v6_group_1(B)
+        & v2_roughs_1(B)
+        & l1_orders_2(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B))) )
+     => ( r2_hidden(A,a_2_4_roughs_1(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u1_struct_0(B))
+            & A = D
+            & ~ r1_xreal_0(k8_funct_2(u1_struct_0(B),k1_numbers,k6_roughs_1(B,C),D),np__0)
+            & ~ r1_xreal_0(np__1,k8_funct_2(u1_struct_0(B),k1_numbers,k6_roughs_1(B,C),D)) ) ) ) ).
+
+%------------------------------------------------------------------------------

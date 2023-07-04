@@ -59,14 +59,18 @@ func (ml MetaList) ToString() string {
 	return global.ListToString(ml, ", ", "")
 }
 
-/* Check if a meta is inside a given list of metavariables */
-func (ml MetaList) Contains(m Meta) bool {
-	for _, v := range ml {
+func (ml MetaList) Find(m Meta) int {
+	for i, v := range ml {
 		if v.Equals(m) {
-			return true
+			return i
 		}
 	}
-	return false
+	return -1
+}
+
+/* Check if a meta is inside a given list of metavariables */
+func (ml MetaList) Contains(m Meta) bool {
+	return ml.Find(m) != -1
 }
 
 /* Append a meta to a meta list if it not already inside */

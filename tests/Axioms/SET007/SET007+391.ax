@@ -1,0 +1,594 @@
+%------------------------------------------------------------------------------
+% File     : SET007+391 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : A Compiler of Arithmetic Expressions for SCM
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : scm_comp [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   49 (   0 unt;   0 def)
+%            Number of atoms       :  323 (  97 equ)
+%            Maximal formula atoms :   37 (   6 avg)
+%            Number of connectives :  298 (  24   ~;   0   |; 112   &)
+%                                         (   6 <=>; 156  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   40 (   9 avg)
+%            Maximal term depth    :    7 (   2 avg)
+%            Number of predicates  :   26 (  25 usr;   0 prp; 1-6 aty)
+%            Number of functors    :   73 (  73 usr;  12 con; 0-4 aty)
+%            Number of variables   :  160 ( 156   !;   4   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_scm_comp,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))
+     => ! [B] :
+          ( m2_finseq_1(B,u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))
+         => ! [C] :
+              ( m2_finseq_1(C,k4_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ! [G] :
+                              ( m1_scm_1(G,k8_finseq_1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),A,B),C,D,E,F)
+                             => ( m1_scm_1(G,A,C,D,E,F)
+                                & m1_scm_1(G,B,C,D,k1_nat_1(E,k3_finseq_1(A)),F) ) ) ) ) ) ) ) ) ).
+
+fof(t2_scm_comp,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))
+     => ! [B] :
+          ( m2_finseq_1(B,u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ! [G] :
+                              ( m2_subset_1(G,k1_numbers,k5_numbers)
+                             => ! [H] :
+                                  ( m1_scm_1(H,k8_finseq_1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),A,B),k2_lang1(k4_numbers),C,D,E)
+                                 => ! [I] :
+                                      ( m1_subset_1(I,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+                                     => ( ( I = k11_ami_1(k1_tarski(k4_numbers),k1_ami_3,k10_ami_1(k1_tarski(k4_numbers),k1_ami_3,H),F)
+                                          & k16_ami_3(G) = k6_ami_1(k1_tarski(k4_numbers),k1_ami_3,I) )
+                                       => m1_scm_1(I,B,k2_lang1(k4_numbers),G,k1_nat_1(D,k3_finseq_1(A)),E) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d1_scm_comp,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_lang1(A)
+        & v3_bintree1(A)
+        & v1_dtconstr(A)
+        & v2_dtconstr(A)
+        & v3_dtconstr(A)
+        & l1_lang1(A) )
+     => ( A = k1_scm_comp
+      <=> ( k6_dtconstr(A) = k2_ami_2
+          & k7_dtconstr(A) = k2_zfmisc_1(np__1,np__5)
+          & ! [B] :
+              ( m1_subset_1(B,u1_struct_0(A))
+             => ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ( r1_lang1(A,B,k4_lang1(u1_struct_0(A),C,D))
+                      <=> r2_hidden(B,k2_zfmisc_1(np__1,np__5)) ) ) ) ) ) ) ) ).
+
+fof(d2_scm_comp,axiom,
+    ! [A] :
+      ( m1_struct_0(A,k1_scm_comp,k6_dtconstr(k1_scm_comp))
+     => k4_scm_comp(A) = A ) ).
+
+fof(t3_scm_comp,axiom,
+    ! [A] :
+      ( m1_struct_0(A,k1_scm_comp,k7_dtconstr(k1_scm_comp))
+     => ~ ( A != k4_tarski(np__0,np__0)
+          & A != k4_tarski(np__0,np__1)
+          & A != k4_tarski(np__0,np__2)
+          & A != k4_tarski(np__0,np__3)
+          & A != k4_tarski(np__0,np__4) ) ) ).
+
+fof(t4_scm_comp,axiom,
+    ( m1_struct_0(k4_tarski(np__0,np__0),k1_scm_comp,k7_dtconstr(k1_scm_comp))
+    & m1_struct_0(k4_tarski(np__0,np__1),k1_scm_comp,k7_dtconstr(k1_scm_comp))
+    & m1_struct_0(k4_tarski(np__0,np__2),k1_scm_comp,k7_dtconstr(k1_scm_comp))
+    & m1_struct_0(k4_tarski(np__0,np__3),k1_scm_comp,k7_dtconstr(k1_scm_comp))
+    & m1_struct_0(k4_tarski(np__0,np__4),k1_scm_comp,k7_dtconstr(k1_scm_comp)) ) ).
+
+fof(d3_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+         => k5_scm_comp(A,B) = k6_trees_4(k4_tarski(np__0,np__0),A,B) ) ) ).
+
+fof(d4_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+         => k6_scm_comp(A,B) = k6_trees_4(k4_tarski(np__0,np__1),A,B) ) ) ).
+
+fof(d5_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+         => k7_scm_comp(A,B) = k6_trees_4(k4_tarski(np__0,np__2),A,B) ) ) ).
+
+fof(d6_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+         => k8_scm_comp(A,B) = k6_trees_4(k4_tarski(np__0,np__3),A,B) ) ) ).
+
+fof(d7_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+         => k9_scm_comp(A,B) = k6_trees_4(k4_tarski(np__0,np__4),A,B) ) ) ).
+
+fof(t5_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ~ ( ! [B] :
+              ( m1_struct_0(B,k1_scm_comp,k6_dtconstr(k1_scm_comp))
+             => A != k3_scm_comp(B) )
+          & ! [B] :
+              ( m1_dtconstr(B,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+             => ! [C] :
+                  ( m1_dtconstr(C,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+                 => ( A != k5_scm_comp(B,C)
+                    & A != k6_scm_comp(B,C)
+                    & A != k7_scm_comp(B,C)
+                    & A != k8_scm_comp(B,C)
+                    & A != k9_scm_comp(B,C) ) ) ) ) ) ).
+
+fof(d8_scm_comp,axiom,
+    ! [A] :
+      ( m1_struct_0(A,k1_scm_comp,k7_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( v1_int_1(B)
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( ( A = k4_tarski(np__0,np__0)
+                 => k10_scm_comp(A,B,C) = k2_xcmplx_0(B,C) )
+                & ( A = k4_tarski(np__0,np__1)
+                 => k10_scm_comp(A,B,C) = k6_xcmplx_0(B,C) )
+                & ( A = k4_tarski(np__0,np__2)
+                 => k10_scm_comp(A,B,C) = k3_xcmplx_0(B,C) )
+                & ( A = k4_tarski(np__0,np__3)
+                 => k10_scm_comp(A,B,C) = k5_int_1(B,C) )
+                & ( A = k4_tarski(np__0,np__4)
+                 => k10_scm_comp(A,B,C) = k6_int_1(B,C) ) ) ) ) ) ).
+
+fof(d9_scm_comp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+         => ! [C] :
+              ( v1_int_1(C)
+             => ( C = k13_scm_comp(A,B)
+              <=> ? [D] :
+                    ( v1_funct_1(D)
+                    & v1_funct_2(D,k4_dtconstr(k1_scm_comp),k4_numbers)
+                    & m2_relset_1(D,k4_dtconstr(k1_scm_comp),k4_numbers)
+                    & C = k8_funct_2(k4_dtconstr(k1_scm_comp),k4_numbers,D,B)
+                    & ! [E] :
+                        ( m1_struct_0(E,k1_scm_comp,k6_dtconstr(k1_scm_comp))
+                       => k8_funct_2(k4_dtconstr(k1_scm_comp),k4_numbers,D,k3_scm_comp(E)) = k11_scm_comp(A,E) )
+                    & ! [E] :
+                        ( m1_struct_0(E,k1_scm_comp,k7_dtconstr(k1_scm_comp))
+                       => ! [F] :
+                            ( m1_dtconstr(F,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+                           => ! [G] :
+                                ( m1_dtconstr(G,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+                               => ! [H] :
+                                    ( m1_subset_1(H,u1_struct_0(k1_scm_comp))
+                                   => ! [I] :
+                                        ( m1_subset_1(I,u1_struct_0(k1_scm_comp))
+                                       => ( ( H = k1_bintree1(u1_struct_0(k1_scm_comp),F)
+                                            & I = k1_bintree1(u1_struct_0(k1_scm_comp),G)
+                                            & r1_lang1(k1_scm_comp,E,k4_lang1(u1_struct_0(k1_scm_comp),H,I)) )
+                                         => ! [J] :
+                                              ( m1_subset_1(J,k4_numbers)
+                                             => ! [K] :
+                                                  ( m1_subset_1(K,k4_numbers)
+                                                 => ( ( J = k8_funct_2(k4_dtconstr(k1_scm_comp),k4_numbers,D,F)
+                                                      & K = k8_funct_2(k4_dtconstr(k1_scm_comp),k4_numbers,D,G) )
+                                                   => k8_funct_2(k4_dtconstr(k1_scm_comp),k4_numbers,D,k2_scm_comp(E,F,G)) = k10_scm_comp(E,J,K) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t6_scm_comp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+     => ! [B] :
+          ( m1_struct_0(B,k1_scm_comp,k6_dtconstr(k1_scm_comp))
+         => k13_scm_comp(A,k3_scm_comp(B)) = k11_scm_comp(A,B) ) ) ).
+
+fof(t7_scm_comp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+     => ! [B] :
+          ( m1_struct_0(B,k1_scm_comp,k7_dtconstr(k1_scm_comp))
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+                 => k13_scm_comp(A,k2_scm_comp(B,C,D)) = k10_scm_comp(B,k13_scm_comp(A,C),k13_scm_comp(A,D)) ) ) ) ) ).
+
+fof(t8_scm_comp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+             => ( k13_scm_comp(A,k5_scm_comp(B,C)) = k2_xcmplx_0(k13_scm_comp(A,B),k13_scm_comp(A,C))
+                & k13_scm_comp(A,k6_scm_comp(B,C)) = k6_xcmplx_0(k13_scm_comp(A,B),k13_scm_comp(A,C))
+                & k13_scm_comp(A,k7_scm_comp(B,C)) = k3_xcmplx_0(k13_scm_comp(A,B),k13_scm_comp(A,C))
+                & k13_scm_comp(A,k8_scm_comp(B,C)) = k5_int_1(k13_scm_comp(A,B),k13_scm_comp(A,C))
+                & k13_scm_comp(A,k9_scm_comp(B,C)) = k6_int_1(k13_scm_comp(A,B),k13_scm_comp(A,C)) ) ) ) ) ).
+
+fof(d10_scm_comp,axiom,
+    ! [A] :
+      ( m1_struct_0(A,k1_scm_comp,k7_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ( A = k4_tarski(np__0,np__0)
+             => k14_scm_comp(A,B) = k3_lang1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k4_ami_3(k15_ami_3(B),k15_ami_3(k1_nat_1(B,np__1)))) )
+            & ( A = k4_tarski(np__0,np__1)
+             => k14_scm_comp(A,B) = k3_lang1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k5_ami_3(k15_ami_3(B),k15_ami_3(k1_nat_1(B,np__1)))) )
+            & ( A = k4_tarski(np__0,np__2)
+             => k14_scm_comp(A,B) = k3_lang1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k6_ami_3(k15_ami_3(B),k15_ami_3(k1_nat_1(B,np__1)))) )
+            & ( A = k4_tarski(np__0,np__3)
+             => k14_scm_comp(A,B) = k3_lang1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k7_ami_3(k15_ami_3(B),k15_ami_3(k1_nat_1(B,np__1)))) )
+            & ( A = k4_tarski(np__0,np__4)
+             => k14_scm_comp(A,B) = k4_lang1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k7_ami_3(k15_ami_3(B),k15_ami_3(k1_nat_1(B,np__1))),k3_ami_3(k15_ami_3(B),k15_ami_3(k1_nat_1(B,np__1)))) ) ) ) ) ).
+
+fof(d11_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_1(C,u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))
+             => ( C = k15_scm_comp(A,B)
+              <=> ? [D] :
+                    ( v1_funct_1(D)
+                    & v1_funct_2(D,k4_dtconstr(k1_scm_comp),k1_fraenkel(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))))
+                    & m2_relset_1(D,k4_dtconstr(k1_scm_comp),k1_fraenkel(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))))
+                    & C = k8_funct_2(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)),k8_funct_2(k4_dtconstr(k1_scm_comp),k1_fraenkel(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))),D,A),B)
+                    & ! [E] :
+                        ( m1_struct_0(E,k1_scm_comp,k6_dtconstr(k1_scm_comp))
+                       => ? [F] :
+                            ( v1_funct_1(F)
+                            & v1_funct_2(F,k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+                            & m2_relset_1(F,k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+                            & F = k8_funct_2(k4_dtconstr(k1_scm_comp),k1_fraenkel(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))),D,k3_scm_comp(E))
+                            & ! [G] :
+                                ( m2_subset_1(G,k1_numbers,k5_numbers)
+                               => k8_funct_2(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)),F,G) = k3_lang1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k3_ami_3(k15_ami_3(G),k4_scm_comp(E))) ) ) )
+                    & ! [E] :
+                        ( m1_struct_0(E,k1_scm_comp,k7_dtconstr(k1_scm_comp))
+                       => ! [F] :
+                            ( m1_dtconstr(F,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+                           => ! [G] :
+                                ( m1_dtconstr(G,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+                               => ! [H] :
+                                    ( m1_subset_1(H,u1_struct_0(k1_scm_comp))
+                                   => ! [I] :
+                                        ( m1_subset_1(I,u1_struct_0(k1_scm_comp))
+                                       => ~ ( H = k1_bintree1(u1_struct_0(k1_scm_comp),F)
+                                            & I = k1_bintree1(u1_struct_0(k1_scm_comp),G)
+                                            & r1_lang1(k1_scm_comp,E,k4_lang1(u1_struct_0(k1_scm_comp),H,I))
+                                            & ! [J] :
+                                                ( ( v1_funct_1(J)
+                                                  & v1_funct_2(J,k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+                                                  & m2_relset_1(J,k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))) )
+                                               => ! [K] :
+                                                    ( ( v1_funct_1(K)
+                                                      & v1_funct_2(K,k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+                                                      & m2_relset_1(K,k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))) )
+                                                   => ! [L] :
+                                                        ( ( v1_funct_1(L)
+                                                          & v1_funct_2(L,k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+                                                          & m2_relset_1(L,k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))) )
+                                                       => ~ ( J = k8_funct_2(k4_dtconstr(k1_scm_comp),k1_fraenkel(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))),D,k2_scm_comp(E,F,G))
+                                                            & K = k8_funct_2(k4_dtconstr(k1_scm_comp),k1_fraenkel(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))),D,F)
+                                                            & L = k8_funct_2(k4_dtconstr(k1_scm_comp),k1_fraenkel(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))),D,G)
+                                                            & ! [M] :
+                                                                ( m2_subset_1(M,k1_numbers,k5_numbers)
+                                                               => k8_funct_2(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)),J,M) = k1_lang1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k1_lang1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k8_funct_2(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)),K,M),k8_funct_2(k5_numbers,k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)),L,k1_nat_1(M,np__1))),k14_scm_comp(E,M)) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t9_scm_comp,axiom,
+    ! [A] :
+      ( m1_struct_0(A,k1_scm_comp,k6_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => k15_scm_comp(k3_scm_comp(A),B) = k3_lang1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k3_ami_3(k15_ami_3(B),k4_scm_comp(A))) ) ) ).
+
+fof(t10_scm_comp,axiom,
+    ! [A] :
+      ( m1_struct_0(A,k1_scm_comp,k7_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(k1_scm_comp))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(k1_scm_comp))
+                         => ( ( E = k1_bintree1(u1_struct_0(k1_scm_comp),B)
+                              & F = k1_bintree1(u1_struct_0(k1_scm_comp),C)
+                              & r1_lang1(k1_scm_comp,A,k4_lang1(u1_struct_0(k1_scm_comp),E,F)) )
+                           => k15_scm_comp(k2_scm_comp(A,B,C),D) = k8_finseq_1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k8_finseq_1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k15_scm_comp(B,D),k15_scm_comp(C,k1_nat_1(D,np__1))),k14_scm_comp(A,D)) ) ) ) ) ) ) ) ).
+
+fof(d12_scm_comp,axiom,
+    ! [A] :
+      ( m1_struct_0(A,k1_scm_comp,k6_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( B = k16_scm_comp(A)
+          <=> k15_ami_3(B) = A ) ) ) ).
+
+fof(d13_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( B = k17_scm_comp(A)
+          <=> ? [C] :
+                ( v1_funct_1(C)
+                & v1_funct_2(C,k4_dtconstr(k1_scm_comp),k5_numbers)
+                & m2_relset_1(C,k4_dtconstr(k1_scm_comp),k5_numbers)
+                & B = k8_funct_2(k4_dtconstr(k1_scm_comp),k5_numbers,C,A)
+                & ! [D] :
+                    ( m1_struct_0(D,k1_scm_comp,k6_dtconstr(k1_scm_comp))
+                   => k8_funct_2(k4_dtconstr(k1_scm_comp),k5_numbers,C,k3_scm_comp(D)) = k16_scm_comp(D) )
+                & ! [D] :
+                    ( m1_struct_0(D,k1_scm_comp,k7_dtconstr(k1_scm_comp))
+                   => ! [E] :
+                        ( m1_dtconstr(E,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+                       => ! [F] :
+                            ( m1_dtconstr(F,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+                           => ! [G] :
+                                ( m1_subset_1(G,u1_struct_0(k1_scm_comp))
+                               => ! [H] :
+                                    ( m1_subset_1(H,u1_struct_0(k1_scm_comp))
+                                   => ( ( G = k1_bintree1(u1_struct_0(k1_scm_comp),E)
+                                        & H = k1_bintree1(u1_struct_0(k1_scm_comp),F)
+                                        & r1_lang1(k1_scm_comp,D,k4_lang1(u1_struct_0(k1_scm_comp),G,H)) )
+                                     => ! [I] :
+                                          ( m2_subset_1(I,k1_numbers,k5_numbers)
+                                         => ! [J] :
+                                              ( m2_subset_1(J,k1_numbers,k5_numbers)
+                                             => ( ( I = k8_funct_2(k4_dtconstr(k1_scm_comp),k5_numbers,C,E)
+                                                  & J = k8_funct_2(k4_dtconstr(k1_scm_comp),k5_numbers,C,F) )
+                                               => k8_funct_2(k4_dtconstr(k1_scm_comp),k5_numbers,C,k2_scm_comp(D,E,F)) = k1_limfunc1(I,J) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t11_scm_comp,axiom,
+    ! [A] :
+      ( m1_struct_0(A,k1_scm_comp,k6_dtconstr(k1_scm_comp))
+     => k17_scm_comp(k3_scm_comp(A)) = k16_scm_comp(A) ) ).
+
+fof(t12_scm_comp,axiom,
+    ! [A] :
+      ( m1_struct_0(A,k1_scm_comp,k7_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m1_dtconstr(B,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+             => k17_scm_comp(k2_scm_comp(A,B,C)) = k1_limfunc1(k17_scm_comp(B),k17_scm_comp(C)) ) ) ) ).
+
+fof(t13_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m1_subset_1(B,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+             => ( ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => ( r1_xreal_0(D,k17_scm_comp(A))
+                     => k2_ami_3(B,k15_ami_3(D)) = k2_ami_3(C,k15_ami_3(D)) ) )
+               => k13_scm_comp(B,A) = k13_scm_comp(C,A) ) ) ) ) ).
+
+fof(t14_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m1_scm_1(E,k15_scm_comp(A,B),k2_lang1(k4_numbers),C,C,D)
+                     => ~ ( ~ r1_xreal_0(B,k17_scm_comp(A))
+                          & ! [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                             => ! [G] :
+                                  ( m1_subset_1(G,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+                                 => ~ ( G = k11_ami_1(k1_tarski(k4_numbers),k1_ami_3,k10_ami_1(k1_tarski(k4_numbers),k1_ami_3,E),k1_nat_1(F,np__1))
+                                      & k1_nat_1(F,np__1) = k3_finseq_1(k15_scm_comp(A,B))
+                                      & k6_ami_1(k1_tarski(k4_numbers),k1_ami_3,k11_ami_1(k1_tarski(k4_numbers),k1_ami_3,k10_ami_1(k1_tarski(k4_numbers),k1_ami_3,E),F)) = k16_ami_3(k1_nat_1(C,F))
+                                      & k6_ami_1(k1_tarski(k4_numbers),k1_ami_3,G) = k16_ami_3(k1_nat_1(C,k1_nat_1(F,np__1)))
+                                      & k2_ami_3(G,k15_ami_3(B)) = k13_scm_comp(E,A)
+                                      & ! [H] :
+                                          ( m2_subset_1(H,k1_numbers,k5_numbers)
+                                         => ( ~ r1_xreal_0(B,H)
+                                           => k2_ami_3(E,k15_ami_3(H)) = k2_ami_3(G,k15_ami_3(H)) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t15_scm_comp,axiom,
+    ! [A] :
+      ( m1_dtconstr(A,u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m1_scm_1(E,k8_finseq_1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k15_scm_comp(A,B),k3_lang1(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k5_ami_1(k1_tarski(k4_numbers),k1_ami_3))),k2_lang1(k4_numbers),C,C,D)
+                     => ( ~ r1_xreal_0(B,k17_scm_comp(A))
+                       => ( v9_ami_1(E,k1_tarski(k4_numbers),k1_ami_3)
+                          & k2_ami_3(k12_ami_1(k1_tarski(k4_numbers),k1_ami_3,E),k15_ami_3(B)) = k13_scm_comp(E,A)
+                          & k2_scm_1(k1_tarski(k4_numbers),k1_ami_3,E) = k3_finseq_1(k15_scm_comp(A,B)) ) ) ) ) ) ) ) ).
+
+fof(dt_k1_scm_comp,axiom,
+    ( ~ v3_struct_0(k1_scm_comp)
+    & v1_lang1(k1_scm_comp)
+    & v3_bintree1(k1_scm_comp)
+    & v1_dtconstr(k1_scm_comp)
+    & v2_dtconstr(k1_scm_comp)
+    & v3_dtconstr(k1_scm_comp)
+    & l1_lang1(k1_scm_comp) ) ).
+
+fof(dt_k2_scm_comp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k7_dtconstr(k1_scm_comp))
+        & m1_subset_1(B,k4_dtconstr(k1_scm_comp))
+        & m1_subset_1(C,k4_dtconstr(k1_scm_comp)) )
+     => m1_dtconstr(k2_scm_comp(A,B,C),u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp)) ) ).
+
+fof(redefinition_k2_scm_comp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k7_dtconstr(k1_scm_comp))
+        & m1_subset_1(B,k4_dtconstr(k1_scm_comp))
+        & m1_subset_1(C,k4_dtconstr(k1_scm_comp)) )
+     => k2_scm_comp(A,B,C) = k6_trees_4(A,B,C) ) ).
+
+fof(dt_k3_scm_comp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k6_dtconstr(k1_scm_comp))
+     => m1_dtconstr(k3_scm_comp(A),u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp)) ) ).
+
+fof(redefinition_k3_scm_comp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k6_dtconstr(k1_scm_comp))
+     => k3_scm_comp(A) = k1_trees_4(A) ) ).
+
+fof(dt_k4_scm_comp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k6_dtconstr(k1_scm_comp))
+     => m1_ami_3(k4_scm_comp(A)) ) ).
+
+fof(dt_k5_scm_comp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k4_dtconstr(k1_scm_comp))
+        & m1_subset_1(B,k4_dtconstr(k1_scm_comp)) )
+     => m1_dtconstr(k5_scm_comp(A,B),u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp)) ) ).
+
+fof(dt_k6_scm_comp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k4_dtconstr(k1_scm_comp))
+        & m1_subset_1(B,k4_dtconstr(k1_scm_comp)) )
+     => m1_dtconstr(k6_scm_comp(A,B),u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp)) ) ).
+
+fof(dt_k7_scm_comp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k4_dtconstr(k1_scm_comp))
+        & m1_subset_1(B,k4_dtconstr(k1_scm_comp)) )
+     => m1_dtconstr(k7_scm_comp(A,B),u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp)) ) ).
+
+fof(dt_k8_scm_comp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k4_dtconstr(k1_scm_comp))
+        & m1_subset_1(B,k4_dtconstr(k1_scm_comp)) )
+     => m1_dtconstr(k8_scm_comp(A,B),u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp)) ) ).
+
+fof(dt_k9_scm_comp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k4_dtconstr(k1_scm_comp))
+        & m1_subset_1(B,k4_dtconstr(k1_scm_comp)) )
+     => m1_dtconstr(k9_scm_comp(A,B),u1_struct_0(k1_scm_comp),k5_trees_3(u1_struct_0(k1_scm_comp)),k4_dtconstr(k1_scm_comp)) ) ).
+
+fof(dt_k10_scm_comp,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k7_dtconstr(k1_scm_comp))
+        & v1_int_1(B)
+        & v1_int_1(C) )
+     => v1_int_1(k10_scm_comp(A,B,C)) ) ).
+
+fof(dt_k11_scm_comp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+        & m1_subset_1(B,k6_dtconstr(k1_scm_comp)) )
+     => v1_int_1(k11_scm_comp(A,B)) ) ).
+
+fof(redefinition_k11_scm_comp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+        & m1_subset_1(B,k6_dtconstr(k1_scm_comp)) )
+     => k11_scm_comp(A,B) = k1_funct_1(A,B) ) ).
+
+fof(dt_k12_scm_comp,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k4_numbers,A)
+        & m1_relset_1(B,k4_numbers,A)
+        & v1_int_1(C) )
+     => m1_subset_1(k12_scm_comp(A,B,C),A) ) ).
+
+fof(redefinition_k12_scm_comp,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,k4_numbers,A)
+        & m1_relset_1(B,k4_numbers,A)
+        & v1_int_1(C) )
+     => k12_scm_comp(A,B,C) = k1_funct_1(B,C) ) ).
+
+fof(dt_k13_scm_comp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k4_card_3(u5_ami_1(k1_tarski(k4_numbers),k1_ami_3)))
+        & m1_subset_1(B,k4_dtconstr(k1_scm_comp)) )
+     => v1_int_1(k13_scm_comp(A,B)) ) ).
+
+fof(dt_k14_scm_comp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k7_dtconstr(k1_scm_comp))
+        & m1_subset_1(B,k5_numbers) )
+     => m2_finseq_2(k14_scm_comp(A,B),u4_ami_1(k1_tarski(k4_numbers),k1_ami_3),k3_finseq_2(u4_ami_1(k1_tarski(k4_numbers),k1_ami_3))) ) ).
+
+fof(dt_k15_scm_comp,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k4_dtconstr(k1_scm_comp))
+        & m1_subset_1(B,k5_numbers) )
+     => m2_finseq_1(k15_scm_comp(A,B),u4_ami_1(k1_tarski(k4_numbers),k1_ami_3)) ) ).
+
+fof(dt_k16_scm_comp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k6_dtconstr(k1_scm_comp))
+     => m2_subset_1(k16_scm_comp(A),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k17_scm_comp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_dtconstr(k1_scm_comp))
+     => m2_subset_1(k17_scm_comp(A),k1_numbers,k5_numbers) ) ).
+
+%------------------------------------------------------------------------------

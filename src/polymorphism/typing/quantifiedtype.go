@@ -154,7 +154,8 @@ func MkQuantifiedType(vars []TypeVar, typeScheme TypeScheme) QuantifiedType {
 	case TypeArrow:
 		typeScheme = ts.substitute(metaTypeMap)
 	default:
-		fmt.Println("[ERROR] MkQuantifiedType: reached an unreachable case.")
+		//Paradoxal
+		PrintError("MkQuantifiedType", "Reached an unreachable case.")
 	}
 
 	return QuantifiedType{vars: vars, scheme: typeScheme}

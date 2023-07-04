@@ -1,0 +1,502 @@
+%------------------------------------------------------------------------------
+% File     : SET007+262 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Several Properties of Fields. Field Theory
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : realset3 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   47 (   6 unt;   0 def)
+%            Number of atoms       :  242 (  50 equ)
+%            Maximal formula atoms :    9 (   5 avg)
+%            Number of connectives :  195 (   0   ~;   1   |;  50   &)
+%                                         (  11 <=>; 133  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   12 (   7 avg)
+%            Maximal term depth    :    9 (   2 avg)
+%            Number of predicates  :    8 (   6 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   16 (  16 usr;   0 con; 1-6 aty)
+%            Number of variables   :  133 ( 133   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),k4_realset2(A)) = k4_realset2(A) ) ).
+
+fof(t2_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),k6_realset2(A)) = k6_realset2(A) ) ).
+
+fof(t3_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => k1_funct_1(k7_realset2(A),k1_funct_1(k3_realset2(A),k4_tarski(B,k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),C)))) = k1_funct_1(k3_realset2(A),k4_tarski(C,k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),B))) ) ) ) ).
+
+fof(t4_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+             => k1_funct_1(k8_realset2(A),k1_funct_1(k5_realset2(A),k4_tarski(B,k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),C)))) = k1_funct_1(k5_realset2(A),k4_tarski(C,k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),B))) ) ) ) ).
+
+fof(t5_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => k1_funct_1(k7_realset2(A),k1_funct_1(k3_realset2(A),k4_tarski(B,C))) = k2_binop_1(k2_realset2(A),k2_realset2(A),k2_realset2(A),k3_realset2(A),k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),B),k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),C)) ) ) ) ).
+
+fof(t6_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+             => k1_funct_1(k8_realset2(A),k1_funct_1(k5_realset2(A),k4_tarski(B,C))) = k1_funct_1(k5_realset2(A),k4_tarski(k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),B),k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),C))) ) ) ) ).
+
+fof(t7_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_realset2(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_realset2(A))
+                     => ( k2_binop_1(k2_realset2(A),k2_realset2(A),k2_realset2(A),k3_realset2(A),B,k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),C)) = k1_funct_1(k3_realset2(A),k4_tarski(D,k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),E)))
+                      <=> k1_funct_1(k3_realset2(A),k4_tarski(B,E)) = k1_funct_1(k3_realset2(A),k4_tarski(C,D)) ) ) ) ) ) ) ).
+
+fof(t8_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                     => ( k1_funct_1(k5_realset2(A),k4_tarski(B,k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),D))) = k1_funct_1(k5_realset2(A),k4_tarski(C,k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),E)))
+                      <=> k1_funct_1(k5_realset2(A),k4_tarski(B,E)) = k1_funct_1(k5_realset2(A),k4_tarski(D,C)) ) ) ) ) ) ) ).
+
+fof(t9_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ( k1_funct_1(k5_realset2(A),k4_tarski(B,C)) = k4_realset2(A)
+              <=> ( B = k4_realset2(A)
+                  | C = k4_realset2(A) ) ) ) ) ) ).
+
+fof(t10_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                     => k1_funct_1(k5_realset2(A),k4_tarski(k1_funct_1(k5_realset2(A),k4_tarski(B,k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),D))),k1_funct_1(k5_realset2(A),k4_tarski(C,k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),E))))) = k1_funct_1(k5_realset2(A),k4_tarski(k1_funct_1(k5_realset2(A),k4_tarski(B,C)),k1_funct_1(k8_realset2(A),k1_funct_1(k5_realset2(A),k4_tarski(D,E))))) ) ) ) ) ) ).
+
+fof(t11_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                     => k1_funct_1(k3_realset2(A),k4_tarski(k1_funct_1(k5_realset2(A),k4_tarski(B,k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),D))),k1_funct_1(k5_realset2(A),k4_tarski(C,k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),E))))) = k1_funct_1(k5_realset2(A),k4_tarski(k1_funct_1(k3_realset2(A),k4_tarski(k1_funct_1(k5_realset2(A),k4_tarski(B,E)),k1_funct_1(k5_realset2(A),k4_tarski(C,D)))),k1_funct_1(k8_realset2(A),k1_funct_1(k5_realset2(A),k4_tarski(D,E))))) ) ) ) ) ) ).
+
+fof(d1_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(k2_realset2(A),k2_realset2(A)),k2_realset2(A))
+            & m2_relset_1(B,k2_zfmisc_1(k2_realset2(A),k2_realset2(A)),k2_realset2(A)) )
+         => ( B = k1_realset3(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k2_realset2(A))
+               => ! [D] :
+                    ( m1_subset_1(D,k2_realset2(A))
+                   => k1_funct_1(B,k4_tarski(C,D)) = k1_funct_1(k3_realset2(A),k4_tarski(C,k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),D))) ) ) ) ) ) ).
+
+fof(t12_realset3,axiom,
+    $true ).
+
+fof(t13_realset3,axiom,
+    $true ).
+
+fof(t14_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => k1_funct_1(k1_realset3(A),k4_tarski(B,B)) = k4_realset2(A) ) ) ).
+
+fof(t15_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_realset2(A))
+                 => k1_funct_1(k5_realset2(A),k4_tarski(B,k1_funct_1(k1_realset3(A),k4_tarski(C,D)))) = k1_funct_1(k1_realset3(A),k4_tarski(k1_funct_1(k5_realset2(A),k4_tarski(B,C)),k1_funct_1(k5_realset2(A),k4_tarski(B,D)))) ) ) ) ) ).
+
+fof(t16_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => m1_subset_1(k1_funct_1(k1_realset3(A),k4_tarski(B,C)),k2_realset2(A)) ) ) ) ).
+
+fof(t17_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_realset2(A))
+                 => k1_funct_1(k5_realset2(A),k4_tarski(k1_funct_1(k1_realset3(A),k4_tarski(B,C)),D)) = k1_funct_1(k1_realset3(A),k4_tarski(k1_funct_1(k5_realset2(A),k4_tarski(B,D)),k1_funct_1(k5_realset2(A),k4_tarski(C,D)))) ) ) ) ) ).
+
+fof(t18_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => k1_funct_1(k1_realset3(A),k4_tarski(B,C)) = k1_funct_1(k7_realset2(A),k1_funct_1(k1_realset3(A),k4_tarski(C,B))) ) ) ) ).
+
+fof(t19_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => k1_funct_1(k1_realset3(A),k4_tarski(k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),B),C)) = k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),k2_binop_1(k2_realset2(A),k2_realset2(A),k2_realset2(A),k3_realset2(A),B,C)) ) ) ) ).
+
+fof(t20_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_realset2(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,k2_realset2(A))
+                     => ( k1_funct_1(k1_realset3(A),k4_tarski(B,C)) = k1_funct_1(k1_realset3(A),k4_tarski(D,E))
+                      <=> k1_funct_1(k3_realset2(A),k4_tarski(B,E)) = k1_funct_1(k3_realset2(A),k4_tarski(C,D)) ) ) ) ) ) ) ).
+
+fof(t21_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => k1_funct_1(k1_realset3(A),k4_tarski(k4_realset2(A),B)) = k8_funct_2(k2_realset2(A),k2_realset2(A),k7_realset2(A),B) ) ) ).
+
+fof(t22_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => k1_funct_1(k1_realset3(A),k4_tarski(B,k4_realset2(A))) = B ) ) ).
+
+fof(t23_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_realset2(A))
+                 => ( k1_funct_1(k3_realset2(A),k4_tarski(B,C)) = D
+                  <=> k1_funct_1(k1_realset3(A),k4_tarski(D,B)) = C ) ) ) ) ) ).
+
+fof(t24_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_realset2(A))
+                 => ( k1_funct_1(k3_realset2(A),k4_tarski(B,C)) = D
+                  <=> k1_funct_1(k1_realset3(A),k4_tarski(D,C)) = B ) ) ) ) ) ).
+
+fof(t25_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_realset2(A))
+                 => k1_funct_1(k1_realset3(A),k4_tarski(B,k1_funct_1(k1_realset3(A),k4_tarski(C,D)))) = k1_funct_1(k3_realset2(A),k4_tarski(k1_funct_1(k1_realset3(A),k4_tarski(B,C)),D)) ) ) ) ) ).
+
+fof(t26_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_realset2(A))
+                 => k1_funct_1(k1_realset3(A),k4_tarski(B,k1_funct_1(k3_realset2(A),k4_tarski(C,D)))) = k1_funct_1(k1_realset3(A),k4_tarski(k1_funct_1(k1_realset3(A),k4_tarski(B,C)),D)) ) ) ) ) ).
+
+fof(d2_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(k2_realset2(A),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A)))),k2_realset2(A))
+            & m2_relset_1(B,k2_zfmisc_1(k2_realset2(A),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A)))),k2_realset2(A)) )
+         => ( B = k2_realset3(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k2_realset2(A))
+               => ! [D] :
+                    ( m1_subset_1(D,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                   => k1_funct_1(B,k4_tarski(C,D)) = k1_funct_1(k5_realset2(A),k4_tarski(C,k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),D))) ) ) ) ) ) ).
+
+fof(t27_realset3,axiom,
+    $true ).
+
+fof(t28_realset3,axiom,
+    $true ).
+
+fof(t29_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+         => k1_funct_1(k2_realset3(A),k4_tarski(B,B)) = k6_realset2(A) ) ) ).
+
+fof(t30_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+             => m1_subset_1(k1_funct_1(k2_realset3(A),k4_tarski(B,C)),k2_realset2(A)) ) ) ) ).
+
+fof(t31_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                 => k1_funct_1(k5_realset2(A),k4_tarski(B,k1_funct_1(k2_realset3(A),k4_tarski(C,D)))) = k1_funct_1(k2_realset3(A),k4_tarski(k1_funct_1(k5_realset2(A),k4_tarski(B,C)),D)) ) ) ) ) ).
+
+fof(t32_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+         => ( k1_funct_1(k5_realset2(A),k4_tarski(B,k1_funct_1(k2_realset3(A),k4_tarski(k6_realset2(A),B)))) = k6_realset2(A)
+            & k1_funct_1(k5_realset2(A),k4_tarski(k1_funct_1(k2_realset3(A),k4_tarski(k6_realset2(A),B)),B)) = k6_realset2(A) ) ) ) ).
+
+fof(t33_realset3,axiom,
+    $true ).
+
+fof(t34_realset3,axiom,
+    $true ).
+
+fof(t35_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+             => k1_funct_1(k2_realset3(A),k4_tarski(B,C)) = k1_funct_1(k8_realset2(A),k1_funct_1(k2_realset3(A),k4_tarski(C,B))) ) ) ) ).
+
+fof(t36_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+             => k1_funct_1(k2_realset3(A),k4_tarski(k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),B),C)) = k1_funct_1(k8_realset2(A),k1_funct_1(k5_realset2(A),k4_tarski(B,C))) ) ) ) ).
+
+fof(t37_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                     => ( k1_funct_1(k2_realset3(A),k4_tarski(B,D)) = k1_funct_1(k2_realset3(A),k4_tarski(C,E))
+                      <=> k1_funct_1(k5_realset2(A),k4_tarski(B,E)) = k1_funct_1(k5_realset2(A),k4_tarski(D,C)) ) ) ) ) ) ) ).
+
+fof(t38_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+         => k1_funct_1(k2_realset3(A),k4_tarski(k6_realset2(A),B)) = k8_funct_2(k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))),k8_realset2(A),B) ) ) ).
+
+fof(t39_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => k1_funct_1(k2_realset3(A),k4_tarski(B,k6_realset2(A))) = B ) ) ).
+
+fof(t40_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k2_realset2(A))
+                 => ( k1_funct_1(k5_realset2(A),k4_tarski(B,C)) = D
+                  <=> k1_funct_1(k2_realset3(A),k4_tarski(D,B)) = C ) ) ) ) ) ).
+
+fof(t41_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k2_realset2(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                 => ( k1_funct_1(k5_realset2(A),k4_tarski(B,D)) = C
+                  <=> k1_funct_1(k2_realset3(A),k4_tarski(C,D)) = B ) ) ) ) ) ).
+
+fof(t42_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                 => k1_funct_1(k2_realset3(A),k4_tarski(B,k1_funct_1(k2_realset3(A),k4_tarski(C,D)))) = k1_funct_1(k5_realset2(A),k4_tarski(k1_funct_1(k2_realset3(A),k4_tarski(B,C)),D)) ) ) ) ) ).
+
+fof(t43_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k2_realset2(A))
+         => ! [C] :
+              ( m1_subset_1(C,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+             => ! [D] :
+                  ( m1_subset_1(D,k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A))))
+                 => k1_funct_1(k2_realset3(A),k4_tarski(B,k1_funct_1(k5_realset2(A),k4_tarski(C,D)))) = k1_funct_1(k2_realset3(A),k4_tarski(k1_funct_1(k2_realset3(A),k4_tarski(B,C)),D)) ) ) ) ) ).
+
+fof(dt_k1_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ( v1_funct_1(k1_realset3(A))
+        & v1_funct_2(k1_realset3(A),k2_zfmisc_1(k2_realset2(A),k2_realset2(A)),k2_realset2(A))
+        & m2_relset_1(k1_realset3(A),k2_zfmisc_1(k2_realset2(A),k2_realset2(A)),k2_realset2(A)) ) ) ).
+
+fof(dt_k2_realset3,axiom,
+    ! [A] :
+      ( ( v4_realset2(A)
+        & l3_vectsp_1(A) )
+     => ( v1_funct_1(k2_realset3(A))
+        & v1_funct_2(k2_realset3(A),k2_zfmisc_1(k2_realset2(A),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A)))),k2_realset2(A))
+        & m2_relset_1(k2_realset3(A),k2_zfmisc_1(k2_realset2(A),k4_xboole_0(k2_realset2(A),k5_realset1(k2_realset2(A),k4_realset2(A)))),k2_realset2(A)) ) ) ).
+
+%------------------------------------------------------------------------------

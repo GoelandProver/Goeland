@@ -1,0 +1,145 @@
+%------------------------------------------------------------------------------
+% File     : QUA001^0 : TPTP v8.1.2. Released v4.1.0.
+% Domain   : Quantales
+% Axioms   : Quantales
+% Version  : [Hoe09] axioms.
+% English  :
+
+% Refs     : [Con71] Conway (1971), Regular Algebra and Finite Machines
+%          : [Hoe09] Hoefner (2009), Email to Geoff Sutcliffe
+% Source   : [Hoe09]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   26 (  13 unt;  12 typ;   7 def)
+%            Number of atoms       :   33 (  17 equ;   0 cnn)
+%            Maximal formula atoms :    2 (   1 avg)
+%            Number of connectives :   43 (   0   ~;   1   |;   4   &;  37   @)
+%                                         (   1 <=>;   0  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    6 (   2 avg;  37 nst)
+%            Number of types       :    2 (   0 usr)
+%            Number of type conns  :   43 (  43   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   14 (  12 usr;   3 con; 0-3 aty)
+%            Number of variables   :   27 (  15   ^   8   !;   4   ?;  27   :)
+% SPC      : 
+
+% Comments :
+%------------------------------------------------------------------------------
+%----Usual Definition of Set Theory
+thf(emptyset_type,type,
+    emptyset: $i > $o ).
+
+thf(emptyset_def,definition,
+    ( emptyset
+    = ( ^ [X: $i] : $false ) ) ).
+
+thf(union_type,type,
+    union: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(union_def,definition,
+    ( union
+    = ( ^ [X: $i > $o,Y: $i > $o,U: $i] :
+          ( ( X @ U )
+          | ( Y @ U ) ) ) ) ).
+
+thf(singleton_type,type,
+    singleton: $i > $i > $o ).
+
+thf(singleton_def,definition,
+    ( singleton
+    = ( ^ [X: $i,U: $i] : ( U = X ) ) ) ).
+
+%----Supremum Definition
+thf(zero_type,type,
+    zero: $i ).
+
+thf(sup_type,type,
+    sup: ( $i > $o ) > $i ).
+
+thf(sup_es,axiom,
+    ( ( sup @ emptyset )
+    = zero ) ).
+
+thf(sup_singleset,axiom,
+    ! [X: $i] :
+      ( ( sup @ ( singleton @ X ) )
+      = X ) ).
+
+thf(supset_type,type,
+    supset: ( ( $i > $o ) > $o ) > $i > $o ).
+
+thf(supset,definition,
+    ( supset
+    = ( ^ [F: ( $i > $o ) > $o,X: $i] :
+        ? [Y: $i > $o] :
+          ( ( F @ Y )
+          & ( ( sup @ Y )
+            = X ) ) ) ) ).
+
+thf(unionset_type,type,
+    unionset: ( ( $i > $o ) > $o ) > $i > $o ).
+
+thf(unionset,definition,
+    ( unionset
+    = ( ^ [F: ( $i > $o ) > $o,X: $i] :
+        ? [Y: $i > $o] :
+          ( ( F @ Y )
+          & ( Y @ X ) ) ) ) ).
+
+thf(sup_set,axiom,
+    ! [X: ( $i > $o ) > $o] :
+      ( ( sup @ ( supset @ X ) )
+      = ( sup @ ( unionset @ X ) ) ) ).
+
+%----Definition of binary sums and lattice order
+thf(addition_type,type,
+    addition: $i > $i > $i ).
+
+thf(addition_def,definition,
+    ( addition
+    = ( ^ [X: $i,Y: $i] : ( sup @ ( union @ ( singleton @ X ) @ ( singleton @ Y ) ) ) ) ) ).
+
+thf(order_type,type,
+    leq: $i > $i > $o ).
+
+thf(order_def,axiom,
+    ! [X1: $i,X2: $i] :
+      ( ( leq @ X1 @ X2 )
+    <=> ( ( addition @ X1 @ X2 )
+        = X2 ) ) ).
+
+%----Definition of multiplication
+thf(multiplication_type,type,
+    multiplication: $i > $i > $i ).
+
+thf(crossmult_type,type,
+    crossmult: ( $i > $o ) > ( $i > $o ) > $i > $o ).
+
+thf(crossmult_def,definition,
+    ( crossmult
+    = ( ^ [X: $i > $o,Y: $i > $o,A: $i] :
+        ? [X1: $i,Y1: $i] :
+          ( ( X @ X1 )
+          & ( Y @ Y1 )
+          & ( A
+            = ( multiplication @ X1 @ Y1 ) ) ) ) ) ).
+
+thf(multiplication_def,axiom,
+    ! [X: $i > $o,Y: $i > $o] :
+      ( ( multiplication @ ( sup @ X ) @ ( sup @ Y ) )
+      = ( sup @ ( crossmult @ X @ Y ) ) ) ).
+
+thf(one_type,type,
+    one: $i ).
+
+thf(multiplication_neutral_right,axiom,
+    ! [X: $i] :
+      ( ( multiplication @ X @ one )
+      = X ) ).
+
+thf(multiplication_neutral_left,axiom,
+    ! [X: $i] :
+      ( ( multiplication @ one @ X )
+      = X ) ).
+
+%------------------------------------------------------------------------------

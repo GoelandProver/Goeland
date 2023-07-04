@@ -1,0 +1,358 @@
+%------------------------------------------------------------------------------
+% File     : SET007+762 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Solving Roots of Polynomial Equation of Degree 4
+% Version  : [Urb08] axioms.
+% English  : Solving Roots of Polynomial Equation of Degree 4 with Real
+%            Coefficients},
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : polyeq_2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   19 (   2 unt;   0 def)
+%            Number of atoms       :  182 (  60 equ)
+%            Maximal formula atoms :   18 (   9 avg)
+%            Number of connectives :  178 (  15   ~;  10   |;  36   &)
+%                                         (   0 <=>; 117  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   26 (  15 avg)
+%            Maximal term depth    :   10 (   2 avg)
+%            Number of predicates  :    5 (   3 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   18 (  18 usr;   7 con; 0-6 aty)
+%            Number of variables   :  114 ( 114   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_polyeq_2,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( v1_xreal_0(A)
+        & v1_xreal_0(B)
+        & v1_xreal_0(C)
+        & v1_xreal_0(D)
+        & v1_xreal_0(E)
+        & v1_xreal_0(F) )
+     => ( v1_xcmplx_0(k1_polyeq_2(A,B,C,D,E,F))
+        & v1_xreal_0(k1_polyeq_2(A,B,C,D,E,F)) ) ) ).
+
+fof(fc2_polyeq_2,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( v1_xreal_0(A)
+        & v1_xreal_0(B)
+        & v1_xreal_0(C)
+        & v1_xreal_0(D)
+        & v1_xreal_0(E)
+        & v1_xreal_0(F) )
+     => ( v1_xcmplx_0(k2_polyeq_2(A,B,C,D,E,F))
+        & v1_xreal_0(k2_polyeq_2(A,B,C,D,E,F)) ) ) ).
+
+fof(d1_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( v1_xreal_0(E)
+                     => ! [F] :
+                          ( v1_xreal_0(F)
+                         => k1_polyeq_2(A,B,C,D,E,F) = k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(A,k2_newton(F,np__4)),k3_xcmplx_0(B,k2_newton(F,np__3))),k3_xcmplx_0(C,k5_square_1(F))),k3_xcmplx_0(D,F)),E) ) ) ) ) ) ) ).
+
+fof(t1_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ( k1_polyeq_2(A,np__0,B,np__0,C,D) = np__0
+                   => ( A = np__0
+                      | C = np__0
+                      | r1_xreal_0(k6_xcmplx_0(k5_square_1(B),k3_xcmplx_0(k3_xcmplx_0(np__4,A),C)),np__0)
+                      | ( D != np__0
+                        & ~ ( D != k8_square_1(k7_xcmplx_0(k2_xcmplx_0(k4_xcmplx_0(B),k8_square_1(k1_quin_1(A,B,C))),k3_xcmplx_0(np__2,A)))
+                            & D != k8_square_1(k7_xcmplx_0(k6_xcmplx_0(k4_xcmplx_0(B),k8_square_1(k1_quin_1(A,B,C))),k3_xcmplx_0(np__2,A)))
+                            & D != k4_xcmplx_0(k8_square_1(k7_xcmplx_0(k2_xcmplx_0(k4_xcmplx_0(B),k8_square_1(k1_quin_1(A,B,C))),k3_xcmplx_0(np__2,A))))
+                            & D != k4_xcmplx_0(k8_square_1(k7_xcmplx_0(k6_xcmplx_0(k4_xcmplx_0(B),k8_square_1(k1_quin_1(A,B,C))),k3_xcmplx_0(np__2,A)))) ) ) ) ) ) ) ) ) ).
+
+fof(t2_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( v1_xreal_0(E)
+                     => ( ( E = k2_xcmplx_0(D,k7_xcmplx_0(np__1,D))
+                          & k1_polyeq_2(A,B,C,B,A,D) = np__0 )
+                       => ( A = np__0
+                          | ( D != np__0
+                            & k6_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(A,k5_square_1(E)),k3_xcmplx_0(B,E)),C),k3_xcmplx_0(np__2,A)) = np__0 ) ) ) ) ) ) ) ) ).
+
+fof(t3_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( v1_xreal_0(E)
+                     => ( ( E = k2_xcmplx_0(D,k7_xcmplx_0(np__1,D))
+                          & k1_polyeq_2(A,B,C,B,A,D) = np__0 )
+                       => ( A = np__0
+                          | r1_xreal_0(k2_xcmplx_0(k6_xcmplx_0(k5_square_1(B),k3_xcmplx_0(k3_xcmplx_0(np__4,A),C)),k3_xcmplx_0(np__8,k5_square_1(A))),np__0)
+                          | ! [F] :
+                              ( v1_xreal_0(F)
+                             => ! [G] :
+                                  ( v1_xreal_0(G)
+                                 => ( ( F = k7_xcmplx_0(k2_xcmplx_0(k4_xcmplx_0(B),k8_square_1(k2_xcmplx_0(k6_xcmplx_0(k5_square_1(B),k3_xcmplx_0(k3_xcmplx_0(np__4,A),C)),k3_xcmplx_0(np__8,k5_square_1(A))))),k3_xcmplx_0(np__2,A))
+                                      & G = k7_xcmplx_0(k6_xcmplx_0(k4_xcmplx_0(B),k8_square_1(k2_xcmplx_0(k6_xcmplx_0(k5_square_1(B),k3_xcmplx_0(k3_xcmplx_0(np__4,A),C)),k3_xcmplx_0(np__8,k5_square_1(A))))),k3_xcmplx_0(np__2,A)) )
+                                   => ( D != np__0
+                                      & ~ ( D != k7_xcmplx_0(k2_xcmplx_0(F,k8_square_1(k1_quin_1(np__1,k4_xcmplx_0(F),np__1))),np__2)
+                                          & D != k7_xcmplx_0(k2_xcmplx_0(G,k8_square_1(k1_quin_1(np__1,k4_xcmplx_0(G),np__1))),np__2)
+                                          & D != k7_xcmplx_0(k6_xcmplx_0(F,k8_square_1(k1_quin_1(np__1,k4_xcmplx_0(F),np__1))),np__2)
+                                          & D != k7_xcmplx_0(k6_xcmplx_0(G,k8_square_1(k1_quin_1(np__1,k4_xcmplx_0(G),np__1))),np__2) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t4_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ( k2_newton(A,np__3) = k3_xcmplx_0(k5_square_1(A),A)
+        & k3_xcmplx_0(k2_newton(A,np__3),A) = k2_newton(A,np__4)
+        & k3_xcmplx_0(k5_square_1(A),k5_square_1(A)) = k2_newton(A,np__4) ) ) ).
+
+fof(t5_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k2_xcmplx_0(A,B) != np__0
+           => k2_newton(k2_xcmplx_0(A,B),np__4) = k2_xcmplx_0(k3_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_newton(A,np__3),k2_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(np__3,B),k5_square_1(A)),k3_xcmplx_0(k3_xcmplx_0(np__3,k5_square_1(B)),A))),k2_newton(B,np__3)),A),k3_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_newton(A,np__3),k2_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(np__3,B),k5_square_1(A)),k3_xcmplx_0(k3_xcmplx_0(np__3,k5_square_1(B)),A))),k2_newton(B,np__3)),B)) ) ) ) ).
+
+fof(t6_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( k2_xcmplx_0(A,B) != np__0
+           => k2_newton(k2_xcmplx_0(A,B),np__4) = k2_xcmplx_0(k2_xcmplx_0(k2_newton(A,np__4),k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(np__4,B),k2_newton(A,np__3)),k3_xcmplx_0(k3_xcmplx_0(np__6,k5_square_1(B)),k5_square_1(A))),k3_xcmplx_0(k3_xcmplx_0(np__4,k2_newton(B,np__3)),A))),k2_newton(B,np__4)) ) ) ) ).
+
+fof(t7_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( v1_xreal_0(E)
+                     => ! [F] :
+                          ( v1_xreal_0(F)
+                         => ! [G] :
+                              ( v1_xreal_0(G)
+                             => ! [H] :
+                                  ( v1_xreal_0(H)
+                                 => ! [I] :
+                                      ( v1_xreal_0(I)
+                                     => ! [J] :
+                                          ( v1_xreal_0(J)
+                                         => ( ! [K] :
+                                                ( v1_xreal_0(K)
+                                               => k1_polyeq_2(A,B,C,D,E,K) = k1_polyeq_2(F,G,H,I,J,K) )
+                                           => ( E = J
+                                              & k6_xcmplx_0(k2_xcmplx_0(k6_xcmplx_0(A,B),C),D) = k6_xcmplx_0(k2_xcmplx_0(k6_xcmplx_0(F,G),H),I)
+                                              & k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(A,B),C),D) = k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(F,G),H),I) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t8_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( v1_xreal_0(E)
+                     => ! [F] :
+                          ( v1_xreal_0(F)
+                         => ! [G] :
+                              ( v1_xreal_0(G)
+                             => ! [H] :
+                                  ( v1_xreal_0(H)
+                                 => ! [I] :
+                                      ( v1_xreal_0(I)
+                                     => ! [J] :
+                                          ( v1_xreal_0(J)
+                                         => ( ! [K] :
+                                                ( v1_xreal_0(K)
+                                               => k1_polyeq_2(A,B,C,D,E,K) = k1_polyeq_2(F,G,H,I,J,K) )
+                                           => ( k6_xcmplx_0(A,F) = k6_xcmplx_0(H,C)
+                                              & k6_xcmplx_0(B,G) = k6_xcmplx_0(I,D) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t9_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( v1_xreal_0(E)
+                     => ! [F] :
+                          ( v1_xreal_0(F)
+                         => ! [G] :
+                              ( v1_xreal_0(G)
+                             => ! [H] :
+                                  ( v1_xreal_0(H)
+                                 => ! [I] :
+                                      ( v1_xreal_0(I)
+                                     => ! [J] :
+                                          ( v1_xreal_0(J)
+                                         => ( ! [K] :
+                                                ( v1_xreal_0(K)
+                                               => k1_polyeq_2(A,B,C,D,E,K) = k1_polyeq_2(F,G,H,I,J,K) )
+                                           => ( A = F
+                                              & B = G
+                                              & C = H
+                                              & D = I
+                                              & E = J ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d2_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( v1_xreal_0(E)
+                     => ! [F] :
+                          ( v1_xreal_0(F)
+                         => k2_polyeq_2(A,B,C,D,E,F) = k3_xcmplx_0(A,k3_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(k6_xcmplx_0(F,B),k6_xcmplx_0(F,C)),k6_xcmplx_0(F,D)),k6_xcmplx_0(F,E))) ) ) ) ) ) ) ).
+
+fof(t10_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( v1_xreal_0(E)
+                     => ! [F] :
+                          ( v1_xreal_0(F)
+                         => ! [G] :
+                              ( v1_xreal_0(G)
+                             => ! [H] :
+                                  ( v1_xreal_0(H)
+                                 => ! [I] :
+                                      ( v1_xreal_0(I)
+                                     => ! [J] :
+                                          ( v1_xreal_0(J)
+                                         => ( ! [K] :
+                                                ( v1_xreal_0(K)
+                                               => k1_polyeq_2(A,B,C,D,E,K) = k2_polyeq_2(A,G,H,I,J,K) )
+                                           => ( A = np__0
+                                              | k7_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(A,k2_newton(F,np__4)),k3_xcmplx_0(B,k2_newton(F,np__3))),k3_xcmplx_0(C,k5_square_1(F))),k3_xcmplx_0(D,F)),E),A) = k6_xcmplx_0(k6_xcmplx_0(k2_xcmplx_0(k6_xcmplx_0(k3_xcmplx_0(k5_square_1(F),k5_square_1(F)),k3_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(G,H),I),k3_xcmplx_0(k5_square_1(F),F))),k3_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(G,I),k3_xcmplx_0(H,I)),k3_xcmplx_0(G,H)),k5_square_1(F))),k3_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(G,H),I),F)),k3_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(k6_xcmplx_0(F,G),k6_xcmplx_0(F,H)),k6_xcmplx_0(F,I)),J)) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t11_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( v1_xreal_0(E)
+                     => ! [F] :
+                          ( v1_xreal_0(F)
+                         => ! [G] :
+                              ( v1_xreal_0(G)
+                             => ! [H] :
+                                  ( v1_xreal_0(H)
+                                 => ! [I] :
+                                      ( v1_xreal_0(I)
+                                     => ! [J] :
+                                          ( v1_xreal_0(J)
+                                         => ( ! [K] :
+                                                ( v1_xreal_0(K)
+                                               => k1_polyeq_2(A,B,C,D,E,K) = k2_polyeq_2(A,G,H,I,J,K) )
+                                           => ( A = np__0
+                                              | k7_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(A,k2_newton(F,np__4)),k3_xcmplx_0(B,k2_newton(F,np__3))),k3_xcmplx_0(C,k5_square_1(F))),k3_xcmplx_0(D,F)),E),A) = k2_xcmplx_0(k6_xcmplx_0(k2_xcmplx_0(k6_xcmplx_0(k2_newton(F,np__4),k3_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(G,H),I),J),k2_newton(F,np__3))),k3_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(G,H),k3_xcmplx_0(G,I)),k3_xcmplx_0(G,J)),k2_xcmplx_0(k3_xcmplx_0(H,I),k3_xcmplx_0(H,J))),k3_xcmplx_0(I,J)),k5_square_1(F))),k3_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(G,H),I),k3_xcmplx_0(k3_xcmplx_0(G,H),J)),k3_xcmplx_0(k3_xcmplx_0(G,I),J)),k3_xcmplx_0(k3_xcmplx_0(H,I),J)),F)),k3_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(G,H),I),J)) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t12_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ! [E] :
+                      ( v1_xreal_0(E)
+                     => ! [F] :
+                          ( v1_xreal_0(F)
+                         => ! [G] :
+                              ( v1_xreal_0(G)
+                             => ! [H] :
+                                  ( v1_xreal_0(H)
+                                 => ! [I] :
+                                      ( v1_xreal_0(I)
+                                     => ( ! [J] :
+                                            ( v1_xreal_0(J)
+                                           => k1_polyeq_2(A,B,C,D,E,J) = k2_polyeq_2(A,F,G,H,I,J) )
+                                       => ( A = np__0
+                                          | ( k7_xcmplx_0(B,A) = k4_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(F,G),H),I))
+                                            & k7_xcmplx_0(C,A) = k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(F,G),k3_xcmplx_0(F,H)),k3_xcmplx_0(F,I)),k2_xcmplx_0(k3_xcmplx_0(G,H),k3_xcmplx_0(G,I))),k3_xcmplx_0(H,I))
+                                            & k7_xcmplx_0(D,A) = k4_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k2_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(F,G),H),k3_xcmplx_0(k3_xcmplx_0(F,G),I)),k3_xcmplx_0(k3_xcmplx_0(F,H),I)),k3_xcmplx_0(k3_xcmplx_0(G,H),I)))
+                                            & k7_xcmplx_0(E,A) = k3_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(F,G),H),I) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t13_polyeq_2,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ( ! [D] :
+                    ( v1_xreal_0(D)
+                   => k2_xcmplx_0(k2_newton(D,np__4),k2_newton(A,np__4)) = k3_xcmplx_0(k3_xcmplx_0(k3_xcmplx_0(B,A),D),k2_xcmplx_0(k5_square_1(D),k5_square_1(A))) )
+               => ( A = np__0
+                  | k2_xcmplx_0(k6_xcmplx_0(k6_xcmplx_0(k2_newton(C,np__4),k3_xcmplx_0(B,k2_newton(C,np__3))),k3_xcmplx_0(B,C)),np__1) = np__0 ) ) ) ) ) ).
+
+fof(dt_k1_polyeq_2,axiom,
+    $true ).
+
+fof(dt_k2_polyeq_2,axiom,
+    $true ).
+
+%------------------------------------------------------------------------------

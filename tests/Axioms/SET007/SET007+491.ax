@@ -1,0 +1,1330 @@
+%------------------------------------------------------------------------------
+% File     : SET007+491 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : 2's Complement Circuit
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : twoscomp [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  146 (  13 unt;   0 def)
+%            Number of atoms       :  759 ( 274 equ)
+%            Maximal formula atoms :   12 (   5 avg)
+%            Number of connectives :  696 (  83   ~;   0   |; 336   &)
+%                                         (  32 <=>; 245  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   15 (   7 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   24 (  22 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   68 (  68 usr;  37 con; 0-4 aty)
+%            Number of variables   :  278 ( 278   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(d1_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k2_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k12_margrel1(B,C) ) ) ) ) ).
+
+fof(d2_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k3_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k12_margrel1(k11_margrel1(B),C) ) ) ) ) ).
+
+fof(d3_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k4_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k12_margrel1(k11_margrel1(B),k11_margrel1(C)) ) ) ) ) ).
+
+fof(d4_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k5_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k11_margrel1(k12_margrel1(B,C)) ) ) ) ) ).
+
+fof(d5_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k6_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k11_margrel1(k12_margrel1(k11_margrel1(B),C)) ) ) ) ) ).
+
+fof(d6_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k7_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k11_margrel1(k12_margrel1(k11_margrel1(B),k11_margrel1(C))) ) ) ) ) ).
+
+fof(d7_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k8_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k3_binarith(B,C) ) ) ) ) ).
+
+fof(d8_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k9_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k3_binarith(k11_margrel1(B),C) ) ) ) ) ).
+
+fof(d9_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k10_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k3_binarith(k11_margrel1(B),k11_margrel1(C)) ) ) ) ) ).
+
+fof(d10_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k11_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k11_margrel1(k3_binarith(B,C)) ) ) ) ) ).
+
+fof(d11_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k12_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k11_margrel1(k3_binarith(k11_margrel1(B),C)) ) ) ) ) ).
+
+fof(d12_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k13_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k11_margrel1(k3_binarith(k11_margrel1(B),k11_margrel1(C))) ) ) ) ) ).
+
+fof(d13_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k14_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k4_binarith(B,C) ) ) ) ) ).
+
+fof(d14_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k15_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k4_binarith(k11_margrel1(B),C) ) ) ) ) ).
+
+fof(d15_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) )
+     => ( A = k16_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => k1_funct_1(A,k6_facirc_1(B,C)) = k4_binarith(k11_margrel1(B),k11_margrel1(C)) ) ) ) ) ).
+
+fof(t1_twoscomp,axiom,
+    $true ).
+
+fof(t2_twoscomp,axiom,
+    $true ).
+
+fof(t3_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ( k1_funct_1(k2_twoscomp,k6_facirc_1(A,B)) = k12_margrel1(A,B)
+            & k1_funct_1(k3_twoscomp,k6_facirc_1(A,B)) = k12_margrel1(k11_margrel1(A),B)
+            & k1_funct_1(k4_twoscomp,k6_facirc_1(A,B)) = k12_margrel1(k11_margrel1(A),k11_margrel1(B)) ) ) ) ).
+
+fof(t4_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ( k1_funct_1(k5_twoscomp,k6_facirc_1(A,B)) = k11_margrel1(k12_margrel1(A,B))
+            & k1_funct_1(k6_twoscomp,k6_facirc_1(A,B)) = k11_margrel1(k12_margrel1(k11_margrel1(A),B))
+            & k1_funct_1(k7_twoscomp,k6_facirc_1(A,B)) = k11_margrel1(k12_margrel1(k11_margrel1(A),k11_margrel1(B))) ) ) ) ).
+
+fof(t5_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ( k1_funct_1(k8_twoscomp,k6_facirc_1(A,B)) = k3_binarith(A,B)
+            & k1_funct_1(k9_twoscomp,k6_facirc_1(A,B)) = k3_binarith(k11_margrel1(A),B)
+            & k1_funct_1(k10_twoscomp,k6_facirc_1(A,B)) = k3_binarith(k11_margrel1(A),k11_margrel1(B)) ) ) ) ).
+
+fof(t6_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ( k1_funct_1(k11_twoscomp,k6_facirc_1(A,B)) = k11_margrel1(k3_binarith(A,B))
+            & k1_funct_1(k12_twoscomp,k6_facirc_1(A,B)) = k11_margrel1(k3_binarith(k11_margrel1(A),B))
+            & k1_funct_1(k13_twoscomp,k6_facirc_1(A,B)) = k11_margrel1(k3_binarith(k11_margrel1(A),k11_margrel1(B))) ) ) ) ).
+
+fof(t7_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ( k1_funct_1(k14_twoscomp,k6_facirc_1(A,B)) = k4_binarith(A,B)
+            & k1_funct_1(k15_twoscomp,k6_facirc_1(A,B)) = k4_binarith(k11_margrel1(A),B)
+            & k1_funct_1(k16_twoscomp,k6_facirc_1(A,B)) = k4_binarith(k11_margrel1(A),k11_margrel1(B)) ) ) ) ).
+
+fof(t8_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ( k1_funct_1(k2_twoscomp,k6_facirc_1(A,B)) = k1_funct_1(k13_twoscomp,k6_facirc_1(A,B))
+            & k1_funct_1(k3_twoscomp,k6_facirc_1(A,B)) = k1_funct_1(k12_twoscomp,k6_facirc_1(B,A))
+            & k1_funct_1(k4_twoscomp,k6_facirc_1(A,B)) = k1_funct_1(k11_twoscomp,k6_facirc_1(A,B)) ) ) ) ).
+
+fof(t9_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ( k1_funct_1(k8_twoscomp,k6_facirc_1(A,B)) = k1_funct_1(k7_twoscomp,k6_facirc_1(A,B))
+            & k1_funct_1(k9_twoscomp,k6_facirc_1(A,B)) = k1_funct_1(k6_twoscomp,k6_facirc_1(B,A))
+            & k1_funct_1(k10_twoscomp,k6_facirc_1(A,B)) = k1_funct_1(k5_twoscomp,k6_facirc_1(A,B)) ) ) ) ).
+
+fof(t10_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => k1_funct_1(k16_twoscomp,k6_facirc_1(A,B)) = k1_funct_1(k14_twoscomp,k6_facirc_1(A,B)) ) ) ).
+
+fof(t11_twoscomp,axiom,
+    ( k1_funct_1(k2_twoscomp,k6_facirc_1(np__0,np__0)) = np__0
+    & k1_funct_1(k2_twoscomp,k6_facirc_1(np__0,np__1)) = np__0
+    & k1_funct_1(k2_twoscomp,k6_facirc_1(np__1,np__0)) = np__0
+    & k1_funct_1(k2_twoscomp,k6_facirc_1(np__1,np__1)) = np__1
+    & k1_funct_1(k3_twoscomp,k6_facirc_1(np__0,np__0)) = np__0
+    & k1_funct_1(k3_twoscomp,k6_facirc_1(np__0,np__1)) = np__1
+    & k1_funct_1(k3_twoscomp,k6_facirc_1(np__1,np__0)) = np__0
+    & k1_funct_1(k3_twoscomp,k6_facirc_1(np__1,np__1)) = np__0
+    & k1_funct_1(k4_twoscomp,k6_facirc_1(np__0,np__0)) = np__1
+    & k1_funct_1(k4_twoscomp,k6_facirc_1(np__0,np__1)) = np__0
+    & k1_funct_1(k4_twoscomp,k6_facirc_1(np__1,np__0)) = np__0
+    & k1_funct_1(k4_twoscomp,k6_facirc_1(np__1,np__1)) = np__0 ) ).
+
+fof(t12_twoscomp,axiom,
+    ( k1_funct_1(k8_twoscomp,k6_facirc_1(np__0,np__0)) = np__0
+    & k1_funct_1(k8_twoscomp,k6_facirc_1(np__0,np__1)) = np__1
+    & k1_funct_1(k8_twoscomp,k6_facirc_1(np__1,np__0)) = np__1
+    & k1_funct_1(k8_twoscomp,k6_facirc_1(np__1,np__1)) = np__1
+    & k1_funct_1(k9_twoscomp,k6_facirc_1(np__0,np__0)) = np__1
+    & k1_funct_1(k9_twoscomp,k6_facirc_1(np__0,np__1)) = np__1
+    & k1_funct_1(k9_twoscomp,k6_facirc_1(np__1,np__0)) = np__0
+    & k1_funct_1(k9_twoscomp,k6_facirc_1(np__1,np__1)) = np__1
+    & k1_funct_1(k10_twoscomp,k6_facirc_1(np__0,np__0)) = np__1
+    & k1_funct_1(k10_twoscomp,k6_facirc_1(np__0,np__1)) = np__1
+    & k1_funct_1(k10_twoscomp,k6_facirc_1(np__1,np__0)) = np__1
+    & k1_funct_1(k10_twoscomp,k6_facirc_1(np__1,np__1)) = np__0 ) ).
+
+fof(t13_twoscomp,axiom,
+    ( k1_funct_1(k14_twoscomp,k6_facirc_1(np__0,np__0)) = np__0
+    & k1_funct_1(k14_twoscomp,k6_facirc_1(np__0,np__1)) = np__1
+    & k1_funct_1(k14_twoscomp,k6_facirc_1(np__1,np__0)) = np__1
+    & k1_funct_1(k14_twoscomp,k6_facirc_1(np__1,np__1)) = np__0
+    & k1_funct_1(k15_twoscomp,k6_facirc_1(np__0,np__0)) = np__1
+    & k1_funct_1(k15_twoscomp,k6_facirc_1(np__0,np__1)) = np__0
+    & k1_funct_1(k15_twoscomp,k6_facirc_1(np__1,np__0)) = np__0
+    & k1_funct_1(k15_twoscomp,k6_facirc_1(np__1,np__1)) = np__1 ) ).
+
+fof(d16_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k17_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k12_margrel1(k12_margrel1(B,C),D) ) ) ) ) ) ).
+
+fof(d17_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k18_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k12_margrel1(k12_margrel1(k11_margrel1(B),C),D) ) ) ) ) ) ).
+
+fof(d18_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k19_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k12_margrel1(k12_margrel1(k11_margrel1(B),k11_margrel1(C)),D) ) ) ) ) ) ).
+
+fof(d19_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k20_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k12_margrel1(k12_margrel1(k11_margrel1(B),k11_margrel1(C)),k11_margrel1(D)) ) ) ) ) ) ).
+
+fof(d20_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k21_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k11_margrel1(k12_margrel1(k12_margrel1(B,C),D)) ) ) ) ) ) ).
+
+fof(d21_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k22_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k11_margrel1(k12_margrel1(k12_margrel1(k11_margrel1(B),C),D)) ) ) ) ) ) ).
+
+fof(d22_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k23_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k11_margrel1(k12_margrel1(k12_margrel1(k11_margrel1(B),k11_margrel1(C)),D)) ) ) ) ) ) ).
+
+fof(d23_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k24_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k11_margrel1(k12_margrel1(k12_margrel1(k11_margrel1(B),k11_margrel1(C)),k11_margrel1(D))) ) ) ) ) ) ).
+
+fof(d24_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k25_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k3_binarith(k3_binarith(B,C),D) ) ) ) ) ) ).
+
+fof(d25_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k26_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k3_binarith(k3_binarith(k11_margrel1(B),C),D) ) ) ) ) ) ).
+
+fof(d26_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k27_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k3_binarith(k3_binarith(k11_margrel1(B),k11_margrel1(C)),D) ) ) ) ) ) ).
+
+fof(d27_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k28_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k3_binarith(k3_binarith(k11_margrel1(B),k11_margrel1(C)),k11_margrel1(D)) ) ) ) ) ) ).
+
+fof(d28_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k29_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k11_margrel1(k3_binarith(k3_binarith(B,C),D)) ) ) ) ) ) ).
+
+fof(d29_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k30_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k11_margrel1(k3_binarith(k3_binarith(k11_margrel1(B),C),D)) ) ) ) ) ) ).
+
+fof(d30_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k31_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k11_margrel1(k3_binarith(k3_binarith(k11_margrel1(B),k11_margrel1(C)),D)) ) ) ) ) ) ).
+
+fof(d31_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k32_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k11_margrel1(k3_binarith(k3_binarith(k11_margrel1(B),k11_margrel1(C)),k11_margrel1(D))) ) ) ) ) ) ).
+
+fof(d32_twoscomp,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+        & m2_relset_1(A,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) )
+     => ( A = k33_twoscomp
+      <=> ! [B] :
+            ( m1_subset_1(B,k10_circcomb)
+           => ! [C] :
+                ( m1_subset_1(C,k10_circcomb)
+               => ! [D] :
+                    ( m1_subset_1(D,k10_circcomb)
+                   => k1_funct_1(A,k7_facirc_1(B,C,D)) = k4_binarith(k4_binarith(B,C),D) ) ) ) ) ) ).
+
+fof(t14_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ! [C] :
+              ( m1_subset_1(C,k10_circcomb)
+             => ( k1_funct_1(k17_twoscomp,k7_facirc_1(A,B,C)) = k12_margrel1(k12_margrel1(A,B),C)
+                & k1_funct_1(k18_twoscomp,k7_facirc_1(A,B,C)) = k12_margrel1(k12_margrel1(k11_margrel1(A),B),C)
+                & k1_funct_1(k19_twoscomp,k7_facirc_1(A,B,C)) = k12_margrel1(k12_margrel1(k11_margrel1(A),k11_margrel1(B)),C)
+                & k1_funct_1(k20_twoscomp,k7_facirc_1(A,B,C)) = k12_margrel1(k12_margrel1(k11_margrel1(A),k11_margrel1(B)),k11_margrel1(C)) ) ) ) ) ).
+
+fof(t15_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ! [C] :
+              ( m1_subset_1(C,k10_circcomb)
+             => ( k1_funct_1(k21_twoscomp,k7_facirc_1(A,B,C)) = k11_margrel1(k12_margrel1(k12_margrel1(A,B),C))
+                & k1_funct_1(k22_twoscomp,k7_facirc_1(A,B,C)) = k11_margrel1(k12_margrel1(k12_margrel1(k11_margrel1(A),B),C))
+                & k1_funct_1(k23_twoscomp,k7_facirc_1(A,B,C)) = k11_margrel1(k12_margrel1(k12_margrel1(k11_margrel1(A),k11_margrel1(B)),C))
+                & k1_funct_1(k24_twoscomp,k7_facirc_1(A,B,C)) = k11_margrel1(k12_margrel1(k12_margrel1(k11_margrel1(A),k11_margrel1(B)),k11_margrel1(C))) ) ) ) ) ).
+
+fof(t16_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ! [C] :
+              ( m1_subset_1(C,k10_circcomb)
+             => ( k1_funct_1(k25_twoscomp,k7_facirc_1(A,B,C)) = k3_binarith(k3_binarith(A,B),C)
+                & k1_funct_1(k26_twoscomp,k7_facirc_1(A,B,C)) = k3_binarith(k3_binarith(k11_margrel1(A),B),C)
+                & k1_funct_1(k27_twoscomp,k7_facirc_1(A,B,C)) = k3_binarith(k3_binarith(k11_margrel1(A),k11_margrel1(B)),C)
+                & k1_funct_1(k28_twoscomp,k7_facirc_1(A,B,C)) = k3_binarith(k3_binarith(k11_margrel1(A),k11_margrel1(B)),k11_margrel1(C)) ) ) ) ) ).
+
+fof(t17_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ! [C] :
+              ( m1_subset_1(C,k10_circcomb)
+             => ( k1_funct_1(k29_twoscomp,k7_facirc_1(A,B,C)) = k11_margrel1(k3_binarith(k3_binarith(A,B),C))
+                & k1_funct_1(k30_twoscomp,k7_facirc_1(A,B,C)) = k11_margrel1(k3_binarith(k3_binarith(k11_margrel1(A),B),C))
+                & k1_funct_1(k31_twoscomp,k7_facirc_1(A,B,C)) = k11_margrel1(k3_binarith(k3_binarith(k11_margrel1(A),k11_margrel1(B)),C))
+                & k1_funct_1(k32_twoscomp,k7_facirc_1(A,B,C)) = k11_margrel1(k3_binarith(k3_binarith(k11_margrel1(A),k11_margrel1(B)),k11_margrel1(C))) ) ) ) ) ).
+
+fof(t18_twoscomp,axiom,
+    $true ).
+
+fof(t19_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ! [C] :
+              ( m1_subset_1(C,k10_circcomb)
+             => ( k1_funct_1(k17_twoscomp,k7_facirc_1(A,B,C)) = k1_funct_1(k32_twoscomp,k7_facirc_1(A,B,C))
+                & k1_funct_1(k18_twoscomp,k7_facirc_1(A,B,C)) = k1_funct_1(k31_twoscomp,k7_facirc_1(C,B,A))
+                & k1_funct_1(k19_twoscomp,k7_facirc_1(A,B,C)) = k1_funct_1(k30_twoscomp,k7_facirc_1(C,B,A))
+                & k1_funct_1(k20_twoscomp,k7_facirc_1(A,B,C)) = k1_funct_1(k29_twoscomp,k7_facirc_1(A,B,C)) ) ) ) ) ).
+
+fof(t20_twoscomp,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k10_circcomb)
+     => ! [B] :
+          ( m1_subset_1(B,k10_circcomb)
+         => ! [C] :
+              ( m1_subset_1(C,k10_circcomb)
+             => ( k1_funct_1(k25_twoscomp,k7_facirc_1(A,B,C)) = k1_funct_1(k24_twoscomp,k7_facirc_1(A,B,C))
+                & k1_funct_1(k26_twoscomp,k7_facirc_1(A,B,C)) = k1_funct_1(k23_twoscomp,k7_facirc_1(C,B,A))
+                & k1_funct_1(k27_twoscomp,k7_facirc_1(A,B,C)) = k1_funct_1(k22_twoscomp,k7_facirc_1(C,B,A))
+                & k1_funct_1(k28_twoscomp,k7_facirc_1(A,B,C)) = k1_funct_1(k21_twoscomp,k7_facirc_1(A,B,C)) ) ) ) ) ).
+
+fof(t21_twoscomp,axiom,
+    ( k1_funct_1(k17_twoscomp,k7_facirc_1(np__0,np__0,np__0)) = np__0
+    & k1_funct_1(k17_twoscomp,k7_facirc_1(np__0,np__0,np__1)) = np__0
+    & k1_funct_1(k17_twoscomp,k7_facirc_1(np__0,np__1,np__0)) = np__0
+    & k1_funct_1(k17_twoscomp,k7_facirc_1(np__0,np__1,np__1)) = np__0
+    & k1_funct_1(k17_twoscomp,k7_facirc_1(np__1,np__0,np__0)) = np__0
+    & k1_funct_1(k17_twoscomp,k7_facirc_1(np__1,np__0,np__1)) = np__0
+    & k1_funct_1(k17_twoscomp,k7_facirc_1(np__1,np__1,np__0)) = np__0
+    & k1_funct_1(k17_twoscomp,k7_facirc_1(np__1,np__1,np__1)) = np__1 ) ).
+
+fof(t22_twoscomp,axiom,
+    ( k1_funct_1(k18_twoscomp,k7_facirc_1(np__0,np__0,np__0)) = np__0
+    & k1_funct_1(k18_twoscomp,k7_facirc_1(np__0,np__0,np__1)) = np__0
+    & k1_funct_1(k18_twoscomp,k7_facirc_1(np__0,np__1,np__0)) = np__0
+    & k1_funct_1(k18_twoscomp,k7_facirc_1(np__0,np__1,np__1)) = np__1
+    & k1_funct_1(k18_twoscomp,k7_facirc_1(np__1,np__0,np__0)) = np__0
+    & k1_funct_1(k18_twoscomp,k7_facirc_1(np__1,np__0,np__1)) = np__0
+    & k1_funct_1(k18_twoscomp,k7_facirc_1(np__1,np__1,np__0)) = np__0
+    & k1_funct_1(k18_twoscomp,k7_facirc_1(np__1,np__1,np__1)) = np__0 ) ).
+
+fof(t23_twoscomp,axiom,
+    ( k1_funct_1(k19_twoscomp,k7_facirc_1(np__0,np__0,np__0)) = np__0
+    & k1_funct_1(k19_twoscomp,k7_facirc_1(np__0,np__0,np__1)) = np__1
+    & k1_funct_1(k19_twoscomp,k7_facirc_1(np__0,np__1,np__0)) = np__0
+    & k1_funct_1(k19_twoscomp,k7_facirc_1(np__0,np__1,np__1)) = np__0
+    & k1_funct_1(k19_twoscomp,k7_facirc_1(np__1,np__0,np__0)) = np__0
+    & k1_funct_1(k19_twoscomp,k7_facirc_1(np__1,np__0,np__1)) = np__0
+    & k1_funct_1(k19_twoscomp,k7_facirc_1(np__1,np__1,np__0)) = np__0
+    & k1_funct_1(k19_twoscomp,k7_facirc_1(np__1,np__1,np__1)) = np__0 ) ).
+
+fof(t24_twoscomp,axiom,
+    ( k1_funct_1(k20_twoscomp,k7_facirc_1(np__0,np__0,np__0)) = np__1
+    & k1_funct_1(k20_twoscomp,k7_facirc_1(np__0,np__0,np__1)) = np__0
+    & k1_funct_1(k20_twoscomp,k7_facirc_1(np__0,np__1,np__0)) = np__0
+    & k1_funct_1(k20_twoscomp,k7_facirc_1(np__0,np__1,np__1)) = np__0
+    & k1_funct_1(k20_twoscomp,k7_facirc_1(np__1,np__0,np__0)) = np__0
+    & k1_funct_1(k20_twoscomp,k7_facirc_1(np__1,np__0,np__1)) = np__0
+    & k1_funct_1(k20_twoscomp,k7_facirc_1(np__1,np__1,np__0)) = np__0
+    & k1_funct_1(k20_twoscomp,k7_facirc_1(np__1,np__1,np__1)) = np__0 ) ).
+
+fof(t25_twoscomp,axiom,
+    ( k1_funct_1(k25_twoscomp,k7_facirc_1(np__0,np__0,np__0)) = np__0
+    & k1_funct_1(k25_twoscomp,k7_facirc_1(np__0,np__0,np__1)) = np__1
+    & k1_funct_1(k25_twoscomp,k7_facirc_1(np__0,np__1,np__0)) = np__1
+    & k1_funct_1(k25_twoscomp,k7_facirc_1(np__0,np__1,np__1)) = np__1
+    & k1_funct_1(k25_twoscomp,k7_facirc_1(np__1,np__0,np__0)) = np__1
+    & k1_funct_1(k25_twoscomp,k7_facirc_1(np__1,np__0,np__1)) = np__1
+    & k1_funct_1(k25_twoscomp,k7_facirc_1(np__1,np__1,np__0)) = np__1
+    & k1_funct_1(k25_twoscomp,k7_facirc_1(np__1,np__1,np__1)) = np__1 ) ).
+
+fof(t26_twoscomp,axiom,
+    ( k1_funct_1(k26_twoscomp,k7_facirc_1(np__0,np__0,np__0)) = np__1
+    & k1_funct_1(k26_twoscomp,k7_facirc_1(np__0,np__0,np__1)) = np__1
+    & k1_funct_1(k26_twoscomp,k7_facirc_1(np__0,np__1,np__0)) = np__1
+    & k1_funct_1(k26_twoscomp,k7_facirc_1(np__0,np__1,np__1)) = np__1
+    & k1_funct_1(k26_twoscomp,k7_facirc_1(np__1,np__0,np__0)) = np__0
+    & k1_funct_1(k26_twoscomp,k7_facirc_1(np__1,np__0,np__1)) = np__1
+    & k1_funct_1(k26_twoscomp,k7_facirc_1(np__1,np__1,np__0)) = np__1
+    & k1_funct_1(k26_twoscomp,k7_facirc_1(np__1,np__1,np__1)) = np__1 ) ).
+
+fof(t27_twoscomp,axiom,
+    ( k1_funct_1(k27_twoscomp,k7_facirc_1(np__0,np__0,np__0)) = np__1
+    & k1_funct_1(k27_twoscomp,k7_facirc_1(np__0,np__0,np__1)) = np__1
+    & k1_funct_1(k27_twoscomp,k7_facirc_1(np__0,np__1,np__0)) = np__1
+    & k1_funct_1(k27_twoscomp,k7_facirc_1(np__0,np__1,np__1)) = np__1
+    & k1_funct_1(k27_twoscomp,k7_facirc_1(np__1,np__0,np__0)) = np__1
+    & k1_funct_1(k27_twoscomp,k7_facirc_1(np__1,np__0,np__1)) = np__1
+    & k1_funct_1(k27_twoscomp,k7_facirc_1(np__1,np__1,np__0)) = np__0
+    & k1_funct_1(k27_twoscomp,k7_facirc_1(np__1,np__1,np__1)) = np__1 ) ).
+
+fof(t28_twoscomp,axiom,
+    ( k1_funct_1(k28_twoscomp,k7_facirc_1(np__0,np__0,np__0)) = np__1
+    & k1_funct_1(k28_twoscomp,k7_facirc_1(np__0,np__0,np__1)) = np__1
+    & k1_funct_1(k28_twoscomp,k7_facirc_1(np__0,np__1,np__0)) = np__1
+    & k1_funct_1(k28_twoscomp,k7_facirc_1(np__0,np__1,np__1)) = np__1
+    & k1_funct_1(k28_twoscomp,k7_facirc_1(np__1,np__0,np__0)) = np__1
+    & k1_funct_1(k28_twoscomp,k7_facirc_1(np__1,np__0,np__1)) = np__1
+    & k1_funct_1(k28_twoscomp,k7_facirc_1(np__1,np__1,np__0)) = np__1
+    & k1_funct_1(k28_twoscomp,k7_facirc_1(np__1,np__1,np__1)) = np__0 ) ).
+
+fof(t29_twoscomp,axiom,
+    ( k1_funct_1(k33_twoscomp,k7_facirc_1(np__0,np__0,np__0)) = np__0
+    & k1_funct_1(k33_twoscomp,k7_facirc_1(np__0,np__0,np__1)) = np__1
+    & k1_funct_1(k33_twoscomp,k7_facirc_1(np__0,np__1,np__0)) = np__1
+    & k1_funct_1(k33_twoscomp,k7_facirc_1(np__0,np__1,np__1)) = np__0
+    & k1_funct_1(k33_twoscomp,k7_facirc_1(np__1,np__0,np__0)) = np__1
+    & k1_funct_1(k33_twoscomp,k7_facirc_1(np__1,np__0,np__1)) = np__0
+    & k1_funct_1(k33_twoscomp,k7_facirc_1(np__1,np__1,np__0)) = np__0
+    & k1_funct_1(k33_twoscomp,k7_facirc_1(np__1,np__1,np__1)) = np__1 ) ).
+
+fof(d33_twoscomp,axiom,
+    ! [A,B] : k34_twoscomp(A,B) = k7_circcomb(k15_twoscomp,k6_facirc_1(A,B)) ).
+
+fof(d34_twoscomp,axiom,
+    ! [A,B] : k35_twoscomp(A,B) = k10_facirc_1(A,B,k15_twoscomp) ).
+
+fof(d35_twoscomp,axiom,
+    ! [A,B] : k36_twoscomp(A,B) = k4_tarski(k6_facirc_1(A,B),k15_twoscomp) ).
+
+fof(d36_twoscomp,axiom,
+    ! [A,B] : k37_twoscomp(A,B) = k7_circcomb(k3_twoscomp,k6_facirc_1(A,B)) ).
+
+fof(d37_twoscomp,axiom,
+    ! [A,B] : k38_twoscomp(A,B) = k10_facirc_1(A,B,k3_twoscomp) ).
+
+fof(d38_twoscomp,axiom,
+    ! [A,B] : k39_twoscomp(A,B) = k4_tarski(k6_facirc_1(A,B),k3_twoscomp) ).
+
+fof(d39_twoscomp,axiom,
+    ! [A,B] : k40_twoscomp(A,B) = k3_circcomb(k34_twoscomp(A,B),k37_twoscomp(A,B)) ).
+
+fof(d40_twoscomp,axiom,
+    ! [A,B] : k41_twoscomp(A,B) = k4_circcomb(k34_twoscomp(A,B),k37_twoscomp(A,B),k35_twoscomp(A,B),k38_twoscomp(A,B)) ).
+
+fof(t30_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => v1_relat_1(k4_msafree2(k34_twoscomp(A,B))) ) ) ).
+
+fof(t31_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ( r2_hidden(A,u1_struct_0(k34_twoscomp(A,B)))
+            & r2_hidden(B,u1_struct_0(k34_twoscomp(A,B)))
+            & r2_hidden(k4_tarski(k6_facirc_1(A,B),k15_twoscomp),u1_struct_0(k34_twoscomp(A,B))) ) ) ) ).
+
+fof(t32_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => u1_struct_0(k34_twoscomp(A,B)) = k2_xboole_0(k2_tarski(A,B),k1_tarski(k4_tarski(k6_facirc_1(A,B),k15_twoscomp))) ) ) ).
+
+fof(t33_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => k4_msafree2(k34_twoscomp(A,B)) = k1_tarski(k4_tarski(k6_facirc_1(A,B),k15_twoscomp)) ) ) ).
+
+fof(t34_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => r2_hidden(k4_tarski(k6_facirc_1(A,B),k15_twoscomp),k4_msafree2(k34_twoscomp(A,B))) ) ) ).
+
+fof(t35_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => k2_msafree2(k34_twoscomp(A,B)) = k2_tarski(A,B) ) ) ).
+
+fof(t36_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ( r2_hidden(A,k2_msafree2(k34_twoscomp(A,B)))
+            & r2_hidden(B,k2_msafree2(k34_twoscomp(A,B))) ) ) ) ).
+
+fof(t37_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ~ v2_facirc_1(k2_msafree2(k34_twoscomp(A,B))) ) ) ).
+
+fof(t38_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => v1_relat_1(k4_msafree2(k37_twoscomp(A,B))) ) ) ).
+
+fof(t39_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ( r2_hidden(A,u1_struct_0(k37_twoscomp(A,B)))
+            & r2_hidden(B,u1_struct_0(k37_twoscomp(A,B)))
+            & r2_hidden(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),u1_struct_0(k37_twoscomp(A,B))) ) ) ) ).
+
+fof(t40_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => u1_struct_0(k37_twoscomp(A,B)) = k2_xboole_0(k2_tarski(A,B),k1_tarski(k4_tarski(k6_facirc_1(A,B),k3_twoscomp))) ) ) ).
+
+fof(t41_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => k4_msafree2(k37_twoscomp(A,B)) = k1_tarski(k4_tarski(k6_facirc_1(A,B),k3_twoscomp)) ) ) ).
+
+fof(t42_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => r2_hidden(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),k4_msafree2(k37_twoscomp(A,B))) ) ) ).
+
+fof(t43_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => k2_msafree2(k37_twoscomp(A,B)) = k2_tarski(A,B) ) ) ).
+
+fof(t44_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ( r2_hidden(A,k2_msafree2(k37_twoscomp(A,B)))
+            & r2_hidden(B,k2_msafree2(k37_twoscomp(A,B))) ) ) ) ).
+
+fof(t45_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ~ v2_facirc_1(k2_msafree2(k37_twoscomp(A,B))) ) ) ).
+
+fof(t46_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => v1_relat_1(k4_msafree2(k40_twoscomp(A,B))) ) ) ).
+
+fof(t47_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ( r2_hidden(A,u1_struct_0(k40_twoscomp(A,B)))
+            & r2_hidden(B,u1_struct_0(k40_twoscomp(A,B)))
+            & r2_hidden(k4_tarski(k6_facirc_1(A,B),k15_twoscomp),u1_struct_0(k40_twoscomp(A,B)))
+            & r2_hidden(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),u1_struct_0(k40_twoscomp(A,B))) ) ) ) ).
+
+fof(t48_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => u1_struct_0(k40_twoscomp(A,B)) = k2_xboole_0(k2_tarski(A,B),k2_tarski(k4_tarski(k6_facirc_1(A,B),k15_twoscomp),k4_tarski(k6_facirc_1(A,B),k3_twoscomp))) ) ) ).
+
+fof(t49_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => k4_msafree2(k40_twoscomp(A,B)) = k2_tarski(k4_tarski(k6_facirc_1(A,B),k15_twoscomp),k4_tarski(k6_facirc_1(A,B),k3_twoscomp)) ) ) ).
+
+fof(t50_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ( r2_hidden(k4_tarski(k6_facirc_1(A,B),k15_twoscomp),k4_msafree2(k40_twoscomp(A,B)))
+            & r2_hidden(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),k4_msafree2(k40_twoscomp(A,B))) ) ) ) ).
+
+fof(t51_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => k2_msafree2(k40_twoscomp(A,B)) = k2_tarski(A,B) ) ) ).
+
+fof(t52_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ( r2_hidden(A,k2_msafree2(k40_twoscomp(A,B)))
+            & r2_hidden(B,k2_msafree2(k40_twoscomp(A,B))) ) ) ) ).
+
+fof(t53_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ~ v2_facirc_1(k2_msafree2(k40_twoscomp(A,B))) ) ) ).
+
+fof(t54_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k34_twoscomp(A,B),k35_twoscomp(A,B))))
+             => ( k1_twoscomp(k34_twoscomp(A,B),k35_twoscomp(A,B),k6_circuit2(k34_twoscomp(A,B),k35_twoscomp(A,B),C),k36_twoscomp(A,B)) = k1_funct_1(k15_twoscomp,k6_facirc_1(k1_funct_1(C,A),k1_funct_1(C,B)))
+                & k1_funct_1(k6_circuit2(k34_twoscomp(A,B),k35_twoscomp(A,B),C),A) = k1_funct_1(C,A)
+                & k1_funct_1(k6_circuit2(k34_twoscomp(A,B),k35_twoscomp(A,B),C),B) = k1_funct_1(C,B) ) ) ) ) ).
+
+fof(t55_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k34_twoscomp(A,B),k35_twoscomp(A,B))))
+             => ! [D] :
+                  ( m1_subset_1(D,k10_circcomb)
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ( ( D = k1_funct_1(C,A)
+                          & E = k1_funct_1(C,B) )
+                       => ( k1_twoscomp(k34_twoscomp(A,B),k35_twoscomp(A,B),k6_circuit2(k34_twoscomp(A,B),k35_twoscomp(A,B),C),k36_twoscomp(A,B)) = k4_binarith(k11_margrel1(D),E)
+                          & k1_funct_1(k6_circuit2(k34_twoscomp(A,B),k35_twoscomp(A,B),C),A) = D
+                          & k1_funct_1(k6_circuit2(k34_twoscomp(A,B),k35_twoscomp(A,B),C),B) = E ) ) ) ) ) ) ) ).
+
+fof(t56_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k40_twoscomp(A,B),k41_twoscomp(A,B))))
+             => ( k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),k36_twoscomp(A,B)) = k1_funct_1(k15_twoscomp,k6_facirc_1(k1_funct_1(C,A),k1_funct_1(C,B)))
+                & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),A) = k1_funct_1(C,A)
+                & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),B) = k1_funct_1(C,B) ) ) ) ) ).
+
+fof(t57_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k40_twoscomp(A,B),k41_twoscomp(A,B))))
+             => ! [D] :
+                  ( m1_subset_1(D,k10_circcomb)
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ( ( D = k1_funct_1(C,A)
+                          & E = k1_funct_1(C,B) )
+                       => ( k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),k36_twoscomp(A,B)) = k4_binarith(k11_margrel1(D),E)
+                          & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),A) = D
+                          & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),B) = E ) ) ) ) ) ) ) ).
+
+fof(t58_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k37_twoscomp(A,B),k38_twoscomp(A,B))))
+             => ( k1_twoscomp(k37_twoscomp(A,B),k38_twoscomp(A,B),k6_circuit2(k37_twoscomp(A,B),k38_twoscomp(A,B),C),k39_twoscomp(A,B)) = k1_funct_1(k3_twoscomp,k6_facirc_1(k1_funct_1(C,A),k1_funct_1(C,B)))
+                & k1_funct_1(k6_circuit2(k37_twoscomp(A,B),k38_twoscomp(A,B),C),A) = k1_funct_1(C,A)
+                & k1_funct_1(k6_circuit2(k37_twoscomp(A,B),k38_twoscomp(A,B),C),B) = k1_funct_1(C,B) ) ) ) ) ).
+
+fof(t59_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k37_twoscomp(A,B),k38_twoscomp(A,B))))
+             => ! [D] :
+                  ( m1_subset_1(D,k10_circcomb)
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ( ( D = k1_funct_1(C,A)
+                          & E = k1_funct_1(C,B) )
+                       => ( k1_twoscomp(k37_twoscomp(A,B),k38_twoscomp(A,B),k6_circuit2(k37_twoscomp(A,B),k38_twoscomp(A,B),C),k39_twoscomp(A,B)) = k12_margrel1(k11_margrel1(D),E)
+                          & k1_funct_1(k6_circuit2(k37_twoscomp(A,B),k38_twoscomp(A,B),C),A) = D
+                          & k1_funct_1(k6_circuit2(k37_twoscomp(A,B),k38_twoscomp(A,B),C),B) = E ) ) ) ) ) ) ) ).
+
+fof(t60_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k40_twoscomp(A,B),k41_twoscomp(A,B))))
+             => ( k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),k39_twoscomp(A,B)) = k1_funct_1(k3_twoscomp,k6_facirc_1(k1_funct_1(C,A),k1_funct_1(C,B)))
+                & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),A) = k1_funct_1(C,A)
+                & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),B) = k1_funct_1(C,B) ) ) ) ) ).
+
+fof(t61_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k40_twoscomp(A,B),k41_twoscomp(A,B))))
+             => ! [D] :
+                  ( m1_subset_1(D,k10_circcomb)
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ( ( D = k1_funct_1(C,A)
+                          & E = k1_funct_1(C,B) )
+                       => ( k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),k39_twoscomp(A,B)) = k12_margrel1(k11_margrel1(D),E)
+                          & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),A) = D
+                          & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),B) = E ) ) ) ) ) ) ) ).
+
+fof(t62_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k40_twoscomp(A,B),k41_twoscomp(A,B))))
+             => ( k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),k36_twoscomp(A,B)) = k1_funct_1(k15_twoscomp,k6_facirc_1(k1_funct_1(C,A),k1_funct_1(C,B)))
+                & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),k39_twoscomp(A,B)) = k1_funct_1(k3_twoscomp,k6_facirc_1(k1_funct_1(C,A),k1_funct_1(C,B)))
+                & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),A) = k1_funct_1(C,A)
+                & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),B) = k1_funct_1(C,B) ) ) ) ) ).
+
+fof(t63_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k40_twoscomp(A,B),k41_twoscomp(A,B))))
+             => ! [D] :
+                  ( m1_subset_1(D,k10_circcomb)
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ( ( D = k1_funct_1(C,A)
+                          & E = k1_funct_1(C,B) )
+                       => ( k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),k36_twoscomp(A,B)) = k4_binarith(k11_margrel1(D),E)
+                          & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),k39_twoscomp(A,B)) = k12_margrel1(k11_margrel1(D),E)
+                          & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),A) = D
+                          & k1_funct_1(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),B) = E ) ) ) ) ) ) ) ).
+
+fof(t64_twoscomp,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u4_msualg_1(k40_twoscomp(A,B),k41_twoscomp(A,B))))
+             => v1_circuit2(k6_circuit2(k40_twoscomp(A,B),k41_twoscomp(A,B),C),k40_twoscomp(A,B),k41_twoscomp(A,B)) ) ) ) ).
+
+fof(dt_k1_twoscomp,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v1_circcomb(A)
+        & l1_msualg_1(A)
+        & v4_msafree2(B,A)
+        & v6_circcomb(B,A)
+        & l3_msualg_1(B,A)
+        & m1_subset_1(C,k4_card_3(u4_msualg_1(A,B)))
+        & m1_subset_1(D,u1_struct_0(A)) )
+     => m1_subset_1(k1_twoscomp(A,B,C,D),k10_circcomb) ) ).
+
+fof(redefinition_k1_twoscomp,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v1_circcomb(A)
+        & l1_msualg_1(A)
+        & v4_msafree2(B,A)
+        & v6_circcomb(B,A)
+        & l3_msualg_1(B,A)
+        & m1_subset_1(C,k4_card_3(u4_msualg_1(A,B)))
+        & m1_subset_1(D,u1_struct_0(A)) )
+     => k1_twoscomp(A,B,C,D) = k1_funct_1(C,D) ) ).
+
+fof(dt_k2_twoscomp,axiom,
+    ( v1_funct_1(k2_twoscomp)
+    & v1_funct_2(k2_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k2_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k3_twoscomp,axiom,
+    ( v1_funct_1(k3_twoscomp)
+    & v1_funct_2(k3_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k3_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k4_twoscomp,axiom,
+    ( v1_funct_1(k4_twoscomp)
+    & v1_funct_2(k4_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k4_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k5_twoscomp,axiom,
+    ( v1_funct_1(k5_twoscomp)
+    & v1_funct_2(k5_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k5_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k6_twoscomp,axiom,
+    ( v1_funct_1(k6_twoscomp)
+    & v1_funct_2(k6_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k6_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k7_twoscomp,axiom,
+    ( v1_funct_1(k7_twoscomp)
+    & v1_funct_2(k7_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k7_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k8_twoscomp,axiom,
+    ( v1_funct_1(k8_twoscomp)
+    & v1_funct_2(k8_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k8_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k9_twoscomp,axiom,
+    ( v1_funct_1(k9_twoscomp)
+    & v1_funct_2(k9_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k9_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k10_twoscomp,axiom,
+    ( v1_funct_1(k10_twoscomp)
+    & v1_funct_2(k10_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k10_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k11_twoscomp,axiom,
+    ( v1_funct_1(k11_twoscomp)
+    & v1_funct_2(k11_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k11_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k12_twoscomp,axiom,
+    ( v1_funct_1(k12_twoscomp)
+    & v1_funct_2(k12_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k12_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k13_twoscomp,axiom,
+    ( v1_funct_1(k13_twoscomp)
+    & v1_funct_2(k13_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k13_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k14_twoscomp,axiom,
+    ( v1_funct_1(k14_twoscomp)
+    & v1_funct_2(k14_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k14_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k15_twoscomp,axiom,
+    ( v1_funct_1(k15_twoscomp)
+    & v1_funct_2(k15_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k15_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k16_twoscomp,axiom,
+    ( v1_funct_1(k16_twoscomp)
+    & v1_funct_2(k16_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k16_twoscomp,k4_finseq_2(np__2,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k17_twoscomp,axiom,
+    ( v1_funct_1(k17_twoscomp)
+    & v1_funct_2(k17_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k17_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k18_twoscomp,axiom,
+    ( v1_funct_1(k18_twoscomp)
+    & v1_funct_2(k18_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k18_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k19_twoscomp,axiom,
+    ( v1_funct_1(k19_twoscomp)
+    & v1_funct_2(k19_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k19_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k20_twoscomp,axiom,
+    ( v1_funct_1(k20_twoscomp)
+    & v1_funct_2(k20_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k20_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k21_twoscomp,axiom,
+    ( v1_funct_1(k21_twoscomp)
+    & v1_funct_2(k21_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k21_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k22_twoscomp,axiom,
+    ( v1_funct_1(k22_twoscomp)
+    & v1_funct_2(k22_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k22_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k23_twoscomp,axiom,
+    ( v1_funct_1(k23_twoscomp)
+    & v1_funct_2(k23_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k23_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k24_twoscomp,axiom,
+    ( v1_funct_1(k24_twoscomp)
+    & v1_funct_2(k24_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k24_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k25_twoscomp,axiom,
+    ( v1_funct_1(k25_twoscomp)
+    & v1_funct_2(k25_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k25_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k26_twoscomp,axiom,
+    ( v1_funct_1(k26_twoscomp)
+    & v1_funct_2(k26_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k26_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k27_twoscomp,axiom,
+    ( v1_funct_1(k27_twoscomp)
+    & v1_funct_2(k27_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k27_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k28_twoscomp,axiom,
+    ( v1_funct_1(k28_twoscomp)
+    & v1_funct_2(k28_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k28_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k29_twoscomp,axiom,
+    ( v1_funct_1(k29_twoscomp)
+    & v1_funct_2(k29_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k29_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k30_twoscomp,axiom,
+    ( v1_funct_1(k30_twoscomp)
+    & v1_funct_2(k30_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k30_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k31_twoscomp,axiom,
+    ( v1_funct_1(k31_twoscomp)
+    & v1_funct_2(k31_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k31_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k32_twoscomp,axiom,
+    ( v1_funct_1(k32_twoscomp)
+    & v1_funct_2(k32_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k32_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k33_twoscomp,axiom,
+    ( v1_funct_1(k33_twoscomp)
+    & v1_funct_2(k33_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb)
+    & m2_relset_1(k33_twoscomp,k4_finseq_2(np__3,k10_circcomb),k10_circcomb) ) ).
+
+fof(dt_k34_twoscomp,axiom,
+    ! [A,B] :
+      ( ~ v3_struct_0(k34_twoscomp(A,B))
+      & v1_msualg_1(k34_twoscomp(A,B))
+      & ~ v2_msualg_1(k34_twoscomp(A,B))
+      & v1_circcomb(k34_twoscomp(A,B))
+      & v2_circcomb(k34_twoscomp(A,B))
+      & v3_circcomb(k34_twoscomp(A,B))
+      & l1_msualg_1(k34_twoscomp(A,B)) ) ).
+
+fof(dt_k35_twoscomp,axiom,
+    ! [A,B] :
+      ( v4_msualg_1(k35_twoscomp(A,B),k34_twoscomp(A,B))
+      & v4_msafree2(k35_twoscomp(A,B),k34_twoscomp(A,B))
+      & v4_circcomb(k35_twoscomp(A,B),k34_twoscomp(A,B))
+      & v6_circcomb(k35_twoscomp(A,B),k34_twoscomp(A,B))
+      & l3_msualg_1(k35_twoscomp(A,B),k34_twoscomp(A,B)) ) ).
+
+fof(dt_k36_twoscomp,axiom,
+    ! [A,B] : m1_struct_0(k36_twoscomp(A,B),k34_twoscomp(A,B),k4_msafree2(k34_twoscomp(A,B))) ).
+
+fof(dt_k37_twoscomp,axiom,
+    ! [A,B] :
+      ( ~ v3_struct_0(k37_twoscomp(A,B))
+      & v1_msualg_1(k37_twoscomp(A,B))
+      & ~ v2_msualg_1(k37_twoscomp(A,B))
+      & v1_circcomb(k37_twoscomp(A,B))
+      & v2_circcomb(k37_twoscomp(A,B))
+      & v3_circcomb(k37_twoscomp(A,B))
+      & l1_msualg_1(k37_twoscomp(A,B)) ) ).
+
+fof(dt_k38_twoscomp,axiom,
+    ! [A,B] :
+      ( v4_msualg_1(k38_twoscomp(A,B),k37_twoscomp(A,B))
+      & v4_msafree2(k38_twoscomp(A,B),k37_twoscomp(A,B))
+      & v4_circcomb(k38_twoscomp(A,B),k37_twoscomp(A,B))
+      & v6_circcomb(k38_twoscomp(A,B),k37_twoscomp(A,B))
+      & l3_msualg_1(k38_twoscomp(A,B),k37_twoscomp(A,B)) ) ).
+
+fof(dt_k39_twoscomp,axiom,
+    ! [A,B] : m1_struct_0(k39_twoscomp(A,B),k37_twoscomp(A,B),k4_msafree2(k37_twoscomp(A,B))) ).
+
+fof(dt_k40_twoscomp,axiom,
+    ! [A,B] :
+      ( ~ v3_struct_0(k40_twoscomp(A,B))
+      & v1_msualg_1(k40_twoscomp(A,B))
+      & ~ v2_msualg_1(k40_twoscomp(A,B))
+      & v1_circcomb(k40_twoscomp(A,B))
+      & v2_circcomb(k40_twoscomp(A,B))
+      & v3_circcomb(k40_twoscomp(A,B))
+      & l1_msualg_1(k40_twoscomp(A,B)) ) ).
+
+fof(dt_k41_twoscomp,axiom,
+    ! [A,B] :
+      ( v4_msualg_1(k41_twoscomp(A,B),k40_twoscomp(A,B))
+      & v4_msafree2(k41_twoscomp(A,B),k40_twoscomp(A,B))
+      & v4_circcomb(k41_twoscomp(A,B),k40_twoscomp(A,B))
+      & v6_circcomb(k41_twoscomp(A,B),k40_twoscomp(A,B))
+      & l3_msualg_1(k41_twoscomp(A,B),k40_twoscomp(A,B)) ) ).
+
+%------------------------------------------------------------------------------

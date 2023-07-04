@@ -1,0 +1,39 @@
+%--------------------------------------------------------------------------
+% File     : LAT001-2 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Lattice Theory
+% Axioms   : Lattice theory complement (equality) axioms
+% Version  : [McC88] (equality) axioms.
+% English  :
+
+% Refs     : [Bum65] Bumcroft (1965), Proceedings of the Glasgow Mathematic
+%          : [McC88] McCune (1988), Challenge Equality Problems in Lattice
+% Source   : [McC88]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :    3 (   0 unt;   0 nHn;   3 RR)
+%            Number of literals    :    7 (   4 equ;   4 neg)
+%            Maximal clause size   :    3 (   2 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of predicates  :    2 (   1 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    4 (   4 usr;   2 con; 0-2 aty)
+%            Number of variables   :    6 (   0 sgn)
+% SPC      : 
+
+% Comments : Requires LAT001-0.ax
+%--------------------------------------------------------------------------
+%----Definition of complement
+cnf(complement_meet,axiom,
+    ( ~ complement(X,Y)
+    | meet(X,Y) = n0 ) ).
+
+cnf(complement_join,axiom,
+    ( ~ complement(X,Y)
+    | join(X,Y) = n1 ) ).
+
+cnf(meet_join_complement,axiom,
+    ( meet(X,Y) != n0
+    | join(X,Y) != n1
+    | complement(X,Y) ) ).
+
+%--------------------------------------------------------------------------

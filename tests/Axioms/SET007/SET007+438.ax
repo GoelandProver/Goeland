@@ -1,0 +1,591 @@
+%------------------------------------------------------------------------------
+% File     : SET007+438 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Dyadic Numbers and T_4 Topological Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : urysohn1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   58 (  14 unt;   0 def)
+%            Number of atoms       :  336 (  32 equ)
+%            Maximal formula atoms :   36 (   5 avg)
+%            Number of connectives :  335 (  57   ~;   4   |; 138   &)
+%                                         (  16 <=>; 120  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   34 (   8 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   27 (  25 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   35 (  35 usr;  11 con; 0-4 aty)
+%            Number of variables   :  122 ( 117   !;   5   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_urysohn1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( ~ v1_xboole_0(k3_urysohn1(A))
+        & v1_membered(k3_urysohn1(A))
+        & v2_membered(k3_urysohn1(A)) ) ) ).
+
+fof(fc2_urysohn1,axiom,
+    ( ~ v1_xboole_0(k4_urysohn1)
+    & v1_membered(k4_urysohn1)
+    & v2_membered(k4_urysohn1) ) ).
+
+fof(fc3_urysohn1,axiom,
+    ( ~ v1_xboole_0(k5_urysohn1)
+    & v1_membered(k5_urysohn1)
+    & v2_membered(k5_urysohn1) ) ).
+
+fof(d1_urysohn1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ( A = k1_urysohn1
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ( r2_hidden(B,A)
+            <=> ~ r1_xreal_0(np__0,B) ) ) ) ) ).
+
+fof(d2_urysohn1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ( A = k2_urysohn1
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ( r2_hidden(B,A)
+            <=> ~ r1_xreal_0(B,np__1) ) ) ) ) ).
+
+fof(d3_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_numbers))
+         => ( B = k3_urysohn1(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k1_numbers)
+               => ( r2_hidden(C,B)
+                <=> ? [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                      & r1_xreal_0(np__0,D)
+                      & r1_xreal_0(D,k1_card_4(np__2,A))
+                      & C = k6_real_1(D,k1_card_4(np__2,A)) ) ) ) ) ) ) ).
+
+fof(d4_urysohn1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ( A = k4_urysohn1
+      <=> ! [B] :
+            ( m1_subset_1(B,k1_numbers)
+           => ( r2_hidden(B,A)
+            <=> ? [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                  & r2_hidden(B,k3_urysohn1(C)) ) ) ) ) ) ).
+
+fof(d5_urysohn1,axiom,
+    k5_urysohn1 = k4_subset_1(k1_numbers,k4_subset_1(k1_numbers,k1_urysohn1,k4_urysohn1),k2_urysohn1) ).
+
+fof(t1_urysohn1,axiom,
+    $true ).
+
+fof(t2_urysohn1,axiom,
+    $true ).
+
+fof(t3_urysohn1,axiom,
+    $true ).
+
+fof(t4_urysohn1,axiom,
+    $true ).
+
+fof(t5_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( r2_hidden(B,k3_urysohn1(A))
+           => ( r1_xreal_0(np__0,B)
+              & r1_xreal_0(B,np__1) ) ) ) ) ).
+
+fof(t6_urysohn1,axiom,
+    k3_urysohn1(np__0) = k7_domain_1(k1_numbers,np__0,np__1) ).
+
+fof(t7_urysohn1,axiom,
+    k3_urysohn1(np__1) = k8_domain_1(k1_numbers,np__0,k6_real_1(np__1,np__2),np__1) ).
+
+fof(t8_urysohn1,axiom,
+    $true ).
+
+fof(t9_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ? [B] :
+          ( v1_relat_1(B)
+          & v1_funct_1(B)
+          & v1_finseq_1(B)
+          & k4_finseq_1(B) = k2_finseq_1(k1_nat_1(k1_card_4(np__2,A),np__1))
+          & ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( r2_hidden(C,k4_finseq_1(B))
+               => k1_funct_1(B,C) = k6_real_1(k5_real_1(C,np__1),k1_card_4(np__2,A)) ) ) ) ) ).
+
+fof(d6_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B) )
+         => ( B = k7_urysohn1(A)
+          <=> ( k4_finseq_1(B) = k2_finseq_1(k1_nat_1(k1_card_4(np__2,A),np__1))
+              & ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ( r2_hidden(C,k4_finseq_1(B))
+                   => k1_funct_1(B,C) = k6_real_1(k5_real_1(C,np__1),k1_card_4(np__2,A)) ) ) ) ) ) ) ).
+
+fof(t10_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( k4_finseq_1(k7_urysohn1(A)) = k2_finseq_1(k1_nat_1(k1_card_4(np__2,A),np__1))
+        & k2_relat_1(k7_urysohn1(A)) = k3_urysohn1(A) ) ) ).
+
+fof(t11_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => r1_tarski(k3_urysohn1(A),k3_urysohn1(k1_nat_1(A,np__1))) ) ).
+
+fof(t12_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( r2_hidden(np__0,k3_urysohn1(A))
+        & r2_hidden(np__1,k3_urysohn1(A)) ) ) ).
+
+fof(t13_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_xreal_0(B,k1_card_4(np__2,A))
+           => ( r1_xreal_0(B,np__0)
+              | r2_hidden(k6_real_1(k5_real_1(k2_nat_1(B,np__2),np__1),k1_card_4(np__2,k1_nat_1(A,np__1))),k6_subset_1(k1_numbers,k3_urysohn1(k1_nat_1(A,np__1)),k3_urysohn1(A))) ) ) ) ) ).
+
+fof(t14_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r1_xreal_0(np__0,B)
+           => ( r1_xreal_0(k1_card_4(np__2,A),B)
+              | r2_hidden(k6_real_1(k1_nat_1(k2_nat_1(B,np__2),np__1),k1_card_4(np__2,k1_nat_1(A,np__1))),k6_subset_1(k1_numbers,k3_urysohn1(k1_nat_1(A,np__1)),k3_urysohn1(A))) ) ) ) ) ).
+
+fof(t15_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => r2_hidden(k6_real_1(np__1,k1_card_4(np__2,k1_nat_1(A,np__1))),k6_subset_1(k1_numbers,k3_urysohn1(k1_nat_1(A,np__1)),k3_urysohn1(A))) ) ).
+
+fof(d7_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k3_urysohn1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( C = k8_urysohn1(A,B)
+              <=> B = k6_real_1(C,k1_card_4(np__2,A)) ) ) ) ) ).
+
+fof(t16_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k3_urysohn1(A))
+         => ( B = k6_real_1(k8_urysohn1(A,B),k1_card_4(np__2,A))
+            & r1_xreal_0(np__0,k8_urysohn1(A,B))
+            & r1_xreal_0(k8_urysohn1(A,B),k1_card_4(np__2,A)) ) ) ) ).
+
+fof(t17_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k3_urysohn1(A))
+         => ( ~ r1_xreal_0(B,k6_real_1(k5_real_1(k8_urysohn1(A,B),np__1),k1_card_4(np__2,A)))
+            & ~ r1_xreal_0(k6_real_1(k1_nat_1(k8_urysohn1(A,B),np__1),k1_card_4(np__2,A)),B) ) ) ) ).
+
+fof(t18_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k3_urysohn1(A))
+         => ~ r1_xreal_0(k6_real_1(k1_nat_1(k8_urysohn1(A,B),np__1),k1_card_4(np__2,A)),k6_real_1(k5_real_1(k8_urysohn1(A,B),np__1),k1_card_4(np__2,A))) ) ) ).
+
+fof(t19_urysohn1,axiom,
+    $true ).
+
+fof(t20_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k3_urysohn1(k1_nat_1(A,np__1)))
+         => ( ~ r2_hidden(B,k3_urysohn1(A))
+           => ( r2_hidden(k6_real_1(k5_real_1(k8_urysohn1(k1_nat_1(A,np__1),B),np__1),k1_card_4(np__2,k1_nat_1(A,np__1))),k3_urysohn1(A))
+              & r2_hidden(k6_real_1(k1_nat_1(k8_urysohn1(k1_nat_1(A,np__1),B),np__1),k1_card_4(np__2,k1_nat_1(A,np__1))),k3_urysohn1(A)) ) ) ) ) ).
+
+fof(t21_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k3_urysohn1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k3_urysohn1(A))
+             => ~ ( ~ r1_xreal_0(C,B)
+                  & r1_xreal_0(k8_urysohn1(A,C),k8_urysohn1(A,B)) ) ) ) ) ).
+
+fof(t22_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k3_urysohn1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k3_urysohn1(A))
+             => ( ~ r1_xreal_0(C,B)
+               => ( r1_xreal_0(B,k6_real_1(k5_real_1(k8_urysohn1(A,C),np__1),k1_card_4(np__2,A)))
+                  & r1_xreal_0(k6_real_1(k1_nat_1(k8_urysohn1(A,B),np__1),k1_card_4(np__2,A)),C) ) ) ) ) ) ).
+
+fof(t23_urysohn1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k3_urysohn1(k1_nat_1(A,np__1)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k3_urysohn1(k1_nat_1(A,np__1)))
+             => ~ ( ~ r1_xreal_0(C,B)
+                  & ~ r2_hidden(B,k3_urysohn1(A))
+                  & ~ r2_hidden(C,k3_urysohn1(A))
+                  & ~ r1_xreal_0(k6_real_1(k1_nat_1(k8_urysohn1(k1_nat_1(A,np__1),B),np__1),k1_card_4(np__2,k1_nat_1(A,np__1))),k6_real_1(k5_real_1(k8_urysohn1(k1_nat_1(A,np__1),C),np__1),k1_card_4(np__2,k1_nat_1(A,np__1)))) ) ) ) ) ).
+
+fof(d8_urysohn1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( m1_connsp_2(C,A,B)
+              <=> ? [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                    & v3_pre_topc(D,A)
+                    & r2_hidden(B,D)
+                    & r1_tarski(D,C) ) ) ) ) ) ).
+
+fof(t24_urysohn1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v3_pre_topc(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ~ ( r2_hidden(C,B)
+                    & ! [D] :
+                        ( m1_connsp_2(D,A,C)
+                       => ~ r1_tarski(D,B) ) ) ) ) ) ) ).
+
+fof(t25_urysohn1,axiom,
+    $true ).
+
+fof(t26_urysohn1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ( r2_hidden(C,B)
+                 => m1_connsp_2(B,A,C) ) )
+           => v3_pre_topc(B,A) ) ) ) ).
+
+fof(d9_urysohn1,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ( v1_urysohn1(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ~ ( B != C
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                       => ! [E] :
+                            ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                           => ~ ( v3_pre_topc(D,A)
+                                & v3_pre_topc(E,A)
+                                & r2_hidden(B,D)
+                                & ~ r2_hidden(C,D)
+                                & r2_hidden(C,E)
+                                & ~ r2_hidden(B,E) ) ) ) ) ) ) ) ) ).
+
+fof(t27_urysohn1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( v1_urysohn1(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => v4_pre_topc(k1_struct_0(A,B),A) ) ) ) ).
+
+fof(t28_urysohn1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( v5_compts_1(A)
+       => ! [B] :
+            ( ( v3_pre_topc(B,A)
+              & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+           => ! [C] :
+                ( ( v3_pre_topc(C,A)
+                  & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+               => ~ ( B != k1_xboole_0
+                    & r1_tarski(k6_pre_topc(A,B),C)
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                       => ~ ( D != k1_xboole_0
+                            & v3_pre_topc(D,A)
+                            & r1_tarski(k6_pre_topc(A,B),D)
+                            & r1_tarski(k6_pre_topc(A,D),C) ) ) ) ) ) ) ) ).
+
+fof(t29_urysohn1,axiom,
+    ! [A] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( v4_compts_1(A)
+      <=> ! [B] :
+            ( ( v3_pre_topc(B,A)
+              & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ~ ( r2_hidden(C,B)
+                    & ! [D] :
+                        ( ( v3_pre_topc(D,A)
+                          & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A))) )
+                       => ~ ( r2_hidden(C,D)
+                            & r1_tarski(k6_pre_topc(A,D),B) ) ) ) ) ) ) ) ).
+
+fof(t30_urysohn1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( ( v5_compts_1(A)
+          & v1_urysohn1(A) )
+       => ! [B] :
+            ( ( v3_pre_topc(B,A)
+              & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+           => ~ ( B != k1_xboole_0
+                & ! [C] :
+                    ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                   => ~ ( C != k1_xboole_0
+                        & r1_tarski(k6_pre_topc(A,C),B) ) ) ) ) ) ) ).
+
+fof(t31_urysohn1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( v5_compts_1(A)
+       => ! [B] :
+            ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ~ ( v3_pre_topc(B,A)
+                    & v4_pre_topc(C,A)
+                    & C != k1_xboole_0
+                    & r1_tarski(C,B)
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                       => ~ ( v3_pre_topc(D,A)
+                            & r1_tarski(C,D)
+                            & r1_tarski(k6_pre_topc(A,D),B) ) ) ) ) ) ) ) ).
+
+fof(d10_urysohn1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v5_compts_1(A)
+                  & v3_pre_topc(B,A)
+                  & v3_pre_topc(C,A)
+                  & r1_tarski(k6_pre_topc(A,B),C) )
+               => ( B = k1_xboole_0
+                  | ! [D] :
+                      ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                     => ( m1_urysohn1(D,A,B,C)
+                      <=> ( D != k1_xboole_0
+                          & v3_pre_topc(D,A)
+                          & r1_tarski(k6_pre_topc(A,B),D)
+                          & r1_tarski(k6_pre_topc(A,D),C) ) ) ) ) ) ) ) ) ).
+
+fof(t32_urysohn1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A) )
+     => ( v5_compts_1(A)
+       => ! [B] :
+            ( ( v4_pre_topc(B,A)
+              & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+           => ! [C] :
+                ( ( v4_pre_topc(C,A)
+                  & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+               => ( r1_xboole_0(B,C)
+                 => ( B = k1_xboole_0
+                    | ! [D] :
+                        ( m2_subset_1(D,k1_numbers,k5_numbers)
+                       => ! [E] :
+                            ( ( v1_funct_1(E)
+                              & v1_funct_2(E,k3_urysohn1(D),k1_zfmisc_1(u1_struct_0(A)))
+                              & m2_relset_1(E,k3_urysohn1(D),k1_zfmisc_1(u1_struct_0(A))) )
+                           => ~ ( r1_tarski(B,k1_funct_1(E,np__0))
+                                & C = k4_xboole_0(k2_pre_topc(A),k1_funct_1(E,np__1))
+                                & ! [F] :
+                                    ( m2_subset_1(F,k1_numbers,k3_urysohn1(D))
+                                   => ! [G] :
+                                        ( m2_subset_1(G,k1_numbers,k3_urysohn1(D))
+                                       => ( ~ r1_xreal_0(G,F)
+                                         => ( v3_pre_topc(k6_urysohn1(A,k3_urysohn1(D),E,F),A)
+                                            & v3_pre_topc(k6_urysohn1(A,k3_urysohn1(D),E,G),A)
+                                            & r1_tarski(k6_pre_topc(A,k6_urysohn1(A,k3_urysohn1(D),E,F)),k6_urysohn1(A,k3_urysohn1(D),E,G)) ) ) ) )
+                                & ! [F] :
+                                    ( ( v1_funct_1(F)
+                                      & v1_funct_2(F,k3_urysohn1(k1_nat_1(D,np__1)),k1_zfmisc_1(u1_struct_0(A)))
+                                      & m2_relset_1(F,k3_urysohn1(k1_nat_1(D,np__1)),k1_zfmisc_1(u1_struct_0(A))) )
+                                   => ~ ( r1_tarski(B,k1_funct_1(F,np__0))
+                                        & C = k4_xboole_0(k2_pre_topc(A),k1_funct_1(F,np__1))
+                                        & ! [G] :
+                                            ( m2_subset_1(G,k1_numbers,k3_urysohn1(k1_nat_1(D,np__1)))
+                                           => ! [H] :
+                                                ( m2_subset_1(H,k1_numbers,k3_urysohn1(k1_nat_1(D,np__1)))
+                                               => ! [I] :
+                                                    ( m2_subset_1(I,k1_numbers,k3_urysohn1(k1_nat_1(D,np__1)))
+                                                   => ( ~ r1_xreal_0(H,G)
+                                                     => ( v3_pre_topc(k6_urysohn1(A,k3_urysohn1(k1_nat_1(D,np__1)),F,G),A)
+                                                        & v3_pre_topc(k6_urysohn1(A,k3_urysohn1(k1_nat_1(D,np__1)),F,H),A)
+                                                        & r1_tarski(k6_pre_topc(A,k6_urysohn1(A,k3_urysohn1(k1_nat_1(D,np__1)),F,G)),k6_urysohn1(A,k3_urysohn1(k1_nat_1(D,np__1)),F,H))
+                                                        & ( r2_hidden(I,k3_urysohn1(D))
+                                                         => k6_urysohn1(A,k3_urysohn1(k1_nat_1(D,np__1)),F,I) = k1_funct_1(E,I) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(dt_m1_urysohn1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+     => ! [D] :
+          ( m1_urysohn1(D,A,B,C)
+         => m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A))) ) ) ).
+
+fof(existence_m1_urysohn1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+     => ? [D] : m1_urysohn1(D,A,B,C) ) ).
+
+fof(dt_k1_urysohn1,axiom,
+    m1_subset_1(k1_urysohn1,k1_zfmisc_1(k1_numbers)) ).
+
+fof(dt_k2_urysohn1,axiom,
+    m1_subset_1(k2_urysohn1,k1_zfmisc_1(k1_numbers)) ).
+
+fof(dt_k3_urysohn1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m1_subset_1(k3_urysohn1(A),k1_zfmisc_1(k1_numbers)) ) ).
+
+fof(dt_k4_urysohn1,axiom,
+    m1_subset_1(k4_urysohn1,k1_zfmisc_1(k1_numbers)) ).
+
+fof(dt_k5_urysohn1,axiom,
+    m1_subset_1(k5_urysohn1,k1_zfmisc_1(k1_numbers)) ).
+
+fof(dt_k6_urysohn1,axiom,
+    ! [A,B,C,D] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k1_numbers))
+        & v1_funct_1(C)
+        & v1_funct_2(C,B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_relset_1(C,B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(D,B) )
+     => m1_subset_1(k6_urysohn1(A,B,C,D),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(redefinition_k6_urysohn1,axiom,
+    ! [A,B,C,D] :
+      ( ( v2_pre_topc(A)
+        & l1_pre_topc(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k1_numbers))
+        & v1_funct_1(C)
+        & v1_funct_2(C,B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_relset_1(C,B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(D,B) )
+     => k6_urysohn1(A,B,C,D) = k1_funct_1(C,D) ) ).
+
+fof(dt_k7_urysohn1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( v1_relat_1(k7_urysohn1(A))
+        & v1_funct_1(k7_urysohn1(A))
+        & v1_finseq_1(k7_urysohn1(A)) ) ) ).
+
+fof(dt_k8_urysohn1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k3_urysohn1(A)) )
+     => m2_subset_1(k8_urysohn1(A,B),k1_numbers,k5_numbers) ) ).
+
+fof(dt_k9_urysohn1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,u1_struct_0(A),u1_struct_0(k3_topmetr))
+        & m1_relset_1(B,u1_struct_0(A),u1_struct_0(k3_topmetr))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k9_urysohn1(A,B,C),k1_numbers) ) ).
+
+fof(redefinition_k9_urysohn1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & l1_pre_topc(A)
+        & v1_funct_1(B)
+        & v1_funct_2(B,u1_struct_0(A),u1_struct_0(k3_topmetr))
+        & m1_relset_1(B,u1_struct_0(A),u1_struct_0(k3_topmetr))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k9_urysohn1(A,B,C) = k1_funct_1(B,C) ) ).
+
+%------------------------------------------------------------------------------

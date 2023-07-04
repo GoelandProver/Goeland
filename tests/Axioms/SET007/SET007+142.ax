@@ -1,0 +1,493 @@
+%------------------------------------------------------------------------------
+% File     : SET007+142 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : The Correctness of the High Speed Array Multiplier Circuits
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : gate_5 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   44 (  40 unt;   0 def)
+%            Number of atoms       :  368 (  19 equ)
+%            Maximal formula atoms :  100 (   8 avg)
+%            Number of connectives :  660 ( 336   ~;   0   |; 324   &)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   80 (   9 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :    3 (   1 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   32 (  32 usr;   1 con; 0-9 aty)
+%            Number of variables   :  189 ( 189   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(d1_gate_5,axiom,
+    ! [A,B,C,D] : k1_gate_5(A,B,C,D) = k2_gate_1(A,C) ).
+
+fof(d2_gate_5,axiom,
+    ! [A,B,C,D] : k2_gate_5(A,B,C,D) = k10_gate_1(k2_gate_1(B,C),k2_gate_1(A,D),k1_xboole_0) ).
+
+fof(d3_gate_5,axiom,
+    ! [A,B,C,D] : k3_gate_5(A,B,C,D) = k35_gate_1(k2_gate_1(B,C),k2_gate_1(A,D),k1_xboole_0,k2_gate_1(B,D),k1_xboole_0) ).
+
+fof(d4_gate_5,axiom,
+    ! [A,B,C,D] : k4_gate_5(A,B,C,D) = k36_gate_1(k2_gate_1(B,C),k2_gate_1(A,D),k1_xboole_0,k2_gate_1(B,D),k1_xboole_0) ).
+
+fof(t1_gate_5,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L,M] :
+      ~ ( ~ ( ~ v1_xboole_0(I)
+            & v1_xboole_0(k2_gate_1(A,C)) )
+        & ~ ( ~ v1_xboole_0(k2_gate_1(A,C))
+            & v1_xboole_0(I) )
+        & ~ ( ~ v1_xboole_0(J)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(B,C),k2_gate_1(A,D),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(B,C),k2_gate_1(A,D),k1_xboole_0))
+            & v1_xboole_0(J) )
+        & ~ ( ~ v1_xboole_0(K)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(B,C),k2_gate_1(A,D),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(B,C),k2_gate_1(A,D),k1_xboole_0))
+            & v1_xboole_0(K) )
+        & ~ ( ~ v1_xboole_0(L)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(B,D),k1_xboole_0,K)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(B,D),k1_xboole_0,K))
+            & v1_xboole_0(L) )
+        & ~ ( ~ v1_xboole_0(M)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(B,D),k1_xboole_0,K)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(B,D),k1_xboole_0,K))
+            & v1_xboole_0(M) )
+        & ~ ( ~ v1_xboole_0(E)
+            & v1_xboole_0(I) )
+        & ~ ( ~ v1_xboole_0(I)
+            & v1_xboole_0(E) )
+        & ~ ( ~ v1_xboole_0(F)
+            & v1_xboole_0(J) )
+        & ~ ( ~ v1_xboole_0(J)
+            & v1_xboole_0(F) )
+        & ~ ( ~ v1_xboole_0(G)
+            & v1_xboole_0(L) )
+        & ~ ( ~ v1_xboole_0(L)
+            & v1_xboole_0(G) )
+        & ~ ( ~ v1_xboole_0(H)
+            & v1_xboole_0(M) )
+        & ~ ( ~ v1_xboole_0(M)
+            & v1_xboole_0(H) )
+        & ~ ( ~ ( ~ v1_xboole_0(E)
+                & v1_xboole_0(k1_gate_5(A,B,C,D)) )
+            & ~ ( ~ v1_xboole_0(k1_gate_5(A,B,C,D))
+                & v1_xboole_0(E) )
+            & ~ ( ~ v1_xboole_0(F)
+                & v1_xboole_0(k2_gate_5(A,B,C,D)) )
+            & ~ ( ~ v1_xboole_0(k2_gate_5(A,B,C,D))
+                & v1_xboole_0(F) )
+            & ~ ( ~ v1_xboole_0(G)
+                & v1_xboole_0(k3_gate_5(A,B,C,D)) )
+            & ~ ( ~ v1_xboole_0(k3_gate_5(A,B,C,D))
+                & v1_xboole_0(G) )
+            & ~ ( ~ v1_xboole_0(H)
+                & v1_xboole_0(k4_gate_5(A,B,C,D)) )
+            & ~ ( ~ v1_xboole_0(k4_gate_5(A,B,C,D))
+                & v1_xboole_0(H) ) ) ) ).
+
+fof(d5_gate_5,axiom,
+    ! [A,B,C,D,E] : k5_gate_5(A,B,C,D,E) = k2_gate_1(A,D) ).
+
+fof(d6_gate_5,axiom,
+    ! [A,B,C,D,E] : k6_gate_5(A,B,C,D,E) = k10_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0) ).
+
+fof(d7_gate_5,axiom,
+    ! [A,B,C,D,E] : k7_gate_5(A,B,C,D,E) = k35_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k2_gate_1(C,D),k2_gate_1(B,E),k1_xboole_0) ).
+
+fof(d8_gate_5,axiom,
+    ! [A,B,C,D,E] : k8_gate_5(A,B,C,D,E) = k37_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k2_gate_1(C,D),k2_gate_1(B,E),k1_xboole_0,k2_gate_1(C,E),k1_xboole_0) ).
+
+fof(d9_gate_5,axiom,
+    ! [A,B,C,D,E] : k9_gate_5(A,B,C,D,E) = k38_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k2_gate_1(C,D),k2_gate_1(B,E),k1_xboole_0,k2_gate_1(C,E),k1_xboole_0) ).
+
+fof(d10_gate_5,axiom,
+    ! [A,B,C,D,E,F] : k10_gate_5(A,B,C,D,E,F) = k10_gate_1(k7_gate_5(A,B,C,D,E),k2_gate_1(A,F),k1_xboole_0) ).
+
+fof(d11_gate_5,axiom,
+    ! [A,B,C,D,E,F] : k11_gate_5(A,B,C,D,E,F) = k35_gate_1(k7_gate_5(A,B,C,D,E),k2_gate_1(A,F),k8_gate_5(A,B,C,D,E),k2_gate_1(B,F),k1_xboole_0) ).
+
+fof(d12_gate_5,axiom,
+    ! [A,B,C,D,E,F] : k12_gate_5(A,B,C,D,E,F) = k37_gate_1(k7_gate_5(A,B,C,D,E),k2_gate_1(A,F),k8_gate_5(A,B,C,D,E),k2_gate_1(B,F),k9_gate_5(A,B,C,D,E),k2_gate_1(C,F),k1_xboole_0) ).
+
+fof(d13_gate_5,axiom,
+    ! [A,B,C,D,E,F] : k13_gate_5(A,B,C,D,E,F) = k38_gate_1(k7_gate_5(A,B,C,D,E),k2_gate_1(A,F),k8_gate_5(A,B,C,D,E),k2_gate_1(B,F),k9_gate_5(A,B,C,D,E),k2_gate_1(C,F),k1_xboole_0) ).
+
+fof(t2_gate_5,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y] :
+      ~ ( ~ ( ~ v1_xboole_0(M)
+            & v1_xboole_0(k2_gate_1(A,D)) )
+        & ~ ( ~ v1_xboole_0(k2_gate_1(A,D))
+            & v1_xboole_0(M) )
+        & ~ ( ~ v1_xboole_0(N)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0))
+            & v1_xboole_0(N) )
+        & ~ ( ~ v1_xboole_0(P)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0))
+            & v1_xboole_0(P) )
+        & ~ ( ~ v1_xboole_0(O)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k1_xboole_0))
+            & v1_xboole_0(O) )
+        & ~ ( ~ v1_xboole_0(Q)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k1_xboole_0))
+            & v1_xboole_0(Q) )
+        & ~ ( ~ v1_xboole_0(R)
+            & v1_xboole_0(k10_gate_1(O,k2_gate_1(A,F),P)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(O,k2_gate_1(A,F),P))
+            & v1_xboole_0(R) )
+        & ~ ( ~ v1_xboole_0(T)
+            & v1_xboole_0(k11_gate_1(O,k2_gate_1(A,F),P)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(O,k2_gate_1(A,F),P))
+            & v1_xboole_0(T) )
+        & ~ ( ~ v1_xboole_0(S)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),Q)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),Q))
+            & v1_xboole_0(S) )
+        & ~ ( ~ v1_xboole_0(U)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),Q)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),Q))
+            & v1_xboole_0(U) )
+        & ~ ( ~ v1_xboole_0(V)
+            & v1_xboole_0(k10_gate_1(S,k1_xboole_0,T)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(S,k1_xboole_0,T))
+            & v1_xboole_0(V) )
+        & ~ ( ~ v1_xboole_0(X)
+            & v1_xboole_0(k11_gate_1(S,k1_xboole_0,T)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(S,k1_xboole_0,T))
+            & v1_xboole_0(X) )
+        & ~ ( ~ v1_xboole_0(W)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(C,F),X,U)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(C,F),X,U))
+            & v1_xboole_0(W) )
+        & ~ ( ~ v1_xboole_0(Y)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(C,F),X,U)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(C,F),X,U))
+            & v1_xboole_0(Y) )
+        & ~ ( ~ v1_xboole_0(G)
+            & v1_xboole_0(M) )
+        & ~ ( ~ v1_xboole_0(M)
+            & v1_xboole_0(G) )
+        & ~ ( ~ v1_xboole_0(H)
+            & v1_xboole_0(N) )
+        & ~ ( ~ v1_xboole_0(N)
+            & v1_xboole_0(H) )
+        & ~ ( ~ v1_xboole_0(I)
+            & v1_xboole_0(R) )
+        & ~ ( ~ v1_xboole_0(R)
+            & v1_xboole_0(I) )
+        & ~ ( ~ v1_xboole_0(J)
+            & v1_xboole_0(V) )
+        & ~ ( ~ v1_xboole_0(V)
+            & v1_xboole_0(J) )
+        & ~ ( ~ v1_xboole_0(K)
+            & v1_xboole_0(W) )
+        & ~ ( ~ v1_xboole_0(W)
+            & v1_xboole_0(K) )
+        & ~ ( ~ v1_xboole_0(L)
+            & v1_xboole_0(Y) )
+        & ~ ( ~ v1_xboole_0(Y)
+            & v1_xboole_0(L) )
+        & ~ ( ~ ( ~ v1_xboole_0(G)
+                & v1_xboole_0(k5_gate_5(A,B,C,D,E)) )
+            & ~ ( ~ v1_xboole_0(k5_gate_5(A,B,C,D,E))
+                & v1_xboole_0(G) )
+            & ~ ( ~ v1_xboole_0(H)
+                & v1_xboole_0(k6_gate_5(A,B,C,D,E)) )
+            & ~ ( ~ v1_xboole_0(k6_gate_5(A,B,C,D,E))
+                & v1_xboole_0(H) )
+            & ~ ( ~ v1_xboole_0(I)
+                & v1_xboole_0(k10_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k10_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(I) )
+            & ~ ( ~ v1_xboole_0(J)
+                & v1_xboole_0(k11_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k11_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(J) )
+            & ~ ( ~ v1_xboole_0(K)
+                & v1_xboole_0(k12_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k12_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(K) )
+            & ~ ( ~ v1_xboole_0(L)
+                & v1_xboole_0(k13_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k13_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(L) ) ) ) ).
+
+fof(t3_gate_5,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y] :
+      ~ ( ~ ( ~ v1_xboole_0(M)
+            & v1_xboole_0(k2_gate_1(A,D)) )
+        & ~ ( ~ v1_xboole_0(k2_gate_1(A,D))
+            & v1_xboole_0(M) )
+        & ~ ( ~ v1_xboole_0(N)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0))
+            & v1_xboole_0(N) )
+        & ~ ( ~ v1_xboole_0(Q)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0))
+            & v1_xboole_0(Q) )
+        & ~ ( ~ v1_xboole_0(O)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k2_gate_1(A,F))) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k2_gate_1(A,F)))
+            & v1_xboole_0(O) )
+        & ~ ( ~ v1_xboole_0(R)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k2_gate_1(A,F))) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k2_gate_1(A,F)))
+            & v1_xboole_0(R) )
+        & ~ ( ~ v1_xboole_0(P)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),k1_xboole_0))
+            & v1_xboole_0(P) )
+        & ~ ( ~ v1_xboole_0(S)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),k1_xboole_0))
+            & v1_xboole_0(S) )
+        & ~ ( ~ v1_xboole_0(T)
+            & v1_xboole_0(k10_gate_1(O,Q,k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(O,Q,k1_xboole_0))
+            & v1_xboole_0(T) )
+        & ~ ( ~ v1_xboole_0(W)
+            & v1_xboole_0(k11_gate_1(O,Q,k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(O,Q,k1_xboole_0))
+            & v1_xboole_0(W) )
+        & ~ ( ~ v1_xboole_0(U)
+            & v1_xboole_0(k10_gate_1(P,R,W)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(P,R,W))
+            & v1_xboole_0(U) )
+        & ~ ( ~ v1_xboole_0(X)
+            & v1_xboole_0(k11_gate_1(P,R,W)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(P,R,W))
+            & v1_xboole_0(X) )
+        & ~ ( ~ v1_xboole_0(V)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(C,F),S,X)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(C,F),S,X))
+            & v1_xboole_0(V) )
+        & ~ ( ~ v1_xboole_0(Y)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(C,F),S,X)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(C,F),S,X))
+            & v1_xboole_0(Y) )
+        & ~ ( ~ v1_xboole_0(G)
+            & v1_xboole_0(M) )
+        & ~ ( ~ v1_xboole_0(M)
+            & v1_xboole_0(G) )
+        & ~ ( ~ v1_xboole_0(H)
+            & v1_xboole_0(N) )
+        & ~ ( ~ v1_xboole_0(N)
+            & v1_xboole_0(H) )
+        & ~ ( ~ v1_xboole_0(I)
+            & v1_xboole_0(T) )
+        & ~ ( ~ v1_xboole_0(T)
+            & v1_xboole_0(I) )
+        & ~ ( ~ v1_xboole_0(J)
+            & v1_xboole_0(U) )
+        & ~ ( ~ v1_xboole_0(U)
+            & v1_xboole_0(J) )
+        & ~ ( ~ v1_xboole_0(K)
+            & v1_xboole_0(V) )
+        & ~ ( ~ v1_xboole_0(V)
+            & v1_xboole_0(K) )
+        & ~ ( ~ v1_xboole_0(L)
+            & v1_xboole_0(Y) )
+        & ~ ( ~ v1_xboole_0(Y)
+            & v1_xboole_0(L) )
+        & ~ ( ~ ( ~ v1_xboole_0(G)
+                & v1_xboole_0(k5_gate_5(A,B,C,D,E)) )
+            & ~ ( ~ v1_xboole_0(k5_gate_5(A,B,C,D,E))
+                & v1_xboole_0(G) )
+            & ~ ( ~ v1_xboole_0(H)
+                & v1_xboole_0(k6_gate_5(A,B,C,D,E)) )
+            & ~ ( ~ v1_xboole_0(k6_gate_5(A,B,C,D,E))
+                & v1_xboole_0(H) )
+            & ~ ( ~ v1_xboole_0(I)
+                & v1_xboole_0(k10_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k10_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(I) )
+            & ~ ( ~ v1_xboole_0(J)
+                & v1_xboole_0(k11_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k11_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(J) )
+            & ~ ( ~ v1_xboole_0(K)
+                & v1_xboole_0(k12_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k12_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(K) )
+            & ~ ( ~ v1_xboole_0(L)
+                & v1_xboole_0(k13_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k13_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(L) ) ) ) ).
+
+fof(d14_gate_5,axiom,
+    $true ).
+
+fof(d15_gate_5,axiom,
+    $true ).
+
+fof(d16_gate_5,axiom,
+    ! [A,B,C,D,E] : k14_gate_5(A,B,C,D,E) = k10_gate_1(C,D,k11_gate_1(A,B,E)) ).
+
+fof(d17_gate_5,axiom,
+    ! [A,B,C,D,E] : k15_gate_5(A,B,C,D,E) = k3_gate_1(k2_gate_1(C,D),k2_gate_1(k3_gate_1(C,D),k11_gate_1(A,B,E))) ).
+
+fof(d18_gate_5,axiom,
+    ! [A,B,C,D,E,F,G] : k16_gate_5(A,B,C,D,E,F,G) = k10_gate_1(E,F,k15_gate_5(A,B,C,D,G)) ).
+
+fof(d19_gate_5,axiom,
+    ! [A,B,C,D,E,F,G] : k17_gate_5(A,B,C,D,E,F,G) = k9_gate_1(k2_gate_1(E,F),k2_gate_1(k3_gate_1(E,F),k2_gate_1(C,D)),k8_gate_1(k3_gate_1(E,F),k3_gate_1(C,D),k11_gate_1(A,B,G))) ).
+
+fof(d20_gate_5,axiom,
+    ! [A,B,C,D,E,F,G,H,I] : k18_gate_5(A,B,C,D,E,F,G,H,I) = k10_gate_1(G,H,k17_gate_5(A,B,C,D,E,F,I)) ).
+
+fof(d21_gate_5,axiom,
+    ! [A,B,C,D,E,F,G,H,I] : k19_gate_5(A,B,C,D,E,F,G,H,I) = k15_gate_1(k2_gate_1(G,H),k2_gate_1(k3_gate_1(G,H),k2_gate_1(E,F)),k8_gate_1(k3_gate_1(G,H),k3_gate_1(E,F),k2_gate_1(C,D)),k14_gate_1(k3_gate_1(G,H),k3_gate_1(E,F),k3_gate_1(C,D),k11_gate_1(A,B,I))) ).
+
+fof(t4_gate_5,axiom,
+    ! [A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S] :
+      ~ ( ~ ( ~ v1_xboole_0(M)
+            & v1_xboole_0(k2_gate_1(A,D)) )
+        & ~ ( ~ v1_xboole_0(k2_gate_1(A,D))
+            & v1_xboole_0(M) )
+        & ~ ( ~ v1_xboole_0(N)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0))
+            & v1_xboole_0(N) )
+        & ~ ( ~ v1_xboole_0(Q)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(B,D),k2_gate_1(A,E),k1_xboole_0))
+            & v1_xboole_0(Q) )
+        & ~ ( ~ v1_xboole_0(O)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k2_gate_1(A,F))) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k2_gate_1(A,F)))
+            & v1_xboole_0(O) )
+        & ~ ( ~ v1_xboole_0(R)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k2_gate_1(A,F))) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(C,D),k2_gate_1(B,E),k2_gate_1(A,F)))
+            & v1_xboole_0(R) )
+        & ~ ( ~ v1_xboole_0(P)
+            & v1_xboole_0(k10_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),k1_xboole_0))
+            & v1_xboole_0(P) )
+        & ~ ( ~ v1_xboole_0(S)
+            & v1_xboole_0(k11_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k11_gate_1(k2_gate_1(C,E),k2_gate_1(B,F),k1_xboole_0))
+            & v1_xboole_0(S) )
+        & ~ ( ~ v1_xboole_0(G)
+            & v1_xboole_0(M) )
+        & ~ ( ~ v1_xboole_0(M)
+            & v1_xboole_0(G) )
+        & ~ ( ~ v1_xboole_0(H)
+            & v1_xboole_0(N) )
+        & ~ ( ~ v1_xboole_0(N)
+            & v1_xboole_0(H) )
+        & ~ ( ~ v1_xboole_0(I)
+            & v1_xboole_0(k10_gate_1(O,Q,k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k10_gate_1(O,Q,k1_xboole_0))
+            & v1_xboole_0(I) )
+        & ~ ( ~ v1_xboole_0(J)
+            & v1_xboole_0(k14_gate_5(O,Q,P,R,k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k14_gate_5(O,Q,P,R,k1_xboole_0))
+            & v1_xboole_0(J) )
+        & ~ ( ~ v1_xboole_0(K)
+            & v1_xboole_0(k16_gate_5(O,Q,P,R,k2_gate_1(C,F),S,k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k16_gate_5(O,Q,P,R,k2_gate_1(C,F),S,k1_xboole_0))
+            & v1_xboole_0(K) )
+        & ~ ( ~ v1_xboole_0(L)
+            & v1_xboole_0(k17_gate_5(O,Q,P,R,k2_gate_1(C,F),S,k1_xboole_0)) )
+        & ~ ( ~ v1_xboole_0(k17_gate_5(O,Q,P,R,k2_gate_1(C,F),S,k1_xboole_0))
+            & v1_xboole_0(L) )
+        & ~ ( ~ ( ~ v1_xboole_0(G)
+                & v1_xboole_0(k5_gate_5(A,B,C,D,E)) )
+            & ~ ( ~ v1_xboole_0(k5_gate_5(A,B,C,D,E))
+                & v1_xboole_0(G) )
+            & ~ ( ~ v1_xboole_0(H)
+                & v1_xboole_0(k6_gate_5(A,B,C,D,E)) )
+            & ~ ( ~ v1_xboole_0(k6_gate_5(A,B,C,D,E))
+                & v1_xboole_0(H) )
+            & ~ ( ~ v1_xboole_0(I)
+                & v1_xboole_0(k10_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k10_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(I) )
+            & ~ ( ~ v1_xboole_0(J)
+                & v1_xboole_0(k11_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k11_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(J) )
+            & ~ ( ~ v1_xboole_0(K)
+                & v1_xboole_0(k12_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k12_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(K) )
+            & ~ ( ~ v1_xboole_0(L)
+                & v1_xboole_0(k13_gate_5(A,B,C,D,E,F)) )
+            & ~ ( ~ v1_xboole_0(k13_gate_5(A,B,C,D,E,F))
+                & v1_xboole_0(L) ) ) ) ).
+
+fof(dt_k1_gate_5,axiom,
+    $true ).
+
+fof(dt_k2_gate_5,axiom,
+    $true ).
+
+fof(dt_k3_gate_5,axiom,
+    $true ).
+
+fof(dt_k4_gate_5,axiom,
+    $true ).
+
+fof(dt_k5_gate_5,axiom,
+    $true ).
+
+fof(dt_k6_gate_5,axiom,
+    $true ).
+
+fof(dt_k7_gate_5,axiom,
+    $true ).
+
+fof(dt_k8_gate_5,axiom,
+    $true ).
+
+fof(dt_k9_gate_5,axiom,
+    $true ).
+
+fof(dt_k10_gate_5,axiom,
+    $true ).
+
+fof(dt_k11_gate_5,axiom,
+    $true ).
+
+fof(dt_k12_gate_5,axiom,
+    $true ).
+
+fof(dt_k13_gate_5,axiom,
+    $true ).
+
+fof(dt_k14_gate_5,axiom,
+    $true ).
+
+fof(dt_k15_gate_5,axiom,
+    $true ).
+
+fof(dt_k16_gate_5,axiom,
+    $true ).
+
+fof(dt_k17_gate_5,axiom,
+    $true ).
+
+fof(dt_k18_gate_5,axiom,
+    $true ).
+
+fof(dt_k19_gate_5,axiom,
+    $true ).
+
+%------------------------------------------------------------------------------

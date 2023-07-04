@@ -1,0 +1,238 @@
+%------------------------------------------------------------------------------
+% File     : ITP005^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : marker.ax [Gau19]
+%          : HL4005^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   36 (  12 unt;  18 typ;   0 def)
+%            Number of atoms       :   21 (   7 equ;   1 cnn)
+%            Maximal formula atoms :    2 (   0 avg)
+%            Number of connectives :  148 (   1   ~;  21   |;  30   &;  75   @)
+%                                         (  20 <=>;   1  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   11 (   6 avg;  75 nst)
+%            Number of types       :    3 (   2 usr)
+%            Number of type conns  :   25 (  25   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   18 (  16 usr;   3 con; 0-3 aty)
+%            Number of variables   :   43 (   0   ^  37   !;   1   ?;  43   :)
+%                                         (   5  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Emin_2Eind,type,
+    tyop_2Emin_2Eind: $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Emarker_2E_3A_2D,type,
+    c_2Emarker_2E_3A_2D: tyop_2Emin_2Eind > $o > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Emarker_2EAC,type,
+    c_2Emarker_2EAC: $o > $o > $o ).
+
+thf(c_2Emarker_2EAbbrev,type,
+    c_2Emarker_2EAbbrev: $o > $o ).
+
+thf(c_2Emarker_2ECong,type,
+    c_2Emarker_2ECong: $o > $o ).
+
+thf(c_2Emarker_2EIfCases,type,
+    c_2Emarker_2EIfCases: $o ).
+
+thf(c_2Ebool_2ET,type,
+    c_2Ebool_2ET: $o ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Emarker_2Estmarker,type,
+    c_2Emarker_2Estmarker: 
+      !>[A_27a: $tType] : ( A_27a > A_27a ) ).
+
+thf(c_2Emarker_2Eunint,type,
+    c_2Emarker_2Eunint: 
+      !>[A_27a: $tType] : ( A_27a > A_27a ) ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2Emarker_2Estmarker__def,axiom,
+    ! [A_27a: $tType,V0x: A_27a] :
+      ( ( c_2Emarker_2Estmarker @ A_27a @ V0x )
+      = V0x ) ).
+
+thf(thm_2Emarker_2Eunint__def,axiom,
+    ! [A_27a: $tType,V0x: A_27a] :
+      ( ( c_2Emarker_2Eunint @ A_27a @ V0x )
+      = V0x ) ).
+
+thf(thm_2Emarker_2EAbbrev__def,axiom,
+    ! [V0x: $o] :
+      ( ( c_2Emarker_2EAbbrev @ V0x )
+      = V0x ) ).
+
+thf(thm_2Emarker_2EIfCases__def,axiom,
+    c_2Emarker_2EIfCases = c_2Ebool_2ET ).
+
+thf(thm_2Emarker_2EAC__DEF,axiom,
+    ! [V0b1: $o,V1b2: $o] :
+      ( ( c_2Emarker_2EAC @ V0b1 @ V1b2 )
+    <=> ( V0b1
+        & V1b2 ) ) ).
+
+thf(thm_2Emarker_2ECong__def,axiom,
+    ! [V0x: $o] :
+      ( ( c_2Emarker_2ECong @ V0x )
+      = V0x ) ).
+
+thf(thm_2Emarker_2Elabel__def,axiom,
+    ! [V0lab: tyop_2Emin_2Eind,V1argument: $o] :
+      ( ( c_2Emarker_2E_3A_2D @ V0lab @ V1argument )
+      = V1argument ) ).
+
+thf(thm_2Emarker_2Emove__left__conj,axiom,
+    ! [V0p: $o,V1q: $o,V2m: $o] :
+      ( ( ( V0p
+          & ( c_2Emarker_2Estmarker @ $o @ V2m ) )
+      <=> ( ( c_2Emarker_2Estmarker @ $o @ V2m )
+          & V0p ) )
+      & ( ( ( c_2Emarker_2Estmarker @ $o @ V2m )
+          & V0p
+          & V1q )
+      <=> ( ( c_2Emarker_2Estmarker @ $o @ V2m )
+          & V0p
+          & V1q ) )
+      & ( ( V0p
+          & ( c_2Emarker_2Estmarker @ $o @ V2m )
+          & V1q )
+      <=> ( ( c_2Emarker_2Estmarker @ $o @ V2m )
+          & V0p
+          & V1q ) ) ) ).
+
+thf(thm_2Emarker_2Emove__right__conj,axiom,
+    ! [V0p: $o,V1q: $o,V2m: $o] :
+      ( ( ( ( c_2Emarker_2Estmarker @ $o @ V2m )
+          & V0p )
+      <=> ( V0p
+          & ( c_2Emarker_2Estmarker @ $o @ V2m ) ) )
+      & ( ( V0p
+          & V1q
+          & ( c_2Emarker_2Estmarker @ $o @ V2m ) )
+      <=> ( V0p
+          & V1q
+          & ( c_2Emarker_2Estmarker @ $o @ V2m ) ) )
+      & ( ( V0p
+          & ( c_2Emarker_2Estmarker @ $o @ V2m )
+          & V1q )
+      <=> ( V0p
+          & V1q
+          & ( c_2Emarker_2Estmarker @ $o @ V2m ) ) ) ) ).
+
+thf(thm_2Emarker_2Emove__left__disj,axiom,
+    ! [V0p: $o,V1q: $o,V2m: $o] :
+      ( ( ( V0p
+          | ( c_2Emarker_2Estmarker @ $o @ V2m ) )
+      <=> ( ( c_2Emarker_2Estmarker @ $o @ V2m )
+          | V0p ) )
+      & ( ( ( c_2Emarker_2Estmarker @ $o @ V2m )
+          | V0p
+          | V1q )
+      <=> ( ( c_2Emarker_2Estmarker @ $o @ V2m )
+          | V0p
+          | V1q ) )
+      & ( ( V0p
+          | ( c_2Emarker_2Estmarker @ $o @ V2m )
+          | V1q )
+      <=> ( ( c_2Emarker_2Estmarker @ $o @ V2m )
+          | V0p
+          | V1q ) ) ) ).
+
+thf(thm_2Emarker_2Emove__right__disj,axiom,
+    ! [V0p: $o,V1q: $o,V2m: $o] :
+      ( ( ( ( c_2Emarker_2Estmarker @ $o @ V2m )
+          | V0p )
+      <=> ( V0p
+          | ( c_2Emarker_2Estmarker @ $o @ V2m ) ) )
+      & ( ( V0p
+          | V1q
+          | ( c_2Emarker_2Estmarker @ $o @ V2m ) )
+      <=> ( V0p
+          | V1q
+          | ( c_2Emarker_2Estmarker @ $o @ V2m ) ) )
+      & ( ( V0p
+          | ( c_2Emarker_2Estmarker @ $o @ V2m )
+          | V1q )
+      <=> ( V0p
+          | V1q
+          | ( c_2Emarker_2Estmarker @ $o @ V2m ) ) ) ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,691 @@
+%------------------------------------------------------------------------------
+% File     : ITP077^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : topology.ax [Gau19]
+%          : HL4077^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  110 (  17 unt;  37 typ;   0 def)
+%            Number of atoms       :  330 (  39 equ;   4 cnn)
+%            Maximal formula atoms :   10 (   3 avg)
+%            Number of connectives : 1085 (   4   ~;   1   |;  46   &; 942   @)
+%                                         (  22 <=>;  70  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   17 (   9 avg; 942 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :  337 ( 337   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   38 (  36 usr;   1 con; 0-5 aty)
+%            Number of variables   :  318 (   5   ^ 271   !;   9   ?; 318   :)
+%                                         (  33  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(tyop_2Epair_2Eprod,type,
+    tyop_2Epair_2Eprod: $tType > $tType > $tType ).
+
+thf(tyop_2Etopology_2Etopology,type,
+    tyop_2Etopology_2Etopology: $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epair_2E_2C,type,
+    c_2Epair_2E_2C: 
+      !>[A_27a: $tType,A_27b: $tType] : ( A_27a > A_27b > ( tyop_2Epair_2Eprod @ A_27a @ A_27b ) ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EBIGINTER,type,
+    c_2Epred__set_2EBIGINTER: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EBIGUNION,type,
+    c_2Epred__set_2EBIGUNION: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2ECOMPL,type,
+    c_2Epred__set_2ECOMPL: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EDIFF,type,
+    c_2Epred__set_2EDIFF: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EEMPTY,type,
+    c_2Epred__set_2EEMPTY: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Epred__set_2EFINITE,type,
+    c_2Epred__set_2EFINITE: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EGSPEC,type,
+    c_2Epred__set_2EGSPEC: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27b > ( tyop_2Epair_2Eprod @ A_27a @ $o ) ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EIMAGE,type,
+    c_2Epred__set_2EIMAGE: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > A_27b ) > ( A_27a > $o ) > A_27b > $o ) ).
+
+thf(c_2Ebool_2EIN,type,
+    c_2Ebool_2EIN: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EINSERT,type,
+    c_2Epred__set_2EINSERT: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EINTER,type,
+    c_2Epred__set_2EINTER: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2ESUBSET,type,
+    c_2Epred__set_2ESUBSET: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2ETYPE__DEFINITION,type,
+    c_2Ebool_2ETYPE__DEFINITION: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > $o ) > ( A_27b > A_27a ) > $o ) ).
+
+thf(c_2Epred__set_2EUNION,type,
+    c_2Epred__set_2EUNION: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EUNIV,type,
+    c_2Epred__set_2EUNIV: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Etopology_2Eclosed,type,
+    c_2Etopology_2Eclosed: 
+      !>[A_27a: $tType] : ( ( tyop_2Etopology_2Etopology @ A_27a ) > $o ) ).
+
+thf(c_2Etopology_2Eclosed__in,type,
+    c_2Etopology_2Eclosed__in: 
+      !>[A_27a: $tType] : ( ( tyop_2Etopology_2Etopology @ A_27a ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Etopology_2Ehull,type,
+    c_2Etopology_2Ehull: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Etopology_2Eistopology,type,
+    c_2Etopology_2Eistopology: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > $o ) > $o ) ).
+
+thf(c_2Etopology_2Elimpt,type,
+    c_2Etopology_2Elimpt: 
+      !>[A_27a: $tType] : ( ( tyop_2Etopology_2Etopology @ A_27a ) > A_27a > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Etopology_2Eneigh,type,
+    c_2Etopology_2Eneigh: 
+      !>[A_27a: $tType] : ( ( tyop_2Etopology_2Etopology @ A_27a ) > ( tyop_2Epair_2Eprod @ ( A_27a > $o ) @ A_27a ) > $o ) ).
+
+thf(c_2Etopology_2Eopen,type,
+    c_2Etopology_2Eopen: 
+      !>[A_27a: $tType] : ( ( tyop_2Etopology_2Etopology @ A_27a ) > $o ) ).
+
+thf(c_2Etopology_2Eopen__in,type,
+    c_2Etopology_2Eopen__in: 
+      !>[A_27a: $tType] : ( ( tyop_2Etopology_2Etopology @ A_27a ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Etopology_2Etopology,type,
+    c_2Etopology_2Etopology: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > $o ) > ( tyop_2Etopology_2Etopology @ A_27a ) ) ).
+
+thf(c_2Etopology_2Etopspace,type,
+    c_2Etopology_2Etopspace: 
+      !>[A_27a: $tType] : ( ( tyop_2Etopology_2Etopology @ A_27a ) > A_27a > $o ) ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2Etopology_2Eistopology,axiom,
+    ! [A_27a: $tType,V0L: ( A_27a > $o ) > $o] :
+      ( ( c_2Etopology_2Eistopology @ A_27a @ V0L )
+    <=> ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ ( c_2Epred__set_2EEMPTY @ A_27a ) @ V0L )
+        & ! [V1s: A_27a > $o,V2t: A_27a > $o] :
+            ( ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V1s @ V0L )
+              & ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V2t @ V0L ) )
+           => ( c_2Ebool_2EIN @ ( A_27a > $o ) @ ( c_2Epred__set_2EINTER @ A_27a @ V1s @ V2t ) @ V0L ) )
+        & ! [V3k: ( A_27a > $o ) > $o] :
+            ( ( c_2Epred__set_2ESUBSET @ ( A_27a > $o ) @ V3k @ V0L )
+           => ( c_2Ebool_2EIN @ ( A_27a > $o ) @ ( c_2Epred__set_2EBIGUNION @ A_27a @ V3k ) @ V0L ) ) ) ) ).
+
+thf(thm_2Etopology_2Etopology__TY__DEF,axiom,
+    ! [A_27a: $tType] :
+    ? [V0rep: ( tyop_2Etopology_2Etopology @ A_27a ) > ( A_27a > $o ) > $o] : ( c_2Ebool_2ETYPE__DEFINITION @ ( ( A_27a > $o ) > $o ) @ ( tyop_2Etopology_2Etopology @ A_27a ) @ ( c_2Etopology_2Eistopology @ A_27a ) @ V0rep ) ).
+
+thf(thm_2Etopology_2Etopology__tybij,axiom,
+    ! [A_27a: $tType] :
+      ( ! [V0a: tyop_2Etopology_2Etopology @ A_27a] :
+          ( ( c_2Etopology_2Etopology @ A_27a @ ( c_2Etopology_2Eopen__in @ A_27a @ V0a ) )
+          = V0a )
+      & ! [V1r: ( A_27a > $o ) > $o] :
+          ( ( c_2Etopology_2Eistopology @ A_27a @ V1r )
+        <=> ( ( c_2Etopology_2Eopen__in @ A_27a @ ( c_2Etopology_2Etopology @ A_27a @ V1r ) )
+            = V1r ) ) ) ).
+
+thf(thm_2Etopology_2Eopen__DEF,axiom,
+    ! [A_27a: $tType,V0s: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Eopen @ A_27a @ V0s )
+      = ( c_2Etopology_2Eopen__in @ A_27a @ V0s @ ( c_2Epred__set_2EUNIV @ A_27a ) ) ) ).
+
+thf(thm_2Etopology_2Etopspace,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Etopspace @ A_27a @ V0top )
+      = ( c_2Epred__set_2EBIGUNION @ A_27a
+        @ ( c_2Epred__set_2EGSPEC @ ( A_27a > $o ) @ ( A_27a > $o )
+          @ ^ [V1s: A_27a > $o] : ( c_2Epair_2E_2C @ ( A_27a > $o ) @ $o @ V1s @ ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V1s ) ) ) ) ) ).
+
+thf(thm_2Etopology_2Eneigh,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1N: A_27a > $o,V2x: A_27a] :
+      ( ( c_2Etopology_2Eneigh @ A_27a @ V0top @ ( c_2Epair_2E_2C @ ( A_27a > $o ) @ A_27a @ V1N @ V2x ) )
+    <=> ? [V3P: A_27a > $o] :
+          ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V3P )
+          & ( c_2Epred__set_2ESUBSET @ A_27a @ V3P @ V1N )
+          & ( V3P @ V2x ) ) ) ).
+
+thf(thm_2Etopology_2Eclosed__in,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o] :
+      ( ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V1s )
+    <=> ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ ( c_2Etopology_2Etopspace @ A_27a @ V0top ) )
+        & ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2EDIFF @ A_27a @ ( c_2Etopology_2Etopspace @ A_27a @ V0top ) @ V1s ) ) ) ) ).
+
+thf(thm_2Etopology_2Eclosed__DEF,axiom,
+    ! [A_27a: $tType,V0s: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Eclosed @ A_27a @ V0s )
+      = ( c_2Etopology_2Eclosed__in @ A_27a @ V0s @ ( c_2Epred__set_2EUNIV @ A_27a ) ) ) ).
+
+thf(thm_2Etopology_2Elimpt,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1x: A_27a,V2S_27: A_27a > $o] :
+      ( ( c_2Etopology_2Elimpt @ A_27a @ V0top @ V1x @ V2S_27 )
+    <=> ! [V3N: A_27a > $o] :
+          ( ( c_2Etopology_2Eneigh @ A_27a @ V0top @ ( c_2Epair_2E_2C @ ( A_27a > $o ) @ A_27a @ V3N @ V1x ) )
+         => ? [V4y: A_27a] :
+              ( ( (~) @ ( V1x = V4y ) )
+              & ( V2S_27 @ V4y )
+              & ( V3N @ V4y ) ) ) ) ).
+
+thf(thm_2Etopology_2Ehull,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o] :
+      ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s )
+      = ( c_2Epred__set_2EBIGINTER @ A_27a
+        @ ( c_2Epred__set_2EGSPEC @ ( A_27a > $o ) @ ( A_27a > $o )
+          @ ^ [V2t: A_27a > $o] : ( c_2Epair_2E_2C @ ( A_27a > $o ) @ $o @ V2t @ ( c_2Ebool_2E_2F_5C @ ( V0P @ V2t ) @ ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ V2t ) ) ) ) ) ) ).
+
+thf(thm_2Etopology_2EISTOPOLOGY__OPEN__IN,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] : ( c_2Etopology_2Eistopology @ A_27a @ ( c_2Etopology_2Eopen__in @ A_27a @ V0top ) ) ).
+
+thf(thm_2Etopology_2ETOPOLOGY__EQ,axiom,
+    ! [A_27a: $tType,V0top1: tyop_2Etopology_2Etopology @ A_27a,V1top2: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( V0top1 = V1top2 )
+    <=> ! [V2s: A_27a > $o] :
+          ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top1 @ V2s )
+          = ( c_2Etopology_2Eopen__in @ A_27a @ V1top2 @ V2s ) ) ) ).
+
+thf(thm_2Etopology_2Eopen__topspace,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Eopen @ A_27a @ V0top )
+     => ( ( c_2Etopology_2Etopspace @ A_27a @ V0top )
+        = ( c_2Epred__set_2EUNIV @ A_27a ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__CLAUSES,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2EEMPTY @ A_27a ) )
+      & ! [V1s: A_27a > $o,V2t: A_27a > $o] :
+          ( ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V1s )
+            & ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V2t ) )
+         => ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2EINTER @ A_27a @ V1s @ V2t ) ) )
+      & ! [V3k: ( A_27a > $o ) > $o] :
+          ( ! [V4s: A_27a > $o] :
+              ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V4s @ V3k )
+             => ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V4s ) )
+         => ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2EBIGUNION @ A_27a @ V3k ) ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__SUBSET,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o] :
+      ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V1s )
+     => ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ ( c_2Etopology_2Etopspace @ A_27a @ V0top ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__EMPTY,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] : ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__INTER,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V1s )
+        & ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V2t ) )
+     => ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2EINTER @ A_27a @ V1s @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__BIGUNION,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1k: ( A_27a > $o ) > $o] :
+      ( ! [V2s: A_27a > $o] :
+          ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V2s @ V1k )
+         => ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V2s ) )
+     => ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2EBIGUNION @ A_27a @ V1k ) ) ) ).
+
+thf(thm_2Etopology_2EBIGUNION__2,axiom,
+    ! [A_27a: $tType,V0s: A_27a > $o,V1t: A_27a > $o] :
+      ( ( c_2Epred__set_2EBIGUNION @ A_27a @ ( c_2Epred__set_2EINSERT @ ( A_27a > $o ) @ V0s @ ( c_2Epred__set_2EINSERT @ ( A_27a > $o ) @ V1t @ ( c_2Epred__set_2EEMPTY @ ( A_27a > $o ) ) ) ) )
+      = ( c_2Epred__set_2EUNION @ A_27a @ V0s @ V1t ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__UNION,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V1s )
+        & ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V2t ) )
+     => ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2EUNION @ A_27a @ V1s @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__TOPSPACE,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] : ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Etopology_2Etopspace @ A_27a @ V0top ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__BIGINTER,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: ( A_27a > $o ) > $o] :
+      ( ( ( c_2Epred__set_2EFINITE @ ( A_27a > $o ) @ V1s )
+        & ( (~)
+          @ ( V1s
+            = ( c_2Epred__set_2EEMPTY @ ( A_27a > $o ) ) ) )
+        & ! [V2t: A_27a > $o] :
+            ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V2t @ V1s )
+           => ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V2t ) ) )
+     => ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V1s ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__SUBOPEN,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o] :
+      ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V1s )
+    <=> ! [V2x: A_27a] :
+          ( ( c_2Ebool_2EIN @ A_27a @ V2x @ V1s )
+         => ? [V3t: A_27a > $o] :
+              ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V3t )
+              & ( c_2Ebool_2EIN @ A_27a @ V2x @ V3t )
+              & ( c_2Epred__set_2ESUBSET @ A_27a @ V3t @ V1s ) ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__OWN__NEIGH,axiom,
+    ! [A_27a: $tType,V0S_27: A_27a > $o,V1top: tyop_2Etopology_2Etopology @ A_27a,V2x: A_27a] :
+      ( ( ( c_2Etopology_2Eopen__in @ A_27a @ V1top @ V0S_27 )
+        & ( V0S_27 @ V2x ) )
+     => ( c_2Etopology_2Eneigh @ A_27a @ V1top @ ( c_2Epair_2E_2C @ ( A_27a > $o ) @ A_27a @ V0S_27 @ V2x ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__UNOPEN,axiom,
+    ! [A_27a: $tType,V0S_27: A_27a > $o,V1top: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Eopen__in @ A_27a @ V1top @ V0S_27 )
+    <=> ( ( c_2Epred__set_2EBIGUNION @ A_27a
+          @ ( c_2Epred__set_2EGSPEC @ ( A_27a > $o ) @ ( A_27a > $o )
+            @ ^ [V2P: A_27a > $o] : ( c_2Epair_2E_2C @ ( A_27a > $o ) @ $o @ V2P @ ( c_2Ebool_2E_2F_5C @ ( c_2Etopology_2Eopen__in @ A_27a @ V1top @ V2P ) @ ( c_2Epred__set_2ESUBSET @ A_27a @ V2P @ V0S_27 ) ) ) ) )
+        = V0S_27 ) ) ).
+
+thf(thm_2Etopology_2EOPEN__SUBOPEN,axiom,
+    ! [A_27a: $tType,V0S_27: A_27a > $o,V1top: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Eopen__in @ A_27a @ V1top @ V0S_27 )
+    <=> ! [V2x: A_27a] :
+          ( ( V0S_27 @ V2x )
+         => ? [V3P: A_27a > $o] :
+              ( ( V3P @ V2x )
+              & ( c_2Etopology_2Eopen__in @ A_27a @ V1top @ V3P )
+              & ( c_2Epred__set_2ESUBSET @ A_27a @ V3P @ V0S_27 ) ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__NEIGH,axiom,
+    ! [A_27a: $tType,V0S_27: A_27a > $o,V1top: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Eopen__in @ A_27a @ V1top @ V0S_27 )
+    <=> ! [V2x: A_27a] :
+          ( ( V0S_27 @ V2x )
+         => ? [V3N: A_27a > $o] :
+              ( ( c_2Etopology_2Eneigh @ A_27a @ V1top @ ( c_2Epair_2E_2C @ ( A_27a > $o ) @ A_27a @ V3N @ V2x ) )
+              & ( c_2Epred__set_2ESUBSET @ A_27a @ V3N @ V0S_27 ) ) ) ) ).
+
+thf(thm_2Etopology_2Eclosed__topspace,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Eclosed @ A_27a @ V0top )
+     => ( ( c_2Etopology_2Etopspace @ A_27a @ V0top )
+        = ( c_2Epred__set_2EUNIV @ A_27a ) ) ) ).
+
+thf(thm_2Etopology_2ECLOSED__IN__OPEN__IN__COMPL,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Eclosed @ A_27a @ V0top )
+     => ! [V1s: A_27a > $o] :
+          ( ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V1s )
+          = ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2ECOMPL @ A_27a @ V1s ) ) ) ) ).
+
+thf(thm_2Etopology_2ECLOSED__IN__SUBSET,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o] :
+      ( ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V1s )
+     => ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ ( c_2Etopology_2Etopspace @ A_27a @ V0top ) ) ) ).
+
+thf(thm_2Etopology_2ECLOSED__IN__EMPTY,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] : ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) ).
+
+thf(thm_2Etopology_2ECLOSED__IN__TOPSPACE,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] : ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ ( c_2Etopology_2Etopspace @ A_27a @ V0top ) ) ).
+
+thf(thm_2Etopology_2ECLOSED__IN__UNION,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V1s )
+        & ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V2t ) )
+     => ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ ( c_2Epred__set_2EUNION @ A_27a @ V1s @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2ECLOSED__IN__BIGINTER,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1k: ( A_27a > $o ) > $o] :
+      ( ( ( (~)
+          @ ( V1k
+            = ( c_2Epred__set_2EEMPTY @ ( A_27a > $o ) ) ) )
+        & ! [V2s: A_27a > $o] :
+            ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V2s @ V1k )
+           => ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V2s ) ) )
+     => ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V1k ) ) ) ).
+
+thf(thm_2Etopology_2EBIGINTER__2,axiom,
+    ! [A_27a: $tType,V0s: A_27a > $o,V1t: A_27a > $o] :
+      ( ( c_2Epred__set_2EBIGINTER @ A_27a @ ( c_2Epred__set_2EINSERT @ ( A_27a > $o ) @ V0s @ ( c_2Epred__set_2EINSERT @ ( A_27a > $o ) @ V1t @ ( c_2Epred__set_2EEMPTY @ ( A_27a > $o ) ) ) ) )
+      = ( c_2Epred__set_2EINTER @ A_27a @ V0s @ V1t ) ) ).
+
+thf(thm_2Etopology_2ECLOSED__IN__INTER,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V1s )
+        & ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V2t ) )
+     => ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ ( c_2Epred__set_2EINTER @ A_27a @ V1s @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__CLOSED__IN__EQ,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o] :
+      ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V1s )
+    <=> ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ ( c_2Etopology_2Etopspace @ A_27a @ V0top ) )
+        & ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ ( c_2Epred__set_2EDIFF @ A_27a @ ( c_2Etopology_2Etopspace @ A_27a @ V0top ) @ V1s ) ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__CLOSED__IN,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o] :
+      ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ ( c_2Etopology_2Etopspace @ A_27a @ V0top ) )
+     => ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V1s )
+        = ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ ( c_2Epred__set_2EDIFF @ A_27a @ ( c_2Etopology_2Etopspace @ A_27a @ V0top ) @ V1s ) ) ) ) ).
+
+thf(thm_2Etopology_2EOPEN__IN__DIFF,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V1s )
+        & ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V2t ) )
+     => ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ ( c_2Epred__set_2EDIFF @ A_27a @ V1s @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2ECLOSED__IN__DIFF,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V1s )
+        & ( c_2Etopology_2Eopen__in @ A_27a @ V0top @ V2t ) )
+     => ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ ( c_2Epred__set_2EDIFF @ A_27a @ V1s @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2ECLOSED__IN__BIGUNION,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a,V1s: ( A_27a > $o ) > $o] :
+      ( ( ( c_2Epred__set_2EFINITE @ ( A_27a > $o ) @ V1s )
+        & ! [V2t: A_27a > $o] :
+            ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V2t @ V1s )
+           => ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V2t ) ) )
+     => ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ ( c_2Epred__set_2EBIGUNION @ A_27a @ V1s ) ) ) ).
+
+thf(thm_2Etopology_2ECLOSED__LIMPT,axiom,
+    ! [A_27a: $tType,V0top: tyop_2Etopology_2Etopology @ A_27a] :
+      ( ( c_2Etopology_2Eclosed @ A_27a @ V0top )
+     => ! [V1S_27: A_27a > $o] :
+          ( ( c_2Etopology_2Eclosed__in @ A_27a @ V0top @ V1S_27 )
+        <=> ! [V2x: A_27a] :
+              ( ( c_2Etopology_2Elimpt @ A_27a @ V0top @ V2x @ V1S_27 )
+             => ( V1S_27 @ V2x ) ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__P,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o] :
+      ( ( V0P @ V1s )
+     => ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s )
+        = V1s ) ) ).
+
+thf(thm_2Etopology_2EP__HULL,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o] :
+      ( ! [V2f: ( A_27a > $o ) > $o] :
+          ( ! [V3s: A_27a > $o] :
+              ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V3s @ V2f )
+             => ( V0P @ V3s ) )
+         => ( V0P @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V2f ) ) )
+     => ( V0P @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__EQ,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o] :
+      ( ! [V2f: ( A_27a > $o ) > $o] :
+          ( ! [V3s: A_27a > $o] :
+              ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V3s @ V2f )
+             => ( V0P @ V3s ) )
+         => ( V0P @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V2f ) ) )
+     => ( ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s )
+          = V1s )
+      <=> ( V0P @ V1s ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__HULL,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o] :
+      ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) )
+      = ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) ) ).
+
+thf(thm_2Etopology_2EHULL__SUBSET,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o] : ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) ) ).
+
+thf(thm_2Etopology_2EHULL__MONO,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ V2t )
+     => ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__ANTIMONO,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1Q: ( A_27a > $o ) > $o,V2s: A_27a > $o] :
+      ( ( c_2Epred__set_2ESUBSET @ ( A_27a > $o ) @ V0P @ V1Q )
+     => ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2Etopology_2Ehull @ A_27a @ V1Q @ V2s ) @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2s ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__MINIMAL,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ V2t )
+        & ( V0P @ V2t ) )
+     => ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) @ V2t ) ) ).
+
+thf(thm_2Etopology_2ESUBSET__HULL,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( V0P @ V2t )
+     => ( ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) @ V2t )
+        = ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__UNIQUE,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ V2t )
+        & ( V0P @ V2t )
+        & ! [V3t_27: A_27a > $o] :
+            ( ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ V3t_27 )
+              & ( V0P @ V3t_27 ) )
+           => ( c_2Epred__set_2ESUBSET @ A_27a @ V2t @ V3t_27 ) ) )
+     => ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s )
+        = V2t ) ) ).
+
+thf(thm_2Etopology_2EHULL__UNION__SUBSET,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o,V2t: A_27a > $o] : ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2Epred__set_2EUNION @ A_27a @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2t ) ) @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EUNION @ A_27a @ V1s @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__UNION,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EUNION @ A_27a @ V1s @ V2t ) )
+      = ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EUNION @ A_27a @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2t ) ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__UNION__LEFT,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EUNION @ A_27a @ V1s @ V2t ) )
+      = ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EUNION @ A_27a @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__UNION__RIGHT,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EUNION @ A_27a @ V1s @ V2t ) )
+      = ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EUNION @ A_27a @ V1s @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2t ) ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__REDUNDANT__EQ,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1a: A_27a,V2s: A_27a > $o] :
+      ( ( c_2Ebool_2EIN @ A_27a @ V1a @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2s ) )
+    <=> ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EINSERT @ A_27a @ V1a @ V2s ) )
+        = ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2s ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__REDUNDANT,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1a: A_27a,V2s: A_27a > $o] :
+      ( ( c_2Ebool_2EIN @ A_27a @ V1a @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2s ) )
+     => ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EINSERT @ A_27a @ V1a @ V2s ) )
+        = ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2s ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__INDUCT,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1p: A_27a > $o,V2s: A_27a > $o] :
+      ( ( ! [V3x: A_27a] :
+            ( ( c_2Ebool_2EIN @ A_27a @ V3x @ V2s )
+           => ( V1p @ V3x ) )
+        & ( V0P
+          @ ( c_2Epred__set_2EGSPEC @ A_27a @ A_27a
+            @ ^ [V4x: A_27a] : ( c_2Epair_2E_2C @ A_27a @ $o @ V4x @ ( V1p @ V4x ) ) ) ) )
+     => ! [V5x: A_27a] :
+          ( ( c_2Ebool_2EIN @ A_27a @ V5x @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2s ) )
+         => ( V1p @ V5x ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__INC,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o,V2x: A_27a] :
+      ( ( c_2Ebool_2EIN @ A_27a @ V2x @ V1s )
+     => ( c_2Ebool_2EIN @ A_27a @ V2x @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__IMAGE__SUBSET,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1f: A_27a > A_27a,V2s: A_27a > $o] :
+      ( ( ( V0P @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2s ) )
+        & ! [V3s: A_27a > $o] :
+            ( ( V0P @ V3s )
+           => ( V0P @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V1f @ V3s ) ) ) )
+     => ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V1f @ V2s ) ) @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V1f @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2s ) ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__IMAGE__GALOIS,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1f: A_27a > A_27a,V2g: A_27a > A_27a,V3s: A_27a > $o] :
+      ( ( ! [V4s: A_27a > $o] : ( V0P @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V4s ) )
+        & ! [V5s: A_27a > $o] :
+            ( ( V0P @ V5s )
+           => ( V0P @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V1f @ V5s ) ) )
+        & ! [V6s: A_27a > $o] :
+            ( ( V0P @ V6s )
+           => ( V0P @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V2g @ V6s ) ) )
+        & ! [V7s: A_27a > $o,V8t: A_27a > $o] :
+            ( ( c_2Epred__set_2ESUBSET @ A_27a @ V7s @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V2g @ V8t ) )
+            = ( c_2Epred__set_2ESUBSET @ A_27a @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V1f @ V7s ) @ V8t ) ) )
+     => ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V1f @ V3s ) )
+        = ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V1f @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V3s ) ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__IMAGE,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1f: A_27a > A_27a,V2s: A_27a > $o] :
+      ( ( ! [V3s: A_27a > $o] : ( V0P @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V3s ) )
+        & ! [V4s: A_27a > $o] :
+            ( ( V0P @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V1f @ V4s ) )
+            = ( V0P @ V4s ) )
+        & ! [V5x: A_27a,V6y: A_27a] :
+            ( ( ( V1f @ V5x )
+              = ( V1f @ V6y ) )
+           => ( V5x = V6y ) )
+        & ! [V7y: A_27a] :
+          ? [V8x: A_27a] :
+            ( ( V1f @ V8x )
+            = V7y ) )
+     => ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V1f @ V2s ) )
+        = ( c_2Epred__set_2EIMAGE @ A_27a @ A_27a @ V1f @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2s ) ) ) ) ).
+
+thf(thm_2Etopology_2EIS__HULL,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o] :
+      ( ! [V2f: ( A_27a > $o ) > $o] :
+          ( ! [V3s: A_27a > $o] :
+              ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V3s @ V2f )
+             => ( V0P @ V3s ) )
+         => ( V0P @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V2f ) ) )
+     => ( ( V0P @ V1s )
+      <=> ? [V4t: A_27a > $o] :
+            ( V1s
+            = ( c_2Etopology_2Ehull @ A_27a @ V0P @ V4t ) ) ) ) ).
+
+thf(thm_2Etopology_2EHULLS__EQ,axiom,
+    ! [A_27a: $tType,V0P: ( A_27a > $o ) > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( ! [V3f: ( A_27a > $o ) > $o] :
+            ( ! [V4s: A_27a > $o] :
+                ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V4s @ V3f )
+               => ( V0P @ V4s ) )
+           => ( V0P @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V3f ) ) )
+        & ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2t ) )
+        & ( c_2Epred__set_2ESUBSET @ A_27a @ V2t @ ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s ) ) )
+     => ( ( c_2Etopology_2Ehull @ A_27a @ V0P @ V1s )
+        = ( c_2Etopology_2Ehull @ A_27a @ V0P @ V2t ) ) ) ).
+
+thf(thm_2Etopology_2EHULL__P__AND__Q,axiom,
+    ! [A_27a: $tType,V0s: A_27a > $o,V1P: ( A_27a > $o ) > $o,V2Q: ( A_27a > $o ) > $o] :
+      ( ( ! [V3f: ( A_27a > $o ) > $o] :
+            ( ! [V4s: A_27a > $o] :
+                ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V4s @ V3f )
+               => ( V1P @ V4s ) )
+           => ( V1P @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V3f ) ) )
+        & ! [V5f: ( A_27a > $o ) > $o] :
+            ( ! [V6s: A_27a > $o] :
+                ( ( c_2Ebool_2EIN @ ( A_27a > $o ) @ V6s @ V5f )
+               => ( V2Q @ V6s ) )
+           => ( V2Q @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V5f ) ) )
+        & ! [V7s: A_27a > $o] :
+            ( ( V2Q @ V7s )
+           => ( V2Q @ ( c_2Etopology_2Ehull @ A_27a @ V1P @ V7s ) ) ) )
+     => ( ( c_2Etopology_2Ehull @ A_27a
+          @ ^ [V8x: A_27a > $o] : ( c_2Ebool_2E_2F_5C @ ( V1P @ V8x ) @ ( V2Q @ V8x ) )
+          @ V0s )
+        = ( c_2Etopology_2Ehull @ A_27a @ V1P @ ( c_2Etopology_2Ehull @ A_27a @ V2Q @ V0s ) ) ) ) ).
+
+%------------------------------------------------------------------------------

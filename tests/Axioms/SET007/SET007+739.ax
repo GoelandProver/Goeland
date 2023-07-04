@@ -1,0 +1,2401 @@
+%------------------------------------------------------------------------------
+% File     : SET007+739 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Free Order Sorted Universal Algebra
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : osafree [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  135 (   1 unt;   0 def)
+%            Number of atoms       : 1675 ( 108 equ)
+%            Maximal formula atoms :   34 (  12 avg)
+%            Number of connectives : 1827 ( 287   ~;   1   |;1059   &)
+%                                         (  52 <=>; 428  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   30 (  12 avg)
+%            Maximal term depth    :    8 (   2 avg)
+%            Number of predicates  :   66 (  64 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   99 (  99 usr;   3 con; 0-5 aty)
+%            Number of variables   :  525 ( 494   !;  31   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( ~ v3_struct_0(k2_osafree(A,B))
+        & v1_lang1(k2_osafree(A,B)) ) ) ).
+
+fof(fc2_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( ~ v3_struct_0(k2_osafree(A,B))
+        & v1_lang1(k2_osafree(A,B))
+        & v1_dtconstr(k2_osafree(A,B))
+        & v2_dtconstr(k2_osafree(A,B))
+        & v3_dtconstr(k2_osafree(A,B)) ) ) ).
+
+fof(fc3_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => ( ~ v1_xboole_0(k4_osafree(A,B,C))
+        & v3_trees_3(k4_osafree(A,B,C)) ) ) ).
+
+fof(fc4_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v1_relat_1(k5_osafree(A,B))
+        & v2_relat_1(k5_osafree(A,B))
+        & ~ v3_relat_1(k5_osafree(A,B))
+        & v1_funct_1(k5_osafree(A,B))
+        & v11_osalg_1(k5_osafree(A,B),A) ) ) ).
+
+fof(fc5_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v4_msualg_1(k8_osafree(A,B),A)
+        & v5_msualg_1(k8_osafree(A,B),A)
+        & v12_osalg_1(k8_osafree(A,B),A) ) ) ).
+
+fof(fc6_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_msualg_1(A)) )
+     => ~ v1_xboole_0(k3_msualg_1(A,C,k8_osafree(A,B))) ) ).
+
+fof(rc1_osafree,axiom,
+    ? [A] :
+      ( l3_osalg_1(A)
+      & ~ v3_struct_0(A)
+      & ~ v2_msualg_1(A)
+      & v2_orders_2(A)
+      & v3_orders_2(A)
+      & v4_orders_2(A)
+      & v4_osalg_1(A)
+      & v5_osalg_1(A)
+      & v8_osalg_1(A)
+      & v10_osalg_1(A)
+      & v2_osalg_4(A) ) ).
+
+fof(fc7_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v1_relat_1(k20_osafree(A,B))
+        & v1_funct_1(k20_osafree(A,B))
+        & v1_msualg_4(k20_osafree(A,B))
+        & v3_msualg_4(k20_osafree(A,B),A,k8_osafree(A,B))
+        & v4_msualg_4(k20_osafree(A,B),A,k8_osafree(A,B))
+        & v3_osalg_4(k20_osafree(A,B),A,k8_osafree(A,B)) ) ) ).
+
+fof(fc8_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => ~ v1_xboole_0(k21_osafree(A,B,C)) ) ).
+
+fof(fc9_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => ~ v1_xboole_0(k23_osafree(A,B,C)) ) ).
+
+fof(fc10_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v1_relat_1(k24_osafree(A,B))
+        & v2_relat_1(k24_osafree(A,B))
+        & ~ v3_relat_1(k24_osafree(A,B))
+        & v1_funct_1(k24_osafree(A,B)) ) ) ).
+
+fof(rc2_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ? [B] :
+          ( l3_msualg_1(B,A)
+          & v4_msualg_1(B,A)
+          & v5_msualg_1(B,A)
+          & v12_osalg_1(B,A)
+          & v13_osalg_1(B,A)
+          & v2_osafree(B,A) ) ) ).
+
+fof(d1_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v12_osalg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( m4_pboole(C,u1_struct_0(A),u4_msualg_1(A,B))
+             => ( m1_osafree(C,A,B)
+              <=> ! [D] :
+                    ( m2_osalg_2(D,A,B)
+                   => ( r6_pboole(u1_struct_0(A),D,k2_osalg_2(A,C))
+                     => r6_pboole(u1_struct_0(A),u4_msualg_1(A,k10_osalg_2(A,B,D)),u4_msualg_1(A,B)) ) ) ) ) ) ) ).
+
+fof(t1_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v4_msualg_1(B,A)
+            & v5_msualg_1(B,A)
+            & v12_osalg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( m4_pboole(C,u1_struct_0(A),u4_msualg_1(A,B))
+             => ( m1_osafree(C,A,B)
+              <=> ! [D] :
+                    ( m2_osalg_2(D,A,B)
+                   => ( r6_pboole(u1_struct_0(A),D,k2_osalg_2(A,C))
+                     => k10_osalg_2(A,B,D) = B ) ) ) ) ) ) ).
+
+fof(d2_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v12_osalg_1(B,A)
+            & v13_osalg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( m1_osafree(C,A,B)
+             => ( v1_osafree(C,A,B)
+              <=> ! [D] :
+                    ( ( v5_msualg_1(D,A)
+                      & v12_osalg_1(D,A)
+                      & v13_osalg_1(D,A)
+                      & l3_msualg_1(D,A) )
+                   => ! [E] :
+                        ( m3_pboole(E,u1_struct_0(A),C,u4_msualg_1(A,D))
+                       => ? [F] :
+                            ( m3_pboole(F,u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,D))
+                            & r1_msualg_3(A,B,D,F)
+                            & v1_osalg_3(F,A)
+                            & r6_pboole(u1_struct_0(A),k1_msafree(u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,D),C,F),E) ) ) ) ) ) ) ) ).
+
+fof(d3_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v12_osalg_1(B,A)
+            & v13_osalg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ( v2_osafree(B,A)
+          <=> ? [C] :
+                ( m1_osafree(C,A,B)
+                & v1_osafree(C,A,B) ) ) ) ) ).
+
+fof(d4_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( m1_pboole(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_relset_1(C,k2_xboole_0(k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))),k3_card_3(k3_msafree(u1_struct_0(A),B))),k3_finseq_2(k2_xboole_0(k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))),k3_card_3(k3_msafree(u1_struct_0(A),B)))))
+             => ( C = k1_osafree(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k2_xboole_0(k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))),k3_card_3(k3_msafree(u1_struct_0(A),B))))
+                   => ! [E] :
+                        ( m2_finseq_2(E,k2_xboole_0(k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))),k3_card_3(k3_msafree(u1_struct_0(A),B))),k3_finseq_2(k2_xboole_0(k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))),k3_card_3(k3_msafree(u1_struct_0(A),B)))))
+                       => ( r2_hidden(k4_tarski(D,E),C)
+                        <=> ( r2_hidden(D,k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))))
+                            & ! [F] :
+                                ( m1_subset_1(F,u1_msualg_1(A))
+                               => ( k4_tarski(F,u1_struct_0(A)) = D
+                                 => ( k3_finseq_1(E) = k3_finseq_1(k1_msualg_1(A,F))
+                                    & ! [G] :
+                                        ( r2_hidden(G,k4_finseq_1(E))
+                                       => ( ( r2_hidden(k1_funct_1(E,G),k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))))
+                                           => ! [H] :
+                                                ( m1_subset_1(H,u1_msualg_1(A))
+                                               => ( k4_tarski(H,u1_struct_0(A)) = k1_funct_1(E,G)
+                                                 => r3_orders_2(A,k1_osalg_1(A,H),k4_finseq_4(k5_numbers,u1_struct_0(A),k1_msualg_1(A,F),G)) ) ) )
+                                          & ~ ( r2_hidden(k1_funct_1(E,G),k3_card_3(k3_msafree(u1_struct_0(A),B)))
+                                              & ! [H] :
+                                                  ( m1_subset_1(H,u1_struct_0(A))
+                                                 => ~ ( r3_orders_2(A,H,k4_finseq_4(k5_numbers,u1_struct_0(A),k1_msualg_1(A,F),G))
+                                                      & r2_hidden(k1_funct_1(E,G),k2_msafree(u1_struct_0(A),B,H)) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t2_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( m1_pboole(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_msualg_1(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_xboole_0(k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))),k3_card_3(k3_msafree(u1_struct_0(A),B))),k3_finseq_2(k2_xboole_0(k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))),k3_card_3(k3_msafree(u1_struct_0(A),B)))))
+                 => ( r2_hidden(k4_tarski(k4_tarski(C,u1_struct_0(A)),D),k1_osafree(A,B))
+                  <=> ( k3_finseq_1(D) = k3_finseq_1(k1_msualg_1(A,C))
+                      & ! [E] :
+                          ( r2_hidden(E,k4_finseq_1(D))
+                         => ( ( r2_hidden(k1_funct_1(D,E),k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))))
+                             => ! [F] :
+                                  ( m1_subset_1(F,u1_msualg_1(A))
+                                 => ( k4_tarski(F,u1_struct_0(A)) = k1_funct_1(D,E)
+                                   => r3_orders_2(A,k1_osalg_1(A,F),k4_finseq_4(k5_numbers,u1_struct_0(A),k1_msualg_1(A,C),E)) ) ) )
+                            & ~ ( r2_hidden(k1_funct_1(D,E),k3_card_3(k3_msafree(u1_struct_0(A),B)))
+                                & ! [F] :
+                                    ( m1_subset_1(F,u1_struct_0(A))
+                                   => ~ ( r3_orders_2(A,F,k4_finseq_4(k5_numbers,u1_struct_0(A),k1_msualg_1(A,C),E))
+                                        & r2_hidden(k1_funct_1(D,E),k2_msafree(u1_struct_0(A),B,F)) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d5_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( m1_pboole(B,u1_struct_0(A))
+         => k2_osafree(A,B) = g1_lang1(k2_xboole_0(k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))),k3_card_3(k3_msafree(u1_struct_0(A),B))),k1_osafree(A,B)) ) ) ).
+
+fof(t3_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ( k6_lang1(k2_osafree(A,B)) = k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A)))
+            & k5_lang1(k2_osafree(A,B)) = k3_card_3(k3_msafree(u1_struct_0(A),B)) ) ) ) ).
+
+fof(t4_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( r2_hidden(C,k6_dtconstr(k2_osafree(A,B)))
+            <=> ? [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                  & ? [E] :
+                      ( r2_hidden(E,k1_funct_1(B,D))
+                      & C = k4_tarski(E,D) ) ) ) ) ) ).
+
+fof(d6_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_msualg_1(A))
+             => k3_osafree(A,B,C) = k4_tarski(C,u1_struct_0(A)) ) ) ) ).
+
+fof(d8_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v11_osalg_1(C,A)
+                & m1_pboole(C,u1_struct_0(A)) )
+             => ( C = k5_osafree(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => k1_funct_1(C,D) = k4_osafree(A,B,D) ) ) ) ) ) ).
+
+fof(t5_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_msualg_1(A))
+             => ! [D] :
+                  ( r2_hidden(D,k1_funct_1(k8_pboole(u1_msualg_1(A),k3_finseq_2(u1_struct_0(A)),u2_msualg_1(A),k6_pboole(u1_struct_0(A),k5_osafree(A,B))),C))
+                 => m1_trees_4(D,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B))) ) ) ) ) ).
+
+fof(t6_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_msualg_1(A))
+             => ! [D] :
+                  ( m1_trees_4(D,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ( r2_hidden(D,k1_funct_1(k8_pboole(u1_msualg_1(A),k3_finseq_2(u1_struct_0(A)),u2_msualg_1(A),k6_pboole(u1_struct_0(A),k5_osafree(A,B))),C))
+                  <=> ( k4_finseq_1(D) = k4_finseq_1(k1_msualg_1(A,C))
+                      & ! [E] :
+                          ( m2_subset_1(E,k1_numbers,k5_numbers)
+                         => ( r2_hidden(E,k4_finseq_1(D))
+                           => r2_hidden(k1_funct_1(D,E),k4_osafree(A,B,k4_finseq_4(k5_numbers,u1_struct_0(A),k1_msualg_1(A,C),E))) ) ) ) ) ) ) ) ) ).
+
+fof(t7_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_msualg_1(A))
+             => ! [D] :
+                  ( m1_trees_4(D,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ( r1_lang1(k2_osafree(A,B),k3_osafree(A,B,C),k1_dtconstr(u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),D))
+                  <=> r2_hidden(D,k1_funct_1(k8_pboole(u1_msualg_1(A),k3_finseq_2(u1_struct_0(A)),u2_msualg_1(A),k6_pboole(u1_struct_0(A),k5_osafree(A,B))),C)) ) ) ) ) ) ).
+
+fof(t8_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => k3_tarski(k2_relat_1(k5_osafree(A,B))) = k4_dtconstr(k2_osafree(A,B)) ) ) ).
+
+fof(d9_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_msualg_1(A))
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k1_funct_1(k8_pboole(u1_msualg_1(A),k3_finseq_2(u1_struct_0(A)),u2_msualg_1(A),k6_pboole(u1_struct_0(A),k5_osafree(A,B))),C),k1_funct_1(k8_pboole(u1_msualg_1(A),u1_struct_0(A),u3_msualg_1(A),k5_osafree(A,B)),C))
+                    & m2_relset_1(D,k1_funct_1(k8_pboole(u1_msualg_1(A),k3_finseq_2(u1_struct_0(A)),u2_msualg_1(A),k6_pboole(u1_struct_0(A),k5_osafree(A,B))),C),k1_funct_1(k8_pboole(u1_msualg_1(A),u1_struct_0(A),u3_msualg_1(A),k5_osafree(A,B)),C)) )
+                 => ( D = k6_osafree(A,B,C)
+                  <=> ! [E] :
+                        ( m1_trees_4(E,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                       => ( r1_lang1(k2_osafree(A,B),k3_osafree(A,B,C),k1_dtconstr(u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),E))
+                         => k1_funct_1(D,E) = k12_trees_4(u1_struct_0(k2_osafree(A,B)),k3_osafree(A,B,C),E) ) ) ) ) ) ) ) ).
+
+fof(d10_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m3_pboole(C,u1_msualg_1(A),k8_pboole(u1_msualg_1(A),k3_finseq_2(u1_struct_0(A)),u2_msualg_1(A),k6_pboole(u1_struct_0(A),k5_osafree(A,B))),k8_pboole(u1_msualg_1(A),u1_struct_0(A),u3_msualg_1(A),k5_osafree(A,B)))
+             => ( C = k7_osafree(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_msualg_1(A))
+                   => k5_msualg_4(A,k8_pboole(u1_msualg_1(A),k3_finseq_2(u1_struct_0(A)),u2_msualg_1(A),k6_pboole(u1_struct_0(A),k5_osafree(A,B))),k8_pboole(u1_msualg_1(A),u1_struct_0(A),u3_msualg_1(A),k5_osafree(A,B)),C,D) = k6_osafree(A,B,D) ) ) ) ) ) ).
+
+fof(d11_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => k8_osafree(A,B) = g3_msualg_1(A,k5_osafree(A,B),k7_osafree(A,B)) ) ) ).
+
+fof(t10_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( r2_hidden(E,k1_funct_1(B,C))
+                     => ( m1_dtconstr(k1_trees_4(k4_tarski(E,C)),u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                        & ! [F] : k4_tarski(F,u1_struct_0(A)) != k1_funct_1(k1_trees_4(k4_tarski(E,C)),k1_xboole_0)
+                        & ( r2_hidden(k1_trees_4(k4_tarski(E,C)),k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),D))
+                         => r3_orders_2(A,C,D) )
+                        & ( r3_orders_2(A,C,D)
+                         => r2_hidden(k1_trees_4(k4_tarski(E,C)),k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),D)) ) ) ) ) ) ) ) ).
+
+fof(t11_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_msualg_1(A))
+                 => ( k1_funct_1(C,k1_xboole_0) = k4_tarski(D,u1_struct_0(A))
+                   => ( ? [E] :
+                          ( m2_dtconstr(E,k2_osafree(A,B),k9_osafree(A,B,D))
+                          & C = k9_dtconstr(k2_osafree(A,B),k9_osafree(A,B,D),E)
+                          & r1_lang1(k2_osafree(A,B),k9_osafree(A,B,D),k1_dtconstr(u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),E))
+                          & r2_hidden(E,k3_msualg_1(A,D,k8_osafree(A,B)))
+                          & C = k1_funct_1(k5_msualg_1(A,D,k8_osafree(A,B)),E) )
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ! [F] : C != k1_trees_4(k4_tarski(F,E)) )
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ( r2_hidden(C,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),E))
+                          <=> r3_orders_2(A,k1_osalg_1(A,D),E) ) ) ) ) ) ) ) ) ).
+
+fof(t12_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k2_osafree(A,B)))
+             => ! [D] :
+                  ( m1_trees_4(D,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ( r1_lang1(k2_osafree(A,B),C,k1_dtconstr(u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),D))
+                   => ( r2_hidden(C,k7_dtconstr(k2_osafree(A,B)))
+                      & r2_hidden(k12_trees_4(u1_struct_0(k2_osafree(A,B)),C,D),k4_dtconstr(k2_osafree(A,B)))
+                      & ? [E] :
+                          ( m1_subset_1(E,u1_msualg_1(A))
+                          & C = k4_tarski(E,u1_struct_0(A))
+                          & r2_hidden(D,k3_msualg_1(A,E,k8_osafree(A,B)))
+                          & k12_trees_4(u1_struct_0(k2_osafree(A,B)),C,D) = k1_funct_1(k5_msualg_1(A,E,k8_osafree(A,B)),D)
+                          & ! [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                             => ( r2_hidden(k12_trees_4(u1_struct_0(k2_osafree(A,B)),C,D),k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),F))
+                              <=> r3_orders_2(A,k1_osalg_1(A,E),F) ) ) ) ) ) ) ) ) ) ).
+
+fof(t13_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_msualg_1(A))
+             => ! [D] :
+                  ( ( v1_relat_1(D)
+                    & v1_funct_1(D)
+                    & v1_finseq_1(D) )
+                 => ( r2_hidden(D,k3_msualg_1(A,C,k8_osafree(A,B)))
+                  <=> ( m1_trees_4(D,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                      & r1_lang1(k2_osafree(A,B),k9_osafree(A,B,C),k16_trees_3(D)) ) ) ) ) ) ) ).
+
+fof(t14_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ? [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                  & r2_hidden(C,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),D))
+                  & ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r2_hidden(C,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),E))
+                       => r3_orders_2(A,D,E) ) ) ) ) ) ) ).
+
+fof(d12_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( D = k10_osafree(A,B,C)
+                  <=> ( r2_hidden(C,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),D))
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ( r2_hidden(C,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),E))
+                           => r3_orders_2(A,D,E) ) ) ) ) ) ) ) ) ).
+
+fof(t15_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,k3_card_3(u4_msualg_1(A,k8_osafree(A,B))))
+            <=> m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B))) ) ) ) ).
+
+fof(t16_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( r2_hidden(D,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),C))
+                 => m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B))) ) ) ) ) ).
+
+fof(t17_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( r2_hidden(D,k1_funct_1(B,C))
+                 => ! [E] :
+                      ( m1_dtconstr(E,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                     => ( E = k1_trees_4(k4_tarski(D,C))
+                       => k10_osafree(A,B,E) = C ) ) ) ) ) ) ).
+
+fof(t18_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_msualg_1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k3_msualg_1(A,C,k8_osafree(A,B)))
+                 => ! [E] :
+                      ( m1_dtconstr(E,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                     => ( E = k8_funct_2(k3_msualg_1(A,C,k8_osafree(A,B)),k4_msualg_1(A,C,k8_osafree(A,B)),k5_msualg_1(A,C,k8_osafree(A,B)),D)
+                       => k10_osafree(A,B,E) = k1_osalg_1(A,C) ) ) ) ) ) ) ).
+
+fof(d13_osafree,axiom,
+    $true ).
+
+fof(d14_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_trees_4(C,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ! [D] :
+                  ( m2_finseq_2(D,u1_struct_0(A),k3_finseq_2(u1_struct_0(A)))
+                 => ( D = k11_osafree(A,B,C)
+                  <=> ( k4_finseq_1(D) = k4_finseq_1(C)
+                      & ! [E] :
+                          ( m2_subset_1(E,k1_numbers,k5_numbers)
+                         => ~ ( r2_hidden(E,k4_finseq_1(C))
+                              & ! [F] :
+                                  ( m1_dtconstr(F,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                                 => ~ ( F = k1_funct_1(C,E)
+                                      & k1_funct_1(D,E) = k10_osafree(A,B,F) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t19_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_msualg_1(A))
+             => ! [D] :
+                  ( m1_trees_4(D,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ( r2_osalg_1(A,k11_osafree(A,B,D),k1_msualg_1(A,C))
+                  <=> r2_hidden(D,k3_msualg_1(A,C,k8_osafree(A,B))) ) ) ) ) ) ).
+
+fof(d15_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_msualg_1(A))
+             => ! [D] :
+                  ( m1_trees_4(D,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ( r1_lang1(k2_osafree(A,B),k9_osafree(A,B,k3_osalg_1(A,C,k11_osafree(A,B,D))),k1_dtconstr(u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),D))
+                   => k12_osafree(A,B,C,D) = k12_trees_4(u1_struct_0(k2_osafree(A,B)),k9_osafree(A,B,k3_osalg_1(A,C,k11_osafree(A,B,D))),D) ) ) ) ) ) ).
+
+fof(d16_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k2_osafree(A,B)))
+             => ( ? [D] :
+                    ( v1_relat_1(D)
+                    & v1_funct_1(D)
+                    & v1_finseq_1(D)
+                    & r1_lang1(k2_osafree(A,B),C,D) )
+               => ! [D] :
+                    ( m1_subset_1(D,u1_msualg_1(A))
+                   => ( D = k13_osafree(A,B,C)
+                    <=> k4_tarski(D,u1_struct_0(A)) = C ) ) ) ) ) ) ).
+
+fof(d17_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k2_osafree(A,B)))
+             => ( r2_hidden(C,k6_dtconstr(k2_osafree(A,B)))
+               => k14_osafree(A,B,C) = k2_trees_4(u1_struct_0(k2_osafree(A,B)),C) ) ) ) ) ).
+
+fof(d18_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v3_msualg_4(C,A,k8_osafree(A,B))
+                & v4_msualg_4(C,A,k8_osafree(A,B))
+                & v3_osalg_4(C,A,k8_osafree(A,B))
+                & m1_osalg_4(C,A,k8_osafree(A,B)) )
+             => ( C = k15_osafree(A,B)
+              <=> ! [D] :
+                    ( ( v3_msualg_4(D,A,k8_osafree(A,B))
+                      & v4_msualg_4(D,A,k8_osafree(A,B))
+                      & v3_osalg_4(D,A,k8_osafree(A,B))
+                      & m1_osalg_4(D,A,k8_osafree(A,B)) )
+                   => r2_pboole(u1_struct_0(A),C,D) ) ) ) ) ) ).
+
+fof(d19_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => k16_osafree(A,B) = k16_osalg_4(A,k8_osafree(A,B),k15_osafree(A,B)) ) ) ).
+
+fof(d22_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))))
+                & m2_relset_1(C,k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A)))) )
+             => ( C = k19_osafree(A,B)
+              <=> ( ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(k2_osafree(A,B)))
+                     => ( r2_hidden(D,k6_dtconstr(k2_osafree(A,B)))
+                       => k1_funct_1(C,k2_trees_4(u1_struct_0(k2_osafree(A,B)),D)) = k17_osafree(A,B,D) ) )
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(k2_osafree(A,B)))
+                     => ! [E] :
+                          ( m1_trees_4(E,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                         => ( r1_lang1(k2_osafree(A,B),D,k1_dtconstr(u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),E))
+                           => k1_funct_1(C,k12_trees_4(u1_struct_0(k2_osafree(A,B)),D,E)) = k18_osafree(A,B,D,k15_lang1(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),E,C)) ) ) ) ) ) ) ) ) ).
+
+fof(t20_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ( ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ( r2_hidden(C,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),D))
+                    <=> r2_hidden(k4_tarski(C,D),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),k19_osafree(A,B),C)) ) )
+                & ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_dtconstr(E,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                       => ( r2_hidden(k4_tarski(E,D),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),k19_osafree(A,B),C))
+                         => r2_hidden(k4_tarski(C,D),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),k19_osafree(A,B),E)) ) ) ) ) ) ) ) ).
+
+fof(t21_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( ? [E] :
+                        ( m1_dtconstr(E,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                        & r2_hidden(k4_tarski(E,D),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),k19_osafree(A,B),C)) )
+                   => r2_hidden(k4_tarski(C,D),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),k19_osafree(A,B),C)) ) ) ) ) ) ).
+
+fof(t22_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ( ( r3_orders_2(A,E,F)
+                              & r2_hidden(C,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),E))
+                              & r2_hidden(D,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),E)) )
+                           => ( r2_hidden(k4_tarski(D,E),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),k19_osafree(A,B),C))
+                            <=> r2_hidden(k4_tarski(D,F),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),k19_osafree(A,B),C)) ) ) ) ) ) ) ) ) ).
+
+fof(t23_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ! [E] :
+                      ( m1_dtconstr(E,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ( ( r2_hidden(k4_tarski(D,F),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),k19_osafree(A,B),C))
+                              & r2_hidden(k4_tarski(E,F),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),k19_osafree(A,B),D)) )
+                           => r2_hidden(k4_tarski(C,F),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))),k19_osafree(A,B),E)) ) ) ) ) ) ) ) ).
+
+fof(t24_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C,D,E] :
+              ( r2_hidden(k4_tarski(C,E),k1_funct_1(k19_osafree(A,B),D))
+             => ( r2_hidden(C,k4_dtconstr(k2_osafree(A,B)))
+                & r2_hidden(D,k4_dtconstr(k2_osafree(A,B)))
+                & r2_hidden(E,u1_struct_0(A)) ) ) ) ) ).
+
+fof(t25_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_zfmisc_1(u1_struct_0(A)),k2_osalg_4(A))
+             => ! [D,E] :
+                  ( r2_hidden(k4_tarski(D,E),k5_osalg_4(A,k8_osafree(A,B),k20_osafree(A,B),C))
+                <=> ? [F] :
+                      ( m1_subset_1(F,u1_struct_0(A))
+                      & r2_hidden(F,C)
+                      & r2_hidden(k4_tarski(D,F),k1_funct_1(k19_osafree(A,B),E)) ) ) ) ) ) ).
+
+fof(t26_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),C))
+                 => k8_osalg_4(A,k8_osafree(A,B),k20_osafree(A,B),C,D) = k1_funct_5(k1_funct_1(k19_osafree(A,B),D)) ) ) ) ) ).
+
+fof(t27_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_msualg_4(C,u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,k8_osafree(A,B)))
+             => ( r6_pboole(u1_struct_0(A),C,k20_osafree(A,B))
+              <=> ( ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( r2_hidden(F,k1_funct_1(B,D))
+                             => ( ( r3_orders_2(A,D,E)
+                                 => r2_hidden(k4_tarski(k1_trees_4(k4_tarski(F,D)),k1_trees_4(k4_tarski(F,D))),k1_msualg_4(u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,k8_osafree(A,B)),C,E)) )
+                                & ! [G] :
+                                    ( ( r2_hidden(k4_tarski(k1_trees_4(k4_tarski(F,D)),G),k1_msualg_4(u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,k8_osafree(A,B)),C,E))
+                                      | r2_hidden(k4_tarski(G,k1_trees_4(k4_tarski(F,D))),k1_msualg_4(u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,k8_osafree(A,B)),C,E)) )
+                                   => ( r3_orders_2(A,D,E)
+                                      & G = k1_trees_4(k4_tarski(F,D)) ) ) ) ) ) )
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_msualg_1(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,u1_msualg_1(A))
+                         => ! [F] :
+                              ( m1_subset_1(F,k3_msualg_1(A,D,k8_osafree(A,B)))
+                             => ! [G] :
+                                  ( m1_subset_1(G,k3_msualg_1(A,E,k8_osafree(A,B)))
+                                 => ! [H] :
+                                      ( m1_subset_1(H,u1_struct_0(A))
+                                     => ( r2_hidden(k4_tarski(k8_funct_2(k3_msualg_1(A,D,k8_osafree(A,B)),k4_msualg_1(A,D,k8_osafree(A,B)),k5_msualg_1(A,D,k8_osafree(A,B)),F),k8_funct_2(k3_msualg_1(A,E,k8_osafree(A,B)),k4_msualg_1(A,E,k8_osafree(A,B)),k5_msualg_1(A,E,k8_osafree(A,B)),G)),k1_msualg_4(u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,k8_osafree(A,B)),C,H))
+                                      <=> ( r1_osalg_1(A,D,E)
+                                          & k3_finseq_1(k1_msualg_1(A,D)) = k3_finseq_1(k1_msualg_1(A,E))
+                                          & r3_orders_2(A,k1_osalg_1(A,D),H)
+                                          & r3_orders_2(A,k1_osalg_1(A,E),H)
+                                          & ? [I] :
+                                              ( m2_finseq_2(I,u1_struct_0(A),k3_finseq_2(u1_struct_0(A)))
+                                              & k4_finseq_1(I) = k4_finseq_1(F)
+                                              & ! [J] :
+                                                  ( m2_subset_1(J,k1_numbers,k5_numbers)
+                                                 => ( r2_hidden(J,k4_finseq_1(I))
+                                                   => r2_hidden(k4_tarski(k1_funct_1(F,J),k1_funct_1(G,J)),k1_msualg_4(u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,k8_osafree(A,B)),C,k4_finseq_4(k5_numbers,u1_struct_0(A),I,J))) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t28_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => v3_osalg_4(k20_osafree(A,B),A,k8_osafree(A,B)) ) ) ).
+
+fof(d24_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),C)))
+                 => ( D = k21_osafree(A,B,C)
+                  <=> ! [E] :
+                        ( r2_hidden(E,D)
+                      <=> ? [F] :
+                            ( r2_hidden(F,k1_funct_1(B,C))
+                            & E = k1_trees_4(k4_tarski(F,C)) ) ) ) ) ) ) ) ).
+
+fof(d25_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m4_pboole(C,u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)))
+             => ( C = k22_osafree(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => k1_funct_1(C,D) = k21_osafree(A,B,D) ) ) ) ) ) ).
+
+fof(t30_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => v2_relat_1(k22_osafree(A,B)) ) ) ).
+
+fof(d26_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k1_funct_1(u4_msualg_1(A,k16_osafree(A,B)),C)))
+                 => ( D = k23_osafree(A,B,C)
+                  <=> ! [E] :
+                        ( r2_hidden(E,D)
+                      <=> ? [F] :
+                            ( r2_hidden(F,k1_funct_1(B,C))
+                            & E = k1_funct_1(k1_msualg_3(u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,k16_osalg_4(A,k8_osafree(A,B),k15_osafree(A,B))),k18_osalg_4(A,k8_osafree(A,B),k15_osafree(A,B)),C),k1_trees_4(k4_tarski(F,C))) ) ) ) ) ) ) ) ).
+
+fof(d27_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_osafree(C,A,k16_osafree(A,B))
+             => ( C = k24_osafree(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => k1_funct_1(C,D) = k23_osafree(A,B,D) ) ) ) ) ) ).
+
+fof(t32_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => v2_relat_1(k24_osafree(A,B)) ) ) ).
+
+fof(d28_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v3_msualg_4(C,A,k8_osafree(A,B))
+                & v4_msualg_4(C,A,k8_osafree(A,B))
+                & m1_osalg_4(C,A,k8_osafree(A,B)) )
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ! [E] :
+                      ( m1_subset_1(E,k6_osalg_4(A,k8_osafree(A,B),C,k10_osafree(A,B,D)))
+                     => ( E = k25_osafree(A,B,C,D)
+                      <=> ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ! [G] :
+                                ( m1_subset_1(G,k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),F))
+                               => ( D = G
+                                 => E = k8_osalg_4(A,k8_osafree(A,B),C,F,G) ) ) ) ) ) ) ) ) ) ).
+
+fof(t33_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v3_msualg_4(C,A,k8_osafree(A,B))
+                & v4_msualg_4(C,A,k8_osafree(A,B))
+                & m1_osalg_4(C,A,k8_osafree(A,B)) )
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => r2_hidden(D,k25_osafree(A,B,C,D)) ) ) ) ) ).
+
+fof(t34_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ! [E,F] :
+                      ( ( r2_hidden(E,k1_funct_1(B,C))
+                        & D = k1_trees_4(k4_tarski(E,C)) )
+                     => ( r2_hidden(F,k25_osafree(A,B,k20_osafree(A,B),D))
+                      <=> F = D ) ) ) ) ) ) ).
+
+fof(t35_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v3_msualg_4(C,A,k8_osafree(A,B))
+                & v4_msualg_4(C,A,k8_osafree(A,B))
+                & m1_osalg_4(C,A,k8_osafree(A,B)) )
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ! [E] :
+                      ( m1_dtconstr(E,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                     => ( r2_hidden(E,k25_osafree(A,B,C,D))
+                      <=> k25_osafree(A,B,C,D) = k25_osafree(A,B,C,E) ) ) ) ) ) ) ).
+
+fof(t36_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v3_msualg_4(C,A,k8_osafree(A,B))
+                & v4_msualg_4(C,A,k8_osafree(A,B))
+                & m1_osalg_4(C,A,k8_osafree(A,B)) )
+             => ! [D] :
+                  ( ( v3_msualg_4(D,A,k8_osafree(A,B))
+                    & v4_msualg_4(D,A,k8_osafree(A,B))
+                    & m1_osalg_4(D,A,k8_osafree(A,B)) )
+                 => ! [E] :
+                      ( m1_dtconstr(E,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                     => ( r2_pboole(u1_struct_0(A),C,D)
+                       => r1_tarski(k25_osafree(A,B,C,E),k25_osafree(A,B,D,E)) ) ) ) ) ) ) ).
+
+fof(t37_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ! [E,F] :
+                      ( ( r2_hidden(E,k1_funct_1(B,C))
+                        & D = k1_trees_4(k4_tarski(E,C)) )
+                     => ( r2_hidden(F,k25_osafree(A,B,k15_osafree(A,B),D))
+                      <=> F = D ) ) ) ) ) ) ).
+
+fof(d29_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v2_relat_1(C)
+                & m1_pboole(C,u1_struct_0(A)) )
+             => ! [D] :
+                  ( m3_pboole(D,u1_struct_0(A),k22_osafree(A,B),C)
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(k2_osafree(A,B)))
+                     => ( r2_hidden(E,k6_dtconstr(k2_osafree(A,B)))
+                       => ! [F] :
+                            ( m1_subset_1(F,k3_card_3(C))
+                           => ( F = k26_osafree(A,B,C,D,E)
+                            <=> ! [G] :
+                                  ( ( v1_relat_1(G)
+                                    & v1_funct_1(G) )
+                                 => ( G = k1_funct_1(D,k2_mcart_1(E))
+                                   => F = k1_funct_1(G,k2_trees_4(u1_struct_0(k2_osafree(A,B)),E)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t38_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v5_msualg_1(C,A)
+                & v12_osalg_1(C,A)
+                & v13_osalg_1(C,A)
+                & l3_msualg_1(C,A) )
+             => ! [D] :
+                  ( m3_pboole(D,u1_struct_0(A),k22_osafree(A,B),u4_msualg_1(A,C))
+                 => ? [E] :
+                      ( m3_pboole(E,u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,C))
+                      & r1_msualg_3(A,k8_osafree(A,B),C,E)
+                      & v1_osalg_3(E,A)
+                      & r6_pboole(u1_struct_0(A),k1_msafree(u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,C),k22_osafree(A,B),E),D) ) ) ) ) ) ).
+
+fof(d30_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k23_osafree(A,B,C),k21_osafree(A,B,C))
+                    & m2_relset_1(D,k23_osafree(A,B,C),k21_osafree(A,B,C)) )
+                 => ( D = k27_osafree(A,B,C)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(k2_osafree(A,B)))
+                       => ( r2_hidden(k1_funct_1(k1_msualg_3(u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,k16_osalg_4(A,k8_osafree(A,B),k15_osafree(A,B))),k18_osalg_4(A,k8_osafree(A,B),k15_osafree(A,B)),C),k2_trees_4(u1_struct_0(k2_osafree(A,B)),E)),k23_osafree(A,B,C))
+                         => k1_funct_1(D,k1_funct_1(k1_msualg_3(u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B)),u4_msualg_1(A,k16_osalg_4(A,k8_osafree(A,B),k15_osafree(A,B))),k18_osalg_4(A,k8_osafree(A,B),k15_osafree(A,B)),C),k2_trees_4(u1_struct_0(k2_osafree(A,B)),E))) = k2_trees_4(u1_struct_0(k2_osafree(A,B)),E) ) ) ) ) ) ) ) ).
+
+fof(d31_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m3_pboole(C,u1_struct_0(A),k24_osafree(A,B),k22_osafree(A,B))
+             => ( C = k28_osafree(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => k1_msualg_3(u1_struct_0(A),k24_osafree(A,B),k22_osafree(A,B),C,D) = k27_osafree(A,B,D) ) ) ) ) ) ).
+
+fof(t39_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => v1_osafree(k24_osafree(A,B),A,k16_osafree(A,B)) ) ) ).
+
+fof(t40_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => v2_osafree(k16_osafree(A,B),A) ) ) ).
+
+fof(d32_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)))
+                & m2_relset_1(C,k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B))) )
+             => ( C = k29_osafree(A,B)
+              <=> ( ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(k2_osafree(A,B)))
+                     => ( r2_hidden(D,k6_dtconstr(k2_osafree(A,B)))
+                       => k1_funct_1(C,k2_trees_4(u1_struct_0(k2_osafree(A,B)),D)) = k14_osafree(A,B,D) ) )
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(k2_osafree(A,B)))
+                     => ! [E] :
+                          ( m1_trees_4(E,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                         => ( r1_lang1(k2_osafree(A,B),D,k1_dtconstr(u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),E))
+                           => k1_funct_1(C,k12_trees_4(u1_struct_0(k2_osafree(A,B)),D,E)) = k12_osafree(A,B,k13_osafree(A,B,D),k15_lang1(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),E,C)) ) ) ) ) ) ) ) ) ).
+
+fof(t41_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ( r2_hidden(k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),C),k25_osafree(A,B,k20_osafree(A,B),C))
+                & r3_orders_2(A,k10_osafree(A,B,k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),C)),k10_osafree(A,B,C))
+                & ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( ( r2_hidden(E,k1_funct_1(B,D))
+                          & C = k1_trees_4(k4_tarski(E,D)) )
+                       => k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),C) = C ) )
+                & ! [D] :
+                    ( m1_subset_1(D,u1_msualg_1(A))
+                   => ! [E] :
+                        ( m1_trees_4(E,k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                       => ( ( r1_lang1(k2_osafree(A,B),k9_osafree(A,B,D),k1_dtconstr(u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),E))
+                            & C = k12_trees_4(u1_struct_0(k2_osafree(A,B)),k9_osafree(A,B,D),E) )
+                         => ( r2_osalg_1(A,k11_osafree(A,B,k15_lang1(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),E,k29_osafree(A,B))),k1_msualg_1(A,D))
+                            & r1_lang1(k2_osafree(A,B),k9_osafree(A,B,D),k16_trees_3(k15_lang1(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),E,k29_osafree(A,B))))
+                            & r1_lang1(k2_osafree(A,B),k9_osafree(A,B,k3_osalg_1(A,D,k11_osafree(A,B,k15_lang1(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),E,k29_osafree(A,B))))),k16_trees_3(k15_lang1(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),E,k29_osafree(A,B))))
+                            & k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),C) = k4_trees_4(k9_osafree(A,B,k3_osalg_1(A,D,k11_osafree(A,B,k15_lang1(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),E,k29_osafree(A,B))))),k15_lang1(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),E,k29_osafree(A,B))) ) ) ) ) ) ) ) ) ).
+
+fof(t42_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ( r2_hidden(D,k25_osafree(A,B,k20_osafree(A,B),C))
+                   => k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),D) = k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),C) ) ) ) ) ) ).
+
+fof(t43_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => ( r2_hidden(D,k25_osafree(A,B,k20_osafree(A,B),C))
+                  <=> k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),D) = k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),C) ) ) ) ) ) ).
+
+fof(t44_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),C)) = k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),C) ) ) ) ).
+
+fof(t45_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v3_msualg_4(C,A,k8_osafree(A,B))
+                & v3_osalg_4(C,A,k8_osafree(A,B))
+                & m1_osalg_4(C,A,k8_osafree(A,B)) )
+             => ! [D] :
+                  ( m1_dtconstr(D,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+                 => r2_hidden(k4_tarski(D,k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),D)),k2_msualg_4(A,k8_osafree(A,B),C,k10_osafree(A,B,D))) ) ) ) ) ).
+
+fof(t46_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v3_msualg_4(C,A,k8_osafree(A,B))
+                & v3_osalg_4(C,A,k8_osafree(A,B))
+                & m1_osalg_4(C,A,k8_osafree(A,B)) )
+             => r2_pboole(u1_struct_0(A),k20_osafree(A,B),C) ) ) ) ).
+
+fof(t47_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => r6_pboole(u1_struct_0(A),k15_osafree(A,B),k20_osafree(A,B)) ) ) ).
+
+fof(d33_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B)))
+             => ( m2_osafree(C,A,B)
+              <=> k8_funct_2(k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)),k29_osafree(A,B),C) = C ) ) ) ) ).
+
+fof(d34_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => k30_osafree(A,B) = k2_relat_1(k29_osafree(A,B)) ) ) ).
+
+fof(t48_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m2_osafree(C,A,B)
+            <=> r2_hidden(C,k30_osafree(A,B)) ) ) ) ).
+
+fof(dt_m1_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v12_osalg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => ! [C] :
+          ( m1_osafree(C,A,B)
+         => m4_pboole(C,u1_struct_0(A),u4_msualg_1(A,B)) ) ) ).
+
+fof(existence_m1_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v12_osalg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => ? [C] : m1_osafree(C,A,B) ) ).
+
+fof(dt_m2_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ! [C] :
+          ( m2_osafree(C,A,B)
+         => m1_dtconstr(C,u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B))) ) ) ).
+
+fof(existence_m2_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ? [C] : m2_osafree(C,A,B) ) ).
+
+fof(dt_k1_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => m2_relset_1(k1_osafree(A,B),k2_xboole_0(k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))),k3_card_3(k3_msafree(u1_struct_0(A),B))),k3_finseq_2(k2_xboole_0(k2_zfmisc_1(u1_msualg_1(A),k1_tarski(u1_struct_0(A))),k3_card_3(k3_msafree(u1_struct_0(A),B))))) ) ).
+
+fof(dt_k2_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => l1_lang1(k2_osafree(A,B)) ) ).
+
+fof(dt_k3_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_msualg_1(A)) )
+     => m1_subset_1(k3_osafree(A,B,C),u1_struct_0(k2_osafree(A,B))) ) ).
+
+fof(dt_k4_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k4_osafree(A,B,C),k1_zfmisc_1(k4_dtconstr(k2_osafree(A,B)))) ) ).
+
+fof(dt_k5_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v11_osalg_1(k5_osafree(A,B),A)
+        & m1_pboole(k5_osafree(A,B),u1_struct_0(A)) ) ) ).
+
+fof(dt_k6_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_msualg_1(A)) )
+     => ( v1_funct_1(k6_osafree(A,B,C))
+        & v1_funct_2(k6_osafree(A,B,C),k1_funct_1(k8_pboole(u1_msualg_1(A),k3_finseq_2(u1_struct_0(A)),u2_msualg_1(A),k6_pboole(u1_struct_0(A),k5_osafree(A,B))),C),k1_funct_1(k8_pboole(u1_msualg_1(A),u1_struct_0(A),u3_msualg_1(A),k5_osafree(A,B)),C))
+        & m2_relset_1(k6_osafree(A,B,C),k1_funct_1(k8_pboole(u1_msualg_1(A),k3_finseq_2(u1_struct_0(A)),u2_msualg_1(A),k6_pboole(u1_struct_0(A),k5_osafree(A,B))),C),k1_funct_1(k8_pboole(u1_msualg_1(A),u1_struct_0(A),u3_msualg_1(A),k5_osafree(A,B)),C)) ) ) ).
+
+fof(dt_k7_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => m3_pboole(k7_osafree(A,B),u1_msualg_1(A),k8_pboole(u1_msualg_1(A),k3_finseq_2(u1_struct_0(A)),u2_msualg_1(A),k6_pboole(u1_struct_0(A),k5_osafree(A,B))),k8_pboole(u1_msualg_1(A),u1_struct_0(A),u3_msualg_1(A),k5_osafree(A,B))) ) ).
+
+fof(dt_k8_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v12_osalg_1(k8_osafree(A,B),A)
+        & l3_msualg_1(k8_osafree(A,B),A) ) ) ).
+
+fof(dt_k9_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_msualg_1(A)) )
+     => m1_struct_0(k9_osafree(A,B,C),k2_osafree(A,B),k7_dtconstr(k2_osafree(A,B))) ) ).
+
+fof(redefinition_k9_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_msualg_1(A)) )
+     => k9_osafree(A,B,C) = k3_osafree(A,B,C) ) ).
+
+fof(dt_k10_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,k4_dtconstr(k2_osafree(A,B))) )
+     => m1_subset_1(k10_osafree(A,B,C),u1_struct_0(A)) ) ).
+
+fof(dt_k11_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_finseq_1(C,k4_dtconstr(k2_osafree(A,B))) )
+     => m2_finseq_2(k11_osafree(A,B,C),u1_struct_0(A),k3_finseq_2(u1_struct_0(A))) ) ).
+
+fof(dt_k12_osafree,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_msualg_1(A))
+        & m1_finseq_1(D,k4_dtconstr(k2_osafree(A,B))) )
+     => m1_dtconstr(k12_osafree(A,B,C,D),u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B))) ) ).
+
+fof(dt_k13_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(k2_osafree(A,B))) )
+     => m1_subset_1(k13_osafree(A,B,C),u1_msualg_1(A)) ) ).
+
+fof(dt_k14_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(k2_osafree(A,B))) )
+     => m1_dtconstr(k14_osafree(A,B,C),u1_struct_0(k2_osafree(A,B)),k5_trees_3(u1_struct_0(k2_osafree(A,B))),k4_dtconstr(k2_osafree(A,B))) ) ).
+
+fof(dt_k15_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v3_msualg_4(k15_osafree(A,B),A,k8_osafree(A,B))
+        & v4_msualg_4(k15_osafree(A,B),A,k8_osafree(A,B))
+        & v3_osalg_4(k15_osafree(A,B),A,k8_osafree(A,B))
+        & m1_osalg_4(k15_osafree(A,B),A,k8_osafree(A,B)) ) ) ).
+
+fof(dt_k16_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v4_msualg_1(k16_osafree(A,B),A)
+        & v5_msualg_1(k16_osafree(A,B),A)
+        & v12_osalg_1(k16_osafree(A,B),A)
+        & v13_osalg_1(k16_osafree(A,B),A)
+        & l3_msualg_1(k16_osafree(A,B),A) ) ) ).
+
+fof(dt_k17_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(k2_osafree(A,B))) )
+     => m1_subset_1(k17_osafree(A,B,C),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A)))) ) ).
+
+fof(dt_k18_osafree,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(k2_osafree(A,B)))
+        & m1_finseq_1(D,k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A)))) )
+     => m1_subset_1(k18_osafree(A,B,C,D),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A)))) ) ).
+
+fof(dt_k19_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v1_funct_1(k19_osafree(A,B))
+        & v1_funct_2(k19_osafree(A,B),k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))))
+        & m2_relset_1(k19_osafree(A,B),k4_dtconstr(k2_osafree(A,B)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A)))) ) ) ).
+
+fof(dt_k20_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v3_msualg_4(k20_osafree(A,B),A,k8_osafree(A,B))
+        & m1_osalg_4(k20_osafree(A,B),A,k8_osafree(A,B)) ) ) ).
+
+fof(dt_k21_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k21_osafree(A,B,C),k1_zfmisc_1(k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),C))) ) ).
+
+fof(dt_k22_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => m4_pboole(k22_osafree(A,B),u1_struct_0(A),u4_msualg_1(A,k8_osafree(A,B))) ) ).
+
+fof(dt_k23_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k23_osafree(A,B,C),k1_zfmisc_1(k1_funct_1(u4_msualg_1(A,k16_osafree(A,B)),C))) ) ).
+
+fof(dt_k24_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => m1_osafree(k24_osafree(A,B),A,k16_osafree(A,B)) ) ).
+
+fof(dt_k25_osafree,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & v3_msualg_4(C,A,k8_osafree(A,B))
+        & v4_msualg_4(C,A,k8_osafree(A,B))
+        & m1_osalg_4(C,A,k8_osafree(A,B))
+        & m1_subset_1(D,k4_dtconstr(k2_osafree(A,B))) )
+     => m1_subset_1(k25_osafree(A,B,C,D),k6_osalg_4(A,k8_osafree(A,B),C,k10_osafree(A,B,D))) ) ).
+
+fof(dt_k26_osafree,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & v2_relat_1(C)
+        & m1_pboole(C,u1_struct_0(A))
+        & m3_pboole(D,u1_struct_0(A),k22_osafree(A,B),C)
+        & m1_subset_1(E,u1_struct_0(k2_osafree(A,B))) )
+     => m1_subset_1(k26_osafree(A,B,C,D,E),k3_card_3(C)) ) ).
+
+fof(dt_k27_osafree,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => ( v1_funct_1(k27_osafree(A,B,C))
+        & v1_funct_2(k27_osafree(A,B,C),k23_osafree(A,B,C),k21_osafree(A,B,C))
+        & m2_relset_1(k27_osafree(A,B,C),k23_osafree(A,B,C),k21_osafree(A,B,C)) ) ) ).
+
+fof(dt_k28_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => m3_pboole(k28_osafree(A,B),u1_struct_0(A),k24_osafree(A,B),k22_osafree(A,B)) ) ).
+
+fof(dt_k29_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => ( v1_funct_1(k29_osafree(A,B))
+        & v1_funct_2(k29_osafree(A,B),k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B)))
+        & m2_relset_1(k29_osafree(A,B),k4_dtconstr(k2_osafree(A,B)),k4_dtconstr(k2_osafree(A,B))) ) ) ).
+
+fof(dt_k30_osafree,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v8_osalg_1(A)
+        & v10_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A)
+        & v2_relat_1(B)
+        & m1_pboole(B,u1_struct_0(A)) )
+     => m1_subset_1(k30_osafree(A,B),k1_zfmisc_1(k4_dtconstr(k2_osafree(A,B)))) ) ).
+
+fof(d7_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k4_osafree(A,B,C) = a_3_0_osafree(A,B,C) ) ) ) ).
+
+fof(t9_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k1_funct_1(u4_msualg_1(A,k8_osafree(A,B)),C) = a_3_0_osafree(A,B,C) ) ) ) ).
+
+fof(d20_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k2_osafree(A,B)))
+             => k17_osafree(A,B,C) = a_3_1_osafree(A,B,C) ) ) ) ).
+
+fof(d21_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k2_osafree(A,B)))
+             => ! [D] :
+                  ( m2_finseq_1(D,k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(A,B)),u1_struct_0(A))))
+                 => k18_osafree(A,B,C,D) = a_4_0_osafree(A,B,C,D) ) ) ) ) ).
+
+fof(d23_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( ( v3_msualg_4(C,A,k8_osafree(A,B))
+                & m1_osalg_4(C,A,k8_osafree(A,B)) )
+             => ( C = k20_osafree(A,B)
+              <=> ! [D] :
+                    ( r2_hidden(D,u1_struct_0(A))
+                   => k1_funct_1(C,D) = a_3_2_osafree(A,B,D) ) ) ) ) ) ).
+
+fof(t29_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k21_osafree(A,B,C) = a_3_3_osafree(A,B,C) ) ) ) ).
+
+fof(t31_osafree,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & v4_osalg_1(A)
+        & v5_osalg_1(A)
+        & v2_osalg_4(A)
+        & l3_osalg_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k23_osafree(A,B,C) = a_3_4_osafree(A,B,C) ) ) ) ).
+
+fof(fraenkel_a_3_0_osafree,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & ~ v2_msualg_1(B)
+        & v4_osalg_1(B)
+        & v5_osalg_1(B)
+        & l3_osalg_1(B)
+        & v2_relat_1(C)
+        & m1_pboole(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_3_0_osafree(B,C,D))
+      <=> ? [E] :
+            ( m1_dtconstr(E,u1_struct_0(k2_osafree(B,C)),k5_trees_3(u1_struct_0(k2_osafree(B,C))),k4_dtconstr(k2_osafree(B,C)))
+            & A = E
+            & ~ ( ! [F] :
+                    ( m1_subset_1(F,u1_struct_0(B))
+                   => ! [G] :
+                        ~ ( r3_orders_2(B,F,D)
+                          & r2_hidden(G,k1_funct_1(C,F))
+                          & E = k1_trees_4(k4_tarski(G,F)) ) )
+                & ! [F] :
+                    ( m1_subset_1(F,u1_msualg_1(B))
+                   => ~ ( k4_tarski(F,u1_struct_0(B)) = k1_funct_1(E,k1_xboole_0)
+                        & r3_orders_2(B,k1_osalg_1(B,F),D) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_3_1_osafree,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & ~ v2_msualg_1(B)
+        & v4_osalg_1(B)
+        & v5_osalg_1(B)
+        & l3_osalg_1(B)
+        & v2_relat_1(C)
+        & m1_pboole(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(k2_osafree(B,C))) )
+     => ( r2_hidden(A,a_3_1_osafree(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(B))
+            & A = k4_tarski(k2_trees_4(u1_struct_0(k2_osafree(B,C)),D),E)
+            & ? [F] :
+                ( m1_subset_1(F,u1_struct_0(B))
+                & ? [G] :
+                    ( r2_hidden(G,k1_funct_1(C,F))
+                    & D = k4_tarski(G,F)
+                    & r3_orders_2(B,F,E) ) ) ) ) ) ).
+
+fof(fraenkel_a_4_0_osafree,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v3_struct_0(B)
+        & ~ v2_msualg_1(B)
+        & v4_osalg_1(B)
+        & v5_osalg_1(B)
+        & l3_osalg_1(B)
+        & v2_relat_1(C)
+        & m1_pboole(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(k2_osafree(B,C)))
+        & m2_finseq_1(E,k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(B,C)),u1_struct_0(B)))) )
+     => ( r2_hidden(A,a_4_0_osafree(B,C,D,E))
+      <=> ? [F,G,H] :
+            ( m1_subset_1(F,u1_msualg_1(B))
+            & m1_subset_1(G,k3_msualg_1(B,F,k8_osafree(B,C)))
+            & m1_subset_1(H,u1_struct_0(B))
+            & A = k4_tarski(k8_funct_2(k3_msualg_1(B,F,k8_osafree(B,C)),k4_msualg_1(B,F,k8_osafree(B,C)),k5_msualg_1(B,F,k8_osafree(B,C)),G),H)
+            & ? [I] :
+                ( m1_subset_1(I,u1_msualg_1(B))
+                & D = k4_tarski(I,u1_struct_0(B))
+                & r1_osalg_1(B,I,F)
+                & k3_finseq_1(k1_msualg_1(B,I)) = k3_finseq_1(k1_msualg_1(B,F))
+                & r3_orders_2(B,k1_osalg_1(B,I),H)
+                & r3_orders_2(B,k1_osalg_1(B,F),H) )
+            & ? [I] :
+                ( m2_finseq_2(I,u1_struct_0(B),k3_finseq_2(u1_struct_0(B)))
+                & k4_finseq_1(I) = k4_finseq_1(E)
+                & ! [J] :
+                    ( m2_subset_1(J,k1_numbers,k5_numbers)
+                   => ( r2_hidden(J,k4_finseq_1(E))
+                     => r2_hidden(k4_tarski(k1_funct_1(G,J),k4_finseq_4(k5_numbers,u1_struct_0(B),I,J)),k1_funct_1(E,J)) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_3_2_osafree,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & ~ v2_msualg_1(B)
+        & v4_osalg_1(B)
+        & v5_osalg_1(B)
+        & v2_osalg_4(B)
+        & l3_osalg_1(B)
+        & v2_relat_1(C)
+        & m1_pboole(C,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_3_2_osafree(B,C,D))
+      <=> ? [E,F] :
+            ( m1_dtconstr(E,u1_struct_0(k2_osafree(B,C)),k5_trees_3(u1_struct_0(k2_osafree(B,C))),k4_dtconstr(k2_osafree(B,C)))
+            & m1_dtconstr(F,u1_struct_0(k2_osafree(B,C)),k5_trees_3(u1_struct_0(k2_osafree(B,C))),k4_dtconstr(k2_osafree(B,C)))
+            & A = k4_tarski(E,F)
+            & r2_hidden(k4_tarski(E,D),k8_funct_2(k4_dtconstr(k2_osafree(B,C)),k1_zfmisc_1(k2_zfmisc_1(k4_dtconstr(k2_osafree(B,C)),u1_struct_0(B))),k19_osafree(B,C),F)) ) ) ) ).
+
+fof(fraenkel_a_3_3_osafree,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & ~ v2_msualg_1(B)
+        & v4_osalg_1(B)
+        & v5_osalg_1(B)
+        & v2_osalg_4(B)
+        & l3_osalg_1(B)
+        & v2_relat_1(C)
+        & m1_pboole(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_3_3_osafree(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(k2_osafree(B,C)))
+            & A = k2_trees_4(u1_struct_0(k2_osafree(B,C)),E)
+            & r2_hidden(E,k6_dtconstr(k2_osafree(B,C)))
+            & k2_mcart_1(E) = D ) ) ) ).
+
+fof(fraenkel_a_3_4_osafree,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & ~ v2_msualg_1(B)
+        & v4_osalg_1(B)
+        & v5_osalg_1(B)
+        & v2_osalg_4(B)
+        & l3_osalg_1(B)
+        & v2_relat_1(C)
+        & m1_pboole(C,u1_struct_0(B))
+        & m1_subset_1(D,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_3_4_osafree(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(k2_osafree(B,C)))
+            & A = k1_funct_1(k1_msualg_3(u1_struct_0(B),u4_msualg_1(B,k8_osafree(B,C)),u4_msualg_1(B,k16_osalg_4(B,k8_osafree(B,C),k15_osafree(B,C))),k18_osalg_4(B,k8_osafree(B,C),k15_osafree(B,C)),D),k2_trees_4(u1_struct_0(k2_osafree(B,C)),E))
+            & r2_hidden(E,k6_dtconstr(k2_osafree(B,C)))
+            & k2_mcart_1(E) = D ) ) ) ).
+
+%------------------------------------------------------------------------------

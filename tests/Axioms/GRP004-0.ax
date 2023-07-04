@@ -1,0 +1,45 @@
+%--------------------------------------------------------------------------
+% File     : GRP004-0 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Group Theory
+% Axioms   : Group theory (equality) axioms
+% Version  : [MOW76] (equality) axioms :
+%            Reduced > Complete.
+% English  :
+
+% Refs     : [MOW76] McCharen et al. (1976), Problems and Experiments for a
+%          : [Wos88] Wos (1988), Automated Reasoning - 33 Basic Research Pr
+% Source   : [ANL]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :    3 (   3 unt;   0 nHn;   0 RR)
+%            Number of literals    :    3 (   3 equ;   0 neg)
+%            Maximal clause size   :    1 (   1 avg)
+%            Maximal term depth    :    3 (   2 avg)
+%            Number of predicates  :    1 (   0 usr;   0 prp; 2-2 aty)
+%            Number of functors    :    3 (   3 usr;   1 con; 0-2 aty)
+%            Number of variables   :    5 (   0 sgn)
+% SPC      : 
+
+% Comments : [MOW76] also contains redundant right_identity and
+%            right_inverse axioms.
+%          : These axioms are also used in [Wos88] p.186, also with
+%            right_identity and right_inverse.
+%--------------------------------------------------------------------------
+%----For any x and y in the group x*y is also in the group. No clause
+%----is needed here since this is an instance of reflexivity
+
+%----There exists an identity element
+cnf(left_identity,axiom,
+    multiply(identity,X) = X ).
+
+%----For any x in the group, there exists an element y such that x*y = y*x
+%----= identity.
+cnf(left_inverse,axiom,
+    multiply(inverse(X),X) = identity ).
+
+%----The operation '*' is associative
+cnf(associativity,axiom,
+    multiply(multiply(X,Y),Z) = multiply(X,multiply(Y,Z)) ).
+
+%--------------------------------------------------------------------------

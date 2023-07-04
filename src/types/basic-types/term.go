@@ -41,8 +41,6 @@
 package basictypes
 
 import (
-	"fmt"
-
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -103,7 +101,7 @@ func TypeAppToTerm(typeApp typing.TypeApp) Term {
 		if nt.IsMeta() {
 			term = typeVarToMeta(nt)
 		} else {
-			fmt.Println("[ERROR] A TypeVar should be only converted to terms if it has been instantiated.")
+			PrintError("TERM", "A TypeVar should be only converted to terms if it has been instantiated.")
 			term = nil
 		}
 	case typing.TypeHint:

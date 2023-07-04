@@ -1,0 +1,776 @@
+%------------------------------------------------------------------------------
+% File     : ITP097_5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : comparison_2.ax [Gau20]
+%          : HL4097_5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   75 (  15 unt;  13 typ;   0 def)
+%            Number of atoms       : 1480 ( 143 equ)
+%            Maximal formula atoms :   54 (  19 avg)
+%            Number of connectives :  326 (   3   ~;   2   |;  63   &)
+%                                         (  24 <=>; 234  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   35 (   9 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of FOOLs       : 1095 (1095 fml;   0 var)
+%            Number of types       :    1 (   0 usr)
+%            Number of type conns  :   34 (  13   >;  21   *;   0   +;   0  <<)
+%            Number of predicates  :   67 (  66 usr;  25 prp; 0-4 aty)
+%            Number of functors    :   13 (  13 usr;   0 con; 1-4 aty)
+%            Number of variables   :  289 ( 289   !;   0   ?; 289   :)
+% SPC      : TF0_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+tff(tp_c_2Ecomparison_2Eequiv__inj,type,
+    c_2Ecomparison_2Eequiv__inj: ( del * del ) > $i ).
+
+tff(mem_c_2Ecomparison_2Eequiv__inj,axiom,
+    ! [A_27a: del,A_27b: del] : mem(c_2Ecomparison_2Eequiv__inj(A_27a,A_27b),arr(arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)),arr(arr(A_27b,arr(A_27b,ty_2EternaryComparisons_2Eordering)),arr(arr(A_27a,A_27b),bool)))) ).
+
+tff(tp_c_2Ecomparison_2Egood__cmp,type,
+    c_2Ecomparison_2Egood__cmp: del > $i ).
+
+tff(mem_c_2Ecomparison_2Egood__cmp,axiom,
+    ! [A_27a: del] : mem(c_2Ecomparison_2Egood__cmp(A_27a),arr(arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)),bool)) ).
+
+tff(tp_c_2Ecomparison_2Eoption__cmp2,type,
+    c_2Ecomparison_2Eoption__cmp2: ( del * del ) > $i ).
+
+tff(mem_c_2Ecomparison_2Eoption__cmp2,axiom,
+    ! [A_27a: del,A_27b: del] : mem(c_2Ecomparison_2Eoption__cmp2(A_27a,A_27b),arr(arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)),arr(ty_2Eoption_2Eoption(A_27a),arr(ty_2Eoption_2Eoption(A_27b),ty_2EternaryComparisons_2Eordering)))) ).
+
+tff(tp_c_2Ecomparison_2Eresp__equiv,type,
+    c_2Ecomparison_2Eresp__equiv: ( del * del * del ) > $i ).
+
+tff(mem_c_2Ecomparison_2Eresp__equiv,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del] : mem(c_2Ecomparison_2Eresp__equiv(A_27a,A_27b,A_27c),arr(arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)),arr(arr(A_27a,arr(A_27b,A_27c)),bool))) ).
+
+tff(tp_c_2Ecomparison_2Eresp__equiv2,type,
+    c_2Ecomparison_2Eresp__equiv2: ( del * del ) > $i ).
+
+tff(mem_c_2Ecomparison_2Eresp__equiv2,axiom,
+    ! [A_27a: del,A_27b: del] : mem(c_2Ecomparison_2Eresp__equiv2(A_27a,A_27b),arr(arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)),arr(arr(A_27b,arr(A_27b,ty_2EternaryComparisons_2Eordering)),arr(arr(A_27a,A_27b),bool)))) ).
+
+tff(ax_thm_2Ecomparison_2Egood__cmp__def,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V0cmp))
+      <=> ( ! [V1x: $i] :
+              ( mem(V1x,A_27a)
+             => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V1x),V1x)) = fo__c_2EternaryComparisons_2EEQUAL ) )
+          & ! [V2x: $i] :
+              ( mem(V2x,A_27a)
+             => ! [V3y: $i] :
+                  ( mem(V3y,A_27a)
+                 => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V2x),V3y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                   => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V3y),V2x)) = fo__c_2EternaryComparisons_2EEQUAL ) ) ) )
+          & ! [V4x: $i] :
+              ( mem(V4x,A_27a)
+             => ! [V5y: $i] :
+                  ( mem(V5y,A_27a)
+                 => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V4x),V5y)) = fo__c_2EternaryComparisons_2EGREATER )
+                  <=> ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V5y),V4x)) = fo__c_2EternaryComparisons_2ELESS ) ) ) )
+          & ! [V6x: $i] :
+              ( mem(V6x,A_27a)
+             => ! [V7y: $i] :
+                  ( mem(V7y,A_27a)
+                 => ! [V8z: $i] :
+                      ( mem(V8z,A_27a)
+                     => ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V6x),V7y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                          & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V7y),V8z)) = fo__c_2EternaryComparisons_2ELESS ) )
+                       => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V6x),V8z)) = fo__c_2EternaryComparisons_2ELESS ) ) ) ) )
+          & ! [V9x: $i] :
+              ( mem(V9x,A_27a)
+             => ! [V10y: $i] :
+                  ( mem(V10y,A_27a)
+                 => ! [V11z: $i] :
+                      ( mem(V11z,A_27a)
+                     => ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V9x),V10y)) = fo__c_2EternaryComparisons_2ELESS )
+                          & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V10y),V11z)) = fo__c_2EternaryComparisons_2EEQUAL ) )
+                       => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V9x),V11z)) = fo__c_2EternaryComparisons_2ELESS ) ) ) ) )
+          & ! [V12x: $i] :
+              ( mem(V12x,A_27a)
+             => ! [V13y: $i] :
+                  ( mem(V13y,A_27a)
+                 => ! [V14z: $i] :
+                      ( mem(V14z,A_27a)
+                     => ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V12x),V13y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                          & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V13y),V14z)) = fo__c_2EternaryComparisons_2EEQUAL ) )
+                       => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V12x),V14z)) = fo__c_2EternaryComparisons_2EEQUAL ) ) ) ) )
+          & ! [V15x: $i] :
+              ( mem(V15x,A_27a)
+             => ! [V16y: $i] :
+                  ( mem(V16y,A_27a)
+                 => ! [V17z: $i] :
+                      ( mem(V17z,A_27a)
+                     => ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V15x),V16y)) = fo__c_2EternaryComparisons_2ELESS )
+                          & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V16y),V17z)) = fo__c_2EternaryComparisons_2ELESS ) )
+                       => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V15x),V17z)) = fo__c_2EternaryComparisons_2ELESS ) ) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Egood__cmp__thm,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V0cmp))
+      <=> ( ! [V1x: $i] :
+              ( mem(V1x,A_27a)
+             => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V1x),V1x)) = fo__c_2EternaryComparisons_2EEQUAL ) )
+          & ! [V2x: $i] :
+              ( mem(V2x,A_27a)
+             => ! [V3y: $i] :
+                  ( mem(V3y,A_27a)
+                 => ! [V4z: $i] :
+                      ( mem(V4z,A_27a)
+                     => ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V2x),V3y)) = fo__c_2EternaryComparisons_2EGREATER )
+                        <=> ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V3y),V2x)) = fo__c_2EternaryComparisons_2ELESS ) )
+                        & ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V2x),V3y)) = fo__c_2EternaryComparisons_2ELESS )
+                            & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V3y),V4z)) = fo__c_2EternaryComparisons_2EEQUAL ) )
+                         => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V2x),V4z)) = fo__c_2EternaryComparisons_2ELESS ) )
+                        & ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V2x),V3y)) = fo__c_2EternaryComparisons_2ELESS )
+                            & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V3y),V4z)) = fo__c_2EternaryComparisons_2ELESS ) )
+                         => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V2x),V4z)) = fo__c_2EternaryComparisons_2ELESS ) ) ) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Ecmp__thms,axiom,
+    ! [A_27a: del] :
+      ( ( fo__c_2EternaryComparisons_2ELESS != fo__c_2EternaryComparisons_2EEQUAL )
+      & ( fo__c_2EternaryComparisons_2ELESS != fo__c_2EternaryComparisons_2EGREATER )
+      & ( fo__c_2EternaryComparisons_2EEQUAL != fo__c_2EternaryComparisons_2EGREATER )
+      & ! [V0v0: $i] :
+          ( mem(V0v0,A_27a)
+         => ! [V1v1: $i] :
+              ( mem(V1v1,A_27a)
+             => ! [V2v2: $i] :
+                  ( mem(V2v2,A_27a)
+                 => ( ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(A_27a),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2ELESS)),V0v0),V1v1),V2v2) = V0v0 ) ) ) )
+      & ! [V3v0: $i] :
+          ( mem(V3v0,A_27a)
+         => ! [V4v1: $i] :
+              ( mem(V4v1,A_27a)
+             => ! [V5v2: $i] :
+                  ( mem(V5v2,A_27a)
+                 => ( ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(A_27a),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2EEQUAL)),V3v0),V4v1),V5v2) = V4v1 ) ) ) )
+      & ! [V6v0: $i] :
+          ( mem(V6v0,A_27a)
+         => ! [V7v1: $i] :
+              ( mem(V7v1,A_27a)
+             => ! [V8v2: $i] :
+                  ( mem(V8v2,A_27a)
+                 => ( ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(A_27a),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2EGREATER)),V6v0),V7v1),V8v2) = V8v2 ) ) ) )
+      & ! [V9a: tp__ty_2EternaryComparisons_2Eordering] :
+          ( ( V9a = fo__c_2EternaryComparisons_2ELESS )
+          | ( V9a = fo__c_2EternaryComparisons_2EEQUAL )
+          | ( V9a = fo__c_2EternaryComparisons_2EGREATER ) )
+      & ! [V10cmp: $i] :
+          ( mem(V10cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+         => ( p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V10cmp))
+          <=> ( ! [V11x: $i] :
+                  ( mem(V11x,A_27a)
+                 => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V11x),V11x)) = fo__c_2EternaryComparisons_2EEQUAL ) )
+              & ! [V12x: $i] :
+                  ( mem(V12x,A_27a)
+                 => ! [V13y: $i] :
+                      ( mem(V13y,A_27a)
+                     => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V12x),V13y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                       => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V13y),V12x)) = fo__c_2EternaryComparisons_2EEQUAL ) ) ) )
+              & ! [V14x: $i] :
+                  ( mem(V14x,A_27a)
+                 => ! [V15y: $i] :
+                      ( mem(V15y,A_27a)
+                     => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V14x),V15y)) = fo__c_2EternaryComparisons_2EGREATER )
+                      <=> ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V15y),V14x)) = fo__c_2EternaryComparisons_2ELESS ) ) ) )
+              & ! [V16x: $i] :
+                  ( mem(V16x,A_27a)
+                 => ! [V17y: $i] :
+                      ( mem(V17y,A_27a)
+                     => ! [V18z: $i] :
+                          ( mem(V18z,A_27a)
+                         => ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V16x),V17y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                              & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V17y),V18z)) = fo__c_2EternaryComparisons_2ELESS ) )
+                           => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V16x),V18z)) = fo__c_2EternaryComparisons_2ELESS ) ) ) ) )
+              & ! [V19x: $i] :
+                  ( mem(V19x,A_27a)
+                 => ! [V20y: $i] :
+                      ( mem(V20y,A_27a)
+                     => ! [V21z: $i] :
+                          ( mem(V21z,A_27a)
+                         => ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V19x),V20y)) = fo__c_2EternaryComparisons_2ELESS )
+                              & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V20y),V21z)) = fo__c_2EternaryComparisons_2EEQUAL ) )
+                           => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V19x),V21z)) = fo__c_2EternaryComparisons_2ELESS ) ) ) ) )
+              & ! [V22x: $i] :
+                  ( mem(V22x,A_27a)
+                 => ! [V23y: $i] :
+                      ( mem(V23y,A_27a)
+                     => ! [V24z: $i] :
+                          ( mem(V24z,A_27a)
+                         => ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V22x),V23y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                              & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V23y),V24z)) = fo__c_2EternaryComparisons_2EEQUAL ) )
+                           => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V22x),V24z)) = fo__c_2EternaryComparisons_2EEQUAL ) ) ) ) )
+              & ! [V25x: $i] :
+                  ( mem(V25x,A_27a)
+                 => ! [V26y: $i] :
+                      ( mem(V26y,A_27a)
+                     => ! [V27z: $i] :
+                          ( mem(V27z,A_27a)
+                         => ( ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V25x),V26y)) = fo__c_2EternaryComparisons_2ELESS )
+                              & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V26y),V27z)) = fo__c_2EternaryComparisons_2ELESS ) )
+                           => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V10cmp,V25x),V27z)) = fo__c_2EternaryComparisons_2ELESS ) ) ) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Eoption__cmp__def,axiom,
+    ! [A_27a: del,A_27b: del,V0c: $i] :
+      ( mem(V0c,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1v0: $i] :
+          ( mem(V1v0,A_27b)
+         => ! [V2v3: $i] :
+              ( mem(V2v3,A_27a)
+             => ! [V3v1: $i] :
+                  ( mem(V3v1,A_27a)
+                 => ! [V4v2: $i] :
+                      ( mem(V4v2,A_27b)
+                     => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Eoption__compare(A_27a,A_27b),V0c),c_2Eoption_2ENONE(A_27a)),c_2Eoption_2ENONE(A_27b))) = fo__c_2EternaryComparisons_2EEQUAL )
+                        & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Eoption__compare(A_27a,A_27b),V0c),c_2Eoption_2ENONE(A_27a)),ap(c_2Eoption_2ESOME(A_27b),V1v0))) = fo__c_2EternaryComparisons_2ELESS )
+                        & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Eoption__compare(A_27a,A_27b),V0c),ap(c_2Eoption_2ESOME(A_27a),V2v3)),c_2Eoption_2ENONE(A_27b))) = fo__c_2EternaryComparisons_2EGREATER )
+                        & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Eoption__compare(A_27a,A_27b),V0c),ap(c_2Eoption_2ESOME(A_27a),V3v1)),ap(c_2Eoption_2ESOME(A_27b),V4v2))) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0c,V3v1),V4v2)) ) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Eoption__cmp2__ind,axiom,
+    ! [A_27a: del,A_27b: del,V0P: $i] :
+      ( mem(V0P,arr(arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)),arr(ty_2Eoption_2Eoption(A_27a),arr(ty_2Eoption_2Eoption(A_27b),bool))))
+     => ( ( ! [V1cmp: $i] :
+              ( mem(V1cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+             => p(ap(ap(ap(V0P,V1cmp),c_2Eoption_2ENONE(A_27a)),c_2Eoption_2ENONE(A_27b))) )
+          & ! [V2cmp: $i] :
+              ( mem(V2cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+             => ! [V3x: $i] :
+                  ( mem(V3x,A_27b)
+                 => p(ap(ap(ap(V0P,V2cmp),c_2Eoption_2ENONE(A_27a)),ap(c_2Eoption_2ESOME(A_27b),V3x))) ) )
+          & ! [V4cmp: $i] :
+              ( mem(V4cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+             => ! [V5x: $i] :
+                  ( mem(V5x,A_27a)
+                 => p(ap(ap(ap(V0P,V4cmp),ap(c_2Eoption_2ESOME(A_27a),V5x)),c_2Eoption_2ENONE(A_27b))) ) )
+          & ! [V6cmp: $i] :
+              ( mem(V6cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+             => ! [V7x: $i] :
+                  ( mem(V7x,A_27a)
+                 => ! [V8y: $i] :
+                      ( mem(V8y,A_27b)
+                     => p(ap(ap(ap(V0P,V6cmp),ap(c_2Eoption_2ESOME(A_27a),V7x)),ap(c_2Eoption_2ESOME(A_27b),V8y))) ) ) ) )
+       => ! [V9v: $i] :
+            ( mem(V9v,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+           => ! [V10v1: $i] :
+                ( mem(V10v1,ty_2Eoption_2Eoption(A_27a))
+               => ! [V11v2: $i] :
+                    ( mem(V11v2,ty_2Eoption_2Eoption(A_27b))
+                   => p(ap(ap(ap(V0P,V9v),V10v1),V11v2)) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Eoption__cmp2__def,axiom,
+    ! [A_27a: del,A_27b: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1x_27: $i] :
+          ( mem(V1x_27,A_27b)
+         => ! [V2x: $i] :
+              ( mem(V2x,A_27a)
+             => ! [V3y: $i] :
+                  ( mem(V3y,A_27b)
+                 => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2Ecomparison_2Eoption__cmp2(A_27a,A_27b),V0cmp),c_2Eoption_2ENONE(A_27a)),c_2Eoption_2ENONE(A_27b))) = fo__c_2EternaryComparisons_2EEQUAL )
+                    & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2Ecomparison_2Eoption__cmp2(A_27a,A_27b),V0cmp),c_2Eoption_2ENONE(A_27a)),ap(c_2Eoption_2ESOME(A_27b),V1x_27))) = fo__c_2EternaryComparisons_2EGREATER )
+                    & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2Ecomparison_2Eoption__cmp2(A_27a,A_27b),V0cmp),ap(c_2Eoption_2ESOME(A_27a),V2x)),c_2Eoption_2ENONE(A_27b))) = fo__c_2EternaryComparisons_2ELESS )
+                    & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2Ecomparison_2Eoption__cmp2(A_27a,A_27b),V0cmp),ap(c_2Eoption_2ESOME(A_27a),V2x)),ap(c_2Eoption_2ESOME(A_27b),V3y))) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V2x),V3y)) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Epair__cmp__def,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del,V0c1: $i] :
+      ( mem(V0c1,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1c2: $i] :
+          ( mem(V1c2,arr(A_27c,arr(A_27d,ty_2EternaryComparisons_2Eordering)))
+         => ! [V2x: $i] :
+              ( mem(V2x,ty_2Epair_2Eprod(A_27a,A_27c))
+             => ! [V3y: $i] :
+                  ( mem(V3y,ty_2Epair_2Eprod(A_27b,A_27d))
+                 => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(ap(c_2EternaryComparisons_2Epair__compare(A_27a,A_27b,A_27c,A_27d),V0c1),V1c2),V2x),V3y)) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(ap(c_2EternaryComparisons_2Eordering__CASE(ty_2EternaryComparisons_2Eordering),ap(ap(V0c1,ap(c_2Epair_2EFST(A_27a,A_27c),V2x)),ap(c_2Epair_2EFST(A_27b,A_27d),V3y))),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2ELESS)),ap(ap(V1c2,ap(c_2Epair_2ESND(A_27a,A_27c),V2x)),ap(c_2Epair_2ESND(A_27b,A_27d),V3y))),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2EGREATER))) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Ebool__cmp__def,axiom,
+    ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Ebool__compare,inj__o(fo__c_2Ebool_2ET)),inj__o(fo__c_2Ebool_2ET))) = fo__c_2EternaryComparisons_2EEQUAL )
+    & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Ebool__compare,inj__o(fo__c_2Ebool_2EF)),inj__o(fo__c_2Ebool_2EF))) = fo__c_2EternaryComparisons_2EEQUAL )
+    & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Ebool__compare,inj__o(fo__c_2Ebool_2ET)),inj__o(fo__c_2Ebool_2EF))) = fo__c_2EternaryComparisons_2EGREATER )
+    & ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Ebool__compare,inj__o(fo__c_2Ebool_2EF)),inj__o(fo__c_2Ebool_2ET))) = fo__c_2EternaryComparisons_2ELESS ) ) ).
+
+tff(conj_thm_2Ecomparison_2Enum__cmp__def,axiom,
+    ! [V0n1: tp__ty_2Enum_2Enum,V1n2: tp__ty_2Enum_2Enum] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Enum__compare,inj__ty_2Enum_2Enum(V0n1)),inj__ty_2Enum_2Enum(V1n2))) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2Ebool_2ECOND(ty_2EternaryComparisons_2Eordering),ap(ap(c_2Emin_2E_3D(ty_2Enum_2Enum),inj__ty_2Enum_2Enum(V0n1)),inj__ty_2Enum_2Enum(V1n2))),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2EEQUAL)),ap(ap(ap(c_2Ebool_2ECOND(ty_2EternaryComparisons_2Eordering),ap(ap(c_2Eprim__rec_2E_3C,inj__ty_2Enum_2Enum(V0n1)),inj__ty_2Enum_2Enum(V1n2))),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2ELESS)),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2EGREATER)))) ) ).
+
+tff(conj_thm_2Ecomparison_2Echar__cmp__def,axiom,
+    ! [V0c1: tp__ty_2Estring_2Echar,V1c2: tp__ty_2Estring_2Echar] : ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Echar__compare,inj__ty_2Estring_2Echar(V0c1)),inj__ty_2Estring_2Echar(V1c2))) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Enum__compare,ap(c_2Estring_2EORD,inj__ty_2Estring_2Echar(V0c1))),ap(c_2Estring_2EORD,inj__ty_2Estring_2Echar(V1c2)))) ) ).
+
+tff(conj_thm_2Ecomparison_2Estring__cmp__def,axiom,
+    c_2EternaryComparisons_2Estring__compare = ap(c_2EternaryComparisons_2Elist__compare(ty_2Estring_2Echar,ty_2Estring_2Echar),c_2EternaryComparisons_2Echar__compare) ).
+
+tff(conj_thm_2Ecomparison_2ETotOrder__imp__good__cmp,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Etoto_2ETotOrd(A_27a),V0cmp))
+       => p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V0cmp)) ) ) ).
+
+tff(conj_thm_2Ecomparison_2ETO__inv__invert,axiom,
+    ! [A_27a: del,V0c: $i] :
+      ( mem(V0c,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Etoto_2ETotOrd(A_27a),V0c))
+       => ( ap(c_2Etoto_2ETO__inv(A_27a),V0c) = ap(c_2Epair_2ECURRY(A_27a,A_27a,ty_2EternaryComparisons_2Eordering),ap(ap(c_2Ecombin_2Eo(ty_2Epair_2Eprod(A_27a,A_27a),ty_2EternaryComparisons_2Eordering,ty_2EternaryComparisons_2Eordering),c_2EternaryComparisons_2Einvert__comparison),ap(c_2Epair_2EUNCURRY(A_27a,A_27a,ty_2EternaryComparisons_2Eordering),V0c))) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Eoption__cmp2__TO__inv,axiom,
+    ! [A_27a: del,V0c: $i] :
+      ( mem(V0c,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( ap(c_2Ecomparison_2Eoption__cmp2(A_27a,A_27a),V0c) = ap(c_2Etoto_2ETO__inv(ty_2Eoption_2Eoption(A_27a)),ap(c_2EternaryComparisons_2Eoption__compare(A_27a,A_27a),ap(c_2Etoto_2ETO__inv(A_27a),V0c))) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Elist__cmp__ListOrd,axiom,
+    ! [A_27a: del,V0c: $i] :
+      ( mem(V0c,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Etoto_2ETotOrd(A_27a),V0c))
+       => ( ap(c_2EternaryComparisons_2Elist__compare(A_27a,A_27a),V0c) = ap(c_2Etoto_2EListOrd(A_27a),ap(c_2Etoto_2ETO(A_27a),V0c)) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2ETotOrd__list__cmp,axiom,
+    ! [A_27a: del,V0c: $i] :
+      ( mem(V0c,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Etoto_2ETotOrd(A_27a),V0c))
+       => p(ap(c_2Etoto_2ETotOrd(ty_2Elist_2Elist(A_27a)),ap(c_2EternaryComparisons_2Elist__compare(A_27a,A_27a),V0c))) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Epair__cmp__lexTO,axiom,
+    ! [A_27a: del,A_27b: del,V0R: $i] :
+      ( mem(V0R,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1V: $i] :
+          ( mem(V1V,arr(A_27b,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+         => ( ( p(ap(c_2Etoto_2ETotOrd(A_27a),V0R))
+              & p(ap(c_2Etoto_2ETotOrd(A_27b),V1V)) )
+           => ( ap(ap(c_2EternaryComparisons_2Epair__compare(A_27a,A_27a,A_27b,A_27b),V0R),V1V) = ap(ap(c_2Etoto_2ElexTO(A_27a,A_27b),V0R),V1V) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Enum__cmp__numOrd,axiom,
+    c_2EternaryComparisons_2Enum__compare = c_2Etoto_2EnumOrd ).
+
+tff(conj_thm_2Ecomparison_2Echar__cmp__charOrd,axiom,
+    c_2EternaryComparisons_2Echar__compare = c_2Etoto_2EcharOrd ).
+
+tff(conj_thm_2Ecomparison_2Estring__cmp__stringto,axiom,
+    c_2EternaryComparisons_2Estring__compare = ap(c_2Etoto_2Eapto(ty_2Elist_2Elist(ty_2Estring_2Echar)),c_2Etoto_2Estringto) ).
+
+tff(conj_thm_2Ecomparison_2Eoption__cmp__good,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V0cmp))
+       => p(ap(c_2Ecomparison_2Egood__cmp(ty_2Eoption_2Eoption(A_27a)),ap(c_2EternaryComparisons_2Eoption__compare(A_27a,A_27a),V0cmp))) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Eoption__cmp2__good,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V0cmp))
+       => p(ap(c_2Ecomparison_2Egood__cmp(ty_2Eoption_2Eoption(A_27a)),ap(c_2Ecomparison_2Eoption__cmp2(A_27a,A_27a),V0cmp))) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Elist__cmp__good,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V0cmp))
+       => p(ap(c_2Ecomparison_2Egood__cmp(ty_2Elist_2Elist(A_27a)),ap(c_2EternaryComparisons_2Elist__compare(A_27a,A_27a),V0cmp))) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Epair__cmp__good,axiom,
+    ! [A_27a: del,A_27b: del,V0cmp1: $i] :
+      ( mem(V0cmp1,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1cmp2: $i] :
+          ( mem(V1cmp2,arr(A_27b,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+         => ( ( p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V0cmp1))
+              & p(ap(c_2Ecomparison_2Egood__cmp(A_27b),V1cmp2)) )
+           => p(ap(c_2Ecomparison_2Egood__cmp(ty_2Epair_2Eprod(A_27a,A_27b)),ap(ap(c_2EternaryComparisons_2Epair__compare(A_27a,A_27a,A_27b,A_27b),V0cmp1),V1cmp2))) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Ebool__cmp__good,axiom,
+    p(ap(c_2Ecomparison_2Egood__cmp(bool),c_2EternaryComparisons_2Ebool__compare)) ).
+
+tff(conj_thm_2Ecomparison_2Enum__cmp__good,axiom,
+    p(ap(c_2Ecomparison_2Egood__cmp(ty_2Enum_2Enum),c_2EternaryComparisons_2Enum__compare)) ).
+
+tff(conj_thm_2Ecomparison_2Echar__cmp__good,axiom,
+    p(ap(c_2Ecomparison_2Egood__cmp(ty_2Estring_2Echar),c_2EternaryComparisons_2Echar__compare)) ).
+
+tff(conj_thm_2Ecomparison_2Estring__cmp__good,axiom,
+    p(ap(c_2Ecomparison_2Egood__cmp(ty_2Elist_2Elist(ty_2Estring_2Echar)),c_2EternaryComparisons_2Estring__compare)) ).
+
+tff(conj_thm_2Ecomparison_2Elist__cmp__cong,axiom,
+    ! [A_27a: del,A_27b: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1l1: $i] :
+          ( mem(V1l1,ty_2Elist_2Elist(A_27a))
+         => ! [V2l2: $i] :
+              ( mem(V2l2,ty_2Elist_2Elist(A_27b))
+             => ! [V3cmp_27: $i] :
+                  ( mem(V3cmp_27,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+                 => ! [V4l1_27: $i] :
+                      ( mem(V4l1_27,ty_2Elist_2Elist(A_27a))
+                     => ! [V5l2_27: $i] :
+                          ( mem(V5l2_27,ty_2Elist_2Elist(A_27b))
+                         => ( ( ( V1l1 = V4l1_27 )
+                              & ( V2l2 = V5l2_27 )
+                              & ! [V6x: $i] :
+                                  ( mem(V6x,A_27a)
+                                 => ! [V7x_27: $i] :
+                                      ( mem(V7x_27,A_27b)
+                                     => ( ( p(ap(ap(c_2Ebool_2EIN(A_27a),V6x),ap(c_2Elist_2ELIST__TO__SET(A_27a),V4l1_27)))
+                                          & p(ap(ap(c_2Ebool_2EIN(A_27b),V7x_27),ap(c_2Elist_2ELIST__TO__SET(A_27b),V5l2_27))) )
+                                       => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V6x),V7x_27)) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(V3cmp_27,V6x),V7x_27)) ) ) ) ) )
+                           => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Elist__compare(A_27a,A_27b),V0cmp),V1l1),V2l2)) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Elist__compare(A_27a,A_27b),V3cmp_27),V4l1_27),V5l2_27)) ) ) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Eoption__cmp__cong,axiom,
+    ! [A_27a: del,A_27b: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1v1: $i] :
+          ( mem(V1v1,ty_2Eoption_2Eoption(A_27a))
+         => ! [V2v2: $i] :
+              ( mem(V2v2,ty_2Eoption_2Eoption(A_27b))
+             => ! [V3cmp_27: $i] :
+                  ( mem(V3cmp_27,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+                 => ! [V4v1_27: $i] :
+                      ( mem(V4v1_27,ty_2Eoption_2Eoption(A_27a))
+                     => ! [V5v2_27: $i] :
+                          ( mem(V5v2_27,ty_2Eoption_2Eoption(A_27b))
+                         => ( ( ( V1v1 = V4v1_27 )
+                              & ( V2v2 = V5v2_27 )
+                              & ! [V6x: $i] :
+                                  ( mem(V6x,A_27a)
+                                 => ! [V7x_27: $i] :
+                                      ( mem(V7x_27,A_27b)
+                                     => ( ( ( V4v1_27 = ap(c_2Eoption_2ESOME(A_27a),V6x) )
+                                          & ( V5v2_27 = ap(c_2Eoption_2ESOME(A_27b),V7x_27) ) )
+                                       => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V6x),V7x_27)) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(V3cmp_27,V6x),V7x_27)) ) ) ) ) )
+                           => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Eoption__compare(A_27a,A_27b),V0cmp),V1v1),V2v2)) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Eoption__compare(A_27a,A_27b),V3cmp_27),V4v1_27),V5v2_27)) ) ) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Eoption__cmp2__cong,axiom,
+    ! [A_27a: del,A_27b: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1v1: $i] :
+          ( mem(V1v1,ty_2Eoption_2Eoption(A_27a))
+         => ! [V2v2: $i] :
+              ( mem(V2v2,ty_2Eoption_2Eoption(A_27b))
+             => ! [V3cmp_27: $i] :
+                  ( mem(V3cmp_27,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+                 => ! [V4v1_27: $i] :
+                      ( mem(V4v1_27,ty_2Eoption_2Eoption(A_27a))
+                     => ! [V5v2_27: $i] :
+                          ( mem(V5v2_27,ty_2Eoption_2Eoption(A_27b))
+                         => ( ( ( V1v1 = V4v1_27 )
+                              & ( V2v2 = V5v2_27 )
+                              & ! [V6x: $i] :
+                                  ( mem(V6x,A_27a)
+                                 => ! [V7x_27: $i] :
+                                      ( mem(V7x_27,A_27b)
+                                     => ( ( ( V4v1_27 = ap(c_2Eoption_2ESOME(A_27a),V6x) )
+                                          & ( V5v2_27 = ap(c_2Eoption_2ESOME(A_27b),V7x_27) ) )
+                                       => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V6x),V7x_27)) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(V3cmp_27,V6x),V7x_27)) ) ) ) ) )
+                           => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2Ecomparison_2Eoption__cmp2(A_27a,A_27b),V0cmp),V1v1),V2v2)) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2Ecomparison_2Eoption__cmp2(A_27a,A_27b),V3cmp_27),V4v1_27),V5v2_27)) ) ) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Epair__cmp__cong,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,A_27d: del,V0cmp1: $i] :
+      ( mem(V0cmp1,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1cmp2: $i] :
+          ( mem(V1cmp2,arr(A_27c,arr(A_27d,ty_2EternaryComparisons_2Eordering)))
+         => ! [V2v1: $i] :
+              ( mem(V2v1,ty_2Epair_2Eprod(A_27a,A_27c))
+             => ! [V3v2: $i] :
+                  ( mem(V3v2,ty_2Epair_2Eprod(A_27b,A_27d))
+                 => ! [V4cmp1_27: $i] :
+                      ( mem(V4cmp1_27,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+                     => ! [V5cmp2_27: $i] :
+                          ( mem(V5cmp2_27,arr(A_27c,arr(A_27d,ty_2EternaryComparisons_2Eordering)))
+                         => ! [V6v1_27: $i] :
+                              ( mem(V6v1_27,ty_2Epair_2Eprod(A_27a,A_27c))
+                             => ! [V7v2_27: $i] :
+                                  ( mem(V7v2_27,ty_2Epair_2Eprod(A_27b,A_27d))
+                                 => ( ( ( V2v1 = V6v1_27 )
+                                      & ( V3v2 = V7v2_27 )
+                                      & ! [V8a: $i] :
+                                          ( mem(V8a,A_27a)
+                                         => ! [V9b: $i] :
+                                              ( mem(V9b,A_27c)
+                                             => ! [V10c: $i] :
+                                                  ( mem(V10c,A_27b)
+                                                 => ! [V11d: $i] :
+                                                      ( mem(V11d,A_27d)
+                                                     => ( ( ( V6v1_27 = ap(ap(c_2Epair_2E_2C(A_27a,A_27c),V8a),V9b) )
+                                                          & ( V7v2_27 = ap(ap(c_2Epair_2E_2C(A_27b,A_27d),V10c),V11d) ) )
+                                                       => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp1,V8a),V10c)) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(V4cmp1_27,V8a),V10c)) ) ) ) ) ) )
+                                      & ! [V12a: $i] :
+                                          ( mem(V12a,A_27a)
+                                         => ! [V13b: $i] :
+                                              ( mem(V13b,A_27c)
+                                             => ! [V14c: $i] :
+                                                  ( mem(V14c,A_27b)
+                                                 => ! [V15d: $i] :
+                                                      ( mem(V15d,A_27d)
+                                                     => ( ( ( V6v1_27 = ap(ap(c_2Epair_2E_2C(A_27a,A_27c),V12a),V13b) )
+                                                          & ( V7v2_27 = ap(ap(c_2Epair_2E_2C(A_27b,A_27d),V14c),V15d) ) )
+                                                       => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V1cmp2,V13b),V15d)) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(V5cmp2_27,V13b),V15d)) ) ) ) ) ) ) )
+                                   => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(ap(c_2EternaryComparisons_2Epair__compare(A_27a,A_27b,A_27c,A_27d),V0cmp1),V1cmp2),V2v1),V3v2)) = surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(ap(c_2EternaryComparisons_2Epair__compare(A_27a,A_27b,A_27c,A_27d),V4cmp1_27),V5cmp2_27),V6v1_27),V7v2_27)) ) ) ) ) ) ) ) ) ) ) ).
+
+tff(lamtp_f2280,type,
+    f2280: ( del * del * $i * $i ) > $i ).
+
+tff(lameq_f2280,axiom,
+    ! [A_27b: del,A_27a: del,V1k: $i] :
+      ( mem(V1k,A_27a)
+     => ! [V0cmp: $i] :
+          ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+         => ! [V3k_27: $i] : ( ap(f2280(A_27b,A_27a,V1k,V0cmp),V3k_27) = k(A_27b,ap(ap(c_2Emin_2E_3D(ty_2EternaryComparisons_2Eordering),ap(ap(V0cmp,V1k),V3k_27)),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2ELESS))) ) ) ) ).
+
+tff(lamtp_f2281,type,
+    f2281: ( del * del * $i ) > $i ).
+
+tff(lameq_f2281,axiom,
+    ! [A_27b: del,A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1k: $i] : ( ap(f2281(A_27b,A_27a,V0cmp),V1k) = k(A_27b,ap(c_2Epair_2EUNCURRY(A_27a,A_27b,bool),f2280(A_27b,A_27a,V1k,V0cmp))) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Egood__cmp__trans,axiom,
+    ! [A_27a: del,A_27b: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V0cmp))
+       => p(ap(c_2Erelation_2Etransitive(ty_2Epair_2Eprod(A_27a,A_27b)),ap(c_2Epair_2EUNCURRY(A_27a,A_27b,arr(ty_2Epair_2Eprod(A_27a,A_27b),bool)),f2281(A_27b,A_27a,V0cmp)))) ) ) ).
+
+tff(lamtp_f2282,type,
+    f2282: ( del * $i * $i ) > $i ).
+
+tff(lameq_f2282,axiom,
+    ! [A_27a: del,V1k: $i] :
+      ( mem(V1k,A_27a)
+     => ! [V0cmp: $i] :
+          ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+         => ! [V2k_27: $i] : ( ap(f2282(A_27a,V1k,V0cmp),V2k_27) = ap(ap(c_2Emin_2E_3D(ty_2EternaryComparisons_2Eordering),ap(ap(V0cmp,V1k),V2k_27)),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2ELESS)) ) ) ) ).
+
+tff(lamtp_f2283,type,
+    f2283: ( del * $i ) > $i ).
+
+tff(lameq_f2283,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1k: $i] : ( ap(f2283(A_27a,V0cmp),V1k) = f2282(A_27a,V1k,V0cmp) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Egood__cmp__Less__trans,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V0cmp))
+       => p(ap(c_2Erelation_2Etransitive(A_27a),f2283(A_27a,V0cmp))) ) ) ).
+
+tff(lamtp_f2284,type,
+    f2284: ( del * $i * $i ) > $i ).
+
+tff(lameq_f2284,axiom,
+    ! [A_27a: del,V3k: $i] :
+      ( mem(V3k,A_27a)
+     => ! [V0cmp: $i] :
+          ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+         => ! [V4k_27: $i] : ( ap(f2284(A_27a,V3k,V0cmp),V4k_27) = ap(ap(c_2Emin_2E_3D(ty_2EternaryComparisons_2Eordering),ap(ap(V0cmp,V3k),V4k_27)),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2ELESS)) ) ) ) ).
+
+tff(lamtp_f2285,type,
+    f2285: ( del * $i ) > $i ).
+
+tff(lameq_f2285,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V3k: $i] : ( ap(f2285(A_27a,V0cmp),V3k) = f2284(A_27a,V3k,V0cmp) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Egood__cmp__Less__irrefl__trans,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ( p(ap(c_2Ecomparison_2Egood__cmp(A_27a),V0cmp))
+       => ( p(ap(c_2Erelation_2Eirreflexive(A_27a),f2283(A_27a,V0cmp)))
+          & p(ap(c_2Erelation_2Etransitive(A_27a),f2285(A_27a,V0cmp))) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Ebool__cmp__antisym,axiom,
+    ! [V0x: tp__o,V1y: tp__o] :
+      ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Ebool__compare,inj__o(V0x)),inj__o(V1y))) = fo__c_2EternaryComparisons_2EEQUAL )
+    <=> ( p(inj__o(V0x))
+      <=> p(inj__o(V1y)) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Enum__cmp__antisym,axiom,
+    ! [V0x: tp__ty_2Enum_2Enum,V1y: tp__ty_2Enum_2Enum] :
+      ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Enum__compare,inj__ty_2Enum_2Enum(V0x)),inj__ty_2Enum_2Enum(V1y))) = fo__c_2EternaryComparisons_2EEQUAL )
+    <=> ( V0x = V1y ) ) ).
+
+tff(conj_thm_2Ecomparison_2Echar__cmp__antisym,axiom,
+    ! [V0x: tp__ty_2Estring_2Echar,V1y: tp__ty_2Estring_2Echar] :
+      ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Echar__compare,inj__ty_2Estring_2Echar(V0x)),inj__ty_2Estring_2Echar(V1y))) = fo__c_2EternaryComparisons_2EEQUAL )
+    <=> ( V0x = V1y ) ) ).
+
+tff(conj_thm_2Ecomparison_2Elist__cmp__antisym,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1x: $i] :
+          ( mem(V1x,ty_2Elist_2Elist(A_27a))
+         => ! [V2y: $i] :
+              ( mem(V2y,ty_2Elist_2Elist(A_27a))
+             => ( ! [V3x: $i] :
+                    ( mem(V3x,A_27a)
+                   => ! [V4y: $i] :
+                        ( mem(V4y,A_27a)
+                       => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V3x),V4y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                        <=> ( V3x = V4y ) ) ) )
+               => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Elist__compare(A_27a,A_27a),V0cmp),V1x),V2y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                <=> ( V1x = V2y ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Estring__cmp__antisym,axiom,
+    ! [V0x: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar,V1y: tp__c_ty_2Elist_2Elist_ty_2Estring_2Echar] :
+      ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(c_2EternaryComparisons_2Estring__compare,inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar(V0x)),inj__c_ty_2Elist_2Elist_ty_2Estring_2Echar(V1y))) = fo__c_2EternaryComparisons_2EEQUAL )
+    <=> ( V0x = V1y ) ) ).
+
+tff(conj_thm_2Ecomparison_2Epair__cmp__antisym,axiom,
+    ! [A_27a: del,A_27b: del,V0cmp1: $i] :
+      ( mem(V0cmp1,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1cmp2: $i] :
+          ( mem(V1cmp2,arr(A_27b,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+         => ! [V2x: $i] :
+              ( mem(V2x,ty_2Epair_2Eprod(A_27a,A_27b))
+             => ! [V3y: $i] :
+                  ( mem(V3y,ty_2Epair_2Eprod(A_27a,A_27b))
+                 => ( ( ! [V4x: $i] :
+                          ( mem(V4x,A_27a)
+                         => ! [V5y: $i] :
+                              ( mem(V5y,A_27a)
+                             => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp1,V4x),V5y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                              <=> ( V4x = V5y ) ) ) )
+                      & ! [V6x: $i] :
+                          ( mem(V6x,A_27b)
+                         => ! [V7y: $i] :
+                              ( mem(V7y,A_27b)
+                             => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V1cmp2,V6x),V7y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                              <=> ( V6x = V7y ) ) ) ) )
+                   => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(ap(c_2EternaryComparisons_2Epair__compare(A_27a,A_27a,A_27b,A_27b),V0cmp1),V1cmp2),V2x),V3y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                    <=> ( V2x = V3y ) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Eoption__cmp__antisym,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1x: $i] :
+          ( mem(V1x,ty_2Eoption_2Eoption(A_27a))
+         => ! [V2y: $i] :
+              ( mem(V2y,ty_2Eoption_2Eoption(A_27a))
+             => ( ! [V3x: $i] :
+                    ( mem(V3x,A_27a)
+                   => ! [V4y: $i] :
+                        ( mem(V4y,A_27a)
+                       => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V3x),V4y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                        <=> ( V3x = V4y ) ) ) )
+               => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Eoption__compare(A_27a,A_27a),V0cmp),V1x),V2y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                <=> ( V1x = V2y ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Eoption__cmp2__antisym,axiom,
+    ! [A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1x: $i] :
+          ( mem(V1x,ty_2Eoption_2Eoption(A_27a))
+         => ! [V2y: $i] :
+              ( mem(V2y,ty_2Eoption_2Eoption(A_27a))
+             => ( ! [V3x: $i] :
+                    ( mem(V3x,A_27a)
+                   => ! [V4y: $i] :
+                        ( mem(V4y,A_27a)
+                       => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V3x),V4y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                        <=> ( V3x = V4y ) ) ) )
+               => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2Ecomparison_2Eoption__cmp2(A_27a,A_27a),V0cmp),V1x),V2y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                <=> ( V1x = V2y ) ) ) ) ) ) ).
+
+tff(ax_thm_2Ecomparison_2Eresp__equiv__def,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,arr(A_27b,A_27c)))
+         => ( p(ap(ap(c_2Ecomparison_2Eresp__equiv(A_27a,A_27b,A_27c),V0cmp),V1f))
+          <=> ! [V2k1: $i] :
+                ( mem(V2k1,A_27a)
+               => ! [V3k2: $i] :
+                    ( mem(V3k2,A_27a)
+                   => ! [V4v: $i] :
+                        ( mem(V4v,A_27b)
+                       => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V2k1),V3k2)) = fo__c_2EternaryComparisons_2EEQUAL )
+                         => ( ap(ap(V1f,V2k1),V4v) = ap(ap(V1f,V3k2),V4v) ) ) ) ) ) ) ) ) ).
+
+tff(ax_thm_2Ecomparison_2Eresp__equiv2__def,axiom,
+    ! [A_27a: del,A_27b: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1cmp2: $i] :
+          ( mem(V1cmp2,arr(A_27b,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+         => ! [V2f: $i] :
+              ( mem(V2f,arr(A_27a,A_27b))
+             => ( p(ap(ap(ap(c_2Ecomparison_2Eresp__equiv2(A_27a,A_27b),V0cmp),V1cmp2),V2f))
+              <=> ! [V3k1: $i] :
+                    ( mem(V3k1,A_27a)
+                   => ! [V4k2: $i] :
+                        ( mem(V4k2,A_27a)
+                       => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V3k1),V4k2)) = fo__c_2EternaryComparisons_2EEQUAL )
+                         => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V1cmp2,ap(V2f,V3k1)),ap(V2f,V4k2))) = fo__c_2EternaryComparisons_2EEQUAL ) ) ) ) ) ) ) ) ).
+
+tff(ax_thm_2Ecomparison_2Eequiv__inj__def,axiom,
+    ! [A_27a: del,A_27b: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1cmp2: $i] :
+          ( mem(V1cmp2,arr(A_27b,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+         => ! [V2f: $i] :
+              ( mem(V2f,arr(A_27a,A_27b))
+             => ( p(ap(ap(ap(c_2Ecomparison_2Eequiv__inj(A_27a,A_27b),V0cmp),V1cmp2),V2f))
+              <=> ! [V3k1: $i] :
+                    ( mem(V3k1,A_27a)
+                   => ! [V4k2: $i] :
+                        ( mem(V4k2,A_27a)
+                       => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V1cmp2,ap(V2f,V3k1)),ap(V2f,V4k2))) = fo__c_2EternaryComparisons_2EEQUAL )
+                         => ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V3k1),V4k2)) = fo__c_2EternaryComparisons_2EEQUAL ) ) ) ) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Eantisym__resp__equiv,axiom,
+    ! [A_27a: del,A_27b: del,A_27c: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27a,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1f: $i] :
+          ( mem(V1f,arr(A_27a,arr(A_27b,A_27c)))
+         => ( ! [V2x: $i] :
+                ( mem(V2x,A_27a)
+               => ! [V3y: $i] :
+                    ( mem(V3y,A_27a)
+                   => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(V0cmp,V2x),V3y)) = fo__c_2EternaryComparisons_2EEQUAL )
+                     => ( V2x = V3y ) ) ) )
+           => ( p(ap(ap(c_2Ecomparison_2Eresp__equiv(A_27a,A_27b,A_27c),V0cmp),V1f))
+              & ! [V4cmp2: $i] :
+                  ( mem(V4cmp2,arr(arr(A_27b,A_27c),arr(arr(A_27b,A_27c),ty_2EternaryComparisons_2Eordering)))
+                 => ( p(ap(c_2Ecomparison_2Egood__cmp(arr(A_27b,A_27c)),V4cmp2))
+                   => p(ap(ap(ap(c_2Ecomparison_2Eresp__equiv2(A_27a,arr(A_27b,A_27c)),V0cmp),V4cmp2),V1f)) ) ) ) ) ) ) ).
+
+tff(lamtp_f2286,type,
+    f2286: ( del * del * $i * $i ) > $i ).
+
+tff(lameq_f2286,axiom,
+    ! [A_27a: del,A_27b: del,V3x: $i] :
+      ( mem(V3x,A_27a)
+     => ! [V0cmp: $i] :
+          ( mem(V0cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+         => ! [V4y: $i] : ( ap(f2286(A_27a,A_27b,V3x,V0cmp),V4y) = ap(ap(c_2Emin_2E_3D(ty_2EternaryComparisons_2Eordering),ap(ap(V0cmp,V3x),V4y)),inj__ty_2EternaryComparisons_2Eordering(fo__c_2EternaryComparisons_2EEQUAL)) ) ) ) ).
+
+tff(lamtp_f2287,type,
+    f2287: ( del * del * $i ) > $i ).
+
+tff(lameq_f2287,axiom,
+    ! [A_27b: del,A_27a: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+     => ! [V3x: $i] : ( ap(f2287(A_27b,A_27a,V0cmp),V3x) = f2286(A_27a,A_27b,V3x,V0cmp) ) ) ).
+
+tff(conj_thm_2Ecomparison_2Elist__cmp__equal__list__rel,axiom,
+    ! [A_27a: del,A_27b: del,V0cmp: $i] :
+      ( mem(V0cmp,arr(A_27a,arr(A_27b,ty_2EternaryComparisons_2Eordering)))
+     => ! [V1l1: $i] :
+          ( mem(V1l1,ty_2Elist_2Elist(A_27a))
+         => ! [V2l2: $i] :
+              ( mem(V2l2,ty_2Elist_2Elist(A_27b))
+             => ( ( surj__ty_2EternaryComparisons_2Eordering(ap(ap(ap(c_2EternaryComparisons_2Elist__compare(A_27a,A_27b),V0cmp),V1l1),V2l2)) = fo__c_2EternaryComparisons_2EEQUAL )
+              <=> p(ap(ap(ap(c_2Elist_2ELIST__REL(A_27a,A_27b),f2287(A_27b,A_27a,V0cmp)),V1l1),V2l2)) ) ) ) ) ).
+
+tff(conj_thm_2Ecomparison_2ETO__of__LinearOrder__LLEX,axiom,
+    ! [A_27a: del,V0R: $i] :
+      ( mem(V0R,arr(A_27a,arr(A_27a,bool)))
+     => ( p(ap(c_2Erelation_2Eirreflexive(A_27a),V0R))
+       => ( ap(c_2Etoto_2ETO__of__LinearOrder(ty_2Elist_2Elist(A_27a)),ap(c_2Elist_2ELLEX(A_27a),V0R)) = ap(c_2EternaryComparisons_2Elist__compare(A_27a,A_27a),ap(c_2Etoto_2ETO__of__LinearOrder(A_27a),V0R)) ) ) ) ).
+
+%------------------------------------------------------------------------------

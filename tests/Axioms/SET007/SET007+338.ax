@@ -1,0 +1,589 @@
+%------------------------------------------------------------------------------
+% File     : SET007+338 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Isomorphisms of Cyclic Groups. Some Properties of Cyclic Groups
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : gr_cy_2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   36 (   6 unt;   0 def)
+%            Number of atoms       :  390 (  49 equ)
+%            Maximal formula atoms :   31 (  10 avg)
+%            Number of connectives :  412 (  58   ~;   2   |; 236   &)
+%                                         (   4 <=>; 112  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   9 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   26 (  24 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   21 (  21 usr;   6 con; 0-3 aty)
+%            Number of variables   :   95 (  88   !;   7   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ( ~ v3_struct_0(k10_group_5(A))
+        & v1_group_1(k10_group_5(A))
+        & v2_group_1(k10_group_5(A))
+        & v3_group_1(k10_group_5(A))
+        & v4_group_1(k10_group_5(A))
+        & v1_group_3(k10_group_5(A),A) ) ) ).
+
+fof(t1_gr_cy_2,axiom,
+    $true ).
+
+fof(t2_gr_cy_2,axiom,
+    $true ).
+
+fof(t3_gr_cy_2,axiom,
+    $true ).
+
+fof(t4_gr_cy_2,axiom,
+    $true ).
+
+fof(t5_gr_cy_2,axiom,
+    $true ).
+
+fof(t6_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ~ ( ~ r1_xreal_0(k7_group_1(A,B),np__1)
+                      & B = k6_group_1(A,D,C)
+                      & D = np__0 ) ) ) ) ) ).
+
+fof(t7_gr_cy_2,axiom,
+    $true ).
+
+fof(t8_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => r1_rlvect_1(k5_group_4(A,k1_struct_0(A,B)),B) ) ) ).
+
+fof(t9_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_group_2(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ( C = D
+                   => k5_group_4(A,k1_struct_0(A,C)) = k5_group_4(B,k1_struct_0(B,D)) ) ) ) ) ) ).
+
+fof(t10_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( ~ v3_struct_0(k5_group_4(A,k1_struct_0(A,B)))
+            & v3_group_1(k5_group_4(A,k1_struct_0(A,B)))
+            & v4_group_1(k5_group_4(A,k1_struct_0(A,B)))
+            & v1_gr_cy_1(k5_group_4(A,k1_struct_0(A,B)))
+            & l1_group_1(k5_group_4(A,k1_struct_0(A,B))) ) ) ) ).
+
+fof(t11_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ? [D] :
+                    ( v1_int_1(D)
+                    & C = k6_group_1(A,D,B) ) )
+          <=> A = k5_group_4(A,k1_struct_0(A,B)) ) ) ) ).
+
+fof(t12_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v6_group_1(A)
+           => ( ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ? [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                      & C = k6_group_1(A,D,B) ) )
+            <=> A = k5_group_4(A,k1_struct_0(A,B)) ) ) ) ) ).
+
+fof(t13_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( ( v6_group_1(A)
+              & A = k5_group_4(A,k1_struct_0(A,B)) )
+           => ! [C] :
+                ( ( v1_group_1(C)
+                  & m1_group_2(C,A) )
+               => ? [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                    & r1_group_2(A,C,k5_group_4(A,k1_struct_0(A,k6_group_1(A,D,B)))) ) ) ) ) ) ).
+
+fof(t14_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( ( v6_group_1(A)
+                          & A = k5_group_4(A,k1_struct_0(A,B))
+                          & k9_group_1(A) = C
+                          & C = k2_nat_1(D,E) )
+                       => k7_group_1(A,k6_group_1(A,D,B)) = E ) ) ) ) ) ) ).
+
+fof(t15_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( r1_nat_1(C,D)
+                   => r1_rlvect_1(k5_group_4(A,k1_struct_0(A,k6_group_1(A,C,B))),k6_group_1(A,D,B)) ) ) ) ) ) ).
+
+fof(t16_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( ( v6_group_1(A)
+                      & k9_group_1(k5_group_4(A,k1_struct_0(A,k6_group_1(A,C,B)))) = k9_group_1(k5_group_4(A,k1_struct_0(A,k6_group_1(A,D,B))))
+                      & r1_rlvect_1(k5_group_4(A,k1_struct_0(A,k6_group_1(A,C,B))),k6_group_1(A,D,B)) )
+                   => r1_group_2(A,k5_group_4(A,k1_struct_0(A,k6_group_1(A,C,B))),k5_group_4(A,k1_struct_0(A,k6_group_1(A,D,B)))) ) ) ) ) ) ).
+
+fof(t17_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_group_2(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( ( v6_group_1(A)
+                              & k9_group_1(A) = D
+                              & A = k5_group_4(A,k1_struct_0(A,C))
+                              & k9_group_1(B) = E
+                              & B = k5_group_4(A,k1_struct_0(A,k6_group_1(A,F,C))) )
+                           => r1_nat_1(D,k2_nat_1(F,E)) ) ) ) ) ) ) ) ).
+
+fof(t18_gr_cy_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v1_group_1(C)
+                & v3_group_1(C)
+                & v4_group_1(C)
+                & l1_group_1(C) )
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(C))
+                 => ( ( v6_group_1(C)
+                      & C = k5_group_4(C,k1_struct_0(C,D))
+                      & k9_group_1(C) = A )
+                   => ( C = k5_group_4(C,k1_struct_0(C,k6_group_1(C,B,D)))
+                    <=> k6_nat_1(B,A) = np__1 ) ) ) ) ) ) ).
+
+fof(t19_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & v1_gr_cy_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_group_2(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( ( A = k5_group_4(A,k1_struct_0(A,C))
+                  & r1_rlvect_1(B,C) )
+               => g1_group_1(u1_struct_0(A),u1_group_1(A)) = g1_group_1(u1_struct_0(B),u1_group_1(B)) ) ) ) ) ).
+
+fof(t20_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & v1_gr_cy_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( A = k5_group_4(A,k1_struct_0(A,B))
+           => ( v6_group_1(A)
+            <=> ? [C] :
+                  ( v1_int_1(C)
+                  & ? [D] :
+                      ( v1_int_1(D)
+                      & C != D
+                      & k6_group_1(A,C,B) = k6_group_1(A,D,B) ) ) ) ) ) ) ).
+
+fof(d1_gr_cy_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ( ~ r1_xreal_0(A,np__0)
+       => ! [B] :
+            ( m1_subset_1(B,u1_struct_0(k5_gr_cy_1(A)))
+           => k1_gr_cy_2(A,B) = B ) ) ) ).
+
+fof(t21_gr_cy_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_group_1(B)
+            & v3_group_1(B)
+            & v4_group_1(B)
+            & v1_gr_cy_1(B)
+            & l1_group_1(B) )
+         => ( ( v6_group_1(B)
+              & k9_group_1(B) = A )
+           => r2_group_6(k5_gr_cy_1(A),B) ) ) ) ).
+
+fof(t22_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & v1_gr_cy_1(A)
+        & l1_group_1(A) )
+     => ( ~ v6_group_1(A)
+       => r2_group_6(k3_gr_cy_1,A) ) ) ).
+
+fof(t23_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & v1_gr_cy_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_group_1(B)
+            & v3_group_1(B)
+            & v4_group_1(B)
+            & v1_gr_cy_1(B)
+            & l1_group_1(B) )
+         => ( ( v6_group_1(B)
+              & v6_group_1(A)
+              & k9_group_1(B) = k9_group_1(A) )
+           => r2_group_6(B,A) ) ) ) ).
+
+fof(t24_gr_cy_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_group_1(B)
+            & v3_group_1(B)
+            & v4_group_1(B)
+            & l1_group_1(B) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v1_group_1(C)
+                & v3_group_1(C)
+                & v4_group_1(C)
+                & l1_group_1(C) )
+             => ( ( v6_group_1(B)
+                  & v6_group_1(C)
+                  & k9_group_1(B) = A
+                  & k9_group_1(C) = A
+                  & v1_int_2(A) )
+               => r2_group_6(B,C) ) ) ) ) ).
+
+fof(t25_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_group_1(B)
+            & v3_group_1(B)
+            & v4_group_1(B)
+            & l1_group_1(B) )
+         => ( ( v6_group_1(A)
+              & v6_group_1(B)
+              & k9_group_1(A) = np__2
+              & k9_group_1(B) = np__2 )
+           => r2_group_6(A,B) ) ) ) ).
+
+fof(t26_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ( ( v6_group_1(A)
+          & k9_group_1(A) = np__2 )
+       => ! [B] :
+            ( ( v1_group_1(B)
+              & m1_group_2(B,A) )
+           => ( r1_group_2(A,B,k5_group_2(A))
+              | B = A ) ) ) ) ).
+
+fof(t27_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ( ( v6_group_1(A)
+          & k9_group_1(A) = np__2 )
+       => ( ~ v3_struct_0(A)
+          & v3_group_1(A)
+          & v4_group_1(A)
+          & v1_gr_cy_1(A)
+          & l1_group_1(A) ) ) ) ).
+
+fof(t28_gr_cy_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_group_1(B)
+            & v3_group_1(B)
+            & v4_group_1(B)
+            & l1_group_1(B) )
+         => ( ( v6_group_1(B)
+              & ~ v3_struct_0(B)
+              & v3_group_1(B)
+              & v4_group_1(B)
+              & v1_gr_cy_1(B)
+              & l1_group_1(B)
+              & k9_group_1(B) = A )
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => ~ ( r1_nat_1(C,A)
+                    & ! [D] :
+                        ( ( v1_group_1(D)
+                          & m1_group_2(D,B) )
+                       => ~ ( k9_group_1(D) = C
+                            & ! [E] :
+                                ( ( v1_group_1(E)
+                                  & m1_group_2(E,B) )
+                               => ( k9_group_1(E) = C
+                                 => r1_group_2(B,E,D) ) ) ) ) ) ) ) ) ) ).
+
+fof(t29_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & v1_gr_cy_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( A = k5_group_4(A,k1_struct_0(A,B))
+           => ! [C] :
+                ( ( ~ v3_struct_0(C)
+                  & v3_group_1(C)
+                  & v4_group_1(C)
+                  & l1_group_1(C) )
+               => ! [D] :
+                    ( ( v1_funct_1(D)
+                      & v1_funct_2(D,u1_struct_0(C),u1_struct_0(A))
+                      & v1_group_6(D,C,A)
+                      & m2_relset_1(D,u1_struct_0(C),u1_struct_0(A)) )
+                   => ( r1_rlvect_1(k13_group_6(C,A,D),B)
+                     => v3_group_6(D,C,A) ) ) ) ) ) ) ).
+
+fof(t30_gr_cy_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_group_1(B)
+            & v3_group_1(B)
+            & v4_group_1(B)
+            & v1_gr_cy_1(B)
+            & l1_group_1(B) )
+         => ~ ( v6_group_1(B)
+              & k9_group_1(B) = A
+              & ? [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                  & A = k2_nat_1(np__2,C) )
+              & ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(B))
+                 => ~ ( k7_group_1(B,C) = np__2
+                      & ! [D] :
+                          ( m1_subset_1(D,u1_struct_0(B))
+                         => ( k7_group_1(B,D) = np__2
+                           => C = D ) ) ) ) ) ) ) ).
+
+fof(t31_gr_cy_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_group_1(B)
+            & v3_group_1(B)
+            & v4_group_1(B)
+            & v1_gr_cy_1(B)
+            & l1_group_1(B) )
+         => ~ ( v6_group_1(B)
+              & k9_group_1(B) = A
+              & ? [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                  & A = k2_nat_1(np__2,C) )
+              & ! [C] :
+                  ( m1_group_2(C,B)
+                 => ~ ( k9_group_1(C) = np__2
+                      & ~ v3_struct_0(C)
+                      & v3_group_1(C)
+                      & v4_group_1(C)
+                      & v1_gr_cy_1(C)
+                      & l1_group_1(C) ) ) ) ) ) ).
+
+fof(t32_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_group_1(B)
+            & v3_group_1(B)
+            & v4_group_1(B)
+            & l1_group_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(B),u1_struct_0(A))
+                & v1_group_6(C,B,A)
+                & m2_relset_1(C,u1_struct_0(B),u1_struct_0(A)) )
+             => ( ( ~ v3_struct_0(B)
+                  & v3_group_1(B)
+                  & v4_group_1(B)
+                  & v1_gr_cy_1(B)
+                  & l1_group_1(B) )
+               => ( ~ v3_struct_0(k13_group_6(B,A,C))
+                  & v3_group_1(k13_group_6(B,A,C))
+                  & v4_group_1(k13_group_6(B,A,C))
+                  & v1_gr_cy_1(k13_group_6(B,A,C))
+                  & l1_group_1(k13_group_6(B,A,C)) ) ) ) ) ) ).
+
+fof(t33_gr_cy_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v1_group_1(A)
+        & v3_group_1(A)
+        & v4_group_1(A)
+        & l1_group_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v1_group_1(B)
+            & v3_group_1(B)
+            & v4_group_1(B)
+            & l1_group_1(B) )
+         => ( r2_group_6(A,B)
+           => ( ( ~ ( ~ v3_struct_0(A)
+                    & v3_group_1(A)
+                    & v4_group_1(A)
+                    & v1_gr_cy_1(A)
+                    & l1_group_1(A) )
+                & ~ ( ~ v3_struct_0(B)
+                    & v3_group_1(B)
+                    & v4_group_1(B)
+                    & v1_gr_cy_1(B)
+                    & l1_group_1(B) ) )
+              | ( ~ v3_struct_0(A)
+                & v3_group_1(A)
+                & v4_group_1(A)
+                & v1_gr_cy_1(A)
+                & l1_group_1(A)
+                & ~ v3_struct_0(B)
+                & v3_group_1(B)
+                & v4_group_1(B)
+                & v1_gr_cy_1(B)
+                & l1_group_1(B) ) ) ) ) ) ).
+
+fof(dt_k1_gr_cy_2,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,u1_struct_0(k5_gr_cy_1(A))) )
+     => m2_subset_1(k1_gr_cy_2(A,B),k1_numbers,k5_numbers) ) ).
+
+%------------------------------------------------------------------------------

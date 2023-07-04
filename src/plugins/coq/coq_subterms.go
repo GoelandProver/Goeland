@@ -41,9 +41,6 @@
 package coq
 
 import (
-	"fmt"
-	"time"
-
 	"github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -96,9 +93,9 @@ func findSubterms(form btps.Form, vars []btps.Var) []Subterm {
 		// --------------------------------------------------------------------
 		// n-ary connectors
 		case btps.And:
-			result = nAryResult(f.GetLF(), vars, path)
+			result = nAryResult(f.FormList, vars, path)
 		case btps.Or:
-			result = nAryResult(f.GetLF(), vars, path)
+			result = nAryResult(f.FormList, vars, path)
 		// --------------------------------------------------------------------
 		// Unary connectors
 		case btps.Not:
@@ -201,9 +198,9 @@ func getSubtermsOf(form btps.Form, subterms []Subterm) []VarMaps {
 		// --------------------------------------------------------------------
 		// n-ary connectors
 		case btps.And:
-			result = getFromPath(f.GetLF()[path[0]], path[1:])
+			result = getFromPath(f.FormList[path[0]], path[1:])
 		case btps.Or:
-			result = getFromPath(f.GetLF()[path[0]], path[1:])
+			result = getFromPath(f.FormList[path[0]], path[1:])
 		// Unary connectors:
 		case btps.Not:
 			result = getFromPath(f.GetForm(), path[1:])
@@ -257,8 +254,7 @@ func merge(ls []VarMaps, element VarMaps) []VarMaps {
 		if listEl.var_.Equals(element.var_) {
 			found = true
 			if !listEl.term.Equals(element.term) {
-				fmt.Printf("[%.6fs][%v][Coq] Error when instanciating a variable.\n", time.Since(global.GetStart()).Seconds(), global.GetGID())
-				panic("Same var different terms")
+				global.PrintPanic("Coq", "Error when instanciating a variable: same var different terms")
 			}
 		}
 	}

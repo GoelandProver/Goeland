@@ -162,7 +162,7 @@ func (lpo LPO) compare(s, t basictypes.Term) compareStruct {
 			// function & meta : Occurences inside : f(x) < x, f(y) < x
 			return compareMetaFun(t_type, s_type, -1, lpo)
 		default:
-			fmt.Printf("Type of t unknown")
+			global.PrintError("CPR", "Type of t unknown")
 		}
 	case basictypes.Meta:
 		global.PrintDebug("CPR", fmt.Sprintf("%v is a Meta", s.ToString()))
@@ -176,10 +176,10 @@ func (lpo LPO) compare(s, t basictypes.Term) compareStruct {
 			// Meta and meta
 			return compareMetaMeta(s_type, t_type)
 		default:
-			fmt.Printf("Type of t unknown")
+			global.PrintError("CPR", "Type of t unknown")
 		}
 	default:
-		fmt.Printf("Type of s unknown")
+		global.PrintError("CPR", "Type of s unknown")
 	}
 	return makeCompareStruct(0, false, s, t)
 }
@@ -224,7 +224,7 @@ func compareMetaFunInside(m basictypes.Meta, f basictypes.Fun, return_code int, 
 			res = cs.order
 			is_comparable = cs.is_comparable
 		default:
-			fmt.Printf("Unexpected return_code in compare\n")
+			global.PrintError("CMFI", "Unexpected return_code in compare")
 		}
 
 		if is_comparable {
@@ -256,10 +256,10 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) compareStruct {
 	g := lpo.get(t.GetID())
 
 	if f == -1 {
-		fmt.Printf("Error : id not in the LPO : %v\n", s.GetID().ToString())
+		global.PrintError("CFF", fmt.Sprintf("id not in the LPO : %v\n", s.GetID().ToString()))
 	}
 	if g == -1 {
-		fmt.Printf("Error : id not in the LPO : %v\n", t.GetID().ToString())
+		global.PrintError("CFF", fmt.Sprintf("id not in the LPO : %v\n", t.GetID().ToString()))
 	}
 
 	if f < g {
@@ -308,7 +308,7 @@ func caseFLessG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
 func caseFEqualsG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
 	global.PrintDebug("F=G", "Case F = G")
 	if len(s.GetArgs()) != len(t.GetArgs()) {
-		fmt.Printf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString())
+		global.PrintError("F=G", fmt.Sprintf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString()))
 		return true, makeCompareStruct(0, false, nil, nil)
 	}
 

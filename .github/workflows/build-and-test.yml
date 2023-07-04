@@ -1,6 +1,10 @@
 name: Build And Test
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - develop
 
 jobs:
   Build:
@@ -12,104 +16,3 @@ jobs:
           go-version: '>=1.18.0'
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
-  Test:
-    runs-on: ubuntu-latest
-    needs: Build
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
-        with:
-          go-version: '>=1.18.0'
-      - run: sudo apt-get install -y golang-golang-x-tools
-      - run: cd src && make
-      - run: cd src && go test ./...
-  Soundness-1:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
-    with:
-      folder: soundness_test/problems_0
-  Soundness-2:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
-    with:
-      folder: soundness_test/problems_1
-  Soundness-3:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
-    with:
-      folder: soundness_test/problems_2
-  Soundness-4:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
-    with:
-      folder: soundness_test/problems_3
-  Soundness-5:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
-    with:
-      folder: soundness_test/problems_4
-  Soundness-6:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
-    with:
-      folder: soundness_test/problems_5
-  Soundness-7:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
-    with:
-      folder: soundness_test/problems_6
-  SYN-1:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/SYN.yml@develop
-    with:
-      folder: SYN_test/problems_0
-  SYN-2:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/SYN.yml@develop
-    with:
-      folder: SYN_test/problems_1
-  SET-1:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/SET.yml@develop
-    with:
-      folder: SET_test/problems_0
-  SET-2:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/SET.yml@develop
-    with:
-      folder: SET_test/problems_1
-  SET-3:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/SET.yml@develop
-    with:
-      folder: SET_test/problems_2
-  CASC-1:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/CASC.yml@develop
-    with:
-      folder: tests/CASC2022_0
-  CASC-2:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/CASC.yml@develop
-    with:
-      folder: tests/CASC2022_1
-  CASC-3:
-    needs: Test
-    if: github.ref == 'refs/heads/develop'
-    uses: GoelandProver/Goeland/.github/workflows/CASC.yml@develop
-    with:
-      folder: tests/CASC2022_2

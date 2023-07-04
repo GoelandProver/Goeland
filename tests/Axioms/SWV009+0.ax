@@ -1,0 +1,267 @@
+%------------------------------------------------------------------------------
+% File     : SWV009+0 : TPTP v8.1.2. Released v4.0.0.
+% Domain   : Software Verification
+% Axioms   : General axioms for access to classified information
+% Version  : [Gar09] axioms.
+% English  :
+
+% Refs     : [Gar09] Garg (2006), Email to G. Sutcliffe
+% Source   : [Gar09]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   41 (  12 unt;   0 def)
+%            Number of atoms       :  129 (   0 equ)
+%            Maximal formula atoms :   11 (   3 avg)
+%            Number of connectives :   88 (   0   ~;   0   |;   0   &)
+%                                         (   0 <=>;  88  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   16 (   6 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of predicates  :   55 (  55 usr;   0 prp; 1-6 aty)
+%            Number of functors    :   14 (  14 usr;  13 con; 0-2 aty)
+%            Number of variables   :  129 ( 129   !;   0   ?)
+% SPC      : 
+
+% Comments :
+%------------------------------------------------------------------------------
+fof(ax0,axiom,
+    ! [K] : loca_level_direct_below(K,unclassified,sbu) ).
+
+fof(ax1,axiom,
+    ! [K] : loca_level_direct_below(K,sbu,confidential) ).
+
+fof(ax2,axiom,
+    ! [K] : loca_level_direct_below(K,confidential,secret) ).
+
+fof(ax3,axiom,
+    ! [K] : loca_level_direct_below(K,secret,topsecret) ).
+
+fof(ax4,axiom,
+    ! [K,L] : loca_level_below(K,L,L) ).
+
+fof(ax5,axiom,
+    ! [K,L,L1,L11] :
+      ( loca_level_direct_below(K,L1,L11)
+     => ( loca_level_below(K,L,L1)
+       => loca_level_below(K,L,L11) ) ) ).
+
+fof(ax6,axiom,
+    ! [C,SSO] :
+      ( system_compartment_has_sso(system,C,SSO)
+     => admin_compartment_has_sso(admin,C,SSO) ) ).
+
+fof(ax7,axiom,
+    ! [OCA,C,SSO,SCG] :
+      ( system_indi_is_oca(system,OCA)
+     => ( oca_compartment_has_scg(OCA,C,SCG)
+       => ( admin_compartment_has_sso(admin,C,SSO)
+         => ( sso_compartment_has_scg(SSO,C,SCG)
+           => admin_compartment_has_scg(admin,C,SCG) ) ) ) ) ).
+
+fof(ax8,axiom,
+    ! [F,CL] :
+      ( system_file_needs_compartments(system,F,CL)
+     => ( admin_file_has_compartments_h(admin,F,CL,CL)
+       => admin_file_has_compartments(admin,F,CL) ) ) ).
+
+fof(ax9,axiom,
+    ! [F,CL] : admin_file_has_compartments_h(admin,F,CL,nil) ).
+
+fof(ax10,axiom,
+    ! [F,CL,C1,CL1,SSO] :
+      ( admin_compartment_has_sso(admin,C1,SSO)
+     => ( sso_file_has_compartments(SSO,F,CL)
+       => ( admin_file_has_compartments_h(admin,F,CL,CL1)
+         => admin_file_has_compartments_h(admin,F,CL,cons(C1,CL1)) ) ) ) ).
+
+fof(ax11,axiom,
+    ! [F,L,CL] :
+      ( system_file_needs_level(system,F,L)
+     => ( admin_file_has_compartments(admin,F,CL)
+       => ( admin_file_has_level_h(admin,F,L,CL)
+         => admin_file_has_level(admin,F,L) ) ) ) ).
+
+fof(ax12,axiom,
+    ! [F,L] : admin_file_has_level_h(admin,F,L,nil) ).
+
+fof(ax13,axiom,
+    ! [F,L,C,CL,SSO,SCG] :
+      ( admin_compartment_has_sso(admin,C,SSO)
+     => ( admin_compartment_has_scg(admin,C,SCG)
+       => ( sso_file_has_level(SSO,F,L,SCG)
+         => ( admin_file_has_level_h(admin,F,L,CL)
+           => admin_file_has_level_h(admin,F,L,cons(C,CL)) ) ) ) ) ).
+
+fof(ax14,axiom,
+    ! [F,U,CL] :
+      ( system_file_needs_citizenship(system,F,U)
+     => ( admin_file_has_compartments(admin,F,CL)
+       => ( admin_file_has_citizenship_h(admin,F,U,CL)
+         => admin_file_has_citizenship(admin,F,U) ) ) ) ).
+
+fof(ax15,axiom,
+    ! [F,U] : admin_file_has_citizenship_h(admin,F,U,nil) ).
+
+fof(ax16,axiom,
+    ! [F,U,C,CL,SSO,SCG] :
+      ( admin_compartment_has_sso(admin,C,SSO)
+     => ( admin_compartment_has_scg(admin,C,SCG)
+       => ( sso_file_has_citizenship(SSO,F,U,SCG)
+         => ( admin_file_has_citizenship_h(admin,F,U,CL)
+           => admin_file_has_citizenship_h(admin,F,U,cons(C,CL)) ) ) ) ) ).
+
+fof(ax17,axiom,
+    ! [K,PA] :
+      ( system_indi_is_polygraph_admin(system,PA)
+     => ( polygraph_admin_indi_has_polygraph(PA,K)
+       => admin_indi_has_polygraph(admin,K) ) ) ).
+
+fof(ax18,axiom,
+    ! [K,CA] :
+      ( system_indi_is_credit_admin(system,CA)
+     => ( credit_admin_indi_has_credit(CA,K)
+       => admin_indi_has_credit(admin,K) ) ) ).
+
+fof(ax19,axiom,
+    ! [K] : admin_indi_has_background(admin,K,unclassified) ).
+
+fof(ax20,axiom,
+    ! [K,L,BA,L1] :
+      ( system_indi_is_background_admin(system,BA)
+     => ( background_admin_indi_has_background(BA,K,L1)
+       => ( loca_level_below(admin,L,L1)
+         => admin_indi_has_background(admin,K,L) ) ) ) ).
+
+fof(ax21,axiom,
+    ! [K,HR] :
+      ( system_indi_is_hr_admin(system,HR)
+     => ( hr_admin_indi_has_employment(HR,K)
+       => admin_indi_has_employment(admin,K) ) ) ).
+
+fof(ax22,axiom,
+    ! [K] : admin_indi_has_citizenship(admin,K,anycountry) ).
+
+fof(ax23,axiom,
+    ! [K,U] :
+      ( system_indi_has_citizenship(system,K,U)
+     => admin_indi_has_citizenship(admin,K,U) ) ).
+
+fof(ax24,axiom,
+    ! [K] : admin_indi_has_level(admin,K,unclassified) ).
+
+fof(ax25,axiom,
+    ! [K,L,L1,LA,L11] :
+      ( system_indi_needs_level(system,K,L1)
+     => ( admin_indi_has_citizenship(admin,K,usa)
+       => ( admin_indi_has_polygraph(admin,K)
+         => ( admin_indi_has_employment(admin,K)
+           => ( admin_indi_has_credit(admin,K)
+             => ( loca_level_below(admin,L,L1)
+               => ( system_indi_is_level_admin(system,LA)
+                 => ( level_admin_indi_has_level(LA,K,L11)
+                   => ( loca_level_below(admin,L,L11)
+                     => ( admin_indi_has_background(admin,K,L)
+                       => admin_indi_has_level(admin,K,L) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(ax26,axiom,
+    ! [K] : admin_indi_has_compartments(admin,K,nil) ).
+
+fof(ax27,axiom,
+    ! [K,C,CL,SSO] :
+      ( system_indi_needs_compartment(system,K,C)
+     => ( admin_indi_has_employment(admin,K)
+       => ( admin_indi_has_citizenship(admin,K,usa)
+         => ( admin_indi_has_polygraph_for_compartment(admin,K,C)
+           => ( admin_indi_has_credit_for_compartment(admin,K,C)
+             => ( admin_compartment_has_sso(admin,C,SSO)
+               => ( sso_indi_has_compartment(SSO,K,C)
+                 => ( admin_indi_has_background_for_compartment(admin,K,C)
+                   => ( admin_indi_has_level_for_compartment(admin,K,C)
+                     => ( admin_indi_has_compartments(admin,K,CL)
+                       => admin_indi_has_compartments(admin,K,cons(C,CL)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(ax28,axiom,
+    ! [K,C,OCA,L1,L2,B1,B2] :
+      ( system_indi_is_oca(system,OCA)
+     => ( oca_compartment_is_compartment(OCA,C,L1,L2,B1,B2)
+       => ( admin_indi_has_background(admin,K,L2)
+         => admin_indi_has_background_for_compartment(admin,K,C) ) ) ) ).
+
+fof(ax29,axiom,
+    ! [K,C,OCA,L1,L2,B1,B2] :
+      ( system_indi_is_oca(system,OCA)
+     => ( oca_compartment_is_compartment(OCA,C,L1,L2,B1,B2)
+       => ( admin_indi_has_level(admin,K,L1)
+         => admin_indi_has_level_for_compartment(admin,K,C) ) ) ) ).
+
+fof(ax30,axiom,
+    ! [K,C,OCA,L1,L2,B1] :
+      ( system_indi_is_oca(system,OCA)
+     => ( oca_compartment_is_compartment(OCA,C,L1,L2,B1,yes)
+       => ( admin_indi_has_polygraph(admin,K)
+         => admin_indi_has_polygraph_for_compartment(admin,K,C) ) ) ) ).
+
+fof(ax31,axiom,
+    ! [K,C,OCA,L1,L2,B1] :
+      ( system_indi_is_oca(system,OCA)
+     => ( oca_compartment_is_compartment(OCA,C,L1,L2,B1,no)
+       => admin_indi_has_polygraph_for_compartment(admin,K,C) ) ) ).
+
+fof(ax32,axiom,
+    ! [K,C,OCA,L1,L2,B2] :
+      ( system_indi_is_oca(system,OCA)
+     => ( oca_compartment_is_compartment(OCA,C,L1,L2,yes,B2)
+       => ( admin_indi_has_credit(admin,K)
+         => admin_indi_has_credit_for_compartment(admin,K,C) ) ) ) ).
+
+fof(ax33,axiom,
+    ! [K,C,OCA,L1,L2,B2] :
+      ( system_indi_is_oca(system,OCA)
+     => ( oca_compartment_is_compartment(OCA,C,L1,L2,no,B2)
+       => admin_indi_has_credit_for_compartment(admin,K,C) ) ) ).
+
+fof(ax34,axiom,
+    ! [K,F,CL] :
+      ( admin_file_has_compartments(admin,F,CL)
+     => ( admin_indi_has_compartments(admin,K,CL)
+       => admin_indi_has_compartments_for_file(admin,K,F) ) ) ).
+
+fof(ax35,axiom,
+    ! [K,F,L] :
+      ( admin_file_has_level(admin,F,L)
+     => ( admin_indi_has_level(admin,K,L)
+       => admin_indi_has_level_for_file(admin,K,F) ) ) ).
+
+fof(ax36,axiom,
+    ! [K,F,OWR] :
+      ( state_file_has_owner(F,OWR)
+     => ( owner_indi_has_need_to_know(OWR,K,F)
+       => admin_indi_has_need_to_know_for_file(admin,K,F) ) ) ).
+
+fof(ax37,axiom,
+    ! [K,F,L] :
+      ( admin_file_has_citizenship(admin,F,L)
+     => ( admin_indi_has_citizenship(admin,K,L)
+       => admin_indi_has_citizenship_for_file(admin,K,F) ) ) ).
+
+fof(ax38,axiom,
+    ! [K,F] :
+      ( admin_indi_has_citizenship(admin,K,usa)
+     => admin_indi_has_citizenship_for_file(admin,K,F) ) ).
+
+fof(ax39,axiom,
+    ! [K,F] :
+      ( state_file_is_not_working_paper(F)
+     => ( admin_indi_has_citizenship_for_file(admin,K,F)
+       => ( admin_indi_has_need_to_know_for_file(admin,K,F)
+         => ( admin_indi_has_level_for_file(admin,K,F)
+           => ( admin_indi_has_compartments_for_file(admin,K,F)
+             => admin_indi_may_file(admin,K,F,read) ) ) ) ) ) ).
+
+fof(ax40,axiom,
+    ! [K,F,K1] :
+      ( state_file_has_owner(F,K1)
+     => ( system_indi_is_counterintelligence(system,K,K1)
+       => admin_indi_may_file(admin,K,F,read) ) ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,218 @@
+%------------------------------------------------------------------------------
+% File     : SET007+916 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Linearity of Lebesgue Integral of Simple Valued Function
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : mesfunc4 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    6 (   0 unt;   0 def)
+%            Number of atoms       :  124 (  24 equ)
+%            Maximal formula atoms :   24 (  20 avg)
+%            Number of connectives :  132 (  14   ~;   5   |;  54   &)
+%                                         (   0 <=>;  59  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   26 (  21 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   15 (  14 usr;   0 prp; 1-5 aty)
+%            Number of functors    :   17 (  17 usr;   6 con; 0-6 aty)
+%            Number of variables   :   49 (  49   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_mesfunc4,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m2_finseq_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m2_finseq_1(C,k3_supinf_1)
+             => ( ( ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( r2_hidden(D,k4_finseq_1(A))
+                       => r1_supinf_1(k1_supinf_2,k4_mesfunc1(k5_numbers,A,D)) ) )
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( r2_hidden(D,k4_finseq_1(B))
+                       => r1_supinf_1(k1_supinf_2,k4_mesfunc1(k5_numbers,B,D)) ) )
+                  & k4_finseq_1(A) = k4_finseq_1(B)
+                  & C = k13_mesfunc1(k5_numbers,A,B) )
+               => k5_convfun1(C) = k2_supinf_2(k5_convfun1(A),k5_convfun1(B)) ) ) ) ) ).
+
+fof(t2_mesfunc4,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( m3_measure1(C,A,B)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & m2_relset_1(E,A,k3_supinf_1) )
+                     => ! [F] :
+                          ( ( v1_prob_2(F)
+                            & m2_finseq_1(F,B) )
+                         => ! [G] :
+                              ( m2_finseq_1(G,k3_supinf_1)
+                             => ! [H] :
+                                  ( m2_finseq_1(H,k3_supinf_1)
+                                 => ( ( r2_mesfunc2(A,B,E)
+                                      & ! [I] :
+                                          ( r2_hidden(I,k1_relat_1(E))
+                                         => r1_supinf_1(k1_supinf_2,k4_mesfunc1(A,E,I)) )
+                                      & r1_mesfunc3(A,B,E,F,G)
+                                      & k4_finseq_1(H) = k4_finseq_1(F)
+                                      & ! [I] :
+                                          ( m2_subset_1(I,k1_numbers,k5_numbers)
+                                         => ( r2_hidden(I,k4_finseq_1(H))
+                                           => k4_mesfunc1(k5_numbers,H,I) = k2_extreal1(k4_mesfunc1(k5_numbers,G,I),k4_mesfunc1(k5_numbers,k1_partfun1(k5_numbers,B,B,k3_supinf_1,F,C),I)) ) )
+                                      & k3_finseq_1(F) = D )
+                                   => ( k1_relat_1(E) = k1_xboole_0
+                                      | k1_mesfunc3(A,B,C,E) = k5_convfun1(H) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t3_mesfunc4,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m3_measure1(D,A,B)
+                 => ! [E] :
+                      ( ( v1_prob_2(E)
+                        & m2_finseq_1(E,B) )
+                     => ! [F] :
+                          ( m2_finseq_1(F,k3_supinf_1)
+                         => ! [G] :
+                              ( m2_finseq_1(G,k3_supinf_1)
+                             => ( ( r2_mesfunc2(A,B,C)
+                                  & ! [H] :
+                                      ( r2_hidden(H,k1_relat_1(C))
+                                     => r1_supinf_1(k1_supinf_2,k4_mesfunc1(A,C,H)) )
+                                  & r1_mesfunc3(A,B,C,E,F)
+                                  & k4_finseq_1(G) = k4_finseq_1(E)
+                                  & ! [H] :
+                                      ( m2_subset_1(H,k1_numbers,k5_numbers)
+                                     => ( r2_hidden(H,k4_finseq_1(G))
+                                       => k4_mesfunc1(k5_numbers,G,H) = k2_extreal1(k4_mesfunc1(k5_numbers,F,H),k4_mesfunc1(k5_numbers,k1_partfun1(k5_numbers,B,B,k3_supinf_1,E,D),H)) ) ) )
+                               => ( k1_relat_1(C) = k1_xboole_0
+                                  | k1_mesfunc3(A,B,D,C) = k5_convfun1(G) ) ) ) ) ) ) ) ) ) ).
+
+fof(t4_mesfunc4,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k3_supinf_1) )
+             => ! [D] :
+                  ( m3_measure1(D,A,B)
+                 => ~ ( r2_mesfunc2(A,B,C)
+                      & k1_relat_1(C) != k1_xboole_0
+                      & ! [E] :
+                          ( r2_hidden(E,k1_relat_1(C))
+                         => r1_supinf_1(k1_supinf_2,k4_mesfunc1(A,C,E)) )
+                      & ! [E] :
+                          ( ( v1_prob_2(E)
+                            & m2_finseq_1(E,B) )
+                         => ! [F] :
+                              ( m2_finseq_1(F,k3_supinf_1)
+                             => ! [G] :
+                                  ( m2_finseq_1(G,k3_supinf_1)
+                                 => ~ ( r1_mesfunc3(A,B,C,E,F)
+                                      & k4_finseq_1(G) = k4_finseq_1(E)
+                                      & ! [H] :
+                                          ( m2_subset_1(H,k1_numbers,k5_numbers)
+                                         => ( r2_hidden(H,k4_finseq_1(G))
+                                           => k4_mesfunc1(k5_numbers,G,H) = k2_extreal1(k4_mesfunc1(k5_numbers,F,H),k4_mesfunc1(k5_numbers,k1_partfun1(k5_numbers,B,B,k3_supinf_1,E,D),H)) ) )
+                                      & k1_mesfunc3(A,B,D,C) = k5_convfun1(G) ) ) ) ) ) ) ) ) ) ).
+
+fof(t5_mesfunc4,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( m3_measure1(C,A,B)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & m2_relset_1(E,A,k3_supinf_1) )
+                     => ( ( r2_mesfunc2(A,B,D)
+                          & ! [F] :
+                              ( r2_hidden(F,k1_relat_1(D))
+                             => r1_supinf_1(k1_supinf_2,k4_mesfunc1(A,D,F)) )
+                          & r2_mesfunc2(A,B,E)
+                          & k1_relat_1(E) = k1_relat_1(D)
+                          & ! [F] :
+                              ( r2_hidden(F,k1_relat_1(E))
+                             => r1_supinf_1(k1_supinf_2,k4_mesfunc1(A,E,F)) ) )
+                       => ( k1_relat_1(D) = k1_xboole_0
+                          | ( r2_mesfunc2(A,B,k13_mesfunc1(A,D,E))
+                            & k1_relat_1(k13_mesfunc1(A,D,E)) != k1_xboole_0
+                            & ! [F] :
+                                ( r2_hidden(F,k1_relat_1(k13_mesfunc1(A,D,E)))
+                               => r1_supinf_1(k1_supinf_2,k4_mesfunc1(A,k13_mesfunc1(A,D,E),F)) )
+                            & k1_mesfunc3(A,B,C,k13_mesfunc1(A,D,E)) = k2_supinf_2(k1_mesfunc3(A,B,C,D),k1_mesfunc3(A,B,C,E)) ) ) ) ) ) ) ) ) ).
+
+fof(t6_mesfunc4,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_prob_1(B,A)
+            & v1_measure1(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+         => ! [C] :
+              ( m3_measure1(C,A,B)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k3_supinf_1) )
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & m2_relset_1(E,A,k3_supinf_1) )
+                     => ! [F] :
+                          ( m1_subset_1(F,k3_supinf_1)
+                         => ( ( r2_mesfunc2(A,B,D)
+                              & ! [G] :
+                                  ( r2_hidden(G,k1_relat_1(D))
+                                 => r1_supinf_1(k1_supinf_2,k4_mesfunc1(A,D,G)) )
+                              & r1_supinf_1(k1_supinf_2,F)
+                              & k1_relat_1(E) = k1_relat_1(D)
+                              & ! [G] :
+                                  ( r2_hidden(G,k1_relat_1(E))
+                                 => k4_mesfunc1(A,E,G) = k2_extreal1(F,k4_mesfunc1(A,D,G)) ) )
+                           => ( k1_relat_1(D) = k1_xboole_0
+                              | r1_supinf_1(k4_supinf_1,F)
+                              | k1_mesfunc3(A,B,C,E) = k2_extreal1(F,k1_mesfunc3(A,B,C,D)) ) ) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

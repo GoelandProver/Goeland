@@ -93,8 +93,7 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 	new_equalities := ep.getE()
 
 	if !ep.getC().isEmpty() {
-		fmt.Printf("Error : constraint not null in applySubstitution\n")
-		global.PrintDebug("EQ-AS", fmt.Sprintf("Error : constraint not null in applySubstitution : %v", ep.getC().toString()))
+		global.PrintError("EQ-AS", fmt.Sprintf("Constraint not null in applySubstitution : %v", ep.getC().toString()))
 	}
 
 	for _, subst := range s {

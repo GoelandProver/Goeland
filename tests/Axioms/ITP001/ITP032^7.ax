@@ -1,0 +1,573 @@
+%------------------------------------------------------------------------------
+% File     : ITP032^7 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 syntactic export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau19] Gauthier (2019), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : res_quan.ax [Gau19]
+%          : HL4032^7.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   91 (  26 unt;  27 typ;   0 def)
+%            Number of atoms       :  225 (  36 equ;  13 cnn)
+%            Maximal formula atoms :    7 (   2 avg)
+%            Number of connectives :  638 (  13   ~;   5   |;  10   &; 566   @)
+%                                         (  29 <=>;  15  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   15 (   8 avg; 566 nst)
+%            Number of types       :    2 (   1 usr)
+%            Number of type conns  :  199 ( 199   >;   0   *;   0   +;   0  <<)
+%            Number of symbols     :   28 (  26 usr;   3 con; 0-5 aty)
+%            Number of variables   :  323 (  67   ^ 231   !;   5   ?; 323   :)
+%                                         (  20  !>;   0  ?*;   0  @-;   0  @+)
+% SPC      : TH1_SAT_EQU_NAR
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+thf(tyop_2Emin_2Ebool,type,
+    tyop_2Emin_2Ebool: $tType ).
+
+thf(tyop_2Emin_2Efun,type,
+    tyop_2Emin_2Efun: $tType > $tType > $tType ).
+
+thf(c_2Ebool_2E_21,type,
+    c_2Ebool_2E_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2E_2F_5C,type,
+    c_2Ebool_2E_2F_5C: $o > $o > $o ).
+
+thf(c_2Emin_2E_3D,type,
+    c_2Emin_2E_3D: 
+      !>[A_27a: $tType] : ( A_27a > A_27a > $o ) ).
+
+thf(c_2Emin_2E_3D_3D_3E,type,
+    c_2Emin_2E_3D_3D_3E: $o > $o > $o ).
+
+thf(c_2Ebool_2E_3F,type,
+    c_2Ebool_2E_3F: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2E_3F_21,type,
+    c_2Ebool_2E_3F_21: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > $o ) ).
+
+thf(c_2Emin_2E_40,type,
+    c_2Emin_2E_40: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > A_27a ) ).
+
+thf(c_2Epred__set_2EBIGINTER,type,
+    c_2Epred__set_2EBIGINTER: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EBIGUNION,type,
+    c_2Epred__set_2EBIGUNION: 
+      !>[A_27a: $tType] : ( ( ( A_27a > $o ) > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EDIFF,type,
+    c_2Epred__set_2EDIFF: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EEMPTY,type,
+    c_2Epred__set_2EEMPTY: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Ebool_2EF,type,
+    c_2Ebool_2EF: $o ).
+
+thf(c_2Ebool_2EIN,type,
+    c_2Ebool_2EIN: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Epred__set_2EINSERT,type,
+    c_2Epred__set_2EINSERT: 
+      !>[A_27a: $tType] : ( A_27a > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Ebool_2ERES__ABSTRACT,type,
+    c_2Ebool_2ERES__ABSTRACT: 
+      !>[A_27a: $tType,A_27b: $tType] : ( ( A_27a > $o ) > ( A_27a > A_27b ) > A_27a > A_27b ) ).
+
+thf(c_2Ebool_2ERES__EXISTS,type,
+    c_2Ebool_2ERES__EXISTS: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2ERES__EXISTS__UNIQUE,type,
+    c_2Ebool_2ERES__EXISTS__UNIQUE: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2ERES__FORALL,type,
+    c_2Ebool_2ERES__FORALL: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2ERES__SELECT,type,
+    c_2Ebool_2ERES__SELECT: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a ) ).
+
+thf(c_2Epred__set_2ESUBSET,type,
+    c_2Epred__set_2ESUBSET: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > $o ) ).
+
+thf(c_2Ebool_2ET,type,
+    c_2Ebool_2ET: $o ).
+
+thf(c_2Epred__set_2EUNION,type,
+    c_2Epred__set_2EUNION: 
+      !>[A_27a: $tType] : ( ( A_27a > $o ) > ( A_27a > $o ) > A_27a > $o ) ).
+
+thf(c_2Epred__set_2EUNIV,type,
+    c_2Epred__set_2EUNIV: 
+      !>[A_27a: $tType] : ( A_27a > $o ) ).
+
+thf(c_2Ebool_2E_5C_2F,type,
+    c_2Ebool_2E_5C_2F: $o > $o > $o ).
+
+thf(c_2Ebool_2E_7E,type,
+    c_2Ebool_2E_7E: $o > $o ).
+
+thf(logicdef_2E_2F_5C,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_2F_5C @ V0 @ V1 )
+    <=> ( V0
+        & V1 ) ) ).
+
+thf(logicdef_2E_5C_2F,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Ebool_2E_5C_2F @ V0 @ V1 )
+    <=> ( V0
+        | V1 ) ) ).
+
+thf(logicdef_2E_7E,axiom,
+    ! [V0: $o] :
+      ( ( c_2Ebool_2E_7E @ V0 )
+    <=> ( (~) @ V0 ) ) ).
+
+thf(logicdef_2E_3D_3D_3E,axiom,
+    ! [V0: $o,V1: $o] :
+      ( ( c_2Emin_2E_3D_3D_3E @ V0 @ V1 )
+    <=> ( V0
+       => V1 ) ) ).
+
+thf(logicdef_2E_3D,axiom,
+    ! [A_27a: $tType,V0: A_27a,V1: A_27a] :
+      ( ( c_2Emin_2E_3D @ A_27a @ V0 @ V1 )
+    <=> ( V0 = V1 ) ) ).
+
+thf(quantdef_2E_21,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_21 @ A_27a @ V0f )
+    <=> ! [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(quantdef_2E_3F,axiom,
+    ! [A_27a: $tType,V0f: A_27a > $o] :
+      ( ( c_2Ebool_2E_3F @ A_27a @ V0f )
+    <=> ? [V1x: A_27a] : ( V0f @ V1x ) ) ).
+
+thf(thm_2Eres__quan_2ERES__SELECT__UNIV,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__SELECT @ A_27a @ ( c_2Epred__set_2EUNIV @ A_27a ) @ V0p )
+      = ( c_2Emin_2E_40 @ A_27a @ V0p ) ) ).
+
+thf(thm_2Eres__quan_2ERES__SELECT__EMPTY,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__SELECT @ A_27a @ ( c_2Epred__set_2EEMPTY @ A_27a ) @ V0p )
+      = ( c_2Emin_2E_40 @ A_27a
+        @ ^ [V1x: A_27a] : c_2Ebool_2EF ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE__ALT,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o,V1m: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27a @ V0p @ V1m )
+      = ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0p
+        @ ^ [V2x: A_27a] :
+            ( c_2Ebool_2E_2F_5C @ ( V1m @ V2x )
+            @ ( c_2Ebool_2ERES__FORALL @ A_27a @ V0p
+              @ ^ [V3y: A_27a] : ( c_2Emin_2E_3D_3D_3E @ ( V1m @ V3y ) @ ( c_2Emin_2E_3D @ A_27a @ V3y @ V2x ) ) ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE__SING,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0P: A_27a,V1s: A_27b > $o,V2x: A_27c] :
+      ( ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27b @ V1s
+        @ ^ [V3x: A_27b] : c_2Ebool_2ET )
+    <=> ? [V4y: A_27b] :
+          ( V1s
+          = ( c_2Epred__set_2EINSERT @ A_27b @ V4y @ ( c_2Epred__set_2EEMPTY @ A_27b ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE__NULL,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o,V1m: $o] :
+      ( ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27a @ V0p
+        @ ^ [V2x: A_27a] : V1m )
+    <=> ( ? [V3x: A_27a] :
+            ( V0p
+            = ( c_2Epred__set_2EINSERT @ A_27a @ V3x @ ( c_2Epred__set_2EEMPTY @ A_27a ) ) )
+        & V1m ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE__UNIV,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27a @ ( c_2Epred__set_2EUNIV @ A_27a ) @ V0p )
+      = ( c_2Ebool_2E_3F_21 @ A_27a @ V0p ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE__NOT__EMPTY,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27a @ V1s @ V0P )
+     => ( (~)
+        @ ( V1s
+          = ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE__EMPTY,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o] : ( (~) @ ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27a @ ( c_2Epred__set_2EEMPTY @ A_27a ) @ V0p ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE__T,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0P: A_27a,V1s: A_27b > $o,V2x: A_27c] :
+      ( ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27b @ V1s
+        @ ^ [V3x: A_27b] : c_2Ebool_2ET )
+      = ( c_2Ebool_2E_3F_21 @ A_27b
+        @ ^ [V4x: A_27b] : ( c_2Ebool_2EIN @ A_27b @ V4x @ V1s ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE__F,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0P: A_27a,V1s: A_27b > $o,V2x: A_27c] :
+      ( (~)
+      @ ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27b @ V1s
+        @ ^ [V3x: A_27b] : c_2Ebool_2EF ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE__EXISTS,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27a @ V0P @ V1s )
+     => ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0P @ V1s ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE__ELIM,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27a @ V1s
+        @ ^ [V2x: A_27a] : ( V0P @ V2x ) )
+      = ( c_2Ebool_2E_3F_21 @ A_27a
+        @ ^ [V3x: A_27a] : ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2EIN @ A_27a @ V3x @ V1s ) @ ( V0P @ V3x ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__BIGINTER,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1sos: ( A_27a > $o ) > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V1sos )
+        @ ^ [V2x: A_27a] : ( V0P @ V2x ) )
+    <=> ? [V3x: A_27a] :
+          ( ( c_2Ebool_2ERES__FORALL @ ( A_27a > $o ) @ V1sos
+            @ ^ [V4s: A_27a > $o] : ( c_2Ebool_2EIN @ A_27a @ V3x @ V4s ) )
+          & ( V0P @ V3x ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__BIGUNION,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1sos: ( A_27a > $o ) > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ ( c_2Epred__set_2EBIGUNION @ A_27a @ V1sos )
+        @ ^ [V2x: A_27a] : ( V0P @ V2x ) )
+      = ( c_2Ebool_2ERES__EXISTS @ ( A_27a > $o ) @ V1sos
+        @ ^ [V3s: A_27a > $o] :
+            ( c_2Ebool_2ERES__EXISTS @ A_27a @ V3s
+            @ ^ [V4x: A_27a] : ( V0P @ V4x ) ) ) ) ).
+
+thf(thm_2Eres__quan_2EIN__BIGUNION__RES__EXISTS,axiom,
+    ! [A_27a: $tType,V0x: A_27a,V1sos: ( A_27a > $o ) > $o] :
+      ( ( c_2Ebool_2EIN @ A_27a @ V0x @ ( c_2Epred__set_2EBIGUNION @ A_27a @ V1sos ) )
+      = ( c_2Ebool_2ERES__EXISTS @ ( A_27a > $o ) @ V1sos
+        @ ^ [V2s: A_27a > $o] : ( c_2Ebool_2EIN @ A_27a @ V0x @ V2s ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__DIFF,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0P: A_27a > $o,V1s: A_27a > $o,V2t: A_27a > $o,V3x: A_27b] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ ( c_2Epred__set_2EDIFF @ A_27a @ V1s @ V2t )
+        @ ^ [V4x: A_27a] : ( V0P @ V4x ) )
+      = ( c_2Ebool_2ERES__EXISTS @ A_27a @ V1s
+        @ ^ [V5x: A_27a] : ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2E_7E @ ( c_2Ebool_2EIN @ A_27a @ V5x @ V2t ) ) @ ( V0P @ V5x ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNION,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ ( c_2Epred__set_2EUNION @ A_27a @ V1s @ V2t ) @ V0P )
+    <=> ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V1s @ V0P )
+        | ( c_2Ebool_2ERES__EXISTS @ A_27a @ V2t @ V0P ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__SUBSET,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ V2t )
+     => ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V1s @ V0P )
+       => ( c_2Ebool_2ERES__EXISTS @ A_27a @ V2t @ V0P ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__NOT__EMPTY,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V1s @ V0P )
+     => ( (~)
+        @ ( V1s
+          = ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ENOT__RES__EXISTS,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o] :
+      ( ( (~)
+        @ ( c_2Ebool_2ERES__EXISTS @ A_27a @ V1s
+          @ ^ [V2x: A_27a] : ( V0P @ V2x ) ) )
+    <=> ( c_2Ebool_2ERES__FORALL @ A_27a @ V1s
+        @ ^ [V3x: A_27a] : ( c_2Ebool_2E_7E @ ( V0P @ V3x ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__ALT,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o,V1m: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0p @ V1m )
+    <=> ( ( c_2Ebool_2EIN @ A_27a @ ( c_2Ebool_2ERES__SELECT @ A_27a @ V0p @ V1m ) @ V0p )
+        & ( V1m @ ( c_2Ebool_2ERES__SELECT @ A_27a @ V0p @ V1m ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__NULL,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o,V1m: $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0p
+        @ ^ [V2x: A_27a] : V1m )
+    <=> ( ( (~)
+          @ ( V0p
+            = ( c_2Epred__set_2EEMPTY @ A_27a ) ) )
+        & V1m ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIV,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ ( c_2Epred__set_2EUNIV @ A_27a ) @ V0p )
+      = ( c_2Ebool_2E_3F @ A_27a @ V0p ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__EMPTY,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o] : ( (~) @ ( c_2Ebool_2ERES__EXISTS @ A_27a @ ( c_2Epred__set_2EEMPTY @ A_27a ) @ V0p ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__T,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0P: A_27a,V1s: A_27b > $o,V2x: A_27c] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27b @ V1s
+        @ ^ [V3x: A_27b] : c_2Ebool_2ET )
+    <=> ( (~)
+        @ ( V1s
+          = ( c_2Epred__set_2EEMPTY @ A_27b ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__F,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0P: A_27a,V1s: A_27b,V2x: A_27c > $o] :
+      ( (~)
+      @ ( c_2Ebool_2ERES__EXISTS @ A_27c @ V2x
+        @ ^ [V3s: A_27c] : c_2Ebool_2EF ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__REORDER,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0P: A_27a > $o,V1Q: A_27b > $o,V2R: A_27a > A_27b > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0P
+        @ ^ [V3i: A_27a] :
+            ( c_2Ebool_2ERES__EXISTS @ A_27b @ V1Q
+            @ ^ [V4j: A_27b] : ( V2R @ V3i @ V4j ) ) )
+      = ( c_2Ebool_2ERES__EXISTS @ A_27b @ V1Q
+        @ ^ [V5j: A_27b] :
+            ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0P
+            @ ^ [V6i: A_27a] : ( V2R @ V6i @ V5j ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__EQUAL,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1j: A_27a] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ ( c_2Emin_2E_3D @ A_27a @ V1j )
+        @ ^ [V2i: A_27a] : ( V0P @ V2i ) )
+      = ( V0P @ V1j ) ) ).
+
+thf(thm_2Eres__quan_2ERES__DISJ__EXISTS__DIST,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1Q: A_27a > $o,V2R: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a
+        @ ^ [V3i: A_27a] : ( c_2Ebool_2E_5C_2F @ ( V0P @ V3i ) @ ( V1Q @ V3i ) )
+        @ ^ [V4i: A_27a] : ( V2R @ V4i ) )
+    <=> ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0P
+          @ ^ [V5i: A_27a] : ( V2R @ V5i ) )
+        | ( c_2Ebool_2ERES__EXISTS @ A_27a @ V1Q
+          @ ^ [V6i: A_27a] : ( V2R @ V6i ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__DISJ__DIST,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1Q: A_27a > $o,V2R: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0P
+        @ ^ [V3i: A_27a] : ( c_2Ebool_2E_5C_2F @ ( V1Q @ V3i ) @ ( V2R @ V3i ) ) )
+    <=> ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0P
+          @ ^ [V4i: A_27a] : ( V1Q @ V4i ) )
+        | ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0P
+          @ ^ [V5i: A_27a] : ( V2R @ V5i ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__BIGINTER,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1sos: ( A_27a > $o ) > $o] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V1sos )
+        @ ^ [V2x: A_27a] : ( V0P @ V2x ) )
+    <=> ! [V3x: A_27a] :
+          ( ( c_2Ebool_2ERES__FORALL @ ( A_27a > $o ) @ V1sos
+            @ ^ [V4s: A_27a > $o] : ( c_2Ebool_2EIN @ A_27a @ V3x @ V4s ) )
+         => ( V0P @ V3x ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__BIGUNION,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1sos: ( A_27a > $o ) > $o] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a @ ( c_2Epred__set_2EBIGUNION @ A_27a @ V1sos )
+        @ ^ [V2x: A_27a] : ( V0P @ V2x ) )
+      = ( c_2Ebool_2ERES__FORALL @ ( A_27a > $o ) @ V1sos
+        @ ^ [V3s: A_27a > $o] :
+            ( c_2Ebool_2ERES__FORALL @ A_27a @ V3s
+            @ ^ [V4x: A_27a] : ( V0P @ V4x ) ) ) ) ).
+
+thf(thm_2Eres__quan_2EIN__BIGINTER__RES__FORALL,axiom,
+    ! [A_27a: $tType,V0x: A_27a,V1sos: ( A_27a > $o ) > $o] :
+      ( ( c_2Ebool_2EIN @ A_27a @ V0x @ ( c_2Epred__set_2EBIGINTER @ A_27a @ V1sos ) )
+      = ( c_2Ebool_2ERES__FORALL @ ( A_27a > $o ) @ V1sos
+        @ ^ [V2s: A_27a > $o] : ( c_2Ebool_2EIN @ A_27a @ V0x @ V2s ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__DIFF,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0P: A_27a > $o,V1s: A_27a > $o,V2t: A_27a > $o,V3x: A_27b] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a @ ( c_2Epred__set_2EDIFF @ A_27a @ V1s @ V2t )
+        @ ^ [V4x: A_27a] : ( V0P @ V4x ) )
+      = ( c_2Ebool_2ERES__FORALL @ A_27a @ V1s
+        @ ^ [V5x: A_27a] : ( c_2Emin_2E_3D_3D_3E @ ( c_2Ebool_2E_7E @ ( c_2Ebool_2EIN @ A_27a @ V5x @ V2t ) ) @ ( V0P @ V5x ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__UNION,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a @ ( c_2Epred__set_2EUNION @ A_27a @ V1s @ V2t ) @ V0P )
+    <=> ( ( c_2Ebool_2ERES__FORALL @ A_27a @ V1s @ V0P )
+        & ( c_2Ebool_2ERES__FORALL @ A_27a @ V2t @ V0P ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__SUBSET,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o,V2t: A_27a > $o] :
+      ( ( c_2Epred__set_2ESUBSET @ A_27a @ V1s @ V2t )
+     => ( ( c_2Ebool_2ERES__FORALL @ A_27a @ V2t @ V0P )
+       => ( c_2Ebool_2ERES__FORALL @ A_27a @ V1s @ V0P ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__NOT__EMPTY,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o] :
+      ( ( (~) @ ( c_2Ebool_2ERES__FORALL @ A_27a @ V1s @ V0P ) )
+     => ( (~)
+        @ ( V1s
+          = ( c_2Epred__set_2EEMPTY @ A_27a ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ENOT__RES__FORALL,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1s: A_27a > $o] :
+      ( ( (~)
+        @ ( c_2Ebool_2ERES__FORALL @ A_27a @ V1s
+          @ ^ [V2x: A_27a] : ( V0P @ V2x ) ) )
+    <=> ( c_2Ebool_2ERES__EXISTS @ A_27a @ V1s
+        @ ^ [V3x: A_27a] : ( c_2Ebool_2E_7E @ ( V0P @ V3x ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__NULL,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o,V1m: $o] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a @ V0p
+        @ ^ [V2x: A_27a] : V1m )
+    <=> ( ( V0p
+          = ( c_2Epred__set_2EEMPTY @ A_27a ) )
+        | V1m ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__UNIV,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a @ ( c_2Epred__set_2EUNIV @ A_27a ) @ V0p )
+      = ( c_2Ebool_2E_21 @ A_27a @ V0p ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__EMPTY,axiom,
+    ! [A_27a: $tType,V0p: A_27a > $o] : ( c_2Ebool_2ERES__FORALL @ A_27a @ ( c_2Epred__set_2EEMPTY @ A_27a ) @ V0p ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__F,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0P: A_27a,V1s: A_27b > $o,V2x: A_27c] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27b @ V1s
+        @ ^ [V3x: A_27b] : c_2Ebool_2EF )
+    <=> ( V1s
+        = ( c_2Epred__set_2EEMPTY @ A_27b ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__T,axiom,
+    ! [A_27a: $tType,A_27b: $tType,A_27c: $tType,V0P: A_27a,V1s: A_27b > $o,V2x: A_27c] :
+      ( c_2Ebool_2ERES__FORALL @ A_27b @ V1s
+      @ ^ [V3x: A_27b] : c_2Ebool_2ET ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__REORDER,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0P: A_27a > $o,V1Q: A_27b > $o,V2R: A_27a > A_27b > $o] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P
+        @ ^ [V3i: A_27a] :
+            ( c_2Ebool_2ERES__FORALL @ A_27b @ V1Q
+            @ ^ [V4j: A_27b] : ( V2R @ V3i @ V4j ) ) )
+      = ( c_2Ebool_2ERES__FORALL @ A_27b @ V1Q
+        @ ^ [V5j: A_27b] :
+            ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P
+            @ ^ [V6i: A_27a] : ( V2R @ V6i @ V5j ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__FORALL,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0P: A_27a > $o,V1R: A_27a > A_27b > $o,V2x: A_27b] :
+      ( ! [V3x: A_27b] :
+          ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P
+          @ ^ [V4i: A_27a] : ( V1R @ V4i @ V3x ) )
+    <=> ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P
+        @ ^ [V5i: A_27a] :
+            ( c_2Ebool_2E_21 @ A_27b
+            @ ^ [V6x: A_27b] : ( V1R @ V5i @ V6x ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__UNIQUE,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1j: A_27a] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a @ ( c_2Emin_2E_3D @ A_27a @ V1j )
+        @ ^ [V2i: A_27a] : ( V0P @ V2i ) )
+      = ( V0P @ V1j ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__DISJ__DIST,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1Q: A_27a > $o,V2R: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a
+        @ ^ [V3j: A_27a] : ( c_2Ebool_2E_5C_2F @ ( V0P @ V3j ) @ ( V1Q @ V3j ) )
+        @ ^ [V4i: A_27a] : ( V2R @ V4i ) )
+    <=> ( ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P
+          @ ^ [V5i: A_27a] : ( V2R @ V5i ) )
+        & ( c_2Ebool_2ERES__FORALL @ A_27a @ V1Q
+          @ ^ [V6i: A_27a] : ( V2R @ V6i ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL__CONJ__DIST,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1Q: A_27a > $o,V2R: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P
+        @ ^ [V3i: A_27a] : ( c_2Ebool_2E_2F_5C @ ( V1Q @ V3i ) @ ( V2R @ V3i ) ) )
+    <=> ( ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P
+          @ ^ [V4i: A_27a] : ( V1Q @ V4i ) )
+        & ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P
+          @ ^ [V5i: A_27a] : ( V2R @ V5i ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__FORALL,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1f: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P @ V1f )
+    <=> ! [V2x: A_27a] :
+          ( ( c_2Ebool_2EIN @ A_27a @ V2x @ V0P )
+         => ( V1f @ V2x ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1f: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0P @ V1f )
+    <=> ? [V2x: A_27a] :
+          ( ( c_2Ebool_2EIN @ A_27a @ V2x @ V0P )
+          & ( V1f @ V2x ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__EXISTS__UNIQUE,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1f: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__EXISTS__UNIQUE @ A_27a @ V0P @ V1f )
+    <=> ( ( c_2Ebool_2ERES__EXISTS @ A_27a @ V0P
+          @ ^ [V2x: A_27a] : ( V1f @ V2x ) )
+        & ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P
+          @ ^ [V3x: A_27a] :
+              ( c_2Ebool_2ERES__FORALL @ A_27a @ V0P
+              @ ^ [V4y: A_27a] : ( c_2Emin_2E_3D_3D_3E @ ( c_2Ebool_2E_2F_5C @ ( V1f @ V3x ) @ ( V1f @ V4y ) ) @ ( c_2Emin_2E_3D @ A_27a @ V3x @ V4y ) ) ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__SELECT,axiom,
+    ! [A_27a: $tType,V0P: A_27a > $o,V1f: A_27a > $o] :
+      ( ( c_2Ebool_2ERES__SELECT @ A_27a @ V0P @ V1f )
+      = ( c_2Emin_2E_40 @ A_27a
+        @ ^ [V2x: A_27a] : ( c_2Ebool_2E_2F_5C @ ( c_2Ebool_2EIN @ A_27a @ V2x @ V0P ) @ ( V1f @ V2x ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__ABSTRACT,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0p: A_27a > $o,V1m: A_27a > A_27b,V2x: A_27a] :
+      ( ( c_2Ebool_2EIN @ A_27a @ V2x @ V0p )
+     => ( ( c_2Ebool_2ERES__ABSTRACT @ A_27a @ A_27b @ V0p @ V1m @ V2x )
+        = ( V1m @ V2x ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__ABSTRACT__EQUAL,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0p: A_27a > $o,V1m1: A_27a > A_27b,V2m2: A_27a > A_27b] :
+      ( ! [V3x: A_27a] :
+          ( ( c_2Ebool_2EIN @ A_27a @ V3x @ V0p )
+         => ( ( V1m1 @ V3x )
+            = ( V2m2 @ V3x ) ) )
+     => ( ( c_2Ebool_2ERES__ABSTRACT @ A_27a @ A_27b @ V0p @ V1m1 )
+        = ( c_2Ebool_2ERES__ABSTRACT @ A_27a @ A_27b @ V0p @ V2m2 ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__ABSTRACT__IDEMPOT,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0p: A_27a > $o,V1m: A_27a > A_27b] :
+      ( ( c_2Ebool_2ERES__ABSTRACT @ A_27a @ A_27b @ V0p @ ( c_2Ebool_2ERES__ABSTRACT @ A_27a @ A_27b @ V0p @ V1m ) )
+      = ( c_2Ebool_2ERES__ABSTRACT @ A_27a @ A_27b @ V0p @ V1m ) ) ).
+
+thf(thm_2Eres__quan_2ERES__ABSTRACT__EQUAL__EQ,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0p: A_27a > $o,V1m1: A_27a > A_27b,V2m2: A_27a > A_27b] :
+      ( ( ( c_2Ebool_2ERES__ABSTRACT @ A_27a @ A_27b @ V0p @ V1m1 )
+        = ( c_2Ebool_2ERES__ABSTRACT @ A_27a @ A_27b @ V0p @ V2m2 ) )
+    <=> ! [V3x: A_27a] :
+          ( ( c_2Ebool_2EIN @ A_27a @ V3x @ V0p )
+         => ( ( V1m1 @ V3x )
+            = ( V2m2 @ V3x ) ) ) ) ).
+
+thf(thm_2Eres__quan_2ERES__ABSTRACT__UNIV,axiom,
+    ! [A_27a: $tType,A_27b: $tType,V0m: A_27a > A_27b] :
+      ( ( c_2Ebool_2ERES__ABSTRACT @ A_27a @ A_27b @ ( c_2Epred__set_2EUNIV @ A_27a ) @ V0m )
+      = V0m ) ).
+
+%------------------------------------------------------------------------------

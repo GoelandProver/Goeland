@@ -55,7 +55,7 @@ import (
 func InitPlugin() error {
 	lpo = makeLPO()
 
-	fmt.Println("[EQ] equality loaded.")
+	fmt.Println("Plugin Equality loaded")
 	// No error can be thrown in this plugin.
 	return nil
 }

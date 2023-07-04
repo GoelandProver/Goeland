@@ -1,0 +1,520 @@
+%------------------------------------------------------------------------------
+% File     : SET007+517 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Algebraic Operation on Subsets of Many Sorted Sets
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : closure3 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   48 (   2 unt;   0 def)
+%            Number of atoms       :  283 (  26 equ)
+%            Maximal formula atoms :   12 (   5 avg)
+%            Number of connectives :  274 (  39   ~;   0   |; 118   &)
+%                                         (  12 <=>; 105  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   9 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   44 (  42 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   32 (  32 usr;   1 con; 0-4 aty)
+%            Number of variables   :  177 ( 171   !;   6   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_closure3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_struct_0(A) )
+     => ( v1_struct_0(g1_struct_0(u1_struct_0(A)))
+        & ~ v3_struct_0(g1_struct_0(u1_struct_0(A))) ) ) ).
+
+fof(fc2_closure3,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & v1_xboole_0(C)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B))) )
+     => ( v1_relat_1(k2_closure3(A,B,C))
+        & v3_relat_1(k2_closure3(A,B,C))
+        & v1_funct_1(k2_closure3(A,B,C))
+        & v1_pre_circ(k2_closure3(A,B,C),A) ) ) ).
+
+fof(rc1_closure3,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_pboole(B,A) )
+     => ? [C] :
+          ( m1_relset_1(C,k6_closure2(A,B),k6_closure2(A,B))
+          & ~ v1_xboole_0(C)
+          & v1_relat_1(C)
+          & v1_funct_1(C)
+          & v1_funct_2(C,k6_closure2(A,B),k6_closure2(A,B))
+          & v1_partfun1(C,k6_closure2(A,B),k6_closure2(A,B))
+          & v7_closure2(C,A,B)
+          & v8_closure2(C,A,B)
+          & v9_closure2(C,A,B)
+          & v1_closure3(C,A,B) ) ) ).
+
+fof(fc3_closure3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A)
+        & v4_msualg_1(B,A)
+        & v5_msualg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => ( v11_closure2(k5_closure3(A,B),g1_struct_0(u1_struct_0(A)))
+        & v14_closure2(k5_closure3(A,B),g1_struct_0(u1_struct_0(A)))
+        & v15_closure2(k5_closure3(A,B),g1_struct_0(u1_struct_0(A)))
+        & v16_closure2(k5_closure3(A,B),g1_struct_0(u1_struct_0(A))) ) ) ).
+
+fof(fc4_closure3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A)
+        & v4_msualg_1(B,A)
+        & v5_msualg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => ( v11_closure2(k5_closure3(A,B),g1_struct_0(u1_struct_0(A)))
+        & v14_closure2(k5_closure3(A,B),g1_struct_0(u1_struct_0(A)))
+        & v15_closure2(k5_closure3(A,B),g1_struct_0(u1_struct_0(A)))
+        & v16_closure2(k5_closure3(A,B),g1_struct_0(u1_struct_0(A)))
+        & v2_closure3(k5_closure3(A,B),g1_struct_0(u1_struct_0(A))) ) ) ).
+
+fof(t1_closure3,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_pboole(B,A)
+         => ! [C] :
+              ( m1_pboole(C,A)
+             => k1_funct_4(B,C) = C ) ) ) ).
+
+fof(t2_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B)))
+             => ( r2_hidden(C,D)
+               => r2_pboole(A,k6_mssubfam(A,B,k5_closure2(A,B,D)),C) ) ) ) ) ).
+
+fof(t3_closure3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v4_msualg_1(B,A)
+            & v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_closure2(u1_struct_0(A),u4_msualg_1(A,B))))
+             => ( r1_tarski(C,k6_msualg_2(A,B))
+               => ! [D] :
+                    ( m4_pboole(D,u1_struct_0(A),u4_msualg_1(A,B))
+                   => ( r6_pboole(u1_struct_0(A),D,k6_mssubfam(u1_struct_0(A),u4_msualg_1(A,B),k5_closure2(u1_struct_0(A),u4_msualg_1(A,B),C)))
+                     => v3_msualg_2(D,A,B) ) ) ) ) ) ) ).
+
+fof(d1_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B)))
+             => ( r1_closure3(A,B,C,D)
+              <=> ! [E] :
+                    ~ ( r2_hidden(E,D)
+                      & ! [F] :
+                          ~ ( r2_hidden(F,C)
+                            & r1_tarski(E,F) ) ) ) ) ) ) ).
+
+fof(d2_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B)))
+             => ( r2_closure3(A,B,C,D)
+              <=> ! [E] :
+                    ~ ( r2_hidden(E,C)
+                      & ! [F] :
+                          ~ ( r2_hidden(F,D)
+                            & r1_tarski(F,E) ) ) ) ) ) ) ).
+
+fof(t4_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B)))
+             => ! [E] :
+                  ( m1_subset_1(E,k1_zfmisc_1(k1_closure2(A,B)))
+                 => ( ( r1_closure3(A,B,D,C)
+                      & r1_closure3(A,B,E,D) )
+                   => r1_closure3(A,B,E,C) ) ) ) ) ) ).
+
+fof(t5_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B)))
+             => ! [E] :
+                  ( m1_subset_1(E,k1_zfmisc_1(k1_closure2(A,B)))
+                 => ( ( r2_closure3(A,B,C,D)
+                      & r2_closure3(A,B,D,E) )
+                   => r2_closure3(A,B,C,E) ) ) ) ) ) ).
+
+fof(t6_closure3,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,A) )
+         => B = k1_funct_4(k1_pboole(A),k7_relat_1(B,k1_closure3(A,B))) ) ) ).
+
+fof(t7_closure3,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,A) )
+         => ! [C] :
+              ( ( v2_relat_1(C)
+                & m1_pboole(C,A) )
+             => ( ( k1_closure3(A,B) = k1_closure3(A,C)
+                  & k7_relat_1(B,k1_closure3(A,B)) = k7_relat_1(C,k1_closure3(A,C)) )
+               => r6_pboole(A,B,C) ) ) ) ) ).
+
+fof(t8_closure3,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_pboole(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,A)
+             => ( ~ r2_hidden(C,k1_closure3(A,B))
+               => k1_funct_1(B,C) = k1_xboole_0 ) ) ) ) ).
+
+fof(t9_closure3,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_pboole(B,A)
+         => ! [C] :
+              ( m1_closure2(C,A,B,k6_closure2(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,A)
+                 => ! [E] :
+                      ~ ( r2_hidden(E,k1_funct_1(C,D))
+                        & ! [F] :
+                            ( m1_closure2(F,A,B,k6_closure2(A,B))
+                           => ~ ( r2_hidden(E,k1_funct_1(F,D))
+                                & v1_pre_circ(F,A)
+                                & v1_finset_1(k1_closure3(A,F))
+                                & r2_pboole(A,F,C) ) ) ) ) ) ) ) ).
+
+fof(t10_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+         => r6_pboole(A,k2_closure3(A,B,C),k2_mboolean(A,k5_closure2(A,B,C))) ) ) ).
+
+fof(t11_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B)))
+             => r6_pboole(A,k2_closure3(A,B,k3_closure3(A,B,C,D)),k2_pboole(A,k2_closure3(A,B,C),k2_closure3(A,B,D))) ) ) ) ).
+
+fof(t12_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B)))
+             => ( r1_tarski(C,D)
+               => r2_pboole(A,k2_closure3(A,B,C),k2_closure3(A,B,D)) ) ) ) ) ).
+
+fof(t13_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B)))
+             => r2_pboole(A,k2_closure3(A,B,k4_closure3(A,B,C,D)),k3_pboole(A,k2_closure3(A,B,C),k2_closure3(A,B,D))) ) ) ) ).
+
+fof(d6_closure3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_struct_0(A) )
+     => ! [B] :
+          ( ( v15_closure2(B,A)
+            & l1_closure2(B,A) )
+         => ( v2_closure3(B,A)
+          <=> v1_closure3(k12_closure2(A,B),u1_struct_0(A),u4_msualg_1(A,B)) ) ) ) ).
+
+fof(d7_closure3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( ( v11_closure2(C,g1_struct_0(u1_struct_0(A)))
+                & l1_closure2(C,g1_struct_0(u1_struct_0(A))) )
+             => ( C = k5_closure3(A,B)
+              <=> ( u4_msualg_1(g1_struct_0(u1_struct_0(A)),C) = u4_msualg_1(A,B)
+                  & u1_closure2(g1_struct_0(u1_struct_0(A)),C) = k6_msualg_2(A,B) ) ) ) ) ) ).
+
+fof(t15_closure3,axiom,
+    $true ).
+
+fof(t16_closure3,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v4_msualg_1(B,A)
+            & v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ( v4_closure2(k6_msualg_2(A,B),u1_struct_0(A),u4_msualg_1(A,B))
+            & m1_subset_1(k6_msualg_2(A,B),k1_zfmisc_1(k1_closure2(u1_struct_0(A),u4_msualg_1(A,B)))) ) ) ) ).
+
+fof(dt_m1_closure3,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B))) )
+     => ! [D] :
+          ( m1_closure3(D,A,B,C)
+         => m1_pboole(D,A) ) ) ).
+
+fof(existence_m1_closure3,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B))) )
+     => ? [D] : m1_closure3(D,A,B,C) ) ).
+
+fof(redefinition_m1_closure3,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B))) )
+     => ! [D] :
+          ( m1_closure3(D,A,B,C)
+        <=> m1_subset_1(D,C) ) ) ).
+
+fof(reflexivity_r1_closure3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+     => r1_closure3(A,B,D,D) ) ).
+
+fof(reflexivity_r2_closure3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+     => r2_closure3(A,B,C,C) ) ).
+
+fof(dt_k1_closure3,axiom,
+    $true ).
+
+fof(dt_k2_closure3,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B))) )
+     => m4_pboole(k2_closure3(A,B,C),A,B) ) ).
+
+fof(dt_k3_closure3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+     => m1_subset_1(k3_closure3(A,B,C,D),k1_zfmisc_1(k1_closure2(A,B))) ) ).
+
+fof(commutativity_k3_closure3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+     => k3_closure3(A,B,C,D) = k3_closure3(A,B,D,C) ) ).
+
+fof(idempotence_k3_closure3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+     => k3_closure3(A,B,C,C) = C ) ).
+
+fof(redefinition_k3_closure3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+     => k3_closure3(A,B,C,D) = k2_xboole_0(C,D) ) ).
+
+fof(dt_k4_closure3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+     => m1_subset_1(k4_closure3(A,B,C,D),k1_zfmisc_1(k1_closure2(A,B))) ) ).
+
+fof(commutativity_k4_closure3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+     => k4_closure3(A,B,C,D) = k4_closure3(A,B,D,C) ) ).
+
+fof(idempotence_k4_closure3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+     => k4_closure3(A,B,C,C) = C ) ).
+
+fof(redefinition_k4_closure3,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+     => k4_closure3(A,B,C,D) = k3_xboole_0(C,D) ) ).
+
+fof(dt_k5_closure3,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A)
+        & v5_msualg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => ( v11_closure2(k5_closure3(A,B),g1_struct_0(u1_struct_0(A)))
+        & l1_closure2(k5_closure3(A,B),g1_struct_0(u1_struct_0(A))) ) ) ).
+
+fof(d3_closure3,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_pboole(B,A)
+         => ! [C] :
+              ( C = k1_closure3(A,B)
+            <=> C = a_2_0_closure3(A,B) ) ) ) ).
+
+fof(d4_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_closure2(A,B)))
+         => ! [D] :
+              ( m4_pboole(D,A,B)
+             => ( D = k2_closure3(A,B,C)
+              <=> ! [E] :
+                    ( r2_hidden(E,A)
+                   => k1_funct_1(D,E) = k3_tarski(a_4_0_closure3(A,B,C,E)) ) ) ) ) ) ).
+
+fof(t14_closure3,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ! [D] :
+              ( r2_hidden(D,C)
+             => m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B))) )
+         => ! [D] :
+              ( m1_subset_1(D,k1_zfmisc_1(k1_closure2(A,B)))
+             => ! [E] :
+                  ( m1_subset_1(E,k1_zfmisc_1(k1_closure2(A,B)))
+                 => ( ( E = a_3_0_closure3(A,B,C)
+                      & D = k3_tarski(C) )
+                   => r6_pboole(A,k2_closure3(A,B,E),k2_closure3(A,B,D)) ) ) ) ) ) ).
+
+fof(d5_closure3,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_pboole(B,A)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k6_closure2(A,B),k6_closure2(A,B))
+                & m2_relset_1(C,k6_closure2(A,B),k6_closure2(A,B)) )
+             => ( v1_closure3(C,A,B)
+              <=> ! [D] :
+                    ( m1_closure3(D,A,B,k6_closure2(A,B))
+                   => ~ ( r6_pboole(A,D,k7_closure2(A,B,C,D))
+                        & ! [E] :
+                            ( m1_subset_1(E,k1_zfmisc_1(k1_closure2(A,B)))
+                           => ~ ( E = a_4_1_closure3(A,B,C,D)
+                                & r6_pboole(A,D,k2_closure3(A,B,E)) ) ) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_0_closure3,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & m1_pboole(C,B) )
+     => ( r2_hidden(A,a_2_0_closure3(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,B)
+            & A = D
+            & k1_funct_1(C,D) != k1_xboole_0 ) ) ) ).
+
+fof(fraenkel_a_4_0_closure3,axiom,
+    ! [A,B,C,D,E] :
+      ( ( m1_pboole(C,B)
+        & m1_subset_1(D,k1_zfmisc_1(k1_closure2(B,C))) )
+     => ( r2_hidden(A,a_4_0_closure3(B,C,D,E))
+      <=> ? [F] :
+            ( m1_closure2(F,B,C,k6_closure2(B,C))
+            & A = k1_funct_1(F,E)
+            & r2_hidden(F,D) ) ) ) ).
+
+fof(fraenkel_a_3_0_closure3,axiom,
+    ! [A,B,C,D] :
+      ( m1_pboole(C,B)
+     => ( r2_hidden(A,a_3_0_closure3(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,k1_zfmisc_1(k1_closure2(B,C)))
+            & A = k2_closure3(B,C,E)
+            & r2_hidden(E,D) ) ) ) ).
+
+fof(fraenkel_a_4_1_closure3,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(B)
+        & m1_pboole(C,B)
+        & v1_funct_1(D)
+        & v1_funct_2(D,k6_closure2(B,C),k6_closure2(B,C))
+        & m2_relset_1(D,k6_closure2(B,C),k6_closure2(B,C))
+        & m1_closure3(E,B,C,k6_closure2(B,C)) )
+     => ( r2_hidden(A,a_4_1_closure3(B,C,D,E))
+      <=> ? [F] :
+            ( m1_closure3(F,B,C,k6_closure2(B,C))
+            & A = k7_closure2(B,C,D,F)
+            & v1_pre_circ(F,B)
+            & v1_finset_1(k1_closure3(B,F))
+            & r2_pboole(B,F,E) ) ) ) ).
+
+%------------------------------------------------------------------------------

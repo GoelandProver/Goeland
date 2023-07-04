@@ -1,0 +1,284 @@
+%--------------------------------------------------------------------------
+% File     : NUM004-0 : TPTP v8.1.2. Released v1.0.0.
+% Domain   : Number Theory (Ordinals)
+% Axioms   : Number theory (ordinals) axioms, based on NBG set theory
+% Version  : [Qua92] axioms.
+% English  :
+
+% Refs     : [Qua92] Quaife (1992), Email to G. Sutcliffe
+% Source   : [Qua92]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of clauses     :   46 (   9 unt;   4 nHn;  40 RR)
+%            Number of literals    :  104 (  22 equ;  55 neg)
+%            Maximal clause size   :    5 (   2 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   10 (   9 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   36 (  36 usr;  12 con; 0-3 aty)
+%            Number of variables   :   89 (   8 sgn)
+% SPC      : 
+
+% Comments : Requires SET004-0.ax SET004-1.ax
+%--------------------------------------------------------------------------
+%----Definition of symmetrization of a class.
+cnf(symmetrization,axiom,
+    union(X,inverse(X)) = symmetrization_of(X) ).
+
+%----could define (irreflexive(x) = (x * ~(identity_relation))).
+cnf(irreflexive1,axiom,
+    ( ~ irreflexive(X,Y)
+    | subclass(restrict(X,Y,Y),complement(identity_relation)) ) ).
+
+cnf(irreflexive2,axiom,
+    ( ~ subclass(restrict(X,Y,Y),complement(identity_relation))
+    | irreflexive(X,Y) ) ).
+
+%----Definition of connected.
+cnf(connected1,axiom,
+    ( ~ connected(X,Y)
+    | subclass(cross_product(Y,Y),union(identity_relation,symmetrization_of(X))) ) ).
+
+cnf(connected2,axiom,
+    ( ~ subclass(cross_product(Y,Y),union(identity_relation,symmetrization_of(X)))
+    | connected(X,Y) ) ).
+
+%----Definition of transitive.
+%----T(x) <--> ((x ^ x) < x).
+cnf(transitive1,axiom,
+    ( ~ transitive(Xr,Y)
+    | subclass(compose(restrict(Xr,Y,Y),restrict(Xr,Y,Y)),restrict(Xr,Y,Y)) ) ).
+
+cnf(transitive2,axiom,
+    ( ~ subclass(compose(restrict(Xr,Y,Y),restrict(Xr,Y,Y)),restrict(Xr,Y,Y))
+    | transitive(Xr,Y) ) ).
+
+%----or:
+%----transitive(x,y) --> (x < cross_product(V,V)).
+%----transitive(x,y) --> ((restrict(x,y,y) ^ restrict(x,y,y)) < x).
+%----((restrict(x,y,y) ^ restrict(x,y,y)) < x), (x < cross_product(V,V))
+%----    --> transitive(x,y).
+
+%----Definition of asymmetric.
+%----asymmetric(x) <--> ((x * inverse(x)) = null_class).
+cnf(asymmetric1,axiom,
+    ( ~ asymmetric(Xr,Y)
+    | restrict(intersection(Xr,inverse(Xr)),Y,Y) = null_class ) ).
+
+cnf(asymmetric2,axiom,
+    ( restrict(intersection(Xr,inverse(Xr)),Y,Y) != null_class
+    | asymmetric(Xr,Y) ) ).
+
+%----Definition of minimal element.
+%----minimum(x,y,z) --> (z e y).
+%----minimum(x,y,z) --> (restrict(x,y,{z}) = null_class).
+%----(restrict(x,y,{z}) = null_class), (z e y) --> minimum(x,y,z).
+
+%----Definition of segment.
+%----If this is useful enough to define, should use it in definition
+%----of WE. --> (segment(xr,y,z) = (y * (inverse(xr) image {z}))).
+cnf(segment,axiom,
+    segment(Xr,Y,Z) = domain_of(restrict(Xr,Y,singleton(Z))) ).
+
+%----Definition of well ordering.
+cnf(well_ordering1,axiom,
+    ( ~ well_ordering(X,Y)
+    | connected(X,Y) ) ).
+
+cnf(well_ordering2,axiom,
+    ( ~ well_ordering(Xr,Y)
+    | ~ subclass(U,Y)
+    | U = null_class
+    | member(least(Xr,U),U) ) ).
+
+cnf(well_ordering3,axiom,
+    ( ~ well_ordering(Xr,Y)
+    | ~ subclass(U,Y)
+    | ~ member(V,U)
+    | member(least(Xr,U),U) ) ).
+
+cnf(well_ordering4,axiom,
+    ( ~ well_ordering(Xr,Y)
+    | ~ subclass(U,Y)
+    | segment(Xr,U,least(Xr,U)) = null_class ) ).
+
+cnf(well_ordering5,axiom,
+    ( ~ well_ordering(Xr,Y)
+    | ~ subclass(U,Y)
+    | ~ member(V,U)
+    | ~ member(ordered_pair(V,least(Xr,U)),Xr) ) ).
+
+cnf(well_ordering6,axiom,
+    ( ~ connected(Xr,Y)
+    | not_well_ordering(Xr,Y) != null_class
+    | well_ordering(Xr,Y) ) ).
+
+cnf(well_ordering7,axiom,
+    ( ~ connected(Xr,Y)
+    | subclass(not_well_ordering(Xr,Y),Y)
+    | well_ordering(Xr,Y) ) ).
+
+cnf(well_ordering8,axiom,
+    ( ~ member(V,not_well_ordering(Xr,Y))
+    | segment(Xr,not_well_ordering(Xr,Y),V) != null_class
+    | ~ connected(Xr,Y)
+    | well_ordering(Xr,Y) ) ).
+
+%----Definition of section.
+cnf(section1,axiom,
+    ( ~ section(Xr,Y,Z)
+    | subclass(Y,Z) ) ).
+
+cnf(section2,axiom,
+    ( ~ section(Xr,Y,Z)
+    | subclass(domain_of(restrict(Xr,Z,Y)),Y) ) ).
+
+%----section(xr,y,z) --> (restrict(xr,z,y) < cross_product(y,y)).
+%----section(xr,y,z) --> ((z * (inverse(xr) image y)) < y).
+
+cnf(section3,axiom,
+    ( ~ subclass(Y,Z)
+    | ~ subclass(domain_of(restrict(Xr,Z,Y)),Y)
+    | section(Xr,Y,Z) ) ).
+
+%----Definition of ordinal class.
+%----Use (ORD15) to eliminate ordinal_class(x).
+%----ordinal_class(x) --> well_ordering(element_relation,x).
+%----ordinal_class(x) --> (sum_class(x) < x).
+%----well_ordering(element_relation,x), (sum_class(x) < x) -->
+%----ordinal_class(x).
+
+%----Definition of ordinal_numbers by Class Existence Theorem.
+%----(x e ordinal_numbers) --> ordinal_class(x).
+%----(x e V), ordinal_class(x) --> (x e ordinal_numbers).
+cnf(ordinal_numbers1,axiom,
+    ( ~ member(X,ordinal_numbers)
+    | well_ordering(element_relation,X) ) ).
+
+cnf(ordinal_numbers2,axiom,
+    ( ~ member(X,ordinal_numbers)
+    | subclass(sum_class(X),X) ) ).
+
+cnf(ordinal_numbers3,axiom,
+    ( ~ well_ordering(element_relation,X)
+    | ~ subclass(sum_class(X),X)
+    | ~ member(X,universal_class)
+    | member(X,ordinal_numbers) ) ).
+
+cnf(ordinal_numbers4,axiom,
+    ( ~ well_ordering(element_relation,X)
+    | ~ subclass(sum_class(X),X)
+    | member(X,ordinal_numbers)
+    | X = ordinal_numbers ) ).
+
+%----(SUCDEF8) Definition of kind_1_ordinals.
+cnf(kind_1_ordinals,axiom,
+    union(singleton(null_class),image(successor_relation,ordinal_numbers)) = kind_1_ordinals ).
+
+%----(LIMDEF1): definition of limit ordinal.
+cnf(limit_ordinals,axiom,
+    intersection(complement(kind_1_ordinals),ordinal_numbers) = limit_ordinals ).
+
+%----(TRECDEF1): definition of rest_of by class existence theorem.
+%----rest_of(x) ' u = {[u,w] e x : w e V}.
+cnf(rest_of1,axiom,
+    subclass(rest_of(X),cross_product(universal_class,universal_class)) ).
+
+cnf(rest_of2,axiom,
+    ( ~ member(ordered_pair(U,V),rest_of(X))
+    | member(U,domain_of(X)) ) ).
+
+cnf(rest_of3,axiom,
+    ( ~ member(ordered_pair(U,V),rest_of(X))
+    | restrict(X,U,universal_class) = V ) ).
+
+cnf(rest_of4,axiom,
+    ( ~ member(U,domain_of(X))
+    | restrict(X,U,universal_class) != V
+    | member(ordered_pair(U,V),rest_of(X)) ) ).
+
+%----(TRECDEF3.8): definition of rest_relation.
+cnf(rest_relation1,axiom,
+    subclass(rest_relation,cross_product(universal_class,universal_class)) ).
+
+cnf(rest_relation2,axiom,
+    ( ~ member(ordered_pair(X,Y),rest_relation)
+    | rest_of(X) = Y ) ).
+
+cnf(rest_relation3,axiom,
+    ( ~ member(X,universal_class)
+    | member(ordered_pair(X,rest_of(X)),rest_relation) ) ).
+
+%----(TRECDEF4): Definition of Fn = recursion_equation_functions.
+%----If z is being used to define a function by transfinite recursion,
+%----then Fn(z) is the class of all partial functions that satisfy the
+%----recursion equation, for as far out into the ordinals as they are
+%----defined.  So THE function defined by z is U Fn(z).
+cnf(recursion_equation_functions1,axiom,
+    ( ~ member(X,recursion_equation_functions(Z))
+    | function(Z) ) ).
+
+cnf(recursion_equation_functions2,axiom,
+    ( ~ member(X,recursion_equation_functions(Z))
+    | function(X) ) ).
+
+cnf(recursion_equation_functions3,axiom,
+    ( ~ member(X,recursion_equation_functions(Z))
+    | member(domain_of(X),ordinal_numbers) ) ).
+
+cnf(recursion_equation_functions4,axiom,
+    ( ~ member(X,recursion_equation_functions(Z))
+    | compose(Z,rest_of(X)) = X ) ).
+
+cnf(recursion_equation_functions5,axiom,
+    ( ~ function(Z)
+    | ~ function(X)
+    | ~ member(domain_of(X),ordinal_numbers)
+    | compose(Z,rest_of(X)) != X
+    | member(X,recursion_equation_functions(Z)) ) ).
+
+%----(OADEF1): definition of union_of_range_map.
+%----Quaife says URAN is the function which maps x into
+%----union(range_of(x)).
+cnf(union_of_range_map1,axiom,
+    subclass(union_of_range_map,cross_product(universal_class,universal_class)) ).
+
+cnf(union_of_range_map2,axiom,
+    ( ~ member(ordered_pair(X,Y),union_of_range_map)
+    | sum_class(range_of(X)) = Y ) ).
+
+cnf(union_of_range_map3,axiom,
+    ( ~ member(ordered_pair(X,Y),cross_product(universal_class,universal_class))
+    | sum_class(range_of(X)) != Y
+    | member(ordered_pair(X,Y),union_of_range_map) ) ).
+
+%----(OADEF2): definition of ordinal addition.
+cnf(ordinal_addition,axiom,
+    apply(recursion(X,successor_relation,union_of_range_map),Y) = ordinal_add(X,Y) ).
+
+%----(OADEF3): definition of twisted plus.
+%------> (add_relation < cross_product(ordinal_numbers,cross_product(
+%----    ordinal_numbers,ordinal_numbers))).
+%----([x,[y,z]] e add_relation) --> (ordinal_add(y,x) = z).
+%---- ([y,x] e cross_product(ordinal_numbers,ordinal_numbers)) -->
+%----  ([x,[y,ordinal_add(x,y)]] e add_relation).
+
+%----(OMDEF1): definition of ordinal multiplication.
+cnf(ordinal_multiplication,axiom,
+    recursion(null_class,apply(add_relation,X),union_of_range_map) = ordinal_multiply(X,Y) ).
+
+%----(IADEF1): integer function.
+cnf(integer_function1,axiom,
+    ( ~ member(X,omega)
+    | integer_of(X) = X ) ).
+
+cnf(integer_function2,axiom,
+    ( member(X,omega)
+    | integer_of(X) = null_class ) ).
+
+%----(IADEF2): integer addition.
+%------> (ordinal_add(integer_of(y),integer_of(x)) = (x + y)).
+
+%----(IADEF3): integer multiplication.
+%------> (ordinal_multiply(integer_of(y),integer_of(x)) = (x * y)).
+%--------------------------------------------------------------------------
