@@ -499,8 +499,8 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 		global.PrintDebug("PS", "Insert tree, searching contradiction, then dispatch")
 
 		// Applying substitutions before inserting in the code tree.
-		atomicsPlus := complextypes.ApplySubstitutionsOnFormulaList(s.GetSubst(), st.GetLF().FilterPred(true))
-		atomicsMinus := complextypes.ApplySubstitutionsOnFormulaList(s.GetSubst(), st.GetLF().FilterPred(false))
+		atomicsPlus := st.GetLF().FilterPred(true)
+		atomicsMinus := st.GetLF().FilterPred(false)
 		st.SetTreePos(st.GetTreePos().InsertFormulaListToDataStructure(atomicsPlus))
 		st.SetTreeNeg(st.GetTreeNeg().InsertFormulaListToDataStructure(atomicsMinus))
 
@@ -513,6 +513,11 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 		for _, f := range st.GetLF() {
 			if basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
 				st.DispatchForm(f.Copy())
+			} else {
+				if searchObviousClosureRule(f.GetForm()) {
+					manageClosureRule(father_id, &st, cha, []treetypes.Substitutions{}, f, node_id, original_node_id)
+					return
+				}
 			}
 		}
 

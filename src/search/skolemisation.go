@@ -85,6 +85,7 @@ func applyOuterSkolemisation(args skoArgs) basictypes.Form {
 
 // Inner skolemisation: takes all the metavariable which occur in a formula as arguments of the skolem term.
 func applyInnerSkolemisation(args skoArgs) basictypes.Form {
+	// TODO: make new formula to get metas
 	args.terms = global.To[basictypes.TermList](args.formula.GetMetas())
 	return substAndReturn(args, makeSkolemFunction(args))
 }

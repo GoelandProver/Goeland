@@ -219,7 +219,7 @@ func PrintSearchResult(res bool) {
 		validity = "VALID"
 
 		if global.IsConjectureFound() {
-			status = "Theorm"
+			status = "Theorem"
 		} else {
 			status = "Unsatisfiable"
 		}

@@ -271,7 +271,10 @@ func isPredEqual(f btps.Form) bool {
 	if not, isNot := f.(btps.Not); isNot {
 		f = not.GetForm()
 	}
-	return f.(btps.Pred).GetID().Equals(btps.Id_eq)
+	if p, isPred := f.(btps.Pred); isPred {
+		return p.Equals(btps.Id_eq)
+	}
+	return false
 }
 
 func addTermGenerated(constantsCreated []btps.Term, term btps.Term) ([]btps.Term, string) {
