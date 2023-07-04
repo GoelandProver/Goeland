@@ -21,7 +21,7 @@ var HasChanged = false
 
 func ApplySubstsAssisted(substi complextypes.SubstAndForm) {
 	fmt.Printf("Je passe avant : %v\n", substi.ToString())
-	substAssisted = complextypes.MergeSubstAndForm(substAssisted, substi)
+	_, substAssisted = complextypes.MergeSubstAndForm(substAssisted, substi)
 	fmt.Printf("Je passe après : %v\n", substAssisted.ToString())
 	need = true
 }

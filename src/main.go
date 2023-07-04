@@ -40,7 +40,6 @@ package main
 
 import (
 	"errors"
-	"flag"
 	"fmt"
 	"os"
 	"path"
@@ -61,8 +60,6 @@ import (
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
-
-var flag_assisted = flag.Bool("assisted", false, "Step-by-step mode used to select specific rules to specific formulae")
 
 var chAssistant chan bool = make(chan bool)
 

@@ -293,7 +293,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 
 		}
 		if global.IsDestructive() {
-			search.WaitChildren(father_id, state1, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, false, child_id_list, meta_to_reintroduce)
+			search.WaitChildren(search.MakeWcdArgs(father_id, state1, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, false, child_id_list, meta_to_reintroduce))
 		} else {
 			global.PrintDebug("PS", "Die")
 		}
