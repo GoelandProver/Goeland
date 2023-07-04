@@ -80,7 +80,7 @@ func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruc
 	}
 
 	// Updates the proof using the proofs of the children of the node.
-	updateProof(args, proofChildren)
+	args.st = updateProof(args, proofChildren)
 
 	xchg.WriteExchanges(args.fatherId, args.st, nil, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
@@ -92,7 +92,7 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 	global.PrintDebug("WC", fmt.Sprintf("All children agree on the substitution(s) : %v", ttps.SubstListToString(ctps.GetSubstListFromSubstAndFormList(substs))))
 
 	// Updates the proof with what the children have found
-	updateProof(args, proofChildren)
+	args.st = updateProof(args, proofChildren)
 	newMetas := args.toReintroduce
 	global.PrintDebug("WC", fmt.Sprintf("new meta to reintroduce: %v", global.IntListToString(newMetas)))
 

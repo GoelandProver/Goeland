@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"sync"
 
-	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
-	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
 type skoArgs struct {
@@ -16,7 +14,6 @@ type skoArgs struct {
 	terms     basictypes.TermList
 	sourceVar basictypes.Var
 	symbol    basictypes.Id
-	subst     treetypes.Substitutions
 }
 
 type class struct {
@@ -30,7 +27,7 @@ var symbolMaker class
 /**
  * Skolemizes once the formula f.
  */
-func Skolemize(fnt basictypes.FormAndTerms, state *complextypes.State) basictypes.FormAndTerms {
+func Skolemize(fnt basictypes.FormAndTerms) basictypes.FormAndTerms {
 	form := fnt.GetForm()
 	terms := fnt.GetTerms()
 
@@ -38,11 +35,11 @@ func Skolemize(fnt basictypes.FormAndTerms, state *complextypes.State) basictype
 	// 1 - not(forall F1)
 	case basictypes.Not:
 		if tmp, ok := nf.GetForm().(basictypes.All); ok {
-			fnt = basictypes.MakeFormAndTerm(basictypes.RefuteForm(realSkolemize(tmp.GetForm(), tmp.GetVarList(), terms, state)), terms)
+			fnt = basictypes.MakeFormAndTerm(basictypes.RefuteForm(realSkolemize(tmp.GetForm(), tmp.GetVarList(), terms)), terms)
 		}
 	// 2 - exists F1
 	case basictypes.Ex:
-		fnt = basictypes.MakeFormAndTerm(realSkolemize(nf.GetForm(), nf.GetVarList(), terms, state), terms)
+		fnt = basictypes.MakeFormAndTerm(realSkolemize(nf.GetForm(), nf.GetVarList(), terms), terms)
 	}
 
 	return fnt
@@ -55,13 +52,12 @@ func Skolemize(fnt basictypes.FormAndTerms, state *complextypes.State) basictype
  * delta+ : only relevant meta : getmeta + meta replaced
  * delta++ : same function name (need classical skolem for meta)
  **/
-func realSkolemize(fnt basictypes.Form, vars []basictypes.Var, terms basictypes.TermList, state *complextypes.State) basictypes.Form {
+func realSkolemize(fnt basictypes.Form, vars []basictypes.Var, terms basictypes.TermList) basictypes.Form {
 	// Replace each variable by the skolemized term.
 	for _, v := range vars {
 		// Generation of a fresh symbol
 		symbol := basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex()))
-		subst := state.GetAppliedSubst().GetSubst()
-		fnt = applySelectedSkolemisation(skoArgs{sourceVar: v, symbol: symbol, subst: subst, formula: fnt, terms: terms})
+		fnt = applySelectedSkolemisation(skoArgs{sourceVar: v, symbol: symbol, formula: fnt, terms: terms})
 	}
 
 	return fnt
@@ -86,7 +82,7 @@ func applyOuterSkolemisation(args skoArgs) basictypes.Form {
 // Inner skolemisation: takes all the metavariable which occur in a formula as arguments of the skolem term.
 func applyInnerSkolemisation(args skoArgs) basictypes.Form {
 	// TODO: make new formula to get metas
-	args.terms = global.To[basictypes.TermList](args.formula.GetMetas())
+	args.terms = global.ConvertList[basictypes.Meta, basictypes.Term](args.formula.GetMetas())
 	return substAndReturn(args, makeSkolemFunction(args))
 }
 
@@ -105,7 +101,6 @@ func substAndReturn(args skoArgs, sko basictypes.Term) basictypes.Form {
 }
 
 func (c *class) make(form basictypes.Form, source basictypes.Var) basictypes.Id {
-
 	form = alphaConvert(basictypes.MakerEx([]basictypes.Var{source}, form), 0, make(map[basictypes.Var]basictypes.Var))
 	c.mu.Lock()
 	symbol := c.getSymbol(form, basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", source.GetName(), source.GetIndex())))
