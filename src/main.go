@@ -71,12 +71,10 @@ func main() {
 		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
 		go assisted.Assistant(chAssistant)
 
-		fmt.Printf("This problem has formula %s\n", form.ToString())
 		assisted.Counter.Increase()
 		go startSearch(form, bound)
 
-		<-chAssistant
-		printResultAssisted()
+		search.PrintSearchResult(<-chAssistant)
 	} else {
 		startSearch(form, bound)
 	}
@@ -148,13 +146,6 @@ func doCPUProfile() {
 			global.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
 		}
 	}
-}
-
-func printResultAssisted() {
-	fmt.Printf("\n\n[%.6fs][%v][Res] %v goroutines created\n", time.Since(global.GetStart()).Seconds(), global.GetGID(), global.GetNbGoroutines())
-	fmt.Printf("======== Result ========\n")
-	fmt.Printf("If you've made it this far, it means you closed all branches with success !\n")
-	fmt.Printf("==== Congrats, USER! ====\n\n")
 }
 
 // ILL TODO this function should not have to call the parser. The parser should do it themselves.

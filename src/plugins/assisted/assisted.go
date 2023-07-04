@@ -13,51 +13,61 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-var chRule = make(chan string, 1)
-var chFormula = make(chan int, 1)
-
-var state = make(chan complextypes.State)
-
 // Prints formulae relative to rules from a State. For terminal uses.
 func PrintFormListFromState(st complextypes.State, id int) {
-	fmt.Printf("\nHere is the content of the state [%d]:\n", id)
-	fmt.Printf(" │ FoundSubs : \n")
+	fmt.Printf("\nState nº%d:\n", id)
 	SubstsFound := st.GetSubstsFound()
-	for _, s := range SubstsFound {
-		fmt.Printf("	└ %s\n", s.ToString())
+	if len(SubstsFound) > 0 {
+		fmt.Printf("FoundSubs : \n")
+		for _, s := range SubstsFound {
+			fmt.Printf("   └ %s\n", s.ToString())
+		}
 	}
-	fmt.Printf(" │ ⦾ Atomic : %s\n", st.GetAtomic().ToString())
-	fmt.Printf(" │ α Alpha : %s\n", st.GetAlpha().ToString())
-	fmt.Printf(" │ β Beta : %s\n", st.GetBeta().ToString())
-	fmt.Printf(" │ δ Delta : %s\n", st.GetDelta().ToString())
-	fmt.Printf(" │ γ Gamma : %s\n", st.GetGamma().ToString())
-	fmt.Printf(" └ MetaGen : %s\n", basictypes.MetaGenListToString(st.GetMetaGen()))
+
+	printRulesLine(" | X - Atomic : %s\n", st.GetAtomic())
+	printRulesLine(" | A - Alpha : %s\n", st.GetAlpha())
+	printRulesLine(" | B - Beta : %s\n", st.GetBeta())
+	printRulesLine(" | D - Delta : %s\n", st.GetDelta())
+	printRulesLine(" | G - Gamma : %s\n", st.GetGamma())
+
+	if len(st.GetMetaGen()) > 0 {
+		fmt.Printf(" | M - MetaGen : %s\n", basictypes.MetaGenListToString(st.GetMetaGen()))
+	}
+}
+
+func printRulesLine(line string, fnts basictypes.FormAndTermsList) {
+	if len(fnts) > 0 {
+		fmt.Printf(line, fnts.ToString())
+	}
 }
 
 // Selects a rule with formulae applicable.
-func ChooseRule(st complextypes.State) string {
+func SelectRule(st complextypes.State) string {
 	checker := 0
 	var rule string
 	for checker < 1 {
+		fmt.Printf("Select a rule to apply ~> ")
 		fmt.Scanf("%s", &rule)
-		if ruleList[rule] == "M" {
+		if ruleSynonymList[rule] == "M" {
 			if st.CanReintroduce() && len(st.GetMetaGen()) > 0 {
 				rule = "M"
-				fmt.Printf("%s rule selected. Please choose a formula for the rule to apply.\n~> ", rule)
+				fmt.Printf("%s rule selected.\n", rule)
+				fmt.Println("-------------------------")
 				checker = 1
 			} else {
-				fmt.Printf("Error, M rule is empty or cannot reintroduce\n~> ")
+				fmt.Printf("Error, M rule is empty or cannot reintroduce\n")
 			}
 		} else {
-			if ruleList[rule] == "X" || ruleList[rule] == "A" || ruleList[rule] == "B" || ruleList[rule] == "D" || ruleList[rule] == "G" {
-				rule = ruleList[rule]
+			if ruleSynonymList[rule] == "X" || ruleSynonymList[rule] == "A" || ruleSynonymList[rule] == "B" || ruleSynonymList[rule] == "D" || ruleSynonymList[rule] == "G" {
+				rule = ruleSynonymList[rule]
 				if rule == "X" && len(st.GetAtomic()) == 0 || rule == "A" && len(st.GetAlpha()) == 0 || rule == "B" && len(st.GetBeta()) == 0 || rule == "D" && len(st.GetDelta()) == 0 || rule == "G" && len(st.GetGamma()) == 0 {
-					fmt.Printf("Error, %s rule does not have any formula. Please select another.\n~> ", rule)
+					fmt.Printf("Error, %s rule does not have any formula. Please select another.\n", rule)
 				} else {
+					fmt.Println("-------------------------")
 					checker = 1
 				}
 			} else {
-				fmt.Printf("Error, select a valid rule to apply.\n~> ")
+				fmt.Printf("Error, select a valid rule to apply.\n")
 			}
 		}
 	}
@@ -65,7 +75,7 @@ func ChooseRule(st complextypes.State) string {
 }
 
 // Given a string, returns the FormAndTermsList associated with that rule.
-func ChooseFormulae(rule string, st complextypes.State) basictypes.FormAndTermsList {
+func GetFormulaeFromRule(rule string, st complextypes.State) basictypes.FormAndTermsList {
 	var chosenFormulae basictypes.FormAndTermsList
 	switch rule {
 	case "X":
@@ -79,14 +89,10 @@ func ChooseFormulae(rule string, st complextypes.State) basictypes.FormAndTermsL
 	case "G":
 		chosenFormulae = st.GetGamma()
 	case "M":
-		list := st.GetMetaGen()
-		var listeLaVraie basictypes.FormAndTermsList
-
-		for _, UwU := range list {
-			listeLaVraie = append(listeLaVraie, UwU.GetForm())
+		metaGens := st.GetMetaGen()
+		for _, metaGen := range metaGens {
+			chosenFormulae = append(chosenFormulae, metaGen.GetForm())
 		}
-
-		chosenFormulae = listeLaVraie
 	}
 
 	return chosenFormulae
@@ -100,44 +106,45 @@ func listIndexedForms(forms basictypes.FormAndTermsList) {
 }
 
 // Choose a formula from an indexed formula list.
-func ChooseFormula(forms basictypes.FormAndTermsList) int {
-	fmt.Printf("Rule selected. Please choose a formula for the rule to apply.\n")
+func SelectFormula(forms basictypes.FormAndTermsList) int {
+	fmt.Println()
 	listIndexedForms(forms)
-	fmt.Printf("~> ")
 
-	checker1 := 0
+	isFormulaValid := false
 	var choice int
-	for checker1 < 1 {
+	for !isFormulaValid {
+		fmt.Printf("Select a formula for the rule to apply ~> ")
 		fmt.Scanf("%d", &choice)
 		if choice < len(forms) && choice >= 0 {
-			fmt.Printf("You chose %s formula.\n", forms[choice].ToString())
-			checker1 = 1
+			fmt.Printf("You selected %s\n", forms[choice].ToString())
+			isFormulaValid = true
+			fmt.Println("-------------------------")
 		} else {
-			fmt.Printf("Error, please choose an existing formula.\n~> ")
+			fmt.Printf("Error, please select a valid formula.\n")
 		}
 	}
 	return choice
 }
 
 // Choose a formula from an indexed formula list.
-func ChooseSubst(substs []complextypes.SubstAndForm) int {
-
+func SelectSubstitution(substs []complextypes.SubstAndForm) int {
 	fmt.Printf("Found closure rule with substitution that is used elsewhere, requires User choice.\n")
-	fmt.Printf("Here is the list of possible substitutions (may contain duplicates), please, choose one :\n")
+	fmt.Printf("Here is the list of possible substitutions (may contain duplicates):\n")
 	for i, elem := range substs {
 		fmt.Printf("[%d] %v\n", i, elem.ToString())
 	}
-	fmt.Printf("~> ")
 
-	checker5 := 0
+	isSubstitutionValid := false
 	var choice int
-	for checker5 < 1 {
+	for !isSubstitutionValid {
+		fmt.Printf("Select a substitution ~> ")
 		fmt.Scanf("%d", &choice)
 		if choice < len(substs) && choice >= 0 {
-			fmt.Printf("You chose %v substitution.\nIt will apply when a status will be updated.\n", substs[choice].ToString())
-			checker5 = 1
+			fmt.Printf("You selected %v substitution.\nIt will apply when a state will be updated.\n", substs[choice].ToString())
+			isSubstitutionValid = true
+			fmt.Println("-------------------------")
 		} else {
-			fmt.Printf("Error, please choose an existing substitution.\n~> ")
+			fmt.Printf("Error, please select a valid substitution.\n")
 		}
 	}
 	return choice
@@ -157,7 +164,6 @@ func receive(father_id uint64, state1 complextypes.State, c search.Communication
 
 var lock_choices sync.Mutex
 var status []StatusElement
-var substsTab []complextypes.SubstAndForm
 
 // Function to apply tabeau rules as we want, given string rule and int choice.
 func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int) {
@@ -168,7 +174,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 	var substitut complextypes.SubstAndForm
 
 	lock_choices.Lock()
-	thisStatus := MakeStatusElem(ch, state1)
+	thisStatus := MakeStatusElement(ch, state1)
 	status = append(status, thisStatus)
 
 	lock_choices.Unlock()
@@ -201,9 +207,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 
 		listSubsts2 := []complextypes.SubstAndForm{}
 		for _, elem := range listSubsts {
-			for _, elem2 := range elem {
-				listSubsts2 = append(listSubsts2, elem2)
-			}
+			listSubsts2 = append(listSubsts2, elem...)
 		}
 
 		if !foundOne {
@@ -213,7 +217,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 
 		if len(listSubsts2) > 0 && finalBool {
 
-			subChoice := ChooseSubst(listSubsts2)
+			subChoice := SelectSubstitution(listSubsts2)
 			ApplySubstsAssisted(listSubsts2[subChoice])
 			HasChanged = true
 		}
@@ -270,7 +274,7 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 		}
 		fmt.Printf("...Adding them to status list.\n\n")
 
-		for _, _ = range int_form_list_list {
+		for range int_form_list_list {
 			Counter.Increase()
 		}
 

@@ -7,8 +7,7 @@ import (
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
-// Map for user friendship purposes. May be an outdated method.
-var ruleList = map[string]string{
+var ruleSynonymList = map[string]string{
 	"Atomic": "X",
 	"Axiom":  "X",
 	"X":      "X",
@@ -67,51 +66,39 @@ type SyncCounter struct {
 
 func (sc *SyncCounter) Increase() {
 	sc.mutex.Lock()
-	fmt.Printf("CPT = %d\n", sc.cpt)
 	defer sc.mutex.Unlock()
 	sc.cpt++
 }
 
 func (sc *SyncCounter) Decrease() {
 	sc.mutex.Lock()
-	fmt.Printf("CPT = %d\n", sc.cpt)
 	defer sc.mutex.Unlock()
 	sc.cpt--
 	if sc.cpt == 0 {
-		fmt.Printf("CPT = 0 : %d\n", sc.cpt)
 		nextStep <- true
 	}
 }
 
-// Returns the element's Id
 func (se StatusElement) GetId() int {
 	return se.id
 }
 
-// Returns the element's channel
 func (se StatusElement) GetChannel() chan Choice {
 	return se.channel
 }
 
-// Creates a StatusElement given a communication channel and a state
-func MakeStatusElem(ch chan Choice, st complextypes.State) StatusElement {
+func MakeStatusElement(ch chan Choice, st complextypes.State) StatusElement {
 	id += 1
 	return StatusElement{id, ch, st}
 }
 
-// Adds a StatusElement to a Status list
-func AddStatusElem(elem StatusElement, statusHere []StatusElement) {
-	statusHere = append(statusHere, elem)
-}
-
-// Prints the actual status
-func printStatus() {
+func printStatusIds() {
 	fmt.Printf("Status list : {")
 	for i, elem := range status {
 		if i < len(status)-1 {
-			fmt.Printf("[%d], ", elem.GetId())
+			fmt.Printf("%d, ", elem.GetId())
 		} else {
-			fmt.Printf("[%d]", elem.GetId())
+			fmt.Printf("%d", elem.GetId())
 		}
 	}
 	fmt.Printf("}\n")
@@ -119,7 +106,6 @@ func printStatus() {
 	for _, elem := range status {
 		PrintFormListFromState(elem.state, elem.GetId())
 	}
-	fmt.Printf("~> ")
 }
 
 func (choice Choice) GetForm() int {

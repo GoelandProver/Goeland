@@ -7,9 +7,6 @@ import (
 )
 
 var nextStep chan bool
-var needSubst chan bool
-var finishedProof = false
-var chAssistant chan bool
 var recieveSubst chan complextypes.SubstAndForm
 
 func SetFinishedProof(b bool) {
@@ -20,74 +17,61 @@ var substAssisted = complextypes.MakeEmptySubstAndForm()
 var HasChanged = false
 
 func ApplySubstsAssisted(substi complextypes.SubstAndForm) {
-	fmt.Printf("Je passe avant : %v\n", substi.ToString())
 	_, substAssisted = complextypes.MergeSubstAndForm(substAssisted, substi)
-	fmt.Printf("Je passe après : %v\n", substAssisted.ToString())
-	need = true
 }
-
-var first = true
-var need = false
 
 func Assistant(channel chan bool) {
 	nextStep = make(chan bool)
-	needSubst = make(chan bool)
 	recieveSubst = make(chan complextypes.SubstAndForm)
 
 	index := 0
 
 	for <-nextStep {
-		fmt.Printf("j'ai commencé nextStep\n")
-		fmt.Printf("HasChanger  %v\n", HasChanged)
 		if HasChanged {
 			for _, elem := range status {
 				_ = elem
-				fmt.Printf("before recieve subst")
 				recieveSubst <- substAssisted
 			}
 			HasChanged = false
 		}
 
-		fmt.Printf("before lock\n")
 		lock_choices.Lock()
-		index = ChooseStatus()
+		fmt.Println()
+		index = SelectStatus()
 
 		PrintFormListFromState(status[index].state, status[index].GetId())
-		fmt.Printf("Please, choose a rule you would like to apply (X, A, B, D, G)...\n~> ")
+		fmt.Println()
 
-		ruleVeritable := ChooseRule(status[index].state)
+		ruleVeritable := SelectRule(status[index].state)
 		indiceChoice := 0
 
 		if ruleVeritable != "X" {
-			indiceChoice = ChooseFormula(ChooseFormulae(ruleVeritable, status[index].state))
+			indiceChoice = SelectFormula(GetFormulaeFromRule(ruleVeritable, status[index].state))
 		}
 
-		fmt.Printf("J'envoie choice avec : %s, %d, %s", ruleVeritable, indiceChoice, substAssisted.ToString())
 		choice := MakeChoice(ruleVeritable, indiceChoice, substAssisted)
 		status[index].channel <- choice
 		lock_choices.Unlock()
-		fmt.Printf("J'unlock\n")
 	}
 	channel <- true
 }
 
-func ChooseStatus() int {
-	fmt.Printf("\nPlease, choose a status from the list (using it's id in [ ])\n")
-	printStatus()
+func SelectStatus() int {
+	printStatusIds()
 	var chosenStatus = 0
-	for true {
+	for {
+		fmt.Printf("Select a state ID ~> ")
 		fmt.Scanf("%d", &chosenStatus)
 		for i, fl := range status {
 			if fl.GetId() == chosenStatus {
-				fmt.Printf("You chose the [%d] status, GO !\n", chosenStatus)
+				fmt.Printf("You selected the state nº%d\n", chosenStatus)
+				fmt.Println("-------------------------")
 				return i
 			}
 		}
 
-		fmt.Printf("Status [%d] is not in the list. Please choose another.\n~> ", chosenStatus)
+		fmt.Printf("\nState nº%d is not in the list. Please select a valid state ID.\n", chosenStatus)
 	}
-
-	return -1
 }
 
 func RemoveStatus(a int) {
