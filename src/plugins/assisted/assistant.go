@@ -280,8 +280,14 @@ func SelectFormula(forms basictypes.FormAndTermsList) int {
 // Choose a formula from an indexed formula list.
 func SelectSubstitution(substs []complextypes.SubstAndForm) int {
 	fmt.Printf("Found closure rule with substitution that is used elsewhere, requires User choice.\n")
-	fmt.Printf("Here is the list of possible substitutions (may contain duplicates):\n")
-	for i, elem := range substs {
+	fmt.Printf("Here is the list of possible substitutions :\n")
+	uniqueSubs := []treetypes.Substitutions{}
+
+	for _, sub := range substs {
+		uniqueSubs = treetypes.AppendIfNotContainsSubst(uniqueSubs, sub.GetSubst())
+	}
+
+	for i, elem := range uniqueSubs {
 		fmt.Printf("[%d] %v\n", i, elem.ToString())
 	}
 
