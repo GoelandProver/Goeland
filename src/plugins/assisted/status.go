@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/GoelandProver/Goeland/global"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
@@ -63,12 +64,13 @@ func (se *StatusElement) applySubs(sub complextypes.SubstAndForm) {
 }
 
 func (se *StatusElement) sendChoice(choice Choice) {
-	fmt.Println("Choice sent to state nº", se.GetId(), ":", choice)
+	global.PrintDebug("ASSISTED", fmt.Sprintf("Choice sent to state nº%d : %v", se.GetId(), choice))
+
 	se.channel <- choice
 }
 
 func (se *StatusElement) receiveChoice() Choice {
 	choice := <-se.channel
-	fmt.Println("Choice sent to state nº", se.GetId(), ":", choice)
+	global.PrintDebug("ASSISTED", fmt.Sprintf("Choice received from state nº%d : %v", se.GetId(), choice))
 	return choice
 }

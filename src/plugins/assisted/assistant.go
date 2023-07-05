@@ -155,7 +155,7 @@ func printGoelandChoice(st *complextypes.State) {
 	}
 
 	if found {
-		str := "Goéland would apply the Closure rule"
+		str := " └ Goéland would apply the Closure rule"
 		if withSubs {
 			str += " with the following substitution: " + allSubs[0].ToString()
 		} else {
@@ -181,7 +181,7 @@ func printGoelandChoice(st *complextypes.State) {
 		}
 
 		if done {
-			fmt.Printf("Goéland would apply the %s rule on the following formula: %s\n", rule, formula.ToString())
+			fmt.Printf(" └ Goéland would apply the %s rule on the following formula: %s\n", rule, formula.ToString())
 		}
 	}
 }
