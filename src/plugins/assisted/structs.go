@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/GoelandProver/Goeland/global"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
@@ -43,6 +44,8 @@ var ruleSynonymList = map[string]string{
 }
 
 var Counter SyncCounter
+
+var lockId sync.Mutex
 var id = -1
 
 var lockStatus sync.Mutex
@@ -71,23 +74,32 @@ func (sc *SyncCounter) Increase() {
 	sc.mutex.Lock()
 	defer sc.mutex.Unlock()
 	sc.cpt++
+	global.PrintDebug("CPT", fmt.Sprintf("++ : %d", sc.cpt))
 }
 
 func (sc *SyncCounter) Decrease() {
 	sc.mutex.Lock()
 	defer sc.mutex.Unlock()
 	sc.cpt--
+	global.PrintDebug("CPT", fmt.Sprintf("-- : %d", sc.cpt))
 	if sc.cpt == 0 {
 		nextStep <- true
 	}
 }
 
-func RemoveStatus(a int) {
+func AddStatus(se *StatusElement) {
 	lockStatus.Lock()
 	defer lockStatus.Unlock()
 
-	for i, fl := range status {
-		if fl.GetId() == a {
+	status = append(status, *se)
+}
+
+func RemoveStatus(id int) {
+	lockStatus.Lock()
+	defer lockStatus.Unlock()
+
+	for i, element := range status {
+		if element.GetId() == id {
 			status = append(status[:i], status[i+1:]...)
 		}
 	}
@@ -102,6 +114,8 @@ func (se StatusElement) GetChannel() chan Choice {
 }
 
 func MakeStatusElement(ch chan Choice, st complextypes.State) StatusElement {
+	lockId.Lock()
+	defer lockId.Unlock()
 	id += 1
 	return StatusElement{id, ch, st}
 }

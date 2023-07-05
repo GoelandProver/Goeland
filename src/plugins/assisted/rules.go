@@ -20,11 +20,8 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 	var indiceForm int
 	var substitut complextypes.SubstAndForm
 
-	lockStatus.Lock()
 	thisStatus := MakeStatusElement(ch, state1)
-	status = append(status, thisStatus)
-
-	lockStatus.Unlock()
+	AddStatus(&thisStatus)
 	Counter.Decrease()
 
 	ruleVeritable, indiceForm, substitut = receive(father_id, state1, c, new_atomics, node_id, original_node_id, meta_to_reintroduce, ch)
@@ -52,26 +49,26 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 			}
 		}
 
-		listSubsts2 := []complextypes.SubstAndForm{}
-		for _, elem := range listSubsts {
-			listSubsts2 = append(listSubsts2, elem...)
-		}
-
 		if !foundOne {
-			fmt.Printf("No applicable rule in X. Re-adding myself to states as nº%d\n", thisStatus.GetId())
-			status = append(status, thisStatus)
-		}
-
-		if len(listSubsts2) > 0 && finalBool {
-			subChoice := SelectSubstitution(listSubsts2)
-			ApplySubstsAssisted(listSubsts2[subChoice])
-			HasChanged = true
-		}
-
-		if len(status) > 0 {
-			nextStep <- true
+			Counter.Increase()
+			go search.ProofSearch(father_id, state1, c, substitut, node_id, original_node_id, meta_to_reintroduce)
 		} else {
-			nextStep <- false
+			listSubsts2 := []complextypes.SubstAndForm{}
+			for _, elem := range listSubsts {
+				listSubsts2 = append(listSubsts2, elem...)
+			}
+
+			if len(listSubsts2) > 0 && finalBool {
+				subChoice := SelectSubstitution(listSubsts2)
+				ApplySubstsAssisted(listSubsts2[subChoice])
+				HasChanged = true
+			}
+
+			if len(status) > 0 {
+				nextStep <- true
+			} else {
+				nextStep <- false
+			}
 		}
 	case "A":
 		global.PrintDebug("PS", "User chose Alpha rule")

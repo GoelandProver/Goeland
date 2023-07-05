@@ -103,34 +103,33 @@ func printRulesLine(line string, fnts basictypes.FormAndTermsList) {
 
 // Selects a rule with formulae applicable.
 func SelectRule(st complextypes.State) string {
-	checker := 0
+	isRuleValid := false
 	var rule string
-	for checker < 1 {
+	for !isRuleValid {
 		fmt.Printf("Select a rule to apply ~> ")
 		fmt.Scanf("%s", &rule)
-		if ruleSynonymList[rule] == "M" {
+		rule = ruleSynonymList[rule]
+		if rule == "M" {
 			if st.CanReintroduce() && len(st.GetMetaGen()) > 0 {
 				rule = "M"
-				fmt.Printf("%s rule selected.\n", rule)
-				fmt.Println("-------------------------")
-				checker = 1
+				isRuleValid = true
 			} else {
 				fmt.Printf("Error, M rule is empty or cannot reintroduce\n")
 			}
 		} else {
-			if ruleSynonymList[rule] == "X" || ruleSynonymList[rule] == "A" || ruleSynonymList[rule] == "B" || ruleSynonymList[rule] == "D" || ruleSynonymList[rule] == "G" {
-				rule = ruleSynonymList[rule]
+			if rule == "X" || rule == "A" || rule == "B" || rule == "D" || rule == "G" {
 				if rule == "X" && len(st.GetAtomic()) == 0 || rule == "A" && len(st.GetAlpha()) == 0 || rule == "B" && len(st.GetBeta()) == 0 || rule == "D" && len(st.GetDelta()) == 0 || rule == "G" && len(st.GetGamma()) == 0 {
 					fmt.Printf("Error, %s rule does not have any formula. Please select another.\n", rule)
 				} else {
-					fmt.Println("-------------------------")
-					checker = 1
+					isRuleValid = true
 				}
 			} else {
 				fmt.Printf("Error, select a valid rule to apply.\n")
 			}
 		}
 	}
+	fmt.Printf("%s rule selected.\n", rule)
+	fmt.Println("-------------------------")
 	return rule
 }
 
