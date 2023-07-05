@@ -65,6 +65,7 @@ func applyAtomicRule(state complextypes.State, fatherId uint64, c search.Communi
 	}
 
 	if !foundOne {
+		fmt.Println("No valid substitution found. This state will be copied and put back in the list.")
 		Counter.Increase()
 		go search.ProofSearch(fatherId, state, c, substitut, nodeId, originalNodeId, metaToReintroduce)
 	} else {

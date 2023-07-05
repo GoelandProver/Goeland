@@ -3,6 +3,9 @@ package assisted
 import (
 	"fmt"
 
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
@@ -91,6 +94,57 @@ func PrintFormListFromState(st complextypes.State, id int) {
 
 	if len(st.GetMetaGen()) > 0 {
 		fmt.Printf(" | M - MetaGen : %s\n", basictypes.MetaGenListToString(st.GetMetaGen()))
+	}
+
+	printGoelandChoice(st)
+}
+
+func printGoelandChoice(st complextypes.State) {
+	found := false
+	allSubs := []treetypes.Substitutions{}
+	withSubs := true
+
+	for _, form := range st.GetAtomic() {
+		canClose, subs := search.ApplyClosureRules(form.GetForm(), &st)
+		if canClose {
+			found = true
+			if !subs[0].IsEmpty() {
+				allSubs = append(allSubs, subs...)
+			} else {
+				withSubs = false
+			}
+		}
+	}
+
+	if found {
+		str := "Goéland would apply the Closure rule"
+		if withSubs {
+			str += " with the following substitution: " + allSubs[0].ToString()
+		} else {
+			str += " without any subsitutions"
+		}
+		fmt.Println(str)
+	} else {
+		rule := ""
+		var formula global.Stringable
+		done := true
+
+		switch {
+		case len(st.GetAlpha()) > 0:
+			rule, formula = "Alpha", st.GetAlpha()[0]
+		case len(st.GetDelta()) > 0:
+			rule, formula = "Delta", st.GetDelta()[0]
+		case len(st.GetBeta()) > 0:
+			rule, formula = "Beta", st.GetBeta()[0]
+		case (len(st.GetGamma()) > 0 && st.CanApplyGammaRule()):
+			rule, formula = "Gamma", st.GetGamma()[0]
+		default:
+			done = false
+		}
+
+		if done {
+			fmt.Printf("Goéland would apply the %s rule on the following formula: %s\n", rule, formula.ToString())
+		}
 	}
 }
 
