@@ -56,7 +56,7 @@ func Assistant(channel chan bool) {
 
 func SelectStatus() int {
 	fmt.Println("\nHere are the states:")
-	printStatusIds()
+	printAllStatusIds()
 	var chosenStatus = 0
 	for {
 		fmt.Printf("Select a state ID ~> ")

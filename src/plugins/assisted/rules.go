@@ -21,11 +21,11 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 	var substitut complextypes.SubstAndForm
 
 	thisStatus := MakeStatusElement(ch, state1)
-	AddStatus(&thisStatus)
+	AddStatusElement(&thisStatus)
 	Counter.Decrease()
 
 	ruleVeritable, indiceForm, substitut = receive(father_id, state1, c, new_atomics, node_id, original_node_id, meta_to_reintroduce, ch)
-	RemoveStatus(thisStatus.GetId())
+	RemoveStatusElement(thisStatus.GetId())
 
 	switch ruleVeritable {
 	case "X":

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/GoelandProver/Goeland/global"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
@@ -43,8 +42,6 @@ var ruleSynonymList = map[string]string{
 	"Meta":    "M",
 }
 
-var Counter SyncCounter
-
 var lockId sync.Mutex
 var id = -1
 
@@ -58,43 +55,14 @@ type StatusElement struct {
 	state   complextypes.State
 }
 
-// Used for communication in channels
-type Choice struct {
-	rule   string
-	form   int
-	substs complextypes.SubstAndForm
-}
-
-type SyncCounter struct {
-	cpt   int
-	mutex sync.Mutex
-}
-
-func (sc *SyncCounter) Increase() {
-	sc.mutex.Lock()
-	defer sc.mutex.Unlock()
-	sc.cpt++
-	global.PrintDebug("CPT", fmt.Sprintf("++ : %d", sc.cpt))
-}
-
-func (sc *SyncCounter) Decrease() {
-	sc.mutex.Lock()
-	defer sc.mutex.Unlock()
-	sc.cpt--
-	global.PrintDebug("CPT", fmt.Sprintf("-- : %d", sc.cpt))
-	if sc.cpt == 0 {
-		nextStep <- true
-	}
-}
-
-func AddStatus(se *StatusElement) {
+func AddStatusElement(se *StatusElement) {
 	lockStatus.Lock()
 	defer lockStatus.Unlock()
 
 	status = append(status, *se)
 }
 
-func RemoveStatus(id int) {
+func RemoveStatusElement(id int) {
 	lockStatus.Lock()
 	defer lockStatus.Unlock()
 
@@ -105,12 +73,11 @@ func RemoveStatus(id int) {
 	}
 }
 
-func (se StatusElement) GetId() int {
-	return se.id
-}
-
-func (se StatusElement) GetChannel() chan Choice {
-	return se.channel
+func printAllStatusIds() {
+	for _, elem := range status {
+		PrintFormListFromState(elem.state, elem.GetId())
+	}
+	fmt.Println()
 }
 
 func MakeStatusElement(ch chan Choice, st complextypes.State) StatusElement {
@@ -120,25 +87,10 @@ func MakeStatusElement(ch chan Choice, st complextypes.State) StatusElement {
 	return StatusElement{id, ch, st}
 }
 
-func printStatusIds() {
-	for _, elem := range status {
-		PrintFormListFromState(elem.state, elem.GetId())
-	}
-	fmt.Println()
+func (se *StatusElement) GetId() int {
+	return se.id
 }
 
-func (choice Choice) GetForm() int {
-	return choice.form
-}
-
-func (choice Choice) GetRule() string {
-	return choice.rule
-}
-
-func (choice Choice) GetSubst() complextypes.SubstAndForm {
-	return choice.substs
-}
-
-func MakeChoice(r string, i int, s complextypes.SubstAndForm) Choice {
-	return Choice{r, i, s}
+func (se *StatusElement) GetChannel() chan Choice {
+	return se.channel
 }
