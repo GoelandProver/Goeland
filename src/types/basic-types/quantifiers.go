@@ -85,8 +85,8 @@ func (e Ex) Copy() Form {
 func (e Ex) Equals(f any) bool {
 	oth, isEx := f.(Ex)
 	return isEx &&
-		AreEqualsVarList(e.GetVarList(), oth.GetVarList()) &&
-		e.GetForm().Equals(oth.GetForm())
+		AreEqualsVarList(e.var_list, oth.var_list) &&
+		e.f.Equals(oth.f)
 }
 
 func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -118,11 +118,8 @@ func (e Ex) GetSubTerms() TermList {
 }
 
 func (e Ex) SubstituteVarByMeta(old Var, new Meta) Form {
-	f, res := e.ReplaceVarByTerm(old, new)
-	if e, isEx := f.(Ex); isEx && res {
-		return Ex{e.index, e.var_list, e.f, append(e.MetaList, new)}
-	}
-	return f
+	f := e.GetForm().SubstituteVarByMeta(old, new)
+	return Ex{e.index, e.var_list, f, f.GetInternalMetas().Copy()}
 }
 
 func (e Ex) GetInternalMetas() MetaList {
@@ -166,8 +163,8 @@ func (a All) Copy() Form {
 func (a All) Equals(f any) bool {
 	oth, isAll := f.(All)
 	return isAll &&
-		AreEqualsVarList(a.GetVarList(), oth.GetVarList()) &&
-		a.GetForm().Equals(oth.GetForm())
+		AreEqualsVarList(a.var_list, oth.var_list) &&
+		a.f.Equals(oth.f)
 }
 
 func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -199,11 +196,8 @@ func (a All) GetSubTerms() TermList {
 }
 
 func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
-	f, res := a.ReplaceVarByTerm(old, new)
-	if a, isAll := f.(All); isAll && res {
-		return All{a.index, a.var_list, a.f, append(a.MetaList, new)}
-	}
-	return f
+	f := a.GetForm().SubstituteVarByMeta(old, new)
+	return All{a.index, a.var_list, f, f.GetInternalMetas().Copy()}
 }
 
 func (a All) GetInternalMetas() MetaList {
@@ -252,8 +246,8 @@ func (a AllType) Copy() Form {
 func (a AllType) Equals(f any) bool {
 	oth, isAll := f.(AllType)
 	return isAll &&
-		AreEqualsTypeVarList(a.GetVarList(), oth.GetVarList()) &&
-		a.GetForm().Equals(oth.GetForm())
+		AreEqualsTypeVarList(a.tvList, oth.tvList) &&
+		a.form.Equals(oth.form)
 }
 
 func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -299,11 +293,8 @@ func (a AllType) GetSubTerms() TermList {
 }
 
 func (a AllType) SubstituteVarByMeta(old Var, new Meta) Form {
-	f, res := a.ReplaceVarByTerm(old, new)
-	if a, isAll := f.(AllType); isAll && res {
-		return AllType{a.index, a.tvList, a.form, append(a.MetaList, new)}
-	}
-	return f
+	f := a.GetForm().SubstituteVarByMeta(old, new)
+	return AllType{a.index, a.tvList, f, f.GetInternalMetas().Copy()}
 }
 
 func (a AllType) GetInternalMetas() MetaList {

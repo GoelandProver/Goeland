@@ -87,7 +87,7 @@ func (n Not) ToString() string {
 
 func (n Not) Equals(f any) bool {
 	oth, isNot := f.(Not)
-	return isNot && oth.GetForm().Equals(n.GetForm())
+	return isNot && oth.f.Equals(n.f)
 }
 
 func (n Not) Copy() Form {
@@ -127,11 +127,8 @@ func (n Not) GetForm() Form {
 }
 
 func (n Not) SubstituteVarByMeta(old Var, new Meta) Form {
-	f, res := n.ReplaceVarByTerm(old, new)
-	if n, isNot := f.(Not); isNot && res {
-		return Not{index: f.GetIndex(), f: n.GetForm(), MetaList: append(n.MetaList, new)}
-	}
-	return f
+	f := n.GetForm().SubstituteVarByMeta(old, new)
+	return Not{n.index, f, f.GetInternalMetas().Copy()}
 }
 
 func (n Not) GetInternalMetas() MetaList {

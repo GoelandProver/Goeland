@@ -143,7 +143,7 @@ func (tl1 TermList) Equals(tl2 TermList) bool {
 		return false
 	}
 	for i := range tl1 {
-		if !tl2[i].Equals((tl1)[i]) {
+		if tl2[i] != nil && !tl2[i].Equals((tl1)[i]) {
 			return false
 		}
 	}
@@ -175,7 +175,7 @@ func AreEqualsVarList(tl1, tl2 []Var) bool {
 		return false
 	}
 	for i := range tl1 {
-		if !tl2[i].Equals((tl1)[i]) {
+		if !tl2[i].Equals(tl1[i]) {
 			return false
 		}
 	}

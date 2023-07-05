@@ -18,6 +18,7 @@ type occurrences []occurrence
 // ----------------------------------------------------------------------------
 
 func manageGammasInstantiations(initialForm, resultForm btps.Form) ([]btps.Form, []btps.Term) {
+	resultForm = normaliseGammaForm(resultForm)
 	// As in Goéland, a gamma formula instantiates multiple vars, we need to split it into
 	// multiple gammas: one per variable.
 	// Otherwise, it won't fit a GS3 proof.
@@ -62,6 +63,7 @@ func makeAllNecessaryGammas(varList []btps.Var, endForm btps.Form, status int, t
 // ----------------------------------------------------------------------------
 
 func manageDeltasSkolemisations(initialForm, resultForm btps.Form) ([]btps.Form, []btps.Term) {
+	resultForm = normaliseDeltaForm(resultForm)
 	var forms []btps.Form
 	var terms []btps.Term
 	switch initialGamma := initialForm.(type) {
@@ -71,9 +73,9 @@ func manageDeltasSkolemisations(initialForm, resultForm btps.Form) ([]btps.Form,
 		terms = getResultTerms(vl, f, resultForm)
 		forms = makeAllNecessaryDeltas(vl, f, IS_EXISTS, terms)
 	case btps.Not:
-		if initialGammaExists, ok := initialGamma.GetForm().(btps.All); ok {
-			vl := initialGammaExists.GetVarList()
-			f := initialGammaExists.GetForm()
+		if initialGammaAll, ok := initialGamma.GetForm().(btps.All); ok {
+			vl := initialGammaAll.GetVarList()
+			f := initialGammaAll.GetForm()
 			terms = getResultTerms(vl, btps.MakerNot(f), resultForm)
 			forms = makeAllNecessaryDeltas(vl, f, IS_ALL, terms)
 		}
@@ -159,11 +161,11 @@ func getVariablesOccurrencesTerm(varList []btps.Var, term btps.Term, currentOcc 
 	case btps.Var:
 		index := findInVarList(varList, t)
 		if index != -1 {
-			currentOcc[index] = append(currentOcc[index], append(workingPath, 0))
+			currentOcc[index] = append(currentOcc[index], workingPath)
 		}
 	case btps.Fun:
 		for i, nt := range t.GetArgs() {
-			currentOcc = getVariablesOccurrencesTerm(varList, nt, currentOcc, append(workingPath, i))
+			currentOcc = getVariablesOccurrencesTerm(varList, nt, currentOcc, appcp(workingPath, i))
 		}
 	}
 	return currentOcc
@@ -202,9 +204,6 @@ func getTermsAt(form btps.Form, occsArr []occurrences) []btps.Term {
 
 func getTermAt(form btps.Form, occ occurrence) btps.Term {
 	var term btps.Term
-	if len(occ) == 0 {
-		return term
-	}
 
 	switch f := form.(type) {
 	case btps.Pred:
@@ -248,7 +247,7 @@ func getNAryTerm(fl btps.FormList, occ occurrence) btps.Term {
 }
 
 func getTerm(term btps.Term, occ occurrence) btps.Term {
-	if len(occ) == 1 && occ[0] == 0 {
+	if len(occ) == 0 {
 		return term
 	}
 
@@ -265,4 +264,28 @@ func appcp[T any](arr []T, el ...T) []T {
 	cp := make([]T, len(arr))
 	copy(cp, arr)
 	return append(cp, el...)
+}
+
+func normaliseGammaForm(form btps.Form) btps.Form {
+	switch f := form.(type) {
+	case btps.All:
+		return f.GetForm()
+	case btps.Not:
+		if ex, isEx := f.GetForm().(btps.Ex); isEx {
+			return btps.MakerNot(ex.GetForm())
+		}
+	}
+	return form
+}
+
+func normaliseDeltaForm(form btps.Form) btps.Form {
+	switch f := form.(type) {
+	case btps.Ex:
+		return f.GetForm()
+	case btps.Not:
+		if all, isAll := f.GetForm().(btps.All); isAll {
+			return btps.MakerNot(all.GetForm())
+		}
+	}
+	return form
 }

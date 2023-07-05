@@ -14,6 +14,7 @@ type GS3Sequent struct {
 	termGenerated  btps.Term
 	formsGenerated [][]btps.Form
 	children       []*GS3Sequent
+	proof          GS3Proof
 }
 
 // Rules
@@ -119,9 +120,11 @@ func (seq *GS3Sequent) toStringAux(i int) string {
 	status := seq.ruleToString(seq.rule) + " on " + seq.hypotheses[seq.appliedOn].ToString()
 	childrenStrings := make([]string, len(seq.children))
 	for j, child := range seq.children {
-		childrenStrings[j] = child.toStringAux(i + 1)
+		if child != nil {
+			childrenStrings[j] = child.toStringAux(i + 1)
+		}
 	}
-	return "\n" + identation + status + strings.Join(childrenStrings, "") + "\n"
+	return "\n" + identation + status + strings.Join(childrenStrings, "")
 }
 
 func (seq *GS3Sequent) ruleToString(rule int) string {

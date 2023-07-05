@@ -123,9 +123,9 @@ func (p Pred) Copy() Form {
 func (p Pred) Equals(f any) bool {
 	oth, isPred := f.(Pred)
 	return isPred &&
-		oth.GetID().Equals(p.GetID()) &&
+		oth.id.Equals(p.id) &&
 		ComparableList[typing.TypeApp](p.typeVars).Equals(oth.typeVars) &&
-		oth.GetArgs().Equals(p.GetArgs()) &&
+		oth.args.Equals(p.args) &&
 		p.typeHint.Equals(oth.typeHint)
 }
 

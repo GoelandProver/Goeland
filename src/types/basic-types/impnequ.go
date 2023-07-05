@@ -72,7 +72,7 @@ func (i Imp) ToStringWithSuffixMeta(suffix string) string {
 func (i Imp) Equals(f any) bool {
 	oth, isImp := f.(Imp)
 	return isImp &&
-		i.GetF1().Equals(oth.GetF1()) && i.GetF2().Equals(oth.GetF2())
+		i.f1.Equals(oth.f1) && i.f2.Equals(oth.f2)
 }
 
 func (i Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -100,11 +100,13 @@ func (i Imp) GetSubTerms() TermList {
 }
 
 func (i Imp) SubstituteVarByMeta(old Var, new Meta) Form {
-	f, res := i.ReplaceVarByTerm(old, new)
-	if i, isImp := f.(Imp); isImp && res {
-		return Imp{index: f.GetIndex(), f1: i.GetF1(), f2: i.GetF2(), MetaList: append(i.MetaList, new)}
+	f1 := i.GetF1().SubstituteVarByMeta(old, new)
+	f2 := i.GetF2().SubstituteVarByMeta(old, new)
+	metas := i.MetaList
+	if f1.GetInternalMetas().Contains(new) || f2.GetInternalMetas().Contains(new) {
+		metas = append(metas, new)
 	}
-	return f
+	return Imp{i.index, f1, f2, metas}
 }
 
 func (i Imp) GetInternalMetas() MetaList {
@@ -139,7 +141,7 @@ func (e Equ) ToStringWithSuffixMeta(suffix string) string {
 func (e Equ) Equals(f any) bool {
 	oth, isEqu := f.(Equ)
 	return isEqu &&
-		e.GetF1().Equals(oth.GetF1()) && e.GetF2().Equals(oth.GetF2())
+		e.f1.Equals(oth.f1) && e.f2.Equals(oth.f2)
 }
 
 func (e Equ) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -167,11 +169,13 @@ func (e Equ) GetSubTerms() TermList {
 }
 
 func (e Equ) SubstituteVarByMeta(old Var, new Meta) Form {
-	f, res := e.ReplaceVarByTerm(old, new)
-	if e, isEqu := f.(Equ); isEqu && res {
-		return Equ{index: f.GetIndex(), f1: e.GetF1(), f2: e.GetF2(), MetaList: append(e.MetaList, new)}
+	f1 := e.GetF1().SubstituteVarByMeta(old, new)
+	f2 := e.GetF2().SubstituteVarByMeta(old, new)
+	metas := e.MetaList
+	if f1.GetInternalMetas().Contains(new) || f2.GetInternalMetas().Contains(new) {
+		metas = append(metas, new)
 	}
-	return f
+	return Equ{e.index, f1, f2, metas}
 }
 
 func (e Equ) GetInternalMetas() MetaList {

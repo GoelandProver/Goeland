@@ -125,11 +125,20 @@ func (o Or) CleanFormula() Form {
 }
 
 func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
-	f, res := o.ReplaceVarByTerm(old, new)
-	if o, isOr := f.(Or); isOr && res {
-		return Or{index: f.GetIndex(), FormList: o.FormList, MetaList: append(o.MetaList, new)}
+	newFormList := make(FormList, 0)
+	found := false
+	for _, form := range o.FormList {
+		f := form.SubstituteVarByMeta(old, new)
+		newFormList = append(newFormList, f)
+		if f.GetInternalMetas().Contains(new) {
+			found = true
+		}
 	}
-	return f
+	metas := o.MetaList
+	if found {
+		metas = append(o.MetaList, new)
+	}
+	return Or{o.index, newFormList, metas}
 }
 
 func (o Or) GetInternalMetas() MetaList {

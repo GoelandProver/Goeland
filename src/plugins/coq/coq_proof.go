@@ -71,25 +71,20 @@ func makeCoqProofFromGS3(proof *gs3.GS3Sequent) string {
 	}
 	index, hypotheses := introduce(btps.MakerNot(conjecture), hypotheses)
 	resultingString += "intro " + introName(index) + ". "
-	resultingString += followProofSteps(proof, hypotheses, make([]btps.Term, 0), 0)
+	resultingString += followProofSteps(proof, hypotheses, make([]btps.Term, 0))
 
 	return resultingString + "\nQed.\n"
 }
 
-func followProofSteps(proof *gs3.GS3Sequent, hypotheses []btps.Form, constantsCreated []btps.Term, indentations int) string {
-	resultingString, childrenHypotheses, constantsCreated := makeProofStep(proof, hypotheses, constantsCreated, indentations)
-	if len(proof.Children()) > 1 {
-		indentations++
-	}
+func followProofSteps(proof *gs3.GS3Sequent, hypotheses []btps.Form, constantsCreated []btps.Term) string {
+	resultingString, childrenHypotheses, constantsCreated := makeProofStep(proof, hypotheses, constantsCreated)
 	for i, child := range proof.Children() {
-
-		resultingString += "\n" + followProofSteps(child, cp(childrenHypotheses[i]), cp(constantsCreated), indentations)
+		resultingString += "\n" + followProofSteps(child, cp(childrenHypotheses[i]), cp(constantsCreated))
 	}
 	return resultingString
 }
 
-func makeProofStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, constantsCreated []btps.Term, indentations int) (string, [][]btps.Form, []btps.Term) {
-	// TODO: indentations
+func makeProofStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, constantsCreated []btps.Term) (string, [][]btps.Form, []btps.Term) {
 	stepResult, childrenHypotheses, constantsCreated := makeStep(proof, hypotheses, constantsCreated)
 	return stepResult, childrenHypotheses, constantsCreated
 }
