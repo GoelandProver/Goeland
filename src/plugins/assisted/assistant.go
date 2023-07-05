@@ -3,7 +3,6 @@ package assisted
 import (
 	"fmt"
 
-	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
@@ -208,15 +207,4 @@ func SelectSubstitution(substs []complextypes.SubstAndForm) int {
 		}
 	}
 	return choice
-}
-
-func receive(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int, ch chan Choice) (ruleVeritable string, indiceForm int, substitut complextypes.SubstAndForm) {
-	select {
-	case cas1 := <-recieveSubst:
-		complextypes.ApplySubstitution(&state1, cas1)
-		receive(father_id, state1, c, new_atomics, node_id, original_node_id, meta_to_reintroduce, ch)
-	case daChoice := <-ch:
-		return daChoice.GetRule(), daChoice.GetForm(), daChoice.GetSubst()
-	}
-	return "", -1, complextypes.MakeEmptySubstAndForm()
 }
