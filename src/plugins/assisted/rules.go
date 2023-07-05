@@ -15,28 +15,26 @@ import (
 func ApplyRulesAssisted(fatherId uint64, state complextypes.State, c search.Communication, newAtomics basictypes.FormAndTermsList, nodeID int, originalNodeId int, metaToReintroduce []int) {
 
 	ch := make(chan Choice)
-	var ruleVeritable string
-	var indiceForm int
-	var substitut complextypes.SubstAndForm
 
-	thisStatus := MakeStatusElement(ch, state)
-	AddStatusElement(&thisStatus)
+	thisStatus := MakeStatusElement(ch, &state)
+	AddStatusElement(thisStatus)
 	Counter.Decrease()
 
-	ruleVeritable, indiceForm, substitut = receiveChoice(fatherId, state, c, newAtomics, nodeID, originalNodeId, metaToReintroduce, ch)
+	choice := thisStatus.receiveChoice()
+	chosenRule, chosenFormIndex, chosenSubstitute := choice.GetRule(), choice.GetForm(), choice.GetSubst()
 	RemoveStatusElement(thisStatus.GetId())
 
-	switch ruleVeritable {
+	switch chosenRule {
 	case "X":
-		applyAtomicRule(state, fatherId, c, nodeID, originalNodeId, substitut, metaToReintroduce)
+		applyAtomicRule(state, fatherId, c, nodeID, originalNodeId, chosenSubstitute, metaToReintroduce)
 	case "A":
-		applyAlphaRule(state, indiceForm, fatherId, c, substitut, originalNodeId)
+		applyAlphaRule(state, chosenFormIndex, fatherId, c, chosenSubstitute, originalNodeId)
 	case "B":
-		applyBetaRule(state, substitut, c, fatherId, nodeID, originalNodeId, metaToReintroduce)
+		applyBetaRule(state, chosenSubstitute, c, fatherId, nodeID, originalNodeId, metaToReintroduce)
 	case "D":
-		applyDeltaRule(state, indiceForm, fatherId, c, substitut, originalNodeId)
+		applyDeltaRule(state, chosenFormIndex, fatherId, c, chosenSubstitute, originalNodeId)
 	case "G":
-		applyGammaRule(state, indiceForm, fatherId, c, substitut, originalNodeId)
+		applyGammaRule(state, chosenFormIndex, fatherId, c, chosenSubstitute, originalNodeId)
 	case "M":
 		fmt.Printf("case M\n")
 		// Counter.Increase()
@@ -124,12 +122,6 @@ func applyBetaRule(state complextypes.State, substitut complextypes.SubstAndForm
 
 	var chan_tab []search.Communication
 
-	fmt.Printf("This rule branches. They have generated processus :\n")
-	for _, feur := range int_form_list_list {
-		fmt.Printf(" * %s \n", feur.ToString())
-	}
-	fmt.Printf("...Adding them to states list.\n\n")
-
 	for range int_form_list_list {
 		Counter.Increase()
 	}
@@ -199,15 +191,4 @@ func applyGammaRule(state complextypes.State, indiceForm int, fatherId uint64, c
 
 	Counter.Increase()
 	go search.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
-}
-
-func receiveChoice(fatherId uint64, state complextypes.State, c search.Communication, newAtomics basictypes.FormAndTermsList, nodeId int, originalNodeId int, metaToReintroduce []int, ch chan Choice) (ruleVeritable string, indiceForm int, substitut complextypes.SubstAndForm) {
-	select {
-	case substitution := <-recieveSubst:
-		complextypes.ApplySubstitution(&state, substitution)
-		receiveChoice(fatherId, state, c, newAtomics, nodeId, originalNodeId, metaToReintroduce, ch)
-	case choice := <-ch:
-		return choice.GetRule(), choice.GetForm(), choice.GetSubst()
-	}
-	return "", -1, complextypes.MakeEmptySubstAndForm()
 }

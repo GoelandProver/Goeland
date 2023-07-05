@@ -10,8 +10,42 @@ import (
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
+var ruleSynonymList = map[string]string{
+	"Atomic": "X",
+	"Axiom":  "X",
+	"X":      "X",
+	"⦾":      "X",
+	"x":      "X",
+
+	"Alpha": "A",
+	"A":     "A",
+	"α":     "A",
+	"a":     "A",
+
+	"Beta": "B",
+	"B":    "B",
+	"β":    "B",
+	"b":    "B",
+
+	"Delta": "D",
+	"D":     "D",
+	"δ":     "D",
+	"d":     "D",
+
+	"Gamma": "G",
+	"G":     "G",
+	"γ":     "G",
+	"g":     "G",
+
+	"MetaGen": "M",
+	"M":       "M",
+	"m":       "M",
+	"MG":      "M",
+	"mg":      "M",
+	"Meta":    "M",
+}
+
 var nextStep chan bool
-var recieveSubst chan complextypes.SubstAndForm
 
 var substAssisted = complextypes.MakeEmptySubstAndForm()
 var HasChanged = false
@@ -22,14 +56,13 @@ func ApplySubstsAssisted(substi complextypes.SubstAndForm) {
 
 func Assistant(channel chan bool) {
 	nextStep = make(chan bool)
-	recieveSubst = make(chan complextypes.SubstAndForm)
 
 	index := 0
 
 	for <-nextStep {
 		if HasChanged {
-			for range status {
-				recieveSubst <- substAssisted
+			for _, element := range status {
+				element.applySubs(substAssisted)
 			}
 			HasChanged = false
 		}
@@ -49,7 +82,7 @@ func Assistant(channel chan bool) {
 		}
 
 		choice := MakeChoice(ruleVeritable, indiceChoice, substAssisted)
-		status[index].channel <- choice
+		status[index].sendChoice(choice)
 		lockStatus.Unlock()
 	}
 	fmt.Println("\nAssistant finished !")
@@ -76,13 +109,18 @@ func SelectStatus() int {
 }
 
 // Prints formulae relative to rules from a State. For terminal uses.
-func PrintFormListFromState(st complextypes.State, id int) {
+func PrintFormListFromState(st *complextypes.State, id int) {
 	fmt.Printf("\nState nº%d:\n", id)
-	SubstsFound := st.GetSubstsFound()
-	if len(SubstsFound) > 0 {
-		fmt.Printf("FoundSubs : \n")
-		for _, s := range SubstsFound {
-			fmt.Printf("   └ %s\n", s.ToString())
+	SubstsFound := st.GetAppliedSubst()
+	if !SubstsFound.IsEmpty() {
+		fmt.Printf(" | Applied subs : \n")
+		allSubs := SubstsFound.GetSubst()
+		for i, sub := range allSubs {
+			transition := "|"
+			if i == len(allSubs)-1 {
+				transition = "└"
+			}
+			fmt.Printf(" | %s %s\n", transition, sub.ToString())
 		}
 	}
 
@@ -99,13 +137,13 @@ func PrintFormListFromState(st complextypes.State, id int) {
 	printGoelandChoice(st)
 }
 
-func printGoelandChoice(st complextypes.State) {
+func printGoelandChoice(st *complextypes.State) {
 	found := false
 	allSubs := []treetypes.Substitutions{}
 	withSubs := true
 
 	for _, form := range st.GetAtomic() {
-		canClose, subs := search.ApplyClosureRules(form.GetForm(), &st)
+		canClose, subs := search.ApplyClosureRules(form.GetForm(), st)
 		if canClose {
 			found = true
 			if !subs[0].IsEmpty() {
@@ -155,7 +193,7 @@ func printRulesLine(line string, fnts basictypes.FormAndTermsList) {
 }
 
 // Selects a rule with formulae applicable.
-func SelectRule(st complextypes.State) string {
+func SelectRule(st *complextypes.State) string {
 	isRuleValid := false
 	var rule string
 	for !isRuleValid {
@@ -187,7 +225,7 @@ func SelectRule(st complextypes.State) string {
 }
 
 // Given a string, returns the FormAndTermsList associated with that rule.
-func GetFormulaeFromRule(rule string, st complextypes.State) basictypes.FormAndTermsList {
+func GetFormulaeFromRule(rule string, st *complextypes.State) basictypes.FormAndTermsList {
 	var chosenFormulae basictypes.FormAndTermsList
 	switch rule {
 	case "X":
@@ -253,7 +291,7 @@ func SelectSubstitution(substs []complextypes.SubstAndForm) int {
 		fmt.Printf("Select a substitution ~> ")
 		fmt.Scanf("%d", &choice)
 		if choice < len(substs) && choice >= 0 {
-			fmt.Printf("You selected %v substitution.\nIt will apply when a state will be updated.\n", substs[choice].ToString())
+			fmt.Printf("You selected %v substitution.\n", substs[choice].ToString())
 			isSubstitutionValid = true
 			fmt.Println("-------------------------")
 		} else {
