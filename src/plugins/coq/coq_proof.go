@@ -287,22 +287,16 @@ func addTermGenerated(constantsCreated []btps.Term, term btps.Term) ([]btps.Term
 }
 
 func findInConstants(constantsCreated []btps.Term, term btps.Term) string {
-	name := "goeland_I"
-	if strings.Contains(term.ToMappedString(coqMapConnectors(), false), "skolem") {
-		for _, t := range constantsCreated {
-			if t.Equals(term) {
-				return getConstantName(term.(btps.Fun).GetID())
-			}
-		}
-		return name
-	}
 	if term == nil {
-		return name
+		return "goeland_I"
 	}
-	if _, isVar := term.(btps.Var); isVar {
-		return name
+	if hasBeenCreated(constantsCreated, term) {
+		return getConstantName(term.(btps.Fun).GetID())
 	}
-	return term.ToMappedString(coqMapConnectors(), false)
+	if isGroundTerm(term) {
+		return "(" + term.ToMappedString(coqMapConnectors(), false) + ")"
+	}
+	return "goeland_I"
 }
 
 func cp[T any](source []T) []T {
@@ -323,4 +317,17 @@ func cleanHypotheses(hypotheses []btps.Form, form btps.Form) (string, [][]btps.F
 
 func getConstantName(id btps.Id) string {
 	return id.ToString()
+}
+
+func hasBeenCreated(constantsCreated []btps.Term, term btps.Term) bool {
+	for _, t := range constantsCreated {
+		if t.Equals(term) {
+			return true
+		}
+	}
+	return false
+}
+
+func isGroundTerm(term btps.Term) bool {
+	return !strings.Contains(term.ToString(), "sko")
 }

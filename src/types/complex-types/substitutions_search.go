@@ -403,22 +403,21 @@ func ApplySubstitutionOnProofList(s treetypes.Substitutions, proof_list []proof.
 	new_proof_list := []proof.ProofStruct{}
 
 	for _, p := range proof_list {
-		new_proof := p.Copy()
-		new_proof.SetFormulaProof(ApplySubstitutionsOnFormAndTerms(s, p.GetFormula()))
+		p.SetFormulaProof(ApplySubstitutionsOnFormAndTerms(s, p.GetFormula()))
 
 		new_result_formulas := []proof.IntFormAndTermsList{}
 		for _, f := range p.GetResultFormulas() {
 			new_result_formulas = append(new_result_formulas, proof.MakeIntFormAndTermsList(f.GetI(), ApplySubstitutionsOnFormAndTermsList(s, f.GetFL())))
 		}
-		new_proof.SetResultFormulasProof(new_result_formulas)
+		p.SetResultFormulasProof(new_result_formulas)
 
 		new_children := [][]proof.ProofStruct{}
 		for _, c := range p.GetChildren() {
 			new_children = append(new_children, ApplySubstitutionOnProofList(s, c))
 		}
-		new_proof.SetChildrenProof(new_children)
+		p.SetChildrenProof(new_children)
 
-		new_proof_list = append(new_proof_list, new_proof)
+		new_proof_list = append(new_proof_list, p)
 	}
 
 	return new_proof_list

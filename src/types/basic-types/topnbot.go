@@ -74,7 +74,7 @@ type Bot struct {
 }
 
 func (b Bot) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[TopType]
+	return map_[BotType]
 }
 
 func (b Bot) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }

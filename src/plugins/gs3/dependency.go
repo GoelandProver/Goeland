@@ -27,25 +27,30 @@ func manageGammasInstantiations(initialForm, resultForm btps.Form) ([]btps.Form,
 	case btps.All:
 		vl := initialGamma.GetVarList()
 		f := initialGamma.GetForm()
-		forms, terms = makeAllNecessaryGammas(vl, f, IS_ALL), getResultTerms(vl, f, resultForm)
+		terms = getResultTerms(vl, f, resultForm)
+		forms = makeAllNecessaryGammas(vl, f, IS_ALL, terms)
 	case btps.Not:
 		if initialGammaExists, ok := initialGamma.GetForm().(btps.Ex); ok {
 			vl := initialGammaExists.GetVarList()
 			f := initialGammaExists.GetForm()
-			forms, terms = makeAllNecessaryGammas(vl, f, IS_EXISTS), getResultTerms(vl, btps.MakerNot(f), resultForm)
+			terms = getResultTerms(vl, btps.MakerNot(f), resultForm)
+			forms = makeAllNecessaryGammas(vl, f, IS_EXISTS, terms)
 		}
 	}
 	return forms, terms
 }
 
-func makeAllNecessaryGammas(varList []btps.Var, endForm btps.Form, status int) []btps.Form {
+func makeAllNecessaryGammas(varList []btps.Var, endForm btps.Form, status int, terms []btps.Term) []btps.Form {
 	var forms []btps.Form
 	for i := 0; i < len(varList); i++ {
-		var form btps.Form
+		form := endForm.Copy()
+		if i > 0 {
+			form, _ = form.ReplaceVarByTerm(varList[i-1], terms[i-1])
+		}
 		if status == IS_ALL {
-			form = btps.MakerAll(varList[i:], endForm)
+			form = btps.MakerAll(varList[i:], form)
 		} else {
-			form = btps.MakerNot(btps.MakerEx(varList[i:], endForm))
+			form = btps.MakerNot(btps.MakerEx(varList[i:], form))
 		}
 		forms = append(forms, form)
 	}
@@ -63,25 +68,30 @@ func manageDeltasSkolemisations(initialForm, resultForm btps.Form) ([]btps.Form,
 	case btps.Ex:
 		vl := initialGamma.GetVarList()
 		f := initialGamma.GetForm()
-		forms, terms = makeAllNecessaryDeltas(vl, f, IS_EXISTS), getResultTerms(vl, f, resultForm)
+		terms = getResultTerms(vl, f, resultForm)
+		forms = makeAllNecessaryDeltas(vl, f, IS_EXISTS, terms)
 	case btps.Not:
 		if initialGammaExists, ok := initialGamma.GetForm().(btps.All); ok {
 			vl := initialGammaExists.GetVarList()
 			f := initialGammaExists.GetForm()
-			forms, terms = makeAllNecessaryDeltas(vl, f, IS_ALL), getResultTerms(vl, btps.MakerNot(f), resultForm)
+			terms = getResultTerms(vl, btps.MakerNot(f), resultForm)
+			forms = makeAllNecessaryDeltas(vl, f, IS_ALL, terms)
 		}
 	}
 	return forms, terms
 }
 
-func makeAllNecessaryDeltas(varList []btps.Var, endForm btps.Form, status int) []btps.Form {
+func makeAllNecessaryDeltas(varList []btps.Var, endForm btps.Form, status int, terms []btps.Term) []btps.Form {
 	var forms []btps.Form
 	for i := 0; i < len(varList); i++ {
-		var form btps.Form
+		form := endForm.Copy()
+		if i > 0 {
+			form, _ = form.ReplaceVarByTerm(varList[i-1], terms[i-1])
+		}
 		if status == IS_ALL {
-			form = btps.MakerNot(btps.MakerAll(varList[i:], endForm))
+			form = btps.MakerNot(btps.MakerAll(varList[i:], form))
 		} else {
-			form = btps.MakerEx(varList[i:], endForm)
+			form = btps.MakerEx(varList[i:], form)
 		}
 		forms = append(forms, form)
 	}

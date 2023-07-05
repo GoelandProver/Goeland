@@ -68,7 +68,7 @@ func (f Fun) ToMappedString(map_ MapString, type_ bool) string {
 		args = append(args, vs)
 	}
 
-	str := f.GetID().ToString() + "(" + strings.Join(args, map_[PredTypeVarSep]) + ")"
+	str := f.GetID().ToMappedString(map_, type_) + "(" + strings.Join(args, map_[PredTypeVarSep]) + ")"
 	if type_ {
 		str += " : " + f.typeHint.ToString()
 	}
