@@ -12,32 +12,31 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-// Function to apply tabeau rules as we want, given string rule and int choice.
-func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int) {
+func ApplyRulesAssisted(fatherId uint64, state complextypes.State, c search.Communication, newAtomics basictypes.FormAndTermsList, nodeID int, originalNodeId int, metaToReintroduce []int) {
 
 	ch := make(chan Choice)
 	var ruleVeritable string
 	var indiceForm int
 	var substitut complextypes.SubstAndForm
 
-	thisStatus := MakeStatusElement(ch, state1)
+	thisStatus := MakeStatusElement(ch, state)
 	AddStatusElement(&thisStatus)
 	Counter.Decrease()
 
-	ruleVeritable, indiceForm, substitut = receiveChoice(father_id, state1, c, new_atomics, node_id, original_node_id, meta_to_reintroduce, ch)
+	ruleVeritable, indiceForm, substitut = receiveChoice(fatherId, state, c, newAtomics, nodeID, originalNodeId, metaToReintroduce, ch)
 	RemoveStatusElement(thisStatus.GetId())
 
 	switch ruleVeritable {
 	case "X":
-		applyAtomicRule(state1, father_id, c, node_id, original_node_id, substitut, meta_to_reintroduce)
+		applyAtomicRule(state, fatherId, c, nodeID, originalNodeId, substitut, metaToReintroduce)
 	case "A":
-		applyAlphaRule(state1, indiceForm, father_id, c, substitut, original_node_id)
+		applyAlphaRule(state, indiceForm, fatherId, c, substitut, originalNodeId)
 	case "B":
-		applyBetaRule(state1, substitut, c, father_id, node_id, original_node_id, meta_to_reintroduce)
+		applyBetaRule(state, substitut, c, fatherId, nodeID, originalNodeId, metaToReintroduce)
 	case "D":
-		applyDeltaRule(state1, indiceForm, father_id, c, substitut, original_node_id)
+		applyDeltaRule(state, indiceForm, fatherId, c, substitut, originalNodeId)
 	case "G":
-		applyGammaRule(state1, indiceForm, father_id, c, substitut, original_node_id)
+		applyGammaRule(state, indiceForm, fatherId, c, substitut, originalNodeId)
 	case "M":
 		fmt.Printf("case M\n")
 		// Counter.Increase()
@@ -47,16 +46,16 @@ func ApplyRulesAssisted(father_id uint64, state1 complextypes.State, c search.Co
 /**
 * Not yet complete for Atomics and reintroduction.
 **/
-func applyAtomicRule(state1 complextypes.State, father_id uint64, c search.Communication, node_id int, original_node_id int, substitut complextypes.SubstAndForm, meta_to_reintroduce []int) {
+func applyAtomicRule(state complextypes.State, fatherId uint64, c search.Communication, nodeId int, originalNodeId int, substitut complextypes.SubstAndForm, metaToReintroduce []int) {
 	foundOne := false
 	listSubsts := [][]complextypes.SubstAndForm{}
 	finalBool := true
-	for _, f := range state1.GetAtomic() {
+	for _, f := range state.GetAtomic() {
 		global.PrintDebug("Assisted", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 
-		clos_res_after_apply_subst, subst_after_apply_subst := search.ApplyClosureRules(f.GetForm(), &state1)
+		clos_res_after_apply_subst, subst_after_apply_subst := search.ApplyClosureRules(f.GetForm(), &state)
 		if clos_res_after_apply_subst {
-			boolSubsts, resSubsts := search.ManageClosureRule(father_id, &state1, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
+			boolSubsts, resSubsts := search.ManageClosureRule(fatherId, &state, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), nodeId, originalNodeId)
 			if !boolSubsts {
 				finalBool = false
 			}
@@ -67,7 +66,7 @@ func applyAtomicRule(state1 complextypes.State, father_id uint64, c search.Commu
 
 	if !foundOne {
 		Counter.Increase()
-		go search.ProofSearch(father_id, state1, c, substitut, node_id, original_node_id, meta_to_reintroduce)
+		go search.ProofSearch(fatherId, state, c, substitut, nodeId, originalNodeId, metaToReintroduce)
 	} else {
 		listSubsts2 := []complextypes.SubstAndForm{}
 		for _, elem := range listSubsts {
@@ -88,39 +87,39 @@ func applyAtomicRule(state1 complextypes.State, father_id uint64, c search.Commu
 	}
 }
 
-func applyAlphaRule(state1 complextypes.State, indiceForm int, father_id uint64, c search.Communication, substitut complextypes.SubstAndForm, original_node_id int) {
+func applyAlphaRule(state complextypes.State, indiceForm int, fatherId uint64, c search.Communication, substitut complextypes.SubstAndForm, originalNodeId int) {
 	global.PrintDebug("PS", "User chose Alpha rule")
-	hdf := state1.GetAlpha()[indiceForm]
+	hdf := state.GetAlpha()[indiceForm]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 
-	state1.SetAlpha(append(state1.GetAlpha()[:indiceForm], state1.GetAlpha()[indiceForm+1:]...))
-	result_forms := search.ApplyAlphaRules(hdf, &state1)
-	state1.SetLF(result_forms)
+	state.SetAlpha(append(state.GetAlpha()[:indiceForm], state.GetAlpha()[indiceForm+1:]...))
+	result_forms := search.ApplyAlphaRules(hdf, &state)
+	state.SetLF(result_forms)
 
-	state1.SetCurrentProofFormula(hdf)
+	state.SetCurrentProofFormula(hdf)
 	id_children := global.IncrCptNode()
-	state1.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, result_forms)})
-	state1.SetProof(append(state1.GetProof(), state1.GetCurrentProof()))
+	state.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, result_forms)})
+	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	Counter.Increase()
-	go search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{})
+	go search.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
 }
 
-func applyBetaRule(state1 complextypes.State, substitut complextypes.SubstAndForm, c search.Communication, father_id uint64, node_id int, original_node_id int, meta_to_reintroduce []int) {
+func applyBetaRule(state complextypes.State, substitut complextypes.SubstAndForm, c search.Communication, fatherId uint64, nodeId int, originalNodeId int, metaToReintroduce []int) {
 	global.PrintDebug("PS", "User chose Beta rule")
-	hdf := state1.GetBeta()[0]
+	hdf := state.GetBeta()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
-	reslf := search.ApplyBetaRules(hdf, &state1)
+	reslf := search.ApplyBetaRules(hdf, &state)
 	child_id_list := []int{}
 
-	state1.SetCurrentProofFormula(hdf)
+	state.SetCurrentProofFormula(hdf)
 
 	int_form_list_list := []proof.IntFormAndTermsList{}
 	for _, fl := range reslf {
 		int_form_list_list = append(int_form_list_list, proof.MakeIntFormAndTermsList(global.IncrCptNode(), fl))
 	}
-	state1.SetCurrentProofResultFormulas(int_form_list_list)
-	state1.SetBTOnFormulas(false)
+	state.SetCurrentProofResultFormulas(int_form_list_list)
+	state.SetBTOnFormulas(false)
 
 	var chan_tab []search.Communication
 
@@ -135,8 +134,8 @@ func applyBetaRule(state1 complextypes.State, substitut complextypes.SubstAndFor
 	}
 
 	for _, fl := range int_form_list_list {
-		st_copy := state1.Copy()
-		st_copy.SetBeta(state1.GetBeta()[1:])
+		st_copy := state.Copy()
+		st_copy.SetBeta(state.GetBeta()[1:])
 		st_copy.SetLF(fl.GetFL())
 		child_id_list = append(child_id_list, fl.GetI())
 
@@ -153,59 +152,59 @@ func applyBetaRule(state1 complextypes.State, substitut complextypes.SubstAndFor
 
 	}
 	if global.IsDestructive() {
-		search.WaitChildren(search.MakeWcdArgs(father_id, state1, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, false, child_id_list, meta_to_reintroduce))
+		search.WaitChildren(search.MakeWcdArgs(fatherId, state, c, chan_tab, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, nodeId, originalNodeId, false, child_id_list, metaToReintroduce))
 	} else {
 		global.PrintDebug("PS", "Die")
 	}
 }
 
-func applyDeltaRule(state1 complextypes.State, indiceForm int, father_id uint64, c search.Communication, substitut complextypes.SubstAndForm, original_node_id int) {
+func applyDeltaRule(state complextypes.State, indiceForm int, fatherId uint64, c search.Communication, substitut complextypes.SubstAndForm, originalNodeId int) {
 	global.PrintDebug("PS", "User chose Delta rule")
-	hdf := state1.GetDelta()[indiceForm]
+	hdf := state.GetDelta()[indiceForm]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 
-	state1.SetDelta(append(state1.GetDelta()[:indiceForm], state1.GetDelta()[indiceForm+1:]...))
-	result_forms := search.ApplyDeltaRules(hdf, &state1)
-	state1.SetLF(result_forms)
+	state.SetDelta(append(state.GetDelta()[:indiceForm], state.GetDelta()[indiceForm+1:]...))
+	result_forms := search.ApplyDeltaRules(hdf, &state)
+	state.SetLF(result_forms)
 
-	state1.SetCurrentProofFormula(hdf)
+	state.SetCurrentProofFormula(hdf)
 	id_children := global.IncrCptNode()
-	state1.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, result_forms)})
-	state1.SetProof(append(state1.GetProof(), state1.GetCurrentProof()))
+	state.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, result_forms)})
+	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	Counter.Increase()
-	go search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{})
+	go search.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
 }
 
-func applyGammaRule(state1 complextypes.State, indiceForm int, father_id uint64, c search.Communication, substitut complextypes.SubstAndForm, original_node_id int) {
+func applyGammaRule(state complextypes.State, indiceForm int, fatherId uint64, c search.Communication, substitut complextypes.SubstAndForm, originalNodeId int) {
 	global.PrintDebug("PS", "User chose Gamma rule")
-	hdf := state1.GetGamma()[indiceForm]
+	hdf := state.GetGamma()[indiceForm]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
-	state1.SetGamma(append(state1.GetGamma()[:indiceForm], state1.GetGamma()[indiceForm+1:]...))
+	state.SetGamma(append(state.GetGamma()[:indiceForm], state.GetGamma()[indiceForm+1:]...))
 
-	index, new_meta_gen := basictypes.GetIndexMetaGenList(hdf, state1.GetMetaGen())
-	state1.SetMetaGen(new_meta_gen)
-	new_lf, new_metas := search.ApplyGammaRules(hdf, index, &state1)
-	state1.SetLF(new_lf)
-	state1.SetMC(append(state1.GetMC(), new_metas...))
+	index, new_meta_gen := basictypes.GetIndexMetaGenList(hdf, state.GetMetaGen())
+	state.SetMetaGen(new_meta_gen)
+	new_lf, new_metas := search.ApplyGammaRules(hdf, index, &state)
+	state.SetLF(new_lf)
+	state.SetMC(append(state.GetMC(), new_metas...))
 	if global.IsDestructive() {
-		state1.SetN(state1.GetN() - 1)
+		state.SetN(state.GetN() - 1)
 	}
 
-	state1.SetCurrentProofFormula(hdf)
+	state.SetCurrentProofFormula(hdf)
 	id_children := global.IncrCptNode()
-	state1.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, new_lf)})
-	state1.SetProof(append(state1.GetProof(), state1.GetCurrentProof()))
+	state.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, new_lf)})
+	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	Counter.Increase()
-	go search.ProofSearch(father_id, state1, c, substitut, id_children, original_node_id, []int{})
+	go search.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
 }
 
-func receiveChoice(father_id uint64, state1 complextypes.State, c search.Communication, new_atomics basictypes.FormAndTermsList, node_id int, original_node_id int, meta_to_reintroduce []int, ch chan Choice) (ruleVeritable string, indiceForm int, substitut complextypes.SubstAndForm) {
+func receiveChoice(fatherId uint64, state complextypes.State, c search.Communication, newAtomics basictypes.FormAndTermsList, nodeId int, originalNodeId int, metaToReintroduce []int, ch chan Choice) (ruleVeritable string, indiceForm int, substitut complextypes.SubstAndForm) {
 	select {
 	case substitution := <-recieveSubst:
-		complextypes.ApplySubstitution(&state1, substitution)
-		receiveChoice(father_id, state1, c, new_atomics, node_id, original_node_id, meta_to_reintroduce, ch)
+		complextypes.ApplySubstitution(&state, substitution)
+		receiveChoice(fatherId, state, c, newAtomics, nodeId, originalNodeId, metaToReintroduce, ch)
 	case choice := <-ch:
 		return choice.GetRule(), choice.GetForm(), choice.GetSubst()
 	}
