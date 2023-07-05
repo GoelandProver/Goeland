@@ -296,8 +296,8 @@ func SelectSubstitution(substs []complextypes.SubstAndForm) int {
 	for !isSubstitutionValid {
 		fmt.Printf("Select a substitution ~> ")
 		fmt.Scanf("%d", &choice)
-		if choice < len(substs) && choice >= 0 {
-			fmt.Printf("You selected %v substitution.\n", substs[choice].ToString())
+		if choice < len(uniqueSubs) && choice >= 0 {
+			fmt.Printf("You selected %v substitution.\n", uniqueSubs[choice].ToString())
 			isSubstitutionValid = true
 			fmt.Println("-------------------------")
 		} else {
