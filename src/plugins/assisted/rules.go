@@ -16,13 +16,13 @@ func ApplyRulesAssisted(fatherId uint64, state complextypes.State, c search.Comm
 
 	ch := make(chan Choice)
 
-	thisStatus := MakeStatusElement(ch, &state)
-	AddStatusElement(thisStatus)
-	Counter.Decrease()
+	thisStatus := makeStatusElement(ch, &state)
+	addStatusElement(thisStatus)
+	Counter.decrease()
 
 	choice := thisStatus.receiveChoice()
-	chosenRule, chosenFormIndex, chosenSubstitute, chosenReintro := choice.GetRule(), choice.GetForm(), choice.GetSubst(), choice.GetReintro()
-	RemoveStatusElement(thisStatus.GetId())
+	chosenRule, chosenFormIndex, chosenSubstitute, chosenReintro := choice.getRule(), choice.getForm(), choice.getSubst(), choice.getReintro()
+	removeStatusElement(thisStatus.getId())
 
 	switch chosenRule {
 	case "X":
@@ -40,9 +40,6 @@ func ApplyRulesAssisted(fatherId uint64, state complextypes.State, c search.Comm
 	}
 }
 
-/**
-* Not yet complete for Atomics and reintroduction.
-**/
 func applyAtomicRule(state complextypes.State, fatherId uint64, c search.Communication, nodeId int, originalNodeId int, substitut complextypes.SubstAndForm, metaToReintroduce []int) {
 	foundOne := false
 	listSubsts := [][]complextypes.SubstAndForm{}
@@ -72,8 +69,8 @@ func applyAtomicRule(state complextypes.State, fatherId uint64, c search.Communi
 		}
 
 		if len(listSubsts2) > 0 && finalBool {
-			subChoice := SelectSubstitution(listSubsts2)
-			ApplySubstsAssisted(listSubsts2[subChoice])
+			subChoice := selectSubstitution(listSubsts2)
+			applySubstsAssisted(listSubsts2[subChoice])
 		}
 
 		if len(status) > 0 {

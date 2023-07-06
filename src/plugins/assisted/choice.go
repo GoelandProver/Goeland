@@ -5,10 +5,10 @@ import (
 )
 
 type Choice interface {
-	GetRule() string
-	GetForm() int
-	GetSubst() complextypes.SubstAndForm
-	GetReintro() int
+	getRule() string
+	getForm() int
+	getSubst() complextypes.SubstAndForm
+	getReintro() int
 }
 
 type ChoiceBasic struct {
@@ -16,23 +16,23 @@ type ChoiceBasic struct {
 	form int
 }
 
-func MakeChoice(rule string, form int) ChoiceBasic {
+func makeChoice(rule string, form int) ChoiceBasic {
 	return ChoiceBasic{rule, form}
 }
 
-func (choice ChoiceBasic) GetForm() int {
+func (choice ChoiceBasic) getForm() int {
 	return choice.form
 }
 
-func (choice ChoiceBasic) GetRule() string {
+func (choice ChoiceBasic) getRule() string {
 	return choice.rule
 }
 
-func (choice ChoiceBasic) GetSubst() complextypes.SubstAndForm {
+func (choice ChoiceBasic) getSubst() complextypes.SubstAndForm {
 	return complextypes.MakeEmptySubstAndForm()
 }
 
-func (choice ChoiceBasic) GetReintro() int {
+func (choice ChoiceBasic) getReintro() int {
 	return -1
 }
 
@@ -41,11 +41,11 @@ type ChoiceSubsts struct {
 	substs complextypes.SubstAndForm
 }
 
-func MakeChoiceWithSubsts(rule string, form int, substs complextypes.SubstAndForm) ChoiceSubsts {
-	return ChoiceSubsts{ChoiceBasic: MakeChoice(rule, form), substs: substs}
+func makeChoiceWithSubsts(rule string, form int, substs complextypes.SubstAndForm) ChoiceSubsts {
+	return ChoiceSubsts{ChoiceBasic: makeChoice(rule, form), substs: substs}
 }
 
-func (choice ChoiceSubsts) GetSubst() complextypes.SubstAndForm {
+func (choice ChoiceSubsts) getSubst() complextypes.SubstAndForm {
 	return choice.substs
 }
 
@@ -54,10 +54,10 @@ type ChoiceReintro struct {
 	reintro int
 }
 
-func MakeChoiceWithReintro(rule string, reintro int) ChoiceReintro {
-	return ChoiceReintro{ChoiceBasic: MakeChoice(rule, -1), reintro: reintro}
+func makeChoiceWithReintro(rule string, reintro int) ChoiceReintro {
+	return ChoiceReintro{ChoiceBasic: makeChoice(rule, -1), reintro: reintro}
 }
 
-func (choice ChoiceReintro) GetReintro() int {
+func (choice ChoiceReintro) getReintro() int {
 	return choice.reintro
 }

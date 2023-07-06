@@ -20,19 +20,19 @@ type StatusElement struct {
 	state   *complextypes.State
 }
 
-func AddStatusElement(se *StatusElement) {
+func addStatusElement(se *StatusElement) {
 	lockStatus.Lock()
 	defer lockStatus.Unlock()
 
 	status = append(status, se)
 }
 
-func RemoveStatusElement(id int) {
+func removeStatusElement(id int) {
 	lockStatus.Lock()
 	defer lockStatus.Unlock()
 
 	for i, element := range status {
-		if element.GetId() == id {
+		if element.getId() == id {
 			status = append(status[:i], status[i+1:]...)
 		}
 	}
@@ -40,12 +40,12 @@ func RemoveStatusElement(id int) {
 
 func printAllStatusIds() {
 	for _, elem := range status {
-		PrintFormListFromState(elem.state, elem.GetId())
+		printFormListFromState(elem.state, elem.getId())
 	}
 	fmt.Println()
 }
 
-func MakeStatusElement(ch chan Choice, st *complextypes.State) *StatusElement {
+func makeStatusElement(ch chan Choice, st *complextypes.State) *StatusElement {
 	lockId.Lock()
 	defer lockId.Unlock()
 	id += 1
@@ -54,23 +54,23 @@ func MakeStatusElement(ch chan Choice, st *complextypes.State) *StatusElement {
 	return statusEl
 }
 
-func (se *StatusElement) GetId() int {
+func (se *StatusElement) getId() int {
 	return se.id
 }
 
 func (se *StatusElement) applySubs(sub complextypes.SubstAndForm) {
-	fmt.Printf("Applying to state %d the following substitution: %s\n", se.GetId(), sub.ToString())
+	fmt.Printf("Applying to state %d the following substitution: %s\n", se.getId(), sub.ToString())
 	complextypes.ApplySubstitution(se.state, sub)
 }
 
 func (se *StatusElement) sendChoice(choice Choice) {
-	global.PrintDebug("ASSISTED", fmt.Sprintf("Choice sent to state nº%d : %v", se.GetId(), choice))
+	global.PrintDebug("ASSISTED", fmt.Sprintf("Choice sent to state nº%d : %v", se.getId(), choice))
 
 	se.channel <- choice
 }
 
 func (se *StatusElement) receiveChoice() Choice {
 	choice := <-se.channel
-	global.PrintDebug("ASSISTED", fmt.Sprintf("Choice received from state nº%d : %v", se.GetId(), choice))
+	global.PrintDebug("ASSISTED", fmt.Sprintf("Choice received from state nº%d : %v", se.getId(), choice))
 	return choice
 }

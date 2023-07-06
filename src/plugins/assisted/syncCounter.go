@@ -21,7 +21,7 @@ func (sc *SyncCounter) Increase() {
 	global.PrintDebug("CPT", fmt.Sprintf("++ : %d", sc.cpt))
 }
 
-func (sc *SyncCounter) Decrease() {
+func (sc *SyncCounter) decrease() {
 	sc.mutex.Lock()
 	defer sc.mutex.Unlock()
 	sc.cpt--

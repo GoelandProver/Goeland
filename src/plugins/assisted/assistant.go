@@ -53,7 +53,7 @@ var lockSubstAssisted sync.Mutex
 var substAssisted = complextypes.MakeEmptySubstAndForm()
 var hasAppliedSubsts = false
 
-func ApplySubstsAssisted(substi complextypes.SubstAndForm) {
+func applySubstsAssisted(substi complextypes.SubstAndForm) {
 	lockSubstAssisted.Lock()
 	defer lockSubstAssisted.Unlock()
 	_, substAssisted = complextypes.MergeSubstAndForm(substAssisted, substi)
@@ -81,38 +81,38 @@ func doOneAssistantStep() {
 		hasAppliedSubsts = false
 	}
 
-	index := SelectStatus()
+	index := selectStatus()
 
 	fmt.Println("\nHere is the state and its rules:")
-	PrintFormListFromState(status[index].state, status[index].GetId())
+	printFormListFromState(status[index].state, status[index].getId())
 	fmt.Println()
 
-	chosenRule := SelectRule(status[index].state)
+	chosenRule := selectRule(status[index].state)
 	chosenReintro := -1
 	chosenForm := 0
 
 	switch {
 	case chosenRule != "X" && chosenRule != "R":
-		chosenForm = SelectFormula(GetFormulaeFromRule(chosenRule, status[index].state))
+		chosenForm = selectFormula(getFormulaeFromRule(chosenRule, status[index].state))
 	case chosenRule == "R":
-		chosenReintro = SelectReintro(status[index].state)
+		chosenReintro = selectReintro(status[index].state)
 	}
 
 	var choice Choice
 
 	switch {
 	case hasAppliedSubsts:
-		choice = MakeChoiceWithSubsts(chosenRule, chosenForm, substAssisted)
+		choice = makeChoiceWithSubsts(chosenRule, chosenForm, substAssisted)
 	case chosenReintro != -1:
-		choice = MakeChoiceWithReintro(chosenRule, chosenReintro)
+		choice = makeChoiceWithReintro(chosenRule, chosenReintro)
 	default:
-		choice = MakeChoice(chosenRule, chosenForm)
+		choice = makeChoice(chosenRule, chosenForm)
 	}
 
 	status[index].sendChoice(choice)
 }
 
-func SelectStatus() int {
+func selectStatus() int {
 	fmt.Println("\nHere are the states:")
 	printAllStatusIds()
 	var chosenStatus = 0
@@ -120,7 +120,7 @@ func SelectStatus() int {
 		fmt.Printf("Select a state ID ~> ")
 		fmt.Scanf("%d", &chosenStatus)
 		for i, fl := range status {
-			if fl.GetId() == chosenStatus {
+			if fl.getId() == chosenStatus {
 				fmt.Printf("You selected the state nº%d\n", chosenStatus)
 				fmt.Println("-------------------------")
 				return i
@@ -131,39 +131,31 @@ func SelectStatus() int {
 	}
 }
 
-// Prints formulae relative to rules from a State. For terminal uses.
-func PrintFormListFromState(st *complextypes.State, id int) {
+func printFormListFromState(st *complextypes.State, id int) {
 	fmt.Printf("\nState nº%d:\n", id)
 
-	printBeautifulList("Applied subs", st.GetAppliedSubst().GetSubst())
-	printBeautifulList("X - Atomic", st.GetAtomic())
-	printBeautifulList("A - Alpha", st.GetAlpha())
-	printBeautifulList("B - Beta", st.GetBeta())
-	printBeautifulList("D - Delta", st.GetDelta())
-	printBeautifulList("G - Gamma", st.GetGamma())
-	printBeautifulList("R - Reintroductions", st.GetMetaGen())
+	printSubList("Applied subs", st.GetAppliedSubst().GetSubst())
+	printSubList("X - Atomic", st.GetAtomic())
+	printSubList("A - Alpha", st.GetAlpha())
+	printSubList("B - Beta", st.GetBeta())
+	printSubList("D - Delta", st.GetDelta())
+	printSubList("G - Gamma", st.GetGamma())
+	printSubList("R - Reintroductions", st.GetMetaGen())
+	printSubList("R - Reintroductions", st.GetMetaGen())
 
 	printGoelandChoice(st)
 }
 
-func printBeautifulList[T global.Stringable](title string, list []T) {
+func printSubList[T global.Stringable](title string, list []T) {
 	if len(list) > 0 {
-		var stringableList []global.Stringable
-		for _, element := range list {
-			stringableList = append(stringableList, element)
+		fmt.Printf(" | %s : \n", title)
+		for i, element := range list {
+			transition := "|"
+			if i == len(list)-1 {
+				transition = "└"
+			}
+			fmt.Printf(" | %s %s\n", transition, element.ToString())
 		}
-		printSubList(title, stringableList)
-	}
-}
-
-func printSubList(title string, list []global.Stringable) {
-	fmt.Printf(" | %s : \n", title)
-	for i, element := range list {
-		transition := "|"
-		if i == len(list)-1 {
-			transition = "└"
-		}
-		fmt.Printf(" | %s %s\n", transition, element.ToString())
 	}
 }
 
@@ -216,8 +208,7 @@ func printGoelandChoice(st *complextypes.State) {
 	}
 }
 
-// Selects a rule with formulae applicable.
-func SelectRule(st *complextypes.State) string {
+func selectRule(st *complextypes.State) string {
 	isRuleValid := false
 	var rule string
 	for !isRuleValid {
@@ -250,8 +241,7 @@ func SelectRule(st *complextypes.State) string {
 	return rule
 }
 
-// Given a string, returns the FormAndTermsList associated with that rule.
-func GetFormulaeFromRule(rule string, st *complextypes.State) basictypes.FormAndTermsList {
+func getFormulaeFromRule(rule string, st *complextypes.State) basictypes.FormAndTermsList {
 	var chosenFormulae basictypes.FormAndTermsList
 	switch rule {
 	case "X":
@@ -274,7 +264,6 @@ func GetFormulaeFromRule(rule string, st *complextypes.State) basictypes.FormAnd
 	return chosenFormulae
 }
 
-// Listing formulae from FormAndTermsList with an index. Might be moved to utils.go later.
 func listIndexedForms(forms basictypes.FormAndTermsList) {
 	for i, s := range forms {
 		fmt.Printf("[%d] %s\n", i, s.ToString())
@@ -282,8 +271,7 @@ func listIndexedForms(forms basictypes.FormAndTermsList) {
 	fmt.Println()
 }
 
-// Choose a formula from an indexed formula list.
-func SelectFormula(forms basictypes.FormAndTermsList) int {
+func selectFormula(forms basictypes.FormAndTermsList) int {
 	fmt.Println("\nHere are the formulas:")
 	listIndexedForms(forms)
 
@@ -303,8 +291,7 @@ func SelectFormula(forms basictypes.FormAndTermsList) int {
 	return choice
 }
 
-// Choose a formula from an indexed formula list.
-func SelectSubstitution(substs []complextypes.SubstAndForm) int {
+func selectSubstitution(substs []complextypes.SubstAndForm) int {
 	fmt.Printf("Found closure rule with substitution that is used elsewhere.\n")
 	fmt.Printf("Here is the list of possible substitutions :\n")
 	uniqueSubs := []treetypes.Substitutions{}
@@ -333,7 +320,7 @@ func SelectSubstitution(substs []complextypes.SubstAndForm) int {
 	return choice
 }
 
-func SelectReintro(st *complextypes.State) int {
+func selectReintro(st *complextypes.State) int {
 	fmt.Println("Here is the list of Meta variables and the formula that introduced them :")
 
 	metaGenList := st.GetMetaGen()
