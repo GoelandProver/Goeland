@@ -2,6 +2,7 @@ package assisted
 
 import (
 	"fmt"
+	"sync"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
@@ -12,81 +13,103 @@ import (
 
 var ruleSynonymList = map[string]string{
 	"Atomic": "X",
+	"atomic": "X",
 	"Axiom":  "X",
+	"axiom":  "X",
 	"X":      "X",
-	"⦾":      "X",
 	"x":      "X",
 
 	"Alpha": "A",
+	"alpha": "A",
 	"A":     "A",
-	"α":     "A",
 	"a":     "A",
 
 	"Beta": "B",
+	"beta": "B",
 	"B":    "B",
-	"β":    "B",
 	"b":    "B",
 
 	"Delta": "D",
+	"delta": "D",
 	"D":     "D",
-	"δ":     "D",
 	"d":     "D",
 
 	"Gamma": "G",
+	"gamma": "G",
 	"G":     "G",
-	"γ":     "G",
 	"g":     "G",
 
-	"MetaGen": "M",
-	"M":       "M",
-	"m":       "M",
-	"MG":      "M",
-	"mg":      "M",
-	"Meta":    "M",
+	"Reintroduction": "R",
+	"reintroduction": "R",
+	"Reintro":        "R",
+	"reintro":        "R",
+	"R":              "R",
+	"r":              "R",
 }
 
 var nextStep chan bool
 
+var lockSubstAssisted sync.Mutex
 var substAssisted = complextypes.MakeEmptySubstAndForm()
-var HasChanged = false
+var hasAppliedSubsts = false
 
 func ApplySubstsAssisted(substi complextypes.SubstAndForm) {
+	lockSubstAssisted.Lock()
+	defer lockSubstAssisted.Unlock()
 	_, substAssisted = complextypes.MergeSubstAndForm(substAssisted, substi)
+	hasAppliedSubsts = true
 }
 
 func Assistant(channel chan bool) {
 	nextStep = make(chan bool)
 
-	index := 0
-
 	for <-nextStep {
-		if HasChanged {
-			for _, element := range status {
-				element.applySubs(substAssisted)
-			}
-			HasChanged = false
-		}
-
-		lockStatus.Lock()
-		index = SelectStatus()
-
-		fmt.Println("\nHere is the state and its rules:")
-		PrintFormListFromState(status[index].state, status[index].GetId())
-		fmt.Println()
-
-		ruleVeritable := SelectRule(status[index].state)
-		indiceChoice := 0
-
-		if ruleVeritable != "X" {
-			indiceChoice = SelectFormula(GetFormulaeFromRule(ruleVeritable, status[index].state))
-		}
-
-		choice := MakeChoice(ruleVeritable, indiceChoice, substAssisted)
-		status[index].sendChoice(choice)
-		lockStatus.Unlock()
+		doOneAssistantStep()
 	}
 	fmt.Println("\nAssistant finished !")
 	channel <- true
+}
+
+func doOneAssistantStep() {
+	lockStatus.Lock()
+	defer lockStatus.Unlock()
+
+	if hasAppliedSubsts {
+		for _, element := range status {
+			element.applySubs(substAssisted)
+		}
+		hasAppliedSubsts = false
+	}
+
+	index := SelectStatus()
+
+	fmt.Println("\nHere is the state and its rules:")
+	PrintFormListFromState(status[index].state, status[index].GetId())
+	fmt.Println()
+
+	chosenRule := SelectRule(status[index].state)
+	chosenReintro := -1
+	chosenForm := 0
+
+	switch {
+	case chosenRule != "X" && chosenRule != "R":
+		chosenForm = SelectFormula(GetFormulaeFromRule(chosenRule, status[index].state))
+	case chosenRule == "R":
+		chosenReintro = SelectReintro(status[index].state)
+	}
+
+	var choice Choice
+
+	switch {
+	case hasAppliedSubsts:
+		choice = MakeChoiceWithSubsts(chosenRule, chosenForm, substAssisted)
+	case chosenReintro != -1:
+		choice = MakeChoiceWithReintro(chosenRule, chosenReintro)
+	default:
+		choice = MakeChoice(chosenRule, chosenForm)
+	}
+
+	status[index].sendChoice(choice)
 }
 
 func SelectStatus() int {
@@ -111,30 +134,37 @@ func SelectStatus() int {
 // Prints formulae relative to rules from a State. For terminal uses.
 func PrintFormListFromState(st *complextypes.State, id int) {
 	fmt.Printf("\nState nº%d:\n", id)
-	SubstsFound := st.GetAppliedSubst()
-	if !SubstsFound.IsEmpty() {
-		fmt.Printf(" | Applied subs : \n")
-		allSubs := SubstsFound.GetSubst()
-		for i, sub := range allSubs {
-			transition := "|"
-			if i == len(allSubs)-1 {
-				transition = "└"
-			}
-			fmt.Printf(" | %s %s\n", transition, sub.ToString())
-		}
-	}
 
-	printRulesLine(" | X - Atomic : %s\n", st.GetAtomic())
-	printRulesLine(" | A - Alpha : %s\n", st.GetAlpha())
-	printRulesLine(" | B - Beta : %s\n", st.GetBeta())
-	printRulesLine(" | D - Delta : %s\n", st.GetDelta())
-	printRulesLine(" | G - Gamma : %s\n", st.GetGamma())
-
-	if len(st.GetMetaGen()) > 0 {
-		fmt.Printf(" | M - MetaGen : %s\n", basictypes.MetaGenListToString(st.GetMetaGen()))
-	}
+	printBeautifulList("Applied subs", st.GetAppliedSubst().GetSubst())
+	printBeautifulList("X - Atomic", st.GetAtomic())
+	printBeautifulList("A - Alpha", st.GetAlpha())
+	printBeautifulList("B - Beta", st.GetBeta())
+	printBeautifulList("D - Delta", st.GetDelta())
+	printBeautifulList("G - Gamma", st.GetGamma())
+	printBeautifulList("R - Reintroductions", st.GetMetaGen())
 
 	printGoelandChoice(st)
+}
+
+func printBeautifulList[T global.Stringable](title string, list []T) {
+	if len(list) > 0 {
+		var stringableList []global.Stringable
+		for _, element := range list {
+			stringableList = append(stringableList, element)
+		}
+		printSubList(title, stringableList)
+	}
+}
+
+func printSubList(title string, list []global.Stringable) {
+	fmt.Printf(" | %s : \n", title)
+	for i, element := range list {
+		transition := "|"
+		if i == len(list)-1 {
+			transition = "└"
+		}
+		fmt.Printf(" | %s %s\n", transition, element.ToString())
+	}
 }
 
 func printGoelandChoice(st *complextypes.State) {
@@ -186,12 +216,6 @@ func printGoelandChoice(st *complextypes.State) {
 	}
 }
 
-func printRulesLine(line string, fnts basictypes.FormAndTermsList) {
-	if len(fnts) > 0 {
-		fmt.Printf(line, fnts.ToString())
-	}
-}
-
 // Selects a rule with formulae applicable.
 func SelectRule(st *complextypes.State) string {
 	isRuleValid := false
@@ -200,12 +224,14 @@ func SelectRule(st *complextypes.State) string {
 		fmt.Printf("Select a rule to apply ~> ")
 		fmt.Scanf("%s", &rule)
 		rule = ruleSynonymList[rule]
-		if rule == "M" {
-			if st.CanReintroduce() && len(st.GetMetaGen()) > 0 {
-				rule = "M"
+		if rule == "R" {
+			switch {
+			case !st.CanReintroduce():
+				fmt.Println("Error, the state cannot be reintroduced")
+			case len(st.GetMetaGen()) == 0:
+				fmt.Println("Error, the M rule is empty")
+			default:
 				isRuleValid = true
-			} else {
-				fmt.Printf("Error, M rule is empty or cannot reintroduce\n")
 			}
 		} else {
 			if rule == "X" || rule == "A" || rule == "B" || rule == "D" || rule == "G" {
@@ -238,7 +264,7 @@ func GetFormulaeFromRule(rule string, st *complextypes.State) basictypes.FormAnd
 		chosenFormulae = st.GetDelta()
 	case "G":
 		chosenFormulae = st.GetGamma()
-	case "M":
+	case "R":
 		metaGens := st.GetMetaGen()
 		for _, metaGen := range metaGens {
 			chosenFormulae = append(chosenFormulae, metaGen.GetForm())
@@ -279,7 +305,7 @@ func SelectFormula(forms basictypes.FormAndTermsList) int {
 
 // Choose a formula from an indexed formula list.
 func SelectSubstitution(substs []complextypes.SubstAndForm) int {
-	fmt.Printf("Found closure rule with substitution that is used elsewhere, requires User choice.\n")
+	fmt.Printf("Found closure rule with substitution that is used elsewhere.\n")
 	fmt.Printf("Here is the list of possible substitutions :\n")
 	uniqueSubs := []treetypes.Substitutions{}
 
@@ -297,7 +323,7 @@ func SelectSubstitution(substs []complextypes.SubstAndForm) int {
 		fmt.Printf("Select a substitution ~> ")
 		fmt.Scanf("%d", &choice)
 		if choice < len(uniqueSubs) && choice >= 0 {
-			fmt.Printf("You selected %v substitution.\n", uniqueSubs[choice].ToString())
+			fmt.Printf("You selected the substitution %v.\n", uniqueSubs[choice].ToString())
 			isSubstitutionValid = true
 			fmt.Println("-------------------------")
 		} else {
@@ -305,4 +331,28 @@ func SelectSubstitution(substs []complextypes.SubstAndForm) int {
 		}
 	}
 	return choice
+}
+
+func SelectReintro(st *complextypes.State) int {
+	fmt.Println("Here is the list of Meta variables and the formula that introduced them :")
+
+	metaGenList := st.GetMetaGen()
+
+	for i, metaGen := range metaGenList {
+		fmt.Printf("[%d] %s\n", i, metaGen.ToString())
+	}
+
+	for {
+		var choice int
+		fmt.Printf("Select a MetaGen ~> ")
+		fmt.Scanf("%d", &choice)
+
+		if choice >= 0 && choice < len(metaGenList) {
+			fmt.Printf("You selected the MetaGen %v \n", metaGenList[choice].ToString())
+			fmt.Println("-------------------------")
+			return choice
+		} else {
+			fmt.Printf("Error, please select a valid MetaGen.\n")
+		}
+	}
 }

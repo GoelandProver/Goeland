@@ -64,6 +64,9 @@ func (m MetaGen) GetCounter() int {
 func (m MetaGen) Copy() MetaGen {
 	return MakeMetaGen(m.GetForm(), m.GetCounter())
 }
+func (m MetaGen) ToString() string {
+	return m.f.ToString() + " - " + strconv.Itoa(m.GetCounter())
+}
 
 /*** Functions ***/
 
@@ -76,9 +79,7 @@ func MakeMetaGen(f FormAndTerms, cpt int) MetaGen {
 func MetaGenListToString(lf []MetaGen) string {
 	var s_res string
 	for i, v := range lf {
-		f := v.f
-		time_used := v.GetCounter()
-		s_res += f.ToString() + " - " + strconv.Itoa(time_used)
+		s_res += v.ToString()
 		if i < len(lf)-1 {
 			s_res += (", ")
 		}

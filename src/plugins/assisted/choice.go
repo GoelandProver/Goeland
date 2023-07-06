@@ -4,25 +4,60 @@ import (
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
-// Used for communication in channels
-type Choice struct {
-	rule   string
-	form   int
-	substs complextypes.SubstAndForm
+type Choice interface {
+	GetRule() string
+	GetForm() int
+	GetSubst() complextypes.SubstAndForm
+	GetReintro() int
 }
 
-func (choice Choice) GetForm() int {
+type ChoiceBasic struct {
+	rule string
+	form int
+}
+
+func MakeChoice(rule string, form int) ChoiceBasic {
+	return ChoiceBasic{rule, form}
+}
+
+func (choice ChoiceBasic) GetForm() int {
 	return choice.form
 }
 
-func (choice Choice) GetRule() string {
+func (choice ChoiceBasic) GetRule() string {
 	return choice.rule
 }
 
-func (choice Choice) GetSubst() complextypes.SubstAndForm {
+func (choice ChoiceBasic) GetSubst() complextypes.SubstAndForm {
+	return complextypes.MakeEmptySubstAndForm()
+}
+
+func (choice ChoiceBasic) GetReintro() int {
+	return -1
+}
+
+type ChoiceSubsts struct {
+	ChoiceBasic
+	substs complextypes.SubstAndForm
+}
+
+func MakeChoiceWithSubsts(rule string, form int, substs complextypes.SubstAndForm) ChoiceSubsts {
+	return ChoiceSubsts{ChoiceBasic: MakeChoice(rule, form), substs: substs}
+}
+
+func (choice ChoiceSubsts) GetSubst() complextypes.SubstAndForm {
 	return choice.substs
 }
 
-func MakeChoice(r string, i int, s complextypes.SubstAndForm) Choice {
-	return Choice{r, i, s}
+type ChoiceReintro struct {
+	ChoiceBasic
+	reintro int
+}
+
+func MakeChoiceWithReintro(rule string, reintro int) ChoiceReintro {
+	return ChoiceReintro{ChoiceBasic: MakeChoice(rule, -1), reintro: reintro}
+}
+
+func (choice ChoiceReintro) GetReintro() int {
+	return choice.reintro
 }

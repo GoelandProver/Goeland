@@ -17,12 +17,11 @@ func ApplyRulesAssisted(fatherId uint64, state complextypes.State, c search.Comm
 	ch := make(chan Choice)
 
 	thisStatus := MakeStatusElement(ch, &state)
-	fmt.Printf("%+v\n", thisStatus.state)
 	AddStatusElement(thisStatus)
 	Counter.Decrease()
 
 	choice := thisStatus.receiveChoice()
-	chosenRule, chosenFormIndex, chosenSubstitute := choice.GetRule(), choice.GetForm(), choice.GetSubst()
+	chosenRule, chosenFormIndex, chosenSubstitute, chosenReintro := choice.GetRule(), choice.GetForm(), choice.GetSubst(), choice.GetReintro()
 	RemoveStatusElement(thisStatus.GetId())
 
 	switch chosenRule {
@@ -36,9 +35,8 @@ func ApplyRulesAssisted(fatherId uint64, state complextypes.State, c search.Comm
 		applyDeltaRule(state, chosenFormIndex, fatherId, c, chosenSubstitute, originalNodeId)
 	case "G":
 		applyGammaRule(state, chosenFormIndex, fatherId, c, chosenSubstitute, originalNodeId)
-	case "M":
-		fmt.Printf("case M\n")
-		// Counter.Increase()
+	case "R":
+		applyReintroductionRule(state, fatherId, c, originalNodeId, metaToReintroduce, chosenReintro)
 	}
 }
 
@@ -76,7 +74,6 @@ func applyAtomicRule(state complextypes.State, fatherId uint64, c search.Communi
 		if len(listSubsts2) > 0 && finalBool {
 			subChoice := SelectSubstitution(listSubsts2)
 			ApplySubstsAssisted(listSubsts2[subChoice])
-			HasChanged = true
 		}
 
 		if len(status) > 0 {
@@ -192,4 +189,25 @@ func applyGammaRule(state complextypes.State, indiceForm int, fatherId uint64, c
 
 	Counter.Increase()
 	go search.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
+}
+
+func applyReintroductionRule(state complextypes.State, fatherId uint64, c search.Communication, originalNodeId int, metaToReintroduce []int, chosenReintro int) {
+	global.PrintDebug("PS", "Reintroduction")
+	global.PrintDebug("PS", fmt.Sprintf("Meta to reintroduce : %s", global.IntListToString(metaToReintroduce)))
+	newMetaGen := state.GetMetaGen()
+	reslf := basictypes.ReintroduceMeta(&newMetaGen, chosenReintro, state.GetN())
+	global.PrintDebug("PS", fmt.Sprintf("Reintroduce the formula : %s", reslf.ToString()))
+	state.SetLF(basictypes.MakeSingleElementFormAndTermList(reslf))
+
+	state.SetMetaGen(newMetaGen)
+
+	childId := global.IncrCptNode()
+	state.SetCurrentProofRule("Reintroduction")
+	state.SetCurrentProofRuleName("Reintroduction")
+	state.SetCurrentProofFormula(reslf)
+	state.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(childId, basictypes.MakeSingleElementFormAndTermList(reslf))})
+	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
+
+	Counter.Increase()
+	go search.ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, metaToReintroduce)
 }

@@ -306,7 +306,7 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 	case len(substs_without_mm) > 0:
 		global.PrintDebug("MCR", fmt.Sprintf("Contradiction found (without mm) : %v", treetypes.SubstListToString(substs_without_mm)))
 
-		if global.GetAssisted() {
+		if global.GetAssisted() && !substs_without_mm[0].IsEmpty() {
 			fmt.Printf("The branch can be closed by using a substitution which has no impact elsewhere!\nApplying it automatically : ")
 			fmt.Printf("%v !\n", treetypes.SubstListToString(substs_without_mm))
 		}
