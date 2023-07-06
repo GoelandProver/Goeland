@@ -2,6 +2,7 @@ package assisted
 
 import (
 	"fmt"
+	"math"
 	"sync"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -198,6 +199,8 @@ func printGoelandChoice(st *complextypes.State) {
 			rule, formula = "Beta", st.GetBeta()[0]
 		case (len(st.GetGamma()) > 0 && st.CanApplyGammaRule()):
 			rule, formula = "Gamma", st.GetGamma()[0]
+		case st.CanReintroduce():
+			rule, formula = "Reintroduction", chooseReintroRule(st)
 		default:
 			done = false
 		}
@@ -206,6 +209,18 @@ func printGoelandChoice(st *complextypes.State) {
 			fmt.Printf(" └ Goéland would apply the %s rule on the following formula: %s\n", rule, formula.ToString())
 		}
 	}
+}
+
+func chooseReintroRule(st *complextypes.State) global.Stringable {
+	bestMg := basictypes.MetaGen{}
+	bestValue := math.MaxInt
+	for _, mg := range st.GetMetaGen() {
+		if bestValue > mg.GetCounter() {
+			bestMg = mg
+			bestValue = mg.GetCounter()
+		}
+	}
+	return bestMg.GetForm().GetForm()
 }
 
 func selectRule(st *complextypes.State) string {
