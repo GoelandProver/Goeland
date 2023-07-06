@@ -60,12 +60,13 @@ func applySubstsAssisted(substi complextypes.SubstAndForm) {
 	hasAppliedSubsts = true
 }
 
-func Assistant(channel chan bool) {
+func StartAssistant(channel chan bool) {
 	nextStep = make(chan bool)
 
 	for <-nextStep {
 		doOneAssistantStep()
 	}
+
 	fmt.Println("\nAssistant finished !")
 	channel <- true
 }
@@ -140,7 +141,6 @@ func printFormListFromState(st *complextypes.State, id int) {
 	printSubList("B - Beta", st.GetBeta())
 	printSubList("D - Delta", st.GetDelta())
 	printSubList("G - Gamma", st.GetGamma())
-	printSubList("R - Reintroductions", st.GetMetaGen())
 	printSubList("R - Reintroductions", st.GetMetaGen())
 
 	printGoelandChoice(st)

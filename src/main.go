@@ -68,7 +68,7 @@ func main() {
 
 	if global.GetAssisted() {
 		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
-		go assisted.Assistant(chAssistant)
+		go assisted.StartAssistant(chAssistant)
 
 		assisted.Counter.Increase()
 		go startSearch(form, bound)

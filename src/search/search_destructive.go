@@ -530,13 +530,17 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 			st.GetTreeNeg().Print()*/
 
 		for _, f := range st.GetLF() {
-			if basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic || global.GetAssisted() {
+			if global.GetAssisted() && basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
 				st.DispatchForm(f.Copy())
 			} else {
-				res, subst, nf := tryObviousClosureRule(f.GetForm(), &st)
-				if res {
-					ManageClosureRule(father_id, &st, cha, subst, basictypes.MakeFormAndTerm(nf, basictypes.MakeEmptyTermList()), node_id, original_node_id)
-					return
+				if basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
+					st.DispatchForm(f.Copy())
+				} else {
+					res, subst, nf := tryObviousClosureRule(f.GetForm(), &st)
+					if res {
+						ManageClosureRule(father_id, &st, cha, subst, basictypes.MakeFormAndTerm(nf, basictypes.MakeEmptyTermList()), node_id, original_node_id)
+						return
+					}
 				}
 			}
 		}
