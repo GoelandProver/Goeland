@@ -422,7 +422,7 @@ func manageRewriteRules(fatherId uint64, state complextypes.State, c Communicati
 		// If f is in atomic, that means we couldn't rewrite it, so it's useless to check
 		if !state.GetAtomic().Contains(f) && global.IsLoaded("dmt") {
 			if rewritten, err := dmt.Rewrite(f.GetForm()); err == nil {
-				shouldReturn := tryRewrite(rewritten, f, state, remainingAtomics, fatherId, c, currentNodeId, originalNodeId, metaToReintroduce)
+				shouldReturn := tryRewrite(rewritten, f, &state, remainingAtomics, fatherId, c, currentNodeId, originalNodeId, metaToReintroduce)
 				if shouldReturn {
 					return
 				}
@@ -437,7 +437,7 @@ func manageRewriteRules(fatherId uint64, state complextypes.State, c Communicati
 	ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), currentNodeId, originalNodeId, []int{})
 }
 
-func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTerms, state complextypes.State, remainingAtomics basictypes.FormAndTermsList, fatherId uint64, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) bool {
+func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTerms, state *complextypes.State, remainingAtomics basictypes.FormAndTermsList, fatherId uint64, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) bool {
 	global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.IntSubstAndFormListToString(rewritten)))
 
 	newRewritten := []complextypes.IntSubstAndFormAndTerms{}
@@ -481,7 +481,7 @@ func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTe
 		go ProofSearch(global.GetGID(), otherState, channelChild, choosenRewritten.GetSaf().ToSubstAndForm(), childNode, childNode, []int{})
 		global.PrintDebug("PS", "GO !")
 		global.IncrGoRoutine(1)
-		WaitChildren(MakeWcdArgs(fatherId, state, c, []Communication{channelChild}, []complextypes.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
+		WaitChildren(MakeWcdArgs(fatherId, *state, c, []Communication{channelChild}, []complextypes.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
 		return true
 	} else {
 		// No rewriting possible
