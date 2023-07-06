@@ -64,7 +64,7 @@ func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
 		}
 
 		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
-		resultingString += strings.Join(contextualizeMetas(metaList), "\n")
+		resultingString += contextualizeMetas(metaList)
 	} else {
 		// TODO: get context and print everything.
 	}
@@ -149,13 +149,10 @@ func clean(set, add []string) []string {
 	return result
 }
 
-func contextualizeMetas(metaList btps.MetaList) []string {
+func contextualizeMetas(metaList btps.MetaList) string {
 	result := []string{}
 	for _, meta := range metaList {
-		result = append(
-			result,
-			fmt.Sprintf("Parameters %s : goeland_U.", meta.ToMappedString(coqMapConnectors(), false)),
-		)
+		result = append(result, meta.ToMappedString(coqMapConnectors(), false))
 	}
-	return result
+	return "Parameters " + strings.Join(result, " ") + " : goeland_U."
 }

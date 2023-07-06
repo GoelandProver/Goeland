@@ -112,6 +112,7 @@ func doOneStep(limit int, formula basictypes.Form) (bool, int) {
 	global.PrintDebug("MAIN", "GO")
 
 	unifier, result, finalProof := ManageResult(c)
+	//global.PrintInfo("UNIFIER", unifier.GetUnifier().ToString())
 	finalProof = complextypes.ApplySubstitutionOnProofList(unifier.GetUnifier(), finalProof)
 	uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
 
