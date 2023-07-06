@@ -530,7 +530,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 			st.GetTreeNeg().Print()*/
 
 		for _, f := range st.GetLF() {
-			if basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
+			if basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic || global.GetAssisted() {
 				st.DispatchForm(f.Copy())
 			} else {
 				res, subst, nf := tryObviousClosureRule(f.GetForm(), &st)

@@ -17,6 +17,7 @@ func ApplyRulesAssisted(fatherId uint64, state complextypes.State, c search.Comm
 	ch := make(chan Choice)
 
 	thisStatus := MakeStatusElement(ch, &state)
+	fmt.Printf("%+v\n", thisStatus.state)
 	AddStatusElement(thisStatus)
 	Counter.Decrease()
 

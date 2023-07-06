@@ -146,7 +146,7 @@ func printGoelandChoice(st *complextypes.State) {
 		canClose, subs := search.ApplyClosureRules(form.GetForm(), st)
 		if canClose {
 			found = true
-			if !subs[0].IsEmpty() {
+			if len(subs) > 0 && !subs[0].IsEmpty() {
 				allSubs = append(allSubs, subs...)
 			} else {
 				withSubs = false
