@@ -116,8 +116,8 @@ func (seq *GS3Sequent) ToString() string {
 }
 
 func (seq *GS3Sequent) toStringAux(i int) string {
-	identation := strings.Repeat("\t", i)
-	status := seq.ruleToString(seq.rule) + " on " + seq.hypotheses[seq.appliedOn].ToString()
+	identation := strings.Repeat("  ", i)
+	status := seq.ruleToString(seq.rule) /* + " on " + seq.hypotheses[seq.appliedOn].ToString()*/
 	childrenStrings := make([]string, len(seq.children))
 	for j, child := range seq.children {
 		if child != nil {

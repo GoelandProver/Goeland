@@ -18,7 +18,7 @@ type occurrences []occurrence
 // ----------------------------------------------------------------------------
 
 func manageGammasInstantiations(initialForm, resultForm btps.Form) ([]btps.Form, []btps.Term) {
-	resultForm = normaliseGammaForm(resultForm)
+	_, resultForm = normaliseGammaForm(resultForm)
 	// As in Goéland, a gamma formula instantiates multiple vars, we need to split it into
 	// multiple gammas: one per variable.
 	// Otherwise, it won't fit a GS3 proof.
@@ -26,16 +26,14 @@ func manageGammasInstantiations(initialForm, resultForm btps.Form) ([]btps.Form,
 	var terms []btps.Term
 	switch initialGamma := initialForm.(type) {
 	case btps.All:
-		vl := initialGamma.GetVarList()
-		f := initialGamma.GetForm()
+		vl, f := normaliseGammaForm(initialGamma)
 		terms = getResultTerms(vl, f, resultForm)
 		forms = makeAllNecessaryGammas(vl, f, IS_ALL, terms)
 	case btps.Not:
-		if initialGammaExists, ok := initialGamma.GetForm().(btps.Ex); ok {
-			vl := initialGammaExists.GetVarList()
-			f := initialGammaExists.GetForm()
-			terms = getResultTerms(vl, btps.MakerNot(f), resultForm)
-			forms = makeAllNecessaryGammas(vl, f, IS_EXISTS, terms)
+		if _, ok := initialGamma.GetForm().(btps.Ex); ok {
+			vl, f := normaliseGammaForm(initialGamma)
+			terms = getResultTerms(vl, f, resultForm)
+			forms = makeAllNecessaryGammas(vl, f.(btps.Not).GetForm(), IS_EXISTS, terms)
 		}
 	}
 	return forms, terms
@@ -63,21 +61,19 @@ func makeAllNecessaryGammas(varList []btps.Var, endForm btps.Form, status int, t
 // ----------------------------------------------------------------------------
 
 func manageDeltasSkolemisations(initialForm, resultForm btps.Form) ([]btps.Form, []btps.Term) {
-	resultForm = normaliseDeltaForm(resultForm)
+	_, resultForm = normaliseDeltaForm(resultForm)
 	var forms []btps.Form
 	var terms []btps.Term
-	switch initialGamma := initialForm.(type) {
+	switch initialDelta := initialForm.(type) {
 	case btps.Ex:
-		vl := initialGamma.GetVarList()
-		f := initialGamma.GetForm()
+		vl, f := normaliseDeltaForm(initialDelta)
 		terms = getResultTerms(vl, f, resultForm)
 		forms = makeAllNecessaryDeltas(vl, f, IS_EXISTS, terms)
 	case btps.Not:
-		if initialGammaAll, ok := initialGamma.GetForm().(btps.All); ok {
-			vl := initialGammaAll.GetVarList()
-			f := initialGammaAll.GetForm()
-			terms = getResultTerms(vl, btps.MakerNot(f), resultForm)
-			forms = makeAllNecessaryDeltas(vl, f, IS_ALL, terms)
+		if _, ok := initialDelta.GetForm().(btps.All); ok {
+			vl, f := normaliseDeltaForm(initialDelta)
+			terms = getResultTerms(vl, f, resultForm)
+			forms = makeAllNecessaryDeltas(vl, f.(btps.Not).GetForm(), IS_ALL, terms)
 		}
 	}
 	return forms, terms
@@ -266,26 +262,30 @@ func appcp[T any](arr []T, el ...T) []T {
 	return append(cp, el...)
 }
 
-func normaliseGammaForm(form btps.Form) btps.Form {
+func normaliseGammaForm(form btps.Form) ([]btps.Var, btps.Form) {
 	switch f := form.(type) {
 	case btps.All:
-		return f.GetForm()
+		vl, a := normaliseGammaForm(f.GetForm())
+		return append(f.GetVarList(), vl...), a
 	case btps.Not:
 		if ex, isEx := f.GetForm().(btps.Ex); isEx {
-			return btps.MakerNot(ex.GetForm())
+			vl, f := normaliseGammaForm(btps.MakerNot(ex.GetForm()))
+			return append(ex.GetVarList(), vl...), f
 		}
 	}
-	return form
+	return make([]btps.Var, 0), form
 }
 
-func normaliseDeltaForm(form btps.Form) btps.Form {
+func normaliseDeltaForm(form btps.Form) ([]btps.Var, btps.Form) {
 	switch f := form.(type) {
 	case btps.Ex:
-		return f.GetForm()
+		vl, ex := normaliseDeltaForm(f.GetForm())
+		return append(f.GetVarList(), vl...), ex
 	case btps.Not:
 		if all, isAll := f.GetForm().(btps.All); isAll {
-			return btps.MakerNot(all.GetForm())
+			vl, f := normaliseDeltaForm(btps.MakerNot(all.GetForm()))
+			return append(all.GetVarList(), vl...), f
 		}
 	}
-	return form
+	return make([]btps.Var, 0), form
 }

@@ -64,7 +64,9 @@ func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
 		}
 
 		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
-		resultingString += contextualizeMetas(metaList)
+		if len(metaList) > 0 {
+			resultingString += contextualizeMetas(metaList)
+		}
 	} else {
 		// TODO: get context and print everything.
 	}

@@ -115,7 +115,9 @@ func (tl1 TermList) MergeTermList(tl2 TermList) TermList {
 func (tl TermList) Copy() TermList {
 	res := MakeEmptyTermList()
 	for _, t := range tl {
-		res = append(res, t.Copy())
+		if t != nil {
+			res = append(res, t.Copy())
+		}
 	}
 	return res
 }
