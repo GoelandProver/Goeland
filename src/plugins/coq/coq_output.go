@@ -72,7 +72,7 @@ func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 
 func makeCoqProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
-	global.PrintInfo("GS3", proof.ToString())
+	//global.PrintInfo("GS3", proof.ToString())
 	proofString := makeCoqProofFromGS3(proof)
 	return contextString + "\n" + proofString
 }

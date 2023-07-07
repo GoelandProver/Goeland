@@ -18,12 +18,14 @@ type occurrences []occurrence
 // ----------------------------------------------------------------------------
 
 func manageGammasInstantiations(initialForm, resultForm btps.Form) ([]btps.Form, []btps.Term) {
-	_, resultForm = normaliseGammaForm(resultForm)
+	//var varList []btps.Var
+	//varList, _ = normaliseGammaForm(resultForm)
+	// TODO: same form for the gamma form & the result form
 	// As in Goéland, a gamma formula instantiates multiple vars, we need to split it into
 	// multiple gammas: one per variable.
 	// Otherwise, it won't fit a GS3 proof.
-	var forms []btps.Form
-	var terms []btps.Term
+	var forms btps.FormList
+	var terms btps.TermList
 	switch initialGamma := initialForm.(type) {
 	case btps.All:
 		vl, f := normaliseGammaForm(initialGamma)
@@ -61,19 +63,30 @@ func makeAllNecessaryGammas(varList []btps.Var, endForm btps.Form, status int, t
 // ----------------------------------------------------------------------------
 
 func manageDeltasSkolemisations(initialForm, resultForm btps.Form) ([]btps.Form, []btps.Term) {
-	_, resultForm = normaliseDeltaForm(resultForm)
-	var forms []btps.Form
-	var terms []btps.Term
+	var varList []btps.Var
+	varList, _ = normaliseDeltaForm(resultForm)
+	// TODO: same form for the delta form & the result form
+	var forms btps.FormList
+	var terms btps.TermList
 	switch initialDelta := initialForm.(type) {
 	case btps.Ex:
 		vl, f := normaliseDeltaForm(initialDelta)
 		terms = getResultTerms(vl, f, resultForm)
-		forms = makeAllNecessaryDeltas(vl, f, IS_EXISTS, terms)
+		// TODO: factorise this
+		if len(vl) == len(varList) {
+			forms = makeAllNecessaryDeltas(vl, f, IS_EXISTS, terms)
+		} else {
+			forms = makeAllNecessaryDeltas(vl, btps.MakerEx(vl[len(vl)-len(varList):], f.(btps.Not).GetForm()), IS_EXISTS, terms)
+		}
 	case btps.Not:
 		if _, ok := initialDelta.GetForm().(btps.All); ok {
 			vl, f := normaliseDeltaForm(initialDelta)
 			terms = getResultTerms(vl, f, resultForm)
-			forms = makeAllNecessaryDeltas(vl, f.(btps.Not).GetForm(), IS_ALL, terms)
+			if len(vl) == len(varList) {
+				forms = makeAllNecessaryDeltas(vl, f.(btps.Not).GetForm(), IS_ALL, terms)
+			} else {
+				forms = makeAllNecessaryDeltas(vl, btps.MakerNot(btps.MakerAll(vl[len(vl)-len(varList):], f.(btps.Not).GetForm())), IS_ALL, terms)
+			}
 		}
 	}
 	return forms, terms

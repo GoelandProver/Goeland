@@ -40,12 +40,12 @@ package search
 
 import (
 	"fmt"
-	"strings"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+	syntax "github.com/GoelandProver/Goeland/syntaxic-manipulations"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
@@ -404,7 +404,7 @@ func applyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 		setStateRules(state, "DELTA", "EXISTS")
 	}
 
-	return basictypes.MakeSingleElementFormAndTermList(Skolemize(fnt))
+	return basictypes.MakeSingleElementFormAndTermList(syntax.Skolemize(fnt))
 }
 
 /**
@@ -425,56 +425,11 @@ func applyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes
 		setStateRules(state, "GAMMA", "FORALL")
 	}
 
-	fnt, mm := Instantiate(fnt, index)
+	fnt, mm := syntax.Instantiate(fnt, index)
 	return basictypes.MakeSingleElementFormAndTermList(fnt), mm
 }
 
 /* Syntaxic manipulations below */
-
-/**
- * Instantiates once the formula fnt.
- */
-func Instantiate(fnt basictypes.FormAndTerms, index int) (basictypes.FormAndTerms, basictypes.MetaList) {
-	var newMm basictypes.MetaList
-	terms := fnt.GetTerms()
-
-	switch nf := fnt.GetForm().(type) {
-	case basictypes.Not:
-		if tmp, ok := nf.GetForm().(basictypes.Ex); ok {
-			form, metas := realInstantiate(tmp.GetForm(), index, tmp.GetVarList())
-			newMm = append(newMm, metas...)
-			fnt = basictypes.MakeFormAndTerm(basictypes.RefuteForm(form), terms.MergeTermList(newMm.ToTermList()))
-		}
-	case basictypes.All:
-		form, metas := realInstantiate(nf.GetForm(), index, nf.GetVarList())
-		newMm = append(newMm, metas...)
-		fnt = basictypes.MakeFormAndTerm(form, terms.MergeTermList(newMm.ToTermList()))
-	case basictypes.AllType:
-		fnt = basictypes.MakeFormAndTerm(nf.GetForm().ReplaceTypeByMeta(nf.GetVarList(), index), basictypes.MakeEmptyTermList())
-		for _, v := range nf.GetVarList() {
-			v.ShouldBeMeta(index)
-		}
-		fnt = basictypes.MakeFormAndTerm(basictypes.MakeAllType(nf.GetIndex(), nf.GetVarList(), fnt.GetForm()), basictypes.MakeEmptyTermList())
-	}
-
-	return fnt, newMm
-}
-
-func realInstantiate(form basictypes.Form, index int, vars []basictypes.Var) (basictypes.Form, basictypes.MetaList) {
-	var newMm basictypes.MetaList
-
-	for _, v := range vars {
-		meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
-		if global.IsInnerSko() || global.IsOptimisedSko() {
-			form = form.SubstituteVarByMeta(v, meta)
-		} else {
-			form, _ = form.ReplaceVarByTerm(v, meta)
-		}
-		newMm = append(newMm, meta)
-	}
-
-	return form, newMm
-}
 
 func crossType(t typing.TypeApp, tf typing.TypeApp) typing.TypeApp {
 	if t == nil {

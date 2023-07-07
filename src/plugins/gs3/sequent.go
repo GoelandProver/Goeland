@@ -45,6 +45,22 @@ func MakeNewSequent() *GS3Sequent {
 	return seq
 }
 
+func IsGammaRule(rule int) bool {
+	return rule == ALL || rule == NEX
+}
+
+func IsDeltaRule(rule int) bool {
+	return rule == NALL || rule == EX
+}
+
+func IsBetaRule(rule int) bool {
+	return rule == NAND || rule == NEQU || rule == IMP || rule == EQU || rule == OR
+}
+
+func IsAlphaRule(rule int) bool {
+	return rule == AND || rule == NOR || rule == NIMP || rule == NNOT
+}
+
 // ----------------------------------------------------------------------------
 // Public methods
 // ----------------------------------------------------------------------------
