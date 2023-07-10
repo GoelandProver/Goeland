@@ -118,12 +118,14 @@ type GS3Proof struct {
 	rulesApplied []Pair[int, tableaux.ProofStruct]
 	lastNode     *GS3Sequent
 	betaHisto    []Pair[int, btps.Form]
+	deltaHisto   []Pair[btps.Term, btps.Form]
 }
 
 func MakeGS3Proof(proof []tableaux.ProofStruct) *GS3Sequent {
 	gs3Proof := GS3Proof{
 		rulesApplied: make([]Pair[int, tableaux.ProofStruct], 0),
 		betaHisto:    make([]Pair[int, btps.Form], 0),
+		deltaHisto:   make([]Pair[btps.Term, btps.Form], 0),
 		offsprings:   make([]Pair[btps.Form, btps.FormList], 0),
 	}
 	return gs3Proof.makeProof(proof)
@@ -136,6 +138,7 @@ func (gs GS3Proof) Copy() GS3Proof {
 		lastNode:     nil,
 		rulesApplied: appcp(gs.rulesApplied),
 		betaHisto:    appcp(gs.betaHisto),
+		deltaHisto:   appcp(gs.deltaHisto),
 		offsprings:   appcp(gs.offsprings),
 	}
 }
@@ -166,6 +169,7 @@ func (gs GS3Proof) makeProof(proof []tableaux.ProofStruct) *GS3Sequent {
 			lastNode:     nil,
 			rulesApplied: appcp(gs.rulesApplied),
 			betaHisto:    appcp(gs.betaHisto, MakePair(i, gs.lastNode.GetTargetForm())),
+			deltaHisto:   appcp(gs.deltaHisto),
 			offsprings:   appcp(gs.offsprings),
 		}
 		childRoot := childProof.makeProof(child)
@@ -254,6 +258,7 @@ func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule int, se
 	return intermediateForms[len(intermediateForms)-1]
 }
 
+// TODO: factorise this function to merge some steps that are similar between the two cases.
 func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int, parent *GS3Sequent) btps.Form {
 	resultForm := proofStep.GetResultFormulas()[0].GetForms()[0]
 	intermediateForms, termsGenerated := manageDeltasSkolemisations(proofStep.GetFormula().GetForm(), resultForm)
@@ -268,7 +273,13 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int, pa
 		}
 		if atLeastOneDependantForm && len(rulesApplied) > 0 {
 			rulesAppliedBeforeWeakening := appcp(gs.rulesApplied)
+			// If the delta-rule has already been applied before, remove the term.
+			var termPreviouslyInstantiated bool
+			offsprings, termPreviouslyInstantiated = gs.findInDeltaHisto(termsGenerated[i], offsprings)
 			_, escaped := gs.weakenForms(offsprings, intermediateForms[i], parent)
+			if termPreviouslyInstantiated {
+				gs.weakenTerm(termsGenerated[i])
+			}
 			deltaSeq = gs.applyDeltaRule(intermediateForms[i], currentResultForm, rule, termsGenerated[i])
 			if parent.IsEmpty() {
 				*parent = *deltaSeq
@@ -290,7 +301,11 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int, pa
 				deltaSeq = gs.getLastSequent(subRoot, childrenIndex)
 			}
 		} else {
-			// Just apply the delta-rule.
+			forms, rulesBack := gs.weakenAllFormsRelatedToTheTerm(termsGenerated[i])
+			if len(forms) > 0 {
+				gs.weakenForms(forms, intermediateForms[i], parent)
+				gs.weakenTerm(termsGenerated[i])
+			}
 			deltaSeq = gs.applyDeltaRule(intermediateForms[i], currentResultForm, rule, termsGenerated[i])
 			gs.branchForms = append(gs.branchForms, currentResultForm)
 			if parent.IsEmpty() {
@@ -299,6 +314,13 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int, pa
 			}
 			if gs.lastNode != nil {
 				gs.lastNode.addChild(deltaSeq)
+			}
+			if len(rulesBack) > 0 {
+				subRoot, childrenIndex := gs.applyRulesBack(gs.rulesApplied, rulesBack, forms)
+				if subRoot != nil {
+					deltaSeq.addChild(subRoot)
+					deltaSeq = gs.getLastSequent(subRoot, childrenIndex)
+				}
 			}
 		}
 		gs.lastNode = deltaSeq
@@ -428,6 +450,18 @@ func (gs *GS3Proof) weakenForm(form btps.Form) *GS3Sequent {
 	return seq
 }
 
+func (gs *GS3Proof) weakenTerm(term btps.Term) *GS3Sequent {
+	seq := MakeNewSequent()
+	seq.setHypotheses(gs.branchForms)
+	seq.setAppliedRule(W)
+	seq.setTermGenerated(term)
+
+	gs.removeFromDeltaHisto(term)
+	gs.lastNode.addChild(seq)
+	gs.lastNode = seq
+	return seq
+}
+
 func (gs *GS3Proof) removeHypothesis(form btps.Form) {
 	index := gs.branchForms.Find(form)
 	gs.branchForms = append(gs.branchForms[:index], gs.branchForms[index+1:]...)
@@ -463,6 +497,7 @@ func (gs *GS3Proof) applyDeltaRule(form, result btps.Form, rule int, term btps.T
 	seq.setFormsGenerated([][]btps.Form{{result}})
 
 	gs.branchForms = append(gs.branchForms, form)
+	gs.deltaHisto = append(gs.deltaHisto, MakePair(term, result))
 
 	return seq
 }
@@ -633,4 +668,39 @@ func getSubformulas(term btps.Term, v btps.Var, form btps.Form) btps.FormList {
 		}
 	}
 	return dependantSubforms
+}
+
+func (gs GS3Proof) findInDeltaHisto(term btps.Term, forms btps.FormList) (btps.FormList, bool) {
+	for _, p := range gs.deltaHisto {
+		if p.Fst != nil && p.Fst.Equals(term) {
+			return append(forms, p.Snd), true
+		}
+	}
+	return forms, false
+}
+
+func (gs *GS3Proof) removeFromDeltaHisto(term btps.Term) {
+	for i, p := range gs.deltaHisto {
+		if p.Fst != nil && p.Fst.Equals(term) {
+			gs.deltaHisto = append(gs.deltaHisto[:i], gs.deltaHisto[i+1:]...)
+		}
+	}
+}
+
+func (gs *GS3Proof) weakenAllFormsRelatedToTheTerm(term btps.Term) (btps.FormList, []Pair[int, tableaux.ProofStruct]) {
+	rules := []Pair[int, tableaux.ProofStruct]{}
+	forms := make(btps.FormList, 0)
+	for _, form := range gs.branchForms {
+		if form.GetSubTerms().Contains(term) {
+			// Get the rule to apply it back
+			for _, rule := range gs.rulesApplied {
+				f := rule.Snd.GetFormula().GetForm()
+				if f.Equals(form) {
+					rules = append(rules, rule)
+				}
+			}
+			forms = append(forms, form)
+		}
+	}
+	return forms, rules
 }

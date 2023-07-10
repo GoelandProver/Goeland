@@ -67,7 +67,7 @@ func manageDeltasSkolemisations(initialForm, resultForm btps.Form) ([]btps.Form,
 	case btps.Ex:
 		vl, f := normaliseDeltaForm(initialDelta)
 		terms = getResultTerms(vl, f, resultForm)
-		forms = makeAllNecessaryGammas(vl, f, IS_EXISTS, terms)
+		forms = makeAllNecessaryDeltas(vl, f, IS_EXISTS, terms)
 	case btps.Not:
 		if _, ok := initialDelta.GetForm().(btps.All); ok {
 			vl, f := normaliseDeltaForm(initialDelta)

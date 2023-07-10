@@ -147,7 +147,11 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, constantsCreated []
 
 	// Weakening rule
 	case gs3.W:
-		resultingString, childrenHypotheses = cleanHypotheses(hypotheses, proof.GetTargetForm())
+		if proof.TermGenerated() != nil {
+			resultingString = fmt.Sprintf("clear %s.", getConstantName(proof.TermGenerated().(btps.Fun).GetID()))
+		} else {
+			resultingString, childrenHypotheses = cleanHypotheses(hypotheses, proof.GetTargetForm())
+		}
 
 		// TODO: Rewrite rules
 	}
@@ -190,7 +194,7 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format
 func gammaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format string, constantsCreated []btps.Term) (string, [][]btps.Form) {
 	var indices []int
 	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
-	name := findInConstants(constantsCreated, proof.TermGenerated())
+	name := "(" + getRealConstantName(constantsCreated, proof.TermGenerated()) + ")"
 	resultingString := fmt.Sprintf(format, introName(target), name, introNames(indices))
 	return resultingString, [][]btps.Form{hypotheses}
 }
@@ -287,6 +291,29 @@ func addTermGenerated(constantsCreated []btps.Term, term btps.Term) ([]btps.Term
 	}
 	constantsCreated = append(constantsCreated, term)
 	return constantsCreated, getConstantName(term.(btps.Fun).GetID())
+}
+
+func getRealConstantName(constantsCreated []btps.Term, term btps.Term) string {
+	if term == nil {
+		return "goeland_I"
+	}
+	if fun, isFun := term.(btps.Fun); isFun {
+		res := ""
+		if isGroundTerm(fun.GetID()) {
+			res = fun.GetID().ToMappedString(coqMapConnectors(), false)
+			subterms := make([]string, 0)
+			for _, t := range fun.GetArgs() {
+				subterms = append(subterms, getRealConstantName(constantsCreated, t))
+			}
+			if len(subterms) > 0 {
+				res += "(" + strings.Join(subterms, ", ") + ")"
+			}
+		} else {
+			res = findInConstants(constantsCreated, term)
+		}
+		return res
+	}
+	return findInConstants(constantsCreated, term)
 }
 
 func findInConstants(constantsCreated []btps.Term, term btps.Term) string {
