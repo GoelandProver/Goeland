@@ -148,3 +148,7 @@ func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
 func (a And) GetInternalMetas() MetaList {
 	return a.MetaList
 }
+
+func (a And) GetSubFormulas() FormList {
+	return getSubformsOfSubformList(a, a.FormList)
+}

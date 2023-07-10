@@ -126,6 +126,10 @@ func (e Ex) GetInternalMetas() MetaList {
 	return e.MetaList
 }
 
+func (e Ex) GetSubFormulas() FormList {
+	return getSubformsOfSubformList(e, FormList{e.GetForm()})
+}
+
 type All struct {
 	index    int
 	var_list []Var
@@ -202,6 +206,10 @@ func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
 
 func (a All) GetInternalMetas() MetaList {
 	return a.MetaList
+}
+
+func (a All) GetSubFormulas() FormList {
+	return getSubformsOfSubformList(a, FormList{a.GetForm()})
 }
 
 /* Struct describing a forall with type variables */
@@ -299,6 +307,10 @@ func (a AllType) SubstituteVarByMeta(old Var, new Meta) Form {
 
 func (a AllType) GetInternalMetas() MetaList {
 	return a.MetaList
+}
+
+func (a AllType) GetSubFormulas() FormList {
+	return getSubformsOfSubformList(a, FormList{a.GetForm()})
 }
 
 // ----------------------------------------------------------------------------

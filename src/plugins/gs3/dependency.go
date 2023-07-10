@@ -1,8 +1,6 @@
 package gs3
 
 import (
-	"fmt"
-
 	. "github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -20,7 +18,6 @@ type occurrences []occurrence
 // ----------------------------------------------------------------------------
 
 func manageGammasInstantiations(initialForm, resultForm btps.Form) ([]btps.Form, []btps.Term) {
-	PrintInfo("FORM", fmt.Sprintf("Initial: %s, result: %s", initialForm.ToString(), resultForm.ToString()))
 	// As in Goéland, a gamma formula instantiates multiple vars, we need to split it into
 	// multiple gammas: one per variable.
 	// Otherwise, it won't fit a GS3 proof.

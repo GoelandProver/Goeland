@@ -77,9 +77,17 @@ func makeCoqProofFromGS3(proof *gs3.GS3Sequent) string {
 }
 
 func followProofSteps(proof *gs3.GS3Sequent, hypotheses []btps.Form, constantsCreated []btps.Term) string {
-	resultingString, childrenHypotheses, constantsCreated := makeProofStep(proof, hypotheses, constantsCreated)
+	var resultingString string
+	var childrenHypotheses [][]btps.Form
+	if !proof.IsEmpty() {
+		resultingString, childrenHypotheses, constantsCreated = makeProofStep(proof, hypotheses, constantsCreated)
+	}
 	for i, child := range proof.Children() {
-		resultingString += "\n" + followProofSteps(child, cp(childrenHypotheses[i]), cp(constantsCreated))
+		if proof.IsEmpty() {
+			resultingString += "\n" + followProofSteps(child, cp(hypotheses), cp(constantsCreated))
+		} else {
+			resultingString += "\n" + followProofSteps(child, cp(childrenHypotheses[i]), cp(constantsCreated))
+		}
 	}
 	return resultingString
 }

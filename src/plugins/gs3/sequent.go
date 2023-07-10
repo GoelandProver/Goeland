@@ -3,7 +3,7 @@ package gs3
 import (
 	"strings"
 
-	. "github.com/GoelandProver/Goeland/global"
+	//. "github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -89,6 +89,10 @@ func (seq *GS3Sequent) TermGenerated() btps.Term {
 	return seq.termGenerated
 }
 
+func (seq *GS3Sequent) IsEmpty() bool {
+	return len(seq.hypotheses) == 0
+}
+
 // ----------------------------------------------------------------------------
 // Private methods & functions
 // ----------------------------------------------------------------------------
@@ -112,7 +116,8 @@ func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
 	}
 
 	if index == -1 {
-		PrintError("SAO", "A rule is applied on an hypothesis which doesn't exist in the current branch.")
+		//PrintInfo("FORM", hypothesis.ToString())
+		//PrintError("SAO", "A rule is applied on an hypothesis which doesn't exist in the current branch.")
 		return
 	}
 
@@ -134,6 +139,9 @@ func (seq *GS3Sequent) ToString() string {
 func (seq *GS3Sequent) toStringAux(i int) string {
 	identation := strings.Repeat("  ", i)
 	status := seq.ruleToString(seq.rule) /* + " on " + seq.hypotheses[seq.appliedOn].ToString()*/
+	if seq.IsEmpty() {
+		status = "EMPTY"
+	}
 	childrenStrings := make([]string, len(seq.children))
 	for j, child := range seq.children {
 		if child != nil {
@@ -162,10 +170,6 @@ func (seq *GS3Sequent) ruleToString(rule int) string {
 		W:    "WEAKEN",
 	}
 	return mapping[rule]
-}
-
-func (seq *GS3Sequent) isEmpty() bool {
-	return len(seq.hypotheses) == 0
 }
 
 func (seq *GS3Sequent) setFormsGenerated(forms [][]btps.Form) {
@@ -200,7 +204,7 @@ func ruleToTableauxString(rule int) string {
 		NOR:  "ALPHA_NOT_OR",
 		NIMP: "ALPHA_NOT_IMPLY",
 		AND:  "ALPHA_AND",
-		NAND: "ALPHA_NOT_AND",
+		NAND: "BETA_NOT_AND",
 		NEQU: "BETA_NOT_EQUIV",
 		OR:   "BETA_OR",
 		IMP:  "BETA_IMPLY",

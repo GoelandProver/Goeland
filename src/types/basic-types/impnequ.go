@@ -113,6 +113,10 @@ func (i Imp) GetInternalMetas() MetaList {
 	return i.MetaList
 }
 
+func (i Imp) GetSubFormulas() FormList {
+	return getSubformsOfSubformList(i, FormList{i.f1, i.f2})
+}
+
 /* Equ(f1, f2): f1 equivalent to f2 */
 type Equ struct {
 	index  int
@@ -180,4 +184,8 @@ func (e Equ) SubstituteVarByMeta(old Var, new Meta) Form {
 
 func (e Equ) GetInternalMetas() MetaList {
 	return e.MetaList
+}
+
+func (e Equ) GetSubFormulas() FormList {
+	return getSubformsOfSubformList(e, FormList{e.f1, e.f2})
 }

@@ -135,6 +135,10 @@ func (n Not) GetInternalMetas() MetaList {
 	return n.MetaList
 }
 
+func (n Not) GetSubFormulas() FormList {
+	return getSubformsOfSubformList(n, FormList{n.GetForm()})
+}
+
 /** Utils **/
 
 /* Gives a new Form that is the negation of the given Form */

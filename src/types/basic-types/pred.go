@@ -171,3 +171,7 @@ func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
 func (p Pred) GetInternalMetas() MetaList {
 	return p.MetaList
 }
+
+func (p Pred) GetSubFormulas() FormList {
+	return FormList{p.Copy()}
+}

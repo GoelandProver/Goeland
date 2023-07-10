@@ -67,6 +67,7 @@ func (t Top) GetIndex() int                                { return t.index }
 func (t Top) GetSubTerms() TermList                        { return MakeEmptyTermList() }
 func (t Top) SubstituteVarByMeta(Var, Meta) Form           { return t }
 func (t Top) GetInternalMetas() MetaList                   { return MetaList{} }
+func (t Top) GetSubFormulas() FormList                     { return FormList{t} }
 
 /* Bot (always false) definitino */
 type Bot struct {
@@ -91,3 +92,4 @@ func (b Bot) GetIndex() int                                { return b.index }
 func (b Bot) GetSubTerms() TermList                        { return MakeEmptyTermList() }
 func (b Bot) SubstituteVarByMeta(Var, Meta) Form           { return b }
 func (b Bot) GetInternalMetas() MetaList                   { return MetaList{} }
+func (b Bot) GetSubFormulas() FormList                     { return FormList{b} }
