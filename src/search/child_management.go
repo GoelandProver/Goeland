@@ -141,6 +141,7 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 
 	unifier := args.st.GetGlobalUnifier()
 	unifier.PruneMetasInSubsts(args.st.GetMC())
+	args.st.SetGlobalUnifier(unifier)
 
 	resultingSubstsAndForms = ctps.RemoveEmptySubstFromSubstAndFormList(resultingSubstsAndForms)
 	args.st.SetSubstsFound(resultingSubstsAndForms)

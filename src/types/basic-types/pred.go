@@ -148,7 +148,7 @@ func (p Pred) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (p Pred) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	termList, res := replaceVarInTermList(p.GetArgs(), old, new)
-	return MakePred(p.GetIndex(), p.GetID(), termList, p.GetTypeVars(), p.GetType()), res
+	return Pred{p.GetIndex(), p.GetID(), termList, p.GetTypeVars(), p.GetType(), p.MetaList}, res
 }
 
 func (p Pred) GetSubTerms() TermList {

@@ -116,7 +116,7 @@ func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (a And) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	varList, res := replaceVarInFormList(a.FormList, old, new)
-	return MakeAnd(a.GetIndex(), varList), res
+	return And{a.GetIndex(), varList, a.MetaList}, res
 }
 
 func (a And) RenameVariables() Form {

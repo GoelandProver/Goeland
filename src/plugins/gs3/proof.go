@@ -181,7 +181,7 @@ func (gs GS3Proof) makeProof(proof []tableaux.ProofStruct) *GS3Sequent {
 	return subRoot
 }
 
-// Returns a sequent and the result formulas: they can not be
+// Returns a sequent and the result formulas.
 func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3Sequent) [][]btps.Form {
 	seq := MakeNewSequent()
 	seq.setHypotheses(gs.branchForms)
@@ -239,20 +239,25 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule int, seq *GS3Sequent) btps.Form {
 	// Manage gamma: add all the gammas except the result formula to the thing
 	resultForm := proofStep.GetResultFormulas()[0].GetForms()[0]
+	originForm := proofStep.GetFormula().GetForm()
 	// TODO: what happens if the result form doesn't care of what it's instantiated with?
 	// JRO: Should be OKAY as "nil" is returned if I understand everything properly.
-	intermediateForms, termsDependency := manageGammasInstantiations(proofStep.GetFormula().GetForm(), resultForm)
+	intermediateForms, termsDependency := manageGammasInstantiations(originForm, resultForm)
 
 	// Update dependency graph & offspring tree.
 	for i, term := range termsDependency {
 		gs.dependency.Add(term, intermediateForms[i])
-		gs.offsprings = append(gs.offsprings, MakePair(intermediateForms[i], getAllFormulasDependantOn(termsDependency[i], intermediateForms[i])))
+		subforms := make(btps.FormList, 0)
+		if i+1 < len(intermediateForms) {
+			subforms = intermediateForms[i+1:]
+		}
+		gs.offsprings = append(gs.offsprings, MakePair(intermediateForms[i], append(getAllFormulasDependantOn(termsDependency[i], intermediateForms[i]), subforms...)))
 	}
 
 	// Create all the next sequents needed.
 	s := gs.createSubSequents(intermediateForms, termsDependency, rule, seq)
 	s.setFormsGenerated([][]btps.Form{{resultForm}})
-	gs.rulesApplied = append(gs.rulesApplied, MakePair(rule, makeProofStructFrom(intermediateForms[len(intermediateForms)-1], resultForm, rule)))
+	gs.rulesApplied = append(gs.rulesApplied, MakePair(rule, makeProofStructFrom(originForm, resultForm, rule)))
 
 	// Needed to have the right offspring tree when updating later
 	return intermediateForms[len(intermediateForms)-1]
@@ -266,7 +271,7 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int, pa
 	previousRulesApplied := appcp(gs.rulesApplied)
 	for i := 0; i < len(intermediateForms); i++ {
 		dependantForms, atLeastOneDependantForm := gs.getFormulasDependantFromTerm(termsGenerated[i])
-		rulesApplied, offsprings := gs.getRulesAppliedInOrder(dependantForms)
+		rulesApplied, offsprings := gs.getRulesAppliedInOrder(termsGenerated[i], dependantForms)
 		currentResultForm := resultForm
 		if i < len(intermediateForms)-1 {
 			currentResultForm = intermediateForms[i+1]
@@ -304,6 +309,9 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int, pa
 			forms, rulesBack := gs.weakenAllFormsRelatedToTheTerm(termsGenerated[i])
 			if len(forms) > 0 {
 				gs.weakenForms(forms, intermediateForms[i], parent)
+			}
+			_, inHist := gs.findInDeltaHisto(termsGenerated[i], forms)
+			if inHist {
 				gs.weakenTerm(termsGenerated[i])
 			}
 			deltaSeq = gs.applyDeltaRule(intermediateForms[i], currentResultForm, rule, termsGenerated[i])
@@ -387,8 +395,8 @@ func (gs GS3Proof) getFormulasDependantFromTerm(term btps.Term) (btps.FormList, 
 	return fs, ok
 }
 
-func (gs GS3Proof) getRulesAppliedInOrder(dependantForms btps.FormList) ([]Pair[int, tableaux.ProofStruct], btps.FormList) {
-	offsprings := gs.getOffspringsOf(dependantForms)
+func (gs GS3Proof) getRulesAppliedInOrder(term btps.Term, dependantForms btps.FormList) ([]Pair[int, tableaux.ProofStruct], btps.FormList) {
+	offsprings := gs.getOffspringsOf(term)
 	rules := []Pair[int, tableaux.ProofStruct]{}
 	for _, rule := range gs.rulesApplied {
 		f := rule.Snd.GetFormula().GetForm()
@@ -400,17 +408,11 @@ func (gs GS3Proof) getRulesAppliedInOrder(dependantForms btps.FormList) ([]Pair[
 	return rules, offsprings
 }
 
-func (gs GS3Proof) getOffspringsOf(forms btps.FormList) btps.FormList {
+func (gs GS3Proof) getOffspringsOf(term btps.Term) btps.FormList {
 	offsprings := btps.FormList{}
-	for _, form := range forms {
-		for _, off := range gs.offsprings.Get(form) {
-			// TODO: meh, MakerNot :(
-			// Also meh to append if not contains
-			if gs.branchForms.Contains(off) {
-				offsprings = offsprings.AppendIfNotContains(off)
-			} else if gs.branchForms.Contains(btps.MakerNot(off)) {
-				offsprings = offsprings.AppendIfNotContains(btps.MakerNot(off))
-			}
+	for _, form := range gs.branchForms {
+		if form.GetSubTerms().Contains(term) {
+			offsprings = append(offsprings, form)
 		}
 	}
 	return offsprings

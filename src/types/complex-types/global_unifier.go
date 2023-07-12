@@ -94,7 +94,7 @@ func (u Unifier) ToString() string {
 
 /** Returns a global unifier: MGU of all the unifiers found */
 func (u Unifier) GetUnifier() ttps.Substitutions {
-	if !GetProof() {
+	if !GetProof() || len(u.localUnifiers) == 0 {
 		return ttps.MakeEmptySubstitution()
 	}
 	PrintInfo("UNIFS", u.ToString())

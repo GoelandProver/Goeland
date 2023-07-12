@@ -111,14 +111,15 @@ func doOneStep(limit int, formula basictypes.Form) (bool, int) {
 
 	global.PrintDebug("MAIN", "GO")
 
-	unifier, result, finalProof := ManageResult(c)
-	finalProof = complextypes.ApplySubstitutionOnProofList(unifier.GetUnifier(), finalProof)
-	uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
-
 	global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
 	global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
 
+	unifier, result, finalProof := ManageResult(c)
 	if result {
+		if !unifier.GetUnifier().IsEmpty() {
+			finalProof = complextypes.ApplySubstitutionOnProofList(unifier.GetUnifier(), finalProof)
+		}
+		uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
 		printProof(result, finalProof, uninstanciatedMeta)
 	}
 

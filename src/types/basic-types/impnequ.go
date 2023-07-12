@@ -82,7 +82,7 @@ func (i Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 func (i Imp) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	f1, res1 := i.GetF1().ReplaceVarByTerm(old, new)
 	f2, res2 := i.GetF2().ReplaceVarByTerm(old, new)
-	return MakeImp(i.GetIndex(), f1, f2), res1 || res2
+	return Imp{i.GetIndex(), f1, f2, i.MetaList}, res1 || res2
 }
 
 func (i Imp) RenameVariables() Form {
@@ -155,7 +155,7 @@ func (e Equ) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 func (e Equ) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	f1, res1 := e.GetF1().ReplaceVarByTerm(old, new)
 	f2, res2 := e.GetF2().ReplaceVarByTerm(old, new)
-	return MakeEqu(e.GetIndex(), f1, f2), res1 || res2
+	return Equ{e.GetIndex(), f1, f2, e.MetaList}, res1 || res2
 }
 
 func (e Equ) RenameVariables() Form {

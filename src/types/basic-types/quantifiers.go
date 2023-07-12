@@ -90,12 +90,12 @@ func (e Ex) Equals(f any) bool {
 }
 
 func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeEx(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceTypeByMeta(varList, index))
+	return Ex{e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceTypeByMeta(varList, index), e.MetaList}
 }
 
 func (e Ex) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	f, res := e.GetForm().ReplaceVarByTerm(old, new)
-	return MakeEx(e.GetIndex(), e.GetVarList(), f), res
+	return Ex{e.GetIndex(), e.GetVarList(), f, e.MetaList}, res
 }
 
 func (e Ex) RenameVariables() Form {
@@ -177,7 +177,7 @@ func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (a All) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	f, res := a.GetForm().ReplaceVarByTerm(old, new)
-	return MakeAll(a.GetIndex(), a.GetVarList(), f), res
+	return All{a.GetIndex(), a.GetVarList(), f, a.MetaList}, res
 }
 
 func (a All) RenameVariables() Form {
@@ -264,7 +264,7 @@ func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (a AllType) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	f, res := a.GetForm().ReplaceVarByTerm(old, new)
-	return MakeAllType(a.GetIndex(), a.GetVarList(), f), res
+	return AllType{a.GetIndex(), a.GetVarList(), f, a.MetaList}, res
 }
 
 func (a AllType) RenameVariables() Form {

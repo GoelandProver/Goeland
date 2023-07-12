@@ -17,7 +17,7 @@ type occurrences []occurrence
 // The gamma-formulas case.
 // ----------------------------------------------------------------------------
 
-func manageGammasInstantiations(initialForm, resultForm btps.Form) ([]btps.Form, []btps.Term) {
+func manageGammasInstantiations(initialForm, resultForm btps.Form) (btps.FormList, btps.TermList) {
 	// As in Goéland, a gamma formula instantiates multiple vars, we need to split it into
 	// multiple gammas: one per variable.
 	// Otherwise, it won't fit a GS3 proof.
