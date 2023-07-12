@@ -276,12 +276,9 @@ func retrieveMetaFromSubst(s treetypes.Substitutions) []int {
 func manageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) {
 
 	mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
-	substs_with_mm, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
+	substs_with_mm, substs_with_mm_uncleared, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
 
-	// Add everything to the global unifier. It will get pruned later so no worries.
 	unifier := st.GetGlobalUnifier()
-	unifier.AddSubstitutions(substs)
-	st.SetGlobalUnifier(unifier)
 
 	switch {
 
@@ -297,6 +294,8 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
+		// No subst needed in the global unifier
+
 		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
 
 	case len(substs_without_mm) > 0:
@@ -311,6 +310,11 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
+		// As no MM is involved, these substitutions can be unified with all the others having an empty subst.
+		for _, subst := range substs_without_mm {
+			unifier.AddSubstitutions(treetypes.MakeEmptySubstitution(), subst)
+		}
+		st.SetGlobalUnifier(unifier)
 		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
 
 	case len(substs_with_mm) > 0:
@@ -355,6 +359,12 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 		global.PrintDebug("MCR", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 		sort.Ints(meta_to_reintroduce)
+
+		// Add substs_with_mm found with the corresponding subst
+		for i, subst := range substs_with_mm {
+			unifier.AddSubstitutions(subst, substs_with_mm_uncleared[i])
+		}
+		st.SetGlobalUnifier(unifier)
 		sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce)
 	}
 }

@@ -367,8 +367,9 @@ func ApplySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen
 }
 
 /* Dispatch a list of substitution : containing mm or not */
-func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]treetypes.Substitutions, []treetypes.Substitutions) {
+func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]treetypes.Substitutions, []treetypes.Substitutions, []treetypes.Substitutions) {
 	var subst_with_mm []treetypes.Substitutions
+	var subst_with_mm_uncleared []treetypes.Substitutions
 	var subst_without_mm []treetypes.Substitutions
 
 	for _, s := range sl {
@@ -378,12 +379,13 @@ func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]tree
 		}
 		if !s_removed.IsEmpty() {
 			subst_with_mm = treetypes.AppendIfNotContainsSubst(subst_with_mm, s_removed)
+			subst_with_mm_uncleared = treetypes.AppendIfNotContainsSubst(subst_with_mm_uncleared, s)
 		} else {
 			subst_without_mm = treetypes.AppendIfNotContainsSubst(subst_without_mm, s)
 		}
 	}
 
-	return subst_with_mm, subst_without_mm
+	return subst_with_mm, subst_with_mm_uncleared, subst_without_mm
 }
 
 /* remove identity in substitution (non destructive case), can happen renaming variables */

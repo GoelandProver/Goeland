@@ -139,8 +139,10 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 		}
 	}
 
+	unifier := args.st.GetGlobalUnifier()
+	unifier.PruneMetasInSubsts(args.st.GetMC())
+
 	resultingSubstsAndForms = ctps.RemoveEmptySubstFromSubstAndFormList(resultingSubstsAndForms)
-	args.st = cleanGlobalUnifier(args.st, resultingSubsts)
 	args.st.SetSubstsFound(resultingSubstsAndForms)
 	xchg.WriteExchanges(args.fatherId, args.st, resultingSubstsAndForms, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all agree")
 
@@ -250,14 +252,4 @@ func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {
 	}
 
 	return args.st
-}
-
-func cleanGlobalUnifier(st ctps.State, substs []ttps.Substitutions) ctps.State {
-	if global.GetProof() {
-		// All remaining substitutions in the global unifier should have at least every substitution of subst.
-		unifier := st.GetGlobalUnifier()
-		unifier.PruneSubstitutions(substs)
-		st.SetGlobalUnifier(unifier)
-	}
-	return st
 }

@@ -8,6 +8,7 @@ import (
 	ttps "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
+	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 type substitutions = ttps.Substitutions
@@ -26,17 +27,19 @@ type substitutions = ttps.Substitutions
 	  in the local meta list and term list.
  **/
 type Unifier struct {
-	localUnifiers []substitutions
+	localUnifiers []Pair[substitutions, []substitutions]
 }
 
 /** Public exposed maker function and object's methods **/
 
 func MakeUnifier() Unifier {
-	// Start with an empty unifier. Mandatory for the other functions to work properly.
-	return Unifier{localUnifiers: []substitutions{{}}}
+	return Unifier{localUnifiers: []Pair[substitutions, []substitutions]{}}
 }
 
 func MergeUnifierList(ls []Unifier) Unifier {
+	if !global.GetProof() {
+		return MakeUnifier()
+	}
 	unifier := ls[0]
 	for i := 1; i < len(ls); i++ {
 		unifier.Merge(ls[i])
@@ -45,54 +48,45 @@ func MergeUnifierList(ls []Unifier) Unifier {
 }
 
 /** Adds the given substitutions to the unifiers if it matches */
-func (u *Unifier) AddSubstitutions(substs []ttps.Substitutions) {
+func (u *Unifier) AddSubstitutions(cleanedSubst, actualSubst substitutions) {
 	if !global.GetProof() {
 		return
 	}
-	for _, subst := range substs {
-		u.mergeWithLocalUnifier(subst)
+	found := false
+	for i, p := range u.localUnifiers {
+		if p.Fst.Equals(cleanedSubst) {
+			u.localUnifiers[i].Snd = append(u.localUnifiers[i].Snd, actualSubst)
+			found = true
+		}
+	}
+	if !found {
+		u.localUnifiers = append(u.localUnifiers, MakePair(cleanedSubst, []substitutions{actualSubst}))
 	}
 }
 
-func (u *Unifier) PruneSubstitutions(substs []ttps.Substitutions) {
-	if len(substs) == 0 || !global.GetProof() {
+func (u *Unifier) PruneUncompatibleSubstitutions(subst substitutions) {
+	if !global.GetProof() {
 		return
 	}
-	// Every substitution that is not compatible with any of the given substs is forgotten.
-	unifiersToForget := make([]bool, len(u.localUnifiers))
-	for i := 0; i < len(unifiersToForget); i++ {
-		unifiersToForget[i] = true
-	}
-
-	for _, subst := range substs {
-		for i, localUnifier := range u.localUnifiers {
-			substRes, ok := tsch.MergeSubstitutions(subst, localUnifier)
-			if u.compatible(substRes) && ok {
-				unifiersToForget[i] = false
-			}
+	res := make([]Pair[substitutions, []substitutions], 0)
+	for _, p := range u.localUnifiers {
+		compat, _ := tsch.MergeSubstitutions(subst, p.Fst)
+		if !compat.Equals(ttps.Failure()) {
+			res = append(res, p)
 		}
 	}
-
-	for i := len(unifiersToForget) - 1; i >= 0; i-- {
-		if unifiersToForget[i] {
-			u.removeFromUnifiers(int64(i))
-		}
-	}
-
-	// Add an empty substitutions if empty.
-	if len(u.localUnifiers) == 0 {
-		for _, subst := range substs {
-			u.localUnifiers = append(u.localUnifiers, subst)
-		}
-	}
+	u.localUnifiers = res
 }
 
 func (u Unifier) ToString() string {
-	str := "object Unifier{\n"
+	substsToString := func(index int, element ttps.Substitution) string {
+		return fmt.Sprintf("(%s -> %s)", element.Key().ToString(), element.Value().ToString())
+	}
+	str := "object Unifier{"
 	for _, unifier := range u.localUnifiers {
-		str += "\t { " + strings.Join(Map(unifier, func(index int, element ttps.Substitution) string {
-			return fmt.Sprintf("(%s -> %s)", element.Key().ToString(), element.Value().ToString())
-		}), ", ") + " }\n"
+		str += "[ " + strings.Join(Map(unifier.Fst, substsToString), ", ") + " ] --> { " + strings.Join(Map(unifier.Snd, func(_ int, el substitutions) string {
+			return strings.Join(Map(el, substsToString), " ; ")
+		}), "") + " }, "
 	}
 	str += "}"
 	return str
@@ -100,16 +94,24 @@ func (u Unifier) ToString() string {
 
 /** Returns a global unifier: MGU of all the unifiers found */
 func (u Unifier) GetUnifier() ttps.Substitutions {
-	return u.localUnifiers[0]
+	if !GetProof() {
+		return ttps.MakeEmptySubstitution()
+	}
+	PrintInfo("UNIFS", u.ToString())
+	return u.localUnifiers[0].Snd[0]
 }
 
 func (u Unifier) Copy() Unifier {
 	if !global.GetProof() {
 		return MakeUnifier()
 	}
-	newLocalUnifier := make([]substitutions, len(u.localUnifiers))
+	newLocalUnifier := make([]Pair[substitutions, []substitutions], len(u.localUnifiers))
 	for i, unif := range u.localUnifiers {
-		newLocalUnifier[i] = unif.Copy()
+		copy := []substitutions{}
+		for _, subst := range unif.Snd {
+			copy = append(copy, subst.Copy())
+		}
+		newLocalUnifier[i] = MakePair(unif.Fst.Copy(), copy)
 	}
 	return Unifier{
 		localUnifiers: newLocalUnifier,
@@ -120,53 +122,38 @@ func (u *Unifier) Merge(other Unifier) {
 	if !global.GetProof() {
 		return
 	}
-	for _, unifier := range other.localUnifiers {
-		u.mergeWithLocalUnifier(unifier)
+
+	newUnifiers := []Pair[substitutions, []substitutions]{}
+	for i, locUnif := range u.localUnifiers {
+		unif := make([]substitutions, len(locUnif.Snd))
+		for j, subst := range locUnif.Snd {
+			unif[j] = subst.Copy()
+		}
+		newUnifs := []substitutions{}
+		for _, unifier := range other.localUnifiers {
+			res, _ := tsch.MergeSubstitutions(unifier.Fst, locUnif.Fst)
+			if !res.Equals(ttps.Failure()) {
+				u.localUnifiers[i].Fst = res
+				for _, subst := range unif {
+					for _, s := range unifier.Snd {
+						merge, _ := tsch.MergeSubstitutions(subst, s)
+						newUnifs = append(newUnifs, merge)
+					}
+				}
+			}
+		}
+		newUnifiers = append(newUnifiers, MakePair(u.localUnifiers[i].Fst, newUnifs))
 	}
+	u.localUnifiers = newUnifiers
 }
 
-/** Private methods & utilitary functions **/
-
-func (u *Unifier) removeFromUnifiers(unifierIndex int64) {
-	ed := len(u.localUnifiers) - 1
-	u.localUnifiers[unifierIndex] = u.localUnifiers[ed]
-	u.localUnifiers = u.localUnifiers[:ed]
-}
-
-func (u Unifier) compatible(subst ttps.Substitutions) bool {
-	return !subst.Equals(ttps.Failure())
-}
-
-/**
-	1 - Get all compatibles substitutions l from the localUnifiers (i.e., forall x in dom(l), then s(x) should be equal to l(x))
- 	2 - Add a substitution from a meta x in l if x is not in dom(l)
-	3 - If there is a compatibility issue, make a new substitution where everything that is in the original substitution and
-		is in conflict with the new substitution is removed, and add it to the local unifiers */
-func (u *Unifier) mergeWithLocalUnifier(workingSubst substitutions) {
-	newUnifiers := []substitutions{}
-	for i, localUnifier := range u.localUnifiers {
-		subst, _ := tsch.MergeSubstitutions(workingSubst, localUnifier)
-		if u.compatible(subst) {
-			u.localUnifiers[i] = subst
-		} else {
-			newUnifiers = appendIfNeeded(newUnifiers, workingSubst)
+func (u *Unifier) PruneMetasInSubsts(metas btps.MetaList) {
+	for i, unif := range u.localUnifiers {
+		for _, meta := range metas {
+			_, index := unif.Fst.Get(meta)
+			if index != -1 {
+				u.localUnifiers[i].Fst.Remove(index)
+			}
 		}
 	}
-	u.localUnifiers = append(u.localUnifiers, newUnifiers...)
-}
-
-/** Appends the unifier if it's not found in the other unifiers to add. */
-func appendIfNeeded(newUnifiers []substitutions, currentUnifier substitutions) []substitutions {
-	found := false
-	for _, unifier := range newUnifiers {
-		if unifier.Equals(currentUnifier) {
-			found = true
-			break
-		}
-	}
-
-	if !found {
-		newUnifiers = append(newUnifiers, currentUnifier)
-	}
-	return newUnifiers
 }

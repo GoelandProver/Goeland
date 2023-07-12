@@ -206,7 +206,8 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 
 			// Manage the substitution sent by this child
 			if res.closed {
-				unifiers = append(unifiers, res.GetUnifier())
+				unif := res.GetUnifier()
+				unifiers = append(unifiers, unif)
 
 				if len(res.subst_list_for_father) != 0 {
 					global.PrintDebug("SLC", fmt.Sprintf("The child %v has %v substitution(s) !", res.id, len(res.subst_list_for_father)))
@@ -344,9 +345,6 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 		subst := answer_father.GetSubstForChildren()
 
 		// Update to prune everything that shouldn't happen.
-		unifier := st.GetGlobalUnifier()
-		unifier.PruneSubstitutions([]treetypes.Substitutions{subst.GetSubst()})
-
 		exchanges.WriteExchanges(father_id, st, given_substs, subst, "WaitFather")
 		global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", subst.ToString()))
 
@@ -364,6 +362,8 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 					subst = answer_father.GetSubstForChildren().AddFormulas(subst_sent.GetForm())
 				}
 			}
+			unifier := st.GetGlobalUnifier()
+			unifier.PruneUncompatibleSubstitutions(subst.GetSubst())
 			st.SetGlobalUnifier(unifier)
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst})
 			sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
@@ -391,7 +391,7 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			new_meta_to_reintroduce := global.InterIntList(meta_to_reintroduce, meta_to_reintroduce_from_subt)
 
 			st_copy := st.Copy()
-			st_copy.SetGlobalUnifier(unifier)
+			st_copy.SetGlobalUnifier(complextypes.MakeUnifier())
 
 			c2 := Communication{make(chan bool), make(chan Result)}
 
