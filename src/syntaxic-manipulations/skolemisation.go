@@ -35,11 +35,19 @@ func Skolemize(fnt btps.FormAndTerms) btps.FormAndTerms {
 	// 1 - not(forall F1)
 	case btps.Not:
 		if tmp, ok := nf.GetForm().(btps.All); ok {
-			fnt = btps.MakeFormAndTerm(btps.RefuteForm(realSkolemize(tmp.GetForm(), tmp.GetVarList(), terms)), terms)
+			res := realSkolemize(tmp.GetForm(), tmp.GetVarList()[0], terms)
+			if len(tmp.GetVarList()) > 1 {
+				res = btps.MakerAll(tmp.GetVarList()[1:], res)
+			}
+			fnt = btps.MakeFormAndTerm(btps.RefuteForm(res), terms)
 		}
 	// 2 - exists F1
 	case btps.Ex:
-		fnt = btps.MakeFormAndTerm(realSkolemize(nf.GetForm(), nf.GetVarList(), terms), terms)
+		res := realSkolemize(nf.GetForm(), nf.GetVarList()[0], terms)
+		if len(nf.GetVarList()) > 1 {
+			res = btps.MakerEx(nf.GetVarList()[1:], res)
+		}
+		fnt = btps.MakeFormAndTerm(res, terms)
 	}
 
 	return fnt
@@ -52,14 +60,10 @@ func Skolemize(fnt btps.FormAndTerms) btps.FormAndTerms {
  * delta+ : only relevant meta : getmeta + meta replaced
  * delta++ : same function name (need classical skolem for meta)
  **/
-func realSkolemize(fnt btps.Form, vars []btps.Var, terms btps.TermList) btps.Form {
+func realSkolemize(fnt btps.Form, v btps.Var, terms btps.TermList) btps.Form {
 	// Replace each variable by the skolemized term.
-	for _, v := range vars {
-		// Generation of a fresh symbol
-		symbol := btps.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex()))
-		fnt = applySelectedSkolemisation(skoArgs{sourceVar: v, symbol: symbol, formula: fnt, terms: terms})
-	}
-
+	symbol := btps.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex()))
+	fnt = applySelectedSkolemisation(skoArgs{sourceVar: v, symbol: symbol, formula: fnt, terms: terms})
 	return fnt
 }
 

@@ -3,52 +3,51 @@ package syntaxicmanipulations
 import (
 	"strings"
 
-	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
+)
+
+const (
+	is_all = iota
+	is_exists
 )
 
 /**
  * Instantiates once the formula fnt.
  */
 func Instantiate(fnt btps.FormAndTerms, index int) (btps.FormAndTerms, btps.MetaList) {
-	var newMm btps.MetaList
+	var meta btps.Meta
 	terms := fnt.GetTerms()
 
-	switch nf := fnt.GetForm().(type) {
+	switch f := fnt.GetForm().(type) {
 	case btps.Not:
-		if tmp, ok := nf.GetForm().(btps.Ex); ok {
-			form, metas := realInstantiate(tmp.GetForm(), index, tmp.GetVarList())
-			newMm = append(newMm, metas...)
-			fnt = btps.MakeFormAndTerm(btps.RefuteForm(form), terms.MergeTermList(newMm.ToTermList()))
+		if ex, isEx := f.GetForm().(btps.Ex); isEx {
+			fnt, meta = realInstantiate(ex.GetVarList(), index, is_exists, ex.GetForm(), terms)
 		}
 	case btps.All:
-		form, metas := realInstantiate(nf.GetForm(), index, nf.GetVarList())
-		newMm = append(newMm, metas...)
-		fnt = btps.MakeFormAndTerm(form, terms.MergeTermList(newMm.ToTermList()))
-	case btps.AllType:
-		fnt = btps.MakeFormAndTerm(nf.GetForm().ReplaceTypeByMeta(nf.GetVarList(), index), btps.MakeEmptyTermList())
-		for _, v := range nf.GetVarList() {
-			v.ShouldBeMeta(index)
-		}
-		fnt = btps.MakeFormAndTerm(btps.MakeAllType(nf.GetIndex(), nf.GetVarList(), fnt.GetForm()), btps.MakeEmptyTermList())
+		fnt, meta = realInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
-	return fnt, newMm
+	return fnt, btps.MetaList{meta}
 }
 
-func realInstantiate(form btps.Form, index int, vars []btps.Var) (btps.Form, btps.MetaList) {
-	var newMm btps.MetaList
+func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, terms btps.TermList) (btps.FormAndTerms, btps.Meta) {
+	v := varList[0]
+	meta := btps.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
+	subForm = subForm.SubstituteVarByMeta(v, meta)
+	terms = terms.MergeTermList(btps.TermList{meta})
 
-	for _, v := range vars {
-		meta := btps.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
-		if global.IsInnerSko() || global.IsOptimisedSko() {
-			form = form.SubstituteVarByMeta(v, meta)
+	if len(varList) > 1 {
+		if status == is_exists {
+			subForm = btps.RefuteForm(btps.MakerEx(varList[1:], subForm))
 		} else {
-			form, _ = form.ReplaceVarByTerm(v, meta)
+			subForm = btps.MakerAll(varList[1:], subForm)
 		}
-		newMm = append(newMm, meta)
+	} else {
+		if status == is_exists {
+			subForm = btps.RefuteForm(subForm)
+		}
 	}
 
-	return form, newMm
+	return btps.MakeFormAndTerm(subForm, terms), meta
 }

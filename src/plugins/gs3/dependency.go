@@ -17,187 +17,143 @@ type occurrences []occurrence
 // The gamma-formulas case.
 // ----------------------------------------------------------------------------
 
-func manageGammasInstantiations(initialForm, resultForm btps.Form) (btps.FormList, btps.TermList) {
-	// As in Goéland, a gamma formula instantiates multiple vars, we need to split it into
-	// multiple gammas: one per variable.
-	// Otherwise, it won't fit a GS3 proof.
-	var forms btps.FormList
-	var terms btps.TermList
+func manageGammasInstantiations(initialForm, resultForm btps.Form) btps.Term {
+	var term btps.Term
+	normalisedInitialForm := getNextFormula(initialForm)
 	switch initialGamma := initialForm.(type) {
 	case btps.All:
-		vl, f := normaliseGammaForm(initialGamma)
-		terms = getResultTerms(vl, f, resultForm)
-		forms = makeAllNecessaryGammas(vl, f, IS_ALL, terms)
+		term = getResultTerm(initialGamma.GetVarList()[0], normalisedInitialForm, resultForm)
 	case btps.Not:
-		if _, ok := initialGamma.GetForm().(btps.Ex); ok {
-			vl, f := normaliseGammaForm(initialGamma)
-			terms = getResultTerms(vl, f, resultForm)
-			forms = makeAllNecessaryGammas(vl, f.(btps.Not).GetForm(), IS_EXISTS, terms)
+		if ex, ok := initialGamma.GetForm().(btps.Ex); ok {
+			term = getResultTerm(ex.GetVarList()[0], normalisedInitialForm, resultForm)
 		}
 	}
-	return forms, terms
-}
-
-func makeAllNecessaryGammas(varList []btps.Var, endForm btps.Form, status int, terms []btps.Term) []btps.Form {
-	var forms []btps.Form
-	for i := 0; i < len(varList); i++ {
-		form := endForm.Copy()
-		if i > 0 {
-			form, _ = form.ReplaceVarByTerm(varList[i-1], terms[i-1])
-		}
-		if status == IS_ALL {
-			form = btps.MakerAll(varList[i:], form)
-		} else {
-			form = btps.MakerNot(btps.MakerEx(varList[i:], form))
-		}
-		forms = append(forms, form)
-	}
-	return forms
+	return term
 }
 
 // ----------------------------------------------------------------------------
 // The delta-formula case
 // ----------------------------------------------------------------------------
 
-func manageDeltasSkolemisations(initialForm, resultForm btps.Form) ([]btps.Form, []btps.Term) {
-	// TODO: same form for the delta form & the result form
-	var forms btps.FormList
-	var terms btps.TermList
+func manageDeltasSkolemisations(initialForm, resultForm btps.Form) btps.Term {
+	var term btps.Term
+	normalisedInitialForm := getNextFormula(initialForm)
 	switch initialDelta := initialForm.(type) {
 	case btps.Ex:
-		vl, f := normaliseDeltaForm(initialDelta)
-		terms = getResultTerms(vl, f, resultForm)
-		forms = makeAllNecessaryDeltas(vl, f, IS_EXISTS, terms)
+		term = getResultTerm(initialDelta.GetVarList()[0], normalisedInitialForm, resultForm)
 	case btps.Not:
-		if _, ok := initialDelta.GetForm().(btps.All); ok {
-			vl, f := normaliseDeltaForm(initialDelta)
-			terms = getResultTerms(vl, f, resultForm)
-			forms = makeAllNecessaryDeltas(vl, f.(btps.Not).GetForm(), IS_ALL, terms)
+		if all, ok := initialDelta.GetForm().(btps.All); ok {
+			term = getResultTerm(all.GetVarList()[0], normalisedInitialForm, resultForm)
 		}
 	}
-	return forms, terms
-}
-
-func makeAllNecessaryDeltas(varList []btps.Var, endForm btps.Form, status int, terms []btps.Term) []btps.Form {
-	var forms []btps.Form
-	for i := 0; i < len(varList); i++ {
-		form := endForm.Copy()
-		if i > 0 {
-			form, _ = form.ReplaceVarByTerm(varList[i-1], terms[i-1])
-		}
-		if status == IS_ALL {
-			form = btps.MakerNot(btps.MakerAll(varList[i:], form))
-		} else {
-			form = btps.MakerEx(varList[i:], form)
-		}
-		forms = append(forms, form)
-	}
-	return forms
+	return term
 }
 
 // ----------------------------------------------------------------------------
 // Utilitary functions
 // ----------------------------------------------------------------------------
 
-func getResultTerms(varList []btps.Var, bareForm, endForm btps.Form) []btps.Term {
-	variablesOccurrences := getAllVariablesOccurrences(varList, bareForm)
-	return getTermsAt(endForm, variablesOccurrences)
+func getNextFormula(form btps.Form) btps.Form {
+	switch f := form.(type) {
+	case btps.All:
+		varList := f.GetVarList()
+		if len(varList) > 1 {
+			return btps.MakerAll(varList[1:], f.GetForm())
+		}
+		return f.GetForm()
+	case btps.Ex:
+		varList := f.GetVarList()
+		if len(varList) > 1 {
+			return btps.MakerEx(varList[1:], f.GetForm())
+		}
+		return f.GetForm()
+	case btps.Not:
+		return btps.RefuteForm(getNextFormula(f.GetForm()))
+	}
+	return form
+}
+
+func getResultTerm(v btps.Var, bareForm, endForm btps.Form) btps.Term {
+	variablesOccurrences := getAllVariableOccurrences(v, bareForm)
+	return getTermAt(endForm, variablesOccurrences)
 }
 
 // Explores the form and if a variable in the varlist is found, returns its occurrence.
-func getAllVariablesOccurrences(varList []btps.Var, form btps.Form) []occurrences {
-	occs := make([]occurrences, len(varList))
-	return getVariablesOccurrencesForm(varList, form, occs, occurrence{})
+func getAllVariableOccurrences(v btps.Var, form btps.Form) occurrences {
+	return getVariableOccurrencesForm(v, form, occurrences{}, occurrence{})
 }
 
-func getVariablesOccurrencesForm(varList []btps.Var, form btps.Form, currentOcc []occurrences, path occurrence) []occurrences {
+func getVariableOccurrencesForm(v btps.Var, form btps.Form, currentOcc occurrences, path occurrence) occurrences {
 	workingPath := make(occurrence, len(path))
 	copy(workingPath, path)
 	switch f := form.(type) {
 	case btps.Pred:
 		for i, term := range f.GetArgs() {
-			currentOcc = getVariablesOccurrencesTerm(varList, term, currentOcc, appcp(workingPath, i))
+			currentOcc = getVariableOccurrencesTerm(v, term, currentOcc, appcp(workingPath, i))
 		}
 	case btps.Not:
-		currentOcc = getUnaryOcc(varList, f.GetForm(), currentOcc, workingPath)
+		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	case btps.And:
-		currentOcc = getNAryOcc(varList, currentOcc, workingPath, f.FormList)
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.FormList)
 	case btps.Or:
-		currentOcc = getNAryOcc(varList, currentOcc, workingPath, f.FormList)
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.FormList)
 	case btps.Imp:
-		currentOcc = getNAryOcc(varList, currentOcc, workingPath, []btps.Form{f.GetF1(), f.GetF2()})
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, []btps.Form{f.GetF1(), f.GetF2()})
 	case btps.Equ:
-		currentOcc = getNAryOcc(varList, currentOcc, workingPath, []btps.Form{f.GetF1(), f.GetF2()})
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, []btps.Form{f.GetF1(), f.GetF2()})
 	case btps.All:
-		currentOcc = getUnaryOcc(varList, f.GetForm(), currentOcc, workingPath)
+		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	case btps.Ex:
-		currentOcc = getUnaryOcc(varList, f.GetForm(), currentOcc, workingPath)
+		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	case btps.AllType:
-		currentOcc = getUnaryOcc(varList, f.GetForm(), currentOcc, workingPath)
+		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	}
 	return currentOcc
 }
 
-func getUnaryOcc(varList []btps.Var, form btps.Form, currentOcc []occurrences, path occurrence) []occurrences {
-	return getVariablesOccurrencesForm(varList, form, currentOcc, append(path, 0))
+func getUnaryOcc(v btps.Var, form btps.Form, currentOcc occurrences, path occurrence) occurrences {
+	return getVariableOccurrencesForm(v, form, currentOcc, append(path, 0))
 }
 
-func getNAryOcc(varList []btps.Var, currentOcc []occurrences, path occurrence, fl btps.FormList) []occurrences {
+func getNAryOcc(v btps.Var, currentOcc occurrences, path occurrence, fl btps.FormList) occurrences {
 	for i, nf := range fl {
-		currentOcc = getVariablesOccurrencesForm(varList, nf, currentOcc, appcp(path, i))
+		currentOcc = getVariableOccurrencesForm(v, nf, currentOcc, appcp(path, i))
 	}
 	return currentOcc
 }
 
-func getVariablesOccurrencesTerm(varList []btps.Var, term btps.Term, currentOcc []occurrences, path occurrence) []occurrences {
+func getVariableOccurrencesTerm(v btps.Var, term btps.Term, currentOcc occurrences, path occurrence) occurrences {
 	workingPath := make(occurrence, len(path))
 	copy(workingPath, path)
 	switch t := term.(type) {
 	case btps.Var:
-		index := findInVarList(varList, t)
-		if index != -1 {
-			currentOcc[index] = append(currentOcc[index], workingPath)
+		if t.Equals(v) {
+			currentOcc = append(currentOcc, workingPath)
 		}
 	case btps.Fun:
 		for i, nt := range t.GetArgs() {
-			currentOcc = getVariablesOccurrencesTerm(varList, nt, currentOcc, appcp(workingPath, i))
+			currentOcc = getVariableOccurrencesTerm(v, nt, currentOcc, appcp(workingPath, i))
 		}
 	}
 	return currentOcc
 }
 
-func findInVarList(varList []btps.Var, v btps.Var) int {
-	r := -1
-	for i, element := range varList {
-		if element.Equals(v) {
-			r = i
-			break
-		}
-	}
-	return r
-}
-
-func getTermsAt(form btps.Form, occsArr []occurrences) []btps.Term {
-	terms := make([]btps.Term, len(occsArr))
-	for i, occs := range occsArr {
-		var term btps.Term
-		for _, occ := range occs {
-			t := getTermAt(form, occ)
-			if term != nil {
-				if !term.Equals(t) {
-					PrintError("GTA", "The same variable is instanciated as two different terms.")
-				}
-			} else {
-				term = t
+func getTermAt(form btps.Form, occsArr occurrences) btps.Term {
+	var term btps.Term
+	for _, occ := range occsArr {
+		t := getTermAux(form, occ)
+		if term != nil {
+			if !term.Equals(t) {
+				PrintError("GTA", "The same variable is instanciated as two different terms.")
 			}
+		} else {
+			term = t
 		}
-		// The ith var is associated to the following term. Could be nil.
-		terms[i] = term
 	}
-	return terms
+	return term
 }
 
-func getTermAt(form btps.Form, occ occurrence) btps.Term {
+func getTermAux(form btps.Form, occ occurrence) btps.Term {
 	var term btps.Term
 
 	switch f := form.(type) {
@@ -230,7 +186,7 @@ func getUnaryTerm(form btps.Form, occ occurrence) btps.Term {
 		return nil
 	}
 
-	return getTermAt(form, occ[1:])
+	return getTermAux(form, occ[1:])
 }
 
 func getNAryTerm(fl btps.FormList, occ occurrence) btps.Term {
@@ -238,7 +194,7 @@ func getNAryTerm(fl btps.FormList, occ occurrence) btps.Term {
 		return nil
 	}
 
-	return getTermAt(fl[occ[0]], occ[1:])
+	return getTermAux(fl[occ[0]], occ[1:])
 }
 
 func getTerm(term btps.Term, occ occurrence) btps.Term {
@@ -259,32 +215,4 @@ func appcp[T any](arr []T, el ...T) []T {
 	cp := make([]T, len(arr))
 	copy(cp, arr)
 	return append(cp, el...)
-}
-
-func normaliseGammaForm(form btps.Form) ([]btps.Var, btps.Form) {
-	switch f := form.(type) {
-	case btps.All:
-		vl, a := normaliseGammaForm(f.GetForm())
-		return append(f.GetVarList(), vl...), a
-	case btps.Not:
-		if ex, isEx := f.GetForm().(btps.Ex); isEx {
-			vl, f := normaliseGammaForm(btps.MakerNot(ex.GetForm()))
-			return append(ex.GetVarList(), vl...), f
-		}
-	}
-	return make([]btps.Var, 0), form
-}
-
-func normaliseDeltaForm(form btps.Form) ([]btps.Var, btps.Form) {
-	switch f := form.(type) {
-	case btps.Ex:
-		vl, ex := normaliseDeltaForm(f.GetForm())
-		return append(f.GetVarList(), vl...), ex
-	case btps.Not:
-		if all, isAll := f.GetForm().(btps.All); isAll {
-			vl, f := normaliseDeltaForm(btps.MakerNot(all.GetForm()))
-			return append(all.GetVarList(), vl...), f
-		}
-	}
-	return make([]btps.Var, 0), form
 }
