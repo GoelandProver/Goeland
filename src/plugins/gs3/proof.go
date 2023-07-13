@@ -41,6 +41,8 @@
 package gs3
 
 import (
+	"strings"
+
 	. "github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	tableaux "github.com/GoelandProver/Goeland/visualization_proof"
@@ -131,7 +133,7 @@ func (gs GS3Proof) makeProof(proof []tableaux.ProofStruct) *GS3Sequent {
 		return MakeNewSequent()
 	}
 	subRoot := MakeNewSequent()
-	var resultFormulas [][]btps.Form
+	var resultFormulas []btps.FormList
 	gs.branchForms = append(gs.branchForms, proof[0].Formula.GetForm())
 
 	// For each proofstep, create a node & populate which is a child of the last proofstep.
@@ -159,7 +161,7 @@ func (gs GS3Proof) makeProof(proof []tableaux.ProofStruct) *GS3Sequent {
 }
 
 // Returns a sequent and the result formulas.
-func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3Sequent) [][]btps.Form {
+func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3Sequent) []btps.FormList {
 	seq := MakeNewSequent()
 	seq.setHypotheses(gs.branchForms)
 
@@ -178,8 +180,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 		}
 	// Be careful as one gamma rule may instantiate multiple variables.
 	case ALL, NEX:
-		form = gs.manageGammaStep(proofStep, rule, parent)
-		seq = MakeNewSequent()
+		seq = gs.manageGammaStep(proofStep, rule, parent)
 	// Be extra careful as it is a delta-rule
 	case NALL, EX:
 		form = gs.manageDeltaStep(proofStep, rule, parent)
@@ -213,7 +214,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 	return forms
 }
 
-func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule int, seq *GS3Sequent) btps.Form {
+func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule int, seq *GS3Sequent) *GS3Sequent {
 	// Manage gamma: add all the gammas except the result formula to the thing
 	resultForm := proofStep.GetResultFormulas()[0].GetForms()[0]
 	originForm := proofStep.GetFormula().GetForm()
@@ -221,29 +222,39 @@ func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule int, se
 	// JRO: Should be OKAY as "nil" is returned if I understand everything properly.
 	term := manageGammasInstantiations(originForm, resultForm)
 
-	gs.dependency.Add(term, originForm)
+	for _, t := range getDepFromTerm(term) {
+		gs.dependency.Add(t, originForm)
+	}
 
 	// Create all the next sequents needed.
-	//s := gs.createSubSequents(intermediateForms, termsDependency, rule, seq)
 	s := MakeNewSequent()
 	s.setHypotheses(gs.branchForms)
 	s.setAppliedRule(rule)
 	s.setAppliedOn(originForm)
-	s.setFormsGenerated([][]btps.Form{{resultForm}})
 	s.setTermGenerated(term)
 
-	if gs.lastNode != nil {
-		gs.lastNode.addChild(s)
-	}
 	if seq.IsEmpty() {
 		*seq = *s
 		s = seq
 	}
-	gs.lastNode = s
-	gs.rulesApplied = append(gs.rulesApplied, MakePair(rule, makeProofStructFrom(originForm, resultForm, rule)))
 
 	// Needed to have the right offspring tree when updating later
-	return originForm
+	return s
+}
+
+func getDepFromTerm(term btps.Term) btps.TermList {
+	if fun, isFun := term.(btps.Fun); isFun {
+		if strings.Contains(fun.GetID().GetName(), "sko") {
+			return btps.TermList{fun}
+		} else {
+			res := btps.TermList{}
+			for _, t := range fun.GetArgs() {
+				res = append(res, getDepFromTerm(t)...)
+			}
+			return res
+		}
+	}
+	return btps.TermList{term}
 }
 
 // TODO: factorise this function to merge some steps that are similar between the two cases.
@@ -319,13 +330,11 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule int, pa
 	return resultForm
 }
 
-func (gs *GS3Proof) postTreatment(proofStep tableaux.ProofStruct, rule int, form btps.Form) [][]btps.Form {
+func (gs *GS3Proof) postTreatment(proofStep tableaux.ProofStruct, rule int, form btps.Form) []btps.FormList {
 	// Add the rule applied & the formula it has been applied on.
-	if !IsGammaRule(rule) {
-		gs.rulesApplied = append(gs.rulesApplied, MakePair(rule, proofStep))
-	}
+	gs.rulesApplied = append(gs.rulesApplied, MakePair(rule, proofStep))
 
-	var forms [][]btps.Form
+	var forms []btps.FormList
 	for i, fs := range proofStep.GetResultFormulas() {
 		forms = append(forms, fs.GetForms())
 		if (rule == NOR || rule == NIMP || rule == AND || rule == EQU) && len(forms[i]) == 1 {
@@ -431,7 +440,6 @@ func (gs *GS3Proof) removeDependency(form btps.Form) {
 			if f.Equals(form) {
 				ls, _ := gs.dependency.Get(v.Fst)
 				gs.dependency.Set(v.Fst, append(ls[:i], ls[i+1:]...))
-				return
 			}
 		}
 	}
@@ -452,7 +460,7 @@ func (gs *GS3Proof) applyDeltaRule(form, result btps.Form, rule int, term btps.T
 	seq.setAppliedRule(rule)
 	seq.setAppliedOn(form)
 	seq.setTermGenerated(term)
-	seq.setFormsGenerated([][]btps.Form{{result}})
+	seq.setFormsGenerated([]btps.FormList{{result}})
 
 	gs.branchForms = append(gs.branchForms, form)
 	gs.deltaHisto = append(gs.deltaHisto, MakePair(term, result))

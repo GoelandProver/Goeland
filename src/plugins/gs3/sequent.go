@@ -4,6 +4,8 @@ import (
 	"strings"
 
 	//. "github.com/GoelandProver/Goeland/global"
+
+	"github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -12,7 +14,7 @@ type GS3Sequent struct {
 	rule           int
 	appliedOn      int
 	termGenerated  btps.Term
-	formsGenerated [][]btps.Form
+	formsGenerated []btps.FormList
 	children       []*GS3Sequent
 	proof          GS3Proof
 }
@@ -116,6 +118,7 @@ func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
 	}
 
 	if index == -1 {
+		global.PrintInfo("APPLIED ON", hypothesis.ToString())
 		//PrintInfo("FORM", hypothesis.ToString())
 		//PrintError("SAO", "A rule is applied on an hypothesis which doesn't exist in the current branch.")
 		return
@@ -138,7 +141,7 @@ func (seq *GS3Sequent) ToString() string {
 
 func (seq *GS3Sequent) toStringAux(i int) string {
 	identation := strings.Repeat("  ", i)
-	status := seq.ruleToString(seq.rule) /* + " on " + seq.hypotheses[seq.appliedOn].ToString()*/
+	status := seq.ruleToString(seq.rule) + " on " + seq.hypotheses[seq.appliedOn].ToString()
 	if seq.IsEmpty() {
 		status = "EMPTY"
 	}
@@ -172,7 +175,7 @@ func (seq *GS3Sequent) ruleToString(rule int) string {
 	return mapping[rule]
 }
 
-func (seq *GS3Sequent) setFormsGenerated(forms [][]btps.Form) {
+func (seq *GS3Sequent) setFormsGenerated(forms []btps.FormList) {
 	seq.formsGenerated = forms
 }
 
