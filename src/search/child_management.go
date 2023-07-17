@@ -11,7 +11,7 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-/* Arguments for waitChildren function & utilitary subfunctions */
+/* Arguments for WaitChildren function & utilitary subfunctions */
 
 type wcdArgs struct {
 	fatherId       uint64
@@ -154,7 +154,7 @@ func passSubstToChildren(args wcdArgs, substs []ctps.SubstAndForm) {
 	args.substsBT = append(args.substsBT, resultingSubsts...)
 	args.st.SetBTOnFormulas(false)
 	args.overwrite = false
-	waitChildren(args)
+	WaitChildren(args)
 }
 
 func manageOpenedChild(args wcdArgs) {
@@ -176,7 +176,7 @@ func manageOpenedChild(args wcdArgs) {
 		// Mutually exclusive cases: when a backtrack is done on substitutions, this backtrack is prioritised from now on.
 		args.st.SetBTOnFormulas(false)
 		args.overwrite = false
-		waitChildren(args)
+		WaitChildren(args)
 	} else {
 		global.PrintDebug("WC", "A child is opened but no more backtracks are available.")
 		xchg.WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Die - No more BT available")
@@ -187,7 +187,7 @@ func manageOpenedChild(args wcdArgs) {
 			sendForbiddenToChildren(args.children, args.st.GetForbiddenSubsts())
 			args.overwrite = false
 			args.currentSubst = ctps.MakeEmptySubstAndForm()
-			waitChildren(args)
+			WaitChildren(args)
 		} else {
 			global.PrintDebug("WC", "No solution. You should launch in complete mode.")
 			closeChildren(&args.children, true)
@@ -225,7 +225,7 @@ func manageBacktrackForDMT(args wcdArgs) {
 	args.childOrdering = []int{childNode}
 	args.currentSubst = nextSaF.GetSaf().ToSubstAndForm()
 
-	waitChildren(args)
+	WaitChildren(args)
 }
 
 func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {

@@ -233,4 +233,10 @@ func buildOptions() {
 		"Enables on-the-fly optimised (delta++) Skolemisation during the proof-search.",
 		func(bool) { global.SetOptimisedSko(true) },
 		func(bool) {})
+	(&option[bool]{}).init(
+		"assisted",
+		false,
+		"Enables the step-by-step mode debugger.",
+		func(bool) { global.SetAssisted(true) },
+		func(bool) {})
 }

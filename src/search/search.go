@@ -237,7 +237,7 @@ func PrintSearchResult(res bool) {
 
 // Do not change this function, it is the standard output for TPTP files
 func PrintStandardSolution(status string) {
-	fmt.Printf("%s SZS status %v for %v", "%", status, global.GetProblemName())
+	fmt.Printf("%s SZS status %v for %v", "%\n", status, global.GetProblemName())
 }
 
 /**
@@ -271,7 +271,7 @@ func retrieveMetaFromSubst(s treetypes.Substitutions) []int {
 * Manage this result, dispatch the subst and recreate data strcutures.
 * Return if the branch is closed without variable from its father
 **/
-func manageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) {
+func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) (bool, []complextypes.SubstAndForm) {
 
 	mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
 	substs_with_mm, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
@@ -282,9 +282,13 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 	st.SetGlobalUnifier(unifier)
 
 	switch {
-
 	case len(substs) == 0:
-		global.PrintDebug("MCR", "Branch closed by ¬⊤ or ⊥ or a litteral and its opposite !")
+		global.PrintDebug("MCR", "Branch closed by ¬⊤ or ⊥ or a litteral and its opposite!")
+
+		if global.GetAssisted() {
+			fmt.Printf("Branch can be closed by ¬⊤, ⊥ or a litteral and its opposite!\nApplying it automatically...\n")
+		}
+
 		st.SetSubstsFound([]complextypes.SubstAndForm{st.GetAppliedSubst()})
 
 		// Proof
@@ -295,10 +299,18 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
-		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
+		if !global.GetAssisted() {
+			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
+		}
 
 	case len(substs_without_mm) > 0:
 		global.PrintDebug("MCR", fmt.Sprintf("Contradiction found (without mm) : %v", treetypes.SubstListToString(substs_without_mm)))
+
+		if global.GetAssisted() && !substs_without_mm[0].IsEmpty() {
+			fmt.Printf("The branch can be closed by using a substitution which has no impact elsewhere!\nApplying it automatically : ")
+			fmt.Printf("%v !\n", treetypes.SubstListToString(substs_without_mm))
+		}
+
 		st.SetSubstsFound([]complextypes.SubstAndForm{st.GetAppliedSubst()})
 
 		// Proof
@@ -309,7 +321,9 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
-		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
+		if !global.GetAssisted() {
+			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
+		}
 
 	case len(substs_with_mm) > 0:
 		global.PrintDebug("MCR", "Contradiction found (with mm) !")
@@ -324,12 +338,10 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		meta_to_reintroduce := []int{}
 
 		for _, subst_for_father := range substs_with_mm {
-
 			// Check if subst_for_father is failure
 			if subst_for_father.Equals(treetypes.Failure()) {
 				global.PrintError("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().ToString()))
 			}
-
 			global.PrintDebug("MCR", fmt.Sprintf("Formula = : %v", f.ToString()))
 
 			// Create substAndForm with the current form and the subst found
@@ -348,11 +360,17 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			meta_to_reintroduce = global.UnionIntList(meta_to_reintroduce, retrieveMetaFromSubst(subst_for_father))
 		}
 
-		global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
-		global.PrintDebug("MCR", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
-		sort.Ints(meta_to_reintroduce)
-		sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce)
+		if global.GetAssisted() {
+			return true, st.GetSubstsFound()
+		} else {
+			global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
+			global.PrintDebug("MCR", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
+			sort.Ints(meta_to_reintroduce)
+			sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce)
+		}
+
 	}
+	return false, []complextypes.SubstAndForm{}
 }
 
 /* Apply rules with priority (closure < rewrite < alpha < delta < closure with mm < beta < gamma) */
@@ -463,7 +481,7 @@ func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTe
 		go ProofSearch(global.GetGID(), otherState, channelChild, choosenRewritten.GetSaf().ToSubstAndForm(), childNode, childNode, []int{})
 		global.PrintDebug("PS", "GO !")
 		global.IncrGoRoutine(1)
-		waitChildren(MakeWcdArgs(fatherId, *state, c, []Communication{channelChild}, []complextypes.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
+		WaitChildren(MakeWcdArgs(fatherId, *state, c, []Communication{channelChild}, []complextypes.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
 		return true
 	} else {
 		// No rewriting possible
@@ -480,7 +498,7 @@ func manageAlphaRules(fatherId uint64, state complextypes.State, c Communication
 	hdf := state.GetAlpha()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 	state.SetAlpha(state.GetAlpha()[1:])
-	resultForms := applyAlphaRules(hdf, &state)
+	resultForms := ApplyAlphaRules(hdf, &state)
 	state.SetLF(resultForms)
 
 	// Proof
@@ -497,7 +515,7 @@ func manageDeltaRules(fatherId uint64, state complextypes.State, c Communication
 	hdf := state.GetDelta()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 	state.SetDelta(state.GetDelta()[1:])
-	resultForms := applyDeltaRules(hdf, &state)
+	resultForms := ApplyDeltaRules(hdf, &state)
 	state.SetLF(resultForms)
 
 	// Proof
@@ -513,7 +531,7 @@ func manageBetaRules(fatherId uint64, state complextypes.State, c Communication,
 	global.PrintDebug("PS", "Beta rule")
 	hdf := state.GetBeta()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
-	reslf := applyBetaRules(hdf, &state)
+	reslf := ApplyBetaRules(hdf, &state)
 	childIds := []int{}
 
 	// Proof
@@ -546,7 +564,7 @@ func manageBetaRules(fatherId uint64, state complextypes.State, c Communication,
 
 	}
 	if global.IsDestructive() {
-		waitChildren(MakeWcdArgs(fatherId, state, c, channels, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, currentNodeId, originalNodeId, false, childIds, metaToReintroduce))
+		WaitChildren(MakeWcdArgs(fatherId, state, c, channels, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, currentNodeId, originalNodeId, false, childIds, metaToReintroduce))
 	} else {
 		global.PrintDebug("PS", "Die")
 	}
@@ -561,7 +579,7 @@ func manageGammaRules(fatherId uint64, state complextypes.State, c Communication
 	// Update MetaGen
 	index, newMetaGen := basictypes.GetIndexMetaGenList(hdf, state.GetMetaGen())
 	state.SetMetaGen(newMetaGen)
-	newFnts, newMetas := applyGammaRules(hdf, index, &state)
+	newFnts, newMetas := ApplyGammaRules(hdf, index, &state)
 	state.SetLF(newFnts)
 	state.SetMC(append(state.GetMC(), newMetas...))
 	if global.IsDestructive() {

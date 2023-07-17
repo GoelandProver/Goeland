@@ -47,6 +47,8 @@ import (
 	"runtime/pprof"
 	"time"
 
+	"github.com/GoelandProver/Goeland/plugins/assisted"
+
 	_ "net/http/pprof"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -59,19 +61,41 @@ import (
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func main() {
-	args := os.Args
-	if len(args) < 2 {
-		fmt.Printf("%s [options] problem_file\n", os.Args[0])
-		return
-	}
+var chAssistant chan bool = make(chan bool)
 
+func main() {
+	form, bound := presearchLoader()
+
+	if global.GetAssisted() {
+		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
+		go assisted.StartAssistant(chAssistant)
+
+		assisted.Counter.Increase()
+		go startSearch(form, bound)
+
+		search.PrintSearchResult(<-chAssistant)
+	} else {
+		startSearch(form, bound)
+	}
+}
+
+// Start solving. Called in a goroutine so that assisted mode can execute a Fyne application in main goroutine.
+func startSearch(form basictypes.Form, bound int) {
+	global.PrintDebug("MAIN", "Start search")
+
+	search.Search(form, bound)
+
+	doMemProfile()
+}
+
+// Initialization
+func presearchLoader() (basictypes.Form, int) {
 	initEverything()
 
 	doCPUProfile()
 	defer pprof.StopCPUProfile()
 
-	problem := args[len(args)-1]
+	problem := os.Args[len(os.Args)-1]
 	global.SetProblemName(path.Base(problem))
 	global.PrintInfo("MAIN", fmt.Sprintf("Problem : %v", problem))
 
@@ -91,9 +115,7 @@ func main() {
 
 	form = checkForTypedProof(form)
 
-	search.Search(form, bound)
-
-	doMemProfile()
+	return form, bound
 }
 
 /* Initializes the options, the loggers and some other global variables*/

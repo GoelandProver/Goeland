@@ -49,6 +49,7 @@ import (
 )
 
 var ocoq = false
+var Assisted = false
 var destructive = true
 var nb_gor = 0
 var mutex sync.Mutex
@@ -137,6 +138,10 @@ func GetLogFile() string {
 
 func GetWriteLogs() bool {
 	return writeLogs
+}
+
+func GetAssisted() bool {
+	return Assisted
 }
 
 func IsDestructive() bool {
@@ -266,6 +271,10 @@ func SetLogFile(s string) {
 
 func SetWriteLogs(b bool) {
 	writeLogs = b
+}
+
+func SetAssisted(b bool) {
+	Assisted = b
 }
 
 func SetStart(t time.Time) {
