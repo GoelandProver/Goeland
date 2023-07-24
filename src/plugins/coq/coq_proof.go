@@ -279,7 +279,7 @@ func isPredEqual(f btps.Form) bool {
 		f = not.GetForm()
 	}
 	if p, isPred := f.(btps.Pred); isPred {
-		return p.Equals(btps.Id_eq)
+		return p.GetID().Equals(btps.Id_eq)
 	}
 	return false
 }

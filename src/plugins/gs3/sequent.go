@@ -9,9 +9,11 @@ import (
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
+type Rule int
+
 type GS3Sequent struct {
 	hypotheses     []btps.Form
-	rule           int
+	rule           Rule
 	appliedOn      int
 	termGenerated  btps.Term
 	formsGenerated []btps.FormList
@@ -21,7 +23,7 @@ type GS3Sequent struct {
 
 // Rules
 const (
-	AX = iota
+	AX Rule = iota
 	W
 	NOT
 	IMP
@@ -47,19 +49,19 @@ func MakeNewSequent() *GS3Sequent {
 	return seq
 }
 
-func IsGammaRule(rule int) bool {
+func IsGammaRule(rule Rule) bool {
 	return rule == ALL || rule == NEX
 }
 
-func IsDeltaRule(rule int) bool {
+func IsDeltaRule(rule Rule) bool {
 	return rule == NALL || rule == EX
 }
 
-func IsBetaRule(rule int) bool {
+func IsBetaRule(rule Rule) bool {
 	return rule == NAND || rule == NEQU || rule == IMP || rule == EQU || rule == OR
 }
 
-func IsAlphaRule(rule int) bool {
+func IsAlphaRule(rule Rule) bool {
 	return rule == AND || rule == NOR || rule == NIMP || rule == NNOT
 }
 
@@ -79,7 +81,7 @@ func (seq *GS3Sequent) Children() []*GS3Sequent {
 	return seq.children
 }
 
-func (seq *GS3Sequent) Rule() int {
+func (seq *GS3Sequent) Rule() Rule {
 	return seq.rule
 }
 
@@ -104,24 +106,27 @@ func (seq *GS3Sequent) setHypotheses(forms []btps.Form) {
 	copy(seq.hypotheses, forms)
 }
 
-func (seq *GS3Sequent) setAppliedRule(rule int) {
+func (seq *GS3Sequent) setAppliedRule(rule Rule) {
 	seq.rule = rule
 }
 
 func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
 	index := -1
+	//global.PrintInfo("SEARCHING FOR", hypothesis.ToString())
 	for i, h := range seq.hypotheses {
+		//global.PrintInfo("BRANCH FORM", h.ToString())
 		if hypothesis.Equals(h) {
 			index = i
 			break
 		}
 	}
+	//global.PrintInfo("END", "")
 
 	if index == -1 {
 		global.PrintInfo("APPLIED ON", hypothesis.ToString())
+		panic("Failure: tried to apply a missing hypothesis")
 		//PrintInfo("FORM", hypothesis.ToString())
 		//PrintError("SAO", "A rule is applied on an hypothesis which doesn't exist in the current branch.")
-		return
 	}
 
 	seq.appliedOn = index
@@ -154,8 +159,8 @@ func (seq *GS3Sequent) toStringAux(i int) string {
 	return "\n" + identation + status + strings.Join(childrenStrings, "")
 }
 
-func (seq *GS3Sequent) ruleToString(rule int) string {
-	mapping := map[int]string{
+func (seq *GS3Sequent) ruleToString(rule Rule) string {
+	mapping := map[Rule]string{
 		NNOT: "NOT_NOT (alpha)",
 		NOR:  "NOT_OR (alpha)",
 		NIMP: "NOT_IMPLY (alpha)",
@@ -179,8 +184,8 @@ func (seq *GS3Sequent) setFormsGenerated(forms []btps.FormList) {
 	seq.formsGenerated = forms
 }
 
-func proofStructRuleToGS3Rule(rule string) (int, bool) {
-	mapping := map[string]int{
+func proofStructRuleToGS3Rule(rule string) (Rule, bool) {
+	mapping := map[string]Rule{
 		"ALPHA_NOT_NOT":    NNOT,
 		"ALPHA_NOT_OR":     NOR,
 		"ALPHA_NOT_IMPLY":  NIMP,
@@ -201,8 +206,8 @@ func proofStructRuleToGS3Rule(rule string) (int, bool) {
 	r, ok := mapping[rule]
 	return r, ok
 }
-func ruleToTableauxString(rule int) string {
-	mapping := map[int]string{
+func ruleToTableauxString(rule Rule) string {
+	mapping := map[Rule]string{
 		NNOT: "ALPHA_NOT_NOT",
 		NOR:  "ALPHA_NOT_OR",
 		NIMP: "ALPHA_NOT_IMPLY",

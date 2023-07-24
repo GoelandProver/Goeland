@@ -86,7 +86,7 @@ func (u Unifier) ToString() string {
 	for _, unifier := range u.localUnifiers {
 		str += "[ " + strings.Join(Map(unifier.Fst, substsToString), ", ") + " ] --> { " + strings.Join(Map(unifier.Snd, func(_ int, el substitutions) string {
 			return strings.Join(Map(el, substsToString), " ; ")
-		}), "") + " }, "
+		}), " ---- ") + " }, "
 	}
 	str += "}"
 	return str
@@ -98,7 +98,10 @@ func (u Unifier) GetUnifier() ttps.Substitutions {
 		return ttps.MakeEmptySubstitution()
 	}
 	PrintInfo("UNIFS", u.ToString())
-	return u.localUnifiers[0].Snd[0]
+	if len(u.localUnifiers) > 0 && len(u.localUnifiers[0].Snd) > 0 {
+		return u.localUnifiers[0].Snd[0]
+	}
+	return ttps.MakeEmptySubstitution()
 }
 
 func (u Unifier) Copy() Unifier {
@@ -123,28 +126,26 @@ func (u *Unifier) Merge(other Unifier) {
 		return
 	}
 
+	PrintDebug("GLOBAL UNIFIER", fmt.Sprintf("Current: %s, to merge: %s", u.ToString(), other.ToString()))
+
 	newUnifiers := []Pair[substitutions, []substitutions]{}
-	for i, locUnif := range u.localUnifiers {
-		unif := make([]substitutions, len(locUnif.Snd))
-		for j, subst := range locUnif.Snd {
-			unif[j] = subst.Copy()
-		}
-		newUnifs := []substitutions{}
+	for _, locUnif := range u.localUnifiers {
 		for _, unifier := range other.localUnifiers {
-			res, _ := tsch.MergeSubstitutions(unifier.Fst, locUnif.Fst)
+			newUnifs := []substitutions{}
+			res, _ := tsch.MergeSubstitutions(unifier.Fst.Copy(), locUnif.Fst.Copy())
 			if !res.Equals(ttps.Failure()) {
-				u.localUnifiers[i].Fst = res
-				for _, subst := range unif {
+				for _, subst := range locUnif.Snd {
 					for _, s := range unifier.Snd {
-						merge, _ := tsch.MergeSubstitutions(subst, s)
+						merge, _ := tsch.MergeSubstitutions(subst.Copy(), s.Copy())
 						newUnifs = append(newUnifs, merge)
 					}
 				}
+				newUnifiers = appendNewUnifiersIfNeeded(newUnifiers, res, newUnifs)
 			}
 		}
-		newUnifiers = append(newUnifiers, MakePair(u.localUnifiers[i].Fst, newUnifs))
 	}
 	u.localUnifiers = newUnifiers
+	PrintDebug("GLOBAL UNIFIER", fmt.Sprintf("After: %s", u.ToString()))
 }
 
 func (u *Unifier) PruneMetasInSubsts(metas btps.MetaList) {
@@ -156,4 +157,20 @@ func (u *Unifier) PruneMetasInSubsts(metas btps.MetaList) {
 			}
 		}
 	}
+	newUnifiers := []Pair[substitutions, []substitutions]{}
+	for _, unif := range u.localUnifiers {
+		newUnifiers = appendNewUnifiersIfNeeded(newUnifiers, unif.Fst, unif.Snd)
+	}
+	u.localUnifiers = newUnifiers
+}
+
+func appendNewUnifiersIfNeeded(unifiers []Pair[substitutions, []substitutions], res substitutions, newUnifs []substitutions) []Pair[substitutions, []substitutions] {
+	for i, unif := range unifiers {
+		if unif.Fst.Equals(res) {
+			unifiers[i].Snd = append(unifiers[i].Snd, newUnifs...)
+			return unifiers
+		}
+	}
+	unifiers = append(unifiers, MakePair(res, newUnifs))
+	return unifiers
 }

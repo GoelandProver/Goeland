@@ -47,30 +47,11 @@ import (
 	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
-/**
- * Replaces all the occurences of all the keys of subst to the corresponding values.
- **/
 func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
-	//terms := []btypes.Term{}
 	for _, s := range subst {
 		old_symbol, new_symbol := s.Get()
 		form = ctypes.ApplySubstitutionOnFormula(old_symbol, new_symbol, form)
-		/*if reflect.TypeOf(new_symbol) == reflect.TypeOf(btypes.Meta{}) {
-			terms = append(terms, new_symbol)
-		}*/
+		// TODO: also apply substitution on internal meta list
 	}
 	return form
 }
-
-/**
- * Stolen method : instantiation.
- * Instanciates once a formula to make meta from bound variables.
-func instantiateOnce(formula btypes.Form) btypes.Form {
-	nf := formula.(btypes.All).GetForm()
-	for _, v := range formula.(btypes.All).GetVarList() {
-		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), 0, v.GetTypeHint())
-		nf = btypes.ReplaceVarByTerm(nf, v, meta)
-	}
-	return nf
-}
-**/

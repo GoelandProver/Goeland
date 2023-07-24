@@ -60,14 +60,15 @@ var contextEnabled bool = false
 // TODO:
 //	* Write the context for TFF problems
 
-func MakeCoqOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
-	if len(proof) == 0 {
+func MakeCoqOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
+	if len(prf) == 0 {
 		global.PrintError("Coq", "Nothing to output")
 		return ""
 	}
 
+	//global.PrintInfo("TEST", proof.ProofStructListToText(prf))
 	// Transform tableaux's proof in GS3 proof
-	return makeCoqProof(gs3.MakeGS3Proof(proof), meta)
+	return makeCoqProof(gs3.MakeGS3Proof(prf), meta)
 }
 
 func makeCoqProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {

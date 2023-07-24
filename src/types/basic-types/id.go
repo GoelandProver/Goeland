@@ -48,11 +48,8 @@ type Id struct {
 	name  string
 }
 
-func (i Id) ToMappedString(_ MapString, status bool) string {
-	if status {
-		return i.ToString()
-	}
-	return i.GetName()
+func (i Id) ToMappedString(_ MapString, _ bool) string {
+	return i.ToString()
 }
 
 func (i Id) GetIndex() int                        { return i.index }

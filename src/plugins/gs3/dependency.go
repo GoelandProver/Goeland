@@ -19,7 +19,7 @@ type occurrences []occurrence
 
 func manageGammasInstantiations(initialForm, resultForm btps.Form) btps.Term {
 	var term btps.Term
-	normalisedInitialForm := getNextFormula(initialForm)
+	normalisedInitialForm := getNextFormula(initialForm.Copy())
 	switch initialGamma := initialForm.(type) {
 	case btps.All:
 		term = getResultTerm(initialGamma.GetVarList()[0], normalisedInitialForm, resultForm)
@@ -28,6 +28,7 @@ func manageGammasInstantiations(initialForm, resultForm btps.Form) btps.Term {
 			term = getResultTerm(ex.GetVarList()[0], normalisedInitialForm, resultForm)
 		}
 	}
+	//PrintInfo("TERM", fmt.Sprintf("Term: %s ; Result: %s", term.ToString(), resultForm.ToString()))
 	return term
 }
 
@@ -37,7 +38,7 @@ func manageGammasInstantiations(initialForm, resultForm btps.Form) btps.Term {
 
 func manageDeltasSkolemisations(initialForm, resultForm btps.Form) btps.Term {
 	var term btps.Term
-	normalisedInitialForm := getNextFormula(initialForm)
+	normalisedInitialForm := getNextFormula(initialForm.Copy())
 	switch initialDelta := initialForm.(type) {
 	case btps.Ex:
 		term = getResultTerm(initialDelta.GetVarList()[0], normalisedInitialForm, resultForm)

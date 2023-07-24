@@ -82,6 +82,10 @@ func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruc
 	// Updates the proof using the proofs of the children of the node.
 	args.st = updateProof(args, proofChildren)
 
+	unifier := args.st.GetGlobalUnifier()
+	unifier.PruneMetasInSubsts(args.st.GetMC())
+	args.st.SetGlobalUnifier(unifier)
+
 	xchg.WriteExchanges(args.fatherId, args.st, nil, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
 	sendSubToFather(args.c, true, false, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
