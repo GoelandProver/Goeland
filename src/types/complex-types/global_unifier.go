@@ -78,6 +78,10 @@ func (u *Unifier) PruneUncompatibleSubstitutions(subst substitutions) {
 	u.localUnifiers = res
 }
 
+func (u Unifier) IsEmpty() bool {
+	return len(u.localUnifiers) == 0
+}
+
 func (u Unifier) ToString() string {
 	substsToString := func(index int, element ttps.Substitution) string {
 		return fmt.Sprintf("(%s -> %s)", element.Key().ToString(), element.Value().ToString())
@@ -129,6 +133,14 @@ func (u *Unifier) Merge(other Unifier) {
 	PrintDebug("GLOBAL UNIFIER", fmt.Sprintf("Current: %s, to merge: %s", u.ToString(), other.ToString()))
 
 	newUnifiers := []Pair[substitutions, []substitutions]{}
+
+	if len(u.localUnifiers) == 0 || len(other.localUnifiers) == 0 {
+		if len(u.localUnifiers) == 0 {
+			u.localUnifiers = other.localUnifiers
+		}
+		return
+	}
+
 	for _, locUnif := range u.localUnifiers {
 		for _, unifier := range other.localUnifiers {
 			newUnifs := []substitutions{}
@@ -137,7 +149,9 @@ func (u *Unifier) Merge(other Unifier) {
 				for _, subst := range locUnif.Snd {
 					for _, s := range unifier.Snd {
 						merge, _ := tsch.MergeSubstitutions(subst.Copy(), s.Copy())
-						newUnifs = append(newUnifs, merge)
+						if !merge.Equals(ttps.Failure()) {
+							newUnifs = append(newUnifs, merge)
+						}
 					}
 				}
 				newUnifiers = appendNewUnifiersIfNeeded(newUnifiers, res, newUnifs)

@@ -237,6 +237,7 @@ func makeImpChain(forms btps.FormList) btps.Form {
 
 // Introduces a new formula in coq's hypotheses.
 func introduce(f btps.Form, hypotheses []btps.Form) (int, []btps.Form) {
+	//PrintInfo("INTRODUCING", f.ToString())
 	index := len(hypotheses)
 	hypotheses = append(hypotheses, f)
 	return index, hypotheses
@@ -256,6 +257,10 @@ func get(f btps.Form, hypotheses []btps.Form) int {
 			return i
 		}
 	}
+	/*PrintInfo("GET", f.ToString())
+	for _, h := range hypotheses {
+		PrintInfo("H", h.ToString())
+	}*/
 	return -1
 }
 

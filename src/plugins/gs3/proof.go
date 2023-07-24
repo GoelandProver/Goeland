@@ -41,7 +41,6 @@
 package gs3
 
 import (
-	"fmt"
 	"strings"
 
 	. "github.com/GoelandProver/Goeland/global"
@@ -135,7 +134,9 @@ func (gs GS3Proof) makeProof(proof []tableaux.ProofStruct) *GS3Sequent {
 	}
 	subRoot := MakeNewSequent()
 	var resultFormulas []btps.FormList
-	gs.branchForms = append(gs.branchForms, proof[0].Formula.GetForm())
+	if len(gs.branchForms) == 0 {
+		gs.branchForms = append(gs.branchForms, proof[0].Formula.GetForm())
+	}
 
 	// For each proofstep, create a node & populate which is a child of the last proofstep.
 	for _, prf := range proof {
@@ -166,16 +167,10 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 	seq := MakeNewSequent()
 	seq.setHypotheses(gs.branchForms)
 
-	/*
-		for _, f := range gs.branchForms {
-			PrintInfo("BRANCH FORM", f.ToString())
-		}
-		PrintInfo("END", "")*/
-
 	rule, _ := proofStructRuleToGS3Rule(proofStep.GetRuleName())
 	form := proofStep.GetFormula().GetForm()
 
-	PrintInfo("RULE", proofStep.GetRuleName())
+	//PrintInfo("RULE", proofStep.GetRuleName())
 
 	// TODO: manage rewrite rules: second return value of proofStructRuleToGS3Rule
 	switch rule {
@@ -468,7 +463,6 @@ func (gs *GS3Proof) removeRuleAppliedOn(form btps.Form) {
 }
 
 func (gs *GS3Proof) applyDeltaRule(form, result btps.Form, rule Rule, term btps.Term) *GS3Sequent {
-	PrintInfo("DELTA", fmt.Sprintf("Form: %s, Result: %s", form.ToString(), result.ToString()))
 	seq := MakeNewSequent()
 	seq.setHypotheses(gs.branchForms)
 	seq.setAppliedRule(rule)

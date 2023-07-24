@@ -20,6 +20,7 @@ type occurrences []occurrence
 func manageGammasInstantiations(initialForm, resultForm btps.Form) btps.Term {
 	var term btps.Term
 	normalisedInitialForm := getNextFormula(initialForm.Copy())
+	//PrintInfo("FORMS", fmt.Sprintf("init: %s, result: %s", initialForm.ToString(), resultForm.ToString()))
 	switch initialGamma := initialForm.(type) {
 	case btps.All:
 		term = getResultTerm(initialGamma.GetVarList()[0], normalisedInitialForm, resultForm)

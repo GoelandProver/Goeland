@@ -43,7 +43,6 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/equality"
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -348,12 +347,6 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 		exchanges.WriteExchanges(father_id, st, given_substs, subst, "WaitFather")
 		global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", subst.ToString()))
 
-		// A substitution is chosen. As free variables are kept inside the terms, we need to apply the substitution on the code tree
-		// kept in the state.
-		newAtomics := complextypes.ApplySubstitutionsOnFormAndTermsList(subst.GetSubst(), st.GetAtomic())
-		st.SetTreePos(st.GetTreePos().MakeDataStruct(newAtomics.ExtractForms(), true))
-		st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(newAtomics.ExtractForms(), false))
-
 		// Check if the subst was already seen, returns eventually the subst with new formula(s)
 		if treetypes.ContainsSubst(complextypes.GetSubstListFromSubstAndFormList(given_substs), answer_father.subst_for_children.GetSubst()) {
 			global.PrintDebug("WF", "This substitution was sent by this child")
@@ -364,10 +357,19 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 			}
 			unifier := st.GetGlobalUnifier()
 			unifier.PruneUncompatibleSubstitutions(subst.GetSubst())
+			if unifier.IsEmpty() {
+				unifier.AddSubstitutions(st.GetAppliedSubst().GetSubst(), st.GetAppliedSubst().GetSubst())
+			}
 			st.SetGlobalUnifier(unifier)
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst})
 			sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
 		} else {
+
+			// A substitution is chosen. As free variables are kept inside the terms, we need to apply the substitution on the code tree
+			// kept in the state.
+			newAtomics := complextypes.ApplySubstitutionsOnFormAndTermsList(subst.GetSubst(), st.GetAtomic())
+			st.SetTreePos(st.GetTreePos().MakeDataStruct(newAtomics.ExtractForms(), true))
+			st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(newAtomics.ExtractForms(), false))
 
 			// Maj forbidden
 			if len(answer_father.forbidden) > 0 {
@@ -575,7 +577,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms())
 				if res_eq {
-					manageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{}), basictypes.MakeEmptyTermList()), node_id, original_node_id)
+					manageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.MakeEmptyTermList()), node_id, original_node_id)
 					return
 				}
 			}

@@ -295,8 +295,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
-		// No subst needed in the global unifier
-
+		// No new subst needed in the global unifier
 		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
 
 	case len(substs_without_mm) > 0:
@@ -314,7 +313,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		// As no MM is involved, these substitutions can be unified with all the others having an empty subst.
 		for _, subst := range substs_without_mm {
 			merge, _ := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), subst)
-			unifier.AddSubstitutions(treetypes.MakeEmptySubstitution(), merge)
+			unifier.AddSubstitutions(st.GetAppliedSubst().GetSubst(), merge)
 		}
 		st.SetGlobalUnifier(unifier)
 		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
@@ -364,8 +363,9 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 
 		// Add substs_with_mm found with the corresponding subst
 		for i, subst := range substs_with_mm {
-			merge, _ := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), substs_with_mm_uncleared[i])
-			unifier.AddSubstitutions(subst, merge)
+			mergeUncleared, _ := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), substs_with_mm_uncleared[i])
+			mergeCleared, _ := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), subst)
+			unifier.AddSubstitutions(mergeCleared, mergeUncleared)
 		}
 		st.SetGlobalUnifier(unifier)
 		sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce)

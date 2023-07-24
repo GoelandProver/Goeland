@@ -104,6 +104,10 @@ func (seq *GS3Sequent) IsEmpty() bool {
 func (seq *GS3Sequent) setHypotheses(forms []btps.Form) {
 	seq.hypotheses = make([]btps.Form, len(forms))
 	copy(seq.hypotheses, forms)
+	// If equality reasoning has been used to terminate the proof, then an empty predicate is expected
+	// (see search_destructive, manageClosureRule on eq reasoning).
+	// As such, add an hypothesis with the empty =
+	seq.hypotheses = append(seq.hypotheses, btps.EmptyPredEq)
 }
 
 func (seq *GS3Sequent) setAppliedRule(rule Rule) {
@@ -125,8 +129,6 @@ func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
 	if index == -1 {
 		global.PrintInfo("APPLIED ON", hypothesis.ToString())
 		panic("Failure: tried to apply a missing hypothesis")
-		//PrintInfo("FORM", hypothesis.ToString())
-		//PrintError("SAO", "A rule is applied on an hypothesis which doesn't exist in the current branch.")
 	}
 
 	seq.appliedOn = index
