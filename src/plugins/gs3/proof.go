@@ -107,7 +107,8 @@ func MakeGS3Proof(proof []tableaux.ProofStruct) *GS3Sequent {
 		rulesApplied: make([]Pair[int, tableaux.ProofStruct], 0),
 		betaHisto:    make([]Pair[int, btps.Form], 0),
 	}
-	return gs3Proof.makeProof(proof)
+	sequent := gs3Proof.makeProof(proof)
+	return sequent // gs3Proof.makeProof(proof)
 }
 
 func (gs GS3Proof) Copy() GS3Proof {

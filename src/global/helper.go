@@ -49,6 +49,7 @@ import (
 )
 
 var ocoq = false
+var olambdapi = false
 var destructive = true
 var nb_gor = 0
 var mutex sync.Mutex
@@ -207,6 +208,10 @@ func IsCoqOutput() bool {
 	return ocoq
 }
 
+func IsLambdapiOutput() bool {
+	return olambdapi
+}
+
 func GetProblemName() string {
 	return problem_name
 }
@@ -310,6 +315,10 @@ func DisplayPretty() {
 
 func OutputCoq() {
 	ocoq = true
+}
+
+func OutputLambdapi() {
+	olambdapi = true
 }
 
 func SetPlugin(s string, b bool) {
