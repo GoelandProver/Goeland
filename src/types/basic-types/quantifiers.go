@@ -126,6 +126,10 @@ func (e Ex) GetInternalMetas() MetaList {
 	return e.MetaList
 }
 
+func (e Ex) SetInternalMetas(m MetaList) {
+	e.MetaList = m
+}
+
 func (e Ex) GetSubFormulas() FormList {
 	return getSubformsOfSubformList(e, FormList{e.GetForm()})
 }
@@ -206,6 +210,10 @@ func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
 
 func (a All) GetInternalMetas() MetaList {
 	return a.MetaList
+}
+
+func (a All) SetInternalMetas(m MetaList) {
+	a.MetaList = m
 }
 
 func (a All) GetSubFormulas() FormList {
@@ -307,6 +315,10 @@ func (a AllType) SubstituteVarByMeta(old Var, new Meta) Form {
 
 func (a AllType) GetInternalMetas() MetaList {
 	return a.MetaList
+}
+
+func (a AllType) SetInternalMetas(m MetaList) {
+	a.MetaList = m
 }
 
 func (a AllType) GetSubFormulas() FormList {

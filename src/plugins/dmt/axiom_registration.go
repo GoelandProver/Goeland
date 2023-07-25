@@ -68,7 +68,7 @@ func RegisterAxiom(axiom btypes.Form) bool {
 
 func instanciateForalls(axiom btypes.Form) btypes.Form {
 	axiomFT := btypes.MakeFormAndTerm(axiom.Copy(), btypes.TermList{})
-	for Is[btypes.All](axiomFT) {
+	for Is[btypes.All](axiomFT.GetForm()) {
 		axiomFT, _ = syntax.Instantiate(axiomFT, -1)
 	}
 	return axiomFT.GetForm()

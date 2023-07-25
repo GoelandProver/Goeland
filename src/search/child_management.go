@@ -82,7 +82,10 @@ func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruc
 	// Updates the proof using the proofs of the children of the node.
 	args.st = updateProof(args, proofChildren)
 
+	toMerge := ctps.MakeUnifier()
+	toMerge.AddSubstitutions(args.st.GetAppliedSubst().GetSubst(), args.st.GetAppliedSubst().GetSubst())
 	unifier := args.st.GetGlobalUnifier()
+	unifier.Merge(toMerge)
 	unifier.PruneMetasInSubsts(args.st.GetMC())
 	args.st.SetGlobalUnifier(unifier)
 
@@ -143,7 +146,10 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 		}
 	}
 
+	toMerge := ctps.MakeUnifier()
+	toMerge.AddSubstitutions(args.st.GetAppliedSubst().GetSubst(), args.st.GetAppliedSubst().GetSubst())
 	unifier := args.st.GetGlobalUnifier()
+	unifier.Merge(toMerge)
 	unifier.PruneMetasInSubsts(args.st.GetMC())
 	args.st.SetGlobalUnifier(unifier)
 

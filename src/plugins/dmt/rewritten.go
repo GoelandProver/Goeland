@@ -51,7 +51,22 @@ func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
 	for _, s := range subst {
 		old_symbol, new_symbol := s.Get()
 		form = ctypes.ApplySubstitutionOnFormula(old_symbol, new_symbol, form)
-		// TODO: also apply substitution on internal meta list
+		form.SetInternalMetas(substInternalMetas(form.GetInternalMetas(), subst))
 	}
 	return form
+}
+
+func substInternalMetas(ml btypes.MetaList, subst treetypes.Substitutions) btypes.MetaList {
+	result := btypes.MetaList{}
+	for _, meta := range ml {
+		s, _ := subst.Get(meta)
+		if s != nil {
+			if newMeta, isMeta := s.(btypes.Meta); isMeta {
+				result = append(result, newMeta)
+			}
+		} else {
+			panic("Introducing DMT meta in proof-search")
+		}
+	}
+	return result
 }

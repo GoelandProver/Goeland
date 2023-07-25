@@ -280,6 +280,7 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 	substs_with_mm, substs_with_mm_uncleared, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
 
 	unifier := st.GetGlobalUnifier()
+	appliedSubst := st.GetAppliedSubst().GetSubst()
 
 	switch {
 
@@ -294,6 +295,9 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
+
+		unifier.AddSubstitutions(appliedSubst, appliedSubst)
+		st.SetGlobalUnifier(unifier)
 
 		// No new subst needed in the global unifier
 		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
@@ -312,8 +316,8 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 
 		// As no MM is involved, these substitutions can be unified with all the others having an empty subst.
 		for _, subst := range substs_without_mm {
-			merge, _ := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), subst)
-			unifier.AddSubstitutions(st.GetAppliedSubst().GetSubst(), merge)
+			merge, _ := treesearch.MergeSubstitutions(appliedSubst, subst)
+			unifier.AddSubstitutions(appliedSubst, merge)
 		}
 		st.SetGlobalUnifier(unifier)
 		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
@@ -363,8 +367,8 @@ func manageClosureRule(father_id uint64, st *complextypes.State, c Communication
 
 		// Add substs_with_mm found with the corresponding subst
 		for i, subst := range substs_with_mm {
-			mergeUncleared, _ := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), substs_with_mm_uncleared[i])
-			mergeCleared, _ := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), subst)
+			mergeUncleared, _ := treesearch.MergeSubstitutions(appliedSubst, substs_with_mm_uncleared[i])
+			mergeCleared, _ := treesearch.MergeSubstitutions(appliedSubst, subst)
 			unifier.AddSubstitutions(mergeCleared, mergeUncleared)
 		}
 		st.SetGlobalUnifier(unifier)

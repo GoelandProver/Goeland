@@ -52,6 +52,7 @@ type Form interface {
 	GetIndex() int
 	GetMetas() MetaList
 	GetInternalMetas() MetaList
+	SetInternalMetas(MetaList)
 	GetType() typing.TypeScheme
 	GetSubTerms() TermList
 	GetSubFormulas() FormList
