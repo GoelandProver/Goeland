@@ -19,6 +19,7 @@ type GS3Sequent struct {
 	formsGenerated []btps.FormList
 	children       []*GS3Sequent
 	proof          GS3Proof
+	nodeId         int
 }
 
 // Rules
@@ -116,15 +117,12 @@ func (seq *GS3Sequent) setAppliedRule(rule Rule) {
 
 func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
 	index := -1
-	//global.PrintInfo("SEARCHING FOR", hypothesis.ToString())
 	for i, h := range seq.hypotheses {
-		//global.PrintInfo("BRANCH FORM", h.ToString())
 		if hypothesis.Equals(h) {
 			index = i
 			break
 		}
 	}
-	//global.PrintInfo("END", "")
 
 	if index == -1 {
 		global.PrintInfo("APPLIED ON", hypothesis.ToString())
