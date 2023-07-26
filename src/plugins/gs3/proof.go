@@ -275,7 +275,7 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule Rule, p
 		// If the delta-rule has already been applied before, remove the term.
 		var termPreviouslyInstantiated bool
 		offsprings, termPreviouslyInstantiated = gs.findInDeltaHisto(termGenerated, offsprings)
-		gs.weakenForms(offsprings, resultForm, parent)
+		gs.weakenForms(offsprings, parent)
 		if termPreviouslyInstantiated {
 			gs.weakenTerm(termGenerated)
 		}
@@ -298,7 +298,7 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule Rule, p
 	} else {
 		forms, rulesBack := gs.weakenAllFormsRelatedToTheTerm(termGenerated)
 		if len(forms) > 0 {
-			gs.weakenForms(forms, originForm, parent)
+			gs.weakenForms(forms, parent)
 		}
 		_, inHist := gs.findInDeltaHisto(termGenerated, forms)
 		if inHist {
@@ -380,12 +380,10 @@ func (gs GS3Proof) getOffspringsOf(term btps.Term) btps.FormList {
 	return offsprings
 }
 
-func (gs *GS3Proof) weakenForms(forms btps.FormList, except btps.Form, parent *GS3Sequent) (*GS3Sequent, bool) {
-	found := false
+func (gs *GS3Proof) weakenForms(forms btps.FormList, parent *GS3Sequent) *GS3Sequent {
 	for i, form := range forms {
-		if !form.Equals(except) {
-			newSeq := gs.weakenForm(form)
-
+		newSeq := gs.weakenForm(form)
+		if newSeq != nil {
 			if i == 0 && parent.IsEmpty() {
 				*parent = *newSeq
 				newSeq = parent
@@ -393,17 +391,15 @@ func (gs *GS3Proof) weakenForms(forms btps.FormList, except btps.Form, parent *G
 				gs.lastNode.addChild(newSeq)
 			}
 			gs.lastNode = newSeq
-		} else {
-			found = true
 		}
 	}
-	return gs.lastNode, found
+	return gs.lastNode
 }
 
 func (gs *GS3Proof) weakenForm(form btps.Form) *GS3Sequent {
 	defer func() {
 		if r := recover(); r != nil {
-			PrintInfo("WEAKENING", "Recovered from bad weakening.")
+			//PrintInfo("WEAKENING", "Recovered from bad weakening.")
 		}
 	}()
 	seq := MakeNewSequent()
@@ -583,6 +579,7 @@ func makeWeakeningProofStructs(forms []btps.Form) []tableaux.ProofStruct {
 }
 
 func (gs *GS3Proof) getLastSequent(seq *GS3Sequent, childrenIndex []int) *GS3Sequent {
+	//PrintInfo("GETLASTSEQ", "")
 	i := 0
 	for len(seq.children) > 0 {
 		if IsBetaRule(seq.rule) {
@@ -595,6 +592,7 @@ func (gs *GS3Proof) getLastSequent(seq *GS3Sequent, childrenIndex []int) *GS3Seq
 		} else {
 			seq = seq.children[0]
 		}
+		//PrintInfo("SEQ", fmt.Sprintf("%v", seq))
 	}
 	*gs = seq.proof
 	return seq

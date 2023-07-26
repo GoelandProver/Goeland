@@ -5,7 +5,6 @@ import (
 
 	//. "github.com/GoelandProver/Goeland/global"
 
-	"github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -125,7 +124,7 @@ func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
 	}
 
 	if index == -1 {
-		global.PrintInfo("APPLIED ON", hypothesis.ToString())
+		//global.PrintInfo("APPLIED ON", hypothesis.ToString())
 		panic("Failure: tried to apply a missing hypothesis")
 	}
 
