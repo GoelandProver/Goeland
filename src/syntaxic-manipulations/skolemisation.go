@@ -37,7 +37,9 @@ func Skolemize(fnt btps.FormAndTerms) btps.FormAndTerms {
 		if tmp, ok := nf.GetForm().(btps.All); ok {
 			res := realSkolemize(tmp.GetForm(), tmp.GetVarList()[0], terms)
 			if len(tmp.GetVarList()) > 1 {
+				internalMetas := res.GetInternalMetas()
 				res = btps.MakerAll(tmp.GetVarList()[1:], res)
+				res.SetInternalMetas(internalMetas)
 			}
 			fnt = btps.MakeFormAndTerm(btps.RefuteForm(res), terms)
 		}
@@ -45,7 +47,9 @@ func Skolemize(fnt btps.FormAndTerms) btps.FormAndTerms {
 	case btps.Ex:
 		res := realSkolemize(nf.GetForm(), nf.GetVarList()[0], terms)
 		if len(nf.GetVarList()) > 1 {
+			internalMetas := res.GetInternalMetas()
 			res = btps.MakerEx(nf.GetVarList()[1:], res)
+			res.SetInternalMetas(internalMetas)
 		}
 		fnt = btps.MakeFormAndTerm(res, terms)
 	}

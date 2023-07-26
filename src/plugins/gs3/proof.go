@@ -134,7 +134,6 @@ func (gs GS3Proof) makeProof(proof []tableaux.ProofStruct) *GS3Sequent {
 		seq.proof = gs.Copy()
 		return seq
 	}
-	//PrintInfo("PROOF", tableaux.ProofStructListToText(proof))
 	subRoot := MakeNewSequent()
 	var resultFormulas []btps.FormList
 	if len(gs.branchForms) == 0 {
@@ -407,7 +406,6 @@ func (gs *GS3Proof) weakenForm(form btps.Form) *GS3Sequent {
 			PrintInfo("WEAKENING", "Recovered from bad weakening.")
 		}
 	}()
-	//PrintInfo("WEAKENING", form.ToString())
 	seq := MakeNewSequent()
 	seq.setHypotheses(gs.branchForms)
 	seq.setAppliedRule(W)

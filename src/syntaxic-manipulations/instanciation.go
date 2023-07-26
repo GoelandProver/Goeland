@@ -36,6 +36,7 @@ func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, t
 	meta := btps.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
 	subForm = subForm.SubstituteVarByMeta(v, meta)
 	terms = terms.MergeTermList(btps.TermList{meta})
+	internalMetas := subForm.GetInternalMetas()
 
 	if len(varList) > 1 {
 		if status == is_exists {
@@ -49,5 +50,6 @@ func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, t
 		}
 	}
 
+	subForm.SetInternalMetas(internalMetas)
 	return btps.MakeFormAndTerm(subForm, terms), meta
 }
