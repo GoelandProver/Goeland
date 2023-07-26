@@ -233,4 +233,13 @@ func buildOptions() {
 		"Enables on-the-fly optimised (delta++) Skolemisation during the proof-search.",
 		func(bool) { global.SetOptimisedSko(true) },
 		func(bool) {})
+	(&option[bool]{}).init(
+		"olambdapi",
+		false,
+		"Enables the Lambdapi format for proofs instead of text",
+		func(bool) {
+			global.OutputLambdapi()
+			global.SetProof(true)
+		},
+		func(bool) {})
 }
