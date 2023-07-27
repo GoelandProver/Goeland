@@ -71,11 +71,17 @@ func (tc TypeCross) toMappedString(subst map[string]string) string {
 	for _, typeScheme := range convert(tc.types, typeAppToTypeScheme) {
 		mappedString = append(mappedString, typeScheme.toMappedString(subst))
 	}
+	if IsLambdapiOutput() {
+		return strings.Join(mappedString, " → ")
+	}
 	return "(" + strings.Join(mappedString, " * ") + ")"
 }
 
 // Exported methods.
 func (tc TypeCross) ToString() string {
+	if IsLambdapiOutput() {
+		return strings.Join(convert(tc.types, typeTToString[TypeApp]), " → ")
+	}
 	return "(" + strings.Join(convert(tc.types, typeTToString[TypeApp]), " * ") + ")"
 }
 func (tc TypeCross) Size() int { return sum(convert(tc.types, typeTToSize[TypeApp])) }
