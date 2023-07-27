@@ -28,7 +28,9 @@ func makeLPProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
 }
 
 func mapDefault(str string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, "$i", "τ (ι)"), "$o", "Prop"), "->", "→")
+	//TODO: Replace cartesian product notation with curryfied versions of types taking parenthesis into account
+	result := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, "$i", "τ (ι)"), "$o", "Prop"), "->", "→"), "*", "→")
+	return result
 }
 
 func lPMapconnectors() map[btps.FormulaType]string {
@@ -40,14 +42,14 @@ func lPMapconnectors() map[btps.FormulaType]string {
 		btps.NotConn:        "¬",
 		btps.TopType:        "⊤",
 		btps.BotType:        "⊥",
-		btps.AllQuant:       "∀",
-		btps.ExQuant:        "∃",
+		btps.AllQuant:       "∀α",
+		btps.ExQuant:        "∃α",
 		btps.AllTypeQuant:   "∀",
 		btps.QuantVarOpen:   "(",
 		btps.QuantVarClose:  ")",
 		btps.QuantVarSep:    " ",
 		btps.PredEmpty:      "",
-		btps.PredTypeVarSep: " ",
+		btps.PredTypeVarSep: ") (",
 		btps.TypeVarType:    "Type",
 	}
 }

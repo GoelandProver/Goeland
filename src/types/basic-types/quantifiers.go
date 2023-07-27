@@ -348,6 +348,9 @@ func toMappedString(quant string, map_ MapString, varList []Var, form Form, disp
 		varStrings = append(varStrings, str+map_[QuantVarClose])
 	}
 
+	if IsLambdapiOutput() {
+		return "(" + quant + " (λ " + strings.Join(varStrings, " ") + map_[QuantVarSep] + ", (" + form.ToMappedString(map_, displayTypes) + ")))"
+	}
 	return "(" + quant + " " + strings.Join(varStrings, " ") + map_[QuantVarSep] + " (" + form.ToMappedString(map_, displayTypes) + "))"
 }
 

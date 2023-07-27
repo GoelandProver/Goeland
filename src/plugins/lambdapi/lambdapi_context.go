@@ -42,6 +42,7 @@ func getContextFromFormula(root btps.Form) []string {
 	case btps.All:
 		result = getContextFromFormula(nf.GetForm())
 	case btps.Ex:
+		// fmt.Printf("Existential form: %s \n ", nf.ToString())
 		result = getContextFromFormula(nf.GetForm())
 	case btps.AllType:
 		result = getContextFromFormula(nf.GetForm())
@@ -74,6 +75,7 @@ func getContextFromFormula(root btps.Form) []string {
 
 func getContextFromTerm(trm btps.Term) []string {
 	result := []string{}
+
 	if fun, isFun := trm.(btps.Fun); isFun {
 		result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", fun.GetID().ToMappedString(lPMapconnectors(), false), fun.GetTypeHint().ToString())))
 		for _, term := range fun.GetArgs() {
@@ -106,5 +108,5 @@ func contextualizeMetas(metaList btps.MetaList) string {
 	for _, meta := range metaList {
 		result = append(result, meta.ToMappedString(lPMapconnectors(), false))
 	}
-	return "symbol " + strings.Join(result, " ") + " : τ (ι)."
+	return "symbol " + strings.Join(result, " ") + " : τ (ι);"
 }

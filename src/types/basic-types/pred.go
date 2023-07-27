@@ -82,7 +82,9 @@ func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 	if tv := ListToString(p.typeVars, ", ", map_[PredEmpty]); tv != "" {
 		args = append(args, tv)
 	}
-	if vs := ListToMappedString(p.GetArgs(), ", ", map_[PredEmpty], map_, type_); vs != "" {
+	// FIXME: Replace if by commented line if n-ary predicates are broken
+	//if vs := ListToMappedString(p.GetArgs(), ", ", map_[PredEmpty], map_, type_); vs != "" {
+	if vs := ListToMappedString(p.GetArgs(), map_[PredTypeVarSep], map_[PredEmpty], map_, type_); vs != "" {
 		args = append(args, vs)
 	}
 
@@ -95,7 +97,7 @@ func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 	}
 
 	// strconv.Itoa(p.GetIndex()) + "@"
-	return p.GetID().ToMappedString(map_, type_) + "(" + strings.Join(args, " "+map_[PredTypeVarSep]+" ") + ")"
+	return "(" + p.GetID().ToMappedString(map_, type_) + "(" + strings.Join(args, " "+map_[PredTypeVarSep]+" ") + ")" + ")"
 }
 
 func (p Pred) ToString() string {
