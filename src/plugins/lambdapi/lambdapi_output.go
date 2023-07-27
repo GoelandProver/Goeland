@@ -22,13 +22,11 @@ func MakeLPOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
 
 func makeLPProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
-	// global.PrintInfo("GS3", proof.ToString())
 	proofString := makeLPProofFromGS3(*proof)
 	return contextString + "\n" + proofString
 }
 
 func mapDefault(str string) string {
-	//TODO: Replace cartesian product notation with curryfied versions of types taking parenthesis into account
 	result := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, "$i", "τ (ι)"), "$o", "Prop"), "->", "→"), "*", "→")
 	return result
 }

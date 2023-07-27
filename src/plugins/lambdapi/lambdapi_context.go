@@ -11,9 +11,6 @@ import (
 )
 
 func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
-	// if !GetContextEnabled() {
-	// 	return ""
-	// }
 	resultString := contextPreamble()
 
 	if typing.EmptyGlobalContext() {
@@ -42,7 +39,6 @@ func getContextFromFormula(root btps.Form) []string {
 	case btps.All:
 		result = getContextFromFormula(nf.GetForm())
 	case btps.Ex:
-		// fmt.Printf("Existential form: %s \n ", nf.ToString())
 		result = getContextFromFormula(nf.GetForm())
 	case btps.AllType:
 		result = getContextFromFormula(nf.GetForm())
