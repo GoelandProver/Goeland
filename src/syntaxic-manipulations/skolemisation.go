@@ -10,10 +10,11 @@ import (
 )
 
 type skoArgs struct {
-	formula   btps.Form
-	terms     btps.TermList
-	sourceVar btps.Var
-	symbol    btps.Id
+	sourceFormula btps.Form
+	formula       btps.Form
+	terms         btps.TermList
+	sourceVar     btps.Var
+	symbol        btps.Id
 }
 
 type class struct {
@@ -35,7 +36,7 @@ func Skolemize(fnt btps.FormAndTerms) btps.FormAndTerms {
 	// 1 - not(forall F1)
 	case btps.Not:
 		if tmp, ok := nf.GetForm().(btps.All); ok {
-			res := realSkolemize(tmp.GetForm(), tmp.GetVarList()[0], terms)
+			res := realSkolemize(form, tmp.GetForm(), tmp.GetVarList()[0], terms)
 			if len(tmp.GetVarList()) > 1 {
 				internalMetas := res.GetInternalMetas()
 				res = btps.MakerAll(tmp.GetVarList()[1:], res)
@@ -45,7 +46,7 @@ func Skolemize(fnt btps.FormAndTerms) btps.FormAndTerms {
 		}
 	// 2 - exists F1
 	case btps.Ex:
-		res := realSkolemize(nf.GetForm(), nf.GetVarList()[0], terms)
+		res := realSkolemize(form, nf.GetForm(), nf.GetVarList()[0], terms)
 		if len(nf.GetVarList()) > 1 {
 			internalMetas := res.GetInternalMetas()
 			res = btps.MakerEx(nf.GetVarList()[1:], res)
@@ -64,10 +65,10 @@ func Skolemize(fnt btps.FormAndTerms) btps.FormAndTerms {
  * delta+ : only relevant meta : getmeta + meta replaced
  * delta++ : same function name (need classical skolem for meta)
  **/
-func realSkolemize(fnt btps.Form, v btps.Var, terms btps.TermList) btps.Form {
+func realSkolemize(sourceForm, fnt btps.Form, v btps.Var, terms btps.TermList) btps.Form {
 	// Replace each variable by the skolemized term.
 	symbol := btps.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex()))
-	fnt = applySelectedSkolemisation(skoArgs{sourceVar: v, symbol: symbol, formula: fnt, terms: terms})
+	fnt = applySelectedSkolemisation(skoArgs{sourceFormula: sourceForm, sourceVar: v, symbol: symbol, formula: fnt, terms: terms})
 	return fnt
 }
 
@@ -76,8 +77,8 @@ func applySelectedSkolemisation(args skoArgs) btps.Form {
 	if global.IsInnerSko() {
 		return applyInnerSkolemisation(args)
 	}
-	if global.IsOptimisedSko() {
-		return applyOptimisedSkolemisation(args)
+	if global.IsPreInnerSko() {
+		return applyPreinnerSkolemisation(args)
 	}
 	return applyOuterSkolemisation(args)
 }
@@ -93,8 +94,8 @@ func applyInnerSkolemisation(args skoArgs) btps.Form {
 	return substAndReturn(args, makeSkolemFunction(args))
 }
 
-func applyOptimisedSkolemisation(args skoArgs) btps.Form {
-	args.symbol = symbolMaker.make(args.formula, args.sourceVar)
+func applyPreinnerSkolemisation(args skoArgs) btps.Form {
+	args.symbol = symbolMaker.make(args.sourceFormula, args.sourceVar)
 	return applyInnerSkolemisation(args)
 }
 
@@ -109,7 +110,7 @@ func substAndReturn(args skoArgs, sko btps.Term) btps.Form {
 }
 
 func (c *class) make(form btps.Form, source btps.Var) btps.Id {
-	form = alphaConvert(btps.MakerEx([]btps.Var{source}, form), 0, make(map[btps.Var]btps.Var))
+	form = alphaConvert(form, 0, make(map[btps.Var]btps.Var))
 	c.mu.Lock()
 	symbol := c.getSymbol(form, btps.MakerNewId(fmt.Sprintf("skolem_%s%v", source.GetName(), source.GetIndex())))
 	c.mu.Unlock()

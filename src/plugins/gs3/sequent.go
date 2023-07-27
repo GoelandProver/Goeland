@@ -85,7 +85,7 @@ func (seq *GS3Sequent) Rule() Rule {
 	return seq.rule
 }
 
-func (seq *GS3Sequent) GetResultFormulasOfChild(i int) []btps.Form {
+func (seq *GS3Sequent) GetResultFormulasOfChild(i int) btps.FormList {
 	return seq.formsGenerated[i]
 }
 

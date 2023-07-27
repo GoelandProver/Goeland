@@ -267,6 +267,11 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule Rule, p
 	originForm := proofStep.GetFormula().GetForm()
 	resultForm := proofStep.GetResultFormulas()[0].GetForms()[0]
 	termGenerated := manageDeltasSkolemisations(proofStep.GetFormula().GetForm(), resultForm)
+
+	if IsPreInnerSko() && !gs.termHasBeenIntroducedByBranch(termGenerated, resultForm) {
+		return resultForm
+	}
+
 	var deltaSeq *GS3Sequent
 	previousRulesApplied := appcp(gs.rulesApplied)
 	dependantForms, atLeastOneDependantForm := gs.getFormulasDependantFromTerm(termGenerated)
@@ -428,6 +433,7 @@ func (gs *GS3Proof) weakenTerm(term btps.Term) *GS3Sequent {
 		gs.lastNode.addChild(seq)
 	}
 	gs.lastNode = seq
+	seq.proof = gs.Copy()
 	return seq
 }
 
@@ -536,7 +542,9 @@ func (gs GS3Proof) getFormsToWeaken(rulesApplied, rulesAlreadyWeakened []Pair[Ru
 			canBeAppending = true
 		}
 		if canBeAppending {
-			formsToWeaken = append(formsToWeaken, gs.getIntersectionBetweenResultAndBranchForms(rule.Snd.GetResultFormulas())...)
+			if !IsPreInnerSko() || !(rule.Fst == EX || rule.Fst == NALL) {
+				formsToWeaken = append(formsToWeaken, gs.getIntersectionBetweenResultAndBranchForms(rule.Snd.GetResultFormulas())...)
+			}
 		}
 	}
 	return formsToWeaken
@@ -664,4 +672,24 @@ func (gs *GS3Proof) weakenAllFormsRelatedToTheTerm(term btps.Term) (btps.FormLis
 		}
 	}
 	return forms, rules
+}
+
+func (gs GS3Proof) termHasBeenIntroducedByBranch(term btps.Term, form btps.Form) bool {
+	for _, p := range gs.deltaHisto {
+		if p.Fst.Equals(term) {
+			// As the form may change (it can be substituted), it's better to compare ids that aren't changed.
+			return p.Snd.GetIndex() == form.GetIndex()
+		}
+	}
+	// Term has not been introduced yet, as such it has been introduced by the current branch
+	return true
+}
+
+func (gs GS3Proof) findFormInDeltaHist(form btps.Form) (btps.Term, bool) {
+	for _, p := range gs.deltaHisto {
+		if p.Snd.Equals(form) {
+			return p.Fst, true
+		}
+	}
+	return nil, false
 }

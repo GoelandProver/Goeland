@@ -185,6 +185,7 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format 
 func deltaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format string, constantsCreated []btps.Term) (string, [][]btps.Form, []btps.Term) {
 	var indices []int
 	var name string
+	//PrintInfo("DELTA", fmt.Sprintf("%s\n%s", hypotheses[target].ToString(), proof.GetResultFormulasOfChild(0).ToString()))
 	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
 	constantsCreated, name = addTermGenerated(constantsCreated, proof.TermGenerated())
 	resultingString := fmt.Sprintf(format, introName(target), name, introNames(indices))
@@ -257,10 +258,10 @@ func get(f btps.Form, hypotheses []btps.Form) int {
 			return i
 		}
 	}
-	/*PrintInfo("GET", f.ToString())
-	for _, h := range hypotheses {
-		PrintInfo("H", h.ToString())
-	}*/
+	// PrintInfo("GET", f.ToString())
+	// for _, h := range hypotheses {
+	// 	PrintInfo("H", h.ToString())
+	// }
 	return -1
 }
 

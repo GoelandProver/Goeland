@@ -228,9 +228,9 @@ func buildOptions() {
 		func(bool) { global.SetInnerSko(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
-		"optimised",
+		"preinner",
 		false,
-		"Enables on-the-fly optimised (delta++) Skolemisation during the proof-search.",
-		func(bool) { global.SetOptimisedSko(true) },
+		"Enables on-the-fly pre-inner (delta++) Skolemisation during the proof-search.",
+		func(bool) { global.SetPreInnerSko(true) },
 		func(bool) {})
 }
