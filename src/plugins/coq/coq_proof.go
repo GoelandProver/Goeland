@@ -45,6 +45,7 @@ import (
 	"strings"
 
 	. "github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/dmt"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -54,10 +55,10 @@ var dummy int
 func makeCoqProofFromGS3(proof *gs3.GS3Sequent) string {
 	dummy = 0
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
-	var resultingString string
 	if IsLoaded("dmt") {
-		resultingString = getRewriteRules()
+		axioms = append(dmt.GetRegisteredAxioms(), axioms...)
 	}
+	var resultingString string
 	resultingString = makeTheorem(axioms, conjecture)
 	resultingString += "Proof.\n"
 	hypotheses := make([]btps.Form, 0)
@@ -153,7 +154,8 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, constantsCreated []
 			resultingString, childrenHypotheses = cleanHypotheses(hypotheses, proof.GetTargetForm())
 		}
 
-		// TODO: Rewrite rules
+	case gs3.REWRITE:
+		resultingString, childrenHypotheses = rewriteStep(proof.GetRewriteWith(), hypotheses, target, proof.GetResultFormulasOfChild(0)[0])
 	}
 
 	return resultingString, childrenHypotheses, constantsCreated
@@ -200,6 +202,12 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format
 	return resultingString, [][]btps.Form{hypotheses}
 }
 
+func rewriteStep(rewriteRule btps.Form, hypotheses btps.FormList, target int, replacementForm btps.Form) (string, [][]btps.Form) {
+	resultingString := fmt.Sprintf("rewrite %s in %s.", introName(get(rewriteRule, hypotheses)), introName(target))
+	hypotheses[target] = replacementForm
+	return resultingString, [][]btps.Form{hypotheses}
+}
+
 // Processes the formula that was proven by Goéland.
 func processMainFormula(form btps.Form) (btps.FormList, btps.Form) {
 	formList := make(btps.FormList, 0)
@@ -212,11 +220,6 @@ func processMainFormula(form btps.Form) (btps.FormList, btps.Form) {
 		form = nf.FormList[last].(btps.Not).GetForm()
 	}
 	return formList, form
-}
-
-func getRewriteRules() string {
-	// TODO
-	return ""
 }
 
 // Prints the theorem's name & properly formats the first formula.

@@ -41,6 +41,7 @@
 package coq
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -66,7 +67,11 @@ func MakeCoqOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 		return ""
 	}
 
-	//global.PrintInfo("TEST", proof.ProofStructListToText(prf))
+	if global.CompareProofs() {
+		fmt.Println(proof.ProofStructListToText(prf))
+		fmt.Println("% Start Coq proof.")
+	}
+
 	// Transform tableaux's proof in GS3 proof
 	return makeCoqProof(gs3.MakeGS3Proof(prf), meta)
 }

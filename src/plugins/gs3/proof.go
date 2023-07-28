@@ -44,6 +44,7 @@ import (
 	"strings"
 
 	. "github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/dmt"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	tableaux "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -109,6 +110,10 @@ func MakeGS3Proof(proof []tableaux.ProofStruct) *GS3Sequent {
 		betaHisto:    make([]Pair[int, int], 0),
 		deltaHisto:   make([]Pair[btps.Term, btps.Form], 0),
 	}
+	if IsLoaded("dmt") {
+		gs3Proof.branchForms = append(gs3Proof.branchForms, dmt.GetRegisteredAxioms()...)
+		gs3Proof.branchForms = append(gs3Proof.branchForms, proof[0].Formula.GetForm())
+	}
 	return gs3Proof.makeProof(proof)
 }
 
@@ -170,15 +175,18 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 	seq.setHypotheses(gs.branchForms)
 	seq.nodeId = proofStep.Node_id
 
-	rule, _ := proofStructRuleToGS3Rule(proofStep.GetRuleName())
+	rule := proofStructRuleToGS3Rule(proofStep.GetRuleName())
 	form := proofStep.GetFormula().GetForm()
 
 	// TODO: manage rewrite rules: second return value of proofStructRuleToGS3Rule
 	switch rule {
 	// Immediate, just apply the rule.
-	case NNOT, NOR, NIMP, AND, NAND, NEQU, OR, IMP, EQU, AX:
+	case NNOT, NOR, NIMP, AND, NAND, NEQU, OR, IMP, EQU, AX, REWRITE:
 		seq.setAppliedRule(rule)
 		seq.setAppliedOn(form)
+		if rule == REWRITE {
+			seq.setRewrittenWith(proofStep.Id_dmt)
+		}
 		if parent.IsEmpty() {
 			*parent = *seq
 			seq = parent
@@ -192,7 +200,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 		seq = MakeNewSequent()
 	case W:
 		seq = gs.weakenForm(form)
-	case R: // Ignore this rule
+	case R: // Ignore this rule (reintroduction)
 		seq = MakeNewSequent()
 	}
 
@@ -211,8 +219,11 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 	}
 
 	// If the length is superior, then it's a branching rule and it needs to be taken care of in makeProof.
-	if IsAlphaRule(rule) || IsGammaRule(rule) || IsDeltaRule(rule) {
+	if IsAlphaRule(rule) || IsGammaRule(rule) || IsDeltaRule(rule) || rule == REWRITE {
 		gs.branchForms = append(gs.branchForms, forms[0]...)
+		if rule == REWRITE {
+			gs.removeHypothesis(form)
+		}
 	}
 	seq.proof = gs.Copy()
 

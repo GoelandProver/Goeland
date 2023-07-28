@@ -5,6 +5,7 @@ import (
 
 	//. "github.com/GoelandProver/Goeland/global"
 
+	"github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -14,6 +15,7 @@ type GS3Sequent struct {
 	hypotheses     []btps.Form
 	rule           Rule
 	appliedOn      int
+	rewriteWith    int
 	termGenerated  btps.Term
 	formsGenerated []btps.FormList
 	children       []*GS3Sequent
@@ -40,6 +42,7 @@ const (
 	NEX
 	NALL
 	R
+	REWRITE
 )
 
 func MakeNewSequent() *GS3Sequent {
@@ -97,6 +100,14 @@ func (seq *GS3Sequent) IsEmpty() bool {
 	return len(seq.hypotheses) == 0
 }
 
+func (seq *GS3Sequent) ToString() string {
+	return seq.toStringAux(0)
+}
+
+func (seq *GS3Sequent) GetRewriteWith() btps.Form {
+	return seq.hypotheses[seq.rewriteWith]
+}
+
 // ----------------------------------------------------------------------------
 // Private methods & functions
 // ----------------------------------------------------------------------------
@@ -139,10 +150,6 @@ func (seq *GS3Sequent) addChild(oth ...*GS3Sequent) {
 	seq.children = append(seq.children, oth...)
 }
 
-func (seq *GS3Sequent) ToString() string {
-	return seq.toStringAux(0)
-}
-
 func (seq *GS3Sequent) toStringAux(i int) string {
 	identation := strings.Repeat("  ", i)
 	status := seq.ruleToString(seq.rule) + " on " + seq.hypotheses[seq.appliedOn].ToString()
@@ -183,7 +190,7 @@ func (seq *GS3Sequent) setFormsGenerated(forms []btps.FormList) {
 	seq.formsGenerated = forms
 }
 
-func proofStructRuleToGS3Rule(rule string) (Rule, bool) {
+func proofStructRuleToGS3Rule(rule string) Rule {
 	mapping := map[string]Rule{
 		"ALPHA_NOT_NOT":    NNOT,
 		"ALPHA_NOT_OR":     NOR,
@@ -201,27 +208,64 @@ func proofStructRuleToGS3Rule(rule string) (Rule, bool) {
 		"CLOSURE":          AX,
 		"WEAKEN":           W,
 		"Reintroduction":   R,
+		"Rewrite":          REWRITE,
 	}
-	r, ok := mapping[rule]
-	return r, ok
+	return mapping[rule]
 }
 func ruleToTableauxString(rule Rule) string {
 	mapping := map[Rule]string{
-		NNOT: "ALPHA_NOT_NOT",
-		NOR:  "ALPHA_NOT_OR",
-		NIMP: "ALPHA_NOT_IMPLY",
-		AND:  "ALPHA_AND",
-		NAND: "BETA_NOT_AND",
-		NEQU: "BETA_NOT_EQUIV",
-		OR:   "BETA_OR",
-		IMP:  "BETA_IMPLY",
-		EQU:  "BETA_EQUIV",
-		NEX:  "GAMMA_NOT_EXISTS",
-		ALL:  "GAMMA_FORALL",
-		NALL: "DELTA_NOT_FORALL",
-		EX:   "DELTA_EXISTS",
-		AX:   "CLOSURE",
-		W:    "WEAKEN",
+		NNOT:    "ALPHA_NOT_NOT",
+		NOR:     "ALPHA_NOT_OR",
+		NIMP:    "ALPHA_NOT_IMPLY",
+		AND:     "ALPHA_AND",
+		NAND:    "BETA_NOT_AND",
+		NEQU:    "BETA_NOT_EQUIV",
+		OR:      "BETA_OR",
+		IMP:     "BETA_IMPLY",
+		EQU:     "BETA_EQUIV",
+		NEX:     "GAMMA_NOT_EXISTS",
+		ALL:     "GAMMA_FORALL",
+		NALL:    "DELTA_NOT_FORALL",
+		EX:      "DELTA_EXISTS",
+		AX:      "CLOSURE",
+		W:       "WEAKEN",
+		REWRITE: "REWRITE",
 	}
 	return mapping[rule]
+}
+
+func (seq *GS3Sequent) setRewrittenWith(rewriteId int) {
+	for i, h := range seq.hypotheses {
+		endForm := h
+		for global.Is[btps.All](endForm) {
+			endForm = endForm.(btps.All).GetForm()
+		}
+		endForm = getAtomic(endForm)
+		if endForm.GetIndex() == rewriteId {
+			seq.rewriteWith = i
+			return
+		}
+	}
+
+	panic("Failure: tried to rewrite using a missing hypothesis")
+}
+
+func getAtomic(f btps.Form) btps.Form {
+	switch nf := f.(type) {
+	case btps.Imp:
+		if pred, isPred := nf.GetF1().(btps.Pred); isPred {
+			return pred
+		}
+		if pred, isPred := nf.GetF2().(btps.Pred); isPred {
+			return pred
+		}
+	case btps.Equ:
+		if pred, isPred := nf.GetF1().(btps.Pred); isPred {
+			return pred
+		}
+		if pred, isPred := nf.GetF2().(btps.Pred); isPred {
+			return pred
+		}
+	}
+	return f
 }

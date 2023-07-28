@@ -72,6 +72,7 @@ var isTypeProof = false
 var arithModule = false
 var innerSkolem = false
 var preInnerSko = false
+var compareProofs = false
 
 var debugTerminal = false
 var debugFile = false
@@ -247,6 +248,10 @@ func IsPreInnerSko() bool {
 	return preInnerSko
 }
 
+func CompareProofs() bool {
+	return compareProofs
+}
+
 /* Setters */
 func SetDebugTerminal(b bool) {
 	debugTerminal = b
@@ -360,4 +365,8 @@ func SetInnerSko(b bool) {
 
 func SetPreInnerSko(b bool) {
 	preInnerSko = b
+}
+
+func SetCompareProofs(b bool) {
+	compareProofs = b
 }

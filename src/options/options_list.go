@@ -233,4 +233,10 @@ func buildOptions() {
 		"Enables on-the-fly pre-inner (delta++) Skolemisation during the proof-search.",
 		func(bool) { global.SetPreInnerSko(true) },
 		func(bool) {})
+	(&option[bool]{}).init(
+		"compare",
+		false,
+		"When outputing a Coq proof, also outputs the tableau proof to compare both of them.",
+		func(bool) { global.SetCompareProofs(true) },
+		func(bool) {})
 }
