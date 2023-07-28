@@ -55,6 +55,7 @@ var dummy int
 func makeCoqProofFromGS3(proof *gs3.GS3Sequent) string {
 	dummy = 0
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
+	totalAxioms := len(axioms)
 	if IsLoaded("dmt") {
 		axioms = append(dmt.GetRegisteredAxioms(), axioms...)
 	}
@@ -68,7 +69,9 @@ func makeCoqProofFromGS3(proof *gs3.GS3Sequent) string {
 			indices[i], hypotheses = introduce(form, hypotheses)
 		}
 		resultingString += "intros " + strings.Join(Map(indices, func(_ int, index int) string { return introName(index) }), " ") + ". "
-		proof = proof.Child(0)
+		if totalAxioms > 0 {
+			proof = proof.Child(0)
+		}
 	}
 	index, hypotheses := introduce(btps.MakerNot(conjecture), hypotheses)
 	resultingString += "intro " + introName(index) + ". "
