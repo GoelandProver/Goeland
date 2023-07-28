@@ -127,9 +127,7 @@ func (seq *GS3Sequent) setAppliedRule(rule Rule) {
 
 func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
 	index := -1
-	//global.PrintInfo("START", "\n")
 	for i, h := range seq.hypotheses {
-		//global.PrintInfo("H", h.ToString())
 		if hypothesis.Equals(h) {
 			index = i
 			break

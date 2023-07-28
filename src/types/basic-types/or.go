@@ -41,6 +41,7 @@
 package basictypes
 
 import (
+	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -125,20 +126,14 @@ func (o Or) CleanFormula() Form {
 }
 
 func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
-	newFormList := make(FormList, 0)
-	found := false
-	for _, form := range o.FormList {
-		f := form.SubstituteVarByMeta(old, new)
-		newFormList = append(newFormList, f)
-		if f.GetInternalMetas().Contains(new) {
-			found = true
-		}
+	if global.IsInnerSko() || global.IsPreInnerSko() {
+		newFormList, newMetas := substVarByMetaInFormList(old, new, o.FormList, o.MetaList)
+		return Or{o.index, newFormList, newMetas}
+	} else {
+		newOr, _ := o.ReplaceVarByTerm(old, new)
+		newOr.SetInternalMetas(append(newOr.GetInternalMetas(), new))
+		return newOr
 	}
-	metas := o.MetaList
-	if found {
-		metas = append(o.MetaList, new)
-	}
-	return Or{o.index, newFormList, metas}
 }
 
 func (o Or) GetInternalMetas() MetaList {

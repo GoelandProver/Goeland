@@ -162,7 +162,7 @@ func (p Pred) GetSubTerms() TermList {
 
 func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
 	f, res := p.ReplaceVarByTerm(old, new)
-	if p, isPred := f.(Pred); isPred && res {
+	if p, isPred := f.(Pred); isPred && (!(global.IsInnerSko() || global.IsPreInnerSko()) || res) {
 		return Pred{index: f.GetIndex(), id: p.id, args: p.args, typeVars: p.typeVars, typeHint: p.typeHint, MetaList: append(p.MetaList.Copy(), new)}
 	}
 	return f

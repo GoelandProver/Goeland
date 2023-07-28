@@ -44,6 +44,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -118,8 +119,13 @@ func (e Ex) GetSubTerms() TermList {
 }
 
 func (e Ex) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := e.GetForm().SubstituteVarByMeta(old, new)
-	return Ex{e.index, e.var_list, f, f.GetInternalMetas().Copy()}
+	if global.IsInnerSko() || global.IsPreInnerSko() {
+		f := e.GetForm().SubstituteVarByMeta(old, new)
+		return Ex{e.index, e.var_list, f, f.GetInternalMetas().Copy()}
+	} else {
+		f, _ := e.GetForm().ReplaceVarByTerm(old, new)
+		return Ex{e.index, e.var_list, f, append(f.GetInternalMetas().Copy(), new)}
+	}
 }
 
 func (e Ex) GetInternalMetas() MetaList {
@@ -204,8 +210,13 @@ func (a All) GetSubTerms() TermList {
 }
 
 func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := a.GetForm().SubstituteVarByMeta(old, new)
-	return All{a.index, a.var_list, f, f.GetInternalMetas().Copy()}
+	if global.IsInnerSko() || global.IsPreInnerSko() {
+		f := a.GetForm().SubstituteVarByMeta(old, new)
+		return All{a.index, a.var_list, f, f.GetInternalMetas().Copy()}
+	} else {
+		f, _ := a.GetForm().ReplaceVarByTerm(old, new)
+		return All{a.index, a.var_list, f, append(f.GetInternalMetas().Copy(), new)}
+	}
 }
 
 func (a All) GetInternalMetas() MetaList {
@@ -309,8 +320,13 @@ func (a AllType) GetSubTerms() TermList {
 }
 
 func (a AllType) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := a.GetForm().SubstituteVarByMeta(old, new)
-	return AllType{a.index, a.tvList, f, f.GetInternalMetas().Copy()}
+	if global.IsInnerSko() || global.IsPreInnerSko() {
+		f := a.GetForm().SubstituteVarByMeta(old, new)
+		return AllType{a.index, a.tvList, f, f.GetInternalMetas().Copy()}
+	} else {
+		f, _ := a.GetForm().ReplaceVarByTerm(old, new)
+		return AllType{a.index, a.tvList, f, append(f.GetInternalMetas().Copy(), new)}
+	}
 }
 
 func (a AllType) GetInternalMetas() MetaList {

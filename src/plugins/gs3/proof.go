@@ -218,7 +218,6 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 		seq.setFormsGenerated(forms)
 	}
 
-	seq.proof = gs.Copy()
 	// If the length is superior, then it's a branching rule and it needs to be taken care of in makeProof.
 	if IsAlphaRule(rule) || IsGammaRule(rule) || IsDeltaRule(rule) || rule == REWRITE {
 		if rule == REWRITE {
@@ -226,6 +225,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 		}
 		gs.branchForms = append(gs.branchForms, forms[0]...)
 	}
+	seq.proof = gs.Copy()
 
 	return forms
 }
