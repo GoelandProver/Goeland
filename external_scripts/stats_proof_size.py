@@ -15,6 +15,9 @@ class Branches:
         s += ";"
         if self.coq != -1:
             s += str(self.coq)
+        s += ";"
+        if self.prf != -1 and self.coq != -1 :
+            s += str(self.coq/self.prf)
         return s + "\n"
 
 folder = sys.argv[1]
@@ -37,6 +40,12 @@ for _, file in enumerate(entries) :
                 res[k].prf = count
 
 with open(outfile, "w") as f :
-    f.write(";Proof;Coq\n")
+    f.write(";Proof;Coq;Proof Size Increase\n")
+    totalIncrease = 0
+    maxSizeIncrease = 0
     for file, c in res.items() :
         f.write(f"{file};{str(c)}")
+        totalIncrease += c.coq/c.prf
+        maxSizeIncrease = max(maxSizeIncrease, c.coq/c.prf)
+    f.write(f"\n;Average Size Increase;;{totalIncrease/len(res)}\n")
+    f.write(f";Max Size Increase;;{maxSizeIncrease}")

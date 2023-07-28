@@ -101,14 +101,14 @@ type GS3Proof struct {
 	rulesApplied []Pair[Rule, tableaux.ProofStruct]
 	lastNode     *GS3Sequent
 	betaHisto    []Pair[int, int]
-	deltaHisto   []Pair[btps.Term, btps.Form]
+	deltaHisto   []Pair[btps.Term, Pair[btps.Form, int]]
 }
 
 func MakeGS3Proof(proof []tableaux.ProofStruct) *GS3Sequent {
 	gs3Proof := GS3Proof{
 		rulesApplied: make([]Pair[Rule, tableaux.ProofStruct], 0),
 		betaHisto:    make([]Pair[int, int], 0),
-		deltaHisto:   make([]Pair[btps.Term, btps.Form], 0),
+		deltaHisto:   make([]Pair[btps.Term, Pair[btps.Form, int]], 0),
 	}
 	if IsLoaded("dmt") {
 		gs3Proof.branchForms = append(gs3Proof.branchForms, dmt.GetRegisteredAxioms()...)
@@ -220,10 +220,10 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 
 	// If the length is superior, then it's a branching rule and it needs to be taken care of in makeProof.
 	if IsAlphaRule(rule) || IsGammaRule(rule) || IsDeltaRule(rule) || rule == REWRITE {
-		if rule == REWRITE {
-			gs.removeHypothesis(form)
-		}
 		gs.branchForms = append(gs.branchForms, forms[0]...)
+		// If rule is rewrite: do not weaken the base form, as it is important to get when applying rules back.
+		// It may however induce bad weakenings.
+		// TODO: fix the bad weakenings in the sequent.
 	}
 	seq.proof = gs.Copy()
 
@@ -279,7 +279,7 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule Rule, p
 	resultForm := proofStep.GetResultFormulas()[0].GetForms()[0]
 	termGenerated := manageDeltasSkolemisations(proofStep.GetFormula().GetForm(), resultForm)
 
-	if IsPreInnerSko() && !gs.termHasBeenIntroducedByBranch(termGenerated, resultForm) {
+	if IsPreInnerSko() && !gs.termHasBeenIntroducedByBranch(termGenerated, proofStep.Node_id) {
 		return resultForm
 	}
 
@@ -295,7 +295,7 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule Rule, p
 		if termPreviouslyInstantiated {
 			gs.weakenTerm(termGenerated)
 		}
-		deltaSeq = gs.applyDeltaRule(originForm, resultForm, rule, termGenerated)
+		deltaSeq = gs.applyDeltaRule(originForm, resultForm, rule, termGenerated, proofStep.Node_id)
 		if parent.IsEmpty() {
 			*parent = *deltaSeq
 			deltaSeq = parent
@@ -324,7 +324,7 @@ func (gs *GS3Proof) manageDeltaStep(proofStep tableaux.ProofStruct, rule Rule, p
 				gs.lastNode = parent
 			}
 		}
-		deltaSeq = gs.applyDeltaRule(originForm, resultForm, rule, termGenerated)
+		deltaSeq = gs.applyDeltaRule(originForm, resultForm, rule, termGenerated, proofStep.Node_id)
 		if parent.IsEmpty() {
 			*parent = *deltaSeq
 			deltaSeq = parent
@@ -473,9 +473,8 @@ func (gs *GS3Proof) removeRuleAppliedOn(form btps.Form) {
 	}
 }
 
-func (gs *GS3Proof) applyDeltaRule(form, result btps.Form, rule Rule, term btps.Term) *GS3Sequent {
+func (gs *GS3Proof) applyDeltaRule(form, result btps.Form, rule Rule, term btps.Term, nodeId int) *GS3Sequent {
 	seq := MakeNewSequent()
-	//PrintInfo("DELTA", gs.branchForms.ToString())
 	seq.setHypotheses(gs.branchForms)
 	seq.setAppliedRule(rule)
 	seq.setAppliedOn(form)
@@ -483,7 +482,7 @@ func (gs *GS3Proof) applyDeltaRule(form, result btps.Form, rule Rule, term btps.
 	seq.setFormsGenerated([]btps.FormList{{result}})
 
 	gs.branchForms = append(gs.branchForms, result)
-	gs.deltaHisto = append(gs.deltaHisto, MakePair(term, result))
+	gs.deltaHisto = append(gs.deltaHisto, MakePair(term, MakePair(result, nodeId)))
 	gs.rulesApplied = append(gs.rulesApplied, MakePair(rule, makeProofStructFrom(form, result, rule)))
 
 	seq.proof = gs.Copy()
@@ -654,7 +653,7 @@ func getSubformulas(term btps.Term, v btps.Var, form btps.Form) btps.FormList {
 func (gs GS3Proof) findInDeltaHisto(term btps.Term, forms btps.FormList) (btps.FormList, bool) {
 	for _, p := range gs.deltaHisto {
 		if p.Fst != nil && p.Fst.Equals(term) {
-			return append(forms, p.Snd), true
+			return append(forms, p.Snd.Fst), true
 		}
 	}
 	return forms, false
@@ -686,11 +685,12 @@ func (gs *GS3Proof) weakenAllFormsRelatedToTheTerm(term btps.Term) (btps.FormLis
 	return forms, rules
 }
 
-func (gs GS3Proof) termHasBeenIntroducedByBranch(term btps.Term, form btps.Form) bool {
+func (gs GS3Proof) termHasBeenIntroducedByBranch(term btps.Term, nodeId int) bool {
 	for _, p := range gs.deltaHisto {
 		if p.Fst.Equals(term) {
-			// As the form may change (it can be substituted), it's better to compare ids that aren't changed.
-			return p.Snd.GetIndex() == form.GetIndex()
+			// DMT needs the nodeId here, as the same formula will produce the same skolem symbol in two different
+			// branches potentially.
+			return p.Snd.Snd == nodeId
 		}
 	}
 	// Term has not been introduced yet, as such it has been introduced by the current branch
@@ -699,7 +699,7 @@ func (gs GS3Proof) termHasBeenIntroducedByBranch(term btps.Term, form btps.Form)
 
 func (gs GS3Proof) findFormInDeltaHist(form btps.Form) (btps.Term, bool) {
 	for _, p := range gs.deltaHisto {
-		if p.Snd.Equals(form) {
+		if p.Snd.Fst.Equals(form) {
 			return p.Fst, true
 		}
 	}

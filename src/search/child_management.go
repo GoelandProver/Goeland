@@ -255,7 +255,8 @@ func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {
 		proofList := args.st.GetProof()
 		if args.overwrite {
 			// TODO: check if it gets properly rewritten when a backtrack on it is done.
-			if args.st.GetProof()[len(proofList)-1].Rule == "Rewrite" {
+			if proofList[len(proofList)-1].Rule == "Rewrite" && (proofChildren[0][0].Rule != "Rewrite" || proofChildren[0][0].Node_id != proofList[len(proofList)-1].Node_id) {
+				proofList[len(proofList)-1].Children = [][]proof.ProofStruct{}
 				proofList = append(proofList, proofChildren[0]...)
 			} else {
 				proofList = append(proofList[:len(proofList)-1], proofChildren[0]...)
