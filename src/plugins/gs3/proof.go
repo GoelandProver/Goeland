@@ -218,14 +218,14 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 		seq.setFormsGenerated(forms)
 	}
 
+	seq.proof = gs.Copy()
 	// If the length is superior, then it's a branching rule and it needs to be taken care of in makeProof.
 	if IsAlphaRule(rule) || IsGammaRule(rule) || IsDeltaRule(rule) || rule == REWRITE {
-		gs.branchForms = append(gs.branchForms, forms[0]...)
 		if rule == REWRITE {
 			gs.removeHypothesis(form)
 		}
+		gs.branchForms = append(gs.branchForms, forms[0]...)
 	}
-	seq.proof = gs.Copy()
 
 	return forms
 }
@@ -475,6 +475,7 @@ func (gs *GS3Proof) removeRuleAppliedOn(form btps.Form) {
 
 func (gs *GS3Proof) applyDeltaRule(form, result btps.Form, rule Rule, term btps.Term) *GS3Sequent {
 	seq := MakeNewSequent()
+	//PrintInfo("DELTA", gs.branchForms.ToString())
 	seq.setHypotheses(gs.branchForms)
 	seq.setAppliedRule(rule)
 	seq.setAppliedOn(form)
