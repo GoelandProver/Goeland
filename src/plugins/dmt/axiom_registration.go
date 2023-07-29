@@ -93,7 +93,7 @@ func addNegRewriteRule(axiom btypes.Form, cons btypes.Form) {
 func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 	for canSkolemize(cons) {
 		ft := btypes.MakeFormAndTerm(cons, btypes.TermList{})
-		ft = syntax.Skolemize(ft)
+		ft = syntax.Skolemize(ft, ft.GetForm().GetInternalMetas())
 		cons = ft.GetForm()
 	}
 	printDebugRewriteRule(polarity, axiom, cons)

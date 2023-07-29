@@ -63,7 +63,7 @@ func TestSimpleExistSkolemization(t *testing.T) {
 	// exists x. P(x) ==> x should be a new constant expression
 	x := basictypes.MakerVar("x")
 	form := basictypes.MakeFormAndTerm(basictypes.MakerEx([]basictypes.Var{x}, basictypes.MakerPred(basictypes.MakerId("P"), basictypes.TermList{x}, []polymorphism.TypeApp{})), basictypes.MakeEmptyTermList())
-	f := syntax.Skolemize(form)
+	f := syntax.Skolemize(form, basictypes.MetaList{})
 
 	if pred, ok := f.GetForm().(basictypes.Pred); ok {
 		if len(pred.GetArgs()) > 1 {
@@ -90,7 +90,7 @@ func TestSimpleNotForallSkolemization(t *testing.T) {
 	// not(forall x. P(x)) ==> x should be a new constant expression
 	x := basictypes.MakerVar("x")
 	form := basictypes.MakeFormAndTerm(basictypes.MakerNot(basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerPred(basictypes.MakerId("P"), basictypes.TermList{x}, []polymorphism.TypeApp{}))), basictypes.MakeEmptyTermList())
-	f := syntax.Skolemize(form)
+	f := syntax.Skolemize(form, basictypes.MetaList{})
 
 	if neg, ok := f.GetForm().(basictypes.Not); ok {
 		if pred, ok := neg.GetForm().(basictypes.Pred); ok {
@@ -190,7 +190,7 @@ func TestSimpleTypedExistSkolemization(t *testing.T) {
 	// exists x. P(x) ==> x should be a new constant expression
 	x := basictypes.MakerVar("x", tInt)
 	form := basictypes.MakeFormAndTerm(basictypes.MakerEx([]basictypes.Var{x}, basictypes.MakerPred(basictypes.MakerId("P"), basictypes.TermList{x}, []polymorphism.TypeApp{})), basictypes.MakeEmptyTermList())
-	f := syntax.Skolemize(form)
+	f := syntax.Skolemize(form, basictypes.MetaList{})
 
 	if pred, ok := f.GetForm().(basictypes.Pred); ok {
 		if len(pred.GetArgs()) != 1 {
@@ -218,7 +218,7 @@ func TestSimpleTypedNotForallSkolemization(t *testing.T) {
 	// not(forall x. P(x)) ==> x should be a new constant expression
 	x := basictypes.MakerVar("x", tInt)
 	form := basictypes.MakeFormAndTerm(basictypes.MakerNot(basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerPred(basictypes.MakerId("P"), basictypes.TermList{x}, []polymorphism.TypeApp{}))), basictypes.MakeEmptyTermList())
-	f := syntax.Skolemize(form)
+	f := syntax.Skolemize(form, basictypes.MetaList{})
 
 	if neg, ok := f.GetForm().(basictypes.Not); ok {
 		if pred, ok := neg.GetForm().(basictypes.Pred); ok {
@@ -333,7 +333,7 @@ func TestSyntaxicTransformationOnFormula(t *testing.T) {
 	// Skolemize y & Instantiate z
 	f2_inst, metas_2 := syntax.Instantiate(basictypes.MakeFormAndTerm(form.GetForm().(basictypes.All).GetForm().(basictypes.Imp).GetF2(), basictypes.MakeEmptyTermList()), 0)
 	metas = append(metas, metas_2...)
-	f2_sko := syntax.Skolemize(f2_inst)
+	f2_sko := syntax.Skolemize(f2_inst, basictypes.MetaList{})
 
 	if len(metas) != 2 {
 		t.Errorf("Wrong amount of metas have been created")
@@ -380,7 +380,7 @@ func TestSyntaxicTransformationOnTypedFormula(t *testing.T) {
 	// Skolemize y & Instantiate z
 	f2_inst, metas_2 := syntax.Instantiate(basictypes.MakeFormAndTerm(form.GetForm().(basictypes.All).GetForm().(basictypes.Imp).GetF2(), basictypes.MakeEmptyTermList()), 0)
 	metas = append(metas, metas_2...)
-	f2_sko := syntax.Skolemize(f2_inst)
+	f2_sko := syntax.Skolemize(f2_inst, basictypes.MetaList{})
 
 	if len(metas) != 2 {
 		t.Errorf("Wrong amount of metas have been created")

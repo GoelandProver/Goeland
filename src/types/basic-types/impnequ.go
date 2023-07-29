@@ -82,7 +82,7 @@ func (i Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 func (i Imp) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	f1, res1 := i.GetF1().ReplaceVarByTerm(old, new)
 	f2, res2 := i.GetF2().ReplaceVarByTerm(old, new)
-	return Imp{i.GetIndex(), f1, f2, i.MetaList}, res1 || res2
+	return Imp{i.index, f1, f2, i.MetaList}, res1 || res2
 }
 
 func (i Imp) RenameVariables() Form {
@@ -100,21 +100,17 @@ func (i Imp) GetSubTerms() TermList {
 }
 
 func (i Imp) SubstituteVarByMeta(old Var, new Meta) Form {
-	f1 := i.GetF1().SubstituteVarByMeta(old, new)
-	f2 := i.GetF2().SubstituteVarByMeta(old, new)
-	metas := i.MetaList
-	if f1.GetInternalMetas().Contains(new) || f2.GetInternalMetas().Contains(new) {
-		metas = append(metas, new)
-	}
-	return Imp{i.index, f1, f2, metas}
+	fl, metas := substVarByMetaInFormList(old, new, FormList{i.f1, i.f2}, i.MetaList)
+	return Imp{i.index, fl[0], fl[1], metas}
 }
 
 func (i Imp) GetInternalMetas() MetaList {
 	return i.MetaList
 }
 
-func (i Imp) SetInternalMetas(m MetaList) {
+func (i Imp) SetInternalMetas(m MetaList) Form {
 	i.MetaList = m
+	return i
 }
 
 func (i Imp) GetSubFormulas() FormList {
@@ -177,21 +173,17 @@ func (e Equ) GetSubTerms() TermList {
 }
 
 func (e Equ) SubstituteVarByMeta(old Var, new Meta) Form {
-	f1 := e.GetF1().SubstituteVarByMeta(old, new)
-	f2 := e.GetF2().SubstituteVarByMeta(old, new)
-	metas := e.MetaList
-	if f1.GetInternalMetas().Contains(new) || f2.GetInternalMetas().Contains(new) {
-		metas = append(metas, new)
-	}
-	return Equ{e.index, f1, f2, metas}
+	fl, metas := substVarByMetaInFormList(old, new, FormList{e.f1, e.f2}, e.MetaList)
+	return Equ{e.index, fl[0], fl[1], metas}
 }
 
 func (e Equ) GetInternalMetas() MetaList {
 	return e.MetaList
 }
 
-func (e Equ) SetInternalMetas(m MetaList) {
+func (e Equ) SetInternalMetas(m MetaList) Form {
 	e.MetaList = m
+	return e
 }
 
 func (e Equ) GetSubFormulas() FormList {

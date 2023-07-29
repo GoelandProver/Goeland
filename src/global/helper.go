@@ -240,6 +240,10 @@ func IsConjectureFound() bool {
 	return isConjectureFound
 }
 
+func IsOuterSko() bool {
+	return !(IsInnerSko() || IsPreInnerSko())
+}
+
 func IsInnerSko() bool {
 	return innerSkolem
 }

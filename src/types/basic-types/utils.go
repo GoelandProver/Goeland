@@ -3,6 +3,8 @@
 
 package basictypes
 
+import "github.com/GoelandProver/Goeland/global"
+
 func getSubformsOfSubformList(f Form, fl FormList) FormList {
 	subforms := FormList{f.Copy()}
 	for _, sf := range fl {
@@ -17,7 +19,7 @@ func substVarByMetaInFormList(old Var, new Meta, formList FormList, metaList Met
 	for _, form := range formList {
 		f := form.SubstituteVarByMeta(old, new)
 		newFormList = append(newFormList, f)
-		if f.GetInternalMetas().Contains(new) {
+		if f.GetInternalMetas().Contains(new) || global.IsOuterSko() {
 			found = true
 		}
 	}

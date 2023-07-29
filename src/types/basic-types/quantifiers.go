@@ -44,7 +44,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -119,21 +118,17 @@ func (e Ex) GetSubTerms() TermList {
 }
 
 func (e Ex) SubstituteVarByMeta(old Var, new Meta) Form {
-	if global.IsInnerSko() || global.IsPreInnerSko() {
-		f := e.GetForm().SubstituteVarByMeta(old, new)
-		return Ex{e.index, e.var_list, f, f.GetInternalMetas().Copy()}
-	} else {
-		f, _ := e.GetForm().ReplaceVarByTerm(old, new)
-		return Ex{e.index, e.var_list, f, append(f.GetInternalMetas().Copy(), new)}
-	}
+	f := e.GetForm().SubstituteVarByMeta(old, new)
+	return Ex{e.index, e.var_list, f, f.GetInternalMetas().Copy()}
 }
 
 func (e Ex) GetInternalMetas() MetaList {
 	return e.MetaList
 }
 
-func (e Ex) SetInternalMetas(m MetaList) {
+func (e Ex) SetInternalMetas(m MetaList) Form {
 	e.MetaList = m
+	return e
 }
 
 func (e Ex) GetSubFormulas() FormList {
@@ -210,21 +205,17 @@ func (a All) GetSubTerms() TermList {
 }
 
 func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
-	if global.IsInnerSko() || global.IsPreInnerSko() {
-		f := a.GetForm().SubstituteVarByMeta(old, new)
-		return All{a.index, a.var_list, f, f.GetInternalMetas().Copy()}
-	} else {
-		f, _ := a.GetForm().ReplaceVarByTerm(old, new)
-		return All{a.index, a.var_list, f, append(f.GetInternalMetas().Copy(), new)}
-	}
+	f := a.GetForm().SubstituteVarByMeta(old, new)
+	return All{a.index, a.var_list, f, f.GetInternalMetas().Copy()}
 }
 
 func (a All) GetInternalMetas() MetaList {
 	return a.MetaList
 }
 
-func (a All) SetInternalMetas(m MetaList) {
+func (a All) SetInternalMetas(m MetaList) Form {
 	a.MetaList = m
+	return a
 }
 
 func (a All) GetSubFormulas() FormList {
@@ -320,21 +311,17 @@ func (a AllType) GetSubTerms() TermList {
 }
 
 func (a AllType) SubstituteVarByMeta(old Var, new Meta) Form {
-	if global.IsInnerSko() || global.IsPreInnerSko() {
-		f := a.GetForm().SubstituteVarByMeta(old, new)
-		return AllType{a.index, a.tvList, f, f.GetInternalMetas().Copy()}
-	} else {
-		f, _ := a.GetForm().ReplaceVarByTerm(old, new)
-		return AllType{a.index, a.tvList, f, append(f.GetInternalMetas().Copy(), new)}
-	}
+	f := a.GetForm().SubstituteVarByMeta(old, new)
+	return AllType{a.index, a.tvList, f, f.GetInternalMetas().Copy()}
 }
 
 func (a AllType) GetInternalMetas() MetaList {
 	return a.MetaList
 }
 
-func (a AllType) SetInternalMetas(m MetaList) {
+func (a AllType) SetInternalMetas(m MetaList) Form {
 	a.MetaList = m
+	return a
 }
 
 func (a AllType) GetSubFormulas() FormList {

@@ -28,29 +28,27 @@ var symbolMaker class
 /**
  * Skolemizes once the formula f.
  */
-func Skolemize(fnt btps.FormAndTerms) btps.FormAndTerms {
+func Skolemize(fnt btps.FormAndTerms, branchMetas btps.MetaList) btps.FormAndTerms {
 	form := fnt.GetForm()
-	terms := fnt.GetTerms()
+	terms := branchMetas.ToTermList()
 
 	switch nf := form.(type) {
 	// 1 - not(forall F1)
 	case btps.Not:
 		if tmp, ok := nf.GetForm().(btps.All); ok {
 			res := realSkolemize(form, tmp.GetForm(), tmp.GetVarList()[0], terms)
+			internalMetas := res.GetInternalMetas()
 			if len(tmp.GetVarList()) > 1 {
-				internalMetas := res.GetInternalMetas()
-				res = btps.MakerAll(tmp.GetVarList()[1:], res)
-				res.SetInternalMetas(internalMetas)
+				res = btps.MakerAll(tmp.GetVarList()[1:], res).SetInternalMetas(internalMetas)
 			}
-			fnt = btps.MakeFormAndTerm(btps.RefuteForm(res), terms)
+			fnt = btps.MakeFormAndTerm(btps.RefuteForm(res).SetInternalMetas(internalMetas), terms)
 		}
 	// 2 - exists F1
 	case btps.Ex:
 		res := realSkolemize(form, nf.GetForm(), nf.GetVarList()[0], terms)
 		if len(nf.GetVarList()) > 1 {
 			internalMetas := res.GetInternalMetas()
-			res = btps.MakerEx(nf.GetVarList()[1:], res)
-			res.SetInternalMetas(internalMetas)
+			res = btps.MakerEx(nf.GetVarList()[1:], res).SetInternalMetas(internalMetas)
 		}
 		fnt = btps.MakeFormAndTerm(res, terms)
 	}

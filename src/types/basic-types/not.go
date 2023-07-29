@@ -41,7 +41,6 @@
 package basictypes
 
 import (
-	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -128,21 +127,17 @@ func (n Not) GetForm() Form {
 }
 
 func (n Not) SubstituteVarByMeta(old Var, new Meta) Form {
-	if global.IsInnerSko() || global.IsPreInnerSko() {
-		f := n.GetForm().SubstituteVarByMeta(old, new)
-		return Not{n.index, f, f.GetInternalMetas().Copy()}
-	} else {
-		f, _ := n.GetForm().ReplaceVarByTerm(old, new)
-		return Not{n.index, f, append(f.GetInternalMetas().Copy(), new)}
-	}
+	f := n.GetForm().SubstituteVarByMeta(old, new)
+	return Not{n.index, f, f.GetInternalMetas().Copy()}
 }
 
 func (n Not) GetInternalMetas() MetaList {
 	return n.MetaList
 }
 
-func (n Not) SetInternalMetas(m MetaList) {
+func (n Not) SetInternalMetas(m MetaList) Form {
 	n.MetaList = m
+	return n
 }
 
 func (n Not) GetSubFormulas() FormList {
@@ -153,7 +148,8 @@ func (n Not) GetSubFormulas() FormList {
 
 /* Gives a new Form that is the negation of the given Form */
 func RefuteForm(form Form) Form {
-	return MakerNot(form)
+	internalMetas := form.GetInternalMetas()
+	return MakerNot(form).SetInternalMetas(internalMetas)
 }
 
 /* Gives a new Form that isn't a Not */
