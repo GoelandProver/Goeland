@@ -11,27 +11,39 @@ import (
 
 var contextEnabled bool = false
 
-func MakeLPOutput(proof []proof.ProofStruct, meta btps.MetaList) string {
-	if len(proof) == 0 {
+// ----------------------------------------------------------------------------
+// Plugin initialisation and main function to call.
+
+// Section: init
+// Functions: MakeCoqOutput
+// Main functions of the coq module.
+// TODO:
+//	* Write the context for TFF problems
+
+func MakeLambdapiOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
+	if len(prf) == 0 {
 		global.PrintError("LambdaPi", "Nothing to output")
 		return ""
 	}
 
-	return makeLPProof(gs3.MakeGS3Proof(proof), meta)
+	//global.PrintInfo("TEST", proof.ProofStructListToText(prf))
+	// Transform tableaux's proof in GS3 proof
+	return makeLambdaPiProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-func makeLPProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
-	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
-	// global.PrintInfo("GS3", proof.ToString())
-	proofString := makeLPProofFromGS3(*proof)
+func makeLambdaPiProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
+	contextString := getContext(proof.GetTargetForm(), meta)
+	//global.PrintInfo("GS3", proof.ToString())
+	proofString := makeLambdaPiProofFromGS3(proof)
 	return contextString + "\n" + proofString
 }
 
+// Replace defined symbols by Coq's defined symbols.
 func mapDefault(str string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, "$i", "τ (ι)"), "$o", "Prop"), "->", "→")
+	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
 }
 
-func lPMapconnectors() map[btps.FormulaType]string {
+func lambdaPiMapConnectors() map[btps.FormulaType]string {
 	return map[btps.FormulaType]string{
 		btps.AndConn:        "∧",
 		btps.OrConn:         "∨",
@@ -47,7 +59,7 @@ func lPMapconnectors() map[btps.FormulaType]string {
 		btps.QuantVarClose:  ")",
 		btps.QuantVarSep:    " ",
 		btps.PredEmpty:      "",
-		btps.PredTypeVarSep: " ",
+		btps.PredTypeVarSep: ") (",
 		btps.TypeVarType:    "Type",
 	}
 }

@@ -164,10 +164,10 @@ func printCoqOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictyp
 }
 
 func printLambdapiOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
-	lambdapiOutput := lambdapi.MakeLPOutput(final_proof, uninstanciatedMeta)
+	lambdapiOutput := lambdapi.MakeLambdapiOutput(final_proof, uninstanciatedMeta)
 
 	if global.GetWriteLogs() {
-		f, err := os.OpenFile("problem_lp.lp", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+		f, err := os.OpenFile("./LambdaPi/problem_lp.lp", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 
 		if err != nil {
 			log.Fatalf("Error opening problem_lp file: %v", err)

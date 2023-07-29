@@ -234,7 +234,7 @@ func buildOptions() {
 		func(bool) { global.SetOptimisedSko(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
-		"olambdapi",
+		"olp",
 		false,
 		"Enables the Lambdapi format for proofs instead of text",
 		func(bool) {

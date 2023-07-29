@@ -8,8 +8,6 @@ import (
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-type Rule int
-
 type GS3Sequent struct {
 	hypotheses     []btps.Form
 	rule           Rule
@@ -20,6 +18,8 @@ type GS3Sequent struct {
 	proof          GS3Proof
 	nodeId         int
 }
+
+type Rule int
 
 // Rules
 const (
