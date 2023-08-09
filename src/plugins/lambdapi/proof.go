@@ -50,7 +50,7 @@ func makeLambdaPiProofFromGS3(proof *gs3.GS3Sequent) string {
 		resultingString += "intros " + strings.Join(Map(indices, func(_ int, index int) string { return introName(index) }), " ") + ". "
 		proof = proof.Child(0)
 	}
-	formula := getDecoratedForm(proof.GetTargetForm())
+	formula := proof.GetTargetForm()
 
 	formulaStr := formula.ToMappedString(lambdaPiMapConnectors(), false)
 	resultingString += fmt.Sprintf("λ (%s : ϵ %s),\n", addToContext(formula), formulaStr)
@@ -109,11 +109,11 @@ func makeProofStep(proof *gs3.GS3Sequent) string {
 }
 
 func closureAxiom(proof *gs3.GS3Sequent) string {
-	formula1 := getDecoratedForm(proof.GetTargetForm())
-	formula2 := btps.RefuteForm(getDecoratedForm(proof.GetTargetForm()))
+	formula1 := proof.GetTargetForm()
+	formula2 := btps.RefuteForm(proof.GetTargetForm())
 	if notForm, ok := formula1.(btps.Not); ok {
 		formula2 = formula1
-		formula1 = getDecoratedForm(notForm.GetForm())
+		formula1 = notForm.GetForm()
 	}
 	formula1Str := formula1.ToMappedString(lambdaPiMapConnectors(), false)
 
@@ -123,7 +123,7 @@ func closureAxiom(proof *gs3.GS3Sequent) string {
 }
 
 func alphaNotNot(proof *gs3.GS3Sequent) string {
-	formula := getDecoratedForm(proof.GetResultFormulasOfChild(0)[0])
+	formula := proof.GetResultFormulasOfChild(0)[0]
 	formulaStr := formula.ToMappedString(lambdaPiMapConnectors(), false)
 
 	result := "GS3nnot\n"
@@ -133,14 +133,14 @@ func alphaNotNot(proof *gs3.GS3Sequent) string {
 	proofStr := makeProofStep(proof.Child(0))
 	result += proofStr
 	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(getDecoratedForm(proof.GetTargetForm())))
+	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
 
 	return result
 }
 
 func alphaAnd(proof *gs3.GS3Sequent) string {
-	formula1 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[0])
-	formula2 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[1])
+	formula1 := proof.GetResultFormulasOfChild(0)[0]
+	formula2 := proof.GetResultFormulasOfChild(0)[1]
 	formula1Str := formula1.ToMappedString(lambdaPiMapConnectors(), false)
 	formula2Str := formula2.ToMappedString(lambdaPiMapConnectors(), false)
 
@@ -153,19 +153,19 @@ func alphaAnd(proof *gs3.GS3Sequent) string {
 	proofStr := makeProofStep(proof.Child(0))
 	result += proofStr
 	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(getDecoratedForm(proof.GetTargetForm())))
+	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
 
 	return result
 }
 
 func alphaNotOr(proof *gs3.GS3Sequent) string {
-	formula1 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[0])
+	formula1 := proof.GetResultFormulasOfChild(0)[0]
 	if notForm, ok := formula1.(btps.Not); ok {
-		formula1 = getDecoratedForm(notForm.GetForm())
+		formula1 = notForm.GetForm()
 	}
-	formula2 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[1])
+	formula2 := proof.GetResultFormulasOfChild(0)[1]
 	if notForm, ok := formula2.(btps.Not); ok {
-		formula2 = getDecoratedForm(notForm.GetForm())
+		formula2 = notForm.GetForm()
 	}
 	formula1Str := formula1.ToMappedString(lambdaPiMapConnectors(), false)
 	formula2Str := formula2.ToMappedString(lambdaPiMapConnectors(), false)
@@ -181,17 +181,17 @@ func alphaNotOr(proof *gs3.GS3Sequent) string {
 	proofStr := makeProofStep(proof.Child(0))
 	result += proofStr
 	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(getDecoratedForm(proof.GetTargetForm())))
+	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
 
 	return result
 }
 
 func alphaNotImp(proof *gs3.GS3Sequent) string {
-	formula1 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[0])
-	formula2 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[1])
+	formula1 := proof.GetResultFormulasOfChild(0)[0]
+	formula2 := proof.GetResultFormulasOfChild(0)[1]
 	notFormula2Str := formula2.ToMappedString(lambdaPiMapConnectors(), false)
 	if notForm, ok := formula2.(btps.Not); ok {
-		formula2 = getDecoratedForm(notForm.GetForm())
+		formula2 = notForm.GetForm()
 	}
 	formula1Str := formula1.ToMappedString(lambdaPiMapConnectors(), false)
 	formula2Str := formula2.ToMappedString(lambdaPiMapConnectors(), false)
@@ -205,14 +205,14 @@ func alphaNotImp(proof *gs3.GS3Sequent) string {
 	proofStr := makeProofStep(proof.Child(0))
 	result += proofStr
 	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(getDecoratedForm(proof.GetTargetForm())))
+	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
 
 	return result
 }
 
 func betaOr(proof *gs3.GS3Sequent) string {
-	formula1 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[0])
-	formula2 := getDecoratedForm(proof.GetResultFormulasOfChild(1)[0])
+	formula1 := proof.GetResultFormulasOfChild(0)[0]
+	formula2 := proof.GetResultFormulasOfChild(1)[0]
 	formula1Str := formula1.ToMappedString(lambdaPiMapConnectors(), false)
 	formula2Str := formula2.ToMappedString(lambdaPiMapConnectors(), false)
 
@@ -229,21 +229,21 @@ func betaOr(proof *gs3.GS3Sequent) string {
 	proofStr = makeProofStep(proof.Child(1))
 	result += proofStr
 	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(getDecoratedForm(proof.GetTargetForm())))
+	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
 
 	return result
 }
 
 func betaNotAnd(proof *gs3.GS3Sequent) string {
-	notFormula1 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[0])
-	notFormula2 := getDecoratedForm(proof.GetResultFormulasOfChild(1)[0])
+	notFormula1 := proof.GetResultFormulasOfChild(0)[0]
+	notFormula2 := proof.GetResultFormulasOfChild(1)[0]
 	var formula1 btps.Form
 	var formula2 btps.Form
 	if notForm, ok := notFormula1.(btps.Not); ok {
-		formula1 = getDecoratedForm(notForm.GetForm())
+		formula1 = notForm.GetForm()
 	}
 	if notForm, ok := notFormula2.(btps.Not); ok {
-		formula2 = getDecoratedForm(notForm.GetForm())
+		formula2 = notForm.GetForm()
 	}
 	formula1Str := formula1.ToMappedString(lambdaPiMapConnectors(), false)
 	formula2Str := formula2.ToMappedString(lambdaPiMapConnectors(), false)
@@ -261,17 +261,17 @@ func betaNotAnd(proof *gs3.GS3Sequent) string {
 	proofStr = makeProofStep(proof.Child(1))
 	result += proofStr
 	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(getDecoratedForm(proof.GetTargetForm())))
+	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
 
 	return result
 }
 
 func betaImp(proof *gs3.GS3Sequent) string {
-	notFormula1 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[0])
-	formula2 := getDecoratedForm(proof.GetResultFormulasOfChild(1)[0])
+	notFormula1 := proof.GetResultFormulasOfChild(0)[0]
+	formula2 := proof.GetResultFormulasOfChild(1)[0]
 	var formula1 btps.Form
 	if notForm, ok := notFormula1.(btps.Not); ok {
-		formula1 = getDecoratedForm(notForm.GetForm())
+		formula1 = notForm.GetForm()
 	}
 	formula1Str := formula1.ToMappedString(lambdaPiMapConnectors(), false)
 	formula2Str := formula2.ToMappedString(lambdaPiMapConnectors(), false)
@@ -289,19 +289,19 @@ func betaImp(proof *gs3.GS3Sequent) string {
 	proofStr = makeProofStep(proof.Child(1))
 	result += proofStr
 	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(getDecoratedForm(proof.GetTargetForm())))
+	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
 
 	return result
 }
 
 func betaEqu(proof *gs3.GS3Sequent) string {
-	formula1 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[0])
-	formula2 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[1])
+	formula1 := proof.GetResultFormulasOfChild(0)[0]
+	formula2 := proof.GetResultFormulasOfChild(0)[1]
 	if notForm, ok := formula1.(btps.Not); ok {
-		formula1 = getDecoratedForm(notForm.GetForm())
+		formula1 = notForm.GetForm()
 	}
 	if notForm, ok := formula2.(btps.Not); ok {
-		formula2 = getDecoratedForm(notForm.GetForm())
+		formula2 = notForm.GetForm()
 	}
 	formula1Str := formula1.ToMappedString(lambdaPiMapConnectors(), false)
 	formula2Str := formula2.ToMappedString(lambdaPiMapConnectors(), false)
@@ -323,19 +323,19 @@ func betaEqu(proof *gs3.GS3Sequent) string {
 	proofStr = makeProofStep(proof.Child(1))
 	result += proofStr
 	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(getDecoratedForm(proof.GetTargetForm())))
+	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
 
 	return result
 }
 
 func betaNotEqu(proof *gs3.GS3Sequent) string {
-	formula1 := getDecoratedForm(proof.GetResultFormulasOfChild(0)[0])
-	formula2 := getDecoratedForm(proof.GetResultFormulasOfChild(1)[0])
+	formula1 := proof.GetResultFormulasOfChild(0)[0]
+	formula2 := proof.GetResultFormulasOfChild(1)[0]
 	if notForm, ok := formula1.(btps.Not); ok {
-		formula1 = getDecoratedForm(notForm.GetForm())
+		formula1 = notForm.GetForm()
 	}
 	if notForm, ok := formula2.(btps.Not); ok {
-		formula2 = getDecoratedForm(notForm.GetForm())
+		formula2 = notForm.GetForm()
 	}
 	formula1Str := formula1.ToMappedString(lambdaPiMapConnectors(), false)
 	formula2Str := formula2.ToMappedString(lambdaPiMapConnectors(), false)
@@ -357,7 +357,7 @@ func betaNotEqu(proof *gs3.GS3Sequent) string {
 	proofStr = makeProofStep(proof.Child(1))
 	result += proofStr
 	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(getDecoratedForm(proof.GetTargetForm())))
+	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
 
 	return result
 }
@@ -450,7 +450,7 @@ func getRewriteRules() string {
 func makeTheorem(axioms btps.FormList, conjecture btps.Form) string {
 	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(GetProblemName(), ".", "_"), "=", "_"), "+", "_")
 	formattedProblem := makeImpChain(append(axioms, btps.MakerNot(conjecture)))
-	return "symbol goeland_" + problemName + " : \nϵ " + getDecoratedForm(formattedProblem).ToMappedString(lambdaPiMapConnectors(), false) + " → ϵ ⊥ ≔ \n"
+	return "symbol goeland_" + problemName + " : \nϵ " + formattedProblem.ToMappedString(lambdaPiMapConnectors(), false) + " → ϵ ⊥ ≔ \n"
 }
 
 // If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).

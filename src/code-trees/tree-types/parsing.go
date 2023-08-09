@@ -46,9 +46,9 @@ type TermForm struct {
 	t     basictypes.Term
 }
 
-func (tf TermForm) ToMappedString(basictypes.MapString, bool) string       { return tf.ToString() }
-func (tf TermForm) GetTerm() basictypes.Term                               { return tf.t.Copy() }
-func (tf TermForm) ToString() string                                       { return tf.t.ToString() }
+func (t TermForm) ToMappedString(basictypes.MapString, bool) string        { return t.ToString() }
+func (t TermForm) GetTerm() basictypes.Term                                { return t.t.Copy() }
+func (t TermForm) ToString() string                                        { return t.t.ToString() }
 func (t TermForm) ToStringWithSuffixMeta(string) string                    { return t.ToString() }
 func (t TermForm) Copy() basictypes.Form                                   { return makeTermForm(t.GetIndex(), t.GetTerm()) }
 func (t TermForm) GetType() typing.TypeScheme                              { return typing.DefaultFunType(0) }
@@ -58,13 +58,12 @@ func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) basictypes.Form { ret
 func (t TermForm) ReplaceVarByTerm(basictypes.Var, basictypes.Term) (basictypes.Form, bool) {
 	return t, false
 }
-func (tf TermForm) GetIndex() int                                                      { return tf.index }
+func (t TermForm) GetIndex() int                                                       { return t.index }
 func (t TermForm) SubstituteVarByMeta(basictypes.Var, basictypes.Meta) basictypes.Form { return t }
 func (t TermForm) GetInternalMetas() basictypes.MetaList                               { return basictypes.MetaList{} }
 func (t TermForm) SetInternalMetas(basictypes.MetaList)                                { return }
-func (t TermForm) GetAllSubFormulas() basictypes.FormList                              { return basictypes.FormList{} }
+func (t TermForm) GetSubFormulasRecur() basictypes.FormList                            { return basictypes.FormList{} }
 func (t TermForm) GetChildFormulas() basictypes.FormList                               { return basictypes.FormList{} }
-func (t TermForm) SetChildFormulas(basictypes.FormList) basictypes.Form                { return t }
 
 func (t TermForm) Equals(t2 any) bool {
 	switch nt := t2.(type) {

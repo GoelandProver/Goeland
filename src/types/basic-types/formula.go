@@ -55,9 +55,8 @@ type Form interface {
 	SetInternalMetas(MetaList)
 	GetType() typing.TypeScheme
 	GetSubTerms() TermList
-	GetAllSubFormulas() FormList
+	GetSubFormulasRecur() FormList
 	GetChildFormulas() FormList
-	SetChildFormulas(FormList) Form
 
 	Stringable
 	Comparable

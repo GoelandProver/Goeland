@@ -139,17 +139,12 @@ func (n Not) SetInternalMetas(m MetaList) {
 	n.MetaList = m
 }
 
-func (n Not) GetAllSubFormulas() FormList {
+func (n Not) GetSubFormulasRecur() FormList {
 	return getAllSubFormulasAppended(n)
 }
 
 func (n Not) GetChildFormulas() FormList {
 	return FormList{n.GetForm()}
-}
-
-func (n Not) SetChildFormulas(fl FormList) Form {
-	n.f = fl[0]
-	return n
 }
 
 /** Utils **/

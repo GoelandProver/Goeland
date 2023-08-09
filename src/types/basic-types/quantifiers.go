@@ -130,17 +130,12 @@ func (e Ex) SetInternalMetas(m MetaList) {
 	e.MetaList = m
 }
 
-func (e Ex) GetAllSubFormulas() FormList {
+func (e Ex) GetSubFormulasRecur() FormList {
 	return getAllSubFormulasAppended(e)
 }
 
 func (e Ex) GetChildFormulas() FormList {
 	return FormList{e.GetForm()}
-}
-
-func (e Ex) SetChildFormulas(fl FormList) Form {
-	e.f = fl[0]
-	return e
 }
 
 type All struct {
@@ -225,17 +220,12 @@ func (a All) SetInternalMetas(m MetaList) {
 	a.MetaList = m
 }
 
-func (a All) GetAllSubFormulas() FormList {
+func (a All) GetSubFormulasRecur() FormList {
 	return getAllSubFormulasAppended(a)
 }
 
 func (a All) GetChildFormulas() FormList {
 	return FormList{a.GetForm()}
-}
-
-func (a All) SetChildFormulas(fl FormList) Form {
-	a.f = fl[0]
-	return a
 }
 
 /* Struct describing a forall with type variables */
@@ -339,17 +329,12 @@ func (a AllType) SetInternalMetas(m MetaList) {
 	a.MetaList = m
 }
 
-func (a AllType) GetAllSubFormulas() FormList {
+func (a AllType) GetSubFormulasRecur() FormList {
 	return getAllSubFormulasAppended(a)
 }
 
 func (a AllType) GetChildFormulas() FormList {
 	return FormList{a.GetForm()}
-}
-
-func (a AllType) SetChildFormulas(fl FormList) Form {
-	a.form = fl[0]
-	return a
 }
 
 // ----------------------------------------------------------------------------

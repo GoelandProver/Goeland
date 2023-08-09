@@ -68,9 +68,8 @@ func (t Top) GetSubTerms() TermList                        { return MakeEmptyTer
 func (t Top) SubstituteVarByMeta(Var, Meta) Form           { return t }
 func (t Top) GetInternalMetas() MetaList                   { return MetaList{} }
 func (t Top) SetInternalMetas(MetaList)                    { return }
-func (t Top) GetAllSubFormulas() FormList                  { return FormList{t.Copy()} }
+func (t Top) GetSubFormulasRecur() FormList                { return FormList{t.Copy()} }
 func (t Top) GetChildFormulas() FormList                   { return FormList{} }
-func (t Top) SetChildFormulas(fl FormList) Form            { return t }
 
 /* Bot (always false) definitino */
 type Bot struct {
@@ -96,6 +95,5 @@ func (b Bot) GetSubTerms() TermList                        { return MakeEmptyTer
 func (b Bot) SubstituteVarByMeta(Var, Meta) Form           { return b }
 func (b Bot) GetInternalMetas() MetaList                   { return MetaList{} }
 func (b Bot) SetInternalMetas(MetaList)                    { return }
-func (b Bot) GetAllSubFormulas() FormList                  { return FormList{b.Copy()} }
+func (b Bot) GetSubFormulasRecur() FormList                { return FormList{b.Copy()} }
 func (b Bot) GetChildFormulas() FormList                   { return FormList{} }
-func (b Bot) SetChildFormulas(fl FormList) Form            { return b }

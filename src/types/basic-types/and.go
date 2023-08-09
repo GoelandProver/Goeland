@@ -153,15 +153,10 @@ func (a And) SetInternalMetas(m MetaList) {
 	a.MetaList = m
 }
 
-func (a And) GetAllSubFormulas() FormList {
+func (a And) GetSubFormulasRecur() FormList {
 	return getAllSubFormulasAppended(a)
 }
 
 func (a And) GetChildFormulas() FormList {
 	return a.FormList
-}
-
-func (a And) SetChildFormulas(fl FormList) Form {
-	a.FormList = fl
-	return a
 }

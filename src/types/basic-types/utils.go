@@ -6,7 +6,7 @@ package basictypes
 func getAllSubFormulasAppended(f Form) FormList {
 	subforms := FormList{f.Copy()}
 	for _, sf := range f.GetChildFormulas() {
-		subforms = append(subforms, sf.GetAllSubFormulas()...)
+		subforms = append(subforms, sf.GetSubFormulasRecur()...)
 	}
 	return subforms
 }
