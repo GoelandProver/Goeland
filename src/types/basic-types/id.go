@@ -44,7 +44,7 @@ import "fmt"
 
 /* id (for predicate) */
 type Id struct {
-	*FormMappableString
+	*MappedString
 	index int
 	name  string
 }
@@ -61,8 +61,8 @@ func (i Id) ToMappedStringSurround(mapping MapString, displayTypes bool) string 
 	return "%s"
 }
 
-func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
+func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
 }
 
 func (i Id) Equals(t Term) bool {

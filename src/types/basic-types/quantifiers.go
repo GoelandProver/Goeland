@@ -49,7 +49,7 @@ import (
 )
 
 type Ex struct {
-	*FormMappableString
+	*MappedString
 	index    int
 	var_list []Var
 	f        Form
@@ -63,15 +63,15 @@ func (e Ex) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (e Ex) GetMetas() MetaList         { return e.GetForm().GetMetas() }
 
 func (e Ex) ToString() string {
-	return e.FormMappableString.ToString()
+	return e.MappedString.ToString()
 }
 
 func (e Ex) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(" + mapping[ExQuant] + " %s)"
+	return QuantifierToMappedString(mapping[ExQuant], mapping, e.GetVarList(), e.GetForm(), displayTypes)
 }
 
-func (e Ex) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return QuantifierToMappedString(mapping, e.GetVarList(), e.GetForm(), displayTypes)
+func (e Ex) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return " ", ""
 }
 
 func (e Ex) Copy() Form {
@@ -136,7 +136,7 @@ func (e Ex) GetChildFormulas() FormList {
 }
 
 type All struct {
-	*FormMappableString
+	*MappedString
 	index    int
 	var_list []Var
 	f        Form
@@ -150,15 +150,15 @@ func (a All) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (a All) GetMetas() MetaList         { return a.GetForm().GetMetas() }
 
 func (a All) ToString() string {
-	return a.FormMappableString.ToString()
+	return a.MappedString.ToString()
 }
 
 func (a All) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(" + mapping[AllQuant] + " %s)"
+	return QuantifierToMappedString(mapping[AllQuant], mapping, a.GetVarList(), a.GetForm(), displayTypes)
 }
 
-func (a All) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return QuantifierToMappedString(mapping, a.GetVarList(), a.GetForm(), displayTypes)
+func (a All) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return " ", ""
 }
 
 func (a All) Copy() Form {
@@ -224,7 +224,7 @@ func (a All) GetChildFormulas() FormList {
 
 /* Struct describing a forall with type variables */
 type AllType struct {
-	*FormMappableString
+	*MappedString
 	index  int
 	tvList []typing.TypeVar
 	form   Form
@@ -245,15 +245,15 @@ func (a AllType) ToMappedString(mapping MapString, displayTypes bool) string {
 }
 
 func (a AllType) ToString() string {
-	return a.FormMappableString.ToString()
+	return a.MappedString.ToString()
 }
 
 func (a AllType) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(" + mapping[AllTypeQuant] + " %s)"
+	return "(" + mapping[AllTypeQuant] + " " + mapping[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (%s))"
 }
 
-func (a AllType) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return mapping[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (" + a.GetForm().ToMappedString(mapping, displayTypes) + ")"
+func (a AllType) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", ""
 }
 
 func (a AllType) GetMetas() MetaList { return a.GetForm().GetMetas() }
@@ -351,7 +351,7 @@ func renameVariable(form Form, varList []Var) ([]Var, Form) {
 	return newVL, newForm
 }
 
-func QuantifierToMappedString(mapping MapString, varList []Var, form Form, displayTypes bool) string {
+func QuantifierToMappedString(quant string, mapping MapString, varList []Var, form Form, displayTypes bool) string {
 	type VarType struct {
 		vars  []Var
 		type_ typing.TypeApp
@@ -380,7 +380,7 @@ func QuantifierToMappedString(mapping MapString, varList []Var, form Form, displ
 		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 
-	return strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (" + form.ToMappedString(mapping, displayTypes) + ")"
+	return "(" + quant + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (%s))"
 }
 
 type QuantifiedForm interface {

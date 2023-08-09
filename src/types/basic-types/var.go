@@ -48,7 +48,7 @@ import (
 
 /* Variable (x,y under ForAll or Exists) */
 type Var struct {
-	*FormMappableString
+	*MappedString
 	index    int
 	name     string
 	typeHint typing.TypeApp
@@ -93,10 +93,10 @@ func (v Var) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "%s"
 }
 
-func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) string {
+func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	if displayTypes {
-		return fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
+		return "", fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
 	} else {
-		return v.GetName()
+		return "", v.GetName()
 	}
 }

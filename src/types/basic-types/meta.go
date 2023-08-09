@@ -49,7 +49,7 @@ import (
 
 /* Metavariable (X, Y) */
 type Meta struct {
-	*FormMappableString
+	*MappedString
 	index     int
 	occurence int
 	name      string
@@ -73,11 +73,11 @@ func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) strin
 	return "%s"
 }
 
-func (m Meta) ToMappedStringChild(mapping MapString, displayTypes bool) string {
+func (m Meta) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	if displayTypes {
-		return fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.GetTypeHint().ToString())
+		return "", fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.GetTypeHint().ToString())
 	} else {
-		return fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
+		return "", fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
 	}
 }
 

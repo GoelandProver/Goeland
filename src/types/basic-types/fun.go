@@ -49,7 +49,7 @@ import (
 
 /* function or constant (f(a,b), f(X,Y), a) */
 type Fun struct {
-	*FormMappableString
+	*MappedString
 	p        Id
 	args     TermList
 	typeVars []typing.TypeApp
@@ -60,9 +60,9 @@ func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "%s"
 }
 
-func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) string {
+func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
-		return f.GetID().ToMappedString(mapping, displayTypes)
+		return "", f.GetID().ToMappedString(mapping, displayTypes)
 	}
 	args := []string{}
 
@@ -77,7 +77,7 @@ func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	if displayTypes {
 		str += " : " + f.typeHint.ToString()
 	}
-	return str
+	return "", str
 }
 
 func (f Fun) GetID() Id         { return f.p.Copy().(Id) }

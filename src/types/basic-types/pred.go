@@ -52,7 +52,7 @@ import (
 
 /* Symbol of predicate */
 type Pred struct {
-	*FormMappableString
+	*MappedString
 	index    int
 	id       Id
 	args     TermList
@@ -75,16 +75,16 @@ func (p Pred) RenameVariables() Form      { return p }
 func (p Pred) CleanFormula() Form         { return p }
 
 func (p Pred) ToString() string {
-	return p.FormMappableString.ToString()
+	return p.MappedString.ToString()
 }
 
 func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"
 }
 
-func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) string {
+func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
-		return p.GetID().ToMappedString(mapping, displayTypes)
+		return "", p.GetID().ToMappedString(mapping, displayTypes)
 	}
 	args := []string{}
 
@@ -100,11 +100,11 @@ func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 		if len(p.GetArgs()) != 2 {
 			global.PrintPanic("Pred", "infix '=' should only have 2 arguments")
 		}
-		return "(" + p.GetArgs()[0].ToMappedString(mapping, displayTypes) + " = " + p.GetArgs()[1].ToMappedString(mapping, displayTypes) + ")"
+		return "", "(" + p.GetArgs()[0].ToMappedString(mapping, displayTypes) + " = " + p.GetArgs()[1].ToMappedString(mapping, displayTypes) + ")"
 	}
 
 	// strconv.Itoa(p.GetIndex()) + "@"
-	return p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
+	return "", p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
 }
 
 func (p Pred) Copy() Form {

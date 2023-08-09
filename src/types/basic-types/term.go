@@ -47,7 +47,7 @@ import (
 
 /* Term */
 type Term interface {
-	StringableMapped
+	MappableString
 	Copyable[Term]
 	GetIndex() int
 	GetName() string
@@ -67,35 +67,35 @@ type TypedTerm interface {
 
 /*** Makers ***/
 func MakeId(i int, s string) Id {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	id := Id{fms, i, s}
-	fms.StringableMapped = id
+	fms.MappableString = id
 	return id
 }
 
 func MakeVar(i int, s string, t ...typing.TypeApp) Var {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	newVar := Var{fms, i, s, getType(t)}
-	fms.StringableMapped = newVar
+	fms.MappableString = newVar
 	return newVar
 }
 
 func MakeMeta(index, occurence int, s string, f int, t ...typing.TypeApp) Meta {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	meta := Meta{fms, index, occurence, s, f, getType(t)}
-	fms.StringableMapped = meta
+	fms.MappableString = meta
 	return meta
 }
 
 func MakeFun(p Id, args TermList, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	var fun Fun
 	if len(t) == 1 {
 		fun = Fun{fms, p, args, typeVars, t[0]}
 	} else {
 		fun = Fun{fms, p, args, typeVars, typing.DefaultFunType(len(args))}
 	}
-	fms.StringableMapped = fun
+	fms.MappableString = fun
 	return fun
 }
 

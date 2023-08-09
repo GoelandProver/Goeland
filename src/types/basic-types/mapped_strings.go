@@ -103,27 +103,27 @@ func initDefaultMap() {
 	defaultMap[TypeVarType] = "$tType"
 }
 
-type StringableMapped interface {
+type MappableString interface {
 	global.Stringable
 
 	ToMappedString(MapString, bool) string
 	ToMappedStringSurround(MapString, bool) string
-	ToMappedStringChild(MapString, bool) string //Return 3 things: surround of each child, separator of each child, what to print if no child
+	ToMappedStringChild(MapString, bool) (string, string) //Return 3 things: surround of each child, separator of each child, what to print if no child
 }
 
-type FormMappableString struct {
-	StringableMapped
+type MappedString struct {
+	MappableString
 }
 
-func (fms FormMappableString) ToString() string {
+func (fms MappedString) ToString() string {
 	return fms.ToMappedString(defaultMap, true)
 }
 
-func (fms FormMappableString) ToMappedString(mapping MapString, displayType bool) string {
+func (fms MappedString) ToMappedString(mapping MapString, displayType bool) string {
 	return fms.ToMappedStringSurround(mapping, displayType) + fms.ToMappedStringChild(mapping, displayType)
 }
 
-func ListToMappedString[T StringableMapped](sgbl []T, sep, emptyValue string, mapping MapString, displayTypes bool) string {
+func ListToMappedString[T MappableString](sgbl []T, separator, emptyValue string, mapping MapString, displayTypes bool) string {
 	strArr := []string{}
 
 	for _, element := range sgbl {
@@ -134,5 +134,5 @@ func ListToMappedString[T StringableMapped](sgbl []T, sep, emptyValue string, ma
 		strArr = append(strArr, emptyValue)
 	}
 
-	return strings.Join(strArr, sep)
+	return strings.Join(strArr, separator)
 }

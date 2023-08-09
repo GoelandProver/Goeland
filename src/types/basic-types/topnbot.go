@@ -46,7 +46,7 @@ import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 
 /* Top (always true) definition */
 type Top struct {
-	*FormMappableString
+	*MappedString
 	index int
 }
 
@@ -54,8 +54,8 @@ func (t Top) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "%s"
 }
 
-func (t Top) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return mapping[TopType]
+func (t Top) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", mapping[TopType]
 }
 
 func (t Top) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
@@ -76,7 +76,7 @@ func (t Top) GetChildFormulas() FormList                   { return FormList{} }
 
 /* Bot (always false) definition */
 type Bot struct {
-	*FormMappableString
+	*MappedString
 	index int
 }
 
@@ -84,8 +84,8 @@ func (b Bot) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "%s"
 }
 
-func (b Bot) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return mapping[BotType]
+func (b Bot) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", mapping[BotType]
 }
 
 func (b Bot) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }

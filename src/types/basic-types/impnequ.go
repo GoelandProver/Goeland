@@ -46,7 +46,7 @@ import (
 
 /* Imp(f1,f2): f1 imply f2*/
 type Imp struct {
-	*FormMappableString
+	*MappedString
 	index  int
 	f1, f2 Form
 	MetaList
@@ -56,8 +56,8 @@ func (i Imp) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "(%s)"
 }
 
-func (i Imp) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return i.GetF1().ToMappedString(mapping, displayTypes) + " " + mapping[ImpConn] + " " + i.GetF2().ToMappedString(mapping, displayTypes)
+func (i Imp) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return " " + mapping[ImpConn] + " ", ""
 }
 
 func (i Imp) GetIndex() int { return i.index }
@@ -126,7 +126,7 @@ func (i Imp) GetChildFormulas() FormList {
 
 /* Equ(f1, f2): f1 equivalent to f2 */
 type Equ struct {
-	*FormMappableString
+	*MappedString
 	index  int
 	f1, f2 Form
 	MetaList
@@ -136,8 +136,8 @@ func (e Equ) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "(%s)"
 }
 
-func (e Equ) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return e.GetF1().ToMappedString(mapping, displayTypes) + " " + mapping[EquConn] + " " + e.GetF2().ToMappedString(mapping, displayTypes)
+func (e Equ) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return " " + mapping[EquConn] + " ", ""
 }
 
 func (e Equ) GetIndex() int { return e.index }

@@ -46,7 +46,7 @@ import (
 
 // A Formula list that represents the conjunction of formulae
 type And struct {
-	*FormMappableString
+	*MappedString
 	index int
 	FormList
 	MetaList
@@ -55,9 +55,9 @@ type And struct {
 /** Constructors **/
 
 func MakeAndSimple(i int, forms FormList, metas MetaList) And {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	and := And{fms, i, forms, metas}
-	fms.StringableMapped = and
+	fms.MappableString = and
 	return and
 }
 
@@ -103,15 +103,15 @@ func (a And) Copy() Form {
 }
 
 func (a And) ToString() string {
-	return a.FormMappableString.ToString()
+	return a.MappedString.ToString()
 }
 
 func (a And) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "(%s)"
 }
 
-func (a And) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return ListToMappedString(a.FormList, " "+mapping[AndConn]+" ", "", mapping, displayTypes)
+func (a And) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return " " + mapping[AndConn] + " ", ""
 }
 
 func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {

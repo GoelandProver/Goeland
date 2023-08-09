@@ -42,7 +42,7 @@ import (
 )
 
 type TermForm struct {
-	*basictypes.FormMappableString
+	*basictypes.MappedString
 	index int
 	t     basictypes.Term
 }
@@ -51,8 +51,8 @@ func (t TermForm) ToMappedStringSurround(mapping basictypes.MapString, displayTy
 	return "%s"
 }
 
-func (t TermForm) ToMappedStringChild(mapping basictypes.MapString, displayTypes bool) string {
-	return t.t.ToMappedString(mapping, displayTypes)
+func (t TermForm) ToMappedStringChild(mapping basictypes.MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", t.t.ToMappedString(mapping, displayTypes)
 }
 
 func (t TermForm) GetTerm() basictypes.Term                                { return t.t.Copy() }
@@ -107,9 +107,9 @@ func MakerTermForm(t basictypes.Term) TermForm {
 }
 
 func makeTermForm(i int, t basictypes.Term) TermForm {
-	fms := &basictypes.FormMappableString{}
+	fms := &basictypes.MappedString{}
 	tf := TermForm{fms, i, t.Copy()}
-	fms.StringableMapped = tf
+	fms.MappableString = tf
 	return tf
 }
 

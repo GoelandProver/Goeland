@@ -46,7 +46,7 @@ import (
 
 // The negation of a Formula
 type Not struct {
-	*FormMappableString
+	*MappedString
 	index int
 	f     Form
 	MetaList
@@ -55,9 +55,9 @@ type Not struct {
 /** Constructors **/
 
 func MakeNotSimple(i int, form Form, metas MetaList) Not {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	not := Not{fms, i, form, metas}
-	fms.StringableMapped = not
+	fms.MappableString = not
 	return not
 }
 
@@ -99,15 +99,15 @@ func (n Not) Copy() Form {
 }
 
 func (n Not) ToString() string {
-	return n.FormMappableString.ToString()
+	return n.MappedString.ToString()
 }
 
 func (n Not) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return mapping[NotConn] + "(%s)"
 }
 
-func (n Not) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return n.GetForm().ToMappedString(mapping, displayTypes)
+func (n Not) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", ""
 }
 
 func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {

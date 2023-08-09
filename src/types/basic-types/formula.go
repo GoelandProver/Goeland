@@ -57,7 +57,7 @@ type Form interface {
 
 	Comparable
 	Copyable[Form]
-	StringableMapped
+	MappableString
 
 	ReplaceTypeByMeta([]typing.TypeVar, int) Form
 	ReplaceVarByTerm(old Var, new Term) (Form, bool)
@@ -71,14 +71,14 @@ type Form interface {
 /* Makers */
 func MakePredSimple(index int, id Id, terms TermList, typeApps []typing.TypeApp, metas MetaList, typeSchemes ...typing.TypeScheme) Pred {
 	if len(typeSchemes) == 1 {
-		fms := &FormMappableString{}
+		fms := &MappedString{}
 		pred := Pred{fms, index, id, terms, typeApps, typeSchemes[0], metas}
-		fms.StringableMapped = pred
+		fms.MappableString = pred
 		return pred
 	} else {
-		fms := &FormMappableString{}
+		fms := &MappedString{}
 		pred := Pred{fms, index, id, terms, typeApps, typing.DefaultPropType(len(terms)), metas}
-		fms.StringableMapped = pred
+		fms.MappableString = pred
 		return pred
 	}
 }
@@ -92,9 +92,9 @@ func MakerPred(id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...
 }
 
 func MakeTop(i int) Top {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	top := Top{fms, i}
-	fms.StringableMapped = top
+	fms.MappableString = top
 	return top
 }
 
@@ -103,9 +103,9 @@ func MakerTop() Top {
 }
 
 func MakeBot(i int) Bot {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	bot := Bot{fms, i}
-	fms.StringableMapped = bot
+	fms.MappableString = bot
 	return bot
 }
 
@@ -114,9 +114,9 @@ func MakerBot() Bot {
 }
 
 func MakeImpSimple(i int, firstForm, secondForm Form, metas MetaList) Imp {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	imp := Imp{fms, i, firstForm, secondForm, metas}
-	fms.StringableMapped = imp
+	fms.MappableString = imp
 	return imp
 }
 
@@ -129,9 +129,9 @@ func MakerImp(firstForm, secondForm Form) Imp {
 }
 
 func MakeEquSimple(i int, firstForm, secondForm Form, metas MetaList) Equ {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	equ := Equ{fms, i, firstForm, secondForm, metas}
-	fms.StringableMapped = equ
+	fms.MappableString = equ
 	return equ
 }
 
@@ -144,9 +144,9 @@ func MakerEqu(firstForm, secondForm Form) Equ {
 }
 
 func MakeExSimple(i int, vars []Var, form Form, metas MetaList) Ex {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	ex := Ex{fms, i, vars, form, metas}
-	fms.StringableMapped = ex
+	fms.MappableString = ex
 	return ex
 }
 
@@ -159,9 +159,9 @@ func MakerEx(vars []Var, form Form) Ex {
 }
 
 func MakeAllSimple(i int, vars []Var, forms Form, metas MetaList) All {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	all := All{fms, i, vars, forms, metas}
-	fms.StringableMapped = all
+	fms.MappableString = all
 	return all
 }
 
@@ -174,9 +174,9 @@ func MakerAll(vars []Var, forms Form) All {
 }
 
 func MakeAllTypeSimple(i int, typeVars []typing.TypeVar, form Form, metas MetaList) AllType {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	at := AllType{fms, i, typeVars, form, metas}
-	fms.StringableMapped = at
+	fms.MappableString = at
 	return at
 }
 

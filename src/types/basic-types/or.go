@@ -46,7 +46,7 @@ import (
 
 // A Formula list that represents the disjunction of formulae
 type Or struct {
-	*FormMappableString
+	*MappedString
 	index int
 	FormList
 	MetaList
@@ -55,9 +55,9 @@ type Or struct {
 /** Constructors **/
 
 func MakeOrSimple(i int, forms FormList, metas MetaList) Or {
-	fms := &FormMappableString{}
+	fms := &MappedString{}
 	or := Or{fms, i, forms, metas}
-	fms.StringableMapped = or
+	fms.MappableString = or
 	return or
 }
 
@@ -103,15 +103,15 @@ func (o Or) Copy() Form {
 }
 
 func (o Or) ToString() string {
-	return o.FormMappableString.ToString()
+	return o.MappedString.ToString()
 }
 
 func (o Or) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "(%s)"
 }
 
-func (o Or) ToMappedStringChild(mapping MapString, displayTypes bool) string {
-	return ListToMappedString(o.FormList, " "+mapping[OrConn]+" ", "", mapping, displayTypes)
+func (o Or) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return " " + mapping[OrConn] + " ", ""
 }
 
 func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
