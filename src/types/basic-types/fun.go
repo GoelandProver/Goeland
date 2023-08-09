@@ -95,13 +95,6 @@ func (f Fun) ToString() string {
 	return f.ToMappedString(defaultMap, true)
 }
 
-func (f Fun) ToStringWithSuffixMeta(suffix string) string {
-	if len(f.args) == 0 {
-		return f.GetID().GetName()
-	}
-	return f.GetID().GetName() + "(" + listToStringMeta(f.args, suffix, ", ", "") + ") : " + f.typeHint.ToString()
-}
-
 func (f Fun) Equals(t Term) bool {
 	oth, isFun := t.(Fun)
 	return isFun &&

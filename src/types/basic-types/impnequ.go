@@ -65,10 +65,6 @@ func (i Imp) GetMetas() MetaList         { return i.f1.GetMetas().Merge(i.f2.Get
 func (i Imp) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (i Imp) ToString() string           { return i.ToMappedString(defaultMap, true) }
 
-func (i Imp) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + i.GetF1().ToStringWithSuffixMeta(suffix) + " " + defaultMap[ImpConn] + " " + i.GetF2().ToStringWithSuffixMeta(suffix) + ")"
-}
-
 func (i Imp) Equals(f any) bool {
 	oth, isImp := f.(Imp)
 	return isImp &&
@@ -137,10 +133,6 @@ func (e Equ) Copy() Form {
 func (e Equ) GetMetas() MetaList         { return e.f1.GetMetas().Merge(e.f2.GetMetas()) }
 func (e Equ) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (e Equ) ToString() string           { return e.ToMappedString(defaultMap, true) }
-
-func (e Equ) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + e.GetF1().ToStringWithSuffixMeta(suffix) + " " + defaultMap[EquConn] + " " + e.GetF2().ToStringWithSuffixMeta(suffix) + ")"
-}
 
 func (e Equ) Equals(f any) bool {
 	oth, isEqu := f.(Equ)

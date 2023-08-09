@@ -51,7 +51,6 @@ type Term interface {
 	GetName() string
 	ToMappedString(MapString, bool) string
 	ToString() string
-	ToStringWithSuffixMeta(string) string
 	Copy() Term
 	Equals(Term) bool
 	IsMeta() bool
