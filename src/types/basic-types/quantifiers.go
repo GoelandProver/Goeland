@@ -69,10 +69,6 @@ func (e Ex) ToString() string {
 	return e.ToMappedString(defaultMap, true)
 }
 
-func (e Ex) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + defaultMap[ExQuant] + " [" + ListToString(e.GetVarList(), ", ", "") + "] (" + e.GetForm().ToStringWithSuffixMeta(suffix) + "))"
-}
-
 func (e Ex) Copy() Form {
 	return Ex{
 		index:    e.GetIndex(),
@@ -157,10 +153,6 @@ func (a All) GetMetas() MetaList         { return a.GetForm().GetMetas() }
 
 func (a All) ToString() string {
 	return a.ToMappedString(defaultMap, true)
-}
-
-func (a All) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + defaultMap[AllQuant] + " [" + ListToString(a.GetVarList(), ", ", "") + "] (" + a.GetForm().ToStringWithSuffixMeta(suffix) + "))"
 }
 
 func (a All) Copy() Form {
@@ -253,10 +245,6 @@ func (a AllType) ToString() string {
 	return "(" + a.ToMappedString(defaultMap, true) + " (" + a.GetForm().ToString() + "))"
 }
 func (a AllType) GetMetas() MetaList { return a.GetForm().GetMetas() }
-
-func (a AllType) ToStringWithSuffixMeta(suffix string) string {
-	return a.ToMappedString(defaultMap, true) + " (" + a.GetForm().ToStringWithSuffixMeta(suffix) + ")"
-}
 
 func (a AllType) Copy() Form {
 	return AllType{

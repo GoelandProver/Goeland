@@ -106,10 +106,6 @@ func (a And) ToMappedString(map_ MapString, displayTypes bool) string {
 	return "(" + ListToMappedString(a.FormList, " "+map_[AndConn]+" ", "", map_, displayTypes) + ")"
 }
 
-func (a And) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + listToStringMeta(a.FormList, suffix, " "+defaultMap[AndConn]+" ", "") + ")"
-}
-
 func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAnd(a.GetIndex(), replaceList(a.FormList, varList, index))
 }

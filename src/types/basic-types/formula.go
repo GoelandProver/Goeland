@@ -39,8 +39,6 @@
 package basictypes
 
 import (
-	"strings"
-
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -63,7 +61,6 @@ type Form interface {
 	Copyable[Form]
 
 	ToMappedString(MapString, bool) string
-	ToStringWithSuffixMeta(string) string
 
 	ReplaceTypeByMeta([]typing.TypeVar, int) Form
 	ReplaceVarByTerm(old Var, new Term) (Form, bool)
@@ -181,24 +178,6 @@ func replaceVarInVarList(vars []Var, oldVar, newVar Var) []Var {
 }
 
 /* Utils */
-
-type FormOrTerm interface {
-	ToStringWithSuffixMeta(string) string
-}
-
-func listToStringMeta[T FormOrTerm](fot []T, suffix, sep, emptyValue string) string {
-	strArr := []string{}
-
-	for _, element := range fot {
-		strArr = append(strArr, element.ToStringWithSuffixMeta(suffix))
-	}
-
-	if len(strArr) == 0 && emptyValue != "" {
-		strArr = append(strArr, emptyValue)
-	}
-
-	return strings.Join(strArr, sep)
-}
 
 func instanciateTypeAppList(typeApps []typing.TypeApp, vars []typing.TypeVar, index int) []typing.TypeApp {
 	// For each typeVar € nf.GetTypeVars(), if typeVar € varList, instanciate typeVar
