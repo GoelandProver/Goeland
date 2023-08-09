@@ -125,28 +125,17 @@ func (a And) CleanFormula() Form {
 }
 
 func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
-	newFormList := make(FormList, 0)
-	found := false
-	for _, form := range a.FormList {
-		f := form.SubstituteVarByMeta(old, new)
-		newFormList = append(newFormList, f)
-		if f.GetInternalMetas().Contains(new) {
-			found = true
-		}
-	}
-	metas := a.MetaList
-	if found {
-		metas = append(a.MetaList, new)
-	}
-	return And{a.index, newFormList, metas}
+	newFormList, newMetas := substVarByMetaInFormList(old, new, a.FormList, a.MetaList)
+	return And{a.index, newFormList, newMetas}
 }
 
 func (a And) GetInternalMetas() MetaList {
 	return a.MetaList
 }
 
-func (a And) SetInternalMetas(m MetaList) {
+func (a And) SetInternalMetas(m MetaList) Form {
 	a.MetaList = m
+	return a
 }
 
 func (a And) GetSubFormulasRecur() FormList {

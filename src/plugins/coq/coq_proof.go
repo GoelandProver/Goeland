@@ -45,6 +45,7 @@ import (
 	"strings"
 
 	. "github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/dmt"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -54,10 +55,11 @@ var dummy int
 func makeCoqProofFromGS3(proof *gs3.GS3Sequent) string {
 	dummy = 0
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
-	var resultingString string
+	totalAxioms := len(axioms)
 	if IsLoaded("dmt") {
-		resultingString = getRewriteRules()
+		axioms = append(dmt.GetRegisteredAxioms(), axioms...)
 	}
+	var resultingString string
 	resultingString = makeTheorem(axioms, conjecture)
 	resultingString += "Proof.\n"
 	hypotheses := make([]btps.Form, 0)
@@ -67,7 +69,9 @@ func makeCoqProofFromGS3(proof *gs3.GS3Sequent) string {
 			indices[i], hypotheses = introduce(form, hypotheses)
 		}
 		resultingString += "intros " + strings.Join(Map(indices, func(_ int, index int) string { return introName(index) }), " ") + ". "
-		proof = proof.Child(0)
+		if totalAxioms > 0 {
+			proof = proof.Child(0)
+		}
 	}
 	index, hypotheses := introduce(btps.MakerNot(conjecture), hypotheses)
 	resultingString += "intro " + introName(index) + ". "
@@ -153,7 +157,8 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, constantsCreated []
 			resultingString, childrenHypotheses = cleanHypotheses(hypotheses, proof.GetTargetForm())
 		}
 
-		// TODO: Rewrite rules
+	case gs3.REWRITE:
+		resultingString, childrenHypotheses = rewriteStep(proof.GetRewriteWith(), hypotheses, target, proof.GetResultFormulasOfChild(0)[0])
 	}
 
 	return resultingString, childrenHypotheses, constantsCreated
@@ -185,6 +190,7 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format 
 func deltaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format string, constantsCreated []btps.Term) (string, [][]btps.Form, []btps.Term) {
 	var indices []int
 	var name string
+	//PrintInfo("DELTA", fmt.Sprintf("%s\n%s", hypotheses[target].ToString(), proof.GetResultFormulasOfChild(0).ToString()))
 	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
 	constantsCreated, name = addTermGenerated(constantsCreated, proof.TermGenerated())
 	resultingString := fmt.Sprintf(format, introName(target), name, introNames(indices))
@@ -196,6 +202,12 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format
 	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
 	name := "(" + getRealConstantName(constantsCreated, proof.TermGenerated()) + ")"
 	resultingString := fmt.Sprintf(format, introName(target), name, introNames(indices))
+	return resultingString, [][]btps.Form{hypotheses}
+}
+
+func rewriteStep(rewriteRule btps.Form, hypotheses btps.FormList, target int, replacementForm btps.Form) (string, [][]btps.Form) {
+	resultingString := fmt.Sprintf("rewrite %s in %s.", introName(get(rewriteRule, hypotheses)), introName(target))
+	hypotheses[target] = replacementForm
 	return resultingString, [][]btps.Form{hypotheses}
 }
 
@@ -211,11 +223,6 @@ func processMainFormula(form btps.Form) (btps.FormList, btps.Form) {
 		form = nf.FormList[last].(btps.Not).GetForm()
 	}
 	return formList, form
-}
-
-func getRewriteRules() string {
-	// TODO
-	return ""
 }
 
 // Prints the theorem's name & properly formats the first formula.
@@ -257,10 +264,10 @@ func get(f btps.Form, hypotheses []btps.Form) int {
 			return i
 		}
 	}
-	/*PrintInfo("GET", f.ToString())
-	for _, h := range hypotheses {
-		PrintInfo("H", h.ToString())
-	}*/
+	// PrintInfo("GET", f.ToString())
+	// for _, h := range hypotheses {
+	// 	PrintInfo("H", h.ToString())
+	// }
 	return -1
 }
 

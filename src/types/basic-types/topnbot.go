@@ -66,7 +66,7 @@ func (t Top) GetIndex() int                                { return t.index }
 func (t Top) GetSubTerms() TermList                        { return MakeEmptyTermList() }
 func (t Top) SubstituteVarByMeta(Var, Meta) Form           { return t }
 func (t Top) GetInternalMetas() MetaList                   { return MetaList{} }
-func (t Top) SetInternalMetas(MetaList)                    { return }
+func (t Top) SetInternalMetas(MetaList) Form               { return t }
 func (t Top) GetSubFormulasRecur() FormList                { return FormList{t.Copy()} }
 func (t Top) GetChildFormulas() FormList                   { return FormList{} }
 
@@ -92,6 +92,6 @@ func (b Bot) GetIndex() int                                { return b.index }
 func (b Bot) GetSubTerms() TermList                        { return MakeEmptyTermList() }
 func (b Bot) SubstituteVarByMeta(Var, Meta) Form           { return b }
 func (b Bot) GetInternalMetas() MetaList                   { return MetaList{} }
-func (b Bot) SetInternalMetas(MetaList)                    { return }
+func (b Bot) SetInternalMetas(MetaList) Form               { return b }
 func (b Bot) GetSubFormulasRecur() FormList                { return FormList{b.Copy()} }
 func (b Bot) GetChildFormulas() FormList                   { return FormList{} }

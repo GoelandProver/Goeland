@@ -461,6 +461,7 @@ func manageRewriteRules(fatherId uint64, state complextypes.State, c Communicati
 	ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), currentNodeId, originalNodeId, []int{})
 }
 
+// ill TODO: check if this function does not make the DMT version lose completeness: is the original formula that's rewritten still in the branch or not?
 func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTerms, state *complextypes.State, remainingAtomics basictypes.FormAndTermsList, fatherId uint64, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) bool {
 	global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.IntSubstAndFormListToString(rewritten)))
 

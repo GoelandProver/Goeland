@@ -46,11 +46,17 @@ The parameters must be passed *before* the problem file. The available parameter
 | Parameter flag | Effect |
 |--------------------------|-----------|
 | -ari | Enable the use of (TPTP) arithmetic functions (default: **false**). |
+| -compare | Together with `-ocoq`, outputs both the Coq proof and the tableaux proof (default: **false**). |
+| -completeness | Enables Goeland to be complete (it may worsen performances) (default: **false**). |
+| -context | Together with `-ocoq`, produces the context for a Coq proof (default: **false**). |
 | -dmt | Allow the use of deduction modulo theory during the proofsearch (default: **false**). |
 | -exchanges | Generate an exchange tree in json (default: **false**). Visualisation of this exchange tree can be done with the [visualisation module](visualization/). |
+| -inner | Activates inner Skolemisation, i.e., a more optimised Skolemisation strategy. It makes Goeland faster and prove more problems (default: **false**). |
+| -preinner | Activates preinner Skolemisation, i.e., a Skolemisation strategy even more optimised than `-inner` (default: **false**). |
 | -l | Re-entry limit of free variables in destructive mode (default: **-1**) |
 | -nd | Use of non-destructive mode (default: **false**) |
 | -noeq | Disable the use of rigid E-Unification (default: **false**). |
+| -ocoq | Activates a Coq proof output (default: **false**). |
 | -proof | Display a proof of the theorem (default: **false**). |
 | -polarized | Only useful if -dmt is activated. Polarises deduction modulo to also transform axioms with implications as the root connective |
 | -presko | Only useful if -dmt is activated. Preskolemises rewrited formulas if possible. |
@@ -63,7 +69,7 @@ Since the tableau method only proves theorems, Goéland returns `Valid` when a p
 
 ### Tests <a id="tests"></a>
 
-The benchmark is available in [tests](tests/) folder, with the [Makefile](tests/Makefile) needed to run them. The folder on which to run the tests are specified in the [Makefile](tests/Makefile).
+The benchmark is available in [GoelandBenchmarks](GoelandBenchmarks/) folder, with the [Makefile](GoelandBenchmarks/Makefile) needed to run them. The folder on which to run the tests are specified in the [Makefile](GoelandBenchmarks/Makefile).
 
 For example, the command line:
 ```console
@@ -82,4 +88,4 @@ with the following architecture:
 ├── RESULTS
 └── Makefile
 ```
-and the corresponding lines added to the [Makefile](tests/Makefile) will run Goéland and Goéland+DMT on the SYN and SET folder. Output results are placed into the [RESULTS](tests/RESULTS/) repository. 
+and the corresponding lines added to the [Makefile](GoelandBenchmarks/Makefile) will run Goéland and Goéland+DMT on the SYN and SET folder. Output results are placed into the [RESULTS](GoelandBenchmarks/RESULTS/) repository. 

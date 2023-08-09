@@ -131,8 +131,9 @@ func (n Not) GetInternalMetas() MetaList {
 	return n.MetaList
 }
 
-func (n Not) SetInternalMetas(m MetaList) {
+func (n Not) SetInternalMetas(m MetaList) Form {
 	n.MetaList = m
+	return n
 }
 
 func (n Not) GetSubFormulasRecur() FormList {
@@ -147,7 +148,8 @@ func (n Not) GetChildFormulas() FormList {
 
 /* Gives a new Form that is the negation of the given Form */
 func RefuteForm(form Form) Form {
-	return MakerNot(form)
+	internalMetas := form.GetInternalMetas()
+	return MakerNot(form).SetInternalMetas(internalMetas)
 }
 
 /* Gives a new Form that isn't a Not */

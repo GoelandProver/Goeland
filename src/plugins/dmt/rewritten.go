@@ -51,7 +51,7 @@ func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
 	for _, s := range subst {
 		old_symbol, new_symbol := s.Get()
 		form = ctypes.ApplySubstitutionOnFormula(old_symbol, new_symbol, form)
-		form.SetInternalMetas(substInternalMetas(form.GetInternalMetas(), subst))
+		form = form.SetInternalMetas(substInternalMetas(form.GetInternalMetas(), subst))
 	}
 	return form
 }

@@ -40,7 +40,8 @@ func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, t
 
 	if len(varList) > 1 {
 		if status == is_exists {
-			subForm = btps.RefuteForm(btps.MakerEx(varList[1:], subForm))
+			ex := btps.MakerEx(varList[1:], subForm)
+			subForm = btps.RefuteForm(ex.SetInternalMetas(internalMetas))
 		} else {
 			subForm = btps.MakerAll(varList[1:], subForm)
 		}
@@ -49,7 +50,5 @@ func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, t
 			subForm = btps.RefuteForm(subForm)
 		}
 	}
-
-	subForm.SetInternalMetas(internalMetas)
-	return btps.MakeFormAndTerm(subForm, terms), meta
+	return btps.MakeFormAndTerm(subForm.SetInternalMetas(internalMetas), terms), meta
 }

@@ -122,8 +122,9 @@ func (e Ex) GetInternalMetas() MetaList {
 	return e.MetaList
 }
 
-func (e Ex) SetInternalMetas(m MetaList) {
+func (e Ex) SetInternalMetas(m MetaList) Form {
 	e.MetaList = m
+	return e
 }
 
 func (e Ex) GetSubFormulasRecur() FormList {
@@ -208,8 +209,9 @@ func (a All) GetInternalMetas() MetaList {
 	return a.MetaList
 }
 
-func (a All) SetInternalMetas(m MetaList) {
+func (a All) SetInternalMetas(m MetaList) Form {
 	a.MetaList = m
+	return a
 }
 
 func (a All) GetSubFormulasRecur() FormList {
@@ -313,8 +315,9 @@ func (a AllType) GetInternalMetas() MetaList {
 	return a.MetaList
 }
 
-func (a AllType) SetInternalMetas(m MetaList) {
+func (a AllType) SetInternalMetas(m MetaList) Form {
 	a.MetaList = m
+	return a
 }
 
 func (a AllType) GetSubFormulasRecur() FormList {

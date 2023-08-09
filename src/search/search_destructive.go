@@ -389,8 +389,28 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 				global.PrintDebug("WF", fmt.Sprintf("MC after sisters : %v", meta_sisters.ToString()))
 			}
 
-			meta_to_reintroduce_from_subt := retrieveMetaFromSubst(answer_father.subst_for_children.GetSubst())
+			father_subst := answer_father.subst_for_children.GetSubst()
+			meta_to_reintroduce_from_subt := retrieveMetaFromSubst(father_subst)
 			new_meta_to_reintroduce := global.InterIntList(meta_to_reintroduce, meta_to_reintroduce_from_subt)
+
+			// Special case: the current node is a rewriting node.
+			// As such, this rule can not be applied back.
+			// Thus, we always need to put the rewrite rule in first, so apply subst on it + no overwrite
+			is_rewrite := st.GetCurrentProof().Rule == "Rewrite"
+
+			if is_rewrite {
+				prf := st.GetCurrentProof()
+				prf.Formula = basictypes.MakeFormAndTerm(
+					complextypes.ApplySubstitutionsOnFormula(father_subst, prf.Formula.GetForm()),
+					prf.Formula.Terms,
+				)
+				for i, test := range prf.Result_formulas {
+					prf.Result_formulas[i] = proof.MakeIntFormAndTermsList(
+						test.GetI(),
+						complextypes.ApplySubstitutionsOnFormAndTermsList(father_subst, test.GetFL()),
+					)
+				}
+			}
 
 			st_copy := st.Copy()
 			st_copy.SetGlobalUnifier(complextypes.MakeUnifier())
@@ -523,7 +543,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 			}
 		}
 
-		lam := func(atomic basictypes.Form) (bool, basictypes.FormAndTerms) {
+		lam := func(atomic basictypes.Form) bool {
 			// Search for a contradiction in LF
 			if global.IsLoaded("equality") {
 				equality.InsertPred(atomic)
@@ -534,28 +554,28 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 
 			if clos_res {
 				manageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst), fAt, node_id, original_node_id)
-				return false, basictypes.FormAndTerms{}
+				return false
 			}
 
-			return true, fAt
+			return true
 
 			// Retrieve atomics generated at this step
 		}
 
 		new_atomics := basictypes.MakeEmptyFormAndTermsList()
 		for _, f := range atomicsPlus {
-			ok, newAtom := lam(f)
+			ok := lam(f.Copy())
 			if !ok {
 				return
 			}
-			new_atomics = append(new_atomics, newAtom)
+			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(f.Copy(), basictypes.MakeEmptyTermList()))
 		}
 		for _, f := range atomicsMinus {
-			ok, newAtom := lam(basictypes.MakerNot(f))
+			ok := lam(basictypes.MakerNot(f))
 			if !ok {
 				return
 			}
-			new_atomics = append(new_atomics, newAtom)
+			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(basictypes.MakerNot(f), basictypes.MakeEmptyTermList()))
 		}
 
 		/** Filter Atomics for DMT

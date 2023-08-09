@@ -294,6 +294,7 @@ func (lexer *TPTPLex) isPredicate() (int, bool) {
 			if unicode.IsLetter(lexer.c) {
 				word += string(lexer.c)
 			} else {
+				lexer.remove(1)
 				break
 			}
 		}

@@ -60,7 +60,7 @@ func (t TermForm) ReplaceVarByTerm(basictypes.Var, basictypes.Term) (basictypes.
 func (t TermForm) GetIndex() int                                                       { return t.index }
 func (t TermForm) SubstituteVarByMeta(basictypes.Var, basictypes.Meta) basictypes.Form { return t }
 func (t TermForm) GetInternalMetas() basictypes.MetaList                               { return basictypes.MetaList{} }
-func (t TermForm) SetInternalMetas(basictypes.MetaList)                                { return }
+func (t TermForm) SetInternalMetas(basictypes.MetaList) basictypes.Form                { return t }
 func (t TermForm) GetSubFormulasRecur() basictypes.FormList                            { return basictypes.FormList{} }
 func (t TermForm) GetChildFormulas() basictypes.FormList                               { return basictypes.FormList{} }
 

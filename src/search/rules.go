@@ -404,7 +404,7 @@ func applyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 		setStateRules(state, "DELTA", "EXISTS")
 	}
 
-	return basictypes.MakeSingleElementFormAndTermList(syntax.Skolemize(fnt))
+	return basictypes.MakeSingleElementFormAndTermList(syntax.Skolemize(fnt, append(state.GetMM(), state.GetMC()...)))
 }
 
 /**
