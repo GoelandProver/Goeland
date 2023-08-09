@@ -66,11 +66,11 @@ func (e Ex) ToString() string {
 	return e.FormMappableString.ToString()
 }
 
-func (e Ex) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (e Ex) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "(" + mapping[ExQuant] + " "
 }
 
-func (e Ex) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (e Ex) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return QuantifierToMappedString(mapping, e.GetVarList(), e.GetForm(), displayTypes)
 }
 
@@ -157,11 +157,11 @@ func (a All) ToString() string {
 	return a.FormMappableString.ToString()
 }
 
-func (a All) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (a All) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "(" + mapping[AllQuant] + " "
 }
 
-func (a All) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (a All) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return QuantifierToMappedString(mapping, a.GetVarList(), a.GetForm(), displayTypes)
 }
 
@@ -256,11 +256,11 @@ func (a AllType) ToString() string {
 	return a.FormMappableString.ToString()
 }
 
-func (a AllType) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (a AllType) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "(" + mapping[AllTypeQuant] + " "
 }
 
-func (a AllType) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (a AllType) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return mapping[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (" + a.GetForm().ToMappedString(mapping, displayTypes) + ")"
 }
 

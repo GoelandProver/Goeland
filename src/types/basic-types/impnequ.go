@@ -52,11 +52,11 @@ type Imp struct {
 	MetaList
 }
 
-func (i Imp) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (i Imp) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "("
 }
 
-func (i Imp) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (i Imp) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return i.GetF1().ToMappedString(mapping, displayTypes) + " " + mapping[ImpConn] + " " + i.GetF2().ToMappedString(mapping, displayTypes)
 }
 
@@ -136,11 +136,11 @@ type Equ struct {
 	MetaList
 }
 
-func (e Equ) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (e Equ) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "("
 }
 
-func (e Equ) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (e Equ) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return e.GetF1().ToMappedString(mapping, displayTypes) + " " + mapping[EquConn] + " " + e.GetF2().ToMappedString(mapping, displayTypes)
 }
 

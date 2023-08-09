@@ -106,11 +106,11 @@ func (o Or) ToString() string {
 	return o.FormMappableString.ToString()
 }
 
-func (o Or) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (o Or) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "("
 }
 
-func (o Or) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (o Or) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return ListToMappedString(o.FormList, " "+mapping[OrConn]+" ", "", mapping, displayTypes)
 }
 

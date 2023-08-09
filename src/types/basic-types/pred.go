@@ -78,11 +78,11 @@ func (p Pred) ToString() string {
 	return p.FormMappableString.ToString()
 }
 
-func (p Pred) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return ""
 }
 
-func (p Pred) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
 		return p.GetID().ToMappedString(mapping, displayTypes)
 	}

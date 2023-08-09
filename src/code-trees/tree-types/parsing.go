@@ -47,11 +47,11 @@ type TermForm struct {
 	t     basictypes.Term
 }
 
-func (t TermForm) ToMappedStringPrefix(mapping basictypes.MapString, displayTypes bool) string {
+func (t TermForm) ToMappedStringSurround(mapping basictypes.MapString, displayTypes bool) string {
 	return ""
 }
 
-func (t TermForm) ToMappedContentPrefix(mapping basictypes.MapString, displayTypes bool) string {
+func (t TermForm) ToMappedStringChild(mapping basictypes.MapString, displayTypes bool) string {
 	return t.t.ToMappedString(mapping, displayTypes)
 }
 

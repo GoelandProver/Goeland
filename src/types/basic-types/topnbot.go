@@ -50,11 +50,11 @@ type Top struct {
 	index int
 }
 
-func (t Top) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (t Top) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return ""
 }
 
-func (t Top) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (t Top) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return mapping[TopType]
 }
 
@@ -84,11 +84,11 @@ type Bot struct {
 	index int
 }
 
-func (b Bot) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (b Bot) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return ""
 }
 
-func (b Bot) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (b Bot) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return mapping[BotType]
 }
 

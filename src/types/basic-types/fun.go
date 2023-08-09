@@ -56,11 +56,11 @@ type Fun struct {
 	typeHint typing.TypeScheme
 }
 
-func (f Fun) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return ""
 }
 
-func (f Fun) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
 		return f.GetID().ToMappedString(mapping, displayTypes)
 	}

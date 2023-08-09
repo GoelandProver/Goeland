@@ -102,11 +102,11 @@ func (n Not) ToString() string {
 	return n.FormMappableString.ToString()
 }
 
-func (n Not) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (n Not) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return mapping[NotConn] + "("
 }
 
-func (n Not) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (n Not) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return n.GetForm().ToMappedString(mapping, displayTypes)
 }
 

@@ -107,8 +107,8 @@ type StringableMapped interface {
 	global.Stringable
 
 	ToMappedString(MapString, bool) string
-	ToMappedStringPrefix(MapString, bool) string
-	ToMappedContentPrefix(MapString, bool) string
+	ToMappedStringSurround(MapString, bool) string
+	ToMappedStringChild(MapString, bool) string //Return 3 things: surround of each child, separator of each child, what to print if no child
 	ToMappedSuffixPrefix(MapString, bool) string
 }
 
@@ -121,7 +121,7 @@ func (fms FormMappableString) ToString() string {
 }
 
 func (fms FormMappableString) ToMappedString(mapping MapString, displayType bool) string {
-	return fms.ToMappedStringPrefix(mapping, displayType) + fms.ToMappedContentPrefix(mapping, displayType) + fms.ToMappedSuffixPrefix(mapping, displayType)
+	return fms.ToMappedStringSurround(mapping, displayType) + fms.ToMappedStringChild(mapping, displayType) + fms.ToMappedSuffixPrefix(mapping, displayType)
 }
 
 func ListToMappedString[T StringableMapped](sgbl []T, sep, emptyValue string, mapping MapString, displayTypes bool) string {

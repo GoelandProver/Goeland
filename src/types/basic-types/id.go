@@ -57,11 +57,11 @@ func (i Id) Copy() Term       { return MakeId(i.GetIndex(), i.GetName()) }
 func (Id) ToMeta() Meta       { return MakeEmptyMeta() }
 func (Id) GetMetas() MetaList { return MetaList{} }
 
-func (i Id) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (i Id) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return ""
 }
 
-func (i Id) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
 }
 

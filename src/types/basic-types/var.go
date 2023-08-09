@@ -89,11 +89,11 @@ func (v Var) ToMappedString(map_ MapString, type_ bool) string {
 	return v.GetName()
 }
 
-func (v Var) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+func (v Var) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return ""
 }
 
-func (v Var) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	if displayTypes {
 		return fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
 	} else {
