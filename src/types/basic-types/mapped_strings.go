@@ -103,15 +103,32 @@ func initDefaultMap() {
 	defaultMap[TypeVarType] = "$tType"
 }
 
-type MappedStringable interface {
+type StringableMapped interface {
+	global.Stringable
+
 	ToMappedString(MapString, bool) string
+	ToMappedStringPrefix(MapString, bool) string
+	ToMappedContentPrefix(MapString, bool) string
+	ToMappedSuffixPrefix(MapString, bool) string
 }
 
-func ListToMappedString[T MappedStringable](sgbl []T, sep, emptyValue string, map_ MapString, displayTypes bool) string {
+type FormMappableString struct {
+	StringableMapped
+}
+
+func (fms FormMappableString) ToString() string {
+	return fms.ToMappedString(defaultMap, true)
+}
+
+func (fms FormMappableString) ToMappedString(mapping MapString, displayType bool) string {
+	return fms.ToMappedStringPrefix(mapping, displayType) + fms.ToMappedContentPrefix(mapping, displayType) + fms.ToMappedSuffixPrefix(mapping, displayType)
+}
+
+func ListToMappedString[T StringableMapped](sgbl []T, sep, emptyValue string, mapping MapString, displayTypes bool) string {
 	strArr := []string{}
 
 	for _, element := range sgbl {
-		strArr = append(strArr, element.ToMappedString(map_, displayTypes))
+		strArr = append(strArr, element.ToMappedString(mapping, displayTypes))
 	}
 
 	if len(strArr) == 0 && emptyValue != "" {

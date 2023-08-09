@@ -45,27 +45,6 @@ import (
 
 /*** Structure ***/
 
-type StringableMapped interface {
-	Stringable
-
-	ToMappedString(MapString, bool) string
-	ToMappedStringPrefix(MapString, bool) string
-	ToMappedContentPrefix(MapString, bool) string
-	ToMappedSuffixPrefix(MapString, bool) string
-}
-
-type FormMappableString struct {
-	StringableMapped
-}
-
-func (fms FormMappableString) ToString() string {
-	return fms.ToMappedString(defaultMap, true)
-}
-
-func (fms FormMappableString) ToMappedString(mapping MapString, displayType bool) string {
-	return fms.ToMappedStringPrefix(mapping, displayType) + fms.ToMappedContentPrefix(mapping, displayType) + fms.ToMappedSuffixPrefix(mapping, displayType)
-}
-
 type Form interface {
 	GetIndex() int
 	GetMetas() MetaList

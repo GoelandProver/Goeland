@@ -9,6 +9,25 @@ import (
 
 var contextEnabled bool = false
 
+var lambdaPiMapConnectors = map[btps.FormulaType]string{
+	btps.AndConn:        "∧",
+	btps.OrConn:         "∨",
+	btps.ImpConn:        "⇒",
+	btps.EquConn:        "⇔",
+	btps.NotConn:        "¬",
+	btps.TopType:        "⊤",
+	btps.BotType:        "⊥",
+	btps.AllQuant:       "∀α",
+	btps.ExQuant:        "∃",
+	btps.AllTypeQuant:   "∀",
+	btps.QuantVarOpen:   "(",
+	btps.QuantVarClose:  ")",
+	btps.QuantVarSep:    " ",
+	btps.PredEmpty:      "",
+	btps.PredTypeVarSep: ") (",
+	btps.TypeVarType:    "Type",
+}
+
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
 
@@ -33,27 +52,6 @@ func makeLambdaPiProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
 	//global.PrintInfo("GS3", proof.ToString())
 	proofString := makeLambdaPiProofFromGS3(proof)
 	return contextString + "\n" + proofString
-}
-
-func lambdaPiMapConnectors() map[btps.FormulaType]string {
-	return map[btps.FormulaType]string{
-		btps.AndConn:        "∧",
-		btps.OrConn:         "∨",
-		btps.ImpConn:        "⇒",
-		btps.EquConn:        "⇔",
-		btps.NotConn:        "¬",
-		btps.TopType:        "⊤",
-		btps.BotType:        "⊥",
-		btps.AllQuant:       "∀α",
-		btps.ExQuant:        "∃",
-		btps.AllTypeQuant:   "∀",
-		btps.QuantVarOpen:   "(",
-		btps.QuantVarClose:  ")",
-		btps.QuantVarSep:    " ",
-		btps.PredEmpty:      "",
-		btps.PredTypeVarSep: ") (",
-		btps.TypeVarType:    "Type",
-	}
 }
 
 // Context flag utility function
