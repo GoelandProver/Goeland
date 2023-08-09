@@ -114,6 +114,10 @@ func (o Or) ToMappedStringChild(mapping MapString, displayTypes bool) (separator
 	return " " + mapping[OrConn] + " ", ""
 }
 
+func (o Or) GetChildrenForMappedString() []MappableString {
+	return o.GetChildFormulas().ToMappableStringSlice()
+}
+
 func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeOr(o.GetIndex(), replaceList(o.FormList, varList, index))
 }

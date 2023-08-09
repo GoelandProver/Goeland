@@ -65,6 +65,10 @@ func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) (separator
 	return "", fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
 }
 
+func (i Id) GetChildrenForMappedString() []MappableString {
+	return []MappableString{}
+}
+
 func (i Id) Equals(t Term) bool {
 	return t.GetIndex() == i.GetIndex()
 	// oth, isId := t.(Id)

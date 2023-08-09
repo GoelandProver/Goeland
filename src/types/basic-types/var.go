@@ -100,3 +100,7 @@ func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) (separato
 		return "", v.GetName()
 	}
 }
+
+func (v Var) GetChildrenForMappedString() []MappableString {
+	return []MappableString{}
+}

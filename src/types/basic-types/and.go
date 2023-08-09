@@ -114,6 +114,10 @@ func (a And) ToMappedStringChild(mapping MapString, displayTypes bool) (separato
 	return " " + mapping[AndConn] + " ", ""
 }
 
+func (a And) GetChildrenForMappedString() []MappableString {
+	return a.GetChildFormulas().ToMappableStringSlice()
+}
+
 func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAnd(a.GetIndex(), replaceList(a.FormList, varList, index))
 }

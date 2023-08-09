@@ -74,6 +74,10 @@ func (e Ex) ToMappedStringChild(mapping MapString, displayTypes bool) (separator
 	return " ", ""
 }
 
+func (e Ex) GetChildrenForMappedString() []MappableString {
+	return e.GetChildFormulas().ToMappableStringSlice()
+}
+
 func (e Ex) Copy() Form {
 	return MakeExSimple(e.GetIndex(), copyVarList(e.GetVarList()), e.GetForm(), e.MetaList.Copy())
 }
@@ -159,6 +163,10 @@ func (a All) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 
 func (a All) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return " ", ""
+}
+
+func (a All) GetChildrenForMappedString() []MappableString {
+	return a.GetChildFormulas().ToMappableStringSlice()
 }
 
 func (a All) Copy() Form {
@@ -254,6 +262,10 @@ func (a AllType) ToMappedStringSurround(mapping MapString, displayTypes bool) st
 
 func (a AllType) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return "", ""
+}
+
+func (a AllType) GetChildrenForMappedString() []MappableString {
+	return a.GetChildFormulas().ToMappableStringSlice()
 }
 
 func (a AllType) GetMetas() MetaList { return a.GetForm().GetMetas() }

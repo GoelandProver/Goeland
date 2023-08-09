@@ -55,6 +55,10 @@ func (t TermForm) ToMappedStringChild(mapping basictypes.MapString, displayTypes
 	return "", t.t.ToMappedString(mapping, displayTypes)
 }
 
+func (t TermForm) GetChildrenForMappedString() []basictypes.MappableString {
+	return t.GetChildFormulas().ToMappableStringSlice()
+}
+
 func (t TermForm) GetTerm() basictypes.Term                                { return t.t.Copy() }
 func (t TermForm) Copy() basictypes.Form                                   { return makeTermForm(t.GetIndex(), t.GetTerm()) }
 func (t TermForm) GetType() typing.TypeScheme                              { return typing.DefaultFunType(0) }

@@ -52,7 +52,7 @@ func makeLambdaPiProofFromGS3(proof *gs3.GS3Sequent) string {
 	}
 	formula := proof.GetTargetForm()
 
-	formulaStr := formula.ToMappedString(lambdaPiMapConnectors, false)
+	formulaStr := decorateForm(formula).ToString()
 	resultingString += fmt.Sprintf("λ (%s : ϵ %s),\n", addToContext(formula), formulaStr)
 	proofStr := makeProofStep(proof)
 	resultingString += proofStr
@@ -385,6 +385,11 @@ func gammaAll(proof *gs3.GS3Sequent) string {
 	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
 
 	return result
+}
+
+func toCorrectString(form btps.MappableString) string {
+	decorated := decorateForm(form)
+	return decorated.ToString()
 }
 
 func alphaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format string) (string, [][]btps.Form) {

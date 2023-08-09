@@ -81,6 +81,10 @@ func (m Meta) ToMappedStringChild(mapping MapString, displayTypes bool) (separat
 	}
 }
 
+func (m Meta) GetChildrenForMappedString() []MappableString {
+	return []MappableString{}
+}
+
 func (m Meta) Equals(t Term) bool {
 	return t.GetIndex() == m.GetIndex()
 	// oth, isMeta := t.(Meta)

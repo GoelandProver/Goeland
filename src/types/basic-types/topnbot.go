@@ -58,6 +58,10 @@ func (t Top) ToMappedStringChild(mapping MapString, displayTypes bool) (separato
 	return "", mapping[TopType]
 }
 
+func (t Top) GetChildrenForMappedString() []MappableString {
+	return t.GetChildFormulas().ToMappableStringSlice()
+}
+
 func (t Top) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
 func (t Top) Copy() Form                                   { return MakeTop(t.GetIndex()) }
 func (Top) Equals(f any) bool                              { _, isTop := f.(Top); return isTop }
@@ -86,6 +90,10 @@ func (b Bot) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 
 func (b Bot) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return "", mapping[BotType]
+}
+
+func (b Bot) GetChildrenForMappedString() []MappableString {
+	return b.GetChildFormulas().ToMappableStringSlice()
 }
 
 func (b Bot) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }

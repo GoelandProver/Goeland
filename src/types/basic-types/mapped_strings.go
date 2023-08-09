@@ -41,6 +41,7 @@
 package basictypes
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -108,7 +109,9 @@ type MappableString interface {
 
 	ToMappedString(MapString, bool) string
 	ToMappedStringSurround(MapString, bool) string
-	ToMappedStringChild(MapString, bool) (string, string) //Return 3 things: surround of each child, separator of each child, what to print if no child
+	//Return the separator for each child as 1st return, and if there are no children, return the value as 2nd return
+	ToMappedStringChild(MapString, bool) (separator string, emptyValue string)
+	GetChildrenForMappedString() []MappableString
 }
 
 type MappedString struct {
@@ -120,7 +123,10 @@ func (fms MappedString) ToString() string {
 }
 
 func (fms MappedString) ToMappedString(mapping MapString, displayType bool) string {
-	return fms.ToMappedStringSurround(mapping, displayType) + fms.ToMappedStringChild(mapping, displayType)
+	surround := fms.ToMappedStringSurround(mapping, displayType)
+	separator, emptyValue := fms.ToMappedStringChild(mapping, displayType)
+	children := ListToMappedString(fms.GetChildrenForMappedString(), separator, emptyValue, mapping, displayType)
+	return fmt.Sprintf(surround, children)
 }
 
 func ListToMappedString[T MappableString](sgbl []T, separator, emptyValue string, mapping MapString, displayTypes bool) string {

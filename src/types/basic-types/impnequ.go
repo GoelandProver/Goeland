@@ -60,6 +60,10 @@ func (i Imp) ToMappedStringChild(mapping MapString, displayTypes bool) (separato
 	return " " + mapping[ImpConn] + " ", ""
 }
 
+func (i Imp) GetChildrenForMappedString() []MappableString {
+	return i.GetChildFormulas().ToMappableStringSlice()
+}
+
 func (i Imp) GetIndex() int { return i.index }
 func (i Imp) GetF1() Form   { return i.f1.Copy() }
 func (i Imp) GetF2() Form   { return i.f2.Copy() }
@@ -138,6 +142,10 @@ func (e Equ) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 
 func (e Equ) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return " " + mapping[EquConn] + " ", ""
+}
+
+func (e Equ) GetChildrenForMappedString() []MappableString {
+	return e.GetChildFormulas().ToMappableStringSlice()
 }
 
 func (e Equ) GetIndex() int { return e.index }

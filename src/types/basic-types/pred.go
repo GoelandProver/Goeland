@@ -107,6 +107,10 @@ func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separat
 	return "", p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
 }
 
+func (p Pred) GetChildrenForMappedString() []MappableString {
+	return []MappableString{}
+}
+
 func (p Pred) Copy() Form {
 	return MakePredSimple(p.index, p.id, p.GetArgs(), typing.CopyTypeAppList(p.GetTypeVars()), p.MetaList.Copy(), p.GetType())
 }

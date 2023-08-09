@@ -80,6 +80,10 @@ func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separato
 	return "", str
 }
 
+func (f Fun) GetChildrenForMappedString() []MappableString {
+	return []MappableString{}
+}
+
 func (f Fun) GetID() Id         { return f.p.Copy().(Id) }
 func (f Fun) GetP() Id          { return f.p.Copy().(Id) }
 func (f Fun) GetArgs() TermList { return f.args.Copy() }

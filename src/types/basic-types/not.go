@@ -110,6 +110,10 @@ func (n Not) ToMappedStringChild(mapping MapString, displayTypes bool) (separato
 	return "", ""
 }
 
+func (n Not) GetChildrenForMappedString() []MappableString {
+	return n.GetChildFormulas().ToMappableStringSlice()
+}
+
 func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
 }
