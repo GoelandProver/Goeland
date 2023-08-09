@@ -67,8 +67,6 @@ func (v Var) ToString() string {
 	return v.ToMappedString(defaultMap, true)
 }
 
-func (v Var) ToStringWithSuffixMeta(string) string { return v.ToString() }
-
 func (v Var) Equals(t Term) bool {
 	return v.GetIndex() == t.GetIndex()
 	// oth, isVar := t.(Var)

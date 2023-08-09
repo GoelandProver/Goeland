@@ -101,10 +101,6 @@ func (o Or) ToMappedString(map_ MapString, displayTypes bool) string {
 	return "(" + ListToMappedString(o.FormList, " "+map_[OrConn]+" ", "", map_, displayTypes) + ")"
 }
 
-func (o Or) ToStringWithSuffixMeta(suffix string) string {
-	return "(" + listToStringMeta(o.FormList, suffix, " "+defaultMap[OrConn]+" ", "") + ")"
-}
-
 func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeOr(o.GetIndex(), replaceList(o.FormList, varList, index))
 }

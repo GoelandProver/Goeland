@@ -58,16 +58,15 @@ type Meta struct {
 
 func (m Meta) GetFormula() int { return m.formula }
 
-func (m Meta) GetTypeApp() typing.TypeApp                  { return m.typeHint }
-func (m Meta) GetTypeHint() typing.TypeScheme              { return m.typeHint.(typing.TypeScheme) }
-func (m Meta) GetName() string                             { return m.name }
-func (m Meta) GetIndex() int                               { return m.index }
-func (m Meta) GetOccurence() int                           { return m.occurence }
-func (m Meta) ToStringWithSuffixMeta(suffix string) string { return m.ToString() + suffix }
-func (m Meta) IsMeta() bool                                { return true }
-func (m Meta) IsFun() bool                                 { return false }
-func (m Meta) ToMeta() Meta                                { return m }
-func (m Meta) GetMetas() MetaList                          { return MetaList{m} }
+func (m Meta) GetTypeApp() typing.TypeApp     { return m.typeHint }
+func (m Meta) GetTypeHint() typing.TypeScheme { return m.typeHint.(typing.TypeScheme) }
+func (m Meta) GetName() string                { return m.name }
+func (m Meta) GetIndex() int                  { return m.index }
+func (m Meta) GetOccurence() int              { return m.occurence }
+func (m Meta) IsMeta() bool                   { return true }
+func (m Meta) IsFun() bool                    { return false }
+func (m Meta) ToMeta() Meta                   { return m }
+func (m Meta) GetMetas() MetaList             { return MetaList{m} }
 
 func (m Meta) ToString() string {
 	// return fmt.Sprintf("%s_%d_%d_%d : %s", m.GetName(), m.GetOccurence(), m.GetFormula(), m.GetIndex(), m.GetTypeHint().ToString())

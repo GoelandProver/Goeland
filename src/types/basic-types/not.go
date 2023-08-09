@@ -97,10 +97,6 @@ func (n Not) ToMappedString(map_ MapString, displayTypes bool) string {
 	return map_[NotConn] + "(" + n.GetForm().ToMappedString(map_, displayTypes) + ")"
 }
 
-func (n Not) ToStringWithSuffixMeta(string) string {
-	return n.ToString()
-}
-
 func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
 }

@@ -101,14 +101,6 @@ func (p Pred) ToString() string {
 	return p.ToMappedString(defaultMap, true)
 }
 
-func (p Pred) ToStringWithSuffixMeta(suffix string) string {
-	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
-		return p.GetID().ToString()
-	}
-	return p.GetID().ToString() + "(" + ListToString(p.typeVars, ", ", defaultMap[PredEmpty]) +
-		" ; " + listToStringMeta(p.GetArgs(), suffix, ", ", defaultMap[PredEmpty]) + ")"
-}
-
 func (p Pred) Copy() Form {
 	return MakePred(p.GetIndex(), p.GetID(), p.GetArgs(), typing.CopyTypeAppList(p.GetTypeVars()), p.GetType())
 }
