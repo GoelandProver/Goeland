@@ -53,15 +53,11 @@ type Imp struct {
 }
 
 func (i Imp) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "("
+	return "(%s)"
 }
 
 func (i Imp) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return i.GetF1().ToMappedString(mapping, displayTypes) + " " + mapping[ImpConn] + " " + i.GetF2().ToMappedString(mapping, displayTypes)
-}
-
-func (i Imp) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ")"
 }
 
 func (i Imp) GetIndex() int { return i.index }
@@ -137,15 +133,11 @@ type Equ struct {
 }
 
 func (e Equ) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "("
+	return "(%s)"
 }
 
 func (e Equ) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return e.GetF1().ToMappedString(mapping, displayTypes) + " " + mapping[EquConn] + " " + e.GetF2().ToMappedString(mapping, displayTypes)
-}
-
-func (e Equ) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ")"
 }
 
 func (e Equ) GetIndex() int { return e.index }

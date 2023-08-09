@@ -107,15 +107,11 @@ func (o Or) ToString() string {
 }
 
 func (o Or) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "("
+	return "(%s)"
 }
 
 func (o Or) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return ListToMappedString(o.FormList, " "+mapping[OrConn]+" ", "", mapping, displayTypes)
-}
-
-func (o Or) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ")"
 }
 
 func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {

@@ -67,15 +67,11 @@ func (e Ex) ToString() string {
 }
 
 func (e Ex) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(" + mapping[ExQuant] + " "
+	return "(" + mapping[ExQuant] + " %s)"
 }
 
 func (e Ex) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return QuantifierToMappedString(mapping, e.GetVarList(), e.GetForm(), displayTypes)
-}
-
-func (e Ex) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ")"
 }
 
 func (e Ex) Copy() Form {
@@ -158,15 +154,11 @@ func (a All) ToString() string {
 }
 
 func (a All) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(" + mapping[AllQuant] + " "
+	return "(" + mapping[AllQuant] + " %s)"
 }
 
 func (a All) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return QuantifierToMappedString(mapping, a.GetVarList(), a.GetForm(), displayTypes)
-}
-
-func (a All) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ")"
 }
 
 func (a All) Copy() Form {
@@ -257,15 +249,11 @@ func (a AllType) ToString() string {
 }
 
 func (a AllType) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(" + mapping[AllTypeQuant] + " "
+	return "(" + mapping[AllTypeQuant] + " %s)"
 }
 
 func (a AllType) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return mapping[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (" + a.GetForm().ToMappedString(mapping, displayTypes) + ")"
-}
-
-func (a AllType) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ")"
 }
 
 func (a AllType) GetMetas() MetaList { return a.GetForm().GetMetas() }

@@ -57,7 +57,7 @@ type Fun struct {
 }
 
 func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return ""
+	return "%s"
 }
 
 func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) string {
@@ -78,10 +78,6 @@ func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 		str += " : " + f.typeHint.ToString()
 	}
 	return str
-}
-
-func (f Fun) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ""
 }
 
 func (f Fun) GetID() Id         { return f.p.Copy().(Id) }

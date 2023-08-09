@@ -48,15 +48,11 @@ type TermForm struct {
 }
 
 func (t TermForm) ToMappedStringSurround(mapping basictypes.MapString, displayTypes bool) string {
-	return ""
+	return "%s"
 }
 
 func (t TermForm) ToMappedStringChild(mapping basictypes.MapString, displayTypes bool) string {
 	return t.t.ToMappedString(mapping, displayTypes)
-}
-
-func (t TermForm) ToMappedSuffixPrefix(mapping basictypes.MapString, displayTypes bool) string {
-	return ""
 }
 
 func (t TermForm) GetTerm() basictypes.Term                                { return t.t.Copy() }

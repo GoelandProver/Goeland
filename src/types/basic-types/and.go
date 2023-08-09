@@ -107,15 +107,11 @@ func (a And) ToString() string {
 }
 
 func (a And) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "("
+	return "(%s)"
 }
 
 func (a And) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return ListToMappedString(a.FormList, " "+mapping[AndConn]+" ", "", mapping, displayTypes)
-}
-
-func (a And) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ")"
 }
 
 func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {

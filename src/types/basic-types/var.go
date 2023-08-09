@@ -90,7 +90,7 @@ func (v Var) ToMappedString(map_ MapString, type_ bool) string {
 }
 
 func (v Var) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return ""
+	return "%s"
 }
 
 func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) string {
@@ -99,8 +99,4 @@ func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	} else {
 		return v.GetName()
 	}
-}
-
-func (v Var) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ""
 }

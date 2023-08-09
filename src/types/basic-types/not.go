@@ -103,15 +103,11 @@ func (n Not) ToString() string {
 }
 
 func (n Not) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return mapping[NotConn] + "("
+	return mapping[NotConn] + "(%s)"
 }
 
 func (n Not) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	return n.GetForm().ToMappedString(mapping, displayTypes)
-}
-
-func (n Not) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ")"
 }
 
 func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {

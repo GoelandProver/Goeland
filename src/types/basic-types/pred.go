@@ -79,7 +79,7 @@ func (p Pred) ToString() string {
 }
 
 func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return ""
+	return "%s"
 }
 
 func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) string {
@@ -105,10 +105,6 @@ func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 
 	// strconv.Itoa(p.GetIndex()) + "@"
 	return p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
-}
-
-func (p Pred) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ""
 }
 
 func (p Pred) Copy() Form {

@@ -70,7 +70,7 @@ func (m Meta) ToMeta() Meta                   { return m }
 func (m Meta) GetMetas() MetaList             { return MetaList{m} }
 
 func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return ""
+	return "%s"
 }
 
 func (m Meta) ToMappedStringChild(mapping MapString, displayTypes bool) string {
@@ -79,10 +79,6 @@ func (m Meta) ToMappedStringChild(mapping MapString, displayTypes bool) string {
 	} else {
 		return fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
 	}
-}
-
-func (m Meta) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
-	return ""
 }
 
 func (m Meta) Equals(t Term) bool {
