@@ -176,6 +176,12 @@ func (p Pred) SetInternalMetas(m MetaList) {
 	p.MetaList = m
 }
 
-func (p Pred) GetSubFormulas() FormList {
+func (p Pred) GetAllSubFormulas() FormList {
 	return FormList{p.Copy()}
 }
+
+func (p Pred) GetChildFormulas() FormList {
+	return FormList{}
+}
+
+func (p Pred) SetChildFormulas(fl FormList) Form { return p }

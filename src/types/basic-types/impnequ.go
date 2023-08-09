@@ -117,8 +117,18 @@ func (i Imp) SetInternalMetas(m MetaList) {
 	i.MetaList = m
 }
 
-func (i Imp) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(i, FormList{i.f1, i.f2})
+func (i Imp) GetAllSubFormulas() FormList {
+	return getAllSubFormulasAppended(i)
+}
+
+func (i Imp) GetChildFormulas() FormList {
+	return FormList{i.f1, i.f2}
+}
+
+func (i Imp) SetChildFormulas(fl FormList) Form {
+	i.f1 = fl[0]
+	i.f2 = fl[1]
+	return i
 }
 
 /* Equ(f1, f2): f1 equivalent to f2 */
@@ -194,6 +204,17 @@ func (e Equ) SetInternalMetas(m MetaList) {
 	e.MetaList = m
 }
 
-func (e Equ) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(e, FormList{e.f1, e.f2})
+func (e Equ) GetAllSubFormulas() FormList {
+	return getAllSubFormulasAppended(e)
+}
+
+func (e Equ) GetChildFormulas() FormList {
+	return FormList{e.f1, e.f2}
+}
+
+func (e Equ) SetChildFormulas(fl FormList) Form {
+	e.f1 = fl[0]
+	e.f2 = fl[1]
+
+	return e
 }

@@ -621,7 +621,7 @@ func getAllFormulasDependantOn(term btps.Term, form btps.Form) btps.FormList {
 }
 
 func getSubformulas(term btps.Term, v btps.Var, form btps.Form) btps.FormList {
-	subforms := form.GetSubFormulas()
+	subforms := form.GetAllSubFormulas()
 	dependantSubforms := btps.FormList{}
 	for _, f := range subforms {
 		f, res := f.ReplaceVarByTerm(v, term)

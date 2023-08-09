@@ -3,10 +3,10 @@
 
 package basictypes
 
-func getSubformsOfSubformList(f Form, fl FormList) FormList {
+func getAllSubFormulasAppended(f Form) FormList {
 	subforms := FormList{f.Copy()}
-	for _, sf := range fl {
-		subforms = append(subforms, sf.GetSubFormulas()...)
+	for _, sf := range f.GetChildFormulas() {
+		subforms = append(subforms, sf.GetAllSubFormulas()...)
 	}
 	return subforms
 }

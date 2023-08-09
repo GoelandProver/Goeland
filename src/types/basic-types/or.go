@@ -149,6 +149,15 @@ func (o Or) SetInternalMetas(m MetaList) {
 	o.MetaList = m
 }
 
-func (o Or) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(o, o.FormList)
+func (o Or) GetAllSubFormulas() FormList {
+	return getAllSubFormulasAppended(o)
+}
+
+func (o Or) GetChildFormulas() FormList {
+	return o.FormList
+}
+
+func (o Or) SetChildFormulas(fl FormList) Form {
+	o.FormList = fl
+	return o
 }

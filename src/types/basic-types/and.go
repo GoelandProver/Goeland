@@ -153,6 +153,15 @@ func (a And) SetInternalMetas(m MetaList) {
 	a.MetaList = m
 }
 
-func (a And) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(a, a.FormList)
+func (a And) GetAllSubFormulas() FormList {
+	return getAllSubFormulasAppended(a)
+}
+
+func (a And) GetChildFormulas() FormList {
+	return a.FormList
+}
+
+func (a And) SetChildFormulas(fl FormList) Form {
+	a.FormList = fl
+	return a
 }

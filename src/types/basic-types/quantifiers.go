@@ -56,7 +56,7 @@ type Ex struct {
 }
 
 func (e Ex) ToMappedString(map_ MapString, displayTypes bool) string {
-	return toMappedString(map_[ExQuant], map_, e.GetVarList(), e.GetForm(), displayTypes)
+	return QuantifierToMappedString(map_[ExQuant], map_, e.GetVarList(), e.GetForm(), displayTypes)
 }
 
 func (e Ex) GetIndex() int              { return e.index }
@@ -130,8 +130,17 @@ func (e Ex) SetInternalMetas(m MetaList) {
 	e.MetaList = m
 }
 
-func (e Ex) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(e, FormList{e.GetForm()})
+func (e Ex) GetAllSubFormulas() FormList {
+	return getAllSubFormulasAppended(e)
+}
+
+func (e Ex) GetChildFormulas() FormList {
+	return FormList{e.GetForm()}
+}
+
+func (e Ex) SetChildFormulas(fl FormList) Form {
+	e.f = fl[0]
+	return e
 }
 
 type All struct {
@@ -142,7 +151,7 @@ type All struct {
 }
 
 func (a All) ToMappedString(map_ MapString, displayTypes bool) string {
-	return toMappedString(map_[AllQuant], map_, a.GetVarList(), a.GetForm(), displayTypes)
+	return QuantifierToMappedString(map_[AllQuant], map_, a.GetVarList(), a.GetForm(), displayTypes)
 }
 
 func (a All) GetIndex() int              { return a.index }
@@ -216,8 +225,17 @@ func (a All) SetInternalMetas(m MetaList) {
 	a.MetaList = m
 }
 
-func (a All) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(a, FormList{a.GetForm()})
+func (a All) GetAllSubFormulas() FormList {
+	return getAllSubFormulasAppended(a)
+}
+
+func (a All) GetChildFormulas() FormList {
+	return FormList{a.GetForm()}
+}
+
+func (a All) SetChildFormulas(fl FormList) Form {
+	a.f = fl[0]
+	return a
 }
 
 /* Struct describing a forall with type variables */
@@ -321,8 +339,17 @@ func (a AllType) SetInternalMetas(m MetaList) {
 	a.MetaList = m
 }
 
-func (a AllType) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(a, FormList{a.GetForm()})
+func (a AllType) GetAllSubFormulas() FormList {
+	return getAllSubFormulasAppended(a)
+}
+
+func (a AllType) GetChildFormulas() FormList {
+	return FormList{a.GetForm()}
+}
+
+func (a AllType) SetChildFormulas(fl FormList) Form {
+	a.form = fl[0]
+	return a
 }
 
 // ----------------------------------------------------------------------------
@@ -343,7 +370,7 @@ func renameVariable(form Form, varList []Var) ([]Var, Form) {
 	return newVL, newForm
 }
 
-func toMappedString(quant string, map_ MapString, varList []Var, form Form, displayTypes bool) string {
+func QuantifierToMappedString(quant string, mapping MapString, varList []Var, form Form, displayTypes bool) string {
 	type VarType struct {
 		vars  []Var
 		type_ typing.TypeApp
@@ -366,13 +393,13 @@ func toMappedString(quant string, map_ MapString, varList []Var, form Form, disp
 	varStrings := []string{}
 
 	for _, vt := range varsType {
-		str := map_[QuantVarOpen]
-		str += ListToMappedString(varList, " ", "", map_, false)
+		str := mapping[QuantVarOpen]
+		str += ListToMappedString(varList, " ", "", mapping, false)
 		str += " : " + vt.type_.ToString()
-		varStrings = append(varStrings, str+map_[QuantVarClose])
+		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 
-	return "(" + quant + " " + strings.Join(varStrings, " ") + map_[QuantVarSep] + " (" + form.ToMappedString(map_, displayTypes) + "))"
+	return "(" + quant + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (" + form.ToMappedString(mapping, displayTypes) + "))"
 }
 
 type QuantifiedForm interface {

@@ -1,8 +1,6 @@
 package lambdapi
 
 import (
-	"strings"
-
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
@@ -32,15 +30,10 @@ func MakeLambdapiOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 }
 
 func makeLambdaPiProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
-	contextString := getContext(proof.GetTargetForm(), meta)
+	contextString := getContext(getDecoratedForm(proof.GetTargetForm()), meta)
 	//global.PrintInfo("GS3", proof.ToString())
 	proofString := makeLambdaPiProofFromGS3(proof)
 	return contextString + "\n" + proofString
-}
-
-// Replace defined symbols by Coq's defined symbols.
-func mapDefault(str string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
 }
 
 func lambdaPiMapConnectors() map[btps.FormulaType]string {
@@ -52,7 +45,7 @@ func lambdaPiMapConnectors() map[btps.FormulaType]string {
 		btps.NotConn:        "¬",
 		btps.TopType:        "⊤",
 		btps.BotType:        "⊥",
-		btps.AllQuant:       "∀",
+		btps.AllQuant:       "∀α",
 		btps.ExQuant:        "∃",
 		btps.AllTypeQuant:   "∀",
 		btps.QuantVarOpen:   "(",
