@@ -44,19 +44,30 @@ import "fmt"
 
 /* id (for predicate) */
 type Id struct {
+	*FormMappableString
 	index int
 	name  string
 }
 
-func (i Id) ToMappedString(MapString, bool) string { return i.ToString() }
-func (i Id) GetIndex() int                         { return i.index }
-func (i Id) GetName() string                       { return i.name }
-func (i Id) ToString() string                      { return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex()) }
-func (i Id) IsMeta() bool                          { return false }
-func (i Id) IsFun() bool                           { return false }
-func (i Id) Copy() Term                            { return MakeId(i.GetIndex(), i.GetName()) }
-func (Id) ToMeta() Meta                            { return MakeEmptyMeta() }
-func (Id) GetMetas() MetaList                      { return MetaList{} }
+func (i Id) GetIndex() int    { return i.index }
+func (i Id) GetName() string  { return i.name }
+func (i Id) IsMeta() bool     { return false }
+func (i Id) IsFun() bool      { return false }
+func (i Id) Copy() Term       { return MakeId(i.GetIndex(), i.GetName()) }
+func (Id) ToMeta() Meta       { return MakeEmptyMeta() }
+func (Id) GetMetas() MetaList { return MetaList{} }
+
+func (i Id) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+	return ""
+}
+
+func (i Id) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
+}
+
+func (i Id) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
+	return ""
+}
 
 func (i Id) Equals(t Term) bool {
 	return t.GetIndex() == i.GetIndex()

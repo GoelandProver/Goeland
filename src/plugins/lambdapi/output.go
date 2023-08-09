@@ -24,7 +24,6 @@ func MakeLambdapiOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 		return ""
 	}
 
-	//global.PrintInfo("TEST", proof.ProofStructListToText(prf))
 	// Transform tableaux's proof in GS3 proof
 	return makeLambdaPiProof(gs3.MakeGS3Proof(prf), meta)
 }

@@ -49,30 +49,39 @@ import (
 
 /* function or constant (f(a,b), f(X,Y), a) */
 type Fun struct {
+	*FormMappableString
 	p        Id
 	args     TermList
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
 }
 
-func (f Fun) ToMappedString(map_ MapString, type_ bool) string {
+func (f Fun) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+	return ""
+}
+
+func (f Fun) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
 	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
-		return f.GetID().ToMappedString(map_, type_)
+		return f.GetID().ToMappedString(mapping, displayTypes)
 	}
 	args := []string{}
 
-	if tv := ListToString(f.typeVars, ", ", map_[PredEmpty]); tv != "" {
+	if tv := ListToString(f.typeVars, ", ", mapping[PredEmpty]); tv != "" {
 		args = append(args, tv)
 	}
-	if vs := ListToMappedString(f.GetArgs(), ", ", map_[PredEmpty], map_, type_); vs != "" {
+	if vs := ListToMappedString(f.GetArgs(), ", ", mapping[PredEmpty], mapping, displayTypes); vs != "" {
 		args = append(args, vs)
 	}
 
-	str := f.GetID().ToMappedString(map_, type_) + "(" + strings.Join(args, map_[PredTypeVarSep]) + ")"
-	if type_ {
+	str := f.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, mapping[PredTypeVarSep]) + ")"
+	if displayTypes {
 		str += " : " + f.typeHint.ToString()
 	}
 	return str
+}
+
+func (f Fun) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
+	return ""
 }
 
 func (f Fun) GetID() Id         { return f.p.Copy().(Id) }
@@ -91,14 +100,10 @@ func (f Fun) IsMeta() bool                   { return false }
 func (f Fun) IsFun() bool                    { return true }
 func (Fun) ToMeta() Meta                     { return MakeEmptyMeta() }
 
-func (f Fun) ToString() string {
-	return f.ToMappedString(defaultMap, true)
-}
-
 func (f Fun) Equals(t Term) bool {
 	oth, isFun := t.(Fun)
 	return isFun &&
-		(oth.GetID() == f.GetID()) &&
+		oth.GetID().Equals(f.GetID()) &&
 		oth.GetArgs().Equals(f.GetArgs()) &&
 		f.typeHint.Equals(oth.typeHint)
 }

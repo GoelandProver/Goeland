@@ -46,6 +46,7 @@ import (
 
 // A Formula list that represents the conjunction of formulae
 type And struct {
+	*FormMappableString
 	index int
 	FormList
 	MetaList
@@ -53,8 +54,15 @@ type And struct {
 
 /** Constructors **/
 
+func MakeAndSimple(i int, forms FormList, metas MetaList) And {
+	fms := &FormMappableString{}
+	and := And{fms, i, forms, metas}
+	fms.StringableMapped = and
+	return and
+}
+
 func MakeAnd(i int, forms FormList) And {
-	return And{index: i, FormList: forms, MetaList: make(MetaList, 0)}
+	return MakeAndSimple(i, forms, make(MetaList, 0))
 }
 
 func MakerAnd(forms FormList) And {
@@ -85,25 +93,29 @@ func (a And) GetSubTerms() TermList {
 	return res
 }
 
-func (a And) ToString() string {
-	return a.ToMappedString(defaultMap, true)
-}
-
 func (a And) Equals(f any) bool {
 	oth, isAnd := f.(And)
 	return isAnd && oth.FormList.Equals(a.FormList)
 }
 
 func (a And) Copy() Form {
-	return And{
-		index:    a.index,
-		FormList: a.FormList.Copy(),
-		MetaList: a.MetaList.Copy(),
-	}
+	return MakeAndSimple(a.index, a.FormList.Copy(), a.MetaList.Copy())
 }
 
-func (a And) ToMappedString(map_ MapString, displayTypes bool) string {
-	return "(" + ListToMappedString(a.FormList, " "+map_[AndConn]+" ", "", map_, displayTypes) + ")"
+func (a And) ToString() string {
+	return a.FormMappableString.ToString()
+}
+
+func (a And) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+	return "("
+}
+
+func (a And) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+	return ListToMappedString(a.FormList, " "+mapping[AndConn]+" ", "", mapping, displayTypes)
+}
+
+func (a And) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
+	return ")"
 }
 
 func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -112,7 +124,7 @@ func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (a And) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	varList, res := replaceVarInFormList(a.FormList, old, new)
-	return And{a.GetIndex(), varList, a.MetaList}, res
+	return MakeAndSimple(a.index, varList, a.MetaList), res
 }
 
 func (a And) RenameVariables() Form {
@@ -126,7 +138,7 @@ func (a And) CleanFormula() Form {
 
 func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, a.FormList, a.MetaList)
-	return And{a.index, newFormList, newMetas}
+	return MakeAndSimple(a.index, newFormList, newMetas)
 }
 
 func (a And) GetInternalMetas() MetaList {

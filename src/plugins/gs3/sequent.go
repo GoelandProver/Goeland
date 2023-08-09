@@ -136,7 +136,7 @@ func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
 
 	if index == -1 {
 		global.PrintInfo("APPLIED ON", hypothesis.ToString())
-		panic("Failure: tried to apply a missing hypothesis")
+		global.PrintPanic("GS3", "Failure: tried to apply a missing hypothesis")
 	}
 
 	seq.appliedOn = index

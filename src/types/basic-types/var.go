@@ -48,6 +48,7 @@ import (
 
 /* Variable (x,y under ForAll or Exists) */
 type Var struct {
+	*FormMappableString
 	index    int
 	name     string
 	typeHint typing.TypeApp
@@ -62,10 +63,6 @@ func (v Var) IsFun() bool                    { return false }
 func (v Var) Copy() Term                     { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
 func (Var) ToMeta() Meta                     { return MakeEmptyMeta() }
 func (Var) GetMetas() MetaList               { return MetaList{} }
-
-func (v Var) ToString() string {
-	return v.ToMappedString(defaultMap, true)
-}
 
 func (v Var) Equals(t Term) bool {
 	return v.GetIndex() == t.GetIndex()
@@ -90,4 +87,20 @@ func (v Var) ToMappedString(map_ MapString, type_ bool) string {
 		return fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
 	}
 	return v.GetName()
+}
+
+func (v Var) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+	return ""
+}
+
+func (v Var) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+	if displayTypes {
+		return fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
+	} else {
+		return v.GetName()
+	}
+}
+
+func (v Var) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
+	return ""
 }

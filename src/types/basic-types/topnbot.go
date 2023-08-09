@@ -46,15 +46,23 @@ import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 
 /* Top (always true) definition */
 type Top struct {
+	*FormMappableString
 	index int
 }
 
-func (t Top) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[TopType]
+func (t Top) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+	return ""
+}
+
+func (t Top) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+	return mapping[TopType]
+}
+
+func (t Top) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
+	return ""
 }
 
 func (t Top) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
-func (t Top) ToString() string                             { return t.ToMappedString(defaultMap, true) }
 func (t Top) Copy() Form                                   { return MakeTop(t.GetIndex()) }
 func (Top) Equals(f any) bool                              { _, isTop := f.(Top); return isTop }
 func (Top) GetMetas() MetaList                             { return MakeEmptyMetaList() }
@@ -70,17 +78,25 @@ func (t Top) SetInternalMetas(MetaList) Form               { return t }
 func (t Top) GetSubFormulasRecur() FormList                { return FormList{t.Copy()} }
 func (t Top) GetChildFormulas() FormList                   { return FormList{} }
 
-/* Bot (always false) definitino */
+/* Bot (always false) definition */
 type Bot struct {
+	*FormMappableString
 	index int
 }
 
-func (b Bot) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[BotType]
+func (b Bot) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+	return ""
+}
+
+func (b Bot) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+	return mapping[BotType]
+}
+
+func (b Bot) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
+	return ""
 }
 
 func (b Bot) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
-func (b Bot) ToString() string                             { return b.ToMappedString(defaultMap, true) }
 func (b Bot) Copy() Form                                   { return MakeBot(b.GetIndex()) }
 func (Bot) Equals(f any) bool                              { _, isBot := f.(Bot); return isBot }
 func (Bot) GetMetas() MetaList                             { return MakeEmptyMetaList() }

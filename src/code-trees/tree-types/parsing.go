@@ -42,13 +42,24 @@ import (
 )
 
 type TermForm struct {
+	*basictypes.FormMappableString
 	index int
 	t     basictypes.Term
 }
 
-func (t TermForm) ToMappedString(basictypes.MapString, bool) string        { return t.ToString() }
+func (t TermForm) ToMappedStringPrefix(mapping basictypes.MapString, displayTypes bool) string {
+	return ""
+}
+
+func (t TermForm) ToMappedContentPrefix(mapping basictypes.MapString, displayTypes bool) string {
+	return t.t.ToMappedString(mapping, displayTypes)
+}
+
+func (t TermForm) ToMappedSuffixPrefix(mapping basictypes.MapString, displayTypes bool) string {
+	return ""
+}
+
 func (t TermForm) GetTerm() basictypes.Term                                { return t.t.Copy() }
-func (t TermForm) ToString() string                                        { return t.t.ToString() }
 func (t TermForm) Copy() basictypes.Form                                   { return makeTermForm(t.GetIndex(), t.GetTerm()) }
 func (t TermForm) GetType() typing.TypeScheme                              { return typing.DefaultFunType(0) }
 func (t TermForm) RenameVariables() basictypes.Form                        { return t }
@@ -100,7 +111,10 @@ func MakerTermForm(t basictypes.Term) TermForm {
 }
 
 func makeTermForm(i int, t basictypes.Term) TermForm {
-	return TermForm{i, t.Copy()}
+	fms := &basictypes.FormMappableString{}
+	tf := TermForm{fms, i, t.Copy()}
+	fms.StringableMapped = tf
+	return tf
 }
 
 /* Parses a formulae to a sequence of instructions. */

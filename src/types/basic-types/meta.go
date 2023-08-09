@@ -49,6 +49,7 @@ import (
 
 /* Metavariable (X, Y) */
 type Meta struct {
+	*FormMappableString
 	index     int
 	occurence int
 	name      string
@@ -68,17 +69,20 @@ func (m Meta) IsFun() bool                    { return false }
 func (m Meta) ToMeta() Meta                   { return m }
 func (m Meta) GetMetas() MetaList             { return MetaList{m} }
 
-func (m Meta) ToString() string {
-	// return fmt.Sprintf("%s_%d_%d_%d : %s", m.GetName(), m.GetOccurence(), m.GetFormula(), m.GetIndex(), m.GetTypeHint().ToString())
-	return fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.GetTypeHint().ToString())
-
+func (m Meta) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+	return ""
 }
 
-func (m Meta) ToMappedString(map_ MapString, type_ bool) string {
-	if type_ {
-		return m.ToString()
+func (m Meta) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+	if displayTypes {
+		return fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.GetTypeHint().ToString())
+	} else {
+		return fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
 	}
-	return fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
+}
+
+func (m Meta) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
+	return ""
 }
 
 func (m Meta) Equals(t Term) bool {

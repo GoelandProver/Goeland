@@ -52,6 +52,7 @@ import (
 
 /* Symbol of predicate */
 type Pred struct {
+	*FormMappableString
 	index    int
 	id       Id
 	args     TermList
@@ -73,16 +74,24 @@ func (p Pred) GetType() typing.TypeScheme { return p.typeHint }
 func (p Pred) RenameVariables() Form      { return p }
 func (p Pred) CleanFormula() Form         { return p }
 
-func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
+func (p Pred) ToString() string {
+	return p.FormMappableString.ToString()
+}
+
+func (p Pred) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+	return ""
+}
+
+func (p Pred) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
-		return p.GetID().ToMappedString(map_, type_)
+		return p.GetID().ToMappedString(mapping, displayTypes)
 	}
 	args := []string{}
 
-	if tv := ListToString(p.typeVars, ", ", map_[PredEmpty]); tv != "" {
+	if tv := ListToString(p.typeVars, ", ", mapping[PredEmpty]); tv != "" {
 		args = append(args, tv)
 	}
-	if vs := ListToMappedString(p.GetArgs(), ", ", map_[PredEmpty], map_, type_); vs != "" {
+	if vs := ListToMappedString(p.GetArgs(), ", ", mapping[PredEmpty], mapping, displayTypes); vs != "" {
 		args = append(args, vs)
 	}
 
@@ -91,25 +100,19 @@ func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 		if len(p.GetArgs()) != 2 {
 			global.PrintPanic("Pred", "infix '=' should only have 2 arguments")
 		}
-		return "(" + p.GetArgs()[0].ToMappedString(map_, type_) + " = " + p.GetArgs()[1].ToMappedString(map_, type_) + ")"
+		return "(" + p.GetArgs()[0].ToMappedString(mapping, displayTypes) + " = " + p.GetArgs()[1].ToMappedString(mapping, displayTypes) + ")"
 	}
 
 	// strconv.Itoa(p.GetIndex()) + "@"
-	return p.GetID().ToMappedString(map_, type_) + "(" + strings.Join(args, " "+map_[PredTypeVarSep]+" ") + ")"
+	return p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
 }
 
-func (p Pred) ToString() string {
-	return p.ToMappedString(defaultMap, true)
+func (p Pred) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
+	return ""
 }
 
 func (p Pred) Copy() Form {
-	return Pred{index: p.index,
-		id:       p.id,
-		args:     p.GetArgs(),
-		typeVars: typing.CopyTypeAppList(p.GetTypeVars()),
-		typeHint: p.GetType(),
-		MetaList: p.MetaList.Copy(),
-	}
+	return MakePredSimple(p.index, p.id, p.GetArgs(), typing.CopyTypeAppList(p.GetTypeVars()), p.MetaList.Copy(), p.GetType())
 }
 
 func (p Pred) Equals(f any) bool {
@@ -140,7 +143,7 @@ func (p Pred) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (p Pred) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	termList, res := replaceVarInTermList(p.GetArgs(), old, new)
-	return Pred{p.GetIndex(), p.GetID(), termList, p.GetTypeVars(), p.GetType(), p.MetaList}, res
+	return MakePredSimple(p.GetIndex(), p.GetID(), termList, p.GetTypeVars(), p.MetaList, p.GetType()), res
 }
 
 func (p Pred) GetSubTerms() TermList {
@@ -155,7 +158,7 @@ func (p Pred) GetSubTerms() TermList {
 func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
 	f, res := p.ReplaceVarByTerm(old, new)
 	if p, isPred := f.(Pred); isPred && (global.IsOuterSko() || res) {
-		return Pred{index: p.index, id: p.id, args: p.args, typeVars: p.typeVars, typeHint: p.typeHint, MetaList: append(p.MetaList.Copy(), new)}
+		return MakePredSimple(p.index, p.id, p.args, p.typeVars, append(p.MetaList.Copy(), new), p.typeHint)
 	}
 	return f
 }

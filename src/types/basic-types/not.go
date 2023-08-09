@@ -46,6 +46,7 @@ import (
 
 // The negation of a Formula
 type Not struct {
+	*FormMappableString
 	index int
 	f     Form
 	MetaList
@@ -53,8 +54,15 @@ type Not struct {
 
 /** Constructors **/
 
+func MakeNotSimple(i int, form Form, metas MetaList) Not {
+	fms := &FormMappableString{}
+	not := Not{fms, i, form, metas}
+	fms.StringableMapped = not
+	return not
+}
+
 func MakeNot(i int, form Form) Not {
-	return Not{i, form, make(MetaList, 0)}
+	return MakeNotSimple(i, form, make(MetaList, 0))
 }
 
 func MakerNot(form Form) Not {
@@ -81,21 +89,29 @@ func (n Not) GetSubTerms() TermList {
 	return n.GetForm().GetSubTerms()
 }
 
-func (n Not) ToString() string {
-	return n.ToMappedString(defaultMap, true)
-}
-
 func (n Not) Equals(f any) bool {
 	oth, isNot := f.(Not)
 	return isNot && oth.f.Equals(n.f)
 }
 
 func (n Not) Copy() Form {
-	return Not{index: n.index, f: n.GetForm(), MetaList: n.MetaList.Copy()}
+	return MakeNotSimple(n.index, n.GetForm(), n.MetaList.Copy())
 }
 
-func (n Not) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[NotConn] + "(" + n.GetForm().ToMappedString(map_, displayTypes) + ")"
+func (n Not) ToString() string {
+	return n.FormMappableString.ToString()
+}
+
+func (n Not) ToMappedStringPrefix(mapping MapString, displayTypes bool) string {
+	return mapping[NotConn] + "("
+}
+
+func (n Not) ToMappedContentPrefix(mapping MapString, displayTypes bool) string {
+	return n.GetForm().ToMappedString(mapping, displayTypes)
+}
+
+func (n Not) ToMappedSuffixPrefix(mapping MapString, displayTypes bool) string {
+	return ")"
 }
 
 func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -104,7 +120,7 @@ func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (n Not) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	f, res := n.f.ReplaceVarByTerm(old, new)
-	return Not{n.GetIndex(), f, n.MetaList}, res
+	return MakeNotSimple(n.GetIndex(), f, n.MetaList), res
 }
 
 func (n Not) RenameVariables() Form {
@@ -124,7 +140,7 @@ func (n Not) GetForm() Form {
 
 func (n Not) SubstituteVarByMeta(old Var, new Meta) Form {
 	f := n.GetForm().SubstituteVarByMeta(old, new)
-	return Not{n.index, f, f.GetInternalMetas().Copy()}
+	return MakeNotSimple(n.index, f, f.GetInternalMetas().Copy())
 }
 
 func (n Not) GetInternalMetas() MetaList {
