@@ -98,12 +98,13 @@ func (f Fun) IsMeta() bool                   { return false }
 func (f Fun) IsFun() bool                    { return true }
 func (Fun) ToMeta() Meta                     { return MakeEmptyMeta() }
 
-func (f Fun) Equals(t Term) bool {
-	oth, isFun := t.(Fun)
-	return isFun &&
-		oth.GetID().Equals(f.GetID()) &&
-		oth.GetArgs().Equals(f.GetArgs()) &&
-		f.typeHint.Equals(oth.typeHint)
+func (f Fun) Equals(t any) bool {
+	if typed, ok := t.(Fun); ok {
+		return typed.GetID().Equals(f.GetID()) &&
+			typed.GetArgs().Equals(f.GetArgs()) &&
+			f.typeHint.Equals(typed.typeHint)
+	}
+	return false
 }
 
 func (f Fun) Copy() Term {

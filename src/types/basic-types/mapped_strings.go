@@ -106,6 +106,7 @@ func initDefaultMap() {
 
 type MappableString interface {
 	global.Stringable
+	global.Comparable
 
 	ToMappedString(MapString, bool) string
 	ToMappedStringSurround(MapString, bool) string

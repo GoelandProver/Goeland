@@ -69,12 +69,11 @@ func (i Id) GetChildrenForMappedString() []MappableString {
 	return []MappableString{}
 }
 
-func (i Id) Equals(t Term) bool {
-	return t.GetIndex() == i.GetIndex()
-	// oth, isId := t.(Id)
-	// return isId &&
-	// 	(oth.GetIndex() == i.GetIndex()) &&
-	// 	(oth.GetName() == i.GetName())
+func (i Id) Equals(t any) bool {
+	if typed, ok := t.(Id); ok {
+		return typed.GetIndex() == i.GetIndex()
+	}
+	return false
 }
 
 func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {

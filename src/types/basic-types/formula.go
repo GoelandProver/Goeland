@@ -55,7 +55,6 @@ type Form interface {
 	GetSubFormulasRecur() FormList
 	GetChildFormulas() FormList
 
-	Comparable
 	Copyable[Form]
 	MappableString
 

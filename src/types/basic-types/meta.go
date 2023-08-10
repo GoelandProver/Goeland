@@ -85,15 +85,11 @@ func (m Meta) GetChildrenForMappedString() []MappableString {
 	return []MappableString{}
 }
 
-func (m Meta) Equals(t Term) bool {
-	return t.GetIndex() == m.GetIndex()
-	// oth, isMeta := t.(Meta)
-	// return isMeta &&
-	// 	(oth.GetIndex() == m.GetIndex()) &&
-	// 	(oth.GetOccurence() == m.GetOccurence()) &&
-	// 	(oth.GetName() == m.GetName()) &&
-	// 	(oth.GetFormula() == m.GetFormula()) &&
-	// 	(m.typeHint.Equals(oth.typeHint))
+func (m Meta) Equals(t any) bool {
+	if typed, ok := t.(Meta); ok {
+		return typed.GetIndex() == m.GetIndex()
+	}
+	return false
 }
 
 func (m Meta) Copy() Term {

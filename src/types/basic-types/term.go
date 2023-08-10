@@ -51,7 +51,6 @@ type Term interface {
 	Copyable[Term]
 	GetIndex() int
 	GetName() string
-	Equals(Term) bool
 	IsMeta() bool
 	IsFun() bool
 	ToMeta() Meta

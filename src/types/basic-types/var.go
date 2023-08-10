@@ -64,11 +64,11 @@ func (v Var) Copy() Term                     { return MakeVar(v.GetIndex(), v.Ge
 func (Var) ToMeta() Meta                     { return MakeEmptyMeta() }
 func (Var) GetMetas() MetaList               { return MetaList{} }
 
-func (v Var) Equals(t Term) bool {
-	return v.GetIndex() == t.GetIndex()
-	// oth, isVar := t.(Var)
-	// return isVar && (oth.GetIndex() == v.GetIndex()) &&
-	// 	(oth.GetName() == v.GetName()) && (v.typeHint.Equals(oth.typeHint))
+func (v Var) Equals(t any) bool {
+	if typed, ok := t.(Var); ok {
+		return v.GetIndex() == typed.GetIndex()
+	}
+	return false
 }
 
 func (v Var) GetSubTerms() TermList {
