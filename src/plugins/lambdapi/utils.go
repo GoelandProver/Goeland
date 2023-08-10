@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoelandProver/Goeland/global"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -14,19 +15,18 @@ func getIncreasedCounter() int {
 	return varCounter - 1
 }
 
-var context map[string]string = make(map[string]string)
+var context global.ComparableMap[btps.MappableString, string] = global.ComparableMap[btps.MappableString, string]{}
 
 func addToContext(key btps.MappableString) string {
-	strKey := toCorrectString(key)
-	if _, ok := context[strKey]; !ok {
-		context[strKey] = fmt.Sprintf("v%v", getIncreasedCounter())
+	if _, ok := context.GetExists(key); !ok {
+		context.Set(key, fmt.Sprintf("v%v", getIncreasedCounter()))
 	}
 
-	return context[strKey]
+	return context.Get(key)
 }
 
 func getFromContext(key btps.MappableString) string {
-	return context[toCorrectString(key)]
+	return context.Get(key)
 }
 
 func toLambdaString(element btps.MappableString, str string) string {
