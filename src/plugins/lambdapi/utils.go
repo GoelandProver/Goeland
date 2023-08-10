@@ -17,7 +17,7 @@ func getIncreasedCounter() int {
 var context map[string]string = make(map[string]string)
 
 func addToContext(key btps.MappableString) string {
-	strKey := key.ToMappedString(lambdaPiMapConnectors, false)
+	strKey := toCorrectString(key)
 	if _, ok := context[strKey]; !ok {
 		context[strKey] = fmt.Sprintf("v%v", getIncreasedCounter())
 	}
@@ -26,7 +26,7 @@ func addToContext(key btps.MappableString) string {
 }
 
 func getFromContext(key btps.MappableString) string {
-	return context[key.ToMappedString(lambdaPiMapConnectors, false)]
+	return context[toCorrectString(key)]
 }
 
 func toLambdaString(element btps.MappableString, str string) string {

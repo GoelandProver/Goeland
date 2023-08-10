@@ -78,7 +78,7 @@ func makeProofStep(proof *gs3.GS3Sequent) string {
 	case gs3.W:
 	}
 
-	return resultingString
+	return "//" + toCorrectString(proof.GetTargetForm()) + "\n" + resultingString
 }
 
 func closureAxiom(proof *gs3.GS3Sequent) string {
@@ -102,7 +102,6 @@ func alphaNotNot(proof *gs3.GS3Sequent) string {
 	result := "GS3nnot\n"
 	result += "(" + formulaStr + ")\n"
 	result += "(\n"
-	result += fmt.Sprintf("λ (%s : ϵ (%s)),\n", addToContext(formula), formulaStr)
 	result += toLambdaString(formula, formulaStr) + ",\n"
 	proofStr := makeProofStep(proof.Child(0))
 	result += proofStr
@@ -249,6 +248,7 @@ func betaImp(proof *gs3.GS3Sequent) string {
 	if notForm, ok := notFormula1.(btps.Not); ok {
 		formula1 = notForm.GetForm()
 	}
+	notFormula1Str := toCorrectString(notFormula1)
 	formula1Str := toCorrectString(formula1)
 	formula2Str := toCorrectString(formula2)
 
@@ -256,7 +256,7 @@ func betaImp(proof *gs3.GS3Sequent) string {
 	result += "(" + formula1Str + ")\n"
 	result += "(" + formula2Str + ")\n"
 	result += "(\n"
-	result += toLambdaString(formula1, formula1Str) + ",\n"
+	result += toLambdaString(notFormula1, notFormula1Str) + ",\n"
 	proofStr := makeProofStep(proof.Child(0))
 	result += proofStr
 	result += ")\n"
@@ -306,7 +306,7 @@ func betaEqu(proof *gs3.GS3Sequent) string {
 
 func betaNotEqu(proof *gs3.GS3Sequent) string {
 	formula1 := proof.GetResultFormulasOfChild(0)[0]
-	formula2 := proof.GetResultFormulasOfChild(1)[0]
+	formula2 := proof.GetResultFormulasOfChild(0)[1]
 	if notForm, ok := formula1.(btps.Not); ok {
 		formula1 = notForm.GetForm()
 	}
