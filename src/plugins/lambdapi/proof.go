@@ -221,17 +221,19 @@ func betaNotAnd(proof *gs3.GS3Sequent) string {
 	}
 	formula1Str := toCorrectString(formula1)
 	formula2Str := toCorrectString(formula2)
+	notFormula1Str := toCorrectString(notFormula1)
+	notFormula2Str := toCorrectString(notFormula2)
 
 	result := "GS3nand\n"
 	result += "(" + formula1Str + ")\n"
 	result += "(" + formula2Str + ")\n"
 	result += "(\n"
-	result += toLambdaString(notFormula1, formula1Str) + ",\n"
+	result += toLambdaString(notFormula1, notFormula1Str) + ",\n"
 	proofStr := makeProofStep(proof.Child(0))
 	result += proofStr
 	result += ")\n"
 	result += "(\n"
-	result += toLambdaString(notFormula2, formula2Str) + ",\n"
+	result += toLambdaString(notFormula2, notFormula2Str) + ",\n"
 	proofStr = makeProofStep(proof.Child(1))
 	result += proofStr
 	result += ")\n"
