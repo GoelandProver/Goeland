@@ -79,36 +79,33 @@ func (p Pred) ToString() string {
 }
 
 func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
-		return "", p.GetID().ToMappedString(mapping, displayTypes)
+		return p.GetID().ToMappedString(mapping, displayTypes) + "%s"
 	}
 	args := []string{}
 
 	if tv := ListToString(p.typeVars, ", ", mapping[PredEmpty]); tv != "" {
 		args = append(args, tv)
 	}
-	if vs := ListToMappedString(p.GetArgs(), ", ", mapping[PredEmpty], mapping, displayTypes); vs != "" {
-		args = append(args, vs)
-	}
+	args = append(args, "%s")
 
 	// Defined infix: =
 	if p.GetID().GetName() == "=" {
 		if len(p.GetArgs()) != 2 {
 			global.PrintPanic("Pred", "infix '=' should only have 2 arguments")
 		}
-		return "", "(" + p.GetArgs()[0].ToMappedString(mapping, displayTypes) + " = " + p.GetArgs()[1].ToMappedString(mapping, displayTypes) + ")"
+		return "(" + p.GetArgs()[0].ToMappedString(mapping, displayTypes) + " = " + p.GetArgs()[1].ToMappedString(mapping, displayTypes) + ")"
 	}
 
-	// strconv.Itoa(p.GetIndex()) + "@"
-	return "", p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
+	return p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
+}
+
+func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return ", ", mapping[PredEmpty]
 }
 
 func (p Pred) GetChildrenForMappedString() []MappableString {
-	return []MappableString{}
+	return p.GetArgs().ToMappableStringSlice()
 }
 
 func (p Pred) Copy() Form {

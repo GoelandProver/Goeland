@@ -57,31 +57,29 @@ type Fun struct {
 }
 
 func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
-		return "", f.GetID().ToMappedString(mapping, displayTypes)
+		return f.GetID().ToMappedString(mapping, displayTypes) + "%s"
 	}
 	args := []string{}
 
 	if tv := ListToString(f.typeVars, ", ", mapping[PredEmpty]); tv != "" {
 		args = append(args, tv)
 	}
-	if vs := ListToMappedString(f.GetArgs(), ", ", mapping[PredEmpty], mapping, displayTypes); vs != "" {
-		args = append(args, vs)
-	}
+	args = append(args, "%s")
 
 	str := f.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, mapping[PredTypeVarSep]) + ")"
 	if displayTypes {
 		str += " : " + f.typeHint.ToString()
 	}
-	return "", str
+	return str
+}
+
+func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return ", ", mapping[PredEmpty]
 }
 
 func (f Fun) GetChildrenForMappedString() []MappableString {
-	return []MappableString{}
+	return f.GetArgs().ToMappableStringSlice()
 }
 
 func (f Fun) GetID() Id         { return f.p.Copy().(Id) }
