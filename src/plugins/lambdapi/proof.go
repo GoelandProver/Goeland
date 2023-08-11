@@ -102,9 +102,21 @@ func allRulesQuant(rule string, target btps.Form, composingForms []btps.Form, ne
 	result := rule + "\n"
 	result += "(ι)\n"
 
-	for _, composingForm := range composingForms {
-		result += "(" + varsToLambdaString(vars) + ", " + toCorrectString(composingForm) + ")\n"
+	result += "(%s, " + toCorrectString(composingForms[0]) + ")\n"
+
+	quant := ""
+	switch target.(type) {
+	case btps.All:
+		quant = lambdaPiMapConnectors[btps.AllQuant]
+	case btps.Not:
+		quant = lambdaPiMapConnectors[btps.ExQuant]
 	}
+
+	varStrs := []string{}
+	for _, singleVar := range vars {
+		varStrs = append(varStrs, toLambdaIntroString(singleVar))
+	}
+	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
 
 	result += "(" + toCorrectString(termGen) + ")\n"
 

@@ -1,6 +1,8 @@
 package lambdapi
 
 import (
+	"fmt"
+
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -22,8 +24,13 @@ func (da DecoratedAll) ToMappedStringSurround(mapping btps.MapString, displayTyp
 }
 
 func QuantifierToMappedString(quant string, varList []btps.Var) string {
-	varsString := varsToLambdaString(varList)
-	return "(" + quant + " (" + varsString + ", %s))"
+	if len(varList) == 0 {
+		return "%s"
+	} else {
+		result := "(" + quant + " (" + toLambdaIntroString(varList[0]) + ", %s))"
+		result = fmt.Sprintf(result, QuantifierToMappedString(quant, varList[1:]))
+		return result
+	}
 }
 
 type DecoratedEx struct {
