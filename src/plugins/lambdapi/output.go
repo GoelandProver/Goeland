@@ -20,7 +20,7 @@ var lambdaPiMapConnectors = map[btps.FormulaType]string{
 	btps.TopType:        "⊤",
 	btps.BotType:        "⊥",
 	btps.AllQuant:       "∀α",
-	btps.ExQuant:        "∃",
+	btps.ExQuant:        "∃α",
 	btps.AllTypeQuant:   "∀",
 	btps.QuantVarOpen:   "(",
 	btps.QuantVarClose:  ")",

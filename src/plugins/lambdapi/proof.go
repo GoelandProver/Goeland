@@ -73,6 +73,7 @@ func makeProofStep(proof *gs3.GS3Sequent) string {
 	case gs3.ALL:
 		resultingString = gammaAll(proof)
 	case gs3.NEX:
+		resultingString = gammaNotEx(proof)
 
 	// Weakening rule
 	case gs3.W:
@@ -354,6 +355,35 @@ func gammaAll(proof *gs3.GS3Sequent) string {
 	result := "GS3all\n"
 	result += "(ι)\n"
 	result += "(" + varsToLambdaString(formulaAll.GetVarList()) + ", " + varStr + ")\n"
+	result += "(" + termStr + ")\n"
+	result += "(\n"
+	result += toLambdaString(formula1, formula1Str) + ",\n"
+	proofStr := makeProofStep(proof.Child(0))
+	result += proofStr
+	result += ")\n"
+	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
+
+	return result
+}
+
+func gammaNotEx(proof *gs3.GS3Sequent) string {
+	formula1 := proof.GetResultFormulasOfChild(0)[0]
+	formula1Str := toCorrectString(formula1)
+	termStr := toCorrectString(proof.TermGenerated())
+
+	formulaVar := proof.GetTargetForm()
+	var formulaEx btps.Ex
+	if notForm, ok := formulaVar.(btps.Not); ok {
+		if form, ok := notForm.GetForm().(btps.Ex); ok {
+			formulaVar = form.GetForm()
+			formulaEx = form
+		}
+	}
+	varStr := toCorrectString(formulaVar)
+
+	result := "GS3nex\n"
+	result += "(ι)\n"
+	result += "(" + varsToLambdaString(formulaEx.GetVarList()) + ", " + varStr + ")\n"
 	result += "(" + termStr + ")\n"
 	result += "(\n"
 	result += toLambdaString(formula1, formula1Str) + ",\n"

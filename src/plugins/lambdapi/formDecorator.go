@@ -26,6 +26,23 @@ func QuantifierToMappedString(quant string, varList []btps.Var) string {
 	return "(" + quant + " (" + varsString + ", %s))"
 }
 
+type DecoratedEx struct {
+	btps.Ex
+}
+
+func MakeDecoratedEx(ex btps.Ex) DecoratedEx {
+	if typed, ok := ex.Copy().(btps.Ex); ok {
+		ex = typed
+	}
+	decorated := DecoratedEx{ex}
+	decorated.MappedString.MappableString = decorated
+	return decorated
+}
+
+func (de DecoratedEx) ToMappedStringSurround(mapping btps.MapString, displayTypes bool) string {
+	return QuantifierToMappedString(mapping[btps.ExQuant], de.GetVarList())
+}
+
 type DecoratedVar struct {
 	btps.Var
 }
@@ -66,6 +83,8 @@ func decorateForm(form btps.MappableString) btps.MappableString {
 	switch typed := form.(type) {
 	case btps.All:
 		return MakeDecoratedAll(typed)
+	case btps.Ex:
+		return MakeDecoratedEx(typed)
 	case btps.Var:
 		return MakeDecoratedVar(typed)
 	case btps.Pred:
