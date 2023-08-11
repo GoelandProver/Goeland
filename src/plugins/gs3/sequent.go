@@ -92,6 +92,16 @@ func (seq *GS3Sequent) GetResultFormulasOfChild(i int) btps.FormList {
 	return seq.formsGenerated[i]
 }
 
+func (seq *GS3Sequent) GetResultFormulasOfChildren() []btps.FormList {
+	result := []btps.FormList{}
+
+	for i := range seq.children {
+		result = append(result, seq.formsGenerated[i])
+	}
+
+	return result
+}
+
 func (seq *GS3Sequent) TermGenerated() btps.Term {
 	return seq.termGenerated
 }

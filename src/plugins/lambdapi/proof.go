@@ -4,12 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	. "github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
-
-var dummiesCreated int
 
 func makeLambdaPiProofFromGS3(proof *gs3.GS3Sequent) string {
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
@@ -17,15 +15,6 @@ func makeLambdaPiProofFromGS3(proof *gs3.GS3Sequent) string {
 
 	resultingString = makeTheorem(axioms, conjecture)
 
-	hypotheses := make([]btps.Form, 0)
-	if len(axioms) > 0 {
-		indices := make([]int, len(axioms))
-		for i, form := range axioms {
-			indices[i], hypotheses = introduce(form, hypotheses)
-		}
-		resultingString += "intros " + strings.Join(Map(indices, func(_ int, index int) string { return introName(index) }), " ") + ". "
-		proof = proof.Child(0)
-	}
 	formula := proof.GetTargetForm()
 
 	formulaStr := toCorrectString(formula)
@@ -83,356 +72,122 @@ func makeProofStep(proof *gs3.GS3Sequent) string {
 }
 
 func closureAxiom(proof *gs3.GS3Sequent) string {
-	formula1 := proof.GetTargetForm()
-	formula2 := btps.RefuteForm(proof.GetTargetForm())
-	if notForm, ok := formula1.(btps.Not); ok {
-		formula2 = formula1
-		formula1 = notForm.GetForm()
+	target, notTarget := getPosAndNeg(proof.GetTargetForm())
+	result := fmt.Sprintf("GS3axiom (%s) (%s) (%s)\n", toCorrectString(target), getFromContext(target), getFromContext(notTarget))
+	return result
+}
+
+func getPosAndNeg(target btps.Form) (pos, neg btps.Form) {
+	if neg, ok := target.(btps.Not); ok {
+		return neg.GetForm(), neg
 	}
-	formula1Str := toCorrectString(formula1)
+	return target, btps.RefuteForm(target)
+}
 
-	result := fmt.Sprintf("GS3axiom (%s) (%s) (%s)\n", formula1Str, getFromContext(formula1), getFromContext(formula2))
+func allRules(rule string, target btps.Form, composingForms []btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList) string {
+	result := rule + "\n"
 
+	for _, composingForm := range composingForms {
+		result += "(" + toCorrectString(composingForm) + ")\n"
+	}
+
+	result += getRecursionStr(target, nexts, children)
+
+	result += fmt.Sprintf("(%s)\n", getFromContext(target))
+
+	return result
+}
+
+func allRulesQuant(rule string, target btps.Form, composingForms []btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, vars []btps.Var, termGen btps.Term) string {
+	result := rule + "\n"
+	result += "(ι)\n"
+
+	for _, composingForm := range composingForms {
+		result += "(" + varsToLambdaString(vars) + ", " + toCorrectString(composingForm) + ")\n"
+	}
+
+	result += "(" + toCorrectString(termGen) + ")\n"
+
+	result += getRecursionStr(target, nexts, children)
+
+	result += fmt.Sprintf("(%s)\n", getFromContext(target))
+
+	return result
+}
+
+func getRecursionStr(target btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList) (result string) {
+	for i, next := range nexts {
+		result += "(\n"
+		for _, childForm := range children[i] {
+			result += toLambdaString(childForm, toCorrectString(childForm)) + ",\n"
+		}
+		proofStr := makeProofStep(next)
+		result += proofStr
+		result += ")\n"
+	}
 	return result
 }
 
 func alphaNotNot(proof *gs3.GS3Sequent) string {
-	formula := proof.GetResultFormulasOfChild(0)[0]
-	formulaStr := toCorrectString(formula)
-
-	result := "GS3nnot\n"
-	result += "(" + formulaStr + ")\n"
-	result += "(\n"
-	result += toLambdaString(formula, formulaStr) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
+	composingForms := proof.GetTargetForm().GetChildFormulas()[0].GetChildFormulas()
+	return allRules("GS3nnot", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
 func alphaAnd(proof *gs3.GS3Sequent) string {
-	formula1 := proof.GetResultFormulasOfChild(0)[0]
-	formula2 := proof.GetResultFormulasOfChild(0)[1]
-	formula1Str := toCorrectString(formula1)
-	formula2Str := toCorrectString(formula2)
-
-	result := "GS3and\n"
-	result += "(" + formula1Str + ")\n"
-	result += "(" + formula2Str + ")\n"
-	result += "(\n"
-	result += toLambdaString(formula1, formula1Str) + ",\n"
-	result += toLambdaString(formula2, formula2Str) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
+	return allRules("GS3and", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
 func alphaNotOr(proof *gs3.GS3Sequent) string {
-	formula1 := proof.GetResultFormulasOfChild(0)[0]
-	if notForm, ok := formula1.(btps.Not); ok {
-		formula1 = notForm.GetForm()
-	}
-	formula2 := proof.GetResultFormulasOfChild(0)[1]
-	if notForm, ok := formula2.(btps.Not); ok {
-		formula2 = notForm.GetForm()
-	}
-	formula1Str := toCorrectString(formula1)
-	formula2Str := toCorrectString(formula2)
-	notFormula1Str := toCorrectString(btps.RefuteForm(formula1))
-	notFormula2Str := toCorrectString(btps.RefuteForm(formula2))
-
-	result := "GS3nor\n"
-	result += "(" + formula1Str + ")\n"
-	result += "(" + formula2Str + ")\n"
-	result += "(\n"
-	result += toLambdaString(btps.RefuteForm(formula1), notFormula1Str) + ",\n"
-	result += toLambdaString(btps.RefuteForm(formula2), notFormula2Str) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
+	composingForms := proof.GetTargetForm().GetChildFormulas()[0].GetChildFormulas()
+	return allRules("GS3nor", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
 func alphaNotImp(proof *gs3.GS3Sequent) string {
-	formula1 := proof.GetResultFormulasOfChild(0)[0]
-	formula2 := proof.GetResultFormulasOfChild(0)[1]
-	notFormula2Str := toCorrectString(formula2)
-	if notForm, ok := formula2.(btps.Not); ok {
-		formula2 = notForm.GetForm()
-	}
-	formula1Str := toCorrectString(formula1)
-	formula2Str := toCorrectString(formula2)
-
-	result := "GS3nimp\n"
-	result += "(" + formula1Str + ")\n"
-	result += "(" + formula2Str + ")\n"
-	result += "(\n"
-	result += toLambdaString(formula1, formula1Str) + ",\n"
-	result += toLambdaString(btps.RefuteForm(formula2), notFormula2Str) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
+	composingForms := proof.GetTargetForm().GetChildFormulas()[0].GetChildFormulas()
+	return allRules("GS3nimp", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
 func betaOr(proof *gs3.GS3Sequent) string {
-	formula1 := proof.GetResultFormulasOfChild(0)[0]
-	formula2 := proof.GetResultFormulasOfChild(1)[0]
-	formula1Str := toCorrectString(formula1)
-	formula2Str := toCorrectString(formula2)
-
-	result := "GS3or\n"
-	result += "(" + formula1Str + ")\n"
-	result += "(" + formula2Str + ")\n"
-	result += "(\n"
-	result += toLambdaString(formula1, formula1Str) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += "(\n"
-	result += toLambdaString(formula2, formula2Str) + ",\n"
-	proofStr = makeProofStep(proof.Child(1))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
+	return allRules("GS3or", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
 func betaNotAnd(proof *gs3.GS3Sequent) string {
-	notFormula1 := proof.GetResultFormulasOfChild(0)[0]
-	notFormula2 := proof.GetResultFormulasOfChild(1)[0]
-	var formula1 btps.Form
-	var formula2 btps.Form
-	if notForm, ok := notFormula1.(btps.Not); ok {
-		formula1 = notForm.GetForm()
-	}
-	if notForm, ok := notFormula2.(btps.Not); ok {
-		formula2 = notForm.GetForm()
-	}
-	formula1Str := toCorrectString(formula1)
-	formula2Str := toCorrectString(formula2)
-	notFormula1Str := toCorrectString(notFormula1)
-	notFormula2Str := toCorrectString(notFormula2)
-
-	result := "GS3nand\n"
-	result += "(" + formula1Str + ")\n"
-	result += "(" + formula2Str + ")\n"
-	result += "(\n"
-	result += toLambdaString(notFormula1, notFormula1Str) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += "(\n"
-	result += toLambdaString(notFormula2, notFormula2Str) + ",\n"
-	proofStr = makeProofStep(proof.Child(1))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
+	composingForms := proof.GetTargetForm().GetChildFormulas()[0].GetChildFormulas()
+	return allRules("GS3nand", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
 func betaImp(proof *gs3.GS3Sequent) string {
-	notFormula1 := proof.GetResultFormulasOfChild(0)[0]
-	formula2 := proof.GetResultFormulasOfChild(1)[0]
-	var formula1 btps.Form
-	if notForm, ok := notFormula1.(btps.Not); ok {
-		formula1 = notForm.GetForm()
-	}
-	notFormula1Str := toCorrectString(notFormula1)
-	formula1Str := toCorrectString(formula1)
-	formula2Str := toCorrectString(formula2)
-
-	result := "GS3imp\n"
-	result += "(" + formula1Str + ")\n"
-	result += "(" + formula2Str + ")\n"
-	result += "(\n"
-	result += toLambdaString(notFormula1, notFormula1Str) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += "(\n"
-	result += toLambdaString(formula2, formula2Str) + ",\n"
-	proofStr = makeProofStep(proof.Child(1))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
+	return allRules("GS3imp", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
 func betaEqu(proof *gs3.GS3Sequent) string {
-	formula1 := proof.GetResultFormulasOfChild(0)[0]
-	formula2 := proof.GetResultFormulasOfChild(0)[1]
-	if notForm, ok := formula1.(btps.Not); ok {
-		formula1 = notForm.GetForm()
-	}
-	if notForm, ok := formula2.(btps.Not); ok {
-		formula2 = notForm.GetForm()
-	}
-	formula1Str := toCorrectString(formula1)
-	formula2Str := toCorrectString(formula2)
-	notFormula1Str := toCorrectString(btps.RefuteForm(formula1))
-	notFormula2Str := toCorrectString(btps.RefuteForm(formula2))
-
-	result := "GS3equ\n"
-	result += "(" + formula1Str + ")\n"
-	result += "(" + formula2Str + ")\n"
-	result += "(\n"
-	result += toLambdaString(btps.RefuteForm(formula1), notFormula1Str) + ",\n"
-	result += toLambdaString(btps.RefuteForm(formula2), notFormula2Str) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += "(\n"
-	result += toLambdaString(formula1, formula1Str) + ",\n"
-	result += toLambdaString(formula2, formula2Str) + ",\n"
-	proofStr = makeProofStep(proof.Child(1))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
+	return allRules("GS3equ", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
 func betaNotEqu(proof *gs3.GS3Sequent) string {
-	formula1 := proof.GetResultFormulasOfChild(0)[0]
-	formula2 := proof.GetResultFormulasOfChild(0)[1]
-	if notForm, ok := formula1.(btps.Not); ok {
-		formula1 = notForm.GetForm()
-	}
-	if notForm, ok := formula2.(btps.Not); ok {
-		formula2 = notForm.GetForm()
-	}
-	formula1Str := toCorrectString(formula1)
-	formula2Str := toCorrectString(formula2)
-	notFormula1Str := toCorrectString(btps.RefuteForm(formula1))
-	notFormula2Str := toCorrectString(btps.RefuteForm(formula2))
-
-	result := "GS3nequ\n"
-	result += "(" + formula1Str + ")\n"
-	result += "(" + formula2Str + ")\n"
-	result += "(\n"
-	result += toLambdaString(btps.RefuteForm(formula1), notFormula1Str) + ",\n"
-	result += toLambdaString(formula2, formula2Str) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += "(\n"
-	result += toLambdaString(formula1, formula1Str) + ",\n"
-	result += toLambdaString(btps.RefuteForm(formula2), notFormula2Str) + ",\n"
-	proofStr = makeProofStep(proof.Child(1))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
+	composingForms := proof.GetTargetForm().GetChildFormulas()[0].GetChildFormulas()
+	return allRules("GS3nequ", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
 func gammaAll(proof *gs3.GS3Sequent) string {
-	formula1 := proof.GetResultFormulasOfChild(0)[0]
-	formula1Str := toCorrectString(formula1)
-	termStr := toCorrectString(proof.TermGenerated())
-
-	formulaVar := proof.GetTargetForm()
 	var formulaAll btps.All
-	if form, ok := formulaVar.(btps.All); ok {
-		formulaVar = form.GetForm()
+	if form, ok := proof.GetTargetForm().(btps.All); ok {
 		formulaAll = form
 	}
-	varStr := toCorrectString(formulaVar)
 
-	result := "GS3all\n"
-	result += "(ι)\n"
-	result += "(" + varsToLambdaString(formulaAll.GetVarList()) + ", " + varStr + ")\n"
-	result += "(" + termStr + ")\n"
-	result += "(\n"
-	result += toLambdaString(formula1, formula1Str) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
+	return allRulesQuant("GS3all", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
 }
 
 func gammaNotEx(proof *gs3.GS3Sequent) string {
-	formula1 := proof.GetResultFormulasOfChild(0)[0]
-	formula1Str := toCorrectString(formula1)
-	termStr := toCorrectString(proof.TermGenerated())
-
-	formulaVar := proof.GetTargetForm()
-	var formulaEx btps.Ex
-	if notForm, ok := formulaVar.(btps.Not); ok {
+	var formulaAll btps.Ex
+	if notForm, ok := proof.GetTargetForm().(btps.Not); ok {
 		if form, ok := notForm.GetForm().(btps.Ex); ok {
-			formulaVar = form.GetForm()
-			formulaEx = form
+			formulaAll = form
 		}
 	}
-	varStr := toCorrectString(formulaVar)
+	composingForms := proof.GetTargetForm().GetChildFormulas()[0].GetChildFormulas()
 
-	result := "GS3nex\n"
-	result += "(ι)\n"
-	result += "(" + varsToLambdaString(formulaEx.GetVarList()) + ", " + varStr + ")\n"
-	result += "(" + termStr + ")\n"
-	result += "(\n"
-	result += toLambdaString(formula1, formula1Str) + ",\n"
-	proofStr := makeProofStep(proof.Child(0))
-	result += proofStr
-	result += ")\n"
-	result += fmt.Sprintf("(%s)\n", getFromContext(proof.GetTargetForm()))
-
-	return result
-}
-
-func alphaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format string) (string, [][]btps.Form) {
-	var indices []int
-	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
-	resultingString := fmt.Sprintf("apply "+format+". intros %s. ", introName(target), introNames(indices))
-	return resultingString, [][]btps.Form{hypotheses}
-}
-
-func betaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format string) (string, [][]btps.Form) {
-	resultHyps := [][]btps.Form{}
-	var indices []int
-	resultingString := fmt.Sprintf("apply "+format+"; ", introName(target))
-	introducedNames := make([]string, 0)
-	for i := range proof.Children() {
-		hypoCopy := make([]btps.Form, len(hypotheses))
-		copy(hypoCopy, hypotheses)
-		indices, hypoCopy = introduceList(proof.GetResultFormulasOfChild(i), hypoCopy)
-		introducedNames = append(introducedNames, "intros "+introNames(indices, " "))
-		resultHyps = append(resultHyps, hypoCopy)
-	}
-
-	return resultingString + "[ " + strings.Join(introducedNames, " | ") + " ].", resultHyps
-}
-
-func deltaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format string, constantsCreated []btps.Term) (string, [][]btps.Form, []btps.Term) {
-	var indices []int
-	var name string
-	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
-	constantsCreated, name = addTermGenerated(constantsCreated, proof.TermGenerated())
-	resultingString := fmt.Sprintf(format, introName(target), name, introNames(indices))
-	return resultingString, [][]btps.Form{hypotheses}, constantsCreated
-}
-
-func gammaStep(proof *gs3.GS3Sequent, hypotheses []btps.Form, target int, format string, constantsCreated []btps.Term) (string, [][]btps.Form) {
-	var indices []int
-	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
-	name := "(" + getRealConstantName(constantsCreated, proof.TermGenerated()) + ")"
-	resultingString := fmt.Sprintf(format, introName(target), name, introNames(indices))
-	return resultingString, [][]btps.Form{hypotheses}
+	return allRulesQuant("GS3nex", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
 }
 
 // Processes the formula that was proven by Goéland.
@@ -449,14 +204,9 @@ func processMainFormula(form btps.Form) (btps.FormList, btps.Form) {
 	return formList, form
 }
 
-func getRewriteRules() string {
-	// TODO
-	return ""
-}
-
 // Prints the theorem's name & properly formats the first formula.
 func makeTheorem(axioms btps.FormList, conjecture btps.Form) string {
-	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(GetProblemName(), ".", "_"), "=", "_"), "+", "_")
+	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(global.GetProblemName(), ".", "_"), "=", "_"), "+", "_")
 	formattedProblem := makeImpChain(append(axioms, btps.MakerNot(conjecture)))
 	return "symbol goeland_" + problemName + " : \nϵ " + toCorrectString(formattedProblem) + " → ϵ ⊥ ≔ \n"
 }
@@ -469,136 +219,4 @@ func makeImpChain(forms btps.FormList) btps.Form {
 		form = btps.MakerImp(forms[i], form)
 	}
 	return form
-}
-
-// Introduces a new formula in coq's hypotheses.
-func introduce(f btps.Form, hypotheses []btps.Form) (int, []btps.Form) {
-	//PrintInfo("INTRODUCING", f.ToString())
-	index := len(hypotheses)
-	hypotheses = append(hypotheses, f)
-	return index, hypotheses
-}
-
-func introduceList(fl btps.FormList, hypotheses []btps.Form) ([]int, []btps.Form) {
-	indices := make([]int, len(fl))
-	for i, f := range fl {
-		indices[i], hypotheses = introduce(f, hypotheses)
-	}
-	return indices, hypotheses
-}
-
-func get(f btps.Form, hypotheses []btps.Form) int {
-	for i, h := range hypotheses {
-		if h.Equals(f) {
-			return i
-		}
-	}
-	/*PrintInfo("GET", f.ToString())
-	for _, h := range hypotheses {
-		PrintInfo("H", h.ToString())
-	}*/
-	return -1
-}
-
-// Makes a Coq's name for a new hypothesis.
-func introName(i int) string {
-	return fmt.Sprintf("H%d", i)
-}
-
-func introNames(il []int, sep ...string) string {
-	var s string
-	if len(sep) == 0 {
-		s = " "
-	} else {
-		s = sep[0]
-	}
-	return strings.Join(Map(il, func(_ int, f int) string { return introName(f) }), s)
-}
-
-func isPredEqual(f btps.Form) bool {
-	if not, isNot := f.(btps.Not); isNot {
-		f = not.GetForm()
-	}
-	if p, isPred := f.(btps.Pred); isPred {
-		return p.GetID().Equals(btps.Id_eq)
-	}
-	return false
-}
-
-func addTermGenerated(constantsCreated []btps.Term, term btps.Term) ([]btps.Term, string) {
-	if term == nil {
-		dummiesCreated++
-		return constantsCreated, fmt.Sprintf("x%d", dummiesCreated-1)
-	}
-	constantsCreated = append(constantsCreated, term)
-	return constantsCreated, getConstantName(term.(btps.Fun).GetID())
-}
-
-func getRealConstantName(constantsCreated []btps.Term, term btps.Term) string {
-	if term == nil {
-		return "goeland_I"
-	}
-	if fun, isFun := term.(btps.Fun); isFun {
-		res := ""
-		if isGroundTerm(fun.GetID()) {
-			res = fun.GetID().ToMappedString(lambdaPiMapConnectors, false)
-			subterms := make([]string, 0)
-			for _, t := range fun.GetArgs() {
-				subterms = append(subterms, getRealConstantName(constantsCreated, t))
-			}
-			if len(subterms) > 0 {
-				res += "(" + strings.Join(subterms, ", ") + ")"
-			}
-		} else {
-			res = findInConstants(constantsCreated, term)
-		}
-		return res
-	}
-	return findInConstants(constantsCreated, term)
-}
-
-func findInConstants(constantsCreated []btps.Term, term btps.Term) string {
-	if term == nil {
-		return "goeland_I"
-	}
-	if hasBeenCreated(constantsCreated, term) {
-		return getConstantName(term.(btps.Fun).GetID())
-	}
-	if isGroundTerm(term) {
-		return "(" + term.ToMappedString(lambdaPiMapConnectors, false) + ")"
-	}
-	return "goeland_I"
-}
-
-func cp[T any](source []T) []T {
-	arr := make([]T, len(source))
-	copy(arr, source)
-	return arr
-}
-
-func cleanHypotheses(hypotheses []btps.Form, form btps.Form) (string, [][]btps.Form) {
-	result := ""
-	index := get(form, hypotheses)
-	if index != -1 {
-		hypotheses[index] = btps.MakerTop()
-		result = fmt.Sprintf("clear %s. ", introName(index))
-	}
-	return result, [][]btps.Form{hypotheses}
-}
-
-func getConstantName(id btps.Id) string {
-	return id.ToString()
-}
-
-func hasBeenCreated(constantsCreated []btps.Term, term btps.Term) bool {
-	for _, t := range constantsCreated {
-		if t.Equals(term) {
-			return true
-		}
-	}
-	return false
-}
-
-func isGroundTerm(term btps.Term) bool {
-	return !strings.Contains(term.ToString(), "sko")
 }
