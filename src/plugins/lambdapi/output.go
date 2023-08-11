@@ -48,8 +48,7 @@ func MakeLambdapiOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 }
 
 func makeLambdaPiProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
-	contextString := getContext(proof.GetTargetForm(), meta)
-	//global.PrintInfo("GS3", proof.ToString())
+	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
 	proofString := makeLambdaPiProofFromGS3(proof)
 	return contextString + "\n" + proofString
 }
