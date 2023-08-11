@@ -4,12 +4,27 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/dmt"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func getContext(root btps.Form, metaList btps.MetaList) string {
-	resultingString := contextPreamble()
-	return resultingString
+func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
+	resultString := contextPreamble()
+
+	if typing.EmptyGlobalContext() {
+
+		if global.IsLoaded("dmt") {
+			root = btps.MakerAnd(append(dmt.GetRegisteredAxioms(), root))
+		}
+
+		resultString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+
+		if len(metaList) > 0 {
+			resultString += contextualizeMetas(metaList)
+		}
+	}
+	return resultString
 }
 
 func contextPreamble() string {
@@ -54,6 +69,7 @@ func getContextFromFormula(root btps.Form) []string {
 
 func getContextFromTerm(trm btps.Term) []string {
 	result := []string{}
+
 	if fun, isFun := trm.(btps.Fun); isFun {
 		result = append(result, fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), fun.GetTypeHint().ToString()))
 		for _, term := range fun.GetArgs() {
@@ -86,5 +102,5 @@ func contextualizeMetas(metaList btps.MetaList) string {
 	for _, meta := range metaList {
 		result = append(result, meta.ToMappedString(lambdaPiMapConnectors, false))
 	}
-	return "Parameters " + strings.Join(result, " ") + " : goeland_U."
+	return "symbol " + strings.Join(result, " ") + " : τ (ι);"
 }
