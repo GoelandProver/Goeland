@@ -11,7 +11,7 @@ import (
 )
 
 func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
-	resultString := contextPreamble()
+	resultString := contextPreamble() + "\n"
 
 	if typing.EmptyGlobalContext() {
 
@@ -34,6 +34,7 @@ func contextPreamble() string {
 
 func getContextFromFormula(root btps.Form) []string {
 	result := []string{}
+
 	switch nf := root.(type) {
 	case btps.All:
 		result = getContextFromFormula(nf.GetForm())
@@ -56,10 +57,10 @@ func getContextFromFormula(root btps.Form) []string {
 		result = clean(result, getContextFromFormula(nf.GetF1()))
 		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
 	case btps.Not:
-		result = clean(result, getContextFromFormula(nf.GetForm()))
+		result = append(result, getContextFromFormula(nf.GetForm())...)
 	case btps.Pred:
 		if !nf.GetID().Equals(btps.Id_eq) {
-			result = append(result, fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToMappedString(lambdaPiMapConnectors, false), nf.GetType().ToString()))
+			result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", nf.GetID().ToMappedString(lambdaPiMapConnectors, false), nf.GetType().ToString())))
 		}
 		for _, term := range nf.GetArgs() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
@@ -72,7 +73,7 @@ func getContextFromTerm(trm btps.Term) []string {
 	result := []string{}
 
 	if fun, isFun := trm.(btps.Fun); isFun {
-		result = append(result, fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), fun.GetTypeHint().ToString()))
+		result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), fun.GetTypeHint().ToString())))
 		for _, term := range fun.GetArgs() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}

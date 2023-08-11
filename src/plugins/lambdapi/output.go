@@ -1,6 +1,8 @@
 package lambdapi
 
 import (
+	"strings"
+
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
@@ -45,6 +47,11 @@ func MakeLambdapiOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 
 	// Transform tableaux's proof in GS3 proof
 	return makeLambdaPiProof(gs3.MakeGS3Proof(prf), meta)
+}
+
+func mapDefault(str string) string {
+	result := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, "$i", "τ (ι)"), "$o", "Prop"), "->", "→"), "*", "→")
+	return result
 }
 
 func makeLambdaPiProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
