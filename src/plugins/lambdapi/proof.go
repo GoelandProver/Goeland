@@ -54,10 +54,11 @@ func makeProofStep(proof *gs3.GS3Sequent) string {
 	case gs3.NEQU:
 		resultingString = betaNotEqu(proof)
 
-	// Delta rules
-	case gs3.NALL:
+		// Delta rules
 	case gs3.EX:
 		resultingString = deltaEx(proof)
+	case gs3.NALL:
+		resultingString = deltaNotAll(proof)
 
 	// Gamma rules
 	case gs3.ALL:
@@ -232,6 +233,18 @@ func deltaEx(proof *gs3.GS3Sequent) string {
 	return allRulesQuantExist("GS3ex", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren(), formulaEx.GetVarList(), proof.TermGenerated())
 }
 
+func deltaNotAll(proof *gs3.GS3Sequent) string {
+	var formulaAll btps.All
+	if notForm, ok := proof.GetTargetForm().(btps.Not); ok {
+		if form, ok := notForm.GetForm().(btps.All); ok {
+			formulaAll = form
+		}
+	}
+	composingForms := proof.GetTargetForm().GetChildFormulas()[0].GetChildFormulas()
+
+	return allRulesQuantExist("GS3nall", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
+}
+
 func gammaAll(proof *gs3.GS3Sequent) string {
 	var formulaAll btps.All
 	if form, ok := proof.GetTargetForm().(btps.All); ok {
@@ -242,15 +255,15 @@ func gammaAll(proof *gs3.GS3Sequent) string {
 }
 
 func gammaNotEx(proof *gs3.GS3Sequent) string {
-	var formulaAll btps.Ex
+	var formulaEx btps.Ex
 	if notForm, ok := proof.GetTargetForm().(btps.Not); ok {
 		if form, ok := notForm.GetForm().(btps.Ex); ok {
-			formulaAll = form
+			formulaEx = form
 		}
 	}
 	composingForms := proof.GetTargetForm().GetChildFormulas()[0].GetChildFormulas()
 
-	return allRulesQuantUniv("GS3nex", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
+	return allRulesQuantUniv("GS3nex", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren(), formulaEx.GetVarList(), proof.TermGenerated())
 }
 
 // Processes the formula that was proven by Goéland.
