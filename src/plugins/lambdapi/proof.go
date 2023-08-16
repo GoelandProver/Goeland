@@ -57,6 +57,7 @@ func makeProofStep(proof *gs3.GS3Sequent) string {
 	// Delta rules
 	case gs3.NALL:
 	case gs3.EX:
+		resultingString = deltaEx(proof)
 
 	// Gamma rules
 	case gs3.ALL:
@@ -91,14 +92,14 @@ func allRules(rule string, target btps.Form, composingForms []btps.Form, nexts [
 		result += "(" + toCorrectString(composingForm) + ")\n"
 	}
 
-	result += getRecursionStr(target, nexts, children)
+	result += getRecursionUnivStr(target, nexts, children)
 
 	result += fmt.Sprintf("(%s)\n", getFromContext(target))
 
 	return result
 }
 
-func allRulesQuant(rule string, target btps.Form, composingForms []btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, vars []btps.Var, termGen btps.Term) string {
+func allRulesQuantUniv(rule string, target btps.Form, composingForms []btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, vars []btps.Var, termGen btps.Term) string {
 	result := rule + "\n"
 	result += "(ι)\n"
 
@@ -120,16 +121,57 @@ func allRulesQuant(rule string, target btps.Form, composingForms []btps.Form, ne
 
 	result += "(" + toCorrectString(termGen) + ")\n"
 
-	result += getRecursionStr(target, nexts, children)
+	result += getRecursionUnivStr(target, nexts, children)
 
 	result += fmt.Sprintf("(%s)\n", getFromContext(target))
 
 	return result
 }
 
-func getRecursionStr(target btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList) (result string) {
+func getRecursionUnivStr(target btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList) (result string) {
 	for i, next := range nexts {
 		result += "(\n"
+		for _, childForm := range children[i] {
+			result += toLambdaString(childForm, toCorrectString(childForm)) + ",\n"
+		}
+		proofStr := makeProofStep(next)
+		result += proofStr
+		result += ")\n"
+	}
+	return result
+}
+
+func allRulesQuantExist(rule string, target btps.Form, composingForms []btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, vars []btps.Var, termGen btps.Term) string {
+	result := rule + "\n"
+	result += "(ι)\n"
+
+	result += "(%s, " + toCorrectString(composingForms[0]) + ")\n"
+
+	quant := ""
+	switch target.(type) {
+	case btps.Ex:
+		quant = lambdaPiMapConnectors[btps.ExQuant]
+	case btps.Not:
+		quant = lambdaPiMapConnectors[btps.AllQuant]
+	}
+
+	varStrs := []string{}
+	for _, singleVar := range vars {
+		varStrs = append(varStrs, toLambdaIntroString(singleVar))
+	}
+	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
+
+	result += getRecursionExistStr(target, nexts, children, termGen)
+
+	result += fmt.Sprintf("(%s)\n", getFromContext(target))
+
+	return result
+}
+
+func getRecursionExistStr(target btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, termGen btps.Term) (result string) {
+	for i, next := range nexts {
+		result += "(\n"
+		result += toLambdaIntroString(termGen) + ",\n"
 		for _, childForm := range children[i] {
 			result += toLambdaString(childForm, toCorrectString(childForm)) + ",\n"
 		}
@@ -181,13 +223,22 @@ func betaNotEqu(proof *gs3.GS3Sequent) string {
 	return allRules("GS3nequ", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
+func deltaEx(proof *gs3.GS3Sequent) string {
+	var formulaEx btps.Ex
+	if form, ok := proof.GetTargetForm().(btps.Ex); ok {
+		formulaEx = form
+	}
+
+	return allRulesQuantExist("GS3ex", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren(), formulaEx.GetVarList(), proof.TermGenerated())
+}
+
 func gammaAll(proof *gs3.GS3Sequent) string {
 	var formulaAll btps.All
 	if form, ok := proof.GetTargetForm().(btps.All); ok {
 		formulaAll = form
 	}
 
-	return allRulesQuant("GS3all", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
+	return allRulesQuantUniv("GS3all", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
 }
 
 func gammaNotEx(proof *gs3.GS3Sequent) string {
@@ -199,7 +250,7 @@ func gammaNotEx(proof *gs3.GS3Sequent) string {
 	}
 	composingForms := proof.GetTargetForm().GetChildFormulas()[0].GetChildFormulas()
 
-	return allRulesQuant("GS3nex", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
+	return allRulesQuantUniv("GS3nex", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
 }
 
 // Processes the formula that was proven by Goéland.

@@ -57,8 +57,12 @@ type Fun struct {
 }
 
 func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return f.ToMappedStringSurroundWithId(f.GetID().ToMappedString(mapping, displayTypes), mapping, displayTypes)
+}
+
+func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, displayTypes bool) string {
 	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
-		return f.GetID().ToMappedString(mapping, displayTypes) + "%s"
+		return idString + "%s"
 	}
 	args := []string{}
 
@@ -67,7 +71,7 @@ func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	}
 	args = append(args, "%s")
 
-	str := f.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, mapping[PredTypeVarSep]) + ")"
+	str := idString + "(" + strings.Join(args, mapping[PredTypeVarSep]) + ")"
 	if displayTypes {
 		str += " : " + f.typeHint.ToString()
 	}

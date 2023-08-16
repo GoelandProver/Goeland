@@ -158,6 +158,11 @@ func (cm *ComparableMap[T, U]) GetExists(otherKey T) (U, bool) {
 	return zero, false
 }
 
+func (cm *ComparableMap[T, U]) Exists(otherKey T) bool {
+	_, result := cm.GetExists(otherKey)
+	return result
+}
+
 func (cm *ComparableMap[T, U]) Set(otherKey T, otherValue U) {
 	for i, key := range cm.keys {
 		if key.Equals(otherKey) {

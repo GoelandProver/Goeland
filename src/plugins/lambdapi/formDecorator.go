@@ -86,6 +86,30 @@ func (dp DecoratedPred) ToMappedStringChild(mapping btps.MapString, displayTypes
 	return " ", emptyValue
 }
 
+type DecoratedFun struct {
+	btps.Fun
+}
+
+func MakeDecoratedFun(newFun btps.Fun) DecoratedFun {
+	if typed, ok := newFun.Copy().(btps.Fun); ok {
+		newFun = typed
+	}
+	decorated := DecoratedFun{newFun}
+	decorated.MappedString.MappableString = decorated
+	return decorated
+}
+
+func (df DecoratedFun) ToMappedStringSurround(mapping btps.MapString, displayTypes bool) string {
+	result := df.Fun.ToMappedStringSurround(mapping, displayTypes)
+
+	possible, exists := context.GetExists(df.Fun)
+	if exists {
+		result = df.Fun.ToMappedStringSurroundWithId(possible, mapping, displayTypes)
+	}
+
+	return result
+}
+
 func decorateForm(form btps.MappableString) btps.MappableString {
 	switch typed := form.(type) {
 	case btps.All:
@@ -96,6 +120,8 @@ func decorateForm(form btps.MappableString) btps.MappableString {
 		return MakeDecoratedVar(typed)
 	case btps.Pred:
 		return MakeDecoratedPred(typed)
+	case btps.Fun:
+		return MakeDecoratedFun(typed)
 	default:
 		return typed
 	}

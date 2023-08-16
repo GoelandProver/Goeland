@@ -11,7 +11,7 @@ import (
 )
 
 func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
-	resultString := contextPreamble() + "\n"
+	resultString := contextPreamble() + "\n\n"
 
 	if typing.EmptyGlobalContext() {
 
