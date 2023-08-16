@@ -75,7 +75,18 @@ func makeProofStep(proof *gs3.GS3Sequent) string {
 
 func closureAxiom(proof *gs3.GS3Sequent) string {
 	target, notTarget := getPosAndNeg(proof.GetTargetForm())
-	result := fmt.Sprintf("GS3axiom (%s) (%s) (%s)\n", toCorrectString(target), getFromContext(target), getFromContext(notTarget))
+
+	result := ""
+
+	switch target.(type) {
+	case btps.Pred:
+		result = fmt.Sprintf("GS3axiom (%s) (%s) (%s)\n", toCorrectString(target), getFromContext(target), getFromContext(notTarget))
+	case btps.Top:
+		result = fmt.Sprintf("GS3ntop (%s)\n", getFromContext(notTarget))
+	case btps.Bot:
+		result = fmt.Sprintf("GS3bot (%s)\n", getFromContext(target))
+	}
+
 	return result
 }
 
