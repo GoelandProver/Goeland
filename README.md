@@ -79,7 +79,7 @@ Since the tableau method only proves theorems, Goéland returns `Valid` when a p
 
 ### Tests <a id="tests"></a>
 
-The benchmark is available in the [Benchmarks](https://github.com/GoelandProver/GoelandBenchmarks/) submodule, with the [Makefile](h[ttps://github.com/GoelandProver/GoelandBenchmarks/Makefile](https://github.com/GoelandProver/GoelandBenchmarks/blob/main/Makefile)) needed to run them. The folder on which to run the tests is specified in the [Makefile]([https://github.com/GoelandProver/GoelandBenchmarks/Makefile](https://github.com/GoelandProver/GoelandBenchmarks/blob/main/Makefile)).
+The benchmark is available in the [Benchmarks](https://github.com/GoelandProver/GoelandBenchmarks/) submodule, with the [Makefile](https://github.com/GoelandProver/GoelandBenchmarks/blob/main/Makefile) needed to run them. The folder on which to run the tests is specified in the [Makefile](https://github.com/GoelandProver/GoelandBenchmarks/blob/main/Makefile).
 
 For example, the command line:
 ```console
@@ -98,4 +98,4 @@ with the following architecture:
 ├── RESULTS
 └── Makefile
 ```
-and the corresponding lines added to the [Makefile]([GoelandBenchmarks/Makefile](https://github.com/GoelandProver/GoelandBenchmarks/blob/main/Makefile)) will run Goéland and Goéland+DMT on the SYN and SET folder. Output results are placed into the [RESULTS]([GoelandBenchmarks/RESULTS/](https://github.com/GoelandProver/GoelandBenchmarks/tree/main/RESULTS)https://github.com/GoelandProver/GoelandBenchmarks/tree/main/RESULTS) repository. 
+and the corresponding lines added to the [Makefile](https://github.com/GoelandProver/GoelandBenchmarks/blob/main/Makefile) will run Goéland and Goéland+DMT on the SYN and SET folder. Output results are placed into the [RESULTS](https://github.com/GoelandProver/GoelandBenchmarks/tree/main/RESULTS) repository. 
