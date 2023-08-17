@@ -132,3 +132,9 @@ func ConvertList[T any, U any](input []T) []U {
 type Copyable[T any] interface {
 	Copy() T
 }
+
+type Basic[T any] interface {
+	Stringable
+	Comparable
+	Copyable[T]
+}
