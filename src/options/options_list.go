@@ -110,7 +110,7 @@ func buildOptions() {
 	(&option[string]{}).init(
 		"memprofile",
 		"",
-		"Write the memory profile to `file`",
+		"Writes the memory profile to `file`",
 		func(s string) { global.SetMemProfile(s) },
 		func(string) {})
 
@@ -191,7 +191,7 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"ari",
 		false,
-		"Enables arithmetic module",
+		"Enables the use of (TPTP) arithmetic functions",
 		func(bool) { global.SetArithModule(true) },
 		func(bool) {})
 	(&option[int]{}).init(
@@ -218,25 +218,25 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"context",
 		false,
-		"Should only be used with the -ocoq parameter. Enables the context for a standalone execution.",
+		"Should only be used with the -ocoq parameter. Enables the context for a standalone execution",
 		func(bool) { coq.SetContextEnabled(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"inner",
 		false,
-		"Enables on-the-fly inner Skolemisation during the proof-search.",
+		"Enables on-the-fly inner Skolemisation during the proof-search",
 		func(bool) { global.SetInnerSko(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
-		"optimised",
+		"optimized",
 		false,
-		"Enables on-the-fly optimised (delta++) Skolemisation during the proof-search.",
+		"Enables on-the-fly optimized (delta++) Skolemisation during the proof-search",
 		func(bool) { global.SetOptimisedSko(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"assisted",
 		false,
-		"Enables the step-by-step mode debugger.",
+		"Enables the step-by-step mode debugger",
 		func(bool) { global.SetAssisted(true) },
 		func(bool) {})
 }
