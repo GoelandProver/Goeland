@@ -44,19 +44,21 @@ import (
 
 type substitutions = ttps.Substitutions
 
-/** The unifier type is a type that keeps the substitutions that close the whole subtree.
+/*
+  - The unifier type is a type that keeps the substitutions that close the whole subtree.
     It is stored in localUnifiers.
-	The goal of this object is to simply export two functions:
-	* a function to add the local substitutions that close a subtree
-	* a function to prune the substitutions when a constraint is given
-	The management of everything else falls inside the object's reach.
-	As such, the current implementation does the following:
-	* it stores the metavariables that exist in at least one substitution.
-	* it stores the terms that exist in at least one substitution.
-	* the local unifiers is a list of substitutions, where each substitution
-	  is a list of pairs of integers, representing the index of the (meta, term)
-	  in the local meta list and term list.
- **/
+    The goal of this object is to simply export two functions:
+  - a function to add the local substitutions that close a subtree
+  - a function to prune the substitutions when a constraint is given
+    The management of everything else falls inside the object's reach.
+    As such, the current implementation does the following:
+  - it stores the metavariables that exist in at least one substitution.
+  - it stores the terms that exist in at least one substitution.
+  - the local unifiers is a list of substitutions, where each substitution
+    is a list of pairs of integers, representing the index of the (meta, term)
+    in the local meta list and term list.
+    *
+*/
 type Unifier struct {
 	localUnifiers []Pair[substitutions, []substitutions]
 }

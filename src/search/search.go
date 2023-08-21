@@ -240,7 +240,7 @@ func PrintSearchResult(res bool) {
 
 // Do not change this function, it is the standard output for TPTP files
 func PrintStandardSolution(status string) {
-	fmt.Printf("%s SZS status %v for %v", "%", status, global.GetProblemName())
+	fmt.Printf("%s SZS status %v for %v", "%\n", status, global.GetProblemName())
 }
 
 /**
@@ -274,7 +274,7 @@ func retrieveMetaFromSubst(s treetypes.Substitutions) []int {
 * Manage this result, dispatch the subst and recreate data strcutures.
 * Return if the branch is closed without variable from its father
 **/
-func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) {
+func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) (bool, []complextypes.SubstAndForm) {
 
 	mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
 	substs_with_mm, substs_with_mm_uncleared, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
@@ -283,9 +283,13 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 	appliedSubst := st.GetAppliedSubst().GetSubst()
 
 	switch {
-
 	case len(substs) == 0:
-		global.PrintDebug("MCR", "Branch closed by ¬⊤ or ⊥ or a litteral and its opposite !")
+		global.PrintDebug("MCR", "Branch closed by ¬⊤ or ⊥ or a litteral and its opposite!")
+
+		if global.GetAssisted() {
+			fmt.Printf("Branch can be closed by ¬⊤, ⊥ or a litteral and its opposite!\nApplying it automatically...\n")
+		}
+
 		st.SetSubstsFound([]complextypes.SubstAndForm{st.GetAppliedSubst()})
 
 		// Proof
@@ -300,10 +304,18 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		st.SetGlobalUnifier(unifier)
 
 		// No new subst needed in the global unifier
-		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
+		if !global.GetAssisted() {
+			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
+		}
 
 	case len(substs_without_mm) > 0:
 		global.PrintDebug("MCR", fmt.Sprintf("Contradiction found (without mm) : %v", treetypes.SubstListToString(substs_without_mm)))
+
+		if global.GetAssisted() && !substs_without_mm[0].IsEmpty() {
+			fmt.Printf("The branch can be closed by using a substitution which has no impact elsewhere!\nApplying it automatically : ")
+			fmt.Printf("%v !\n", treetypes.SubstListToString(substs_without_mm))
+		}
+
 		st.SetSubstsFound([]complextypes.SubstAndForm{st.GetAppliedSubst()})
 
 		// Proof
@@ -320,7 +332,9 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			unifier.AddSubstitutions(appliedSubst, merge)
 		}
 		st.SetGlobalUnifier(unifier)
-		sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
+		if !global.GetAssisted() {
+			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
+		}
 
 	case len(substs_with_mm) > 0:
 		global.PrintDebug("MCR", "Contradiction found (with mm) !")
@@ -335,12 +349,10 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		meta_to_reintroduce := []int{}
 
 		for _, subst_for_father := range substs_with_mm {
-
 			// Check if subst_for_father is failure
 			if subst_for_father.Equals(treetypes.Failure()) {
 				global.PrintError("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().ToString()))
 			}
-
 			global.PrintDebug("MCR", fmt.Sprintf("Formula = : %v", f.ToString()))
 
 			// Create substAndForm with the current form and the subst found
@@ -361,19 +373,24 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			meta_to_reintroduce = global.UnionIntList(meta_to_reintroduce, retrieveMetaFromSubst(subst_for_father))
 		}
 
-		global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
-		global.PrintDebug("MCR", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
-		sort.Ints(meta_to_reintroduce)
+		if global.GetAssisted() {
+			return true, st.GetSubstsFound()
+		} else {
+			global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
+			global.PrintDebug("MCR", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
+			sort.Ints(meta_to_reintroduce)
 
-		// Add substs_with_mm found with the corresponding subst
-		for i, subst := range substs_with_mm {
-			mergeUncleared, _ := treesearch.MergeSubstitutions(appliedSubst, substs_with_mm_uncleared[i])
-			mergeCleared, _ := treesearch.MergeSubstitutions(appliedSubst, subst)
-			unifier.AddSubstitutions(mergeCleared, mergeUncleared)
+			// Add substs_with_mm found with the corresponding subst
+			for i, subst := range substs_with_mm {
+				mergeUncleared, _ := treesearch.MergeSubstitutions(appliedSubst, substs_with_mm_uncleared[i])
+				mergeCleared, _ := treesearch.MergeSubstitutions(appliedSubst, subst)
+				unifier.AddSubstitutions(mergeCleared, mergeUncleared)
+			}
+			st.SetGlobalUnifier(unifier)
+			sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce)
 		}
-		st.SetGlobalUnifier(unifier)
-		sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce)
 	}
+	return false, []complextypes.SubstAndForm{}
 }
 
 /* Apply rules with priority (closure < rewrite < alpha < delta < closure with mm < beta < gamma) */
@@ -440,7 +457,7 @@ func manageRewriteRules(fatherId uint64, state complextypes.State, c Communicati
 	ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), currentNodeId, originalNodeId, []int{})
 }
 
-// ill TODO: check if this function does not make the DMT version lose completeness: is the original formula that's rewritten still in the branch or not?
+// ILL TODO: check if this function does not make the DMT version lose completeness: is the original formula that's rewritten still in the branch or not?
 func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTerms, state *complextypes.State, remainingAtomics basictypes.FormAndTermsList, fatherId uint64, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) bool {
 	global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.IntSubstAndFormListToString(rewritten)))
 

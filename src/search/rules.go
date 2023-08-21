@@ -78,10 +78,8 @@ var strToPrintMap map[string]string = map[string]string{
 *	a boolean, true if a contradiction was found, false otherwise
 *	a substitution, the substitution which make the contradiction (possibly empty)
 **/
-func ApplyClosureRules(form basictypes.Form, state *complextypes.State) (bool, []treetypes.Substitutions) {
+func ApplyClosureRules(form basictypes.Form, state *complextypes.State) (result bool, substitutions []treetypes.Substitutions) {
 	global.PrintDebug("ACR", "Start ACR")
-	var substitutions []treetypes.Substitutions
-	result := false
 
 	if searchObviousClosureRule(form) {
 		return true, substitutions
