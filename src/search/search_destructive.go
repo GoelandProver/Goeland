@@ -505,9 +505,9 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 			for _, f := range st.GetAtomic() {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 				// Check if exists a contradiction after applying the substitution
-				clos_res_after_apply_subst, subst_after_apply_subst := applyClosureRules(f.GetForm(), &st)
+				clos_res_after_apply_subst, subst_after_apply_subst := ApplyClosureRules(f.GetForm(), &st)
 				if clos_res_after_apply_subst {
-					manageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
+					ManageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
 					return
 				}
 			}
@@ -537,7 +537,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 				st.DispatchForm(f.Copy())
 			} else {
 				if searchObviousClosureRule(f.GetForm()) {
-					manageClosureRule(father_id, &st, cha, []treetypes.Substitutions{}, f, node_id, original_node_id)
+					ManageClosureRule(father_id, &st, cha, []treetypes.Substitutions{}, f, node_id, original_node_id)
 					return
 				}
 			}
@@ -549,11 +549,11 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 				equality.InsertPred(atomic)
 			}
 			global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
-			clos_res, subst := applyClosureRules(atomic, &st)
+			clos_res, subst := ApplyClosureRules(atomic, &st)
 			fAt := basictypes.MakeFormAndTerm(atomic, basictypes.MakeEmptyTermList())
 
 			if clos_res {
-				manageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst), fAt, node_id, original_node_id)
+				ManageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst), fAt, node_id, original_node_id)
 				return false
 			}
 
@@ -597,7 +597,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms())
 				if res_eq {
-					manageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.MakeEmptyTermList()), node_id, original_node_id)
+					ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.MakeEmptyTermList()), node_id, original_node_id)
 					return
 				}
 			}

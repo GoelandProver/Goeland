@@ -78,7 +78,7 @@ var strToPrintMap map[string]string = map[string]string{
 *	a boolean, true if a contradiction was found, false otherwise
 *	a substitution, the substitution which make the contradiction (possibly empty)
 **/
-func applyClosureRules(form basictypes.Form, state *complextypes.State) (bool, []treetypes.Substitutions) {
+func ApplyClosureRules(form basictypes.Form, state *complextypes.State) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ACR", "Start ACR")
 	var substitutions []treetypes.Substitutions
 	result := false
@@ -224,7 +224,7 @@ func setStateRules(state *complextypes.State, name string, forms ...string) {
 * Result :
 *	a formula list (conjunction)
 **/
-func applyAlphaRules(fnt basictypes.FormAndTerms, state *complextypes.State) basictypes.FormAndTermsList {
+func ApplyAlphaRules(fnt basictypes.FormAndTerms, state *complextypes.State) basictypes.FormAndTermsList {
 	var result basictypes.FormAndTermsList
 
 	form := fnt.GetForm()
@@ -298,7 +298,7 @@ func applyAlphaAndRule(formTyped basictypes.And, state *complextypes.State, term
 * Result :
 *	a formula list (disjunction)
 **/
-func applyBetaRules(fnt basictypes.FormAndTerms, state *complextypes.State) []basictypes.FormAndTermsList {
+func ApplyBetaRules(fnt basictypes.FormAndTerms, state *complextypes.State) []basictypes.FormAndTermsList {
 	var result []basictypes.FormAndTermsList
 
 	form := fnt.GetForm()
@@ -396,7 +396,7 @@ func applyBetaEquRule(formTyped basictypes.Equ, state *complextypes.State, terms
 * Result :
 *	a formula
 **/
-func applyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) basictypes.FormAndTermsList {
+func ApplyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) basictypes.FormAndTermsList {
 	switch fnt.GetForm().(type) {
 	case basictypes.Not:
 		setStateRules(state, "DELTA", "NOT", "FORALL")
@@ -416,7 +416,7 @@ func applyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 *	a formula
 *	the new metavariables
 **/
-func applyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes.State) (basictypes.FormAndTermsList, basictypes.MetaList) {
+func ApplyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes.State) (basictypes.FormAndTermsList, basictypes.MetaList) {
 	switch fnt.GetForm().(type) {
 	case basictypes.Not:
 		setStateRules(state, "GAMMA", "NOT", "EXISTS")

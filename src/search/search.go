@@ -274,7 +274,7 @@ func retrieveMetaFromSubst(s treetypes.Substitutions) []int {
 * Manage this result, dispatch the subst and recreate data strcutures.
 * Return if the branch is closed without variable from its father
 **/
-func manageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) {
+func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) {
 
 	mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
 	substs_with_mm, substs_with_mm_uncleared, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
@@ -502,7 +502,7 @@ func manageAlphaRules(fatherId uint64, state complextypes.State, c Communication
 	hdf := state.GetAlpha()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 	state.SetAlpha(state.GetAlpha()[1:])
-	resultForms := applyAlphaRules(hdf, &state)
+	resultForms := ApplyAlphaRules(hdf, &state)
 	state.SetLF(resultForms)
 
 	// Proof
@@ -519,7 +519,7 @@ func manageDeltaRules(fatherId uint64, state complextypes.State, c Communication
 	hdf := state.GetDelta()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
 	state.SetDelta(state.GetDelta()[1:])
-	resultForms := applyDeltaRules(hdf, &state)
+	resultForms := ApplyDeltaRules(hdf, &state)
 	state.SetLF(resultForms)
 
 	// Proof
@@ -535,7 +535,7 @@ func manageBetaRules(fatherId uint64, state complextypes.State, c Communication,
 	global.PrintDebug("PS", "Beta rule")
 	hdf := state.GetBeta()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
-	reslf := applyBetaRules(hdf, &state)
+	reslf := ApplyBetaRules(hdf, &state)
 	childIds := []int{}
 
 	// Proof
@@ -583,7 +583,7 @@ func manageGammaRules(fatherId uint64, state complextypes.State, c Communication
 	// Update MetaGen
 	index, newMetaGen := basictypes.GetIndexMetaGenList(hdf, state.GetMetaGen())
 	state.SetMetaGen(newMetaGen)
-	newFnts, newMetas := applyGammaRules(hdf, index, &state)
+	newFnts, newMetas := ApplyGammaRules(hdf, index, &state)
 	state.SetLF(newFnts)
 	state.SetMC(append(state.GetMC(), newMetas...))
 	if global.IsDestructive() {
