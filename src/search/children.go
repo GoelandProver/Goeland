@@ -46,15 +46,15 @@ import (
 
 /* Struct result to communicate substitution or a quit order through a channel */
 type Communication struct {
-	Quit   chan bool // True if need to die, false si need to wait
-	Result chan Result
+	quit   chan bool // True if need to die, false si need to wait
+	result chan Result
 }
 
 func (c Communication) GetQuit() chan bool {
-	return c.Quit
+	return c.quit
 }
 func (c Communication) GetResult() chan Result {
-	return c.Result
+	return c.result
 }
 
 func MakeCommunication(quit chan bool, result chan Result) Communication {
@@ -128,12 +128,12 @@ func closeChildren(children *[]Communication, kill bool) {
 
 	for i, v := range *children {
 		select {
-		case v.Quit <- kill:
+		case v.quit <- kill:
 			global.PrintDebug("CC", "Send close order")
-		case res := <-v.Result:
+		case res := <-v.result:
 			global.PrintDebug("CC", fmt.Sprintf("Receive answer : %v and then send close order", res.id))
 			if res.need_answer {
-				v.Quit <- kill
+				v.quit <- kill
 			} else {
 				global.PrintDebug("CC", "Not send, child already dead")
 				*children = removeChildren(*children, i)
@@ -150,7 +150,7 @@ func sendSubToChildren(children []Communication, s complextypes.SubstAndForm) {
 	global.PrintDebug("SSTC", fmt.Sprintf("Send sub to children : %v", len(children)))
 	for i, v := range children {
 		global.PrintDebug("SSTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
-		v.Result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, treetypes.MakeEmptySubstitutionList(), nil, -1, -1, complextypes.MakeUnifier()}
+		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, treetypes.MakeEmptySubstitutionList(), nil, -1, -1, complextypes.MakeUnifier()}
 	}
 }
 
@@ -159,7 +159,7 @@ func sendForbiddenToChildren(children []Communication, s []treetypes.Substitutio
 	global.PrintDebug("SFTC", fmt.Sprintf("Send forbidden to children : %v", len(children)))
 	for i, v := range children {
 		global.PrintDebug("SFTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
-		v.Result <- Result{global.GetGID(), true, true, complextypes.MakeEmptySubstAndForm(), []complextypes.SubstAndForm{}, s, nil, -1, -1, complextypes.MakeUnifier()}
+		v.result <- Result{global.GetGID(), true, true, complextypes.MakeEmptySubstAndForm(), []complextypes.SubstAndForm{}, s, nil, -1, -1, complextypes.MakeUnifier()}
 	}
 }
 
@@ -173,13 +173,13 @@ func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64
 	global.PrintDebug("SSTF", fmt.Sprintf("Meta to reintroduce: %v", global.IntListToString(meta_to_reintroduce)))
 
 	select {
-	case c.Result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), treetypes.MakeEmptySubstitutionList(), st.GetProof(), node_id, original_node_id, st.GetGlobalUnifier()}:
+	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), treetypes.MakeEmptySubstitutionList(), st.GetProof(), node_id, original_node_id, st.GetGlobalUnifier()}:
 		if need_answer {
 			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
 		} else {
 			global.PrintDebug("SSTF", "Die")
 		}
-	case quit := <-c.Quit:
+	case quit := <-c.quit:
 		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id, original_node_id, []int{}, meta_to_reintroduce)
 	}
 }

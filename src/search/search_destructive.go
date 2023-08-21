@@ -153,12 +153,12 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 	// Select structure
 	cases := make([]reflect.SelectCase, len(*children)+1)
 	for i, ch := range *children {
-		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(ch.Result)}
+		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(ch.result)}
 	}
 
 	// Manage quit order
 	index_quit := len(*children)
-	cases[index_quit] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(father.Quit)}
+	cases[index_quit] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(father.quit)}
 
 	// Result struct
 	result_int := ERROR
@@ -340,12 +340,12 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 	st.SetSubstsFound([]complextypes.SubstAndForm{})
 
 	select {
-	case quit := <-c.Quit:
+	case quit := <-c.quit:
 		exchanges.WriteExchanges(father_id, st, given_substs, complextypes.SubstAndForm{}, "WaitFather - Die")
 		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
 		return
 
-	case answer_father := <-c.Result:
+	case answer_father := <-c.result:
 		subst := answer_father.GetSubstForChildren()
 
 		// Update to prune everything that shouldn't happen.
@@ -417,7 +417,7 @@ func WaitChildren(args wcdArgs) {
 	args.printDebugMessages()
 
 	select {
-	case quit := <-args.c.Quit:
+	case quit := <-args.c.quit:
 		exchanges.WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Die")
 		manageQuitOrder(quit, args.c, args.fatherId, args.st, args.children, args.givenSubsts, args.nodeId, args.originalNodeId, args.childOrdering, args.toReintroduce)
 		return
@@ -477,7 +477,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 
 	// Select to check kill order
 	select {
-	case quit := <-cha.Quit:
+	case quit := <-cha.quit:
 		manageQuitOrder(quit, cha, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce)
 	default:
 		err := complextypes.ApplySubstitution(&st, s)

@@ -159,7 +159,7 @@ func applyBetaRule(state complextypes.State, substitut complextypes.SubstAndForm
 		child_id_list = append(child_id_list, fl.GetI())
 
 		if global.IsDestructive() {
-			c_child := search.Communication{Quit: make(chan bool), Result: make(chan search.Result)}
+			c_child := search.MakeCommunication(make(chan bool), make(chan search.Result))
 			chan_tab = append(chan_tab, c_child)
 			go search.ProofSearch(global.GetGID(), st_copy, c_child, substitut, fl.GetI(), fl.GetI(), []int{})
 		} else {
