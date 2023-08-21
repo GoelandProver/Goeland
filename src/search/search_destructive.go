@@ -501,6 +501,11 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 	case quit := <-cha.quit:
 		manageQuitOrder(quit, cha, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce)
 	default:
+		err := complextypes.ApplySubstitution(&st, s)
+		if err != nil {
+			global.PrintError("PSD", "There was an error when merging substitutions. What to do?")
+		}
+
 		// Apply subst if any
 		if !s.IsEmpty() {
 			//st.SetCurrentProofRule(fmt.Sprintf("Apply substitution : %v", s.GetSubst().ToStringForProof()))

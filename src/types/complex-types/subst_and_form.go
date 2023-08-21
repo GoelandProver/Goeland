@@ -44,7 +44,6 @@ import (
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
