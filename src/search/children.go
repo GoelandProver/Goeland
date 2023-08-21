@@ -175,7 +175,7 @@ func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64
 	select {
 	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), treetypes.MakeEmptySubstitutionList(), st.GetProof(), node_id, original_node_id, st.GetGlobalUnifier()}:
 		if need_answer {
-			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
+			WaitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
 		} else {
 			global.PrintDebug("SSTF", "Die")
 		}

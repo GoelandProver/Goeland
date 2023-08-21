@@ -69,7 +69,7 @@ func manageQuitOrder(quit bool, c Communication, father_id uint64, st complextyp
 		global.PrintDebug("MQO", "Die")
 	} else {
 		global.PrintDebug("MQO", "Closing order received, let's wait father")
-		waitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
+		WaitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
 	}
 }
 
@@ -328,7 +328,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 * 	children : list of children
 * 	given_substs : subst send by this node to its father
 **/
-func waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
+func WaitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
 	global.PrintDebug("WF", "Wait father")
 
 	// CLear subst found
@@ -424,13 +424,13 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 
 			global.PrintDebug("WF", "GO !")
 			st.SetBTOnFormulas(false)
-			waitChildren(MakeWcdArgs(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, true, []int{original_node_id}, meta_to_reintroduce))
+			WaitChildren(MakeWcdArgs(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, true, []int{original_node_id}, meta_to_reintroduce))
 		}
 	}
 }
 
 /** Waits for its children to end, and manages their return status. */
-func waitChildren(args wcdArgs) {
+func WaitChildren(args wcdArgs) {
 	args.printDebugMessages()
 
 	select {
@@ -463,7 +463,7 @@ func waitChildren(args wcdArgs) {
 			exchanges.WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Wait father")
 			global.PrintDebug("WC", "Closing order received, let's wait father")
 			closeChildren(&args.children, true)
-			waitFather(args.fatherId, args.st, args.c, args.givenSubsts, args.nodeId, args.originalNodeId, args.childOrdering, args.toReintroduce)
+			WaitFather(args.fatherId, args.st, args.c, args.givenSubsts, args.nodeId, args.originalNodeId, args.childOrdering, args.toReintroduce)
 		case OPENED:
 			manageOpenedChild(args)
 		}
