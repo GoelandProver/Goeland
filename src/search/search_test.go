@@ -47,7 +47,6 @@ import (
 	polymorphism "github.com/GoelandProver/Goeland/polymorphism/typing"
 	syntax "github.com/GoelandProver/Goeland/syntaxic-manipulations"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
-	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
 func TestMain(m *testing.M) {

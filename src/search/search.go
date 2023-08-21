@@ -295,7 +295,7 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		// Proof
 		st.SetCurrentProofRule("⊙")
 		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofFormula(f)
+		st.SetCurrentProofFormula(f.Copy())
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
@@ -321,7 +321,7 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		// Proof
 		st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", substs_without_mm[0].ToString()))
 		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofFormula(f)
+		st.SetCurrentProofFormula(f.Copy())
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
@@ -342,7 +342,7 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		// TODO : REMOVE vu qu fait dans wait father ?
 		st.SetCurrentProofRule("⊙")
 		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofFormula(f)
+		st.SetCurrentProofFormula(f.Copy())
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))

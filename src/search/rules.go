@@ -101,13 +101,15 @@ func ApplyClosureRules(form basictypes.Form, state *complextypes.State) (result 
 		for _, subst := range matchSubsts {
 			global.PrintDebug("ACR", fmt.Sprintf("MSL : %v", subst.ToString()))
 
-			shouldBeAdded := true
-			if global.GetCompleteness() && searchForbidden(state, subst) {
-				shouldBeAdded = false
-			}
-			if shouldBeAdded {
-				// Result should be true as at least one substitution is added in the substitutions returned to the parent.
+			if subst.GetSubst().Equals(treetypes.MakeEmptySubstitution()) {
 				result = true
+			} else {
+				if !searchForbidden(state, subst) {
+					result = true
+				}
+			}
+
+			if result {
 				global.PrintDebug("ACR", fmt.Sprintf("Subst found between : %v and %v : %v", form.ToString(), subst.GetForm().ToString(), subst.GetSubst().ToString()))
 				substitutions = treetypes.AppendIfNotContainsSubst(substitutions, subst.GetSubst())
 			}
