@@ -48,6 +48,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
+	polymorphism "github.com/GoelandProver/Goeland/polymorphism/typing"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -67,7 +68,25 @@ func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
 			resultingString += contextualizeMetas(metaList)
 		}
 	} else {
-		// TODO: get context and print everything.
+		if global.IsLoaded("dmt") {
+			root = btps.MakerAnd(append(dmt.GetRegisteredAxioms(), root))
+		}
+
+		context := polymorphism.GetGlobalContext()
+		for k, v := range context {
+			if typed, ok := v[0].App.(polymorphism.TypeHint); ok {
+				if k[0] != '$' && k == typed.ToString() {
+					resultingString += "Parameter " + k + ": Type.\n"
+
+				}
+			}
+		}
+
+		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+
+		if len(metaList) > 0 {
+			resultingString += contextualizeMetas(metaList)
+		}
 	}
 	return resultingString
 }
