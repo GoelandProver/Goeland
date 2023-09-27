@@ -42,10 +42,9 @@ package dmt
 
 import (
 	"fmt"
-	"strings"
 
 	. "github.com/GoelandProver/Goeland/global"
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+	syntax "github.com/GoelandProver/Goeland/syntaxic-manipulations"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -68,11 +67,11 @@ func RegisterAxiom(axiom btypes.Form) bool {
 }
 
 func instanciateForalls(axiom btypes.Form) btypes.Form {
-	axiomFT := axiom.Copy()
-	for Is[btypes.All](axiomFT) {
-		axiomFT, _ = Instantiate(axiomFT, -1)
+	axiomFT := btypes.MakeFormAndTerm(axiom.Copy(), btypes.TermList{})
+	for Is[btypes.All](axiomFT.GetForm()) {
+		axiomFT, _ = syntax.Instantiate(axiomFT, -1)
 	}
-	return axiomFT
+	return axiomFT.GetForm()
 }
 
 func addPosRewriteRule(axiom btypes.Form, cons btypes.Form) {
@@ -93,7 +92,9 @@ func addNegRewriteRule(axiom btypes.Form, cons btypes.Form) {
 
 func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 	for canSkolemize(cons) {
-		cons = Skolemize(cons)
+		ft := btypes.MakeFormAndTerm(cons, btypes.TermList{})
+		ft = syntax.Skolemize(ft, ft.GetForm().GetInternalMetas())
+		cons = ft.GetForm()
 	}
 	printDebugRewriteRule(polarity, axiom, cons)
 	rewriteMapInsertion(polarity, axiom.ToString(), cons)
@@ -254,101 +255,3 @@ func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
 
 // End rewrite rule from implicated formula.
 // ----------------------------------------------------------------------------
-
-// ...
-
-/**
- * Skolemizes once the formula f.
- */
-func Skolemize(f btypes.Form) btypes.Form {
-	switch nf := f.(type) {
-	// 1 - not(forall F1)
-	case btypes.Not:
-		if tmp, ok := nf.GetForm().(btypes.All); ok {
-			f = btypes.RefuteForm(realSkolemize(tmp.GetForm(), tmp.GetVarList(), f.GetMetas().ToTermList()))
-		}
-	// 2 - exists F1
-	case btypes.Ex:
-		f = realSkolemize(nf.GetForm(), nf.GetVarList(), f.GetMetas().ToTermList())
-	}
-
-	return f
-}
-
-/**
- * Applies skolemization to a formula (ie: replaces existential quantified variables
- * by fresh skolem symbols).
- **/
-func realSkolemize(f btypes.Form, vars []btypes.Var, terms []btypes.Term) btypes.Form {
-	// Replace each variable by the skolemized term.
-	for _, v := range vars {
-		// TypeScheme construction
-		var t typing.TypeApp
-		// Okay that's absolutely wrong, but it's the best way of doing things right now, I swear.
-		for _, term := range terms {
-			if meta, ok := term.(btypes.Meta); ok {
-				t = crossType(t, meta.GetTypeApp())
-			}
-		}
-
-		var scheme typing.TypeScheme
-		if t == nil {
-			scheme = v.GetTypeHint()
-		} else {
-			scheme = typing.MkTypeArrow(t, To[typing.TypeApp](v.GetTypeHint()))
-		}
-
-		// A Skolem symbol has no quantified variables.
-		skolem := btypes.MakerFun(
-			btypes.MakerId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex())), // Or makerNewId
-			terms,
-			[]typing.TypeApp{},
-			scheme,
-		)
-		f = f.ReplaceVarByTerm(v, skolem)
-	}
-	return f
-}
-
-/**
- * Instantiates once the formula f.
- */
-func Instantiate(f btypes.Form, index int) (btypes.Form, btypes.MetaList) {
-	var newMm btypes.MetaList
-	switch nf := f.(type) {
-	case btypes.Not:
-		if tmp, ok := nf.GetForm().(btypes.Ex); ok {
-			form, metas := realInstantiate(tmp.GetForm(), index, tmp.GetVarList())
-			newMm = append(newMm, metas...)
-			f = btypes.RefuteForm(form)
-		}
-	case btypes.All:
-		form, metas := realInstantiate(nf.GetForm(), index, nf.GetVarList())
-		newMm = append(newMm, metas...)
-		f = form
-	case btypes.AllType:
-		f = f.ReplaceTypeByMeta(nf.GetVarList(), index)
-		for _, v := range nf.GetVarList() {
-			v.ShouldBeMeta(index)
-		}
-		f = btypes.MakeAllType(nf.GetIndex(), nf.GetVarList(), f)
-	}
-	return f, newMm
-}
-
-func realInstantiate(form btypes.Form, index int, vars []btypes.Var) (btypes.Form, btypes.MetaList) {
-	var newMm btypes.MetaList
-	for _, v := range vars {
-		meta := btypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
-		newMm = append(newMm, meta)
-		form = form.ReplaceVarByTerm(v, meta)
-	}
-	return form, newMm
-}
-
-func crossType(t typing.TypeApp, tf typing.TypeApp) typing.TypeApp {
-	if t == nil {
-		return tf
-	}
-	return typing.MkTypeCross(t, tf)
-}

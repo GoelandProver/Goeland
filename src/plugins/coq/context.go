@@ -48,22 +48,45 @@ import (
 
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
+	polymorphism "github.com/GoelandProver/Goeland/polymorphism/typing"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func makeContext(root btps.Form, metaList btps.MetaList) string {
+func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
+	if !GetContextEnabled() {
+		return ""
+	}
 	resultingString := contextPreamble()
 	if typing.EmptyGlobalContext() {
-		// Rewrote functions / predicates to put in the context
 		if global.IsLoaded("dmt") {
 			root = btps.MakerAnd(append(dmt.GetRegisteredAxioms(), root))
 		}
 
 		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
-		resultingString += strings.Join(contextualizeMetas(metaList), "\n")
+		if len(metaList) > 0 {
+			resultingString += contextualizeMetas(metaList)
+		}
 	} else {
-		// TODO: get context and print everything.
+		if global.IsLoaded("dmt") {
+			root = btps.MakerAnd(append(dmt.GetRegisteredAxioms(), root))
+		}
+
+		context := polymorphism.GetGlobalContext()
+		for k, v := range context {
+			if typed, ok := v[0].App.(polymorphism.TypeHint); ok {
+				if k[0] != '$' && k == typed.ToString() {
+					resultingString += "Parameter " + k + ": Type.\n"
+
+				}
+			}
+		}
+
+		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+
+		if len(metaList) > 0 {
+			resultingString += contextualizeMetas(metaList)
+		}
 	}
 	return resultingString
 }
@@ -71,7 +94,8 @@ func makeContext(root btps.Form, metaList btps.MetaList) string {
 func contextPreamble() string {
 	str := "Add LoadPath \"" + pathToGoelandCoq() + "\" as Goeland.\n"
 	str += "Require Import Goeland.goeland.\n"
-	str += "Parameter goeland_U : Set. (* individual type *)\n\n"
+	str += "Parameter goeland_U : Set. (* goeland's universe *)\n"
+	str += "Parameter goeland_I : goeland_U. (* an individual in the universe. *)\n\n"
 	return str
 }
 
@@ -107,7 +131,7 @@ func getContextFromFormula(root btps.Form) []string {
 		result = clean(result, getContextFromFormula(nf.GetForm()))
 	case btps.Pred:
 		if !nf.GetID().Equals(btps.Id_eq) {
-			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToString(), nf.GetType().ToString())))
+			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToMappedString(coqMapConnectors(), false), nf.GetType().ToString())))
 		}
 		for _, term := range nf.GetArgs() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
@@ -119,7 +143,7 @@ func getContextFromFormula(root btps.Form) []string {
 func getContextFromTerm(trm btps.Term) []string {
 	result := []string{}
 	if fun, isFun := trm.(btps.Fun); isFun {
-		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToString(), fun.GetTypeHint().ToString())))
+		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToMappedString(coqMapConnectors(), false), fun.GetTypeHint().ToString())))
 		for _, term := range fun.GetArgs() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
@@ -145,13 +169,10 @@ func clean(set, add []string) []string {
 	return result
 }
 
-func contextualizeMetas(metaList btps.MetaList) []string {
+func contextualizeMetas(metaList btps.MetaList) string {
 	result := []string{}
 	for _, meta := range metaList {
-		result = append(
-			result,
-			fmt.Sprintf("Parameter %s : goeland_U.", meta.ToMappedString(coqMapConnectorsCreation(), false)),
-		)
+		result = append(result, meta.ToMappedString(coqMapConnectors(), false))
 	}
-	return result
+	return "Parameters " + strings.Join(result, " ") + " : goeland_U."
 }

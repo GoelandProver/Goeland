@@ -48,12 +48,13 @@ import (
 type And struct {
 	index int
 	FormList
+	MetaList
 }
 
 /** Constructors **/
 
 func MakeAnd(i int, forms FormList) And {
-	return And{index: i, FormList: forms}
+	return And{index: i, FormList: forms, MetaList: make(MetaList, 0)}
 }
 
 func MakerAnd(forms FormList) And {
@@ -94,7 +95,11 @@ func (a And) Equals(f any) bool {
 }
 
 func (a And) Copy() Form {
-	return MakeAnd(a.GetIndex(), a.FormList)
+	return And{
+		index:    a.index,
+		FormList: a.FormList.Copy(),
+		MetaList: a.MetaList.Copy(),
+	}
 }
 
 func (a And) ToMappedString(map_ MapString, displayTypes bool) string {
@@ -105,8 +110,9 @@ func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAnd(a.GetIndex(), replaceList(a.FormList, varList, index))
 }
 
-func (a And) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeAnd(a.GetIndex(), replaceVarInFormList(a.FormList, old, new))
+func (a And) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
+	varList, res := replaceVarInFormList(a.FormList, old, new)
+	return And{a.GetIndex(), varList, a.MetaList}, res
 }
 
 func (a And) RenameVariables() Form {
@@ -116,4 +122,22 @@ func (a And) RenameVariables() Form {
 func (a And) CleanFormula() Form {
 	a.CleanFormList()
 	return a
+}
+
+func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
+	newFormList, newMetas := substVarByMetaInFormList(old, new, a.FormList, a.MetaList)
+	return And{a.index, newFormList, newMetas}
+}
+
+func (a And) GetInternalMetas() MetaList {
+	return a.MetaList
+}
+
+func (a And) SetInternalMetas(m MetaList) Form {
+	a.MetaList = m
+	return a
+}
+
+func (a And) GetSubFormulas() FormList {
+	return getSubformsOfSubformList(a, a.FormList)
 }

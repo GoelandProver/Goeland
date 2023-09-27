@@ -367,8 +367,9 @@ func ApplySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen
 }
 
 /* Dispatch a list of substitution : containing mm or not */
-func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]treetypes.Substitutions, []treetypes.Substitutions) {
+func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]treetypes.Substitutions, []treetypes.Substitutions, []treetypes.Substitutions) {
 	var subst_with_mm []treetypes.Substitutions
+	var subst_with_mm_uncleared []treetypes.Substitutions
 	var subst_without_mm []treetypes.Substitutions
 
 	for _, s := range sl {
@@ -378,12 +379,13 @@ func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]tree
 		}
 		if !s_removed.IsEmpty() {
 			subst_with_mm = treetypes.AppendIfNotContainsSubst(subst_with_mm, s_removed)
+			subst_with_mm_uncleared = treetypes.AppendIfNotContainsSubst(subst_with_mm_uncleared, s)
 		} else {
 			subst_without_mm = treetypes.AppendIfNotContainsSubst(subst_without_mm, s)
 		}
 	}
 
-	return subst_with_mm, subst_without_mm
+	return subst_with_mm, subst_with_mm_uncleared, subst_without_mm
 }
 
 /* remove identity in substitution (non destructive case), can happen renaming variables */
@@ -403,22 +405,21 @@ func ApplySubstitutionOnProofList(s treetypes.Substitutions, proof_list []proof.
 	new_proof_list := []proof.ProofStruct{}
 
 	for _, p := range proof_list {
-		new_proof := p.Copy()
-		new_proof.SetFormulaProof(ApplySubstitutionsOnFormAndTerms(s, p.GetFormula()))
+		p.SetFormulaProof(ApplySubstitutionsOnFormAndTerms(s, p.GetFormula()))
 
 		new_result_formulas := []proof.IntFormAndTermsList{}
 		for _, f := range p.GetResultFormulas() {
 			new_result_formulas = append(new_result_formulas, proof.MakeIntFormAndTermsList(f.GetI(), ApplySubstitutionsOnFormAndTermsList(s, f.GetFL())))
 		}
-		new_proof.SetResultFormulasProof(new_result_formulas)
+		p.SetResultFormulasProof(new_result_formulas)
 
 		new_children := [][]proof.ProofStruct{}
 		for _, c := range p.GetChildren() {
 			new_children = append(new_children, ApplySubstitutionOnProofList(s, c))
 		}
-		new_proof.SetChildrenProof(new_children)
+		p.SetChildrenProof(new_children)
 
-		new_proof_list = append(new_proof_list, new_proof)
+		new_proof_list = append(new_proof_list, p)
 	}
 
 	return new_proof_list

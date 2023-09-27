@@ -32,6 +32,7 @@
 package search
 
 import (
+	"errors"
 	"fmt"
 
 	ttps "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -42,7 +43,7 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-/* Arguments for WaitChildren function & utilitary subfunctions */
+/* Arguments for waitChildren function & utilitary subfunctions */
 
 type wcdArgs struct {
 	fatherId       uint64
@@ -89,7 +90,7 @@ func (args wcdArgs) printDebugMessages() {
 
 /* Utilitary subfunctions */
 
-func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruct) {
+func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruct) error {
 	global.PrintDebug("WC", "All children has finished by themselves")
 
 	// All children are closed & did not send any subst, i.e., they can be closed.
@@ -103,14 +104,26 @@ func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruc
 		args.st.SetSubstsFound([]ctps.SubstAndForm{})
 	}
 
+	// No need to append the current substitution, because the children returns it anyway (if it exists)
+	// So here, the current substitution should be empty. Otherwise, there's a big bug somewhere else.
+	if !args.currentSubst.IsEmpty() {
+		return errors.New("Current substitution is not empty but children close by themselves. That shouldn't happen.")
+	}
+
 	// Updates the proof using the proofs of the children of the node.
 	args.st = updateProof(args, proofChildren)
 
+	toMerge := ctps.MakeUnifier()
+	toMerge.AddSubstitutions(args.st.GetAppliedSubst().GetSubst(), args.st.GetAppliedSubst().GetSubst())
+	unifier := args.st.GetGlobalUnifier()
+	unifier.Merge(toMerge)
+	unifier.PruneMetasInSubsts(args.st.GetMC())
+	args.st.SetGlobalUnifier(unifier)
+
 	xchg.WriteExchanges(args.fatherId, args.st, nil, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
-	global.PrintInfo("CCBT", args.st.GetGlobalUnifier().ToString())
-
 	sendSubToFather(args.c, true, false, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
+	return nil
 }
 
 func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs []ctps.SubstAndForm) error {
@@ -126,9 +139,11 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 	resultingSubsts := []ttps.Substitutions{}
 
 	for _, subst := range substs {
+		global.PrintDebug("WC", fmt.Sprintf("Check the susbt, remove useless element and merge with applied subst :%v", subst.GetSubst().ToString()))
 		err, merged := ctps.MergeSubstAndForm(subst, args.st.GetAppliedSubst())
+
 		if err != nil {
-			global.PrintError("WC", fmt.Sprintf("Error: when merging the children substitution's with the applied one. It shouldn't happen as the conflict resolution has already taken place."))
+			global.PrintError("WC", fmt.Sprintf("Error when merging the children substitution's with the applied one."))
 			return err
 		}
 
@@ -139,7 +154,6 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 		// Otherwise, we have to check if the cleaned substitution is already in the resulting substs list
 		// and, if applicable, add the formula to the list of substituted formulas.
 		// It is useful for the nondestructive mode, to store with which formula the contradiction has been found.
-		// Furthermore, adds the cleaned substitutions to the global unifier.
 		if !cleaned.IsEmpty() {
 			// Check if the new substitution is already in the list, merge formulas
 			added := false
@@ -163,8 +177,14 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 		}
 	}
 
+	toMerge := ctps.MakeUnifier()
+	toMerge.AddSubstitutions(args.st.GetAppliedSubst().GetSubst(), args.st.GetAppliedSubst().GetSubst())
+	unifier := args.st.GetGlobalUnifier()
+	unifier.Merge(toMerge)
+	unifier.PruneMetasInSubsts(args.st.GetMC())
+	args.st.SetGlobalUnifier(unifier)
+
 	resultingSubstsAndForms = ctps.RemoveEmptySubstFromSubstAndFormList(resultingSubstsAndForms)
-	args.st = cleanGlobalUnifier(args.st, resultingSubsts)
 	args.st.SetSubstsFound(resultingSubstsAndForms)
 	xchg.WriteExchanges(args.fatherId, args.st, resultingSubstsAndForms, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all agree")
 
@@ -185,6 +205,7 @@ func passSubstToChildren(args wcdArgs, substs []ctps.SubstAndForm) {
 	args.substsBT = append(args.substsBT, resultingSubsts...)
 	args.st.SetBTOnFormulas(false)
 	args.overwrite = false
+	args.currentSubst = subst
 	WaitChildren(args)
 }
 
@@ -264,7 +285,13 @@ func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {
 	if global.GetProof() {
 		proofList := args.st.GetProof()
 		if args.overwrite {
-			proofList = append(proofList[0:len(proofList)-1], proofChildren[0]...)
+			// TODO: check if it gets properly rewritten when a backtrack on it is done.
+			if proofList[len(proofList)-1].Rule == "Rewrite" && (proofChildren[0][0].Rule != "Rewrite" || proofChildren[0][0].Node_id != proofList[len(proofList)-1].Node_id) {
+				proofList[len(proofList)-1].Children = [][]proof.ProofStruct{}
+				proofList = append(proofList, proofChildren[0]...)
+			} else {
+				proofList = append(proofList[:len(proofList)-1], proofChildren[0]...)
+			}
 		} else {
 			args.st.SetCurrentProofChildren(proofChildren)
 			proofList = append(proofList, args.st.GetCurrentProof())
@@ -273,12 +300,4 @@ func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {
 	}
 
 	return args.st
-}
-
-func cleanGlobalUnifier(st ctps.State, substs []ttps.Substitutions) ctps.State {
-	// All remaining substitutions in the global unifier should have at least every substitution of subst.
-	unifier := st.GetGlobalUnifier()
-	unifier.PruneSubstitutions(substs)
-	st.SetGlobalUnifier(unifier)
-	return st
 }

@@ -43,7 +43,6 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/equality"
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -75,7 +74,7 @@ func manageQuitOrder(quit bool, c Communication, father_id uint64, st complextyp
 		global.PrintDebug("MQO", "Die")
 	} else {
 		global.PrintDebug("MQO", "Closing order received, let's wait father")
-		waitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
+		WaitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
 	}
 }
 
@@ -211,7 +210,8 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 
 			// Manage the substitution sent by this child
 			if res.closed {
-				unifiers = append(unifiers, res.GetUnifier())
+				unif := res.GetUnifier()
+				unifiers = append(unifiers, unif)
 
 				if len(res.subst_list_for_father) != 0 {
 					global.PrintDebug("SLC", fmt.Sprintf("The child %v has %v substitution(s) !", res.id, len(res.subst_list_for_father)))
@@ -294,7 +294,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 						err, new_subst := complextypes.MergeSubstAndForm(s.Copy(), new_current_subst.Copy())
 
 						if err != nil {
-							global.PrintError("SLC", "Error when merging substitutions. It shouldn't be possible as the current substitution is applied.")
+							global.PrintError("SLC", "Error when merging substitutions. What to do?")
 						}
 
 						new_result_subst = append(new_result_subst, new_subst)
@@ -333,7 +333,7 @@ func selectChildren(father Communication, children *[]Communication, current_sub
 * 	children : list of children
 * 	given_substs : subst send by this node to its father
 **/
-func waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
+func WaitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
 	global.PrintDebug("WF", "Wait father")
 
 	// CLear subst found
@@ -349,17 +349,8 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 		subst := answer_father.GetSubstForChildren()
 
 		// Update to prune everything that shouldn't happen.
-		unifier := st.GetGlobalUnifier()
-		unifier.PruneSubstitutions([]treetypes.Substitutions{subst.GetSubst()})
-
 		exchanges.WriteExchanges(father_id, st, given_substs, subst, "WaitFather")
 		global.PrintDebug("WF", fmt.Sprintf("Substition received : %v", subst.ToString()))
-
-		// A substitution is chosen. As free variables are kept inside the terms, we need to apply the substitution on the code tree
-		// kept in the state.
-		newAtomics := complextypes.ApplySubstitutionsOnFormAndTermsList(subst.GetSubst(), st.GetAtomic())
-		st.SetTreePos(st.GetTreePos().MakeDataStruct(newAtomics.ExtractForms(), true))
-		st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(newAtomics.ExtractForms(), false))
 
 		// Check if the subst was already seen, returns eventually the subst with new formula(s)
 		if treetypes.ContainsSubst(complextypes.GetSubstListFromSubstAndFormList(given_substs), answer_father.subst_for_children.GetSubst()) {
@@ -369,10 +360,21 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 					subst = answer_father.GetSubstForChildren().AddFormulas(subst_sent.GetForm())
 				}
 			}
+			unifier := st.GetGlobalUnifier()
+			unifier.PruneUncompatibleSubstitutions(subst.GetSubst())
+			if unifier.IsEmpty() {
+				unifier.AddSubstitutions(st.GetAppliedSubst().GetSubst(), st.GetAppliedSubst().GetSubst())
+			}
 			st.SetGlobalUnifier(unifier)
 			st.SetSubstsFound([]complextypes.SubstAndForm{subst})
 			sendSubToFather(c, true, true, father_id, st, given_substs, node_id, original_node_id, meta_to_reintroduce)
 		} else {
+
+			// A substitution is chosen. As free variables are kept inside the terms, we need to apply the substitution on the code tree
+			// kept in the state.
+			newAtomics := complextypes.ApplySubstitutionsOnFormAndTermsList(subst.GetSubst(), st.GetAtomic())
+			st.SetTreePos(st.GetTreePos().MakeDataStruct(newAtomics.ExtractForms(), true))
+			st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(newAtomics.ExtractForms(), false))
 
 			// Maj forbidden
 			if len(answer_father.forbidden) > 0 {
@@ -392,11 +394,31 @@ func waitFather(father_id uint64, st complextypes.State, c Communication, given_
 				global.PrintDebug("WF", fmt.Sprintf("MC after sisters : %v", meta_sisters.ToString()))
 			}
 
-			meta_to_reintroduce_from_subt := retrieveMetaFromSubst(answer_father.subst_for_children.GetSubst())
+			father_subst := answer_father.subst_for_children.GetSubst()
+			meta_to_reintroduce_from_subt := retrieveMetaFromSubst(father_subst)
 			new_meta_to_reintroduce := global.InterIntList(meta_to_reintroduce, meta_to_reintroduce_from_subt)
 
+			// Special case: the current node is a rewriting node.
+			// As such, this rule can not be applied back.
+			// Thus, we always need to put the rewrite rule in first, so apply subst on it + no overwrite
+			is_rewrite := st.GetCurrentProof().Rule == "Rewrite"
+
+			if is_rewrite {
+				prf := st.GetCurrentProof()
+				prf.Formula = basictypes.MakeFormAndTerm(
+					complextypes.ApplySubstitutionsOnFormula(father_subst, prf.Formula.GetForm()),
+					prf.Formula.Terms,
+				)
+				for i, test := range prf.Result_formulas {
+					prf.Result_formulas[i] = proof.MakeIntFormAndTermsList(
+						test.GetI(),
+						complextypes.ApplySubstitutionsOnFormAndTermsList(father_subst, test.GetFL()),
+					)
+				}
+			}
+
 			st_copy := st.Copy()
-			st_copy.SetGlobalUnifier(unifier)
+			st_copy.SetGlobalUnifier(complextypes.MakeUnifier())
 
 			c2 := Communication{make(chan bool), make(chan Result)}
 
@@ -433,7 +455,7 @@ func WaitChildren(args wcdArgs) {
 
 		switch status {
 		case CLOSE_BY_ITSELF:
-			childrenClosedByThemselves(args, proofs)
+			err = childrenClosedByThemselves(args, proofs)
 		case SUBST_FOR_PARENT:
 			err = passSubstToParent(args, proofs, substs)
 		case SUBST_FOR_CHILDREN:
@@ -446,14 +468,13 @@ func WaitChildren(args wcdArgs) {
 			exchanges.WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Wait father")
 			global.PrintDebug("WC", "Closing order received, let's wait father")
 			closeChildren(&args.children, true)
-			waitFather(args.fatherId, args.st, args.c, args.givenSubsts, args.nodeId, args.originalNodeId, args.childOrdering, args.toReintroduce)
+			WaitFather(args.fatherId, args.st, args.c, args.givenSubsts, args.nodeId, args.originalNodeId, args.childOrdering, args.toReintroduce)
 		case OPENED:
 			manageOpenedChild(args)
 		}
 
 		if err != nil {
 			global.PrintError("WC", "Error when waiting for children. It should be an error when merging substitutions. What to do?")
-			global.PrintError("WC", err.Error())
 		}
 	}
 }
@@ -480,27 +501,22 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 	case quit := <-cha.quit:
 		manageQuitOrder(quit, cha, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce)
 	default:
-		err := complextypes.ApplySubstitution(&st, s)
-		if err != nil {
-			global.PrintError("PSD", "There was an error when merging substitutions. What to do?")
-		}
-
 		// Apply subst if any
 		if !s.IsEmpty() {
 			//st.SetCurrentProofRule(fmt.Sprintf("Apply substitution : %v", s.GetSubst().ToStringForProof()))
 			//global.PrintDebug("PS", fmt.Sprintf("Apply Substitution : %v", s.ToString()))
-
+			complextypes.ApplySubstitution(&st, s)
 			global.PrintDebug("PS", "Searching contradiction with new atomics")
-		}
 
-		if !global.GetAssisted() {
-			for _, f := range st.GetAtomic() {
-				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
-				// Check if exists a contradiction after applying the substitution
-				clos_res_after_apply_subst, subst_after_apply_subst := ApplyClosureRules(f.GetForm(), &st)
-				if clos_res_after_apply_subst {
-					ManageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
-					return
+			if !global.GetAssisted() {
+				for _, f := range st.GetAtomic() {
+					global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
+					// Check if exists a contradiction after applying the substitution
+					clos_res_after_apply_subst, subst_after_apply_subst := ApplyClosureRules(f.GetForm(), &st)
+					if clos_res_after_apply_subst {
+						ManageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
+						return
+					}
 				}
 			}
 		}
@@ -513,15 +529,10 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 		global.PrintDebug("PS", "Insert tree, searching contradiction, then dispatch")
 
 		// Applying substitutions before inserting in the code tree.
-		// We need to be careful to keep the uninstantiated predicates as that's what should be sent to the parent
-		// if the branch is closed, so we keep it as the first element of the atomics slice.
-		substs := st.GetAppliedSubst().GetSubst()
 		atomicsPlus := st.GetLF().FilterPred(true)
 		atomicsMinus := st.GetLF().FilterPred(false)
-		atomicsPlusSubstituted := complextypes.ApplySubstitutionsOnFormulaList(substs, atomicsPlus)
-		atomicsMinusSubstituted := complextypes.ApplySubstitutionsOnFormulaList(substs, atomicsMinus)
-		st.SetTreePos(st.GetTreePos().InsertFormulaListToDataStructure(atomicsPlusSubstituted))
-		st.SetTreeNeg(st.GetTreeNeg().InsertFormulaListToDataStructure(atomicsMinusSubstituted))
+		st.SetTreePos(st.GetTreePos().InsertFormulaListToDataStructure(atomicsPlus))
+		st.SetTreeNeg(st.GetTreeNeg().InsertFormulaListToDataStructure(atomicsMinus))
 
 		/*
 			global.PrintDebug("PS", "Tree pos : ")
@@ -530,56 +541,51 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 			st.GetTreeNeg().Print()*/
 
 		for _, f := range st.GetLF() {
-			if global.GetAssisted() && basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
+			if global.GetAssisted() || basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
 				st.DispatchForm(f.Copy())
 			} else {
-				if basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
-					st.DispatchForm(f.Copy())
-				} else {
-					res, subst, nf := tryObviousClosureRule(f.GetForm(), &st)
-					if res {
-						ManageClosureRule(father_id, &st, cha, subst, basictypes.MakeFormAndTerm(nf, basictypes.MakeEmptyTermList()), node_id, original_node_id)
-						return
-					}
+				if searchObviousClosureRule(f.GetForm()) {
+					ManageClosureRule(father_id, &st, cha, []treetypes.Substitutions{}, f, node_id, original_node_id)
+					return
 				}
 			}
 		}
 
-		lam := func(atomic basictypes.Form) (bool, basictypes.FormAndTerms) {
+		lam := func(atomic basictypes.Form) bool {
 			// Search for a contradiction in LF
 			if global.IsLoaded("equality") {
 				equality.InsertPred(atomic)
 			}
 
-			fAt := basictypes.MakeFormAndTerm(atomic, basictypes.MakeEmptyTermList())
-
 			if !global.GetAssisted() {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
 				clos_res, subst := ApplyClosureRules(atomic, &st)
+				fAt := basictypes.MakeFormAndTerm(atomic, basictypes.MakeEmptyTermList())
 
 				if clos_res {
 					ManageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst), fAt, node_id, original_node_id)
-					return false, basictypes.FormAndTerms{}
+					return false
 				}
 			}
+			return true
 
-			return true, fAt
+			// Retrieve atomics generated at this step
 		}
 
 		new_atomics := basictypes.MakeEmptyFormAndTermsList()
 		for _, f := range atomicsPlus {
-			ok, newAtom := lam(f)
+			ok := lam(f.Copy())
 			if !ok {
 				return
 			}
-			new_atomics = append(new_atomics, newAtom)
+			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(f.Copy(), basictypes.MakeEmptyTermList()))
 		}
 		for _, f := range atomicsMinus {
-			ok, newAtom := lam(basictypes.MakerNot(f))
+			ok := lam(basictypes.MakerNot(f))
 			if !ok {
 				return
 			}
-			new_atomics = append(new_atomics, newAtom)
+			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(basictypes.MakerNot(f), basictypes.MakeEmptyTermList()))
 		}
 
 		/** Filter Atomics for DMT
@@ -601,7 +607,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms())
 				if res_eq {
-					ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{}), basictypes.MakeEmptyTermList()), node_id, original_node_id)
+					ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.MakeEmptyTermList()), node_id, original_node_id)
 					return
 				}
 			}

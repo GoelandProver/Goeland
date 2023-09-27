@@ -59,11 +59,15 @@ func (t Top) Copy() Form                                   { return MakeTop(t.Ge
 func (Top) Equals(f any) bool                              { _, isTop := f.(Top); return isTop }
 func (Top) GetMetas() MetaList                             { return MakeEmptyMetaList() }
 func (t Top) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeTop(t.GetIndex()) }
-func (t Top) ReplaceVarByTerm(old Var, new Term) Form      { return MakeTop(t.GetIndex()) }
+func (t Top) ReplaceVarByTerm(Var, Term) (Form, bool)      { return MakeTop(t.GetIndex()), false }
 func (t Top) RenameVariables() Form                        { return MakeTop(t.GetIndex()) }
 func (t Top) CleanFormula() Form                           { return t }
 func (t Top) GetIndex() int                                { return t.index }
 func (t Top) GetSubTerms() TermList                        { return MakeEmptyTermList() }
+func (t Top) SubstituteVarByMeta(Var, Meta) Form           { return t }
+func (t Top) GetInternalMetas() MetaList                   { return MetaList{} }
+func (t Top) SetInternalMetas(MetaList) Form               { return t }
+func (t Top) GetSubFormulas() FormList                     { return FormList{t} }
 
 /* Bot (always false) definitino */
 type Bot struct {
@@ -71,7 +75,7 @@ type Bot struct {
 }
 
 func (b Bot) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[TopType]
+	return map_[BotType]
 }
 
 func (b Bot) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
@@ -80,8 +84,12 @@ func (b Bot) Copy() Form                                   { return MakeBot(b.Ge
 func (Bot) Equals(f any) bool                              { _, isBot := f.(Bot); return isBot }
 func (Bot) GetMetas() MetaList                             { return MakeEmptyMetaList() }
 func (b Bot) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeBot(b.GetIndex()) }
-func (b Bot) ReplaceVarByTerm(old Var, new Term) Form      { return MakeBot(b.GetIndex()) }
+func (b Bot) ReplaceVarByTerm(Var, Term) (Form, bool)      { return MakeBot(b.GetIndex()), false }
 func (b Bot) RenameVariables() Form                        { return MakeBot(b.GetIndex()) }
 func (b Bot) CleanFormula() Form                           { return b }
 func (b Bot) GetIndex() int                                { return b.index }
 func (b Bot) GetSubTerms() TermList                        { return MakeEmptyTermList() }
+func (b Bot) SubstituteVarByMeta(Var, Meta) Form           { return b }
+func (b Bot) GetInternalMetas() MetaList                   { return MetaList{} }
+func (b Bot) SetInternalMetas(MetaList) Form               { return b }
+func (b Bot) GetSubFormulas() FormList                     { return FormList{b} }

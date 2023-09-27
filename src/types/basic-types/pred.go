@@ -57,6 +57,7 @@ type Pred struct {
 	args     TermList
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
+	MetaList
 }
 
 /* Pred attributes getters */
@@ -74,7 +75,7 @@ func (p Pred) CleanFormula() Form         { return p }
 
 func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
-		return p.GetID().ToString()
+		return p.GetID().ToMappedString(map_, type_)
 	}
 	args := []string{}
 
@@ -94,7 +95,7 @@ func (p Pred) ToMappedString(map_ MapString, type_ bool) string {
 	}
 
 	// strconv.Itoa(p.GetIndex()) + "@"
-	return p.GetID().ToString() + "(" + strings.Join(args, " "+map_[PredTypeVarSep]+" ") + ")"
+	return p.GetID().ToMappedString(map_, type_) + "(" + strings.Join(args, " "+map_[PredTypeVarSep]+" ") + ")"
 }
 
 func (p Pred) ToString() string {
@@ -102,15 +103,21 @@ func (p Pred) ToString() string {
 }
 
 func (p Pred) Copy() Form {
-	return MakePred(p.GetIndex(), p.GetID(), p.GetArgs(), typing.CopyTypeAppList(p.GetTypeVars()), p.GetType())
+	return Pred{index: p.index,
+		id:       p.id,
+		args:     p.GetArgs(),
+		typeVars: typing.CopyTypeAppList(p.GetTypeVars()),
+		typeHint: p.GetType(),
+		MetaList: p.MetaList.Copy(),
+	}
 }
 
 func (p Pred) Equals(f any) bool {
 	oth, isPred := f.(Pred)
 	return isPred &&
-		oth.GetID().Equals(p.GetID()) &&
+		oth.id.Equals(p.id) &&
 		ComparableList[typing.TypeApp](p.typeVars).Equals(oth.typeVars) &&
-		oth.GetArgs().Equals(p.GetArgs()) &&
+		oth.args.Equals(p.args) &&
 		p.typeHint.Equals(oth.typeHint)
 }
 
@@ -131,8 +138,9 @@ func (p Pred) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakePred(p.GetIndex(), p.GetID(), replaceTermListTypesByMeta(p.GetArgs(), varList, index), instanciateTypeAppList(p.typeVars, varList, index), p.GetType())
 }
 
-func (p Pred) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakePred(p.GetIndex(), p.GetID(), replaceVarInTermList(p.GetArgs(), old, new), p.GetTypeVars(), p.GetType())
+func (p Pred) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
+	termList, res := replaceVarInTermList(p.GetArgs(), old, new)
+	return Pred{p.GetIndex(), p.GetID(), termList, p.GetTypeVars(), p.GetType(), p.MetaList}, res
 }
 
 func (p Pred) GetSubTerms() TermList {
@@ -142,4 +150,25 @@ func (p Pred) GetSubTerms() TermList {
 		res = res.MergeTermList(t.GetSubTerms())
 	}
 	return res
+}
+
+func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
+	f, res := p.ReplaceVarByTerm(old, new)
+	if p, isPred := f.(Pred); isPred && (global.IsOuterSko() || res) {
+		return Pred{index: p.index, id: p.id, args: p.args, typeVars: p.typeVars, typeHint: p.typeHint, MetaList: append(p.MetaList.Copy(), new)}
+	}
+	return f
+}
+
+func (p Pred) GetInternalMetas() MetaList {
+	return p.MetaList
+}
+
+func (p Pred) SetInternalMetas(m MetaList) Form {
+	p.MetaList = m
+	return p
+}
+
+func (p Pred) GetSubFormulas() FormList {
+	return FormList{p.Copy()}
 }

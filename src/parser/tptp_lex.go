@@ -289,9 +289,14 @@ func (lexer *TPTPLex) isPredicate() (int, bool) {
 	case '$': // $true or $false
 		lexer.advance()
 		word += string(lexer.c)
-		for len(lexer.s) > lexer.pos && unicode.IsLetter(lexer.c) {
+		for len(lexer.s) > lexer.pos+1 {
 			lexer.advance()
-			word += string(lexer.c)
+			if unicode.IsLetter(lexer.c) {
+				word += string(lexer.c)
+			} else {
+				lexer.remove(1)
+				break
+			}
 		}
 	case '!': // !=
 		if lexer.checkAdvance('=') {
@@ -793,27 +798,27 @@ func (lexer *TPTPLex) Lex(yylval *TPTPSymType) int {
 	}
 
 	if token := lexer.SyntacticLex(); token != FAILURE_TOKEN {
-		// fmt.Printf("Syntactic lex: %d\n", token)
+		//fmt.Printf("Syntactic lex: %d\n", token)
 		return token
 	}
 
 	if token := lexer.quotedWords(yylval); token != FAILURE_TOKEN {
-		// fmt.Printf("Quoted word: %d %s\n", token, yylval.str)
+		//fmt.Printf("Quoted word: %d %s\n", token, yylval.str)
 		return token
 	}
 
 	if token := lexer.word(yylval); token != FAILURE_TOKEN {
-		// fmt.Printf("Word: %d %s\n", token, yylval.str)
+		//fmt.Printf("Word: %d %s\n", token, yylval.str)
 		return token
 	}
 
 	if token := lexer.specialChars(); token != FAILURE_TOKEN {
-		// fmt.Printf("Special char: %d\n", token)
+		//fmt.Printf("Special char: %d\n", token)
 		return token
 	}
 
 	if token := lexer.number(yylval); token != FAILURE_TOKEN {
-		// fmt.Printf("Number: %d %s\n", token, yylval.str)
+		//fmt.Printf("Number: %d %s\n", token, yylval.str)
 		return token
 	}
 

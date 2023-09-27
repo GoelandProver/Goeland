@@ -115,7 +115,9 @@ func (tl1 TermList) MergeTermList(tl2 TermList) TermList {
 func (tl TermList) Copy() TermList {
 	res := MakeEmptyTermList()
 	for _, t := range tl {
-		res = append(res, t.Copy())
+		if t != nil {
+			res = append(res, t.Copy())
+		}
 	}
 	return res
 }
@@ -143,7 +145,7 @@ func (tl1 TermList) Equals(tl2 TermList) bool {
 		return false
 	}
 	for i := range tl1 {
-		if !tl2[i].Equals((tl1)[i]) {
+		if tl2[i] != nil && !tl2[i].Equals((tl1)[i]) {
 			return false
 		}
 	}
@@ -175,7 +177,7 @@ func AreEqualsVarList(tl1, tl2 []Var) bool {
 		return false
 	}
 	for i := range tl1 {
-		if !tl2[i].Equals((tl1)[i]) {
+		if !tl2[i].Equals(tl1[i]) {
 			return false
 		}
 	}

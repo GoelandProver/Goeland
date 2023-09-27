@@ -48,12 +48,13 @@ import (
 type Not struct {
 	index int
 	f     Form
+	MetaList
 }
 
 /** Constructors **/
 
 func MakeNot(i int, form Form) Not {
-	return Not{i, form}
+	return Not{i, form, make(MetaList, 0)}
 }
 
 func MakerNot(form Form) Not {
@@ -86,11 +87,11 @@ func (n Not) ToString() string {
 
 func (n Not) Equals(f any) bool {
 	oth, isNot := f.(Not)
-	return isNot && oth.GetForm().Equals(n.GetForm())
+	return isNot && oth.f.Equals(n.f)
 }
 
 func (n Not) Copy() Form {
-	return MakeNot(n.GetIndex(), n.GetForm())
+	return Not{index: n.index, f: n.GetForm(), MetaList: n.MetaList.Copy()}
 }
 
 func (n Not) ToMappedString(map_ MapString, displayTypes bool) string {
@@ -101,8 +102,9 @@ func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
 }
 
-func (n Not) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceVarByTerm(old, new))
+func (n Not) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
+	f, res := n.f.ReplaceVarByTerm(old, new)
+	return Not{n.GetIndex(), f, n.MetaList}, res
 }
 
 func (n Not) RenameVariables() Form {
@@ -120,11 +122,30 @@ func (n Not) GetForm() Form {
 	return n.f.Copy()
 }
 
+func (n Not) SubstituteVarByMeta(old Var, new Meta) Form {
+	f := n.GetForm().SubstituteVarByMeta(old, new)
+	return Not{n.index, f, f.GetInternalMetas().Copy()}
+}
+
+func (n Not) GetInternalMetas() MetaList {
+	return n.MetaList
+}
+
+func (n Not) SetInternalMetas(m MetaList) Form {
+	n.MetaList = m
+	return n
+}
+
+func (n Not) GetSubFormulas() FormList {
+	return getSubformsOfSubformList(n, FormList{n.GetForm()})
+}
+
 /** Utils **/
 
 /* Gives a new Form that is the negation of the given Form */
 func RefuteForm(form Form) Form {
-	return MakerNot(form)
+	internalMetas := form.GetInternalMetas()
+	return MakerNot(form).SetInternalMetas(internalMetas)
 }
 
 /* Gives a new Form that isn't a Not */

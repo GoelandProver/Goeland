@@ -56,10 +56,6 @@ Lemma goeland_notall : forall (T : Type) (P : T -> Prop),
   (forall z : T, (~(P z) -> False)) -> (~(forall x : T, (P x)) -> False).
 Proof. intros T P Ha Hb. apply Hb. intro. apply NNPP. exact (Ha x). Qed.
 
-Ltac goeland_intro id :=
-  intro id || let nid := fresh in (intro nid; try clear nid)
-.
-
 Definition goeland_and_s := fun P Q c h => goeland_and P Q h c.
 Definition goeland_or_s := fun P Q c h i => goeland_or P Q h i c.
 Definition goeland_imply_s := fun P Q c h i => goeland_imply P Q h i c.

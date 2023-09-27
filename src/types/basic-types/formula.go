@@ -49,8 +49,11 @@ import (
 type Form interface {
 	GetIndex() int
 	GetMetas() MetaList
+	GetInternalMetas() MetaList
+	SetInternalMetas(MetaList) Form
 	GetType() typing.TypeScheme
 	GetSubTerms() TermList
+	GetSubFormulas() FormList
 
 	Stringable
 	Comparable
@@ -59,9 +62,10 @@ type Form interface {
 	ToMappedString(MapString, bool) string
 
 	ReplaceTypeByMeta([]typing.TypeVar, int) Form
-	ReplaceVarByTerm(old Var, new Term) Form
+	ReplaceVarByTerm(old Var, new Term) (Form, bool)
 	RenameVariables() Form
 	CleanFormula() Form
+	SubstituteVarByMeta(old Var, new Meta) Form
 }
 
 /*** Functions ***/
@@ -69,9 +73,9 @@ type Form interface {
 /* Makers */
 func MakePred(index int, id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
 	if len(typeSchemes) == 1 {
-		return Pred{index, id, terms, typeApps, typeSchemes[0]}
+		return Pred{index, id, terms, typeApps, typeSchemes[0], make(MetaList, 0)}
 	} else {
-		return Pred{index, id, terms, typeApps, typing.DefaultPropType(len(terms))}
+		return Pred{index, id, terms, typeApps, typing.DefaultPropType(len(terms)), make(MetaList, 0)}
 	}
 }
 
@@ -96,7 +100,7 @@ func MakerBot() Bot {
 }
 
 func MakeImp(i int, firstForm, secondForm Form) Imp {
-	return Imp{i, firstForm, secondForm}
+	return Imp{i, firstForm, secondForm, make(MetaList, 0)}
 }
 
 func MakerImp(firstForm, secondForm Form) Imp {
@@ -104,7 +108,7 @@ func MakerImp(firstForm, secondForm Form) Imp {
 }
 
 func MakeEqu(i int, firstForm, secondForm Form) Equ {
-	return Equ{i, firstForm, secondForm}
+	return Equ{i, firstForm, secondForm, make(MetaList, 0)}
 }
 
 func MakerEqu(firstForm, secondForm Form) Equ {
@@ -112,7 +116,7 @@ func MakerEqu(firstForm, secondForm Form) Equ {
 }
 
 func MakeEx(i int, vars []Var, form Form) Ex {
-	return Ex{i, vars, form}
+	return Ex{i, vars, form, make(MetaList, 0)}
 }
 
 func MakerEx(vars []Var, form Form) Ex {
@@ -120,7 +124,7 @@ func MakerEx(vars []Var, form Form) Ex {
 }
 
 func MakeAll(i int, vars []Var, forms Form) All {
-	return All{i, vars, forms}
+	return All{i, vars, forms, make(MetaList, 0)}
 }
 
 func MakerAll(vars []Var, forms Form) All {
@@ -128,31 +132,35 @@ func MakerAll(vars []Var, forms Form) All {
 }
 
 func MakeAllType(i int, typeVars []typing.TypeVar, form Form) AllType {
-	return AllType{i, typeVars, form}
+	return AllType{i, typeVars, form, make(MetaList, 0)}
 }
 
 func MakerAllType(typeVars []typing.TypeVar, form Form) AllType {
-	return AllType{MakerIndexFormula(), typeVars, form}
+	return AllType{MakerIndexFormula(), typeVars, form, make(MetaList, 0)}
 }
 
 /* Replace a Var by a term inside a function */
-func replaceVarInTermList(terms TermList, oldVar Var, newTerm Term) TermList {
+func replaceVarInTermList(terms TermList, oldVar Var, newTerm Term) (TermList, bool) {
+	res := false
 	new_list := make(TermList, len(terms))
 	for i, val := range terms {
 		switch nf := val.(type) {
 		case Var:
 			if oldVar.GetIndex() == nf.GetIndex() {
 				new_list[i] = newTerm
+				res = true
 			} else {
 				new_list[i] = val
 			}
 		case Fun:
-			new_list[i] = MakerFun(nf.GetP(), replaceVarInTermList(nf.GetArgs(), oldVar, newTerm), nf.GetTypeVars(), nf.GetTypeHint())
+			termList, r := replaceVarInTermList(nf.GetArgs(), oldVar, newTerm)
+			new_list[i] = MakerFun(nf.GetP(), termList, nf.GetTypeVars(), nf.GetTypeHint())
+			res = res || r
 		default:
 			new_list[i] = val
 		}
 	}
-	return new_list
+	return new_list, res
 }
 
 /* replace a var by another in a var list */
@@ -210,14 +218,17 @@ func replaceList(oldForms FormList, vars []typing.TypeVar, index int) FormList {
 	return newForms
 }
 
-func replaceVarInFormList(oldForms FormList, oldVar Var, newTerm Term) FormList {
+func replaceVarInFormList(oldForms FormList, oldVar Var, newTerm Term) (FormList, bool) {
 	newForms := MakeEmptyFormList()
+	res := false
 
 	for _, form := range oldForms {
-		newForms = append(newForms, form.ReplaceVarByTerm(oldVar, newTerm))
+		newForm, r := form.ReplaceVarByTerm(oldVar, newTerm)
+		res = res || r
+		newForms = append(newForms, newForm)
 	}
 
-	return newForms
+	return newForms, res
 }
 
 // Creates and returns a FormList with its Forms renamed

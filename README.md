@@ -48,25 +48,26 @@ The parameters must be passed *before* the problem file. The available parameter
 | -ari | Enables the use of (TPTP) arithmetic functions (default: **false**). |
 | -assisted | Enables the step-by-step mode debugger (default: **false**). |
 | -completeness | Enables completeness mode (default: **false**). |
-| -context | Should only be used with the -ocoq parameter. Enables the context for a standalone execution. (default: **false**). |
+| -compare | Should only be used with the `-ocoq` parameter. Outputs both the Coq proof and the tableaux proof (default: **false**). |
+| -context | Should only be used with the `-ocoq` parameter. Enables the context for a standalone execution (default: **false**). |
 | -core_limit *int* | Sets the limit in number of cores (default: all) (default: **-1**). |
 | -cpuprofile *file* | Writes the cpu profile to *file*. |
 | -debug | Enables printing debug information in the terminal (default: **false**). |
-| -dif | Short for 'Debug In File'. Enables printing debug information in the log file. Won't work when used with the option -nwlogs (default: **false**). |
+| -dif | Short for 'Debug In File'. Enables printing debug information in the log file. Won't work when used with the option `-nwlogs` (default: **false**). |
 | -dmt | Enables deduction modulo theory (default: **false**). |
 | -dmt_before_eq | Enables dmt before equality (default: **false**). |
 | -exchanges | Enables the node exchanges to be written in a file (default: **false**). |
 | -inner | Enables on-the-fly inner Skolemisation during the proof-search (default: **false**). |
 | -l *int* | Sets the limit in destructive mode (default: **-1**). |
-| -log *file* | Changes the file output for loggers. Won't work when used with the option -nwlogs (default: **logs**). |
+| -log *file* | Changes the file output for loggers. Won't work when used with the option `-nwlogs` (default: **logs**). |
 | -memprofile *file* | Writes the memory profile to file (default: **false**). |
 | -nd | Enables the non-destructive version (default: **false**). |
 | -noeq | Disables equality (default: **false**). |
 | -ocoq | Enables the Coq format for proofs instead of text (default: **false**). |
 | -one_step | Enables only one step of search (default: **false**). |
-| -optimized | Enables on-the-fly optimized (delta++) Skolemisation during the proof-search (default: **false**). |
-| -polarized | Activate polarized dmt (default: **false**). |
-| -pretty | Enables UTF-8 characters in prints (use in combination with -proof for a pretty proof) (default: **false**). |
+| -polarized | Should only be used with the `-dmt` parameter. Activate polarized dmt (default: **false**). |
+| -preinner | Activates preinner Skolemisation, a Skolemisation strategy even more optimised than `-inner` (default: **false**). |
+| -pretty | Should only be used with the `-proof` parameter. Enables UTF-8 characters in prints for a pretty proof (default: **false**). |
 | -proof | Enables the display of a proof of the problem (in TPTP format) (default: **false**). |
 | -show_trace | Enables the location of the loggers call to be shown in the logs (default: **false**). |
 | -type_proof | Enables type proof visualisation (default: **false**). |

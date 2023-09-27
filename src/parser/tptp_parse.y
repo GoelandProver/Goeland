@@ -296,17 +296,11 @@ tff_plain_atomic_formula: constant                { $$ = btypes.MakerPred($1, []
   ;
 
 tff_defined_atomic: tff_defined_plain { $$ = $1 }
+  | TRUE { $$ = btypes.MakerTop() }
+  | FALSE { $$ = btypes.MakerBot() }
   ;
 
-tff_defined_plain: defined_constant                       { 
-    if $1.GetName() == "$true" {
-        $$ = btypes.MakerTop()
-    } else if $1.GetName() == "$false" {
-        $$ = btypes.MakerBot()
-    } else {
-        $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{})
-    }
-    }
+tff_defined_plain: defined_constant                       { $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{}) }
   | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = btypes.MakerPred($1, $3.terms, $3.types) }
   ;
 
@@ -485,15 +479,9 @@ fof_defined_atomic_formula: fof_defined_plain_formula { $$ = $1 }
   | fof_defined_infix_formula                         { $$ = $1 }
   ;
 
-fof_defined_plain_formula: defined_constant               { 
-    if $1.GetName() == "$true" {
-        $$ = btypes.MakerTop()
-    } else if $1.GetName() == "$false" {
-        $$ = btypes.MakerBot()
-    } else {
-        $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{})
-    }
-    }
+fof_defined_plain_formula: defined_constant               { $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{}) }
+  | TRUE  { $$ = btypes.MakerTop() }
+  | FALSE { $$ = btypes.MakerBot() }
   | defined_functor LEFT_PAREN fof_arguments RIGHT_PAREN  { $$ = btypes.MakerPred($1, $3, []typing.TypeApp{}) }
   ;
 

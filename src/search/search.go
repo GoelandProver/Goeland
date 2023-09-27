@@ -44,6 +44,7 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"runtime/pprof"
 	"sort"
 	"time"
 
@@ -75,6 +76,7 @@ func Search(formula basictypes.Form, bound int) {
 	}
 
 	PrintSearchResult(res)
+	pprof.StopCPUProfile()
 }
 
 func doOneStep(limit int, formula basictypes.Form) (bool, int) {
@@ -109,14 +111,15 @@ func doOneStep(limit int, formula basictypes.Form) (bool, int) {
 
 	global.PrintDebug("MAIN", "GO")
 
-	unifier, result, finalProof := ManageResult(c)
-	finalProof = complextypes.ApplySubstitutionOnProofList(unifier.GetUnifier(), finalProof)
-	uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
-
 	global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
 	global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
 
+	unifier, result, finalProof := ManageResult(c)
 	if result {
+		if unif := unifier.GetUnifier(); !unif.IsEmpty() {
+			finalProof = complextypes.ApplySubstitutionOnProofList(unif, finalProof)
+		}
+		uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
 		printProof(result, finalProof, uninstanciatedMeta)
 	}
 
@@ -126,7 +129,7 @@ func doOneStep(limit int, formula basictypes.Form) (bool, int) {
 
 func printProof(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
 	if global.GetProof() {
-		proof.WriteGraphProof(final_proof)
+		//proof.WriteGraphProof(final_proof)
 
 		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
 
@@ -274,12 +277,10 @@ func retrieveMetaFromSubst(s treetypes.Substitutions) []int {
 func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) (bool, []complextypes.SubstAndForm) {
 
 	mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
-	substs_with_mm, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
+	substs_with_mm, substs_with_mm_uncleared, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
 
-	// Add everything to the global unifier. It will get pruned later so no worries.
 	unifier := st.GetGlobalUnifier()
-	unifier.AddSubstitutions(substs)
-	st.SetGlobalUnifier(unifier)
+	appliedSubst := st.GetAppliedSubst().GetSubst()
 
 	switch {
 	case len(substs) == 0:
@@ -294,11 +295,15 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		// Proof
 		st.SetCurrentProofRule("⊙")
 		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofFormula(f)
+		st.SetCurrentProofFormula(f.Copy())
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
+		unifier.AddSubstitutions(appliedSubst, appliedSubst)
+		st.SetGlobalUnifier(unifier)
+
+		// No new subst needed in the global unifier
 		if !global.GetAssisted() {
 			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
 		}
@@ -316,11 +321,17 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		// Proof
 		st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", substs_without_mm[0].ToString()))
 		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofFormula(f)
+		st.SetCurrentProofFormula(f.Copy())
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
+		// As no MM is involved, these substitutions can be unified with all the others having an empty subst.
+		for _, subst := range substs_without_mm {
+			merge, _ := treesearch.MergeSubstitutions(appliedSubst, subst)
+			unifier.AddSubstitutions(appliedSubst, merge)
+		}
+		st.SetGlobalUnifier(unifier)
 		if !global.GetAssisted() {
 			sendSubToFather(c, true, false, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, []int{})
 		}
@@ -331,7 +342,7 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 		// TODO : REMOVE vu qu fait dans wait father ?
 		st.SetCurrentProofRule("⊙")
 		st.SetCurrentProofRuleName("CLOSURE")
-		st.SetCurrentProofFormula(f)
+		st.SetCurrentProofFormula(f.Copy())
 		st.SetCurrentProofNodeId(node_id)
 		st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{})
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
@@ -354,9 +365,11 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 
 			if err != nil {
 				global.PrintError("MCR", "Contradiction found between applied subst and child subst. What to do?")
+			} else {
+
+				st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), subst_and_form_for_father))
 			}
 
-			st.SetSubstsFound(complextypes.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), subst_and_form_for_father))
 			meta_to_reintroduce = global.UnionIntList(meta_to_reintroduce, retrieveMetaFromSubst(subst_for_father))
 		}
 
@@ -366,9 +379,16 @@ func ManageClosureRule(father_id uint64, st *complextypes.State, c Communication
 			global.PrintDebug("MCR", fmt.Sprintf("Subst found now : %v", complextypes.SubstAndFormListToString(st.GetSubstsFound())))
 			global.PrintDebug("MCR", fmt.Sprintf("Send subst(s) with mm to father : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 			sort.Ints(meta_to_reintroduce)
+
+			// Add substs_with_mm found with the corresponding subst
+			for i, subst := range substs_with_mm {
+				mergeUncleared, _ := treesearch.MergeSubstitutions(appliedSubst, substs_with_mm_uncleared[i])
+				mergeCleared, _ := treesearch.MergeSubstitutions(appliedSubst, subst)
+				unifier.AddSubstitutions(mergeCleared, mergeUncleared)
+			}
+			st.SetGlobalUnifier(unifier)
 			sendSubToFather(c, true, true, global.GetGID(), *st, []complextypes.SubstAndForm{}, node_id, original_node_id, meta_to_reintroduce)
 		}
-
 	}
 	return false, []complextypes.SubstAndForm{}
 }
@@ -437,6 +457,7 @@ func manageRewriteRules(fatherId uint64, state complextypes.State, c Communicati
 	ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), currentNodeId, originalNodeId, []int{})
 }
 
+// ILL TODO: check if this function does not make the DMT version lose completeness: is the original formula that's rewritten still in the branch or not?
 func tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTerms, state *complextypes.State, remainingAtomics basictypes.FormAndTermsList, fatherId uint64, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) bool {
 	global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.IntSubstAndFormListToString(rewritten)))
 

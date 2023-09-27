@@ -41,6 +41,7 @@ package basictypes
 import (
 	"sync"
 
+	polymorphism "github.com/GoelandProver/Goeland/polymorphism/typing"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -56,11 +57,13 @@ var lock_formula sync.Mutex
 
 // Global id
 var Id_eq Id
+var EmptyPredEq Pred
 
 /* Initialization */
 func Init() {
 	Reset()
 	Id_eq = MakerId("=")
+	EmptyPredEq = MakerPred(Id_eq, MakeEmptyTermList(), make([]polymorphism.TypeApp, 0))
 
 	// Eq/Neq types
 	tv := typing.MkTypeVar("α")

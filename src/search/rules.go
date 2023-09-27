@@ -40,12 +40,12 @@ package search
 
 import (
 	"fmt"
-	"strings"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
+	syntax "github.com/GoelandProver/Goeland/syntaxic-manipulations"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
@@ -78,19 +78,16 @@ var strToPrintMap map[string]string = map[string]string{
 *	a boolean, true if a contradiction was found, false otherwise
 *	a substitution, the substitution which make the contradiction (possibly empty)
 **/
-func ApplyClosureRules(form basictypes.Form, state *complextypes.State) (bool, []treetypes.Substitutions) {
+func ApplyClosureRules(form basictypes.Form, state *complextypes.State) (result bool, substitutions []treetypes.Substitutions) {
 	global.PrintDebug("ACR", "Start ACR")
-	var substitutions []treetypes.Substitutions
 
 	if searchObviousClosureRule(form) {
 		return true, substitutions
 	}
 
-	// The formula needs to be substituted as free variables are kept in the proof-search.
-	f := complextypes.ApplySubstitutionsOnFormula(state.GetAppliedSubst().GetSubst(), form.Copy())
+	f := form.Copy()
 
-	result := false
-	substFound, subst := searchInequalities(f)
+	substFound, subst := searchInequalities(form)
 	if substFound {
 		result = true
 		substitutions = append(substitutions, subst)
@@ -104,13 +101,15 @@ func ApplyClosureRules(form basictypes.Form, state *complextypes.State) (bool, [
 		for _, subst := range matchSubsts {
 			global.PrintDebug("ACR", fmt.Sprintf("MSL : %v", subst.ToString()))
 
-			shouldBeAdded := true
-			if global.GetCompleteness() && searchForbidden(state, subst) {
-				shouldBeAdded = false
-			}
-			if shouldBeAdded {
-				// Result should be true as at least one substitution is added in the substitutions returned to the parent.
+			if subst.GetSubst().Equals(treetypes.MakeEmptySubstitution()) {
 				result = true
+			} else {
+				if !searchForbidden(state, subst) {
+					result = true
+				}
+			}
+
+			if result {
 				global.PrintDebug("ACR", fmt.Sprintf("Subst found between : %v and %v : %v", form.ToString(), subst.GetForm().ToString(), subst.GetSubst().ToString()))
 				substitutions = treetypes.AppendIfNotContainsSubst(substitutions, subst.GetSubst())
 			}
@@ -403,7 +402,7 @@ func ApplyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 		setStateRules(state, "DELTA", "EXISTS")
 	}
 
-	return basictypes.MakeSingleElementFormAndTermList(Skolemize(fnt, state))
+	return basictypes.MakeSingleElementFormAndTermList(syntax.Skolemize(fnt, append(state.GetMM(), state.GetMC()...)))
 }
 
 /**
@@ -424,52 +423,11 @@ func ApplyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes
 		setStateRules(state, "GAMMA", "FORALL")
 	}
 
-	fnt, mm := Instantiate(fnt, index)
+	fnt, mm := syntax.Instantiate(fnt, index)
 	return basictypes.MakeSingleElementFormAndTermList(fnt), mm
 }
 
 /* Syntaxic manipulations below */
-
-/**
- * Instantiates once the formula fnt.
- */
-func Instantiate(fnt basictypes.FormAndTerms, index int) (basictypes.FormAndTerms, basictypes.MetaList) {
-	var newMm basictypes.MetaList
-	terms := fnt.GetTerms()
-
-	switch nf := fnt.GetForm().(type) {
-	case basictypes.Not:
-		if tmp, ok := nf.GetForm().(basictypes.Ex); ok {
-			form, metas := realInstantiate(tmp.GetForm(), index, tmp.GetVarList())
-			newMm = append(newMm, metas...)
-			fnt = basictypes.MakeFormAndTerm(basictypes.RefuteForm(form), terms.MergeTermList(newMm.ToTermList()))
-		}
-	case basictypes.All:
-		form, metas := realInstantiate(nf.GetForm(), index, nf.GetVarList())
-		newMm = append(newMm, metas...)
-		fnt = basictypes.MakeFormAndTerm(form, terms.MergeTermList(newMm.ToTermList()))
-	case basictypes.AllType:
-		fnt = basictypes.MakeFormAndTerm(nf.GetForm().ReplaceTypeByMeta(nf.GetVarList(), index), basictypes.MakeEmptyTermList())
-		for _, v := range nf.GetVarList() {
-			v.ShouldBeMeta(index)
-		}
-		fnt = basictypes.MakeFormAndTerm(basictypes.MakeAllType(nf.GetIndex(), nf.GetVarList(), fnt.GetForm()), basictypes.MakeEmptyTermList())
-	}
-
-	return fnt, newMm
-}
-
-func realInstantiate(form basictypes.Form, index int, vars []basictypes.Var) (basictypes.Form, basictypes.MetaList) {
-	var newMm basictypes.MetaList
-
-	for _, v := range vars {
-		meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
-		newMm = append(newMm, meta)
-		form = form.ReplaceVarByTerm(v, meta)
-	}
-
-	return form, newMm
-}
 
 func crossType(t typing.TypeApp, tf typing.TypeApp) typing.TypeApp {
 	if t == nil {

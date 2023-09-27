@@ -19,8 +19,8 @@ def LaunchTest(prover_name, command_line, succes, memory_limit=None, failure=Non
         
         return res
 
-if len(sys.argv) != 3: 
-    print(f"python3 {sys.argv[0]} problem_folder timeout")
+if len(sys.argv) < 3: 
+    print(f"python3 {sys.argv[0]} problem_folder timeout goeland_options")
 else:
     folder = sys.argv[1]
     folder_split = folder.split("/")
@@ -34,7 +34,7 @@ else:
 
     for index, file in enumerate(entries):
         print(f"Problem {index+1}/{len(entries)} : {folder+file}")
-        if LaunchTest("Goéland", "timeout "+timeout+" src/_build/goeland -dmt -presko "+folder+file, "% RES : VALID", None, "% RES : NOT VALID"):
+        if LaunchTest("Goéland", "timeout "+timeout+" src/_build/goeland " + " ".join(sys.argv[4:]) + " " +folder+file, "% RES : VALID", None, "% RES : NOT VALID"):
             cpt+=1
 
     print(f"Number of problems solved : {cpt}/{total}")

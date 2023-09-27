@@ -48,12 +48,13 @@ import (
 type Or struct {
 	index int
 	FormList
+	MetaList
 }
 
 /** Constructors **/
 
 func MakeOr(i int, forms FormList) Or {
-	return Or{i, forms}
+	return Or{i, forms, make(MetaList, 0)}
 }
 
 func MakerOr(forms FormList) Or {
@@ -94,7 +95,7 @@ func (o Or) Equals(f any) bool {
 }
 
 func (o Or) Copy() Form {
-	return MakeOr(o.GetIndex(), o.FormList)
+	return Or{index: o.index, FormList: o.FormList.Copy(), MetaList: o.MetaList.Copy()}
 }
 
 func (o Or) ToMappedString(map_ MapString, displayTypes bool) string {
@@ -105,8 +106,9 @@ func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeOr(o.GetIndex(), replaceList(o.FormList, varList, index))
 }
 
-func (o Or) ReplaceVarByTerm(old Var, new Term) Form {
-	return MakeOr(o.GetIndex(), replaceVarInFormList(o.FormList, old, new))
+func (o Or) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
+	formList, res := replaceVarInFormList(o.FormList, old, new)
+	return Or{o.GetIndex(), formList, o.MetaList}, res
 }
 
 func (o Or) RenameVariables() Form {
@@ -116,4 +118,22 @@ func (o Or) RenameVariables() Form {
 func (o Or) CleanFormula() Form {
 	o.FormList.CleanFormList()
 	return o
+}
+
+func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
+	newFormList, newMetas := substVarByMetaInFormList(old, new, o.FormList, o.MetaList)
+	return Or{o.index, newFormList, newMetas}
+}
+
+func (o Or) GetInternalMetas() MetaList {
+	return o.MetaList
+}
+
+func (o Or) SetInternalMetas(m MetaList) Form {
+	o.MetaList = m
+	return o
+}
+
+func (o Or) GetSubFormulas() FormList {
+	return getSubformsOfSubformList(o, o.FormList)
 }

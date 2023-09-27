@@ -131,14 +131,18 @@ func (l1 FormList) Equals(l2 FormList) bool {
 	return true
 }
 
-/* Return true if a formula f is inside the given formulas list, false otherwise */
-func (fl FormList) Contains(f Form) bool {
-	for _, v := range fl {
+func (fl FormList) Find(f Form) int {
+	for i, v := range fl {
 		if f.Equals(v) {
-			return true
+			return i
 		}
 	}
-	return false
+	return -1
+}
+
+/* Return true if a formula f is inside the given formulas list, false otherwise */
+func (fl FormList) Contains(f Form) bool {
+	return fl.Find(f) != -1
 }
 
 /* Append a formula to a list if the formula is not already inside */

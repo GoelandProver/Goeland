@@ -47,7 +47,7 @@ func isEquality(pred btypes.Pred) bool {
 }
 
 func refute(f btypes.Form) btypes.Form {
-	return btypes.SimplifyNegations(btypes.RefuteForm(f))
+	return btypes.RefuteForm(f)
 }
 
 func predFromNegatedAtom(f btypes.Form) btypes.Pred {

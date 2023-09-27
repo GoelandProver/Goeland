@@ -78,7 +78,7 @@ func (m Meta) ToMappedString(map_ MapString, type_ bool) string {
 	if type_ {
 		return m.ToString()
 	}
-	return fmt.Sprintf("%s_%d_%d", m.GetName(), m.GetIndex(), m.GetFormula())
+	return fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
 }
 
 func (m Meta) Equals(t Term) bool {

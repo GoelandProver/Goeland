@@ -72,7 +72,8 @@ var completeness = false
 var isTypeProof = false
 var arithModule = false
 var innerSkolem = false
-var optimisedSkolem = false
+var preInnerSko = false
+var compareProofs = false
 
 var debugTerminal = false
 var debugFile = false
@@ -244,12 +245,20 @@ func IsConjectureFound() bool {
 	return isConjectureFound
 }
 
+func IsOuterSko() bool {
+	return !(IsInnerSko() || IsPreInnerSko())
+}
+
 func IsInnerSko() bool {
 	return innerSkolem
 }
 
-func IsOptimisedSko() bool {
-	return optimisedSkolem
+func IsPreInnerSko() bool {
+	return preInnerSko
+}
+
+func CompareProofs() bool {
+	return compareProofs
 }
 
 /* Setters */
@@ -367,6 +376,10 @@ func SetInnerSko(b bool) {
 	innerSkolem = b
 }
 
-func SetOptimisedSko(b bool) {
-	optimisedSkolem = b
+func SetPreInnerSko(b bool) {
+	preInnerSko = b
+}
+
+func SetCompareProofs(b bool) {
+	compareProofs = b
 }
