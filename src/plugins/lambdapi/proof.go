@@ -112,22 +112,26 @@ func allRules(rule string, target btps.Form, composingForms []btps.Form, nexts [
 }
 
 func allRulesQuantUniv(rule string, target btps.Form, composingForms []btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, vars []btps.Var, termGen btps.Term) string {
-	result := rule + "\n"
-	result += "(ι)\n"
-
-	result += "(%s, " + toCorrectString(composingForms[0]) + ")\n"
 
 	quant := ""
-	switch target.(type) {
+	typeStr := "ι"
+	switch typed := target.(type) {
 	case btps.All:
 		quant = lambdaPiMapConnectors[btps.AllQuant]
+		typeStr = typed.GetVarList()[0].GetTypeHint().ToString()
 	case btps.Not:
 		quant = lambdaPiMapConnectors[btps.ExQuant]
 	}
 
+	typeStr = mapDefault(typeStr)
+
+	result := rule + "\n"
+	result += "(" + typeStr + ")\n"
+	result += "(%s, " + toCorrectString(composingForms[0]) + ")\n"
+
 	varStrs := []string{}
 	for _, singleVar := range vars {
-		varStrs = append(varStrs, toLambdaIntroString(singleVar))
+		varStrs = append(varStrs, toLambdaIntroString(singleVar, singleVar.GetTypeHint().ToString()))
 	}
 	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
 
@@ -154,22 +158,25 @@ func getRecursionUnivStr(target btps.Form, nexts []*gs3.GS3Sequent, children []b
 }
 
 func allRulesQuantExist(rule string, target btps.Form, composingForms []btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, vars []btps.Var, termGen btps.Term) string {
-	result := rule + "\n"
-	result += "(ι)\n"
-
-	result += "(%s, " + toCorrectString(composingForms[0]) + ")\n"
-
 	quant := ""
-	switch target.(type) {
+	typeStr := "ι"
+	switch typed := target.(type) {
 	case btps.Ex:
 		quant = lambdaPiMapConnectors[btps.ExQuant]
+		typeStr = typed.GetVarList()[0].GetTypeHint().ToString()
 	case btps.Not:
 		quant = lambdaPiMapConnectors[btps.AllQuant]
 	}
 
+	typeStr = mapDefault(typeStr)
+
+	result := rule + "\n"
+	result += "(" + typeStr + ")\n"
+	result += "(%s, " + toCorrectString(composingForms[0]) + ")\n"
+
 	varStrs := []string{}
 	for _, singleVar := range vars {
-		varStrs = append(varStrs, toLambdaIntroString(singleVar))
+		varStrs = append(varStrs, toLambdaIntroString(singleVar, singleVar.GetTypeHint().ToString()))
 	}
 	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
 
@@ -183,7 +190,11 @@ func allRulesQuantExist(rule string, target btps.Form, composingForms []btps.For
 func getRecursionExistStr(target btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, termGen btps.Term) (result string) {
 	for i, next := range nexts {
 		result += "(\n"
-		result += toLambdaIntroString(termGen) + ",\n"
+		typesStr := ""
+		if typed, ok := termGen.(btps.Fun); ok {
+			typesStr = mapDefault(typed.GetTypeHint().ToString())
+		}
+		result += toLambdaIntroString(termGen, typesStr) + ",\n"
 		for _, childForm := range children[i] {
 			result += toLambdaString(childForm, toCorrectString(childForm)) + ",\n"
 		}

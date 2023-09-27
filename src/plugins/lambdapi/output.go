@@ -50,7 +50,7 @@ func MakeLambdapiOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 }
 
 func mapDefault(str string) string {
-	result := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, "$i", "τ (ι)"), "$o", "Prop"), "->", "→"), "*", "→")
+	result := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, "$i", "ι"), "$o", "Prop"), "->", "→"), "*", "→")
 	return result
 }
 

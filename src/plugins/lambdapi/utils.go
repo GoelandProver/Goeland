@@ -33,18 +33,8 @@ func toLambdaString(element btps.MappableString, str string) string {
 	return fmt.Sprintf("λ (%s : ϵ (%s))", addToContext(element), str)
 }
 
-func toLambdaIntroString(element btps.MappableString) string {
-	return fmt.Sprintf("λ (%s : τ (ι))", addToContext(element))
-}
-
-func varsToLambdaString(varList []btps.Var) string {
-	varStrings := []string{}
-
-	for _, vt := range varList {
-		varStrings = append(varStrings, toLambdaIntroString(vt))
-	}
-
-	return strings.Join(varStrings, ", ")
+func toLambdaIntroString(element btps.MappableString, typeStr string) string {
+	return fmt.Sprintf("λ (%s : τ (%s))", addToContext(element), mapDefault(typeStr))
 }
 
 func toCorrectString(element btps.MappableString) string {

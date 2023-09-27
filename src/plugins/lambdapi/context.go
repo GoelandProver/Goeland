@@ -14,9 +14,27 @@ func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
 	resultString := contextPreamble() + "\n\n"
 
 	if typing.EmptyGlobalContext() {
-
 		if global.IsLoaded("dmt") {
 			root = btps.MakerAnd(append(dmt.GetRegisteredAxioms(), root))
+		}
+
+		resultString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+
+		if len(metaList) > 0 {
+			resultString += contextualizeMetas(metaList)
+		}
+	} else {
+		if global.IsLoaded("dmt") {
+			root = btps.MakerAnd(append(dmt.GetRegisteredAxioms(), root))
+		}
+
+		context := typing.GetGlobalContext()
+		for k, v := range context {
+			if typed, ok := v[0].App.(typing.TypeHint); ok {
+				if k[0] != '$' && k == typed.ToString() {
+					resultString += "symbol " + k + " : Type;\n"
+				}
+			}
 		}
 
 		resultString += strings.Join(getContextFromFormula(root), "\n") + "\n"
@@ -60,7 +78,18 @@ func getContextFromFormula(root btps.Form) []string {
 		result = append(result, getContextFromFormula(nf.GetForm())...)
 	case btps.Pred:
 		if !nf.GetID().Equals(btps.Id_eq) {
-			result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", nf.GetID().ToMappedString(lambdaPiMapConnectors, false), nf.GetType().ToString())))
+			primitives := nf.GetType().GetPrimitives()
+			typesStr := ""
+
+			for i, prim := range primitives {
+				if i != len(primitives)-1 {
+					typesStr += "τ (" + prim.ToString() + ") → "
+				} else {
+					typesStr += prim.ToString()
+				}
+			}
+
+			result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", nf.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
 		}
 		for _, term := range nf.GetArgs() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
@@ -73,7 +102,7 @@ func getContextFromTerm(trm btps.Term) []string {
 	result := []string{}
 
 	if fun, isFun := trm.(btps.Fun); isFun {
-		result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), fun.GetTypeHint().ToString())))
+		result = append(result, mapDefault(fmt.Sprintf("symbol %s : τ (%s);", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), fun.GetTypeHint().ToString())))
 		for _, term := range fun.GetArgs() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
