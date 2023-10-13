@@ -143,3 +143,33 @@ func ListToMappedString[T MappableString](sgbl []T, separator, emptyValue string
 
 	return strings.Join(strArr, separator)
 }
+
+type SimpleStringMappable string
+
+func (ssm *SimpleStringMappable) ToString() string {
+	return string(*ssm)
+}
+
+func (ssm *SimpleStringMappable) Equals(other any) bool {
+	if typed, ok := other.(*SimpleStringMappable); ok {
+		return string(*typed) == string(*ssm)
+	}
+
+	return false
+}
+
+func (ssm *SimpleStringMappable) ToMappedString(MapString, bool) string {
+	return string(*ssm)
+}
+
+func (ssm *SimpleStringMappable) ToMappedStringSurround(MapString, bool) string {
+	return ""
+}
+
+func (ssm *SimpleStringMappable) ToMappedStringChild(MapString, bool) (separator string, emptyValue string) {
+	return "", ""
+}
+
+func (ssm *SimpleStringMappable) GetChildrenForMappedString() []MappableString {
+	return []MappableString{}
+}

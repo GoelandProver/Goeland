@@ -99,6 +99,10 @@ func MakeDecoratedFun(newFun btps.Fun) DecoratedFun {
 	return decorated
 }
 
+func (df DecoratedFun) ToMappedStringChild(mapping btps.MapString, displayTypes bool) (separator, emptyValue string) {
+	return " ", mapping[btps.PredEmpty]
+}
+
 func (df DecoratedFun) ToMappedStringSurround(mapping btps.MapString, displayTypes bool) string {
 	result := df.Fun.ToMappedStringSurround(mapping, displayTypes)
 
