@@ -38,10 +38,14 @@ func toLambdaIntroString(element btps.MappableString, typeStr string) string {
 }
 
 func toCorrectString(element btps.MappableString) string {
+	isNotSkolem := len(element.ToString()) <= 5 || element.ToString()[:6] != "skolem"
 	element = decorateForm(element)
 	surround := element.ToMappedStringSurround(lambdaPiMapConnectors, false)
 	separator, emptyValue := element.ToMappedStringChild(lambdaPiMapConnectors, false)
-	children := ListToMappedString(element.GetChildrenForMappedString(), separator, emptyValue)
+	children := ""
+	if isNotSkolem {
+		children = ListToMappedString(element.GetChildrenForMappedString(), separator, emptyValue)
+	}
 	return fmt.Sprintf(surround, children)
 }
 
