@@ -1,3 +1,34 @@
+/**
+* Copyright 2022 by the authors (see AUTHORS).
+*
+* Goéland is an automated theorem prover for first order logic.
+*
+* This software is governed by the CeCILL license under French law and
+* abiding by the rules of distribution of free software.  You can  use,
+* modify and/ or redistribute the software under the terms of the CeCILL
+* license as circulated by CEA, CNRS and INRIA at the following URL
+* "http://www.cecill.info".
+*
+* As a counterpart to the access to the source code and  rights to copy,
+* modify and redistribute granted by the license, users are provided only
+* with a limited warranty  and the software's author,  the holder of the
+* economic rights,  and the successive licensors  have only  limited
+* liability.
+*
+* In this respect, the user's attention is drawn to the risks associated
+* with loading,  using,  modifying and/or developing or reproducing the
+* software by the user in light of its specific status of free software,
+* that may mean  that it is complicated to manipulate,  and  that  also
+* therefore means  that it is reserved for developers  and  experienced
+* professionals having in-depth computer knowledge. Users are therefore
+* encouraged to load and test the software's suitability as regards their
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and,  more generally, to use and operate it in the
+* same conditions as regards security.
+*
+* The fact that you are presently reading this means that you have had
+* knowledge of the CeCILL license and that you accept its terms.
+**/
 package search
 
 import (
@@ -175,7 +206,7 @@ func passSubstToChildren(args wcdArgs, substs []ctps.SubstAndForm) {
 	args.st.SetBTOnFormulas(false)
 	args.overwrite = false
 	args.currentSubst = subst
-	waitChildren(args)
+	WaitChildren(args)
 }
 
 func manageOpenedChild(args wcdArgs) {
@@ -197,7 +228,7 @@ func manageOpenedChild(args wcdArgs) {
 		// Mutually exclusive cases: when a backtrack is done on substitutions, this backtrack is prioritised from now on.
 		args.st.SetBTOnFormulas(false)
 		args.overwrite = false
-		waitChildren(args)
+		WaitChildren(args)
 	} else {
 		global.PrintDebug("WC", "A child is opened but no more backtracks are available.")
 		xchg.WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Die - No more BT available")
@@ -208,7 +239,7 @@ func manageOpenedChild(args wcdArgs) {
 			sendForbiddenToChildren(args.children, args.st.GetForbiddenSubsts())
 			args.overwrite = false
 			args.currentSubst = ctps.MakeEmptySubstAndForm()
-			waitChildren(args)
+			WaitChildren(args)
 		} else {
 			global.PrintDebug("WC", "No solution. You should launch in complete mode.")
 			closeChildren(&args.children, true)
@@ -246,7 +277,7 @@ func manageBacktrackForDMT(args wcdArgs) {
 	args.childOrdering = []int{childNode}
 	args.currentSubst = nextSaF.GetSaf().ToSubstAndForm()
 
-	waitChildren(args)
+	WaitChildren(args)
 }
 
 func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {

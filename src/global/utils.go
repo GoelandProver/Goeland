@@ -204,3 +204,9 @@ func (cm *ComparableMap[T, U]) Keys() []T {
 func (cm *ComparableMap[T, U]) Values() []U {
 	return cm.values
 }
+
+type Basic[T any] interface {
+	Stringable
+	Comparable
+	Copyable[T]
+}

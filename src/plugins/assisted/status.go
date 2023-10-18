@@ -29,64 +29,79 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-package datastruct
+package assisted
 
 import (
-	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"fmt"
+	"sync"
+
 	"github.com/GoelandProver/Goeland/global"
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
-type FormListDS struct {
-	fl basictypes.FormList
+var lockId sync.Mutex
+var id = -1
+
+var lockStatus sync.Mutex
+var status []*StatusElement
+
+type StatusElement struct {
+	id      int
+	channel chan Choice
+	state   *complextypes.State
 }
 
-func (f FormListDS) GetFL() basictypes.FormList {
-	return f.fl.Copy()
+func addStatusElement(se *StatusElement) {
+	lockStatus.Lock()
+	defer lockStatus.Unlock()
+
+	status = append(status, se)
 }
 
-/* Data struct */
+func removeStatusElement(id int) {
+	lockStatus.Lock()
+	defer lockStatus.Unlock()
 
-/* Take a list of formula and return a FormList (Datastructure type) */
-func (f FormListDS) MakeDataStruct(lf basictypes.FormList, is_pos bool) DataStructure {
-	return (new(FormListDS)).InsertFormulaListToDataStructure(lf)
-}
-
-/* Insert a list of formula into the given Datastructure (here, FormList) */
-func (f FormListDS) InsertFormulaListToDataStructure(lf basictypes.FormList) DataStructure {
-	for _, v := range lf {
-		switch nf := v.(type) {
-		case basictypes.Pred:
-			f.fl = f.fl.AppendIfNotContains(nf)
-		case basictypes.Not:
-			switch nf.GetForm().(type) {
-			case basictypes.Pred:
-				f.fl = f.fl.AppendIfNotContains(nf.GetForm())
-			}
+	for i, element := range status {
+		if element.getId() == id {
+			status = append(status[:i], status[i+1:]...)
 		}
 	}
-	return f
 }
 
-func (f FormListDS) Print() {
-	for _, f := range f.GetFL() {
-		global.PrintDebug("FLTS", f.ToString())
+func printAllStatusIds() {
+	for _, elem := range status {
+		printFormListFromState(elem.state, elem.getId())
 	}
+	fmt.Println()
 }
 
-func (f FormListDS) Copy() DataStructure {
-	return FormListDS{f.GetFL().Copy()}
+func makeStatusElement(ch chan Choice, st *complextypes.State) *StatusElement {
+	lockId.Lock()
+	defer lockId.Unlock()
+	id += 1
+	statusEl := new(StatusElement)
+	statusEl.id, statusEl.channel, statusEl.state = id, ch, st
+	return statusEl
 }
 
-func (fl FormListDS) IsEmpty() bool {
-	return len(fl.GetFL()) <= 0
+func (se *StatusElement) getId() int {
+	return se.id
 }
 
-func (fl FormListDS) Unify(f basictypes.Form) (bool, []treetypes.MatchingSubstitutions) {
-	for _, element := range fl.GetFL() {
-		if element.Equals(f) {
-			return true, []treetypes.MatchingSubstitutions{}
-		}
-	}
-	return false, []treetypes.MatchingSubstitutions{}
+func (se *StatusElement) applySubs(sub complextypes.SubstAndForm) {
+	fmt.Printf("Applying to state %d the following substitution: %s\n", se.getId(), sub.ToString())
+	complextypes.ApplySubstitution(se.state, sub)
+}
+
+func (se *StatusElement) sendChoice(choice Choice) {
+	global.PrintDebug("ASSISTED", fmt.Sprintf("Choice sent to state nº%d : %v", se.getId(), choice))
+
+	se.channel <- choice
+}
+
+func (se *StatusElement) receiveChoice() Choice {
+	choice := <-se.channel
+	global.PrintDebug("ASSISTED", fmt.Sprintf("Choice received from state nº%d : %v", se.getId(), choice))
+	return choice
 }

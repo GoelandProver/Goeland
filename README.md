@@ -45,23 +45,34 @@ The parameters must be passed *before* the problem file. The available parameter
 
 | Parameter flag | Effect |
 |--------------------------|-----------|
-| -ari | Enable the use of (TPTP) arithmetic functions (default: **false**). |
-| -compare | Together with `-ocoq`, outputs both the Coq proof and the tableaux proof (default: **false**). |
-| -completeness | Enables Goeland to be complete (it may worsen performances) (default: **false**). |
-| -context | Together with `-ocoq`, produces the context for a Coq proof (default: **false**). |
-| -dmt | Allow the use of deduction modulo theory during the proofsearch (default: **false**). |
-| -exchanges | Generate an exchange tree in json (default: **false**). Visualisation of this exchange tree can be done with the [visualisation module](visualization/). |
-| -inner | Activates inner Skolemisation, i.e., a more optimised Skolemisation strategy. It makes Goeland faster and prove more problems (default: **false**). |
-| -preinner | Activates preinner Skolemisation, i.e., a Skolemisation strategy even more optimised than `-inner` (default: **false**). |
-| -l | Re-entry limit of free variables in destructive mode (default: **-1**) |
-| -nd | Use of non-destructive mode (default: **false**) |
-| -noeq | Disable the use of rigid E-Unification (default: **false**). |
-| -ocoq | Activates a Coq proof output (default: **false**). |
-| -proof | Display a proof of the theorem (default: **false**). |
-| -polarized | Only useful if -dmt is activated. Polarises deduction modulo to also transform axioms with implications as the root connective |
-| -presko | Only useful if -dmt is activated. Preskolemises rewrited formulas if possible. |
-| -pretty | Use pretty connectives and quantifiers when printing formulas (default: **false**). Can be used in combination with `-proof` to have a pretty proof. | 
-| -type_proof | Generate a sequent-style proof of the well-typedness of the problem in a json (default: **false**). Visualisation of the proof can be done with the [visualisation module](visualization/). |
+| -ari | Enables the use of (TPTP) arithmetic functions (default: **false**). |
+| -assisted | Enables the step-by-step mode debugger (default: **false**). |
+| -completeness | Enables completeness mode (default: **false**). |
+| -compare | Should only be used with the `-ocoq` parameter. Outputs both the Coq proof and the tableaux proof (default: **false**). |
+| -context | Should only be used with the `-ocoq` parameter. Enables the context for a standalone execution (default: **false**). |
+| -core_limit *int* | Sets the limit in number of cores (default: all) (default: **-1**). |
+| -cpuprofile *file* | Writes the cpu profile to *file*. |
+| -debug | Enables printing debug information in the terminal (default: **false**). |
+| -dif | Short for 'Debug In File'. Enables printing debug information in the log file. Won't work when used with the option `-nwlogs` (default: **false**). |
+| -dmt | Enables deduction modulo theory (default: **false**). |
+| -dmt_before_eq | Enables dmt before equality (default: **false**). |
+| -exchanges | Enables the node exchanges to be written in a file (default: **false**). |
+| -inner | Enables on-the-fly inner Skolemisation during the proof-search (default: **false**). |
+| -l *int* | Sets the limit in destructive mode (default: **-1**). |
+| -log *file* | Changes the file output for loggers. Won't work when used with the option `-nwlogs` (default: **logs**). |
+| -memprofile *file* | Writes the memory profile to file (default: **false**). |
+| -nd | Enables the non-destructive version (default: **false**). |
+| -noeq | Disables equality (default: **false**). |
+| -ocoq | Enables the Coq format for proofs instead of text (default: **false**). |
+| -one_step | Enables only one step of search (default: **false**). |
+| -polarized | Should only be used with the `-dmt` parameter. Activate polarized dmt (default: **false**). |
+| -preinner | Activates preinner Skolemisation, a Skolemisation strategy even more optimised than `-inner` (default: **false**). |
+| -pretty | Should only be used with the `-proof` parameter. Enables UTF-8 characters in prints for a pretty proof (default: **false**). |
+| -proof | Enables the display of a proof of the problem (in TPTP format) (default: **false**). |
+| -show_trace | Enables the location of the loggers call to be shown in the logs (default: **false**). |
+| -type_proof | Enables type proof visualisation (default: **false**). |
+| -completeness | Enables completeness mode (default: **false**). |
+| -wlogs | Enables the writing of the logs in files (default: **false**). |
 
 ### Result values
 
@@ -69,7 +80,7 @@ Since the tableau method only proves theorems, Goéland returns `Valid` when a p
 
 ### Tests <a id="tests"></a>
 
-The benchmark is available in [GoelandBenchmarks](GoelandBenchmarks/) folder, with the [Makefile](GoelandBenchmarks/Makefile) needed to run them. The folder on which to run the tests are specified in the [Makefile](GoelandBenchmarks/Makefile).
+The benchmark is available in the [Benchmarks](https://github.com/GoelandProver/GoelandBenchmarks/) submodule, with the [Makefile](https://github.com/GoelandProver/GoelandBenchmarks/blob/main/Makefile) needed to run them. The folder on which to run the tests is specified in the [Makefile](https://github.com/GoelandProver/GoelandBenchmarks/blob/main/Makefile).
 
 For example, the command line:
 ```console
@@ -88,4 +99,4 @@ with the following architecture:
 ├── RESULTS
 └── Makefile
 ```
-and the corresponding lines added to the [Makefile](GoelandBenchmarks/Makefile) will run Goéland and Goéland+DMT on the SYN and SET folder. Output results are placed into the [RESULTS](GoelandBenchmarks/RESULTS/) repository. 
+and the corresponding lines added to the [Makefile](https://github.com/GoelandProver/GoelandBenchmarks/blob/main/Makefile) will run Goéland and Goéland+DMT on the SYN and SET folder. Output results are placed into the [RESULTS](https://github.com/GoelandProver/GoelandBenchmarks/tree/main/RESULTS) repository. 

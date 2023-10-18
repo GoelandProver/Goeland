@@ -122,14 +122,14 @@ func initLogger(fileName string, debugInTerminal, debugInFile, showTrace, writeL
 func setDebugFunction() {
 	if GetDebug() {
 		PrintDebug = func(function, message string) {
-			printToLogger(*logDebug, function, message)
+			printToLogger(logDebug, function, message)
 		}
 	} else {
 		PrintDebug = func(function, message string) {}
 	}
 }
 
-func printToLogger(logger log.Logger, function, message string) {
+func printToLogger(logger *log.Logger, function, message string) {
 	toParse := "[%.6fs]"
 	options := []any{time.Since(start).Seconds()}
 
@@ -161,7 +161,7 @@ var PrintDebug func(function, message string)
 // Use when you want to display an important information.
 // The prefix for information messages is 'INF'.
 func PrintInfo(function, message string) {
-	printToLogger(*logInfo, function, message)
+	printToLogger(logInfo, function, message)
 }
 
 // Prints the message into the terminal and the file as an error message
@@ -169,7 +169,7 @@ func PrintInfo(function, message string) {
 // Use when you want to warn that something is not happening as it should and it is important and must be corrected.
 // The prefix for error messages is 'ERR'.
 func PrintError(function, message string) {
-	printToLogger(*logError, function, message)
+	printToLogger(logError, function, message)
 }
 
 // Prints the message into the terminal and the file as a panic message and calls panic()
@@ -178,7 +178,7 @@ func PrintError(function, message string) {
 // The format of the panic message is '[function] message'.
 // The prefix for panic messages is 'PAN'.
 func PrintPanic(function, message string) {
-	printToLogger(*logPanic, function, message)
+	printToLogger(logPanic, function, message)
 	panic(fmt.Sprintf("[%v] %v", function, message))
 }
 
@@ -187,6 +187,6 @@ func PrintPanic(function, message string) {
 // Use when something is not happening as it should and you want to stop the current program immediatly.
 // The prefix for fatal messages is 'FAT'.
 func PrintFatal(function, message string) {
-	printToLogger(*logFatal, function, message)
+	printToLogger(logFatal, function, message)
 	os.Exit(1)
 }

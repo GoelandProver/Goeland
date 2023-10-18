@@ -29,67 +29,35 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*************/
-/* helper.go */
-/*************/
-/**
-* This file contains useful functions for int
-**/
-
-package global
+package assisted
 
 import (
-	"strconv"
+	"fmt"
+	"sync"
+
+	"github.com/GoelandProver/Goeland/global"
 )
 
-func IntListToString(l []int) string {
-	res := ""
-	for index, i := range l {
-		res += strconv.Itoa(i)
-		if index < len(l)-1 {
-			res += ", "
-		}
-	}
-	return res
+var Counter SyncCounter
+
+type SyncCounter struct {
+	cpt   int
+	mutex sync.Mutex
 }
 
-func AppendIfNotContainsInt(l []int, i int) []int {
-	if ContainsInt(i, l) {
-		return l
-	} else {
-		return append(l, i)
-	}
+func (sc *SyncCounter) Increase() {
+	sc.mutex.Lock()
+	defer sc.mutex.Unlock()
+	sc.cpt++
+	global.PrintDebug("CPT", fmt.Sprintf("++ : %d", sc.cpt))
 }
 
-func ContainsInt(i int, l []int) bool {
-	for _, v := range l {
-		if i == v {
-			return true
-		}
+func (sc *SyncCounter) decrease() {
+	sc.mutex.Lock()
+	defer sc.mutex.Unlock()
+	sc.cpt--
+	global.PrintDebug("CPT", fmt.Sprintf("-- : %d", sc.cpt))
+	if sc.cpt == 0 {
+		nextStep <- true
 	}
-	return false
-}
-
-func UnionIntList(l1, l2 []int) []int {
-	res := l1
-	for _, l2_element := range l2 {
-		res = AppendIfNotContainsInt(res, l2_element)
-	}
-	return res
-}
-
-func InterIntList(l1, l2 []int) []int {
-	res := []int{}
-	for _, l1_element := range l1 {
-		if ContainsInt(l1_element, l2) {
-			res = AppendIfNotContainsInt(res, l1_element)
-		}
-	}
-	return res
-}
-
-func CopyIntList(il []int) []int {
-	res := make([]int, len(il))
-	copy(res, il)
-	return res
 }

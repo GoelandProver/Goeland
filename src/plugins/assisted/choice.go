@@ -29,67 +29,66 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*************/
-/* helper.go */
-/*************/
-/**
-* This file contains useful functions for int
-**/
-
-package global
+package assisted
 
 import (
-	"strconv"
+	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
-func IntListToString(l []int) string {
-	res := ""
-	for index, i := range l {
-		res += strconv.Itoa(i)
-		if index < len(l)-1 {
-			res += ", "
-		}
-	}
-	return res
+type Choice interface {
+	getRule() string
+	getForm() int
+	getSubst() complextypes.SubstAndForm
+	getReintro() int
 }
 
-func AppendIfNotContainsInt(l []int, i int) []int {
-	if ContainsInt(i, l) {
-		return l
-	} else {
-		return append(l, i)
-	}
+type ChoiceBasic struct {
+	rule string
+	form int
 }
 
-func ContainsInt(i int, l []int) bool {
-	for _, v := range l {
-		if i == v {
-			return true
-		}
-	}
-	return false
+func makeChoice(rule string, form int) ChoiceBasic {
+	return ChoiceBasic{rule, form}
 }
 
-func UnionIntList(l1, l2 []int) []int {
-	res := l1
-	for _, l2_element := range l2 {
-		res = AppendIfNotContainsInt(res, l2_element)
-	}
-	return res
+func (choice ChoiceBasic) getForm() int {
+	return choice.form
 }
 
-func InterIntList(l1, l2 []int) []int {
-	res := []int{}
-	for _, l1_element := range l1 {
-		if ContainsInt(l1_element, l2) {
-			res = AppendIfNotContainsInt(res, l1_element)
-		}
-	}
-	return res
+func (choice ChoiceBasic) getRule() string {
+	return choice.rule
 }
 
-func CopyIntList(il []int) []int {
-	res := make([]int, len(il))
-	copy(res, il)
-	return res
+func (choice ChoiceBasic) getSubst() complextypes.SubstAndForm {
+	return complextypes.MakeEmptySubstAndForm()
+}
+
+func (choice ChoiceBasic) getReintro() int {
+	return -1
+}
+
+type ChoiceSubsts struct {
+	ChoiceBasic
+	substs complextypes.SubstAndForm
+}
+
+func makeChoiceWithSubsts(rule string, form int, substs complextypes.SubstAndForm) ChoiceSubsts {
+	return ChoiceSubsts{ChoiceBasic: makeChoice(rule, form), substs: substs}
+}
+
+func (choice ChoiceSubsts) getSubst() complextypes.SubstAndForm {
+	return choice.substs
+}
+
+type ChoiceReintro struct {
+	ChoiceBasic
+	reintro int
+}
+
+func makeChoiceWithReintro(rule string, reintro int) ChoiceReintro {
+	return ChoiceReintro{ChoiceBasic: makeChoice(rule, -1), reintro: reintro}
+}
+
+func (choice ChoiceReintro) getReintro() int {
+	return choice.reintro
 }

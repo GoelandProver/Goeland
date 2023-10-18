@@ -68,8 +68,8 @@ func (tl TermList) ToString() string {
 }
 
 /* Get the metavariables of a formula list */
-func (tl TermList) GetMetas() []Meta {
-	var res []Meta
+func (tl TermList) GetMetas() MetaList {
+	var res MetaList
 	for _, t := range tl {
 		m, ok := t.(Meta)
 		if ok {

@@ -410,9 +410,9 @@ func TestSyntaxicTransformationOnTypedFormula(t *testing.T) {
 }
 
 /*
-	(X |-> Y ),
-	(Z |-> f(Y, Y),
-	(T |-> Y)
+(X |-> Y ),
+(Z |-> f(Y, Y),
+(T |-> Y)
 */
 func TestEliminate(t *testing.T) {
 }
