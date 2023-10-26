@@ -5,10 +5,10 @@ package basictypes
 
 import "github.com/GoelandProver/Goeland/global"
 
-func getSubformsOfSubformList(f Form, fl FormList) FormList {
+func getAllSubFormulasAppended(f Form) FormList {
 	subforms := FormList{f.Copy()}
-	for _, sf := range fl {
-		subforms = append(subforms, sf.GetSubFormulas()...)
+	for _, sf := range f.GetChildFormulas() {
+		subforms = append(subforms, sf.GetSubFormulasRecur()...)
 	}
 	return subforms
 }

@@ -114,7 +114,8 @@ func MakeGS3Proof(proof []tableaux.ProofStruct) *GS3Sequent {
 		gs3Proof.branchForms = append(gs3Proof.branchForms, dmt.GetRegisteredAxioms()...)
 		gs3Proof.branchForms = append(gs3Proof.branchForms, proof[0].Formula.GetForm())
 	}
-	return gs3Proof.makeProof(proof)
+	sequent := gs3Proof.makeProof(proof)
+	return sequent // gs3Proof.makeProof(proof)
 }
 
 func (gs GS3Proof) Copy() GS3Proof {
@@ -639,7 +640,7 @@ func getAllFormulasDependantOn(term btps.Term, form btps.Form) btps.FormList {
 }
 
 func getSubformulas(term btps.Term, v btps.Var, form btps.Form) btps.FormList {
-	subforms := form.GetSubFormulas()
+	subforms := form.GetSubFormulasRecur()
 	dependantSubforms := btps.FormList{}
 	for _, f := range subforms {
 		f, res := f.ReplaceVarByTerm(v, term)

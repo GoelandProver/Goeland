@@ -49,30 +49,41 @@ import (
 
 /* function or constant (f(a,b), f(X,Y), a) */
 type Fun struct {
+	*MappedString
 	p        Id
 	args     TermList
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
 }
 
-func (f Fun) ToMappedString(map_ MapString, type_ bool) string {
+func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return f.ToMappedStringSurroundWithId(f.GetID().ToMappedString(mapping, displayTypes), mapping, displayTypes)
+}
+
+func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, displayTypes bool) string {
 	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
-		return f.GetID().ToMappedString(map_, type_)
+		return idString + "%s"
 	}
 	args := []string{}
 
-	if tv := ListToString(f.typeVars, ", ", map_[PredEmpty]); tv != "" {
+	if tv := ListToString(f.typeVars, ", ", mapping[PredEmpty]); tv != "" {
 		args = append(args, tv)
 	}
-	if vs := ListToMappedString(f.GetArgs(), ", ", map_[PredEmpty], map_, type_); vs != "" {
-		args = append(args, vs)
-	}
+	args = append(args, "%s")
 
-	str := f.GetID().ToMappedString(map_, type_) + "(" + strings.Join(args, map_[PredTypeVarSep]) + ")"
-	if type_ {
+	str := idString + "(" + strings.Join(args, mapping[PredTypeVarSep]) + ")"
+	if displayTypes {
 		str += " : " + f.typeHint.ToString()
 	}
 	return str
+}
+
+func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return ", ", mapping[PredEmpty]
+}
+
+func (f Fun) GetChildrenForMappedString() []MappableString {
+	return f.GetArgs().ToMappableStringSlice()
 }
 
 func (f Fun) GetID() Id         { return f.p.Copy().(Id) }
@@ -91,16 +102,13 @@ func (f Fun) IsMeta() bool                   { return false }
 func (f Fun) IsFun() bool                    { return true }
 func (Fun) ToMeta() Meta                     { return MakeEmptyMeta() }
 
-func (f Fun) ToString() string {
-	return f.ToMappedString(defaultMap, true)
-}
-
-func (f Fun) Equals(t Term) bool {
-	oth, isFun := t.(Fun)
-	return isFun &&
-		(oth.GetID() == f.GetID()) &&
-		oth.GetArgs().Equals(f.GetArgs()) &&
-		f.typeHint.Equals(oth.typeHint)
+func (f Fun) Equals(t any) bool {
+	if typed, ok := t.(Fun); ok {
+		return typed.GetID().Equals(f.GetID()) &&
+			typed.GetArgs().Equals(f.GetArgs()) &&
+			f.typeHint.Equals(typed.typeHint)
+	}
+	return false
 }
 
 func (f Fun) Copy() Term {

@@ -44,26 +44,36 @@ import "fmt"
 
 /* id (for predicate) */
 type Id struct {
+	*MappedString
 	index int
 	name  string
 }
 
-func (i Id) ToMappedString(MapString, bool) string { return i.ToString() }
-func (i Id) GetIndex() int                         { return i.index }
-func (i Id) GetName() string                       { return i.name }
-func (i Id) ToString() string                      { return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex()) }
-func (i Id) IsMeta() bool                          { return false }
-func (i Id) IsFun() bool                           { return false }
-func (i Id) Copy() Term                            { return MakeId(i.GetIndex(), i.GetName()) }
-func (Id) ToMeta() Meta                            { return MakeEmptyMeta() }
-func (Id) GetMetas() MetaList                      { return MetaList{} }
+func (i Id) GetIndex() int    { return i.index }
+func (i Id) GetName() string  { return i.name }
+func (i Id) IsMeta() bool     { return false }
+func (i Id) IsFun() bool      { return false }
+func (i Id) Copy() Term       { return MakeId(i.GetIndex(), i.GetName()) }
+func (Id) ToMeta() Meta       { return MakeEmptyMeta() }
+func (Id) GetMetas() MetaList { return MetaList{} }
 
-func (i Id) Equals(t Term) bool {
-	return t.GetIndex() == i.GetIndex()
-	// oth, isId := t.(Id)
-	// return isId &&
-	// 	(oth.GetIndex() == i.GetIndex()) &&
-	// 	(oth.GetName() == i.GetName())
+func (i Id) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return "%s"
+}
+
+func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
+}
+
+func (i Id) GetChildrenForMappedString() []MappableString {
+	return []MappableString{}
+}
+
+func (i Id) Equals(t any) bool {
+	if typed, ok := t.(Id); ok {
+		return typed.GetIndex() == i.GetIndex()
+	}
+	return false
 }
 
 func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {

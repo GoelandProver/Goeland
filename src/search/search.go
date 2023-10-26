@@ -53,6 +53,7 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/coq"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
+	"github.com/GoelandProver/Goeland/plugins/lambdapi"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	visualization "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -135,6 +136,9 @@ func printProof(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta ba
 
 		if global.IsCoqOutput() {
 			printCoqOutput(final_proof, uninstanciatedMeta)
+		}
+		if global.IsLambdapiOutput() {
+			printLambdapiOutput(final_proof, uninstanciatedMeta)
 		} else {
 			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
 		}
@@ -148,15 +152,32 @@ func printCoqOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictyp
 
 	if global.GetWriteLogs() {
 		f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-		defer f.Close()
 
 		if err != nil {
 			log.Fatalf("Error opening problem_coq file: %v", err)
 		}
+		defer f.Close()
 		f.WriteString(coqOutput)
 	}
 
 	fmt.Printf("%s", coqOutput)
+}
+
+func printLambdapiOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
+	lambdapiOutput := lambdapi.MakeLambdapiOutput(final_proof, uninstanciatedMeta)
+
+	if global.GetWriteLogs() {
+		f, err := os.OpenFile("./LambdaPi/problem_lp.lp", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+
+		if err != nil {
+			log.Fatalf("Error opening problem_lp file: %v", err)
+		}
+
+		defer f.Close()
+		f.WriteString(lambdapiOutput)
+	}
+
+	fmt.Printf("%s", lambdapiOutput)
 }
 
 /* Manage return from search for destructive and non-destructive versions  */

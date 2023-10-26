@@ -49,6 +49,7 @@ import (
 
 /* Metavariable (X, Y) */
 type Meta struct {
+	*MappedString
 	index     int
 	occurence int
 	name      string
@@ -68,28 +69,27 @@ func (m Meta) IsFun() bool                    { return false }
 func (m Meta) ToMeta() Meta                   { return m }
 func (m Meta) GetMetas() MetaList             { return MetaList{m} }
 
-func (m Meta) ToString() string {
-	// return fmt.Sprintf("%s_%d_%d_%d : %s", m.GetName(), m.GetOccurence(), m.GetFormula(), m.GetIndex(), m.GetTypeHint().ToString())
-	return fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.GetTypeHint().ToString())
-
+func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return "%s"
 }
 
-func (m Meta) ToMappedString(map_ MapString, type_ bool) string {
-	if type_ {
-		return m.ToString()
+func (m Meta) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	if displayTypes {
+		return "", fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.GetTypeHint().ToString())
+	} else {
+		return "", fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
 	}
-	return fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
 }
 
-func (m Meta) Equals(t Term) bool {
-	return t.GetIndex() == m.GetIndex()
-	// oth, isMeta := t.(Meta)
-	// return isMeta &&
-	// 	(oth.GetIndex() == m.GetIndex()) &&
-	// 	(oth.GetOccurence() == m.GetOccurence()) &&
-	// 	(oth.GetName() == m.GetName()) &&
-	// 	(oth.GetFormula() == m.GetFormula()) &&
-	// 	(m.typeHint.Equals(oth.typeHint))
+func (m Meta) GetChildrenForMappedString() []MappableString {
+	return []MappableString{}
+}
+
+func (m Meta) Equals(t any) bool {
+	if typed, ok := t.(Meta); ok {
+		return typed.GetIndex() == m.GetIndex()
+	}
+	return false
 }
 
 func (m Meta) Copy() Term {

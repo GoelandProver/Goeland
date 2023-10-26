@@ -46,15 +46,23 @@ import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 
 /* Top (always true) definition */
 type Top struct {
+	*MappedString
 	index int
 }
 
-func (t Top) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[TopType]
+func (t Top) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return "%s"
+}
+
+func (t Top) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", mapping[TopType]
+}
+
+func (t Top) GetChildrenForMappedString() []MappableString {
+	return t.GetChildFormulas().ToMappableStringSlice()
 }
 
 func (t Top) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
-func (t Top) ToString() string                             { return t.ToMappedString(defaultMap, true) }
 func (t Top) Copy() Form                                   { return MakeTop(t.GetIndex()) }
 func (Top) Equals(f any) bool                              { _, isTop := f.(Top); return isTop }
 func (Top) GetMetas() MetaList                             { return MakeEmptyMetaList() }
@@ -67,19 +75,28 @@ func (t Top) GetSubTerms() TermList                        { return MakeEmptyTer
 func (t Top) SubstituteVarByMeta(Var, Meta) Form           { return t }
 func (t Top) GetInternalMetas() MetaList                   { return MetaList{} }
 func (t Top) SetInternalMetas(MetaList) Form               { return t }
-func (t Top) GetSubFormulas() FormList                     { return FormList{t} }
+func (t Top) GetSubFormulasRecur() FormList                { return FormList{t.Copy()} }
+func (t Top) GetChildFormulas() FormList                   { return FormList{} }
 
-/* Bot (always false) definitino */
+/* Bot (always false) definition */
 type Bot struct {
+	*MappedString
 	index int
 }
 
-func (b Bot) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[BotType]
+func (b Bot) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return "%s"
+}
+
+func (b Bot) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", mapping[BotType]
+}
+
+func (b Bot) GetChildrenForMappedString() []MappableString {
+	return b.GetChildFormulas().ToMappableStringSlice()
 }
 
 func (b Bot) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
-func (b Bot) ToString() string                             { return b.ToMappedString(defaultMap, true) }
 func (b Bot) Copy() Form                                   { return MakeBot(b.GetIndex()) }
 func (Bot) Equals(f any) bool                              { _, isBot := f.(Bot); return isBot }
 func (Bot) GetMetas() MetaList                             { return MakeEmptyMetaList() }
@@ -92,4 +109,5 @@ func (b Bot) GetSubTerms() TermList                        { return MakeEmptyTer
 func (b Bot) SubstituteVarByMeta(Var, Meta) Form           { return b }
 func (b Bot) GetInternalMetas() MetaList                   { return MetaList{} }
 func (b Bot) SetInternalMetas(MetaList) Form               { return b }
-func (b Bot) GetSubFormulas() FormList                     { return FormList{b} }
+func (b Bot) GetSubFormulasRecur() FormList                { return FormList{b.Copy()} }
+func (b Bot) GetChildFormulas() FormList                   { return FormList{} }

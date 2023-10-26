@@ -46,6 +46,7 @@ import (
 
 // A Formula list that represents the disjunction of formulae
 type Or struct {
+	*MappedString
 	index int
 	FormList
 	MetaList
@@ -53,8 +54,15 @@ type Or struct {
 
 /** Constructors **/
 
+func MakeOrSimple(i int, forms FormList, metas MetaList) Or {
+	fms := &MappedString{}
+	or := Or{fms, i, forms, metas}
+	fms.MappableString = or
+	return or
+}
+
 func MakeOr(i int, forms FormList) Or {
-	return Or{i, forms, make(MetaList, 0)}
+	return MakeOrSimple(i, forms, make(MetaList, 0))
 }
 
 func MakerOr(forms FormList) Or {
@@ -85,21 +93,29 @@ func (o Or) GetSubTerms() TermList {
 	return res
 }
 
-func (o Or) ToString() string {
-	return o.ToMappedString(defaultMap, true)
-}
-
 func (o Or) Equals(f any) bool {
 	oth, isOr := f.(Or)
 	return isOr && oth.FormList.Equals(o.FormList)
 }
 
 func (o Or) Copy() Form {
-	return Or{index: o.index, FormList: o.FormList.Copy(), MetaList: o.MetaList.Copy()}
+	return MakeOrSimple(o.index, o.FormList.Copy(), o.MetaList.Copy())
 }
 
-func (o Or) ToMappedString(map_ MapString, displayTypes bool) string {
-	return "(" + ListToMappedString(o.FormList, " "+map_[OrConn]+" ", "", map_, displayTypes) + ")"
+func (o Or) ToString() string {
+	return o.MappedString.ToString()
+}
+
+func (o Or) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return "(%s)"
+}
+
+func (o Or) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return " " + mapping[OrConn] + " ", ""
+}
+
+func (o Or) GetChildrenForMappedString() []MappableString {
+	return o.GetChildFormulas().ToMappableStringSlice()
 }
 
 func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -108,7 +124,7 @@ func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (o Or) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	formList, res := replaceVarInFormList(o.FormList, old, new)
-	return Or{o.GetIndex(), formList, o.MetaList}, res
+	return MakeOrSimple(o.GetIndex(), formList, o.MetaList), res
 }
 
 func (o Or) RenameVariables() Form {
@@ -122,7 +138,7 @@ func (o Or) CleanFormula() Form {
 
 func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, o.FormList, o.MetaList)
-	return Or{o.index, newFormList, newMetas}
+	return MakeOrSimple(o.index, newFormList, newMetas)
 }
 
 func (o Or) GetInternalMetas() MetaList {
@@ -134,6 +150,10 @@ func (o Or) SetInternalMetas(m MetaList) Form {
 	return o
 }
 
-func (o Or) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(o, o.FormList)
+func (o Or) GetSubFormulasRecur() FormList {
+	return getAllSubFormulasAppended(o)
+}
+
+func (o Or) GetChildFormulas() FormList {
+	return o.FormList
 }

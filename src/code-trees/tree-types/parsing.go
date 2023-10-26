@@ -42,13 +42,24 @@ import (
 )
 
 type TermForm struct {
+	*basictypes.MappedString
 	index int
 	t     basictypes.Term
 }
 
-func (tf TermForm) ToMappedString(basictypes.MapString, bool) string       { return tf.ToString() }
-func (tf TermForm) GetTerm() basictypes.Term                               { return tf.t.Copy() }
-func (tf TermForm) ToString() string                                       { return tf.t.ToString() }
+func (t TermForm) ToMappedStringSurround(mapping basictypes.MapString, displayTypes bool) string {
+	return "%s"
+}
+
+func (t TermForm) ToMappedStringChild(mapping basictypes.MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", t.t.ToMappedString(mapping, displayTypes)
+}
+
+func (t TermForm) GetChildrenForMappedString() []basictypes.MappableString {
+	return t.GetChildFormulas().ToMappableStringSlice()
+}
+
+func (t TermForm) GetTerm() basictypes.Term                                { return t.t.Copy() }
 func (t TermForm) Copy() basictypes.Form                                   { return makeTermForm(t.GetIndex(), t.GetTerm()) }
 func (t TermForm) GetType() typing.TypeScheme                              { return typing.DefaultFunType(0) }
 func (t TermForm) RenameVariables() basictypes.Form                        { return t }
@@ -57,11 +68,12 @@ func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) basictypes.Form { ret
 func (t TermForm) ReplaceVarByTerm(basictypes.Var, basictypes.Term) (basictypes.Form, bool) {
 	return t, false
 }
-func (tf TermForm) GetIndex() int                                                      { return tf.index }
+func (t TermForm) GetIndex() int                                                       { return t.index }
 func (t TermForm) SubstituteVarByMeta(basictypes.Var, basictypes.Meta) basictypes.Form { return t }
 func (t TermForm) GetInternalMetas() basictypes.MetaList                               { return basictypes.MetaList{} }
 func (t TermForm) SetInternalMetas(basictypes.MetaList) basictypes.Form                { return t }
-func (t TermForm) GetSubFormulas() basictypes.FormList                                 { return basictypes.FormList{} }
+func (t TermForm) GetSubFormulasRecur() basictypes.FormList                            { return basictypes.FormList{} }
+func (t TermForm) GetChildFormulas() basictypes.FormList                               { return basictypes.FormList{} }
 
 func (t TermForm) Equals(t2 any) bool {
 	switch nt := t2.(type) {
@@ -99,7 +111,10 @@ func MakerTermForm(t basictypes.Term) TermForm {
 }
 
 func makeTermForm(i int, t basictypes.Term) TermForm {
-	return TermForm{i, t.Copy()}
+	fms := &basictypes.MappedString{}
+	tf := TermForm{fms, i, t.Copy()}
+	fms.MappableString = tf
+	return tf
 }
 
 /* Parses a formulae to a sequence of instructions. */

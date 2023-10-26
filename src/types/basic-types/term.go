@@ -47,12 +47,10 @@ import (
 
 /* Term */
 type Term interface {
+	MappableString
+	Copyable[Term]
 	GetIndex() int
 	GetName() string
-	ToMappedString(MapString, bool) string
-	ToString() string
-	Copy() Term
-	Equals(Term) bool
 	IsMeta() bool
 	IsFun() bool
 	ToMeta() Meta
@@ -67,19 +65,37 @@ type TypedTerm interface {
 }
 
 /*** Makers ***/
+func MakeId(i int, s string) Id {
+	fms := &MappedString{}
+	id := Id{fms, i, s}
+	fms.MappableString = id
+	return id
+}
 
-func MakeId(i int, s string) Id                        { return Id{i, s} }
-func MakeVar(i int, s string, t ...typing.TypeApp) Var { return Var{i, s, getType(t)} }
+func MakeVar(i int, s string, t ...typing.TypeApp) Var {
+	fms := &MappedString{}
+	newVar := Var{fms, i, s, getType(t)}
+	fms.MappableString = newVar
+	return newVar
+}
+
 func MakeMeta(index, occurence int, s string, f int, t ...typing.TypeApp) Meta {
-	return Meta{index, occurence, s, f, getType(t)}
+	fms := &MappedString{}
+	meta := Meta{fms, index, occurence, s, f, getType(t)}
+	fms.MappableString = meta
+	return meta
 }
 
 func MakeFun(p Id, args TermList, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
+	fms := &MappedString{}
+	var fun Fun
 	if len(t) == 1 {
-		return Fun{p, args, typeVars, t[0]}
+		fun = Fun{fms, p, args, typeVars, t[0]}
 	} else {
-		return Fun{p, args, typeVars, typing.DefaultFunType(len(args))}
+		fun = Fun{fms, p, args, typeVars, typing.DefaultFunType(len(args))}
 	}
+	fms.MappableString = fun
+	return fun
 }
 
 /*** Functions ***/

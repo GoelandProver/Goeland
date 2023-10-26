@@ -45,7 +45,6 @@ import (
 
 /*** Structure ***/
 
-/* Formula  */
 type Form interface {
 	GetIndex() int
 	GetMetas() MetaList
@@ -53,13 +52,11 @@ type Form interface {
 	SetInternalMetas(MetaList) Form
 	GetType() typing.TypeScheme
 	GetSubTerms() TermList
-	GetSubFormulas() FormList
+	GetSubFormulasRecur() FormList
+	GetChildFormulas() FormList
 
-	Stringable
-	Comparable
 	Copyable[Form]
-
-	ToMappedString(MapString, bool) string
+	MappableString
 
 	ReplaceTypeByMeta([]typing.TypeVar, int) Form
 	ReplaceVarByTerm(old Var, new Term) (Form, bool)
@@ -71,12 +68,22 @@ type Form interface {
 /*** Functions ***/
 
 /* Makers */
-func MakePred(index int, id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
+func MakePredSimple(index int, id Id, terms TermList, typeApps []typing.TypeApp, metas MetaList, typeSchemes ...typing.TypeScheme) Pred {
 	if len(typeSchemes) == 1 {
-		return Pred{index, id, terms, typeApps, typeSchemes[0], make(MetaList, 0)}
+		fms := &MappedString{}
+		pred := Pred{fms, index, id, terms, typeApps, typeSchemes[0], metas}
+		fms.MappableString = pred
+		return pred
 	} else {
-		return Pred{index, id, terms, typeApps, typing.DefaultPropType(len(terms)), make(MetaList, 0)}
+		fms := &MappedString{}
+		pred := Pred{fms, index, id, terms, typeApps, typing.DefaultPropType(len(terms)), metas}
+		fms.MappableString = pred
+		return pred
 	}
+}
+
+func MakePred(index int, id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
+	return MakePredSimple(index, id, terms, typeApps, make(MetaList, 0), typeSchemes...)
 }
 
 func MakerPred(id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
@@ -84,7 +91,10 @@ func MakerPred(id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...
 }
 
 func MakeTop(i int) Top {
-	return Top{i}
+	fms := &MappedString{}
+	top := Top{fms, i}
+	fms.MappableString = top
+	return top
 }
 
 func MakerTop() Top {
@@ -92,51 +102,89 @@ func MakerTop() Top {
 }
 
 func MakeBot(i int) Bot {
-	return Bot{i}
+	fms := &MappedString{}
+	bot := Bot{fms, i}
+	fms.MappableString = bot
+	return bot
 }
 
 func MakerBot() Bot {
 	return MakeBot(MakerIndexFormula())
 }
 
+func MakeImpSimple(i int, firstForm, secondForm Form, metas MetaList) Imp {
+	fms := &MappedString{}
+	imp := Imp{fms, i, firstForm, secondForm, metas}
+	fms.MappableString = imp
+	return imp
+}
+
 func MakeImp(i int, firstForm, secondForm Form) Imp {
-	return Imp{i, firstForm, secondForm, make(MetaList, 0)}
+	return MakeImpSimple(i, firstForm, secondForm, make(MetaList, 0))
 }
 
 func MakerImp(firstForm, secondForm Form) Imp {
 	return MakeImp(MakerIndexFormula(), firstForm, secondForm)
 }
 
+func MakeEquSimple(i int, firstForm, secondForm Form, metas MetaList) Equ {
+	fms := &MappedString{}
+	equ := Equ{fms, i, firstForm, secondForm, metas}
+	fms.MappableString = equ
+	return equ
+}
+
 func MakeEqu(i int, firstForm, secondForm Form) Equ {
-	return Equ{i, firstForm, secondForm, make(MetaList, 0)}
+	return MakeEquSimple(i, firstForm, secondForm, make(MetaList, 0))
 }
 
 func MakerEqu(firstForm, secondForm Form) Equ {
 	return MakeEqu(MakerIndexFormula(), firstForm, secondForm)
 }
 
+func MakeExSimple(i int, vars []Var, form Form, metas MetaList) Ex {
+	fms := &MappedString{}
+	ex := Ex{fms, i, vars, form, metas}
+	fms.MappableString = ex
+	return ex
+}
+
 func MakeEx(i int, vars []Var, form Form) Ex {
-	return Ex{i, vars, form, make(MetaList, 0)}
+	return MakeExSimple(i, vars, form, make(MetaList, 0))
 }
 
 func MakerEx(vars []Var, form Form) Ex {
 	return MakeEx(MakerIndexFormula(), vars, form)
 }
 
+func MakeAllSimple(i int, vars []Var, forms Form, metas MetaList) All {
+	fms := &MappedString{}
+	all := All{fms, i, vars, forms, metas}
+	fms.MappableString = all
+	return all
+}
+
 func MakeAll(i int, vars []Var, forms Form) All {
-	return All{i, vars, forms, make(MetaList, 0)}
+	return MakeAllSimple(i, vars, forms, make(MetaList, 0))
 }
 
 func MakerAll(vars []Var, forms Form) All {
 	return MakeAll(MakerIndexFormula(), vars, forms)
 }
 
+func MakeAllTypeSimple(i int, typeVars []typing.TypeVar, form Form, metas MetaList) AllType {
+	fms := &MappedString{}
+	at := AllType{fms, i, typeVars, form, metas}
+	fms.MappableString = at
+	return at
+}
+
 func MakeAllType(i int, typeVars []typing.TypeVar, form Form) AllType {
-	return AllType{i, typeVars, form, make(MetaList, 0)}
+	return MakeAllTypeSimple(i, typeVars, form, make(MetaList, 0))
 }
 
 func MakerAllType(typeVars []typing.TypeVar, form Form) AllType {
-	return AllType{MakerIndexFormula(), typeVars, form, make(MetaList, 0)}
+	return MakeAllType(MakerIndexFormula(), typeVars, form)
 }
 
 /* Replace a Var by a term inside a function */

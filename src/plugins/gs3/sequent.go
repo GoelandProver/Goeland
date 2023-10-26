@@ -9,8 +9,6 @@ import (
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-type Rule int
-
 type GS3Sequent struct {
 	hypotheses     []btps.Form
 	rule           Rule
@@ -22,6 +20,8 @@ type GS3Sequent struct {
 	proof          GS3Proof
 	nodeId         int
 }
+
+type Rule int
 
 // Rules
 const (
@@ -92,6 +92,16 @@ func (seq *GS3Sequent) GetResultFormulasOfChild(i int) btps.FormList {
 	return seq.formsGenerated[i]
 }
 
+func (seq *GS3Sequent) GetResultFormulasOfChildren() []btps.FormList {
+	result := []btps.FormList{}
+
+	for i := range seq.children {
+		result = append(result, seq.formsGenerated[i])
+	}
+
+	return result
+}
+
 func (seq *GS3Sequent) TermGenerated() btps.Term {
 	return seq.termGenerated
 }
@@ -136,7 +146,7 @@ func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
 
 	if index == -1 {
 		global.PrintInfo("APPLIED ON", hypothesis.ToString())
-		panic("Failure: tried to apply a missing hypothesis")
+		global.PrintPanic("GS3", "Failure: tried to apply a missing hypothesis")
 	}
 
 	seq.appliedOn = index

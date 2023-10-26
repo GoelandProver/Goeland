@@ -201,6 +201,17 @@ func (tl TermList) replaceFirstOccurrenceTermList(old_term, new_term Term) TermL
 	}
 	return res
 }
+
+func (tl TermList) ToMappableStringSlice() []MappableString {
+	forms := []MappableString{}
+
+	for _, form := range tl {
+		forms = append(forms, form.(MappableString))
+	}
+
+	return forms
+}
+
 func AreEqualsTypeVarList(tv1, tv2 []typing.TypeVar) bool {
 	return ComparableList[typing.TypeVar](tv1).Equals(tv2)
 }

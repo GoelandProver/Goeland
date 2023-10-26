@@ -49,14 +49,11 @@ import (
 )
 
 type Ex struct {
+	*MappedString
 	index    int
 	var_list []Var
 	f        Form
 	MetaList
-}
-
-func (e Ex) ToMappedString(map_ MapString, displayTypes bool) string {
-	return toMappedString(map_[ExQuant], map_, e.GetVarList(), e.GetForm(), displayTypes)
 }
 
 func (e Ex) GetIndex() int              { return e.index }
@@ -66,16 +63,23 @@ func (e Ex) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (e Ex) GetMetas() MetaList         { return e.GetForm().GetMetas() }
 
 func (e Ex) ToString() string {
-	return e.ToMappedString(defaultMap, true)
+	return e.MappedString.ToString()
+}
+
+func (e Ex) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return QuantifierToMappedString(mapping[ExQuant], mapping, e.GetVarList(), e.GetForm(), displayTypes)
+}
+
+func (e Ex) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return " ", ""
+}
+
+func (e Ex) GetChildrenForMappedString() []MappableString {
+	return e.GetChildFormulas().ToMappableStringSlice()
 }
 
 func (e Ex) Copy() Form {
-	return Ex{
-		index:    e.GetIndex(),
-		var_list: copyVarList(e.GetVarList()),
-		f:        e.GetForm(),
-		MetaList: e.MetaList.Copy(),
-	}
+	return MakeExSimple(e.GetIndex(), copyVarList(e.GetVarList()), e.GetForm(), e.MetaList.Copy())
 }
 
 func (e Ex) Equals(f any) bool {
@@ -86,12 +90,12 @@ func (e Ex) Equals(f any) bool {
 }
 
 func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return Ex{e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceTypeByMeta(varList, index), e.MetaList}
+	return MakeExSimple(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceTypeByMeta(varList, index), e.MetaList)
 }
 
 func (e Ex) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	f, res := e.GetForm().ReplaceVarByTerm(old, new)
-	return Ex{e.GetIndex(), e.GetVarList(), f, e.MetaList}, res
+	return MakeExSimple(e.GetIndex(), e.GetVarList(), f, e.MetaList), res
 }
 
 func (e Ex) RenameVariables() Form {
@@ -115,7 +119,7 @@ func (e Ex) GetSubTerms() TermList {
 
 func (e Ex) SubstituteVarByMeta(old Var, new Meta) Form {
 	f := e.GetForm().SubstituteVarByMeta(old, new)
-	return Ex{e.index, e.var_list, f, f.GetInternalMetas().Copy()}
+	return MakeExSimple(e.index, e.var_list, f, f.GetInternalMetas().Copy())
 }
 
 func (e Ex) GetInternalMetas() MetaList {
@@ -127,19 +131,20 @@ func (e Ex) SetInternalMetas(m MetaList) Form {
 	return e
 }
 
-func (e Ex) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(e, FormList{e.GetForm()})
+func (e Ex) GetSubFormulasRecur() FormList {
+	return getAllSubFormulasAppended(e)
+}
+
+func (e Ex) GetChildFormulas() FormList {
+	return FormList{e.GetForm()}
 }
 
 type All struct {
+	*MappedString
 	index    int
 	var_list []Var
 	f        Form
 	MetaList
-}
-
-func (a All) ToMappedString(map_ MapString, displayTypes bool) string {
-	return toMappedString(map_[AllQuant], map_, a.GetVarList(), a.GetForm(), displayTypes)
 }
 
 func (a All) GetIndex() int              { return a.index }
@@ -149,16 +154,23 @@ func (a All) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (a All) GetMetas() MetaList         { return a.GetForm().GetMetas() }
 
 func (a All) ToString() string {
-	return a.ToMappedString(defaultMap, true)
+	return a.MappedString.ToString()
+}
+
+func (a All) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return QuantifierToMappedString(mapping[AllQuant], mapping, a.GetVarList(), a.GetForm(), displayTypes)
+}
+
+func (a All) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return " ", ""
+}
+
+func (a All) GetChildrenForMappedString() []MappableString {
+	return a.GetChildFormulas().ToMappableStringSlice()
 }
 
 func (a All) Copy() Form {
-	return All{
-		index:    a.GetIndex(),
-		var_list: copyVarList(a.GetVarList()),
-		f:        a.GetForm(),
-		MetaList: a.MetaList.Copy(),
-	}
+	return MakeAllSimple(a.GetIndex(), copyVarList(a.GetVarList()), a.GetForm(), a.MetaList.Copy())
 }
 
 func (a All) Equals(f any) bool {
@@ -174,7 +186,7 @@ func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (a All) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	f, res := a.GetForm().ReplaceVarByTerm(old, new)
-	return All{a.GetIndex(), a.GetVarList(), f, a.MetaList}, res
+	return MakeAllSimple(a.GetIndex(), a.GetVarList(), f, a.MetaList), res
 }
 
 func (a All) RenameVariables() Form {
@@ -198,7 +210,7 @@ func (a All) GetSubTerms() TermList {
 
 func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
 	f := a.GetForm().SubstituteVarByMeta(old, new)
-	return All{a.index, a.var_list, f, f.GetInternalMetas().Copy()}
+	return MakeAllSimple(a.index, a.var_list, f, f.GetInternalMetas().Copy())
 }
 
 func (a All) GetInternalMetas() MetaList {
@@ -210,12 +222,17 @@ func (a All) SetInternalMetas(m MetaList) Form {
 	return a
 }
 
-func (a All) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(a, FormList{a.GetForm()})
+func (a All) GetSubFormulasRecur() FormList {
+	return getAllSubFormulasAppended(a)
+}
+
+func (a All) GetChildFormulas() FormList {
+	return FormList{a.GetForm()}
 }
 
 /* Struct describing a forall with type variables */
 type AllType struct {
+	*MappedString
 	index  int
 	tvList []typing.TypeVar
 	form   Form
@@ -231,22 +248,30 @@ func (a AllType) GetType() typing.TypeScheme   { return typing.DefaultPropType(0
 
 /* Form interface */
 
-func (a AllType) ToMappedString(map_ MapString, displayTypes bool) string {
-	return map_[AllTypeQuant] + " " + map_[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + map_[TypeVarType] + map_[QuantVarClose] + map_[QuantVarSep]
+func (a AllType) ToMappedString(mapping MapString, displayTypes bool) string {
+	return mapping[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (" + a.GetForm().ToString() + ")"
 }
 
 func (a AllType) ToString() string {
-	return "(" + a.ToMappedString(defaultMap, true) + " (" + a.GetForm().ToString() + "))"
+	return a.MappedString.ToString()
 }
+
+func (a AllType) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return "(" + mapping[AllTypeQuant] + " " + mapping[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (%s))"
+}
+
+func (a AllType) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return "", ""
+}
+
+func (a AllType) GetChildrenForMappedString() []MappableString {
+	return a.GetChildFormulas().ToMappableStringSlice()
+}
+
 func (a AllType) GetMetas() MetaList { return a.GetForm().GetMetas() }
 
 func (a AllType) Copy() Form {
-	return AllType{
-		index:    a.index,
-		form:     a.form.Copy(),
-		tvList:   copyTypeVarList(a.tvList),
-		MetaList: a.MetaList.Copy(),
-	}
+	return MakeAllTypeSimple(a.index, copyTypeVarList(a.tvList), a.form.Copy(), a.MetaList.Copy())
 }
 
 func (a AllType) Equals(f any) bool {
@@ -262,7 +287,7 @@ func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 
 func (a AllType) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	f, res := a.GetForm().ReplaceVarByTerm(old, new)
-	return AllType{a.GetIndex(), a.GetVarList(), f, a.MetaList}, res
+	return MakeAllTypeSimple(a.GetIndex(), a.GetVarList(), f, a.MetaList), res
 }
 
 func (a AllType) RenameVariables() Form {
@@ -300,7 +325,7 @@ func (a AllType) GetSubTerms() TermList {
 
 func (a AllType) SubstituteVarByMeta(old Var, new Meta) Form {
 	f := a.GetForm().SubstituteVarByMeta(old, new)
-	return AllType{a.index, a.tvList, f, f.GetInternalMetas().Copy()}
+	return MakeAllTypeSimple(a.index, a.tvList, f, f.GetInternalMetas().Copy())
 }
 
 func (a AllType) GetInternalMetas() MetaList {
@@ -312,8 +337,12 @@ func (a AllType) SetInternalMetas(m MetaList) Form {
 	return a
 }
 
-func (a AllType) GetSubFormulas() FormList {
-	return getSubformsOfSubformList(a, FormList{a.GetForm()})
+func (a AllType) GetSubFormulasRecur() FormList {
+	return getAllSubFormulasAppended(a)
+}
+
+func (a AllType) GetChildFormulas() FormList {
+	return FormList{a.GetForm()}
 }
 
 // ----------------------------------------------------------------------------
@@ -334,7 +363,7 @@ func renameVariable(form Form, varList []Var) ([]Var, Form) {
 	return newVL, newForm
 }
 
-func toMappedString(quant string, map_ MapString, varList []Var, form Form, displayTypes bool) string {
+func QuantifierToMappedString(quant string, mapping MapString, varList []Var, form Form, displayTypes bool) string {
 	type VarType struct {
 		vars  []Var
 		type_ typing.TypeApp
@@ -357,13 +386,13 @@ func toMappedString(quant string, map_ MapString, varList []Var, form Form, disp
 	varStrings := []string{}
 
 	for _, vt := range varsType {
-		str := map_[QuantVarOpen]
-		str += ListToMappedString(varList, " ", "", map_, false)
+		str := mapping[QuantVarOpen]
+		str += ListToMappedString(varList, " ", "", mapping, false)
 		str += " : " + vt.type_.ToString()
-		varStrings = append(varStrings, str+map_[QuantVarClose])
+		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 
-	return "(" + quant + " " + strings.Join(varStrings, " ") + map_[QuantVarSep] + " (" + form.ToMappedString(map_, displayTypes) + "))"
+	return "(" + quant + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (%s))"
 }
 
 type QuantifiedForm interface {

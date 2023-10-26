@@ -204,6 +204,16 @@ func (lf FormList) CleanFormList() FormList {
 	return lf
 }
 
+func (lf FormList) ToMappableStringSlice() []MappableString {
+	forms := []MappableString{}
+
+	for _, form := range lf {
+		forms = append(forms, form.(MappableString))
+	}
+
+	return forms
+}
+
 /*** Functions ***/
 
 /** Makers **/

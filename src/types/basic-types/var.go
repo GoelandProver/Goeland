@@ -48,6 +48,7 @@ import (
 
 /* Variable (x,y under ForAll or Exists) */
 type Var struct {
+	*MappedString
 	index    int
 	name     string
 	typeHint typing.TypeApp
@@ -63,15 +64,11 @@ func (v Var) Copy() Term                     { return MakeVar(v.GetIndex(), v.Ge
 func (Var) ToMeta() Meta                     { return MakeEmptyMeta() }
 func (Var) GetMetas() MetaList               { return MetaList{} }
 
-func (v Var) ToString() string {
-	return v.ToMappedString(defaultMap, true)
-}
-
-func (v Var) Equals(t Term) bool {
-	return v.GetIndex() == t.GetIndex()
-	// oth, isVar := t.(Var)
-	// return isVar && (oth.GetIndex() == v.GetIndex()) &&
-	// 	(oth.GetName() == v.GetName()) && (v.typeHint.Equals(oth.typeHint))
+func (v Var) Equals(t any) bool {
+	if typed, ok := t.(Var); ok {
+		return v.GetIndex() == typed.GetIndex()
+	}
+	return false
 }
 
 func (v Var) GetSubTerms() TermList {
@@ -90,4 +87,20 @@ func (v Var) ToMappedString(map_ MapString, type_ bool) string {
 		return fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
 	}
 	return v.GetName()
+}
+
+func (v Var) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return "%s"
+}
+
+func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	if displayTypes {
+		return "", fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
+	} else {
+		return "", v.GetName()
+	}
+}
+
+func (v Var) GetChildrenForMappedString() []MappableString {
+	return []MappableString{}
 }

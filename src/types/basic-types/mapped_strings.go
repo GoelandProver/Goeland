@@ -41,6 +41,7 @@
 package basictypes
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -103,20 +104,72 @@ func initDefaultMap() {
 	defaultMap[TypeVarType] = "$tType"
 }
 
-type MappedStringable interface {
+type MappableString interface {
+	global.Stringable
+	global.Comparable
+
 	ToMappedString(MapString, bool) string
+	ToMappedStringSurround(MapString, bool) string
+	//Return the separator for each child as 1st return, and if there are no children, return the value as 2nd return
+	ToMappedStringChild(MapString, bool) (separator string, emptyValue string)
+	GetChildrenForMappedString() []MappableString
 }
 
-func ListToMappedString[T MappedStringable](sgbl []T, sep, emptyValue string, map_ MapString, displayTypes bool) string {
+type MappedString struct {
+	MappableString
+}
+
+func (fms MappedString) ToString() string {
+	return fms.ToMappedString(defaultMap, true)
+}
+
+func (fms MappedString) ToMappedString(mapping MapString, displayType bool) string {
+	surround := fms.ToMappedStringSurround(mapping, displayType)
+	separator, emptyValue := fms.ToMappedStringChild(mapping, displayType)
+	children := ListToMappedString(fms.GetChildrenForMappedString(), separator, emptyValue, mapping, displayType)
+	return fmt.Sprintf(surround, children)
+}
+
+func ListToMappedString[T MappableString](sgbl []T, separator, emptyValue string, mapping MapString, displayTypes bool) string {
 	strArr := []string{}
 
 	for _, element := range sgbl {
-		strArr = append(strArr, element.ToMappedString(map_, displayTypes))
+		strArr = append(strArr, element.ToMappedString(mapping, displayTypes))
 	}
 
 	if len(strArr) == 0 && emptyValue != "" {
 		strArr = append(strArr, emptyValue)
 	}
 
-	return strings.Join(strArr, sep)
+	return strings.Join(strArr, separator)
+}
+
+type SimpleStringMappable string
+
+func (ssm *SimpleStringMappable) ToString() string {
+	return string(*ssm)
+}
+
+func (ssm *SimpleStringMappable) Equals(other any) bool {
+	if typed, ok := other.(*SimpleStringMappable); ok {
+		return string(*typed) == string(*ssm)
+	}
+
+	return false
+}
+
+func (ssm *SimpleStringMappable) ToMappedString(MapString, bool) string {
+	return string(*ssm)
+}
+
+func (ssm *SimpleStringMappable) ToMappedStringSurround(MapString, bool) string {
+	return ""
+}
+
+func (ssm *SimpleStringMappable) ToMappedStringChild(MapString, bool) (separator string, emptyValue string) {
+	return "", ""
+}
+
+func (ssm *SimpleStringMappable) GetChildrenForMappedString() []MappableString {
+	return []MappableString{}
 }
