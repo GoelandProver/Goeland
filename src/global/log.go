@@ -56,7 +56,7 @@ var (
 )
 
 // Initialises the logger with the correct options
-func InitLogger() {
+func init() {
 	initLogger(GetLogFile(), GetDebugTerminal(), GetDebugFile(), GetShowTrace(), GetWriteLogs())
 }
 

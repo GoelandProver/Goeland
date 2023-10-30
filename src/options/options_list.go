@@ -52,7 +52,7 @@ import (
 )
 
 // Build the options, parses the flags, calls the 'funcAlways' functions on every option and if an option has been changed, calls the 'funcNotDefault' option on it.
-func InitAndRunOptions() {
+func init() {
 	buildOptions()
 	flag.Parse()
 

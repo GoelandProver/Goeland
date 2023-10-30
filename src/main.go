@@ -51,8 +51,9 @@ import (
 
 	_ "net/http/pprof"
 
+	_ "github.com/GoelandProver/Goeland/options"
+
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/options"
 	"github.com/GoelandProver/Goeland/parser"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	polymorphism "github.com/GoelandProver/Goeland/polymorphism/rules"
@@ -144,9 +145,6 @@ func doMemProfile() {
 
 /* Initializes the options, the loggers and some other global variables*/
 func initEverything() {
-	options.InitAndRunOptions()
-
-	global.InitLogger()
 
 	runtime.GOMAXPROCS(global.GetCoreLimit())
 
