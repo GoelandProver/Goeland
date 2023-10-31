@@ -39,26 +39,12 @@
 package equality
 
 import (
-	"fmt"
-
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
-
-/**
- * Base function needed to initialize any plugin of Goéland.
- * It registers the hooks to the plugin manager, and parses the given options.
- **/
-func InitPlugin() error {
-	lpo = makeLPO()
-
-	fmt.Println("Plugin Equality loaded")
-	// No error can be thrown in this plugin.
-	return nil
-}
 
 /**
 * Fonction EqualityReasoning

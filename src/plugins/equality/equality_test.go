@@ -116,7 +116,7 @@ var eq_z1_c2 basictypes.Pred
 var eq_z2_c1 basictypes.Pred
 var eq_z3_c1 basictypes.Pred
 var eq_gx_fx basictypes.Pred
-var eq_ggx_x basictypes.Pred
+var eq_ggx_fa basictypes.Pred
 var eq_gfy_y basictypes.Pred
 var eq_fa_a basictypes.Pred
 var eq_b_c basictypes.Pred
@@ -127,6 +127,7 @@ var neq_x_a basictypes.Form
 var neq_a_b basictypes.Form
 var neq_a_d basictypes.Form
 var neq_gggx_x basictypes.Form
+var neq_fx_a basictypes.Form
 
 // Form
 var pggab basictypes.Form
@@ -197,7 +198,7 @@ func initTestVariable() {
 	eq_z2_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{z2, c1}, []typing.TypeApp{})
 	eq_z3_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{z3, c1}, []typing.TypeApp{})
 
-	eq_ggx_x = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{ggx, fa}, []typing.TypeApp{})
+	eq_ggx_fa = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{ggx, fa}, []typing.TypeApp{})
 	eq_gfy_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{gfy, y}, []typing.TypeApp{})
 	eq_gx_fx = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{gx, fx}, []typing.TypeApp{})
 	eq_fa_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fa, a}, []typing.TypeApp{})
@@ -209,6 +210,7 @@ func initTestVariable() {
 	neq_a_b = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, b}, []typing.TypeApp{}))
 	neq_a_d = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, d}, []typing.TypeApp{}))
 	neq_gggx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{gggx, x}, []typing.TypeApp{}))
+	neq_fx_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fx, a}, []typing.TypeApp{}))
 
 	// Predicates
 	pggab = basictypes.MakerPred(p_id, basictypes.TermList{gga, b}, []typing.TypeApp{})
@@ -238,9 +240,9 @@ func initCodeTreesTests(lf basictypes.FormList) (datastruct.DataStructure, datas
 
 func TestMain(m *testing.M) {
 	global.SetStart(time.Now())
+	global.InitLogger()
 	typing.Init()
 	basictypes.Init()
-	InitPlugin()
 	initTestVariable()
 	global.SetDebugTerminal(true)
 	code := m.Run()
@@ -260,12 +262,8 @@ func TestEQ1(t *testing.T) {
 	* Solutions : (X, g(a)), (X, g(f(a)))
 	**/
 
-	lf := basictypes.FormList{eq_fa_a, eq_ggx_x, neq_gggx_x}
+	lf := basictypes.FormList{eq_fa_a, eq_ggx_fa, neq_gggx_x}
 	tp, tn = initCodeTreesTests(lf)
-	global.PrintInfo("EQ", "##### TP #####")
-	tp.Print()
-	global.PrintInfo("EQ", "##### TN #####")
-	tn.Print()
 	res, subst := EqualityReasoning(tp, tn, lf)
 
 	expected_subst_1 := treetypes.MakeEmptySubstitution()
@@ -518,6 +516,27 @@ func TestEQ8(t *testing.T) {
 		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
 	}
 
+}
+
+/** Tests equality problem ***/
+func TestSimon(t *testing.T) {
+	global.SetDebugTerminal(true)
+	/**
+	* Eq :
+	* x = a
+	*
+	* Problem : fx != a
+	*
+	* Solutions : N/A
+	**/
+
+	lf := basictypes.FormList{eq_x_a, neq_fx_a}
+	tp, tn = initCodeTreesTests(lf)
+	res, _ := EqualityReasoning(tp, tn, lf)
+
+	if res {
+		t.Fatalf("Error: found solution where it shouldn't have")
+	}
 }
 
 /* Test apply substitution */

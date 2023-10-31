@@ -41,13 +41,14 @@ package equality
 import (
 	"fmt"
 	"strconv"
-	"sync"
 
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-type LPO map[basictypes.Id]int
+type LPO struct {
+	global.ComparableMap[basictypes.Id, int]
+}
 
 type compareStruct struct {
 	order          int
@@ -63,36 +64,25 @@ func makeEmptyCompareStruct() compareStruct {
 	return makeCompareStruct(0, false, nil, nil)
 }
 
-var lock_lpo sync.Mutex
-var lpo LPO
+var lpo *LPO = &LPO{}
 
-func makeLPO() LPO {
-	return LPO{}
-}
-
-func (lpo LPO) isEmpty() bool {
-	return (lpo == nil || len(lpo) == 0)
-}
-
-func (lpo LPO) toString() string {
+func (lpo *LPO) toString() string {
 	res := "{"
 	cpt := 0
-	lock_lpo.Lock()
-	for term, value := range lpo {
-		res += "[" + term.ToString() + "] : " + strconv.Itoa(value)
-		if cpt < len(lpo)-1 {
+	keys := lpo.Keys()
+	values := lpo.Values()
+	for i := range keys {
+		res += "[" + keys[i].ToString() + "] : " + strconv.Itoa(values[i])
+		if cpt < lpo.Length()-1 {
 			res += ", "
 		}
 		cpt++
 	}
-	lock_lpo.Unlock()
 	return res + "}"
 }
 
-func (lpo LPO) get(t basictypes.Id) int {
-	lock_lpo.Lock()
-	res, found := lpo[t]
-	lock_lpo.Unlock()
+func (lpo *LPO) get(t basictypes.Id) int {
+	res, found := lpo.GetExists(t)
 	if found {
 		return res
 	} else {
@@ -118,9 +108,7 @@ func (lpo *LPO) insertTerm(t basictypes.Term) {
 		lpo.insertIdIfNotContains(t_type)
 	case basictypes.Fun:
 		if !lpo.contains(t_type.GetID()) {
-			lock_lpo.Lock()
-			(*lpo)[t_type.GetID()] = len(*lpo)
-			lock_lpo.Unlock()
+			lpo.Set(t_type.GetID(), lpo.Length())
 		}
 		for _, arg := range t_type.GetArgs() {
 			lpo.insertTerm(arg)
@@ -128,15 +116,13 @@ func (lpo *LPO) insertTerm(t basictypes.Term) {
 	}
 }
 
-func (lpo LPO) contains(i basictypes.Id) bool {
+func (lpo *LPO) contains(i basictypes.Id) bool {
 	return lpo.get(i) != -1
 }
 
 func (lpo *LPO) insertIdIfNotContains(i basictypes.Id) {
 	if !lpo.contains(i) {
-		lock_lpo.Lock()
-		(*lpo)[i] = len(*lpo)
-		lock_lpo.Unlock()
+		lpo.Set(i, lpo.Length())
 	}
 }
 
@@ -147,7 +133,7 @@ func (lpo *LPO) insertIdIfNotContains(i basictypes.Id) {
 *	a boolean : true if the two term are comparable, false otherwise
 *	two terms : the new terms for the constraint (if not comparable)
 **/
-func (lpo LPO) compare(s, t basictypes.Term) compareStruct {
+func (lpo *LPO) compare(s, t basictypes.Term) compareStruct {
 	global.PrintDebug("CPR", fmt.Sprintf("Compare %v and %v", s.ToString(), t.ToString()))
 	switch s_type := s.(type) {
 	case basictypes.Fun:
@@ -190,7 +176,7 @@ func (lpo LPO) compare(s, t basictypes.Term) compareStruct {
 * It's needed to keep the order.
 * For example, x < f(x) is ok but f(x) < x isn't
 **/
-func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LPO) compareStruct {
+func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo *LPO) compareStruct {
 	global.PrintDebug("CMF", "Compare Meta Fun")
 	// Check argument inside f
 	if found, res := compareMetaFunInside(m, f, return_code, lpo); found {
@@ -207,7 +193,7 @@ func compareMetaFun(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LP
 	}
 }
 
-func compareMetaFunInside(m basictypes.Meta, f basictypes.Fun, return_code int, lpo LPO) (bool, compareStruct) {
+func compareMetaFunInside(m basictypes.Meta, f basictypes.Fun, return_code int, lpo *LPO) (bool, compareStruct) {
 	global.PrintDebug("CMFI", "Compare Meta Fun Inside")
 	i := 0
 	// Check arguments to find occur-check eventually
@@ -249,7 +235,7 @@ func compareMetaMeta(m1, m2 basictypes.Meta) compareStruct {
 }
 
 /* Compare two functions */
-func compareFunFun(s, t basictypes.Fun, lpo LPO) compareStruct {
+func compareFunFun(s, t basictypes.Fun, lpo *LPO) compareStruct {
 	global.PrintDebug("CFF", "Compare Fun Fun")
 	// Initalisation
 	f := lpo.get(s.GetID())
@@ -279,7 +265,7 @@ func compareFunFun(s, t basictypes.Fun, lpo LPO) compareStruct {
 }
 
 /* Case f < g */
-func caseFLessG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
+func caseFLessG(s, t basictypes.Fun, lpo *LPO) (bool, compareStruct) {
 	// f < g and f has no argument
 	if len(s.GetArgs()) == 0 {
 		return true, makeCompareStruct(1, true, nil, nil)
@@ -305,7 +291,7 @@ func caseFLessG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
 }
 
 /* Case f == g */
-func caseFEqualsG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
+func caseFEqualsG(s, t basictypes.Fun, lpo *LPO) (bool, compareStruct) {
 	global.PrintDebug("F=G", "Case F = G")
 	if len(s.GetArgs()) != len(t.GetArgs()) {
 		global.PrintError("F=G", fmt.Sprintf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString()))
@@ -357,7 +343,7 @@ func caseFEqualsG(s, t basictypes.Fun, lpo LPO) (bool, compareStruct) {
 }
 
 /* Default case */
-func caseDefault(s, t basictypes.Fun, lpo LPO) compareStruct {
+func caseDefault(s, t basictypes.Fun, lpo *LPO) compareStruct {
 	// Occurences inside
 	m := len(t.GetArgs())
 	i := 0

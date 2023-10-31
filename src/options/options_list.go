@@ -46,7 +46,6 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/coq"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
-	"github.com/GoelandProver/Goeland/plugins/equality"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -172,9 +171,6 @@ func buildOptions() {
 		func(bool) {},
 		func(noeq bool) {
 			global.SetPlugin("equality", !noeq)
-			if !noeq {
-				equality.InitPlugin()
-			}
 		})
 	(&option[bool]{}).init(
 		"type_proof",
@@ -253,5 +249,13 @@ func buildOptions() {
 		false,
 		"Enables the step-by-step mode debugger",
 		func(bool) { global.SetAssisted(true) },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"sateq",
+		false,
+		"Enables the equality unification using a SAT reduction",
+		func(sateq bool) {
+			global.SetPlugin("equality", !sateq)
+		},
 		func(bool) {})
 }
