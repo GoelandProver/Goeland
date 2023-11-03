@@ -50,11 +50,12 @@ import (
 )
 
 type EqualityProblem struct {
-	E_tree datastruct.DataStructure
-	E_map  map[string]basictypes.TermList
-	E      Equalities
-	s, t   basictypes.Term
-	c      ConstraintStruct
+	E_tree    datastruct.DataStructure
+	E_map     map[string]basictypes.TermList
+	E         Equalities
+	s, t      basictypes.Term
+	c         ConstraintStruct
+	forbidden basictypes.TermList
 }
 
 func (ep EqualityProblem) getETree() datastruct.DataStructure {
@@ -79,11 +80,14 @@ func (ep EqualityProblem) getT() basictypes.Term {
 func (ep EqualityProblem) getC() ConstraintStruct {
 	return ep.c.copy()
 }
+func (ep EqualityProblem) getForbidden() basictypes.TermList {
+	return ep.forbidden.Copy()
+}
 func (ep EqualityProblem) copy() EqualityProblem {
-	return makeEqualityProblem(ep.getE(), ep.getS(), ep.getT(), ep.getC())
+	return makeEqualityProblem(ep.getE(), ep.getS(), ep.getT(), ep.getC(), ep.getForbidden())
 }
 func (ep EqualityProblem) toString() string {
-	return "<" + ep.getE().toString() + ", " + ep.getS().ToString() + ", " + ep.getT().ToString() + "> • " + ep.getC().toString()
+	return "<" + ep.getE().ToString() + ", " + ep.getS().ToString() + ", " + ep.getT().ToString() + "> • " + ep.getC().toString()
 }
 
 /* Apply a substitution on an equality problem */
@@ -103,14 +107,14 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 		new_equalities = new_equalities.applySubstitution(old_symbol, new_symbol)
 	}
 
-	res := makeEqualityProblem(new_equalities, new_s, new_t, makeEmptyConstaintStruct())
+	res := makeEqualityProblem(new_equalities, new_s, new_t, makeEmptyConstraintStruct(), basictypes.TermList{})
 	return res
 }
 
 /*** Functions ***/
 
-func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c ConstraintStruct) EqualityProblem {
-	return EqualityProblem{makeDataStructFromEqualities(E.copy()), makeEQMapFromEqualities(E.copy()), E.copy(), s.Copy(), t.Copy(), c.copy()}
+func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c ConstraintStruct, forbidden basictypes.TermList) EqualityProblem {
+	return EqualityProblem{makeDataStructFromEqualities(E.copy()), makeEQMapFromEqualities(E.copy()), E.copy(), s.Copy(), t.Copy(), c.copy(), forbidden}
 }
 
 /* Take a list of equalities and build the corresponding code tree */

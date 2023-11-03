@@ -85,11 +85,11 @@ func (cs ConstraintStruct) copy() ConstraintStruct {
 func (cs ConstraintStruct) toString() string {
 	return "EQ subst : " + cs.getSubst().ToString() + " - PREC List : " + cs.getPrec().toString() + " - All cst : " + cs.getAllConstraints().toString()
 }
-func makeEmptyConstaintStruct() ConstraintStruct {
+func makeEmptyConstraintStruct() ConstraintStruct {
 	return ConstraintStruct{makeEmptyConstaintsList(), treetypes.MakeEmptySubstitution(), makeEmptyConstaintsList()}
 }
 func makeConstraintStruct(ac ConstraintList, s treetypes.Substitutions, p ConstraintList) ConstraintStruct {
-	res := makeEmptyConstaintStruct()
+	res := makeEmptyConstraintStruct()
 	res.setAllConstraits(ac)
 	res.setSubst(s)
 	res.setPrec(p)

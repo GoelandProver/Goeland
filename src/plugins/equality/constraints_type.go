@@ -33,7 +33,7 @@
 /* constraints_type.go */
 /***********************/
 /**
-* This file contains the type definition of a contraint.
+* This file contains the type definition of a constraint.
 **/
 
 package equality

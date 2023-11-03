@@ -96,7 +96,7 @@ func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, las
 		global.PrintDebug("ERP", "Stop case not found")
 	}
 
-	// Apply avaibalbe rule
+	// Apply available rule
 	solution_found, solution_subst := manageRLRules(ep, father_chan, last_applied_rule_index, last_applied_rule_type)
 	if solution_found {
 		unif_found = true

@@ -59,7 +59,7 @@ func equalityReasoningMultiList(epml EqualityProblemMultiList) (bool, []treetype
 	found := false
 
 	for _, epl := range epml {
-		global.PrintDebug("ERML", fmt.Sprintf("iteration on EPL : %v", epl.toString()))
+		global.PrintDebug("ERML", fmt.Sprintf("iteration on EPL : %v", epl.ToString()))
 		if has_solution, subst_res_tmp := equalityReasoningList(epl); has_solution {
 			global.PrintDebug("ERML", fmt.Sprintf("Solution found for one EPL : %v !", treetypes.SubstListToString(subst_res_tmp)))
 			found = true
@@ -78,7 +78,7 @@ func equalityReasoningMultiList(epml EqualityProblemMultiList) (bool, []treetype
 * Result : true if all of the problem in the list agrees on at least one substitution, and the corresponding substitutions
 **/
 func equalityReasoningList(epl EqualityProblemList) (bool, []treetypes.Substitutions) {
-	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning list : %v", epl.toString()))
+	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning list : %v", epl.ToString()))
 
 	substs_res := []treetypes.Substitutions{}
 

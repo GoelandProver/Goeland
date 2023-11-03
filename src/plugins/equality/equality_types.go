@@ -51,7 +51,7 @@ type Equalities []TermPair
 
 type Inequalities []TermPair
 
-func (e Equalities) toString() string {
+func (e Equalities) ToString() string {
 	res := "["
 	for i, tp := range e {
 		res += tp.toString()
@@ -62,7 +62,7 @@ func (e Equalities) toString() string {
 	return res + "]"
 }
 
-func (ie Inequalities) toString() string {
+func (ie Inequalities) ToString() string {
 	res := ""
 	for i, tp := range ie {
 		res += tp.toString()

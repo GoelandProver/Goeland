@@ -88,6 +88,8 @@ var ga basictypes.Fun
 var fx basictypes.Fun
 var fy basictypes.Fun
 var fa basictypes.Fun
+var fb basictypes.Fun
+var fc basictypes.Fun
 
 var ggx basictypes.Fun
 var gga basictypes.Fun
@@ -100,6 +102,7 @@ var fxa basictypes.Fun
 var fay basictypes.Fun
 var fab basictypes.Fun
 var fbc basictypes.Fun
+var fcd basictypes.Fun
 
 var gggx basictypes.Fun
 
@@ -111,6 +114,7 @@ var f_a_fbc basictypes.Fun
 // Equalities
 var eq_x_y basictypes.Pred
 var eq_x_a basictypes.Pred
+var eq_y_a basictypes.Pred
 var eq_z1_c1 basictypes.Pred
 var eq_z1_c2 basictypes.Pred
 var eq_z2_c1 basictypes.Pred
@@ -121,6 +125,9 @@ var eq_gfy_y basictypes.Pred
 var eq_fa_a basictypes.Pred
 var eq_b_c basictypes.Pred
 var eq_a_b basictypes.Pred
+var eq_a_c basictypes.Pred
+var eq_b_d basictypes.Pred
+var eq_x_d basictypes.Pred
 
 // Inequalites
 var neq_x_a basictypes.Form
@@ -128,6 +135,8 @@ var neq_a_b basictypes.Form
 var neq_a_d basictypes.Form
 var neq_gggx_x basictypes.Form
 var neq_fx_a basictypes.Form
+var neq_fab_fcd basictypes.Form
+var neq_fb_fc basictypes.Form
 
 // Form
 var pggab basictypes.Form
@@ -135,6 +144,9 @@ var pac basictypes.Form
 var pa basictypes.Form
 var pb basictypes.Form
 var not_pc basictypes.Form
+var pab basictypes.Form
+var pax basictypes.Form
+var not_pcd basictypes.Form
 
 func initTestVariable() {
 	// Id
@@ -170,6 +182,8 @@ func initTestVariable() {
 	fx = basictypes.MakerFun(f_id, basictypes.TermList{x}, []typing.TypeApp{})
 	fy = basictypes.MakerFun(f_id, basictypes.TermList{y}, []typing.TypeApp{})
 	fa = basictypes.MakerFun(f_id, basictypes.TermList{a}, []typing.TypeApp{})
+	fb = basictypes.MakerFun(f_id, basictypes.TermList{b}, []typing.TypeApp{})
+	fc = basictypes.MakerFun(f_id, basictypes.TermList{c}, []typing.TypeApp{})
 
 	ggx = basictypes.MakerFun(g_id, basictypes.TermList{gx}, []typing.TypeApp{})
 	gga = basictypes.MakerFun(g_id, basictypes.TermList{ga}, []typing.TypeApp{})
@@ -182,6 +196,7 @@ func initTestVariable() {
 	fay = basictypes.MakerFun(f_id, basictypes.TermList{a, y}, []typing.TypeApp{})
 	fab = basictypes.MakerFun(f_id, basictypes.TermList{a, b}, []typing.TypeApp{})
 	fbc = basictypes.MakerFun(f_id, basictypes.TermList{b, c}, []typing.TypeApp{})
+	fcd = basictypes.MakerFun(f_id, basictypes.TermList{c, d}, []typing.TypeApp{})
 
 	gggx = basictypes.MakerFun(g_id, basictypes.TermList{ggx}, []typing.TypeApp{})
 
@@ -193,6 +208,7 @@ func initTestVariable() {
 	// Equalities
 	eq_x_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{x, y}, []typing.TypeApp{})
 	eq_x_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{x, a}, []typing.TypeApp{})
+	eq_y_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{y, a}, []typing.TypeApp{})
 	eq_z1_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{z1, c1}, []typing.TypeApp{})
 	eq_z1_c2 = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{z1, c2}, []typing.TypeApp{})
 	eq_z2_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{z2, c1}, []typing.TypeApp{})
@@ -204,6 +220,9 @@ func initTestVariable() {
 	eq_fa_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fa, a}, []typing.TypeApp{})
 	eq_a_b = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, b}, []typing.TypeApp{})
 	eq_b_c = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{b, c}, []typing.TypeApp{})
+	eq_a_c = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, c}, []typing.TypeApp{})
+	eq_b_d = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{b, d}, []typing.TypeApp{})
+	eq_x_d = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{x, d}, []typing.TypeApp{})
 
 	// Inequalites
 	neq_x_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{x, a}, []typing.TypeApp{}))
@@ -211,6 +230,8 @@ func initTestVariable() {
 	neq_a_d = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, d}, []typing.TypeApp{}))
 	neq_gggx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{gggx, x}, []typing.TypeApp{}))
 	neq_fx_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fx, a}, []typing.TypeApp{}))
+	neq_fab_fcd = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fab, fcd}, []typing.TypeApp{}))
+	neq_fb_fc = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fb, fc}, []typing.TypeApp{}))
 
 	// Predicates
 	pggab = basictypes.MakerPred(p_id, basictypes.TermList{gga, b}, []typing.TypeApp{})
@@ -218,6 +239,9 @@ func initTestVariable() {
 	pa = basictypes.MakerPred(p_id, basictypes.TermList{a}, []typing.TypeApp{})
 	pb = basictypes.MakerPred(p_id, basictypes.TermList{b}, []typing.TypeApp{})
 	not_pc = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.TermList{c}, []typing.TypeApp{}))
+	pab = basictypes.MakerPred(p_id, basictypes.TermList{a, b}, []typing.TypeApp{})
+	pax = basictypes.MakerPred(p_id, basictypes.TermList{a, x}, []typing.TypeApp{})
+	not_pcd = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.TermList{c, d}, []typing.TypeApp{}))
 
 	lpo.insertTerm(p_id)
 	lpo.insertTerm(g_id)
@@ -251,7 +275,6 @@ func TestMain(m *testing.M) {
 
 /** Tests equality problem ***/
 func TestEQ1(t *testing.T) {
-	global.SetDebugTerminal(true)
 	/**
 	* Eq :
 	* fa = a
@@ -346,10 +369,6 @@ func TestEQ4(t *testing.T) {
 
 	lf := basictypes.FormList{eq_b_c, eq_gfy_y, neq_x_a, pggab, pac}
 	tp, tn = initCodeTreesTests(lf)
-	global.PrintDebug("PT", "Tree pos")
-	tp.Print()
-	global.PrintDebug("PT", "Tree neg")
-	tn.Print()
 	res, subst := EqualityReasoning(tp, tn, lf)
 
 	expected_subst := treetypes.MakeEmptySubstitution()
@@ -518,9 +537,7 @@ func TestEQ8(t *testing.T) {
 
 }
 
-/** Tests equality problem ***/
 func TestSimon(t *testing.T) {
-	global.SetDebugTerminal(true)
 	/**
 	* Eq :
 	* x = a
@@ -532,10 +549,83 @@ func TestSimon(t *testing.T) {
 
 	lf := basictypes.FormList{eq_x_a, neq_fx_a}
 	tp, tn = initCodeTreesTests(lf)
-	res, _ := EqualityReasoning(tp, tn, lf)
+	res, subst := EqualityReasoning(tp, tn, lf)
 
 	if res {
-		t.Fatalf("Error: found solution where it shouldn't have")
+		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
+	}
+}
+
+func TestSeparation(t *testing.T) {
+	/**
+	* Eq :
+	* P(a, b)
+	* a = c
+	* b = d
+	*
+	* Problem : ~P(c, d)
+	*
+	* Solutions : {}
+	**/
+
+	lf := basictypes.FormList{pab, eq_a_c, eq_b_d, not_pcd}
+	tp, tn = initCodeTreesTests(lf)
+	res, subst := EqualityReasoning(tp, tn, lf)
+
+	if !res || len(subst) != 1 || !subst[0].Equals(treetypes.MakeEmptySubstitution()) {
+		t.Fatalf("Error: %v - %v is not the expected substitution. Expected empty solution", res, treetypes.SubstListToString(subst))
+	}
+}
+
+func TestDeuxiemeSeparation(t *testing.T) {
+	/**
+	* Eq :
+	* P(a, x)
+	* a = c
+	* b = d
+	*
+	* Problem : ~P(c, d)
+	*
+	* Solutions : {x -> d}
+	**/
+
+	lf := basictypes.FormList{pax, eq_a_c, eq_b_d, not_pcd}
+	tp, tn = initCodeTreesTests(lf)
+	res, subst := EqualityReasoning(tp, tn, lf)
+
+	expected_subst := treetypes.MakeEmptySubstitution()
+	expected_subst.Set(x, d)
+
+	if !res || len(subst) != 1 || !subst[0].Equals(expected_subst) {
+		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expected_subst.ToString())
+	}
+}
+
+func TestContreExemple(t *testing.T) {
+	/**
+	* Eq :
+	* x = a
+	* y = a
+	* P(b)
+	*
+	* Problem : ~P(c)
+	*
+	* Solutions : {x -> b, y -> c}
+	**/
+
+	lf := basictypes.FormList{eq_x_a, eq_y_a, pb, not_pc}
+	tp, tn = initCodeTreesTests(lf)
+	res, subst := EqualityReasoning(tp, tn, lf)
+
+	expected_subst := treetypes.MakeEmptySubstitution()
+	expected_subst.Set(x, b)
+	expected_subst.Set(y, c)
+	expected_subst_bis := treetypes.MakeEmptySubstitution()
+	expected_subst_bis.Set(x, c)
+	expected_subst_bis.Set(y, b)
+
+	if !res || len(subst) != 1 || (!subst[0].Equals(expected_subst) && !subst[0].Equals(expected_subst_bis)) {
+		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expected_subst.ToString())
 	}
 }
 
@@ -551,13 +641,13 @@ func TestAS(t *testing.T) {
 	lf := basictypes.FormList{eq_x_y}
 	tp, tn = initCodeTreesTests(lf)
 	eq := retrieveEqualities(tp.Copy())
-	ep := makeEqualityProblem(eq, x, y, makeEmptyConstaintStruct())
+	ep := makeEqualityProblem(eq, x, y, makeEmptyConstraintStruct(), basictypes.TermList{})
 
 	// Expected problem
 	lf2 := basictypes.FormList{eq_x_a}
 	tp, tn = initCodeTreesTests(lf2)
 	eq2 := retrieveEqualities(tp.Copy())
-	expected_ep := makeEqualityProblem(eq2, x, a, makeEmptyConstaintStruct())
+	expected_ep := makeEqualityProblem(eq2, x, a, makeEmptyConstraintStruct(), basictypes.TermList{})
 
 	s := treetypes.MakeEmptySubstitution()
 	s.Set(y, a)
@@ -574,7 +664,7 @@ func TestConstraints1(t *testing.T) {
 	/* Not consistant */
 	tp_ffx_x := makeTermPair(ffx, x)
 	constraint_ffx_x := MakeConstraint(PREC, tp_ffx_x)
-	cs := makeEmptyConstaintStruct()
+	cs := makeEmptyConstraintStruct()
 	append := cs.appendIfConsistant(constraint_ffx_x)
 
 	if append || len(cs.getPrec()) > 0 {
@@ -586,7 +676,7 @@ func TestConstraints2(t *testing.T) {
 	/* Consistant but useless */
 	tp_x_ffx := makeTermPair(x, ffx)
 	constraint_x_ffx := MakeConstraint(PREC, tp_x_ffx)
-	cs := makeEmptyConstaintStruct()
+	cs := makeEmptyConstraintStruct()
 	append := cs.appendIfConsistant(constraint_x_ffx)
 
 	if !append || len(cs.getPrec()) > 0 {
@@ -599,7 +689,7 @@ func TestConstraints3(t *testing.T) {
 
 	tp_fx_a := makeTermPair(fx, a)
 	constraint_fx_a := MakeConstraint(PREC, tp_fx_a)
-	cs := makeEmptyConstaintStruct()
+	cs := makeEmptyConstraintStruct()
 
 	append := cs.appendIfConsistant(constraint_fx_a)
 	if !append || len(cs.getPrec()) != 1 || !cs.getPrec()[0].equals(constraint_fx_a) {
@@ -615,7 +705,7 @@ func TestConstaints4(t *testing.T) {
 
 	tp_fx_a := makeTermPair(fx, a)
 	constraint_fx_a := MakeConstraint(PREC, tp_fx_a)
-	cs := makeEmptyConstaintStruct()
+	cs := makeEmptyConstraintStruct()
 
 	res_constraint_1 := cs.appendIfConsistant(constraint_fx_a)
 	if !res_constraint_1 || len(cs.getPrec()) != 1 || !cs.getPrec()[0].equals(constraint_fx_a) {
@@ -632,7 +722,7 @@ func TestConstaints4(t *testing.T) {
 }
 
 func TestConstraints5(t *testing.T) {
-	cs := makeEmptyConstaintStruct()
+	cs := makeEmptyConstraintStruct()
 
 	/* Not consistant */
 	tp_ffabc_fafbc := makeTermPair(f_fab_c, f_a_fbc)
@@ -652,7 +742,7 @@ func TestConstraints5(t *testing.T) {
 }
 
 func TestConstaintes6(t *testing.T) {
-	cs := makeEmptyConstaintStruct()
+	cs := makeEmptyConstraintStruct()
 
 	/* consistant but not relevant */
 	tp_fxfyz_ffxyz := makeTermPair(f_x_fyz, f_fxy_z)
@@ -664,7 +754,7 @@ func TestConstaintes6(t *testing.T) {
 }
 
 func TestConstaintes7(t *testing.T) {
-	cs := makeEmptyConstaintStruct()
+	cs := makeEmptyConstraintStruct()
 
 	/* consistant, should return X,a and Y, b */
 	tp_fxy_fab := makeTermPair(fxy, fab)
@@ -679,7 +769,7 @@ func TestConstaintes7(t *testing.T) {
 }
 
 func TestConstaintes8(t *testing.T) {
-	cs := makeEmptyConstaintStruct()
+	cs := makeEmptyConstraintStruct()
 
 	/* consistant, should return X,a and Y, b */
 	tp_fxa_fay := makeTermPair(fxa, fay)
@@ -694,7 +784,7 @@ func TestConstaintes8(t *testing.T) {
 }
 
 func TestConstaintes9(t *testing.T) {
-	cs := makeEmptyConstaintStruct()
+	cs := makeEmptyConstraintStruct()
 
 	/* consistant, should return X,a and Y, b */
 	tp_gga_ggx := makeTermPair(gga, ggx)

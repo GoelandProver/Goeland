@@ -41,6 +41,7 @@ package equality
 import (
 	"fmt"
 
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
@@ -63,7 +64,7 @@ func applyRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_i
 /* Apply left rigid basic superposition rule */
 func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP, father_id uint64) {
 	global.PrintDebug("ALR", "Apply left rule")
-	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC())
+	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC(), ep.getForbidden())
 
 	if is_consistant_with_lpo {
 		global.PrintDebug("ALR", fmt.Sprintf("New term : %v", new_term.ToString()))
@@ -73,8 +74,8 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP,
 		} else {
 			new_eq_list[rs.getIndexEQList()] = makeTermPair(rs.getS(), new_term.Copy())
 		}
-		global.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.toString()))
-		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.getS(), ep.getT(), new_cl), father_chan, rs.getIndexEQList(), LEFT, father_id)
+		global.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.ToString()))
+		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.getS(), ep.getT(), new_cl, ep.forbidden.Copy()), father_chan, rs.getIndexEQList(), LEFT, father_id)
 	} else {
 		global.PrintDebug("ALR", "Not consistant with LPO, send nil")
 		father_chan <- makeEmptyAnswerEP()
@@ -86,14 +87,14 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP,
 func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP, father_id uint64) {
 	global.PrintDebug("ARR", "Apply right rule")
 
-	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC())
+	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC(), ep.getForbidden())
 
 	if is_consistant_with_lpo {
 		global.PrintDebug("ARR", fmt.Sprintf("New term : %v", new_term.ToString()))
 		if rs.getIsSModified() {
-			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), new_term.Copy(), rs.getT(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), new_term.Copy(), rs.getT(), new_cl, ep.forbidden.Copy()), father_chan, rs.getIndexEQList(), RIGHT, father_id)
 		} else {
-			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), rs.getS(), new_term.Copy(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), rs.getS(), new_term.Copy(), new_cl, ep.forbidden.Copy()), father_chan, rs.getIndexEQList(), RIGHT, father_id)
 		}
 	} else {
 		global.PrintDebug("ARR", "Not consistant with LPO, send nil")
@@ -109,20 +110,36 @@ func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP
 * s and t
 * sub_term_of s is a subterm of s unifible with l
 **/
-func applyEQRule(l, r, sub_term_of_s, s, t basictypes.Term, cs ConstraintStruct) (bool, basictypes.Term, ConstraintStruct) {
+func applyEQRule(l, r, sub_term_of_s, s, t basictypes.Term, cs ConstraintStruct, forbidden basictypes.TermList) (bool, basictypes.Term, ConstraintStruct) {
 	global.PrintDebug("AEQR", "Apply eq rule")
 	global.PrintDebug("AEQR", fmt.Sprintf("Replace %v by %v in %v", sub_term_of_s.ToString(), r.ToString(), s.ToString()))
 	new_s := s.Copy().ReplaceSubTermBy(sub_term_of_s, r)
 	global.PrintDebug("AEQR", fmt.Sprintf("s = %v, new_s = %v", s.ToString(), new_s.ToString()))
 	constraints_list := cs.copy()
+
+	if checkIfSubsForbidden(forbidden, cs.subst) {
+		return false, nil, makeEmptyConstraintStruct()
+	}
 	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, makeTermPair(r, l))) {
-		return false, nil, makeEmptyConstaintStruct()
+		return false, nil, makeEmptyConstraintStruct()
 	}
 	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, makeTermPair(t, s))) {
-		return false, nil, makeEmptyConstaintStruct()
+		return false, nil, makeEmptyConstraintStruct()
 	}
 	if !constraints_list.appendIfConsistant(MakeConstraint(EQ, makeTermPair(l, sub_term_of_s))) {
-		return false, nil, makeEmptyConstaintStruct()
+		return false, nil, makeEmptyConstraintStruct()
 	}
 	return true, new_s, constraints_list
+}
+
+func checkIfSubsForbidden(allForbidden basictypes.TermList, allSubs treetypes.Substitutions) bool {
+	for _, sub := range allSubs {
+		for _, forbidden := range allForbidden {
+			if sub.Value().Equals(forbidden) {
+				return true
+			}
+		}
+	}
+
+	return false
 }

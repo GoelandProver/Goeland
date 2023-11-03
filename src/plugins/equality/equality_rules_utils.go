@@ -76,9 +76,7 @@ func tryUnifySAndT(s, t basictypes.Term) (bool, treetypes.Substitutions) {
 }
 
 /* check unfiication */
-func checkUnif(ep EqualityProblem) (bool, []treetypes.Substitutions) {
-	found := false
-	substs_res := []treetypes.Substitutions{}
+func checkUnif(ep EqualityProblem) (found bool, substs_res []treetypes.Substitutions) {
 	if ok, subst_found := tryUnifySAndT(ep.getS(), ep.getT()); ok {
 		global.PrintDebug("ERP", "Unif found !")
 		new_subst := treesearch.AddUnification(ep.getS(), ep.getT(), ep.getC().getSubst())

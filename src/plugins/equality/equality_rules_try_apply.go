@@ -92,7 +92,7 @@ func tryApplyRuleCompute(s, t basictypes.Term, ep EqualityProblem, type_rule int
 	// Retrieve the list of substerm of s
 	subterms_of_s := s.GetSubTerms()
 	global.PrintDebug("TARA", fmt.Sprintf("len subterms found : %v - %v", len(subterms_of_s), subterms_of_s.ToString()))
-	global.PrintDebug("TARA", fmt.Sprintf("EP eq list : %v", ep.getE().toString()))
+	global.PrintDebug("TARA", fmt.Sprintf("EP eq list : %v", ep.getE().ToString()))
 
 	// for each l' substerm of s, return a list (l', l) unifiable
 	list_l_prime_l := searchUnifBewteenListAndEq(subterms_of_s, ep.getETree())
