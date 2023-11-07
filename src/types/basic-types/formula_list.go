@@ -214,6 +214,22 @@ func (lf FormList) ToMappableStringSlice() []MappableString {
 	return forms
 }
 
+func (fl FormList) Flatten() FormList {
+	result := FormList{}
+
+	for _, form := range fl {
+		formAsAnd, isFormAnd := form.(And)
+
+		if isFormAnd {
+			result = append(result, formAsAnd.FormList.Flatten()...)
+		} else {
+			result = append(result, form)
+		}
+	}
+
+	return result
+}
+
 /*** Functions ***/
 
 /** Makers **/

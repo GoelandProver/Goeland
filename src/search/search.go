@@ -44,7 +44,6 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"runtime/pprof"
 	"sort"
 	"time"
 
@@ -77,7 +76,6 @@ func Search(formula basictypes.Form, bound int) {
 	}
 
 	PrintSearchResult(res)
-	pprof.StopCPUProfile()
 }
 
 func doOneStep(limit int, formula basictypes.Form) (bool, int) {

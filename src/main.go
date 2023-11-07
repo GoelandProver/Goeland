@@ -67,32 +67,7 @@ var chAssistant chan bool = make(chan bool)
 func main() {
 	form, bound := presearchLoader()
 
-	if global.GetAssisted() {
-		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
-		go assisted.StartAssistant(chAssistant)
-
-		assisted.Counter.Increase()
-		go startSearch(form, bound)
-
-		search.PrintSearchResult(<-chAssistant)
-	} else {
-		startSearch(form, bound)
-	}
-}
-
-// Start solving. Called in a goroutine so that assisted mode can execute a Fyne application in main goroutine.
-func startSearch(form basictypes.Form, bound int) {
-	global.PrintDebug("MAIN", "Start search")
-
-	search.Search(form, bound)
-
-	doMemProfile()
-}
-
-// Initialization
-func presearchLoader() (basictypes.Form, int) {
-	initEverything()
-
+	//This block cannot be removed from the main function, as it breaks how the CPU profiler works
 	if global.GetCpuProfile() != "" {
 		file, err := os.Create(global.GetCpuProfile())
 		if err != nil {
@@ -103,7 +78,35 @@ func presearchLoader() (basictypes.Form, int) {
 		if err := pprof.StartCPUProfile(file); err != nil {
 			global.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
 		}
+		defer pprof.StopCPUProfile()
 	}
+
+	startSearch(form, bound)
+
+	doMemProfile()
+}
+
+// Start solving
+func startSearch(form basictypes.Form, bound int) {
+	global.PrintDebug("MAIN", "Start search")
+
+	if global.GetAssisted() {
+		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
+		go assisted.StartAssistant(chAssistant)
+
+		assisted.Counter.Increase()
+		go search.Search(form, bound)
+
+		search.PrintSearchResult(<-chAssistant)
+	} else {
+		search.Search(form, bound)
+	}
+
+}
+
+// Initialization
+func presearchLoader() (basictypes.Form, int) {
+	initEverything()
 
 	problem := os.Args[len(os.Args)-1]
 	global.SetProblemName(path.Base(problem))
@@ -202,7 +205,7 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 	case not_form == nil:
 		return basictypes.MakerAnd(and_list), bound
 	default:
-		return basictypes.MakerAnd(append(flatten(and_list), basictypes.RefuteForm(not_form))), bound
+		return basictypes.MakerAnd(append(and_list.Flatten(), basictypes.RefuteForm(not_form))), bound
 	}
 }
 
@@ -253,22 +256,6 @@ func doTypeStatement(statement basictypes.Statement) {
 			typing.SavePolymorphScheme(statement.GetAtomTyping().Literal.GetName(), typeScheme)
 		}
 	}
-}
-
-func flatten(fl basictypes.FormList) basictypes.FormList {
-	result := basictypes.FormList{}
-
-	for _, form := range fl {
-		formAsAnd, isFormAnd := form.(basictypes.And)
-
-		if isFormAnd {
-			result = append(result, flatten(formAsAnd.FormList)...)
-		} else {
-			result = append(result, form)
-		}
-	}
-
-	return result
 }
 
 func getFile(filename string, dir string) (string, error) {
