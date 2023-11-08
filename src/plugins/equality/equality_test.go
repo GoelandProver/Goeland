@@ -135,6 +135,7 @@ var neq_a_b basictypes.Form
 var neq_a_d basictypes.Form
 var neq_gggx_x basictypes.Form
 var neq_fx_a basictypes.Form
+var neq_fx_x basictypes.Form
 var neq_fab_fcd basictypes.Form
 var neq_fb_fc basictypes.Form
 
@@ -230,6 +231,7 @@ func initTestVariable() {
 	neq_a_d = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, d}, []typing.TypeApp{}))
 	neq_gggx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{gggx, x}, []typing.TypeApp{}))
 	neq_fx_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fx, a}, []typing.TypeApp{}))
+	neq_fx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fx, x}, []typing.TypeApp{}))
 	neq_fab_fcd = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fab, fcd}, []typing.TypeApp{}))
 	neq_fb_fc = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fb, fc}, []typing.TypeApp{}))
 
@@ -537,7 +539,7 @@ func TestEQ8(t *testing.T) {
 
 }
 
-func TestSimon(t *testing.T) {
+func TestImpossible(t *testing.T) {
 	/**
 	* Eq :
 	* x = a
@@ -553,6 +555,28 @@ func TestSimon(t *testing.T) {
 
 	if res {
 		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
+	}
+}
+
+func TestSimon(t *testing.T) {
+	/**
+	* Eq :
+	* x = a
+	*
+	* Problem : fx != x
+	*
+	* Solutions : {x -> fa}
+	**/
+
+	lf := basictypes.FormList{eq_x_a, neq_fx_x}
+	tp, tn = initCodeTreesTests(lf)
+	res, subst := EqualityReasoning(tp, tn, lf)
+
+	expected_subst := treetypes.MakeEmptySubstitution()
+	expected_subst.Set(x, fa)
+
+	if !res || len(subst) != 1 || !subst[0].Equals(expected_subst) {
+		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expected_subst.ToString())
 	}
 }
 
