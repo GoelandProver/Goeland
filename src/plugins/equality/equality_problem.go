@@ -50,12 +50,11 @@ import (
 )
 
 type EqualityProblem struct {
-	E_tree    datastruct.DataStructure
-	E_map     map[string]basictypes.TermList
-	E         Equalities
-	s, t      basictypes.Term
-	c         ConstraintStruct
-	forbidden basictypes.TermList
+	E_tree datastruct.DataStructure
+	E_map  map[string]basictypes.TermList
+	E      Equalities
+	s, t   basictypes.Term
+	c      ConstraintStruct
 }
 
 func (ep EqualityProblem) getETree() datastruct.DataStructure {
@@ -80,11 +79,8 @@ func (ep EqualityProblem) getT() basictypes.Term {
 func (ep EqualityProblem) getC() ConstraintStruct {
 	return ep.c.copy()
 }
-func (ep EqualityProblem) getForbidden() basictypes.TermList {
-	return ep.forbidden.Copy()
-}
 func (ep EqualityProblem) copy() EqualityProblem {
-	return makeEqualityProblem(ep.getE(), ep.getS(), ep.getT(), ep.getC(), ep.getForbidden())
+	return makeEqualityProblem(ep.getE(), ep.getS(), ep.getT(), ep.getC())
 }
 func (ep EqualityProblem) toString() string {
 	return "<" + ep.getE().ToString() + ", " + ep.getS().ToString() + ", " + ep.getT().ToString() + "> • " + ep.getC().toString()
@@ -107,14 +103,14 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 		new_equalities = new_equalities.applySubstitution(old_symbol, new_symbol)
 	}
 
-	res := makeEqualityProblem(new_equalities, new_s, new_t, makeEmptyConstraintStruct(), basictypes.TermList{})
+	res := makeEqualityProblem(new_equalities, new_s, new_t, makeEmptyConstraintStruct())
 	return res
 }
 
 /*** Functions ***/
 
-func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c ConstraintStruct, forbidden basictypes.TermList) EqualityProblem {
-	return EqualityProblem{makeDataStructFromEqualities(E.copy()), makeEQMapFromEqualities(E.copy()), E.copy(), s.Copy(), t.Copy(), c.copy(), forbidden}
+func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c ConstraintStruct) EqualityProblem {
+	return EqualityProblem{makeDataStructFromEqualities(E.copy()), makeEQMapFromEqualities(E.copy()), E.copy(), s.Copy(), t.Copy(), c.copy()}
 }
 
 /* Take a list of equalities and build the corresponding code tree */

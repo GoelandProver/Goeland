@@ -665,13 +665,13 @@ func TestAS(t *testing.T) {
 	lf := basictypes.FormList{eq_x_y}
 	tp, tn = initCodeTreesTests(lf)
 	eq := retrieveEqualities(tp.Copy())
-	ep := makeEqualityProblem(eq, x, y, makeEmptyConstraintStruct(), basictypes.TermList{})
+	ep := makeEqualityProblem(eq, x, y, makeEmptyConstraintStruct())
 
 	// Expected problem
 	lf2 := basictypes.FormList{eq_x_a}
 	tp, tn = initCodeTreesTests(lf2)
 	eq2 := retrieveEqualities(tp.Copy())
-	expected_ep := makeEqualityProblem(eq2, x, a, makeEmptyConstraintStruct(), basictypes.TermList{})
+	expected_ep := makeEqualityProblem(eq2, x, a, makeEmptyConstraintStruct())
 
 	s := treetypes.MakeEmptySubstitution()
 	s.Set(y, a)

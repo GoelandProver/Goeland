@@ -44,7 +44,6 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/global"
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -89,7 +88,7 @@ func makeEmptyEqualityProblemMultiList() EqualityProblemMultiList {
 func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
 	for _, neq_pair := range neq {
-		x := makeEqualityProblem(eq.copy(), neq_pair.getT1(), neq_pair.getT2(), makeEmptyConstraintStruct(), basictypes.TermList{})
+		x := makeEqualityProblem(eq.copy(), neq_pair.getT1(), neq_pair.getT2(), makeEmptyConstraintStruct())
 		res = append(res, append(makeEmptyEqualityProblemList(), x))
 	}
 	return res
@@ -98,21 +97,9 @@ func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) Equal
 /* Build an equality problem list from a predicat and its negation */
 func buildEqualityProblemListFrom2Pred(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
 	res := makeEmptyEqualityProblemList()
-
-	termList1 := append(basictypes.TermList{}, p1.GetArgs()...)
-	id1 := basictypes.MakerId("f_" + p1.GetID().GetName())
-	lpo.insertTerm(id1)
-	f1 := basictypes.MakerFun(id1, termList1, []typing.TypeApp{})
-
-	termList2 := append(basictypes.TermList{}, p2.GetArgs()...)
-	id2 := basictypes.MakerId("f_" + p2.GetID().GetName())
-	lpo.insertTerm(id2)
-	f2 := basictypes.MakerFun(id2, termList2, []typing.TypeApp{})
-
-	forbidden := basictypes.TermList{f1, f2}
-
-	res = append(res, makeEqualityProblem(eq.copy(), f1, f2, makeEmptyConstraintStruct(), forbidden))
-
+	for i := range p1.GetArgs() {
+		res = append(res, makeEqualityProblem(eq.copy(), p1.GetArgs()[i].Copy(), p2.GetArgs()[i].Copy(), makeEmptyConstraintStruct()))
+	}
 	return res
 }
 
