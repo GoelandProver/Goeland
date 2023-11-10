@@ -542,14 +542,14 @@ func TestEQ8(t *testing.T) {
 func TestImpossible(t *testing.T) {
 	/**
 	* Eq :
-	* x = a
+	* x = d
 	*
 	* Problem : fx != a
 	*
 	* Solutions : N/A
 	**/
 
-	lf := basictypes.FormList{eq_x_a, neq_fx_a}
+	lf := basictypes.FormList{eq_x_d, neq_fx_a}
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := EqualityReasoning(tp, tn, lf)
 

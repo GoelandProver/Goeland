@@ -47,7 +47,7 @@ import (
 )
 
 type LPO struct {
-	global.ComparableMap[basictypes.Id, int]
+	global.SyncComparableMap[basictypes.Id, int]
 }
 
 type compareStruct struct {
