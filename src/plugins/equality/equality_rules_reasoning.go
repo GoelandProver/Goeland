@@ -47,12 +47,12 @@ import (
 )
 
 /**
-* EqualityReasoningMultiList
+* RunEqualityReasoning
 * Data : a whole equality problem (EqualityProblemMultiList)
 * Result : true if at least on of the list return a solution, and the corresponding substitutions
 **/
 // Todo : S'arrêter au premier trouvé ?
-func equalityReasoningMultiList(epml EqualityProblemMultiList) (bool, []treetypes.Substitutions) {
+var RunEqualityReasoning = func(epml EqualityProblemMultiList) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning multilist : %v", len(epml)))
 	global.PrintDebug("ERML", fmt.Sprintf("LPO : %v", lpo.toString()))
 	substs_res := []treetypes.Substitutions{}

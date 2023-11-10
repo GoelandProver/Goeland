@@ -42,7 +42,6 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugins/equality"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -553,9 +552,7 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 
 		lam := func(atomic basictypes.Form) bool {
 			// Search for a contradiction in LF
-			if global.IsLoaded("equality") {
-				equality.InsertPred(atomic)
-			}
+			UseAtomic(atomic)
 
 			if !global.GetAssisted() {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
@@ -600,17 +597,9 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 
 		/* Equality - ok because dmt do not apply on equalities */
 		// Variation : do not apply if new_atomics not empty
-		if global.IsLoaded("equality") && (!global.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 || len(st.GetLF()) == 0) {
-			global.PrintDebug("PS", "Try apply EQ !")
-			if shouldApplyEquality(new_atomics, st) {
-				global.PrintDebug("PS", "EQ is applicable !")
-				atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
-				res_eq, subst_eq := equality.EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms())
-				if res_eq {
-					ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.MakeEmptyTermList()), node_id, original_node_id)
-					return
-				}
-			}
+		eqSuccess := TryEquality(atomics_for_dmt, st, new_atomics, father_id, cha, node_id, original_node_id)
+		if eqSuccess {
+			return
 		}
 
 		global.PrintDebug("PS", "Let's apply rules !")
@@ -621,11 +610,13 @@ func proofSearchDestructive(father_id uint64, st complextypes.State, cha Communi
 	}
 }
 
-var DoCorrectApplyRules func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
+var UseAtomic = func(atomic basictypes.Form) {}
 
-func shouldApplyEquality(new_atomics basictypes.FormAndTermsList, st complextypes.State) bool {
-	return len(new_atomics) > 0 || len(st.GetLF()) == 0
+var TryEquality = func(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.State, new_atomics basictypes.FormAndTermsList, father_id uint64, cha Communication, node_id int, original_node_id int) bool {
+	return false
 }
+
+var DoCorrectApplyRules func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
 
 func getAtomicsForDMT(new_atomics basictypes.FormAndTermsList, st *complextypes.State, s complextypes.SubstAndForm) basictypes.FormAndTermsList {
 	atomics_for_dmt := basictypes.MakeEmptyFormAndTermsList()

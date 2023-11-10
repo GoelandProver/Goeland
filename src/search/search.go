@@ -130,16 +130,14 @@ func doOneStep(limit int, formula basictypes.Form) (bool, int) {
 
 func printProof(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
 	if global.GetProof() {
-		//proof.WriteGraphProof(final_proof)
-
 		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
 
-		if global.IsCoqOutput() {
+		switch {
+		case global.IsCoqOutput():
 			printCoqOutput(final_proof, uninstanciatedMeta)
-		}
-		if global.IsLambdapiOutput() {
+		case global.IsLambdapiOutput():
 			printLambdapiOutput(final_proof, uninstanciatedMeta)
-		} else {
+		default:
 			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
 		}
 

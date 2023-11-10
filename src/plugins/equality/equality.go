@@ -41,10 +41,39 @@ package equality
 import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/search"
 
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
+
+func Enable() {
+	search.UseAtomic = func(atomic basictypes.Form) {
+		InsertPred(atomic)
+	}
+	SetTryEquality()
+}
+
+func SetTryEquality() {
+	search.TryEquality = TryEquality
+}
+
+func TryEquality(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.State, new_atomics basictypes.FormAndTermsList, father_id uint64, cha search.Communication, node_id int, original_node_id int) bool {
+	if !global.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 || len(st.GetLF()) == 0 {
+		global.PrintDebug("PS", "Try apply EQ !")
+		if len(new_atomics) > 0 || len(st.GetLF()) == 0 {
+			global.PrintDebug("PS", "EQ is applicable !")
+			atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
+			res_eq, subst_eq := EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms())
+			if res_eq {
+				search.ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.MakeEmptyTermList()), node_id, original_node_id)
+				return true
+			}
+		}
+	}
+	return false
+}
 
 /**
 * Function EqualityReasoning
@@ -56,7 +85,7 @@ func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basic
 	global.PrintDebug("ER", "ER call")
 	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
 	if equalities {
-		return equalityReasoningMultiList(problem)
+		return RunEqualityReasoning(problem)
 	} else {
 		return false, []treetypes.Substitutions{}
 	}

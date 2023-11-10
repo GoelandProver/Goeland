@@ -46,6 +46,9 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/coq"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
+	"github.com/GoelandProver/Goeland/plugins/equality"
+	"github.com/GoelandProver/Goeland/plugins/feq"
+	"github.com/GoelandProver/Goeland/plugins/sateq"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -170,7 +173,9 @@ func buildOptions() {
 		"Disables equality",
 		func(bool) {},
 		func(noeq bool) {
-			global.SetPlugin("equality", !noeq)
+			if !noeq {
+				equality.Enable()
+			}
 		})
 	(&option[bool]{}).init(
 		"type_proof",
@@ -253,9 +258,19 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"sateq",
 		false,
-		"Enables the equality unification using a SAT reduction",
-		func(sateq bool) {
-			global.SetPlugin("equality", !sateq)
+		"Enables the equality unification using a SAT reduction. Will override the use of -noeq",
+		func(bool) {
+			equality.SetTryEquality()
+			sateq.Enable()
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"feq",
+		false,
+		"Enables the equality unification using the Franssen implementation. Will override the use of -noeq",
+		func(bool) {
+			equality.SetTryEquality()
+			feq.Enable()
 		},
 		func(bool) {})
 }
