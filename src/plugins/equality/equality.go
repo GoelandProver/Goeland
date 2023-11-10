@@ -94,3 +94,7 @@ func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basic
 func InsertPred(p basictypes.Form) {
 	lpo.insertPred(p)
 }
+
+func InsertTerm(t basictypes.Term) {
+	lpo.insertTerm(t)
+}
