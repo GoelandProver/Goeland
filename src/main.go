@@ -112,7 +112,7 @@ func presearchLoader() (basictypes.Form, int) {
 	global.SetProblemName(path.Base(problem))
 	global.PrintInfo("MAIN", fmt.Sprintf("Problem : %v", problem))
 
-	statements, bound := parser.ParseTPTPFile(problem)
+	statements, bound, containsEquality := parser.ParseTPTPFile(problem)
 
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(statements)))
 
@@ -120,7 +120,13 @@ func presearchLoader() (basictypes.Form, int) {
 		bound = global.GetLimit()
 	}
 
-	form, bound := StatementListToFormula(statements, bound, path.Dir(problem))
+	form, bound, contEq := StatementListToFormula(statements, bound, path.Dir(problem))
+	containsEquality = containsEquality || contEq
+
+	if !containsEquality {
+		global.SetPlugin("equality", false)
+		global.PrintInfo("EQU", "Plugin Equality disabled")
+	}
 
 	if form == nil {
 		global.PrintFatal("MAIN", "Problem not found")
@@ -160,10 +166,10 @@ func initEverything() {
 
 // ILL TODO this function should not have to call the parser. The parser should do it themselves.
 /* Transforms a list of statements into a formula and returns it with its new bound */
-func StatementListToFormula(statements []basictypes.Statement, old_bound int, problemDir string) (basictypes.Form, int) {
+func StatementListToFormula(statements []basictypes.Statement, old_bound int, problemDir string) (form basictypes.Form, bound int, containsEquality bool) {
 	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
-	bound := old_bound
+	bound = old_bound
 
 	for _, statement := range statements {
 		switch statement.GetRole() {
@@ -175,11 +181,13 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 
 			if err != nil {
 				global.PrintError("MAIN", err.Error())
-				return nil, -1
+				return nil, -1, false
 			}
 
-			new_lstm, bound_tmp := parser.ParseTPTPFile(realname)
-			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(problemDir, path.Dir(file_name)))
+			new_lstm, bound_tmp, contEq := parser.ParseTPTPFile(realname)
+			containsEquality = containsEquality || contEq
+			new_form_list, new_bound, contEq := StatementListToFormula(new_lstm, bound_tmp, path.Join(problemDir, path.Dir(file_name)))
+			containsEquality = containsEquality || contEq
 
 			if new_form_list != nil {
 				bound = new_bound
@@ -199,13 +207,13 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 
 	switch {
 	case len(and_list) == 0 && not_form == nil:
-		return nil, bound
+		return nil, bound, containsEquality
 	case len(and_list) == 0:
-		return basictypes.RefuteForm(not_form), bound
+		return basictypes.RefuteForm(not_form), bound, containsEquality
 	case not_form == nil:
-		return basictypes.MakerAnd(and_list), bound
+		return basictypes.MakerAnd(and_list), bound, containsEquality
 	default:
-		return basictypes.MakerAnd(append(and_list.Flatten(), basictypes.RefuteForm(not_form))), bound
+		return basictypes.MakerAnd(append(and_list.Flatten(), basictypes.RefuteForm(not_form))), bound, containsEquality
 	}
 }
 

@@ -40,6 +40,7 @@ import (
 )
 
 var quantifiersCounter = 0
+var containsEquality = false
 var yylineno = 1
 
 // Final result
