@@ -73,12 +73,11 @@ func MakeCoqOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 	}
 
 	// Transform tableaux's proof in GS3 proof
-	return makeCoqProof(gs3.MakeGS3Proof(prf), meta)
+	return MakeCoqProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-func makeCoqProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
+var MakeCoqProof = func(proof *gs3.GS3Sequent, meta btps.MetaList) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
-	//global.PrintInfo("GS3", proof.ToString())
 	proofString := makeCoqProofFromGS3(proof)
 	return contextString + "\n" + proofString
 }
