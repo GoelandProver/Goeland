@@ -84,13 +84,13 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"dif",
 		false,
-		"Short for 'Debug In File'. Enables printing debug information in the log file. Won't work when used with the option -nwlogs",
+		"Short for 'Debug In File'. Enables printing debug information in the log file. Won't work when used with the option -wlogs",
 		func(bool) { global.SetDebugFile(true) },
 		func(bool) {})
 	(&option[string]{}).init(
 		"log",
 		"logs",
-		"Changes the `file` output for loggers. Won't work when used with the option -nwlogs",
+		"Changes the `file` output for loggers. Won't work when used with the option -wlogs",
 		func(string) {},
 		func(val string) { global.SetLogFile(val) })
 	(&option[bool]{}).init(
