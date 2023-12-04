@@ -164,7 +164,7 @@ func sendForbiddenToChildren(children []Communication, s []treetypes.Substitutio
 }
 
 /* Send a subst to father. Return true if the process is supposed to die after */
-func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
+func (ds *destructiveSearch) sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
 	subst_for_father := complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound())
 	global.PrintDebug("SSTF", fmt.Sprintf("Send subst to father : %v, closed : %v, need answer : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(subst_for_father)), closed, need_answer))
 	global.PrintDebug("SSTF", fmt.Sprintf("Send answer : %v", complextypes.SubstAndFormListToString(subst_for_father)))
@@ -175,11 +175,11 @@ func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64
 	select {
 	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), treetypes.MakeEmptySubstitutionList(), st.GetProof(), node_id, original_node_id, st.GetGlobalUnifier()}:
 		if need_answer {
-			WaitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
+			ds.WaitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
 		} else {
 			global.PrintDebug("SSTF", "Die")
 		}
 	case quit := <-c.quit:
-		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id, original_node_id, []int{}, meta_to_reintroduce)
+		ds.manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id, original_node_id, []int{}, meta_to_reintroduce)
 	}
 }

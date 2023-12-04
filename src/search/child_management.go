@@ -90,7 +90,7 @@ func (args wcdArgs) printDebugMessages() {
 
 /* Utilitary subfunctions */
 
-func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruct) error {
+func (ds *destructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruct) error {
 	global.PrintDebug("WC", "All children has finished by themselves")
 
 	// All children are closed & did not send any subst, i.e., they can be closed.
@@ -122,11 +122,11 @@ func childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruc
 
 	xchg.WriteExchanges(args.fatherId, args.st, nil, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
 
-	sendSubToFather(args.c, true, false, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
+	ds.sendSubToFather(args.c, true, false, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
 	return nil
 }
 
-func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs []ctps.SubstAndForm) error {
+func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs []ctps.SubstAndForm) error {
 	global.PrintDebug("WC", fmt.Sprintf("All children agree on the substitution(s) : %v", ttps.SubstListToString(ctps.GetSubstListFromSubstAndFormList(substs))))
 
 	// Updates the proof with what the children have found
@@ -189,13 +189,13 @@ func passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs
 	xchg.WriteExchanges(args.fatherId, args.st, resultingSubstsAndForms, ctps.MakeEmptySubstAndForm(), "WaitChildren - To father - all agree")
 
 	closeChildren(&args.children, true)
-	sendSubToFather(args.c, true, len(args.st.GetSubstsFound()) != 0, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, newMetas)
+	ds.sendSubToFather(args.c, true, len(args.st.GetSubstsFound()) != 0, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, newMetas)
 	return nil
 }
 
 // If there is a problem of a child always checking the same substitution, it can be avoided here.
-func passSubstToChildren(args wcdArgs, substs []ctps.SubstAndForm) {
-	subst, resultingSubsts := chooseSubstitutionDestructive(ctps.CopySubstAndFormList(substs), args.st.GetMM())
+func (bs *destructiveSearch) passSubstToChildren(args wcdArgs, substs []ctps.SubstAndForm) {
+	subst, resultingSubsts := bs.chooseSubstitutionDestructive(ctps.CopySubstAndFormList(substs), args.st.GetMM())
 	global.PrintDebug("WC", fmt.Sprintf("There is more than one substitution, choose one : %v and send it to children", subst.ToString()))
 
 	sendSubToChildren(args.children, subst)
@@ -206,10 +206,10 @@ func passSubstToChildren(args wcdArgs, substs []ctps.SubstAndForm) {
 	args.st.SetBTOnFormulas(false)
 	args.overwrite = false
 	args.currentSubst = subst
-	WaitChildren(args)
+	bs.WaitChildren(args)
 }
 
-func manageOpenedChild(args wcdArgs) {
+func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
 	global.PrintDebug("WC", "Open children previously found, tell to children to wait for me and try another substitution")
 	closeChildren(&args.children, false)
 
@@ -220,15 +220,15 @@ func manageOpenedChild(args wcdArgs) {
 
 	if args.st.GetBTOnFormulas() && len(args.formsBT) > 0 {
 		global.PrintDebug("WC", "Backtrack on DMT formulas.")
-		manageBacktrackForDMT(args)
+		ds.manageBacktrackForDMT(args)
 	} else if len(args.substsBT) > 0 {
 		global.PrintDebug("WC", "Backtrack on substitutions.")
-		newSubst := tryBTSubstitution(&args.substsBT, args.st.GetMM(), args.children)
+		newSubst := ds.tryBTSubstitution(&args.substsBT, args.st.GetMM(), args.children)
 		xchg.WriteExchanges(args.fatherId, args.st, []ctps.SubstAndForm{newSubst}, ctps.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on substitutions.")
 		// Mutually exclusive cases: when a backtrack is done on substitutions, this backtrack is prioritised from now on.
 		args.st.SetBTOnFormulas(false)
 		args.overwrite = false
-		WaitChildren(args)
+		ds.WaitChildren(args)
 	} else {
 		global.PrintDebug("WC", "A child is opened but no more backtracks are available.")
 		xchg.WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Die - No more BT available")
@@ -239,16 +239,16 @@ func manageOpenedChild(args wcdArgs) {
 			sendForbiddenToChildren(args.children, args.st.GetForbiddenSubsts())
 			args.overwrite = false
 			args.currentSubst = ctps.MakeEmptySubstAndForm()
-			WaitChildren(args)
+			ds.WaitChildren(args)
 		} else {
 			global.PrintDebug("WC", "No solution. You should launch in complete mode.")
 			closeChildren(&args.children, true)
-			sendSubToFather(args.c, false, true, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
+			ds.sendSubToFather(args.c, false, true, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
 		}
 	}
 }
 
-func manageBacktrackForDMT(args wcdArgs) {
+func (ds *destructiveSearch) manageBacktrackForDMT(args wcdArgs) {
 	// Let's try to launch ourselves again with another formula, kept in the backtrack formulas.
 	nextSaF := args.formsBT[0].Copy()
 	nextForm := nextSaF.GetSaf().GetForm()[0].Copy()
@@ -268,7 +268,7 @@ func manageBacktrackForDMT(args wcdArgs) {
 
 	copiedState := args.st.Copy()
 	communicationChild := Communication{make(chan bool), make(chan Result)}
-	go ProofSearch(global.GetGID(), copiedState, communicationChild, nextSaF.GetSaf().ToSubstAndForm(), childNode, args.originalNodeId, args.toReintroduce)
+	go ds.ProofSearch(global.GetGID(), copiedState, communicationChild, nextSaF.GetSaf().ToSubstAndForm(), childNode, args.originalNodeId, args.toReintroduce)
 	global.PrintDebug("PS", "GO !")
 	global.IncrGoRoutine(1)
 
@@ -277,7 +277,7 @@ func manageBacktrackForDMT(args wcdArgs) {
 	args.childOrdering = []int{childNode}
 	args.currentSubst = nextSaF.GetSaf().ToSubstAndForm()
 
-	WaitChildren(args)
+	ds.WaitChildren(args)
 }
 
 func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {
