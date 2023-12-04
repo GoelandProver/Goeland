@@ -42,18 +42,34 @@ package coq
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 var contextEnabled bool = false
 
-// ----------------------------------------------------------------------------
-// Plugin initialisation and main function to call.
+func PrintCoqOutput(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
+	coqOutput := MakeCoqOutput(final_proof, uninstanciatedMeta)
+
+	if global.GetWriteLogs() {
+		f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+
+		if err != nil {
+			log.Fatalf("Error opening problem_coq file: %v", err)
+		}
+		defer f.Close()
+		f.WriteString(coqOutput)
+	}
+
+	fmt.Printf("%s", coqOutput)
+}
 
 // Section: init
 // Functions: MakeCoqOutput

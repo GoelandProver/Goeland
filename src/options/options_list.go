@@ -221,6 +221,7 @@ func buildOptions() {
 		func(bool) {
 			global.OutputCoq()
 			global.SetProof(true)
+			search.SetPrintProofAlgorithm(coq.PrintCoqOutput)
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -254,6 +255,7 @@ func buildOptions() {
 		func(bool) {
 			global.OutputLambdapi()
 			global.SetProof(true)
+			search.SetPrintProofAlgorithm(lambdapi.PrintLambdapiOutput)
 		},
 		func(bool) {})
 	(&option[bool]{}).init(

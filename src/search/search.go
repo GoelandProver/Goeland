@@ -41,15 +41,9 @@ package search
 
 import (
 	"fmt"
-	"log"
-	"os"
-	"runtime"
-	"time"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugins/coq"
-	"github.com/GoelandProver/Goeland/plugins/lambdapi"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
@@ -62,12 +56,21 @@ type SearchAlgorithm interface {
 	manageRewriteRules(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
 	setApplyRules(func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int))
 	ManageClosureRule(uint64, *complextypes.State, Communication, []treetypes.Substitutions, basictypes.FormAndTerms, int, int) (bool, []complextypes.SubstAndForm)
+	manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool)
 }
 
+var printProofAlgorithm func(bool, []proof.ProofStruct, basictypes.MetaList)
 var UsedSearch SearchAlgorithm
 
 func init() {
 	SetSearchAlgorithm(NewDestructiveSearch())
+	SetPrintProofAlgorithm(func(res bool, final_proof []proof.ProofStruct, metaList basictypes.MetaList) {
+		fmt.Printf("%v", proof.ProofStructListToText(final_proof))
+	})
+}
+
+func SetPrintProofAlgorithm(function func(bool, []proof.ProofStruct, basictypes.MetaList)) {
+	printProofAlgorithm = function
 }
 
 func SetSearchAlgorithm(algo SearchAlgorithm) {
@@ -93,100 +96,10 @@ func printProof(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta ba
 	if global.GetProof() {
 		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
 
-		switch {
-		case global.IsCoqOutput():
-			printCoqOutput(final_proof, uninstanciatedMeta)
-		case global.IsLambdapiOutput():
-			printLambdapiOutput(final_proof, uninstanciatedMeta)
-		default:
-			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
-		}
+		printProofAlgorithm(res, final_proof, uninstanciatedMeta)
 
 		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output end Proof for %v", "%", global.GetProblemName()))
 	}
-}
-
-func printCoqOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
-	coqOutput := coq.MakeCoqOutput(final_proof, uninstanciatedMeta)
-
-	if global.GetWriteLogs() {
-		f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-
-		if err != nil {
-			log.Fatalf("Error opening problem_coq file: %v", err)
-		}
-		defer f.Close()
-		f.WriteString(coqOutput)
-	}
-
-	fmt.Printf("%s", coqOutput)
-}
-
-func printLambdapiOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
-	lambdapiOutput := lambdapi.MakeLambdapiOutput(final_proof, uninstanciatedMeta)
-
-	if global.GetWriteLogs() {
-		f, err := os.OpenFile("./LambdaPi/problem_lp.lp", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-
-		if err != nil {
-			log.Fatalf("Error opening problem_lp file: %v", err)
-		}
-
-		defer f.Close()
-		f.WriteString(lambdapiOutput)
-	}
-
-	fmt.Printf("%s", lambdapiOutput)
-}
-
-/* Manage return from search for destructive and non-destructive versions  */
-func manageResult(c Communication) (complextypes.Unifier, bool, []proof.ProofStruct) {
-	res := false
-	final_proof := []proof.ProofStruct{}
-	unifier := complextypes.MakeUnifier()
-
-	if global.IsDestructive() {
-		unifier, final_proof, res = manageDestructiveResult(c)
-	} else {
-		res = manageNotDestructiveResult(c)
-	}
-
-	return unifier, res, final_proof
-}
-
-func manageDestructiveResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool) {
-	result := <-c.getResult()
-
-	global.PrintDebug("MAIN", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(result.getProof())))
-
-	if result.needsAnswer() {
-		c.getQuit() <- true
-		global.PrintDebug("MAIN", "Close order sent")
-	} else {
-		global.PrintDebug("MAIN", "Close order not sent")
-	}
-
-	return result.getUnifier(), result.getProof(), result.isClosed()
-}
-
-func manageNotDestructiveResult(c Communication) bool {
-	open := false
-
-	for !open && runtime.NumGoroutine() > 1 {
-
-		// TODO : kill all goroutines if open found
-		// Close channel -> broadcast
-		res := <-c.getResult()
-
-		open = !res.isClosed()
-
-		time.Sleep(1 * time.Millisecond)
-
-		global.PrintDebug("MAIN", fmt.Sprintf("open is : %v from %v", open, res.getId()))
-		global.PrintInfo("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines()))
-	}
-
-	return !open
 }
 
 func PrintSearchResult(res bool) {

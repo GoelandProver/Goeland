@@ -37,12 +37,15 @@ package search
 
 import (
 	"fmt"
+	"runtime"
+	"time"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 type nonDestructiveSearch struct {
@@ -345,3 +348,23 @@ func (nds *nonDestructiveSearch) proofSearch(father_id uint64, st complextypes.S
 
 }
 */
+
+func (ds *nonDestructiveSearch) manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool) {
+	open := false
+
+	for !open && runtime.NumGoroutine() > 1 {
+
+		// TODO : kill all goroutines if open found
+		// Close channel -> broadcast
+		res := <-c.getResult()
+
+		open = !res.isClosed()
+
+		time.Sleep(1 * time.Millisecond)
+
+		global.PrintDebug("MAIN", fmt.Sprintf("open is : %v from %v", open, res.getId()))
+		global.PrintInfo("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines()))
+	}
+
+	return complextypes.MakeUnifier(), []proof.ProofStruct{}, !open
+}

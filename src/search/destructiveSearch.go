@@ -120,7 +120,8 @@ func (ds *destructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool
 	global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
 	global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
 
-	unifier, result, finalProof := manageResult(c)
+	unifier, finalProof, result := ds.manageResult(c)
+
 	if result {
 		if unif := unifier.GetUnifier(); !unif.IsEmpty() {
 			finalProof = complextypes.ApplySubstitutionOnProofList(unif, finalProof)
@@ -1079,4 +1080,19 @@ func (ds *destructiveSearch) manageReintroductionRules(fatherId uint64, state co
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	ds.ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, metaToReintroduce)
+}
+
+func (ds *destructiveSearch) manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool) {
+	result := <-c.getResult()
+
+	global.PrintDebug("MAIN", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(result.getProof())))
+
+	if result.needsAnswer() {
+		c.getQuit() <- true
+		global.PrintDebug("MAIN", "Close order sent")
+	} else {
+		global.PrintDebug("MAIN", "Close order not sent")
+	}
+
+	return result.getUnifier(), result.getProof(), result.isClosed()
 }

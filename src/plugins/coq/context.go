@@ -101,7 +101,7 @@ func contextPreamble() string {
 
 func pathToGoelandCoq() string {
 	path, _ := os.Executable()
-	return filepath.Clean(filepath.Dir(path) + "/..")
+	return filepath.Clean(filepath.Dir(path) + "/../src")
 }
 
 func getContextFromFormula(root btps.Form) []string {

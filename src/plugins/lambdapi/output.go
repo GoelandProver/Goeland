@@ -1,10 +1,14 @@
 package lambdapi
 
 import (
+	"fmt"
+	"log"
+	"os"
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -30,8 +34,22 @@ var lambdaPiMapConnectors = map[btps.FormulaType]string{
 	btps.TypeVarType:    "Type",
 }
 
-// ----------------------------------------------------------------------------
-// Plugin initialisation and main function to call.
+func PrintLambdapiOutput(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
+	lambdapiOutput := MakeLambdapiOutput(final_proof, uninstanciatedMeta)
+
+	if global.GetWriteLogs() {
+		f, err := os.OpenFile("./LambdaPi/problem_lp.lp", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+
+		if err != nil {
+			log.Fatalf("Error opening problem_lp file: %v", err)
+		}
+
+		defer f.Close()
+		f.WriteString(lambdapiOutput)
+	}
+
+	fmt.Printf("%s", lambdapiOutput)
+}
 
 // Section: init
 // Functions: MakeCoqOutput
