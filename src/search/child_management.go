@@ -107,7 +107,7 @@ func (ds *destructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChild
 	// No need to append the current substitution, because the children returns it anyway (if it exists)
 	// So here, the current substitution should be empty. Otherwise, there's a big bug somewhere else.
 	if !args.currentSubst.IsEmpty() {
-		return errors.New("Current substitution is not empty but children close by themselves. That shouldn't happen.")
+		return errors.New("current substitution is not empty but children close by themselves which shouldn't happen")
 	}
 
 	// Updates the proof using the proofs of the children of the node.
@@ -143,7 +143,7 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]p
 		err, merged := ctps.MergeSubstAndForm(subst, args.st.GetAppliedSubst())
 
 		if err != nil {
-			global.PrintError("WC", fmt.Sprintf("Error when merging the children substitution's with the applied one."))
+			global.PrintError("WC", "Error when merging the children substitution's with the applied one.")
 			return err
 		}
 
@@ -206,7 +206,7 @@ func (bs *destructiveSearch) passSubstToChildren(args wcdArgs, substs []ctps.Sub
 	args.st.SetBTOnFormulas(false)
 	args.overwrite = false
 	args.currentSubst = subst
-	bs.WaitChildren(args)
+	bs.waitChildren(args)
 }
 
 func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
@@ -228,7 +228,7 @@ func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
 		// Mutually exclusive cases: when a backtrack is done on substitutions, this backtrack is prioritised from now on.
 		args.st.SetBTOnFormulas(false)
 		args.overwrite = false
-		ds.WaitChildren(args)
+		ds.waitChildren(args)
 	} else {
 		global.PrintDebug("WC", "A child is opened but no more backtracks are available.")
 		xchg.WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Die - No more BT available")
@@ -239,7 +239,7 @@ func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
 			sendForbiddenToChildren(args.children, args.st.GetForbiddenSubsts())
 			args.overwrite = false
 			args.currentSubst = ctps.MakeEmptySubstAndForm()
-			ds.WaitChildren(args)
+			ds.waitChildren(args)
 		} else {
 			global.PrintDebug("WC", "No solution. You should launch in complete mode.")
 			closeChildren(&args.children, true)
@@ -277,7 +277,7 @@ func (ds *destructiveSearch) manageBacktrackForDMT(args wcdArgs) {
 	args.childOrdering = []int{childNode}
 	args.currentSubst = nextSaF.GetSaf().ToSubstAndForm()
 
-	ds.WaitChildren(args)
+	ds.waitChildren(args)
 }
 
 func updateProof(args wcdArgs, proofChildren [][]proof.ProofStruct) ctps.State {

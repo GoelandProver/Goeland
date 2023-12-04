@@ -50,10 +50,10 @@ type Communication struct {
 	result chan Result
 }
 
-func (c Communication) GetQuit() chan bool {
+func (c Communication) getQuit() chan bool {
 	return c.quit
 }
-func (c Communication) GetResult() chan Result {
+func (c Communication) getResult() chan Result {
 	return c.result
 }
 
@@ -73,39 +73,39 @@ type Result struct {
 	unifier               complextypes.Unifier
 }
 
-func (r Result) GetId() uint64 {
+func (r Result) getId() uint64 {
 	return r.id
 }
-func (r Result) GetClosed() bool {
+func (r Result) isClosed() bool {
 	return r.closed
 }
-func (r Result) GetNeedAnswer() bool {
+func (r Result) needsAnswer() bool {
 	return r.need_answer
 }
-func (r Result) GetSubstForChildren() complextypes.SubstAndForm {
+func (r Result) getSubstForChildren() complextypes.SubstAndForm {
 	return r.subst_for_children.Copy()
 }
-func (r Result) GetSubstListForFather() []complextypes.SubstAndForm {
+func (r Result) getSubstListForFather() []complextypes.SubstAndForm {
 	return complextypes.CopySubstAndFormList(r.subst_list_for_father)
 }
-func (r Result) GetForbiddenSubsts() []treetypes.Substitutions {
+func (r Result) getForbiddenSubsts() []treetypes.Substitutions {
 	return treetypes.CopySubstList(r.forbidden)
 }
-func (r Result) GetProof() []proof.ProofStruct {
+func (r Result) getProof() []proof.ProofStruct {
 	return proof.CopyProofStructList(r.proof)
 }
-func (r Result) GetNodeId() int {
+func (r Result) getNodeId() int {
 	return r.node_id
 }
-func (r Result) GetOriginalNodeId() int {
+func (r Result) getOriginalNodeId() int {
 	return r.original_node_id
 }
-func (r Result) GetUnifier() complextypes.Unifier {
+func (r Result) getUnifier() complextypes.Unifier {
 	return r.unifier.Copy()
 }
 
 func (r Result) Copy() Result {
-	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetForbiddenSubsts(), r.GetProof(), r.GetNodeId(), r.GetOriginalNodeId(), r.GetUnifier()}
+	return Result{r.getId(), r.isClosed(), r.needsAnswer(), r.getSubstForChildren(), r.getSubstListForFather(), r.getForbiddenSubsts(), r.getProof(), r.getNodeId(), r.getOriginalNodeId(), r.getUnifier()}
 }
 
 /* remove a childre  from a communication list */
@@ -175,7 +175,7 @@ func (ds *destructiveSearch) sendSubToFather(c Communication, closed, need_answe
 	select {
 	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), treetypes.MakeEmptySubstitutionList(), st.GetProof(), node_id, original_node_id, st.GetGlobalUnifier()}:
 		if need_answer {
-			ds.WaitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
+			ds.waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
 		} else {
 			global.PrintDebug("SSTF", "Die")
 		}

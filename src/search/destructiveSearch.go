@@ -54,13 +54,13 @@ import (
 )
 
 const (
-	CLOSE_BY_ITSELF    int = 0
-	SUBST_FOR_PARENT       = 1
-	SUBST_FOR_CHILDREN     = 2
-	QUIT                   = 3
-	WAIT                   = 4
-	OPENED                 = 5
-	ERROR                  = -1
+	ERROR           = -1
+	CLOSE_BY_ITSELF = iota
+	SUBST_FOR_PARENT
+	SUBST_FOR_CHILDREN
+	QUIT
+	WAIT
+	OPENED
 )
 
 type destructiveSearch struct {
@@ -75,6 +75,62 @@ func NewDestructiveSearch() SearchAlgorithm {
 
 func (ds *destructiveSearch) setApplyRules(function func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)) {
 	ds.doCorrectApplyRules = function
+}
+func (ds *destructiveSearch) search(formula basictypes.Form, bound int) bool {
+	res := false
+	global.SetNbStep(1)
+	limit := bound
+
+	for ok := true; ok; ok = (!res && bound > 0 && !global.IsOneStep()) {
+		res, limit = ds.doOneStep(limit, formula)
+	}
+
+	return res
+}
+
+func (ds *destructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool, int) {
+	basictypes.ResetMeta()
+	proof.ResetProofFile()
+	visualization.ResetExchangesFile()
+
+	global.PrintInfo("MAIN", fmt.Sprintf("nb_step : %v - limit : %v", global.GetNbStep(), limit))
+
+	tp := new(treesearch.Node)
+	tn := new(treesearch.Node)
+
+	state := complextypes.MakeState(limit, tp, tn, formula)
+	state.SetCurrentProofNodeId(0)
+
+	global.PrintInfo("MAIN", fmt.Sprintf("Launch Gotab with destructive = %v", global.IsDestructive()))
+
+	global.SetNbGoroutines(0)
+	state.SetLF(basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(formula, basictypes.MakeEmptyTermList())))
+	c := MakeCommunication(make(chan bool), make(chan Result))
+
+	if global.GetExchanges() {
+		visualization.WriteExchanges(global.GetGID(), state, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
+	}
+
+	nodeId := global.IncrCptNode()
+	go ds.ProofSearch(global.GetGID(), state, c, complextypes.MakeEmptySubstAndForm(), nodeId, nodeId, []int{})
+	global.IncrGoRoutine(1)
+
+	global.PrintDebug("MAIN", "GO")
+
+	global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
+	global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
+
+	unifier, result, finalProof := manageResult(c)
+	if result {
+		if unif := unifier.GetUnifier(); !unif.IsEmpty() {
+			finalProof = complextypes.ApplySubstitutionOnProofList(unif, finalProof)
+		}
+		uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
+		printProof(result, finalProof, uninstanciatedMeta)
+	}
+
+	global.SetNbStep(global.GetNbStep() + 1)
+	return result, 2 * limit
 }
 
 /* Choose a substitution (backtrack) */
@@ -281,22 +337,8 @@ func (ds *destructiveSearch) getAtomicsForDMT(new_atomics basictypes.FormAndTerm
 	return atomics_for_dmt
 }
 
-func (ds *destructiveSearch) tryObviousClosureRule(f basictypes.Form, st *complextypes.State) (bool, []treetypes.Substitutions, basictypes.Form) {
-	switch nf := f.(type) {
-	case basictypes.Bot:
-		res, subst := ApplyClosureRules(nf, st)
-		return res, subst, nf
-	case basictypes.Not:
-		if _, isTop := nf.GetForm().(basictypes.Top); isTop {
-			res, subst := ApplyClosureRules(nf, st)
-			return res, subst, nf
-		}
-	}
-	return false, []treetypes.Substitutions{}, nil
-}
-
 /** Waits for its children to end, and manages their return status. */
-func (ds *destructiveSearch) WaitChildren(args wcdArgs) {
+func (ds *destructiveSearch) waitChildren(args wcdArgs) {
 	args.printDebugMessages()
 
 	select {
@@ -329,7 +371,7 @@ func (ds *destructiveSearch) WaitChildren(args wcdArgs) {
 			visualization.WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Wait father")
 			global.PrintDebug("WC", "Closing order received, let's wait father")
 			closeChildren(&args.children, true)
-			ds.WaitFather(args.fatherId, args.st, args.c, args.givenSubsts, args.nodeId, args.originalNodeId, args.childOrdering, args.toReintroduce)
+			ds.waitFather(args.fatherId, args.st, args.c, args.givenSubsts, args.nodeId, args.originalNodeId, args.childOrdering, args.toReintroduce)
 		case OPENED:
 			ds.manageOpenedChild(args)
 		}
@@ -341,7 +383,7 @@ func (ds *destructiveSearch) WaitChildren(args wcdArgs) {
 }
 
 /**
-* WaitFather
+* waitFather
 * a node wait an order from its father
 * Datas :
 *	father_id : father's id (debug)
@@ -350,7 +392,7 @@ func (ds *destructiveSearch) WaitChildren(args wcdArgs) {
 * 	children : list of children
 * 	given_substs : subst send by this node to its father
 **/
-func (ds *destructiveSearch) WaitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
+func (ds *destructiveSearch) waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
 	global.PrintDebug("WF", "Wait father")
 
 	// CLear subst found
@@ -363,7 +405,7 @@ func (ds *destructiveSearch) WaitFather(father_id uint64, st complextypes.State,
 		return
 
 	case answer_father := <-c.result:
-		subst := answer_father.GetSubstForChildren()
+		subst := answer_father.getSubstForChildren()
 
 		// Update to prune everything that shouldn't happen.
 		visualization.WriteExchanges(father_id, st, given_substs, subst, "WaitFather")
@@ -374,7 +416,7 @@ func (ds *destructiveSearch) WaitFather(father_id uint64, st complextypes.State,
 			global.PrintDebug("WF", "This substitution was sent by this child")
 			for _, subst_sent := range given_substs {
 				if subst_sent.GetSubst().Equals(answer_father.subst_for_children.GetSubst()) {
-					subst = answer_father.GetSubstForChildren().AddFormulas(subst_sent.GetForm())
+					subst = answer_father.getSubstForChildren().AddFormulas(subst_sent.GetForm())
 				}
 			}
 			unifier := st.GetGlobalUnifier()
@@ -395,8 +437,8 @@ func (ds *destructiveSearch) WaitFather(father_id uint64, st complextypes.State,
 
 			// Maj forbidden
 			if len(answer_father.forbidden) > 0 {
-				global.PrintDebug("WF", fmt.Sprintf("Forbidden received : %v", treetypes.SubstListToString(answer_father.GetForbiddenSubsts())))
-				st.SetForbiddenSubsts(answer_father.GetForbiddenSubsts())
+				global.PrintDebug("WF", fmt.Sprintf("Forbidden received : %v", treetypes.SubstListToString(answer_father.getForbiddenSubsts())))
+				st.SetForbiddenSubsts(answer_father.getForbiddenSubsts())
 				global.PrintDebug("WF", fmt.Sprintf("New forbidden fo this state : %v", treetypes.SubstListToString(st.GetForbiddenSubsts())))
 			} else {
 				// Retrieve meta from the subst sent by my father
@@ -439,14 +481,14 @@ func (ds *destructiveSearch) WaitFather(father_id uint64, st complextypes.State,
 
 			c2 := Communication{make(chan bool), make(chan Result)}
 
-			global.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", answer_father.GetSubstForChildren().GetSubst().ToString()))
+			global.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", answer_father.getSubstForChildren().GetSubst().ToString()))
 			global.PrintDebug("WF", fmt.Sprintf("Forbidden : %v", treetypes.SubstListToString(st_copy.GetForbiddenSubsts())))
-			go ds.ProofSearch(global.GetGID(), st_copy, c2, answer_father.GetSubstForChildren(), node_id, original_node_id, new_meta_to_reintroduce)
+			go ds.ProofSearch(global.GetGID(), st_copy, c2, answer_father.getSubstForChildren(), node_id, original_node_id, new_meta_to_reintroduce)
 			global.IncrGoRoutine(1)
 
 			global.PrintDebug("WF", "GO !")
 			st.SetBTOnFormulas(false)
-			ds.WaitChildren(MakeWcdArgs(father_id, st, c, []Communication{c2}, given_substs, answer_father.GetSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, true, []int{original_node_id}, meta_to_reintroduce))
+			ds.waitChildren(MakeWcdArgs(father_id, st, c, []Communication{c2}, given_substs, answer_father.getSubstForChildren(), []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, node_id, original_node_id, true, []int{original_node_id}, meta_to_reintroduce))
 		}
 	}
 }
@@ -461,7 +503,7 @@ func (ds *destructiveSearch) manageQuitOrder(quit bool, c Communication, father_
 		global.PrintDebug("MQO", "Die")
 	} else {
 		global.PrintDebug("MQO", "Closing order received, let's wait father")
-		ds.WaitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
+		ds.waitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
 	}
 }
 
@@ -535,13 +577,13 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 
 			index_children := -1
 			for i, children_node_id := range child_order {
-				if children_node_id == res.GetOriginalNodeId() {
+				if children_node_id == res.getOriginalNodeId() {
 					index_children = i
 					break
 				}
 			}
 
-			proof_tab[index_children] = res.GetProof()
+			proof_tab[index_children] = res.getProof()
 
 			// Remove children from waiting children
 			global.PrintDebug("SLC", fmt.Sprintf("Child %v has finished", res.id))
@@ -552,7 +594,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 
 			// Manage the substitution sent by this child
 			if res.closed {
-				unif := res.GetUnifier()
+				unif := res.getUnifier()
 				unifiers = append(unifiers, unif)
 
 				if len(res.subst_list_for_father) != 0 {
@@ -666,7 +708,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 }
 
 func (ds *destructiveSearch) DoEndManageBeta(fatherId uint64, state complextypes.State, c Communication, channels []Communication, currentNodeId int, originalNodeId int, childIds []int, metaToReintroduce []int) {
-	ds.WaitChildren(MakeWcdArgs(fatherId, state, c, channels, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, currentNodeId, originalNodeId, false, childIds, metaToReintroduce))
+	ds.waitChildren(MakeWcdArgs(fatherId, state, c, channels, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, currentNodeId, originalNodeId, false, childIds, metaToReintroduce))
 }
 
 func (ds *destructiveSearch) manageRewriteRules(fatherId uint64, state complextypes.State, c Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
@@ -747,7 +789,7 @@ func (ds *destructiveSearch) tryRewrite(rewritten []complextypes.IntSubstAndForm
 		go ds.ProofSearch(global.GetGID(), otherState, channelChild, choosenRewritten.GetSaf().ToSubstAndForm(), childNode, childNode, []int{})
 		global.PrintDebug("PS", "GO !")
 		global.IncrGoRoutine(1)
-		ds.WaitChildren(MakeWcdArgs(fatherId, *state, c, []Communication{channelChild}, []complextypes.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
+		ds.waitChildren(MakeWcdArgs(fatherId, *state, c, []Communication{channelChild}, []complextypes.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []complextypes.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
 		return true
 	} else {
 		// No rewriting possible
@@ -757,62 +799,6 @@ func (ds *destructiveSearch) tryRewrite(rewritten []complextypes.IntSubstAndForm
 
 		return false
 	}
-}
-func (ds *destructiveSearch) search(formula basictypes.Form, bound int) bool {
-	res := false
-	global.SetNbStep(1)
-	limit := bound
-
-	for ok := true; ok; ok = (!res && bound > 0 && !global.IsOneStep()) {
-		res, limit = ds.doOneStep(limit, formula)
-	}
-
-	return res
-}
-
-func (ds *destructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool, int) {
-	basictypes.ResetMeta()
-	proof.ResetProofFile()
-	visualization.ResetExchangesFile()
-
-	global.PrintInfo("MAIN", fmt.Sprintf("nb_step : %v - limit : %v", global.GetNbStep(), limit))
-
-	tp := new(treesearch.Node)
-	tn := new(treesearch.Node)
-
-	state := complextypes.MakeState(limit, tp, tn, formula)
-	state.SetCurrentProofNodeId(0)
-
-	global.PrintInfo("MAIN", fmt.Sprintf("Launch Gotab with destructive = %v", global.IsDestructive()))
-
-	global.SetNbGoroutines(0)
-	state.SetLF(basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(formula, basictypes.MakeEmptyTermList())))
-	c := MakeCommunication(make(chan bool), make(chan Result))
-
-	if global.GetExchanges() {
-		visualization.WriteExchanges(global.GetGID(), state, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), "Search")
-	}
-
-	nodeId := global.IncrCptNode()
-	go ds.ProofSearch(global.GetGID(), state, c, complextypes.MakeEmptySubstAndForm(), nodeId, nodeId, []int{})
-	global.IncrGoRoutine(1)
-
-	global.PrintDebug("MAIN", "GO")
-
-	global.PrintDebug("MAIN", fmt.Sprintf("Nb of goroutines = %d", global.GetNbGoroutines()))
-	global.PrintDebug("MAIN", fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()))
-
-	unifier, result, finalProof := manageResult(c)
-	if result {
-		if unif := unifier.GetUnifier(); !unif.IsEmpty() {
-			finalProof = complextypes.ApplySubstitutionOnProofList(unif, finalProof)
-		}
-		uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
-		printProof(result, finalProof, uninstanciatedMeta)
-	}
-
-	global.SetNbStep(global.GetNbStep() + 1)
-	return result, 2 * limit
 }
 
 //ILL TODO Clean the following function and be careful with the Coq output.

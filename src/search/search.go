@@ -155,18 +155,18 @@ func manageResult(c Communication) (complextypes.Unifier, bool, []proof.ProofStr
 }
 
 func manageDestructiveResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool) {
-	result := <-c.GetResult()
+	result := <-c.getResult()
 
-	global.PrintDebug("MAIN", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(result.GetProof())))
+	global.PrintDebug("MAIN", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(result.getProof())))
 
-	if result.GetNeedAnswer() {
-		c.GetQuit() <- true
+	if result.needsAnswer() {
+		c.getQuit() <- true
 		global.PrintDebug("MAIN", "Close order sent")
 	} else {
 		global.PrintDebug("MAIN", "Close order not sent")
 	}
 
-	return result.GetUnifier(), result.GetProof(), result.GetClosed()
+	return result.getUnifier(), result.getProof(), result.isClosed()
 }
 
 func manageNotDestructiveResult(c Communication) bool {
@@ -176,13 +176,13 @@ func manageNotDestructiveResult(c Communication) bool {
 
 		// TODO : kill all goroutines if open found
 		// Close channel -> broadcast
-		res := <-c.GetResult()
+		res := <-c.getResult()
 
-		open = !res.GetClosed()
+		open = !res.isClosed()
 
 		time.Sleep(1 * time.Millisecond)
 
-		global.PrintDebug("MAIN", fmt.Sprintf("open is : %v from %v", open, res.GetId()))
+		global.PrintDebug("MAIN", fmt.Sprintf("open is : %v from %v", open, res.getId()))
 		global.PrintInfo("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines()))
 	}
 
@@ -215,11 +215,11 @@ func PrintSearchResult(res bool) {
 	}
 
 	global.PrintInfo("Res", fmt.Sprintf("%v RES : %v", "%", validity))
-	PrintStandardSolution(status)
+	printStandardSolution(status)
 }
 
 // Do not change this function, it is the standard output for TPTP files
-func PrintStandardSolution(status string) {
+func printStandardSolution(status string) {
 	fmt.Printf("%s SZS status %v for %v\n", "%", status, global.GetProblemName())
 }
 
