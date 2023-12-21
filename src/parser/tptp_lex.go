@@ -302,6 +302,8 @@ func (lexer *TPTPLex) isPredicate() (int, bool) {
 		if lexer.checkAdvance('=') {
 			word = "!="
 		}
+	case '=':
+		containsEquality = true
 	}
 
 	return lexer.manageFailableReturn(lexMap, word)
