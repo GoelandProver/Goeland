@@ -147,10 +147,10 @@ func printCoqOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictyp
 	coqOutput := coq.MakeCoqOutput(final_proof, uninstanciatedMeta)
 
 	if global.GetWriteLogs() {
-		f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+		f, err := os.OpenFile(global.ProofFile+".v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 
 		if err != nil {
-			log.Fatalf("Error opening problem_coq file: %v", err)
+			log.Fatalf("Error opening "+global.ProofFile+" file: %v", err)
 		}
 		defer f.Close()
 		f.WriteString(coqOutput)
@@ -163,10 +163,10 @@ func printLambdapiOutput(final_proof []proof.ProofStruct, uninstanciatedMeta bas
 	lambdapiOutput := lambdapi.MakeLambdapiOutput(final_proof, uninstanciatedMeta)
 
 	if global.GetWriteLogs() {
-		f, err := os.OpenFile("./LambdaPi/problem_lp.lp", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+		f, err := os.OpenFile(global.ProofFile+".lp", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 
 		if err != nil {
-			log.Fatalf("Error opening problem_lp file: %v", err)
+			log.Fatalf("Error opening "+global.ProofFile+" file: %v", err)
 		}
 
 		defer f.Close()

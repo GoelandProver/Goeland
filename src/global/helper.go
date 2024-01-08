@@ -87,6 +87,8 @@ var memProfile string
 
 var isConjectureFound = false
 
+var ProofFile string
+
 // Executable path
 var current_directory, _ = os.Executable()
 var current_directory_splitted = strings.Split(current_directory, "/")

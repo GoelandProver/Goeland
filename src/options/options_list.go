@@ -267,6 +267,14 @@ func buildOptions() {
 			chronoInit()
 		},
 		func(bool) {})
+	(&option[string]{}).init(
+		"proof_file",
+		"problem_proof",
+		"Should only be used with the -ocoq or the -olp parameters, only works with the -wlogs parameter. Enables the writing of the proof in a specific file. The extension of the file will depend on the type of proof",
+		func(string) {},
+		func(val string) {
+			global.ProofFile = val
+		})
 }
 
 func chronoInit() {
