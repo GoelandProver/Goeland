@@ -47,7 +47,6 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/equality"
-	"github.com/GoelandProver/Goeland/plugins/feq"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
@@ -270,7 +269,7 @@ func TestMain(m *testing.M) {
 	global.InitLogger()
 	typing.Init()
 	basictypes.Init()
-	feq.Enable()
+	equality.Enable()
 	initTestVariable()
 	global.SetDebugTerminal(true)
 	code := m.Run()

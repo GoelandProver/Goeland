@@ -47,7 +47,6 @@ import (
 	"github.com/GoelandProver/Goeland/plugins/coq"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
 	"github.com/GoelandProver/Goeland/plugins/equality"
-	"github.com/GoelandProver/Goeland/plugins/feq"
 	"github.com/GoelandProver/Goeland/plugins/sateq"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
@@ -262,15 +261,6 @@ func buildOptions() {
 		func(bool) {
 			equality.SetTryEquality()
 			sateq.Enable()
-		},
-		func(bool) {})
-	(&option[bool]{}).init(
-		"feq",
-		false,
-		"Enables the equality unification using the Franssen implementation. Will override the use of -noeq",
-		func(bool) {
-			equality.SetTryEquality()
-			feq.Enable()
 		},
 		func(bool) {})
 }
