@@ -266,7 +266,6 @@ func initCodeTreesTests(lf basictypes.FormList) (datastruct.DataStructure, datas
 
 func TestMain(m *testing.M) {
 	global.SetStart(time.Now())
-	global.InitLogger()
 	typing.Init()
 	basictypes.Init()
 	initTestVariable()
