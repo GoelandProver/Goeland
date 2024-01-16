@@ -115,7 +115,7 @@ func allRules(rule string, target btps.Form, composingForms []btps.Form, nexts [
 func allRulesQuantUniv(rule string, target btps.Form, composingForms []btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, vars []btps.Var, termGen btps.Term) string {
 
 	quant := ""
-	typeStr := "ι"
+	typeStr := vars[0].GetTypeApp().ToString()
 	switch typed := target.(type) {
 	case btps.All:
 		quant = lambdaPiMapConnectors[btps.AllQuant]
@@ -160,7 +160,7 @@ func getRecursionUnivStr(target btps.Form, nexts []*gs3.GS3Sequent, children []b
 
 func allRulesQuantExist(rule string, target btps.Form, composingForms []btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, vars []btps.Var, termGen btps.Term) string {
 	quant := ""
-	typeStr := "ι"
+	typeStr := vars[0].GetTypeApp().ToString()
 	switch typed := target.(type) {
 	case btps.Ex:
 		quant = lambdaPiMapConnectors[btps.ExQuant]

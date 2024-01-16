@@ -302,6 +302,8 @@ func (lexer *TPTPLex) isPredicate() (int, bool) {
 		if lexer.checkAdvance('=') {
 			word = "!="
 		}
+	case '=':
+		containsEquality = true
 	}
 
 	return lexer.manageFailableReturn(lexMap, word)
@@ -829,7 +831,7 @@ func (lexer *TPTPLex) Lex(yylval *TPTPSymType) int {
 // Main parsing function
 // ----------------------------------------------------------------------------
 
-func ParseTPTPFile(filename string) ([]btypes.Statement, int) {
+func ParseTPTPFile(filename string) ([]btypes.Statement, int, bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			global.PrintFatal("PARSE", fmt.Sprintf("Lexing error: %v", r))
@@ -844,7 +846,7 @@ func ParseTPTPFile(filename string) ([]btypes.Statement, int) {
 
 	TPTPParse(&TPTPLex{s: string(data)})
 
-	return statement, quantifiersCounter
+	return statement, quantifiersCounter, containsEquality
 }
 
 // ----------------------------------------------------------------------------

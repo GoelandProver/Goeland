@@ -51,8 +51,9 @@ import (
 
 	_ "net/http/pprof"
 
+	_ "github.com/GoelandProver/Goeland/options"
+
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/options"
 	"github.com/GoelandProver/Goeland/parser"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	polymorphism "github.com/GoelandProver/Goeland/polymorphism/rules"
@@ -66,32 +67,7 @@ var chAssistant chan bool = make(chan bool)
 func main() {
 	form, bound := presearchLoader()
 
-	if global.GetAssisted() {
-		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
-		go assisted.StartAssistant(chAssistant)
-
-		assisted.Counter.Increase()
-		go startSearch(form, bound)
-
-		search.PrintSearchResult(<-chAssistant)
-	} else {
-		startSearch(form, bound)
-	}
-}
-
-// Start solving. Called in a goroutine so that assisted mode can execute a Fyne application in main goroutine.
-func startSearch(form basictypes.Form, bound int) {
-	global.PrintDebug("MAIN", "Start search")
-
-	search.Search(form, bound)
-
-	doMemProfile()
-}
-
-// Initialization
-func presearchLoader() (basictypes.Form, int) {
-	initEverything()
-
+	//This block cannot be removed from the main function, as it breaks how the CPU profiler works
 	if global.GetCpuProfile() != "" {
 		file, err := os.Create(global.GetCpuProfile())
 		if err != nil {
@@ -102,13 +78,41 @@ func presearchLoader() (basictypes.Form, int) {
 		if err := pprof.StartCPUProfile(file); err != nil {
 			global.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
 		}
+		defer pprof.StopCPUProfile()
 	}
+
+	startSearch(form, bound)
+
+	doMemProfile()
+}
+
+// Start solving
+func startSearch(form basictypes.Form, bound int) {
+	global.PrintDebug("MAIN", "Start search")
+
+	if global.GetAssisted() {
+		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
+		go assisted.StartAssistant(chAssistant)
+
+		assisted.Counter.Increase()
+		go search.Search(form, bound)
+
+		search.PrintSearchResult(<-chAssistant)
+	} else {
+		search.Search(form, bound)
+	}
+
+}
+
+// Initialization
+func presearchLoader() (basictypes.Form, int) {
+	initEverything()
 
 	problem := os.Args[len(os.Args)-1]
 	global.SetProblemName(path.Base(problem))
 	global.PrintInfo("MAIN", fmt.Sprintf("Problem : %v", problem))
 
-	statements, bound := parser.ParseTPTPFile(problem)
+	statements, bound, containsEquality := parser.ParseTPTPFile(problem)
 
 	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(statements)))
 
@@ -116,7 +120,13 @@ func presearchLoader() (basictypes.Form, int) {
 		bound = global.GetLimit()
 	}
 
-	form, bound := StatementListToFormula(statements, bound, path.Dir(problem))
+	form, bound, contEq := StatementListToFormula(statements, bound, path.Dir(problem))
+	containsEquality = containsEquality || contEq
+
+	if !containsEquality {
+		global.SetPlugin("equality", false)
+		global.PrintInfo("EQU", "Plugin Equality disabled")
+	}
 
 	if form == nil {
 		global.PrintFatal("MAIN", "Problem not found")
@@ -144,9 +154,6 @@ func doMemProfile() {
 
 /* Initializes the options, the loggers and some other global variables*/
 func initEverything() {
-	options.InitAndRunOptions()
-
-	global.InitLogger()
 
 	runtime.GOMAXPROCS(global.GetCoreLimit())
 
@@ -159,10 +166,10 @@ func initEverything() {
 
 // ILL TODO this function should not have to call the parser. The parser should do it themselves.
 /* Transforms a list of statements into a formula and returns it with its new bound */
-func StatementListToFormula(statements []basictypes.Statement, old_bound int, problemDir string) (basictypes.Form, int) {
+func StatementListToFormula(statements []basictypes.Statement, old_bound int, problemDir string) (form basictypes.Form, bound int, containsEquality bool) {
 	and_list := basictypes.MakeEmptyFormList()
 	var not_form basictypes.Form
-	bound := old_bound
+	bound = old_bound
 
 	for _, statement := range statements {
 		switch statement.GetRole() {
@@ -174,11 +181,13 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 
 			if err != nil {
 				global.PrintError("MAIN", err.Error())
-				return nil, -1
+				return nil, -1, false
 			}
 
-			new_lstm, bound_tmp := parser.ParseTPTPFile(realname)
-			new_form_list, new_bound := StatementListToFormula(new_lstm, bound_tmp, path.Join(problemDir, path.Dir(file_name)))
+			new_lstm, bound_tmp, contEq := parser.ParseTPTPFile(realname)
+			containsEquality = containsEquality || contEq
+			new_form_list, new_bound, contEq := StatementListToFormula(new_lstm, bound_tmp, path.Join(problemDir, path.Dir(file_name)))
+			containsEquality = containsEquality || contEq
 
 			if new_form_list != nil {
 				bound = new_bound
@@ -198,13 +207,13 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 
 	switch {
 	case len(and_list) == 0 && not_form == nil:
-		return nil, bound
+		return nil, bound, containsEquality
 	case len(and_list) == 0:
-		return basictypes.RefuteForm(not_form), bound
+		return basictypes.RefuteForm(not_form), bound, containsEquality
 	case not_form == nil:
-		return basictypes.MakerAnd(and_list), bound
+		return basictypes.MakerAnd(and_list), bound, containsEquality
 	default:
-		return basictypes.MakerAnd(append(flatten(and_list), basictypes.RefuteForm(not_form))), bound
+		return basictypes.MakerAnd(append(and_list.Flatten(), basictypes.RefuteForm(not_form))), bound, containsEquality
 	}
 }
 
@@ -255,22 +264,6 @@ func doTypeStatement(statement basictypes.Statement) {
 			typing.SavePolymorphScheme(statement.GetAtomTyping().Literal.GetName(), typeScheme)
 		}
 	}
-}
-
-func flatten(fl basictypes.FormList) basictypes.FormList {
-	result := basictypes.FormList{}
-
-	for _, form := range fl {
-		formAsAnd, isFormAnd := form.(basictypes.And)
-
-		if isFormAnd {
-			result = append(result, flatten(formAsAnd.FormList)...)
-		} else {
-			result = append(result, form)
-		}
-	}
-
-	return result
 }
 
 func getFile(filename string, dir string) (string, error) {

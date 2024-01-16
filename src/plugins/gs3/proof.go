@@ -104,7 +104,7 @@ type GS3Proof struct {
 	deltaHisto   []Pair[btps.Term, Pair[btps.Form, int]]
 }
 
-func MakeGS3Proof(proof []tableaux.ProofStruct) *GS3Sequent {
+var MakeGS3Proof = func(proof []tableaux.ProofStruct) *GS3Sequent {
 	gs3Proof := GS3Proof{
 		rulesApplied: make([]Pair[Rule, tableaux.ProofStruct], 0),
 		betaHisto:    make([]Pair[int, int], 0),
@@ -115,7 +115,7 @@ func MakeGS3Proof(proof []tableaux.ProofStruct) *GS3Sequent {
 		gs3Proof.branchForms = append(gs3Proof.branchForms, proof[0].Formula.GetForm())
 	}
 	sequent := gs3Proof.makeProof(proof)
-	return sequent // gs3Proof.makeProof(proof)
+	return sequent
 }
 
 func (gs GS3Proof) Copy() GS3Proof {

@@ -42,18 +42,23 @@ package options
 
 import (
 	"flag"
+	"fmt"
+	"time"
 
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/coq"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
 	"github.com/GoelandProver/Goeland/plugins/equality"
+	"github.com/GoelandProver/Goeland/plugins/gs3"
+	"github.com/GoelandProver/Goeland/plugins/lambdapi"
 	"github.com/GoelandProver/Goeland/plugins/sateq"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 // Build the options, parses the flags, calls the 'funcAlways' functions on every option and if an option has been changed, calls the 'funcNotDefault' option on it.
-func InitAndRunOptions() {
+func init() {
 	buildOptions()
 	flag.Parse()
 
@@ -80,13 +85,13 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"dif",
 		false,
-		"Short for 'Debug In File'. Enables printing debug information in the log file. Won't work when used with the option -nwlogs",
+		"Short for 'Debug In File'. Enables printing debug information in the log file. Won't work when used with the option -wlogs",
 		func(bool) { global.SetDebugFile(true) },
 		func(bool) {})
 	(&option[string]{}).init(
 		"log",
 		"logs",
-		"Changes the `file` output for loggers. Won't work when used with the option -nwlogs",
+		"Changes the `file` output for loggers. Won't work when used with the option -wlogs",
 		func(string) {},
 		func(val string) { global.SetLogFile(val) })
 	(&option[bool]{}).init(
@@ -236,7 +241,7 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"compare",
 		false,
-		"When outputing a Coq proof, also outputs the tableau proof to compare both of them.",
+		"Should only be used with the -ocoq parameter. Outputs both the Coq proof and the tableaux proof",
 		func(bool) { global.SetCompareProofs(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -263,4 +268,50 @@ func buildOptions() {
 			sateq.Enable()
 		},
 		func(bool) {})
+	(&option[bool]{}).init(
+		"chrono",
+		false,
+		"Should only be used with the -ocoq or the -olp parameters. Enables the chronometer for deskolemization and proof translation",
+		func(bool) {
+			chronoInit()
+		},
+		func(bool) {})
+	(&option[string]{}).init(
+		"proof_file",
+		"problem_proof",
+		"Should only be used with the -ocoq or the -olp parameters, only works with the -wlogs parameter. Enables the writing of the proof in a specific file. The extension of the file will depend on the type of proof",
+		func(string) {},
+		func(val string) {
+			global.ProofFile = val
+		})
+}
+
+func chronoInit() {
+	oldCoq := coq.MakeCoqProof
+	coq.MakeCoqProof = func(proof *gs3.GS3Sequent, meta basictypes.MetaList) string {
+		start := time.Now()
+		result := oldCoq(proof, meta)
+		printChrono("Coq", start)
+		return result
+	}
+
+	oldLP := lambdapi.MakeLambdaPiProof
+	lambdapi.MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta basictypes.MetaList) string {
+		start := time.Now()
+		result := oldLP(proof, meta)
+		printChrono("LP", start)
+		return result
+	}
+
+	oldGS3 := gs3.MakeGS3Proof
+	gs3.MakeGS3Proof = func(proof []proof.ProofStruct) *gs3.GS3Sequent {
+		start := time.Now()
+		result := oldGS3(proof)
+		printChrono("GS3", start)
+		return result
+	}
+}
+
+func printChrono(id string, start time.Time) {
+	fmt.Printf("%s Chrono - %s - %d\n", "%", id, time.Since(start).Milliseconds())
 }

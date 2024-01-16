@@ -44,7 +44,6 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"runtime/pprof"
 	"sort"
 	"time"
 
@@ -77,7 +76,6 @@ func Search(formula basictypes.Form, bound int) {
 	}
 
 	PrintSearchResult(res)
-	pprof.StopCPUProfile()
 }
 
 func doOneStep(limit int, formula basictypes.Form) (bool, int) {
@@ -149,12 +147,14 @@ func printCoqOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictyp
 	coqOutput := coq.MakeCoqOutput(final_proof, uninstanciatedMeta)
 
 	if global.GetWriteLogs() {
-		f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-
+		coqExtension := ".v"
+		f, err := os.OpenFile(global.ProofFile+coqExtension, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 		if err != nil {
-			log.Fatalf("Error opening problem_coq file: %v", err)
+			log.Fatalf("Error opening "+global.ProofFile+" file: %v", err)
 		}
 		defer f.Close()
+
+		global.PrintInfo("WLOGS", "Writing Coq proof to file "+global.ProofFile+coqExtension)
 		f.WriteString(coqOutput)
 	}
 
@@ -165,13 +165,14 @@ func printLambdapiOutput(final_proof []proof.ProofStruct, uninstanciatedMeta bas
 	lambdapiOutput := lambdapi.MakeLambdapiOutput(final_proof, uninstanciatedMeta)
 
 	if global.GetWriteLogs() {
-		f, err := os.OpenFile("./LambdaPi/problem_lp.lp", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-
+		lpExtension := ".lp"
+		f, err := os.OpenFile(global.ProofFile+lpExtension, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 		if err != nil {
-			log.Fatalf("Error opening problem_lp file: %v", err)
+			log.Fatalf("Error opening "+global.ProofFile+" file: %v", err)
 		}
-
 		defer f.Close()
+
+		global.PrintInfo("WLOGS", "Writing Lambdapi proof to file "+global.ProofFile+lpExtension)
 		f.WriteString(lambdapiOutput)
 	}
 

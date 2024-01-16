@@ -46,18 +46,18 @@ func MakeLambdapiOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 	}
 
 	// Transform tableaux's proof in GS3 proof
-	return makeLambdaPiProof(gs3.MakeGS3Proof(prf), meta)
+	return MakeLambdaPiProof(gs3.MakeGS3Proof(prf), meta)
+}
+
+var MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta btps.MetaList) string {
+	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
+	proofString := makeLambdaPiProofFromGS3(proof)
+	return contextString + "\n" + proofString
 }
 
 func mapDefault(str string) string {
 	result := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, "$i", "ι"), "$o", "Prop"), "->", "→"), "*", "→")
 	return result
-}
-
-func makeLambdaPiProof(proof *gs3.GS3Sequent, meta btps.MetaList) string {
-	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
-	proofString := makeLambdaPiProofFromGS3(proof)
-	return contextString + "\n" + proofString
 }
 
 // Context flag utility function
