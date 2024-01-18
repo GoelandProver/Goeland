@@ -41,8 +41,6 @@ package search
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"runtime"
 	"sort"
 	"time"
@@ -50,9 +48,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugins/coq"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
-	"github.com/GoelandProver/Goeland/plugins/lambdapi"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	visualization "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -119,64 +115,11 @@ func doOneStep(limit int, formula basictypes.Form) (bool, int) {
 			finalProof = complextypes.ApplySubstitutionOnProofList(unif, finalProof)
 		}
 		uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
-		printProof(result, finalProof, uninstanciatedMeta)
+		printProof(finalProof, uninstanciatedMeta)
 	}
 
 	global.SetNbStep(global.GetNbStep() + 1)
 	return result, 2 * limit
-}
-
-func printProof(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
-	if global.GetProof() {
-		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
-
-		switch {
-		case global.IsCoqOutput():
-			printCoqOutput(final_proof, uninstanciatedMeta)
-		case global.IsLambdapiOutput():
-			printLambdapiOutput(final_proof, uninstanciatedMeta)
-		default:
-			fmt.Printf("%v", proof.ProofStructListToText(final_proof))
-		}
-
-		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output end Proof for %v", "%", global.GetProblemName()))
-	}
-}
-
-func printCoqOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
-	coqOutput := coq.MakeCoqOutput(final_proof, uninstanciatedMeta)
-
-	if global.GetWriteLogs() {
-		coqExtension := ".v"
-		f, err := os.OpenFile(global.ProofFile+coqExtension, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-		if err != nil {
-			log.Fatalf("Error opening "+global.ProofFile+" file: %v", err)
-		}
-		defer f.Close()
-
-		global.PrintInfo("WLOGS", "Writing Coq proof to file "+global.ProofFile+coqExtension)
-		f.WriteString(coqOutput)
-	}
-
-	fmt.Printf("%s", coqOutput)
-}
-
-func printLambdapiOutput(final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
-	lambdapiOutput := lambdapi.MakeLambdapiOutput(final_proof, uninstanciatedMeta)
-
-	if global.GetWriteLogs() {
-		lpExtension := ".lp"
-		f, err := os.OpenFile(global.ProofFile+lpExtension, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-		if err != nil {
-			log.Fatalf("Error opening "+global.ProofFile+" file: %v", err)
-		}
-		defer f.Close()
-
-		global.PrintInfo("WLOGS", "Writing Lambdapi proof to file "+global.ProofFile+lpExtension)
-		f.WriteString(lambdapiOutput)
-	}
-
-	fmt.Printf("%s", lambdapiOutput)
 }
 
 /* Manage return from search for destructive and non-destructive versions  */

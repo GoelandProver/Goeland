@@ -41,16 +41,20 @@
 package coq
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
+	"github.com/GoelandProver/Goeland/search"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 var contextEnabled bool = false
+
+func GetProofStruct() *search.ProofStruct {
+	return &search.ProofStruct{ProofOutput: MakeCoqOutput, Name: "Coq", Extension: ".v"}
+}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
@@ -65,11 +69,6 @@ func MakeCoqOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 	if len(prf) == 0 {
 		global.PrintError("Coq", "Nothing to output")
 		return ""
-	}
-
-	if global.CompareProofs() {
-		fmt.Println(proof.ProofStructListToText(prf))
-		fmt.Println("% Start Coq proof.")
 	}
 
 	// Transform tableaux's proof in GS3 proof

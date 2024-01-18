@@ -5,6 +5,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
+	"github.com/GoelandProver/Goeland/search"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -28,6 +29,10 @@ var lambdaPiMapConnectors = map[btps.FormulaType]string{
 	btps.PredEmpty:      "",
 	btps.PredTypeVarSep: ") (",
 	btps.TypeVarType:    "Type",
+}
+
+func GetProofStruct() *search.ProofStruct {
+	return &search.ProofStruct{ProofOutput: MakeLambdapiOutput, Name: "Lambdapi", Extension: ".lp"}
 }
 
 // ----------------------------------------------------------------------------

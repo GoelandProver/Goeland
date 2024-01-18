@@ -51,6 +51,7 @@ import (
 	"github.com/GoelandProver/Goeland/plugins/equality"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	"github.com/GoelandProver/Goeland/plugins/lambdapi"
+	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
@@ -156,6 +157,7 @@ func buildOptions() {
 		func(bool) {
 			global.SetProof(true)
 			proof.ResetProofFile()
+			search.AddPrintProofAlgorithm(search.GetProofStruct())
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -218,6 +220,7 @@ func buildOptions() {
 		func(bool) {
 			global.OutputCoq()
 			global.SetProof(true)
+			search.AddPrintProofAlgorithm(coq.GetProofStruct())
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -239,18 +242,13 @@ func buildOptions() {
 		func(bool) { global.SetPreInnerSko(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
-		"compare",
-		false,
-		"Should only be used with the -ocoq parameter. Outputs both the Coq proof and the tableaux proof",
-		func(bool) { global.SetCompareProofs(true) },
-		func(bool) {})
-	(&option[bool]{}).init(
 		"olp",
 		false,
 		"Enables the Lambdapi format for proofs instead of text",
 		func(bool) {
 			global.OutputLambdapi()
 			global.SetProof(true)
+			search.AddPrintProofAlgorithm(lambdapi.GetProofStruct())
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
