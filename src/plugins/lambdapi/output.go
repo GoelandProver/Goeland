@@ -31,9 +31,7 @@ var lambdaPiMapConnectors = map[btps.FormulaType]string{
 	btps.TypeVarType:    "Type",
 }
 
-func GetProofStruct() *search.ProofStruct {
-	return &search.ProofStruct{ProofOutput: MakeLambdapiOutput, Name: "Lambdapi", Extension: ".lp"}
-}
+var LambdapiOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeLambdapiOutput, Name: "Lambdapi", Extension: ".lp"}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.

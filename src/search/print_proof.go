@@ -10,27 +10,25 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-func GetProofStruct() *ProofStruct {
-	return &ProofStruct{ProofOutput: proof.ProofStructListToText, Name: "Basic", Extension: ".proof"}
-}
+var BasicOutputProofStruct = &OutputProofStruct{ProofOutput: proof.ProofStructListToText, Name: "Basic", Extension: ".proof"}
 
-type ProofStruct struct {
+type OutputProofStruct struct {
 	ProofOutput func(finalProof []proof.ProofStruct, metaList basictypes.MetaList) string
 	Name        string
 	Extension   string
 }
 
-var proofStructs []*ProofStruct
+var outputProofStructs []*OutputProofStruct
 
-func AddPrintProofAlgorithm(ps *ProofStruct) {
-	proofStructs = append(proofStructs, ps)
+func AddPrintProofAlgorithm(ps *OutputProofStruct) {
+	outputProofStructs = append(outputProofStructs, ps)
 }
 
 func printProof(final_proof []proof.ProofStruct, metaList basictypes.MetaList) {
 	if global.GetProof() {
 		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
 
-		for _, ps := range proofStructs {
+		for _, ps := range outputProofStructs {
 			ps.printProofWithProofStruct(final_proof, metaList)
 		}
 
@@ -38,7 +36,7 @@ func printProof(final_proof []proof.ProofStruct, metaList basictypes.MetaList) {
 	}
 }
 
-func (ps *ProofStruct) printProofWithProofStruct(finalProof []proof.ProofStruct, metaList basictypes.MetaList) {
+func (ps *OutputProofStruct) printProofWithProofStruct(finalProof []proof.ProofStruct, metaList basictypes.MetaList) {
 	output := ps.ProofOutput(finalProof, metaList)
 
 	if global.GetWriteLogs() {

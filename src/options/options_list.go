@@ -157,7 +157,7 @@ func buildOptions() {
 		func(bool) {
 			global.SetProof(true)
 			proof.ResetProofFile()
-			search.AddPrintProofAlgorithm(search.GetProofStruct())
+			search.AddPrintProofAlgorithm(search.BasicOutputProofStruct)
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -220,7 +220,7 @@ func buildOptions() {
 		func(bool) {
 			global.OutputCoq()
 			global.SetProof(true)
-			search.AddPrintProofAlgorithm(coq.GetProofStruct())
+			search.AddPrintProofAlgorithm(coq.CoqOutputProofStruct)
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -248,7 +248,7 @@ func buildOptions() {
 		func(bool) {
 			global.OutputLambdapi()
 			global.SetProof(true)
-			search.AddPrintProofAlgorithm(lambdapi.GetProofStruct())
+			search.AddPrintProofAlgorithm(lambdapi.LambdapiOutputProofStruct)
 		},
 		func(bool) {})
 	(&option[bool]{}).init(

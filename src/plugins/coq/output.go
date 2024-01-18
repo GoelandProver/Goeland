@@ -52,9 +52,7 @@ import (
 
 var contextEnabled bool = false
 
-func GetProofStruct() *search.ProofStruct {
-	return &search.ProofStruct{ProofOutput: MakeCoqOutput, Name: "Coq", Extension: ".v"}
-}
+var CoqOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeCoqOutput, Name: "Coq", Extension: ".v"}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
