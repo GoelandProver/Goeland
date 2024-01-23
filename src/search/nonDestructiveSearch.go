@@ -37,16 +37,41 @@ package search
 
 import (
 	"fmt"
+	"runtime"
+	"time"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
+	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
+type nonDestructiveSearch struct {
+}
+
+func NewNonDestructiveSearch() SearchAlgorithm {
+	nds := &nonDestructiveSearch{}
+	_ = nds
+	global.PrintError("NDS", "Non-destructive search not in working order for now.")
+	return nil
+}
+
+func (nds *nonDestructiveSearch) setApplyRules(function func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)) {
+	global.PrintError("NDS", "Non-destructive search not compatible with the assisted plugin for now.")
+}
+
+func (nds *nonDestructiveSearch) doEndManageBeta(fatherId uint64, state complextypes.State, c Communication, channels []Communication, currentNodeId int, originalNodeId int, childIds []int, metaToReintroduce []int) {
+	global.PrintDebug("PS", "Die")
+}
+
+func (nds *nonDestructiveSearch) manageRewriteRules(fatherId uint64, state complextypes.State, c Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
+	global.PrintError("NDS", "Non-destructive search not compatible with the DMT plugin for now.")
+}
+
 /* Choose substitution - whitout meta in lastAppliedSubst */
-func chooseSubstitutionWithoutMetaLastApplyNonDestructive(sl []complextypes.SubstAndForm, ml basictypes.MetaList) (complextypes.SubstAndForm, []complextypes.SubstAndForm) {
+func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestructive(sl []complextypes.SubstAndForm, ml basictypes.MetaList) (complextypes.SubstAndForm, []complextypes.SubstAndForm) {
 	for i, v := range sl {
 		if !v.GetSubst().GetMeta().IsInclude(ml) {
 			return v, complextypes.RemoveSubstFromSubstAndFormList(i, sl)
@@ -56,7 +81,7 @@ func chooseSubstitutionWithoutMetaLastApplyNonDestructive(sl []complextypes.Subs
 }
 
 /* Choose substitution - whith meta in lastAppliedSubst */
-func chooseSubstitutionWithtMetaLastApplyNonDestructive(sl []complextypes.SubstAndForm, last_applied_subst complextypes.SubstAndForm) (complextypes.SubstAndForm, []complextypes.SubstAndForm) {
+func (nds *nonDestructiveSearch) chooseSubstitutionWithtMetaLastApplyNonDestructive(sl []complextypes.SubstAndForm, last_applied_subst complextypes.SubstAndForm) (complextypes.SubstAndForm, []complextypes.SubstAndForm) {
 	for i, v := range sl {
 		if !v.GetSubst().Equals(last_applied_subst.GetSubst()) {
 			return v, complextypes.RemoveSubstFromSubstAndFormList(i, sl)
@@ -66,23 +91,23 @@ func chooseSubstitutionWithtMetaLastApplyNonDestructive(sl []complextypes.SubstA
 }
 
 /* Choose the best substitution among subst_found_at_this_step and subst_found */
-func chooseSubstitutionNonDestructive(substs_found_this_step []complextypes.SubstAndForm, st *complextypes.State) complextypes.SubstAndForm {
-	res, sl := chooseSubstitutionWithoutMetaLastApplyNonDestructive(substs_found_this_step, st.GetLastAppliedSubst().GetSubst().GetMeta())
+func (nds *nonDestructiveSearch) chooseSubstitutionNonDestructive(substs_found_this_step []complextypes.SubstAndForm, st *complextypes.State) complextypes.SubstAndForm {
+	res, sl := nds.chooseSubstitutionWithoutMetaLastApplyNonDestructive(substs_found_this_step, st.GetLastAppliedSubst().GetSubst().GetMeta())
 	if !res.IsEmpty() { // subst without meta in last applied meta found in substs_found_at_this_step
 		st.SetSubstsFound(append(sl, st.GetSubstsFound()...))
 		return res
 	} else {
-		res, sl = chooseSubstitutionWithoutMetaLastApplyNonDestructive(st.GetSubstsFound(), st.GetLastAppliedSubst().GetSubst().GetMeta())
+		res, sl = nds.chooseSubstitutionWithoutMetaLastApplyNonDestructive(st.GetSubstsFound(), st.GetLastAppliedSubst().GetSubst().GetMeta())
 		if !res.IsEmpty() { // subst without meta in last applied meta found in substs_found
 			st.SetSubstsFound(append(sl, substs_found_this_step...))
 			return res
 		} else {
-			res, sl = chooseSubstitutionWithtMetaLastApplyNonDestructive(substs_found_this_step, st.GetAppliedSubst())
+			res, sl = nds.chooseSubstitutionWithtMetaLastApplyNonDestructive(substs_found_this_step, st.GetAppliedSubst())
 			if !res.IsEmpty() { // subst with meta in last applied meta found in subst_found_at_this_step
 				st.SetSubstsFound(append(sl, st.GetSubstsFound()...))
 				return res
 			} else {
-				res, sl = chooseSubstitutionWithtMetaLastApplyNonDestructive(st.GetSubstsFound(), st.GetAppliedSubst())
+				res, sl = nds.chooseSubstitutionWithtMetaLastApplyNonDestructive(st.GetSubstsFound(), st.GetAppliedSubst())
 				if !res.IsEmpty() { // subst with meta in last applied meta found in substs_found
 					st.SetSubstsFound(append(sl, substs_found_this_step...))
 					return res
@@ -100,7 +125,7 @@ func chooseSubstitutionNonDestructive(substs_found_this_step []complextypes.Subs
 }
 
 /*  Take a substitution, returns the id of the formula which introduce the metavariable */
-func catchFormulaToInstantiate(subst_found treetypes.Substitutions) int {
+func (nds *nonDestructiveSearch) catchFormulaToInstantiate(subst_found treetypes.Substitutions) int {
 	meta_to_reintroduce := -1
 	for _, subst := range subst_found {
 		meta, term := subst.Get()
@@ -119,7 +144,7 @@ func catchFormulaToInstantiate(subst_found treetypes.Substitutions) int {
 /** Instantiate a formula with a substitution
 * Got the substitution (X, a) and reintroduce ForAll x P(x) -> need to reintroduce P(a). Remplace immediatly the new generated metavariable by a.
 **/
-func instantiate(father_id uint64, st *complextypes.State, c Communication, index int, s complextypes.SubstAndForm) {
+func (nds *nonDestructiveSearch) instantiate(father_id uint64, st *complextypes.State, c Communication, index int, s complextypes.SubstAndForm) {
 	global.PrintDebug("PS", fmt.Sprintf("Instantiate with subst : %v ", s.GetSubst().ToString()))
 	new_meta_generator := st.GetMetaGen()
 	reslf := basictypes.ReintroduceMeta(&new_meta_generator, index, st.GetN())
@@ -228,7 +253,7 @@ func instantiate(father_id uint64, st *complextypes.State, c Communication, inde
 * Choose the best subtitution to instantiate : avoid the same than last used, and the one which contains meta already used in last applied
 **/
 
-func manageSubstFoundNonDestructive(father_id uint64, st *complextypes.State, c Communication, substs_found_at_this_step []complextypes.SubstAndFormAndTerms) (int, complextypes.SubstAndForm) {
+func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64, st *complextypes.State, c Communication, substs_found_at_this_step []complextypes.SubstAndFormAndTerms) (int, complextypes.SubstAndForm) {
 	form_to_instantiate := -1
 	choosen_subst := complextypes.MakeEmptySubstAndForm()
 	new_choosen_subst := complextypes.MakeEmptySubstAndForm()
@@ -257,14 +282,14 @@ func manageSubstFoundNonDestructive(father_id uint64, st *complextypes.State, c 
 	choosen_subst = new_choosen_subst
 
 	// Catch all the meta which can be instantiate
-	form_to_instantiate = catchFormulaToInstantiate(choosen_subst.GetSubst())
+	form_to_instantiate = nds.catchFormulaToInstantiate(choosen_subst.GetSubst())
 	global.PrintDebug("PS", fmt.Sprintf("Form_to_instantiate : %v", form_to_instantiate))
 
 	return form_to_instantiate, choosen_subst
 }
 
 /**
-* ProofSearchNonDestructive
+* proofSearch
 * Search algorithm (Tableaux method)
 * n : number of gamma rule available
 * st : state, the current search state
@@ -272,7 +297,11 @@ func manageSubstFoundNonDestructive(father_id uint64, st *complextypes.State, c 
 * s : substitution to apply to the current state
 * subst_found : treetypes.Substitutions found by this process
 **/
-func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Communication) {
+
+//ILL TODO: Redo the non-destructive search, in particular, this function.
+//Both this search and the destructive search should be refactored so the similarities arise in a single struct BasicSearch
+/*
+func (nds *nonDestructiveSearch) proofSearch(father_id uint64, st complextypes.State, c Communication, s complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
 
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v", father_id))
@@ -290,7 +319,7 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 		var substs []treetypes.Substitutions
 		global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
 		closed, substs = ApplyClosureRules(f.GetForm(), &st)
-		ManageClosureRule(father_id, &st, c, substs, f, -1, -1)
+		nds.ManageClosureRule(father_id, &st, c, substs, f, -1, -1)
 
 		if closed {
 			return
@@ -304,17 +333,38 @@ func proofSearchNonDestructive(father_id uint64, st complextypes.State, c Commun
 
 	global.PrintDebug("PS", fmt.Sprintf("Subst_found before management : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 
-	form_to_instantiate, choosen_subst := manageSubstFoundNonDestructive(father_id, &st, c, substs_found_at_this_step)
+	form_to_instantiate, choosen_subst := nds.manageSubstFoundNonDestructive(father_id, &st, c, substs_found_at_this_step)
 
 	global.PrintDebug("PS", fmt.Sprintf("Subst_found after management : %v ", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 
 	if form_to_instantiate == -1 {
 		global.PrintDebug("PS", "Let's apply rules !")
-		applyRules(father_id, st, c, basictypes.MakeEmptyFormAndTermsList(), -1, -1, []int{})
+		nds.applyRules(father_id, st, c, basictypes.MakeEmptyFormAndTermsList(), -1, -1, []int{})
 	} else {
 		global.PrintDebug("PS", "Let's instantiate !")
-		instantiate(father_id, &st, c, form_to_instantiate, choosen_subst)
-		ProofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1, -1, []int{})
+		nds.instantiate(father_id, &st, c, form_to_instantiate, choosen_subst)
+		nds.proofSearch(father_id, st, c, complextypes.MakeEmptySubstAndForm(), -1, -1, []int{})
 	}
 
+}
+*/
+
+func (ds *nonDestructiveSearch) manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool) {
+	open := false
+
+	for !open && runtime.NumGoroutine() > 1 {
+
+		// TODO : kill all goroutines if open found
+		// Close channel -> broadcast
+		res := <-c.getResult()
+
+		open = !res.isClosed()
+
+		time.Sleep(1 * time.Millisecond)
+
+		global.PrintDebug("MAIN", fmt.Sprintf("open is : %v from %v", open, res.getId()))
+		global.PrintInfo("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), global.GetNbGoroutines()))
+	}
+
+	return complextypes.MakeUnifier(), []proof.ProofStruct{}, !open
 }

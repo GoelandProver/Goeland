@@ -46,6 +46,7 @@ import (
 	"time"
 
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/assisted"
 	"github.com/GoelandProver/Goeland/plugins/coq"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
 	"github.com/GoelandProver/Goeland/plugins/equality"
@@ -125,6 +126,7 @@ func buildOptions() {
 		false,
 		"Enables the non-destructive version",
 		func(bool) {
+			search.SetSearchAlgorithm(search.NewNonDestructiveSearch())
 			global.SetDestructive(false)
 			global.SetOneStep(true)
 		},
@@ -255,7 +257,10 @@ func buildOptions() {
 		"assisted",
 		false,
 		"Enables the step-by-step mode debugger",
-		func(bool) { global.SetAssisted(true) },
+		func(bool) {
+			search.SetApplyRules(assisted.ApplyRulesAssisted)
+			global.SetAssisted(true)
+		},
 		func(bool) {})
 	(&option[bool]{}).init(
 		"chrono",

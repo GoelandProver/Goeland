@@ -91,7 +91,6 @@ func startSearch(form basictypes.Form, bound int) {
 	global.PrintDebug("MAIN", "Start search")
 
 	if global.GetAssisted() {
-		search.DoCorrectApplyRules = assisted.ApplyRulesAssisted
 		go assisted.StartAssistant(chAssistant)
 
 		assisted.Counter.Increase()
