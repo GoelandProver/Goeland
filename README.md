@@ -48,7 +48,6 @@ The parameters must be passed *before* the problem file. The available parameter
 | -ari | Enables the use of (TPTP) arithmetic functions (default: **false**). |
 | -assisted | Enables the step-by-step mode debugger (default: **false**). |
 | -completeness | Enables completeness mode (default: **false**). |
-| -compare | Should only be used with the `-ocoq` parameter. Outputs both the Coq proof and the tableaux proof (default: **false**). |
 | -context | Should only be used with the `-ocoq` or the `-olp` parameters.  Enables the context for a standalone execution (default: **false**). |
 | -core_limit *int* | Sets the limit in number of cores (default: all) (default: **-1**). |
 | -cpuprofile *file* | Writes the cpu profile to *file*. |

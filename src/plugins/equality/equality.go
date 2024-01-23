@@ -67,7 +67,7 @@ func TryEquality(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.St
 			atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 			res_eq, subst_eq := EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms())
 			if res_eq {
-				search.ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.MakeEmptyTermList()), node_id, original_node_id)
+				search.UsedSearch.ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.MakeEmptyTermList()), node_id, original_node_id)
 				return true
 			}
 		}
