@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**************/
-/*  utils.go  */
-/**************/
-
 /**
  * This file stores various utils functions for typing.
  **/

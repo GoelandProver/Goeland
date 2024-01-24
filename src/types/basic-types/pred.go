@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/***********/
-/* pred.go */
-/***********/
-
 /**
 * This file implements a Pred, which is an atomic formula.
 * It's composed of a name (for example, in forall x. human(x) => mortal(x),

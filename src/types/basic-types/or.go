@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*********/
-/* or.go */
-/*********/
-
 /**
 * This file implements a disjunction of formulas.
 **/

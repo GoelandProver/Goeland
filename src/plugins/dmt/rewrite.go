@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**************/
-/* rewrite.go */
-/**************/
-
 /**
 * This file implements the rewrite part of the DMT plugin.
 **/

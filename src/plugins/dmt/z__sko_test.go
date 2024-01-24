@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/* z__sko_test.go */
-/******************/
-
 /**
  * This file tests the preskolemized functionnalities of the DMT plugin.
  **/

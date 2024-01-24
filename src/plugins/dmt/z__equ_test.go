@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/* z__equ_test.go */
-/******************/
-
 /**
  * This file tests the base functionnalities of DMT plugin :
  *	- equivalence-only initialisation

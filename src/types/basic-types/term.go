@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/***********/
-/* term.go */
-/***********/
-
 /**
 * This file contains functions and types which describe the term's data structure
 **/

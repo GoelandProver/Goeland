@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************************/
-/* equality_rules_apply.go */
-/***************************/
+
 /**
 * This file contains the functions to apply a rule on an equality problem struct
 **/

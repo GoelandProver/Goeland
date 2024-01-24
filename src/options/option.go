@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*************/
-/* option.go */
-/*************/
-
 /**
 * This file defines the structure for options. To make new options, go to the options_list.go file.
 **/

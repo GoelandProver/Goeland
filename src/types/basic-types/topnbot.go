@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**************/
-/* topnbot.go */
-/**************/
-
 /**
 * This file implements Top/Bot formulas (true/false).
 * As it is almost the same interface (with practically nothing to do), it is

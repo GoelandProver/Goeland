@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/************/
-/* utils.go */
-/************/
-
 /**
 * This file contains some useful functions.
 **/

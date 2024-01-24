@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*************************/
-/* axiom_registration.go */
-/*************************/
-
 /**
 * This file implements the main algorithms for turning axioms into rewrite rules.
 **/

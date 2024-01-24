@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/********************/
-/*  search_test.go  */
-/********************/
-
 /**
  * This file tests the search package.
  **/

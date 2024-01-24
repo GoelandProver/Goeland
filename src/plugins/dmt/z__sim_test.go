@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/* z__sim_test.go */
-/******************/
-
 /**
  * This file tests the base functionnalities of DMT plugin :
  *	- Axioms of format : forall x.P(x)

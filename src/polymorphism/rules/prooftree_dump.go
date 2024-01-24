@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/***********************/
-/*  prooftree_dump.go  */
-/***********************/
-
 package polyrules
 
 import (

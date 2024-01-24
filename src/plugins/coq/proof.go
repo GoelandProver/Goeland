@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/****************/
-/* coq_proof.go */
-/****************/
-
 /**
 * This file provides a coq proof from Goéland's proof.
 **/

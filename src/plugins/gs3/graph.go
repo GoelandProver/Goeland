@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
  **/
 
-/************/
-/* graph.go */
-/************/
-
 /**
  * This file provides a definition of a polymorphic graph.
  **/

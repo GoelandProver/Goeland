@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************************/
-/* equality_rules_unify.go */
-/***************************/
+
 /**
 * This file contains some functions about unification and stop cases for equality reasoning.
 **/

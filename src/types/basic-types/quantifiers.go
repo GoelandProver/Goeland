@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/* quantifiers.go */
-/******************/
-
 /**
 * This file implements quantifiers over formulas (forall, exists, forall (types)).
 **/

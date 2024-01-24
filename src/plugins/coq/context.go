@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/* coq_context.go */
-/******************/
-
 /**
 * This file provides coq's context for a proof.
 **/

@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/****************************/
-/* equality_problem_list.go */
-/****************************/
+
 /**
 * This file contains the type definition for equality problem list. and multilist.
 * Equality problem list :  a list of equality problem wich are connected to each other. A solution for one of them needs to be a solution for the others.

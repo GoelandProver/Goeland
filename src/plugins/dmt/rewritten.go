@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/****************/
-/* rewritten.go */
-/****************/
-
 /**
  * This file contains the functions definition gotten from the main prover.
  * Any of these could be replaced by its other part when they are exported.

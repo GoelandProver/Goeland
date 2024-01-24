@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**********/
-/* not.go */
-/**********/
-
 /**
 * This file implements a negation of a formula.
 **/

@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/* formAndTerm.go */
-/******************/
-
 /**
 * This file contains the implementation of formAndTerm.
 **/

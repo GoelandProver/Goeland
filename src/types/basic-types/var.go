@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**********/
-/* var.go */
-/**********/
-
 /**
 * This file contains the implementation of a closed variable.
 **/

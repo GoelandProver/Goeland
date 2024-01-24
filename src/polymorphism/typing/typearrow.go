@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/*  typearrow.go  */
-/******************/
-
 /**
  * This file declares one of the basic types used for typing the prover :
  * TypeArrow, the -> operator. It's implemented as an input scheme (TypeApp)

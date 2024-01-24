@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**********/
-/* dmt.go */
-/**********/
-
 /**
 * This file inits the global variables of the DMT and hook the functions to the prover.
 **/

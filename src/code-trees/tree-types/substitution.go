@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*************************/
-/* substitution.go */
-/*************************/
-
 /**
 * This file provides the necessary structures to manipulate sustitutions
 **/

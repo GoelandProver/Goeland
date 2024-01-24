@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**************/
-/* impnequ.go */
-/**************/
-
 /**
 * This file implements an implication and an equivalence of formulas.
 **/

@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*****************/
-/*  typehint.go  */
-/*****************/
-
 /**
  * This file declares the basic types used for typing the prover :
  * TypeHint, a primitive type that is used as the basis of the inductive relation

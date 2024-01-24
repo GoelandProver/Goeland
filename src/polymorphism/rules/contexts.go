@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*****************/
-/*  contexts.go  */
-/*****************/
-
 package polyrules
 
 import (

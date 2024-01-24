@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**********/
-/* and.go */
-/**********/
-
 /**
 * This file implements a conjunction of formulas
 **/

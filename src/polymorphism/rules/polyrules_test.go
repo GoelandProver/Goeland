@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**************************/
-/*  polymorphism_test.go  */
-/**************************/
-
 /**
  * This file tests the polymorphism package.
  **/

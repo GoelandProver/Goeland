@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
  **/
 
-/************/
-/* proof.go */
-/************/
-
 /**
  * This file provides a definition of a GS3 proof: the object & the exported functions.
  **/

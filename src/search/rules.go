@@ -29,9 +29,6 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/************/
-/* rules.go */
-/************/
 
 /**
 * This file contains functions to apply rules on a search
@@ -63,10 +60,6 @@ var strToPrintMap map[string]string = map[string]string{
 	"FORALL": "∀",
 	"EXISTS": "∃",
 }
-
-/*************/
-/* Functions */
-/*************/
 
 /**
 * ApplyClosureRules

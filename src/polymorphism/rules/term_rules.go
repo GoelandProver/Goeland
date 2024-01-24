@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/********************/
-/*  terms_rules.go  */
-/********************/
-
 package polyrules
 
 import (

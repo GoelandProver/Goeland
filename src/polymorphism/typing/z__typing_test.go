@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/***********************/
-/*  z__typing_test.go  */
-/***********************/
-
 /**
  * This file defines the Main of the typing test package.
  **/

@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/* z__pol_test.go */
-/******************/
-
 /**
  * This file tests the polarized functionnalities of the DMT plugin :
  *	- Axioms of format : (forall x).P => Q

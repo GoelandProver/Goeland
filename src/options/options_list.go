@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*******************/
-/* options_list.go */
-/*******************/
-
 /**
 * This file is used to instanciate options
 **/

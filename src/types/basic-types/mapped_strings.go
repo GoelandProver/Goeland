@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*********************/
-/* mapped_strings.go */
-/*********************/
-
 /**
 * This file provides things.
 **/

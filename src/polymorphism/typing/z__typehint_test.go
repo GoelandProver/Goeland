@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*************************/
-/*  z__typehint_test.go  */
-/*************************/
-
 /**
  * This file tests the creation & functions of a TypeHint.
  * A TypeHint is at the base of the type system.

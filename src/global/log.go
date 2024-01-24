@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**********/
-/* log.go */
-/**********/
-
 /**
 * This file is used initialise the loggers and provide easily usable functions to log
 **/

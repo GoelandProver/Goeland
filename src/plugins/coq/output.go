@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*****************/
-/* coq_output.go */
-/*****************/
-
 /**
 * This file provides a coq output for Goeland's proofs.
 **/

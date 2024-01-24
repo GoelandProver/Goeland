@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***********************/
-/* constraints_list.go */
-/***********************/
+
 /**
 * This file contains the type definition of the contraint list.
 **/

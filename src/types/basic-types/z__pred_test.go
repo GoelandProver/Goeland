@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*********************/
-/*  z__pred_test.go  */
-/*********************/
-
 /**
  * This file tests predicates methods.
  **/

@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/***********************/
-/*  quantifiedtype.go  */
-/***********************/
-
 /**
  * This file declares one of the basic types used for typing the prover :
  * QuantifiedType, the Pi operator.

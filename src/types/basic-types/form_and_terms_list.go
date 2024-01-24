@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/********************/
-/* formula_liste.go */
-/********************/
+
 /**
 * This file contains functions and types which describe the fomula_list's data
 * structure
