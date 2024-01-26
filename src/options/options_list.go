@@ -283,6 +283,16 @@ func buildOptions() {
 		func(val string) {
 			global.ProofFile = val
 		})
+	(&option[bool]{}).init(
+		"zeq",
+		false,
+		"Enables zenon equality rules",
+		func(bool) {
+			fmt.Printf("OUI\n")
+			global.SetZenonEquality(true)
+			//sateq.Enable()
+		},
+		func(bool) {})
 }
 
 func chronoInit() {

@@ -49,6 +49,7 @@ import (
 var ocoq = false
 var olambdapi = false
 var Assisted = false
+var zenonEquality = false
 var destructive = true
 var nb_gor = 0
 var mutex sync.Mutex
@@ -351,4 +352,8 @@ func SetInnerSko(b bool) {
 
 func SetPreInnerSko(b bool) {
 	preInnerSko = b
+}
+
+func SetZenonEquality(b bool) {
+	zenonEquality = b
 }
