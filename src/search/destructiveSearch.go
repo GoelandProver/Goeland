@@ -59,20 +59,20 @@ const (
 	OPENED
 )
 
-type destructiveSearch struct {
+type DestructiveSearch struct {
 	doCorrectApplyRules func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
 }
 
 func NewDestructiveSearch() SearchAlgorithm {
-	ds := &destructiveSearch{}
-	ds.doCorrectApplyRules = ds.applyRules
+	ds := &DestructiveSearch{}
+	ds.doCorrectApplyRules = ds.ApplyRules
 	return ds
 }
 
-func (ds *destructiveSearch) setApplyRules(function func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)) {
+func (ds *DestructiveSearch) setApplyRules(function func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)) {
 	ds.doCorrectApplyRules = function
 }
-func (ds *destructiveSearch) search(formula basictypes.Form, bound int) bool {
+func (ds *DestructiveSearch) search(formula basictypes.Form, bound int) bool {
 	res := false
 	global.SetNbStep(1)
 	limit := bound
@@ -84,7 +84,7 @@ func (ds *destructiveSearch) search(formula basictypes.Form, bound int) bool {
 	return res
 }
 
-func (ds *destructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool, int) {
+func (ds *DestructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool, int) {
 	basictypes.ResetMeta()
 	proof.ResetProofFile()
 	visualization.ResetExchangesFile()
@@ -131,7 +131,7 @@ func (ds *destructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool
 }
 
 /* Choose a substitution (backtrack) */
-func (ds *destructiveSearch) tryBTSubstitution(spc *([]complextypes.SubstAndForm), mm basictypes.MetaList, children []Communication) complextypes.SubstAndForm {
+func (ds *DestructiveSearch) tryBTSubstitution(spc *([]complextypes.SubstAndForm), mm basictypes.MetaList, children []Communication) complextypes.SubstAndForm {
 	global.PrintDebug("TBTS", "Try another substitution.")
 	next_subst, new_spc := ds.chooseSubstitutionDestructive(complextypes.CopySubstAndFormList(*spc), mm)
 	global.PrintDebug("TBTS", fmt.Sprintf("Choose the substitution : %v and send it to children", next_subst.ToString()))
@@ -141,7 +141,7 @@ func (ds *destructiveSearch) tryBTSubstitution(spc *([]complextypes.SubstAndForm
 }
 
 /* Choose a substitution among all the subst send by children - takes thoses who contains no mm first */
-func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []complextypes.SubstAndForm, mm []basictypes.Meta) (complextypes.SubstAndForm, []complextypes.SubstAndForm) {
+func (ds *DestructiveSearch) chooseSubstitutionDestructive(subst_list []complextypes.SubstAndForm, mm []basictypes.Meta) (complextypes.SubstAndForm, []complextypes.SubstAndForm) {
 	subst_found := subst_list[0]
 	found := false
 	i := 0
@@ -184,7 +184,7 @@ func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []complext
 * s : substitution to apply to the current complextypes.State
 * subst_found : treetypes.Substitutions found by this process
 **/
-func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State, cha Communication, s complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
+func (ds *DestructiveSearch) ProofSearch(father_id uint64, st complextypes.State, cha Communication, s complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
 	global.PrintDebug("PS", "---------- New search step ----------")
 	global.PrintDebug("PS", fmt.Sprintf("Child of %v - node id : %v - original node id : %v", father_id, node_id, original_node_id))
 	global.PrintDebug("PS", fmt.Sprintf("Meta to reintroduce: %v", global.IntListToString(meta_to_reintroduce)))
@@ -308,7 +308,7 @@ var TryEquality = func(atomics_for_dmt basictypes.FormAndTermsList, st complexty
 	return false
 }
 
-func (ds *destructiveSearch) getAtomicsForDMT(new_atomics basictypes.FormAndTermsList, st *complextypes.State, s complextypes.SubstAndForm) basictypes.FormAndTermsList {
+func (ds *DestructiveSearch) getAtomicsForDMT(new_atomics basictypes.FormAndTermsList, st *complextypes.State, s complextypes.SubstAndForm) basictypes.FormAndTermsList {
 	atomics_for_dmt := basictypes.MakeEmptyFormAndTermsList()
 	for i, f := range new_atomics {
 		if global.IsLoaded("dmt") && !(i == len(st.GetLF()) && st.GetBTOnFormulas() && !s.IsEmpty()) {
@@ -321,7 +321,7 @@ func (ds *destructiveSearch) getAtomicsForDMT(new_atomics basictypes.FormAndTerm
 }
 
 /** Waits for its children to end, and manages their return status. */
-func (ds *destructiveSearch) waitChildren(args wcdArgs) {
+func (ds *DestructiveSearch) waitChildren(args wcdArgs) {
 	args.printDebugMessages()
 
 	select {
@@ -375,7 +375,7 @@ func (ds *destructiveSearch) waitChildren(args wcdArgs) {
 * 	children : list of children
 * 	given_substs : subst send by this node to its father
 **/
-func (ds *destructiveSearch) waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
+func (ds *DestructiveSearch) waitFather(father_id uint64, st complextypes.State, c Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
 	global.PrintDebug("WF", "Wait father")
 
 	// CLear subst found
@@ -477,7 +477,7 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st complextypes.State,
 }
 
 /* Manage quit or wait father order. Return true if the process is supposed to die at the end */
-func (ds *destructiveSearch) manageQuitOrder(quit bool, c Communication, father_id uint64, st complextypes.State, children []Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
+func (ds *DestructiveSearch) manageQuitOrder(quit bool, c Communication, father_id uint64, st complextypes.State, children []Communication, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
 	if len(children) > 0 {
 		closeChildren(&children, true)
 	}
@@ -512,7 +512,7 @@ Result :
 
 []complextypes.SubstAndForm : substitutions list
 */
-func (ds *destructiveSearch) selectChildren(father Communication, children *[]Communication, current_subst complextypes.SubstAndForm, child_order []int) (int, []complextypes.SubstAndForm, [][]proof.ProofStruct, []complextypes.Unifier) {
+func (ds *DestructiveSearch) selectChildren(father Communication, children *[]Communication, current_subst complextypes.SubstAndForm, child_order []int) (int, []complextypes.SubstAndForm, [][]proof.ProofStruct, []complextypes.Unifier) {
 
 	proof_tab := make([][]proof.ProofStruct, len(child_order))
 
@@ -690,11 +690,11 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 	return result_int, result_subst, proof_tab, unifiers
 }
 
-func (ds *destructiveSearch) DoEndManageBeta(fatherId uint64, state complextypes.State, c Communication, channels []Communication, currentNodeId int, originalNodeId int, childIds []int, metaToReintroduce []int) {
+func (ds *DestructiveSearch) DoEndManageBeta(fatherId uint64, state complextypes.State, c Communication, channels []Communication, currentNodeId int, originalNodeId int, childIds []int, metaToReintroduce []int) {
 	ds.waitChildren(MakeWcdArgs(fatherId, state, c, channels, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, currentNodeId, originalNodeId, false, childIds, metaToReintroduce))
 }
 
-func (ds *destructiveSearch) manageRewriteRules(fatherId uint64, state complextypes.State, c Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
+func (ds *DestructiveSearch) manageRewriteRules(fatherId uint64, state complextypes.State, c Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
 	global.PrintDebug("PS", "Try rewrite rule")
 	global.PrintDebug("PS - MRR", fmt.Sprintf("Id : %v, original node id :%v", currentNodeId, originalNodeId))
 	remainingAtomics := newAtomics.Copy()
@@ -728,7 +728,7 @@ func (ds *destructiveSearch) manageRewriteRules(fatherId uint64, state complexty
 }
 
 // ILL TODO: check if this function does not make the DMT version lose completeness: is the original formula that's rewritten still in the branch or not?
-func (ds *destructiveSearch) tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTerms, state *complextypes.State, remainingAtomics basictypes.FormAndTermsList, fatherId uint64, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) bool {
+func (ds *DestructiveSearch) tryRewrite(rewritten []complextypes.IntSubstAndForm, f basictypes.FormAndTerms, state *complextypes.State, remainingAtomics basictypes.FormAndTermsList, fatherId uint64, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) bool {
 	global.PrintDebug("PS", fmt.Sprintf("Try to rewrite into :  %v", complextypes.IntSubstAndFormListToString(rewritten)))
 
 	newRewritten := []complextypes.IntSubstAndFormAndTerms{}
@@ -790,7 +790,7 @@ func (ds *destructiveSearch) tryRewrite(rewritten []complextypes.IntSubstAndForm
 * Manage this result, dispatch the subst and recreate data strcutures.
 * Return if the branch is closed without variable from its father
 **/
-func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) (bool, []complextypes.SubstAndForm) {
+func (ds *DestructiveSearch) ManageClosureRule(father_id uint64, st *complextypes.State, c Communication, substs []treetypes.Substitutions, f basictypes.FormAndTerms, node_id int, original_node_id int) (bool, []complextypes.SubstAndForm) {
 
 	mm := append(st.GetMM(), complextypes.GetMetaFromSubst(st.GetAppliedSubst().GetSubst())...)
 	substs_with_mm, substs_with_mm_uncleared, substs_without_mm := complextypes.DispatchSubst(treetypes.CopySubstList(substs), mm)
@@ -910,7 +910,7 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *complextype
 }
 
 /* Apply rules with priority (closure < rewrite < alpha < delta < closure with mm < beta < gamma) */
-func (ds *destructiveSearch) applyRules(fatherId uint64, state complextypes.State, c Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
+func (ds *DestructiveSearch) ApplyRules(fatherId uint64, state complextypes.State, c Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
 	global.PrintDebug("AR", "ApplyRule")
 	switch {
 	case len(newAtomics) > 0 && global.IsLoaded("dmt") && len(state.GetSubstsFound()) == 0:
@@ -940,7 +940,7 @@ func (ds *destructiveSearch) applyRules(fatherId uint64, state complextypes.Stat
 	}
 }
 
-func (ds *destructiveSearch) manageAlphaRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int) {
+func (ds *DestructiveSearch) manageAlphaRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int) {
 	global.PrintDebug("PS", "Alpha rule")
 	hdf := state.GetAlpha()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
@@ -957,7 +957,7 @@ func (ds *destructiveSearch) manageAlphaRules(fatherId uint64, state complextype
 	ds.ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, []int{})
 }
 
-func (ds *destructiveSearch) manageDeltaRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int) {
+func (ds *DestructiveSearch) manageDeltaRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int) {
 	global.PrintDebug("PS", "Delta rule")
 	hdf := state.GetDelta()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
@@ -974,7 +974,7 @@ func (ds *destructiveSearch) manageDeltaRules(fatherId uint64, state complextype
 	ds.ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, []int{})
 }
 
-func (ds *destructiveSearch) manageBetaRules(fatherId uint64, state complextypes.State, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
+func (ds *DestructiveSearch) manageBetaRules(fatherId uint64, state complextypes.State, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
 	global.PrintDebug("PS", "Beta rule")
 	hdf := state.GetBeta()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
@@ -1014,7 +1014,7 @@ func (ds *destructiveSearch) manageBetaRules(fatherId uint64, state complextypes
 	ds.DoEndManageBeta(fatherId, state, c, channels, currentNodeId, originalNodeId, childIds, metaToReintroduce)
 }
 
-func (ds *destructiveSearch) manageGammaRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int) {
+func (ds *DestructiveSearch) manageGammaRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int) {
 	global.PrintDebug("PS", "Gamma rule")
 	hdf := state.GetGamma()[0]
 	global.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
@@ -1039,7 +1039,7 @@ func (ds *destructiveSearch) manageGammaRules(fatherId uint64, state complextype
 	ds.ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, []int{})
 }
 
-func (ds *destructiveSearch) manageReintroductionRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int, metaToReintroduce []int, newAtomics basictypes.FormAndTermsList, currentNodeId int, reintroduceAnyway bool) {
+func (ds *DestructiveSearch) manageReintroductionRules(fatherId uint64, state complextypes.State, c Communication, originalNodeId int, metaToReintroduce []int, newAtomics basictypes.FormAndTermsList, currentNodeId int, reintroduceAnyway bool) {
 
 	currentMTR := -1
 
@@ -1064,7 +1064,7 @@ func (ds *destructiveSearch) manageReintroductionRules(fatherId uint64, state co
 	ds.ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, metaToReintroduce)
 }
 
-func (ds *destructiveSearch) manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool) {
+func (ds *DestructiveSearch) manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool) {
 	result := <-c.getResult()
 
 	global.PrintDebug("MAIN", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(result.getProof())))
