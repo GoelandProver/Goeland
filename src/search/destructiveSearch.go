@@ -1075,3 +1075,121 @@ func (ds *DestructiveSearch) manageResult(c Communication) (complextypes.Unifier
 
 	return result.getUnifier(), result.getProof(), result.isClosed()
 }
+
+/* [TEMP]: This will be the new way to use ApplyRules
+- For the moment, it's a little bit janky it's to simplify tests and integration
+- Everything is public by default because it's easier to test, but should be considered private accordingly in the future
+- Coding this, I realize that if this work, there should be no use of the old `SetApplyRules` way of doing
+*/
+
+type ApplyRulesArgs struct {
+	FatherId          uint64
+	State             complextypes.State
+	C                 Communication
+	NewAtomics        basictypes.FormAndTermsList
+	CurrentNodeId     int
+	OriginalNodeId    int
+	MetaToReintroduce []int
+}
+
+// [?]: Maybe i can cram the following in its own file, so when you use a plugin, you can just chose to import a set of rules defined in a specific file
+type ConditionalsRules struct {
+	condition func(args *ApplyRulesArgs) bool
+	rules     func(ds *DestructiveSearch, args *ApplyRulesArgs) // [TODO]: investigate possible return type | [?]: apparently, there is none
+	// [?]: Also, I'm not sure if the correct way to declare the ruled, preferably I would like to declare this as a method of ds
+}
+
+var AtomicRules = ConditionalsRules{
+	condition: func(args *ApplyRulesArgs) bool {
+		return len(args.NewAtomics) > 0 && global.IsLoaded("dmt") && len(args.State.GetSubstsFound()) == 0
+	},
+	rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
+		// [TEMP]: here I would like to use "clever" unpacking but apparently it's not possible in go as of now
+
+		ds.manageRewriteRules(
+			args.FatherId,
+			args.State,
+			args.C,
+			args.NewAtomics,
+			args.CurrentNodeId,
+			args.OriginalNodeId,
+			args.MetaToReintroduce,
+		)
+	},
+}
+
+var AlphaRules = ConditionalsRules{
+	condition: func(args *ApplyRulesArgs) bool {
+		return len(args.State.GetAlpha()) > 0
+	},
+	rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
+		ds.manageAlphaRules(
+			args.FatherId,
+			args.State,
+			args.C,
+			args.OriginalNodeId,
+		)
+	},
+}
+
+var DeltaRules = ConditionalsRules{
+	condition: func(args *ApplyRulesArgs) bool {
+		return len(args.State.GetDelta()) > 0
+	},
+	rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
+		ds.manageDeltaRules(
+			args.FatherId,
+			args.State,
+			args.C,
+			args.OriginalNodeId,
+		)
+	},
+}
+
+var BetaRules = ConditionalsRules{
+	condition: func(args *ApplyRulesArgs) bool {
+		return len(args.State.GetBeta()) > 0
+	},
+	rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
+		ds.manageBetaRules(
+			args.FatherId,
+			args.State,
+			args.C,
+			args.CurrentNodeId,
+			args.OriginalNodeId,
+			args.MetaToReintroduce,
+		)
+	},
+}
+
+var GammaRules = ConditionalsRules{
+	condition: func(args *ApplyRulesArgs) bool {
+		return len(args.State.GetGamma()) > 0
+	},
+	rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
+		ds.manageGammaRules(
+			args.FatherId,
+			args.State,
+			args.C,
+			args.OriginalNodeId,
+		)
+	},
+}
+
+var ConditionalsRulesList = []ConditionalsRules{
+	AtomicRules,
+	AlphaRules,
+	DeltaRules,
+	BetaRules,
+	GammaRules,
+}
+
+func (ds *DestructiveSearch) NewApplyRules(args *ApplyRulesArgs, conditionalsRulesList []ConditionalsRules) {
+	for _, conditionalsRules := range conditionalsRulesList {
+		if conditionalsRules.condition(args) {
+			conditionalsRules.rules(ds, args)
+			return
+		}
+	}
+
+}
