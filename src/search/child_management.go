@@ -90,7 +90,7 @@ func (args wcdArgs) printDebugMessages() {
 
 /* Utilitary subfunctions */
 
-func (ds *destructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruct) error {
+func (ds *DestructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChildren [][]proof.ProofStruct) error {
 	global.PrintDebug("WC", "All children has finished by themselves")
 
 	// All children are closed & did not send any subst, i.e., they can be closed.
@@ -126,7 +126,7 @@ func (ds *destructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChild
 	return nil
 }
 
-func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs []ctps.SubstAndForm) error {
+func (ds *DestructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]proof.ProofStruct, substs []ctps.SubstAndForm) error {
 	global.PrintDebug("WC", fmt.Sprintf("All children agree on the substitution(s) : %v", ttps.SubstListToString(ctps.GetSubstListFromSubstAndFormList(substs))))
 
 	// Updates the proof with what the children have found
@@ -194,7 +194,7 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]p
 }
 
 // If there is a problem of a child always checking the same substitution, it can be avoided here.
-func (bs *destructiveSearch) passSubstToChildren(args wcdArgs, substs []ctps.SubstAndForm) {
+func (bs *DestructiveSearch) passSubstToChildren(args wcdArgs, substs []ctps.SubstAndForm) {
 	subst, resultingSubsts := bs.chooseSubstitutionDestructive(ctps.CopySubstAndFormList(substs), args.st.GetMM())
 	global.PrintDebug("WC", fmt.Sprintf("There is more than one substitution, choose one : %v and send it to children", subst.ToString()))
 
@@ -209,7 +209,7 @@ func (bs *destructiveSearch) passSubstToChildren(args wcdArgs, substs []ctps.Sub
 	bs.waitChildren(args)
 }
 
-func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
+func (ds *DestructiveSearch) manageOpenedChild(args wcdArgs) {
 	global.PrintDebug("WC", "Open children previously found, tell to children to wait for me and try another substitution")
 	closeChildren(&args.children, false)
 
@@ -248,7 +248,7 @@ func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
 	}
 }
 
-func (ds *destructiveSearch) manageBacktrackForDMT(args wcdArgs) {
+func (ds *DestructiveSearch) manageBacktrackForDMT(args wcdArgs) {
 	// Let's try to launch ourselves again with another formula, kept in the backtrack formulas.
 	nextSaF := args.formsBT[0].Copy()
 	nextForm := nextSaF.GetSaf().GetForm()[0].Copy()

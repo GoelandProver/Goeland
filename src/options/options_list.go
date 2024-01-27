@@ -49,6 +49,7 @@ import (
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	"github.com/GoelandProver/Goeland/plugins/lambdapi"
 	"github.com/GoelandProver/Goeland/plugins/sateq"
+	"github.com/GoelandProver/Goeland/plugins/zeq"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -288,9 +289,7 @@ func buildOptions() {
 		false,
 		"Enables zenon equality rules",
 		func(bool) {
-			fmt.Printf("OUI\n")
-			global.SetZenonEquality(true)
-			//sateq.Enable()
+			zeq.Enable()
 		},
 		func(bool) {})
 }
