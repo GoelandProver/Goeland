@@ -1,5 +1,3 @@
-// There some things to do, search [TODO]
-
 package zeq
 
 import (
@@ -17,8 +15,19 @@ func Enable() {
 /* Apply rules with priority (closure < rewrite < alpha < equality < delta < closure with mm < beta < gamma) */
 func zeqApplyRules(fatherId uint64, state complextypes.State, c search.Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
 
+	var args = search.ApplyRulesArgs{ // [TEMP]: Again, this is very suboptimal
+		fatherId,
+		state,
+		c,
+		newAtomics,
+		currentNodeId,
+		originalNodeId,
+		metaToReintroduce,
+	}
+
 	global.PrintInfo("ZEQ", "Apply rules")
 	if typed, ok := search.UsedSearch.(*search.DestructiveSearch); ok {
-		typed.ApplyRules(fatherId, state, c, newAtomics, currentNodeId, originalNodeId, metaToReintroduce)
+
+		typed.NewApplyRules(&args, search.ConditionalsRulesList)
 	}
 }
