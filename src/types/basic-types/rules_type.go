@@ -59,6 +59,7 @@ const (
 	Beta
 	Delta
 	Gamma
+	Zeq
 )
 
 /*************/
@@ -97,3 +98,5 @@ func ShowKindOfRule(f Form) KindOfRule {
 	}
 	return res
 }
+
+/* TODO ZEQ : Create detection here */
