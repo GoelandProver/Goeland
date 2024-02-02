@@ -61,21 +61,15 @@ const (
 
 type DestructiveSearch struct {
 	// [TODO]: Will be removed in favor of the next argument
-	doCorrectApplyRules func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
+	//doCorrectApplyRules func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
+	doCorrectApplyRules func(*ApplyRulesArgs, []ConditionalsRules)
 	rulesToApply        []ConditionalsRules
 }
 
 func NewDestructiveSearch() SearchAlgorithm {
 	ds := &DestructiveSearch{}
-	// [TODO]: Will be removed in favor of the next function
-	ds.doCorrectApplyRules = ds.OldApplyRules
 	ds.rulesToApply = conditionalsRulesList
 	return ds
-}
-
-// [TODO]: Will be removed in favor of the next function
-func (ds *DestructiveSearch) setApplyRules(function func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)) {
-	ds.doCorrectApplyRules = function
 }
 
 func (ds *DestructiveSearch) setRulesToApply(rules []ConditionalsRules) {
@@ -308,7 +302,18 @@ func (ds *DestructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", atomics_for_dmt.ToString()))
 
 		// DoCorrectApplyRules is defined by default as ApplyRules, or to ApplyRulesAssisted if assisted flag is given.
-		go ds.doCorrectApplyRules(father_id, st, cha, atomics_for_dmt, node_id, original_node_id, meta_to_reintroduce)
+
+		var args = ApplyRulesArgs{
+			FatherId:          father_id,
+			State:             st,
+			C:                 cha,
+			NewAtomics:        atomics_for_dmt,
+			CurrentNodeId:     node_id,
+			OriginalNodeId:    original_node_id,
+			MetaToReintroduce: meta_to_reintroduce,
+		}
+
+		go ds.ApplyRules(&args, ds.rulesToApply)
 	}
 }
 
