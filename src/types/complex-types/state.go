@@ -93,6 +93,8 @@ func (s State) GetDelta() basictypes.FormAndTermsList {
 func (s State) GetGamma() basictypes.FormAndTermsList {
 	return s.gamma.Copy()
 }
+
+// [M24]
 func (s State) GetZeq() basictypes.FormAndTermsList {
 	return s.zeq.Copy()
 }
