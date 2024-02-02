@@ -134,3 +134,25 @@ type Basic[T any] interface {
 	Comparable
 	Copyable[T]
 }
+
+type Case[T any] interface {
+	Case(T) bool
+	Then(T)
+}
+
+type SwitchCase[T any] struct {
+	Args  T
+	Cases []Case[T]
+}
+
+func (sc *SwitchCase[T]) Init(cases []Case[T]) {
+	sc.Cases = cases
+}
+
+func (sc *SwitchCase[T]) Do() {
+	for _, c := range sc.Cases {
+		if c.Case(sc.Args) {
+			c.Then(sc.Args)
+		}
+	}
+}
