@@ -9,30 +9,29 @@ import (
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
+)
+
+var ZeqRules = search.ConditionalsRules{
+	Condition: func(args *search.ApplyRulesArgs) bool {
+		return len(args.State.GetZeq()) > 0
+	},
+	Rules: func(ds *search.DestructiveSearch, args *search.ApplyRulesArgs) {
+	},
+}
+
+var conditionalsRulesList = []search.ConditionalsRules{
+	search.AtomicRules,
+	search.AlphaRules,
+	ZeqRules,
+	search.DeltaRules,
+	search.BetaRules,
+	search.GammaRules,
+}
 
 func Enable() {
 	global.PrintInfo("ZEQ", "ZEQ plugin enabled")
-	search.SetApplyRules(zeqApplyRules)
-}
-
-/* Apply rules with priority (closure < rewrite < alpha < equality < delta < closure with mm < beta < gamma) */
-func zeqApplyRules(fatherId uint64, state complextypes.State, c search.Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
-
-	var args = search.ApplyRulesArgs{ // [TEMP]: Again, this is very suboptimal
-		fatherId,
-		state,
-		c,
-		newAtomics,
-		currentNodeId,
-		originalNodeId,
-		metaToReintroduce,
-	}
-
-	global.PrintInfo("ZEQ", "Apply rules")
-	if typed, ok := search.UsedSearch.(*search.DestructiveSearch); ok {
-
-		typed.NewApplyRules(&args, search.ConditionalsRulesList)
-	}
+	// Ici PrintInfo printera 9223372036.854776s, juste ici, idk why
+	search.SetRulesToApply(conditionalsRulesList)
 }
 
 func manageZeqRules(ds *search.DestructiveSearch, fatherId uint64, state complextypes.State, c search.Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) {

@@ -42,7 +42,6 @@ import (
 	"time"
 
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugins/assisted"
 	"github.com/GoelandProver/Goeland/plugins/coq"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
 	"github.com/GoelandProver/Goeland/plugins/equality"
@@ -255,8 +254,9 @@ func buildOptions() {
 		false,
 		"Enables the step-by-step mode debugger",
 		func(bool) {
-			search.SetApplyRules(assisted.ApplyRulesAssisted)
-			global.SetAssisted(true)
+			// [TODO]: Non functional because SetApplyRules removed
+			//search.SetApplyRules(assisted.ApplyRulesAssisted)
+			//global.SetAssisted(true)
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
