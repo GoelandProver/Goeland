@@ -9,6 +9,7 @@ import (
 
 func Enable() {
 	global.PrintInfo("ZEQ", "ZEQ plugin enabled")
+	// Ici PrintInfo printera 9223372036.854776s, juste ici, idk why
 	search.SetApplyRules(zeqApplyRules)
 }
 

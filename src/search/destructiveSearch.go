@@ -1175,6 +1175,22 @@ var GammaRules = ConditionalsRules{
 }
 
 // [TODO]: Rember to pass in private
+/*
+	 Thoughts on zeq AR
+		var ZeqRules = ConditionalsRules{
+			condition: func(args *ZeqRulesArgs) bool {
+				return len(args.State.GetZeq()) >
+			},
+			rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
+				ds.manageZeqRules(
+					args.FatherId,
+					args.State,
+					args.C,
+					args.OriginalNodeId,
+				)
+			},
+		}
+*/
 var ConditionalsRulesList = []ConditionalsRules{
 	AtomicRules,
 	AlphaRules,

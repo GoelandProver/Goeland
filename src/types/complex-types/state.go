@@ -52,19 +52,19 @@ import (
 
 /* The state of the search in a step */
 type State struct {
-	n                                     int
-	lf, atomic, alpha, beta, delta, gamma basictypes.FormAndTermsList
-	meta_generator                        []basictypes.MetaGen
-	mm, mc                                basictypes.MetaList
-	applied_subst                         SubstAndForm
-	last_applied_subst                    SubstAndForm   // For non destructive case only
-	substs_found                          []SubstAndForm // Subst found with mm in d, subst for "bactrack" in nd
-	tree_pos, tree_neg                    datastruct.DataStructure
-	proof                                 []proof.ProofStruct
-	current_proof                         proof.ProofStruct
-	bt_on_formulas                        bool
-	forbidden                             []treetypes.Substitutions
-	unifier                               Unifier
+	n                                          int
+	lf, atomic, alpha, beta, delta, gamma, zeq basictypes.FormAndTermsList
+	meta_generator                             []basictypes.MetaGen
+	mm, mc                                     basictypes.MetaList
+	applied_subst                              SubstAndForm
+	last_applied_subst                         SubstAndForm   // For non destructive case only
+	substs_found                               []SubstAndForm // Subst found with mm in d, subst for "bactrack" in nd
+	tree_pos, tree_neg                         datastruct.DataStructure
+	proof                                      []proof.ProofStruct
+	current_proof                              proof.ProofStruct
+	bt_on_formulas                             bool
+	forbidden                                  []treetypes.Substitutions
+	unifier                                    Unifier
 }
 
 /***********/
@@ -92,6 +92,9 @@ func (s State) GetDelta() basictypes.FormAndTermsList {
 }
 func (s State) GetGamma() basictypes.FormAndTermsList {
 	return s.gamma.Copy()
+}
+func (s State) GetZeq() basictypes.FormAndTermsList {
+	return s.zeq.Copy()
 }
 func (s State) GetMetaGen() []basictypes.MetaGen {
 	return basictypes.CopyMetaGenList(s.meta_generator)
@@ -155,6 +158,9 @@ func (st *State) SetDelta(fl basictypes.FormAndTermsList) {
 }
 func (st *State) SetGamma(fl basictypes.FormAndTermsList) {
 	st.gamma = fl.Copy()
+}
+func (st *State) SetZeq(fl basictypes.FormAndTermsList) {
+	st.zeq = fl.Copy()
 }
 func (st *State) SetMetaGen(fl []basictypes.MetaGen) {
 	st.meta_generator = basictypes.CopyMetaGenList(fl)
@@ -251,7 +257,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) St
 	current_proof.SetRuleProof("Initial formula")
 	current_proof.SetFormulaProof(basictypes.MakeFormAndTerm(f.Copy(), basictypes.MakeEmptyTermList()))
 
-	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier()}
+	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier()}
 }
 
 /* Print a state */
@@ -287,6 +293,11 @@ func (st State) Print() {
 	if !st.GetGamma().IsEmpty() {
 		global.PrintDebug("PSt", "Gamma formulae: ")
 		st.GetGamma().Print()
+	}
+
+	if !st.GetZeq().IsEmpty() {
+		global.PrintDebug("PSt", "Zeq formulae: ")
+		st.GetZeq().Print()
 	}
 
 	if len(st.GetMetaGen()) > 0 {
@@ -339,6 +350,7 @@ func (st State) Copy() State {
 	new_state.SetBeta(st.GetBeta())
 	new_state.SetDelta(st.GetDelta())
 	new_state.SetGamma(st.GetGamma())
+	new_state.SetZeq(st.GetZeq())
 
 	new_state.SetMetaGen(st.GetMetaGen())
 	new_state.SetMM(append(new_state.GetMM(), append(st.GetMM(), st.GetMC()...)...))
@@ -400,7 +412,7 @@ func (st State) CanApplyGammaRule() bool {
 
 /* Check if rules are appliable */
 func (st State) AreRulesApplicable() bool {
-	return len(st.GetAlpha()) > 0 || len(st.GetDelta()) > 0 || len(st.GetBeta()) > 0 || (len(st.GetGamma()) > 0 && st.CanApplyGammaRule()) || (global.IsDestructive() && len(st.GetMetaGen()) > 0)
+	return len(st.GetAlpha()) > 0 || len(st.GetDelta()) > 0 || len(st.GetBeta()) > 0 || len(st.GetZeq()) > 0 || (len(st.GetGamma()) > 0 && st.CanApplyGammaRule()) || (global.IsDestructive() && len(st.GetMetaGen()) > 0)
 }
 
 /* Put the given formula in the right rule box in the given state */
@@ -418,6 +430,8 @@ func (st *State) DispatchForm(f basictypes.FormAndTerms) {
 		st.SetDelta(st.GetDelta().AppendIfNotContains(f))
 	case basictypes.Gamma:
 		st.SetGamma(st.GetGamma().AppendIfNotContains(f))
+	case basictypes.Zeq:
+		st.SetZeq(st.GetZeq().AppendIfNotContains(f))
 	default:
 		global.PrintError("STATE", "Formula not recognized")
 	}
