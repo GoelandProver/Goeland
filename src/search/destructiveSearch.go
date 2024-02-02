@@ -1095,8 +1095,7 @@ type ApplyRulesArgs struct {
 // [?]: Maybe i can cram the following in its own file, so when you use a plugin, you can just chose to import a set of rules defined in a specific file
 type ConditionalsRules struct {
 	condition func(args *ApplyRulesArgs) bool
-	rules     func(ds *DestructiveSearch, args *ApplyRulesArgs) // [TODO]: investigate possible return type | [?]: apparently, there is none
-	// [?]: Also, I'm not sure if the correct way to declare the ruled, preferably I would like to declare this as a method of ds
+	rules     func(ds *DestructiveSearch, args *ApplyRulesArgs)
 }
 
 var AtomicRules = ConditionalsRules{
@@ -1104,7 +1103,6 @@ var AtomicRules = ConditionalsRules{
 		return len(args.NewAtomics) > 0 && global.IsLoaded("dmt") && len(args.State.GetSubstsFound()) == 0
 	},
 	rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
-		// [TEMP]: here I would like to use "clever" unpacking but apparently it's not possible in go as of now
 
 		ds.manageRewriteRules(
 			args.FatherId,
@@ -1176,6 +1174,7 @@ var GammaRules = ConditionalsRules{
 	},
 }
 
+// [TODO]: Rember to pass in private
 var ConditionalsRulesList = []ConditionalsRules{
 	AtomicRules,
 	AlphaRules,
@@ -1185,7 +1184,7 @@ var ConditionalsRulesList = []ConditionalsRules{
 }
 
 func (ds *DestructiveSearch) NewApplyRules(args *ApplyRulesArgs, conditionalsRulesList []ConditionalsRules) {
-	for _, conditionalsRules := range conditionalsRulesList {
+	for _, conditionalsRules := range ConditionalsRulesList {
 		if conditionalsRules.condition(args) {
 			conditionalsRules.rules(ds, args)
 			return

@@ -16,18 +16,18 @@ func Enable() {
 func zeqApplyRules(fatherId uint64, state complextypes.State, c search.Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
 
 	var args = search.ApplyRulesArgs{ // [TEMP]: Again, this is very suboptimal
-		fatherId,
-		state,
-		c,
-		newAtomics,
-		currentNodeId,
-		originalNodeId,
-		metaToReintroduce,
+		FatherId:          fatherId,
+		State:             state,
+		C:                 c,
+		NewAtomics:        newAtomics,
+		CurrentNodeId:     currentNodeId,
+		OriginalNodeId:    originalNodeId,
+		MetaToReintroduce: metaToReintroduce,
 	}
 
 	global.PrintInfo("ZEQ", "Apply rules")
 	if typed, ok := search.UsedSearch.(*search.DestructiveSearch); ok {
 
-		typed.NewApplyRules(&args, search.ConditionalsRulesList)
+		typed.NewApplyRules(&args, search.conditionalsRulesList)
 	}
 }
