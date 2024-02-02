@@ -51,7 +51,9 @@ type SearchAlgorithm interface {
 	ProofSearch(uint64, complextypes.State, Communication, complextypes.SubstAndForm, int, int, []int)
 	DoEndManageBeta(uint64, complextypes.State, Communication, []Communication, int, int, []int, []int)
 	manageRewriteRules(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
+	// [TODO]: Will be removed in favor of the next function
 	setApplyRules(func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int))
+	setRulesToApply([]ConditionalsRules)
 	ManageClosureRule(uint64, *complextypes.State, Communication, []treetypes.Substitutions, basictypes.FormAndTerms, int, int) (bool, []complextypes.SubstAndForm)
 	manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool)
 }
@@ -66,8 +68,13 @@ func SetSearchAlgorithm(algo SearchAlgorithm) {
 	UsedSearch = algo
 }
 
+// [TODO]: Will be removed in favor of the next function
 func SetApplyRules(function func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)) {
 	UsedSearch.setApplyRules(function)
+}
+
+func SetRulesToApply(rules []ConditionalsRules) {
+	UsedSearch.setRulesToApply(rules)
 }
 
 /* Begin the proof search */
