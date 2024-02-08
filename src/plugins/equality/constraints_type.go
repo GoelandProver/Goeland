@@ -73,9 +73,9 @@ func (c Constraint) equals(c2 Constraint) bool {
 func (c Constraint) toString() string {
 	switch c.getCType() {
 	case PREC:
-		return c.getTP().getT1().ToString() + " ≺ " + c.getTP().getT2().ToString()
+		return c.getTP().GetT1().ToString() + " ≺ " + c.getTP().GetT2().ToString()
 	case EQ:
-		return c.getTP().getT1().ToString() + " ≃ " + c.getTP().getT2().ToString()
+		return c.getTP().GetT1().ToString() + " ≃ " + c.getTP().GetT2().ToString()
 	default:
 		global.PrintError("CT", "Constraint type unknown")
 		return "Constraint type unknown"
@@ -89,8 +89,8 @@ func MakeConstraint(i int, tp TermPair) Constraint {
 func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
 	for _, subst := range s {
 		m, t := subst.Get()
-		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().getT1())
-		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().getT2())
+		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().GetT1())
+		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().GetT2())
 		c.setTP(makeTermPair(new_t1, new_t2))
 	}
 }
@@ -98,7 +98,7 @@ func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
 /* return true if the constraint is not violated, false otherwise  + true is the contraint is comparable, false otherwise + update c into the useful part of the constraint */
 func (c *Constraint) checkLPO() (bool, bool) {
 	global.PrintDebug("CLPO", fmt.Sprintf("Type %v, cst : %v", c.getCType(), c.toString()))
-	cs := lpo.compare(c.getTP().getT1(), c.getTP().getT2())
+	cs := lpo.compare(c.getTP().GetT1(), c.getTP().GetT2())
 	global.PrintDebug("CLPO", fmt.Sprintf("res : %v, is_comparable : %v", cs.order, cs.is_comparable))
 	if cs.is_comparable {
 		switch c.getCType() {

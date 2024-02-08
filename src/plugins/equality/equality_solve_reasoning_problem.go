@@ -73,7 +73,7 @@ func tryEqualityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, 
 
 /* launch an equality reasoning problem resolution. Stop when the first solution is found */
 func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, last_applied_rule_index, last_applied_rule_type int) (bool, []treetypes.Substitutions) {
-	global.PrintDebug("ERP", fmt.Sprintf("EP : %v", ep.toString()))
+	global.PrintDebug("ERP", fmt.Sprintf("EP : %v", ep.ToString()))
 	substs_res := []treetypes.Substitutions{}
 	unif_found := false
 

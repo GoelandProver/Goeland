@@ -65,30 +65,38 @@ func (ep EqualityProblem) getEMap() map[string]basictypes.TermList {
 	}
 	return map_res
 }
-func (ep EqualityProblem) getE() Equalities {
+func (ep EqualityProblem) GetE() Equalities {
 	return ep.E.copy()
 }
-func (ep EqualityProblem) getS() basictypes.Term {
+func (ep EqualityProblem) GetS() basictypes.Term {
 	return ep.s.Copy()
 }
-func (ep EqualityProblem) getT() basictypes.Term {
+func (ep EqualityProblem) GetT() basictypes.Term {
 	return ep.t.Copy()
 }
 func (ep EqualityProblem) getC() ConstraintStruct {
 	return ep.c.copy()
 }
 func (ep EqualityProblem) copy() EqualityProblem {
-	return makeEqualityProblem(ep.getE(), ep.getS(), ep.getT(), ep.getC())
+	return makeEqualityProblem(ep.GetE(), ep.GetS(), ep.GetT(), ep.getC())
 }
-func (ep EqualityProblem) toString() string {
-	return "<" + ep.getE().ToString() + ", " + ep.getS().ToString() + ", " + ep.getT().ToString() + "> • " + ep.getC().toString()
+func (ep EqualityProblem) ToString() string {
+	return "<" + ep.GetE().ToString() + ", " + ep.GetS().ToString() + ", " + ep.GetT().ToString() + "> • " + ep.getC().toString()
+}
+
+func (ep EqualityProblem) AxiomsToTPTPString() string {
+	return ep.GetE().ToTPTPString()
+}
+
+func (ep EqualityProblem) ToTPTPString() string {
+	return ep.GetS().ToMappedString(basictypes.DefaultMapString, false) + " = " + ep.GetT().ToMappedString(basictypes.DefaultMapString, false)
 }
 
 /* Apply a substitution on an equality problem */
 func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityProblem {
-	new_s := ep.getS()
-	new_t := ep.getT()
-	new_equalities := ep.getE()
+	new_s := ep.GetS()
+	new_t := ep.GetT()
+	new_equalities := ep.GetE()
 
 	if !ep.getC().isEmpty() {
 		global.PrintError("EQ-AS", fmt.Sprintf("Constraint not null in applySubstitution : %v", ep.getC().toString()))
@@ -105,6 +113,22 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 	return res
 }
 
+func (ep EqualityProblem) getMetas() basictypes.MetaList {
+	metas := basictypes.MakeEmptyMetaList()
+
+	for _, meta := range ep.E.getMetas() {
+		metas = metas.AppendIfNotContains(meta)
+	}
+	for _, meta := range ep.s.GetMetas() {
+		metas = metas.AppendIfNotContains(meta)
+	}
+	for _, meta := range ep.t.GetMetas() {
+		metas = metas.AppendIfNotContains(meta)
+	}
+
+	return metas
+}
+
 /*** Functions ***/
 
 func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c ConstraintStruct) EqualityProblem {
@@ -115,8 +139,8 @@ func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c C
 func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
 	form_list := basictypes.MakeEmptyFormList()
 	for _, e := range eq {
-		form_list = append(form_list, treetypes.MakerTermForm(e.getT1()))
-		form_list = append(form_list, treetypes.MakerTermForm(e.getT2()))
+		form_list = append(form_list, treetypes.MakerTermForm(e.GetT1()))
+		form_list = append(form_list, treetypes.MakerTermForm(e.GetT2()))
 	}
 	return new(treesearch.Node).MakeDataStruct(form_list.Copy(), true)
 }
@@ -125,8 +149,8 @@ func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
 func makeEQMapFromEqualities(eq Equalities) map[string]basictypes.TermList {
 	map_res := make(map[string]basictypes.TermList)
 	for _, e := range eq {
-		map_res[e.getT1().ToString()] = append(map_res[e.getT1().ToString()], e.getT2())
-		map_res[e.getT2().ToString()] = append(map_res[e.getT2().ToString()], e.getT1())
+		map_res[e.GetT1().ToString()] = append(map_res[e.GetT1().ToString()], e.GetT2())
+		map_res[e.GetT2().ToString()] = append(map_res[e.GetT2().ToString()], e.GetT1())
 	}
 	return map_res
 }

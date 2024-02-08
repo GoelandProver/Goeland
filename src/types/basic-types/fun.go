@@ -62,8 +62,10 @@ func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, di
 	}
 	args := []string{}
 
-	if tv := ListToString(f.typeVars, ", ", mapping[PredEmpty]); tv != "" {
-		args = append(args, tv)
+	if len(f.typeVars) > 0 {
+		if tv := ListToString(f.typeVars, ", ", mapping[PredEmpty]); tv != "" {
+			args = append(args, tv)
+		}
 	}
 	args = append(args, "%s")
 
@@ -99,16 +101,26 @@ func (f Fun) IsFun() bool                    { return true }
 func (Fun) ToMeta() Meta                     { return MakeEmptyMeta() }
 
 func (f Fun) Equals(t any) bool {
-	if typed, ok := t.(Fun); ok {
+	switch typed := t.(type) {
+	case Fun:
 		return typed.GetID().Equals(f.GetID()) &&
 			typed.GetArgs().Equals(f.GetArgs()) &&
 			f.typeHint.Equals(typed.typeHint)
+	case *Fun:
+		return typed.GetID().Equals(f.GetID()) &&
+			typed.GetArgs().Equals(f.GetArgs()) &&
+			f.typeHint.Equals(typed.typeHint)
+	default:
+		return false
 	}
-	return false
 }
 
 func (f Fun) Copy() Term {
 	return MakeFun(f.GetP(), f.GetArgs(), typing.CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
+}
+
+func (f Fun) PointerCopy() Term {
+	return NewFun(f.GetP(), f.GetArgs(), typing.CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
 }
 
 func (f Fun) GetMetas() MetaList {
@@ -119,11 +131,19 @@ func (f Fun) GetMetas() MetaList {
 	return metas
 }
 
-func (f Fun) ReplaceSubTermBy(original_term, new_term Term) Term {
-	if f.Equals(original_term) {
-		return new_term.Copy()
+func (f Fun) ReplaceSubTermBy(oldTerm, newTerm Term) Term {
+	if f.Equals(oldTerm) {
+		return newTerm.Copy()
 	} else {
-		return MakeFun(f.GetID(), f.GetArgs().replaceFirstOccurrenceTermList(original_term, new_term), f.GetTypeVars(), f.GetTypeHint())
+		return MakeFun(f.GetID(), f.GetArgs().replaceFirstOccurrenceTermList(oldTerm, newTerm), f.GetTypeVars(), f.GetTypeHint())
+	}
+}
+
+func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
+	if f.Equals(oldTerm) {
+		return newTerm.Copy()
+	} else {
+		return MakeFun(f.GetID(), f.GetArgs().replaceOccurrence(oldTerm, newTerm), f.GetTypeVars(), f.GetTypeHint())
 	}
 }
 

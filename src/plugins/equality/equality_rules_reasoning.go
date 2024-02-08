@@ -81,7 +81,7 @@ func equalityReasoningList(epl EqualityProblemList) (bool, []treetypes.Substitut
 	substs_res := []treetypes.Substitutions{}
 
 	for _, ep := range epl {
-		global.PrintDebug("ERL", fmt.Sprintf("Iteration on EP : %v", ep.toString()))
+		global.PrintDebug("ERL", fmt.Sprintf("Iteration on EP : %v", ep.ToString()))
 		// Each step manage one problem with n subtitutions
 		if has_solution, subst_res_tmp := manageEqualityReasoningProblem(ep.copy(), substs_res); has_solution {
 			global.PrintDebug("ERL", fmt.Sprintf("Solution found for on EP : %v !", treetypes.SubstListToString(subst_res_tmp)))

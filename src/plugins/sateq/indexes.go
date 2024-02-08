@@ -29,56 +29,20 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
+package sateq
 
-/**
-* This file contains the type definition for equality reasonning.
-**/
+import "cmp"
 
-package equality
-
-import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
-
-/* A pair of two terms */
-type TermPair struct {
-	t1, t2 basictypes.Term
+type unorderedPair[T cmp.Ordered] struct {
+	x, y T
 }
 
-func (tp TermPair) GetT1() basictypes.Term {
-	return tp.t1.Copy()
-}
-func (tp TermPair) GetT2() basictypes.Term {
-	return tp.t2.Copy()
-}
-func (tp TermPair) copy() TermPair {
-	return makeTermPair(tp.GetT1(), tp.GetT2())
-}
-func (tp TermPair) equals(tp2 TermPair) bool {
-	return tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())
-}
-func (tp TermPair) equalsModulo(tp2 TermPair) bool {
-	return (tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())) ||
-		(tp.GetT1().Equals(tp2.GetT2()) && tp.GetT2().Equals(tp2.GetT1()))
-
-}
-func (tp TermPair) ToString() string {
-	return tp.GetT1().ToString() + " ≈ " + tp.GetT2().ToString()
-}
-func (tp TermPair) ToTPTPString() string {
-	return tp.GetT1().ToMappedString(basictypes.DefaultMapString, false) + " = " + tp.GetT2().ToMappedString(basictypes.DefaultMapString, false)
-}
-func makeTermPair(t1, t2 basictypes.Term) TermPair {
-	return TermPair{t1.Copy(), t2.Copy()}
-}
-
-func (tp TermPair) getMetas() basictypes.MetaList {
-	metas := basictypes.MakeEmptyMetaList()
-
-	for _, meta := range tp.t1.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
+func makeUnorderedPair[T cmp.Ordered](x, y T) unorderedPair[T] {
+	if x < y {
+		return unorderedPair[T]{x, y}
 	}
-	for _, meta := range tp.t2.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
-
-	return metas
+	return unorderedPair[T]{y, x}
 }
+
+type constantIndex int
+type termIndex int

@@ -40,8 +40,12 @@ package equality
 
 import (
 	"fmt"
+	"os"
+	"strconv"
+	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -51,12 +55,37 @@ type EqualityProblemList []EqualityProblem
 func (epl EqualityProblemList) ToString() string {
 	res := "{"
 	for i, ep := range epl {
-		res += ep.toString()
+		res += ep.ToString()
 		if i < len(epl)-1 {
 			res += ", "
 		}
 	}
 	return res + "}"
+}
+
+var eqCpt = 0
+
+func (epl EqualityProblemList) ToTPTPString() string {
+	result := "("
+	for _, ep := range epl {
+		result += ep.ToTPTPString() + ") & ("
+	}
+	result = result[:len(result)-4]
+
+	return result
+}
+
+func (epl EqualityProblemList) GetMetas() *global.List[basictypes.Meta] {
+	metas := global.NewList[basictypes.Meta]()
+
+	for _, ep := range epl {
+		x := ep.getMetas()
+		for _, meta := range x {
+			metas.AppendIfNotContains(meta)
+		}
+	}
+
+	return metas
 }
 
 func makeEmptyEqualityProblemList() EqualityProblemList {
@@ -65,15 +94,113 @@ func makeEmptyEqualityProblemList() EqualityProblemList {
 
 type EqualityProblemMultiList []EqualityProblemList
 
-func (epl EqualityProblemMultiList) ToString() string {
+func (epml EqualityProblemMultiList) HasMetas() bool {
+	for _, epl := range epml {
+		if epl.GetMetas().Length() > 0 {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (epml EqualityProblemMultiList) ToString() string {
 	res := "{"
-	for i, ep := range epl {
+	for i, ep := range epml {
 		res += ep.ToString()
-		if i < len(epl)-1 {
+		if i < len(epml)-1 {
 			res += ", "
 		}
 	}
 	return res + "}"
+}
+
+func (epml EqualityProblemMultiList) AllSubToTPTPString() string {
+	for _, epl := range epml {
+		epmlCopy := EqualityProblemMultiList{epl}
+		subProblemSat, _ := RunEqualityReasoning(epmlCopy)
+
+		if !epmlCopy.isTrivial() && subProblemSat {
+			result := epmlCopy.ToTPTPString(true) + "\n"
+			success := true
+
+			for success && !epmlCopy.isTrivial() {
+				epmlCopy.removeHalfOfEqualities()
+				success, _ = RunEqualityReasoning(epmlCopy)
+			}
+
+			if !success && !epmlCopy.isTrivial() {
+				result += epmlCopy.ToTPTPString(false)
+				return result
+			} else {
+				eqCpt--
+			}
+		}
+	}
+
+	return ""
+}
+
+func (epml EqualityProblemMultiList) ToTPTPString(isSat bool) string {
+	problemName := os.Args[len(os.Args)-1]
+	problemName = problemName[:len(problemName)-2]
+	parts := strings.Split(problemName, "/")
+	problemName = strings.ToLower(strings.ReplaceAll(parts[len(parts)-1], "+", "plus") + "eq" + strconv.Itoa(eqCpt))
+
+	if !isSat {
+		problemName = problemName + "un"
+	}
+	problemName = problemName + "sat"
+
+	result := "fof(" + problemName + ", conjecture, "
+	eqCpt++
+
+	result += epml.GetMetasToTPTPString() + "(("
+	result += epml[0][0].AxiomsToTPTPString() + ") => (("
+
+	for _, epl := range epml {
+		result += epl.ToTPTPString() + ") | ("
+	}
+	result = result[:len(result)-4]
+
+	result = strings.ReplaceAll(result, "{}", "")
+
+	return result + ")))."
+}
+
+func (epml EqualityProblemMultiList) GetMetasToTPTPString() string {
+	result := ""
+	metas := basictypes.MakeEmptyMetaList()
+
+	for _, epl := range epml {
+		for _, meta := range epl.GetMetas().AsSlice() {
+			metas = metas.AppendIfNotContains(meta)
+		}
+	}
+
+	if len(metas) > 0 {
+		result = "? ["
+		for _, meta := range metas {
+			result += meta.ToMappedString(basictypes.DefaultMapString, false) + ", "
+		}
+		result = result[:len(result)-2] + "] : "
+	}
+
+	return result
+}
+
+func (epml EqualityProblemMultiList) isTrivial() bool {
+	return len(epml[0][0].GetE()) == 0 || !epml.HasMetas()
+}
+
+func (epml EqualityProblemMultiList) removeHalfOfEqualities() {
+	for i, epm := range epml {
+		for j, ep := range epm {
+			ep.E = ep.GetE().removeHalf()
+			epm[j] = ep
+		}
+		epml[i] = epm
+	}
 }
 
 func makeEmptyEqualityProblemMultiList() EqualityProblemMultiList {
@@ -86,19 +213,39 @@ func makeEmptyEqualityProblemMultiList() EqualityProblemMultiList {
 func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
 	for _, neq_pair := range neq {
-		x := makeEqualityProblem(eq.copy(), neq_pair.getT1(), neq_pair.getT2(), makeEmptyConstraintStruct())
+		x := makeEqualityProblem(eq.copy(), neq_pair.GetT1(), neq_pair.GetT2(), makeEmptyConstraintStruct())
 		res = append(res, append(makeEmptyEqualityProblemList(), x))
 	}
 	return res
 }
 
 /* Build an equality problem list from a predicat and its negation */
-func buildEqualityProblemListFrom2Pred(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
+var buildEqualityProblemListFrom2Pred = func(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
 	res := makeEmptyEqualityProblemList()
 	for i := range p1.GetArgs() {
 		res = append(res, makeEqualityProblem(eq.copy(), p1.GetArgs()[i].Copy(), p2.GetArgs()[i].Copy(), makeEmptyConstraintStruct()))
 	}
 	return res
+}
+
+func MakeFunctionEqualityProblem() {
+	buildEqualityProblemListFrom2Pred = buildFunctionEqualityProblemListFrom2Pred
+}
+
+/* Build an equality problem list from a predicat and its negation */
+func buildFunctionEqualityProblemListFrom2Pred(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
+	res := makeEmptyEqualityProblemList()
+
+	idFst := basictypes.MakerId(p1.GetID().GetName() + "_SATEQ")
+	idSnd := basictypes.MakerId(p2.GetID().GetName() + "_SATEQ")
+
+	funFst := basictypes.MakerFun(idFst, p1.GetArgs(), []typing.TypeApp{})
+	funSnd := basictypes.MakerFun(idSnd, p2.GetArgs(), []typing.TypeApp{})
+
+	lpo.insertIdIfNotContains(idFst)
+	lpo.insertIdIfNotContains(idSnd)
+
+	return append(res, makeEqualityProblem(eq.copy(), funFst, funSnd, makeEmptyConstraintStruct()))
 }
 
 /* Build an equality problem multi list from a list of predicate. Take one predicate, search for its negation in the code tree, and if it found any, build the corresponding equality problem list */

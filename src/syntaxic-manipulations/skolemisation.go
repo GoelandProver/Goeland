@@ -175,7 +175,7 @@ func alphaConvert(form btps.Form, k int, substitution map[btps.Var]btps.Var) btp
 	case btps.Top, btps.Bot:
 		return form
 	case btps.Pred:
-		return btps.MakePred(f.GetIndex(), f.GetID(), global.Map(f.GetArgs(), func(_ int, t btps.Term) btps.Term { return alphaConvertTerm(t, substitution) }), f.GetTypeVars(), f.GetType())
+		return btps.MakePred(f.GetIndex(), f.GetID(), global.MapTo(f.GetArgs(), func(_ int, t btps.Term) btps.Term { return alphaConvertTerm(t, substitution) }), f.GetTypeVars(), f.GetType())
 	case btps.Not:
 		return btps.MakeNot(f.GetIndex(), alphaConvert(f.GetForm(), k, substitution))
 	case btps.Imp:
@@ -183,9 +183,9 @@ func alphaConvert(form btps.Form, k int, substitution map[btps.Var]btps.Var) btp
 	case btps.Equ:
 		return btps.MakeEqu(f.GetIndex(), alphaConvert(f.GetF1(), k, substitution), alphaConvert(f.GetF2(), k, substitution))
 	case btps.And:
-		return btps.MakeAnd(f.GetIndex(), global.Map(f.FormList, func(_ int, f btps.Form) btps.Form { return alphaConvert(f, k, substitution) }))
+		return btps.MakeAnd(f.GetIndex(), global.MapTo(f.FormList, func(_ int, f btps.Form) btps.Form { return alphaConvert(f, k, substitution) }))
 	case btps.Or:
-		return btps.MakeOr(f.GetIndex(), global.Map(f.FormList, func(_ int, f btps.Form) btps.Form { return alphaConvert(f, k, substitution) }))
+		return btps.MakeOr(f.GetIndex(), global.MapTo(f.FormList, func(_ int, f btps.Form) btps.Form { return alphaConvert(f, k, substitution) }))
 	case btps.All:
 		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
 		return btps.MakeAll(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
@@ -215,7 +215,7 @@ func alphaConvertTerm(t btps.Term, substitution map[btps.Var]btps.Var) btps.Term
 			return nt
 		}
 	case btps.Fun:
-		return btps.MakeFun(nt.GetID(), global.Map(nt.GetArgs(), func(_ int, trm btps.Term) btps.Term { return alphaConvertTerm(trm, substitution) }), nt.GetTypeVars(), nt.GetTypeHint())
+		return btps.MakeFun(nt.GetID(), global.MapTo(nt.GetArgs(), func(_ int, trm btps.Term) btps.Term { return alphaConvertTerm(trm, substitution) }), nt.GetTypeVars(), nt.GetTypeHint())
 	}
 	return t
 }

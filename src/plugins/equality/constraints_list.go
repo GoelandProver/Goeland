@@ -132,17 +132,17 @@ func (cl ConstraintList) checkConstraintList() bool {
 		global.PrintDebug("CCL", fmt.Sprintf("Constraint : %v", c.toString()))
 		switch c.getCType() {
 		case PREC:
-			if !appendToMapAndCheck(c.getTP().getT1().ToString(), c.getTP().getT2(), &map_constraintes, 1, 2) {
+			if !appendToMapAndCheck(c.getTP().GetT1().ToString(), c.getTP().GetT2(), &map_constraintes, 1, 2) {
 				return false
 			}
-			if !appendToMapAndCheck(c.getTP().getT2().ToString(), c.getTP().getT1(), &map_constraintes, 2, 2) {
+			if !appendToMapAndCheck(c.getTP().GetT2().ToString(), c.getTP().GetT1(), &map_constraintes, 2, 2) {
 				return false
 			}
 		case EQ:
-			if !appendToMapAndCheck(c.getTP().getT1().ToString(), c.getTP().getT2(), &map_constraintes, 0, 2) {
+			if !appendToMapAndCheck(c.getTP().GetT1().ToString(), c.getTP().GetT2(), &map_constraintes, 0, 2) {
 				return false
 			}
-			if !appendToMapAndCheck(c.getTP().getT2().ToString(), c.getTP().getT1(), &map_constraintes, 0, 2) {
+			if !appendToMapAndCheck(c.getTP().GetT2().ToString(), c.getTP().GetT1(), &map_constraintes, 0, 2) {
 				return false
 			}
 		}

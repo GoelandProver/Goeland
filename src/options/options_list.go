@@ -41,6 +41,7 @@ import (
 	"fmt"
 	"time"
 
+	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/assisted"
 	"github.com/GoelandProver/Goeland/plugins/coq"
@@ -267,12 +268,30 @@ func buildOptions() {
 			sateq.Enable()
 		},
 		func(bool) {})
+	(&option[string]{}).init(
+		"wrteq",
+		"",
+		"Writes all found equality problems to `file`",
+		func(path string) {
+			equality.ShouldPrintProblems = true
+			equality.PathForProblems = path
+			equality.MakeFunctionEqualityProblem()
+		},
+		func(string) {})
 	(&option[bool]{}).init(
 		"chrono",
 		false,
 		"Should only be used with the -ocoq or the -olp parameters. Enables the chronometer for deskolemization and proof translation",
 		func(bool) {
 			chronoInit()
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"deter",
+		false,
+		"Makes codetrees deterministic",
+		func(bool) {
+			treesearch.DeterministicCodeTree = true
 		},
 		func(bool) {})
 	(&option[string]{}).init(

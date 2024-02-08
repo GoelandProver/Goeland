@@ -76,3 +76,11 @@ func (s Substitution) Get() (btypes.Meta, btypes.Term) {
 func (s *Substitution) Set(value btypes.Term) {
 	s.v = value
 }
+
+func (s Substitution) Equals(other any) bool {
+	if typed, ok := other.(Substitution); ok {
+		return s.k.Equals(typed.k) && s.v.Equals(typed.v)
+	}
+
+	return false
+}

@@ -64,7 +64,7 @@ func makeCoqProofFromGS3(proof *gs3.GS3Sequent) string {
 		for i, form := range axioms {
 			indices[i], hypotheses = introduce(form, hypotheses)
 		}
-		resultingString += "intros " + strings.Join(Map(indices, func(_ int, index int) string { return introName(index) }), " ") + ". "
+		resultingString += "intros " + strings.Join(MapTo(indices, func(_ int, index int) string { return introName(index) }), " ") + ". "
 		if totalAxioms > 0 {
 			proof = proof.Child(0)
 		}
@@ -279,7 +279,7 @@ func introNames(il []int, sep ...string) string {
 	} else {
 		s = sep[0]
 	}
-	return strings.Join(Map(il, func(_ int, f int) string { return introName(f) }), s)
+	return strings.Join(MapTo(il, func(_ int, f int) string { return introName(f) }), s)
 }
 
 func isPredEqual(f btps.Form) bool {

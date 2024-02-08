@@ -40,15 +40,6 @@ import (
 	"strings"
 )
 
-type Pair[T, U any] struct {
-	Fst T
-	Snd U
-}
-
-func MakePair[T, U any](fst T, snd U) Pair[T, U] {
-	return Pair[T, U]{Fst: fst, Snd: snd}
-}
-
 type Comparable interface {
 	Equals(any) bool
 }
@@ -113,7 +104,7 @@ func To[T any, U any](obj U) T {
 	return any(obj).(T)
 }
 
-func Map[T any, U any](input []T, fn func(int, T) U) []U {
+func MapTo[T any, U any](input []T, fn func(int, T) U) []U {
 	output := []U{}
 	for i, element := range input {
 		output = append(output, fn(i, element))
@@ -122,15 +113,15 @@ func Map[T any, U any](input []T, fn func(int, T) U) []U {
 }
 
 func ConvertList[T any, U any](input []T) []U {
-	return Map[T, U](input, func(_ int, element T) U { return any(element).(U) })
+	return MapTo[T, U](input, func(_ int, element T) U { return any(element).(U) })
 }
 
 type Copyable[T any] interface {
 	Copy() T
 }
 
-type Basic[T any] interface {
+type Basic interface {
 	Stringable
 	Comparable
-	Copyable[T]
+	// ILL TODO : Make Basic implement the Copyable interface (all interfaces that require a copy should have another name for such copy)
 }

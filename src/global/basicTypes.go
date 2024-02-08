@@ -29,56 +29,32 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
+package global
 
-/**
-* This file contains the type definition for equality reasonning.
-**/
+import "fmt"
 
-package equality
+type Integer int
 
-import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
-
-/* A pair of two terms */
-type TermPair struct {
-	t1, t2 basictypes.Term
-}
-
-func (tp TermPair) GetT1() basictypes.Term {
-	return tp.t1.Copy()
-}
-func (tp TermPair) GetT2() basictypes.Term {
-	return tp.t2.Copy()
-}
-func (tp TermPair) copy() TermPair {
-	return makeTermPair(tp.GetT1(), tp.GetT2())
-}
-func (tp TermPair) equals(tp2 TermPair) bool {
-	return tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())
-}
-func (tp TermPair) equalsModulo(tp2 TermPair) bool {
-	return (tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())) ||
-		(tp.GetT1().Equals(tp2.GetT2()) && tp.GetT2().Equals(tp2.GetT1()))
-
-}
-func (tp TermPair) ToString() string {
-	return tp.GetT1().ToString() + " ≈ " + tp.GetT2().ToString()
-}
-func (tp TermPair) ToTPTPString() string {
-	return tp.GetT1().ToMappedString(basictypes.DefaultMapString, false) + " = " + tp.GetT2().ToMappedString(basictypes.DefaultMapString, false)
-}
-func makeTermPair(t1, t2 basictypes.Term) TermPair {
-	return TermPair{t1.Copy(), t2.Copy()}
-}
-
-func (tp TermPair) getMetas() basictypes.MetaList {
-	metas := basictypes.MakeEmptyMetaList()
-
-	for _, meta := range tp.t1.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
+func (i Integer) Equals(other any) bool {
+	if typed, ok := other.(Integer); ok {
+		return int(typed) == int(i)
 	}
-	for _, meta := range tp.t2.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
+	return false
+}
 
-	return metas
+func (i Integer) ToString() string {
+	return fmt.Sprint(i)
+}
+
+type String string
+
+func (s String) Equals(other any) bool {
+	if typed, ok := other.(String); ok {
+		return string(typed) == string(s)
+	}
+	return false
+}
+
+func (s String) ToString() string {
+	return string(s)
 }

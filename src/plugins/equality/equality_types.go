@@ -37,6 +37,8 @@
 package equality
 
 import (
+	"math"
+
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
@@ -52,18 +54,28 @@ type Inequalities []TermPair
 func (e Equalities) ToString() string {
 	res := "["
 	for i, tp := range e {
-		res += tp.toString()
+		res += tp.ToString()
 		if i < len(e)-1 {
 			res += ", "
 		}
 	}
 	return res + "]"
 }
+func (e Equalities) ToTPTPString() string {
+	res := ""
+	for i, tp := range e {
+		res += tp.ToTPTPString()
+		if i < len(e)-1 {
+			res += " & "
+		}
+	}
+	return res + ""
+}
 
 func (ie Inequalities) ToString() string {
 	res := ""
 	for i, tp := range ie {
-		res += tp.toString()
+		res += tp.ToString()
 		if i < len(ie) {
 			res += ", "
 		}
@@ -125,9 +137,25 @@ func (ie Inequalities) appendIfNotContains(eq TermPair) Inequalities {
 func (e Equalities) applySubstitution(old_symbol basictypes.Meta, new_symbol basictypes.Term) Equalities {
 	res := e.copy()
 	for i, tp := range res {
-		res[i] = makeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.getT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.getT2()))
+		res[i] = makeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT2()))
 	}
 	return res
+}
+
+func (equs Equalities) getMetas() basictypes.MetaList {
+	metas := basictypes.MakeEmptyMetaList()
+
+	for _, equ := range equs {
+		for _, meta := range equ.getMetas() {
+			metas = metas.AppendIfNotContains(meta)
+		}
+	}
+
+	return metas
+}
+
+func (equs Equalities) removeHalf() Equalities {
+	return equs[int(math.Ceil(float64(len(equs))/2)):]
 }
 
 /* Retrieve equalities from a datastructure */

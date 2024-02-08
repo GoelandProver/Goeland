@@ -70,12 +70,12 @@ func MakePredSimple(index int, id Id, terms TermList, typeApps []typing.TypeApp,
 	if len(typeSchemes) == 1 {
 		fms := &MappedString{}
 		pred := Pred{fms, index, id, terms, typeApps, typeSchemes[0], metas}
-		fms.MappableString = pred
+		fms.MappableString = &pred
 		return pred
 	} else {
 		fms := &MappedString{}
 		pred := Pred{fms, index, id, terms, typeApps, typing.DefaultPropType(len(terms)), metas}
-		fms.MappableString = pred
+		fms.MappableString = &pred
 		return pred
 	}
 }
@@ -91,7 +91,7 @@ func MakerPred(id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...
 func MakeTop(i int) Top {
 	fms := &MappedString{}
 	top := Top{fms, i}
-	fms.MappableString = top
+	fms.MappableString = &top
 	return top
 }
 
@@ -102,7 +102,7 @@ func MakerTop() Top {
 func MakeBot(i int) Bot {
 	fms := &MappedString{}
 	bot := Bot{fms, i}
-	fms.MappableString = bot
+	fms.MappableString = &bot
 	return bot
 }
 
@@ -113,7 +113,7 @@ func MakerBot() Bot {
 func MakeImpSimple(i int, firstForm, secondForm Form, metas MetaList) Imp {
 	fms := &MappedString{}
 	imp := Imp{fms, i, firstForm, secondForm, metas}
-	fms.MappableString = imp
+	fms.MappableString = &imp
 	return imp
 }
 
@@ -128,7 +128,7 @@ func MakerImp(firstForm, secondForm Form) Imp {
 func MakeEquSimple(i int, firstForm, secondForm Form, metas MetaList) Equ {
 	fms := &MappedString{}
 	equ := Equ{fms, i, firstForm, secondForm, metas}
-	fms.MappableString = equ
+	fms.MappableString = &equ
 	return equ
 }
 
@@ -143,7 +143,7 @@ func MakerEqu(firstForm, secondForm Form) Equ {
 func MakeExSimple(i int, vars []Var, form Form, metas MetaList) Ex {
 	fms := &MappedString{}
 	ex := Ex{fms, i, vars, form, metas}
-	fms.MappableString = ex
+	fms.MappableString = &ex
 	return ex
 }
 
@@ -158,7 +158,7 @@ func MakerEx(vars []Var, form Form) Ex {
 func MakeAllSimple(i int, vars []Var, forms Form, metas MetaList) All {
 	fms := &MappedString{}
 	all := All{fms, i, vars, forms, metas}
-	fms.MappableString = all
+	fms.MappableString = &all
 	return all
 }
 
@@ -173,7 +173,7 @@ func MakerAll(vars []Var, forms Form) All {
 func MakeAllTypeSimple(i int, typeVars []typing.TypeVar, form Form, metas MetaList) AllType {
 	fms := &MappedString{}
 	at := AllType{fms, i, typeVars, form, metas}
-	fms.MappableString = at
+	fms.MappableString = &at
 	return at
 }
 
