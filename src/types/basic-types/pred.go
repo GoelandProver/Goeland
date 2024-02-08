@@ -41,7 +41,6 @@ package basictypes
 import (
 	"strings"
 
-	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
@@ -80,23 +79,25 @@ func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) strin
 	}
 	args := []string{}
 
-	if tv := ListToString(p.typeVars, ", ", mapping[PredEmpty]); tv != "" {
-		args = append(args, tv)
+	if len(p.typeVars) > 0 {
+		if tv := ListToString(p.typeVars, ", ", mapping[PredEmpty]); tv != "" {
+			args = append(args, tv)
+		}
 	}
 	args = append(args, "%s")
 
-	// Defined infix: =
 	if p.GetID().GetName() == "=" {
-		if len(p.GetArgs()) != 2 {
-			global.PrintPanic("Pred", "infix '=' should only have 2 arguments")
-		}
-		return "(" + p.GetArgs()[0].ToMappedString(mapping, displayTypes) + " = " + p.GetArgs()[1].ToMappedString(mapping, displayTypes) + ")"
+		return "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
 	}
 
 	return p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
 }
 
 func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	if p.GetID().GetName() == "=" {
+		return " = ", mapping[PredEmpty]
+	}
+
 	return ", ", mapping[PredEmpty]
 }
 
@@ -150,7 +151,7 @@ func (p Pred) GetSubTerms() TermList {
 
 func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
 	f, res := p.ReplaceVarByTerm(old, new)
-	if p, isPred := f.(Pred); isPred && (global.IsOuterSko() || res) {
+	if p, isPred := f.(Pred); isPred && (IsOuterSko() || res) {
 		return MakePredSimple(p.index, p.id, p.args, p.typeVars, append(p.MetaList.Copy(), new), p.typeHint)
 	}
 	return f

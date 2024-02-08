@@ -140,9 +140,9 @@ func (df DecoratedFun) ToMappedStringSurround(mapping btps.MapString, displayTyp
 	possible, exists := context.GetExists(df.Fun)
 	if exists {
 		if result[:6] == "skolem" {
-			result = possible + "%s"
+			result = string(possible) + "%s"
 		} else {
-			result = df.Fun.ToMappedStringSurroundWithId(possible, mapping, displayTypes)
+			result = df.Fun.ToMappedStringSurroundWithId(string(possible), mapping, displayTypes)
 		}
 	}
 

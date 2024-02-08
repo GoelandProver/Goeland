@@ -46,7 +46,7 @@ import (
 /* apply a rule */
 func applyRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64) {
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Child of %v", father_id))
-	global.PrintDebug("EQ-AR", fmt.Sprintf("EQ before applying rule %v", ep.toString()))
+	global.PrintDebug("EQ-AR", fmt.Sprintf("EQ before applying rule %v", ep.ToString()))
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Apply rule %v", rs.toString()))
 	switch rs.getRule() {
 	case LEFT:
@@ -65,14 +65,14 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP,
 
 	if is_consistant_with_lpo {
 		global.PrintDebug("ALR", fmt.Sprintf("New term : %v", new_term.ToString()))
-		new_eq_list := ep.getE()
+		new_eq_list := ep.GetE()
 		if rs.getIsSModified() {
 			new_eq_list[rs.getIndexEQList()] = makeTermPair(new_term.Copy(), rs.getT())
 		} else {
 			new_eq_list[rs.getIndexEQList()] = makeTermPair(rs.getS(), new_term.Copy())
 		}
 		global.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.ToString()))
-		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.getS(), ep.getT(), new_cl), father_chan, rs.getIndexEQList(), LEFT, father_id)
+		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.GetS(), ep.GetT(), new_cl), father_chan, rs.getIndexEQList(), LEFT, father_id)
 	} else {
 		global.PrintDebug("ALR", "Not consistant with LPO, send nil")
 		father_chan <- makeEmptyAnswerEP()
@@ -89,9 +89,9 @@ func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP
 	if is_consistant_with_lpo {
 		global.PrintDebug("ARR", fmt.Sprintf("New term : %v", new_term.ToString()))
 		if rs.getIsSModified() {
-			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), new_term.Copy(), rs.getT(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().GetE(), new_term.Copy(), rs.getT(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
 		} else {
-			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), rs.getS(), new_term.Copy(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().GetE(), rs.getS(), new_term.Copy(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
 		}
 	} else {
 		global.PrintDebug("ARR", "Not consistant with LPO, send nil")

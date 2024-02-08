@@ -46,18 +46,18 @@ func getIncreasedCounter() int {
 	return varCounter - 1
 }
 
-var context global.ComparableMap[btps.MappableString, string] = global.ComparableMap[btps.MappableString, string]{}
+var context global.Map[btps.MappableString, global.String] = *global.NewMap[btps.MappableString, global.String]()
 
 func addToContext(key btps.MappableString) string {
 	if _, ok := context.GetExists(key); !ok {
-		context.Set(key, fmt.Sprintf("v%v", getIncreasedCounter()))
+		context.Set(key, global.String(fmt.Sprintf("v%v", getIncreasedCounter())))
 	}
 
-	return context.Get(key)
+	return string(context.Get(key))
 }
 
 func getFromContext(key btps.MappableString) string {
-	return context.Get(key)
+	return string(context.Get(key))
 }
 
 func toLambdaString(element btps.MappableString, str string) string {

@@ -45,7 +45,7 @@ import (
 )
 
 type LPO struct {
-	global.SyncComparableMap[basictypes.Id, int]
+	global.Map[basictypes.Id, global.Integer]
 }
 
 type compareStruct struct {
@@ -62,7 +62,7 @@ func makeEmptyCompareStruct() compareStruct {
 	return makeCompareStruct(0, false, nil, nil)
 }
 
-var lpo *LPO = &LPO{}
+var lpo *LPO = &LPO{*global.NewSyncMap[basictypes.Id, global.Integer]()}
 
 func (lpo *LPO) toString() string {
 	res := "{"
@@ -70,7 +70,7 @@ func (lpo *LPO) toString() string {
 	keys := lpo.Keys()
 	values := lpo.Values()
 	for i := range keys {
-		res += "[" + keys[i].ToString() + "] : " + strconv.Itoa(values[i])
+		res += "[" + keys[i].ToString() + "] : " + strconv.Itoa(int(values[i]))
 		if cpt < lpo.Length()-1 {
 			res += ", "
 		}
@@ -82,7 +82,7 @@ func (lpo *LPO) toString() string {
 func (lpo *LPO) get(t basictypes.Id) int {
 	res, found := lpo.GetExists(t)
 	if found {
-		return res
+		return int(res)
 	} else {
 		return -1
 	}
@@ -106,7 +106,7 @@ func (lpo *LPO) insertTerm(t basictypes.Term) {
 		lpo.insertIdIfNotContains(t_type)
 	case basictypes.Fun:
 		if !lpo.contains(t_type.GetID()) {
-			lpo.Set(t_type.GetID(), lpo.Length())
+			lpo.Set(t_type.GetID(), global.Integer(lpo.Length()))
 		}
 		for _, arg := range t_type.GetArgs() {
 			lpo.insertTerm(arg)
@@ -120,7 +120,7 @@ func (lpo *LPO) contains(i basictypes.Id) bool {
 
 func (lpo *LPO) insertIdIfNotContains(i basictypes.Id) {
 	if !lpo.contains(i) {
-		lpo.Set(i, lpo.Length())
+		lpo.Set(i, global.Integer(lpo.Length()))
 	}
 }
 

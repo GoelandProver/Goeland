@@ -53,7 +53,7 @@ type Or struct {
 func MakeOrSimple(i int, forms FormList, metas MetaList) Or {
 	fms := &MappedString{}
 	or := Or{fms, i, forms, metas}
-	fms.MappableString = or
+	fms.MappableString = &or
 	return or
 }
 

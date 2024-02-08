@@ -147,8 +147,6 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 				final_subst := computeSubstitutions(treetypes.CopySubstPairList(m.subst), m.meta.Copy(), f.Copy())
 				if !final_subst.Equals(treetypes.Failure()) {
 					matching = append(matching, treetypes.MakeMatchingSubstitutions(f, final_subst))
-				} else {
-					// global.PrintDebug("UX", "Error try substitute")
 				}
 			}
 		}
@@ -159,17 +157,23 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 
 /* Unify on goroutines - to manage die message */
 /* TODO : remove when debug ok */
-func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []treetypes.MatchingSubstitutions, father_id uint64) {
+func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []treetypes.MatchingSubstitutions, father_id uint64) []treetypes.MatchingSubstitutions {
 	global.PrintDebug("UA", fmt.Sprintf("Child of %v, Unify Aux", father_id))
-	ch <- m.unifyAux(n)
+	subs := m.unifyAux(n)
+	ch <- subs
 	global.PrintDebug("UA", "Die")
+	return subs
 }
+
+var DeterministicCodeTree bool
 
 /* Launches each child of the current node in a goroutine. */
 func (m *Machine) launchChildrenSearch(node Node) []treetypes.MatchingSubstitutions {
 	channels := []chan []treetypes.MatchingSubstitutions{}
-	for range node.children {
-		channels = append(channels, make(chan []treetypes.MatchingSubstitutions))
+	if !DeterministicCodeTree {
+		for range node.children {
+			channels = append(channels, make(chan []treetypes.MatchingSubstitutions))
+		}
 	}
 
 	matching := []treetypes.MatchingSubstitutions{}
@@ -181,20 +185,26 @@ func (m *Machine) launchChildrenSearch(node Node) []treetypes.MatchingSubstituti
 
 		copy := Machine{subst: sc, beginLock: m.beginLock, terms: st, meta: m.meta.Copy(), q: m.q, beginCount: m.beginCount, hasPushed: m.hasPushed, hasPoped: m.hasPoped, post: ip, topLevelTot: m.topLevelTot, topLevelCount: m.topLevelCount}
 
-		go copy.unifyAuxOnGoroutine(*n, ch, global.GetGID())
-		global.IncrGoRoutine(1)
+		if !DeterministicCodeTree {
+			go copy.unifyAuxOnGoroutine(*n, ch, global.GetGID())
+			global.IncrGoRoutine(1)
+		} else {
+			matching = append(matching, copy.unifyAuxOnGoroutine(*n, ch, global.GetGID())...)
+		}
 	}
 
-	cpt_remaining_children := len(channels)
-	cases := make([]reflect.SelectCase, len(channels))
-	for i, ch := range channels {
-		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(ch)}
-	}
+	if !DeterministicCodeTree {
+		cpt_remaining_children := len(channels)
+		cases := make([]reflect.SelectCase, len(channels))
+		for i, ch := range channels {
+			cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(ch)}
+		}
 
-	for cpt_remaining_children > 0 {
-		_, value, _ := reflect.Select(cases)
-		matching = append(matching, value.Interface().([]treetypes.MatchingSubstitutions)...)
-		cpt_remaining_children--
+		for cpt_remaining_children > 0 {
+			_, value, _ := reflect.Select(cases)
+			matching = append(matching, value.Interface().([]treetypes.MatchingSubstitutions)...)
+			cpt_remaining_children--
+		}
 	}
 
 	return matching

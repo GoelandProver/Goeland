@@ -297,8 +297,8 @@ func TestAS(t *testing.T) {
 	new_ep := ep.applySubstitution(s)
 
 	global.SetDebugTerminal(true)
-	global.PrintDebug("TEST_AS", fmt.Sprintf("Current EP : %v", new_ep.toString()))
-	global.PrintDebug("TEST_AS", fmt.Sprintf("Expected : %v", expected_ep.toString()))
+	global.PrintDebug("TEST_AS", fmt.Sprintf("Current EP : %v", new_ep.ToString()))
+	global.PrintDebug("TEST_AS", fmt.Sprintf("Expected : %v", expected_ep.ToString()))
 	global.SetDebugTerminal(false)
 }
 

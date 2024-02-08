@@ -37,6 +37,8 @@
 package equality
 
 import (
+	"os"
+
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/search"
@@ -63,7 +65,7 @@ func TryEquality(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.St
 		if len(new_atomics) > 0 || len(st.GetLF()) == 0 {
 			global.PrintDebug("PS", "EQ is applicable !")
 			atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
-			res_eq, subst_eq := EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms())
+			res_eq, subst_eq := EqualityReasoning(st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms(), original_node_id)
 			if res_eq {
 				search.UsedSearch.ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.MakeEmptyTermList()), node_id, original_node_id)
 				return true
@@ -73,17 +75,27 @@ func TryEquality(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.St
 	return false
 }
 
+var ShouldPrintProblems bool = false
+var PathForProblems string = ""
+
+var nodesDone = global.NewList[global.Integer]()
+
 /**
 * Function EqualityReasoning
 * Takes atomics
 * creates the problem
 * returns a bool for success and the corresponding substitution
 **/
-func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList) (bool, []treetypes.Substitutions) {
+func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList, originalNodeId int) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ER", "ER call")
 	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
 	if equalities {
-		return RunEqualityReasoning(problem)
+		success, subs := RunEqualityReasoning(problem)
+		if ShouldPrintProblems && success && !problem.isTrivial() && !nodesDone.Contains(global.Integer(originalNodeId)) {
+			nodesDone.Append(global.Integer(originalNodeId))
+			writeInFile(problem.AllSubToTPTPString())
+		}
+		return success, subs
 	} else {
 		return false, []treetypes.Substitutions{}
 	}
@@ -95,4 +107,19 @@ func InsertPred(p basictypes.Form) {
 
 func InsertTerm(t basictypes.Term) {
 	lpo.insertTerm(t)
+}
+
+func writeInFile(str string) {
+	if str != "" {
+		f, err := os.OpenFile(PathForProblems, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+		if err != nil {
+			panic(err)
+		}
+
+		defer f.Close()
+
+		if _, err = f.WriteString(str + "\n"); err != nil {
+			panic(err)
+		}
+	}
 }

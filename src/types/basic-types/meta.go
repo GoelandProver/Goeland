@@ -103,6 +103,11 @@ func (m Meta) GetSubTerms() TermList {
 	return TermList{m}
 }
 
+func (m Meta) CompareTo(other Term) int {
+	// TODO
+	return 0
+}
+
 func MakeEmptyMeta() Meta {
 	return MakeMeta(-1, -1, "-1", -1, nil, typing.DefaultType())
 }

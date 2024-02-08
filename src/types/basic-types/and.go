@@ -53,7 +53,7 @@ type And struct {
 func MakeAndSimple(i int, forms FormList, metas MetaList) And {
 	fms := &MappedString{}
 	and := And{fms, i, forms, metas}
-	fms.MappableString = and
+	fms.MappableString = &and
 	return and
 }
 

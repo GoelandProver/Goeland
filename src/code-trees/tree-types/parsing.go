@@ -110,7 +110,7 @@ func MakerTermForm(t basictypes.Term) TermForm {
 func makeTermForm(i int, t basictypes.Term) TermForm {
 	fms := &basictypes.MappedString{}
 	tf := TermForm{fms, i, t.Copy()}
-	fms.MappableString = tf
+	fms.MappableString = &tf
 	return tf
 }
 

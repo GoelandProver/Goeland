@@ -65,39 +65,39 @@ const (
 	TypeVarType
 )
 
-var defaultMap = make(map[FormulaType]string)
+var DefaultMapString = make(map[FormulaType]string)
 
 func initDefaultMap() {
 	if global.IsPrettyPrint() {
-		defaultMap[AndConn] = "∧"
-		defaultMap[OrConn] = "∨"
-		defaultMap[ImpConn] = "⇒"
-		defaultMap[EquConn] = "⇔"
-		defaultMap[NotConn] = "¬"
-		defaultMap[TopType] = "⊤"
-		defaultMap[BotType] = "⊥"
-		defaultMap[AllQuant] = "∀"
-		defaultMap[ExQuant] = "∃"
-		defaultMap[AllTypeQuant] = "∀"
-		defaultMap[PredEmpty] = "∅"
+		DefaultMapString[AndConn] = "∧"
+		DefaultMapString[OrConn] = "∨"
+		DefaultMapString[ImpConn] = "⇒"
+		DefaultMapString[EquConn] = "⇔"
+		DefaultMapString[NotConn] = "¬"
+		DefaultMapString[TopType] = "⊤"
+		DefaultMapString[BotType] = "⊥"
+		DefaultMapString[AllQuant] = "∀"
+		DefaultMapString[ExQuant] = "∃"
+		DefaultMapString[AllTypeQuant] = "∀"
+		DefaultMapString[PredEmpty] = "∅"
 	} else {
-		defaultMap[AndConn] = "&"
-		defaultMap[OrConn] = "|"
-		defaultMap[ImpConn] = "=>"
-		defaultMap[EquConn] = "<=>"
-		defaultMap[NotConn] = "~"
-		defaultMap[TopType] = "$true"
-		defaultMap[BotType] = "$false"
-		defaultMap[AllQuant] = "!"
-		defaultMap[ExQuant] = "?"
-		defaultMap[AllTypeQuant] = "!"
-		defaultMap[PredEmpty] = "{}"
+		DefaultMapString[AndConn] = "&"
+		DefaultMapString[OrConn] = "|"
+		DefaultMapString[ImpConn] = "=>"
+		DefaultMapString[EquConn] = "<=>"
+		DefaultMapString[NotConn] = "~"
+		DefaultMapString[TopType] = "$true"
+		DefaultMapString[BotType] = "$false"
+		DefaultMapString[AllQuant] = "!"
+		DefaultMapString[ExQuant] = "?"
+		DefaultMapString[AllTypeQuant] = "!"
+		DefaultMapString[PredEmpty] = "{}"
 	}
-	defaultMap[QuantVarOpen] = "["
-	defaultMap[QuantVarClose] = "]"
-	defaultMap[QuantVarSep] = ":"
-	defaultMap[PredTypeVarSep] = ";"
-	defaultMap[TypeVarType] = "$tType"
+	DefaultMapString[QuantVarOpen] = "["
+	DefaultMapString[QuantVarClose] = "]"
+	DefaultMapString[QuantVarSep] = ":"
+	DefaultMapString[PredTypeVarSep] = ";"
+	DefaultMapString[TypeVarType] = "$tType"
 }
 
 type MappableString interface {
@@ -116,7 +116,7 @@ type MappedString struct {
 }
 
 func (fms MappedString) ToString() string {
-	return fms.ToMappedString(defaultMap, true)
+	return fms.ToMappedString(DefaultMapString, true)
 }
 
 func (fms MappedString) ToMappedString(mapping MapString, displayType bool) string {

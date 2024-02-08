@@ -29,56 +29,74 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
+package global
 
-/**
-* This file contains the type definition for equality reasonning.
-**/
-
-package equality
-
-import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
-
-/* A pair of two terms */
-type TermPair struct {
-	t1, t2 basictypes.Term
+type Pair[T, U any] struct {
+	Fst T
+	Snd U
 }
 
-func (tp TermPair) GetT1() basictypes.Term {
-	return tp.t1.Copy()
-}
-func (tp TermPair) GetT2() basictypes.Term {
-	return tp.t2.Copy()
-}
-func (tp TermPair) copy() TermPair {
-	return makeTermPair(tp.GetT1(), tp.GetT2())
-}
-func (tp TermPair) equals(tp2 TermPair) bool {
-	return tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())
-}
-func (tp TermPair) equalsModulo(tp2 TermPair) bool {
-	return (tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())) ||
-		(tp.GetT1().Equals(tp2.GetT2()) && tp.GetT2().Equals(tp2.GetT1()))
-
-}
-func (tp TermPair) ToString() string {
-	return tp.GetT1().ToString() + " ≈ " + tp.GetT2().ToString()
-}
-func (tp TermPair) ToTPTPString() string {
-	return tp.GetT1().ToMappedString(basictypes.DefaultMapString, false) + " = " + tp.GetT2().ToMappedString(basictypes.DefaultMapString, false)
-}
-func makeTermPair(t1, t2 basictypes.Term) TermPair {
-	return TermPair{t1.Copy(), t2.Copy()}
+func MakePair[T, U any](fst T, snd U) Pair[T, U] {
+	return Pair[T, U]{Fst: fst, Snd: snd}
 }
 
-func (tp TermPair) getMetas() basictypes.MetaList {
-	metas := basictypes.MakeEmptyMetaList()
+type BasicPaired[T, U Basic] interface {
+	Basic
+	GetFst() T
+	GetSnd() U
+	SetFst(T)
+	SetSnd(U)
+}
 
-	for _, meta := range tp.t1.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
-	for _, meta := range tp.t2.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
+type BasicPair[T, U Basic] struct {
+	fst T
+	snd U
+}
+
+func NewBasicPair[T, U Basic](fst T, snd U) *BasicPair[T, U] {
+	return &BasicPair[T, U]{fst, snd}
+}
+
+func (bp *BasicPair[T, U]) GetFst() T {
+	return bp.fst
+}
+
+func (bp *BasicPair[T, U]) GetSnd() U {
+	return bp.snd
+}
+
+func (bp *BasicPair[T, U]) SetFst(other T) {
+	bp.fst = other
+}
+
+func (bp *BasicPair[T, U]) SetSnd(other U) {
+	bp.snd = other
+}
+
+func (bp *BasicPair[T, U]) Equals(other any) bool {
+	if typed, ok := other.(*BasicPair[T, U]); ok {
+		return bp.fst.Equals(typed.fst) && bp.snd.Equals(typed.snd)
 	}
 
-	return metas
+	return false
+}
+
+func (bp *BasicPair[T, U]) ToString() string {
+	return "{" + bp.fst.ToString() + ", " + bp.snd.ToString() + "}"
+}
+
+type UnorderedBasicPair[T Basic] struct {
+	*BasicPair[T, T]
+}
+
+func NewUnorderedBasicPair[T Basic](fst T, snd T) *UnorderedBasicPair[T] {
+	return &UnorderedBasicPair[T]{NewBasicPair(fst, snd)}
+}
+
+func (ubp *UnorderedBasicPair[T]) Equals(other any) bool {
+	if typed, ok := other.(*UnorderedBasicPair[T]); ok {
+		return (ubp.fst.Equals(typed.fst) && ubp.snd.Equals(typed.snd)) || (ubp.fst.Equals(typed.snd) && ubp.snd.Equals(typed.fst))
+	}
+
+	return false
 }

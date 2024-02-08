@@ -53,7 +53,7 @@ type Not struct {
 func MakeNotSimple(i int, form Form, metas MetaList) Not {
 	fms := &MappedString{}
 	not := Not{fms, i, form, metas}
-	fms.MappableString = not
+	fms.MappableString = &not
 	return not
 }
 

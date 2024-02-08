@@ -50,10 +50,10 @@ func tryApplyLeftRules(ep EqualityProblem, index_begin int) ruleStructList {
 	global.PrintDebug("TALR", "-- Try apply left rule")
 	res := ruleStructList{}
 	i := index_begin
-	for i < len(ep.getE()) {
-		eq_pair := ep.getE()[i]
-		res = append(res, tryApplyRuleAux(eq_pair.getT1(), eq_pair.getT2(), ep.copy(), LEFT, true, i)...)
-		res = append(res, tryApplyRuleAux(eq_pair.getT2(), eq_pair.getT1(), ep.copy(), LEFT, false, i)...)
+	for i < len(ep.GetE()) {
+		eq_pair := ep.GetE()[i]
+		res = append(res, tryApplyRuleAux(eq_pair.GetT1(), eq_pair.GetT2(), ep.copy(), LEFT, true, i)...)
+		res = append(res, tryApplyRuleAux(eq_pair.GetT2(), eq_pair.GetT1(), ep.copy(), LEFT, false, i)...)
 		i++
 	}
 	global.PrintDebug("TALR", "-- End of Try apply left rule")
@@ -64,8 +64,8 @@ func tryApplyLeftRules(ep EqualityProblem, index_begin int) ruleStructList {
 func tryApplyRightRules(ep EqualityProblem) ruleStructList {
 	global.PrintDebug("TARR", "-- Try apply right rule")
 	res := ruleStructList{}
-	res = append(res, tryApplyRuleAux(ep.getS(), ep.getT(), ep.copy(), RIGHT, true, -1)...)
-	res = append(res, tryApplyRuleAux(ep.getT(), ep.getS(), ep.copy(), RIGHT, false, -1)...)
+	res = append(res, tryApplyRuleAux(ep.GetS(), ep.GetT(), ep.copy(), RIGHT, true, -1)...)
+	res = append(res, tryApplyRuleAux(ep.GetT(), ep.GetS(), ep.copy(), RIGHT, false, -1)...)
 	global.PrintDebug("TARR", "-- End of Try apply right rule")
 	return res
 }
@@ -90,7 +90,7 @@ func tryApplyRuleCompute(s, t basictypes.Term, ep EqualityProblem, type_rule int
 	// Retrieve the list of substerm of s
 	subterms_of_s := s.GetSubTerms()
 	global.PrintDebug("TARA", fmt.Sprintf("len subterms found : %v - %v", len(subterms_of_s), subterms_of_s.ToString()))
-	global.PrintDebug("TARA", fmt.Sprintf("EP eq list : %v", ep.getE().ToString()))
+	global.PrintDebug("TARA", fmt.Sprintf("EP eq list : %v", ep.GetE().ToString()))
 
 	// for each l' substerm of s, return a list (l', l) unifiable
 	list_l_prime_l := searchUnifBewteenListAndEq(subterms_of_s, ep.getETree())
@@ -105,19 +105,19 @@ func connectLAndR(list_l_prime_l []TermPair, ep EqualityProblem, s basictypes.Te
 	res := ruleStructList{}
 
 	for _, l_prime_l_pair := range list_l_prime_l {
-		global.PrintDebug("TARA", fmt.Sprintf("Subterms unifiable found : %v", l_prime_l_pair.toString()))
+		global.PrintDebug("TARA", fmt.Sprintf("Subterms unifiable found : %v", l_prime_l_pair.ToString()))
 
-		for _, r := range ep.getEMap()[l_prime_l_pair.getT2().ToString()] {
-			global.PrintDebug("TARA", fmt.Sprintf("On veut susbstituer %v (unifiable avec %v) par %v dans %v = %v", l_prime_l_pair.getT1().ToString(), l_prime_l_pair.getT2().ToString(), r.ToString(), s.ToString(), t.ToString()))
+		for _, r := range ep.getEMap()[l_prime_l_pair.GetT2().ToString()] {
+			global.PrintDebug("TARA", fmt.Sprintf("On veut susbstituer %v (unifiable avec %v) par %v dans %v = %v", l_prime_l_pair.GetT1().ToString(), l_prime_l_pair.GetT2().ToString(), r.ToString(), s.ToString(), t.ToString()))
 
 			// create pair an check equality
 			s_t := makeTermPair(s, t)
-			l_r := makeTermPair(l_prime_l_pair.getT2(), r)
+			l_r := makeTermPair(l_prime_l_pair.GetT2(), r)
 
 			// if s = t is not l = r OR, if they are, the rule's type is right, so it's ok
 			if !s_t.equalsModulo(l_r) || type_rule == RIGHT {
 				global.PrintDebug("TARA", "Try apply rule ok !")
-				res = append(res, makeRuleStruct(type_rule, l_prime_l_pair.getT2(), r.Copy(), l_prime_l_pair.getT1(), s.Copy(), t.Copy()))
+				res = append(res, makeRuleStruct(type_rule, l_prime_l_pair.GetT2(), r.Copy(), l_prime_l_pair.GetT1(), s.Copy(), t.Copy()))
 			} else {
 				global.PrintDebug("TARA", "Don't apply an equality on itself")
 			}

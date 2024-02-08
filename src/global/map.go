@@ -31,151 +31,235 @@
 **/
 package global
 
-import "sync"
+// A simple map of generic Basic types.
+//
+// Instanciate with NewMap() or NewSyncMap() for a synchronised version.
+type Map[T Basic, U Basic] struct {
+	*RWSynchroniser
 
-type ComparableMap[T Comparable, U any] struct {
-	keys   []T
-	values []U
+	keys   *List[T]
+	values *List[U]
 }
 
-func (cm *ComparableMap[T, U]) Get(otherKey T) U {
-	for i, key := range cm.keys {
+// Create a new Map and gives its pointer
+func NewMap[T Basic, U Basic]() *Map[T, U] {
+	return &Map[T, U]{NewRWSynchroniser(), NewList[T](), NewList[U]()}
+}
+
+// Creates a new synchronised Map and gives its pointer
+func NewSyncMap[T Basic, U Basic]() *Map[T, U] {
+	syncMap := NewMap[T, U]()
+	MakeIntoSyncableRW(syncMap)
+
+	return syncMap
+}
+
+// Given a key, gives the value associated with that key. If the key doesn't exist, gives a zero value of type U.
+func (m *Map[T, U]) Get(otherKey T) U {
+	m.DoAtStartR()
+	defer m.DoAtEndR()
+
+	for i, key := range m.keys.AsSlice() {
 		if key.Equals(otherKey) {
-			return cm.values[i]
+			return m.values.Get(i)
 		}
 	}
 	var zero U
 	return zero
 }
 
-func (cm *ComparableMap[T, U]) GetExists(otherKey T) (U, bool) {
-	for i, key := range cm.keys {
+// Given a key, gives the value associated with that key and if the key exists. If the key doesn't exist, gives a zero value of type U.
+func (m *Map[T, U]) GetExists(otherKey T) (U, bool) {
+	m.DoAtStartR()
+	defer m.DoAtEndR()
+
+	for i, key := range m.keys.AsSlice() {
 		if key.Equals(otherKey) {
-			return cm.values[i], true
+			return m.values.Get(i), true
 		}
 	}
 	var zero U
 	return zero, false
 }
 
-func (cm *ComparableMap[T, U]) Exists(otherKey T) bool {
-	_, result := cm.GetExists(otherKey)
+// Given a key, return true if the key exists.
+func (m *Map[T, U]) Exists(otherKey T) bool {
+	m.DoAtStartR()
+	defer m.DoAtEndR()
+
+	_, result := m.GetExists(otherKey)
 	return result
 }
 
-func (cm *ComparableMap[T, U]) Set(otherKey T, otherValue U) {
-	for i, key := range cm.keys {
+// Given a value, gives the key associated with that value and if the value exists. If the value doesn't exist, gives a zero value of type T.
+func (m *Map[T, U]) GetKey(otherValue U) (key T, found bool) {
+	m.DoAtStartR()
+	defer m.DoAtEndR()
+
+	if index, ok := m.values.GetIndexOf(otherValue); ok {
+		return m.keys.Get(index), true
+	}
+
+	return key, false
+}
+
+// Sets the given value to be associated with the given key. If the key already existed, the new value overrides the previous value.
+// Returns the old value if it was replaced and a boolean indicating if a value was replaced.
+func (m *Map[T, U]) Set(otherKey T, otherValue U) (oldValue U, replacedValue bool) {
+	m.DoAtStart()
+	defer m.DoAtEnd()
+
+	for i, key := range m.keys.AsSlice() {
 		if key.Equals(otherKey) {
-			cm.values[i] = otherValue
-			return
+			oldValue := m.values.Get(i)
+			m.values.Set(i, otherValue)
+			return oldValue, true
 		}
 	}
 
-	cm.keys = append(cm.keys, otherKey)
-	cm.values = append(cm.values, otherValue)
+	m.keys.Append(otherKey)
+	m.values.Append(otherValue)
+
+	return oldValue, false
 }
 
-func (cm *ComparableMap[T, U]) Length() int {
-	return len(cm.keys)
-}
+// Removes the given key and the associated value, if they existed.
+func (m *Map[T, U]) Unset(otherKey T) {
+	m.DoAtStart()
+	defer m.DoAtEnd()
 
-func (cm *ComparableMap[T, U]) Clear() {
-	cm.keys = []T{}
-	cm.values = []U{}
-}
+	index, success := m.keys.GetIndexOf(otherKey)
 
-func (cm *ComparableMap[T, U]) Clone() *ComparableMap[T, U] {
-	newCm := new(ComparableMap[T, U])
-	newCm.keys = append(newCm.keys, cm.keys...)
-	newCm.values = append(newCm.values, cm.values...)
-	return newCm
-}
-
-func (cm *ComparableMap[T, U]) CopyInto(other *ComparableMap[T, U]) {
-	for i := range cm.keys {
-		other.Set(cm.keys[i], cm.values[i])
+	if success {
+		m.keys.Remove(index)
+		m.values.Remove(index)
 	}
 }
 
-func (cm *ComparableMap[T, U]) Keys() []T {
-	return cm.keys
+// Indicated the amount of keys there are in the Map.
+func (m *Map[T, U]) Length() int {
+	m.DoAtStartR()
+	defer m.DoAtEndR()
+
+	return m.keys.Length()
 }
 
-func (cm *ComparableMap[T, U]) Values() []U {
-	return cm.values
+// Removes every key and every associated value from the Map.
+func (m *Map[T, U]) Clear() {
+	m.DoAtStart()
+	defer m.DoAtEnd()
+
+	m.keys = NewList[T]()
+	m.values = NewList[U]()
 }
 
-type SyncComparableMap[T Comparable, U any] struct {
-	ComparableMap[T, U]
-	mutex sync.RWMutex
+// Create a shallow copy of the Map.
+func (m *Map[T, U]) Clone() *Map[T, U] {
+	m.DoAtStartR()
+	defer m.DoAtEndR()
+
+	newCm := NewMap[T, U]()
+	newCm.keys.Append(m.keys.AsSlice()...)
+	newCm.values.Append(m.values.AsSlice()...)
+	return newCm
 }
 
-func (cm *SyncComparableMap[T, U]) Get(otherKey T) U {
-	cm.mutex.RLock()
-	defer cm.mutex.RUnlock()
+// Inserts all the keys and associated values inside another Map.
+func (m *Map[T, U]) CopyInto(other *Map[T, U]) {
+	m.DoAtStart()
+	defer m.DoAtEnd()
 
-	return cm.ComparableMap.Get(otherKey)
+	for i := range m.keys.AsSlice() {
+		other.Set(m.keys.Get(i), m.values.Get(i))
+	}
 }
 
-func (cm *SyncComparableMap[T, U]) GetExists(otherKey T) (U, bool) {
-	cm.mutex.RLock()
-	defer cm.mutex.RUnlock()
+// Returns a slice with all the keys.
+func (m *Map[T, U]) Keys() []T {
+	m.DoAtStartR()
+	defer m.DoAtEndR()
 
-	return cm.ComparableMap.GetExists(otherKey)
+	return m.keys.AsSlice()
 }
 
-func (cm *SyncComparableMap[T, U]) Exists(otherKey T) bool {
-	cm.mutex.RLock()
-	defer cm.mutex.RUnlock()
+// Returns a slice with all the values.
+func (m *Map[T, U]) Values() []U {
+	m.DoAtStartR()
+	defer m.DoAtEndR()
 
-	return cm.ComparableMap.Exists(otherKey)
+	return m.values.AsSlice()
 }
 
-func (cm *SyncComparableMap[T, U]) Set(otherKey T, otherValue U) {
-	cm.mutex.Lock()
-	defer cm.mutex.Unlock()
+// Returns a string that represents the Map.
+//
+// The string will look like: "{" + list[0].toString + ", " + list[1].toString + ", " + list[2].toString + "]"
+func (m *Map[T, U]) ToString() string {
+	m.DoAtStartR()
+	defer m.DoAtEndR()
 
-	cm.ComparableMap.Set(otherKey, otherValue)
+	result := "{"
+	for i := range m.keys.AsSlice() {
+		result += m.keys.Get(i).ToString() + " : " + m.values.Get(i).ToString() + "; "
+	}
+
+	if m.keys.Length() > 0 {
+		return result[:len(result)-2] + "}"
+	} else {
+		return "{}"
+	}
 }
 
-func (cm *SyncComparableMap[T, U]) Length() int {
-	cm.mutex.RLock()
-	defer cm.mutex.RUnlock()
-
-	return cm.ComparableMap.Length()
+type MapWithList[T Basic, U Basic] struct {
+	Map[T, *List[U]]
 }
 
-func (cm *SyncComparableMap[T, U]) Clear() {
-	cm.mutex.Lock()
-	defer cm.mutex.Unlock()
-
-	cm.ComparableMap.Clear()
+func NewMapWithList[T Basic, U Basic]() *MapWithList[T, U] {
+	return &MapWithList[T, U]{*NewMap[T, *List[U]]()}
 }
 
-func (cm *SyncComparableMap[T, U]) Clone() *ComparableMap[T, U] {
-	cm.mutex.RLock()
-	defer cm.mutex.RUnlock()
+func NewSyncMapWithList[T Basic, U Basic]() *MapWithList[T, U] {
+	syncMap := NewMapWithList[T, U]()
+	MakeIntoSyncableRW(syncMap)
 
-	return cm.ComparableMap.Clone()
+	return syncMap
 }
 
-func (cm *SyncComparableMap[T, U]) CopyInto(other *ComparableMap[T, U]) {
-	cm.mutex.Lock()
-	defer cm.mutex.Unlock()
+func (mwl *MapWithList[T, U]) Add(key T, value ...U) {
+	mwl.DoAtStart()
+	defer mwl.DoAtEnd()
 
-	cm.ComparableMap.CopyInto(other)
+	if !mwl.Exists(key) {
+		mwl.Set(key, NewList[U]())
+	}
+	mwl.Get(key).Append(value...)
 }
 
-func (cm *SyncComparableMap[T, U]) Keys() []T {
-	cm.mutex.RLock()
-	defer cm.mutex.RUnlock()
+func (mwl *MapWithList[T, U]) AddIfNotContains(key T, value ...U) {
+	mwl.DoAtStart()
+	defer mwl.DoAtEnd()
 
-	return cm.ComparableMap.Keys()
+	if !mwl.Exists(key) {
+		mwl.Set(key, NewList[U]())
+	}
+	mwl.Get(key).AppendIfNotContains(value...)
 }
 
-func (cm *SyncComparableMap[T, U]) Values() []U {
-	cm.mutex.RLock()
-	defer cm.mutex.RUnlock()
+func (mwl *MapWithList[T, U]) Remove(key T, index int) {
+	mwl.DoAtStart()
+	defer mwl.DoAtEnd()
 
-	return cm.ComparableMap.Values()
+	if !mwl.Exists(key) {
+		mwl.Set(key, NewList[U]())
+	}
+	mwl.Get(key).Remove(index)
+}
+
+func (mwl *MapWithList[T, U]) RemoveAll(key T, value U) {
+	mwl.DoAtStart()
+	defer mwl.DoAtEnd()
+
+	if !mwl.Exists(key) {
+		mwl.Set(key, NewList[U]())
+	}
+	mwl.Get(key).RemoveAll(value)
 }
