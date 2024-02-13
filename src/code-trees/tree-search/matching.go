@@ -160,7 +160,9 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []treetypes.MatchingSubstitutions, father_id uint64) []treetypes.MatchingSubstitutions {
 	global.PrintDebug("UA", fmt.Sprintf("Child of %v, Unify Aux", father_id))
 	subs := m.unifyAux(n)
-	ch <- subs
+	if !DeterministicCodeTree {
+		ch <- subs
+	}
 	global.PrintDebug("UA", "Die")
 	return subs
 }
@@ -178,7 +180,10 @@ func (m *Machine) launchChildrenSearch(node Node) []treetypes.MatchingSubstituti
 
 	matching := []treetypes.MatchingSubstitutions{}
 	for i, n := range node.children {
-		ch := channels[i]
+		ch := make(chan []treetypes.MatchingSubstitutions)
+		if !DeterministicCodeTree {
+			ch = channels[i]
+		}
 		st := m.terms.Copy()
 		ip := treetypes.CopyIntPairList(m.post)
 		sc := treetypes.CopySubstPairList(m.subst)
