@@ -268,16 +268,6 @@ func buildOptions() {
 			sateq.Enable()
 		},
 		func(bool) {})
-	(&option[string]{}).init(
-		"wrteq",
-		"",
-		"Writes all found equality problems to `file`",
-		func(path string) {
-			equality.ShouldPrintProblems = true
-			equality.PathForProblems = path
-			equality.MakeFunctionEqualityProblem()
-		},
-		func(string) {})
 	(&option[bool]{}).init(
 		"chrono",
 		false,

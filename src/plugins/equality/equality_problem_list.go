@@ -45,7 +45,6 @@ import (
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -226,26 +225,6 @@ var buildEqualityProblemListFrom2Pred = func(p1 basictypes.Pred, p2 basictypes.P
 		res = append(res, makeEqualityProblem(eq.copy(), p1.GetArgs()[i].Copy(), p2.GetArgs()[i].Copy(), makeEmptyConstraintStruct()))
 	}
 	return res
-}
-
-func MakeFunctionEqualityProblem() {
-	buildEqualityProblemListFrom2Pred = buildFunctionEqualityProblemListFrom2Pred
-}
-
-/* Build an equality problem list from a predicat and its negation */
-func buildFunctionEqualityProblemListFrom2Pred(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
-	res := makeEmptyEqualityProblemList()
-
-	idFst := basictypes.MakerId(p1.GetID().GetName() + "_SATEQ")
-	idSnd := basictypes.MakerId(p2.GetID().GetName() + "_SATEQ")
-
-	funFst := basictypes.MakerFun(idFst, p1.GetArgs(), []typing.TypeApp{})
-	funSnd := basictypes.MakerFun(idSnd, p2.GetArgs(), []typing.TypeApp{})
-
-	lpo.insertIdIfNotContains(idFst)
-	lpo.insertIdIfNotContains(idSnd)
-
-	return append(res, makeEqualityProblem(eq.copy(), funFst, funSnd, makeEmptyConstraintStruct()))
 }
 
 /* Build an equality problem multi list from a list of predicate. Take one predicate, search for its negation in the code tree, and if it found any, build the corresponding equality problem list */

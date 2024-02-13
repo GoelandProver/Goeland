@@ -37,8 +37,6 @@
 package equality
 
 import (
-	"os"
-
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/search"
@@ -75,9 +73,6 @@ func TryEquality(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.St
 	return false
 }
 
-var ShouldPrintProblems bool = false
-var PathForProblems string = ""
-
 var nodesDone = global.NewList[global.Integer]()
 
 /**
@@ -90,12 +85,7 @@ func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basic
 	global.PrintDebug("ER", "ER call")
 	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
 	if equalities {
-		success, subs := RunEqualityReasoning(problem)
-		if ShouldPrintProblems && success && !problem.isTrivial() && !nodesDone.Contains(global.Integer(originalNodeId)) {
-			nodesDone.Append(global.Integer(originalNodeId))
-			writeInFile(problem.AllSubToTPTPString())
-		}
-		return success, subs
+		return RunEqualityReasoning(problem)
 	} else {
 		return false, []treetypes.Substitutions{}
 	}
@@ -107,19 +97,4 @@ func InsertPred(p basictypes.Form) {
 
 func InsertTerm(t basictypes.Term) {
 	lpo.insertTerm(t)
-}
-
-func writeInFile(str string) {
-	if str != "" {
-		f, err := os.OpenFile(PathForProblems, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-		if err != nil {
-			panic(err)
-		}
-
-		defer f.Close()
-
-		if _, err = f.WriteString(str + "\n"); err != nil {
-			panic(err)
-		}
-	}
 }

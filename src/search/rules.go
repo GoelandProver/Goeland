@@ -41,7 +41,6 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	syntax "github.com/GoelandProver/Goeland/syntaxic-manipulations"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -418,14 +417,4 @@ func ApplyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes
 
 	fnt, mm := syntax.Instantiate(fnt, index)
 	return basictypes.MakeSingleElementFormAndTermList(fnt), mm
-}
-
-/* Syntaxic manipulations below */
-
-func crossType(t typing.TypeApp, tf typing.TypeApp) typing.TypeApp {
-	if t == nil {
-		return tf
-	}
-
-	return typing.MkTypeCross(t, tf)
 }
