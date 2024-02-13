@@ -267,7 +267,7 @@ func TestMain(m *testing.M) {
 	typing.Init()
 	basictypes.Init()
 	initTestVariable()
-	global.SetDebugTerminal(true)
+	global.EnableDebug()
 	code := m.Run()
 	os.Exit(code)
 }
@@ -296,10 +296,8 @@ func TestAS(t *testing.T) {
 	s.Set(y, a)
 	new_ep := ep.applySubstitution(s)
 
-	global.SetDebugTerminal(true)
 	global.PrintDebug("TEST_AS", fmt.Sprintf("Current EP : %v", new_ep.ToString()))
 	global.PrintDebug("TEST_AS", fmt.Sprintf("Expected : %v", expected_ep.ToString()))
-	global.SetDebugTerminal(false)
 }
 
 /*** Test constraints ***/

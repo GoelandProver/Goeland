@@ -564,7 +564,7 @@ func TestEquRewrite6(t *testing.T) {
  **/
 func TestSubst1(t *testing.T) {
 	initDMT()
-	global.SetDebugTerminal(true)
+	global.EnableDebug()
 	// forall x.P(x, x) <=> P(x, x) ^ Q(x, x)
 	equPred := btypes.MakerAll(
 		[]btypes.Var{x},

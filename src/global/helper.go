@@ -73,10 +73,7 @@ var arithModule = false
 var innerSkolem = false
 var preInnerSko = false
 
-var debugTerminal = false
-var debugFile = false
-var showTrace = false
-var logFile string
+var debug = false
 var writeLogs = false
 
 var cpuProfile string
@@ -118,23 +115,7 @@ func GetGID() uint64 {
 
 /* Getters */
 func GetDebug() bool {
-	return debugTerminal || debugFile
-}
-
-func GetDebugTerminal() bool {
-	return debugTerminal
-}
-
-func GetDebugFile() bool {
-	return debugFile
-}
-
-func GetShowTrace() bool {
-	return showTrace
-}
-
-func GetLogFile() string {
-	return logFile
+	return debug
 }
 
 func GetWriteLogs() bool {
@@ -262,20 +243,8 @@ func IsPreInnerSko() bool {
 }
 
 /* Setters */
-func SetDebugTerminal(b bool) {
-	debugTerminal = b
-}
-
-func SetDebugFile(b bool) {
-	debugFile = b
-}
-
-func SetShowTrace(b bool) {
-	showTrace = b
-}
-
-func SetLogFile(s string) {
-	logFile = s
+func SetDebug(b bool) {
+	debug = b
 }
 
 func SetWriteLogs(b bool) {

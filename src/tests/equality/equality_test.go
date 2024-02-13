@@ -319,7 +319,7 @@ func initEqualityTest() {
 	basictypes.Init()
 	sateq.Enable()
 	initTestVariable()
-	global.SetDebugTerminal(true)
+	global.EnableDebug()
 }
 
 func checkAllCompatibleWith(areCompatbile []treetypes.Substitutions, with ...treetypes.Substitutions) bool {

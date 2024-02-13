@@ -42,7 +42,6 @@ import (
 	"strings"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
-	"github.com/GoelandProver/Goeland/global"
 	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -55,8 +54,6 @@ var negativeTree datastruct.DataStructure /* Matches atoms with negative occurre
 
 var activatePolarized bool
 var preskolemize bool
-
-var debugActivated bool
 
 var flagPolarized = flag.Bool("polarized", false, "Activate polarized DMT")
 var flagPresko = flag.Bool("presko", false, "Activate preskolemization on DMT")
@@ -87,7 +84,6 @@ func initPluginGlobalVariables() {
 	negativeRewrite = make(map[string]btypes.FormList)
 	positiveTree = new(treesearch.Node)
 	negativeTree = new(treesearch.Node)
-	debugActivated = global.GetDebug()
 }
 
 /**

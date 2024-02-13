@@ -52,14 +52,13 @@ The parameters must be passed *before* the problem file. The available parameter
 | -core_limit *int* | Sets the limit in number of cores (default: all) (default: **-1**). |
 | -cpuprofile *file* | Writes the cpu profile to *file*. |
 | -debug | Enables printing debug information in the terminal (default: **false**). |
-| -dif | Short for 'Debug In File'. Enables printing debug information in the log file. Won't work when used with the option `-wlogs` (default: **false**). |
 | -dmt | Enables deduction modulo theory (default: **false**). |
 | -dmt_before_eq | Enables dmt before equality (default: **false**). |
 | -exchanges | Enables the node exchanges to be written in a file (default: **false**). |
 | -inner | Enables on-the-fly inner Skolemisation during the proof-search (default: **false**). |
 | -preinner | Activates preinner Skolemisation, a Skolemisation strategy even more optimised than `-inner` (default: **false**). |
 | -l *int* | Sets the limit in destructive mode (default: **-1**). |
-| -log *file* | Changes the file output for loggers. Won't work when used with the option `-wlogs` (default: **logs**). |
+| -log *file* | Changes the file output for loggers. Won't work without the option `-wlogs` (default: **logs**). |
 | -memprofile *file* | Writes the memory profile to file (default: **false**). |
 | -nd | Enables the non-destructive version (default: **false**). |
 | -noeq | Disables equality (default: **false**). |

@@ -97,15 +97,13 @@ func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 }
 
 func printDebugRewriteRule(polarity bool, axiom, cons btypes.Form) {
-	if debugActivated {
-		var ax, co string
-		if polarity {
-			ax, co = axiom.ToString(), cons.ToString()
-		} else {
-			ax, co = btypes.RefuteForm(axiom).ToString(), cons.ToString()
-		}
-		PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co))
+	var ax, co string
+	if polarity {
+		ax, co = axiom.ToString(), cons.ToString()
+	} else {
+		ax, co = btypes.RefuteForm(axiom).ToString(), cons.ToString()
 	}
+	PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co))
 }
 
 /**

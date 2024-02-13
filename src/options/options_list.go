@@ -79,31 +79,31 @@ func buildOptions() {
 		"debug",
 		false,
 		"Enables printing debug information in the terminal",
-		func(bool) { global.SetDebugTerminal(true) },
-		func(bool) {})
-	(&option[bool]{}).init(
-		"dif",
-		false,
-		"Short for 'Debug In File'. Enables printing debug information in the log file. Won't work when used with the option -wlogs",
-		func(bool) { global.SetDebugFile(true) },
+		func(bool) {
+			global.SetDebug(true)
+			global.EnableDebug()
+		},
 		func(bool) {})
 	(&option[string]{}).init(
 		"log",
 		"logs",
-		"Changes the `file` output for loggers. Won't work when used with the option -wlogs",
+		"Changes the `file` output for loggers. Won't work without the option -wlogs",
 		func(string) {},
-		func(val string) { global.SetLogFile(val) })
+		func(val string) { global.EnableLogFile(val) })
 	(&option[bool]{}).init(
 		"show_trace",
 		false,
 		"Enables the location of the loggers call to be shown in the logs",
-		func(bool) { global.SetShowTrace(true) },
+		func(bool) { global.EnableShowTrace() },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"wlogs",
 		false,
 		"Enables the writing of the logs in files",
-		func(bool) { global.SetWriteLogs(true) },
+		func(bool) {
+			global.SetWriteLogs(true)
+			global.EnableWriteLogs()
+		},
 		func(bool) {})
 
 	(&option[string]{}).init(

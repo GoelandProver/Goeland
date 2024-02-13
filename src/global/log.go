@@ -49,12 +49,10 @@ var (
 	logError *log.Logger
 	logPanic *log.Logger
 	logFatal *log.Logger
-)
 
-// Initialises the logger with the correct options
-func init() {
-	initLogger(GetLogFile(), GetDebugTerminal(), GetDebugFile(), GetShowTrace(), GetWriteLogs())
-}
+	wrt      io.Writer
+	fileName string
+)
 
 /**
 *  Initialises the loggers
@@ -64,64 +62,20 @@ func init() {
 *  Will write the debug logs in the terminal only if the parameter debugInTerminal is true
 *  Will write the line where the logger was called only if the parameter showTrace is true
 **/
-func initLogger(fileName string, debugInTerminal, debugInFile, showTrace, writeLogs bool) {
+func init() {
+	wrt = os.Stdout
 
-	var wrt io.Writer
-	var f *os.File
-
-	if writeLogs {
-		f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-
-		if err != nil {
-			log.Fatalf("Error opening log file: %v", err)
-		}
-
-		wrt = io.MultiWriter(os.Stdout, f)
-
-		f, err = os.OpenFile("/tmp/Goeland"+time.Now().Format("[2006-01-02 15:04:05]")+".log", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-
-		if err != nil {
-			log.Fatalf("Error opening log file: %v", err)
-		}
-
-		wrt = io.MultiWriter(wrt, f)
-	} else {
-		wrt = os.Stdout
-	}
-
-	logOptions := 0
-	if showTrace {
-		logOptions = log.Lshortfile
-	}
-
-	debPrefix := "DEB: "
-
-	if debugInFile && !writeLogs {
-		if debugInTerminal {
-			logDebug = log.New(wrt, debPrefix, logOptions)
-		} else {
-			logDebug = log.New(f, debPrefix, logOptions)
-		}
-	} else if debugInTerminal {
-		logDebug = log.New(os.Stdout, debPrefix, logOptions)
-	}
-
-	setDebugFunction()
-
-	logInfo = log.New(wrt, "INF: ", logOptions)
-	logError = log.New(wrt, "ERR: ", logOptions)
-	logPanic = log.New(wrt, "PAN: ", logOptions)
-	logFatal = log.New(wrt, "FAT: ", logOptions)
+	logDebug = log.New(wrt, "DEB: ", 0)
+	logInfo = log.New(wrt, "INF: ", 0)
+	logError = log.New(wrt, "ERR: ", 0)
+	logPanic = log.New(wrt, "PAN: ", 0)
+	logFatal = log.New(wrt, "FAT: ", 0)
 }
 
 /* Sets the function to be called when PrintDebug is called. This way, we avoid an if test when not in debug mode. */
-func setDebugFunction() {
-	if GetDebug() {
-		PrintDebug = func(function, message string) {
-			printToLogger(logDebug, function, message)
-		}
-	} else {
-		PrintDebug = func(function, message string) {}
+func EnableDebug() {
+	PrintDebug = func(function, message string) {
+		printToLogger(logDebug, function, message)
 	}
 }
 
@@ -134,10 +88,9 @@ func printToLogger(logger *log.Logger, function, message string) {
 		options = append(options, GetGID())
 	}
 
-	if !GetShowTrace() {
-		toParse += "[%v]"
-		options = append(options, function)
-	}
+	additionalOptions, strToAdd := getTraceFormating(function)
+	options = append(options, additionalOptions...)
+	toParse += strToAdd
 
 	toParse += " %v\n"
 	options = append(options, message)
@@ -145,12 +98,56 @@ func printToLogger(logger *log.Logger, function, message string) {
 	logger.Output(3, fmt.Sprintf(toParse, options...))
 }
 
+var getTraceFormating = func(function string) (options []any, str string) {
+	return []any{}, ""
+}
+
+func EnableShowTrace() {
+	logDebug.SetFlags(log.Lshortfile)
+	logInfo.SetFlags(log.Lshortfile)
+	logError.SetFlags(log.Lshortfile)
+	logPanic.SetFlags(log.Lshortfile)
+	logFatal.SetFlags(log.Lshortfile)
+
+	getTraceFormating = func(function string) (options []any, str string) {
+		return []any{function}, "[%v]"
+	}
+}
+
+func EnableLogFile(file string) {
+	fileName = file
+}
+
+func EnableWriteLogs() {
+	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+
+	if err != nil {
+		log.Fatalf("Error opening log file: %v", err)
+	}
+
+	wrt = io.MultiWriter(os.Stdout, f)
+
+	f, err = os.OpenFile("/tmp/Goeland"+time.Now().Format("[2006-01-02 15:04:05]")+".log", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+
+	if err != nil {
+		log.Fatalf("Error opening log file: %v", err)
+	}
+
+	wrt = io.MultiWriter(wrt, f)
+
+	logDebug.SetOutput(wrt)
+	logInfo.SetOutput(wrt)
+	logError.SetOutput(wrt)
+	logPanic.SetOutput(wrt)
+	logFatal.SetOutput(wrt)
+}
+
 // Prints the message into the terminal and/or the file as a debug message
 //
 // Use when you want to display a message for debugging purposes only.
 // The prefix for debug messages is 'DEB'.
 // Will only print in the terminal and/or the file if the corresponding options -debug and -dif have been set.
-var PrintDebug func(function, message string)
+var PrintDebug = func(function, message string) {}
 
 // Prints the message into the terminal and the file as an information message
 //
