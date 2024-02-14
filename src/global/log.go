@@ -77,20 +77,22 @@ func EnableDebug() {
 	PrintDebug = func(function, message string) {
 		printToLogger(logDebug, function, message)
 	}
+
+	getId = func() (options []any, str string) {
+		return []any{GetGID()}, "[%v]"
+	}
 }
 
 func printToLogger(logger *log.Logger, function, message string) {
 	toParse := "[%.6fs]"
 	options := []any{time.Since(start).Seconds()}
 
-	if GetDebug() {
-		toParse += "[%v]"
-		options = append(options, GetGID())
-	}
-
-	additionalOptions, strToAdd := getTraceFormating(function)
+	additionalOptions, additionalStr := getId()
 	options = append(options, additionalOptions...)
-	toParse += strToAdd
+	toParse += additionalStr
+
+	options = append(options, function)
+	toParse += "[%v]"
 
 	toParse += " %v\n"
 	options = append(options, message)
@@ -98,7 +100,7 @@ func printToLogger(logger *log.Logger, function, message string) {
 	logger.Output(3, fmt.Sprintf(toParse, options...))
 }
 
-var getTraceFormating = func(function string) (options []any, str string) {
+var getId = func() (options []any, str string) {
 	return []any{}, ""
 }
 
@@ -108,10 +110,6 @@ func EnableShowTrace() {
 	logError.SetFlags(log.Lshortfile)
 	logPanic.SetFlags(log.Lshortfile)
 	logFatal.SetFlags(log.Lshortfile)
-
-	getTraceFormating = func(function string) (options []any, str string) {
-		return []any{function}, "[%v]"
-	}
 }
 
 func EnableLogFile(file string) {
