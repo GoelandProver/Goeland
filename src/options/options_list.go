@@ -41,7 +41,6 @@ import (
 	"fmt"
 	"time"
 
-	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/assisted"
 	"github.com/GoelandProver/Goeland/plugins/coq"
@@ -274,14 +273,6 @@ func buildOptions() {
 		"Should only be used with the -ocoq or the -olp parameters. Enables the chronometer for deskolemization and proof translation",
 		func(bool) {
 			chronoInit()
-		},
-		func(bool) {})
-	(&option[bool]{}).init(
-		"deter",
-		false,
-		"Makes codetrees deterministic",
-		func(bool) {
-			treesearch.DeterministicCodeTree = true
 		},
 		func(bool) {})
 	(&option[string]{}).init(
