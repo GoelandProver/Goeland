@@ -283,6 +283,17 @@ func buildOptions() {
 		func(val string) {
 			global.ProofFile = val
 		})
+	(&option[bool]{}).init(
+		"vec",
+		false,
+		"Cannot be used with the -l and the -completeness parameters. Enables the very-eager-closure",
+		func(bool) {
+			global.SetCompleteness(false)
+
+			maxInt := int(^uint(0) >> 1)
+			global.SetLimit(maxInt)
+		},
+		func(bool) {})
 }
 
 func chronoInit() {
