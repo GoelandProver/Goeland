@@ -70,8 +70,6 @@ func TryEquality(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.St
 	return false
 }
 
-var nodesDone = global.NewList[global.Integer]()
-
 /**
 * Function EqualityReasoning
 * Takes atomics
