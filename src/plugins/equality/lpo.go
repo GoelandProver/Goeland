@@ -235,31 +235,19 @@ func compareMetaMeta(m1, m2 basictypes.Meta) compareStruct {
 /* Compare two functions */
 func compareFunFun(s, t basictypes.Fun, lpo *LPO) compareStruct {
 	global.PrintDebug("CFF", "Compare Fun Fun")
-	// Initalisation
-	f := lpo.get(s.GetID())
-	g := lpo.get(t.GetID())
 
-	if f == -1 {
-		global.PrintError("CFF", fmt.Sprintf("id not in the LPO : %v\n", s.GetID().ToString()))
-	}
-	if g == -1 {
-		global.PrintError("CFF", fmt.Sprintf("id not in the LPO : %v\n", t.GetID().ToString()))
-	}
-
-	if f < g {
+	switch s.GetID().CompareWith(t.GetID()) {
+	case -1:
 		if found, res := caseFLessG(s, t, lpo); found {
 			return res
 		}
-	}
-
-	if f == g {
+	case 0:
 		if found, res := caseFEqualsG(s, t, lpo); found {
 			return res
 		}
 	}
 
 	return caseDefault(s, t, lpo)
-
 }
 
 /* Case f < g */

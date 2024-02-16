@@ -36,7 +36,10 @@
 
 package basictypes
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 /* id (for predicate) */
 type Id struct {
@@ -81,4 +84,20 @@ func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
 
 func (i Id) GetSubTerms() TermList {
 	return TermList{i}
+}
+
+// id < other : -1; id = other : 0; id > other : 1
+func (i Id) CompareWith(other Id) int {
+	if i.name == other.name {
+		switch {
+		case i.index < other.index:
+			return -1
+		case i.index == other.index:
+			return 0
+		default:
+			return 1
+		}
+	}
+
+	return strings.Compare(i.name, other.name)
 }
