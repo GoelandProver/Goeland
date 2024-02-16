@@ -242,16 +242,6 @@ func initTestVariable() {
 	pab = basictypes.MakerPred(p_id, basictypes.TermList{a, b}, []typing.TypeApp{})
 	pax = basictypes.MakerPred(p_id, basictypes.TermList{a, x}, []typing.TypeApp{})
 	not_pcd = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.TermList{c, d}, []typing.TypeApp{}))
-
-	lpo.insertTerm(p_id)
-	lpo.insertTerm(g_id)
-	lpo.insertTerm(f_id)
-	lpo.insertTerm(c2_id)
-	lpo.insertTerm(c1_id)
-	lpo.insertTerm(d_id)
-	lpo.insertTerm(c_id)
-	lpo.insertTerm(b_id)
-	lpo.insertTerm(a_id)
 }
 
 func initCodeTreesTests(lf basictypes.FormList) (datastruct.DataStructure, datastruct.DataStructure) {

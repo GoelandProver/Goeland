@@ -47,9 +47,6 @@ import (
 )
 
 func Enable() {
-	search.UseAtomic = func(atomic basictypes.Form) {
-		InsertPred(atomic)
-	}
 	SetTryEquality()
 }
 
@@ -89,12 +86,4 @@ func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basic
 	} else {
 		return false, []treetypes.Substitutions{}
 	}
-}
-
-func InsertPred(p basictypes.Form) {
-	lpo.insertPred(p)
-}
-
-func InsertTerm(t basictypes.Term) {
-	lpo.insertTerm(t)
 }

@@ -98,7 +98,7 @@ func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
 /* return true if the constraint is not violated, false otherwise  + true is the contraint is comparable, false otherwise + update c into the useful part of the constraint */
 func (c *Constraint) checkLPO() (bool, bool) {
 	global.PrintDebug("CLPO", fmt.Sprintf("Type %v, cst : %v", c.getCType(), c.toString()))
-	cs := lpo.compare(c.getTP().GetT1(), c.getTP().GetT2())
+	cs := compareLPO(c.getTP().GetT1(), c.getTP().GetT2())
 	global.PrintDebug("CLPO", fmt.Sprintf("res : %v, is_comparable : %v", cs.order, cs.is_comparable))
 	if cs.is_comparable {
 		switch c.getCType() {

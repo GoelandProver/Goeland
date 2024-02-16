@@ -52,7 +52,6 @@ import (
 // Todo : S'arrêter au premier trouvé ?
 var RunEqualityReasoning = func(epml EqualityProblemMultiList) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning multilist : %v", len(epml)))
-	global.PrintDebug("ERML", fmt.Sprintf("LPO : %v", lpo.toString()))
 	substs_res := []treetypes.Substitutions{}
 	found := false
 

@@ -244,7 +244,6 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 
 		lam := func(atomic basictypes.Form) bool {
 			// Search for a contradiction in LF
-			UseAtomic(atomic)
 
 			if !global.GetAssisted() {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
@@ -301,8 +300,6 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 		go ds.doCorrectApplyRules(father_id, st, cha, atomics_for_dmt, node_id, original_node_id, meta_to_reintroduce)
 	}
 }
-
-var UseAtomic = func(atomic basictypes.Form) {}
 
 var TryEquality = func(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.State, new_atomics basictypes.FormAndTermsList, father_id uint64, cha Communication, node_id int, original_node_id int) bool {
 	return false
