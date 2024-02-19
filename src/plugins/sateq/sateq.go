@@ -50,6 +50,13 @@ func RunEqualityReasoning(epml equality.EqualityProblemMultiList) (success bool,
 
 	problem := format(epml)
 	normalized := normalize(problem)
+	if problem.HasTrivialGoals() {
+		// congruence closure alone finds a solution
+		s := treetypes.MakeEmptySubstitution()
+		l := treetypes.MakeEmptySubstitutionList()
+		l = append(l, s)
+		return true, l
+	}
 	satBuilder := buildSAT(normalized)
 
 	subs, success = findSolution(satBuilder)

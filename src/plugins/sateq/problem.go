@@ -122,6 +122,24 @@ func (problem *Problem) format() {
 	}
 }
 
+func isTrivialGoal(goal *global.List[*Equality]) bool {
+	for _, eq := range goal.AsSlice() {
+		if eq.GetFst() != eq.GetSnd() {
+			return false
+		}
+	}
+	return true
+}
+
+func (problem *Problem) HasTrivialGoals() bool {
+	for _, goal := range problem.goals.AsSlice() {
+		if isTrivialGoal(goal) {
+			return true
+		}
+	}
+	return false
+}
+
 func (problem *Problem) ToString() string {
 	result := ""
 
