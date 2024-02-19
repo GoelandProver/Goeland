@@ -39,6 +39,7 @@ package options
 import (
 	"flag"
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -290,7 +291,7 @@ func buildOptions() {
 		func(bool) {
 			global.SetCompleteness(false)
 
-			maxInt := int(^uint(0) >> 1)
+			maxInt := math.MaxInt
 			global.SetLimit(maxInt)
 		},
 		func(bool) {})
