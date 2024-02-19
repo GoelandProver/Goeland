@@ -172,7 +172,7 @@ func (epml EqualityProblemMultiList) GetMetasToTPTPString() string {
 	metas := basictypes.MakeEmptyMetaList()
 
 	for _, epl := range epml {
-		for _, meta := range epl.GetMetas().AsSlice() {
+		for _, meta := range epl.GetMetas().Iterator() {
 			metas = metas.AppendIfNotContains(meta)
 		}
 	}

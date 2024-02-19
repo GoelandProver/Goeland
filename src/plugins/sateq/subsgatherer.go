@@ -111,7 +111,7 @@ func translateFunction(toTranslate basictypes.Fun, termCorrespondance map[consta
 		newTerms.Append(subterm)
 	}
 
-	return basictypes.MakerFun(toTranslate.GetID(), newTerms.AsSlice(), toTranslate.GetTypeVars(), toTranslate.GetTypeHint()), false
+	return basictypes.MakerFun(toTranslate.GetID(), newTerms.Iterator(), toTranslate.GetTypeVars(), toTranslate.GetTypeHint()), false
 }
 
 func buildSubsFrom(subsMap map[termIndex]constant, translation map[constant]termIndex, termCorrespondance map[termIndex]basictypes.Term) []treetypes.Substitutions {

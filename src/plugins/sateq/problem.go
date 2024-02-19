@@ -98,7 +98,7 @@ func NewProblem(assumptions *global.List[*Equality], goals *global.List[*global.
 }
 
 func (problem *Problem) format() {
-	for i, eq := range problem.assumptions.AsSlice() {
+	for i, eq := range problem.assumptions.Iterator() {
 		rhs := termIndex(i)
 		problem.rightHandIndex[rhs] = eq.GetSnd()
 
@@ -125,13 +125,13 @@ func (problem *Problem) format() {
 func (problem *Problem) ToString() string {
 	result := ""
 
-	for _, ass := range problem.assumptions.AsSlice() {
+	for _, ass := range problem.assumptions.Iterator() {
 		result += ass.ToString() + ", "
 	}
 
 	result = result[:len(result)-2] + " ⊨ "
 
-	for _, goal := range problem.goals.AsSlice() {
+	for _, goal := range problem.goals.Iterator() {
 		result += goal.ToString() + ", "
 	}
 
@@ -143,11 +143,11 @@ func (problem *Problem) addAssumption(equ *Equality) {
 }
 
 func (problem *Problem) replaceAllWith(oldTerm, newTerm basictypes.Term) {
-	for _, equ := range problem.assumptions.AsSlice() {
+	for _, equ := range problem.assumptions.Iterator() {
 		equ.replaceAllWith(oldTerm, newTerm)
 	}
-	for _, goal := range problem.goals.AsSlice() {
-		for _, equ := range goal.AsSlice() {
+	for _, goal := range problem.goals.Iterator() {
+		for _, equ := range goal.Iterator() {
 			equ.replaceAllWith(oldTerm, newTerm)
 		}
 	}
@@ -172,7 +172,7 @@ func (problem *Problem) removeDuplicates() int {
 func (problem *Problem) getConstants() *global.List[constant] {
 	result := global.NewList[constant]()
 
-	for _, equ := range problem.assumptions.AsSlice() {
+	for _, equ := range problem.assumptions.Iterator() {
 		if typed, ok := equ.GetFst().(constant); ok {
 			result.AppendIfNotContains(typed)
 		}

@@ -54,26 +54,16 @@ func NewSyncMap[T Basic, U Basic]() *Map[T, U] {
 	return syncMap
 }
 
-// Given a key, gives the value associated with that key. If the key doesn't exist, gives a zero value of type U.
-func (m *Map[T, U]) Get(otherKey T) U {
-	m.DoAtStartR()
-	defer m.DoAtEndR()
-
-	for i, key := range m.keys.AsSlice() {
-		if key.Equals(otherKey) {
-			return m.values.Get(i)
-		}
-	}
-	var zero U
-	return zero
-}
-
 // Given a key, gives the value associated with that key and if the key exists. If the key doesn't exist, gives a zero value of type U.
 func (m *Map[T, U]) GetExists(otherKey T) (U, bool) {
 	m.DoAtStartR()
 	defer m.DoAtEndR()
 
-	for i, key := range m.keys.AsSlice() {
+	return m.getExists(otherKey)
+}
+
+func (m *Map[T, U]) getExists(otherKey T) (U, bool) {
+	for i, key := range m.keys.Iterator() {
 		if key.Equals(otherKey) {
 			return m.values.Get(i), true
 		}
@@ -82,12 +72,29 @@ func (m *Map[T, U]) GetExists(otherKey T) (U, bool) {
 	return zero, false
 }
 
+// Given a key, gives the value associated with that key. If the key doesn't exist, gives a zero value of type U.
+func (m *Map[T, U]) Get(otherKey T) U {
+	m.DoAtStartR()
+	defer m.DoAtEndR()
+
+	return m.get(otherKey)
+}
+
+func (m *Map[T, U]) get(otherKey T) U {
+	value, _ := m.getExists(otherKey)
+	return value
+}
+
 // Given a key, return true if the key exists.
 func (m *Map[T, U]) Exists(otherKey T) bool {
 	m.DoAtStartR()
 	defer m.DoAtEndR()
 
-	_, result := m.GetExists(otherKey)
+	return m.exists(otherKey)
+}
+
+func (m *Map[T, U]) exists(otherKey T) bool {
+	_, result := m.getExists(otherKey)
 	return result
 }
 
@@ -109,7 +116,11 @@ func (m *Map[T, U]) Set(otherKey T, otherValue U) (oldValue U, replacedValue boo
 	m.DoAtStart()
 	defer m.DoAtEnd()
 
-	for i, key := range m.keys.AsSlice() {
+	return m.set(otherKey, otherValue)
+}
+
+func (m *Map[T, U]) set(otherKey T, otherValue U) (oldValue U, replacedValue bool) {
+	for i, key := range m.keys.Iterator() {
 		if key.Equals(otherKey) {
 			oldValue := m.values.Get(i)
 			m.values.Set(i, otherValue)
@@ -159,8 +170,8 @@ func (m *Map[T, U]) Clone() *Map[T, U] {
 	defer m.DoAtEndR()
 
 	newCm := NewMap[T, U]()
-	newCm.keys.Append(m.keys.AsSlice()...)
-	newCm.values.Append(m.values.AsSlice()...)
+	newCm.keys.Append(m.keys.Iterator()...)
+	newCm.values.Append(m.values.Iterator()...)
 	return newCm
 }
 
@@ -169,7 +180,7 @@ func (m *Map[T, U]) CopyInto(other *Map[T, U]) {
 	m.DoAtStart()
 	defer m.DoAtEnd()
 
-	for i := range m.keys.AsSlice() {
+	for i := range m.keys.Iterator() {
 		other.Set(m.keys.Get(i), m.values.Get(i))
 	}
 }
@@ -179,7 +190,7 @@ func (m *Map[T, U]) Keys() []T {
 	m.DoAtStartR()
 	defer m.DoAtEndR()
 
-	return m.keys.AsSlice()
+	return m.keys.Iterator()
 }
 
 // Returns a slice with all the values.
@@ -187,7 +198,7 @@ func (m *Map[T, U]) Values() []U {
 	m.DoAtStartR()
 	defer m.DoAtEndR()
 
-	return m.values.AsSlice()
+	return m.values.Iterator()
 }
 
 // Returns a string that represents the Map.
@@ -198,7 +209,7 @@ func (m *Map[T, U]) ToString() string {
 	defer m.DoAtEndR()
 
 	result := "{"
-	for i := range m.keys.AsSlice() {
+	for i := range m.keys.Iterator() {
 		result += m.keys.Get(i).ToString() + " : " + m.values.Get(i).ToString() + "; "
 	}
 
@@ -228,38 +239,38 @@ func (mwl *MapWithList[T, U]) Add(key T, value ...U) {
 	mwl.DoAtStart()
 	defer mwl.DoAtEnd()
 
-	if !mwl.Exists(key) {
-		mwl.Set(key, NewList[U]())
+	if !mwl.exists(key) {
+		mwl.set(key, NewList[U]())
 	}
-	mwl.Get(key).Append(value...)
+	mwl.get(key).Append(value...)
 }
 
 func (mwl *MapWithList[T, U]) AddIfNotContains(key T, value ...U) {
 	mwl.DoAtStart()
 	defer mwl.DoAtEnd()
 
-	if !mwl.Exists(key) {
-		mwl.Set(key, NewList[U]())
+	if !mwl.exists(key) {
+		mwl.set(key, NewList[U]())
 	}
-	mwl.Get(key).AppendIfNotContains(value...)
+	mwl.get(key).AppendIfNotContains(value...)
 }
 
 func (mwl *MapWithList[T, U]) Remove(key T, index int) {
 	mwl.DoAtStart()
 	defer mwl.DoAtEnd()
 
-	if !mwl.Exists(key) {
-		mwl.Set(key, NewList[U]())
+	if !mwl.exists(key) {
+		mwl.set(key, NewList[U]())
 	}
-	mwl.Get(key).Remove(index)
+	mwl.get(key).Remove(index)
 }
 
 func (mwl *MapWithList[T, U]) RemoveAll(key T, value U) {
 	mwl.DoAtStart()
 	defer mwl.DoAtEnd()
 
-	if !mwl.Exists(key) {
-		mwl.Set(key, NewList[U]())
+	if !mwl.exists(key) {
+		mwl.set(key, NewList[U]())
 	}
-	mwl.Get(key).RemoveAll(value)
+	mwl.get(key).RemoveAll(value)
 }

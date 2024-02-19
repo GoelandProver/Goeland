@@ -31,14 +31,6 @@
 **/
 package global
 
-type Container[T any, U Basic] interface {
-	Basic
-	RWSyncable
-	Contains(U) bool
-	Append(...U) T
-	AppendIfNotContains(...U) T
-}
-
 // A simple list of generic Basic type.
 //
 // Instanciate with NewList(), NewListWithSlice() or their sync counterparts for a synchronised version.
@@ -85,6 +77,10 @@ func (list *List[T]) Length() int {
 	list.doAtStartR()
 	defer list.doAtEndR()
 
+	return list.length()
+}
+
+func (list *List[T]) length() int {
 	return len(list.values)
 }
 
@@ -115,6 +111,10 @@ func (list *List[T]) Remove(i int) {
 	list.doAtStart()
 	defer list.doAtEnd()
 
+	list.remove(i)
+}
+
+func (list *List[T]) remove(i int) {
 	list.values = append(list.values[:i], list.values[i+1:]...)
 }
 
@@ -127,7 +127,7 @@ func (list *List[T]) RemoveAll(toRemove T) {
 
 	for i, value := range list.values {
 		if value.Equals(toRemove) {
-			list.Remove(i)
+			list.remove(i)
 			i--
 		}
 	}
@@ -140,9 +140,7 @@ func (list *List[T]) Clear() {
 	list.doAtStart()
 	defer list.doAtEnd()
 
-	for list.Length() > 0 {
-		list.Remove(0)
-	}
+	list.values = []T{}
 }
 
 /*
@@ -160,7 +158,7 @@ func (list *List[T]) ToString() string {
 		str += element.ToString() + ", "
 	}
 
-	if list.Length() > 0 {
+	if list.length() > 0 {
 		return str[:len(str)-2] + "]"
 	} else {
 		return "[]"
@@ -202,7 +200,11 @@ func (list *List[T]) Contains(element T) bool {
 	list.doAtStartR()
 	defer list.doAtEndR()
 
-	_, contains := list.GetIndexOf(element)
+	return list.contains(element)
+}
+
+func (list *List[T]) contains(element T) bool {
+	_, contains := list.getIndexOf(element)
 	return contains
 }
 
@@ -214,7 +216,7 @@ func (list *List[T]) ContainsAll(elements ...T) bool {
 	defer list.doAtEndR()
 
 	for _, element := range elements {
-		if !list.Contains(element) {
+		if !list.contains(element) {
 			return false
 		}
 	}
@@ -229,6 +231,10 @@ func (list *List[T]) GetIndexOf(element T) (int, bool) {
 	list.doAtStartR()
 	defer list.doAtEndR()
 
+	return list.getIndexOf(element)
+}
+
+func (list *List[T]) getIndexOf(element T) (int, bool) {
 	for i := range list.values {
 		if (list.values)[i].Equals(element) {
 			return i, true
@@ -245,6 +251,10 @@ func (list *List[T]) Append(elements ...T) {
 	list.doAtStart()
 	defer list.doAtEnd()
 
+	list.append(elements...)
+}
+
+func (list *List[T]) append(elements ...T) {
 	list.values = append(list.values, elements...)
 }
 
@@ -256,8 +266,8 @@ func (list *List[T]) AppendIfNotContains(elements ...T) {
 	defer list.doAtEnd()
 
 	for _, element := range elements {
-		if !list.Contains(element) {
-			list.Append(element)
+		if !list.contains(element) {
+			list.append(element)
 		}
 	}
 }
@@ -272,16 +282,16 @@ func (list *List[T]) Copy() *List[T] {
 	result := NewList[T]()
 
 	for _, element := range list.values {
-		result.Append(element)
+		result.append(element)
 	}
 
 	return result
 }
 
 /*
-Returns the internal slice of the list.
+Returns an iterable element representing the list to use in for loops.
 */
-func (list *List[T]) AsSlice() []T {
+func (list *List[T]) Iterator() []T {
 	list.doAtStartR()
 	defer list.doAtEndR()
 
