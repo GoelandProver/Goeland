@@ -140,6 +140,11 @@ func (problem *Problem) HasTrivialGoals() bool {
 	return false
 }
 
+func (problem *Problem) IsGround() bool {
+	// TODO
+	return false
+}
+
 func (problem *Problem) ToString() string {
 	result := ""
 
