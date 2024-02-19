@@ -37,8 +37,7 @@ package global
 //
 // Instanciate with NewSet(), NewSetWithSlice() or their sync counterparts for a synchronised version.
 type Set[T Basic] struct {
-	*RWSynchroniser
-	values []T
+	*List[T]
 }
 
 /*
@@ -59,7 +58,7 @@ func NewSyncSet[T Basic]() *Set[T] {
 Given a slice, creates a new set with that slice already set and gives its pointer.
 */
 func NewSetWithSlice[T Basic](slice []T) *Set[T] {
-	return &Set[T]{NewRWSynchroniser(), slice}
+	return &Set[T]{NewListWithSlice[T](slice)}
 }
 
 /*
@@ -73,219 +72,8 @@ func NewSyncSetWithSlice[T Basic](slice []T) *Set[T] {
 }
 
 /*
-Returns the number of elements in the set.
-*/
-func (set *Set[T]) Length() int {
-	set.doAtStartR()
-	defer set.doAtEndR()
-
-	return set.length()
-}
-
-func (set *Set[T]) length() int {
-	return len(set.values)
-}
-
-/*
-Returns the i-th element of the set.
-*/
-func (set *Set[T]) Get(i int) T {
-	set.doAtStartR()
-	defer set.doAtEndR()
-
-	return set.values[i]
-}
-
-/*
-Sets the i-th element of the set to the given value.
-*/
-func (set *Set[T]) Set(i int, value T) {
-	set.doAtStart()
-	defer set.doAtEnd()
-
-	set.values[i] = value
-}
-
-/*
-Removes the i-th element of the set.
-*/
-func (set *Set[T]) Remove(i int) {
-	set.doAtStart()
-	defer set.doAtEnd()
-
-	set.remove(i)
-}
-
-func (set *Set[T]) remove(i int) {
-	set.values = append(set.values[:i], set.values[i+1:]...)
-}
-
-/*
-Removes all elements of the set that are equal to the passed element.
-*/
-func (set *Set[T]) RemoveAll(toRemove T) {
-	set.doAtStart()
-	defer set.doAtEnd()
-
-	for i, value := range set.values {
-		if value.Equals(toRemove) {
-			set.remove(i)
-			i--
-		}
-	}
-}
-
-/*
-Removes every element of the set.
-*/
-func (set *Set[T]) Clear() {
-	set.doAtStart()
-	defer set.doAtEnd()
-
-	set.values = []T{}
-}
-
-/*
-Returns a string that represents the Set.
-
-The string will look like: "[" + set[0].ToString() + ", " + set[1].ToString() + ", " + set[2].ToString() + "]"
-*/
-func (set *Set[T]) ToString() string {
-	set.doAtStartR()
-	defer set.doAtEndR()
-
-	str := "["
-
-	for _, element := range set.values {
-		str += element.ToString() + ", "
-	}
-
-	if set.length() > 0 {
-		return str[:len(str)-2] + "]"
-	} else {
-		return "[]"
-	}
-
-}
-
-/*
-Returns true if the parameter *other* is equals to the set.
-If the parameter is not a Set, returns false
-
-They are equals if they are the same size and each element of a set is .Equals() to the element in the same place for the other set
-*/
-func (set *Set[T]) Equals(other any) bool {
-	set.doAtStartR()
-	defer set.doAtEndR()
-
-	if typed, ok := other.(*Set[T]); ok {
-		if len(set.values) != len(typed.values) {
-			return false
-		}
-
-		for i := range set.values {
-			if !(set.values)[i].Equals(typed.values[i]) {
-				return false
-			}
-		}
-
-		return true
-	}
-
-	return false
-}
-
-/*
-If any element of the set is equal to the parameter, returns true.
-*/
-func (set *Set[T]) Contains(element T) bool {
-	set.doAtStartR()
-	defer set.doAtEndR()
-
-	return set.contains(element)
-}
-
-func (set *Set[T]) contains(element T) bool {
-	_, contains := set.getIndexOf(element)
-	return contains
-}
-
-/*
-If every element of the parameter set is contained in the set, returns true.
-*/
-func (set *Set[T]) ContainsAll(elements ...T) bool {
-	set.doAtStartR()
-	defer set.doAtEndR()
-
-	for _, element := range elements {
-		if !set.contains(element) {
-			return false
-		}
-	}
-
-	return true
-}
-
-/*
-If any element of the set is equal to the parameter, returns the index and true, otherwise, return -1 and false.
-*/
-func (set *Set[T]) GetIndexOf(element T) (int, bool) {
-	set.doAtStartR()
-	defer set.doAtEndR()
-
-	return set.getIndexOf(element)
-}
-
-func (set *Set[T]) getIndexOf(element T) (int, bool) {
-	for i := range set.values {
-		if (set.values)[i].Equals(element) {
-			return i, true
-		}
-	}
-
-	return -1, false
-}
-
-/*
 Adds all the elements at the end of the set.
 */
 func (set *Set[T]) Append(elements ...T) {
-	set.doAtStart()
-	defer set.doAtEnd()
-
-	for _, element := range elements {
-		if !set.contains(element) {
-			set.append(element)
-		}
-	}
-}
-
-func (set *Set[T]) append(elements ...T) {
-	set.values = append(set.values, elements...)
-}
-
-/*
-Returns a shallow copy of the set.
-*/
-func (set *Set[T]) Copy() *Set[T] {
-	set.doAtStartR()
-	defer set.doAtEndR()
-
-	result := NewSet[T]()
-
-	for _, element := range set.values {
-		result.append(element)
-	}
-
-	return result
-}
-
-/*
-Returns an iterable element representing the set to use in for loops.
-*/
-func (set *Set[T]) Iterator() []T {
-	set.doAtStartR()
-	defer set.doAtEndR()
-
-	return set.values
+	set.AppendIfNotContains(elements...)
 }

@@ -245,6 +245,18 @@ func (list *List[T]) getIndexOf(element T) (int, bool) {
 }
 
 /*
+Swaps the elements in the given indexes.
+*/
+func (list *List[T]) Swap(i, j int) {
+	list.doAtStart()
+	defer list.doAtEnd()
+
+	temp := list.values[i]
+	list.values[i] = list.values[j]
+	list.values[j] = temp
+}
+
+/*
 Adds all the elements at the end of the list.
 */
 func (list *List[T]) Append(elements ...T) {
