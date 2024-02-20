@@ -344,7 +344,7 @@ func TestEquRewrite1(t *testing.T) {
 	}
 
 	if !forms[0].Equals(btypes.MakerAll([]btypes.Var{y}, btypes.MakerPred(Q, []btypes.Term{a, y}, []typing.TypeApp{}))) ||
-		len(subst.GetMeta()) > 0 {
+		subst.GetMeta().Len() > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
 	}
 }
@@ -386,7 +386,7 @@ func TestEquRewrite2(t *testing.T) {
 	}
 
 	if !forms[0].Equals(btypes.MakerNot(btypes.MakerAll([]btypes.Var{y}, btypes.MakerPred(Q, []btypes.Term{a, y}, []typing.TypeApp{})))) ||
-		len(subst.GetMeta()) > 0 {
+		subst.GetMeta().Len() > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
 	}
 }
@@ -428,7 +428,7 @@ func TestEquRewrite3(t *testing.T) {
 	}
 
 	if !forms[0].Equals(btypes.MakerNot(btypes.MakerAll([]btypes.Var{y}, btypes.MakerPred(Q, []btypes.Term{a, y}, []typing.TypeApp{})))) ||
-		len(subst.GetMeta()) > 0 {
+		subst.GetMeta().Len() > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
 	}
 }
@@ -470,7 +470,7 @@ func TestEquRewrite4(t *testing.T) {
 	}
 
 	if !forms[0].Equals(btypes.MakerAll([]btypes.Var{y}, btypes.MakerPred(Q, []btypes.Term{a, y}, []typing.TypeApp{}))) ||
-		len(subst.GetMeta()) > 0 {
+		subst.GetMeta().Len() > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
 	}
 }
@@ -512,7 +512,7 @@ func TestEquRewrite5(t *testing.T) {
 	}
 
 	if !forms[0].Equals(btypes.MakerAll([]btypes.Var{y}, btypes.MakerPred(Q, []btypes.Term{a, y}, []typing.TypeApp{}))) ||
-		len(subst.GetMeta()) > 0 {
+		subst.GetMeta().Len() > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
 	}
 }
@@ -554,7 +554,7 @@ func TestEquRewrite6(t *testing.T) {
 	}
 
 	if !forms[0].Equals(btypes.MakerNot(btypes.MakerAll([]btypes.Var{y}, btypes.MakerPred(Q, []btypes.Term{a, y}, []typing.TypeApp{})))) ||
-		len(subst.GetMeta()) > 0 {
+		subst.GetMeta().Len() > 0 {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), forms[0].ToString())
 	}
 }

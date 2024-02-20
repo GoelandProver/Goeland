@@ -50,7 +50,7 @@ type Term interface {
 	IsMeta() bool
 	IsFun() bool
 	ToMeta() Meta
-	GetMetas() MetaList
+	GetMetas() *MetaList
 	GetSubTerms() TermList
 	ReplaceSubTermBy(original_term, new_term Term) Term
 }

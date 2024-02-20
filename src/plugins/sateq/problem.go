@@ -98,7 +98,7 @@ func NewProblem(assumptions *global.List[*Equality], goals *global.List[*global.
 }
 
 func (problem *Problem) format() {
-	for i, eq := range problem.assumptions.Iterator() {
+	for i, eq := range problem.assumptions.Slice() {
 		rhs := termIndex(i)
 		problem.rightHandIndex[rhs] = eq.GetSnd()
 
@@ -125,13 +125,13 @@ func (problem *Problem) format() {
 func (problem *Problem) ToString() string {
 	result := ""
 
-	for _, ass := range problem.assumptions.Iterator() {
+	for _, ass := range problem.assumptions.Slice() {
 		result += ass.ToString() + ", "
 	}
 
 	result = result[:len(result)-2] + " ⊨ "
 
-	for _, goal := range problem.goals.Iterator() {
+	for _, goal := range problem.goals.Slice() {
 		result += goal.ToString() + ", "
 	}
 
@@ -143,11 +143,11 @@ func (problem *Problem) addAssumption(equ *Equality) {
 }
 
 func (problem *Problem) replaceAllWith(oldTerm, newTerm basictypes.Term) {
-	for _, equ := range problem.assumptions.Iterator() {
+	for _, equ := range problem.assumptions.Slice() {
 		equ.replaceAllWith(oldTerm, newTerm)
 	}
-	for _, goal := range problem.goals.Iterator() {
-		for _, equ := range goal.Iterator() {
+	for _, goal := range problem.goals.Slice() {
+		for _, equ := range goal.Slice() {
 			equ.replaceAllWith(oldTerm, newTerm)
 		}
 	}
@@ -156,8 +156,8 @@ func (problem *Problem) replaceAllWith(oldTerm, newTerm basictypes.Term) {
 func (problem *Problem) removeDuplicates() int {
 	cpt := 0
 
-	for i := 0; i < problem.assumptions.Length()-1; i++ {
-		for j := i + 1; j < problem.assumptions.Length(); j++ {
+	for i := 0; i < problem.assumptions.Len()-1; i++ {
+		for j := i + 1; j < problem.assumptions.Len(); j++ {
 			if problem.assumptions.Get(i).Equals(problem.assumptions.Get(j)) {
 				problem.assumptions.Remove(j)
 				j--
@@ -172,7 +172,7 @@ func (problem *Problem) removeDuplicates() int {
 func (problem *Problem) getConstants() *global.List[constant] {
 	result := global.NewList[constant]()
 
-	for _, equ := range problem.assumptions.Iterator() {
+	for _, equ := range problem.assumptions.Slice() {
 		if typed, ok := equ.GetFst().(constant); ok {
 			result.AppendIfNotContains(typed)
 		}

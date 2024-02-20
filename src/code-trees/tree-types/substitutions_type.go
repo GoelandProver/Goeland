@@ -149,15 +149,18 @@ func CopySubstList(sl []Substitutions) []Substitutions {
 }
 
 /* Get all the metavariables of a substitution */
-func (s Substitutions) GetMeta() basictypes.MetaList {
-	res := basictypes.MetaList{}
-	for _, v := range s {
-		meta, term := v.Key(), v.Value()
-		res = res.AppendIfNotContains(meta.Copy().ToMeta())
+func (subs Substitutions) GetMeta() *basictypes.MetaList {
+	res := basictypes.NewMetaList()
+
+	for _, singleSubs := range subs {
+		meta, term := singleSubs.Key(), singleSubs.Value()
+		res.AppendIfNotContains(meta)
+
 		if term.IsMeta() {
-			res = res.AppendIfNotContains(term.Copy().ToMeta())
+			res.AppendIfNotContains(term.ToMeta())
 		}
 	}
+
 	return res
 }
 

@@ -43,47 +43,26 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 )
 
-/* Meta function for sort */
-type MetaList []Meta
-
-func (m MetaList) Len() int      { return len(m) }
-func (m MetaList) Swap(i, j int) { m[i], m[j] = m[j], m[i] }
-func (m MetaList) Less(i, j int) bool {
-	return (m[i].GetName() + strconv.Itoa(m[i].GetOccurence())) < (m[j].GetName() + strconv.Itoa(m[j].GetOccurence()))
+type MetaList struct {
+	*global.List[Meta]
 }
 
-/* Print a list of metas */
-func (ml MetaList) ToString() string {
-	return global.ListToString(ml, ", ", "")
+func NewMetaList() *MetaList {
+	return &MetaList{global.NewList[Meta]()}
 }
 
-func (ml MetaList) Find(m Meta) int {
-	for i, v := range ml {
-		if v.Equals(m) {
-			return i
-		}
-	}
-	return -1
+func NewMetaListWithSlice(metas ...Meta) *MetaList {
+	return &MetaList{global.NewListWithSlice(metas)}
 }
 
-/* Check if a meta is inside a given list of metavariables */
-func (ml MetaList) Contains(m Meta) bool {
-	return ml.Find(m) != -1
-}
-
-/* Append a meta to a meta list if it not already inside */
-func (ml MetaList) AppendIfNotContains(m Meta) MetaList {
-	if ml.Contains(m) {
-		return ml
-	} else {
-		return append(ml, m)
-	}
+func (ml *MetaList) Less(i, j int) bool {
+	return (ml.Get(i).GetName() + strconv.Itoa(ml.Get(i).GetOccurence())) < (ml.Get(j).GetName() + strconv.Itoa(ml.Get(j).GetOccurence()))
 }
 
 /* check if two metalist have metavariables in common */
-func (m1 MetaList) HasInCommon(m2 MetaList) bool {
-	for _, meta := range m1 {
-		if m2.Contains(meta) {
+func (ml *MetaList) HasInCommon(other *MetaList) bool {
+	for _, meta := range ml.Slice() {
+		if other.Contains(meta) {
 			return true
 		}
 	}
@@ -91,9 +70,9 @@ func (m1 MetaList) HasInCommon(m2 MetaList) bool {
 }
 
 /* Check if a list of meta is includ in another */
-func (ml MetaList) IsInclude(ml2 MetaList) bool {
-	for _, meta := range ml2 {
-		if !ml2.Contains(meta) {
+func (ml *MetaList) IsInclude(other *MetaList) bool {
+	for _, meta := range other.Slice() {
+		if !other.Contains(meta) {
 			return false
 		}
 	}
@@ -101,33 +80,19 @@ func (ml MetaList) IsInclude(ml2 MetaList) bool {
 	return true
 }
 
-/* Copy  a MetaList */
-func (ml MetaList) Copy() MetaList {
-	res := make(MetaList, len(ml))
-	for i := range ml {
-		res[i] = ml[i].Copy().ToMeta()
-	}
-	return res
-}
-
-/* Check if a list of meta is empty */
-func (ml MetaList) IsEmpty() bool {
-	return len(ml) <= 0
-}
-
 /* Check if two metalist contains the same elements */
-func (l1 MetaList) Equals(l2 MetaList) bool {
-	if len(l1) != len(l2) {
+func (ml *MetaList) Equals(other *MetaList) bool {
+	if ml.Len() == other.Len() {
 		return false
 	} else {
-		l1_sorted := l1.Copy()
-		sort.Sort(l1_sorted)
+		mlSorted := ml.Copy()
+		sort.Sort(mlSorted)
 
-		l2_sorted := l2.Copy()
-		sort.Sort(l2_sorted)
+		otherSorted := other.Copy()
+		sort.Sort(otherSorted)
 
-		for i := range l1_sorted {
-			if !l1_sorted[i].Equals(l2_sorted[i]) {
+		for i := range mlSorted.Slice() {
+			if !mlSorted.Get(i).Equals(otherSorted.Get(i)) {
 				return false
 			}
 		}
@@ -135,25 +100,15 @@ func (l1 MetaList) Equals(l2 MetaList) bool {
 	return true
 }
 
-/* Maker */
-func MakeEmptyMetaList() MetaList {
-	return MetaList{}
-}
-
 /* MetaList to term list */
-func (ml MetaList) ToTermList() TermList {
+func (ml *MetaList) ToTermList() TermList {
 	res := MakeEmptyTermList()
-	for _, m := range ml {
+	for _, m := range ml.Slice() {
 		res = append(res, m.Copy())
 	}
 	return res
 }
 
-/* Merge two meta list */
-func (l1 MetaList) Merge(l2 MetaList) MetaList {
-	res := l1.Copy()
-	for _, f := range l2 {
-		res = res.AppendIfNotContains(f.Copy().ToMeta())
-	}
-	return res
+func (ml *MetaList) Copy() *MetaList {
+	return &MetaList{ml.List.Copy()}
 }

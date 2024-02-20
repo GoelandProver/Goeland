@@ -45,12 +45,12 @@ type And struct {
 	*MappedString
 	index int
 	FormList
-	MetaList
+	*MetaList
 }
 
 /** Constructors **/
 
-func MakeAndSimple(i int, forms FormList, metas MetaList) And {
+func MakeAndSimple(i int, forms FormList, metas *MetaList) And {
 	fms := &MappedString{}
 	and := And{fms, i, forms, metas}
 	fms.MappableString = &and
@@ -58,7 +58,7 @@ func MakeAndSimple(i int, forms FormList, metas MetaList) And {
 }
 
 func MakeAnd(i int, forms FormList) And {
-	return MakeAndSimple(i, forms, make(MetaList, 0))
+	return MakeAndSimple(i, forms, NewMetaList())
 }
 
 func MakerAnd(forms FormList) And {
@@ -73,7 +73,7 @@ func (a And) GetIndex() int {
 	return a.index
 }
 
-func (a And) GetMetas() MetaList {
+func (a And) GetMetas() *MetaList {
 	return metasUnion(a.FormList)
 }
 
@@ -137,11 +137,11 @@ func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
 	return MakeAndSimple(a.index, newFormList, newMetas)
 }
 
-func (a And) GetInternalMetas() MetaList {
+func (a And) GetInternalMetas() *MetaList {
 	return a.MetaList
 }
 
-func (a And) SetInternalMetas(m MetaList) Form {
+func (a And) SetInternalMetas(m *MetaList) Form {
 	a.MetaList = m
 	return a
 }

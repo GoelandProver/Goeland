@@ -44,18 +44,23 @@ func getAllSubFormulasAppended(f Form) FormList {
 	return subforms
 }
 
-func substVarByMetaInFormList(old Var, new Meta, formList FormList, metaList MetaList) (FormList, MetaList) {
-	newFormList := make(FormList, 0)
+func substVarByMetaInFormList(old Var, new Meta, formList FormList, metaList *MetaList) (replacedFormList FormList, newMetaList *MetaList) {
+	replacedFormList = make(FormList, 0)
+	newMetaList = metaList.Copy()
 	found := false
+
 	for _, form := range formList {
-		f := form.SubstituteVarByMeta(old, new)
-		newFormList = append(newFormList, f)
-		if f.GetInternalMetas().Contains(new) || global.IsOuterSko() {
+		replacedForm := form.SubstituteVarByMeta(old, new)
+		replacedFormList = append(replacedFormList, replacedForm)
+
+		if replacedForm.GetInternalMetas().Contains(new) || global.IsOuterSko() {
 			found = true
 		}
 	}
+
 	if found {
-		metaList = append(metaList, new)
+		newMetaList.AppendIfNotContains(new)
 	}
-	return newFormList, metaList
+
+	return replacedFormList, metaList
 }

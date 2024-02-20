@@ -113,18 +113,12 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 	return res
 }
 
-func (ep EqualityProblem) getMetas() basictypes.MetaList {
-	metas := basictypes.MakeEmptyMetaList()
+func (ep EqualityProblem) getMetas() *basictypes.MetaList {
+	metas := basictypes.NewMetaList()
 
-	for _, meta := range ep.E.getMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
-	for _, meta := range ep.s.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
-	for _, meta := range ep.t.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
+	metas.AppendIfNotContains(ep.E.getMetas().Slice()...)
+	metas.AppendIfNotContains(ep.s.GetMetas().Slice()...)
+	metas.AppendIfNotContains(ep.t.GetMetas().Slice()...)
 
 	return metas
 }

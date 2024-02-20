@@ -364,23 +364,26 @@ func JsonProofStructListToText(jps []JsonProofStruct) string {
 	return res
 }
 
-func ProofStructListToText(ps []ProofStruct, metaList basictypes.MetaList) string {
+func ProofStructListToText(ps []ProofStruct, metaList *basictypes.MetaList) string {
 	json_content := ProofStructListToJsonProofStructList(ps)
 	return JsonProofStructListToText(json_content)
 }
 
-func RetrieveUninstantiatedMetaFromProof(p []ProofStruct) basictypes.MetaList {
-	res := basictypes.MakeEmptyMetaList()
-	for _, proof_element := range p {
-		res = res.Merge(proof_element.GetFormula().GetForm().GetMetas())
-		res_result_formulas := GetFormulasFromIntFormAndTermList(proof_element.GetResultFormulas())
-		for _, v := range res_result_formulas {
-			res = res.Merge(v.GetMetas())
-		}
-		for _, children := range proof_element.GetChildren() {
-			res = res.Merge(RetrieveUninstantiatedMetaFromProof(children))
+func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) *basictypes.MetaList {
+	res := basictypes.NewMetaList()
+
+	for _, proofElement := range proofStruct {
+		res.AppendIfNotContains(proofElement.GetFormula().GetForm().GetMetas().Slice()...)
+		resResultFormulas := GetFormulasFromIntFormAndTermList(proofElement.GetResultFormulas())
+
+		for _, v := range resResultFormulas {
+			res.AppendIfNotContains(v.GetInternalMetas().Slice()...)
 		}
 
+		for _, children := range proofElement.GetChildren() {
+			res.AppendIfNotContains(RetrieveUninstantiatedMetaFromProof(children).Slice()...)
+		}
 	}
+
 	return res
 }

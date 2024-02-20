@@ -183,8 +183,8 @@ func isFiltering(ms treetypes.MatchingSubstitutions) bool {
 	return checkAllMetaAreInstanciated(metas, subst)
 }
 
-func checkAllMetaAreInstanciated(metas btypes.MetaList, subst treetypes.Substitutions) bool {
-	for _, m := range metas {
+func checkAllMetaAreInstanciated(metas *btypes.MetaList, subst treetypes.Substitutions) bool {
+	for _, m := range metas.Slice() {
 		m_found := false
 		for _, s := range subst {
 			k, v := s.Get()
@@ -199,7 +199,7 @@ func checkAllMetaAreInstanciated(metas btypes.MetaList, subst treetypes.Substitu
 	return true
 }
 
-func checkMetaAreFromSearch(metas btypes.MetaList, subst treetypes.Substitutions) bool {
+func checkMetaAreFromSearch(metas *btypes.MetaList, subst treetypes.Substitutions) bool {
 	for _, s := range subst {
 		k, v := s.Get()
 		if !metas.Contains(k) {

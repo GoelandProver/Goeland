@@ -64,14 +64,15 @@ func (tl TermList) ToString() string {
 }
 
 /* Get the metavariables of a formula list */
-func (tl TermList) GetMetas() MetaList {
-	var res MetaList
-	for _, t := range tl {
-		m, ok := t.(Meta)
-		if ok {
-			res = append(res, m)
+func (tl TermList) GetMetas() *MetaList {
+	res := NewMetaList()
+
+	for _, term := range tl {
+		if typed, ok := term.(Meta); ok {
+			res.AppendIfNotContains(typed)
 		}
 	}
+
 	return res
 }
 

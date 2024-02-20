@@ -46,72 +46,72 @@ import (
 
 /* Takes each meta of the formula, matches the index to the metas, and add everything to subst */
 /*
-* Subst : (int, term) : (index in tree, term in formula)
-* Meta : (meta, term) : meta in formula, term in tree
+* Subs : (int, term) : (index in tree, term in formula)
+* MetaToSubs : (meta, term) : meta in formula, term in tree
 * Merge both of them
 **/
-func computeSubstitutions(subst []treetypes.SubstPair, metas treetypes.Substitutions, form basictypes.Form) treetypes.Substitutions {
-	global.PrintDebug("CS", fmt.Sprintf("Compute substitution : %v and %v", treetypes.SubstPairListToString(subst), metas.ToString()))
-	metas_from_tree_form := basictypes.MetaList{}
-	tree_subst := treetypes.Substitutions{}
+func computeSubstitutions(subs []treetypes.SubstPair, metasToSubs treetypes.Substitutions, form basictypes.Form) treetypes.Substitutions {
+	global.PrintDebug("CS", fmt.Sprintf("Compute substitution : %v and %v", treetypes.SubstPairListToString(subs), metasToSubs.ToString()))
+	metasFromTreeForm := basictypes.NewMetaList()
+	treeSubs := treetypes.Substitutions{}
 
 	// Retrieve all the meta of from the tree formula
-	switch t_form := form.(type) {
+	switch typedForm := form.(type) {
 	case basictypes.Pred:
-		for _, arg := range t_form.GetArgs() {
-			metas_from_tree_form = append(metas_from_tree_form, arg.GetMetas()...)
+		for _, term := range typedForm.GetArgs() {
+			metasFromTreeForm.Append(term.GetMetas().Slice()...)
 		}
 	case treetypes.TermForm:
-		metas_from_tree_form = append(metas_from_tree_form, t_form.GetTerm().GetMetas()...)
+		metasFromTreeForm.Append(typedForm.GetTerm().GetMetas().Slice()...)
 	default:
 		return treetypes.Failure()
 	}
 
 	//  Transform subst tree into a real substitution
-	for _, value := range subst {
-		current_meta := metas_from_tree_form[value.GetIndex()]
-		current_value := value.GetTerm()
-		global.PrintDebug("CS", fmt.Sprintf("Iterate on subst : %v and  %v", current_meta.ToString(), current_value.ToString()))
+	for _, value := range subs {
+		currentMeta := metasFromTreeForm.Get(value.GetIndex())
+		currentValue := value.GetTerm()
+		global.PrintDebug("CS", fmt.Sprintf("Iterate on subst : %v and  %v", currentMeta.ToString(), currentValue.ToString()))
 
-		if !current_meta.Equals(current_value) {
+		if !currentMeta.Equals(currentValue) {
 			// Si current_meta a déjà une association dans metas
-			metaGet, index := metas.Get(current_meta)
-			if treetypes.HasSubst(metas, current_meta) && (index != -1) && !current_value.Equals(metaGet) {
+			metaGet, index := metasToSubs.Get(currentMeta)
+			if treetypes.HasSubst(metasToSubs, currentMeta) && (index != -1) && !currentValue.Equals(metaGet) {
 				// On cherche a unifier les deux valeurs
-				tree_subst.Set(current_meta, current_value)
-				new_unif := AddUnification(current_value.Copy(), metaGet.Copy(), tree_subst.Copy())
+				treeSubs.Set(currentMeta, currentValue)
+				new_unif := AddUnification(currentValue.Copy(), metaGet.Copy(), treeSubs.Copy())
 				if new_unif.Equals(treetypes.Failure()) {
 					return treetypes.Failure()
 				} else {
-					tree_subst = new_unif
-					metas.Remove(index) // Remove from meta
+					treeSubs = new_unif
+					metasToSubs.Remove(index) // Remove from meta
 				}
 			} else { // Ne pas ajouter la susbtitution égalité
-				tree_subst.Set(current_meta, current_value)
+				treeSubs.Set(currentMeta, currentValue)
 			}
 		}
 	}
 
-	global.PrintDebug("CS", fmt.Sprintf("before meta : %v", metas.ToString()))
+	global.PrintDebug("CS", fmt.Sprintf("before meta : %v", metasToSubs.ToString()))
 	// Metas_subst eliminate
-	treetypes.EliminateMeta(&metas)
-	treetypes.Eliminate(&metas)
-	if metas.Equals(treetypes.Failure()) {
+	treetypes.EliminateMeta(&metasToSubs)
+	treetypes.Eliminate(&metasToSubs)
+	if metasToSubs.Equals(treetypes.Failure()) {
 		return treetypes.Failure()
 	}
-	global.PrintDebug("CS", fmt.Sprintf("After meta : %v", metas.ToString()))
+	global.PrintDebug("CS", fmt.Sprintf("After meta : %v", metasToSubs.ToString()))
 
-	global.PrintDebug("CS", fmt.Sprintf("before tree_subst : %v", tree_subst.ToString()))
+	global.PrintDebug("CS", fmt.Sprintf("before tree_subst : %v", treeSubs.ToString()))
 	// Tree subst elminate
-	treetypes.EliminateMeta(&tree_subst)
-	treetypes.Eliminate(&tree_subst)
-	if tree_subst.Equals(treetypes.Failure()) {
+	treetypes.EliminateMeta(&treeSubs)
+	treetypes.Eliminate(&treeSubs)
+	if treeSubs.Equals(treetypes.Failure()) {
 		return treetypes.Failure()
 	}
-	global.PrintDebug("CS", fmt.Sprintf("after tree_subst : %v", tree_subst.ToString()))
+	global.PrintDebug("CS", fmt.Sprintf("after tree_subst : %v", treeSubs.ToString()))
 
 	// Fusion
-	res, _ := MergeSubstitutions(metas, tree_subst)
+	res, _ := MergeSubstitutions(metasToSubs, treeSubs)
 	if res.Equals(treetypes.Failure()) {
 		return res
 	}

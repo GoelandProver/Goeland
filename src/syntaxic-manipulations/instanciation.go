@@ -46,7 +46,7 @@ const (
 /**
  * Instantiates once the formula fnt.
  */
-func Instantiate(fnt btps.FormAndTerms, index int) (btps.FormAndTerms, btps.MetaList) {
+func Instantiate(fnt btps.FormAndTerms, index int) (btps.FormAndTerms, *btps.MetaList) {
 	var meta btps.Meta
 	terms := fnt.GetTerms()
 
@@ -59,7 +59,7 @@ func Instantiate(fnt btps.FormAndTerms, index int) (btps.FormAndTerms, btps.Meta
 		fnt, meta = realInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
-	return fnt, btps.MetaList{meta}
+	return fnt, btps.NewMetaListWithSlice(meta)
 }
 
 func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, terms btps.TermList) (btps.FormAndTerms, btps.Meta) {

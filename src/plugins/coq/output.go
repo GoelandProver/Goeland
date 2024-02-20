@@ -59,7 +59,7 @@ var CoqOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeCoqOutput,
 // TODO:
 //	* Write the context for TFF problems
 
-func MakeCoqOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
+func MakeCoqOutput(prf []proof.ProofStruct, meta *btps.MetaList) string {
 	if len(prf) == 0 {
 		global.PrintError("Coq", "Nothing to output")
 		return ""
@@ -69,7 +69,7 @@ func MakeCoqOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 	return MakeCoqProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-var MakeCoqProof = func(proof *gs3.GS3Sequent, meta btps.MetaList) string {
+var MakeCoqProof = func(proof *gs3.GS3Sequent, meta *btps.MetaList) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
 	proofString := makeCoqProofFromGS3(proof)
 	return contextString + "\n" + proofString

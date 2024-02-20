@@ -99,8 +99,8 @@ func (c constant) GetIndex() int {
 	return int(c)
 }
 
-func (c constant) GetMetas() basictypes.MetaList {
-	return basictypes.MetaList{}
+func (c constant) GetMetas() *basictypes.MetaList {
+	return basictypes.NewMetaList()
 }
 
 func (c constant) GetName() string {

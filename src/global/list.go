@@ -73,7 +73,7 @@ func NewSyncListWithSlice[T Basic](slice []T) *List[T] {
 /*
 Returns the number of elements in the list.
 */
-func (list *List[T]) Length() int {
+func (list *List[T]) Len() int {
 	list.doAtStartR()
 	defer list.doAtEndR()
 
@@ -82,6 +82,16 @@ func (list *List[T]) Length() int {
 
 func (list *List[T]) length() int {
 	return len(list.values)
+}
+
+/*
+Returns true if the list is empty.
+*/
+func (list *List[T]) IsEmpty() bool {
+	list.doAtStartR()
+	defer list.doAtEndR()
+
+	return list.length() == 0
 }
 
 /*
@@ -303,7 +313,7 @@ func (list *List[T]) Copy() *List[T] {
 /*
 Returns an iterable element representing the list to use in for loops.
 */
-func (list *List[T]) Iterator() []T {
+func (list *List[T]) Slice() []T {
 	list.doAtStartR()
 	defer list.doAtEndR()
 

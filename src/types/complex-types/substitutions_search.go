@@ -48,61 +48,57 @@ import (
 )
 
 /* Return the list of metavariable from a substitution */
-func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
-	res := basictypes.MetaList{}
-	for _, v := range s {
-		m, t := v.Get()
-		res = res.AppendIfNotContains(m)
-		switch ttype := t.(type) {
+func GetMetaFromSubst(subs treetypes.Substitutions) *basictypes.MetaList {
+	res := basictypes.NewMetaList()
+
+	for _, singleSubs := range subs {
+		meta, term := singleSubs.Get()
+		res.AppendIfNotContains(meta)
+
+		switch typedTerm := term.(type) {
 		case basictypes.Meta:
-			res = res.AppendIfNotContains(ttype)
+			res.AppendIfNotContains(typedTerm)
 		case basictypes.Fun:
-			for _, meta_term_list := range ttype.GetArgs().GetMetas() {
-				res = res.AppendIfNotContains(meta_term_list)
-			}
+			res.AppendIfNotContains(typedTerm.GetArgs().GetMetas().Slice()...)
 		}
 	}
+
 	return res
 }
 
 /* Remove substitution without mm */
-func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) treetypes.Substitutions {
-
+func RemoveElementWithoutMM(subs treetypes.Substitutions, mm *basictypes.MetaList) treetypes.Substitutions {
 	global.PrintDebug("REWM", fmt.Sprintf("MM : %v", mm.ToString()))
-	// global.PrintDebug("REWM", fmt.Sprintf("Initial subst : %v", s.ToString()))
 
-	// Substitution définitive
 	res := treetypes.Substitutions{}
-	// Substitution à réorganiser
-	subst_to_reorganize := treetypes.Substitutions{}
-	// Relevant meta
-	relevant_metas := mm.Copy()
-	// Has changer
-	has_changed := true
 
-	for has_changed {
-		has_changed = false
-		global.PrintDebug("REWM", fmt.Sprintf("Relevant meta : %v", relevant_metas.ToString()))
-		for _, t := range s {
-			k, v := t.Get()
-			switch vt := v.(type) {
+	subsToReorganize := treetypes.Substitutions{}
+	relevantMetas := mm.Copy()
+	hasChanged := true
 
+	for hasChanged {
+		hasChanged = false
+		global.PrintDebug("REWM", fmt.Sprintf("Relevant meta : %v", relevantMetas.ToString()))
+		for _, singleSubs := range subs {
+			meta, term := singleSubs.Get()
+
+			switch typedTerm := term.(type) {
 			case basictypes.Meta:
 				switch {
-				case relevant_metas.Contains(k) && relevant_metas.Contains(vt):
-					res.Set(k, vt)
+				case relevantMetas.Contains(meta) && relevantMetas.Contains(typedTerm):
+					res.Set(meta, typedTerm)
 
-				case relevant_metas.Contains(k) && !relevant_metas.Contains(vt):
-					subst_to_reorganize.Set(k, vt)
+				case relevantMetas.Contains(meta) && !relevantMetas.Contains(typedTerm):
+					subsToReorganize.Set(meta, typedTerm)
 				}
 
 			default:
-				if relevant_metas.Contains(k) {
-					res.Set(k, v)
-					for _, candidate_meta := range v.GetMetas() {
-						if !relevant_metas.Contains(candidate_meta) {
-							relevant_metas = append(relevant_metas, candidate_meta)
-							has_changed = true
+				if relevantMetas.Contains(meta) {
+					res.Set(meta, term)
+					for _, candidateMeta := range term.GetMetas().Slice() {
+						if !relevantMetas.Contains(candidateMeta) {
+							relevantMetas.Append(candidateMeta)
+							hasChanged = true
 						}
 					}
 				}
@@ -111,18 +107,17 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 	}
 
 	global.PrintDebug("REWM", fmt.Sprintf("Subst intermédiaire res : %v", res.ToString()))
-	global.PrintDebug("REWM", fmt.Sprintf("Subst intermédiaire subst_to_reorganize  : %v", subst_to_reorganize.ToString()))
+	global.PrintDebug("REWM", fmt.Sprintf("Subst intermédiaire subst_to_reorganize  : %v", subsToReorganize.ToString()))
 
-	subst_to_reorganize = ReorganizeSubstitution(subst_to_reorganize)
-	treetypes.EliminateMeta(&subst_to_reorganize)
-	treetypes.Eliminate(&subst_to_reorganize)
-	ms, _ := treesearch.MergeSubstitutions(res, subst_to_reorganize)
+	subsToReorganize = ReorganizeSubstitution(subsToReorganize)
+	treetypes.EliminateMeta(&subsToReorganize)
+	treetypes.Eliminate(&subsToReorganize)
+	ms, _ := treesearch.MergeSubstitutions(res, subsToReorganize)
 
 	global.PrintDebug("REWM", fmt.Sprintf("Finale subst : %v", ms.ToString()))
 
 	if ms.Equals(treetypes.Failure()) {
-		println("[REWM] Error : MergeSubstitutions returns failure")
-		// os.Exit(0)
+		global.PrintError("REWM", "MergeSubstitutions returns failure")
 	}
 
 	return ms
@@ -133,19 +128,20 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 * Take a substitution wich conatins elements like (meta_mother, meta_current), returning only relevante substitution like (meta_mother, meta_mother)
 * (X, X2) (Y, X2) -> (X, Y)
 **/
-func ReorganizeSubstitution(s treetypes.Substitutions) treetypes.Substitutions {
+func ReorganizeSubstitution(subs treetypes.Substitutions) treetypes.Substitutions {
 	res := treetypes.Substitutions{}
-	meta_seen := basictypes.MetaList{}
+	metaSeen := basictypes.NewMetaList()
 
-	for _, subst := range s {
-		meta_mother, meta_current := subst.Get()
-		meta_seen = meta_seen.AppendIfNotContains(meta_mother)
+	for _, firstSingleSubs := range subs {
+		firstMetaMother, firstMetaCurrent := firstSingleSubs.Get()
+		metaSeen.AppendIfNotContains(firstMetaMother)
 
-		for _, subst_2 := range s {
-			meta_mother_2, meta_current_2 := subst_2.Get()
-			if meta_current.Equals(meta_current_2) && !meta_mother.Equals(meta_mother_2) && !meta_seen.Contains(meta_mother_2) {
-				res.Set(meta_mother_2, meta_mother)
-				meta_seen = meta_seen.AppendIfNotContains(meta_mother_2)
+		for _, secondSingleSubs := range subs {
+			secondMetaMother, secondMetaCurrent := secondSingleSubs.Get()
+
+			if firstMetaCurrent.Equals(secondMetaCurrent) && !firstMetaMother.Equals(secondMetaMother) && !metaSeen.Contains(secondMetaMother) {
+				res.Set(secondMetaMother, firstMetaMother)
+				metaSeen.AppendIfNotContains(secondMetaMother)
 			}
 		}
 	}
@@ -154,7 +150,7 @@ func ReorganizeSubstitution(s treetypes.Substitutions) treetypes.Substitutions {
 }
 
 /* Check if a substitution contains a metavirbale which is inside a given list of metavariable (check for the key, not the value) */
-func ContainsMetaMother(s treetypes.Substitutions, mm basictypes.MetaList) bool {
+func ContainsMetaMother(s treetypes.Substitutions, mm *basictypes.MetaList) bool {
 	for _, subst := range s {
 		k, v := subst.Get()
 		if mm.Contains(k) {
@@ -365,25 +361,27 @@ func ApplySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen
 }
 
 /* Dispatch a list of substitution : containing mm or not */
-func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]treetypes.Substitutions, []treetypes.Substitutions, []treetypes.Substitutions) {
-	var subst_with_mm []treetypes.Substitutions
-	var subst_with_mm_uncleared []treetypes.Substitutions
-	var subst_without_mm []treetypes.Substitutions
+func DispatchSubst(subsList []treetypes.Substitutions, mm *basictypes.MetaList) ([]treetypes.Substitutions, []treetypes.Substitutions, []treetypes.Substitutions) {
+	var subsWithMM []treetypes.Substitutions
+	var subsWithMMUncleared []treetypes.Substitutions
+	var subsWithoutMM []treetypes.Substitutions
 
-	for _, s := range sl {
-		s_removed := s
+	for _, subs := range subsList {
+		removedSubs := subs
+
 		if global.IsDestructive() {
-			s_removed = RemoveElementWithoutMM(s, mm)
+			removedSubs = RemoveElementWithoutMM(subs, mm)
 		}
-		if !s_removed.IsEmpty() {
-			subst_with_mm = treetypes.AppendIfNotContainsSubst(subst_with_mm, s_removed)
-			subst_with_mm_uncleared = treetypes.AppendIfNotContainsSubst(subst_with_mm_uncleared, s)
+
+		if !removedSubs.IsEmpty() {
+			subsWithMM = treetypes.AppendIfNotContainsSubst(subsWithMM, removedSubs)
+			subsWithMMUncleared = treetypes.AppendIfNotContainsSubst(subsWithMMUncleared, subs)
 		} else {
-			subst_without_mm = treetypes.AppendIfNotContainsSubst(subst_without_mm, s)
+			subsWithoutMM = treetypes.AppendIfNotContainsSubst(subsWithoutMM, subs)
 		}
 	}
 
-	return subst_with_mm, subst_with_mm_uncleared, subst_without_mm
+	return subsWithMM, subsWithMMUncleared, subsWithoutMM
 }
 
 /* remove identity in substitution (non destructive case), can happen renaming variables */

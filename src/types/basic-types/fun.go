@@ -123,11 +123,13 @@ func (f Fun) PointerCopy() Term {
 	return NewFun(f.GetP(), f.GetArgs(), typing.CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
 }
 
-func (f Fun) GetMetas() MetaList {
-	metas := MetaList{}
+func (f Fun) GetMetas() *MetaList {
+	metas := NewMetaList()
+
 	for _, arg := range f.GetArgs() {
-		metas = append(metas, arg.GetMetas()...)
+		metas.Append(arg.GetMetas().Slice()...)
 	}
+
 	return metas
 }
 

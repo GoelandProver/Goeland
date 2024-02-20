@@ -52,17 +52,20 @@ func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
 	return form
 }
 
-func substInternalMetas(ml btypes.MetaList, subst treetypes.Substitutions) btypes.MetaList {
-	result := btypes.MetaList{}
-	for _, meta := range ml {
-		s, _ := subst.Get(meta)
-		if s != nil {
-			if newMeta, isMeta := s.(btypes.Meta); isMeta {
-				result = append(result, newMeta)
+func substInternalMetas(ml *btypes.MetaList, subst treetypes.Substitutions) *btypes.MetaList {
+	result := btypes.NewMetaList()
+
+	for _, meta := range ml.Slice() {
+		term, _ := subst.Get(meta)
+
+		if term != nil {
+			if typed, ok := term.(btypes.Meta); ok {
+				result.AppendIfNotContains(typed)
 			}
 		} else {
 			panic("Introducing DMT meta in proof-search")
 		}
 	}
+
 	return result
 }

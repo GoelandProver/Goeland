@@ -63,7 +63,7 @@ func (m *Map[T, U]) GetExists(otherKey T) (U, bool) {
 }
 
 func (m *Map[T, U]) getExists(otherKey T) (U, bool) {
-	for i, key := range m.keys.Iterator() {
+	for i, key := range m.keys.Slice() {
 		if key.Equals(otherKey) {
 			return m.values.Get(i), true
 		}
@@ -120,7 +120,7 @@ func (m *Map[T, U]) Set(otherKey T, otherValue U) (oldValue U, replacedValue boo
 }
 
 func (m *Map[T, U]) set(otherKey T, otherValue U) (oldValue U, replacedValue bool) {
-	for i, key := range m.keys.Iterator() {
+	for i, key := range m.keys.Slice() {
 		if key.Equals(otherKey) {
 			oldValue := m.values.Get(i)
 			m.values.Set(i, otherValue)
@@ -152,7 +152,7 @@ func (m *Map[T, U]) Length() int {
 	m.DoAtStartR()
 	defer m.DoAtEndR()
 
-	return m.keys.Length()
+	return m.keys.Len()
 }
 
 // Removes every key and every associated value from the Map.
@@ -170,8 +170,8 @@ func (m *Map[T, U]) Clone() *Map[T, U] {
 	defer m.DoAtEndR()
 
 	newCm := NewMap[T, U]()
-	newCm.keys.Append(m.keys.Iterator()...)
-	newCm.values.Append(m.values.Iterator()...)
+	newCm.keys.Append(m.keys.Slice()...)
+	newCm.values.Append(m.values.Slice()...)
 	return newCm
 }
 
@@ -180,7 +180,7 @@ func (m *Map[T, U]) CopyInto(other *Map[T, U]) {
 	m.DoAtStart()
 	defer m.DoAtEnd()
 
-	for i := range m.keys.Iterator() {
+	for i := range m.keys.Slice() {
 		other.Set(m.keys.Get(i), m.values.Get(i))
 	}
 }
@@ -190,7 +190,7 @@ func (m *Map[T, U]) Keys() []T {
 	m.DoAtStartR()
 	defer m.DoAtEndR()
 
-	return m.keys.Iterator()
+	return m.keys.Slice()
 }
 
 // Returns a slice with all the values.
@@ -198,7 +198,7 @@ func (m *Map[T, U]) Values() []U {
 	m.DoAtStartR()
 	defer m.DoAtEndR()
 
-	return m.values.Iterator()
+	return m.values.Slice()
 }
 
 // Returns a string that represents the Map.
@@ -209,11 +209,11 @@ func (m *Map[T, U]) ToString() string {
 	defer m.DoAtEndR()
 
 	result := "{"
-	for i := range m.keys.Iterator() {
+	for i := range m.keys.Slice() {
 		result += m.keys.Get(i).ToString() + " : " + m.values.Get(i).ToString() + "; "
 	}
 
-	if m.keys.Length() > 0 {
+	if m.keys.Len() > 0 {
 		return result[:len(result)-2] + "}"
 	} else {
 		return "{}"

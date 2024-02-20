@@ -53,7 +53,29 @@ type Pred struct {
 	args     TermList
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
-	MetaList
+	*MetaList
+}
+
+func MakePredSimple(index int, id Id, terms TermList, typeApps []typing.TypeApp, metas *MetaList, typeSchemes ...typing.TypeScheme) Pred {
+	if len(typeSchemes) == 1 {
+		fms := &MappedString{}
+		pred := Pred{fms, index, id, terms, typeApps, typeSchemes[0], metas}
+		fms.MappableString = &pred
+		return pred
+	} else {
+		fms := &MappedString{}
+		pred := Pred{fms, index, id, terms, typeApps, typing.DefaultPropType(len(terms)), metas}
+		fms.MappableString = &pred
+		return pred
+	}
+}
+
+func MakePred(index int, id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
+	return MakePredSimple(index, id, terms, typeApps, NewMetaList(), typeSchemes...)
+}
+
+func MakerPred(id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
+	return MakePred(MakerIndexFormula(), id, terms, typeApps, typeSchemes...)
 }
 
 /* Pred attributes getters */
@@ -118,16 +140,18 @@ func (p Pred) Equals(f any) bool {
 		p.typeHint.Equals(oth.typeHint)
 }
 
-func (p Pred) GetMetas() MetaList {
-	res := MakeEmptyMetaList()
+func (p Pred) GetMetas() *MetaList {
+	res := NewMetaList()
+
 	for _, m := range p.GetArgs() {
 		switch mt := m.(type) {
 		case Meta:
-			res = res.AppendIfNotContains(mt)
+			res.Append(mt)
 		case Fun:
-			res = res.Merge(mt.GetMetas())
+			res.Append(mt.GetMetas().Slice()...)
 		}
 	}
+
 	return res
 }
 
@@ -151,17 +175,22 @@ func (p Pred) GetSubTerms() TermList {
 
 func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
 	f, res := p.ReplaceVarByTerm(old, new)
+
 	if p, isPred := f.(Pred); isPred && (IsOuterSko() || res) {
-		return MakePredSimple(p.index, p.id, p.args, p.typeVars, append(p.MetaList.Copy(), new), p.typeHint)
+		metaList := p.MetaList.Copy()
+		metaList.AppendIfNotContains(new)
+
+		return MakePredSimple(p.index, p.id, p.args, p.typeVars, metaList, p.typeHint)
 	}
+
 	return f
 }
 
-func (p Pred) GetInternalMetas() MetaList {
+func (p Pred) GetInternalMetas() *MetaList {
 	return p.MetaList
 }
 
-func (p Pred) SetInternalMetas(m MetaList) Form {
+func (p Pred) SetInternalMetas(m *MetaList) Form {
 	p.MetaList = m
 	return p
 }

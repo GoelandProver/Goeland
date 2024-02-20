@@ -45,12 +45,12 @@ type Or struct {
 	*MappedString
 	index int
 	FormList
-	MetaList
+	*MetaList
 }
 
 /** Constructors **/
 
-func MakeOrSimple(i int, forms FormList, metas MetaList) Or {
+func MakeOrSimple(i int, forms FormList, metas *MetaList) Or {
 	fms := &MappedString{}
 	or := Or{fms, i, forms, metas}
 	fms.MappableString = &or
@@ -58,7 +58,7 @@ func MakeOrSimple(i int, forms FormList, metas MetaList) Or {
 }
 
 func MakeOr(i int, forms FormList) Or {
-	return MakeOrSimple(i, forms, make(MetaList, 0))
+	return MakeOrSimple(i, forms, NewMetaList())
 }
 
 func MakerOr(forms FormList) Or {
@@ -73,7 +73,7 @@ func (o Or) GetIndex() int {
 	return o.index
 }
 
-func (o Or) GetMetas() MetaList {
+func (o Or) GetMetas() *MetaList {
 	return metasUnion(o.FormList)
 }
 
@@ -137,11 +137,11 @@ func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
 	return MakeOrSimple(o.index, newFormList, newMetas)
 }
 
-func (o Or) GetInternalMetas() MetaList {
+func (o Or) GetInternalMetas() *MetaList {
 	return o.MetaList
 }
 
-func (o Or) SetInternalMetas(m MetaList) Form {
+func (o Or) SetInternalMetas(m *MetaList) Form {
 	o.MetaList = m
 	return o
 }

@@ -55,7 +55,7 @@ type State struct {
 	n                                     int
 	lf, atomic, alpha, beta, delta, gamma basictypes.FormAndTermsList
 	meta_generator                        []basictypes.MetaGen
-	mm, mc                                basictypes.MetaList
+	mm, mc                                *basictypes.MetaList
 	applied_subst                         SubstAndForm
 	last_applied_subst                    SubstAndForm   // For non destructive case only
 	substs_found                          []SubstAndForm // Subst found with mm in d, subst for "bactrack" in nd
@@ -96,10 +96,10 @@ func (s State) GetGamma() basictypes.FormAndTermsList {
 func (s State) GetMetaGen() []basictypes.MetaGen {
 	return basictypes.CopyMetaGenList(s.meta_generator)
 }
-func (s State) GetMM() basictypes.MetaList {
+func (s State) GetMM() *basictypes.MetaList {
 	return s.mm.Copy()
 }
-func (s State) GetMC() basictypes.MetaList {
+func (s State) GetMC() *basictypes.MetaList {
 	return s.mc.Copy()
 }
 func (s State) GetAppliedSubst() SubstAndForm {
@@ -159,10 +159,10 @@ func (st *State) SetGamma(fl basictypes.FormAndTermsList) {
 func (st *State) SetMetaGen(fl []basictypes.MetaGen) {
 	st.meta_generator = basictypes.CopyMetaGenList(fl)
 }
-func (st *State) SetMM(mm basictypes.MetaList) {
+func (st *State) SetMM(mm *basictypes.MetaList) {
 	st.mm = mm.Copy()
 }
-func (st *State) SetMC(mc basictypes.MetaList) {
+func (st *State) SetMC(mc *basictypes.MetaList) {
 	st.mc = mc.Copy()
 }
 func (st *State) SetAppliedSubst(s SubstAndForm) {
@@ -251,7 +251,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) St
 	current_proof.SetRuleProof("Initial formula")
 	current_proof.SetFormulaProof(basictypes.MakeFormAndTerm(f.Copy(), basictypes.MakeEmptyTermList()))
 
-	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier()}
+	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.NewMetaList(), basictypes.NewMetaList(), MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier()}
 }
 
 /* Print a state */
@@ -299,7 +299,7 @@ func (st State) Print() {
 		global.PrintDebug("Pst", st.GetMM().ToString())
 	}
 
-	if len(st.GetMC()) > 0 {
+	if st.GetMC().Len() > 0 {
 		global.PrintDebug("PSt", "Meta current: ")
 		global.PrintDebug("Pst", st.GetMC().ToString())
 	}
@@ -341,8 +341,13 @@ func (st State) Copy() State {
 	new_state.SetGamma(st.GetGamma())
 
 	new_state.SetMetaGen(st.GetMetaGen())
-	new_state.SetMM(append(new_state.GetMM(), append(st.GetMM(), st.GetMC()...)...))
-	new_state.SetMC(basictypes.MetaList{})
+
+	newMetaMM := basictypes.NewMetaList()
+	newMetaMM.Append(st.GetMM().Slice()...)
+	newMetaMM.Append(st.GetMC().Slice()...)
+	new_state.SetMM(newMetaMM)
+
+	new_state.SetMC(basictypes.NewMetaList())
 
 	if global.IsDestructive() {
 		// Don't need to copy because launched with the subst applied - no need to tell father I found something

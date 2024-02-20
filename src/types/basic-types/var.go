@@ -58,7 +58,7 @@ func (v Var) IsMeta() bool                   { return false }
 func (v Var) IsFun() bool                    { return false }
 func (v Var) Copy() Term                     { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
 func (Var) ToMeta() Meta                     { return MakeEmptyMeta() }
-func (Var) GetMetas() MetaList               { return MetaList{} }
+func (Var) GetMetas() *MetaList              { return NewMetaList() }
 
 func (v Var) Equals(t any) bool {
 	if typed, ok := t.(Var); ok {

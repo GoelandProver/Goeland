@@ -394,7 +394,10 @@ func ApplyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 		setStateRules(state, "DELTA", "EXISTS")
 	}
 
-	return basictypes.MakeSingleElementFormAndTermList(syntax.Skolemize(fnt, append(state.GetMM(), state.GetMC()...)))
+	newMetas := state.GetMM().Copy()
+	newMetas.AppendIfNotContains(state.GetMC().Slice()...)
+
+	return basictypes.MakeSingleElementFormAndTermList(syntax.Skolemize(fnt, newMetas))
 }
 
 /**
@@ -406,7 +409,7 @@ func ApplyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 *	a formula
 *	the new metavariables
 **/
-func ApplyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes.State) (basictypes.FormAndTermsList, basictypes.MetaList) {
+func ApplyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes.State) (basictypes.FormAndTermsList, *basictypes.MetaList) {
 	switch fnt.GetForm().(type) {
 	case basictypes.Not:
 		setStateRules(state, "GAMMA", "NOT", "EXISTS")

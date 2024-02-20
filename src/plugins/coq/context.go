@@ -48,7 +48,7 @@ import (
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
+func makeContextIfNeeded(root btps.Form, metaList *btps.MetaList) string {
 	if !GetContextEnabled() {
 		return ""
 	}
@@ -59,7 +59,7 @@ func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
 		}
 
 		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
-		if len(metaList) > 0 {
+		if metaList.Len() > 0 {
 			resultingString += contextualizeMetas(metaList)
 		}
 	} else {
@@ -79,7 +79,7 @@ func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
 
 		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
 
-		if len(metaList) > 0 {
+		if metaList.Len() > 0 {
 			resultingString += contextualizeMetas(metaList)
 		}
 	}
@@ -164,9 +164,9 @@ func clean(set, add []string) []string {
 	return result
 }
 
-func contextualizeMetas(metaList btps.MetaList) string {
+func contextualizeMetas(metaList *btps.MetaList) string {
 	result := []string{}
-	for _, meta := range metaList {
+	for _, meta := range metaList.Slice() {
 		result = append(result, meta.ToMappedString(coqMapConnectors(), false))
 	}
 	return "Parameters " + strings.Join(result, " ") + " : goeland_U."

@@ -202,7 +202,11 @@ func applyGammaRule(state complextypes.State, indiceForm int, fatherId uint64, c
 	state.SetMetaGen(new_meta_gen)
 	new_lf, new_metas := search.ApplyGammaRules(hdf, index, &state)
 	state.SetLF(new_lf)
-	state.SetMC(append(state.GetMC(), new_metas...))
+
+	newMC := state.GetMC().Copy()
+	newMC.AppendIfNotContains(new_metas.Slice()...)
+	state.SetMC(newMC)
+
 	if global.IsDestructive() {
 		state.SetN(state.GetN() - 1)
 	}

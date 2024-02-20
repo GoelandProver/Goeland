@@ -59,7 +59,7 @@ var symbolMaker class
 /**
  * Skolemizes once the formula f.
  */
-func Skolemize(fnt btps.FormAndTerms, branchMetas btps.MetaList) btps.FormAndTerms {
+func Skolemize(fnt btps.FormAndTerms, branchMetas *btps.MetaList) btps.FormAndTerms {
 	form := fnt.GetForm()
 	terms := branchMetas.ToTermList()
 

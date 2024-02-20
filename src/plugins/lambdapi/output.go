@@ -73,7 +73,7 @@ var LambdapiOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeLambd
 // TODO:
 //	* Write the context for TFF problems
 
-func MakeLambdapiOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
+func MakeLambdapiOutput(prf []proof.ProofStruct, meta *btps.MetaList) string {
 	if len(prf) == 0 {
 		global.PrintError("LambdaPi", "Nothing to output")
 		return ""
@@ -83,7 +83,7 @@ func MakeLambdapiOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
 	return MakeLambdaPiProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-var MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta btps.MetaList) string {
+var MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta *btps.MetaList) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
 	proofString := makeLambdaPiProofFromGS3(proof)
 	return contextString + "\n" + proofString

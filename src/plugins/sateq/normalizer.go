@@ -46,10 +46,10 @@ func normalize(problem *Problem) *Problem {
 }
 
 func ApplyAllGoalName(problem *Problem) *Problem {
-	for i, goal := range problem.goals.Iterator() {
+	for i, goal := range problem.goals.Slice() {
 		newGoal := global.NewList[*Equality]()
 
-		for _, equ := range goal.Iterator() {
+		for _, equ := range goal.Slice() {
 			const1 := makeConstant()
 			const2 := makeConstant()
 			goalEqu := NewEquality(const1, const2)
@@ -71,7 +71,7 @@ func ApplyAllGoalName(problem *Problem) *Problem {
 func ApplyAllEqName(problem *Problem) *Problem {
 	newAssumptions := global.NewList[*Equality]()
 
-	for _, equ := range problem.assumptions.Iterator() {
+	for _, equ := range problem.assumptions.Slice() {
 		_, okFst := equ.GetFst().(constant)
 		_, okSnd := equ.GetSnd().(constant)
 
@@ -95,13 +95,13 @@ func ApplyAllEqName(problem *Problem) *Problem {
 func ApplyAllEqFlatten(problem *Problem) *Problem {
 	assumptions, toDo := global.NewList[*Equality](), problem.assumptions
 
-	for toDo.Length() > 0 {
+	for toDo.Len() > 0 {
 		chosen := toDo.Get(0)
 		toDo.Remove(0)
 		done, nextToDo := ApplyEqFlattenOn(chosen)
 
-		assumptions.Append(done.Iterator()...)
-		toDo.Append(nextToDo.Iterator()...)
+		assumptions.Append(done.Slice()...)
+		toDo.Append(nextToDo.Slice()...)
 	}
 
 	problem.assumptions = assumptions
@@ -155,7 +155,7 @@ func replaceConstants(problem *Problem) {
 func buildConstantMapOf(problem *Problem) *global.MapWithList[basictypes.Term, constant] {
 	constantMap := global.NewMapWithList[basictypes.Term, constant]()
 
-	for _, equ := range problem.assumptions.Iterator() {
+	for _, equ := range problem.assumptions.Slice() {
 		if typed, ok := equ.GetFst().(constant); ok {
 			constantMap.AddIfNotContains(equ.GetSnd(), typed)
 		}
@@ -166,7 +166,7 @@ func buildConstantMapOf(problem *Problem) *global.MapWithList[basictypes.Term, c
 
 func buildDisjointSetOf(problem *Problem) *util.DisjointSet[constant] {
 	disjointSet := util.NewDisjointSet[constant]()
-	for _, constant := range problem.getConstants().Iterator() {
+	for _, constant := range problem.getConstants().Slice() {
 		disjointSet.MakeSet(constant)
 	}
 	return disjointSet
@@ -174,7 +174,7 @@ func buildDisjointSetOf(problem *Problem) *util.DisjointSet[constant] {
 
 func unionizeDisjointSet(constantMap *global.MapWithList[basictypes.Term, constant], disjointSet *util.DisjointSet[constant]) {
 	for _, value := range constantMap.Values() {
-		for i := range value.Iterator() {
+		for i := range value.Slice() {
 			if i != 0 {
 				disjointSet.Union(value.Get(i-1), value.Get(i))
 			}
@@ -183,7 +183,7 @@ func unionizeDisjointSet(constantMap *global.MapWithList[basictypes.Term, consta
 }
 
 func replaceConstantsInProblem(problem *Problem, disjointSet *util.DisjointSet[constant]) {
-	for _, constant := range problem.getConstants().Iterator() {
+	for _, constant := range problem.getConstants().Slice() {
 		problem.replaceAllWith(constant, disjointSet.Find(constant))
 	}
 }

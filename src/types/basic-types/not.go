@@ -45,12 +45,12 @@ type Not struct {
 	*MappedString
 	index int
 	f     Form
-	MetaList
+	*MetaList
 }
 
 /** Constructors **/
 
-func MakeNotSimple(i int, form Form, metas MetaList) Not {
+func MakeNotSimple(i int, form Form, metas *MetaList) Not {
 	fms := &MappedString{}
 	not := Not{fms, i, form, metas}
 	fms.MappableString = &not
@@ -58,7 +58,7 @@ func MakeNotSimple(i int, form Form, metas MetaList) Not {
 }
 
 func MakeNot(i int, form Form) Not {
-	return MakeNotSimple(i, form, make(MetaList, 0))
+	return MakeNotSimple(i, form, NewMetaList())
 }
 
 func MakerNot(form Form) Not {
@@ -73,7 +73,7 @@ func (n Not) GetIndex() int {
 	return n.index
 }
 
-func (n Not) GetMetas() MetaList {
+func (n Not) GetMetas() *MetaList {
 	return n.GetForm().GetMetas()
 }
 
@@ -139,11 +139,11 @@ func (n Not) SubstituteVarByMeta(old Var, new Meta) Form {
 	return MakeNotSimple(n.index, f, f.GetInternalMetas().Copy())
 }
 
-func (n Not) GetInternalMetas() MetaList {
+func (n Not) GetInternalMetas() *MetaList {
 	return n.MetaList
 }
 
-func (n Not) SetInternalMetas(m MetaList) Form {
+func (n Not) SetInternalMetas(m *MetaList) Form {
 	n.MetaList = m
 	return n
 }

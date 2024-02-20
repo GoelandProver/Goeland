@@ -41,7 +41,7 @@ import (
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
+func makeContextIfNeeded(root btps.Form, metaList *btps.MetaList) string {
 	resultString := contextPreamble() + "\n\n"
 
 	if typing.EmptyGlobalContext() {
@@ -51,7 +51,7 @@ func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
 
 		resultString += strings.Join(getContextFromFormula(root), "\n") + "\n"
 
-		if len(metaList) > 0 {
+		if metaList.Len() > 0 {
 			resultString += contextualizeMetas(metaList)
 		}
 	} else {
@@ -61,7 +61,7 @@ func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
 
 		resultString += getContextAsString(root)
 
-		if len(metaList) > 0 {
+		if metaList.Len() > 0 {
 			resultString += contextualizeMetas(metaList)
 		}
 	}
@@ -296,9 +296,9 @@ func clean(set, add []string) []string {
 	return result
 }
 
-func contextualizeMetas(metaList btps.MetaList) string {
+func contextualizeMetas(metaList *btps.MetaList) string {
 	result := []string{}
-	for _, meta := range metaList {
+	for _, meta := range metaList.Slice() {
 		result = append(result, meta.ToMappedString(lambdaPiMapConnectors, false))
 	}
 	return "symbol " + strings.Join(result, " ") + " : τ (ι);"

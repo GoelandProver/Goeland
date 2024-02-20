@@ -142,13 +142,11 @@ func (e Equalities) applySubstitution(old_symbol basictypes.Meta, new_symbol bas
 	return res
 }
 
-func (equs Equalities) getMetas() basictypes.MetaList {
-	metas := basictypes.MakeEmptyMetaList()
+func (equs Equalities) getMetas() *basictypes.MetaList {
+	metas := basictypes.NewMetaList()
 
 	for _, equ := range equs {
-		for _, meta := range equ.getMetas() {
-			metas = metas.AppendIfNotContains(meta)
-		}
+		metas.AppendIfNotContains(equ.getMetas().Slice()...)
 	}
 
 	return metas

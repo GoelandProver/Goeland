@@ -45,9 +45,9 @@ import (
 
 type Form interface {
 	GetIndex() int
-	GetMetas() MetaList
-	GetInternalMetas() MetaList
-	SetInternalMetas(MetaList) Form
+	GetMetas() *MetaList
+	GetInternalMetas() *MetaList
+	SetInternalMetas(*MetaList) Form
 	GetType() typing.TypeScheme
 	GetSubTerms() TermList
 	GetSubFormulasRecur() FormList
@@ -61,128 +61,6 @@ type Form interface {
 	RenameVariables() Form
 	CleanFormula() Form
 	SubstituteVarByMeta(old Var, new Meta) Form
-}
-
-/*** Functions ***/
-
-/* Makers */
-func MakePredSimple(index int, id Id, terms TermList, typeApps []typing.TypeApp, metas MetaList, typeSchemes ...typing.TypeScheme) Pred {
-	if len(typeSchemes) == 1 {
-		fms := &MappedString{}
-		pred := Pred{fms, index, id, terms, typeApps, typeSchemes[0], metas}
-		fms.MappableString = &pred
-		return pred
-	} else {
-		fms := &MappedString{}
-		pred := Pred{fms, index, id, terms, typeApps, typing.DefaultPropType(len(terms)), metas}
-		fms.MappableString = &pred
-		return pred
-	}
-}
-
-func MakePred(index int, id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
-	return MakePredSimple(index, id, terms, typeApps, make(MetaList, 0), typeSchemes...)
-}
-
-func MakerPred(id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
-	return MakePred(MakerIndexFormula(), id, terms, typeApps, typeSchemes...)
-}
-
-func MakeTop(i int) Top {
-	fms := &MappedString{}
-	top := Top{fms, i}
-	fms.MappableString = &top
-	return top
-}
-
-func MakerTop() Top {
-	return MakeTop(MakerIndexFormula())
-}
-
-func MakeBot(i int) Bot {
-	fms := &MappedString{}
-	bot := Bot{fms, i}
-	fms.MappableString = &bot
-	return bot
-}
-
-func MakerBot() Bot {
-	return MakeBot(MakerIndexFormula())
-}
-
-func MakeImpSimple(i int, firstForm, secondForm Form, metas MetaList) Imp {
-	fms := &MappedString{}
-	imp := Imp{fms, i, firstForm, secondForm, metas}
-	fms.MappableString = &imp
-	return imp
-}
-
-func MakeImp(i int, firstForm, secondForm Form) Imp {
-	return MakeImpSimple(i, firstForm, secondForm, make(MetaList, 0))
-}
-
-func MakerImp(firstForm, secondForm Form) Imp {
-	return MakeImp(MakerIndexFormula(), firstForm, secondForm)
-}
-
-func MakeEquSimple(i int, firstForm, secondForm Form, metas MetaList) Equ {
-	fms := &MappedString{}
-	equ := Equ{fms, i, firstForm, secondForm, metas}
-	fms.MappableString = &equ
-	return equ
-}
-
-func MakeEqu(i int, firstForm, secondForm Form) Equ {
-	return MakeEquSimple(i, firstForm, secondForm, make(MetaList, 0))
-}
-
-func MakerEqu(firstForm, secondForm Form) Equ {
-	return MakeEqu(MakerIndexFormula(), firstForm, secondForm)
-}
-
-func MakeExSimple(i int, vars []Var, form Form, metas MetaList) Ex {
-	fms := &MappedString{}
-	ex := Ex{fms, i, vars, form, metas}
-	fms.MappableString = &ex
-	return ex
-}
-
-func MakeEx(i int, vars []Var, form Form) Ex {
-	return MakeExSimple(i, vars, form, make(MetaList, 0))
-}
-
-func MakerEx(vars []Var, form Form) Ex {
-	return MakeEx(MakerIndexFormula(), vars, form)
-}
-
-func MakeAllSimple(i int, vars []Var, forms Form, metas MetaList) All {
-	fms := &MappedString{}
-	all := All{fms, i, vars, forms, metas}
-	fms.MappableString = &all
-	return all
-}
-
-func MakeAll(i int, vars []Var, forms Form) All {
-	return MakeAllSimple(i, vars, forms, make(MetaList, 0))
-}
-
-func MakerAll(vars []Var, forms Form) All {
-	return MakeAll(MakerIndexFormula(), vars, forms)
-}
-
-func MakeAllTypeSimple(i int, typeVars []typing.TypeVar, form Form, metas MetaList) AllType {
-	fms := &MappedString{}
-	at := AllType{fms, i, typeVars, form, metas}
-	fms.MappableString = &at
-	return at
-}
-
-func MakeAllType(i int, typeVars []typing.TypeVar, form Form) AllType {
-	return MakeAllTypeSimple(i, typeVars, form, make(MetaList, 0))
-}
-
-func MakerAllType(typeVars []typing.TypeVar, form Form) AllType {
-	return MakeAllType(MakerIndexFormula(), typeVars, form)
 }
 
 /* Replace a Var by a term inside a function */
@@ -243,11 +121,11 @@ func instanciateTypeAppList(typeApps []typing.TypeApp, vars []typing.TypeVar, in
 }
 
 // Creates and returns a MetaList from a FormList, making sure there are no duplicates
-func metasUnion(forms FormList) MetaList {
-	res := MakeEmptyMetaList()
+func metasUnion(forms FormList) *MetaList {
+	res := NewMetaList()
 
 	for _, form := range forms {
-		res = res.Merge(form.GetMetas())
+		res.AppendIfNotContains(form.GetInternalMetas().Slice()...)
 	}
 
 	return res

@@ -287,7 +287,7 @@ func buildOptions() {
 
 func chronoInit() {
 	oldCoq := coq.MakeCoqProof
-	coq.MakeCoqProof = func(proof *gs3.GS3Sequent, meta basictypes.MetaList) string {
+	coq.MakeCoqProof = func(proof *gs3.GS3Sequent, meta *basictypes.MetaList) string {
 		start := time.Now()
 		result := oldCoq(proof, meta)
 		printChrono("Coq", start)
@@ -295,7 +295,7 @@ func chronoInit() {
 	}
 
 	oldLP := lambdapi.MakeLambdaPiProof
-	lambdapi.MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta basictypes.MetaList) string {
+	lambdapi.MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta *basictypes.MetaList) string {
 		start := time.Now()
 		result := oldLP(proof, meta)
 		printChrono("LP", start)

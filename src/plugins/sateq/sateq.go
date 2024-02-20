@@ -95,7 +95,7 @@ func solve(satInstance gini.Gini, litList *global.List[Lit]) (map[Lit]bool, bool
 
 	assignmentMap := make(map[Lit]bool)
 
-	for _, lit := range litList.Iterator() {
+	for _, lit := range litList.Slice() {
 		assignmentMap[lit] = satInstance.Value(z.Lit(lit))
 	}
 	return assignmentMap, true
