@@ -80,25 +80,33 @@ func (s Substitutions) IsEmpty() bool {
 }
 
 /* Check equality between two substitutions */
-func (s Substitutions) Equals(s2 Substitutions) bool {
-	if len(s) != len(s2) {
-		return false
-	}
-
-	for _, subst_s1 := range s {
-		found := false
-		i := 0
-		for !found && i < len(s2) {
-			if subst_s1.Key().Equals(s2[i].Key()) && subst_s1.Value().Equals(s2[i].Value()) {
-				found = true
-			}
-			i++
-		}
-		if !found {
+func (s Substitutions) Equals(other any) bool {
+	if typed, ok := other.(Substitutions); ok {
+		if len(s) != len(typed) {
 			return false
 		}
+
+		for _, subst_s1 := range s {
+			found := false
+			i := 0
+
+			for !found && i < len(typed) {
+				if subst_s1.Key().Equals(typed[i].Key()) && subst_s1.Value().Equals(typed[i].Value()) {
+					found = true
+				}
+
+				i++
+			}
+
+			if !found {
+				return false
+			}
+		}
+
+		return true
 	}
-	return true
+
+	return false
 }
 
 /* Copy the current substitution */

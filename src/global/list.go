@@ -33,38 +33,24 @@ package global
 
 // A simple list of generic Basic type.
 //
-// Instanciate with NewList(), NewListWithSlice() or their sync counterparts for a synchronised version.
+// Instanciate with NewList() or the sync counterpart for a synchronised version.
 type List[T Basic] struct {
 	*RWSynchroniser
 	values []T
 }
 
 /*
-Creates a new list and gives its pointer.
-*/
-func NewList[T Basic]() *List[T] {
-	return NewListWithSlice([]T{})
-}
-
-/*
-Creates a new synchronised list and gives its pointer.
-*/
-func NewSyncList[T Basic]() *List[T] {
-	return NewSyncListWithSlice([]T{})
-}
-
-/*
 Given a slice, creates a new list with that slice already set and gives its pointer.
 */
-func NewListWithSlice[T Basic](slice []T) *List[T] {
+func NewList[T Basic](slice ...T) *List[T] {
 	return &List[T]{NewRWSynchroniser(), slice}
 }
 
 /*
 Given a slice, creates a new synchronised list with that slice already set and gives its pointer.
 */
-func NewSyncListWithSlice[T Basic](slice []T) *List[T] {
-	syncList := NewListWithSlice(slice)
+func NewSyncList[T Basic](slice ...T) *List[T] {
+	syncList := NewList(slice...)
 	MakeIntoSyncableRW(syncList)
 
 	return syncList

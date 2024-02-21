@@ -35,37 +35,23 @@ package global
 //
 // The main difference from the list is the unicity of the elements. There can be no i and j with i != j such that set[i].Equals(set[j])
 //
-// Instanciate with NewSet(), NewSetWithSlice() or their sync counterparts for a synchronised version.
+// Instanciate with NewSet() or the sync counterpart for a synchronised version.
 type Set[T Basic] struct {
 	*List[T]
 }
 
 /*
-Creates a new set and gives its pointer.
-*/
-func NewSet[T Basic]() *Set[T] {
-	return NewSetWithSlice([]T{})
-}
-
-/*
-Creates a new synchronised set and gives its pointer.
-*/
-func NewSyncSet[T Basic]() *Set[T] {
-	return NewSyncSetWithSlice([]T{})
-}
-
-/*
 Given a slice, creates a new set with that slice already set and gives its pointer.
 */
-func NewSetWithSlice[T Basic](slice []T) *Set[T] {
-	return &Set[T]{NewListWithSlice[T](slice)}
+func NewSet[T Basic](slice ...T) *Set[T] {
+	return &Set[T]{NewList[T](slice...)}
 }
 
 /*
 Given a slice, creates a new synchronised set with that slice already set and gives its pointer.
 */
-func NewSyncSetWithSlice[T Basic](slice []T) *Set[T] {
-	syncSet := NewSetWithSlice(slice)
+func NewSyncSet[T Basic](slice ...T) *Set[T] {
+	syncSet := NewSet(slice...)
 	MakeIntoSyncableRW(syncSet)
 
 	return syncSet

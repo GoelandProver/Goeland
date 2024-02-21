@@ -333,7 +333,7 @@ func checkSubsIsCompatibleWith(isCompatible treetypes.Substitutions, with ...tre
 }
 
 func isFirstIncludedInSecond(first treetypes.Substitutions, second treetypes.Substitutions) bool {
-	secondList := global.NewListWithSlice(first)
+	secondList := global.NewList(first...)
 
 	for _, firstElement := range first {
 		if !secondList.Contains(firstElement) {

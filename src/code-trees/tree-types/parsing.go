@@ -84,7 +84,7 @@ func (t TermForm) Equals(t2 any) bool {
 func (t TermForm) GetMetas() *basictypes.MetaList {
 	switch nt := t.GetTerm().(type) {
 	case basictypes.Meta:
-		return basictypes.NewMetaListWithSlice(nt)
+		return basictypes.NewMetaList(nt)
 	case basictypes.Fun:
 		res := basictypes.NewMetaList()
 

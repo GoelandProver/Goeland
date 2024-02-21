@@ -70,7 +70,7 @@ func (nds *nonDestructiveSearch) manageRewriteRules(fatherId uint64, state compl
 /* Choose substitution - whitout meta in lastAppliedSubst */
 func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestructive(sl []complextypes.SubstAndForm, ml *basictypes.MetaList) (complextypes.SubstAndForm, []complextypes.SubstAndForm) {
 	for i, v := range sl {
-		if !v.GetSubst().GetMeta().IsInclude(ml) {
+		if !v.GetSubst().GetMeta().IsIncludeInsideOF(ml) {
 			return v, complextypes.RemoveSubstFromSubstAndFormList(i, sl)
 		}
 	}
@@ -275,7 +275,7 @@ func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64
 		st.SetSubstsFound(st.GetSubstsFound()[1:])
 	}
 
-	global.PrintDebug("PS", fmt.Sprintf("Choosen subst : %v - HasInCommon : %v", new_choosen_subst.GetSubst().ToString(), new_choosen_subst.GetSubst().GetMeta().HasInCommon(st.GetLastAppliedSubst().GetSubst().GetMeta())))
+	global.PrintDebug("PS", fmt.Sprintf("Choosen subst : %v - HasInCommon : %v", new_choosen_subst.GetSubst().ToString(), new_choosen_subst.GetSubst().GetMeta().HasMetaInCommonWith(st.GetLastAppliedSubst().GetSubst().GetMeta())))
 	global.PrintDebug("PS", fmt.Sprintf("AreRulesApplicable : %v", st.AreRulesApplicable()))
 
 	choosen_subst = new_choosen_subst

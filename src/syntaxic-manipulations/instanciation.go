@@ -59,7 +59,7 @@ func Instantiate(fnt btps.FormAndTerms, index int) (btps.FormAndTerms, *btps.Met
 		fnt, meta = realInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
-	return fnt, btps.NewMetaListWithSlice(meta)
+	return fnt, btps.NewMetaList(meta)
 }
 
 func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, terms btps.TermList) (btps.FormAndTerms, btps.Meta) {

@@ -63,7 +63,7 @@ func (m Meta) GetOccurence() int              { return m.occurence }
 func (m Meta) IsMeta() bool                   { return true }
 func (m Meta) IsFun() bool                    { return false }
 func (m Meta) ToMeta() Meta                   { return m }
-func (m Meta) GetMetas() *MetaList            { return NewMetaListWithSlice(m) }
+func (m Meta) GetMetas() *MetaList            { return NewMetaList(m) }
 
 func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"
