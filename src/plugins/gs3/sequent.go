@@ -149,6 +149,10 @@ func (seq *GS3Sequent) GetRewriteWith() btps.Form {
 	return seq.hypotheses[seq.rewriteWith]
 }
 
+func (seq *GS3Sequent) GetId() int {
+	return seq.nodeId
+}
+
 // ----------------------------------------------------------------------------
 // Private methods & functions
 // ----------------------------------------------------------------------------
