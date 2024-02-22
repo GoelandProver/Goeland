@@ -37,8 +37,6 @@
 package basictypes
 
 import (
-	"strconv"
-
 	"github.com/GoelandProver/Goeland/global"
 )
 
@@ -48,10 +46,6 @@ type MetaList struct {
 
 func NewMetaList(metas ...Meta) *MetaList {
 	return &MetaList{global.NewList(metas...)}
-}
-
-func (ml *MetaList) Less(i, j int) bool {
-	return (ml.Get(i).GetName() + strconv.Itoa(ml.Get(i).GetOccurence())) < (ml.Get(j).GetName() + strconv.Itoa(ml.Get(j).GetOccurence()))
 }
 
 func (ml *MetaList) HasMetaInCommonWith(other *MetaList) bool {
@@ -73,12 +67,22 @@ func (ml *MetaList) IsIncludeInsideOF(other *MetaList) bool {
 	return true
 }
 
-func (ml *MetaList) ToTermList() TermList {
-	res := MakeEmptyTermList()
-	for _, m := range ml.Slice() {
-		res = append(res, m.Copy())
+func (ml *MetaList) ToTermList() *TermList {
+	res := NewTermList()
+
+	for _, meta := range ml.Slice() {
+		res.AppendIfNotContains(meta)
 	}
+
 	return res
+}
+
+func (ml *MetaList) Equals(other any) bool {
+	if typed, ok := other.(*MetaList); ok {
+		return ml.List.Equals(typed.List)
+	}
+
+	return false
 }
 
 func (ml *MetaList) Copy() *MetaList {

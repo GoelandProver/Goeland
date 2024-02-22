@@ -67,8 +67,8 @@ func (v Var) Equals(t any) bool {
 	return false
 }
 
-func (v Var) GetSubTerms() TermList {
-	return TermList{v}
+func (v Var) GetSubTerms() *TermList {
+	return NewTermList(v)
 }
 
 func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {

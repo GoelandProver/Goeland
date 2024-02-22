@@ -82,8 +82,8 @@ func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return i
 }
 
-func (i Id) GetSubTerms() TermList {
-	return TermList{i}
+func (i Id) GetSubTerms() *TermList {
+	return NewTermList(i)
 }
 
 // id < other : -1; id = other : 0; id > other : 1

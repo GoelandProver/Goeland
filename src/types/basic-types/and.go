@@ -81,17 +81,22 @@ func (a And) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (a And) GetSubTerms() TermList {
-	res := TermList{}
+func (a And) GetSubTerms() *TermList {
+	res := NewTermList()
+
 	for _, tl := range a.FormList {
-		res = res.MergeTermList(tl.GetSubTerms())
+		res.AppendIfNotContains(tl.GetSubTerms().Slice()...)
 	}
+
 	return res
 }
 
-func (a And) Equals(f any) bool {
-	oth, isAnd := f.(And)
-	return isAnd && oth.FormList.Equals(a.FormList)
+func (a And) Equals(other any) bool {
+	if typed, ok := other.(And); ok {
+		return typed.FormList.Equals(a.FormList)
+	}
+
+	return false
 }
 
 func (a And) Copy() Form {

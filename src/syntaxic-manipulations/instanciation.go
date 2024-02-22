@@ -62,11 +62,14 @@ func Instantiate(fnt btps.FormAndTerms, index int) (btps.FormAndTerms, *btps.Met
 	return fnt, btps.NewMetaList(meta)
 }
 
-func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, terms btps.TermList) (btps.FormAndTerms, btps.Meta) {
+func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, terms *btps.TermList) (btps.FormAndTerms, btps.Meta) {
 	v := varList[0]
 	meta := btps.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
 	subForm = subForm.SubstituteVarByMeta(v, meta)
-	terms = terms.MergeTermList(btps.TermList{meta})
+
+	terms = terms.Copy()
+	terms.AppendIfNotContains(meta)
+
 	internalMetas := subForm.GetInternalMetas()
 
 	if len(varList) > 1 {
@@ -81,5 +84,6 @@ func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, t
 			subForm = btps.RefuteForm(subForm)
 		}
 	}
+
 	return btps.MakeFormAndTerm(subForm.SetInternalMetas(internalMetas), terms), meta
 }

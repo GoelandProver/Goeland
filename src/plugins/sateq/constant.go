@@ -107,8 +107,8 @@ func (c constant) GetName() string {
 	return c.ToString()
 }
 
-func (c constant) GetSubTerms() basictypes.TermList {
-	return basictypes.TermList{c}
+func (c constant) GetSubTerms() *basictypes.TermList {
+	return basictypes.NewTermList(c)
 }
 
 func (c constant) IsFun() bool {

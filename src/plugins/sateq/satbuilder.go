@@ -206,9 +206,9 @@ func (sb *SatBuilder) 𝜓Constraint(index int, ci, cj constant) {
 						fVar := sb.getVarFromFMapping(index, firstTerm, secondTerm)
 						firstArgs, secondArgs := firstFun.GetArgs(), secondFun.GetArgs()
 
-						for i := range firstArgs {
-							if firstConst, ok := firstArgs[i].(constant); ok {
-								if secondConst, ok := secondArgs[i].(constant); ok {
+						for i := range firstArgs.Slice() {
+							if firstConst, ok := firstArgs.Get(i).(constant); ok {
+								if secondConst, ok := secondArgs.Get(i).(constant); ok {
 									sb.addClause(fVar.Not(), sb.getVarFromEMapping(index, firstConst, secondConst))
 								}
 							}
@@ -262,7 +262,7 @@ func (sb *SatBuilder) buildSubtermRelationConstraints() {
 
 				rVar := sb.getVarFromRMapping(currentConst, t)
 
-				for _, arg := range typedFun.GetArgs() {
+				for _, arg := range typedFun.GetArgs().Slice() {
 					if typedArg, ok := arg.(constant); ok {
 						sb.addClause(rVar.Not(), sb.getVarFromOMapping(typedArg, currentConst))
 					}

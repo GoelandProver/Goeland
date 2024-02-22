@@ -100,7 +100,7 @@ func (ds *destructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool
 	global.PrintInfo("MAIN", fmt.Sprintf("Launch Gotab with destructive = %v", global.IsDestructive()))
 
 	global.SetNbGoroutines(0)
-	state.SetLF(basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(formula, basictypes.MakeEmptyTermList())))
+	state.SetLF(basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(formula, basictypes.NewTermList())))
 	c := MakeCommunication(make(chan bool), make(chan Result))
 
 	if global.GetExchanges() {
@@ -248,7 +248,7 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 			if !global.GetAssisted() {
 				global.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
 				clos_res, subst := ApplyClosureRules(atomic, &st)
-				fAt := basictypes.MakeFormAndTerm(atomic, basictypes.MakeEmptyTermList())
+				fAt := basictypes.MakeFormAndTerm(atomic, basictypes.NewTermList())
 
 				if clos_res {
 					ds.ManageClosureRule(father_id, &st, cha, treetypes.CopySubstList(subst), fAt, node_id, original_node_id)
@@ -266,14 +266,14 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 			if !ok {
 				return
 			}
-			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(f.Copy(), basictypes.MakeEmptyTermList()))
+			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(f.Copy(), basictypes.NewTermList()))
 		}
 		for _, f := range atomicsMinus {
 			ok := lam(basictypes.MakerNot(f))
 			if !ok {
 				return
 			}
-			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(basictypes.MakerNot(f), basictypes.MakeEmptyTermList()))
+			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(basictypes.MakerNot(f), basictypes.NewTermList()))
 		}
 
 		/** Filter Atomics for DMT

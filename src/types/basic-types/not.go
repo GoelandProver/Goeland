@@ -81,13 +81,16 @@ func (n Not) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (n Not) GetSubTerms() TermList {
+func (n Not) GetSubTerms() *TermList {
 	return n.GetForm().GetSubTerms()
 }
 
-func (n Not) Equals(f any) bool {
-	oth, isNot := f.(Not)
-	return isNot && oth.f.Equals(n.f)
+func (n Not) Equals(other any) bool {
+	if typed, ok := other.(Not); ok {
+		return typed.f.Equals(n.f)
+	}
+
+	return false
 }
 
 func (n Not) Copy() Form {

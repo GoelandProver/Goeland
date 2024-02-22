@@ -39,7 +39,7 @@ package basictypes
 /* id (for predicate) */
 type FormAndTerms struct {
 	form  Form
-	Terms TermList
+	Terms *TermList
 }
 
 func (fat FormAndTerms) GetForm() Form {
@@ -50,7 +50,7 @@ func (fat FormAndTerms) GetForm() Form {
 	}
 }
 
-func (fat FormAndTerms) GetTerms() TermList {
+func (fat FormAndTerms) GetTerms() *TermList {
 	return fat.Terms.Copy()
 }
 
@@ -58,11 +58,11 @@ func (fat *FormAndTerms) SetForm(form Form) {
 	fat.form = form
 }
 
-func (fat *FormAndTerms) SetTerms(Terms TermList) {
+func (fat *FormAndTerms) SetTerms(Terms *TermList) {
 	fat.Terms = Terms
 }
 
-func MakeFormAndTerm(f Form, tl TermList) FormAndTerms {
+func MakeFormAndTerm(f Form, tl *TermList) FormAndTerms {
 	return FormAndTerms{f, tl}
 }
 

@@ -156,10 +156,11 @@ func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstru
 	case btypes.Pred:
 		// The len(form.GetTypeVars()) first children launched are children for typevars.
 		// So the len(form.GetTypeVars()) first children will return <nil>
-		if len(reconstruction.terms) > len(form.GetTypeVars()) {
-			f = btypes.MakePred(form.GetIndex(), form.GetID(), reconstruction.terms[len(form.GetTypeVars()):], form.GetTypeVars(), form.GetType())
+		if reconstruction.terms.Len() > len(form.GetTypeVars()) {
+			terms := btypes.NewTermList(reconstruction.terms.GetElements(len(form.GetTypeVars()), reconstruction.terms.Len())...)
+			f = btypes.MakePred(form.GetIndex(), form.GetID(), terms, form.GetTypeVars(), form.GetType())
 		} else {
-			f = btypes.MakePred(form.GetIndex(), form.GetID(), []btypes.Term{}, form.GetTypeVars(), form.GetType())
+			f = btypes.MakePred(form.GetIndex(), form.GetID(), btypes.NewTermList(), form.GetTypeVars(), form.GetType())
 		}
 	case btypes.Top, btypes.Bot:
 		f = baseForm
@@ -180,15 +181,16 @@ func reconstructTerm(reconstruction Reconstruct, baseTerm btypes.Term) Reconstru
 		var fun btypes.Fun
 		// The len(form.GetTypeVars()) first children launched are children for typevars.
 		// So the len(form.GetTypeVars()) first children will return <nil>
-		if len(reconstruction.terms) > len(termFun.GetTypeVars()) {
-			fun = btypes.MakerFun(termFun.GetID(), reconstruction.terms[len(termFun.GetTypeVars()):], termFun.GetTypeVars(), termFun.GetTypeHint())
+		if reconstruction.terms.Len() > len(termFun.GetTypeVars()) {
+			terms := btypes.NewTermList(reconstruction.terms.GetElements(len(termFun.GetTypeVars()), reconstruction.terms.Len())...)
+			fun = btypes.MakerFun(termFun.GetID(), terms, termFun.GetTypeVars(), termFun.GetTypeHint())
 		} else {
-			fun = btypes.MakerFun(termFun.GetID(), []btypes.Term{}, termFun.GetTypeVars(), termFun.GetTypeHint())
+			fun = btypes.MakerFun(termFun.GetID(), btypes.NewTermList(), termFun.GetTypeVars(), termFun.GetTypeHint())
 		}
-		return Reconstruct{result: true, terms: []btypes.Term{fun}, err: nil}
+		return Reconstruct{result: true, terms: btypes.NewTermList(fun), err: nil}
 	}
 
-	return Reconstruct{result: true, terms: []btypes.Term{baseTerm}, err: nil}
+	return Reconstruct{result: true, terms: btypes.NewTermList(baseTerm), err: nil}
 }
 
 /* Utils for reconstructions function */

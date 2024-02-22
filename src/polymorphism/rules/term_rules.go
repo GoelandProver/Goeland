@@ -49,7 +49,7 @@ import (
 func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	var index int
 	var id btypes.Id
-	var terms []btypes.Term
+	var terms *btypes.TermList
 	var vars []typing.TypeApp
 
 	if whatIsSet(state.consequence) == formIsSet {
@@ -118,14 +118,14 @@ func applyVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 /**
  * Takes all the types of the terms and makes a cross product of everything
  **/
-func getArgsTypes(context GlobalContext, terms []btypes.Term) (typing.TypeApp, error) {
-	if len(terms) == 0 {
+func getArgsTypes(context GlobalContext, terms *btypes.TermList) (typing.TypeApp, error) {
+	if terms.Len() == 0 {
 		return nil, nil
 	}
 
 	var types []typing.TypeApp
 
-	for _, term := range terms {
+	for _, term := range terms.Slice() {
 		switch tmpTerm := term.(type) {
 		case btypes.Fun:
 			typeScheme, err := context.getTypeScheme(
@@ -161,7 +161,7 @@ func getArgsTypes(context GlobalContext, terms []btypes.Term) (typing.TypeApp, e
 }
 
 /* Creates children for app rule */
-func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term, primitives []typing.TypeApp) []Sequent {
+func createAppChildren(state Sequent, vars []typing.TypeApp, terms *btypes.TermList, primitives []typing.TypeApp) []Sequent {
 	children := []Sequent{}
 
 	// 1 for each type in the vars
@@ -174,7 +174,7 @@ func createAppChildren(state Sequent, vars []typing.TypeApp, terms []btypes.Term
 	}
 
 	// 1 for each term
-	for i, term := range terms {
+	for i, term := range terms.Slice() {
 		switch t := term.(type) {
 		case btypes.Fun:
 			term = btypes.MakeFun(t.GetID(), t.GetArgs(), t.GetTypeVars(), primitives[i].(typing.TypeScheme))

@@ -233,7 +233,7 @@ func (p *ProofStruct) SetResultFormulasProof(fl []IntFormAndTermsList) {
 /* makers */
 
 func MakeEmptyProofStruct() ProofStruct {
-	return ProofStruct{basictypes.MakeFormAndTerm(basictypes.MakerBot(), basictypes.MakeEmptyTermList()), -1, -1, "", "", []IntFormAndTermsList{}, [][]ProofStruct{}}
+	return ProofStruct{basictypes.MakeFormAndTerm(basictypes.MakerBot(), basictypes.NewTermList()), -1, -1, "", "", []IntFormAndTermsList{}, [][]ProofStruct{}}
 }
 
 func MakeProofStruct(formula basictypes.FormAndTerms, formula_use, id int, rule, rule_name string, Result_formulas []IntFormAndTermsList, children [][]ProofStruct) ProofStruct {

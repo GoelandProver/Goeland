@@ -63,12 +63,12 @@ func TestPreskolemization(t *testing.T) {
 	axiom := btypes.MakerAll(
 		[]btypes.Var{x, y},
 		btypes.MakerEqu(
-			btypes.MakerPred(subset, []btypes.Term{x, y}, []typing.TypeApp{}),
+			btypes.MakerPred(subset, btypes.NewTermList(x, y), []typing.TypeApp{}),
 			btypes.MakerAll(
 				[]btypes.Var{z},
 				btypes.MakerImp(
-					btypes.MakerPred(in, []btypes.Term{z, x}, []typing.TypeApp{}),
-					btypes.MakerPred(in, []btypes.Term{z, y}, []typing.TypeApp{}),
+					btypes.MakerPred(in, btypes.NewTermList(z, x), []typing.TypeApp{}),
+					btypes.MakerPred(in, btypes.NewTermList(z, y), []typing.TypeApp{}),
 				),
 			),
 		),
@@ -79,7 +79,7 @@ func TestPreskolemization(t *testing.T) {
 	}
 
 	// Positive occurrences should be rewritten normally
-	form := btypes.MakerPred(subset, []btypes.Term{a, b}, []typing.TypeApp{})
+	form := btypes.MakerPred(subset, btypes.NewTermList(a, b), []typing.TypeApp{})
 	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
@@ -89,8 +89,8 @@ func TestPreskolemization(t *testing.T) {
 	expected := btypes.MakerAll(
 		[]btypes.Var{z},
 		btypes.MakerImp(
-			btypes.MakerPred(in, []btypes.Term{z, a}, []typing.TypeApp{}),
-			btypes.MakerPred(in, []btypes.Term{z, b}, []typing.TypeApp{}),
+			btypes.MakerPred(in, btypes.NewTermList(z, a), []typing.TypeApp{}),
+			btypes.MakerPred(in, btypes.NewTermList(z, b), []typing.TypeApp{}),
 		),
 	)
 
@@ -102,7 +102,7 @@ func TestPreskolemization(t *testing.T) {
 	}
 
 	// Negative occurrences should be skolemized
-	form2 := btypes.MakerNot(btypes.MakerPred(subset, []btypes.Term{a, b}, []typing.TypeApp{}))
+	form2 := btypes.MakerNot(btypes.MakerPred(subset, btypes.NewTermList(a, b), []typing.TypeApp{}))
 	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
@@ -114,8 +114,8 @@ func TestPreskolemization(t *testing.T) {
 		len(substs[0].GetSaf().GetForm()) > 1 ||
 		reflect.TypeOf(substs[0].GetSaf().GetForm()[0]) != reflect.TypeOf(btypes.Not{}) ||
 		reflect.TypeOf(substs[0].GetSaf().GetForm()[0].(btypes.Not).GetForm()) != reflect.TypeOf(btypes.Imp{}) ||
-		!substs[0].GetSaf().GetForm()[0].(btypes.Not).GetForm().(btypes.Imp).GetF1().(btypes.Pred).GetArgs()[0].IsFun() ||
-		!substs[0].GetSaf().GetForm()[0].(btypes.Not).GetForm().(btypes.Imp).GetF2().(btypes.Pred).GetArgs()[0].IsFun() {
+		!substs[0].GetSaf().GetForm()[0].(btypes.Not).GetForm().(btypes.Imp).GetF1().(btypes.Pred).GetArgs().Get(0).IsFun() ||
+		!substs[0].GetSaf().GetForm()[0].(btypes.Not).GetForm().(btypes.Imp).GetF2().(btypes.Pred).GetArgs().Get(0).IsFun() {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form2.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 }
@@ -132,12 +132,12 @@ func TestPreskolemization2(t *testing.T) {
 	axiom := btypes.MakerAll(
 		[]btypes.Var{x, y},
 		btypes.MakerEqu(
-			btypes.MakerPred(subset, []btypes.Term{x, y}, []typing.TypeApp{}),
+			btypes.MakerPred(subset, btypes.NewTermList(x, y), []typing.TypeApp{}),
 			btypes.MakerEx(
 				[]btypes.Var{z},
 				btypes.MakerImp(
-					btypes.MakerPred(in, []btypes.Term{z, x}, []typing.TypeApp{}),
-					btypes.MakerPred(in, []btypes.Term{z, y}, []typing.TypeApp{}),
+					btypes.MakerPred(in, btypes.NewTermList(z, x), []typing.TypeApp{}),
+					btypes.MakerPred(in, btypes.NewTermList(z, y), []typing.TypeApp{}),
 				),
 			),
 		),
@@ -148,7 +148,7 @@ func TestPreskolemization2(t *testing.T) {
 	}
 
 	// Positive occurrences should be skolemized
-	form := btypes.MakerPred(subset, []btypes.Term{a, b}, []typing.TypeApp{})
+	form := btypes.MakerPred(subset, btypes.NewTermList(a, b), []typing.TypeApp{})
 	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
@@ -159,13 +159,13 @@ func TestPreskolemization2(t *testing.T) {
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		len(substs[0].GetSaf().GetForm()) > 1 ||
 		reflect.TypeOf(substs[0].GetSaf().GetForm()[0]) != reflect.TypeOf(btypes.Imp{}) ||
-		!substs[0].GetSaf().GetForm()[0].(btypes.Imp).GetF1().(btypes.Pred).GetArgs()[0].IsFun() ||
-		!substs[0].GetSaf().GetForm()[0].(btypes.Imp).GetF2().(btypes.Pred).GetArgs()[0].IsFun() {
+		!substs[0].GetSaf().GetForm()[0].(btypes.Imp).GetF1().(btypes.Pred).GetArgs().Get(0).IsFun() ||
+		!substs[0].GetSaf().GetForm()[0].(btypes.Imp).GetF2().(btypes.Pred).GetArgs().Get(0).IsFun() {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
 	}
 
 	// Negative occurrences should be rewritten normally
-	form2 := btypes.MakerNot(btypes.MakerPred(subset, []btypes.Term{a, b}, []typing.TypeApp{}))
+	form2 := btypes.MakerNot(btypes.MakerPred(subset, btypes.NewTermList(a, b), []typing.TypeApp{}))
 	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
@@ -175,8 +175,8 @@ func TestPreskolemization2(t *testing.T) {
 	expected := btypes.MakerNot(btypes.MakerEx(
 		[]btypes.Var{z},
 		btypes.MakerImp(
-			btypes.MakerPred(in, []btypes.Term{z, a}, []typing.TypeApp{}),
-			btypes.MakerPred(in, []btypes.Term{z, b}, []typing.TypeApp{}),
+			btypes.MakerPred(in, btypes.NewTermList(z, a), []typing.TypeApp{}),
+			btypes.MakerPred(in, btypes.NewTermList(z, b), []typing.TypeApp{}),
 		),
 	))
 

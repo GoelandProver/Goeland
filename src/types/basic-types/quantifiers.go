@@ -91,7 +91,7 @@ func QuantifierToMappedString(quant string, mapping MapString, varList []Var, fo
 
 type QuantifiedForm interface {
 	GetForm() Form
-	GetSubTerms() TermList
+	GetSubTerms() *TermList
 	GetVarList() []Var
 }
 
@@ -107,11 +107,11 @@ func cleanQuantifiedFormula(qf QuantifiedForm) ([]Var, Form) {
 	return newList, f
 }
 
-func checkSeenVars(varList []Var, terms TermList) []bool {
+func checkSeenVars(varList []Var, terms *TermList) []bool {
 	areSeen := make([]bool, len(varList))
 
 	for i, v := range varList {
-		for _, term := range terms {
+		for _, term := range terms.Slice() {
 			if term.Equals(v) {
 				areSeen[i] = true
 			}

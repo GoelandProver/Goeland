@@ -235,7 +235,7 @@ func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule Rule, s
 	// JRO: Should be OKAY as "nil" is returned if I understand everything properly.
 	term := manageGammasInstantiations(originForm, resultForm)
 
-	for _, t := range getDepFromTerm(term) {
+	for _, t := range getDepFromTerm(term).Slice() {
 		gs.dependency.Add(t, originForm)
 	}
 
@@ -255,19 +255,22 @@ func (gs *GS3Proof) manageGammaStep(proofStep tableaux.ProofStruct, rule Rule, s
 	return s
 }
 
-func getDepFromTerm(term btps.Term) btps.TermList {
-	if fun, isFun := term.(btps.Fun); isFun {
-		if strings.Contains(fun.GetID().GetName(), "sko") {
-			return btps.TermList{fun}
-		} else {
-			res := btps.TermList{}
-			for _, t := range fun.GetArgs() {
-				res = append(res, getDepFromTerm(t)...)
-			}
-			return res
+func getDepFromTerm(term btps.Term) *btps.TermList {
+	if typedFun, ok := term.(btps.Fun); ok {
+		if strings.Contains(typedFun.GetID().GetName(), "sko") {
+			return btps.NewTermList(typedFun)
 		}
+
+		res := btps.NewTermList()
+
+		for _, t := range typedFun.GetArgs().Slice() {
+			res.Append(getDepFromTerm(t).Slice()...)
+		}
+
+		return res
 	}
-	return btps.TermList{term}
+
+	return btps.NewTermList(term)
 }
 
 // TODO: factorise this function to merge some steps that are similar between the two cases.
@@ -587,7 +590,7 @@ func makeWeakeningProofStructs(forms []btps.Form) []tableaux.ProofStruct {
 	resultingProof := make([]tableaux.ProofStruct, 0)
 	for _, f := range forms {
 		proofStruct := tableaux.MakeEmptyProofStruct()
-		proofStruct.SetFormulaProof(btps.MakeFormAndTerm(f, btps.TermList{}))
+		proofStruct.SetFormulaProof(btps.MakeFormAndTerm(f, btps.NewTermList()))
 		proofStruct.SetRuleNameProof("WEAKEN")
 		resultingProof = append(resultingProof, proofStruct)
 	}

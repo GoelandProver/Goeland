@@ -81,11 +81,13 @@ func (o Or) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (o Or) GetSubTerms() TermList {
-	res := MakeEmptyTermList()
+func (o Or) GetSubTerms() *TermList {
+	res := NewTermList()
+
 	for _, tl := range o.FormList {
-		res = res.MergeTermList(tl.GetSubTerms())
+		res.AppendIfNotContains(tl.GetSubTerms().Slice()...)
 	}
+
 	return res
 }
 

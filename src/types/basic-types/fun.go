@@ -47,7 +47,7 @@ import (
 type Fun struct {
 	*MappedString
 	p        Id
-	args     TermList
+	args     *TermList
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
 }
@@ -57,7 +57,7 @@ func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 }
 
 func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, displayTypes bool) string {
-	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
+	if len(f.typeVars) == 0 && f.GetArgs().Len() == 0 {
 		return idString + "%s"
 	}
 	args := []string{}
@@ -84,11 +84,11 @@ func (f Fun) GetChildrenForMappedString() []MappableString {
 	return f.GetArgs().ToMappableStringSlice()
 }
 
-func (f Fun) GetID() Id         { return f.p.Copy().(Id) }
-func (f Fun) GetP() Id          { return f.p.Copy().(Id) }
-func (f Fun) GetArgs() TermList { return f.args.Copy() }
+func (f Fun) GetID() Id          { return f.p.Copy().(Id) }
+func (f Fun) GetP() Id           { return f.p.Copy().(Id) }
+func (f Fun) GetArgs() *TermList { return f.args.Copy() }
 
-func (f *Fun) SetArgs(tl TermList)                { f.args = tl }
+func (f *Fun) SetArgs(tl *TermList)               { f.args = tl }
 func (f *Fun) SetTypeScheme(ts typing.TypeScheme) { f.typeHint = ts }
 
 func (f Fun) GetTypeVars() []typing.TypeApp  { return f.typeVars }
@@ -126,7 +126,7 @@ func (f Fun) PointerCopy() Term {
 func (f Fun) GetMetas() *MetaList {
 	metas := NewMetaList()
 
-	for _, arg := range f.GetArgs() {
+	for _, arg := range f.GetArgs().Slice() {
 		metas.Append(arg.GetMetas().Slice()...)
 	}
 
@@ -149,11 +149,13 @@ func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
 	}
 }
 
-func (f Fun) GetSubTerms() TermList {
-	res := MakeEmptyTermList()
-	res = res.AppendIfNotContains(f)
-	for _, arg := range f.GetArgs() {
-		res = append(res, arg.GetSubTerms()...)
+func (f Fun) GetSubTerms() *TermList {
+	res := NewTermList()
+
+	res.AppendIfNotContains(f)
+	for _, arg := range f.GetArgs().Slice() {
+		res.AppendIfNotContains(arg.GetSubTerms().Slice()...)
 	}
+
 	return res
 }

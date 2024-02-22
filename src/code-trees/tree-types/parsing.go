@@ -88,7 +88,7 @@ func (t TermForm) GetMetas() *basictypes.MetaList {
 	case basictypes.Fun:
 		res := basictypes.NewMetaList()
 
-		for _, m := range nt.GetArgs() {
+		for _, m := range nt.GetArgs().Slice() {
 			switch mt := m.(type) {
 			case basictypes.Meta:
 				res.AppendIfNotContains(mt)
@@ -101,7 +101,7 @@ func (t TermForm) GetMetas() *basictypes.MetaList {
 	}
 }
 
-func (t TermForm) GetSubTerms() basictypes.TermList {
+func (t TermForm) GetSubTerms() *basictypes.TermList {
 	return t.GetTerm().GetSubTerms()
 }
 
@@ -140,7 +140,7 @@ func ParseFormula(formula basictypes.Form) Sequence {
 		varCount := 0
 		postCount := 0
 		instructions.add(Begin{})
-		parseTerms(basictypes.TermList{formula_type.GetTerm().Copy()}, &instructions, basictypes.NewMetaList(), &varCount, &postCount)
+		parseTerms(basictypes.NewTermList(formula_type.GetTerm().Copy()), &instructions, basictypes.NewMetaList(), &varCount, &postCount)
 		instructions.add(End{})
 
 		return instructions
@@ -150,17 +150,19 @@ func ParseFormula(formula basictypes.Form) Sequence {
 	}
 }
 
-func TypeAndTermsToTerms(types []typing.TypeApp, terms basictypes.TermList) basictypes.TermList {
-	tms := basictypes.MakeEmptyTermList()
-	tms = append(tms, basictypes.TypeAppArrToTerm(types)...)
-	tms = append(tms, terms...)
+func TypeAndTermsToTerms(types []typing.TypeApp, terms *basictypes.TermList) *basictypes.TermList {
+	tms := basictypes.NewTermList()
+
+	tms.Append(basictypes.TypeAppArrToTerm(types).Slice()...)
+	tms.Append(terms.Slice()...)
+
 	return tms
 }
 
 /* Parses a predicate to machine instructions */
 func parsePred(p basictypes.Pred, instructions *Sequence) {
 	instructions.add(makeCheck(p.GetID()))
-	if len(p.GetArgs()) > 0 {
+	if p.GetArgs().Len() > 0 {
 		instructions.add(Begin{})
 		instructions.add(Down{})
 		varCount := 0
@@ -171,17 +173,17 @@ func parsePred(p basictypes.Pred, instructions *Sequence) {
 }
 
 /* Parses an array of terms to machine instructions */
-func parseTerms(terms basictypes.TermList, instructions *Sequence, subst *basictypes.MetaList, varCount *int, postCount *int) *basictypes.MetaList {
+func parseTerms(terms *basictypes.TermList, instructions *Sequence, subst *basictypes.MetaList, varCount *int, postCount *int) *basictypes.MetaList {
 
-	rightDefined := func(terms []basictypes.Term, i int) bool {
-		return i < len(terms)-1
+	rightDefined := func(terms *basictypes.TermList, i int) bool {
+		return i < terms.Len()-1
 	}
 
-	downDefined := func(args []basictypes.Term) bool {
-		return len(args) > 0
+	downDefined := func(terms *basictypes.TermList) bool {
+		return terms.Len() > 0
 	}
 
-	for i, term := range terms {
+	for i, term := range terms.Slice() {
 		switch t := term.(type) {
 		case basictypes.Meta:
 			instructions.add(Put{i: *varCount})
@@ -229,7 +231,7 @@ func ParseTerm(term basictypes.Term) Sequence {
 	var instructions Sequence
 	varCount := 0
 	postCount := 0
-	parseTerms([]basictypes.Term{term.Copy()}, &instructions, basictypes.NewMetaList(), &varCount, &postCount)
+	parseTerms(basictypes.NewTermList(term.Copy()), &instructions, basictypes.NewMetaList(), &varCount, &postCount)
 	instructions.formula = MakerTermForm(term)
 	return instructions
 }

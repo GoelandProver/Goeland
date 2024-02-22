@@ -63,7 +63,7 @@ func RegisterAxiom(axiom btypes.Form) bool {
 }
 
 func instanciateForalls(axiom btypes.Form) btypes.Form {
-	axiomFT := btypes.MakeFormAndTerm(axiom.Copy(), btypes.TermList{})
+	axiomFT := btypes.MakeFormAndTerm(axiom.Copy(), btypes.NewTermList())
 	for Is[btypes.All](axiomFT.GetForm()) {
 		axiomFT, _ = syntax.Instantiate(axiomFT, -1)
 	}
@@ -88,7 +88,7 @@ func addNegRewriteRule(axiom btypes.Form, cons btypes.Form) {
 
 func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 	for canSkolemize(cons) {
-		ft := btypes.MakeFormAndTerm(cons, btypes.TermList{})
+		ft := btypes.MakeFormAndTerm(cons, btypes.NewTermList())
 		ft = syntax.Skolemize(ft, ft.GetForm().GetInternalMetas())
 		cons = ft.GetForm()
 	}

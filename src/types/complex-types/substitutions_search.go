@@ -205,13 +205,14 @@ func applySubstitutionOnType(old_type, new_type, t typing.TypeApp) typing.TypeAp
 }
 
 /* Apply substitutions on a list of terms */
-func ApplySubstitutionsOnTermList(s treetypes.Substitutions, tl basictypes.TermList) basictypes.TermList {
-	res := basictypes.MakeEmptyTermList()
-	for _, t := range tl {
-		new_term := ApplySubstitutionsOnTerm(s, t)
-		res = res.AppendIfNotContains(new_term)
+func ApplySubstitutionsOnTermList(s treetypes.Substitutions, tl *basictypes.TermList) *basictypes.TermList {
+	res := basictypes.NewTermList()
 
+	for _, t := range tl.Slice() {
+		newTerm := ApplySubstitutionsOnTerm(s, t)
+		res.AppendIfNotContains(newTerm)
 	}
+
 	return res
 }
 
@@ -229,11 +230,13 @@ func ApplySubstitutionsOnTerm(s treetypes.Substitutions, t basictypes.Term) basi
 }
 
 /* Apply substElement on a term list */
-func ApplySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl basictypes.TermList) basictypes.TermList {
-	res := make(basictypes.TermList, len(tl))
-	for i, t := range tl {
-		res[i] = ApplySubstitutionOnTerm(old_symbol, new_symbol, t)
+func ApplySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl *basictypes.TermList) *basictypes.TermList {
+	res := basictypes.NewTermList()
+
+	for _, t := range tl.Slice() {
+		res.Append(ApplySubstitutionOnTerm(old_symbol, new_symbol, t))
 	}
+
 	return res
 }
 

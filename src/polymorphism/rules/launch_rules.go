@@ -46,7 +46,7 @@ import (
 type Reconstruct struct {
 	result bool
 	forms  []btypes.Form
-	terms  []btypes.Term
+	terms  *btypes.TermList
 	err    error
 }
 
@@ -103,7 +103,7 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 	var errorFound error = nil
 
 	forms := make([]btypes.Form, len(chansTab))
-	terms := make([]btypes.Term, len(chansTab))
+	terms := btypes.NewTermList()
 
 	// Wait for all children to finish.
 	for remaining > 0 && errorFound == nil {
@@ -121,8 +121,8 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 				if len(res.forms) == 1 {
 					forms[index] = res.forms[0]
 				}
-				if len(res.terms) == 1 {
-					terms[index] = res.terms[0]
+				if res.terms.Len() == 1 {
+					terms.Set(index, res.terms.Get(0))
 				}
 			}
 		}

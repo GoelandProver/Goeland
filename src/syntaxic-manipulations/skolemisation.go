@@ -43,7 +43,7 @@ import (
 type skoArgs struct {
 	sourceFormula btps.Form
 	formula       btps.Form
-	terms         btps.TermList
+	terms         *btps.TermList
 	sourceVar     btps.Var
 	symbol        btps.Id
 }
@@ -94,7 +94,7 @@ func Skolemize(fnt btps.FormAndTerms, branchMetas *btps.MetaList) btps.FormAndTe
  * delta+ : only relevant meta : getmeta + meta replaced
  * delta++ : same function name (need classical skolem for meta)
  **/
-func realSkolemize(sourceForm, fnt btps.Form, v btps.Var, terms btps.TermList) btps.Form {
+func realSkolemize(sourceForm, fnt btps.Form, v btps.Var, terms *btps.TermList) btps.Form {
 	// Replace each variable by the skolemized term.
 	symbol := btps.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex()))
 	fnt = applySelectedSkolemisation(skoArgs{sourceFormula: sourceForm, sourceVar: v, symbol: symbol, formula: fnt, terms: terms})
@@ -175,7 +175,8 @@ func alphaConvert(form btps.Form, k int, substitution map[btps.Var]btps.Var) btp
 	case btps.Top, btps.Bot:
 		return form
 	case btps.Pred:
-		return btps.MakePred(f.GetIndex(), f.GetID(), global.MapTo(f.GetArgs(), func(_ int, t btps.Term) btps.Term { return alphaConvertTerm(t, substitution) }), f.GetTypeVars(), f.GetType())
+		mappedTerms := global.MapTo(f.GetArgs().Slice(), func(_ int, t btps.Term) btps.Term { return alphaConvertTerm(t, substitution) })
+		return btps.MakePred(f.GetIndex(), f.GetID(), btps.NewTermList(mappedTerms...), f.GetTypeVars(), f.GetType())
 	case btps.Not:
 		return btps.MakeNot(f.GetIndex(), alphaConvert(f.GetForm(), k, substitution))
 	case btps.Imp:
@@ -215,7 +216,8 @@ func alphaConvertTerm(t btps.Term, substitution map[btps.Var]btps.Var) btps.Term
 			return nt
 		}
 	case btps.Fun:
-		return btps.MakeFun(nt.GetID(), global.MapTo(nt.GetArgs(), func(_ int, trm btps.Term) btps.Term { return alphaConvertTerm(trm, substitution) }), nt.GetTypeVars(), nt.GetTypeHint())
+		mappedTerms := global.MapTo(nt.GetArgs().Slice(), func(_ int, trm btps.Term) btps.Term { return alphaConvertTerm(trm, substitution) })
+		return btps.MakeFun(nt.GetID(), btps.NewTermList(mappedTerms...), nt.GetTypeVars(), nt.GetTypeHint())
 	}
 	return t
 }

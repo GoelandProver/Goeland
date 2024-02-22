@@ -99,9 +99,9 @@ func translateConstant(toTranslate constant, termCorrespondance map[constant]bas
 }
 
 func translateFunction(toTranslate basictypes.Fun, termCorrespondance map[constant]basictypes.Term) (basictypes.Term, bool) {
-	newTerms := global.NewList[basictypes.Term]()
+	newTerms := basictypes.NewTermList()
 
-	for _, arg := range toTranslate.GetArgs() {
+	for _, arg := range toTranslate.GetArgs().Slice() {
 		subterm, subchange := arg, true
 
 		for subchange {
@@ -111,7 +111,7 @@ func translateFunction(toTranslate basictypes.Fun, termCorrespondance map[consta
 		newTerms.Append(subterm)
 	}
 
-	return basictypes.MakerFun(toTranslate.GetID(), newTerms.Slice(), toTranslate.GetTypeVars(), toTranslate.GetTypeHint()), false
+	return basictypes.MakerFun(toTranslate.GetID(), newTerms, toTranslate.GetTypeVars(), toTranslate.GetTypeHint()), false
 }
 
 func buildSubsFrom(subsMap map[termIndex]constant, translation map[constant]termIndex, termCorrespondance map[termIndex]basictypes.Term) []treetypes.Substitutions {

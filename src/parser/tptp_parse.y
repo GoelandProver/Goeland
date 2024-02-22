@@ -65,7 +65,7 @@ type TFFTerm struct {
 
 type TFFTermList struct {
     types []typing.TypeApp
-    terms []btypes.Term
+    terms *btypes.TermList
 }
 
 type TFFFormula struct {
@@ -87,7 +87,7 @@ type TFFFormula struct {
 	vrb btypes.Var
     id btypes.Id
     trm btypes.Term 
-    tml []btypes.Term
+    tml *btypes.TermList
     tfv TFFVar
     tfl TFFVarList
     ttl TFFTermList
@@ -285,14 +285,14 @@ tff_unary_formula: tff_prefix_unary { $$ = $1 }
 tff_prefix_unary: NOT tff_preunit_formula { $$ = btypes.RefuteForm($2) }
   ;
 
-tff_infix_unary: tff_term NOT_EQUAL tff_term { $$ = btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{}))}
+tff_infix_unary: tff_term NOT_EQUAL tff_term { $$ = btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, btypes.NewTermList($1.term, $3.term), []typing.TypeApp{}))}
   ;
 
 tff_atomic_formula: tff_plain_atomic_formula    { $$ = $1 }
   | tff_defined_atomic                          { $$ = $1 }
   ;
 
-tff_plain_atomic_formula: constant                { $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{}) }
+tff_plain_atomic_formula: constant                { $$ = btypes.MakerPred($1, btypes.NewTermList(), []typing.TypeApp{}) }
   | functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = btypes.MakerPred($1, $3.terms, $3.types) }
   ;
 
@@ -301,11 +301,11 @@ tff_defined_atomic: tff_defined_plain { $$ = $1 }
   | FALSE { $$ = btypes.MakerBot() }
   ;
 
-tff_defined_plain: defined_constant                       { $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{}) }
+tff_defined_plain: defined_constant                       { $$ = btypes.MakerPred($1, btypes.NewTermList(), []typing.TypeApp{}) }
   | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = btypes.MakerPred($1, $3.terms, $3.types) }
   ;
 
-tff_defined_infix: tff_term EQUAL tff_term { $$ = btypes.MakerPred(btypes.Id_eq, []btypes.Term{$1.term, $3.term}, []typing.TypeApp{}) }
+tff_defined_infix: tff_term EQUAL tff_term { $$ = btypes.MakerPred(btypes.Id_eq, btypes.NewTermList($1.term, $3.term), []typing.TypeApp{}) }
   ;
 
 tff_plain_term: constant                         { $$ = tftFrom(nil, btypes.MakerConst($1)) }
@@ -442,7 +442,7 @@ fof_unary_formula: NOT fof_unit_formula     { $$ = btypes.RefuteForm($2) }
   | fof_infix_unary                         { $$ = $1 }
   ;
   
-fof_infix_unary: fof_term NOT_EQUAL fof_term { $$ = btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, []btypes.Term{$1, $3}, []typing.TypeApp{})) }
+fof_infix_unary: fof_term NOT_EQUAL fof_term { $$ = btypes.MakerNot(btypes.MakerPred(btypes.Id_eq, btypes.NewTermList($1, $3), []typing.TypeApp{})) }
   ;
   
 fof_unit_formula: fof_unitary_formula   { $$ = $1 }
@@ -467,7 +467,7 @@ fof_atomic_formula: fof_plain_atomic_formula    { $$ = $1 }
   ;
   //   | fof_system_atomic_formula                   { $$ = $1 }
 
-fof_plain_atomic_formula: constant                  { $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{}) }
+fof_plain_atomic_formula: constant                  { $$ = btypes.MakerPred($1, btypes.NewTermList(), []typing.TypeApp{}) }
   | functor LEFT_PAREN fof_arguments RIGHT_PAREN    { $$ = btypes.MakerPred($1, $3, []typing.TypeApp{}) }
   ;
 
@@ -480,13 +480,13 @@ fof_defined_atomic_formula: fof_defined_plain_formula { $$ = $1 }
   | fof_defined_infix_formula                         { $$ = $1 }
   ;
 
-fof_defined_plain_formula: defined_constant               { $$ = btypes.MakerPred($1, []btypes.Term{}, []typing.TypeApp{}) }
+fof_defined_plain_formula: defined_constant               { $$ = btypes.MakerPred($1, btypes.NewTermList(), []typing.TypeApp{}) }
   | TRUE  { $$ = btypes.MakerTop() }
   | FALSE { $$ = btypes.MakerBot() }
   | defined_functor LEFT_PAREN fof_arguments RIGHT_PAREN  { $$ = btypes.MakerPred($1, $3, []typing.TypeApp{}) }
   ;
 
-fof_defined_infix_formula: fof_term EQUAL fof_term { $$ = btypes.MakerPred(btypes.Id_eq, []btypes.Term{$1, $3}, []typing.TypeApp{}) }
+fof_defined_infix_formula: fof_term EQUAL fof_term { $$ = btypes.MakerPred(btypes.Id_eq, btypes.NewTermList($1, $3), []typing.TypeApp{}) }
   ;
 
 // <fof_system_atomic_formula> ::= <fof_system_term>
@@ -509,8 +509,12 @@ fof_defined_plain_term: defined_constant                    { $$ = btypes.MakerC
   | defined_functor LEFT_PAREN fof_arguments RIGHT_PAREN    { $$ = btypes.MakerFun($1, $3, []typing.TypeApp{}) }
   ;
   
-fof_arguments: fof_term          { $$ = []btypes.Term{$1} }
-  | fof_term COMMA fof_arguments { $$ = append([]btypes.Term{$1}, $3...) }
+fof_arguments: fof_term          { $$ = btypes.NewTermList($1) }
+  | fof_term COMMA fof_arguments { 
+    newTerms := btypes.NewTermList($1)
+    newTerms.Append($3.Slice()...)
+    $$ = newTerms
+    }
   ;
 
 fof_term: fof_function_term { $$ = $1 }
@@ -661,14 +665,16 @@ func tftFromTfv(in TFFVar) TFFTerm {
 
 func makeTermList(in TFFTerm) TFFTermList {
     if in.type_ == nil {
-        return TFFTermList{types: []typing.TypeApp{}, terms: []btypes.Term{in.term}}
+        return TFFTermList{types: []typing.TypeApp{}, terms: btypes.NewTermList(in.term)}
     }
-    return TFFTermList{types: []typing.TypeApp{in.type_}, terms: []btypes.Term{}}
+    return TFFTermList{types: []typing.TypeApp{in.type_}, terms: btypes.NewTermList()}
 }
 
 func appendTermList(in TFFTerm, ls TFFTermList) TFFTermList {
     if in.type_ == nil {
-        ls.terms = append([]btypes.Term{in.term}, ls.terms...)
+        newTerms := btypes.NewTermList(in.term)
+        newTerms.Append(ls.terms.Slice()...)
+        ls.terms = newTerms
     } else {
         ls.types = append([]typing.TypeApp{in.type_}, ls.types...)
     }

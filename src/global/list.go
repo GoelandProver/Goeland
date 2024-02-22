@@ -91,6 +91,16 @@ func (list *List[T]) Get(i int) T {
 }
 
 /*
+Returns the [from:to] elements of the list.
+*/
+func (list *List[T]) GetElements(from, to int) []T {
+	list.doAtStartR()
+	defer list.doAtEndR()
+
+	return list.values[from:to]
+}
+
+/*
 Sets the i-th element of the list to the given value.
 */
 func (list *List[T]) Set(i int, value T) {

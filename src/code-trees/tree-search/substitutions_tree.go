@@ -58,7 +58,7 @@ func computeSubstitutions(subs []treetypes.SubstPair, metasToSubs treetypes.Subs
 	// Retrieve all the meta of from the tree formula
 	switch typedForm := form.(type) {
 	case basictypes.Pred:
-		for _, term := range typedForm.GetArgs() {
+		for _, term := range typedForm.GetArgs().Slice() {
 			metasFromTreeForm.Append(term.GetMetas().Slice()...)
 		}
 	case treetypes.TermForm:
@@ -188,7 +188,7 @@ func (m *Machine) addUnifications(term1, term2 basictypes.Term) Status {
 func tryUnification(term1, term2 basictypes.Term, meta treetypes.Substitutions) []treetypes.MatchingSubstitutions {
 	global.PrintDebug("TU", fmt.Sprintf("Try unification : %v and %v", term1.ToString(), term2.ToString()))
 	aux := makeMachine()
-	aux.terms = basictypes.TermList{term2}
+	aux.terms = basictypes.NewTermList(term2)
 	aux.meta = meta
 
 	// add begin at the start and end at the end !

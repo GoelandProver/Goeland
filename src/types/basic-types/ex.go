@@ -120,7 +120,7 @@ func (e Ex) CleanFormula() Form {
 	}
 }
 
-func (e Ex) GetSubTerms() TermList {
+func (e Ex) GetSubTerms() *TermList {
 	return e.GetForm().GetSubTerms()
 }
 

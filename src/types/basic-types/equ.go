@@ -119,8 +119,11 @@ func (e Equ) CleanFormula() Form {
 	return e
 }
 
-func (e Equ) GetSubTerms() TermList {
-	return e.GetF1().GetSubTerms().MergeTermList(e.GetF2().GetSubTerms())
+func (e Equ) GetSubTerms() *TermList {
+	res := e.GetF1().GetSubTerms().Copy()
+	res.AppendIfNotContains(e.GetF2().GetSubTerms().Slice()...)
+
+	return res
 }
 
 func (e Equ) SubstituteVarByMeta(old Var, new Meta) Form {

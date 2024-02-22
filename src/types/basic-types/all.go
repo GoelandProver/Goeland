@@ -89,11 +89,12 @@ func (a All) Copy() Form {
 	return MakeAllSimple(a.GetIndex(), copyVarList(a.GetVarList()), a.GetForm(), a.MetaList.Copy())
 }
 
-func (a All) Equals(f any) bool {
-	oth, isAll := f.(All)
-	return isAll &&
-		AreEqualsVarList(a.var_list, oth.var_list) &&
-		a.f.Equals(oth.f)
+func (a All) Equals(other any) bool {
+	if typed, ok := other.(All); ok {
+		return AreEqualsVarList(a.var_list, typed.var_list) && a.f.Equals(typed.f)
+	}
+
+	return false
 }
 
 func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -120,7 +121,7 @@ func (a All) CleanFormula() Form {
 	}
 }
 
-func (a All) GetSubTerms() TermList {
+func (a All) GetSubTerms() *TermList {
 	return a.GetForm().GetSubTerms()
 }
 

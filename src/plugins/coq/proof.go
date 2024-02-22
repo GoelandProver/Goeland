@@ -310,7 +310,7 @@ func getRealConstantName(constantsCreated []btps.Term, term btps.Term) string {
 		if isGroundTerm(fun.GetID()) {
 			res = fun.GetID().ToMappedString(coqMapConnectors(), false)
 			subterms := make([]string, 0)
-			for _, t := range fun.GetArgs() {
+			for _, t := range fun.GetArgs().Slice() {
 				subterms = append(subterms, getRealConstantName(constantsCreated, t))
 			}
 			if len(subterms) > 0 {

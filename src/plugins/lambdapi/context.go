@@ -213,7 +213,7 @@ func getContextFromFormula(root btps.Form) []string {
 
 			result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", nf.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
 		}
-		for _, term := range nf.GetArgs() {
+		for _, term := range nf.GetArgs().Slice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}
@@ -248,7 +248,7 @@ func getIdsFromFormula(root btps.Form) []global.Pair[string, string] {
 		result = getIdsFromFormula(nf.GetForm())
 	case btps.Pred:
 		result = append(result, global.MakePair(nf.GetID().GetName(), nf.GetID().ToMappedString(lambdaPiMapConnectors, false)))
-		for _, f := range nf.GetArgs() {
+		for _, f := range nf.GetArgs().Slice() {
 			result = append(result, global.MakePair(f.GetName(), f.ToMappedString(lambdaPiMapConnectors, false)))
 		}
 	}
@@ -271,7 +271,7 @@ func getContextFromTerm(trm btps.Term) []string {
 		}
 
 		result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
-		for _, term := range fun.GetArgs() {
+		for _, term := range fun.GetArgs().Slice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}

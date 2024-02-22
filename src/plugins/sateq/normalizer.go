@@ -112,11 +112,11 @@ func ApplyEqFlattenOn(equ *Equality) (done *global.List[*Equality], toDo *global
 	done, toDo = global.NewList[*Equality](), global.NewList[*Equality]()
 
 	if typed, ok := equ.GetSnd().(basictypes.Fun); ok {
-		argsAsConstants := basictypes.TermList{}
+		argsAsConstants := basictypes.NewTermList()
 
-		for _, term := range typed.GetArgs() {
+		for _, term := range typed.GetArgs().Slice() {
 			constant := makeConstant()
-			argsAsConstants = append(argsAsConstants, constant)
+			argsAsConstants.Append(constant)
 
 			newAssumption := NewEquality(constant, term)
 			toDo.Append(newAssumption)

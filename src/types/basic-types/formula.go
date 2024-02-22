@@ -49,7 +49,7 @@ type Form interface {
 	GetInternalMetas() *MetaList
 	SetInternalMetas(*MetaList) Form
 	GetType() typing.TypeScheme
-	GetSubTerms() TermList
+	GetSubTerms() *TermList
 	GetSubFormulasRecur() FormList
 	GetChildFormulas() FormList
 
@@ -64,27 +64,29 @@ type Form interface {
 }
 
 /* Replace a Var by a term inside a function */
-func replaceVarInTermList(terms TermList, oldVar Var, newTerm Term) (TermList, bool) {
+func replaceVarInTermList(terms *TermList, oldVar Var, newTerm Term) (*TermList, bool) {
 	res := false
-	new_list := make(TermList, len(terms))
-	for i, val := range terms {
+	newTermList := NewTermList()
+
+	for _, val := range terms.Slice() {
 		switch nf := val.(type) {
 		case Var:
 			if oldVar.GetIndex() == nf.GetIndex() {
-				new_list[i] = newTerm
+				newTermList.Append(newTerm)
 				res = true
 			} else {
-				new_list[i] = val
+				newTermList.Append(val)
 			}
 		case Fun:
 			termList, r := replaceVarInTermList(nf.GetArgs(), oldVar, newTerm)
-			new_list[i] = MakerFun(nf.GetP(), termList, nf.GetTypeVars(), nf.GetTypeHint())
+			newTermList.Append(MakerFun(nf.GetP(), termList, nf.GetTypeVars(), nf.GetTypeHint()))
 			res = res || r
 		default:
-			new_list[i] = val
+			newTermList.Append(val)
 		}
 	}
-	return new_list, res
+
+	return newTermList, res
 }
 
 /* replace a var by another in a var list */

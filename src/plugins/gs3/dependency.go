@@ -121,7 +121,7 @@ func getVariableOccurrencesForm(v btps.Var, form btps.Form, currentOcc occurrenc
 	copy(workingPath, path)
 	switch f := form.(type) {
 	case btps.Pred:
-		for i, term := range f.GetArgs() {
+		for i, term := range f.GetArgs().Slice() {
 			currentOcc = getVariableOccurrencesTerm(v, term, currentOcc, appcp(workingPath, i))
 		}
 	case btps.Not:
@@ -164,7 +164,7 @@ func getVariableOccurrencesTerm(v btps.Var, term btps.Term, currentOcc occurrenc
 			currentOcc = append(currentOcc, workingPath)
 		}
 	case btps.Fun:
-		for i, nt := range t.GetArgs() {
+		for i, nt := range t.GetArgs().Slice() {
 			currentOcc = getVariableOccurrencesTerm(v, nt, currentOcc, appcp(workingPath, i))
 		}
 	}
@@ -191,8 +191,8 @@ func getTermAux(form btps.Form, occ occurrence) btps.Term {
 
 	switch f := form.(type) {
 	case btps.Pred:
-		if occ[0] < len(f.GetArgs()) {
-			term = getTerm(f.GetArgs()[occ[0]], occ[1:])
+		if occ[0] < f.GetArgs().Len() {
+			term = getTerm(f.GetArgs().Get(occ[0]), occ[1:])
 		}
 	case btps.Not:
 		term = getUnaryTerm(f.GetForm(), occ)
@@ -236,10 +236,10 @@ func getTerm(term btps.Term, occ occurrence) btps.Term {
 	}
 
 	if fn, ok := term.(btps.Fun); ok {
-		if occ[0] >= len(fn.GetArgs()) {
+		if occ[0] >= fn.GetArgs().Len() {
 			return nil
 		}
-		return getTerm(fn.GetArgs()[occ[0]], occ[1:])
+		return getTerm(fn.GetArgs().Get(occ[0]), occ[1:])
 	}
 	return nil
 }

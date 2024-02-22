@@ -44,30 +44,22 @@ import (
 )
 
 /* Term */
-type TermList []Term
-
-func (tl TermList) Len() int      { return len(tl) }
-func (tl TermList) Swap(i, j int) { tl[i], tl[j] = tl[j], tl[i] }
-func (tl TermList) Less(i, j int) bool {
-	return (tl[i].GetIndex() < tl[j].GetIndex())
+type TermList struct {
+	*List[Term]
 }
 
-func MakeEmptyTermList() TermList {
-	return TermList{}
+func NewTermList(slice ...Term) *TermList {
+	return &TermList{NewList[Term](slice...)}
 }
 
-/*** Functions ***/
-
-/* Print a list of terms */
-func (tl TermList) ToString() string {
-	return ListToString(tl, ", ", "")
+func (tl *TermList) Less(i, j int) bool {
+	return (tl.Get(i).GetIndex() < tl.Get(j).GetIndex())
 }
 
-/* Get the metavariables of a formula list */
-func (tl TermList) GetMetas() *MetaList {
+func (tl *TermList) GetMetas() *MetaList {
 	res := NewMetaList()
 
-	for _, term := range tl {
+	for _, term := range tl.Slice() {
 		if typed, ok := term.(Meta); ok {
 			res.AppendIfNotContains(typed)
 		}
@@ -76,47 +68,98 @@ func (tl TermList) GetMetas() *MetaList {
 	return res
 }
 
-func (tl TermList) Find(t Term) int {
-	for i, v := range tl {
-		if v.Equals(t) {
-			return i
+func (tl *TermList) Copy() *TermList {
+	return &TermList{tl.List.Copy()}
+}
+
+/*
+Replace the first occurence of a term by another in the list
+*/
+func (tl *TermList) replaceFirstOccurrenceTermList(replaceThis, withThis Term) *TermList {
+	res := tl.Copy()
+
+	for i := range tl.Slice() {
+		modifiedTerm := res.Get(i).ReplaceSubTermBy(replaceThis, withThis)
+
+		if !tl.Get(i).Equals(modifiedTerm) {
+			res.Set(i, modifiedTerm)
+			return res
 		}
 	}
-	return -1
-}
 
-/* Contains term list */
-func (tl TermList) Contains(t Term) bool {
-	return tl.Find(t) != -1
-}
-
-/* Append if not contains */
-func (tl *TermList) AppendIfNotContains(t Term) TermList {
-	if !tl.Contains(t) {
-		return append(*tl, t)
-	} else {
-		return *tl
-	}
-}
-
-/* Megre */
-func (tl1 TermList) MergeTermList(tl2 TermList) TermList {
-	res := tl1.Copy()
-	for _, t := range tl2 {
-		res = res.AppendIfNotContains(t)
-	}
 	return res
 }
 
-/* copy a list of terms */
-func (tl TermList) Copy() TermList {
-	res := MakeEmptyTermList()
-	for _, t := range tl {
-		if t != nil {
-			res = append(res, t.Copy())
+/*
+Replace all occurences of a term by another in the list
+*/
+func (tl *TermList) replaceOccurrence(replaceThis, withThis Term) *TermList {
+	res := tl.Copy()
+
+	for i := range tl.Slice() {
+		modifiedTerm := res.Get(i).ReplaceSubTermBy(replaceThis, withThis)
+
+		if !tl.Get(i).Equals(modifiedTerm) {
+			res.Set(i, modifiedTerm)
 		}
 	}
+
 	return res
+}
+
+func (tl *TermList) ToMappableStringSlice() []MappableString {
+	forms := []MappableString{}
+
+	for _, form := range tl.Slice() {
+		forms = append(forms, form.(MappableString))
+	}
+
+	return forms
+}
+
+func (tl *TermList) Equals(other any) bool {
+	if typed, ok := other.(*TermList); ok {
+		return tl.List.Equals(typed.List)
+	}
+
+	return false
+}
+
+func (tl *TermList) EqualsWithoutOrder(other *TermList) bool {
+	if tl.Len() != other.Len() {
+		return false
+	}
+
+	tlSorted := tl.Copy()
+	sort.Sort(tlSorted)
+
+	otherSorted := other.Copy()
+	sort.Sort(otherSorted)
+
+	for i := range tlSorted.Slice() {
+		if !otherSorted.Get(i).Equals(tlSorted.Get(i)) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func AreEqualsTypeVarList(tv1, tv2 []typing.TypeVar) bool {
+	return ComparableList[typing.TypeVar](tv1).Equals(tv2)
+}
+
+/* check if two lists of var are equals */
+func AreEqualsVarList(tl1, tl2 []Var) bool {
+	if len(tl1) != len(tl2) {
+		return false
+	}
+	for i := range tl1 {
+		if !tl2[i].Equals(tl1[i]) {
+			return false
+		}
+	}
+	return true
 }
 
 /* copy a list of var */
@@ -134,92 +177,4 @@ func copyTypeVarList(tv []typing.TypeVar) []typing.TypeVar {
 		res = append(res, t.Copy().(typing.TypeVar))
 	}
 	return res
-}
-
-/* check if two lists of terms are equals */
-func (tl1 TermList) Equals(tl2 TermList) bool {
-	if len(tl1) != len(tl2) {
-		return false
-	}
-	for i := range tl1 {
-		if tl2[i] != nil && !tl2[i].Equals((tl1)[i]) {
-			return false
-		}
-	}
-	return true
-}
-
-func (tl1 TermList) EqualsWithoutOrder(tl2 TermList) bool {
-	if len(tl1) != len(tl2) {
-		return false
-	}
-
-	sorted_tl1 := tl1.Copy()
-	sort.Sort(sorted_tl1)
-
-	sorted_tl2 := tl2.Copy()
-	sort.Sort(sorted_tl2)
-
-	for i := range sorted_tl1 {
-		if !sorted_tl2[i].Equals(sorted_tl1[i]) {
-			return false
-		}
-	}
-	return true
-}
-
-/* check if two lists of var are equals */
-func AreEqualsVarList(tl1, tl2 []Var) bool {
-	if len(tl1) != len(tl2) {
-		return false
-	}
-	for i := range tl1 {
-		if !tl2[i].Equals(tl1[i]) {
-			return false
-		}
-	}
-	return true
-}
-
-/*
-Replace the first occurence of a term by another in the list
-*/
-func (tl TermList) replaceFirstOccurrenceTermList(oldTerm, newTerm Term) TermList {
-	res := tl.Copy()
-	for i := range tl {
-		modifed_term := res[i].ReplaceSubTermBy(oldTerm, newTerm)
-		if !tl[i].Equals(modifed_term) {
-			res[i] = modifed_term
-			return res
-		}
-	}
-	return res
-}
-
-/*
-Replace all occurences of a term by another in the list
-*/
-func (tl TermList) replaceOccurrence(oldTerm, newTerm Term) TermList {
-	res := tl.Copy()
-	for i := range tl {
-		modifed_term := res[i].ReplaceSubTermBy(oldTerm, newTerm)
-		if !tl[i].Equals(modifed_term) {
-			res[i] = modifed_term
-		}
-	}
-	return res
-}
-
-func (tl TermList) ToMappableStringSlice() []MappableString {
-	forms := []MappableString{}
-
-	for _, form := range tl {
-		forms = append(forms, form.(MappableString))
-	}
-
-	return forms
-}
-
-func AreEqualsTypeVarList(tv1, tv2 []typing.TypeVar) bool {
-	return ComparableList[typing.TypeVar](tv1).Equals(tv2)
 }

@@ -145,7 +145,7 @@ func (a AllType) CleanFormula() Form {
 	return a
 }
 
-func (a AllType) GetSubTerms() TermList {
+func (a AllType) GetSubTerms() *TermList {
 	return a.GetForm().GetSubTerms()
 }
 

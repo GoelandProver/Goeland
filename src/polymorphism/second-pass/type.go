@@ -56,7 +56,7 @@ func secondPassAux(form btypes.Form, vars []btypes.Var, types []typing.TypeApp) 
 
 		// Special case: defined predicate. We need to infer types.
 		if f.GetID().Equals(btypes.Id_eq) {
-			return btypes.MakePred(f.GetIndex(), f.GetID(), terms, []typing.TypeApp{typing.GetOutType(To[btypes.TypedTerm](terms[0]).GetTypeHint())})
+			return btypes.MakePred(f.GetIndex(), f.GetID(), terms, []typing.TypeApp{typing.GetOutType(To[btypes.TypedTerm, btypes.Term](terms.Get(0)).GetTypeHint())})
 		}
 
 		// Real case: classical predicate, it should be given
@@ -103,7 +103,7 @@ func secondPassTerm(term btypes.Term, vars []btypes.Var, types []typing.TypeApp)
 		}
 
 		termsType := []typing.TypeApp{}
-		for _, tm := range terms {
+		for _, tm := range terms.Slice() {
 			termsType = append(termsType, outType(tm))
 		}
 
@@ -133,15 +133,19 @@ func nArySecondPass(forms []btypes.Form, vars []btypes.Var, types []typing.TypeA
 	return res
 }
 
-func nArySecondPassTerms(terms []btypes.Term, vars []btypes.Var, types []typing.TypeApp) ([]btypes.Term, []typing.TypeApp) {
-	resTerms, resVars := []btypes.Term{}, []typing.TypeApp{}
-	for _, term := range terms {
+func nArySecondPassTerms(terms *btypes.TermList, vars []btypes.Var, types []typing.TypeApp) (*btypes.TermList, []typing.TypeApp) {
+	resTerms, resVars := btypes.NewTermList(), []typing.TypeApp{}
+
+	for _, term := range terms.Slice() {
 		t, v := secondPassTerm(term, vars, types)
+
 		if t != nil {
-			resTerms = append(resTerms, t)
+			resTerms.Append(t)
 		}
+
 		resVars = append(resVars, v...)
 	}
+
 	return resTerms, resVars
 }
 

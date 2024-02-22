@@ -99,13 +99,8 @@ func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return m
 }
 
-func (m Meta) GetSubTerms() TermList {
-	return TermList{m}
-}
-
-func (m Meta) CompareTo(other Term) int {
-	// TODO
-	return 0
+func (m Meta) GetSubTerms() *TermList {
+	return NewTermList(m)
 }
 
 func MakeEmptyMeta() Meta {

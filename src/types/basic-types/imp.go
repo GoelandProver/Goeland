@@ -92,11 +92,12 @@ func (i Imp) GetMetas() *MetaList {
 func (i Imp) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (i Imp) ToString() string           { return i.ToMappedString(DefaultMapString, true) }
 
-func (i Imp) Equals(f any) bool {
-	oth, isImp := f.(Imp)
-	return isImp &&
-		i.f1.Equals(oth.f1) &&
-		i.f2.Equals(oth.f2)
+func (i Imp) Equals(other any) bool {
+	if typed, ok := other.(Imp); ok {
+		return i.f1.Equals(typed.f1) && i.f2.Equals(typed.f2)
+	}
+
+	return false
 }
 
 func (i Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
@@ -120,8 +121,11 @@ func (i Imp) CleanFormula() Form {
 	return i
 }
 
-func (i Imp) GetSubTerms() TermList {
-	return i.GetF1().GetSubTerms().MergeTermList(i.GetF2().GetSubTerms())
+func (i Imp) GetSubTerms() *TermList {
+	res := i.GetF1().GetSubTerms().Copy()
+	res.AppendIfNotContains(i.GetF2().GetSubTerms().Slice()...)
+
+	return res
 }
 
 func (i Imp) SubstituteVarByMeta(old Var, new Meta) Form {

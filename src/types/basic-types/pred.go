@@ -50,13 +50,13 @@ type Pred struct {
 	*MappedString
 	index    int
 	id       Id
-	args     TermList
+	args     *TermList
 	typeVars []typing.TypeApp
 	typeHint typing.TypeScheme
 	*MetaList
 }
 
-func MakePredSimple(index int, id Id, terms TermList, typeApps []typing.TypeApp, metas *MetaList, typeSchemes ...typing.TypeScheme) Pred {
+func MakePredSimple(index int, id Id, terms *TermList, typeApps []typing.TypeApp, metas *MetaList, typeSchemes ...typing.TypeScheme) Pred {
 	if len(typeSchemes) == 1 {
 		fms := &MappedString{}
 		pred := Pred{fms, index, id, terms, typeApps, typeSchemes[0], metas}
@@ -64,17 +64,17 @@ func MakePredSimple(index int, id Id, terms TermList, typeApps []typing.TypeApp,
 		return pred
 	} else {
 		fms := &MappedString{}
-		pred := Pred{fms, index, id, terms, typeApps, typing.DefaultPropType(len(terms)), metas}
+		pred := Pred{fms, index, id, terms, typeApps, typing.DefaultPropType(terms.Len()), metas}
 		fms.MappableString = &pred
 		return pred
 	}
 }
 
-func MakePred(index int, id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
+func MakePred(index int, id Id, terms *TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
 	return MakePredSimple(index, id, terms, typeApps, NewMetaList(), typeSchemes...)
 }
 
-func MakerPred(id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
+func MakerPred(id Id, terms *TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
 	return MakePred(MakerIndexFormula(), id, terms, typeApps, typeSchemes...)
 }
 
@@ -82,7 +82,7 @@ func MakerPred(id Id, terms TermList, typeApps []typing.TypeApp, typeSchemes ...
 
 func (p Pred) GetIndex() int                 { return p.index }
 func (p Pred) GetID() Id                     { return p.id.Copy().(Id) }
-func (p Pred) GetArgs() TermList             { return p.args.Copy() }
+func (p Pred) GetArgs() *TermList            { return p.args.Copy() }
 func (p Pred) GetTypeVars() []typing.TypeApp { return typing.CopyTypeAppList(p.typeVars) }
 
 /* Formula methods */
@@ -96,7 +96,7 @@ func (p Pred) ToString() string {
 }
 
 func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	if len(p.typeVars) == 0 && len(p.GetArgs()) == 0 {
+	if len(p.typeVars) == 0 && p.GetArgs().Len() == 0 {
 		return p.GetID().ToMappedString(mapping, displayTypes) + "%s"
 	}
 	args := []string{}
@@ -131,19 +131,21 @@ func (p Pred) Copy() Form {
 	return MakePredSimple(p.index, p.id, p.GetArgs(), typing.CopyTypeAppList(p.GetTypeVars()), p.MetaList.Copy(), p.GetType())
 }
 
-func (p Pred) Equals(f any) bool {
-	oth, isPred := f.(Pred)
-	return isPred &&
-		oth.id.Equals(p.id) &&
-		ComparableList[typing.TypeApp](p.typeVars).Equals(oth.typeVars) &&
-		oth.args.Equals(p.args) &&
-		p.typeHint.Equals(oth.typeHint)
+func (p Pred) Equals(other any) bool {
+	if typed, ok := other.(Pred); ok {
+		return typed.id.Equals(p.id) &&
+			ComparableList[typing.TypeApp](p.typeVars).Equals(typed.typeVars) &&
+			typed.args.Equals(p.args) &&
+			p.typeHint.Equals(typed.typeHint)
+	}
+
+	return false
 }
 
 func (p Pred) GetMetas() *MetaList {
 	res := NewMetaList()
 
-	for _, m := range p.GetArgs() {
+	for _, m := range p.GetArgs().Slice() {
 		switch mt := m.(type) {
 		case Meta:
 			res.Append(mt)
@@ -164,12 +166,14 @@ func (p Pred) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 	return MakePredSimple(p.GetIndex(), p.GetID(), termList, p.GetTypeVars(), p.MetaList, p.GetType()), res
 }
 
-func (p Pred) GetSubTerms() TermList {
-	res := MakeEmptyTermList()
-	for _, t := range p.GetArgs() {
-		res = res.AppendIfNotContains(t)
-		res = res.MergeTermList(t.GetSubTerms())
+func (p Pred) GetSubTerms() *TermList {
+	res := NewTermList()
+
+	for _, t := range p.GetArgs().Slice() {
+		res.AppendIfNotContains(t)
+		res.AppendIfNotContains(t.GetSubTerms().Slice()...)
 	}
+
 	return res
 }
 
