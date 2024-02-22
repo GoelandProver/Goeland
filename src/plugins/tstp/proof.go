@@ -48,6 +48,7 @@ import (
 
 var mutex sync.Mutex
 var id_proof_step = 0
+var prefix_step = "f"
 
 func makeTstpProofFromGS3(proof *gs3.GS3Sequent) string {
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
@@ -111,7 +112,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 			target2 := -1
 			switch initial_formula := proof.GetTargetForm().(type) {
 			case btps.Pred:
-				target2 = get(initial_formula, hypotheses)
+				target2 = get(btps.MakerNot(initial_formula), hypotheses)
 			case btps.Not:
 				target2 = get(initial_formula.GetForm(), hypotheses)
 			}
@@ -120,7 +121,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 				PrintError("TSTP - makeStep", "complementary literal not found")
 			}
 
-			resultingString = fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d, %d), [%s])) ",
+			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, param(%d, %d), [%s])) ",
 				proof.GetId(),
 				mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
 				"leftHyp",
@@ -189,12 +190,13 @@ func alphaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 		c.SetId(new_id)
 	}
 
-	resultingString := fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d), [%s])) ",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d), [%s])) ",
+		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
 		format,
 		target,
-		IntListToString(children_id))
+		IntListToString(children_id, prefix_step))
 
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
 }
@@ -212,12 +214,13 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, forma
 		resultHyps = append(resultHyps, hypoCopy.Merge(proof.GetResultFormulasOfChild(i)))
 	}
 
-	resultingString := fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d), [%s])) ",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d), [%s])) ",
+		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
 		format,
 		target,
-		IntListToString(children_id))
+		IntListToString(children_id, prefix_step))
 
 	return resultingString, resultHyps
 }
@@ -230,13 +233,14 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 		c.SetId(new_id)
 	}
 
-	resultingString := fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])) ",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])) ",
+		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
 		format,
 		target,
 		proof.TermGenerated().ToMappedString(tstpMapConnectors(), false),
-		IntListToString(children_id))
+		IntListToString(children_id, prefix_step))
 
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
 }
@@ -248,13 +252,14 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 		children_id = append(children_id, new_id)
 		c.SetId(new_id)
 	}
-	resultingString := fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])) ",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])) ",
+		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
 		format,
 		target,
 		proof.TermGenerated().ToMappedString(tstpMapConnectors(), false),
-		IntListToString(children_id))
+		IntListToString(children_id, "f"))
 
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
 }
@@ -266,11 +271,13 @@ func weakenStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, for
 		hypotheses = hypotheses.Remove(target)
 	}
 
-	resultingString := fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d), [%d])) ",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d), [%s%d])) ",
+		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
 		format,
 		target,
+		prefix_step,
 		child_id)
 
 	return resultingString, []btps.FormList{hypotheses}, child_id
