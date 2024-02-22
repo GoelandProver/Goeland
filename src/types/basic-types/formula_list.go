@@ -173,6 +173,13 @@ func (l1 FormList) Merge(l2 FormList) FormList {
 	return res
 }
 
+/* Remove the element at index i */
+func (l FormList) Remove(i int) FormList {
+	res := l.Copy()
+	res = append(res[:i], res[i+1:]...)
+	return res
+}
+
 /* Keep only predicate with right polarity */
 func (lf FormList) FilterPred(pola bool) FormList {
 	res := MakeEmptyFormList()
