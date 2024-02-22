@@ -39,68 +39,87 @@ package tstp
 import (
 	"fmt"
 	"strings"
+	"sync"
 
 	. "github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-var dummy int
+var mutex sync.Mutex
+var id_proof_step = 0
 
 func makeTstpProofFromGS3(proof *gs3.GS3Sequent) string {
-	dummy = 0
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
 	var resultingString string
 	resultingString = makeTheorem(axioms, conjecture)
 	hypotheses := make(btps.FormList, 0)
-	_, hypotheses = addH(btps.MakerNot(conjecture), hypotheses)
-	resultingString += followProofSteps(proof, hypotheses)
+	hypotheses = hypotheses.AppendIfNotContains(btps.MakerNot(conjecture))
+	resultingString += followProofSteps(proof, hypotheses, -1)
 
 	return "% SZS output start Proof for " + GetProblemName() + "\n\n" + resultingString + "\n% SZS output end Proof for " + GetProblemName() + "\n\n"
 }
 
-func followProofSteps(proof *gs3.GS3Sequent, hypotheses btps.FormList) string {
+/*** Proof Steps ***/
+
+func followProofSteps(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id int) string {
 	var resultingString string
 	var resultingStringParent string
 	var childrenHypotheses []btps.FormList
+
 	if !proof.IsEmpty() {
-		resultingStringParent, childrenHypotheses = makeProofStep(proof, hypotheses)
+		resultingStringParent, childrenHypotheses, new_current_id = makeProofStep(proof, hypotheses, new_current_id)
 	}
 	for i, child := range proof.Children() {
 		if proof.IsEmpty() {
-			resultingString += followProofSteps(child, cp(hypotheses)) + "\n"
+			resultingString += followProofSteps(child, cp(hypotheses), new_current_id) + "\n"
 		} else {
-			resultingString += followProofSteps(child, hypotheses.Merge(childrenHypotheses[i])) + "\n"
+			resultingString += followProofSteps(child, hypotheses.Merge(childrenHypotheses[i]), new_current_id) + "\n"
 		}
 	}
 	return resultingString + resultingStringParent
 }
 
-func makeProofStep(proof *gs3.GS3Sequent, hypotheses btps.FormList) (string, []btps.FormList) {
-	stepResult, childrenHypotheses := makeStep(proof, hypotheses)
-	return stepResult, childrenHypotheses
+func makeProofStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id int) (string, []btps.FormList, int) {
+	stepResult, childrenHypotheses, next_child_weakened_id := makeStep(proof, hypotheses, new_current_id)
+	return stepResult, childrenHypotheses, next_child_weakened_id
 }
 
-func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList) (string, []btps.FormList) {
+func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id int) (string, []btps.FormList, int) {
 	var resultingString string
 	childrenHypotheses := []btps.FormList{hypotheses}
+	next_child_weakened_id := -1
 
-	fmt.Printf("---------------------------\n")
-	fmt.Printf("%s\n", proof.ToString())
-	fmt.Printf("---------------------------\n")
+	updateId(proof, new_current_id)
+
+	// fmt.Printf("---------------------------\n")
+	// fmt.Printf("%s\n", proof.ToString())
+	// fmt.Printf("---------------------------\n")
 
 	target := get(proof.GetTargetForm(), hypotheses)
 
+	// fmt.Printf("Target : %d\n", target)
+	// fmt.Printf("Proof Rule : %d\n", proof.Rule())
+
 	switch proof.Rule() {
+
 	// Closure.
 	case gs3.AX:
 		if isPredEqual(proof.GetTargetForm()) {
 			resultingString = "equality."
 		} else {
-			target2 := get(btps.MakerNot(proof.GetTargetForm()), hypotheses)
+			target2 := -1
+			switch initial_formula := proof.GetTargetForm().(type) {
+			case btps.Pred:
+				target2 = get(initial_formula, hypotheses)
+			case btps.Not:
+				target2 = get(initial_formula.GetForm(), hypotheses)
+			}
+
 			if target2 == -1 {
 				PrintError("TSTP - makeStep", "complementary literal not found")
 			}
+
 			resultingString = fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d, %d), [%s])) ",
 				proof.GetId(),
 				mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
@@ -147,16 +166,16 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList) (string, []btps.F
 	// Weakening rule
 	case gs3.W:
 		if proof.TermGenerated() != nil {
-			resultingString = fmt.Sprintf("weaken %s", getConstantName(proof.TermGenerated().(btps.Fun).GetID()))
+			resultingString = fmt.Sprintf("leftWeaken %s", getConstantName(proof.TermGenerated().(btps.Fun).GetID()))
 		} else {
-			resultingString, childrenHypotheses = cleanHypotheses(hypotheses, proof.GetTargetForm())
+			resultingString, childrenHypotheses, next_child_weakened_id = weakenStep(proof, hypotheses, target, "leftWeaken")
 		}
 
 	case gs3.REWRITE:
 		resultingString, childrenHypotheses = rewriteStep(proof.GetRewriteWith(), hypotheses, target, proof.GetResultFormulasOfChild(0)[0])
 	}
 
-	return resultingString + "\n", childrenHypotheses
+	return resultingString + "\n", childrenHypotheses, next_child_weakened_id
 }
 
 func alphaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, format string) (string, []btps.FormList) {
@@ -164,8 +183,10 @@ func alphaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 	// fmt.Printf("proof.child : \n%s\n", proof.GetResultFormulasOfChild(0).ToString())
 
 	children_id := []int{}
-	for _, c_id := range proof.Children() {
-		children_id = append(children_id, c_id.GetId())
+	for _, c := range proof.Children() {
+		new_id := incrId()
+		children_id = append(children_id, new_id)
+		c.SetId(new_id)
 	}
 
 	resultingString := fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d), [%s])) ",
@@ -183,8 +204,10 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, forma
 	resultHyps := []btps.FormList{}
 	children_id := []int{}
 
-	for i, c_id := range proof.Children() {
-		children_id = append(children_id, c_id.GetId())
+	for i, c := range proof.Children() {
+		new_id := incrId()
+		children_id = append(children_id, new_id)
+		c.SetId(new_id)
 		hypoCopy = cp(hypotheses)
 		resultHyps = append(resultHyps, hypoCopy.Merge(proof.GetResultFormulasOfChild(i)))
 	}
@@ -200,41 +223,11 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, forma
 }
 
 func deltaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, format string) (string, []btps.FormList) {
-
-	// fmt.Printf("proof.GetTargetForm() : \n%s\n", proof.GetTargetForm().ToString())
-	// fmt.Printf("proof.child : \n%s\n", proof.GetResultFormulasOfChild(0).ToString())
-
-	// children_id := []int{}
-	// for _, c_id := range proof.Children() {
-	// 	children_id = append(children_id, c_id.GetId())
-	// }
-
-	// resultingString := fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d), [%s])) ",
-	// 	proof.GetId(),
-	// 	btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false),
-	// 	format,
-	// 	target,
-	// 	IntListToString(children_id))
-
-	// return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
-
-	// 	var indices []int
-	// 	var name string
-	// 	//PrintInfo("DELTA", fmt.Sprintf("%s\n%s", hypotheses[target].ToString(), proof.GetResultFormulasOfChild(0).ToString()))
-	// 	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
-	// 	resultingString := fmt.Sprintf(format, introName(target), name, introNames(indices))
-	// 	return resultingString, []btps.FormList{hypotheses}
-
-	return "", []btps.FormList{}
-}
-
-func gammaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, format string) (string, []btps.FormList) {
-	fmt.Printf("proof.GetTargetForm() : \n%s\n", proof.GetTargetForm().ToString())
-	fmt.Printf("proof.child : \n%s\n", proof.GetResultFormulasOfChild(0).ToString())
-
 	children_id := []int{}
-	for _, c_id := range proof.Children() {
-		children_id = append(children_id, c_id.GetId())
+	for _, c := range proof.Children() {
+		new_id := incrId()
+		children_id = append(children_id, new_id)
+		c.SetId(new_id)
 	}
 
 	resultingString := fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])) ",
@@ -248,12 +241,49 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
 }
 
+func gammaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, format string) (string, []btps.FormList) {
+	children_id := []int{}
+	for _, c := range proof.Children() {
+		new_id := incrId()
+		children_id = append(children_id, new_id)
+		c.SetId(new_id)
+	}
+	resultingString := fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])) ",
+		proof.GetId(),
+		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
+		format,
+		target,
+		proof.TermGenerated().ToMappedString(tstpMapConnectors(), false),
+		IntListToString(children_id))
+
+	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
+}
+
+func weakenStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, format string) (string, []btps.FormList, int) {
+	child_id := incrId()
+
+	if target != -1 {
+		hypotheses = hypotheses.Remove(target)
+	}
+
+	resultingString := fmt.Sprintf("fof(%d, plain, [%s] --> [], inference(%s, param(%d), [%d])) ",
+		proof.GetId(),
+		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
+		format,
+		target,
+		child_id)
+
+	return resultingString, []btps.FormList{hypotheses}, child_id
+}
+
 func rewriteStep(rewriteRule btps.Form, hypotheses btps.FormList, target int, replacementForm btps.Form) (string, []btps.FormList) {
 	// resultingString := fmt.Sprintf("rewrite %s in %s.", introName(get(rewriteRule, hypotheses)), introName(target))
 	// hypotheses[target] = replacementForm
 	// return resultingString, []btps.FormList{hypotheses}
 	return "", []btps.FormList{}
 }
+
+/*** Initial Formula Management ***/
 
 // Processes the formula that was proven by Goéland.
 func processMainFormula(form btps.Form) (btps.FormList, btps.Form) {
@@ -286,13 +316,7 @@ func makeImpChain(forms btps.FormList) btps.Form {
 	return form
 }
 
-// Introduces a new formula in TSTP's hypotheses.
-func addH(f btps.Form, hypotheses btps.FormList) (int, btps.FormList) {
-	PrintInfo("Add in hypothesis", f.ToString())
-	index := len(hypotheses)
-	hypotheses = append(hypotheses, f)
-	return index, hypotheses
-}
+/*** Unmilitary Functions ***/
 
 func get(f btps.Form, fl btps.FormList) int {
 	for i, h := range fl {
@@ -300,10 +324,6 @@ func get(f btps.Form, fl btps.FormList) int {
 			return i
 		}
 	}
-	// PrintInfo("GET", f.ToString())
-	// for _, h := range hypotheses {
-	// 	PrintInfo("H", h.ToString())
-	// }
 	return -1
 }
 
@@ -317,80 +337,28 @@ func isPredEqual(f btps.Form) bool {
 	return false
 }
 
-func addTermGenerated(constantsCreated []btps.Term, term btps.Term) ([]btps.Term, string) {
-	if term == nil {
-		dummy++
-		return constantsCreated, fmt.Sprintf("x%d", dummy-1)
-	}
-	constantsCreated = append(constantsCreated, term)
-	return constantsCreated, getConstantName(term.(btps.Fun).GetID())
-}
-
-func getRealConstantName(constantsCreated []btps.Term, term btps.Term) string {
-	if term == nil {
-		return "goeland_I"
-	}
-	if fun, isFun := term.(btps.Fun); isFun {
-		res := ""
-		if isGroundTerm(fun.GetID()) {
-			res = fun.GetID().ToMappedString(tstpMapConnectors(), false)
-			subterms := make([]string, 0)
-			for _, t := range fun.GetArgs() {
-				subterms = append(subterms, getRealConstantName(constantsCreated, t))
-			}
-			if len(subterms) > 0 {
-				res += "(" + strings.Join(subterms, ", ") + ")"
-			}
-		} else {
-			res = findInConstants(constantsCreated, term)
-		}
-		return res
-	}
-	return findInConstants(constantsCreated, term)
-}
-
-func findInConstants(constantsCreated []btps.Term, term btps.Term) string {
-	if term == nil {
-		return "goeland_I"
-	}
-	if hasBeenCreated(constantsCreated, term) {
-		return getConstantName(term.(btps.Fun).GetID())
-	}
-	if isGroundTerm(term) {
-		return "(" + term.ToMappedString(tstpMapConnectors(), false) + ")"
-	}
-	return "goeland_I"
-}
-
 func cp[T any](source []T) []T {
 	arr := make([]T, len(source))
 	copy(arr, source)
 	return arr
 }
 
-func cleanHypotheses(hypotheses btps.FormList, form btps.Form) (string, []btps.FormList) {
-	result := ""
-	// index := get(form, hypotheses)
-	// if index != -1 {
-	// 	hypotheses[index] = btps.MakerTop()
-	// 	result = fmt.Sprintf("clear %s. ", introName(index))
-	// }
-	return result, []btps.FormList{hypotheses}
+func incrId() int {
+	res := -1
+	mutex.Lock()
+	id_proof_step = id_proof_step + 1
+	res = id_proof_step
+	mutex.Unlock()
+	return res
 }
 
 func getConstantName(id btps.Id) string {
 	return id.ToString()
 }
 
-func hasBeenCreated(constantsCreated []btps.Term, term btps.Term) bool {
-	for _, t := range constantsCreated {
-		if t.Equals(term) {
-			return true
-		}
+func updateId(proof *gs3.GS3Sequent, i int) {
+	// fmt.Printf("Your current Id is %d and I want to give you id %d\n", proof.GetId(), i)
+	if i != -1 {
+		proof.SetId(i)
 	}
-	return false
-}
-
-func isGroundTerm(term btps.Term) bool {
-	return !strings.Contains(term.ToString(), "sko")
 }

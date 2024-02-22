@@ -153,6 +153,10 @@ func (seq *GS3Sequent) GetId() int {
 	return seq.nodeId
 }
 
+func (seq *GS3Sequent) SetId(i int) {
+	seq.nodeId = i
+}
+
 // ----------------------------------------------------------------------------
 // Private methods & functions
 // ----------------------------------------------------------------------------
