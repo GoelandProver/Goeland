@@ -133,7 +133,7 @@ func ParseFormula(formula basictypes.Form) Sequence {
 	case TermForm:
 		if global.Is[basictypes.Fun](formula_type.GetTerm()) {
 			fun := global.To[basictypes.Fun](formula_type.GetTerm())
-			formula = makeTermForm(formula.GetIndex(), basictypes.MakeFun(fun.GetID(), TypeAndTermsToTerms(fun.GetTypeVars(), fun.GetArgs()), []typing.TypeApp{}))
+			formula = makeTermForm(formula.GetIndex(), basictypes.MakeFun(fun.GetID(), TypeAndTermsToTerms(fun.GetTypeVars(), fun.GetArgs()), []typing.TypeApp{}, fun.GetTypeHint()))
 		}
 
 		instructions := Sequence{formula: formula}

@@ -82,22 +82,14 @@ func MakeMeta(index, occurence int, s string, f int, t ...typing.TypeApp) Meta {
 	return meta
 }
 
-func MakeFun(p Id, args *TermList, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
-	return *NewFun(p, args, typeVars, t...)
+func MakeFun(p Id, args *TermList, typeVars []typing.TypeApp, t typing.TypeScheme) Fun {
+	return *NewFun(p, args, typeVars, t)
 }
 
-func NewFun(p Id, args *TermList, typeVars []typing.TypeApp, t ...typing.TypeScheme) *Fun {
+func NewFun(p Id, args *TermList, typeVars []typing.TypeApp, t typing.TypeScheme) *Fun {
 	fms := &MappedString{}
-	var fun *Fun
-
-	if len(t) == 1 {
-		fun = &Fun{fms, p, args, typeVars, t[0]}
-	} else {
-		fun = &Fun{fms, p, args, typeVars, typing.DefaultFunType(args.Len())}
-	}
-
+	fun := &Fun{fms, p, args, typeVars, t}
 	fms.MappableString = fun
-
 	return fun
 }
 

@@ -119,7 +119,7 @@ func (f Fun) Copy() Term {
 	return MakeFun(f.GetP(), f.GetArgs(), typing.CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
 }
 
-func (f Fun) PointerCopy() Term {
+func (f Fun) PointerCopy() *Fun {
 	return NewFun(f.GetP(), f.GetArgs(), typing.CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
 }
 

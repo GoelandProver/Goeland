@@ -212,7 +212,7 @@ func caseFLessG(s, t basictypes.Fun) (bool, compareStruct) {
 /* Case f == g */
 func caseFEqualsG(s, t basictypes.Fun) (bool, compareStruct) {
 	global.PrintDebug("F=G", "Case F = G")
-	if s.GetArgs().Len() != s.GetArgs().Len() {
+	if s.GetArgs().Len() != t.GetArgs().Len() {
 		global.PrintError("F=G", fmt.Sprintf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString()))
 		return true, makeCompareStruct(0, false, nil, nil)
 	}
@@ -264,7 +264,7 @@ func caseFEqualsG(s, t basictypes.Fun) (bool, compareStruct) {
 /* Default case */
 func caseDefault(s, t basictypes.Fun) compareStruct {
 	// Occurences inside
-	m := s.GetArgs().Len()
+	m := t.GetArgs().Len()
 	i := 0
 	stopped := false
 	for i < m && !stopped {

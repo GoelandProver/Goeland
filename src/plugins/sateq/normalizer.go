@@ -122,10 +122,9 @@ func ApplyEqFlattenOn(equ *Equality) (done *global.List[*Equality], toDo *global
 			toDo.Append(newAssumption)
 		}
 
-		if newTyped, ok := typed.PointerCopy().(*basictypes.Fun); ok {
-			newTyped.SetArgs(argsAsConstants)
-			done.Append(NewEquality(equ.GetFst(), newTyped))
-		}
+		newTyped := typed.PointerCopy()
+		newTyped.SetArgs(argsAsConstants)
+		done.Append(NewEquality(equ.GetFst(), newTyped))
 	} else {
 		done.Append(equ)
 	}
