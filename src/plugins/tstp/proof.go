@@ -52,13 +52,17 @@ var prefix_step = "f"
 
 func makeTstpProofFromGS3(proof *gs3.GS3Sequent) string {
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
-	var resultingString string
-	resultingString = makeTheorem(axioms, conjecture)
-	hypotheses := make(btps.FormList, 0)
-	hypotheses = hypotheses.AppendIfNotContains(btps.MakerNot(conjecture))
-	resultingString += followProofSteps(proof, hypotheses, -1)
+	resultingString := makeTheorem(axioms, conjecture)
+	firstStep := performIntroStep(axioms, conjecture)
+	hypotheses := append(axioms, btps.MakerNot(conjecture))
 
-	return "% SZS output start Proof for " + GetProblemName() + "\n\n" + resultingString + "\n% SZS output end Proof for " + GetProblemName() + "\n\n"
+	//todo : remove last step if I have axioms to get a1, ... an, ~c and cut on that
+	// Manage axioms and cut here
+	// Add multiple step to go from the binary formula to the splitted one
+
+	resultingString += followProofSteps(proof.Child(0), hypotheses, -1)
+
+	return "\n% SZS output start Proof for " + GetProblemName() + "\n\n\n" + resultingString + "\n" + firstStep + "\n% SZS output end Proof for " + GetProblemName() + "\n"
 }
 
 /*** Proof Steps ***/
@@ -308,19 +312,26 @@ func processMainFormula(form btps.Form) (btps.FormList, btps.Form) {
 
 // Prints the theorem's name & properly formats the first formula.
 func makeTheorem(axioms btps.FormList, conjecture btps.Form) string {
+	var resulting_string string
 	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(GetProblemName(), ".", "_"), "=", "_"), "+", "_")
-	formattedProblem := makeImpChain(append(axioms, btps.MakerNot(conjecture)))
-	return "fof(" + problemName + ", conjecture, " + mapDefault(formattedProblem.ToMappedString(tstpMapConnectors(), false)) + ").\n\n"
+
+	for _, ax := range axioms {
+		resulting_string = resulting_string + "fof(" + fmt.Sprintf("ax%d", ax.GetIndex()) + ", axiom, " + mapDefault(ax.ToMappedString(tstpMapConnectors(), false)) + ").\n\n"
+	}
+
+	resulting_string = resulting_string + "fof(" + problemName + ", conjecture, " + mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)) + ").\n\n"
+	return resulting_string
 }
 
-// If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).
-func makeImpChain(forms btps.FormList) btps.Form {
-	last := len(forms) - 1
-	form := forms[last]
-	for i := last - 1; i >= 0; i-- {
-		form = btps.MakerImp(forms[i], form)
-	}
-	return form
+// Perform the first step to go from ax |- c to ax, ~c |-
+func performIntroStep(axioms btps.FormList, conjecture btps.Form) string {
+	nextForm := incrId()
+	return fmt.Sprintf("fof(f%d, plain, [%s] --> [%s], inference(rightRAA, 0, [f%d])).\n\n",
+		nextForm-1,
+		mapDefault(btps.ListToMappedString(axioms, ", ", "", tstpMapConnectors(), false)),
+		mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
+		nextForm)
+
 }
 
 /*** Unmilitary Functions ***/

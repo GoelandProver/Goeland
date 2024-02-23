@@ -57,12 +57,29 @@ func MakeAndSimple(i int, forms FormList, metas *MetaList) And {
 	return and
 }
 
-func MakeAnd(i int, forms FormList) And {
-	return MakeAndSimple(i, forms, NewMetaList())
+func MakeAndSimpleBinary(i int, forms FormList, metas *MetaList) And {
+	var and And
+	fms := &MappedString{}
+	switch len(forms) {
+	case 0, 1:
+		and = And{fms, i, forms, metas}
+	default:
+		and = And{fms, i, append(MakeSingleElementList(forms[0]), MakerAnd(forms[1:], true)), metas}
+	}
+	fms.MappableString = &and
+	return and
 }
 
-func MakerAnd(forms FormList) And {
-	return MakeAnd(MakerIndexFormula(), forms)
+func MakeAnd(i int, forms FormList, binary ...bool) And {
+	if binary != nil {
+		return MakeAndSimpleBinary(i, forms, NewMetaList())
+	} else {
+		return MakeAndSimple(i, forms, NewMetaList())
+	}
+}
+
+func MakerAnd(forms FormList, binary ...bool) And {
+	return MakeAnd(MakerIndexFormula(), forms, binary...)
 }
 
 /** Methods **/
