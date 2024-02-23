@@ -287,10 +287,11 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 		atomics_for_dmt := ds.getAtomicsForDMT(new_atomics, &st, s)
 
 		/* Equality - ok because dmt do not apply on equalities */
-		// Variation : do not apply if new_atomics not empty
-		eqSuccess := TryEquality(atomics_for_dmt, st, new_atomics, father_id, cha, node_id, original_node_id)
-		if eqSuccess {
-			return
+		if EagerEq || (len(st.GetAlpha()) == 0 && len(st.GetDelta()) == 0 && len(st.GetBeta()) == 0) {
+			eqSuccess := TryEquality(atomics_for_dmt, st, new_atomics, father_id, cha, node_id, original_node_id)
+			if eqSuccess {
+				return
+			}
 		}
 
 		global.PrintDebug("PS", "Let's apply rules !")
