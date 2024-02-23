@@ -32,7 +32,7 @@
 
 /**
 * This file contains the implementation of a metavariable (also known as free
-* variable in the litterature).
+* variable in the literature).
 **/
 
 package basictypes

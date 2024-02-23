@@ -33,7 +33,6 @@ package sateq
 
 import (
 	"github.com/GoelandProver/Goeland/global"
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	"github.com/go-air/gini"
 	"github.com/go-air/gini/z"
 )
@@ -51,8 +50,9 @@ type SatBuilder struct {
 	fMapping FMapping
 	tMapping TMapping
 
-	gini gini.Gini
-	lits *global.List[Lit]
+	gini      gini.Gini
+	eqClasses *global.List[*eqClass]
+	lits      *global.List[Lit]
 
 	numberOfPairs int
 }
@@ -61,23 +61,22 @@ func buildSAT(problem *Problem) (sb *SatBuilder) {
 	sb = &SatBuilder{
 		problem: problem,
 
-		sMapping: make(map[global.Pair[termIndex, constant]]Lit),
-		eMapping: make(map[int]map[unorderedPair[constant]]Lit),
-		rMapping: make(map[global.Pair[constant, termIndex]]Lit),
-		oMapping: make(map[global.Pair[constant, constant]]Lit),
+		sMapping: make(map[global.Pair[*termRecord, *eqClass]]Lit),
+		eMapping: make(map[int]map[unorderedPair[*eqClass]]Lit),
+		rMapping: make(map[global.Pair[*eqClass, *termRecord]]Lit),
+		oMapping: make(map[global.Pair[*eqClass, *eqClass]]Lit),
 		cMapping: make(map[int]Lit),
-		ϕMapping: make(map[int]map[unorderedPair[constant]]Lit),
-		𝜓Mapping: make(map[int]map[unorderedPair[constant]]Lit),
-		fMapping: make(map[int]map[unorderedPair[termIndex]]Lit),
-		tMapping: make(map[int]map[global.Pair[unorderedPair[constant], constant]]Lit),
+		ϕMapping: make(map[int]map[unorderedPair[*eqClass]]Lit),
+		𝜓Mapping: make(map[int]map[unorderedPair[*eqClass]]Lit),
+		fMapping: make(map[int]map[unorderedPair[*termRecord]]Lit),
+		tMapping: make(map[int]map[global.Pair[unorderedPair[*eqClass], *eqClass]]Lit),
 
-		gini: *gini.New(),
-		lits: global.NewList[Lit](),
+		gini:      *gini.New(),
+		eqClasses: problem.EquivalenceClasses(),
+		lits:      global.NewList[Lit](),
 	}
 
-	sb.problem.format()
-
-	n := sb.problem.constants.Length()
+	n := sb.eqClasses.Length()
 	sb.numberOfPairs = (n * (n - 1)) / 2
 
 	sb.buildAllStandardConstraints()
@@ -112,40 +111,39 @@ func (sb *SatBuilder) buildAllAcyclicityConstraints() {
 }
 
 func (sb *SatBuilder) buildMappingConstraints() {
-	for _, meta := range sb.problem.metas.AsSlice() {
-		for i := 0; i < sb.problem.constants.Length()-1; i++ {
-			iConst := sb.problem.constants.Get(i)
-			for j := i + 1; j < sb.problem.constants.Length(); j++ {
-				jConst := sb.problem.constants.Get(j)
-				sb.addClause(sb.getVarFromSMapping(meta, iConst).Not(), sb.getVarFromSMapping(meta, jConst).Not())
+	for _, meta := range sb.problem.Metas().AsSlice() {
+		for i := 0; i < sb.eqClasses.Length()-1; i++ {
+			eci := sb.eqClasses.Get(i)
+			for j := i + 1; j < sb.eqClasses.Length(); j++ {
+				ecj := sb.eqClasses.Get(j)
+				sb.addClause(sb.getVarFromSMapping(meta, eci).Not(), sb.getVarFromSMapping(meta, ecj).Not())
 			}
 		}
 	}
 }
 
 func (sb *SatBuilder) buildSubsConstraints() {
-
-	for i := 0; i < sb.problem.constants.Length()-1; i++ {
-		iConst := sb.problem.constants.Get(i)
-		for j := i + 1; j < sb.problem.constants.Length(); j++ {
-			jConst := sb.problem.constants.Get(j)
-			sb.subsConstraint(iConst, jConst)
+	for i := 0; i < sb.eqClasses.Length()-1; i++ {
+		eci := sb.eqClasses.Get(i)
+		for j := i + 1; j < sb.eqClasses.Length(); j++ {
+			ecj := sb.eqClasses.Get(j)
+			sb.subsConstraint(eci, ecj)
 		}
 	}
 }
 
-func (sb *SatBuilder) subsConstraint(ci, cj constant) {
-	allVars := []Lit{sb.getVarFromEMapping(0, ci, cj).Not()}
+func (sb *SatBuilder) subsConstraint(ec1, ec2 *eqClass) {
+	allVars := []Lit{sb.getVarFromEMapping(0, ec1, ec2).Not()}
 
-	for _, t := range sb.problem.representativeIndex[ci].AsSlice() {
-		if sb.problem.rightHandIndex[t].IsMeta() {
-			allVars = append(allVars, sb.getVarFromSMapping(t, cj))
+	for _, t := range sb.problem.TermsInClass(ec1).AsSlice() {
+		if t.isMeta() {
+			allVars = append(allVars, sb.getVarFromSMapping(t, ec2))
 		}
 	}
 
-	for _, t := range sb.problem.representativeIndex[cj].AsSlice() {
-		if sb.problem.rightHandIndex[t].IsMeta() {
-			allVars = append(allVars, sb.getVarFromSMapping(t, ci))
+	for _, t := range sb.problem.TermsInClass(ec2).AsSlice() {
+		if t.isMeta() {
+			allVars = append(allVars, sb.getVarFromSMapping(t, ec1))
 		}
 	}
 
@@ -154,35 +152,35 @@ func (sb *SatBuilder) subsConstraint(ci, cj constant) {
 
 func (sb *SatBuilder) buildEConstraints() {
 	for index := 1; index <= sb.numberOfPairs; index++ {
-		for i := 0; i < sb.problem.constants.Length()-1; i++ {
-			ci := sb.problem.constants.Get(i)
-			for j := i + 1; j < sb.problem.constants.Length(); j++ {
-				cj := sb.problem.constants.Get(j)
-				if ci != cj {
-					eSupVar := sb.getVarFromEMapping(index, ci, cj)
-					eVar := sb.getVarFromEMapping(index-1, ci, cj)
+		for i := 0; i < sb.eqClasses.Length()-1; i++ {
+			eci := sb.eqClasses.Get(i)
+			for j := i + 1; j < sb.eqClasses.Length(); j++ {
+				ecj := sb.eqClasses.Get(j)
+				if !eci.congruent(ecj) {
+					eSupVar := sb.getVarFromEMapping(index, eci, ecj)
+					eVar := sb.getVarFromEMapping(index-1, eci, ecj)
 
-					ϕVar, _ := sb.getVarFromϕMapping(index-1, ci, cj)
-					𝜓Var, _ := sb.getVarFrom𝜓Mapping(index-1, ci, cj)
+					ϕVar, _ := sb.getVarFromϕMapping(index-1, eci, ecj)
+					𝜓Var, _ := sb.getVarFrom𝜓Mapping(index-1, eci, ecj)
 					sb.addClause(eSupVar.Not(), eVar, ϕVar, 𝜓Var)
 
-					sb.ϕConstraint(index-1, ci, cj)
-					sb.𝜓Constraint(index-1, ci, cj)
+					sb.ϕConstraint(index-1, eci, ecj)
+					sb.𝜓Constraint(index-1, eci, ecj)
 				}
 			}
 		}
 	}
 }
 
-func (sb *SatBuilder) ϕConstraint(index int, ci, cj constant) {
-	lit, _ := sb.getVarFromϕMapping(index, ci, cj)
+func (sb *SatBuilder) ϕConstraint(index int, ec1, ec2 *eqClass) {
+	lit, _ := sb.getVarFromϕMapping(index, ec1, ec2)
 	vars := []Lit{lit.Not()}
 
-	for _, other := range sb.problem.constants.AsSlice() {
-		if other != ci && other != cj {
-			tVar := sb.getVarFromTMapping(index, ci, cj, other)
-			eFirstVar := sb.getVarFromEMapping(index, ci, other)
-			eSecondtVar := sb.getVarFromEMapping(index, other, cj)
+	for _, ec3 := range sb.eqClasses.AsSlice() {
+		if !ec3.congruent(ec1) && !ec3.congruent(ec2) {
+			tVar := sb.getVarFromTMapping(index, ec1, ec2, ec3)
+			eFirstVar := sb.getVarFromEMapping(index, ec1, ec3)
+			eSecondtVar := sb.getVarFromEMapping(index, ec3, ec2)
 
 			sb.addClause(tVar.Not(), eFirstVar)
 			sb.addClause(tVar.Not(), eSecondtVar)
@@ -194,28 +192,22 @@ func (sb *SatBuilder) ϕConstraint(index int, ci, cj constant) {
 	sb.addClause(vars...)
 }
 
-func (sb *SatBuilder) 𝜓Constraint(index int, ci, cj constant) {
-	lit, _ := sb.getVarFrom𝜓Mapping(index, ci, cj)
+func (sb *SatBuilder) 𝜓Constraint(index int, ec1, ec2 *eqClass) {
+	lit, _ := sb.getVarFrom𝜓Mapping(index, ec1, ec2)
 	vars := []Lit{lit.Not()}
 
-	for _, firstTerm := range sb.problem.representativeIndex[ci].AsSlice() {
-		for _, secondTerm := range sb.problem.representativeIndex[cj].AsSlice() {
-			if firstFun, ok := sb.problem.rightHandIndex[firstTerm].(basictypes.Fun); ok {
-				if secondFun, ok := sb.problem.rightHandIndex[secondTerm].(basictypes.Fun); ok {
-					if firstFun.GetID().Equals(secondFun.GetID()) {
-						fVar := sb.getVarFromFMapping(index, firstTerm, secondTerm)
-						firstArgs, secondArgs := firstFun.GetArgs(), secondFun.GetArgs()
+	for _, tr1 := range sb.problem.TermsInClass(ec1).AsSlice() {
+		if !tr1.isMeta() && len(tr1.args) != 0 {
+			for _, tr2 := range sb.problem.TermsWithSymbol(tr1.index).AsSlice() {
+				if !tr1.eqClass.congruent(tr2.eqClass) {
+					fVar := sb.getVarFromFMapping(index, tr1, tr2)
 
-						for i := range firstArgs {
-							if firstConst, ok := firstArgs[i].(constant); ok {
-								if secondConst, ok := secondArgs[i].(constant); ok {
-									sb.addClause(fVar.Not(), sb.getVarFromEMapping(index, firstConst, secondConst))
-								}
-							}
-						}
-
-						vars = append(vars, fVar)
+					for i, rs1 := range tr1.args {
+						rs2 := tr2.args[i]
+						sb.addClause(fVar.Not(), sb.getVarFromEMapping(index, rs1, rs2))
 					}
+
+					vars = append(vars, fVar)
 				}
 			}
 		}
@@ -231,12 +223,8 @@ func (sb *SatBuilder) buildGoalConstraints() {
 		cVar := sb.getVarFromCMapping(i)
 		conjunction = append(conjunction, cVar)
 
-		for _, equ := range goal.AsSlice() {
-			if fstTyped, ok := equ.GetFst().(constant); ok {
-				if sndTyped, ok := equ.GetSnd().(constant); ok {
-					sb.addClause(cVar.Not(), sb.getVarFromEMapping(sb.numberOfPairs, fstTyped, sndTyped))
-				}
-			}
+		for _, eq := range goal.AsSlice() {
+			sb.addClause(cVar.Not(), sb.getVarFromEMapping(sb.numberOfPairs, eq.GetFst(), eq.GetSnd()))
 		}
 	}
 
@@ -244,11 +232,11 @@ func (sb *SatBuilder) buildGoalConstraints() {
 }
 
 func (sb *SatBuilder) buildRepresentedConstraint() {
-	for _, currentConst := range sb.problem.constants.AsSlice() {
+	for _, ec := range sb.eqClasses.AsSlice() {
 		disjunction := []Lit{}
 
-		for _, representedTerm := range sb.problem.representativeIndex[currentConst].AsSlice() {
-			disjunction = append(disjunction, sb.getVarFromRMapping(currentConst, representedTerm))
+		for _, representedTerm := range sb.problem.TermsInClass(ec).AsSlice() {
+			disjunction = append(disjunction, sb.getVarFromRMapping(ec, representedTerm))
 		}
 
 		sb.addClause(disjunction...)
@@ -256,16 +244,14 @@ func (sb *SatBuilder) buildRepresentedConstraint() {
 }
 
 func (sb *SatBuilder) buildSubtermRelationConstraints() {
-	for _, currentConst := range sb.problem.constants.AsSlice() {
-		for _, t := range sb.problem.representativeIndex[currentConst].AsSlice() {
-			if typedFun, ok := sb.problem.rightHandIndex[t].(basictypes.Fun); ok {
+	for _, ec := range sb.eqClasses.AsSlice() {
+		for _, t := range sb.problem.TermsInClass(ec).AsSlice() {
+			if !t.isMeta() {
 
-				rVar := sb.getVarFromRMapping(currentConst, t)
+				rVar := sb.getVarFromRMapping(ec, t)
 
-				for _, arg := range typedFun.GetArgs() {
-					if typedArg, ok := arg.(constant); ok {
-						sb.addClause(rVar.Not(), sb.getVarFromOMapping(typedArg, currentConst))
-					}
+				for _, arg := range t.args {
+					sb.addClause(rVar.Not(), sb.getVarFromOMapping(arg, ec))
 				}
 
 			}
@@ -274,11 +260,11 @@ func (sb *SatBuilder) buildSubtermRelationConstraints() {
 }
 
 func (sb *SatBuilder) buildTransitivityConstraints() {
-	for _, iConst := range sb.problem.constants.AsSlice() {
-		for _, jConst := range sb.problem.constants.AsSlice() {
-			if iConst != jConst {
-				for _, kConst := range sb.problem.constants.AsSlice() {
-					if jConst != kConst {
+	for _, iConst := range sb.eqClasses.AsSlice() {
+		for _, jConst := range sb.eqClasses.AsSlice() {
+			if !iConst.congruent(jConst) {
+				for _, kConst := range sb.eqClasses.AsSlice() {
+					if !jConst.congruent(kConst) {
 						oVarji, oVarkj, oVarki := sb.getVarFromOMapping(jConst, iConst), sb.getVarFromOMapping(kConst, jConst), sb.getVarFromOMapping(kConst, iConst)
 						sb.addClause(oVarji.Not(), oVarkj.Not(), oVarki)
 					}
@@ -289,14 +275,14 @@ func (sb *SatBuilder) buildTransitivityConstraints() {
 }
 
 func (sb *SatBuilder) buildSubstitutionConstraints() {
-	for _, meta := range sb.problem.metas.AsSlice() {
-		for _, iConst := range sb.problem.constants.AsSlice() {
-			if iConst != sb.problem.leftHandIndex[meta] {
-				for _, kConst := range sb.problem.constants.AsSlice() {
-					jConst := sb.problem.leftHandIndex[meta]
-					sVar, rVar := sb.getVarFromSMapping(meta, iConst), sb.getVarFromRMapping(jConst, meta)
-					oVarjk, oVarik := sb.getVarFromOMapping(jConst, kConst), sb.getVarFromOMapping(iConst, kConst)
-					oVarki, oVarkj := sb.getVarFromOMapping(kConst, iConst), sb.getVarFromOMapping(kConst, jConst)
+	for _, meta := range sb.problem.Metas().AsSlice() {
+		for _, eci := range sb.eqClasses.AsSlice() {
+			if !eci.congruent(meta.eqClass) {
+				for _, eck := range sb.eqClasses.AsSlice() {
+					ecj := meta.eqClass
+					sVar, rVar := sb.getVarFromSMapping(meta, eci), sb.getVarFromRMapping(ecj, meta)
+					oVarjk, oVarik := sb.getVarFromOMapping(ecj, eck), sb.getVarFromOMapping(eci, eck)
+					oVarki, oVarkj := sb.getVarFromOMapping(eck, eci), sb.getVarFromOMapping(eck, ecj)
 
 					sb.addClause(sVar.Not(), rVar.Not(), oVarki.Not(), oVarkj)
 					sb.addClause(sVar.Not(), rVar.Not(), oVarjk.Not(), oVarik)
@@ -307,7 +293,7 @@ func (sb *SatBuilder) buildSubstitutionConstraints() {
 }
 
 func (sb *SatBuilder) buildAcyclicityConstraints() {
-	for _, currentConst := range sb.problem.constants.AsSlice() {
+	for _, currentConst := range sb.eqClasses.AsSlice() {
 		sb.addClause(sb.getVarFromOMapping(currentConst, currentConst).Not())
 	}
 }

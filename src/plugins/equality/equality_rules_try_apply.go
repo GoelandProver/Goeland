@@ -111,8 +111,8 @@ func connectLAndR(list_l_prime_l []TermPair, ep EqualityProblem, s basictypes.Te
 			global.PrintDebug("TARA", fmt.Sprintf("On veut susbstituer %v (unifiable avec %v) par %v dans %v = %v", l_prime_l_pair.GetT1().ToString(), l_prime_l_pair.GetT2().ToString(), r.ToString(), s.ToString(), t.ToString()))
 
 			// create pair an check equality
-			s_t := makeTermPair(s, t)
-			l_r := makeTermPair(l_prime_l_pair.GetT2(), r)
+			s_t := MakeTermPair(s, t)
+			l_r := MakeTermPair(l_prime_l_pair.GetT2(), r)
 
 			// if s = t is not l = r OR, if they are, the rule's type is right, so it's ok
 			if !s_t.equalsModulo(l_r) || type_rule == RIGHT {
@@ -140,7 +140,7 @@ func searchUnifBewteenListAndEq(tl basictypes.TermList, tree datastruct.DataStru
 				global.PrintDebug("SUBLE", "Unification found !")
 				for _, t := range tl {
 					global.PrintDebug("SUBLE", fmt.Sprintf("Unif found with : %v", t.ToString()))
-					term_pair_list = append(term_pair_list, makeTermPair(t_prime, t))
+					term_pair_list = append(term_pair_list, MakeTermPair(t_prime, t))
 				}
 			} else {
 				global.PrintDebug("SUBLE", "Unification not found !")

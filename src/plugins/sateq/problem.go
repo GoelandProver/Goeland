@@ -33,10 +33,11 @@ package sateq
 
 import (
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/equality"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-type Equality struct {
+/*type Equality struct {
 	*global.BasicPair[basictypes.Term, basictypes.Term]
 }
 
@@ -53,78 +54,153 @@ func (equ *Equality) Equals(other any) bool {
 		return equ.BasicPair.Equals(typed.BasicPair)
 	}
 	return false
-}
-
-func (equ *Equality) replaceAllWith(oldTerm, newTerm basictypes.Term) {
-	if typed, ok := equ.GetFst().(basictypes.Fun); ok {
-		equ.SetFst(typed.ReplaceAllSubTerm(oldTerm, newTerm))
-	} else {
-		equ.SetFst(equ.GetFst().ReplaceSubTermBy(oldTerm, newTerm))
-	}
-
-	if typed, ok := equ.GetSnd().(basictypes.Fun); ok {
-		equ.SetSnd(typed.ReplaceAllSubTerm(oldTerm, newTerm))
-	} else {
-		equ.SetSnd(equ.GetSnd().ReplaceSubTermBy(oldTerm, newTerm))
-	}
-}
+}*/
 
 type Problem struct {
-	assumptions *global.List[*Equality]
-	goals       *global.List[*global.List[*Equality]]
+	goals *global.List[*global.List[*global.BasicPair[*eqClass, *eqClass]]]
 
-	leftHandIndex       map[termIndex]constant
-	rightHandIndex      map[termIndex]basictypes.Term
-	representativeIndex map[constant]*global.List[termIndex]
-
-	metas     *global.List[termIndex]
-	constants *global.List[constant]
+	functionsIndex map[int]*global.List[*termRecord]      // terms indexed by their function symbol
+	metasIndex     map[int]*termRecord                    // metas indexed by identifier
+	partitionIndex map[*eqClass]*global.List[*termRecord] // terms in each eqClass
+	supertermIndex map[*eqClass]*global.List[*termRecord] // superterms of a given eqClass
+	// the last two indexes should be maintained so that only representatives of eqClasses are keys (i.e. not two keys should be congruent)
 }
 
-func NewProblem(assumptions *global.List[*Equality], goals *global.List[*global.List[*Equality]]) *Problem {
+func NewProblem() *Problem {
 	pb := &Problem{
-		assumptions,
-		goals,
+		global.NewList[*global.List[*global.BasicPair[*eqClass, *eqClass]]](),
 
-		make(map[termIndex]constant),
-		make(map[termIndex]basictypes.Term),
-		make(map[constant]*global.List[termIndex]),
-
-		global.NewList[termIndex](),
-		global.NewList[constant](),
+		make(map[int]*global.List[*termRecord]),
+		make(map[int]*termRecord),
+		make(map[*eqClass]*global.List[*termRecord]),
+		make(map[*eqClass]*global.List[*termRecord]),
 	}
 
 	return pb
 }
 
-func (problem *Problem) format() {
-	for i, eq := range problem.assumptions.AsSlice() {
-		rhs := termIndex(i)
-		problem.rightHandIndex[rhs] = eq.GetSnd()
+func (problem *Problem) EquivalenceClasses() *global.List[*eqClass] {
+	// TODO simplify this whenever the standard library gets a method to extract keys from a map
+	l := global.NewList[*eqClass]()
+	for k, _ := range problem.partitionIndex {
+		l.Append(k)
+	}
+	return l
+}
 
-		if typed, ok := eq.GetFst().(constant); ok {
-			problem.leftHandIndex[rhs] = typed
+func (problem *Problem) TermsInClass(ec *eqClass) *global.List[*termRecord] {
+	return problem.partitionIndex[ec.representative()]
+}
 
-			if problem.representativeIndex[typed] == nil {
-				problem.representativeIndex[typed] = global.NewList[termIndex]()
-			}
+func (problem *Problem) TermsWithSymbol(symbolIndex int) *global.List[*termRecord] {
+	return problem.functionsIndex[symbolIndex]
+}
 
-			problem.representativeIndex[typed].Append(rhs)
+func (problem *Problem) Metas() *global.List[*termRecord] {
+	// TODO simplify this whenever the standard library gets a method to extract keys from a map
+	l := global.NewList[*termRecord]()
+	for _, v := range problem.metasIndex {
+		l.Append(v)
+	}
+	return l
+}
+
+func (problem *Problem) getEquivalenceClass(t basictypes.Term) *eqClass {
+	if t.IsMeta() {
+		if tr, found := problem.metasIndex[t.GetIndex()]; found {
+			return tr.eqClass
 		}
-
-		if eq.GetSnd().IsMeta() {
-			problem.metas.Append(rhs)
+		if typed, ok := t.(basictypes.Meta); ok {
+			return problem.addNewTermRecord(metaTermRecord(typed))
+		}
+	} else {
+		if typed, ok := t.(basictypes.Fun); ok {
+			args := make([]*eqClass, typed.GetArgs().Len())
+			for i, st := range typed.GetArgs() {
+				args[i] = problem.getEquivalenceClass(st)
+			}
+			tr1 := funTermRecord(typed, args)
+			if idxList, found := problem.functionsIndex[tr1.index]; found {
+				for _, tr2 := range idxList.AsSlice() {
+					if tr1.congruent(tr2) {
+						return tr2.eqClass
+					}
+				}
+			}
+			// no congruent term is present
+			return problem.addNewTermRecord(tr1)
 		}
 	}
+	// shouldn't be reached
+	return nil
+}
 
-	for k := range problem.representativeIndex {
-		problem.constants.Append(k)
+func (problem *Problem) addNewTermRecord(tr *termRecord) *eqClass {
+	// this should only be called if there is no term congruent to tr
+	ec := tr.eqClass.representative()
+	problem.partitionIndex[ec] = global.NewList[*termRecord]()
+	problem.partitionIndex[ec].Append(tr)
+	problem.supertermIndex[ec] = global.NewList[*termRecord]()
+	if tr.isMeta() {
+		problem.metasIndex[tr.index] = tr
+	} else {
+		if _, found := problem.functionsIndex[tr.index]; !found {
+			problem.functionsIndex[tr.index] = global.NewList[*termRecord]()
+		}
+		problem.functionsIndex[tr.index].Append(tr)
+		problem.supertermIndex[ec].Append(tr)
+	}
+	return ec
+}
+
+func (problem *Problem) mergeEquivalenceClasses(ec1, ec2 *eqClass) {
+	if ec1.congruent(ec2) {
+		return
+	}
+
+	ecMerged := ec1.representative()
+	ecDeleted := ec2.representative()
+
+	ec1.merge(ec2)
+
+	if ec1.representative() != ecMerged {
+		ecMerged, ecDeleted = ecDeleted, ecMerged
+	}
+
+	// update indexes (see invariant above)
+	problem.partitionIndex[ecMerged].Append(problem.partitionIndex[ecDeleted].AsSlice()...) // the entries of partitionIndex are disjoint
+	problem.supertermIndex[ecMerged].AppendIfNotContains(problem.supertermIndex[ecDeleted].AsSlice()...)
+	delete(problem.partitionIndex, ecDeleted)
+	delete(problem.supertermIndex, ecDeleted)
+
+	// propagate congruence
+	for _, t3 := range problem.supertermIndex[ecMerged].AsSlice() {
+		// !t3.isMeta
+		for _, t4 := range problem.supertermIndex[ecMerged].AsSlice() {
+			ec3 := t3.eqClass
+			ec4 := t4.eqClass
+			if !ec3.congruent(ec4) && t3.congruent(t4) {
+				problem.mergeEquivalenceClasses(ec3, ec4)
+			}
+		}
 	}
 }
 
-func isTrivialGoal(goal *global.List[*Equality]) bool {
-	for _, eq := range goal.AsSlice() {
-		if eq.GetFst() != eq.GetSnd() {
+func (problem *Problem) AddAssumption(eq equality.TermPair) {
+	problem.mergeEquivalenceClasses(problem.getEquivalenceClass(eq.GetT1()), problem.getEquivalenceClass(eq.GetT2()))
+}
+
+func (problem *Problem) AddGoal(goal []equality.TermPair) {
+	g := global.NewList[*global.BasicPair[*eqClass, *eqClass]]()
+	for _, eq := range goal {
+		g.Append(global.NewBasicPair(problem.getEquivalenceClass(eq.GetT1()), problem.getEquivalenceClass(eq.GetT2())))
+	}
+	problem.goals.Append(g)
+}
+
+func isTrivialGoal(goal *global.List[*global.BasicPair[*eqClass, *eqClass]]) bool {
+	for _, p := range goal.AsSlice() {
+		if !p.GetFst().congruent(p.GetSnd()) {
 			return false
 		}
 	}
@@ -141,65 +217,5 @@ func (problem *Problem) HasTrivialGoals() bool {
 }
 
 func (problem *Problem) IsGround() bool {
-	// TODO
-	return false
-}
-
-func (problem *Problem) ToString() string {
-	result := ""
-
-	for _, ass := range problem.assumptions.AsSlice() {
-		result += ass.ToString() + ", "
-	}
-
-	result = result[:len(result)-2] + " ⊨ "
-
-	for _, goal := range problem.goals.AsSlice() {
-		result += goal.ToString() + ", "
-	}
-
-	return result[:len(result)-2]
-}
-
-func (problem *Problem) addAssumption(equ *Equality) {
-	problem.assumptions.AppendIfNotContains(equ)
-}
-
-func (problem *Problem) replaceAllWith(oldTerm, newTerm basictypes.Term) {
-	for _, equ := range problem.assumptions.AsSlice() {
-		equ.replaceAllWith(oldTerm, newTerm)
-	}
-	for _, goal := range problem.goals.AsSlice() {
-		for _, equ := range goal.AsSlice() {
-			equ.replaceAllWith(oldTerm, newTerm)
-		}
-	}
-}
-
-func (problem *Problem) removeDuplicates() int {
-	cpt := 0
-
-	for i := 0; i < problem.assumptions.Length()-1; i++ {
-		for j := i + 1; j < problem.assumptions.Length(); j++ {
-			if problem.assumptions.Get(i).Equals(problem.assumptions.Get(j)) {
-				problem.assumptions.Remove(j)
-				j--
-				cpt++
-			}
-		}
-	}
-
-	return cpt
-}
-
-func (problem *Problem) getConstants() *global.List[constant] {
-	result := global.NewList[constant]()
-
-	for _, equ := range problem.assumptions.AsSlice() {
-		if typed, ok := equ.GetFst().(constant); ok {
-			result.AppendIfNotContains(typed)
-		}
-	}
-
-	return result
+	return len(problem.metasIndex) == 0
 }

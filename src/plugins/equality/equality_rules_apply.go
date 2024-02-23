@@ -67,9 +67,9 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP,
 		global.PrintDebug("ALR", fmt.Sprintf("New term : %v", new_term.ToString()))
 		new_eq_list := ep.GetE()
 		if rs.getIsSModified() {
-			new_eq_list[rs.getIndexEQList()] = makeTermPair(new_term.Copy(), rs.getT())
+			new_eq_list[rs.getIndexEQList()] = MakeTermPair(new_term.Copy(), rs.getT())
 		} else {
-			new_eq_list[rs.getIndexEQList()] = makeTermPair(rs.getS(), new_term.Copy())
+			new_eq_list[rs.getIndexEQList()] = MakeTermPair(rs.getS(), new_term.Copy())
 		}
 		global.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.ToString()))
 		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.GetS(), ep.GetT(), new_cl), father_chan, rs.getIndexEQList(), LEFT, father_id)
@@ -114,13 +114,13 @@ func applyEQRule(l, r, sub_term_of_s, s, t basictypes.Term, cs ConstraintStruct)
 	global.PrintDebug("AEQR", fmt.Sprintf("s = %v, new_s = %v", s.ToString(), new_s.ToString()))
 	constraints_list := cs.copy()
 
-	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, makeTermPair(r, l))) {
+	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, MakeTermPair(r, l))) {
 		return false, nil, makeEmptyConstraintStruct()
 	}
-	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, makeTermPair(t, s))) {
+	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, MakeTermPair(t, s))) {
 		return false, nil, makeEmptyConstraintStruct()
 	}
-	if !constraints_list.appendIfConsistant(MakeConstraint(EQ, makeTermPair(l, sub_term_of_s))) {
+	if !constraints_list.appendIfConsistant(MakeConstraint(EQ, MakeTermPair(l, sub_term_of_s))) {
 		return false, nil, makeEmptyConstraintStruct()
 	}
 	return true, new_s, constraints_list

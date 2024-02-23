@@ -137,7 +137,7 @@ func (ie Inequalities) appendIfNotContains(eq TermPair) Inequalities {
 func (e Equalities) applySubstitution(old_symbol basictypes.Meta, new_symbol basictypes.Term) Equalities {
 	res := e.copy()
 	for i, tp := range res {
-		res[i] = makeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT2()))
+		res[i] = MakeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT2()))
 	}
 	return res
 }
@@ -181,7 +181,7 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 		if ok_t2 == -1 {
 			global.PrintError("RI", "Meta_eq_2 not found in map")
 		}
-		res = append(res, makeTermPair(eq1_term, eq2_term))
+		res = append(res, MakeTermPair(eq1_term, eq2_term))
 	}
 	return res
 }
@@ -210,7 +210,7 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 		if ok_t2 == -1 {
 			global.PrintError("RI", "Meta_eq_1 not found in map")
 		}
-		res = append(res, makeTermPair(neq1_term, neq2_term))
+		res = append(res, MakeTermPair(neq1_term, neq2_term))
 	}
 	return res
 }

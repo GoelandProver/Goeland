@@ -50,7 +50,7 @@ func (tp TermPair) GetT2() basictypes.Term {
 	return tp.t2.Copy()
 }
 func (tp TermPair) copy() TermPair {
-	return makeTermPair(tp.GetT1(), tp.GetT2())
+	return MakeTermPair(tp.GetT1(), tp.GetT2())
 }
 func (tp TermPair) equals(tp2 TermPair) bool {
 	return tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())
@@ -66,7 +66,7 @@ func (tp TermPair) ToString() string {
 func (tp TermPair) ToTPTPString() string {
 	return tp.GetT1().ToMappedString(basictypes.DefaultMapString, false) + " = " + tp.GetT2().ToMappedString(basictypes.DefaultMapString, false)
 }
-func makeTermPair(t1, t2 basictypes.Term) TermPair {
+func MakeTermPair(t1, t2 basictypes.Term) TermPair {
 	return TermPair{t1.Copy(), t2.Copy()}
 }
 

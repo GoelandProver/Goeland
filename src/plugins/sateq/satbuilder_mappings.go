@@ -35,13 +35,13 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 )
 
-type SMapping map[global.Pair[termIndex, constant]]Lit
-type EMapping map[int]map[unorderedPair[constant]]Lit
-type RMapping map[global.Pair[constant, termIndex]]Lit
-type OMapping map[global.Pair[constant, constant]]Lit
+type SMapping map[global.Pair[*termRecord, *eqClass]]Lit
+type EMapping map[int]map[unorderedPair[*eqClass]]Lit // we make unorderedPairs of *eqClass, which is correct only as long as we don't mutate (merge) them
+type RMapping map[global.Pair[*eqClass, *termRecord]]Lit
+type OMapping map[global.Pair[*eqClass, *eqClass]]Lit
 type CMapping map[int]Lit
-type FMapping map[int]map[unorderedPair[termIndex]]Lit
-type TMapping map[int]map[global.Pair[unorderedPair[constant], constant]]Lit
+type FMapping map[int]map[unorderedPair[*termRecord]]Lit
+type TMapping map[int]map[global.Pair[unorderedPair[*eqClass], *eqClass]]Lit
 
 func getIdAndRegister[T comparable](sb *SatBuilder, element T, mapping map[T]Lit) (Lit, bool) {
 	if value, found := mapping[element]; found {
@@ -50,35 +50,35 @@ func getIdAndRegister[T comparable](sb *SatBuilder, element T, mapping map[T]Lit
 		result := Lit(sb.gini.Lit())
 		sb.lits.Append(result)
 		mapping[element] = result
-		return Lit(result), true
+		return result, true
 	}
 }
 
-func (sb *SatBuilder) getVarFromSMapping(t termIndex, c constant) Lit {
-	pair := global.MakePair(t, c)
-	lit, _ := getIdAndRegister[global.Pair[termIndex, constant]](sb, pair, sb.sMapping)
+func (sb *SatBuilder) getVarFromSMapping(t *termRecord, r *eqClass) Lit {
+	pair := global.MakePair(t, r.representative())
+	lit, _ := getIdAndRegister[global.Pair[*termRecord, *eqClass]](sb, pair, sb.sMapping)
 	return lit
 }
 
-func (sb *SatBuilder) getVarFromEMapping(index int, c1 constant, c2 constant) Lit {
+func (sb *SatBuilder) getVarFromEMapping(index int, r1, r2 *eqClass) Lit {
 	_, found := sb.eMapping[index]
 	if !found {
-		sb.eMapping[index] = make(map[unorderedPair[constant]]Lit)
+		sb.eMapping[index] = make(map[unorderedPair[*eqClass]]Lit)
 	}
-	pair := makeUnorderedPair[constant](c1, c2)
-	lit, _ := getIdAndRegister[unorderedPair[constant]](sb, pair, sb.eMapping[index])
+	pair := makeUnorderedPair[*eqClass](r1.representative(), r2.representative())
+	lit, _ := getIdAndRegister[unorderedPair[*eqClass]](sb, pair, sb.eMapping[index])
 	return lit
 }
 
-func (sb *SatBuilder) getVarFromRMapping(c constant, t termIndex) Lit {
-	pair := global.MakePair(c, t)
-	lit, _ := getIdAndRegister[global.Pair[constant, termIndex]](sb, pair, sb.rMapping)
+func (sb *SatBuilder) getVarFromRMapping(r *eqClass, t *termRecord) Lit {
+	pair := global.MakePair(r.representative(), t)
+	lit, _ := getIdAndRegister[global.Pair[*eqClass, *termRecord]](sb, pair, sb.rMapping)
 	return lit
 }
 
-func (sb *SatBuilder) getVarFromOMapping(c1 constant, c2 constant) Lit {
-	pair := global.MakePair(c1, c2)
-	lit, _ := getIdAndRegister[global.Pair[constant, constant]](sb, pair, sb.oMapping)
+func (sb *SatBuilder) getVarFromOMapping(r1, r2 *eqClass) Lit {
+	pair := global.MakePair(r1.representative(), r2.representative())
+	lit, _ := getIdAndRegister[global.Pair[*eqClass, *eqClass]](sb, pair, sb.oMapping)
 	return lit
 }
 
@@ -87,40 +87,40 @@ func (sb *SatBuilder) getVarFromCMapping(index int) Lit {
 	return lit
 }
 
-func (sb *SatBuilder) getVarFromϕMapping(index int, c1 constant, c2 constant) (Lit, bool) {
+func (sb *SatBuilder) getVarFromϕMapping(index int, r1, r2 *eqClass) (Lit, bool) {
 	_, found := sb.ϕMapping[index]
 	if !found {
-		sb.ϕMapping[index] = make(map[unorderedPair[constant]]Lit)
+		sb.ϕMapping[index] = make(map[unorderedPair[*eqClass]]Lit)
 	}
-	pair := makeUnorderedPair[constant](c1, c2)
-	return getIdAndRegister[unorderedPair[constant]](sb, pair, sb.ϕMapping[index])
+	pair := makeUnorderedPair[*eqClass](r1.representative(), r2.representative())
+	return getIdAndRegister[unorderedPair[*eqClass]](sb, pair, sb.ϕMapping[index])
 }
 
-func (sb *SatBuilder) getVarFrom𝜓Mapping(index int, c1 constant, c2 constant) (Lit, bool) {
+func (sb *SatBuilder) getVarFrom𝜓Mapping(index int, r1, r2 *eqClass) (Lit, bool) {
 	_, found := sb.𝜓Mapping[index]
 	if !found {
-		sb.𝜓Mapping[index] = make(map[unorderedPair[constant]]Lit)
+		sb.𝜓Mapping[index] = make(map[unorderedPair[*eqClass]]Lit)
 	}
-	pair := makeUnorderedPair[constant](c1, c2)
-	return getIdAndRegister[unorderedPair[constant]](sb, pair, sb.𝜓Mapping[index])
+	pair := makeUnorderedPair[*eqClass](r1.representative(), r2.representative())
+	return getIdAndRegister[unorderedPair[*eqClass]](sb, pair, sb.𝜓Mapping[index])
 }
 
-func (sb *SatBuilder) getVarFromFMapping(index int, t1 termIndex, t2 termIndex) Lit {
+func (sb *SatBuilder) getVarFromFMapping(index int, t1, t2 *termRecord) Lit {
 	_, found := sb.fMapping[index]
 	if !found {
-		sb.fMapping[index] = make(map[unorderedPair[termIndex]]Lit)
+		sb.fMapping[index] = make(map[unorderedPair[*termRecord]]Lit)
 	}
-	pair := makeUnorderedPair[termIndex](t1, t2)
-	lit, _ := getIdAndRegister[unorderedPair[termIndex]](sb, pair, sb.fMapping[index])
+	pair := makeUnorderedPair[*termRecord](t1, t2)
+	lit, _ := getIdAndRegister[unorderedPair[*termRecord]](sb, pair, sb.fMapping[index])
 	return lit
 }
 
-func (sb *SatBuilder) getVarFromTMapping(index int, c1 constant, c2 constant, c3 constant) Lit {
+func (sb *SatBuilder) getVarFromTMapping(index int, r1, r2, r3 *eqClass) Lit {
 	_, found := sb.tMapping[index]
 	if !found {
-		sb.tMapping[index] = make(map[global.Pair[unorderedPair[constant], constant]]Lit)
+		sb.tMapping[index] = make(map[global.Pair[unorderedPair[*eqClass], *eqClass]]Lit)
 	}
-	triplet := global.MakePair[unorderedPair[constant], constant](makeUnorderedPair[constant](c1, c2), c3)
-	lit, _ := getIdAndRegister[global.Pair[unorderedPair[constant], constant]](sb, triplet, sb.tMapping[index])
+	triplet := global.MakePair[unorderedPair[*eqClass], *eqClass](makeUnorderedPair[*eqClass](r1.representative(), r2.representative()), r3.representative())
+	lit, _ := getIdAndRegister[global.Pair[unorderedPair[*eqClass], *eqClass]](sb, triplet, sb.tMapping[index])
 	return lit
 }

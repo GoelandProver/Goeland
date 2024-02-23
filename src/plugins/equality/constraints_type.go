@@ -91,7 +91,7 @@ func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
 		m, t := subst.Get()
 		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().GetT1())
 		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().GetT2())
-		c.setTP(makeTermPair(new_t1, new_t2))
+		c.setTP(MakeTermPair(new_t1, new_t2))
 	}
 }
 
@@ -114,7 +114,7 @@ func (c *Constraint) checkLPO() (bool, bool) {
 	}
 
 	if cs.new_t1 != nil && cs.new_t2 != nil {
-		c.setTP(makeTermPair(cs.new_t1, cs.new_t2))
+		c.setTP(MakeTermPair(cs.new_t1, cs.new_t2))
 	}
 
 	return true, false

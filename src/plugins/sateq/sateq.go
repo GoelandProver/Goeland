@@ -49,36 +49,33 @@ func RunEqualityReasoning(epml equality.EqualityProblemMultiList) (success bool,
 	}
 
 	problem := format(epml)
-	normalized := normalize(problem)
-	if normalized.HasTrivialGoals() {
+	if problem.HasTrivialGoals() {
 		// congruence closure alone finds a solution
 		return true, append(treetypes.MakeEmptySubstitutionList(), treetypes.MakeEmptySubstitution())
 	}
-	if normalized.IsGround() {
+	if problem.IsGround() {
 		// ground problem that is not solved by CC has no solution
 		return false, []treetypes.Substitutions{}
 	}
-	satBuilder := buildSAT(normalized)
+	satBuilder := buildSAT(problem)
 
 	subs, success = findSolution(satBuilder)
 	return success, subs
 }
 
 func format(epml equality.EqualityProblemMultiList) *Problem {
-	problem := NewProblem(global.NewList[*Equality](), global.NewList[*global.List[*Equality]]())
+	problem := NewProblem()
 
-	for _, termPair := range epml[0][0].GetE() {
-		equ := NewEquality(termPair.GetT1(), termPair.GetT2())
-		problem.assumptions.Append(equ)
+	for _, eq := range epml[0][0].GetE() {
+		problem.AddAssumption(eq)
 	}
 
 	for _, epl := range epml {
-		goal := global.NewList[*Equality]()
+		goal := make([]equality.TermPair, 0)
 		for _, ep := range epl {
-			equ := NewEquality(ep.GetS(), ep.GetT())
-			goal.Append(equ)
+			goal = append(goal, equality.MakeTermPair(ep.GetS(), ep.GetT()))
 		}
-		problem.goals.Append(goal)
+		problem.AddGoal(goal)
 	}
 
 	return problem
@@ -91,7 +88,7 @@ func findSolution(satBuilder *SatBuilder) (subs []treetypes.Substitutions, succe
 		return []treetypes.Substitutions{}, false
 	}
 
-	return gatherSubs(solution, satBuilder.sMapping, satBuilder.rMapping, satBuilder.problem.rightHandIndex)
+	return gatherSubs(solution, satBuilder.sMapping, satBuilder.rMapping)
 }
 
 func solve(satInstance gini.Gini, litList *global.List[Lit]) (map[Lit]bool, bool) {
