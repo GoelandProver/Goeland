@@ -185,6 +185,10 @@ func (sb *SatBuilder) ϕConstraint(index int, ec1, ec2 *eqClass) {
 			sb.addClause(tVar.Not(), eFirstVar)
 			sb.addClause(tVar.Not(), eSecondtVar)
 
+			if Clausiff {
+				sb.addClause(eFirstVar.Not(), eSecondtVar.Not(), tVar)
+			}
+
 			vars = append(vars, tVar)
 		}
 	}
@@ -201,10 +205,18 @@ func (sb *SatBuilder) 𝜓Constraint(index int, ec1, ec2 *eqClass) {
 			for _, tr2 := range sb.problem.TermsWithSymbol(tr1.index).AsSlice() {
 				if !tr1.eqClass.congruent(tr2.eqClass) {
 					fVar := sb.getVarFromFMapping(index, tr1, tr2)
+					vars2 := []Lit{fVar}
 
 					for i, rs1 := range tr1.args {
 						rs2 := tr2.args[i]
-						sb.addClause(fVar.Not(), sb.getVarFromEMapping(index, rs1, rs2))
+						l := sb.getVarFromEMapping(index, rs1, rs2)
+						sb.addClause(fVar.Not(), l)
+						vars2 = append(vars2, l.Not())
+					}
+
+					if Clausiff {
+						sb.addClause(fVar.Not(), lit)
+						sb.addClause(vars2...)
 					}
 
 					vars = append(vars, fVar)

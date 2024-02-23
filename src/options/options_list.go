@@ -268,6 +268,14 @@ func buildOptions() {
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
+		"clausiff",
+		false,
+		"Experimental clausification for SATEQ, to delete soon",
+		func(bool) {
+			sateq.Clausiff = true
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
 		"chrono",
 		false,
 		"Should only be used with the -ocoq or the -olp parameters. Enables the chronometer for deskolemization and proof translation",

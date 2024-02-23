@@ -32,34 +32,53 @@
 package sateq
 
 import (
+	"fmt"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/equality"
 	"github.com/go-air/gini"
 	"github.com/go-air/gini/z"
+	"time"
 )
 
 func Enable() {
 	equality.RunEqualityReasoning = RunEqualityReasoning
 }
 
+var Clausiff = false
+
 func RunEqualityReasoning(epml equality.EqualityProblemMultiList) (success bool, subs []treetypes.Substitutions) {
 	if len(epml) == 0 {
 		return false, []treetypes.Substitutions{}
 	}
 
+	t := time.Now()
+
 	problem := format(epml)
+
+	fmt.Printf("normalization time: %s\n", time.Since(t))
+
 	if problem.HasTrivialGoals() {
+		fmt.Printf("trivially sat problem\n")
 		// congruence closure alone finds a solution
 		return true, append(treetypes.MakeEmptySubstitutionList(), treetypes.MakeEmptySubstitution())
 	}
 	if problem.IsGround() {
+		fmt.Printf("trivially unsat problem\n")
 		// ground problem that is not solved by CC has no solution
 		return false, []treetypes.Substitutions{}
 	}
+
+	t = time.Now()
+
 	satBuilder := buildSAT(problem)
 
+	fmt.Printf("constraint building time: %s\n", time.Since(t))
+
+	t = time.Now()
 	subs, success = findSolution(satBuilder)
+
+	fmt.Printf("SAT solving and reconstruction: %s\n", time.Since(t))
 	return success, subs
 }
 
