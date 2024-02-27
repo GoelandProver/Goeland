@@ -55,16 +55,11 @@ var prefix_axiom_cut = "ac"
 func makeTstpProofFromGS3(proof *gs3.GS3Sequent) string {
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
 	resultingString := makeTheorem(axioms, conjecture)
-	hypotheses := append(axioms, btps.MakerNot(conjecture))
+	hypotheses := axioms.Copy().AppendIfNotContains(btps.MakerNot(conjecture.Copy()))
 
 	AxiomCut := performCutAxiomStep(axioms, conjecture)
 
-	firstStep, nextId := performFirstStep(axioms, conjecture, 0)
-
-	axioms = append(axioms, btps.MakerNot(conjecture))
-
-	// Manage axioms and cut here
-	// Add multiple step to go from the binary formula to the splitted one
+	firstStep, nextId := performFirstStep(axioms, conjecture, hypotheses, 0)
 
 	if len(axioms) == 0 {
 		resultingString += followProofSteps(proof, hypotheses, 0)
@@ -332,19 +327,18 @@ func makeTheorem(axioms btps.FormList, conjecture btps.Form) string {
 }
 
 // Perform the first step to go from ax |- c to ax, ~c |-
-func performFirstStep(axioms btps.FormList, conjecture btps.Form, nextId int) (string, int) {
+func performFirstStep(axioms btps.FormList, conjecture btps.Form, hypothesis btps.FormList, nextId int) (string, int) {
 	cutFormNotId := incrId()
 	cutFormHypId := incrId()
 	nextFormId := incrId()
 
 	// Cut initial formula, |- ~c, c step
-	cutFormNot := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s, %s], inference(%s, param(%d, %d), [%s])).",
+	cutFormNot := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s, %s], inference(%s, param(%d), [%s])).",
 		cutFormNotId,
 		mapDefault(btps.ListToMappedString(axioms, ", ", "", tstpMapConnectors(), false)),
 		mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
 		mapDefault(btps.MakerNot(conjecture).ToMappedString(tstpMapConnectors(), false)),
 		"rightNot",
-		0,
 		1,
 		prefix_step+strconv.Itoa(cutFormHypId))
 
@@ -359,10 +353,12 @@ func performFirstStep(axioms btps.FormList, conjecture btps.Form, nextId int) (s
 		"")
 
 	// Actual start of the formula with H |- C
-	startForm := fmt.Sprintf("fof(f%d, plain, [%s] --> [%s], inference(cut, 0, [%s%d, %s%d])).\n\n",
+	startForm := fmt.Sprintf("fof(f%d, plain, [%s] --> [%s], inference(cut, param(%d, %d), [%s%d, %s%d])).\n\n",
 		nextId,
 		mapDefault(btps.ListToMappedString(axioms, ", ", "", tstpMapConnectors(), false)),
 		mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
+		1,
+		hypothesis.Find(btps.MakerNot(conjecture)),
 		prefix_step,
 		cutFormNotId,
 		prefix_step,
@@ -385,11 +381,13 @@ func performCutAxiomStep(axioms btps.FormList, conjecture btps.Form) string {
 			nextStep = prefix_axiom_cut + strconv.Itoa(i+1)
 		}
 
-		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, [%s] --> [%s], inference(cut, 0, [%s%d, %s])).\n",
+		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, [%s] --> [%s], inference(cut, param(%d, %d), [%s%d, %s])).\n",
 			prefix_axiom_cut,
 			i,
 			btps.ListToMappedString(axioms[:i], ", ", "", tstpMapConnectors(), false),
 			mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
+			0,
+			i,
 			"ax",
 			ax.GetIndex(),
 			nextStep)
