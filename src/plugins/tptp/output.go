@@ -31,10 +31,10 @@
 **/
 
 /**
-* This file provides a TSTP output for Goeland's proofs.
+* This file provides a TPTP output for Goeland's proofs.
 **/
 
-package tstp
+package tptp
 
 import (
 	"strings"
