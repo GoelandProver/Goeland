@@ -49,7 +49,7 @@ import (
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	"github.com/GoelandProver/Goeland/plugins/lambdapi"
 	"github.com/GoelandProver/Goeland/plugins/sateq"
-	"github.com/GoelandProver/Goeland/plugins/tstp"
+	"github.com/GoelandProver/Goeland/plugins/tptp"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -223,13 +223,13 @@ func buildOptions() {
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
-		"otstp",
+		"otptp",
 		false,
-		"Enables the TSTP format for proofs instead of text",
+		"Enables the TPTP format for proofs instead of text",
 		func(bool) {
 			global.OutputTSTP()
 			global.SetProof(true)
-			search.AddPrintProofAlgorithm(tstp.TstpOutputProofStruct)
+			search.AddPrintProofAlgorithm(tptp.TstpOutputProofStruct)
 
 		},
 		func(bool) {})
