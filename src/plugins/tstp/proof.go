@@ -38,6 +38,7 @@ package tstp
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -49,20 +50,27 @@ import (
 var mutex sync.Mutex
 var id_proof_step = 0
 var prefix_step = "f"
+var prefix_axiom_cut = "ac"
 
 func makeTstpProofFromGS3(proof *gs3.GS3Sequent) string {
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
 	resultingString := makeTheorem(axioms, conjecture)
-	firstStep := performIntroStep(axioms, conjecture)
 	hypotheses := append(axioms, btps.MakerNot(conjecture))
 
-	//todo : remove last step if I have axioms to get a1, ... an, ~c and cut on that
+	AxiomCut := performCutAxiomStep(axioms, conjecture)
+
+	firstStep, nextId := performFirstStep(axioms, conjecture, 0)
+
 	// Manage axioms and cut here
 	// Add multiple step to go from the binary formula to the splitted one
 
-	resultingString += followProofSteps(proof.Child(0), hypotheses, -1)
+	if len(axioms) == 0 {
+		resultingString += followProofSteps(proof, hypotheses, 0)
+	} else {
+		resultingString += followProofSteps(proof.Child(0), hypotheses, nextId)
+	}
 
-	return "\n% SZS output start Proof for " + GetProblemName() + "\n\n\n" + resultingString + "\n" + firstStep + "\n% SZS output end Proof for " + GetProblemName() + "\n"
+	return "\n% SZS output start Proof for " + GetProblemName() + "\n\n\n" + resultingString + "\n" + firstStep + AxiomCut + "\n% SZS output end Proof for " + GetProblemName() + "\n"
 }
 
 /*** Proof Steps ***/
@@ -152,7 +160,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 	case gs3.OR:
 		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftOr")
 	case gs3.IMP:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftImp")
+		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftImp2")
 	case gs3.EQU:
 		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftEqu")
 
@@ -263,7 +271,7 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 		format,
 		target,
 		proof.TermGenerated().ToMappedString(tstpMapConnectors(), false),
-		IntListToString(children_id, "f"))
+		IntListToString(children_id, prefix_step))
 
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
 }
@@ -324,14 +332,71 @@ func makeTheorem(axioms btps.FormList, conjecture btps.Form) string {
 }
 
 // Perform the first step to go from ax |- c to ax, ~c |-
-func performIntroStep(axioms btps.FormList, conjecture btps.Form) string {
-	nextForm := incrId()
-	return fmt.Sprintf("fof(f%d, plain, [%s] --> [%s], inference(rightRAA, 0, [f%d])).\n\n",
-		nextForm-1,
+func performFirstStep(axioms btps.FormList, conjecture btps.Form, nextId int) (string, int) {
+	cutFormNotId := incrId()
+	cutFormHypId := incrId()
+	nextFormId := incrId()
+
+	// Cut initial formula, |- ~c, c step
+	cutFormNot := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s, %s], inference(%s, param(%d, %d), [%s])) ",
+		cutFormNotId,
 		mapDefault(btps.ListToMappedString(axioms, ", ", "", tstpMapConnectors(), false)),
 		mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
-		nextForm)
+		mapDefault(btps.MakerNot(conjecture).ToMappedString(tstpMapConnectors(), false)),
+		"rightNot",
+		0,
+		1,
+		prefix_step+strconv.Itoa(cutFormHypId))
 
+	// Cut initial formula, c |- c step
+	cutFormHyp := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s], inference(%s, param(%d, %d), [%s])) ",
+		cutFormHypId,
+		mapDefault(btps.ListToMappedString(append(axioms, btps.MakerNot(conjecture)), ", ", "", tstpMapConnectors(), false)),
+		mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
+		"Hyp",
+		len(axioms),
+		0,
+		"")
+
+	// Actual start of the formula with H |- C
+	startForm := fmt.Sprintf("fof(f%d, plain, [%s] --> [%s], inference(cut, 0, [%s%d, %s%d])).\n\n",
+		nextId,
+		mapDefault(btps.ListToMappedString(axioms, ", ", "", tstpMapConnectors(), false)),
+		mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
+		prefix_step,
+		cutFormNotId,
+		prefix_step,
+		nextFormId)
+
+	return cutFormHyp + "\n\n" + cutFormNot + "\n\n" + startForm, nextFormId
+}
+
+// Perform the cut axiom steps
+func performCutAxiomStep(axioms btps.FormList, conjecture btps.Form) string {
+
+	resultString := ""
+
+	// Loop on axioms
+	for i, ax := range axioms {
+		var nextStep string
+		if i == axioms.Len()-1 {
+			nextStep = "f0"
+		} else {
+			nextStep = prefix_axiom_cut + strconv.Itoa(i+1)
+		}
+
+		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, [%s] --> [%s], inference(cut, 0, [%s%d, %s])).\n",
+			prefix_axiom_cut,
+			i,
+			btps.ListToMappedString(axioms[:i], ", ", "", tstpMapConnectors(), false),
+			mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
+			"ax",
+			ax.GetIndex(),
+			nextStep)
+
+		resultString = cutAxiomStep + "\n" + resultString
+	}
+	return resultString + "\n"
 }
 
 /*** Unmilitary Functions ***/
