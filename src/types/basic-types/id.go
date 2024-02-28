@@ -39,6 +39,8 @@ package basictypes
 import (
 	"fmt"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 )
 
 /* id (for predicate) */
@@ -46,6 +48,10 @@ type Id struct {
 	*MappedString
 	index int
 	name  string
+}
+
+var ToStringBis = func(i Id) string {
+	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
 }
 
 func (i Id) GetIndex() int     { return i.index }
@@ -61,7 +67,20 @@ func (i Id) ToMappedStringSurround(mapping MapString, displayTypes bool) string 
 }
 
 func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
+	return "", ToStringBis(i)
+}
+
+func NoIdToString(i Id) string {
+	return fmt.Sprintf("%s", i.GetName())
+}
+
+func QuotedToString(i Id) string {
+	r, _ := utf8.DecodeRuneInString(i.GetName())
+	if unicode.IsUpper(r) {
+		return fmt.Sprintf("'%s'", i.GetName())
+	} else {
+		return fmt.Sprintf("%s", i.GetName())
+	}
 }
 
 func (i Id) GetChildrenForMappedString() []MappableString {

@@ -46,27 +46,27 @@ import (
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-var TstpOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeTstpOutput, Name: "TSTP", Extension: ".p"}
+var TptpOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeTptpOutput, Name: "TPTP", Extension: ".p"}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
 
 // Section: init
-// Functions: MakeTstpOutput
-// Main functions of the TSTP module.
+// Functions: MakeTptpOutput
+// Main functions of the TPTP module.
 
-func MakeTstpOutput(prf []proof.ProofStruct, meta *btps.MetaList) string {
+func MakeTptpOutput(prf []proof.ProofStruct, meta *btps.MetaList) string {
 	if len(prf) == 0 {
-		global.PrintError("Tstp", "Nothing to output")
+		global.PrintError("Tptp", "Nothing to output")
 		return ""
 	}
 
 	// Transform tableaux's proof in GS3 proof
-	return MakeTstpProof(gs3.MakeGS3Proof(prf), meta)
+	return MakeTptpProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-var MakeTstpProof = func(proof *gs3.GS3Sequent, meta *btps.MetaList) string {
-	proofString := makeTstpProofFromGS3(proof)
+var MakeTptpProof = func(proof *gs3.GS3Sequent, meta *btps.MetaList) string {
+	proofString := makeTptpProofFromGS3(proof)
 	return proofString
 }
 
@@ -74,7 +74,7 @@ var MakeTstpProof = func(proof *gs3.GS3Sequent, meta *btps.MetaList) string {
 func mapDefault(str string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, " : $i", ""), " : $o", ""), " : , ", " : ")
 }
-func tstpMapConnectors() map[btps.FormulaType]string {
+func tptpMapConnectors() map[btps.FormulaType]string {
 	return map[btps.FormulaType]string{
 		btps.AndConn:        "&",
 		btps.OrConn:         "|",
