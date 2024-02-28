@@ -227,9 +227,9 @@ func buildOptions() {
 		false,
 		"Enables the TPTP format for proofs instead of text",
 		func(bool) {
-			global.OutputTSTP()
+			global.OutputTPTP()
 			global.SetProof(true)
-			search.AddPrintProofAlgorithm(tptp.TstpOutputProofStruct)
+			search.AddPrintProofAlgorithm(tptp.TptpOutputProofStruct)
 
 		},
 		func(bool) {})
@@ -295,6 +295,18 @@ func buildOptions() {
 		func(val string) {
 			global.ProofFile = val
 		})
+	(&option[bool]{}).init(
+		"no_id",
+		false,
+		"Disables the id in the ToString",
+		func(bool) { basictypes.ToStringBis = basictypes.NoIdToString },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"quoted_pred",
+		false,
+		"Print predicates between quotes if they start by a capital letter (TPTP compliance)",
+		func(bool) { basictypes.ToStringBis = basictypes.QuotedToString },
+		func(bool) {})
 }
 
 func chronoInit() {

@@ -34,6 +34,10 @@
 * This file provides a TPTP proof from Goéland's proof.
 **/
 
+// TODO :
+// Equality
+// unbound variables
+
 package tptp
 
 import (
@@ -52,7 +56,7 @@ var id_proof_step = 0
 var prefix_step = "f"
 var prefix_axiom_cut = "ac"
 
-func makeTstpProofFromGS3(proof *gs3.GS3Sequent) string {
+func makeTptpProofFromGS3(proof *gs3.GS3Sequent) string {
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
 	resultingString := makeTheorem(axioms, conjecture)
 	hypotheses := axioms.Copy().AppendIfNotContains(btps.MakerNot(conjecture.Copy()))
@@ -62,12 +66,14 @@ func makeTstpProofFromGS3(proof *gs3.GS3Sequent) string {
 	firstStep, nextId := performFirstStep(axioms, conjecture, hypotheses, 0)
 
 	if len(axioms) == 0 {
-		resultingString += followProofSteps(proof, hypotheses, 0)
+		resultingString += followProofSteps(proof, hypotheses, nextId)
 	} else {
 		resultingString += followProofSteps(proof.Child(0), hypotheses, nextId)
 	}
 
-	return "\n% SZS output start Proof for " + GetProblemName() + "\n\n\n" + resultingString + "\n" + firstStep + AxiomCut + "\n% SZS output end Proof for " + GetProblemName() + "\n"
+	res := "\n% SZS output start Proof for " + GetProblemName() + "\n\n\n" + resultingString + "\n" + firstStep + AxiomCut + "\n% SZS output end Proof for " + GetProblemName() + "\n"
+
+	return res
 }
 
 /*** Proof Steps ***/
@@ -127,12 +133,12 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 			}
 
 			if target2 == -1 {
-				PrintError("TSTP - makeStep", "complementary literal not found")
+				PrintError("TPTP - makeStep", "complementary literal not found")
 			}
 
-			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, param(%d, %d), [%s])) ",
+			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, param(%d, %d), [%s])).",
 				proof.GetId(),
-				mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
+				mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
 				"leftHyp",
 				target,
 				target2,
@@ -200,7 +206,7 @@ func alphaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d), [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
 		format,
 		target,
 		IntListToString(children_id, prefix_step))
@@ -224,7 +230,7 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, forma
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d), [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
 		format,
 		target,
 		IntListToString(children_id, prefix_step))
@@ -243,10 +249,10 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
 		format,
 		target,
-		proof.TermGenerated().ToMappedString(tstpMapConnectors(), false),
+		proof.TermGenerated().ToMappedString(tptpMapConnectors(), false),
 		IntListToString(children_id, prefix_step))
 
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
@@ -259,13 +265,36 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 		children_id = append(children_id, new_id)
 		c.SetId(new_id)
 	}
+
+	termGenerated := proof.TermGenerated()
+	var termGeneratedString string
+
+	if termGenerated == nil {
+
+		switch f_typed := proof.GetTargetForm().(type) {
+		case btps.All:
+			termGeneratedString = f_typed.GetVarList()[0].ToMappedString(tptpMapConnectors(), false)
+		case btps.Not:
+			switch f_typed_not := f_typed.GetForm().(type) {
+			case btps.Ex:
+				termGeneratedString = f_typed_not.GetVarList()[0].ToMappedString(tptpMapConnectors(), false)
+			default:
+				termGeneratedString = "NULL"
+			}
+		default:
+			termGeneratedString = "NULL"
+		}
+	} else {
+		termGeneratedString = proof.TermGenerated().ToMappedString(tptpMapConnectors(), false)
+	}
+
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
 		format,
 		target,
-		proof.TermGenerated().ToMappedString(tstpMapConnectors(), false),
+		termGeneratedString,
 		IntListToString(children_id, prefix_step))
 
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
@@ -281,7 +310,7 @@ func weakenStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, for
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d), [%s%d])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tstpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
 		format,
 		target,
 		prefix_step,
@@ -319,10 +348,10 @@ func makeTheorem(axioms btps.FormList, conjecture btps.Form) string {
 	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(GetProblemName(), ".", "_"), "=", "_"), "+", "_")
 
 	for _, ax := range axioms {
-		resulting_string = resulting_string + "fof(" + fmt.Sprintf("ax%d", ax.GetIndex()) + ", axiom, " + mapDefault(ax.ToMappedString(tstpMapConnectors(), false)) + ").\n\n"
+		resulting_string = resulting_string + "fof(" + fmt.Sprintf("ax%d", ax.GetIndex()) + ", axiom, " + mapDefault(ax.ToMappedString(tptpMapConnectors(), false)) + ").\n\n"
 	}
 
-	resulting_string = resulting_string + "fof(c_" + problemName + ", conjecture, " + mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)) + ").\n\n"
+	resulting_string = resulting_string + "fof(c_" + problemName + ", conjecture, " + mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)) + ").\n\n"
 	return resulting_string
 }
 
@@ -335,9 +364,9 @@ func performFirstStep(axioms btps.FormList, conjecture btps.Form, hypothesis btp
 	// Cut initial formula, |- ~c, c step
 	cutFormNot := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s, %s], inference(%s, param(%d), [%s])).",
 		cutFormNotId,
-		mapDefault(btps.ListToMappedString(axioms, ", ", "", tstpMapConnectors(), false)),
-		mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
-		mapDefault(btps.MakerNot(conjecture).ToMappedString(tstpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(axioms, ", ", "", tptpMapConnectors(), false)),
+		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
+		mapDefault(btps.MakerNot(conjecture).ToMappedString(tptpMapConnectors(), false)),
 		"rightNot",
 		1,
 		prefix_step+strconv.Itoa(cutFormHypId))
@@ -345,8 +374,8 @@ func performFirstStep(axioms btps.FormList, conjecture btps.Form, hypothesis btp
 	// Cut initial formula, c |- c step
 	cutFormHyp := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s], inference(%s, param(%d, %d), [%s])).",
 		cutFormHypId,
-		mapDefault(btps.ListToMappedString(append(axioms, conjecture), ", ", "", tstpMapConnectors(), false)),
-		mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(append(axioms, conjecture), ", ", "", tptpMapConnectors(), false)),
+		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
 		"hyp",
 		len(axioms),
 		0,
@@ -355,8 +384,8 @@ func performFirstStep(axioms btps.FormList, conjecture btps.Form, hypothesis btp
 	// Actual start of the formula with H |- C
 	startForm := fmt.Sprintf("fof(f%d, plain, [%s] --> [%s], inference(cut, param(%d, %d), [%s%d, %s%d])).\n\n",
 		nextId,
-		mapDefault(btps.ListToMappedString(axioms, ", ", "", tstpMapConnectors(), false)),
-		mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(axioms, ", ", "", tptpMapConnectors(), false)),
+		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
 		1,
 		hypothesis.Find(btps.MakerNot(conjecture)),
 		prefix_step,
@@ -384,8 +413,8 @@ func performCutAxiomStep(axioms btps.FormList, conjecture btps.Form) string {
 		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, [%s] --> [%s], inference(cut, param(%d, %d), [%s%d, %s])).\n",
 			prefix_axiom_cut,
 			i,
-			btps.ListToMappedString(axioms[:i], ", ", "", tstpMapConnectors(), false),
-			mapDefault(conjecture.ToMappedString(tstpMapConnectors(), false)),
+			btps.ListToMappedString(axioms[:i], ", ", "", tptpMapConnectors(), false),
+			mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
 			0,
 			i,
 			"ax",
