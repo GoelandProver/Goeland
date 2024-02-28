@@ -73,7 +73,6 @@ func SetApplyRules(function func(uint64, complextypes.State, Communication, basi
 /* Begin the proof search */
 func Search(formula basictypes.Form, bound int) {
 	global.PrintDebug("MAIN", "Start search")
-
 	global.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", formula.ToString()))
 
 	res := UsedSearch.search(formula, bound)
