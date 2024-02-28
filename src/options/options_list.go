@@ -283,6 +283,14 @@ func buildOptions() {
 		func(val string) {
 			global.ProofFile = val
 		})
+	(&option[bool]{}).init(
+		"clean",
+		false,
+		"Enables the cleaning of the formula before searching for the proof",
+		func(bool) {
+			global.ToBeCleaned = true
+		},
+		func(bool) {})
 }
 
 func chronoInit() {
