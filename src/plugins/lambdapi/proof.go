@@ -136,7 +136,7 @@ func allRules(rule string, target btps.Form, composingForms []btps.Form, nexts [
 		result += "(" + toCorrectString(composingForm) + ")\n"
 	}
 
-	result += getRecursionUnivStr(target, nexts, children)
+	result += getRecursionUnivStr(nexts, children)
 
 	result += fmt.Sprintf("(%s)\n", getFromContext(target))
 
@@ -169,14 +169,14 @@ func allRulesQuantUniv(rule string, target btps.Form, composingForms []btps.Form
 
 	result += "(" + toCorrectString(termGen) + ")\n"
 
-	result += getRecursionUnivStr(target, nexts, children)
+	result += getRecursionUnivStr(nexts, children)
 
 	result += fmt.Sprintf("(%s)\n", getFromContext(target))
 
 	return result
 }
 
-func getRecursionUnivStr(target btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList) (result string) {
+func getRecursionUnivStr(nexts []*gs3.GS3Sequent, children []btps.FormList) (result string) {
 	for i, next := range nexts {
 		result += "(\n"
 		for _, childForm := range children[i] {
@@ -212,14 +212,14 @@ func allRulesQuantExist(rule string, target btps.Form, composingForms []btps.For
 	}
 	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
 
-	result += getRecursionExistStr(target, nexts, children, termGen)
+	result += getRecursionExistStr(nexts, children, termGen)
 
 	result += fmt.Sprintf("(%s)\n", getFromContext(target))
 
 	return result
 }
 
-func getRecursionExistStr(target btps.Form, nexts []*gs3.GS3Sequent, children []btps.FormList, termGen btps.Term) (result string) {
+func getRecursionExistStr(nexts []*gs3.GS3Sequent, children []btps.FormList, termGen btps.Term) (result string) {
 	for i, next := range nexts {
 		result += "(\n"
 		typesStr := ""
