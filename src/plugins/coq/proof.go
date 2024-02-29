@@ -225,7 +225,7 @@ func processMainFormula(form btps.Form) (btps.FormList, btps.Form) {
 func makeTheorem(axioms btps.FormList, conjecture btps.Form) string {
 	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(GetProblemName(), ".", "_"), "=", "_"), "+", "_")
 	formattedProblem := makeImpChain(append(axioms, btps.MakerNot(btps.MakerNot(conjecture))))
-	return "Theorem goeland_proof_of_" + problemName + " : " + mapDefault(formattedProblem.ToMappedString(coqMapConnectors(), false)) + ".\n"
+	return "Theorem goeland_proof_of_" + problemName + " : " + mapDefault(formattedProblem.ToMappedString(coqMapConnectors(), GetTypeProof())) + ".\n"
 }
 
 // If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).
@@ -308,7 +308,7 @@ func getRealConstantName(constantsCreated []btps.Term, term btps.Term) string {
 	if fun, isFun := term.(btps.Fun); isFun {
 		res := ""
 		if isGroundTerm(fun.GetID()) {
-			res = fun.GetID().ToMappedString(coqMapConnectors(), false)
+			res = fun.GetID().ToMappedString(coqMapConnectors(), GetTypeProof())
 			subterms := make([]string, 0)
 			for _, t := range fun.GetArgs() {
 				subterms = append(subterms, getRealConstantName(constantsCreated, t))
@@ -332,7 +332,7 @@ func findInConstants(constantsCreated []btps.Term, term btps.Term) string {
 		return getConstantName(term.(btps.Fun).GetID())
 	}
 	if isGroundTerm(term) {
-		return "(" + term.ToMappedString(coqMapConnectors(), false) + ")"
+		return "(" + term.ToMappedString(coqMapConnectors(), GetTypeProof()) + ")"
 	}
 	return "goeland_I"
 }

@@ -52,7 +52,15 @@ type Fun struct {
 	typeHint typing.TypeScheme
 }
 
-var ToMappedStringSurroundWithId = func(f Fun, idString string, mapping MapString, displayTypes bool) string {
+func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+	return f.ToMappedStringSurroundWithId(f.GetID().ToMappedString(mapping, displayTypes), mapping, displayTypes)
+}
+
+func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return ", ", mapping[PredEmpty]
+}
+
+func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, displayTypes bool) string {
 	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
 		return idString + "%s"
 	}
@@ -66,36 +74,6 @@ var ToMappedStringSurroundWithId = func(f Fun, idString string, mapping MapStrin
 	args = append(args, "%s")
 
 	str := idString + "(" + strings.Join(args, mapping[PredTypeVarSep]) + ")"
-	if displayTypes {
-		str += " : " + f.typeHint.ToString()
-	}
-
-	return str
-}
-
-func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return ToMappedStringSurroundWithId(f, f.GetID().ToMappedString(mapping, displayTypes), mapping, displayTypes)
-}
-
-func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return ", ", mapping[PredEmpty]
-}
-
-func ToFlatternStringSurrountWithId(f Fun, idString string, mapping MapString, displayTypes bool) string {
-
-	if len(f.typeVars) == 0 && len(f.GetArgs()) == 0 {
-		return idString + "%s"
-	}
-	args := []string{}
-
-	if len(f.typeVars) > 0 {
-		if tv := ListToString(f.typeVars, "_", mapping[PredEmpty]); tv != "" {
-			args = append(args, tv)
-		}
-	}
-	args = append(args, "%s")
-
-	str := idString + "_" + strings.Join(args, mapping[PredTypeVarSep])
 	if displayTypes {
 		str += " : " + f.typeHint.ToString()
 	}

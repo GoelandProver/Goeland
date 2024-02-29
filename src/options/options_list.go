@@ -307,12 +307,6 @@ func buildOptions() {
 		"Print predicates between quotes if they start by a capital letter (TPTP compliance)",
 		func(bool) { basictypes.ToStringId = basictypes.QuotedToString },
 		func(bool) {})
-	(&option[bool]{}).init(
-		"flatterms",
-		false,
-		"Print functions as flatterms",
-		func(bool) { basictypes.ToMappedStringSurroundWithId = basictypes.ToFlatternStringSurrountWithId },
-		func(bool) {})
 }
 
 func chronoInit() {

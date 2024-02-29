@@ -157,6 +157,18 @@ func (seq *GS3Sequent) SetId(i int) {
 	seq.nodeId = i
 }
 
+func (seq *GS3Sequent) SetFormGenerated(fg []btps.FormList) {
+	seq.formsGenerated = fg
+}
+
+func (seq *GS3Sequent) SetChildren(c []*GS3Sequent) {
+	seq.children = c
+}
+
+func (seq *GS3Sequent) SetTargetForm(f btps.Form) {
+	seq.hypotheses[seq.appliedOn] = f
+}
+
 // ----------------------------------------------------------------------------
 // Private methods & functions
 // ----------------------------------------------------------------------------
