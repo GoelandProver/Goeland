@@ -112,8 +112,10 @@ func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool)
 
 	for _, vt := range varsType {
 		str := mapping[QuantVarOpen]
-		str += ListToMappedString(q.GetVarList(), " ", "", mapping, displayTypes)
-		str += " : " + vt.type_.ToString()
+		str += ListToMappedString(q.GetVarList(), " ", "", mapping, false)
+		if displayTypes {
+			str += " : " + vt.type_.ToString()
+		}
 		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 

@@ -154,7 +154,7 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"proof",
 		false,
-		"Enables the display of a proof of the problem (in TPTP format)",
+		"Enables the display of a proof of the problem (in custom format)",
 		func(bool) {
 			global.SetProof(true)
 			proof.ResetProofFile()
