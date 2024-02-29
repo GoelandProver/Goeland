@@ -194,14 +194,6 @@ func (lf FormList) FilterPred(pola bool) FormList {
 	return res
 }
 
-func (lf FormList) CleanFormList() FormList {
-	for i, f := range lf {
-		lf[i] = f.CleanFormula()
-	}
-
-	return lf
-}
-
 func (lf FormList) ToMappableStringSlice() []MappableString {
 	forms := []MappableString{}
 

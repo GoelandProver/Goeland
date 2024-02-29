@@ -112,12 +112,6 @@ func (e Equ) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 func (e Equ) RenameVariables() Form {
 	return MakeEqu(e.GetIndex(), e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
 }
-func (e Equ) CleanFormula() Form {
-	e.f1 = e.f1.CleanFormula()
-	e.f2 = e.f2.CleanFormula()
-
-	return e
-}
 
 func (e Equ) GetSubTerms() *TermList {
 	res := e.GetF1().GetSubTerms().Copy()

@@ -68,16 +68,6 @@ func (e Ex) Equals(other any) bool {
 	return false
 }
 
-func (e Ex) CleanFormula() Form {
-	e.quantifier.varList, e.quantifier.subForm = e.quantifier.clean()
-
-	if len(e.GetVarList()) > 0 {
-		return e
-	} else {
-		return e.GetForm()
-	}
-}
-
 func (e Ex) GetSubFormulasRecur() FormList {
 	return getAllSubFormulasAppended(e)
 }

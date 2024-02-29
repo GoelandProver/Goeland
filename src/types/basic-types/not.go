@@ -126,11 +126,6 @@ func (n Not) RenameVariables() Form {
 	return MakeNot(n.GetIndex(), n.f.RenameVariables())
 }
 
-func (n Not) CleanFormula() Form {
-	n.f = n.f.CleanFormula()
-	return n
-}
-
 /** - Other Methods **/
 
 func (n Not) GetForm() Form {

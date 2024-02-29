@@ -172,43 +172,10 @@ func (q quantifier) toMappedString(quant string, mapping MapString, displayTypes
 
 	for _, vt := range varsType {
 		str := mapping[QuantVarOpen]
-		str += ListToMappedString(q.GetVarList(), " ", "", mapping, false)
+		str += ListToMappedString(q.GetVarList(), " ", "", mapping, displayTypes)
 		str += " : " + vt.type_.ToString()
 		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 
 	return "(" + quant + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (%s))"
-}
-
-func (q quantifier) clean() ([]Var, Form) {
-	f := q.GetForm().CleanFormula()
-
-	areSeen := q.checkSeenVars()
-	newList := q.getSeenVars(areSeen)
-
-	return newList, f
-}
-
-func (q quantifier) checkSeenVars() []bool {
-	areSeen := make([]bool, len(q.GetVarList()))
-
-	for i, v := range q.GetVarList() {
-		for _, term := range q.GetSubTerms().Slice() {
-			if term.Equals(v) {
-				areSeen[i] = true
-			}
-		}
-	}
-	return areSeen
-}
-
-func (q quantifier) getSeenVars(areSeen []bool) []Var {
-	newList := []Var{}
-
-	for i, seen := range areSeen {
-		if seen {
-			newList = append(newList, q.GetVarList()[i])
-		}
-	}
-	return newList
 }

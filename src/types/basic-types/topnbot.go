@@ -76,7 +76,6 @@ func (Top) GetMetas() *MetaList                            { return NewMetaList(
 func (t Top) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeTop(t.GetIndex()) }
 func (t Top) ReplaceVarByTerm(Var, Term) (Form, bool)      { return MakeTop(t.GetIndex()), false }
 func (t Top) RenameVariables() Form                        { return MakeTop(t.GetIndex()) }
-func (t Top) CleanFormula() Form                           { return t }
 func (t Top) GetIndex() int                                { return t.index }
 func (t Top) GetSubTerms() *TermList                       { return NewTermList() }
 func (t Top) SubstituteVarByMeta(Var, Meta) Form           { return t }
@@ -121,7 +120,6 @@ func (Bot) GetMetas() *MetaList                            { return NewMetaList(
 func (b Bot) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeBot(b.GetIndex()) }
 func (b Bot) ReplaceVarByTerm(Var, Term) (Form, bool)      { return MakeBot(b.GetIndex()), false }
 func (b Bot) RenameVariables() Form                        { return MakeBot(b.GetIndex()) }
-func (b Bot) CleanFormula() Form                           { return b }
 func (b Bot) GetIndex() int                                { return b.index }
 func (b Bot) GetSubTerms() *TermList                       { return NewTermList() }
 func (b Bot) SubstituteVarByMeta(Var, Meta) Form           { return b }

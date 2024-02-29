@@ -81,8 +81,6 @@ var memProfile string
 
 var isConjectureFound = false
 
-var ToBeCleaned = false
-
 var ProofFile string
 
 // Executable path

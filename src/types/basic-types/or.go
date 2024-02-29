@@ -129,11 +129,6 @@ func (o Or) RenameVariables() Form {
 	return MakeOr(o.GetIndex(), renameFormList(o.FormList))
 }
 
-func (o Or) CleanFormula() Form {
-	o.FormList.CleanFormList()
-	return o
-}
-
 func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, o.FormList, o.MetaList)
 	return MakeOrSimple(o.index, newFormList, newMetas)

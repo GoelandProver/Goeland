@@ -114,12 +114,6 @@ func (i Imp) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 func (i Imp) RenameVariables() Form {
 	return MakeImp(i.GetIndex(), i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
 }
-func (i Imp) CleanFormula() Form {
-	i.f1 = i.f1.CleanFormula()
-	i.f2 = i.f2.CleanFormula()
-
-	return i
-}
 
 func (i Imp) GetSubTerms() *TermList {
 	res := i.GetF1().GetSubTerms().Copy()

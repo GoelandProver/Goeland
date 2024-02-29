@@ -132,11 +132,6 @@ func (a And) RenameVariables() Form {
 	return MakeAnd(a.GetIndex(), renameFormList(a.FormList))
 }
 
-func (a And) CleanFormula() Form {
-	a.CleanFormList()
-	return a
-}
-
 func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, a.FormList, a.MetaList)
 	return MakeAndSimple(a.index, newFormList, newMetas)

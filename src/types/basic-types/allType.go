@@ -120,31 +120,6 @@ func (a AllType) RenameVariables() Form {
 	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
 }
 
-func (a AllType) CleanFormula() Form {
-	a.form = a.form.CleanFormula()
-
-	areSeen := make([]bool, len(a.tvList))
-
-	terms := a.GetVarList()
-
-	for i, v := range a.tvList {
-		for _, term := range terms {
-			if term.Equals(v) {
-				areSeen[i] = true
-			}
-		}
-	}
-
-	for i, seen := range areSeen {
-		if !seen {
-			a.tvList = append(a.tvList[:i], a.tvList[i+1:]...)
-			i--
-		}
-	}
-
-	return a
-}
-
 func (a AllType) GetSubTerms() *TermList {
 	return a.GetForm().GetSubTerms()
 }

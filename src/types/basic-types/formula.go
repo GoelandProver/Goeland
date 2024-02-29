@@ -59,7 +59,6 @@ type Form interface {
 	ReplaceTypeByMeta([]typing.TypeVar, int) Form
 	ReplaceVarByTerm(old Var, new Term) (Form, bool)
 	RenameVariables() Form
-	CleanFormula() Form
 	SubstituteVarByMeta(old Var, new Meta) Form
 }
 
@@ -87,19 +86,6 @@ func replaceVarInTermList(terms *TermList, oldVar Var, newTerm Term) (*TermList,
 	}
 
 	return newTermList, res
-}
-
-/* replace a var by another in a var list */
-func replaceVarInVarList(vars []Var, oldVar, newVar Var) []Var {
-	res := []Var{}
-	for _, v := range vars {
-		if v.GetIndex() == oldVar.GetIndex() {
-			res = append(res, newVar)
-		} else {
-			res = append(res, v)
-		}
-	}
-	return res
 }
 
 /* Utils */
