@@ -43,7 +43,7 @@ type All struct {
 }
 
 func MakeAllSimple(i int, vars []Var, forms Form, metas *MetaList) All {
-	return All{makeQuantifier(i, vars, forms, metas)}
+	return All{makeQuantifier(i, vars, forms, metas, AllQuant)}
 }
 
 func MakeAll(i int, vars []Var, forms Form) All {
@@ -52,10 +52,6 @@ func MakeAll(i int, vars []Var, forms Form) All {
 
 func MakerAll(vars []Var, forms Form) All {
 	return MakeAll(MakerIndexFormula(), vars, forms)
-}
-
-func (a All) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return a.quantifier.toMappedString(mapping[AllQuant], mapping, displayTypes)
 }
 
 func (a All) Equals(other any) bool {

@@ -167,5 +167,3 @@ func StatementListToString(statements []Statement) string {
 	}
 	return res
 }
-
-// TODO : add include

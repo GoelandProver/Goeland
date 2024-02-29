@@ -45,7 +45,7 @@ type Ex struct {
 }
 
 func MakeExSimple(i int, vars []Var, forms Form, metas *MetaList) Ex {
-	return Ex{makeQuantifier(i, vars, forms, metas)}
+	return Ex{makeQuantifier(i, vars, forms, metas, ExQuant)}
 }
 
 func MakeEx(i int, vars []Var, forms Form) Ex {
@@ -54,10 +54,6 @@ func MakeEx(i int, vars []Var, forms Form) Ex {
 
 func MakerEx(vars []Var, forms Form) Ex {
 	return MakeEx(MakerIndexFormula(), vars, forms)
-}
-
-func (e Ex) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return e.quantifier.toMappedString(mapping[ExQuant], mapping, displayTypes)
 }
 
 func (e Ex) Equals(other any) bool {
