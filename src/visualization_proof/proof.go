@@ -273,7 +273,7 @@ func IntFormAndTermsListToIntIntStringPairList(fl []IntFormAndTermsList) []IntIn
 func ProofStructListToJsonProofStructList(ps []ProofStruct) []JsonProofStruct {
 	res := []JsonProofStruct{}
 	for _, p := range ps {
-		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.GetIdDMT(), p.Node_id, p.Rule, p.Rule_name, IntFormAndTermsListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
+		new_json_element := JsonProofStruct{p.GetFormula().GetForm().ToMappedString(basictypes.DefaultMapString, global.GetTypeProof()), p.GetIdDMT(), p.Node_id, p.Rule, p.Rule_name, IntFormAndTermsListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
 		res = append(res, new_json_element)
 	}
 	return res

@@ -82,7 +82,9 @@ func QuantifierToMappedString(quant string, mapping MapString, varList []Var, fo
 	for _, vt := range varsType {
 		str := mapping[QuantVarOpen]
 		str += ListToMappedString(varList, " ", "", mapping, false)
-		str += " : " + vt.type_.ToString()
+		if displayTypes {
+			str += " : " + vt.type_.ToString()
+		}
 		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 
