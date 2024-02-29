@@ -139,8 +139,8 @@ func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAnd(a.GetIndex(), replaceList(a.FormList, varList, index))
 }
 
-func (a And) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	varList, res := replaceVarInFormList(a.FormList, old, new)
+func (a And) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	varList, res := replaceTermInFormList(a.FormList, old, new)
 	return MakeAndSimple(a.index, varList, a.MetaList), res
 }
 

@@ -283,7 +283,7 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"chrono",
 		false,
-		"Should only be used with the -ocoq or the -olp parameters. Enables the chronometer for deskolemization and proof translation",
+		"Should only be used with the -ocoq, the -olp or the otptp parameters. Enables the chronometer for deskolemization and proof translation",
 		func(bool) {
 			chronoInit()
 		},
@@ -311,13 +311,19 @@ func buildOptions() {
 		"no_id",
 		false,
 		"Disables the id in the ToString",
-		func(bool) { basictypes.ToStringBis = basictypes.NoIdToString },
+		func(bool) { basictypes.ToStringId = basictypes.NoIdToString },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"quoted_pred",
 		false,
 		"Print predicates between quotes if they start by a capital letter (TPTP compliance)",
-		func(bool) { basictypes.ToStringBis = basictypes.QuotedToString },
+		func(bool) { basictypes.ToStringId = basictypes.QuotedToString },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"flatterms",
+		false,
+		"Print functions as flatterms",
+		func(bool) { basictypes.ToMappedStringSurroundWithId = basictypes.ToFlatternStringSurrountWithId },
 		func(bool) {})
 }
 

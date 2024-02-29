@@ -61,7 +61,7 @@ func (t TermForm) Copy() basictypes.Form                                   { ret
 func (t TermForm) GetType() typing.TypeScheme                              { return typing.DefaultFunType(0) }
 func (t TermForm) RenameVariables() basictypes.Form                        { return t }
 func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) basictypes.Form { return t }
-func (t TermForm) ReplaceVarByTerm(basictypes.Var, basictypes.Term) (basictypes.Form, bool) {
+func (t TermForm) ReplaceTermByTerm(basictypes.Term, basictypes.Term) (basictypes.Form, bool) {
 	return t, false
 }
 func (t TermForm) GetIndex() int                                                       { return t.index }

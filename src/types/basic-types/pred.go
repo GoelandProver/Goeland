@@ -160,8 +160,8 @@ func (p Pred) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakePred(p.GetIndex(), p.GetID(), replaceTermListTypesByMeta(p.GetArgs(), varList, index), instanciateTypeAppList(p.typeVars, varList, index), p.GetType())
 }
 
-func (p Pred) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	termList, res := replaceVarInTermList(p.GetArgs(), old, new)
+func (p Pred) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	termList, res := replaceTermInTermList(p.GetArgs(), old, new)
 	return MakePredSimple(p.GetIndex(), p.GetID(), termList, p.GetTypeVars(), p.MetaList, p.GetType()), res
 }
 
@@ -177,7 +177,7 @@ func (p Pred) GetSubTerms() *TermList {
 }
 
 func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
-	f, res := p.ReplaceVarByTerm(old, new)
+	f, res := p.ReplaceTermByTerm(old, new)
 
 	if p, isPred := f.(Pred); isPred && (IsOuterSko() || res) {
 		metaList := p.MetaList.Copy()

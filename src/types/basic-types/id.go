@@ -50,10 +50,6 @@ type Id struct {
 	name  string
 }
 
-var ToStringBis = func(i Id) string {
-	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
-}
-
 func (i Id) GetIndex() int     { return i.index }
 func (i Id) GetName() string   { return i.name }
 func (i Id) IsMeta() bool      { return false }
@@ -62,12 +58,16 @@ func (i Id) Copy() Term        { return MakeId(i.GetIndex(), i.GetName()) }
 func (Id) ToMeta() Meta        { return MakeEmptyMeta() }
 func (Id) GetMetas() *MetaList { return NewMetaList() }
 
+var ToStringId = func(i Id) string {
+	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
+}
+
 func (i Id) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"
 }
 
 func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", ToStringBis(i)
+	return "", ToStringId(i)
 }
 
 func NoIdToString(i Id) string {
