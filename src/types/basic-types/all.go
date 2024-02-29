@@ -36,23 +36,14 @@
 
 package basictypes
 
-import (
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-)
+import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 
 type All struct {
-	*MappedString
-	index    int
-	var_list []Var
-	f        Form
-	*MetaList
+	quantifier
 }
 
 func MakeAllSimple(i int, vars []Var, forms Form, metas *MetaList) All {
-	fms := &MappedString{}
-	all := All{fms, i, vars, forms, metas}
-	fms.MappableString = &all
-	return all
+	return All{makeQuantifier(i, vars, forms, metas)}
 }
 
 func MakeAll(i int, vars []Var, forms Form) All {
@@ -63,86 +54,53 @@ func MakerAll(vars []Var, forms Form) All {
 	return MakeAll(MakerIndexFormula(), vars, forms)
 }
 
-func (a All) GetIndex() int              { return a.index }
-func (a All) GetVarList() []Var          { return copyVarList(a.var_list) }
-func (a All) GetForm() Form              { return a.f.Copy() }
-func (a All) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-func (a All) GetMetas() *MetaList        { return a.GetForm().GetMetas() }
-
-func (a All) ToString() string {
-	return a.MappedString.ToString()
-}
-
 func (a All) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return QuantifierToMappedString(mapping[AllQuant], mapping, a.GetVarList(), a.GetForm(), displayTypes)
-}
-
-func (a All) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return " ", ""
-}
-
-func (a All) GetChildrenForMappedString() []MappableString {
-	return a.GetChildFormulas().ToMappableStringSlice()
-}
-
-func (a All) Copy() Form {
-	return MakeAllSimple(a.GetIndex(), copyVarList(a.GetVarList()), a.GetForm(), a.MetaList.Copy())
+	return a.quantifier.toMappedString(mapping[AllQuant], mapping, displayTypes)
 }
 
 func (a All) Equals(other any) bool {
 	if typed, ok := other.(All); ok {
-		return AreEqualsVarList(a.var_list, typed.var_list) && a.f.Equals(typed.f)
+		return AreEqualsVarList(a.GetVarList(), typed.GetVarList()) && a.GetForm().Equals(typed.GetForm())
 	}
 
 	return false
 }
 
-func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeAll(a.GetIndex(), a.GetVarList(), a.GetForm().ReplaceTypeByMeta(varList, index))
-}
-
-func (a All) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f, res := a.GetForm().ReplaceVarByTerm(old, new)
-	return MakeAllSimple(a.GetIndex(), a.GetVarList(), f, a.MetaList), res
-}
-
-func (a All) RenameVariables() Form {
-	newVarList, newForm := renameVariable(a.GetForm(), a.GetVarList())
-	return MakeAll(a.GetIndex(), newVarList, newForm)
-}
-
 func (a All) CleanFormula() Form {
-	a.var_list, a.f = cleanQuantifiedFormula(&a)
+	a.quantifier.varList, a.quantifier.subForm = a.quantifier.clean()
 
-	if len(a.var_list) > 0 {
+	if len(a.GetVarList()) > 0 {
 		return a
 	} else {
-		return a.f
+		return a.GetForm()
 	}
-}
-
-func (a All) GetSubTerms() *TermList {
-	return a.GetForm().GetSubTerms()
-}
-
-func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := a.GetForm().SubstituteVarByMeta(old, new)
-	return MakeAllSimple(a.index, a.var_list, f, f.GetInternalMetas().Copy())
-}
-
-func (a All) GetInternalMetas() *MetaList {
-	return a.MetaList
-}
-
-func (a All) SetInternalMetas(m *MetaList) Form {
-	a.MetaList = m
-	return a
 }
 
 func (a All) GetSubFormulasRecur() FormList {
 	return getAllSubFormulasAppended(a)
 }
 
-func (a All) GetChildFormulas() FormList {
-	return FormList{a.GetForm()}
+func (a All) Copy() Form {
+	return All{a.quantifier.copy()}
+}
+
+func (a All) RenameVariables() Form {
+	return All{a.quantifier.renameVariables()}
+}
+
+func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
+	return All{a.quantifier.replaceTypeByMeta(varList, index)}
+}
+
+func (a All) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
+	quant, isReplaced := a.quantifier.replaceVarByTerm(old, new)
+	return All{quant}, isReplaced
+}
+
+func (a All) SetInternalMetas(m *MetaList) Form {
+	return All{a.quantifier.setInternalMetas(m)}
+}
+
+func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
+	return All{a.quantifier.substituteVarByMeta(old, new)}
 }

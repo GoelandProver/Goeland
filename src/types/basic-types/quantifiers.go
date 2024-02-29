@@ -43,28 +43,119 @@ import (
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
-func renameVariable(form Form, varList []Var) ([]Var, Form) {
-	newVL := []Var{}
-	newForm := form
+type quantifier struct {
+	*MappedString
+	*MetaList
+	index   int
+	varList []Var
+	subForm Form
+}
 
-	for _, v := range varList {
+func makeQuantifier(i int, vars []Var, subForm Form, metas *MetaList) quantifier {
+	fms := &MappedString{}
+	qua := quantifier{fms, metas, i, vars, subForm}
+	fms.MappableString = &qua
+
+	return qua
+}
+
+func (q quantifier) GetIndex() int {
+	return q.index
+}
+
+func (q quantifier) GetVarList() []Var {
+	return copyVarList(q.varList)
+}
+
+func (q quantifier) GetForm() Form {
+	return q.subForm.Copy()
+}
+
+func (q quantifier) GetType() typing.TypeScheme {
+	return typing.DefaultPropType(0)
+}
+
+func (q quantifier) GetMetas() *MetaList {
+	return q.subForm.GetMetas()
+}
+
+func (q quantifier) ToString() string {
+	return q.MappedString.ToString()
+}
+
+func (q quantifier) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return " ", ""
+}
+
+func (q quantifier) GetChildrenForMappedString() []MappableString {
+	return q.GetChildFormulas().ToMappableStringSlice()
+}
+
+func (q quantifier) GetChildFormulas() FormList {
+	return FormList{q.GetForm()}
+}
+
+func (q quantifier) Equals(other any) bool {
+	if typed, ok := other.(quantifier); ok {
+		return AreEqualsVarList(q.varList, typed.varList) && q.subForm.Equals(typed.subForm)
+	}
+
+	return false
+}
+
+func (q quantifier) GetSubTerms() *TermList {
+	return q.GetForm().GetSubTerms()
+}
+
+func (q quantifier) GetInternalMetas() *MetaList {
+	return q.MetaList
+}
+
+func (q quantifier) copy() quantifier {
+	return makeQuantifier(q.GetIndex(), copyVarList(q.GetVarList()), q.GetForm(), q.MetaList.Copy())
+}
+
+func (q quantifier) replaceTypeByMeta(varList []typing.TypeVar, index int) quantifier {
+	return makeQuantifier(q.GetIndex(), q.GetVarList(), q.GetForm().ReplaceTypeByMeta(varList, index), q.MetaList.Copy())
+}
+
+func (q quantifier) replaceVarByTerm(old Var, new Term) (quantifier, bool) {
+	f, res := q.GetForm().ReplaceVarByTerm(old, new)
+	return makeQuantifier(q.GetIndex(), q.GetVarList(), f, q.MetaList.Copy()), res
+}
+
+func (q quantifier) renameVariables() quantifier {
+	newVarList := []Var{}
+	newForm := q.GetForm()
+
+	for _, v := range q.GetVarList() {
 		newVar := MakerNewVar(v.GetName())
 		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()), v.typeHint)
-		newVL = append(newVL, newVar)
+		newVarList = append(newVarList, newVar)
 		newForm, _ = newForm.RenameVariables().ReplaceVarByTerm(v, newVar)
 	}
 
-	return newVL, newForm
+	return makeQuantifier(q.GetIndex(), newVarList, newForm, q.MetaList.Copy())
 }
 
-func QuantifierToMappedString(quant string, mapping MapString, varList []Var, form Form, displayTypes bool) string {
+func (q quantifier) substituteVarByMeta(old Var, new Meta) quantifier {
+	newForm := q.GetForm().SubstituteVarByMeta(old, new)
+	return makeQuantifier(q.GetIndex(), q.GetVarList(), newForm, newForm.GetInternalMetas().Copy())
+}
+
+func (q quantifier) setInternalMetas(m *MetaList) quantifier {
+	q.MetaList = m
+	return q
+}
+
+func (q quantifier) toMappedString(quant string, mapping MapString, displayTypes bool) string {
 	type VarType struct {
 		vars  []Var
 		type_ typing.TypeApp
 	}
 
 	varsType := []VarType{}
-	for _, v := range varList {
+	for _, v := range q.GetVarList() {
 		found := false
 		for _, vt := range varsType {
 			if vt.type_.Equals(v.GetTypeApp()) {
@@ -81,7 +172,7 @@ func QuantifierToMappedString(quant string, mapping MapString, varList []Var, fo
 
 	for _, vt := range varsType {
 		str := mapping[QuantVarOpen]
-		str += ListToMappedString(varList, " ", "", mapping, false)
+		str += ListToMappedString(q.GetVarList(), " ", "", mapping, false)
 		str += " : " + vt.type_.ToString()
 		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
@@ -89,29 +180,20 @@ func QuantifierToMappedString(quant string, mapping MapString, varList []Var, fo
 	return "(" + quant + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (%s))"
 }
 
-type QuantifiedForm interface {
-	GetForm() Form
-	GetSubTerms() *TermList
-	GetVarList() []Var
-}
+func (q quantifier) clean() ([]Var, Form) {
+	f := q.GetForm().CleanFormula()
 
-func cleanQuantifiedFormula(qf QuantifiedForm) ([]Var, Form) {
-	f := qf.GetForm().CleanFormula()
-
-	varList := qf.GetVarList()
-	terms := qf.GetSubTerms()
-
-	areSeen := checkSeenVars(varList, terms)
-	newList := getSeenVars(areSeen, varList)
+	areSeen := q.checkSeenVars()
+	newList := q.getSeenVars(areSeen)
 
 	return newList, f
 }
 
-func checkSeenVars(varList []Var, terms *TermList) []bool {
-	areSeen := make([]bool, len(varList))
+func (q quantifier) checkSeenVars() []bool {
+	areSeen := make([]bool, len(q.GetVarList()))
 
-	for i, v := range varList {
-		for _, term := range terms.Slice() {
+	for i, v := range q.GetVarList() {
+		for _, term := range q.GetSubTerms().Slice() {
 			if term.Equals(v) {
 				areSeen[i] = true
 			}
@@ -120,12 +202,12 @@ func checkSeenVars(varList []Var, terms *TermList) []bool {
 	return areSeen
 }
 
-func getSeenVars(areSeen []bool, varList []Var) []Var {
+func (q quantifier) getSeenVars(areSeen []bool) []Var {
 	newList := []Var{}
 
 	for i, seen := range areSeen {
 		if seen {
-			newList = append(newList, varList[i])
+			newList = append(newList, q.GetVarList()[i])
 		}
 	}
 	return newList
