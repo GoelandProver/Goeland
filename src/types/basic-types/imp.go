@@ -103,9 +103,9 @@ func (i Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeImp(i.GetIndex(), i.GetF1().ReplaceTypeByMeta(varList, index), i.GetF2().ReplaceTypeByMeta(varList, index))
 }
 
-func (i Imp) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f1, res1 := i.GetF1().ReplaceVarByTerm(old, new)
-	f2, res2 := i.GetF2().ReplaceVarByTerm(old, new)
+func (i Imp) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	f1, res1 := i.GetF1().ReplaceTermByTerm(old, new)
+	f2, res2 := i.GetF2().ReplaceTermByTerm(old, new)
 
 	return MakeImpSimple(i.index, f1, f2, i.MetaList), res1 || res2
 }

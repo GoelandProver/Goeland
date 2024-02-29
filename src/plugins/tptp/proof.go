@@ -51,7 +51,7 @@ import (
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-var mutex sync.Mutex
+var mutex_proof_step sync.Mutex
 var id_proof_step = 0
 var prefix_step = "f"
 var prefix_axiom_cut = "ac"
@@ -122,7 +122,13 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 	// Closure.
 	case gs3.AX:
 		if isPredEqual(proof.GetTargetForm()) {
-			resultingString = "equality."
+			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, param(%d, %d), [%s])).",
+				proof.GetId(),
+				mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
+				"leftCongruence",
+				target,
+				target,
+				"")
 		} else {
 			target2 := -1
 			switch initial_formula := proof.GetTargetForm().(type) {
@@ -159,13 +165,13 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 	case gs3.NAND:
 		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftNotAnd")
 	case gs3.NEQU:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftNotEqu")
+		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftNotIff")
 	case gs3.OR:
 		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftOr")
 	case gs3.IMP:
 		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftImp2")
 	case gs3.EQU:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftEqu")
+		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftIff")
 
 	// Delta rules
 	case gs3.NALL:
@@ -182,7 +188,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 	// Weakening rule
 	case gs3.W:
 		if proof.TermGenerated() != nil {
-			resultingString = fmt.Sprintf("leftWeaken %s", getConstantName(proof.TermGenerated().(btps.Fun).GetID()))
+			resultingString = fmt.Sprintf("leftWeaken %s", proof.TermGenerated().ToMappedString(tptpMapConnectors(), false))
 		} else {
 			resultingString, childrenHypotheses, next_child_weakened_id = weakenStep(proof, hypotheses, target, "leftWeaken")
 		}
@@ -198,7 +204,7 @@ func alphaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 
 	children_id := []int{}
 	for _, c := range proof.Children() {
-		new_id := incrId()
+		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
 		children_id = append(children_id, new_id)
 		c.SetId(new_id)
 	}
@@ -220,7 +226,7 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, forma
 	children_id := []int{}
 
 	for i, c := range proof.Children() {
-		new_id := incrId()
+		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
 		children_id = append(children_id, new_id)
 		c.SetId(new_id)
 		hypoCopy = cp(hypotheses)
@@ -241,10 +247,12 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, forma
 func deltaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, format string) (string, []btps.FormList) {
 	children_id := []int{}
 	for _, c := range proof.Children() {
-		new_id := incrId()
+		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
 		children_id = append(children_id, new_id)
 		c.SetId(new_id)
 	}
+
+	generated_term := ToUpperCaseFirstLetter(proof.TermGenerated().ToMappedString(tptpMapConnectors(), false))
 
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])).",
 		prefix_step,
@@ -252,7 +260,7 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
 		format,
 		target,
-		proof.TermGenerated().ToMappedString(tptpMapConnectors(), false),
+		generated_term,
 		IntListToString(children_id, prefix_step))
 
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
@@ -261,32 +269,12 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 func gammaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, format string) (string, []btps.FormList) {
 	children_id := []int{}
 	for _, c := range proof.Children() {
-		new_id := incrId()
+		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
 		children_id = append(children_id, new_id)
 		c.SetId(new_id)
 	}
 
-	termGenerated := proof.TermGenerated()
-	var termGeneratedString string
-
-	if termGenerated == nil {
-
-		switch f_typed := proof.GetTargetForm().(type) {
-		case btps.All:
-			termGeneratedString = f_typed.GetVarList()[0].ToMappedString(tptpMapConnectors(), false)
-		case btps.Not:
-			switch f_typed_not := f_typed.GetForm().(type) {
-			case btps.Ex:
-				termGeneratedString = f_typed_not.GetVarList()[0].ToMappedString(tptpMapConnectors(), false)
-			default:
-				termGeneratedString = "NULL"
-			}
-		default:
-			termGeneratedString = "NULL"
-		}
-	} else {
-		termGeneratedString = proof.TermGenerated().ToMappedString(tptpMapConnectors(), false)
-	}
+	generated_term := ToUpperCaseFirstLetter(proof.TermGenerated().ToMappedString(tptpMapConnectors(), false))
 
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])).",
 		prefix_step,
@@ -294,14 +282,14 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
 		format,
 		target,
-		termGeneratedString,
+		generated_term,
 		IntListToString(children_id, prefix_step))
 
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
 }
 
 func weakenStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, format string) (string, []btps.FormList, int) {
-	child_id := incrId()
+	child_id := incrByOne(&id_proof_step, &mutex_proof_step)
 
 	if target != -1 {
 		hypotheses = hypotheses.Remove(target)
@@ -357,9 +345,9 @@ func makeTheorem(axioms btps.FormList, conjecture btps.Form) string {
 
 // Perform the first step to go from ax |- c to ax, ~c |-
 func performFirstStep(axioms btps.FormList, conjecture btps.Form, hypothesis btps.FormList, nextId int) (string, int) {
-	cutFormNotId := incrId()
-	cutFormHypId := incrId()
-	nextFormId := incrId()
+	cutFormNotId := incrByOne(&id_proof_step, &mutex_proof_step)
+	cutFormHypId := incrByOne(&id_proof_step, &mutex_proof_step)
+	nextFormId := incrByOne(&id_proof_step, &mutex_proof_step)
 
 	// Cut initial formula, |- ~c, c step
 	cutFormNot := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s, %s], inference(%s, param(%d), [%s])).",
@@ -376,7 +364,7 @@ func performFirstStep(axioms btps.FormList, conjecture btps.Form, hypothesis btp
 		cutFormHypId,
 		mapDefault(btps.ListToMappedString(append(axioms, conjecture), ", ", "", tptpMapConnectors(), false)),
 		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
-		"hyp",
+		"rightHyp",
 		len(axioms),
 		0,
 		"")
@@ -426,7 +414,7 @@ func performCutAxiomStep(axioms btps.FormList, conjecture btps.Form) string {
 	return resultString + "\n"
 }
 
-/*** Unmilitary Functions ***/
+/*** Utility Functions ***/
 
 func get(f btps.Form, fl btps.FormList) int {
 	for i, h := range fl {
@@ -453,17 +441,13 @@ func cp[T any](source []T) []T {
 	return arr
 }
 
-func incrId() int {
+func incrByOne(cpt *int, mutex *sync.Mutex) int {
 	res := -1
 	mutex.Lock()
-	id_proof_step = id_proof_step + 1
-	res = id_proof_step
+	*cpt = (*cpt) + 1
+	res = *cpt
 	mutex.Unlock()
 	return res
-}
-
-func getConstantName(id btps.Id) string {
-	return id.ToString()
 }
 
 func updateId(proof *gs3.GS3Sequent, i int) {
@@ -472,3 +456,6 @@ func updateId(proof *gs3.GS3Sequent, i int) {
 		proof.SetId(i)
 	}
 }
+
+// TODO ; tester avec desko en pre-inner pour les id -- exemple papier
+// fX1 et fx2 ?

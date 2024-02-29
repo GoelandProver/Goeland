@@ -114,8 +114,8 @@ func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
 }
 
-func (n Not) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f, res := n.f.ReplaceVarByTerm(old, new)
+func (n Not) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	f, res := n.f.ReplaceTermByTerm(old, new)
 	return MakeNotSimple(n.GetIndex(), f, n.MetaList), res
 }
 

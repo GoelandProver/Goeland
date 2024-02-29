@@ -102,9 +102,9 @@ func (e Equ) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeEqu(e.GetIndex(), e.GetF1().ReplaceTypeByMeta(varList, index), e.GetF2().ReplaceTypeByMeta(varList, index))
 }
 
-func (e Equ) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f1, res1 := e.GetF1().ReplaceVarByTerm(old, new)
-	f2, res2 := e.GetF2().ReplaceVarByTerm(old, new)
+func (e Equ) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	f1, res1 := e.GetF1().ReplaceTermByTerm(old, new)
+	f2, res2 := e.GetF2().ReplaceTermByTerm(old, new)
 	MakeEquSimple(e.GetIndex(), f1, f2, e.MetaList)
 	return MakeEquSimple(e.GetIndex(), f1, f2, e.MetaList), res1 || res2
 }

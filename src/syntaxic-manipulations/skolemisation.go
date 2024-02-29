@@ -134,7 +134,7 @@ func makeSkolemFunction(args skoArgs) btps.Term {
 }
 
 func substAndReturn(args skoArgs, sko btps.Term) btps.Form {
-	f, _ := args.formula.ReplaceVarByTerm(args.sourceVar, sko)
+	f, _ := args.formula.ReplaceTermByTerm(args.sourceVar, sko)
 	return f
 }
 

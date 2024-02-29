@@ -51,7 +51,7 @@ func renameVariable(form Form, varList []Var) ([]Var, Form) {
 		newVar := MakerNewVar(v.GetName())
 		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()), v.typeHint)
 		newVL = append(newVL, newVar)
-		newForm, _ = newForm.RenameVariables().ReplaceVarByTerm(v, newVar)
+		newForm, _ = newForm.RenameVariables().ReplaceTermByTerm(v, newVar)
 	}
 
 	return newVL, newForm

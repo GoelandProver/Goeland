@@ -100,8 +100,8 @@ func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeExSimple(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceTypeByMeta(varList, index), e.MetaList)
 }
 
-func (e Ex) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f, res := e.GetForm().ReplaceVarByTerm(old, new)
+func (e Ex) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	f, res := e.GetForm().ReplaceTermByTerm(old, new)
 	return MakeExSimple(e.GetIndex(), e.GetVarList(), f, e.MetaList), res
 }
 

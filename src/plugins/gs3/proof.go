@@ -639,7 +639,7 @@ func getSubformulas(term btps.Term, v btps.Var, form btps.Form) btps.FormList {
 	subforms := form.GetSubFormulasRecur()
 	dependantSubforms := btps.FormList{}
 	for _, f := range subforms {
-		f, res := f.ReplaceVarByTerm(v, term)
+		f, res := f.ReplaceTermByTerm(v, term)
 		if res {
 			dependantSubforms = append(dependantSubforms, f)
 		}
