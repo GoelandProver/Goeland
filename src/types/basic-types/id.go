@@ -75,11 +75,15 @@ func NoIdToString(i Id) string {
 }
 
 func QuotedToString(i Id) string {
-	r, _ := utf8.DecodeRuneInString(i.GetName())
-	if unicode.IsUpper(r) {
-		return fmt.Sprintf("'%s'", i.GetName())
-	} else {
+	if i.GetName() == "Goeland_I" || strings.Contains(i.GetName(), "Sko_") {
 		return fmt.Sprintf("%s", i.GetName())
+	} else {
+		r, _ := utf8.DecodeRuneInString(i.GetName())
+		if unicode.IsUpper(r) {
+			return fmt.Sprintf("'%s'", i.GetName())
+		} else {
+			return fmt.Sprintf("%s", i.GetName())
+		}
 	}
 }
 

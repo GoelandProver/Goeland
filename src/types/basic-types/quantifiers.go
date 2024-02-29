@@ -40,6 +40,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -113,7 +114,7 @@ func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool)
 	for _, vt := range varsType {
 		str := mapping[QuantVarOpen]
 		str += ListToMappedString(q.GetVarList(), " ", "", mapping, false)
-		if displayTypes {
+		if displayTypes || global.IsCoqOutput() {
 			str += " : " + vt.type_.ToString()
 		}
 		varStrings = append(varStrings, str+mapping[QuantVarClose])

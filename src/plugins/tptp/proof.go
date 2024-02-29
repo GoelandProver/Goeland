@@ -53,8 +53,13 @@ import (
 
 var mutex_proof_step sync.Mutex
 var id_proof_step = 0
+var mutex_constant sync.Mutex
+var original_term = make([]btps.Term, 0)
+var constant_created = make([]btps.Term, 0)
 var prefix_step = "f"
 var prefix_axiom_cut = "ac"
+var prefix_const = "Sko_"
+var dummyTerm = btps.MakerNewId("Goeland_I")
 
 func makeTptpProofFromGS3(proof *gs3.GS3Sequent) string {
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
@@ -108,14 +113,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 
 	updateId(proof, new_current_id)
 
-	// fmt.Printf("---------------------------\n")
-	// fmt.Printf("%s\n", proof.ToString())
-	// fmt.Printf("---------------------------\n")
-
 	target := get(proof.GetTargetForm(), hypotheses)
-
-	// fmt.Printf("Target : %d\n", target)
-	// fmt.Printf("Proof Rule : %d\n", proof.Rule())
 
 	switch proof.Rule() {
 
@@ -124,7 +122,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 		if isPredEqual(proof.GetTargetForm()) {
 			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, param(%d, %d), [%s])).",
 				proof.GetId(),
-				mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
+				mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), GetTypeProof())),
 				"leftCongruence",
 				target,
 				target,
@@ -144,7 +142,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 
 			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, param(%d, %d), [%s])).",
 				proof.GetId(),
-				mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
+				mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), GetTypeProof())),
 				"leftHyp",
 				target,
 				target2,
@@ -188,7 +186,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, new_current_id in
 	// Weakening rule
 	case gs3.W:
 		if proof.TermGenerated() != nil {
-			resultingString = fmt.Sprintf("leftWeaken %s", proof.TermGenerated().ToMappedString(tptpMapConnectors(), false))
+			resultingString = fmt.Sprintf("leftWeaken %s", findInConstants(proof.TermGenerated()).ToMappedString(tptpMapConnectors(), GetTypeProof()))
 		} else {
 			resultingString, childrenHypotheses, next_child_weakened_id = weakenStep(proof, hypotheses, target, "leftWeaken")
 		}
@@ -212,7 +210,7 @@ func alphaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d), [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), GetTypeProof())),
 		format,
 		target,
 		IntListToString(children_id, prefix_step))
@@ -252,15 +250,16 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 		c.SetId(new_id)
 	}
 
-	generated_term := ToUpperCaseFirstLetter(proof.TermGenerated().ToMappedString(tptpMapConnectors(), false))
+	new_term := createNewConstant(proof.TermGenerated())
+	proof = updateSkolemSymbol(proof.TermGenerated(), new_term, proof)
 
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), GetTypeProof())),
 		format,
 		target,
-		generated_term,
+		new_term.ToMappedString(tptpMapConnectors(), GetTypeProof()),
 		IntListToString(children_id, prefix_step))
 
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
@@ -274,15 +273,15 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses btps.FormList, target int, form
 		c.SetId(new_id)
 	}
 
-	generated_term := ToUpperCaseFirstLetter(proof.TermGenerated().ToMappedString(tptpMapConnectors(), false))
+	get(proof.GetTargetForm(), hypotheses)
 
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, param(%d, $fot(%s)), [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(hypotheses, ", ", "", tptpMapConnectors(), GetTypeProof())),
 		format,
 		target,
-		generated_term,
+		findInConstants(proof.TermGenerated()).ToMappedString(tptpMapConnectors(), GetTypeProof()),
 		IntListToString(children_id, prefix_step))
 
 	return resultingString, []btps.FormList{hypotheses.Merge(proof.GetResultFormulasOfChild(0))}
@@ -336,10 +335,10 @@ func makeTheorem(axioms btps.FormList, conjecture btps.Form) string {
 	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(GetProblemName(), ".", "_"), "=", "_"), "+", "_")
 
 	for _, ax := range axioms {
-		resulting_string = resulting_string + "fof(" + fmt.Sprintf("ax%d", ax.GetIndex()) + ", axiom, " + mapDefault(ax.ToMappedString(tptpMapConnectors(), false)) + ").\n\n"
+		resulting_string = resulting_string + "fof(" + fmt.Sprintf("ax%d", ax.GetIndex()) + ", axiom, " + mapDefault(ax.ToMappedString(tptpMapConnectors(), GetTypeProof())) + ").\n\n"
 	}
 
-	resulting_string = resulting_string + "fof(c_" + problemName + ", conjecture, " + mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)) + ").\n\n"
+	resulting_string = resulting_string + "fof(c_" + problemName + ", conjecture, " + mapDefault(conjecture.ToMappedString(tptpMapConnectors(), GetTypeProof())) + ").\n\n"
 	return resulting_string
 }
 
@@ -352,9 +351,9 @@ func performFirstStep(axioms btps.FormList, conjecture btps.Form, hypothesis btp
 	// Cut initial formula, |- ~c, c step
 	cutFormNot := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s, %s], inference(%s, param(%d), [%s])).",
 		cutFormNotId,
-		mapDefault(btps.ListToMappedString(axioms, ", ", "", tptpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(axioms, ", ", "", tptpMapConnectors(), GetTypeProof())),
 		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
-		mapDefault(btps.MakerNot(conjecture).ToMappedString(tptpMapConnectors(), false)),
+		mapDefault(btps.MakerNot(conjecture).ToMappedString(tptpMapConnectors(), GetTypeProof())),
 		"rightNot",
 		1,
 		prefix_step+strconv.Itoa(cutFormHypId))
@@ -362,9 +361,9 @@ func performFirstStep(axioms btps.FormList, conjecture btps.Form, hypothesis btp
 	// Cut initial formula, c |- c step
 	cutFormHyp := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s], inference(%s, param(%d, %d), [%s])).",
 		cutFormHypId,
-		mapDefault(btps.ListToMappedString(append(axioms, conjecture), ", ", "", tptpMapConnectors(), false)),
-		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
-		"rightHyp",
+		mapDefault(btps.ListToMappedString(append(axioms, conjecture), ", ", "", tptpMapConnectors(), GetTypeProof())),
+		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), GetTypeProof())),
+		"hyp",
 		len(axioms),
 		0,
 		"")
@@ -372,8 +371,8 @@ func performFirstStep(axioms btps.FormList, conjecture btps.Form, hypothesis btp
 	// Actual start of the formula with H |- C
 	startForm := fmt.Sprintf("fof(f%d, plain, [%s] --> [%s], inference(cut, param(%d, %d), [%s%d, %s%d])).\n\n",
 		nextId,
-		mapDefault(btps.ListToMappedString(axioms, ", ", "", tptpMapConnectors(), false)),
-		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
+		mapDefault(btps.ListToMappedString(axioms, ", ", "", tptpMapConnectors(), GetTypeProof())),
+		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), GetTypeProof())),
 		1,
 		hypothesis.Find(btps.MakerNot(conjecture)),
 		prefix_step,
@@ -401,8 +400,8 @@ func performCutAxiomStep(axioms btps.FormList, conjecture btps.Form) string {
 		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, [%s] --> [%s], inference(cut, param(%d, %d), [%s%d, %s])).\n",
 			prefix_axiom_cut,
 			i,
-			btps.ListToMappedString(axioms[:i], ", ", "", tptpMapConnectors(), false),
-			mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
+			btps.ListToMappedString(axioms[:i], ", ", "", tptpMapConnectors(), GetTypeProof()),
+			mapDefault(conjecture.ToMappedString(tptpMapConnectors(), GetTypeProof())),
 			0,
 			i,
 			"ax",
@@ -457,5 +456,61 @@ func updateId(proof *gs3.GS3Sequent, i int) {
 	}
 }
 
-// TODO ; tester avec desko en pre-inner pour les id -- exemple papier
-// fX1 et fx2 ?
+func updateSkolemSymbol(old, new btps.Term, proof *gs3.GS3Sequent) *gs3.GS3Sequent {
+
+	// Update Target Form
+	new_target_form, _ := proof.GetTargetForm().ReplaceTermByTerm(old, new)
+	proof.SetTargetForm(new_target_form)
+
+	// Update formGenerated
+	new_forms_generated := make([]btps.FormList, len(proof.GetResultFormulasOfChildren()))
+	for i, fg := range proof.GetResultFormulasOfChildren() {
+		new_forms_generated_bis := make(btps.FormList, len(fg))
+		for j, fg_bis := range fg {
+			new_forms_generated_bis[j], _ = fg_bis.ReplaceTermByTerm(old, new)
+		}
+		new_forms_generated[i] = new_forms_generated_bis
+	}
+
+	proof.SetFormGenerated(new_forms_generated)
+
+	// // Update Children
+	new_children := make([]*gs3.GS3Sequent, len(proof.Children()))
+	for i, child := range proof.Children() {
+		new_children[i] = updateSkolemSymbol(old, new, child)
+	}
+
+	proof.SetChildren(new_children)
+
+	return proof
+}
+
+/*** Constant created Management ***/
+
+func createNewConstant(term btps.Term) btps.Term {
+	mutex_constant.Lock()
+	new_id := len(constant_created)
+	new_term_name := fmt.Sprintf("%s%d", prefix_const, new_id)
+	new_term := btps.MakerNewId(new_term_name)
+	original_term = append(original_term, term)
+	constant_created = append(constant_created, new_term)
+	mutex_constant.Unlock()
+	return new_term
+}
+
+func findInConstants(term btps.Term) btps.Term {
+	if term == nil {
+		return dummyTerm
+	} else {
+		return getCreatedFromOriginal(term)
+	}
+}
+
+func getCreatedFromOriginal(term btps.Term) btps.Term {
+	for i, t := range original_term {
+		if t.Equals(term) {
+			return constant_created[i]
+		}
+	}
+	return dummyTerm
+}

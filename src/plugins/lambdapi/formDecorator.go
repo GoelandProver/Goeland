@@ -142,7 +142,7 @@ func (df DecoratedFun) ToMappedStringSurround(mapping basictypes.MapString, disp
 		if result[:6] == "skolem" {
 			result = string(possible) + "%s"
 		} else {
-			result = btps.ToMappedStringSurroundWithId(df.Fun, string(possible), mapping, displayTypes)
+			result = df.Fun.ToMappedStringSurroundWithId(string(possible), mapping, displayTypes)
 		}
 	}
 

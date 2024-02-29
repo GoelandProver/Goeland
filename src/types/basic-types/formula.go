@@ -77,9 +77,14 @@ func replaceTermInTermList(terms *TermList, oldTerm Term, newTerm Term) (*TermLi
 				newTermList.Append(val)
 			}
 		case Fun:
-			termList, r := replaceTermInTermList(nf.GetArgs(), oldTerm, newTerm)
-			newTermList.Append(MakerFun(nf.GetP(), termList, nf.GetTypeVars(), nf.GetTypeHint()))
-			res = res || r
+			if oldTerm.GetIndex() == nf.GetIndex() {
+				newTermList.Append(newTerm)
+				res = true
+			} else {
+				termList, r := replaceTermInTermList(nf.GetArgs(), oldTerm, newTerm)
+				newTermList.Append(MakerFun(nf.GetP(), termList, nf.GetTypeVars(), nf.GetTypeHint()))
+				res = res || r
+			}
 		default:
 			newTermList.Append(val)
 		}
