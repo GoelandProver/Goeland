@@ -462,6 +462,12 @@ func updateSkolemSymbol(old, new btps.Term, proof *gs3.GS3Sequent) *gs3.GS3Seque
 	new_target_form, _ := proof.GetTargetForm().ReplaceTermByTerm(old, new)
 	proof.SetTargetForm(new_target_form)
 
+	// Update generated term
+	if proof.TermGenerated() != nil {
+		new_generated_term := proof.TermGenerated().ReplaceSubTermBy(old, new)
+		proof.SetTermGenerated(new_generated_term)
+	}
+
 	// Update formGenerated
 	new_forms_generated := make([]btps.FormList, len(proof.GetResultFormulasOfChildren()))
 	for i, fg := range proof.GetResultFormulasOfChildren() {

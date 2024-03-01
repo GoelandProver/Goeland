@@ -169,6 +169,10 @@ func (seq *GS3Sequent) SetTargetForm(f btps.Form) {
 	seq.hypotheses[seq.appliedOn] = f
 }
 
+func (seq *GS3Sequent) SetTermGenerated(t btps.Term) {
+	seq.termGenerated = t
+}
+
 // ----------------------------------------------------------------------------
 // Private methods & functions
 // ----------------------------------------------------------------------------
