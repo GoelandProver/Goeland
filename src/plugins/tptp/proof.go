@@ -512,5 +512,5 @@ func getCreatedFromOriginal(term btps.Term) btps.Term {
 			return constant_created[i]
 		}
 	}
-	return dummyTerm
+	return term
 }

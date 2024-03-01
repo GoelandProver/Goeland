@@ -83,7 +83,11 @@ func EnableDebug() {
 	}
 }
 
-func printToLogger(logger *log.Logger, function, message string) {
+func DisableLoggers() {
+	printToLogger = func(*log.Logger, string, string) {}
+}
+
+var printToLogger = func(logger *log.Logger, function, message string) {
 	toParse := "[%.6fs]"
 	options := []any{time.Since(start).Seconds()}
 

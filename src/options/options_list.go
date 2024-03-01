@@ -319,6 +319,12 @@ func buildOptions() {
 		"Print predicates between quotes if they start by a capital letter (TPTP compliance)",
 		func(bool) { basictypes.ToStringId = basictypes.QuotedToString },
 		func(bool) {})
+	(&option[bool]{}).init(
+		"quiete",
+		false,
+		"Remove Goeland output in terminal",
+		func(bool) { global.DisableLoggers() },
+		func(bool) {})
 }
 
 func chronoInit() {

@@ -105,13 +105,13 @@ func PrintSearchResult(res bool) {
 		}
 	}
 
-	global.PrintInfo("Res", fmt.Sprintf("%v RES : %v", "%", validity))
+	global.PrintInfo("MAIN", fmt.Sprintf("%v RES : %v", "%", validity))
 	printStandardSolution(status)
 }
 
 // Do not change this function, it is the standard output for TPTP files
 func printStandardSolution(status string) {
-	fmt.Printf("%s SZS status %v for %v\n", "%", status, global.GetProblemName())
+	global.PrintInfo("MAIN", fmt.Sprintf("%s SZS status %v for %v\n", "%", status, global.GetProblemName()))
 }
 
 func retrieveMetaFromSubst(s treetypes.Substitutions) []int {
