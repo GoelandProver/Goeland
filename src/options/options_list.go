@@ -320,7 +320,7 @@ func buildOptions() {
 		func(bool) { basictypes.ToStringId = basictypes.QuotedToString },
 		func(bool) {})
 	(&option[bool]{}).init(
-		"quiete",
+		"quiet",
 		false,
 		"Remove Goeland output in terminal",
 		func(bool) { global.DisableLoggers() },
