@@ -61,5 +61,10 @@ func selectFromPolarity[T any](polarity bool, positive, negative T) T {
 
 func rewriteMapInsertion(polarity bool, key string, val basictypes.Form) {
 	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
+
+	if _, ok := rewriteMap[key]; !ok {
+		rewriteMap[key] = basictypes.NewFormList()
+	}
+
 	rewriteMap[key].Append(val)
 }

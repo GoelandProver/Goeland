@@ -84,6 +84,8 @@ func initPluginGlobalVariables() {
 	negativeRewrite = make(map[string]*basictypes.FormList)
 	positiveTree = treesearch.NewNode()
 	negativeTree = treesearch.NewNode()
+
+	registeredAxioms = basictypes.NewFormList()
 }
 
 /**
