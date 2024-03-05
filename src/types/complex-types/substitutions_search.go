@@ -264,15 +264,15 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 	case basictypes.Not:
 		res = basictypes.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case basictypes.And:
-		res_tmp := basictypes.MakeEmptyFormList()
-		for _, val := range nf.FormList {
-			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
+		res_tmp := basictypes.NewFormList()
+		for _, val := range nf.FormList.Slice() {
+			res_tmp.Append(ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = basictypes.MakeAnd(f.GetIndex(), res_tmp)
 	case basictypes.Or:
-		res_tmp := basictypes.MakeEmptyFormList()
-		for _, val := range nf.FormList {
-			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
+		res_tmp := basictypes.NewFormList()
+		for _, val := range nf.FormList.Slice() {
+			res_tmp.Append(ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = basictypes.MakeOr(f.GetIndex(), res_tmp)
 	case basictypes.Imp:
@@ -305,11 +305,11 @@ func ApplySubstitutionsOnFormula(s treetypes.Substitutions, f basictypes.Form) b
 }
 
 /* For each element of the substitution, apply it on the entire formula list */
-func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf basictypes.FormList) basictypes.FormList {
-	lf_res := basictypes.MakeEmptyFormList()
-	for _, f := range lf {
+func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf *basictypes.FormList) *basictypes.FormList {
+	lf_res := basictypes.NewFormList()
+	for _, f := range lf.Slice() {
 		new_form := ApplySubstitutionsOnFormula(s, f)
-		lf_res = lf_res.AppendIfNotContains(new_form)
+		lf_res.AppendIfNotContains(new_form)
 
 	}
 	return lf_res

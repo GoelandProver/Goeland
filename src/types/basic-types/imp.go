@@ -123,8 +123,8 @@ func (i Imp) GetSubTerms() *TermList {
 }
 
 func (i Imp) SubstituteVarByMeta(old Var, new Meta) Form {
-	fl, metas := substVarByMetaInFormList(old, new, FormList{i.f1, i.f2}, i.MetaList)
-	return MakeImpSimple(i.index, fl[0], fl[1], metas)
+	fl, metas := substVarByMetaInFormList(old, new, NewFormList(i.f1, i.f2), i.MetaList)
+	return MakeImpSimple(i.index, fl.Get(0), fl.Get(1), metas)
 }
 
 func (i Imp) GetInternalMetas() *MetaList {
@@ -136,10 +136,10 @@ func (i Imp) SetInternalMetas(m *MetaList) Form {
 	return i
 }
 
-func (i Imp) GetSubFormulasRecur() FormList {
+func (i Imp) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(i)
 }
 
-func (i Imp) GetChildFormulas() FormList {
-	return FormList{i.f1, i.f2}
+func (i Imp) GetChildFormulas() *FormList {
+	return NewFormList(i.f1, i.f2)
 }

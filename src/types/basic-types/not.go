@@ -146,12 +146,12 @@ func (n Not) SetInternalMetas(m *MetaList) Form {
 	return n
 }
 
-func (n Not) GetSubFormulasRecur() FormList {
+func (n Not) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(n)
 }
 
-func (n Not) GetChildFormulas() FormList {
-	return FormList{n.GetForm()}
+func (n Not) GetChildFormulas() *FormList {
+	return NewFormList(n.GetForm())
 }
 
 /** Utils **/

@@ -127,12 +127,11 @@ func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c C
 
 /* Take a list of equalities and build the corresponding code tree */
 func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
-	form_list := basictypes.MakeEmptyFormList()
+	formList := basictypes.NewFormList()
 	for _, e := range eq {
-		form_list = append(form_list, treetypes.MakerTermForm(e.GetT1()))
-		form_list = append(form_list, treetypes.MakerTermForm(e.GetT2()))
+		formList.Append(treetypes.MakerTermForm(e.GetT1()), treetypes.MakerTermForm(e.GetT2()))
 	}
-	return new(treesearch.Node).MakeDataStruct(form_list.Copy(), true)
+	return treesearch.NewNode().MakeDataStruct(formList.Copy(), true)
 }
 
 /* Take a list of equalities and build the corresponding assocative map */

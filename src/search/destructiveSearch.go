@@ -91,8 +91,8 @@ func (ds *destructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool
 
 	global.PrintInfo("MAIN", fmt.Sprintf("nb_step : %v - limit : %v", global.GetNbStep(), limit))
 
-	tp := new(treesearch.Node)
-	tn := new(treesearch.Node)
+	tp := treesearch.NewNode()
+	tn := treesearch.NewNode()
 
 	state := complextypes.MakeState(limit, tp, tn, formula)
 	state.SetCurrentProofNodeId(0)
@@ -261,14 +261,14 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 		}
 
 		new_atomics := basictypes.MakeEmptyFormAndTermsList()
-		for _, f := range atomicsPlus {
+		for _, f := range atomicsPlus.Slice() {
 			ok := lam(f.Copy())
 			if !ok {
 				return
 			}
 			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(f.Copy(), basictypes.NewTermList()))
 		}
-		for _, f := range atomicsMinus {
+		for _, f := range atomicsMinus.Slice() {
 			ok := lam(basictypes.MakerNot(f))
 			if !ok {
 				return
@@ -380,7 +380,7 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st complextypes.State,
 
 	select {
 	case quit := <-c.quit:
-		visualization.WriteExchanges(father_id, st, given_substs, complextypes.SubstAndForm{}, "WaitFather - Die")
+		visualization.WriteExchanges(father_id, st, given_substs, complextypes.MakeEmptySubstAndForm(), "WaitFather - Die")
 		ds.manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
 		return
 
@@ -688,7 +688,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 }
 
 func (ds *destructiveSearch) DoEndManageBeta(fatherId uint64, state complextypes.State, c Communication, channels []Communication, currentNodeId int, originalNodeId int, childIds []int, metaToReintroduce []int) {
-	ds.waitChildren(MakeWcdArgs(fatherId, state, c, channels, []complextypes.SubstAndForm{}, complextypes.SubstAndForm{}, []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, currentNodeId, originalNodeId, false, childIds, metaToReintroduce))
+	ds.waitChildren(MakeWcdArgs(fatherId, state, c, channels, []complextypes.SubstAndForm{}, complextypes.MakeEmptySubstAndForm(), []complextypes.SubstAndForm{}, []complextypes.IntSubstAndFormAndTerms{}, currentNodeId, originalNodeId, false, childIds, metaToReintroduce))
 }
 
 func (ds *destructiveSearch) manageRewriteRules(fatherId uint64, state complextypes.State, c Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
@@ -731,7 +731,7 @@ func (ds *destructiveSearch) tryRewrite(rewritten []complextypes.IntSubstAndForm
 	newRewritten := []complextypes.IntSubstAndFormAndTerms{}
 	for _, isaf := range rewritten {
 		newFNTs := basictypes.MakeEmptyFormAndTermsList()
-		for _, isaf_f := range isaf.GetSaf().GetForm() {
+		for _, isaf_f := range isaf.GetSaf().GetForm().Slice() {
 			newFNTs = append(newFNTs, basictypes.MakeFormAndTerm(isaf_f, f.GetTerms()))
 		}
 
@@ -870,7 +870,7 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *complextype
 			global.PrintDebug("MCR", fmt.Sprintf("Formula = : %v", f.ToString()))
 
 			// Create substAndForm with the current form and the subst found
-			subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, basictypes.MakeSingleElementList(f.GetForm()))
+			subst_and_form_for_father := complextypes.MakeSubstAndForm(subst_for_father, basictypes.NewFormList(f.GetForm()))
 
 			global.PrintDebug("MCR", fmt.Sprintf("SubstAndForm created : %v", subst_and_form_for_father.ToString()))
 

@@ -44,24 +44,24 @@ import (
 type Or struct {
 	*MappedString
 	index int
-	FormList
+	*FormList
 	*MetaList
 }
 
 /** Constructors **/
 
-func MakeOrSimple(i int, forms FormList, metas *MetaList) Or {
+func MakeOrSimple(i int, forms *FormList, metas *MetaList) Or {
 	fms := &MappedString{}
 	or := Or{fms, i, forms, metas}
 	fms.MappableString = &or
 	return or
 }
 
-func MakeOr(i int, forms FormList) Or {
+func MakeOr(i int, forms *FormList) Or {
 	return MakeOrSimple(i, forms, NewMetaList())
 }
 
-func MakerOr(forms FormList) Or {
+func MakerOr(forms *FormList) Or {
 	return MakeOr(MakerIndexFormula(), forms)
 }
 
@@ -84,7 +84,7 @@ func (o Or) GetType() typing.TypeScheme {
 func (o Or) GetSubTerms() *TermList {
 	res := NewTermList()
 
-	for _, tl := range o.FormList {
+	for _, tl := range o.FormList.Slice() {
 		res.AppendIfNotContains(tl.GetSubTerms().Slice()...)
 	}
 
@@ -143,10 +143,10 @@ func (o Or) SetInternalMetas(m *MetaList) Form {
 	return o
 }
 
-func (o Or) GetSubFormulasRecur() FormList {
+func (o Or) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(o)
 }
 
-func (o Or) GetChildFormulas() FormList {
+func (o Or) GetChildFormulas() *FormList {
 	return o.FormList
 }

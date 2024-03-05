@@ -177,7 +177,7 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *complextype
 		if !found {
 			// La meta nouvellement générée n'apparaît pas dans la substitution
 			// Trouver celle de la formula de base
-			for _, f := range s.GetForm() {
+			for _, f := range s.GetForm().Slice() {
 				for _, term_formula := range f.GetMetas().Slice() {
 					if !found && term_formula.IsMeta() && term_formula.GetName() == new_meta.GetName() {
 						association_subst.Set(new_meta, term_formula)

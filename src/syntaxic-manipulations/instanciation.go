@@ -35,7 +35,7 @@ import (
 	"strings"
 
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 const (
@@ -46,25 +46,25 @@ const (
 /**
  * Instantiates once the formula fnt.
  */
-func Instantiate(fnt btps.FormAndTerms, index int) (btps.FormAndTerms, *btps.MetaList) {
-	var meta btps.Meta
+func Instantiate(fnt basictypes.FormAndTerms, index int) (basictypes.FormAndTerms, *basictypes.MetaList) {
+	var meta basictypes.Meta
 	terms := fnt.GetTerms()
 
 	switch f := fnt.GetForm().(type) {
-	case btps.Not:
-		if ex, isEx := f.GetForm().(btps.Ex); isEx {
+	case basictypes.Not:
+		if ex, isEx := f.GetForm().(basictypes.Ex); isEx {
 			fnt, meta = realInstantiate(ex.GetVarList(), index, is_exists, ex.GetForm(), terms)
 		}
-	case btps.All:
+	case basictypes.All:
 		fnt, meta = realInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
-	return fnt, btps.NewMetaList(meta)
+	return fnt, basictypes.NewMetaList(meta)
 }
 
-func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, terms *btps.TermList) (btps.FormAndTerms, btps.Meta) {
+func realInstantiate(varList []basictypes.Var, index, status int, subForm basictypes.Form, terms *basictypes.TermList) (basictypes.FormAndTerms, basictypes.Meta) {
 	v := varList[0]
-	meta := btps.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
+	meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
 	subForm = subForm.SubstituteVarByMeta(v, meta)
 
 	terms = terms.Copy()
@@ -74,16 +74,16 @@ func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, t
 
 	if len(varList) > 1 {
 		if status == is_exists {
-			ex := btps.MakerEx(varList[1:], subForm)
-			subForm = btps.RefuteForm(ex.SetInternalMetas(internalMetas))
+			ex := basictypes.MakerEx(varList[1:], subForm)
+			subForm = basictypes.RefuteForm(ex.SetInternalMetas(internalMetas))
 		} else {
-			subForm = btps.MakerAll(varList[1:], subForm)
+			subForm = basictypes.MakerAll(varList[1:], subForm)
 		}
 	} else {
 		if status == is_exists {
-			subForm = btps.RefuteForm(subForm)
+			subForm = basictypes.RefuteForm(subForm)
 		}
 	}
 
-	return btps.MakeFormAndTerm(subForm.SetInternalMetas(internalMetas), terms), meta
+	return basictypes.MakeFormAndTerm(subForm.SetInternalMetas(internalMetas), terms), meta
 }

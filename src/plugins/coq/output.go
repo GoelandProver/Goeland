@@ -42,7 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	"github.com/GoelandProver/Goeland/search"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
@@ -59,7 +59,7 @@ var CoqOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeCoqOutput,
 // TODO:
 //	* Write the context for TFF problems
 
-func MakeCoqOutput(prf []proof.ProofStruct, meta *btps.MetaList) string {
+func MakeCoqOutput(prf []proof.ProofStruct, meta *basictypes.MetaList) string {
 	if len(prf) == 0 {
 		global.PrintError("Coq", "Nothing to output")
 		return ""
@@ -69,7 +69,7 @@ func MakeCoqOutput(prf []proof.ProofStruct, meta *btps.MetaList) string {
 	return MakeCoqProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-var MakeCoqProof = func(proof *gs3.GS3Sequent, meta *btps.MetaList) string {
+var MakeCoqProof = func(proof *gs3.GS3Sequent, meta *basictypes.MetaList) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
 	proofString := makeCoqProofFromGS3(proof)
 	return contextString + "\n" + proofString
@@ -79,24 +79,24 @@ var MakeCoqProof = func(proof *gs3.GS3Sequent, meta *btps.MetaList) string {
 func mapDefault(str string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
 }
-func coqMapConnectors() map[btps.FormulaType]string {
-	return map[btps.FormulaType]string{
-		btps.AndConn:        "/\\",
-		btps.OrConn:         "\\/",
-		btps.ImpConn:        "->",
-		btps.EquConn:        "<->",
-		btps.NotConn:        "~",
-		btps.TopType:        "True",
-		btps.BotType:        "False",
-		btps.AllQuant:       "forall",
-		btps.ExQuant:        "exists",
-		btps.AllTypeQuant:   "forall",
-		btps.QuantVarOpen:   "(",
-		btps.QuantVarClose:  ")",
-		btps.QuantVarSep:    ",",
-		btps.PredEmpty:      "",
-		btps.PredTypeVarSep: ",",
-		btps.TypeVarType:    "Type",
+func coqMapConnectors() map[basictypes.FormulaType]string {
+	return map[basictypes.FormulaType]string{
+		basictypes.AndConn:        "/\\",
+		basictypes.OrConn:         "\\/",
+		basictypes.ImpConn:        "->",
+		basictypes.EquConn:        "<->",
+		basictypes.NotConn:        "~",
+		basictypes.TopType:        "True",
+		basictypes.BotType:        "False",
+		basictypes.AllQuant:       "forall",
+		basictypes.ExQuant:        "exists",
+		basictypes.AllTypeQuant:   "forall",
+		basictypes.QuantVarOpen:   "(",
+		basictypes.QuantVarClose:  ")",
+		basictypes.QuantVarSep:    ",",
+		basictypes.PredEmpty:      "",
+		basictypes.PredTypeVarSep: ",",
+		basictypes.TypeVarType:    "Type",
 	}
 }
 

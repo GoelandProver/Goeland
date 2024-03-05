@@ -254,8 +254,8 @@ func applyAlphaNotNotRule(formWithoutNot basictypes.Not, state *complextypes.Sta
 func applyAlphaNotOrRule(formWithoutNot basictypes.Or, state *complextypes.State, terms *basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
 	setStateRules(state, "ALPHA", "NOT", "OR")
 
-	for i := range formWithoutNot.FormList {
-		result = result.AppendIfNotContains(basictypes.MakeFormAndTerm(basictypes.RefuteForm(formWithoutNot.FormList[i]), terms))
+	for i := range formWithoutNot.FormList.Slice() {
+		result = result.AppendIfNotContains(basictypes.MakeFormAndTerm(basictypes.RefuteForm(formWithoutNot.FormList.Get(i)), terms))
 	}
 
 	return result
@@ -273,8 +273,8 @@ func applyAlphaNotImpRule(formWithoutNot basictypes.Imp, state *complextypes.Sta
 func applyAlphaAndRule(formTyped basictypes.And, state *complextypes.State, terms *basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
 	setStateRules(state, "ALPHA", "AND")
 
-	for i := range formTyped.FormList {
-		result = result.AppendIfNotContains(basictypes.MakeFormAndTerm(formTyped.FormList[i], terms))
+	for i := range formTyped.FormList.Slice() {
+		result = result.AppendIfNotContains(basictypes.MakeFormAndTerm(formTyped.FormList.Get(i), terms))
 	}
 
 	return result
@@ -322,8 +322,8 @@ func applyBetaNotRule(formTyped basictypes.Not, state *complextypes.State, terms
 func applyBetaNotAndRule(formWithoutNot basictypes.And, state *complextypes.State, terms *basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
 	setStateRules(state, "BETA", "NOT", "AND")
 
-	for i := range formWithoutNot.FormList {
-		result = append(result, basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(basictypes.RefuteForm(formWithoutNot.FormList[i]), terms)))
+	for i := range formWithoutNot.FormList.Slice() {
+		result = append(result, basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(basictypes.RefuteForm(formWithoutNot.FormList.Get(i)), terms)))
 	}
 
 	return result
@@ -347,8 +347,8 @@ func applyBetaNotEquRule(formWithoutNot basictypes.Equ, state *complextypes.Stat
 func applyBetaOrRule(formTyped basictypes.Or, state *complextypes.State, terms *basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
 	setStateRules(state, "BETA", "OR")
 
-	for i := range formTyped.FormList {
-		result = append(result, basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(formTyped.FormList[i], terms)))
+	for i := range formTyped.FormList.Slice() {
+		result = append(result, basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(formTyped.FormList.Get(i), terms)))
 	}
 
 	return result

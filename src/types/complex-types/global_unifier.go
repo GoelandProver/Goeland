@@ -39,7 +39,7 @@ import (
 	ttps "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 type substitutions = ttps.Substitutions
@@ -195,7 +195,7 @@ func (u *Unifier) Merge(other Unifier) {
 	PrintDebug("GLOBAL UNIFIER", fmt.Sprintf("After: %s", u.ToString()))
 }
 
-func (u *Unifier) PruneMetasInSubsts(metas *btps.MetaList) {
+func (u *Unifier) PruneMetasInSubsts(metas *basictypes.MetaList) {
 	for i, unif := range u.localUnifiers {
 		for _, meta := range metas.Slice() {
 			_, index := unif.Fst.Get(meta)

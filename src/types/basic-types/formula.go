@@ -50,8 +50,8 @@ type Form interface {
 	SetInternalMetas(*MetaList) Form
 	GetType() typing.TypeScheme
 	GetSubTerms() *TermList
-	GetSubFormulasRecur() FormList
-	GetChildFormulas() FormList
+	GetSubFormulasRecur() *FormList
+	GetChildFormulas() *FormList
 
 	Copyable[Form]
 	MappableString
@@ -109,10 +109,10 @@ func instanciateTypeAppList(typeApps []typing.TypeApp, vars []typing.TypeVar, in
 }
 
 // Creates and returns a MetaList from a FormList, making sure there are no duplicates
-func metasUnion(forms FormList) *MetaList {
+func metasUnion(forms *FormList) *MetaList {
 	res := NewMetaList()
 
-	for _, form := range forms {
+	for _, form := range forms.Slice() {
 		res.AppendIfNotContains(form.GetInternalMetas().Slice()...)
 	}
 
@@ -120,35 +120,35 @@ func metasUnion(forms FormList) *MetaList {
 }
 
 // Creates and returns a FormList
-func replaceList(oldForms FormList, vars []typing.TypeVar, index int) FormList {
-	newForms := MakeEmptyFormList()
+func replaceList(oldForms *FormList, vars []typing.TypeVar, index int) *FormList {
+	newForms := NewFormList()
 
-	for _, form := range oldForms {
-		newForms = append(newForms, form.ReplaceTypeByMeta(vars, index))
+	for _, form := range oldForms.Slice() {
+		newForms.Append(form.ReplaceTypeByMeta(vars, index))
 	}
 
 	return newForms
 }
 
-func replaceVarInFormList(oldForms FormList, oldVar Var, newTerm Term) (FormList, bool) {
-	newForms := MakeEmptyFormList()
+func replaceVarInFormList(oldForms *FormList, oldVar Var, newTerm Term) (*FormList, bool) {
+	newForms := NewFormList()
 	res := false
 
-	for _, form := range oldForms {
+	for _, form := range oldForms.Slice() {
 		newForm, r := form.ReplaceVarByTerm(oldVar, newTerm)
 		res = res || r
-		newForms = append(newForms, newForm)
+		newForms.Append(newForm)
 	}
 
 	return newForms, res
 }
 
 // Creates and returns a FormList with its Forms renamed
-func renameFormList(forms FormList) FormList {
-	newForms := MakeEmptyFormList()
+func renameFormList(forms *FormList) *FormList {
+	newForms := NewFormList()
 
-	for _, form := range forms {
-		newForms = append(newForms, form.RenameVariables())
+	for _, form := range forms.Slice() {
+		newForms.Append(form.RenameVariables())
 	}
 
 	return newForms

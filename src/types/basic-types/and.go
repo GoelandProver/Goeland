@@ -44,24 +44,24 @@ import (
 type And struct {
 	*MappedString
 	index int
-	FormList
+	*FormList
 	*MetaList
 }
 
 /** Constructors **/
 
-func MakeAndSimple(i int, forms FormList, metas *MetaList) And {
+func MakeAndSimple(i int, forms *FormList, metas *MetaList) And {
 	fms := &MappedString{}
 	and := And{fms, i, forms, metas}
 	fms.MappableString = &and
 	return and
 }
 
-func MakeAnd(i int, forms FormList) And {
+func MakeAnd(i int, forms *FormList) And {
 	return MakeAndSimple(i, forms, NewMetaList())
 }
 
-func MakerAnd(forms FormList) And {
+func MakerAnd(forms *FormList) And {
 	return MakeAnd(MakerIndexFormula(), forms)
 }
 
@@ -84,7 +84,7 @@ func (a And) GetType() typing.TypeScheme {
 func (a And) GetSubTerms() *TermList {
 	res := NewTermList()
 
-	for _, tl := range a.FormList {
+	for _, tl := range a.FormList.Slice() {
 		res.AppendIfNotContains(tl.GetSubTerms().Slice()...)
 	}
 
@@ -146,10 +146,10 @@ func (a And) SetInternalMetas(m *MetaList) Form {
 	return a
 }
 
-func (a And) GetSubFormulasRecur() FormList {
+func (a And) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(a)
 }
 
-func (a And) GetChildFormulas() FormList {
+func (a And) GetChildFormulas() *FormList {
 	return a.FormList
 }

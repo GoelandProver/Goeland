@@ -39,17 +39,17 @@ package basictypes
 import (
 	"sort"
 
-	. "github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
 /* Term */
 type TermList struct {
-	*List[Term]
+	*global.List[Term]
 }
 
 func NewTermList(slice ...Term) *TermList {
-	return &TermList{NewList[Term](slice...)}
+	return &TermList{global.NewList[Term](slice...)}
 }
 
 func (tl *TermList) Less(i, j int) bool {
@@ -146,7 +146,7 @@ func (tl *TermList) EqualsWithoutOrder(other *TermList) bool {
 }
 
 func AreEqualsTypeVarList(tv1, tv2 []typing.TypeVar) bool {
-	return ComparableList[typing.TypeVar](tv1).Equals(tv2)
+	return global.ComparableList[typing.TypeVar](tv1).Equals(tv2)
 }
 
 /* check if two lists of var are equals */

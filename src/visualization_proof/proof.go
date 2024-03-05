@@ -108,18 +108,18 @@ func (ifl *IntFormAndTermsList) Copy() IntFormAndTermsList {
 	return MakeIntFormAndTermsList(ifl.i, ifl.fl.Copy())
 }
 
-func (ifl *IntFormAndTermsList) GetForms() basictypes.FormList {
-	res := basictypes.MakeEmptyFormList()
+func (ifl *IntFormAndTermsList) GetForms() *basictypes.FormList {
+	res := basictypes.NewFormList()
 	for _, ift := range (*ifl).GetFL() {
-		res = append(res, ift.GetForm())
+		res.Append(ift.GetForm())
 	}
 	return res
 }
 
-func GetFormulasFromIntFormAndTermList(iftl []IntFormAndTermsList) basictypes.FormList {
-	res := basictypes.MakeEmptyFormList()
+func GetFormulasFromIntFormAndTermList(iftl []IntFormAndTermsList) *basictypes.FormList {
+	res := basictypes.NewFormList()
 	for _, v := range iftl {
-		res = append(res, v.GetForms()...)
+		res.Append(v.GetForms().Slice()...)
 	}
 	return res
 }
@@ -376,7 +376,7 @@ func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) *basictypes.
 		res.AppendIfNotContains(proofElement.GetFormula().GetForm().GetMetas().Slice()...)
 		resResultFormulas := GetFormulasFromIntFormAndTermList(proofElement.GetResultFormulas())
 
-		for _, v := range resResultFormulas {
+		for _, v := range resResultFormulas.Slice() {
 			res.AppendIfNotContains(v.GetInternalMetas().Slice()...)
 		}
 

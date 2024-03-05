@@ -141,7 +141,7 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 
 	if node.isLeaf() {
 		// global.PrintDebug("UX", fmt.Sprintf("Is leaf : %v", node.formulae.ToString()))
-		for _, f := range node.formulae {
+		for _, f := range node.formulae.Slice() {
 			if reflect.TypeOf(f) == reflect.TypeOf(basictypes.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(treetypes.TermForm{}) {
 				// Rebuild final substitution between meta and subst
 				final_subst := computeSubstitutions(treetypes.CopySubstPairList(m.subst), m.meta.Copy(), f.Copy())

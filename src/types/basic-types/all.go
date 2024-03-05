@@ -62,7 +62,7 @@ func (a All) Equals(other any) bool {
 	return false
 }
 
-func (a All) GetSubFormulasRecur() FormList {
+func (a All) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(a)
 }
 

@@ -37,29 +37,29 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	"github.com/GoelandProver/Goeland/search"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 var contextEnabled bool = false
 
-var lambdaPiMapConnectors = map[btps.FormulaType]string{
-	btps.AndConn:        "∧",
-	btps.OrConn:         "∨",
-	btps.ImpConn:        "⇒",
-	btps.EquConn:        "⇔",
-	btps.NotConn:        "¬",
-	btps.TopType:        "⊤",
-	btps.BotType:        "⊥",
-	btps.AllQuant:       "∀α",
-	btps.ExQuant:        "∃α",
-	btps.AllTypeQuant:   "∀",
-	btps.QuantVarOpen:   "(",
-	btps.QuantVarClose:  ")",
-	btps.QuantVarSep:    " ",
-	btps.PredEmpty:      "",
-	btps.PredTypeVarSep: ") (",
-	btps.TypeVarType:    "Type",
+var lambdaPiMapConnectors = map[basictypes.FormulaType]string{
+	basictypes.AndConn:        "∧",
+	basictypes.OrConn:         "∨",
+	basictypes.ImpConn:        "⇒",
+	basictypes.EquConn:        "⇔",
+	basictypes.NotConn:        "¬",
+	basictypes.TopType:        "⊤",
+	basictypes.BotType:        "⊥",
+	basictypes.AllQuant:       "∀α",
+	basictypes.ExQuant:        "∃α",
+	basictypes.AllTypeQuant:   "∀",
+	basictypes.QuantVarOpen:   "(",
+	basictypes.QuantVarClose:  ")",
+	basictypes.QuantVarSep:    " ",
+	basictypes.PredEmpty:      "",
+	basictypes.PredTypeVarSep: ") (",
+	basictypes.TypeVarType:    "Type",
 }
 
 var LambdapiOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeLambdapiOutput, Name: "Lambdapi", Extension: ".lp"}
@@ -73,7 +73,7 @@ var LambdapiOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeLambd
 // TODO:
 //	* Write the context for TFF problems
 
-func MakeLambdapiOutput(prf []proof.ProofStruct, meta *btps.MetaList) string {
+func MakeLambdapiOutput(prf []proof.ProofStruct, meta *basictypes.MetaList) string {
 	if len(prf) == 0 {
 		global.PrintError("LambdaPi", "Nothing to output")
 		return ""
@@ -83,7 +83,7 @@ func MakeLambdapiOutput(prf []proof.ProofStruct, meta *btps.MetaList) string {
 	return MakeLambdaPiProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-var MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta *btps.MetaList) string {
+var MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta *basictypes.MetaList) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
 	proofString := makeLambdaPiProofFromGS3(proof)
 	return contextString + "\n" + proofString

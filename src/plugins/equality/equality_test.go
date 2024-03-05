@@ -244,9 +244,9 @@ func initTestVariable() {
 	not_pcd = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.NewTermList(c, d), []typing.TypeApp{}))
 }
 
-func initCodeTreesTests(lf basictypes.FormList) (datastruct.DataStructure, datastruct.DataStructure) {
-	tp = new(treesearch.Node)
-	tn = new(treesearch.Node)
+func initCodeTreesTests(lf *basictypes.FormList) (datastruct.DataStructure, datastruct.DataStructure) {
+	tp = treesearch.NewNode()
+	tn = treesearch.NewNode()
 	tp = tp.MakeDataStruct(lf, true)
 	tn = tn.MakeDataStruct(lf, false)
 	return tp, tn
@@ -271,13 +271,13 @@ func TestAS(t *testing.T) {
 	**/
 
 	// Original problem
-	lf := basictypes.FormList{eq_x_y}
+	lf := basictypes.NewFormList(eq_x_y)
 	tp, tn = initCodeTreesTests(lf)
 	eq := retrieveEqualities(tp.Copy())
 	ep := makeEqualityProblem(eq, x, y, makeEmptyConstraintStruct())
 
 	// Expected problem
-	lf2 := basictypes.FormList{eq_x_a}
+	lf2 := basictypes.NewFormList(eq_x_a)
 	tp, tn = initCodeTreesTests(lf2)
 	eq2 := retrieveEqualities(tp.Copy())
 	expected_ep := makeEqualityProblem(eq2, x, a, makeEmptyConstraintStruct())

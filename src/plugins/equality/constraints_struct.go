@@ -68,9 +68,6 @@ func (cs *ConstraintStruct) setPrec(cl ConstraintList) {
 func (cs *ConstraintStruct) setAllConstraits(cl ConstraintList) {
 	cs.all_constraints = cl.Copy()
 }
-func (cs *ConstraintStruct) addPrec(c Constraint) {
-	cs.setPrec(append(cs.getPrec(), c))
-}
 func (cs *ConstraintStruct) addAllConstraints(c Constraint) {
 	cs.setAllConstraits(append(cs.getAllConstraints(), c))
 }

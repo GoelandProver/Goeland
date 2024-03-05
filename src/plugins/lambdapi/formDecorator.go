@@ -34,15 +34,15 @@ package lambdapi
 import (
 	"fmt"
 
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 type DecoratedAll struct {
-	btps.All
+	basictypes.All
 }
 
-func MakeDecoratedAll(all btps.All) DecoratedAll {
-	if typed, ok := all.Copy().(btps.All); ok {
+func MakeDecoratedAll(all basictypes.All) DecoratedAll {
+	if typed, ok := all.Copy().(basictypes.All); ok {
 		all = typed
 	}
 	decorated := DecoratedAll{all}
@@ -50,11 +50,11 @@ func MakeDecoratedAll(all btps.All) DecoratedAll {
 	return decorated
 }
 
-func (da DecoratedAll) ToMappedStringSurround(mapping btps.MapString, displayTypes bool) string {
-	return QuantifierToMappedString(mapping[btps.AllQuant], da.GetVarList())
+func (da DecoratedAll) ToMappedStringSurround(mapping basictypes.MapString, displayTypes bool) string {
+	return QuantifierToMappedString(mapping[basictypes.AllQuant], da.GetVarList())
 }
 
-func QuantifierToMappedString(quant string, varList []btps.Var) string {
+func QuantifierToMappedString(quant string, varList []basictypes.Var) string {
 	if len(varList) == 0 {
 		return "%s"
 	} else {
@@ -65,11 +65,11 @@ func QuantifierToMappedString(quant string, varList []btps.Var) string {
 }
 
 type DecoratedEx struct {
-	btps.Ex
+	basictypes.Ex
 }
 
-func MakeDecoratedEx(ex btps.Ex) DecoratedEx {
-	if typed, ok := ex.Copy().(btps.Ex); ok {
+func MakeDecoratedEx(ex basictypes.Ex) DecoratedEx {
+	if typed, ok := ex.Copy().(basictypes.Ex); ok {
 		ex = typed
 	}
 	decorated := DecoratedEx{ex}
@@ -77,16 +77,16 @@ func MakeDecoratedEx(ex btps.Ex) DecoratedEx {
 	return decorated
 }
 
-func (de DecoratedEx) ToMappedStringSurround(mapping btps.MapString, displayTypes bool) string {
-	return QuantifierToMappedString(mapping[btps.ExQuant], de.GetVarList())
+func (de DecoratedEx) ToMappedStringSurround(mapping basictypes.MapString, displayTypes bool) string {
+	return QuantifierToMappedString(mapping[basictypes.ExQuant], de.GetVarList())
 }
 
 type DecoratedVar struct {
-	btps.Var
+	basictypes.Var
 }
 
-func MakeDecoratedVar(newVar btps.Var) DecoratedVar {
-	if typed, ok := newVar.Copy().(btps.Var); ok {
+func MakeDecoratedVar(newVar basictypes.Var) DecoratedVar {
+	if typed, ok := newVar.Copy().(basictypes.Var); ok {
 		newVar = typed
 	}
 	decorated := DecoratedVar{newVar}
@@ -94,17 +94,17 @@ func MakeDecoratedVar(newVar btps.Var) DecoratedVar {
 	return decorated
 }
 
-func (da DecoratedVar) ToMappedStringChild(mapping btps.MapString, displayTypes bool) (separator, emptyValue string) {
+func (da DecoratedVar) ToMappedStringChild(mapping basictypes.MapString, displayTypes bool) (separator, emptyValue string) {
 	emptyValue = getFromContext(da.Var)
 	return "", emptyValue
 }
 
 type DecoratedPred struct {
-	btps.Pred
+	basictypes.Pred
 }
 
-func MakeDecoratedPred(newPred btps.Pred) DecoratedPred {
-	if typed, ok := newPred.Copy().(btps.Pred); ok {
+func MakeDecoratedPred(newPred basictypes.Pred) DecoratedPred {
+	if typed, ok := newPred.Copy().(basictypes.Pred); ok {
 		newPred = typed
 	}
 	decorated := DecoratedPred{newPred}
@@ -112,17 +112,17 @@ func MakeDecoratedPred(newPred btps.Pred) DecoratedPred {
 	return decorated
 }
 
-func (dp DecoratedPred) ToMappedStringChild(mapping btps.MapString, displayTypes bool) (separator, emptyValue string) {
+func (dp DecoratedPred) ToMappedStringChild(mapping basictypes.MapString, displayTypes bool) (separator, emptyValue string) {
 	_, emptyValue = dp.Pred.ToMappedStringChild(mapping, displayTypes)
 	return " ", emptyValue
 }
 
 type DecoratedFun struct {
-	btps.Fun
+	basictypes.Fun
 }
 
-func MakeDecoratedFun(newFun btps.Fun) DecoratedFun {
-	if typed, ok := newFun.Copy().(btps.Fun); ok {
+func MakeDecoratedFun(newFun basictypes.Fun) DecoratedFun {
+	if typed, ok := newFun.Copy().(basictypes.Fun); ok {
 		newFun = typed
 	}
 	decorated := DecoratedFun{newFun}
@@ -130,11 +130,11 @@ func MakeDecoratedFun(newFun btps.Fun) DecoratedFun {
 	return decorated
 }
 
-func (df DecoratedFun) ToMappedStringChild(mapping btps.MapString, displayTypes bool) (separator, emptyValue string) {
-	return " ", mapping[btps.PredEmpty]
+func (df DecoratedFun) ToMappedStringChild(mapping basictypes.MapString, displayTypes bool) (separator, emptyValue string) {
+	return " ", mapping[basictypes.PredEmpty]
 }
 
-func (df DecoratedFun) ToMappedStringSurround(mapping btps.MapString, displayTypes bool) string {
+func (df DecoratedFun) ToMappedStringSurround(mapping basictypes.MapString, displayTypes bool) string {
 	result := df.Fun.ToMappedStringSurround(mapping, displayTypes)
 
 	possible, exists := context.GetExists(df.Fun)
@@ -149,17 +149,17 @@ func (df DecoratedFun) ToMappedStringSurround(mapping btps.MapString, displayTyp
 	return result
 }
 
-func decorateForm(form btps.MappableString) btps.MappableString {
+func decorateForm(form basictypes.MappableString) basictypes.MappableString {
 	switch typed := form.(type) {
-	case btps.All:
+	case basictypes.All:
 		return MakeDecoratedAll(typed)
-	case btps.Ex:
+	case basictypes.Ex:
 		return MakeDecoratedEx(typed)
-	case btps.Var:
+	case basictypes.Var:
 		return MakeDecoratedVar(typed)
-	case btps.Pred:
+	case basictypes.Pred:
 		return MakeDecoratedPred(typed)
-	case btps.Fun:
+	case basictypes.Fun:
 		return MakeDecoratedFun(typed)
 	default:
 		return typed

@@ -76,7 +76,7 @@ func TryEquality(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.St
 * creates the problem
 * returns a bool for success and the corresponding substitution
 **/
-func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList, originalNodeId int) (bool, []treetypes.Substitutions) {
+func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic *basictypes.FormList, originalNodeId int) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ER", "ER call")
 	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
 	if equalities {

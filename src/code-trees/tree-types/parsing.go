@@ -68,8 +68,8 @@ func (t TermForm) GetIndex() int                                                
 func (t TermForm) SubstituteVarByMeta(basictypes.Var, basictypes.Meta) basictypes.Form { return t }
 func (t TermForm) GetInternalMetas() *basictypes.MetaList                              { return basictypes.NewMetaList() }
 func (t TermForm) SetInternalMetas(*basictypes.MetaList) basictypes.Form               { return t }
-func (t TermForm) GetSubFormulasRecur() basictypes.FormList                            { return basictypes.FormList{} }
-func (t TermForm) GetChildFormulas() basictypes.FormList                               { return basictypes.FormList{} }
+func (t TermForm) GetSubFormulasRecur() *basictypes.FormList                           { return basictypes.NewFormList() }
+func (t TermForm) GetChildFormulas() *basictypes.FormList                              { return basictypes.NewFormList() }
 
 func (t TermForm) Equals(t2 any) bool {
 	switch nt := t2.(type) {

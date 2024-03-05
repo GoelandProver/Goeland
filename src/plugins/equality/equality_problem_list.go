@@ -246,9 +246,9 @@ func buildEqualityProblemMultiListFromPredList(pred basictypes.Pred, tn datastru
 }
 
 /* Take a list of form and build an equality problem list, corresponding to thoses related to a predicate and its negation */
-func buildEqualityProblemMultiListFromFormList(fl basictypes.FormList, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
+func buildEqualityProblemMultiListFromFormList(fl *basictypes.FormList, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
-	for _, p := range fl {
+	for _, p := range fl.Slice() {
 		if pt, ok := p.(basictypes.Pred); ok {
 			global.PrintDebug("BEPMLFFL", fmt.Sprintf("Pred found : %v", p.ToString()))
 			if !pt.GetID().Equals(basictypes.Id_eq) {
@@ -263,7 +263,7 @@ func buildEqualityProblemMultiListFromFormList(fl basictypes.FormList, tn datast
 * Take a form list
 * Retun a lis of independent problem list (from predicate and negation) + a boolean, true if there is equality in the formula list, false otherwise
 **/
-func buildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.DataStructure) (EqualityProblemMultiList, bool) {
+func buildEqualityProblemMultiList(fl *basictypes.FormList, tp, tn datastruct.DataStructure) (EqualityProblemMultiList, bool) {
 	res := makeEmptyEqualityProblemMultiList()
 	eq := retrieveEqualities(tp.Copy())
 	if len(eq) <= 0 {

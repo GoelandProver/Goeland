@@ -34,7 +34,7 @@ package polyrules
 
 import (
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
@@ -45,26 +45,26 @@ import (
 func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	// Add rule to prooftree
 	switch (state.consequence.f).(type) {
-	case btypes.All, btypes.AllType:
+	case basictypes.All, basictypes.AllType:
 		root.appliedRule = "∀"
-	case btypes.Ex:
+	case basictypes.Ex:
 		root.appliedRule = "∃"
 	}
 
-	var newForm btypes.Form
-	var varTreated btypes.Var
+	var newForm basictypes.Form
+	var varTreated basictypes.Var
 	var typeTreated typing.TypeVar
 
 	varInstantiated := false
 
 	switch f := (state.consequence.f).(type) {
-	case btypes.All, btypes.Ex:
+	case basictypes.All, basictypes.Ex:
 		varTreated, newForm = removeOneVar(state.consequence.f)
 		varInstantiated = true
-	case btypes.AllType:
+	case basictypes.AllType:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			typeTreated, newForm = v, btypes.MakeAllType(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
+			typeTreated, newForm = v, basictypes.MakeAllType(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
 		} else {
 			typeTreated, newForm = v, f.GetForm()
 		}
@@ -84,20 +84,20 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 
 /* Applies OR or AND rule and launches n goroutines waiting its children */
 func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	formList := btypes.MakeEmptyFormList()
+	formList := basictypes.NewFormList()
 	// Add rule to prooftree
 	switch f := (state.consequence.f).(type) {
-	case btypes.And:
+	case basictypes.And:
 		root.appliedRule = "∧"
 		formList = f.FormList
-	case btypes.Or:
+	case basictypes.Or:
 		root.appliedRule = "∨"
 		formList = f.FormList
 	}
 
 	// Construct children with all the formulas
 	children := []Sequent{}
-	for _, form := range formList {
+	for _, form := range formList.Slice() {
 		children = append(children, Sequent{
 			globalContext: state.globalContext,
 			localContext:  state.localContext.copy(),
@@ -112,13 +112,13 @@ func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 
 /* Applies => or <=> rule and launches 2 goroutines waiting its children */
 func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	var f1, f2 btypes.Form
+	var f1, f2 basictypes.Form
 	// Add rule to prooftree
 	switch f := (state.consequence.f).(type) {
-	case btypes.Imp:
+	case basictypes.Imp:
 		root.appliedRule = "⇒"
 		f1, f2 = f.GetF1(), f.GetF2()
-	case btypes.Equ:
+	case basictypes.Equ:
 		root.appliedRule = "⇔"
 		f1, f2 = f.GetF1(), f.GetF2()
 	}
@@ -146,9 +146,9 @@ func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct
 func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	// Add rule to prooftree
 	switch (state.consequence.f).(type) {
-	case btypes.Top:
+	case basictypes.Top:
 		root.appliedRule = "⊤"
-	case btypes.Bot:
+	case basictypes.Bot:
 		root.appliedRule = "⊥"
 	}
 
@@ -168,7 +168,7 @@ func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct
 func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	// Add rule to prooftree
 	root.appliedRule = "¬"
-	form := (state.consequence.f).(btypes.Not).GetForm()
+	form := (state.consequence.f).(basictypes.Not).GetForm()
 
 	// Construct children with the contexts
 	children := []Sequent{
@@ -188,27 +188,27 @@ func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
  * universal / existential form iff it still possesses other vars.
  * Otherwise, it returns the form gotten with GetForm().
  **/
-func removeOneVar(form btypes.Form) (btypes.Var, btypes.Form) {
+func removeOneVar(form basictypes.Form) (basictypes.Var, basictypes.Form) {
 	// It's pretty much the same thing, but I don't have a clue on how to factorize this..
 	switch f := form.(type) {
-	case btypes.Ex:
+	case basictypes.Ex:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			return v, btypes.MakeEx(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
+			return v, basictypes.MakeEx(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
 		}
 		return v, f.GetForm()
-	case btypes.All:
+	case basictypes.All:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			return v, btypes.MakeAll(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
+			return v, basictypes.MakeAll(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
 		}
 		return v, f.GetForm()
 	}
-	return btypes.Var{}, nil
+	return basictypes.Var{}, nil
 }
 
 /* Makes the child treating the variable depending on which is set. */
-func mkQuantChildren(state Sequent, varInstantiated bool, varTreated btypes.Var, typeTreated typing.TypeVar, newForm btypes.Form) []Sequent {
+func mkQuantChildren(state Sequent, varInstantiated bool, varTreated basictypes.Var, typeTreated typing.TypeVar, newForm basictypes.Form) []Sequent {
 	var type_ typing.TypeApp
 	var newLocalContext LocalContext
 	if varInstantiated {

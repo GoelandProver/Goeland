@@ -35,7 +35,7 @@ package polypass
 import (
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
@@ -44,46 +44,46 @@ import (
  *	- Give a type to the polymorph predicates / functions
  **/
 
-func SecondPass(form btypes.Form) btypes.Form {
-	after := secondPassAux(form, []btypes.Var{}, []typing.TypeApp{})
+func SecondPass(form basictypes.Form) basictypes.Form {
+	after := secondPassAux(form, []basictypes.Var{}, []typing.TypeApp{})
 	return after
 }
 
-func secondPassAux(form btypes.Form, vars []btypes.Var, types []typing.TypeApp) btypes.Form {
+func secondPassAux(form basictypes.Form, vars []basictypes.Var, types []typing.TypeApp) basictypes.Form {
 	switch f := form.(type) {
-	case btypes.Pred:
+	case basictypes.Pred:
 		terms, typeApps := nArySecondPassTerms(f.GetArgs(), vars, types)
 
 		// Special case: defined predicate. We need to infer types.
-		if f.GetID().Equals(btypes.Id_eq) {
-			return btypes.MakePred(f.GetIndex(), f.GetID(), terms, []typing.TypeApp{typing.GetOutType(To[btypes.TypedTerm, btypes.Term](terms.Get(0)).GetTypeHint())})
+		if f.GetID().Equals(basictypes.Id_eq) {
+			return basictypes.MakePred(f.GetIndex(), f.GetID(), terms, []typing.TypeApp{typing.GetOutType(To[basictypes.TypedTerm, basictypes.Term](terms.Get(0)).GetTypeHint())})
 		}
 
 		// Real case: classical predicate, it should be given
-		return btypes.MakePred(f.GetIndex(), f.GetID(), terms, typeApps)
-	case btypes.And:
-		return btypes.MakeAnd(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
-	case btypes.Or:
-		return btypes.MakeOr(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
-	case btypes.Imp:
-		return btypes.MakeImp(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
-	case btypes.Equ:
-		return btypes.MakeEqu(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
-	case btypes.Not:
-		return btypes.MakeNot(f.GetIndex(), secondPassAux(f.GetForm(), vars, types))
-	case btypes.All:
-		return btypes.MakeAll(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
-	case btypes.Ex:
-		return btypes.MakeEx(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
-	case btypes.AllType:
-		return btypes.MakeAllType(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), vars, append(types, ConvertList[typing.TypeVar, typing.TypeApp](f.GetVarList())...)))
+		return basictypes.MakePred(f.GetIndex(), f.GetID(), terms, typeApps)
+	case basictypes.And:
+		return basictypes.MakeAnd(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
+	case basictypes.Or:
+		return basictypes.MakeOr(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
+	case basictypes.Imp:
+		return basictypes.MakeImp(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
+	case basictypes.Equ:
+		return basictypes.MakeEqu(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
+	case basictypes.Not:
+		return basictypes.MakeNot(f.GetIndex(), secondPassAux(f.GetForm(), vars, types))
+	case basictypes.All:
+		return basictypes.MakeAll(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
+	case basictypes.Ex:
+		return basictypes.MakeEx(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
+	case basictypes.AllType:
+		return basictypes.MakeAllType(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), vars, append(types, ConvertList[typing.TypeVar, typing.TypeApp](f.GetVarList())...)))
 	}
 	return form
 }
 
-func secondPassTerm(term btypes.Term, vars []btypes.Var, types []typing.TypeApp) (btypes.Term, []typing.TypeApp) {
+func secondPassTerm(term basictypes.Term, vars []basictypes.Var, types []typing.TypeApp) (basictypes.Term, []typing.TypeApp) {
 	switch t := term.(type) {
-	case btypes.Fun:
+	case basictypes.Fun:
 		// 3 cases:
 		//	- It's a TypeHint
 		if typing.IsPrimitive(t.GetName()) {
@@ -98,8 +98,8 @@ func secondPassTerm(term btypes.Term, vars []btypes.Var, types []typing.TypeApp)
 		}
 
 		//	- It's a function
-		outType := func(term btypes.Term) typing.TypeApp {
-			return typing.GetOutType(To[btypes.TypedTerm](term).GetTypeHint())
+		outType := func(term basictypes.Term) typing.TypeApp {
+			return typing.GetOutType(To[basictypes.TypedTerm](term).GetTypeHint())
 		}
 
 		termsType := []typing.TypeApp{}
@@ -107,9 +107,9 @@ func secondPassTerm(term btypes.Term, vars []btypes.Var, types []typing.TypeApp)
 			termsType = append(termsType, outType(tm))
 		}
 
-		return btypes.MakeFun(t.GetID(), terms, v, getTypeOfFunction(t.GetName(), v, termsType)), []typing.TypeApp{}
+		return basictypes.MakeFun(t.GetID(), terms, v, getTypeOfFunction(t.GetName(), v, termsType)), []typing.TypeApp{}
 
-	case btypes.Var:
+	case basictypes.Var:
 		for _, v := range types {
 			if v.ToString() == t.GetName() {
 				return nil, []typing.TypeApp{v}
@@ -125,16 +125,18 @@ func secondPassTerm(term btypes.Term, vars []btypes.Var, types []typing.TypeApp)
 	return term, types
 }
 
-func nArySecondPass(forms []btypes.Form, vars []btypes.Var, types []typing.TypeApp) []btypes.Form {
-	res := []btypes.Form{}
-	for _, form := range forms {
-		res = append(res, secondPassAux(form, vars, types))
+func nArySecondPass(forms *basictypes.FormList, vars []basictypes.Var, types []typing.TypeApp) *basictypes.FormList {
+	res := basictypes.NewFormList()
+
+	for _, form := range forms.Slice() {
+		res.Append(secondPassAux(form, vars, types))
 	}
+
 	return res
 }
 
-func nArySecondPassTerms(terms *btypes.TermList, vars []btypes.Var, types []typing.TypeApp) (*btypes.TermList, []typing.TypeApp) {
-	resTerms, resVars := btypes.NewTermList(), []typing.TypeApp{}
+func nArySecondPassTerms(terms *basictypes.TermList, vars []basictypes.Var, types []typing.TypeApp) (*basictypes.TermList, []typing.TypeApp) {
+	resTerms, resVars := basictypes.NewTermList(), []typing.TypeApp{}
 
 	for _, term := range terms.Slice() {
 		t, v := secondPassTerm(term, vars, types)

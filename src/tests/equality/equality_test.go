@@ -295,9 +295,9 @@ func initTestVariable() {
 	not_pcd = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.NewTermList(c, d), []typing.TypeApp{}))
 }
 
-func initCodeTreesTests(lf basictypes.FormList) (datastruct.DataStructure, datastruct.DataStructure) {
-	tp = new(treesearch.Node)
-	tn = new(treesearch.Node)
+func initCodeTreesTests(lf *basictypes.FormList) (datastruct.DataStructure, datastruct.DataStructure) {
+	tp = treesearch.NewNode()
+	tn = treesearch.NewNode()
 	tp = tp.MakeDataStruct(lf, true)
 	tn = tn.MakeDataStruct(lf, false)
 	return tp, tn
@@ -333,7 +333,7 @@ func checkSubsIsCompatibleWith(isCompatible treetypes.Substitutions, with ...tre
 }
 
 func isFirstIncludedInSecond(first treetypes.Substitutions, second treetypes.Substitutions) bool {
-	secondList := global.NewList(first...)
+	secondList := global.NewList(second...)
 
 	for _, firstElement := range first {
 		if !secondList.Contains(firstElement) {
@@ -362,7 +362,7 @@ func TestEQ1(t *testing.T) {
 	* Solutions : (X, g(a)), (X, g(f(a)))
 	**/
 
-	lf := basictypes.FormList{eq_fa_a, eq_ggx_fa, neq_gggx_x}
+	lf := basictypes.NewFormList(eq_fa_a, eq_ggx_fa, neq_gggx_x)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -390,7 +390,7 @@ func TestEQ2(t *testing.T) {
 	* Solutions : {} or X = Y
 	**/
 
-	lf := basictypes.FormList{eq_b_c, eq_gx_fx, eq_gfy_y, pb, not_pc}
+	lf := basictypes.NewFormList(eq_b_c, eq_gx_fx, eq_gfy_y, pb, not_pc)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -417,7 +417,7 @@ func TestEQ3(t *testing.T) {
 	* Solutions : {(X,a) (Y,a)}, {(X, a) (Y, X)}, {(X, Y) (Y, a)}
 	**/
 
-	lf := basictypes.FormList{eq_b_c, eq_gx_fx, eq_gfy_y, pggab, not_pac}
+	lf := basictypes.NewFormList(eq_b_c, eq_gx_fx, eq_gfy_y, pggab, not_pac)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -449,7 +449,7 @@ func TestEQ4(t *testing.T) {
 	* Solutions : {(X,a)}
 	**/
 
-	lf := basictypes.FormList{eq_b_c, eq_gfy_y, neq_x_a, pggab, not_pac}
+	lf := basictypes.NewFormList(eq_b_c, eq_gfy_y, neq_x_a, pggab, not_pac)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -473,7 +473,7 @@ func TestEQ5(t *testing.T) {
 	* Solutions : {(Z1,a) (Z2,b)} ou {(Z1, b) (Z2, a)}
 	**/
 
-	lf := basictypes.FormList{eq_z1_c1, eq_z2_c1, neq_a_b}
+	lf := basictypes.NewFormList(eq_z1_c1, eq_z2_c1, neq_a_b)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -518,7 +518,7 @@ func TestEQ6(t *testing.T) {
 	 *
 	 **/
 
-	lf := basictypes.FormList{pa, pb, not_pc, neq_a_b, eq_z1_c2, eq_z2_c1, eq_z3_c1}
+	lf := basictypes.NewFormList(pa, pb, not_pc, neq_a_b, eq_z1_c2, eq_z2_c1, eq_z3_c1)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -566,7 +566,7 @@ func TestEQ7(t *testing.T) {
 	* Solutions : {}
 	**/
 
-	lf := basictypes.FormList{eq_a_b, neq_a_b}
+	lf := basictypes.NewFormList(eq_a_b, neq_a_b)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -586,7 +586,7 @@ func TestEQ8(t *testing.T) {
 	* Solution : N/A
 	*
 	**/
-	lf := basictypes.FormList{eq_a_b, neq_a_d}
+	lf := basictypes.NewFormList(eq_a_b, neq_a_d)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -607,7 +607,7 @@ func TestImpossible(t *testing.T) {
 	* Solutions : N/A
 	**/
 
-	lf := basictypes.FormList{eq_x_d, neq_fx_a}
+	lf := basictypes.NewFormList(eq_x_d, neq_fx_a)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -627,7 +627,7 @@ func TestSimon(t *testing.T) {
 	* Solutions : {x -> fa}
 	**/
 
-	lf := basictypes.FormList{eq_x_a, neq_fx_x}
+	lf := basictypes.NewFormList(eq_x_a, neq_fx_x)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -651,7 +651,7 @@ func TestSeparation(t *testing.T) {
 	* Solutions : {}
 	**/
 
-	lf := basictypes.FormList{pab, eq_a_c, eq_b_d, not_pcd}
+	lf := basictypes.NewFormList(pab, eq_a_c, eq_b_d, not_pcd)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -673,7 +673,7 @@ func TestDeuxiemeSeparation(t *testing.T) {
 	* Solutions : {x -> d}, {x -> b}
 	**/
 
-	lf := basictypes.FormList{pax, eq_a_c, eq_b_d, not_pcd}
+	lf := basictypes.NewFormList(pax, eq_a_c, eq_b_d, not_pcd)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -701,7 +701,7 @@ func TestMultiListes(t *testing.T) {
 	* Solutions : {}, {x -> d}, {x -> b}
 	**/
 
-	lf := basictypes.FormList{pax, pab, eq_a_c, eq_b_d, not_pcd}
+	lf := basictypes.NewFormList(pax, pab, eq_a_c, eq_b_d, not_pcd)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -727,7 +727,7 @@ func TestSubsEnMeta(t *testing.T) {
 	* Solutions : {X -> Y}, {Y -> X}, {Y -> a}
 	**/
 
-	lf := basictypes.FormList{eq_x_a, neq_y_a}
+	lf := basictypes.NewFormList(eq_x_a, neq_y_a)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -756,7 +756,7 @@ func TestContreExemple(t *testing.T) {
 	* Solutions : {x -> b, y -> c}
 	**/
 
-	lf := basictypes.FormList{eq_x_a, eq_y_a, pb, not_pc}
+	lf := basictypes.NewFormList(eq_x_a, eq_y_a, pb, not_pc)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -783,7 +783,7 @@ func TestCycle(t *testing.T) {
 	* Solutions : N/A
 	**/
 
-	lf := basictypes.FormList{eq_fgy_gfy, neq_ghx_x}
+	lf := basictypes.NewFormList(eq_fgy_gfy, neq_ghx_x)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 
@@ -804,7 +804,7 @@ func TestTemp(t *testing.T) {
 	* Solutions : N/A
 	**/
 
-	lf := basictypes.FormList{eq_fdc_a, eq_x_d, neq_b_e}
+	lf := basictypes.NewFormList(eq_fdc_a, eq_x_d, neq_b_e)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
 

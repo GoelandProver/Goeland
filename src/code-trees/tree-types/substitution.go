@@ -38,12 +38,11 @@ package treetypes
 
 import (
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 type Substitution struct {
-	k btypes.Meta
-	v btypes.Term
+	k basictypes.Meta
+	v basictypes.Term
 }
 
 func MakeSubstitution(k basictypes.Meta, v basictypes.Term) Substitution {
@@ -54,11 +53,11 @@ func (s Substitution) ToString() string {
 	return "(" + s.k.ToString() + " |-> " + s.v.ToString() + ")"
 }
 
-func (s Substitution) Key() btypes.Meta {
+func (s Substitution) Key() basictypes.Meta {
 	return s.k
 }
 
-func (s Substitution) Value() btypes.Term {
+func (s Substitution) Value() basictypes.Term {
 	return s.v
 }
 
@@ -69,11 +68,11 @@ func (s Substitution) Copy() Substitution {
 	}
 }
 
-func (s Substitution) Get() (btypes.Meta, btypes.Term) {
+func (s Substitution) Get() (basictypes.Meta, basictypes.Term) {
 	return s.k, s.v
 }
 
-func (s *Substitution) Set(value btypes.Term) {
+func (s *Substitution) Set(value basictypes.Term) {
 	s.v = value
 }
 

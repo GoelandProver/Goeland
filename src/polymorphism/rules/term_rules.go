@@ -37,7 +37,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
@@ -48,19 +48,19 @@ import (
 /* Applies the App rule for predicates or functions */
 func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	var index int
-	var id btypes.Id
-	var terms *btypes.TermList
+	var id basictypes.Id
+	var terms *basictypes.TermList
 	var vars []typing.TypeApp
 
 	if whatIsSet(state.consequence) == formIsSet {
-		index = (state.consequence.f).(btypes.Pred).GetIndex()
-		id = (state.consequence.f).(btypes.Pred).GetID()
-		terms = (state.consequence.f).(btypes.Pred).GetArgs()
-		vars = (state.consequence.f).(btypes.Pred).GetTypeVars()
+		index = (state.consequence.f).(basictypes.Pred).GetIndex()
+		id = (state.consequence.f).(basictypes.Pred).GetID()
+		terms = (state.consequence.f).(basictypes.Pred).GetArgs()
+		vars = (state.consequence.f).(basictypes.Pred).GetTypeVars()
 	} else {
-		id = (state.consequence.t).(btypes.Fun).GetID()
-		terms = (state.consequence.t).(btypes.Fun).GetArgs()
-		vars = (state.consequence.t).(btypes.Fun).GetTypeVars()
+		id = (state.consequence.t).(basictypes.Fun).GetID()
+		terms = (state.consequence.t).(basictypes.Fun).GetArgs()
+		vars = (state.consequence.t).(basictypes.Fun).GetTypeVars()
 	}
 
 	root.appliedRule = "App"
@@ -80,10 +80,10 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 
 	// Type predicate or function
 	if whatIsSet(state.consequence) == formIsSet {
-		fTyped := btypes.MakePred(index, id, terms, vars, typeScheme)
+		fTyped := basictypes.MakePred(index, id, terms, vars, typeScheme)
 		return reconstructForm(launchChildren(createAppChildren(state, vars, terms, primitives), root, fatherChan), fTyped)
 	} else {
-		fTyped := btypes.MakeFun(id, terms, vars, typeScheme)
+		fTyped := basictypes.MakeFun(id, terms, vars, typeScheme)
 		return reconstructTerm(launchChildren(createAppChildren(state, vars, terms, primitives), root, fatherChan), fTyped)
 	}
 }
@@ -118,7 +118,7 @@ func applyVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 /**
  * Takes all the types of the terms and makes a cross product of everything
  **/
-func getArgsTypes(context GlobalContext, terms *btypes.TermList) (typing.TypeApp, error) {
+func getArgsTypes(context GlobalContext, terms *basictypes.TermList) (typing.TypeApp, error) {
 	if terms.Len() == 0 {
 		return nil, nil
 	}
@@ -127,7 +127,7 @@ func getArgsTypes(context GlobalContext, terms *btypes.TermList) (typing.TypeApp
 
 	for _, term := range terms.Slice() {
 		switch tmpTerm := term.(type) {
-		case btypes.Fun:
+		case basictypes.Fun:
 			typeScheme, err := context.getTypeScheme(
 				tmpTerm.GetID(),
 				tmpTerm.GetTypeVars(),
@@ -140,11 +140,11 @@ func getArgsTypes(context GlobalContext, terms *btypes.TermList) (typing.TypeApp
 				return nil, fmt.Errorf("function %s not found in global context", tmpTerm.GetName())
 			}
 			types = append(types, typing.GetOutType(typeScheme))
-		case btypes.Var:
+		case basictypes.Var:
 			// Variables can't be of type TypeScheme, so this line shouldn't fail.
 			types = append(types, tmpTerm.GetTypeApp())
 		// There shouldn't be Metas yet.
-		case btypes.Meta:
+		case basictypes.Meta:
 			global.PrintDebug("GAT", "Found a Meta while typing everything.")
 			// ID is filtered out
 		}
@@ -161,7 +161,7 @@ func getArgsTypes(context GlobalContext, terms *btypes.TermList) (typing.TypeApp
 }
 
 /* Creates children for app rule */
-func createAppChildren(state Sequent, vars []typing.TypeApp, terms *btypes.TermList, primitives []typing.TypeApp) []Sequent {
+func createAppChildren(state Sequent, vars []typing.TypeApp, terms *basictypes.TermList, primitives []typing.TypeApp) []Sequent {
 	children := []Sequent{}
 
 	// 1 for each type in the vars
@@ -176,12 +176,12 @@ func createAppChildren(state Sequent, vars []typing.TypeApp, terms *btypes.TermL
 	// 1 for each term
 	for i, term := range terms.Slice() {
 		switch t := term.(type) {
-		case btypes.Fun:
-			term = btypes.MakeFun(t.GetID(), t.GetArgs(), t.GetTypeVars(), primitives[i].(typing.TypeScheme))
-		case btypes.Meta:
-			term = btypes.MakeMeta(t.GetIndex(), t.GetOccurence(), t.GetName(), t.GetFormula(), primitives[i])
-		case btypes.Var:
-			term = btypes.MakeVar(t.GetIndex(), t.GetName(), primitives[i])
+		case basictypes.Fun:
+			term = basictypes.MakeFun(t.GetID(), t.GetArgs(), t.GetTypeVars(), primitives[i].(typing.TypeScheme))
+		case basictypes.Meta:
+			term = basictypes.MakeMeta(t.GetIndex(), t.GetOccurence(), t.GetName(), t.GetFormula(), primitives[i])
+		case basictypes.Var:
+			term = basictypes.MakeVar(t.GetIndex(), t.GetName(), primitives[i])
 		}
 		children = append(children, Sequent{
 			globalContext: state.globalContext,
@@ -194,11 +194,11 @@ func createAppChildren(state Sequent, vars []typing.TypeApp, terms *btypes.TermL
 }
 
 /* Finds the given term in the local context, returns false if it couldn't */
-func getTermFromLocalContext(localContext LocalContext, term btypes.Term) (btypes.Var, bool) {
+func getTermFromLocalContext(localContext LocalContext, term basictypes.Term) (basictypes.Var, bool) {
 	for _, var_ := range localContext.vars {
 		if var_.Equals(term) {
 			return var_, true
 		}
 	}
-	return btypes.Var{}, false
+	return basictypes.Var{}, false
 }

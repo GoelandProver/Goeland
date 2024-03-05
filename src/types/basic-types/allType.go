@@ -138,10 +138,10 @@ func (a AllType) SetInternalMetas(m *MetaList) Form {
 	return a
 }
 
-func (a AllType) GetSubFormulasRecur() FormList {
+func (a AllType) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(a)
 }
 
-func (a AllType) GetChildFormulas() FormList {
-	return FormList{a.GetForm()}
+func (a AllType) GetChildFormulas() *FormList {
+	return NewFormList(a.GetForm())
 }

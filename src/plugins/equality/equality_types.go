@@ -91,48 +91,6 @@ func (e Equalities) copy() Equalities {
 	return res
 }
 
-func (ie Inequalities) copy() Inequalities {
-	res := []TermPair{}
-	for _, tp := range ie {
-		res = append(res, tp.copy())
-	}
-	return res
-}
-
-func (e Equalities) contains(eq TermPair) bool {
-	for _, element := range e {
-		if element.equals(eq) {
-			return true
-		}
-	}
-	return false
-}
-
-func (ie Inequalities) contains(eq TermPair) bool {
-	for _, element := range ie {
-		if element.equals(eq) {
-			return true
-		}
-	}
-	return false
-}
-
-func (e Equalities) appendIfNotContains(eq TermPair) Equalities {
-	res := e.copy()
-	if !e.contains(eq) {
-		res = append(res, eq)
-	}
-	return res
-}
-
-func (ie Inequalities) appendIfNotContains(eq TermPair) Inequalities {
-	res := ie.copy()
-	if !ie.contains(eq) {
-		res = append(res, eq)
-	}
-	return res
-}
-
 /* Apply a substitution on an equality */
 func (e Equalities) applySubstitution(old_symbol basictypes.Meta, new_symbol basictypes.Term) Equalities {
 	res := e.copy()

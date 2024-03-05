@@ -125,8 +125,8 @@ func (q quantifier) GetChildrenForMappedString() []MappableString {
 	return q.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (q quantifier) GetChildFormulas() FormList {
-	return FormList{q.GetForm()}
+func (q quantifier) GetChildFormulas() *FormList {
+	return NewFormList(q.GetForm())
 }
 
 func (q quantifier) Equals(other any) bool {

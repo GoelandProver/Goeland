@@ -38,7 +38,6 @@ package equality
 
 import (
 	"fmt"
-	"sort"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
@@ -53,24 +52,7 @@ func (cl ConstraintList) Swap(i, j int) { cl[i], cl[j] = cl[j], cl[i] }
 func (cl ConstraintList) Less(i, j int) bool {
 	return (cl[i].toString() < cl[j].toString())
 }
-func (l1 ConstraintList) equals(l2 ConstraintList) bool {
-	if len(l1) != len(l2) {
-		return false
-	} else {
-		l1_sorted := l1.Copy()
-		sort.Sort(l1_sorted)
 
-		l2_sorted := l2.Copy()
-		sort.Sort(l2_sorted)
-
-		for i := range l1_sorted {
-			if !l1_sorted[i].equals(l2_sorted[i]) {
-				return false
-			}
-		}
-	}
-	return true
-}
 func (cl ConstraintList) toString() string {
 	res := "{"
 	for i, c := range cl {
