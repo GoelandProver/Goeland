@@ -62,17 +62,17 @@ const (
 type DestructiveSearch struct {
 	// [TODO]: Will be removed in favor of the next argument
 	//doCorrectApplyRules func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
-	doCorrectApplyRules func(*ApplyRulesArgs, []ConditionalsRules)
-	rulesToApply        []ConditionalsRules
+	doCorrectApplyRules func(*ApplyRulesArgs, global.SwitchCase[*ConditionalRuleArgs])
+	rulesToApply        global.SwitchCase[*ConditionalRuleArgs]
 }
 
 func NewDestructiveSearch() SearchAlgorithm {
 	ds := &DestructiveSearch{}
-	ds.rulesToApply = conditionalsRulesList
+	ds.rulesToApply = ConditionalRuleSwitch
 	return ds
 }
 
-func (ds *DestructiveSearch) setRulesToApply(rules []ConditionalsRules) {
+func (ds *DestructiveSearch) setRulesToApply(rules global.SwitchCase[*ConditionalRuleArgs]) {
 	ds.rulesToApply = rules
 }
 
@@ -1108,19 +1108,19 @@ type ApplyRulesArgs struct {
 	MetaToReintroduce []int
 }
 
-// [?]: Maybe i can cram the following in its own file, so when you use a plugin, you can just chose to import a set of rules defined in a specific file
-type ConditionalsRules struct {
-	Condition func(args *ApplyRulesArgs) bool
-	Rules     func(ds *DestructiveSearch, args *ApplyRulesArgs)
+type ConditionalRuleArgs struct {
+	*ApplyRulesArgs
+	Ds *DestructiveSearch
 }
 
-var AtomicRules = ConditionalsRules{
-	Condition: func(args *ApplyRulesArgs) bool {
+type ConditionalRule = global.Case[*ConditionalRuleArgs]
+
+var AtomicRules = ConditionalRule{
+	If: func(args *ConditionalRuleArgs) bool {
 		return len(args.NewAtomics) > 0 && global.IsLoaded("dmt") && len(args.State.GetSubstsFound()) == 0
 	},
-	Rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
-
-		ds.manageRewriteRules(
+	Then: func(args *ConditionalRuleArgs) {
+		args.Ds.manageRewriteRules(
 			args.FatherId,
 			args.State,
 			args.C,
@@ -1132,12 +1132,12 @@ var AtomicRules = ConditionalsRules{
 	},
 }
 
-var AlphaRules = ConditionalsRules{
-	Condition: func(args *ApplyRulesArgs) bool {
+var AlphaRules = ConditionalRule{
+	If: func(args *ConditionalRuleArgs) bool {
 		return len(args.State.GetAlpha()) > 0
 	},
-	Rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
-		ds.manageAlphaRules(
+	Then: func(args *ConditionalRuleArgs) {
+		args.Ds.manageAlphaRules(
 			args.FatherId,
 			args.State,
 			args.C,
@@ -1146,12 +1146,12 @@ var AlphaRules = ConditionalsRules{
 	},
 }
 
-var DeltaRules = ConditionalsRules{
-	Condition: func(args *ApplyRulesArgs) bool {
+var DeltaRules = ConditionalRule{
+	If: func(args *ConditionalRuleArgs) bool {
 		return len(args.State.GetDelta()) > 0
 	},
-	Rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
-		ds.manageDeltaRules(
+	Then: func(args *ConditionalRuleArgs) {
+		args.Ds.manageDeltaRules(
 			args.FatherId,
 			args.State,
 			args.C,
@@ -1160,12 +1160,12 @@ var DeltaRules = ConditionalsRules{
 	},
 }
 
-var BetaRules = ConditionalsRules{
-	Condition: func(args *ApplyRulesArgs) bool {
+var BetaRules = ConditionalRule{
+	If: func(args *ConditionalRuleArgs) bool {
 		return len(args.State.GetBeta()) > 0
 	},
-	Rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
-		ds.manageBetaRules(
+	Then: func(args *ConditionalRuleArgs) {
+		args.Ds.manageBetaRules(
 			args.FatherId,
 			args.State,
 			args.C,
@@ -1176,12 +1176,12 @@ var BetaRules = ConditionalsRules{
 	},
 }
 
-var GammaRules = ConditionalsRules{
-	Condition: func(args *ApplyRulesArgs) bool {
+var GammaRules = ConditionalRule{
+	If: func(args *ConditionalRuleArgs) bool {
 		return len(args.State.GetGamma()) > 0
 	},
-	Rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
-		ds.manageGammaRules(
+	Then: func(args *ConditionalRuleArgs) {
+		args.Ds.manageGammaRules(
 			args.FatherId,
 			args.State,
 			args.C,
@@ -1190,37 +1190,20 @@ var GammaRules = ConditionalsRules{
 	},
 }
 
-// [TODO]: Rember to pass in private
-/*
-	 Thoughts on zeq AR
-		var ZeqRules = ConditionalsRules{
-			condition: func(args *ZeqRulesArgs) bool {
-				return len(args.State.GetZeq()) >
-			},
-			rules: func(ds *DestructiveSearch, args *ApplyRulesArgs) {
-				ds.manageZeqRules(
-					args.FatherId,
-					args.State,
-					args.C,
-					args.OriginalNodeId,
-				)
-			},
-		}
-*/
-var ConditionalsRulesList = []ConditionalsRules{
-	AtomicRules,
-	AlphaRules,
-	DeltaRules,
-	BetaRules,
-	GammaRules,
+var ConditionalRuleSwitch = global.SwitchCase[*ConditionalRuleArgs]{
+	Cases: []ConditionalRule{
+		AtomicRules,
+		AlphaRules,
+		DeltaRules,
+		BetaRules,
+		GammaRules,
+	},
 }
 
-func (ds *DestructiveSearch) ApplyRules(args *ApplyRulesArgs, conditionalsRulesList []ConditionalsRules) {
-	for _, conditionalsRules := range conditionalsRulesList {
-		if conditionalsRules.Condition(args) {
-			conditionalsRules.Rules(ds, args)
-			return
-		}
-	}
+func (ds *DestructiveSearch) ApplyRules(args *ApplyRulesArgs, conditionalRuleSwitch global.SwitchCase[*ConditionalRuleArgs]) {
+	crArgs := &ConditionalRuleArgs{}
+	crArgs.ApplyRulesArgs = args
+	crArgs.Ds = ds
 
+	conditionalRuleSwitch.Do(crArgs)
 }
