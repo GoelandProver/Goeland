@@ -51,7 +51,7 @@ type SearchAlgorithm interface {
 	ProofSearch(uint64, complextypes.State, Communication, complextypes.SubstAndForm, int, int, []int)
 	DoEndManageBeta(uint64, complextypes.State, Communication, []Communication, int, int, []int, []int)
 	manageRewriteRules(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
-	setRulesToApply(global.SwitchCase[*ConditionalRuleArgs])
+	setRulesToApply(ConditionalRuleSwitch)
 	ManageClosureRule(uint64, *complextypes.State, Communication, []treetypes.Substitutions, basictypes.FormAndTerms, int, int) (bool, []complextypes.SubstAndForm)
 	manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool)
 }
