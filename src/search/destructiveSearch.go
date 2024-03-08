@@ -61,18 +61,16 @@ const (
 
 type DestructiveSearch struct {
 	// [TODO]: Will be removed in favor of the next argument
-	//doCorrectApplyRules func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
-	doCorrectApplyRules func(*ApplyRulesArgs, global.SwitchCase[*ConditionalRuleArgs])
-	rulesToApply        global.SwitchCase[*ConditionalRuleArgs]
+	rulesToApply ConditionalRuleSwitch
 }
 
 func NewDestructiveSearch() SearchAlgorithm {
 	ds := &DestructiveSearch{}
-	ds.rulesToApply = ConditionalRuleSwitch
+	ds.rulesToApply = rules
 	return ds
 }
 
-func (ds *DestructiveSearch) setRulesToApply(rules global.SwitchCase[*ConditionalRuleArgs]) {
+func (ds *DestructiveSearch) setRulesToApply(rules ConditionalRuleSwitch) {
 	ds.rulesToApply = rules
 }
 
@@ -1193,7 +1191,9 @@ var GammaRules = ConditionalRule{
 	},
 }
 
-var ConditionalRuleSwitch = global.SwitchCase[*ConditionalRuleArgs]{
+type ConditionalRuleSwitch = global.SwitchCase[*ConditionalRuleArgs]
+
+var rules = ConditionalRuleSwitch{
 	Cases: []ConditionalRule{
 		AtomicRules,
 		AlphaRules,
@@ -1203,10 +1203,10 @@ var ConditionalRuleSwitch = global.SwitchCase[*ConditionalRuleArgs]{
 	},
 }
 
-func (ds *DestructiveSearch) ApplyRules(args *ApplyRulesArgs, conditionalRuleSwitch global.SwitchCase[*ConditionalRuleArgs]) {
+func (ds *DestructiveSearch) ApplyRules(args *ApplyRulesArgs, rules ConditionalRuleSwitch) {
 	crArgs := &ConditionalRuleArgs{}
 	crArgs.ApplyRulesArgs = args
 	crArgs.Ds = ds
 
-	conditionalRuleSwitch.Do(crArgs)
+	rules.Do(crArgs)
 }
