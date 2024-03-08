@@ -1,57 +1,36 @@
 package zeq
 
 import (
-	"fmt"
-
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/search"
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
-	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
-	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-var ZeqRules = search.ConditionalsRules{
-	Condition: func(args *search.ApplyRulesArgs) bool {
+var ZeqRules = search.ConditionalRule{
+	If: func(args *search.ConditionalRuleArgs) bool {
 		return len(args.State.GetZeq()) > 0
 	},
-	Rules: func(ds *search.DestructiveSearch, args *search.ApplyRulesArgs) {
+	Then: func(args *search.ConditionalRuleArgs) {
 	},
 }
 
-var conditionalsRulesList = []search.ConditionalsRules{
-	search.AtomicRules,
-	search.AlphaRules,
-	ZeqRules,
-	search.DeltaRules,
-	search.BetaRules,
-	search.GammaRules,
+var rules = search.ConditionalRuleSwitch{
+	Cases: []search.ConditionalRule{
+		search.AtomicRules,
+		search.AlphaRules,
+		ZeqRules,
+		search.DeltaRules,
+		search.BetaRules,
+		search.GammaRules,
+	},
 }
 
 func Enable() {
 	global.PrintInfo("ZEQ", "ZEQ plugin enabled")
-	search.SetApplyRules(zeqApplyRules)
+	// Ici PrintInfo printera 9223372036.854776s, juste ici, idk why
+	search.SetRulesToApply(rules)
 }
 
-/* Apply rules with priority (closure < rewrite < alpha < equality < delta < closure with mm < beta < gamma) */
-func zeqApplyRules(fatherId uint64, state complextypes.State, c search.Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
-
-	var args = search.ApplyRulesArgs{ // [TEMP]: Again, this is very suboptimal
-		fatherId,
-		state,
-		c,
-		newAtomics,
-		currentNodeId,
-		originalNodeId,
-		metaToReintroduce,
-	}
-
-	global.PrintInfo("ZEQ", "Apply rules")
-	if typed, ok := search.UsedSearch.(*search.DestructiveSearch); ok {
-
-		typed.NewApplyRules(&args, search.ConditionalsRulesList)
-	}
-}
-
+/*
 func manageZeqRules(ds *search.DestructiveSearch, fatherId uint64, state complextypes.State, c search.Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
 	global.PrintDebug("PS", "Zeq rule")
 	hdf := state.GetZeq()[0]
@@ -102,3 +81,4 @@ func ApplyZeqRules(fnt basictypes.FormAndTerms, state *complextypes.State) []bas
 
 	return result
 }
+*/
