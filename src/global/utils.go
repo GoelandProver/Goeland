@@ -126,24 +126,20 @@ type Basic interface {
 	// ILL TODO : Make Basic implement the Copyable interface (all interfaces that require a copy should have another name for such copy)
 }
 
-type Case[T any] interface {
-	Case(T) bool
-	Then(T)
+type Case[T any] struct {
+	If   func(T) bool
+	Then func(T)
 }
 
 type SwitchCase[T any] struct {
-	Args  T
 	Cases []Case[T]
 }
 
-func (sc *SwitchCase[T]) Init(cases []Case[T]) {
-	sc.Cases = cases
-}
-
-func (sc *SwitchCase[T]) Do() {
+func (sc *SwitchCase[T]) Do(args T) {
 	for _, c := range sc.Cases {
-		if c.Case(sc.Args) {
-			c.Then(sc.Args)
+		if c.If(args) {
+			c.Then(args)
+			return
 		}
 	}
 }
