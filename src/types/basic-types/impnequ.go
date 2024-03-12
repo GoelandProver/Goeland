@@ -128,6 +128,10 @@ func (i Imp) GetChildFormulas() FormList {
 	return FormList{i.f1, i.f2}
 }
 
+func (i Imp) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return MakeImp(i.GetIndex(), i.f1.ReplaceMetaByTerm(meta, term), i.f2.ReplaceMetaByTerm(meta, term))
+}
+
 /* Equ(f1, f2): f1 equivalent to f2 */
 type Equ struct {
 	*MappedString
@@ -209,4 +213,8 @@ func (e Equ) GetSubFormulasRecur() FormList {
 
 func (e Equ) GetChildFormulas() FormList {
 	return FormList{e.f1, e.f2}
+}
+
+func (e Equ) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return MakeEqu(e.GetIndex(), e.f1.ReplaceMetaByTerm(meta, term), e.f2.ReplaceMetaByTerm(meta, term))
 }

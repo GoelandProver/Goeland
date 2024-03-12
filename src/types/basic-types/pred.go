@@ -176,3 +176,18 @@ func (p Pred) GetSubFormulasRecur() FormList {
 func (p Pred) GetChildFormulas() FormList {
 	return FormList{}
 }
+
+func (p Pred) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	newTerms := MakeEmptyTermList()
+
+	for _, old := range p.args {
+		// ILL TODO: old.GetName() == meta.GetName() ??
+		if old.Equals(meta) {
+			newTerms = append(newTerms, term)
+		} else {
+			newTerms = append(newTerms, old)
+		}
+	}
+
+	return MakePred(p.GetIndex(), p.id, newTerms, p.typeVars, p.GetType())
+}

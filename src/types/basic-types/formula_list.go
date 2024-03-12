@@ -204,6 +204,14 @@ func (lf FormList) CleanFormList() FormList {
 	return lf
 }
 
+func (fl FormList) ReplaceMetaByTerm(meta Meta, term Term) FormList {
+	for i, f := range fl {
+		fl[i] = f.ReplaceMetaByTerm(meta, term)
+	}
+
+	return fl
+}
+
 func (lf FormList) ToMappableStringSlice() []MappableString {
 	forms := []MappableString{}
 

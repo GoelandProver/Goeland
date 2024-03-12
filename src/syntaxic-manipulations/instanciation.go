@@ -22,16 +22,16 @@ func Instantiate(fnt btps.FormAndTerms, index int) (btps.FormAndTerms, btps.Meta
 	switch f := fnt.GetForm().(type) {
 	case btps.Not:
 		if ex, isEx := f.GetForm().(btps.Ex); isEx {
-			fnt, meta = realInstantiate(ex.GetVarList(), index, is_exists, ex.GetForm(), terms)
+			fnt, meta = RealInstantiate(ex.GetVarList(), index, is_exists, ex.GetForm(), terms)
 		}
 	case btps.All:
-		fnt, meta = realInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
+		fnt, meta = RealInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
 	return fnt, btps.MetaList{meta}
 }
 
-func realInstantiate(varList []btps.Var, index, status int, subForm btps.Form, terms btps.TermList) (btps.FormAndTerms, btps.Meta) {
+func RealInstantiate(varList []btps.Var, index, status int, subForm btps.Form, terms btps.TermList) (btps.FormAndTerms, btps.Meta) {
 	v := varList[0]
 	meta := btps.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
 	subForm = subForm.SubstituteVarByMeta(v, meta)

@@ -63,20 +63,29 @@ const (
 	OPENED
 )
 
+type BasicSearchAlgorithm interface {
+	SearchAlgorithm
+	ProofSearch(uint64, complextypes.State, Communication, complextypes.SubstAndForm, int, int, []int)
+	DoEndManageBeta(uint64, complextypes.State, Communication, []Communication, int, int, []int, []int)
+	manageRewriteRules(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
+	ManageClosureRule(uint64, *complextypes.State, Communication, []treetypes.Substitutions, basictypes.FormAndTerms, int, int) (bool, []complextypes.SubstAndForm)
+	manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool)
+}
+
 type destructiveSearch struct {
 	doCorrectApplyRules func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
 }
 
-func NewDestructiveSearch() SearchAlgorithm {
+func NewDestructiveSearch() BasicSearchAlgorithm {
 	ds := &destructiveSearch{}
 	ds.doCorrectApplyRules = ds.applyRules
 	return ds
 }
 
-func (ds *destructiveSearch) setApplyRules(function func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)) {
+func (ds *destructiveSearch) SetApplyRules(function func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)) {
 	ds.doCorrectApplyRules = function
 }
-func (ds *destructiveSearch) search(formula basictypes.Form, bound int) bool {
+func (ds *destructiveSearch) Search(formula basictypes.Form, bound int) bool {
 	res := false
 	global.SetNbStep(1)
 	limit := bound
@@ -127,7 +136,7 @@ func (ds *destructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool
 			finalProof = complextypes.ApplySubstitutionOnProofList(unif, finalProof)
 		}
 		uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
-		printProof(result, finalProof, uninstanciatedMeta)
+		PrintProof(result, finalProof, uninstanciatedMeta)
 	}
 
 	global.SetNbStep(global.GetNbStep() + 1)

@@ -139,6 +139,10 @@ func (e Ex) GetChildFormulas() FormList {
 	return FormList{e.GetForm()}
 }
 
+func (e Ex) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return MakeEx(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceMetaByTerm(meta, term))
+}
+
 type All struct {
 	*MappedString
 	index    int
@@ -228,6 +232,10 @@ func (a All) GetSubFormulasRecur() FormList {
 
 func (a All) GetChildFormulas() FormList {
 	return FormList{a.GetForm()}
+}
+
+func (e All) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return MakeAll(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceMetaByTerm(meta, term))
 }
 
 /* Struct describing a forall with type variables */
@@ -343,6 +351,10 @@ func (a AllType) GetSubFormulasRecur() FormList {
 
 func (a AllType) GetChildFormulas() FormList {
 	return FormList{a.GetForm()}
+}
+
+func (e AllType) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return MakeAllType(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceMetaByTerm(meta, term))
 }
 
 // ----------------------------------------------------------------------------

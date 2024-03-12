@@ -51,6 +51,7 @@ import (
 	"github.com/GoelandProver/Goeland/plugins/dmt"
 	"github.com/GoelandProver/Goeland/plugins/equality"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
+	"github.com/GoelandProver/Goeland/plugins/incremental"
 	"github.com/GoelandProver/Goeland/plugins/lambdapi"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -273,6 +274,14 @@ func buildOptions() {
 		"Should only be used with the -ocoq or the -olp parameters. Enables the chronometer for deskolemization and proof translation",
 		func(bool) {
 			chronoInit()
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"incr",
+		false,
+		"Enables the Incremental search algorithm",
+		func(bool) {
+			search.SetSearchAlgorithm(incremental.NewIncrementalSearch())
 		},
 		func(bool) {})
 }

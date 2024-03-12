@@ -50,26 +50,21 @@ import (
 )
 
 type SearchAlgorithm interface {
-	search(basictypes.Form, int) bool
-	ProofSearch(uint64, complextypes.State, Communication, complextypes.SubstAndForm, int, int, []int)
-	DoEndManageBeta(uint64, complextypes.State, Communication, []Communication, int, int, []int, []int)
-	manageRewriteRules(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
-	setApplyRules(func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int))
-	ManageClosureRule(uint64, *complextypes.State, Communication, []treetypes.Substitutions, basictypes.FormAndTerms, int, int) (bool, []complextypes.SubstAndForm)
-	manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool)
+	Search(basictypes.Form, int) bool
+	SetApplyRules(func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int))
 }
 
-var printProofAlgorithm func(bool, []proof.ProofStruct, basictypes.MetaList)
+var printProofAlgorithm func([]proof.ProofStruct, basictypes.MetaList)
 var UsedSearch SearchAlgorithm
 
 func init() {
 	SetSearchAlgorithm(NewDestructiveSearch())
-	SetPrintProofAlgorithm(func(res bool, final_proof []proof.ProofStruct, metaList basictypes.MetaList) {
+	SetPrintProofAlgorithm(func(final_proof []proof.ProofStruct, metaList basictypes.MetaList) {
 		fmt.Printf("%v", proof.ProofStructListToText(final_proof))
 	})
 }
 
-func SetPrintProofAlgorithm(function func(bool, []proof.ProofStruct, basictypes.MetaList)) {
+func SetPrintProofAlgorithm(function func([]proof.ProofStruct, basictypes.MetaList)) {
 	printProofAlgorithm = function
 }
 
@@ -78,7 +73,7 @@ func SetSearchAlgorithm(algo SearchAlgorithm) {
 }
 
 func SetApplyRules(function func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)) {
-	UsedSearch.setApplyRules(function)
+	UsedSearch.SetApplyRules(function)
 }
 
 /* Begin the proof search */
@@ -87,16 +82,16 @@ func Search(formula basictypes.Form, bound int) {
 	formula = formula.CleanFormula()
 	global.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", formula.ToString()))
 
-	res := UsedSearch.search(formula, bound)
+	res := UsedSearch.Search(formula, bound)
 
 	PrintSearchResult(res)
 }
 
-func printProof(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
-	if global.GetProof() {
+func PrintProof(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
+	if global.GetProof() && res {
 		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
 
-		printProofAlgorithm(res, final_proof, uninstanciatedMeta)
+		printProofAlgorithm(final_proof, uninstanciatedMeta)
 
 		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output end Proof for %v", "%", global.GetProblemName()))
 	}

@@ -77,6 +77,7 @@ func (t Top) GetInternalMetas() MetaList                   { return MetaList{} }
 func (t Top) SetInternalMetas(MetaList) Form               { return t }
 func (t Top) GetSubFormulasRecur() FormList                { return FormList{t.Copy()} }
 func (t Top) GetChildFormulas() FormList                   { return FormList{} }
+func (t Top) ReplaceMetaByTerm(meta Meta, term Term) Form  { return t }
 
 /* Bot (always false) definition */
 type Bot struct {
@@ -111,3 +112,4 @@ func (b Bot) GetInternalMetas() MetaList                   { return MetaList{} }
 func (b Bot) SetInternalMetas(MetaList) Form               { return b }
 func (b Bot) GetSubFormulasRecur() FormList                { return FormList{b.Copy()} }
 func (b Bot) GetChildFormulas() FormList                   { return FormList{} }
+func (b Bot) ReplaceMetaByTerm(meta Meta, term Term) Form  { return b }

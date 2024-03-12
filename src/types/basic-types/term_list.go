@@ -185,10 +185,6 @@ func AreEqualsVarList(tl1, tl2 []Var) bool {
 }
 
 /* Replace the first occurence of a term in a list by another */
-/*
-* Pourquoi seulement la première occurrence ?
-* TODO : la fonction les remplace TOUTES
-**/
 func (tl TermList) replaceFirstOccurrenceTermList(old_term, new_term Term) TermList {
 	res := tl.Copy()
 	for i := range tl {
@@ -200,6 +196,18 @@ func (tl TermList) replaceFirstOccurrenceTermList(old_term, new_term Term) TermL
 		}
 	}
 	return res
+}
+
+func (tl TermList) replaceAllOccurences(old, new Term) TermList {
+	result := tl.Copy()
+
+	for i := range tl {
+		if tl[i].Equals(old) {
+			tl[i] = new
+		}
+	}
+
+	return result
 }
 
 func (tl TermList) ToMappableStringSlice() []MappableString {

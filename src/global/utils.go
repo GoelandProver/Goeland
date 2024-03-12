@@ -57,6 +57,26 @@ type Comparable interface {
 	Equals(any) bool
 }
 
+func AppendIfNotContains[T Comparable](slice []T, elements ...T) []T {
+	for _, element := range elements {
+		if !Contains(slice, element) {
+			slice = append(slice, element)
+		}
+	}
+
+	return slice
+}
+
+func Contains[T Comparable](slice []T, element T) bool {
+	for _, el := range slice {
+		if el.Equals(element) {
+			return true
+		}
+	}
+
+	return false
+}
+
 type ComparableList[T Comparable] []T
 
 func (cpbl ComparableList[T]) Equals(oth ComparableList[T]) bool {
@@ -205,8 +225,7 @@ func (cm *ComparableMap[T, U]) Values() []U {
 	return cm.values
 }
 
-type Basic[T any] interface {
+type Basic interface {
 	Stringable
 	Comparable
-	Copyable[T]
 }

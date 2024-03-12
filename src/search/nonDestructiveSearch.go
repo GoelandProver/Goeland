@@ -51,7 +51,7 @@ import (
 type nonDestructiveSearch struct {
 }
 
-func NewNonDestructiveSearch() SearchAlgorithm {
+func NewNonDestructiveSearch() BasicSearchAlgorithm {
 	nds := &nonDestructiveSearch{}
 	_ = nds
 	global.PrintError("NDS", "Non-destructive search not in working order for now.")

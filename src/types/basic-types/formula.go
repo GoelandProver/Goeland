@@ -63,6 +63,7 @@ type Form interface {
 	RenameVariables() Form
 	CleanFormula() Form
 	SubstituteVarByMeta(old Var, new Meta) Form
+	ReplaceMetaByTerm(meta Meta, term Term) Form
 }
 
 /*** Functions ***/

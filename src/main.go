@@ -91,9 +91,10 @@ func startSearch(form basictypes.Form, bound int) {
 	global.PrintDebug("MAIN", "Start search")
 
 	if global.GetAssisted() {
+		assisted.InitAssisted()
+
 		go assisted.StartAssistant(chAssistant)
 
-		assisted.Counter.Increase()
 		go search.Search(form, bound)
 
 		search.PrintSearchResult(<-chAssistant)

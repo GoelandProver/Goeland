@@ -1,13 +1,13 @@
 package global
 
-type Container[T any, U Basic[U]] interface {
-	Basic[T]
+type Container[T any, U Basic] interface {
+	Basic
 	Contains(U) bool
 	Append(...U) T
 	AppendIfNotContains(...U) T
 }
 
-type List[T Basic[T]] []T
+type List[T Basic] []T
 
 /*
 Returns a string that represents the List.
@@ -21,7 +21,11 @@ func (list *List[T]) ToString() string {
 		str += element.ToString() + ", "
 	}
 
-	return str[:len(str)-2] + "]"
+	if len(str) > 2 {
+		str = str[:len(str)-2] + "]"
+	}
+
+	return str
 }
 
 /*
@@ -84,30 +88,4 @@ func (list *List[T]) AppendIfNotContains(elements ...T) *List[T] {
 	}
 
 	return list
-}
-
-/*
-Returns a shallow copy of the list.
-*/
-func (list *List[T]) Copy() *List[T] {
-	result := &List[T]{}
-
-	for _, element := range *list {
-		result = result.Append(element)
-	}
-
-	return result
-}
-
-/*
-Returns a deep copy of the list.
-*/
-func (list *List[T]) DeepCopy() *List[T] {
-	result := &List[T]{}
-
-	for _, element := range *list {
-		result = result.Append(element.Copy())
-	}
-
-	return result
 }

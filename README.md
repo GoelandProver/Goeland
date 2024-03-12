@@ -74,6 +74,7 @@ The parameters must be passed *before* the problem file. The available parameter
 | -completeness | Enables completeness mode (default: **false**). |
 | -wlogs | Enables the writing of the logs in files (default: **false**). |
 | -chrono | Should only be used with the `-ocoq` or the `-olp` parameters. Enables the chronometer for deskolemization and proof translation (default: **false**). |
+| -incr | Enables the Incremental search algorithm (default: **false**). |
 
 ### Result values
 
