@@ -58,7 +58,12 @@ func newSearchNode(father *SearchNode, manager *RulesManager) *SearchNode {
 		rulesManager: manager,
 	}
 
-	node.subsManager = newSubsManager(node)
+	doneSubs := SubList{}
+	if father != nil {
+		doneSubs = father.subsManager.getDoneSubs()
+	}
+
+	node.subsManager = newSubsManager(node, doneSubs)
 	node.closureManager = newClosureManager(node)
 	return node
 }
@@ -140,20 +145,26 @@ func (sn *SearchNode) continueSearch(newManagers []RulesManager, isClosure bool,
 	switch rule := sn.rulesManager.appliedRule.(type) {
 	case GammaRule:
 		metas := rule.getGeneratedMetas()
-		sn.subsManager = newRootSubsManager(sn, metas)
+		sn.subsManager = newIntroSubsManager(sn, metas, sn.father.subsManager.getDoneSubs())
 	case *BetaEqu, *BetaImp, *BetaNotAnd, *BetaNotEqu, *BetaOr:
-		sn.subsManager = newBranchingSubsManager(sn, len(newManagers))
+		sn.subsManager = newBranchingSubsManager(sn, len(newManagers), sn.father.subsManager.getDoneSubs())
 	}
 
 	sn.closureManager.sendClosureInfo(isClosure, subs)
 
 	if isClosure {
-		sn.subsManager.AddClosingSubsForFather(subs)
+		if sn.subsManager.hasNewSubs(subs) {
+			sn.subsManager.AddClosingSubsForFather(subs)
+		} else {
+			sn.nonClosureSearch()
+		}
 	} else {
 		sn.children = []*SearchNode{}
+
 		for _, manager := range newManagers {
 			sn.NewChildSearchNode(manager)
 		}
+
 		allDoParallelAlgo(doSearch, sn.children...)
 	}
 }

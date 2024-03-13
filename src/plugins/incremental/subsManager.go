@@ -14,6 +14,9 @@ type SubsManager interface {
 	getCompatibleSubs() SubList
 	GetApplicableSubs() (basictypes.MetaList, basictypes.TermList)
 	tryingAgain()
+	getDoneSubs() SubList
+	addDoneSubs(SubList)
+	hasNewSubs(SubList) bool
 }
 
 func addClosingSubsForFather(sm SubsManager, subs SubList) {
@@ -41,17 +44,20 @@ type SimpleSubsManager struct {
 
 	closingSubsForEachChild []SubList
 	childAmount             int
+
+	doneSubs SubList
 }
 
-func newSubsManager(node *SearchNode) *SimpleSubsManager {
-	return newSubsManagerWithChild(node, 1)
+func newSubsManager(node *SearchNode, doneSubs SubList) *SimpleSubsManager {
+	return newSubsManagerWithChild(node, 1, doneSubs)
 }
 
-func newSubsManagerWithChild(node *SearchNode, childAmount int) *SimpleSubsManager {
-	return &SimpleSubsManager{node, make([]SubList, childAmount), childAmount}
+func newSubsManagerWithChild(node *SearchNode, childAmount int, doneSubs SubList) *SimpleSubsManager {
+	return &SimpleSubsManager{node, make([]SubList, childAmount), childAmount, doneSubs}
 }
 
 func (ssm *SimpleSubsManager) AddClosingSubsForFather(subs SubList) {
+	ssm.addDoneSubs(subs)
 	addClosingSubs(ssm.node.father.subsManager, subs, ssm.node.childNb)
 }
 
@@ -93,6 +99,28 @@ func (ssm *SimpleSubsManager) tryingAgain() {
 	ssm.closingSubsForEachChild = make([]SubList, ssm.childAmount)
 }
 
+func (ssm *SimpleSubsManager) getDoneSubs() SubList {
+	return ssm.doneSubs
+}
+
+func (ssm *SimpleSubsManager) addDoneSubs(doneSubs SubList) {
+	ssm.doneSubs = ssm.doneSubs.AppendIfNotContains(doneSubs...)
+}
+
+func (ssm *SimpleSubsManager) hasNewSubs(doneSubs SubList) bool {
+	if len(ssm.doneSubs) == 0 {
+		return true
+	}
+
+	for _, subs := range doneSubs {
+		if !ssm.doneSubs.Contains(subs) {
+			return true
+		}
+	}
+
+	return false
+}
+
 type BranchingSubsManager struct {
 	*SimpleSubsManager
 
@@ -101,9 +129,9 @@ type BranchingSubsManager struct {
 	mutex sync.Mutex
 }
 
-func newBranchingSubsManager(node *SearchNode, childAmount int) *BranchingSubsManager {
+func newBranchingSubsManager(node *SearchNode, childAmount int, doneSubs SubList) *BranchingSubsManager {
 	counter := global.NewEmptySyncCounter()
-	bsm := &BranchingSubsManager{newSubsManagerWithChild(node, childAmount), counter, sync.Mutex{}}
+	bsm := &BranchingSubsManager{newSubsManagerWithChild(node, childAmount, doneSubs), counter, sync.Mutex{}}
 
 	counter.SetWhenFinished(bsm.sendClosingSubsToFather)
 
@@ -162,8 +190,8 @@ type IntroSubsManager struct {
 	subsitutes basictypes.TermList
 }
 
-func newRootSubsManager(node *SearchNode, metas basictypes.MetaList) *IntroSubsManager {
-	return &IntroSubsManager{newSubsManager(node), metas, basictypes.TermList{}}
+func newIntroSubsManager(node *SearchNode, metas basictypes.MetaList, doneSubs SubList) *IntroSubsManager {
+	return &IntroSubsManager{newSubsManager(node, SubList{}), metas, basictypes.TermList{}}
 }
 
 func (gsm *IntroSubsManager) GetApplicableSubs() (metas basictypes.MetaList, terms basictypes.TermList) {
