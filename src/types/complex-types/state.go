@@ -53,7 +53,7 @@ import (
 /* The state of the search in a step */
 type State struct {
 	n                                          int
-	lf, atomic, alpha, beta, delta, gamma, zeq basictypes.FormAndTermsList
+	lf, atomic, alpha, beta, delta, gamma, zeq basictypes.FormAndTermsList // [TODO] zeq need to be removed from here and place in zeq plugin somehow
 	meta_generator                             []basictypes.MetaGen
 	mm, mc                                     basictypes.MetaList
 	applied_subst                              SubstAndForm
@@ -95,6 +95,7 @@ func (s State) GetGamma() basictypes.FormAndTermsList {
 }
 
 // [M24]
+// [TODO] need to be removed from here and place in zeq plugin
 func (s State) GetZeq() basictypes.FormAndTermsList {
 	return s.zeq.Copy()
 }
