@@ -191,7 +191,7 @@ type IntroSubsManager struct {
 }
 
 func newIntroSubsManager(node *SearchNode, metas basictypes.MetaList, doneSubs SubList) *IntroSubsManager {
-	return &IntroSubsManager{newSubsManager(node, SubList{}), metas, basictypes.TermList{}}
+	return &IntroSubsManager{newSubsManager(node, doneSubs), metas, basictypes.TermList{}}
 }
 
 func (gsm *IntroSubsManager) GetApplicableSubs() (metas basictypes.MetaList, terms basictypes.TermList) {
