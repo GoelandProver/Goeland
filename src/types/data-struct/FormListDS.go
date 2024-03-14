@@ -56,11 +56,11 @@ func (f FormListDS) MakeDataStruct(lf *basictypes.FormList, is_pos bool) DataStr
 func (f FormListDS) InsertFormulaListToDataStructure(lf *basictypes.FormList) DataStructure {
 	for _, v := range lf.Slice() {
 		switch nf := v.(type) {
-		case basictypes.Pred:
+		case *basictypes.Pred:
 			f.fl.AppendIfNotContains(nf)
-		case basictypes.Not:
+		case *basictypes.Not:
 			switch nf.GetForm().(type) {
-			case basictypes.Pred:
+			case *basictypes.Pred:
 				f.fl.AppendIfNotContains(nf.GetForm())
 			}
 		}

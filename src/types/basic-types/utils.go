@@ -50,7 +50,8 @@ func substVarByMetaInFormList(old Var, new Meta, formList *FormList, metaList *M
 	found := false
 
 	for _, form := range formList.Slice() {
-		replacedForm := form.SubstituteVarByMeta(old, new)
+		replacedForm := form.Copy()
+		replacedForm.SubstituteVarByMeta(old, new)
 		replacedFormList.Append(replacedForm)
 
 		if replacedForm.GetInternalMetas().Contains(new) || global.IsOuterSko() {

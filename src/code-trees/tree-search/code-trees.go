@@ -108,13 +108,13 @@ func makeCodeTreeFromAtomic(lf *basictypes.FormList, is_pos bool) *Node {
 
 	for _, f := range lf.Slice() {
 		switch nf := f.(type) {
-		case basictypes.Pred:
+		case *basictypes.Pred:
 			if is_pos {
 				form.Append(nf.Copy())
 			}
-		case basictypes.Not:
+		case *basictypes.Not:
 			switch nf.GetForm().(type) {
-			case basictypes.Pred:
+			case *basictypes.Pred:
 				if !(is_pos) {
 					form.Append(nf.GetForm())
 				}
@@ -163,12 +163,12 @@ func makeNode(block CodeBlock) *Node {
 func (n Node) InsertFormulaListToDataStructure(lf *basictypes.FormList) datastruct.DataStructure {
 	for _, f := range lf.Slice() {
 		switch nf := f.Copy().(type) {
-		case basictypes.Pred:
+		case *basictypes.Pred:
 			n.insert(treetypes.ParseFormula(nf))
 
-		case basictypes.Not:
+		case *basictypes.Not:
 			switch nf.GetForm().(type) {
-			case basictypes.Pred:
+			case *basictypes.Pred:
 				n.insert(treetypes.ParseFormula(nf.GetForm()))
 
 			}

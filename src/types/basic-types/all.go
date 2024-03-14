@@ -39,54 +39,53 @@ package basictypes
 import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 
 type All struct {
-	quantifier
+	*quantifier
 }
 
-func MakeAllSimple(i int, vars []Var, forms Form, metas *MetaList) All {
-	return All{makeQuantifier(i, vars, forms, metas, AllQuant)}
+func NewAllSimple(i int, vars []Var, forms Form, metas *MetaList) *All {
+	return &All{newQuantifier(i, vars, forms, metas, AllQuant)}
 }
 
-func MakeAll(i int, vars []Var, forms Form) All {
-	return MakeAllSimple(i, vars, forms, NewMetaList())
+func NewAllIndexed(i int, vars []Var, forms Form) *All {
+	return NewAllSimple(i, vars, forms, NewMetaList())
 }
 
-func MakerAll(vars []Var, forms Form) All {
-	return MakeAll(MakerIndexFormula(), vars, forms)
+func NewAll(vars []Var, forms Form) *All {
+	return NewAllIndexed(MakerIndexFormula(), vars, forms)
 }
 
-func (a All) Equals(other any) bool {
-	if typed, ok := other.(All); ok {
+func (a *All) Equals(other any) bool {
+	if typed, ok := other.(*All); ok {
 		return AreEqualsVarList(a.GetVarList(), typed.GetVarList()) && a.GetForm().Equals(typed.GetForm())
 	}
 
 	return false
 }
 
-func (a All) GetSubFormulasRecur() *FormList {
+func (a *All) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(a)
 }
 
-func (a All) Copy() Form {
-	return All{a.quantifier.copy()}
+func (a *All) Copy() Form {
+	return &All{a.quantifier.copy()}
 }
 
-func (a All) RenameVariables() Form {
-	return All{a.quantifier.renameVariables()}
+func (a *All) RenameVariables() {
+	a.quantifier.renameVariables()
 }
 
-func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return All{a.quantifier.replaceTypeByMeta(varList, index)}
+func (a *All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
+	a.quantifier.replaceTypeByMeta(varList, index)
 }
 
-func (a All) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	quant, isReplaced := a.quantifier.replaceVarByTerm(old, new)
-	return All{quant}, isReplaced
+func (a *All) ReplaceVarByTerm(old Var, new Term) bool {
+	return a.quantifier.replaceVarByTerm(old, new)
 }
 
-func (a All) SetInternalMetas(m *MetaList) Form {
-	return All{a.quantifier.setInternalMetas(m)}
+func (a *All) SetInternalMetas(m *MetaList) {
+	a.quantifier.setInternalMetas(m)
 }
 
-func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
-	return All{a.quantifier.substituteVarByMeta(old, new)}
+func (a *All) SubstituteVarByMeta(old Var, new Meta) {
+	a.quantifier.substituteVarByMeta(old, new)
 }

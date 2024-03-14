@@ -49,10 +49,10 @@ func RegisterAxiom(axiom basictypes.Form) bool {
 
 	if isRegisterableAsEqu(axiomFT) {
 		registeredAxioms.Append(axiom)
-		return makeRewriteRuleFromEquivalence(axiomFT.(basictypes.Equ))
+		return makeRewriteRuleFromEquivalence(axiomFT.(*basictypes.Equ))
 	} else if isRegisterableAsImplication(axiomFT) {
 		registeredAxioms.Append(axiom)
-		return makeRewriteRuleFromImplication(axiomFT.(basictypes.Imp))
+		return makeRewriteRuleFromImplication(axiomFT.(*basictypes.Imp))
 	}
 
 	return false
@@ -121,23 +121,23 @@ func makeRewriteRuleFromAtomic(atomic basictypes.Form) bool {
 		return false
 	}
 	if Is[basictypes.Pred](atomic) {
-		return makeRewriteRuleFromPred(atomic.(basictypes.Pred))
+		return makeRewriteRuleFromPred(atomic.(*basictypes.Pred))
 	}
-	return makeRewriteRuleFromNegatedAtom(atomic.(basictypes.Not))
+	return makeRewriteRuleFromNegatedAtom(atomic.(*basictypes.Not))
 }
 
-func makeRewriteRuleFromPred(pred basictypes.Pred) bool {
-	addPosRewriteRule(pred, basictypes.MakerTop())
-	addNegRewriteRule(pred, basictypes.RefuteForm(basictypes.MakerTop()))
+func makeRewriteRuleFromPred(pred *basictypes.Pred) bool {
+	addPosRewriteRule(pred, basictypes.NewTop())
+	addNegRewriteRule(pred, basictypes.RefuteForm(basictypes.NewTop()))
 	return true
 }
 
-func makeRewriteRuleFromNegatedAtom(atom basictypes.Not) bool {
-	if isEquality(atom.GetForm().(basictypes.Pred)) {
+func makeRewriteRuleFromNegatedAtom(atom *basictypes.Not) bool {
+	if isEquality(atom.GetForm().(*basictypes.Pred)) {
 		return false
 	}
-	addNegRewriteRule(atom, basictypes.RefuteForm(basictypes.MakerBot()))
-	addPosRewriteRule(atom, basictypes.MakerBot())
+	addNegRewriteRule(atom, basictypes.RefuteForm(basictypes.NewBot()))
+	addPosRewriteRule(atom, basictypes.NewBot())
 	return true
 }
 
@@ -151,7 +151,7 @@ func isRegisterableAsEqu(instanciatedAxiom basictypes.Form) bool {
 	return Is[basictypes.Equ](instanciatedAxiom)
 }
 
-func makeRewriteRuleFromEquivalence(equForm basictypes.Equ) bool {
+func makeRewriteRuleFromEquivalence(equForm *basictypes.Equ) bool {
 	phi1, phi2 := equForm.GetF1(), equForm.GetF2()
 
 	if areBothAtomics(phi1, phi2) || neitherAreAtomics(phi1, phi2) {
@@ -181,7 +181,7 @@ func neitherAreAtomics(f1, f2 basictypes.Form) bool {
 }
 
 func isEqualityPred(f basictypes.Form) bool {
-	return (Is[basictypes.Pred](f) && isEquality(f.(basictypes.Pred))) ||
+	return (Is[basictypes.Pred](f) && isEquality(f.(*basictypes.Pred))) ||
 		(Is[basictypes.Not](f) && isEquality(predFromNegatedAtom(f)))
 }
 
@@ -213,7 +213,7 @@ func isRegisterableAsImplication(instanciatedAxiom basictypes.Form) bool {
 	return activatePolarized && Is[basictypes.Imp](instanciatedAxiom)
 }
 
-func makeRewriteRuleFromImplication(impForm basictypes.Imp) bool {
+func makeRewriteRuleFromImplication(impForm *basictypes.Imp) bool {
 	phi1, phi2 := impForm.GetF1(), impForm.GetF2()
 
 	// This line currently blocks the generation of a rewrite rule if there is

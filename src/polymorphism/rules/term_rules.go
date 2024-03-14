@@ -53,10 +53,10 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	var vars []typing.TypeApp
 
 	if whatIsSet(state.consequence) == formIsSet {
-		index = (state.consequence.f).(basictypes.Pred).GetIndex()
-		id = (state.consequence.f).(basictypes.Pred).GetID()
-		terms = (state.consequence.f).(basictypes.Pred).GetArgs()
-		vars = (state.consequence.f).(basictypes.Pred).GetTypeVars()
+		index = (state.consequence.f).(*basictypes.Pred).GetIndex()
+		id = (state.consequence.f).(*basictypes.Pred).GetID()
+		terms = (state.consequence.f).(*basictypes.Pred).GetArgs()
+		vars = (state.consequence.f).(*basictypes.Pred).GetTypeVars()
 	} else {
 		id = (state.consequence.t).(basictypes.Fun).GetID()
 		terms = (state.consequence.t).(basictypes.Fun).GetArgs()
@@ -80,7 +80,7 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 
 	// Type predicate or function
 	if whatIsSet(state.consequence) == formIsSet {
-		fTyped := basictypes.MakePred(index, id, terms, vars, typeScheme)
+		fTyped := basictypes.NewPredIndexed(index, id, terms, vars, typeScheme)
 		return reconstructForm(launchChildren(createAppChildren(state, vars, terms, primitives), root, fatherChan), fTyped)
 	} else {
 		fTyped := basictypes.MakeFun(id, terms, vars, typeScheme)

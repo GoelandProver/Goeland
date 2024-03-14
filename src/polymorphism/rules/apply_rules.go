@@ -82,17 +82,17 @@ func applyRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reco
 func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	var rec Reconstruct
 	switch (state.consequence.f).(type) {
-	case basictypes.All, basictypes.AllType, basictypes.Ex:
+	case *basictypes.All, *basictypes.AllType, *basictypes.Ex:
 		rec = applyQuantRule(state, root, fatherChan)
-	case basictypes.And, basictypes.Or:
+	case *basictypes.And, *basictypes.Or:
 		rec = applyNAryRule(state, root, fatherChan)
-	case basictypes.Imp, basictypes.Equ:
+	case *basictypes.Imp, *basictypes.Equ:
 		rec = applyBinaryRule(state, root, fatherChan)
-	case basictypes.Top, basictypes.Bot:
+	case *basictypes.Top, *basictypes.Bot:
 		rec = applyBotTopRule(state, root, fatherChan)
-	case basictypes.Not:
+	case *basictypes.Not:
 		rec = applyNotRule(state, root, fatherChan)
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		rec = applyAppRule(state, root, fatherChan)
 	}
 	return rec

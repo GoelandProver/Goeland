@@ -45,9 +45,9 @@ import (
 func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	// Add rule to prooftree
 	switch (state.consequence.f).(type) {
-	case basictypes.All, basictypes.AllType:
+	case *basictypes.All, *basictypes.AllType:
 		root.appliedRule = "∀"
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		root.appliedRule = "∃"
 	}
 
@@ -58,13 +58,13 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 	varInstantiated := false
 
 	switch f := (state.consequence.f).(type) {
-	case basictypes.All, basictypes.Ex:
+	case *basictypes.All, *basictypes.Ex:
 		varTreated, newForm = removeOneVar(state.consequence.f)
 		varInstantiated = true
-	case basictypes.AllType:
+	case *basictypes.AllType:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			typeTreated, newForm = v, basictypes.MakeAllType(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
+			typeTreated, newForm = v, basictypes.NewAllTypeIndexed(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
 		} else {
 			typeTreated, newForm = v, f.GetForm()
 		}
@@ -87,10 +87,10 @@ func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 	formList := basictypes.NewFormList()
 	// Add rule to prooftree
 	switch f := (state.consequence.f).(type) {
-	case basictypes.And:
+	case *basictypes.And:
 		root.appliedRule = "∧"
 		formList = f.FormList
-	case basictypes.Or:
+	case *basictypes.Or:
 		root.appliedRule = "∨"
 		formList = f.FormList
 	}
@@ -115,10 +115,10 @@ func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct
 	var f1, f2 basictypes.Form
 	// Add rule to prooftree
 	switch f := (state.consequence.f).(type) {
-	case basictypes.Imp:
+	case *basictypes.Imp:
 		root.appliedRule = "⇒"
 		f1, f2 = f.GetF1(), f.GetF2()
-	case basictypes.Equ:
+	case *basictypes.Equ:
 		root.appliedRule = "⇔"
 		f1, f2 = f.GetF1(), f.GetF2()
 	}
@@ -146,9 +146,9 @@ func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct
 func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	// Add rule to prooftree
 	switch (state.consequence.f).(type) {
-	case basictypes.Top:
+	case *basictypes.Top:
 		root.appliedRule = "⊤"
-	case basictypes.Bot:
+	case *basictypes.Bot:
 		root.appliedRule = "⊥"
 	}
 
@@ -168,7 +168,7 @@ func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct
 func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	// Add rule to prooftree
 	root.appliedRule = "¬"
-	form := (state.consequence.f).(basictypes.Not).GetForm()
+	form := (state.consequence.f).(*basictypes.Not).GetForm()
 
 	// Construct children with the contexts
 	children := []Sequent{
@@ -191,16 +191,16 @@ func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 func removeOneVar(form basictypes.Form) (basictypes.Var, basictypes.Form) {
 	// It's pretty much the same thing, but I don't have a clue on how to factorize this..
 	switch f := form.(type) {
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			return v, basictypes.MakeEx(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
+			return v, basictypes.NewExIndexed(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
 		}
 		return v, f.GetForm()
-	case basictypes.All:
+	case *basictypes.All:
 		v := f.GetVarList()[0]
 		if len(f.GetVarList()) > 1 {
-			return v, basictypes.MakeAll(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
+			return v, basictypes.NewAllIndexed(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
 		}
 		return v, f.GetForm()
 	}

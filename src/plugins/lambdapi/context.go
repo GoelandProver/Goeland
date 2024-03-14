@@ -47,7 +47,7 @@ func makeContextIfNeeded(root basictypes.Form, metaList *basictypes.MetaList) st
 	if global.IsLoaded("dmt") {
 		registeredAxioms := dmt.GetRegisteredAxioms()
 		registeredAxioms.Append(root)
-		root = basictypes.MakerAnd(registeredAxioms)
+		root = basictypes.NewAnd(registeredAxioms)
 	}
 
 	if typing.EmptyGlobalContext() {
@@ -174,29 +174,29 @@ func getContextFromFormula(root basictypes.Form) []string {
 	result := []string{}
 
 	switch nf := root.(type) {
-	case basictypes.All:
+	case *basictypes.All:
 		result = getContextFromFormula(nf.GetForm())
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		result = getContextFromFormula(nf.GetForm())
-	case basictypes.AllType:
+	case *basictypes.AllType:
 		result = getContextFromFormula(nf.GetForm())
-	case basictypes.And:
+	case *basictypes.And:
 		for _, f := range nf.FormList.Slice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
-	case basictypes.Or:
+	case *basictypes.Or:
 		for _, f := range nf.FormList.Slice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
-	case basictypes.Imp:
+	case *basictypes.Imp:
 		result = clean(result, getContextFromFormula(nf.GetF1()))
 		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case basictypes.Equ:
+	case *basictypes.Equ:
 		result = clean(result, getContextFromFormula(nf.GetF1()))
 		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case basictypes.Not:
+	case *basictypes.Not:
 		result = append(result, getContextFromFormula(nf.GetForm())...)
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		if !nf.GetID().Equals(basictypes.Id_eq) {
 			primitives := nf.GetType().GetPrimitives()
 			typesStr := ""
@@ -222,29 +222,29 @@ func getIdsFromFormula(root basictypes.Form) []global.Pair[string, string] {
 	result := []global.Pair[string, string]{}
 
 	switch nf := root.(type) {
-	case basictypes.All:
+	case *basictypes.All:
 		result = getIdsFromFormula(nf.GetForm())
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		result = getIdsFromFormula(nf.GetForm())
-	case basictypes.AllType:
+	case *basictypes.AllType:
 		result = getIdsFromFormula(nf.GetForm())
-	case basictypes.And:
+	case *basictypes.And:
 		for _, f := range nf.FormList.Slice() {
 			result = append(result, getIdsFromFormula(f)...)
 		}
-	case basictypes.Or:
+	case *basictypes.Or:
 		for _, f := range nf.FormList.Slice() {
 			result = append(result, getIdsFromFormula(f)...)
 		}
-	case basictypes.Imp:
+	case *basictypes.Imp:
 		result = getIdsFromFormula(nf.GetF1())
 		result = append(result, getIdsFromFormula(nf.GetF2())...)
-	case basictypes.Equ:
+	case *basictypes.Equ:
 		result = getIdsFromFormula(nf.GetF1())
 		result = append(result, getIdsFromFormula(nf.GetF2())...)
-	case basictypes.Not:
+	case *basictypes.Not:
 		result = getIdsFromFormula(nf.GetForm())
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		result = append(result, global.MakePair(nf.GetID().GetName(), nf.GetID().ToMappedString(lambdaPiMapConnectors, false)))
 		for _, f := range nf.GetArgs().Slice() {
 			result = append(result, global.MakePair(f.GetName(), f.ToMappedString(lambdaPiMapConnectors, false)))

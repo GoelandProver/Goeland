@@ -44,11 +44,14 @@ import (
 )
 
 func substitute(form basictypes.Form, subst treetypes.Substitutions) basictypes.Form {
+	form = form.Copy()
+
 	for _, s := range subst {
 		old_symbol, new_symbol := s.Get()
 		form = ctypes.ApplySubstitutionOnFormula(old_symbol, new_symbol, form)
-		form = form.SetInternalMetas(substInternalMetas(form.GetInternalMetas(), subst))
+		form.SetInternalMetas(substInternalMetas(form.GetInternalMetas(), subst))
 	}
+
 	return form
 }
 

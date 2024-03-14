@@ -94,7 +94,7 @@ func (fl *FormList) Flatten() *FormList {
 	result := NewFormList()
 
 	for _, form := range fl.Slice() {
-		if typed, ok := form.(And); ok {
+		if typed, ok := form.(*And); ok {
 			result.Append(typed.FormList.Flatten().Slice()...)
 		} else {
 			result.Append(form)

@@ -56,20 +56,20 @@ func (t TermForm) GetChildrenForMappedString() []basictypes.MappableString {
 	return t.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (t TermForm) GetTerm() basictypes.Term                                { return t.t.Copy() }
-func (t TermForm) Copy() basictypes.Form                                   { return makeTermForm(t.GetIndex(), t.GetTerm()) }
-func (t TermForm) GetType() typing.TypeScheme                              { return typing.DefaultFunType(0) }
-func (t TermForm) RenameVariables() basictypes.Form                        { return t }
-func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) basictypes.Form { return t }
-func (t TermForm) ReplaceVarByTerm(basictypes.Var, basictypes.Term) (basictypes.Form, bool) {
-	return t, false
+func (t TermForm) GetTerm() basictypes.Term                { return t.t.Copy() }
+func (t TermForm) Copy() basictypes.Form                   { return makeTermForm(t.GetIndex(), t.GetTerm()) }
+func (t TermForm) GetType() typing.TypeScheme              { return typing.DefaultFunType(0) }
+func (t TermForm) RenameVariables()                        {}
+func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) {}
+func (t TermForm) ReplaceVarByTerm(basictypes.Var, basictypes.Term) bool {
+	return false
 }
-func (t TermForm) GetIndex() int                                                       { return t.index }
-func (t TermForm) SubstituteVarByMeta(basictypes.Var, basictypes.Meta) basictypes.Form { return t }
-func (t TermForm) GetInternalMetas() *basictypes.MetaList                              { return basictypes.NewMetaList() }
-func (t TermForm) SetInternalMetas(*basictypes.MetaList) basictypes.Form               { return t }
-func (t TermForm) GetSubFormulasRecur() *basictypes.FormList                           { return basictypes.NewFormList() }
-func (t TermForm) GetChildFormulas() *basictypes.FormList                              { return basictypes.NewFormList() }
+func (t TermForm) GetIndex() int                                       { return t.index }
+func (t TermForm) SubstituteVarByMeta(basictypes.Var, basictypes.Meta) {}
+func (t TermForm) GetInternalMetas() *basictypes.MetaList              { return basictypes.NewMetaList() }
+func (t TermForm) SetInternalMetas(*basictypes.MetaList)               {}
+func (t TermForm) GetSubFormulasRecur() *basictypes.FormList           { return basictypes.NewFormList() }
+func (t TermForm) GetChildFormulas() *basictypes.FormList              { return basictypes.NewFormList() }
 
 func (t TermForm) Equals(t2 any) bool {
 	switch nt := t2.(type) {
@@ -120,8 +120,8 @@ func ParseFormula(formula basictypes.Form) Sequence {
 
 	// The formula has to be a predicate
 	switch formula_type := formula.(type) {
-	case basictypes.Pred:
-		pred := basictypes.MakePred(formula_type.GetIndex(), formula_type.GetID(), TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs()), []typing.TypeApp{}, formula_type.GetType())
+	case *basictypes.Pred:
+		pred := basictypes.NewPredIndexed(formula_type.GetIndex(), formula_type.GetID(), TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs()), []typing.TypeApp{}, formula_type.GetType())
 		instructions := Sequence{formula: pred}
 
 		instructions.add(Begin{})
@@ -159,7 +159,7 @@ func TypeAndTermsToTerms(types []typing.TypeApp, terms *basictypes.TermList) *ba
 }
 
 /* Parses a predicate to machine instructions */
-func parsePred(p basictypes.Pred, instructions *Sequence) {
+func parsePred(p *basictypes.Pred, instructions *Sequence) {
 	instructions.add(makeCheck(p.GetID()))
 	if p.GetArgs().Len() > 0 {
 		instructions.add(Begin{})

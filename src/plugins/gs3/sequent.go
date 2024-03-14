@@ -175,6 +175,8 @@ func (seq *GS3Sequent) setAppliedOn(hypothesis basictypes.Form) {
 	}
 
 	if index == -1 {
+		test, test2 := hypothesis.ToString(), seq.hypotheses.ToString()
+		_, _ = test, test2
 		global.PrintInfo("APPLIED ON", hypothesis.ToString())
 		global.PrintPanic("GS3", "Failure: tried to apply a missing hypothesis")
 	}
@@ -277,8 +279,8 @@ func ruleToTableauxString(rule Rule) string {
 func (seq *GS3Sequent) setRewrittenWith(rewriteId int) {
 	for i, h := range seq.hypotheses.Slice() {
 		endForm := h
-		for global.Is[basictypes.All](endForm) {
-			endForm = endForm.(basictypes.All).GetForm()
+		for global.Is[*basictypes.All](endForm) {
+			endForm = endForm.(*basictypes.All).GetForm()
 		}
 		endForm = getAtomic(endForm)
 		if endForm.GetIndex() == rewriteId {
@@ -292,18 +294,18 @@ func (seq *GS3Sequent) setRewrittenWith(rewriteId int) {
 
 func getAtomic(f basictypes.Form) basictypes.Form {
 	switch nf := f.(type) {
-	case basictypes.Imp:
-		if pred, isPred := nf.GetF1().(basictypes.Pred); isPred {
+	case *basictypes.Imp:
+		if pred, isPred := nf.GetF1().(*basictypes.Pred); isPred {
 			return pred
 		}
-		if pred, isPred := nf.GetF2().(basictypes.Pred); isPred {
+		if pred, isPred := nf.GetF2().(*basictypes.Pred); isPred {
 			return pred
 		}
-	case basictypes.Equ:
-		if pred, isPred := nf.GetF1().(basictypes.Pred); isPred {
+	case *basictypes.Equ:
+		if pred, isPred := nf.GetF1().(*basictypes.Pred); isPred {
 			return pred
 		}
-		if pred, isPred := nf.GetF2().(basictypes.Pred); isPred {
+		if pred, isPred := nf.GetF2().(*basictypes.Pred); isPred {
 			return pred
 		}
 	}

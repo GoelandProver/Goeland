@@ -51,32 +51,32 @@ func SecondPass(form basictypes.Form) basictypes.Form {
 
 func secondPassAux(form basictypes.Form, vars []basictypes.Var, types []typing.TypeApp) basictypes.Form {
 	switch f := form.(type) {
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		terms, typeApps := nArySecondPassTerms(f.GetArgs(), vars, types)
 
 		// Special case: defined predicate. We need to infer types.
 		if f.GetID().Equals(basictypes.Id_eq) {
-			return basictypes.MakePred(f.GetIndex(), f.GetID(), terms, []typing.TypeApp{typing.GetOutType(To[basictypes.TypedTerm, basictypes.Term](terms.Get(0)).GetTypeHint())})
+			return basictypes.NewPredIndexed(f.GetIndex(), f.GetID(), terms, []typing.TypeApp{typing.GetOutType(To[basictypes.TypedTerm, basictypes.Term](terms.Get(0)).GetTypeHint())})
 		}
 
 		// Real case: classical predicate, it should be given
-		return basictypes.MakePred(f.GetIndex(), f.GetID(), terms, typeApps)
-	case basictypes.And:
-		return basictypes.MakeAnd(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
-	case basictypes.Or:
-		return basictypes.MakeOr(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
-	case basictypes.Imp:
-		return basictypes.MakeImp(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
-	case basictypes.Equ:
-		return basictypes.MakeEqu(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
-	case basictypes.Not:
-		return basictypes.MakeNot(f.GetIndex(), secondPassAux(f.GetForm(), vars, types))
-	case basictypes.All:
-		return basictypes.MakeAll(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
-	case basictypes.Ex:
-		return basictypes.MakeEx(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
-	case basictypes.AllType:
-		return basictypes.MakeAllType(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), vars, append(types, ConvertList[typing.TypeVar, typing.TypeApp](f.GetVarList())...)))
+		return basictypes.NewPredIndexed(f.GetIndex(), f.GetID(), terms, typeApps)
+	case *basictypes.And:
+		return basictypes.NewAndIndexed(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
+	case *basictypes.Or:
+		return basictypes.NewOrIndexed(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
+	case *basictypes.Imp:
+		return basictypes.NewImpIndexed(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
+	case *basictypes.Equ:
+		return basictypes.NewEquIndexed(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
+	case *basictypes.Not:
+		return basictypes.NewNotIndexed(f.GetIndex(), secondPassAux(f.GetForm(), vars, types))
+	case *basictypes.All:
+		return basictypes.NewAllIndexed(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
+	case *basictypes.Ex:
+		return basictypes.NewExIndexed(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
+	case *basictypes.AllType:
+		return basictypes.NewAllTypeIndexed(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), vars, append(types, ConvertList[typing.TypeVar, typing.TypeApp](f.GetVarList())...)))
 	}
 	return form
 }

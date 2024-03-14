@@ -47,7 +47,7 @@ type Form interface {
 	GetIndex() int
 	GetMetas() *MetaList
 	GetInternalMetas() *MetaList
-	SetInternalMetas(*MetaList) Form
+	SetInternalMetas(*MetaList)
 	GetType() typing.TypeScheme
 	GetSubTerms() *TermList
 	GetSubFormulasRecur() *FormList
@@ -56,10 +56,10 @@ type Form interface {
 	Copyable[Form]
 	MappableString
 
-	ReplaceTypeByMeta([]typing.TypeVar, int) Form
-	ReplaceVarByTerm(old Var, new Term) (Form, bool)
-	RenameVariables() Form
-	SubstituteVarByMeta(old Var, new Meta) Form
+	ReplaceTypeByMeta([]typing.TypeVar, int)
+	ReplaceVarByTerm(old Var, new Term) bool
+	RenameVariables()
+	SubstituteVarByMeta(old Var, new Meta)
 }
 
 /* Replace a Var by a term inside a function */
@@ -119,37 +119,26 @@ func metasUnion(forms *FormList) *MetaList {
 	return res
 }
 
-// Creates and returns a FormList
-func replaceList(oldForms *FormList, vars []typing.TypeVar, index int) *FormList {
-	newForms := NewFormList()
-
+func replaceList(oldForms *FormList, vars []typing.TypeVar, index int) {
 	for _, form := range oldForms.Slice() {
-		newForms.Append(form.ReplaceTypeByMeta(vars, index))
+		form.ReplaceTypeByMeta(vars, index)
 	}
-
-	return newForms
 }
 
-func replaceVarInFormList(oldForms *FormList, oldVar Var, newTerm Term) (*FormList, bool) {
-	newForms := NewFormList()
+func replaceVarInFormList(oldForms *FormList, oldVar Var, newTerm Term) bool {
 	res := false
 
 	for _, form := range oldForms.Slice() {
-		newForm, r := form.ReplaceVarByTerm(oldVar, newTerm)
+		r := form.ReplaceVarByTerm(oldVar, newTerm)
 		res = res || r
-		newForms.Append(newForm)
 	}
 
-	return newForms, res
+	return res
 }
 
-// Creates and returns a FormList with its Forms renamed
-func renameFormList(forms *FormList) *FormList {
-	newForms := NewFormList()
-
+// Renames the variables of the given FormList
+func renameFormList(forms *FormList) {
 	for _, form := range forms.Slice() {
-		newForms.Append(form.RenameVariables())
+		form.RenameVariables()
 	}
-
-	return newForms
 }

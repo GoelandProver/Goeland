@@ -53,10 +53,10 @@ func manageGammasInstantiations(initialForm, resultForm basictypes.Form) basicty
 	normalisedInitialForm := getNextFormula(initialForm.Copy())
 	//PrintInfo("FORMS", fmt.Sprintf("init: %s, result: %s", initialForm.ToString(), resultForm.ToString()))
 	switch initialGamma := initialForm.(type) {
-	case basictypes.All:
+	case *basictypes.All:
 		term = getResultTerm(initialGamma.GetVarList()[0], normalisedInitialForm, resultForm)
-	case basictypes.Not:
-		if ex, ok := initialGamma.GetForm().(basictypes.Ex); ok {
+	case *basictypes.Not:
+		if ex, ok := initialGamma.GetForm().(*basictypes.Ex); ok {
 			term = getResultTerm(ex.GetVarList()[0], normalisedInitialForm, resultForm)
 		}
 	}
@@ -72,10 +72,10 @@ func manageDeltasSkolemisations(initialForm, resultForm basictypes.Form) basicty
 	var term basictypes.Term
 	normalisedInitialForm := getNextFormula(initialForm.Copy())
 	switch initialDelta := initialForm.(type) {
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		term = getResultTerm(initialDelta.GetVarList()[0], normalisedInitialForm, resultForm)
-	case basictypes.Not:
-		if all, ok := initialDelta.GetForm().(basictypes.All); ok {
+	case *basictypes.Not:
+		if all, ok := initialDelta.GetForm().(*basictypes.All); ok {
 			term = getResultTerm(all.GetVarList()[0], normalisedInitialForm, resultForm)
 		}
 	}
@@ -88,19 +88,19 @@ func manageDeltasSkolemisations(initialForm, resultForm basictypes.Form) basicty
 
 func getNextFormula(form basictypes.Form) basictypes.Form {
 	switch f := form.(type) {
-	case basictypes.All:
+	case *basictypes.All:
 		varList := f.GetVarList()
 		if len(varList) > 1 {
-			return basictypes.MakerAll(varList[1:], f.GetForm())
+			return basictypes.NewAll(varList[1:], f.GetForm())
 		}
 		return f.GetForm()
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		varList := f.GetVarList()
 		if len(varList) > 1 {
-			return basictypes.MakerEx(varList[1:], f.GetForm())
+			return basictypes.NewEx(varList[1:], f.GetForm())
 		}
 		return f.GetForm()
-	case basictypes.Not:
+	case *basictypes.Not:
 		return basictypes.RefuteForm(getNextFormula(f.GetForm()))
 	}
 	return form
@@ -120,25 +120,25 @@ func getVariableOccurrencesForm(v basictypes.Var, form basictypes.Form, currentO
 	workingPath := make(occurrence, len(path))
 	copy(workingPath, path)
 	switch f := form.(type) {
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		for i, term := range f.GetArgs().Slice() {
 			currentOcc = getVariableOccurrencesTerm(v, term, currentOcc, appcp(workingPath, i))
 		}
-	case basictypes.Not:
+	case *basictypes.Not:
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
-	case basictypes.And:
+	case *basictypes.And:
 		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.FormList)
-	case basictypes.Or:
+	case *basictypes.Or:
 		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.FormList)
-	case basictypes.Imp:
+	case *basictypes.Imp:
 		currentOcc = getNAryOcc(v, currentOcc, workingPath, basictypes.NewFormList(f.GetF1(), f.GetF2()))
-	case basictypes.Equ:
+	case *basictypes.Equ:
 		currentOcc = getNAryOcc(v, currentOcc, workingPath, basictypes.NewFormList(f.GetF1(), f.GetF2()))
-	case basictypes.All:
+	case *basictypes.All:
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
-	case basictypes.AllType:
+	case *basictypes.AllType:
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	}
 	return currentOcc
@@ -190,25 +190,25 @@ func getTermAux(form basictypes.Form, occ occurrence) basictypes.Term {
 	var term basictypes.Term
 
 	switch f := form.(type) {
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		if occ[0] < f.GetArgs().Len() {
 			term = getTerm(f.GetArgs().Get(occ[0]), occ[1:])
 		}
-	case basictypes.Not:
+	case *basictypes.Not:
 		term = getUnaryTerm(f.GetForm(), occ)
-	case basictypes.And:
+	case *basictypes.And:
 		term = getNAryTerm(f.FormList, occ)
-	case basictypes.Or:
+	case *basictypes.Or:
 		term = getNAryTerm(f.FormList, occ)
-	case basictypes.Imp:
+	case *basictypes.Imp:
 		term = getNAryTerm(basictypes.NewFormList(f.GetF1(), f.GetF2()), occ)
-	case basictypes.Equ:
+	case *basictypes.Equ:
 		term = getNAryTerm(basictypes.NewFormList(f.GetF1(), f.GetF2()), occ)
-	case basictypes.All:
+	case *basictypes.All:
 		term = getUnaryTerm(f.GetForm(), occ)
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		term = getUnaryTerm(f.GetForm(), occ)
-	case basictypes.AllType:
+	case *basictypes.AllType:
 		term = getUnaryTerm(f.GetForm(), occ)
 	}
 	return term

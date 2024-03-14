@@ -50,38 +50,38 @@ type Or struct {
 
 /** Constructors **/
 
-func MakeOrSimple(i int, forms *FormList, metas *MetaList) Or {
+func NewOrSimple(i int, forms *FormList, metas *MetaList) *Or {
 	fms := &MappedString{}
-	or := Or{fms, i, forms, metas}
-	fms.MappableString = &or
+	or := &Or{fms, i, forms, metas}
+	fms.MappableString = or
 	return or
 }
 
-func MakeOr(i int, forms *FormList) Or {
-	return MakeOrSimple(i, forms, NewMetaList())
+func NewOrIndexed(i int, forms *FormList) *Or {
+	return NewOrSimple(i, forms, NewMetaList())
 }
 
-func MakerOr(forms *FormList) Or {
-	return MakeOr(MakerIndexFormula(), forms)
+func NewOr(forms *FormList) *Or {
+	return NewOrIndexed(MakerIndexFormula(), forms)
 }
 
 /** Methods **/
 
 /** - Form interface Methods **/
 
-func (o Or) GetIndex() int {
+func (o *Or) GetIndex() int {
 	return o.index
 }
 
-func (o Or) GetMetas() *MetaList {
+func (o *Or) GetMetas() *MetaList {
 	return metasUnion(o.FormList)
 }
 
-func (o Or) GetType() typing.TypeScheme {
+func (o *Or) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (o Or) GetSubTerms() *TermList {
+func (o *Or) GetSubTerms() *TermList {
 	res := NewTermList()
 
 	for _, tl := range o.FormList.Slice() {
@@ -91,62 +91,61 @@ func (o Or) GetSubTerms() *TermList {
 	return res
 }
 
-func (o Or) Equals(f any) bool {
-	oth, isOr := f.(Or)
+func (o *Or) Equals(f any) bool {
+	oth, isOr := f.(*Or)
 	return isOr && oth.FormList.Equals(o.FormList)
 }
 
-func (o Or) Copy() Form {
-	return MakeOrSimple(o.index, o.FormList.Copy(), o.MetaList.Copy())
+func (o *Or) Copy() Form {
+	return NewOrSimple(o.index, o.FormList.Copy(), o.MetaList.Copy())
 }
 
-func (o Or) ToString() string {
+func (o *Or) ToString() string {
 	return o.MappedString.ToString()
 }
 
-func (o Or) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+func (o *Or) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "(%s)"
 }
 
-func (o Or) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (o *Or) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return " " + mapping[OrConn] + " ", ""
 }
 
-func (o Or) GetChildrenForMappedString() []MappableString {
+func (o *Or) GetChildrenForMappedString() []MappableString {
 	return o.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeOr(o.GetIndex(), replaceList(o.FormList, varList, index))
+func (o *Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
+	replaceList(o.FormList, varList, index)
 }
 
-func (o Or) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	formList, res := replaceVarInFormList(o.FormList, old, new)
-	return MakeOrSimple(o.GetIndex(), formList, o.MetaList), res
+func (o *Or) ReplaceVarByTerm(old Var, new Term) bool {
+	return replaceVarInFormList(o.FormList, old, new)
 }
 
-func (o Or) RenameVariables() Form {
-	return MakeOr(o.GetIndex(), renameFormList(o.FormList))
+func (o *Or) RenameVariables() {
+	renameFormList(o.FormList)
 }
 
-func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
+func (o *Or) SubstituteVarByMeta(old Var, new Meta) {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, o.FormList, o.MetaList)
-	return MakeOrSimple(o.index, newFormList, newMetas)
+	o.FormList = newFormList
+	o.MetaList = newMetas
 }
 
-func (o Or) GetInternalMetas() *MetaList {
+func (o *Or) GetInternalMetas() *MetaList {
 	return o.MetaList
 }
 
-func (o Or) SetInternalMetas(m *MetaList) Form {
+func (o *Or) SetInternalMetas(m *MetaList) {
 	o.MetaList = m
-	return o
 }
 
-func (o Or) GetSubFormulasRecur() *FormList {
+func (o *Or) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(o)
 }
 
-func (o Or) GetChildFormulas() *FormList {
+func (o *Or) GetChildFormulas() *FormList {
 	return o.FormList
 }

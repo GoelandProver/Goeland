@@ -137,32 +137,32 @@ func reconstructForm(reconstruction Reconstruct, baseForm basictypes.Form) Recon
 
 	var f basictypes.Form
 	switch form := baseForm.(type) {
-	case basictypes.All:
-		f = basictypes.MakeAll(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
-	case basictypes.AllType:
-		f = basictypes.MakeAllType(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
-	case basictypes.Ex:
-		f = basictypes.MakeEx(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
-	case basictypes.And:
-		f = basictypes.MakeAnd(form.GetIndex(), reconstruction.forms)
-	case basictypes.Or:
-		f = basictypes.MakeOr(form.GetIndex(), reconstruction.forms)
-	case basictypes.Imp:
-		f = basictypes.MakeImp(form.GetIndex(), reconstruction.forms.Get(0), reconstruction.forms.Get(1))
-	case basictypes.Equ:
-		f = basictypes.MakeEqu(form.GetIndex(), reconstruction.forms.Get(0), reconstruction.forms.Get(1))
-	case basictypes.Not:
-		f = basictypes.MakeNot(form.GetIndex(), reconstruction.forms.Get(0))
-	case basictypes.Pred:
+	case *basictypes.All:
+		f = basictypes.NewAllIndexed(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
+	case *basictypes.AllType:
+		f = basictypes.NewAllTypeIndexed(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
+	case *basictypes.Ex:
+		f = basictypes.NewExIndexed(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
+	case *basictypes.And:
+		f = basictypes.NewAndIndexed(form.GetIndex(), reconstruction.forms)
+	case *basictypes.Or:
+		f = basictypes.NewOrIndexed(form.GetIndex(), reconstruction.forms)
+	case *basictypes.Imp:
+		f = basictypes.NewImpIndexed(form.GetIndex(), reconstruction.forms.Get(0), reconstruction.forms.Get(1))
+	case *basictypes.Equ:
+		f = basictypes.NewEquIndexed(form.GetIndex(), reconstruction.forms.Get(0), reconstruction.forms.Get(1))
+	case *basictypes.Not:
+		f = basictypes.NewNotIndexed(form.GetIndex(), reconstruction.forms.Get(0))
+	case *basictypes.Pred:
 		// The len(form.GetTypeVars()) first children launched are children for typevars.
 		// So the len(form.GetTypeVars()) first children will return <nil>
 		if reconstruction.terms.Len() > len(form.GetTypeVars()) {
 			terms := basictypes.NewTermList(reconstruction.terms.GetElements(len(form.GetTypeVars()), reconstruction.terms.Len())...)
-			f = basictypes.MakePred(form.GetIndex(), form.GetID(), terms, form.GetTypeVars(), form.GetType())
+			f = basictypes.NewPredIndexed(form.GetIndex(), form.GetID(), terms, form.GetTypeVars(), form.GetType())
 		} else {
-			f = basictypes.MakePred(form.GetIndex(), form.GetID(), basictypes.NewTermList(), form.GetTypeVars(), form.GetType())
+			f = basictypes.NewPredIndexed(form.GetIndex(), form.GetID(), basictypes.NewTermList(), form.GetTypeVars(), form.GetType())
 		}
-	case basictypes.Top, basictypes.Bot:
+	case *basictypes.Top, *basictypes.Bot:
 		f = baseForm
 	}
 
@@ -199,12 +199,12 @@ func reconstructTerm(reconstruction Reconstruct, baseTerm basictypes.Term) Recon
 func unquantify(form basictypes.Form, quant basictypes.Form) basictypes.Form {
 	for reflect.TypeOf(form) == reflect.TypeOf(quant) {
 		switch quant.(type) {
-		case basictypes.All:
-			form = To[basictypes.All](form).GetForm()
-		case basictypes.AllType:
-			form = To[basictypes.AllType](form).GetForm()
-		case basictypes.Ex:
-			form = To[basictypes.Ex](form).GetForm()
+		case *basictypes.All:
+			form = To[*basictypes.All](form).GetForm()
+		case *basictypes.AllType:
+			form = To[*basictypes.AllType](form).GetForm()
+		case *basictypes.Ex:
+			form = To[*basictypes.Ex](form).GetForm()
 		}
 	}
 	return form

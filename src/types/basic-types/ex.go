@@ -41,54 +41,53 @@ import (
 )
 
 type Ex struct {
-	quantifier
+	*quantifier
 }
 
-func MakeExSimple(i int, vars []Var, forms Form, metas *MetaList) Ex {
-	return Ex{makeQuantifier(i, vars, forms, metas, ExQuant)}
+func NewExSimple(i int, vars []Var, forms Form, metas *MetaList) *Ex {
+	return &Ex{newQuantifier(i, vars, forms, metas, ExQuant)}
 }
 
-func MakeEx(i int, vars []Var, forms Form) Ex {
-	return MakeExSimple(i, vars, forms, NewMetaList())
+func NewExIndexed(i int, vars []Var, forms Form) *Ex {
+	return NewExSimple(i, vars, forms, NewMetaList())
 }
 
-func MakerEx(vars []Var, forms Form) Ex {
-	return MakeEx(MakerIndexFormula(), vars, forms)
+func NewEx(vars []Var, forms Form) *Ex {
+	return NewExIndexed(MakerIndexFormula(), vars, forms)
 }
 
-func (e Ex) Equals(other any) bool {
-	if typed, ok := other.(Ex); ok {
+func (e *Ex) Equals(other any) bool {
+	if typed, ok := other.(*Ex); ok {
 		return AreEqualsVarList(e.GetVarList(), typed.GetVarList()) && e.GetForm().Equals(typed.GetForm())
 	}
 
 	return false
 }
 
-func (e Ex) GetSubFormulasRecur() *FormList {
+func (e *Ex) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(e)
 }
 
-func (e Ex) Copy() Form {
-	return Ex{e.quantifier.copy()}
+func (e *Ex) Copy() Form {
+	return &Ex{e.quantifier.copy()}
 }
 
-func (e Ex) RenameVariables() Form {
-	return Ex{e.quantifier.renameVariables()}
+func (e *Ex) RenameVariables() {
+	e.quantifier.renameVariables()
 }
 
-func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return Ex{e.quantifier.replaceTypeByMeta(varList, index)}
+func (e *Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
+	e.quantifier.replaceTypeByMeta(varList, index)
 }
 
-func (e Ex) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	quant, isReplaced := e.quantifier.replaceVarByTerm(old, new)
-	return Ex{quant}, isReplaced
+func (e *Ex) ReplaceVarByTerm(old Var, new Term) bool {
+	return e.quantifier.replaceVarByTerm(old, new)
 }
 
-func (e Ex) SetInternalMetas(m *MetaList) Form {
-	return Ex{e.quantifier.setInternalMetas(m)}
+func (e *Ex) SetInternalMetas(m *MetaList) {
+	e.quantifier.setInternalMetas(m)
 }
 
-func (e Ex) SubstituteVarByMeta(old Var, new Meta) Form {
-	return Ex{e.quantifier.substituteVarByMeta(old, new)}
+func (e *Ex) SubstituteVarByMeta(old Var, new Meta) {
+	e.quantifier.substituteVarByMeta(old, new)
 }

@@ -38,11 +38,11 @@ import (
 )
 
 type DecoratedAll struct {
-	basictypes.All
+	*basictypes.All
 }
 
-func MakeDecoratedAll(all basictypes.All) DecoratedAll {
-	if typed, ok := all.Copy().(basictypes.All); ok {
+func MakeDecoratedAll(all *basictypes.All) DecoratedAll {
+	if typed, ok := all.Copy().(*basictypes.All); ok {
 		all = typed
 	}
 	decorated := DecoratedAll{all}
@@ -65,11 +65,11 @@ func QuantifierToMappedString(quant string, varList []basictypes.Var) string {
 }
 
 type DecoratedEx struct {
-	basictypes.Ex
+	*basictypes.Ex
 }
 
-func MakeDecoratedEx(ex basictypes.Ex) DecoratedEx {
-	if typed, ok := ex.Copy().(basictypes.Ex); ok {
+func MakeDecoratedEx(ex *basictypes.Ex) DecoratedEx {
+	if typed, ok := ex.Copy().(*basictypes.Ex); ok {
 		ex = typed
 	}
 	decorated := DecoratedEx{ex}
@@ -100,11 +100,11 @@ func (da DecoratedVar) ToMappedStringChild(mapping basictypes.MapString, display
 }
 
 type DecoratedPred struct {
-	basictypes.Pred
+	*basictypes.Pred
 }
 
-func MakeDecoratedPred(newPred basictypes.Pred) DecoratedPred {
-	if typed, ok := newPred.Copy().(basictypes.Pred); ok {
+func MakeDecoratedPred(newPred *basictypes.Pred) DecoratedPred {
+	if typed, ok := newPred.Copy().(*basictypes.Pred); ok {
 		newPred = typed
 	}
 	decorated := DecoratedPred{newPred}
@@ -151,13 +151,13 @@ func (df DecoratedFun) ToMappedStringSurround(mapping basictypes.MapString, disp
 
 func decorateForm(form basictypes.MappableString) basictypes.MappableString {
 	switch typed := form.(type) {
-	case basictypes.All:
+	case *basictypes.All:
 		return MakeDecoratedAll(typed)
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		return MakeDecoratedEx(typed)
 	case basictypes.Var:
 		return MakeDecoratedVar(typed)
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		return MakeDecoratedPred(typed)
 	case basictypes.Fun:
 		return MakeDecoratedFun(typed)

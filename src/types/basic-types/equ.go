@@ -48,96 +48,96 @@ type Equ struct {
 	*MetaList
 }
 
-func MakeEquSimple(i int, firstForm, secondForm Form, metas *MetaList) Equ {
+func NewEquSimple(i int, firstForm, secondForm Form, metas *MetaList) *Equ {
 	fms := &MappedString{}
-	equ := Equ{fms, i, firstForm, secondForm, metas}
-	fms.MappableString = &equ
+	equ := &Equ{fms, i, firstForm, secondForm, metas}
+	fms.MappableString = equ
 	return equ
 }
 
-func MakeEqu(i int, firstForm, secondForm Form) Equ {
-	return MakeEquSimple(i, firstForm, secondForm, NewMetaList())
+func NewEquIndexed(i int, firstForm, secondForm Form) *Equ {
+	return NewEquSimple(i, firstForm, secondForm, NewMetaList())
 }
 
-func MakerEqu(firstForm, secondForm Form) Equ {
-	return MakeEqu(MakerIndexFormula(), firstForm, secondForm)
+func NewEqu(firstForm, secondForm Form) *Equ {
+	return NewEquIndexed(MakerIndexFormula(), firstForm, secondForm)
 }
 
-func (e Equ) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+func (e *Equ) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "(%s)"
 }
 
-func (e Equ) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (e *Equ) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return " " + mapping[EquConn] + " ", ""
 }
 
-func (e Equ) GetChildrenForMappedString() []MappableString {
+func (e *Equ) GetChildrenForMappedString() []MappableString {
 	return e.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (e Equ) GetIndex() int { return e.index }
-func (e Equ) GetF1() Form   { return e.f1.Copy() }
-func (e Equ) GetF2() Form   { return e.f2.Copy() }
-func (e Equ) Copy() Form {
-	return MakeEquSimple(e.index, e.GetF1(), e.GetF2(), e.MetaList.Copy())
+func (e *Equ) GetIndex() int { return e.index }
+func (e *Equ) GetF1() Form   { return e.f1.Copy() }
+func (e *Equ) GetF2() Form   { return e.f2.Copy() }
+func (e *Equ) Copy() Form {
+	return NewEquSimple(e.index, e.GetF1(), e.GetF2(), e.MetaList.Copy())
 }
 
-func (e Equ) GetMetas() *MetaList {
+func (e *Equ) GetMetas() *MetaList {
 	allMetas := e.f1.GetMetas().Copy()
 	allMetas.AppendIfNotContains(e.f2.GetMetas().Slice()...)
 
 	return allMetas
 }
 
-func (e Equ) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-func (e Equ) ToString() string           { return e.ToMappedString(DefaultMapString, true) }
+func (e *Equ) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
+func (e *Equ) ToString() string           { return e.ToMappedString(DefaultMapString, true) }
 
-func (e Equ) Equals(f any) bool {
-	oth, isEqu := f.(Equ)
+func (e *Equ) Equals(f any) bool {
+	oth, isEqu := f.(*Equ)
 	return isEqu &&
 		e.f1.Equals(oth.f1) && e.f2.Equals(oth.f2)
 }
 
-func (e Equ) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeEqu(e.GetIndex(), e.GetF1().ReplaceTypeByMeta(varList, index), e.GetF2().ReplaceTypeByMeta(varList, index))
+func (e *Equ) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
+	e.f1.ReplaceTypeByMeta(varList, index)
+	e.f2.ReplaceTypeByMeta(varList, index)
 }
 
-func (e Equ) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f1, res1 := e.GetF1().ReplaceVarByTerm(old, new)
-	f2, res2 := e.GetF2().ReplaceVarByTerm(old, new)
-	MakeEquSimple(e.GetIndex(), f1, f2, e.MetaList)
-	return MakeEquSimple(e.GetIndex(), f1, f2, e.MetaList), res1 || res2
+func (e *Equ) ReplaceVarByTerm(old Var, new Term) bool {
+	return e.f1.ReplaceVarByTerm(old, new) || e.f2.ReplaceVarByTerm(old, new)
 }
 
-func (e Equ) RenameVariables() Form {
-	return MakeEqu(e.GetIndex(), e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
+func (e *Equ) RenameVariables() {
+	e.f1.RenameVariables()
+	e.f2.RenameVariables()
 }
 
-func (e Equ) GetSubTerms() *TermList {
+func (e *Equ) GetSubTerms() *TermList {
 	res := e.GetF1().GetSubTerms().Copy()
 	res.AppendIfNotContains(e.GetF2().GetSubTerms().Slice()...)
 
 	return res
 }
 
-func (e Equ) SubstituteVarByMeta(old Var, new Meta) Form {
+func (e *Equ) SubstituteVarByMeta(old Var, new Meta) {
 	fl, metas := substVarByMetaInFormList(old, new, NewFormList(e.f1, e.f2), e.MetaList)
-	return MakeEquSimple(e.index, fl.Get(0), fl.Get(1), metas)
+	e.f1 = fl.Get(0)
+	e.f2 = fl.Get(1)
+	e.MetaList = metas
 }
 
-func (e Equ) GetInternalMetas() *MetaList {
+func (e *Equ) GetInternalMetas() *MetaList {
 	return e.MetaList
 }
 
-func (e Equ) SetInternalMetas(m *MetaList) Form {
+func (e *Equ) SetInternalMetas(m *MetaList) {
 	e.MetaList = m
-	return e
 }
 
-func (e Equ) GetSubFormulasRecur() *FormList {
+func (e *Equ) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(e)
 }
 
-func (e Equ) GetChildFormulas() *FormList {
+func (e *Equ) GetChildFormulas() *FormList {
 	return NewFormList(e.f1, e.f2)
 }

@@ -111,11 +111,11 @@ func closureAxiom(proof *gs3.GS3Sequent) string {
 	result := ""
 
 	switch target.(type) {
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		result = fmt.Sprintf("GS3axiom (%s) (%s) (%s)\n", toCorrectString(target), getFromContext(target), getFromContext(notTarget))
-	case basictypes.Top:
+	case *basictypes.Top:
 		result = fmt.Sprintf("GS3ntop (%s)\n", getFromContext(notTarget))
-	case basictypes.Bot:
+	case *basictypes.Bot:
 		result = fmt.Sprintf("GS3bot (%s)\n", getFromContext(target))
 	}
 
@@ -123,7 +123,7 @@ func closureAxiom(proof *gs3.GS3Sequent) string {
 }
 
 func getPosAndNeg(target basictypes.Form) (pos, neg basictypes.Form) {
-	if neg, ok := target.(basictypes.Not); ok {
+	if neg, ok := target.(*basictypes.Not); ok {
 		return neg.GetForm(), neg
 	}
 	return target, basictypes.RefuteForm(target)
@@ -148,10 +148,10 @@ func allRulesQuantUniv(rule string, target basictypes.Form, composingForms *basi
 	quant := ""
 	typeStr := vars[0].GetTypeApp().ToString()
 	switch typed := target.(type) {
-	case basictypes.All:
+	case *basictypes.All:
 		quant = lambdaPiMapConnectors[basictypes.AllQuant]
 		typeStr = typed.GetVarList()[0].GetTypeHint().ToString()
-	case basictypes.Not:
+	case *basictypes.Not:
 		quant = lambdaPiMapConnectors[basictypes.ExQuant]
 	}
 
@@ -193,10 +193,10 @@ func allRulesQuantExist(rule string, target basictypes.Form, composingForms *bas
 	quant := ""
 	typeStr := vars[0].GetTypeApp().ToString()
 	switch typed := target.(type) {
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		quant = lambdaPiMapConnectors[basictypes.ExQuant]
 		typeStr = typed.GetVarList()[0].GetTypeHint().ToString()
-	case basictypes.Not:
+	case *basictypes.Not:
 		quant = lambdaPiMapConnectors[basictypes.AllQuant]
 	}
 
@@ -279,8 +279,8 @@ func betaNotEqu(proof *gs3.GS3Sequent) string {
 }
 
 func deltaEx(proof *gs3.GS3Sequent) string {
-	var formulaEx basictypes.Ex
-	if form, ok := proof.GetTargetForm().(basictypes.Ex); ok {
+	var formulaEx *basictypes.Ex
+	if form, ok := proof.GetTargetForm().(*basictypes.Ex); ok {
 		formulaEx = form
 	}
 
@@ -288,9 +288,9 @@ func deltaEx(proof *gs3.GS3Sequent) string {
 }
 
 func deltaNotAll(proof *gs3.GS3Sequent) string {
-	var formulaAll basictypes.All
-	if notForm, ok := proof.GetTargetForm().(basictypes.Not); ok {
-		if form, ok := notForm.GetForm().(basictypes.All); ok {
+	var formulaAll *basictypes.All
+	if notForm, ok := proof.GetTargetForm().(*basictypes.Not); ok {
+		if form, ok := notForm.GetForm().(*basictypes.All); ok {
 			formulaAll = form
 		}
 	}
@@ -300,8 +300,8 @@ func deltaNotAll(proof *gs3.GS3Sequent) string {
 }
 
 func gammaAll(proof *gs3.GS3Sequent) string {
-	var formulaAll basictypes.All
-	if form, ok := proof.GetTargetForm().(basictypes.All); ok {
+	var formulaAll *basictypes.All
+	if form, ok := proof.GetTargetForm().(*basictypes.All); ok {
 		formulaAll = form
 	}
 
@@ -309,9 +309,9 @@ func gammaAll(proof *gs3.GS3Sequent) string {
 }
 
 func gammaNotEx(proof *gs3.GS3Sequent) string {
-	var formulaEx basictypes.Ex
-	if notForm, ok := proof.GetTargetForm().(basictypes.Not); ok {
-		if form, ok := notForm.GetForm().(basictypes.Ex); ok {
+	var formulaEx *basictypes.Ex
+	if notForm, ok := proof.GetTargetForm().(*basictypes.Not); ok {
+		if form, ok := notForm.GetForm().(*basictypes.Ex); ok {
 			formulaEx = form
 		}
 	}
@@ -324,12 +324,12 @@ func gammaNotEx(proof *gs3.GS3Sequent) string {
 func processMainFormula(form basictypes.Form) (*basictypes.FormList, basictypes.Form) {
 	formList := basictypes.NewFormList()
 	switch nf := form.(type) {
-	case basictypes.Not:
+	case *basictypes.Not:
 		form = nf.GetForm()
-	case basictypes.And:
+	case *basictypes.And:
 		last := nf.FormList.Len() - 1
 		formList = basictypes.NewFormList(nf.FormList.GetElements(0, last)...)
-		form = nf.FormList.Get(last).(basictypes.Not).GetForm()
+		form = nf.FormList.Get(last).(*basictypes.Not).GetForm()
 	}
 	return formList, form
 }
@@ -338,7 +338,7 @@ func processMainFormula(form basictypes.Form) (*basictypes.FormList, basictypes.
 func makeTheorem(axioms *basictypes.FormList, conjecture basictypes.Form) string {
 	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(global.GetProblemName(), ".", "_"), "=", "_"), "+", "_")
 	axioms = axioms.Copy()
-	axioms.Append(basictypes.MakerNot(conjecture))
+	axioms.Append(basictypes.NewNot(conjecture))
 	formattedProblem := makeImpChain(axioms)
 	return "symbol goeland_" + problemName + " : \nϵ " + toCorrectString(formattedProblem) + " → ϵ ⊥ ≔ \n"
 }
@@ -348,7 +348,7 @@ func makeImpChain(forms *basictypes.FormList) basictypes.Form {
 	last := forms.Len() - 1
 	form := forms.Get(last)
 	for i := last - 1; i >= 0; i-- {
-		form = basictypes.MakerImp(forms.Get(i), form)
+		form = basictypes.NewImp(forms.Get(i), form)
 	}
 	return form
 }

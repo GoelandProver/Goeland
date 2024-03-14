@@ -57,7 +57,7 @@ func computeSubstitutions(subs []treetypes.SubstPair, metasToSubs treetypes.Subs
 
 	// Retrieve all the meta of from the tree formula
 	switch typedForm := form.(type) {
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		for _, term := range typedForm.GetArgs().Slice() {
 			metasFromTreeForm.Append(term.GetMetas().Slice()...)
 		}

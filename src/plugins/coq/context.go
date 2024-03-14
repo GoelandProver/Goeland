@@ -56,7 +56,7 @@ func makeContextIfNeeded(root basictypes.Form, metaList *basictypes.MetaList) st
 	if global.IsLoaded("dmt") {
 		registeredAxioms := dmt.GetRegisteredAxioms()
 		registeredAxioms.Append(root)
-		root = basictypes.MakerAnd(registeredAxioms)
+		root = basictypes.NewAnd(registeredAxioms)
 	}
 
 	if typing.EmptyGlobalContext() {
@@ -95,29 +95,29 @@ func contextPreamble() string {
 func getContextFromFormula(root basictypes.Form) []string {
 	result := []string{}
 	switch nf := root.(type) {
-	case basictypes.All:
+	case *basictypes.All:
 		result = getContextFromFormula(nf.GetForm())
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		result = getContextFromFormula(nf.GetForm())
-	case basictypes.AllType:
+	case *basictypes.AllType:
 		result = getContextFromFormula(nf.GetForm())
-	case basictypes.And:
+	case *basictypes.And:
 		for _, f := range nf.FormList.Slice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
-	case basictypes.Or:
+	case *basictypes.Or:
 		for _, f := range nf.FormList.Slice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
-	case basictypes.Imp:
+	case *basictypes.Imp:
 		result = clean(result, getContextFromFormula(nf.GetF1()))
 		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case basictypes.Equ:
+	case *basictypes.Equ:
 		result = clean(result, getContextFromFormula(nf.GetF1()))
 		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case basictypes.Not:
+	case *basictypes.Not:
 		result = clean(result, getContextFromFormula(nf.GetForm()))
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		if !nf.GetID().Equals(basictypes.Id_eq) {
 			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToMappedString(coqMapConnectors(), false), nf.GetType().ToString())))
 		}

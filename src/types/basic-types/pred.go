@@ -56,45 +56,45 @@ type Pred struct {
 	*MetaList
 }
 
-func MakePredSimple(index int, id Id, terms *TermList, typeApps []typing.TypeApp, metas *MetaList, typeSchemes ...typing.TypeScheme) Pred {
+func NewPredSimple(index int, id Id, terms *TermList, typeApps []typing.TypeApp, metas *MetaList, typeSchemes ...typing.TypeScheme) *Pred {
 	if len(typeSchemes) == 1 {
 		fms := &MappedString{}
-		pred := Pred{fms, index, id, terms, typeApps, typeSchemes[0], metas}
-		fms.MappableString = &pred
+		pred := &Pred{fms, index, id, terms, typeApps, typeSchemes[0], metas}
+		fms.MappableString = pred
 		return pred
 	} else {
 		fms := &MappedString{}
-		pred := Pred{fms, index, id, terms, typeApps, typing.DefaultPropType(terms.Len()), metas}
-		fms.MappableString = &pred
+		pred := &Pred{fms, index, id, terms, typeApps, typing.DefaultPropType(terms.Len()), metas}
+		fms.MappableString = pred
 		return pred
 	}
 }
 
-func MakePred(index int, id Id, terms *TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
-	return MakePredSimple(index, id, terms, typeApps, NewMetaList(), typeSchemes...)
+func NewPredIndexed(index int, id Id, terms *TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) *Pred {
+	return NewPredSimple(index, id, terms, typeApps, NewMetaList(), typeSchemes...)
 }
 
-func MakerPred(id Id, terms *TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) Pred {
-	return MakePred(MakerIndexFormula(), id, terms, typeApps, typeSchemes...)
+func NewPred(id Id, terms *TermList, typeApps []typing.TypeApp, typeSchemes ...typing.TypeScheme) *Pred {
+	return NewPredIndexed(MakerIndexFormula(), id, terms, typeApps, typeSchemes...)
 }
 
 /* Pred attributes getters */
 
-func (p Pred) GetIndex() int                 { return p.index }
-func (p Pred) GetID() Id                     { return p.id.Copy().(Id) }
-func (p Pred) GetArgs() *TermList            { return p.args.Copy() }
-func (p Pred) GetTypeVars() []typing.TypeApp { return typing.CopyTypeAppList(p.typeVars) }
+func (p *Pred) GetIndex() int                 { return p.index }
+func (p *Pred) GetID() Id                     { return p.id.Copy().(Id) }
+func (p *Pred) GetArgs() *TermList            { return p.args.Copy() }
+func (p *Pred) GetTypeVars() []typing.TypeApp { return typing.CopyTypeAppList(p.typeVars) }
 
 /* Formula methods */
 
-func (p Pred) GetType() typing.TypeScheme { return p.typeHint }
-func (p Pred) RenameVariables() Form      { return p }
+func (p *Pred) GetType() typing.TypeScheme { return p.typeHint }
+func (p *Pred) RenameVariables()           {}
 
-func (p Pred) ToString() string {
+func (p *Pred) ToString() string {
 	return p.MappedString.ToString()
 }
 
-func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+func (p *Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	if len(p.typeVars) == 0 && p.GetArgs().Len() == 0 {
 		return p.GetID().ToMappedString(mapping, displayTypes) + "%s"
 	}
@@ -114,7 +114,7 @@ func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) strin
 	return p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
 }
 
-func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (p *Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	if p.GetID().GetName() == "=" {
 		return " = ", mapping[PredEmpty]
 	}
@@ -122,16 +122,16 @@ func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separat
 	return ", ", mapping[PredEmpty]
 }
 
-func (p Pred) GetChildrenForMappedString() []MappableString {
+func (p *Pred) GetChildrenForMappedString() []MappableString {
 	return p.GetArgs().ToMappableStringSlice()
 }
 
-func (p Pred) Copy() Form {
-	return MakePredSimple(p.index, p.id, p.GetArgs(), typing.CopyTypeAppList(p.GetTypeVars()), p.MetaList.Copy(), p.GetType())
+func (p *Pred) Copy() Form {
+	return NewPredSimple(p.index, p.id, p.GetArgs(), typing.CopyTypeAppList(p.GetTypeVars()), p.MetaList.Copy(), p.GetType())
 }
 
-func (p Pred) Equals(other any) bool {
-	if typed, ok := other.(Pred); ok {
+func (p *Pred) Equals(other any) bool {
+	if typed, ok := other.(*Pred); ok {
 		return typed.id.Equals(p.id) &&
 			ComparableList[typing.TypeApp](p.typeVars).Equals(typed.typeVars) &&
 			typed.args.Equals(p.args) &&
@@ -141,7 +141,7 @@ func (p Pred) Equals(other any) bool {
 	return false
 }
 
-func (p Pred) GetMetas() *MetaList {
+func (p *Pred) GetMetas() *MetaList {
 	res := NewMetaList()
 
 	for _, m := range p.GetArgs().Slice() {
@@ -156,16 +156,17 @@ func (p Pred) GetMetas() *MetaList {
 	return res
 }
 
-func (p Pred) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakePred(p.GetIndex(), p.GetID(), replaceTermListTypesByMeta(p.GetArgs(), varList, index), instanciateTypeAppList(p.typeVars, varList, index), p.GetType())
+func (p *Pred) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
+	replaceTermListTypesByMeta(p.GetArgs(), varList, index)
 }
 
-func (p Pred) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
+func (p *Pred) ReplaceVarByTerm(old Var, new Term) bool {
 	termList, res := replaceVarInTermList(p.GetArgs(), old, new)
-	return MakePredSimple(p.GetIndex(), p.GetID(), termList, p.GetTypeVars(), p.MetaList, p.GetType()), res
+	p.args = termList
+	return res
 }
 
-func (p Pred) GetSubTerms() *TermList {
+func (p *Pred) GetSubTerms() *TermList {
 	res := NewTermList()
 
 	for _, t := range p.GetArgs().Slice() {
@@ -176,32 +177,26 @@ func (p Pred) GetSubTerms() *TermList {
 	return res
 }
 
-func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
-	f, res := p.ReplaceVarByTerm(old, new)
+func (p *Pred) SubstituteVarByMeta(old Var, new Meta) {
+	res := p.ReplaceVarByTerm(old, new)
 
-	if p, isPred := f.(Pred); isPred && (IsOuterSko() || res) {
-		metaList := p.MetaList.Copy()
-		metaList.AppendIfNotContains(new)
-
-		return MakePredSimple(p.index, p.id, p.args, p.typeVars, metaList, p.typeHint)
+	if IsOuterSko() || res {
+		p.MetaList.AppendIfNotContains(new)
 	}
-
-	return f
 }
 
-func (p Pred) GetInternalMetas() *MetaList {
+func (p *Pred) GetInternalMetas() *MetaList {
 	return p.MetaList
 }
 
-func (p Pred) SetInternalMetas(m *MetaList) Form {
+func (p *Pred) SetInternalMetas(m *MetaList) {
 	p.MetaList = m
-	return p
 }
 
-func (p Pred) GetSubFormulasRecur() *FormList {
+func (p *Pred) GetSubFormulasRecur() *FormList {
 	return NewFormList(p.Copy())
 }
 
-func (p Pred) GetChildFormulas() *FormList {
+func (p *Pred) GetChildFormulas() *FormList {
 	return NewFormList()
 }

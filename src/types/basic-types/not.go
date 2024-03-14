@@ -50,107 +50,104 @@ type Not struct {
 
 /** Constructors **/
 
-func MakeNotSimple(i int, form Form, metas *MetaList) Not {
+func NewNotSimple(i int, form Form, metas *MetaList) *Not {
 	fms := &MappedString{}
-	not := Not{fms, i, form, metas}
-	fms.MappableString = &not
+	not := &Not{fms, i, form, metas}
+	fms.MappableString = not
 	return not
 }
 
-func MakeNot(i int, form Form) Not {
-	return MakeNotSimple(i, form, NewMetaList())
+func NewNotIndexed(i int, form Form) *Not {
+	return NewNotSimple(i, form, NewMetaList())
 }
 
-func MakerNot(form Form) Not {
-	return MakeNot(MakerIndexFormula(), form)
+func NewNot(form Form) *Not {
+	return NewNotIndexed(MakerIndexFormula(), form)
 }
 
 /** Methods **/
 
 /** - Form interface Methods **/
 
-func (n Not) GetIndex() int {
+func (n *Not) GetIndex() int {
 	return n.index
 }
 
-func (n Not) GetMetas() *MetaList {
+func (n *Not) GetMetas() *MetaList {
 	return n.GetForm().GetMetas()
 }
 
-func (n Not) GetType() typing.TypeScheme {
+func (n *Not) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (n Not) GetSubTerms() *TermList {
+func (n *Not) GetSubTerms() *TermList {
 	return n.GetForm().GetSubTerms()
 }
 
-func (n Not) Equals(other any) bool {
-	if typed, ok := other.(Not); ok {
+func (n *Not) Equals(other any) bool {
+	if typed, ok := other.(*Not); ok {
 		return typed.f.Equals(n.f)
 	}
 
 	return false
 }
 
-func (n Not) Copy() Form {
-	return MakeNotSimple(n.index, n.GetForm(), n.MetaList.Copy())
+func (n *Not) Copy() Form {
+	return NewNotSimple(n.index, n.GetForm(), n.MetaList.Copy())
 }
 
-func (n Not) ToString() string {
+func (n *Not) ToString() string {
 	return n.MappedString.ToString()
 }
 
-func (n Not) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+func (n *Not) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return mapping[NotConn] + "(%s)"
 }
 
-func (n Not) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (n *Not) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return "", ""
 }
 
-func (n Not) GetChildrenForMappedString() []MappableString {
+func (n *Not) GetChildrenForMappedString() []MappableString {
 	return n.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
+func (n *Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
+	n.f.ReplaceTypeByMeta(varList, index)
 }
 
-func (n Not) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f, res := n.f.ReplaceVarByTerm(old, new)
-	return MakeNotSimple(n.GetIndex(), f, n.MetaList), res
+func (n *Not) ReplaceVarByTerm(old Var, new Term) bool {
+	return n.f.ReplaceVarByTerm(old, new)
 }
 
-func (n Not) RenameVariables() Form {
-	return MakeNot(n.GetIndex(), n.f.RenameVariables())
+func (n *Not) RenameVariables() {
+	n.f.RenameVariables()
 }
 
 /** - Other Methods **/
 
-func (n Not) GetForm() Form {
+func (n *Not) GetForm() Form {
 	return n.f.Copy()
 }
 
-func (n Not) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := n.GetForm().SubstituteVarByMeta(old, new)
-	return MakeNotSimple(n.index, f, f.GetInternalMetas().Copy())
+func (n *Not) SubstituteVarByMeta(old Var, new Meta) {
+	n.f.SubstituteVarByMeta(old, new)
 }
 
-func (n Not) GetInternalMetas() *MetaList {
+func (n *Not) GetInternalMetas() *MetaList {
 	return n.MetaList
 }
 
-func (n Not) SetInternalMetas(m *MetaList) Form {
+func (n *Not) SetInternalMetas(m *MetaList) {
 	n.MetaList = m
-	return n
 }
 
-func (n Not) GetSubFormulasRecur() *FormList {
+func (n *Not) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(n)
 }
 
-func (n Not) GetChildFormulas() *FormList {
+func (n *Not) GetChildFormulas() *FormList {
 	return NewFormList(n.GetForm())
 }
 
@@ -159,13 +156,16 @@ func (n Not) GetChildFormulas() *FormList {
 /* Gives a new Form that is the negation of the given Form */
 func RefuteForm(form Form) Form {
 	internalMetas := form.GetInternalMetas()
-	return MakerNot(form).SetInternalMetas(internalMetas)
+	notform := NewNot(form)
+	notform.SetInternalMetas(internalMetas)
+
+	return notform
 }
 
 /* Gives a new Form that isn't a Not */
 func RemoveNeg(form Form) Form {
 	switch typedForm := form.(type) {
-	case Not:
+	case *Not:
 		return RemoveNeg(typedForm.GetForm())
 	default:
 		return form
@@ -184,7 +184,7 @@ func SimplifyNegations(form Form) Form {
 }
 
 func getDeepFormWithoutNot(form Form, isEven bool) (Form, bool) {
-	if not, isNot := form.(Not); isNot {
+	if not, isNot := form.(*Not); isNot {
 		return getDeepFormWithoutNot(not.GetForm(), !isEven)
 	} else {
 		return form, isEven

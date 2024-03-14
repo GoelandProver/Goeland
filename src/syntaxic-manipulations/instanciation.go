@@ -51,11 +51,11 @@ func Instantiate(fnt basictypes.FormAndTerms, index int) (basictypes.FormAndTerm
 	terms := fnt.GetTerms()
 
 	switch f := fnt.GetForm().(type) {
-	case basictypes.Not:
-		if ex, isEx := f.GetForm().(basictypes.Ex); isEx {
+	case *basictypes.Not:
+		if ex, isEx := f.GetForm().(*basictypes.Ex); isEx {
 			fnt, meta = realInstantiate(ex.GetVarList(), index, is_exists, ex.GetForm(), terms)
 		}
-	case basictypes.All:
+	case *basictypes.All:
 		fnt, meta = realInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
@@ -65,7 +65,8 @@ func Instantiate(fnt basictypes.FormAndTerms, index int) (basictypes.FormAndTerm
 func realInstantiate(varList []basictypes.Var, index, status int, subForm basictypes.Form, terms *basictypes.TermList) (basictypes.FormAndTerms, basictypes.Meta) {
 	v := varList[0]
 	meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
-	subForm = subForm.SubstituteVarByMeta(v, meta)
+	subForm = subForm.Copy()
+	subForm.SubstituteVarByMeta(v, meta)
 
 	terms = terms.Copy()
 	terms.AppendIfNotContains(meta)
@@ -74,10 +75,11 @@ func realInstantiate(varList []basictypes.Var, index, status int, subForm basict
 
 	if len(varList) > 1 {
 		if status == is_exists {
-			ex := basictypes.MakerEx(varList[1:], subForm)
-			subForm = basictypes.RefuteForm(ex.SetInternalMetas(internalMetas))
+			ex := basictypes.NewEx(varList[1:], subForm)
+			ex.SetInternalMetas(internalMetas)
+			subForm = basictypes.RefuteForm(ex)
 		} else {
-			subForm = basictypes.MakerAll(varList[1:], subForm)
+			subForm = basictypes.NewAll(varList[1:], subForm)
 		}
 	} else {
 		if status == is_exists {
@@ -85,5 +87,6 @@ func realInstantiate(varList []basictypes.Var, index, status int, subForm basict
 		}
 	}
 
-	return basictypes.MakeFormAndTerm(subForm.SetInternalMetas(internalMetas), terms), meta
+	subForm.SetInternalMetas(internalMetas)
+	return basictypes.MakeFormAndTerm(subForm, terms), meta
 }

@@ -253,36 +253,36 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 	var res basictypes.Form
 
 	switch nf := f.(type) {
-	case basictypes.Pred:
-		res = basictypes.MakePred(
+	case *basictypes.Pred:
+		res = basictypes.NewPredIndexed(
 			nf.GetIndex(),
 			nf.GetID(),
 			ApplySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
 			applySubstitutionOnTypeList(old_symbol, new_symbol, nf.GetTypeVars()),
 			nf.GetType(),
 		)
-	case basictypes.Not:
-		res = basictypes.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
-	case basictypes.And:
+	case *basictypes.Not:
+		res = basictypes.NewNotIndexed(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
+	case *basictypes.And:
 		res_tmp := basictypes.NewFormList()
 		for _, val := range nf.FormList.Slice() {
 			res_tmp.Append(ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
-		res = basictypes.MakeAnd(f.GetIndex(), res_tmp)
-	case basictypes.Or:
+		res = basictypes.NewAndIndexed(f.GetIndex(), res_tmp)
+	case *basictypes.Or:
 		res_tmp := basictypes.NewFormList()
 		for _, val := range nf.FormList.Slice() {
 			res_tmp.Append(ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
-		res = basictypes.MakeOr(f.GetIndex(), res_tmp)
-	case basictypes.Imp:
-		res = basictypes.MakeImp(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF1()), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF2()))
-	case basictypes.Equ:
-		res = basictypes.MakeEqu(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF1()), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF2()))
-	case basictypes.Ex:
-		res = basictypes.MakeEx(f.GetIndex(), nf.GetVarList(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
-	case basictypes.All:
-		res = basictypes.MakeAll(f.GetIndex(), nf.GetVarList(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
+		res = basictypes.NewOrIndexed(f.GetIndex(), res_tmp)
+	case *basictypes.Imp:
+		res = basictypes.NewImpIndexed(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF1()), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF2()))
+	case *basictypes.Equ:
+		res = basictypes.NewEquIndexed(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF1()), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF2()))
+	case *basictypes.Ex:
+		res = basictypes.NewExIndexed(f.GetIndex(), nf.GetVarList(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
+	case *basictypes.All:
+		res = basictypes.NewAllIndexed(f.GetIndex(), nf.GetVarList(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	default:
 		res = f
 	}

@@ -208,16 +208,17 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 	case and_list.IsEmpty():
 		return basictypes.RefuteForm(not_form), bound, containsEquality
 	case not_form == nil:
-		return basictypes.MakerAnd(and_list), bound, containsEquality
+		return basictypes.NewAnd(and_list), bound, containsEquality
 	default:
 		flattened := and_list.Flatten()
 		flattened.Append(basictypes.RefuteForm(not_form))
-		return basictypes.MakerAnd(flattened), bound, containsEquality
+		return basictypes.NewAnd(flattened), bound, containsEquality
 	}
 }
 
 func doAxiomStatement(andList *basictypes.FormList, statement basictypes.Statement) *basictypes.FormList {
-	newForm := statement.GetForm().RenameVariables()
+	newForm := statement.GetForm().Copy()
+	newForm.RenameVariables()
 
 	if !global.IsLoaded("dmt") {
 		andList.Append(newForm)
@@ -235,7 +236,9 @@ func doAxiomStatement(andList *basictypes.FormList, statement basictypes.Stateme
 
 func doConjectureStatement(statement basictypes.Statement) basictypes.Form {
 	global.SetConjecture(true)
-	return statement.GetForm().RenameVariables()
+	form := statement.GetForm().Copy()
+	form.RenameVariables()
+	return form
 }
 
 func doTypeStatement(statement basictypes.Statement) {

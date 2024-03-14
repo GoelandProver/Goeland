@@ -61,7 +61,7 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 	var result []treetypes.MatchingSubstitutions
 	// The formula has to be a predicate.
 	switch formula_type := formula.(type) {
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		terms := treetypes.TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs())
 
 		// Transform the predicate to a function to make the tool work properly
@@ -142,7 +142,7 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 	if node.isLeaf() {
 		// global.PrintDebug("UX", fmt.Sprintf("Is leaf : %v", node.formulae.ToString()))
 		for _, f := range node.formulae.Slice() {
-			if reflect.TypeOf(f) == reflect.TypeOf(basictypes.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(treetypes.TermForm{}) {
+			if reflect.TypeOf(f) == reflect.TypeOf(&basictypes.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(treetypes.TermForm{}) {
 				// Rebuild final substitution between meta and subst
 				final_subst := computeSubstitutions(treetypes.CopySubstPairList(m.subst), m.meta.Copy(), f.Copy())
 				if !final_subst.Equals(treetypes.Failure()) {

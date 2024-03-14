@@ -55,8 +55,8 @@ func TestConstantsPredicatesEquality(t *testing.T) {
 	a := MakerConst(MakerId("a"))
 	p := MakerId("P")
 
-	p1 := MakerPred(p, NewTermList(a), []typing.TypeApp{})
-	p2 := MakerPred(p, NewTermList(a), []typing.TypeApp{})
+	p1 := NewPred(p, NewTermList(a), []typing.TypeApp{})
+	p2 := NewPred(p, NewTermList(a), []typing.TypeApp{})
 
 	if !p1.Equals(p2) {
 		t.Errorf("%s != %s when it should be equal.", p1.ToString(), p2.ToString())
@@ -68,8 +68,8 @@ func TestVariablesPredicatesEquality(t *testing.T) {
 	x := MakerVar("x")
 	p := MakerId("P")
 
-	p1 := MakerPred(p, NewTermList(x), []typing.TypeApp{})
-	p2 := MakerPred(p, NewTermList(x), []typing.TypeApp{})
+	p1 := NewPred(p, NewTermList(x), []typing.TypeApp{})
+	p2 := NewPred(p, NewTermList(x), []typing.TypeApp{})
 
 	if !p1.Equals(p2) {
 		t.Errorf("%s != %s when it should be equal.", p1.ToString(), p2.ToString())
@@ -82,8 +82,8 @@ func TestFunctionsPredicatesEquality(t *testing.T) {
 	f := MakerFun(MakerId("f"), NewTermList(x), []typing.TypeApp{})
 	p := MakerId("P")
 
-	p1 := MakerPred(p, NewTermList(f), []typing.TypeApp{})
-	p2 := MakerPred(p, NewTermList(f), []typing.TypeApp{})
+	p1 := NewPred(p, NewTermList(f), []typing.TypeApp{})
+	p2 := NewPred(p, NewTermList(f), []typing.TypeApp{})
 
 	if !p1.Equals(p2) {
 		t.Errorf("%s != %s when it should be equal.", p1.ToString(), p2.ToString())
@@ -94,8 +94,8 @@ func TestTypedPredicatesEquality(t *testing.T) {
 	x := MakerVar("x", typing.MkTypeHint("int"))
 	p := MakerId("P")
 
-	p1 := MakerPred(p, NewTermList(x), []typing.TypeApp{typing.MkTypeHint("int")})
-	p2 := MakerPred(p, NewTermList(x), []typing.TypeApp{typing.MkTypeHint("int")})
+	p1 := NewPred(p, NewTermList(x), []typing.TypeApp{typing.MkTypeHint("int")})
+	p2 := NewPred(p, NewTermList(x), []typing.TypeApp{typing.MkTypeHint("int")})
 
 	if !p1.Equals(p2) {
 		t.Errorf("%s != %s when it should be equal.", p1.ToString(), p2.ToString())

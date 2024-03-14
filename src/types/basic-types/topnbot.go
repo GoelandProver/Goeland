@@ -46,43 +46,43 @@ type Top struct {
 	index int
 }
 
-func MakeTop(i int) Top {
+func NewTopIndexed(i int) *Top {
 	fms := &MappedString{}
-	top := Top{fms, i}
-	fms.MappableString = &top
+	top := &Top{fms, i}
+	fms.MappableString = top
 	return top
 }
 
-func MakerTop() Top {
-	return MakeTop(MakerIndexFormula())
+func NewTop() *Top {
+	return NewTopIndexed(MakerIndexFormula())
 }
 
-func (t Top) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+func (t *Top) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"
 }
 
-func (t Top) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (t *Top) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return "", mapping[TopType]
 }
 
-func (t Top) GetChildrenForMappedString() []MappableString {
+func (t *Top) GetChildrenForMappedString() []MappableString {
 	return t.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (t Top) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
-func (t Top) Copy() Form                                   { return MakeTop(t.GetIndex()) }
-func (Top) Equals(f any) bool                              { _, isTop := f.(Top); return isTop }
-func (Top) GetMetas() *MetaList                            { return NewMetaList() }
-func (t Top) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeTop(t.GetIndex()) }
-func (t Top) ReplaceVarByTerm(Var, Term) (Form, bool)      { return MakeTop(t.GetIndex()), false }
-func (t Top) RenameVariables() Form                        { return MakeTop(t.GetIndex()) }
-func (t Top) GetIndex() int                                { return t.index }
-func (t Top) GetSubTerms() *TermList                       { return NewTermList() }
-func (t Top) SubstituteVarByMeta(Var, Meta) Form           { return t }
-func (t Top) GetInternalMetas() *MetaList                  { return NewMetaList() }
-func (t Top) SetInternalMetas(*MetaList) Form              { return t }
-func (t Top) GetSubFormulasRecur() *FormList               { return NewFormList(t.Copy()) }
-func (t Top) GetChildFormulas() *FormList                  { return NewFormList() }
+func (t *Top) GetType() typing.TypeScheme              { return typing.DefaultPropType(0) }
+func (t *Top) Copy() Form                              { return NewTopIndexed(t.GetIndex()) }
+func (Top) Equals(f any) bool                          { _, isTop := f.(*Top); return isTop }
+func (Top) GetMetas() *MetaList                        { return NewMetaList() }
+func (t *Top) ReplaceTypeByMeta([]typing.TypeVar, int) {}
+func (t *Top) ReplaceVarByTerm(Var, Term) bool         { return false }
+func (t *Top) RenameVariables()                        {}
+func (t *Top) GetIndex() int                           { return t.index }
+func (t *Top) GetSubTerms() *TermList                  { return NewTermList() }
+func (t *Top) SubstituteVarByMeta(Var, Meta)           {}
+func (t *Top) GetInternalMetas() *MetaList             { return NewMetaList() }
+func (t *Top) SetInternalMetas(*MetaList)              {}
+func (t *Top) GetSubFormulasRecur() *FormList          { return NewFormList(t.Copy()) }
+func (t *Top) GetChildFormulas() *FormList             { return NewFormList() }
 
 /* Bot (always false) definition */
 type Bot struct {
@@ -90,40 +90,40 @@ type Bot struct {
 	index int
 }
 
-func MakeBot(i int) Bot {
+func NewBotSimple(i int) *Bot {
 	fms := &MappedString{}
-	bot := Bot{fms, i}
-	fms.MappableString = &bot
+	bot := &Bot{fms, i}
+	fms.MappableString = bot
 	return bot
 }
 
-func MakerBot() Bot {
-	return MakeBot(MakerIndexFormula())
+func NewBot() *Bot {
+	return NewBotSimple(MakerIndexFormula())
 }
 
-func (b Bot) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+func (b *Bot) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"
 }
 
-func (b Bot) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (b *Bot) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return "", mapping[BotType]
 }
 
-func (b Bot) GetChildrenForMappedString() []MappableString {
+func (b *Bot) GetChildrenForMappedString() []MappableString {
 	return b.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (b Bot) GetType() typing.TypeScheme                   { return typing.DefaultPropType(0) }
-func (b Bot) Copy() Form                                   { return MakeBot(b.GetIndex()) }
-func (Bot) Equals(f any) bool                              { _, isBot := f.(Bot); return isBot }
-func (Bot) GetMetas() *MetaList                            { return NewMetaList() }
-func (b Bot) ReplaceTypeByMeta([]typing.TypeVar, int) Form { return MakeBot(b.GetIndex()) }
-func (b Bot) ReplaceVarByTerm(Var, Term) (Form, bool)      { return MakeBot(b.GetIndex()), false }
-func (b Bot) RenameVariables() Form                        { return MakeBot(b.GetIndex()) }
-func (b Bot) GetIndex() int                                { return b.index }
-func (b Bot) GetSubTerms() *TermList                       { return NewTermList() }
-func (b Bot) SubstituteVarByMeta(Var, Meta) Form           { return b }
-func (b Bot) GetInternalMetas() *MetaList                  { return NewMetaList() }
-func (b Bot) SetInternalMetas(*MetaList) Form              { return b }
-func (b Bot) GetSubFormulasRecur() *FormList               { return NewFormList(b.Copy()) }
-func (b Bot) GetChildFormulas() *FormList                  { return NewFormList() }
+func (b *Bot) GetType() typing.TypeScheme              { return typing.DefaultPropType(0) }
+func (b *Bot) Copy() Form                              { return NewBotSimple(b.GetIndex()) }
+func (Bot) Equals(f any) bool                          { _, isBot := f.(*Bot); return isBot }
+func (Bot) GetMetas() *MetaList                        { return NewMetaList() }
+func (b *Bot) ReplaceTypeByMeta([]typing.TypeVar, int) {}
+func (b *Bot) ReplaceVarByTerm(Var, Term) bool         { return false }
+func (b *Bot) RenameVariables()                        {}
+func (b *Bot) GetIndex() int                           { return b.index }
+func (b *Bot) GetSubTerms() *TermList                  { return NewTermList() }
+func (b *Bot) SubstituteVarByMeta(Var, Meta)           {}
+func (b *Bot) GetInternalMetas() *MetaList             { return NewMetaList() }
+func (b *Bot) SetInternalMetas(*MetaList)              {}
+func (b *Bot) GetSubFormulasRecur() *FormList          { return NewFormList(b.Copy()) }
+func (b *Bot) GetChildFormulas() *FormList             { return NewFormList() }

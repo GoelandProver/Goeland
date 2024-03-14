@@ -269,11 +269,11 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(f.Copy(), basictypes.NewTermList()))
 		}
 		for _, f := range atomicsMinus.Slice() {
-			ok := lam(basictypes.MakerNot(f))
+			ok := lam(basictypes.NewNot(f))
 			if !ok {
 				return
 			}
-			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(basictypes.MakerNot(f), basictypes.NewTermList()))
+			new_atomics = append(new_atomics, basictypes.MakeFormAndTerm(basictypes.NewNot(f), basictypes.NewTermList()))
 		}
 
 		/** Filter Atomics for DMT

@@ -50,38 +50,38 @@ type And struct {
 
 /** Constructors **/
 
-func MakeAndSimple(i int, forms *FormList, metas *MetaList) And {
+func NewAndSimple(i int, forms *FormList, metas *MetaList) *And {
 	fms := &MappedString{}
-	and := And{fms, i, forms, metas}
-	fms.MappableString = &and
+	and := &And{fms, i, forms, metas}
+	fms.MappableString = and
 	return and
 }
 
-func MakeAnd(i int, forms *FormList) And {
-	return MakeAndSimple(i, forms, NewMetaList())
+func NewAndIndexed(i int, forms *FormList) *And {
+	return NewAndSimple(i, forms, NewMetaList())
 }
 
-func MakerAnd(forms *FormList) And {
-	return MakeAnd(MakerIndexFormula(), forms)
+func NewAnd(forms *FormList) *And {
+	return NewAndIndexed(MakerIndexFormula(), forms)
 }
 
 /** Methods **/
 
 /** - Form interface Methods **/
 
-func (a And) GetIndex() int {
+func (a *And) GetIndex() int {
 	return a.index
 }
 
-func (a And) GetMetas() *MetaList {
+func (a *And) GetMetas() *MetaList {
 	return metasUnion(a.FormList)
 }
 
-func (a And) GetType() typing.TypeScheme {
+func (a *And) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (a And) GetSubTerms() *TermList {
+func (a *And) GetSubTerms() *TermList {
 	res := NewTermList()
 
 	for _, tl := range a.FormList.Slice() {
@@ -91,65 +91,64 @@ func (a And) GetSubTerms() *TermList {
 	return res
 }
 
-func (a And) Equals(other any) bool {
-	if typed, ok := other.(And); ok {
+func (a *And) Equals(other any) bool {
+	if typed, ok := other.(*And); ok {
 		return typed.FormList.Equals(a.FormList)
 	}
 
 	return false
 }
 
-func (a And) Copy() Form {
-	return MakeAndSimple(a.index, a.FormList.Copy(), a.MetaList.Copy())
+func (a *And) Copy() Form {
+	return NewAndSimple(a.index, a.FormList.Copy(), a.MetaList.Copy())
 }
 
-func (a And) ToString() string {
+func (a *And) ToString() string {
 	return a.MappedString.ToString()
 }
 
-func (a And) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+func (a *And) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "(%s)"
 }
 
-func (a And) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (a *And) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return " " + mapping[AndConn] + " ", ""
 }
 
-func (a And) GetChildrenForMappedString() []MappableString {
+func (a *And) GetChildrenForMappedString() []MappableString {
 	return a.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeAnd(a.GetIndex(), replaceList(a.FormList, varList, index))
+func (a *And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
+	replaceList(a.FormList, varList, index)
 }
 
-func (a And) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	varList, res := replaceVarInFormList(a.FormList, old, new)
-	return MakeAndSimple(a.index, varList, a.MetaList), res
+func (a *And) ReplaceVarByTerm(old Var, new Term) bool {
+	return replaceVarInFormList(a.FormList, old, new)
 }
 
-func (a And) RenameVariables() Form {
-	return MakeAnd(a.GetIndex(), renameFormList(a.FormList))
+func (a *And) RenameVariables() {
+	renameFormList(a.FormList)
 }
 
-func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
+func (a *And) SubstituteVarByMeta(old Var, new Meta) {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, a.FormList, a.MetaList)
-	return MakeAndSimple(a.index, newFormList, newMetas)
+	a.FormList = newFormList
+	a.MetaList = newMetas
 }
 
-func (a And) GetInternalMetas() *MetaList {
+func (a *And) GetInternalMetas() *MetaList {
 	return a.MetaList
 }
 
-func (a And) SetInternalMetas(m *MetaList) Form {
+func (a *And) SetInternalMetas(m *MetaList) {
 	a.MetaList = m
-	return a
 }
 
-func (a And) GetSubFormulasRecur() *FormList {
+func (a *And) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(a)
 }
 
-func (a And) GetChildFormulas() *FormList {
+func (a *And) GetChildFormulas() *FormList {
 	return a.FormList
 }

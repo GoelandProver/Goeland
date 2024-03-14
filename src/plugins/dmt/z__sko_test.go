@@ -60,15 +60,15 @@ func TestPreskolemization(t *testing.T) {
 	in := basictypes.MakerId("in")
 
 	// forall x, y. subset(x, y) <=> forall z. in(z, x) => in(z, y)
-	axiom := basictypes.MakerAll(
+	axiom := basictypes.NewAll(
 		[]basictypes.Var{x, y},
-		basictypes.MakerEqu(
-			basictypes.MakerPred(subset, basictypes.NewTermList(x, y), []typing.TypeApp{}),
-			basictypes.MakerAll(
+		basictypes.NewEqu(
+			basictypes.NewPred(subset, basictypes.NewTermList(x, y), []typing.TypeApp{}),
+			basictypes.NewAll(
 				[]basictypes.Var{z},
-				basictypes.MakerImp(
-					basictypes.MakerPred(in, basictypes.NewTermList(z, x), []typing.TypeApp{}),
-					basictypes.MakerPred(in, basictypes.NewTermList(z, y), []typing.TypeApp{}),
+				basictypes.NewImp(
+					basictypes.NewPred(in, basictypes.NewTermList(z, x), []typing.TypeApp{}),
+					basictypes.NewPred(in, basictypes.NewTermList(z, y), []typing.TypeApp{}),
 				),
 			),
 		),
@@ -79,18 +79,18 @@ func TestPreskolemization(t *testing.T) {
 	}
 
 	// Positive occurrences should be rewritten normally
-	form := basictypes.MakerPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{})
+	form := basictypes.NewPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{})
 	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form.ToString())
 	}
 
-	expected := basictypes.MakerAll(
+	expected := basictypes.NewAll(
 		[]basictypes.Var{z},
-		basictypes.MakerImp(
-			basictypes.MakerPred(in, basictypes.NewTermList(z, a), []typing.TypeApp{}),
-			basictypes.MakerPred(in, basictypes.NewTermList(z, b), []typing.TypeApp{}),
+		basictypes.NewImp(
+			basictypes.NewPred(in, basictypes.NewTermList(z, a), []typing.TypeApp{}),
+			basictypes.NewPred(in, basictypes.NewTermList(z, b), []typing.TypeApp{}),
 		),
 	)
 
@@ -102,7 +102,7 @@ func TestPreskolemization(t *testing.T) {
 	}
 
 	// Negative occurrences should be skolemized
-	form2 := basictypes.MakerNot(basictypes.MakerPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{}))
+	form2 := basictypes.NewNot(basictypes.NewPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{}))
 	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
@@ -112,10 +112,10 @@ func TestPreskolemization(t *testing.T) {
 	if len(substs) > 1 ||
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		substs[0].GetSaf().GetForm().Len() > 1 ||
-		reflect.TypeOf(substs[0].GetSaf().GetForm().Get(0)) != reflect.TypeOf(basictypes.Not{}) ||
-		reflect.TypeOf(substs[0].GetSaf().GetForm().Get(0).(basictypes.Not).GetForm()) != reflect.TypeOf(basictypes.Imp{}) ||
-		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Not).GetForm().(basictypes.Imp).GetF1().(basictypes.Pred).GetArgs().Get(0).IsFun() ||
-		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Not).GetForm().(basictypes.Imp).GetF2().(basictypes.Pred).GetArgs().Get(0).IsFun() {
+		reflect.TypeOf(substs[0].GetSaf().GetForm().Get(0)) != reflect.TypeOf(&basictypes.Not{}) ||
+		reflect.TypeOf(substs[0].GetSaf().GetForm().Get(0).(*basictypes.Not).GetForm()) != reflect.TypeOf(&basictypes.Imp{}) ||
+		!substs[0].GetSaf().GetForm().Get(0).(*basictypes.Not).GetForm().(*basictypes.Imp).GetF1().(*basictypes.Pred).GetArgs().Get(0).IsFun() ||
+		!substs[0].GetSaf().GetForm().Get(0).(*basictypes.Not).GetForm().(*basictypes.Imp).GetF2().(*basictypes.Pred).GetArgs().Get(0).IsFun() {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form2.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
 	}
 }
@@ -129,15 +129,15 @@ func TestPreskolemization2(t *testing.T) {
 	in := basictypes.MakerId("in")
 
 	// forall x, y. subset(x, y) <=> forall z. in(z, x) => in(z, y)
-	axiom := basictypes.MakerAll(
+	axiom := basictypes.NewAll(
 		[]basictypes.Var{x, y},
-		basictypes.MakerEqu(
-			basictypes.MakerPred(subset, basictypes.NewTermList(x, y), []typing.TypeApp{}),
-			basictypes.MakerEx(
+		basictypes.NewEqu(
+			basictypes.NewPred(subset, basictypes.NewTermList(x, y), []typing.TypeApp{}),
+			basictypes.NewEx(
 				[]basictypes.Var{z},
-				basictypes.MakerImp(
-					basictypes.MakerPred(in, basictypes.NewTermList(z, x), []typing.TypeApp{}),
-					basictypes.MakerPred(in, basictypes.NewTermList(z, y), []typing.TypeApp{}),
+				basictypes.NewImp(
+					basictypes.NewPred(in, basictypes.NewTermList(z, x), []typing.TypeApp{}),
+					basictypes.NewPred(in, basictypes.NewTermList(z, y), []typing.TypeApp{}),
 				),
 			),
 		),
@@ -148,7 +148,7 @@ func TestPreskolemization2(t *testing.T) {
 	}
 
 	// Positive occurrences should be skolemized
-	form := basictypes.MakerPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{})
+	form := basictypes.NewPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{})
 	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
@@ -158,25 +158,25 @@ func TestPreskolemization2(t *testing.T) {
 	if len(substs) > 1 ||
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		substs[0].GetSaf().GetForm().Len() > 1 ||
-		reflect.TypeOf(substs[0].GetSaf().GetForm().Get(0)) != reflect.TypeOf(basictypes.Imp{}) ||
-		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Imp).GetF1().(basictypes.Pred).GetArgs().Get(0).IsFun() ||
-		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Imp).GetF2().(basictypes.Pred).GetArgs().Get(0).IsFun() {
+		reflect.TypeOf(substs[0].GetSaf().GetForm().Get(0)) != reflect.TypeOf(&basictypes.Imp{}) ||
+		!substs[0].GetSaf().GetForm().Get(0).(*basictypes.Imp).GetF1().(*basictypes.Pred).GetArgs().Get(0).IsFun() ||
+		!substs[0].GetSaf().GetForm().Get(0).(*basictypes.Imp).GetF2().(*basictypes.Pred).GetArgs().Get(0).IsFun() {
 		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
 	}
 
 	// Negative occurrences should be rewritten normally
-	form2 := basictypes.MakerNot(basictypes.MakerPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{}))
+	form2 := basictypes.NewNot(basictypes.NewPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{}))
 	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should.", form2.ToString())
 	}
 
-	expected := basictypes.MakerNot(basictypes.MakerEx(
+	expected := basictypes.NewNot(basictypes.NewEx(
 		[]basictypes.Var{z},
-		basictypes.MakerImp(
-			basictypes.MakerPred(in, basictypes.NewTermList(z, a), []typing.TypeApp{}),
-			basictypes.MakerPred(in, basictypes.NewTermList(z, b), []typing.TypeApp{}),
+		basictypes.NewImp(
+			basictypes.NewPred(in, basictypes.NewTermList(z, a), []typing.TypeApp{}),
+			basictypes.NewPred(in, basictypes.NewTermList(z, b), []typing.TypeApp{}),
 		),
 	))
 

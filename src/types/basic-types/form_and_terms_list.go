@@ -187,13 +187,13 @@ func (lf FormAndTermsList) FilterPred(pola bool) *FormList {
 	res := NewFormList()
 	for _, f := range lf {
 		switch nf := f.GetForm().(type) {
-		case Pred:
+		case *Pred:
 			if pola {
 				res.AppendIfNotContains(nf)
 			}
-		case Not:
+		case *Not:
 			switch nf.GetForm().(type) {
-			case Pred:
+			case *Pred:
 				if !pola {
 					res.AppendIfNotContains(nf.GetForm())
 				}

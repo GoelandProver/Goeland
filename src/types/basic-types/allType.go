@@ -50,98 +50,95 @@ type AllType struct {
 	*MetaList
 }
 
-func MakeAllTypeSimple(i int, typeVars []typing.TypeVar, form Form, metas *MetaList) AllType {
+func NewAllTypeSimple(i int, typeVars []typing.TypeVar, form Form, metas *MetaList) *AllType {
 	fms := &MappedString{}
-	at := AllType{fms, i, typeVars, form, metas}
-	fms.MappableString = &at
+	at := &AllType{fms, i, typeVars, form, metas}
+	fms.MappableString = at
 	return at
 }
 
-func MakeAllType(i int, typeVars []typing.TypeVar, form Form) AllType {
-	return MakeAllTypeSimple(i, typeVars, form, NewMetaList())
+func NewAllTypeIndexed(i int, typeVars []typing.TypeVar, form Form) *AllType {
+	return NewAllTypeSimple(i, typeVars, form, NewMetaList())
 }
 
-func MakerAllType(typeVars []typing.TypeVar, form Form) AllType {
-	return MakeAllType(MakerIndexFormula(), typeVars, form)
+func NewAllType(typeVars []typing.TypeVar, form Form) *AllType {
+	return NewAllTypeIndexed(MakerIndexFormula(), typeVars, form)
 }
 
 /* Methods */
 
-func (a AllType) GetIndex() int                { return a.index }
-func (a AllType) GetVarList() []typing.TypeVar { return copyTypeVarList(a.tvList) }
-func (a AllType) GetForm() Form                { return a.form.Copy() }
-func (a AllType) GetType() typing.TypeScheme   { return typing.DefaultPropType(0) }
+func (a *AllType) GetIndex() int                { return a.index }
+func (a *AllType) GetVarList() []typing.TypeVar { return copyTypeVarList(a.tvList) }
+func (a *AllType) GetForm() Form                { return a.form.Copy() }
+func (a *AllType) GetType() typing.TypeScheme   { return typing.DefaultPropType(0) }
 
 /* Form interface */
 
-func (a AllType) ToMappedString(mapping MapString, displayTypes bool) string {
+func (a *AllType) ToMappedString(mapping MapString, displayTypes bool) string {
 	return mapping[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (" + a.GetForm().ToString() + ")"
 }
 
-func (a AllType) ToString() string {
+func (a *AllType) ToString() string {
 	return a.MappedString.ToString()
 }
 
-func (a AllType) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+func (a *AllType) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "(" + mapping[AllTypeQuant] + " " + mapping[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (%s))"
 }
 
-func (a AllType) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (a *AllType) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return "", ""
 }
 
-func (a AllType) GetChildrenForMappedString() []MappableString {
+func (a *AllType) GetChildrenForMappedString() []MappableString {
 	return a.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (a AllType) GetMetas() *MetaList { return a.GetForm().GetMetas() }
+func (a *AllType) GetMetas() *MetaList { return a.GetForm().GetMetas() }
 
-func (a AllType) Copy() Form {
-	return MakeAllTypeSimple(a.index, copyTypeVarList(a.tvList), a.form.Copy(), a.MetaList.Copy())
+func (a *AllType) Copy() Form {
+	return NewAllTypeSimple(a.index, copyTypeVarList(a.tvList), a.form.Copy(), a.MetaList.Copy())
 }
 
-func (a AllType) Equals(f any) bool {
-	oth, isAll := f.(AllType)
+func (a *AllType) Equals(f any) bool {
+	oth, isAll := f.(*AllType)
 	return isAll &&
 		AreEqualsTypeVarList(a.tvList, oth.tvList) &&
 		a.form.Equals(oth.form)
 }
 
-func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeAllType(a.GetIndex(), a.tvList, a.GetForm().ReplaceTypeByMeta(varList, index))
+func (a *AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
+	a.form.ReplaceTypeByMeta(varList, index)
 }
 
-func (a AllType) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f, res := a.GetForm().ReplaceVarByTerm(old, new)
-	return MakeAllTypeSimple(a.GetIndex(), a.GetVarList(), f, a.MetaList), res
+func (a *AllType) ReplaceVarByTerm(old Var, new Term) bool {
+	return a.form.ReplaceVarByTerm(old, new)
 }
 
-func (a AllType) RenameVariables() Form {
-	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
+func (a *AllType) RenameVariables() {
+	a.form.RenameVariables()
 }
 
-func (a AllType) GetSubTerms() *TermList {
+func (a *AllType) GetSubTerms() *TermList {
 	return a.GetForm().GetSubTerms()
 }
 
-func (a AllType) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := a.GetForm().SubstituteVarByMeta(old, new)
-	return MakeAllTypeSimple(a.index, a.tvList, f, f.GetInternalMetas().Copy())
+func (a *AllType) SubstituteVarByMeta(old Var, new Meta) {
+	a.form.SubstituteVarByMeta(old, new)
 }
 
-func (a AllType) GetInternalMetas() *MetaList {
+func (a *AllType) GetInternalMetas() *MetaList {
 	return a.MetaList
 }
 
-func (a AllType) SetInternalMetas(m *MetaList) Form {
+func (a *AllType) SetInternalMetas(m *MetaList) {
 	a.MetaList = m
-	return a
 }
 
-func (a AllType) GetSubFormulasRecur() *FormList {
+func (a *AllType) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(a)
 }
 
-func (a AllType) GetChildFormulas() *FormList {
+func (a *AllType) GetChildFormulas() *FormList {
 	return NewFormList(a.GetForm())
 }

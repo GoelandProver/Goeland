@@ -69,7 +69,7 @@ func makeCoqProofFromGS3(proof *gs3.GS3Sequent) string {
 			proof = proof.Child(0)
 		}
 	}
-	index, hypotheses := introduce(basictypes.MakerNot(conjecture), hypotheses)
+	index, hypotheses := introduce(basictypes.NewNot(conjecture), hypotheses)
 	resultingString += "intro " + introName(index) + ". "
 	resultingString += followProofSteps(proof, hypotheses, make([]basictypes.Term, 0))
 
@@ -211,12 +211,12 @@ func rewriteStep(rewriteRule basictypes.Form, hypotheses *basictypes.FormList, t
 func processMainFormula(form basictypes.Form) (*basictypes.FormList, basictypes.Form) {
 	formList := basictypes.NewFormList()
 	switch nf := form.(type) {
-	case basictypes.Not:
+	case *basictypes.Not:
 		form = nf.GetForm()
-	case basictypes.And:
+	case *basictypes.And:
 		last := nf.FormList.Len() - 1
 		formList = basictypes.NewFormList(nf.FormList.GetElements(0, last)...)
-		form = nf.FormList.Get(last).(basictypes.Not).GetForm()
+		form = nf.FormList.Get(last).(*basictypes.Not).GetForm()
 	}
 	return formList, form
 }
@@ -225,7 +225,7 @@ func processMainFormula(form basictypes.Form) (*basictypes.FormList, basictypes.
 func makeTheorem(axioms *basictypes.FormList, conjecture basictypes.Form) string {
 	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(GetProblemName(), ".", "_"), "=", "_"), "+", "_")
 	axiomsWithConj := axioms.Copy()
-	axiomsWithConj.Append(basictypes.MakerNot(basictypes.MakerNot(conjecture)))
+	axiomsWithConj.Append(basictypes.NewNot(basictypes.NewNot(conjecture)))
 	formattedProblem := makeImpChain(axiomsWithConj)
 	return "Theorem goeland_proof_of_" + problemName + " : " + mapDefault(formattedProblem.ToMappedString(coqMapConnectors(), false)) + ".\n"
 }
@@ -235,7 +235,7 @@ func makeImpChain(forms *basictypes.FormList) basictypes.Form {
 	last := forms.Len() - 1
 	form := forms.Get(last)
 	for i := last - 1; i >= 0; i-- {
-		form = basictypes.MakerImp(forms.Get(i), form)
+		form = basictypes.NewImp(forms.Get(i), form)
 	}
 	return form
 }
@@ -272,10 +272,10 @@ func introNames(il []int, sep ...string) string {
 }
 
 func isPredEqual(f basictypes.Form) bool {
-	if not, isNot := f.(basictypes.Not); isNot {
+	if not, isNot := f.(*basictypes.Not); isNot {
 		f = not.GetForm()
 	}
-	if p, isPred := f.(basictypes.Pred); isPred {
+	if p, isPred := f.(*basictypes.Pred); isPred {
 		return p.GetID().Equals(basictypes.Id_eq)
 	}
 	return false
@@ -336,7 +336,7 @@ func cleanHypotheses(hypotheses *basictypes.FormList, form basictypes.Form) (str
 	result := ""
 	index, _ := hypotheses.GetIndexOf(form)
 	if index != -1 {
-		hypotheses.Set(index, basictypes.MakerTop())
+		hypotheses.Set(index, basictypes.NewTop())
 		result = fmt.Sprintf("clear %s. ", introName(index))
 	}
 	return result, []*basictypes.FormList{hypotheses}

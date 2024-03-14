@@ -214,7 +214,7 @@ func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) Equal
 }
 
 /* Build an equality problem list from a predicat and its negation */
-var buildEqualityProblemListFrom2Pred = func(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
+var buildEqualityProblemListFrom2Pred = func(p1 *basictypes.Pred, p2 *basictypes.Pred, eq Equalities) EqualityProblemList {
 	res := makeEmptyEqualityProblemList()
 	for i := range p1.GetArgs().Slice() {
 		res = append(res, makeEqualityProblem(eq.copy(), p1.GetArgs().Get(i).Copy(), p2.GetArgs().Get(i).Copy(), makeEmptyConstraintStruct()))
@@ -223,7 +223,7 @@ var buildEqualityProblemListFrom2Pred = func(p1 basictypes.Pred, p2 basictypes.P
 }
 
 /* Build an equality problem multi list from a list of predicate. Take one predicate, search for its negation in the code tree, and if it found any, build the corresponding equality problem list */
-func buildEqualityProblemMultiListFromPredList(pred basictypes.Pred, tn datastruct.DataStructure, equs Equalities) EqualityProblemMultiList {
+func buildEqualityProblemMultiListFromPredList(pred *basictypes.Pred, tn datastruct.DataStructure, equs Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
 
 	predId := pred.GetID()
@@ -233,12 +233,12 @@ func buildEqualityProblemMultiListFromPredList(pred basictypes.Pred, tn datastru
 		metas.AppendIfNotContains(basictypes.MakerMeta("METAEQ_"+arg.ToString(), -1))
 	}
 
-	newTerm := basictypes.MakerPred(predId.Copy().(basictypes.Id), metas.ToTermList(), pred.GetTypeVars(), pred.GetType())
+	newTerm := basictypes.NewPred(predId.Copy().(basictypes.Id), metas.ToTermList(), pred.GetTypeVars(), pred.GetType())
 	found, complementaryPredList := tn.Unify(newTerm)
 
 	if found {
 		for _, s := range complementaryPredList {
-			res = append(res, buildEqualityProblemListFrom2Pred(pred.Copy().(basictypes.Pred), s.GetForm().(basictypes.Pred), equs.copy()))
+			res = append(res, buildEqualityProblemListFrom2Pred(pred.Copy().(*basictypes.Pred), s.GetForm().(*basictypes.Pred), equs.copy()))
 		}
 	}
 
@@ -249,7 +249,7 @@ func buildEqualityProblemMultiListFromPredList(pred basictypes.Pred, tn datastru
 func buildEqualityProblemMultiListFromFormList(fl *basictypes.FormList, tn datastruct.DataStructure, eq Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
 	for _, p := range fl.Slice() {
-		if pt, ok := p.(basictypes.Pred); ok {
+		if pt, ok := p.(*basictypes.Pred); ok {
 			global.PrintDebug("BEPMLFFL", fmt.Sprintf("Pred found : %v", p.ToString()))
 			if !pt.GetID().Equals(basictypes.Id_eq) {
 				res = append(res, buildEqualityProblemMultiListFromPredList(pt, tn, eq.copy())...)

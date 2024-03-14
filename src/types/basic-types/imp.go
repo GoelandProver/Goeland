@@ -48,98 +48,98 @@ type Imp struct {
 	*MetaList
 }
 
-func MakeImpSimple(i int, firstForm, secondForm Form, metas *MetaList) Imp {
+func NewImpSimple(i int, firstForm, secondForm Form, metas *MetaList) *Imp {
 	fms := &MappedString{}
-	imp := Imp{fms, i, firstForm, secondForm, metas}
-	fms.MappableString = &imp
+	imp := &Imp{fms, i, firstForm, secondForm, metas}
+	fms.MappableString = imp
 	return imp
 }
 
-func MakeImp(i int, firstForm, secondForm Form) Imp {
-	return MakeImpSimple(i, firstForm, secondForm, NewMetaList())
+func NewImpIndexed(i int, firstForm, secondForm Form) *Imp {
+	return NewImpSimple(i, firstForm, secondForm, NewMetaList())
 }
 
-func MakerImp(firstForm, secondForm Form) Imp {
-	return MakeImp(MakerIndexFormula(), firstForm, secondForm)
+func NewImp(firstForm, secondForm Form) *Imp {
+	return NewImpIndexed(MakerIndexFormula(), firstForm, secondForm)
 }
 
-func (i Imp) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
+func (i *Imp) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "(%s)"
 }
 
-func (i Imp) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (i *Imp) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return " " + mapping[ImpConn] + " ", ""
 }
 
-func (i Imp) GetChildrenForMappedString() []MappableString {
+func (i *Imp) GetChildrenForMappedString() []MappableString {
 	return i.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (i Imp) GetIndex() int { return i.index }
-func (i Imp) GetF1() Form   { return i.f1.Copy() }
-func (i Imp) GetF2() Form   { return i.f2.Copy() }
-func (i Imp) Copy() Form {
-	return MakeImpSimple(i.index, i.GetF1(), i.GetF2(), i.MetaList.Copy())
+func (i *Imp) GetIndex() int { return i.index }
+func (i *Imp) GetF1() Form   { return i.f1.Copy() }
+func (i *Imp) GetF2() Form   { return i.f2.Copy() }
+func (i *Imp) Copy() Form {
+	return NewImpSimple(i.index, i.GetF1(), i.GetF2(), i.MetaList.Copy())
 }
 
-func (i Imp) GetMetas() *MetaList {
+func (i *Imp) GetMetas() *MetaList {
 	allMetas := i.f1.GetMetas().Copy()
 	allMetas.AppendIfNotContains(i.f2.GetMetas().Slice()...)
 
 	return allMetas
 }
 
-func (i Imp) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-func (i Imp) ToString() string           { return i.ToMappedString(DefaultMapString, true) }
+func (i *Imp) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
+func (i *Imp) ToString() string           { return i.ToMappedString(DefaultMapString, true) }
 
-func (i Imp) Equals(other any) bool {
-	if typed, ok := other.(Imp); ok {
+func (i *Imp) Equals(other any) bool {
+	if typed, ok := other.(*Imp); ok {
 		return i.f1.Equals(typed.f1) && i.f2.Equals(typed.f2)
 	}
 
 	return false
 }
 
-func (i Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeImp(i.GetIndex(), i.GetF1().ReplaceTypeByMeta(varList, index), i.GetF2().ReplaceTypeByMeta(varList, index))
+func (i *Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
+	i.f1.ReplaceTypeByMeta(varList, index)
+	i.f2.ReplaceTypeByMeta(varList, index)
 }
 
-func (i Imp) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f1, res1 := i.GetF1().ReplaceVarByTerm(old, new)
-	f2, res2 := i.GetF2().ReplaceVarByTerm(old, new)
-
-	return MakeImpSimple(i.index, f1, f2, i.MetaList), res1 || res2
+func (i *Imp) ReplaceVarByTerm(old Var, new Term) bool {
+	return i.f1.ReplaceVarByTerm(old, new) || i.f2.ReplaceVarByTerm(old, new)
 }
 
-func (i Imp) RenameVariables() Form {
-	return MakeImp(i.GetIndex(), i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
+func (i *Imp) RenameVariables() {
+	i.f1.RenameVariables()
+	i.f2.RenameVariables()
 }
 
-func (i Imp) GetSubTerms() *TermList {
+func (i *Imp) GetSubTerms() *TermList {
 	res := i.GetF1().GetSubTerms().Copy()
 	res.AppendIfNotContains(i.GetF2().GetSubTerms().Slice()...)
 
 	return res
 }
 
-func (i Imp) SubstituteVarByMeta(old Var, new Meta) Form {
+func (i *Imp) SubstituteVarByMeta(old Var, new Meta) {
 	fl, metas := substVarByMetaInFormList(old, new, NewFormList(i.f1, i.f2), i.MetaList)
-	return MakeImpSimple(i.index, fl.Get(0), fl.Get(1), metas)
+	i.f1 = fl.Get(0)
+	i.f2 = fl.Get(1)
+	i.MetaList = metas
 }
 
-func (i Imp) GetInternalMetas() *MetaList {
+func (i *Imp) GetInternalMetas() *MetaList {
 	return i.MetaList
 }
 
-func (i Imp) SetInternalMetas(m *MetaList) Form {
+func (i *Imp) SetInternalMetas(m *MetaList) {
 	i.MetaList = m
-	return i
 }
 
-func (i Imp) GetSubFormulasRecur() *FormList {
+func (i *Imp) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(i)
 }
 
-func (i Imp) GetChildFormulas() *FormList {
+func (i *Imp) GetChildFormulas() *FormList {
 	return NewFormList(i.f1, i.f2)
 }

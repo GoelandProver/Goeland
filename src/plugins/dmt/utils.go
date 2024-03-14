@@ -40,7 +40,7 @@ import (
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func isEquality(pred basictypes.Pred) bool {
+func isEquality(pred *basictypes.Pred) bool {
 	return pred.GetID().Equals(basictypes.Id_eq)
 }
 
@@ -48,8 +48,8 @@ func refute(f basictypes.Form) basictypes.Form {
 	return basictypes.RefuteForm(f)
 }
 
-func predFromNegatedAtom(f basictypes.Form) basictypes.Pred {
-	return f.(basictypes.Not).GetForm().(basictypes.Pred)
+func predFromNegatedAtom(f basictypes.Form) *basictypes.Pred {
+	return f.(*basictypes.Not).GetForm().(*basictypes.Pred)
 }
 
 func selectFromPolarity[T any](polarity bool, positive, negative T) T {

@@ -54,13 +54,13 @@ var lock_formula sync.Mutex
 
 // Global id
 var Id_eq Id
-var EmptyPredEq Pred
+var EmptyPredEq *Pred
 
 /* Initialization */
 func Init() {
 	Reset()
 	Id_eq = MakerId("=")
-	EmptyPredEq = MakerPred(Id_eq, NewTermList(), make([]typing.TypeApp, 0))
+	EmptyPredEq = NewPred(Id_eq, NewTermList(), make([]typing.TypeApp, 0))
 
 	// Eq/Neq types
 	tv := typing.MkTypeVar("α")

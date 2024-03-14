@@ -113,7 +113,7 @@ func addRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif treetypes.Mat
 
 func getAtomAndPolarity(atom basictypes.Form) (basictypes.Form, bool) {
 	switch form := atom.Copy().(type) {
-	case basictypes.Not:
+	case *basictypes.Not:
 		return form.GetForm(), false
 	default:
 		return form, true
@@ -157,7 +157,7 @@ func sortUnifications(unifs []treetypes.MatchingSubstitutions, polarity bool, at
 
 // Priority of substitutions: Top/Bottom > others
 func insert(sortedUnifs []treetypes.MatchingSubstitutions, list *basictypes.FormList, unif treetypes.MatchingSubstitutions) []treetypes.MatchingSubstitutions {
-	if list.Contains(basictypes.MakerTop()) || list.Contains(basictypes.MakerBot()) {
+	if list.Contains(basictypes.NewTop()) || list.Contains(basictypes.NewBot()) {
 		sortedUnifs = insertFirst(sortedUnifs, unif)
 	} else {
 		sortedUnifs = append(sortedUnifs, unif)

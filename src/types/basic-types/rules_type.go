@@ -69,30 +69,30 @@ const (
 func ShowKindOfRule(f Form) KindOfRule {
 	var res KindOfRule
 	switch nf := f.(type) {
-	case Pred, Top, Bot:
+	case *Pred, *Top, *Bot:
 		res = Atomic
-	case Not:
+	case *Not:
 		switch nf.f.(type) {
-		case Pred, Top, Bot:
+		case *Pred, *Top, *Bot:
 			res = Atomic
-		case Not, Imp, Or:
+		case *Not, *Imp, *Or:
 			res = Alpha
-		case And, Equ:
+		case *And, *Equ:
 			res = Beta
-		case Ex:
+		case *Ex:
 			res = Gamma
-		case All:
+		case *All:
 			res = Delta
-		case AllType:
+		case *AllType:
 			global.PrintError("RULE", "not forall(type) found when it shouldn't happen.")
 		}
-	case And:
+	case *And:
 		res = Alpha
-	case Or, Imp, Equ:
+	case *Or, *Imp, *Equ:
 		res = Beta
-	case Ex:
+	case *Ex:
 		res = Delta
-	case All, AllType:
+	case *All, *AllType:
 		res = Gamma
 	}
 	return res

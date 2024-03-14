@@ -65,21 +65,25 @@ func Skolemize(fnt basictypes.FormAndTerms, branchMetas *basictypes.MetaList) ba
 
 	switch nf := form.(type) {
 	// 1 - not(forall F1)
-	case basictypes.Not:
-		if tmp, ok := nf.GetForm().(basictypes.All); ok {
+	case *basictypes.Not:
+		if tmp, ok := nf.GetForm().(*basictypes.All); ok {
 			res := realSkolemize(form, tmp.GetForm(), tmp.GetVarList()[0], terms)
 			internalMetas := res.GetInternalMetas()
 			if len(tmp.GetVarList()) > 1 {
-				res = basictypes.MakerAll(tmp.GetVarList()[1:], res).SetInternalMetas(internalMetas)
+				res = basictypes.NewAll(tmp.GetVarList()[1:], res)
+				res.SetInternalMetas(internalMetas)
 			}
-			fnt = basictypes.MakeFormAndTerm(basictypes.RefuteForm(res).SetInternalMetas(internalMetas), terms)
+			notRes := basictypes.RefuteForm(res)
+			notRes.SetInternalMetas(internalMetas)
+			fnt = basictypes.MakeFormAndTerm(notRes, terms)
 		}
 	// 2 - exists F1
-	case basictypes.Ex:
+	case *basictypes.Ex:
 		res := realSkolemize(form, nf.GetForm(), nf.GetVarList()[0], terms)
 		if len(nf.GetVarList()) > 1 {
 			internalMetas := res.GetInternalMetas()
-			res = basictypes.MakerEx(nf.GetVarList()[1:], res).SetInternalMetas(internalMetas)
+			res = basictypes.NewEx(nf.GetVarList()[1:], res)
+			res.SetInternalMetas(internalMetas)
 		}
 		fnt = basictypes.MakeFormAndTerm(res, terms)
 	}
@@ -134,7 +138,8 @@ func makeSkolemFunction(args skoArgs) basictypes.Term {
 }
 
 func substAndReturn(args skoArgs, sko basictypes.Term) basictypes.Form {
-	f, _ := args.formula.ReplaceVarByTerm(args.sourceVar, sko)
+	f := args.formula.Copy()
+	f.ReplaceVarByTerm(args.sourceVar, sko)
 	return f
 }
 
@@ -172,27 +177,27 @@ func fresh(k int) string {
 
 func alphaConvert(form basictypes.Form, k int, substitution map[basictypes.Var]basictypes.Var) basictypes.Form {
 	switch f := form.(type) {
-	case basictypes.Top, basictypes.Bot:
+	case *basictypes.Top, *basictypes.Bot:
 		return form
-	case basictypes.Pred:
+	case *basictypes.Pred:
 		mappedTerms := global.MapTo(f.GetArgs().Slice(), func(_ int, t basictypes.Term) basictypes.Term { return alphaConvertTerm(t, substitution) })
-		return basictypes.MakePred(f.GetIndex(), f.GetID(), basictypes.NewTermList(mappedTerms...), f.GetTypeVars(), f.GetType())
-	case basictypes.Not:
-		return basictypes.MakeNot(f.GetIndex(), alphaConvert(f.GetForm(), k, substitution))
-	case basictypes.Imp:
-		return basictypes.MakeImp(f.GetIndex(), alphaConvert(f.GetF1(), k, substitution), alphaConvert(f.GetF2(), k, substitution))
-	case basictypes.Equ:
-		return basictypes.MakeEqu(f.GetIndex(), alphaConvert(f.GetF1(), k, substitution), alphaConvert(f.GetF2(), k, substitution))
-	case basictypes.And:
-		return basictypes.MakeAnd(f.GetIndex(), basictypes.NewFormList(global.MapTo(f.FormList.Slice(), func(_ int, f basictypes.Form) basictypes.Form { return alphaConvert(f, k, substitution) })...))
-	case basictypes.Or:
-		return basictypes.MakeOr(f.GetIndex(), basictypes.NewFormList(global.MapTo(f.FormList.Slice(), func(_ int, f basictypes.Form) basictypes.Form { return alphaConvert(f, k, substitution) })...))
-	case basictypes.All:
+		return basictypes.NewPredIndexed(f.GetIndex(), f.GetID(), basictypes.NewTermList(mappedTerms...), f.GetTypeVars(), f.GetType())
+	case *basictypes.Not:
+		return basictypes.NewNotIndexed(f.GetIndex(), alphaConvert(f.GetForm(), k, substitution))
+	case *basictypes.Imp:
+		return basictypes.NewImpIndexed(f.GetIndex(), alphaConvert(f.GetF1(), k, substitution), alphaConvert(f.GetF2(), k, substitution))
+	case *basictypes.Equ:
+		return basictypes.NewEquIndexed(f.GetIndex(), alphaConvert(f.GetF1(), k, substitution), alphaConvert(f.GetF2(), k, substitution))
+	case *basictypes.And:
+		return basictypes.NewAndIndexed(f.GetIndex(), basictypes.NewFormList(global.MapTo(f.FormList.Slice(), func(_ int, f basictypes.Form) basictypes.Form { return alphaConvert(f, k, substitution) })...))
+	case *basictypes.Or:
+		return basictypes.NewOrIndexed(f.GetIndex(), basictypes.NewFormList(global.MapTo(f.FormList.Slice(), func(_ int, f basictypes.Form) basictypes.Form { return alphaConvert(f, k, substitution) })...))
+	case *basictypes.All:
 		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
-		return basictypes.MakeAll(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
-	case basictypes.Ex:
+		return basictypes.NewAllIndexed(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
+	case *basictypes.Ex:
 		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
-		return basictypes.MakeEx(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
+		return basictypes.NewExIndexed(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
 	}
 	return form
 }
