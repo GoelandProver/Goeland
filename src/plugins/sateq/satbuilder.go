@@ -185,10 +185,6 @@ func (sb *SatBuilder) ϕConstraint(index int, ec1, ec2 *eqClass) {
 			sb.addClause(tVar.Not(), eFirstVar)
 			sb.addClause(tVar.Not(), eSecondtVar)
 
-			if Clausiff {
-				sb.addClause(eFirstVar.Not(), eSecondtVar.Not(), tVar)
-			}
-
 			vars = append(vars, tVar)
 		}
 	}
@@ -212,11 +208,6 @@ func (sb *SatBuilder) 𝜓Constraint(index int, ec1, ec2 *eqClass) {
 						l := sb.getVarFromEMapping(index, rs1, rs2)
 						sb.addClause(fVar.Not(), l)
 						vars2 = append(vars2, l.Not())
-					}
-
-					if Clausiff {
-						sb.addClause(fVar.Not(), lit)
-						sb.addClause(vars2...)
 					}
 
 					vars = append(vars, fVar)

@@ -33,19 +33,18 @@ package sateq
 
 import (
 	"fmt"
+	"time"
+
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/equality"
 	"github.com/go-air/gini"
 	"github.com/go-air/gini/z"
-	"time"
 )
 
 func Enable() {
 	equality.RunEqualityReasoning = RunEqualityReasoning
 }
-
-var Clausiff = false
 
 func RunEqualityReasoning(epml equality.EqualityProblemMultiList) (success bool, subs []treetypes.Substitutions) {
 	if len(epml) == 0 {

@@ -268,14 +268,6 @@ func buildOptions() {
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
-		"clausiff",
-		false,
-		"Experimental clausification for SATEQ, to delete soon",
-		func(bool) {
-			sateq.Clausiff = true
-		},
-		func(bool) {})
-	(&option[bool]{}).init(
 		"eagereq",
 		false,
 		"Run equality reasoning every time a new (in)equality is added to the branch",
