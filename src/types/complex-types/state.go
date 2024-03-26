@@ -41,6 +41,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
@@ -65,6 +66,7 @@ type State struct {
 	bt_on_formulas                        bool
 	forbidden                             []treetypes.Substitutions
 	unifier                               Unifier
+	eqStruct                              eqStruct.EqualityStruct
 }
 
 /***********/
@@ -131,6 +133,10 @@ func (s State) GetForbiddenSubsts() []treetypes.Substitutions {
 }
 func (s State) GetGlobalUnifier() Unifier {
 	return s.unifier.Copy()
+}
+
+func (s State) GetEqStruct() eqStruct.EqualityStruct {
+	return s.eqStruct.Copy()
 }
 
 /* Setters */
@@ -251,7 +257,7 @@ func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) St
 	current_proof.SetRuleProof("Initial formula")
 	current_proof.SetFormulaProof(basictypes.MakeFormAndTerm(f.Copy(), basictypes.MakeEmptyTermList()))
 
-	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier()}
+	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier(), eqStruct.NewEqStruct()}
 }
 
 /* Print a state */
@@ -343,6 +349,12 @@ func (st State) Copy() State {
 	new_state.SetMetaGen(st.GetMetaGen())
 	new_state.SetMM(append(new_state.GetMM(), append(st.GetMM(), st.GetMC()...)...))
 	new_state.SetMC(basictypes.MetaList{})
+
+	if global.IncrEq {
+		new_state.eqStruct = st.GetEqStruct()
+	} else {
+		new_state.eqStruct = eqStruct.NewEqStruct()
+	}
 
 	if global.IsDestructive() {
 		// Don't need to copy because launched with the subst applied - no need to tell father I found something

@@ -41,15 +41,16 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-type Equalities []TermPair
+type Equalities []eqStruct.TermPair
 
-type Inequalities []TermPair
+type Inequalities []eqStruct.TermPair
 
 func (e Equalities) ToString() string {
 	res := "["
@@ -84,40 +85,40 @@ func (ie Inequalities) ToString() string {
 }
 
 func (e Equalities) copy() Equalities {
-	res := []TermPair{}
+	res := []eqStruct.TermPair{}
 	for _, tp := range e {
-		res = append(res, tp.copy())
+		res = append(res, tp.Copy())
 	}
 	return res
 }
 
 func (ie Inequalities) copy() Inequalities {
-	res := []TermPair{}
+	res := []eqStruct.TermPair{}
 	for _, tp := range ie {
-		res = append(res, tp.copy())
+		res = append(res, tp.Copy())
 	}
 	return res
 }
 
-func (e Equalities) contains(eq TermPair) bool {
+func (e Equalities) contains(eq eqStruct.TermPair) bool {
 	for _, element := range e {
-		if element.equals(eq) {
+		if element.Equals(eq) {
 			return true
 		}
 	}
 	return false
 }
 
-func (ie Inequalities) contains(eq TermPair) bool {
+func (ie Inequalities) contains(eq eqStruct.TermPair) bool {
 	for _, element := range ie {
-		if element.equals(eq) {
+		if element.Equals(eq) {
 			return true
 		}
 	}
 	return false
 }
 
-func (e Equalities) appendIfNotContains(eq TermPair) Equalities {
+func (e Equalities) appendIfNotContains(eq eqStruct.TermPair) Equalities {
 	res := e.copy()
 	if !e.contains(eq) {
 		res = append(res, eq)
@@ -125,7 +126,7 @@ func (e Equalities) appendIfNotContains(eq TermPair) Equalities {
 	return res
 }
 
-func (ie Inequalities) appendIfNotContains(eq TermPair) Inequalities {
+func (ie Inequalities) appendIfNotContains(eq eqStruct.TermPair) Inequalities {
 	res := ie.copy()
 	if !ie.contains(eq) {
 		res = append(res, eq)
@@ -137,7 +138,7 @@ func (ie Inequalities) appendIfNotContains(eq TermPair) Inequalities {
 func (e Equalities) applySubstitution(old_symbol basictypes.Meta, new_symbol basictypes.Term) Equalities {
 	res := e.copy()
 	for i, tp := range res {
-		res[i] = MakeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT2()))
+		res[i] = eqStruct.MakeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT2()))
 	}
 	return res
 }
@@ -146,7 +147,7 @@ func (equs Equalities) getMetas() basictypes.MetaList {
 	metas := basictypes.MakeEmptyMetaList()
 
 	for _, equ := range equs {
-		for _, meta := range equ.getMetas() {
+		for _, meta := range equ.GetMetas() {
 			metas = metas.AppendIfNotContains(meta)
 		}
 	}
@@ -181,7 +182,7 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 		if ok_t2 == -1 {
 			global.PrintError("RI", "Meta_eq_2 not found in map")
 		}
-		res = append(res, MakeTermPair(eq1_term, eq2_term))
+		res = append(res, eqStruct.MakeTermPair(eq1_term, eq2_term))
 	}
 	return res
 }
@@ -210,7 +211,7 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 		if ok_t2 == -1 {
 			global.PrintError("RI", "Meta_eq_1 not found in map")
 		}
-		res = append(res, MakeTermPair(neq1_term, neq2_term))
+		res = append(res, eqStruct.MakeTermPair(neq1_term, neq2_term))
 	}
 	return res
 }

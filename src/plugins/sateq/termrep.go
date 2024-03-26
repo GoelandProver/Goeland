@@ -33,6 +33,7 @@ package sateq
 
 import (
 	"cmp"
+
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )

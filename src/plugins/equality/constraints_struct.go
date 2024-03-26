@@ -137,7 +137,7 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 
 	case EQ:
 		// Check if the EQ constraint is unifiable
-		subst := treesearch.AddUnification(c.getTP().t1.Copy(), c.getTP().t2.Copy(), treetypes.MakeEmptySubstitution())
+		subst := treesearch.AddUnification(c.getTP().GetT1().Copy(), c.getTP().GetT2().Copy(), treetypes.MakeEmptySubstitution())
 		global.PrintDebug("ICW", fmt.Sprintf("Candidate subst : %v", subst.ToString()))
 		if subst.Equals(treetypes.Failure()) {
 			return false

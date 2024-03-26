@@ -73,6 +73,8 @@ var arithModule = false
 var innerSkolem = false
 var preInnerSko = false
 
+var IncrEq = false
+
 var debug = false
 var writeLogs = false
 

@@ -276,6 +276,14 @@ func buildOptions() {
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
+		"increq",
+		false,
+		"Run equality reasoning incrementally",
+		func(bool) {
+			global.IncrEq = true
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
 		"chrono",
 		false,
 		"Should only be used with the -ocoq or the -olp parameters. Enables the chronometer for deskolemization and proof translation",

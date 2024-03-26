@@ -41,6 +41,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
@@ -52,23 +53,23 @@ const (
 
 type Constraint struct {
 	ctype int
-	tp    TermPair
+	tp    eqStruct.TermPair
 }
 
 func (c Constraint) getCType() int {
 	return c.ctype
 }
-func (c Constraint) getTP() TermPair {
-	return c.tp.copy()
+func (c Constraint) getTP() eqStruct.TermPair {
+	return c.tp.Copy()
 }
-func (c *Constraint) setTP(tp TermPair) {
+func (c *Constraint) setTP(tp eqStruct.TermPair) {
 	c.tp = tp
 }
 func (c Constraint) copy() Constraint {
 	return MakeConstraint(c.getCType(), c.getTP())
 }
 func (c Constraint) equals(c2 Constraint) bool {
-	return ((c.getCType() == c2.getCType()) && c.getTP().equals(c2.getTP()))
+	return ((c.getCType() == c2.getCType()) && c.getTP().Equals(c2.getTP()))
 }
 func (c Constraint) toString() string {
 	switch c.getCType() {
@@ -82,8 +83,8 @@ func (c Constraint) toString() string {
 	}
 }
 
-func MakeConstraint(i int, tp TermPair) Constraint {
-	return Constraint{i, tp.copy()}
+func MakeConstraint(i int, tp eqStruct.TermPair) Constraint {
+	return Constraint{i, tp.Copy()}
 }
 
 func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
@@ -91,7 +92,7 @@ func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
 		m, t := subst.Get()
 		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().GetT1())
 		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().GetT2())
-		c.setTP(MakeTermPair(new_t1, new_t2))
+		c.setTP(eqStruct.MakeTermPair(new_t1, new_t2))
 	}
 }
 
@@ -114,7 +115,7 @@ func (c *Constraint) checkLPO() (bool, bool) {
 	}
 
 	if cs.new_t1 != nil && cs.new_t2 != nil {
-		c.setTP(MakeTermPair(cs.new_t1, cs.new_t2))
+		c.setTP(eqStruct.MakeTermPair(cs.new_t1, cs.new_t2))
 	}
 
 	return true, false

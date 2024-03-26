@@ -305,6 +305,8 @@ func initCodeTreesTests(lf basictypes.FormList) (datastruct.DataStructure, datas
 	return tp, tn
 }
 
+var eqStruct = sateq.NewEqStruct()
+
 func initEqualityTest() {
 	global.SetStart(time.Now())
 	typing.Init()
@@ -366,7 +368,7 @@ func TestEQ1(t *testing.T) {
 
 	lf := basictypes.FormList{eq_fa_a, eq_ggx_fa, neq_gggx_x}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst1 := treetypes.MakeEmptySubstitution()
 	expectedSubst1.Set(x, ga)
@@ -394,7 +396,7 @@ func TestEQ2(t *testing.T) {
 
 	lf := basictypes.FormList{eq_b_c, eq_gx_fx, eq_gfy_y, pb, not_pc}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst1 := treetypes.MakeEmptySubstitution()
 	expectedSubst1.Set(x, y)
@@ -421,7 +423,7 @@ func TestEQ3(t *testing.T) {
 
 	lf := basictypes.FormList{eq_b_c, eq_gx_fx, eq_gfy_y, pggab, not_pac}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst1 := treetypes.MakeEmptySubstitution()
 	expectedSubst1.Set(x, a)
@@ -452,7 +454,7 @@ func TestEQ3bis(t *testing.T) {
 
 	lf := basictypes.FormList{eq_gx_fx, eq_fy_y, neq_ga_a}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst1 := treetypes.MakeEmptySubstitution()
 	expectedSubst1.Set(x, a)
@@ -484,7 +486,7 @@ func TestEQ4(t *testing.T) {
 
 	lf := basictypes.FormList{eq_b_c, eq_gfy_y, neq_x_a, pggab, not_pac}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst := treetypes.MakeEmptySubstitution()
 	expectedSubst.Set(x, a)
@@ -508,7 +510,7 @@ func TestEQ5(t *testing.T) {
 
 	lf := basictypes.FormList{eq_z1_c1, eq_z2_c1, neq_a_b}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst1 := treetypes.MakeEmptySubstitution()
 	expectedSubst1.Set(z1, a)
@@ -553,7 +555,7 @@ func TestEQ6(t *testing.T) {
 
 	lf := basictypes.FormList{pa, pb, not_pc, neq_a_b, eq_z1_c2, eq_z2_c1, eq_z3_c1}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst1 := treetypes.MakeEmptySubstitution()
 	expectedSubst1.Set(z2, b)
@@ -601,7 +603,7 @@ func TestEQ7(t *testing.T) {
 
 	lf := basictypes.FormList{eq_a_b, neq_a_b}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if !res || !checkAllCompatibleWith(subst, treetypes.MakeEmptySubstitution()) {
 		t.Fatalf("Error: %v - %v is not the expected substitution. Expected empty solution", res, treetypes.SubstListToString(subst))
@@ -621,7 +623,7 @@ func TestEQ8(t *testing.T) {
 	**/
 	lf := basictypes.FormList{eq_a_b, neq_a_d}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if res {
 		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
@@ -642,7 +644,7 @@ func TestImpossible(t *testing.T) {
 
 	lf := basictypes.FormList{eq_x_d, neq_fx_a}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if res {
 		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
@@ -662,7 +664,7 @@ func TestSimon(t *testing.T) {
 
 	lf := basictypes.FormList{eq_x_a, neq_fx_x}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst := treetypes.MakeEmptySubstitution()
 	expectedSubst.Set(x, fa)
@@ -686,7 +688,7 @@ func TestSeparation(t *testing.T) {
 
 	lf := basictypes.FormList{pab, eq_a_c, eq_b_d, not_pcd}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if !res || !checkAllCompatibleWith(subst, treetypes.MakeEmptySubstitution()) {
 		t.Fatalf("Error: %v - %v is not the expected substitution. Expected empty solution", res, treetypes.SubstListToString(subst))
@@ -708,7 +710,7 @@ func TestDeuxiemeSeparation(t *testing.T) {
 
 	lf := basictypes.FormList{pax, eq_a_c, eq_b_d, not_pcd}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst1 := treetypes.MakeEmptySubstitution()
 	expectedSubst1.Set(x, d)
@@ -736,7 +738,7 @@ func TestMultiListes(t *testing.T) {
 
 	lf := basictypes.FormList{pax, pab, eq_a_c, eq_b_d, not_pcd}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst1 := treetypes.MakeEmptySubstitution()
 	expectedSubst1.Set(x, d)
@@ -762,7 +764,7 @@ func TestSubsEnMeta(t *testing.T) {
 
 	lf := basictypes.FormList{eq_x_a, neq_y_a}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst1 := treetypes.MakeEmptySubstitution()
 	expectedSubst1.Set(x, y)
@@ -791,7 +793,7 @@ func TestContreExemple(t *testing.T) {
 
 	lf := basictypes.FormList{eq_x_a, eq_y_a, pb, not_pc}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	expectedSubst := treetypes.MakeEmptySubstitution()
 	expectedSubst.Set(x, b)
@@ -818,7 +820,7 @@ func TestCycle(t *testing.T) {
 
 	lf := basictypes.FormList{eq_fgy_gfy, neq_ghx_x}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if res {
 		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
@@ -839,7 +841,7 @@ func TestTemp(t *testing.T) {
 
 	lf := basictypes.FormList{eq_fdc_a, eq_x_d, neq_b_e}
 	tp, tn = initCodeTreesTests(lf)
-	res, subst := equality.EqualityReasoning(tp, tn, lf, 0)
+	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if res {
 		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))

@@ -32,29 +32,14 @@
 package sateq
 
 import (
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	"github.com/GoelandProver/Goeland/plugins/equality"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	"github.com/go-air/gini"
+	"github.com/go-air/gini/z"
 )
-
-/*type Equality struct {
-	*global.BasicPair[basictypes.Term, basictypes.Term]
-}
-
-func NewEquality(fst basictypes.Term, snd basictypes.Term) *Equality {
-	return &Equality{global.NewBasicPair(fst, snd)}
-}
-
-func (equ *Equality) ToString() string {
-	return equ.GetFst().ToMappedString(basictypes.DefaultMapString, false) + " ≃ " + equ.GetSnd().ToMappedString(basictypes.DefaultMapString, false)
-}
-
-func (equ *Equality) Equals(other any) bool {
-	if typed, ok := other.(*Equality); ok {
-		return equ.BasicPair.Equals(typed.BasicPair)
-	}
-	return false
-}*/
 
 type Problem struct {
 	goals *global.List[*global.List[*global.BasicPair[*eqClass, *eqClass]]]
@@ -77,6 +62,20 @@ func NewProblem() *Problem {
 	}
 
 	return pb
+}
+
+func (problem *Problem) format(epml equality.EqualityProblemMultiList) {
+	for _, eq := range epml[0][0].GetE() {
+		problem.AddAssumption(eq)
+	}
+
+	for _, epl := range epml {
+		goal := make([]eqStruct.TermPair, 0)
+		for _, ep := range epl {
+			goal = append(goal, eqStruct.MakeTermPair(ep.GetS(), ep.GetT()))
+		}
+		problem.AddGoal(goal)
+	}
 }
 
 func (problem *Problem) EquivalenceClasses() *global.List[*eqClass] {
@@ -186,16 +185,18 @@ func (problem *Problem) mergeEquivalenceClasses(ec1, ec2 *eqClass) {
 	}
 }
 
-func (problem *Problem) AddAssumption(eq equality.TermPair) {
+func (problem *Problem) AddAssumption(eq eqStruct.TermPair) {
 	problem.mergeEquivalenceClasses(problem.getEquivalenceClass(eq.GetT1()), problem.getEquivalenceClass(eq.GetT2()))
 }
 
-func (problem *Problem) AddGoal(goal []equality.TermPair) {
+func (problem *Problem) AddGoal(goal []eqStruct.TermPair) {
 	g := global.NewList[*global.BasicPair[*eqClass, *eqClass]]()
+
 	for _, eq := range goal {
-		g.Append(global.NewBasicPair(problem.getEquivalenceClass(eq.GetT1()), problem.getEquivalenceClass(eq.GetT2())))
+		g.AppendIfNotContains(global.NewBasicPair(problem.getEquivalenceClass(eq.GetT1()), problem.getEquivalenceClass(eq.GetT2())))
 	}
-	problem.goals.Append(g)
+
+	problem.goals.AppendIfNotContains(g)
 }
 
 func isTrivialGoal(goal *global.List[*global.BasicPair[*eqClass, *eqClass]]) bool {
@@ -218,4 +219,93 @@ func (problem *Problem) HasTrivialGoals() bool {
 
 func (problem *Problem) IsGround() bool {
 	return len(problem.metasIndex) == 0
+}
+
+func (problem *Problem) Solve() (subs []treetypes.Substitutions, success bool) {
+	if problem.HasTrivialGoals() {
+		// congruence closure alone finds a solution
+		return append(treetypes.MakeEmptySubstitutionList(), treetypes.MakeEmptySubstitution()), true
+	}
+
+	if problem.IsGround() {
+		// ground problem that is not solved by CC has no solution
+		return []treetypes.Substitutions{}, false
+	}
+
+	satBuilder := buildSAT(problem)
+	return findSolution(satBuilder)
+}
+
+func findSolution(satBuilder *SatBuilder) (subs []treetypes.Substitutions, success bool) {
+	solution, success := solve(satBuilder.gini, satBuilder.lits)
+
+	if !success {
+		return []treetypes.Substitutions{}, false
+	}
+
+	return gatherSubs(solution, satBuilder.sMapping, satBuilder.rMapping)
+}
+
+func solve(satInstance gini.Gini, litList *global.List[Lit]) (map[Lit]bool, bool) {
+	result := satInstance.Solve()
+
+	if result != 1 {
+		return nil, false
+	}
+
+	assignmentMap := make(map[Lit]bool)
+
+	for _, lit := range litList.AsSlice() {
+		assignmentMap[lit] = satInstance.Value(z.Lit(lit))
+	}
+	return assignmentMap, true
+}
+
+func (problem *Problem) Copy() eqStruct.EqualityStruct {
+	newProblem := NewProblem()
+
+	for _, goal := range problem.goals.AsSlice() {
+		newGoal := global.NewList[*global.BasicPair[*eqClass, *eqClass]]()
+
+		for _, singleGoal := range goal.AsSlice() {
+			newPair := global.NewBasicPair(singleGoal.GetFst(), singleGoal.GetSnd())
+			newGoal.Append(newPair)
+		}
+
+		newProblem.goals.Append(newGoal)
+	}
+
+	newFunctionsIndex := make(map[int]*global.List[*termRecord])
+
+	for k, v := range problem.functionsIndex {
+		newFunctionsIndex[k] = v.Copy()
+	}
+
+	newProblem.functionsIndex = newFunctionsIndex
+
+	newMetasIndex := make(map[int]*termRecord)
+
+	for k, v := range problem.metasIndex {
+		newMetasIndex[k] = v
+	}
+
+	newProblem.metasIndex = newMetasIndex
+
+	newPartitionIndex := make(map[*eqClass]*global.List[*termRecord])
+
+	for k, v := range problem.partitionIndex {
+		newPartitionIndex[k] = v.Copy()
+	}
+
+	newProblem.partitionIndex = newPartitionIndex
+
+	newSupertermIndex := make(map[*eqClass]*global.List[*termRecord])
+
+	for k, v := range problem.supertermIndex {
+		newSupertermIndex[k] = v.Copy()
+	}
+
+	newProblem.supertermIndex = newSupertermIndex
+
+	return newProblem
 }

@@ -34,9 +34,21 @@
 * This file contains the type definition for equality reasonning.
 **/
 
-package equality
+package eqStruct
 
-import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+import (
+	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+)
+
+type EqualityStruct interface {
+	AddAssumption(TermPair)
+	AddGoal([]TermPair)
+	Solve() (subs []treetypes.Substitutions, success bool)
+	Copy() EqualityStruct
+}
+
+var NewEqStruct func() EqualityStruct
 
 /* A pair of two terms */
 type TermPair struct {
@@ -49,13 +61,19 @@ func (tp TermPair) GetT1() basictypes.Term {
 func (tp TermPair) GetT2() basictypes.Term {
 	return tp.t2.Copy()
 }
-func (tp TermPair) copy() TermPair {
+func (tp TermPair) Copy() TermPair {
 	return MakeTermPair(tp.GetT1(), tp.GetT2())
 }
-func (tp TermPair) equals(tp2 TermPair) bool {
-	return tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())
+
+func (tp TermPair) Equals(other any) bool {
+	if typed, ok := other.(TermPair); ok {
+		return tp.GetT1().Equals(typed.GetT1()) && tp.GetT2().Equals(typed.GetT2())
+	}
+
+	return false
 }
-func (tp TermPair) equalsModulo(tp2 TermPair) bool {
+
+func (tp TermPair) EqualsModulo(tp2 TermPair) bool {
 	return (tp.GetT1().Equals(tp2.GetT1()) && tp.GetT2().Equals(tp2.GetT2())) ||
 		(tp.GetT1().Equals(tp2.GetT2()) && tp.GetT2().Equals(tp2.GetT1()))
 
@@ -70,7 +88,7 @@ func MakeTermPair(t1, t2 basictypes.Term) TermPair {
 	return TermPair{t1.Copy(), t2.Copy()}
 }
 
-func (tp TermPair) getMetas() basictypes.MetaList {
+func (tp TermPair) GetMetas() basictypes.MetaList {
 	metas := basictypes.MakeEmptyMetaList()
 
 	for _, meta := range tp.t1.GetMetas() {

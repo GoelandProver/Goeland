@@ -41,6 +41,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -101,7 +102,7 @@ func tryApplyRuleCompute(s, t basictypes.Term, ep EqualityProblem, type_rule int
 }
 
 /* Retrieve the last membre of rule struct and return the list */
-func connectLAndR(list_l_prime_l []TermPair, ep EqualityProblem, s basictypes.Term, t basictypes.Term, type_rule int) ruleStructList {
+func connectLAndR(list_l_prime_l []eqStruct.TermPair, ep EqualityProblem, s basictypes.Term, t basictypes.Term, type_rule int) ruleStructList {
 	res := ruleStructList{}
 
 	for _, l_prime_l_pair := range list_l_prime_l {
@@ -111,11 +112,11 @@ func connectLAndR(list_l_prime_l []TermPair, ep EqualityProblem, s basictypes.Te
 			global.PrintDebug("TARA", fmt.Sprintf("On veut susbstituer %v (unifiable avec %v) par %v dans %v = %v", l_prime_l_pair.GetT1().ToString(), l_prime_l_pair.GetT2().ToString(), r.ToString(), s.ToString(), t.ToString()))
 
 			// create pair an check equality
-			s_t := MakeTermPair(s, t)
-			l_r := MakeTermPair(l_prime_l_pair.GetT2(), r)
+			s_t := eqStruct.MakeTermPair(s, t)
+			l_r := eqStruct.MakeTermPair(l_prime_l_pair.GetT2(), r)
 
 			// if s = t is not l = r OR, if they are, the rule's type is right, so it's ok
-			if !s_t.equalsModulo(l_r) || type_rule == RIGHT {
+			if !s_t.EqualsModulo(l_r) || type_rule == RIGHT {
 				global.PrintDebug("TARA", "Try apply rule ok !")
 				res = append(res, makeRuleStruct(type_rule, l_prime_l_pair.GetT2(), r.Copy(), l_prime_l_pair.GetT1(), s.Copy(), t.Copy()))
 			} else {
@@ -127,9 +128,9 @@ func connectLAndR(list_l_prime_l []TermPair, ep EqualityProblem, s basictypes.Te
 }
 
 /* return all the pair (l, l') unifiable */
-func searchUnifBewteenListAndEq(tl basictypes.TermList, tree datastruct.DataStructure) []TermPair {
+func searchUnifBewteenListAndEq(tl basictypes.TermList, tree datastruct.DataStructure) []eqStruct.TermPair {
 	global.PrintDebug("SUBLE", fmt.Sprintf("Searching unfication between %v and the eq tree", tl.ToString()))
-	term_pair_list := []TermPair{}
+	term_pair_list := []eqStruct.TermPair{}
 	for _, t_prime := range tl {
 		// If the subterm is not a variable
 		global.PrintDebug("SUBLE", "------------------------------------------")
@@ -140,7 +141,7 @@ func searchUnifBewteenListAndEq(tl basictypes.TermList, tree datastruct.DataStru
 				global.PrintDebug("SUBLE", "Unification found !")
 				for _, t := range tl {
 					global.PrintDebug("SUBLE", fmt.Sprintf("Unif found with : %v", t.ToString()))
-					term_pair_list = append(term_pair_list, MakeTermPair(t_prime, t))
+					term_pair_list = append(term_pair_list, eqStruct.MakeTermPair(t_prime, t))
 				}
 			} else {
 				global.PrintDebug("SUBLE", "Unification not found !")

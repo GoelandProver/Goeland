@@ -42,6 +42,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
@@ -130,6 +131,16 @@ func (ep EqualityProblem) getMetas() basictypes.MetaList {
 }
 
 /*** Functions ***/
+
+func makeEqualityProblemList(E Equalities, goal []eqStruct.TermPair) EqualityProblemList {
+	epl := makeEmptyEqualityProblemList()
+
+	for _, g := range goal {
+		epl = append(epl, makeEqualityProblem(E, g.GetT1(), g.GetT2(), makeEmptyConstraintStruct()))
+	}
+
+	return epl
+}
 
 func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c ConstraintStruct) EqualityProblem {
 	return EqualityProblem{makeDataStructFromEqualities(E.copy()), makeEQMapFromEqualities(E.copy()), E.copy(), s.Copy(), t.Copy(), c.copy()}

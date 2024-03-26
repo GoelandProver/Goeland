@@ -31,95 +31,12 @@
 **/
 package sateq
 
-import (
-	"fmt"
-	"time"
-
-	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugins/equality"
-	"github.com/go-air/gini"
-	"github.com/go-air/gini/z"
-)
+import "github.com/GoelandProver/Goeland/plugins/eqStruct"
 
 func Enable() {
-	equality.RunEqualityReasoning = RunEqualityReasoning
+	eqStruct.NewEqStruct = NewEqStruct
 }
 
-func RunEqualityReasoning(epml equality.EqualityProblemMultiList) (success bool, subs []treetypes.Substitutions) {
-	if len(epml) == 0 {
-		return false, []treetypes.Substitutions{}
-	}
-
-	t := time.Now()
-
-	problem := format(epml)
-
-	fmt.Printf("normalization time: %s\n", time.Since(t))
-
-	if problem.HasTrivialGoals() {
-		fmt.Printf("trivially sat problem\n")
-		// congruence closure alone finds a solution
-		return true, append(treetypes.MakeEmptySubstitutionList(), treetypes.MakeEmptySubstitution())
-	}
-	if problem.IsGround() {
-		fmt.Printf("trivially unsat problem\n")
-		// ground problem that is not solved by CC has no solution
-		return false, []treetypes.Substitutions{}
-	}
-
-	t = time.Now()
-
-	satBuilder := buildSAT(problem)
-
-	fmt.Printf("constraint building time: %s\n", time.Since(t))
-
-	t = time.Now()
-	subs, success = findSolution(satBuilder)
-
-	fmt.Printf("SAT solving and reconstruction: %s\n", time.Since(t))
-	return success, subs
-}
-
-func format(epml equality.EqualityProblemMultiList) *Problem {
-	problem := NewProblem()
-
-	for _, eq := range epml[0][0].GetE() {
-		problem.AddAssumption(eq)
-	}
-
-	for _, epl := range epml {
-		goal := make([]equality.TermPair, 0)
-		for _, ep := range epl {
-			goal = append(goal, equality.MakeTermPair(ep.GetS(), ep.GetT()))
-		}
-		problem.AddGoal(goal)
-	}
-
-	return problem
-}
-
-func findSolution(satBuilder *SatBuilder) (subs []treetypes.Substitutions, success bool) {
-	solution, success := solve(satBuilder.gini, satBuilder.lits)
-
-	if !success {
-		return []treetypes.Substitutions{}, false
-	}
-
-	return gatherSubs(solution, satBuilder.sMapping, satBuilder.rMapping)
-}
-
-func solve(satInstance gini.Gini, litList *global.List[Lit]) (map[Lit]bool, bool) {
-	result := satInstance.Solve()
-
-	if result != 1 {
-		return nil, false
-	}
-
-	assignmentMap := make(map[Lit]bool)
-
-	for _, lit := range litList.AsSlice() {
-		assignmentMap[lit] = satInstance.Value(z.Lit(lit))
-	}
-	return assignmentMap, true
+func NewEqStruct() eqStruct.EqualityStruct {
+	return NewProblem()
 }
