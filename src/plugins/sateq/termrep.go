@@ -33,6 +33,7 @@ package sateq
 
 import (
 	"cmp"
+	"fmt"
 
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
@@ -65,13 +66,15 @@ type eqClass struct {
 }
 
 func (e *eqClass) Equals(a any) bool {
-	//TODO implement me
-	panic("implement me")
+	if typed, ok := a.(*eqClass); ok {
+		return e.id == typed.id
+	}
+
+	return false
 }
 
 func (e *eqClass) ToString() string {
-	//TODO implement me
-	panic("implement me")
+	return fmt.Sprintf("(id: %d, parent: %d, size: %d)", e.id, e.parent.id, e.size)
 }
 
 func (e *eqClass) CompareTo(other *eqClass) int {
