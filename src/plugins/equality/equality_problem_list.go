@@ -240,12 +240,17 @@ func buildEqualityProblemMultiListFromFormList(fl basictypes.FormList, tn datast
 func buildEqualityProblemMultiList(fl basictypes.FormList, tp, tn datastruct.DataStructure) (EqualityProblemMultiList, bool) {
 	res := makeEmptyEqualityProblemMultiList()
 	eq := retrieveEqualities(tp.Copy())
-	if len(eq) <= 0 {
+	if len(eq) == 0 {
 		return res, false
 	}
 	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tn.Copy()), eq.copy())...)
 	global.PrintDebug("BEPML", fmt.Sprintf("Res after FromNEQ : %v", res.ToString()))
 	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.copy())...)
 	global.PrintDebug("BEPML", fmt.Sprintf("Res after FromForm : %v", res.ToString()))
+
+	if len(res) == 0 {
+		return res, false
+	}
+
 	return res, true
 }
