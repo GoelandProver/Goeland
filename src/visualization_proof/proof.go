@@ -287,13 +287,6 @@ func proofStructChildrenToJsonProofStructChildren(c [][]ProofStruct) [][]JsonPro
 	return res
 }
 
-func ResetProofFile() {
-	if global.GetProof() {
-		f, _ := os.Create(GetGraphFileNameProof())
-		SetFileProof(f)
-	}
-}
-
 func WriteGraphProof(proof_content []ProofStruct) {
 	json_content := ProofStructListToJsonProofStructList(proof_content)
 	if global.GetProof() {

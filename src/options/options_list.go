@@ -156,7 +156,6 @@ func buildOptions() {
 		"Enables the display of a proof of the problem (in TPTP format)",
 		func(bool) {
 			global.SetProof(true)
-			proof.ResetProofFile()
 			search.AddPrintProofAlgorithm(search.BasicOutputProofStruct)
 		},
 		func(bool) {})
