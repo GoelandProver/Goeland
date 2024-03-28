@@ -112,10 +112,16 @@ func (st State) GetSubstsFound() []SubstAndForm {
 	return CopySubstAndFormList(st.substs_found)
 }
 func (s State) GetTreePos() datastruct.DataStructure {
-	return s.tree_pos.Copy()
+	return s.tree_pos
+}
+func (s *State) AddToTreePos(fl *basictypes.FormList) {
+	s.tree_pos = s.tree_pos.InsertFormulaListToDataStructure(fl)
 }
 func (s State) GetTreeNeg() datastruct.DataStructure {
-	return s.tree_neg.Copy()
+	return s.tree_neg
+}
+func (s *State) AddToTreeNeg(fl *basictypes.FormList) {
+	s.tree_neg = s.tree_neg.InsertFormulaListToDataStructure(fl)
 }
 func (s State) GetProof() []proof.ProofStruct {
 	return proof.CopyProofStructList(s.proof)

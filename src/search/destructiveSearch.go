@@ -228,8 +228,8 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 		// Applying substitutions before inserting in the code tree.
 		atomicsPlus := st.GetLF().FilterPred(true)
 		atomicsMinus := st.GetLF().FilterPred(false)
-		st.SetTreePos(st.GetTreePos().InsertFormulaListToDataStructure(atomicsPlus))
-		st.SetTreeNeg(st.GetTreeNeg().InsertFormulaListToDataStructure(atomicsMinus))
+		st.AddToTreePos(atomicsPlus)
+		st.AddToTreeNeg(atomicsMinus)
 
 		for _, f := range st.GetLF() {
 			if global.GetAssisted() || basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
@@ -413,7 +413,10 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st complextypes.State,
 			// kept in the state.
 			newAtomics := complextypes.ApplySubstitutionsOnFormAndTermsList(subst.GetSubst(), st.GetAtomic())
 			st.SetTreePos(st.GetTreePos().MakeDataStruct(newAtomics.ExtractForms(), true))
-			st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(newAtomics.ExtractForms(), false))
+			x := st.GetTreeNeg()
+			x2 := newAtomics.ExtractForms()
+			x1 := x.MakeDataStruct(x2, false)
+			st.SetTreeNeg(x1)
 
 			// Maj forbidden
 			if len(answer_father.forbidden) > 0 {
