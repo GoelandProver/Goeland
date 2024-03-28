@@ -64,7 +64,7 @@ var dummyTerm = btps.MakerNewId("Goeland_I")
 func makeTptpProofFromGS3(proof *gs3.GS3Sequent) string {
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
 	resultingString := makeTheorem(axioms, conjecture)
-	hypotheses := axioms.Copy().AppendIfNotContains(btps.MakerNot(conjecture.Copy()))
+	hypotheses := append(axioms.Copy(), btps.MakerNot(conjecture.Copy()))
 
 	AxiomCut := performCutAxiomStep(axioms, conjecture)
 
