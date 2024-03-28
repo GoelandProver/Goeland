@@ -73,6 +73,7 @@ func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, di
 	if displayTypes {
 		str += " : " + f.typeHint.ToString()
 	}
+
 	return str
 }
 

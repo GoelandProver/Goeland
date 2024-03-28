@@ -106,7 +106,9 @@ func (i *Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
 }
 
 func (i *Imp) ReplaceVarByTerm(old Var, new Term) bool {
-	return i.f1.ReplaceVarByTerm(old, new) || i.f2.ReplaceVarByTerm(old, new)
+	isF1Replaced := i.f1.ReplaceVarByTerm(old, new)
+	isF2Replaced := i.f2.ReplaceVarByTerm(old, new)
+	return isF1Replaced || isF2Replaced
 }
 
 func (i *Imp) RenameVariables() {

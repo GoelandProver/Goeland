@@ -104,7 +104,9 @@ func (e *Equ) ReplaceTypeByMeta(varList []typing.TypeVar, index int) {
 }
 
 func (e *Equ) ReplaceVarByTerm(old Var, new Term) bool {
-	return e.f1.ReplaceVarByTerm(old, new) || e.f2.ReplaceVarByTerm(old, new)
+	isF1Replaced := e.f1.ReplaceVarByTerm(old, new)
+	isF2Replaced := e.f2.ReplaceVarByTerm(old, new)
+	return isF1Replaced || isF2Replaced
 }
 
 func (e *Equ) RenameVariables() {
