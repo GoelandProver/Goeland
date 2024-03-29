@@ -157,7 +157,7 @@ func (seq *GS3Sequent) SetId(i int) {
 	seq.nodeId = i
 }
 
-func (seq *GS3Sequent) SetFormGenerated(fg []btps.FormList) {
+func (seq *GS3Sequent) SetFormGenerated(fg []*basictypes.FormList) {
 	seq.formsGenerated = fg
 }
 
@@ -165,11 +165,11 @@ func (seq *GS3Sequent) SetChildren(c []*GS3Sequent) {
 	seq.children = c
 }
 
-func (seq *GS3Sequent) SetTargetForm(f btps.Form) {
-	seq.hypotheses[seq.appliedOn] = f
+func (seq *GS3Sequent) SetTargetForm(f basictypes.Form) {
+	seq.hypotheses.Set(seq.appliedOn, f)
 }
 
-func (seq *GS3Sequent) SetTermGenerated(t btps.Term) {
+func (seq *GS3Sequent) SetTermGenerated(t basictypes.Term) {
 	seq.termGenerated = t
 }
 
