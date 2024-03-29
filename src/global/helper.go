@@ -48,6 +48,7 @@ import (
 
 var ocoq = false
 var olambdapi = false
+var otptp = false
 var Assisted = false
 var destructive = true
 var nb_gor = 0
@@ -198,6 +199,10 @@ func IsLambdapiOutput() bool {
 	return olambdapi
 }
 
+func IsTPTPOutput() bool {
+	return otptp
+}
+
 func GetProblemName() string {
 	return problem_name
 }
@@ -301,6 +306,10 @@ func OutputCoq() {
 
 func OutputLambdapi() {
 	olambdapi = true
+}
+
+func OutputTPTP() {
+	otptp = true
 }
 
 func SetPlugin(s string, b bool) {

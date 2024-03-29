@@ -40,9 +40,12 @@ import (
 	"strconv"
 )
 
-func IntListToString(l []int) string {
+func IntListToString(l []int, prefix ...string) string {
 	res := ""
 	for index, i := range l {
+		if len(prefix) == 1 {
+			res += prefix[0]
+		}
 		res += strconv.Itoa(i)
 		if index < len(l)-1 {
 			res += ", "

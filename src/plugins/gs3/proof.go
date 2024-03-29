@@ -626,6 +626,30 @@ func (gs GS3Proof) findInBetaHist(id int) int {
 	return -1
 }
 
+func getAllFormulasDependantOn(term basictypes.Term, form basictypes.Form) *basictypes.FormList {
+	switch f := form.(type) {
+	case basictypes.All:
+		return getSubformulas(term, f.GetVarList()[0], f.GetForm())
+	case basictypes.Not:
+		if ex, isEx := f.GetForm().(basictypes.Ex); isEx {
+			return getSubformulas(term, ex.GetVarList()[0], basictypes.MakerNot(f.GetForm()))
+		}
+	}
+	return basictypes.NewFormList()
+}
+
+func getSubformulas(term basictypes.Term, v basictypes.Var, form basictypes.Form) *basictypes.FormList {
+	subforms := form.GetSubFormulasRecur()
+	dependantSubforms := basictypes.NewFormList()
+	for _, f := range subforms.Slice() {
+		f, res := f.ReplaceTermByTerm(v, term)
+		if res {
+			dependantSubforms.Append(f)
+		}
+	}
+	return dependantSubforms
+}
+
 func (gs GS3Proof) findInDeltaHisto(term basictypes.Term, forms *basictypes.FormList) (*basictypes.FormList, bool) {
 	for _, p := range gs.deltaHisto {
 		if p.Fst != nil && p.Fst.Equals(term) {

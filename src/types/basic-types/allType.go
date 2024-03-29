@@ -111,8 +111,8 @@ func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAllType(a.GetIndex(), a.tvList, a.GetForm().ReplaceTypeByMeta(varList, index))
 }
 
-func (a AllType) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f, res := a.GetForm().ReplaceVarByTerm(old, new)
+func (a AllType) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	f, res := a.GetForm().ReplaceTermByTerm(old, new)
 	return MakeAllTypeSimple(a.GetIndex(), a.GetVarList(), f, a.MetaList), res
 }
 

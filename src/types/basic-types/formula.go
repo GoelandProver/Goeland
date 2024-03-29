@@ -57,29 +57,34 @@ type Form interface {
 	MappableString
 
 	ReplaceTypeByMeta([]typing.TypeVar, int) Form
-	ReplaceVarByTerm(old Var, new Term) (Form, bool)
+	ReplaceTermByTerm(old Term, new Term) (Form, bool)
 	RenameVariables() Form
 	SubstituteVarByMeta(old Var, new Meta) Form
 }
 
-/* Replace a Var by a term inside a function */
-func replaceVarInTermList(terms *TermList, oldVar Var, newTerm Term) (*TermList, bool) {
+/* Replace a term by a term inside a function */
+func replaceTermInTermList(terms *TermList, oldTerm Term, newTerm Term) (*TermList, bool) {
 	res := false
 	newTermList := NewTermList()
 
 	for _, val := range terms.Slice() {
 		switch nf := val.(type) {
 		case Var:
-			if oldVar.GetIndex() == nf.GetIndex() {
+			if oldTerm.GetIndex() == nf.GetIndex() {
 				newTermList.Append(newTerm)
 				res = true
 			} else {
 				newTermList.Append(val)
 			}
 		case Fun:
-			termList, r := replaceVarInTermList(nf.GetArgs(), oldVar, newTerm)
-			newTermList.Append(MakerFun(nf.GetP(), termList, nf.GetTypeVars(), nf.GetTypeHint()))
-			res = res || r
+			if oldTerm.GetIndex() == nf.GetIndex() {
+				newTermList.Append(newTerm)
+				res = true
+			} else {
+				termList, r := replaceTermInTermList(nf.GetArgs(), oldTerm, newTerm)
+				newTermList.Append(MakerFun(nf.GetP(), termList, nf.GetTypeVars(), nf.GetTypeHint()))
+				res = res || r
+			}
 		default:
 			newTermList.Append(val)
 		}
@@ -130,12 +135,12 @@ func replaceList(oldForms *FormList, vars []typing.TypeVar, index int) *FormList
 	return newForms
 }
 
-func replaceVarInFormList(oldForms *FormList, oldVar Var, newTerm Term) (*FormList, bool) {
+func replaceTermInFormList(oldForms *FormList, oldTerm Term, newTerm Term) (*FormList, bool) {
 	newForms := NewFormList()
 	res := false
 
 	for _, form := range oldForms.Slice() {
-		newForm, r := form.ReplaceVarByTerm(oldVar, newTerm)
+		newForm, r := form.ReplaceTermByTerm(oldTerm, newTerm)
 		res = res || r
 		newForms.Append(newForm)
 	}

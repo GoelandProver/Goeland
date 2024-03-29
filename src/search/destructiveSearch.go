@@ -86,7 +86,7 @@ func (ds *destructiveSearch) search(formula basictypes.Form, bound int) bool {
 
 func (ds *destructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool, int) {
 	basictypes.ResetMeta()
-	proof.ResetProofFile()
+	// proof.ResetProofFile()
 	visualization.ResetExchangesFile()
 
 	global.PrintInfo("MAIN", fmt.Sprintf("nb_step : %v - limit : %v", global.GetNbStep(), limit))

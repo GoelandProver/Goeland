@@ -227,7 +227,7 @@ func makeTheorem(axioms *basictypes.FormList, conjecture basictypes.Form) string
 	axiomsWithConj := axioms.Copy()
 	axiomsWithConj.Append(basictypes.MakerNot(basictypes.MakerNot(conjecture)))
 	formattedProblem := makeImpChain(axiomsWithConj)
-	return "Theorem goeland_proof_of_" + problemName + " : " + mapDefault(formattedProblem.ToMappedString(coqMapConnectors(), false)) + ".\n"
+	return "Theorem goeland_proof_of_" + problemName + " : " + mapDefault(formattedProblem.ToMappedString(coqMapConnectors(), GetTypeProof())) + ".\n"
 }
 
 // If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).
@@ -297,7 +297,7 @@ func getRealConstantName(constantsCreated []basictypes.Term, term basictypes.Ter
 	if fun, isFun := term.(basictypes.Fun); isFun {
 		res := ""
 		if isGroundTerm(fun.GetID()) {
-			res = fun.GetID().ToMappedString(coqMapConnectors(), false)
+			res = fun.GetID().ToMappedString(coqMapConnectors(), GetTypeProof())
 			subterms := make([]string, 0)
 			for _, t := range fun.GetArgs().Slice() {
 				subterms = append(subterms, getRealConstantName(constantsCreated, t))
@@ -321,7 +321,7 @@ func findInConstants(constantsCreated []basictypes.Term, term basictypes.Term) s
 		return getConstantName(term.(basictypes.Fun).GetID())
 	}
 	if isGroundTerm(term) {
-		return "(" + term.ToMappedString(coqMapConnectors(), false) + ")"
+		return "(" + term.ToMappedString(coqMapConnectors(), GetTypeProof()) + ")"
 	}
 	return "goeland_I"
 }

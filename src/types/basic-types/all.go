@@ -78,8 +78,8 @@ func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return All{a.quantifier.replaceTypeByMeta(varList, index)}
 }
 
-func (a All) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	quant, isReplaced := a.quantifier.replaceVarByTerm(old, new)
+func (a All) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	quant, isReplaced := a.quantifier.replaceTermByTerm(old, new)
 	return All{quant}, isReplaced
 }
 

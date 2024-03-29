@@ -57,12 +57,28 @@ func MakeAndSimple(i int, forms *FormList, metas *MetaList) And {
 	return and
 }
 
-func MakeAnd(i int, forms *FormList) And {
-	return MakeAndSimple(i, forms, NewMetaList())
+func MakeAndSimpleBinary(i int, forms *FormList, metas *MetaList) And {
+	switch forms.Len() {
+	case 0, 1, 2:
+		return MakeAndSimple(i, forms, metas)
+	default:
+		return MakeAndSimple(
+			i,
+			NewFormList([]Form{forms.Get(0), MakerAnd(NewFormList(forms.GetElements(1, forms.Len())...), true)}...),
+			metas)
+	}
 }
 
-func MakerAnd(forms *FormList) And {
-	return MakeAnd(MakerIndexFormula(), forms)
+func MakeAnd(i int, forms *FormList, binary ...bool) And {
+	if binary != nil {
+		return MakeAndSimpleBinary(i, forms, NewMetaList())
+	} else {
+		return MakeAndSimple(i, forms, NewMetaList())
+	}
+}
+
+func MakerAnd(forms *FormList, binary ...bool) And {
+	return MakeAnd(MakerIndexFormula(), forms, binary...)
 }
 
 /** Methods **/
@@ -123,8 +139,8 @@ func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAnd(a.GetIndex(), replaceList(a.FormList, varList, index))
 }
 
-func (a And) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	varList, res := replaceVarInFormList(a.FormList, old, new)
+func (a And) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	varList, res := replaceTermInFormList(a.FormList, old, new)
 	return MakeAndSimple(a.index, varList, a.MetaList), res
 }
 

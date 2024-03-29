@@ -36,6 +36,8 @@
 
 package basictypes
 
+import "github.com/GoelandProver/Goeland/global"
+
 /* id (for predicate) */
 type FormAndTerms struct {
 	form  Form
@@ -75,5 +77,5 @@ func (fat FormAndTerms) Equals(fat2 FormAndTerms) bool {
 }
 
 func (fat FormAndTerms) ToString() string {
-	return fat.GetForm().ToString()
+	return fat.GetForm().ToMappedString(DefaultMapString, global.GetTypeProof())
 }

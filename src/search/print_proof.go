@@ -81,5 +81,5 @@ func (ps *OutputProofStruct) printProofWithProofStruct(finalProof []proof.ProofS
 		f.WriteString(output)
 	}
 
-	println(output)
+	global.PrintInfo("PROOF", "\n"+output)
 }

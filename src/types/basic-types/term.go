@@ -68,6 +68,13 @@ func MakeId(i int, s string) Id {
 	return id
 }
 
+func MakeQuotedId(i int, s string) Id {
+	fms := &MappedString{}
+	id := Id{fms, i, "" + s + "'"}
+	fms.MappableString = &id
+	return id
+}
+
 func MakeVar(i int, s string, t ...typing.TypeApp) Var {
 	fms := &MappedString{}
 	newVar := Var{fms, i, s, getType(t)}

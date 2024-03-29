@@ -134,7 +134,7 @@ func makeSkolemFunction(args skoArgs) basictypes.Term {
 }
 
 func substAndReturn(args skoArgs, sko basictypes.Term) basictypes.Form {
-	f, _ := args.formula.ReplaceVarByTerm(args.sourceVar, sko)
+	f, _ := args.formula.ReplaceTermByTerm(args.sourceVar, sko)
 	return f
 }
 

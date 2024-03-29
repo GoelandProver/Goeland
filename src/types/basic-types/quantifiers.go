@@ -40,6 +40,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -49,8 +50,7 @@ type quantifier struct {
 	index   int
 	varList []Var
 	subForm Form
-
-	symbol FormulaType
+	symbol  FormulaType
 }
 
 func makeQuantifier(i int, vars []Var, subForm Form, metas *MetaList, symbol FormulaType) quantifier {
@@ -113,8 +113,10 @@ func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool)
 
 	for _, vt := range varsType {
 		str := mapping[QuantVarOpen]
-		str += ListToMappedString(q.GetVarList(), " ", "", mapping, displayTypes)
-		str += " : " + vt.type_.ToString()
+		str += ListToMappedString(q.GetVarList(), " ", "", mapping, false)
+		if displayTypes || global.IsCoqOutput() {
+			str += " : " + vt.type_.ToString()
+		}
 		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 
@@ -153,8 +155,8 @@ func (q quantifier) replaceTypeByMeta(varList []typing.TypeVar, index int) quant
 	return makeQuantifier(q.GetIndex(), q.GetVarList(), q.GetForm().ReplaceTypeByMeta(varList, index), q.MetaList.Copy(), q.symbol)
 }
 
-func (q quantifier) replaceVarByTerm(old Var, new Term) (quantifier, bool) {
-	f, res := q.GetForm().ReplaceVarByTerm(old, new)
+func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
+	f, res := q.GetForm().ReplaceTermByTerm(old, new)
 	return makeQuantifier(q.GetIndex(), q.GetVarList(), f, q.MetaList.Copy(), q.symbol), res
 }
 
@@ -166,7 +168,7 @@ func (q quantifier) renameVariables() quantifier {
 		newVar := MakerNewVar(v.GetName())
 		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()), v.typeHint)
 		newVarList = append(newVarList, newVar)
-		newForm, _ = newForm.RenameVariables().ReplaceVarByTerm(v, newVar)
+		newForm, _ = newForm.RenameVariables().ReplaceTermByTerm(v, newVar)
 	}
 
 	return makeQuantifier(q.GetIndex(), newVarList, newForm, q.MetaList.Copy(), q.symbol)

@@ -56,6 +56,10 @@ func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return f.ToMappedStringSurroundWithId(f.GetID().ToMappedString(mapping, displayTypes), mapping, displayTypes)
 }
 
+func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+	return ", ", mapping[PredEmpty]
+}
+
 func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, displayTypes bool) string {
 	if len(f.typeVars) == 0 && f.GetArgs().Len() == 0 {
 		return idString + "%s"
@@ -73,11 +77,30 @@ func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, di
 	if displayTypes {
 		str += " : " + f.typeHint.ToString()
 	}
+
 	return str
 }
 
-func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return ", ", mapping[PredEmpty]
+func ToFlatternStringSurrountWithId(f Fun, idString string, mapping MapString, displayTypes bool) string {
+
+	if len(f.typeVars) == 0 && f.GetArgs().Len() == 0 {
+		return idString + "%s"
+	}
+	args := []string{}
+
+	if len(f.typeVars) > 0 {
+		if tv := ListToString(f.typeVars, "_", mapping[PredEmpty]); tv != "" {
+			args = append(args, tv)
+		}
+	}
+	args = append(args, "%s")
+
+	str := idString + "_" + strings.Join(args, mapping[PredTypeVarSep])
+	if displayTypes {
+		str += " : " + f.typeHint.ToString()
+	}
+
+	return str
 }
 
 func (f Fun) GetChildrenForMappedString() []MappableString {
