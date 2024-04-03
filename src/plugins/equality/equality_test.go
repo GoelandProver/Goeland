@@ -45,6 +45,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
@@ -293,7 +294,7 @@ func TestAS(t *testing.T) {
 /*** Test constraints ***/
 func TestConstraints1(t *testing.T) {
 	/* Not consistant */
-	tp_ffx_x := makeTermPair(ffx, x)
+	tp_ffx_x := eqStruct.MakeTermPair(ffx, x)
 	constraint_ffx_x := MakeConstraint(PREC, tp_ffx_x)
 	cs := makeEmptyConstraintStruct()
 	append := cs.appendIfConsistant(constraint_ffx_x)
@@ -305,7 +306,7 @@ func TestConstraints1(t *testing.T) {
 
 func TestConstraints2(t *testing.T) {
 	/* Consistant but useless */
-	tp_x_ffx := makeTermPair(x, ffx)
+	tp_x_ffx := eqStruct.MakeTermPair(x, ffx)
 	constraint_x_ffx := MakeConstraint(PREC, tp_x_ffx)
 	cs := makeEmptyConstraintStruct()
 	append := cs.appendIfConsistant(constraint_x_ffx)
@@ -318,7 +319,7 @@ func TestConstraints2(t *testing.T) {
 func TestConstraints3(t *testing.T) {
 	/* Consistant and relevant */
 
-	tp_fx_a := makeTermPair(fx, a)
+	tp_fx_a := eqStruct.MakeTermPair(fx, a)
 	constraint_fx_a := MakeConstraint(PREC, tp_fx_a)
 	cs := makeEmptyConstraintStruct()
 
@@ -334,7 +335,7 @@ func TestConstaints4(t *testing.T) {
 	* On accepte les cas comme f(f(x)) < a et a < f(x)
 	 */
 
-	tp_fx_a := makeTermPair(fx, a)
+	tp_fx_a := eqStruct.MakeTermPair(fx, a)
 	constraint_fx_a := MakeConstraint(PREC, tp_fx_a)
 	cs := makeEmptyConstraintStruct()
 
@@ -343,7 +344,7 @@ func TestConstaints4(t *testing.T) {
 		t.Fatalf("Error: %v and %v is not the expected PREC list. Expected consistant and %v", res_constraint_1, cs.getPrec().toString(), constraint_fx_a.toString())
 	}
 
-	tp_a_fx := makeTermPair(a, fx)
+	tp_a_fx := eqStruct.MakeTermPair(a, fx)
 	constraint_a_fx := MakeConstraint(PREC, tp_a_fx)
 	res_constraint_2 := cs.appendIfConsistant(constraint_a_fx)
 	if res_constraint_2 || len(cs.getPrec()) != 1 || !cs.getPrec()[0].equals(constraint_fx_a) {
@@ -356,7 +357,7 @@ func TestConstraints5(t *testing.T) {
 	cs := makeEmptyConstraintStruct()
 
 	/* Not consistant */
-	tp_ffabc_fafbc := makeTermPair(f_fab_c, f_a_fbc)
+	tp_ffabc_fafbc := eqStruct.MakeTermPair(f_fab_c, f_a_fbc)
 	constraint_ffabc_fafbc := MakeConstraint(PREC, tp_ffabc_fafbc)
 	res_constraint_1 := cs.appendIfConsistant(constraint_ffabc_fafbc)
 	if res_constraint_1 || len(cs.getPrec()) > 0 {
@@ -364,7 +365,7 @@ func TestConstraints5(t *testing.T) {
 	}
 
 	/* Consistant but not relevant */
-	tp_fafbc_ffabc := makeTermPair(f_a_fbc, f_fab_c)
+	tp_fafbc_ffabc := eqStruct.MakeTermPair(f_a_fbc, f_fab_c)
 	constraint_fafbc_ffabc := MakeConstraint(PREC, tp_fafbc_ffabc)
 	res_constraint_2 := cs.appendIfConsistant(constraint_fafbc_ffabc)
 	if !res_constraint_2 || len(cs.getPrec()) > 0 {
@@ -376,7 +377,7 @@ func TestConstaintes6(t *testing.T) {
 	cs := makeEmptyConstraintStruct()
 
 	/* consistant but not relevant */
-	tp_fxfyz_ffxyz := makeTermPair(f_x_fyz, f_fxy_z)
+	tp_fxfyz_ffxyz := eqStruct.MakeTermPair(f_x_fyz, f_fxy_z)
 	constraint_fafbc_ffabc := MakeConstraint(PREC, tp_fxfyz_ffxyz)
 	append := cs.appendIfConsistant(constraint_fafbc_ffabc)
 	if !append || len(cs.getPrec()) > 0 {
@@ -388,7 +389,7 @@ func TestConstaintes7(t *testing.T) {
 	cs := makeEmptyConstraintStruct()
 
 	/* consistant, should return X,a and Y, b */
-	tp_fxy_fab := makeTermPair(fxy, fab)
+	tp_fxy_fab := eqStruct.MakeTermPair(fxy, fab)
 	constraint_fxy_fab := MakeConstraint(EQ, tp_fxy_fab)
 	// append :=
 	cs.appendIfConsistant(constraint_fxy_fab)
@@ -403,7 +404,7 @@ func TestConstaintes8(t *testing.T) {
 	cs := makeEmptyConstraintStruct()
 
 	/* consistant, should return X,a and Y, b */
-	tp_fxa_fay := makeTermPair(fxa, fay)
+	tp_fxa_fay := eqStruct.MakeTermPair(fxa, fay)
 	constraint_fxa_fay := MakeConstraint(EQ, tp_fxa_fay)
 	// append :=
 	cs.appendIfConsistant(constraint_fxa_fay)
@@ -418,7 +419,7 @@ func TestConstaintes9(t *testing.T) {
 	cs := makeEmptyConstraintStruct()
 
 	/* consistant, should return X,a and Y, b */
-	tp_gga_ggx := makeTermPair(gga, ggx)
+	tp_gga_ggx := eqStruct.MakeTermPair(gga, ggx)
 	constraint_gga_ggx := MakeConstraint(PREC, tp_gga_ggx)
 	// append :=
 	cs.appendIfConsistant(constraint_gga_ggx)

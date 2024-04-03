@@ -31,7 +31,7 @@
 **/
 
 /**
-* This file is used to instanciate options
+* This file is used to instantiate options
 **/
 
 package options
@@ -278,6 +278,22 @@ func buildOptions() {
 		func(bool) {
 			equality.SetTryEquality()
 			sateq.Enable()
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"eagereq",
+		false,
+		"Run equality reasoning every time a new (in)equality is added to the branch",
+		func(bool) {
+			search.EagerEq = true
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"increq",
+		false,
+		"Run equality reasoning incrementally",
+		func(bool) {
+			global.IncrEq = true
 		},
 		func(bool) {})
 	(&option[bool]{}).init(

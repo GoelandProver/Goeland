@@ -41,15 +41,16 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-type Equalities []TermPair
+type Equalities []eqStruct.TermPair
 
-type Inequalities []TermPair
+type Inequalities []eqStruct.TermPair
 
 func (e Equalities) ToString() string {
 	res := "["
@@ -84,9 +85,9 @@ func (ie Inequalities) ToString() string {
 }
 
 func (e Equalities) copy() Equalities {
-	res := []TermPair{}
+	res := []eqStruct.TermPair{}
 	for _, tp := range e {
-		res = append(res, tp.copy())
+		res = append(res, tp.Copy())
 	}
 	return res
 }
@@ -95,7 +96,7 @@ func (e Equalities) copy() Equalities {
 func (e Equalities) applySubstitution(old_symbol basictypes.Meta, new_symbol basictypes.Term) Equalities {
 	res := e.copy()
 	for i, tp := range res {
-		res[i] = makeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT2()))
+		res[i] = eqStruct.MakeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT2()))
 	}
 	return res
 }
@@ -104,7 +105,7 @@ func (equs Equalities) getMetas() *basictypes.MetaList {
 	metas := basictypes.NewMetaList()
 
 	for _, equ := range equs {
-		metas.AppendIfNotContains(equ.getMetas().Slice()...)
+		metas.AppendIfNotContains(equ.GetMetas().Slice()...)
 	}
 
 	return metas
@@ -137,7 +138,7 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 		if ok_t2 == -1 {
 			global.PrintError("RI", "Meta_eq_2 not found in map")
 		}
-		res = append(res, makeTermPair(eq1_term, eq2_term))
+		res = append(res, eqStruct.MakeTermPair(eq1_term, eq2_term))
 	}
 	return res
 }
@@ -166,7 +167,7 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 		if ok_t2 == -1 {
 			global.PrintError("RI", "Meta_eq_1 not found in map")
 		}
-		res = append(res, makeTermPair(neq1_term, neq2_term))
+		res = append(res, eqStruct.MakeTermPair(neq1_term, neq2_term))
 	}
 	return res
 }

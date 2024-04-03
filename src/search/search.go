@@ -58,6 +58,8 @@ type SearchAlgorithm interface {
 
 var UsedSearch SearchAlgorithm
 
+var EagerEq = false
+
 func init() {
 	SetSearchAlgorithm(NewDestructiveSearch())
 }

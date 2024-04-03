@@ -111,32 +111,6 @@ func (epml EqualityProblemMultiList) ToString() string {
 	return res + "}"
 }
 
-func (epml EqualityProblemMultiList) AllSubToTPTPString() string {
-	for _, epl := range epml {
-		epmlCopy := EqualityProblemMultiList{epl}
-		subProblemSat, _ := RunEqualityReasoning(epmlCopy)
-
-		if !epmlCopy.isTrivial() && subProblemSat {
-			result := epmlCopy.ToTPTPString(true) + "\n"
-			success := true
-
-			for success && !epmlCopy.isTrivial() {
-				epmlCopy.removeHalfOfEqualities()
-				success, _ = RunEqualityReasoning(epmlCopy)
-			}
-
-			if !success && !epmlCopy.isTrivial() {
-				result += epmlCopy.ToTPTPString(false)
-				return result
-			} else {
-				eqCpt--
-			}
-		}
-	}
-
-	return ""
-}
-
 func (epml EqualityProblemMultiList) ToTPTPString(isSat bool) string {
 	problemName := os.Args[len(os.Args)-1]
 	problemName = problemName[:len(problemName)-2]
@@ -214,7 +188,7 @@ func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) Equal
 }
 
 /* Build an equality problem list from a predicat and its negation */
-var buildEqualityProblemListFrom2Pred = func(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
+func buildEqualityProblemListFrom2Pred(p1 basictypes.Pred, p2 basictypes.Pred, eq Equalities) EqualityProblemList {
 	res := makeEmptyEqualityProblemList()
 	for i := range p1.GetArgs().Slice() {
 		res = append(res, makeEqualityProblem(eq.copy(), p1.GetArgs().Get(i).Copy(), p2.GetArgs().Get(i).Copy(), makeEmptyConstraintStruct()))
@@ -266,12 +240,17 @@ func buildEqualityProblemMultiListFromFormList(fl *basictypes.FormList, tn datas
 func buildEqualityProblemMultiList(fl *basictypes.FormList, tp, tn datastruct.DataStructure) (EqualityProblemMultiList, bool) {
 	res := makeEmptyEqualityProblemMultiList()
 	eq := retrieveEqualities(tp.Copy())
-	if len(eq) <= 0 {
+	if len(eq) == 0 {
 		return res, false
 	}
 	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tn.Copy()), eq.copy())...)
 	global.PrintDebug("BEPML", fmt.Sprintf("Res after FromNEQ : %v", res.ToString()))
 	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.copy())...)
 	global.PrintDebug("BEPML", fmt.Sprintf("Res after FromForm : %v", res.ToString()))
+
+	if len(res) == 0 {
+		return res, false
+	}
+
 	return res, true
 }

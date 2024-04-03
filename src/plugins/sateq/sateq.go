@@ -31,72 +31,12 @@
 **/
 package sateq
 
-import (
-	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugins/equality"
-	"github.com/go-air/gini"
-	"github.com/go-air/gini/z"
-)
+import "github.com/GoelandProver/Goeland/plugins/eqStruct"
 
 func Enable() {
-	equality.RunEqualityReasoning = RunEqualityReasoning
+	eqStruct.NewEqStruct = NewEqStruct
 }
 
-func RunEqualityReasoning(epml equality.EqualityProblemMultiList) (success bool, subs []treetypes.Substitutions) {
-	if len(epml) == 0 {
-		return false, []treetypes.Substitutions{}
-	}
-
-	problem := format(epml)
-	normalized := normalize(problem)
-	satBuilder := buildSAT(normalized)
-
-	subs, success = findSolution(satBuilder)
-	return success, subs
-}
-
-func format(epml equality.EqualityProblemMultiList) *Problem {
-	problem := NewProblem(global.NewList[*Equality](), global.NewList[*global.List[*Equality]]())
-
-	for _, termPair := range epml[0][0].GetE() {
-		equ := NewEquality(termPair.GetT1(), termPair.GetT2())
-		problem.assumptions.Append(equ)
-	}
-
-	for _, epl := range epml {
-		goal := global.NewList[*Equality]()
-		for _, ep := range epl {
-			equ := NewEquality(ep.GetS(), ep.GetT())
-			goal.Append(equ)
-		}
-		problem.goals.Append(goal)
-	}
-
-	return problem
-}
-
-func findSolution(satBuilder *SatBuilder) (subs []treetypes.Substitutions, success bool) {
-	solution, success := solve(satBuilder.gini, satBuilder.lits)
-
-	if !success {
-		return []treetypes.Substitutions{}, false
-	}
-
-	return gatherSubs(solution, satBuilder.sMapping, satBuilder.rMapping, satBuilder.problem.rightHandIndex)
-}
-
-func solve(satInstance gini.Gini, litList *global.List[Lit]) (map[Lit]bool, bool) {
-	result := satInstance.Solve()
-
-	if result != 1 {
-		return nil, false
-	}
-
-	assignmentMap := make(map[Lit]bool)
-
-	for _, lit := range litList.Slice() {
-		assignmentMap[lit] = satInstance.Value(z.Lit(lit))
-	}
-	return assignmentMap, true
+func NewEqStruct() eqStruct.EqualityStruct {
+	return NewProblem()
 }

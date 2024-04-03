@@ -37,38 +37,33 @@ import (
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func gatherSubs(truthValues map[Lit]bool, sMapping map[global.Pair[termIndex, constant]]Lit, rMapping map[global.Pair[constant, termIndex]]Lit, termCorrespondance map[termIndex]basictypes.Term) (subs []treetypes.Substitutions, success bool) {
-	subsMap := getSubstitution(truthValues, sMapping)
-	transMap := getTranslation(truthValues, rMapping)
+func gatherSubs(truthValues map[Lit]bool, sMapping map[global.Pair[*termRecord, *eqClass]]Lit, rMapping map[global.Pair[*eqClass, *termRecord]]Lit) (subs []treetypes.Substitutions, success bool) {
+	sub := getSubstitution(truthValues, sMapping)
+	correspondence := getTranslation(truthValues, rMapping)
 
-	return buildSubsFrom(subsMap, transMap, termCorrespondance), true
+	return translateSub(sub, correspondence), true
 }
 
-func getSubstitution(truthValue map[Lit]bool, sMapping map[global.Pair[termIndex, constant]]Lit) map[termIndex]constant {
-	subsMap := make(map[termIndex]constant)
+func getSubstitution(truthValue map[Lit]bool, sMapping map[global.Pair[*termRecord, *eqClass]]Lit) map[*termRecord]*eqClass {
+	subsMap := make(map[*termRecord]*eqClass)
 
-	for firstLit, assignedTrue := range truthValue {
-		if assignedTrue {
-			for pair, secondLit := range sMapping {
-				if firstLit.Equals(secondLit) {
-					subsMap[pair.Fst] = pair.Snd
-					break
-				}
-			}
+	for pair, lit := range sMapping {
+		if pair.Fst.isMeta() && truthValue[lit] {
+			subsMap[pair.Fst] = pair.Snd
 		}
 	}
 
 	return subsMap
 }
 
-func getTranslation(truthValue map[Lit]bool, rMapping map[global.Pair[constant, termIndex]]Lit) map[constant]termIndex {
-	transMap := make(map[constant]termIndex)
+func getTranslation(truthValue map[Lit]bool, rMapping map[global.Pair[*eqClass, *termRecord]]Lit) map[*eqClass]*termRecord {
+	transMap := make(map[*eqClass]*termRecord)
 
 	for firstLit, assignedTrue := range truthValue {
 		if assignedTrue {
 			for replacement, secondLit := range rMapping {
 				if firstLit.Equals(secondLit) {
-					transMap[replacement.Fst] = replacement.Snd
+					transMap[replacement.Fst.representative()] = replacement.Snd
 					break
 				}
 			}
@@ -78,57 +73,25 @@ func getTranslation(truthValue map[Lit]bool, rMapping map[global.Pair[constant, 
 	return transMap
 }
 
-func translate(toTranslate basictypes.Term, termCorrespondance map[constant]basictypes.Term) (basictypes.Term, bool) {
-	if typed, ok := toTranslate.(constant); ok {
-		return translateConstant(typed, termCorrespondance)
-	}
-
-	if typed, ok := toTranslate.(basictypes.Fun); ok {
-		return translateFunction(typed, termCorrespondance)
-	}
-
-	return toTranslate, false
-}
-
-func translateConstant(toTranslate constant, termCorrespondance map[constant]basictypes.Term) (basictypes.Term, bool) {
-	if value, found := termCorrespondance[toTranslate]; found {
-		return value, true
+func translate(toTranslate *eqClass, correspondence map[*eqClass]*termRecord) basictypes.Term {
+	tr := correspondence[toTranslate.representative()]
+	if tr.isMeta() {
+		return tr.meta
 	} else {
-		return toTranslate, false
-	}
-}
-
-func translateFunction(toTranslate basictypes.Fun, termCorrespondance map[constant]basictypes.Term) (basictypes.Term, bool) {
-	newTerms := basictypes.NewTermList()
-
-	for _, arg := range toTranslate.GetArgs().Slice() {
-		subterm, subchange := arg, true
-
-		for subchange {
-			subterm, subchange = translate(subterm, termCorrespondance)
+		args := basictypes.NewTermList()
+		for _, s := range tr.args {
+			args.Append(translate(s, correspondence))
 		}
-
-		newTerms.Append(subterm)
+		return basictypes.MakerFun(tr.symbolId, args, tr.typeVars, tr.typeHint)
 	}
-
-	return basictypes.MakerFun(toTranslate.GetID(), newTerms, toTranslate.GetTypeVars(), toTranslate.GetTypeHint()), false
 }
 
-func buildSubsFrom(subsMap map[termIndex]constant, translation map[constant]termIndex, termCorrespondance map[termIndex]basictypes.Term) []treetypes.Substitutions {
+func translateSub(sub map[*termRecord]*eqClass, correspondence map[*eqClass]*termRecord) []treetypes.Substitutions {
 	result := treetypes.MakeEmptySubstitutionList()
 	subs := treetypes.MakeEmptySubstitution()
 
-	translatedCorrespondance := make(map[constant]basictypes.Term)
-	for k, v := range translation {
-		translatedCorrespondance[k] = termCorrespondance[v]
-	}
-
-	for meta, constantId := range subsMap {
-		if typedMeta, ok := termCorrespondance[meta].(basictypes.Meta); ok {
-			c := constantId
-			t1, _ := translate(c, translatedCorrespondance)
-			subs.Set(typedMeta, t1)
-		}
+	for x, r := range sub {
+		subs.Set(*x.meta, translate(r, correspondence))
 	}
 
 	result = append(result, subs)
