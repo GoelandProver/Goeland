@@ -67,7 +67,7 @@ func Skolemize(fnt basictypes.FormAndTerms, branchMetas *basictypes.MetaList) ba
 	// 1 - not(forall F1)
 	case basictypes.Not:
 		if tmp, ok := nf.GetForm().(basictypes.All); ok {
-			res := realSkolemize(form, tmp.GetForm(), tmp.GetVarList()[0], terms)
+			res := RealSkolemize(form, tmp.GetForm(), tmp.GetVarList()[0], terms)
 			internalMetas := res.GetInternalMetas()
 			if len(tmp.GetVarList()) > 1 {
 				res = basictypes.MakerAll(tmp.GetVarList()[1:], res).SetInternalMetas(internalMetas)
@@ -76,7 +76,7 @@ func Skolemize(fnt basictypes.FormAndTerms, branchMetas *basictypes.MetaList) ba
 		}
 	// 2 - exists F1
 	case basictypes.Ex:
-		res := realSkolemize(form, nf.GetForm(), nf.GetVarList()[0], terms)
+		res := RealSkolemize(form, nf.GetForm(), nf.GetVarList()[0], terms)
 		if len(nf.GetVarList()) > 1 {
 			internalMetas := res.GetInternalMetas()
 			res = basictypes.MakerEx(nf.GetVarList()[1:], res).SetInternalMetas(internalMetas)
@@ -94,7 +94,7 @@ func Skolemize(fnt basictypes.FormAndTerms, branchMetas *basictypes.MetaList) ba
  * delta+ : only relevant meta : getmeta + meta replaced
  * delta++ : same function name (need classical skolem for meta)
  **/
-func realSkolemize(sourceForm, fnt basictypes.Form, v basictypes.Var, terms *basictypes.TermList) basictypes.Form {
+func RealSkolemize(sourceForm, fnt basictypes.Form, v basictypes.Var, terms *basictypes.TermList) basictypes.Form {
 	// Replace each variable by the skolemized term.
 	symbol := basictypes.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex()))
 	fnt = applySelectedSkolemisation(skoArgs{sourceFormula: sourceForm, sourceVar: v, symbol: symbol, formula: fnt, terms: terms})

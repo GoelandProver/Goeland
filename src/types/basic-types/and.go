@@ -169,3 +169,7 @@ func (a And) GetSubFormulasRecur() *FormList {
 func (a And) GetChildFormulas() *FormList {
 	return a.FormList
 }
+
+func (a And) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return MakeAnd(a.GetIndex(), a.FormList.ReplaceMetaByTerm(meta, term))
+}

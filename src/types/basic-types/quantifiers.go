@@ -183,3 +183,8 @@ func (q quantifier) setInternalMetas(m *MetaList) quantifier {
 	q.MetaList = m
 	return q
 }
+
+func (q quantifier) replaceMetaByTerm(meta Meta, term Term) quantifier {
+	newForm := q.GetForm().ReplaceMetaByTerm(meta, term)
+	return makeQuantifier(q.GetIndex(), q.GetVarList(), newForm, newForm.GetInternalMetas().Copy(), q.symbol)
+}

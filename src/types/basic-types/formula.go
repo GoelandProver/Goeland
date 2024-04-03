@@ -60,6 +60,7 @@ type Form interface {
 	ReplaceTermByTerm(old Term, new Term) (Form, bool)
 	RenameVariables() Form
 	SubstituteVarByMeta(old Var, new Meta) Form
+	ReplaceMetaByTerm(meta Meta, term Term) Form
 }
 
 /* Replace a term by a term inside a function */

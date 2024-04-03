@@ -150,3 +150,7 @@ func (o Or) GetSubFormulasRecur() *FormList {
 func (o Or) GetChildFormulas() *FormList {
 	return o.FormList
 }
+
+func (o Or) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return MakeOr(o.GetIndex(), o.FormList.ReplaceMetaByTerm(meta, term))
+}

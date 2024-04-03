@@ -116,6 +116,10 @@ func (ifl *IntFormAndTermsList) GetForms() *basictypes.FormList {
 	return res
 }
 
+func (ifl *IntFormAndTermsList) SubstituteBy(metas *basictypes.MetaList, terms *basictypes.TermList) IntFormAndTermsList {
+	return MakeIntFormAndTermsList(ifl.i, ifl.fl.SubstituteBy(metas, terms))
+}
+
 func GetFormulasFromIntFormAndTermList(iftl []IntFormAndTermsList) *basictypes.FormList {
 	res := basictypes.NewFormList()
 	for _, v := range iftl {

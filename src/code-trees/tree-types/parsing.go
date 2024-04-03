@@ -104,6 +104,10 @@ func (t TermForm) GetSubTerms() *basictypes.TermList {
 	return t.GetTerm().GetSubTerms()
 }
 
+func (t TermForm) ReplaceMetaByTerm(meta basictypes.Meta, term basictypes.Term) basictypes.Form {
+	return t
+}
+
 func MakerTermForm(t basictypes.Term) TermForm {
 	return makeTermForm(basictypes.MakerIndexFormula(), t.Copy())
 }

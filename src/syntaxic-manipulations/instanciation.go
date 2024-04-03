@@ -53,16 +53,16 @@ func Instantiate(fnt basictypes.FormAndTerms, index int) (basictypes.FormAndTerm
 	switch f := fnt.GetForm().(type) {
 	case basictypes.Not:
 		if ex, isEx := f.GetForm().(basictypes.Ex); isEx {
-			fnt, meta = realInstantiate(ex.GetVarList(), index, is_exists, ex.GetForm(), terms)
+			fnt, meta = RealInstantiate(ex.GetVarList(), index, is_exists, ex.GetForm(), terms)
 		}
 	case basictypes.All:
-		fnt, meta = realInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
+		fnt, meta = RealInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
 	return fnt, basictypes.NewMetaList(meta)
 }
 
-func realInstantiate(varList []basictypes.Var, index, status int, subForm basictypes.Form, terms *basictypes.TermList) (basictypes.FormAndTerms, basictypes.Meta) {
+func RealInstantiate(varList []basictypes.Var, index, status int, subForm basictypes.Form, terms *basictypes.TermList) (basictypes.FormAndTerms, basictypes.Meta) {
 	v := varList[0]
 	meta := basictypes.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(typing.TypeApp))
 	subForm = subForm.SubstituteVarByMeta(v, meta)

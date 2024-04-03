@@ -143,3 +143,7 @@ func (i Imp) GetSubFormulasRecur() *FormList {
 func (i Imp) GetChildFormulas() *FormList {
 	return NewFormList(i.f1, i.f2)
 }
+
+func (i Imp) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return MakeImp(i.GetIndex(), i.f1.ReplaceMetaByTerm(meta, term), i.f2.ReplaceMetaByTerm(meta, term))
+}

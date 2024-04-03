@@ -90,3 +90,7 @@ func (a All) SetInternalMetas(m *MetaList) Form {
 func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
 	return All{a.quantifier.substituteVarByMeta(old, new)}
 }
+
+func (a All) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return All{a.quantifier.replaceMetaByTerm(meta, term)}
+}

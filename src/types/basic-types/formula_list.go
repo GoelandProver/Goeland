@@ -103,3 +103,11 @@ func (fl *FormList) Flatten() *FormList {
 
 	return result
 }
+
+func (fl *FormList) ReplaceMetaByTerm(meta Meta, term Term) *FormList {
+	for i, f := range fl.Slice() {
+		fl.Set(i, f.ReplaceMetaByTerm(meta, term))
+	}
+
+	return fl
+}

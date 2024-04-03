@@ -141,3 +141,7 @@ func (e Equ) GetSubFormulasRecur() *FormList {
 func (e Equ) GetChildFormulas() *FormList {
 	return NewFormList(e.f1, e.f2)
 }
+
+func (e Equ) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return MakeEqu(e.GetIndex(), e.f1.ReplaceMetaByTerm(meta, term), e.f2.ReplaceMetaByTerm(meta, term))
+}

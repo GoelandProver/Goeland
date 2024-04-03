@@ -43,17 +43,12 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
-	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 type SearchAlgorithm interface {
-	search(basictypes.Form, int) bool
-	ProofSearch(uint64, complextypes.State, Communication, complextypes.SubstAndForm, int, int, []int)
-	DoEndManageBeta(uint64, complextypes.State, Communication, []Communication, int, int, []int, []int)
-	manageRewriteRules(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)
-	setApplyRules(func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int))
+	Search(basictypes.Form, int) bool
+	SetApplyRules(func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int))
 	ManageClosureRule(uint64, *complextypes.State, Communication, []treetypes.Substitutions, basictypes.FormAndTerms, int, int) (bool, []complextypes.SubstAndForm)
-	manageResult(c Communication) (complextypes.Unifier, []proof.ProofStruct, bool)
 }
 
 var UsedSearch SearchAlgorithm
@@ -69,7 +64,7 @@ func SetSearchAlgorithm(algo SearchAlgorithm) {
 }
 
 func SetApplyRules(function func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int)) {
-	UsedSearch.setApplyRules(function)
+	UsedSearch.SetApplyRules(function)
 }
 
 /* Begin the proof search */
@@ -77,7 +72,7 @@ func Search(formula basictypes.Form, bound int) {
 	global.PrintDebug("MAIN", "Start search")
 	global.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", formula.ToString()))
 
-	res := UsedSearch.search(formula, bound)
+	res := UsedSearch.Search(formula, bound)
 
 	PrintSearchResult(res)
 }

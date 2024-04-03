@@ -49,7 +49,7 @@ func ApplyRulesAssisted(fatherId uint64, state complextypes.State, c search.Comm
 
 	thisStatus := makeStatusElement(ch, &state)
 	addStatusElement(thisStatus)
-	Counter.decrease()
+	assistedCounter.Decrement()
 
 	choice := thisStatus.receiveChoice()
 	chosenRule, chosenFormIndex, chosenSubstitute, chosenReintro := choice.getRule(), choice.getForm(), choice.getSubst(), choice.getReintro()
@@ -80,7 +80,7 @@ func applyAtomicRule(state complextypes.State, fatherId uint64, c search.Communi
 
 		clos_res_after_apply_subst, subst_after_apply_subst := search.ApplyClosureRules(f.GetForm(), &state)
 		if clos_res_after_apply_subst {
-			boolSubsts, resSubsts := search.UsedSearch.ManageClosureRule(fatherId, &state, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), nodeId, originalNodeId)
+			boolSubsts, resSubsts := searchAlgo.ManageClosureRule(fatherId, &state, c, treetypes.CopySubstList(subst_after_apply_subst), f.Copy(), nodeId, originalNodeId)
 			if !boolSubsts {
 				finalBool = false
 			}
@@ -91,8 +91,8 @@ func applyAtomicRule(state complextypes.State, fatherId uint64, c search.Communi
 
 	if !foundOne {
 		fmt.Println("No valid substitution found. This state will be copied and put back in the list.")
-		Counter.Increase()
-		go search.UsedSearch.ProofSearch(fatherId, state, c, substitut, nodeId, originalNodeId, metaToReintroduce)
+		assistedCounter.Increment()
+		go searchAlgo.ProofSearch(fatherId, state, c, substitut, nodeId, originalNodeId, metaToReintroduce)
 	} else {
 		listSubsts2 := []complextypes.SubstAndForm{}
 		for _, elem := range listSubsts {
@@ -126,8 +126,8 @@ func applyAlphaRule(state complextypes.State, indiceForm int, fatherId uint64, c
 	state.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, result_forms)})
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
-	Counter.Increase()
-	go search.UsedSearch.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
+	assistedCounter.Increment()
+	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
 }
 
 func applyBetaRule(state complextypes.State, substitut complextypes.SubstAndForm, c search.Communication, fatherId uint64, nodeId int, originalNodeId int, metaToReintroduce []int) {
@@ -149,7 +149,7 @@ func applyBetaRule(state complextypes.State, substitut complextypes.SubstAndForm
 	var chan_tab []search.Communication
 
 	for range int_form_list_list {
-		Counter.Increase()
+		assistedCounter.Increment()
 	}
 
 	for _, fl := range int_form_list_list {
@@ -161,9 +161,9 @@ func applyBetaRule(state complextypes.State, substitut complextypes.SubstAndForm
 		if global.IsDestructive() {
 			c_child := search.MakeCommunication(make(chan bool), make(chan search.Result))
 			chan_tab = append(chan_tab, c_child)
-			go search.UsedSearch.ProofSearch(global.GetGID(), st_copy, c_child, substitut, fl.GetI(), fl.GetI(), []int{})
+			go searchAlgo.ProofSearch(global.GetGID(), st_copy, c_child, substitut, fl.GetI(), fl.GetI(), []int{})
 		} else {
-			go search.UsedSearch.ProofSearch(global.GetGID(), st_copy, c, substitut, fl.GetI(), fl.GetI(), []int{})
+			go searchAlgo.ProofSearch(global.GetGID(), st_copy, c, substitut, fl.GetI(), fl.GetI(), []int{})
 		}
 
 		global.IncrGoRoutine(1)
@@ -171,7 +171,7 @@ func applyBetaRule(state complextypes.State, substitut complextypes.SubstAndForm
 
 	}
 
-	search.UsedSearch.DoEndManageBeta(fatherId, state, c, chan_tab, nodeId, originalNodeId, child_id_list, metaToReintroduce)
+	searchAlgo.DoEndManageBeta(fatherId, state, c, chan_tab, nodeId, originalNodeId, child_id_list, metaToReintroduce)
 }
 
 func applyDeltaRule(state complextypes.State, indiceForm int, fatherId uint64, c search.Communication, substitut complextypes.SubstAndForm, originalNodeId int) {
@@ -188,8 +188,8 @@ func applyDeltaRule(state complextypes.State, indiceForm int, fatherId uint64, c
 	state.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, result_forms)})
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
-	Counter.Increase()
-	go search.UsedSearch.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
+	assistedCounter.Increment()
+	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
 }
 
 func applyGammaRule(state complextypes.State, indiceForm int, fatherId uint64, c search.Communication, substitut complextypes.SubstAndForm, originalNodeId int) {
@@ -216,8 +216,8 @@ func applyGammaRule(state complextypes.State, indiceForm int, fatherId uint64, c
 	state.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(id_children, new_lf)})
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
-	Counter.Increase()
-	go search.UsedSearch.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
+	assistedCounter.Decrement()
+	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
 }
 
 func applyReintroductionRule(state complextypes.State, fatherId uint64, c search.Communication, originalNodeId int, metaToReintroduce []int, chosenReintro int) {
@@ -237,6 +237,6 @@ func applyReintroductionRule(state complextypes.State, fatherId uint64, c search
 	state.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(childId, basictypes.MakeSingleElementFormAndTermList(reslf))})
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
-	Counter.Increase()
-	go search.UsedSearch.ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, metaToReintroduce)
+	assistedCounter.Increment()
+	go searchAlgo.ProofSearch(fatherId, state, c, complextypes.MakeEmptySubstAndForm(), childId, originalNodeId, metaToReintroduce)
 }

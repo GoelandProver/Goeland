@@ -168,6 +168,16 @@ func (fl FormAndTermsList) ExtractForms() *FormList {
 	return res
 }
 
+func (fl FormAndTermsList) SubstituteBy(metas *MetaList, terms *TermList) FormAndTermsList {
+	result := FormAndTermsList{}
+
+	for _, fat := range fl {
+		result = append(result, fat.SubstituteBy(metas, terms))
+	}
+
+	return result
+}
+
 /*** Functions ***/
 
 /** Makers **/

@@ -85,6 +85,19 @@ var lockSubstAssisted sync.Mutex
 var substAssisted = complextypes.MakeEmptySubstAndForm()
 var hasAppliedSubsts = false
 
+var assistedCounter global.SyncCounter
+var searchAlgo search.BasicSearchAlgorithm
+
+func InitAssisted() {
+	assistedCounter = *global.NewEmptySyncCounter()
+	assistedCounter.Increment()
+	if typed, ok := search.UsedSearch.(search.BasicSearchAlgorithm); ok {
+		searchAlgo = typed
+	} else {
+		global.PrintError("ASS", "Search algorithm not supported by the Assisted plugin")
+	}
+}
+
 func applySubstsAssisted(substi complextypes.SubstAndForm) {
 	lockSubstAssisted.Lock()
 	defer lockSubstAssisted.Unlock()

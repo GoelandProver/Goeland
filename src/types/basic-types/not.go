@@ -126,6 +126,10 @@ func (n Not) RenameVariables() Form {
 	return MakeNot(n.GetIndex(), n.f.RenameVariables())
 }
 
+func (n Not) ReplaceMetaByTerm(meta Meta, term Term) Form {
+	return MakeNot(n.GetIndex(), n.f.ReplaceMetaByTerm(meta, term))
+}
+
 /** - Other Methods **/
 
 func (n Not) GetForm() Form {

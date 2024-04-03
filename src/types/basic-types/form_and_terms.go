@@ -79,3 +79,14 @@ func (fat FormAndTerms) Equals(fat2 FormAndTerms) bool {
 func (fat FormAndTerms) ToString() string {
 	return fat.GetForm().ToMappedString(DefaultMapString, global.GetTypeProof())
 }
+
+func (fat FormAndTerms) SubstituteBy(metas *MetaList, terms *TermList) FormAndTerms {
+	result := fat.Copy()
+
+	for i := range metas.Slice() {
+		result.form = result.form.ReplaceMetaByTerm(metas.Get(i), terms.Get(i))
+		result.Terms = result.Terms.replaceOccurrence(metas.Get(i), terms.Get(i))
+	}
+
+	return result
+}
