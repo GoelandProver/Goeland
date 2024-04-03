@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************************/
-/* equality_rules_apply.go */
-/***************************/
+
 /**
 * This file contains the functions to apply a rule on an equality problem struct
 **/
@@ -42,13 +40,14 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /* apply a rule */
 func applyRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64) {
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Child of %v", father_id))
-	global.PrintDebug("EQ-AR", fmt.Sprintf("EQ before applying rule %v", ep.toString()))
+	global.PrintDebug("EQ-AR", fmt.Sprintf("EQ before applying rule %v", ep.ToString()))
 	global.PrintDebug("EQ-AR", fmt.Sprintf("Apply rule %v", rs.toString()))
 	switch rs.getRule() {
 	case LEFT:
@@ -67,14 +66,14 @@ func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP,
 
 	if is_consistant_with_lpo {
 		global.PrintDebug("ALR", fmt.Sprintf("New term : %v", new_term.ToString()))
-		new_eq_list := ep.getE()
+		new_eq_list := ep.GetE()
 		if rs.getIsSModified() {
-			new_eq_list[rs.getIndexEQList()] = makeTermPair(new_term.Copy(), rs.getT())
+			new_eq_list[rs.getIndexEQList()] = eqStruct.MakeTermPair(new_term.Copy(), rs.getT())
 		} else {
-			new_eq_list[rs.getIndexEQList()] = makeTermPair(rs.getS(), new_term.Copy())
+			new_eq_list[rs.getIndexEQList()] = eqStruct.MakeTermPair(rs.getS(), new_term.Copy())
 		}
-		global.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.toString()))
-		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.getS(), ep.getT(), new_cl), father_chan, rs.getIndexEQList(), LEFT, father_id)
+		global.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.ToString()))
+		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.GetS(), ep.GetT(), new_cl), father_chan, rs.getIndexEQList(), LEFT, father_id)
 	} else {
 		global.PrintDebug("ALR", "Not consistant with LPO, send nil")
 		father_chan <- makeEmptyAnswerEP()
@@ -91,9 +90,9 @@ func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP
 	if is_consistant_with_lpo {
 		global.PrintDebug("ARR", fmt.Sprintf("New term : %v", new_term.ToString()))
 		if rs.getIsSModified() {
-			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), new_term.Copy(), rs.getT(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().GetE(), new_term.Copy(), rs.getT(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
 		} else {
-			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().getE(), rs.getS(), new_term.Copy(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
+			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().GetE(), rs.getS(), new_term.Copy(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
 		}
 	} else {
 		global.PrintDebug("ARR", "Not consistant with LPO, send nil")
@@ -115,14 +114,15 @@ func applyEQRule(l, r, sub_term_of_s, s, t basictypes.Term, cs ConstraintStruct)
 	new_s := s.Copy().ReplaceSubTermBy(sub_term_of_s, r)
 	global.PrintDebug("AEQR", fmt.Sprintf("s = %v, new_s = %v", s.ToString(), new_s.ToString()))
 	constraints_list := cs.copy()
-	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, makeTermPair(r, l))) {
-		return false, nil, makeEmptyConstaintStruct()
+
+	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, eqStruct.MakeTermPair(r, l))) {
+		return false, nil, makeEmptyConstraintStruct()
 	}
-	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, makeTermPair(t, s))) {
-		return false, nil, makeEmptyConstaintStruct()
+	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, eqStruct.MakeTermPair(t, s))) {
+		return false, nil, makeEmptyConstraintStruct()
 	}
-	if !constraints_list.appendIfConsistant(MakeConstraint(EQ, makeTermPair(l, sub_term_of_s))) {
-		return false, nil, makeEmptyConstaintStruct()
+	if !constraints_list.appendIfConsistant(MakeConstraint(EQ, eqStruct.MakeTermPair(l, sub_term_of_s))) {
+		return false, nil, makeEmptyConstraintStruct()
 	}
 	return true, new_s, constraints_list
 }

@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**************************/
-/*  manage_apps_types.go  */
-/**************************/
-
 package polymorphism
 
 import (

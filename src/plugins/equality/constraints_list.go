@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***********************/
-/* constraints_list.go */
-/***********************/
+
 /**
 * This file contains the type definition of the contraint list.
 **/
@@ -40,7 +38,6 @@ package equality
 
 import (
 	"fmt"
-	"sort"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
@@ -55,24 +52,7 @@ func (cl ConstraintList) Swap(i, j int) { cl[i], cl[j] = cl[j], cl[i] }
 func (cl ConstraintList) Less(i, j int) bool {
 	return (cl[i].toString() < cl[j].toString())
 }
-func (l1 ConstraintList) equals(l2 ConstraintList) bool {
-	if len(l1) != len(l2) {
-		return false
-	} else {
-		l1_sorted := l1.Copy()
-		sort.Sort(l1_sorted)
 
-		l2_sorted := l2.Copy()
-		sort.Sort(l2_sorted)
-
-		for i := range l1_sorted {
-			if !l1_sorted[i].equals(l2_sorted[i]) {
-				return false
-			}
-		}
-	}
-	return true
-}
 func (cl ConstraintList) toString() string {
 	res := "{"
 	for i, c := range cl {
@@ -129,26 +109,27 @@ func (cl ConstraintList) isConsistantWithSubst(s treetypes.Substitutions) bool {
 * check intersection is empty
 **/
 func (cl ConstraintList) checkConstraintList() bool {
-	map_constraintes := make(map[string][]basictypes.TermList)
+	map_constraintes := make(map[string][]*basictypes.TermList)
+
 	for _, c := range cl {
 		global.PrintDebug("CCL", fmt.Sprintf("Constraint : %v", c.toString()))
 		switch c.getCType() {
 		case PREC:
-			if !appendToMapAndCheck(c.getTP().getT1().ToString(), c.getTP().getT2(), &map_constraintes, 1, 2) {
+			if !appendToMapAndCheck(c.getTP().GetT1().ToString(), c.getTP().GetT2(), &map_constraintes, 1, 2) {
 				return false
 			}
-			if !appendToMapAndCheck(c.getTP().getT2().ToString(), c.getTP().getT1(), &map_constraintes, 2, 2) {
+			if !appendToMapAndCheck(c.getTP().GetT2().ToString(), c.getTP().GetT1(), &map_constraintes, 2, 2) {
 				return false
 			}
 		case EQ:
-			if !appendToMapAndCheck(c.getTP().getT1().ToString(), c.getTP().getT2(), &map_constraintes, 0, 2) {
+			if !appendToMapAndCheck(c.getTP().GetT1().ToString(), c.getTP().GetT2(), &map_constraintes, 0, 2) {
 				return false
 			}
-			if !appendToMapAndCheck(c.getTP().getT2().ToString(), c.getTP().getT1(), &map_constraintes, 0, 2) {
+			if !appendToMapAndCheck(c.getTP().GetT2().ToString(), c.getTP().GetT1(), &map_constraintes, 0, 2) {
 				return false
 			}
 		}
-
 	}
+
 	return true
 }

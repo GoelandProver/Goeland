@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**********/
-/* and.go */
-/**********/
-
 /**
 * This file implements a conjunction of formulas
 **/
@@ -48,25 +44,41 @@ import (
 type And struct {
 	*MappedString
 	index int
-	FormList
-	MetaList
+	*FormList
+	*MetaList
 }
 
 /** Constructors **/
 
-func MakeAndSimple(i int, forms FormList, metas MetaList) And {
+func MakeAndSimple(i int, forms *FormList, metas *MetaList) And {
 	fms := &MappedString{}
 	and := And{fms, i, forms, metas}
-	fms.MappableString = and
+	fms.MappableString = &and
 	return and
 }
 
-func MakeAnd(i int, forms FormList) And {
-	return MakeAndSimple(i, forms, make(MetaList, 0))
+func MakeAndSimpleBinary(i int, forms *FormList, metas *MetaList) And {
+	switch forms.Len() {
+	case 0, 1, 2:
+		return MakeAndSimple(i, forms, metas)
+	default:
+		return MakeAndSimple(
+			i,
+			NewFormList([]Form{forms.Get(0), MakerAnd(NewFormList(forms.GetElements(1, forms.Len())...), true)}...),
+			metas)
+	}
 }
 
-func MakerAnd(forms FormList) And {
-	return MakeAnd(MakerIndexFormula(), forms)
+func MakeAnd(i int, forms *FormList, binary ...bool) And {
+	if binary != nil {
+		return MakeAndSimpleBinary(i, forms, NewMetaList())
+	} else {
+		return MakeAndSimple(i, forms, NewMetaList())
+	}
+}
+
+func MakerAnd(forms *FormList, binary ...bool) And {
+	return MakeAnd(MakerIndexFormula(), forms, binary...)
 }
 
 /** Methods **/
@@ -77,7 +89,7 @@ func (a And) GetIndex() int {
 	return a.index
 }
 
-func (a And) GetMetas() MetaList {
+func (a And) GetMetas() *MetaList {
 	return metasUnion(a.FormList)
 }
 
@@ -85,17 +97,22 @@ func (a And) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (a And) GetSubTerms() TermList {
-	res := TermList{}
-	for _, tl := range a.FormList {
-		res = res.MergeTermList(tl.GetSubTerms())
+func (a And) GetSubTerms() *TermList {
+	res := NewTermList()
+
+	for _, tl := range a.FormList.Slice() {
+		res.AppendIfNotContains(tl.GetSubTerms().Slice()...)
 	}
+
 	return res
 }
 
-func (a And) Equals(f any) bool {
-	oth, isAnd := f.(And)
-	return isAnd && oth.FormList.Equals(a.FormList)
+func (a And) Equals(other any) bool {
+	if typed, ok := other.(And); ok {
+		return typed.FormList.Equals(a.FormList)
+	}
+
+	return false
 }
 
 func (a And) Copy() Form {
@@ -122,8 +139,8 @@ func (a And) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeAnd(a.GetIndex(), replaceList(a.FormList, varList, index))
 }
 
-func (a And) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	varList, res := replaceVarInFormList(a.FormList, old, new)
+func (a And) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	varList, res := replaceTermInFormList(a.FormList, old, new)
 	return MakeAndSimple(a.index, varList, a.MetaList), res
 }
 
@@ -131,30 +148,25 @@ func (a And) RenameVariables() Form {
 	return MakeAnd(a.GetIndex(), renameFormList(a.FormList))
 }
 
-func (a And) CleanFormula() Form {
-	a.CleanFormList()
-	return a
-}
-
 func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, a.FormList, a.MetaList)
 	return MakeAndSimple(a.index, newFormList, newMetas)
 }
 
-func (a And) GetInternalMetas() MetaList {
+func (a And) GetInternalMetas() *MetaList {
 	return a.MetaList
 }
 
-func (a And) SetInternalMetas(m MetaList) Form {
+func (a And) SetInternalMetas(m *MetaList) Form {
 	a.MetaList = m
 	return a
 }
 
-func (a And) GetSubFormulasRecur() FormList {
+func (a And) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(a)
 }
 
-func (a And) GetChildFormulas() FormList {
+func (a And) GetChildFormulas() *FormList {
 	return a.FormList
 }
 

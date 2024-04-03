@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************/
-/* formula.go */
-/***************/
+
 /**
 * This file contains functions and types which describe the formula's data
   structure
@@ -47,8 +45,8 @@ import (
 type DataStructure interface {
 	Print()
 	IsEmpty() bool
-	MakeDataStruct(basictypes.FormList, bool) DataStructure
-	InsertFormulaListToDataStructure(basictypes.FormList) DataStructure
+	MakeDataStruct(*basictypes.FormList, bool) DataStructure
+	InsertFormulaListToDataStructure(*basictypes.FormList) DataStructure
 	Unify(basictypes.Form) (bool, []treetypes.MatchingSubstitutions)
 	Copy() DataStructure
 }

@@ -188,14 +188,14 @@ func (s *Sub) AddOtherSub(other *Sub) {
 	}
 }
 
-func (s *Sub) GetAsMetasAndTerms() (metas basictypes.MetaList, terms basictypes.TermList) {
+func (s *Sub) GetAsMetasAndTerms() (metas *basictypes.MetaList, terms *basictypes.TermList) {
 	for _, ss := range s.everySub {
-		metas = append(metas, *ss.getMeta())
+		metas.Append(*ss.getMeta())
 
 		if ss.isAnyTerm() {
-			terms = append(terms, *ss.getMeta())
+			terms.Append(*ss.getMeta())
 		} else {
-			terms = append(terms, ss.getTerm())
+			terms.Append(ss.getTerm())
 		}
 	}
 
@@ -230,15 +230,15 @@ func getCompatibleBetween(first SubList, second SubList) SubList {
 	return compatibles
 }
 
-func addMissingMetas(compatibles SubList, metas basictypes.MetaList) SubList {
-	if len(metas) == 0 || len(compatibles) == 0 {
+func addMissingMetas(compatibles SubList, metas *basictypes.MetaList) SubList {
+	if metas.Len() == 0 || len(compatibles) == 0 {
 		return compatibles
 	}
 
 	for _, subs := range compatibles {
 		metasInSubs, _ := subs.GetAsMetasAndTerms()
-		for _, meta := range metasInSubs {
-			metas = metas.AppendIfNotContains(meta)
+		for _, meta := range metasInSubs.Slice() {
+			metas.AppendIfNotContains(meta)
 		}
 	}
 
@@ -247,7 +247,7 @@ func addMissingMetas(compatibles SubList, metas basictypes.MetaList) SubList {
 	for _, subs := range compatibles {
 		newSubs := subs.Copy()
 
-		for _, meta := range metas {
+		for _, meta := range metas.Slice() {
 			if ok, _ := subs.containsMeta(&meta); !ok {
 				newSubs.AddMetaAndTerm(meta, anyTerm)
 			}

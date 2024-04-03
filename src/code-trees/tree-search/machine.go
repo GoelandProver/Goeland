@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/**************/
-/* Machine.go */
-/**************/
+
 /**
 * This file provides the necessary structures to operate the unification algorithm.
 **/
@@ -65,7 +63,7 @@ type Machine struct {
 	hasPoped      bool
 	post          []treetypes.IntPair
 	subst         []treetypes.SubstPair
-	terms         basictypes.TermList
+	terms         *basictypes.TermList
 	meta          treetypes.Substitutions
 	failure       []treetypes.MatchingSubstitutions
 	topLevelTot   int
@@ -82,7 +80,7 @@ func makeMachine() Machine {
 		hasPoped:      false,
 		post:          []treetypes.IntPair{},
 		subst:         []treetypes.SubstPair{},
-		terms:         basictypes.TermList{},
+		terms:         basictypes.NewTermList(),
 		meta:          treetypes.Substitutions{},
 		failure:       []treetypes.MatchingSubstitutions{},
 		topLevelTot:   0,
@@ -100,7 +98,7 @@ func errorOccured(s Status) bool {
 /*** CURSOR ***/
 /* Get the Meta object of the current formulae term. */
 func (m *Machine) getCurrentMeta() basictypes.Meta {
-	return m.terms[m.q].Copy().ToMeta()
+	return m.terms.Get(m.q).Copy().ToMeta()
 }
 
 /* While term is a metavariable, replace it by its substitution in the map of substitutions (meta). */
@@ -149,7 +147,7 @@ func (m *Machine) unlockMachine() {
 
 /* Locks the machine to the given count of nested instructions block if the current term is a metavariable. */
 func (m *Machine) lockIfMeta(count int) {
-	if m.terms[m.q].IsMeta() && !m.isLocked() {
+	if m.terms.Get(m.q).IsMeta() && !m.isLocked() {
 		m.beginLock = count
 	}
 }
@@ -158,7 +156,7 @@ func (m *Machine) lockIfMeta(count int) {
 func (m *Machine) lockedRight() Status {
 	if m.hasPushed && m.hasPoped {
 		m.hasPoped, m.hasPushed = false, false
-		if m.q < len(m.terms)-1 {
+		if m.q < m.terms.Len()-1 {
 			if errorOccured(m.right()) {
 				return Status(ERROR)
 			}

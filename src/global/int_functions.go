@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*************/
-/* helper.go */
-/*************/
+
 /**
 * This file contains useful functions for int
 **/
@@ -42,9 +40,12 @@ import (
 	"strconv"
 )
 
-func IntListToString(l []int) string {
+func IntListToString(l []int, prefix ...string) string {
 	res := ""
 	for index, i := range l {
+		if len(prefix) == 1 {
+			res += prefix[0]
+		}
 		res += strconv.Itoa(i)
 		if index < len(l)-1 {
 			res += ", "

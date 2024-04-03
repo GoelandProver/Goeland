@@ -41,22 +41,17 @@ else:
     folder = sys.argv[1]
 
     for parent, dirnames, filenames in os.walk(folder): 
-        print(filenames)
         for fn in filenames:
             if fn.split(".")[-1].lower() == "go":
                 with open(os.path.join(parent, fn), 'r+') as f:
                     content = f.read()
                     # If the file already contains a license, replace it
                     if re.search(r"Copyright(.|\n)*license and that you accept its terms\.", content):
-                        print("License already found, let's replace it!")
                         f.close()
                         f = open(os.path.join(parent, fn), 'w').close()
                         f = open(os.path.join(parent, fn), 'r+')
                         f.write(re.sub(r"Copyright(.|\n)*license and that you accept its terms\.", license, content))
                     # Else, add it
                     else:
-                        print("No license here, let's add it!")
                         f.seek(0, 0)
                         f.write("/**\n* "+license + '\n**/\n' + content)
-            else:
-                print("Not a .go file")

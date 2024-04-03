@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***********************/
-/* equality_problem.go */
-/***********************/
+
 /**
 * This file contains the type definition for equality reasonning.
 **/
@@ -44,6 +42,7 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
@@ -51,7 +50,7 @@ import (
 
 type EqualityProblem struct {
 	E_tree datastruct.DataStructure
-	E_map  map[string]basictypes.TermList
+	E_map  map[string]*basictypes.TermList
 	E      Equalities
 	s, t   basictypes.Term
 	c      ConstraintStruct
@@ -60,37 +59,41 @@ type EqualityProblem struct {
 func (ep EqualityProblem) getETree() datastruct.DataStructure {
 	return ep.E_tree.Copy()
 }
-func (ep EqualityProblem) getEMap() map[string]basictypes.TermList {
-	map_res := make(map[string]basictypes.TermList)
-	for k, v := range ep.E_map {
-		map_res[k] = v.Copy()
-	}
-	return map_res
+func (ep EqualityProblem) getEMap() map[string]*basictypes.TermList {
+	return ep.E_map
 }
-func (ep EqualityProblem) getE() Equalities {
+func (ep EqualityProblem) GetE() Equalities {
 	return ep.E.copy()
 }
-func (ep EqualityProblem) getS() basictypes.Term {
+func (ep EqualityProblem) GetS() basictypes.Term {
 	return ep.s.Copy()
 }
-func (ep EqualityProblem) getT() basictypes.Term {
+func (ep EqualityProblem) GetT() basictypes.Term {
 	return ep.t.Copy()
 }
 func (ep EqualityProblem) getC() ConstraintStruct {
 	return ep.c.copy()
 }
 func (ep EqualityProblem) copy() EqualityProblem {
-	return makeEqualityProblem(ep.getE(), ep.getS(), ep.getT(), ep.getC())
+	return makeEqualityProblem(ep.GetE(), ep.GetS(), ep.GetT(), ep.getC())
 }
-func (ep EqualityProblem) toString() string {
-	return "<" + ep.getE().toString() + ", " + ep.getS().ToString() + ", " + ep.getT().ToString() + "> • " + ep.getC().toString()
+func (ep EqualityProblem) ToString() string {
+	return "<" + ep.GetE().ToString() + ", " + ep.GetS().ToString() + ", " + ep.GetT().ToString() + "> • " + ep.getC().toString()
+}
+
+func (ep EqualityProblem) AxiomsToTPTPString() string {
+	return ep.GetE().ToTPTPString()
+}
+
+func (ep EqualityProblem) ToTPTPString() string {
+	return ep.GetS().ToMappedString(basictypes.DefaultMapString, false) + " = " + ep.GetT().ToMappedString(basictypes.DefaultMapString, false)
 }
 
 /* Apply a substitution on an equality problem */
 func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityProblem {
-	new_s := ep.getS()
-	new_t := ep.getT()
-	new_equalities := ep.getE()
+	new_s := ep.GetS()
+	new_t := ep.GetT()
+	new_equalities := ep.GetE()
 
 	if !ep.getC().isEmpty() {
 		global.PrintError("EQ-AS", fmt.Sprintf("Constraint not null in applySubstitution : %v", ep.getC().toString()))
@@ -103,11 +106,31 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 		new_equalities = new_equalities.applySubstitution(old_symbol, new_symbol)
 	}
 
-	res := makeEqualityProblem(new_equalities, new_s, new_t, makeEmptyConstaintStruct())
+	res := makeEqualityProblem(new_equalities, new_s, new_t, makeEmptyConstraintStruct())
 	return res
 }
 
+func (ep EqualityProblem) getMetas() *basictypes.MetaList {
+	metas := basictypes.NewMetaList()
+
+	metas.AppendIfNotContains(ep.E.getMetas().Slice()...)
+	metas.AppendIfNotContains(ep.s.GetMetas().Slice()...)
+	metas.AppendIfNotContains(ep.t.GetMetas().Slice()...)
+
+	return metas
+}
+
 /*** Functions ***/
+
+func makeEqualityProblemList(E Equalities, goal []eqStruct.TermPair) EqualityProblemList {
+	epl := makeEmptyEqualityProblemList()
+
+	for _, g := range goal {
+		epl = append(epl, makeEqualityProblem(E, g.GetT1(), g.GetT2(), makeEmptyConstraintStruct()))
+	}
+
+	return epl
+}
 
 func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c ConstraintStruct) EqualityProblem {
 	return EqualityProblem{makeDataStructFromEqualities(E.copy()), makeEQMapFromEqualities(E.copy()), E.copy(), s.Copy(), t.Copy(), c.copy()}
@@ -115,20 +138,32 @@ func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c C
 
 /* Take a list of equalities and build the corresponding code tree */
 func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
-	form_list := basictypes.MakeEmptyFormList()
+	formList := basictypes.NewFormList()
 	for _, e := range eq {
-		form_list = append(form_list, treetypes.MakerTermForm(e.getT1()))
-		form_list = append(form_list, treetypes.MakerTermForm(e.getT2()))
+		formList.Append(treetypes.MakerTermForm(e.GetT1()), treetypes.MakerTermForm(e.GetT2()))
 	}
-	return new(treesearch.Node).MakeDataStruct(form_list.Copy(), true)
+	return treesearch.NewNode().MakeDataStruct(formList.Copy(), true)
 }
 
 /* Take a list of equalities and build the corresponding assocative map */
-func makeEQMapFromEqualities(eq Equalities) map[string]basictypes.TermList {
-	map_res := make(map[string]basictypes.TermList)
+func makeEQMapFromEqualities(eq Equalities) map[string]*basictypes.TermList {
+	map_res := make(map[string]*basictypes.TermList)
+
 	for _, e := range eq {
-		map_res[e.getT1().ToString()] = append(map_res[e.getT1().ToString()], e.getT2())
-		map_res[e.getT2().ToString()] = append(map_res[e.getT2().ToString()], e.getT1())
+		key1 := e.GetT1().ToString()
+		key2 := e.GetT2().ToString()
+
+		if _, found := map_res[key1]; !found {
+			map_res[key1] = basictypes.NewTermList()
+		}
+
+		if _, found := map_res[key2]; !found {
+			map_res[key2] = basictypes.NewTermList()
+		}
+
+		map_res[key1].Append(e.GetT2())
+		map_res[key2].Append(e.GetT1())
 	}
+
 	return map_res
 }

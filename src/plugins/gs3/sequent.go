@@ -1,3 +1,34 @@
+/**
+* Copyright 2022 by the authors (see AUTHORS).
+*
+* Goéland is an automated theorem prover for first order logic.
+*
+* This software is governed by the CeCILL license under French law and
+* abiding by the rules of distribution of free software.  You can  use,
+* modify and/ or redistribute the software under the terms of the CeCILL
+* license as circulated by CEA, CNRS and INRIA at the following URL
+* "http://www.cecill.info".
+*
+* As a counterpart to the access to the source code and  rights to copy,
+* modify and redistribute granted by the license, users are provided only
+* with a limited warranty  and the software's author,  the holder of the
+* economic rights,  and the successive licensors  have only  limited
+* liability.
+*
+* In this respect, the user's attention is drawn to the risks associated
+* with loading,  using,  modifying and/or developing or reproducing the
+* software by the user in light of its specific status of free software,
+* that may mean  that it is complicated to manipulate,  and  that  also
+* therefore means  that it is reserved for developers  and  experienced
+* professionals having in-depth computer knowledge. Users are therefore
+* encouraged to load and test the software's suitability as regards their
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and,  more generally, to use and operate it in the
+* same conditions as regards security.
+*
+* The fact that you are presently reading this means that you have had
+* knowledge of the CeCILL license and that you accept its terms.
+**/
 package gs3
 
 import (
@@ -6,16 +37,16 @@ import (
 	//. "github.com/GoelandProver/Goeland/global"
 
 	"github.com/GoelandProver/Goeland/global"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 type GS3Sequent struct {
-	hypotheses     []btps.Form
+	hypotheses     *basictypes.FormList
 	rule           Rule
 	appliedOn      int
 	rewriteWith    int
-	termGenerated  btps.Term
-	formsGenerated []btps.FormList
+	termGenerated  basictypes.Term
+	formsGenerated []*basictypes.FormList
 	children       []*GS3Sequent
 	proof          GS3Proof
 	nodeId         int
@@ -47,7 +78,7 @@ const (
 
 func MakeNewSequent() *GS3Sequent {
 	seq := new(GS3Sequent)
-	seq.hypotheses = make([]btps.Form, 0)
+	seq.hypotheses = basictypes.NewFormList()
 	seq.children = make([]*GS3Sequent, 0)
 	return seq
 }
@@ -72,8 +103,8 @@ func IsAlphaRule(rule Rule) bool {
 // Public methods
 // ----------------------------------------------------------------------------
 
-func (seq *GS3Sequent) GetTargetForm() btps.Form {
-	return seq.hypotheses[seq.appliedOn]
+func (seq *GS3Sequent) GetTargetForm() basictypes.Form {
+	return seq.hypotheses.Get(seq.appliedOn)
 }
 
 func (seq *GS3Sequent) Child(i int) *GS3Sequent {
@@ -88,12 +119,12 @@ func (seq *GS3Sequent) Rule() Rule {
 	return seq.rule
 }
 
-func (seq *GS3Sequent) GetResultFormulasOfChild(i int) btps.FormList {
+func (seq *GS3Sequent) GetResultFormulasOfChild(i int) *basictypes.FormList {
 	return seq.formsGenerated[i]
 }
 
-func (seq *GS3Sequent) GetResultFormulasOfChildren() []btps.FormList {
-	result := []btps.FormList{}
+func (seq *GS3Sequent) GetResultFormulasOfChildren() []*basictypes.FormList {
+	result := []*basictypes.FormList{}
 
 	for i := range seq.children {
 		result = append(result, seq.formsGenerated[i])
@@ -102,42 +133,65 @@ func (seq *GS3Sequent) GetResultFormulasOfChildren() []btps.FormList {
 	return result
 }
 
-func (seq *GS3Sequent) TermGenerated() btps.Term {
+func (seq *GS3Sequent) TermGenerated() basictypes.Term {
 	return seq.termGenerated
 }
 
 func (seq *GS3Sequent) IsEmpty() bool {
-	return len(seq.hypotheses) == 0
+	return seq.hypotheses.IsEmpty()
 }
 
 func (seq *GS3Sequent) ToString() string {
 	return seq.toStringAux(0)
 }
 
-func (seq *GS3Sequent) GetRewriteWith() btps.Form {
-	return seq.hypotheses[seq.rewriteWith]
+func (seq *GS3Sequent) GetRewriteWith() basictypes.Form {
+	return seq.hypotheses.Get(seq.rewriteWith)
+}
+
+func (seq *GS3Sequent) GetId() int {
+	return seq.nodeId
+}
+
+func (seq *GS3Sequent) SetId(i int) {
+	seq.nodeId = i
+}
+
+func (seq *GS3Sequent) SetFormGenerated(fg []*basictypes.FormList) {
+	seq.formsGenerated = fg
+}
+
+func (seq *GS3Sequent) SetChildren(c []*GS3Sequent) {
+	seq.children = c
+}
+
+func (seq *GS3Sequent) SetTargetForm(f basictypes.Form) {
+	seq.hypotheses.Set(seq.appliedOn, f)
+}
+
+func (seq *GS3Sequent) SetTermGenerated(t basictypes.Term) {
+	seq.termGenerated = t
 }
 
 // ----------------------------------------------------------------------------
 // Private methods & functions
 // ----------------------------------------------------------------------------
 
-func (seq *GS3Sequent) setHypotheses(forms []btps.Form) {
-	seq.hypotheses = make([]btps.Form, len(forms))
-	copy(seq.hypotheses, forms)
+func (seq *GS3Sequent) setHypotheses(forms *basictypes.FormList) {
+	seq.hypotheses = forms.Copy()
 	// If equality reasoning has been used to terminate the proof, then an empty predicate is expected
 	// (see search_destructive, manageClosureRule on eq reasoning).
 	// As such, add an hypothesis with the empty =
-	seq.hypotheses = append(seq.hypotheses, btps.EmptyPredEq)
+	seq.hypotheses.Append(basictypes.EmptyPredEq)
 }
 
 func (seq *GS3Sequent) setAppliedRule(rule Rule) {
 	seq.rule = rule
 }
 
-func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
+func (seq *GS3Sequent) setAppliedOn(hypothesis basictypes.Form) {
 	index := -1
-	for i, h := range seq.hypotheses {
+	for i, h := range seq.hypotheses.Slice() {
 		if hypothesis.Equals(h) {
 			index = i
 			break
@@ -152,7 +206,7 @@ func (seq *GS3Sequent) setAppliedOn(hypothesis btps.Form) {
 	seq.appliedOn = index
 }
 
-func (seq *GS3Sequent) setTermGenerated(t btps.Term) {
+func (seq *GS3Sequent) setTermGenerated(t basictypes.Term) {
 	seq.termGenerated = t
 }
 
@@ -162,7 +216,7 @@ func (seq *GS3Sequent) addChild(oth ...*GS3Sequent) {
 
 func (seq *GS3Sequent) toStringAux(i int) string {
 	identation := strings.Repeat("  ", i)
-	status := seq.ruleToString(seq.rule) + " on " + seq.hypotheses[seq.appliedOn].ToString()
+	status := seq.ruleToString(seq.rule) + " on " + seq.hypotheses.Get(seq.appliedOn).ToString()
 	if seq.IsEmpty() {
 		status = "EMPTY"
 	}
@@ -196,7 +250,7 @@ func (seq *GS3Sequent) ruleToString(rule Rule) string {
 	return mapping[rule]
 }
 
-func (seq *GS3Sequent) setFormsGenerated(forms []btps.FormList) {
+func (seq *GS3Sequent) setFormsGenerated(forms []*basictypes.FormList) {
 	seq.formsGenerated = forms
 }
 
@@ -245,10 +299,10 @@ func ruleToTableauxString(rule Rule) string {
 }
 
 func (seq *GS3Sequent) setRewrittenWith(rewriteId int) {
-	for i, h := range seq.hypotheses {
+	for i, h := range seq.hypotheses.Slice() {
 		endForm := h
-		for global.Is[btps.All](endForm) {
-			endForm = endForm.(btps.All).GetForm()
+		for global.Is[basictypes.All](endForm) {
+			endForm = endForm.(basictypes.All).GetForm()
 		}
 		endForm = getAtomic(endForm)
 		if endForm.GetIndex() == rewriteId {
@@ -260,20 +314,20 @@ func (seq *GS3Sequent) setRewrittenWith(rewriteId int) {
 	panic("Failure: tried to rewrite using a missing hypothesis")
 }
 
-func getAtomic(f btps.Form) btps.Form {
+func getAtomic(f basictypes.Form) basictypes.Form {
 	switch nf := f.(type) {
-	case btps.Imp:
-		if pred, isPred := nf.GetF1().(btps.Pred); isPred {
+	case basictypes.Imp:
+		if pred, isPred := nf.GetF1().(basictypes.Pred); isPred {
 			return pred
 		}
-		if pred, isPred := nf.GetF2().(btps.Pred); isPred {
+		if pred, isPred := nf.GetF2().(basictypes.Pred); isPred {
 			return pred
 		}
-	case btps.Equ:
-		if pred, isPred := nf.GetF1().(btps.Pred); isPred {
+	case basictypes.Equ:
+		if pred, isPred := nf.GetF1().(basictypes.Pred); isPred {
 			return pred
 		}
-		if pred, isPred := nf.GetF2().(btps.Pred); isPred {
+		if pred, isPred := nf.GetF2().(basictypes.Pred); isPred {
 			return pred
 		}
 	}

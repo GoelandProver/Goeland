@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*****************/
-/* coq_output.go */
-/*****************/
-
 /**
 * This file provides a coq output for Goeland's proofs.
 **/
@@ -41,34 +37,21 @@
 package coq
 
 import (
-	"fmt"
-	"log"
-	"os"
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	"github.com/GoelandProver/Goeland/search"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 var contextEnabled bool = false
 
-func PrintCoqOutput(final_proof []proof.ProofStruct, uninstanciatedMeta btps.MetaList) {
-	coqOutput := MakeCoqOutput(final_proof, uninstanciatedMeta)
+var CoqOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeCoqOutput, Name: "Coq", Extension: ".v"}
 
-	if global.GetWriteLogs() {
-		f, err := os.OpenFile("problem_coq.v", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-
-		if err != nil {
-			log.Fatalf("Error opening problem_coq file: %v", err)
-		}
-		defer f.Close()
-		f.WriteString(coqOutput)
-	}
-
-	fmt.Printf("%s", coqOutput)
-}
+// ----------------------------------------------------------------------------
+// Plugin initialisation and main function to call.
 
 // Section: init
 // Functions: MakeCoqOutput
@@ -76,22 +59,17 @@ func PrintCoqOutput(final_proof []proof.ProofStruct, uninstanciatedMeta btps.Met
 // TODO:
 //	* Write the context for TFF problems
 
-func MakeCoqOutput(prf []proof.ProofStruct, meta btps.MetaList) string {
+func MakeCoqOutput(prf []proof.ProofStruct, meta *basictypes.MetaList) string {
 	if len(prf) == 0 {
 		global.PrintError("Coq", "Nothing to output")
 		return ""
-	}
-
-	if global.CompareProofs() {
-		fmt.Println(proof.ProofStructListToText(prf))
-		fmt.Println("% Start Coq proof.")
 	}
 
 	// Transform tableaux's proof in GS3 proof
 	return MakeCoqProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-var MakeCoqProof = func(proof *gs3.GS3Sequent, meta btps.MetaList) string {
+var MakeCoqProof = func(proof *gs3.GS3Sequent, meta *basictypes.MetaList) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
 	proofString := makeCoqProofFromGS3(proof)
 	return contextString + "\n" + proofString
@@ -101,24 +79,24 @@ var MakeCoqProof = func(proof *gs3.GS3Sequent, meta btps.MetaList) string {
 func mapDefault(str string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
 }
-func coqMapConnectors() map[btps.FormulaType]string {
-	return map[btps.FormulaType]string{
-		btps.AndConn:        "/\\",
-		btps.OrConn:         "\\/",
-		btps.ImpConn:        "->",
-		btps.EquConn:        "<->",
-		btps.NotConn:        "~",
-		btps.TopType:        "True",
-		btps.BotType:        "False",
-		btps.AllQuant:       "forall",
-		btps.ExQuant:        "exists",
-		btps.AllTypeQuant:   "forall",
-		btps.QuantVarOpen:   "(",
-		btps.QuantVarClose:  ")",
-		btps.QuantVarSep:    ",",
-		btps.PredEmpty:      "",
-		btps.PredTypeVarSep: ",",
-		btps.TypeVarType:    "Type",
+func coqMapConnectors() map[basictypes.FormulaType]string {
+	return map[basictypes.FormulaType]string{
+		basictypes.AndConn:        "/\\",
+		basictypes.OrConn:         "\\/",
+		basictypes.ImpConn:        "->",
+		basictypes.EquConn:        "<->",
+		basictypes.NotConn:        "~",
+		basictypes.TopType:        "True",
+		basictypes.BotType:        "False",
+		basictypes.AllQuant:       "forall",
+		basictypes.ExQuant:        "exists",
+		basictypes.AllTypeQuant:   "forall",
+		basictypes.QuantVarOpen:   "(",
+		basictypes.QuantVarClose:  ")",
+		basictypes.QuantVarSep:    ",",
+		basictypes.PredEmpty:      "",
+		basictypes.PredTypeVarSep: ",",
+		basictypes.TypeVarType:    "Type",
 	}
 }
 

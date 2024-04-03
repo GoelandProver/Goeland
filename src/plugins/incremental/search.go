@@ -24,7 +24,7 @@ func (is *incrementalSearch) Search(formula basictypes.Form, bound int) bool {
 func (is *incrementalSearch) handleSearchResults() bool {
 	resultFound, finalProof := rootSearchNode.getResult()
 
-	search.PrintProof(resultFound, finalProof, basictypes.MakeEmptyMetaList())
+	search.PrintProof(resultFound, finalProof, basictypes.NewMetaList())
 
 	return resultFound
 }

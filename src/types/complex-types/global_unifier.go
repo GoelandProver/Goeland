@@ -39,7 +39,7 @@ import (
 	ttps "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 type substitutions = ttps.Substitutions
@@ -121,8 +121,8 @@ func (u Unifier) ToString() string {
 	}
 	str := "object Unifier{"
 	for _, unifier := range u.localUnifiers {
-		str += "[ " + strings.Join(Map(unifier.Fst, substsToString), ", ") + " ] --> { " + strings.Join(Map(unifier.Snd, func(_ int, el substitutions) string {
-			return strings.Join(Map(el, substsToString), " ; ")
+		str += "[ " + strings.Join(MapTo(unifier.Fst, substsToString), ", ") + " ] --> { " + strings.Join(MapTo(unifier.Snd, func(_ int, el substitutions) string {
+			return strings.Join(MapTo(el, substsToString), " ; ")
 		}), " ---- ") + " }, "
 	}
 	str += "}"
@@ -195,9 +195,9 @@ func (u *Unifier) Merge(other Unifier) {
 	PrintDebug("GLOBAL UNIFIER", fmt.Sprintf("After: %s", u.ToString()))
 }
 
-func (u *Unifier) PruneMetasInSubsts(metas btps.MetaList) {
+func (u *Unifier) PruneMetasInSubsts(metas *basictypes.MetaList) {
 	for i, unif := range u.localUnifiers {
-		for _, meta := range metas {
+		for _, meta := range metas.Slice() {
 			_, index := unif.Fst.Get(meta)
 			if index != -1 {
 				u.localUnifiers[i].Fst.Remove(index)

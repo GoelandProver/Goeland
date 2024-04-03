@@ -12,7 +12,7 @@ type SubsManager interface {
 	addClosingSubs(SubList, int)
 	sendClosingSubsToFather()
 	getCompatibleSubs() SubList
-	GetApplicableSubs() (basictypes.MetaList, basictypes.TermList)
+	GetApplicableSubs() (*basictypes.MetaList, *basictypes.TermList)
 	tryingAgain()
 	getDoneSubs() SubList
 	addDoneSubs(SubList)
@@ -35,7 +35,7 @@ func getCompatibleSubs(sm SubsManager) SubList {
 	return sm.getCompatibleSubs()
 }
 
-func getApplicableSubs(sm SubsManager) (basictypes.MetaList, basictypes.TermList) {
+func getApplicableSubs(sm SubsManager) (*basictypes.MetaList, *basictypes.TermList) {
 	return sm.GetApplicableSubs()
 }
 
@@ -88,7 +88,7 @@ func (ssm *SimpleSubsManager) getCompatibleSubs() SubList {
 	return compatibleSubs
 }
 
-func (ssm *SimpleSubsManager) GetApplicableSubs() (ml basictypes.MetaList, tl basictypes.TermList) {
+func (ssm *SimpleSubsManager) GetApplicableSubs() (ml *basictypes.MetaList, tl *basictypes.TermList) {
 	if !ssm.node.isRoot() {
 		return getApplicableSubs(ssm.node.father.subsManager)
 	}
@@ -186,18 +186,18 @@ func (bsm *BranchingSubsManager) tryingAgain() {
 type IntroSubsManager struct {
 	*SimpleSubsManager
 
-	metas      basictypes.MetaList
-	subsitutes basictypes.TermList
+	metas      *basictypes.MetaList
+	subsitutes *basictypes.TermList
 }
 
-func newIntroSubsManager(node *SearchNode, metas basictypes.MetaList, doneSubs SubList) *IntroSubsManager {
-	return &IntroSubsManager{newSubsManager(node, doneSubs), metas, basictypes.TermList{}}
+func newIntroSubsManager(node *SearchNode, metas *basictypes.MetaList, doneSubs SubList) *IntroSubsManager {
+	return &IntroSubsManager{newSubsManager(node, doneSubs), metas, basictypes.NewTermList()}
 }
 
-func (gsm *IntroSubsManager) GetApplicableSubs() (metas basictypes.MetaList, terms basictypes.TermList) {
+func (gsm *IntroSubsManager) GetApplicableSubs() (metas *basictypes.MetaList, terms *basictypes.TermList) {
 	metas, terms = getApplicableSubs(gsm.SimpleSubsManager)
-	metas = append(metas, gsm.metas...)
-	terms = append(terms, gsm.subsitutes...)
+	metas.Append(gsm.metas.Slice()...)
+	terms.Append(gsm.subsitutes.Slice()...)
 
 	return metas, terms
 }

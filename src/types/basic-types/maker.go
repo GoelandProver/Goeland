@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************/
-/* maker.go */
-/***************/
+
 /**
 * This file provides the necessary methods and data to the variable management.
 **/
@@ -41,7 +39,6 @@ package basictypes
 import (
 	"sync"
 
-	polymorphism "github.com/GoelandProver/Goeland/polymorphism/typing"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
@@ -63,7 +60,7 @@ var EmptyPredEq Pred
 func Init() {
 	Reset()
 	Id_eq = MakerId("=")
-	EmptyPredEq = MakerPred(Id_eq, MakeEmptyTermList(), make([]polymorphism.TypeApp, 0))
+	EmptyPredEq = MakerPred(Id_eq, NewTermList(), make([]typing.TypeApp, 0))
 
 	// Eq/Neq types
 	tv := typing.MkTypeVar("α")
@@ -152,16 +149,16 @@ func MakerMeta(s string, formula int, t ...typing.TypeApp) Meta {
 
 /* Const maker (given a id, create a fun without args) */
 func MakerConst(id Id, t ...typing.TypeApp) Fun {
-	return MakeFun(id, MakeEmptyTermList(), []typing.TypeApp{}, getType(t).(typing.TypeScheme))
+	return MakeFun(id, NewTermList(), []typing.TypeApp{}, getType(t).(typing.TypeScheme))
 }
 
 /* Fun maker, with given id and args */
-func MakerFun(id Id, terms TermList, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
+func MakerFun(id Id, terms *TermList, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
 	var ts typing.TypeScheme
 	if len(t) == 1 {
 		ts = t[0]
 	} else {
-		ts = typing.DefaultFunType(len(terms))
+		ts = typing.DefaultFunType(terms.Len())
 	}
 	return MakeFun(id, terms, typeVars, ts)
 }

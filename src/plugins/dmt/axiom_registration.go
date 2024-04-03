@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*************************/
-/* axiom_registration.go */
-/*************************/
-
 /**
 * This file implements the main algorithms for turning axioms into rewrite rules.
 **/
@@ -45,54 +41,50 @@ import (
 
 	. "github.com/GoelandProver/Goeland/global"
 	syntax "github.com/GoelandProver/Goeland/syntaxic-manipulations"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func RegisterAxiom(axiom btypes.Form) bool {
+func RegisterAxiom(axiom basictypes.Form) bool {
 	axiomFT := instanciateForalls(axiom)
 
-	// if isRegisterableAsAtomic(axiom, axiomFT) {
-	//	return makeRewriteRuleFromAtomic(axiomFT)
-	// } else
-
 	if isRegisterableAsEqu(axiomFT) {
-		registeredAxioms = append(registeredAxioms, axiom)
-		return makeRewriteRuleFromEquivalence(axiomFT.(btypes.Equ))
+		registeredAxioms.Append(axiom)
+		return makeRewriteRuleFromEquivalence(axiomFT.(basictypes.Equ))
 	} else if isRegisterableAsImplication(axiomFT) {
-		registeredAxioms = append(registeredAxioms, axiom)
-		return makeRewriteRuleFromImplication(axiomFT.(btypes.Imp))
+		registeredAxioms.Append(axiom)
+		return makeRewriteRuleFromImplication(axiomFT.(basictypes.Imp))
 	}
 
 	return false
 }
 
-func instanciateForalls(axiom btypes.Form) btypes.Form {
-	axiomFT := btypes.MakeFormAndTerm(axiom.Copy(), btypes.TermList{})
-	for Is[btypes.All](axiomFT.GetForm()) {
+func instanciateForalls(axiom basictypes.Form) basictypes.Form {
+	axiomFT := basictypes.MakeFormAndTerm(axiom.Copy(), basictypes.NewTermList())
+	for Is[basictypes.All](axiomFT.GetForm()) {
 		axiomFT, _ = syntax.Instantiate(axiomFT, -1)
 	}
 	return axiomFT.GetForm()
 }
 
-func addPosRewriteRule(axiom btypes.Form, cons btypes.Form) {
-	simplifiedAxiom := btypes.RemoveNeg(axiom)
+func addPosRewriteRule(axiom basictypes.Form, cons basictypes.Form) {
+	simplifiedAxiom := basictypes.RemoveNeg(axiom)
 	positiveTree = positiveTree.InsertFormulaListToDataStructure(
-		btypes.MakeSingleElementList(simplifiedAxiom),
+		basictypes.NewFormList(simplifiedAxiom),
 	)
 	addRewriteRule(simplifiedAxiom, cons, true)
 }
 
-func addNegRewriteRule(axiom btypes.Form, cons btypes.Form) {
-	simplifiedAxiom := btypes.RemoveNeg(axiom)
+func addNegRewriteRule(axiom basictypes.Form, cons basictypes.Form) {
+	simplifiedAxiom := basictypes.RemoveNeg(axiom)
 	negativeTree = negativeTree.InsertFormulaListToDataStructure(
-		btypes.MakeSingleElementList(simplifiedAxiom),
+		basictypes.NewFormList(simplifiedAxiom),
 	)
 	addRewriteRule(simplifiedAxiom, cons, false)
 }
 
-func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
+func addRewriteRule(axiom basictypes.Form, cons basictypes.Form, polarity bool) {
 	for canSkolemize(cons) {
-		ft := btypes.MakeFormAndTerm(cons, btypes.TermList{})
+		ft := basictypes.MakeFormAndTerm(cons, basictypes.NewTermList())
 		ft = syntax.Skolemize(ft, ft.GetForm().GetInternalMetas())
 		cons = ft.GetForm()
 	}
@@ -100,54 +92,52 @@ func addRewriteRule(axiom btypes.Form, cons btypes.Form, polarity bool) {
 	rewriteMapInsertion(polarity, axiom.ToString(), cons)
 }
 
-func printDebugRewriteRule(polarity bool, axiom, cons btypes.Form) {
-	if debugActivated {
-		var ax, co string
-		if polarity {
-			ax, co = axiom.ToString(), cons.ToString()
-		} else {
-			ax, co = btypes.RefuteForm(axiom).ToString(), cons.ToString()
-		}
-		PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co))
+func printDebugRewriteRule(polarity bool, axiom, cons basictypes.Form) {
+	var ax, co string
+	if polarity {
+		ax, co = axiom.ToString(), cons.ToString()
+	} else {
+		ax, co = basictypes.RefuteForm(axiom).ToString(), cons.ToString()
 	}
+	PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co))
 }
 
 /**
  * Skolemization can be applied only when the kind of rule appliable is a delta-rule.
  **/
-func canSkolemize(form btypes.Form) bool {
-	return preskolemize && btypes.ShowKindOfRule(form) == btypes.Delta
+func canSkolemize(form basictypes.Form) bool {
+	return preskolemize && basictypes.ShowKindOfRule(form) == basictypes.Delta
 }
 
 // ----------------------------------------------------------------------------
 // Rewrite rules from atomic predicate.
 
-func isRegisterableAsAtomic(axiom, instanciatedAxiom btypes.Form) bool {
-	return Is[btypes.All](axiom) && btypes.ShowKindOfRule(instanciatedAxiom) == btypes.Atomic
+func isRegisterableAsAtomic(axiom, instanciatedAxiom basictypes.Form) bool {
+	return Is[basictypes.All](axiom) && basictypes.ShowKindOfRule(instanciatedAxiom) == basictypes.Atomic
 }
 
-func makeRewriteRuleFromAtomic(atomic btypes.Form) bool {
+func makeRewriteRuleFromAtomic(atomic basictypes.Form) bool {
 	if isEqualityPred(atomic) {
 		return false
 	}
-	if Is[btypes.Pred](atomic) {
-		return makeRewriteRuleFromPred(atomic.(btypes.Pred))
+	if Is[basictypes.Pred](atomic) {
+		return makeRewriteRuleFromPred(atomic.(basictypes.Pred))
 	}
-	return makeRewriteRuleFromNegatedAtom(atomic.(btypes.Not))
+	return makeRewriteRuleFromNegatedAtom(atomic.(basictypes.Not))
 }
 
-func makeRewriteRuleFromPred(pred btypes.Pred) bool {
-	addPosRewriteRule(pred, btypes.MakerTop())
-	addNegRewriteRule(pred, btypes.RefuteForm(btypes.MakerTop()))
+func makeRewriteRuleFromPred(pred basictypes.Pred) bool {
+	addPosRewriteRule(pred, basictypes.MakerTop())
+	addNegRewriteRule(pred, basictypes.RefuteForm(basictypes.MakerTop()))
 	return true
 }
 
-func makeRewriteRuleFromNegatedAtom(atom btypes.Not) bool {
-	if isEquality(atom.GetForm().(btypes.Pred)) {
+func makeRewriteRuleFromNegatedAtom(atom basictypes.Not) bool {
+	if isEquality(atom.GetForm().(basictypes.Pred)) {
 		return false
 	}
-	addNegRewriteRule(atom, btypes.RefuteForm(btypes.MakerBot()))
-	addPosRewriteRule(atom, btypes.MakerBot())
+	addNegRewriteRule(atom, basictypes.RefuteForm(basictypes.MakerBot()))
+	addPosRewriteRule(atom, basictypes.MakerBot())
 	return true
 }
 
@@ -157,18 +147,18 @@ func makeRewriteRuleFromNegatedAtom(atom btypes.Not) bool {
 // ----------------------------------------------------------------------------
 // Rewrite rules from equivalence formula.
 
-func isRegisterableAsEqu(instanciatedAxiom btypes.Form) bool {
-	return Is[btypes.Equ](instanciatedAxiom)
+func isRegisterableAsEqu(instanciatedAxiom basictypes.Form) bool {
+	return Is[basictypes.Equ](instanciatedAxiom)
 }
 
-func makeRewriteRuleFromEquivalence(equForm btypes.Equ) bool {
+func makeRewriteRuleFromEquivalence(equForm basictypes.Equ) bool {
 	phi1, phi2 := equForm.GetF1(), equForm.GetF2()
 
 	if areBothAtomics(phi1, phi2) || neitherAreAtomics(phi1, phi2) {
 		return false
 	}
 
-	var f1, f2 btypes.Form
+	var f1, f2 basictypes.Form
 	if isAtomic(phi1) {
 		f1, f2 = phi1, phi2
 	} else {
@@ -178,24 +168,24 @@ func makeRewriteRuleFromEquivalence(equForm btypes.Equ) bool {
 	return addEquRewriteRuleIfNotEquality(f1, f2)
 }
 
-func isAtomic(f btypes.Form) bool {
-	return btypes.ShowKindOfRule(f) == btypes.Atomic
+func isAtomic(f basictypes.Form) bool {
+	return basictypes.ShowKindOfRule(f) == basictypes.Atomic
 }
 
-func areBothAtomics(f1, f2 btypes.Form) bool {
+func areBothAtomics(f1, f2 basictypes.Form) bool {
 	return isAtomic(f1) && isAtomic(f2)
 }
 
-func neitherAreAtomics(f1, f2 btypes.Form) bool {
+func neitherAreAtomics(f1, f2 basictypes.Form) bool {
 	return !isAtomic(f1) && !isAtomic(f2)
 }
 
-func isEqualityPred(f btypes.Form) bool {
-	return (Is[btypes.Pred](f) && isEquality(f.(btypes.Pred))) ||
-		(Is[btypes.Not](f) && isEquality(predFromNegatedAtom(f)))
+func isEqualityPred(f basictypes.Form) bool {
+	return (Is[basictypes.Pred](f) && isEquality(f.(basictypes.Pred))) ||
+		(Is[basictypes.Not](f) && isEquality(predFromNegatedAtom(f)))
 }
 
-func addEquRewriteRuleIfNotEquality(f1, f2 btypes.Form) bool {
+func addEquRewriteRuleIfNotEquality(f1, f2 basictypes.Form) bool {
 	if isEqualityPred(f1) {
 		return false
 	}
@@ -203,8 +193,8 @@ func addEquRewriteRuleIfNotEquality(f1, f2 btypes.Form) bool {
 	return true
 }
 
-func addEquivalenceRewriteRule(axiom, cons btypes.Form) {
-	if Is[btypes.Not](axiom) {
+func addEquivalenceRewriteRule(axiom, cons basictypes.Form) {
+	if Is[basictypes.Not](axiom) {
 		addPosRewriteRule(axiom, refute(cons))
 		addNegRewriteRule(axiom, cons)
 	} else {
@@ -219,11 +209,11 @@ func addEquivalenceRewriteRule(axiom, cons btypes.Form) {
 // ----------------------------------------------------------------------------
 // Rewrite rules from implicated formula.
 
-func isRegisterableAsImplication(instanciatedAxiom btypes.Form) bool {
-	return activatePolarized && Is[btypes.Imp](instanciatedAxiom)
+func isRegisterableAsImplication(instanciatedAxiom basictypes.Form) bool {
+	return activatePolarized && Is[basictypes.Imp](instanciatedAxiom)
 }
 
-func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
+func makeRewriteRuleFromImplication(impForm basictypes.Imp) bool {
 	phi1, phi2 := impForm.GetF1(), impForm.GetF2()
 
 	// This line currently blocks the generation of a rewrite rule if there is
@@ -233,7 +223,7 @@ func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
 	}
 
 	if isAtomic(phi1) {
-		if Is[btypes.Pred](phi1) {
+		if Is[basictypes.Pred](phi1) {
 			addPosRewriteRule(phi1, phi2)
 		} else {
 			addNegRewriteRule(predFromNegatedAtom(phi1), phi2)
@@ -243,7 +233,7 @@ func makeRewriteRuleFromImplication(impForm btypes.Imp) bool {
 	// This line currently blocks the generation of a rewrite rule if there is
 	// an equality atom on the right-side of the formula.
 	if isAtomic(phi2) && !isEqualityPred(phi2) {
-		if Is[btypes.Pred](phi2) {
+		if Is[basictypes.Pred](phi2) {
 			addNegRewriteRule(phi2, refute(phi1))
 		} else {
 			addPosRewriteRule(predFromNegatedAtom(phi2), refute(phi1))

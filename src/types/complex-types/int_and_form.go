@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/************/
-/* subst.go */
-/************/
+
 /**
 * This file contains functions and types which describe the substitution management in a proofsearch.
 **/
@@ -41,19 +39,19 @@ package complextypes
 import (
 	"fmt"
 
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 type IntAndForm struct {
 	index int
-	form  btps.Form
+	form  basictypes.Form
 }
 
 func (intandform *IntAndForm) GetIndex() int {
 	return intandform.index
 }
 
-func (intandform *IntAndForm) GetForm() btps.Form {
+func (intandform *IntAndForm) GetForm() basictypes.Form {
 	return intandform.form.Copy()
 }
 
@@ -62,7 +60,7 @@ func (intandform *IntAndForm) SetIndex(index int) *IntAndForm {
 	return intandform
 }
 
-func (intandform *IntAndForm) SetForm(form btps.Form) *IntAndForm {
+func (intandform *IntAndForm) SetForm(form basictypes.Form) *IntAndForm {
 	intandform.form = form
 	return intandform
 }
@@ -75,6 +73,6 @@ func (iaf *IntAndForm) ToString() string {
 	return fmt.Sprintf("[%v] %v", iaf.GetIndex(), iaf.GetForm().ToString())
 }
 
-func MakeIntAndForm(i int, f btps.Form) IntAndForm {
+func MakeIntAndForm(i int, f basictypes.Form) IntAndForm {
 	return IntAndForm{i, f}
 }

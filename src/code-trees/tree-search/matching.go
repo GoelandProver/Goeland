@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************/
-/* Machine.go */
-/***************/
+
 /**
 * This file provides the necessary methods for the unification algorithm.
 **/
@@ -67,7 +65,7 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 		terms := treetypes.TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs())
 
 		// Transform the predicate to a function to make the tool work properly
-		m.terms = basictypes.TermList{basictypes.MakeFun(formula_type.GetID(), terms, []typing.TypeApp{}, formula_type.GetType())}
+		m.terms = basictypes.NewTermList(basictypes.MakeFun(formula_type.GetID(), terms, []typing.TypeApp{}, formula_type.GetType()))
 		result = m.unifyAux(node)
 
 		if !reflect.DeepEqual(m.failure, result) {
@@ -80,7 +78,7 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 			result = filteredResult
 		}
 	case treetypes.TermForm:
-		m.terms = basictypes.TermList{formula_type.GetTerm()}
+		m.terms = basictypes.NewTermList(formula_type.GetTerm())
 		result = m.unifyAux(node)
 	default:
 		result = m.failure
@@ -143,14 +141,12 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 
 	if node.isLeaf() {
 		// global.PrintDebug("UX", fmt.Sprintf("Is leaf : %v", node.formulae.ToString()))
-		for _, f := range node.formulae {
+		for _, f := range node.formulae.Slice() {
 			if reflect.TypeOf(f) == reflect.TypeOf(basictypes.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(treetypes.TermForm{}) {
 				// Rebuild final substitution between meta and subst
 				final_subst := computeSubstitutions(treetypes.CopySubstPairList(m.subst), m.meta.Copy(), f.Copy())
 				if !final_subst.Equals(treetypes.Failure()) {
 					matching = append(matching, treetypes.MakeMatchingSubstitutions(f, final_subst))
-				} else {
-					// global.PrintDebug("UX", "Error try substitute")
 				}
 			}
 		}
@@ -163,7 +159,8 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 /* TODO : remove when debug ok */
 func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []treetypes.MatchingSubstitutions, father_id uint64) {
 	global.PrintDebug("UA", fmt.Sprintf("Child of %v, Unify Aux", father_id))
-	ch <- m.unifyAux(n)
+	subs := m.unifyAux(n)
+	ch <- subs
 	global.PrintDebug("UA", "Die")
 }
 
@@ -225,7 +222,7 @@ func (m *Machine) right() Status {
 	if m.isUnlocked() {
 		// global.PrintDebug("RIGHT", "IS UNLOCKED")
 		m.q += 1
-		if m.q > len(m.terms) {
+		if m.q > m.terms.Len() {
 			return Status(ERROR)
 		}
 		m.topLevelCount += 1
@@ -236,18 +233,18 @@ func (m *Machine) right() Status {
 /* Algorithm for the instruction Down. */
 func (m *Machine) down() {
 	if m.isUnlocked() {
-		m.terms = m.terms[m.q].(basictypes.Fun).GetArgs()
+		m.terms = m.terms.Get(m.q).(basictypes.Fun).GetArgs()
 		m.q = 0
 
 		// When down, add the number of args to topLevelCount and add 1 to topLevelCount because we go straigth forward inside without rigth
-		m.topLevelTot += len(m.terms)
+		m.topLevelTot += m.terms.Len()
 		m.topLevelCount += 1
 	}
 }
 
 /* Algorithm for the instruction Check. */
 func (m *Machine) check(instrTerm basictypes.Term) Status {
-	if m.isUnlocked() && errorOccured(m.matchIndexes(m.terms[m.q], instrTerm)) {
+	if m.isUnlocked() && errorOccured(m.matchIndexes(m.terms.Get(m.q), instrTerm)) {
 		return Status(ERROR)
 	}
 	return Status(SUCCESS)
@@ -267,7 +264,7 @@ func (m *Machine) pop(index int) Status {
 	if m.isUnlocked() {
 		m.q = m.post[index].GetQ()
 		m.terms = m.post[index].GetTerms()
-		if len(m.terms) <= m.q {
+		if m.terms.Len() <= m.q {
 			return Status(ERROR)
 		}
 		m.post = removePost(treetypes.CopyIntPairList(m.post), index)
@@ -283,7 +280,7 @@ func (m *Machine) pop(index int) Status {
 /* Algorithm for the instruction Put. */
 func (m *Machine) put(instr treetypes.Put) {
 	if m.isUnlocked() {
-		m.subst = append(m.subst, treetypes.MakeSubstPair(instr.GetIndex(), m.terms[m.q]))
+		m.subst = append(m.subst, treetypes.MakeSubstPair(instr.GetIndex(), m.terms.Get(m.q)))
 	}
 }
 

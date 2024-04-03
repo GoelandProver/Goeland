@@ -30,17 +30,13 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/********************/
-/*  apply_rules.go  */
-/********************/
-
 package polyrules
 
 import (
 	"fmt"
 
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
@@ -86,17 +82,17 @@ func applyRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reco
 func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	var rec Reconstruct
 	switch (state.consequence.f).(type) {
-	case btypes.All, btypes.AllType, btypes.Ex:
+	case basictypes.All, basictypes.AllType, basictypes.Ex:
 		rec = applyQuantRule(state, root, fatherChan)
-	case btypes.And, btypes.Or:
+	case basictypes.And, basictypes.Or:
 		rec = applyNAryRule(state, root, fatherChan)
-	case btypes.Imp, btypes.Equ:
+	case basictypes.Imp, basictypes.Equ:
 		rec = applyBinaryRule(state, root, fatherChan)
-	case btypes.Top, btypes.Bot:
+	case basictypes.Top, basictypes.Bot:
 		rec = applyBotTopRule(state, root, fatherChan)
-	case btypes.Not:
+	case basictypes.Not:
 		rec = applyNotRule(state, root, fatherChan)
-	case btypes.Pred:
+	case basictypes.Pred:
 		rec = applyAppRule(state, root, fatherChan)
 	}
 	return rec
@@ -106,9 +102,9 @@ func applyFormRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) 
 func applyTermRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	var rec Reconstruct
 	switch (state.consequence.t).(type) {
-	case btypes.Fun:
+	case basictypes.Fun:
 		rec = applyAppRule(state, root, fatherChan)
-	case btypes.Var:
+	case basictypes.Var:
 		rec = applyVarRule(state, root, fatherChan)
 		// Metas shoudln't appear in the formula yet.
 		// IDs are not a real Term.

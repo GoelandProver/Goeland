@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/* z__pol_test.go */
-/******************/
-
 /**
  * This file tests the polarized functionnalities of the DMT plugin :
  *	- Axioms of format : (forall x).P => Q
@@ -47,7 +43,7 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 // Makers a plugin manager and inits the DMT for polarized tests
@@ -61,11 +57,11 @@ func initPolarizedDMT() {
 func TestPolarizedInsertion(t *testing.T) {
 	initPolarizedDMT()
 
-	polPred := btypes.MakerAll(
-		[]btypes.Var{x},
-		btypes.MakerImp(
-			btypes.MakerPred(P, []btypes.Term{x}, []typing.TypeApp{}),
-			btypes.MakerAll([]btypes.Var{y}, btypes.MakerPred(Q, []btypes.Term{x, y}, []typing.TypeApp{})),
+	polPred := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerImp(
+			basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{}),
+			basictypes.MakerAll([]basictypes.Var{y}, basictypes.MakerPred(Q, basictypes.NewTermList(x, y), []typing.TypeApp{})),
 		),
 	)
 
@@ -73,11 +69,11 @@ func TestPolarizedInsertion(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", polPred.ToString())
 	}
 
-	polPred2 := btypes.MakerAll(
-		[]btypes.Var{x},
-		btypes.MakerImp(
-			btypes.MakerPred(P, []btypes.Term{x}, []typing.TypeApp{}),
-			btypes.MakerPred(Q, []btypes.Term{x, a}, []typing.TypeApp{}),
+	polPred2 := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerImp(
+			basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{}),
+			basictypes.MakerPred(Q, basictypes.NewTermList(x, a), []typing.TypeApp{}),
 		),
 	)
 
@@ -85,11 +81,11 @@ func TestPolarizedInsertion(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", polPred2.ToString())
 	}
 
-	polPred3 := btypes.MakerAll(
-		[]btypes.Var{x},
-		btypes.MakerImp(
-			btypes.MakerAll([]btypes.Var{y}, btypes.MakerPred(Q, []btypes.Term{x, y}, []typing.TypeApp{})),
-			btypes.MakerPred(P, []btypes.Term{x}, []typing.TypeApp{}),
+	polPred3 := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerImp(
+			basictypes.MakerAll([]basictypes.Var{y}, basictypes.MakerPred(Q, basictypes.NewTermList(x, y), []typing.TypeApp{})),
+			basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{}),
 		),
 	)
 
@@ -97,29 +93,29 @@ func TestPolarizedInsertion(t *testing.T) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", polPred3.ToString())
 	}
 
-	polPred4 := btypes.MakerImp(
-		btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(P, []btypes.Term{x}, []typing.TypeApp{})),
-		btypes.MakerAll([]btypes.Var{x, y}, btypes.MakerPred(Q, []btypes.Term{x, y}, []typing.TypeApp{})),
+	polPred4 := basictypes.MakerImp(
+		basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{})),
+		basictypes.MakerAll([]basictypes.Var{x, y}, basictypes.MakerPred(Q, basictypes.NewTermList(x, y), []typing.TypeApp{})),
 	)
 
 	if dmt.RegisterAxiom(polPred4) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't be.", polPred4.ToString())
 	}
 
-	polPred5 := btypes.MakerImp(
-		btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{}),
-		btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{}),
+	polPred5 := basictypes.MakerImp(
+		basictypes.MakerPred(P, basictypes.NewTermList(a), []typing.TypeApp{}),
+		basictypes.MakerPred(Q, basictypes.NewTermList(a, a), []typing.TypeApp{}),
 	)
 
 	if !dmt.RegisterAxiom(polPred5) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", polPred5.ToString())
 	}
 
-	polPred6 := btypes.MakerAll(
-		[]btypes.Var{x},
-		btypes.MakerImp(
-			btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{x}, []typing.TypeApp{})),
-			btypes.MakerNot(btypes.MakerPred(Q, []btypes.Term{x, a}, []typing.TypeApp{})),
+	polPred6 := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerImp(
+			basictypes.MakerNot(basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{})),
+			basictypes.MakerNot(basictypes.MakerPred(Q, basictypes.NewTermList(x, a), []typing.TypeApp{})),
 		),
 	)
 
@@ -128,34 +124,34 @@ func TestPolarizedInsertion(t *testing.T) {
 	}
 
 	// (x = x) => forall x. P(x) shouldn't be registered (because equality and dmt are managed separately)
-	neqPred := btypes.MakerPred(btypes.Id_eq, []btypes.Term{x, x}, []typing.TypeApp{})
-	polPred7 := btypes.MakerImp(
+	neqPred := basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, x), []typing.TypeApp{})
+	polPred7 := basictypes.MakerImp(
 		neqPred,
-		btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(P, []btypes.Term{x}, []typing.TypeApp{})),
+		basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{})),
 	)
 	if dmt.RegisterAxiom(polPred7) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't (equalities are not registered).", polPred7.ToString())
 	}
 
 	// (Vx (x = x)) => forall x. P(x) shouldn't be registered
-	neqPred2 := btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(btypes.Id_eq, []btypes.Term{x, x}, []typing.TypeApp{}))
-	polPred8 := btypes.MakerImp(
+	neqPred2 := basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, x), []typing.TypeApp{}))
+	polPred8 := basictypes.MakerImp(
 		neqPred2,
-		btypes.MakerAll([]btypes.Var{x}, btypes.MakerPred(P, []btypes.Term{x}, []typing.TypeApp{})),
+		basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{})),
 	)
 	if dmt.RegisterAxiom(polPred8) {
 		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't (equalities are not registered).", polPred8.ToString())
 	}
 
-	polPred9 := btypes.MakerAll(
-		[]btypes.Var{x, y},
-		btypes.MakerImp(
-			btypes.MakerPred(P, []btypes.Term{x, y}, []typing.TypeApp{}),
-			btypes.MakerAnd(
-				[]btypes.Form{
-					btypes.MakerPred(Q, []btypes.Term{x, y}, []typing.TypeApp{}),
-					btypes.MakerPred(Q, []btypes.Term{x, y}, []typing.TypeApp{}),
-				},
+	polPred9 := basictypes.MakerAll(
+		[]basictypes.Var{x, y},
+		basictypes.MakerImp(
+			basictypes.MakerPred(P, basictypes.NewTermList(x, y), []typing.TypeApp{}),
+			basictypes.MakerAnd(
+				basictypes.NewFormList(
+					basictypes.MakerPred(Q, basictypes.NewTermList(x, y), []typing.TypeApp{}),
+					basictypes.MakerPred(Q, basictypes.NewTermList(x, y), []typing.TypeApp{}),
+				),
 			),
 		),
 	)
@@ -171,11 +167,11 @@ func TestPolarizedInsertion(t *testing.T) {
 func TestPolarizedRewrite1(t *testing.T) {
 	initPolarizedDMT()
 
-	polPred := btypes.MakerAll(
-		[]btypes.Var{x},
-		btypes.MakerImp(
-			btypes.MakerPred(P, []btypes.Term{x}, []typing.TypeApp{}),
-			btypes.MakerAll([]btypes.Var{y}, btypes.MakerPred(Q, []btypes.Term{x, y}, []typing.TypeApp{})),
+	polPred := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerImp(
+			basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{}),
+			basictypes.MakerAll([]basictypes.Var{y}, basictypes.MakerPred(Q, basictypes.NewTermList(x, y), []typing.TypeApp{})),
 		),
 	)
 
@@ -184,26 +180,26 @@ func TestPolarizedRewrite1(t *testing.T) {
 	}
 
 	// Only rewrites on positive occurrences of P
-	form := btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{})
+	form := basictypes.MakerPred(P, basictypes.NewTermList(a), []typing.TypeApp{})
 	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should have been.", form.ToString())
 	}
 
-	expected := btypes.MakerAll(
-		[]btypes.Var{y},
-		btypes.MakerPred(Q, []btypes.Term{a, y}, []typing.TypeApp{}),
+	expected := basictypes.MakerAll(
+		[]basictypes.Var{y},
+		basictypes.MakerPred(Q, basictypes.NewTermList(a, y), []typing.TypeApp{}),
 	)
 
 	if len(substs) > 1 ||
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetSaf().GetForm()) > 1 ||
-		!substs[0].GetSaf().GetForm()[0].Equals(expected) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
+		substs[0].GetSaf().GetForm().Len() > 1 ||
+		!substs[0].GetSaf().GetForm().Get(0).Equals(expected) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
 	}
 
-	form2 := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{}))
+	form2 := basictypes.MakerNot(basictypes.MakerPred(P, basictypes.NewTermList(a), []typing.TypeApp{}))
 	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
@@ -216,7 +212,7 @@ func TestPolarizedRewrite1(t *testing.T) {
 
 	// ¬forall y... should not have been inserted in the rewrite tree
 
-	form3 := btypes.MakerNot(expected)
+	form3 := basictypes.MakerNot(expected)
 	substs, err = dmt.Rewrite(form3)
 
 	if err != nil {
@@ -234,11 +230,11 @@ func TestPolarizedRewrite1(t *testing.T) {
 func TestPolarizedRewrite2(t *testing.T) {
 	initPolarizedDMT()
 
-	polPred := btypes.MakerAll(
-		[]btypes.Var{x},
-		btypes.MakerImp(
-			btypes.MakerPred(P, []btypes.Term{x}, []typing.TypeApp{}),
-			btypes.MakerPred(Q, []btypes.Term{x, a}, []typing.TypeApp{}),
+	polPred := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerImp(
+			basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{}),
+			basictypes.MakerPred(Q, basictypes.NewTermList(x, a), []typing.TypeApp{}),
 		),
 	)
 
@@ -247,23 +243,23 @@ func TestPolarizedRewrite2(t *testing.T) {
 	}
 
 	// Only rewrites on positive occurrences of P
-	form := btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{})
+	form := basictypes.MakerPred(P, basictypes.NewTermList(a), []typing.TypeApp{})
 	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should have been.", form.ToString())
 	}
 
-	expected := btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{})
+	expected := basictypes.MakerPred(Q, basictypes.NewTermList(a, a), []typing.TypeApp{})
 
 	if len(substs) > 1 ||
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetSaf().GetForm()) > 1 ||
-		!substs[0].GetSaf().GetForm()[0].Equals(expected) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
+		substs[0].GetSaf().GetForm().Len() > 1 ||
+		!substs[0].GetSaf().GetForm().Get(0).Equals(expected) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
 	}
 
-	form2 := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{}))
+	form2 := basictypes.MakerNot(basictypes.MakerPred(P, basictypes.NewTermList(a), []typing.TypeApp{}))
 	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
@@ -276,23 +272,23 @@ func TestPolarizedRewrite2(t *testing.T) {
 
 	// Only rewrites negative occurrences of Q
 
-	form3 := btypes.MakerNot(btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{}))
+	form3 := basictypes.MakerNot(basictypes.MakerPred(Q, basictypes.NewTermList(a, a), []typing.TypeApp{}))
 	substs, err = dmt.Rewrite(form3)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should have been.", form3.ToString())
 	}
 
-	expectedNeg := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{}))
+	expectedNeg := basictypes.MakerNot(basictypes.MakerPred(P, basictypes.NewTermList(a), []typing.TypeApp{}))
 
 	if len(substs) > 1 ||
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetSaf().GetForm()) > 1 ||
-		!substs[0].GetSaf().GetForm()[0].Equals(expectedNeg) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), expectedNeg.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
+		substs[0].GetSaf().GetForm().Len() > 1 ||
+		!substs[0].GetSaf().GetForm().Get(0).Equals(expectedNeg) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), expectedNeg.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
 	}
 
-	form4 := btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{})
+	form4 := basictypes.MakerPred(Q, basictypes.NewTermList(a, a), []typing.TypeApp{})
 	substs, err = dmt.Rewrite(form4)
 
 	if err != nil {
@@ -310,11 +306,11 @@ func TestPolarizedRewrite2(t *testing.T) {
 func TestPolarizedRewrite3(t *testing.T) {
 	initPolarizedDMT()
 
-	polPred := btypes.MakerAll(
-		[]btypes.Var{x},
-		btypes.MakerImp(
-			btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{x}, []typing.TypeApp{})),
-			btypes.MakerNot(btypes.MakerPred(Q, []btypes.Term{x, a}, []typing.TypeApp{})),
+	polPred := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerImp(
+			basictypes.MakerNot(basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{})),
+			basictypes.MakerNot(basictypes.MakerPred(Q, basictypes.NewTermList(x, a), []typing.TypeApp{})),
 		),
 	)
 
@@ -323,23 +319,23 @@ func TestPolarizedRewrite3(t *testing.T) {
 	}
 
 	// Only rewrites on negative occurrences of P
-	form := btypes.MakerNot(btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{}))
+	form := basictypes.MakerNot(basictypes.MakerPred(P, basictypes.NewTermList(a), []typing.TypeApp{}))
 	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should have been.", form.ToString())
 	}
 
-	expected := btypes.MakerNot(btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{}))
+	expected := basictypes.MakerNot(basictypes.MakerPred(Q, basictypes.NewTermList(a, a), []typing.TypeApp{}))
 
 	if len(substs) > 1 ||
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetSaf().GetForm()) > 1 ||
-		!substs[0].GetSaf().GetForm()[0].Equals(expected) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
+		substs[0].GetSaf().GetForm().Len() > 1 ||
+		!substs[0].GetSaf().GetForm().Get(0).Equals(expected) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
 	}
 
-	form2 := btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{})
+	form2 := basictypes.MakerPred(P, basictypes.NewTermList(a), []typing.TypeApp{})
 	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
@@ -352,23 +348,23 @@ func TestPolarizedRewrite3(t *testing.T) {
 
 	// Only rewrites negative occurrences of Q
 
-	form3 := btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{})
+	form3 := basictypes.MakerPred(Q, basictypes.NewTermList(a, a), []typing.TypeApp{})
 	substs, err = dmt.Rewrite(form3)
 
 	if err != nil {
 		t.Fatalf("Error: %s not found in the rewrite tree when it should have been.", form3.ToString())
 	}
 
-	expectedNeg := btypes.MakerPred(P, []btypes.Term{a}, []typing.TypeApp{})
+	expectedNeg := basictypes.MakerPred(P, basictypes.NewTermList(a), []typing.TypeApp{})
 
 	if len(substs) > 1 ||
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
-		len(substs[0].GetSaf().GetForm()) > 1 ||
-		!substs[0].GetSaf().GetForm()[0].Equals(expectedNeg) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), expectedNeg.ToString(), substs[0].GetSaf().GetForm()[0].ToString())
+		substs[0].GetSaf().GetForm().Len() > 1 ||
+		!substs[0].GetSaf().GetForm().Get(0).Equals(expectedNeg) {
+		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form3.ToString(), expectedNeg.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
 	}
 
-	form4 := btypes.MakerNot(btypes.MakerPred(Q, []btypes.Term{a, a}, []typing.TypeApp{}))
+	form4 := basictypes.MakerNot(basictypes.MakerPred(Q, basictypes.NewTermList(a, a), []typing.TypeApp{}))
 	substs, err = dmt.Rewrite(form4)
 
 	if err != nil {
@@ -386,20 +382,20 @@ func TestPolarizedRewrite3(t *testing.T) {
 func TestPolarizedRewrite4(t *testing.T) {
 	initPolarizedDMT()
 
-	axiom := btypes.MakerAll(
-		[]btypes.Var{x, y},
-		btypes.MakerImp(
-			btypes.MakerPred(P, []btypes.Term{x, btypes.MakerFun(f, []btypes.Term{y}, []typing.TypeApp{})}, []typing.TypeApp{}),
-			btypes.MakerAnd(btypes.FormList{btypes.MakerPred(Q, []btypes.Term{x, y}, []typing.TypeApp{}), btypes.MakerPred(Q, []btypes.Term{x, y}, []typing.TypeApp{})})))
+	axiom := basictypes.MakerAll(
+		[]basictypes.Var{x, y},
+		basictypes.MakerImp(
+			basictypes.MakerPred(P, basictypes.NewTermList(x, basictypes.MakerFun(f, basictypes.NewTermList(y), []typing.TypeApp{})), []typing.TypeApp{}),
+			basictypes.MakerAnd(basictypes.NewFormList(basictypes.MakerPred(Q, basictypes.NewTermList(x, y), []typing.TypeApp{}), basictypes.MakerPred(Q, basictypes.NewTermList(x, y), []typing.TypeApp{})))))
 
 	if !dmt.RegisterAxiom(axiom) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", axiom.ToString())
 	}
 
-	X := btypes.MakerMeta("X2", 1)
-	Y := btypes.MakerMeta("Y2", 1)
+	X := basictypes.MakerMeta("X2", 1)
+	Y := basictypes.MakerMeta("Y2", 1)
 
-	form := btypes.MakerPred(P, []btypes.Term{X, Y}, []typing.TypeApp{})
+	form := basictypes.MakerPred(P, basictypes.NewTermList(X, Y), []typing.TypeApp{})
 	substs, err := dmt.Rewrite(form)
 
 	if err != nil {
@@ -407,6 +403,6 @@ func TestPolarizedRewrite4(t *testing.T) {
 	}
 
 	if len(substs) != 1 && !substs[0].GetSaf().GetSubst().Equals(treetypes.Failure()) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s - %v.", form.ToString(), substs[0].GetSaf().GetForm()[0].ToString(), substs[0].GetSaf().GetSubst().ToString())
+		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s - %v.", form.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString(), substs[0].GetSaf().GetSubst().ToString())
 	}
 }

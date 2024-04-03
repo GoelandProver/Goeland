@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/********************/
-/* formula_liste.go */
-/********************/
+
 /**
 * This file contains functions and types which describe the fomula_list's data
 * structure
@@ -162,15 +160,15 @@ func (l1 FormAndTermsList) Merge(l2 FormAndTermsList) FormAndTermsList {
 	return res
 }
 
-func (fl FormAndTermsList) ExtractForms() FormList {
-	res := MakeEmptyFormList()
+func (fl FormAndTermsList) ExtractForms() *FormList {
+	res := NewFormList()
 	for _, f := range fl {
-		res = res.AppendIfNotContains(f.GetForm())
+		res.AppendIfNotContains(f.GetForm())
 	}
 	return res
 }
 
-func (fl FormAndTermsList) SubstituteBy(metas MetaList, terms TermList) FormAndTermsList {
+func (fl FormAndTermsList) SubstituteBy(metas *MetaList, terms *TermList) FormAndTermsList {
 	result := FormAndTermsList{}
 
 	for _, fat := range fl {
@@ -195,19 +193,19 @@ func MakeSingleElementFormAndTermList(f FormAndTerms) FormAndTermsList {
 }
 
 /* Keep only predicate with right polarity */
-func (lf FormAndTermsList) FilterPred(pola bool) FormList {
-	res := MakeEmptyFormList()
+func (lf FormAndTermsList) FilterPred(pola bool) *FormList {
+	res := NewFormList()
 	for _, f := range lf {
 		switch nf := f.GetForm().(type) {
 		case Pred:
 			if pola {
-				res = res.AppendIfNotContains(nf)
+				res.AppendIfNotContains(nf)
 			}
 		case Not:
 			switch nf.GetForm().(type) {
 			case Pred:
 				if !pola {
-					res = res.AppendIfNotContains(nf.GetForm())
+					res.AppendIfNotContains(nf.GetForm())
 				}
 			}
 		}

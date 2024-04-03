@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/************/
-/* subst.go */
-/************/
+
 /**
 * This file contains functions and types which describe the substitution management in a proofsearch.
 **/
@@ -51,19 +49,19 @@ import (
 /* Stock the substitution and the corresponding list of formulas */
 type SubstAndForm struct {
 	s treetypes.Substitutions
-	f basictypes.FormList
+	f *basictypes.FormList
 }
 
 func (s SubstAndForm) GetSubst() treetypes.Substitutions {
 	return s.s.Copy()
 }
-func (s SubstAndForm) GetForm() basictypes.FormList {
+func (s SubstAndForm) GetForm() *basictypes.FormList {
 	return s.f.Copy()
 }
 func (s *SubstAndForm) SetSubst(subst treetypes.Substitutions) {
 	s.s = subst.Copy()
 }
-func (s *SubstAndForm) SetForm(form basictypes.FormList) {
+func (s *SubstAndForm) SetForm(form *basictypes.FormList) {
 	s.f = form.Copy()
 }
 func (saf SubstAndForm) IsEmpty() bool {
@@ -93,14 +91,16 @@ func (s SubstAndForm) ToString() string {
 	return res
 }
 
-func MakeSubstAndForm(subst treetypes.Substitutions, form basictypes.FormList) SubstAndForm {
+func MakeSubstAndForm(subst treetypes.Substitutions, form *basictypes.FormList) SubstAndForm {
 	return SubstAndForm{subst.Copy(), form.Copy()}
 }
 func MakeEmptySubstAndForm() SubstAndForm {
-	return SubstAndForm{treetypes.MakeEmptySubstitution(), basictypes.FormList{}}
+	return SubstAndForm{treetypes.MakeEmptySubstitution(), basictypes.NewFormList()}
 }
-func (s SubstAndForm) AddFormulas(fl basictypes.FormList) SubstAndForm {
-	return MakeSubstAndForm(s.GetSubst(), s.GetForm().Merge(fl.Copy()))
+func (s SubstAndForm) AddFormulas(fl *basictypes.FormList) SubstAndForm {
+	formList := s.GetForm().Copy()
+	formList.AppendIfNotContains(fl.Copy().Slice()...)
+	return MakeSubstAndForm(s.GetSubst(), formList)
 }
 
 /* Remove empty substitution from a substitution list */
@@ -203,9 +203,10 @@ func MergeSubstAndForm(s1, s2 SubstAndForm) (error, SubstAndForm) {
 		return errors.New("Couldn't merge two substitutions"), MakeEmptySubstAndForm()
 	}
 
-	new_form := s1.GetForm().Copy().Merge(s2.GetForm().Copy())
+	newFormList := s1.GetForm().Copy()
+	newFormList.AppendIfNotContains(s2.GetForm().Slice()...)
 
-	return nil, MakeSubstAndForm(new_subst, new_form)
+	return nil, MakeSubstAndForm(new_subst, newFormList)
 }
 
 /* Merge a list of subst with one subst */

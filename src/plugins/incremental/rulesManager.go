@@ -17,7 +17,7 @@ type RulesManager struct {
 
 	reintroRules *ReintroRuleList
 
-	metaVariables []basictypes.Meta
+	metaVariables *basictypes.MetaList
 
 	appliedRule    Rule
 	resultingRules []RuleList
@@ -34,7 +34,7 @@ func (rm *RulesManager) onlyReintroOrClosureLeft() bool {
 }
 
 func (rm *RulesManager) insertForm(formula basictypes.Form) {
-	rule := makeCorrectRule(formula, basictypes.MakeEmptyTermList())
+	rule := makeCorrectRule(formula, basictypes.NewTermList())
 	rm.insertIntoCorrectSlice(rule)
 }
 
@@ -125,7 +125,7 @@ func (rm *RulesManager) applyReintroductionRule() (success bool, resultManagers 
 
 	switch typed := applied.(type) {
 	case GammaRule:
-		rm.metaVariables = append(rm.metaVariables, typed.getGeneratedMetas()...)
+		rm.metaVariables.Append(typed.getGeneratedMetas().Slice()...)
 		rm.reintroRules.AddReintro(typed)
 	}
 
@@ -235,10 +235,10 @@ func (rm *RulesManager) tryToApply(category RuleList) (success bool, applied Rul
 			copy.removeRule(applied)
 			copy.insertIntoCorrectSlice(branch...)
 
-			copy.metaVariables = append(copy.metaVariables, rm.metaVariables...)
+			copy.metaVariables.Append(rm.metaVariables.Slice()...)
 			switch typed := applied.(type) {
 			case GammaRule:
-				copy.metaVariables = append(copy.metaVariables, typed.getGeneratedMetas()...)
+				copy.metaVariables.Append(typed.getGeneratedMetas().Slice()...)
 				rm.reintroRules.AddReintro(typed)
 			}
 			copy.reintroRules = rm.reintroRules.Copy()

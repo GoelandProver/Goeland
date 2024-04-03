@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/********************/
-/*  tptp_native.go  */
-/********************/
-
 /**
  * This file declares TPTP native types and types scheme :
  *	- int, rat, real for primitives

@@ -29,9 +29,6 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/************/
-/* rules.go */
-/************/
 
 /**
 * This file contains functions to apply rules on a search
@@ -44,7 +41,6 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	syntax "github.com/GoelandProver/Goeland/syntaxic-manipulations"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
@@ -63,10 +59,6 @@ var strToPrintMap map[string]string = map[string]string{
 	"FORALL": "∀",
 	"EXISTS": "∃",
 }
-
-/*************/
-/* Functions */
-/*************/
 
 /**
 * ApplyClosureRules
@@ -163,8 +155,8 @@ func searchInequalities(form basictypes.Form) (bool, treetypes.Substitutions) {
 				global.PrintDebug("SI", fmt.Sprintf("Search Inequality closure rule : %v", form.ToString()))
 
 				// Search if the two terms are unfiable
-				arg_1 := predNeq.GetArgs()[0]
-				arg_2 := predNeq.GetArgs()[1]
+				arg_1 := predNeq.GetArgs().Get(0)
+				arg_2 := predNeq.GetArgs().Get(1)
 
 				global.PrintDebug("SI", fmt.Sprintf("Arg 1 : %v", arg_1.ToString()))
 				global.PrintDebug("SI", fmt.Sprintf("Arg 2 : %v", arg_2.ToString()))
@@ -238,7 +230,7 @@ func ApplyAlphaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 	return result
 }
 
-func applyAlphaNotRule(formTyped basictypes.Not, state *complextypes.State, terms basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
+func applyAlphaNotRule(formTyped basictypes.Not, state *complextypes.State, terms *basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
 	switch formWithoutNot := formTyped.GetForm().(type) {
 	case basictypes.Not:
 		result = applyAlphaNotNotRule(formWithoutNot, state, terms, result)
@@ -251,7 +243,7 @@ func applyAlphaNotRule(formTyped basictypes.Not, state *complextypes.State, term
 	return result
 }
 
-func applyAlphaNotNotRule(formWithoutNot basictypes.Not, state *complextypes.State, terms basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
+func applyAlphaNotNotRule(formWithoutNot basictypes.Not, state *complextypes.State, terms *basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
 	setStateRules(state, "ALPHA", "NOT", "NOT")
 
 	result = result.AppendIfNotContains(basictypes.MakeFormAndTerm(formWithoutNot.GetForm(), terms))
@@ -259,17 +251,17 @@ func applyAlphaNotNotRule(formWithoutNot basictypes.Not, state *complextypes.Sta
 	return result
 }
 
-func applyAlphaNotOrRule(formWithoutNot basictypes.Or, state *complextypes.State, terms basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
+func applyAlphaNotOrRule(formWithoutNot basictypes.Or, state *complextypes.State, terms *basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
 	setStateRules(state, "ALPHA", "NOT", "OR")
 
-	for i := range formWithoutNot.FormList {
-		result = result.AppendIfNotContains(basictypes.MakeFormAndTerm(basictypes.RefuteForm(formWithoutNot.FormList[i]), terms))
+	for i := range formWithoutNot.FormList.Slice() {
+		result = result.AppendIfNotContains(basictypes.MakeFormAndTerm(basictypes.RefuteForm(formWithoutNot.FormList.Get(i)), terms))
 	}
 
 	return result
 }
 
-func applyAlphaNotImpRule(formWithoutNot basictypes.Imp, state *complextypes.State, terms basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
+func applyAlphaNotImpRule(formWithoutNot basictypes.Imp, state *complextypes.State, terms *basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
 	setStateRules(state, "ALPHA", "NOT", "IMPLY")
 
 	result = result.AppendIfNotContains(basictypes.MakeFormAndTerm(formWithoutNot.GetF1(), terms))
@@ -278,11 +270,11 @@ func applyAlphaNotImpRule(formWithoutNot basictypes.Imp, state *complextypes.Sta
 	return result
 }
 
-func applyAlphaAndRule(formTyped basictypes.And, state *complextypes.State, terms basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
+func applyAlphaAndRule(formTyped basictypes.And, state *complextypes.State, terms *basictypes.TermList, result basictypes.FormAndTermsList) basictypes.FormAndTermsList {
 	setStateRules(state, "ALPHA", "AND")
 
-	for i := range formTyped.FormList {
-		result = result.AppendIfNotContains(basictypes.MakeFormAndTerm(formTyped.FormList[i], terms))
+	for i := range formTyped.FormList.Slice() {
+		result = result.AppendIfNotContains(basictypes.MakeFormAndTerm(formTyped.FormList.Get(i), terms))
 	}
 
 	return result
@@ -316,7 +308,7 @@ func ApplyBetaRules(fnt basictypes.FormAndTerms, state *complextypes.State) []ba
 	return result
 }
 
-func applyBetaNotRule(formTyped basictypes.Not, state *complextypes.State, terms basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
+func applyBetaNotRule(formTyped basictypes.Not, state *complextypes.State, terms *basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
 	switch formWithoutNot := formTyped.GetForm().(type) {
 	case basictypes.And:
 		result = applyBetaNotAndRule(formWithoutNot, state, terms, result)
@@ -327,17 +319,17 @@ func applyBetaNotRule(formTyped basictypes.Not, state *complextypes.State, terms
 	return result
 }
 
-func applyBetaNotAndRule(formWithoutNot basictypes.And, state *complextypes.State, terms basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
+func applyBetaNotAndRule(formWithoutNot basictypes.And, state *complextypes.State, terms *basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
 	setStateRules(state, "BETA", "NOT", "AND")
 
-	for i := range formWithoutNot.FormList {
-		result = append(result, basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(basictypes.RefuteForm(formWithoutNot.FormList[i]), terms)))
+	for i := range formWithoutNot.FormList.Slice() {
+		result = append(result, basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(basictypes.RefuteForm(formWithoutNot.FormList.Get(i)), terms)))
 	}
 
 	return result
 }
 
-func applyBetaNotEquRule(formWithoutNot basictypes.Equ, state *complextypes.State, terms basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
+func applyBetaNotEquRule(formWithoutNot basictypes.Equ, state *complextypes.State, terms *basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
 	setStateRules(state, "BETA", "NOT", "EQUIV")
 
 	result = append(result,
@@ -352,17 +344,17 @@ func applyBetaNotEquRule(formWithoutNot basictypes.Equ, state *complextypes.Stat
 	return result
 }
 
-func applyBetaOrRule(formTyped basictypes.Or, state *complextypes.State, terms basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
+func applyBetaOrRule(formTyped basictypes.Or, state *complextypes.State, terms *basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
 	setStateRules(state, "BETA", "OR")
 
-	for i := range formTyped.FormList {
-		result = append(result, basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(formTyped.FormList[i], terms)))
+	for i := range formTyped.FormList.Slice() {
+		result = append(result, basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(formTyped.FormList.Get(i), terms)))
 	}
 
 	return result
 }
 
-func applyBetaImpRule(formTyped basictypes.Imp, state *complextypes.State, terms basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
+func applyBetaImpRule(formTyped basictypes.Imp, state *complextypes.State, terms *basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
 	setStateRules(state, "BETA", "IMPLY")
 
 	result = append(result, basictypes.MakeSingleElementFormAndTermList(basictypes.MakeFormAndTerm(basictypes.RefuteForm(formTyped.GetF1()), terms)))
@@ -371,7 +363,7 @@ func applyBetaImpRule(formTyped basictypes.Imp, state *complextypes.State, terms
 	return result
 }
 
-func applyBetaEquRule(formTyped basictypes.Equ, state *complextypes.State, terms basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
+func applyBetaEquRule(formTyped basictypes.Equ, state *complextypes.State, terms *basictypes.TermList, result []basictypes.FormAndTermsList) []basictypes.FormAndTermsList {
 	setStateRules(state, "BETA", "EQUIV")
 
 	result = append(result,
@@ -402,7 +394,10 @@ func ApplyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 		setStateRules(state, "DELTA", "EXISTS")
 	}
 
-	return basictypes.MakeSingleElementFormAndTermList(syntax.Skolemize(fnt, append(state.GetMM(), state.GetMC()...)))
+	newMetas := state.GetMM().Copy()
+	newMetas.AppendIfNotContains(state.GetMC().Slice()...)
+
+	return basictypes.MakeSingleElementFormAndTermList(syntax.Skolemize(fnt, newMetas))
 }
 
 /**
@@ -414,7 +409,7 @@ func ApplyDeltaRules(fnt basictypes.FormAndTerms, state *complextypes.State) bas
 *	a formula
 *	the new metavariables
 **/
-func ApplyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes.State) (basictypes.FormAndTermsList, basictypes.MetaList) {
+func ApplyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes.State) (basictypes.FormAndTermsList, *basictypes.MetaList) {
 	switch fnt.GetForm().(type) {
 	case basictypes.Not:
 		setStateRules(state, "GAMMA", "NOT", "EXISTS")
@@ -425,14 +420,4 @@ func ApplyGammaRules(fnt basictypes.FormAndTerms, index int, state *complextypes
 
 	fnt, mm := syntax.Instantiate(fnt, index)
 	return basictypes.MakeSingleElementFormAndTermList(fnt), mm
-}
-
-/* Syntaxic manipulations below */
-
-func crossType(t typing.TypeApp, tf typing.TypeApp) typing.TypeApp {
-	if t == nil {
-		return tf
-	}
-
-	return typing.MkTypeCross(t, tf)
 }

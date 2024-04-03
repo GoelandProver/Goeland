@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**************************/
-/*  z__typecross_test.go  */
-/**************************/
-
 /**
  * This file tests the creation & functions of a TypeCross.
  **/

@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************/
-/* main.go */
-/***************/
+
 /**
 * This file provides the main function for lanche the program.
 **/
@@ -167,7 +165,7 @@ func initEverything() {
 // ILL TODO this function should not have to call the parser. The parser should do it themselves.
 /* Transforms a list of statements into a formula and returns it with its new bound */
 func StatementListToFormula(statements []basictypes.Statement, old_bound int, problemDir string) (form basictypes.Form, bound int, containsEquality bool) {
-	and_list := basictypes.MakeEmptyFormList()
+	and_list := basictypes.NewFormList()
 	var not_form basictypes.Form
 	bound = old_bound
 
@@ -191,7 +189,7 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 
 			if new_form_list != nil {
 				bound = new_bound
-				and_list = append(and_list, new_form_list)
+				and_list.Append(new_form_list)
 			}
 
 		case basictypes.Axiom:
@@ -206,30 +204,34 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 	}
 
 	switch {
-	case len(and_list) == 0 && not_form == nil:
+	case and_list.IsEmpty() && not_form == nil:
 		return nil, bound, containsEquality
-	case len(and_list) == 0:
+	case and_list.IsEmpty():
 		return basictypes.RefuteForm(not_form), bound, containsEquality
 	case not_form == nil:
 		return basictypes.MakerAnd(and_list), bound, containsEquality
 	default:
-		return basictypes.MakerAnd(append(and_list.Flatten(), basictypes.RefuteForm(not_form))), bound, containsEquality
+		flattened := and_list.Flatten()
+		flattened.Append(basictypes.RefuteForm(not_form))
+		return basictypes.MakerAnd(flattened), bound, containsEquality
 	}
 }
 
-func doAxiomStatement(and_list basictypes.FormList, statement basictypes.Statement) basictypes.FormList {
-	new_form := statement.GetForm().RenameVariables()
+func doAxiomStatement(andList *basictypes.FormList, statement basictypes.Statement) *basictypes.FormList {
+	newForm := statement.GetForm().RenameVariables()
 
 	if !global.IsLoaded("dmt") {
-		return append(and_list, new_form)
+		andList.Append(newForm)
+		return andList
 	}
 
-	consumed := dmt.RegisterAxiom(new_form.Copy())
+	consumed := dmt.RegisterAxiom(newForm.Copy())
 	if !consumed {
-		return append(and_list, new_form)
+		andList.Append(newForm)
+		return andList
 	}
 
-	return and_list
+	return andList
 }
 
 func doConjectureStatement(statement basictypes.Statement) basictypes.Form {

@@ -30,12 +30,8 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*******************/
-/* options_list.go */
-/*******************/
-
 /**
-* This file is used to instanciate options
+* This file is used to instantiate options
 **/
 
 package options
@@ -43,6 +39,7 @@ package options
 import (
 	"flag"
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -53,6 +50,8 @@ import (
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	"github.com/GoelandProver/Goeland/plugins/incremental"
 	"github.com/GoelandProver/Goeland/plugins/lambdapi"
+	"github.com/GoelandProver/Goeland/plugins/sateq"
+	"github.com/GoelandProver/Goeland/plugins/tptp"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -82,31 +81,31 @@ func buildOptions() {
 		"debug",
 		false,
 		"Enables printing debug information in the terminal",
-		func(bool) { global.SetDebugTerminal(true) },
-		func(bool) {})
-	(&option[bool]{}).init(
-		"dif",
-		false,
-		"Short for 'Debug In File'. Enables printing debug information in the log file. Won't work when used with the option -wlogs",
-		func(bool) { global.SetDebugFile(true) },
+		func(bool) {
+			global.SetDebug(true)
+			global.EnableDebug()
+		},
 		func(bool) {})
 	(&option[string]{}).init(
 		"log",
 		"logs",
-		"Changes the `file` output for loggers. Won't work when used with the option -wlogs",
+		"Changes the `file` output for loggers. Won't work without the option -wlogs",
 		func(string) {},
-		func(val string) { global.SetLogFile(val) })
+		func(val string) { global.EnableLogFile(val) })
 	(&option[bool]{}).init(
 		"show_trace",
 		false,
 		"Enables the location of the loggers call to be shown in the logs",
-		func(bool) { global.SetShowTrace(true) },
+		func(bool) { global.EnableShowTrace() },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"wlogs",
 		false,
 		"Enables the writing of the logs in files",
-		func(bool) { global.SetWriteLogs(true) },
+		func(bool) {
+			global.SetWriteLogs(true)
+			global.EnableWriteLogs()
+		},
 		func(bool) {})
 
 	(&option[string]{}).init(
@@ -156,10 +155,11 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"proof",
 		false,
-		"Enables the display of a proof of the problem (in TPTP format)",
+		"Enables the display of a proof of the problem (in custom format)",
 		func(bool) {
 			global.SetProof(true)
 			proof.ResetProofFile()
+			search.AddPrintProofAlgorithm(search.BasicOutputProofStruct)
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -180,9 +180,8 @@ func buildOptions() {
 		"Disables equality",
 		func(bool) {},
 		func(noeq bool) {
-			global.SetPlugin("equality", !noeq)
 			if !noeq {
-				equality.InitPlugin()
+				equality.Enable()
 			}
 		})
 	(&option[bool]{}).init(
@@ -222,7 +221,18 @@ func buildOptions() {
 		func(bool) {
 			global.OutputCoq()
 			global.SetProof(true)
-			search.SetPrintProofAlgorithm(coq.PrintCoqOutput)
+			search.AddPrintProofAlgorithm(coq.CoqOutputProofStruct)
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"otptp",
+		false,
+		"Enables the TPTP format for proofs instead of text",
+		func(bool) {
+			global.OutputTPTP()
+			global.SetProof(true)
+			search.AddPrintProofAlgorithm(tptp.TptpOutputProofStruct)
+
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -244,19 +254,13 @@ func buildOptions() {
 		func(bool) { global.SetPreInnerSko(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
-		"compare",
-		false,
-		"Should only be used with the -ocoq parameter. Outputs both the Coq proof and the tableaux proof",
-		func(bool) { global.SetCompareProofs(true) },
-		func(bool) {})
-	(&option[bool]{}).init(
 		"olp",
 		false,
 		"Enables the Lambdapi format for proofs instead of text",
 		func(bool) {
 			global.OutputLambdapi()
 			global.SetProof(true)
-			search.SetPrintProofAlgorithm(lambdapi.PrintLambdapiOutput)
+			search.AddPrintProofAlgorithm(lambdapi.LambdapiOutputProofStruct)
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -269,9 +273,34 @@ func buildOptions() {
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
+		"sateq",
+		false,
+		"Enables the equality unification using a SAT reduction. Will override the use of -noeq",
+		func(bool) {
+			equality.SetTryEquality()
+			sateq.Enable()
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"eagereq",
+		false,
+		"Run equality reasoning every time a new (in)equality is added to the branch",
+		func(bool) {
+			search.EagerEq = true
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"increq",
+		false,
+		"Run equality reasoning incrementally",
+		func(bool) {
+			global.IncrEq = true
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
 		"chrono",
 		false,
-		"Should only be used with the -ocoq or the -olp parameters. Enables the chronometer for deskolemization and proof translation",
+		"Should only be used with the -ocoq, the -olp or the otptp parameters. Enables the chronometer for deskolemization and proof translation",
 		func(bool) {
 			chronoInit()
 		},
@@ -284,11 +313,48 @@ func buildOptions() {
 			search.SetSearchAlgorithm(incremental.NewIncrementalSearch())
 		},
 		func(bool) {})
+	(&option[string]{}).init(
+		"proof_file",
+		"problem_proof",
+		"Should only be used with the -ocoq or the -olp parameters, only works with the -wlogs parameter. Enables the writing of the proof in a specific file. The extension of the file will depend on the type of proof",
+		func(string) {},
+		func(val string) {
+			global.ProofFile = val
+		})
+	(&option[bool]{}).init(
+		"vec",
+		false,
+		"Cannot be used with the -l and the -completeness parameters. Enables the very-eager-closure",
+		func(bool) {
+			global.SetCompleteness(false)
+
+			maxInt := math.MaxInt
+			global.SetLimit(maxInt)
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"no_id",
+		false,
+		"Disables the id in the ToString",
+		func(bool) { basictypes.ToStringId = basictypes.NoIdToString },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"quoted_pred",
+		false,
+		"Print predicates between quotes if they start by a capital letter (TPTP compliance)",
+		func(bool) { basictypes.ToStringId = basictypes.QuotedToString },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"quiet",
+		false,
+		"Remove Goeland output in terminal",
+		func(bool) { global.DisableLoggers() },
+		func(bool) {})
 }
 
 func chronoInit() {
 	oldCoq := coq.MakeCoqProof
-	coq.MakeCoqProof = func(proof *gs3.GS3Sequent, meta basictypes.MetaList) string {
+	coq.MakeCoqProof = func(proof *gs3.GS3Sequent, meta *basictypes.MetaList) string {
 		start := time.Now()
 		result := oldCoq(proof, meta)
 		printChrono("Coq", start)
@@ -296,7 +362,7 @@ func chronoInit() {
 	}
 
 	oldLP := lambdapi.MakeLambdaPiProof
-	lambdapi.MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta basictypes.MetaList) string {
+	lambdapi.MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta *basictypes.MetaList) string {
 		start := time.Now()
 		result := oldLP(proof, meta)
 		printChrono("LP", start)

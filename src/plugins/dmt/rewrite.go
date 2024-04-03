@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**************/
-/* rewrite.go */
-/**************/
-
 /**
 * This file implements the rewrite part of the DMT plugin.
 **/
@@ -46,7 +42,7 @@ import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/global"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
@@ -54,13 +50,13 @@ import (
 // ----------------------------------------------------------------------------
 // Primary algorithms.
 
-func Rewrite(atomic btypes.Form) ([]ctypes.IntSubstAndForm, error) {
+func Rewrite(atomic basictypes.Form) ([]ctypes.IntSubstAndForm, error) {
 	form, polarity := getAtomAndPolarity(atomic)
 	tree := selectFromPolarity(polarity, positiveTree, negativeTree)
 	return rewriteGeneric(tree, atomic, form, polarity)
 }
 
-func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btypes.Form, polarity bool) ([]ctypes.IntSubstAndForm, error) {
+func rewriteGeneric(tree datastruct.DataStructure, atomic basictypes.Form, form basictypes.Form, polarity bool) ([]ctypes.IntSubstAndForm, error) {
 	rewritten := []ctypes.IntSubstAndForm{}
 
 	var err error = nil
@@ -72,7 +68,7 @@ func rewriteGeneric(tree datastruct.DataStructure, atomic btypes.Form, form btyp
 	return rewritten, err
 }
 
-func getRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif []treetypes.MatchingSubstitutions, atomic btypes.Form, polarity bool) ([]ctypes.IntSubstAndForm, error) {
+func getRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif []treetypes.MatchingSubstitutions, atomic basictypes.Form, polarity bool) ([]ctypes.IntSubstAndForm, error) {
 	unifs := sortUnifications(unif, polarity, atomic)
 	if len(unifs) == 0 {
 		rewritten = rewriteFailure(atomic)
@@ -89,7 +85,7 @@ func getRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif []treetypes.M
 	return rewritten, nil
 }
 
-func addRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif treetypes.MatchingSubstitutions, atomic btypes.Form, equivalence btypes.FormList) []ctypes.IntSubstAndForm {
+func addRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif treetypes.MatchingSubstitutions, atomic basictypes.Form, equivalence *basictypes.FormList) []ctypes.IntSubstAndForm {
 	// Keep only useful substitutions
 	useful_subst := ctypes.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas())
 	meta_search := atomic.GetMetas()
@@ -102,7 +98,7 @@ func addRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif treetypes.Mat
 	)
 
 	// Add each candidate to the rewrite slice with precedence order (Top/Bot are prioritized).
-	for _, rewrittenCandidate := range equivalence {
+	for _, rewrittenCandidate := range equivalence.Slice() {
 		rewritten = addUnifToAtomics(rewritten, rewrittenCandidate, filteredUnif)
 	}
 
@@ -115,23 +111,23 @@ func addRewrittenFormulas(rewritten []ctypes.IntSubstAndForm, unif treetypes.Mat
 // ----------------------------------------------------------------------------
 // Supportive functions.
 
-func getAtomAndPolarity(atom btypes.Form) (btypes.Form, bool) {
+func getAtomAndPolarity(atom basictypes.Form) (basictypes.Form, bool) {
 	switch form := atom.Copy().(type) {
-	case btypes.Not:
+	case basictypes.Not:
 		return form.GetForm(), false
 	default:
 		return form, true
 	}
 }
 
-func rewriteFailure(atomic btypes.Form) []ctypes.IntSubstAndForm {
+func rewriteFailure(atomic basictypes.Form) []ctypes.IntSubstAndForm {
 	return []ctypes.IntSubstAndForm{
-		ctypes.MakeIntSubstAndForm(-1, ctypes.MakeSubstAndForm(treetypes.Failure(), btypes.MakeSingleElementList(atomic))),
+		ctypes.MakeIntSubstAndForm(-1, ctypes.MakeSubstAndForm(treetypes.Failure(), basictypes.NewFormList(atomic))),
 	}
 }
 
-func addUnifToAtomics(atomics []ctypes.IntSubstAndForm, candidate btypes.Form, unif treetypes.MatchingSubstitutions) []ctypes.IntSubstAndForm {
-	substAndForm := ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), btypes.MakeSingleElementList(candidate))
+func addUnifToAtomics(atomics []ctypes.IntSubstAndForm, candidate basictypes.Form, unif treetypes.MatchingSubstitutions) []ctypes.IntSubstAndForm {
+	substAndForm := ctypes.MakeSubstAndForm(unif.GetSubst().Copy(), basictypes.NewFormList(candidate))
 	if isBotOrTop(candidate) {
 		atomics = ctypes.InsertFirstIntSubstAndFormList(atomics, ctypes.MakeIntSubstAndForm(unif.GetForm().GetIndex(), substAndForm))
 	} else {
@@ -140,11 +136,11 @@ func addUnifToAtomics(atomics []ctypes.IntSubstAndForm, candidate btypes.Form, u
 	return atomics
 }
 
-func isBotOrTop(form btypes.Form) bool {
-	return Is[btypes.Bot](form) || Is[btypes.Top](form)
+func isBotOrTop(form basictypes.Form) bool {
+	return Is[basictypes.Bot](form) || Is[basictypes.Top](form)
 }
 
-func sortUnifications(unifs []treetypes.MatchingSubstitutions, polarity bool, atomic btypes.Form) []treetypes.MatchingSubstitutions {
+func sortUnifications(unifs []treetypes.MatchingSubstitutions, polarity bool, atomic basictypes.Form) []treetypes.MatchingSubstitutions {
 	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
 
 	sortedUnifs := []treetypes.MatchingSubstitutions{}
@@ -160,8 +156,8 @@ func sortUnifications(unifs []treetypes.MatchingSubstitutions, polarity bool, at
 }
 
 // Priority of substitutions: Top/Bottom > others
-func insert(sortedUnifs []treetypes.MatchingSubstitutions, list btypes.FormList, unif treetypes.MatchingSubstitutions) []treetypes.MatchingSubstitutions {
-	if list.Contains(btypes.MakerTop()) || list.Contains(btypes.MakerBot()) {
+func insert(sortedUnifs []treetypes.MatchingSubstitutions, list *basictypes.FormList, unif treetypes.MatchingSubstitutions) []treetypes.MatchingSubstitutions {
+	if list.Contains(basictypes.MakerTop()) || list.Contains(basictypes.MakerBot()) {
 		sortedUnifs = insertFirst(sortedUnifs, unif)
 	} else {
 		sortedUnifs = append(sortedUnifs, unif)
@@ -187,8 +183,8 @@ func isFiltering(ms treetypes.MatchingSubstitutions) bool {
 	return checkAllMetaAreInstanciated(metas, subst)
 }
 
-func checkAllMetaAreInstanciated(metas btypes.MetaList, subst treetypes.Substitutions) bool {
-	for _, m := range metas {
+func checkAllMetaAreInstanciated(metas *basictypes.MetaList, subst treetypes.Substitutions) bool {
+	for _, m := range metas.Slice() {
 		m_found := false
 		for _, s := range subst {
 			k, v := s.Get()
@@ -203,13 +199,13 @@ func checkAllMetaAreInstanciated(metas btypes.MetaList, subst treetypes.Substitu
 	return true
 }
 
-func checkMetaAreFromSearch(metas btypes.MetaList, subst treetypes.Substitutions) bool {
+func checkMetaAreFromSearch(metas *basictypes.MetaList, subst treetypes.Substitutions) bool {
 	for _, s := range subst {
 		k, v := s.Get()
 		if !metas.Contains(k) {
 			return false
 		} else {
-			if meta_v, ok := v.(btypes.Meta); ok && !metas.Contains(meta_v) {
+			if meta_v, ok := v.(basictypes.Meta); ok && !metas.Contains(meta_v) {
 				return false
 			}
 		}
@@ -217,21 +213,21 @@ func checkMetaAreFromSearch(metas btypes.MetaList, subst treetypes.Substitutions
 	return true
 }
 
-func getUnifiedEquivalence(atom btypes.Form, subst treetypes.Substitutions, polarity bool) (btypes.FormList, error) {
+func getUnifiedEquivalence(atom basictypes.Form, subst treetypes.Substitutions, polarity bool) (*basictypes.FormList, error) {
 	equivalence := findEquivalence(atom, polarity)
 	if equivalence == nil {
 		return nil, fmt.Errorf("[DMT] Fatal error : no rewrite rule found when an unification has been found : %v", atom.ToString())
 	}
 
-	res := btypes.MakeEmptyFormList()
-	for _, f := range equivalence {
-		res = res.AppendIfNotContains(substitute(f, subst))
+	res := basictypes.NewFormList()
+	for _, f := range equivalence.Slice() {
+		res.AppendIfNotContains(substitute(f, subst))
 	}
 
 	return res, nil
 }
 
-func findEquivalence(atom btypes.Form, polarity bool) btypes.FormList {
+func findEquivalence(atom basictypes.Form, polarity bool) *basictypes.FormList {
 	return selectFromPolarity(polarity, positiveRewrite, negativeRewrite)[atom.ToString()]
 }
 

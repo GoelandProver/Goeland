@@ -29,11 +29,9 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***********************/
-/* constraints_type.go */
-/***********************/
+
 /**
-* This file contains the type definition of a contraint.
+* This file contains the type definition of a constraint.
 **/
 
 package equality
@@ -43,6 +41,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
@@ -54,54 +53,55 @@ const (
 
 type Constraint struct {
 	ctype int
-	tp    TermPair
+	tp    eqStruct.TermPair
 }
 
 func (c Constraint) getCType() int {
 	return c.ctype
 }
-func (c Constraint) getTP() TermPair {
-	return c.tp.copy()
+func (c Constraint) getTP() eqStruct.TermPair {
+	return c.tp.Copy()
 }
-func (c *Constraint) setTP(tp TermPair) {
+func (c *Constraint) setTP(tp eqStruct.TermPair) {
 	c.tp = tp
 }
 func (c Constraint) copy() Constraint {
 	return MakeConstraint(c.getCType(), c.getTP())
 }
 func (c Constraint) equals(c2 Constraint) bool {
-	return ((c.getCType() == c2.getCType()) && c.getTP().equals(c2.getTP()))
+	return ((c.getCType() == c2.getCType()) && c.getTP().Equals(c2.getTP()))
 }
 func (c Constraint) toString() string {
 	switch c.getCType() {
 	case PREC:
-		return c.getTP().getT1().ToString() + " ≺ " + c.getTP().getT2().ToString()
+		return c.getTP().GetT1().ToString() + " ≺ " + c.getTP().GetT2().ToString()
 	case EQ:
-		return c.getTP().getT1().ToString() + " ≃ " + c.getTP().getT2().ToString()
+		return c.getTP().GetT1().ToString() + " ≃ " + c.getTP().GetT2().ToString()
 	default:
 		global.PrintError("CT", "Constraint type unknown")
 		return "Constraint type unknown"
 	}
 }
 
-func MakeConstraint(i int, tp TermPair) Constraint {
-	return Constraint{i, tp.copy()}
+func MakeConstraint(i int, tp eqStruct.TermPair) Constraint {
+	return Constraint{i, tp.Copy()}
 }
 
 func (c *Constraint) applySubstitution(s treetypes.Substitutions) {
 	for _, subst := range s {
 		m, t := subst.Get()
-		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().getT1())
-		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().getT2())
-		c.setTP(makeTermPair(new_t1, new_t2))
+		new_t1 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().GetT1())
+		new_t2 := complextypes.ApplySubstitutionOnTerm(m, t, c.getTP().GetT2())
+		c.setTP(eqStruct.MakeTermPair(new_t1, new_t2))
 	}
 }
 
 /* return true if the constraint is not violated, false otherwise  + true is the contraint is comparable, false otherwise + update c into the useful part of the constraint */
 func (c *Constraint) checkLPO() (bool, bool) {
 	global.PrintDebug("CLPO", fmt.Sprintf("Type %v, cst : %v", c.getCType(), c.toString()))
-	cs := lpo.compare(c.getTP().getT1(), c.getTP().getT2())
+	cs := compareLPO(c.getTP().GetT1(), c.getTP().GetT2())
 	global.PrintDebug("CLPO", fmt.Sprintf("res : %v, is_comparable : %v", cs.order, cs.is_comparable))
+
 	if cs.is_comparable {
 		switch c.getCType() {
 		case PREC:
@@ -113,30 +113,27 @@ func (c *Constraint) checkLPO() (bool, bool) {
 			return false, true
 		}
 	}
-	//global.PrintDebug("CLPO", fmt.Sprintf("new_t1 : %v, new_t2 : %v", cs.new_t1.ToString(), cs.new_t2.ToString()))
-	// if (!c.getTP().getT1().Equals(cs.new_t1)) || (!c.getTP().getT2().Equals(cs.new_t2)) {
-	//	global.PrintDebug("CLPO", fmt.Sprintf("Compare LPO changed terms : %v and %v became : %v and %v", c.getTP().getT1().ToString(), c.getTP().getT2().ToString(), cs.new_t1.ToString(), cs.new_t2.ToString()))
-	// }
-	//c.setTP(makeTermPair(cs.new_t1, cs.new_t2))
+
+	if cs.new_t1 != nil && cs.new_t2 != nil {
+		c.setTP(eqStruct.MakeTermPair(cs.new_t1, cs.new_t2))
+	}
+
 	return true, false
 }
 
 /* append to the map and check if the new element is not in the other list */
-func appendToMapAndCheck(m string, t basictypes.Term, map_constraintes *map[string][]basictypes.TermList, index_append, index_max_other_lists int) bool {
+func appendToMapAndCheck(m string, t basictypes.Term, map_constraintes *map[string][]*basictypes.TermList, index_append, index_max_other_lists int) bool {
 	if _, ok := (*map_constraintes)[m]; !ok {
-		(*map_constraintes)[m] = make([]basictypes.TermList, index_max_other_lists+1)
+		(*map_constraintes)[m] = make([]*basictypes.TermList, index_max_other_lists+1)
 		for i := 0; i <= index_max_other_lists; i++ {
-			(*map_constraintes)[m][i] = basictypes.MakeEmptyTermList()
+			(*map_constraintes)[m][i] = basictypes.NewTermList()
 		}
 	}
-	(*map_constraintes)[m][index_append] = append((*map_constraintes)[m][index_append], t)
-	// global.PrintDebug("ATMAC", fmt.Sprintf("%v", *map_constraintes))
+
+	(*map_constraintes)[m][index_append].Append(t)
 
 	for i := 0; i <= index_max_other_lists; i++ {
-
-		// global.PrintDebug("ATMAC", fmt.Sprintf("Term : %v - in : %v", m, basictypes.TermListToString((*map_constraintes)[m][i])))
 		if i != index_append && (*map_constraintes)[m][i].Contains(t) {
-			// global.PrintDebug("ATMAC", "Term found in list")
 			return false
 		}
 	}

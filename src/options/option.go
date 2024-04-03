@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/*************/
-/* option.go */
-/*************/
-
 /**
 * This file defines the structure for options. To make new options, go to the options_list.go file.
 **/
@@ -78,6 +74,19 @@ func (op *option[T]) doFunctions() {
 	}
 }
 
+/*
+Using this function, you can initialize an option of type T.
+
+- name : the name of the option. The option will be called with -'name'
+
+- defaultValue : the value of the option if its not used
+
+- usage : the string of text to explain the option
+
+- funcNotDefault : a function that will be called if the option is used. The parameter is the value of the option
+
+- funcAlways : a function that will be called regardless if the option was used or not (if it wasn't, the parameter will be 'defaultValue')
+*/
 func (op *option[T]) init(name string, defaultValue T, usage string, funcNotDefault func(T), funcAlways func(T)) {
 	op.initOption(defaultValue, funcNotDefault, funcAlways)
 

@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************************/
-/* equality_rules_unify.go */
-/***************************/
+
 /**
 * This file contains some functions about unification and stop cases for equality reasoning.
 **/
@@ -65,7 +63,7 @@ func makeAnswerEP(found bool, substs []treetypes.Substitutions) answerEP {
 * check if the search should stop, ie if s = t
 **/
 func checkStopCases(ep EqualityProblem) bool {
-	return ep.getS().Equals(ep.getT())
+	return ep.GetS().Equals(ep.GetT())
 }
 
 /* Try to unify s and t */
@@ -76,12 +74,10 @@ func tryUnifySAndT(s, t basictypes.Term) (bool, treetypes.Substitutions) {
 }
 
 /* check unfiication */
-func checkUnif(ep EqualityProblem) (bool, []treetypes.Substitutions) {
-	found := false
-	substs_res := []treetypes.Substitutions{}
-	if ok, subst_found := tryUnifySAndT(ep.getS(), ep.getT()); ok {
+func checkUnif(ep EqualityProblem) (found bool, substs_res []treetypes.Substitutions) {
+	if ok, subst_found := tryUnifySAndT(ep.GetS(), ep.GetT()); ok {
 		global.PrintDebug("ERP", "Unif found !")
-		new_subst := treesearch.AddUnification(ep.getS(), ep.getT(), ep.getC().getSubst())
+		new_subst := treesearch.AddUnification(ep.GetS(), ep.GetT(), ep.getC().getSubst())
 		if !new_subst.Equals(treetypes.Failure()) {
 			is_consistant := ep.c.getPrec().isConsistantWithSubst(new_subst)
 			if is_consistant {

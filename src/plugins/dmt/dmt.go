@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**********/
-/* dmt.go */
-/**********/
-
 /**
 * This file inits the global variables of the DMT and hook the functions to the prover.
 **/
@@ -46,13 +42,12 @@ import (
 	"strings"
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
-	"github.com/GoelandProver/Goeland/global"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-var positiveRewrite map[string]btypes.FormList /* Stores rewrites of atoms with positive occurrences */
-var negativeRewrite map[string]btypes.FormList /* Stores rewrites of atoms with negative occurrences */
+var positiveRewrite map[string]*basictypes.FormList /* Stores rewrites of atoms with positive occurrences */
+var negativeRewrite map[string]*basictypes.FormList /* Stores rewrites of atoms with negative occurrences */
 
 var positiveTree datastruct.DataStructure /* Matches atoms with positive occurrences */
 var negativeTree datastruct.DataStructure /* Matches atoms with negative occurrences */
@@ -60,12 +55,10 @@ var negativeTree datastruct.DataStructure /* Matches atoms with negative occurre
 var activatePolarized bool
 var preskolemize bool
 
-var debugActivated bool
-
 var flagPolarized = flag.Bool("polarized", false, "Activate polarized DMT")
 var flagPresko = flag.Bool("presko", false, "Activate preskolemization on DMT")
 
-var registeredAxioms btypes.FormList
+var registeredAxioms *basictypes.FormList
 
 /**
  * Base function needed to initialize any plugin of Goéland.
@@ -87,11 +80,12 @@ func InitPluginTests(polarized, presko bool) {
 }
 
 func initPluginGlobalVariables() {
-	positiveRewrite = make(map[string]btypes.FormList)
-	negativeRewrite = make(map[string]btypes.FormList)
-	positiveTree = new(treesearch.Node)
-	negativeTree = new(treesearch.Node)
-	debugActivated = global.GetDebug()
+	positiveRewrite = make(map[string]*basictypes.FormList)
+	negativeRewrite = make(map[string]*basictypes.FormList)
+	positiveTree = treesearch.NewNode()
+	negativeTree = treesearch.NewNode()
+
+	registeredAxioms = basictypes.NewFormList()
 }
 
 /**
@@ -122,6 +116,6 @@ func parsePluginOptions() {
 	fmt.Println(output)
 }
 
-func GetRegisteredAxioms() btypes.FormList {
+func GetRegisteredAxioms() *basictypes.FormList {
 	return registeredAxioms
 }

@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**************************/
-/*  parameterizedtype.go  */
-/**************************/
-
 /**
  * This file declares one of the basic types used for typing the prover :
  * ParameterizedType, a type which is parameterized with other types.

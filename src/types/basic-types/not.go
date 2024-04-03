@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**********/
-/* not.go */
-/**********/
-
 /**
 * This file implements a negation of a formula.
 **/
@@ -49,20 +45,20 @@ type Not struct {
 	*MappedString
 	index int
 	f     Form
-	MetaList
+	*MetaList
 }
 
 /** Constructors **/
 
-func MakeNotSimple(i int, form Form, metas MetaList) Not {
+func MakeNotSimple(i int, form Form, metas *MetaList) Not {
 	fms := &MappedString{}
 	not := Not{fms, i, form, metas}
-	fms.MappableString = not
+	fms.MappableString = &not
 	return not
 }
 
 func MakeNot(i int, form Form) Not {
-	return MakeNotSimple(i, form, make(MetaList, 0))
+	return MakeNotSimple(i, form, NewMetaList())
 }
 
 func MakerNot(form Form) Not {
@@ -77,7 +73,7 @@ func (n Not) GetIndex() int {
 	return n.index
 }
 
-func (n Not) GetMetas() MetaList {
+func (n Not) GetMetas() *MetaList {
 	return n.GetForm().GetMetas()
 }
 
@@ -85,13 +81,16 @@ func (n Not) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (n Not) GetSubTerms() TermList {
+func (n Not) GetSubTerms() *TermList {
 	return n.GetForm().GetSubTerms()
 }
 
-func (n Not) Equals(f any) bool {
-	oth, isNot := f.(Not)
-	return isNot && oth.f.Equals(n.f)
+func (n Not) Equals(other any) bool {
+	if typed, ok := other.(Not); ok {
+		return typed.f.Equals(n.f)
+	}
+
+	return false
 }
 
 func (n Not) Copy() Form {
@@ -118,18 +117,13 @@ func (n Not) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
 }
 
-func (n Not) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f, res := n.f.ReplaceVarByTerm(old, new)
+func (n Not) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	f, res := n.f.ReplaceTermByTerm(old, new)
 	return MakeNotSimple(n.GetIndex(), f, n.MetaList), res
 }
 
 func (n Not) RenameVariables() Form {
 	return MakeNot(n.GetIndex(), n.f.RenameVariables())
-}
-
-func (n Not) CleanFormula() Form {
-	n.f = n.f.CleanFormula()
-	return n
 }
 
 func (n Not) ReplaceMetaByTerm(meta Meta, term Term) Form {
@@ -147,21 +141,21 @@ func (n Not) SubstituteVarByMeta(old Var, new Meta) Form {
 	return MakeNotSimple(n.index, f, f.GetInternalMetas().Copy())
 }
 
-func (n Not) GetInternalMetas() MetaList {
+func (n Not) GetInternalMetas() *MetaList {
 	return n.MetaList
 }
 
-func (n Not) SetInternalMetas(m MetaList) Form {
+func (n Not) SetInternalMetas(m *MetaList) Form {
 	n.MetaList = m
 	return n
 }
 
-func (n Not) GetSubFormulasRecur() FormList {
+func (n Not) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(n)
 }
 
-func (n Not) GetChildFormulas() FormList {
-	return FormList{n.GetForm()}
+func (n Not) GetChildFormulas() *FormList {
+	return NewFormList(n.GetForm())
 }
 
 /** Utils **/

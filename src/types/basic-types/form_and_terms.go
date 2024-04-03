@@ -30,20 +30,18 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/* formAndTerm.go */
-/******************/
-
 /**
 * This file contains the implementation of formAndTerm.
 **/
 
 package basictypes
 
+import "github.com/GoelandProver/Goeland/global"
+
 /* id (for predicate) */
 type FormAndTerms struct {
 	form  Form
-	Terms TermList
+	Terms *TermList
 }
 
 func (fat FormAndTerms) GetForm() Form {
@@ -54,7 +52,7 @@ func (fat FormAndTerms) GetForm() Form {
 	}
 }
 
-func (fat FormAndTerms) GetTerms() TermList {
+func (fat FormAndTerms) GetTerms() *TermList {
 	return fat.Terms.Copy()
 }
 
@@ -62,11 +60,11 @@ func (fat *FormAndTerms) SetForm(form Form) {
 	fat.form = form
 }
 
-func (fat *FormAndTerms) SetTerms(Terms TermList) {
+func (fat *FormAndTerms) SetTerms(Terms *TermList) {
 	fat.Terms = Terms
 }
 
-func MakeFormAndTerm(f Form, tl TermList) FormAndTerms {
+func MakeFormAndTerm(f Form, tl *TermList) FormAndTerms {
 	return FormAndTerms{f, tl}
 }
 
@@ -79,15 +77,15 @@ func (fat FormAndTerms) Equals(fat2 FormAndTerms) bool {
 }
 
 func (fat FormAndTerms) ToString() string {
-	return fat.GetForm().ToString()
+	return fat.GetForm().ToMappedString(DefaultMapString, global.GetTypeProof())
 }
 
-func (fat FormAndTerms) SubstituteBy(metas MetaList, terms TermList) FormAndTerms {
+func (fat FormAndTerms) SubstituteBy(metas *MetaList, terms *TermList) FormAndTerms {
 	result := fat.Copy()
 
-	for i := range metas {
-		result.form = result.form.ReplaceMetaByTerm(metas[i], terms[i])
-		result.Terms = result.Terms.replaceAllOccurences(metas[i], terms[i])
+	for i := range metas.Slice() {
+		result.form = result.form.ReplaceMetaByTerm(metas.Get(i), terms.Get(i))
+		result.Terms = result.Terms.replaceOccurrence(metas.Get(i), terms.Get(i))
 	}
 
 	return result

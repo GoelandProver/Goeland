@@ -29,9 +29,6 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*************/
-/* search.go */
-/************/
 
 package search
 
@@ -71,9 +68,9 @@ func (nds *nonDestructiveSearch) manageRewriteRules(fatherId uint64, state compl
 }
 
 /* Choose substitution - whitout meta in lastAppliedSubst */
-func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestructive(sl []complextypes.SubstAndForm, ml basictypes.MetaList) (complextypes.SubstAndForm, []complextypes.SubstAndForm) {
+func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestructive(sl []complextypes.SubstAndForm, ml *basictypes.MetaList) (complextypes.SubstAndForm, []complextypes.SubstAndForm) {
 	for i, v := range sl {
-		if !v.GetSubst().GetMeta().IsInclude(ml) {
+		if !v.GetSubst().GetMeta().IsIncludeInsideOF(ml) {
 			return v, complextypes.RemoveSubstFromSubstAndFormList(i, sl)
 		}
 	}
@@ -144,17 +141,19 @@ func (nds *nonDestructiveSearch) catchFormulaToInstantiate(subst_found treetypes
 /** Instantiate a formula with a substitution
 * Got the substitution (X, a) and reintroduce ForAll x P(x) -> need to reintroduce P(a). Remplace immediatly the new generated metavariable by a.
 **/
-func (nds *nonDestructiveSearch) instantiate(father_id uint64, st *complextypes.State, c Communication, index int, s complextypes.SubstAndForm) {
+func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *complextypes.State, c Communication, index int, s complextypes.SubstAndForm) {
 	global.PrintDebug("PS", fmt.Sprintf("Instantiate with subst : %v ", s.GetSubst().ToString()))
-	new_meta_generator := st.GetMetaGen()
-	reslf := basictypes.ReintroduceMeta(&new_meta_generator, index, st.GetN())
-	st.SetMetaGen(new_meta_generator)
+	newMetaGenerator := state.GetMetaGen()
+	reslf := basictypes.ReintroduceMeta(&newMetaGenerator, index, state.GetN())
+	state.SetMetaGen(newMetaGenerator)
 	global.PrintDebug("PS", fmt.Sprintf("Instantiate the formula : %s", reslf.ToString()))
 
 	// Apply gamma rule
-	new_lf, new_metas := ApplyGammaRules(reslf, index, st)
-	st.SetLF(new_lf)
-	st.SetMC(append(st.GetMC(), new_metas...))
+	newLf, newMetas := ApplyGammaRules(reslf, index, state)
+	state.SetLF(newLf)
+	newMC := state.GetMC().Copy()
+	newMC.AppendIfNotContains(newMetas.Slice()...)
+	state.SetMC(newMC)
 
 	// I got a substitution {(X_0, a)}
 	// Pour tout X, Y, ... Pour tout x : P(x, y, x) -> Impossible d'avoir 2 x différents avec le même nom
@@ -173,13 +172,13 @@ func (nds *nonDestructiveSearch) instantiate(father_id uint64, st *complextypes.
 	association_subst := treetypes.Substitutions{}
 
 	// Associate new meta with old meta
-	for _, new_meta := range new_metas {
+	for _, new_meta := range newMetas.Slice() {
 		found := false
 		if !found {
 			// La meta nouvellement générée n'apparaît pas dans la substitution
 			// Trouver celle de la formula de base
-			for _, f := range s.GetForm() {
-				for _, term_formula := range f.GetMetas() {
+			for _, f := range s.GetForm().Slice() {
+				for _, term_formula := range f.GetMetas().Slice() {
 					if !found && term_formula.IsMeta() && term_formula.GetName() == new_meta.GetName() {
 						association_subst.Set(new_meta, term_formula)
 						found = true
@@ -189,7 +188,7 @@ func (nds *nonDestructiveSearch) instantiate(father_id uint64, st *complextypes.
 
 		}
 		if !found { // Vérifier dans substapplied
-			for _, subst := range st.GetAppliedSubst().GetSubst() {
+			for _, subst := range state.GetAppliedSubst().GetSubst() {
 				original_meta, original_term := subst.Get()
 				if !found && original_meta.GetName() == new_meta.GetName() && !found {
 					association_subst.Set(new_meta, original_term)
@@ -202,7 +201,7 @@ func (nds *nonDestructiveSearch) instantiate(father_id uint64, st *complextypes.
 		}
 	}
 
-	new_subst, same_key := treesearch.MergeSubstitutions(association_subst, st.GetAppliedSubst().GetSubst())
+	new_subst, same_key := treesearch.MergeSubstitutions(association_subst, state.GetAppliedSubst().GetSubst())
 	if same_key {
 		global.PrintInfo("PS", "Same key in S2 and S1")
 	}
@@ -233,20 +232,20 @@ func (nds *nonDestructiveSearch) instantiate(father_id uint64, st *complextypes.
 	// 	}
 	// }
 
-	global.PrintDebug("PS", fmt.Sprintf("Applied subst: %s", st.GetAppliedSubst().GetSubst().ToString()))
+	global.PrintDebug("PS", fmt.Sprintf("Applied subst: %s", state.GetAppliedSubst().GetSubst().ToString()))
 	global.PrintDebug("PS", fmt.Sprintf("Real substitution applied : %s", new_subst.ToString()))
 
-	st.SetLF(complextypes.ApplySubstitutionsOnFormAndTermsList(new_subst, st.GetLF()))
+	state.SetLF(complextypes.ApplySubstitutionsOnFormAndTermsList(new_subst, state.GetLF()))
 
-	ms, same_key := treesearch.MergeSubstitutions(st.GetAppliedSubst().GetSubst(), new_subst)
+	ms, same_key := treesearch.MergeSubstitutions(state.GetAppliedSubst().GetSubst(), new_subst)
 	if same_key {
 		global.PrintError("PS", "Same key in S2 and S1")
 	}
 	if ms.Equals(treetypes.Failure()) {
 		global.PrintError("PS", "MergeSubstitutions return failure")
 	}
-	st.SetAppliedSubst(complextypes.MakeSubstAndForm(ms, s.GetForm()))
-	st.SetLastAppliedSubst(s)
+	state.SetAppliedSubst(complextypes.MakeSubstAndForm(ms, s.GetForm()))
+	state.SetLastAppliedSubst(s)
 }
 
 /**
@@ -276,7 +275,7 @@ func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64
 		st.SetSubstsFound(st.GetSubstsFound()[1:])
 	}
 
-	global.PrintDebug("PS", fmt.Sprintf("Choosen subst : %v - HasInCommon : %v", new_choosen_subst.GetSubst().ToString(), new_choosen_subst.GetSubst().GetMeta().HasInCommon(st.GetLastAppliedSubst().GetSubst().GetMeta())))
+	global.PrintDebug("PS", fmt.Sprintf("Choosen subst : %v - HasInCommon : %v", new_choosen_subst.GetSubst().ToString(), new_choosen_subst.GetSubst().GetMeta().HasMetaInCommonWith(st.GetLastAppliedSubst().GetSubst().GetMeta())))
 	global.PrintDebug("PS", fmt.Sprintf("AreRulesApplicable : %v", st.AreRulesApplicable()))
 
 	choosen_subst = new_choosen_subst

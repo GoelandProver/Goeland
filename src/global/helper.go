@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*************/
-/* helper.go */
-/*************/
+
 /**
 * This file contains the helper functions.
 **/
@@ -50,6 +48,7 @@ import (
 
 var ocoq = false
 var olambdapi = false
+var otptp = false
 var Assisted = false
 var destructive = true
 var nb_gor = 0
@@ -74,18 +73,18 @@ var isTypeProof = false
 var arithModule = false
 var innerSkolem = false
 var preInnerSko = false
-var compareProofs = false
 
-var debugTerminal = false
-var debugFile = false
-var showTrace = false
-var logFile string
+var IncrEq = false
+
+var debug = false
 var writeLogs = false
 
 var cpuProfile string
 var memProfile string
 
 var isConjectureFound = false
+
+var ProofFile string
 
 // Executable path
 var current_directory, _ = os.Executable()
@@ -119,23 +118,7 @@ func GetGID() uint64 {
 
 /* Getters */
 func GetDebug() bool {
-	return debugTerminal || debugFile
-}
-
-func GetDebugTerminal() bool {
-	return debugTerminal
-}
-
-func GetDebugFile() bool {
-	return debugFile
-}
-
-func GetShowTrace() bool {
-	return showTrace
-}
-
-func GetLogFile() string {
-	return logFile
+	return debug
 }
 
 func GetWriteLogs() bool {
@@ -218,6 +201,10 @@ func IsLambdapiOutput() bool {
 	return olambdapi
 }
 
+func IsTPTPOutput() bool {
+	return otptp
+}
+
 func GetProblemName() string {
 	return problem_name
 }
@@ -262,25 +249,9 @@ func IsPreInnerSko() bool {
 	return preInnerSko
 }
 
-func CompareProofs() bool {
-	return compareProofs
-}
-
 /* Setters */
-func SetDebugTerminal(b bool) {
-	debugTerminal = b
-}
-
-func SetDebugFile(b bool) {
-	debugFile = b
-}
-
-func SetShowTrace(b bool) {
-	showTrace = b
-}
-
-func SetLogFile(s string) {
-	logFile = s
+func SetDebug(b bool) {
+	debug = b
 }
 
 func SetWriteLogs(b bool) {
@@ -339,6 +310,10 @@ func OutputLambdapi() {
 	olambdapi = true
 }
 
+func OutputTPTP() {
+	otptp = true
+}
+
 func SetPlugin(s string, b bool) {
 	lock_plugins.Lock()
 	plugins[s] = b
@@ -387,8 +362,4 @@ func SetInnerSko(b bool) {
 
 func SetPreInnerSko(b bool) {
 	preInnerSko = b
-}
-
-func SetCompareProofs(b bool) {
-	compareProofs = b
 }

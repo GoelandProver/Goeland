@@ -29,42 +29,28 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/****************/
-/* term_pair.go */
-/****************/
-/**
-* This file contains the type definition for equality reasonning.
-**/
+package sateq
 
-package equality
+import (
+	"fmt"
 
-import basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	"github.com/go-air/gini/z"
+)
 
-/* A pair of two terms */
-type TermPair struct {
-	t1, t2 basictypes.Term
+type Lit z.Lit
+
+func (l Lit) Equals(other any) bool {
+	if typed, ok := other.(Lit); ok {
+		return uint32(typed) == uint32(l)
+	}
+
+	return false
 }
 
-func (tp TermPair) getT1() basictypes.Term {
-	return tp.t1.Copy()
+func (l Lit) ToString() string {
+	return fmt.Sprintf("%v", uint32(l))
 }
-func (tp TermPair) getT2() basictypes.Term {
-	return tp.t2.Copy()
-}
-func (tp TermPair) copy() TermPair {
-	return makeTermPair(tp.getT1(), tp.getT2())
-}
-func (tp TermPair) equals(tp2 TermPair) bool {
-	return tp.getT1().Equals(tp2.getT1()) && tp.getT2().Equals(tp2.getT2())
-}
-func (tp TermPair) equalsModulo(tp2 TermPair) bool {
-	return (tp.getT1().Equals(tp2.getT1()) && tp.getT2().Equals(tp2.getT2())) ||
-		(tp.getT1().Equals(tp2.getT2()) && tp.getT2().Equals(tp2.getT1()))
 
-}
-func (tp TermPair) toString() string {
-	return tp.getT1().ToString() + " ≈ " + tp.getT2().ToString()
-}
-func makeTermPair(t1, t2 basictypes.Term) TermPair {
-	return TermPair{t1.Copy(), t2.Copy()}
+func (l Lit) Not() Lit {
+	return Lit(z.Lit(l).Not())
 }

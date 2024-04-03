@@ -29,9 +29,6 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*************/
-/* search.go */
-/************/
 
 /**
 * This file contains functions and types common to destructive and non-destructive version of tableaux and the search algorithm
@@ -46,7 +43,6 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
-	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 type SearchAlgorithm interface {
@@ -54,18 +50,12 @@ type SearchAlgorithm interface {
 	SetApplyRules(func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int))
 }
 
-var printProofAlgorithm func([]proof.ProofStruct, basictypes.MetaList)
 var UsedSearch SearchAlgorithm
+
+var EagerEq = false
 
 func init() {
 	SetSearchAlgorithm(NewDestructiveSearch())
-	SetPrintProofAlgorithm(func(final_proof []proof.ProofStruct, metaList basictypes.MetaList) {
-		fmt.Printf("%v", proof.ProofStructListToText(final_proof))
-	})
-}
-
-func SetPrintProofAlgorithm(function func([]proof.ProofStruct, basictypes.MetaList)) {
-	printProofAlgorithm = function
 }
 
 func SetSearchAlgorithm(algo SearchAlgorithm) {
@@ -79,22 +69,11 @@ func SetApplyRules(function func(uint64, complextypes.State, Communication, basi
 /* Begin the proof search */
 func Search(formula basictypes.Form, bound int) {
 	global.PrintDebug("MAIN", "Start search")
-	formula = formula.CleanFormula()
 	global.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", formula.ToString()))
 
 	res := UsedSearch.Search(formula, bound)
 
 	PrintSearchResult(res)
-}
-
-func PrintProof(res bool, final_proof []proof.ProofStruct, uninstanciatedMeta basictypes.MetaList) {
-	if global.GetProof() && res {
-		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
-
-		printProofAlgorithm(final_proof, uninstanciatedMeta)
-
-		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output end Proof for %v", "%", global.GetProblemName()))
-	}
 }
 
 func PrintSearchResult(res bool) {
@@ -122,13 +101,13 @@ func PrintSearchResult(res bool) {
 		}
 	}
 
-	global.PrintInfo("Res", fmt.Sprintf("%v RES : %v", "%", validity))
+	global.PrintInfo("MAIN", fmt.Sprintf("%v RES : %v", "%", validity))
 	printStandardSolution(status)
 }
 
 // Do not change this function, it is the standard output for TPTP files
 func printStandardSolution(status string) {
-	fmt.Printf("%s SZS status %v for %v\n", "%", status, global.GetProblemName())
+	global.PrintInfo("MAIN", fmt.Sprintf("%s SZS status %v for %v\n", "%", status, global.GetProblemName()))
 }
 
 func retrieveMetaFromSubst(s treetypes.Substitutions) []int {

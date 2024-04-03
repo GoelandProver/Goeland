@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*************************/
-/* constraints_struct.go */
-/*************************/
+
 /**
 * This file contains the type definition of a constraint struct for equality reasoning.
 **/
@@ -70,9 +68,6 @@ func (cs *ConstraintStruct) setPrec(cl ConstraintList) {
 func (cs *ConstraintStruct) setAllConstraits(cl ConstraintList) {
 	cs.all_constraints = cl.Copy()
 }
-func (cs *ConstraintStruct) addPrec(c Constraint) {
-	cs.setPrec(append(cs.getPrec(), c))
-}
 func (cs *ConstraintStruct) addAllConstraints(c Constraint) {
 	cs.setAllConstraits(append(cs.getAllConstraints(), c))
 }
@@ -85,11 +80,11 @@ func (cs ConstraintStruct) copy() ConstraintStruct {
 func (cs ConstraintStruct) toString() string {
 	return "EQ subst : " + cs.getSubst().ToString() + " - PREC List : " + cs.getPrec().toString() + " - All cst : " + cs.getAllConstraints().toString()
 }
-func makeEmptyConstaintStruct() ConstraintStruct {
+func makeEmptyConstraintStruct() ConstraintStruct {
 	return ConstraintStruct{makeEmptyConstaintsList(), treetypes.MakeEmptySubstitution(), makeEmptyConstaintsList()}
 }
 func makeConstraintStruct(ac ConstraintList, s treetypes.Substitutions, p ConstraintList) ConstraintStruct {
-	res := makeEmptyConstaintStruct()
+	res := makeEmptyConstraintStruct()
 	res.setAllConstraits(ac)
 	res.setSubst(s)
 	res.setPrec(p)
@@ -139,7 +134,7 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 
 	case EQ:
 		// Check if the EQ constraint is unifiable
-		subst := treesearch.AddUnification(c.getTP().t1.Copy(), c.getTP().t2.Copy(), treetypes.MakeEmptySubstitution())
+		subst := treesearch.AddUnification(c.getTP().GetT1().Copy(), c.getTP().GetT2().Copy(), treetypes.MakeEmptySubstitution())
 		global.PrintDebug("ICW", fmt.Sprintf("Candidate subst : %v", subst.ToString()))
 		if subst.Equals(treetypes.Failure()) {
 			return false
@@ -155,9 +150,9 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 		//	return respect_lpo
 		// }
 
-		global.PrintDebug("ICW", fmt.Sprintf("Try to check compatibility : %v (%v and %v) and %v", subst.ToString(), c.getTP().getT1().ToString(), c.getTP().getT2().ToString(), cs.getSubst().ToString()))
+		global.PrintDebug("ICW", fmt.Sprintf("Try to check compatibility : %v (%v and %v) and %v", subst.ToString(), c.getTP().GetT1().ToString(), c.getTP().GetT2().ToString(), cs.getSubst().ToString()))
 		// Add it to subst and check unification consistency
-		subst_all := treesearch.AddUnification(c.getTP().getT1(), c.getTP().getT2(), cs.getSubst())
+		subst_all := treesearch.AddUnification(c.getTP().GetT1(), c.getTP().GetT2(), cs.getSubst())
 		global.PrintDebug("ICW", fmt.Sprintf("Subst all : %v", subst_all.ToString()))
 		if subst_all.Equals(treetypes.Failure()) {
 			return false

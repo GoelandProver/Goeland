@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/***********************/
-/*  prooftree_dump.go  */
-/***********************/
-
 package polyrules
 
 import (
@@ -44,7 +40,7 @@ import (
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
@@ -101,10 +97,10 @@ func (root *ProofTree) dump() (string, error) {
 	case termIsSet:
 		consequence = root.sequent.consequence.t.ToString()
 		if root.typeScheme == nil {
-			if root.sequent.consequence.t.(btypes.TypedTerm).GetTypeHint() == nil {
-				ts = root.sequent.consequence.t.(btypes.TypedTerm).GetTypeApp().ToString()
+			if root.sequent.consequence.t.(basictypes.TypedTerm).GetTypeHint() == nil {
+				ts = root.sequent.consequence.t.(basictypes.TypedTerm).GetTypeApp().ToString()
 			} else {
-				ts = root.sequent.consequence.t.(btypes.TypedTerm).GetTypeHint().ToString()
+				ts = root.sequent.consequence.t.(basictypes.TypedTerm).GetTypeHint().ToString()
 			}
 		}
 	case typeIsSet:

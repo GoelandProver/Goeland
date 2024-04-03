@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*********************/
-/* equality_types.go */
-/*********************/
+
 /**
 * This file contains the type definition for equality reasonning.
 **/
@@ -39,33 +37,46 @@
 package equality
 
 import (
+	"math"
+
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-type Equalities []TermPair
+type Equalities []eqStruct.TermPair
 
-type Inequalities []TermPair
+type Inequalities []eqStruct.TermPair
 
-func (e Equalities) toString() string {
+func (e Equalities) ToString() string {
 	res := "["
 	for i, tp := range e {
-		res += tp.toString()
+		res += tp.ToString()
 		if i < len(e)-1 {
 			res += ", "
 		}
 	}
 	return res + "]"
 }
+func (e Equalities) ToTPTPString() string {
+	res := ""
+	for i, tp := range e {
+		res += tp.ToTPTPString()
+		if i < len(e)-1 {
+			res += " & "
+		}
+	}
+	return res + ""
+}
 
-func (ie Inequalities) toString() string {
+func (ie Inequalities) ToString() string {
 	res := ""
 	for i, tp := range ie {
-		res += tp.toString()
+		res += tp.ToString()
 		if i < len(ie) {
 			res += ", "
 		}
@@ -74,51 +85,9 @@ func (ie Inequalities) toString() string {
 }
 
 func (e Equalities) copy() Equalities {
-	res := []TermPair{}
+	res := []eqStruct.TermPair{}
 	for _, tp := range e {
-		res = append(res, tp.copy())
-	}
-	return res
-}
-
-func (ie Inequalities) copy() Inequalities {
-	res := []TermPair{}
-	for _, tp := range ie {
-		res = append(res, tp.copy())
-	}
-	return res
-}
-
-func (e Equalities) contains(eq TermPair) bool {
-	for _, element := range e {
-		if element.equals(eq) {
-			return true
-		}
-	}
-	return false
-}
-
-func (ie Inequalities) contains(eq TermPair) bool {
-	for _, element := range ie {
-		if element.equals(eq) {
-			return true
-		}
-	}
-	return false
-}
-
-func (e Equalities) appendIfNotContains(eq TermPair) Equalities {
-	res := e.copy()
-	if !e.contains(eq) {
-		res = append(res, eq)
-	}
-	return res
-}
-
-func (ie Inequalities) appendIfNotContains(eq TermPair) Inequalities {
-	res := ie.copy()
-	if !ie.contains(eq) {
-		res = append(res, eq)
+		res = append(res, tp.Copy())
 	}
 	return res
 }
@@ -127,9 +96,23 @@ func (ie Inequalities) appendIfNotContains(eq TermPair) Inequalities {
 func (e Equalities) applySubstitution(old_symbol basictypes.Meta, new_symbol basictypes.Term) Equalities {
 	res := e.copy()
 	for i, tp := range res {
-		res[i] = makeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.getT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.getT2()))
+		res[i] = eqStruct.MakeTermPair(complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT1()), complextypes.ApplySubstitutionOnTerm(old_symbol, new_symbol, tp.GetT2()))
 	}
 	return res
+}
+
+func (equs Equalities) getMetas() *basictypes.MetaList {
+	metas := basictypes.NewMetaList()
+
+	for _, equ := range equs {
+		metas.AppendIfNotContains(equ.GetMetas().Slice()...)
+	}
+
+	return metas
+}
+
+func (equs Equalities) removeHalf() Equalities {
+	return equs[int(math.Ceil(float64(len(equs))/2)):]
 }
 
 /* Retrieve equalities from a datastructure */
@@ -139,10 +122,10 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 	MetaEQ2 := basictypes.MakerMeta("METAEQ2", -1)
 	// TODO: type this
 	tv := typing.MkTypeVar("EQ")
-	eq_pred := basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{})
+	eq_pred := basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(), []typing.TypeApp{})
 	tv.ShouldBeMeta(eq_pred.GetIndex())
 	tv.Instantiate(1)
-	eq_pred = basictypes.MakePred(eq_pred.GetIndex(), basictypes.Id_eq, basictypes.TermList{MetaEQ1, MetaEQ2}, []typing.TypeApp{}, typing.GetPolymorphicType(basictypes.Id_eq.GetName(), 1, 2))
+	eq_pred = basictypes.MakePred(eq_pred.GetIndex(), basictypes.Id_eq, basictypes.NewTermList(MetaEQ1, MetaEQ2), []typing.TypeApp{}, typing.GetPolymorphicType(basictypes.Id_eq.GetName(), 1, 2))
 	_, eq_list := dt.Unify(eq_pred)
 
 	for _, ms := range eq_list {
@@ -155,7 +138,7 @@ func retrieveEqualities(dt datastruct.DataStructure) Equalities {
 		if ok_t2 == -1 {
 			global.PrintError("RI", "Meta_eq_2 not found in map")
 		}
-		res = append(res, makeTermPair(eq1_term, eq2_term))
+		res = append(res, eqStruct.MakeTermPair(eq1_term, eq2_term))
 	}
 	return res
 }
@@ -168,10 +151,10 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 	// TODO: type this
 
 	tv := typing.MkTypeVar("EQ")
-	neq_pred := basictypes.MakerPred(basictypes.Id_eq, basictypes.MakeEmptyTermList(), []typing.TypeApp{})
+	neq_pred := basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(), []typing.TypeApp{})
 	tv.ShouldBeMeta(neq_pred.GetIndex())
 	tv.Instantiate(1)
-	neq_pred = basictypes.MakePred(neq_pred.GetIndex(), basictypes.Id_eq, basictypes.TermList{MetaNEQ1, MetaNEQ2}, []typing.TypeApp{}, typing.GetPolymorphicType(basictypes.Id_eq.GetName(), 1, 2))
+	neq_pred = basictypes.MakePred(neq_pred.GetIndex(), basictypes.Id_eq, basictypes.NewTermList(MetaNEQ1, MetaNEQ2), []typing.TypeApp{}, typing.GetPolymorphicType(basictypes.Id_eq.GetName(), 1, 2))
 	_, neq_list := dt.Unify(neq_pred)
 
 	for _, ms := range neq_list {
@@ -184,7 +167,7 @@ func retrieveInequalities(dt datastruct.DataStructure) Inequalities {
 		if ok_t2 == -1 {
 			global.PrintError("RI", "Meta_eq_1 not found in map")
 		}
-		res = append(res, makeTermPair(neq1_term, neq2_term))
+		res = append(res, eqStruct.MakeTermPair(neq1_term, neq2_term))
 	}
 	return res
 }

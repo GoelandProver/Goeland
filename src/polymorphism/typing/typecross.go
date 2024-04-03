@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/*  typecross.go  */
-/******************/
-
 /**
  * This file declares one of the basic types used for typing the prover :
  * TypeCross, a conjonction of types. It's a list of TypeApp.

@@ -26,7 +26,7 @@ var RuleStringMap map[string]string = map[string]string{
 type Rule interface {
 	apply() []RuleList
 	GetForm() basictypes.Form
-	GetTerms() basictypes.TermList
+	GetTerms() *basictypes.TermList
 	ToFormula() basictypes.FormAndTerms
 	Equals(any) bool
 	GetRuleStrings() (string, string)
@@ -34,7 +34,7 @@ type Rule interface {
 
 type AnyRule struct {
 	formula basictypes.Form
-	terms   basictypes.TermList
+	terms   *basictypes.TermList
 
 	//formString string
 
@@ -45,7 +45,7 @@ func (ar *AnyRule) GetForm() basictypes.Form {
 	return ar.formula
 }
 
-func (ar *AnyRule) GetTerms() basictypes.TermList {
+func (ar *AnyRule) GetTerms() *basictypes.TermList {
 	return ar.terms
 }
 
@@ -70,7 +70,7 @@ func (ar *AnyRule) GetRuleStrings() (full string, simple string) {
 	return full[:len(full)-1], simple
 }
 
-func makeCorrectRule(formula basictypes.Form, terms basictypes.TermList) Rule {
+func makeCorrectRule(formula basictypes.Form, terms *basictypes.TermList) Rule {
 	any := AnyRule{formula: formula, terms: terms}
 	//any := AnyRule{formula: formula, terms: terms, formString: formula.ToString()}
 
@@ -200,7 +200,7 @@ func (aa *AlphaAnd) apply() []RuleList {
 
 	switch form := aa.GetForm().(type) {
 	case basictypes.And:
-		for _, subForm := range form.FormList {
+		for _, subForm := range form.FormList.Slice() {
 			resultRules = append(resultRules, makeCorrectRule(subForm, aa.GetTerms()))
 		}
 	}
@@ -239,7 +239,7 @@ func (ano *AlphaNotOr) apply() []RuleList {
 	case basictypes.Not:
 		switch subForm := form.GetForm().(type) {
 		case basictypes.Or:
-			for _, subForm := range subForm.FormList {
+			for _, subForm := range subForm.FormList.Slice() {
 				resultRules = append(resultRules, makeCorrectRule(basictypes.RefuteForm(subForm), ano.GetTerms()))
 			}
 		}
@@ -280,7 +280,7 @@ func (bna *BetaNotAnd) apply() []RuleList {
 	case basictypes.Not:
 		switch subForm := form.GetForm().(type) {
 		case basictypes.And:
-			for _, andForm := range subForm.FormList {
+			for _, andForm := range subForm.FormList.Slice() {
 				resultRulesBeta = append(resultRulesBeta, RuleList{makeCorrectRule(basictypes.RefuteForm(andForm), bna.GetTerms())})
 			}
 		}
@@ -323,7 +323,7 @@ func (bo *BetaOr) apply() []RuleList {
 
 	switch form := bo.GetForm().(type) {
 	case basictypes.Or:
-		for _, subForm := range form.FormList {
+		for _, subForm := range form.FormList.Slice() {
 			resultRulesBeta = append(resultRulesBeta, RuleList{makeCorrectRule(subForm, bo.GetTerms())})
 		}
 	}
@@ -373,13 +373,13 @@ func (be *BetaEqu) apply() []RuleList {
 type GammaRule interface {
 	Rule
 	Copy() GammaRule
-	getGeneratedMetas() basictypes.MetaList
+	getGeneratedMetas() *basictypes.MetaList
 	getVarList() []basictypes.Var
 }
 
 type GammaNotExists struct {
 	AnyRule
-	generatedMetas basictypes.MetaList
+	generatedMetas *basictypes.MetaList
 }
 
 func (gne *GammaNotExists) apply() []RuleList {
@@ -387,7 +387,9 @@ func (gne *GammaNotExists) apply() []RuleList {
 	global.PrintDebug("SRCH", "Applying "+fmt.Sprint(gne.FullString))
 
 	instanciatedForm, metas := syntaxicmanipulations.Instantiate(basictypes.MakeFormAndTerm(gne.GetForm(), gne.GetTerms()), 42)
-	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), gne.GetTerms().MergeTermList(metas.ToTermList())))
+	newTerms := gne.GetTerms().Copy()
+	newTerms.AppendIfNotContains(metas.ToTermList().Slice()...)
+	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), newTerms))
 	gne.generatedMetas = metas
 
 	return []RuleList{resultRules}
@@ -403,7 +405,7 @@ func (gne *GammaNotExists) Copy() GammaRule {
 	return nil
 }
 
-func (gne *GammaNotExists) getGeneratedMetas() basictypes.MetaList {
+func (gne *GammaNotExists) getGeneratedMetas() *basictypes.MetaList {
 	return gne.generatedMetas
 }
 
@@ -418,7 +420,7 @@ func (gne *GammaNotExists) getVarList() []basictypes.Var {
 
 type GammaForall struct {
 	AnyRule
-	generatedMetas basictypes.MetaList
+	generatedMetas *basictypes.MetaList
 }
 
 func (gf *GammaForall) apply() []RuleList {
@@ -426,7 +428,9 @@ func (gf *GammaForall) apply() []RuleList {
 	global.PrintDebug("SRCH", "Applying "+fmt.Sprint(gf.FullString))
 
 	instanciatedForm, metas := syntaxicmanipulations.Instantiate(basictypes.MakeFormAndTerm(gf.GetForm(), gf.GetTerms()), 42)
-	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), gf.GetTerms().MergeTermList(metas.ToTermList())))
+	newTerms := gf.GetTerms().Copy()
+	newTerms.AppendIfNotContains(metas.ToTermList().Slice()...)
+	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), newTerms))
 	gf.generatedMetas = metas
 
 	return []RuleList{resultRules}
@@ -442,7 +446,7 @@ func (gf *GammaForall) Copy() GammaRule {
 	return nil
 }
 
-func (gf *GammaForall) getGeneratedMetas() basictypes.MetaList {
+func (gf *GammaForall) getGeneratedMetas() *basictypes.MetaList {
 	return gf.generatedMetas
 }
 
@@ -483,13 +487,9 @@ func (de *DeltaExists) apply() []RuleList {
 
 type RuleList []Rule
 
-func (rl *RuleList) GetFormList() basictypes.FormList {
-	result := basictypes.FormList{}
-
-	for _, rule := range *rl {
-		result = append(result, rule.GetForm())
-	}
-
+func (rl *RuleList) GetFormList() *basictypes.FormList {
+	result := basictypes.NewFormList()
+	result.Append(rl.GetFormList().Slice()...)
 	return result
 }
 

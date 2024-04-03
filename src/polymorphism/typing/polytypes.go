@@ -30,10 +30,6 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/******************/
-/*  polytypes.go  */
-/******************/
-
 /**
  * This file declares the basic interfaces used for typing the prover.
  **/

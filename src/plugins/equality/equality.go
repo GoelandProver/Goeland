@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/****************/
-/* equalitys.go */
-/****************/
+
 /**
 * This file implements the main logic behind the equality plugin.
 **/
@@ -39,43 +37,53 @@
 package equality
 
 import (
-	"fmt"
-
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/plugins/eqStruct"
+	"github.com/GoelandProver/Goeland/search"
 
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	complextypes "github.com/GoelandProver/Goeland/types/complex-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
 )
 
-/**
- * Base function needed to initialize any plugin of Goéland.
- * It registers the hooks to the plugin manager, and parses the given options.
- **/
-func InitPlugin() error {
-	lpo = makeLPO()
+func Enable() {
+	SetTryEquality()
+	eqStruct.NewEqStruct = NewBasicEqualityStruct
+}
 
-	fmt.Println("Plugin Equality loaded")
-	// No error can be thrown in this plugin.
-	return nil
+func SetTryEquality() {
+	search.TryEquality = TryEquality
+}
+
+func TryEquality(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.State, new_atomics basictypes.FormAndTermsList, father_id uint64, cha search.Communication, node_id int, original_node_id int) bool {
+	if !global.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 || len(st.GetLF()) == 0 {
+		global.PrintDebug("PS", "Try apply EQ !")
+		if len(new_atomics) > 0 || len(st.GetLF()) == 0 {
+			global.PrintDebug("PS", "EQ is applicable !")
+			atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
+			res_eq, subst_eq := EqualityReasoning(st.GetEqStruct(), st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms(), original_node_id)
+			if res_eq {
+				search.UsedSearch.ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.NewTermList()), node_id, original_node_id)
+				return true
+			}
+		}
+	}
+	return false
 }
 
 /**
-* Fonction EqualityReasoning
-* Prend atomics
-* créé problème
-* réturn bool et substitution
+* Function EqualityReasoning
+* Takes atomics
+* creates the problem
+* returns a bool for success and the corresponding substitution
 **/
-func EqualityReasoning(tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList) (bool, []treetypes.Substitutions) {
+func EqualityReasoning(eqStruct eqStruct.EqualityStruct, tree_pos, tree_neg datastruct.DataStructure, atomic *basictypes.FormList, originalNodeId int) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ER", "ER call")
 	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
 	if equalities {
-		return equalityReasoningMultiList(problem)
+		return RunEqualityReasoning(eqStruct, problem)
 	} else {
 		return false, []treetypes.Substitutions{}
 	}
-}
-
-func InsertPred(p basictypes.Form) {
-	lpo.insertPred(p)
 }

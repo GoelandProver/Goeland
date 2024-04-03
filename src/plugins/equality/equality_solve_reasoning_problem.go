@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*******************************/
-/* equality_rules_reasoning.go */
-/*******************************/
+
 /**
 * This file contains the functions to apply equality raasoning on a problem, a list and a multilist.
 **/
@@ -75,7 +73,7 @@ func tryEqualityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, 
 
 /* launch an equality reasoning problem resolution. Stop when the first solution is found */
 func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, last_applied_rule_index, last_applied_rule_type int) (bool, []treetypes.Substitutions) {
-	global.PrintDebug("ERP", fmt.Sprintf("EP : %v", ep.toString()))
+	global.PrintDebug("ERP", fmt.Sprintf("EP : %v", ep.ToString()))
 	substs_res := []treetypes.Substitutions{}
 	unif_found := false
 
@@ -96,7 +94,7 @@ func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, las
 		global.PrintDebug("ERP", "Stop case not found")
 	}
 
-	// Apply avaibalbe rule
+	// Apply available rule
 	solution_found, solution_subst := manageRLRules(ep, father_chan, last_applied_rule_index, last_applied_rule_type)
 	if solution_found {
 		unif_found = true

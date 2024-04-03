@@ -29,9 +29,6 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/**************/
-/* parsing.go */
-/**************/
 
 package treetypes
 
@@ -63,17 +60,16 @@ func (t TermForm) GetTerm() basictypes.Term                                { ret
 func (t TermForm) Copy() basictypes.Form                                   { return makeTermForm(t.GetIndex(), t.GetTerm()) }
 func (t TermForm) GetType() typing.TypeScheme                              { return typing.DefaultFunType(0) }
 func (t TermForm) RenameVariables() basictypes.Form                        { return t }
-func (t TermForm) CleanFormula() basictypes.Form                           { return t }
 func (t TermForm) ReplaceTypeByMeta([]typing.TypeVar, int) basictypes.Form { return t }
-func (t TermForm) ReplaceVarByTerm(basictypes.Var, basictypes.Term) (basictypes.Form, bool) {
+func (t TermForm) ReplaceTermByTerm(basictypes.Term, basictypes.Term) (basictypes.Form, bool) {
 	return t, false
 }
 func (t TermForm) GetIndex() int                                                       { return t.index }
 func (t TermForm) SubstituteVarByMeta(basictypes.Var, basictypes.Meta) basictypes.Form { return t }
-func (t TermForm) GetInternalMetas() basictypes.MetaList                               { return basictypes.MetaList{} }
-func (t TermForm) SetInternalMetas(basictypes.MetaList) basictypes.Form                { return t }
-func (t TermForm) GetSubFormulasRecur() basictypes.FormList                            { return basictypes.FormList{} }
-func (t TermForm) GetChildFormulas() basictypes.FormList                               { return basictypes.FormList{} }
+func (t TermForm) GetInternalMetas() *basictypes.MetaList                              { return basictypes.NewMetaList() }
+func (t TermForm) SetInternalMetas(*basictypes.MetaList) basictypes.Form               { return t }
+func (t TermForm) GetSubFormulasRecur() *basictypes.FormList                           { return basictypes.NewFormList() }
+func (t TermForm) GetChildFormulas() *basictypes.FormList                              { return basictypes.NewFormList() }
 
 func (t TermForm) Equals(t2 any) bool {
 	switch nt := t2.(type) {
@@ -84,25 +80,27 @@ func (t TermForm) Equals(t2 any) bool {
 	}
 }
 
-func (t TermForm) GetMetas() basictypes.MetaList {
+func (t TermForm) GetMetas() *basictypes.MetaList {
 	switch nt := t.GetTerm().(type) {
 	case basictypes.Meta:
-		return append(basictypes.MakeEmptyMetaList(), nt)
+		return basictypes.NewMetaList(nt)
 	case basictypes.Fun:
-		res := basictypes.MakeEmptyMetaList()
-		for _, m := range nt.GetArgs() {
+		res := basictypes.NewMetaList()
+
+		for _, m := range nt.GetArgs().Slice() {
 			switch mt := m.(type) {
 			case basictypes.Meta:
-				res = res.AppendIfNotContains(mt)
+				res.AppendIfNotContains(mt)
 			}
 		}
+
 		return res
 	default:
-		return basictypes.MakeEmptyMetaList()
+		return basictypes.NewMetaList()
 	}
 }
 
-func (t TermForm) GetSubTerms() basictypes.TermList {
+func (t TermForm) GetSubTerms() *basictypes.TermList {
 	return t.GetTerm().GetSubTerms()
 }
 
@@ -117,7 +115,7 @@ func MakerTermForm(t basictypes.Term) TermForm {
 func makeTermForm(i int, t basictypes.Term) TermForm {
 	fms := &basictypes.MappedString{}
 	tf := TermForm{fms, i, t.Copy()}
-	fms.MappableString = tf
+	fms.MappableString = &tf
 	return tf
 }
 
@@ -138,14 +136,14 @@ func ParseFormula(formula basictypes.Form) Sequence {
 	case TermForm:
 		if global.Is[basictypes.Fun](formula_type.GetTerm()) {
 			fun := global.To[basictypes.Fun](formula_type.GetTerm())
-			formula = makeTermForm(formula.GetIndex(), basictypes.MakeFun(fun.GetID(), TypeAndTermsToTerms(fun.GetTypeVars(), fun.GetArgs()), []typing.TypeApp{}))
+			formula = makeTermForm(formula.GetIndex(), basictypes.MakeFun(fun.GetID(), TypeAndTermsToTerms(fun.GetTypeVars(), fun.GetArgs()), []typing.TypeApp{}, fun.GetTypeHint()))
 		}
 
 		instructions := Sequence{formula: formula}
 		varCount := 0
 		postCount := 0
 		instructions.add(Begin{})
-		parseTerms(basictypes.TermList{formula_type.GetTerm().Copy()}, &instructions, basictypes.MetaList{}, &varCount, &postCount)
+		parseTerms(basictypes.NewTermList(formula_type.GetTerm().Copy()), &instructions, basictypes.NewMetaList(), &varCount, &postCount)
 		instructions.add(End{})
 
 		return instructions
@@ -155,45 +153,48 @@ func ParseFormula(formula basictypes.Form) Sequence {
 	}
 }
 
-func TypeAndTermsToTerms(types []typing.TypeApp, terms basictypes.TermList) basictypes.TermList {
-	tms := basictypes.MakeEmptyTermList()
-	tms = append(tms, basictypes.TypeAppArrToTerm(types)...)
-	tms = append(tms, terms...)
+func TypeAndTermsToTerms(types []typing.TypeApp, terms *basictypes.TermList) *basictypes.TermList {
+	tms := basictypes.NewTermList()
+
+	tms.Append(basictypes.TypeAppArrToTerm(types).Slice()...)
+	tms.Append(terms.Slice()...)
+
 	return tms
 }
 
 /* Parses a predicate to machine instructions */
 func parsePred(p basictypes.Pred, instructions *Sequence) {
 	instructions.add(makeCheck(p.GetID()))
-	if len(p.GetArgs()) > 0 {
+	if p.GetArgs().Len() > 0 {
 		instructions.add(Begin{})
 		instructions.add(Down{})
 		varCount := 0
 		postCount := 0
-		parseTerms(p.GetArgs(), instructions, basictypes.MetaList{}, &varCount, &postCount)
+		parseTerms(p.GetArgs(), instructions, basictypes.NewMetaList(), &varCount, &postCount)
 		instructions.add(End{})
 	}
 }
 
 /* Parses an array of terms to machine instructions */
-func parseTerms(terms basictypes.TermList, instructions *Sequence, subst basictypes.MetaList, varCount *int, postCount *int) basictypes.MetaList {
+func parseTerms(terms *basictypes.TermList, instructions *Sequence, subst *basictypes.MetaList, varCount *int, postCount *int) *basictypes.MetaList {
 
-	rightDefined := func(terms []basictypes.Term, i int) bool {
-		return i < len(terms)-1
+	rightDefined := func(terms *basictypes.TermList, i int) bool {
+		return i < terms.Len()-1
 	}
 
-	downDefined := func(args []basictypes.Term) bool {
-		return len(args) > 0
+	downDefined := func(terms *basictypes.TermList) bool {
+		return terms.Len() > 0
 	}
 
-	for i, term := range terms {
+	for i, term := range terms.Slice() {
 		switch t := term.(type) {
 		case basictypes.Meta:
 			instructions.add(Put{i: *varCount})
-			subst = append(subst, t)
+			subst = subst.Copy()
+			subst.Append(t)
 			if *varCount > 0 {
 				for j := 0; j < *varCount; j++ {
-					if subst[j].Equals(t) {
+					if subst.Get(j).Equals(t) {
 						instructions.add(Compare{j, *varCount})
 					}
 				}
@@ -233,7 +234,7 @@ func ParseTerm(term basictypes.Term) Sequence {
 	var instructions Sequence
 	varCount := 0
 	postCount := 0
-	parseTerms([]basictypes.Term{term.Copy()}, &instructions, basictypes.MetaList{}, &varCount, &postCount)
+	parseTerms(basictypes.NewTermList(term.Copy()), &instructions, basictypes.NewMetaList(), &varCount, &postCount)
 	instructions.formula = MakerTermForm(term)
 	return instructions
 }
