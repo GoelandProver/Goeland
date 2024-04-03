@@ -63,7 +63,7 @@ func (list *List[T]) Len() int {
 	list.doAtStartR()
 	defer list.doAtEndR()
 
-	return list.Len()
+	return list.length()
 }
 
 func (list *List[T]) length() int {
@@ -77,7 +77,7 @@ func (list *List[T]) IsEmpty() bool {
 	list.doAtStartR()
 	defer list.doAtEndR()
 
-	return list.Len() == 0
+	return list.length() == 0
 }
 
 /*
@@ -164,7 +164,7 @@ func (list *List[T]) ToString() string {
 		str += element.ToString() + ", "
 	}
 
-	if list.Len() > 0 {
+	if list.length() > 0 {
 		return str[:len(str)-2] + "]"
 	} else {
 		return "[]"
