@@ -90,7 +90,7 @@ func tryApplyRuleCompute(s, t basictypes.Term, ep EqualityProblem, type_rule int
 
 	// Retrieve the list of substerm of s
 	subterms_of_s := s.GetSubTerms()
-	global.PrintDebug("TARA", fmt.Sprintf("len subterms found : %v - %v", len(subterms_of_s), subterms_of_s.ToString()))
+	global.PrintDebug("TARA", fmt.Sprintf("len subterms found : %v - %v", subterms_of_s.Len(), subterms_of_s.ToString()))
 	global.PrintDebug("TARA", fmt.Sprintf("EP eq list : %v", ep.GetE().ToString()))
 
 	// for each l' substerm of s, return a list (l', l) unifiable
@@ -108,7 +108,7 @@ func connectLAndR(list_l_prime_l []eqStruct.TermPair, ep EqualityProblem, s basi
 	for _, l_prime_l_pair := range list_l_prime_l {
 		global.PrintDebug("TARA", fmt.Sprintf("Subterms unifiable found : %v", l_prime_l_pair.ToString()))
 
-		for _, r := range ep.getEMap()[l_prime_l_pair.GetT2().ToString()] {
+		for _, r := range ep.getEMap()[l_prime_l_pair.GetT2().ToString()].Slice() {
 			global.PrintDebug("TARA", fmt.Sprintf("On veut susbstituer %v (unifiable avec %v) par %v dans %v = %v", l_prime_l_pair.GetT1().ToString(), l_prime_l_pair.GetT2().ToString(), r.ToString(), s.ToString(), t.ToString()))
 
 			// create pair an check equality
@@ -128,10 +128,10 @@ func connectLAndR(list_l_prime_l []eqStruct.TermPair, ep EqualityProblem, s basi
 }
 
 /* return all the pair (l, l') unifiable */
-func searchUnifBewteenListAndEq(tl basictypes.TermList, tree datastruct.DataStructure) []eqStruct.TermPair {
+func searchUnifBewteenListAndEq(tl *basictypes.TermList, tree datastruct.DataStructure) []eqStruct.TermPair {
 	global.PrintDebug("SUBLE", fmt.Sprintf("Searching unfication between %v and the eq tree", tl.ToString()))
 	term_pair_list := []eqStruct.TermPair{}
-	for _, t_prime := range tl {
+	for _, t_prime := range tl.Slice() {
 		// If the subterm is not a variable
 		global.PrintDebug("SUBLE", "------------------------------------------")
 		global.PrintDebug("SUBLE", fmt.Sprintf("Current subterm : %v", t_prime.ToString()))
@@ -139,7 +139,7 @@ func searchUnifBewteenListAndEq(tl basictypes.TermList, tree datastruct.DataStru
 			res, tl := checkUnifInTree(t_prime, tree)
 			if res {
 				global.PrintDebug("SUBLE", "Unification found !")
-				for _, t := range tl {
+				for _, t := range tl.Slice() {
 					global.PrintDebug("SUBLE", fmt.Sprintf("Unif found with : %v", t.ToString()))
 					term_pair_list = append(term_pair_list, eqStruct.MakeTermPair(t_prime, t))
 				}
@@ -154,15 +154,18 @@ func searchUnifBewteenListAndEq(tl basictypes.TermList, tree datastruct.DataStru
 }
 
 /* Take a (sub)-term t, and retrieve all the term t' unifiable with t */
-func checkUnifInTree(t basictypes.Term, tree datastruct.DataStructure) (bool, basictypes.TermList) {
-	result_list := basictypes.MakeEmptyTermList()
+func checkUnifInTree(t basictypes.Term, tree datastruct.DataStructure) (bool, *basictypes.TermList) {
+	result_list := basictypes.NewTermList()
 	res, ms := tree.Unify(treetypes.MakerTermForm(t.Copy()))
+
 	if !res {
 		return false, result_list
 	}
+
 	for _, subst := range ms {
 		global.PrintDebug("CUIT", fmt.Sprintf("Unif found with %v :%v", subst.GetForm().ToString(), subst.GetSubst().ToString()))
-		result_list = append(result_list, subst.GetForm().(treetypes.TermForm).GetTerm())
+		result_list.Append(subst.GetForm().(treetypes.TermForm).GetTerm())
 	}
-	return len(result_list) > 0, result_list
+
+	return result_list.Len() > 0, result_list
 }

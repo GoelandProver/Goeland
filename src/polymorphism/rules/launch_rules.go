@@ -36,7 +36,7 @@ import (
 	"fmt"
 	"reflect"
 
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
@@ -45,13 +45,13 @@ import (
 
 type Reconstruct struct {
 	result bool
-	forms  []btypes.Form
-	terms  []btypes.Term
+	forms  *basictypes.FormList
+	terms  *basictypes.TermList
 	err    error
 }
 
 /* Launches the first instance of applyRule. Do this to launch the typing system. */
-func launchRuleApplication(state Sequent, root *ProofTree) (btypes.Form, error) {
+func launchRuleApplication(state Sequent, root *ProofTree) (basictypes.Form, error) {
 	superFatherChan := make(chan Reconstruct)
 	go tryApplyRule(state, root, superFatherChan)
 	res := <-superFatherChan
@@ -102,8 +102,8 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 	remaining, indexQuit := len(chansTab), len(chansTab)
 	var errorFound error = nil
 
-	forms := make([]btypes.Form, len(chansTab))
-	terms := make([]btypes.Term, len(chansTab))
+	forms := make([]basictypes.Form, len(chansTab))
+	terms := basictypes.NewTermList()
 
 	// Wait for all children to finish.
 	for remaining > 0 && errorFound == nil {
@@ -118,18 +118,18 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 				errorFound = res.err
 			} else {
 				// Once the child sends back to the father, it should only have one item.
-				if len(res.forms) == 1 {
-					forms[index] = res.forms[0]
+				if res.forms.Len() == 1 {
+					forms[index] = res.forms.Get(0)
 				}
-				if len(res.terms) == 1 {
-					terms[index] = res.terms[0]
+				if res.terms.Len() == 1 {
+					terms.Set(index, res.terms.Get(0))
 				}
 			}
 		}
 	}
 
 	selectCleanup(errorFound, hasAnswered, chansTab)
-	return Reconstruct{result: errorFound == nil, forms: forms, terms: terms, err: errorFound}
+	return Reconstruct{result: errorFound == nil, forms: basictypes.NewFormList(forms...), terms: terms, err: errorFound}
 }
 
 /* Utils functions for selectSequents */
@@ -161,16 +161,16 @@ func selectCleanup(errorFound error, hasAnswered []bool, chansTab [](chan Recons
 }
 
 /* Treats the different return types of the system. */
-func treatReturns(res Reconstruct) (btypes.Form, error) {
+func treatReturns(res Reconstruct) (basictypes.Form, error) {
 	if !res.result {
 		return nil, res.err
 	} else {
-		if len(res.forms) == 0 {
+		if res.forms.Len() == 0 {
 			return nil, res.err
 		}
-		if len(res.forms) > 1 {
+		if res.forms.Len() > 1 {
 			return nil, fmt.Errorf("more than one formula is returned by the typing system")
 		}
-		return res.forms[0], res.err
+		return res.forms.Get(0), res.err
 	}
 }

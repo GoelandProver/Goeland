@@ -44,24 +44,24 @@ import (
 type Or struct {
 	*MappedString
 	index int
-	FormList
-	MetaList
+	*FormList
+	*MetaList
 }
 
 /** Constructors **/
 
-func MakeOrSimple(i int, forms FormList, metas MetaList) Or {
+func MakeOrSimple(i int, forms *FormList, metas *MetaList) Or {
 	fms := &MappedString{}
 	or := Or{fms, i, forms, metas}
 	fms.MappableString = &or
 	return or
 }
 
-func MakeOr(i int, forms FormList) Or {
-	return MakeOrSimple(i, forms, make(MetaList, 0))
+func MakeOr(i int, forms *FormList) Or {
+	return MakeOrSimple(i, forms, NewMetaList())
 }
 
-func MakerOr(forms FormList) Or {
+func MakerOr(forms *FormList) Or {
 	return MakeOr(MakerIndexFormula(), forms)
 }
 
@@ -73,7 +73,7 @@ func (o Or) GetIndex() int {
 	return o.index
 }
 
-func (o Or) GetMetas() MetaList {
+func (o Or) GetMetas() *MetaList {
 	return metasUnion(o.FormList)
 }
 
@@ -81,11 +81,13 @@ func (o Or) GetType() typing.TypeScheme {
 	return typing.DefaultPropType(0)
 }
 
-func (o Or) GetSubTerms() TermList {
-	res := MakeEmptyTermList()
-	for _, tl := range o.FormList {
-		res = res.MergeTermList(tl.GetSubTerms())
+func (o Or) GetSubTerms() *TermList {
+	res := NewTermList()
+
+	for _, tl := range o.FormList.Slice() {
+		res.AppendIfNotContains(tl.GetSubTerms().Slice()...)
 	}
+
 	return res
 }
 
@@ -118,8 +120,8 @@ func (o Or) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeOr(o.GetIndex(), replaceList(o.FormList, varList, index))
 }
 
-func (o Or) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	formList, res := replaceVarInFormList(o.FormList, old, new)
+func (o Or) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	formList, res := replaceTermInFormList(o.FormList, old, new)
 	return MakeOrSimple(o.GetIndex(), formList, o.MetaList), res
 }
 
@@ -127,29 +129,24 @@ func (o Or) RenameVariables() Form {
 	return MakeOr(o.GetIndex(), renameFormList(o.FormList))
 }
 
-func (o Or) CleanFormula() Form {
-	o.FormList.CleanFormList()
-	return o
-}
-
 func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, o.FormList, o.MetaList)
 	return MakeOrSimple(o.index, newFormList, newMetas)
 }
 
-func (o Or) GetInternalMetas() MetaList {
+func (o Or) GetInternalMetas() *MetaList {
 	return o.MetaList
 }
 
-func (o Or) SetInternalMetas(m MetaList) Form {
+func (o Or) SetInternalMetas(m *MetaList) Form {
 	o.MetaList = m
 	return o
 }
 
-func (o Or) GetSubFormulasRecur() FormList {
+func (o Or) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(o)
 }
 
-func (o Or) GetChildFormulas() FormList {
+func (o Or) GetChildFormulas() *FormList {
 	return o.FormList
 }

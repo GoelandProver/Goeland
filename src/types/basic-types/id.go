@@ -39,6 +39,8 @@ package basictypes
 import (
 	"fmt"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 )
 
 /* id (for predicate) */
@@ -48,20 +50,41 @@ type Id struct {
 	name  string
 }
 
-func (i Id) GetIndex() int    { return i.index }
-func (i Id) GetName() string  { return i.name }
-func (i Id) IsMeta() bool     { return false }
-func (i Id) IsFun() bool      { return false }
-func (i Id) Copy() Term       { return MakeId(i.GetIndex(), i.GetName()) }
-func (Id) ToMeta() Meta       { return MakeEmptyMeta() }
-func (Id) GetMetas() MetaList { return MetaList{} }
+func (i Id) GetIndex() int     { return i.index }
+func (i Id) GetName() string   { return i.name }
+func (i Id) IsMeta() bool      { return false }
+func (i Id) IsFun() bool       { return false }
+func (i Id) Copy() Term        { return MakeId(i.GetIndex(), i.GetName()) }
+func (Id) ToMeta() Meta        { return MakeEmptyMeta() }
+func (Id) GetMetas() *MetaList { return NewMetaList() }
+
+var ToStringId = func(i Id) string {
+	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
+}
 
 func (i Id) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"
 }
 
 func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
+	return "", ToStringId(i)
+}
+
+func NoIdToString(i Id) string {
+	return fmt.Sprintf("%s", i.GetName())
+}
+
+func QuotedToString(i Id) string {
+	if i.GetName() == "Goeland_I" || strings.Contains(i.GetName(), "Sko_") {
+		return fmt.Sprintf("%s", i.GetName())
+	} else {
+		r, _ := utf8.DecodeRuneInString(i.GetName())
+		if unicode.IsUpper(r) {
+			return fmt.Sprintf("'%s'", i.GetName())
+		} else {
+			return fmt.Sprintf("%s", i.GetName())
+		}
+	}
 }
 
 func (i Id) GetChildrenForMappedString() []MappableString {
@@ -82,8 +105,8 @@ func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return i
 }
 
-func (i Id) GetSubTerms() TermList {
-	return TermList{i}
+func (i Id) GetSubTerms() *TermList {
+	return NewTermList(i)
 }
 
 // id < other : -1; id = other : 0; id > other : 1

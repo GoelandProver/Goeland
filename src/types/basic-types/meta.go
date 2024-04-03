@@ -63,7 +63,7 @@ func (m Meta) GetOccurence() int              { return m.occurence }
 func (m Meta) IsMeta() bool                   { return true }
 func (m Meta) IsFun() bool                    { return false }
 func (m Meta) ToMeta() Meta                   { return m }
-func (m Meta) GetMetas() MetaList             { return MetaList{m} }
+func (m Meta) GetMetas() *MetaList            { return NewMetaList(m) }
 
 func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"
@@ -99,13 +99,8 @@ func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return m
 }
 
-func (m Meta) GetSubTerms() TermList {
-	return TermList{m}
-}
-
-func (m Meta) CompareTo(other Term) int {
-	// TODO
-	return 0
+func (m Meta) GetSubTerms() *TermList {
+	return NewTermList(m)
 }
 
 func MakeEmptyMeta() Meta {

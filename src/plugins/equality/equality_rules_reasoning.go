@@ -66,12 +66,12 @@ func (bes *BasicEqualityStruct) AddGoal(goal []eqStruct.TermPair) {
 }
 
 func (bes *BasicEqualityStruct) Solve() (subs []treetypes.Substitutions, success bool) {
-	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning multilist : %v", bes.goals.Length()))
+	global.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning multilist : %v", bes.goals.Len()))
 	substs_res := []treetypes.Substitutions{}
 	found := false
 
-	for _, goal := range bes.goals.AsSlice() {
-		epl := makeEqualityProblemList(bes.assumptions.AsSlice(), goal.AsSlice())
+	for _, goal := range bes.goals.Slice() {
+		epl := makeEqualityProblemList(bes.assumptions.Slice(), goal.Slice())
 
 		global.PrintDebug("ERML", fmt.Sprintf("iteration on EPL : %v", epl.ToString()))
 		if has_solution, subst_res_tmp := equalityReasoningList(epl); has_solution {
@@ -90,11 +90,11 @@ func (bes *BasicEqualityStruct) Solve() (subs []treetypes.Substitutions, success
 func (bes *BasicEqualityStruct) Copy() eqStruct.EqualityStruct {
 	newBES := NewBasicEqualityStruct()
 
-	for _, goal := range bes.goals.AsSlice() {
-		newBES.AddGoal(goal.AsSlice())
+	for _, goal := range bes.goals.Slice() {
+		newBES.AddGoal(goal.Slice())
 	}
 
-	for _, assumption := range bes.assumptions.AsSlice() {
+	for _, assumption := range bes.assumptions.Slice() {
 		newBES.AddAssumption(assumption)
 	}
 

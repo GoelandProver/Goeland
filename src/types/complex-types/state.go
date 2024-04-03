@@ -56,7 +56,7 @@ type State struct {
 	n                                     int
 	lf, atomic, alpha, beta, delta, gamma basictypes.FormAndTermsList
 	meta_generator                        []basictypes.MetaGen
-	mm, mc                                basictypes.MetaList
+	mm, mc                                *basictypes.MetaList
 	applied_subst                         SubstAndForm
 	last_applied_subst                    SubstAndForm   // For non destructive case only
 	substs_found                          []SubstAndForm // Subst found with mm in d, subst for "bactrack" in nd
@@ -98,10 +98,10 @@ func (s State) GetGamma() basictypes.FormAndTermsList {
 func (s State) GetMetaGen() []basictypes.MetaGen {
 	return basictypes.CopyMetaGenList(s.meta_generator)
 }
-func (s State) GetMM() basictypes.MetaList {
+func (s State) GetMM() *basictypes.MetaList {
 	return s.mm.Copy()
 }
-func (s State) GetMC() basictypes.MetaList {
+func (s State) GetMC() *basictypes.MetaList {
 	return s.mc.Copy()
 }
 func (s State) GetAppliedSubst() SubstAndForm {
@@ -114,10 +114,16 @@ func (st State) GetSubstsFound() []SubstAndForm {
 	return CopySubstAndFormList(st.substs_found)
 }
 func (s State) GetTreePos() datastruct.DataStructure {
-	return s.tree_pos.Copy()
+	return s.tree_pos
+}
+func (s *State) AddToTreePos(fl *basictypes.FormList) {
+	s.tree_pos = s.tree_pos.InsertFormulaListToDataStructure(fl)
 }
 func (s State) GetTreeNeg() datastruct.DataStructure {
-	return s.tree_neg.Copy()
+	return s.tree_neg
+}
+func (s *State) AddToTreeNeg(fl *basictypes.FormList) {
+	s.tree_neg = s.tree_neg.InsertFormulaListToDataStructure(fl)
 }
 func (s State) GetProof() []proof.ProofStruct {
 	return proof.CopyProofStructList(s.proof)
@@ -165,10 +171,10 @@ func (st *State) SetGamma(fl basictypes.FormAndTermsList) {
 func (st *State) SetMetaGen(fl []basictypes.MetaGen) {
 	st.meta_generator = basictypes.CopyMetaGenList(fl)
 }
-func (st *State) SetMM(mm basictypes.MetaList) {
+func (st *State) SetMM(mm *basictypes.MetaList) {
 	st.mm = mm.Copy()
 }
-func (st *State) SetMC(mc basictypes.MetaList) {
+func (st *State) SetMC(mc *basictypes.MetaList) {
 	st.mc = mc.Copy()
 }
 func (st *State) SetAppliedSubst(s SubstAndForm) {
@@ -255,9 +261,9 @@ func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) St
 
 	current_proof := proof.MakeEmptyProofStruct()
 	current_proof.SetRuleProof("Initial formula")
-	current_proof.SetFormulaProof(basictypes.MakeFormAndTerm(f.Copy(), basictypes.MakeEmptyTermList()))
+	current_proof.SetFormulaProof(basictypes.MakeFormAndTerm(f.Copy(), basictypes.NewTermList()))
 
-	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier(), eqStruct.NewEqStruct()}
+	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.NewMetaList(), basictypes.NewMetaList(), MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier(), eqStruct.NewEqStruct()}
 }
 
 /* Print a state */
@@ -305,7 +311,7 @@ func (st State) Print() {
 		global.PrintDebug("Pst", st.GetMM().ToString())
 	}
 
-	if len(st.GetMC()) > 0 {
+	if st.GetMC().Len() > 0 {
 		global.PrintDebug("PSt", "Meta current: ")
 		global.PrintDebug("Pst", st.GetMC().ToString())
 	}
@@ -347,8 +353,13 @@ func (st State) Copy() State {
 	new_state.SetGamma(st.GetGamma())
 
 	new_state.SetMetaGen(st.GetMetaGen())
-	new_state.SetMM(append(new_state.GetMM(), append(st.GetMM(), st.GetMC()...)...))
-	new_state.SetMC(basictypes.MetaList{})
+
+	newMetaMM := basictypes.NewMetaList()
+	newMetaMM.Append(st.GetMM().Slice()...)
+	newMetaMM.Append(st.GetMC().Slice()...)
+	new_state.SetMM(newMetaMM)
+
+	new_state.SetMC(basictypes.NewMetaList())
 
 	if global.IncrEq {
 		new_state.eqStruct = st.GetEqStruct()

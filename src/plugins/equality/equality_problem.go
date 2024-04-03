@@ -50,7 +50,7 @@ import (
 
 type EqualityProblem struct {
 	E_tree datastruct.DataStructure
-	E_map  map[string]basictypes.TermList
+	E_map  map[string]*basictypes.TermList
 	E      Equalities
 	s, t   basictypes.Term
 	c      ConstraintStruct
@@ -59,12 +59,8 @@ type EqualityProblem struct {
 func (ep EqualityProblem) getETree() datastruct.DataStructure {
 	return ep.E_tree.Copy()
 }
-func (ep EqualityProblem) getEMap() map[string]basictypes.TermList {
-	map_res := make(map[string]basictypes.TermList)
-	for k, v := range ep.E_map {
-		map_res[k] = v.Copy()
-	}
-	return map_res
+func (ep EqualityProblem) getEMap() map[string]*basictypes.TermList {
+	return ep.E_map
 }
 func (ep EqualityProblem) GetE() Equalities {
 	return ep.E.copy()
@@ -114,18 +110,12 @@ func (ep EqualityProblem) applySubstitution(s treetypes.Substitutions) EqualityP
 	return res
 }
 
-func (ep EqualityProblem) getMetas() basictypes.MetaList {
-	metas := basictypes.MakeEmptyMetaList()
+func (ep EqualityProblem) getMetas() *basictypes.MetaList {
+	metas := basictypes.NewMetaList()
 
-	for _, meta := range ep.E.getMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
-	for _, meta := range ep.s.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
-	for _, meta := range ep.t.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
+	metas.AppendIfNotContains(ep.E.getMetas().Slice()...)
+	metas.AppendIfNotContains(ep.s.GetMetas().Slice()...)
+	metas.AppendIfNotContains(ep.t.GetMetas().Slice()...)
 
 	return metas
 }
@@ -148,20 +138,32 @@ func makeEqualityProblem(E Equalities, s basictypes.Term, t basictypes.Term, c C
 
 /* Take a list of equalities and build the corresponding code tree */
 func makeDataStructFromEqualities(eq Equalities) datastruct.DataStructure {
-	form_list := basictypes.MakeEmptyFormList()
+	formList := basictypes.NewFormList()
 	for _, e := range eq {
-		form_list = append(form_list, treetypes.MakerTermForm(e.GetT1()))
-		form_list = append(form_list, treetypes.MakerTermForm(e.GetT2()))
+		formList.Append(treetypes.MakerTermForm(e.GetT1()), treetypes.MakerTermForm(e.GetT2()))
 	}
-	return new(treesearch.Node).MakeDataStruct(form_list.Copy(), true)
+	return treesearch.NewNode().MakeDataStruct(formList.Copy(), true)
 }
 
 /* Take a list of equalities and build the corresponding assocative map */
-func makeEQMapFromEqualities(eq Equalities) map[string]basictypes.TermList {
-	map_res := make(map[string]basictypes.TermList)
+func makeEQMapFromEqualities(eq Equalities) map[string]*basictypes.TermList {
+	map_res := make(map[string]*basictypes.TermList)
+
 	for _, e := range eq {
-		map_res[e.GetT1().ToString()] = append(map_res[e.GetT1().ToString()], e.GetT2())
-		map_res[e.GetT2().ToString()] = append(map_res[e.GetT2().ToString()], e.GetT1())
+		key1 := e.GetT1().ToString()
+		key2 := e.GetT2().ToString()
+
+		if _, found := map_res[key1]; !found {
+			map_res[key1] = basictypes.NewTermList()
+		}
+
+		if _, found := map_res[key2]; !found {
+			map_res[key2] = basictypes.NewTermList()
+		}
+
+		map_res[key1].Append(e.GetT2())
+		map_res[key2].Append(e.GetT1())
 	}
+
 	return map_res
 }

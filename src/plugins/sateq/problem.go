@@ -115,12 +115,12 @@ func (problem *Problem) getEquivalenceClass(t basictypes.Term) *eqClass {
 	} else {
 		if typed, ok := t.(basictypes.Fun); ok {
 			args := make([]*eqClass, typed.GetArgs().Len())
-			for i, st := range typed.GetArgs() {
+			for i, st := range typed.GetArgs().Slice() {
 				args[i] = problem.getEquivalenceClass(st)
 			}
 			tr1 := funTermRecord(typed, args)
 			if idxList, found := problem.functionsIndex[tr1.index]; found {
-				for _, tr2 := range idxList.AsSlice() {
+				for _, tr2 := range idxList.Slice() {
 					if tr1.congruent(tr2) {
 						return tr2.eqClass
 					}
@@ -167,15 +167,15 @@ func (problem *Problem) mergeEquivalenceClasses(ec1, ec2 *eqClass) {
 	}
 
 	// update indexes (see invariant above)
-	problem.partitionIndex[ecMerged].Append(problem.partitionIndex[ecDeleted].AsSlice()...) // the entries of partitionIndex are disjoint
-	problem.supertermIndex[ecMerged].AppendIfNotContains(problem.supertermIndex[ecDeleted].AsSlice()...)
+	problem.partitionIndex[ecMerged].Append(problem.partitionIndex[ecDeleted].Slice()...) // the entries of partitionIndex are disjoint
+	problem.supertermIndex[ecMerged].AppendIfNotContains(problem.supertermIndex[ecDeleted].Slice()...)
 	delete(problem.partitionIndex, ecDeleted)
 	delete(problem.supertermIndex, ecDeleted)
 
 	// propagate congruence
-	for _, t3 := range problem.supertermIndex[ecMerged].AsSlice() {
+	for _, t3 := range problem.supertermIndex[ecMerged].Slice() {
 		// !t3.isMeta
-		for _, t4 := range problem.supertermIndex[ecMerged].AsSlice() {
+		for _, t4 := range problem.supertermIndex[ecMerged].Slice() {
 			ec3 := t3.eqClass
 			ec4 := t4.eqClass
 			if !ec3.congruent(ec4) && t3.congruent(t4) {
@@ -200,7 +200,7 @@ func (problem *Problem) AddGoal(goal []eqStruct.TermPair) {
 }
 
 func isTrivialGoal(goal *global.List[*global.BasicPair[*eqClass, *eqClass]]) bool {
-	for _, p := range goal.AsSlice() {
+	for _, p := range goal.Slice() {
 		if !p.GetFst().congruent(p.GetSnd()) {
 			return false
 		}
@@ -209,7 +209,7 @@ func isTrivialGoal(goal *global.List[*global.BasicPair[*eqClass, *eqClass]]) boo
 }
 
 func (problem *Problem) HasTrivialGoals() bool {
-	for _, goal := range problem.goals.AsSlice() {
+	for _, goal := range problem.goals.Slice() {
 		if isTrivialGoal(goal) {
 			return true
 		}
@@ -255,7 +255,7 @@ func solve(satInstance gini.Gini, litList *global.List[Lit]) (map[Lit]bool, bool
 
 	assignmentMap := make(map[Lit]bool)
 
-	for _, lit := range litList.AsSlice() {
+	for _, lit := range litList.Slice() {
 		assignmentMap[lit] = satInstance.Value(z.Lit(lit))
 	}
 	return assignmentMap, true
@@ -264,10 +264,10 @@ func solve(satInstance gini.Gini, litList *global.List[Lit]) (map[Lit]bool, bool
 func (problem *Problem) Copy() eqStruct.EqualityStruct {
 	newProblem := NewProblem()
 
-	for _, goal := range problem.goals.AsSlice() {
+	for _, goal := range problem.goals.Slice() {
 		newGoal := global.NewList[*global.BasicPair[*eqClass, *eqClass]]()
 
-		for _, singleGoal := range goal.AsSlice() {
+		for _, singleGoal := range goal.Slice() {
 			newPair := global.NewBasicPair(singleGoal.GetFst(), singleGoal.GetSnd())
 			newGoal.Append(newPair)
 		}

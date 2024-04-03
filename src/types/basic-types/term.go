@@ -50,8 +50,8 @@ type Term interface {
 	IsMeta() bool
 	IsFun() bool
 	ToMeta() Meta
-	GetMetas() MetaList
-	GetSubTerms() TermList
+	GetMetas() *MetaList
+	GetSubTerms() *TermList
 	ReplaceSubTermBy(original_term, new_term Term) Term
 }
 
@@ -64,6 +64,13 @@ type TypedTerm interface {
 func MakeId(i int, s string) Id {
 	fms := &MappedString{}
 	id := Id{fms, i, s}
+	fms.MappableString = &id
+	return id
+}
+
+func MakeQuotedId(i int, s string) Id {
+	fms := &MappedString{}
+	id := Id{fms, i, "" + s + "'"}
 	fms.MappableString = &id
 	return id
 }
@@ -82,29 +89,26 @@ func MakeMeta(index, occurence int, s string, f int, t ...typing.TypeApp) Meta {
 	return meta
 }
 
-func MakeFun(p Id, args TermList, typeVars []typing.TypeApp, t ...typing.TypeScheme) Fun {
-	return *NewFun(p, args, typeVars, t...)
+func MakeFun(p Id, args *TermList, typeVars []typing.TypeApp, t typing.TypeScheme) Fun {
+	return *NewFun(p, args, typeVars, t)
 }
 
-func NewFun(p Id, args TermList, typeVars []typing.TypeApp, t ...typing.TypeScheme) *Fun {
+func NewFun(p Id, args *TermList, typeVars []typing.TypeApp, t typing.TypeScheme) *Fun {
 	fms := &MappedString{}
-	var fun *Fun
-	if len(t) == 1 {
-		fun = &Fun{fms, p, args, typeVars, t[0]}
-	} else {
-		fun = &Fun{fms, p, args, typeVars, typing.DefaultFunType(len(args))}
-	}
+	fun := &Fun{fms, p, args, typeVars, t}
 	fms.MappableString = fun
 	return fun
 }
 
 /*** Functions ***/
 
-func TypeAppArrToTerm(typeApp []typing.TypeApp) TermList {
-	terms := MakeEmptyTermList()
-	for _, type_ := range typeApp {
-		terms = append(terms, TypeAppToTerm(type_))
+func TypeAppArrToTerm(typeApps []typing.TypeApp) *TermList {
+	terms := NewTermList()
+
+	for _, typeApp := range typeApps {
+		terms.Append(TypeAppToTerm(typeApp))
 	}
+
 	return terms
 }
 
@@ -120,18 +124,22 @@ func TypeAppToTerm(typeApp typing.TypeApp) Term {
 			term = nil
 		}
 	case typing.TypeHint:
-		term = MakerFun(MakerId(nt.ToString()), MakeEmptyTermList(), []typing.TypeApp{}, typing.MkTypeHint("$tType"))
+		term = MakerFun(MakerId(nt.ToString()), NewTermList(), []typing.TypeApp{}, typing.MkTypeHint("$tType"))
 	case typing.TypeCross:
-		args := MakeEmptyTermList()
+		args := NewTermList()
+
 		for _, type_ := range nt.GetAllUnderlyingTypes() {
-			args = append(args, TypeAppToTerm(type_))
+			args.Append(TypeAppToTerm(type_))
 		}
+
 		term = MakeFun(MakerId("$$tCross"), args, []typing.TypeApp{}, typing.MkTypeHint("$tType"))
 	case typing.ParameterizedType:
-		args := MakeEmptyTermList()
+		args := NewTermList()
+
 		for _, type_ := range nt.GetParameters() {
-			args = append(args, TypeAppToTerm(type_))
+			args.Append(TypeAppToTerm(type_))
 		}
+
 		term = MakeFun(MakerId(nt.ToString()), args, []typing.TypeApp{}, typing.MkTypeHint("$tType"))
 	}
 	return term
@@ -149,15 +157,17 @@ func typeVarToMeta(typeVar typing.TypeVar) Meta {
 	return meta
 }
 
-func replaceTermListTypesByMeta(tl TermList, varList []typing.TypeVar, index int) TermList {
-	terms := MakeEmptyTermList()
-	for _, term := range tl {
+func replaceTermListTypesByMeta(tl *TermList, varList []typing.TypeVar, index int) *TermList {
+	res := NewTermList()
+
+	for _, term := range tl.Slice() {
 		if Is[Fun](term) {
 			t := To[Fun](term)
-			terms = append(terms, MakeFun(t.GetID(), replaceTermListTypesByMeta(t.GetArgs(), varList, index), instanciateTypeAppList(t.GetTypeVars(), varList, index), t.GetTypeHint()))
+			res.Append(MakeFun(t.GetID(), replaceTermListTypesByMeta(t.GetArgs(), varList, index), instanciateTypeAppList(t.GetTypeVars(), varList, index), t.GetTypeHint()))
 		} else {
-			terms = append(terms, term)
+			res.Append(term)
 		}
 	}
-	return terms
+
+	return res
 }

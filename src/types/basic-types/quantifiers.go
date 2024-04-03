@@ -40,333 +40,63 @@ import (
 	"fmt"
 	"strings"
 
-	. "github.com/GoelandProver/Goeland/global"
+	"github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
-type Ex struct {
+type quantifier struct {
 	*MappedString
-	index    int
-	var_list []Var
-	f        Form
-	MetaList
+	*MetaList
+	index   int
+	varList []Var
+	subForm Form
+	symbol  FormulaType
 }
 
-func (e Ex) GetIndex() int              { return e.index }
-func (e Ex) GetVarList() []Var          { return copyVarList(e.var_list) }
-func (e Ex) GetForm() Form              { return e.f.Copy() }
-func (e Ex) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-func (e Ex) GetMetas() MetaList         { return e.GetForm().GetMetas() }
+func makeQuantifier(i int, vars []Var, subForm Form, metas *MetaList, symbol FormulaType) quantifier {
+	fms := &MappedString{}
+	qua := quantifier{fms, metas, i, vars, subForm, symbol}
+	fms.MappableString = &qua
 
-func (e Ex) ToString() string {
-	return e.MappedString.ToString()
+	return qua
 }
 
-func (e Ex) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return QuantifierToMappedString(mapping[ExQuant], mapping, e.GetVarList(), e.GetForm(), displayTypes)
+func (q quantifier) GetIndex() int {
+	return q.index
 }
 
-func (e Ex) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (q quantifier) GetVarList() []Var {
+	return copyVarList(q.varList)
+}
+
+func (q quantifier) GetForm() Form {
+	return q.subForm.Copy()
+}
+
+func (q quantifier) GetType() typing.TypeScheme {
+	return typing.DefaultPropType(0)
+}
+
+func (q quantifier) GetMetas() *MetaList {
+	return q.subForm.GetMetas()
+}
+
+func (q quantifier) ToString() string {
+	return q.MappedString.ToString()
+}
+
+func (q quantifier) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	return " ", ""
 }
 
-func (e Ex) GetChildrenForMappedString() []MappableString {
-	return e.GetChildFormulas().ToMappableStringSlice()
-}
-
-func (e Ex) Copy() Form {
-	return MakeExSimple(e.GetIndex(), copyVarList(e.GetVarList()), e.GetForm(), e.MetaList.Copy())
-}
-
-func (e Ex) Equals(f any) bool {
-	oth, isEx := f.(Ex)
-	return isEx &&
-		AreEqualsVarList(e.var_list, oth.var_list) &&
-		e.f.Equals(oth.f)
-}
-
-func (e Ex) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeExSimple(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceTypeByMeta(varList, index), e.MetaList)
-}
-
-func (e Ex) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f, res := e.GetForm().ReplaceVarByTerm(old, new)
-	return MakeExSimple(e.GetIndex(), e.GetVarList(), f, e.MetaList), res
-}
-
-func (e Ex) RenameVariables() Form {
-	newVarList, newForm := renameVariable(e.GetForm(), e.GetVarList())
-	return MakeEx(e.GetIndex(), newVarList, newForm)
-}
-
-func (e Ex) CleanFormula() Form {
-	e.var_list, e.f = cleanQuantifiedFormula(&e)
-
-	if len(e.var_list) > 0 {
-		return e
-	} else {
-		return e.f
-	}
-}
-
-func (e Ex) GetSubTerms() TermList {
-	return e.GetForm().GetSubTerms()
-}
-
-func (e Ex) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := e.GetForm().SubstituteVarByMeta(old, new)
-	return MakeExSimple(e.index, e.var_list, f, f.GetInternalMetas().Copy())
-}
-
-func (e Ex) GetInternalMetas() MetaList {
-	return e.MetaList
-}
-
-func (e Ex) SetInternalMetas(m MetaList) Form {
-	e.MetaList = m
-	return e
-}
-
-func (e Ex) GetSubFormulasRecur() FormList {
-	return getAllSubFormulasAppended(e)
-}
-
-func (e Ex) GetChildFormulas() FormList {
-	return FormList{e.GetForm()}
-}
-
-type All struct {
-	*MappedString
-	index    int
-	var_list []Var
-	f        Form
-	MetaList
-}
-
-func (a All) GetIndex() int              { return a.index }
-func (a All) GetVarList() []Var          { return copyVarList(a.var_list) }
-func (a All) GetForm() Form              { return a.f.Copy() }
-func (a All) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-func (a All) GetMetas() MetaList         { return a.GetForm().GetMetas() }
-
-func (a All) ToString() string {
-	return a.MappedString.ToString()
-}
-
-func (a All) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return QuantifierToMappedString(mapping[AllQuant], mapping, a.GetVarList(), a.GetForm(), displayTypes)
-}
-
-func (a All) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return " ", ""
-}
-
-func (a All) GetChildrenForMappedString() []MappableString {
-	return a.GetChildFormulas().ToMappableStringSlice()
-}
-
-func (a All) Copy() Form {
-	return MakeAllSimple(a.GetIndex(), copyVarList(a.GetVarList()), a.GetForm(), a.MetaList.Copy())
-}
-
-func (a All) Equals(f any) bool {
-	oth, isAll := f.(All)
-	return isAll &&
-		AreEqualsVarList(a.var_list, oth.var_list) &&
-		a.f.Equals(oth.f)
-}
-
-func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeAll(a.GetIndex(), a.GetVarList(), a.GetForm().ReplaceTypeByMeta(varList, index))
-}
-
-func (a All) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f, res := a.GetForm().ReplaceVarByTerm(old, new)
-	return MakeAllSimple(a.GetIndex(), a.GetVarList(), f, a.MetaList), res
-}
-
-func (a All) RenameVariables() Form {
-	newVarList, newForm := renameVariable(a.GetForm(), a.GetVarList())
-	return MakeAll(a.GetIndex(), newVarList, newForm)
-}
-
-func (a All) CleanFormula() Form {
-	a.var_list, a.f = cleanQuantifiedFormula(&a)
-
-	if len(a.var_list) > 0 {
-		return a
-	} else {
-		return a.f
-	}
-}
-
-func (a All) GetSubTerms() TermList {
-	return a.GetForm().GetSubTerms()
-}
-
-func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := a.GetForm().SubstituteVarByMeta(old, new)
-	return MakeAllSimple(a.index, a.var_list, f, f.GetInternalMetas().Copy())
-}
-
-func (a All) GetInternalMetas() MetaList {
-	return a.MetaList
-}
-
-func (a All) SetInternalMetas(m MetaList) Form {
-	a.MetaList = m
-	return a
-}
-
-func (a All) GetSubFormulasRecur() FormList {
-	return getAllSubFormulasAppended(a)
-}
-
-func (a All) GetChildFormulas() FormList {
-	return FormList{a.GetForm()}
-}
-
-/* Struct describing a forall with type variables */
-type AllType struct {
-	*MappedString
-	index  int
-	tvList []typing.TypeVar
-	form   Form
-	MetaList
-}
-
-/* Methods */
-
-func (a AllType) GetIndex() int                { return a.index }
-func (a AllType) GetVarList() []typing.TypeVar { return copyTypeVarList(a.tvList) }
-func (a AllType) GetForm() Form                { return a.form.Copy() }
-func (a AllType) GetType() typing.TypeScheme   { return typing.DefaultPropType(0) }
-
-/* Form interface */
-
-func (a AllType) ToMappedString(mapping MapString, displayTypes bool) string {
-	return mapping[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (" + a.GetForm().ToString() + ")"
-}
-
-func (a AllType) ToString() string {
-	return a.MappedString.ToString()
-}
-
-func (a AllType) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(" + mapping[AllTypeQuant] + " " + mapping[QuantVarOpen] + ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (%s))"
-}
-
-func (a AllType) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", ""
-}
-
-func (a AllType) GetChildrenForMappedString() []MappableString {
-	return a.GetChildFormulas().ToMappableStringSlice()
-}
-
-func (a AllType) GetMetas() MetaList { return a.GetForm().GetMetas() }
-
-func (a AllType) Copy() Form {
-	return MakeAllTypeSimple(a.index, copyTypeVarList(a.tvList), a.form.Copy(), a.MetaList.Copy())
-}
-
-func (a AllType) Equals(f any) bool {
-	oth, isAll := f.(AllType)
-	return isAll &&
-		AreEqualsTypeVarList(a.tvList, oth.tvList) &&
-		a.form.Equals(oth.form)
-}
-
-func (a AllType) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeAllType(a.GetIndex(), a.tvList, a.GetForm().ReplaceTypeByMeta(varList, index))
-}
-
-func (a AllType) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f, res := a.GetForm().ReplaceVarByTerm(old, new)
-	return MakeAllTypeSimple(a.GetIndex(), a.GetVarList(), f, a.MetaList), res
-}
-
-func (a AllType) RenameVariables() Form {
-	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
-}
-
-func (a AllType) CleanFormula() Form {
-	a.form = a.form.CleanFormula()
-
-	areSeen := make([]bool, len(a.tvList))
-
-	terms := a.GetVarList()
-
-	for i, v := range a.tvList {
-		for _, term := range terms {
-			if term.Equals(v) {
-				areSeen[i] = true
-			}
-		}
-	}
-
-	for i, seen := range areSeen {
-		if !seen {
-			a.tvList = append(a.tvList[:i], a.tvList[i+1:]...)
-			i--
-		}
-	}
-
-	return a
-}
-
-func (a AllType) GetSubTerms() TermList {
-	return a.GetForm().GetSubTerms()
-}
-
-func (a AllType) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := a.GetForm().SubstituteVarByMeta(old, new)
-	return MakeAllTypeSimple(a.index, a.tvList, f, f.GetInternalMetas().Copy())
-}
-
-func (a AllType) GetInternalMetas() MetaList {
-	return a.MetaList
-}
-
-func (a AllType) SetInternalMetas(m MetaList) Form {
-	a.MetaList = m
-	return a
-}
-
-func (a AllType) GetSubFormulasRecur() FormList {
-	return getAllSubFormulasAppended(a)
-}
-
-func (a AllType) GetChildFormulas() FormList {
-	return FormList{a.GetForm()}
-}
-
-// ----------------------------------------------------------------------------
-// Utility of quantified forms
-// ----------------------------------------------------------------------------
-
-func renameVariable(form Form, varList []Var) ([]Var, Form) {
-	newVL := []Var{}
-	newForm := form
-
-	for _, v := range varList {
-		newVar := MakerNewVar(v.GetName())
-		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()), v.typeHint)
-		newVL = append(newVL, newVar)
-		newForm, _ = newForm.RenameVariables().ReplaceVarByTerm(v, newVar)
-	}
-
-	return newVL, newForm
-}
-
-func QuantifierToMappedString(quant string, mapping MapString, varList []Var, form Form, displayTypes bool) string {
+func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	type VarType struct {
 		vars  []Var
 		type_ typing.TypeApp
 	}
 
 	varsType := []VarType{}
-	for _, v := range varList {
+	for _, v := range q.GetVarList() {
 		found := false
 		for _, vt := range varsType {
 			if vt.type_.Equals(v.GetTypeApp()) {
@@ -383,52 +113,73 @@ func QuantifierToMappedString(quant string, mapping MapString, varList []Var, fo
 
 	for _, vt := range varsType {
 		str := mapping[QuantVarOpen]
-		str += ListToMappedString(varList, " ", "", mapping, false)
-		str += " : " + vt.type_.ToString()
+		str += ListToMappedString(q.GetVarList(), " ", "", mapping, false)
+		if displayTypes || global.IsCoqOutput() {
+			str += " : " + vt.type_.ToString()
+		}
 		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 
-	return "(" + quant + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (%s))"
+	return "(" + mapping[q.symbol] + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (%s))"
 }
 
-type QuantifiedForm interface {
-	GetForm() Form
-	GetSubTerms() TermList
-	GetVarList() []Var
+func (q quantifier) GetChildrenForMappedString() []MappableString {
+	return q.GetChildFormulas().ToMappableStringSlice()
 }
 
-func cleanQuantifiedFormula(qf QuantifiedForm) ([]Var, Form) {
-	f := qf.GetForm().CleanFormula()
-
-	varList := qf.GetVarList()
-	terms := qf.GetSubTerms()
-
-	areSeen := checkSeenVars(varList, terms)
-	newList := getSeenVars(areSeen, varList)
-
-	return newList, f
+func (q quantifier) GetChildFormulas() *FormList {
+	return NewFormList(q.GetForm())
 }
 
-func checkSeenVars(varList []Var, terms TermList) []bool {
-	areSeen := make([]bool, len(varList))
-
-	for i, v := range varList {
-		for _, term := range terms {
-			if term.Equals(v) {
-				areSeen[i] = true
-			}
-		}
+func (q quantifier) Equals(other any) bool {
+	if typed, ok := other.(quantifier); ok {
+		return AreEqualsVarList(q.varList, typed.varList) && q.subForm.Equals(typed.subForm)
 	}
-	return areSeen
+
+	return false
 }
 
-func getSeenVars(areSeen []bool, varList []Var) []Var {
-	newList := []Var{}
+func (q quantifier) GetSubTerms() *TermList {
+	return q.GetForm().GetSubTerms()
+}
 
-	for i, seen := range areSeen {
-		if seen {
-			newList = append(newList, varList[i])
-		}
+func (q quantifier) GetInternalMetas() *MetaList {
+	return q.MetaList
+}
+
+func (q quantifier) copy() quantifier {
+	return makeQuantifier(q.GetIndex(), copyVarList(q.GetVarList()), q.GetForm(), q.MetaList.Copy(), q.symbol)
+}
+
+func (q quantifier) replaceTypeByMeta(varList []typing.TypeVar, index int) quantifier {
+	return makeQuantifier(q.GetIndex(), q.GetVarList(), q.GetForm().ReplaceTypeByMeta(varList, index), q.MetaList.Copy(), q.symbol)
+}
+
+func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
+	f, res := q.GetForm().ReplaceTermByTerm(old, new)
+	return makeQuantifier(q.GetIndex(), q.GetVarList(), f, q.MetaList.Copy(), q.symbol), res
+}
+
+func (q quantifier) renameVariables() quantifier {
+	newVarList := []Var{}
+	newForm := q.GetForm()
+
+	for _, v := range q.GetVarList() {
+		newVar := MakerNewVar(v.GetName())
+		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()), v.typeHint)
+		newVarList = append(newVarList, newVar)
+		newForm, _ = newForm.RenameVariables().ReplaceTermByTerm(v, newVar)
 	}
-	return newList
+
+	return makeQuantifier(q.GetIndex(), newVarList, newForm, q.MetaList.Copy(), q.symbol)
+}
+
+func (q quantifier) substituteVarByMeta(old Var, new Meta) quantifier {
+	newForm := q.GetForm().SubstituteVarByMeta(old, new)
+	return makeQuantifier(q.GetIndex(), q.GetVarList(), newForm, newForm.GetInternalMetas().Copy(), q.symbol)
+}
+
+func (q quantifier) setInternalMetas(m *MetaList) quantifier {
+	q.MetaList = m
+	return q
 }

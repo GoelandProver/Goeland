@@ -31,75 +31,62 @@
 **/
 
 /**
-* This file contains functions and types which describe the fomula_list's data
-* structure
+* This file implements quantifiers over formulas (forall, exists, forall (types)).
 **/
 
 package basictypes
 
-import (
-	"sort"
+import typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 
-	"github.com/GoelandProver/Goeland/global"
-)
-
-type FormList struct {
-	*global.List[Form]
+type All struct {
+	quantifier
 }
 
-func NewFormList(slice ...Form) *FormList {
-	return &FormList{global.NewList(slice...)}
+func MakeAllSimple(i int, vars []Var, forms Form, metas *MetaList) All {
+	return All{makeQuantifier(i, vars, forms, metas, AllQuant)}
 }
 
-func (fl *FormList) Less(i, j int) bool {
-	return (fl.Get(i).ToString() < fl.Get(j).ToString())
+func MakeAll(i int, vars []Var, forms Form) All {
+	return MakeAllSimple(i, vars, forms, NewMetaList())
 }
 
-func (fl *FormList) Copy() *FormList {
-	return &FormList{fl.List.Copy()}
+func MakerAll(vars []Var, forms Form) All {
+	return MakeAll(MakerIndexFormula(), vars, forms)
 }
 
-func (lf *FormList) ToMappableStringSlice() []MappableString {
-	forms := []MappableString{}
-
-	for _, form := range lf.Slice() {
-		forms = append(forms, form.(MappableString))
+func (a All) Equals(other any) bool {
+	if typed, ok := other.(All); ok {
+		return AreEqualsVarList(a.GetVarList(), typed.GetVarList()) && a.GetForm().Equals(typed.GetForm())
 	}
 
-	return forms
+	return false
 }
 
-func (fl *FormList) Equals(other *FormList) bool {
-	if fl.Len() != other.Len() {
-		return false
-	}
-
-	flSorted := fl.Copy()
-	sort.Sort(flSorted)
-
-	otherSorted := other.Copy()
-	sort.Sort(otherSorted)
-
-	for i := range flSorted.Slice() {
-		if !flSorted.Get(i).Equals(otherSorted.Get(i)) {
-			return false
-		}
-	}
-
-	return true
+func (a All) GetSubFormulasRecur() *FormList {
+	return getAllSubFormulasAppended(a)
 }
 
-// Removes all AND formulas: {(a & b), (b => c), (d & (e & f))} -> {(a), (b), (b => c), (d), (e), (f)}
-func (fl *FormList) Flatten() *FormList {
-	result := NewFormList()
+func (a All) Copy() Form {
+	return All{a.quantifier.copy()}
+}
 
-	for _, form := range fl.Slice() {
-		if typed, ok := form.(And); ok {
-			result.Append(typed.FormList.Flatten().Slice()...)
-		} else {
-			result.Append(form)
-		}
-	}
+func (a All) RenameVariables() Form {
+	return All{a.quantifier.renameVariables()}
+}
 
-	return result
+func (a All) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
+	return All{a.quantifier.replaceTypeByMeta(varList, index)}
+}
+
+func (a All) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	quant, isReplaced := a.quantifier.replaceTermByTerm(old, new)
+	return All{quant}, isReplaced
+}
+
+func (a All) SetInternalMetas(m *MetaList) Form {
+	return All{a.quantifier.setInternalMetas(m)}
+}
+
+func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
+	return All{a.quantifier.substituteVarByMeta(old, new)}
 }

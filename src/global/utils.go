@@ -38,6 +38,7 @@ package global
 
 import (
 	"strings"
+	"unicode"
 )
 
 type Comparable interface {
@@ -124,4 +125,17 @@ type Basic interface {
 	Stringable
 	Comparable
 	// ILL TODO : Make Basic implement the Copyable interface (all interfaces that require a copy should have another name for such copy)
+}
+
+func ToUpperCaseFirstLetter(s string) string {
+	switch len(s) {
+	case 0:
+		return s
+	case 1:
+		return strings.ToUpper(s)
+	default:
+		s_bytes := []byte(s)
+		s_bytes[0] = byte(unicode.ToUpper(rune(s[0])))
+		return string(s_bytes)
+	}
 }

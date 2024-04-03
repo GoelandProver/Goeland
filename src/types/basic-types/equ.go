@@ -40,96 +40,27 @@ import (
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 )
 
-/* Imp(f1,f2): f1 imply f2*/
-type Imp struct {
-	*MappedString
-	index  int
-	f1, f2 Form
-	MetaList
-}
-
-func (i Imp) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(%s)"
-}
-
-func (i Imp) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return " " + mapping[ImpConn] + " ", ""
-}
-
-func (i Imp) GetChildrenForMappedString() []MappableString {
-	return i.GetChildFormulas().ToMappableStringSlice()
-}
-
-func (i Imp) GetIndex() int { return i.index }
-func (i Imp) GetF1() Form   { return i.f1.Copy() }
-func (i Imp) GetF2() Form   { return i.f2.Copy() }
-func (i Imp) Copy() Form {
-	return MakeImpSimple(i.index, i.GetF1(), i.GetF2(), i.MetaList.Copy())
-}
-func (i Imp) GetMetas() MetaList         { return i.f1.GetMetas().Merge(i.f2.GetMetas()) }
-func (i Imp) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
-func (i Imp) ToString() string           { return i.ToMappedString(DefaultMapString, true) }
-
-func (i Imp) Equals(f any) bool {
-	oth, isImp := f.(Imp)
-	return isImp &&
-		i.f1.Equals(oth.f1) &&
-		i.f2.Equals(oth.f2)
-}
-
-func (i Imp) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
-	return MakeImp(i.GetIndex(), i.GetF1().ReplaceTypeByMeta(varList, index), i.GetF2().ReplaceTypeByMeta(varList, index))
-}
-
-func (i Imp) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f1, res1 := i.GetF1().ReplaceVarByTerm(old, new)
-	f2, res2 := i.GetF2().ReplaceVarByTerm(old, new)
-
-	return MakeImpSimple(i.index, f1, f2, i.MetaList), res1 || res2
-}
-
-func (i Imp) RenameVariables() Form {
-	return MakeImp(i.GetIndex(), i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
-}
-func (i Imp) CleanFormula() Form {
-	i.f1 = i.f1.CleanFormula()
-	i.f2 = i.f2.CleanFormula()
-
-	return i
-}
-
-func (i Imp) GetSubTerms() TermList {
-	return i.GetF1().GetSubTerms().MergeTermList(i.GetF2().GetSubTerms())
-}
-
-func (i Imp) SubstituteVarByMeta(old Var, new Meta) Form {
-	fl, metas := substVarByMetaInFormList(old, new, FormList{i.f1, i.f2}, i.MetaList)
-	return MakeImpSimple(i.index, fl[0], fl[1], metas)
-}
-
-func (i Imp) GetInternalMetas() MetaList {
-	return i.MetaList
-}
-
-func (i Imp) SetInternalMetas(m MetaList) Form {
-	i.MetaList = m
-	return i
-}
-
-func (i Imp) GetSubFormulasRecur() FormList {
-	return getAllSubFormulasAppended(i)
-}
-
-func (i Imp) GetChildFormulas() FormList {
-	return FormList{i.f1, i.f2}
-}
-
 /* Equ(f1, f2): f1 equivalent to f2 */
 type Equ struct {
 	*MappedString
 	index  int
 	f1, f2 Form
-	MetaList
+	*MetaList
+}
+
+func MakeEquSimple(i int, firstForm, secondForm Form, metas *MetaList) Equ {
+	fms := &MappedString{}
+	equ := Equ{fms, i, firstForm, secondForm, metas}
+	fms.MappableString = &equ
+	return equ
+}
+
+func MakeEqu(i int, firstForm, secondForm Form) Equ {
+	return MakeEquSimple(i, firstForm, secondForm, NewMetaList())
+}
+
+func MakerEqu(firstForm, secondForm Form) Equ {
+	return MakeEqu(MakerIndexFormula(), firstForm, secondForm)
 }
 
 func (e Equ) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
@@ -150,7 +81,14 @@ func (e Equ) GetF2() Form   { return e.f2.Copy() }
 func (e Equ) Copy() Form {
 	return MakeEquSimple(e.index, e.GetF1(), e.GetF2(), e.MetaList.Copy())
 }
-func (e Equ) GetMetas() MetaList         { return e.f1.GetMetas().Merge(e.f2.GetMetas()) }
+
+func (e Equ) GetMetas() *MetaList {
+	allMetas := e.f1.GetMetas().Copy()
+	allMetas.AppendIfNotContains(e.f2.GetMetas().Slice()...)
+
+	return allMetas
+}
+
 func (e Equ) GetType() typing.TypeScheme { return typing.DefaultPropType(0) }
 func (e Equ) ToString() string           { return e.ToMappedString(DefaultMapString, true) }
 
@@ -164,9 +102,9 @@ func (e Equ) ReplaceTypeByMeta(varList []typing.TypeVar, index int) Form {
 	return MakeEqu(e.GetIndex(), e.GetF1().ReplaceTypeByMeta(varList, index), e.GetF2().ReplaceTypeByMeta(varList, index))
 }
 
-func (e Equ) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
-	f1, res1 := e.GetF1().ReplaceVarByTerm(old, new)
-	f2, res2 := e.GetF2().ReplaceVarByTerm(old, new)
+func (e Equ) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
+	f1, res1 := e.GetF1().ReplaceTermByTerm(old, new)
+	f2, res2 := e.GetF2().ReplaceTermByTerm(old, new)
 	MakeEquSimple(e.GetIndex(), f1, f2, e.MetaList)
 	return MakeEquSimple(e.GetIndex(), f1, f2, e.MetaList), res1 || res2
 }
@@ -174,35 +112,32 @@ func (e Equ) ReplaceVarByTerm(old Var, new Term) (Form, bool) {
 func (e Equ) RenameVariables() Form {
 	return MakeEqu(e.GetIndex(), e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
 }
-func (e Equ) CleanFormula() Form {
-	e.f1 = e.f1.CleanFormula()
-	e.f2 = e.f2.CleanFormula()
 
-	return e
-}
+func (e Equ) GetSubTerms() *TermList {
+	res := e.GetF1().GetSubTerms().Copy()
+	res.AppendIfNotContains(e.GetF2().GetSubTerms().Slice()...)
 
-func (e Equ) GetSubTerms() TermList {
-	return e.GetF1().GetSubTerms().MergeTermList(e.GetF2().GetSubTerms())
+	return res
 }
 
 func (e Equ) SubstituteVarByMeta(old Var, new Meta) Form {
-	fl, metas := substVarByMetaInFormList(old, new, FormList{e.f1, e.f2}, e.MetaList)
-	return MakeEquSimple(e.index, fl[0], fl[1], metas)
+	fl, metas := substVarByMetaInFormList(old, new, NewFormList(e.f1, e.f2), e.MetaList)
+	return MakeEquSimple(e.index, fl.Get(0), fl.Get(1), metas)
 }
 
-func (e Equ) GetInternalMetas() MetaList {
+func (e Equ) GetInternalMetas() *MetaList {
 	return e.MetaList
 }
 
-func (e Equ) SetInternalMetas(m MetaList) Form {
+func (e Equ) SetInternalMetas(m *MetaList) Form {
 	e.MetaList = m
 	return e
 }
 
-func (e Equ) GetSubFormulasRecur() FormList {
+func (e Equ) GetSubFormulasRecur() *FormList {
 	return getAllSubFormulasAppended(e)
 }
 
-func (e Equ) GetChildFormulas() FormList {
-	return FormList{e.f1, e.f2}
+func (e Equ) GetChildFormulas() *FormList {
+	return NewFormList(e.f1, e.f2)
 }

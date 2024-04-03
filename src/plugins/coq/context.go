@@ -38,35 +38,34 @@ package coq
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
+func makeContextIfNeeded(root basictypes.Form, metaList *basictypes.MetaList) string {
 	if !GetContextEnabled() {
 		return ""
 	}
-	resultingString := contextPreamble()
-	if typing.EmptyGlobalContext() {
-		if global.IsLoaded("dmt") {
-			root = btps.MakerAnd(append(dmt.GetRegisteredAxioms(), root))
-		}
 
+	resultingString := contextPreamble()
+
+	if global.IsLoaded("dmt") {
+		registeredAxioms := dmt.GetRegisteredAxioms()
+		registeredAxioms.Append(root)
+		root = basictypes.MakerAnd(registeredAxioms)
+	}
+
+	if typing.EmptyGlobalContext() {
 		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
-		if len(metaList) > 0 {
+
+		if metaList.Len() > 0 {
 			resultingString += contextualizeMetas(metaList)
 		}
 	} else {
-		if global.IsLoaded("dmt") {
-			root = btps.MakerAnd(append(dmt.GetRegisteredAxioms(), root))
-		}
-
 		context := typing.GetGlobalContext()
 		for k, v := range context {
 			if typed, ok := v[0].App.(typing.TypeHint); ok {
@@ -79,7 +78,7 @@ func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
 
 		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
 
-		if len(metaList) > 0 {
+		if metaList.Len() > 0 {
 			resultingString += contextualizeMetas(metaList)
 		}
 	}
@@ -87,59 +86,53 @@ func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
 }
 
 func contextPreamble() string {
-	str := "Add LoadPath \"" + pathToGoelandCoq() + "\" as Goeland.\n"
-	str += "Require Import Goeland.goeland.\n"
+	str := lemmas
 	str += "Parameter goeland_U : Set. (* goeland's universe *)\n"
 	str += "Parameter goeland_I : goeland_U. (* an individual in the universe. *)\n\n"
 	return str
 }
 
-func pathToGoelandCoq() string {
-	path, _ := os.Executable()
-	return filepath.Clean(filepath.Dir(path) + "/")
-}
-
-func getContextFromFormula(root btps.Form) []string {
+func getContextFromFormula(root basictypes.Form) []string {
 	result := []string{}
 	switch nf := root.(type) {
-	case btps.All:
+	case basictypes.All:
 		result = getContextFromFormula(nf.GetForm())
-	case btps.Ex:
+	case basictypes.Ex:
 		result = getContextFromFormula(nf.GetForm())
-	case btps.AllType:
+	case basictypes.AllType:
 		result = getContextFromFormula(nf.GetForm())
-	case btps.And:
-		for _, f := range nf.FormList {
+	case basictypes.And:
+		for _, f := range nf.FormList.Slice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
-	case btps.Or:
-		for _, f := range nf.FormList {
+	case basictypes.Or:
+		for _, f := range nf.FormList.Slice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
-	case btps.Imp:
+	case basictypes.Imp:
 		result = clean(result, getContextFromFormula(nf.GetF1()))
 		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case btps.Equ:
+	case basictypes.Equ:
 		result = clean(result, getContextFromFormula(nf.GetF1()))
 		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case btps.Not:
+	case basictypes.Not:
 		result = clean(result, getContextFromFormula(nf.GetForm()))
-	case btps.Pred:
-		if !nf.GetID().Equals(btps.Id_eq) {
+	case basictypes.Pred:
+		if !nf.GetID().Equals(basictypes.Id_eq) {
 			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToMappedString(coqMapConnectors(), false), nf.GetType().ToString())))
 		}
-		for _, term := range nf.GetArgs() {
+		for _, term := range nf.GetArgs().Slice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}
 	return result
 }
 
-func getContextFromTerm(trm btps.Term) []string {
+func getContextFromTerm(trm basictypes.Term) []string {
 	result := []string{}
-	if fun, isFun := trm.(btps.Fun); isFun {
+	if fun, isFun := trm.(basictypes.Fun); isFun {
 		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToMappedString(coqMapConnectors(), false), fun.GetTypeHint().ToString())))
-		for _, term := range fun.GetArgs() {
+		for _, term := range fun.GetArgs().Slice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}
@@ -164,10 +157,80 @@ func clean(set, add []string) []string {
 	return result
 }
 
-func contextualizeMetas(metaList btps.MetaList) string {
+func contextualizeMetas(metaList *basictypes.MetaList) string {
 	result := []string{}
-	for _, meta := range metaList {
+	for _, meta := range metaList.Slice() {
 		result = append(result, meta.ToMappedString(coqMapConnectors(), false))
 	}
 	return "Parameters " + strings.Join(result, " ") + " : goeland_U."
 }
+
+var lemmas = `Require Export Classical.
+
+Lemma goeland_notnot : forall P : Prop,
+  P -> (~ P -> False).
+Proof. tauto. Qed.
+
+Lemma goeland_nottrue :
+  (~True -> False).
+Proof. tauto. Qed.
+
+Lemma goeland_and : forall P Q : Prop,
+  (P -> (Q -> False)) -> (P /\ Q -> False).
+Proof. tauto. Qed.
+
+Lemma goeland_or : forall P Q : Prop,
+  (P -> False) -> (Q -> False) -> (P \/ Q -> False).
+Proof. tauto. Qed.
+
+Lemma goeland_imply : forall P Q : Prop,
+  (~P -> False) -> (Q -> False) -> ((P -> Q) -> False).
+Proof. tauto. Qed.
+
+Lemma goeland_equiv : forall P Q : Prop,
+  (~P -> ~Q -> False) -> (P -> Q -> False) -> ((P <-> Q) -> False).
+Proof. tauto. Qed.
+
+Lemma goeland_notand : forall P Q : Prop,
+  (~P -> False) -> (~Q -> False) -> (~(P /\ Q) -> False).
+Proof. tauto. Qed.
+
+Lemma goeland_notor : forall P Q : Prop,
+  (~P -> ~Q -> False) -> (~(P \/ Q) -> False).
+Proof. tauto. Qed.
+
+Lemma goeland_notimply : forall P Q : Prop,
+  (P -> ~Q -> False) -> (~(P -> Q) -> False).
+Proof. tauto. Qed.
+
+Lemma goeland_notequiv : forall P Q : Prop,
+  (~P -> Q -> False) -> (P -> ~Q -> False) -> (~(P <-> Q) -> False).
+Proof. tauto. Qed.
+
+Lemma goeland_ex : forall (T : Type) (P : T -> Prop),
+  (forall z : T, ((P z) -> False)) -> ((exists x : T, (P x)) -> False).
+Proof. firstorder. Qed.
+
+Lemma goeland_all : forall (T : Type) (P : T -> Prop) (t : T),
+  ((P t) -> False) -> ((forall x : T, (P x)) -> False).
+Proof. firstorder. Qed.
+
+Lemma goeland_notex : forall (T : Type) (P : T -> Prop) (t : T),
+  (~(P t) -> False) -> (~(exists x : T, (P x)) -> False).
+Proof. firstorder. Qed.
+
+Lemma goeland_notall : forall (T : Type) (P : T -> Prop),
+  (forall z : T, (~(P z) -> False)) -> (~(forall x : T, (P x)) -> False).
+Proof. intros T P Ha Hb. apply Hb. intro. apply NNPP. exact (Ha x). Qed.
+
+Definition goeland_and_s := fun P Q c h => goeland_and P Q h c.
+Definition goeland_or_s := fun P Q c h i => goeland_or P Q h i c.
+Definition goeland_imply_s := fun P Q c h i => goeland_imply P Q h i c.
+Definition goeland_equiv_s := fun P Q c h i => goeland_equiv P Q h i c.
+Definition goeland_notand_s := fun P Q c h i => goeland_notand P Q h i c.
+Definition goeland_notor_s := fun P Q c h => goeland_notor P Q h c.
+Definition goeland_notimply_s := fun P Q c h => goeland_notimply P Q h c.
+Definition goeland_notequiv_s := fun P Q c h i => goeland_notequiv P Q h i c.
+Definition goeland_ex_s := fun T P c h => goeland_ex T P h c.
+Definition goeland_notall_s := fun T P c h => goeland_notall T P h c.
+`

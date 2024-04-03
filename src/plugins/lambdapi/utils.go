@@ -36,7 +36,7 @@ import (
 	"strings"
 
 	"github.com/GoelandProver/Goeland/global"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 var varCounter int
@@ -46,9 +46,9 @@ func getIncreasedCounter() int {
 	return varCounter - 1
 }
 
-var context global.Map[btps.MappableString, global.String] = *global.NewMap[btps.MappableString, global.String]()
+var context global.Map[basictypes.MappableString, global.String] = *global.NewMap[basictypes.MappableString, global.String]()
 
-func addToContext(key btps.MappableString) string {
+func addToContext(key basictypes.MappableString) string {
 	if _, ok := context.GetExists(key); !ok {
 		context.Set(key, global.String(fmt.Sprintf("v%v", getIncreasedCounter())))
 	}
@@ -56,19 +56,19 @@ func addToContext(key btps.MappableString) string {
 	return string(context.Get(key))
 }
 
-func getFromContext(key btps.MappableString) string {
+func getFromContext(key basictypes.MappableString) string {
 	return string(context.Get(key))
 }
 
-func toLambdaString(element btps.MappableString, str string) string {
+func toLambdaString(element basictypes.MappableString, str string) string {
 	return fmt.Sprintf("λ (%s : ϵ (%s))", addToContext(element), str)
 }
 
-func toLambdaIntroString(element btps.MappableString, typeStr string) string {
+func toLambdaIntroString(element basictypes.MappableString, typeStr string) string {
 	return fmt.Sprintf("λ (%s : τ (%s))", addToContext(element), mapDefault(typeStr))
 }
 
-func toCorrectString(element btps.MappableString) string {
+func toCorrectString(element basictypes.MappableString) string {
 	isNotSkolem := len(element.ToString()) <= 5 || element.ToString()[:6] != "skolem"
 	element = decorateForm(element)
 	surround := element.ToMappedStringSurround(lambdaPiMapConnectors, false)
@@ -80,7 +80,7 @@ func toCorrectString(element btps.MappableString) string {
 	return fmt.Sprintf(surround, children)
 }
 
-func ListToMappedString[T btps.MappableString](children []T, separator, emptyValue string) string {
+func ListToMappedString[T basictypes.MappableString](children []T, separator, emptyValue string) string {
 	strArr := []string{}
 
 	for _, element := range children {

@@ -38,37 +38,35 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/dmt"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func makeContextIfNeeded(root btps.Form, metaList btps.MetaList) string {
+func makeContextIfNeeded(root basictypes.Form, metaList *basictypes.MetaList) string {
 	resultString := contextPreamble() + "\n\n"
 
-	if typing.EmptyGlobalContext() {
-		if global.IsLoaded("dmt") {
-			root = btps.MakerAnd(append(dmt.GetRegisteredAxioms(), root))
-		}
+	if global.IsLoaded("dmt") {
+		registeredAxioms := dmt.GetRegisteredAxioms()
+		registeredAxioms.Append(root)
+		root = basictypes.MakerAnd(registeredAxioms)
+	}
 
+	if typing.EmptyGlobalContext() {
 		resultString += strings.Join(getContextFromFormula(root), "\n") + "\n"
 
-		if len(metaList) > 0 {
+		if metaList.Len() > 0 {
 			resultString += contextualizeMetas(metaList)
 		}
 	} else {
-		if global.IsLoaded("dmt") {
-			root = btps.MakerAnd(append(dmt.GetRegisteredAxioms(), root))
-		}
-
 		resultString += getContextAsString(root)
 
-		if len(metaList) > 0 {
+		if metaList.Len() > 0 {
 			resultString += contextualizeMetas(metaList)
 		}
 	}
 	return resultString
 }
 
-func getContextAsString(root btps.Form) string {
+func getContextAsString(root basictypes.Form) string {
 	types, arrows, others := globalContextPairs()
 	ids := getIdsFromFormula(root)
 
@@ -143,7 +141,7 @@ func globalContextPairs() (types, arrows, others []global.Pair[string, string]) 
 					if i != len(primitives)-1 {
 						switch typedPrim := prim.(type) {
 						case typing.TypeVar:
-							str := btps.SimpleStringMappable(typedPrim.ToString())
+							str := basictypes.SimpleStringMappable(typedPrim.ToString())
 							symbol := addToContext(&str)
 							typesStr += "τ (" + symbol + ") → "
 							contextualized = append(contextualized, symbol)
@@ -172,34 +170,34 @@ func contextPreamble() string {
 	return "require open Logic.Goeland.FOL Logic.Goeland.LL Logic.Goeland.ND Logic.Goeland.ND_eps Logic.Goeland.ND_eps_full Logic.Goeland.ND_eps_aux Logic.Goeland.LL_ND Logic.Goeland.GS3;"
 }
 
-func getContextFromFormula(root btps.Form) []string {
+func getContextFromFormula(root basictypes.Form) []string {
 	result := []string{}
 
 	switch nf := root.(type) {
-	case btps.All:
+	case basictypes.All:
 		result = getContextFromFormula(nf.GetForm())
-	case btps.Ex:
+	case basictypes.Ex:
 		result = getContextFromFormula(nf.GetForm())
-	case btps.AllType:
+	case basictypes.AllType:
 		result = getContextFromFormula(nf.GetForm())
-	case btps.And:
-		for _, f := range nf.FormList {
+	case basictypes.And:
+		for _, f := range nf.FormList.Slice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
-	case btps.Or:
-		for _, f := range nf.FormList {
+	case basictypes.Or:
+		for _, f := range nf.FormList.Slice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
-	case btps.Imp:
+	case basictypes.Imp:
 		result = clean(result, getContextFromFormula(nf.GetF1()))
 		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case btps.Equ:
+	case basictypes.Equ:
 		result = clean(result, getContextFromFormula(nf.GetF1()))
 		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case btps.Not:
+	case basictypes.Not:
 		result = append(result, getContextFromFormula(nf.GetForm())...)
-	case btps.Pred:
-		if !nf.GetID().Equals(btps.Id_eq) {
+	case basictypes.Pred:
+		if !nf.GetID().Equals(basictypes.Id_eq) {
 			primitives := nf.GetType().GetPrimitives()
 			typesStr := ""
 
@@ -213,52 +211,52 @@ func getContextFromFormula(root btps.Form) []string {
 
 			result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", nf.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
 		}
-		for _, term := range nf.GetArgs() {
+		for _, term := range nf.GetArgs().Slice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}
 	return result
 }
 
-func getIdsFromFormula(root btps.Form) []global.Pair[string, string] {
+func getIdsFromFormula(root basictypes.Form) []global.Pair[string, string] {
 	result := []global.Pair[string, string]{}
 
 	switch nf := root.(type) {
-	case btps.All:
+	case basictypes.All:
 		result = getIdsFromFormula(nf.GetForm())
-	case btps.Ex:
+	case basictypes.Ex:
 		result = getIdsFromFormula(nf.GetForm())
-	case btps.AllType:
+	case basictypes.AllType:
 		result = getIdsFromFormula(nf.GetForm())
-	case btps.And:
-		for _, f := range nf.FormList {
+	case basictypes.And:
+		for _, f := range nf.FormList.Slice() {
 			result = append(result, getIdsFromFormula(f)...)
 		}
-	case btps.Or:
-		for _, f := range nf.FormList {
+	case basictypes.Or:
+		for _, f := range nf.FormList.Slice() {
 			result = append(result, getIdsFromFormula(f)...)
 		}
-	case btps.Imp:
+	case basictypes.Imp:
 		result = getIdsFromFormula(nf.GetF1())
 		result = append(result, getIdsFromFormula(nf.GetF2())...)
-	case btps.Equ:
+	case basictypes.Equ:
 		result = getIdsFromFormula(nf.GetF1())
 		result = append(result, getIdsFromFormula(nf.GetF2())...)
-	case btps.Not:
+	case basictypes.Not:
 		result = getIdsFromFormula(nf.GetForm())
-	case btps.Pred:
+	case basictypes.Pred:
 		result = append(result, global.MakePair(nf.GetID().GetName(), nf.GetID().ToMappedString(lambdaPiMapConnectors, false)))
-		for _, f := range nf.GetArgs() {
+		for _, f := range nf.GetArgs().Slice() {
 			result = append(result, global.MakePair(f.GetName(), f.ToMappedString(lambdaPiMapConnectors, false)))
 		}
 	}
 	return result
 }
 
-func getContextFromTerm(trm btps.Term) []string {
+func getContextFromTerm(trm basictypes.Term) []string {
 	result := []string{}
 
-	if fun, isFun := trm.(btps.Fun); isFun {
+	if fun, isFun := trm.(basictypes.Fun); isFun {
 
 		primitives := fun.GetTypeHint().GetPrimitives()
 		typesStr := ""
@@ -271,7 +269,7 @@ func getContextFromTerm(trm btps.Term) []string {
 		}
 
 		result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
-		for _, term := range fun.GetArgs() {
+		for _, term := range fun.GetArgs().Slice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}
@@ -296,9 +294,9 @@ func clean(set, add []string) []string {
 	return result
 }
 
-func contextualizeMetas(metaList btps.MetaList) string {
+func contextualizeMetas(metaList *basictypes.MetaList) string {
 	result := []string{}
-	for _, meta := range metaList {
+	for _, meta := range metaList.Slice() {
 		result = append(result, meta.ToMappedString(lambdaPiMapConnectors, false))
 	}
 	return "symbol " + strings.Join(result, " ") + " : τ (ι);"

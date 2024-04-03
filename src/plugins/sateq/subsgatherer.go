@@ -78,37 +78,13 @@ func translate(toTranslate *eqClass, correspondence map[*eqClass]*termRecord) ba
 	if tr.isMeta() {
 		return tr.meta
 	} else {
-		args := global.NewList[basictypes.Term]()
+		args := basictypes.NewTermList()
 		for _, s := range tr.args {
 			args.Append(translate(s, correspondence))
 		}
-		return basictypes.MakerFun(tr.symbolId, args.AsSlice(), tr.typeVars, tr.typeHint)
+		return basictypes.MakerFun(tr.symbolId, args, tr.typeVars, tr.typeHint)
 	}
 }
-
-/*func translateConstant(toTranslate *eqClass, termCorrespondance map[*eqClass]basictypes.Term) (basictypes.Term, bool) {
-	if value, found := termCorrespondance[toTranslate]; found {
-		return value, true
-	} else {
-		return toTranslate, false
-	}
-}*/
-
-/*func translateFunction(toTranslate basictypes.Fun, termCorrespondance map[*eqClass]basictypes.Term) (basictypes.Term, bool) {
-	newTerms := global.NewList[basictypes.Term]()
-
-	for _, arg := range toTranslate.GetArgs() {
-		subterm, subchange := arg, true
-
-		for subchange {
-			subterm, subchange = translate(subterm, termCorrespondance)
-		}
-
-		newTerms.Append(subterm)
-	}
-
-	return basictypes.MakerFun(toTranslate.GetID(), newTerms.AsSlice(), toTranslate.GetTypeVars(), toTranslate.GetTypeHint()), false
-}*/
 
 func translateSub(sub map[*termRecord]*eqClass, correspondence map[*eqClass]*termRecord) []treetypes.Substitutions {
 	result := treetypes.MakeEmptySubstitutionList()

@@ -39,11 +39,11 @@ package dmt
 
 import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	ctypes "github.com/GoelandProver/Goeland/types/complex-types"
 )
 
-func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
+func substitute(form basictypes.Form, subst treetypes.Substitutions) basictypes.Form {
 	for _, s := range subst {
 		old_symbol, new_symbol := s.Get()
 		form = ctypes.ApplySubstitutionOnFormula(old_symbol, new_symbol, form)
@@ -52,17 +52,20 @@ func substitute(form btypes.Form, subst treetypes.Substitutions) btypes.Form {
 	return form
 }
 
-func substInternalMetas(ml btypes.MetaList, subst treetypes.Substitutions) btypes.MetaList {
-	result := btypes.MetaList{}
-	for _, meta := range ml {
-		s, _ := subst.Get(meta)
-		if s != nil {
-			if newMeta, isMeta := s.(btypes.Meta); isMeta {
-				result = append(result, newMeta)
+func substInternalMetas(ml *basictypes.MetaList, subst treetypes.Substitutions) *basictypes.MetaList {
+	result := basictypes.NewMetaList()
+
+	for _, meta := range ml.Slice() {
+		term, _ := subst.Get(meta)
+
+		if term != nil {
+			if typed, ok := term.(basictypes.Meta); ok {
+				result.AppendIfNotContains(typed)
 			}
 		} else {
 			panic("Introducing DMT meta in proof-search")
 		}
 	}
+
 	return result
 }

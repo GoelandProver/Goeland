@@ -45,13 +45,13 @@ import (
 /* Association between an integer and an array of Terms. */
 type IntPair struct {
 	q     int
-	terms basictypes.TermList
+	terms *basictypes.TermList
 }
 
 func (ip IntPair) GetQ() int {
 	return ip.q
 }
-func (ip IntPair) GetTerms() basictypes.TermList {
+func (ip IntPair) GetTerms() *basictypes.TermList {
 	return ip.terms.Copy()
 }
 
@@ -77,7 +77,7 @@ func IntPairistToString(ipl []IntPair) string {
 	return res
 }
 
-func MakeIntPair(q int, terms basictypes.TermList) IntPair {
+func MakeIntPair(q int, terms *basictypes.TermList) IntPair {
 	return IntPair{q, terms.Copy()}
 }
 

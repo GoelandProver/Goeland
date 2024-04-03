@@ -29,77 +29,37 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
+package global
 
-/**
-* This file contains functions and types which describe the fomula_list's data
-* structure
-**/
-
-package basictypes
-
-import (
-	"sort"
-
-	"github.com/GoelandProver/Goeland/global"
-)
-
-type FormList struct {
-	*global.List[Form]
+// A simple set of generic Basic type.
+//
+// The main difference from the list is the unicity of the elements. There can be no i and j with i != j such that set[i].Equals(set[j])
+//
+// Instanciate with NewSet() or the sync counterpart for a synchronised version.
+type Set[T Basic] struct {
+	*List[T]
 }
 
-func NewFormList(slice ...Form) *FormList {
-	return &FormList{global.NewList(slice...)}
+/*
+Given a slice, creates a new set with that slice already set and gives its pointer.
+*/
+func NewSet[T Basic](slice ...T) *Set[T] {
+	return &Set[T]{NewList[T](slice...)}
 }
 
-func (fl *FormList) Less(i, j int) bool {
-	return (fl.Get(i).ToString() < fl.Get(j).ToString())
+/*
+Given a slice, creates a new synchronised set with that slice already set and gives its pointer.
+*/
+func NewSyncSet[T Basic](slice ...T) *Set[T] {
+	syncSet := NewSet(slice...)
+	MakeIntoSyncableRW(syncSet)
+
+	return syncSet
 }
 
-func (fl *FormList) Copy() *FormList {
-	return &FormList{fl.List.Copy()}
-}
-
-func (lf *FormList) ToMappableStringSlice() []MappableString {
-	forms := []MappableString{}
-
-	for _, form := range lf.Slice() {
-		forms = append(forms, form.(MappableString))
-	}
-
-	return forms
-}
-
-func (fl *FormList) Equals(other *FormList) bool {
-	if fl.Len() != other.Len() {
-		return false
-	}
-
-	flSorted := fl.Copy()
-	sort.Sort(flSorted)
-
-	otherSorted := other.Copy()
-	sort.Sort(otherSorted)
-
-	for i := range flSorted.Slice() {
-		if !flSorted.Get(i).Equals(otherSorted.Get(i)) {
-			return false
-		}
-	}
-
-	return true
-}
-
-// Removes all AND formulas: {(a & b), (b => c), (d & (e & f))} -> {(a), (b), (b => c), (d), (e), (f)}
-func (fl *FormList) Flatten() *FormList {
-	result := NewFormList()
-
-	for _, form := range fl.Slice() {
-		if typed, ok := form.(And); ok {
-			result.Append(typed.FormList.Flatten().Slice()...)
-		} else {
-			result.Append(form)
-		}
-	}
-
-	return result
+/*
+Adds all the elements at the end of the set.
+*/
+func (set *Set[T]) Append(elements ...T) {
+	set.AppendIfNotContains(elements...)
 }

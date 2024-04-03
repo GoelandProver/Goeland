@@ -88,15 +88,11 @@ func MakeTermPair(t1, t2 basictypes.Term) TermPair {
 	return TermPair{t1.Copy(), t2.Copy()}
 }
 
-func (tp TermPair) GetMetas() basictypes.MetaList {
-	metas := basictypes.MakeEmptyMetaList()
+func (tp TermPair) GetMetas() *basictypes.MetaList {
+	metas := basictypes.NewMetaList()
 
-	for _, meta := range tp.t1.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
-	for _, meta := range tp.t2.GetMetas() {
-		metas = metas.AppendIfNotContains(meta)
-	}
+	metas.AppendIfNotContains(tp.t1.GetMetas().Slice()...)
+	metas.AppendIfNotContains(tp.t2.GetMetas().Slice()...)
 
 	return metas
 }

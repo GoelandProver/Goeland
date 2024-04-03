@@ -37,7 +37,7 @@ import (
 
 	. "github.com/GoelandProver/Goeland/global"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
@@ -46,14 +46,14 @@ import (
 
 /* Stores the local context */
 type LocalContext struct {
-	vars     []btypes.Var
+	vars     []basictypes.Var
 	typeVars []typing.TypeVar
 }
 
 /* LocalContext methods */
 
 /* Adds a var to a copy of the local context and returns it. */
-func (lc LocalContext) addVar(var_ btypes.Var) LocalContext {
+func (lc LocalContext) addVar(var_ basictypes.Var) LocalContext {
 	newLc := lc.copy()
 	newLc.vars = append(newLc.vars, var_)
 	return newLc
@@ -68,7 +68,7 @@ func (lc LocalContext) addTypeVar(var_ typing.TypeVar) LocalContext {
 
 /* Copies a LocalContext. */
 func (lc LocalContext) copy() LocalContext {
-	newVars := make([]btypes.Var, len(lc.vars))
+	newVars := make([]basictypes.Var, len(lc.vars))
 	newTypeVars := make([]typing.TypeVar, len(lc.typeVars))
 	copy(newVars, lc.vars)
 	copy(newTypeVars, lc.typeVars)
@@ -84,7 +84,7 @@ func (lc LocalContext) isEmpty() bool {
  * Copies the context and pops the first var (and returns it with the new local context).
  * It doesn't check if the size of the array is positive, it should be checked before.
  **/
-func (lc LocalContext) popVar() (btypes.Var, LocalContext) {
+func (lc LocalContext) popVar() (basictypes.Var, LocalContext) {
 	newLc := lc.copy()
 	newLc.vars = newLc.vars[1:]
 	return lc.vars[0], newLc
@@ -134,7 +134,7 @@ func (gc GlobalContext) copy() GlobalContext {
 }
 
 /* Gets a simple / polymorphic type scheme from an ID, type variables, and terms */
-func (gc GlobalContext) getTypeScheme(id btypes.Id, vars []typing.TypeApp, terms []btypes.Term) (typing.TypeScheme, error) {
+func (gc GlobalContext) getTypeScheme(id basictypes.Id, vars []typing.TypeApp, terms *basictypes.TermList) (typing.TypeScheme, error) {
 	args, err := getArgsTypes(gc, terms)
 	if err != nil {
 		return nil, err
@@ -143,7 +143,7 @@ func (gc GlobalContext) getTypeScheme(id btypes.Id, vars []typing.TypeApp, terms
 	typeScheme, err := gc.getSimpleTypeScheme(id.GetName(), args)
 
 	if typeScheme == nil {
-		typeScheme, err = gc.getPolymorphicTypeScheme(id.GetName(), len(vars), len(terms))
+		typeScheme, err = gc.getPolymorphicTypeScheme(id.GetName(), len(vars), terms.Len())
 		// Instantiate type scheme with actual types
 		if typeScheme != nil {
 			typeScheme = To[typing.QuantifiedType](typeScheme).Instanciate(vars)

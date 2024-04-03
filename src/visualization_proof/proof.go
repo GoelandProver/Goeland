@@ -108,18 +108,18 @@ func (ifl *IntFormAndTermsList) Copy() IntFormAndTermsList {
 	return MakeIntFormAndTermsList(ifl.i, ifl.fl.Copy())
 }
 
-func (ifl *IntFormAndTermsList) GetForms() basictypes.FormList {
-	res := basictypes.MakeEmptyFormList()
+func (ifl *IntFormAndTermsList) GetForms() *basictypes.FormList {
+	res := basictypes.NewFormList()
 	for _, ift := range (*ifl).GetFL() {
-		res = append(res, ift.GetForm())
+		res.Append(ift.GetForm())
 	}
 	return res
 }
 
-func GetFormulasFromIntFormAndTermList(iftl []IntFormAndTermsList) basictypes.FormList {
-	res := basictypes.MakeEmptyFormList()
+func GetFormulasFromIntFormAndTermList(iftl []IntFormAndTermsList) *basictypes.FormList {
+	res := basictypes.NewFormList()
 	for _, v := range iftl {
-		res = append(res, v.GetForms()...)
+		res.Append(v.GetForms().Slice()...)
 	}
 	return res
 }
@@ -233,7 +233,7 @@ func (p *ProofStruct) SetResultFormulasProof(fl []IntFormAndTermsList) {
 /* makers */
 
 func MakeEmptyProofStruct() ProofStruct {
-	return ProofStruct{basictypes.MakeFormAndTerm(basictypes.MakerBot(), basictypes.MakeEmptyTermList()), -1, -1, "", "", []IntFormAndTermsList{}, [][]ProofStruct{}}
+	return ProofStruct{basictypes.MakeFormAndTerm(basictypes.MakerBot(), basictypes.NewTermList()), -1, -1, "", "", []IntFormAndTermsList{}, [][]ProofStruct{}}
 }
 
 func MakeProofStruct(formula basictypes.FormAndTerms, formula_use, id int, rule, rule_name string, Result_formulas []IntFormAndTermsList, children [][]ProofStruct) ProofStruct {
@@ -273,7 +273,7 @@ func IntFormAndTermsListToIntIntStringPairList(fl []IntFormAndTermsList) []IntIn
 func ProofStructListToJsonProofStructList(ps []ProofStruct) []JsonProofStruct {
 	res := []JsonProofStruct{}
 	for _, p := range ps {
-		new_json_element := JsonProofStruct{p.GetFormula().ToString(), p.GetIdDMT(), p.Node_id, p.Rule, p.Rule_name, IntFormAndTermsListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
+		new_json_element := JsonProofStruct{p.GetFormula().GetForm().ToMappedString(basictypes.DefaultMapString, global.GetTypeProof()), p.GetIdDMT(), p.Node_id, p.Rule, p.Rule_name, IntFormAndTermsListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
 		res = append(res, new_json_element)
 	}
 	return res
@@ -364,23 +364,26 @@ func JsonProofStructListToText(jps []JsonProofStruct) string {
 	return res
 }
 
-func ProofStructListToText(ps []ProofStruct, metaList basictypes.MetaList) string {
+func ProofStructListToText(ps []ProofStruct, metaList *basictypes.MetaList) string {
 	json_content := ProofStructListToJsonProofStructList(ps)
 	return JsonProofStructListToText(json_content)
 }
 
-func RetrieveUninstantiatedMetaFromProof(p []ProofStruct) basictypes.MetaList {
-	res := basictypes.MakeEmptyMetaList()
-	for _, proof_element := range p {
-		res = res.Merge(proof_element.GetFormula().GetForm().GetMetas())
-		res_result_formulas := GetFormulasFromIntFormAndTermList(proof_element.GetResultFormulas())
-		for _, v := range res_result_formulas {
-			res = res.Merge(v.GetMetas())
-		}
-		for _, children := range proof_element.GetChildren() {
-			res = res.Merge(RetrieveUninstantiatedMetaFromProof(children))
+func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) *basictypes.MetaList {
+	res := basictypes.NewMetaList()
+
+	for _, proofElement := range proofStruct {
+		res.AppendIfNotContains(proofElement.GetFormula().GetForm().GetMetas().Slice()...)
+		resResultFormulas := GetFormulasFromIntFormAndTermList(proofElement.GetResultFormulas())
+
+		for _, v := range resResultFormulas.Slice() {
+			res.AppendIfNotContains(v.GetInternalMetas().Slice()...)
 		}
 
+		for _, children := range proofElement.GetChildren() {
+			res.AppendIfNotContains(RetrieveUninstantiatedMetaFromProof(children).Slice()...)
+		}
 	}
+
 	return res
 }

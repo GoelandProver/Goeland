@@ -39,6 +39,7 @@ package options
 import (
 	"flag"
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -49,6 +50,7 @@ import (
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	"github.com/GoelandProver/Goeland/plugins/lambdapi"
 	"github.com/GoelandProver/Goeland/plugins/sateq"
+	"github.com/GoelandProver/Goeland/plugins/tptp"
 	"github.com/GoelandProver/Goeland/search"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	exchanges "github.com/GoelandProver/Goeland/visualization_exchanges"
@@ -152,7 +154,7 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"proof",
 		false,
-		"Enables the display of a proof of the problem (in TPTP format)",
+		"Enables the display of a proof of the problem (in custom format)",
 		func(bool) {
 			global.SetProof(true)
 			proof.ResetProofFile()
@@ -222,6 +224,17 @@ func buildOptions() {
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
+		"otptp",
+		false,
+		"Enables the TPTP format for proofs instead of text",
+		func(bool) {
+			global.OutputTPTP()
+			global.SetProof(true)
+			search.AddPrintProofAlgorithm(tptp.TptpOutputProofStruct)
+
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
 		"context",
 		false,
 		"Should only be used with the -ocoq or the -olp parameters. Enables the context for a standalone execution",
@@ -286,7 +299,7 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"chrono",
 		false,
-		"Should only be used with the -ocoq or the -olp parameters. Enables the chronometer for deskolemization and proof translation",
+		"Should only be used with the -ocoq, the -olp or the otptp parameters. Enables the chronometer for deskolemization and proof translation",
 		func(bool) {
 			chronoInit()
 		},
@@ -299,11 +312,40 @@ func buildOptions() {
 		func(val string) {
 			global.ProofFile = val
 		})
+	(&option[bool]{}).init(
+		"vec",
+		false,
+		"Cannot be used with the -l and the -completeness parameters. Enables the very-eager-closure",
+		func(bool) {
+			global.SetCompleteness(false)
+
+			maxInt := math.MaxInt
+			global.SetLimit(maxInt)
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
+		"no_id",
+		false,
+		"Disables the id in the ToString",
+		func(bool) { basictypes.ToStringId = basictypes.NoIdToString },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"quoted_pred",
+		false,
+		"Print predicates between quotes if they start by a capital letter (TPTP compliance)",
+		func(bool) { basictypes.ToStringId = basictypes.QuotedToString },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"quiet",
+		false,
+		"Remove Goeland output in terminal",
+		func(bool) { global.DisableLoggers() },
+		func(bool) {})
 }
 
 func chronoInit() {
 	oldCoq := coq.MakeCoqProof
-	coq.MakeCoqProof = func(proof *gs3.GS3Sequent, meta basictypes.MetaList) string {
+	coq.MakeCoqProof = func(proof *gs3.GS3Sequent, meta *basictypes.MetaList) string {
 		start := time.Now()
 		result := oldCoq(proof, meta)
 		printChrono("Coq", start)
@@ -311,7 +353,7 @@ func chronoInit() {
 	}
 
 	oldLP := lambdapi.MakeLambdaPiProof
-	lambdapi.MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta basictypes.MetaList) string {
+	lambdapi.MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta *basictypes.MetaList) string {
 		start := time.Now()
 		result := oldLP(proof, meta)
 		printChrono("LP", start)

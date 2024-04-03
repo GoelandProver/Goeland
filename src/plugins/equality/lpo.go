@@ -128,16 +128,16 @@ func compareMetaFunInside(m basictypes.Meta, f basictypes.Fun, return_code int) 
 	global.PrintDebug("CMFI", "Compare Meta Fun Inside")
 	i := 0
 	// Check arguments to find occur-check eventually
-	for i < len(f.GetArgs()) {
+	for i < f.GetArgs().Len() {
 		res := 0
 		is_comparable := false
 		switch return_code {
 		case 1:
-			cs := compareLPO(m, f.GetArgs()[i])
+			cs := compareLPO(m, f.GetArgs().Get(i))
 			res = cs.order
 			is_comparable = cs.is_comparable
 		case -1:
-			cs := compareLPO(f.GetArgs()[i], m)
+			cs := compareLPO(f.GetArgs().Get(i), m)
 			res = cs.order
 			is_comparable = cs.is_comparable
 		default:
@@ -186,13 +186,13 @@ func compareFunFun(s, t basictypes.Fun) compareStruct {
 /* Case f < g */
 func caseFLessG(s, t basictypes.Fun) (bool, compareStruct) {
 	// f < g and f has no argument
-	if len(s.GetArgs()) == 0 {
+	if s.GetArgs().Len() == 0 {
 		return true, makeCompareStruct(1, true, nil, nil)
 	} else {
 		i := 0
 		stopped := false
-		for i < len(s.GetArgs()) && !stopped {
-			cs := compareLPO(s.GetArgs()[i], t)
+		for i < s.GetArgs().Len() && !stopped {
+			cs := compareLPO(s.GetArgs().Get(i), t)
 
 			if !cs.is_comparable {
 				return true, makeCompareStruct(0, false, s, t)
@@ -212,18 +212,18 @@ func caseFLessG(s, t basictypes.Fun) (bool, compareStruct) {
 /* Case f == g */
 func caseFEqualsG(s, t basictypes.Fun) (bool, compareStruct) {
 	global.PrintDebug("F=G", "Case F = G")
-	if len(s.GetArgs()) != len(t.GetArgs()) {
+	if s.GetArgs().Len() != t.GetArgs().Len() {
 		global.PrintError("F=G", fmt.Sprintf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString()))
 		return true, makeCompareStruct(0, false, nil, nil)
 	}
 
-	n := len(s.GetArgs())
+	n := s.GetArgs().Len()
 	i := 0
 	stopped := false
 	val_res := 0
 	// First loop : while equals
 	for i < n && !stopped {
-		cs := compareLPO(s.GetArgs()[i], t.GetArgs()[i])
+		cs := compareLPO(s.GetArgs().Get(i), t.GetArgs().Get(i))
 
 		// Bug here : les autres arguments !
 		if !cs.is_comparable {
@@ -245,7 +245,7 @@ func caseFEqualsG(s, t basictypes.Fun) (bool, compareStruct) {
 	stopped = false
 	if val_res > 0 {
 		for i < n && !stopped {
-			cs := compareLPO(s.GetArgs()[i], t)
+			cs := compareLPO(s.GetArgs().Get(i), t)
 			if !cs.is_comparable {
 				return true, makeCompareStruct(0, false, s, t)
 			}
@@ -264,11 +264,11 @@ func caseFEqualsG(s, t basictypes.Fun) (bool, compareStruct) {
 /* Default case */
 func caseDefault(s, t basictypes.Fun) compareStruct {
 	// Occurences inside
-	m := len(t.GetArgs())
+	m := t.GetArgs().Len()
 	i := 0
 	stopped := false
 	for i < m && !stopped {
-		cs := compareLPO(s, t.GetArgs()[i])
+		cs := compareLPO(s, t.GetArgs().Get(i))
 		if !cs.is_comparable {
 			return makeCompareStruct(0, false, s, t)
 		}

@@ -37,19 +37,19 @@
 package dmt
 
 import (
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
-func isEquality(pred btypes.Pred) bool {
-	return pred.GetID().Equals(btypes.Id_eq)
+func isEquality(pred basictypes.Pred) bool {
+	return pred.GetID().Equals(basictypes.Id_eq)
 }
 
-func refute(f btypes.Form) btypes.Form {
-	return btypes.RefuteForm(f)
+func refute(f basictypes.Form) basictypes.Form {
+	return basictypes.RefuteForm(f)
 }
 
-func predFromNegatedAtom(f btypes.Form) btypes.Pred {
-	return f.(btypes.Not).GetForm().(btypes.Pred)
+func predFromNegatedAtom(f basictypes.Form) basictypes.Pred {
+	return f.(basictypes.Not).GetForm().(basictypes.Pred)
 }
 
 func selectFromPolarity[T any](polarity bool, positive, negative T) T {
@@ -59,7 +59,12 @@ func selectFromPolarity[T any](polarity bool, positive, negative T) T {
 	return negative
 }
 
-func rewriteMapInsertion(polarity bool, key string, val btypes.Form) {
+func rewriteMapInsertion(polarity bool, key string, val basictypes.Form) {
 	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
-	rewriteMap[key] = append(rewriteMap[key], val)
+
+	if _, ok := rewriteMap[key]; !ok {
+		rewriteMap[key] = basictypes.NewFormList()
+	}
+
+	rewriteMap[key].Append(val)
 }

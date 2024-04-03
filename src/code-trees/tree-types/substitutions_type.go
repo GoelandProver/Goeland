@@ -80,25 +80,33 @@ func (s Substitutions) IsEmpty() bool {
 }
 
 /* Check equality between two substitutions */
-func (s Substitutions) Equals(s2 Substitutions) bool {
-	if len(s) != len(s2) {
-		return false
-	}
-
-	for _, subst_s1 := range s {
-		found := false
-		i := 0
-		for !found && i < len(s2) {
-			if subst_s1.Key().Equals(s2[i].Key()) && subst_s1.Value().Equals(s2[i].Value()) {
-				found = true
-			}
-			i++
-		}
-		if !found {
+func (s Substitutions) Equals(other any) bool {
+	if typed, ok := other.(Substitutions); ok {
+		if len(s) != len(typed) {
 			return false
 		}
+
+		for _, subst_s1 := range s {
+			found := false
+			i := 0
+
+			for !found && i < len(typed) {
+				if subst_s1.Key().Equals(typed[i].Key()) && subst_s1.Value().Equals(typed[i].Value()) {
+					found = true
+				}
+
+				i++
+			}
+
+			if !found {
+				return false
+			}
+		}
+
+		return true
 	}
-	return true
+
+	return false
 }
 
 /* Copy the current substitution */
@@ -149,15 +157,18 @@ func CopySubstList(sl []Substitutions) []Substitutions {
 }
 
 /* Get all the metavariables of a substitution */
-func (s Substitutions) GetMeta() basictypes.MetaList {
-	res := basictypes.MetaList{}
-	for _, v := range s {
-		meta, term := v.Key(), v.Value()
-		res = res.AppendIfNotContains(meta.Copy().ToMeta())
+func (subs Substitutions) GetMeta() *basictypes.MetaList {
+	res := basictypes.NewMetaList()
+
+	for _, singleSubs := range subs {
+		meta, term := singleSubs.Key(), singleSubs.Value()
+		res.AppendIfNotContains(meta)
+
 		if term.IsMeta() {
-			res = res.AppendIfNotContains(term.Copy().ToMeta())
+			res.AppendIfNotContains(term.ToMeta())
 		}
 	}
+
 	return res
 }
 
@@ -247,7 +258,7 @@ func isRecursive(t basictypes.Term, m basictypes.Meta) bool {
 /* Checks if any argument of the function f contains the metavariable m. */
 func areFuncArgsRecursive(f basictypes.Fun, m basictypes.Meta) bool {
 	// global.PrintDebug("AFAR", fmt.Sprintf("AFAR between %v and %v", f.ToString(), m.ToString()))
-	for _, term := range f.GetArgs() {
+	for _, term := range f.GetArgs().Slice() {
 		if isRecursive(term, m) {
 			return true
 		}
@@ -329,38 +340,42 @@ func eliminateInside(key basictypes.Meta, value basictypes.Term, s Substitutions
 }
 
 /* Eliminate for a list of Terms */
-func eliminateList(key basictypes.Meta, value basictypes.Term, l basictypes.TermList, has_changed_top *bool) basictypes.TermList {
-	has_changed := true
+func eliminateList(key basictypes.Meta, value basictypes.Term, termList *basictypes.TermList, hasChangedTop *bool) *basictypes.TermList {
+	hasChanged := true
 
-	for has_changed {
-		has_changed = false
-		list_tmp := basictypes.MakeEmptyTermList()
-		for _, list_element := range l {
-			switch lt := list_element.(type) {
+	for hasChanged {
+		hasChanged = false
+		tempList := basictypes.NewTermList()
+
+		for _, elementList := range termList.Slice() {
+			switch lt := elementList.(type) {
 			case basictypes.Meta: // If its a meta and its equals to the key te replace
 				if lt.Equals(key) {
-					list_tmp = append(list_tmp, value)
-					has_changed = true
+					tempList.Append(value)
+					hasChanged = true
 				} else {
-					list_tmp = append(list_tmp, list_element)
+					tempList.Append(elementList)
 				}
 			case basictypes.Fun: // If its a function, reccursive call for the arguments
-				list_tmp = append(list_tmp, basictypes.MakeFun(
+				tempList.Append(basictypes.MakeFun(
 					lt.GetP(),
-					eliminateList(key, value, lt.GetArgs(), &has_changed),
+					eliminateList(key, value, lt.GetArgs(), &hasChanged),
 					lt.GetTypeVars(),
 					lt.GetTypeHint(),
 				))
 			default:
-				list_tmp = append(list_tmp, list_element)
+				tempList.Append(elementList)
 			}
 		}
-		l = list_tmp.Copy()
-		if has_changed {
-			*has_changed_top = true
+
+		termList = tempList.Copy()
+
+		if hasChanged {
+			*hasChangedTop = true
 		}
 	}
-	return l
+
+	return termList
 }
 
 /* Eliminates one of the subsitution of a pair like (X, Y) (Y, X). It will keep the first one indexed in the map. */

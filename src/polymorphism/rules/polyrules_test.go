@@ -43,7 +43,7 @@ import (
 	. "github.com/GoelandProver/Goeland/global"
 	. "github.com/GoelandProver/Goeland/polymorphism/rules"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 func TestMain(m *testing.M) {
@@ -74,13 +74,13 @@ func TestMain(m *testing.M) {
 
 func TestSimpleDoublePass(t *testing.T) {
 	// P(2, 3)
-	pred := btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{
-		btypes.MakerConst(btypes.MakerId("2")),
-		btypes.MakerConst(btypes.MakerId("3")),
-	}, []typing.TypeApp{})
+	pred := basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(
+		basictypes.MakerConst(basictypes.MakerId("2")),
+		basictypes.MakerConst(basictypes.MakerId("3")),
+	), []typing.TypeApp{})
 
 	// Formal type verification
-	//ptr := (*btypes.Form)(unsafe.Po$inter(&pred))
+	//ptr := (*basictypes.Form)(unsafe.Po$inter(&pred))
 	form, err := WellFormedVerification(pred, false)
 
 	if err != nil {
@@ -100,10 +100,10 @@ func TestSimpleDoublePass(t *testing.T) {
 
 func TestNegDoublePass(t *testing.T) {
 	// ¬P(2, 3)
-	pred := btypes.RefuteForm(btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{
-		btypes.MakerConst(btypes.MakerId("2")),
-		btypes.MakerConst(btypes.MakerId("3")),
-	}, []typing.TypeApp{}))
+	pred := basictypes.RefuteForm(basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(
+		basictypes.MakerConst(basictypes.MakerId("2")),
+		basictypes.MakerConst(basictypes.MakerId("3")),
+	), []typing.TypeApp{}))
 
 	// Double pass pred
 	newPred, err := WellFormedVerification(pred, false)
@@ -112,7 +112,7 @@ func TestNegDoublePass(t *testing.T) {
 		t.Fatalf("Error during formal verification: %s", err.Error())
 	}
 
-	if _, ok := newPred.(btypes.Not); !ok {
+	if _, ok := newPred.(basictypes.Not); !ok {
 		t.Fatalf("Double pass should've returned a negation. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
@@ -120,7 +120,7 @@ func TestNegDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	newPred = newPred.(btypes.Not).GetForm()
+	newPred = newPred.(basictypes.Not).GetForm()
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("$int"), typing.MkTypeHint("$int")),
@@ -134,15 +134,15 @@ func TestNegDoublePass(t *testing.T) {
 
 func TestBinaryDoublePass(t *testing.T) {
 	// P(2, 2) => P(3, 3)
-	pred := btypes.MakerImp(
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{
-			btypes.MakerConst(btypes.MakerId("2")),
-			btypes.MakerConst(btypes.MakerId("2")),
-		}, []typing.TypeApp{}),
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{
-			btypes.MakerConst(btypes.MakerId("3")),
-			btypes.MakerConst(btypes.MakerId("3")),
-		}, []typing.TypeApp{}),
+	pred := basictypes.MakerImp(
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(
+			basictypes.MakerConst(basictypes.MakerId("2")),
+			basictypes.MakerConst(basictypes.MakerId("2")),
+		), []typing.TypeApp{}),
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(
+			basictypes.MakerConst(basictypes.MakerId("3")),
+			basictypes.MakerConst(basictypes.MakerId("3")),
+		), []typing.TypeApp{}),
 	)
 
 	// Double pass pred
@@ -152,7 +152,7 @@ func TestBinaryDoublePass(t *testing.T) {
 		t.Fatalf("Error during formal verification: %s", err.Error())
 	}
 
-	if _, ok := newPred.(btypes.Imp); !ok {
+	if _, ok := newPred.(basictypes.Imp); !ok {
 		t.Fatalf("Double pass should've returned an implication. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
@@ -160,8 +160,8 @@ func TestBinaryDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	F1 := newPred.(btypes.Imp).GetF1()
-	F2 := newPred.(btypes.Imp).GetF2()
+	F1 := newPred.(basictypes.Imp).GetF1()
+	F2 := newPred.(basictypes.Imp).GetF2()
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("$int"), typing.MkTypeHint("$int")),
@@ -176,15 +176,15 @@ func TestBinaryDoublePass(t *testing.T) {
 	}
 
 	// P(2, 2) <=> P(3, 3)
-	predEqu := btypes.MakerEqu(
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{
-			btypes.MakerConst(btypes.MakerId("2")),
-			btypes.MakerConst(btypes.MakerId("2")),
-		}, []typing.TypeApp{}),
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{
-			btypes.MakerConst(btypes.MakerId("3")),
-			btypes.MakerConst(btypes.MakerId("3")),
-		}, []typing.TypeApp{}),
+	predEqu := basictypes.MakerEqu(
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(
+			basictypes.MakerConst(basictypes.MakerId("2")),
+			basictypes.MakerConst(basictypes.MakerId("2")),
+		), []typing.TypeApp{}),
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(
+			basictypes.MakerConst(basictypes.MakerId("3")),
+			basictypes.MakerConst(basictypes.MakerId("3")),
+		), []typing.TypeApp{}),
 	)
 
 	// Double pass pred
@@ -194,7 +194,7 @@ func TestBinaryDoublePass(t *testing.T) {
 		t.Fatalf("Error during formal verification: %s", err.Error())
 	}
 
-	if _, ok := newPred.(btypes.Equ); !ok {
+	if _, ok := newPred.(basictypes.Equ); !ok {
 		t.Fatalf("Double pass should've returned an equivalence. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
@@ -202,8 +202,8 @@ func TestBinaryDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	F1 = newPred.(btypes.Equ).GetF1()
-	F2 = newPred.(btypes.Equ).GetF2()
+	F1 = newPred.(basictypes.Equ).GetF1()
+	F2 = newPred.(basictypes.Equ).GetF2()
 
 	// Pred should be of type ($int * $int) -> o
 	if !F1.GetType().Equals(expected) {
@@ -216,12 +216,12 @@ func TestBinaryDoublePass(t *testing.T) {
 
 func TestQuantDoublePass(t *testing.T) {
 	// forall x y : $int, P(x, y)
-	x := btypes.MakerVar("x", typing.MkTypeHint("$int"))
-	y := btypes.MakerVar("y", typing.MkTypeHint("$int"))
+	x := basictypes.MakerVar("x", typing.MkTypeHint("$int"))
+	y := basictypes.MakerVar("y", typing.MkTypeHint("$int"))
 
-	pred := btypes.MakerAll(
-		[]btypes.Var{x, y},
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{x, y}, []typing.TypeApp{}),
+	pred := basictypes.MakerAll(
+		[]basictypes.Var{x, y},
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(x, y), []typing.TypeApp{}),
 	)
 
 	// Double pass pred
@@ -231,7 +231,7 @@ func TestQuantDoublePass(t *testing.T) {
 		t.Fatalf("Error during formal verification: %s", err.Error())
 	}
 
-	if _, ok := newPred.(btypes.All); !ok {
+	if _, ok := newPred.(basictypes.All); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
@@ -239,7 +239,7 @@ func TestQuantDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	newForm := newPred.(btypes.All).GetForm()
+	newForm := newPred.(basictypes.All).GetForm()
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("$int"), typing.MkTypeHint("$int")),
@@ -251,9 +251,9 @@ func TestQuantDoublePass(t *testing.T) {
 	}
 
 	// exists x y : $int, P(x, y)
-	predEqu := btypes.MakerEx(
-		[]btypes.Var{x, y},
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{x, y}, []typing.TypeApp{}),
+	predEqu := basictypes.MakerEx(
+		[]basictypes.Var{x, y},
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(x, y), []typing.TypeApp{}),
 	)
 
 	// Double pass pred
@@ -263,7 +263,7 @@ func TestQuantDoublePass(t *testing.T) {
 		t.Fatalf("Error during formal verification: %s", err.Error())
 	}
 
-	if _, ok := newPred.(btypes.Ex); !ok {
+	if _, ok := newPred.(basictypes.Ex); !ok {
 		t.Fatalf("Double pass should've returned an existential quantifier. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
@@ -271,7 +271,7 @@ func TestQuantDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	newForm = newPred.(btypes.Ex).GetForm()
+	newForm = newPred.(basictypes.Ex).GetForm()
 
 	// Pred should be of type ($int * $int) -> o
 	if !newForm.GetType().Equals(expected) {
@@ -281,15 +281,15 @@ func TestQuantDoublePass(t *testing.T) {
 
 func TestNAryDoublePass(t *testing.T) {
 	// P(2, 2) v P(2, 3) v P(3, 2) v P(3, 3)
-	two := btypes.MakerConst(btypes.MakerId("2"))
-	three := btypes.MakerConst(btypes.MakerId("3"))
+	two := basictypes.MakerConst(basictypes.MakerId("2"))
+	three := basictypes.MakerConst(basictypes.MakerId("3"))
 
-	pred := btypes.MakerOr(btypes.FormList{
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{two, two}, []typing.TypeApp{}),
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{two, three}, []typing.TypeApp{}),
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{three, two}, []typing.TypeApp{}),
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{three, three}, []typing.TypeApp{}),
-	})
+	pred := basictypes.MakerOr(basictypes.NewFormList(
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(two, two), []typing.TypeApp{}),
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(two, three), []typing.TypeApp{}),
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(three, two), []typing.TypeApp{}),
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(three, three), []typing.TypeApp{}),
+	))
 
 	// Double pass pred
 	newPred, err := WellFormedVerification(pred, false)
@@ -298,7 +298,7 @@ func TestNAryDoublePass(t *testing.T) {
 		t.Fatalf("Error during formal verification: %s", err.Error())
 	}
 
-	if _, ok := newPred.(btypes.Or); !ok {
+	if _, ok := newPred.(basictypes.Or); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
@@ -306,13 +306,13 @@ func TestNAryDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	newForms := newPred.(btypes.Or).FormList
+	newForms := newPred.(basictypes.Or).FormList
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("$int"), typing.MkTypeHint("$int")),
 		typing.DefaultProp(),
 	)
-	for _, newForm := range newForms {
+	for _, newForm := range newForms.Slice() {
 		// Pred should be of type ($int * $int) -> o
 		if !newForm.GetType().Equals(expected) {
 			t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newForm.GetType().ToString())
@@ -321,12 +321,12 @@ func TestNAryDoublePass(t *testing.T) {
 
 	// P(2, 2) ^ P(2, 3) ^ P(3, 2) ^ P(3, 3)
 
-	andPred := btypes.MakerAnd(btypes.FormList{
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{two, two}, []typing.TypeApp{}),
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{two, three}, []typing.TypeApp{}),
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{three, two}, []typing.TypeApp{}),
-		btypes.MakerPred(btypes.MakerId("P"), []btypes.Term{three, three}, []typing.TypeApp{}),
-	})
+	andPred := basictypes.MakerAnd(basictypes.NewFormList(
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(two, two), []typing.TypeApp{}),
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(two, three), []typing.TypeApp{}),
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(three, two), []typing.TypeApp{}),
+		basictypes.MakerPred(basictypes.MakerId("P"), basictypes.NewTermList(three, three), []typing.TypeApp{}),
+	))
 
 	// Double pass pred
 	newPred, err = WellFormedVerification(andPred, false)
@@ -335,7 +335,7 @@ func TestNAryDoublePass(t *testing.T) {
 		t.Fatalf("Error during formal verification: %s", err.Error())
 	}
 
-	if _, ok := newPred.(btypes.And); !ok {
+	if _, ok := newPred.(basictypes.And); !ok {
 		t.Fatalf("Double pass should've returned a forall quantifier. Actual: %s", newPred.ToString())
 	}
 	if !typing.GetOutType(newPred.GetType()).Equals(typing.DefaultProp()) {
@@ -343,9 +343,9 @@ func TestNAryDoublePass(t *testing.T) {
 			typing.DefaultProp().ToString(), typing.GetOutType(newPred.GetType()).ToString())
 	}
 
-	newForms = newPred.(btypes.And).FormList
+	newForms = newPred.(basictypes.And).FormList
 
-	for _, newForm := range newForms {
+	for _, newForm := range newForms.Slice() {
 		// Pred should be of type ($int * $int) -> o
 		if !newForm.GetType().Equals(expected) {
 			t.Errorf("Double pass didn't succeed. Expected: %s, actual: %s", expected.ToString(), newForm.GetType().ToString())
@@ -356,10 +356,10 @@ func TestNAryDoublePass(t *testing.T) {
 // What happens if I try to type something not in the global context ?
 func TestTypingNotInGlobalContext(t *testing.T) {
 	// Q(2, 3)
-	pred := btypes.MakerPred(btypes.MakerId("Q"), []btypes.Term{
-		btypes.MakerConst(btypes.MakerId("2")),
-		btypes.MakerConst(btypes.MakerId("3")),
-	}, []typing.TypeApp{})
+	pred := basictypes.MakerPred(basictypes.MakerId("Q"), basictypes.NewTermList(
+		basictypes.MakerConst(basictypes.MakerId("2")),
+		basictypes.MakerConst(basictypes.MakerId("3")),
+	), []typing.TypeApp{})
 
 	// Double pass pred
 	_, err := WellFormedVerification(pred, false)
@@ -373,14 +373,14 @@ func TestTypingNotInGlobalContext(t *testing.T) {
 
 func TestBabyNoErr(t *testing.T) {
 	//a := typing.MkTypeVar("α")
-	x := btypes.MakerVar("x", typing.MkTypeHint("$int"))
-	y := btypes.MakerVar("y", typing.MkTypeHint("$int"))
+	x := basictypes.MakerVar("x", typing.MkTypeHint("$int"))
+	y := basictypes.MakerVar("y", typing.MkTypeHint("$int"))
 
-	testForm := btypes.MakerAll(
-		[]btypes.Var{x, y},
-		btypes.MakerPred(
-			btypes.MakerId("P"),
-			[]btypes.Term{x, y},
+	testForm := basictypes.MakerAll(
+		[]basictypes.Var{x, y},
+		basictypes.MakerPred(
+			basictypes.MakerId("P"),
+			basictypes.NewTermList(x, y),
 			[]typing.TypeApp{},
 		))
 
@@ -389,7 +389,7 @@ func TestBabyNoErr(t *testing.T) {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
 
-	form = form.(btypes.All).GetForm()
+	form = form.(basictypes.All).GetForm()
 
 	expected := typing.MkTypeArrow(
 		typing.MkTypeCross(typing.MkTypeHint("$int"), typing.MkTypeHint("$int")),
@@ -400,11 +400,11 @@ func TestBabyNoErr(t *testing.T) {
 		t.Errorf("Formal type verification didn't succeed. Expected: %s, actual: %s", expected.ToString(), form.GetType().ToString())
 	}
 
-	testForm2 := btypes.MakerEx(
-		[]btypes.Var{x, y},
-		btypes.MakerPred(
-			btypes.MakerId("P"),
-			[]btypes.Term{x, y},
+	testForm2 := basictypes.MakerEx(
+		[]basictypes.Var{x, y},
+		basictypes.MakerPred(
+			basictypes.MakerId("P"),
+			basictypes.NewTermList(x, y),
 			[]typing.TypeApp{},
 		))
 
@@ -413,7 +413,7 @@ func TestBabyNoErr(t *testing.T) {
 		t.Fatalf("Encountered error when system is well-typed. Err: %s", err.Error())
 	}
 
-	pred := form.(btypes.Ex).GetForm()
+	pred := form.(basictypes.Ex).GetForm()
 
 	if !typing.GetOutType(pred.GetType()).Equals(typing.DefaultProp()) ||
 		!pred.GetType().Equals(expected) {
@@ -444,17 +444,17 @@ func TestPolymorphicExample(t *testing.T) {
 	}
 
 	// Everything is fine, let's create the predicate
-	x := btypes.MakerVar("x", typeVar)
-	y := btypes.MakerVar("y", typeVar)
-	a := btypes.MakerVar("α", typeVar)
+	x := basictypes.MakerVar("x", typeVar)
+	y := basictypes.MakerVar("y", typeVar)
+	a := basictypes.MakerVar("α", typeVar)
 
-	testForm := btypes.MakerAllType(
+	testForm := basictypes.MakerAllType(
 		[]typing.TypeVar{typeVar},
-		btypes.MakerAll(
-			[]btypes.Var{x, y},
-			btypes.MakerPred(
-				btypes.MakerId("Φ"),
-				[]btypes.Term{a, x, y},
+		basictypes.MakerAll(
+			[]basictypes.Var{x, y},
+			basictypes.MakerPred(
+				basictypes.MakerId("Φ"),
+				basictypes.NewTermList(a, x, y),
 				[]typing.TypeApp{},
 			),
 		),
@@ -469,7 +469,7 @@ func TestPolymorphicExample(t *testing.T) {
 
 	// Apparently, it's still well-typed (great !)
 	// Let's check Φ's type
-	pred := form.(btypes.AllType).GetForm().(btypes.All).GetForm()
+	pred := form.(basictypes.AllType).GetForm().(basictypes.All).GetForm()
 
 	if !pred.GetType().Equals(typeScheme) {
 		t.Fatalf("Type schemes do not match. Expected: %s, actual: %s", typeScheme.ToString(), form.GetType().ToString())
@@ -500,16 +500,16 @@ func TestPolymorphicFailureExample(t *testing.T) {
 	}
 
 	// Everything is fine, let's create the predicate
-	x := btypes.MakerVar("x", typing.MkTypeHint("$int"))
-	y := btypes.MakerVar("y", typeVar)
+	x := basictypes.MakerVar("x", typing.MkTypeHint("$int"))
+	y := basictypes.MakerVar("y", typeVar)
 
-	testForm := btypes.MakerAllType(
+	testForm := basictypes.MakerAllType(
 		[]typing.TypeVar{typeVar},
-		btypes.MakerAll(
-			[]btypes.Var{x, y},
-			btypes.MakerPred(
-				btypes.MakerId("Φ"),
-				[]btypes.Term{x, y},
+		basictypes.MakerAll(
+			[]basictypes.Var{x, y},
+			basictypes.MakerPred(
+				basictypes.MakerId("Φ"),
+				basictypes.NewTermList(x, y),
 				[]typing.TypeApp{typeVar},
 			),
 		),
@@ -525,9 +525,9 @@ func TestPolymorphicFailureExample(t *testing.T) {
 
 func TestArithmeticFunction(t *testing.T) {
 	// 1 + 2 <= 3
-	pred := btypes.MakerPred(
-		btypes.MakerId("$lesseq"),
-		[]btypes.Term{btypes.MakerFun(btypes.MakerId("$sum"), []btypes.Term{btypes.MakerConst(btypes.MakerId("1")), btypes.MakerConst(btypes.MakerId("2"))}, []typing.TypeApp{}), btypes.MakerConst(btypes.MakerId("3"))},
+	pred := basictypes.MakerPred(
+		basictypes.MakerId("$lesseq"),
+		basictypes.NewTermList(basictypes.MakerFun(basictypes.MakerId("$sum"), basictypes.NewTermList(basictypes.MakerConst(basictypes.MakerId("1")), basictypes.MakerConst(basictypes.MakerId("2"))), []typing.TypeApp{}), basictypes.MakerConst(basictypes.MakerId("3"))),
 		[]typing.TypeApp{},
 	)
 
@@ -540,19 +540,19 @@ func TestArithmeticFunction(t *testing.T) {
 func TestArithmeticFunction2(t *testing.T) {
 	// (1 + 2) * 3 <= 9
 	typing.SaveConstant("9", typing.MkTypeHint("$int"))
-	fun := btypes.MakerFun(
-		btypes.MakerId("$product"),
-		[]btypes.Term{
-			btypes.MakerFun(
-				btypes.MakerId("$sum"), []btypes.Term{btypes.MakerConst(btypes.MakerId("1")), btypes.MakerConst(btypes.MakerId("2"))}, []typing.TypeApp{},
+	fun := basictypes.MakerFun(
+		basictypes.MakerId("$product"),
+		basictypes.NewTermList(
+			basictypes.MakerFun(
+				basictypes.MakerId("$sum"), basictypes.NewTermList(basictypes.MakerConst(basictypes.MakerId("1")), basictypes.MakerConst(basictypes.MakerId("2"))), []typing.TypeApp{},
 			),
-			btypes.MakerConst(btypes.MakerId("3")),
-		},
+			basictypes.MakerConst(basictypes.MakerId("3")),
+		),
 		[]typing.TypeApp{},
 	)
-	pred := btypes.MakerPred(
-		btypes.MakerId("$lesseq"),
-		[]btypes.Term{fun, btypes.MakerConst(btypes.MakerId("9"))},
+	pred := basictypes.MakerPred(
+		basictypes.MakerId("$lesseq"),
+		basictypes.NewTermList(fun, basictypes.MakerConst(basictypes.MakerId("9"))),
 		[]typing.TypeApp{},
 	)
 
@@ -569,53 +569,53 @@ func TestArithmeticFunction2(t *testing.T) {
 
 	termsType := make(map[string]typing.TypeScheme)
 
-	termsType[btypes.MakerId("$product").ToString()] = typing.MkTypeArrow(typing.MkTypeCross(tint, tint), tint)
-	termsType[btypes.MakerId("$sum").ToString()] = typing.MkTypeArrow(typing.MkTypeCross(tint, tint), tint)
-	termsType[btypes.MakerId("1").ToString()] = tint
-	termsType[btypes.MakerId("2").ToString()] = tint
-	termsType[btypes.MakerId("3").ToString()] = tint
-	termsType[btypes.MakerId("9").ToString()] = tint
+	termsType[basictypes.MakerId("$product").ToString()] = typing.MkTypeArrow(typing.MkTypeCross(tint, tint), tint)
+	termsType[basictypes.MakerId("$sum").ToString()] = typing.MkTypeArrow(typing.MkTypeCross(tint, tint), tint)
+	termsType[basictypes.MakerId("1").ToString()] = tint
+	termsType[basictypes.MakerId("2").ToString()] = tint
+	termsType[basictypes.MakerId("3").ToString()] = tint
+	termsType[basictypes.MakerId("9").ToString()] = tint
 
-	for _, term := range typedForm.(btypes.Pred).GetArgs() {
+	for _, term := range typedForm.(basictypes.Pred).GetArgs().Slice() {
 		checkType(t, termsType, term)
 	}
 }
 
-func checkType(t *testing.T, types map[string]typing.TypeScheme, term btypes.Term) {
-	if Is[btypes.Fun](term) {
-		fun := To[btypes.Fun](term)
-		if !types[fun.GetID().ToString()].Equals(term.(btypes.TypedTerm).GetTypeHint()) {
-			t.Fatalf("Error: wrong TypeScheme for %s. Expected: %s, actual: %s", fun.GetID().ToString(), types[fun.GetID().ToString()].ToString(), term.(btypes.TypedTerm).GetTypeHint().ToString())
+func checkType(t *testing.T, types map[string]typing.TypeScheme, term basictypes.Term) {
+	if Is[basictypes.Fun](term) {
+		fun := To[basictypes.Fun](term)
+		if !types[fun.GetID().ToString()].Equals(term.(basictypes.TypedTerm).GetTypeHint()) {
+			t.Fatalf("Error: wrong TypeScheme for %s. Expected: %s, actual: %s", fun.GetID().ToString(), types[fun.GetID().ToString()].ToString(), term.(basictypes.TypedTerm).GetTypeHint().ToString())
 		}
-		for _, nt := range fun.GetArgs() {
+		for _, nt := range fun.GetArgs().Slice() {
 			checkType(t, types, nt)
 		}
 	} else {
-		if !types[term.ToString()].Equals(term.(btypes.TypedTerm).GetTypeHint()) {
-			t.Fatalf("Error: wrong TypeScheme for %s. Expected: %s, actual: %s", term.ToString(), types[term.ToString()].ToString(), term.(btypes.TypedTerm).GetTypeHint().ToString())
+		if !types[term.ToString()].Equals(term.(basictypes.TypedTerm).GetTypeHint()) {
+			t.Fatalf("Error: wrong TypeScheme for %s. Expected: %s, actual: %s", term.ToString(), types[term.ToString()].ToString(), term.(basictypes.TypedTerm).GetTypeHint().ToString())
 		}
 	}
 }
 
 func TestArithmeticFunction3(t *testing.T) {
 	// (x + y) * 4 <= 9
-	x := btypes.MakerVar("x", typing.MkTypeHint("$rat"))
-	y := btypes.MakerVar("y", typing.MkTypeHint("$rat"))
+	x := basictypes.MakerVar("x", typing.MkTypeHint("$rat"))
+	y := basictypes.MakerVar("y", typing.MkTypeHint("$rat"))
 	typing.SaveConstant("9", typing.MkTypeHint("$int"))
 	typing.SaveConstant("4", typing.MkTypeHint("$rat"))
-	fun := btypes.MakerFun(
-		btypes.MakerId("$product"),
-		[]btypes.Term{
-			btypes.MakerFun(
-				btypes.MakerId("$sum"), []btypes.Term{x, y}, []typing.TypeApp{},
+	fun := basictypes.MakerFun(
+		basictypes.MakerId("$product"),
+		basictypes.NewTermList(
+			basictypes.MakerFun(
+				basictypes.MakerId("$sum"), basictypes.NewTermList(x, y), []typing.TypeApp{},
 			),
-			btypes.MakerConst(btypes.MakerId("4")),
-		},
+			basictypes.MakerConst(basictypes.MakerId("4")),
+		),
 		[]typing.TypeApp{},
 	)
-	pred := btypes.MakerPred(
-		btypes.MakerId("$lesseq"),
-		[]btypes.Term{fun, btypes.MakerConst(btypes.MakerId("9"))},
+	pred := basictypes.MakerPred(
+		basictypes.MakerId("$lesseq"),
+		basictypes.NewTermList(fun, basictypes.MakerConst(basictypes.MakerId("9"))),
 		[]typing.TypeApp{},
 	)
 
@@ -627,31 +627,31 @@ func TestArithmeticFunction3(t *testing.T) {
 
 func TestArithmeticFunction4(t *testing.T) {
 	// 1 + 2 <= 3
-	x := btypes.MakerVar("x", typing.MkTypeHint("$int"))
-	y := btypes.MakerVar("y", typing.MkTypeHint("$int"))
-	pred := btypes.MakerAll(
-		[]btypes.Var{
+	x := basictypes.MakerVar("x", typing.MkTypeHint("$int"))
+	y := basictypes.MakerVar("y", typing.MkTypeHint("$int"))
+	pred := basictypes.MakerAll(
+		[]basictypes.Var{
 			x, y,
 		},
-		btypes.MakerImp(
-			btypes.MakerPred(
-				btypes.MakerId("$lesseq"),
-				[]btypes.Term{btypes.MakerFun(btypes.MakerId("$sum"), []btypes.Term{x, y}, []typing.TypeApp{}), btypes.MakerConst(btypes.MakerId("3"))},
+		basictypes.MakerImp(
+			basictypes.MakerPred(
+				basictypes.MakerId("$lesseq"),
+				basictypes.NewTermList(basictypes.MakerFun(basictypes.MakerId("$sum"), basictypes.NewTermList(x, y), []typing.TypeApp{}), basictypes.MakerConst(basictypes.MakerId("3"))),
 				[]typing.TypeApp{},
 			),
-			btypes.MakerAnd(
-				[]btypes.Form{
-					btypes.MakerPred(
-						btypes.MakerId("$lesseq"),
-						[]btypes.Term{x, btypes.MakerConst(btypes.MakerId("3"))},
+			basictypes.MakerAnd(
+				basictypes.NewFormList(
+					basictypes.MakerPred(
+						basictypes.MakerId("$lesseq"),
+						basictypes.NewTermList(x, basictypes.MakerConst(basictypes.MakerId("3"))),
 						[]typing.TypeApp{},
 					),
-					btypes.MakerPred(
-						btypes.MakerId("$lesseq"),
-						[]btypes.Term{y, btypes.MakerConst(btypes.MakerId("3"))},
+					basictypes.MakerPred(
+						basictypes.MakerId("$lesseq"),
+						basictypes.NewTermList(y, basictypes.MakerConst(basictypes.MakerId("3"))),
 						[]typing.TypeApp{},
 					),
-				},
+				),
 			),
 		),
 	)
@@ -669,7 +669,7 @@ func TestAriWellTyped(t *testing.T) {
 	typing.Init()
 	typing.InitTPTPArithmetic()
 
-	_, err := WellFormedVerification(btypes.MakerTop(), true)
+	_, err := WellFormedVerification(basictypes.MakerTop(), true)
 
 	if err != nil {
 		t.Fatalf("Error during formal verification: %s", err.Error())

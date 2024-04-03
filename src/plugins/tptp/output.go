@@ -31,10 +31,10 @@
 **/
 
 /**
-* This file provides a coq output for Goeland's proofs.
+* This file provides a TPTP output for Goeland's proofs.
 **/
 
-package coq
+package tptp
 
 import (
 	"strings"
@@ -42,70 +42,55 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	"github.com/GoelandProver/Goeland/search"
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
-var contextEnabled bool = false
-
-var CoqOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeCoqOutput, Name: "Coq", Extension: ".v"}
+var TptpOutputProofStruct = &search.OutputProofStruct{ProofOutput: MakeTptpOutput, Name: "TPTP", Extension: ".p"}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
 
 // Section: init
-// Functions: MakeCoqOutput
-// Main functions of the coq module.
-// TODO:
-//	* Write the context for TFF problems
+// Functions: MakeTptpOutput
+// Main functions of the TPTP module.
 
-func MakeCoqOutput(prf []proof.ProofStruct, meta *basictypes.MetaList) string {
+func MakeTptpOutput(prf []proof.ProofStruct, meta *btps.MetaList) string {
 	if len(prf) == 0 {
-		global.PrintError("Coq", "Nothing to output")
+		global.PrintError("Tptp", "Nothing to output")
 		return ""
 	}
 
 	// Transform tableaux's proof in GS3 proof
-	return MakeCoqProof(gs3.MakeGS3Proof(prf), meta)
+	return MakeTptpProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-var MakeCoqProof = func(proof *gs3.GS3Sequent, meta *basictypes.MetaList) string {
-	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
-	proofString := makeCoqProofFromGS3(proof)
-	return contextString + "\n" + proofString
+var MakeTptpProof = func(proof *gs3.GS3Sequent, meta *btps.MetaList) string {
+	proofString := makeTptpProofFromGS3(proof)
+	return proofString
 }
 
-// Replace defined symbols by Coq's defined symbols.
+// Replace defined symbols by TSTP's defined symbols.
 func mapDefault(str string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
+	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, " : $i", ""), " : $o", ""), " : , ", " : ")
 }
-func coqMapConnectors() map[basictypes.FormulaType]string {
-	return map[basictypes.FormulaType]string{
-		basictypes.AndConn:        "/\\",
-		basictypes.OrConn:         "\\/",
-		basictypes.ImpConn:        "->",
-		basictypes.EquConn:        "<->",
-		basictypes.NotConn:        "~",
-		basictypes.TopType:        "True",
-		basictypes.BotType:        "False",
-		basictypes.AllQuant:       "forall",
-		basictypes.ExQuant:        "exists",
-		basictypes.AllTypeQuant:   "forall",
-		basictypes.QuantVarOpen:   "(",
-		basictypes.QuantVarClose:  ")",
-		basictypes.QuantVarSep:    ",",
-		basictypes.PredEmpty:      "",
-		basictypes.PredTypeVarSep: ",",
-		basictypes.TypeVarType:    "Type",
+func tptpMapConnectors() map[btps.FormulaType]string {
+	return map[btps.FormulaType]string{
+		btps.AndConn:        "&",
+		btps.OrConn:         "|",
+		btps.ImpConn:        "=>",
+		btps.EquConn:        "<=>",
+		btps.NotConn:        "~",
+		btps.TopType:        "$true",
+		btps.BotType:        "$false",
+		btps.AllQuant:       "!",
+		btps.ExQuant:        "?",
+		btps.AllTypeQuant:   "!",
+		btps.QuantVarOpen:   "[",
+		btps.QuantVarClose:  "] : ",
+		btps.QuantVarSep:    ",",
+		btps.PredEmpty:      "",
+		btps.PredTypeVarSep: ",",
+		btps.TypeVarType:    "Type",
 	}
-}
-
-// Context flag utility function
-func GetContextEnabled() bool {
-	return contextEnabled
-}
-
-// Context flag utility function
-func SetContextEnabled(ce bool) {
-	contextEnabled = true
 }

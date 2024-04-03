@@ -44,7 +44,7 @@ import (
 var BasicOutputProofStruct = &OutputProofStruct{ProofOutput: proof.ProofStructListToText, Name: "Basic", Extension: ".proof"}
 
 type OutputProofStruct struct {
-	ProofOutput func(finalProof []proof.ProofStruct, metaList basictypes.MetaList) string
+	ProofOutput func(finalProof []proof.ProofStruct, metaList *basictypes.MetaList) string
 	Name        string
 	Extension   string
 }
@@ -55,7 +55,7 @@ func AddPrintProofAlgorithm(ps *OutputProofStruct) {
 	outputProofStructs = append(outputProofStructs, ps)
 }
 
-func printProof(final_proof []proof.ProofStruct, metaList basictypes.MetaList) {
+func printProof(final_proof []proof.ProofStruct, metaList *basictypes.MetaList) {
 	if global.GetProof() {
 		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
 
@@ -67,7 +67,7 @@ func printProof(final_proof []proof.ProofStruct, metaList basictypes.MetaList) {
 	}
 }
 
-func (ps *OutputProofStruct) printProofWithProofStruct(finalProof []proof.ProofStruct, metaList basictypes.MetaList) {
+func (ps *OutputProofStruct) printProofWithProofStruct(finalProof []proof.ProofStruct, metaList *basictypes.MetaList) {
 	output := ps.ProofOutput(finalProof, metaList)
 
 	if global.GetWriteLogs() {
@@ -81,5 +81,5 @@ func (ps *OutputProofStruct) printProofWithProofStruct(finalProof []proof.ProofS
 		f.WriteString(output)
 	}
 
-	println(output)
+	global.PrintInfo("PROOF", "\n"+output)
 }

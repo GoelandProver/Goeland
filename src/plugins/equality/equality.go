@@ -64,7 +64,7 @@ func TryEquality(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.St
 			atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 			res_eq, subst_eq := EqualityReasoning(st.GetEqStruct(), st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms(), original_node_id)
 			if res_eq {
-				search.UsedSearch.ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.MakeEmptyTermList()), node_id, original_node_id)
+				search.UsedSearch.ManageClosureRule(father_id, &st, cha, subst_eq, basictypes.MakeFormAndTerm(basictypes.EmptyPredEq, basictypes.NewTermList()), node_id, original_node_id)
 				return true
 			}
 		}
@@ -78,7 +78,7 @@ func TryEquality(atomics_for_dmt basictypes.FormAndTermsList, st complextypes.St
 * creates the problem
 * returns a bool for success and the corresponding substitution
 **/
-func EqualityReasoning(eqStruct eqStruct.EqualityStruct, tree_pos, tree_neg datastruct.DataStructure, atomic basictypes.FormList, originalNodeId int) (bool, []treetypes.Substitutions) {
+func EqualityReasoning(eqStruct eqStruct.EqualityStruct, tree_pos, tree_neg datastruct.DataStructure, atomic *basictypes.FormList, originalNodeId int) (bool, []treetypes.Substitutions) {
 	global.PrintDebug("ER", "ER call")
 	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
 	if equalities {

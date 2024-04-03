@@ -36,10 +36,12 @@
 
 package basictypes
 
+import "github.com/GoelandProver/Goeland/global"
+
 /* id (for predicate) */
 type FormAndTerms struct {
 	form  Form
-	Terms TermList
+	Terms *TermList
 }
 
 func (fat FormAndTerms) GetForm() Form {
@@ -50,7 +52,7 @@ func (fat FormAndTerms) GetForm() Form {
 	}
 }
 
-func (fat FormAndTerms) GetTerms() TermList {
+func (fat FormAndTerms) GetTerms() *TermList {
 	return fat.Terms.Copy()
 }
 
@@ -58,11 +60,11 @@ func (fat *FormAndTerms) SetForm(form Form) {
 	fat.form = form
 }
 
-func (fat *FormAndTerms) SetTerms(Terms TermList) {
+func (fat *FormAndTerms) SetTerms(Terms *TermList) {
 	fat.Terms = Terms
 }
 
-func MakeFormAndTerm(f Form, tl TermList) FormAndTerms {
+func MakeFormAndTerm(f Form, tl *TermList) FormAndTerms {
 	return FormAndTerms{f, tl}
 }
 
@@ -75,5 +77,5 @@ func (fat FormAndTerms) Equals(fat2 FormAndTerms) bool {
 }
 
 func (fat FormAndTerms) ToString() string {
-	return fat.GetForm().ToString()
+	return fat.GetForm().ToMappedString(DefaultMapString, global.GetTypeProof())
 }

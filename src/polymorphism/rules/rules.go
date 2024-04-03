@@ -38,7 +38,7 @@ import (
 	. "github.com/GoelandProver/Goeland/global"
 	sp "github.com/GoelandProver/Goeland/polymorphism/second-pass"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	btypes "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
 /**
@@ -49,8 +49,8 @@ import (
 
 /* Stores the consequence of the sequent */
 type Consequence struct {
-	f btypes.Form
-	t btypes.Term
+	f basictypes.Form
+	t basictypes.Term
 	a typing.TypeApp
 	s typing.TypeScheme
 }
@@ -93,7 +93,7 @@ var globalContextIsWellTyped bool = false
  * be typed after this step.
  * Otherwise, it will return an error.
  **/
-func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
+func WellFormedVerification(form basictypes.Form, dump bool) (basictypes.Form, error) {
 	// Instanciate meta type
 	metaType = typing.MkTypeHint("$tType")
 
@@ -108,7 +108,7 @@ func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
 	// Sequent creation
 	state := Sequent{
 		globalContext: globalContext,
-		localContext:  LocalContext{vars: []btypes.Var{}, typeVars: []typing.TypeVar{}},
+		localContext:  LocalContext{vars: []basictypes.Var{}, typeVars: []typing.TypeVar{}},
 		consequence:   Consequence{f: form},
 	}
 
@@ -130,79 +130,81 @@ func WellFormedVerification(form btypes.Form, dump bool) (btypes.Form, error) {
 }
 
 /* Reconstructs a Form depending on what the children has returned */
-func reconstructForm(reconstruction Reconstruct, baseForm btypes.Form) Reconstruct {
+func reconstructForm(reconstruction Reconstruct, baseForm basictypes.Form) Reconstruct {
 	if !reconstruction.result {
 		return reconstruction
 	}
 
-	var f btypes.Form
+	var f basictypes.Form
 	switch form := baseForm.(type) {
-	case btypes.All:
-		f = btypes.MakeAll(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms[1], form))
-	case btypes.AllType:
-		f = btypes.MakeAllType(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms[1], form))
-	case btypes.Ex:
-		f = btypes.MakeEx(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms[1], form))
-	case btypes.And:
-		f = btypes.MakeAnd(form.GetIndex(), reconstruction.forms)
-	case btypes.Or:
-		f = btypes.MakeOr(form.GetIndex(), reconstruction.forms)
-	case btypes.Imp:
-		f = btypes.MakeImp(form.GetIndex(), reconstruction.forms[0], reconstruction.forms[1])
-	case btypes.Equ:
-		f = btypes.MakeEqu(form.GetIndex(), reconstruction.forms[0], reconstruction.forms[1])
-	case btypes.Not:
-		f = btypes.MakeNot(form.GetIndex(), reconstruction.forms[0])
-	case btypes.Pred:
+	case basictypes.All:
+		f = basictypes.MakeAll(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
+	case basictypes.AllType:
+		f = basictypes.MakeAllType(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
+	case basictypes.Ex:
+		f = basictypes.MakeEx(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
+	case basictypes.And:
+		f = basictypes.MakeAnd(form.GetIndex(), reconstruction.forms)
+	case basictypes.Or:
+		f = basictypes.MakeOr(form.GetIndex(), reconstruction.forms)
+	case basictypes.Imp:
+		f = basictypes.MakeImp(form.GetIndex(), reconstruction.forms.Get(0), reconstruction.forms.Get(1))
+	case basictypes.Equ:
+		f = basictypes.MakeEqu(form.GetIndex(), reconstruction.forms.Get(0), reconstruction.forms.Get(1))
+	case basictypes.Not:
+		f = basictypes.MakeNot(form.GetIndex(), reconstruction.forms.Get(0))
+	case basictypes.Pred:
 		// The len(form.GetTypeVars()) first children launched are children for typevars.
 		// So the len(form.GetTypeVars()) first children will return <nil>
-		if len(reconstruction.terms) > len(form.GetTypeVars()) {
-			f = btypes.MakePred(form.GetIndex(), form.GetID(), reconstruction.terms[len(form.GetTypeVars()):], form.GetTypeVars(), form.GetType())
+		if reconstruction.terms.Len() > len(form.GetTypeVars()) {
+			terms := basictypes.NewTermList(reconstruction.terms.GetElements(len(form.GetTypeVars()), reconstruction.terms.Len())...)
+			f = basictypes.MakePred(form.GetIndex(), form.GetID(), terms, form.GetTypeVars(), form.GetType())
 		} else {
-			f = btypes.MakePred(form.GetIndex(), form.GetID(), []btypes.Term{}, form.GetTypeVars(), form.GetType())
+			f = basictypes.MakePred(form.GetIndex(), form.GetID(), basictypes.NewTermList(), form.GetTypeVars(), form.GetType())
 		}
-	case btypes.Top, btypes.Bot:
+	case basictypes.Top, basictypes.Bot:
 		f = baseForm
 	}
 
-	return Reconstruct{result: true, forms: []btypes.Form{f}, err: nil}
+	return Reconstruct{result: true, forms: basictypes.NewFormList(f), err: nil}
 }
 
 /* Reconstructs a Term depending on what the children has returned */
-func reconstructTerm(reconstruction Reconstruct, baseTerm btypes.Term) Reconstruct {
+func reconstructTerm(reconstruction Reconstruct, baseTerm basictypes.Term) Reconstruct {
 	if !reconstruction.result {
 		return reconstruction
 	}
 
 	// fun: reconstruct with children terms
-	if Is[btypes.Fun](baseTerm) {
-		termFun := To[btypes.Fun](baseTerm)
-		var fun btypes.Fun
+	if Is[basictypes.Fun](baseTerm) {
+		termFun := To[basictypes.Fun](baseTerm)
+		var fun basictypes.Fun
 		// The len(form.GetTypeVars()) first children launched are children for typevars.
 		// So the len(form.GetTypeVars()) first children will return <nil>
-		if len(reconstruction.terms) > len(termFun.GetTypeVars()) {
-			fun = btypes.MakerFun(termFun.GetID(), reconstruction.terms[len(termFun.GetTypeVars()):], termFun.GetTypeVars(), termFun.GetTypeHint())
+		if reconstruction.terms.Len() > len(termFun.GetTypeVars()) {
+			terms := basictypes.NewTermList(reconstruction.terms.GetElements(len(termFun.GetTypeVars()), reconstruction.terms.Len())...)
+			fun = basictypes.MakerFun(termFun.GetID(), terms, termFun.GetTypeVars(), termFun.GetTypeHint())
 		} else {
-			fun = btypes.MakerFun(termFun.GetID(), []btypes.Term{}, termFun.GetTypeVars(), termFun.GetTypeHint())
+			fun = basictypes.MakerFun(termFun.GetID(), basictypes.NewTermList(), termFun.GetTypeVars(), termFun.GetTypeHint())
 		}
-		return Reconstruct{result: true, terms: []btypes.Term{fun}, err: nil}
+		return Reconstruct{result: true, terms: basictypes.NewTermList(fun), err: nil}
 	}
 
-	return Reconstruct{result: true, terms: []btypes.Term{baseTerm}, err: nil}
+	return Reconstruct{result: true, terms: basictypes.NewTermList(baseTerm), err: nil}
 }
 
 /* Utils for reconstructions function */
 
 /* Removes all the quantifiers of form of the same type of quant. */
-func unquantify(form btypes.Form, quant btypes.Form) btypes.Form {
+func unquantify(form basictypes.Form, quant basictypes.Form) basictypes.Form {
 	for reflect.TypeOf(form) == reflect.TypeOf(quant) {
 		switch quant.(type) {
-		case btypes.All:
-			form = To[btypes.All](form).GetForm()
-		case btypes.AllType:
-			form = To[btypes.AllType](form).GetForm()
-		case btypes.Ex:
-			form = To[btypes.Ex](form).GetForm()
+		case basictypes.All:
+			form = To[basictypes.All](form).GetForm()
+		case basictypes.AllType:
+			form = To[basictypes.AllType](form).GetForm()
+		case basictypes.Ex:
+			form = To[basictypes.Ex](form).GetForm()
 		}
 	}
 	return form

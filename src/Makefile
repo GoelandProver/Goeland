@@ -34,9 +34,6 @@ parse:
 	@for i in `ls $(PROB)/*.p`; do echo -e "File \033[32m$$i\033[39m: "; \
         ./$(BIN) $$i; echo; done
 
-coq:
-	coqc -Q . Goeland goeland.v
-
 clean:
 	rm -f *~ $(GOPARSER) y.output  
 	rm -rf $(BUILD)

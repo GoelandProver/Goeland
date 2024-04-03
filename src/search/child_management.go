@@ -37,7 +37,7 @@ import (
 
 	ttps "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
-	btps "github.com/GoelandProver/Goeland/types/basic-types"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	ctps "github.com/GoelandProver/Goeland/types/complex-types"
 	xchg "github.com/GoelandProver/Goeland/visualization_exchanges"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
@@ -258,7 +258,7 @@ func (ds *destructiveSearch) manageBacktrackForDMT(args wcdArgs) {
 	childNode := global.IncrCptNode()
 
 	// Update the proof-tree with the
-	args.st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(childNode, btps.MakeSingleElementFormAndTermList(nextForm))})
+	args.st.SetCurrentProofResultFormulas([]proof.IntFormAndTermsList{proof.MakeIntFormAndTermsList(childNode, basictypes.MakeSingleElementFormAndTermList(nextForm))})
 	args.st.SetCurrentProofRule("Rewrite")
 	args.st.SetCurrentProofRuleName("Rewrite")
 	args.st.SetCurrentProofIdDMT(nextSaF.GetId_rewrite())

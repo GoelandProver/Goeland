@@ -206,100 +206,100 @@ func initTestVariable() {
 	c2 = basictypes.MakerConst(c2_id)
 
 	// Fun
-	gx = basictypes.MakerFun(g_id, basictypes.TermList{x}, []typing.TypeApp{})
-	gy = basictypes.MakerFun(g_id, basictypes.TermList{y}, []typing.TypeApp{})
-	ga = basictypes.MakerFun(g_id, basictypes.TermList{a}, []typing.TypeApp{})
-	fx = basictypes.MakerFun(f_id, basictypes.TermList{x}, []typing.TypeApp{})
-	fy = basictypes.MakerFun(f_id, basictypes.TermList{y}, []typing.TypeApp{})
-	fa = basictypes.MakerFun(f_id, basictypes.TermList{a}, []typing.TypeApp{})
-	fb = basictypes.MakerFun(f_id, basictypes.TermList{b}, []typing.TypeApp{})
-	fc = basictypes.MakerFun(f_id, basictypes.TermList{c}, []typing.TypeApp{})
-	hx = basictypes.MakerFun(h_id, basictypes.TermList{x}, []typing.TypeApp{})
+	gx = basictypes.MakerFun(g_id, basictypes.NewTermList(x), []typing.TypeApp{})
+	gy = basictypes.MakerFun(g_id, basictypes.NewTermList(y), []typing.TypeApp{})
+	ga = basictypes.MakerFun(g_id, basictypes.NewTermList(a), []typing.TypeApp{})
+	fx = basictypes.MakerFun(f_id, basictypes.NewTermList(x), []typing.TypeApp{})
+	fy = basictypes.MakerFun(f_id, basictypes.NewTermList(y), []typing.TypeApp{})
+	fa = basictypes.MakerFun(f_id, basictypes.NewTermList(a), []typing.TypeApp{})
+	fb = basictypes.MakerFun(f_id, basictypes.NewTermList(b), []typing.TypeApp{})
+	fc = basictypes.MakerFun(f_id, basictypes.NewTermList(c), []typing.TypeApp{})
+	hx = basictypes.MakerFun(h_id, basictypes.NewTermList(x), []typing.TypeApp{})
 
-	ggx = basictypes.MakerFun(g_id, basictypes.TermList{gx}, []typing.TypeApp{})
-	gga = basictypes.MakerFun(g_id, basictypes.TermList{ga}, []typing.TypeApp{})
-	gfy = basictypes.MakerFun(g_id, basictypes.TermList{fy}, []typing.TypeApp{})
-	gfa = basictypes.MakerFun(g_id, basictypes.TermList{fa}, []typing.TypeApp{})
-	fxy = basictypes.MakerFun(f_id, basictypes.TermList{x, y}, []typing.TypeApp{})
-	fyz = basictypes.MakerFun(f_id, basictypes.TermList{y, z}, []typing.TypeApp{})
-	ffx = basictypes.MakerFun(f_id, basictypes.TermList{fx}, []typing.TypeApp{})
-	fxa = basictypes.MakerFun(f_id, basictypes.TermList{x, a}, []typing.TypeApp{})
-	fay = basictypes.MakerFun(f_id, basictypes.TermList{a, y}, []typing.TypeApp{})
-	fab = basictypes.MakerFun(f_id, basictypes.TermList{a, b}, []typing.TypeApp{})
-	fbc = basictypes.MakerFun(f_id, basictypes.TermList{b, c}, []typing.TypeApp{})
-	fcd = basictypes.MakerFun(f_id, basictypes.TermList{c, d}, []typing.TypeApp{})
-	gab = basictypes.MakerFun(g_id, basictypes.TermList{a, b}, []typing.TypeApp{})
-	hfab = basictypes.MakerFun(h_id, basictypes.TermList{fa, b}, []typing.TypeApp{})
-	gxb = basictypes.MakerFun(g_id, basictypes.TermList{x, b}, []typing.TypeApp{})
-	ffb = basictypes.MakerFun(f_id, basictypes.TermList{fb}, []typing.TypeApp{})
-	fgy = basictypes.MakerFun(f_id, basictypes.TermList{gy}, []typing.TypeApp{})
-	fdc = basictypes.MakerFun(f_id, basictypes.TermList{d, c}, []typing.TypeApp{})
-	ghx = basictypes.MakerFun(h_id, basictypes.TermList{hx}, []typing.TypeApp{})
-	hgxbffb = basictypes.MakerFun(h_id, basictypes.TermList{gxb, ffb}, []typing.TypeApp{})
+	ggx = basictypes.MakerFun(g_id, basictypes.NewTermList(gx), []typing.TypeApp{})
+	gga = basictypes.MakerFun(g_id, basictypes.NewTermList(ga), []typing.TypeApp{})
+	gfy = basictypes.MakerFun(g_id, basictypes.NewTermList(fy), []typing.TypeApp{})
+	gfa = basictypes.MakerFun(g_id, basictypes.NewTermList(fa), []typing.TypeApp{})
+	fxy = basictypes.MakerFun(f_id, basictypes.NewTermList(x, y), []typing.TypeApp{})
+	fyz = basictypes.MakerFun(f_id, basictypes.NewTermList(y, z), []typing.TypeApp{})
+	ffx = basictypes.MakerFun(f_id, basictypes.NewTermList(fx), []typing.TypeApp{})
+	fxa = basictypes.MakerFun(f_id, basictypes.NewTermList(x, a), []typing.TypeApp{})
+	fay = basictypes.MakerFun(f_id, basictypes.NewTermList(a, y), []typing.TypeApp{})
+	fab = basictypes.MakerFun(f_id, basictypes.NewTermList(a, b), []typing.TypeApp{})
+	fbc = basictypes.MakerFun(f_id, basictypes.NewTermList(b, c), []typing.TypeApp{})
+	fcd = basictypes.MakerFun(f_id, basictypes.NewTermList(c, d), []typing.TypeApp{})
+	gab = basictypes.MakerFun(g_id, basictypes.NewTermList(a, b), []typing.TypeApp{})
+	hfab = basictypes.MakerFun(h_id, basictypes.NewTermList(fa, b), []typing.TypeApp{})
+	gxb = basictypes.MakerFun(g_id, basictypes.NewTermList(x, b), []typing.TypeApp{})
+	ffb = basictypes.MakerFun(f_id, basictypes.NewTermList(fb), []typing.TypeApp{})
+	fgy = basictypes.MakerFun(f_id, basictypes.NewTermList(gy), []typing.TypeApp{})
+	fdc = basictypes.MakerFun(f_id, basictypes.NewTermList(d, c), []typing.TypeApp{})
+	ghx = basictypes.MakerFun(h_id, basictypes.NewTermList(hx), []typing.TypeApp{})
+	hgxbffb = basictypes.MakerFun(h_id, basictypes.NewTermList(gxb, ffb), []typing.TypeApp{})
 
-	gggx = basictypes.MakerFun(g_id, basictypes.TermList{ggx}, []typing.TypeApp{})
+	gggx = basictypes.MakerFun(g_id, basictypes.NewTermList(ggx), []typing.TypeApp{})
 
-	f_fxy_z = basictypes.MakerFun(f_id, basictypes.TermList{fxy, z}, []typing.TypeApp{})
-	f_x_fyz = basictypes.MakerFun(f_id, basictypes.TermList{x, fyz}, []typing.TypeApp{})
-	f_fab_c = basictypes.MakerFun(f_id, basictypes.TermList{fab, c}, []typing.TypeApp{})
-	f_a_fbc = basictypes.MakerFun(f_id, basictypes.TermList{a, fbc}, []typing.TypeApp{})
+	f_fxy_z = basictypes.MakerFun(f_id, basictypes.NewTermList(fxy, z), []typing.TypeApp{})
+	f_x_fyz = basictypes.MakerFun(f_id, basictypes.NewTermList(x, fyz), []typing.TypeApp{})
+	f_fab_c = basictypes.MakerFun(f_id, basictypes.NewTermList(fab, c), []typing.TypeApp{})
+	f_a_fbc = basictypes.MakerFun(f_id, basictypes.NewTermList(a, fbc), []typing.TypeApp{})
 
 	// Equalities
-	eq_x_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{x, y}, []typing.TypeApp{})
-	eq_x_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{x, a}, []typing.TypeApp{})
-	eq_y_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{y, a}, []typing.TypeApp{})
-	eq_z1_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{z1, c1}, []typing.TypeApp{})
-	eq_z1_c2 = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{z1, c2}, []typing.TypeApp{})
-	eq_z2_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{z2, c1}, []typing.TypeApp{})
-	eq_z3_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{z3, c1}, []typing.TypeApp{})
+	eq_x_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, y), []typing.TypeApp{})
+	eq_x_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, a), []typing.TypeApp{})
+	eq_y_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(y, a), []typing.TypeApp{})
+	eq_z1_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(z1, c1), []typing.TypeApp{})
+	eq_z1_c2 = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(z1, c2), []typing.TypeApp{})
+	eq_z2_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(z2, c1), []typing.TypeApp{})
+	eq_z3_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(z3, c1), []typing.TypeApp{})
 
-	eq_ggx_fa = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{ggx, fa}, []typing.TypeApp{})
-	eq_gfy_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{gfy, y}, []typing.TypeApp{})
-	eq_gx_fx = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{gx, fx}, []typing.TypeApp{})
-	eq_fa_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fa, a}, []typing.TypeApp{})
-	eq_a_b = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, b}, []typing.TypeApp{})
-	eq_b_c = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{b, c}, []typing.TypeApp{})
-	eq_a_c = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, c}, []typing.TypeApp{})
-	eq_b_d = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{b, d}, []typing.TypeApp{})
-	eq_x_d = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{x, d}, []typing.TypeApp{})
-	eq_fx_gab = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fx, gab}, []typing.TypeApp{})
-	eq_fy_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fy, y}, []typing.TypeApp{})
-	eq_a_ffb = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, ffb}, []typing.TypeApp{})
-	eq_b_fb = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{b, fb}, []typing.TypeApp{})
-	eq_fgy_gfy = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fgy, gfy}, []typing.TypeApp{})
-	eq_fdc_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fdc, a}, []typing.TypeApp{})
+	eq_ggx_fa = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ggx, fa), []typing.TypeApp{})
+	eq_gfy_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(gfy, y), []typing.TypeApp{})
+	eq_gx_fx = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(gx, fx), []typing.TypeApp{})
+	eq_fa_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fa, a), []typing.TypeApp{})
+	eq_a_b = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, b), []typing.TypeApp{})
+	eq_b_c = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(b, c), []typing.TypeApp{})
+	eq_a_c = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, c), []typing.TypeApp{})
+	eq_b_d = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(b, d), []typing.TypeApp{})
+	eq_x_d = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, d), []typing.TypeApp{})
+	eq_fx_gab = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fx, gab), []typing.TypeApp{})
+	eq_fy_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fy, y), []typing.TypeApp{})
+	eq_a_ffb = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, ffb), []typing.TypeApp{})
+	eq_b_fb = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(b, fb), []typing.TypeApp{})
+	eq_fgy_gfy = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fgy, gfy), []typing.TypeApp{})
+	eq_fdc_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fdc, a), []typing.TypeApp{})
 
 	// Inequalites
-	neq_x_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{x, a}, []typing.TypeApp{}))
-	neq_y_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{y, a}, []typing.TypeApp{}))
-	neq_a_b = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, b}, []typing.TypeApp{}))
-	neq_a_d = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{a, d}, []typing.TypeApp{}))
-	neq_gggx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{gggx, x}, []typing.TypeApp{}))
-	neq_fx_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fx, a}, []typing.TypeApp{}))
-	neq_fx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fx, x}, []typing.TypeApp{}))
-	neq_fab_fcd = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fab, fcd}, []typing.TypeApp{}))
-	neq_fb_fc = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{fb, fc}, []typing.TypeApp{}))
-	neq_hfab_hgxbffb = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{hfab, hgxbffb}, []typing.TypeApp{}))
-	neq_ffb_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{ffb, a}, []typing.TypeApp{}))
-	neq_x_y = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{x, y}, []typing.TypeApp{}))
-	neq_ghx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{ghx, x}, []typing.TypeApp{}))
-	neq_b_e = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{b, e}, []typing.TypeApp{}))
-	neq_ga_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.TermList{ga, a}, []typing.TypeApp{}))
+	neq_x_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, a), []typing.TypeApp{}))
+	neq_y_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(y, a), []typing.TypeApp{}))
+	neq_a_b = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, b), []typing.TypeApp{}))
+	neq_a_d = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, d), []typing.TypeApp{}))
+	neq_gggx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(gggx, x), []typing.TypeApp{}))
+	neq_fx_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fx, a), []typing.TypeApp{}))
+	neq_fx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fx, x), []typing.TypeApp{}))
+	neq_fab_fcd = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fab, fcd), []typing.TypeApp{}))
+	neq_fb_fc = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fb, fc), []typing.TypeApp{}))
+	neq_hfab_hgxbffb = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(hfab, hgxbffb), []typing.TypeApp{}))
+	neq_ffb_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ffb, a), []typing.TypeApp{}))
+	neq_x_y = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, y), []typing.TypeApp{}))
+	neq_ghx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ghx, x), []typing.TypeApp{}))
+	neq_b_e = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(b, e), []typing.TypeApp{}))
+	neq_ga_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ga, a), []typing.TypeApp{}))
 
 	// Predicates
-	pggab = basictypes.MakerPred(p_id, basictypes.TermList{gga, b}, []typing.TypeApp{})
-	not_pac = basictypes.MakerNot(basictypes.MakerPred(p_id, basictypes.TermList{a, c}, []typing.TypeApp{}))
-	pa = basictypes.MakerPred(p_id, basictypes.TermList{a}, []typing.TypeApp{})
-	pb = basictypes.MakerPred(p_id, basictypes.TermList{b}, []typing.TypeApp{})
-	not_pc = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.TermList{c}, []typing.TypeApp{}))
-	pab = basictypes.MakerPred(p_id, basictypes.TermList{a, b}, []typing.TypeApp{})
-	pax = basictypes.MakerPred(p_id, basictypes.TermList{a, x}, []typing.TypeApp{})
-	not_pcd = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.TermList{c, d}, []typing.TypeApp{}))
+	pggab = basictypes.MakerPred(p_id, basictypes.NewTermList(gga, b), []typing.TypeApp{})
+	not_pac = basictypes.MakerNot(basictypes.MakerPred(p_id, basictypes.NewTermList(a, c), []typing.TypeApp{}))
+	pa = basictypes.MakerPred(p_id, basictypes.NewTermList(a), []typing.TypeApp{})
+	pb = basictypes.MakerPred(p_id, basictypes.NewTermList(b), []typing.TypeApp{})
+	not_pc = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.NewTermList(c), []typing.TypeApp{}))
+	pab = basictypes.MakerPred(p_id, basictypes.NewTermList(a, b), []typing.TypeApp{})
+	pax = basictypes.MakerPred(p_id, basictypes.NewTermList(a, x), []typing.TypeApp{})
+	not_pcd = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.NewTermList(c, d), []typing.TypeApp{}))
 }
 
-func initCodeTreesTests(lf basictypes.FormList) (datastruct.DataStructure, datastruct.DataStructure) {
-	tp = new(treesearch.Node)
-	tn = new(treesearch.Node)
+func initCodeTreesTests(lf *basictypes.FormList) (datastruct.DataStructure, datastruct.DataStructure) {
+	tp = treesearch.NewNode()
+	tn = treesearch.NewNode()
 	tp = tp.MakeDataStruct(lf, true)
 	tn = tn.MakeDataStruct(lf, false)
 	return tp, tn
@@ -337,7 +337,7 @@ func checkSubsIsCompatibleWith(isCompatible treetypes.Substitutions, with ...tre
 }
 
 func isFirstIncludedInSecond(first treetypes.Substitutions, second treetypes.Substitutions) bool {
-	secondList := global.NewListWithSlice(first)
+	secondList := global.NewList(second...)
 
 	for _, firstElement := range first {
 		if !secondList.Contains(firstElement) {
@@ -366,7 +366,7 @@ func TestEQ1(t *testing.T) {
 	* Solutions : (X, g(a)), (X, g(f(a)))
 	**/
 
-	lf := basictypes.FormList{eq_fa_a, eq_ggx_fa, neq_gggx_x}
+	lf := basictypes.NewFormList(eq_fa_a, eq_ggx_fa, neq_gggx_x)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -394,7 +394,7 @@ func TestEQ2(t *testing.T) {
 	* Solutions : {} or X = Y
 	**/
 
-	lf := basictypes.FormList{eq_b_c, eq_gx_fx, eq_gfy_y, pb, not_pc}
+	lf := basictypes.NewFormList(eq_b_c, eq_gx_fx, eq_gfy_y, pb, not_pc)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -421,7 +421,7 @@ func TestEQ3(t *testing.T) {
 	* Solutions : {(X,a) (Y,a)}, {(X, a) (Y, X)}, {(X, Y) (Y, a)}
 	**/
 
-	lf := basictypes.FormList{eq_b_c, eq_gx_fx, eq_gfy_y, pggab, not_pac}
+	lf := basictypes.NewFormList(eq_b_c, eq_gx_fx, eq_gfy_y, pggab, not_pac)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -452,7 +452,7 @@ func TestEQ3bis(t *testing.T) {
 	* Solutions : {(X,a) (Y,a)}, {(X, a) (Y, X)}, {(X, Y) (Y, a)}
 	**/
 
-	lf := basictypes.FormList{eq_gx_fx, eq_fy_y, neq_ga_a}
+	lf := basictypes.NewFormList(eq_gx_fx, eq_fy_y, neq_ga_a)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -484,7 +484,7 @@ func TestEQ4(t *testing.T) {
 	* Solutions : {(X,a)}
 	**/
 
-	lf := basictypes.FormList{eq_b_c, eq_gfy_y, neq_x_a, pggab, not_pac}
+	lf := basictypes.NewFormList(eq_b_c, eq_gfy_y, neq_x_a, pggab, not_pac)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -508,7 +508,7 @@ func TestEQ5(t *testing.T) {
 	* Solutions : {(Z1,a) (Z2,b)} ou {(Z1, b) (Z2, a)}
 	**/
 
-	lf := basictypes.FormList{eq_z1_c1, eq_z2_c1, neq_a_b}
+	lf := basictypes.NewFormList(eq_z1_c1, eq_z2_c1, neq_a_b)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -553,7 +553,7 @@ func TestEQ6(t *testing.T) {
 	 *
 	 **/
 
-	lf := basictypes.FormList{pa, pb, not_pc, neq_a_b, eq_z1_c2, eq_z2_c1, eq_z3_c1}
+	lf := basictypes.NewFormList(pa, pb, not_pc, neq_a_b, eq_z1_c2, eq_z2_c1, eq_z3_c1)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -601,7 +601,7 @@ func TestEQ7(t *testing.T) {
 	* Solutions : {}
 	**/
 
-	lf := basictypes.FormList{eq_a_b, neq_a_b}
+	lf := basictypes.NewFormList(eq_a_b, neq_a_b)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -621,7 +621,7 @@ func TestEQ8(t *testing.T) {
 	* Solution : N/A
 	*
 	**/
-	lf := basictypes.FormList{eq_a_b, neq_a_d}
+	lf := basictypes.NewFormList(eq_a_b, neq_a_d)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -642,7 +642,7 @@ func TestImpossible(t *testing.T) {
 	* Solutions : N/A
 	**/
 
-	lf := basictypes.FormList{eq_x_d, neq_fx_a}
+	lf := basictypes.NewFormList(eq_x_d, neq_fx_a)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -662,7 +662,7 @@ func TestSimon(t *testing.T) {
 	* Solutions : {x -> fa}
 	**/
 
-	lf := basictypes.FormList{eq_x_a, neq_fx_x}
+	lf := basictypes.NewFormList(eq_x_a, neq_fx_x)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -686,7 +686,7 @@ func TestSeparation(t *testing.T) {
 	* Solutions : {}
 	**/
 
-	lf := basictypes.FormList{pab, eq_a_c, eq_b_d, not_pcd}
+	lf := basictypes.NewFormList(pab, eq_a_c, eq_b_d, not_pcd)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -708,7 +708,7 @@ func TestDeuxiemeSeparation(t *testing.T) {
 	* Solutions : {x -> d}, {x -> b}
 	**/
 
-	lf := basictypes.FormList{pax, eq_a_c, eq_b_d, not_pcd}
+	lf := basictypes.NewFormList(pax, eq_a_c, eq_b_d, not_pcd)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -736,7 +736,7 @@ func TestMultiListes(t *testing.T) {
 	* Solutions : {}, {x -> d}, {x -> b}
 	**/
 
-	lf := basictypes.FormList{pax, pab, eq_a_c, eq_b_d, not_pcd}
+	lf := basictypes.NewFormList(pax, pab, eq_a_c, eq_b_d, not_pcd)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -762,7 +762,7 @@ func TestSubsEnMeta(t *testing.T) {
 	* Solutions : {X -> Y}, {Y -> X}, {Y -> a}
 	**/
 
-	lf := basictypes.FormList{eq_x_a, neq_y_a}
+	lf := basictypes.NewFormList(eq_x_a, neq_y_a)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -791,7 +791,7 @@ func TestContreExemple(t *testing.T) {
 	* Solutions : {x -> b, y -> c}
 	**/
 
-	lf := basictypes.FormList{eq_x_a, eq_y_a, pb, not_pc}
+	lf := basictypes.NewFormList(eq_x_a, eq_y_a, pb, not_pc)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -818,7 +818,7 @@ func TestCycle(t *testing.T) {
 	* Solutions : N/A
 	**/
 
-	lf := basictypes.FormList{eq_fgy_gfy, neq_ghx_x}
+	lf := basictypes.NewFormList(eq_fgy_gfy, neq_ghx_x)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
@@ -839,7 +839,7 @@ func TestTemp(t *testing.T) {
 	* Solutions : N/A
 	**/
 
-	lf := basictypes.FormList{eq_fdc_a, eq_x_d, neq_b_e}
+	lf := basictypes.NewFormList(eq_fdc_a, eq_x_d, neq_b_e)
 	tp, tn = initCodeTreesTests(lf)
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
