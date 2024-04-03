@@ -132,7 +132,7 @@ func (ds *destructiveSearch) doOneStep(limit int, formula basictypes.Form) (bool
 			finalProof = complextypes.ApplySubstitutionOnProofList(unif, finalProof)
 		}
 		uninstanciatedMeta := proof.RetrieveUninstantiatedMetaFromProof(finalProof)
-		printProof(finalProof, uninstanciatedMeta)
+		PrintProof(finalProof, uninstanciatedMeta)
 	}
 
 	global.SetNbStep(global.GetNbStep() + 1)

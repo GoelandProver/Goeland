@@ -189,6 +189,8 @@ func (s *Sub) AddOtherSub(other *Sub) {
 }
 
 func (s *Sub) GetAsMetasAndTerms() (metas *basictypes.MetaList, terms *basictypes.TermList) {
+	metas, terms = basictypes.NewMetaList(), basictypes.NewTermList()
+
 	for _, ss := range s.everySub {
 		metas.Append(*ss.getMeta())
 

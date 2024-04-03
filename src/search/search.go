@@ -48,6 +48,7 @@ import (
 type SearchAlgorithm interface {
 	Search(basictypes.Form, int) bool
 	SetApplyRules(func(uint64, complextypes.State, Communication, basictypes.FormAndTermsList, int, int, []int))
+	ManageClosureRule(uint64, *complextypes.State, Communication, []treetypes.Substitutions, basictypes.FormAndTerms, int, int) (bool, []complextypes.SubstAndForm)
 }
 
 var UsedSearch SearchAlgorithm

@@ -489,7 +489,11 @@ type RuleList []Rule
 
 func (rl *RuleList) GetFormList() *basictypes.FormList {
 	result := basictypes.NewFormList()
-	result.Append(rl.GetFormList().Slice()...)
+
+	for _, rule := range *rl {
+		result.Append(rule.GetForm())
+	}
+
 	return result
 }
 

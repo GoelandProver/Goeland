@@ -55,7 +55,7 @@ func AddPrintProofAlgorithm(ps *OutputProofStruct) {
 	outputProofStructs = append(outputProofStructs, ps)
 }
 
-func printProof(final_proof []proof.ProofStruct, metaList *basictypes.MetaList) {
+func PrintProof(final_proof []proof.ProofStruct, metaList *basictypes.MetaList) {
 	if global.GetProof() {
 		global.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", global.GetProblemName()))
 

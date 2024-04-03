@@ -24,7 +24,7 @@ type RulesManager struct {
 }
 
 func makeRulesManager() *RulesManager {
-	manager := &RulesManager{reintroRules: &ReintroRuleList{}}
+	manager := &RulesManager{reintroRules: &ReintroRuleList{}, metaVariables: basictypes.NewMetaList()}
 
 	return manager
 }
