@@ -89,6 +89,14 @@ func (q quantifier) ToMappedStringChild(mapping MapString, displayTypes bool) (s
 	return " ", ""
 }
 
+var varSeparator = " "
+
+func ChangeVarSeparator(sep string) string {
+	old := varSeparator
+	varSeparator = sep
+	return old
+}
+
 func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	type VarType struct {
 		vars  []Var
@@ -113,7 +121,7 @@ func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool)
 
 	for _, vt := range varsType {
 		str := mapping[QuantVarOpen]
-		str += ListToMappedString(q.GetVarList(), " ", "", mapping, false)
+		str += ListToMappedString(q.GetVarList(), varSeparator, "", mapping, false)
 		if displayTypes || global.IsCoqOutput() {
 			str += " : " + vt.type_.ToString()
 		}

@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 	"github.com/GoelandProver/Goeland/plugins/gs3"
 	"github.com/GoelandProver/Goeland/search"
+	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	btps "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
@@ -66,7 +67,9 @@ func MakeTptpOutput(prf []proof.ProofStruct, meta *btps.MetaList) string {
 }
 
 var MakeTptpProof = func(proof *gs3.GS3Sequent, meta *btps.MetaList) string {
+	old := basictypes.ChangeVarSeparator(", ")
 	proofString := makeTptpProofFromGS3(proof)
+	basictypes.ChangeVarSeparator(old)
 	return proofString
 }
 
