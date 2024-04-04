@@ -165,7 +165,7 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"pretty",
 		false,
-		"Enables UTF-8 characters in prints (use in combination with -proof for a pretty proof)",
+		"Should only be used with the -proof parameter. Enables UTF-8 characters in prints for a pretty proof",
 		func(bool) { global.DisplayPretty() },
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -236,6 +236,16 @@ func buildOptions() {
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
+		"olp",
+		false,
+		"Enables the Lambdapi format for proofs instead of text",
+		func(bool) {
+			global.OutputLambdapi()
+			global.SetProof(true)
+			search.AddPrintProofAlgorithm(lambdapi.LambdapiOutputProofStruct)
+		},
+		func(bool) {})
+	(&option[bool]{}).init(
 		"context",
 		false,
 		"Should only be used with the -ocoq or the -olp parameters. Enables the context for a standalone execution",
@@ -250,18 +260,8 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"preinner",
 		false,
-		"Activates preinner Skolemisation, a Skolemisation strategy even more optimised than -inner",
+		"Activates preinner Skolemisation, a Skolemisation strategy even more optimized than -inner",
 		func(bool) { global.SetPreInnerSko(true) },
-		func(bool) {})
-	(&option[bool]{}).init(
-		"olp",
-		false,
-		"Enables the Lambdapi format for proofs instead of text",
-		func(bool) {
-			global.OutputLambdapi()
-			global.SetProof(true)
-			search.AddPrintProofAlgorithm(lambdapi.LambdapiOutputProofStruct)
-		},
 		func(bool) {})
 	(&option[bool]{}).init(
 		"assisted",
@@ -316,7 +316,7 @@ func buildOptions() {
 	(&option[string]{}).init(
 		"proof_file",
 		"problem_proof",
-		"Should only be used with the -ocoq or the -olp parameters, only works with the -wlogs parameter. Enables the writing of the proof in a specific file. The extension of the file will depend on the type of proof",
+		"Should only be used with the proof output parameters, only works with the -wlogs parameter. Enables the writing of the proof in a specific file. The extension of the file will depend on the type of proof",
 		func(string) {},
 		func(val string) {
 			global.ProofFile = val
