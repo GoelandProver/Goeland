@@ -45,15 +45,15 @@ import (
 	"runtime/pprof"
 	"time"
 
-	"github.com/GoelandProver/Goeland/plugins/assisted"
+	"github.com/GoelandProver/Goeland/modules/assisted"
 
 	_ "net/http/pprof"
 
 	_ "github.com/GoelandProver/Goeland/options"
 
 	"github.com/GoelandProver/Goeland/global"
+	dmt "github.com/GoelandProver/Goeland/modules/dmt"
 	"github.com/GoelandProver/Goeland/parser"
-	dmt "github.com/GoelandProver/Goeland/plugins/dmt"
 	polymorphism "github.com/GoelandProver/Goeland/polymorphism/rules"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	"github.com/GoelandProver/Goeland/search"
