@@ -12,7 +12,7 @@ Goéland is licensed under the CeCILL 2.1 License. See [LICENSE](LICENSE).
 
 ### Dependencies
 
-Goéland needs Go (version >= 1.21, download directly from the [site](https://go.dev/)) and goyacc (`sudo apt-get install golang-golang-x-tools`) to compile.
+Goéland needs Go (version >= 1.22, download directly from the [site](https://go.dev/)) and goyacc (`sudo apt-get install golang-golang-x-tools`) to compile.
 
 Python3 (any version, download directly from the [site](https://www.python.org/downloads/)) is also needed to perform tests on the given benchmark (see  [Tests](#tests)).
 
