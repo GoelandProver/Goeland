@@ -43,9 +43,9 @@ import (
 
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	equality "github.com/GoelandProver/Goeland/equality/bse"
+	"github.com/GoelandProver/Goeland/equality/sateq"
 	"github.com/GoelandProver/Goeland/global"
-	"github.com/GoelandProver/Goeland/plugins/equality"
-	"github.com/GoelandProver/Goeland/plugins/sateq"
 	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
