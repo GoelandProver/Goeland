@@ -48,7 +48,18 @@ type EqualityStruct interface {
 	Copy() EqualityStruct
 }
 
-var NewEqStruct func() EqualityStruct
+type EmptyEqualityStruct struct{}
+
+func (e EmptyEqualityStruct) AddAssumption(TermPair) {}
+func (e EmptyEqualityStruct) AddGoal([]TermPair)     {}
+func (e EmptyEqualityStruct) Copy() EqualityStruct   { return e }
+func (e EmptyEqualityStruct) Solve() (subs []treetypes.Substitutions, success bool) {
+	return []treetypes.Substitutions{}, false
+}
+
+var NewEqStruct func() EqualityStruct = func() EqualityStruct {
+	return EmptyEqualityStruct{}
+}
 
 /* A pair of two terms */
 type TermPair struct {
