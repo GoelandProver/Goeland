@@ -432,7 +432,14 @@ func (st *State) DispatchForm(f basictypes.FormAndTerms) {
 	global.PrintDebug("DF", fmt.Sprintf("Kind of rule : %v ", basictypes.ShowKindOfRule(f.GetForm())))
 	switch basictypes.ShowKindOfRule(f.GetForm()) {
 	case basictypes.Atomic:
-		st.SetAtomic(st.GetAtomic().AppendIfNotContains(f))
+		if !st.GetAtomic().Contains(f) {
+			st.SetAtomic(st.GetAtomic().Append(f))
+			if _, ok := f.GetForm().(basictypes.Not); ok {
+				st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().ExtractForms(), true))
+			} else {
+				st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().ExtractForms(), false))
+			}
+		}
 	case basictypes.Alpha:
 		st.SetAlpha(st.GetAlpha().AppendIfNotContains(f))
 	case basictypes.Beta:

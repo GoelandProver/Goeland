@@ -237,8 +237,17 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 		// Applying substitutions before inserting in the code tree.
 		atomicsPlus := st.GetLF().FilterPred(true)
 		atomicsMinus := st.GetLF().FilterPred(false)
+
+		// global.PrintDebug("PS", fmt.Sprintf("Atomic plus : %v", atomicsPlus.ToString()))
+		// global.PrintDebug("PS", fmt.Sprintf("Atomic minus : %v", atomicsMinus.ToString()))
+
 		st.AddToTreePos(atomicsPlus)
 		st.AddToTreeNeg(atomicsMinus)
+
+		// global.PrintDebug("PS", "Tree Pos after insert:")
+		// st.GetTreePos().Print()
+		// global.PrintDebug("PS", "Tree Neg after insert:")
+		// st.GetTreeNeg().Print()
 
 		for _, f := range st.GetLF() {
 			if global.GetAssisted() || basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
@@ -786,7 +795,7 @@ func (ds *destructiveSearch) tryRewrite(rewritten []complextypes.IntSubstAndForm
 		return true
 	} else {
 		// No rewriting possible
-		global.PrintDebug("PS", fmt.Sprintf("No rewriting possible, dispatchform de %v", f.ToString()))
+		global.PrintDebug("PS", fmt.Sprintf("No rewriting possible, dispatch %v", f.ToString()))
 		// Then add f in atomics
 		state.DispatchForm(f.Copy())
 
@@ -922,6 +931,7 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *complextype
 
 /* Apply rules with priority (closure < rewrite < alpha < delta < closure with mm < beta < gamma) */
 func (ds *destructiveSearch) applyRules(fatherId uint64, state complextypes.State, c Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
+	global.PrintDebug("AR", fmt.Sprintf("Id : %v, original node id :%v, Child of: %v", currentNodeId, originalNodeId, fatherId))
 	global.PrintDebug("AR", "ApplyRule")
 	switch {
 	case len(newAtomics) > 0 && global.IsLoaded("dmt") && len(state.GetSubstsFound()) == 0:

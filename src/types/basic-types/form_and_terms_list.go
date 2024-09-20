@@ -135,8 +135,13 @@ func (fl FormAndTermsList) AppendIfNotContains(f FormAndTerms) FormAndTermsList 
 	if fl.Contains(f) {
 		return fl.Copy()
 	} else {
-		return append(fl.Copy(), f)
+		return fl.Append(f)
 	}
+}
+
+/* Append a formula to a list */
+func (fl FormAndTermsList) Append(f FormAndTerms) FormAndTermsList {
+	return append(fl.Copy(), f)
 }
 
 /* insert first */

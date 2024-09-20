@@ -37,7 +37,6 @@
 package treesearch
 
 import (
-	"fmt"
 	"strings"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
@@ -196,7 +195,7 @@ func (n Node) printAux(tab int) {
 			tab += 1
 		}
 		global.PrintDebug("PT", strings.Repeat("\t", tab)+instr.ToString())
-		fmt.Printf(strings.Repeat("\t", tab) + instr.ToString() + "\n")
+		// fmt.Printf(strings.Repeat("\t", tab) + instr.ToString() + "\n")
 
 		if treetypes.IsEnd(instr) {
 			tab -= 1
@@ -206,7 +205,7 @@ func (n Node) printAux(tab int) {
 	if n.isLeaf() {
 		for _, form := range n.formulae.Slice() {
 			global.PrintDebug("PT", strings.Repeat("\t", tab+1)+form.ToString())
-			fmt.Printf(strings.Repeat("\t", tab+1) + form.ToString() + "\n")
+			// fmt.Printf(strings.Repeat("\t", tab+1) + form.ToString() + "\n")
 		}
 	}
 	global.PrintDebug("PT", "\n")

@@ -91,19 +91,19 @@ func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.Matching
 func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 	for _, instr := range node.value {
 
-		// global.PrintDebug("UX", "------------------------")
-		// global.PrintDebug("UX", fmt.Sprintf("Instr: %v", instr.ToString()))
-		// global.PrintDebug("UX", fmt.Sprintf("Meta : %v", m.meta.ToString()))
-		// global.PrintDebug("UX", fmt.Sprintf("Subst : %v", treetypes.SubstPairListToString(m.subst)))
-		// global.PrintDebug("UX", fmt.Sprintf("Post : %v", treetypes.IntPairistToString(m.post)))
-		// global.PrintDebug("UX", fmt.Sprintf("IsLocked : %v", m.isLocked()))
-		// global.PrintDebug("UX", fmt.Sprintf("HasPushed : %v", m.hasPushed))
-		// global.PrintDebug("UX", fmt.Sprintf("HasPoped : %v", m.hasPoped))
-		// global.PrintDebug("UX", fmt.Sprintf("m.beginCount: %v - m.beginLock : %v", m.beginCount, m.beginLock))
-		// global.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
-		// global.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, len(m.terms)))
-		// global.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms[m.q].ToString()))
-		// global.PrintDebug("UX", fmt.Sprintf("m.terms : %v", m.terms.ToString()))
+		global.PrintDebug("UX", "------------------------")
+		global.PrintDebug("UX", fmt.Sprintf("Instr: %v", instr.ToString()))
+		global.PrintDebug("UX", fmt.Sprintf("Meta : %v", m.meta.ToString()))
+		global.PrintDebug("UX", fmt.Sprintf("Subst : %v", treetypes.SubstPairListToString(m.subst)))
+		global.PrintDebug("UX", fmt.Sprintf("Post : %v", treetypes.IntPairistToString(m.post)))
+		global.PrintDebug("UX", fmt.Sprintf("IsLocked : %v", m.isLocked()))
+		global.PrintDebug("UX", fmt.Sprintf("HasPushed : %v", m.hasPushed))
+		global.PrintDebug("UX", fmt.Sprintf("HasPoped : %v", m.hasPoped))
+		global.PrintDebug("UX", fmt.Sprintf("m.beginCount: %v - m.beginLock : %v", m.beginCount, m.beginLock))
+		global.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
+		global.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, m.terms.Len()))
+		global.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms.Get(m.q).ToString()))
+		global.PrintDebug("UX", fmt.Sprintf("m.terms : %v", m.terms.ToString()))
 
 		switch instr := instr.(type) {
 		case treetypes.Begin:
@@ -167,7 +167,8 @@ func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []treetypes.MatchingSubsti
 /* Launches each child of the current node in a goroutine. */
 func (m *Machine) launchChildrenSearch(node Node) []treetypes.MatchingSubstitutions {
 	channels := []chan []treetypes.MatchingSubstitutions{}
-	for range node.children {
+	for _, c := range node.children {
+		global.PrintDebug("LCS", fmt.Sprintf("Next symbol = %v", c.getValue()))
 		channels = append(channels, make(chan []treetypes.MatchingSubstitutions))
 	}
 
