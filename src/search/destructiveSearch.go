@@ -238,16 +238,8 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 		atomicsPlus := st.GetLF().FilterPred(true)
 		atomicsMinus := st.GetLF().FilterPred(false)
 
-		// global.PrintDebug("PS", fmt.Sprintf("Atomic plus : %v", atomicsPlus.ToString()))
-		// global.PrintDebug("PS", fmt.Sprintf("Atomic minus : %v", atomicsMinus.ToString()))
-
-		st.AddToTreePos(atomicsPlus)
-		st.AddToTreeNeg(atomicsMinus)
-
-		// global.PrintDebug("PS", "Tree Pos after insert:")
-		// st.GetTreePos().Print()
-		// global.PrintDebug("PS", "Tree Neg after insert:")
-		// st.GetTreeNeg().Print()
+		global.PrintDebug("PS", fmt.Sprintf("Atomic plus : %v", atomicsPlus.ToString()))
+		global.PrintDebug("PS", fmt.Sprintf("Atomic minus : %v", atomicsMinus.ToString()))
 
 		for _, f := range st.GetLF() {
 			if global.GetAssisted() || basictypes.ShowKindOfRule(f.GetForm()) != basictypes.Atomic {
@@ -311,6 +303,20 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st complextypes.State
 				return
 			}
 		}
+
+		for _, f := range new_atomics {
+			if !atomics_for_dmt.Contains(f) {
+				st.SetAtomic(st.GetAtomic().Append(f))
+			}
+		}
+
+		st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().ExtractForms(), true))
+		st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().ExtractForms(), false))
+
+		global.PrintDebug("PS", "Tree Pos after insert:")
+		st.GetTreePos().Print()
+		global.PrintDebug("PS", "Tree Neg after insert:")
+		st.GetTreeNeg().Print()
 
 		global.PrintDebug("PS", "Let's apply rules !")
 		global.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", atomics_for_dmt.ToString()))
@@ -931,8 +937,13 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *complextype
 
 /* Apply rules with priority (closure < rewrite < alpha < delta < closure with mm < beta < gamma) */
 func (ds *destructiveSearch) applyRules(fatherId uint64, state complextypes.State, c Communication, newAtomics basictypes.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
-	global.PrintDebug("AR", fmt.Sprintf("Id : %v, original node id :%v, Child of: %v", currentNodeId, originalNodeId, fatherId))
 	global.PrintDebug("AR", "ApplyRule")
+	global.PrintDebug("AR", fmt.Sprintf("Id : %v, original node id :%v, Child of: %v", currentNodeId, originalNodeId, fatherId))
+	state.Print()
+	global.PrintDebug("PS", "Tree Pos:")
+	state.GetTreePos().Print()
+	global.PrintDebug("PS", "Tree Neg:")
+	state.GetTreeNeg().Print()
 	switch {
 	case len(newAtomics) > 0 && global.IsLoaded("dmt") && len(state.GetSubstsFound()) == 0:
 		ds.manageRewriteRules(fatherId, state, c, newAtomics, currentNodeId, originalNodeId, metaToReintroduce)

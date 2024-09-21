@@ -168,7 +168,7 @@ func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []treetypes.MatchingSubsti
 func (m *Machine) launchChildrenSearch(node Node) []treetypes.MatchingSubstitutions {
 	channels := []chan []treetypes.MatchingSubstitutions{}
 	for _, c := range node.children {
-		global.PrintDebug("LCS", fmt.Sprintf("Next symbol = %v", c.getValue()))
+		global.PrintDebug("LCS", fmt.Sprintf("Next symbol = %v", c.getValue()[0].ToString()))
 		channels = append(channels, make(chan []treetypes.MatchingSubstitutions))
 	}
 
