@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/************/
-/* state.go */
-/************/
+
 /**
 * This file contains functions and types which describe the state's data structure
 **/
@@ -42,6 +40,7 @@ import (
 	"fmt"
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
+	"github.com/GoelandProver/Goeland/equality/eqStruct"
 	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	datastruct "github.com/GoelandProver/Goeland/types/data-struct"
@@ -55,9 +54,9 @@ import (
 /* The state of the search in a step */
 type State struct {
 	n                                     int
-	lf, atomic, alpha, beta, delta, gamma basictypes.FormList
+	lf, atomic, alpha, beta, delta, gamma basictypes.FormAndTermsList
 	meta_generator                        []basictypes.MetaGen
-	mm, mc                                basictypes.MetaList
+	mm, mc                                *basictypes.MetaList
 	applied_subst                         SubstAndForm
 	last_applied_subst                    SubstAndForm   // For non destructive case only
 	substs_found                          []SubstAndForm // Subst found with mm in d, subst for "bactrack" in nd
@@ -65,6 +64,9 @@ type State struct {
 	proof                                 []proof.ProofStruct
 	current_proof                         proof.ProofStruct
 	bt_on_formulas                        bool
+	forbidden                             []treetypes.Substitutions
+	unifier                               Unifier
+	eqStruct                              eqStruct.EqualityStruct
 }
 
 /***********/
@@ -75,31 +77,31 @@ type State struct {
 func (s State) GetN() int {
 	return s.n
 }
-func (s State) GetLF() basictypes.FormList {
+func (s State) GetLF() basictypes.FormAndTermsList {
 	return s.lf.Copy()
 }
-func (s State) GetAtomic() basictypes.FormList {
+func (s State) GetAtomic() basictypes.FormAndTermsList {
 	return s.atomic.Copy()
 }
-func (s State) GetAlpha() basictypes.FormList {
+func (s State) GetAlpha() basictypes.FormAndTermsList {
 	return s.alpha.Copy()
 }
-func (s State) GetBeta() basictypes.FormList {
+func (s State) GetBeta() basictypes.FormAndTermsList {
 	return s.beta.Copy()
 }
-func (s State) GetDelta() basictypes.FormList {
+func (s State) GetDelta() basictypes.FormAndTermsList {
 	return s.delta.Copy()
 }
-func (s State) GetGamma() basictypes.FormList {
+func (s State) GetGamma() basictypes.FormAndTermsList {
 	return s.gamma.Copy()
 }
 func (s State) GetMetaGen() []basictypes.MetaGen {
 	return basictypes.CopyMetaGenList(s.meta_generator)
 }
-func (s State) GetMM() basictypes.MetaList {
+func (s State) GetMM() *basictypes.MetaList {
 	return s.mm.Copy()
 }
-func (s State) GetMC() basictypes.MetaList {
+func (s State) GetMC() *basictypes.MetaList {
 	return s.mc.Copy()
 }
 func (s State) GetAppliedSubst() SubstAndForm {
@@ -112,10 +114,16 @@ func (st State) GetSubstsFound() []SubstAndForm {
 	return CopySubstAndFormList(st.substs_found)
 }
 func (s State) GetTreePos() datastruct.DataStructure {
-	return s.tree_pos.Copy()
+	return s.tree_pos
+}
+func (s *State) AddToTreePos(fl *basictypes.FormList) {
+	s.tree_pos = s.tree_pos.InsertFormulaListToDataStructure(fl)
 }
 func (s State) GetTreeNeg() datastruct.DataStructure {
-	return s.tree_neg.Copy()
+	return s.tree_neg
+}
+func (s *State) AddToTreeNeg(fl *basictypes.FormList) {
+	s.tree_neg = s.tree_neg.InsertFormulaListToDataStructure(fl)
 }
 func (s State) GetProof() []proof.ProofStruct {
 	return proof.CopyProofStructList(s.proof)
@@ -126,37 +134,47 @@ func (s State) GetCurrentProof() proof.ProofStruct {
 func (s State) GetBTOnFormulas() bool {
 	return s.bt_on_formulas
 }
+func (s State) GetForbiddenSubsts() []treetypes.Substitutions {
+	return s.forbidden
+}
+func (s State) GetGlobalUnifier() Unifier {
+	return s.unifier.Copy()
+}
+
+func (s State) GetEqStruct() eqStruct.EqualityStruct {
+	return s.eqStruct.Copy()
+}
 
 /* Setters */
 
 func (st *State) SetN(n int) {
 	st.n = n
 }
-func (st *State) SetLF(fl basictypes.FormList) {
+func (st *State) SetLF(fl basictypes.FormAndTermsList) {
 	st.lf = fl.Copy()
 }
-func (st *State) SetAtomic(fl basictypes.FormList) {
+func (st *State) SetAtomic(fl basictypes.FormAndTermsList) {
 	st.atomic = fl.Copy()
 }
-func (st *State) SetAlpha(fl basictypes.FormList) {
+func (st *State) SetAlpha(fl basictypes.FormAndTermsList) {
 	st.alpha = fl.Copy()
 }
-func (st *State) SetBeta(fl basictypes.FormList) {
+func (st *State) SetBeta(fl basictypes.FormAndTermsList) {
 	st.beta = fl.Copy()
 }
-func (st *State) SetDelta(fl basictypes.FormList) {
+func (st *State) SetDelta(fl basictypes.FormAndTermsList) {
 	st.delta = fl.Copy()
 }
-func (st *State) SetGamma(fl basictypes.FormList) {
+func (st *State) SetGamma(fl basictypes.FormAndTermsList) {
 	st.gamma = fl.Copy()
 }
 func (st *State) SetMetaGen(fl []basictypes.MetaGen) {
 	st.meta_generator = basictypes.CopyMetaGenList(fl)
 }
-func (st *State) SetMM(mm basictypes.MetaList) {
+func (st *State) SetMM(mm *basictypes.MetaList) {
 	st.mm = mm.Copy()
 }
-func (st *State) SetMC(mc basictypes.MetaList) {
+func (st *State) SetMC(mc *basictypes.MetaList) {
 	st.mc = mc.Copy()
 }
 func (st *State) SetAppliedSubst(s SubstAndForm) {
@@ -185,16 +203,21 @@ func (st *State) SetCurrentProof(p proof.ProofStruct) {
 		st.current_proof = p
 	}
 }
-func (st *State) SetCurrentProofFormula(f basictypes.Form) {
+func (st *State) SetCurrentProofFormula(f basictypes.FormAndTerms) {
 	if global.GetProof() {
-		st.current_proof.SetFormulaProof(f.Copy())
+		st.current_proof.SetFormulaProof(f)
 	}
 }
-func (st *State) SetCurrentProofResultFormulas(fll []proof.IntFormList) {
+func (st *State) SetCurrentProofIdDMT(i int) {
 	if global.GetProof() {
-		new_fll := []proof.IntFormList{}
+		st.current_proof.SetIdDMT(i)
+	}
+}
+func (st *State) SetCurrentProofResultFormulas(fll []proof.IntFormAndTermsList) {
+	if global.GetProof() {
+		new_fll := []proof.IntFormAndTermsList{}
 		for _, fl := range fll {
-			new_fll = append(new_fll, fl.Copy())
+			new_fll = append(new_fll, proof.MakeIntFormAndTermsList(fl.GetI(), fl.GetFL()))
 		}
 		st.current_proof.SetResultFormulasProof(new_fll)
 	}
@@ -219,9 +242,14 @@ func (st *State) SetCurrentProofNodeId(i int) {
 		st.current_proof.SetNodeIdProof(i)
 	}
 }
-
 func (st *State) SetBTOnFormulas(b bool) {
 	st.bt_on_formulas = b
+}
+func (st *State) SetForbiddenSubsts(s []treetypes.Substitutions) {
+	st.forbidden = treetypes.CopySubstList(s)
+}
+func (s *State) SetGlobalUnifier(u Unifier) {
+	s.unifier = u.Copy()
 }
 
 /* Maker */
@@ -233,9 +261,9 @@ func MakeState(limit int, tp, tn datastruct.DataStructure, f basictypes.Form) St
 
 	current_proof := proof.MakeEmptyProofStruct()
 	current_proof.SetRuleProof("Initial formula")
-	current_proof.SetFormulaProof(f.Copy())
+	current_proof.SetFormulaProof(basictypes.MakeFormAndTerm(f.Copy(), basictypes.NewTermList()))
 
-	return State{n, basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), basictypes.MakeEmptyFormList(), []basictypes.MetaGen{}, basictypes.MetaList{}, basictypes.MetaList{}, MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false}
+	return State{n, basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), basictypes.MakeEmptyFormAndTermsList(), []basictypes.MetaGen{}, basictypes.NewMetaList(), basictypes.NewMetaList(), MakeEmptySubstAndForm(), MakeEmptySubstAndForm(), []SubstAndForm{}, tp, tn, []proof.ProofStruct{}, current_proof, false, []treetypes.Substitutions{}, MakeUnifier(), eqStruct.NewEqStruct()}
 }
 
 /* Print a state */
@@ -283,7 +311,7 @@ func (st State) Print() {
 		global.PrintDebug("Pst", st.GetMM().ToString())
 	}
 
-	if len(st.GetMC()) > 0 {
+	if st.GetMC().Len() > 0 {
 		global.PrintDebug("PSt", "Meta current: ")
 		global.PrintDebug("Pst", st.GetMC().ToString())
 	}
@@ -303,6 +331,11 @@ func (st State) Print() {
 		global.PrintDebug("PSt", st.GetLastAppliedSubst().ToString())
 	}
 
+	if len(st.forbidden) > 0 {
+		global.PrintDebug("PSt", "Forbidden:")
+		global.PrintDebug("PSt", treetypes.SubstListToString(st.forbidden))
+	}
+
 	global.PrintDebug("PSt", fmt.Sprintf("BT on formulas : %v", st.GetBTOnFormulas()))
 
 }
@@ -320,8 +353,19 @@ func (st State) Copy() State {
 	new_state.SetGamma(st.GetGamma())
 
 	new_state.SetMetaGen(st.GetMetaGen())
-	new_state.SetMM(append(new_state.GetMM(), append(st.GetMM(), st.GetMC()...)...))
-	new_state.SetMC(basictypes.MetaList{})
+
+	newMetaMM := basictypes.NewMetaList()
+	newMetaMM.Append(st.GetMM().Slice()...)
+	newMetaMM.Append(st.GetMC().Slice()...)
+	new_state.SetMM(newMetaMM)
+
+	new_state.SetMC(basictypes.NewMetaList())
+
+	if global.IncrEq {
+		new_state.eqStruct = st.GetEqStruct()
+	} else {
+		new_state.eqStruct = eqStruct.NewEqStruct()
+	}
 
 	if global.IsDestructive() {
 		// Don't need to copy because launched with the subst applied - no need to tell father I found something
@@ -339,24 +383,37 @@ func (st State) Copy() State {
 		new_state.SetSubstsFound(st.GetSubstsFound())
 	}
 
-	// Réccréer arbre
+	new_state.SetGlobalUnifier(st.GetGlobalUnifier().Copy())
+
+	// Recréer arbre
 	if global.IsLoaded("dmt") {
-		new_state.SetTreePos(st.tree_pos.MakeDataStruct(st.GetAtomic(), true))
-		new_state.SetTreeNeg(st.tree_pos.MakeDataStruct(st.GetAtomic(), false))
+		new_state.SetTreePos(st.tree_pos.MakeDataStruct(st.GetAtomic().ExtractForms(), true))
+		new_state.SetTreeNeg(st.tree_pos.MakeDataStruct(st.GetAtomic().ExtractForms(), false))
 	} else {
 		new_state.SetTreePos(st.GetTreePos())
 		new_state.SetTreeNeg(st.GetTreeNeg())
 	}
+
 	new_state.SetProof([]proof.ProofStruct{})
 	new_state.SetCurrentProof(proof.MakeEmptyProofStruct())
 	new_state.SetBTOnFormulas(st.GetBTOnFormulas())
-
+	new_state.SetForbiddenSubsts(st.GetForbiddenSubsts())
 	return new_state
 }
 
 /* Check if the sate is allowed to reintroduce */
 func (st State) CanReintroduce() bool {
-	return st.n > 0 && global.IsDestructive()
+	return global.IsDestructive() && st.GetN() > 0
+	// formula_available := false
+	// i := 0
+	// for !formula_available && i < len(st.GetMetaGen()) {
+	// 	if st.GetMetaGen()[i].GetCounter() <= st.GetN() {
+	// 		formula_available = true
+	// 	}
+	// 	i++
+	// }
+	// global.PrintDebug("CR", fmt.Sprintf("%v", st.n > 0 && global.IsDestructive() && (formula_available || (len(st.GetGamma()) > 0))))
+	// return global.IsDestructive() && (formula_available || (len(st.GetGamma()) > 0)) // st.n > 0
 }
 
 /* Check if the sate is allowed to reintroduce */
@@ -370,12 +427,19 @@ func (st State) AreRulesApplicable() bool {
 }
 
 /* Put the given formula in the right rule box in the given state */
-func (st *State) DispatchForm(f basictypes.Form) {
+func (st *State) DispatchForm(f basictypes.FormAndTerms) {
 	global.PrintDebug("DF", fmt.Sprintf("Dispatch the form : %v ", f.ToString()))
-	global.PrintDebug("DF", fmt.Sprintf("Kind of rule : %v ", basictypes.ShowKindOfRule(f.Copy())))
-	switch basictypes.ShowKindOfRule(f.Copy()) {
+	global.PrintDebug("DF", fmt.Sprintf("Kind of rule : %v ", basictypes.ShowKindOfRule(f.GetForm())))
+	switch basictypes.ShowKindOfRule(f.GetForm()) {
 	case basictypes.Atomic:
-		st.SetAtomic(st.GetAtomic().AppendIfNotContains(f))
+		if !st.GetAtomic().Contains(f) {
+			st.SetAtomic(st.GetAtomic().Append(f))
+			if _, ok := f.GetForm().(basictypes.Not); ok {
+				st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().ExtractForms(), true))
+			} else {
+				st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().ExtractForms(), false))
+			}
+		}
 	case basictypes.Alpha:
 		st.SetAlpha(st.GetAlpha().AppendIfNotContains(f))
 	case basictypes.Beta:
@@ -385,31 +449,44 @@ func (st *State) DispatchForm(f basictypes.Form) {
 	case basictypes.Gamma:
 		st.SetGamma(st.GetGamma().AppendIfNotContains(f))
 	default:
-		fmt.Println("[ERROR] Formula not recognized")
+		global.PrintError("STATE", "Formula not recognized")
 	}
 }
 
 /** Apply a sbstitution on a state
 * TODO : remove old MM/MC
 **/
-func ApplySubstitution(st *State, saf SubstAndForm) {
+func ApplySubstitution(st *State, saf SubstAndForm) error {
 	s := saf.GetSubst()
-	ms := MergeSubstAndForm(st.GetAppliedSubst(), saf.Copy())
+	err, ms := MergeSubstAndForm(st.GetAppliedSubst(), saf.Copy())
+	if err != nil {
+		return err
+	}
+
 	st.SetAppliedSubst(ms)
 	st.SetLastAppliedSubst(saf)
-	st.SetLF(ApplySubstitutionsOnFormulaList(s, st.GetLF()))
-	st.SetAtomic(ApplySubstitutionsOnFormulaList(s, st.GetAtomic()))
-	st.SetAlpha(ApplySubstitutionsOnFormulaList(s, st.GetAlpha()))
-	st.SetBeta(ApplySubstitutionsOnFormulaList(s, st.GetBeta()))
-	st.SetDelta(ApplySubstitutionsOnFormulaList(s, st.GetDelta()))
-	st.SetGamma(ApplySubstitutionsOnFormulaList(s, st.GetGamma()))
+	st.SetLF(ApplySubstitutionsOnFormAndTermsList(s, st.GetLF()))
+	st.SetAtomic(ApplySubstitutionsOnFormAndTermsList(s, st.GetAtomic()))
+	st.SetAlpha(ApplySubstitutionsOnFormAndTermsList(s, st.GetAlpha()))
+	st.SetBeta(ApplySubstitutionsOnFormAndTermsList(s, st.GetBeta()))
+	st.SetDelta(ApplySubstitutionsOnFormAndTermsList(s, st.GetDelta()))
+	st.SetGamma(ApplySubstitutionsOnFormAndTermsList(s, st.GetGamma()))
 	st.SetMetaGen(ApplySubstitutionOnMetaGenList(s, st.GetMetaGen()))
 
-	st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic(), true))
-	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic(), false))
+	st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().ExtractForms(), true))
+	st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().ExtractForms(), false))
+
+	return nil
 }
 
 /* TODO : remove and change - for write proof */
-func (st *State) GetAllForms() basictypes.FormList {
-	return st.GetLF()
+func (st *State) GetAllForms() basictypes.FormAndTermsList {
+	res := basictypes.MakeEmptyFormAndTermsList()
+	res = res.Merge(st.GetLF())
+	res = res.Merge(st.GetAtomic())
+	res = res.Merge(st.GetAlpha())
+	res = res.Merge(st.GetBeta())
+	res = res.Merge(st.GetDelta())
+	res = res.Merge(st.GetGamma())
+	return res
 }

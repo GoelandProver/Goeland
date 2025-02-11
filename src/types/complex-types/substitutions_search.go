@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/************/
-/* subst.go */
-/************/
+
 /**
 * This file contains functions and types which describe the substitution management in a proofsearch.
 **/
@@ -44,67 +42,82 @@ import (
 	treesearch "github.com/GoelandProver/Goeland/code-trees/tree-search"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 	proof "github.com/GoelandProver/Goeland/visualization_proof"
 )
 
 /* Return the list of metavariable from a substitution */
-func GetMetaFromSubst(s treetypes.Substitutions) basictypes.MetaList {
-	res := basictypes.MetaList{}
-	for m, t := range s {
-		res = res.AppendIfNotContains(m)
-		switch ttype := t.(type) {
+func GetMetaFromSubst(subs treetypes.Substitutions) *basictypes.MetaList {
+	res := basictypes.NewMetaList()
+
+	for _, singleSubs := range subs {
+		meta, term := singleSubs.Get()
+		res.AppendIfNotContains(meta)
+
+		switch typedTerm := term.(type) {
 		case basictypes.Meta:
-			res = res.AppendIfNotContains(ttype)
+			res.AppendIfNotContains(typedTerm)
 		case basictypes.Fun:
-			for _, meta_term_list := range basictypes.GetMetaInTermList(ttype.GetArgs()) {
-				res = res.AppendIfNotContains(meta_term_list)
-			}
+			res.AppendIfNotContains(typedTerm.GetArgs().GetMetas().Slice()...)
 		}
 	}
+
 	return res
 }
 
 /* Remove substitution without mm */
-func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) treetypes.Substitutions {
-
+func RemoveElementWithoutMM(subs treetypes.Substitutions, mm *basictypes.MetaList) treetypes.Substitutions {
 	global.PrintDebug("REWM", fmt.Sprintf("MM : %v", mm.ToString()))
-	global.PrintDebug("REWM", fmt.Sprintf("Initial subst : %v", s.ToString()))
 
-	// Substitution définitive
 	res := treetypes.Substitutions{}
-	// Substitution à réorganiser
-	subst_to_reorganize := treetypes.Substitutions{}
 
-	for k, v := range s {
-		switch vt := v.(type) {
+	subsToReorganize := treetypes.Substitutions{}
+	relevantMetas := mm.Copy()
+	hasChanged := true
 
-		case basictypes.Meta:
-			switch {
-			case mm.Contains(k) && mm.Contains(vt):
-				res[k] = vt
+	for hasChanged {
+		hasChanged = false
+		global.PrintDebug("REWM", fmt.Sprintf("Relevant meta : %v", relevantMetas.ToString()))
+		for _, singleSubs := range subs {
+			meta, term := singleSubs.Get()
 
-			case mm.Contains(k) && !mm.Contains(vt):
-				subst_to_reorganize[k] = vt
+			switch typedTerm := term.(type) {
+			case basictypes.Meta:
+				switch {
+				case relevantMetas.Contains(meta) && relevantMetas.Contains(typedTerm):
+					res.Set(meta, typedTerm)
+
+				case relevantMetas.Contains(meta) && !relevantMetas.Contains(typedTerm):
+					subsToReorganize.Set(meta, typedTerm)
+				}
+
+			default:
+				if relevantMetas.Contains(meta) {
+					res.Set(meta, term)
+					for _, candidateMeta := range term.GetMetas().Slice() {
+						if !relevantMetas.Contains(candidateMeta) {
+							relevantMetas.Append(candidateMeta)
+							hasChanged = true
+						}
+					}
+				}
 			}
-
-		default:
-			if mm.Contains(k) {
-				res[k] = v
-			}
-
 		}
 	}
-	subst_to_reorganize = ReorganizeSubstitution(subst_to_reorganize, mm)
-	treetypes.EliminateMeta(&subst_to_reorganize)
-	treetypes.Eliminate(&subst_to_reorganize)
-	ms, _ := treesearch.MergeSubstitutions(res, subst_to_reorganize)
+
+	global.PrintDebug("REWM", fmt.Sprintf("Subst intermédiaire res : %v", res.ToString()))
+	global.PrintDebug("REWM", fmt.Sprintf("Subst intermédiaire subst_to_reorganize  : %v", subsToReorganize.ToString()))
+
+	subsToReorganize = ReorganizeSubstitution(subsToReorganize)
+	treetypes.EliminateMeta(&subsToReorganize)
+	treetypes.Eliminate(&subsToReorganize)
+	ms, _ := treesearch.MergeSubstitutions(res, subsToReorganize)
 
 	global.PrintDebug("REWM", fmt.Sprintf("Finale subst : %v", ms.ToString()))
 
 	if ms.Equals(treetypes.Failure()) {
-		println("[REWM] Error : MergeSubstitutions returns failure")
-		// os.Exit(0)
+		global.PrintError("REWM", "MergeSubstitutions returns failure")
 	}
 
 	return ms
@@ -115,17 +128,20 @@ func RemoveElementWithoutMM(s treetypes.Substitutions, mm basictypes.MetaList) t
 * Take a substitution wich conatins elements like (meta_mother, meta_current), returning only relevante substitution like (meta_mother, meta_mother)
 * (X, X2) (Y, X2) -> (X, Y)
 **/
-func ReorganizeSubstitution(s treetypes.Substitutions, mm basictypes.MetaList) treetypes.Substitutions {
+func ReorganizeSubstitution(subs treetypes.Substitutions) treetypes.Substitutions {
 	res := treetypes.Substitutions{}
-	meta_seen := basictypes.MetaList{}
+	metaSeen := basictypes.NewMetaList()
 
-	for meta_mother, meta_current := range s {
-		meta_seen = meta_seen.AppendIfNotContains(meta_mother)
+	for _, firstSingleSubs := range subs {
+		firstMetaMother, firstMetaCurrent := firstSingleSubs.Get()
+		metaSeen.AppendIfNotContains(firstMetaMother)
 
-		for meta_mother_2, meta_current_2 := range s {
-			if meta_current == meta_current_2 && meta_mother != meta_mother_2 && !meta_seen.Contains(meta_mother_2) {
-				res[meta_mother_2] = meta_mother
-				meta_seen = meta_seen.AppendIfNotContains(meta_mother_2)
+		for _, secondSingleSubs := range subs {
+			secondMetaMother, secondMetaCurrent := secondSingleSubs.Get()
+
+			if firstMetaCurrent.Equals(secondMetaCurrent) && !firstMetaMother.Equals(secondMetaMother) && !metaSeen.Contains(secondMetaMother) {
+				res.Set(secondMetaMother, firstMetaMother)
+				metaSeen.AppendIfNotContains(secondMetaMother)
 			}
 		}
 	}
@@ -134,8 +150,9 @@ func ReorganizeSubstitution(s treetypes.Substitutions, mm basictypes.MetaList) t
 }
 
 /* Check if a substitution contains a metavirbale which is inside a given list of metavariable (check for the key, not the value) */
-func ContainsMetaMother(s treetypes.Substitutions, mm basictypes.MetaList) bool {
-	for k, v := range s {
+func ContainsMetaMother(s treetypes.Substitutions, mm *basictypes.MetaList) bool {
+	for _, subst := range s {
+		k, v := subst.Get()
 		if mm.Contains(k) {
 			return true
 		} else {
@@ -159,25 +176,74 @@ func FusionSubstAndFormListWithoutDouble(l1, l2 []SubstAndForm) []SubstAndForm {
 }
 
 /* Apply a substElement on a term */
-func applySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictypes.Term) basictypes.Term {
+func ApplySubstitutionOnTerm(old_symbol basictypes.Meta, new_symbol, t basictypes.Term) basictypes.Term {
 	res := t
 
 	switch nf := t.(type) {
 	case basictypes.Meta:
-		if nf == old_symbol {
-			res = new_symbol
+		if nf.Equals(old_symbol) {
+			res = new_symbol.Copy()
 		}
 	case basictypes.Fun:
-		res = basictypes.MakeFun(nf.GetP(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()))
+		res = basictypes.MakeFun(
+			nf.GetP(),
+			ApplySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
+			nf.GetTypeVars(),
+			nf.GetTypeHint(),
+		)
 	}
 	return res
 }
 
+func applySubstitutionOnType(old_type, new_type, t typing.TypeApp) typing.TypeApp {
+	if tv, isTv := t.(typing.TypeVar); isTv {
+		if tv.Instantiated() && tv.Equals(old_type) {
+			return new_type
+		}
+	}
+	return t
+}
+
+/* Apply substitutions on a list of terms */
+func ApplySubstitutionsOnTermList(s treetypes.Substitutions, tl *basictypes.TermList) *basictypes.TermList {
+	res := basictypes.NewTermList()
+
+	for _, t := range tl.Slice() {
+		newTerm := ApplySubstitutionsOnTerm(s, t)
+		res.AppendIfNotContains(newTerm)
+	}
+
+	return res
+}
+
+func ApplySubstitutionsOnTerm(s treetypes.Substitutions, t basictypes.Term) basictypes.Term {
+	if t != nil {
+		term_res := t.Copy()
+		for _, subst := range s {
+			old_symbol, new_symbol := subst.Get()
+			term_res = ApplySubstitutionOnTerm(old_symbol, new_symbol, term_res)
+		}
+		return term_res
+	} else {
+		return nil
+	}
+}
+
 /* Apply substElement on a term list */
-func applySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl []basictypes.Term) []basictypes.Term {
-	res := make([]basictypes.Term, len(tl))
+func ApplySubstitutionOnTermList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl *basictypes.TermList) *basictypes.TermList {
+	res := basictypes.NewTermList()
+
+	for _, t := range tl.Slice() {
+		res.Append(ApplySubstitutionOnTerm(old_symbol, new_symbol, t))
+	}
+
+	return res
+}
+
+func applySubstitutionOnTypeList(old_symbol basictypes.Meta, new_symbol basictypes.Term, tl []typing.TypeApp) []typing.TypeApp {
+	res := make([]typing.TypeApp, len(tl))
 	for i, t := range tl {
-		res[i] = applySubstitutionOnTerm(old_symbol, new_symbol, t)
+		res[i] = applySubstitutionOnType(old_symbol.GetTypeApp(), new_symbol.(basictypes.TypedTerm).GetTypeApp(), t)
 	}
 	return res
 }
@@ -188,19 +254,25 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 
 	switch nf := f.(type) {
 	case basictypes.Pred:
-		res = basictypes.MakePred(f.GetIndex(), nf.GetID(), applySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()))
+		res = basictypes.MakePred(
+			nf.GetIndex(),
+			nf.GetID(),
+			ApplySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
+			applySubstitutionOnTypeList(old_symbol, new_symbol, nf.GetTypeVars()),
+			nf.GetType(),
+		)
 	case basictypes.Not:
 		res = basictypes.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case basictypes.And:
-		res_tmp := basictypes.MakeEmptyFormList()
-		for _, val := range nf.GetLF() {
-			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
+		res_tmp := basictypes.NewFormList()
+		for _, val := range nf.FormList.Slice() {
+			res_tmp.Append(ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = basictypes.MakeAnd(f.GetIndex(), res_tmp)
 	case basictypes.Or:
-		res_tmp := basictypes.MakeEmptyFormList()
-		for _, val := range nf.GetLF() {
-			res_tmp = append(res_tmp, ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
+		res_tmp := basictypes.NewFormList()
+		for _, val := range nf.FormList.Slice() {
+			res_tmp.Append(ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = basictypes.MakeOr(f.GetIndex(), res_tmp)
 	case basictypes.Imp:
@@ -218,28 +290,53 @@ func ApplySubstitutionOnFormula(old_symbol basictypes.Meta, new_symbol basictype
 	return res
 }
 
-/* For each element of the substitution, apply it on the entire formula list */
-func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf basictypes.FormList) basictypes.FormList {
-	lf_res := basictypes.MakeEmptyFormList()
-	for _, f := range lf {
-		new_form := ApplySubstitutionsOnFormula(s, f)
-		lf_res = lf_res.AppendIfNotContains(new_form)
-
-	}
-	return lf_res
-}
-
-/* Apply substitution on FormAndTerm */
+/* Apply substitutions on Formula */
 func ApplySubstitutionsOnFormula(s treetypes.Substitutions, f basictypes.Form) basictypes.Form {
 	if f != nil {
 		form_res := f.Copy()
-		for old_symbol, new_symbol := range s {
+		for _, subst := range s {
+			old_symbol, new_symbol := subst.Get()
 			form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
 		}
 		return form_res
 	} else {
 		return nil
 	}
+}
+
+/* For each element of the substitution, apply it on the entire formula list */
+func ApplySubstitutionsOnFormulaList(s treetypes.Substitutions, lf *basictypes.FormList) *basictypes.FormList {
+	lf_res := basictypes.NewFormList()
+	for _, f := range lf.Slice() {
+		new_form := ApplySubstitutionsOnFormula(s, f)
+		lf_res.AppendIfNotContains(new_form)
+
+	}
+	return lf_res
+}
+
+/* Apply substitutions on FormAndTerm */
+func ApplySubstitutionsOnFormAndTerms(s treetypes.Substitutions, fat basictypes.FormAndTerms) basictypes.FormAndTerms {
+	// if fat != basictypes.FormAndTerms{} {
+	form_res := fat.GetForm()
+	tl_res := fat.GetTerms()
+	for _, subst := range s {
+		old_symbol, new_symbol := subst.Get()
+		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
+		//tl_res = ApplySubstitutionOnTermList(old_symbol, new_symbol, tl_res)
+	}
+	return basictypes.MakeFormAndTerm(form_res, tl_res)
+}
+
+/* For each element of the substitution, apply it on the entire formAndTerms list */
+func ApplySubstitutionsOnFormAndTermsList(s treetypes.Substitutions, lf basictypes.FormAndTermsList) basictypes.FormAndTermsList {
+	lf_res := basictypes.MakeEmptyFormAndTermsList()
+	for _, f := range lf {
+		new_form := ApplySubstitutionsOnFormAndTerms(s, f)
+		lf_res = lf_res.AppendIfNotContains(new_form)
+
+	}
+	return lf_res
 }
 
 /* Apply a substitution on a metaGenerator list */
@@ -256,159 +353,50 @@ func ApplySubstitutionOnMetaGenList(s treetypes.Substitutions, lf []basictypes.M
 
 /* Apply a substitution on a metaGen form */
 func ApplySubstitutionOnMetaGen(s treetypes.Substitutions, mg basictypes.MetaGen) basictypes.MetaGen {
-	form_res := mg.GetForm()
-	for old_symbol, new_symbol := range s {
+	form_res := mg.GetForm().GetForm()
+	terms_res := mg.GetForm().Terms
+	for _, subst := range s {
+		old_symbol, new_symbol := subst.Get()
 		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
+		terms_res = ApplySubstitutionOnTermList(old_symbol, new_symbol, terms_res)
 	}
-	return basictypes.MakeMetaGen(form_res, mg.GetCounter())
+	return basictypes.MakeMetaGen(basictypes.MakeFormAndTerm(form_res, terms_res), mg.GetCounter())
 }
 
 /* Dispatch a list of substitution : containing mm or not */
-func DispatchSubst(sl []treetypes.Substitutions, mm basictypes.MetaList) ([]treetypes.Substitutions, []treetypes.Substitutions) {
-	var subst_with_mm []treetypes.Substitutions
-	var subst_without_mm []treetypes.Substitutions
+func DispatchSubst(subsList []treetypes.Substitutions, mm *basictypes.MetaList) ([]treetypes.Substitutions, []treetypes.Substitutions, []treetypes.Substitutions) {
+	var subsWithMM []treetypes.Substitutions
+	var subsWithMMUncleared []treetypes.Substitutions
+	var subsWithoutMM []treetypes.Substitutions
 
-	for _, s := range sl {
-		s_removed := s
+	for _, subs := range subsList {
+		removedSubs := subs
+
 		if global.IsDestructive() {
-			s_removed = RemoveElementWithoutMM(s, mm)
+			removedSubs = RemoveElementWithoutMM(subs, mm)
 		}
-		if ContainsMetaMother(s_removed, mm) {
-			subst_with_mm = append(subst_with_mm, s_removed)
+
+		if !removedSubs.IsEmpty() {
+			subsWithMM = treetypes.AppendIfNotContainsSubst(subsWithMM, removedSubs)
+			subsWithMMUncleared = treetypes.AppendIfNotContainsSubst(subsWithMMUncleared, subs)
 		} else {
-			subst_without_mm = append(subst_without_mm, s)
+			subsWithoutMM = treetypes.AppendIfNotContainsSubst(subsWithoutMM, subs)
 		}
 	}
 
-	return subst_with_mm, subst_without_mm
-}
-
-/* Remove empty substitution from a substitution list */
-func RemoveEmptySubstFromSubstList(sl []treetypes.Substitutions) []treetypes.Substitutions {
-	res := []treetypes.Substitutions{}
-	for _, s := range sl {
-		if !(s.IsEmpty()) {
-			res = append(res, s)
-		}
-	}
-	return res
-}
-
-/* Remove empty substitution from a substitution list */
-func RemoveEmptySubstFromSubstAndFormList(sl []SubstAndForm) []SubstAndForm {
-	res := []SubstAndForm{}
-	for _, s := range sl {
-		if !(s.GetSubst().IsEmpty()) {
-			res = append(res, s)
-		}
-	}
-	return res
+	return subsWithMM, subsWithMMUncleared, subsWithoutMM
 }
 
 /* remove identity in substitution (non destructive case), can happen renaming variables */
 func RemoveIdentitySubst(s *treetypes.Substitutions) {
 	res := treetypes.Substitutions{}
-	for meta, term := range *s {
+	for _, subst := range *s {
+		meta, term := subst.Get()
 		if !meta.Equals(term) {
-			res[meta] = term
+			res.Set(meta, term)
 		}
 	}
 	*s = res
-}
-
-/* Get a subst list from SubstAndForm lsit */
-func GetSubstListFromSubstAndFormList(l []SubstAndForm) []treetypes.Substitutions {
-	res := []treetypes.Substitutions{}
-	for _, saf := range l {
-		res = append(res, saf.GetSubst())
-	}
-	return res
-}
-
-/* Check if a substitution is inside a list of SubstAndForm */
-func ContainsSubstAndForm(s SubstAndForm, sl []SubstAndForm) bool {
-	for _, v := range sl {
-		if v.Equals(s) {
-			return true
-		}
-	}
-	return false
-}
-
-/* Append a substitution s to a list of substitution sl if s is not in sl */
-func AppendIfNotContainsSubstAndForm(sl []SubstAndForm, s SubstAndForm) []SubstAndForm {
-	if !ContainsSubstAndForm(s, sl) {
-		return append(sl, s)
-	} else {
-		return sl
-	}
-}
-
-/* Remove a substitution from a list of substitutions */
-func RemoveSubstFromSubstAndFormList(i int, sl []SubstAndForm) []SubstAndForm {
-	if len(sl) > 1 {
-		sl[i] = sl[len(sl)-1].Copy()
-		return sl[:len(sl)-1]
-	} else {
-		return []SubstAndForm{}
-	}
-}
-
-/* Copy a list of subst and form */
-func CopySubstAndFormList(sl []SubstAndForm) []SubstAndForm {
-	res := make([]SubstAndForm, len(sl))
-	for i := range sl {
-		res[i] = sl[i].Copy()
-	}
-	return res
-}
-
-/* Print a list of substAndForm */
-func SubstAndFormListToString(sl []SubstAndForm) string {
-	var s_res string
-	s_res = "{"
-	for i, v := range sl {
-		s_res += v.ToString()
-		if i < len(sl)-1 {
-			s_res += (", ")
-		}
-	}
-	s_res += "}"
-	return s_res
-}
-
-/* Merge two SubstAndForm (supposed to fit) */
-func MergeSubstAndForm(s1, s2 SubstAndForm) SubstAndForm {
-	if s1.IsEmpty() {
-		return s2
-	}
-
-	if s2.IsEmpty() {
-		return s1
-	}
-
-	new_subst, _ := treesearch.MergeSubstitutions(s1.GetSubst().Copy(), s2.GetSubst().Copy())
-
-	if new_subst.Equals(treetypes.Failure()) {
-		global.PrintDebug("MSAF", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString()))
-		fmt.Printf("[MSAF] Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString())
-		// os.Exit(0)
-	}
-
-	new_form := s1.GetForm().Copy().Merge(s2.GetForm().Copy())
-
-	return MakeSubstAndForm(new_subst, new_form)
-}
-
-/* Merge a list of subst with one subst */
-func MergeSubstListWithSubst(sl []SubstAndForm, subst SubstAndForm) []SubstAndForm {
-	sl_res := []SubstAndForm{}
-
-	for _, s := range sl {
-		sl_res = append(sl_res, MergeSubstAndForm(s, subst))
-	}
-
-	return sl_res
 }
 
 /* Apply subst on a proof tree */
@@ -416,22 +404,37 @@ func ApplySubstitutionOnProofList(s treetypes.Substitutions, proof_list []proof.
 	new_proof_list := []proof.ProofStruct{}
 
 	for _, p := range proof_list {
-		new_proof := p.Copy()
-		new_proof.SetFormulaProof(ApplySubstitutionsOnFormula(s, p.GetFormula()))
+		p.SetFormulaProof(ApplySubstitutionsOnFormAndTerms(s, p.GetFormula()))
 
-		new_result_formulas := []proof.IntFormList{}
+		new_result_formulas := []proof.IntFormAndTermsList{}
 		for _, f := range p.GetResultFormulas() {
-			new_result_formulas = append(new_result_formulas, proof.MakeIntFormList(f.GetI(), ApplySubstitutionsOnFormulaList(s, f.GetFL())))
+			new_result_formulas = append(new_result_formulas, proof.MakeIntFormAndTermsList(f.GetI(), ApplySubstitutionsOnFormAndTermsList(s, f.GetFL())))
 		}
-		new_proof.SetResultFormulasProof(new_result_formulas)
+		p.SetResultFormulasProof(new_result_formulas)
 
 		new_children := [][]proof.ProofStruct{}
 		for _, c := range p.GetChildren() {
 			new_children = append(new_children, ApplySubstitutionOnProofList(s, c))
 		}
-		new_proof.SetChildrenProof(new_children)
+		p.SetChildrenProof(new_children)
 
-		new_proof_list = append(new_proof_list, new_proof)
+		new_proof_list = append(new_proof_list, p)
 	}
+
 	return new_proof_list
+}
+
+// true if s1 included or equals to s2 modlulo aplha conversion (or vice versa)
+func AreEqualsModuloaLaphaConversion(s1, s2 treetypes.Substitutions) bool {
+	cpt := 0
+	i := 0
+	for i < len(s1) && cpt == i {
+		for _, s2_element := range s2 {
+			if (s1[i].Key().GetName() == s2_element.Key().GetName()) && (s1[i].Value().Equals(s2_element.Value())) {
+				cpt++
+			}
+		}
+		i++
+	}
+	return cpt == i
 }

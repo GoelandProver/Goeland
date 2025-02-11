@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/********************/
-/* formula_liste.go */
-/********************/
+
 /**
 * This file contains functions and types which describe the fomula_list's data
 * structure
@@ -45,162 +43,71 @@ import (
 	"github.com/GoelandProver/Goeland/global"
 )
 
-/*** Structure ***/
-
-/* List of formulae */
-type FormList []Form
-
-/*** Methods ***/
-
-/*Sort */
-func (fl FormList) Len() int      { return len(fl) }
-func (fl FormList) Swap(i, j int) { fl[i], fl[j] = fl[j], fl[i] }
-func (fl FormList) Less(i, j int) bool {
-	return (fl[i].ToString() < fl[j].ToString())
+type FormList struct {
+	*global.List[Form]
 }
 
-/** To String **/
+func NewFormList(slice ...Form) *FormList {
+	return &FormList{global.NewList(slice...)}
+}
 
-/* Convert a list of formulas into string*/
-func (fl FormList) ToString() string {
-	res := "{"
-	for i, v := range fl {
-		res += v.ToString()
-		if i < len(fl)-1 {
-			res += (", ")
-		}
+func (fl *FormList) Less(i, j int) bool {
+	return (fl.Get(i).ToString() < fl.Get(j).ToString())
+}
+
+func (fl *FormList) Copy() *FormList {
+	return &FormList{fl.List.Copy()}
+}
+
+func (lf *FormList) ToMappableStringSlice() []MappableString {
+	forms := []MappableString{}
+
+	for _, form := range lf.Slice() {
+		forms = append(forms, form.(MappableString))
 	}
-	res += "}"
-	return res
+
+	return forms
 }
 
-/* Print a list of formulas */
-func (lf FormList) Print() {
-	for _, f := range lf {
-		global.PrintDebug("FLTS", f.ToString())
-	}
-}
-
-/* Convert a list of formulas into string for proof struct */
-func (fl FormList) ToStringForProof() string {
-	return fl.ToString()
-	// res := ""
-	// for i, f := range fl {
-	// 	res = res + "<tspan x='0', dy='1.2em'>" + f.ToString() + "<tspan>"
-	// 	if i < len(fl)-1 {
-	// 		res = res + ", "
-	// 	}
-	// }
-	// return res
-}
-
-/** Utilitary **/
-
-/* Return true is the FormList is empty, false otherwise */
-func (fl FormList) IsEmpty() bool {
-	return len(fl) <= 0
-}
-
-/* Copy a list of form */
-func (fl FormList) Copy() FormList {
-	res := make([]Form, len(fl))
-	for i := range fl {
-		res[i] = fl[i].Copy()
-	}
-	return res
-}
-
-/* Check if two form_and_term_list contains the same elements */
-func (l1 FormList) Equals(l2 FormList) bool {
-	if len(l1) != len(l2) {
+func (fl *FormList) Equals(other *FormList) bool {
+	if fl.Len() != other.Len() {
 		return false
-	} else {
-		l1_sorted := l1.Copy()
-		sort.Sort(l1_sorted)
+	}
 
-		l2_sorted := l2.Copy()
-		sort.Sort(l2_sorted)
+	flSorted := fl.Copy()
+	sort.Sort(flSorted)
 
-		for i := range l1_sorted {
-			if !l1_sorted[i].Equals(l2_sorted[i]) {
-				return false
-			}
+	otherSorted := other.Copy()
+	sort.Sort(otherSorted)
+
+	for i := range flSorted.Slice() {
+		if !flSorted.Get(i).Equals(otherSorted.Get(i)) {
+			return false
 		}
 	}
+
 	return true
 }
 
-/* Return true if a formula f is inside the given formulas list, false otherwise */
-func (fl FormList) Contains(f Form) bool {
-	for _, v := range fl {
-		if f.Equals(v) {
-			return true
+// Removes all AND formulas: {(a & b), (b => c), (d & (e & f))} -> {(a), (b), (b => c), (d), (e), (f)}
+func (fl *FormList) Flatten() *FormList {
+	result := NewFormList()
+
+	for _, form := range fl.Slice() {
+		if typed, ok := form.(And); ok {
+			result.Append(typed.FormList.Flatten().Slice()...)
+		} else {
+			result.Append(form)
 		}
 	}
-	return false
+
+	return result
 }
 
-/* Append a formula to a list if the formula is not already inside */
-func (fl FormList) AppendIfNotContains(f Form) FormList {
-	if fl.Contains(f) {
-		return fl.Copy()
-	} else {
-		return append(fl.Copy(), f)
+func (fl *FormList) ReplaceMetaByTerm(meta Meta, term Term) *FormList {
+	for i, f := range fl.Slice() {
+		fl.Set(i, f.ReplaceMetaByTerm(meta, term))
 	}
-}
 
-/* insert first */
-func (fl FormList) InsertFirst(f Form) FormList {
-	if len(fl) > 0 {
-		// Moves everything to the right once.
-		fl = append(fl[:1], fl[0:]...)
-		fl[0] = f
-	} else {
-		fl = append(fl, f)
-	}
 	return fl
-}
-
-/* Merge two formulas lists */
-func (l1 FormList) Merge(l2 FormList) FormList {
-	res := l1.Copy()
-	for _, f := range l2 {
-		res = res.AppendIfNotContains(f.Copy())
-	}
-	return res
-}
-
-/* Kepp only predicate with right polarity */
-func (lf FormList) FilterPred(pola bool) FormList {
-	res := MakeEmptyFormList()
-	for _, f := range lf {
-		switch nf := f.Copy().(type) {
-		case Pred:
-			if pola {
-				res = res.AppendIfNotContains(nf)
-			}
-		case Not:
-			switch nf.GetForm().(type) {
-			case Pred:
-				if !pola {
-					res = res.AppendIfNotContains(nf.GetForm())
-				}
-			}
-		}
-	}
-	return res
-}
-
-/*** Functions ***/
-
-/** Makers **/
-
-/* Make empty form_and_term_list */
-func MakeEmptyFormList() FormList {
-	return FormList{}
-}
-
-/* Make a form_and_term_list with one element */
-func MakeSingleElementList(f Form) FormList {
-	return FormList{f}
 }

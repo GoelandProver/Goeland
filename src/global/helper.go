@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*************/
-/* helper.go */
-/*************/
+
 /**
 * This file contains the helper functions.
 **/
@@ -40,7 +38,6 @@ package global
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 	"runtime"
 	"strconv"
@@ -49,7 +46,10 @@ import (
 	"time"
 )
 
-var debug = false
+var ocoq = false
+var olambdapi = false
+var otptp = false
+var Assisted = false
 var destructive = true
 var nb_gor = 0
 var mutex sync.Mutex
@@ -57,6 +57,7 @@ var start time.Time
 var nb_step = 1
 var exchanges = false
 var proof = false
+var prettyPrint = false
 var data_struct = "trees"
 var limit = -1
 var one_step = false
@@ -64,20 +65,32 @@ var plugins map[string]bool = make(map[string]bool)
 var lock_plugins sync.Mutex
 var cpt_node = -1
 var lock_cpt_node sync.Mutex
+var dmt_before_eq bool
+var problem_name string
+var core_limit = -1
+var completeness = false
+var isTypeProof = false
+var arithModule = false
+var innerSkolem = false
+var preInnerSko = false
+
+var IncrEq = false
+
+var debug = false
+var writeLogs = false
+
+var cpuProfile string
+var memProfile string
+
+var isConjectureFound = false
+
+var ProofFile string
 
 // Executable path
 var current_directory, _ = os.Executable()
 var current_directory_splitted = strings.Split(current_directory, "/")
 var exec_name = current_directory_splitted[len(current_directory_splitted)-1]
 var exec_path = current_directory[:len(current_directory)-len(exec_name)]
-
-/* Prints in debug mode. */
-func PrintDebug(function, message string) {
-	if debug {
-		fmt.Printf("[%.6fs][%v][%v] %v\n", time.Since(start).Seconds(), GetGID(), function, message)
-		//[\033[1;34mDEBUG\033[0m]
-	}
-}
 
 /* incr the  global number of gouroutine lanched */
 func IncrGoRoutine(i int) {
@@ -91,17 +104,29 @@ func IncrGoRoutine(i int) {
 *  Otherwise, you will go straight to hell.
 **/
 func GetGID() uint64 {
-	b := make([]byte, 64)
-	b = b[:runtime.Stack(b, false)]
-	b = bytes.TrimPrefix(b, []byte("goroutine "))
-	b = b[:bytes.IndexByte(b, ' ')]
-	n, _ := strconv.ParseUint(string(b), 10, 64)
-	return n
+	if GetDebug() {
+		b := make([]byte, 64)
+		b = b[:runtime.Stack(b, false)]
+		b = bytes.TrimPrefix(b, []byte("goroutine "))
+		b = b[:bytes.IndexByte(b, ' ')]
+		n, _ := strconv.ParseUint(string(b), 10, 64)
+		return n
+	} else {
+		return 0
+	}
 }
 
 /* Getters */
 func GetDebug() bool {
 	return debug
+}
+
+func GetWriteLogs() bool {
+	return writeLogs
+}
+
+func GetAssisted() bool {
+	return Assisted
 }
 
 func IsDestructive() bool {
@@ -143,13 +168,16 @@ func GetProof() bool {
 func GetExecPath() string {
 	return exec_path
 }
+
 func IsLoaded(s string) bool {
 	// Not locked here because read-only except in main
 	return plugins[s]
 }
+
 func GetCptNode() int {
 	return cpt_node
 }
+
 func IncrCptNode() int {
 	lock_cpt_node.Lock()
 	cpt_node++
@@ -157,9 +185,81 @@ func IncrCptNode() int {
 	return GetCptNode()
 }
 
+func GetDMTBeforeEq() bool {
+	return dmt_before_eq
+}
+
+func IsPrettyPrint() bool {
+	return prettyPrint
+}
+
+func IsCoqOutput() bool {
+	return ocoq
+}
+
+func IsLambdapiOutput() bool {
+	return olambdapi
+}
+
+func IsTPTPOutput() bool {
+	return otptp
+}
+
+func GetProblemName() string {
+	return problem_name
+}
+
+func GetCoreLimit() int {
+	return core_limit
+}
+
+func GetCompleteness() bool {
+	return completeness
+}
+
+func GetTypeProof() bool {
+	return isTypeProof
+}
+
+func GetArithModule() bool {
+	return arithModule
+}
+
+func GetCpuProfile() string {
+	return cpuProfile
+}
+
+func GetMemProfile() string {
+	return memProfile
+}
+
+func IsConjectureFound() bool {
+	return isConjectureFound
+}
+
+func IsOuterSko() bool {
+	return !(IsInnerSko() || IsPreInnerSko())
+}
+
+func IsInnerSko() bool {
+	return innerSkolem
+}
+
+func IsPreInnerSko() bool {
+	return preInnerSko
+}
+
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
+}
+
+func SetWriteLogs(b bool) {
+	writeLogs = b
+}
+
+func SetAssisted(b bool) {
+	Assisted = b
 }
 
 func SetStart(t time.Time) {
@@ -198,8 +298,68 @@ func SetProof(b bool) {
 	proof = b
 }
 
+func DisplayPretty() {
+	prettyPrint = true
+}
+
+func OutputCoq() {
+	ocoq = true
+}
+
+func OutputLambdapi() {
+	olambdapi = true
+}
+
+func OutputTPTP() {
+	otptp = true
+}
+
 func SetPlugin(s string, b bool) {
 	lock_plugins.Lock()
 	plugins[s] = b
 	lock_plugins.Unlock()
+}
+
+func SetDMTBeforeEQ(b bool) {
+	dmt_before_eq = b
+}
+
+func SetProblemName(problem string) {
+	problem_name = problem
+}
+
+func SetCoreLimit(i int) {
+	core_limit = i
+}
+
+func SetCompleteness(b bool) {
+	completeness = b
+}
+
+func SetTypeProof(b bool) {
+	isTypeProof = b
+}
+
+func SetArithModule(b bool) {
+	arithModule = b
+}
+
+func SetCpuProfile(s string) {
+	cpuProfile = s
+}
+
+func SetMemProfile(s string) {
+	memProfile = s
+}
+
+func SetConjecture(b bool) {
+	isConjectureFound = b
+}
+
+func SetInnerSko(b bool) {
+	innerSkolem = b
+}
+
+func SetPreInnerSko(b bool) {
+	preInnerSko = b
 }

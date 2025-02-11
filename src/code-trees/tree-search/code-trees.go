@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/*****************/
-/* code-trees.go */
-/*****************/
+
 /**
 * This file contains all the definitons necessary to make a Code Tree
 **/
@@ -62,7 +60,11 @@ func (c CodeBlock) Copy() CodeBlock {
 type Node struct {
 	value    CodeBlock
 	children []*Node
-	formulae basictypes.FormList
+	formulae *basictypes.FormList
+}
+
+func NewNode() *Node {
+	return &Node{CodeBlock{}, []*Node{}, basictypes.NewFormList()}
 }
 
 func (n Node) getValue() CodeBlock {
@@ -71,7 +73,7 @@ func (n Node) getValue() CodeBlock {
 func (n Node) getChildren() []*Node {
 	return CopyNodeList(n.children)
 }
-func (n Node) getFormulae() basictypes.FormList {
+func (n Node) getFormulae() *basictypes.FormList {
 	return n.formulae.Copy()
 }
 
@@ -81,7 +83,7 @@ func (n Node) IsEmpty() bool {
 }
 
 /* Make data struct */
-func (n Node) MakeDataStruct(fl basictypes.FormList, is_pos bool) datastruct.DataStructure {
+func (n Node) MakeDataStruct(fl *basictypes.FormList, is_pos bool) datastruct.DataStructure {
 	return makeCodeTreeFromAtomic(fl, is_pos)
 }
 
@@ -96,26 +98,29 @@ func (n Node) Copy() datastruct.DataStructure {
 
 /* The Node is a leaf when it contains at least one formulae. */
 func (n Node) isLeaf() bool {
-	return len(n.getFormulae()) > 0
+	return n.getFormulae().Len() > 0
 }
 
 /* Make two code trees (tree_pos and tree_neg) from st.atomic */
-func makeCodeTreeFromAtomic(lf basictypes.FormList, is_pos bool) *Node {
-	var form basictypes.FormList
+func makeCodeTreeFromAtomic(lf *basictypes.FormList, is_pos bool) *Node {
+	form := basictypes.NewFormList()
 
-	for _, f := range lf {
-		switch nf := f.Copy().(type) {
+	for _, f := range lf.Slice() {
+		switch nf := f.(type) {
 		case basictypes.Pred:
 			if is_pos {
-				form = append(form, f)
+				form.Append(nf.Copy())
 			}
 		case basictypes.Not:
 			switch nf.GetForm().(type) {
 			case basictypes.Pred:
 				if !(is_pos) {
-					form = append(form, nf.GetForm())
+					form.Append(nf.GetForm())
 				}
 			}
+		case treetypes.TermForm:
+			// EQUALITY - To build a tree of terms
+			form.Append(nf.Copy())
 		}
 	}
 
@@ -123,10 +128,10 @@ func makeCodeTreeFromAtomic(lf basictypes.FormList, is_pos bool) *Node {
 }
 
 /* Makes a Code Tree from a Sequence of instructions */
-func makeCodeTree(forms basictypes.FormList) *Node {
+func makeCodeTree(forms *basictypes.FormList) *Node {
 	root := makeNode(nil)
 
-	for _, f := range forms {
+	for _, f := range forms.Slice() {
 		f_tmp := f.Copy()
 		form_tmp := treetypes.ParseFormula(f_tmp)
 		root.insert(form_tmp)
@@ -149,13 +154,13 @@ func makeNode(block CodeBlock) *Node {
 	n := new(Node)
 	n.value = block.Copy()
 	n.children = []*Node{}
-	n.formulae = basictypes.MakeEmptyFormList()
+	n.formulae = basictypes.NewFormList()
 	return n
 }
 
 /* Insert a lsit of formula into the right tree */
-func (n Node) InsertFormulaListToDataStructure(lf basictypes.FormList) datastruct.DataStructure {
-	for _, f := range lf {
+func (n Node) InsertFormulaListToDataStructure(lf *basictypes.FormList) datastruct.DataStructure {
+	for _, f := range lf.Slice() {
 		switch nf := f.Copy().(type) {
 		case basictypes.Pred:
 			n.insert(treetypes.ParseFormula(nf))
@@ -180,6 +185,8 @@ func (n Node) Print() {
 	n.printAux(-1)
 }
 
+//ILL TODO: A Print function should not print, it should return a String that is then printed
+//Why is there a debug print followed by a normal print ?
 /* Auxiliary function to print a CodeTree. */
 func (n Node) printAux(tab int) {
 	// Print current value
@@ -188,6 +195,7 @@ func (n Node) printAux(tab int) {
 			tab += 1
 		}
 		global.PrintDebug("PT", strings.Repeat("\t", tab)+instr.ToString())
+		// fmt.Printf(strings.Repeat("\t", tab) + instr.ToString() + "\n")
 
 		if treetypes.IsEnd(instr) {
 			tab -= 1
@@ -195,8 +203,9 @@ func (n Node) printAux(tab int) {
 	}
 
 	if n.isLeaf() {
-		for _, form := range n.formulae {
+		for _, form := range n.formulae.Slice() {
 			global.PrintDebug("PT", strings.Repeat("\t", tab+1)+form.ToString())
+			// fmt.Printf(strings.Repeat("\t", tab+1) + form.ToString() + "\n")
 		}
 	}
 	global.PrintDebug("PT", "\n")
@@ -211,7 +220,7 @@ func (n Node) printAux(tab int) {
 func (n *Node) insert(sequence treetypes.Sequence) {
 	if len(n.value) == 0 {
 		n.value = sequence.GetInstructions()
-		n.formulae = basictypes.MakeSingleElementList(sequence.GetFormula())
+		n.formulae = basictypes.NewFormList(sequence.GetFormula())
 	} else {
 		n.followInstructions(sequence.GetInstructions(), sequence.GetFormula())
 	}
@@ -234,7 +243,7 @@ func (n *Node) followInstructions(instructions []treetypes.Instruction, form bas
 		if instr.IsEquivalent(current.value[oui]) {
 			oui += 1
 			if i == len(instructions)-1 && oui == len(current.value) && !current.formulae.Contains(form) {
-				current.formulae = append(current.formulae, form)
+				current.formulae.Append(form)
 			} else if i < len(instructions)-1 && oui == len(current.value) {
 
 				// If the instruction matches, then continue the algorithm with the child as the current node.
@@ -249,7 +258,7 @@ func (n *Node) followInstructions(instructions []treetypes.Instruction, form bas
 				}
 				if !found {
 					newNode := makeNode(instructions[i+1:])
-					newNode.formulae = basictypes.MakeSingleElementList(form)
+					newNode.formulae = basictypes.NewFormList(form)
 					current.children = append(current.children, newNode)
 					break
 				}
@@ -260,13 +269,13 @@ func (n *Node) followInstructions(instructions []treetypes.Instruction, form bas
 			//    * The second one contains the remaining instructions of the sequence plus the formulae.
 			child1 := makeNode(current.value[oui:])
 			child2 := makeNode(instructions[i:])
-			child2.formulae = basictypes.MakeSingleElementList(form)
+			child2.formulae = basictypes.NewFormList(form)
 
 			child1.children = current.children
 			child1.formulae = current.formulae
 
 			current.value = current.value[:oui]
-			current.formulae = basictypes.MakeEmptyFormList()
+			current.formulae = basictypes.NewFormList()
 			current.children = []*Node{child1, child2}
 
 			break
@@ -281,7 +290,7 @@ func (n *Node) followInstructions(instructions []treetypes.Instruction, form bas
 		child1.children = current.children
 		current.value = current.value[:oui]
 		current.children = []*Node{child1}
-		current.formulae = basictypes.MakeSingleElementList(form.Copy())
+		current.formulae = basictypes.NewFormList(form.Copy())
 	}
 }
 

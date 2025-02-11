@@ -1,19 +1,21 @@
 # Commit rules
 
 ## Basic rules
-Be sure you are on your branch before commiting.
+Only very simple commits (such as changing the `COMMIT.md` file) should be made directly on the `develop` branch.
+
+Each feature should have its own branch, with commits being done only on feature branches. When a feature is fully implemented, merge this branch with `develop`.
+A feature branch should be named `dev/featurename`. If two people are working on the same feature, it is acceptable to have a two branches named `dev/featurename/devid1` and `dev/featurename/devid2`.
 
 A commit should be formatted like this :
 ```
-[FEATURE] Title of the commit
+Title of the commit
 
 Description of the modifications made in detail
 ```
-The `FEATURE` tag corresponds to the thing you've worked on in the commit (e.g. `PROV`, `DMT`, `ARITH`, `FIX`,, etc)
 
 ## Merging rules
 
-Your feature has been fully developed ? Let's merge it. First, verify that your branch is up-to-date with the target branch. We'll be using `develop` as the target in the following examples:
+Your feature has been fully developed ? Let's merge it. First, verify that the feature branch is up-to-date with the target branch. We'll be using `develop` as the target in the following examples:
 ```
 # Fetches the modifications from origin since the last fetch/pull.
 git fetch

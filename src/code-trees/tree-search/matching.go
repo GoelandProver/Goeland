@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************/
-/* Machine.go */
-/***************/
+
 /**
 * This file provides the necessary methods for the unification algorithm.
 **/
@@ -44,6 +42,7 @@ import (
 
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
+	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -53,40 +52,58 @@ import (
 func (n Node) Unify(formula basictypes.Form) (bool, []treetypes.MatchingSubstitutions) {
 	machine := makeMachine()
 	res := machine.unify(n, formula)
-	global.PrintDebug("Unify", fmt.Sprintf("Res = %v", !reflect.DeepEqual(machine.failure, res)))
+	// global.PrintDebug("Unify", fmt.Sprintf("Res = %v", !reflect.DeepEqual(machine.failure, res)))
 	return !reflect.DeepEqual(machine.failure, res), res // return found, res
 }
 
 /* Tries to find the substitutions needed to unify the formulae with the one described by the sequence of instructions. */
 func (m *Machine) unify(node Node, formula basictypes.Form) []treetypes.MatchingSubstitutions {
+	var result []treetypes.MatchingSubstitutions
 	// The formula has to be a predicate.
-	if reflect.TypeOf(formula) != reflect.TypeOf(basictypes.Pred{}) {
-		return m.failure
+	switch formula_type := formula.(type) {
+	case basictypes.Pred:
+		terms := treetypes.TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs())
+
+		// Transform the predicate to a function to make the tool work properly
+		m.terms = basictypes.NewTermList(basictypes.MakeFun(formula_type.GetID(), terms, []typing.TypeApp{}, formula_type.GetType()))
+		result = m.unifyAux(node)
+
+		if !reflect.DeepEqual(m.failure, result) {
+			filteredResult := []treetypes.MatchingSubstitutions{}
+			// For each substitutions, remove the [0...MetaCount(formula_type.GetTypeVars())] ones to put it in another slice (the type slice)
+			for _, matchingSubst := range result {
+				actualSubsts := matchingSubst.GetSubst()[typing.CountMeta(formula_type.GetTypeVars()):]
+				filteredResult = append(filteredResult, treetypes.MakeMatchingSubstitutions(matchingSubst.GetForm(), actualSubsts))
+			}
+			result = filteredResult
+		}
+	case treetypes.TermForm:
+		m.terms = basictypes.NewTermList(formula_type.GetTerm())
+		result = m.unifyAux(node)
+	default:
+		result = m.failure
 	}
 
-	// Transform the predicate to a function to make the tool work properly
-	m.terms = []basictypes.Term{basictypes.MakeFun(formula.(basictypes.Pred).GetID(), formula.(basictypes.Pred).GetArgs())}
-
-	return m.unifyAux(node)
+	return result
 }
 
 /*** Unify aux ***/
 func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 	for _, instr := range node.value {
 
-		// global.PrintDebug("UX", "------------------------")
-		// global.PrintDebug("UX", fmt.Sprintf("Instr: %v", instr.ToString()))
-		// global.PrintDebug("UX", fmt.Sprintf("Meta : %v", m.meta.ToString()))
-		// global.PrintDebug("UX", fmt.Sprintf("Subst : %v", treetypes.SubstPairListToString(m.subst)))
-		// global.PrintDebug("UX", fmt.Sprintf("Post : %v", treetypes.IntPairistToString(m.post)))
-		// global.PrintDebug("UX", fmt.Sprintf("IsLocked : %v", m.isLocked()))
-		// global.PrintDebug("UX", fmt.Sprintf("HasPushed : %v", m.hasPushed))
-		// global.PrintDebug("UX", fmt.Sprintf("HasPoped : %v", m.hasPoped))
-		// global.PrintDebug("UX", fmt.Sprintf("m.beginCount: %v - m.beginLock : %v", m.beginCount, m.beginLock))
-		// global.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
-		// global.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, len(m.terms)))
-		// global.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms[m.q].ToString()))
-		// global.PrintDebug("UX", fmt.Sprintf("m.terms : %v", basictypes.TermListToString(m.terms)))
+		global.PrintDebug("UX", "------------------------")
+		global.PrintDebug("UX", fmt.Sprintf("Instr: %v", instr.ToString()))
+		global.PrintDebug("UX", fmt.Sprintf("Meta : %v", m.meta.ToString()))
+		global.PrintDebug("UX", fmt.Sprintf("Subst : %v", treetypes.SubstPairListToString(m.subst)))
+		global.PrintDebug("UX", fmt.Sprintf("Post : %v", treetypes.IntPairistToString(m.post)))
+		global.PrintDebug("UX", fmt.Sprintf("IsLocked : %v", m.isLocked()))
+		global.PrintDebug("UX", fmt.Sprintf("HasPushed : %v", m.hasPushed))
+		global.PrintDebug("UX", fmt.Sprintf("HasPoped : %v", m.hasPoped))
+		global.PrintDebug("UX", fmt.Sprintf("m.beginCount: %v - m.beginLock : %v", m.beginCount, m.beginLock))
+		global.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
+		global.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, m.terms.Len()))
+		global.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms.Get(m.q).ToString()))
+		global.PrintDebug("UX", fmt.Sprintf("m.terms : %v", m.terms.ToString()))
 
 		switch instr := instr.(type) {
 		case treetypes.Begin:
@@ -123,15 +140,13 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 	matching := []treetypes.MatchingSubstitutions{}
 
 	if node.isLeaf() {
-		global.PrintDebug("UX", fmt.Sprintf("Is leaf : %v", node.formulae.ToString()))
-		for _, f := range node.formulae {
+		// global.PrintDebug("UX", fmt.Sprintf("Is leaf : %v", node.formulae.ToString()))
+		for _, f := range node.formulae.Slice() {
 			if reflect.TypeOf(f) == reflect.TypeOf(basictypes.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(treetypes.TermForm{}) {
 				// Rebuild final substitution between meta and subst
 				final_subst := computeSubstitutions(treetypes.CopySubstPairList(m.subst), m.meta.Copy(), f.Copy())
 				if !final_subst.Equals(treetypes.Failure()) {
 					matching = append(matching, treetypes.MakeMatchingSubstitutions(f, final_subst))
-				} else {
-					global.PrintDebug("UX", "Error try substitute")
 				}
 			}
 		}
@@ -144,21 +159,23 @@ func (m *Machine) unifyAux(node Node) []treetypes.MatchingSubstitutions {
 /* TODO : remove when debug ok */
 func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []treetypes.MatchingSubstitutions, father_id uint64) {
 	global.PrintDebug("UA", fmt.Sprintf("Child of %v, Unify Aux", father_id))
-	ch <- m.unifyAux(n)
+	subs := m.unifyAux(n)
+	ch <- subs
 	global.PrintDebug("UA", "Die")
 }
 
 /* Launches each child of the current node in a goroutine. */
 func (m *Machine) launchChildrenSearch(node Node) []treetypes.MatchingSubstitutions {
 	channels := []chan []treetypes.MatchingSubstitutions{}
-	for range node.children {
+	for _, c := range node.children {
+		global.PrintDebug("LCS", fmt.Sprintf("Next symbol = %v", c.getValue()[0].ToString()))
 		channels = append(channels, make(chan []treetypes.MatchingSubstitutions))
 	}
 
 	matching := []treetypes.MatchingSubstitutions{}
 	for i, n := range node.children {
 		ch := channels[i]
-		st := basictypes.CopyTermList(m.terms)
+		st := m.terms.Copy()
 		ip := treetypes.CopyIntPairList(m.post)
 		sc := treetypes.CopySubstPairList(m.subst)
 
@@ -206,7 +223,7 @@ func (m *Machine) right() Status {
 	if m.isUnlocked() {
 		// global.PrintDebug("RIGHT", "IS UNLOCKED")
 		m.q += 1
-		if m.q > len(m.terms) {
+		if m.q > m.terms.Len() {
 			return Status(ERROR)
 		}
 		m.topLevelCount += 1
@@ -217,18 +234,18 @@ func (m *Machine) right() Status {
 /* Algorithm for the instruction Down. */
 func (m *Machine) down() {
 	if m.isUnlocked() {
-		m.terms = m.terms[m.q].(basictypes.Fun).GetArgs()
+		m.terms = m.terms.Get(m.q).(basictypes.Fun).GetArgs()
 		m.q = 0
 
 		// When down, add the number of args to topLevelCount and add 1 to topLevelCount because we go straigth forward inside without rigth
-		m.topLevelTot += len(m.terms)
+		m.topLevelTot += m.terms.Len()
 		m.topLevelCount += 1
 	}
 }
 
 /* Algorithm for the instruction Check. */
 func (m *Machine) check(instrTerm basictypes.Term) Status {
-	if m.isUnlocked() && errorOccured(m.matchIndexes(m.terms[m.q], instrTerm)) {
+	if m.isUnlocked() && errorOccured(m.matchIndexes(m.terms.Get(m.q), instrTerm)) {
 		return Status(ERROR)
 	}
 	return Status(SUCCESS)
@@ -248,7 +265,7 @@ func (m *Machine) pop(index int) Status {
 	if m.isUnlocked() {
 		m.q = m.post[index].GetQ()
 		m.terms = m.post[index].GetTerms()
-		if len(m.terms) <= m.q {
+		if m.terms.Len() <= m.q {
 			return Status(ERROR)
 		}
 		m.post = removePost(treetypes.CopyIntPairList(m.post), index)
@@ -264,7 +281,7 @@ func (m *Machine) pop(index int) Status {
 /* Algorithm for the instruction Put. */
 func (m *Machine) put(instr treetypes.Put) {
 	if m.isUnlocked() {
-		m.subst = append(m.subst, treetypes.MakeSubstPair(instr.GetIndex(), m.terms[m.q]))
+		m.subst = append(m.subst, treetypes.MakeSubstPair(instr.GetIndex(), m.terms.Get(m.q)))
 	}
 }
 

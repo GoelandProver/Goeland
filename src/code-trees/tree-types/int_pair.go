@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************/
-/* Int_pair.go */
-/***************/
+
 /**
 * This file provides the necessary structures to manipulate pairs of int.
 **/
@@ -47,18 +45,18 @@ import (
 /* Association between an integer and an array of Terms. */
 type IntPair struct {
 	q     int
-	terms []basictypes.Term
+	terms *basictypes.TermList
 }
 
 func (ip IntPair) GetQ() int {
 	return ip.q
 }
-func (ip IntPair) GetTerms() []basictypes.Term {
-	return basictypes.CopyTermList(ip.terms)
+func (ip IntPair) GetTerms() *basictypes.TermList {
+	return ip.terms.Copy()
 }
 
 func (ip IntPair) ToString() string {
-	res := "(" + strconv.Itoa(ip.q) + ", [" + basictypes.TermListToString(ip.terms) + "])"
+	res := "(" + strconv.Itoa(ip.q) + ", [" + ip.terms.ToString() + "])"
 	return res
 }
 
@@ -79,8 +77,8 @@ func IntPairistToString(ipl []IntPair) string {
 	return res
 }
 
-func MakeIntPair(q int, terms []basictypes.Term) IntPair {
-	return IntPair{q, basictypes.CopyTermList(terms)}
+func MakeIntPair(q int, terms *basictypes.TermList) IntPair {
+	return IntPair{q, terms.Copy()}
 }
 
 func CopyIntPairList(ipl []IntPair) []IntPair {

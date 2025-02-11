@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/**************/
-/* Machine.go */
-/**************/
+
 /**
 * This file provides the necessary structures to operate the unification algorithm.
 **/
@@ -40,7 +38,6 @@ package treesearch
 
 import (
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
-	"github.com/GoelandProver/Goeland/global"
 	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
 )
 
@@ -66,7 +63,7 @@ type Machine struct {
 	hasPoped      bool
 	post          []treetypes.IntPair
 	subst         []treetypes.SubstPair
-	terms         []basictypes.Term
+	terms         *basictypes.TermList
 	meta          treetypes.Substitutions
 	failure       []treetypes.MatchingSubstitutions
 	topLevelTot   int
@@ -83,7 +80,7 @@ func makeMachine() Machine {
 		hasPoped:      false,
 		post:          []treetypes.IntPair{},
 		subst:         []treetypes.SubstPair{},
-		terms:         []basictypes.Term{},
+		terms:         basictypes.NewTermList(),
 		meta:          treetypes.Substitutions{},
 		failure:       []treetypes.MatchingSubstitutions{},
 		topLevelTot:   0,
@@ -101,19 +98,21 @@ func errorOccured(s Status) bool {
 /*** CURSOR ***/
 /* Get the Meta object of the current formulae term. */
 func (m *Machine) getCurrentMeta() basictypes.Meta {
-	return m.terms[m.q].Copy().ToMeta()
+	return m.terms.Get(m.q).Copy().ToMeta()
 }
 
 /* While term is a metavariable, replace it by its substitution in the map of substitutions (meta). */
 func (m *Machine) unwrapMeta(term basictypes.Term) basictypes.Term {
-	deja_vu := map[basictypes.Term]bool{}
+	deja_vu := map[int]bool{}
 	for term.IsMeta() {
-		val, ok := m.meta[term.ToMeta()]
-		if !ok || deja_vu[term] {
+		val, ok := m.meta.Get(term.ToMeta())
+		// global.PrintDebug("UM", fmt.Sprintf("ok : %v", ok))
+		if (ok == -1) || deja_vu[term.GetIndex()] {
 			break
 		}
-
-		deja_vu[term] = true
+		// global.PrintDebug("UM", fmt.Sprintf("ok 2 : %v", ok))
+		// global.PrintDebug("UM", fmt.Sprintf("Val : %v", val.ToString()))
+		deja_vu[term.GetIndex()] = true
 		term = val.Copy()
 	}
 	return term
@@ -148,7 +147,7 @@ func (m *Machine) unlockMachine() {
 
 /* Locks the machine to the given count of nested instructions block if the current term is a metavariable. */
 func (m *Machine) lockIfMeta(count int) {
-	if m.terms[m.q].IsMeta() && !m.isLocked() {
+	if m.terms.Get(m.q).IsMeta() && !m.isLocked() {
 		m.beginLock = count
 	}
 }
@@ -157,7 +156,7 @@ func (m *Machine) lockIfMeta(count int) {
 func (m *Machine) lockedRight() Status {
 	if m.hasPushed && m.hasPoped {
 		m.hasPoped, m.hasPushed = false, false
-		if m.q < len(m.terms)-1 {
+		if m.q < m.terms.Len()-1 {
 			if errorOccured(m.right()) {
 				return Status(ERROR)
 			}
@@ -171,11 +170,11 @@ func (m *Machine) tryUnlock(instrTerm basictypes.Term) Status {
 	if m.isLocked() && m.beginCount == m.beginLock {
 		m.unlockMachine()
 		if errorOccured(m.trySubstituteMeta(m.getCurrentMeta(), instrTerm.Copy())) {
-			global.PrintDebug("TU", "ERROR in ATTM")
+			// global.PrintDebug("TU", "ERROR in ATTM")
 			return Status(ERROR)
 		}
 		if errorOccured(m.lockedRight()) {
-			global.PrintDebug("TU", "ERROR in LR")
+			// global.PrintDebug("TU", "ERROR in LR")
 			return Status(ERROR)
 		}
 	}
@@ -223,7 +222,8 @@ func (m *Machine) matchIndexes(t basictypes.Term, instrTerm basictypes.Term) Sta
 /* Checks if the substitution of the metavariable t matches the index of instrTerm. */
 func (m *Machine) checkMeta(t basictypes.Meta, instrTerm basictypes.Term) Status {
 	if treetypes.HasSubst(m.meta, t) {
-		unwrapped := m.unwrapMeta(m.meta[t])
+		metaGotten, _ := m.meta.Get(t)
+		unwrapped := m.unwrapMeta(metaGotten)
 		if !unwrapped.IsMeta() && !m.doIndexMatch(unwrapped, instrTerm) {
 			return Status(ERROR)
 		}

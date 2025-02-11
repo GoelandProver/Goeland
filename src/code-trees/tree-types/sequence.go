@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************/
-/* sequence.go */
-/***************/
+
 /**
 * This file provides the necessary structures to represents a sequences for the machine.
 **/
@@ -65,6 +63,7 @@ func (s *Sequence) add(instr Instruction) {
 	s.instructions = append(s.instructions, instr)
 }
 
+// ILL TODO: Should not print directly, should return a string that is then printed
 func (s Sequence) Print() {
 	for _, instr := range s.instructions {
 		fmt.Printf("%v", instr)

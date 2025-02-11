@@ -23,7 +23,7 @@ def process(src, dst) :
     f.close()
 
 if len(sys.argv) != 2:
-    print("./add_include DIRECTORY")
+    print("python3 add_include DIRECTORY")
 else :
     dir = sys.argv[1]
     dir_include = dir[:-1]+"_INCLUDE/"
@@ -33,4 +33,4 @@ else :
          os.mkdir(dir_include, 0o777)
     for file in os.listdir(dir) :
         process(f"{dir}/{file}", f"{dir_include}{file}")
-        print(f"{file} processed.")
+        #print(f"{file} processed.")

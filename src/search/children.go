@@ -29,9 +29,6 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/***************/
-/* children.go */
-/**************/
 
 package search
 
@@ -50,10 +47,10 @@ type Communication struct {
 	result chan Result
 }
 
-func (c Communication) GetQuit() chan bool {
+func (c Communication) getQuit() chan bool {
 	return c.quit
 }
-func (c Communication) GetResult() chan Result {
+func (c Communication) getResult() chan Result {
 	return c.result
 }
 
@@ -66,29 +63,46 @@ type Result struct {
 	closed, need_answer   bool
 	subst_for_children    complextypes.SubstAndForm
 	subst_list_for_father []complextypes.SubstAndForm
+	forbidden             []treetypes.Substitutions
 	proof                 []proof.ProofStruct
+	node_id               int
+	original_node_id      int
+	unifier               complextypes.Unifier
 }
 
-func (r Result) GetId() uint64 {
+func (r Result) getId() uint64 {
 	return r.id
 }
-func (r Result) GetClosed() bool {
+func (r Result) isClosed() bool {
 	return r.closed
 }
-func (r Result) GetNeedAnswer() bool {
+func (r Result) needsAnswer() bool {
 	return r.need_answer
 }
-func (r Result) GetSubstForChildren() complextypes.SubstAndForm {
+func (r Result) getSubstForChildren() complextypes.SubstAndForm {
 	return r.subst_for_children.Copy()
 }
-func (r Result) GetSubstListForFather() []complextypes.SubstAndForm {
+func (r Result) getSubstListForFather() []complextypes.SubstAndForm {
 	return complextypes.CopySubstAndFormList(r.subst_list_for_father)
 }
-func (r Result) GetProof() []proof.ProofStruct {
+func (r Result) getForbiddenSubsts() []treetypes.Substitutions {
+	return treetypes.CopySubstList(r.forbidden)
+}
+func (r Result) getProof() []proof.ProofStruct {
 	return proof.CopyProofStructList(r.proof)
 }
+func (r Result) getNodeId() int {
+	return r.node_id
+}
+func (r Result) getOriginalNodeId() int {
+	return r.original_node_id
+}
+func (r Result) getUnifier() complextypes.Unifier {
+	return r.unifier.Copy()
+}
+
 func (r Result) Copy() Result {
-	return Result{r.GetId(), r.GetClosed(), r.GetNeedAnswer(), r.GetSubstForChildren(), r.GetSubstListForFather(), r.GetProof()}
+	return Result{r.getId(), r.isClosed(), r.needsAnswer(), r.getSubstForChildren(), r.getSubstListForFather(), r.getForbiddenSubsts(), r.getProof(), r.getNodeId(), r.getOriginalNodeId(), r.getUnifier()}
 }
 
 /* remove a childre  from a communication list */
@@ -133,26 +147,36 @@ func sendSubToChildren(children []Communication, s complextypes.SubstAndForm) {
 	global.PrintDebug("SSTC", fmt.Sprintf("Send sub to children : %v", len(children)))
 	for i, v := range children {
 		global.PrintDebug("SSTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
-		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, nil}
+		v.result <- Result{global.GetGID(), true, true, s.Copy(), []complextypes.SubstAndForm{}, treetypes.MakeEmptySubstitutionList(), nil, -1, -1, complextypes.MakeUnifier()}
+	}
+}
+
+/* Send a substitution to a list of child */
+func sendForbiddenToChildren(children []Communication, s []treetypes.Substitutions) {
+	global.PrintDebug("SFTC", fmt.Sprintf("Send forbidden to children : %v", len(children)))
+	for i, v := range children {
+		global.PrintDebug("SFTC", fmt.Sprintf("children : %v/%v", i+1, len(children)))
+		v.result <- Result{global.GetGID(), true, true, complextypes.MakeEmptySubstAndForm(), []complextypes.SubstAndForm{}, s, nil, -1, -1, complextypes.MakeUnifier()}
 	}
 }
 
 /* Send a subst to father. Return true if the process is supposed to die after */
-func sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm, node_id int) {
+func (ds *destructiveSearch) sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st complextypes.State, given_substs []complextypes.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
 	subst_for_father := complextypes.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound())
 	global.PrintDebug("SSTF", fmt.Sprintf("Send subst to father : %v, closed : %v, need answer : %v", treetypes.SubstListToString(complextypes.GetSubstListFromSubstAndFormList(subst_for_father)), closed, need_answer))
 	global.PrintDebug("SSTF", fmt.Sprintf("Send answer : %v", complextypes.SubstAndFormListToString(subst_for_father)))
-
-	global.PrintDebug("SSTF", fmt.Sprintf("Proof : %v", proof.ProofStructListToString(st.GetProof())))
+	global.PrintDebug("SSTF", fmt.Sprintf("Id : %v, original node id :%v", node_id, original_node_id))
+	global.PrintDebug("SSTF", fmt.Sprintf("Send proof : %v", proof.ProofStructListToString(st.GetProof())))
+	global.PrintDebug("SSTF", fmt.Sprintf("Meta to reintroduce: %v", global.IntListToString(meta_to_reintroduce)))
 
 	select {
-	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), st.GetProof()}:
+	case c.result <- Result{global.GetGID(), closed, need_answer, complextypes.MakeEmptySubstAndForm(), complextypes.CopySubstAndFormList(subst_for_father), treetypes.MakeEmptySubstitutionList(), st.GetProof(), node_id, original_node_id, st.GetGlobalUnifier()}:
 		if need_answer {
-			waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id)
+			ds.waitFather(father_id, st, c, complextypes.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
 		} else {
 			global.PrintDebug("SSTF", "Die")
 		}
 	case quit := <-c.quit:
-		manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id)
+		ds.manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id, original_node_id, []int{}, meta_to_reintroduce)
 	}
 }

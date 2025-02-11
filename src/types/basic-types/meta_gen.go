@@ -29,9 +29,7 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-/**************/
-/* formula.go */
-/**************/
+
 /**
 * This file contains functions and types which describe the formula's data structure
 **/
@@ -39,6 +37,7 @@
 package basictypes
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/GoelandProver/Goeland/global"
@@ -50,11 +49,11 @@ import (
 * A formula which can introduce a metavariable and the number of time it was used
 **/
 type MetaGen struct {
-	f       Form
+	f       FormAndTerms
 	counter int
 }
 
-func (m MetaGen) GetForm() Form {
+func (m MetaGen) GetForm() FormAndTerms {
 	return m.f.Copy()
 }
 func (m MetaGen) GetCounter() int {
@@ -63,11 +62,14 @@ func (m MetaGen) GetCounter() int {
 func (m MetaGen) Copy() MetaGen {
 	return MakeMetaGen(m.GetForm(), m.GetCounter())
 }
+func (m MetaGen) ToString() string {
+	return m.f.ToString() + " - " + strconv.Itoa(m.GetCounter())
+}
 
 /*** Functions ***/
 
 /* Maker */
-func MakeMetaGen(f Form, cpt int) MetaGen {
+func MakeMetaGen(f FormAndTerms, cpt int) MetaGen {
 	return MetaGen{f, cpt}
 }
 
@@ -75,9 +77,7 @@ func MakeMetaGen(f Form, cpt int) MetaGen {
 func MetaGenListToString(lf []MetaGen) string {
 	var s_res string
 	for i, v := range lf {
-		f := v.f
-		time_used := v.GetCounter()
-		s_res += f.ToString() + " - " + strconv.Itoa(time_used)
+		s_res += v.ToString()
 		if i < len(lf)-1 {
 			s_res += (", ")
 		}
@@ -86,7 +86,7 @@ func MetaGenListToString(lf []MetaGen) string {
 }
 
 /* Return true is a given Form is in metaGenList, false otherwise */
-func ContainsMetaGenList(hdf Form, meta_generator []MetaGen) bool {
+func ContainsMetaGenList(hdf FormAndTerms, meta_generator []MetaGen) bool {
 	for _, v := range meta_generator {
 		if v.GetForm().Equals(hdf) {
 			return true
@@ -96,7 +96,7 @@ func ContainsMetaGenList(hdf Form, meta_generator []MetaGen) bool {
 }
 
 /* Return the index of the formula f in meta_generator list - append if not exists */
-func GetIndexMetaGenList(f Form, meta_generator []MetaGen) (int, []MetaGen) {
+func GetIndexMetaGenList(f FormAndTerms, meta_generator []MetaGen) (int, []MetaGen) {
 	for i, v := range meta_generator {
 		if v.GetForm().Equals(f) {
 			return i, meta_generator
@@ -128,14 +128,33 @@ func chooseLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int)
 	return saved_index
 }
 
+/* Choose less reintroduced Meta */
+func getAllLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int) []int {
+	min := -1
+	saved_indexes := []int{}
+	for i, v := range meta_generator {
+		global.PrintDebug("PS", fmt.Sprintf("v.getCounter : %d - Min : %d", v.GetCounter(), min))
+		if (allowed_indexes == nil || global.ContainsInt(i, allowed_indexes)) && ((v.GetCounter() <= min) || min == -1) {
+			new_min := v.GetCounter()
+			if new_min < min || min == -1 {
+				saved_indexes = []int{i}
+				min = new_min
+			} else {
+				saved_indexes = global.AppendIfNotContainsInt(saved_indexes, i)
+			}
+		}
+		global.PrintDebug("PS", fmt.Sprintf("Min after : %d", min))
+	}
+	return saved_indexes
+}
+
 /**
 * Reintroduce meta
 * reintroduce a given formula if index != -1
 * Choose the less reintroduced formula among a list of fomulas otherwise
 **/
-func ReintroduceMeta(meta_generator *[]MetaGen, index int) Form {
-
-	if index != -1 {
+func ReintroduceMeta(meta_generator *[]MetaGen, index int, limit int) FormAndTerms {
+	if index != -1 && (*meta_generator)[index].GetCounter() <= limit {
 		(*meta_generator)[index] = MakeMetaGen((*meta_generator)[index].GetForm(), (*meta_generator)[index].GetCounter()+1)
 		return (*meta_generator)[index].GetForm()
 	} else {
@@ -143,4 +162,20 @@ func ReintroduceMeta(meta_generator *[]MetaGen, index int) Form {
 		(*meta_generator)[index_less_reintroduced_meta] = MakeMetaGen((*meta_generator)[index_less_reintroduced_meta].GetForm(), (*meta_generator)[index_less_reintroduced_meta].GetCounter()+1)
 		return (*meta_generator)[index_less_reintroduced_meta].GetForm()
 	}
+
+}
+
+/* reintroduce the given meta iff is it part of the less reintroduced ones */
+func ReintroduceMetaIfLessReintroduced(meta_generator *[]MetaGen, index int) FormAndTerms {
+	indexes_less_reintroduced_meta := getAllLessReintroducedMeta(*meta_generator, nil)
+	global.PrintDebug("PS", fmt.Sprintf("Less reintroduced metas : %s", global.IntListToString(indexes_less_reintroduced_meta)))
+	index_less_reintroduced_meta := -1
+	if global.ContainsInt(index, indexes_less_reintroduced_meta) {
+		index_less_reintroduced_meta = index
+	} else {
+		index_less_reintroduced_meta = indexes_less_reintroduced_meta[0]
+	}
+	(*meta_generator)[index_less_reintroduced_meta] = MakeMetaGen((*meta_generator)[index_less_reintroduced_meta].GetForm(), (*meta_generator)[index_less_reintroduced_meta].GetCounter()+1)
+	return (*meta_generator)[index_less_reintroduced_meta].GetForm()
+
 }

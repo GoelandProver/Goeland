@@ -1,0 +1,53 @@
+name: Build And Test
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.18.0'
+      - run: sudo apt-get install -y golang-golang-x-tools
+      - run: cd src && make
+#  Soundness-0:
+#    needs: Build
+#    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
+#    with:
+#      folder: _0
+#  Soundness-1:
+#    needs: Build
+#    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
+#    with:
+#      folder: _1
+#  Soundness-2:
+#    needs: Build
+#    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
+#    with:
+#      folder: _2
+#  Soundness-3:
+#    needs: Build
+#    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
+#    with:
+#      folder: _3
+#  Soundness-4:
+#    needs: Build
+#    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
+#    with:
+#      folder: _4
+#  Soundness-5:
+#    needs: Build
+#    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
+#    with:
+#      folder: _5
+#  Soundness-6:
+#    needs: Build
+#    uses: GoelandProver/Goeland/.github/workflows/soundness.yml@develop
+#    with:
+#      folder: _6
