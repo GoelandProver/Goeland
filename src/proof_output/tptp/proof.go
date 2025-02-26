@@ -258,7 +258,7 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses *btps.FormList, target int, for
 	new_term := createNewConstant(proof.TermGenerated())
 	proof = updateSkolemSymbol(proof.TermGenerated(), new_term, proof)
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, $fot(%s)], [%s])).",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, '%s'], [%s])).",
 		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), GetTypeProof())),
