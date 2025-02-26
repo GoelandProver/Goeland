@@ -123,30 +123,32 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *btps.FormList, new_current_id i
 	// Closure.
 	case gs3.AX:
 		if isPredEqual(proof.GetTargetForm()) {
-			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, {%s} --> {}, inference(%s, [], [%s])).",
+			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, [status(thm)], [%s])).",
 				proof.GetId(),
 				mapDefault(btps.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), GetTypeProof())),
 				"congruence",
 				"")
 		} else {
 			target2 := -1
+			targetNotNeg := -1
 			switch initial_formula := proof.GetTargetForm().(type) {
 			case btps.Pred:
 				target2 = get(btps.MakerNot(initial_formula), hypotheses)
+				targetNotNeg = target2
 			case btps.Not:
 				target2 = get(initial_formula.GetForm(), hypotheses)
+				targetNotNeg = target
 			}
 
 			if target2 == -1 {
 				PrintError("TPTP - makeStep", "complementary literal not found")
 			}
 
-			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, {%s} --> {}, inference(%s, [%d, %d], [%s])).",
+			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
 				proof.GetId(),
 				mapDefault(btps.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), GetTypeProof())),
 				"leftHyp",
-				target,
-				target2,
+				targetNotNeg,
 				"")
 		}
 
@@ -158,7 +160,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *btps.FormList, new_current_id i
 	case gs3.NOR:
 		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "leftNotOr")
 	case gs3.NIMP:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "leftNotImp")
+		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "leftNotImplies")
 
 	// Beta rules
 	case gs3.NAND:
@@ -168,15 +170,15 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *btps.FormList, new_current_id i
 	case gs3.OR:
 		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftOr")
 	case gs3.IMP:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftImp2")
+		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftImplies")
 	case gs3.EQU:
 		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftIff")
 
 	// Delta rules
 	case gs3.NALL:
-		resultingString, childrenHypotheses = deltaStep(proof, hypotheses, target, "leftNotForall")
+		resultingString, childrenHypotheses = deltaStep(proof, hypotheses, target, "leftNotAll")
 	case gs3.EX:
-		resultingString, childrenHypotheses = deltaStep(proof, hypotheses, target, "leftEx")
+		resultingString, childrenHypotheses = deltaStep(proof, hypotheses, target, "leftExists")
 
 	// Gamma rules
 	case gs3.ALL:
@@ -208,7 +210,7 @@ func alphaStep(proof *gs3.GS3Sequent, hypotheses *btps.FormList, target int, for
 		c.SetId(new_id)
 	}
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, {%s} --> {}, inference(%s, [%d], [%s])).",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
 		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), GetTypeProof())),
@@ -234,7 +236,7 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses *btps.FormList, target int, form
 		resultHyps = append(resultHyps, newHypotheses)
 	}
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, {%s} --> {}, inference(%s, [%d], [%s])).",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
 		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), false)),
@@ -256,7 +258,7 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses *btps.FormList, target int, for
 	new_term := createNewConstant(proof.TermGenerated())
 	proof = updateSkolemSymbol(proof.TermGenerated(), new_term, proof)
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, {%s} --> {}, inference(%s, [%d, $fot(%s)], [%s])).",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, '%s'], [%s])).",
 		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), GetTypeProof())),
@@ -281,7 +283,7 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses *btps.FormList, target int, for
 
 	get(proof.GetTargetForm(), hypotheses)
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, {%s} --> {}, inference(%s, [%d, $fot(%s)], [%s])).",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, $fot(%s)], [%s])).",
 		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), GetTypeProof())),
@@ -303,7 +305,7 @@ func weakenStep(proof *gs3.GS3Sequent, hypotheses *btps.FormList, target int, fo
 		hypotheses.Remove(target)
 	}
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, {%s} --> {}, inference(%s, [%d], [%s%d])).",
+	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).",
 		prefix_step,
 		proof.GetId(),
 		mapDefault(btps.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), false)),
@@ -358,7 +360,7 @@ func performFirstStep(axioms *btps.FormList, conjecture btps.Form, hypothesis *b
 	nextFormId := incrByOne(&id_proof_step, &mutex_proof_step)
 
 	// Cut initial formula, |- ~c, c step
-	cutFormNot := fmt.Sprintf("fof("+prefix_step+"%d, plain, {%s} --> {%s, %s}, inference(%s, [%d], [%s])).",
+	cutFormNot := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s, %s], inference(%s, [status(thm), %d], [%s])).",
 		cutFormNotId,
 		mapDefault(btps.ListToMappedString(axioms.Slice(), ", ", "", tptpMapConnectors(), GetTypeProof())),
 		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
@@ -368,23 +370,23 @@ func performFirstStep(axioms *btps.FormList, conjecture btps.Form, hypothesis *b
 		prefix_step+strconv.Itoa(cutFormHypId))
 
 	// Cut initial formula, c |- c step
-	cutFormHyp := fmt.Sprintf("fof("+prefix_step+"%d, plain, {%s} --> {%s}, inference(%s, [%d, %d], [%s])).",
+	cutFormHyp := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s], inference(%s, [status(thm), %d], [%s])).",
 		cutFormHypId,
 		mapDefault(btps.ListToMappedString(append(axioms.Slice(), conjecture), ", ", "", tptpMapConnectors(), GetTypeProof())),
 		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), GetTypeProof())),
 		"hyp",
 		axioms.Len(),
-		0,
+		// 0,
 		"")
 
 	// Actual start of the formula with H |- C
-	indexHyp, _ := hypothesis.GetIndexOf(btps.MakerNot(conjecture))
-	startForm := fmt.Sprintf("fof(f%d, plain, {%s} --> {%s}, inference(cut, [%d, %d], [%s%d, %s%d])).\n\n",
+	// indexHyp, _ := hypothesis.GetIndexOf(btps.MakerNot(conjecture))
+	startForm := fmt.Sprintf("fof(f%d, plain, [%s] --> [%s], inference(cut, [status(thm), %d], [%s%d, %s%d])).\n\n",
 		nextId,
 		mapDefault(btps.ListToMappedString(axioms.Slice(), ", ", "", tptpMapConnectors(), GetTypeProof())),
 		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), GetTypeProof())),
 		1,
-		indexHyp,
+		//indexHyp,
 		prefix_step,
 		cutFormNotId,
 		prefix_step,
@@ -407,13 +409,13 @@ func performCutAxiomStep(axioms *btps.FormList, conjecture btps.Form) string {
 			nextStep = prefix_axiom_cut + strconv.Itoa(i+1)
 		}
 
-		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, {%s} --> {%s}, inference(cut, [%d, %d], [%s%d, %s])).\n",
+		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, [%s] --> [%s], inference(cut, [status(thm), %d, %d], [%s%d, %s])).\n",
 			prefix_axiom_cut,
 			i,
 			btps.ListToMappedString(axioms.GetElements(0, i), ", ", "", tptpMapConnectors(), GetTypeProof()),
 			mapDefault(conjecture.ToMappedString(tptpMapConnectors(), GetTypeProof())),
 			0,
-			i,
+			//i,
 			"ax",
 			ax.GetIndex(),
 			nextStep)

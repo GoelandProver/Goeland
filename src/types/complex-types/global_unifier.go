@@ -121,9 +121,9 @@ func (u Unifier) ToString() string {
 	}
 	str := "object Unifier{"
 	for _, unifier := range u.localUnifiers {
-		str += "[ " + strings.Join(MapTo(unifier.Fst, substsToString), ", ") + " ] --> { " + strings.Join(MapTo(unifier.Snd, func(_ int, el substitutions) string {
+		str += "[ " + strings.Join(MapTo(unifier.Fst, substsToString), ", ") + " ] --> [ " + strings.Join(MapTo(unifier.Snd, func(_ int, el substitutions) string {
 			return strings.Join(MapTo(el, substsToString), " ; ")
-		}), " ---- ") + " }, "
+		}), " ---- ") + " ], "
 	}
 	str += "}"
 	return str
