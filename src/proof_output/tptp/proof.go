@@ -409,7 +409,7 @@ func performCutAxiomStep(axioms *btps.FormList, conjecture btps.Form) string {
 			nextStep = prefix_axiom_cut + strconv.Itoa(i+1)
 		}
 
-		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, [%s] --> [%s], inference(cut, [status(thm), %d, %d], [%s%d, %s])).\n",
+		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, [%s] --> [%s], inference(cut, [status(thm), %d], [%s%d, %s])).\n",
 			prefix_axiom_cut,
 			i,
 			btps.ListToMappedString(axioms.GetElements(0, i), ", ", "", tptpMapConnectors(), GetTypeProof()),
