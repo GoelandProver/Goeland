@@ -12,7 +12,10 @@ Goéland is licensed under the CeCILL 2.1 License. See [LICENSE](LICENSE).
 
 ### Dependencies
 
-Goéland needs Go (version >= 1.22, download directly from the [site](https://go.dev/)) and goyacc (`sudo apt-get install golang-golang-x-tools`) to compile.
+Goéland needs Go (version >= 1.22, download directly from the [site](https://go.dev/))   
+and goyacc to compile:
+ - with Apt `sudo apt-get install golang-golang-x-tools` ) .
+ - with Homebrew: `brew install goyacc`
 
 ### Compilation
 
