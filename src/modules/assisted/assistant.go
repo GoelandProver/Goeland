@@ -331,7 +331,7 @@ func listIndexedForms(forms basictypes.FormAndTermsList) {
 }
 
 func selectFormula(forms basictypes.FormAndTermsList) int {
-	fmt.Println("\nHere are the formulas:")
+	fmt.Println("\nHere are the formulae:")
 	listIndexedForms(forms)
 
 	isFormulaValid := false
