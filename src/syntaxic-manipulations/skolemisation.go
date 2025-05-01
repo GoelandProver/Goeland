@@ -54,7 +54,16 @@ type class struct {
 	mu               sync.Mutex
 }
 
-var symbolMaker class
+var symbolMaker class = makeClass()
+
+/** Constructor **/
+func makeClass() class {
+	var new_class class
+	new_class.availableForms = basictypes.NewFormList()
+	new_class.availableSymbols = []basictypes.Id{}
+	new_class.mu = sync.Mutex{}
+	return new_class
+}
 
 /**
  * Skolemizes once the formula f.
@@ -148,10 +157,12 @@ func (c *class) make(form basictypes.Form, source basictypes.Var) basictypes.Id 
 
 func (c *class) getSymbol(form basictypes.Form, defaultId basictypes.Id) basictypes.Id {
 	index := -1
-	for i, f := range c.availableForms.Slice() {
-		if f.Equals(form) {
-			index = i
-			break
+	if c.availableForms != nil {
+		for i, f := range c.availableForms.Slice() {
+			if f.Equals(form) {
+				index = i
+				break
+			}
 		}
 	}
 

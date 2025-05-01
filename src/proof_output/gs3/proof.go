@@ -48,7 +48,7 @@ import (
 type dependencyMap []Pair[basictypes.Term, *basictypes.FormList]
 
 func (d dependencyMap) Copy() dependencyMap {
-	oth := make(dependencyMap, len(d))
+	oth := make([]Pair[basictypes.Term, *basictypes.FormList], 0)
 	for _, v := range d {
 		if v.Fst != nil {
 			p := MakePair(v.Fst.Copy(), basictypes.NewFormList(v.Snd.Slice()...))
@@ -107,6 +107,7 @@ var MakeGS3Proof = func(proof []tableaux.ProofStruct) *GS3Sequent {
 		betaHisto:    make([]Pair[int, int], 0),
 		deltaHisto:   make([]Pair[basictypes.Term, Pair[basictypes.Form, int]], 0),
 		branchForms:  basictypes.NewFormList(),
+		dependency:   make([]Pair[basictypes.Term, *basictypes.FormList], 0),
 	}
 	if IsLoaded("dmt") {
 		gs3Proof.branchForms.Append(dmt.GetRegisteredAxioms().Slice()...)
@@ -224,6 +225,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep tableaux.ProofStruct, parent *GS3
 		// It may however induce bad weakenings.
 		// TODO: fix the bad weakenings in the sequent.
 	}
+
 	seq.proof = gs.Copy()
 
 	return forms
@@ -452,14 +454,17 @@ func (gs *GS3Proof) removeHypothesis(form basictypes.Form) {
 
 func (gs *GS3Proof) removeDependency(form basictypes.Form) {
 	for _, v := range gs.dependency {
-		for i, f := range v.Snd.Slice() {
-			if f.Equals(form) {
-				ls, _ := gs.dependency.Get(v.Fst)
-				removed := ls.Copy()
-				removed.Remove(i)
-
-				gs.dependency.Set(v.Fst, removed)
+		if v.Fst != nil {
+			ls, _ := gs.dependency.Get(v.Fst)
+			removed := ls.Copy()
+			nb_rm := 0
+			for i, f := range v.Snd.Slice() {
+				if f.Equals(form) {
+					removed.Remove(i - nb_rm)
+					nb_rm++
+				}
 			}
+			gs.dependency.Set(v.Fst, removed)
 		}
 	}
 }

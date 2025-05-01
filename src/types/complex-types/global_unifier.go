@@ -134,7 +134,7 @@ func (u Unifier) GetUnifier() ttps.Substitutions {
 	if !GetProof() || len(u.localUnifiers) == 0 {
 		return ttps.MakeEmptySubstitution()
 	}
-	PrintInfo("UNIFS", u.ToString())
+	PrintDebug("UNIFS", u.ToString())
 	if len(u.localUnifiers) > 0 && len(u.localUnifiers[0].Snd) > 0 {
 		return u.localUnifiers[0].Snd[0]
 	}
