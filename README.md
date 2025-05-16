@@ -4,27 +4,35 @@ Goéland is a concurrent automated theorem prover using the tableau method for f
 
 It supports [TPTP](http://tptp.org/) FOF and TFF files.
 
-## License
+## Table of Contents
 
-Goéland is licensed under the CeCILL 2.1 License. See [LICENSE](LICENSE).
+- [Goéland](#goeland)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Running Benchmarks](#running-benchmarks)
+  - [Bug Reports](#bug-reports)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [How To Cite](#how-to-cite)
 
 ## Installation
 
 ### Dependencies
 
-Goéland needs Go (version >= 1.22, download directly from the [site](https://go.dev/))   
-and goyacc to compile:
- - with Apt `sudo apt-get install golang-golang-x-tools` ) .
- - with Homebrew: `brew install goyacc`
+In order to compile, Goéland needs:
+* Go (version >= 1.22, download directly from the [site](https://go.dev/)), and
+* `goyacc`, which can be found
+  - in the package `golang-golang-x-tools` on `apt`-based distributions,
+  - in the package `goyacc` with homebrew.
 
 ### Compilation
 
-Proceed as follows to build Goéland from source (assuming that you currently are in the root folder of the repository):
+Run the command
 ```console
-$ cd src
-$ make
+$ cd src && make
 ```
-This should produce an executable in the `_build` folder.
+to compile Goéland from source. This should produce an executable in the `_build` folder.
 
 You can now run Goéland:
 ```console
@@ -35,59 +43,45 @@ Usage of ./_build/goeland:
 
 ## Usage
 
-This is still a preliminary version of the implementation. Goéland must be called from the command line. To solve a `problem.p` problem, just give this problem as an argument:
+Goéland must be called on a TPTP file. Running vanilla Goéland on `problem.p` can be done via the following command:
 ```console
 $ ./_build/goeland problem.p
 ```
 
-### Parameters
+See [USAGE](USAGE.md) for an overview of the useful options.
 
-The parameters must be passed *before* the problem file. The available parameters are as follows:
+## Running Benchmarks
 
-| Parameter flag | Effect |
-|--------------------------|-----------|
-| -ari | Enables the use of (TPTP) arithmetic functions (default: **false**). |
-| -assisted | Enables the step-by-step mode debugger (default: **false**). |
-| -completeness | Enables completeness mode (default: **false**). |
-| -core_limit *int* | Sets the limit in number of cores (default: all) (default: **-1**). |
-| -cpuprofile *file* | Writes the cpu profile to *file*. |
-| -memprofile *file* | Writes the memory profile to *file*. |
-| -debug | Enables printing debug information in the terminal (default: **false**). |
-| -dmt | Enables deduction modulo theory (default: **false**). |
-| -dmt_before_eq | Enables dmt before equality (default: **false**). |
-| -exchanges | Enables the node exchanges to be written in a file (default: **false**). |
-| -inner | Enables on-the-fly inner Skolemisation during the proof-search (default: **false**). |
-| -preinner | Activates preinner Skolemisation, a Skolemisation strategy even more optimized than `-inner` (default: **false**). |
-| -l *int* | Sets the limit in destructive mode (default: **-1**). |
-| -log *file* | Changes the file output for loggers. Won't work without the option `-wlogs` (default: **logs**). |
-| -nd | Enables the non-destructive version (default: **false**). |
-| -noeq | Disables equality (default: **false**). |
-| -ocoq | Enables the Coq format for proofs instead of text (default: **false**). |
-| -olp | Enables the Lambdapi format for proofs instead of text (default: **false**). |
-| -otptp | Enables the TPTP format for proofs instead of text (default: **false**). |
-| -context | Should only be used with the `-ocoq` or the `-olp` parameters.  Enables the context for a standalone execution (default: **false**). |
-| -pretty | Should only be used with the `-proof` parameter. Enables UTF-8 characters in prints for a pretty proof (default: **false**). |
-| -proof | Enables the display of a proof of the problem (in custom format) (default: **false**). |
-| -proof_file | Should only be used with the proof output parameters, only works with the `-wlogs` parameter. Enables the writing of the proof in a specific file. The extension of the file will depend on the type of proof (default: **problem_proof**). |
-| -one_step | Enables only one step of search (default: **false**). |
-| -show_trace | Enables the location of the loggers call to be shown in the logs (default: **false**). |
-| -type_proof | Enables type proof visualisation (default: **false**). |
-| -completeness | Enables completeness mode (default: **false**). |
-| -wlogs | Enables the writing of the logs in files (default: **false**). |
-| -chrono | Should only be used with the `-ocoq` or the `-olp` parameters. Enables the chronometer for deskolemization and proof translation (default: **false**). |
-| -incr | Enables the Incremental search algorithm (default: **false**). |
-| -sateq | Enables the equality unification using a SAT reduction. Will override the use of `-noeq` (default: **false**). |
-| -eagereq | Run equality reasoning every time a new (in)equality is added to the branch (default: **false**). |
-| -increq | Run equality reasoning incrementally (default: **false**). |
-| -vec | Cannot be used with the -l and the -completeness parameters. Enables the very-eager-closure (default: **false**). |
-| -no_id | Disables the id in the ToString (default: **false**). |
-| -quoted_pred | Print predicates between quotes if they start by a capital letter (TPTP compliance) (default: **false**). |
-| -quiet | Remove Goeland output in terminal (default: **false**). |
+We have developed scripts (in python and bash) to make running benchmarks for
+Goéland easy. You can find the tools in [this repository](https://github.com/GoelandProver/GoelandBenchmarks/).
 
-### Result values
+## Bug Reports
 
-Since the tableau method only proves theorems, Goéland returns `Valid` when a proof is found, otherwise it loops to infinity, trying to increase the reintroduction limit (unless the reintroduction limit is fixed).
+If you find a bug or if something does not work as you expect it to, please
+report it by [opening an
+issue](https://github.com/GoelandProver/Goeland/issues).
 
-### Tests <a id="tests"></a>
+To be effective, your report should include (i) the options passed to Goéland
+and (ii) the problem file for which the issue appears. Beware that, as Goéland's
+proof-search algorithm is non-deterministic, tracking bugs can sometimes be
+difficult and *log files* are appreciated (see [USAGE](USAGE.md) for enabling
+logs and outputing them to a file).
 
-To run tests, you can use the benchmarking tool available at [this repository](https://github.com/GoelandProver/GoelandBenchmarks/).
+## Contributing
+
+See the dedicated [CONTRIBUTING](CONTRIBUTING.md) file.
+
+## License
+
+Goéland is licensed under the CeCILL 2.1 License. See [LICENSE](LICENSE).
+
+## How To Cite
+
+Please use the following paper to cite Goéland:
+
+[CRDRB22] Julie Cailler, Johann Rosain, David Delahaye, Simon Robillard and Hinde
+L. Bouziane, [Goéland: A Concurrent Tableau-Based Theorem Prover (System
+Description)](https://doi.org/10.1007/978-3-031-10769-6_22).  
+In IJCAR22, 11th International Joint Conference on Automated Reasoning (Jasmin
+Blanchette, Laura Kovács, Dirk Pattinson eds.), Springer, LNCS, volume 13385,
+pp. 359-368, 2022.
