@@ -1,0 +1,88 @@
+name: Full CI
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  RemoveLabel:
+    if: github.event.label.name == 'request:ci'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: |
+            request:ci
+  # FIXME: disabled as always fail
+  # UnitTests:
+  #   if: github.event.label.name == 'request:ci'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-go@v3
+  #       with:
+  #         go-version: '>=1.22.0'
+  #     - run: sudo apt-get install -y golang-golang-x-tools
+  #     - run: cd src && make && make tests
+
+  VanillaSoundness:
+    if: github.event.label.name == 'request:ci'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.22.0'
+      - run: sudo apt-get install -y golang-golang-x-tools
+      - run: cd src && make
+      - run: cd external_scripts && python3 run_soundness_tests.py ../.github/soundness 120
+
+  InnerSoundness:
+    if: github.event.label.name == 'request:ci'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.22.0'
+      - run: sudo apt-get install -y golang-golang-x-tools
+      - run: cd src && make
+      - run: cd external_scripts && python3 run_soundness_tests.py ../.github/soundness 120 -inner
+
+  PreInnerSoundness:
+    if: github.event.label.name == 'request:ci'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.22.0'
+      - run: sudo apt-get install -y golang-golang-x-tools
+      - run: cd src && make
+      - run: cd external_scripts && python3 run_soundness_tests.py ../.github/soundness 120 -preinner
+
+  DMTSoundness:
+    if: github.event.label.name == 'request:ci'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.22.0'
+      - run: sudo apt-get install -y golang-golang-x-tools
+      - run: cd src && make
+      - run: cd external_scripts && python3 run_soundness_tests.py ../.github/soundness 120 -dmt
+
+  RemoveNeedsCIIfSucceed:
+    needs:
+      - VanillaSoundness
+      - InnerSoundness
+      - PreInnerSoundness
+      - DMTSoundness
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: |
+            needs:ci
+

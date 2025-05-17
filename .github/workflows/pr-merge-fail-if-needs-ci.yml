@@ -1,0 +1,14 @@
+name: Enforce CI run before merging
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  enforce-label:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: yogevbd/enforce-label-action@2.1.0
+      with:
+        BANNED_LABELS: "needs:ci"
+
