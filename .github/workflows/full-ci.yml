@@ -35,7 +35,7 @@ jobs:
           go-version: '>=1.22.0'
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
-      - run: cd external_scripts && python3 run_soundness_tests.py ../.github/soundness 120
+      - run: cd devtools && python3 run_soundness_tests.py ../.github/soundness 120
 
   InnerSoundness:
     if: github.event.label.name == 'request:ci'
@@ -47,7 +47,7 @@ jobs:
           go-version: '>=1.22.0'
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
-      - run: cd external_scripts && python3 run_soundness_tests.py ../.github/soundness 120 -inner
+      - run: cd devtools && python3 run_soundness_tests.py ../.github/soundness 120 -inner
 
   PreInnerSoundness:
     if: github.event.label.name == 'request:ci'
@@ -59,7 +59,7 @@ jobs:
           go-version: '>=1.22.0'
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
-      - run: cd external_scripts && python3 run_soundness_tests.py ../.github/soundness 120 -preinner
+      - run: cd devtools && python3 run_soundness_tests.py ../.github/soundness 120 -preinner
 
   DMTSoundness:
     if: github.event.label.name == 'request:ci'
@@ -71,7 +71,7 @@ jobs:
           go-version: '>=1.22.0'
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
-      - run: cd external_scripts && python3 run_soundness_tests.py ../.github/soundness 120 -dmt
+      - run: cd devtools && python3 run_soundness_tests.py ../.github/soundness 120 -dmt
 
   RemoveNeedsCIIfSucceed:
     needs:
