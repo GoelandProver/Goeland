@@ -17,13 +17,11 @@ them. The current maintainers are: @jcailler, @jrosain.
 Your code is expected to (i) build, (ii) satisfy the unit tests and (iii) not
 prove countertheorems. This check *does not* run automatically. One of the
 maintainers will trigger the CI when he sees fit. You may check soundness
-locally by running the
-[SOUNDNESS](https://github.com/GoelandProver/GoelandBenchmarks/tree/main/SOUNDNESS)
-benchmarks (see the [README](README.md#running-benchmarks) for more explanations
-on running benchmarks). Note that it is **not** the maintainer's responsibility
-to make your modifications compatible with the master's branch. If there are any
-conflicts, you are expected to solve them by *rebasing your branch on top of
-upstream's master*.
+locally by running the `ci-soundness` target of the [devtools](devtools)
+folder. Note that it is **not** the maintainer's responsibility to make your
+modifications compatible with the master's branch. If there are any conflicts,
+you are expected to solve them by *rebasing your branch on top of upstream's
+master*.
 
 If you are solving a bug referenced in the issue tracker, do not forget to link
 it in the PR.
