@@ -66,3 +66,7 @@ We provide a bunch of flags to make debugging easier:
 | -one_step | Enables only one step of search. |
 | -show_trace | Enables the location of the loggers call to be shown in the logs. |
 | -wlogs | Enables the writing of the logs in files. |
+
+The `-exchanges` and `-proof` options can be used together with the
+[visualization](devtools/visualization) module to have a visual idea of what
+happens during proof-search.
