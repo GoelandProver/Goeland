@@ -5,17 +5,20 @@ from subprocess import PIPE, run
 
 def Out(command):
     result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True, encoding='utf-8')
-    return result.stdout
+    return (result.stdout, result.stderr)
+
+def sanitize(s):
+    return s.encode('utf-8', errors='ignore').decode(errors='ignore')
 
 def LaunchTest(command_line, filename, success):
     print(f"Launching: {command_line}")
-    output = Out(command_line).encode('utf-8', errors='ignore').decode(errors='ignore')
+    output, err = Out(command_line)
 
-    if re.search(success, output):
-        print(f"Error: found proof for file ${filename}. Goéland is unsound.")
+    if re.search(success, sanitize(output)):
+        print(f"Error: found proof for file {filename}. Goéland is unsound.")
         exit(1)
-    else if re.search ("panic", output):
-        print(f"Error: panic encountered during proof-search of ${filename}.")
+    elif re.search ("panic", sanitize(err)):
+        print(f"Error: panic encountered during proof-search of {filename}.")
         exit(1)
 
 if len(sys.argv) < 3:
