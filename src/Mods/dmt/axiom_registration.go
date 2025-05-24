@@ -85,9 +85,7 @@ func addNegRewriteRule(axiom AST.Form, cons AST.Form) {
 
 func addRewriteRule(axiom AST.Form, cons AST.Form, polarity bool) {
 	for canSkolemize(cons) {
-		ft := Core.MakeFormAndTerm(cons, Lib.MkList[AST.Term](0))
-		ft = Core.Skolemize(ft, ft.GetForm().GetInternalMetas())
-		cons = ft.GetForm()
+		cons = Core.Skolemize(cons, cons.GetInternalMetas())
 	}
 	printDebugRewriteRule(polarity, axiom, cons)
 	rewriteMapInsertion(polarity, axiom.ToString(), cons)

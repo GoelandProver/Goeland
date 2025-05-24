@@ -468,8 +468,13 @@ func (dnf *DeltaNotForall) apply() []RuleList {
 	resultRules := RuleList{}
 	Glob.PrintDebug("SRCH", "Applying "+fmt.Sprint(dnf.FullString))
 
-	skolemizedForm := Core.Skolemize(Core.MakeFormAndTerm(dnf.GetForm(), dnf.GetTerms()), dnf.GetForm().GetMetas())
-	resultRules = append(resultRules, makeCorrectRule(skolemizedForm.GetForm(), skolemizedForm.GetTerms()))
+	skolemizedForm := Core.Skolemize(dnf.GetForm(), dnf.GetForm().GetMetas())
+	skolemizedFnt := Core.MakeFormAndTerm(skolemizedForm, dnf.GetTerms())
+
+	resultRules = append(
+		resultRules,
+		makeCorrectRule(skolemizedFnt.GetForm(), skolemizedFnt.GetTerms()),
+	)
 
 	return []RuleList{resultRules}
 }
@@ -482,8 +487,13 @@ func (de *DeltaExists) apply() []RuleList {
 	resultRules := RuleList{}
 	Glob.PrintDebug("SRCH", "Applying "+fmt.Sprint(de.FullString))
 
-	skolemizedForm := Core.Skolemize(Core.MakeFormAndTerm(de.GetForm(), de.GetTerms()), de.GetForm().GetMetas())
-	resultRules = append(resultRules, makeCorrectRule(skolemizedForm.GetForm(), skolemizedForm.GetTerms()))
+	skolemizedForm := Core.Skolemize(de.GetForm(), de.GetForm().GetMetas())
+	skolemizedFnt := Core.MakeFormAndTerm(skolemizedForm, de.GetTerms())
+
+	resultRules = append(
+		resultRules,
+		makeCorrectRule(skolemizedFnt.GetForm(), skolemizedFnt.GetTerms()),
+	)
 
 	return []RuleList{resultRules}
 }

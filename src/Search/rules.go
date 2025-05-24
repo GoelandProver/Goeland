@@ -450,8 +450,15 @@ func ApplyDeltaRules(fnt Core.FormAndTerms, state *State) Core.FormAndTermsList 
 
 	newMetas := state.GetMM().Copy()
 	newMetas.AppendIfNotContains(state.GetMC().Slice()...)
+	metasAsTerms := Lib.ListMap(
+		Lib.MkListV(newMetas.List.Slice()...),
+		Glob.To[AST.Term],
+	)
 
-	return Core.MakeSingleElementFormAndTermList(Core.Skolemize(fnt, newMetas))
+	f := Core.Skolemize(fnt.GetForm(), newMetas)
+	return Core.MakeSingleElementFormAndTermList(
+		Core.MakeFormAndTerm(f, metasAsTerms),
+	)
 }
 
 /**

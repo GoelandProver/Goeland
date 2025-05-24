@@ -142,8 +142,17 @@ func (l *List[T]) Add(cmpFunc Func2[T, T, bool], x ...T) {
 	}
 }
 
-func (l *List[T]) Get(from, to int) []T {
+func (l List[T]) Get(from, to int) []T {
 	return l.values[from:to]
+}
+
+func (l List[T]) Find(pred Func[T, bool], def T) (T, bool) {
+	for _, v := range l.values {
+		if pred(v) {
+			return v, true
+		}
+	}
+	return def, false
 }
 
 func ToStrictlyOrderedList[T StrictlyOrdered](l List[T]) StrictlyOrderedList[T] {

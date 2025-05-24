@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Core"
+	"github.com/GoelandProver/Goeland/Core/Sko"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Mods/assisted"
 	"github.com/GoelandProver/Goeland/Mods/coq"
@@ -279,14 +281,14 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"inner",
 		false,
-		"Enables on-the-fly inner Skolemisation during the proof-search",
-		func(bool) { Glob.SetInnerSko(true) },
+		"Enables inner Skolemisation during the proof-search",
+		func(bool) { Core.SetSelectedSkolemization(Sko.MkInnerSkolemization()) },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"preinner",
 		false,
 		"Activates preinner Skolemisation, a Skolemisation strategy even more optimized than -inner",
-		func(bool) { Glob.SetPreInnerSko(true) },
+		func(bool) { Core.SetSelectedSkolemization(Sko.MkPreInnerSkolemization()) },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"assisted",
