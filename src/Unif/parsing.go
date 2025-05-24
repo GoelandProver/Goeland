@@ -35,6 +35,7 @@ package Unif
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type TermForm struct {
@@ -86,7 +87,7 @@ func (t TermForm) GetMetas() *AST.MetaList {
 	case AST.Fun:
 		res := AST.NewMetaList()
 
-		for _, m := range nt.GetArgs().Slice() {
+		for _, m := range nt.GetArgs().GetSlice() {
 			switch mt := m.(type) {
 			case AST.Meta:
 				res.AppendIfNotContains(mt)
@@ -99,7 +100,7 @@ func (t TermForm) GetMetas() *AST.MetaList {
 	}
 }
 
-func (t TermForm) GetSubTerms() *AST.TermList {
+func (t TermForm) GetSubTerms() Lib.List[AST.Term] {
 	return t.GetTerm().GetSubTerms()
 }
 
@@ -142,7 +143,13 @@ func ParseFormula(formula AST.Form) Sequence {
 		varCount := 0
 		postCount := 0
 		instructions.add(Begin{})
-		parseTerms(AST.NewTermList(formula_type.GetTerm().Copy()), &instructions, AST.NewMetaList(), &varCount, &postCount)
+		parseTerms(
+			Lib.MkListV(formula_type.GetTerm().Copy()),
+			&instructions,
+			AST.NewMetaList(),
+			&varCount,
+			&postCount,
+		)
 		instructions.add(End{})
 
 		return instructions
@@ -152,11 +159,13 @@ func ParseFormula(formula AST.Form) Sequence {
 	}
 }
 
-func TypeAndTermsToTerms(types []AST.TypeApp, terms *AST.TermList) *AST.TermList {
-	tms := AST.NewTermList()
-
-	tms.Append(AST.TypeAppArrToTerm(types).Slice()...)
-	tms.Append(terms.Slice()...)
+func TypeAndTermsToTerms(
+	types []AST.TypeApp,
+	terms Lib.List[AST.Term],
+) Lib.List[AST.Term] {
+	tms := Lib.MkList[AST.Term](0)
+	tms.Append(AST.TypeAppArrToTerm(types).GetSlice()...)
+	tms.Append(terms.GetSlice()...)
 
 	return tms
 }
@@ -175,17 +184,23 @@ func parsePred(p AST.Pred, instructions *Sequence) {
 }
 
 /* Parses an array of terms to machine instructions */
-func parseTerms(terms *AST.TermList, instructions *Sequence, subst *AST.MetaList, varCount *int, postCount *int) *AST.MetaList {
+func parseTerms(
+	terms Lib.List[AST.Term],
+	instructions *Sequence,
+	subst *AST.MetaList,
+	varCount *int,
+	postCount *int,
+) *AST.MetaList {
 
-	rightDefined := func(terms *AST.TermList, i int) bool {
+	rightDefined := func(terms Lib.List[AST.Term], i int) bool {
 		return i < terms.Len()-1
 	}
 
-	downDefined := func(terms *AST.TermList) bool {
+	downDefined := func(terms Lib.List[AST.Term]) bool {
 		return terms.Len() > 0
 	}
 
-	for i, term := range terms.Slice() {
+	for i, term := range terms.GetSlice() {
 		switch t := term.(type) {
 		case AST.Meta:
 			instructions.add(Put{i: *varCount})
@@ -233,7 +248,13 @@ func ParseTerm(term AST.Term) Sequence {
 	var instructions Sequence
 	varCount := 0
 	postCount := 0
-	parseTerms(AST.NewTermList(term.Copy()), &instructions, AST.NewMetaList(), &varCount, &postCount)
+	parseTerms(
+		Lib.MkListV(term.Copy()),
+		&instructions,
+		AST.NewMetaList(),
+		&varCount,
+		&postCount,
+	)
 	instructions.formula = MakerTermForm(term)
 	return instructions
 }

@@ -46,6 +46,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -118,7 +119,10 @@ func (ifl *IntFormAndTermsList) GetForms() *AST.FormList {
 	return res
 }
 
-func (ifl *IntFormAndTermsList) SubstituteBy(metas *AST.MetaList, terms *AST.TermList) IntFormAndTermsList {
+func (ifl *IntFormAndTermsList) SubstituteBy(
+	metas *AST.MetaList,
+	terms Lib.List[AST.Term],
+) IntFormAndTermsList {
 	return MakeIntFormAndTermsList(ifl.i, ifl.fl.SubstituteBy(metas, terms))
 }
 
@@ -239,7 +243,10 @@ func (p *ProofStruct) SetResultFormulasProof(fl []IntFormAndTermsList) {
 /* makers */
 
 func MakeEmptyProofStruct() ProofStruct {
-	return ProofStruct{Core.MakeFormAndTerm(AST.MakerBot(), AST.NewTermList()), -1, -1, "", "", []IntFormAndTermsList{}, [][]ProofStruct{}}
+	return ProofStruct{
+		Core.MakeFormAndTerm(AST.MakerBot(), Lib.MkList[AST.Term](0)),
+		-1, -1, "", "", []IntFormAndTermsList{}, [][]ProofStruct{},
+	}
 }
 
 func MakeProofStruct(formula Core.FormAndTerms, formula_use, id int, rule, rule_name string, Result_formulas []IntFormAndTermsList, children [][]ProofStruct) ProofStruct {

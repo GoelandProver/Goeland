@@ -120,7 +120,7 @@ func getContextFromFormula(root AST.Form) []string {
 		if !nf.GetID().Equals(AST.Id_eq) {
 			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToMappedString(coqMapConnectors(), false), nf.GetType().ToString())))
 		}
-		for _, term := range nf.GetArgs().Slice() {
+		for _, term := range nf.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}
@@ -131,7 +131,7 @@ func getContextFromTerm(trm AST.Term) []string {
 	result := []string{}
 	if fun, isFun := trm.(AST.Fun); isFun {
 		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToMappedString(coqMapConnectors(), false), fun.GetTypeHint().ToString())))
-		for _, term := range fun.GetArgs().Slice() {
+		for _, term := range fun.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}

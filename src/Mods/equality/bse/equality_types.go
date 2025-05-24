@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -123,10 +124,16 @@ func retrieveEqualities(dt Unif.DataStructure) Equalities {
 	MetaEQ2 := AST.MakerMeta("METAEQ2", -1)
 	// TODO: type this
 	tv := AST.MkTypeVar("EQ")
-	eq_pred := AST.MakerPred(AST.Id_eq, AST.NewTermList(), []AST.TypeApp{})
+	eq_pred := AST.MakerPred(AST.Id_eq, Lib.MkList[AST.Term](0), []AST.TypeApp{})
 	tv.ShouldBeMeta(eq_pred.GetIndex())
 	tv.Instantiate(1)
-	eq_pred = AST.MakePred(eq_pred.GetIndex(), AST.Id_eq, AST.NewTermList(MetaEQ1, MetaEQ2), []AST.TypeApp{}, AST.GetPolymorphicType(AST.Id_eq.GetName(), 1, 2))
+	eq_pred = AST.MakePred(
+		eq_pred.GetIndex(),
+		AST.Id_eq,
+		Lib.MkListV[AST.Term](MetaEQ1, MetaEQ2),
+		[]AST.TypeApp{},
+		AST.GetPolymorphicType(AST.Id_eq.GetName(), 1, 2),
+	)
 	_, eq_list := dt.Unify(eq_pred)
 
 	for _, ms := range eq_list {
@@ -152,10 +159,16 @@ func retrieveInequalities(dt Unif.DataStructure) Inequalities {
 	// TODO: type this
 
 	tv := AST.MkTypeVar("EQ")
-	neq_pred := AST.MakerPred(AST.Id_eq, AST.NewTermList(), []AST.TypeApp{})
+	neq_pred := AST.MakerPred(AST.Id_eq, Lib.MkList[AST.Term](0), []AST.TypeApp{})
 	tv.ShouldBeMeta(neq_pred.GetIndex())
 	tv.Instantiate(1)
-	neq_pred = AST.MakePred(neq_pred.GetIndex(), AST.Id_eq, AST.NewTermList(MetaNEQ1, MetaNEQ2), []AST.TypeApp{}, AST.GetPolymorphicType(AST.Id_eq.GetName(), 1, 2))
+	neq_pred = AST.MakePred(
+		neq_pred.GetIndex(),
+		AST.Id_eq,
+		Lib.MkListV[AST.Term](MetaNEQ1, MetaNEQ2),
+		[]AST.TypeApp{},
+		AST.GetPolymorphicType(AST.Id_eq.GetName(), 1, 2),
+	)
 	_, neq_list := dt.Unify(neq_pred)
 
 	for _, ms := range neq_list {

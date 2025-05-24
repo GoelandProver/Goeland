@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -260,7 +261,10 @@ func MakeState(limit int, tp, tn Unif.DataStructure, f AST.Form) State {
 
 	current_proof := MakeEmptyProofStruct()
 	current_proof.SetRuleProof("Initial formula")
-	current_proof.SetFormulaProof(Core.MakeFormAndTerm(f.Copy(), AST.NewTermList()))
+	current_proof.SetFormulaProof(Core.MakeFormAndTerm(
+		f.Copy(),
+		Lib.MkList[AST.Term](0),
+	))
 
 	return State{
 		n,

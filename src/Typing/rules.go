@@ -37,6 +37,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /**
@@ -155,10 +156,25 @@ func reconstructForm(reconstruction Reconstruct, baseForm AST.Form) Reconstruct 
 		// The len(form.GetTypeVars()) first children launched are children for typevars.
 		// So the len(form.GetTypeVars()) first children will return <nil>
 		if reconstruction.terms.Len() > len(form.GetTypeVars()) {
-			terms := AST.NewTermList(reconstruction.terms.GetElements(len(form.GetTypeVars()), reconstruction.terms.Len())...)
-			f = AST.MakePred(form.GetIndex(), form.GetID(), terms, form.GetTypeVars(), form.GetType())
+			terms := Lib.MkListV(reconstruction.terms.Get(
+				len(form.GetTypeVars()),
+				reconstruction.terms.Len(),
+			)...)
+			f = AST.MakePred(
+				form.GetIndex(),
+				form.GetID(),
+				terms,
+				form.GetTypeVars(),
+				form.GetType(),
+			)
 		} else {
-			f = AST.MakePred(form.GetIndex(), form.GetID(), AST.NewTermList(), form.GetTypeVars(), form.GetType())
+			f = AST.MakePred(
+				form.GetIndex(),
+				form.GetID(),
+				Lib.MkList[AST.Term](0),
+				form.GetTypeVars(),
+				form.GetType(),
+			)
 		}
 	case AST.Top, AST.Bot:
 		f = baseForm
@@ -180,15 +196,28 @@ func reconstructTerm(reconstruction Reconstruct, baseTerm AST.Term) Reconstruct 
 		// The len(form.GetTypeVars()) first children launched are children for typevars.
 		// So the len(form.GetTypeVars()) first children will return <nil>
 		if reconstruction.terms.Len() > len(termFun.GetTypeVars()) {
-			terms := AST.NewTermList(reconstruction.terms.GetElements(len(termFun.GetTypeVars()), reconstruction.terms.Len())...)
-			fun = AST.MakerFun(termFun.GetID(), terms, termFun.GetTypeVars(), termFun.GetTypeHint())
+			terms := Lib.MkListV(reconstruction.terms.Get(
+				len(termFun.GetTypeVars()),
+				reconstruction.terms.Len(),
+			)...)
+			fun = AST.MakerFun(
+				termFun.GetID(),
+				terms,
+				termFun.GetTypeVars(),
+				termFun.GetTypeHint(),
+			)
 		} else {
-			fun = AST.MakerFun(termFun.GetID(), AST.NewTermList(), termFun.GetTypeVars(), termFun.GetTypeHint())
+			fun = AST.MakerFun(
+				termFun.GetID(),
+				Lib.MkList[AST.Term](0),
+				termFun.GetTypeVars(),
+				termFun.GetTypeHint(),
+			)
 		}
-		return Reconstruct{result: true, terms: AST.NewTermList(fun), err: nil}
+		return Reconstruct{result: true, terms: Lib.MkListV[AST.Term](fun), err: nil}
 	}
 
-	return Reconstruct{result: true, terms: AST.NewTermList(baseTerm), err: nil}
+	return Reconstruct{result: true, terms: Lib.MkListV(baseTerm), err: nil}
 }
 
 /* Utils for reconstructions function */

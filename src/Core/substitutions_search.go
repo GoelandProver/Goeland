@@ -41,6 +41,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -56,7 +57,7 @@ func GetMetaFromSubst(subs Unif.Substitutions) *AST.MetaList {
 		case AST.Meta:
 			res.AppendIfNotContains(typedTerm)
 		case AST.Fun:
-			res.AppendIfNotContains(typedTerm.GetArgs().GetMetas().Slice()...)
+			res.AppendIfNotContains(AST.GetMetas(typedTerm.GetArgs()).Slice()...)
 		}
 	}
 
@@ -202,12 +203,15 @@ func applySubstitutionOnType(old_type, new_type, t AST.TypeApp) AST.TypeApp {
 }
 
 /* Apply substitutions on a list of terms */
-func ApplySubstitutionsOnTermList(s Unif.Substitutions, tl *AST.TermList) *AST.TermList {
-	res := AST.NewTermList()
+func ApplySubstitutionsOnTermList(
+	s Unif.Substitutions,
+	tl Lib.List[AST.Term],
+) Lib.List[AST.Term] {
+	res := Lib.MkList[AST.Term](tl.Len())
 
-	for _, t := range tl.Slice() {
+	for i, t := range tl.GetSlice() {
 		newTerm := ApplySubstitutionsOnTerm(s, t)
-		res.AppendIfNotContains(newTerm)
+		res.Upd(i, newTerm)
 	}
 
 	return res
@@ -227,11 +231,15 @@ func ApplySubstitutionsOnTerm(s Unif.Substitutions, t AST.Term) AST.Term {
 }
 
 /* Apply substElement on a term list */
-func ApplySubstitutionOnTermList(old_symbol AST.Meta, new_symbol AST.Term, tl *AST.TermList) *AST.TermList {
-	res := AST.NewTermList()
+func ApplySubstitutionOnTermList(
+	old_symbol AST.Meta,
+	new_symbol AST.Term,
+	tl Lib.List[AST.Term],
+) Lib.List[AST.Term] {
+	res := Lib.MkList[AST.Term](tl.Len())
 
-	for _, t := range tl.Slice() {
-		res.Append(ApplySubstitutionOnTerm(old_symbol, new_symbol, t))
+	for i, t := range tl.GetSlice() {
+		res.Upd(i, ApplySubstitutionOnTerm(old_symbol, new_symbol, t))
 	}
 
 	return res

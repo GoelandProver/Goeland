@@ -35,6 +35,8 @@ import (
 	"strings"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 const (
@@ -61,13 +63,21 @@ func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, *AST.MetaList) {
 	return fnt, AST.NewMetaList(meta)
 }
 
-func RealInstantiate(varList []AST.Var, index, status int, subForm AST.Form, terms *AST.TermList) (FormAndTerms, AST.Meta) {
+func RealInstantiate(
+	varList []AST.Var,
+	index, status int,
+	subForm AST.Form,
+	terms Lib.List[AST.Term],
+) (FormAndTerms, AST.Meta) {
 	v := varList[0]
 	meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(AST.TypeApp))
 	subForm = subForm.SubstituteVarByMeta(v, meta)
 
-	terms = terms.Copy()
-	terms.AppendIfNotContains(meta)
+	terms = terms.Copy(AST.Term.Copy)
+	terms.Add(
+		AST.TermEquals,
+		Glob.To[AST.Term](meta),
+	)
 
 	internalMetas := subForm.GetInternalMetas()
 

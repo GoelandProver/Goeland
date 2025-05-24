@@ -38,6 +38,7 @@ package AST
 
 import (
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type MetaList struct {
@@ -67,11 +68,11 @@ func (ml *MetaList) IsIncludeInsideOF(other *MetaList) bool {
 	return true
 }
 
-func (ml *MetaList) ToTermList() *TermList {
-	res := NewTermList()
+func (ml *MetaList) ToTermList() Lib.List[Term] {
+	res := Lib.MkList[Term](0)
 
 	for _, meta := range ml.Slice() {
-		res.AppendIfNotContains(meta)
+		res.Add(TermEquals, Glob.To[Term](meta))
 	}
 
 	return res

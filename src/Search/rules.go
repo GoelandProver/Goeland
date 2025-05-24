@@ -41,6 +41,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -153,8 +154,8 @@ func searchInequalities(form AST.Form) (bool, Unif.Substitutions) {
 				Glob.PrintDebug("SI", fmt.Sprintf("Search Inequality closure rule : %v", form.ToString()))
 
 				// Search if the two terms are unfiable
-				arg_1 := predNeq.GetArgs().Get(0)
-				arg_2 := predNeq.GetArgs().Get(1)
+				arg_1 := predNeq.GetArgs().At(0)
+				arg_2 := predNeq.GetArgs().At(1)
 
 				Glob.PrintDebug("SI", fmt.Sprintf("Arg 1 : %v", arg_1.ToString()))
 				Glob.PrintDebug("SI", fmt.Sprintf("Arg 2 : %v", arg_2.ToString()))
@@ -228,7 +229,12 @@ func ApplyAlphaRules(fnt Core.FormAndTerms, state *State) Core.FormAndTermsList 
 	return result
 }
 
-func applyAlphaNotRule(formTyped AST.Not, state *State, terms *AST.TermList, result Core.FormAndTermsList) Core.FormAndTermsList {
+func applyAlphaNotRule(
+	formTyped AST.Not,
+	state *State,
+	terms Lib.List[AST.Term],
+	result Core.FormAndTermsList,
+) Core.FormAndTermsList {
 	switch formWithoutNot := formTyped.GetForm().(type) {
 	case AST.Not:
 		result = applyAlphaNotNotRule(formWithoutNot, state, terms, result)
@@ -241,7 +247,12 @@ func applyAlphaNotRule(formTyped AST.Not, state *State, terms *AST.TermList, res
 	return result
 }
 
-func applyAlphaNotNotRule(formWithoutNot AST.Not, state *State, terms *AST.TermList, result Core.FormAndTermsList) Core.FormAndTermsList {
+func applyAlphaNotNotRule(
+	formWithoutNot AST.Not,
+	state *State,
+	terms Lib.List[AST.Term],
+	result Core.FormAndTermsList,
+) Core.FormAndTermsList {
 	setStateRules(state, "ALPHA", "NOT", "NOT")
 
 	result = result.AppendIfNotContains(Core.MakeFormAndTerm(formWithoutNot.GetForm(), terms))
@@ -249,7 +260,12 @@ func applyAlphaNotNotRule(formWithoutNot AST.Not, state *State, terms *AST.TermL
 	return result
 }
 
-func applyAlphaNotOrRule(formWithoutNot AST.Or, state *State, terms *AST.TermList, result Core.FormAndTermsList) Core.FormAndTermsList {
+func applyAlphaNotOrRule(
+	formWithoutNot AST.Or,
+	state *State,
+	terms Lib.List[AST.Term],
+	result Core.FormAndTermsList,
+) Core.FormAndTermsList {
 	setStateRules(state, "ALPHA", "NOT", "OR")
 
 	for i := range formWithoutNot.FormList.Slice() {
@@ -259,7 +275,12 @@ func applyAlphaNotOrRule(formWithoutNot AST.Or, state *State, terms *AST.TermLis
 	return result
 }
 
-func applyAlphaNotImpRule(formWithoutNot AST.Imp, state *State, terms *AST.TermList, result Core.FormAndTermsList) Core.FormAndTermsList {
+func applyAlphaNotImpRule(
+	formWithoutNot AST.Imp,
+	state *State,
+	terms Lib.List[AST.Term],
+	result Core.FormAndTermsList,
+) Core.FormAndTermsList {
 	setStateRules(state, "ALPHA", "NOT", "IMPLY")
 
 	result = result.AppendIfNotContains(Core.MakeFormAndTerm(formWithoutNot.GetF1(), terms))
@@ -268,7 +289,12 @@ func applyAlphaNotImpRule(formWithoutNot AST.Imp, state *State, terms *AST.TermL
 	return result
 }
 
-func applyAlphaAndRule(formTyped AST.And, state *State, terms *AST.TermList, result Core.FormAndTermsList) Core.FormAndTermsList {
+func applyAlphaAndRule(
+	formTyped AST.And,
+	state *State,
+	terms Lib.List[AST.Term],
+	result Core.FormAndTermsList,
+) Core.FormAndTermsList {
 	setStateRules(state, "ALPHA", "AND")
 
 	for i := range formTyped.FormList.Slice() {
@@ -306,7 +332,12 @@ func ApplyBetaRules(fnt Core.FormAndTerms, state *State) []Core.FormAndTermsList
 	return result
 }
 
-func applyBetaNotRule(formTyped AST.Not, state *State, terms *AST.TermList, result []Core.FormAndTermsList) []Core.FormAndTermsList {
+func applyBetaNotRule(
+	formTyped AST.Not,
+	state *State,
+	terms Lib.List[AST.Term],
+	result []Core.FormAndTermsList,
+) []Core.FormAndTermsList {
 	switch formWithoutNot := formTyped.GetForm().(type) {
 	case AST.And:
 		result = applyBetaNotAndRule(formWithoutNot, state, terms, result)
@@ -317,7 +348,12 @@ func applyBetaNotRule(formTyped AST.Not, state *State, terms *AST.TermList, resu
 	return result
 }
 
-func applyBetaNotAndRule(formWithoutNot AST.And, state *State, terms *AST.TermList, result []Core.FormAndTermsList) []Core.FormAndTermsList {
+func applyBetaNotAndRule(
+	formWithoutNot AST.And,
+	state *State,
+	terms Lib.List[AST.Term],
+	result []Core.FormAndTermsList,
+) []Core.FormAndTermsList {
 	setStateRules(state, "BETA", "NOT", "AND")
 
 	for i := range formWithoutNot.FormList.Slice() {
@@ -327,7 +363,12 @@ func applyBetaNotAndRule(formWithoutNot AST.And, state *State, terms *AST.TermLi
 	return result
 }
 
-func applyBetaNotEquRule(formWithoutNot AST.Equ, state *State, terms *AST.TermList, result []Core.FormAndTermsList) []Core.FormAndTermsList {
+func applyBetaNotEquRule(
+	formWithoutNot AST.Equ,
+	state *State,
+	terms Lib.List[AST.Term],
+	result []Core.FormAndTermsList,
+) []Core.FormAndTermsList {
 	setStateRules(state, "BETA", "NOT", "EQUIV")
 
 	result = append(result,
@@ -342,7 +383,12 @@ func applyBetaNotEquRule(formWithoutNot AST.Equ, state *State, terms *AST.TermLi
 	return result
 }
 
-func applyBetaOrRule(formTyped AST.Or, state *State, terms *AST.TermList, result []Core.FormAndTermsList) []Core.FormAndTermsList {
+func applyBetaOrRule(
+	formTyped AST.Or,
+	state *State,
+	terms Lib.List[AST.Term],
+	result []Core.FormAndTermsList,
+) []Core.FormAndTermsList {
 	setStateRules(state, "BETA", "OR")
 
 	for i := range formTyped.FormList.Slice() {
@@ -352,7 +398,12 @@ func applyBetaOrRule(formTyped AST.Or, state *State, terms *AST.TermList, result
 	return result
 }
 
-func applyBetaImpRule(formTyped AST.Imp, state *State, terms *AST.TermList, result []Core.FormAndTermsList) []Core.FormAndTermsList {
+func applyBetaImpRule(
+	formTyped AST.Imp,
+	state *State,
+	terms Lib.List[AST.Term],
+	result []Core.FormAndTermsList,
+) []Core.FormAndTermsList {
 	setStateRules(state, "BETA", "IMPLY")
 
 	result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(AST.RefuteForm(formTyped.GetF1()), terms)))
@@ -361,7 +412,12 @@ func applyBetaImpRule(formTyped AST.Imp, state *State, terms *AST.TermList, resu
 	return result
 }
 
-func applyBetaEquRule(formTyped AST.Equ, state *State, terms *AST.TermList, result []Core.FormAndTermsList) []Core.FormAndTermsList {
+func applyBetaEquRule(
+	formTyped AST.Equ,
+	state *State,
+	terms Lib.List[AST.Term],
+	result []Core.FormAndTermsList,
+) []Core.FormAndTermsList {
 	setStateRules(state, "BETA", "EQUIV")
 
 	result = append(result,

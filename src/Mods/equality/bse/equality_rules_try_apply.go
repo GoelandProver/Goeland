@@ -41,6 +41,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -89,7 +90,11 @@ func tryApplyRuleCompute(s, t AST.Term, ep EqualityProblem, type_rule int) ruleS
 
 	// Retrieve the list of substerm of s
 	subterms_of_s := s.GetSubTerms()
-	Glob.PrintDebug("TARA", fmt.Sprintf("len subterms found : %v - %v", subterms_of_s.Len(), subterms_of_s.ToString()))
+	Glob.PrintDebug("TARA", fmt.Sprintf(
+		"len subterms found : %v - %v",
+		subterms_of_s.Len(),
+		subterms_of_s.ToString(AST.Term.ToString, ",", "[]"),
+	))
 	Glob.PrintDebug("TARA", fmt.Sprintf("EP eq list : %v", ep.GetE().ToString()))
 
 	// for each l' substerm of s, return a list (l', l) unifiable
@@ -107,7 +112,7 @@ func connectLAndR(list_l_prime_l []eqStruct.TermPair, ep EqualityProblem, s AST.
 	for _, l_prime_l_pair := range list_l_prime_l {
 		Glob.PrintDebug("TARA", fmt.Sprintf("Subterms unifiable found : %v", l_prime_l_pair.ToString()))
 
-		for _, r := range ep.getEMap()[l_prime_l_pair.GetT2().ToString()].Slice() {
+		for _, r := range ep.getEMap()[l_prime_l_pair.GetT2().ToString()].GetSlice() {
 			Glob.PrintDebug("TARA", fmt.Sprintf("On veut susbstituer %v (unifiable avec %v) par %v dans %v = %v", l_prime_l_pair.GetT1().ToString(), l_prime_l_pair.GetT2().ToString(), r.ToString(), s.ToString(), t.ToString()))
 
 			// create pair an check equality
@@ -127,10 +132,13 @@ func connectLAndR(list_l_prime_l []eqStruct.TermPair, ep EqualityProblem, s AST.
 }
 
 /* return all the pair (l, l') unifiable */
-func searchUnifBewteenListAndEq(tl *AST.TermList, tree Unif.DataStructure) []eqStruct.TermPair {
-	Glob.PrintDebug("SUBLE", fmt.Sprintf("Searching unfication between %v and the eq tree", tl.ToString()))
+func searchUnifBewteenListAndEq(tl Lib.List[AST.Term], tree Unif.DataStructure) []eqStruct.TermPair {
+	Glob.PrintDebug("SUBLE", fmt.Sprintf(
+		"Searching unfication between %v and the eq tree",
+		tl.ToString(AST.Term.ToString, ",", "[]"),
+	))
 	term_pair_list := []eqStruct.TermPair{}
-	for _, t_prime := range tl.Slice() {
+	for _, t_prime := range tl.GetSlice() {
 		// If the subterm is not a variable
 		Glob.PrintDebug("SUBLE", "------------------------------------------")
 		Glob.PrintDebug("SUBLE", fmt.Sprintf("Current subterm : %v", t_prime.ToString()))
@@ -138,7 +146,7 @@ func searchUnifBewteenListAndEq(tl *AST.TermList, tree Unif.DataStructure) []eqS
 			res, tl := checkUnifInTree(t_prime, tree)
 			if res {
 				Glob.PrintDebug("SUBLE", "Unification found !")
-				for _, t := range tl.Slice() {
+				for _, t := range tl.GetSlice() {
 					Glob.PrintDebug("SUBLE", fmt.Sprintf("Unif found with : %v", t.ToString()))
 					term_pair_list = append(term_pair_list, eqStruct.MakeTermPair(t_prime, t))
 				}
@@ -153,8 +161,8 @@ func searchUnifBewteenListAndEq(tl *AST.TermList, tree Unif.DataStructure) []eqS
 }
 
 /* Take a (sub)-term t, and retrieve all the term t' unifiable with t */
-func checkUnifInTree(t AST.Term, tree Unif.DataStructure) (bool, *AST.TermList) {
-	result_list := AST.NewTermList()
+func checkUnifInTree(t AST.Term, tree Unif.DataStructure) (bool, Lib.List[AST.Term]) {
+	result_list := Lib.MkList[AST.Term](0)
 	res, ms := tree.Unify(Unif.MakerTermForm(t.Copy()))
 
 	if !res {

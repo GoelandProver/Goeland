@@ -190,8 +190,13 @@ func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) Equal
 /* Build an equality problem list from a predicat and its negation */
 func buildEqualityProblemListFrom2Pred(p1 AST.Pred, p2 AST.Pred, eq Equalities) EqualityProblemList {
 	res := makeEmptyEqualityProblemList()
-	for i := range p1.GetArgs().Slice() {
-		res = append(res, makeEqualityProblem(eq.copy(), p1.GetArgs().Get(i).Copy(), p2.GetArgs().Get(i).Copy(), makeEmptyConstraintStruct()))
+	for i := range p1.GetArgs().GetSlice() {
+		res = append(res, makeEqualityProblem(
+			eq.copy(),
+			p1.GetArgs().At(i).Copy(),
+			p2.GetArgs().At(i).Copy(),
+			makeEmptyConstraintStruct()),
+		)
 	}
 	return res
 }
@@ -203,7 +208,7 @@ func buildEqualityProblemMultiListFromPredList(pred AST.Pred, tn Unif.DataStruct
 	predId := pred.GetID()
 	metas := AST.NewMetaList()
 
-	for _, arg := range pred.GetArgs().Slice() {
+	for _, arg := range pred.GetArgs().GetSlice() {
 		metas.AppendIfNotContains(AST.MakerMeta("METAEQ_"+arg.ToString(), -1))
 	}
 

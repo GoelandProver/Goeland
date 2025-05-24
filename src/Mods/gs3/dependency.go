@@ -121,7 +121,7 @@ func getVariableOccurrencesForm(v AST.Var, form AST.Form, currentOcc occurrences
 	copy(workingPath, path)
 	switch f := form.(type) {
 	case AST.Pred:
-		for i, term := range f.GetArgs().Slice() {
+		for i, term := range f.GetArgs().GetSlice() {
 			currentOcc = getVariableOccurrencesTerm(v, term, currentOcc, appcp(workingPath, i))
 		}
 	case AST.Not:
@@ -164,7 +164,7 @@ func getVariableOccurrencesTerm(v AST.Var, term AST.Term, currentOcc occurrences
 			currentOcc = append(currentOcc, workingPath)
 		}
 	case AST.Fun:
-		for i, nt := range t.GetArgs().Slice() {
+		for i, nt := range t.GetArgs().GetSlice() {
 			currentOcc = getVariableOccurrencesTerm(v, nt, currentOcc, appcp(workingPath, i))
 		}
 	}
@@ -192,7 +192,7 @@ func getTermAux(form AST.Form, occ occurrence) AST.Term {
 	switch f := form.(type) {
 	case AST.Pred:
 		if occ[0] < f.GetArgs().Len() {
-			term = getTerm(f.GetArgs().Get(occ[0]), occ[1:])
+			term = getTerm(f.GetArgs().At(occ[0]), occ[1:])
 		}
 	case AST.Not:
 		term = getUnaryTerm(f.GetForm(), occ)
@@ -239,7 +239,7 @@ func getTerm(term AST.Term, occ occurrence) AST.Term {
 		if occ[0] >= fn.GetArgs().Len() {
 			return nil
 		}
-		return getTerm(fn.GetArgs().Get(occ[0]), occ[1:])
+		return getTerm(fn.GetArgs().At(occ[0]), occ[1:])
 	}
 	return nil
 }

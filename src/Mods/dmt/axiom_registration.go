@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 func RegisterAxiom(axiom AST.Form) bool {
@@ -59,7 +60,7 @@ func RegisterAxiom(axiom AST.Form) bool {
 }
 
 func instanciateForalls(axiom AST.Form) AST.Form {
-	axiomFT := Core.MakeFormAndTerm(axiom.Copy(), AST.NewTermList())
+	axiomFT := Core.MakeFormAndTerm(axiom.Copy(), Lib.MkList[AST.Term](0))
 	for Glob.Is[AST.All](axiomFT.GetForm()) {
 		axiomFT, _ = Core.Instantiate(axiomFT, -1)
 	}
@@ -84,7 +85,7 @@ func addNegRewriteRule(axiom AST.Form, cons AST.Form) {
 
 func addRewriteRule(axiom AST.Form, cons AST.Form, polarity bool) {
 	for canSkolemize(cons) {
-		ft := Core.MakeFormAndTerm(cons, AST.NewTermList())
+		ft := Core.MakeFormAndTerm(cons, Lib.MkList[AST.Term](0))
 		ft = Core.Skolemize(ft, ft.GetForm().GetInternalMetas())
 		cons = ft.GetForm()
 	}

@@ -32,6 +32,8 @@
 
 package Lib
 
+type ComparableList[T Comparable] []T
+
 func (cpbl ComparableList[T]) Equals(oth ComparableList[T]) bool {
 	if len(cpbl) != len(oth) {
 		return false

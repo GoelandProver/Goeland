@@ -41,6 +41,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -109,7 +110,7 @@ func (cl ConstraintList) isConsistantWithSubst(s Unif.Substitutions) bool {
 * check intersection is empty
 **/
 func (cl ConstraintList) checkConstraintList() bool {
-	map_constraintes := make(map[string][]*AST.TermList)
+	map_constraintes := make(map[string][]Lib.List[AST.Term])
 
 	for _, c := range cl {
 		Glob.PrintDebug("CCL", fmt.Sprintf("Constraint : %v", c.toString()))

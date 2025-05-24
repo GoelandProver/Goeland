@@ -40,23 +40,24 @@ import (
 	"strconv"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /* Association between an integer and an array of Terms. */
 type IntPair struct {
 	q     int
-	terms *AST.TermList
+	terms Lib.List[AST.Term]
 }
 
 func (ip IntPair) GetQ() int {
 	return ip.q
 }
-func (ip IntPair) GetTerms() *AST.TermList {
-	return ip.terms.Copy()
+func (ip IntPair) GetTerms() Lib.List[AST.Term] {
+	return ip.terms.Copy(AST.Term.Copy)
 }
 
 func (ip IntPair) ToString() string {
-	res := "(" + strconv.Itoa(ip.q) + ", [" + ip.terms.ToString() + "])"
+	res := "(" + strconv.Itoa(ip.q) + ", [" + ip.terms.ToString(AST.Term.ToString, "", "{}") + "])"
 	return res
 }
 
@@ -77,8 +78,8 @@ func IntPairistToString(ipl []IntPair) string {
 	return res
 }
 
-func MakeIntPair(q int, terms *AST.TermList) IntPair {
-	return IntPair{q, terms.Copy()}
+func MakeIntPair(q int, terms Lib.List[AST.Term]) IntPair {
+	return IntPair{q, terms.Copy(AST.Term.Copy)}
 }
 
 func CopyIntPairList(ipl []IntPair) []IntPair {

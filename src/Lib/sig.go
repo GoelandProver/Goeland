@@ -37,7 +37,7 @@
 package Lib
 
 type StrictlyOrdered interface {
-	Lt(any) bool
+	Less(any) bool
 }
 
 type Copyable[T any] interface {
@@ -48,9 +48,14 @@ type Comparable interface {
 	Equals(any) bool
 }
 
-type ComparableList[T Comparable] []T
-
 type Ordered interface {
 	StrictlyOrdered
 	Comparable
+}
+
+type Func[T, U any] func(T) U
+type Func2[T, U, V any] func(T, U) V
+
+type Stringable interface {
+	ToString() string
 }

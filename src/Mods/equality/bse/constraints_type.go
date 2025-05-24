@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -122,18 +123,25 @@ func (c *Constraint) checkLPO() (bool, bool) {
 }
 
 /* append to the map and check if the new element is not in the other list */
-func appendToMapAndCheck(m string, t AST.Term, map_constraintes *map[string][]*AST.TermList, index_append, index_max_other_lists int) bool {
+func appendToMapAndCheck(
+	m string,
+	t AST.Term,
+	map_constraintes *map[string][]Lib.List[AST.Term],
+	index_append,
+	index_max_other_lists int,
+) bool {
 	if _, ok := (*map_constraintes)[m]; !ok {
-		(*map_constraintes)[m] = make([]*AST.TermList, index_max_other_lists+1)
+		(*map_constraintes)[m] = make([]Lib.List[AST.Term], index_max_other_lists+1)
 		for i := 0; i <= index_max_other_lists; i++ {
-			(*map_constraintes)[m][i] = AST.NewTermList()
+			(*map_constraintes)[m][i] = Lib.MkList[AST.Term](0)
 		}
 	}
 
 	(*map_constraintes)[m][index_append].Append(t)
 
 	for i := 0; i <= index_max_other_lists; i++ {
-		if i != index_append && (*map_constraintes)[m][i].Contains(t) {
+		if i != index_append &&
+			(*map_constraintes)[m][i].Contains(t, AST.TermEquals) {
 			return false
 		}
 	}

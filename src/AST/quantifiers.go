@@ -41,6 +41,7 @@ import (
 	"strings"
 
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type quantifier struct {
@@ -146,7 +147,7 @@ func (q quantifier) Equals(other any) bool {
 	return false
 }
 
-func (q quantifier) GetSubTerms() *TermList {
+func (q quantifier) GetSubTerms() Lib.List[Term] {
 	return q.GetForm().GetSubTerms()
 }
 

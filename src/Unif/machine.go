@@ -38,6 +38,7 @@ package Unif
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /* Describes the success or failure of the execution of a machine instruction. */
@@ -62,7 +63,7 @@ type Machine struct {
 	hasPoped      bool
 	post          []IntPair
 	subst         []SubstPair
-	terms         *AST.TermList
+	terms         Lib.List[AST.Term]
 	meta          Substitutions
 	failure       []MatchingSubstitutions
 	topLevelTot   int
@@ -79,7 +80,7 @@ func makeMachine() Machine {
 		hasPoped:      false,
 		post:          []IntPair{},
 		subst:         []SubstPair{},
-		terms:         AST.NewTermList(),
+		terms:         Lib.MkList[AST.Term](0),
 		meta:          Substitutions{},
 		failure:       []MatchingSubstitutions{},
 		topLevelTot:   0,
@@ -97,7 +98,7 @@ func errorOccured(s Status) bool {
 /*** CURSOR ***/
 /* Get the Meta object of the current formulae term. */
 func (m *Machine) getCurrentMeta() AST.Meta {
-	return m.terms.Get(m.q).Copy().ToMeta()
+	return m.terms.At(m.q).Copy().ToMeta()
 }
 
 /* While term is a metavariable, replace it by its substitution in the map of substitutions (meta). */
@@ -146,7 +147,7 @@ func (m *Machine) unlockMachine() {
 
 /* Locks the machine to the given count of nested instructions block if the current term is a metavariable. */
 func (m *Machine) lockIfMeta(count int) {
-	if m.terms.Get(m.q).IsMeta() && !m.isLocked() {
+	if m.terms.At(m.q).IsMeta() && !m.isLocked() {
 		m.beginLock = count
 	}
 }

@@ -37,12 +37,45 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
+
+/** This file provides multiple ways to skolemize a formula.
+ *
+ * Currently implemented techniques:
+ *
+ *   - outer skolemization. Default technique: fresh symbol parameterized by
+ *     all the metavariables of the branch.
+ *
+ *   - inner skolemization. Somewhat optimized technique: fresh symbol
+ *     parameterized by the metavariables appearing _inside_ the formula to
+ *     skolemize. Activated with the -inner option.
+ *
+ *   - pre-inner skolemization. This is the same mechanism as inner
+ *     skolemization, except that we reuse the skolem symbol when skolemizing
+ *     multiple times formulas in the same alpha-equivalence class. Activated
+ *     using the -preinner option.
+ *
+ * We provide a generic [Skolemization] interface, which implements a single
+ * function [skolemize] parameterized by (i) the formula to skolemize ∃x.δ(x),
+ * (ii) the formula δ(x) where x should be replaced, (iii) the variable x itself
+ * and (iv) the list of metavariables present inside a branch.
+ *
+ * If you wish to implement a new skolemization technique, you should follow
+ * these steps:
+ *
+ *   1. Add a brief description of the technique in the list above.
+ *   2. Create a file in the [Sko] folder with a structure that implements
+ *      the [Skolemization] interface.
+ *   3. Add a variable in this file refering to this structure.
+ *   4. Add an option that updates the [selectedSkolemization] variable (via
+ *      the function [SetSelectedSkolemization]).
+ **/
 
 type skoArgs struct {
 	sourceFormula AST.Form
 	formula       AST.Form
-	terms         *AST.TermList
+	terms         Lib.List[AST.Term]
 	sourceVar     AST.Var
 	symbol        AST.Id
 }
@@ -102,10 +135,16 @@ func Skolemize(fnt FormAndTerms, branchMetas *AST.MetaList) FormAndTerms {
  * delta+ : only relevant meta : getmeta + meta replaced
  * delta++ : same function name (need classical skolem for meta)
  **/
-func RealSkolemize(sourceForm, fnt AST.Form, v AST.Var, terms *AST.TermList) AST.Form {
+func RealSkolemize(sourceForm, fnt AST.Form, v AST.Var, terms Lib.List[AST.Term]) AST.Form {
 	// Replace each variable by the skolemized term.
 	symbol := AST.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex()))
-	fnt = applySelectedSkolemisation(skoArgs{sourceFormula: sourceForm, sourceVar: v, symbol: symbol, formula: fnt, terms: terms})
+	fnt = applySelectedSkolemisation(skoArgs{
+		sourceFormula: sourceForm,
+		sourceVar:     v,
+		symbol:        symbol,
+		formula:       fnt,
+		terms:         terms,
+	})
 	return fnt
 }
 
@@ -185,9 +224,17 @@ func alphaConvert(form AST.Form, k int, substitution map[AST.Var]AST.Var) AST.Fo
 	case AST.Top, AST.Bot:
 		return form
 	case AST.Pred:
-		mappedTerms := Glob.MapTo(f.GetArgs().Slice(),
-			func(_ int, t AST.Term) AST.Term { return alphaConvertTerm(t, substitution) })
-		return AST.MakePred(f.GetIndex(), f.GetID(), AST.NewTermList(mappedTerms...), f.GetTypeVars(), f.GetType())
+		mappedTerms := Lib.ListMap(f.GetArgs(),
+			func(t AST.Term) AST.Term {
+				return alphaConvertTerm(t, substitution)
+			})
+		return AST.MakePred(
+			f.GetIndex(),
+			f.GetID(),
+			mappedTerms,
+			f.GetTypeVars(),
+			f.GetType(),
+		)
 	case AST.Not:
 		return AST.MakeNot(f.GetIndex(), alphaConvert(f.GetForm(), k, substitution))
 	case AST.Imp:
@@ -231,9 +278,16 @@ func alphaConvertTerm(t AST.Term, substitution map[AST.Var]AST.Var) AST.Term {
 			return nt
 		}
 	case AST.Fun:
-		mappedTerms := Glob.MapTo(nt.GetArgs().Slice(),
-			func(_ int, trm AST.Term) AST.Term { return alphaConvertTerm(trm, substitution) })
-		return AST.MakeFun(nt.GetID(), AST.NewTermList(mappedTerms...), nt.GetTypeVars(), nt.GetTypeHint())
+		mappedTerms := Lib.ListMap(nt.GetArgs(),
+			func(trm AST.Term) AST.Term {
+				return alphaConvertTerm(trm, substitution)
+			})
+		return AST.MakeFun(
+			nt.GetID(),
+			mappedTerms,
+			nt.GetTypeVars(),
+			nt.GetTypeHint(),
+		)
 	}
 	return t
 }

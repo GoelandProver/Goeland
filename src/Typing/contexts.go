@@ -134,7 +134,11 @@ func (gc GlobalContext) copy() GlobalContext {
 }
 
 /* Gets a simple / polymorphic type scheme from an ID, type variables, and terms */
-func (gc GlobalContext) getTypeScheme(id AST.Id, vars []AST.TypeApp, terms *AST.TermList) (AST.TypeScheme, error) {
+func (gc GlobalContext) getTypeScheme(
+	id AST.Id,
+	vars []AST.TypeApp,
+	terms Lib.List[AST.Term],
+) (AST.TypeScheme, error) {
 	args, err := getArgsTypes(gc, terms)
 	if err != nil {
 		return nil, err
@@ -143,7 +147,11 @@ func (gc GlobalContext) getTypeScheme(id AST.Id, vars []AST.TypeApp, terms *AST.
 	typeScheme, err := gc.getSimpleTypeScheme(id.GetName(), args)
 
 	if typeScheme == nil {
-		typeScheme, err = gc.getPolymorphicTypeScheme(id.GetName(), len(vars), terms.Len())
+		typeScheme, err = gc.getPolymorphicTypeScheme(
+			id.GetName(),
+			len(vars),
+			terms.Len(),
+		)
 		// Instantiate type scheme with actual types
 		if typeScheme != nil {
 			typeScheme = Glob.To[AST.QuantifiedType](typeScheme).Instanciate(vars)

@@ -276,7 +276,7 @@ func (a AllType) RenameVariables() Form {
 	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
 }
 
-func (a AllType) GetSubTerms() *TermList {
+func (a AllType) GetSubTerms() Lib.List[Term] {
 	return a.GetForm().GetSubTerms()
 }
 
@@ -349,11 +349,11 @@ func (o Or) GetType() TypeScheme {
 	return DefaultPropType(0)
 }
 
-func (o Or) GetSubTerms() *TermList {
-	res := NewTermList()
+func (o Or) GetSubTerms() Lib.List[Term] {
+	res := Lib.MkList[Term](0)
 
 	for _, tl := range o.FormList.Slice() {
-		res.AppendIfNotContains(tl.GetSubTerms().Slice()...)
+		res.Add(TermEquals, tl.GetSubTerms().GetSlice()...)
 	}
 
 	return res
@@ -482,11 +482,11 @@ func (a And) GetType() TypeScheme {
 	return DefaultPropType(0)
 }
 
-func (a And) GetSubTerms() *TermList {
-	res := NewTermList()
+func (a And) GetSubTerms() Lib.List[Term] {
+	res := Lib.MkList[Term](0)
 
 	for _, tl := range a.FormList.Slice() {
-		res.AppendIfNotContains(tl.GetSubTerms().Slice()...)
+		res.Add(TermEquals, tl.GetSubTerms().GetSlice()...)
 	}
 
 	return res
@@ -634,9 +634,9 @@ func (e Equ) RenameVariables() Form {
 	return MakeEqu(e.GetIndex(), e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
 }
 
-func (e Equ) GetSubTerms() *TermList {
-	res := e.GetF1().GetSubTerms().Copy()
-	res.AppendIfNotContains(e.GetF2().GetSubTerms().Slice()...)
+func (e Equ) GetSubTerms() Lib.List[Term] {
+	res := e.GetF1().GetSubTerms().Copy(Term.Copy)
+	res.Add(TermEquals, e.GetF2().GetSubTerms().GetSlice()...)
 
 	return res
 }
@@ -744,9 +744,9 @@ func (i Imp) RenameVariables() Form {
 	return MakeImp(i.GetIndex(), i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
 }
 
-func (i Imp) GetSubTerms() *TermList {
-	res := i.GetF1().GetSubTerms().Copy()
-	res.AppendIfNotContains(i.GetF2().GetSubTerms().Slice()...)
+func (i Imp) GetSubTerms() Lib.List[Term] {
+	res := i.GetF1().GetSubTerms().Copy(Term.Copy)
+	res.Add(TermEquals, i.GetF2().GetSubTerms().GetSlice()...)
 
 	return res
 }
@@ -820,7 +820,7 @@ func (n Not) GetType() TypeScheme {
 	return DefaultPropType(0)
 }
 
-func (n Not) GetSubTerms() *TermList {
+func (n Not) GetSubTerms() Lib.List[Term] {
 	return n.GetForm().GetSubTerms()
 }
 
@@ -941,13 +941,20 @@ type Pred struct {
 	*MappedString
 	index    int
 	id       Id
-	args     *TermList
+	args     Lib.List[Term]
 	typeVars []TypeApp
 	typeHint TypeScheme
 	*MetaList
 }
 
-func MakePredSimple(index int, id Id, terms *TermList, typeApps []TypeApp, metas *MetaList, typeSchemes ...TypeScheme) Pred {
+func MakePredSimple(
+	index int,
+	id Id,
+	terms Lib.List[Term],
+	typeApps []TypeApp,
+	metas *MetaList,
+	typeSchemes ...TypeScheme,
+) Pred {
 	if len(typeSchemes) == 1 {
 		fms := &MappedString{}
 		pred := Pred{fms, index, id, terms, typeApps, typeSchemes[0], metas}
@@ -955,26 +962,52 @@ func MakePredSimple(index int, id Id, terms *TermList, typeApps []TypeApp, metas
 		return pred
 	} else {
 		fms := &MappedString{}
-		pred := Pred{fms, index, id, terms, typeApps, DefaultPropType(terms.Len()), metas}
+		pred := Pred{
+			fms,
+			index,
+			id,
+			terms,
+			typeApps,
+			DefaultPropType(terms.Len()),
+			metas,
+		}
 		fms.MappableString = &pred
 		return pred
 	}
 }
 
-func MakePred(index int, id Id, terms *TermList, typeApps []TypeApp, typeSchemes ...TypeScheme) Pred {
-	return MakePredSimple(index, id, terms, typeApps, NewMetaList(), typeSchemes...)
+func MakePred(
+	index int,
+	id Id,
+	terms Lib.List[Term],
+	typeApps []TypeApp,
+	typeSchemes ...TypeScheme,
+) Pred {
+	return MakePredSimple(
+		index,
+		id,
+		terms,
+		typeApps,
+		NewMetaList(),
+		typeSchemes...,
+	)
 }
 
-func MakerPred(id Id, terms *TermList, typeApps []TypeApp, typeSchemes ...TypeScheme) Pred {
+func MakerPred(
+	id Id,
+	terms Lib.List[Term],
+	typeApps []TypeApp,
+	typeSchemes ...TypeScheme,
+) Pred {
 	return MakePred(MakerIndexFormula(), id, terms, typeApps, typeSchemes...)
 }
 
 /* Pred attributes getters */
 
-func (p Pred) GetIndex() int          { return p.index }
-func (p Pred) GetID() Id              { return p.id.Copy().(Id) }
-func (p Pred) GetArgs() *TermList     { return p.args.Copy() }
-func (p Pred) GetTypeVars() []TypeApp { return CopyTypeAppList(p.typeVars) }
+func (p Pred) GetIndex() int           { return p.index }
+func (p Pred) GetID() Id               { return p.id.Copy().(Id) }
+func (p Pred) GetArgs() Lib.List[Term] { return p.args }
+func (p Pred) GetTypeVars() []TypeApp  { return CopyTypeAppList(p.typeVars) }
 
 /* Formula methods */
 
@@ -1014,7 +1047,8 @@ func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separat
 }
 
 func (p Pred) GetChildrenForMappedString() []MappableString {
-	return p.GetArgs().ToMappableStringSlice()
+	mappableStringList := Lib.ListMap(p.GetArgs(), Glob.To[MappableString])
+	return mappableStringList.GetSlice()
 }
 
 func (p Pred) Copy() Form {
@@ -1025,7 +1059,7 @@ func (p Pred) Equals(other any) bool {
 	if typed, ok := other.(Pred); ok {
 		return typed.id.Equals(p.id) &&
 			Lib.ComparableList[TypeApp](p.typeVars).Equals(typed.typeVars) &&
-			typed.args.Equals(p.args) &&
+			Lib.ListEquals(typed.args, p.args) &&
 			p.typeHint.Equals(typed.typeHint)
 	}
 
@@ -1035,7 +1069,7 @@ func (p Pred) Equals(other any) bool {
 func (p Pred) GetMetas() *MetaList {
 	res := NewMetaList()
 
-	for _, m := range p.GetArgs().Slice() {
+	for _, m := range p.GetArgs().GetSlice() {
 		switch mt := m.(type) {
 		case Meta:
 			res.Append(mt)
@@ -1048,7 +1082,12 @@ func (p Pred) GetMetas() *MetaList {
 }
 
 func (p Pred) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return MakePred(p.GetIndex(), p.GetID(), replaceTermListTypesByMeta(p.GetArgs(), varList, index), instanciateTypeAppList(p.typeVars, varList, index), p.GetType())
+	return MakePred(
+		p.GetIndex(),
+		p.GetID(),
+		replaceTermListTypesByMeta(p.GetArgs(), varList, index),
+		instanciateTypeAppList(p.typeVars, varList, index), p.GetType(),
+	)
 }
 
 func (p Pred) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -1056,12 +1095,12 @@ func (p Pred) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	return MakePredSimple(p.GetIndex(), p.GetID(), termList, p.GetTypeVars(), p.MetaList, p.GetType()), res
 }
 
-func (p Pred) GetSubTerms() *TermList {
-	res := NewTermList()
+func (p Pred) GetSubTerms() Lib.List[Term] {
+	res := Lib.MkList[Term](0)
 
-	for _, t := range p.GetArgs().Slice() {
-		res.AppendIfNotContains(t)
-		res.AppendIfNotContains(t.GetSubTerms().Slice()...)
+	for _, t := range p.GetArgs().GetSlice() {
+		res.Add(TermEquals, t)
+		res.Add(TermEquals, t.GetSubTerms().GetSlice()...)
 	}
 
 	return res
@@ -1098,14 +1137,14 @@ func (p Pred) GetChildFormulas() *FormList {
 }
 
 func (p Pred) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	newTerms := NewTermList()
+	newTerms := Lib.MkList[Term](p.args.Len())
 
-	for _, old := range p.args.Slice() {
-		// ILL TODO: old.GetName() == meta.GetName() ??
+	for i, old := range p.args.GetSlice() {
+		// FIXME: old.GetName() == meta.GetName() ??
 		if old.Equals(meta) {
-			newTerms.Append(term)
+			newTerms.Upd(i, term)
 		} else {
-			newTerms.Append(old)
+			newTerms.Upd(i, old)
 		}
 	}
 
@@ -1151,7 +1190,7 @@ func (t Top) ReplaceTypeByMeta([]TypeVar, int) Form       { return MakeTop(t.Get
 func (t Top) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeTop(t.GetIndex()), false }
 func (t Top) RenameVariables() Form                       { return MakeTop(t.GetIndex()) }
 func (t Top) GetIndex() int                               { return t.index }
-func (t Top) GetSubTerms() *TermList                      { return NewTermList() }
+func (t Top) GetSubTerms() Lib.List[Term]                 { return Lib.MkList[Term](0) }
 func (t Top) SubstituteVarByMeta(Var, Meta) Form          { return t }
 func (t Top) GetInternalMetas() *MetaList                 { return NewMetaList() }
 func (t Top) SetInternalMetas(*MetaList) Form             { return t }
@@ -1196,7 +1235,7 @@ func (b Bot) ReplaceTypeByMeta([]TypeVar, int) Form       { return MakeBot(b.Get
 func (b Bot) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeBot(b.GetIndex()), false }
 func (b Bot) RenameVariables() Form                       { return MakeBot(b.GetIndex()) }
 func (b Bot) GetIndex() int                               { return b.index }
-func (b Bot) GetSubTerms() *TermList                      { return NewTermList() }
+func (b Bot) GetSubTerms() Lib.List[Term]                 { return Lib.MkList[Term](0) }
 func (b Bot) SubstituteVarByMeta(Var, Meta) Form          { return b }
 func (b Bot) GetInternalMetas() *MetaList                 { return NewMetaList() }
 func (b Bot) SetInternalMetas(*MetaList) Form             { return b }

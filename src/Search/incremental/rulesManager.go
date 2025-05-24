@@ -4,6 +4,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -34,7 +35,7 @@ func (rm *RulesManager) onlyReintroOrClosureLeft() bool {
 }
 
 func (rm *RulesManager) insertForm(formula AST.Form) {
-	rule := makeCorrectRule(formula, AST.NewTermList())
+	rule := makeCorrectRule(formula, Lib.MkList[AST.Term](0))
 	rm.insertIntoCorrectSlice(rule)
 }
 

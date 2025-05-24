@@ -210,7 +210,7 @@ func getContextFromFormula(root AST.Form) []string {
 
 			result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", nf.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
 		}
-		for _, term := range nf.GetArgs().Slice() {
+		for _, term := range nf.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}
@@ -245,7 +245,7 @@ func getIdsFromFormula(root AST.Form) []Glob.Pair[string, string] {
 		result = getIdsFromFormula(nf.GetForm())
 	case AST.Pred:
 		result = append(result, Glob.MakePair(nf.GetID().GetName(), nf.GetID().ToMappedString(lambdaPiMapConnectors, false)))
-		for _, f := range nf.GetArgs().Slice() {
+		for _, f := range nf.GetArgs().GetSlice() {
 			result = append(result, Glob.MakePair(f.GetName(), f.ToMappedString(lambdaPiMapConnectors, false)))
 		}
 	}
@@ -268,7 +268,7 @@ func getContextFromTerm(trm AST.Term) []string {
 		}
 
 		result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
-		for _, term := range fun.GetArgs().Slice() {
+		for _, term := range fun.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}

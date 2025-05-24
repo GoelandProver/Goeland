@@ -38,6 +38,8 @@ package AST
 
 import (
 	"sync"
+
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /* Datas */
@@ -59,7 +61,7 @@ func Init() {
 	Reset()
 	initTypes()
 	Id_eq = MakerId("=")
-	EmptyPredEq = MakerPred(Id_eq, NewTermList(), make([]TypeApp, 0))
+	EmptyPredEq = MakerPred(Id_eq, Lib.MkList[Term](0), make([]TypeApp, 0))
 
 	// Eq/Neq types
 	tv := MkTypeVar("α")
@@ -148,11 +150,11 @@ func MakerMeta(s string, formula int, t ...TypeApp) Meta {
 
 /* Const maker (given a id, create a fun without args) */
 func MakerConst(id Id, t ...TypeApp) Fun {
-	return MakeFun(id, NewTermList(), []TypeApp{}, getType(t).(TypeScheme))
+	return MakeFun(id, Lib.MkList[Term](0), []TypeApp{}, getType(t).(TypeScheme))
 }
 
 /* Fun maker, with given id and args */
-func MakerFun(id Id, terms *TermList, typeVars []TypeApp, t ...TypeScheme) Fun {
+func MakerFun(id Id, terms Lib.List[Term], typeVars []TypeApp, t ...TypeScheme) Fun {
 	var ts TypeScheme
 	if len(t) == 1 {
 		ts = t[0]

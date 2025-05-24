@@ -2,6 +2,7 @@ package incremental
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -188,8 +189,8 @@ func (s *Sub) AddOtherSub(other *Sub) {
 	}
 }
 
-func (s *Sub) GetAsMetasAndTerms() (metas *AST.MetaList, terms *AST.TermList) {
-	metas, terms = AST.NewMetaList(), AST.NewTermList()
+func (s *Sub) GetAsMetasAndTerms() (metas *AST.MetaList, terms Lib.List[AST.Term]) {
+	metas, terms = AST.NewMetaList(), Lib.MkList[AST.Term](0)
 
 	for _, ss := range s.everySub {
 		metas.Append(*ss.getMeta())

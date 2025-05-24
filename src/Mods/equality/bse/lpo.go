@@ -133,11 +133,11 @@ func compareMetaFunInside(m AST.Meta, f AST.Fun, return_code int) (bool, compare
 		is_comparable := false
 		switch return_code {
 		case 1:
-			cs := compareLPO(m, f.GetArgs().Get(i))
+			cs := compareLPO(m, f.GetArgs().At(i))
 			res = cs.order
 			is_comparable = cs.is_comparable
 		case -1:
-			cs := compareLPO(f.GetArgs().Get(i), m)
+			cs := compareLPO(f.GetArgs().At(i), m)
 			res = cs.order
 			is_comparable = cs.is_comparable
 		default:
@@ -192,7 +192,7 @@ func caseFLessG(s, t AST.Fun) (bool, compareStruct) {
 		i := 0
 		stopped := false
 		for i < s.GetArgs().Len() && !stopped {
-			cs := compareLPO(s.GetArgs().Get(i), t)
+			cs := compareLPO(s.GetArgs().At(i), t)
 
 			if !cs.is_comparable {
 				return true, makeCompareStruct(0, false, s, t)
@@ -223,7 +223,7 @@ func caseFEqualsG(s, t AST.Fun) (bool, compareStruct) {
 	val_res := 0
 	// First loop : while equals
 	for i < n && !stopped {
-		cs := compareLPO(s.GetArgs().Get(i), t.GetArgs().Get(i))
+		cs := compareLPO(s.GetArgs().At(i), t.GetArgs().At(i))
 
 		// Bug here : les autres arguments !
 		if !cs.is_comparable {
@@ -245,7 +245,7 @@ func caseFEqualsG(s, t AST.Fun) (bool, compareStruct) {
 	stopped = false
 	if val_res > 0 {
 		for i < n && !stopped {
-			cs := compareLPO(s.GetArgs().Get(i), t)
+			cs := compareLPO(s.GetArgs().At(i), t)
 			if !cs.is_comparable {
 				return true, makeCompareStruct(0, false, s, t)
 			}
@@ -268,7 +268,7 @@ func caseDefault(s, t AST.Fun) compareStruct {
 	i := 0
 	stopped := false
 	for i < m && !stopped {
-		cs := compareLPO(s, t.GetArgs().Get(i))
+		cs := compareLPO(s, t.GetArgs().At(i))
 		if !cs.is_comparable {
 			return makeCompareStruct(0, false, s, t)
 		}

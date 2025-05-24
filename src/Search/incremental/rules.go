@@ -6,6 +6,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 var RuleStringMap map[string]string = map[string]string{
@@ -26,7 +27,7 @@ var RuleStringMap map[string]string = map[string]string{
 type Rule interface {
 	apply() []RuleList
 	GetForm() AST.Form
-	GetTerms() *AST.TermList
+	GetTerms() Lib.List[AST.Term]
 	ToFormula() Core.FormAndTerms
 	Equals(any) bool
 	GetRuleStrings() (string, string)
@@ -34,7 +35,7 @@ type Rule interface {
 
 type AnyRule struct {
 	formula AST.Form
-	terms   *AST.TermList
+	terms   Lib.List[AST.Term]
 
 	//formString string
 
@@ -45,7 +46,7 @@ func (ar *AnyRule) GetForm() AST.Form {
 	return ar.formula
 }
 
-func (ar *AnyRule) GetTerms() *AST.TermList {
+func (ar *AnyRule) GetTerms() Lib.List[AST.Term] {
 	return ar.terms
 }
 
@@ -55,7 +56,9 @@ func (ar *AnyRule) ToFormula() Core.FormAndTerms {
 
 func (ar *AnyRule) Equals(other any) bool {
 	oth, isRule := other.(Rule)
-	return isRule && ar.GetTerms().Equals(oth.GetTerms()) && ar.GetForm().Equals(oth.GetForm())
+	return isRule &&
+		Lib.ListEquals(ar.GetTerms(), oth.GetTerms()) &&
+		ar.GetForm().Equals(oth.GetForm())
 }
 
 func (ar *AnyRule) GetRuleStrings() (full string, simple string) {
@@ -70,7 +73,7 @@ func (ar *AnyRule) GetRuleStrings() (full string, simple string) {
 	return full[:len(full)-1], simple
 }
 
-func makeCorrectRule(formula AST.Form, terms *AST.TermList) Rule {
+func makeCorrectRule(formula AST.Form, terms Lib.List[AST.Term]) Rule {
 	any := AnyRule{formula: formula, terms: terms}
 	//any := AnyRule{formula: formula, terms: terms, formString: formula.ToString()}
 
@@ -387,8 +390,8 @@ func (gne *GammaNotExists) apply() []RuleList {
 	Glob.PrintDebug("SRCH", "Applying "+fmt.Sprint(gne.FullString))
 
 	instanciatedForm, metas := Core.Instantiate(Core.MakeFormAndTerm(gne.GetForm(), gne.GetTerms()), 42)
-	newTerms := gne.GetTerms().Copy()
-	newTerms.AppendIfNotContains(metas.ToTermList().Slice()...)
+	newTerms := gne.GetTerms().Copy(AST.Term.Copy)
+	newTerms.Add(AST.TermEquals, metas.ToTermList().GetSlice()...)
 	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), newTerms))
 	gne.generatedMetas = metas
 
@@ -428,8 +431,8 @@ func (gf *GammaForall) apply() []RuleList {
 	Glob.PrintDebug("SRCH", "Applying "+fmt.Sprint(gf.FullString))
 
 	instanciatedForm, metas := Core.Instantiate(Core.MakeFormAndTerm(gf.GetForm(), gf.GetTerms()), 42)
-	newTerms := gf.GetTerms().Copy()
-	newTerms.AppendIfNotContains(metas.ToTermList().Slice()...)
+	newTerms := gf.GetTerms().Copy(AST.Term.Copy)
+	newTerms.Add(AST.TermEquals, metas.ToTermList().GetSlice()...)
 	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), newTerms))
 	gf.generatedMetas = metas
 

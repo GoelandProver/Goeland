@@ -35,6 +35,7 @@ package Parser
 
 import (
     "github.com/GoelandProver/Goeland/AST"
+    "github.com/GoelandProver/Goeland/Lib"
     "github.com/GoelandProver/Goeland/Core"
     "github.com/GoelandProver/Goeland/Glob"
 )
@@ -65,7 +66,7 @@ type TFFTerm struct {
 
 type TFFTermList struct {
     types []AST.TypeApp
-    terms *AST.TermList
+    terms Lib.List[AST.Term]
 }
 
 type TFFFormula struct {
@@ -87,7 +88,7 @@ type TFFFormula struct {
 	vrb AST.Var
     id AST.Id
     trm AST.Term 
-    tml *AST.TermList
+    tml Lib.List[AST.Term]
     tfv TFFVar
     tfl TFFVarList
     ttl TFFTermList
@@ -285,14 +286,19 @@ tff_unary_formula: tff_prefix_unary { $$ = $1 }
 tff_prefix_unary: NOT tff_preunit_formula { $$ = AST.RefuteForm($2) }
   ;
 
-tff_infix_unary: tff_term NOT_EQUAL tff_term { $$ = AST.MakerNot(AST.MakerPred(AST.Id_eq, AST.NewTermList($1.term, $3.term), []AST.TypeApp{}))}
+tff_infix_unary: tff_term NOT_EQUAL tff_term {
+    $$ = AST.MakerNot(AST.MakerPred(
+           AST.Id_eq,
+           Lib.MkListV($1.term, $3.term),
+           []AST.TypeApp{},
+         ))}
   ;
 
 tff_atomic_formula: tff_plain_atomic_formula    { $$ = $1 }
   | tff_defined_atomic                          { $$ = $1 }
   ;
 
-tff_plain_atomic_formula: constant                { $$ = AST.MakerPred($1, AST.NewTermList(), []AST.TypeApp{}) }
+tff_plain_atomic_formula: constant { $$ = AST.MakerPred($1, Lib.MkList[AST.Term](0), []AST.TypeApp{}) }
   | functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = AST.MakerPred($1, $3.terms, $3.types) }
   ;
 
@@ -301,13 +307,14 @@ tff_defined_atomic: tff_defined_plain { $$ = $1 }
   | FALSE { $$ = AST.MakerBot() }
   ;
 
-tff_defined_plain: defined_constant                       { $$ = AST.MakerPred($1, AST.NewTermList(), []AST.TypeApp{}) }
+tff_defined_plain: defined_constant { $$ = AST.MakerPred($1, Lib.MkList[AST.Term](0), []AST.TypeApp{}) }
   | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = AST.MakerPred($1, $3.terms, $3.types) }
   ;
 
-tff_defined_infix: tff_term EQUAL tff_term { $$ = AST.MakerPred(AST.Id_eq, AST.NewTermList($1.term, $3.term), []AST.TypeApp{}) }
+tff_defined_infix: tff_term EQUAL tff_term {
+    $$ = AST.MakerPred(AST.Id_eq, Lib.MkListV($1.term, $3.term), []AST.TypeApp{}) 
+  }
   ;
-
 tff_plain_term: constant                         { $$ = tftFrom(nil, AST.MakerConst($1)) }
   | functor LEFT_PAREN tff_arguments RIGHT_PAREN { $$ = tftFrom(nil, AST.MakerFun($1, $3.terms, $3.types)) }
   ;
@@ -442,7 +449,9 @@ fof_unary_formula: NOT fof_unit_formula     { $$ = AST.RefuteForm($2) }
   | fof_infix_unary                         { $$ = $1 }
   ;
   
-fof_infix_unary: fof_term NOT_EQUAL fof_term { $$ = AST.MakerNot(AST.MakerPred(AST.Id_eq, AST.NewTermList($1, $3), []AST.TypeApp{})) }
+fof_infix_unary: fof_term NOT_EQUAL fof_term {
+    $$ = AST.MakerNot(AST.MakerPred(AST.Id_eq, Lib.MkListV($1, $3), []AST.TypeApp{})) 
+  }
   ;
   
 fof_unit_formula: fof_unitary_formula   { $$ = $1 }
@@ -467,7 +476,8 @@ fof_atomic_formula: fof_plain_atomic_formula    { $$ = $1 }
   ;
   //   | fof_system_atomic_formula                   { $$ = $1 }
 
-fof_plain_atomic_formula: constant                  { $$ = AST.MakerPred($1, AST.NewTermList(), []AST.TypeApp{}) }
+fof_plain_atomic_formula: constant {
+    $$ = AST.MakerPred($1, Lib.MkList[AST.Term](0), []AST.TypeApp{}) }
   | functor LEFT_PAREN fof_arguments RIGHT_PAREN    { $$ = AST.MakerPred($1, $3, []AST.TypeApp{}) }
   ;
 
@@ -480,13 +490,15 @@ fof_defined_atomic_formula: fof_defined_plain_formula { $$ = $1 }
   | fof_defined_infix_formula                         { $$ = $1 }
   ;
 
-fof_defined_plain_formula: defined_constant               { $$ = AST.MakerPred($1, AST.NewTermList(), []AST.TypeApp{}) }
+fof_defined_plain_formula: defined_constant {
+    $$ = AST.MakerPred($1, Lib.MkList[AST.Term](0), []AST.TypeApp{}) }
   | TRUE  { $$ = AST.MakerTop() }
   | FALSE { $$ = AST.MakerBot() }
   | defined_functor LEFT_PAREN fof_arguments RIGHT_PAREN  { $$ = AST.MakerPred($1, $3, []AST.TypeApp{}) }
   ;
 
-fof_defined_infix_formula: fof_term EQUAL fof_term { $$ = AST.MakerPred(AST.Id_eq, AST.NewTermList($1, $3), []AST.TypeApp{}) }
+fof_defined_infix_formula: fof_term EQUAL fof_term {
+    $$ = AST.MakerPred(AST.Id_eq, Lib.MkListV($1, $3), []AST.TypeApp{}) }
   ;
 
 // <fof_system_atomic_formula> ::= <fof_system_term>
@@ -509,10 +521,10 @@ fof_defined_plain_term: defined_constant                    { $$ = AST.MakerCons
   | defined_functor LEFT_PAREN fof_arguments RIGHT_PAREN    { $$ = AST.MakerFun($1, $3, []AST.TypeApp{}) }
   ;
   
-fof_arguments: fof_term          { $$ = AST.NewTermList($1) }
-  | fof_term COMMA fof_arguments { 
-    newTerms := AST.NewTermList($1)
-    newTerms.Append($3.Slice()...)
+fof_arguments: fof_term          { $$ = Lib.MkListV($1) }
+  | fof_term COMMA fof_arguments {
+    newTerms := Lib.MkListV($1)
+    newTerms.Append($3.GetSlice()...)
     $$ = newTerms
     }
   ;
@@ -665,15 +677,15 @@ func tftFromTfv(in TFFVar) TFFTerm {
 
 func makeTermList(in TFFTerm) TFFTermList {
     if in.type_ == nil {
-        return TFFTermList{types: []AST.TypeApp{}, terms: AST.NewTermList(in.term)}
+        return TFFTermList{types: []AST.TypeApp{}, terms: Lib.MkListV(in.term)}
     }
-    return TFFTermList{types: []AST.TypeApp{in.type_}, terms: AST.NewTermList()}
+    return TFFTermList{types: []AST.TypeApp{in.type_}, terms: Lib.MkList[AST.Term](0)}
 }
 
 func appendTermList(in TFFTerm, ls TFFTermList) TFFTermList {
     if in.type_ == nil {
-        newTerms := AST.NewTermList(in.term)
-        newTerms.Append(ls.terms.Slice()...)
+        newTerms := Lib.MkListV(in.term)
+        newTerms.Append(ls.terms.GetSlice()...)
         ls.terms = newTerms
     } else {
         ls.types = append([]AST.TypeApp{in.type_}, ls.types...)

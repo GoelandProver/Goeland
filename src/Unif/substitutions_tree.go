@@ -41,6 +41,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /* Takes each meta of the formula, matches the index to the metas, and add everything to subst */
@@ -57,7 +58,7 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 	// Retrieve all the meta of from the tree formula
 	switch typedForm := form.(type) {
 	case AST.Pred:
-		for _, term := range typedForm.GetArgs().Slice() {
+		for _, term := range typedForm.GetArgs().GetSlice() {
 			metasFromTreeForm.Append(term.GetMetas().Slice()...)
 		}
 	case TermForm:
@@ -187,7 +188,7 @@ func (m *Machine) addUnifications(term1, term2 AST.Term) Status {
 func tryUnification(term1, term2 AST.Term, meta Substitutions) []MatchingSubstitutions {
 	Glob.PrintDebug("TU", fmt.Sprintf("Try unification : %v and %v", term1.ToString(), term2.ToString()))
 	aux := makeMachine()
-	aux.terms = AST.NewTermList(term2)
+	aux.terms = Lib.MkListV(term2)
 	aux.meta = meta
 
 	// add begin at the start and end at the end !

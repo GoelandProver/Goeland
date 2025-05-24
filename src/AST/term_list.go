@@ -39,27 +39,13 @@ package AST
 import (
 	"sort"
 
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-/* Term */
-type TermList struct {
-	*Glob.List[Term]
-}
-
-func NewTermList(slice ...Term) *TermList {
-	return &TermList{Glob.NewList[Term](slice...)}
-}
-
-func (tl *TermList) Less(i, j int) bool {
-	return (tl.Get(i).GetIndex() < tl.Get(j).GetIndex())
-}
-
-func (tl *TermList) GetMetas() *MetaList {
+func GetMetas(tl Lib.List[Term]) *MetaList {
 	res := NewMetaList()
 
-	for _, term := range tl.Slice() {
+	for _, term := range tl.GetSlice() {
 		if typed, ok := term.(Meta); ok {
 			res.AppendIfNotContains(typed)
 		}
@@ -68,23 +54,28 @@ func (tl *TermList) GetMetas() *MetaList {
 	return res
 }
 
-func (tl *TermList) Copy() *TermList {
-	return &TermList{tl.List.Copy()}
-}
-
 /*
 Replace the first occurence of a term by another in the list
 */
-func (tl *TermList) replaceFirstOccurrenceTermList(replaceThis, withThis Term) *TermList {
-	res := tl.Copy()
+func replaceFirstOccurrenceTermList(
+	tl Lib.List[Term],
+	replaceThis, withThis Term,
+) Lib.List[Term] {
+	res := Lib.MkList[Term](tl.Len())
+	updated := false
 
-	for i := range tl.Slice() {
-		modifiedTerm := res.Get(i).ReplaceSubTermBy(replaceThis, withThis)
+	for i := range tl.GetSlice() {
+		candidate := tl.At(i)
 
-		if !tl.Get(i).Equals(modifiedTerm) {
-			res.Set(i, modifiedTerm)
-			return res
+		// FIXME: should [res.At(i)] be copied? I don't think so but we'll see.
+		modifiedTerm := candidate.ReplaceSubTermBy(replaceThis, withThis)
+
+		if !tl.At(i).Equals(modifiedTerm) && !updated {
+			updated = true
+			candidate = modifiedTerm
 		}
+
+		res.Upd(i, candidate)
 	}
 
 	return res
@@ -93,56 +84,33 @@ func (tl *TermList) replaceFirstOccurrenceTermList(replaceThis, withThis Term) *
 /*
 Replace all occurences of a term by another in the list
 */
-func (tl *TermList) ReplaceOccurrence(replaceThis, withThis Term) *TermList {
-	res := tl.Copy()
+func ReplaceOccurrence(
+	tl Lib.List[Term],
+	replaceThis, withThis Term,
+) Lib.List[Term] {
+	res := Lib.MkList[Term](tl.Len())
 
-	for i := range tl.Slice() {
-		modifiedTerm := res.Get(i).ReplaceSubTermBy(replaceThis, withThis)
-
-		if !tl.Get(i).Equals(modifiedTerm) {
-			res.Set(i, modifiedTerm)
-		}
+	for i := range tl.GetSlice() {
+		// FIXME: should [res.At(i)] be copied? I don't think so but we'll see.
+		trm := tl.At(i).ReplaceSubTermBy(replaceThis, withThis)
+		res.Upd(i, trm)
 	}
 
 	return res
 }
 
-func (tl *TermList) ToMappableStringSlice() []MappableString {
-	forms := []MappableString{}
-
-	for _, form := range tl.Slice() {
-		forms = append(forms, form.(MappableString))
-	}
-
-	return forms
-}
-
-func (tl *TermList) Equals(other any) bool {
-	if typed, ok := other.(*TermList); ok {
-		return tl.List.Equals(typed.List)
-	}
-
-	return false
-}
-
-func (tl *TermList) EqualsWithoutOrder(other *TermList) bool {
+func EqualsWithoutOrder(tl, other Lib.List[Term]) bool {
 	if tl.Len() != other.Len() {
 		return false
 	}
 
-	tlSorted := tl.Copy()
+	tlSorted := Lib.ToStrictlyOrderedList(tl.Copy(Term.Copy))
 	sort.Sort(tlSorted)
 
-	otherSorted := other.Copy()
+	otherSorted := Lib.ToStrictlyOrderedList(other.Copy(Term.Copy))
 	sort.Sort(otherSorted)
 
-	for i := range tlSorted.Slice() {
-		if !otherSorted.Get(i).Equals(tlSorted.Get(i)) {
-			return false
-		}
-	}
-
-	return true
+	return Lib.ListEquals(tlSorted.List(), otherSorted.List())
 }
 
 func AreEqualsTypeVarList(tv1, tv2 []TypeVar) bool {

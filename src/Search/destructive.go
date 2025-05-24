@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -106,7 +107,10 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 	Glob.PrintInfo("MAIN", fmt.Sprintf("Launch Gotab with destructive = %v", Glob.IsDestructive()))
 
 	Glob.SetNbGoroutines(0)
-	state.SetLF(Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(formula, AST.NewTermList())))
+	state.SetLF(Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(
+		formula,
+		Lib.MkList[AST.Term](0),
+	)))
 	c := MakeCommunication(make(chan bool), make(chan Result))
 
 	if Glob.GetExchanges() {
@@ -182,8 +186,8 @@ func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []Core.Sub
 }
 
 func (ds *destructiveSearch) searchContradictionAfterApplySusbt(father_id uint64, st State, cha Communication, node_id int, original_node_id int) bool {
-	if Glob.GetAssisted() { 
-		return false 
+	if Glob.GetAssisted() {
+		return false
 	}
 	for _, f := range st.GetAtomic() {
 		Glob.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
@@ -198,12 +202,12 @@ func (ds *destructiveSearch) searchContradictionAfterApplySusbt(father_id uint64
 
 func (ds *destructiveSearch) searchContradiction(atomic AST.Form, father_id uint64, st State, cha Communication, node_id int, original_node_id int) bool {
 	// Search for a contradiction in LF
-	if Glob.GetAssisted() { 
-		return false 
+	if Glob.GetAssisted() {
+		return false
 	}
 	Glob.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
 	clos_res, subst := ApplyClosureRules(atomic, &st)
-	fAt := Core.MakeFormAndTerm(atomic, AST.NewTermList())
+	fAt := Core.MakeFormAndTerm(atomic, Lib.MkList[AST.Term](0))
 
 	if clos_res {
 		ds.ManageClosureRule(father_id, &st, cha, Unif.CopySubstList(subst), fAt, node_id, original_node_id)
