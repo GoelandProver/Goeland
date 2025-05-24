@@ -15,6 +15,7 @@ It supports [TPTP](http://tptp.org/) FOF and TFF files.
   - [Contributing](#contributing)
   - [License](#license)
   - [How To Cite](#how-to-cite)
+  - [Papers](#papers)
 
 ## Installation
 
@@ -81,7 +82,21 @@ Please use the following paper to cite Goéland:
 
 [CRDRB22] Julie Cailler, Johann Rosain, David Delahaye, Simon Robillard and Hinde
 L. Bouziane, [Goéland: A Concurrent Tableau-Based Theorem Prover (System
-Description)](https://doi.org/10.1007/978-3-031-10769-6_22).  
+Description)](https://doi.org/10.1007/978-3-031-10769-6_22).
 In IJCAR22, 11th International Joint Conference on Automated Reasoning (Jasmin
 Blanchette, Laura Kovács, Dirk Pattinson eds.), Springer, LNCS, volume 13385,
 pp. 359-368, 2022.
+
+## Papers
+
+* The following paper presents an algorithm for deskolemizing proofs, which
+  introduces a compatibility layer between tableaux and sequent calculus and
+  then allows us to certify the proofs in various proof assistants. Goéland
+  currently outputs proofs for Rocq (`-ocoq`) and LambdaPi (`-olp`). Note that
+  the implementation is currently outdated w.r.t. the paper's version.
+
+  [RBCH24] Johann Rosain, Richard Bonichon, Julie Cailler and Olivier Hermant,
+  [A Generic Deskolemization Strategy](https://doi.org/10.29007/g1tm).
+  In LPAR-25, 25th Conference on Logic for Programming, Artificial Intelligence
+  and Reasoning (Nikolaj Bjørner, Marijn Heule, Andrei Voronkov eds.),
+  EasyChair, EPiC Series in Computing, volume 100, pp. 246-263, 2024.
