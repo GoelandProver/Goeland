@@ -45,36 +45,37 @@ import (
 	"runtime/pprof"
 	"time"
 
-	"github.com/GoelandProver/Goeland/modules/assisted"
-
 	_ "net/http/pprof"
 
-	_ "github.com/GoelandProver/Goeland/options"
-
-	"github.com/GoelandProver/Goeland/global"
-	dmt "github.com/GoelandProver/Goeland/modules/dmt"
-	"github.com/GoelandProver/Goeland/parser"
-	polymorphism "github.com/GoelandProver/Goeland/polymorphism/rules"
-	typing "github.com/GoelandProver/Goeland/polymorphism/typing"
-	"github.com/GoelandProver/Goeland/search"
-	basictypes "github.com/GoelandProver/Goeland/types/basic-types"
+	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Core"
+	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Mods/assisted"
+	"github.com/GoelandProver/Goeland/Mods/dmt"
+	"github.com/GoelandProver/Goeland/Parser"
+	"github.com/GoelandProver/Goeland/Search"
+	"github.com/GoelandProver/Goeland/Typing"
 )
 
 var chAssistant chan bool = make(chan bool)
 
+func printChrono(id string, start time.Time) {
+	fmt.Printf("%s Chrono - %s - %d\n", "%", id, time.Since(start).Milliseconds())
+}
+
 func main() {
 	form, bound := presearchLoader()
 
-	//This block cannot be removed from the main function, as it breaks how the CPU profiler works
-	if global.GetCpuProfile() != "" {
-		file, err := os.Create(global.GetCpuProfile())
+	// This block cannot be removed from the main function, as it breaks how the CPU profiler works
+	if Glob.GetCpuProfile() != "" {
+		file, err := os.Create(Glob.GetCpuProfile())
 		if err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a CPU profile: %v", err))
+			Glob.PrintFatal("MAIN", fmt.Sprintf("Could not create a CPU profile: %v", err))
 		}
 		defer file.Close()
 
 		if err := pprof.StartCPUProfile(file); err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
+			Glob.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
 		}
 		defer pprof.StopCPUProfile()
 	}
@@ -85,49 +86,52 @@ func main() {
 }
 
 // Start solving
-func startSearch(form basictypes.Form, bound int) {
-	global.PrintDebug("MAIN", "Start search")
+func startSearch(form AST.Form, bound int) {
+	Glob.PrintDebug("MAIN", "Start search")
 
-	if global.GetAssisted() {
+	// FIXME: assisted should be a plugin.
+	// Ideally, we should create a hook here in order to let plugins do what
+	// they want and launch the proofsearch.
+	if Glob.GetAssisted() {
 		assisted.InitAssisted()
 
 		go assisted.StartAssistant(chAssistant)
 
-		go search.Search(form, bound)
+		go Search.Search(form, bound)
 
-		search.PrintSearchResult(<-chAssistant)
+		Search.PrintSearchResult(<-chAssistant)
 	} else {
-		search.Search(form, bound)
+		Search.Search(form, bound)
 	}
 
 }
 
 // Initialization
-func presearchLoader() (basictypes.Form, int) {
+func presearchLoader() (AST.Form, int) {
 	initEverything()
 
 	problem := os.Args[len(os.Args)-1]
-	global.SetProblemName(path.Base(problem))
-	global.PrintInfo("MAIN", fmt.Sprintf("Problem : %v", problem))
+	Glob.SetProblemName(path.Base(problem))
+	Glob.PrintInfo("MAIN", fmt.Sprintf("Problem : %v", problem))
 
-	statements, bound, containsEquality := parser.ParseTPTPFile(problem)
+	statements, bound, containsEquality := Parser.ParseTPTPFile(problem)
 
-	global.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", basictypes.StatementListToString(statements)))
+	Glob.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", Core.StatementListToString(statements)))
 
-	if global.GetLimit() != -1 {
-		bound = global.GetLimit()
+	if Glob.GetLimit() != -1 {
+		bound = Glob.GetLimit()
 	}
 
 	form, bound, contEq := StatementListToFormula(statements, bound, path.Dir(problem))
 	containsEquality = containsEquality || contEq
 
 	if !containsEquality {
-		global.SetPlugin("equality", false)
-		global.PrintInfo("EQU", "Plugin Equality disabled")
+		Glob.SetPlugin("equality", false)
+		Glob.PrintInfo("EQU", "Plugin Equality disabled")
 	}
 
 	if form == nil {
-		global.PrintFatal("MAIN", "Problem not found")
+		Glob.PrintFatal("MAIN", "Problem not found")
 	}
 
 	form = checkForTypedProof(form)
@@ -136,53 +140,48 @@ func presearchLoader() (basictypes.Form, int) {
 }
 
 func doMemProfile() {
-	if global.GetMemProfile() != "" {
-		f, err := os.Create(global.GetMemProfile())
+	if Glob.GetMemProfile() != "" {
+		f, err := os.Create(Glob.GetMemProfile())
 		if err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not create a memory profile: %v", err))
+			Glob.PrintFatal("MAIN", fmt.Sprintf("Could not create a memory profile: %v", err))
 		}
 		defer f.Close()
 
 		runtime.GC()
 		if err := pprof.WriteHeapProfile(f); err != nil {
-			global.PrintFatal("MAIN", fmt.Sprintf("Could not write the memory profile: %v", err))
+			Glob.PrintFatal("MAIN", fmt.Sprintf("Could not write the memory profile: %v", err))
 		}
 	}
 }
 
-/* Initializes the options, the loggers and some other global variables*/
+/* Initializes the options, the loggers and some other Glob variables*/
 func initEverything() {
-
-	runtime.GOMAXPROCS(global.GetCoreLimit())
-
-	global.SetStart(time.Now())
-
-	typing.Init()
-
-	basictypes.Init()
+	initOpts()
+	Glob.InitLogs()
+	runtime.GOMAXPROCS(Glob.GetCoreLimit())
+	Glob.SetStart(time.Now())
+	AST.Init()
 }
 
-// ILL TODO this function should not have to call the parser. The parser should do it themselves.
-/* Transforms a list of statements into a formula and returns it with its new bound */
-func StatementListToFormula(statements []basictypes.Statement, old_bound int, problemDir string) (form basictypes.Form, bound int, containsEquality bool) {
-	and_list := basictypes.NewFormList()
-	var not_form basictypes.Form
+func StatementListToFormula(statements []Core.Statement, old_bound int, problemDir string) (form AST.Form, bound int, containsEquality bool) {
+	and_list := AST.NewFormList()
+	var not_form AST.Form
 	bound = old_bound
 
 	for _, statement := range statements {
 		switch statement.GetRole() {
-		case basictypes.Include:
+		case Core.Include:
 			file_name := statement.GetName()
 
 			realname, err := getFile(file_name, problemDir)
-			global.PrintDebug("MAIN", fmt.Sprintf("File to parse : %s\n", realname))
+			Glob.PrintDebug("MAIN", fmt.Sprintf("File to parse : %s\n", realname))
 
 			if err != nil {
-				global.PrintError("MAIN", err.Error())
+				Glob.PrintError("MAIN", err.Error())
 				return nil, -1, false
 			}
 
-			new_lstm, bound_tmp, contEq := parser.ParseTPTPFile(realname)
+			new_lstm, bound_tmp, contEq := Parser.ParseTPTPFile(realname)
 			containsEquality = containsEquality || contEq
 			new_form_list, new_bound, contEq := StatementListToFormula(new_lstm, bound_tmp, path.Join(problemDir, path.Dir(file_name)))
 			containsEquality = containsEquality || contEq
@@ -192,13 +191,13 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 				and_list.Append(new_form_list)
 			}
 
-		case basictypes.Axiom:
+		case Core.Axiom:
 			and_list = doAxiomStatement(and_list, statement)
 
-		case basictypes.Conjecture:
+		case Core.Conjecture:
 			not_form = doConjectureStatement(statement)
 
-		case basictypes.Type:
+		case Core.Type:
 			doTypeStatement(statement)
 		}
 	}
@@ -207,20 +206,24 @@ func StatementListToFormula(statements []basictypes.Statement, old_bound int, pr
 	case and_list.IsEmpty() && not_form == nil:
 		return nil, bound, containsEquality
 	case and_list.IsEmpty():
-		return basictypes.RefuteForm(not_form), bound, containsEquality
+		return AST.RefuteForm(not_form), bound, containsEquality
 	case not_form == nil:
-		return basictypes.MakerAnd(and_list), bound, containsEquality
+		return AST.MakerAnd(and_list), bound, containsEquality
 	default:
 		flattened := and_list.Flatten()
-		flattened.Append(basictypes.RefuteForm(not_form))
-		return basictypes.MakerAnd(flattened), bound, containsEquality
+		flattened.Append(AST.RefuteForm(not_form))
+		return AST.MakerAnd(flattened), bound, containsEquality
 	}
 }
 
-func doAxiomStatement(andList *basictypes.FormList, statement basictypes.Statement) *basictypes.FormList {
+func doAxiomStatement(andList *AST.FormList, statement Core.Statement) *AST.FormList {
 	newForm := statement.GetForm().RenameVariables()
 
-	if !global.IsLoaded("dmt") {
+	// FIXME: dmt should be a plugin and therefore not checked here.
+	// Ideally, we want to be able to define a hook here and let the plugins do
+	// whatever they want, returning only whether they consumed the axiom or
+	// not. It would also avoid duplicated code.
+	if !Glob.IsLoaded("dmt") {
 		andList.Append(newForm)
 		return andList
 	}
@@ -234,12 +237,12 @@ func doAxiomStatement(andList *basictypes.FormList, statement basictypes.Stateme
 	return andList
 }
 
-func doConjectureStatement(statement basictypes.Statement) basictypes.Form {
-	global.SetConjecture(true)
+func doConjectureStatement(statement Core.Statement) AST.Form {
+	Glob.SetConjecture(true)
 	return statement.GetForm().RenameVariables()
 }
 
-func doTypeStatement(statement basictypes.Statement) {
+func doTypeStatement(statement Core.Statement) {
 	typeScheme := statement.GetAtomTyping().Ts
 
 	if typeScheme == nil {
@@ -249,21 +252,21 @@ func doTypeStatement(statement basictypes.Statement) {
 	if typeScheme.Size() == 1 {
 		isNewType := typeScheme.ToString() == "$tType"
 		if isNewType {
-			typing.MkTypeHint(statement.GetAtomTyping().Literal.GetName())
+			AST.MkTypeHint(statement.GetAtomTyping().Literal.GetName())
 		} else {
-			isConstant := !global.Is[typing.QuantifiedType](typeScheme)
+			isConstant := !Glob.Is[AST.QuantifiedType](typeScheme)
 			if isConstant {
-				typing.SaveConstant(statement.GetAtomTyping().Literal.GetName(), typeScheme.GetPrimitives()[0])
+				AST.SaveConstant(statement.GetAtomTyping().Literal.GetName(), typeScheme.GetPrimitives()[0])
 			} else {
-				typing.SavePolymorphScheme(statement.GetAtomTyping().Literal.GetName(), typeScheme)
+				AST.SavePolymorphScheme(statement.GetAtomTyping().Literal.GetName(), typeScheme)
 			}
 		}
 	} else {
 		switch typeScheme.(type) {
-		case typing.TypeArrow:
-			typing.SaveTypeScheme(statement.GetAtomTyping().Literal.GetName(), typing.GetInputType(typeScheme)[0], typing.GetOutType(typeScheme))
-		case typing.QuantifiedType:
-			typing.SavePolymorphScheme(statement.GetAtomTyping().Literal.GetName(), typeScheme)
+		case AST.TypeArrow:
+			AST.SaveTypeScheme(statement.GetAtomTyping().Literal.GetName(), AST.GetInputType(typeScheme)[0], AST.GetOutType(typeScheme))
+		case AST.QuantifiedType:
+			AST.SavePolymorphScheme(statement.GetAtomTyping().Literal.GetName(), typeScheme)
 		}
 	}
 }
@@ -296,16 +299,16 @@ func getFile(filename string, dir string) (string, error) {
 	return "", fmt.Errorf("file %s not found", filename)
 }
 
-func checkForTypedProof(form basictypes.Form) basictypes.Form {
-	isTypedProof := !typing.EmptyGlobalContext()
+func checkForTypedProof(form AST.Form) AST.Form {
+	isTypedProof := !AST.EmptyGlobalContext()
 
 	if isTypedProof {
-		formula, err := polymorphism.WellFormedVerification(form, global.GetTypeProof())
+		formula, err := Typing.WellFormedVerification(form, Glob.GetTypeProof())
 
 		if err != nil {
-			global.PrintPanic("MAIN", fmt.Sprintf("Typing error: %v", err))
+			Glob.PrintPanic("MAIN", fmt.Sprintf("Typing error: %v", err))
 		} else {
-			global.PrintInfo("MAIN", "Well typed.")
+			Glob.PrintInfo("MAIN", "Well typed.")
 			return formula
 		}
 	}

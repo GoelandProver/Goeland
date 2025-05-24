@@ -1,7 +1,7 @@
 # Sources
-GOSRC=main.go
+GOSRC=main.go options.go
 PLUGINS_SRC=plugins/
-YACCFILE=./parser/tptp_parse.y
+YACCFILE=./Parser/tptp_parse.y
 GOPARSER=$(YACCFILE:.y=.go)
 
 # Compilation
@@ -36,9 +36,8 @@ parse:
         ./$(BIN) $$i; echo; done
 
 clean:
-	rm -f *~ $(GOPARSER) y.output
+	rm -f **/*~ $(GOPARSER) y.output
 	rm -rf $(BUILD)
-	rm goeland.vo* goeland.glob
 
 .PHONY: tests
 tests:
