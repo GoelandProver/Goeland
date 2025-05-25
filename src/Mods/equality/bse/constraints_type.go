@@ -133,7 +133,7 @@ func appendToMapAndCheck(
 	if _, ok := (*map_constraintes)[m]; !ok {
 		(*map_constraintes)[m] = make([]Lib.List[AST.Term], index_max_other_lists+1)
 		for i := 0; i <= index_max_other_lists; i++ {
-			(*map_constraintes)[m][i] = Lib.MkList[AST.Term](0)
+			(*map_constraintes)[m][i] = Lib.NewList[AST.Term]()
 		}
 	}
 

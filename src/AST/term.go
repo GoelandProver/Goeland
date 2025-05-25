@@ -127,7 +127,7 @@ func TypeAppToTerm(typeApp TypeApp) Term {
 	case TypeHint:
 		term = MakerFun(
 			MakerId(nt.ToString()),
-			Lib.MkList[Term](0),
+			Lib.NewList[Term](),
 			[]TypeApp{},
 			MkTypeHint("$tType"),
 		)

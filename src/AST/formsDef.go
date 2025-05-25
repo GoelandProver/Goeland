@@ -350,7 +350,7 @@ func (o Or) GetType() TypeScheme {
 }
 
 func (o Or) GetSubTerms() Lib.List[Term] {
-	res := Lib.MkList[Term](0)
+	res := Lib.NewList[Term]()
 
 	for _, tl := range o.FormList.Slice() {
 		res.Add(TermEquals, tl.GetSubTerms().GetSlice()...)
@@ -483,7 +483,7 @@ func (a And) GetType() TypeScheme {
 }
 
 func (a And) GetSubTerms() Lib.List[Term] {
-	res := Lib.MkList[Term](0)
+	res := Lib.NewList[Term]()
 
 	for _, tl := range a.FormList.Slice() {
 		res.Add(TermEquals, tl.GetSubTerms().GetSlice()...)
@@ -1096,7 +1096,7 @@ func (p Pred) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 }
 
 func (p Pred) GetSubTerms() Lib.List[Term] {
-	res := Lib.MkList[Term](0)
+	res := Lib.NewList[Term]()
 
 	for _, t := range p.GetArgs().GetSlice() {
 		res.Add(TermEquals, t)
@@ -1190,7 +1190,7 @@ func (t Top) ReplaceTypeByMeta([]TypeVar, int) Form       { return MakeTop(t.Get
 func (t Top) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeTop(t.GetIndex()), false }
 func (t Top) RenameVariables() Form                       { return MakeTop(t.GetIndex()) }
 func (t Top) GetIndex() int                               { return t.index }
-func (t Top) GetSubTerms() Lib.List[Term]                 { return Lib.MkList[Term](0) }
+func (t Top) GetSubTerms() Lib.List[Term]                 { return Lib.NewList[Term]() }
 func (t Top) SubstituteVarByMeta(Var, Meta) Form          { return t }
 func (t Top) GetInternalMetas() *MetaList                 { return NewMetaList() }
 func (t Top) SetInternalMetas(*MetaList) Form             { return t }
@@ -1235,7 +1235,7 @@ func (b Bot) ReplaceTypeByMeta([]TypeVar, int) Form       { return MakeBot(b.Get
 func (b Bot) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeBot(b.GetIndex()), false }
 func (b Bot) RenameVariables() Form                       { return MakeBot(b.GetIndex()) }
 func (b Bot) GetIndex() int                               { return b.index }
-func (b Bot) GetSubTerms() Lib.List[Term]                 { return Lib.MkList[Term](0) }
+func (b Bot) GetSubTerms() Lib.List[Term]                 { return Lib.NewList[Term]() }
 func (b Bot) SubstituteVarByMeta(Var, Meta) Form          { return b }
 func (b Bot) GetInternalMetas() *MetaList                 { return NewMetaList() }
 func (b Bot) SetInternalMetas(*MetaList) Form             { return b }

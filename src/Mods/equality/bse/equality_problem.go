@@ -153,11 +153,11 @@ func makeEQMapFromEqualities(eq Equalities) map[string]Lib.List[AST.Term] {
 		key2 := e.GetT2().ToString()
 
 		if _, found := map_res[key1]; !found {
-			map_res[key1] = Lib.MkList[AST.Term](0)
+			map_res[key1] = Lib.NewList[AST.Term]()
 		}
 
 		if _, found := map_res[key2]; !found {
-			map_res[key2] = Lib.MkList[AST.Term](0)
+			map_res[key2] = Lib.NewList[AST.Term]()
 		}
 
 		map_res[key1].Append(e.GetT2())

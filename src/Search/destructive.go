@@ -109,7 +109,7 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 	Glob.SetNbGoroutines(0)
 	state.SetLF(Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(
 		formula,
-		Lib.MkList[AST.Term](0),
+		Lib.NewList[AST.Term](),
 	)))
 	c := MakeCommunication(make(chan bool), make(chan Result))
 

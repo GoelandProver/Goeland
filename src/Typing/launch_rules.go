@@ -104,7 +104,7 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 	var errorFound error = nil
 
 	forms := make([]AST.Form, len(chansTab))
-	terms := Lib.MkList[AST.Term](0)
+	terms := Lib.NewList[AST.Term]()
 
 	// Wait for all children to finish.
 	for remaining > 0 && errorFound == nil {

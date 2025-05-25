@@ -195,7 +195,7 @@ func newIntroSubsManager(node *SearchNode, metas *AST.MetaList, doneSubs SubList
 	return &IntroSubsManager{
 		newSubsManager(node, doneSubs),
 		metas,
-		Lib.MkList[AST.Term](0),
+		Lib.NewList[AST.Term](),
 	}
 }
 

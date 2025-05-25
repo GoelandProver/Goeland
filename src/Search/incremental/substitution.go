@@ -190,7 +190,7 @@ func (s *Sub) AddOtherSub(other *Sub) {
 }
 
 func (s *Sub) GetAsMetasAndTerms() (metas *AST.MetaList, terms Lib.List[AST.Term]) {
-	metas, terms = AST.NewMetaList(), Lib.MkList[AST.Term](0)
+	metas, terms = AST.NewMetaList(), Lib.NewList[AST.Term]()
 
 	for _, ss := range s.everySub {
 		metas.Append(*ss.getMeta())

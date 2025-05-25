@@ -52,7 +52,7 @@ type OuterSkolemization struct {
 
 func MkOuterSkolemization() OuterSkolemization {
 	return OuterSkolemization{
-		existingSymbols: Lib.MkList[AST.Id](0),
+		existingSymbols: Lib.NewList[AST.Id](),
 		mu:              sync.Mutex{},
 	}
 }

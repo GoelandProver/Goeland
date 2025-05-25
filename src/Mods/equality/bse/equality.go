@@ -70,7 +70,7 @@ func TryEquality(atomics_for_dmt Core.FormAndTermsList, st Search.State, new_ato
 					subst_eq,
 					Core.MakeFormAndTerm(
 						AST.EmptyPredEq,
-						Lib.MkList[AST.Term](0),
+						Lib.NewList[AST.Term](),
 					),
 					node_id,
 					original_node_id,

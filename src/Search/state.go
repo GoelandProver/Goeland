@@ -263,7 +263,7 @@ func MakeState(limit int, tp, tn Unif.DataStructure, f AST.Form) State {
 	current_proof.SetRuleProof("Initial formula")
 	current_proof.SetFormulaProof(Core.MakeFormAndTerm(
 		f.Copy(),
-		Lib.MkList[AST.Term](0),
+		Lib.NewList[AST.Term](),
 	))
 
 	return State{

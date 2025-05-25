@@ -80,7 +80,7 @@ func makeMachine() Machine {
 		hasPoped:      false,
 		post:          []IntPair{},
 		subst:         []SubstPair{},
-		terms:         Lib.MkList[AST.Term](0),
+		terms:         Lib.NewList[AST.Term](),
 		meta:          Substitutions{},
 		failure:       []MatchingSubstitutions{},
 		topLevelTot:   0,

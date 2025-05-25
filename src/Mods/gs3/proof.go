@@ -267,7 +267,7 @@ func getDepFromTerm(term AST.Term) Lib.List[AST.Term] {
 			return Lib.MkListV[AST.Term](typedFun)
 		}
 
-		res := Lib.MkList[AST.Term](0)
+		res := Lib.NewList[AST.Term]()
 
 		for _, t := range typedFun.GetArgs().GetSlice() {
 			res.Append(getDepFromTerm(t).GetSlice()...)
@@ -368,13 +368,13 @@ func (gs *GS3Proof) postTreatment(proofStep Search.ProofStruct, rule Rule) []*AS
 
 func makeProofStructFrom(f, nf AST.Form, rule Rule) Search.ProofStruct {
 	proofStruct := Search.MakeEmptyProofStruct()
-	proofStruct.Formula = Core.MakeFormAndTerm(f, Lib.MkList[AST.Term](0))
+	proofStruct.Formula = Core.MakeFormAndTerm(f, Lib.NewList[AST.Term]())
 	proofStruct.Result_formulas = []Search.IntFormAndTermsList{
 		Search.MakeIntFormAndTermsList(
 			0,
 			Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(
 				nf,
-				Lib.MkList[AST.Term](0)),
+				Lib.NewList[AST.Term]()),
 			))}
 	proofStruct.Rule_name = ruleToTableauxString(rule)
 	return proofStruct
@@ -605,7 +605,7 @@ func makeWeakeningProofStructs(forms *AST.FormList) []Search.ProofStruct {
 		proofStruct := Search.MakeEmptyProofStruct()
 		proofStruct.SetFormulaProof(Core.MakeFormAndTerm(
 			f,
-			Lib.MkList[AST.Term](0)),
+			Lib.NewList[AST.Term]()),
 		)
 		proofStruct.SetRuleNameProof("WEAKEN")
 		resultingProof = append(resultingProof, proofStruct)

@@ -163,7 +163,7 @@ func TypeAndTermsToTerms(
 	types []AST.TypeApp,
 	terms Lib.List[AST.Term],
 ) Lib.List[AST.Term] {
-	tms := Lib.MkList[AST.Term](0)
+	tms := Lib.NewList[AST.Term]()
 	tms.Append(AST.TypeAppArrToTerm(types).GetSlice()...)
 	tms.Append(terms.GetSlice()...)
 

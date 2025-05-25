@@ -283,7 +283,7 @@ func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
 }
 
 func (f Fun) GetSubTerms() Lib.List[Term] {
-	res := Lib.MkList[Term](0)
+	res := Lib.NewList[Term]()
 
 	res.Add(TermEquals, f)
 	for _, arg := range f.GetArgs().GetSlice() {

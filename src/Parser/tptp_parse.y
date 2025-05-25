@@ -298,7 +298,7 @@ tff_atomic_formula: tff_plain_atomic_formula    { $$ = $1 }
   | tff_defined_atomic                          { $$ = $1 }
   ;
 
-tff_plain_atomic_formula: constant { $$ = AST.MakerPred($1, Lib.MkList[AST.Term](0), []AST.TypeApp{}) }
+tff_plain_atomic_formula: constant { $$ = AST.MakerPred($1, Lib.NewList[AST.Term](), []AST.TypeApp{}) }
   | functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = AST.MakerPred($1, $3.terms, $3.types) }
   ;
 
@@ -307,7 +307,7 @@ tff_defined_atomic: tff_defined_plain { $$ = $1 }
   | FALSE { $$ = AST.MakerBot() }
   ;
 
-tff_defined_plain: defined_constant { $$ = AST.MakerPred($1, Lib.MkList[AST.Term](0), []AST.TypeApp{}) }
+tff_defined_plain: defined_constant { $$ = AST.MakerPred($1, Lib.NewList[AST.Term](), []AST.TypeApp{}) }
   | defined_functor LEFT_PAREN tff_arguments RIGHT_PAREN  { $$ = AST.MakerPred($1, $3.terms, $3.types) }
   ;
 
@@ -477,7 +477,7 @@ fof_atomic_formula: fof_plain_atomic_formula    { $$ = $1 }
   //   | fof_system_atomic_formula                   { $$ = $1 }
 
 fof_plain_atomic_formula: constant {
-    $$ = AST.MakerPred($1, Lib.MkList[AST.Term](0), []AST.TypeApp{}) }
+    $$ = AST.MakerPred($1, Lib.NewList[AST.Term](), []AST.TypeApp{}) }
   | functor LEFT_PAREN fof_arguments RIGHT_PAREN    { $$ = AST.MakerPred($1, $3, []AST.TypeApp{}) }
   ;
 
@@ -491,7 +491,7 @@ fof_defined_atomic_formula: fof_defined_plain_formula { $$ = $1 }
   ;
 
 fof_defined_plain_formula: defined_constant {
-    $$ = AST.MakerPred($1, Lib.MkList[AST.Term](0), []AST.TypeApp{}) }
+    $$ = AST.MakerPred($1, Lib.NewList[AST.Term](), []AST.TypeApp{}) }
   | TRUE  { $$ = AST.MakerTop() }
   | FALSE { $$ = AST.MakerBot() }
   | defined_functor LEFT_PAREN fof_arguments RIGHT_PAREN  { $$ = AST.MakerPred($1, $3, []AST.TypeApp{}) }
@@ -679,7 +679,7 @@ func makeTermList(in TFFTerm) TFFTermList {
     if in.type_ == nil {
         return TFFTermList{types: []AST.TypeApp{}, terms: Lib.MkListV(in.term)}
     }
-    return TFFTermList{types: []AST.TypeApp{in.type_}, terms: Lib.MkList[AST.Term](0)}
+    return TFFTermList{types: []AST.TypeApp{in.type_}, terms: Lib.NewList[AST.Term]()}
 }
 
 func appendTermList(in TFFTerm, ls TFFTermList) TFFTermList {

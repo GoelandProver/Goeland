@@ -35,7 +35,7 @@ func (rm *RulesManager) onlyReintroOrClosureLeft() bool {
 }
 
 func (rm *RulesManager) insertForm(formula AST.Form) {
-	rule := makeCorrectRule(formula, Lib.MkList[AST.Term](0))
+	rule := makeCorrectRule(formula, Lib.NewList[AST.Term]())
 	rm.insertIntoCorrectSlice(rule)
 }
 

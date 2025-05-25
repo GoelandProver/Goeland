@@ -64,6 +64,10 @@ func MkListV[T any](sl ...T) List[T] {
 	return List[T]{values: sl}
 }
 
+func NewList[T any]() List[T] {
+	return MkList[T](0)
+}
+
 func (l List[T]) Append(value ...T) {
 	l.values = append(l.values, value...)
 }
@@ -125,6 +129,11 @@ func (l List[T]) Copy(cpyFunc Func[T, T]) List[T] {
 	return cpy
 }
 
+func ListCpy[U any, T Copyable[U]](ls List[T]) List[T] {
+	cpy := func(x T) T { return any(x.Copy()).(T) }
+	return ls.Copy(cpy)
+}
+
 func (l List[T]) Contains(x T, cmpFunc Func2[T, T, bool]) bool {
 	for _, y := range l.values {
 		if cmpFunc(x, y) {
@@ -134,12 +143,23 @@ func (l List[T]) Contains(x T, cmpFunc Func2[T, T, bool]) bool {
 	return false
 }
 
+func ListMem[T Comparable](x T, ls List[T]) bool {
+	cmp := func(x, y T) bool { return x.Equals(y) }
+	return ls.Contains(x, cmp)
+}
+
 func (l *List[T]) Add(cmpFunc Func2[T, T, bool], x ...T) {
 	for _, y := range x {
 		if !l.Contains(y, cmpFunc) {
 			l.Append(y)
 		}
 	}
+}
+
+func ListAdd[T Comparable](l List[T], x ...T) List[T] {
+	cmp := func(x, y T) bool { return x.Equals(y) }
+	l.Add(cmp, x...)
+	return l
 }
 
 func (l List[T]) Get(from, to int) []T {

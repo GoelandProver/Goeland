@@ -187,7 +187,11 @@ func applyAppTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruc
 	result := launchChildren(children, root, fatherChan)
 
 	// Only one term needs to be returned because the ParameterizedType is counted as one.
-	return Reconstruct{result: result.result, err: result.err, terms: Lib.MkList[AST.Term](0)}
+	return Reconstruct{
+		result: result.result,
+		err:    result.err,
+		terms:  Lib.NewList[AST.Term](),
+	}
 }
 
 /* Utils functions */

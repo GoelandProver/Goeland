@@ -350,7 +350,7 @@ func eliminateList(
 
 	for hasChanged {
 		hasChanged = false
-		tempList := Lib.MkList[AST.Term](0)
+		tempList := Lib.NewList[AST.Term]()
 
 		for _, elementList := range termList.GetSlice() {
 			switch lt := elementList.(type) {

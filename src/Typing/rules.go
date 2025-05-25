@@ -171,7 +171,7 @@ func reconstructForm(reconstruction Reconstruct, baseForm AST.Form) Reconstruct 
 			f = AST.MakePred(
 				form.GetIndex(),
 				form.GetID(),
-				Lib.MkList[AST.Term](0),
+				Lib.NewList[AST.Term](),
 				form.GetTypeVars(),
 				form.GetType(),
 			)
@@ -209,7 +209,7 @@ func reconstructTerm(reconstruction Reconstruct, baseTerm AST.Term) Reconstruct 
 		} else {
 			fun = AST.MakerFun(
 				termFun.GetID(),
-				Lib.MkList[AST.Term](0),
+				Lib.NewList[AST.Term](),
 				termFun.GetTypeVars(),
 				termFun.GetTypeHint(),
 			)

@@ -147,7 +147,7 @@ func nArySecondPassTerms(
 	vars []AST.Var,
 	types []AST.TypeApp,
 ) (Lib.List[AST.Term], []AST.TypeApp) {
-	resTerms, resVars := Lib.MkList[AST.Term](0), []AST.TypeApp{}
+	resTerms, resVars := Lib.NewList[AST.Term](), []AST.TypeApp{}
 
 	for _, term := range terms.GetSlice() {
 		t, v := secondPassTerm(term, vars, types)

@@ -124,7 +124,7 @@ func retrieveEqualities(dt Unif.DataStructure) Equalities {
 	MetaEQ2 := AST.MakerMeta("METAEQ2", -1)
 	// TODO: type this
 	tv := AST.MkTypeVar("EQ")
-	eq_pred := AST.MakerPred(AST.Id_eq, Lib.MkList[AST.Term](0), []AST.TypeApp{})
+	eq_pred := AST.MakerPred(AST.Id_eq, Lib.NewList[AST.Term](), []AST.TypeApp{})
 	tv.ShouldBeMeta(eq_pred.GetIndex())
 	tv.Instantiate(1)
 	eq_pred = AST.MakePred(
@@ -159,7 +159,7 @@ func retrieveInequalities(dt Unif.DataStructure) Inequalities {
 	// TODO: type this
 
 	tv := AST.MkTypeVar("EQ")
-	neq_pred := AST.MakerPred(AST.Id_eq, Lib.MkList[AST.Term](0), []AST.TypeApp{})
+	neq_pred := AST.MakerPred(AST.Id_eq, Lib.NewList[AST.Term](), []AST.TypeApp{})
 	tv.ShouldBeMeta(neq_pred.GetIndex())
 	tv.Instantiate(1)
 	neq_pred = AST.MakePred(
