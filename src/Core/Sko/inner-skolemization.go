@@ -52,7 +52,7 @@ type InnerSkolemization struct {
 
 func MkInnerSkolemization() InnerSkolemization {
 	return InnerSkolemization{
-		existingSymbols: Lib.MkList[AST.Id](0),
+		existingSymbols: Lib.NewList[AST.Id](),
 		mu:              sync.Mutex{},
 	}
 }
@@ -66,7 +66,7 @@ func (sko InnerSkolemization) Skolemize(
 	symbol := genFreshSymbol(&sko.existingSymbols, sko.mu, x)
 	sko.mu.Unlock()
 
-	internalMetas := Lib.MkListV(form.GetInternalMetas().List.Slice()...)
+	internalMetas := form.GetMetas()
 
 	skolemFunc := AST.MakeFun(
 		symbol,

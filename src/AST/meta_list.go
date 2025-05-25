@@ -41,26 +41,18 @@ import (
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-type MetaList struct {
-	*Glob.List[Meta]
-}
-
-func NewMetaList(metas ...Meta) *MetaList {
-	return &MetaList{Glob.NewList(metas...)}
-}
-
-func (ml *MetaList) HasMetaInCommonWith(other *MetaList) bool {
-	for _, meta := range ml.Slice() {
-		if other.Contains(meta) {
+func HasMetaInCommonWith(ml Lib.List[Meta], other Lib.List[Meta]) bool {
+	for _, meta := range ml.GetSlice() {
+		if Lib.ListMem(meta, other) {
 			return true
 		}
 	}
 	return false
 }
 
-func (ml *MetaList) IsIncludeInsideOF(other *MetaList) bool {
-	for _, meta := range other.Slice() {
-		if !other.Contains(meta) {
+func IsIncludeInsideOF(ml Lib.List[Meta], other Lib.List[Meta]) bool {
+	for _, meta := range other.GetSlice() {
+		if !Lib.ListMem(meta, other) {
 			return false
 		}
 	}
@@ -68,24 +60,12 @@ func (ml *MetaList) IsIncludeInsideOF(other *MetaList) bool {
 	return true
 }
 
-func (ml *MetaList) ToTermList() Lib.List[Term] {
-	res := Lib.MkList[Term](0)
+func MetaListToTermList(ml Lib.List[Meta]) Lib.List[Term] {
+	res := Lib.NewList[Term]()
 
-	for _, meta := range ml.Slice() {
+	for _, meta := range ml.GetSlice() {
 		res.Add(TermEquals, Glob.To[Term](meta))
 	}
 
 	return res
-}
-
-func (ml *MetaList) Equals(other any) bool {
-	if typed, ok := other.(*MetaList); ok {
-		return ml.List.Equals(typed.List)
-	}
-
-	return false
-}
-
-func (ml *MetaList) Copy() *MetaList {
-	return &MetaList{ml.List.Copy()}
 }

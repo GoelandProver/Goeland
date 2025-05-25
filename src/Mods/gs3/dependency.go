@@ -101,7 +101,7 @@ func getNextFormula(form AST.Form) AST.Form {
 		}
 		return f.GetForm()
 	case AST.Not:
-		return AST.RefuteForm(getNextFormula(f.GetForm()))
+		return AST.MakerNot(getNextFormula(f.GetForm()))
 	}
 	return form
 }

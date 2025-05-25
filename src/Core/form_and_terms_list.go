@@ -193,7 +193,7 @@ func (fl FormAndTermsList) ExtractForms() *AST.FormList {
 }
 
 func (fl FormAndTermsList) SubstituteBy(
-	metas *AST.MetaList,
+	metas Lib.List[AST.Meta],
 	terms Lib.List[AST.Term],
 ) FormAndTermsList {
 	result := FormAndTermsList{}

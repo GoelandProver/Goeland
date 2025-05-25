@@ -37,10 +37,11 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 )
 
-func makeContextIfNeeded(root AST.Form, metaList *AST.MetaList) string {
+func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
 	resultString := contextPreamble() + "\n\n"
 
 	if Glob.IsLoaded("dmt") {
@@ -293,9 +294,9 @@ func clean(set, add []string) []string {
 	return result
 }
 
-func contextualizeMetas(metaList *AST.MetaList) string {
+func contextualizeMetas(metaList Lib.List[AST.Meta]) string {
 	result := []string{}
-	for _, meta := range metaList.Slice() {
+	for _, meta := range metaList.GetSlice() {
 		result = append(result, meta.ToMappedString(lambdaPiMapConnectors, false))
 	}
 	return "symbol " + strings.Join(result, " ") + " : τ (ι);"

@@ -222,9 +222,9 @@ tff_binary_formula: tff_binary_nonassoc { $$ = $1 }
 tff_binary_nonassoc: tff_unit_formula EQUIV tff_unit_formula    { $$ = AST.MakerEqu($1, $3) }
   | tff_unit_formula IMPLY tff_unit_formula                     { $$ = AST.MakerImp($1, $3) }
   | tff_unit_formula LEFT_IMPLY tff_unit_formula                { $$ = AST.MakerImp($3, $1) }
-  | tff_unit_formula XOR tff_unit_formula                       { $$ = AST.MakerOr(AST.NewFormList(AST.MakerAnd(AST.NewFormList($1, AST.RefuteForm($3))), AST.MakerAnd(AST.NewFormList(AST.RefuteForm($1), $3))))}
-  | tff_unit_formula NOTVLINE tff_unit_formula                  { $$ = AST.RefuteForm(AST.MakerOr(AST.NewFormList($1, $3)))}
-  | tff_unit_formula NOTAND tff_unit_formula                    { $$ = AST.RefuteForm(AST.MakerAnd(AST.NewFormList($1, $3)))}
+  | tff_unit_formula XOR tff_unit_formula                       { $$ = AST.MakerOr(AST.NewFormList(AST.MakerAnd(AST.NewFormList($1, AST.MakerNot($3))), AST.MakerAnd(AST.NewFormList(AST.MakerNot($1), $3))))}
+  | tff_unit_formula NOTVLINE tff_unit_formula                  { $$ = AST.MakerNot(AST.MakerOr(AST.NewFormList($1, $3)))}
+  | tff_unit_formula NOTAND tff_unit_formula                    { $$ = AST.MakerNot(AST.MakerAnd(AST.NewFormList($1, $3)))}
   ;
 
 tff_binary_assoc: tff_or_formula { $$ = $1 }
@@ -283,7 +283,7 @@ tff_unary_formula: tff_prefix_unary { $$ = $1 }
   | tff_infix_unary                 { $$ = $1 }
   ;
 
-tff_prefix_unary: NOT tff_preunit_formula { $$ = AST.RefuteForm($2) }
+tff_prefix_unary: NOT tff_preunit_formula { $$ = AST.MakerNot($2) }
   ;
 
 tff_infix_unary: tff_term NOT_EQUAL tff_term {
@@ -428,9 +428,9 @@ fof_binary_formula: fof_binary_nonassoc     { $$ = $1 }
 fof_binary_nonassoc: fof_unit_formula EQUIV fof_unit_formula { $$ = AST.MakerEqu($1, $3) }
   | fof_unit_formula IMPLY fof_unit_formula                  { $$ = AST.MakerImp($1, $3) }
   | fof_unit_formula LEFT_IMPLY fof_unit_formula             { $$ = AST.MakerImp($3, $1) }
-  | fof_unit_formula XOR fof_unit_formula                       { $$ = AST.MakerOr(AST.NewFormList(AST.MakerAnd(AST.NewFormList($1, AST.RefuteForm($3))), AST.MakerAnd(AST.NewFormList(AST.RefuteForm($1), $3))))}
-  | fof_unit_formula NOTVLINE fof_unit_formula                  { $$ = AST.RefuteForm(AST.MakerOr(AST.NewFormList($1, $3)))}
-  | fof_unit_formula NOTAND fof_unit_formula                    { $$ = AST.RefuteForm(AST.MakerAnd(AST.NewFormList($1, $3)))}
+  | fof_unit_formula XOR fof_unit_formula                       { $$ = AST.MakerOr(AST.NewFormList(AST.MakerAnd(AST.NewFormList($1, AST.MakerNot($3))), AST.MakerAnd(AST.NewFormList(AST.MakerNot($1), $3))))}
+  | fof_unit_formula NOTVLINE fof_unit_formula                  { $$ = AST.MakerNot(AST.MakerOr(AST.NewFormList($1, $3)))}
+  | fof_unit_formula NOTAND fof_unit_formula                    { $$ = AST.MakerNot(AST.MakerAnd(AST.NewFormList($1, $3)))}
   ;
 
 fof_binary_assoc: fof_or_formula    { $$ = $1 }
@@ -445,7 +445,7 @@ fof_and_formula: fof_unit_formula AND fof_unit_formula  { $$ = AST.MakerAnd(AST.
   | fof_and_formula AND fof_unit_formula                { $$ = AST.MakerAnd(AST.NewFormList($1, $3)) }
   ;
   
-fof_unary_formula: NOT fof_unit_formula     { $$ = AST.RefuteForm($2) }
+fof_unary_formula: NOT fof_unit_formula     { $$ = AST.MakerNot($2) }
   | fof_infix_unary                         { $$ = $1 }
   ;
   

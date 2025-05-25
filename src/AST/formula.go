@@ -45,9 +45,7 @@ import (
 
 type Form interface {
 	GetIndex() int
-	GetMetas() *MetaList
-	GetInternalMetas() *MetaList
-	SetInternalMetas(*MetaList) Form
+	GetMetas() Lib.List[Meta]
 	GetType() TypeScheme
 	GetSubTerms() Lib.List[Term]
 	GetSubFormulasRecur() *FormList
@@ -63,7 +61,7 @@ type Form interface {
 	ReplaceMetaByTerm(meta Meta, term Term) Form
 }
 
-/* Replace a term by a term inside a function */
+/* Replace a term by a term inside a function. */
 func replaceTermInTermList(
 	terms Lib.List[Term],
 	oldTerm Term,
@@ -99,8 +97,13 @@ func replaceTermInTermList(
 				))
 				res = res || r
 			}
-		default:
-			newTermList.Upd(i, val)
+		case Meta:
+			if oldTerm.Equals(newTerm) {
+				newTermList.Upd(i, newTerm)
+				res = true
+			} else {
+				newTermList.Upd(i, val)
+			}
 		}
 	}
 
@@ -128,11 +131,11 @@ func instanciateTypeAppList(typeApps []TypeApp, vars []TypeVar, index int) []Typ
 }
 
 // Creates and returns a MetaList from a FormList, making sure there are no duplicates
-func metasUnion(forms *FormList) *MetaList {
-	res := NewMetaList()
+func metasUnion(forms *FormList) Lib.List[Meta] {
+	res := Lib.NewList[Meta]()
 
 	for _, form := range forms.Slice() {
-		res.AppendIfNotContains(form.GetInternalMetas().Slice()...)
+		res = Lib.ListAdd(res, form.GetMetas().GetSlice()...)
 	}
 
 	return res

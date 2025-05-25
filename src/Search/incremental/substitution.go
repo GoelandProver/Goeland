@@ -189,8 +189,8 @@ func (s *Sub) AddOtherSub(other *Sub) {
 	}
 }
 
-func (s *Sub) GetAsMetasAndTerms() (metas *AST.MetaList, terms Lib.List[AST.Term]) {
-	metas, terms = AST.NewMetaList(), Lib.NewList[AST.Term]()
+func (s *Sub) GetAsMetasAndTerms() (metas Lib.List[AST.Meta], terms Lib.List[AST.Term]) {
+	metas, terms = Lib.NewList[AST.Meta](), Lib.NewList[AST.Term]()
 
 	for _, ss := range s.everySub {
 		metas.Append(*ss.getMeta())
@@ -233,15 +233,15 @@ func getCompatibleBetween(first SubList, second SubList) SubList {
 	return compatibles
 }
 
-func addMissingMetas(compatibles SubList, metas *AST.MetaList) SubList {
+func addMissingMetas(compatibles SubList, metas Lib.List[AST.Meta]) SubList {
 	if metas.Len() == 0 || len(compatibles) == 0 {
 		return compatibles
 	}
 
 	for _, subs := range compatibles {
 		metasInSubs, _ := subs.GetAsMetasAndTerms()
-		for _, meta := range metasInSubs.Slice() {
-			metas.AppendIfNotContains(meta)
+		for _, meta := range metasInSubs.GetSlice() {
+			metas = Lib.ListAdd(metas, meta)
 		}
 	}
 
@@ -250,7 +250,7 @@ func addMissingMetas(compatibles SubList, metas *AST.MetaList) SubList {
 	for _, subs := range compatibles {
 		newSubs := subs.Copy()
 
-		for _, meta := range metas.Slice() {
+		for _, meta := range metas.GetSlice() {
 			if ok, _ := subs.containsMeta(&meta); !ok {
 				newSubs.AddMetaAndTerm(meta, anyTerm)
 			}

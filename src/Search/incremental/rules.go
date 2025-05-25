@@ -243,7 +243,7 @@ func (ano *AlphaNotOr) apply() []RuleList {
 		switch subForm := form.GetForm().(type) {
 		case AST.Or:
 			for _, subForm := range subForm.FormList.Slice() {
-				resultRules = append(resultRules, makeCorrectRule(AST.RefuteForm(subForm), ano.GetTerms()))
+				resultRules = append(resultRules, makeCorrectRule(AST.MakerNot(subForm), ano.GetTerms()))
 			}
 		}
 	}
@@ -264,7 +264,7 @@ func (ani *AlphaNotImp) apply() []RuleList {
 		switch subForm := form.GetForm().(type) {
 		case AST.Imp:
 			resultRules = append(resultRules, makeCorrectRule(subForm.GetF1(), ani.GetTerms()))
-			resultRules = append(resultRules, makeCorrectRule(AST.RefuteForm(subForm.GetF2()), ani.GetTerms()))
+			resultRules = append(resultRules, makeCorrectRule(AST.MakerNot(subForm.GetF2()), ani.GetTerms()))
 		}
 	}
 
@@ -284,7 +284,7 @@ func (bna *BetaNotAnd) apply() []RuleList {
 		switch subForm := form.GetForm().(type) {
 		case AST.And:
 			for _, andForm := range subForm.FormList.Slice() {
-				resultRulesBeta = append(resultRulesBeta, RuleList{makeCorrectRule(AST.RefuteForm(andForm), bna.GetTerms())})
+				resultRulesBeta = append(resultRulesBeta, RuleList{makeCorrectRule(AST.MakerNot(andForm), bna.GetTerms())})
 			}
 		}
 	}
@@ -305,11 +305,11 @@ func (bne *BetaNotEqu) apply() []RuleList {
 	case AST.Not:
 		switch subForm := form.GetForm().(type) {
 		case AST.Equ:
-			resultRules1 = append(resultRules1, makeCorrectRule(AST.RefuteForm(subForm.GetF1()), bne.GetTerms()))
+			resultRules1 = append(resultRules1, makeCorrectRule(AST.MakerNot(subForm.GetF1()), bne.GetTerms()))
 			resultRules1 = append(resultRules1, makeCorrectRule(subForm.GetF2(), bne.GetTerms()))
 
 			resultRules2 = append(resultRules2, makeCorrectRule(subForm.GetF1(), bne.GetTerms()))
-			resultRules2 = append(resultRules2, makeCorrectRule(AST.RefuteForm(subForm.GetF2()), bne.GetTerms()))
+			resultRules2 = append(resultRules2, makeCorrectRule(AST.MakerNot(subForm.GetF2()), bne.GetTerms()))
 		}
 	}
 
@@ -345,7 +345,7 @@ func (bi *BetaImp) apply() []RuleList {
 
 	switch subForm := bi.GetForm().(type) {
 	case AST.Imp:
-		resultRules1 = append(resultRules1, makeCorrectRule(AST.RefuteForm(subForm.GetF1()), bi.GetTerms()))
+		resultRules1 = append(resultRules1, makeCorrectRule(AST.MakerNot(subForm.GetF1()), bi.GetTerms()))
 		resultRules2 = append(resultRules2, makeCorrectRule(subForm.GetF2(), bi.GetTerms()))
 	}
 
@@ -366,8 +366,8 @@ func (be *BetaEqu) apply() []RuleList {
 		resultRules1 = append(resultRules1, makeCorrectRule(form.GetF1(), be.GetTerms()))
 		resultRules1 = append(resultRules1, makeCorrectRule(form.GetF2(), be.GetTerms()))
 
-		resultRules2 = append(resultRules2, makeCorrectRule(AST.RefuteForm(form.GetF1()), be.GetTerms()))
-		resultRules2 = append(resultRules2, makeCorrectRule(AST.RefuteForm(form.GetF2()), be.GetTerms()))
+		resultRules2 = append(resultRules2, makeCorrectRule(AST.MakerNot(form.GetF1()), be.GetTerms()))
+		resultRules2 = append(resultRules2, makeCorrectRule(AST.MakerNot(form.GetF2()), be.GetTerms()))
 	}
 
 	return []RuleList{resultRules2, resultRules1}
@@ -376,13 +376,13 @@ func (be *BetaEqu) apply() []RuleList {
 type GammaRule interface {
 	Rule
 	Copy() GammaRule
-	getGeneratedMetas() *AST.MetaList
+	getGeneratedMetas() Lib.List[AST.Meta]
 	getVarList() []AST.Var
 }
 
 type GammaNotExists struct {
 	AnyRule
-	generatedMetas *AST.MetaList
+	generatedMetas Lib.List[AST.Meta]
 }
 
 func (gne *GammaNotExists) apply() []RuleList {
@@ -391,7 +391,7 @@ func (gne *GammaNotExists) apply() []RuleList {
 
 	instanciatedForm, metas := Core.Instantiate(Core.MakeFormAndTerm(gne.GetForm(), gne.GetTerms()), 42)
 	newTerms := gne.GetTerms().Copy(AST.Term.Copy)
-	newTerms.Add(AST.TermEquals, metas.ToTermList().GetSlice()...)
+	newTerms.Add(AST.TermEquals, AST.MetaListToTermList(metas).GetSlice()...)
 	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), newTerms))
 	gne.generatedMetas = metas
 
@@ -408,7 +408,7 @@ func (gne *GammaNotExists) Copy() GammaRule {
 	return nil
 }
 
-func (gne *GammaNotExists) getGeneratedMetas() *AST.MetaList {
+func (gne *GammaNotExists) getGeneratedMetas() Lib.List[AST.Meta] {
 	return gne.generatedMetas
 }
 
@@ -423,7 +423,7 @@ func (gne *GammaNotExists) getVarList() []AST.Var {
 
 type GammaForall struct {
 	AnyRule
-	generatedMetas *AST.MetaList
+	generatedMetas Lib.List[AST.Meta]
 }
 
 func (gf *GammaForall) apply() []RuleList {
@@ -432,7 +432,7 @@ func (gf *GammaForall) apply() []RuleList {
 
 	instanciatedForm, metas := Core.Instantiate(Core.MakeFormAndTerm(gf.GetForm(), gf.GetTerms()), 42)
 	newTerms := gf.GetTerms().Copy(AST.Term.Copy)
-	newTerms.Add(AST.TermEquals, metas.ToTermList().GetSlice()...)
+	newTerms.Add(AST.TermEquals, AST.MetaListToTermList(metas).GetSlice()...)
 	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), newTerms))
 	gf.generatedMetas = metas
 
@@ -449,7 +449,7 @@ func (gf *GammaForall) Copy() GammaRule {
 	return nil
 }
 
-func (gf *GammaForall) getGeneratedMetas() *AST.MetaList {
+func (gf *GammaForall) getGeneratedMetas() Lib.List[AST.Meta] {
 	return gf.generatedMetas
 }
 

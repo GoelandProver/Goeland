@@ -120,7 +120,7 @@ func (ifl *IntFormAndTermsList) GetForms() *AST.FormList {
 }
 
 func (ifl *IntFormAndTermsList) SubstituteBy(
-	metas *AST.MetaList,
+	metas Lib.List[AST.Meta],
 	terms Lib.List[AST.Term],
 ) IntFormAndTermsList {
 	return MakeIntFormAndTermsList(ifl.i, ifl.fl.SubstituteBy(metas, terms))
@@ -377,24 +377,26 @@ func JsonProofStructListToText(jps []JsonProofStruct) string {
 	return res
 }
 
-func ProofStructListToText(ps []ProofStruct, metaList *AST.MetaList) string {
+func ProofStructListToText(ps []ProofStruct, metaList Lib.List[AST.Meta]) string {
 	json_content := ProofStructListToJsonProofStructList(ps)
 	return JsonProofStructListToText(json_content)
 }
 
-func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) *AST.MetaList {
-	res := AST.NewMetaList()
+func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) Lib.List[AST.Meta] {
+	res := Lib.NewList[AST.Meta]()
 
 	for _, proofElement := range proofStruct {
-		res.AppendIfNotContains(proofElement.GetFormula().GetForm().GetMetas().Slice()...)
+		proofMetas := proofElement.GetFormula().GetForm().GetMetas()
+		res = Lib.ListAdd(res, proofMetas.GetSlice()...)
 		resResultFormulas := GetFormulasFromIntFormAndTermList(proofElement.GetResultFormulas())
 
 		for _, v := range resResultFormulas.Slice() {
-			res.AppendIfNotContains(v.GetInternalMetas().Slice()...)
+			res = Lib.ListAdd(res, v.GetMetas().GetSlice()...)
 		}
 
 		for _, children := range proofElement.GetChildren() {
-			res.AppendIfNotContains(RetrieveUninstantiatedMetaFromProof(children).Slice()...)
+			uninstanciatedMetas := RetrieveUninstantiatedMetaFromProof(children)
+			res = Lib.ListAdd(res, uninstanciatedMetas.GetSlice()...)
 		}
 	}
 

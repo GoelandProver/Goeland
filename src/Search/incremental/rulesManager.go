@@ -18,14 +18,14 @@ type RulesManager struct {
 
 	reintroRules *ReintroRuleList
 
-	metaVariables *AST.MetaList
+	metaVariables Lib.List[AST.Meta]
 
 	appliedRule    Rule
 	resultingRules []RuleList
 }
 
 func makeRulesManager() *RulesManager {
-	manager := &RulesManager{reintroRules: &ReintroRuleList{}, metaVariables: AST.NewMetaList()}
+	manager := &RulesManager{reintroRules: &ReintroRuleList{}, metaVariables: Lib.NewList[AST.Meta]()}
 
 	return manager
 }
@@ -126,7 +126,7 @@ func (rm *RulesManager) applyReintroductionRule() (success bool, resultManagers 
 
 	switch typed := applied.(type) {
 	case GammaRule:
-		rm.metaVariables.Append(typed.getGeneratedMetas().Slice()...)
+		rm.metaVariables.Append(typed.getGeneratedMetas().GetSlice()...)
 		rm.reintroRules.AddReintro(typed)
 	}
 
@@ -236,10 +236,10 @@ func (rm *RulesManager) tryToApply(category RuleList) (success bool, applied Rul
 			copy.removeRule(applied)
 			copy.insertIntoCorrectSlice(branch...)
 
-			copy.metaVariables.Append(rm.metaVariables.Slice()...)
+			copy.metaVariables.Append(rm.metaVariables.GetSlice()...)
 			switch typed := applied.(type) {
 			case GammaRule:
-				copy.metaVariables.Append(typed.getGeneratedMetas().Slice()...)
+				copy.metaVariables.Append(typed.getGeneratedMetas().GetSlice()...)
 				rm.reintroRules.AddReintro(typed)
 			}
 			copy.reintroRules = rm.reintroRules.Copy()

@@ -126,7 +126,7 @@ func getPosAndNeg(target AST.Form) (pos, neg AST.Form) {
 	if neg, ok := target.(AST.Not); ok {
 		return neg.GetForm(), neg
 	}
-	return target, AST.RefuteForm(target)
+	return target, AST.MakerNot(target)
 }
 
 func allRules(rule string, target AST.Form, composingForms *AST.FormList, nexts []*gs3.GS3Sequent, children []*AST.FormList) string {

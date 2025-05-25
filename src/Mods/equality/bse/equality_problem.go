@@ -109,12 +109,12 @@ func (ep EqualityProblem) applySubstitution(s Unif.Substitutions) EqualityProble
 	return res
 }
 
-func (ep EqualityProblem) getMetas() *AST.MetaList {
-	metas := AST.NewMetaList()
+func (ep EqualityProblem) getMetas() Lib.List[AST.Meta] {
+	metas := Lib.NewList[AST.Meta]()
 
-	metas.AppendIfNotContains(ep.E.getMetas().Slice()...)
-	metas.AppendIfNotContains(ep.s.GetMetas().Slice()...)
-	metas.AppendIfNotContains(ep.t.GetMetas().Slice()...)
+	metas = Lib.ListAdd(metas, ep.E.getMetas().GetSlice()...)
+	metas = Lib.ListAdd(metas, ep.s.GetMetas().GetSlice()...)
+	metas = Lib.ListAdd(metas, ep.t.GetMetas().GetSlice()...)
 
 	return metas
 }
@@ -160,8 +160,14 @@ func makeEQMapFromEqualities(eq Equalities) map[string]Lib.List[AST.Term] {
 			map_res[key2] = Lib.NewList[AST.Term]()
 		}
 
-		map_res[key1].Append(e.GetT2())
-		map_res[key2].Append(e.GetT1())
+		upd1 := map_res[key1]
+		upd2 := map_res[key2]
+
+		upd1.Append(e.GetT2())
+		upd2.Append(e.GetT1())
+
+		map_res[key1] = upd1
+		map_res[key2] = upd2
 	}
 
 	return map_res

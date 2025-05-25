@@ -55,13 +55,13 @@ type Id struct {
 	name  string
 }
 
-func (i Id) GetIndex() int     { return i.index }
-func (i Id) GetName() string   { return i.name }
-func (i Id) IsMeta() bool      { return false }
-func (i Id) IsFun() bool       { return false }
-func (i Id) Copy() Term        { return MakeId(i.GetIndex(), i.GetName()) }
-func (Id) ToMeta() Meta        { return MakeEmptyMeta() }
-func (Id) GetMetas() *MetaList { return NewMetaList() }
+func (i Id) GetIndex() int          { return i.index }
+func (i Id) GetName() string        { return i.name }
+func (i Id) IsMeta() bool           { return false }
+func (i Id) IsFun() bool            { return false }
+func (i Id) Copy() Term             { return MakeId(i.GetIndex(), i.GetName()) }
+func (Id) ToMeta() Meta             { return MakeEmptyMeta() }
+func (Id) GetMetas() Lib.List[Meta] { return Lib.NewList[Meta]() }
 
 var ToStringId = func(i Id) string {
 	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
@@ -246,11 +246,11 @@ func (f Fun) PointerCopy() *Fun {
 	return NewFun(f.GetP(), f.GetArgs(), CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
 }
 
-func (f Fun) GetMetas() *MetaList {
-	metas := NewMetaList()
+func (f Fun) GetMetas() Lib.List[Meta] {
+	metas := Lib.NewList[Meta]()
 
 	for _, arg := range f.GetArgs().GetSlice() {
-		metas.Append(arg.GetMetas().Slice()...)
+		metas.Append(arg.GetMetas().GetSlice()...)
 	}
 
 	return metas
@@ -321,7 +321,7 @@ func (v Var) IsMeta() bool            { return false }
 func (v Var) IsFun() bool             { return false }
 func (v Var) Copy() Term              { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
 func (Var) ToMeta() Meta              { return MakeEmptyMeta() }
-func (Var) GetMetas() *MetaList       { return NewMetaList() }
+func (Var) GetMetas() Lib.List[Meta]  { return Lib.NewList[Meta]() }
 
 func (v Var) Equals(t any) bool {
 	if typed, ok := t.(Var); ok {
@@ -388,15 +388,15 @@ type Meta struct {
 
 func (m Meta) GetFormula() int { return m.formula }
 
-func (m Meta) GetTypeApp() TypeApp     { return m.typeHint }
-func (m Meta) GetTypeHint() TypeScheme { return m.typeHint.(TypeScheme) }
-func (m Meta) GetName() string         { return m.name }
-func (m Meta) GetIndex() int           { return m.index }
-func (m Meta) GetOccurence() int       { return m.occurence }
-func (m Meta) IsMeta() bool            { return true }
-func (m Meta) IsFun() bool             { return false }
-func (m Meta) ToMeta() Meta            { return m }
-func (m Meta) GetMetas() *MetaList     { return NewMetaList(m) }
+func (m Meta) GetTypeApp() TypeApp      { return m.typeHint }
+func (m Meta) GetTypeHint() TypeScheme  { return m.typeHint.(TypeScheme) }
+func (m Meta) GetName() string          { return m.name }
+func (m Meta) GetIndex() int            { return m.index }
+func (m Meta) GetOccurence() int        { return m.occurence }
+func (m Meta) IsMeta() bool             { return true }
+func (m Meta) IsFun() bool              { return false }
+func (m Meta) ToMeta() Meta             { return m }
+func (m Meta) GetMetas() Lib.List[Meta] { return Lib.MkListV(m) }
 
 func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"
@@ -448,4 +448,8 @@ func (m Meta) Less(u any) bool {
 
 func MakeEmptyMeta() Meta {
 	return MakeMeta(-1, -1, "-1", -1, nil, DefaultType())
+}
+
+func MetaEquals(x, y Meta) bool {
+	return x.Equals(y)
 }

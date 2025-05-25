@@ -49,7 +49,7 @@ func (rrl *ReintroRuleList) TryToApply(original *RulesManager) (success bool, ap
 		copy.copyAppliableRules(original)
 		copy.reintroRules = rrl.Copy()
 		copy.reintroRules.reintroAmount[index]++
-		copy.metaVariables.Append(original.metaVariables.Slice()...)
+		copy.metaVariables.Append(original.metaVariables.GetSlice()...)
 		copy.insertIntoCorrectSlice(best)
 
 		return copy.tryToApply(copy.gammaRules)

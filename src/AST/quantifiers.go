@@ -46,16 +46,23 @@ import (
 
 type quantifier struct {
 	*MappedString
-	*MetaList
+	metas   Lib.Cache[Lib.List[Meta], quantifier]
 	index   int
 	varList []Var
 	subForm Form
 	symbol  FormulaType
 }
 
-func makeQuantifier(i int, vars []Var, subForm Form, metas *MetaList, symbol FormulaType) quantifier {
+func makeQuantifier(i int, vars []Var, subForm Form, metas Lib.List[Meta], symbol FormulaType) quantifier {
 	fms := &MappedString{}
-	qua := quantifier{fms, metas, i, vars, subForm, symbol}
+	qua := quantifier{
+		fms,
+		Lib.MkCache(metas, quantifier.forceGetMetas),
+		i,
+		vars,
+		subForm,
+		symbol,
+	}
 	fms.MappableString = &qua
 
 	return qua
@@ -77,8 +84,12 @@ func (q quantifier) GetType() TypeScheme {
 	return DefaultPropType(0)
 }
 
-func (q quantifier) GetMetas() *MetaList {
+func (q quantifier) forceGetMetas() Lib.List[Meta] {
 	return q.subForm.GetMetas()
+}
+
+func (q quantifier) GetMetas() Lib.List[Meta] {
+	return q.metas.Get(q)
 }
 
 func (q quantifier) ToString() string {
@@ -151,21 +162,41 @@ func (q quantifier) GetSubTerms() Lib.List[Term] {
 	return q.GetForm().GetSubTerms()
 }
 
-func (q quantifier) GetInternalMetas() *MetaList {
-	return q.MetaList
-}
-
 func (q quantifier) copy() quantifier {
-	return makeQuantifier(q.GetIndex(), copyVarList(q.GetVarList()), q.GetForm(), q.MetaList.Copy(), q.symbol)
+	nq := makeQuantifier(
+		q.GetIndex(),
+		copyVarList(q.GetVarList()),
+		q.GetForm(),
+		Lib.ListCpy(q.metas.Raw()),
+		q.symbol,
+	)
+
+	if !q.metas.NeedsUpd() {
+		nq.metas.AvoidUpd()
+	}
+
+	return nq
 }
 
 func (q quantifier) replaceTypeByMeta(varList []TypeVar, index int) quantifier {
-	return makeQuantifier(q.GetIndex(), q.GetVarList(), q.GetForm().ReplaceTypeByMeta(varList, index), q.MetaList.Copy(), q.symbol)
+	return makeQuantifier(
+		q.GetIndex(),
+		q.GetVarList(),
+		q.GetForm().ReplaceTypeByMeta(varList, index),
+		Lib.ListCpy(q.metas.Raw()),
+		q.symbol,
+	)
 }
 
 func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
 	f, res := q.GetForm().ReplaceTermByTerm(old, new)
-	return makeQuantifier(q.GetIndex(), q.GetVarList(), f, q.MetaList.Copy(), q.symbol), res
+	return makeQuantifier(
+		q.GetIndex(),
+		q.GetVarList(),
+		f,
+		Lib.ListCpy(q.metas.Raw()),
+		q.symbol,
+	), res
 }
 
 func (q quantifier) renameVariables() quantifier {
@@ -179,20 +210,33 @@ func (q quantifier) renameVariables() quantifier {
 		newForm, _ = newForm.RenameVariables().ReplaceTermByTerm(v, newVar)
 	}
 
-	return makeQuantifier(q.GetIndex(), newVarList, newForm, q.MetaList.Copy(), q.symbol)
+	return makeQuantifier(
+		q.GetIndex(),
+		newVarList,
+		newForm,
+		Lib.ListCpy(q.metas.Raw()),
+		q.symbol,
+	)
 }
 
 func (q quantifier) substituteVarByMeta(old Var, new Meta) quantifier {
 	newForm := q.GetForm().SubstituteVarByMeta(old, new)
-	return makeQuantifier(q.GetIndex(), q.GetVarList(), newForm, newForm.GetInternalMetas().Copy(), q.symbol)
-}
-
-func (q quantifier) setInternalMetas(m *MetaList) quantifier {
-	q.MetaList = m
-	return q
+	return makeQuantifier(
+		q.GetIndex(),
+		q.GetVarList(),
+		newForm,
+		Lib.ListCpy(newForm.GetMetas()),
+		q.symbol,
+	)
 }
 
 func (q quantifier) replaceMetaByTerm(meta Meta, term Term) quantifier {
 	newForm := q.GetForm().ReplaceMetaByTerm(meta, term)
-	return makeQuantifier(q.GetIndex(), q.GetVarList(), newForm, newForm.GetInternalMetas().Copy(), q.symbol)
+	return makeQuantifier(
+		q.GetIndex(),
+		q.GetVarList(),
+		newForm,
+		Lib.ListCpy(newForm.GetMetas()),
+		q.symbol,
+	)
 }

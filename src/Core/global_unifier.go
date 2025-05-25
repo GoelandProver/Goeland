@@ -37,6 +37,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -193,9 +194,9 @@ func (u *Unifier) Merge(other Unifier) {
 	Glob.PrintDebug("GLOBAL UNIFIER", fmt.Sprintf("After: %s", u.ToString()))
 }
 
-func (u *Unifier) PruneMetasInSubsts(metas *AST.MetaList) {
+func (u *Unifier) PruneMetasInSubsts(metas Lib.List[AST.Meta]) {
 	for i, unif := range u.localUnifiers {
-		for _, meta := range metas.Slice() {
+		for _, meta := range metas.GetSlice() {
 			_, index := unif.Fst.Get(meta)
 			if index != -1 {
 				u.localUnifiers[i].Fst.Remove(index)

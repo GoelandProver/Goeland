@@ -42,12 +42,12 @@ import (
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-func GetMetas(tl Lib.List[Term]) *MetaList {
-	res := NewMetaList()
+func GetMetasOfList(tl Lib.List[Term]) Lib.List[Meta] {
+	res := Lib.NewList[Meta]()
 
 	for _, term := range tl.GetSlice() {
 		if typed, ok := term.(Meta); ok {
-			res.AppendIfNotContains(typed)
+			res = Lib.ListAdd(res, typed)
 		}
 	}
 

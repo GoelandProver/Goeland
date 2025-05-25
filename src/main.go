@@ -206,12 +206,12 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 	case and_list.IsEmpty() && not_form == nil:
 		return nil, bound, containsEquality
 	case and_list.IsEmpty():
-		return AST.RefuteForm(not_form), bound, containsEquality
+		return AST.MakerNot(not_form), bound, containsEquality
 	case not_form == nil:
 		return AST.MakerAnd(and_list), bound, containsEquality
 	default:
 		flattened := and_list.Flatten()
-		flattened.Append(AST.RefuteForm(not_form))
+		flattened.Append(AST.MakerNot(not_form))
 		return AST.MakerAnd(flattened), bound, containsEquality
 	}
 }

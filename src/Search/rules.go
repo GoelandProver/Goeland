@@ -269,7 +269,7 @@ func applyAlphaNotOrRule(
 	setStateRules(state, "ALPHA", "NOT", "OR")
 
 	for i := range formWithoutNot.FormList.Slice() {
-		result = result.AppendIfNotContains(Core.MakeFormAndTerm(AST.RefuteForm(formWithoutNot.FormList.Get(i)), terms))
+		result = result.AppendIfNotContains(Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.FormList.Get(i)), terms))
 	}
 
 	return result
@@ -284,7 +284,7 @@ func applyAlphaNotImpRule(
 	setStateRules(state, "ALPHA", "NOT", "IMPLY")
 
 	result = result.AppendIfNotContains(Core.MakeFormAndTerm(formWithoutNot.GetF1(), terms))
-	result = result.AppendIfNotContains(Core.MakeFormAndTerm(AST.RefuteForm(formWithoutNot.GetF2()), terms))
+	result = result.AppendIfNotContains(Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.GetF2()), terms))
 
 	return result
 }
@@ -357,7 +357,7 @@ func applyBetaNotAndRule(
 	setStateRules(state, "BETA", "NOT", "AND")
 
 	for i := range formWithoutNot.FormList.Slice() {
-		result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(AST.RefuteForm(formWithoutNot.FormList.Get(i)), terms)))
+		result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.FormList.Get(i)), terms)))
 	}
 
 	return result
@@ -373,12 +373,12 @@ func applyBetaNotEquRule(
 
 	result = append(result,
 		Core.FormAndTermsList{
-			Core.MakeFormAndTerm(AST.RefuteForm(formWithoutNot.GetF1()), terms),
+			Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.GetF1()), terms),
 			Core.MakeFormAndTerm(formWithoutNot.GetF2(), terms)})
 	result = append(result,
 		Core.FormAndTermsList{
 			Core.MakeFormAndTerm(formWithoutNot.GetF1(), terms),
-			Core.MakeFormAndTerm(AST.RefuteForm(formWithoutNot.GetF2()), terms)})
+			Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.GetF2()), terms)})
 
 	return result
 }
@@ -406,7 +406,7 @@ func applyBetaImpRule(
 ) []Core.FormAndTermsList {
 	setStateRules(state, "BETA", "IMPLY")
 
-	result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(AST.RefuteForm(formTyped.GetF1()), terms)))
+	result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(AST.MakerNot(formTyped.GetF1()), terms)))
 	result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(formTyped.GetF2(), terms)))
 
 	return result
@@ -422,8 +422,8 @@ func applyBetaEquRule(
 
 	result = append(result,
 		Core.FormAndTermsList{
-			Core.MakeFormAndTerm(AST.RefuteForm(formTyped.GetF1()), terms),
-			Core.MakeFormAndTerm(AST.RefuteForm(formTyped.GetF2()), terms)})
+			Core.MakeFormAndTerm(AST.MakerNot(formTyped.GetF1()), terms),
+			Core.MakeFormAndTerm(AST.MakerNot(formTyped.GetF2()), terms)})
 	result = append(result,
 		Core.FormAndTermsList{
 			Core.MakeFormAndTerm(formTyped.GetF1(), terms),
@@ -448,12 +448,9 @@ func ApplyDeltaRules(fnt Core.FormAndTerms, state *State) Core.FormAndTermsList 
 		setStateRules(state, "DELTA", "EXISTS")
 	}
 
-	newMetas := state.GetMM().Copy()
-	newMetas.AppendIfNotContains(state.GetMC().Slice()...)
-	metasAsTerms := Lib.ListMap(
-		Lib.MkListV(newMetas.List.Slice()...),
-		Glob.To[AST.Term],
-	)
+	newMetas := Lib.ListCpy(state.GetMM())
+	newMetas = Lib.ListAdd(newMetas, state.GetMC().GetSlice()...)
+	metasAsTerms := Lib.ListMap(newMetas, Glob.To[AST.Term])
 
 	f := Core.Skolemize(fnt.GetForm(), newMetas)
 	return Core.MakeSingleElementFormAndTermList(
@@ -470,7 +467,7 @@ func ApplyDeltaRules(fnt Core.FormAndTerms, state *State) Core.FormAndTermsList 
 *	a formula
 *	the new metavariables
 **/
-func ApplyGammaRules(fnt Core.FormAndTerms, index int, state *State) (Core.FormAndTermsList, *AST.MetaList) {
+func ApplyGammaRules(fnt Core.FormAndTerms, index int, state *State) (Core.FormAndTermsList, Lib.List[AST.Meta]) {
 	switch fnt.GetForm().(type) {
 	case AST.Not:
 		setStateRules(state, "GAMMA", "NOT", "EXISTS")

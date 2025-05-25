@@ -13,7 +13,7 @@ type SubsManager interface {
 	addClosingSubs(SubList, int)
 	sendClosingSubsToFather()
 	getCompatibleSubs() SubList
-	GetApplicableSubs() (*AST.MetaList, Lib.List[AST.Term])
+	GetApplicableSubs() (Lib.List[AST.Meta], Lib.List[AST.Term])
 	tryingAgain()
 	getDoneSubs() SubList
 	addDoneSubs(SubList)
@@ -36,7 +36,7 @@ func getCompatibleSubs(sm SubsManager) SubList {
 	return sm.getCompatibleSubs()
 }
 
-func getApplicableSubs(sm SubsManager) (*AST.MetaList, Lib.List[AST.Term]) {
+func getApplicableSubs(sm SubsManager) (Lib.List[AST.Meta], Lib.List[AST.Term]) {
 	return sm.GetApplicableSubs()
 }
 
@@ -89,7 +89,7 @@ func (ssm *SimpleSubsManager) getCompatibleSubs() SubList {
 	return compatibleSubs
 }
 
-func (ssm *SimpleSubsManager) GetApplicableSubs() (ml *AST.MetaList, tl Lib.List[AST.Term]) {
+func (ssm *SimpleSubsManager) GetApplicableSubs() (ml Lib.List[AST.Meta], tl Lib.List[AST.Term]) {
 	if !ssm.node.isRoot() {
 		return getApplicableSubs(ssm.node.father.subsManager)
 	}
@@ -187,11 +187,11 @@ func (bsm *BranchingSubsManager) tryingAgain() {
 type IntroSubsManager struct {
 	*SimpleSubsManager
 
-	metas      *AST.MetaList
+	metas      Lib.List[AST.Meta]
 	subsitutes Lib.List[AST.Term]
 }
 
-func newIntroSubsManager(node *SearchNode, metas *AST.MetaList, doneSubs SubList) *IntroSubsManager {
+func newIntroSubsManager(node *SearchNode, metas Lib.List[AST.Meta], doneSubs SubList) *IntroSubsManager {
 	return &IntroSubsManager{
 		newSubsManager(node, doneSubs),
 		metas,
@@ -200,11 +200,11 @@ func newIntroSubsManager(node *SearchNode, metas *AST.MetaList, doneSubs SubList
 }
 
 func (gsm *IntroSubsManager) GetApplicableSubs() (
-	metas *AST.MetaList,
+	metas Lib.List[AST.Meta],
 	terms Lib.List[AST.Term],
 ) {
 	metas, terms = getApplicableSubs(gsm.SimpleSubsManager)
-	metas.Append(gsm.metas.Slice()...)
+	metas.Append(gsm.metas.GetSlice()...)
 	terms.Append(gsm.subsitutes.GetSlice()...)
 
 	return metas, terms

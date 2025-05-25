@@ -85,14 +85,14 @@ func (fat FormAndTerms) ToString() string {
 }
 
 func (fat FormAndTerms) SubstituteBy(
-	metas *AST.MetaList,
+	metas Lib.List[AST.Meta],
 	terms Lib.List[AST.Term],
 ) FormAndTerms {
 	result := fat.Copy()
 
-	for i := range metas.Slice() {
-		result.form = result.form.ReplaceMetaByTerm(metas.Get(i), terms.At(i))
-		result.Terms = AST.ReplaceOccurrence(result.Terms, metas.Get(i), terms.At(i))
+	for i := range metas.GetSlice() {
+		result.form = result.form.ReplaceMetaByTerm(metas.At(i), terms.At(i))
+		result.Terms = AST.ReplaceOccurrence(result.Terms, metas.At(i), terms.At(i))
 	}
 
 	return result

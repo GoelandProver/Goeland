@@ -41,6 +41,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/gs3"
 	"github.com/GoelandProver/Goeland/Search"
 )
@@ -54,7 +55,7 @@ var TptpOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeTptpOutpu
 // Functions: MakeTptpOutput
 // Main functions of the TPTP module.
 
-func MakeTptpOutput(prf []Search.ProofStruct, meta *AST.MetaList) string {
+func MakeTptpOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	if len(prf) == 0 {
 		Glob.PrintError("Tptp", "Nothing to output")
 		return ""
@@ -64,7 +65,7 @@ func MakeTptpOutput(prf []Search.ProofStruct, meta *AST.MetaList) string {
 	return MakeTptpProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-var MakeTptpProof = func(proof *gs3.GS3Sequent, meta *AST.MetaList) string {
+var MakeTptpProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
 	old := AST.ChangeVarSeparator(", ")
 	proofString := makeTptpProofFromGS3(proof)
 	AST.ChangeVarSeparator(old)

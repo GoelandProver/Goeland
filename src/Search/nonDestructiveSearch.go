@@ -40,6 +40,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -66,9 +67,9 @@ func (nds *nonDestructiveSearch) manageRewriteRules(fatherId uint64, state State
 }
 
 /* Choose substitution - whitout meta in lastAppliedSubst */
-func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestructive(sl []Core.SubstAndForm, ml *AST.MetaList) (Core.SubstAndForm, []Core.SubstAndForm) {
+func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestructive(sl []Core.SubstAndForm, ml Lib.List[AST.Meta]) (Core.SubstAndForm, []Core.SubstAndForm) {
 	for i, v := range sl {
-		if !v.GetSubst().GetMeta().IsIncludeInsideOF(ml) {
+		if !AST.IsIncludeInsideOF(v.GetSubst().GetMeta(), ml) {
 			return v, Core.RemoveSubstFromSubstAndFormList(i, sl)
 		}
 	}
@@ -149,8 +150,8 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 	// Apply gamma rule
 	newLf, newMetas := ApplyGammaRules(reslf, index, state)
 	state.SetLF(newLf)
-	newMC := state.GetMC().Copy()
-	newMC.AppendIfNotContains(newMetas.Slice()...)
+	newMC := Lib.ListCpy(state.GetMC())
+	newMC = Lib.ListAdd(newMC, newMetas.GetSlice()...)
 	state.SetMC(newMC)
 
 	// I got a substitution {(X_0, a)}
@@ -170,13 +171,13 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 	association_subst := Unif.Substitutions{}
 
 	// Associate new meta with old meta
-	for _, new_meta := range newMetas.Slice() {
+	for _, new_meta := range newMetas.GetSlice() {
 		found := false
 		if !found {
 			// La meta nouvellement générée n'apparaît pas dans la substitution
 			// Trouver celle de la formula de base
 			for _, f := range s.GetForm().Slice() {
-				for _, term_formula := range f.GetMetas().Slice() {
+				for _, term_formula := range f.GetMetas().GetSlice() {
 					if !found && term_formula.IsMeta() && term_formula.GetName() == new_meta.GetName() {
 						association_subst.Set(new_meta, term_formula)
 						found = true
@@ -273,7 +274,15 @@ func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64
 		st.SetSubstsFound(st.GetSubstsFound()[1:])
 	}
 
-	Glob.PrintDebug("PS", fmt.Sprintf("Choosen subst : %v - HasInCommon : %v", new_choosen_subst.GetSubst().ToString(), new_choosen_subst.GetSubst().GetMeta().HasMetaInCommonWith(st.GetLastAppliedSubst().GetSubst().GetMeta())))
+	choosenSubstMetas := new_choosen_subst.GetSubst().GetMeta()
+	Glob.PrintDebug("PS", fmt.Sprintf(
+		"Choosen subst : %v - HasInCommon : %v",
+		new_choosen_subst.GetSubst().ToString(),
+		AST.HasMetaInCommonWith(
+			choosenSubstMetas,
+			st.GetLastAppliedSubst().GetSubst().GetMeta(),
+		),
+	))
 	Glob.PrintDebug("PS", fmt.Sprintf("AreRulesApplicable : %v", st.AreRulesApplicable()))
 
 	choosen_subst = new_choosen_subst

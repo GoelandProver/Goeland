@@ -85,8 +85,8 @@ func SetSelectedSkolemization(sko Sko.Skolemization) {
  * Skolemizes the formula f once (e.g., if f is ∃(x,y,z). δ, only x will be
  * treated).
  */
-func Skolemize(form AST.Form, branchMetas *AST.MetaList) AST.Form {
-	metas := Lib.MkListV(branchMetas.List.Slice()...)
+func Skolemize(form AST.Form, branchMetas Lib.List[AST.Meta]) AST.Form {
+	metas := Lib.MkListV(branchMetas.GetSlice()...)
 
 	switch nf := form.(type) {
 	case AST.Not:
@@ -126,7 +126,6 @@ func realSkolemize(
 	metas Lib.List[AST.Meta],
 	typ int,
 ) AST.Form {
-	internalMetas := initialForm.GetInternalMetas()
 	sko, res := selectedSkolemization.Skolemize(
 		initialForm,
 		deltaForm,
@@ -134,16 +133,15 @@ func realSkolemize(
 		metas,
 	)
 	selectedSkolemization = sko
-	res.SetInternalMetas(internalMetas)
 	switch typ {
 	case isNegAll:
 		if len(allVars) > 1 {
-			res = AST.MakerAll(allVars[1:], res).SetInternalMetas(internalMetas)
+			res = AST.MakerAll(allVars[1:], res)
 		}
-		res = AST.RefuteForm(res)
+		res = AST.MakerNot(res)
 	case isExists:
 		if len(allVars) > 1 {
-			res = AST.MakerEx(allVars[1:], res).SetInternalMetas(internalMetas)
+			res = AST.MakerEx(allVars[1:], res)
 		}
 	default:
 		Glob.Anomaly("Skolemization", "impossible reconstruction case")

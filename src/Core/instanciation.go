@@ -47,7 +47,7 @@ const (
 /**
  * Instantiates once the formula fnt.
  */
-func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, *AST.MetaList) {
+func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.List[AST.Meta]) {
 	var meta AST.Meta
 	terms := fnt.GetTerms()
 
@@ -60,7 +60,7 @@ func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, *AST.MetaList) {
 		fnt, meta = RealInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
-	return fnt, AST.NewMetaList(meta)
+	return fnt, Lib.MkListV[AST.Meta](meta)
 }
 
 func RealInstantiate(
@@ -79,20 +79,18 @@ func RealInstantiate(
 		Glob.To[AST.Term](meta),
 	)
 
-	internalMetas := subForm.GetInternalMetas()
-
 	if len(varList) > 1 {
 		if status == is_exists {
 			ex := AST.MakerEx(varList[1:], subForm)
-			subForm = AST.RefuteForm(ex.SetInternalMetas(internalMetas))
+			subForm = AST.MakerNot(ex)
 		} else {
 			subForm = AST.MakerAll(varList[1:], subForm)
 		}
 	} else {
 		if status == is_exists {
-			subForm = AST.RefuteForm(subForm)
+			subForm = AST.MakerNot(subForm)
 		}
 	}
 
-	return MakeFormAndTerm(subForm.SetInternalMetas(internalMetas), terms), meta
+	return MakeFormAndTerm(subForm, terms), meta
 }

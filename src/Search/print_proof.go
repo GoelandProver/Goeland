@@ -38,12 +38,13 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 var BasicOutputProofStruct = &OutputProofStruct{ProofOutput: ProofStructListToText, Name: "Basic", Extension: ".proof"}
 
 type OutputProofStruct struct {
-	ProofOutput func(finalProof []ProofStruct, metaList *AST.MetaList) string
+	ProofOutput func(finalProof []ProofStruct, metaList Lib.List[AST.Meta]) string
 	Name        string
 	Extension   string
 }
@@ -54,7 +55,7 @@ func AddPrintProofAlgorithm(ps *OutputProofStruct) {
 	outputProofStructs = append(outputProofStructs, ps)
 }
 
-func PrintProof(final_proof []ProofStruct, metaList *AST.MetaList) {
+func PrintProof(final_proof []ProofStruct, metaList Lib.List[AST.Meta]) {
 	if Glob.GetProof() {
 		Glob.PrintInfo("MAIN", fmt.Sprintf("%s SZS output start Proof for %v", "%", Glob.GetProblemName()))
 
@@ -66,7 +67,7 @@ func PrintProof(final_proof []ProofStruct, metaList *AST.MetaList) {
 	}
 }
 
-func (ps *OutputProofStruct) printProofWithProofStruct(finalProof []ProofStruct, metaList *AST.MetaList) {
+func (ps *OutputProofStruct) printProofWithProofStruct(finalProof []ProofStruct, metaList Lib.List[AST.Meta]) {
 	output := ps.ProofOutput(finalProof, metaList)
 
 	if Glob.GetWriteLogs() {

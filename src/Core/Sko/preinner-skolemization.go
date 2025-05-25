@@ -54,8 +54,8 @@ type PreInnerSkolemization struct {
 
 func MkPreInnerSkolemization() PreInnerSkolemization {
 	return PreInnerSkolemization{
-		existingSymbols: Lib.MkList[AST.Id](0),
-		linkedSymbols:   Lib.MkList[Glob.Pair[AST.Form, int]](0),
+		existingSymbols: Lib.NewList[AST.Id](),
+		linkedSymbols:   Lib.NewList[Glob.Pair[AST.Form, int]](),
 		mu:              sync.Mutex{},
 	}
 }
@@ -81,7 +81,7 @@ func (sko PreInnerSkolemization) Skolemize(
 	}
 	sko.mu.Unlock()
 
-	internalMetas := Lib.MkListV(form.GetInternalMetas().List.Slice()...)
+	internalMetas := form.GetMetas()
 
 	skolemFunc := AST.MakeFun(
 		symbol,

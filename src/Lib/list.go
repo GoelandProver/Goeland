@@ -68,7 +68,7 @@ func NewList[T any]() List[T] {
 	return MkList[T](0)
 }
 
-func (l List[T]) Append(value ...T) {
+func (l *List[T]) Append(value ...T) {
 	l.values = append(l.values, value...)
 }
 
@@ -117,6 +117,11 @@ func (l List[T]) ToString(
 	}
 
 	return strings.Join(strArr, sep)
+}
+
+func ListToString[T Stringable](l List[T], sep, emptyValue string) string {
+	strFunc := func(x T) string { return x.ToString() }
+	return l.ToString(strFunc, sep, emptyValue)
 }
 
 func (l List[T]) Copy(cpyFunc Func[T, T]) List[T] {
@@ -173,6 +178,10 @@ func (l List[T]) Find(pred Func[T, bool], def T) (T, bool) {
 		}
 	}
 	return def, false
+}
+
+func (l List[T]) Empty() bool {
+	return l.Len() == 0
 }
 
 func ToStrictlyOrderedList[T StrictlyOrdered](l List[T]) StrictlyOrderedList[T] {

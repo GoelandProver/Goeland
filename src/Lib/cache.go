@@ -31,36 +31,59 @@
 **/
 
 /**
-* This file implements some useful functions for the plugin.
-**/
+ * This file defines a _cached_ data-type.
+ * It provides a cache system for a generic type of data, and automatically
+ * updates cached data when needed.
+ * For these functionalities to work properly, do not forget to set up the
+ * different hooks.
+ **/
 
-package dmt
+package Lib
 
-import (
-	"github.com/GoelandProver/Goeland/AST"
-)
+type Cache[T, U any] struct {
+	data         T
+	shouldUpdate bool
 
-func isEquality(pred AST.Pred) bool {
-	return pred.GetID().Equals(AST.Id_eq)
+	updateHook func(U) T
 }
 
-func predFromNegatedAtom(f AST.Form) AST.Pred {
-	return f.(AST.Not).GetForm().(AST.Pred)
-}
-
-func selectFromPolarity[T any](polarity bool, positive, negative T) T {
-	if polarity {
-		return positive
+func MkCache[T, U any](data T, updateHook func(U) T) Cache[T, U] {
+	return Cache[T, U]{
+		data:         data,
+		shouldUpdate: true,
+		updateHook:   updateHook,
 	}
-	return negative
 }
 
-func rewriteMapInsertion(polarity bool, key string, val AST.Form) {
-	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
-
-	if _, ok := rewriteMap[key]; !ok {
-		rewriteMap[key] = AST.NewFormList()
+func (cache *Cache[T, U]) Get(v U) T {
+	if cache.shouldUpdate {
+		cache.data = cache.updateHook(v)
+		cache.shouldUpdate = false
 	}
+	return cache.data
+}
 
-	rewriteMap[key].Append(val)
+func (cache Cache[T, U]) Raw() T {
+	return cache.data
+}
+
+func (cache Cache[T, U]) Copy(cpyFunc Func[T, T]) Cache[T, U] {
+	return Cache[T, U]{
+		data:         cpyFunc(cache.data),
+		shouldUpdate: cache.shouldUpdate,
+		updateHook:   cache.updateHook,
+	}
+}
+
+func CacheCpy[T Copyable[T], U any](cache Cache[T, U]) Cache[T, U] {
+	cpyFunc := func(x T) T { return x.Copy() }
+	return cache.Copy(cpyFunc)
+}
+
+func (cache *Cache[T, U]) AvoidUpd() {
+	cache.shouldUpdate = false
+}
+
+func (cache Cache[T, U]) NeedsUpd() bool {
+	return cache.shouldUpdate
 }

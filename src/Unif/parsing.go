@@ -66,8 +66,8 @@ func (t TermForm) ReplaceTermByTerm(AST.Term, AST.Term) (AST.Form, bool) {
 }
 func (t TermForm) GetIndex() int                                  { return t.index }
 func (t TermForm) SubstituteVarByMeta(AST.Var, AST.Meta) AST.Form { return t }
-func (t TermForm) GetInternalMetas() *AST.MetaList                { return AST.NewMetaList() }
-func (t TermForm) SetInternalMetas(*AST.MetaList) AST.Form        { return t }
+func (t TermForm) GetInternalMetas() Lib.List[AST.Meta]           { return Lib.NewList[AST.Meta]() }
+func (t TermForm) SetInternalMetas(Lib.List[AST.Meta]) AST.Form   { return t }
 func (t TermForm) GetSubFormulasRecur() *AST.FormList             { return AST.NewFormList() }
 func (t TermForm) GetChildFormulas() *AST.FormList                { return AST.NewFormList() }
 
@@ -80,23 +80,23 @@ func (t TermForm) Equals(t2 any) bool {
 	}
 }
 
-func (t TermForm) GetMetas() *AST.MetaList {
+func (t TermForm) GetMetas() Lib.List[AST.Meta] {
 	switch nt := t.GetTerm().(type) {
 	case AST.Meta:
-		return AST.NewMetaList(nt)
+		return Lib.MkListV(nt)
 	case AST.Fun:
-		res := AST.NewMetaList()
+		res := Lib.NewList[AST.Meta]()
 
 		for _, m := range nt.GetArgs().GetSlice() {
 			switch mt := m.(type) {
 			case AST.Meta:
-				res.AppendIfNotContains(mt)
+				res = Lib.ListAdd(res, mt)
 			}
 		}
 
 		return res
 	default:
-		return AST.NewMetaList()
+		return Lib.NewList[AST.Meta]()
 	}
 }
 
@@ -146,7 +146,7 @@ func ParseFormula(formula AST.Form) Sequence {
 		parseTerms(
 			Lib.MkListV(formula_type.GetTerm().Copy()),
 			&instructions,
-			AST.NewMetaList(),
+			Lib.NewList[AST.Meta](),
 			&varCount,
 			&postCount,
 		)
@@ -178,7 +178,7 @@ func parsePred(p AST.Pred, instructions *Sequence) {
 		instructions.add(Down{})
 		varCount := 0
 		postCount := 0
-		parseTerms(p.GetArgs(), instructions, AST.NewMetaList(), &varCount, &postCount)
+		parseTerms(p.GetArgs(), instructions, Lib.NewList[AST.Meta](), &varCount, &postCount)
 		instructions.add(End{})
 	}
 }
@@ -187,10 +187,10 @@ func parsePred(p AST.Pred, instructions *Sequence) {
 func parseTerms(
 	terms Lib.List[AST.Term],
 	instructions *Sequence,
-	subst *AST.MetaList,
+	subst Lib.List[AST.Meta],
 	varCount *int,
 	postCount *int,
-) *AST.MetaList {
+) Lib.List[AST.Meta] {
 
 	rightDefined := func(terms Lib.List[AST.Term], i int) bool {
 		return i < terms.Len()-1
@@ -204,11 +204,11 @@ func parseTerms(
 		switch t := term.(type) {
 		case AST.Meta:
 			instructions.add(Put{i: *varCount})
-			subst = subst.Copy()
+			subst = Lib.ListCpy(subst)
 			subst.Append(t)
 			if *varCount > 0 {
 				for j := 0; j < *varCount; j++ {
-					if subst.Get(j).Equals(t) {
+					if subst.At(j).Equals(t) {
 						instructions.add(Compare{j, *varCount})
 					}
 				}
@@ -251,7 +251,7 @@ func ParseTerm(term AST.Term) Sequence {
 	parseTerms(
 		Lib.MkListV(term.Copy()),
 		&instructions,
-		AST.NewMetaList(),
+		Lib.NewList[AST.Meta](),
 		&varCount,
 		&postCount,
 	)

@@ -52,24 +52,24 @@ import (
 **/
 func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.Form) Substitutions {
 	Glob.PrintDebug("CS", fmt.Sprintf("Compute substitution : %v and %v", SubstPairListToString(subs), metasToSubs.ToString()))
-	metasFromTreeForm := AST.NewMetaList()
+	metasFromTreeForm := Lib.NewList[AST.Meta]()
 	treeSubs := Substitutions{}
 
 	// Retrieve all the meta of from the tree formula
 	switch typedForm := form.(type) {
 	case AST.Pred:
 		for _, term := range typedForm.GetArgs().GetSlice() {
-			metasFromTreeForm.Append(term.GetMetas().Slice()...)
+			metasFromTreeForm.Append(term.GetMetas().GetSlice()...)
 		}
 	case TermForm:
-		metasFromTreeForm.Append(typedForm.GetTerm().GetMetas().Slice()...)
+		metasFromTreeForm.Append(typedForm.GetTerm().GetMetas().GetSlice()...)
 	default:
 		return Failure()
 	}
 
 	//  Transform subst tree into a real substitution
 	for _, value := range subs {
-		currentMeta := metasFromTreeForm.Get(value.GetIndex())
+		currentMeta := metasFromTreeForm.At(value.GetIndex())
 		currentValue := value.GetTerm()
 		Glob.PrintDebug("CS", fmt.Sprintf("Iterate on subst : %v and  %v", currentMeta.ToString(), currentValue.ToString()))
 
