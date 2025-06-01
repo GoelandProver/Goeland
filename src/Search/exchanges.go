@@ -104,8 +104,8 @@ func makeJsonExchanges(father_uint uint64, st State, ss_subst []Unif.Substitutio
 	forms := st.GetLF().ToString() + " ; " + st.GetAtomic().ToString()
 
 	// Meta
-	mm := Lib.ListToString(st.GetMM(), ",", "[]")
-	mc := Lib.ListToString(st.GetMC(), ",", "[]")
+	mm := Lib.ListToString(st.GetMM().Elements(), ",", "[]")
+	mc := Lib.ListToString(st.GetMC().Elements(), ",", "[]")
 
 	// Subt
 	sr := ""

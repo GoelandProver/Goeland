@@ -85,9 +85,7 @@ func SetSelectedSkolemization(sko Sko.Skolemization) {
  * Skolemizes the formula f once (e.g., if f is ∃(x,y,z). δ, only x will be
  * treated).
  */
-func Skolemize(form AST.Form, branchMetas Lib.List[AST.Meta]) AST.Form {
-	metas := Lib.MkListV(branchMetas.GetSlice()...)
-
+func Skolemize(form AST.Form, branchMetas Lib.Set[AST.Meta]) AST.Form {
 	switch nf := form.(type) {
 	case AST.Not:
 		switch f := nf.GetForm().(type) {
@@ -97,7 +95,7 @@ func Skolemize(form AST.Form, branchMetas Lib.List[AST.Meta]) AST.Form {
 				f.GetForm(),
 				f.GetVarList()[0],
 				f.GetVarList(),
-				metas,
+				branchMetas,
 				isNegAll,
 			)
 		default:
@@ -109,7 +107,7 @@ func Skolemize(form AST.Form, branchMetas Lib.List[AST.Meta]) AST.Form {
 			nf.GetForm(),
 			nf.GetVarList()[0],
 			nf.GetVarList(),
-			metas,
+			branchMetas,
 			isExists,
 		)
 	default:
@@ -123,7 +121,7 @@ func realSkolemize(
 	initialForm, deltaForm AST.Form,
 	x AST.Var,
 	allVars []AST.Var,
-	metas Lib.List[AST.Meta],
+	metas Lib.Set[AST.Meta],
 	typ int,
 ) AST.Form {
 	sko, res := selectedSkolemization.Skolemize(

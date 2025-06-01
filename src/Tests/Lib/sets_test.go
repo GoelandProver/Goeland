@@ -37,7 +37,7 @@ func TestSimpleAdd(t *testing.T) {
 	s := Lib.EmptySet[Integer]()
 	s = s.Add(mkInt(0))
 
-	if !s.Mem(mkInt(0)) {
+	if !s.Contains(mkInt(0)) {
 		t.Fatal("Error: added element not found in set.")
 	}
 }
@@ -45,7 +45,7 @@ func TestSimpleAdd(t *testing.T) {
 func TestSingleton(t *testing.T) {
 	s := Lib.Singleton(mkInt(0))
 
-	if !s.Mem(mkInt(0)) {
+	if !s.Contains(mkInt(0)) {
 		t.Fatal("Error: single element not found in singleton.")
 	}
 }
@@ -70,7 +70,7 @@ func TestMultiAdd(t *testing.T) {
 		s = s.Add(mkInt(i))
 	}
 	for i := 0; i < 8; i++ {
-		if !s.Mem(mkInt(i)) {
+		if !s.Contains(mkInt(i)) {
 			t.Fatal("Error: added element not found in set.")
 		}
 	}
@@ -95,7 +95,7 @@ func TestSimpleRemove(t *testing.T) {
 	s := Lib.Singleton(mkInt(12))
 
 	s = s.Remove(mkInt(12))
-	if s.Mem(mkInt(12)) {
+	if s.Contains(mkInt(12)) {
 		t.Fatal("Error: Removed element still in set.")
 	}
 }
@@ -108,7 +108,7 @@ func TestAdvancedRemove(t *testing.T) {
 	}
 
 	s = s.Remove(mkInt(5))
-	if s.Mem(mkInt(5)) {
+	if s.Contains(mkInt(5)) {
 		t.Fatal("Error: Removed element still in set.")
 	}
 
@@ -146,7 +146,7 @@ func TestUnion(t *testing.T) {
 
 	s := s1.Union(s2)
 	for _, x := range []int{5, 2, 1, 8, 6, 7, 3, 12, 40, 35} {
-		if !s.Mem(mkInt(x)) {
+		if !s.Contains(mkInt(x)) {
 			t.Fatalf("Error: expected %d to be in the union of the sets", x)
 		}
 	}
@@ -166,12 +166,12 @@ func TestInter(t *testing.T) {
 
 	s := s1.Inter(s2)
 	for _, x := range []int{5, 2, 1} {
-		if !s.Mem(mkInt(x)) {
+		if !s.Contains(mkInt(x)) {
 			t.Fatalf("Error: expected %d to be in the intersection of the sets", x)
 		}
 	}
 	for _, x := range []int{8, 6, 7, 3, 12, 40, 35} {
-		if s.Mem(mkInt(x)) {
+		if s.Contains(mkInt(x)) {
 			t.Fatalf("Error: expected %d to not be in the intersection of the sets", x)
 		}
 	}
@@ -191,12 +191,12 @@ func TestDiff(t *testing.T) {
 
 	s := s1.Diff(s2)
 	for _, x := range []int{8, 6, 7, 3} {
-		if !s.Mem(mkInt(x)) {
+		if !s.Contains(mkInt(x)) {
 			t.Fatalf("Error: expected %d to be in the difference of the sets", x)
 		}
 	}
 	for _, x := range []int{5, 2, 1, 12, 40, 35} {
-		if s.Mem(mkInt(x)) {
+		if s.Contains(mkInt(x)) {
 			t.Fatalf("Error: expected %d to not be in the difference of the sets", x)
 		}
 	}

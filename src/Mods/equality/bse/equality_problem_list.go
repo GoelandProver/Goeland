@@ -75,11 +75,11 @@ func (epl EqualityProblemList) ToTPTPString() string {
 	return result
 }
 
-func (epl EqualityProblemList) GetMetas() Lib.List[AST.Meta] {
-	metas := Lib.NewList[AST.Meta]()
+func (epl EqualityProblemList) GetMetas() Lib.Set[AST.Meta] {
+	metas := Lib.EmptySet[AST.Meta]()
 
 	for _, ep := range epl {
-		metas = Lib.ListAdd(metas, ep.getMetas().GetSlice()...)
+		metas = metas.Union(ep.getMetas())
 	}
 
 	return metas
@@ -93,7 +93,7 @@ type EqualityProblemMultiList []EqualityProblemList
 
 func (epml EqualityProblemMultiList) HasMetas() bool {
 	for _, epl := range epml {
-		if epl.GetMetas().Len() > 0 {
+		if epl.GetMetas().Cardinal() > 0 {
 			return true
 		}
 	}
@@ -141,15 +141,15 @@ func (epml EqualityProblemMultiList) ToTPTPString(isSat bool) string {
 
 func (epml EqualityProblemMultiList) GetMetasToTPTPString() string {
 	result := ""
-	metas := Lib.NewList[AST.Meta]()
+	metas := Lib.EmptySet[AST.Meta]()
 
 	for _, epl := range epml {
-		metas = Lib.ListAdd(metas, epl.GetMetas().GetSlice()...)
+		metas = metas.Union(epl.GetMetas())
 	}
 
-	if metas.Len() > 0 {
+	if metas.Cardinal() > 0 {
 		result = "? ["
-		for _, meta := range metas.GetSlice() {
+		for _, meta := range metas.Elements().GetSlice() {
 			result += meta.ToMappedString(AST.DefaultMapString, false) + ", "
 		}
 		result = result[:len(result)-2] + "] : "

@@ -391,9 +391,9 @@ func (gne *GammaNotExists) apply() []RuleList {
 
 	instanciatedForm, metas := Core.Instantiate(Core.MakeFormAndTerm(gne.GetForm(), gne.GetTerms()), 42)
 	newTerms := gne.GetTerms().Copy(AST.Term.Copy)
-	newTerms.Add(AST.TermEquals, AST.MetaListToTermList(metas).GetSlice()...)
+	newTerms.Add(AST.TermEquals, AST.MetaListToTermList(metas.Elements()).GetSlice()...)
 	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), newTerms))
-	gne.generatedMetas = metas
+	gne.generatedMetas = metas.Elements()
 
 	return []RuleList{resultRules}
 }
@@ -432,9 +432,9 @@ func (gf *GammaForall) apply() []RuleList {
 
 	instanciatedForm, metas := Core.Instantiate(Core.MakeFormAndTerm(gf.GetForm(), gf.GetTerms()), 42)
 	newTerms := gf.GetTerms().Copy(AST.Term.Copy)
-	newTerms.Add(AST.TermEquals, AST.MetaListToTermList(metas).GetSlice()...)
+	newTerms.Add(AST.TermEquals, AST.MetaListToTermList(metas.Elements()).GetSlice()...)
 	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), newTerms))
-	gf.generatedMetas = metas
+	gf.generatedMetas = metas.Elements()
 
 	return []RuleList{resultRules}
 }

@@ -182,8 +182,8 @@ func isFiltering(ms Unif.MatchingSubstitutions) bool {
 	return checkAllMetaAreInstanciated(metas, subst)
 }
 
-func checkAllMetaAreInstanciated(metas Lib.List[AST.Meta], subst Unif.Substitutions) bool {
-	for _, m := range metas.GetSlice() {
+func checkAllMetaAreInstanciated(metas Lib.Set[AST.Meta], subst Unif.Substitutions) bool {
+	for _, m := range metas.Elements().GetSlice() {
 		m_found := false
 		for _, s := range subst {
 			k, v := s.Get()
@@ -198,14 +198,14 @@ func checkAllMetaAreInstanciated(metas Lib.List[AST.Meta], subst Unif.Substituti
 	return true
 }
 
-func checkMetaAreFromSearch(metas Lib.List[AST.Meta], subst Unif.Substitutions) bool {
+func checkMetaAreFromSearch(metas Lib.Set[AST.Meta], subst Unif.Substitutions) bool {
 	for _, s := range subst {
 		k, v := s.Get()
-		if !Lib.ListMem(k, metas) {
+		if !metas.Contains(k) {
 			return false
 		} else {
 			if meta_v, ok := v.(AST.Meta); ok &&
-				!Lib.ListMem(meta_v, metas) {
+				!metas.Contains(meta_v) {
 				return false
 			}
 		}

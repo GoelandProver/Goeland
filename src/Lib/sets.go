@@ -35,7 +35,7 @@
  * The following operations are supported:
  *  - insertion (using Add) in O(log(n))
  *  - deletion (using ...) in O(log(n))
- *  - membership test (using Mem) in O(log(n))
+ *  - membership test (using Contains) in O(log(n))
  *  - union (using Union) in O(nlog(n))
  *  - intersection (using Inter) in O(nlog(n))
  *  - difference (using Diff) in O(nlog(n))
@@ -227,6 +227,18 @@ func cardinal[T Ordered](node *Node[T]) int {
 	return 1 + cardinal(node.left) + cardinal(node.right)
 }
 
+func nodeCpy[T Ordered](node *Node[T]) *Node[T] {
+	if node == nil {
+		return node
+	}
+
+	newNode := mkNode(node.value)
+	newNode.left = nodeCpy(node.left)
+	newNode.right = nodeCpy(node.right)
+
+	return newNode
+}
+
 // End internal
 // -----------------------------------------------------------------------------
 
@@ -261,7 +273,7 @@ func (s Set[T]) Elements() List[T] {
 	return elements(s.root)
 }
 
-func (s Set[T]) Mem(x T) bool {
+func (s Set[T]) Contains(x T) bool {
 	return find(s.root, x)
 }
 
@@ -275,7 +287,7 @@ func (s0 Set[T]) Union(s1 Set[T]) Set[T] {
 func (s0 Set[T]) Inter(s1 Set[T]) Set[T] {
 	s2 := EmptySet[T]()
 	for _, x := range s1.Elements().GetSlice() {
-		if s0.Mem(x) {
+		if s0.Contains(x) {
 			s2 = s2.Add(x)
 		}
 	}
@@ -291,7 +303,7 @@ func (s0 Set[T]) Diff(s1 Set[T]) Set[T] {
 
 func (s0 Set[T]) Disjoint(s1 Set[T]) bool {
 	for _, x := range s1.Elements().GetSlice() {
-		if s0.Mem(x) {
+		if s0.Contains(x) {
 			return false
 		}
 	}
@@ -304,6 +316,10 @@ func (s Set[T]) Cardinal() int {
 
 func (s Set[T]) IsEmpty() bool {
 	return s.root == nil
+}
+
+func (s Set[T]) Copy() Set[T] {
+	return mkSet(nodeCpy(s.root))
 }
 
 // -----------------------------------------------------------------------------

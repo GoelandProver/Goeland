@@ -50,7 +50,8 @@ type Term interface {
 	IsMeta() bool
 	IsFun() bool
 	ToMeta() Meta
-	GetMetas() Lib.List[Meta]
+	GetMetas() Lib.Set[Meta]
+	GetMetaList() Lib.List[Meta] // Metas appearing in the term ORDERED
 	GetSubTerms() Lib.List[Term]
 	ReplaceSubTermBy(original_term, new_term Term) Term
 	Less(any) bool

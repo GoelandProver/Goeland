@@ -100,11 +100,11 @@ func MakeTermPair(t1, t2 AST.Term) TermPair {
 	return TermPair{t1.Copy(), t2.Copy()}
 }
 
-func (tp TermPair) GetMetas() Lib.List[AST.Meta] {
-	metas := Lib.NewList[AST.Meta]()
+func (tp TermPair) GetMetas() Lib.Set[AST.Meta] {
+	metas := Lib.EmptySet[AST.Meta]()
 
-	metas = Lib.ListAdd(metas, tp.t1.GetMetas().GetSlice()...)
-	metas = Lib.ListAdd(metas, tp.t2.GetMetas().GetSlice()...)
+	metas = metas.Union(tp.t1.GetMetas())
+	metas = metas.Union(tp.t2.GetMetas())
 
 	return metas
 }

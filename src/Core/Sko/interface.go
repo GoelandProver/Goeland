@@ -55,7 +55,7 @@ type Skolemization interface {
 		AST.Form,
 		AST.Form,
 		AST.Var,
-		Lib.List[AST.Meta],
+		Lib.Set[AST.Meta],
 	) (Skolemization, AST.Form)
 }
 
@@ -92,11 +92,11 @@ func mkSkoFuncType(
 /* If every Skolem symbol is created using this function, then it will generate
  * a fresh symbol for sure. Otherwise, nothing is guaranteed.
  */
-func genFreshSymbol(existingSymbols *Lib.List[AST.Id], mu sync.Mutex, x AST.Var) AST.Id {
+func genFreshSymbol(existingSymbols *Lib.Set[AST.Id], mu sync.Mutex, x AST.Var) AST.Id {
 	symbol := AST.MakerNewId(
 		fmt.Sprintf("skolem@%v", x.GetName()),
 	)
-	existingSymbols.Append(symbol)
+	existingSymbols.Add(symbol)
 
 	return symbol
 }
