@@ -47,15 +47,15 @@ import (
 **/
 
 type PreInnerSkolemization struct {
-	existingSymbols Lib.List[AST.Id]
-	linkedSymbols   Lib.List[Glob.Pair[AST.Form, int]]
+	existingSymbols Lib.Set[AST.Id]
+	linkedSymbols   Lib.List[Glob.Pair[AST.Form, AST.Id]]
 	mu              sync.Mutex
 }
 
 func MkPreInnerSkolemization() PreInnerSkolemization {
 	return PreInnerSkolemization{
-		existingSymbols: Lib.NewList[AST.Id](),
-		linkedSymbols:   Lib.NewList[Glob.Pair[AST.Form, int]](),
+		existingSymbols: Lib.EmptySet[AST.Id](),
+		linkedSymbols:   Lib.NewList[Glob.Pair[AST.Form, AST.Id]](),
 		mu:              sync.Mutex{},
 	}
 }
@@ -63,27 +63,26 @@ func MkPreInnerSkolemization() PreInnerSkolemization {
 func (sko PreInnerSkolemization) Skolemize(
 	delta, form AST.Form,
 	x AST.Var,
-	_ Lib.List[AST.Meta],
+	_ Lib.Set[AST.Meta],
 ) (Skolemization, AST.Form) {
 	realDelta := alphaConvert(delta, 0, make(map[int]AST.Var))
 
 	var symbol AST.Id
 	sko.mu.Lock()
 	if val, ok := sko.linkedSymbols.Find(
-		func(p Glob.Pair[AST.Form, int]) bool { return p.Fst.Equals(realDelta) },
-		Glob.MakePair(Glob.To[AST.Form](AST.MakerBot()), -1),
+		func(p Glob.Pair[AST.Form, AST.Id]) bool { return p.Fst.Equals(realDelta) },
+		Glob.MakePair(Glob.To[AST.Form](AST.MakerBot()), AST.MakeId(-1, "")),
 	); ok {
-		symbol = sko.existingSymbols.At(val.Snd)
+		symbol = val.Snd
 	} else {
-		index := sko.existingSymbols.Len()
-		sko.linkedSymbols.Append(Glob.MakePair(realDelta, index))
 		symbol = genFreshSymbol(&sko.existingSymbols, sko.mu, x)
+		sko.linkedSymbols.Append(Glob.MakePair(realDelta, symbol))
 	}
 	sko.mu.Unlock()
 
-	internalMetas := form.GetMetas()
+	internalMetas := form.GetMetas().Elements()
 
-	skolemFunc := AST.MakeFun(
+	skolemFunc := AST.MakerFun(
 		symbol,
 		Lib.ListMap(internalMetas, Glob.To[AST.Term]),
 		[]AST.TypeApp{},
@@ -195,7 +194,7 @@ func alphaConvertTerm(t AST.Term, substitution map[int]AST.Var) AST.Term {
 			func(trm AST.Term) AST.Term {
 				return alphaConvertTerm(trm, substitution)
 			})
-		return AST.MakeFun(
+		return AST.MakerFun(
 			nt.GetID(),
 			mappedTerms,
 			nt.GetTypeVars(),

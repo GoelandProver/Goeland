@@ -46,13 +46,13 @@ import (
 **/
 
 type InnerSkolemization struct {
-	existingSymbols Lib.List[AST.Id]
+	existingSymbols Lib.Set[AST.Id]
 	mu              sync.Mutex
 }
 
 func MkInnerSkolemization() InnerSkolemization {
 	return InnerSkolemization{
-		existingSymbols: Lib.NewList[AST.Id](),
+		existingSymbols: Lib.EmptySet[AST.Id](),
 		mu:              sync.Mutex{},
 	}
 }
@@ -60,15 +60,15 @@ func MkInnerSkolemization() InnerSkolemization {
 func (sko InnerSkolemization) Skolemize(
 	_, form AST.Form,
 	x AST.Var,
-	_ Lib.List[AST.Meta],
+	_ Lib.Set[AST.Meta],
 ) (Skolemization, AST.Form) {
 	sko.mu.Lock()
 	symbol := genFreshSymbol(&sko.existingSymbols, sko.mu, x)
 	sko.mu.Unlock()
 
-	internalMetas := form.GetMetas()
+	internalMetas := form.GetMetas().Elements()
 
-	skolemFunc := AST.MakeFun(
+	skolemFunc := AST.MakerFun(
 		symbol,
 		Lib.ListMap(internalMetas, Glob.To[AST.Term]),
 		[]AST.TypeApp{},

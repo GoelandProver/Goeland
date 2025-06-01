@@ -84,11 +84,11 @@ func (args wcdArgs) printDebugMessages() {
 	Glob.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(args.children), len(args.substsBT), len(args.formsBT), args.st.GetBTOnFormulas(), Core.SubstAndFormListToString(args.givenSubsts), args.st.GetAppliedSubst().ToString(), Core.SubstAndFormListToString(args.st.GetSubstsFound())))
 	Glob.PrintDebug("WC", fmt.Sprintf(
 		"MM : %v",
-		Lib.ListToString(args.st.GetMM(), ",", "[]"),
+		Lib.ListToString(args.st.GetMM().Elements(), ",", "[]"),
 	))
 	Glob.PrintDebug("WC", fmt.Sprintf(
 		"MC : %v",
-		Lib.ListToString(args.st.GetMC(), ",", "[]"),
+		Lib.ListToString(args.st.GetMC().Elements(), ",", "[]"),
 	))
 }
 

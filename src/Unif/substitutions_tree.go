@@ -58,11 +58,9 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 	// Retrieve all the meta of from the tree formula
 	switch typedForm := form.(type) {
 	case AST.Pred:
-		for _, term := range typedForm.GetArgs().GetSlice() {
-			metasFromTreeForm.Append(term.GetMetas().GetSlice()...)
-		}
+		metasFromTreeForm.Append(typedForm.GetMetaList().GetSlice()...)
 	case TermForm:
-		metasFromTreeForm.Append(typedForm.GetTerm().GetMetas().GetSlice()...)
+		metasFromTreeForm.Append(typedForm.GetTerm().GetMetaList().GetSlice()...)
 	default:
 		return Failure()
 	}

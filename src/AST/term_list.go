@@ -42,12 +42,12 @@ import (
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-func GetMetasOfList(tl Lib.List[Term]) Lib.List[Meta] {
-	res := Lib.NewList[Meta]()
+func GetMetasOfList(tl Lib.List[Term]) Lib.Set[Meta] {
+	res := Lib.EmptySet[Meta]()
 
 	for _, term := range tl.GetSlice() {
 		if typed, ok := term.(Meta); ok {
-			res = Lib.ListAdd(res, typed)
+			res = res.Add(typed)
 		}
 	}
 
@@ -60,7 +60,7 @@ Replace the first occurence of a term by another in the list
 func replaceFirstOccurrenceTermList(
 	tl Lib.List[Term],
 	replaceThis, withThis Term,
-) Lib.List[Term] {
+) (Lib.List[Term], bool) {
 	res := Lib.MkList[Term](tl.Len())
 	updated := false
 
@@ -78,7 +78,7 @@ func replaceFirstOccurrenceTermList(
 		res.Upd(i, candidate)
 	}
 
-	return res
+	return res, updated
 }
 
 /*
@@ -87,16 +87,20 @@ Replace all occurences of a term by another in the list
 func ReplaceOccurrence(
 	tl Lib.List[Term],
 	replaceThis, withThis Term,
-) Lib.List[Term] {
+) (Lib.List[Term], bool) {
 	res := Lib.MkList[Term](tl.Len())
+	hasUpdated := false
 
 	for i := range tl.GetSlice() {
 		// FIXME: should [res.At(i)] be copied? I don't think so but we'll see.
 		trm := tl.At(i).ReplaceSubTermBy(replaceThis, withThis)
+		if !trm.Equals(tl.At(i)) {
+			hasUpdated = true
+		}
 		res.Upd(i, trm)
 	}
 
-	return res
+	return res, hasUpdated
 }
 
 func EqualsWithoutOrder(tl, other Lib.List[Term]) bool {

@@ -150,8 +150,8 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 	// Apply gamma rule
 	newLf, newMetas := ApplyGammaRules(reslf, index, state)
 	state.SetLF(newLf)
-	newMC := Lib.ListCpy(state.GetMC())
-	newMC = Lib.ListAdd(newMC, newMetas.GetSlice()...)
+	newMC := state.GetMC().Copy()
+	newMC = newMC.Union(newMetas)
 	state.SetMC(newMC)
 
 	// I got a substitution {(X_0, a)}
@@ -171,13 +171,13 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 	association_subst := Unif.Substitutions{}
 
 	// Associate new meta with old meta
-	for _, new_meta := range newMetas.GetSlice() {
+	for _, new_meta := range newMetas.Elements().GetSlice() {
 		found := false
 		if !found {
 			// La meta nouvellement générée n'apparaît pas dans la substitution
 			// Trouver celle de la formula de base
 			for _, f := range s.GetForm().Slice() {
-				for _, term_formula := range f.GetMetas().GetSlice() {
+				for _, term_formula := range f.GetMetas().Elements().GetSlice() {
 					if !found && term_formula.IsMeta() && term_formula.GetName() == new_meta.GetName() {
 						association_subst.Set(new_meta, term_formula)
 						found = true

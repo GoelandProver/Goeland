@@ -103,11 +103,11 @@ func (e Equalities) applySubstitution(old_symbol AST.Meta, new_symbol AST.Term) 
 	return res
 }
 
-func (equs Equalities) getMetas() Lib.List[AST.Meta] {
-	metas := Lib.NewList[AST.Meta]()
+func (equs Equalities) getMetas() Lib.Set[AST.Meta] {
+	metas := Lib.EmptySet[AST.Meta]()
 
 	for _, equ := range equs {
-		metas = Lib.ListAdd(metas, equ.GetMetas().GetSlice()...)
+		metas = metas.Union(equ.GetMetas())
 	}
 
 	return metas

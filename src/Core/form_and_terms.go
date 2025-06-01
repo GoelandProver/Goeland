@@ -92,7 +92,7 @@ func (fat FormAndTerms) SubstituteBy(
 
 	for i := range metas.GetSlice() {
 		result.form = result.form.ReplaceMetaByTerm(metas.At(i), terms.At(i))
-		result.Terms = AST.ReplaceOccurrence(result.Terms, metas.At(i), terms.At(i))
+		result.Terms, _ = AST.ReplaceOccurrence(result.Terms, metas.At(i), terms.At(i))
 	}
 
 	return result
