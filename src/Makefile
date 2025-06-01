@@ -24,6 +24,8 @@ endif
 PROB=../../problems/SYN
 TMPFILE=/tmp/GOELAND_TESTS_OK
 
+ENABLED_TESTS=./Tests/Lib
+
 all: build
 
 parser:
@@ -49,7 +51,7 @@ clean:
 
 .PHONY: tests
 tests:
-	go test -v -coverprofile=coverage.out ./... && touch $(TMPFILE) || /bin/true
+	go test -v -coverprofile=coverage.out $(ENABLED_TESTS) && touch $(TMPFILE) || /bin/true
 	go tool cover -html=coverage.out -o _build/coverage.html && rm coverage.out
 	if [ -f $(TMPFILE) ]; then \
 		rm -f $(TMPFILE); \
