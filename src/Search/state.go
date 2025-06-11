@@ -292,37 +292,37 @@ func (st State) Print() {
 	Glob.PrintDebug("PSt", fmt.Sprintf(" n = %v", st.GetN()))
 
 	if !st.GetLF().IsEmpty() {
-		Glob.PrintDebug("Pst", "Formulae list: ")
+		Glob.PrintDebug("Pst", "Formulas list: ")
 		st.GetLF().Print()
 	}
 
 	if !st.GetAtomic().IsEmpty() {
-		Glob.PrintDebug("PSt", "Atomic formulae: ")
+		Glob.PrintDebug("PSt", "Atomic formulas: ")
 		st.GetAtomic().Print()
 	}
 
 	if !st.GetAlpha().IsEmpty() {
-		Glob.PrintDebug("PSt", "Alpha formulae: ")
+		Glob.PrintDebug("PSt", "Alpha formulas: ")
 		st.GetAlpha().Print()
 	}
 
 	if !st.GetBeta().IsEmpty() {
-		Glob.PrintDebug("PSt", "Beta formulae: ")
+		Glob.PrintDebug("PSt", "Beta formulas: ")
 		st.GetBeta().Print()
 	}
 
 	if !st.GetDelta().IsEmpty() {
-		Glob.PrintDebug("PSt", "Delta formulae: ")
+		Glob.PrintDebug("PSt", "Delta formulas: ")
 		st.GetDelta().Print()
 	}
 
 	if !st.GetGamma().IsEmpty() {
-		Glob.PrintDebug("PSt", "Gamma formulae: ")
+		Glob.PrintDebug("PSt", "Gamma formulas: ")
 		st.GetGamma().Print()
 	}
 
 	if len(st.GetMetaGen()) > 0 {
-		Glob.PrintDebug("PSt", "Meta generator formulae: ")
+		Glob.PrintDebug("PSt", "Meta generator formulas: ")
 		Glob.PrintDebug("PSt", Core.MetaGenListToString(st.GetMetaGen()))
 	}
 
@@ -452,14 +452,7 @@ func (st *State) DispatchForm(f Core.FormAndTerms) {
 	Glob.PrintDebug("DF", fmt.Sprintf("Kind of rule : %v ", Core.ShowKindOfRule(f.GetForm())))
 	switch Core.ShowKindOfRule(f.GetForm()) {
 	case Core.Atomic:
-		if !st.GetAtomic().Contains(f) {
-			st.SetAtomic(st.GetAtomic().Append(f))
-			if _, ok := f.GetForm().(AST.Not); ok {
-				st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().ExtractForms(), true))
-			} else {
-				st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().ExtractForms(), false))
-			}
-		}
+		st.SetAtomic(st.GetAtomic().AppendIfNotContains(f))
 	case Core.Alpha:
 		st.SetAlpha(st.GetAlpha().AppendIfNotContains(f))
 	case Core.Beta:

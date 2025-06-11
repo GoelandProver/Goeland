@@ -44,6 +44,15 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 )
 
+type PolarityFlag int
+
+const (
+	Pos PolarityFlag = iota
+	Neg
+	PosAndNeg
+)
+
+
 /*** Structure ***/
 
 /* List of formulae */
@@ -97,6 +106,15 @@ func (fl FormAndTermsList) Copy() FormAndTermsList {
 	res := MakeEmptyFormAndTermsList()
 	for _, f := range fl {
 		res = append(res, f.Copy())
+	}
+	return res
+}
+
+/* Create a FaT List from a FormList */
+func MakeFTListFromFormList(l *AST.FormList) FormAndTermsList {
+	res := MakeEmptyFormAndTermsList()
+	for _, f := range l.Slice() {
+		res = append(res, MakeFormAndTerm(f.Copy(), AST.NewTermList()))
 	}
 	return res
 }
@@ -198,23 +216,19 @@ func MakeSingleElementFormAndTermList(f FormAndTerms) FormAndTermsList {
 	return FormAndTermsList{f}
 }
 
-/* Keep only predicate with right polarity */
-func (lf FormAndTermsList) FilterPred(pola bool) *AST.FormList {
-	res := AST.NewFormList()
-	for _, f := range lf {
-		switch nf := f.GetForm().(type) {
-		case AST.Pred:
-			if pola {
-				res.AppendIfNotContains(nf)
-			}
-		case AST.Not:
-			switch nf.GetForm().(type) {
-			case AST.Pred:
-				if !pola {
-					res.AppendIfNotContains(nf.GetForm())
+/* Make a FormAndTerm list made of all the predicates from the calling list with the corresponding polarity (Pos = positive, Neg = negative, PosAndNeg = both) */
+func (lf FormAndTermsList) FilterLitPolarity(pol PolarityFlag) FormAndTermsList {
+    res := MakeEmptyFormAndTermsList()
+    for _, f := range lf {
+        switch nf := f.GetForm().(type) {
+            case AST.Pred:
+                 if (pol == Pos || pol == PosAndNeg) { res = res.AppendIfNotContains(f) }
+            case AST.Not:
+				switch nf.GetForm().(type) {
+				case AST.Pred:
+                	if (pol == Neg || pol == PosAndNeg) { res = res.AppendIfNotContains(f) }
 				}
-			}
-		}
-	}
-	return res
+        }
+    }
+    return res
 }

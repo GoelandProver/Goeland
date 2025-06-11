@@ -90,7 +90,7 @@ func applyAtomicRule(state Search.State, fatherId uint64, c Search.Communication
 	if !foundOne {
 		fmt.Println("No valid substitution found. This state will be copied and put back in the list.")
 		assistedCounter.Increment()
-		go searchAlgo.ProofSearch(fatherId, state, c, substitut, nodeId, originalNodeId, metaToReintroduce)
+		go searchAlgo.ProofSearch(fatherId, state, c, substitut, nodeId, originalNodeId, metaToReintroduce, false)
 	} else {
 		listSubsts2 := []Core.SubstAndForm{}
 		for _, elem := range listSubsts {
@@ -125,7 +125,7 @@ func applyAlphaRule(state Search.State, indiceForm int, fatherId uint64, c Searc
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	assistedCounter.Increment()
-	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
+	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{}, false)
 }
 
 func applyBetaRule(state Search.State, substitut Core.SubstAndForm, c Search.Communication, fatherId uint64, nodeId int, originalNodeId int, metaToReintroduce []int) {
@@ -159,9 +159,9 @@ func applyBetaRule(state Search.State, substitut Core.SubstAndForm, c Search.Com
 		if Glob.IsDestructive() {
 			c_child := Search.MakeCommunication(make(chan bool), make(chan Search.Result))
 			chan_tab = append(chan_tab, c_child)
-			go searchAlgo.ProofSearch(Glob.GetGID(), st_copy, c_child, substitut, fl.GetI(), fl.GetI(), []int{})
+			go searchAlgo.ProofSearch(Glob.GetGID(), st_copy, c_child, substitut, fl.GetI(), fl.GetI(), []int{}, false)
 		} else {
-			go searchAlgo.ProofSearch(Glob.GetGID(), st_copy, c, substitut, fl.GetI(), fl.GetI(), []int{})
+			go searchAlgo.ProofSearch(Glob.GetGID(), st_copy, c, substitut, fl.GetI(), fl.GetI(), []int{}, false)
 		}
 
 		Glob.IncrGoRoutine(1)
@@ -187,7 +187,7 @@ func applyDeltaRule(state Search.State, indiceForm int, fatherId uint64, c Searc
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	assistedCounter.Increment()
-	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
+	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{}, false)
 }
 
 func applyGammaRule(state Search.State, indiceForm int, fatherId uint64, c Search.Communication, substitut Core.SubstAndForm, originalNodeId int) {
@@ -215,7 +215,7 @@ func applyGammaRule(state Search.State, indiceForm int, fatherId uint64, c Searc
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	assistedCounter.Decrement()
-	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{})
+	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{}, false)
 }
 
 func applyReintroductionRule(state Search.State, fatherId uint64, c Search.Communication, originalNodeId int, metaToReintroduce []int, chosenReintro int) {
@@ -236,5 +236,5 @@ func applyReintroductionRule(state Search.State, fatherId uint64, c Search.Commu
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	assistedCounter.Increment()
-	go searchAlgo.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, metaToReintroduce)
+	go searchAlgo.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, metaToReintroduce, false)
 }
