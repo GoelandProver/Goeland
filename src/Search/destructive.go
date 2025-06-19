@@ -58,7 +58,7 @@ const (
 
 type BasicSearchAlgorithm interface {
 	SearchAlgorithm
-	ProofSearch(uint64, State, Communication, Core.SubstAndForm, int, int, []int)
+	ProofSearch(uint64, State, Communication, Core.SubstAndForm, int, int, []int, bool)
 	DoEndManageBeta(uint64, State, Communication, []Communication, int, int, []int, []int)
 	manageRewriteRules(uint64, State, Communication, Core.FormAndTermsList, int, int, []int)
 	ManageClosureRule(uint64, *State, Communication, []Unif.Substitutions, Core.FormAndTerms, int, int) (bool, []Core.SubstAndForm)
@@ -114,7 +114,7 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 	}
 
 	nodeId := Glob.IncrCptNode()
-	go ds.ProofSearch(Glob.GetGID(), state, c, Core.MakeEmptySubstAndForm(), nodeId, nodeId, []int{})
+	go ds.ProofSearch(Glob.GetGID(), state, c, Core.MakeEmptySubstAndForm(), nodeId, nodeId, []int{}, false)
 	Glob.IncrGoRoutine(1)
 
 	Glob.PrintDebug("MAIN", "GO")
@@ -181,6 +181,37 @@ func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []Core.Sub
 	return subst_found, subst_list
 }
 
+func (ds *destructiveSearch) searchContradictionAfterApplySusbt(father_id uint64, st State, cha Communication, node_id int, original_node_id int) bool {
+	if Glob.GetAssisted() { 
+		return false 
+	}
+	for _, f := range st.GetAtomic() {
+		Glob.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
+		// Check if exists a contradiction after applying the substitution
+		if res, subst := ApplyClosureRules(f.GetForm(), &st); res {
+			ds.ManageClosureRule(father_id, &st, cha, Unif.CopySubstList(subst), f.Copy(), node_id, original_node_id)
+			return true
+		}
+	}
+	return false
+}
+
+func (ds *destructiveSearch) searchContradiction(atomic AST.Form, father_id uint64, st State, cha Communication, node_id int, original_node_id int) bool {
+	// Search for a contradiction in LF
+	if Glob.GetAssisted() { 
+		return false 
+	}
+	Glob.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
+	clos_res, subst := ApplyClosureRules(atomic, &st)
+	fAt := Core.MakeFormAndTerm(atomic, AST.NewTermList())
+
+	if clos_res {
+		ds.ManageClosureRule(father_id, &st, cha, Unif.CopySubstList(subst), fAt, node_id, original_node_id)
+		return true
+	}
+	return false
+}
+
 /**
 * ProofSearch
 * Search algorithm (Tableaux method)
@@ -190,7 +221,7 @@ func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []Core.Sub
 * s : substitution to apply to the current State
 * subst_found : Unif.Substitutions found by this process
 **/
-func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communication, s Core.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
+func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communication, s Core.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int, post_dmt_step bool) {
 	Glob.PrintDebug("PS", "---------- New search step ----------")
 	Glob.PrintDebug("PS", fmt.Sprintf("Child of %v - node id : %v - original node id : %v", father_id, node_id, original_node_id))
 	Glob.PrintDebug("PS", fmt.Sprintf("Meta to reintroduce: %v", Glob.IntListToString(meta_to_reintroduce)))
@@ -204,122 +235,82 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 	case quit := <-cha.quit:
 		ds.manageQuitOrder(quit, cha, father_id, st, nil, st.GetSubstsFound(), node_id, original_node_id, nil, meta_to_reintroduce)
 	default:
-		// Apply subst if any
+		// Apply subst if needed
 		if !s.IsEmpty() {
-			//st.SetCurrentProofRule(fmt.Sprintf("Apply substitution : %v", s.GetSubst().ToStringForProof()))
-			//Glob.PrintDebug("PS", fmt.Sprintf("Apply Substitution : %v", s.ToString()))
+			Glob.PrintDebug("PS", fmt.Sprintf("Apply Substitution : %v", s.ToString()))
 			ApplySubstitution(&st, s)
 			Glob.PrintDebug("PS", "Searching contradiction with new atomics")
-
-			if !Glob.GetAssisted() {
-				for _, f := range st.GetAtomic() {
-					Glob.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
-					// Check if exists a contradiction after applying the substitution
-					clos_res_after_apply_subst, subst_after_apply_subst := ApplyClosureRules(f.GetForm(), &st)
-					if clos_res_after_apply_subst {
-						ds.ManageClosureRule(father_id, &st, cha, Unif.CopySubstList(subst_after_apply_subst), f.Copy(), node_id, original_node_id)
-						return
-					}
-				}
+			if ds.searchContradictionAfterApplySusbt(father_id, st, cha, node_id, original_node_id) {
+				return
 			}
 		}
 
+		// Print current state
 		st.Print()
 		if len(st.GetSubstsFound()) > 0 {
 			Glob.PrintDebug("PS", fmt.Sprintf("Current substitutions list: %v", Unif.SubstListToString(Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))))
 		}
-		Glob.PrintDebug("PS", fmt.Sprintf("Formulae to be added: %v", st.GetLF().ToString()))
-		Glob.PrintDebug("PS", "Insert tree, searching contradiction, then dispatch")
+		Glob.PrintDebug("PS", fmt.Sprintf("Formulas to be added: %v", st.GetLF().ToString()))
 
-		// Applying substitutions before inserting in the code tree.
-		atomicsPlus := st.GetLF().FilterPred(true)
-		atomicsMinus := st.GetLF().FilterPred(false)
-
-		Glob.PrintDebug("PS", fmt.Sprintf("Atomic plus : %v", atomicsPlus.ToString()))
-		Glob.PrintDebug("PS", fmt.Sprintf("Atomic minus : %v", atomicsMinus.ToString()))
-
+		// Dispatch newly generated formulas into the right category
+		Glob.PrintDebug("PS", "Dispatch")
+		step_atomics := Core.MakeEmptyFormAndTermsList()
 		for _, f := range st.GetLF() {
-			if Glob.GetAssisted() || Core.ShowKindOfRule(f.GetForm()) != Core.Atomic {
-				st.DispatchForm(f.Copy())
-			} else {
+			if Core.ShowKindOfRule(f.GetForm()) == Core.Atomic {
 				if searchObviousClosureRule(f.GetForm()) {
 					ds.ManageClosureRule(father_id, &st, cha, []Unif.Substitutions{}, f, node_id, original_node_id)
 					return
 				}
+				step_atomics = append(step_atomics, f)
+			} else {
+				st.DispatchForm(f.Copy())
 			}
 		}
 
-		lam := func(atomic AST.Form) bool {
-			// Search for a contradiction in LF
+		// DMT --- Retrieve atomics for DMT
+		Glob.PrintDebug("PS", fmt.Sprintf("New atomics : %v", step_atomics.ToString()))
+		atomics_dmt, atomics_non_dmt := ds.getAtomicsForDMT(step_atomics, &st, s, post_dmt_step)
+		Glob.PrintDebug("PS", fmt.Sprintf("Atomics dmt : %v", atomics_dmt.ToString()))
+		Glob.PrintDebug("PS", fmt.Sprintf("Atomics non-dmt : %v", atomics_non_dmt.ToString()))
 
-			if !Glob.GetAssisted() {
-				Glob.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
-				clos_res, subst := ApplyClosureRules(atomic, &st)
-				fAt := Core.MakeFormAndTerm(atomic, AST.NewTermList())
-
-				if clos_res {
-					ds.ManageClosureRule(father_id, &st, cha, Unif.CopySubstList(subst), fAt, node_id, original_node_id)
-					return false
-				}
-			}
-			return true
-
-			// Retrieve atomics generated at this step
-		}
-
-		new_atomics := Core.MakeEmptyFormAndTermsList()
-		for _, f := range atomicsPlus.Slice() {
-			ok := lam(f.Copy())
-			if !ok {
-				return
-			}
-			new_atomics = append(new_atomics, Core.MakeFormAndTerm(f.Copy(), AST.NewTermList()))
-		}
-		for _, f := range atomicsMinus.Slice() {
-			ok := lam(AST.MakerNot(f))
-			if !ok {
-				return
-			}
-			new_atomics = append(new_atomics, Core.MakeFormAndTerm(AST.MakerNot(f), AST.NewTermList()))
-		}
-
-		/** Filter Atomics for DMT
-		* last condition to don't loop on the same formula
-		* We can rewrite iff :
-		* i is not the last element
-		* or we're not in bt formula mode
-		* or the subst to apply is empty
-		* = !(i is last and getBtOnFOrm and subst not null)
-		**/
-		atomics_for_dmt := ds.getAtomicsForDMT(new_atomics, &st, s)
-
-		/* Equality - ok because dmt do not apply on equalities */
+		// Equality
 		if EagerEq || (len(st.GetAlpha()) == 0 && len(st.GetDelta()) == 0 && len(st.GetBeta()) == 0) {
-			eqSuccess := TryEquality(atomics_for_dmt, st, new_atomics, father_id, cha, node_id, original_node_id)
-			if eqSuccess {
+			if TryEquality(atomics_dmt, st, step_atomics, father_id, cha, node_id, original_node_id) {
 				return
 			}
 		}
 
-		for _, f := range new_atomics {
-			if !atomics_for_dmt.Contains(f) {
-				st.SetAtomic(st.GetAtomic().Append(f))
-			}
+		// Retrieve new formulas to insert into the trees
+		atomicsPlus := atomics_non_dmt.FilterLitPolarity(Core.Pos)
+		atomicsMinus := atomics_non_dmt.FilterLitPolarity(Core.Neg)
+		Glob.PrintDebug("PS", fmt.Sprintf("Atomic plus : %v", atomicsPlus.ToString()))
+		Glob.PrintDebug("PS", fmt.Sprintf("Atomic minus : %v", atomicsMinus.ToString()))
+		st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().Merge(atomicsPlus).ExtractForms(), true))
+		st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().Merge(atomicsMinus).ExtractForms(), false))
+		for _, f := range atomics_non_dmt {
+			st.DispatchForm(f)
 		}
 
-		st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().ExtractForms(), true))
-		st.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().ExtractForms(), false))
+		for _, f := range atomicsPlus {
+			if ds.searchContradiction(f.GetForm().Copy(), father_id, st, cha, node_id, original_node_id) {
+				return
+			}
+		}
+		for _, f := range atomicsMinus {
+			if ds.searchContradiction(f.GetForm().Copy(), father_id, st, cha, node_id, original_node_id) {
+				return
+			}
+		}
 
 		Glob.PrintDebug("PS", "Tree Pos after insert:")
 		st.GetTreePos().Print()
 		Glob.PrintDebug("PS", "Tree Neg after insert:")
 		st.GetTreeNeg().Print()
-
 		Glob.PrintDebug("PS", "Let's apply rules !")
-		Glob.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", atomics_for_dmt.ToString()))
+		Glob.PrintDebug("PS", fmt.Sprintf("LF before applyRules : %v", st.GetLF().ToString()))
 
 		// DoCorrectApplyRules is defined by default as ApplyRules, or to ApplyRulesAssisted if assisted flag is given.
-		go ds.doCorrectApplyRules(father_id, st, cha, atomics_for_dmt, node_id, original_node_id, meta_to_reintroduce)
+		go ds.doCorrectApplyRules(father_id, st, cha, atomics_dmt, node_id, original_node_id, meta_to_reintroduce)
 	}
 }
 
@@ -327,16 +318,29 @@ var TryEquality = func(atomics_for_dmt Core.FormAndTermsList, st State, new_atom
 	return false
 }
 
-func (ds *destructiveSearch) getAtomicsForDMT(new_atomics Core.FormAndTermsList, st *State, s Core.SubstAndForm) Core.FormAndTermsList {
-	atomics_for_dmt := Core.MakeEmptyFormAndTermsList()
-	for i, f := range new_atomics {
-		if Glob.IsLoaded("dmt") && !(i == len(st.GetLF()) && st.GetBTOnFormulas() && !s.IsEmpty()) {
-			atomics_for_dmt = append(atomics_for_dmt, f)
-		} else {
-			st.DispatchForm(f.Copy())
+/** Filter Atomics for DMT
+* last condition to don't loop on the same formula
+* We can rewrite iff :
+* i is not the last element
+* or we're not in bt formula mode
+* or the subst to apply is empty
+* = !(i is last and getBtOnFOrm and subst not null)
+**/
+func (ds *destructiveSearch) getAtomicsForDMT(new_atomics Core.FormAndTermsList, st *State, s Core.SubstAndForm, post_dmt_step bool) (Core.FormAndTermsList, Core.FormAndTermsList) {
+	if post_dmt_step {
+		return Core.MakeEmptyFormAndTermsList(), new_atomics
+	} else {
+		atomics_dmt := Core.MakeEmptyFormAndTermsList()
+		atomics_no_dmt := Core.MakeEmptyFormAndTermsList()
+		for _, f := range new_atomics {
+			if Glob.IsLoaded("dmt") && !(st.GetBTOnFormulas() && !s.IsEmpty()) { // TODO : no DMT flag
+				atomics_dmt = append(atomics_dmt, f)
+			} else {
+				atomics_no_dmt = append(atomics_no_dmt, f)
+			}
 		}
+		return atomics_dmt, atomics_no_dmt
 	}
-	return atomics_for_dmt
 }
 
 /** Waits for its children to end, and manages their return status. */
@@ -488,7 +492,7 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 
 			Glob.PrintDebug("WF", fmt.Sprintf("Apply substitution on myself and wait : %v", answer_father.getSubstForChildren().GetSubst().ToString()))
 			Glob.PrintDebug("WF", fmt.Sprintf("Forbidden : %v", Unif.SubstListToString(st_copy.GetForbiddenSubsts())))
-			go ds.ProofSearch(Glob.GetGID(), st_copy, c2, answer_father.getSubstForChildren(), node_id, original_node_id, new_meta_to_reintroduce)
+			go ds.ProofSearch(Glob.GetGID(), st_copy, c2, answer_father.getSubstForChildren(), node_id, original_node_id, new_meta_to_reintroduce, false)
 			Glob.IncrGoRoutine(1)
 
 			Glob.PrintDebug("WF", "GO !")
@@ -725,7 +729,7 @@ func (ds *destructiveSearch) manageRewriteRules(fatherId uint64, state State, c 
 	for len(remainingAtomics) > 0 {
 		Glob.PrintDebug("PS", "Remaining atomic > 0")
 
-		//We take the first element in the list of atomics
+		// Take the first element in the list of atomics
 		f := remainingAtomics[0].Copy()
 		remainingAtomics = remainingAtomics[1:].Copy()
 		Glob.PrintDebug("PS", fmt.Sprintf("Choose : %v", f.ToString()))
@@ -744,9 +748,8 @@ func (ds *destructiveSearch) manageRewriteRules(fatherId uint64, state State, c 
 		}
 	}
 
-	//If no rewriting has been found, do an "empty" step
-	state.SetLF(Core.MakeEmptyFormAndTermsList())
-	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), currentNodeId, originalNodeId, []int{})
+	//If no rewriting has been found, perform an "empty" step with unused axioms
+	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), currentNodeId, originalNodeId, []int{}, true)
 }
 
 // ILL TODO: check if this function does not make the DMT version lose completeness: is the original formula that's rewritten still in the branch or not?
@@ -759,19 +762,19 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 		for _, isaf_f := range isaf.GetSaf().GetForm().Slice() {
 			newFNTs = append(newFNTs, Core.MakeFormAndTerm(isaf_f, f.GetTerms()))
 		}
-
 		newRewritten = append(newRewritten, Core.MakeIntSubstAndFormAndTerms(isaf.GetId_rewrite(), Core.MakeSubstAndFormAndTerms(isaf.GetSaf().GetSubst(), newFNTs)))
 	}
 
 	// Keep all the possibility of rewriting and choose the first one
 	choosenRewritten := newRewritten[0]
 	choosenRewrittenForm := choosenRewritten.GetSaf().GetForm()[0].Copy()
-	// Case with multiple formulae: we also have to copy rewritten[0] without the first formulae. This case cannot happen because of the DMT's code
+	// Case with multiple formulas: we also have to copy rewritten[0] without the first formulas. This case cannot happen because of the DMT's code
 	newRewritten = Core.CopyIntSubstAndFormAndTermsList(newRewritten[1:])
 
 	// If we didn't rewrite as itself ?
 	if !choosenRewritten.GetSaf().GetSubst().Equals(Unif.Failure()) {
 		// Create a child with the current rewriting rule and make this process to wait for him, with a list of other subst to try
+		// all atomics but not the chosen one
 		state.SetLF(append(remainingAtomics.Copy(), choosenRewrittenForm.Copy()))
 		state.SetBTOnFormulas(true) // I need to know that I can bt on form and my child needs to know it to to don't loop
 
@@ -791,7 +794,7 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 		otherState.SetBTOnFormulas(false)
 
 		channelChild := Communication{make(chan bool), make(chan Result)}
-		go ds.ProofSearch(Glob.GetGID(), otherState, channelChild, choosenRewritten.GetSaf().ToSubstAndForm(), childNode, childNode, []int{})
+		go ds.ProofSearch(Glob.GetGID(), otherState, channelChild, choosenRewritten.GetSaf().ToSubstAndForm(), childNode, childNode, []int{}, false)
 		Glob.PrintDebug("PS", "GO !")
 		Glob.IncrGoRoutine(1)
 		ds.waitChildren(MakeWcdArgs(fatherId, *state, c, []Communication{channelChild}, []Core.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []Core.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
@@ -799,8 +802,8 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 	} else {
 		// No rewriting possible
 		Glob.PrintDebug("PS", fmt.Sprintf("No rewriting possible, dispatch %v", f.ToString()))
-		// Then add f in atomics
-		state.DispatchForm(f.Copy())
+		// Then add f in LF
+		state.SetLF(state.GetLF().AppendIfNotContains(f.Copy()))
 
 		return false
 	}
@@ -809,7 +812,7 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 //ILL TODO Clean the following function and be careful with the Coq output.
 /**
 * clos_res and subst are the result of applyClosureRule.
-* Manage this result, dispatch the subst and recreate data strcutures.
+* Manage this result, dispatch the subst and recreate data structures.
 * Return if the branch is closed without variable from its father
 **/
 func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Communication, substs []Unif.Substitutions, f Core.FormAndTerms, node_id int, original_node_id int) (bool, []Core.SubstAndForm) {
@@ -933,7 +936,7 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 }
 
 /* Apply rules with priority (closure < rewrite < alpha < delta < closure with mm < beta < gamma) */
-func (ds *destructiveSearch) applyRules(fatherId uint64, state State, c Communication, newAtomics Core.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
+func (ds *destructiveSearch) applyRules(fatherId uint64, state State, c Communication, atomicDMT Core.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
 	Glob.PrintDebug("AR", "ApplyRule")
 	Glob.PrintDebug("AR", fmt.Sprintf("Id : %v, original node id :%v, Child of: %v", currentNodeId, originalNodeId, fatherId))
 	state.Print()
@@ -942,8 +945,8 @@ func (ds *destructiveSearch) applyRules(fatherId uint64, state State, c Communic
 	Glob.PrintDebug("PS", "Tree Neg:")
 	state.GetTreeNeg().Print()
 	switch {
-	case len(newAtomics) > 0 && Glob.IsLoaded("dmt") && len(state.GetSubstsFound()) == 0:
-		ds.manageRewriteRules(fatherId, state, c, newAtomics, currentNodeId, originalNodeId, metaToReintroduce)
+	case len(atomicDMT) > 0 && Glob.IsLoaded("dmt") && len(state.GetSubstsFound()) == 0:
+		ds.manageRewriteRules(fatherId, state, c, atomicDMT, currentNodeId, originalNodeId, metaToReintroduce)
 
 	case len(state.GetAlpha()) > 0:
 		ds.manageAlphaRules(fatherId, state, c, originalNodeId)
@@ -958,7 +961,7 @@ func (ds *destructiveSearch) applyRules(fatherId uint64, state State, c Communic
 		ds.manageGammaRules(fatherId, state, c, originalNodeId)
 
 	case len(state.GetMetaGen()) > 0 && state.CanReintroduce():
-		ds.manageReintroductionRules(fatherId, state, c, originalNodeId, metaToReintroduce, newAtomics, currentNodeId, true)
+		ds.manageReintroductionRules(fatherId, state, c, originalNodeId, metaToReintroduce, atomicDMT, currentNodeId, true)
 
 	default:
 		WriteExchanges(fatherId, state, nil, Core.MakeEmptySubstAndForm(), "ApplyRules - SAT")
@@ -983,7 +986,7 @@ func (ds *destructiveSearch) manageAlphaRules(fatherId uint64, state State, c Co
 	state.SetCurrentProofResultFormulas([]IntFormAndTermsList{MakeIntFormAndTermsList(childId, resultForms)})
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
-	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, []int{})
+	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, []int{}, false)
 }
 
 func (ds *destructiveSearch) manageDeltaRules(fatherId uint64, state State, c Communication, originalNodeId int) {
@@ -1000,7 +1003,7 @@ func (ds *destructiveSearch) manageDeltaRules(fatherId uint64, state State, c Co
 	state.SetCurrentProofResultFormulas([]IntFormAndTermsList{MakeIntFormAndTermsList(childId, resultForms)})
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
-	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, []int{})
+	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, []int{}, false)
 }
 
 func (ds *destructiveSearch) manageBetaRules(fatherId uint64, state State, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
@@ -1030,9 +1033,9 @@ func (ds *destructiveSearch) manageBetaRules(fatherId uint64, state State, c Com
 		if Glob.IsDestructive() {
 			channelChild := Communication{make(chan bool), make(chan Result)}
 			channels = append(channels, channelChild)
-			go ds.ProofSearch(Glob.GetGID(), otherState, channelChild, Core.MakeEmptySubstAndForm(), fl.GetI(), fl.GetI(), []int{})
+			go ds.ProofSearch(Glob.GetGID(), otherState, channelChild, Core.MakeEmptySubstAndForm(), fl.GetI(), fl.GetI(), []int{}, false)
 		} else {
-			go ds.ProofSearch(Glob.GetGID(), otherState, c, Core.MakeEmptySubstAndForm(), fl.GetI(), fl.GetI(), []int{})
+			go ds.ProofSearch(Glob.GetGID(), otherState, c, Core.MakeEmptySubstAndForm(), fl.GetI(), fl.GetI(), []int{}, false)
 		}
 
 		Glob.IncrGoRoutine(1)
@@ -1069,7 +1072,7 @@ func (ds *destructiveSearch) manageGammaRules(fatherId uint64, state State, c Co
 	state.SetCurrentProofResultFormulas([]IntFormAndTermsList{MakeIntFormAndTermsList(childId, newFnts)})
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
-	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, []int{})
+	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, []int{}, false)
 }
 
 func (ds *destructiveSearch) manageReintroductionRules(fatherId uint64, state State, c Communication, originalNodeId int, metaToReintroduce []int, newAtomics Core.FormAndTermsList, currentNodeId int, reintroduceAnyway bool) {
@@ -1094,7 +1097,7 @@ func (ds *destructiveSearch) manageReintroductionRules(fatherId uint64, state St
 	state.SetCurrentProofResultFormulas([]IntFormAndTermsList{MakeIntFormAndTermsList(childId, Core.MakeSingleElementFormAndTermList(reslf))})
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
-	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, metaToReintroduce)
+	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, metaToReintroduce, false)
 }
 
 func (ds *destructiveSearch) manageResult(c Communication) (Core.Unifier, []ProofStruct, bool) {

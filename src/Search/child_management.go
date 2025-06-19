@@ -265,7 +265,7 @@ func (ds *destructiveSearch) manageBacktrackForDMT(args wcdArgs) {
 
 	copiedState := args.st.Copy()
 	communicationChild := Communication{make(chan bool), make(chan Result)}
-	go ds.ProofSearch(Glob.GetGID(), copiedState, communicationChild, nextSaF.GetSaf().ToSubstAndForm(), childNode, args.originalNodeId, args.toReintroduce)
+	go ds.ProofSearch(Glob.GetGID(), copiedState, communicationChild, nextSaF.GetSaf().ToSubstAndForm(), childNode, args.originalNodeId, args.toReintroduce, false)
 	Glob.PrintDebug("PS", "GO !")
 	Glob.IncrGoRoutine(1)
 
