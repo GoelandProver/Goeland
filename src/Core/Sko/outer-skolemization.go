@@ -30,28 +30,53 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-package Lib
+package Sko
 
-type ComparableList[T Comparable] []T
+import (
+	"sync"
 
-func (cpbl ComparableList[T]) Equals(oth ComparableList[T]) bool {
-	if len(cpbl) != len(oth) {
-		return false
-	}
+	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
+)
 
-	for i := range cpbl {
-		if !cpbl[i].Equals(oth[i]) {
-			return false
-		}
-	}
-	return true
+/** This file provides the outer Skolemization method.
+ *
+ * See the [skolemisation] file of the package [Core] for more information.
+**/
+
+type OuterSkolemization struct {
+	existingSymbols Lib.List[AST.Id]
+	mu              sync.Mutex
 }
 
-func (cpbl ComparableList[T]) Contains(element T) bool {
-	for i := range cpbl {
-		if cpbl[i].Equals(element) {
-			return true
-		}
+func MkOuterSkolemization() OuterSkolemization {
+	return OuterSkolemization{
+		existingSymbols: Lib.NewList[AST.Id](),
+		mu:              sync.Mutex{},
 	}
-	return false
+}
+
+func (sko OuterSkolemization) Skolemize(
+	_, form AST.Form,
+	x AST.Var,
+	fvs Lib.List[AST.Meta],
+) (Skolemization, AST.Form) {
+	sko.mu.Lock()
+	symbol := genFreshSymbol(&sko.existingSymbols, sko.mu, x)
+	sko.mu.Unlock()
+
+	skolemFunc := AST.MakeFun(
+		symbol,
+		Lib.ListMap(fvs, Glob.To[AST.Term]),
+		[]AST.TypeApp{},
+		mkSkoFuncType(fvs, x.GetTypeApp()),
+	)
+
+	skolemizedForm, _ := form.ReplaceTermByTerm(
+		Glob.To[AST.Term](x),
+		Glob.To[AST.Term](skolemFunc),
+	)
+
+	return sko, skolemizedForm
 }

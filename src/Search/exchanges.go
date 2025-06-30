@@ -43,6 +43,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -103,8 +104,8 @@ func makeJsonExchanges(father_uint uint64, st State, ss_subst []Unif.Substitutio
 	forms := st.GetLF().ToString() + " ; " + st.GetAtomic().ToString()
 
 	// Meta
-	mm := st.GetMM().ToString()
-	mc := st.GetMC().ToString()
+	mm := Lib.ListToString(st.GetMM(), ",", "[]")
+	mc := Lib.ListToString(st.GetMC(), ",", "[]")
 
 	// Subt
 	sr := ""

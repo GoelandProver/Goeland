@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -106,7 +107,10 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 	Glob.PrintInfo("MAIN", fmt.Sprintf("Launch Gotab with destructive = %v", Glob.IsDestructive()))
 
 	Glob.SetNbGoroutines(0)
-	state.SetLF(Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(formula, AST.NewTermList())))
+	state.SetLF(Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(
+		formula,
+		Lib.NewList[AST.Term](),
+	)))
 	c := MakeCommunication(make(chan bool), make(chan Result))
 
 	if Glob.GetExchanges() {
@@ -137,7 +141,7 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 }
 
 /* Choose a substitution (backtrack) */
-func (ds *destructiveSearch) tryBTSubstitution(spc *([]Core.SubstAndForm), mm *AST.MetaList, children []Communication) Core.SubstAndForm {
+func (ds *destructiveSearch) tryBTSubstitution(spc *([]Core.SubstAndForm), mm Lib.List[AST.Meta], children []Communication) Core.SubstAndForm {
 	Glob.PrintDebug("TBTS", "Try another substitution.")
 	next_subst, new_spc := ds.chooseSubstitutionDestructive(Core.CopySubstAndFormList(*spc), mm)
 	Glob.PrintDebug("TBTS", fmt.Sprintf("Choose the substitution : %v and send it to children", next_subst.ToString()))
@@ -147,7 +151,7 @@ func (ds *destructiveSearch) tryBTSubstitution(spc *([]Core.SubstAndForm), mm *A
 }
 
 /* Choose a substitution among all the subst send by children - takes thoses who contains no mm first */
-func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []Core.SubstAndForm, mm *AST.MetaList) (Core.SubstAndForm, []Core.SubstAndForm) {
+func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []Core.SubstAndForm, mm Lib.List[AST.Meta]) (Core.SubstAndForm, []Core.SubstAndForm) {
 	subst_found := subst_list[0]
 	found := false
 	i := 0
@@ -182,8 +186,8 @@ func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []Core.Sub
 }
 
 func (ds *destructiveSearch) searchContradictionAfterApplySusbt(father_id uint64, st State, cha Communication, node_id int, original_node_id int) bool {
-	if Glob.GetAssisted() { 
-		return false 
+	if Glob.GetAssisted() {
+		return false
 	}
 	for _, f := range st.GetAtomic() {
 		Glob.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", f.ToString()))
@@ -198,12 +202,12 @@ func (ds *destructiveSearch) searchContradictionAfterApplySusbt(father_id uint64
 
 func (ds *destructiveSearch) searchContradiction(atomic AST.Form, father_id uint64, st State, cha Communication, node_id int, original_node_id int) bool {
 	// Search for a contradiction in LF
-	if Glob.GetAssisted() { 
-		return false 
+	if Glob.GetAssisted() {
+		return false
 	}
 	Glob.PrintDebug("PS", fmt.Sprintf("##### Formula %v #####", atomic.ToString()))
 	clos_res, subst := ApplyClosureRules(atomic, &st)
-	fAt := Core.MakeFormAndTerm(atomic, AST.NewTermList())
+	fAt := Core.MakeFormAndTerm(atomic, Lib.MkList[AST.Term](0))
 
 	if clos_res {
 		ds.ManageClosureRule(father_id, &st, cha, Unif.CopySubstList(subst), fAt, node_id, original_node_id)
@@ -452,14 +456,19 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 			} else {
 				// Retrieve meta from the subst sent by my father
 				meta_sisters := st.GetMM()
-				for _, m := range Core.GetMetaFromSubst(answer_father.subst_for_children.GetSubst()).Slice() {
-					if !st.GetMC().Contains(m) { // If the meta is not a meta current for the process
-						meta_sisters.AppendIfNotContains(m)
+				subst := answer_father.subst_for_children.GetSubst()
+				for _, m := range Core.GetMetaFromSubst(subst).GetSlice() {
+					// If the meta is not a meta current for the process
+					if !Lib.ListMem(m, st.GetMC()) {
+						meta_sisters = Lib.ListAdd(meta_sisters, m)
 					}
 				}
 				// Set to MM
 				st.SetMM(meta_sisters)
-				Glob.PrintDebug("WF", fmt.Sprintf("MC after sisters : %v", meta_sisters.ToString()))
+				Glob.PrintDebug("WF", fmt.Sprintf(
+					"MC after sisters : %v",
+					Lib.ListToString(meta_sisters, ",", "[]"),
+				))
 			}
 
 			father_subst := answer_father.subst_for_children.GetSubst()
@@ -817,8 +826,9 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 **/
 func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Communication, substs []Unif.Substitutions, f Core.FormAndTerms, node_id int, original_node_id int) (bool, []Core.SubstAndForm) {
 
-	mm := st.GetMM().Copy()
-	mm.AppendIfNotContains(Core.GetMetaFromSubst(st.GetAppliedSubst().GetSubst()).Slice()...)
+	mm := Lib.ListCpy(st.GetMM())
+	subst := st.GetAppliedSubst().GetSubst()
+	mm = Lib.ListAdd(mm, Core.GetMetaFromSubst(subst).GetSlice()...)
 	substs_with_mm, substs_with_mm_uncleared, substs_without_mm := Core.DispatchSubst(Unif.CopySubstList(substs), mm)
 
 	unifier := st.GetGlobUnifier()
@@ -1058,8 +1068,9 @@ func (ds *destructiveSearch) manageGammaRules(fatherId uint64, state State, c Co
 	newFnts, newMetas := ApplyGammaRules(hdf, index, &state)
 	state.SetLF(newFnts)
 
-	newMC := state.GetMC().Copy()
-	newMC.AppendIfNotContains(newMetas.Slice()...)
+	newMC := Lib.ListCpy(state.GetMC())
+	newMC = Lib.ListAdd(newMC, newMetas.GetSlice()...)
+
 	state.SetMC(newMC)
 
 	if Glob.IsDestructive() {

@@ -40,6 +40,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
 	"github.com/GoelandProver/Goeland/Search"
 	"github.com/GoelandProver/Goeland/Unif"
@@ -62,7 +63,18 @@ func TryEquality(atomics_for_dmt Core.FormAndTermsList, st Search.State, new_ato
 			atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 			res_eq, subst_eq := EqualityReasoning(st.GetEqStruct(), st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms(), original_node_id)
 			if res_eq {
-				Search.UsedSearch.ManageClosureRule(father_id, &st, cha, subst_eq, Core.MakeFormAndTerm(AST.EmptyPredEq, AST.NewTermList()), node_id, original_node_id)
+				Search.UsedSearch.ManageClosureRule(
+					father_id,
+					&st,
+					cha,
+					subst_eq,
+					Core.MakeFormAndTerm(
+						AST.EmptyPredEq,
+						Lib.NewList[AST.Term](),
+					),
+					node_id,
+					original_node_id,
+				)
 				return true
 			}
 		}

@@ -37,6 +37,7 @@ import (
 	"reflect"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /**
@@ -46,7 +47,7 @@ import (
 type Reconstruct struct {
 	result bool
 	forms  *AST.FormList
-	terms  *AST.TermList
+	terms  Lib.List[AST.Term]
 	err    error
 }
 
@@ -103,7 +104,7 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 	var errorFound error = nil
 
 	forms := make([]AST.Form, len(chansTab))
-	terms := AST.NewTermList()
+	terms := Lib.NewList[AST.Term]()
 
 	// Wait for all children to finish.
 	for remaining > 0 && errorFound == nil {
@@ -122,7 +123,7 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 					forms[index] = res.forms.Get(0)
 				}
 				if res.terms.Len() == 1 {
-					terms.Set(index, res.terms.Get(0))
+					terms.Upd(index, res.terms.At(0))
 				}
 			}
 		}

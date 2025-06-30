@@ -42,10 +42,11 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 )
 
-func makeContextIfNeeded(root AST.Form, metaList *AST.MetaList) string {
+func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
 	if !GetContextEnabled() {
 		return ""
 	}
@@ -120,7 +121,7 @@ func getContextFromFormula(root AST.Form) []string {
 		if !nf.GetID().Equals(AST.Id_eq) {
 			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToMappedString(coqMapConnectors(), false), nf.GetType().ToString())))
 		}
-		for _, term := range nf.GetArgs().Slice() {
+		for _, term := range nf.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}
@@ -131,7 +132,7 @@ func getContextFromTerm(trm AST.Term) []string {
 	result := []string{}
 	if fun, isFun := trm.(AST.Fun); isFun {
 		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToMappedString(coqMapConnectors(), false), fun.GetTypeHint().ToString())))
-		for _, term := range fun.GetArgs().Slice() {
+		for _, term := range fun.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
 	}
@@ -156,9 +157,9 @@ func clean(set, add []string) []string {
 	return result
 }
 
-func contextualizeMetas(metaList *AST.MetaList) string {
+func contextualizeMetas(metaList Lib.List[AST.Meta]) string {
 	result := []string{}
-	for _, meta := range metaList.Slice() {
+	for _, meta := range metaList.GetSlice() {
 		result = append(result, meta.ToMappedString(coqMapConnectors(), false))
 	}
 	return "Parameters " + strings.Join(result, " ") + " : goeland_U."

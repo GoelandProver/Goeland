@@ -4,6 +4,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Search"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -25,7 +26,7 @@ func (is *incrementalSearch) Search(formula AST.Form, bound int) bool {
 func (is *incrementalSearch) handleSearchResults() bool {
 	resultFound, finalProof := rootSearchNode.getResult()
 
-	Search.PrintProof(finalProof, AST.NewMetaList())
+	Search.PrintProof(finalProof, Lib.NewList[AST.Meta]())
 
 	return resultFound
 }

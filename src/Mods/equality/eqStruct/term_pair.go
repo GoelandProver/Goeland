@@ -38,6 +38,7 @@ package eqStruct
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -99,11 +100,11 @@ func MakeTermPair(t1, t2 AST.Term) TermPair {
 	return TermPair{t1.Copy(), t2.Copy()}
 }
 
-func (tp TermPair) GetMetas() *AST.MetaList {
-	metas := AST.NewMetaList()
+func (tp TermPair) GetMetas() Lib.List[AST.Meta] {
+	metas := Lib.NewList[AST.Meta]()
 
-	metas.AppendIfNotContains(tp.t1.GetMetas().Slice()...)
-	metas.AppendIfNotContains(tp.t2.GetMetas().Slice()...)
+	metas = Lib.ListAdd(metas, tp.t1.GetMetas().GetSlice()...)
+	metas = Lib.ListAdd(metas, tp.t2.GetMetas().GetSlice()...)
 
 	return metas
 }

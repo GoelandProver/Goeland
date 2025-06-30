@@ -38,6 +38,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -201,8 +202,8 @@ func applyGammaRule(state Search.State, indiceForm int, fatherId uint64, c Searc
 	new_lf, new_metas := Search.ApplyGammaRules(hdf, index, &state)
 	state.SetLF(new_lf)
 
-	newMC := state.GetMC().Copy()
-	newMC.AppendIfNotContains(new_metas.Slice()...)
+	newMC := Lib.ListCpy(state.GetMC())
+	newMC = Lib.ListAdd(newMC, new_metas.GetSlice()...)
 	state.SetMC(newMC)
 
 	if Glob.IsDestructive() {

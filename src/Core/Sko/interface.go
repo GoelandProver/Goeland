@@ -30,62 +30,73 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**
-* This file provides the necessary structures to manipulate pairs of int.
-**/
-
-package Unif
+package Sko
 
 import (
-	"strconv"
+	"fmt"
+	"sync"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-/* Association between an integer and an array of Terms. */
-type IntPair struct {
-	q     int
-	terms Lib.List[AST.Term]
+/** This file provides the generic [Skolemization] interface that is exported
+ *  and should be used to skolemize formulas.
+ *
+ * See [Core.skolemisation] for a thorough description of the structure.
+ *
+ * It also provides some utility functions that may be used by the different
+ * skolemization techniques.
+ **/
+
+type Skolemization interface {
+	Skolemize(
+		AST.Form,
+		AST.Form,
+		AST.Var,
+		Lib.List[AST.Meta],
+	) (Skolemization, AST.Form)
 }
 
-func (ip IntPair) GetQ() int {
-	return ip.q
-}
-func (ip IntPair) GetTerms() Lib.List[AST.Term] {
-	return ip.terms.Copy(AST.Term.Copy)
-}
+func mkSkoFuncType(
+	relevantMetas Lib.List[AST.Meta],
+	varType AST.TypeApp,
+) AST.TypeScheme {
+	var resultingScheme AST.TypeScheme
 
-func (ip IntPair) ToString() string {
-	res := "(" + strconv.Itoa(ip.q) + ", [" + ip.terms.ToString(AST.Term.ToString, "", "{}") + "])"
-	return res
-}
-
-func (ip IntPair) Copy() IntPair {
-	return MakeIntPair(ip.GetQ(), ip.GetTerms())
-}
-
-func IntPairistToString(ipl []IntPair) string {
-	res := "{"
-	for i, ip := range ipl {
-		res += ip.ToString()
-		if i < len(ipl)-1 {
-			res += ", "
+	switch relevantMetas.Len() {
+	case 0:
+		if typ, ok := varType.(AST.TypeScheme); ok {
+			resultingScheme = typ
+		} else {
+			Glob.Anomaly("Skolemization", "Variable has an illegal type")
 		}
+	case 1:
+		metaType := relevantMetas.At(0).GetTypeApp()
+		resultingScheme = AST.MkTypeArrow(metaType, varType)
+	default:
+		argTypes := Lib.ListMap(
+			relevantMetas,
+			func(x AST.Meta) AST.TypeApp { return x.GetTypeApp() },
+		)
+		resultingScheme = AST.MkTypeArrow(
+			AST.MkTypeCross(argTypes.GetSlice()...),
+			varType,
+		)
 	}
-	res += "}"
 
-	return res
+	return resultingScheme
 }
 
-func MakeIntPair(q int, terms Lib.List[AST.Term]) IntPair {
-	return IntPair{q, terms.Copy(AST.Term.Copy)}
-}
+/* If every Skolem symbol is created using this function, then it will generate
+ * a fresh symbol for sure. Otherwise, nothing is guaranteed.
+ */
+func genFreshSymbol(existingSymbols *Lib.List[AST.Id], mu sync.Mutex, x AST.Var) AST.Id {
+	symbol := AST.MakerNewId(
+		fmt.Sprintf("skolem@%v", x.GetName()),
+	)
+	existingSymbols.Append(symbol)
 
-func CopyIntPairList(ipl []IntPair) []IntPair {
-	res := make([]IntPair, len(ipl))
-	for i, ip := range ipl {
-		res[i] = ip.Copy()
-	}
-	return res
+	return symbol
 }

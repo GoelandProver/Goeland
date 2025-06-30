@@ -5,6 +5,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type SubsManager interface {
@@ -12,7 +13,7 @@ type SubsManager interface {
 	addClosingSubs(SubList, int)
 	sendClosingSubsToFather()
 	getCompatibleSubs() SubList
-	GetApplicableSubs() (*AST.MetaList, *AST.TermList)
+	GetApplicableSubs() (Lib.List[AST.Meta], Lib.List[AST.Term])
 	tryingAgain()
 	getDoneSubs() SubList
 	addDoneSubs(SubList)
@@ -35,7 +36,7 @@ func getCompatibleSubs(sm SubsManager) SubList {
 	return sm.getCompatibleSubs()
 }
 
-func getApplicableSubs(sm SubsManager) (*AST.MetaList, *AST.TermList) {
+func getApplicableSubs(sm SubsManager) (Lib.List[AST.Meta], Lib.List[AST.Term]) {
 	return sm.GetApplicableSubs()
 }
 
@@ -88,7 +89,7 @@ func (ssm *SimpleSubsManager) getCompatibleSubs() SubList {
 	return compatibleSubs
 }
 
-func (ssm *SimpleSubsManager) GetApplicableSubs() (ml *AST.MetaList, tl *AST.TermList) {
+func (ssm *SimpleSubsManager) GetApplicableSubs() (ml Lib.List[AST.Meta], tl Lib.List[AST.Term]) {
 	if !ssm.node.isRoot() {
 		return getApplicableSubs(ssm.node.father.subsManager)
 	}
@@ -186,18 +187,25 @@ func (bsm *BranchingSubsManager) tryingAgain() {
 type IntroSubsManager struct {
 	*SimpleSubsManager
 
-	metas      *AST.MetaList
-	subsitutes *AST.TermList
+	metas      Lib.List[AST.Meta]
+	subsitutes Lib.List[AST.Term]
 }
 
-func newIntroSubsManager(node *SearchNode, metas *AST.MetaList, doneSubs SubList) *IntroSubsManager {
-	return &IntroSubsManager{newSubsManager(node, doneSubs), metas, AST.NewTermList()}
+func newIntroSubsManager(node *SearchNode, metas Lib.List[AST.Meta], doneSubs SubList) *IntroSubsManager {
+	return &IntroSubsManager{
+		newSubsManager(node, doneSubs),
+		metas,
+		Lib.NewList[AST.Term](),
+	}
 }
 
-func (gsm *IntroSubsManager) GetApplicableSubs() (metas *AST.MetaList, terms *AST.TermList) {
+func (gsm *IntroSubsManager) GetApplicableSubs() (
+	metas Lib.List[AST.Meta],
+	terms Lib.List[AST.Term],
+) {
 	metas, terms = getApplicableSubs(gsm.SimpleSubsManager)
-	metas.Append(gsm.metas.Slice()...)
-	terms.Append(gsm.subsitutes.Slice()...)
+	metas.Append(gsm.metas.GetSlice()...)
+	terms.Append(gsm.subsitutes.GetSlice()...)
 
 	return metas, terms
 }

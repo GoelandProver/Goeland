@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -181,8 +182,8 @@ func isFiltering(ms Unif.MatchingSubstitutions) bool {
 	return checkAllMetaAreInstanciated(metas, subst)
 }
 
-func checkAllMetaAreInstanciated(metas *AST.MetaList, subst Unif.Substitutions) bool {
-	for _, m := range metas.Slice() {
+func checkAllMetaAreInstanciated(metas Lib.List[AST.Meta], subst Unif.Substitutions) bool {
+	for _, m := range metas.GetSlice() {
 		m_found := false
 		for _, s := range subst {
 			k, v := s.Get()
@@ -197,13 +198,14 @@ func checkAllMetaAreInstanciated(metas *AST.MetaList, subst Unif.Substitutions) 
 	return true
 }
 
-func checkMetaAreFromSearch(metas *AST.MetaList, subst Unif.Substitutions) bool {
+func checkMetaAreFromSearch(metas Lib.List[AST.Meta], subst Unif.Substitutions) bool {
 	for _, s := range subst {
 		k, v := s.Get()
-		if !metas.Contains(k) {
+		if !Lib.ListMem(k, metas) {
 			return false
 		} else {
-			if meta_v, ok := v.(AST.Meta); ok && !metas.Contains(meta_v) {
+			if meta_v, ok := v.(AST.Meta); ok &&
+				!Lib.ListMem(meta_v, metas) {
 				return false
 			}
 		}

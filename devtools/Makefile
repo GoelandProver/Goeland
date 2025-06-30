@@ -1,3 +1,7 @@
+.PHONY: test-suite
+test-suite:
+	python3 run-test-suite.py
+
 ci-soundness:
 	cd ../src && make
 	python3 run_soundness_tests.py ../.github/soundness 120

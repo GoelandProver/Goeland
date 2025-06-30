@@ -30,28 +30,60 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
+/**
+ * This file defines a _cached_ data-type.
+ * It provides a cache system for a generic type of data, and automatically
+ * updates cached data when needed.
+ * For these functionalities to work properly, do not forget to set up the
+ * different hooks.
+ **/
+
 package Lib
 
-type ComparableList[T Comparable] []T
+type Cache[T, U any] struct {
+	data         T
+	shouldUpdate bool
 
-func (cpbl ComparableList[T]) Equals(oth ComparableList[T]) bool {
-	if len(cpbl) != len(oth) {
-		return false
-	}
-
-	for i := range cpbl {
-		if !cpbl[i].Equals(oth[i]) {
-			return false
-		}
-	}
-	return true
+	updateHook func(U) T
 }
 
-func (cpbl ComparableList[T]) Contains(element T) bool {
-	for i := range cpbl {
-		if cpbl[i].Equals(element) {
-			return true
-		}
+func MkCache[T, U any](data T, updateHook func(U) T) Cache[T, U] {
+	return Cache[T, U]{
+		data:         data,
+		shouldUpdate: true,
+		updateHook:   updateHook,
 	}
-	return false
+}
+
+func (cache *Cache[T, U]) Get(v U) T {
+	if cache.shouldUpdate {
+		cache.data = cache.updateHook(v)
+		cache.shouldUpdate = false
+	}
+	return cache.data
+}
+
+func (cache Cache[T, U]) Raw() T {
+	return cache.data
+}
+
+func (cache Cache[T, U]) Copy(cpyFunc Func[T, T]) Cache[T, U] {
+	return Cache[T, U]{
+		data:         cpyFunc(cache.data),
+		shouldUpdate: cache.shouldUpdate,
+		updateHook:   cache.updateHook,
+	}
+}
+
+func CacheCpy[T Copyable[T], U any](cache Cache[T, U]) Cache[T, U] {
+	cpyFunc := func(x T) T { return x.Copy() }
+	return cache.Copy(cpyFunc)
+}
+
+func (cache *Cache[T, U]) AvoidUpd() {
+	cache.shouldUpdate = false
+}
+
+func (cache Cache[T, U]) NeedsUpd() bool {
+	return cache.shouldUpdate
 }

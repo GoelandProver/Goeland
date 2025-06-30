@@ -36,6 +36,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/gs3"
 	"github.com/GoelandProver/Goeland/Search"
 )
@@ -72,7 +73,7 @@ var LambdapiOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeLambd
 // TODO:
 //	* Write the context for TFF problems
 
-func MakeLambdapiOutput(prf []Search.ProofStruct, meta *AST.MetaList) string {
+func MakeLambdapiOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	if len(prf) == 0 {
 		Glob.PrintError("LambdaPi", "Nothing to output")
 		return ""
@@ -82,7 +83,7 @@ func MakeLambdapiOutput(prf []Search.ProofStruct, meta *AST.MetaList) string {
 	return MakeLambdaPiProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-var MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta *AST.MetaList) string {
+var MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
 	proofString := makeLambdaPiProofFromGS3(proof)
 	return contextString + "\n" + proofString

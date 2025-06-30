@@ -42,6 +42,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /*** Unify ***/
@@ -63,7 +64,12 @@ func (m *Machine) unify(node Node, formula AST.Form) []MatchingSubstitutions {
 		terms := TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs())
 
 		// Transform the predicate to a function to make the tool work properly
-		m.terms = AST.NewTermList(AST.MakeFun(formula_type.GetID(), terms, []AST.TypeApp{}, formula_type.GetType()))
+		m.terms = Lib.MkListV[AST.Term](AST.MakeFun(
+			formula_type.GetID(),
+			terms,
+			[]AST.TypeApp{},
+			formula_type.GetType(),
+		))
 		result = m.unifyAux(node)
 
 		if !reflect.DeepEqual(m.failure, result) {
@@ -76,7 +82,7 @@ func (m *Machine) unify(node Node, formula AST.Form) []MatchingSubstitutions {
 			result = filteredResult
 		}
 	case TermForm:
-		m.terms = AST.NewTermList(formula_type.GetTerm())
+		m.terms = Lib.MkListV(formula_type.GetTerm())
 		result = m.unifyAux(node)
 	default:
 		result = m.failure
@@ -100,8 +106,8 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 		Glob.PrintDebug("UX", fmt.Sprintf("m.beginCount: %v - m.beginLock : %v", m.beginCount, m.beginLock))
 		Glob.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
 		Glob.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, m.terms.Len()))
-		Glob.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms.Get(m.q).ToString()))
-		Glob.PrintDebug("UX", fmt.Sprintf("m.terms : %v", m.terms.ToString()))
+		Glob.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms.At(m.q).ToString()))
+		Glob.PrintDebug("UX", fmt.Sprintf("m.terms : %v", m.terms.ToString(AST.Term.ToString, ",", "{}")))
 
 		switch instr := instr.(type) {
 		case Begin:
@@ -173,7 +179,7 @@ func (m *Machine) launchChildrenSearch(node Node) []MatchingSubstitutions {
 	matching := []MatchingSubstitutions{}
 	for i, n := range node.children {
 		ch := channels[i]
-		st := m.terms.Copy()
+		st := m.terms.Copy(AST.Term.Copy)
 		ip := CopyIntPairList(m.post)
 		sc := CopySubstPairList(m.subst)
 
@@ -232,7 +238,7 @@ func (m *Machine) right() Status {
 /* Algorithm for the instruction Down. */
 func (m *Machine) down() {
 	if m.isUnlocked() {
-		m.terms = m.terms.Get(m.q).(AST.Fun).GetArgs()
+		m.terms = m.terms.At(m.q).(AST.Fun).GetArgs()
 		m.q = 0
 
 		// When down, add the number of args to topLevelCount and add 1 to topLevelCount because we go straigth forward inside without rigth
@@ -243,7 +249,7 @@ func (m *Machine) down() {
 
 /* Algorithm for the instruction Check. */
 func (m *Machine) check(instrTerm AST.Term) Status {
-	if m.isUnlocked() && errorOccured(m.matchIndexes(m.terms.Get(m.q), instrTerm)) {
+	if m.isUnlocked() && errorOccured(m.matchIndexes(m.terms.At(m.q), instrTerm)) {
 		return Status(ERROR)
 	}
 	return Status(SUCCESS)
@@ -279,7 +285,10 @@ func (m *Machine) pop(index int) Status {
 /* Algorithm for the instruction Put. */
 func (m *Machine) put(instr Put) {
 	if m.isUnlocked() {
-		m.subst = append(m.subst, MakeSubstPair(instr.GetIndex(), m.terms.Get(m.q)))
+		m.subst = append(
+			m.subst,
+			MakeSubstPair(instr.GetIndex(), m.terms.At(m.q)),
+		)
 	}
 }
 

@@ -42,13 +42,14 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
 type EqualityProblem struct {
 	E_tree Unif.DataStructure
-	E_map  map[string]*AST.TermList
+	E_map  map[string]Lib.List[AST.Term]
 	E      Equalities
 	s, t   AST.Term
 	c      ConstraintStruct
@@ -57,7 +58,7 @@ type EqualityProblem struct {
 func (ep EqualityProblem) getETree() Unif.DataStructure {
 	return ep.E_tree.Copy()
 }
-func (ep EqualityProblem) getEMap() map[string]*AST.TermList {
+func (ep EqualityProblem) getEMap() map[string]Lib.List[AST.Term] {
 	return ep.E_map
 }
 func (ep EqualityProblem) GetE() Equalities {
@@ -108,12 +109,12 @@ func (ep EqualityProblem) applySubstitution(s Unif.Substitutions) EqualityProble
 	return res
 }
 
-func (ep EqualityProblem) getMetas() *AST.MetaList {
-	metas := AST.NewMetaList()
+func (ep EqualityProblem) getMetas() Lib.List[AST.Meta] {
+	metas := Lib.NewList[AST.Meta]()
 
-	metas.AppendIfNotContains(ep.E.getMetas().Slice()...)
-	metas.AppendIfNotContains(ep.s.GetMetas().Slice()...)
-	metas.AppendIfNotContains(ep.t.GetMetas().Slice()...)
+	metas = Lib.ListAdd(metas, ep.E.getMetas().GetSlice()...)
+	metas = Lib.ListAdd(metas, ep.s.GetMetas().GetSlice()...)
+	metas = Lib.ListAdd(metas, ep.t.GetMetas().GetSlice()...)
 
 	return metas
 }
@@ -144,23 +145,29 @@ func makeDataStructFromEqualities(eq Equalities) Unif.DataStructure {
 }
 
 /* Take a list of equalities and build the corresponding assocative map */
-func makeEQMapFromEqualities(eq Equalities) map[string]*AST.TermList {
-	map_res := make(map[string]*AST.TermList)
+func makeEQMapFromEqualities(eq Equalities) map[string]Lib.List[AST.Term] {
+	map_res := make(map[string]Lib.List[AST.Term])
 
 	for _, e := range eq {
 		key1 := e.GetT1().ToString()
 		key2 := e.GetT2().ToString()
 
 		if _, found := map_res[key1]; !found {
-			map_res[key1] = AST.NewTermList()
+			map_res[key1] = Lib.NewList[AST.Term]()
 		}
 
 		if _, found := map_res[key2]; !found {
-			map_res[key2] = AST.NewTermList()
+			map_res[key2] = Lib.NewList[AST.Term]()
 		}
 
-		map_res[key1].Append(e.GetT2())
-		map_res[key2].Append(e.GetT1())
+		upd1 := map_res[key1]
+		upd2 := map_res[key2]
+
+		upd1.Append(e.GetT2())
+		upd2.Append(e.GetT1())
+
+		map_res[key1] = upd1
+		map_res[key2] = upd2
 	}
 
 	return map_res

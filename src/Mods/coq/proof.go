@@ -299,7 +299,7 @@ func getRealConstantName(constantsCreated []AST.Term, term AST.Term) string {
 		if isGroundTerm(fun.GetID()) {
 			res = fun.GetID().ToMappedString(coqMapConnectors(), Glob.GetTypeProof())
 			subterms := make([]string, 0)
-			for _, t := range fun.GetArgs().Slice() {
+			for _, t := range fun.GetArgs().GetSlice() {
 				subterms = append(subterms, getRealConstantName(constantsCreated, t))
 			}
 			if len(subterms) > 0 {

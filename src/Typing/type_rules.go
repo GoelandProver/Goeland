@@ -37,6 +37,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /**
@@ -186,7 +187,11 @@ func applyAppTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruc
 	result := launchChildren(children, root, fatherChan)
 
 	// Only one term needs to be returned because the ParameterizedType is counted as one.
-	return Reconstruct{result: result.result, err: result.err, terms: AST.NewTermList(nil)}
+	return Reconstruct{
+		result: result.result,
+		err:    result.err,
+		terms:  Lib.NewList[AST.Term](),
+	}
 }
 
 /* Utils functions */

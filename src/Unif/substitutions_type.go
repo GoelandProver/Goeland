@@ -41,6 +41,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /* Stores the result of the algorithm and the substitutions for each metavariable. */
@@ -156,15 +157,15 @@ func CopySubstList(sl []Substitutions) []Substitutions {
 }
 
 /* Get all the metavariables of a substitution */
-func (subs Substitutions) GetMeta() *AST.MetaList {
-	res := AST.NewMetaList()
+func (subs Substitutions) GetMeta() Lib.List[AST.Meta] {
+	res := Lib.NewList[AST.Meta]()
 
 	for _, singleSubs := range subs {
 		meta, term := singleSubs.Key(), singleSubs.Value()
-		res.AppendIfNotContains(meta)
+		res = Lib.ListAdd(res, meta)
 
 		if term.IsMeta() {
-			res.AppendIfNotContains(term.ToMeta())
+			res = Lib.ListAdd(res, term.ToMeta())
 		}
 	}
 
@@ -257,7 +258,7 @@ func isRecursive(t AST.Term, m AST.Meta) bool {
 /* Checks if any argument of the function f contains the metavariable m. */
 func areFuncArgsRecursive(f AST.Fun, m AST.Meta) bool {
 	// Glob.PrintDebug("AFAR", fmt.Sprintf("AFAR between %v and %v", f.ToString(), m.ToString()))
-	for _, term := range f.GetArgs().Slice() {
+	for _, term := range f.GetArgs().GetSlice() {
 		if isRecursive(term, m) {
 			return true
 		}
@@ -339,14 +340,19 @@ func eliminateInside(key AST.Meta, value AST.Term, s Substitutions, has_changed_
 }
 
 /* Eliminate for a list of Terms */
-func eliminateList(key AST.Meta, value AST.Term, termList *AST.TermList, hasChangedTop *bool) *AST.TermList {
+func eliminateList(
+	key AST.Meta,
+	value AST.Term,
+	termList Lib.List[AST.Term],
+	hasChangedTop *bool,
+) Lib.List[AST.Term] {
 	hasChanged := true
 
 	for hasChanged {
 		hasChanged = false
-		tempList := AST.NewTermList()
+		tempList := Lib.NewList[AST.Term]()
 
-		for _, elementList := range termList.Slice() {
+		for _, elementList := range termList.GetSlice() {
 			switch lt := elementList.(type) {
 			case AST.Meta: // If its a meta and its equals to the key te replace
 				if lt.Equals(key) {
@@ -367,7 +373,7 @@ func eliminateList(key AST.Meta, value AST.Term, termList *AST.TermList, hasChan
 			}
 		}
 
-		termList = tempList.Copy()
+		termList = tempList.Copy(AST.Term.Copy)
 
 		if hasChanged {
 			*hasChangedTop = true

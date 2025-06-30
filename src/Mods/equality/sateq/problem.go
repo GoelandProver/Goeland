@@ -115,7 +115,7 @@ func (problem *Problem) getEquivalenceClass(t AST.Term) *eqClass {
 	} else {
 		if typed, ok := t.(AST.Fun); ok {
 			args := make([]*eqClass, typed.GetArgs().Len())
-			for i, st := range typed.GetArgs().Slice() {
+			for i, st := range typed.GetArgs().GetSlice() {
 				args[i] = problem.getEquivalenceClass(st)
 			}
 			tr1 := funTermRecord(typed, args)

@@ -30,28 +30,55 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-package Lib
+package Sko
 
-type ComparableList[T Comparable] []T
+import (
+	"sync"
 
-func (cpbl ComparableList[T]) Equals(oth ComparableList[T]) bool {
-	if len(cpbl) != len(oth) {
-		return false
-	}
+	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
+)
 
-	for i := range cpbl {
-		if !cpbl[i].Equals(oth[i]) {
-			return false
-		}
-	}
-	return true
+/** This file provides the inner Skolemization method.
+ *
+ * See the [skolemisation] file of the package [Core] for more information.
+**/
+
+type InnerSkolemization struct {
+	existingSymbols Lib.List[AST.Id]
+	mu              sync.Mutex
 }
 
-func (cpbl ComparableList[T]) Contains(element T) bool {
-	for i := range cpbl {
-		if cpbl[i].Equals(element) {
-			return true
-		}
+func MkInnerSkolemization() InnerSkolemization {
+	return InnerSkolemization{
+		existingSymbols: Lib.NewList[AST.Id](),
+		mu:              sync.Mutex{},
 	}
-	return false
+}
+
+func (sko InnerSkolemization) Skolemize(
+	_, form AST.Form,
+	x AST.Var,
+	_ Lib.List[AST.Meta],
+) (Skolemization, AST.Form) {
+	sko.mu.Lock()
+	symbol := genFreshSymbol(&sko.existingSymbols, sko.mu, x)
+	sko.mu.Unlock()
+
+	internalMetas := form.GetMetas()
+
+	skolemFunc := AST.MakeFun(
+		symbol,
+		Lib.ListMap(internalMetas, Glob.To[AST.Term]),
+		[]AST.TypeApp{},
+		mkSkoFuncType(internalMetas, x.GetTypeApp()),
+	)
+
+	skolemizedForm, _ := form.ReplaceTermByTerm(
+		Glob.To[AST.Term](x),
+		Glob.To[AST.Term](skolemFunc),
+	)
+
+	return sko, skolemizedForm
 }

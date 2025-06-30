@@ -42,6 +42,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type PolarityFlag int
@@ -51,7 +52,6 @@ const (
 	Neg
 	PosAndNeg
 )
-
 
 /*** Structure ***/
 
@@ -114,7 +114,7 @@ func (fl FormAndTermsList) Copy() FormAndTermsList {
 func MakeFTListFromFormList(l *AST.FormList) FormAndTermsList {
 	res := MakeEmptyFormAndTermsList()
 	for _, f := range l.Slice() {
-		res = append(res, MakeFormAndTerm(f.Copy(), AST.NewTermList()))
+		res = append(res, MakeFormAndTerm(f.Copy(), Lib.MkList[AST.Term](0)))
 	}
 	return res
 }
@@ -192,7 +192,10 @@ func (fl FormAndTermsList) ExtractForms() *AST.FormList {
 	return res
 }
 
-func (fl FormAndTermsList) SubstituteBy(metas *AST.MetaList, terms *AST.TermList) FormAndTermsList {
+func (fl FormAndTermsList) SubstituteBy(
+	metas Lib.List[AST.Meta],
+	terms Lib.List[AST.Term],
+) FormAndTermsList {
 	result := FormAndTermsList{}
 
 	for _, fat := range fl {
@@ -218,17 +221,21 @@ func MakeSingleElementFormAndTermList(f FormAndTerms) FormAndTermsList {
 
 /* Make a FormAndTerm list made of all the predicates from the calling list with the corresponding polarity (Pos = positive, Neg = negative, PosAndNeg = both) */
 func (lf FormAndTermsList) FilterLitPolarity(pol PolarityFlag) FormAndTermsList {
-    res := MakeEmptyFormAndTermsList()
-    for _, f := range lf {
-        switch nf := f.GetForm().(type) {
-            case AST.Pred:
-                 if (pol == Pos || pol == PosAndNeg) { res = res.AppendIfNotContains(f) }
-            case AST.Not:
-				switch nf.GetForm().(type) {
-				case AST.Pred:
-                	if (pol == Neg || pol == PosAndNeg) { res = res.AppendIfNotContains(f) }
+	res := MakeEmptyFormAndTermsList()
+	for _, f := range lf {
+		switch nf := f.GetForm().(type) {
+		case AST.Pred:
+			if pol == Pos || pol == PosAndNeg {
+				res = res.AppendIfNotContains(f)
+			}
+		case AST.Not:
+			switch nf.GetForm().(type) {
+			case AST.Pred:
+				if pol == Neg || pol == PosAndNeg {
+					res = res.AppendIfNotContains(f)
 				}
-        }
-    }
-    return res
+			}
+		}
+	}
+	return res
 }

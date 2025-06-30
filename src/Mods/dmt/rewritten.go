@@ -40,6 +40,8 @@ package dmt
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
+	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -47,23 +49,22 @@ func substitute(form AST.Form, subst Unif.Substitutions) AST.Form {
 	for _, s := range subst {
 		old_symbol, new_symbol := s.Get()
 		form = Core.ApplySubstitutionOnFormula(old_symbol, new_symbol, form)
-		form = form.SetInternalMetas(substInternalMetas(form.GetInternalMetas(), subst))
 	}
 	return form
 }
 
-func substInternalMetas(ml *AST.MetaList, subst Unif.Substitutions) *AST.MetaList {
-	result := AST.NewMetaList()
+func substInternalMetas(ml Lib.List[AST.Meta], subst Unif.Substitutions) Lib.List[AST.Meta] {
+	result := Lib.NewList[AST.Meta]()
 
-	for _, meta := range ml.Slice() {
+	for _, meta := range ml.GetSlice() {
 		term, _ := subst.Get(meta)
 
 		if term != nil {
 			if typed, ok := term.(AST.Meta); ok {
-				result.AppendIfNotContains(typed)
+				result = Lib.ListAdd(result, typed)
 			}
 		} else {
-			panic("Introducing DMT meta in proof-search")
+			Glob.Anomaly("DMT", "introducing meta in proof-search")
 		}
 	}
 

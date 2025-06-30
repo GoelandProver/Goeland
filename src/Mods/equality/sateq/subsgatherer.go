@@ -34,6 +34,7 @@ package sateq
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -78,9 +79,9 @@ func translate(toTranslate *eqClass, correspondence map[*eqClass]*termRecord) AS
 	if tr.isMeta() {
 		return tr.meta
 	} else {
-		args := AST.NewTermList()
-		for _, s := range tr.args {
-			args.Append(translate(s, correspondence))
+		args := Lib.MkList[AST.Term](len(tr.args))
+		for i, s := range tr.args {
+			args.Upd(i, translate(s, correspondence))
 		}
 		return AST.MakerFun(tr.symbolId, args, tr.typeVars, tr.typeHint)
 	}

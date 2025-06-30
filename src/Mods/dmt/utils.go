@@ -44,10 +44,6 @@ func isEquality(pred AST.Pred) bool {
 	return pred.GetID().Equals(AST.Id_eq)
 }
 
-func refute(f AST.Form) AST.Form {
-	return AST.RefuteForm(f)
-}
-
 func predFromNegatedAtom(f AST.Form) AST.Pred {
 	return f.(AST.Not).GetForm().(AST.Pred)
 }

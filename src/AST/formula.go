@@ -45,11 +45,9 @@ import (
 
 type Form interface {
 	GetIndex() int
-	GetMetas() *MetaList
-	GetInternalMetas() *MetaList
-	SetInternalMetas(*MetaList) Form
+	GetMetas() Lib.List[Meta]
 	GetType() TypeScheme
-	GetSubTerms() *TermList
+	GetSubTerms() Lib.List[Term]
 	GetSubFormulasRecur() *FormList
 	GetChildFormulas() *FormList
 
@@ -63,31 +61,49 @@ type Form interface {
 	ReplaceMetaByTerm(meta Meta, term Term) Form
 }
 
-/* Replace a term by a term inside a function */
-func replaceTermInTermList(terms *TermList, oldTerm Term, newTerm Term) (*TermList, bool) {
+/* Replace a term by a term inside a function. */
+func replaceTermInTermList(
+	terms Lib.List[Term],
+	oldTerm Term,
+	newTerm Term,
+) (Lib.List[Term], bool) {
 	res := false
-	newTermList := NewTermList()
+	newTermList := Lib.MkList[Term](terms.Len())
 
-	for _, val := range terms.Slice() {
+	for i, val := range terms.GetSlice() {
 		switch nf := val.(type) {
 		case Var:
 			if oldTerm.GetIndex() == nf.GetIndex() {
-				newTermList.Append(newTerm)
+				newTermList.Upd(i, newTerm)
 				res = true
 			} else {
-				newTermList.Append(val)
+				newTermList.Upd(i, val)
 			}
 		case Fun:
 			if oldTerm.GetIndex() == nf.GetIndex() {
-				newTermList.Append(newTerm)
+				newTermList.Upd(i, newTerm)
 				res = true
 			} else {
-				termList, r := replaceTermInTermList(nf.GetArgs(), oldTerm, newTerm)
-				newTermList.Append(MakerFun(nf.GetP(), termList, nf.GetTypeVars(), nf.GetTypeHint()))
+				termList, r := replaceTermInTermList(
+					nf.GetArgs(),
+					oldTerm,
+					newTerm,
+				)
+				newTermList.Upd(i, MakerFun(
+					nf.GetP(),
+					termList,
+					nf.GetTypeVars(),
+					nf.GetTypeHint(),
+				))
 				res = res || r
 			}
-		default:
-			newTermList.Append(val)
+		case Meta:
+			if oldTerm.Equals(newTerm) {
+				newTermList.Upd(i, newTerm)
+				res = true
+			} else {
+				newTermList.Upd(i, val)
+			}
 		}
 	}
 
@@ -115,11 +131,11 @@ func instanciateTypeAppList(typeApps []TypeApp, vars []TypeVar, index int) []Typ
 }
 
 // Creates and returns a MetaList from a FormList, making sure there are no duplicates
-func metasUnion(forms *FormList) *MetaList {
-	res := NewMetaList()
+func metasUnion(forms *FormList) Lib.List[Meta] {
+	res := Lib.NewList[Meta]()
 
 	for _, form := range forms.Slice() {
-		res.AppendIfNotContains(form.GetInternalMetas().Slice()...)
+		res = Lib.ListAdd(res, form.GetMetas().GetSlice()...)
 	}
 
 	return res

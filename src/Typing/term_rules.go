@@ -37,6 +37,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /**
@@ -48,7 +49,7 @@ import (
 func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
 	var index int
 	var id AST.Id
-	var terms *AST.TermList
+	var terms Lib.List[AST.Term]
 	var vars []AST.TypeApp
 
 	if whatIsSet(state.consequence) == formIsSet {
@@ -80,7 +81,11 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	// Type predicate or function
 	if whatIsSet(state.consequence) == formIsSet {
 		fTyped := AST.MakePred(index, id, terms, vars, typeScheme)
-		return reconstructForm(launchChildren(createAppChildren(state, vars, terms, primitives), root, fatherChan), fTyped)
+		return reconstructForm(launchChildren(
+			createAppChildren(state, vars, terms, primitives),
+			root,
+			fatherChan,
+		), fTyped)
 	} else {
 		fTyped := AST.MakeFun(id, terms, vars, typeScheme)
 		return reconstructTerm(launchChildren(createAppChildren(state, vars, terms, primitives), root, fatherChan), fTyped)
@@ -117,14 +122,17 @@ func applyVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 /**
  * Takes all the types of the terms and makes a cross product of everything
  **/
-func getArgsTypes(context GlobalContext, terms *AST.TermList) (AST.TypeApp, error) {
+func getArgsTypes(
+	context GlobalContext,
+	terms Lib.List[AST.Term],
+) (AST.TypeApp, error) {
 	if terms.Len() == 0 {
 		return nil, nil
 	}
 
 	var types []AST.TypeApp
 
-	for _, term := range terms.Slice() {
+	for _, term := range terms.GetSlice() {
 		switch tmpTerm := term.(type) {
 		case AST.Fun:
 			typeScheme, err := context.getTypeScheme(
@@ -160,7 +168,12 @@ func getArgsTypes(context GlobalContext, terms *AST.TermList) (AST.TypeApp, erro
 }
 
 /* Creates children for app rule */
-func createAppChildren(state Sequent, vars []AST.TypeApp, terms *AST.TermList, primitives []AST.TypeApp) []Sequent {
+func createAppChildren(
+	state Sequent,
+	vars []AST.TypeApp,
+	terms Lib.List[AST.Term],
+	primitives []AST.TypeApp,
+) []Sequent {
 	children := []Sequent{}
 
 	// 1 for each type in the vars
@@ -173,7 +186,7 @@ func createAppChildren(state Sequent, vars []AST.TypeApp, terms *AST.TermList, p
 	}
 
 	// 1 for each term
-	for i, term := range terms.Slice() {
+	for i, term := range terms.GetSlice() {
 		switch t := term.(type) {
 		case AST.Fun:
 			term = AST.MakeFun(t.GetID(), t.GetArgs(), t.GetTypeVars(), primitives[i].(AST.TypeScheme))

@@ -39,11 +39,12 @@ package Core
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type FormAndTerms struct {
 	form  AST.Form
-	Terms *AST.TermList
+	Terms Lib.List[AST.Term]
 }
 
 func (fat FormAndTerms) GetForm() AST.Form {
@@ -54,19 +55,19 @@ func (fat FormAndTerms) GetForm() AST.Form {
 	}
 }
 
-func (fat FormAndTerms) GetTerms() *AST.TermList {
-	return fat.Terms.Copy()
+func (fat FormAndTerms) GetTerms() Lib.List[AST.Term] {
+	return fat.Terms.Copy(AST.Term.Copy)
 }
 
 func (fat *FormAndTerms) SetForm(form AST.Form) {
 	fat.form = form
 }
 
-func (fat *FormAndTerms) SetTerms(Terms *AST.TermList) {
+func (fat *FormAndTerms) SetTerms(Terms Lib.List[AST.Term]) {
 	fat.Terms = Terms
 }
 
-func MakeFormAndTerm(f AST.Form, tl *AST.TermList) FormAndTerms {
+func MakeFormAndTerm(f AST.Form, tl Lib.List[AST.Term]) FormAndTerms {
 	return FormAndTerms{f, tl}
 }
 
@@ -75,19 +76,23 @@ func (fat FormAndTerms) Copy() FormAndTerms {
 }
 
 func (fat FormAndTerms) Equals(fat2 FormAndTerms) bool {
-	return fat.GetForm().Equals(fat2.GetForm()) && fat.GetTerms().EqualsWithoutOrder(fat2.GetTerms())
+	return fat.GetForm().Equals(fat2.GetForm()) &&
+		AST.EqualsWithoutOrder(fat.GetTerms(), fat2.GetTerms())
 }
 
 func (fat FormAndTerms) ToString() string {
 	return fat.GetForm().ToMappedString(AST.DefaultMapString, Glob.GetTypeProof())
 }
 
-func (fat FormAndTerms) SubstituteBy(metas *AST.MetaList, terms *AST.TermList) FormAndTerms {
+func (fat FormAndTerms) SubstituteBy(
+	metas Lib.List[AST.Meta],
+	terms Lib.List[AST.Term],
+) FormAndTerms {
 	result := fat.Copy()
 
-	for i := range metas.Slice() {
-		result.form = result.form.ReplaceMetaByTerm(metas.Get(i), terms.Get(i))
-		result.Terms = result.Terms.ReplaceOccurrence(metas.Get(i), terms.Get(i))
+	for i := range metas.GetSlice() {
+		result.form = result.form.ReplaceMetaByTerm(metas.At(i), terms.At(i))
+		result.Terms = AST.ReplaceOccurrence(result.Terms, metas.At(i), terms.At(i))
 	}
 
 	return result

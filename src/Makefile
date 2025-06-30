@@ -9,6 +9,7 @@ BUILD=_build/
 GOYACC=goyacc
 GOYACCFLAGS=-l
 GOC=go build
+GOW=gow -e=go -e=y -P "\n" build
 GOFLAGS=
 BIN=_build/goeland
 PREFIX=TPTP
@@ -23,9 +24,16 @@ endif
 PROB=../../problems/SYN
 TMPFILE=/tmp/GOELAND_TESTS_OK
 
-all:
-	$(GOYACC) $(GOYACCFLAGS) -p $(PREFIX) -o $(GOPARSER) $(YACCFILE); \
+all: build
+
+parser:
+	$(GOYACC) $(GOYACCFLAGS) -p $(PREFIX) -o $(GOPARSER) $(YACCFILE)
+
+build: parser
 	$(GOC) $(GOFLAGS) -o $(BIN) $(GOSRC)
+
+watch: parser
+	$(GOW) $(GOFLAGS) -o $(BIN) $(GOSRC)
 
 static-linux-release:
 	$(GOYACC) $(GOYACCFLAGS) -p $(PREFIX) -o $(GOPARSER) $(YACCFILE); \

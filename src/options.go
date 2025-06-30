@@ -6,7 +6,10 @@ import (
 	"time"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Core"
+	"github.com/GoelandProver/Goeland/Core/Sko"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/assisted"
 	"github.com/GoelandProver/Goeland/Mods/coq"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
@@ -279,14 +282,20 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"inner",
 		false,
-		"Enables on-the-fly inner Skolemisation during the proof-search",
-		func(bool) { Glob.SetInnerSko(true) },
+		"Enables inner Skolemisation during the proof-search",
+		func(bool) {
+			Core.SetSelectedSkolemization(Sko.MkInnerSkolemization())
+			Glob.SetInnerSko(true)
+		},
 		func(bool) {})
 	(&option[bool]{}).init(
 		"preinner",
 		false,
 		"Activates preinner Skolemisation, a Skolemisation strategy even more optimized than -inner",
-		func(bool) { Glob.SetPreInnerSko(true) },
+		func(bool) {
+			Core.SetSelectedSkolemization(Sko.MkPreInnerSkolemization())
+			Glob.SetPreInnerSko(true)
+		},
 		func(bool) {})
 	(&option[bool]{}).init(
 		"assisted",
@@ -379,7 +388,7 @@ func buildOptions() {
 
 func chronoInit() {
 	oldCoq := coq.MakeCoqProof
-	coq.MakeCoqProof = func(proof *gs3.GS3Sequent, meta *AST.MetaList) string {
+	coq.MakeCoqProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
 		start := time.Now()
 		result := oldCoq(proof, meta)
 		printChrono("Coq", start)
@@ -387,7 +396,7 @@ func chronoInit() {
 	}
 
 	oldLP := lambdapi.MakeLambdaPiProof
-	lambdapi.MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta *AST.MetaList) string {
+	lambdapi.MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
 		start := time.Now()
 		result := oldLP(proof, meta)
 		printChrono("LP", start)

@@ -41,6 +41,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /* Takes each meta of the formula, matches the index to the metas, and add everything to subst */
@@ -51,24 +52,24 @@ import (
 **/
 func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.Form) Substitutions {
 	Glob.PrintDebug("CS", fmt.Sprintf("Compute substitution : %v and %v", SubstPairListToString(subs), metasToSubs.ToString()))
-	metasFromTreeForm := AST.NewMetaList()
+	metasFromTreeForm := Lib.NewList[AST.Meta]()
 	treeSubs := Substitutions{}
 
 	// Retrieve all the meta of from the tree formula
 	switch typedForm := form.(type) {
 	case AST.Pred:
-		for _, term := range typedForm.GetArgs().Slice() {
-			metasFromTreeForm.Append(term.GetMetas().Slice()...)
+		for _, term := range typedForm.GetArgs().GetSlice() {
+			metasFromTreeForm.Append(term.GetMetas().GetSlice()...)
 		}
 	case TermForm:
-		metasFromTreeForm.Append(typedForm.GetTerm().GetMetas().Slice()...)
+		metasFromTreeForm.Append(typedForm.GetTerm().GetMetas().GetSlice()...)
 	default:
 		return Failure()
 	}
 
 	//  Transform subst tree into a real substitution
 	for _, value := range subs {
-		currentMeta := metasFromTreeForm.Get(value.GetIndex())
+		currentMeta := metasFromTreeForm.At(value.GetIndex())
 		currentValue := value.GetTerm()
 		Glob.PrintDebug("CS", fmt.Sprintf("Iterate on subst : %v and  %v", currentMeta.ToString(), currentValue.ToString()))
 
@@ -187,7 +188,7 @@ func (m *Machine) addUnifications(term1, term2 AST.Term) Status {
 func tryUnification(term1, term2 AST.Term, meta Substitutions) []MatchingSubstitutions {
 	Glob.PrintDebug("TU", fmt.Sprintf("Try unification : %v and %v", term1.ToString(), term2.ToString()))
 	aux := makeMachine()
-	aux.terms = AST.NewTermList(term2)
+	aux.terms = Lib.MkListV(term2)
 	aux.meta = meta
 
 	// add begin at the start and end at the end !

@@ -43,6 +43,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 // -----------------------------------------------------------------------------
@@ -54,13 +55,13 @@ type Id struct {
 	name  string
 }
 
-func (i Id) GetIndex() int     { return i.index }
-func (i Id) GetName() string   { return i.name }
-func (i Id) IsMeta() bool      { return false }
-func (i Id) IsFun() bool       { return false }
-func (i Id) Copy() Term        { return MakeId(i.GetIndex(), i.GetName()) }
-func (Id) ToMeta() Meta        { return MakeEmptyMeta() }
-func (Id) GetMetas() *MetaList { return NewMetaList() }
+func (i Id) GetIndex() int          { return i.index }
+func (i Id) GetName() string        { return i.name }
+func (i Id) IsMeta() bool           { return false }
+func (i Id) IsFun() bool            { return false }
+func (i Id) Copy() Term             { return MakeId(i.GetIndex(), i.GetName()) }
+func (Id) ToMeta() Meta             { return MakeEmptyMeta() }
+func (Id) GetMetas() Lib.List[Meta] { return Lib.NewList[Meta]() }
 
 var ToStringId = func(i Id) string {
 	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
@@ -109,8 +110,8 @@ func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return i
 }
 
-func (i Id) GetSubTerms() *TermList {
-	return NewTermList(i)
+func (i Id) GetSubTerms() Lib.List[Term] {
+	return Lib.MkListV[Term](i)
 }
 
 // id < other : -1; id = other : 0; id > other : 1
@@ -129,13 +130,23 @@ func (i Id) CompareWith(other Id) int {
 	return strings.Compare(i.name, other.name)
 }
 
+func (i Id) Less(u any) bool {
+	switch t := u.(type) {
+	case Term:
+		return i.GetIndex() < t.GetIndex()
+	default:
+		Glob.Anomaly("Strict term comparison", "Not comparing two terms")
+	}
+	return false
+}
+
 // -----------------------------------------------------------------------------
 // n-ary functions
 
 type Fun struct {
 	*MappedString
 	p        Id
-	args     *TermList
+	args     Lib.List[Term]
 	typeVars []TypeApp
 	typeHint TypeScheme
 }
@@ -192,14 +203,15 @@ func ToFlatternStringSurrountWithId(f Fun, idString string, mapping MapString, d
 }
 
 func (f Fun) GetChildrenForMappedString() []MappableString {
-	return f.GetArgs().ToMappableStringSlice()
+	mappableList := Lib.ListMap(f.GetArgs(), Glob.To[MappableString])
+	return mappableList.GetSlice()
 }
 
-func (f Fun) GetID() Id          { return f.p.Copy().(Id) }
-func (f Fun) GetP() Id           { return f.p.Copy().(Id) }
-func (f Fun) GetArgs() *TermList { return f.args.Copy() }
+func (f Fun) GetID() Id               { return f.p.Copy().(Id) }
+func (f Fun) GetP() Id                { return f.p.Copy().(Id) }
+func (f Fun) GetArgs() Lib.List[Term] { return f.args }
 
-func (f *Fun) SetArgs(tl *TermList)        { f.args = tl }
+func (f *Fun) SetArgs(tl Lib.List[Term])   { f.args = tl }
 func (f *Fun) SetTypeScheme(ts TypeScheme) { f.typeHint = ts }
 
 func (f Fun) GetTypeVars() []TypeApp  { return f.typeVars }
@@ -215,11 +227,11 @@ func (f Fun) Equals(t any) bool {
 	switch typed := t.(type) {
 	case Fun:
 		return typed.GetID().Equals(f.GetID()) &&
-			typed.GetArgs().Equals(f.GetArgs()) &&
+			Lib.ListEquals(typed.GetArgs(), f.GetArgs()) &&
 			f.typeHint.Equals(typed.typeHint)
 	case *Fun:
 		return typed.GetID().Equals(f.GetID()) &&
-			typed.GetArgs().Equals(f.GetArgs()) &&
+			Lib.ListEquals(typed.GetArgs(), f.GetArgs()) &&
 			f.typeHint.Equals(typed.typeHint)
 	default:
 		return false
@@ -234,11 +246,11 @@ func (f Fun) PointerCopy() *Fun {
 	return NewFun(f.GetP(), f.GetArgs(), CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
 }
 
-func (f Fun) GetMetas() *MetaList {
-	metas := NewMetaList()
+func (f Fun) GetMetas() Lib.List[Meta] {
+	metas := Lib.NewList[Meta]()
 
-	for _, arg := range f.GetArgs().Slice() {
-		metas.Append(arg.GetMetas().Slice()...)
+	for _, arg := range f.GetArgs().GetSlice() {
+		metas.Append(arg.GetMetas().GetSlice()...)
 	}
 
 	return metas
@@ -248,7 +260,12 @@ func (f Fun) ReplaceSubTermBy(oldTerm, newTerm Term) Term {
 	if f.Equals(oldTerm) {
 		return newTerm.Copy()
 	} else {
-		return MakeFun(f.GetID(), f.GetArgs().replaceFirstOccurrenceTermList(oldTerm, newTerm), f.GetTypeVars(), f.GetTypeHint())
+		return MakeFun(
+			f.GetID(),
+			replaceFirstOccurrenceTermList(f.GetArgs(), oldTerm, newTerm),
+			f.GetTypeVars(),
+			f.GetTypeHint(),
+		)
 	}
 }
 
@@ -256,19 +273,34 @@ func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
 	if f.Equals(oldTerm) {
 		return newTerm.Copy()
 	} else {
-		return MakeFun(f.GetID(), f.GetArgs().ReplaceOccurrence(oldTerm, newTerm), f.GetTypeVars(), f.GetTypeHint())
+		return MakeFun(
+			f.GetID(),
+			ReplaceOccurrence(f.GetArgs(), oldTerm, newTerm),
+			f.GetTypeVars(),
+			f.GetTypeHint(),
+		)
 	}
 }
 
-func (f Fun) GetSubTerms() *TermList {
-	res := NewTermList()
+func (f Fun) GetSubTerms() Lib.List[Term] {
+	res := Lib.NewList[Term]()
 
-	res.AppendIfNotContains(f)
-	for _, arg := range f.GetArgs().Slice() {
-		res.AppendIfNotContains(arg.GetSubTerms().Slice()...)
+	res.Add(TermEquals, f)
+	for _, arg := range f.GetArgs().GetSlice() {
+		res.Add(TermEquals, arg.GetSubTerms().GetSlice()...)
 	}
 
 	return res
+}
+
+func (f Fun) Less(u any) bool {
+	switch t := u.(type) {
+	case Term:
+		return f.GetIndex() < t.GetIndex()
+	default:
+		Glob.Anomaly("Strict term comparison", "Not comparing two terms")
+	}
+	return false
 }
 
 // -----------------------------------------------------------------------------
@@ -289,7 +321,7 @@ func (v Var) IsMeta() bool            { return false }
 func (v Var) IsFun() bool             { return false }
 func (v Var) Copy() Term              { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
 func (Var) ToMeta() Meta              { return MakeEmptyMeta() }
-func (Var) GetMetas() *MetaList       { return NewMetaList() }
+func (Var) GetMetas() Lib.List[Meta]  { return Lib.NewList[Meta]() }
 
 func (v Var) Equals(t any) bool {
 	if typed, ok := t.(Var); ok {
@@ -298,8 +330,8 @@ func (v Var) Equals(t any) bool {
 	return false
 }
 
-func (v Var) GetSubTerms() *TermList {
-	return NewTermList(v)
+func (v Var) GetSubTerms() Lib.List[Term] {
+	return Lib.MkListV[Term](v)
 }
 
 func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
@@ -332,6 +364,16 @@ func (v Var) GetChildrenForMappedString() []MappableString {
 	return []MappableString{}
 }
 
+func (v Var) Less(u any) bool {
+	switch t := u.(type) {
+	case Term:
+		return v.GetIndex() < t.GetIndex()
+	default:
+		Glob.Anomaly("Strict term comparison", "Not comparing two terms")
+	}
+	return false
+}
+
 // -----------------------------------------------------------------------------
 // Meta/Free variables
 
@@ -346,15 +388,15 @@ type Meta struct {
 
 func (m Meta) GetFormula() int { return m.formula }
 
-func (m Meta) GetTypeApp() TypeApp     { return m.typeHint }
-func (m Meta) GetTypeHint() TypeScheme { return m.typeHint.(TypeScheme) }
-func (m Meta) GetName() string         { return m.name }
-func (m Meta) GetIndex() int           { return m.index }
-func (m Meta) GetOccurence() int       { return m.occurence }
-func (m Meta) IsMeta() bool            { return true }
-func (m Meta) IsFun() bool             { return false }
-func (m Meta) ToMeta() Meta            { return m }
-func (m Meta) GetMetas() *MetaList     { return NewMetaList(m) }
+func (m Meta) GetTypeApp() TypeApp      { return m.typeHint }
+func (m Meta) GetTypeHint() TypeScheme  { return m.typeHint.(TypeScheme) }
+func (m Meta) GetName() string          { return m.name }
+func (m Meta) GetIndex() int            { return m.index }
+func (m Meta) GetOccurence() int        { return m.occurence }
+func (m Meta) IsMeta() bool             { return true }
+func (m Meta) IsFun() bool              { return false }
+func (m Meta) ToMeta() Meta             { return m }
+func (m Meta) GetMetas() Lib.List[Meta] { return Lib.MkListV(m) }
 
 func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"
@@ -390,10 +432,24 @@ func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return m
 }
 
-func (m Meta) GetSubTerms() *TermList {
-	return NewTermList(m)
+func (m Meta) GetSubTerms() Lib.List[Term] {
+	return Lib.MkListV[Term](m)
+}
+
+func (m Meta) Less(u any) bool {
+	switch t := u.(type) {
+	case Term:
+		return m.GetIndex() < t.GetIndex()
+	default:
+		Glob.Anomaly("Strict term comparison", "Not comparing two terms")
+	}
+	return false
 }
 
 func MakeEmptyMeta() Meta {
 	return MakeMeta(-1, -1, "-1", -1, nil, DefaultType())
+}
+
+func MetaEquals(x, y Meta) bool {
+	return x.Equals(y)
 }

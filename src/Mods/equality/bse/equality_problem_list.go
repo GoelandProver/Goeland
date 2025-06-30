@@ -46,6 +46,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -74,11 +75,11 @@ func (epl EqualityProblemList) ToTPTPString() string {
 	return result
 }
 
-func (epl EqualityProblemList) GetMetas() *AST.MetaList {
-	metas := AST.NewMetaList()
+func (epl EqualityProblemList) GetMetas() Lib.List[AST.Meta] {
+	metas := Lib.NewList[AST.Meta]()
 
 	for _, ep := range epl {
-		metas.AppendIfNotContains(ep.getMetas().Slice()...)
+		metas = Lib.ListAdd(metas, ep.getMetas().GetSlice()...)
 	}
 
 	return metas
@@ -140,15 +141,15 @@ func (epml EqualityProblemMultiList) ToTPTPString(isSat bool) string {
 
 func (epml EqualityProblemMultiList) GetMetasToTPTPString() string {
 	result := ""
-	metas := AST.NewMetaList()
+	metas := Lib.NewList[AST.Meta]()
 
 	for _, epl := range epml {
-		metas.AppendIfNotContains(epl.GetMetas().Slice()...)
+		metas = Lib.ListAdd(metas, epl.GetMetas().GetSlice()...)
 	}
 
 	if metas.Len() > 0 {
 		result = "? ["
-		for _, meta := range metas.Slice() {
+		for _, meta := range metas.GetSlice() {
 			result += meta.ToMappedString(AST.DefaultMapString, false) + ", "
 		}
 		result = result[:len(result)-2] + "] : "
@@ -190,8 +191,13 @@ func buildEqualityProblemMultiListFromNEQ(neq Inequalities, eq Equalities) Equal
 /* Build an equality problem list from a predicat and its negation */
 func buildEqualityProblemListFrom2Pred(p1 AST.Pred, p2 AST.Pred, eq Equalities) EqualityProblemList {
 	res := makeEmptyEqualityProblemList()
-	for i := range p1.GetArgs().Slice() {
-		res = append(res, makeEqualityProblem(eq.copy(), p1.GetArgs().Get(i).Copy(), p2.GetArgs().Get(i).Copy(), makeEmptyConstraintStruct()))
+	for i := range p1.GetArgs().GetSlice() {
+		res = append(res, makeEqualityProblem(
+			eq.copy(),
+			p1.GetArgs().At(i).Copy(),
+			p2.GetArgs().At(i).Copy(),
+			makeEmptyConstraintStruct()),
+		)
 	}
 	return res
 }
@@ -201,13 +207,18 @@ func buildEqualityProblemMultiListFromPredList(pred AST.Pred, tn Unif.DataStruct
 	res := makeEmptyEqualityProblemMultiList()
 
 	predId := pred.GetID()
-	metas := AST.NewMetaList()
+	metas := Lib.NewList[AST.Meta]()
 
-	for _, arg := range pred.GetArgs().Slice() {
-		metas.AppendIfNotContains(AST.MakerMeta("METAEQ_"+arg.ToString(), -1))
+	for _, arg := range pred.GetArgs().GetSlice() {
+		metas = Lib.ListAdd(metas, AST.MakerMeta("METAEQ_"+arg.ToString(), -1))
 	}
 
-	newTerm := AST.MakerPred(predId.Copy().(AST.Id), metas.ToTermList(), pred.GetTypeVars(), pred.GetType())
+	newTerm := AST.MakerPred(
+		predId.Copy().(AST.Id),
+		AST.MetaListToTermList(metas),
+		pred.GetTypeVars(),
+		pred.GetType(),
+	)
 	found, complementaryPredList := tn.Unify(newTerm)
 
 	if found {

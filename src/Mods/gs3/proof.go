@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 	"github.com/GoelandProver/Goeland/Search"
 )
@@ -240,7 +241,7 @@ func (gs *GS3Proof) manageGammaStep(proofStep Search.ProofStruct, rule Rule, seq
 	// JRO: Should be OKAY as "nil" is returned if I understand everything properly.
 	term := manageGammasInstantiations(originForm, resultForm)
 
-	for _, t := range getDepFromTerm(term).Slice() {
+	for _, t := range getDepFromTerm(term).GetSlice() {
 		gs.dependency.Add(t, originForm)
 	}
 
@@ -260,22 +261,22 @@ func (gs *GS3Proof) manageGammaStep(proofStep Search.ProofStruct, rule Rule, seq
 	return s
 }
 
-func getDepFromTerm(term AST.Term) *AST.TermList {
+func getDepFromTerm(term AST.Term) Lib.List[AST.Term] {
 	if typedFun, ok := term.(AST.Fun); ok {
 		if strings.Contains(typedFun.GetID().GetName(), "sko") {
-			return AST.NewTermList(typedFun)
+			return Lib.MkListV[AST.Term](typedFun)
 		}
 
-		res := AST.NewTermList()
+		res := Lib.NewList[AST.Term]()
 
-		for _, t := range typedFun.GetArgs().Slice() {
-			res.Append(getDepFromTerm(t).Slice()...)
+		for _, t := range typedFun.GetArgs().GetSlice() {
+			res.Append(getDepFromTerm(t).GetSlice()...)
 		}
 
 		return res
 	}
 
-	return AST.NewTermList(term)
+	return Lib.MkListV(term)
 }
 
 // TODO: factorise this function to merge some steps that are similar between the two cases.
@@ -367,8 +368,14 @@ func (gs *GS3Proof) postTreatment(proofStep Search.ProofStruct, rule Rule) []*AS
 
 func makeProofStructFrom(f, nf AST.Form, rule Rule) Search.ProofStruct {
 	proofStruct := Search.MakeEmptyProofStruct()
-	proofStruct.Formula = Core.MakeFormAndTerm(f, nil)
-	proofStruct.Result_formulas = []Search.IntFormAndTermsList{Search.MakeIntFormAndTermsList(0, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(nf, nil)))}
+	proofStruct.Formula = Core.MakeFormAndTerm(f, Lib.NewList[AST.Term]())
+	proofStruct.Result_formulas = []Search.IntFormAndTermsList{
+		Search.MakeIntFormAndTermsList(
+			0,
+			Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(
+				nf,
+				Lib.NewList[AST.Term]()),
+			))}
 	proofStruct.Rule_name = ruleToTableauxString(rule)
 	return proofStruct
 }
@@ -394,7 +401,7 @@ func (gs GS3Proof) getRulesAppliedInOrder(term AST.Term, dependantForms *AST.For
 func (gs GS3Proof) getOffspringsOf(term AST.Term) *AST.FormList {
 	offsprings := AST.NewFormList()
 	for _, form := range gs.branchForms.Slice() {
-		if form.GetSubTerms().Contains(term) {
+		if form.GetSubTerms().Contains(term, AST.TermEquals) {
 			offsprings.Append(form)
 		}
 	}
@@ -596,7 +603,10 @@ func makeWeakeningProofStructs(forms *AST.FormList) []Search.ProofStruct {
 	resultingProof := make([]Search.ProofStruct, 0)
 	for _, f := range forms.Slice() {
 		proofStruct := Search.MakeEmptyProofStruct()
-		proofStruct.SetFormulaProof(Core.MakeFormAndTerm(f, AST.NewTermList()))
+		proofStruct.SetFormulaProof(Core.MakeFormAndTerm(
+			f,
+			Lib.NewList[AST.Term]()),
+		)
 		proofStruct.SetRuleNameProof("WEAKEN")
 		resultingProof = append(resultingProof, proofStruct)
 	}
@@ -679,7 +689,7 @@ func (gs *GS3Proof) weakenAllFormsRelatedToTheTerm(term AST.Term) (*AST.FormList
 	rules := []Glob.Pair[Rule, Search.ProofStruct]{}
 	forms := AST.NewFormList()
 	for _, form := range gs.branchForms.Slice() {
-		if form.GetSubTerms().Contains(term) {
+		if form.GetSubTerms().Contains(term, AST.TermEquals) {
 			// Get the rule to apply it back
 			for _, rule := range gs.rulesApplied {
 				f := rule.Snd.GetFormula().GetForm()

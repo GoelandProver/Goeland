@@ -50,9 +50,10 @@ type Term interface {
 	IsMeta() bool
 	IsFun() bool
 	ToMeta() Meta
-	GetMetas() *MetaList
-	GetSubTerms() *TermList
+	GetMetas() Lib.List[Meta]
+	GetSubTerms() Lib.List[Term]
 	ReplaceSubTermBy(original_term, new_term Term) Term
+	Less(any) bool
 }
 
 type TypedTerm interface {
@@ -89,11 +90,11 @@ func MakeMeta(index, occurence int, s string, f int, t ...TypeApp) Meta {
 	return meta
 }
 
-func MakeFun(p Id, args *TermList, typeVars []TypeApp, t TypeScheme) Fun {
+func MakeFun(p Id, args Lib.List[Term], typeVars []TypeApp, t TypeScheme) Fun {
 	return *NewFun(p, args, typeVars, t)
 }
 
-func NewFun(p Id, args *TermList, typeVars []TypeApp, t TypeScheme) *Fun {
+func NewFun(p Id, args Lib.List[Term], typeVars []TypeApp, t TypeScheme) *Fun {
 	fms := &MappedString{}
 	fun := &Fun{fms, p, args, typeVars, t}
 	fms.MappableString = fun
@@ -102,11 +103,11 @@ func NewFun(p Id, args *TermList, typeVars []TypeApp, t TypeScheme) *Fun {
 
 /*** Functions ***/
 
-func TypeAppArrToTerm(typeApps []TypeApp) *TermList {
-	terms := NewTermList()
+func TypeAppArrToTerm(typeApps []TypeApp) Lib.List[Term] {
+	terms := Lib.MkList[Term](len(typeApps))
 
-	for _, typeApp := range typeApps {
-		terms.Append(TypeAppToTerm(typeApp))
+	for i, typeApp := range typeApps {
+		terms.Upd(i, TypeAppToTerm(typeApp))
 	}
 
 	return terms
@@ -124,23 +125,40 @@ func TypeAppToTerm(typeApp TypeApp) Term {
 			term = nil
 		}
 	case TypeHint:
-		term = MakerFun(MakerId(nt.ToString()), NewTermList(), []TypeApp{}, MkTypeHint("$tType"))
+		term = MakerFun(
+			MakerId(nt.ToString()),
+			Lib.NewList[Term](),
+			[]TypeApp{},
+			MkTypeHint("$tType"),
+		)
 	case TypeCross:
-		args := NewTermList()
+		underlyingTypes := nt.GetAllUnderlyingTypes()
+		args := Lib.MkList[Term](len(underlyingTypes))
 
-		for _, type_ := range nt.GetAllUnderlyingTypes() {
-			args.Append(TypeAppToTerm(type_))
+		for i, type_ := range nt.GetAllUnderlyingTypes() {
+			args.Upd(i, TypeAppToTerm(type_))
 		}
 
-		term = MakeFun(MakerId("$$tCross"), args, []TypeApp{}, MkTypeHint("$tType"))
+		term = MakeFun(
+			MakerId("$$tCross"),
+			args,
+			[]TypeApp{},
+			MkTypeHint("$tType"),
+		)
 	case ParameterizedType:
-		args := NewTermList()
+		parameters := nt.GetParameters()
+		args := Lib.MkList[Term](len(parameters))
 
-		for _, type_ := range nt.GetParameters() {
-			args.Append(TypeAppToTerm(type_))
+		for i, type_ := range nt.GetParameters() {
+			args.Upd(i, TypeAppToTerm(type_))
 		}
 
-		term = MakeFun(MakerId(nt.ToString()), args, []TypeApp{}, MkTypeHint("$tType"))
+		term = MakeFun(
+			MakerId(nt.ToString()),
+			args,
+			[]TypeApp{},
+			MkTypeHint("$tType"),
+		)
 	}
 	return term
 }
@@ -157,17 +175,26 @@ func typeVarToMeta(typeVar TypeVar) Meta {
 	return meta
 }
 
-func replaceTermListTypesByMeta(tl *TermList, varList []TypeVar, index int) *TermList {
-	res := NewTermList()
+func replaceTermListTypesByMeta(tl Lib.List[Term], varList []TypeVar, index int) Lib.List[Term] {
+	res := Lib.MkList[Term](tl.Len())
 
-	for _, term := range tl.Slice() {
+	for i, term := range tl.GetSlice() {
 		if Glob.Is[Fun](term) {
 			t := Glob.To[Fun](term)
-			res.Append(MakeFun(t.GetID(), replaceTermListTypesByMeta(t.GetArgs(), varList, index), instanciateTypeAppList(t.GetTypeVars(), varList, index), t.GetTypeHint()))
+			res.Upd(i, MakeFun(
+				t.GetID(),
+				replaceTermListTypesByMeta(t.GetArgs(), varList, index),
+				instanciateTypeAppList(t.GetTypeVars(), varList, index),
+				t.GetTypeHint(),
+			))
 		} else {
-			res.Append(term)
+			res.Upd(i, term)
 		}
 	}
 
 	return res
+}
+
+func TermEquals(x, y Term) bool {
+	return x.Equals(y)
 }

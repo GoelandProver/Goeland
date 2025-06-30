@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -55,7 +56,7 @@ type State struct {
 	n                                     int
 	lf, atomic, alpha, beta, delta, gamma Core.FormAndTermsList
 	meta_generator                        []Core.MetaGen
-	mm, mc                                *AST.MetaList
+	mm, mc                                Lib.List[AST.Meta]
 	applied_subst                         Core.SubstAndForm
 	last_applied_subst                    Core.SubstAndForm   // For non destructive case only
 	substs_found                          []Core.SubstAndForm // Subst found with mm in d, subst for "bactrack" in nd
@@ -97,11 +98,11 @@ func (s State) GetGamma() Core.FormAndTermsList {
 func (s State) GetMetaGen() []Core.MetaGen {
 	return Core.CopyMetaGenList(s.meta_generator)
 }
-func (s State) GetMM() *AST.MetaList {
-	return s.mm.Copy()
+func (s State) GetMM() Lib.List[AST.Meta] {
+	return Lib.ListCpy(s.mm)
 }
-func (s State) GetMC() *AST.MetaList {
-	return s.mc.Copy()
+func (s State) GetMC() Lib.List[AST.Meta] {
+	return Lib.ListCpy(s.mc)
 }
 func (s State) GetAppliedSubst() Core.SubstAndForm {
 	return s.applied_subst.Copy()
@@ -170,11 +171,11 @@ func (st *State) SetGamma(fl Core.FormAndTermsList) {
 func (st *State) SetMetaGen(fl []Core.MetaGen) {
 	st.meta_generator = Core.CopyMetaGenList(fl)
 }
-func (st *State) SetMM(mm *AST.MetaList) {
-	st.mm = mm.Copy()
+func (st *State) SetMM(mm Lib.List[AST.Meta]) {
+	st.mm = Lib.ListCpy(mm)
 }
-func (st *State) SetMC(mc *AST.MetaList) {
-	st.mc = mc.Copy()
+func (st *State) SetMC(mc Lib.List[AST.Meta]) {
+	st.mc = Lib.ListCpy(mc)
 }
 func (st *State) SetAppliedSubst(s Core.SubstAndForm) {
 	st.applied_subst = s.Copy()
@@ -260,7 +261,10 @@ func MakeState(limit int, tp, tn Unif.DataStructure, f AST.Form) State {
 
 	current_proof := MakeEmptyProofStruct()
 	current_proof.SetRuleProof("Initial formula")
-	current_proof.SetFormulaProof(Core.MakeFormAndTerm(f.Copy(), AST.NewTermList()))
+	current_proof.SetFormulaProof(Core.MakeFormAndTerm(
+		f.Copy(),
+		Lib.NewList[AST.Term](),
+	))
 
 	return State{
 		n,
@@ -271,8 +275,8 @@ func MakeState(limit int, tp, tn Unif.DataStructure, f AST.Form) State {
 		Core.MakeEmptyFormAndTermsList(),
 		Core.MakeEmptyFormAndTermsList(),
 		[]Core.MetaGen{},
-		AST.NewMetaList(),
-		AST.NewMetaList(),
+		Lib.NewList[AST.Meta](),
+		Lib.NewList[AST.Meta](),
 		Core.MakeEmptySubstAndForm(),
 		Core.MakeEmptySubstAndForm(),
 		[]Core.SubstAndForm{},
@@ -326,14 +330,14 @@ func (st State) Print() {
 		Glob.PrintDebug("PSt", Core.MetaGenListToString(st.GetMetaGen()))
 	}
 
-	if !st.GetMM().IsEmpty() {
+	if !st.GetMM().Empty() {
 		Glob.PrintDebug("PSt", "Meta Mother: ")
-		Glob.PrintDebug("Pst", st.GetMM().ToString())
+		Glob.PrintDebug("Pst", Lib.ListToString(st.GetMM(), ",", "[]"))
 	}
 
-	if st.GetMC().Len() > 0 {
+	if !st.GetMC().Empty() {
 		Glob.PrintDebug("PSt", "Meta current: ")
-		Glob.PrintDebug("Pst", st.GetMC().ToString())
+		Glob.PrintDebug("Pst", Lib.ListToString(st.GetMC(), ",", "[]"))
 	}
 
 	if !st.GetAppliedSubst().IsEmpty() {
@@ -374,12 +378,12 @@ func (st State) Copy() State {
 
 	new_state.SetMetaGen(st.GetMetaGen())
 
-	newMetaMM := AST.NewMetaList()
-	newMetaMM.Append(st.GetMM().Slice()...)
-	newMetaMM.Append(st.GetMC().Slice()...)
+	newMetaMM := Lib.NewList[AST.Meta]()
+	newMetaMM.Append(st.GetMM().GetSlice()...)
+	newMetaMM.Append(st.GetMC().GetSlice()...)
 	new_state.SetMM(newMetaMM)
 
-	new_state.SetMC(AST.NewMetaList())
+	new_state.SetMC(Lib.NewList[AST.Meta]())
 
 	if Glob.IncrEq {
 		new_state.eqStruct = st.GetEqStruct()

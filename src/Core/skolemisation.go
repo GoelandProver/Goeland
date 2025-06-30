@@ -32,208 +32,119 @@
 package Core
 
 import (
-	"fmt"
-	"sync"
-
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Core/Sko"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
-type skoArgs struct {
-	sourceFormula AST.Form
-	formula       AST.Form
-	terms         *AST.TermList
-	sourceVar     AST.Var
-	symbol        AST.Id
-}
+/** This file provides multiple ways to skolemize a formula.
+ *
+ * Currently implemented techniques:
+ *
+ *   - outer skolemization. Default technique: fresh symbol parameterized by
+ *     all the metavariables of the branch.
+ *
+ *   - inner skolemization. Somewhat optimized technique: fresh symbol
+ *     parameterized by the metavariables appearing _inside_ the formula to
+ *     skolemize. Activated with the -inner option.
+ *
+ *   - pre-inner skolemization. This is the same mechanism as inner
+ *     skolemization, except that we reuse the skolem symbol when skolemizing
+ *     multiple times formulas in the same alpha-equivalence class. Activated
+ *     using the -preinner option.
+ *
+ * We provide a generic [Skolemization] interface, which implements a single
+ * function [skolemize] parameterized by (i) the formula to skolemize ∃x.δ(x),
+ * (ii) the formula δ(x) where x should be replaced, (iii) the variable x itself
+ * and (iv) the list of metavariables present inside a branch.
+ *
+ * If you wish to implement a new skolemization technique, you should follow
+ * these steps:
+ *
+ *   1. Add a brief description of the technique in the list above.
+ *   2. Create a file in the [Sko] folder with a structure that implements
+ *      the [Skolemization] interface.
+ *   3. Add a variable in this file refering to this structure.
+ *   4. Add an option that updates the [selectedSkolemization] variable (via
+ *      the function [SetSelectedSkolemization]).
+ **/
 
-type class struct {
-	availableForms   *AST.FormList
-	availableSymbols []AST.Id
-	mu               sync.Mutex
-}
+var selectedSkolemization Sko.Skolemization = Sko.MkOuterSkolemization()
 
-var symbolMaker class = makeClass()
+const (
+	isNegAll = iota
+	isExists = iota
+)
 
-/** Constructor **/
-func makeClass() class {
-	var new_class class
-	new_class.availableForms = AST.NewFormList()
-	new_class.availableSymbols = []AST.Id{}
-	new_class.mu = sync.Mutex{}
-	return new_class
+func SetSelectedSkolemization(sko Sko.Skolemization) {
+	selectedSkolemization = sko
 }
 
 /**
- * Skolemizes once the formula f.
+ * Skolemizes the formula f once (e.g., if f is ∃(x,y,z). δ, only x will be
+ * treated).
  */
-func Skolemize(fnt FormAndTerms, branchMetas *AST.MetaList) FormAndTerms {
-	form := fnt.GetForm()
-	terms := branchMetas.ToTermList()
+func Skolemize(form AST.Form, branchMetas Lib.List[AST.Meta]) AST.Form {
+	metas := Lib.MkListV(branchMetas.GetSlice()...)
 
 	switch nf := form.(type) {
-	// 1 - not(forall F1)
 	case AST.Not:
-		if tmp, ok := nf.GetForm().(AST.All); ok {
-			res := RealSkolemize(form, tmp.GetForm(), tmp.GetVarList()[0], terms)
-			internalMetas := res.GetInternalMetas()
-			if len(tmp.GetVarList()) > 1 {
-				res = AST.MakerAll(tmp.GetVarList()[1:], res).SetInternalMetas(internalMetas)
-			}
-			fnt = MakeFormAndTerm(AST.RefuteForm(res).SetInternalMetas(internalMetas), terms)
+		switch f := nf.GetForm().(type) {
+		case AST.All:
+			return realSkolemize(
+				form,
+				f.GetForm(),
+				f.GetVarList()[0],
+				f.GetVarList(),
+				metas,
+				isNegAll,
+			)
+		default:
+			Glob.Anomaly("Skolemization", "on illegal negated form")
 		}
-	// 2 - exists F1
 	case AST.Ex:
-		res := RealSkolemize(form, nf.GetForm(), nf.GetVarList()[0], terms)
-		if len(nf.GetVarList()) > 1 {
-			internalMetas := res.GetInternalMetas()
-			res = AST.MakerEx(nf.GetVarList()[1:], res).SetInternalMetas(internalMetas)
-		}
-		fnt = MakeFormAndTerm(res, terms)
+		return realSkolemize(
+			form,
+			nf.GetForm(),
+			nf.GetVarList()[0],
+			nf.GetVarList(),
+			metas,
+			isExists,
+		)
+	default:
+		Glob.Anomaly("Skolemization", "on illegal form")
 	}
 
-	return fnt
-}
-
-/**
- * Applies skolemization to a formula (ie: replaces existential quantified variables
- * by fresh skolem symbols).
- * delta : all the meta under and new function name
- * delta+ : only relevant meta : getmeta + meta replaced
- * delta++ : same function name (need classical skolem for meta)
- **/
-func RealSkolemize(sourceForm, fnt AST.Form, v AST.Var, terms *AST.TermList) AST.Form {
-	// Replace each variable by the skolemized term.
-	symbol := AST.MakerNewId(fmt.Sprintf("skolem_%s%v", v.GetName(), v.GetIndex()))
-	fnt = applySelectedSkolemisation(skoArgs{sourceFormula: sourceForm, sourceVar: v, symbol: symbol, formula: fnt, terms: terms})
-	return fnt
-}
-
-// Applies the right skolemisation depending on the mode Goeland is launched
-func applySelectedSkolemisation(args skoArgs) AST.Form {
-	if Glob.IsInnerSko() {
-		return applyInnerSkolemisation(args)
-	}
-	if Glob.IsPreInnerSko() {
-		return applyPreinnerSkolemisation(args)
-	}
-	return applyOuterSkolemisation(args)
-}
-
-// Default outer skolemisation: takes all the metavariables of the branch and pass it as arguments of the symbol skolem.
-func applyOuterSkolemisation(args skoArgs) AST.Form {
-	return substAndReturn(args, makeSkolemFunction(args))
-}
-
-// Inner skolemisation: takes all the metavariable which occur in a formula as arguments of the skolem term.
-func applyInnerSkolemisation(args skoArgs) AST.Form {
-	args.terms = args.formula.GetInternalMetas().ToTermList()
-	return substAndReturn(args, makeSkolemFunction(args))
-}
-
-func applyPreinnerSkolemisation(args skoArgs) AST.Form {
-	args.symbol = symbolMaker.make(args.sourceFormula, args.sourceVar)
-	return applyInnerSkolemisation(args)
-}
-
-// Makes a function with the given arguments and symbol. Its type is the type of the variable.
-func makeSkolemFunction(args skoArgs) AST.Term {
-	return AST.MakerFun(args.symbol, args.terms, AST.EmptyTAArray(), args.sourceVar.GetTypeHint())
-}
-
-func substAndReturn(args skoArgs, sko AST.Term) AST.Form {
-	f, _ := args.formula.ReplaceTermByTerm(args.sourceVar, sko)
-	return f
-}
-
-func (c *class) make(form AST.Form, source AST.Var) AST.Id {
-	form = alphaConvert(form, 0, make(map[AST.Var]AST.Var))
-	c.mu.Lock()
-	symbol := c.getSymbol(form, AST.MakerNewId(fmt.Sprintf("skolem_%s%v", source.GetName(), source.GetIndex())))
-	c.mu.Unlock()
-	return symbol
-}
-
-func (c *class) getSymbol(form AST.Form, defaultId AST.Id) AST.Id {
-	index := -1
-	if c.availableForms != nil {
-		for i, f := range c.availableForms.Slice() {
-			if f.Equals(form) {
-				index = i
-				break
-			}
-		}
-	}
-
-	if index == -1 {
-		index = c.availableForms.Len()
-		c.availableForms.Append(form)
-		c.availableSymbols = append(c.availableSymbols, defaultId)
-	}
-
-	return c.availableSymbols[index]
-}
-
-// Alpha-conversion of formulas & terms
-
-func fresh(k int) string {
-	return fmt.Sprintf("x@%d", k)
-}
-
-func alphaConvert(form AST.Form, k int, substitution map[AST.Var]AST.Var) AST.Form {
-	switch f := form.(type) {
-	case AST.Top, AST.Bot:
-		return form
-	case AST.Pred:
-		mappedTerms := Glob.MapTo(f.GetArgs().Slice(),
-			func(_ int, t AST.Term) AST.Term { return alphaConvertTerm(t, substitution) })
-		return AST.MakePred(f.GetIndex(), f.GetID(), AST.NewTermList(mappedTerms...), f.GetTypeVars(), f.GetType())
-	case AST.Not:
-		return AST.MakeNot(f.GetIndex(), alphaConvert(f.GetForm(), k, substitution))
-	case AST.Imp:
-		return AST.MakeImp(f.GetIndex(), alphaConvert(f.GetF1(), k, substitution), alphaConvert(f.GetF2(), k, substitution))
-	case AST.Equ:
-		return AST.MakeEqu(f.GetIndex(), alphaConvert(f.GetF1(), k, substitution), alphaConvert(f.GetF2(), k, substitution))
-	case AST.And:
-		return AST.MakeAnd(f.GetIndex(),
-			AST.NewFormList(Glob.MapTo(f.FormList.Slice(),
-				func(_ int, f AST.Form) AST.Form { return alphaConvert(f, k, substitution) })...))
-	case AST.Or:
-		return AST.MakeOr(f.GetIndex(),
-			AST.NewFormList(Glob.MapTo(f.FormList.Slice(),
-				func(_ int, f AST.Form) AST.Form { return alphaConvert(f, k, substitution) })...))
-	case AST.All:
-		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
-		return AST.MakeAll(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
-	case AST.Ex:
-		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
-		return AST.MakeEx(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
-	}
 	return form
 }
 
-func makeConvertedVarList(k int, substitution map[AST.Var]AST.Var, vl []AST.Var) (int, map[AST.Var]AST.Var, []AST.Var) {
-	newVarList := []AST.Var{}
-	for i, v := range vl {
-		nv := AST.MakeVar(k+i, fresh(k+i), v.GetTypeApp())
-		newVarList = append(newVarList, nv)
-		substitution[v] = nv
-	}
-	return k + len(vl), substitution, newVarList
-}
-
-func alphaConvertTerm(t AST.Term, substitution map[AST.Var]AST.Var) AST.Term {
-	switch nt := t.(type) {
-	case AST.Var:
-		if val, ok := substitution[nt]; ok {
-			return val
-		} else {
-			return nt
+func realSkolemize(
+	initialForm, deltaForm AST.Form,
+	x AST.Var,
+	allVars []AST.Var,
+	metas Lib.List[AST.Meta],
+	typ int,
+) AST.Form {
+	sko, res := selectedSkolemization.Skolemize(
+		initialForm,
+		deltaForm,
+		x,
+		metas,
+	)
+	selectedSkolemization = sko
+	switch typ {
+	case isNegAll:
+		if len(allVars) > 1 {
+			res = AST.MakerAll(allVars[1:], res)
 		}
-	case AST.Fun:
-		mappedTerms := Glob.MapTo(nt.GetArgs().Slice(),
-			func(_ int, trm AST.Term) AST.Term { return alphaConvertTerm(trm, substitution) })
-		return AST.MakeFun(nt.GetID(), AST.NewTermList(mappedTerms...), nt.GetTypeVars(), nt.GetTypeHint())
+		res = AST.MakerNot(res)
+	case isExists:
+		if len(allVars) > 1 {
+			res = AST.MakerEx(allVars[1:], res)
+		}
+	default:
+		Glob.Anomaly("Skolemization", "impossible reconstruction case")
 	}
-	return t
+	return res
 }

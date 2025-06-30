@@ -35,6 +35,7 @@ package Typing
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /**
@@ -55,7 +56,14 @@ func secondPassAux(form AST.Form, vars []AST.Var, types []AST.TypeApp) AST.Form 
 
 		// Special case: defined predicate. We need to infer types.
 		if f.GetID().Equals(AST.Id_eq) {
-			return AST.MakePred(f.GetIndex(), f.GetID(), terms, []AST.TypeApp{AST.GetOutType(Glob.To[AST.TypedTerm, AST.Term](terms.Get(0)).GetTypeHint())})
+			return AST.MakePred(
+				f.GetIndex(),
+				f.GetID(),
+				terms,
+				[]AST.TypeApp{
+					AST.GetOutType(
+						Glob.To[AST.TypedTerm, AST.Term](terms.At(0)).GetTypeHint(),
+					)})
 		}
 
 		// Real case: classical predicate, it should be given
@@ -102,7 +110,7 @@ func secondPassTerm(term AST.Term, vars []AST.Var, types []AST.TypeApp) (AST.Ter
 		}
 
 		termsType := []AST.TypeApp{}
-		for _, tm := range terms.Slice() {
+		for _, tm := range terms.GetSlice() {
 			termsType = append(termsType, outType(tm))
 		}
 
@@ -134,10 +142,14 @@ func nArySecondPass(forms *AST.FormList, vars []AST.Var, types []AST.TypeApp) *A
 	return res
 }
 
-func nArySecondPassTerms(terms *AST.TermList, vars []AST.Var, types []AST.TypeApp) (*AST.TermList, []AST.TypeApp) {
-	resTerms, resVars := AST.NewTermList(), []AST.TypeApp{}
+func nArySecondPassTerms(
+	terms Lib.List[AST.Term],
+	vars []AST.Var,
+	types []AST.TypeApp,
+) (Lib.List[AST.Term], []AST.TypeApp) {
+	resTerms, resVars := Lib.NewList[AST.Term](), []AST.TypeApp{}
 
-	for _, term := range terms.Slice() {
+	for _, term := range terms.GetSlice() {
 		t, v := secondPassTerm(term, vars, types)
 
 		if t != nil {

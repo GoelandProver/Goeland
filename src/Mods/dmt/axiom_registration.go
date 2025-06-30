@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 func RegisterAxiom(axiom AST.Form) bool {
@@ -59,7 +60,7 @@ func RegisterAxiom(axiom AST.Form) bool {
 }
 
 func instanciateForalls(axiom AST.Form) AST.Form {
-	axiomFT := Core.MakeFormAndTerm(axiom.Copy(), AST.NewTermList())
+	axiomFT := Core.MakeFormAndTerm(axiom.Copy(), Lib.NewList[AST.Term]())
 	for Glob.Is[AST.All](axiomFT.GetForm()) {
 		axiomFT, _ = Core.Instantiate(axiomFT, -1)
 	}
@@ -84,9 +85,7 @@ func addNegRewriteRule(axiom AST.Form, cons AST.Form) {
 
 func addRewriteRule(axiom AST.Form, cons AST.Form, polarity bool) {
 	for canSkolemize(cons) {
-		ft := Core.MakeFormAndTerm(cons, AST.NewTermList())
-		ft = Core.Skolemize(ft, ft.GetForm().GetInternalMetas())
-		cons = ft.GetForm()
+		cons = Core.Skolemize(cons, cons.GetMetas())
 	}
 	printDebugRewriteRule(polarity, axiom, cons)
 	rewriteMapInsertion(polarity, axiom.ToString(), cons)
@@ -97,7 +96,7 @@ func printDebugRewriteRule(polarity bool, axiom, cons AST.Form) {
 	if polarity {
 		ax, co = axiom.ToString(), cons.ToString()
 	} else {
-		ax, co = AST.RefuteForm(axiom).ToString(), cons.ToString()
+		ax, co = AST.MakerNot(axiom).ToString(), cons.ToString()
 	}
 	Glob.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co))
 }
@@ -128,7 +127,7 @@ func makeRewriteRuleFromAtomic(atomic AST.Form) bool {
 
 func makeRewriteRuleFromPred(pred AST.Pred) bool {
 	addPosRewriteRule(pred, AST.MakerTop())
-	addNegRewriteRule(pred, AST.RefuteForm(AST.MakerTop()))
+	addNegRewriteRule(pred, AST.MakerNot(AST.MakerTop()))
 	return true
 }
 
@@ -136,7 +135,7 @@ func makeRewriteRuleFromNegatedAtom(atom AST.Not) bool {
 	if isEquality(atom.GetForm().(AST.Pred)) {
 		return false
 	}
-	addNegRewriteRule(atom, AST.RefuteForm(AST.MakerBot()))
+	addNegRewriteRule(atom, AST.MakerNot(AST.MakerBot()))
 	addPosRewriteRule(atom, AST.MakerBot())
 	return true
 }
@@ -195,11 +194,11 @@ func addEquRewriteRuleIfNotEquality(f1, f2 AST.Form) bool {
 
 func addEquivalenceRewriteRule(axiom, cons AST.Form) {
 	if Glob.Is[AST.Not](axiom) {
-		addPosRewriteRule(axiom, refute(cons))
+		addPosRewriteRule(axiom, AST.MakerNot(cons))
 		addNegRewriteRule(axiom, cons)
 	} else {
 		addPosRewriteRule(axiom, cons)
-		addNegRewriteRule(axiom, refute(cons))
+		addNegRewriteRule(axiom, AST.MakerNot(cons))
 	}
 }
 
@@ -234,9 +233,9 @@ func makeRewriteRuleFromImplication(impForm AST.Imp) bool {
 	// an equality atom on the right-side of the formula.
 	if isAtomic(phi2) && !isEqualityPred(phi2) {
 		if Glob.Is[AST.Pred](phi2) {
-			addNegRewriteRule(phi2, refute(phi1))
+			addNegRewriteRule(phi2, AST.MakerNot(phi1))
 		} else {
-			addPosRewriteRule(predFromNegatedAtom(phi2), refute(phi1))
+			addPosRewriteRule(predFromNegatedAtom(phi2), AST.MakerNot(phi1))
 		}
 	}
 

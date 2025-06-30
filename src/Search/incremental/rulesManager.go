@@ -4,6 +4,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -17,14 +18,14 @@ type RulesManager struct {
 
 	reintroRules *ReintroRuleList
 
-	metaVariables *AST.MetaList
+	metaVariables Lib.List[AST.Meta]
 
 	appliedRule    Rule
 	resultingRules []RuleList
 }
 
 func makeRulesManager() *RulesManager {
-	manager := &RulesManager{reintroRules: &ReintroRuleList{}, metaVariables: AST.NewMetaList()}
+	manager := &RulesManager{reintroRules: &ReintroRuleList{}, metaVariables: Lib.NewList[AST.Meta]()}
 
 	return manager
 }
@@ -34,7 +35,7 @@ func (rm *RulesManager) onlyReintroOrClosureLeft() bool {
 }
 
 func (rm *RulesManager) insertForm(formula AST.Form) {
-	rule := makeCorrectRule(formula, AST.NewTermList())
+	rule := makeCorrectRule(formula, Lib.NewList[AST.Term]())
 	rm.insertIntoCorrectSlice(rule)
 }
 
@@ -125,7 +126,7 @@ func (rm *RulesManager) applyReintroductionRule() (success bool, resultManagers 
 
 	switch typed := applied.(type) {
 	case GammaRule:
-		rm.metaVariables.Append(typed.getGeneratedMetas().Slice()...)
+		rm.metaVariables.Append(typed.getGeneratedMetas().GetSlice()...)
 		rm.reintroRules.AddReintro(typed)
 	}
 
@@ -235,10 +236,10 @@ func (rm *RulesManager) tryToApply(category RuleList) (success bool, applied Rul
 			copy.removeRule(applied)
 			copy.insertIntoCorrectSlice(branch...)
 
-			copy.metaVariables.Append(rm.metaVariables.Slice()...)
+			copy.metaVariables.Append(rm.metaVariables.GetSlice()...)
 			switch typed := applied.(type) {
 			case GammaRule:
-				copy.metaVariables.Append(typed.getGeneratedMetas().Slice()...)
+				copy.metaVariables.Append(typed.getGeneratedMetas().GetSlice()...)
 				rm.reintroRules.AddReintro(typed)
 			}
 			copy.reintroRules = rm.reintroRules.Copy()

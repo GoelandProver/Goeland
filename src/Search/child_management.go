@@ -37,6 +37,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -81,8 +82,14 @@ func (args wcdArgs) printDebugMessages() {
 	Glob.PrintDebug("WC", fmt.Sprintf("Id : %v, original node id :%v", args.nodeId, args.originalNodeId))
 	Glob.PrintDebug("WC", fmt.Sprintf("Child order : %v", args.childOrdering))
 	Glob.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(args.children), len(args.substsBT), len(args.formsBT), args.st.GetBTOnFormulas(), Core.SubstAndFormListToString(args.givenSubsts), args.st.GetAppliedSubst().ToString(), Core.SubstAndFormListToString(args.st.GetSubstsFound())))
-	Glob.PrintDebug("WC", fmt.Sprintf("MM : %v", args.st.GetMM().ToString()))
-	Glob.PrintDebug("WC", fmt.Sprintf("MC : %v", args.st.GetMC().ToString()))
+	Glob.PrintDebug("WC", fmt.Sprintf(
+		"MM : %v",
+		Lib.ListToString(args.st.GetMM(), ",", "[]"),
+	))
+	Glob.PrintDebug("WC", fmt.Sprintf(
+		"MC : %v",
+		Lib.ListToString(args.st.GetMC(), ",", "[]"),
+	))
 }
 
 /* Utilitary subfunctions */
