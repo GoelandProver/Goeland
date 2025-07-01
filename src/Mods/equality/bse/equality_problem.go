@@ -109,12 +109,11 @@ func (ep EqualityProblem) applySubstitution(s Unif.Substitutions) EqualityProble
 	return res
 }
 
-func (ep EqualityProblem) getMetas() Lib.List[AST.Meta] {
-	metas := Lib.NewList[AST.Meta]()
+func (ep EqualityProblem) getMetas() Lib.Set[AST.Meta] {
+	metas := ep.E.getMetas()
 
-	metas = Lib.ListAdd(metas, ep.E.getMetas().GetSlice()...)
-	metas = Lib.ListAdd(metas, ep.s.GetMetas().GetSlice()...)
-	metas = Lib.ListAdd(metas, ep.t.GetMetas().GetSlice()...)
+	metas = metas.Union(ep.s.GetMetas())
+	metas = metas.Union(ep.t.GetMetas())
 
 	return metas
 }

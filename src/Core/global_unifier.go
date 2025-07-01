@@ -194,9 +194,9 @@ func (u *Unifier) Merge(other Unifier) {
 	Glob.PrintDebug("GLOBAL UNIFIER", fmt.Sprintf("After: %s", u.ToString()))
 }
 
-func (u *Unifier) PruneMetasInSubsts(metas Lib.List[AST.Meta]) {
+func (u *Unifier) PruneMetasInSubsts(metas Lib.Set[AST.Meta]) {
 	for i, unif := range u.localUnifiers {
-		for _, meta := range metas.GetSlice() {
+		for _, meta := range metas.Elements().GetSlice() {
 			_, index := unif.Fst.Get(meta)
 			if index != -1 {
 				u.localUnifiers[i].Fst.Remove(index)

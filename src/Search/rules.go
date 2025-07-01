@@ -448,9 +448,9 @@ func ApplyDeltaRules(fnt Core.FormAndTerms, state *State) Core.FormAndTermsList 
 		setStateRules(state, "DELTA", "EXISTS")
 	}
 
-	newMetas := Lib.ListCpy(state.GetMM())
-	newMetas = Lib.ListAdd(newMetas, state.GetMC().GetSlice()...)
-	metasAsTerms := Lib.ListMap(newMetas, Glob.To[AST.Term])
+	newMetas := state.GetMM().Copy()
+	newMetas = newMetas.Union(state.GetMC())
+	metasAsTerms := Lib.ListMap(newMetas.Elements(), Glob.To[AST.Term])
 
 	f := Core.Skolemize(fnt.GetForm(), newMetas)
 	return Core.MakeSingleElementFormAndTermList(
@@ -467,7 +467,7 @@ func ApplyDeltaRules(fnt Core.FormAndTerms, state *State) Core.FormAndTermsList 
 *	a formula
 *	the new metavariables
 **/
-func ApplyGammaRules(fnt Core.FormAndTerms, index int, state *State) (Core.FormAndTermsList, Lib.List[AST.Meta]) {
+func ApplyGammaRules(fnt Core.FormAndTerms, index int, state *State) (Core.FormAndTermsList, Lib.Set[AST.Meta]) {
 	switch fnt.GetForm().(type) {
 	case AST.Not:
 		setStateRules(state, "GAMMA", "NOT", "EXISTS")

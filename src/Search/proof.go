@@ -382,21 +382,21 @@ func ProofStructListToText(ps []ProofStruct, metaList Lib.List[AST.Meta]) string
 	return JsonProofStructListToText(json_content)
 }
 
-func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) Lib.List[AST.Meta] {
-	res := Lib.NewList[AST.Meta]()
+func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) Lib.Set[AST.Meta] {
+	res := Lib.EmptySet[AST.Meta]()
 
 	for _, proofElement := range proofStruct {
 		proofMetas := proofElement.GetFormula().GetForm().GetMetas()
-		res = Lib.ListAdd(res, proofMetas.GetSlice()...)
+		res = res.Union(proofMetas)
 		resResultFormulas := GetFormulasFromIntFormAndTermList(proofElement.GetResultFormulas())
 
 		for _, v := range resResultFormulas.Slice() {
-			res = Lib.ListAdd(res, v.GetMetas().GetSlice()...)
+			res = res.Union(v.GetMetas())
 		}
 
 		for _, children := range proofElement.GetChildren() {
 			uninstanciatedMetas := RetrieveUninstantiatedMetaFromProof(children)
-			res = Lib.ListAdd(res, uninstanciatedMetas.GetSlice()...)
+			res = res.Union(uninstanciatedMetas)
 		}
 	}
 
