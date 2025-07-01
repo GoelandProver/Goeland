@@ -1,16 +1,25 @@
 name: Full CI
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 on:
   pull_request:
     types: [labeled]
+
+env:
+  goVersion: '>=1.22.0'
 
 jobs:
   RemoveLabel:
     if: github.event.label.name == 'request:ci'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions-ecosystem/action-remove-labels@v1
+      - uses: mondeja/remove-labels-gh-action@v2
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             request:ci
   # FIXME: disabled as always fail
@@ -32,7 +41,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
         with:
-          go-version: '>=1.22.0'
+          go-version: ${{ env.goVersion }}
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
       - run: cd devtools && python3 run_soundness_tests.py ../.github/soundness 120
@@ -44,7 +53,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
         with:
-          go-version: '>=1.22.0'
+          go-version: ${{ env.goVersion }}
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
       - run: cd devtools && python3 run_soundness_tests.py ../.github/soundness 120 -inner
@@ -56,7 +65,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
         with:
-          go-version: '>=1.22.0'
+          go-version: ${{ env.goVersion }}
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
       - run: cd devtools && python3 run_soundness_tests.py ../.github/soundness 120 -preinner
@@ -68,7 +77,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
         with:
-          go-version: '>=1.22.0'
+          go-version: ${{ env.goVersion }}
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
       - run: cd devtools && python3 run_soundness_tests.py ../.github/soundness 120 -dmt
@@ -80,21 +89,23 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
         with:
-          go-version: '>=1.22.0'
+          go-version: ${{ env.goVersion }}
       - run: sudo apt-get install -y golang-golang-x-tools
       - run: cd src && make
       - run: cd devtools && make test-suite
 
   RemoveNeedsCIIfSucceed:
     needs:
+      - TestSuite
       - VanillaSoundness
       - InnerSoundness
       - PreInnerSoundness
       - DMTSoundness
     runs-on: ubuntu-latest
     steps:
-      - uses: actions-ecosystem/action-remove-labels@v1
+      - uses: mondeja/remove-labels-gh-action@v2
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             needs:ci
 
