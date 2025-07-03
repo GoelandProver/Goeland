@@ -92,7 +92,7 @@ func initDefaultMap() {
 		DefaultMapString[AllQuant] = "!"
 		DefaultMapString[ExQuant] = "?"
 		DefaultMapString[AllTypeQuant] = "!"
-		DefaultMapString[PredEmpty] = "{}"
+		DefaultMapString[PredEmpty] = ""
 	}
 	DefaultMapString[QuantVarOpen] = "["
 	DefaultMapString[QuantVarClose] = "]"

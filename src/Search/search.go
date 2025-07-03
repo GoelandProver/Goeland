@@ -72,9 +72,7 @@ func Search(formula AST.Form, bound int) {
 	Glob.PrintDebug("MAIN", "Start search")
 	Glob.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", formula.ToString()))
 
-	res := UsedSearch.Search(formula, bound)
-
-	PrintSearchResult(res)
+	UsedSearch.Search(formula, bound)
 }
 
 func PrintSearchResult(res bool) {
@@ -108,7 +106,7 @@ func PrintSearchResult(res bool) {
 
 // Do not change this function, it is the standard output for TPTP files
 func printStandardSolution(status string) {
-	Glob.PrintInfo("MAIN", fmt.Sprintf("%s SZS status %v for %v\n", "%", status, Glob.GetProblemName()))
+	fmt.Printf("%s SZS status %v for %v\n", "%", status, Glob.GetProblemName())
 }
 
 func retrieveMetaFromSubst(s Unif.Substitutions) []int {

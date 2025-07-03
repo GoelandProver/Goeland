@@ -10,9 +10,10 @@ GOYACC=goyacc
 GOYACCFLAGS=-l
 GOC=go build
 GOW=gow -e=go -e=y -P "\n" build
-GOFLAGS=
+GOFLAGS= -ldflags="-X github.com/GoelandProver/Goeland/Glob.commit=$(COMMIT)"
 BIN=_build/goeland
 PREFIX=TPTP
+COMMIT= $(shell git rev-parse HEAD | git hash-object --stdin)
 RELEASE=
 SHUTUP=
 ifdef RELEASE
@@ -37,7 +38,7 @@ watch: parser
 
 static-linux-release:
 	$(GOYACC) $(GOYACCFLAGS) -p $(PREFIX) -o $(GOPARSER) $(YACCFILE); \
-	GOOS=linux GOARCH=amd64 $(GOC) -tags osusergo,netgo -ldflags="-extldflags=-static" -o $(BIN)_linux_release $(GOSRC)
+	GOOS=linux GOARCH=amd64 $(GOC) -tags osusergo,netgo -ldflags="-extldflags=-static -X github.com/GoelandProver/Goeland/Glob.commit=$(git rev-parse HEAD)" -o $(BIN)_linux_release $(GOSRC)
 
 parse:
 	@for i in `ls $(PROB)/*.p`; do echo -e "File \033[32m$$i\033[39m: "; \

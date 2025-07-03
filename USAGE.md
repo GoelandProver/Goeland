@@ -45,6 +45,7 @@ Goéland has multiple proof outputs:
 | -ocoq | Enables the Coq format for proofs instead of text. |
 | -olp | Enables the Lambdapi format for proofs instead of text. |
 | -otptp | Enables the TPTP format for proofs instead of text. |
+| -osctptp | Enables the SC-TPTP format for proofs instead of text. |
 | -proof | Enables the display of a proof of the problem (in custom format). |
 | -proof_file | Should only be used with the proof output parameters. Only works with the `-wlogs` parameter. Enables the writing of the proof in a specific file. The extension of the file will depend on the type of proof. |
 | -quoted_pred | Print predicates between quotes if they start by a capital letter (TPTP compliance). |
@@ -59,6 +60,7 @@ We provide a bunch of flags to make debugging easier:
 | -assisted | Enables the step-by-step mode debugger. |
 | -cpuprofile *file* | Writes the cpu profile to *file*. |
 | -debug | Enables printing debug information in the terminal. |
+| -silent | Remove logs in the terminal. |
 | -exchanges | Enables the node exchanges to be written in a file. |
 | -memprofile *file* | Writes the memory profile to *file*. |
 | -l *int* | Sets the limit in destructive mode (default: **-1**, i.e., no limit). |
@@ -70,3 +72,4 @@ We provide a bunch of flags to make debugging easier:
 The `-exchanges` and `-proof` options can be used together with the
 [visualization](devtools/visualization) module to have a visual idea of what
 happens during proof-search.
+

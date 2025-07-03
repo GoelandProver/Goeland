@@ -89,7 +89,7 @@ func applyAtomicRule(state Search.State, fatherId uint64, c Search.Communication
 	}
 
 	if !foundOne {
-		fmt.Println("No valid substitution found. This state will be copied and put back in the list.")
+		Glob.PrintDebug("ApplyAtomicRule", "No valid substitution found. This state will be copied and put back in the list.")
 		assistedCounter.Increment()
 		go searchAlgo.ProofSearch(fatherId, state, c, substitut, nodeId, originalNodeId, metaToReintroduce, false)
 	} else {
