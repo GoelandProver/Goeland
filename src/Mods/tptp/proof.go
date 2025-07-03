@@ -58,8 +58,8 @@ var original_term = make([]AST.Term, 0)
 var constant_created = make([]AST.Term, 0)
 var prefix_step = "f"
 var prefix_axiom_cut = "ac"
-var prefix_const = "Sko_"
-var dummyTerm = AST.MakerNewId("Goeland_I")
+var prefix_const = "sko_"
+var dummyTerm = AST.MakerConst(AST.MakerId("Goeland_I"))
 
 func makeTptpProofFromGS3(proof *gs3.GS3Sequent) string {
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
@@ -77,7 +77,7 @@ func makeTptpProofFromGS3(proof *gs3.GS3Sequent) string {
 		resultingString += followProofSteps(proof.Child(0), hypotheses, nextId)
 	}
 
-	res := "\n% SZS output start Proof for " + Glob.GetProblemName() + "\n\n\n" + resultingString + "\n" + firstStep + AxiomCut + "\n% SZS output end Proof for " + Glob.GetProblemName() + "\n"
+	res := resultingString + "\n" + firstStep + AxiomCut
 
 	return res
 }
@@ -88,7 +88,6 @@ func followProofSteps(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_curre
 	var resultingString string
 	var resultingStringParent string
 	var childrenHypotheses []*AST.FormList
-
 	if !proof.IsEmpty() {
 		resultingStringParent, childrenHypotheses, new_current_id = makeProofStep(proof, hypotheses, new_current_id)
 	}
@@ -115,7 +114,6 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_id in
 	next_child_weakened_id := -1
 
 	updateId(proof, new_current_id)
-
 	target := get(proof.GetTargetForm(), hypotheses)
 
 	switch proof.Rule() {
@@ -129,18 +127,16 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_id in
 				"congruence",
 				"")
 		} else {
-			target2 := -1
-			targetNotNeg := -1
+			targetPos := -1
+
 			switch initial_formula := proof.GetTargetForm().(type) {
 			case AST.Pred:
-				target2 = get(AST.MakerNot(initial_formula), hypotheses)
-				targetNotNeg = target2
+				targetPos = target
 			case AST.Not:
-				target2 = get(initial_formula.GetForm(), hypotheses)
-				targetNotNeg = target
+				targetPos = get(initial_formula.GetForm(), hypotheses)
 			}
 
-			if target2 == -1 {
+			if targetPos == -1 {
 				Glob.PrintError("TPTP - makeStep", "complementary literal not found")
 			}
 
@@ -148,7 +144,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_id in
 				proof.GetId(),
 				mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
 				"leftHyp",
-				targetNotNeg,
+				targetPos,
 				"")
 		}
 
@@ -256,6 +252,7 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, form
 	}
 
 	new_term := createNewConstant(proof.TermGenerated())
+	
 	proof = updateSkolemSymbol(proof.TermGenerated(), new_term, proof)
 
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, '%s'], [%s])).",
@@ -457,7 +454,6 @@ func incrByOne(cpt *int, mutex *sync.Mutex) int {
 }
 
 func updateId(proof *gs3.GS3Sequent, i int) {
-	// fmt.Printf("Your current Id is %d and I want to give you id %d\n", proof.GetId(), i)
 	if i != -1 {
 		proof.SetId(i)
 	}
@@ -475,7 +471,6 @@ func updateSkolemSymbol(old, new AST.Term, proof *gs3.GS3Sequent) *gs3.GS3Sequen
 		proof.SetTermGenerated(new_generated_term)
 	}
 
-	// Update formGenerated
 	new_forms_generated := make([]*AST.FormList, len(proof.GetResultFormulasOfChildren()))
 	for i, fg := range proof.GetResultFormulasOfChildren() {
 		new_forms_generated_bis := AST.NewFormList()
@@ -484,11 +479,10 @@ func updateSkolemSymbol(old, new AST.Term, proof *gs3.GS3Sequent) *gs3.GS3Sequen
 			new_forms_generated_bis.Append(new_term)
 		}
 		new_forms_generated[i] = new_forms_generated_bis
-	}
-
+	}	
 	proof.SetFormGenerated(new_forms_generated)
 
-	// // Update Children
+	// Update Children
 	new_children := make([]*gs3.GS3Sequent, len(proof.Children()))
 	for i, child := range proof.Children() {
 		new_children[i] = updateSkolemSymbol(old, new, child)
@@ -505,7 +499,8 @@ func createNewConstant(term AST.Term) AST.Term {
 	mutex_constant.Lock()
 	new_id := len(constant_created)
 	new_term_name := fmt.Sprintf("%s%d", prefix_const, new_id)
-	new_term := AST.MakerNewId(new_term_name)
+	new_term_id := AST.MakerNewId(new_term_name)
+	new_term := AST	.MakerConst(new_term_id)
 	original_term = append(original_term, term)
 	constant_created = append(constant_created, new_term)
 	mutex_constant.Unlock()

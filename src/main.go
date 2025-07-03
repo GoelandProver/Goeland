@@ -112,6 +112,10 @@ func presearchLoader() (AST.Form, int) {
 
 	problem := os.Args[len(os.Args)-1]
 	Glob.SetProblemName(path.Base(problem))
+
+	fmt.Printf("You are running Goeland v.%v\n", Glob.GetVersion())
+	fmt.Printf("Problem: %v\n", Glob.GetProblemName())
+
 	Glob.PrintInfo("MAIN", fmt.Sprintf("Problem : %v", problem))
 
 	statements, bound, containsEquality := Parser.ParseTPTPFile(problem)
@@ -156,10 +160,10 @@ func doMemProfile() {
 
 /* Initializes the options, the loggers and some other Glob variables*/
 func initEverything() {
-	initOpts()
-	Glob.InitLogs()
-	runtime.GOMAXPROCS(Glob.GetCoreLimit())
 	Glob.SetStart(time.Now())
+	Glob.InitLogs()
+	initOpts()
+	runtime.GOMAXPROCS(Glob.GetCoreLimit())
 	AST.Init()
 }
 

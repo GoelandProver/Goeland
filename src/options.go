@@ -114,6 +114,14 @@ func buildOptions() {
 			Glob.EnableDebug()
 		},
 		func(bool) {})
+	(&option[bool]{}).init(
+			"silent",
+			false,
+			"Remove logs (except prover's name and result)",
+			func(bool) {
+				Glob.SetSilent(true)
+			},
+			func(bool) {})
 	(&option[string]{}).init(
 		"log",
 		"logs",
