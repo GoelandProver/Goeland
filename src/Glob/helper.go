@@ -73,11 +73,13 @@ var isTypeProof = false
 var arithModule = false
 var innerSkolem = false
 var preInnerSko = false
+var version = "1.2-dev"
 
 var IncrEq = false
 
 var debug = false
 var writeLogs = false
+var silent = false
 
 var cpuProfile string
 var memProfile string
@@ -119,6 +121,10 @@ func GetGID() uint64 {
 /* Getters */
 func GetDebug() bool {
 	return debug
+}
+
+func GetSilent() bool {
+	return silent
 }
 
 func GetWriteLogs() bool {
@@ -249,9 +255,17 @@ func IsPreInnerSko() bool {
 	return preInnerSko
 }
 
+func GetVersion() string {
+	return version
+}
+
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
+}
+
+func SetSilent(b bool) {
+	silent = b
 }
 
 func SetWriteLogs(b bool) {

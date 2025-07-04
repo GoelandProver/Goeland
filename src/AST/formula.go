@@ -104,6 +104,8 @@ func replaceTermInTermList(
 			} else {
 				newTermList.Upd(i, val)
 			}
+		default:
+			Glob.Anomaly("ReplaceTermInTermList", "Term is not a Var, a Fun, or a Meta")
 		}
 	}
 

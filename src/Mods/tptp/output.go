@@ -57,7 +57,7 @@ var TptpOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeTptpOutpu
 
 func MakeTptpOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	if len(prf) == 0 {
-		Glob.PrintError("Tptp", "Nothing to output")
+		Glob.PrintError("TPTP", "Nothing to output")
 		return ""
 	}
 

@@ -59,6 +59,7 @@ We provide a bunch of flags to make debugging easier:
 | -assisted | Enables the step-by-step mode debugger. |
 | -cpuprofile *file* | Writes the cpu profile to *file*. |
 | -debug | Enables printing debug information in the terminal. |
+| -silent | Remove logs in the terminal. |
 | -exchanges | Enables the node exchanges to be written in a file. |
 | -memprofile *file* | Writes the memory profile to *file*. |
 | -l *int* | Sets the limit in destructive mode (default: **-1**, i.e., no limit). |
