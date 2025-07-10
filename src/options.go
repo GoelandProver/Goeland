@@ -114,6 +114,14 @@ func buildOptions() {
 			Glob.EnableDebug()
 		},
 		func(bool) {})
+	(&option[bool]{}).init(
+			"silent",
+			false,
+			"Remove logs (except prover's name and result)",
+			func(bool) {
+				Glob.SetSilent(true)
+			},
+			func(bool) {})
 	(&option[string]{}).init(
 		"log",
 		"logs",
@@ -135,7 +143,14 @@ func buildOptions() {
 			Glob.EnableWriteLogs()
 		},
 		func(bool) {})
-
+	(&option[bool]{}).init(
+		"version",
+		false,
+		"Print the version of Goeland",
+		func(bool) {
+			Glob.SetPrintVersion(true)
+		},
+		func(bool) {})
 	(&option[string]{}).init(
 		"cpuprofile",
 		"",
@@ -263,6 +278,17 @@ func buildOptions() {
 
 		},
 		func(bool) {})
+	(&option[bool]{}).init(
+			"osctptp",
+			false,
+			"Enables the SC-TPTP format for proofs instead of text",
+			func(bool) {
+				Glob.OutputSCTPTP()
+				Glob.SetProof(true)
+				Search.AddPrintProofAlgorithm(tptp.TptpOutputProofStruct)
+	
+			},
+			func(bool) {})
 	(&option[bool]{}).init(
 		"olp",
 		false,

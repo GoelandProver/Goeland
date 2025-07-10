@@ -58,8 +58,8 @@ var original_term = make([]AST.Term, 0)
 var constant_created = make([]AST.Term, 0)
 var prefix_step = "f"
 var prefix_axiom_cut = "ac"
-var prefix_const = "Sko_"
-var dummyTerm = AST.MakerNewId("Goeland_I")
+var prefix_const = "sko_"
+var dummyTerm = AST.MakerConst(AST.MakerId("Goeland_I"))
 
 func makeTptpProofFromGS3(proof *gs3.GS3Sequent) string {
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
@@ -77,7 +77,7 @@ func makeTptpProofFromGS3(proof *gs3.GS3Sequent) string {
 		resultingString += followProofSteps(proof.Child(0), hypotheses, nextId)
 	}
 
-	res := "\n% SZS output start Proof for " + Glob.GetProblemName() + "\n\n\n" + resultingString + "\n" + firstStep + AxiomCut + "\n% SZS output end Proof for " + Glob.GetProblemName() + "\n"
+	res := resultingString + "\n" + firstStep + AxiomCut
 
 	return res
 }
@@ -88,7 +88,6 @@ func followProofSteps(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_curre
 	var resultingString string
 	var resultingStringParent string
 	var childrenHypotheses []*AST.FormList
-
 	if !proof.IsEmpty() {
 		resultingStringParent, childrenHypotheses, new_current_id = makeProofStep(proof, hypotheses, new_current_id)
 	}
@@ -109,13 +108,29 @@ func makeProofStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_
 	return stepResult, childrenHypotheses, next_child_weakened_id
 }
 
+func findIndexPos(f AST.Form, hypotheses *AST.FormList, target int) int {
+	targetPos := -1
+
+	switch initial_formula := f.(type) {
+	case AST.Not:
+		targetPos = get(initial_formula.GetForm(), hypotheses)
+	default:
+		targetPos = target
+	}
+
+	if targetPos == -1 {
+		Glob.Anomaly("TPTP - makeStep", "complementary literal not found")
+	}
+
+	return targetPos
+}
+
 func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_id int) (string, []*AST.FormList, int) {
 	var resultingString string
 	childrenHypotheses := []*AST.FormList{hypotheses}
 	next_child_weakened_id := -1
 
 	updateId(proof, new_current_id)
-
 	target := get(proof.GetTargetForm(), hypotheses)
 
 	switch proof.Rule() {
@@ -129,26 +144,13 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_id in
 				"congruence",
 				"")
 		} else {
-			target2 := -1
-			targetNotNeg := -1
-			switch initial_formula := proof.GetTargetForm().(type) {
-			case AST.Pred:
-				target2 = get(AST.MakerNot(initial_formula), hypotheses)
-				targetNotNeg = target2
-			case AST.Not:
-				target2 = get(initial_formula.GetForm(), hypotheses)
-				targetNotNeg = target
-			}
-
-			if target2 == -1 {
-				Glob.PrintError("TPTP - makeStep", "complementary literal not found")
-			}
+			targetPos := findIndexPos(proof.GetTargetForm(), hypotheses, target)
 
 			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
 				proof.GetId(),
 				mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
 				"leftHyp",
-				targetNotNeg,
+				targetPos,
 				"")
 		}
 
@@ -166,13 +168,13 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_id in
 	case gs3.NAND:
 		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftNotAnd")
 	case gs3.NEQU:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftNotIff")
+		resultingString, childrenHypotheses = NotEquStep(proof, hypotheses, target)
 	case gs3.OR:
 		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftOr")
 	case gs3.IMP:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftImplies")
+		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftImp2")
 	case gs3.EQU:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftIff")
+		resultingString, childrenHypotheses = EquStep(proof, hypotheses, target)
 
 	// Delta rules
 	case gs3.NALL:
@@ -256,6 +258,7 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, form
 	}
 
 	new_term := createNewConstant(proof.TermGenerated())
+	
 	proof = updateSkolemSymbol(proof.TermGenerated(), new_term, proof)
 
 	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, '%s'], [%s])).",
@@ -323,6 +326,166 @@ func rewriteStep(rewriteRule AST.Form, hypotheses *AST.FormList, target int, rep
 	// return resultingString, []*AST.FormList{hypotheses}
 	return "", []*AST.FormList{}
 }
+
+func EquStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int) (string, []*AST.FormList) {
+	resultingString := ""
+	resultHyps := []*AST.FormList{}
+	children_id := []int{}
+
+	for i, c := range proof.Children() {
+		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
+		children_id = append(children_id, new_id)
+		c.SetId(new_id)
+		newHypotheses := hypotheses.Copy()
+		newHypotheses.AppendIfNotContains(proof.GetResultFormulasOfChild(i).Slice()...)
+		resultHyps = append(resultHyps, newHypotheses)
+	}
+
+	// Sub-formulas
+	A := hypotheses.Get(target).(AST.Equ).GetF1()
+	B := hypotheses.Get(target).(AST.Equ).GetF2()
+	notA := AST.MakerNot(A)
+	notB := AST.MakerNot(B)
+	A_imp_B := AST.MakerImp(A, B)
+	B_imp_A := AST.MakerImp(B, A)
+
+	// from A <=> B to A => B, B => A (unary)
+	s1_id := fmt.Sprintf("%s%dext1", prefix_step, proof.GetId())
+	resultingString = fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
+	prefix_step,
+	proof.GetId(),
+	mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+	"leftIff",
+	target,
+	s1_id) + resultingString 
+
+	// from A => B, B => A to ~A, B => A | B, B => A (binary)
+	s2_id := fmt.Sprintf("%s%dext2", prefix_step, proof.GetId())
+	s3_id := fmt.Sprintf("%s%dext3", prefix_step, proof.GetId())
+	newHyp := hypotheses.Copy()
+	newHyp.AppendIfNotContains([]AST.Form{A_imp_B, B_imp_A}...)
+	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s])).\n\n",
+	s1_id,
+	mapDefault(AST.ListToMappedString(newHyp.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+	"leftImp2",
+	get(A_imp_B, newHyp),
+	s2_id, 
+	s3_id) + resultingString
+
+	// Branch s2 : from ~A, B => A to ~A, ~B | ~A, A
+	s2_closure_id := fmt.Sprintf("%sext1", s2_id)
+	newHypS2 := newHyp.Copy()
+	newHypS2.AppendIfNotContains(notA)
+	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d, %s])).\n\n",
+	s2_id,
+	mapDefault(AST.ListToMappedString(newHypS2.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+	"leftImp2",
+	get(B_imp_A, newHypS2),
+	prefix_step,
+	children_id[0], 
+	s2_closure_id) + resultingString
+	resultHyps[0].AppendIfNotContains(newHypS2.Slice()...)
+
+
+	// Branch 2.closure : from ~A, A closure - check polarity before
+	newHypS2Closure := newHypS2.Copy()
+	newHypS2Closure.AppendIfNotContains(A)
+	targetPosS2 := findIndexPos(A, newHypS2Closure, get(A, newHypS2Closure))
+	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).\n\n",
+	s2_closure_id,
+	mapDefault(AST.ListToMappedString(newHypS2Closure.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+	"leftHyp",
+	targetPosS2,
+	"") + resultingString
+
+	// Branch s3: from B, B => A to B, ~B | B, A
+	s3_closure_id := fmt.Sprintf("%sext1", s3_id)
+	newHypS3 := newHyp.Copy()
+	newHypS3.AppendIfNotContains(B)
+	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s%d])).\n\n",
+	s3_id,
+	mapDefault(AST.ListToMappedString(newHypS3.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+	"leftImp2",
+	get(B_imp_A, newHypS3),
+	s3_closure_id,
+	prefix_step,
+	children_id[1]) + resultingString
+	resultHyps[1].AppendIfNotContains(newHypS3.Slice()...)
+
+	// Branch 3.closure : from B, ~B closure - check polarity before
+	newHypS3Closure := newHypS3.Copy()
+	newHypS3Closure.AppendIfNotContains(notB)
+	targetPosS3 := findIndexPos(B, newHypS3Closure, get(B, newHypS3Closure))
+	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).\n\n",
+	s3_closure_id,
+	mapDefault(AST.ListToMappedString(newHypS3Closure.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+	"leftHyp",
+	targetPosS3,
+	"") + resultingString
+
+	return resultingString, resultHyps
+}
+
+func NotEquStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int) (string, []*AST.FormList) {
+	resultingString := ""
+	resultHyps := []*AST.FormList{}
+	children_id := []int{}
+
+	for i, c := range proof.Children() {
+		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
+		children_id = append(children_id, new_id)
+		c.SetId(new_id)
+		newHypotheses := hypotheses.Copy()
+		newHypotheses.AppendIfNotContains(proof.GetResultFormulasOfChild(i).Slice()...)
+		resultHyps = append(resultHyps, newHypotheses)
+	}
+
+	// Sub-formulas
+	equ := hypotheses.Get(target).(AST.Not).GetForm().(AST.Equ)
+	A := equ.GetF1()
+	B := equ.GetF2()
+	not_A_imp_B := AST.MakerNot(AST.MakerImp(A, B))
+	not_B_imp_A := AST.MakerNot(AST.MakerImp(B, A))
+
+	// from ~(A <=> B) to ~(A => B) | ~(B => A) (binary)
+	s1_id := fmt.Sprintf("%s%dext1", prefix_step, proof.GetId())
+	s2_id := fmt.Sprintf("%s%dext2", prefix_step, proof.GetId())
+	resultingString = fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s])).",
+	prefix_step,
+	proof.GetId(),
+	mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+	"leftNotIff",
+	target,
+	s1_id,
+	s2_id) + resultingString 
+
+	// from ~(A => B) to A, ~B
+	newHyp1 := hypotheses.Copy()
+	newHyp1.AppendIfNotContains(not_A_imp_B)
+	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).\n\n",
+	s1_id,
+	mapDefault(AST.ListToMappedString(newHyp1.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+	"leftNotImplies",
+	get(not_A_imp_B, newHyp1),
+	prefix_step,
+	children_id[1]) + resultingString
+	resultHyps[1].AppendIfNotContains(newHyp1.Slice()...)
+
+	// from ~(B => A) to B, ~A
+	newHyp2 := hypotheses.Copy()
+	newHyp2.AppendIfNotContains(not_B_imp_A)
+	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).\n\n",
+	s2_id,
+	mapDefault(AST.ListToMappedString(newHyp2.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+	"leftNotImplies",
+	get(not_B_imp_A, newHyp2),
+	prefix_step,
+	children_id[0]) + resultingString
+	resultHyps[0].AppendIfNotContains(newHyp2.Slice()...)
+
+	return resultingString, resultHyps
+}
+
 
 /*** Initial Formula Management ***/
 
@@ -395,6 +558,7 @@ func performFirstStep(axioms *AST.FormList, conjecture AST.Form, hypothesis *AST
 	return cutFormHyp + "\n\n" + cutFormNot + "\n\n" + startForm, nextFormId
 }
 
+
 // Perform the cut axiom steps
 func performCutAxiomStep(axioms *AST.FormList, conjecture AST.Form) string {
 
@@ -457,7 +621,6 @@ func incrByOne(cpt *int, mutex *sync.Mutex) int {
 }
 
 func updateId(proof *gs3.GS3Sequent, i int) {
-	// fmt.Printf("Your current Id is %d and I want to give you id %d\n", proof.GetId(), i)
 	if i != -1 {
 		proof.SetId(i)
 	}
@@ -475,7 +638,6 @@ func updateSkolemSymbol(old, new AST.Term, proof *gs3.GS3Sequent) *gs3.GS3Sequen
 		proof.SetTermGenerated(new_generated_term)
 	}
 
-	// Update formGenerated
 	new_forms_generated := make([]*AST.FormList, len(proof.GetResultFormulasOfChildren()))
 	for i, fg := range proof.GetResultFormulasOfChildren() {
 		new_forms_generated_bis := AST.NewFormList()
@@ -484,11 +646,10 @@ func updateSkolemSymbol(old, new AST.Term, proof *gs3.GS3Sequent) *gs3.GS3Sequen
 			new_forms_generated_bis.Append(new_term)
 		}
 		new_forms_generated[i] = new_forms_generated_bis
-	}
-
+	}	
 	proof.SetFormGenerated(new_forms_generated)
 
-	// // Update Children
+	// Update Children
 	new_children := make([]*gs3.GS3Sequent, len(proof.Children()))
 	for i, child := range proof.Children() {
 		new_children[i] = updateSkolemSymbol(old, new, child)
@@ -505,7 +666,7 @@ func createNewConstant(term AST.Term) AST.Term {
 	mutex_constant.Lock()
 	new_id := len(constant_created)
 	new_term_name := fmt.Sprintf("%s%d", prefix_const, new_id)
-	new_term := AST.MakerNewId(new_term_name)
+	new_term := AST	.MakerConst(AST.MakerNewId(new_term_name))
 	original_term = append(original_term, term)
 	constant_created = append(constant_created, new_term)
 	mutex_constant.Unlock()

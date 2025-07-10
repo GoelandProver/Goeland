@@ -4,6 +4,7 @@ import glob
 import os
 import sys
 import re
+import difflib
 from subprocess import PIPE, run
 
 class Parser:
@@ -88,15 +89,17 @@ def compareOutputs(f, parser):
     # Also: add a diffing result to make it easier to understand when it fails
     if relevantLines != relevantExpectedLines:
         print("Error: actual output doesn't match the expected one.")
-        print("Expected:\n" + "\n".join(relevantExpectedLines) + "\n")
-        print("Actual:\n" + "\n".join(relevantLines) + "\n")
+        d = difflib.Differ()
+        sys.stderr.writelines(list(d.compare(relevantExpectedLines, relevantLines)))
+        sys.stderr.write("\n")
         exit(1)
 
 if __name__ == "__main__":
+    outputTest = ["-proof", "-otptp", "-osctptp"]
     for f in glob.glob("test-suite/**/*.p"):
         parser = Parser(f)
 
-        if "-proof" in parser.arguments :
+        if any(out in parser.arguments for out in outputTest) :
             compareOutputs(f, parser)
         else :
             runWithExpected(f, parser)

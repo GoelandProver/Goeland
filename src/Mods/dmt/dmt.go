@@ -38,10 +38,10 @@ package dmt
 
 import (
 	"flag"
-	"fmt"
 	"strings"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -97,7 +97,7 @@ func parsePluginOptions() {
 	preskolemize = *flagPresko
 
 	// Display what's been activated.
-	output := "[DMT] DMT loaded "
+	output := "DMT loaded "
 
 	if activatePolarized || preskolemize {
 		output += "with "
@@ -112,8 +112,9 @@ func parsePluginOptions() {
 	}
 
 	output += strings.Join(activatedOptions, " and ")
-	fmt.Println(output)
+	Glob.PrintInfo("DMT", output)
 }
+
 
 func GetRegisteredAxioms() *AST.FormList {
 	return registeredAxioms

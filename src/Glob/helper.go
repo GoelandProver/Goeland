@@ -38,6 +38,7 @@ package Glob
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"runtime"
 	"strconv"
@@ -49,6 +50,7 @@ import (
 var ocoq = false
 var olambdapi = false
 var otptp = false
+var osctptp = false
 var Assisted = false
 var destructive = true
 var nb_gor = 0
@@ -73,11 +75,15 @@ var isTypeProof = false
 var arithModule = false
 var innerSkolem = false
 var preInnerSko = false
+var commit string
+var version = fmt.Sprintf("1.2-dev.r%s", commit)
+var printVersion = false
 
 var IncrEq = false
 
 var debug = false
 var writeLogs = false
+var silent = false
 
 var cpuProfile string
 var memProfile string
@@ -119,6 +125,10 @@ func GetGID() uint64 {
 /* Getters */
 func GetDebug() bool {
 	return debug
+}
+
+func GetSilent() bool {
+	return silent
 }
 
 func GetWriteLogs() bool {
@@ -205,6 +215,10 @@ func IsTPTPOutput() bool {
 	return otptp
 }
 
+func IsSCTPTPOutput() bool {
+	return osctptp
+}
+
 func GetProblemName() string {
 	return problem_name
 }
@@ -249,9 +263,21 @@ func IsPreInnerSko() bool {
 	return preInnerSko
 }
 
+func GetVersion() string {
+	return version
+}
+
+func GetPrintVersion() bool {
+	return printVersion
+}
+
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
+}
+
+func SetSilent(b bool) {
+	silent = b
 }
 
 func SetWriteLogs(b bool) {
@@ -314,6 +340,10 @@ func OutputTPTP() {
 	otptp = true
 }
 
+func OutputSCTPTP() {
+	osctptp = true
+}
+
 func SetPlugin(s string, b bool) {
 	lock_plugins.Lock()
 	plugins[s] = b
@@ -362,4 +392,8 @@ func SetInnerSko(b bool) {
 
 func SetPreInnerSko(b bool) {
 	preInnerSko = b
+}
+
+func SetPrintVersion(b bool) {
+	printVersion = b
 }

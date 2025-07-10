@@ -88,6 +88,10 @@ func (ds *destructiveSearch) Search(formula AST.Form, bound int) bool {
 		res, limit = ds.doOneStep(limit, formula)
 	}
 
+	if (!res || !Glob.GetProof()) {
+		PrintSearchResult(res)
+	}
+
 	return res
 }
 
@@ -128,7 +132,12 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 
 	unifier, finalProof, result := ds.manageResult(c)
 
-	if result {
+	
+	if result {		
+		if Glob.GetProof(){
+			PrintSearchResult(result)
+		}
+
 		if unif := unifier.GetUnifier(); !unif.IsEmpty() {
 			finalProof = ApplySubstitutionOnProofList(unif, finalProof)
 		}

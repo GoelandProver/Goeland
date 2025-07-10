@@ -88,6 +88,10 @@ func DisableLoggers() {
 }
 
 var printToLogger = func(logger *log.Logger, function, message string) {
+	if GetSilent() {
+		return
+	}
+
 	toParse := "[%.6fs]"
 	options := []any{time.Since(start).Seconds()}
 
@@ -100,7 +104,6 @@ var printToLogger = func(logger *log.Logger, function, message string) {
 
 	toParse += " %v\n"
 	options = append(options, message)
-
 	logger.Output(3, fmt.Sprintf(toParse, options...))
 }
 

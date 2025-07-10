@@ -64,8 +64,14 @@ func printChrono(id string, start time.Time) {
 }
 
 func main() {
+	initEverything()
+	if Glob.GetPrintVersion() {
+		fmt.Printf("You are running Goeland v.%v\n", Glob.GetVersion())
+		return
+	}
+	
 	form, bound := presearchLoader()
-
+	
 	// This block cannot be removed from the main function, as it breaks how the CPU profiler works
 	if Glob.GetCpuProfile() != "" {
 		file, err := os.Create(Glob.GetCpuProfile())
@@ -80,7 +86,9 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
+
 	startSearch(form, bound)
+	
 
 	doMemProfile()
 }
@@ -108,10 +116,12 @@ func startSearch(form AST.Form, bound int) {
 
 // Initialization
 func presearchLoader() (AST.Form, int) {
-	initEverything()
-
 	problem := os.Args[len(os.Args)-1]
 	Glob.SetProblemName(path.Base(problem))
+
+	fmt.Printf("You are running Goeland v.%v\n", Glob.GetVersion())
+	fmt.Printf("Problem: %v\n", Glob.GetProblemName())
+
 	Glob.PrintInfo("MAIN", fmt.Sprintf("Problem : %v", problem))
 
 	statements, bound, containsEquality := Parser.ParseTPTPFile(problem)
@@ -156,10 +166,10 @@ func doMemProfile() {
 
 /* Initializes the options, the loggers and some other Glob variables*/
 func initEverything() {
-	initOpts()
-	Glob.InitLogs()
-	runtime.GOMAXPROCS(Glob.GetCoreLimit())
 	Glob.SetStart(time.Now())
+	Glob.InitLogs()
+	initOpts()
+	runtime.GOMAXPROCS(Glob.GetCoreLimit())
 	AST.Init()
 }
 

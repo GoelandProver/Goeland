@@ -57,8 +57,12 @@ var TptpOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeTptpOutpu
 
 func MakeTptpOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	if len(prf) == 0 {
-		Glob.PrintError("Tptp", "Nothing to output")
+		Glob.PrintError("TPTP", "Nothing to output")
 		return ""
+	}
+
+	if Glob.IsSCTPTPOutput() {
+		prefix_const = "Sko_"
 	}
 
 	// Transform tableaux's proof in GS3 proof
