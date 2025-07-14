@@ -115,13 +115,13 @@ func buildOptions() {
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
-			"silent",
-			false,
-			"Remove logs (except prover's name and result)",
-			func(bool) {
-				Glob.SetSilent(true)
-			},
-			func(bool) {})
+		"silent",
+		false,
+		"Remove logs (except prover's name and result)",
+		func(bool) {
+			Glob.SetSilent(true)
+		},
+		func(bool) {})
 	(&option[string]{}).init(
 		"log",
 		"logs",
@@ -279,16 +279,16 @@ func buildOptions() {
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
-			"osctptp",
-			false,
-			"Enables the SC-TPTP format for proofs instead of text",
-			func(bool) {
-				Glob.OutputSCTPTP()
-				Glob.SetProof(true)
-				Search.AddPrintProofAlgorithm(tptp.TptpOutputProofStruct)
-	
-			},
-			func(bool) {})
+		"osctptp",
+		false,
+		"Enables the SC-TPTP format for proofs instead of text",
+		func(bool) {
+			Glob.OutputSCTPTP()
+			Glob.SetProof(true)
+			Search.AddPrintProofAlgorithm(tptp.TptpOutputProofStruct)
+
+		},
+		func(bool) {})
 	(&option[bool]{}).init(
 		"olp",
 		false,
@@ -409,6 +409,12 @@ func buildOptions() {
 		false,
 		"Remove Goeland output in terminal",
 		func(bool) { Glob.DisableLoggers() },
+		func(bool) {})
+	(&option[bool]{}).init(
+		"flatten",
+		false,
+		"Flatten the or & and formulas at parsing",
+		func(bool) { Glob.SetFlatteningAllowed() },
 		func(bool) {})
 }
 

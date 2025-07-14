@@ -141,7 +141,7 @@ func applySymRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	}
 
 	children := []Sequent{}
-	if Glob.Is[AST.TypeScheme](out) && !out.Equals(AST.DefaultProp()) {
+	if Glob.Is[AST.TypeScheme](out) {
 		children = append(children, Sequent{
 			globalContext: state.globalContext,
 			localContext:  newLocalContext,

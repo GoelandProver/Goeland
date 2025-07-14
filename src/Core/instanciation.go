@@ -41,6 +41,7 @@ import (
 
 const (
 	is_all = iota
+	is_all_type
 	is_exists
 )
 

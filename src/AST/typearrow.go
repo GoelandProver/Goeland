@@ -83,7 +83,7 @@ func (ta TypeArrow) instanciate(mapSubst map[TypeVar]TypeApp) TypeScheme {
 func (ta TypeArrow) ToString() string {
 	list := []string{ta.left.ToString()}
 	list = append(list, convert(ta.right, typeTToString[TypeApp])...)
-	return "(" + strings.Join(list, " -> ") + ")"
+	return "(" + strings.Join(list, " > ") + ")"
 }
 
 func (ta TypeArrow) Equals(oth interface{}) bool {

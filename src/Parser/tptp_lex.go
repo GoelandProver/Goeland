@@ -37,7 +37,6 @@ import (
 	"os"
 	"unicode"
 
-	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 )
 
@@ -504,9 +503,7 @@ func (lexer TPTPLex) specialChars() int {
 func (lexer *TPTPLex) number(yylval *TPTPSymType) int {
 	if lexer.real(yylval) {
 		return REAL
-	}
-
-	if lexer.rational(yylval) {
+	} else if lexer.rational(yylval) {
 		return RATIONAL
 	} else if lexer.integer(yylval) {
 		return INTEGER
@@ -553,8 +550,9 @@ func (lexer *TPTPLex) decimalExponent(yylval *TPTPSymType) bool {
 		return false
 	}
 
+	lexer.advance()
 	if !lexer.isExponent() {
-		lexer.remove(len(yylval.str) - pos - 1)
+		lexer.remove(len(yylval.str) - pos)
 		yylval.str = yylval.str[:pos]
 		return false
 	}
@@ -742,8 +740,9 @@ func (lexer *TPTPLex) unsignedRational(yylval *TPTPSymType) bool {
 		return false
 	}
 
+	lexer.advance()
 	if lexer.c != '/' {
-		lexer.remove(len(yylval.str) - pos - 1)
+		lexer.remove(len(yylval.str) - pos)
 		yylval.str = yylval.str[:pos]
 		return false
 	}
@@ -802,27 +801,27 @@ func (lexer *TPTPLex) Lex(yylval *TPTPSymType) int {
 	}
 
 	if token := lexer.SyntacticLex(); token != FAILURE_TOKEN {
-		//fmt.Printf("Syntactic lex: %d\n", token)
+		// fmt.Printf("Syntactic lex: %d\n", token)
 		return token
 	}
 
 	if token := lexer.quotedWords(yylval); token != FAILURE_TOKEN {
-		//fmt.Printf("Quoted word: %d %s\n", token, yylval.str)
+		// fmt.Printf("Quoted word: %d %s\n", token, yylval.str)
 		return token
 	}
 
 	if token := lexer.word(yylval); token != FAILURE_TOKEN {
-		//fmt.Printf("Word: %d %s\n", token, yylval.str)
-		return token
-	}
-
-	if token := lexer.specialChars(); token != FAILURE_TOKEN {
-		//fmt.Printf("Special char: %d\n", token)
+		// fmt.Printf("Word: %d %s\n", token, yylval.str)
 		return token
 	}
 
 	if token := lexer.number(yylval); token != FAILURE_TOKEN {
-		//fmt.Printf("Number: %d %s\n", token, yylval.str)
+		// fmt.Printf("Number: %d %s\n", token, yylval.str)
+		return token
+	}
+
+	if token := lexer.specialChars(); token != FAILURE_TOKEN {
+		// fmt.Printf("Special char: %d\n", token)
 		return token
 	}
 
@@ -833,7 +832,7 @@ func (lexer *TPTPLex) Lex(yylval *TPTPSymType) int {
 // Main parsing function
 // ----------------------------------------------------------------------------
 
-func ParseTPTPFile(filename string) ([]Core.Statement, int, bool) {
+func ParseTPTPFile(filename string) ([]PStatement, int, bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			Glob.Fatal(parse_label, fmt.Sprintf("Lexing error: %v", r))
