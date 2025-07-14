@@ -33,9 +33,23 @@ package Glob
 
 import (
 	"fmt"
+	"os"
 )
+
+func exitWithError(panicMsg string) {
+	if GetDebug() {
+		panic(panicMsg)
+	}
+	os.Exit(1)
+}
 
 func Anomaly(label, msg string) {
 	url := "https://github.com/GoelandProver/Goeland/issues"
-	panic(fmt.Sprintf("Anomaly in %s: %s.\nPlease report at %s", label, msg, url))
+	PrintError("Anomaly", fmt.Sprintf("In %s: %s.\nPlease report at %s", label, msg, url))
+	exitWithError("Anomaly encountered.")
+}
+
+func Fatal(label, msg string) {
+	PrintError(label, msg)
+	exitWithError("Fatal error encountered.")
 }

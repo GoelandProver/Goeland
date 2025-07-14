@@ -44,11 +44,12 @@ import (
 )
 
 var (
-	logDebug *log.Logger
-	logInfo  *log.Logger
-	logError *log.Logger
-	logPanic *log.Logger
-	logFatal *log.Logger
+	logDebug   *log.Logger
+	logInfo    *log.Logger
+	logError   *log.Logger
+	logPanic   *log.Logger
+	logFatal   *log.Logger
+	logWarning *log.Logger
 
 	wrt      io.Writer
 	fileName string
@@ -65,11 +66,12 @@ var (
 func InitLogs() {
 	wrt = os.Stdout
 
-	logDebug = log.New(wrt, "DEB: ", 0)
-	logInfo = log.New(wrt, "INF: ", 0)
-	logError = log.New(wrt, "ERR: ", 0)
-	logPanic = log.New(wrt, "PAN: ", 0)
-	logFatal = log.New(wrt, "FAT: ", 0)
+	logDebug = log.New(wrt, "[\033[34mdebug\033[0m] ", 0)
+	logInfo = log.New(wrt, "[\033[32minfo\033[0m] ", 0)
+	logError = log.New(wrt, "[\033[31merror\033[0m] ", 0)
+	logPanic = log.New(wrt, "[\033[31mpanic\033[0m] ", 0)
+	logFatal = log.New(wrt, "[\033[35mfatal\033[0m] ", 0)
+	logWarning = log.New(wrt, "[\033[33mwarn\033[0m] ", 0)
 }
 
 /* Sets the function to be called when PrintDebug is called. This way, we avoid an if test when not in debug mode. */
@@ -150,14 +152,14 @@ func EnableWriteLogs() {
 // Prints the message into the terminal and/or the file as a debug message
 //
 // Use when you want to display a message for debugging purposes only.
-// The prefix for debug messages is 'DEB'.
+// The prefix for debug messages is '[debug]' in blue.
 // Will only print in the terminal and/or the file if the corresponding options -debug and -dif have been set.
 var PrintDebug = func(function, message string) {}
 
 // Prints the message into the terminal and the file as an information message
 //
 // Use when you want to display an important information.
-// The prefix for information messages is 'INF'.
+// The prefix for information messages is '[info]' in green.
 func PrintInfo(function, message string) {
 	printToLogger(logInfo, function, message)
 }
@@ -165,7 +167,7 @@ func PrintInfo(function, message string) {
 // Prints the message into the terminal and the file as an error message
 //
 // Use when you want to warn that something is not happening as it should and it is important and must be corrected.
-// The prefix for error messages is 'ERR'.
+// The prefix for error messages is '[error]' in red.
 func PrintError(function, message string) {
 	printToLogger(logError, function, message)
 }
@@ -174,7 +176,7 @@ func PrintError(function, message string) {
 //
 // Use when something is not happening as it should and you want to call a panic.
 // The format of the panic message is '[function] message'.
-// The prefix for panic messages is 'PAN'.
+// The prefix for panic messages is '[panic]' in red.
 func PrintPanic(function, message string) {
 	printToLogger(logPanic, function, message)
 	panic(fmt.Sprintf("[%v] %v", function, message))
@@ -183,8 +185,12 @@ func PrintPanic(function, message string) {
 // Prints the message into the terminal and the file as a fatal message and calls os.Exit(1)
 //
 // Use when something is not happening as it should and you want to stop the current program immediatly.
-// The prefix for fatal messages is 'FAT'.
+// The prefix for fatal messages is '[fatal]' in magenta.
 func PrintFatal(function, message string) {
 	printToLogger(logFatal, function, message)
 	os.Exit(1)
+}
+
+func PrintWarn(function, message string) {
+	printToLogger(logWarning, function, message)
 }
