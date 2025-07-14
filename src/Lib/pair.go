@@ -40,3 +40,7 @@ type Pair[T, U any] struct {
 func MkPair[T, U any](x T, y U) Pair[T, U] {
 	return Pair[T, U]{x, y}
 }
+
+func (p Pair[T, U]) ToString(f Func[T, string], g Func[U, string], sep string) string {
+	return "(" + f(p.Fst) + sep + g(p.Snd) + ")"
+}

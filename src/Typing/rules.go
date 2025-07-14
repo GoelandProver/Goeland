@@ -88,11 +88,9 @@ var globalContextIsWellTyped bool = false
 
 /**
  * Tries to type form.
- * If the system is well-formed, all subforms and subterms of the formula will
- * be typed after this step.
- * Otherwise, it will return an error.
+ * If not well-typed, will return an error.
  **/
-func WellFormedVerification(form AST.Form, dump bool) (AST.Form, error) {
+func WellFormedVerification(form AST.Form, dump bool) error {
 	// Instanciate meta type
 	metaType = AST.MkTypeHint("$tType")
 
@@ -101,7 +99,7 @@ func WellFormedVerification(form AST.Form, dump bool) (AST.Form, error) {
 
 	globalContext, err := createGlobalContext(AST.GetGlobalContext())
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// Sequent creation
@@ -118,14 +116,14 @@ func WellFormedVerification(form AST.Form, dump bool) (AST.Form, error) {
 	}
 
 	// Launch the typing system
-	form, err = launchRuleApplication(state, &root)
+	_, err = launchRuleApplication(state, &root)
 
 	// Dump prooftree in json if it's asked & there is no error
 	if dump && err == nil {
 		err = root.DumpJson()
 	}
 
-	return form, err
+	return err
 }
 
 /* Reconstructs a Form depending on what the children has returned */

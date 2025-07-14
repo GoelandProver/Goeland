@@ -165,6 +165,18 @@ func (gc GlobalContext) getTypeScheme(
 	return typeScheme, nil
 }
 
+func flattenCross(ty AST.TypeApp) []AST.TypeApp {
+	switch nty := ty.(type) {
+	case AST.TypeCross:
+		flattened := []AST.TypeApp{}
+		for _, uty := range nty.GetAllUnderlyingTypes() {
+			flattened = append(flattened, flattenCross(uty)...)
+		}
+		return []AST.TypeApp{AST.MkTypeCross(flattened...)}
+	}
+	return []AST.TypeApp{ty}
+}
+
 /* Search for a TypeScheme with the name & the arguments type */
 func (gc GlobalContext) getSimpleTypeScheme(name string, termsType AST.TypeApp) (AST.TypeScheme, error) {
 	if termsType == nil {
@@ -175,6 +187,7 @@ func (gc GlobalContext) getSimpleTypeScheme(name string, termsType AST.TypeApp) 
 		}
 	}
 
+	termsType = flattenCross(termsType)[0]
 	if typeSchemeList, found := gc.simpleSchemes[name]; found {
 		for _, typeScheme := range typeSchemeList {
 			if AST.GetInputType(typeScheme).Equals(Lib.ComparableList[AST.TypeApp]{termsType}) {

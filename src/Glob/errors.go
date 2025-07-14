@@ -53,3 +53,7 @@ func Fatal(label, msg string) {
 	PrintError(label, msg)
 	exitWithError("Fatal error encountered.")
 }
+
+func FatalError(label, msg string) {
+	panic(fmt.Sprintf("Fatal error in %s: %s.", label, msg))
+}

@@ -114,7 +114,6 @@ func ConvertList[T any, U any](input []T) []U {
 type Basic interface {
 	Stringable
 	Lib.Comparable
-	// ILL TODO : Make Basic implement the Copyable interface (all interfaces that require a copy should have another name for such copy)
 }
 
 func ToUpperCaseFirstLetter(s string) string {

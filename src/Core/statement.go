@@ -34,6 +34,7 @@ package Core
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /***************************/
@@ -49,8 +50,8 @@ type TFFAtomTyping struct {
 type Statement struct {
 	name       string
 	role       FormulaRole
-	form       AST.Form
-	atomTyping TFFAtomTyping
+	form       Lib.Option[AST.Form]
+	atomTyping Lib.Option[TFFAtomTyping]
 }
 
 func (s Statement) GetName() string {
@@ -59,24 +60,23 @@ func (s Statement) GetName() string {
 func (s Statement) GetRole() FormulaRole {
 	return s.role
 }
-func (s Statement) GetForm() AST.Form {
+func (s Statement) GetForm() Lib.Option[AST.Form] {
 	return s.form
 }
-func (s Statement) GetAtomTyping() TFFAtomTyping {
+func (s Statement) GetAtomTyping() Lib.Option[TFFAtomTyping] {
 	return s.atomTyping
 }
-func (s *Statement) SetName(n string) {
-	s.name = n
-}
-func (s *Statement) SetRole(r FormulaRole) {
-	s.role = r
-}
-func (s *Statement) SetForm(f AST.Form) {
-	s.form = f
+
+func MakeFormStatement(s string, r FormulaRole, f AST.Form) Statement {
+	return Statement{s, r, Lib.MkSome(f), Lib.MkNone[TFFAtomTyping]()}
 }
 
-func MakeStatement(s string, r FormulaRole, f AST.Form, at TFFAtomTyping) Statement {
-	return Statement{s, r, f, at}
+func MakeTypingStatement(s string, r FormulaRole, ty TFFAtomTyping) Statement {
+	return Statement{s, r, Lib.MkNone[AST.Form](), Lib.MkSome(ty)}
+}
+
+func MakeIncludeStatement(s string) Statement {
+	return Statement{s, Include, Lib.MkNone[AST.Form](), Lib.MkNone[TFFAtomTyping]()}
 }
 
 // Formula roles (enumerate type)
@@ -114,46 +114,25 @@ func (fr FormulaRole) ToString() string {
 	return res
 }
 
-/*
-A function to get a FormulaRole from a String
-  - "axiom"s are accepted, without proof. There is no guarantee that the axioms of a problem are consistent.
-  - "hypothesis"s are assumed to be true for a particular problem, and are used like "axiom"s.
-  - "definition"s are intended to define symbols. They are either universally quantified equations, or universally quantified equivalences with an atomic lefthand side. They can be treated like "axiom"s.
-  - "assumption"s can be used like axioms, but must be discharged before a derivation is complete.
-  - "lemma"s and "theorem"s have been proven from the "axiom"s. They can be used like "axiom"s in problems, and a problem containing a non-redundant
-  - "lemma" or theorem" is ill-formed. They can also appear in derivations.
-  - "theorem"s are more important than "lemma"s from the user perspective.
-  - "conjecture"s are to be proven from the "axiom"(-like) formulae. A problem is solved only when all "conjecture"s are proven.
-  - "negated_conjecture"s are formed from negation of a "conjecture" (usually in a FOF to CNF conversion).
-  - "plain"s have no specified user semantics.
-  - "fi_domain", "fi_functors", and "fi_predicates" are used to record the domain, interpretation of functors, and interpretation of predicates, for a finite interpretation.
-  - "type" defines the type globally for one symbol; treat as $true.
-  - "unknown"s have unknown role, and this is an error situation.
-*/
-func MakeFormulaRoleFromString(role string) FormulaRole {
-	switch role {
-	case "axiom", "hypothesis", "definition", "assumption", "lemma", "theorem":
-		return Axiom
-	case "conjecture":
-		return Conjecture
-	case "negated_conjecture":
-		return NegatedConjecture
-	case "type":
-		return Type
-	default:
-		return Unknown
-	}
-}
-
 func (statement Statement) ToString() string {
 	switch statement.GetRole() {
 	case Include:
 		return statement.GetRole().ToString() + " " + statement.GetName()
 	case Axiom, Conjecture:
-		return statement.GetRole().ToString() + " " + statement.GetName() + " " + statement.GetForm().ToString()
+		str := statement.role.ToString() + " " + statement.name + " "
+		switch f := statement.form.(type) {
+		case Lib.Some[AST.Form]:
+			return str + f.Val.ToString()
+		case Lib.None[AST.Form]:
+			return str + "[None]"
+		}
 	case Type:
-		if statement.atomTyping.Ts != nil {
-			return statement.GetRole().ToString() + " " + statement.GetName() + " " + statement.atomTyping.Literal.ToString() + ": " + statement.atomTyping.Ts.ToString()
+		str := statement.role.ToString() + " " + statement.name + " "
+		switch ty := statement.atomTyping.(type) {
+		case Lib.Some[TFFAtomTyping]:
+			return str + ty.Val.Literal.GetName() + ": " + ty.Val.Ts.ToString()
+		case Lib.None[TFFAtomTyping]:
+			return str + "[None]"
 		}
 	}
 	return "Unknown"
