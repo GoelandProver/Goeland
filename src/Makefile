@@ -38,7 +38,7 @@ watch: parser
 
 static-linux-release:
 	$(GOYACC) $(GOYACCFLAGS) -p $(PREFIX) -o $(GOPARSER) $(YACCFILE); \
-	GOOS=linux GOARCH=amd64 $(GOC) -tags osusergo,netgo -ldflags="-extldflags=-static -X github.com/GoelandProver/Goeland/Glob.commit=$(git rev-parse HEAD)" -o $(BIN)_linux_release $(GOSRC)
+	GOOS=linux GOARCH=amd64 $(GOC) -tags osusergo,netgo -ldflags="-extldflags=-static -X github.com/GoelandProver/Goeland/Glob.commit=$(COMMIT)" -o $(BIN)_linux_release $(GOSRC)
 
 parse:
 	@for i in `ls $(PROB)/*.p`; do echo -e "File \033[32m$$i\033[39m: "; \
