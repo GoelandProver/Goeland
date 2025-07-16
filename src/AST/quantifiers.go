@@ -46,14 +46,14 @@ import (
 
 type quantifier struct {
 	*MappedString
-	metas   Lib.Cache[Lib.List[Meta], quantifier]
+	metas   Lib.Cache[Lib.Set[Meta], quantifier]
 	index   int
 	varList []Var
 	subForm Form
 	symbol  FormulaType
 }
 
-func makeQuantifier(i int, vars []Var, subForm Form, metas Lib.List[Meta], symbol FormulaType) quantifier {
+func makeQuantifier(i int, vars []Var, subForm Form, metas Lib.Set[Meta], symbol FormulaType) quantifier {
 	fms := &MappedString{}
 	qua := quantifier{
 		fms,
@@ -84,11 +84,11 @@ func (q quantifier) GetType() TypeScheme {
 	return DefaultPropType(0)
 }
 
-func (q quantifier) forceGetMetas() Lib.List[Meta] {
+func (q quantifier) forceGetMetas() Lib.Set[Meta] {
 	return q.subForm.GetMetas()
 }
 
-func (q quantifier) GetMetas() Lib.List[Meta] {
+func (q quantifier) GetMetas() Lib.Set[Meta] {
 	return q.metas.Get(q)
 }
 
@@ -167,7 +167,7 @@ func (q quantifier) copy() quantifier {
 		q.GetIndex(),
 		copyVarList(q.GetVarList()),
 		q.GetForm(),
-		Lib.ListCpy(q.metas.Raw()),
+		q.metas.Raw().Copy(),
 		q.symbol,
 	)
 
@@ -183,7 +183,7 @@ func (q quantifier) replaceTypeByMeta(varList []TypeVar, index int) quantifier {
 		q.GetIndex(),
 		q.GetVarList(),
 		q.GetForm().ReplaceTypeByMeta(varList, index),
-		Lib.ListCpy(q.metas.Raw()),
+		q.metas.Raw().Copy(),
 		q.symbol,
 	)
 }
@@ -194,7 +194,7 @@ func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
 		q.GetIndex(),
 		q.GetVarList(),
 		f,
-		Lib.ListCpy(q.metas.Raw()),
+		q.metas.Raw().Copy(),
 		q.symbol,
 	), res
 }
@@ -214,7 +214,7 @@ func (q quantifier) renameVariables() quantifier {
 		q.GetIndex(),
 		newVarList,
 		newForm,
-		Lib.ListCpy(q.metas.Raw()),
+		q.metas.Raw().Copy(),
 		q.symbol,
 	)
 }
@@ -225,7 +225,7 @@ func (q quantifier) substituteVarByMeta(old Var, new Meta) quantifier {
 		q.GetIndex(),
 		q.GetVarList(),
 		newForm,
-		Lib.ListCpy(newForm.GetMetas()),
+		newForm.GetMetas().Copy(),
 		q.symbol,
 	)
 }
@@ -236,7 +236,7 @@ func (q quantifier) replaceMetaByTerm(meta Meta, term Term) quantifier {
 		q.GetIndex(),
 		q.GetVarList(),
 		newForm,
-		Lib.ListCpy(newForm.GetMetas()),
+		newForm.GetMetas().Copy(),
 		q.symbol,
 	)
 }

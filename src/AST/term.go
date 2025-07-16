@@ -50,7 +50,8 @@ type Term interface {
 	IsMeta() bool
 	IsFun() bool
 	ToMeta() Meta
-	GetMetas() Lib.List[Meta]
+	GetMetas() Lib.Set[Meta]
+	GetMetaList() Lib.List[Meta] // Metas appearing in the term ORDERED
 	GetSubTerms() Lib.List[Term]
 	ReplaceSubTermBy(original_term, new_term Term) Term
 	Less(any) bool
@@ -90,13 +91,9 @@ func MakeMeta(index, occurence int, s string, f int, t ...TypeApp) Meta {
 	return meta
 }
 
-func MakeFun(p Id, args Lib.List[Term], typeVars []TypeApp, t TypeScheme) Fun {
-	return *NewFun(p, args, typeVars, t)
-}
-
-func NewFun(p Id, args Lib.List[Term], typeVars []TypeApp, t TypeScheme) *Fun {
+func MakeFun(p Id, args Lib.List[Term], typeVars []TypeApp, t TypeScheme, metas Lib.Set[Meta]) Fun {
 	fms := &MappedString{}
-	fun := &Fun{fms, p, args, typeVars, t}
+	fun := Fun{fms, p, args, typeVars, t, Lib.MkCache(metas, Fun.forceGetMetas)}
 	fms.MappableString = fun
 	return fun
 }
@@ -144,6 +141,7 @@ func TypeAppToTerm(typeApp TypeApp) Term {
 			args,
 			[]TypeApp{},
 			MkTypeHint("$tType"),
+			Lib.EmptySet[Meta](),
 		)
 	case ParameterizedType:
 		parameters := nt.GetParameters()
@@ -158,6 +156,7 @@ func TypeAppToTerm(typeApp TypeApp) Term {
 			args,
 			[]TypeApp{},
 			MkTypeHint("$tType"),
+			Lib.EmptySet[Meta](),
 		)
 	}
 	return term
@@ -186,6 +185,7 @@ func replaceTermListTypesByMeta(tl Lib.List[Term], varList []TypeVar, index int)
 				replaceTermListTypesByMeta(t.GetArgs(), varList, index),
 				instanciateTypeAppList(t.GetTypeVars(), varList, index),
 				t.GetTypeHint(),
+				t.metas.Raw(),
 			))
 		} else {
 			res.Upd(i, term)

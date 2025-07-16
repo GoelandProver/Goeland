@@ -150,7 +150,7 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 }
 
 /* Choose a substitution (backtrack) */
-func (ds *destructiveSearch) tryBTSubstitution(spc *([]Core.SubstAndForm), mm Lib.List[AST.Meta], children []Communication) Core.SubstAndForm {
+func (ds *destructiveSearch) tryBTSubstitution(spc *([]Core.SubstAndForm), mm Lib.Set[AST.Meta], children []Communication) Core.SubstAndForm {
 	Glob.PrintDebug("TBTS", "Try another substitution.")
 	next_subst, new_spc := ds.chooseSubstitutionDestructive(Core.CopySubstAndFormList(*spc), mm)
 	Glob.PrintDebug("TBTS", fmt.Sprintf("Choose the substitution : %v and send it to children", next_subst.ToString()))
@@ -160,7 +160,7 @@ func (ds *destructiveSearch) tryBTSubstitution(spc *([]Core.SubstAndForm), mm Li
 }
 
 /* Choose a substitution among all the subst send by children - takes thoses who contains no mm first */
-func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []Core.SubstAndForm, mm Lib.List[AST.Meta]) (Core.SubstAndForm, []Core.SubstAndForm) {
+func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []Core.SubstAndForm, mm Lib.Set[AST.Meta]) (Core.SubstAndForm, []Core.SubstAndForm) {
 	subst_found := subst_list[0]
 	found := false
 	i := 0
@@ -466,17 +466,17 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 				// Retrieve meta from the subst sent by my father
 				meta_sisters := st.GetMM()
 				subst := answer_father.subst_for_children.GetSubst()
-				for _, m := range Core.GetMetaFromSubst(subst).GetSlice() {
+				for _, m := range Core.GetMetaFromSubst(subst).Elements().GetSlice() {
 					// If the meta is not a meta current for the process
-					if !Lib.ListMem(m, st.GetMC()) {
-						meta_sisters = Lib.ListAdd(meta_sisters, m)
+					if !st.GetMC().Contains(m) {
+						meta_sisters = meta_sisters.Add(m)
 					}
 				}
 				// Set to MM
 				st.SetMM(meta_sisters)
 				Glob.PrintDebug("WF", fmt.Sprintf(
 					"MC after sisters : %v",
-					Lib.ListToString(meta_sisters, ",", "[]"),
+					Lib.ListToString(meta_sisters.Elements(), ",", "[]"),
 				))
 			}
 
@@ -835,9 +835,9 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 **/
 func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Communication, substs []Unif.Substitutions, f Core.FormAndTerms, node_id int, original_node_id int) (bool, []Core.SubstAndForm) {
 
-	mm := Lib.ListCpy(st.GetMM())
+	mm := st.GetMM().Copy()
 	subst := st.GetAppliedSubst().GetSubst()
-	mm = Lib.ListAdd(mm, Core.GetMetaFromSubst(subst).GetSlice()...)
+	mm = mm.Union(Core.GetMetaFromSubst(subst))
 	substs_with_mm, substs_with_mm_uncleared, substs_without_mm := Core.DispatchSubst(Unif.CopySubstList(substs), mm)
 
 	unifier := st.GetGlobUnifier()
@@ -1077,8 +1077,8 @@ func (ds *destructiveSearch) manageGammaRules(fatherId uint64, state State, c Co
 	newFnts, newMetas := ApplyGammaRules(hdf, index, &state)
 	state.SetLF(newFnts)
 
-	newMC := Lib.ListCpy(state.GetMC())
-	newMC = Lib.ListAdd(newMC, newMetas.GetSlice()...)
+	newMC := state.GetMC().Copy()
+	newMC = newMC.Union(newMetas)
 
 	state.SetMC(newMC)
 

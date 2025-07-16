@@ -47,7 +47,7 @@ const (
 /**
  * Instantiates once the formula fnt.
  */
-func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.List[AST.Meta]) {
+func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.Set[AST.Meta]) {
 	var meta AST.Meta
 	terms := fnt.GetTerms()
 
@@ -60,7 +60,7 @@ func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.List[AST.Meta])
 		fnt, meta = RealInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
-	return fnt, Lib.MkListV[AST.Meta](meta)
+	return fnt, Lib.Singleton(meta)
 }
 
 func RealInstantiate(

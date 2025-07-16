@@ -45,7 +45,7 @@ import (
 
 type Form interface {
 	GetIndex() int
-	GetMetas() Lib.List[Meta]
+	GetMetas() Lib.Set[Meta]
 	GetType() TypeScheme
 	GetSubTerms() Lib.List[Term]
 	GetSubFormulasRecur() *FormList
@@ -133,11 +133,11 @@ func instanciateTypeAppList(typeApps []TypeApp, vars []TypeVar, index int) []Typ
 }
 
 // Creates and returns a MetaList from a FormList, making sure there are no duplicates
-func metasUnion(forms *FormList) Lib.List[Meta] {
-	res := Lib.NewList[Meta]()
+func metasUnion(forms *FormList) Lib.Set[Meta] {
+	res := Lib.EmptySet[Meta]()
 
 	for _, form := range forms.Slice() {
-		res = Lib.ListAdd(res, form.GetMetas().GetSlice()...)
+		res = res.Union(form.GetMetas())
 	}
 
 	return res

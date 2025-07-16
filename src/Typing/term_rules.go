@@ -87,7 +87,7 @@ func applyAppRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 			fatherChan,
 		), fTyped)
 	} else {
-		fTyped := AST.MakeFun(id, terms, vars, typeScheme)
+		fTyped := AST.MakerFun(id, terms, vars, typeScheme)
 		return reconstructTerm(launchChildren(createAppChildren(state, vars, terms, primitives), root, fatherChan), fTyped)
 	}
 }
@@ -189,7 +189,7 @@ func createAppChildren(
 	for i, term := range terms.GetSlice() {
 		switch t := term.(type) {
 		case AST.Fun:
-			term = AST.MakeFun(t.GetID(), t.GetArgs(), t.GetTypeVars(), primitives[i].(AST.TypeScheme))
+			term = AST.MakerFun(t.GetID(), t.GetArgs(), t.GetTypeVars(), primitives[i].(AST.TypeScheme))
 		case AST.Meta:
 			term = AST.MakeMeta(t.GetIndex(), t.GetOccurence(), t.GetName(), t.GetFormula(), primitives[i])
 		case AST.Var:

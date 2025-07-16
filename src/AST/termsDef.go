@@ -55,13 +55,14 @@ type Id struct {
 	name  string
 }
 
-func (i Id) GetIndex() int          { return i.index }
-func (i Id) GetName() string        { return i.name }
-func (i Id) IsMeta() bool           { return false }
-func (i Id) IsFun() bool            { return false }
-func (i Id) Copy() Term             { return MakeId(i.GetIndex(), i.GetName()) }
-func (Id) ToMeta() Meta             { return MakeEmptyMeta() }
-func (Id) GetMetas() Lib.List[Meta] { return Lib.NewList[Meta]() }
+func (i Id) GetIndex() int             { return i.index }
+func (i Id) GetName() string           { return i.name }
+func (i Id) IsMeta() bool              { return false }
+func (i Id) IsFun() bool               { return false }
+func (i Id) Copy() Term                { return MakeId(i.GetIndex(), i.GetName()) }
+func (Id) ToMeta() Meta                { return MakeEmptyMeta() }
+func (Id) GetMetas() Lib.Set[Meta]     { return Lib.EmptySet[Meta]() }
+func (Id) GetMetaList() Lib.List[Meta] { return Lib.NewList[Meta]() }
 
 var ToStringId = func(i Id) string {
 	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
@@ -149,6 +150,7 @@ type Fun struct {
 	args     Lib.List[Term]
 	typeVars []TypeApp
 	typeHint TypeScheme
+	metas    Lib.Cache[Lib.Set[Meta], Fun]
 }
 
 func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
@@ -239,18 +241,38 @@ func (f Fun) Equals(t any) bool {
 }
 
 func (f Fun) Copy() Term {
-	return MakeFun(f.GetP(), f.GetArgs(), CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
+	return MakeFun(f.GetP(), f.GetArgs(), CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint(), f.metas.Raw())
 }
 
 func (f Fun) PointerCopy() *Fun {
-	return NewFun(f.GetP(), f.GetArgs(), CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint())
+	nf := MakeFun(f.GetP(), f.GetArgs(), CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint(), f.metas.Raw())
+	return &nf
 }
 
-func (f Fun) GetMetas() Lib.List[Meta] {
+func (f Fun) forceGetMetas() Lib.Set[Meta] {
+	metas := Lib.EmptySet[Meta]()
+
+	for _, arg := range f.GetArgs().GetSlice() {
+		metas = metas.Union(arg.GetMetas())
+	}
+
+	return metas
+}
+
+func (f Fun) GetMetas() Lib.Set[Meta] {
+	return f.metas.Get(f)
+}
+
+func (f Fun) GetMetaList() Lib.List[Meta] {
 	metas := Lib.NewList[Meta]()
 
 	for _, arg := range f.GetArgs().GetSlice() {
-		metas.Append(arg.GetMetas().GetSlice()...)
+		switch t := arg.(type) {
+		case Fun:
+			metas.Append(t.GetMetaList().GetSlice()...)
+		default:
+			metas.Append(arg.GetMetas().Elements().GetSlice()...)
+		}
 	}
 
 	return metas
@@ -260,12 +282,12 @@ func (f Fun) ReplaceSubTermBy(oldTerm, newTerm Term) Term {
 	if f.Equals(oldTerm) {
 		return newTerm.Copy()
 	} else {
-		return MakeFun(
-			f.GetID(),
-			replaceFirstOccurrenceTermList(f.GetArgs(), oldTerm, newTerm),
-			f.GetTypeVars(),
-			f.GetTypeHint(),
-		)
+		tl, res := replaceFirstOccurrenceTermList(f.GetArgs(), oldTerm, newTerm)
+		nf := MakeFun(f.GetID(), tl, f.GetTypeVars(), f.GetTypeHint(), f.metas.Raw())
+		if !res && !f.metas.NeedsUpd() {
+			nf.metas.AvoidUpd()
+		}
+		return nf
 	}
 }
 
@@ -273,12 +295,12 @@ func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
 	if f.Equals(oldTerm) {
 		return newTerm.Copy()
 	} else {
-		return MakeFun(
-			f.GetID(),
-			ReplaceOccurrence(f.GetArgs(), oldTerm, newTerm),
-			f.GetTypeVars(),
-			f.GetTypeHint(),
-		)
+		tl, res := ReplaceOccurrence(f.GetArgs(), oldTerm, newTerm)
+		nf := MakeFun(f.GetID(), tl, f.GetTypeVars(), f.GetTypeHint(), f.metas.Raw())
+		if !res && !f.metas.NeedsUpd() {
+			nf.metas.AvoidUpd()
+		}
+		return nf
 	}
 }
 
@@ -313,15 +335,16 @@ type Var struct {
 	typeHint TypeApp
 }
 
-func (v Var) GetTypeApp() TypeApp     { return v.typeHint }
-func (v Var) GetTypeHint() TypeScheme { return v.typeHint.(TypeScheme) }
-func (v Var) GetIndex() int           { return v.index }
-func (v Var) GetName() string         { return v.name }
-func (v Var) IsMeta() bool            { return false }
-func (v Var) IsFun() bool             { return false }
-func (v Var) Copy() Term              { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
-func (Var) ToMeta() Meta              { return MakeEmptyMeta() }
-func (Var) GetMetas() Lib.List[Meta]  { return Lib.NewList[Meta]() }
+func (v Var) GetTypeApp() TypeApp       { return v.typeHint }
+func (v Var) GetTypeHint() TypeScheme   { return v.typeHint.(TypeScheme) }
+func (v Var) GetIndex() int             { return v.index }
+func (v Var) GetName() string           { return v.name }
+func (v Var) IsMeta() bool              { return false }
+func (v Var) IsFun() bool               { return false }
+func (v Var) Copy() Term                { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
+func (Var) ToMeta() Meta                { return MakeEmptyMeta() }
+func (Var) GetMetas() Lib.Set[Meta]     { return Lib.EmptySet[Meta]() }
+func (Var) GetMetaList() Lib.List[Meta] { return Lib.NewList[Meta]() }
 
 func (v Var) Equals(t any) bool {
 	if typed, ok := t.(Var); ok {
@@ -388,15 +411,16 @@ type Meta struct {
 
 func (m Meta) GetFormula() int { return m.formula }
 
-func (m Meta) GetTypeApp() TypeApp      { return m.typeHint }
-func (m Meta) GetTypeHint() TypeScheme  { return m.typeHint.(TypeScheme) }
-func (m Meta) GetName() string          { return m.name }
-func (m Meta) GetIndex() int            { return m.index }
-func (m Meta) GetOccurence() int        { return m.occurence }
-func (m Meta) IsMeta() bool             { return true }
-func (m Meta) IsFun() bool              { return false }
-func (m Meta) ToMeta() Meta             { return m }
-func (m Meta) GetMetas() Lib.List[Meta] { return Lib.MkListV(m) }
+func (m Meta) GetTypeApp() TypeApp         { return m.typeHint }
+func (m Meta) GetTypeHint() TypeScheme     { return m.typeHint.(TypeScheme) }
+func (m Meta) GetName() string             { return m.name }
+func (m Meta) GetIndex() int               { return m.index }
+func (m Meta) GetOccurence() int           { return m.occurence }
+func (m Meta) IsMeta() bool                { return true }
+func (m Meta) IsFun() bool                 { return false }
+func (m Meta) ToMeta() Meta                { return m }
+func (m Meta) GetMetas() Lib.Set[Meta]     { return Lib.Singleton(m) }
+func (m Meta) GetMetaList() Lib.List[Meta] { return Lib.MkListV(m) }
 
 func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"

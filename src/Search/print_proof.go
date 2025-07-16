@@ -55,7 +55,7 @@ func AddPrintProofAlgorithm(ps *OutputProofStruct) {
 	outputProofStructs = append(outputProofStructs, ps)
 }
 
-func PrintProof(final_proof []ProofStruct, metaList Lib.List[AST.Meta]) {
+func PrintProof(final_proof []ProofStruct, metaList Lib.Set[AST.Meta]) {
 	if !Glob.GetProof() {
 		return
 	}
@@ -69,8 +69,8 @@ func PrintProof(final_proof []ProofStruct, metaList Lib.List[AST.Meta]) {
 	fmt.Printf("%v SZS output end Proof for %v\n", "%", Glob.GetProblemName())
 }
 
-func (ps *OutputProofStruct) printProofWithProofStruct(finalProof []ProofStruct, metaList Lib.List[AST.Meta]) {
-	output := ps.ProofOutput(finalProof, metaList)
+func (ps *OutputProofStruct) printProofWithProofStruct(finalProof []ProofStruct, metaList Lib.Set[AST.Meta]) {
+	output := ps.ProofOutput(finalProof, metaList.Elements())
 
 	if Glob.GetWriteLogs() {
 		f, err := os.OpenFile(Glob.ProofFile+ps.Extension, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)

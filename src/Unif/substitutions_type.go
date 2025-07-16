@@ -315,7 +315,7 @@ func eliminateInside(key AST.Meta, value AST.Term, s Substitutions, has_changed_
 				}
 
 			case AST.Fun:
-				new_value := AST.MakeFun(
+				new_value := AST.MakerFun(
 					value_2_type.GetP(),
 					eliminateList(key, value, value_2_type.GetArgs(), &has_changed),
 					value_2_type.GetTypeVars(),
@@ -362,7 +362,7 @@ func eliminateList(
 					tempList.Append(elementList)
 				}
 			case AST.Fun: // If its a function, reccursive call for the arguments
-				tempList.Append(AST.MakeFun(
+				tempList.Append(AST.MakerFun(
 					lt.GetP(),
 					eliminateList(key, value, lt.GetArgs(), &hasChanged),
 					lt.GetTypeVars(),

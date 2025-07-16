@@ -46,21 +46,18 @@ import (
 )
 
 /* Return the list of metavariable from a substitution */
-func GetMetaFromSubst(subs Unif.Substitutions) Lib.List[AST.Meta] {
-	res := Lib.NewList[AST.Meta]()
+func GetMetaFromSubst(subs Unif.Substitutions) Lib.Set[AST.Meta] {
+	res := Lib.EmptySet[AST.Meta]()
 
 	for _, singleSubs := range subs {
 		meta, term := singleSubs.Get()
-		res = Lib.ListAdd(res, meta)
+		res = res.Add(meta)
 
 		switch typedTerm := term.(type) {
 		case AST.Meta:
-			res = Lib.ListAdd(res, typedTerm)
+			res = res.Add(typedTerm)
 		case AST.Fun:
-			res = Lib.ListAdd(
-				res,
-				AST.GetMetasOfList(typedTerm.GetArgs()).GetSlice()...,
-			)
+			res = res.Union(AST.GetMetasOfList(typedTerm.GetArgs()))
 		}
 	}
 
@@ -68,23 +65,23 @@ func GetMetaFromSubst(subs Unif.Substitutions) Lib.List[AST.Meta] {
 }
 
 /* Remove substitution without mm */
-func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.List[AST.Meta]) Unif.Substitutions {
+func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.Substitutions {
 	Glob.PrintDebug("REWM", fmt.Sprintf(
 		"MM : %v",
-		Lib.ListToString(mm, ",", "[]"),
+		Lib.ListToString(mm.Elements(), ",", "[]"),
 	))
 
 	res := Unif.Substitutions{}
 
 	subsToReorganize := Unif.Substitutions{}
-	relevantMetas := Lib.ListCpy(mm)
+	relevantMetas := mm.Copy()
 	hasChanged := true
 
 	for hasChanged {
 		hasChanged = false
 		Glob.PrintDebug("REWM", fmt.Sprintf(
 			"Relevant meta : %v",
-			Lib.ListToString(relevantMetas, ",", "[]"),
+			Lib.ListToString(relevantMetas.Elements(), ",", "[]"),
 		))
 		for _, singleSubs := range subs {
 			meta, term := singleSubs.Get()
@@ -92,24 +89,24 @@ func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.List[AST.Meta]) Unif
 			switch typedTerm := term.(type) {
 			case AST.Meta:
 				switch {
-				case Lib.ListMem(meta, relevantMetas) &&
-					Lib.ListMem(typedTerm, relevantMetas):
+				case relevantMetas.Contains(meta) &&
+					relevantMetas.Contains(typedTerm):
 					res.Set(meta, typedTerm)
 
-				case Lib.ListMem(meta, relevantMetas) &&
-					!Lib.ListMem(typedTerm, relevantMetas):
+				case relevantMetas.Contains(meta) &&
+					relevantMetas.Contains(typedTerm):
 					subsToReorganize.Set(meta, typedTerm)
 				}
 
 			default:
-				if Lib.ListMem(meta, relevantMetas) {
+				if relevantMetas.Contains(meta) {
 					res.Set(meta, term)
-					for _, candidateMeta := range term.GetMetas().GetSlice() {
-						if !Lib.ListMem(candidateMeta, relevantMetas) {
-							relevantMetas.Append(candidateMeta)
+					for _, candidateMeta := range term.GetMetas().Elements().GetSlice() {
+						if !relevantMetas.Contains(candidateMeta) {
 							hasChanged = true
 						}
 					}
+					relevantMetas = relevantMetas.Union(term.GetMetas())
 				}
 			}
 		}
@@ -161,15 +158,15 @@ func ReorganizeSubstitution(subs Unif.Substitutions) Unif.Substitutions {
 }
 
 /* Check if a substitution contains a metavirbale which is inside a given list of metavariable (check for the key, not the value) */
-func ContainsMetaMother(s Unif.Substitutions, mm Lib.List[AST.Meta]) bool {
+func ContainsMetaMother(s Unif.Substitutions, mm Lib.Set[AST.Meta]) bool {
 	for _, subst := range s {
 		k, v := subst.Get()
-		if Lib.ListMem(k, mm) {
+		if mm.Contains(k) {
 			return true
 		} else {
 			switch vtype := v.(type) {
 			case AST.Meta:
-				if Lib.ListMem(vtype, mm) {
+				if mm.Contains(vtype) {
 					return true
 				}
 			}
@@ -196,7 +193,7 @@ func ApplySubstitutionOnTerm(old_symbol AST.Meta, new_symbol, t AST.Term) AST.Te
 			res = new_symbol.Copy()
 		}
 	case AST.Fun:
-		res = AST.MakeFun(
+		res = AST.MakerFun(
 			nf.GetP(),
 			ApplySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
 			nf.GetTypeVars(),
@@ -382,7 +379,7 @@ func ApplySubstitutionOnMetaGen(s Unif.Substitutions, mg MetaGen) MetaGen {
 }
 
 /* Dispatch a list of substitution : containing mm or not */
-func DispatchSubst(subsList []Unif.Substitutions, mm Lib.List[AST.Meta]) ([]Unif.Substitutions, []Unif.Substitutions, []Unif.Substitutions) {
+func DispatchSubst(subsList []Unif.Substitutions, mm Lib.Set[AST.Meta]) ([]Unif.Substitutions, []Unif.Substitutions, []Unif.Substitutions) {
 	var subsWithMM []Unif.Substitutions
 	var subsWithMMUncleared []Unif.Substitutions
 	var subsWithoutMM []Unif.Substitutions

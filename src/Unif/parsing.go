@@ -80,23 +80,23 @@ func (t TermForm) Equals(t2 any) bool {
 	}
 }
 
-func (t TermForm) GetMetas() Lib.List[AST.Meta] {
+func (t TermForm) GetMetas() Lib.Set[AST.Meta] {
 	switch nt := t.GetTerm().(type) {
 	case AST.Meta:
-		return Lib.MkListV(nt)
+		return Lib.Singleton(nt)
 	case AST.Fun:
-		res := Lib.NewList[AST.Meta]()
+		res := Lib.EmptySet[AST.Meta]()
 
 		for _, m := range nt.GetArgs().GetSlice() {
 			switch mt := m.(type) {
 			case AST.Meta:
-				res = Lib.ListAdd(res, mt)
+				res = res.Add(mt)
 			}
 		}
 
 		return res
 	default:
-		return Lib.NewList[AST.Meta]()
+		return Lib.EmptySet[AST.Meta]()
 	}
 }
 
@@ -136,7 +136,7 @@ func ParseFormula(formula AST.Form) Sequence {
 	case TermForm:
 		if Glob.Is[AST.Fun](formula_type.GetTerm()) {
 			fun := Glob.To[AST.Fun](formula_type.GetTerm())
-			formula = makeTermForm(formula.GetIndex(), AST.MakeFun(fun.GetID(), TypeAndTermsToTerms(fun.GetTypeVars(), fun.GetArgs()), []AST.TypeApp{}, fun.GetTypeHint()))
+			formula = makeTermForm(formula.GetIndex(), AST.MakerFun(fun.GetID(), TypeAndTermsToTerms(fun.GetTypeVars(), fun.GetArgs()), []AST.TypeApp{}, fun.GetTypeHint()))
 		}
 
 		instructions := Sequence{formula: formula}

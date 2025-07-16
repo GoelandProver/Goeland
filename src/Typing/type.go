@@ -114,7 +114,7 @@ func secondPassTerm(term AST.Term, vars []AST.Var, types []AST.TypeApp) (AST.Ter
 			termsType = append(termsType, outType(tm))
 		}
 
-		return AST.MakeFun(t.GetID(), terms, v, getTypeOfFunction(t.GetName(), v, termsType)), []AST.TypeApp{}
+		return AST.MakerFun(t.GetID(), terms, v, getTypeOfFunction(t.GetName(), v, termsType)), []AST.TypeApp{}
 
 	case AST.Var:
 		for _, v := range types {

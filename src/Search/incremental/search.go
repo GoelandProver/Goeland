@@ -26,7 +26,7 @@ func (is *incrementalSearch) Search(formula AST.Form, bound int) bool {
 func (is *incrementalSearch) handleSearchResults() bool {
 	resultFound, finalProof := rootSearchNode.getResult()
 
-	Search.PrintProof(finalProof, Lib.NewList[AST.Meta]())
+	Search.PrintProof(finalProof, Lib.EmptySet[AST.Meta]())
 
 	return resultFound
 }

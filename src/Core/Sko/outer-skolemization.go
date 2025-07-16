@@ -46,13 +46,13 @@ import (
 **/
 
 type OuterSkolemization struct {
-	existingSymbols Lib.List[AST.Id]
+	existingSymbols Lib.Set[AST.Id]
 	mu              sync.Mutex
 }
 
 func MkOuterSkolemization() OuterSkolemization {
 	return OuterSkolemization{
-		existingSymbols: Lib.NewList[AST.Id](),
+		existingSymbols: Lib.EmptySet[AST.Id](),
 		mu:              sync.Mutex{},
 	}
 }
@@ -60,17 +60,19 @@ func MkOuterSkolemization() OuterSkolemization {
 func (sko OuterSkolemization) Skolemize(
 	_, form AST.Form,
 	x AST.Var,
-	fvs Lib.List[AST.Meta],
+	fvs Lib.Set[AST.Meta],
 ) (Skolemization, AST.Form) {
 	sko.mu.Lock()
 	symbol := genFreshSymbol(&sko.existingSymbols, sko.mu, x)
 	sko.mu.Unlock()
 
-	skolemFunc := AST.MakeFun(
+	metas := fvs.Elements()
+
+	skolemFunc := AST.MakerFun(
 		symbol,
-		Lib.ListMap(fvs, Glob.To[AST.Term]),
+		Lib.ListMap(metas, Glob.To[AST.Term]),
 		[]AST.TypeApp{},
-		mkSkoFuncType(fvs, x.GetTypeApp()),
+		mkSkoFuncType(metas, x.GetTypeApp()),
 	)
 
 	skolemizedForm, _ := form.ReplaceTermByTerm(
