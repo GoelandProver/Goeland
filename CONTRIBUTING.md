@@ -32,8 +32,27 @@ By default, a pull request that modifies the go source code has the `needs:ci`
 label. You may trigger CI jobs by adding the label `request:ci`, which will
 remove the `needs:ci` if it succeeds. Every time a new push is done on the pull
 request's branch, the `needs:ci` label will reappear. Avoid removing this label
-by hand, and always prefer requesting the CI. Moreover, it is your
-responsibility to put the right `part:` and `kind:` labels.
+by hand, and always prefer requesting the CI. 
 
-Once you approve the modifications, you should add the target milestone (i.e.,
-which version of Goéland should include the patch) before merging.
+It is the maintainer’s responsibility to:
+- add the appropriate `part:` and `kind:` labels,
+- approve changes once ready,
+- assign a milestone indicating the target Goéland release (i.e., which version of Goéland should include the patch) before merging.
+
+
+## Working with Pull Requests
+
+Before opening a pull request, make sure your branch is **up-to-date with the master's branch of `GoelandProver/Goeland`** or at least **mergeable without conflicts**. You can update your branch using:
+
+```bash
+git fetch masterBranch
+git rebase masterBranch
+```
+
+When preparing your PR:  
+* Target the master branch of `GoelandProver/Goeland`.
+* Push your branch to your fork first.
+* Then open a PR from that branch.
+
+Maintainers may ask you to squash your commits to simplify the history. However, squashing is not always required — in some cases, preserving the commit history is preferred. Wait for a maintainer's guidance before squashing. 
+
