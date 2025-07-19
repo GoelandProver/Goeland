@@ -28,12 +28,12 @@ it in the PR.
 
 ## For Maintainers
 
-By default, a pull request that modifies the go source code has the `needs:ci`
-label. You may trigger CI jobs by adding the label `request:ci`, which will
-remove the `needs:ci` if it succeeds. Every time a new push is done on the pull
-request's branch, the `needs:ci` label will reappear. Avoid removing this label
-by hand, and always prefer requesting the CI. Moreover, it is your
-responsibility to put the right `part:` and `kind:` labels.
+By default, a pull request that modifies the go source code has the `needs:ci` label. You
+may trigger CI jobs by adding the label `request:ci`, which will remove the `needs:ci` if
+it succeeds. Every time a new push is done on the pull request's branch, the `needs:ci`
+label will reappear. Try to never remove this label by hand, it is good practice to
+request a successful full ci run before merging the PR into the master's branch. Moreover,
+it is your responsibility to put the right `part:` and `kind:` labels.
 
 Once you approve the modifications, you should add the target milestone (i.e.,
 which version of Goéland should include the patch) before merging.
