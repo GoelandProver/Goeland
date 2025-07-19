@@ -41,6 +41,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /*************************/
@@ -183,8 +184,6 @@ func (n Node) Print() {
 	n.printAux(-1)
 }
 
-//ILL TODO: A Print function should not print, it should return a String that is then printed
-//Why is there a debug print followed by a normal print ?
 /* Auxiliary function to print a CodeTree. */
 func (n Node) printAux(tab int) {
 	// Print current value
@@ -192,8 +191,7 @@ func (n Node) printAux(tab int) {
 		if instr.IsEquivalent(Begin{}) {
 			tab += 1
 		}
-		Glob.PrintDebug("PT", strings.Repeat("\t", tab)+instr.ToString())
-		// fmt.Printf(strings.Repeat("\t", tab) + instr.ToString() + "\n")
+		Glob.PrintDebug("PT", Lib.MkLazy(func() string { return strings.Repeat("\t", tab) + instr.ToString() }))
 
 		if IsEnd(instr) {
 			tab -= 1
@@ -202,11 +200,10 @@ func (n Node) printAux(tab int) {
 
 	if n.isLeaf() {
 		for _, form := range n.formulae.Slice() {
-			Glob.PrintDebug("PT", strings.Repeat("\t", tab+1)+form.ToString())
-			// fmt.Printf(strings.Repeat("\t", tab+1) + form.ToString() + "\n")
+			Glob.PrintDebug("PT", Lib.MkLazy(func() string { return strings.Repeat("\t", tab+1) + form.ToString() }))
 		}
 	}
-	Glob.PrintDebug("PT", "\n")
+	Glob.PrintDebug("PT", Lib.MkLazy(func() string { return "\n" }))
 
 	// For each child, print the following sequences with tab = tab + 1
 	for _, child := range n.children {

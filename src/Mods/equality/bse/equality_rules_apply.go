@@ -41,63 +41,94 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
 )
 
 /* apply a rule */
 func applyRule(rs ruleStruct, ep EqualityProblem, parent chan answerEP, father_id uint64) {
-	Glob.PrintDebug("EQ-AR", fmt.Sprintf("Child of %v", father_id))
-	Glob.PrintDebug("EQ-AR", fmt.Sprintf("EQ before applying rule %v", ep.ToString()))
-	Glob.PrintDebug("EQ-AR", fmt.Sprintf("Apply rule %v", rs.toString()))
+	Glob.PrintDebug("EQ-AR", Lib.MkLazy(func() string { return fmt.Sprintf("Child of %v", father_id) }))
+	Glob.PrintDebug(
+		"EQ-AR",
+		Lib.MkLazy(func() string { return fmt.Sprintf("EQ before applying rule %v", ep.ToString()) }),
+	)
+	Glob.PrintDebug(
+		"EQ-AR",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Apply rule %v", rs.toString()) }),
+	)
 	switch rs.getRule() {
 	case LEFT:
 		applyLeftRule(rs, ep, parent, father_id)
 	case RIGHT:
 		applyRightRule(rs, ep, parent, father_id)
 	default:
-		Glob.PrintDebug("AR", "[EQ] Rule type unknown")
+		Glob.PrintDebug(
+			"AR",
+			Lib.MkLazy(func() string { return "[EQ] Rule type unknown" }),
+		)
 	}
 }
 
 /* Apply left rigid basic superposition rule */
 func applyLeftRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP, father_id uint64) {
-	Glob.PrintDebug("ALR", "Apply left rule")
+	Glob.PrintDebug(
+		"ALR",
+		Lib.MkLazy(func() string { return "Apply left rule" }),
+	)
 	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC())
 
 	if is_consistant_with_lpo {
-		Glob.PrintDebug("ALR", fmt.Sprintf("New term : %v", new_term.ToString()))
+		Glob.PrintDebug(
+			"ALR",
+			Lib.MkLazy(func() string { return fmt.Sprintf("New term : %v", new_term.ToString()) }),
+		)
 		new_eq_list := ep.GetE()
 		if rs.getIsSModified() {
 			new_eq_list[rs.getIndexEQList()] = eqStruct.MakeTermPair(new_term.Copy(), rs.getT())
 		} else {
 			new_eq_list[rs.getIndexEQList()] = eqStruct.MakeTermPair(rs.getS(), new_term.Copy())
 		}
-		Glob.PrintDebug("ALR", fmt.Sprintf("New EQ list : %v", new_eq_list.ToString()))
+		Glob.PrintDebug(
+			"ALR",
+			Lib.MkLazy(func() string { return fmt.Sprintf("New EQ list : %v", new_eq_list.ToString()) }),
+		)
 		tryEqualityReasoningProblem(makeEqualityProblem(new_eq_list, ep.GetS(), ep.GetT(), new_cl), father_chan, rs.getIndexEQList(), LEFT, father_id)
 	} else {
-		Glob.PrintDebug("ALR", "Not consistant with LPO, send nil")
+		Glob.PrintDebug(
+			"ALR",
+			Lib.MkLazy(func() string { return "Not consistant with LPO, send nil" }),
+		)
 		father_chan <- makeEmptyAnswerEP()
-		Glob.PrintDebug("ALR", "Die")
+		Glob.PrintDebug("ALR", Lib.MkLazy(func() string { return "Die" }))
 	}
 }
 
 /* Apply right rigid basic superposition rule */
 func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP, father_id uint64) {
-	Glob.PrintDebug("ARR", "Apply right rule")
+	Glob.PrintDebug(
+		"ARR",
+		Lib.MkLazy(func() string { return "Apply right rule" }),
+	)
 
 	is_consistant_with_lpo, new_term, new_cl := applyEQRule(rs.getL(), rs.getR(), rs.getLPrime(), rs.getS(), rs.getT(), ep.getC())
 
 	if is_consistant_with_lpo {
-		Glob.PrintDebug("ARR", fmt.Sprintf("New term : %v", new_term.ToString()))
+		Glob.PrintDebug(
+			"ARR",
+			Lib.MkLazy(func() string { return fmt.Sprintf("New term : %v", new_term.ToString()) }),
+		)
 		if rs.getIsSModified() {
 			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().GetE(), new_term.Copy(), rs.getT(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
 		} else {
 			tryEqualityReasoningProblem(makeEqualityProblem(ep.copy().GetE(), rs.getS(), new_term.Copy(), new_cl), father_chan, rs.getIndexEQList(), RIGHT, father_id)
 		}
 	} else {
-		Glob.PrintDebug("ARR", "Not consistant with LPO, send nil")
+		Glob.PrintDebug(
+			"ARR",
+			Lib.MkLazy(func() string { return "Not consistant with LPO, send nil" }),
+		)
 		father_chan <- makeEmptyAnswerEP()
-		Glob.PrintDebug("ARR", "Die")
+		Glob.PrintDebug("ARR", Lib.MkLazy(func() string { return "Die" }))
 	}
 }
 
@@ -109,10 +140,22 @@ func applyRightRule(rs ruleStruct, ep EqualityProblem, father_chan chan answerEP
 * sub_term_of s is a subterm of s unifible with l
 **/
 func applyEQRule(l, r, sub_term_of_s, s, t AST.Term, cs ConstraintStruct) (bool, AST.Term, ConstraintStruct) {
-	Glob.PrintDebug("AEQR", "Apply eq rule")
-	Glob.PrintDebug("AEQR", fmt.Sprintf("Replace %v by %v in %v", sub_term_of_s.ToString(), r.ToString(), s.ToString()))
+	Glob.PrintDebug(
+		"AEQR",
+		Lib.MkLazy(func() string { return "Apply eq rule" }),
+	)
+	Glob.PrintDebug(
+		"AEQR",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Replace %v by %v in %v", sub_term_of_s.ToString(), r.ToString(), s.ToString())
+		}),
+	)
 	new_s := s.Copy().ReplaceSubTermBy(sub_term_of_s, r)
-	Glob.PrintDebug("AEQR", fmt.Sprintf("s = %v, new_s = %v", s.ToString(), new_s.ToString()))
+	Glob.PrintDebug(
+		"AEQR",
+		Lib.MkLazy(func() string { return fmt.Sprintf("s = %v, new_s = %v", s.ToString(), new_s.ToString()) }),
+	)
 	constraints_list := cs.copy()
 
 	if !constraints_list.appendIfConsistant(MakeConstraint(PREC, eqStruct.MakeTermPair(r, l))) {

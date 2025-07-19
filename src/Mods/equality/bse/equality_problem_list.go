@@ -235,7 +235,10 @@ func buildEqualityProblemMultiListFromFormList(fl *AST.FormList, tn Unif.DataStr
 	res := makeEmptyEqualityProblemMultiList()
 	for _, p := range fl.Slice() {
 		if pt, ok := p.(AST.Pred); ok {
-			Glob.PrintDebug("BEPMLFFL", fmt.Sprintf("Pred found : %v", p.ToString()))
+			Glob.PrintDebug(
+				"BEPMLFFL",
+				Lib.MkLazy(func() string { return fmt.Sprintf("Pred found : %v", p.ToString()) }),
+			)
 			if !pt.GetID().Equals(AST.Id_eq) {
 				res = append(res, buildEqualityProblemMultiListFromPredList(pt, tn, eq.copy())...)
 			}
@@ -255,9 +258,15 @@ func buildEqualityProblemMultiList(fl *AST.FormList, tp, tn Unif.DataStructure) 
 		return res, false
 	}
 	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tn.Copy()), eq.copy())...)
-	Glob.PrintDebug("BEPML", fmt.Sprintf("Res after FromNEQ : %v", res.ToString()))
+	Glob.PrintDebug(
+		"BEPML",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Res after FromNEQ : %v", res.ToString()) }),
+	)
 	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.copy())...)
-	Glob.PrintDebug("BEPML", fmt.Sprintf("Res after FromForm : %v", res.ToString()))
+	Glob.PrintDebug(
+		"BEPML",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Res after FromForm : %v", res.ToString()) }),
+	)
 
 	if len(res) == 0 {
 		return res, false
