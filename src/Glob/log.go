@@ -69,8 +69,6 @@ func InitLogs() {
 	logDebug = log.New(wrt, "[\033[34mdebug\033[0m] ", 0)
 	logInfo = log.New(wrt, "[\033[32minfo\033[0m] ", 0)
 	logError = log.New(wrt, "[\033[31merror\033[0m] ", 0)
-	logPanic = log.New(wrt, "[\033[31mpanic\033[0m] ", 0)
-	logFatal = log.New(wrt, "[\033[35mfatal\033[0m] ", 0)
 	logWarning = log.New(wrt, "[\033[33mwarn\033[0m] ", 0)
 }
 
@@ -170,25 +168,6 @@ func PrintInfo(function, message string) {
 // The prefix for error messages is '[error]' in red.
 func PrintError(function, message string) {
 	printToLogger(logError, function, message)
-}
-
-// Prints the message into the terminal and the file as a panic message and calls panic()
-//
-// Use when something is not happening as it should and you want to call a panic.
-// The format of the panic message is '[function] message'.
-// The prefix for panic messages is '[panic]' in red.
-func PrintPanic(function, message string) {
-	printToLogger(logPanic, function, message)
-	panic(fmt.Sprintf("[%v] %v", function, message))
-}
-
-// Prints the message into the terminal and the file as a fatal message and calls os.Exit(1)
-//
-// Use when something is not happening as it should and you want to stop the current program immediatly.
-// The prefix for fatal messages is '[fatal]' in magenta.
-func PrintFatal(function, message string) {
-	printToLogger(logFatal, function, message)
-	os.Exit(1)
 }
 
 func PrintWarn(function, message string) {
