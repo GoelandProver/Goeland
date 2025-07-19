@@ -51,7 +51,6 @@ import (
 func (n Node) Unify(formula AST.Form) (bool, []MatchingSubstitutions) {
 	machine := makeMachine()
 	res := machine.unify(n, formula)
-	// Glob.PrintDebug("Unify", fmt.Sprintf("Res = %v", !reflect.DeepEqual(machine.failure, res)))
 	return !reflect.DeepEqual(machine.failure, res), res // return found, res
 }
 
@@ -95,19 +94,54 @@ func (m *Machine) unify(node Node, formula AST.Form) []MatchingSubstitutions {
 func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 	for _, instr := range node.value {
 
-		Glob.PrintDebug("UX", "------------------------")
-		Glob.PrintDebug("UX", fmt.Sprintf("Instr: %v", instr.ToString()))
-		Glob.PrintDebug("UX", fmt.Sprintf("Meta : %v", m.meta.ToString()))
-		Glob.PrintDebug("UX", fmt.Sprintf("Subst : %v", SubstPairListToString(m.subst)))
-		Glob.PrintDebug("UX", fmt.Sprintf("Post : %v", IntPairistToString(m.post)))
-		Glob.PrintDebug("UX", fmt.Sprintf("IsLocked : %v", m.isLocked()))
-		Glob.PrintDebug("UX", fmt.Sprintf("HasPushed : %v", m.hasPushed))
-		Glob.PrintDebug("UX", fmt.Sprintf("HasPoped : %v", m.hasPoped))
-		Glob.PrintDebug("UX", fmt.Sprintf("m.beginCount: %v - m.beginLock : %v", m.beginCount, m.beginLock))
-		Glob.PrintDebug("UX", fmt.Sprintf("m.TopLevelCount: %v - m.TopLevelTot : %v", m.topLevelCount, m.topLevelTot))
-		Glob.PrintDebug("UX", fmt.Sprintf("Cursor: %v/%v", m.q, m.terms.Len()))
-		Glob.PrintDebug("UX", fmt.Sprintf("m.terms[cursor] : %v", m.terms.At(m.q).ToString()))
-		Glob.PrintDebug("UX", fmt.Sprintf("m.terms : %v", m.terms.ToString(AST.Term.ToString, ",", "{}")))
+		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return "------------------------" }))
+		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return fmt.Sprintf("Instr: %v", instr.ToString()) }))
+		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return fmt.Sprintf("Meta : %v", m.meta.ToString()) }))
+		Glob.PrintDebug(
+			"UX",
+			Lib.MkLazy(func() string { return fmt.Sprintf("Subst : %v", SubstPairListToString(m.subst)) }),
+		)
+		Glob.PrintDebug(
+			"UX",
+			Lib.MkLazy(func() string { return fmt.Sprintf("Post : %v", IntPairistToString(m.post)) }),
+		)
+		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return fmt.Sprintf("IsLocked : %v", m.isLocked()) }))
+		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return fmt.Sprintf("HasPushed : %v", m.hasPushed) }))
+		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return fmt.Sprintf("HasPoped : %v", m.hasPoped) }))
+		Glob.PrintDebug(
+			"UX",
+			Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"m.beginCount: %v - m.beginLock : %v",
+					m.beginCount,
+					m.beginLock)
+			}),
+		)
+		Glob.PrintDebug(
+			"UX",
+			Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"m.TopLevelCount: %v - m.TopLevelTot : %v",
+					m.topLevelCount,
+					m.topLevelTot)
+			}),
+		)
+		Glob.PrintDebug(
+			"UX",
+			Lib.MkLazy(func() string { return fmt.Sprintf("Cursor: %v/%v", m.q, m.terms.Len()) }),
+		)
+		Glob.PrintDebug(
+			"UX",
+			Lib.MkLazy(func() string { return fmt.Sprintf("m.terms[cursor] : %v", m.terms.At(m.q).ToString()) }),
+		)
+		Glob.PrintDebug(
+			"UX",
+			Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"m.terms : %v",
+					m.terms.ToString(AST.Term.ToString, ",", "{}"))
+			}),
+		)
 
 		switch instr := instr.(type) {
 		case Begin:
@@ -144,7 +178,6 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 	matching := []MatchingSubstitutions{}
 
 	if node.isLeaf() {
-		// Glob.PrintDebug("UX", fmt.Sprintf("Is leaf : %v", node.formulae.ToString()))
 		for _, f := range node.formulae.Slice() {
 			if reflect.TypeOf(f) == reflect.TypeOf(AST.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(TermForm{}) {
 				// Rebuild final substitution between meta and subst
@@ -162,17 +195,23 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 /* Unify on goroutines - to manage die message */
 /* TODO : remove when debug ok */
 func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []MatchingSubstitutions, father_id uint64) {
-	Glob.PrintDebug("UA", fmt.Sprintf("Child of %v, Unify Aux", father_id))
+	Glob.PrintDebug(
+		"UA",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Child of %v, Unify Aux", father_id) }),
+	)
 	subs := m.unifyAux(n)
 	ch <- subs
-	Glob.PrintDebug("UA", "Die")
+	Glob.PrintDebug("UA", Lib.MkLazy(func() string { return "Die" }))
 }
 
 /* Launches each child of the current node in a goroutine. */
 func (m *Machine) launchChildrenSearch(node Node) []MatchingSubstitutions {
 	channels := []chan []MatchingSubstitutions{}
 	for _, c := range node.children {
-		Glob.PrintDebug("LCS", fmt.Sprintf("Next symbol = %v", c.getValue()[0].ToString()))
+		Glob.PrintDebug(
+			"LCS",
+			Lib.MkLazy(func() string { return fmt.Sprintf("Next symbol = %v", c.getValue()[0].ToString()) }),
+		)
 		channels = append(channels, make(chan []MatchingSubstitutions))
 	}
 
@@ -223,9 +262,7 @@ func (m *Machine) end(instrTerm AST.Term) Status {
 
 /* Algorithm for the instruction Right. */
 func (m *Machine) right() Status {
-	//Glob.PrintDebug("RIGHT", "RIGHT")
 	if m.isUnlocked() {
-		// Glob.PrintDebug("RIGHT", "IS UNLOCKED")
 		m.q += 1
 		if m.q > m.terms.Len() {
 			return Status(ERROR)

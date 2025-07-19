@@ -50,6 +50,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/assisted"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 	"github.com/GoelandProver/Goeland/Parser"
@@ -94,7 +95,7 @@ func main() {
 
 // Start solving
 func startSearch(form AST.Form, bound int) {
-	Glob.PrintDebug(main_label, "Start search")
+	Glob.PrintDebug(main_label, Lib.MkLazy(func() string { return "Start search" }))
 
 	// FIXME: assisted should be a plugin.
 	// Ideally, we should create a hook here in order to let plugins do what
@@ -125,7 +126,10 @@ func presearchLoader() (AST.Form, int) {
 
 	statements, bound, containsEquality := Parser.ParseTPTPFile(problem)
 
-	Glob.PrintDebug(main_label, fmt.Sprintf("Statement : %s", Core.StatementListToString(statements)))
+	Glob.PrintDebug(
+		main_label,
+		Lib.MkLazy(func() string { return fmt.Sprintf("Statement : %s", Core.StatementListToString(statements)) }),
+	)
 
 	if Glob.GetLimit() != -1 {
 		bound = Glob.GetLimit()
@@ -183,7 +187,10 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			file_name := statement.GetName()
 
 			realname, err := getFile(file_name, problemDir)
-			Glob.PrintDebug(main_label, fmt.Sprintf("File to parse : %s\n", realname))
+			Glob.PrintDebug(
+				main_label,
+				Lib.MkLazy(func() string { return fmt.Sprintf("File to parse : %s\n", realname) }),
+			)
 
 			if err != nil {
 				Glob.PrintError(main_label, err.Error())

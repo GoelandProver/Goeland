@@ -40,6 +40,7 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -65,16 +66,33 @@ func (bes *BasicEqualityStruct) AddGoal(goal []eqStruct.TermPair) {
 }
 
 func (bes *BasicEqualityStruct) Solve() (subs []Unif.Substitutions, success bool) {
-	Glob.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning multilist : %v", bes.goals.Len()))
+	Glob.PrintDebug(
+		"ERML",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Start of Equality reasoning multilist : %v",
+				bes.goals.Len())
+		}),
+	)
 	substs_res := []Unif.Substitutions{}
 	found := false
 
 	for _, goal := range bes.goals.Slice() {
 		epl := makeEqualityProblemList(bes.assumptions.Slice(), goal.Slice())
 
-		Glob.PrintDebug("ERML", fmt.Sprintf("iteration on EPL : %v", epl.ToString()))
+		Glob.PrintDebug(
+			"ERML",
+			Lib.MkLazy(func() string { return fmt.Sprintf("iteration on EPL : %v", epl.ToString()) }),
+		)
 		if has_solution, subst_res_tmp := equalityReasoningList(epl); has_solution {
-			Glob.PrintDebug("ERML", fmt.Sprintf("Solution found for one EPL : %v !", Unif.SubstListToString(subst_res_tmp)))
+			Glob.PrintDebug(
+				"ERML",
+				Lib.MkLazy(func() string {
+					return fmt.Sprintf(
+						"Solution found for one EPL : %v !",
+						Unif.SubstListToString(subst_res_tmp))
+				}),
+			)
 			found = true
 			for subst_res_tmp_element := range subst_res_tmp {
 				substs_res = Unif.AppendIfNotContainsSubst(substs_res, subst_res_tmp[subst_res_tmp_element])
@@ -82,7 +100,14 @@ func (bes *BasicEqualityStruct) Solve() (subs []Unif.Substitutions, success bool
 		}
 	}
 
-	Glob.PrintDebug("ERML", fmt.Sprintf("Final subst after ER : %v", Unif.SubstListToString(substs_res)))
+	Glob.PrintDebug(
+		"ERML",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Final subst after ER : %v",
+				Unif.SubstListToString(substs_res))
+		}),
+	)
 	return substs_res, found
 }
 
@@ -126,15 +151,28 @@ func RunEqualityReasoning(es eqStruct.EqualityStruct, epml EqualityProblemMultiL
 * Result : true if all of the problem in the list agrees on at least one substitution, and the corresponding substitutions
 **/
 func equalityReasoningList(epl EqualityProblemList) (bool, []Unif.Substitutions) {
-	Glob.PrintDebug("ERML", fmt.Sprintf("Start of Equality reasoning list : %v", epl.ToString()))
+	Glob.PrintDebug(
+		"ERML",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Start of Equality reasoning list : %v", epl.ToString()) }),
+	)
 
 	substs_res := []Unif.Substitutions{}
 
 	for _, ep := range epl {
-		Glob.PrintDebug("ERL", fmt.Sprintf("Iteration on EP : %v", ep.ToString()))
+		Glob.PrintDebug(
+			"ERL",
+			Lib.MkLazy(func() string { return fmt.Sprintf("Iteration on EP : %v", ep.ToString()) }),
+		)
 		// Each step manage one problem with n subtitutions
 		if has_solution, subst_res_tmp := manageEqualityReasoningProblem(ep.copy(), substs_res); has_solution {
-			Glob.PrintDebug("ERL", fmt.Sprintf("Solution found for on EP : %v !", Unif.SubstListToString(subst_res_tmp)))
+			Glob.PrintDebug(
+				"ERL",
+				Lib.MkLazy(func() string {
+					return fmt.Sprintf(
+						"Solution found for on EP : %v !",
+						Unif.SubstListToString(subst_res_tmp))
+				}),
+			)
 			substs_res = Unif.CopySubstList(subst_res_tmp)
 		} else {
 			return false, []Unif.Substitutions{Unif.Failure()}
@@ -145,7 +183,10 @@ func equalityReasoningList(epl EqualityProblemList) (bool, []Unif.Substitutions)
 
 /* return true if at least on subst on the subst list returns result, and the corresponding substitution list */
 func manageEqualityReasoningProblem(ep EqualityProblem, sl []Unif.Substitutions) (bool, []Unif.Substitutions) {
-	Glob.PrintDebug("ERPWAS", "Start on equality reasoning  problem with apply subst")
+	Glob.PrintDebug(
+		"ERPWAS",
+		Lib.MkLazy(func() string { return "Start on equality reasoning  problem with apply subst" }),
+	)
 	if len(sl) == 0 {
 		subst := launchEqualityReasoningProblem(ep)
 		return len(subst) > 0, subst

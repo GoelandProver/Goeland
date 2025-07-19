@@ -41,6 +41,7 @@ import (
 	"reflect"
 
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -55,25 +56,34 @@ func launchEqualityReasoningProblem(ep EqualityProblem) []Unif.Substitutions {
 
 /* try equalityReasoningProblem */
 func tryEqualityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, last_applied_rule_index, last_applied_rule_type int, father_id uint64) {
-	Glob.PrintDebug("TERP", fmt.Sprintf("Child of %v", father_id))
+	Glob.PrintDebug(
+		"TERP",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Child of %v", father_id) }),
+	)
 	select {
 	case <-father_chan: // kil order
 	default:
 		// No kill order, let's apply the next rules.
 		found, substs := equalityReasoningProblem(ep, father_chan, last_applied_rule_index, last_applied_rule_type)
-		Glob.PrintDebug("TERP", "Send solution to father_chan")
+		Glob.PrintDebug(
+			"TERP",
+			Lib.MkLazy(func() string { return "Send solution to father_chan" }),
+		)
 		select {
 		case <-father_chan: // Kill order received, it's finished anyway.
-			Glob.PrintDebug("TERP", "Kill order recieved")
+			Glob.PrintDebug(
+				"TERP",
+				Lib.MkLazy(func() string { return "Kill order recieved" }),
+			)
 		case father_chan <- makeAnswerEP(found, substs): // Otherwise, send result to father.
-			Glob.PrintDebug("TERP", "Message sent")
+			Glob.PrintDebug("TERP", Lib.MkLazy(func() string { return "Message sent" }))
 		}
 	}
 }
 
 /* launch an equality reasoning problem resolution. Stop when the first solution is found */
 func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, last_applied_rule_index, last_applied_rule_type int) (bool, []Unif.Substitutions) {
-	Glob.PrintDebug("ERP", fmt.Sprintf("EP : %v", ep.ToString()))
+	Glob.PrintDebug("ERP", Lib.MkLazy(func() string { return fmt.Sprintf("EP : %v", ep.ToString()) }))
 	substs_res := []Unif.Substitutions{}
 	unif_found := false
 
@@ -88,10 +98,17 @@ func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, las
 
 	// Check stop case
 	if checkStopCases(ep) {
-		Glob.PrintDebug("ERP", fmt.Sprintf("Stop case found ! Send : %v", Unif.SubstListToString(substs_res)))
+		Glob.PrintDebug(
+			"ERP",
+			Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"Stop case found ! Send : %v",
+					Unif.SubstListToString(substs_res))
+			}),
+		)
 		return true, substs_res
 	} else {
-		Glob.PrintDebug("ERP", "Stop case not found")
+		Glob.PrintDebug("ERP", Lib.MkLazy(func() string { return "Stop case not found" }))
 	}
 
 	// Apply available rule
@@ -101,7 +118,10 @@ func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, las
 		substs_res = append(substs_res, solution_subst...)
 	}
 
-	Glob.PrintDebug("ERP", fmt.Sprintf("Send : %v !", Unif.SubstListToString(substs_res)))
+	Glob.PrintDebug(
+		"ERP",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Send : %v !", Unif.SubstListToString(substs_res)) }),
+	)
 	return unif_found, substs_res
 }
 
@@ -111,9 +131,17 @@ func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, las
 func manageRLRules(ep EqualityProblem, father chan answerEP, last_applied_rule_index, last_applied_rule_type int) (bool, []Unif.Substitutions) {
 
 	// Compute right rule
-	Glob.PrintDebug("MRLR", "Try apply right rules !")
+	Glob.PrintDebug("MRLR", Lib.MkLazy(func() string { return "Try apply right rules !" }))
 	rules_to_apply := tryApplyRightRules(ep) // TODO : ne chercher la contradiction seulement avec l'index donné
-	Glob.PrintDebug("MRLR", fmt.Sprintf("There is %v right rules available : %v ", len(rules_to_apply), rules_to_apply.toString()))
+	Glob.PrintDebug(
+		"MRLR",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"There is %v right rules available : %v ",
+				len(rules_to_apply),
+				rules_to_apply.toString())
+		}),
+	)
 	// apply right rules
 	res_right, subst_right := manageRule(ep, rules_to_apply, father)
 
@@ -122,13 +150,22 @@ func manageRLRules(ep EqualityProblem, father chan answerEP, last_applied_rule_i
 		return true, subst_right
 	} else {
 		// Compute left rule
-		Glob.PrintDebug("MRLR", "Try apply left rules !")
+		Glob.PrintDebug("MRLR", Lib.MkLazy(func() string { return "Try apply left rules !" }))
 		index_begin := 0
 		if last_applied_rule_type == LEFT {
 			index_begin = last_applied_rule_index
 		}
 		rules_to_apply = tryApplyLeftRules(ep, index_begin)
-		Glob.PrintDebug("MRLR", fmt.Sprintf("There is %v left rules available : %v ", len(rules_to_apply), rules_to_apply.toString()))
+		Glob.PrintDebug(
+			"MRLR",
+			Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"There is %v left rules available : %v ",
+					len(rules_to_apply),
+					rules_to_apply.toString(),
+				)
+			}),
+		)
 		return manageRule(ep, rules_to_apply, father)
 	}
 }
@@ -168,15 +205,34 @@ func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP) (bool
 	// Wait for at least on child to finish.
 	// TODO : perte complétude here
 	for remaining > 0 && !answer_found && !stop_found {
-		Glob.PrintDebug("SAEP", fmt.Sprintf("Remainig : %v - answer_found : %v - stop_found : %v", remaining, answer_found, stop_found))
+		Glob.PrintDebug(
+			"SAEP",
+			Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"Remainig : %v - answer_found : %v - stop_found : %v",
+					remaining,
+					answer_found,
+					stop_found,
+				)
+			}),
+		)
 		index, value, _ := reflect.Select(cases)
 		remaining--
 		if index == indexQuit {
-			Glob.PrintDebug("SAEP", "Close order received")
+			Glob.PrintDebug("SAEP", Lib.MkLazy(func() string { return "Close order received" }))
 			stop_found = true
 		} else {
 			res := value.Interface().(answerEP)
-			Glob.PrintDebug("SAEP", fmt.Sprintf("Recieved from %v : %v !", res.id, Unif.SubstListToString(res.substs)))
+			Glob.PrintDebug(
+				"SAEP",
+				Lib.MkLazy(func() string {
+					return fmt.Sprintf(
+						"Received from %v : %v !",
+						res.id,
+						Unif.SubstListToString(res.substs),
+					)
+				}),
+			)
 			hasAnswered[index] = true
 			if res.found {
 				answer_found = true
@@ -184,12 +240,12 @@ func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP) (bool
 					substs_res = Unif.AppendIfNotContainsSubst(substs_res, s)
 				}
 			} else {
-				Glob.PrintDebug("SAEP", "Child provide no solution")
+				Glob.PrintDebug("SAEP", Lib.MkLazy(func() string { return "Child provide no solution" }))
 			}
 		}
 	}
 
-	Glob.PrintDebug("SAEP", "End of select")
+	Glob.PrintDebug("SAEP", Lib.MkLazy(func() string { return "End of select" }))
 
 	selectCleanup(hasAnswered, chan_tab)
 	return answer_found, substs_res

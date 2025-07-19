@@ -152,7 +152,7 @@ func getArgsTypes(
 			types = append(types, tmpTerm.GetTypeApp())
 		// There shouldn't be Metas yet.
 		case AST.Meta:
-			Glob.PrintDebug("GAT", "Found a Meta while typing everything.")
+			Glob.PrintDebug("GAT", Lib.MkLazy(func() string { return "Found a Meta while typing everything." }))
 			// ID is filtered out
 		}
 	}

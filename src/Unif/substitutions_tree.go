@@ -51,7 +51,14 @@ import (
 * Merge both of them
 **/
 func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.Form) Substitutions {
-	Glob.PrintDebug("CS", fmt.Sprintf("Compute substitution : %v and %v", SubstPairListToString(subs), metasToSubs.ToString()))
+	Glob.PrintDebug(
+		"CS",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Compute substitution : %v and %v",
+				SubstPairListToString(subs), metasToSubs.ToString())
+		}),
+	)
 	metasFromTreeForm := Lib.NewList[AST.Meta]()
 	treeSubs := Substitutions{}
 
@@ -69,7 +76,15 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 	for _, value := range subs {
 		currentMeta := metasFromTreeForm.At(value.GetIndex())
 		currentValue := value.GetTerm()
-		Glob.PrintDebug("CS", fmt.Sprintf("Iterate on subst : %v and  %v", currentMeta.ToString(), currentValue.ToString()))
+		Glob.PrintDebug(
+			"CS",
+			Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"Iterate on subst : %v and  %v",
+					currentMeta.ToString(),
+					currentValue.ToString())
+			}),
+		)
 
 		if !currentMeta.Equals(currentValue) {
 			// Si current_meta a déjà une association dans metas
@@ -90,41 +105,61 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 		}
 	}
 
-	Glob.PrintDebug("CS", fmt.Sprintf("before meta : %v", metasToSubs.ToString()))
+	Glob.PrintDebug(
+		"CS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("before meta : %v", metasToSubs.ToString()) }),
+	)
 	// Metas_subst eliminate
 	EliminateMeta(&metasToSubs)
 	Eliminate(&metasToSubs)
 	if metasToSubs.Equals(Failure()) {
 		return Failure()
 	}
-	Glob.PrintDebug("CS", fmt.Sprintf("After meta : %v", metasToSubs.ToString()))
+	Glob.PrintDebug(
+		"CS", Lib.MkLazy(func() string { return fmt.Sprintf("After meta : %v", metasToSubs.ToString()) }),
+	)
 
-	Glob.PrintDebug("CS", fmt.Sprintf("before tree_subst : %v", treeSubs.ToString()))
+	Glob.PrintDebug(
+		"CS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("before tree_subst : %v", treeSubs.ToString()) }),
+	)
 	// Tree subst elminate
 	EliminateMeta(&treeSubs)
 	Eliminate(&treeSubs)
 	if treeSubs.Equals(Failure()) {
 		return Failure()
 	}
-	Glob.PrintDebug("CS", fmt.Sprintf("after tree_subst : %v", treeSubs.ToString()))
+	Glob.PrintDebug(
+		"CS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("after tree_subst : %v", treeSubs.ToString()) }),
+	)
 
 	// Fusion
 	res, _ := MergeSubstitutions(metasToSubs, treeSubs)
 	if res.Equals(Failure()) {
 		return res
 	}
-	Glob.PrintDebug("CS", fmt.Sprintf("after merge : %v", res.ToString()))
+	Glob.PrintDebug(
+		"CS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("after merge : %v", res.ToString()) }),
+	)
 
 	EliminateMeta(&res)
 	Eliminate(&res)
-	Glob.PrintDebug("CS", fmt.Sprintf("after eliminate : %v", res.ToString()))
+	Glob.PrintDebug(
+		"CS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("after eliminate : %v", res.ToString()) }),
+	)
 
 	return res
 }
 
 /* Call addUnification and returns a status - modify m.meta */
 func (m *Machine) trySubstituteMeta(i AST.Term, j AST.Term) Status {
-	Glob.PrintDebug("TS", fmt.Sprintf("Try substitute : %v and %v", i.ToString(), j.ToString()))
+	Glob.PrintDebug(
+		"TS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Try substitute : %v and %v", i.ToString(), j.ToString()) }),
+	)
 	new_meta := AddUnification(i, j, m.meta.Copy())
 	if new_meta.Equals(Failure()) {
 		return Status(ERROR)
@@ -134,7 +169,16 @@ func (m *Machine) trySubstituteMeta(i AST.Term, j AST.Term) Status {
 }
 
 func AddUnification(term1, term2 AST.Term, subst Substitutions) Substitutions {
-	Glob.PrintDebug("AU", fmt.Sprintf("Add unification : %v and %v to %v", term1.ToString(), term2.ToString(), subst.ToString()))
+	Glob.PrintDebug(
+		"AU",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Add unification : %v and %v to %v",
+				term1.ToString(),
+				term2.ToString(),
+				subst.ToString())
+		}),
+	)
 	// unify with ct only if the term already has an unification or if there is 2 fun. Just add it and eliminate otherwise.
 	t1v, _ := subst.Get(term1.ToMeta())
 	t2v, _ := subst.Get(term2.ToMeta())
@@ -168,7 +212,15 @@ func AddUnification(term1, term2 AST.Term, subst Substitutions) Substitutions {
 
 /* Adds the unifications found to the meta substitutions from running the algorithm on term1 and term2. */
 func (m *Machine) addUnifications(term1, term2 AST.Term) Status {
-	Glob.PrintDebug("au", fmt.Sprintf("add unification : %v and %v", term1.ToString(), term2.ToString()))
+	Glob.PrintDebug(
+		"au",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"add unification : %v and %v",
+				term1.ToString(),
+				term2.ToString())
+		}),
+	)
 	meta := tryUnification(term1.Copy(), term2.Copy(), m.meta.Copy()) // Return empty or an array of 1 matching substitution, which is m.meta improved wit (term1, term2)
 
 	if len(meta) == 0 {
@@ -184,7 +236,15 @@ func (m *Machine) addUnifications(term1, term2 AST.Term) Status {
 
 /* Tries to unify term1 with term2, depending on the substitutions already found by the parent unification process. */
 func tryUnification(term1, term2 AST.Term, meta Substitutions) []MatchingSubstitutions {
-	Glob.PrintDebug("TU", fmt.Sprintf("Try unification : %v and %v", term1.ToString(), term2.ToString()))
+	Glob.PrintDebug(
+		"TU",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Try unification : %v and %v",
+				term1.ToString(),
+				term2.ToString())
+		}),
+	)
 	aux := makeMachine()
 	aux.terms = Lib.MkListV(term2)
 	aux.meta = meta
@@ -197,7 +257,15 @@ func tryUnification(term1, term2 AST.Term, meta Substitutions) []MatchingSubstit
 
 /* Merge two valid substitutions */
 func MergeSubstitutions(s1, s2 Substitutions) (Substitutions, bool) {
-	Glob.PrintDebug("MS", fmt.Sprintf("Merge substitution : %v and %v", s1.ToString(), s2.ToString()))
+	Glob.PrintDebug(
+		"MS",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Merge substitution : %v and %v",
+				s1.ToString(),
+				s2.ToString())
+		}),
+	)
 	res := Substitutions{}
 	same_key := false
 

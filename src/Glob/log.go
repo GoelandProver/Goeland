@@ -37,6 +37,7 @@ package Glob
 
 import (
 	"fmt"
+	"github.com/GoelandProver/Goeland/Lib"
 	"io"
 	"log"
 	"os"
@@ -74,8 +75,8 @@ func InitLogs() {
 
 /* Sets the function to be called when PrintDebug is called. This way, we avoid an if test when not in debug mode. */
 func EnableDebug() {
-	PrintDebug = func(function, message string) {
-		printToLogger(logDebug, function, message)
+	PrintDebug = func(function string, message Lib.Lazy[string]) {
+		printToLogger(logDebug, function, message.Run())
 	}
 
 	getId = func() (options []any, str string) {
@@ -152,7 +153,7 @@ func EnableWriteLogs() {
 // Use when you want to display a message for debugging purposes only.
 // The prefix for debug messages is '[debug]' in blue.
 // Will only print in the terminal and/or the file if the corresponding options -debug and -dif have been set.
-var PrintDebug = func(function, message string) {}
+var PrintDebug = func(function string, message Lib.Lazy[string]) {}
 
 // Prints the message into the terminal and the file as an information message
 //

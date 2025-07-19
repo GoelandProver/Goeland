@@ -99,9 +99,15 @@ func (c *Constraint) applySubstitution(s Unif.Substitutions) {
 
 /* return true if the constraint is not violated, false otherwise  + true is the contraint is comparable, false otherwise + update c into the useful part of the constraint */
 func (c *Constraint) checkLPO() (bool, bool) {
-	Glob.PrintDebug("CLPO", fmt.Sprintf("Type %v, cst : %v", c.getCType(), c.toString()))
+	Glob.PrintDebug(
+		"CLPO",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Type %v, cst : %v", c.getCType(), c.toString()) }),
+	)
 	cs := compareLPO(c.getTP().GetT1(), c.getTP().GetT2())
-	Glob.PrintDebug("CLPO", fmt.Sprintf("res : %v, is_comparable : %v", cs.order, cs.is_comparable))
+	Glob.PrintDebug(
+		"CLPO",
+		Lib.MkLazy(func() string { return fmt.Sprintf("res : %v, is_comparable : %v", cs.order, cs.is_comparable) }),
+	)
 
 	if cs.is_comparable {
 		switch c.getCType() {
