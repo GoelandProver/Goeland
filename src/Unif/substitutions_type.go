@@ -61,7 +61,10 @@ func (s Substitutions) ToStringForProof() string {
 
 /* Helper function, prints the content of a Substitutions object. */
 func (s Substitutions) Print() {
-	Glob.PrintDebug("Print", fmt.Sprintf("Success. %v ", s.ToString()))
+	Glob.PrintDebug(
+		"Print",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Success. %v ", s.ToString()) }),
+	)
 }
 
 /* Substitution list into string */
@@ -229,27 +232,24 @@ func HasSubst(s Substitutions, m AST.Meta) bool {
 /*** Occur check ***/
 /* An invalid occur-check happens if the same meta-variable as the key is found in the value. */
 func OccurCheckValid(key AST.Meta, val AST.Term) bool {
-	// Glob.PrintDebug("OC", fmt.Sprintf("Occur-chek between %v and %v", key.ToString(), val.ToString()))
 	if val.IsFun() && isRecursive(val, key) || key.Equals(val) {
-		// Glob.PrintDebug("OC", "OC FAIL")
 		return false
 	}
-	// Glob.PrintDebug("OC", "OC SUCCESS")
 	return true
 }
 
 /* Checks if the substitution is of type (X, f(X)). */
 func isRecursive(t AST.Term, m AST.Meta) bool {
-	// Glob.PrintDebug("IR", fmt.Sprintf("IR between %v and %v", t.ToString(), m.ToString()))
 	switch t := t.(type) {
 	case AST.Fun:
-		// Glob.PrintDebug("IR", "IR FUN")
 		return areFuncArgsRecursive(t, m)
 	case AST.Meta:
-		// Glob.PrintDebug("IR", "IR META")
 		return t.Equals(m)
 	default:
-		Glob.PrintDebug("IR", "Error: [[substitution.go:157]] shouldn't be attained.")
+		Glob.PrintDebug(
+			"IR",
+			Lib.MkLazy(func() string { return "Error: [[substitution.go:157]] shouldn't be attained." }),
+		)
 	}
 
 	return false
@@ -257,7 +257,6 @@ func isRecursive(t AST.Term, m AST.Meta) bool {
 
 /* Checks if any argument of the function f contains the metavariable m. */
 func areFuncArgsRecursive(f AST.Fun, m AST.Meta) bool {
-	// Glob.PrintDebug("AFAR", fmt.Sprintf("AFAR between %v and %v", f.ToString(), m.ToString()))
 	for _, term := range f.GetArgs().GetSlice() {
 		if isRecursive(term, m) {
 			return true
@@ -269,7 +268,6 @@ func areFuncArgsRecursive(f AST.Fun, m AST.Meta) bool {
 /*** Eliminate ***/
 /* Eliminate - apply each element of the subst on the entire substitution, because an element can't œappears on the rigth and and the left if a substitution */
 func Eliminate(s *Substitutions) {
-	// Glob.PrintDebug("EL", fmt.Sprintf("Eliminate on %v", s.ToString()))
 	if s.Equals(Failure()) {
 		return
 	}
@@ -385,7 +383,10 @@ func eliminateList(
 
 /* Eliminates one of the subsitution of a pair like (X, Y) (Y, X). It will keep the first one indexed in the map. */
 func EliminateMeta(subst *Substitutions) {
-	Glob.PrintDebug("EM", fmt.Sprintf("Eliminate Meta on %v", subst.ToString()))
+	Glob.PrintDebug(
+		"EM",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Eliminate Meta on %v", subst.ToString()) }),
+	)
 	meta := Substitutions{}
 
 	for _, t := range *subst {

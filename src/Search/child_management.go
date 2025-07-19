@@ -78,24 +78,52 @@ func MakeWcdArgs(
 }
 
 func (args wcdArgs) printDebugMessages() {
-	Glob.PrintDebug("WC", "Waiting children")
-	Glob.PrintDebug("WC", fmt.Sprintf("Id : %v, original node id :%v", args.nodeId, args.originalNodeId))
-	Glob.PrintDebug("WC", fmt.Sprintf("Child order : %v", args.childOrdering))
-	Glob.PrintDebug("WC", fmt.Sprintf("Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v", len(args.children), len(args.substsBT), len(args.formsBT), args.st.GetBTOnFormulas(), Core.SubstAndFormListToString(args.givenSubsts), args.st.GetAppliedSubst().ToString(), Core.SubstAndFormListToString(args.st.GetSubstsFound())))
-	Glob.PrintDebug("WC", fmt.Sprintf(
-		"MM : %v",
-		Lib.ListToString(args.st.GetMM().Elements(), ",", "[]"),
-	))
-	Glob.PrintDebug("WC", fmt.Sprintf(
-		"MC : %v",
-		Lib.ListToString(args.st.GetMC().Elements(), ",", "[]"),
-	))
+	Glob.PrintDebug("WC", Lib.MkLazy(func() string { return "Waiting children" }))
+	Glob.PrintDebug(
+		"WC",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Id : %v, original node id :%v",
+				args.nodeId,
+				args.originalNodeId)
+		}),
+	)
+	Glob.PrintDebug(
+		"WC",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Child order : %v", args.childOrdering) }),
+	)
+	Glob.PrintDebug(
+		"WC",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Children : %v, BT_subst : %v, BT_formulas : %v, bt_bool : %v, Given_subst : %v, applied subst : %v, subst_found : %v",
+				len(args.children),
+				len(args.substsBT),
+				len(args.formsBT),
+				args.st.GetBTOnFormulas(),
+				Core.SubstAndFormListToString(args.givenSubsts),
+				args.st.GetAppliedSubst().ToString(),
+				Core.SubstAndFormListToString(args.st.GetSubstsFound()))
+		}),
+	)
+	Glob.PrintDebug("WC", Lib.MkLazy(func() string {
+		return fmt.Sprintf(
+			"MM : %v",
+			Lib.ListToString(args.st.GetMM().Elements(), ",", "[]"),
+		)
+	}))
+	Glob.PrintDebug("WC", Lib.MkLazy(func() string {
+		return fmt.Sprintf(
+			"MC : %v",
+			Lib.ListToString(args.st.GetMC().Elements(), ",", "[]"),
+		)
+	}))
 }
 
 /* Utilitary subfunctions */
 
 func (ds *destructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChildren [][]ProofStruct) error {
-	Glob.PrintDebug("WC", "All children has finished by themselves")
+	Glob.PrintDebug("WC", Lib.MkLazy(func() string { return "All children has finished by themselves" }))
 
 	// All children are closed & did not send any subst, i.e., they can be closed.
 	closeChildren(&args.children, true)
@@ -131,19 +159,40 @@ func (ds *destructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChild
 }
 
 func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]ProofStruct, substs []Core.SubstAndForm) error {
-	Glob.PrintDebug("WC", fmt.Sprintf("All children agree on the substitution(s) : %v", Unif.SubstListToString(Core.GetSubstListFromSubstAndFormList(substs))))
+	Glob.PrintDebug(
+		"WC",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"All children agree on the substitution(s) : %v",
+				Unif.SubstListToString(Core.GetSubstListFromSubstAndFormList(substs)))
+		}),
+	)
 
 	// Updates the proof with what the children have found
 	args.st = updateProof(args, proofChildren)
 	newMetas := args.toReintroduce
-	Glob.PrintDebug("WC", fmt.Sprintf("new meta to reintroduce: %v", Glob.IntListToString(newMetas)))
+	Glob.PrintDebug(
+		"WC",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"new meta to reintroduce: %v",
+				Glob.IntListToString(newMetas))
+		}),
+	)
 
 	// Remove all the metas introduced by the current node to only retrieve relevant ones for the parent.
 	resultingSubstsAndForms := []Core.SubstAndForm{}
 	resultingSubsts := []Unif.Substitutions{}
 
 	for _, subst := range substs {
-		Glob.PrintDebug("WC", fmt.Sprintf("Check the susbt, remove useless element and merge with applied subst :%v", subst.GetSubst().ToString()))
+		Glob.PrintDebug(
+			"WC",
+			Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"Check the susbt, remove useless element and merge with applied subst :%v",
+					subst.GetSubst().ToString())
+			}),
+		)
 		err, merged := Core.MergeSubstAndForm(subst, args.st.GetAppliedSubst())
 
 		if err != nil {
@@ -174,10 +223,17 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 			}
 
 			newMetas = Glob.UnionIntList(newMetas, retrieveMetaFromSubst(cleaned))
-			Glob.PrintDebug("WC", fmt.Sprintf("New meta to reintroduce in loop: %v - %v ", Glob.IntListToString(newMetas), Glob.IntListToString(retrieveMetaFromSubst(cleaned))))
+			Glob.PrintDebug(
+				"WC",
+				Lib.MkLazy(func() string {
+					return fmt.Sprintf(
+						"New meta to reintroduce in loop: %v - %v ",
+						Glob.IntListToString(newMetas),
+						Glob.IntListToString(retrieveMetaFromSubst(cleaned)))
+				}))
 
 		} else {
-			Glob.PrintDebug("WC", "Subst empty")
+			Glob.PrintDebug("WC", Lib.MkLazy(func() string { return "Subst empty" }))
 		}
 	}
 
@@ -200,7 +256,14 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 // If there is a problem of a child always checking the same substitution, it can be avoided here.
 func (bs *destructiveSearch) passSubstToChildren(args wcdArgs, substs []Core.SubstAndForm) {
 	subst, resultingSubsts := bs.chooseSubstitutionDestructive(Core.CopySubstAndFormList(substs), args.st.GetMM())
-	Glob.PrintDebug("WC", fmt.Sprintf("There is more than one substitution, choose one : %v and send it to children", subst.ToString()))
+	Glob.PrintDebug(
+		"WC",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"There is more than one substitution, choose one : %v and send it to children",
+				subst.ToString())
+		}),
+	)
 
 	sendSubToChildren(args.children, subst)
 
@@ -214,7 +277,12 @@ func (bs *destructiveSearch) passSubstToChildren(args wcdArgs, substs []Core.Sub
 }
 
 func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
-	Glob.PrintDebug("WC", "Open children previously found, tell to children to wait for me and try another substitution")
+	Glob.PrintDebug(
+		"WC",
+		Lib.MkLazy(func() string {
+			return "Open children previously found, tell to children to wait for me and try another substitution"
+		}),
+	)
 	closeChildren(&args.children, false)
 
 	// If the completeness mode is active, then we need to deal with forbidden substitutions.
@@ -223,10 +291,10 @@ func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
 	}
 
 	if args.st.GetBTOnFormulas() && len(args.formsBT) > 0 {
-		Glob.PrintDebug("WC", "Backtrack on DMT formulas.")
+		Glob.PrintDebug("WC", Lib.MkLazy(func() string { return "Backtrack on DMT formulas." }))
 		ds.manageBacktrackForDMT(args)
 	} else if len(args.substsBT) > 0 {
-		Glob.PrintDebug("WC", "Backtrack on substitutions.")
+		Glob.PrintDebug("WC", Lib.MkLazy(func() string { return "Backtrack on substitutions." }))
 		newSubst := ds.tryBTSubstitution(&args.substsBT, args.st.GetMM(), args.children)
 		WriteExchanges(args.fatherId, args.st, []Core.SubstAndForm{newSubst}, Core.MakeEmptySubstAndForm(), "WaitChildren - Backtrack on substitutions.")
 		// Mutually exclusive cases: when a backtrack is done on substitutions, this backtrack is prioritised from now on.
@@ -234,18 +302,27 @@ func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
 		args.overwrite = false
 		ds.waitChildren(args)
 	} else {
-		Glob.PrintDebug("WC", "A child is opened but no more backtracks are available.")
+		Glob.PrintDebug(
+			"WC",
+			Lib.MkLazy(func() string { return "A child is opened but no more backtracks are available." }),
+		)
 		WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Die - No more BT available")
 
 		// In the complete version, we just have to restart the proofsearch forbidding the bad substitutions.
 		if Glob.GetCompleteness() && len(args.children) > 1 && !args.currentSubst.IsEmpty() {
-			Glob.PrintDebug("WC", "Restart proof with forbidden substitutions.")
+			Glob.PrintDebug(
+				"WC",
+				Lib.MkLazy(func() string { return "Restart proof with forbidden substitutions." }),
+			)
 			sendForbiddenToChildren(args.children, args.st.GetForbiddenSubsts())
 			args.overwrite = false
 			args.currentSubst = Core.MakeEmptySubstAndForm()
 			ds.waitChildren(args)
 		} else {
-			Glob.PrintDebug("WC", "No solution. You should launch in complete mode.")
+			Glob.PrintDebug(
+				"WC",
+				Lib.MkLazy(func() string { return "No solution. You should launch in complete mode." }),
+			)
 			closeChildren(&args.children, true)
 			ds.sendSubToFather(args.c, false, true, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
 		}
@@ -273,7 +350,7 @@ func (ds *destructiveSearch) manageBacktrackForDMT(args wcdArgs) {
 	copiedState := args.st.Copy()
 	communicationChild := Communication{make(chan bool), make(chan Result)}
 	go ds.ProofSearch(Glob.GetGID(), copiedState, communicationChild, nextSaF.GetSaf().ToSubstAndForm(), childNode, args.originalNodeId, args.toReintroduce, false)
-	Glob.PrintDebug("PS", "GO !")
+	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "GO !" }))
 	Glob.IncrGoRoutine(1)
 
 	args.children = []Communication{communicationChild}

@@ -91,7 +91,7 @@ func initDefaultMap() {
 		DefaultMapString[BotType] = "$false"
 		DefaultMapString[AllQuant] = "!"
 		DefaultMapString[ExQuant] = "?"
-		DefaultMapString[AllTypeQuant] = "!"
+		DefaultMapString[AllTypeQuant] = ">!"
 		DefaultMapString[PredEmpty] = ""
 	}
 	DefaultMapString[QuantVarOpen] = "["

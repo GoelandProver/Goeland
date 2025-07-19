@@ -34,6 +34,7 @@ package Core
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -70,7 +71,7 @@ func (f FormListDS) InsertFormulaListToDataStructure(lf *AST.FormList) Unif.Data
 
 func (f FormListDS) Print() {
 	for _, f := range f.GetFL().Slice() {
-		Glob.PrintDebug("FLTS", f.ToString())
+		Glob.PrintDebug("FLTS", Lib.MkLazy(func() string { return f.ToString() }))
 	}
 }
 

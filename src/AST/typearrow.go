@@ -83,7 +83,7 @@ func (ta TypeArrow) instanciate(mapSubst map[TypeVar]TypeApp) TypeScheme {
 func (ta TypeArrow) ToString() string {
 	list := []string{ta.left.ToString()}
 	list = append(list, convert(ta.right, typeTToString[TypeApp])...)
-	return "(" + strings.Join(list, " -> ") + ")"
+	return "(" + strings.Join(list, " > ") + ")"
 }
 
 func (ta TypeArrow) Equals(oth interface{}) bool {
@@ -108,7 +108,10 @@ func (ta TypeArrow) GetPrimitives() []TypeApp {
 /* Makes a TypeArrow from two TypeSchemes */
 func MkTypeArrow(left TypeApp, typeApps ...TypeApp) TypeArrow {
 	if len(typeApps) < 1 {
-		Glob.PrintDebug("MKTA", "There should be at least one out type in a TypeArrow.")
+		Glob.PrintDebug(
+			"MKTA",
+			Lib.MkLazy(func() string { return "There should be at least one out type in a TypeArrow." }),
+		)
 		return TypeArrow{}
 	}
 	ta := TypeArrow{left: left, right: make(Lib.ComparableList[TypeApp], len(typeApps))}

@@ -40,6 +40,7 @@ package AST
 import (
 	"strings"
 
+	"fmt"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
@@ -130,6 +131,7 @@ func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
 		}
 		if k != len(types) {
 			pMap.lock.Unlock()
+			Glob.PrintInfo("PRMTR_TYPE", fmt.Sprintf("Name of the type: %s, length of the args: %d", name, len(types)))
 			Glob.PrintError("PRMTR_TYPE", "Parameterized type can not be instanciated with this number of arguments.")
 			return ParameterizedType{}
 		}

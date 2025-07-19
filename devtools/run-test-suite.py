@@ -10,11 +10,15 @@ from subprocess import PIPE, run
 class Parser:
     ARGS = "% args: "
     RES = "% result: "
+    ENV = "% env: "
+    EXIT_CODE = "% exit: "
 
     def __init__(self, filename):
         self.filename = filename
         self.parseArguments()
         self.parseResult()
+        self.parseEnv()
+        self.parseExitCode()
 
     def parseGen(self, pat):
         with open(self.filename) as f:
@@ -30,8 +34,16 @@ class Parser:
     def parseResult(self):
         self.expectedResult = self.parseGen(self.RES).strip()
 
+    def parseEnv(self):
+        self.env = self.parseGen(self.ENV).strip()
+        # Special string: $(PWD) which replaces it by the directory of the script
+        self.env = self.env.replace("$(PWD)", os.path.dirname(os.path.abspath(__file__)))
+
+    def parseExitCode(self):
+        self.expectedExitCode = self.parseGen(self.EXIT_CODE).strip()
+
     def getCommandLine(self):
-        return "../src/_build/goeland " + self.arguments + " " + self.filename
+        return self.env + " ../src/_build/goeland " + self.arguments + " " + self.filename
 
 def sanitize(s):
     return s.encode('utf-8', errors='ignore').decode(errors='ignore')
@@ -39,10 +51,10 @@ def sanitize(s):
 def runProver(command):
     print(f"Launching: {command}")
     result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True, encoding='utf-8')
-    return (sanitize(result.stdout), sanitize(result.stderr))
+    return (sanitize(result.stdout), sanitize(result.stderr), result.returncode)
 
 def runWithExpected(f, parser):
-    output, err = runProver(parser.getCommandLine())
+    output, err, exit_code = runProver(parser.getCommandLine())
 
     if err != "":
         print(f"Runtime error: {err}")
@@ -54,11 +66,21 @@ def runWithExpected(f, parser):
         if res != None:
             actual = res.group(1)
             if actual != parser.expectedResult:
-                print(f"Error: expected {parser.expectedResult}, got: {actual}")
+                print(f"Error: expected '{parser.expectedResult}', got: '{actual}'")
                 exit(1)
+            else:
+                return
+
+    if parser.expectedExitCode != '' and int(parser.expectedExitCode) != exit_code:
+        print(f"Error: expected exit code '{parser.expectedExitCode}', got: '{exit_code}'")
+        exit(1)
+    else: return
+
+    print(f"Unknown error: {output}")
+    exit(1)
 
 def compareOutputs(f, parser):
-    output, err = runProver(parser.getCommandLine())
+    output, err, _ = runProver(parser.getCommandLine())
 
     if err != "":
         print(f"Runtime error: {err}")
