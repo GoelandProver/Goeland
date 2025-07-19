@@ -38,6 +38,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -74,7 +75,10 @@ func applyAtomicRule(state Search.State, fatherId uint64, c Search.Communication
 	listSubsts := [][]Core.SubstAndForm{}
 	finalBool := true
 	for _, f := range state.GetAtomic() {
-		Glob.PrintDebug("Assisted", fmt.Sprintf("##### Formula %v #####", f.ToString()))
+		Glob.PrintDebug(
+			"Assisted",
+			Lib.MkLazy(func() string { return fmt.Sprintf("##### Formula %v #####", f.ToString()) }),
+		)
 
 		clos_res_after_apply_subst, subst_after_apply_subst := Search.ApplyClosureRules(f.GetForm(), &state)
 		if clos_res_after_apply_subst {
@@ -88,7 +92,12 @@ func applyAtomicRule(state Search.State, fatherId uint64, c Search.Communication
 	}
 
 	if !foundOne {
-		Glob.PrintDebug("ApplyAtomicRule", "No valid substitution found. This state will be copied and put back in the list.")
+		Glob.PrintDebug(
+			"ApplyAtomicRule",
+			Lib.MkLazy(func() string {
+				return "No valid substitution found. This state will be copied and put back in the list."
+			}),
+		)
 		assistedCounter.Increment()
 		go searchAlgo.ProofSearch(fatherId, state, c, substitut, nodeId, originalNodeId, metaToReintroduce, false)
 	} else {
@@ -111,9 +120,12 @@ func applyAtomicRule(state Search.State, fatherId uint64, c Search.Communication
 }
 
 func applyAlphaRule(state Search.State, indiceForm int, fatherId uint64, c Search.Communication, substitut Core.SubstAndForm, originalNodeId int) {
-	Glob.PrintDebug("PS", "User chose Alpha rule")
+	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "User chose Alpha rule" }))
 	hdf := state.GetAlpha()[indiceForm]
-	Glob.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
+	Glob.PrintDebug(
+		"PS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }),
+	)
 
 	state.SetAlpha(append(state.GetAlpha()[:indiceForm], state.GetAlpha()[indiceForm+1:]...))
 	result_forms := Search.ApplyAlphaRules(hdf, &state)
@@ -129,9 +141,9 @@ func applyAlphaRule(state Search.State, indiceForm int, fatherId uint64, c Searc
 }
 
 func applyBetaRule(state Search.State, substitut Core.SubstAndForm, c Search.Communication, fatherId uint64, nodeId int, originalNodeId int, metaToReintroduce []int) {
-	Glob.PrintDebug("PS", "User chose Beta rule")
+	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "User chose Beta rule" }))
 	hdf := state.GetBeta()[0]
-	Glob.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
+	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }))
 	reslf := Search.ApplyBetaRules(hdf, &state)
 	child_id_list := []int{}
 
@@ -165,7 +177,7 @@ func applyBetaRule(state Search.State, substitut Core.SubstAndForm, c Search.Com
 		}
 
 		Glob.IncrGoRoutine(1)
-		Glob.PrintDebug("PS", fmt.Sprintf("GO %v !", fl.GetI()))
+		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return fmt.Sprintf("GO %v !", fl.GetI()) }))
 
 	}
 
@@ -173,9 +185,12 @@ func applyBetaRule(state Search.State, substitut Core.SubstAndForm, c Search.Com
 }
 
 func applyDeltaRule(state Search.State, indiceForm int, fatherId uint64, c Search.Communication, substitut Core.SubstAndForm, originalNodeId int) {
-	Glob.PrintDebug("PS", "User chose Delta rule")
+	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "User chose Delta rule" }))
 	hdf := state.GetDelta()[indiceForm]
-	Glob.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
+	Glob.PrintDebug(
+		"PS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }),
+	)
 
 	state.SetDelta(append(state.GetDelta()[:indiceForm], state.GetDelta()[indiceForm+1:]...))
 	result_forms := Search.ApplyDeltaRules(hdf, &state)
@@ -191,9 +206,15 @@ func applyDeltaRule(state Search.State, indiceForm int, fatherId uint64, c Searc
 }
 
 func applyGammaRule(state Search.State, indiceForm int, fatherId uint64, c Search.Communication, substitut Core.SubstAndForm, originalNodeId int) {
-	Glob.PrintDebug("PS", "User chose Gamma rule")
+	Glob.PrintDebug(
+		"PS",
+		Lib.MkLazy(func() string { return "User chose Gamma rule" }),
+	)
 	hdf := state.GetGamma()[indiceForm]
-	Glob.PrintDebug("PS", fmt.Sprintf("Rule applied on : %s", hdf.ToString()))
+	Glob.PrintDebug(
+		"PS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }),
+	)
 	state.SetGamma(append(state.GetGamma()[:indiceForm], state.GetGamma()[indiceForm+1:]...))
 
 	index, new_meta_gen := Core.GetIndexMetaGenList(hdf, state.GetMetaGen())
@@ -219,11 +240,21 @@ func applyGammaRule(state Search.State, indiceForm int, fatherId uint64, c Searc
 }
 
 func applyReintroductionRule(state Search.State, fatherId uint64, c Search.Communication, originalNodeId int, metaToReintroduce []int, chosenReintro int) {
-	Glob.PrintDebug("PS", "Reintroduction")
-	Glob.PrintDebug("PS", fmt.Sprintf("Meta to reintroduce : %s", Glob.IntListToString(metaToReintroduce)))
+	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Reintroduction" }))
+	Glob.PrintDebug(
+		"PS",
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Meta to reintroduce : %s",
+				Glob.IntListToString(metaToReintroduce))
+		}),
+	)
 	newMetaGen := state.GetMetaGen()
 	reslf := Core.ReintroduceMeta(&newMetaGen, chosenReintro, state.GetN())
-	Glob.PrintDebug("PS", fmt.Sprintf("Reintroduce the formula : %s", reslf.ToString()))
+	Glob.PrintDebug(
+		"PS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Reintroduce the formula : %s", reslf.ToString()) }),
+	)
 	state.SetLF(Core.MakeSingleElementFormAndTermList(reslf))
 
 	state.SetMetaGen(newMetaGen)

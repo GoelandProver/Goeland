@@ -128,7 +128,7 @@ func makeJsonExchanges(father_uint uint64, st State, ss_subst []Unif.Substitutio
 func WriteExchanges(father uint64, st State, sub_sent []Core.SubstAndForm, subst_received Core.SubstAndForm, calling_function string) {
 	if Glob.GetExchanges() {
 		mutex_file_exchanges.Lock()
-		Glob.PrintDebug("WG", calling_function)
+		Glob.PrintDebug("WG", Lib.MkLazy(func() string { return calling_function }))
 		os_stat, _ := os.Stat(graph_file_name_exchanges)
 		if os_stat.Size() != 0 {
 			file_exchanges.WriteString(",\n")
