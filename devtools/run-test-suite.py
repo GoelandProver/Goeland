@@ -10,11 +10,13 @@ from subprocess import PIPE, run
 class Parser:
     ARGS = "% args: "
     RES = "% result: "
+    ENV = "% env: "
 
     def __init__(self, filename):
         self.filename = filename
         self.parseArguments()
         self.parseResult()
+        self.parseEnv()
 
     def parseGen(self, pat):
         with open(self.filename) as f:
@@ -30,8 +32,13 @@ class Parser:
     def parseResult(self):
         self.expectedResult = self.parseGen(self.RES).strip()
 
+    def parseEnv(self):
+        self.env = self.parseGen(self.ENV).strip()
+        # Special string: $(PWD) which replaces it by the directory of the script
+        self.env = self.env.replace("$(PWD)", os.path.dirname(os.path.abspath(__file__)))
+
     def getCommandLine(self):
-        return "../src/_build/goeland " + self.arguments + " " + self.filename
+        return self.env + " ../src/_build/goeland " + self.arguments + " " + self.filename
 
 def sanitize(s):
     return s.encode('utf-8', errors='ignore').decode(errors='ignore')
@@ -56,6 +63,11 @@ def runWithExpected(f, parser):
             if actual != parser.expectedResult:
                 print(f"Error: expected {parser.expectedResult}, got: {actual}")
                 exit(1)
+            else:
+                return
+
+    print(f"Unknown error: {output}")
+    exit(1)
 
 def compareOutputs(f, parser):
     output, err = runProver(parser.getCommandLine())
