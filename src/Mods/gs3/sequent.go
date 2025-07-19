@@ -198,7 +198,7 @@ func (seq *GS3Sequent) setAppliedOn(hypothesis AST.Form) {
 
 	if index == -1 {
 		Glob.PrintInfo("APPLIED ON", hypothesis.ToString())
-		Glob.PrintPanic("GS3", "Failure: tried to apply a missing hypothesis")
+		Glob.Anomaly("GS3", "Failure: tried to apply a missing hypothesis")
 	}
 
 	seq.appliedOn = index

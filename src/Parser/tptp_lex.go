@@ -51,6 +51,8 @@ const (
 	FAILURE_TOKEN = 0
 )
 
+var parse_label = "Parsing"
+
 // ----------------------------------------------------------------------------
 // Lexer methods
 // ----------------------------------------------------------------------------
@@ -783,7 +785,7 @@ func (lexer TPTPLex) isNumeric() bool {
 }
 
 func (lexer TPTPLex) Error(s string) {
-	Glob.PrintFatal("PARSE", fmt.Sprintf("Syntax error, line %d: %s", yylineno, s))
+	Glob.Fatal(parse_label, fmt.Sprintf("Syntax error, line %d: %s", yylineno, s))
 }
 
 func (lexer *TPTPLex) Lex(yylval *TPTPSymType) int {
@@ -834,14 +836,14 @@ func (lexer *TPTPLex) Lex(yylval *TPTPSymType) int {
 func ParseTPTPFile(filename string) ([]Core.Statement, int, bool) {
 	defer func() {
 		if r := recover(); r != nil {
-			Glob.PrintFatal("PARSE", fmt.Sprintf("Lexing error: %v", r))
+			Glob.Fatal(parse_label, fmt.Sprintf("Lexing error: %v", r))
 		}
 	}()
 
 	data, err := os.ReadFile(filename)
 
 	if err != nil {
-		Glob.PrintFatal("PARSE", err.Error())
+		Glob.Fatal(parse_label, err.Error())
 	}
 
 	TPTPParse(&TPTPLex{s: string(data)})
