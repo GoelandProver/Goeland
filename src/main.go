@@ -343,7 +343,7 @@ func getFile(filename string, dir string) (string, error) {
 }
 
 func checkForTypedProof(form AST.Form) AST.Form {
-	isTypedProof := !AST.EmptyGlobalContext()
+	isTypedProof := !AST.EmptyGlobalContext() && !Glob.NoTypeCheck()
 
 	if isTypedProof {
 		err := Typing.WellFormedVerification(form.Copy(), Glob.GetTypeProof())

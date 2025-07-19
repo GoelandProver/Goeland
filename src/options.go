@@ -416,6 +416,12 @@ func buildOptions() {
 		"Flatten the or & and formulas at parsing",
 		func(bool) { Glob.SetFlatteningAllowed() },
 		func(bool) {})
+	(&option[bool]{}).init(
+		"no-type-check",
+		false,
+		"Avoids type-checking a typed problem (this is unsound)",
+		func(bool) { Glob.SetNoTypeCheck() },
+		func(bool) {})
 }
 
 func chronoInit() {
