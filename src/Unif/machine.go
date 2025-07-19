@@ -106,12 +106,9 @@ func (m *Machine) unwrapMeta(term AST.Term) AST.Term {
 	deja_vu := map[int]bool{}
 	for term.IsMeta() {
 		val, ok := m.meta.Get(term.ToMeta())
-		// global.PrintDebug("UM", fmt.Sprintf("ok : %v", ok))
 		if (ok == -1) || deja_vu[term.GetIndex()] {
 			break
 		}
-		// global.PrintDebug("UM", fmt.Sprintf("ok 2 : %v", ok))
-		// global.PrintDebug("UM", fmt.Sprintf("Val : %v", val.ToString()))
 		deja_vu[term.GetIndex()] = true
 		term = val.Copy()
 	}
@@ -170,11 +167,9 @@ func (m *Machine) tryUnlock(instrTerm AST.Term) Status {
 	if m.isLocked() && m.beginCount == m.beginLock {
 		m.unlockMachine()
 		if errorOccured(m.trySubstituteMeta(m.getCurrentMeta(), instrTerm.Copy())) {
-			// global.PrintDebug("TU", "ERROR in ATTM")
 			return Status(ERROR)
 		}
 		if errorOccured(m.lockedRight()) {
-			// global.PrintDebug("TU", "ERROR in LR")
 			return Status(ERROR)
 		}
 	}
