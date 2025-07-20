@@ -1,5 +1,21 @@
 # Goéland
 
+## Post-release notice
+
+**Warning**: Goéland v1.1 has many bugs and is unsound with the flags `-inner` or
+`-preinner` (see [#19](https://github.com/GoelandProver/Goeland/issues/19)). Other bugs
+and performances issues were introduced in this version, e.g.,
+[#16](https://github.com/GoelandProver/Goeland/issues/16),
+[#38](https://github.com/GoelandProver/Goeland/issues/38) or
+[#41](https://github.com/GoelandProver/Goeland/issues/41). You may want to use
+[v1.0](https://github.com/GoelandProver/Goeland/tree/v1.0) or the [development
+version](https://github.com/GoelandProver/Goeland/tree/master) instead. We will not be
+patching this version, so avoid using it if possible.
+
+See also: [updated release post](https://github.com/GoelandProver/Goeland/releases/tag/v1.1)
+
+----
+
 Goéland is a concurrent automated theorem prover using the tableau method for first order logic.
 
 It supports [TPTP](http://tptp.org/) FOF and TFF files.
