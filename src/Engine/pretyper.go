@@ -145,11 +145,7 @@ func splitTypeVars(
 		if isTType(ty.Snd.(Parser.PType)) {
 			tyvars = append(tyvars, AST.MkTypeVar(ty.Fst))
 		} else {
-			varTy := ty.Snd.(Parser.PType)
-			others = append(
-				others,
-				AST.MakerVar(ty.Fst, elaborateType(varTy, varTy).(AST.TypeApp)),
-			)
+			others = append(others, AST.MakerVar(ty.Fst))
 		}
 	}
 	return tyvars, others

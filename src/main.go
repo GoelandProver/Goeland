@@ -58,7 +58,7 @@ import (
 	"github.com/GoelandProver/Goeland/Parser"
 	"github.com/GoelandProver/Goeland/Search"
 	"github.com/GoelandProver/Goeland/Search/incremental"
-	"github.com/GoelandProver/Goeland/Typing"
+	_ "github.com/GoelandProver/Goeland/Typing"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -196,7 +196,7 @@ func initDebuggers() {
 	equality.InitDebugger()
 	incremental.InitDebugger()
 	Search.InitDebugger()
-	Typing.InitDebugger()
+	// Typing.InitDebugger()
 	Unif.InitDebugger()
 }
 
@@ -361,13 +361,13 @@ func checkForTypedProof(form AST.Form) AST.Form {
 	isTypedProof := !AST.EmptyGlobalContext() && !Glob.NoTypeCheck()
 
 	if isTypedProof {
-		err := Typing.WellFormedVerification(form.Copy(), Glob.GetTypeProof())
+		// err := Typing.WellFormedVerification(form.Copy(), Glob.GetTypeProof())
 
-		if err != nil {
-			Glob.Fatal(main_label, fmt.Sprintf("Typing error: %v", err))
-		} else {
-			Glob.PrintInfo(main_label, "Well typed.")
-		}
+		// if err != nil {
+		// 	Glob.Fatal(main_label, fmt.Sprintf("Typing error: %v", err))
+		// } else {
+		// 	Glob.PrintInfo(main_label, "Well typed.")
+		// }
 	}
 
 	return form

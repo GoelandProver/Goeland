@@ -66,23 +66,18 @@ func (m *Machine) unify(node Node, formula AST.Form) []MatchingSubstitutions {
 	// The formula has to be a predicate.
 	switch formula_type := formula.(type) {
 	case AST.Pred:
-		terms := TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs())
-
 		// Transform the predicate to a function to make the tool work properly
 		m.terms = Lib.MkListV[AST.Term](AST.MakerFun(
 			formula_type.GetID(),
-			terms,
-			[]AST.TypeApp{},
-			formula_type.GetType(),
+			formula_type.GetArgs(),
 		))
 		result = m.unifyAux(node)
 
 		if !reflect.DeepEqual(m.failure, result) {
 			filteredResult := []MatchingSubstitutions{}
-			// For each substitutions, remove the [0...MetaCount(formula_type.GetTypeVars())] ones to put it in another slice (the type slice)
 			for _, matchingSubst := range result {
-				actualSubsts := matchingSubst.GetSubst()[AST.CountMeta(formula_type.GetTypeVars()):]
-				filteredResult = append(filteredResult, MakeMatchingSubstitutions(matchingSubst.GetForm(), actualSubsts))
+				filteredResult = append(filteredResult,
+					MakeMatchingSubstitutions(matchingSubst.GetForm(), matchingSubst.GetSubst()))
 			}
 			result = filteredResult
 		}

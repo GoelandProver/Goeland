@@ -40,7 +40,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -109,33 +108,11 @@ func ChangeVarSeparator(sep string) string {
 }
 
 func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	type VarType struct {
-		vars  []Var
-		type_ TypeApp
-	}
-
-	varsType := []VarType{}
-	for _, v := range q.GetVarList() {
-		found := false
-		for _, vt := range varsType {
-			if vt.type_.Equals(v.GetTypeApp()) {
-				vt.vars = append(vt.vars, v)
-				found = true
-			}
-		}
-		if !found {
-			varsType = append(varsType, VarType{[]Var{v}, v.GetTypeApp()})
-		}
-	}
-
 	varStrings := []string{}
 
-	for _, vt := range varsType {
+	for _ = range q.GetVarList() {
 		str := mapping[QuantVarOpen]
 		str += ListToMappedString(q.GetVarList(), varSeparator, "", mapping, false)
-		if displayTypes || Glob.IsCoqOutput() {
-			str += " : " + vt.type_.ToString()
-		}
 		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 
@@ -178,16 +155,6 @@ func (q quantifier) copy() quantifier {
 	return nq
 }
 
-func (q quantifier) replaceTypeByMeta(varList []TypeVar, index int) quantifier {
-	return makeQuantifier(
-		q.GetIndex(),
-		q.GetVarList(),
-		q.GetForm().ReplaceTypeByMeta(varList, index),
-		q.metas.Raw().Copy(),
-		q.symbol,
-	)
-}
-
 func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
 	f, res := q.GetForm().ReplaceTermByTerm(old, new)
 	return makeQuantifier(
@@ -205,7 +172,7 @@ func (q quantifier) renameVariables() quantifier {
 
 	for _, v := range q.GetVarList() {
 		newVar := MakerNewVar(v.GetName())
-		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()), v.typeHint)
+		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()))
 		newVarList = append(newVarList, newVar)
 		newForm, _ = newForm.RenameVariables().ReplaceTermByTerm(v, newVar)
 	}

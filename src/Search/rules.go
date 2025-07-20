@@ -43,7 +43,6 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
-	"os"
 )
 
 var strToPrintMap map[string]string = map[string]string{
@@ -503,10 +502,6 @@ func ApplyGammaRules(fnt Core.FormAndTerms, index int, state *State) (Core.FormA
 
 	case AST.All:
 		setStateRules(state, "GAMMA", "FORALL")
-
-	case AST.AllType:
-		Glob.PrintError("search", "Typed search not handled yet")
-		os.Exit(3)
 	}
 
 	fnt, mm := Core.Instantiate(fnt, index)

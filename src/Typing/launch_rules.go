@@ -32,146 +32,146 @@
 
 package Typing
 
-import (
-	"fmt"
-	"reflect"
+// import (
+// 	"fmt"
+// 	"reflect"
 
-	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Lib"
-)
+// 	"github.com/GoelandProver/Goeland/AST"
+// 	"github.com/GoelandProver/Goeland/Lib"
+// )
 
-/**
- * This file manages everything related to parallelism / concurrency.
- **/
+// /**
+//  * This file manages everything related to parallelism / concurrency.
+//  **/
 
-type Reconstruct struct {
-	result bool
-	forms  Lib.List[AST.Form]
-	terms  Lib.List[AST.Term]
-	err    error
-}
+// type Reconstruct struct {
+// 	result bool
+// 	forms  Lib.List[AST.Form]
+// 	terms  Lib.List[AST.Term]
+// 	err    error
+// }
 
-/* Launches the first instance of applyRule. Do this to launch the typing system. */
-func launchRuleApplication(state Sequent, root *ProofTree) (AST.Form, error) {
-	superFatherChan := make(chan Reconstruct)
-	go tryApplyRule(state, root, superFatherChan)
-	res := <-superFatherChan
-	return treatReturns(res)
-}
+// /* Launches the first instance of applyRule. Do this to launch the typing system. */
+// func launchRuleApplication(state Sequent, root *ProofTree) (AST.Form, error) {
+// 	superFatherChan := make(chan Reconstruct)
+// 	go tryApplyRule(state, root, superFatherChan)
+// 	res := <-superFatherChan
+// 	return treatReturns(res)
+// }
 
-/* Launches applyRule and manages the error return. */
-func tryApplyRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) {
-	select {
-	case <-fatherChan: // Message from the father received: it can only be a kill order.
-	default:
-		// No kill order, it's still properly typed, let's apply the next rules.
-		reconstruct := applyRule(state, root, fatherChan)
-		select {
-		case <-fatherChan: // Kill order received, it's finished anyway.
-		case fatherChan <- reconstruct: // Otherwise, send result to father.
-		}
-	}
-}
+// /* Launches applyRule and manages the error return. */
+// func tryApplyRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) {
+// 	select {
+// 	case <-fatherChan: // Message from the father received: it can only be a kill order.
+// 	default:
+// 		// No kill order, it's still properly typed, let's apply the next rules.
+// 		reconstruct := applyRule(state, root, fatherChan)
+// 		select {
+// 		case <-fatherChan: // Kill order received, it's finished anyway.
+// 		case fatherChan <- reconstruct: // Otherwise, send result to father.
+// 		}
+// 	}
+// }
 
-/* Launch each sequent in a goroutine if sequent length > 1. */
-func launchChildren(sequents []Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	if len(sequents) == 1 {
-		// Do not launch another goroutine if the applied rule has only 1 child.
-		return applyRule(sequents[0], root.addChildWith(sequents[0]), fatherChan)
-	} else {
-		// Create a channel for each child, and launch it in a goroutine.
-		chanTab := make([](chan Reconstruct), len(sequents))
-		for i := range sequents {
-			childChan := make(chan Reconstruct)
-			chanTab[i] = childChan
-			go tryApplyRule(sequents[i], root.addChildWith(sequents[i]), childChan)
-		}
-		// If a child dies with an error, stops the typesearch procedure.
-		return selectSequents(chanTab, fatherChan)
-	}
-}
+// /* Launch each sequent in a goroutine if sequent length > 1. */
+// func launchChildren(sequents []Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	if len(sequents) == 1 {
+// 		// Do not launch another goroutine if the applied rule has only 1 child.
+// 		return applyRule(sequents[0], root.addChildWith(sequents[0]), fatherChan)
+// 	} else {
+// 		// Create a channel for each child, and launch it in a goroutine.
+// 		chanTab := make([](chan Reconstruct), len(sequents))
+// 		for i := range sequents {
+// 			childChan := make(chan Reconstruct)
+// 			chanTab[i] = childChan
+// 			go tryApplyRule(sequents[i], root.addChildWith(sequents[i]), childChan)
+// 		}
+// 		// If a child dies with an error, stops the typesearch procedure.
+// 		return selectSequents(chanTab, fatherChan)
+// 	}
+// }
 
-/**
- * Waits for all the children to close.
- * If an error is received, stops the type-search of every children and sends an error
- * to the parent.
- **/
-func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Reconstruct {
-	// Instantiation
-	cases := makeCases(chansTab, chanQuit)
-	hasAnswered := make([]bool, len(chansTab)) // Everything to false
-	remaining, indexQuit := len(chansTab), len(chansTab)
-	var errorFound error = nil
+// /**
+//  * Waits for all the children to close.
+//  * If an error is received, stops the type-search of every children and sends an error
+//  * to the parent.
+//  **/
+// func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Reconstruct {
+// 	// Instantiation
+// 	cases := makeCases(chansTab, chanQuit)
+// 	hasAnswered := make([]bool, len(chansTab)) // Everything to false
+// 	remaining, indexQuit := len(chansTab), len(chansTab)
+// 	var errorFound error = nil
 
-	forms := make([]AST.Form, len(chansTab))
-	terms := Lib.MkList[AST.Term](len(chansTab))
+// 	forms := make([]AST.Form, len(chansTab))
+// 	terms := Lib.MkList[AST.Term](len(chansTab))
 
-	// Wait for all children to finish.
-	for remaining > 0 && errorFound == nil {
-		index, value, _ := reflect.Select(cases)
-		remaining--
-		if index == indexQuit {
-			errorFound = fmt.Errorf("father detected an error")
-		} else {
-			res := value.Interface().(Reconstruct)
-			hasAnswered[index] = true
-			if !res.result {
-				errorFound = res.err
-			} else {
-				// Once the child sends back to the father, it should only have one item.
-				if res.forms.Len() == 1 {
-					forms[index] = res.forms.At(0)
-				}
-				if res.terms.Len() == 1 {
-					terms.Upd(index, res.terms.At(0))
-				}
-			}
-		}
-	}
+// 	// Wait for all children to finish.
+// 	for remaining > 0 && errorFound == nil {
+// 		index, value, _ := reflect.Select(cases)
+// 		remaining--
+// 		if index == indexQuit {
+// 			errorFound = fmt.Errorf("father detected an error")
+// 		} else {
+// 			res := value.Interface().(Reconstruct)
+// 			hasAnswered[index] = true
+// 			if !res.result {
+// 				errorFound = res.err
+// 			} else {
+// 				// Once the child sends back to the father, it should only have one item.
+// 				if res.forms.Len() == 1 {
+// 					forms[index] = res.forms.At(0)
+// 				}
+// 				if res.terms.Len() == 1 {
+// 					terms.Upd(index, res.terms.At(0))
+// 				}
+// 			}
+// 		}
+// 	}
 
-	selectCleanup(errorFound, hasAnswered, chansTab)
-	return Reconstruct{result: errorFound == nil, forms: Lib.MkListV(forms...), terms: terms, err: errorFound}
-}
+// 	selectCleanup(errorFound, hasAnswered, chansTab)
+// 	return Reconstruct{result: errorFound == nil, forms: Lib.MkListV(forms...), terms: terms, err: errorFound}
+// }
 
-/* Utils functions for selectSequents */
+// /* Utils functions for selectSequents */
 
-/* Makes the array of cases from the channels */
-func makeCases(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) []reflect.SelectCase {
-	cases := make([]reflect.SelectCase, len(chansTab)+1)
-	// Children
-	for i, chan_ := range chansTab {
-		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(chan_)}
-	}
-	// Father
-	cases[len(chansTab)] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(chanQuit)}
-	return cases
-}
+// /* Makes the array of cases from the channels */
+// func makeCases(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) []reflect.SelectCase {
+// 	cases := make([]reflect.SelectCase, len(chansTab)+1)
+// 	// Children
+// 	for i, chan_ := range chansTab {
+// 		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(chan_)}
+// 	}
+// 	// Father
+// 	cases[len(chansTab)] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(chanQuit)}
+// 	return cases
+// }
 
-/* If an error was found, kills all the children. */
-func selectCleanup(errorFound error, hasAnswered []bool, chansTab [](chan Reconstruct)) {
-	if errorFound != nil {
-		for i, answered := range hasAnswered {
-			if !answered {
-				select {
-				case <-chansTab[i]: // Filter out, he already responded
-				case chansTab[i] <- Reconstruct{result: false, err: errorFound}: // Kill child
-				}
-			}
-		}
-	}
-}
+// /* If an error was found, kills all the children. */
+// func selectCleanup(errorFound error, hasAnswered []bool, chansTab [](chan Reconstruct)) {
+// 	if errorFound != nil {
+// 		for i, answered := range hasAnswered {
+// 			if !answered {
+// 				select {
+// 				case <-chansTab[i]: // Filter out, he already responded
+// 				case chansTab[i] <- Reconstruct{result: false, err: errorFound}: // Kill child
+// 				}
+// 			}
+// 		}
+// 	}
+// }
 
-/* Treats the different return types of the system. */
-func treatReturns(res Reconstruct) (AST.Form, error) {
-	if !res.result {
-		return nil, res.err
-	} else {
-		if res.forms.Len() == 0 {
-			return nil, res.err
-		}
-		if res.forms.Len() > 1 {
-			return nil, fmt.Errorf("more than one formula is returned by the typing system")
-		}
-		return res.forms.At(0), res.err
-	}
-}
+// /* Treats the different return types of the system. */
+// func treatReturns(res Reconstruct) (AST.Form, error) {
+// 	if !res.result {
+// 		return nil, res.err
+// 	} else {
+// 		if res.forms.Len() == 0 {
+// 			return nil, res.err
+// 		}
+// 		if res.forms.Len() > 1 {
+// 			return nil, fmt.Errorf("more than one formula is returned by the typing system")
+// 		}
+// 		return res.forms.At(0), res.err
+// 	}
+// }

@@ -63,7 +63,7 @@ func (sko OuterSkolemization) Skolemize(
 	fvs Lib.Set[AST.Meta],
 ) (Skolemization, AST.Form) {
 	sko.mu.Lock()
-	symbol := genFreshSymbol(&sko.existingSymbols, sko.mu, x)
+	symbol := genFreshSymbol(&sko.existingSymbols, &sko.mu, x)
 	sko.mu.Unlock()
 
 	metas := fvs.Elements()
@@ -71,8 +71,6 @@ func (sko OuterSkolemization) Skolemize(
 	skolemFunc := AST.MakerFun(
 		symbol,
 		Lib.ListMap(metas, Glob.To[AST.Term]),
-		[]AST.TypeApp{},
-		mkSkoFuncType(metas, x.GetTypeApp()),
 	)
 
 	skolemizedForm, _ := form.ReplaceTermByTerm(
