@@ -30,84 +30,17 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**
-* This file contains functions and types which describe the fomula_list's data
-* structure
-**/
+package Lib
 
-package AST
+/** This file defines the type that allows one to emulate the behaviour of optional named
+  arguments. */
 
-import (
-	"sort"
+type NamedParamsWithDefault[T any] func(T) T
 
-	"github.com/GoelandProver/Goeland/Glob"
-)
-
-type FormList struct {
-	*Glob.List[Form]
-}
-
-func NewFormList(slice ...Form) *FormList {
-	return &FormList{Glob.NewList(slice...)}
-}
-
-func (fl *FormList) Less(i, j int) bool {
-	return (fl.Get(i).ToString() < fl.Get(j).ToString())
-}
-
-func (fl *FormList) Copy() *FormList {
-	return &FormList{fl.List.Copy()}
-}
-
-func (lf *FormList) ToMappableStringSlice() []MappableString {
-	forms := []MappableString{}
-
-	for _, form := range lf.Slice() {
-		forms = append(forms, form.(MappableString))
+func GetParams[T any](def T, opts ...NamedParamsWithDefault[T]) T {
+	options := def
+	for _, opt := range opts {
+		options = opt(options)
 	}
-
-	return forms
-}
-
-func (fl *FormList) Equals(other *FormList) bool {
-	if fl.Len() != other.Len() {
-		return false
-	}
-
-	flSorted := fl.Copy()
-	sort.Sort(flSorted)
-
-	otherSorted := other.Copy()
-	sort.Sort(otherSorted)
-
-	for i := range flSorted.Slice() {
-		if !flSorted.Get(i).Equals(otherSorted.Get(i)) {
-			return false
-		}
-	}
-
-	return true
-}
-
-// Removes all AND formulas: {(a & b), (b => c), (d & (e & f))} -> {(a), (b), (b => c), (d), (e), (f)}
-func (fl *FormList) Flatten() *FormList {
-	result := NewFormList()
-
-	for _, form := range fl.Slice() {
-		if typed, ok := form.(And); ok {
-			result.Append(typed.FormList.Flatten().Slice()...)
-		} else {
-			result.Append(form)
-		}
-	}
-
-	return result
-}
-
-func (fl *FormList) ReplaceMetaByTerm(meta Meta, term Term) *FormList {
-	for i, f := range fl.Slice() {
-		fl.Set(i, f.ReplaceMetaByTerm(meta, term))
-	}
-
-	return fl
+	return options
 }

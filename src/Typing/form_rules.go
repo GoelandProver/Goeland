@@ -34,6 +34,7 @@ package Typing
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /**
@@ -83,20 +84,20 @@ func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 
 /* Applies OR or AND rule and launches n goroutines waiting its children */
 func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	formList := AST.NewFormList()
+	formList := Lib.NewList[AST.Form]()
 	// Add rule to prooftree
 	switch f := (state.consequence.f).(type) {
 	case AST.And:
 		root.appliedRule = "∧"
-		formList = f.FormList
+		formList = f.GetChildFormulas()
 	case AST.Or:
 		root.appliedRule = "∨"
-		formList = f.FormList
+		formList = f.GetChildFormulas()
 	}
 
 	// Construct children with all the formulas
 	children := []Sequent{}
-	for _, form := range formList.Slice() {
+	for _, form := range formList.GetSlice() {
 		children = append(children, Sequent{
 			globalContext: state.globalContext,
 			localContext:  state.localContext.copy(),

@@ -57,7 +57,7 @@ func (ip IntPair) GetTerms() Lib.List[AST.Term] {
 }
 
 func (ip IntPair) ToString() string {
-	res := "(" + strconv.Itoa(ip.q) + ", [" + ip.terms.ToString(AST.Term.ToString, "", "{}") + "])"
+	res := "(" + strconv.Itoa(ip.q) + ", [" + ip.terms.ToString(AST.Term.ToString, Lib.WithSep(""), Lib.WithEmpty("{}")) + "])"
 	return res
 }
 

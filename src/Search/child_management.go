@@ -106,13 +106,13 @@ func (args wcdArgs) printDebugMessages() {
 	debug(Lib.MkLazy(func() string {
 		return fmt.Sprintf(
 			"MM : %v",
-			Lib.ListToString(args.st.GetMM().Elements(), ",", "[]"),
+			Lib.ListToString(args.st.GetMM().Elements()),
 		)
 	}))
 	debug(Lib.MkLazy(func() string {
 		return fmt.Sprintf(
 			"MC : %v",
-			Lib.ListToString(args.st.GetMC().Elements(), ",", "[]"),
+			Lib.ListToString(args.st.GetMC().Elements()),
 		)
 	}))
 }
