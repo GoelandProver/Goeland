@@ -32,189 +32,189 @@
 
 package Typing
 
-import (
-	"fmt"
+// import (
+// 	"fmt"
 
-	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
-	"github.com/GoelandProver/Goeland/Lib"
-)
+// 	"github.com/GoelandProver/Goeland/AST"
+// 	"github.com/GoelandProver/Goeland/Glob"
+// 	"github.com/GoelandProver/Goeland/Lib"
+// )
 
-/**
- * This file contains the rules for typing terms, and also the App rule.
- * The App rule is used for predicates and functions.
- **/
+// /**
+//  * This file contains the rules for typing terms, and also the App rule.
+//  * The App rule is used for predicates and functions.
+//  **/
 
-/* Applies the Var rule for a type variable: erase consequence */
-func applyLocalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	// Add applied rule to the prooftree
-	root.appliedRule = "Var"
+// /* Applies the Var rule for a type variable: erase consequence */
+// func applyLocalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	// Add applied rule to the prooftree
+// 	root.appliedRule = "Var"
 
-	// Find current variable in the local context
-	if _, ok := getTypeFromLocalContext(state.localContext, state.consequence.a.(AST.TypeVar)); !ok {
-		return Reconstruct{
-			result: false,
-			err:    fmt.Errorf("TypeVar %s not found in the local context", state.consequence.a.ToString()),
-		}
-	}
+// 	// Find current variable in the local context
+// 	if _, ok := getTypeFromLocalContext(state.localContext, state.consequence.a.(AST.TypeVar)); !ok {
+// 		return Reconstruct{
+// 			result: false,
+// 			err:    fmt.Errorf("TypeVar %s not found in the local context", state.consequence.a.ToString()),
+// 		}
+// 	}
 
-	// No consequence: next rule is the WF rule.
-	children := []Sequent{
-		{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{},
-		},
-	}
+// 	// No consequence: next rule is the WF rule.
+// 	children := []Sequent{
+// 		{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{},
+// 		},
+// 	}
 
-	return launchChildren(children, root, fatherChan)
-}
+// 	return launchChildren(children, root, fatherChan)
+// }
 
-/* Applies the Var rule for a type hint: erase consequence */
-func applyGlobalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	// Add applied rule to the prooftree
-	root.appliedRule = "Var"
+// /* Applies the Var rule for a type hint: erase consequence */
+// func applyGlobalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	// Add applied rule to the prooftree
+// 	root.appliedRule = "Var"
 
-	// Find current variable in the local context
-	if found := state.globalContext.isTypeInContext(Glob.To[AST.TypeScheme](state.consequence.a)); !found {
-		return Reconstruct{
-			result: false,
-			err:    fmt.Errorf("TypeVar %s not found in the global context", state.consequence.a.ToString()),
-		}
-	}
+// 	// Find current variable in the local context
+// 	if found := state.globalContext.isTypeInContext(Glob.To[AST.TypeScheme](state.consequence.a)); !found {
+// 		return Reconstruct{
+// 			result: false,
+// 			err:    fmt.Errorf("TypeVar %s not found in the global context", state.consequence.a.ToString()),
+// 		}
+// 	}
 
-	// No consequence: next rule is the WF rule.
-	children := []Sequent{
-		{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{},
-		},
-	}
+// 	// No consequence: next rule is the WF rule.
+// 	children := []Sequent{
+// 		{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{},
+// 		},
+// 	}
 
-	return launchChildren(children, root, fatherChan)
-}
+// 	return launchChildren(children, root, fatherChan)
+// }
 
-/* Applies Type rule: erase consequence */
-func applyTypeWFRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	// Add applied rule to the prooftree
-	root.appliedRule = "Type"
+// /* Applies Type rule: erase consequence */
+// func applyTypeWFRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	// Add applied rule to the prooftree
+// 	root.appliedRule = "Type"
 
-	// WF child
-	children := []Sequent{
-		{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{},
-		},
-	}
+// 	// WF child
+// 	children := []Sequent{
+// 		{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{},
+// 		},
+// 	}
 
-	return launchChildren(children, root, fatherChan)
-}
+// 	return launchChildren(children, root, fatherChan)
+// }
 
-/* Applies Cross rule */
-func applyCrossRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	// Add applied rule to the prooftree
-	root.appliedRule = "Cross"
+// /* Applies Cross rule */
+// func applyCrossRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	// Add applied rule to the prooftree
+// 	root.appliedRule = "Cross"
 
-	if tc, ok := state.consequence.a.(AST.TypeCross); ok {
-		// Construct a child for every type recovered
-		return launchChildren(constructWithTypes(state, tc.GetAllUnderlyingTypes()), root, fatherChan)
-	} else {
-		return Reconstruct{
-			result: false,
-			err:    fmt.Errorf("CrossRule type on something that is not a TypeCross: %s", state.consequence.a.ToString()),
-		}
-	}
-}
+// 	if tc, ok := state.consequence.a.(AST.TypeCross); ok {
+// 		// Construct a child for every type recovered
+// 		return launchChildren(constructWithTypes(state, tc.GetAllUnderlyingTypes()), root, fatherChan)
+// 	} else {
+// 		return Reconstruct{
+// 			result: false,
+// 			err:    fmt.Errorf("CrossRule type on something that is not a TypeCross: %s", state.consequence.a.ToString()),
+// 		}
+// 	}
+// }
 
-/* Sym rule: a child for each type in the input, and one for the output if it's a function */
-func applySymRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	root.appliedRule = "Sym"
+// /* Sym rule: a child for each type in the input, and one for the output if it's a function */
+// func applySymRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	root.appliedRule = "Sym"
 
-	primitives := state.consequence.s.GetPrimitives()
-	out := AST.GetOutType(state.consequence.s)
+// 	primitives := state.consequence.s.GetPrimitives()
+// 	out := AST.GetOutType(state.consequence.s)
 
-	newLocalContext := state.localContext.copy()
-	if qt, found := state.consequence.s.(AST.QuantifiedType); found {
-		newLocalContext.typeVars = append(newLocalContext.typeVars, qt.QuantifiedVars()...)
-	}
+// 	newLocalContext := state.localContext.copy()
+// 	if qt, found := state.consequence.s.(AST.QuantifiedType); found {
+// 		newLocalContext.typeVars = append(newLocalContext.typeVars, qt.QuantifiedVars()...)
+// 	}
 
-	children := []Sequent{}
-	if Glob.Is[AST.TypeScheme](out) {
-		children = append(children, Sequent{
-			globalContext: state.globalContext,
-			localContext:  newLocalContext,
-			consequence:   Consequence{a: out},
-		})
-	}
+// 	children := []Sequent{}
+// 	if Glob.Is[AST.TypeScheme](out) {
+// 		children = append(children, Sequent{
+// 			globalContext: state.globalContext,
+// 			localContext:  newLocalContext,
+// 			consequence:   Consequence{a: out},
+// 		})
+// 	}
 
-	for _, type_ := range primitives[:len(primitives)-1] {
-		children = append(children, Sequent{
-			globalContext: state.globalContext,
-			localContext:  newLocalContext,
-			consequence:   Consequence{a: type_},
-		})
-	}
+// 	for _, type_ := range primitives[:len(primitives)-1] {
+// 		children = append(children, Sequent{
+// 			globalContext: state.globalContext,
+// 			localContext:  newLocalContext,
+// 			consequence:   Consequence{a: type_},
+// 		})
+// 	}
 
-	return launchChildren(children, root, fatherChan)
-}
+// 	return launchChildren(children, root, fatherChan)
+// }
 
-/* AppType rule: a child for each type in the input, and checks if the parameterized type exists. */
-func applyAppTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	root.appliedRule = "App"
+// /* AppType rule: a child for each type in the input, and checks if the parameterized type exists. */
+// func applyAppTypeRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	root.appliedRule = "App"
 
-	type_ := state.consequence.a.(AST.ParameterizedType)
-	types := type_.GetParameters()
+// 	type_ := state.consequence.a.(AST.ParameterizedType)
+// 	types := type_.GetParameters()
 
-	// Search for the ID in the global context
-	if !state.globalContext.parameterizedTypesContains(type_.GetName()) {
-		return Reconstruct{
-			result: false,
-			err:    fmt.Errorf("parameterized Type %s not in context", type_.ToString()),
-		}
-	}
+// 	// Search for the ID in the global context
+// 	if !state.globalContext.parameterizedTypesContains(type_.GetName()) {
+// 		return Reconstruct{
+// 			result: false,
+// 			err:    fmt.Errorf("parameterized Type %s not in context", type_.ToString()),
+// 		}
+// 	}
 
-	children := []Sequent{}
-	for _, type_ := range types {
-		children = append(children, Sequent{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{a: type_},
-		})
-	}
+// 	children := []Sequent{}
+// 	for _, type_ := range types {
+// 		children = append(children, Sequent{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{a: type_},
+// 		})
+// 	}
 
-	result := launchChildren(children, root, fatherChan)
+// 	result := launchChildren(children, root, fatherChan)
 
-	// Only one term needs to be returned because the ParameterizedType is counted as one.
-	return Reconstruct{
-		result: result.result,
-		err:    result.err,
-		terms:  Lib.NewList[AST.Term](),
-	}
-}
+// 	// Only one term needs to be returned because the ParameterizedType is counted as one.
+// 	return Reconstruct{
+// 		result: result.result,
+// 		err:    result.err,
+// 		terms:  Lib.NewList[AST.Term](),
+// 	}
+// }
 
-/* Utils functions */
+// /* Utils functions */
 
-/* Finds the given term in the local context, returns false if it couldn't */
-func getTypeFromLocalContext(localContext LocalContext, typeApp AST.TypeVar) (AST.TypeApp, bool) {
-	for _, type_ := range localContext.typeVars {
-		if typeApp.Equals(type_) {
-			return type_, true
-		}
-	}
-	return AST.TypeVar{}, false
-}
+// /* Finds the given term in the local context, returns false if it couldn't */
+// func getTypeFromLocalContext(localContext LocalContext, typeApp AST.TypeVar) (AST.TypeApp, bool) {
+// 	for _, type_ := range localContext.typeVars {
+// 		if typeApp.Equals(type_) {
+// 			return type_, true
+// 		}
+// 	}
+// 	return AST.TypeVar{}, false
+// }
 
-/* Constructs all the children of a composed type */
-func constructWithTypes(state Sequent, types []AST.TypeApp) []Sequent {
-	children := []Sequent{}
-	for _, type_ := range types {
-		children = append(children, Sequent{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{a: type_},
-		})
-	}
-	return children
-}
+// /* Constructs all the children of a composed type */
+// func constructWithTypes(state Sequent, types []AST.TypeApp) []Sequent {
+// 	children := []Sequent{}
+// 	for _, type_ := range types {
+// 		children = append(children, Sequent{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{a: type_},
+// 		})
+// 	}
+// 	return children
+// }
