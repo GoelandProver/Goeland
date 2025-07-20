@@ -75,7 +75,7 @@ func (sko PreInnerSkolemization) Skolemize(
 	); ok {
 		symbol = val.Snd
 	} else {
-		symbol = genFreshSymbol(&sko.existingSymbols, sko.mu, x)
+		symbol = genFreshSymbol(&sko.existingSymbols, &sko.mu, x)
 		sko.linkedSymbols.Append(Glob.MakePair(realDelta, symbol))
 	}
 	sko.mu.Unlock()
@@ -85,8 +85,6 @@ func (sko PreInnerSkolemization) Skolemize(
 	skolemFunc := AST.MakerFun(
 		symbol,
 		Lib.ListMap(internalMetas, Glob.To[AST.Term]),
-		[]AST.TypeApp{},
-		mkSkoFuncType(internalMetas, x.GetTypeApp()),
 	)
 
 	skolemizedForm, _ := form.ReplaceTermByTerm(
@@ -118,8 +116,6 @@ func alphaConvert(
 			f.GetIndex(),
 			f.GetID(),
 			mappedTerms,
-			f.GetTypeVars(),
-			f.GetType(),
 		)
 	case AST.Not:
 		return AST.MakeNot(
@@ -164,6 +160,10 @@ func alphaConvert(
 		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
 		return AST.MakeEx(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
 	}
+	Glob.Anomaly(
+		"preinner",
+		fmt.Sprintf("On alpha-conversion of %s: form does not correspond to any known ones", form.ToString()),
+	)
 	return form
 }
 
@@ -174,7 +174,7 @@ func makeConvertedVarList(
 ) (int, map[int]AST.Var, []AST.Var) {
 	newVarList := []AST.Var{}
 	for i, v := range vl {
-		nv := AST.MakeVar(k+i, fresh(k+i), v.GetTypeApp())
+		nv := AST.MakeVar(k+i, fresh(k+i))
 		newVarList = append(newVarList, nv)
 		substitution[v.GetIndex()] = nv
 	}
@@ -197,8 +197,6 @@ func alphaConvertTerm(t AST.Term, substitution map[int]AST.Var) AST.Term {
 		return AST.MakerFun(
 			nt.GetID(),
 			mappedTerms,
-			nt.GetTypeVars(),
-			nt.GetTypeHint(),
 		)
 	}
 	return t

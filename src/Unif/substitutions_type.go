@@ -213,7 +213,7 @@ func MakeEmptySubstitutionList() []Substitutions {
 
 /* Returns a « failed » substitution. */
 func Failure() Substitutions {
-	fail := AST.MakeMeta(-1, -1, "FAILURE", -1, AST.MkTypeHint("i"))
+	fail := AST.MakeMeta(-1, -1, "FAILURE", -1)
 	return Substitutions{Substitution{fail, fail}}
 }
 
@@ -314,8 +314,6 @@ func eliminateInside(key AST.Meta, value AST.Term, s Substitutions, has_changed_
 				new_value := AST.MakerFun(
 					value_2_type.GetP(),
 					eliminateList(key, value, value_2_type.GetArgs(), &has_changed),
-					value_2_type.GetTypeVars(),
-					value_2_type.GetTypeHint(),
 				)
 				if OccurCheckValid(key_2, new_value) {
 					s_tmp.Set(key_2, new_value)
@@ -361,8 +359,6 @@ func eliminateList(
 				tempList.Append(AST.MakerFun(
 					lt.GetP(),
 					eliminateList(key, value, lt.GetArgs(), &hasChanged),
-					lt.GetTypeVars(),
-					lt.GetTypeHint(),
 				))
 			default:
 				tempList.Append(elementList)

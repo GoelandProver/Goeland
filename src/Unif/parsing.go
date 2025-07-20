@@ -34,7 +34,6 @@ package Unif
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -56,11 +55,9 @@ func (t TermForm) GetChildrenForMappedString() []AST.MappableString {
 	return AST.LsToMappableStringSlice(t.GetChildFormulas())
 }
 
-func (t TermForm) GetTerm() AST.Term                             { return t.t.Copy() }
-func (t TermForm) Copy() AST.Form                                { return makeTermForm(t.GetIndex(), t.GetTerm()) }
-func (t TermForm) GetType() AST.TypeScheme                       { return AST.DefaultFunType(0) }
-func (t TermForm) RenameVariables() AST.Form                     { return t }
-func (t TermForm) ReplaceTypeByMeta([]AST.TypeVar, int) AST.Form { return t }
+func (t TermForm) GetTerm() AST.Term         { return t.t.Copy() }
+func (t TermForm) Copy() AST.Form            { return makeTermForm(t.GetIndex(), t.GetTerm()) }
+func (t TermForm) RenameVariables() AST.Form { return t }
 func (t TermForm) ReplaceTermByTerm(AST.Term, AST.Term) (AST.Form, bool) {
 	return t, false
 }
@@ -125,20 +122,14 @@ func ParseFormula(formula AST.Form) Sequence {
 	// The formula has to be a predicate
 	switch formula_type := formula.(type) {
 	case AST.Pred:
-		pred := AST.MakePred(formula_type.GetIndex(), formula_type.GetID(), TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs()), []AST.TypeApp{}, formula_type.GetType())
-		instructions := Sequence{formula: pred}
+		instructions := Sequence{formula: formula_type}
 
 		instructions.add(Begin{})
-		parsePred(pred, &instructions)
+		parsePred(formula_type, &instructions)
 		instructions.add(End{})
 
 		return instructions
 	case TermForm:
-		if Glob.Is[AST.Fun](formula_type.GetTerm()) {
-			fun := Glob.To[AST.Fun](formula_type.GetTerm())
-			formula = makeTermForm(formula.GetIndex(), AST.MakerFun(fun.GetID(), TypeAndTermsToTerms(fun.GetTypeVars(), fun.GetArgs()), []AST.TypeApp{}, fun.GetTypeHint()))
-		}
-
 		instructions := Sequence{formula: formula}
 		varCount := 0
 		postCount := 0
@@ -157,17 +148,6 @@ func ParseFormula(formula AST.Form) Sequence {
 	default:
 		return Sequence{}
 	}
-}
-
-func TypeAndTermsToTerms(
-	types []AST.TypeApp,
-	terms Lib.List[AST.Term],
-) Lib.List[AST.Term] {
-	tms := Lib.NewList[AST.Term]()
-	tms.Append(AST.TypeAppArrToTerm(types).GetSlice()...)
-	tms.Append(terms.GetSlice()...)
-
-	return tms
 }
 
 /* Parses a predicate to machine instructions */

@@ -32,120 +32,120 @@
 
 package Typing
 
-import (
-	"encoding/json"
-	"errors"
-	"fmt"
-	"os"
-	"strings"
+// import (
+// 	"encoding/json"
+// 	"errors"
+// 	"fmt"
+// 	"os"
+// 	"strings"
 
-	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
-)
+// 	"github.com/GoelandProver/Goeland/AST"
+// 	"github.com/GoelandProver/Goeland/Glob"
+// )
 
-/**
- * This file contains the methods to dump a prooftree in a json.
- **/
+// /**
+//  * This file contains the methods to dump a prooftree in a json.
+//  **/
 
-/* Dumps the prooftree in a json. */
-func (root *ProofTree) DumpJson() error {
-	// Dump folder should be a flag in the future
-	dump := "../visualization/types/"
-	// Create a new file
-	i := 0
-	for fileExists(getFileName(dump, i)) {
-		i++
-	}
+// /* Dumps the prooftree in a json. */
+// func (root *ProofTree) DumpJson() error {
+// 	// Dump folder should be a flag in the future
+// 	dump := "../visualization/types/"
+// 	// Create a new file
+// 	i := 0
+// 	for fileExists(getFileName(dump, i)) {
+// 		i++
+// 	}
 
-	f, err := os.OpenFile(getFileName(dump, i), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		return err
-	}
-	json, err := root.dump()
+// 	f, err := os.OpenFile(getFileName(dump, i), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	json, err := root.dump()
 
-	if err != nil {
-		return err
-	}
+// 	if err != nil {
+// 		return err
+// 	}
 
-	_, err = f.WriteString(json)
-	Glob.PrintInfo("DUMP", fmt.Sprintf("Dumped type proof in %s\n", f.Name()))
-	return err
-}
+// 	_, err = f.WriteString(json)
+// 	Glob.PrintInfo("DUMP", fmt.Sprintf("Dumped type proof in %s\n", f.Name()))
+// 	return err
+// }
 
-/* Creates file if not exists, dump informations in it, and calls recursively on each child */
-func (root *ProofTree) dump() (string, error) {
-	varsString := []string{}
-	var consequence string = ""
-	var ts string
-	if root.typeScheme != nil {
-		ts = root.typeScheme.ToString()
-	}
+// /* Creates file if not exists, dump informations in it, and calls recursively on each child */
+// func (root *ProofTree) dump() (string, error) {
+// 	varsString := []string{}
+// 	var consequence string = ""
+// 	var ts string
+// 	if root.typeScheme != nil {
+// 		ts = root.typeScheme.ToString()
+// 	}
 
-	for _, var_ := range root.sequent.localContext.vars {
-		varsString = append(varsString, var_.ToString())
-	}
-	for _, var_ := range root.sequent.localContext.typeVars {
-		varsString = append(varsString, fmt.Sprintf("%s: Type", var_.ToString()))
-	}
+// 	for _, var_ := range root.sequent.localContext.vars {
+// 		varsString = append(varsString, var_.ToString())
+// 	}
+// 	for _, var_ := range root.sequent.localContext.typeVars {
+// 		varsString = append(varsString, fmt.Sprintf("%s: Type", var_.ToString()))
+// 	}
 
-	switch whatIsSet(root.sequent.consequence) {
-	case formIsSet:
-		consequence = root.sequent.consequence.f.ToString()
-		if root.typeScheme == nil {
-			ts = root.sequent.consequence.f.GetType().ToString()
-		}
-	case termIsSet:
-		consequence = root.sequent.consequence.t.ToString()
-		if root.typeScheme == nil {
-			if root.sequent.consequence.t.(AST.TypedTerm).GetTypeHint() == nil {
-				ts = root.sequent.consequence.t.(AST.TypedTerm).GetTypeApp().ToString()
-			} else {
-				ts = root.sequent.consequence.t.(AST.TypedTerm).GetTypeHint().ToString()
-			}
-		}
-	case typeIsSet:
-		consequence = root.sequent.consequence.a.ToString()
-		if root.typeScheme == nil {
-			ts = "Type"
-		}
-	}
+// 	switch whatIsSet(root.sequent.consequence) {
+// 	case formIsSet:
+// 		consequence = root.sequent.consequence.f.ToString()
+// 		if root.typeScheme == nil {
+// 			ts = root.sequent.consequence.f.GetType().ToString()
+// 		}
+// 	case termIsSet:
+// 		consequence = root.sequent.consequence.t.ToString()
+// 		if root.typeScheme == nil {
+// 			if root.sequent.consequence.t.(AST.TypedTerm).GetTypeHint() == nil {
+// 				ts = root.sequent.consequence.t.(AST.TypedTerm).GetTypeApp().ToString()
+// 			} else {
+// 				ts = root.sequent.consequence.t.(AST.TypedTerm).GetTypeHint().ToString()
+// 			}
+// 		}
+// 	case typeIsSet:
+// 		consequence = root.sequent.consequence.a.ToString()
+// 		if root.typeScheme == nil {
+// 			ts = "Type"
+// 		}
+// 	}
 
-	childrenProofs := []string{}
+// 	childrenProofs := []string{}
 
-	for _, child := range root.children {
-		bytes, err := child.dump()
-		if err != nil {
-			return "", err
-		}
-		childrenProofs = append(childrenProofs, bytes)
-	}
+// 	for _, child := range root.children {
+// 		bytes, err := child.dump()
+// 		if err != nil {
+// 			return "", err
+// 		}
+// 		childrenProofs = append(childrenProofs, bytes)
+// 	}
 
-	bytes, err := json.Marshal(&struct {
-		LocalContext string   `json:"localContext"`
-		Consequence  string   `json:"consequence"`
-		TypeScheme   string   `json:"typeScheme"`
-		Rule         string   `json:"rule"`
-		Children     []string `json:"children"`
-	}{
-		LocalContext: strings.Join(varsString, ", "),
-		Consequence:  consequence,
-		TypeScheme:   ts,
-		Rule:         root.appliedRule,
-		Children:     childrenProofs,
-	})
+// 	bytes, err := json.Marshal(&struct {
+// 		LocalContext string   `json:"localContext"`
+// 		Consequence  string   `json:"consequence"`
+// 		TypeScheme   string   `json:"typeScheme"`
+// 		Rule         string   `json:"rule"`
+// 		Children     []string `json:"children"`
+// 	}{
+// 		LocalContext: strings.Join(varsString, ", "),
+// 		Consequence:  consequence,
+// 		TypeScheme:   ts,
+// 		Rule:         root.appliedRule,
+// 		Children:     childrenProofs,
+// 	})
 
-	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(string(bytes), "\\", ""), "\"{", "{"), "}\"", "}"), err
-}
+// 	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(string(bytes), "\\", ""), "\"{", "{"), "}\"", "}"), err
+// }
 
-/* Utils */
+// /* Utils */
 
-/* Checks if file exists at given path */
-func fileExists(path string) bool {
-	_, err := os.Stat(path)
-	return !errors.Is(err, os.ErrNotExist)
-}
+// /* Checks if file exists at given path */
+// func fileExists(path string) bool {
+// 	_, err := os.Stat(path)
+// 	return !errors.Is(err, os.ErrNotExist)
+// }
 
-/* Create a formated file name */
-func getFileName(folder string, i int) string {
-	return fmt.Sprintf("%sproof_%d.json", folder, i)
-}
+// /* Create a formated file name */
+// func getFileName(folder string, i int) string {
+// 	return fmt.Sprintf("%sproof_%d.json", folder, i)
+// }

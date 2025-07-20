@@ -178,8 +178,6 @@ func getContextFromFormula(root AST.Form) []string {
 		result = getContextFromFormula(nf.GetForm())
 	case AST.Ex:
 		result = getContextFromFormula(nf.GetForm())
-	case AST.AllType:
-		result = getContextFromFormula(nf.GetForm())
 	case AST.And:
 		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
@@ -198,18 +196,7 @@ func getContextFromFormula(root AST.Form) []string {
 		result = append(result, getContextFromFormula(nf.GetForm())...)
 	case AST.Pred:
 		if !nf.GetID().Equals(AST.Id_eq) {
-			primitives := nf.GetType().GetPrimitives()
-			typesStr := ""
-
-			for i, prim := range primitives {
-				if i != len(primitives)-1 {
-					typesStr += "τ (" + prim.ToString() + ") → "
-				} else {
-					typesStr += prim.ToString()
-				}
-			}
-
-			result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", nf.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
+			result = append(result, mapDefault(fmt.Sprintf("symbol %s;", nf.GetID().ToMappedString(lambdaPiMapConnectors, false))))
 		}
 		for _, term := range nf.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
@@ -225,8 +212,6 @@ func getIdsFromFormula(root AST.Form) []Glob.Pair[string, string] {
 	case AST.All:
 		result = getIdsFromFormula(nf.GetForm())
 	case AST.Ex:
-		result = getIdsFromFormula(nf.GetForm())
-	case AST.AllType:
 		result = getIdsFromFormula(nf.GetForm())
 	case AST.And:
 		for _, f := range nf.GetChildFormulas().GetSlice() {
@@ -257,18 +242,7 @@ func getContextFromTerm(trm AST.Term) []string {
 	result := []string{}
 
 	if fun, isFun := trm.(AST.Fun); isFun {
-
-		primitives := fun.GetTypeHint().GetPrimitives()
-		typesStr := ""
-		for i, prim := range primitives {
-			if i != len(primitives)-1 {
-				typesStr += "τ (" + prim.ToString() + ") → "
-			} else {
-				typesStr += "τ (" + prim.ToString() + ")"
-			}
-		}
-
-		result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
+		result = append(result, mapDefault(fmt.Sprintf("symbol %s;", fun.GetID().ToMappedString(lambdaPiMapConnectors, false))))
 		for _, term := range fun.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
