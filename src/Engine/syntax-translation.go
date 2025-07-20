@@ -229,8 +229,7 @@ func elaborateForm(con Context, f, source_form Parser.PForm) AST.Form {
 func maybeFlattenOr(con Context, f Parser.PBin, source_form Parser.PForm) AST.Form {
 	return maybeFlattenBin(
 		con, f, source_form,
-		// FIXME: get rid of the pointer
-		func(ls *AST.FormList) AST.Form { return AST.MakerOr(ls) },
+		func(ls Lib.List[AST.Form]) AST.Form { return AST.MakerOr(ls) },
 		Parser.PBinaryOr,
 	)
 }
@@ -238,8 +237,7 @@ func maybeFlattenOr(con Context, f Parser.PBin, source_form Parser.PForm) AST.Fo
 func maybeFlattenAnd(con Context, f Parser.PBin, source_form Parser.PForm) AST.Form {
 	return maybeFlattenBin(
 		con, f, source_form,
-		// FIXME: get rid of the pointer
-		func(ls *AST.FormList) AST.Form { return AST.MakerAnd(ls) },
+		func(ls Lib.List[AST.Form]) AST.Form { return AST.MakerAnd(ls) },
 		Parser.PBinaryAnd,
 	)
 }
@@ -248,19 +246,19 @@ func maybeFlattenBin(
 	con Context,
 	f Parser.PBin,
 	source_form Parser.PForm,
-	maker Lib.Func[*AST.FormList, AST.Form],
+	maker Lib.Func[Lib.List[AST.Form], AST.Form],
 	op Parser.PBinOp,
 ) AST.Form {
 	if !Glob.Flatten() {
 		return maker(
-			AST.NewFormList(
+			Lib.MkListV(
 				elaborateForm(con, f.Left(), source_form),
 				elaborateForm(con, f.Right(), source_form),
 			))
 	}
 
 	subforms := flatten(f, op)
-	forms := AST.NewFormList(
+	forms := Lib.MkListV(
 		Lib.ListMap(
 			subforms,
 			func(f Parser.PForm) AST.Form { return elaborateForm(con, f, source_form) },

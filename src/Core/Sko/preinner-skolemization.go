@@ -141,9 +141,9 @@ func alphaConvert(
 	case AST.And:
 		return AST.MakeAnd(
 			f.GetIndex(),
-			AST.NewFormList(
+			Lib.MkListV(
 				Glob.MapTo(
-					f.FormList.Slice(),
+					f.GetChildFormulas().GetSlice(),
 					func(_ int, f AST.Form) AST.Form {
 						return alphaConvert(f, k, substitution)
 					})...),
@@ -151,8 +151,8 @@ func alphaConvert(
 	case AST.Or:
 		return AST.MakeOr(
 			f.GetIndex(),
-			AST.NewFormList(Glob.MapTo(
-				f.FormList.Slice(),
+			Lib.MkListV(Glob.MapTo(
+				f.GetChildFormulas().GetSlice(),
 				func(_ int, f AST.Form) AST.Form {
 					return alphaConvert(f, k, substitution)
 				})...),

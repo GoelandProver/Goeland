@@ -46,7 +46,7 @@ import (
 
 type Reconstruct struct {
 	result bool
-	forms  *AST.FormList
+	forms  Lib.List[AST.Form]
 	terms  Lib.List[AST.Term]
 	err    error
 }
@@ -119,8 +119,8 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 				errorFound = res.err
 			} else {
 				// Once the child sends back to the father, it should only have one item.
-				if res.forms != nil && res.forms.Len() == 1 {
-					forms[index] = res.forms.Get(0)
+				if res.forms.Len() == 1 {
+					forms[index] = res.forms.At(0)
 				}
 				if res.terms.Len() == 1 {
 					terms.Upd(index, res.terms.At(0))
@@ -130,7 +130,7 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 	}
 
 	selectCleanup(errorFound, hasAnswered, chansTab)
-	return Reconstruct{result: errorFound == nil, forms: AST.NewFormList(forms...), terms: terms, err: errorFound}
+	return Reconstruct{result: errorFound == nil, forms: Lib.MkListV(forms...), terms: terms, err: errorFound}
 }
 
 /* Utils functions for selectSequents */
@@ -172,6 +172,6 @@ func treatReturns(res Reconstruct) (AST.Form, error) {
 		if res.forms.Len() > 1 {
 			return nil, fmt.Errorf("more than one formula is returned by the typing system")
 		}
-		return res.forms.Get(0), res.err
+		return res.forms.At(0), res.err
 	}
 }

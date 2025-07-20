@@ -31,83 +31,42 @@
 **/
 
 /**
-* This file contains functions and types which describe the fomula_list's data
-* structure
+* This file contains utility functions for list of formulas
 **/
 
 package AST
 
 import (
-	"sort"
-
-	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
-type FormList struct {
-	*Glob.List[Form]
+// ex-name: ReplaceMetaByTerm
+func LsSubstByTerm(formulas Lib.List[Form], meta Meta, term Term) Lib.List[Form] {
+	for i, f := range formulas.GetSlice() {
+		formulas.Upd(i, f.ReplaceMetaByTerm(meta, term))
+	}
+	return formulas
 }
 
-func NewFormList(slice ...Form) *FormList {
-	return &FormList{Glob.NewList(slice...)}
-}
-
-func (fl *FormList) Less(i, j int) bool {
-	return (fl.Get(i).ToString() < fl.Get(j).ToString())
-}
-
-func (fl *FormList) Copy() *FormList {
-	return &FormList{fl.List.Copy()}
-}
-
-func (lf *FormList) ToMappableStringSlice() []MappableString {
+// ex-name: ToMappableStringSlice
+func LsToMappableStringSlice(formulas Lib.List[Form]) []MappableString {
 	forms := []MappableString{}
-
-	for _, form := range lf.Slice() {
+	for _, form := range formulas.GetSlice() {
 		forms = append(forms, form.(MappableString))
 	}
-
 	return forms
 }
 
-func (fl *FormList) Equals(other *FormList) bool {
-	if fl.Len() != other.Len() {
-		return false
-	}
+func LsFlatten(formulas Lib.List[Form]) Lib.List[Form] {
+	result := Lib.NewList[Form]()
 
-	flSorted := fl.Copy()
-	sort.Sort(flSorted)
-
-	otherSorted := other.Copy()
-	sort.Sort(otherSorted)
-
-	for i := range flSorted.Slice() {
-		if !flSorted.Get(i).Equals(otherSorted.Get(i)) {
-			return false
-		}
-	}
-
-	return true
-}
-
-// Removes all AND formulas: {(a & b), (b => c), (d & (e & f))} -> {(a), (b), (b => c), (d), (e), (f)}
-func (fl *FormList) Flatten() *FormList {
-	result := NewFormList()
-
-	for _, form := range fl.Slice() {
+	for _, form := range formulas.GetSlice() {
 		if typed, ok := form.(And); ok {
-			result.Append(typed.FormList.Flatten().Slice()...)
+			result.Append(LsFlatten(typed.GetChildFormulas()).GetSlice()...)
 		} else {
 			result.Append(form)
 		}
 	}
 
 	return result
-}
-
-func (fl *FormList) ReplaceMetaByTerm(meta Meta, term Term) *FormList {
-	for i, f := range fl.Slice() {
-		fl.Set(i, f.ReplaceMetaByTerm(meta, term))
-	}
-
-	return fl
 }

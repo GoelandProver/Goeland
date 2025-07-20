@@ -94,7 +94,7 @@ func TryEquality(atomics_for_dmt Core.FormAndTermsList, st Search.State, new_ato
 * creates the problem
 * returns a bool for success and the corresponding substitution
 **/
-func EqualityReasoning(eqStruct eqStruct.EqualityStruct, tree_pos, tree_neg Unif.DataStructure, atomic *AST.FormList, originalNodeId int) (bool, []Unif.Substitutions) {
+func EqualityReasoning(eqStruct eqStruct.EqualityStruct, tree_pos, tree_neg Unif.DataStructure, atomic Lib.List[AST.Form], originalNodeId int) (bool, []Unif.Substitutions) {
 	debug(Lib.MkLazy(func() string { return "ER call" }))
 	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
 	if equalities {
