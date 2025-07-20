@@ -147,11 +147,10 @@ func allRules(rule string, target AST.Form, composingForms Lib.List[AST.Form], n
 func allRulesQuantUniv(rule string, target AST.Form, composingForms Lib.List[AST.Form], nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form], vars []AST.Var, termGen AST.Term) string {
 
 	quant := ""
-	typeStr := vars[0].GetTypeApp().ToString()
-	switch typed := target.(type) {
+	typeStr := ""
+	switch target.(type) {
 	case AST.All:
 		quant = lambdaPiMapConnectors[AST.AllQuant]
-		typeStr = typed.GetVarList()[0].GetTypeHint().ToString()
 	case AST.Not:
 		quant = lambdaPiMapConnectors[AST.ExQuant]
 	}
@@ -164,7 +163,7 @@ func allRulesQuantUniv(rule string, target AST.Form, composingForms Lib.List[AST
 
 	varStrs := []string{}
 	for _, singleVar := range vars {
-		varStrs = append(varStrs, toLambdaIntroString(singleVar, singleVar.GetTypeHint().ToString()))
+		varStrs = append(varStrs, toLambdaIntroString(singleVar, ""))
 	}
 	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
 
@@ -192,11 +191,10 @@ func getRecursionUnivStr(nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form])
 
 func allRulesQuantExist(rule string, target AST.Form, composingForms Lib.List[AST.Form], nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form], vars []AST.Var, termGen AST.Term) string {
 	quant := ""
-	typeStr := vars[0].GetTypeApp().ToString()
-	switch typed := target.(type) {
+	typeStr := ""
+	switch target.(type) {
 	case AST.Ex:
 		quant = lambdaPiMapConnectors[AST.ExQuant]
-		typeStr = typed.GetVarList()[0].GetTypeHint().ToString()
 	case AST.Not:
 		quant = lambdaPiMapConnectors[AST.AllQuant]
 	}
@@ -209,7 +207,7 @@ func allRulesQuantExist(rule string, target AST.Form, composingForms Lib.List[AS
 
 	varStrs := []string{}
 	for _, singleVar := range vars {
-		varStrs = append(varStrs, toLambdaIntroString(singleVar, singleVar.GetTypeHint().ToString()))
+		varStrs = append(varStrs, toLambdaIntroString(singleVar, ""))
 	}
 	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
 
@@ -224,8 +222,8 @@ func getRecursionExistStr(nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form]
 	for i, next := range nexts {
 		result += "(\n"
 		typesStr := ""
-		if typed, ok := termGen.(AST.Fun); ok {
-			typesStr = mapDefault(typed.GetTypeHint().ToString())
+		if _, ok := termGen.(AST.Fun); ok {
+			typesStr = mapDefault("")
 		}
 		result += toLambdaIntroString(termGen, typesStr) + ",\n"
 		for _, childForm := range children[i].GetSlice() {

@@ -119,10 +119,6 @@ func (a All) RenameVariables() Form {
 	return All{a.quantifier.renameVariables()}
 }
 
-func (a All) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return All{a.quantifier.replaceTypeByMeta(varList, index)}
-}
-
 func (a All) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	quant, isReplaced := a.quantifier.replaceTermByTerm(old, new)
 	return All{quant}, isReplaced
@@ -175,10 +171,6 @@ func (e Ex) RenameVariables() Form {
 	return Ex{e.quantifier.renameVariables()}
 }
 
-func (e Ex) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return Ex{e.quantifier.replaceTypeByMeta(varList, index)}
-}
-
 func (e Ex) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	quant, isReplaced := e.quantifier.replaceTermByTerm(old, new)
 	return Ex{quant}, isReplaced
@@ -190,138 +182,6 @@ func (e Ex) SubstituteVarByMeta(old Var, new Meta) Form {
 
 func (e Ex) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return Ex{e.quantifier.replaceMetaByTerm(meta, term)}
-}
-
-// -----------------------------------------------------------------------------
-// Π-types
-
-type AllType struct {
-	*MappedString
-	index  int
-	tvList []TypeVar
-	form   Form
-	metas  Lib.Cache[Lib.Set[Meta], AllType]
-}
-
-func MakeAllTypeSimple(
-	i int,
-	typeVars []TypeVar,
-	form Form,
-	metas Lib.Set[Meta],
-) AllType {
-	fms := &MappedString{}
-	at := AllType{
-		fms,
-		i,
-		typeVars,
-		form,
-		Lib.MkCache(metas, AllType.forceGetMetas),
-	}
-	fms.MappableString = &at
-	return at
-}
-
-func MakeAllType(i int, typeVars []TypeVar, form Form) AllType {
-	return MakeAllTypeSimple(i, typeVars, form, Lib.EmptySet[Meta]())
-}
-
-func MakerAllType(typeVars []TypeVar, form Form) AllType {
-	return MakeAllType(MakerIndexFormula(), typeVars, form)
-}
-
-/* Methods */
-
-func (a AllType) GetIndex() int         { return a.index }
-func (a AllType) GetVarList() []TypeVar { return copyTypeVarList(a.tvList) }
-func (a AllType) GetForm() Form         { return a.form.Copy() }
-func (a AllType) GetType() TypeScheme   { return DefaultPropType(0) }
-
-/* Form interface */
-
-func (a AllType) ToMappedString(mapping MapString, displayTypes bool) string {
-	return mapping[QuantVarOpen] + Glob.ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (" + a.GetForm().ToString() + ")"
-}
-
-func (a AllType) ToString() string {
-	return a.MappedString.ToString()
-}
-
-func (a AllType) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(" + mapping[AllTypeQuant] + " " + mapping[QuantVarOpen] + Glob.ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (%s))"
-}
-
-func (a AllType) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", ""
-}
-
-func (a AllType) GetChildrenForMappedString() []MappableString {
-	return LsToMappableStringSlice(a.GetChildFormulas())
-}
-
-func (a AllType) forceGetMetas() Lib.Set[Meta] {
-	return a.GetForm().GetMetas()
-}
-
-func (a AllType) GetMetas() Lib.Set[Meta] {
-	return a.metas.Get(a)
-}
-
-func (a AllType) Copy() Form {
-	fms := &MappedString{}
-	at := AllType{
-		fms,
-		a.index,
-		copyTypeVarList(a.tvList),
-		a.form.Copy(),
-		a.metas.Copy(Lib.Set[Meta].Copy),
-	}
-	fms.MappableString = &at
-	return at
-}
-
-func (a AllType) Equals(f any) bool {
-	oth, isAll := f.(AllType)
-	return isAll &&
-		AreEqualsTypeVarList(a.tvList, oth.tvList) &&
-		a.form.Equals(oth.form)
-}
-
-func (a AllType) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return MakeAllType(a.GetIndex(), a.tvList, a.GetForm().ReplaceTypeByMeta(varList, index))
-}
-
-func (a AllType) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
-	f, res := a.GetForm().ReplaceTermByTerm(old, new)
-	na := MakeAllTypeSimple(a.GetIndex(), a.GetVarList(), f, a.metas.Raw())
-	if !res && !a.metas.NeedsUpd() {
-		na.metas.AvoidUpd()
-	}
-	return na, res
-}
-
-func (a AllType) RenameVariables() Form {
-	return MakeAllType(a.GetIndex(), a.GetVarList(), a.GetForm().RenameVariables())
-}
-
-func (a AllType) GetSubTerms() Lib.List[Term] {
-	return a.GetForm().GetSubTerms()
-}
-
-func (a AllType) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := a.GetForm().SubstituteVarByMeta(old, new)
-	return MakeAllTypeSimple(a.index, a.tvList, f, a.metas.Raw())
-}
-
-func (a AllType) GetSubFormulasRecur() Lib.List[Form] {
-	return getAllSubFormulasAppended(a)
-}
-
-func (a AllType) GetChildFormulas() Lib.List[Form] {
-	return Lib.MkListV(a.GetForm())
-}
-
-func (e AllType) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeAllType(e.GetIndex(), e.GetVarList(), e.GetForm().ReplaceMetaByTerm(meta, term))
 }
 
 // -----------------------------------------------------------------------------
@@ -367,10 +227,6 @@ func (o Or) GetMetas() Lib.Set[Meta] {
 	return o.metas.Get(o)
 }
 
-func (o Or) GetType() TypeScheme {
-	return DefaultPropType(0)
-}
-
 func (o Or) GetSubTerms() Lib.List[Term] {
 	res := Lib.NewList[Term]()
 
@@ -412,10 +268,6 @@ func (o Or) ToMappedStringChild(mapping MapString, displayTypes bool) (separator
 
 func (o Or) GetChildrenForMappedString() []MappableString {
 	return LsToMappableStringSlice(o.GetChildFormulas())
-}
-
-func (o Or) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return MakeOr(o.GetIndex(), replaceList(o.forms, varList, index))
 }
 
 func (o Or) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -508,10 +360,6 @@ func (a And) GetMetas() Lib.Set[Meta] {
 	return a.metas.Get(a)
 }
 
-func (a And) GetType() TypeScheme {
-	return DefaultPropType(0)
-}
-
 func (a And) GetSubTerms() Lib.List[Term] {
 	res := Lib.NewList[Term]()
 
@@ -556,10 +404,6 @@ func (a And) ToMappedStringChild(mapping MapString, displayTypes bool) (separato
 
 func (a And) GetChildrenForMappedString() []MappableString {
 	return LsToMappableStringSlice(a.GetChildFormulas())
-}
-
-func (a And) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return MakeAnd(a.GetIndex(), replaceList(a.forms, varList, index))
 }
 
 func (a And) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -662,17 +506,12 @@ func (e Equ) GetMetas() Lib.Set[Meta] {
 	return e.metas.Get(e)
 }
 
-func (e Equ) GetType() TypeScheme { return DefaultPropType(0) }
-func (e Equ) ToString() string    { return e.ToMappedString(DefaultMapString, true) }
+func (e Equ) ToString() string { return e.ToMappedString(DefaultMapString, true) }
 
 func (e Equ) Equals(f any) bool {
 	oth, isEqu := f.(Equ)
 	return isEqu &&
 		e.f1.Equals(oth.f1) && e.f2.Equals(oth.f2)
-}
-
-func (e Equ) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return MakeEqu(e.GetIndex(), e.GetF1().ReplaceTypeByMeta(varList, index), e.GetF2().ReplaceTypeByMeta(varList, index))
 }
 
 func (e Equ) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -785,8 +624,7 @@ func (i Imp) GetMetas() Lib.Set[Meta] {
 	return i.metas.Get(i)
 }
 
-func (i Imp) GetType() TypeScheme { return DefaultPropType(0) }
-func (i Imp) ToString() string    { return i.ToMappedString(DefaultMapString, true) }
+func (i Imp) ToString() string { return i.ToMappedString(DefaultMapString, true) }
 
 func (i Imp) Equals(other any) bool {
 	if typed, ok := other.(Imp); ok {
@@ -794,10 +632,6 @@ func (i Imp) Equals(other any) bool {
 	}
 
 	return false
-}
-
-func (i Imp) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return MakeImp(i.GetIndex(), i.GetF1().ReplaceTypeByMeta(varList, index), i.GetF2().ReplaceTypeByMeta(varList, index))
 }
 
 func (i Imp) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -884,10 +718,6 @@ func (n Not) GetMetas() Lib.Set[Meta] {
 	return n.metas.Get(n)
 }
 
-func (n Not) GetType() TypeScheme {
-	return DefaultPropType(0)
-}
-
 func (n Not) GetSubTerms() Lib.List[Term] {
 	return n.GetForm().GetSubTerms()
 }
@@ -922,10 +752,6 @@ func (n Not) ToMappedStringChild(mapping MapString, displayTypes bool) (separato
 
 func (n Not) GetChildrenForMappedString() []MappableString {
 	return LsToMappableStringSlice(n.GetChildFormulas())
-}
-
-func (n Not) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceTypeByMeta(varList, index))
 }
 
 func (n Not) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -998,37 +824,24 @@ func getDeepFormWithoutNot(form Form, isEven bool) (Form, bool) {
 
 type Pred struct {
 	*MappedString
-	index    int
-	id       Id
-	args     Lib.List[Term]
-	typeVars []TypeApp
-	typeHint TypeScheme
-	metas    Lib.Cache[Lib.Set[Meta], Pred]
+	index int
+	id    Id
+	args  Lib.List[Term]
+	metas Lib.Cache[Lib.Set[Meta], Pred]
 }
 
 func MakePredSimple(
 	index int,
 	id Id,
 	terms Lib.List[Term],
-	typeApps []TypeApp,
 	metas Lib.Set[Meta],
-	typeSchemes ...TypeScheme,
 ) Pred {
-	var ts TypeScheme
-	// FIXME: this condition is very suspect
-	if len(typeSchemes) == 1 {
-		ts = typeSchemes[0]
-	} else {
-		ts = DefaultPropType(terms.Len())
-	}
 	fms := &MappedString{}
 	pred := Pred{
 		fms,
 		index,
 		id,
 		terms,
-		typeApps,
-		ts,
 		Lib.MkCache(metas, Pred.forceGetMetas),
 	}
 	fms.MappableString = &pred
@@ -1039,26 +852,20 @@ func MakePred(
 	index int,
 	id Id,
 	terms Lib.List[Term],
-	typeApps []TypeApp,
-	typeSchemes ...TypeScheme,
 ) Pred {
 	return MakePredSimple(
 		index,
 		id,
 		terms,
-		typeApps,
 		Lib.EmptySet[Meta](),
-		typeSchemes...,
 	)
 }
 
 func MakerPred(
 	id Id,
 	terms Lib.List[Term],
-	typeApps []TypeApp,
-	typeSchemes ...TypeScheme,
 ) Pred {
-	return MakePred(MakerIndexFormula(), id, terms, typeApps, typeSchemes...)
+	return MakePred(MakerIndexFormula(), id, terms)
 }
 
 /* Pred attributes getters */
@@ -1066,11 +873,9 @@ func MakerPred(
 func (p Pred) GetIndex() int           { return p.index }
 func (p Pred) GetID() Id               { return p.id.Copy().(Id) }
 func (p Pred) GetArgs() Lib.List[Term] { return p.args }
-func (p Pred) GetTypeVars() []TypeApp  { return CopyTypeAppList(p.typeVars) }
 
 /* Formula methods */
 
-func (p Pred) GetType() TypeScheme   { return p.typeHint }
 func (p Pred) RenameVariables() Form { return p }
 
 func (p Pred) ToString() string {
@@ -1078,16 +883,11 @@ func (p Pred) ToString() string {
 }
 
 func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	if len(p.typeVars) == 0 && p.GetArgs().Len() == 0 {
+	if p.GetArgs().Len() == 0 {
 		return p.GetID().ToMappedString(mapping, displayTypes) + "%s"
 	}
 	args := []string{}
 
-	if len(p.typeVars) > 0 {
-		if tv := Glob.ListToString(p.typeVars, ", ", mapping[PredEmpty]); tv != "" {
-			args = append(args, tv)
-		}
-	}
 	args = append(args, "%s")
 
 	if p.GetID().GetName() == "=" {
@@ -1115,9 +915,7 @@ func (p Pred) Copy() Form {
 		p.index,
 		p.id,
 		p.GetArgs(),
-		CopyTypeAppList(p.GetTypeVars()),
 		p.metas.Raw().Copy(),
-		p.GetType(),
 	)
 
 	if !p.metas.NeedsUpd() {
@@ -1129,10 +927,7 @@ func (p Pred) Copy() Form {
 
 func (p Pred) Equals(other any) bool {
 	if typed, ok := other.(Pred); ok {
-		return typed.id.Equals(p.id) &&
-			Lib.ComparableList[TypeApp](p.typeVars).Equals(typed.typeVars) &&
-			Lib.ListEquals(typed.args, p.args) &&
-			p.typeHint.Equals(typed.typeHint)
+		return typed.id.Equals(p.id) && Lib.ListEquals(typed.args, p.args)
 	}
 
 	return false
@@ -1167,15 +962,6 @@ func (p Pred) GetMetaList() Lib.List[Meta] {
 	return metas
 }
 
-func (p Pred) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return MakePred(
-		p.GetIndex(),
-		p.GetID(),
-		replaceTermListTypesByMeta(p.GetArgs(), varList, index),
-		instanciateTypeAppList(p.typeVars, varList, index), p.GetType(),
-	)
-}
-
 func (p Pred) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	termList, res := replaceTermInTermList(p.GetArgs(), old, new)
 
@@ -1183,9 +969,7 @@ func (p Pred) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 		p.GetIndex(),
 		p.GetID(),
 		termList,
-		p.GetTypeVars(),
 		p.metas.Raw(),
-		p.GetType(),
 	)
 
 	if !res && !p.metas.NeedsUpd() {
@@ -1216,9 +1000,7 @@ func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
 				nf.index,
 				nf.id,
 				nf.args,
-				nf.typeVars,
 				nf.metas.Raw(),
-				nf.typeHint,
 			)
 		}
 		return nf
@@ -1249,7 +1031,7 @@ func (p Pred) ReplaceMetaByTerm(meta Meta, term Term) Form {
 		}
 	}
 
-	return MakePred(p.GetIndex(), p.id, newTerms, p.typeVars, p.GetType())
+	return MakePred(p.GetIndex(), p.id, newTerms)
 }
 
 // -----------------------------------------------------------------------------
@@ -1283,11 +1065,9 @@ func (t Top) GetChildrenForMappedString() []MappableString {
 	return LsToMappableStringSlice(t.GetChildFormulas())
 }
 
-func (t Top) GetType() TypeScheme                         { return DefaultPropType(0) }
 func (t Top) Copy() Form                                  { return MakeTop(t.GetIndex()) }
 func (Top) Equals(f any) bool                             { _, isTop := f.(Top); return isTop }
 func (Top) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
-func (t Top) ReplaceTypeByMeta([]TypeVar, int) Form       { return MakeTop(t.GetIndex()) }
 func (t Top) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeTop(t.GetIndex()), false }
 func (t Top) RenameVariables() Form                       { return MakeTop(t.GetIndex()) }
 func (t Top) GetIndex() int                               { return t.index }
@@ -1327,11 +1107,9 @@ func (b Bot) GetChildrenForMappedString() []MappableString {
 	return LsToMappableStringSlice(b.GetChildFormulas())
 }
 
-func (b Bot) GetType() TypeScheme                         { return DefaultPropType(0) }
 func (b Bot) Copy() Form                                  { return MakeBot(b.GetIndex()) }
 func (Bot) Equals(f any) bool                             { _, isBot := f.(Bot); return isBot }
 func (Bot) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
-func (b Bot) ReplaceTypeByMeta([]TypeVar, int) Form       { return MakeBot(b.GetIndex()) }
 func (b Bot) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeBot(b.GetIndex()), false }
 func (b Bot) RenameVariables() Form                       { return MakeBot(b.GetIndex()) }
 func (b Bot) GetIndex() int                               { return b.index }

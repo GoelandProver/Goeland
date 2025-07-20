@@ -71,7 +71,7 @@ func RealInstantiate(
 	terms Lib.List[AST.Term],
 ) (FormAndTerms, AST.Meta) {
 	v := varList[0]
-	meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(AST.TypeApp))
+	meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index)
 	subForm = subForm.SubstituteVarByMeta(v, meta)
 
 	terms = terms.Copy(AST.Term.Copy)

@@ -32,165 +32,159 @@
 
 package Typing
 
-import (
-	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
-	"github.com/GoelandProver/Goeland/Lib"
-)
+// import (
+// 	"github.com/GoelandProver/Goeland/AST"
+// 	"github.com/GoelandProver/Goeland/Glob"
+// 	"github.com/GoelandProver/Goeland/Lib"
+// )
 
-var debug Glob.Debugger
+// /**
+//  * This file implements a second pass on the given formula to:
+//  *	- Type the variables
+//  *	- Give a type to the polymorph predicates / functions
+//  **/
 
-func InitDebugger() {
-	debug = Glob.CreateDebugger("typing")
-}
+// func SecondPass(form AST.Form) AST.Form {
+// 	after := secondPassAux(form, []AST.Var{}, []AST.TypeApp{})
+// 	return after
+// }
 
-/**
- * This file implements a second pass on the given formula to:
- *	- Type the variables
- *	- Give a type to the polymorph predicates / functions
- **/
+// func secondPassAux(form AST.Form, vars []AST.Var, types []AST.TypeApp) AST.Form {
+// 	switch f := form.(type) {
+// 	case AST.Pred:
+// 		terms := nArySecondPassTerms(f.GetArgs(), vars, types)
 
-func SecondPass(form AST.Form) AST.Form {
-	after := secondPassAux(form, []AST.Var{}, []AST.TypeApp{})
-	return after
-}
+// 		// Special case: defined predicate. We need to infer types.
+// 		if f.GetID().Equals(AST.Id_eq) {
+// 			return AST.MakePred(
+// 				f.GetIndex(),
+// 				f.GetID(),
+// 				terms,
+// 				[]AST.TypeApp{
+// 					AST.GetOutType(
+// 						Glob.To[AST.TypedTerm, AST.Term](terms.At(0)).GetTypeHint(),
+// 					)})
+// 		}
 
-func secondPassAux(form AST.Form, vars []AST.Var, types []AST.TypeApp) AST.Form {
-	switch f := form.(type) {
-	case AST.Pred:
-		terms := nArySecondPassTerms(f.GetArgs(), vars, types)
+// 		// Real case: classical predicate, it should be given
+// 		return AST.MakePred(f.GetIndex(), f.GetID(), terms, f.GetTypeVars())
+// 	case AST.And:
+// 		return AST.MakeAnd(f.GetIndex(), nArySecondPass(f.GetChildFormulas(), vars, types))
+// 	case AST.Or:
+// 		return AST.MakeOr(f.GetIndex(), nArySecondPass(f.Get, vars, types))
+// 	case AST.Imp:
+// 		return AST.MakeImp(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
+// 	case AST.Equ:
+// 		return AST.MakeEqu(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
+// 	case AST.Not:
+// 		return AST.MakeNot(f.GetIndex(), secondPassAux(f.GetForm(), vars, types))
+// 	case AST.All:
+// 		return AST.MakeAll(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
+// 	case AST.Ex:
+// 		return AST.MakeEx(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
+// 	case AST.AllType:
+// 		return AST.MakeAllType(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), vars, append(types, Glob.ConvertList[AST.TypeVar, AST.TypeApp](f.GetVarList())...)))
+// 	}
+// 	return form
+// }
 
-		// Special case: defined predicate. We need to infer types.
-		if f.GetID().Equals(AST.Id_eq) {
-			return AST.MakePred(
-				f.GetIndex(),
-				f.GetID(),
-				terms,
-				[]AST.TypeApp{
-					AST.GetOutType(
-						Glob.To[AST.TypedTerm, AST.Term](terms.At(0)).GetTypeHint(),
-					)})
-		}
+// func secondPassTerm(term AST.Term, vars []AST.Var, types []AST.TypeApp) AST.Term {
+// 	switch t := term.(type) {
+// 	case AST.Fun:
+// 		terms := nArySecondPassTerms(t.GetArgs(), vars, types)
 
-		// Real case: classical predicate, it should be given
-		return AST.MakePred(f.GetIndex(), f.GetID(), terms, f.GetTypeVars())
-	case AST.And:
-		return AST.MakeAnd(f.GetIndex(), nArySecondPass(f.GetChildFormulas(), vars, types))
-	case AST.Or:
-		return AST.MakeOr(f.GetIndex(), nArySecondPass(f.GetChildFormulas(), vars, types))
-	case AST.Imp:
-		return AST.MakeImp(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
-	case AST.Equ:
-		return AST.MakeEqu(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
-	case AST.Not:
-		return AST.MakeNot(f.GetIndex(), secondPassAux(f.GetForm(), vars, types))
-	case AST.All:
-		return AST.MakeAll(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
-	case AST.Ex:
-		return AST.MakeEx(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), append(vars, f.GetVarList()...), types))
-	case AST.AllType:
-		return AST.MakeAllType(f.GetIndex(), f.GetVarList(), secondPassAux(f.GetForm(), vars, append(types, Glob.ConvertList[AST.TypeVar, AST.TypeApp](f.GetVarList())...)))
-	}
-	return form
-}
+// 		//	- It's a function
+// 		outType := func(term AST.Term) AST.TypeApp {
+// 			return AST.GetOutType(Glob.To[AST.TypedTerm](term).GetTypeHint())
+// 		}
 
-func secondPassTerm(term AST.Term, vars []AST.Var, types []AST.TypeApp) AST.Term {
-	switch t := term.(type) {
-	case AST.Fun:
-		terms := nArySecondPassTerms(t.GetArgs(), vars, types)
+// 		termsType := []AST.TypeApp{}
+// 		for _, tm := range terms.GetSlice() {
+// 			termsType = append(termsType, outType(tm))
+// 		}
 
-		//	- It's a function
-		outType := func(term AST.Term) AST.TypeApp {
-			return AST.GetOutType(Glob.To[AST.TypedTerm](term).GetTypeHint())
-		}
+// 		return AST.MakerFun(t.GetID(), terms, t.GetTypeVars(),
+// 			getTypeOfFunction(t.GetName(), t.GetTypeVars(), termsType))
 
-		termsType := []AST.TypeApp{}
-		for _, tm := range terms.GetSlice() {
-			termsType = append(termsType, outType(tm))
-		}
+// 	case AST.Var:
+// 		return t
+// 	}
+// 	return term
+// }
 
-		return AST.MakerFun(t.GetID(), terms, t.GetTypeVars(),
-			getTypeOfFunction(t.GetName(), t.GetTypeVars(), termsType))
+// func nArySecondPass(forms Lib.List[AST.Form], vars []AST.Var, types []AST.TypeApp) Lib.List[AST.Form] {
+// 	res := Lib.NewList[AST.Form]()
 
-	case AST.Var:
-		return t
-	}
-	return term
-}
+// 	for _, form := range forms.GetSlice() {
+// 		res.Append(secondPassAux(form, vars, types))
+// 	}
 
-func nArySecondPass(forms Lib.List[AST.Form], vars []AST.Var, types []AST.TypeApp) Lib.List[AST.Form] {
-	res := Lib.NewList[AST.Form]()
+// 	return res
+// }
 
-	for _, form := range forms.GetSlice() {
-		res.Append(secondPassAux(form, vars, types))
-	}
+// func nArySecondPassTerms(
+// 	terms Lib.List[AST.Term],
+// 	vars []AST.Var,
+// 	types []AST.TypeApp,
+// ) Lib.List[AST.Term] {
+// 	resTerms := Lib.NewList[AST.Term]()
 
-	return res
-}
+// 	for _, term := range terms.GetSlice() {
+// 		t := secondPassTerm(term, vars, types)
 
-func nArySecondPassTerms(
-	terms Lib.List[AST.Term],
-	vars []AST.Var,
-	types []AST.TypeApp,
-) Lib.List[AST.Term] {
-	resTerms := Lib.NewList[AST.Term]()
+// 		if t != nil {
+// 			resTerms.Append(t)
+// 		}
+// 	}
 
-	for _, term := range terms.GetSlice() {
-		t := secondPassTerm(term, vars, types)
+// 	return resTerms
+// }
 
-		if t != nil {
-			resTerms.Append(t)
-		}
-	}
+// func getTypeOfFunction(name string, vars []AST.TypeApp, termsType []AST.TypeApp) AST.TypeScheme {
+// 	// Build TypeCross from termsType
+// 	var tt []AST.TypeApp
+// 	if len(termsType) >= 2 {
+// 		tc := AST.MkTypeCross(termsType[0], termsType[1])
+// 		for i := 2; i < len(termsType); i += 1 {
+// 			tc = AST.MkTypeCross(tc, termsType[i])
+// 		}
+// 		tt = []AST.TypeApp{tc}
+// 	} else {
+// 		tt = termsType
+// 	}
 
-	return resTerms
-}
+// 	simpleTypeScheme := AST.GetType(name, tt...)
+// 	if simpleTypeScheme != nil {
+// 		if Glob.Is[AST.QuantifiedType](simpleTypeScheme) {
+// 			return Glob.To[AST.QuantifiedType](simpleTypeScheme).Instanciate(vars)
+// 		}
+// 		return simpleTypeScheme
+// 	}
 
-func getTypeOfFunction(name string, vars []AST.TypeApp, termsType []AST.TypeApp) AST.TypeScheme {
-	// Build TypeCross from termsType
-	var tt []AST.TypeApp
-	if len(termsType) >= 2 {
-		tc := AST.MkTypeCross(termsType[0], termsType[1])
-		for i := 2; i < len(termsType); i += 1 {
-			tc = AST.MkTypeCross(tc, termsType[i])
-		}
-		tt = []AST.TypeApp{tc}
-	} else {
-		tt = termsType
-	}
+// 	typeScheme := AST.GetPolymorphicType(name, len(vars), len(termsType))
 
-	simpleTypeScheme := AST.GetType(name, tt...)
-	if simpleTypeScheme != nil {
-		if Glob.Is[AST.QuantifiedType](simpleTypeScheme) {
-			return Glob.To[AST.QuantifiedType](simpleTypeScheme).Instanciate(vars)
-		}
-		return simpleTypeScheme
-	}
+// 	if typeScheme != nil {
+// 		// Instantiate type scheme with actual types
+// 		typeScheme = Glob.To[AST.QuantifiedType](typeScheme).Instanciate(vars)
+// 	} else {
+// 		// As only distinct objects are here, it should work with only this.
+// 		// I leave the other condition if others weirderies are found later.
+// 		if len(termsType) == 0 {
+// 			AST.SaveConstant(name, Glob.To[AST.TypeApp](AST.DefaultFunType(0)))
+// 		}
+// 		/*
+// 			else {
+// 				type_ := DefaultFunType(len(termsType))
+// 				if len(termsType) == 1 {
+// 					SaveTypeScheme(name, GetInputType(type_)[0], GetOutType(type_))
+// 				} else {
+// 					SaveTypeScheme(name, AST.MkTypeCross(GetInputType(type_)...), GetOutType(type_))
+// 				}
+// 			}
+// 		*/
+// 		typeScheme = AST.DefaultFunType(0)
 
-	typeScheme := AST.GetPolymorphicType(name, len(vars), len(termsType))
+// 	}
 
-	if typeScheme != nil {
-		// Instantiate type scheme with actual types
-		typeScheme = Glob.To[AST.QuantifiedType](typeScheme).Instanciate(vars)
-	} else {
-		// As only distinct objects are here, it should work with only this.
-		// I leave the other condition if others weirderies are found later.
-		if len(termsType) == 0 {
-			AST.SaveConstant(name, Glob.To[AST.TypeApp](AST.DefaultFunType(0)))
-		}
-		/*
-			else {
-				type_ := DefaultFunType(len(termsType))
-				if len(termsType) == 1 {
-					SaveTypeScheme(name, GetInputType(type_)[0], GetOutType(type_))
-				} else {
-					SaveTypeScheme(name, AST.MkTypeCross(GetInputType(type_)...), GetOutType(type_))
-				}
-			}
-		*/
-		typeScheme = AST.DefaultFunType(0)
-
-	}
-
-	return typeScheme
-}
+// 	return typeScheme
+// }
