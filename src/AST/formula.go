@@ -48,8 +48,8 @@ type Form interface {
 	GetMetas() Lib.Set[Meta]
 	GetType() TypeScheme
 	GetSubTerms() Lib.List[Term]
-	GetSubFormulasRecur() *FormList
-	GetChildFormulas() *FormList
+	GetSubFormulasRecur() Lib.List[Form]
+	GetChildFormulas() Lib.List[Form]
 
 	Lib.Copyable[Form]
 	MappableString
@@ -132,47 +132,45 @@ func instanciateTypeAppList(typeApps []TypeApp, vars []TypeVar, index int) []Typ
 	return typeVars
 }
 
-// Creates and returns a MetaList from a FormList, making sure there are no duplicates
-func metasUnion(forms *FormList) Lib.Set[Meta] {
+func metasUnion(forms Lib.List[Form]) Lib.Set[Meta] {
 	res := Lib.EmptySet[Meta]()
 
-	for _, form := range forms.Slice() {
+	for _, form := range forms.GetSlice() {
 		res = res.Union(form.GetMetas())
 	}
 
 	return res
 }
 
-// Creates and returns a FormList
-func replaceList(oldForms *FormList, vars []TypeVar, index int) *FormList {
-	newForms := NewFormList()
+func replaceList(oldForms Lib.List[Form], vars []TypeVar, index int) Lib.List[Form] {
+	newForms := Lib.MkList[Form](oldForms.Len())
 
-	for _, form := range oldForms.Slice() {
-		newForms.Append(form.ReplaceTypeByMeta(vars, index))
+	for i, form := range oldForms.GetSlice() {
+		newForms.Upd(i, form.ReplaceTypeByMeta(vars, index))
 	}
 
 	return newForms
 }
 
-func replaceTermInFormList(oldForms *FormList, oldTerm Term, newTerm Term) (*FormList, bool) {
-	newForms := NewFormList()
+// Returns whether the term has been replaced in a subformula or not
+func replaceTermInFormList(oldForms Lib.List[Form], oldTerm Term, newTerm Term) (Lib.List[Form], bool) {
+	newForms := Lib.MkList[Form](oldForms.Len())
 	res := false
 
-	for _, form := range oldForms.Slice() {
+	for i, form := range oldForms.GetSlice() {
 		newForm, r := form.ReplaceTermByTerm(oldTerm, newTerm)
 		res = res || r
-		newForms.Append(newForm)
+		newForms.Upd(i, newForm)
 	}
 
 	return newForms, res
 }
 
-// Creates and returns a FormList with its Forms renamed
-func renameFormList(forms *FormList) *FormList {
-	newForms := NewFormList()
+func renameFormList(forms Lib.List[Form]) Lib.List[Form] {
+	newForms := Lib.MkList[Form](forms.Len())
 
-	for _, form := range forms.Slice() {
-		newForms.Append(form.RenameVariables())
+	for i, form := range forms.GetSlice() {
+		newForms.Upd(i, form.RenameVariables())
 	}
 
 	return newForms

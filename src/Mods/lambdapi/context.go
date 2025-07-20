@@ -181,11 +181,11 @@ func getContextFromFormula(root AST.Form) []string {
 	case AST.AllType:
 		result = getContextFromFormula(nf.GetForm())
 	case AST.And:
-		for _, f := range nf.FormList.Slice() {
+		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
 	case AST.Or:
-		for _, f := range nf.FormList.Slice() {
+		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
 	case AST.Imp:
@@ -229,11 +229,11 @@ func getIdsFromFormula(root AST.Form) []Glob.Pair[string, string] {
 	case AST.AllType:
 		result = getIdsFromFormula(nf.GetForm())
 	case AST.And:
-		for _, f := range nf.FormList.Slice() {
+		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, getIdsFromFormula(f)...)
 		}
 	case AST.Or:
-		for _, f := range nf.FormList.Slice() {
+		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, getIdsFromFormula(f)...)
 		}
 	case AST.Imp:
