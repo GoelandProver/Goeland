@@ -88,6 +88,10 @@ func (l List[T]) At(i int) T {
 	return l.values[i]
 }
 
+func (l List[T]) Slice(st, ed int) List[T] {
+	return List[T]{values: l.values[st:ed]}
+}
+
 func ListEquals[T Comparable](ls0, ls1 List[T]) bool {
 	if ls0.Len() != ls1.Len() {
 		return false
@@ -182,6 +186,30 @@ func (l List[T]) Find(pred Func[T, bool], def T) (T, bool) {
 
 func (l List[T]) Empty() bool {
 	return l.Len() == 0
+}
+
+func (l List[T]) IndexOf(x T, cmp Func2[T, T, bool]) Option[int] {
+	for i, el := range l.values {
+		if cmp(x, el) {
+			return MkSome(i)
+		}
+	}
+	return MkNone[int]()
+}
+
+func ListIndexOf[T Comparable](x T, l List[T]) Option[int] {
+	cmp := func(x, y T) bool { return x.Equals(y) }
+	return l.IndexOf(x, cmp)
+}
+
+func (l List[T]) RemoveAt(index int) List[T] {
+	new_list := NewList[T]()
+	for i, el := range l.values {
+		if i != index {
+			new_list.Append(el)
+		}
+	}
+	return new_list
 }
 
 func ToStrictlyOrderedList[T StrictlyOrdered](l List[T]) StrictlyOrderedList[T] {

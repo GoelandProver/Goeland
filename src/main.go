@@ -206,7 +206,7 @@ func initDebuggers() {
 }
 
 func StatementListToFormula(statements []Core.Statement, old_bound int, problemDir string) (form AST.Form, bound int, containsEquality bool) {
-	and_list := AST.NewFormList()
+	and_list := Lib.NewList[AST.Form]()
 	var not_form AST.Form
 	bound = old_bound
 
@@ -265,20 +265,20 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 	}
 
 	switch {
-	case and_list.IsEmpty() && not_form == nil:
+	case and_list.Empty() && not_form == nil:
 		return nil, bound, containsEquality
-	case and_list.IsEmpty():
+	case and_list.Empty():
 		return AST.MakerNot(not_form), bound, containsEquality
 	case not_form == nil:
 		return AST.MakerAnd(and_list), bound, containsEquality
 	default:
-		flattened := and_list.Flatten()
+		flattened := AST.LsFlatten(and_list)
 		flattened.Append(AST.MakerNot(not_form))
 		return AST.MakerAnd(flattened), bound, containsEquality
 	}
 }
 
-func doAxiomStatement(andList *AST.FormList, f AST.Form) *AST.FormList {
+func doAxiomStatement(andList Lib.List[AST.Form], f AST.Form) Lib.List[AST.Form] {
 	newForm := f.RenameVariables()
 
 	// FIXME: dmt should be a plugin and therefore not checked here.

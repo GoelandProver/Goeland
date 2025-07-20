@@ -143,11 +143,11 @@ func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool)
 }
 
 func (q quantifier) GetChildrenForMappedString() []MappableString {
-	return q.GetChildFormulas().ToMappableStringSlice()
+	return LsToMappableStringSlice(q.GetChildFormulas())
 }
 
-func (q quantifier) GetChildFormulas() *FormList {
-	return NewFormList(q.GetForm())
+func (q quantifier) GetChildFormulas() Lib.List[Form] {
+	return Lib.MkListV(q.GetForm())
 }
 
 func (q quantifier) Equals(other any) bool {
