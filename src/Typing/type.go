@@ -75,9 +75,9 @@ func secondPassAux(form AST.Form, vars []AST.Var, types []AST.TypeApp) AST.Form 
 		// Real case: classical predicate, it should be given
 		return AST.MakePred(f.GetIndex(), f.GetID(), terms, f.GetTypeVars())
 	case AST.And:
-		return AST.MakeAnd(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
+		return AST.MakeAnd(f.GetIndex(), nArySecondPass(f.GetChildFormulas(), vars, types))
 	case AST.Or:
-		return AST.MakeOr(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
+		return AST.MakeOr(f.GetIndex(), nArySecondPass(f.GetChildFormulas(), vars, types))
 	case AST.Imp:
 		return AST.MakeImp(f.GetIndex(), secondPassAux(f.GetF1(), vars, types), secondPassAux(f.GetF2(), vars, types))
 	case AST.Equ:
@@ -118,10 +118,10 @@ func secondPassTerm(term AST.Term, vars []AST.Var, types []AST.TypeApp) AST.Term
 	return term
 }
 
-func nArySecondPass(forms *AST.FormList, vars []AST.Var, types []AST.TypeApp) *AST.FormList {
-	res := AST.NewFormList()
+func nArySecondPass(forms Lib.List[AST.Form], vars []AST.Var, types []AST.TypeApp) Lib.List[AST.Form] {
+	res := Lib.NewList[AST.Form]()
 
-	for _, form := range forms.Slice() {
+	for _, form := range forms.GetSlice() {
 		res.Append(secondPassAux(form, vars, types))
 	}
 

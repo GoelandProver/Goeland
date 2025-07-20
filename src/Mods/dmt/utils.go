@@ -38,6 +38,7 @@ package dmt
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 func isEquality(pred AST.Pred) bool {
@@ -59,8 +60,10 @@ func rewriteMapInsertion(polarity bool, key string, val AST.Form) {
 	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
 
 	if _, ok := rewriteMap[key]; !ok {
-		rewriteMap[key] = AST.NewFormList()
+		rewriteMap[key] = Lib.NewList[AST.Form]()
 	}
 
-	rewriteMap[key].Append(val)
+	ls := rewriteMap[key]
+	ls.Append(val)
+	rewriteMap[key] = ls
 }
