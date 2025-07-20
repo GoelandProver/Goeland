@@ -46,7 +46,6 @@ import (
 type Form interface {
 	GetIndex() int
 	GetMetas() Lib.Set[Meta]
-	GetType() TypeScheme
 	GetSubTerms() Lib.List[Term]
 	GetSubFormulasRecur() Lib.List[Form]
 	GetChildFormulas() Lib.List[Form]
@@ -54,7 +53,6 @@ type Form interface {
 	Lib.Copyable[Form]
 	MappableString
 
-	ReplaceTypeByMeta([]TypeVar, int) Form
 	ReplaceTermByTerm(old Term, new Term) (Form, bool)
 	RenameVariables() Form
 	SubstituteVarByMeta(old Var, new Meta) Form
@@ -92,8 +90,6 @@ func replaceTermInTermList(
 				newTermList.Upd(i, MakerFun(
 					nf.GetP(),
 					termList,
-					nf.GetTypeVars(),
-					nf.GetTypeHint(),
 				))
 				res = res || r
 			}
@@ -140,16 +136,6 @@ func metasUnion(forms Lib.List[Form]) Lib.Set[Meta] {
 	}
 
 	return res
-}
-
-func replaceList(oldForms Lib.List[Form], vars []TypeVar, index int) Lib.List[Form] {
-	newForms := Lib.MkList[Form](oldForms.Len())
-
-	for i, form := range oldForms.GetSlice() {
-		newForms.Upd(i, form.ReplaceTypeByMeta(vars, index))
-	}
-
-	return newForms
 }
 
 // Returns whether the term has been replaced in a subformula or not

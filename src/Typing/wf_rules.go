@@ -32,36 +32,36 @@
 
 package Typing
 
-/**
- * This file defines the WF rules.
- **/
+// /**
+//  * This file defines the WF rules.
+//  **/
 
-/* WF1 rule first empties the variables, and then the types. */
-func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	root.appliedRule = "WF_2"
+// /* WF1 rule first empties the variables, and then the types. */
+// func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	root.appliedRule = "WF_2"
 
-	// Try to empty vars first
-	if len(state.localContext.vars) > 0 {
-		// Launch child on the type of the first var
-		var_, newLocalContext := state.localContext.popVar()
-		child := []Sequent{
-			{
-				localContext:  newLocalContext,
-				globalContext: state.globalContext,
-				consequence:   Consequence{a: var_.GetTypeApp()},
-			},
-		}
-		return launchChildren(child, root, fatherChan)
-	}
+// 	// Try to empty vars first
+// 	if len(state.localContext.vars) > 0 {
+// 		// Launch child on the type of the first var
+// 		var_, newLocalContext := state.localContext.popVar()
+// 		child := []Sequent{
+// 			{
+// 				localContext:  newLocalContext,
+// 				globalContext: state.globalContext,
+// 				consequence:   Consequence{a: var_.GetTypeApp()},
+// 			},
+// 		}
+// 		return launchChildren(child, root, fatherChan)
+// 	}
 
-	// Then, if vars is not empty, empty the types
-	_, newLocalContext := state.localContext.popTypeVar()
-	child := []Sequent{
-		{
-			localContext:  newLocalContext,
-			globalContext: state.globalContext,
-			consequence:   Consequence{a: metaType},
-		},
-	}
-	return launchChildren(child, root, fatherChan)
-}
+// 	// Then, if vars is not empty, empty the types
+// 	_, newLocalContext := state.localContext.popTypeVar()
+// 	child := []Sequent{
+// 		{
+// 			localContext:  newLocalContext,
+// 			globalContext: state.globalContext,
+// 			consequence:   Consequence{a: metaType},
+// 		},
+// 	}
+// 	return launchChildren(child, root, fatherChan)
+// }

@@ -130,8 +130,6 @@ func funTermRecord(t AST.Fun, args []*eqClass) *termRecord {
 		meta:     nil,
 		symbolId: t.GetID(),
 		args:     args,
-		typeHint: t.GetTypeHint(),
-		typeVars: t.GetTypeVars(),
 	}
 }
 
@@ -141,8 +139,6 @@ type termRecord struct {
 	meta     *AST.Meta
 	symbolId AST.Id
 	args     []*eqClass
-	typeHint AST.TypeScheme
-	typeVars []AST.TypeApp
 }
 
 func (t *termRecord) isMeta() bool {

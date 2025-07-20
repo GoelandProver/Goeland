@@ -139,8 +139,6 @@ func getVariableOccurrencesForm(v AST.Var, form AST.Form, currentOcc occurrences
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	case AST.Ex:
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
-	case AST.AllType:
-		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	}
 	return currentOcc
 }
@@ -208,8 +206,6 @@ func getTermAux(form AST.Form, occ occurrence) AST.Term {
 	case AST.All:
 		term = getUnaryTerm(f.GetForm(), occ)
 	case AST.Ex:
-		term = getUnaryTerm(f.GetForm(), occ)
-	case AST.AllType:
 		term = getUnaryTerm(f.GetForm(), occ)
 	}
 	return term

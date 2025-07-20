@@ -215,8 +215,6 @@ func buildEqualityProblemMultiListFromPredList(pred AST.Pred, tn Unif.DataStruct
 	newTerm := AST.MakerPred(
 		predId.Copy().(AST.Id),
 		AST.MetaListToTermList(metas),
-		pred.GetTypeVars(),
-		pred.GetType(),
 	)
 	found, complementaryPredList := tn.Unify(newTerm)
 

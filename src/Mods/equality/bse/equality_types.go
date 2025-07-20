@@ -124,15 +124,13 @@ func retrieveEqualities(dt Unif.DataStructure) Equalities {
 	MetaEQ2 := AST.MakerMeta("METAEQ2", -1)
 	// TODO: type this
 	tv := AST.MkTypeVar("EQ")
-	eq_pred := AST.MakerPred(AST.Id_eq, Lib.NewList[AST.Term](), []AST.TypeApp{})
+	eq_pred := AST.MakerPred(AST.Id_eq, Lib.NewList[AST.Term]())
 	tv.ShouldBeMeta(eq_pred.GetIndex())
 	tv.Instantiate(1)
 	eq_pred = AST.MakePred(
 		eq_pred.GetIndex(),
 		AST.Id_eq,
 		Lib.MkListV[AST.Term](MetaEQ1, MetaEQ2),
-		[]AST.TypeApp{},
-		AST.GetPolymorphicType(AST.Id_eq.GetName(), 1, 2),
 	)
 	_, eq_list := dt.Unify(eq_pred)
 
@@ -156,18 +154,12 @@ func retrieveInequalities(dt Unif.DataStructure) Inequalities {
 	res := Inequalities{}
 	MetaNEQ1 := AST.MakerMeta("META_NEQ_1", -1)
 	MetaNEQ2 := AST.MakerMeta("META_NEQ_2", -1)
-	// TODO: type this
 
-	tv := AST.MkTypeVar("EQ")
-	neq_pred := AST.MakerPred(AST.Id_eq, Lib.NewList[AST.Term](), []AST.TypeApp{})
-	tv.ShouldBeMeta(neq_pred.GetIndex())
-	tv.Instantiate(1)
+	neq_pred := AST.MakerPred(AST.Id_eq, Lib.NewList[AST.Term]())
 	neq_pred = AST.MakePred(
 		neq_pred.GetIndex(),
 		AST.Id_eq,
 		Lib.MkListV[AST.Term](MetaNEQ1, MetaNEQ2),
-		[]AST.TypeApp{},
-		AST.GetPolymorphicType(AST.Id_eq.GetName(), 1, 2),
 	)
 	_, neq_list := dt.Unify(neq_pred)
 

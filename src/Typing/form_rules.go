@@ -32,203 +32,203 @@
 
 package Typing
 
-import (
-	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Lib"
-)
+// import (
+// 	"github.com/GoelandProver/Goeland/AST"
+// 	"github.com/GoelandProver/Goeland/Lib"
+// )
 
-/**
- * This file contains all the rules that the typing system can apply on a formula.
- **/
+// /**
+//  * This file contains all the rules that the typing system can apply on a formula.
+//  **/
 
-/* Applies quantification rule and launches 2 goroutines waiting its children. */
-func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	// Add rule to prooftree
-	switch (state.consequence.f).(type) {
-	case AST.All, AST.AllType:
-		root.appliedRule = "∀"
-	case AST.Ex:
-		root.appliedRule = "∃"
-	}
+// /* Applies quantification rule and launches 2 goroutines waiting its children. */
+// func applyQuantRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	// Add rule to prooftree
+// 	switch (state.consequence.f).(type) {
+// 	case AST.All, AST.AllType:
+// 		root.appliedRule = "∀"
+// 	case AST.Ex:
+// 		root.appliedRule = "∃"
+// 	}
 
-	var newForm AST.Form
-	var varTreated AST.Var
-	var typeTreated AST.TypeVar
+// 	var newForm AST.Form
+// 	var varTreated AST.Var
+// 	var typeTreated AST.TypeVar
 
-	varInstantiated := false
+// 	varInstantiated := false
 
-	switch f := (state.consequence.f).(type) {
-	case AST.All, AST.Ex:
-		varTreated, newForm = removeOneVar(state.consequence.f)
-		varInstantiated = true
-	case AST.AllType:
-		v := f.GetVarList()[0]
-		if len(f.GetVarList()) > 1 {
-			typeTreated, newForm = v, AST.MakeAllType(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
-		} else {
-			typeTreated, newForm = v, f.GetForm()
-		}
-	}
+// 	switch f := (state.consequence.f).(type) {
+// 	case AST.All, AST.Ex:
+// 		varTreated, newForm = removeOneVar(state.consequence.f)
+// 		varInstantiated = true
+// 	case AST.AllType:
+// 		v := f.GetVarList()[0]
+// 		if len(f.GetVarList()) > 1 {
+// 			typeTreated, newForm = v, AST.MakeAllType(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
+// 		} else {
+// 			typeTreated, newForm = v, f.GetForm()
+// 		}
+// 	}
 
-	// Create 2 children:
-	//	1 - First one with the type of the quantified variable. It should be a TypeApp.
-	//	2 - Second one with the quantified variable added in the local context.
-	// => copy the local context and use the function to get the global context (copy or not).
-	// The underlying form should be gotten to be properly typed.
-	children := mkQuantChildren(state, varInstantiated, varTreated, typeTreated, newForm)
+// 	// Create 2 children:
+// 	//	1 - First one with the type of the quantified variable. It should be a TypeApp.
+// 	//	2 - Second one with the quantified variable added in the local context.
+// 	// => copy the local context and use the function to get the global context (copy or not).
+// 	// The underlying form should be gotten to be properly typed.
+// 	children := mkQuantChildren(state, varInstantiated, varTreated, typeTreated, newForm)
 
-	// Launch the children in a goroutine, and wait for it to close.
-	// If one branch closes with an error, then the system is not well-typed.
-	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
-}
+// 	// Launch the children in a goroutine, and wait for it to close.
+// 	// If one branch closes with an error, then the system is not well-typed.
+// 	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
+// }
 
-/* Applies OR or AND rule and launches n goroutines waiting its children */
-func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	formList := Lib.NewList[AST.Form]()
-	// Add rule to prooftree
-	switch f := (state.consequence.f).(type) {
-	case AST.And:
-		root.appliedRule = "∧"
-		formList = f.GetChildFormulas()
-	case AST.Or:
-		root.appliedRule = "∨"
-		formList = f.GetChildFormulas()
-	}
+// /* Applies OR or AND rule and launches n goroutines waiting its children */
+// func applyNAryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	formList := Lib.NewList[AST.Form]()
+// 	// Add rule to prooftree
+// 	switch f := (state.consequence.f).(type) {
+// 	case AST.And:
+// 		root.appliedRule = "∧"
+// 		formList = f.GetChildFormulas()
+// 	case AST.Or:
+// 		root.appliedRule = "∨"
+// 		formList = f.GetChildFormulas()
+// 	}
 
-	// Construct children with all the formulas
-	children := []Sequent{}
-	for _, form := range formList.GetSlice() {
-		children = append(children, Sequent{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{f: form},
-		})
-	}
+// 	// Construct children with all the formulas
+// 	children := []Sequent{}
+// 	for _, form := range formList.GetSlice() {
+// 		children = append(children, Sequent{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{f: form},
+// 		})
+// 	}
 
-	// Launch the children in a goroutine, and wait for it to close.
-	// If one branch closes with an error, then the system is not well-typed.
-	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
-}
+// 	// Launch the children in a goroutine, and wait for it to close.
+// 	// If one branch closes with an error, then the system is not well-typed.
+// 	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
+// }
 
-/* Applies => or <=> rule and launches 2 goroutines waiting its children */
-func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	var f1, f2 AST.Form
-	// Add rule to prooftree
-	switch f := (state.consequence.f).(type) {
-	case AST.Imp:
-		root.appliedRule = "⇒"
-		f1, f2 = f.GetF1(), f.GetF2()
-	case AST.Equ:
-		root.appliedRule = "⇔"
-		f1, f2 = f.GetF1(), f.GetF2()
-	}
+// /* Applies => or <=> rule and launches 2 goroutines waiting its children */
+// func applyBinaryRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	var f1, f2 AST.Form
+// 	// Add rule to prooftree
+// 	switch f := (state.consequence.f).(type) {
+// 	case AST.Imp:
+// 		root.appliedRule = "⇒"
+// 		f1, f2 = f.GetF1(), f.GetF2()
+// 	case AST.Equ:
+// 		root.appliedRule = "⇔"
+// 		f1, f2 = f.GetF1(), f.GetF2()
+// 	}
 
-	// Construct children with the 2 formulas
-	children := []Sequent{
-		{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{f: f1},
-		},
-		{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{f: f2},
-		},
-	}
+// 	// Construct children with the 2 formulas
+// 	children := []Sequent{
+// 		{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{f: f1},
+// 		},
+// 		{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{f: f2},
+// 		},
+// 	}
 
-	// Launch the children in a goroutine, and wait for it to close.
-	// If one branch closes with an error, then the system is not well-typed.
-	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
-}
+// 	// Launch the children in a goroutine, and wait for it to close.
+// 	// If one branch closes with an error, then the system is not well-typed.
+// 	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
+// }
 
-/* Applies BOT or TOP rule and does not create a new goroutine */
-func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	// Add rule to prooftree
-	switch (state.consequence.f).(type) {
-	case AST.Top:
-		root.appliedRule = "⊤"
-	case AST.Bot:
-		root.appliedRule = "⊥"
-	}
+// /* Applies BOT or TOP rule and does not create a new goroutine */
+// func applyBotTopRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	// Add rule to prooftree
+// 	switch (state.consequence.f).(type) {
+// 	case AST.Top:
+// 		root.appliedRule = "⊤"
+// 	case AST.Bot:
+// 		root.appliedRule = "⊥"
+// 	}
 
-	// Construct children with the contexts
-	children := []Sequent{
-		{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{},
-		},
-	}
+// 	// Construct children with the contexts
+// 	children := []Sequent{
+// 		{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{},
+// 		},
+// 	}
 
-	// If the branch closes with an error, then the system is not well-typed.
-	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
-}
+// 	// If the branch closes with an error, then the system is not well-typed.
+// 	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
+// }
 
-func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	// Add rule to prooftree
-	root.appliedRule = "¬"
-	form := (state.consequence.f).(AST.Not).GetForm()
+// func applyNotRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+// 	// Add rule to prooftree
+// 	root.appliedRule = "¬"
+// 	form := (state.consequence.f).(AST.Not).GetForm()
 
-	// Construct children with the contexts
-	children := []Sequent{
-		{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{f: form},
-		},
-	}
+// 	// Construct children with the contexts
+// 	children := []Sequent{
+// 		{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{f: form},
+// 		},
+// 	}
 
-	// If the branch closes with an error, then the system is not well-typed.
-	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
-}
+// 	// If the branch closes with an error, then the system is not well-typed.
+// 	return reconstructForm(launchChildren(children, root, fatherChan), state.consequence.f)
+// }
 
-/**
- * Removes the first variable of an exitential or universal form, and returns a
- * universal / existential form iff it still possesses other vars.
- * Otherwise, it returns the form gotten with GetForm().
- **/
-func removeOneVar(form AST.Form) (AST.Var, AST.Form) {
-	// It's pretty much the same thing, but I don't have a clue on how to factorize this..
-	switch f := form.(type) {
-	case AST.Ex:
-		v := f.GetVarList()[0]
-		if len(f.GetVarList()) > 1 {
-			return v, AST.MakeEx(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
-		}
-		return v, f.GetForm()
-	case AST.All:
-		v := f.GetVarList()[0]
-		if len(f.GetVarList()) > 1 {
-			return v, AST.MakeAll(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
-		}
-		return v, f.GetForm()
-	}
-	return AST.Var{}, nil
-}
+// /**
+//  * Removes the first variable of an exitential or universal form, and returns a
+//  * universal / existential form iff it still possesses other vars.
+//  * Otherwise, it returns the form gotten with GetForm().
+//  **/
+// func removeOneVar(form AST.Form) (AST.Var, AST.Form) {
+// 	// It's pretty much the same thing, but I don't have a clue on how to factorize this..
+// 	switch f := form.(type) {
+// 	case AST.Ex:
+// 		v := f.GetVarList()[0]
+// 		if len(f.GetVarList()) > 1 {
+// 			return v, AST.MakeEx(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
+// 		}
+// 		return v, f.GetForm()
+// 	case AST.All:
+// 		v := f.GetVarList()[0]
+// 		if len(f.GetVarList()) > 1 {
+// 			return v, AST.MakeAll(f.GetIndex(), f.GetVarList()[1:], f.GetForm())
+// 		}
+// 		return v, f.GetForm()
+// 	}
+// 	return AST.Var{}, nil
+// }
 
-/* Makes the child treating the variable depending on which is set. */
-func mkQuantChildren(state Sequent, varInstantiated bool, varTreated AST.Var, typeTreated AST.TypeVar, newForm AST.Form) []Sequent {
-	var type_ AST.TypeApp
-	var newLocalContext LocalContext
-	if varInstantiated {
-		type_ = varTreated.GetTypeApp()
-		newLocalContext = state.localContext.addVar(varTreated)
-	} else {
-		type_ = metaType
-		newLocalContext = state.localContext.addTypeVar(typeTreated)
-	}
+// /* Makes the child treating the variable depending on which is set. */
+// func mkQuantChildren(state Sequent, varInstantiated bool, varTreated AST.Var, typeTreated AST.TypeVar, newForm AST.Form) []Sequent {
+// 	var type_ AST.TypeApp
+// 	var newLocalContext LocalContext
+// 	if varInstantiated {
+// 		type_ = varTreated.GetTypeApp()
+// 		newLocalContext = state.localContext.addVar(varTreated)
+// 	} else {
+// 		type_ = metaType
+// 		newLocalContext = state.localContext.addTypeVar(typeTreated)
+// 	}
 
-	return []Sequent{
-		{
-			globalContext: state.globalContext,
-			localContext:  state.localContext.copy(),
-			consequence:   Consequence{a: type_},
-		},
-		{
-			globalContext: state.globalContext,
-			localContext:  newLocalContext,
-			consequence:   Consequence{f: newForm},
-		},
-	}
-}
+// 	return []Sequent{
+// 		{
+// 			globalContext: state.globalContext,
+// 			localContext:  state.localContext.copy(),
+// 			consequence:   Consequence{a: type_},
+// 		},
+// 		{
+// 			globalContext: state.globalContext,
+// 			localContext:  newLocalContext,
+// 			consequence:   Consequence{f: newForm},
+// 		},
+// 	}
+// }

@@ -145,16 +145,10 @@ func elaborateForm(con Context, f, source_form Parser.PForm) AST.Form {
 
 	case Parser.PPred:
 		typed_arguments := pretype(con, pform.Args())
-		type_args, real_args := splitTypes(typed_arguments)
+		_, real_args := splitTypes(typed_arguments)
 		return AST.MakerPred(
 			AST.MakerId(pform.Symbol()),
 			Lib.ListMap(real_args, aux),
-			Lib.ListMap(
-				type_args,
-				func(pty Parser.PType) AST.TypeApp {
-					return elaborateType(pty, pty).(AST.TypeApp)
-				},
-			).GetSlice(),
 		)
 
 	case Parser.PUnary:
@@ -194,9 +188,6 @@ func elaborateForm(con Context, f, source_form Parser.PForm) AST.Form {
 			form := elaborateForm(append(con, actualVars.GetSlice()...), pform.PForm, source_form)
 			if len(vars) != 0 {
 				form = AST.MakerAll(vars, form)
-			}
-			if len(type_vars) != 0 {
-				form = AST.MakerAllType(type_vars, form)
 			}
 			return form
 		case Parser.PQuantEx:
@@ -321,25 +312,15 @@ func elaborateTerm(con Context, t, source_term Parser.PTerm) AST.Term {
 				fail(ty)
 			}
 			// FIXME: get some error function over here
-			return AST.MakerVar(pterm.Name(), elaborateType(t.Val, t.Val).(AST.TypeApp))
+			return AST.MakerVar(pterm.Name())
 		}
 
 	case Parser.PFun:
 		typed_arguments := pretype(con, pterm.Args())
-		type_args, real_args := splitTypes(typed_arguments)
+		_, real_args := splitTypes(typed_arguments)
 		fun := AST.MakerFun(
 			AST.MakerId(pterm.Symbol()),
 			Lib.ListMap(real_args, aux),
-			Lib.ListMap(
-				type_args,
-				func(pty Parser.PType) AST.TypeApp {
-					ty := elaborateType(pty, pty)
-					if _, ok := ty.(AST.TypeApp); !ok {
-						fail(ty)
-					}
-					return elaborateType(pty, pty).(AST.TypeApp)
-				},
-			).GetSlice(),
 		)
 		switch oty := pterm.DefinedType().(type) {
 		case Lib.Some[Parser.PTypeFun]:

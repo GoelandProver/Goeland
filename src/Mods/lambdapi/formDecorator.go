@@ -58,7 +58,7 @@ func QuantifierToMappedString(quant string, varList []AST.Var) string {
 	if len(varList) == 0 {
 		return "%s"
 	} else {
-		result := "(" + quant + " (" + toLambdaIntroString(varList[0], varList[0].GetTypeHint().ToString()) + ", %s))"
+		result := "(" + quant + " (" + toLambdaIntroString(varList[0], "") + ", %s))"
 		result = fmt.Sprintf(result, QuantifierToMappedString(quant, varList[1:]))
 		return result
 	}
