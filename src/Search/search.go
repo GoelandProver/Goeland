@@ -42,6 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -69,8 +70,11 @@ func SetApplyRules(function func(uint64, State, Communication, Core.FormAndTerms
 
 /* Begin the proof search */
 func Search(formula AST.Form, bound int) {
-	Glob.PrintDebug("MAIN", "Start search")
-	Glob.PrintDebug("MAIN", fmt.Sprintf("Initial formula: %v", formula.ToString()))
+	Glob.PrintDebug("MAIN", Lib.MkLazy(func() string { return "Start search" }))
+	Glob.PrintDebug(
+		"MAIN",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Initial formula: %v", formula.ToString()) }),
+	)
 
 	UsedSearch.Search(formula, bound)
 }

@@ -70,7 +70,7 @@ var strToPrintMap map[string]string = map[string]string{
 *	a substitution, the substitution which make the contradiction (possibly empty)
 **/
 func ApplyClosureRules(form AST.Form, state *State) (result bool, substitutions []Unif.Substitutions) {
-	Glob.PrintDebug("ACR", "Start ACR")
+	Glob.PrintDebug("ACR", Lib.MkLazy(func() string { return "Start ACR" }))
 
 	if searchObviousClosureRule(form) {
 		return true, substitutions
@@ -87,10 +87,10 @@ func ApplyClosureRules(form AST.Form, state *State) (result bool, substitutions 
 	substFound, matchSubsts := searchClosureRule(f, *state)
 
 	if substFound {
-		Glob.PrintDebug("ACR", "Subst found")
+		Glob.PrintDebug("ACR", Lib.MkLazy(func() string { return "Subst found" }))
 
 		for _, subst := range matchSubsts {
-			Glob.PrintDebug("ACR", fmt.Sprintf("MSL : %v", subst.ToString()))
+			Glob.PrintDebug("ACR", Lib.MkLazy(func() string { return fmt.Sprintf("MSL : %v", subst.ToString()) }))
 
 			if subst.GetSubst().Equals(Unif.MakeEmptySubstitution()) {
 				result = true
@@ -101,7 +101,16 @@ func ApplyClosureRules(form AST.Form, state *State) (result bool, substitutions 
 			}
 
 			if result {
-				Glob.PrintDebug("ACR", fmt.Sprintf("Subst found between : %v and %v : %v", form.ToString(), subst.GetForm().ToString(), subst.GetSubst().ToString()))
+				Glob.PrintDebug(
+					"ACR",
+					Lib.MkLazy(func() string {
+						return fmt.Sprintf(
+							"Subst found between : %v and %v : %v",
+							form.ToString(),
+							subst.GetForm().ToString(),
+							subst.GetSubst().ToString())
+					}),
+				)
 				substitutions = Unif.AppendIfNotContainsSubst(substitutions, subst.GetSubst())
 			}
 		}
@@ -128,12 +137,12 @@ func searchForbidden(state *State, s Unif.MatchingSubstitutions) bool {
 func searchObviousClosureRule(f AST.Form) bool {
 	switch nf := f.(type) {
 	case AST.Bot:
-		Glob.PrintDebug("AR", "⊥ found !")
+		Glob.PrintDebug("AR", Lib.MkLazy(func() string { return "⊥ found !" }))
 		return true
 	case AST.Not:
 		switch nf.GetForm().(type) {
 		case AST.Top:
-			Glob.PrintDebug("AR", "¬⊤ found !")
+			Glob.PrintDebug("AR", Lib.MkLazy(func() string { return "¬⊤ found !" }))
 			return true
 		default:
 			return false
@@ -151,17 +160,33 @@ func searchInequalities(form AST.Form) (bool, Unif.Substitutions) {
 		if predNeq, isPred := formNot.GetForm().(AST.Pred); isPred {
 			if predNeq.GetID().Equals(AST.Id_eq) {
 
-				Glob.PrintDebug("SI", fmt.Sprintf("Search Inequality closure rule : %v", form.ToString()))
+				Glob.PrintDebug(
+					"SI",
+					Lib.MkLazy(func() string {
+						return fmt.Sprintf(
+							"Search Inequality closure rule : %v",
+							form.ToString())
+					}),
+				)
 
 				// Search if the two terms are unfiable
 				arg_1 := predNeq.GetArgs().At(0)
 				arg_2 := predNeq.GetArgs().At(1)
 
-				Glob.PrintDebug("SI", fmt.Sprintf("Arg 1 : %v", arg_1.ToString()))
-				Glob.PrintDebug("SI", fmt.Sprintf("Arg 2 : %v", arg_2.ToString()))
+				Glob.PrintDebug(
+					"SI",
+					Lib.MkLazy(func() string { return fmt.Sprintf("Arg 1 : %v", arg_1.ToString()) }),
+				)
+				Glob.PrintDebug(
+					"SI",
+					Lib.MkLazy(func() string { return fmt.Sprintf("Arg 2 : %v", arg_2.ToString()) }),
+				)
 
 				subst = Unif.AddUnification(arg_1, arg_2, subst)
-				Glob.PrintDebug("SI", fmt.Sprintf("Subst : %v", subst.ToString()))
+				Glob.PrintDebug(
+					"SI",
+					Lib.MkLazy(func() string { return fmt.Sprintf("Subst : %v", subst.ToString()) }),
+				)
 
 				if !subst.Equals(Unif.Failure()) {
 					return true, subst
@@ -199,7 +224,7 @@ func setStateRules(state *State, name string, forms ...string) {
 		strWords += "_" + val
 	}
 
-	Glob.PrintDebug("AR", "Applying "+strChars+"...")
+	Glob.PrintDebug("AR", Lib.MkLazy(func() string { return "Applying " + strChars + "..." }))
 
 	state.SetCurrentProofRule(strChars)
 	state.SetCurrentProofRuleName(strWords)

@@ -98,7 +98,10 @@ func printDebugRewriteRule(polarity bool, axiom, cons AST.Form) {
 	} else {
 		ax, co = AST.MakerNot(axiom).ToString(), cons.ToString()
 	}
-	Glob.PrintDebug("DMT", fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co))
+	Glob.PrintDebug(
+		"DMT",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co) }),
+	)
 }
 
 /**

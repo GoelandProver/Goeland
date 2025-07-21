@@ -85,7 +85,7 @@ func (fl FormAndTermsList) ToString() string {
 /* Print a list of formulas */
 func (lf FormAndTermsList) Print() {
 	for _, f := range lf {
-		Glob.PrintDebug("FLTS", f.GetForm().ToString())
+		Glob.PrintDebug("FLTS", Lib.MkLazy(func() string { return f.GetForm().ToString() }))
 	}
 }
 

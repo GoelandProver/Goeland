@@ -37,6 +37,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Search"
 )
 
@@ -96,13 +97,19 @@ func (se *StatusElement) applySubs(sub Core.SubstAndForm) {
 }
 
 func (se *StatusElement) sendChoice(choice Choice) {
-	Glob.PrintDebug("ASSISTED", fmt.Sprintf("Choice sent to state nº%d : %v", se.getId(), choice))
+	Glob.PrintDebug(
+		"ASSISTED",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Choice sent to state nº%d : %v", se.getId(), choice) }),
+	)
 
 	se.channel <- choice
 }
 
 func (se *StatusElement) receiveChoice() Choice {
 	choice := <-se.channel
-	Glob.PrintDebug("ASSISTED", fmt.Sprintf("Choice received from state nº%d : %v", se.getId(), choice))
+	Glob.PrintDebug(
+		"ASSISTED",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Choice received from state nº%d : %v", se.getId(), choice) }),
+	)
 	return choice
 }

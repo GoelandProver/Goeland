@@ -41,6 +41,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type compareStruct struct {
@@ -65,31 +66,52 @@ func makeEmptyCompareStruct() compareStruct {
 *	two terms : the new terms for the constraint (if not comparable)
 **/
 func compareLPO(s, t AST.Term) compareStruct {
-	Glob.PrintDebug("CPR", fmt.Sprintf("Compare %v and %v", s.ToString(), t.ToString()))
+	Glob.PrintDebug(
+		"CPR",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Compare %v and %v", s.ToString(), t.ToString()) }),
+	)
 	switch s_type := s.(type) {
 	case AST.Fun:
-		Glob.PrintDebug("CPR", fmt.Sprintf("%v is a function", s.ToString()))
+		Glob.PrintDebug(
+			"CPR",
+			Lib.MkLazy(func() string { return fmt.Sprintf("%v is a function", s.ToString()) }),
+		)
 		switch t_type := t.(type) {
 		case AST.Fun:
-			Glob.PrintDebug("CPR", fmt.Sprintf("%v is a function", t.ToString()))
+			Glob.PrintDebug(
+				"CPR",
+				Lib.MkLazy(func() string { return fmt.Sprintf("%v is a function", t.ToString()) }),
+			)
 			// function and function
 			return compareFunFun(s_type, t_type)
 		case AST.Meta:
-			Glob.PrintDebug("CPR", fmt.Sprintf("%v is a Meta", t.ToString()))
+			Glob.PrintDebug(
+				"CPR",
+				Lib.MkLazy(func() string { return fmt.Sprintf("%v is a Meta", t.ToString()) }),
+			)
 			// function & meta : Occurences inside : f(x) < x, f(y) < x
 			return compareMetaFun(t_type, s_type, -1)
 		default:
 			Glob.PrintError("CPR", "Type of t unknown")
 		}
 	case AST.Meta:
-		Glob.PrintDebug("CPR", fmt.Sprintf("%v is a Meta", s.ToString()))
+		Glob.PrintDebug(
+			"CPR",
+			Lib.MkLazy(func() string { return fmt.Sprintf("%v is a Meta", s.ToString()) }),
+		)
 		switch t_type := t.(type) {
 		case AST.Fun:
-			Glob.PrintDebug("CPR", fmt.Sprintf("%v is a function", t.ToString()))
+			Glob.PrintDebug(
+				"CPR",
+				Lib.MkLazy(func() string { return fmt.Sprintf("%v is a function", t.ToString()) }),
+			)
 			// meta & function : Occurences inside : x < f(x), x < f(y)
 			return compareMetaFun(s_type, t_type, 1)
 		case AST.Meta:
-			Glob.PrintDebug("CPR", fmt.Sprintf("%v is a Meta", t.ToString()))
+			Glob.PrintDebug(
+				"CPR",
+				Lib.MkLazy(func() string { return fmt.Sprintf("%v is a Meta", t.ToString()) }),
+			)
 			// Meta and meta
 			return compareMetaMeta(s_type, t_type)
 		default:
@@ -108,14 +130,23 @@ func compareLPO(s, t AST.Term) compareStruct {
 * For example, x < f(x) is ok but f(x) < x isn't
 **/
 func compareMetaFun(m AST.Meta, f AST.Fun, return_code int) compareStruct {
-	Glob.PrintDebug("CMF", "Compare Meta Fun")
+	Glob.PrintDebug(
+		"CMF",
+		Lib.MkLazy(func() string { return "Compare Meta Fun" }),
+	)
 	// Check argument inside f
 	if found, res := compareMetaFunInside(m, f, return_code); found {
-		Glob.PrintDebug("CMF", fmt.Sprintf("Found after compare inside : %v", res))
+		Glob.PrintDebug(
+			"CMF",
+			Lib.MkLazy(func() string { return fmt.Sprintf("Found after compare inside : %v", res) }),
+		)
 		return res
 	}
 
-	Glob.PrintDebug("CMF", fmt.Sprintf("Not found and return_code is %v", return_code))
+	Glob.PrintDebug(
+		"CMF",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Not found and return_code is %v", return_code) }),
+	)
 	// f has no args or all respect LPO
 	if return_code == 1 {
 		return makeCompareStruct(0, false, m, f)
@@ -125,7 +156,10 @@ func compareMetaFun(m AST.Meta, f AST.Fun, return_code int) compareStruct {
 }
 
 func compareMetaFunInside(m AST.Meta, f AST.Fun, return_code int) (bool, compareStruct) {
-	Glob.PrintDebug("CMFI", "Compare Meta Fun Inside")
+	Glob.PrintDebug(
+		"CMFI",
+		Lib.MkLazy(func() string { return "Compare Meta Fun Inside" }),
+	)
 	i := 0
 	// Check arguments to find occur-check eventually
 	for i < f.GetArgs().Len() {
@@ -167,7 +201,10 @@ func compareMetaMeta(m1, m2 AST.Meta) compareStruct {
 
 /* Compare two functions */
 func compareFunFun(s, t AST.Fun) compareStruct {
-	Glob.PrintDebug("CFF", "Compare Fun Fun")
+	Glob.PrintDebug(
+		"CFF",
+		Lib.MkLazy(func() string { return "Compare Fun Fun" }),
+	)
 
 	switch s.GetID().CompareWith(t.GetID()) {
 	case -1:
@@ -211,7 +248,10 @@ func caseFLessG(s, t AST.Fun) (bool, compareStruct) {
 
 /* Case f == g */
 func caseFEqualsG(s, t AST.Fun) (bool, compareStruct) {
-	Glob.PrintDebug("F=G", "Case F = G")
+	Glob.PrintDebug(
+		"F=G",
+		Lib.MkLazy(func() string { return "Case F = G" }),
+	)
 	if s.GetArgs().Len() != t.GetArgs().Len() {
 		Glob.PrintError("F=G", fmt.Sprintf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString()))
 		return true, makeCompareStruct(0, false, nil, nil)
@@ -227,7 +267,16 @@ func caseFEqualsG(s, t AST.Fun) (bool, compareStruct) {
 
 		// Bug here : les autres arguments !
 		if !cs.is_comparable {
-			Glob.PrintDebug("F=G", fmt.Sprintf("Not comparable, return : %v and %v", cs.new_t1.ToString(), cs.new_t2.ToString()))
+			Glob.PrintDebug(
+				"F=G",
+				Lib.MkLazy(func() string {
+					return fmt.Sprintf(
+						"Not comparable, return : %v and %v",
+						cs.new_t1.ToString(),
+						cs.new_t2.ToString(),
+					)
+				}),
+			)
 			return true, makeCompareStruct(0, false, cs.new_t1, cs.new_t2)
 		}
 		if cs.order != 0 {

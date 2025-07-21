@@ -44,6 +44,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Typing"
 	"github.com/GoelandProver/Goeland/Unif"
 	"github.com/GoelandProver/Goeland/equality/eqStruct"
@@ -285,8 +286,14 @@ func TestAS(t *testing.T) {
 	s.Set(y, a)
 	new_ep := ep.applySubstitution(s)
 
-	Glob.PrintDebug("TEST_AS", fmt.Sprintf("Current EP : %v", new_ep.ToString()))
-	Glob.PrintDebug("TEST_AS", fmt.Sprintf("Expected : %v", expected_ep.ToString()))
+	Glob.PrintDebug(
+		"TEST_AS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Current EP : %v", new_ep.ToString()) }),
+	)
+	Glob.PrintDebug(
+		"TEST_AS",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Expected : %v", expected_ep.ToString()) }),
+	)
 }
 
 /*** Test constraints ***/

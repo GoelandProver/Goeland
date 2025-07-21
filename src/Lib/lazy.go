@@ -29,65 +29,19 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-package Core
 
-import (
-	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
-	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
-)
+package Lib
 
-type FormListDS struct {
-	fl *AST.FormList
+/** This file provides a basic interface to use basic laziness. */
+
+type Lazy[T any] struct {
+	run func() T
 }
 
-func (f FormListDS) GetFL() *AST.FormList {
-	return f.fl.Copy()
+func MkLazy[T any](run func() T) Lazy[T] {
+	return Lazy[T]{run}
 }
 
-/* Data struct */
-
-/* Take a list of formula and return a FormList (Datastructure type) */
-func (f FormListDS) MakeDataStruct(lf *AST.FormList, is_pos bool) Unif.DataStructure {
-	return (new(FormListDS)).InsertFormulaListToDataStructure(lf)
-}
-
-/* Insert a list of formula into the given Datastructure (here, FormList) */
-func (f FormListDS) InsertFormulaListToDataStructure(lf *AST.FormList) Unif.DataStructure {
-	for _, v := range lf.Slice() {
-		switch nf := v.(type) {
-		case AST.Pred:
-			f.fl.AppendIfNotContains(nf)
-		case AST.Not:
-			switch nf.GetForm().(type) {
-			case AST.Pred:
-				f.fl.AppendIfNotContains(nf.GetForm())
-			}
-		}
-	}
-	return f
-}
-
-func (f FormListDS) Print() {
-	for _, f := range f.GetFL().Slice() {
-		Glob.PrintDebug("FLTS", Lib.MkLazy(func() string { return f.ToString() }))
-	}
-}
-
-func (f FormListDS) Copy() Unif.DataStructure {
-	return FormListDS{f.GetFL().Copy()}
-}
-
-func (fl FormListDS) IsEmpty() bool {
-	return fl.GetFL().IsEmpty()
-}
-
-func (fl FormListDS) Unify(f AST.Form) (bool, []Unif.MatchingSubstitutions) {
-	for _, element := range fl.GetFL().Slice() {
-		if element.Equals(f) {
-			return true, []Unif.MatchingSubstitutions{}
-		}
-	}
-	return false, []Unif.MatchingSubstitutions{}
+func (lazy Lazy[T]) Run() T {
+	return lazy.run()
 }

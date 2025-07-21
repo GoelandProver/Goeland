@@ -46,6 +46,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/GoelandProver/Goeland/Lib"
 	treetypes "github.com/GoelandProver/Goeland/code-trees/tree-types"
 	"github.com/GoelandProver/Goeland/global"
 	dmt "github.com/GoelandProver/Goeland/modules/dmt"
@@ -573,7 +574,9 @@ func TestSubst1(t *testing.T) {
 			basictypes.MakerAnd(basictypes.NewFormList(basictypes.MakerPred(Q, basictypes.NewTermList(x, x), []typing.TypeApp{}), basictypes.MakerPred(P, basictypes.NewTermList(x, x), []typing.TypeApp{}))),
 		),
 	)
-	global.PrintDebug("TS1", fmt.Sprintf("equpred : %v", equPred.ToString()))
+	global.PrintDebug(
+		"TS1",
+		Lib.MkLazy(func() string { return fmt.Sprintf("equpred : %v", equPred.ToString()) }))
 
 	if !dmt.RegisterAxiom(equPred) {
 		t.Fatalf("Error: %s hasn't been registered as a rewrite rule.", equPred.ToString())
@@ -583,7 +586,10 @@ func TestSubst1(t *testing.T) {
 	Z := basictypes.MakerMeta("Z", 1)
 
 	form := basictypes.MakerPred(P, basictypes.NewTermList(Y, Z), []typing.TypeApp{})
-	global.PrintDebug("TS1", fmt.Sprintf("form : %v", form.ToString()))
+	global.PrintDebug(
+		"TS1",
+		Lib.MkLazy(func() string { return fmt.Sprintf("form : %v", form.ToString()) }),
+	)
 
 	substs, err := dmt.Rewrite(form)
 
@@ -595,7 +601,10 @@ func TestSubst1(t *testing.T) {
 		t.Fatalf("Error: more than one rewrite rule found for %s when it should have only one.", form.ToString())
 	}
 
-	global.PrintDebug("TS1", fmt.Sprintf("after form : %v", form.ToString()))
+	global.PrintDebug(
+		"TS1",
+		Lib.MkLazy(func() string { return fmt.Sprintf("after form : %v", form.ToString()) }),
+	)
 	forms := substs[0].GetSaf().GetForm()
 	subst := substs[0].GetSaf().GetSubst()
 

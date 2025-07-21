@@ -133,7 +133,7 @@ func (u Unifier) GetUnifier() Unif.Substitutions {
 	if !Glob.GetProof() || len(u.localUnifiers) == 0 {
 		return Unif.MakeEmptySubstitution()
 	}
-	Glob.PrintDebug("UNIFS", u.ToString())
+	Glob.PrintDebug("UNIFS", Lib.MkLazy(func() string { return u.ToString() }))
 	if len(u.localUnifiers) > 0 && len(u.localUnifiers[0].Snd) > 0 {
 		return u.localUnifiers[0].Snd[0]
 	}
@@ -162,7 +162,10 @@ func (u *Unifier) Merge(other Unifier) {
 		return
 	}
 
-	Glob.PrintDebug("GLOBAL UNIFIER", fmt.Sprintf("Current: %s, to merge: %s", u.ToString(), other.ToString()))
+	Glob.PrintDebug(
+		"GLOBAL UNIFIER",
+		Lib.MkLazy(func() string { return fmt.Sprintf("Current: %s, to merge: %s", u.ToString(), other.ToString()) }),
+	)
 
 	newUnifiers := []Glob.Pair[substitutions, []substitutions]{}
 
@@ -191,7 +194,7 @@ func (u *Unifier) Merge(other Unifier) {
 		}
 	}
 	u.localUnifiers = newUnifiers
-	Glob.PrintDebug("GLOBAL UNIFIER", fmt.Sprintf("After: %s", u.ToString()))
+	Glob.PrintDebug("GLOBAL UNIFIER", Lib.MkLazy(func() string { return fmt.Sprintf("After: %s", u.ToString()) }))
 }
 
 func (u *Unifier) PruneMetasInSubsts(metas Lib.Set[AST.Meta]) {
