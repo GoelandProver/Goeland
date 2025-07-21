@@ -281,27 +281,27 @@ func doTypeStatement(statement Core.Statement) {
 }
 
 func getFile(filename string, dir string) (string, error) {
+	fileExists := func(err error) bool {
+		return err == nil && !errors.Is(err, os.ErrNotExist)
+	}
 	// Check in Goéland's path
 	_, err := os.Stat(filename)
-	fileExists := !(err != nil && errors.Is(err, os.ErrNotExist))
-	if fileExists {
+	if fileExists(err) {
 		return filename, err
 	}
 
 	// Check in the dir's path
 	otherFilename := path.Join(dir, filename)
-	_, err = os.Stat(filename)
-	fileExists = !(err != nil && errors.Is(err, os.ErrNotExist))
-	if fileExists {
+	_, err = os.Stat(otherFilename)
+	if fileExists(err) {
 		return otherFilename, err
 	}
 
 	// Check in the environment variable
 	directory := os.Getenv("TPTP")
 	otherFilename = path.Join(directory, filename)
-	_, err = os.Stat(filename)
-	fileExists = !(err != nil && errors.Is(err, os.ErrNotExist))
-	if fileExists {
+	_, err = os.Stat(otherFilename)
+	if fileExists(err) {
 		return otherFilename, err
 	}
 
