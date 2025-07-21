@@ -26,6 +26,19 @@ master*.
 If you are solving a bug referenced in the issue tracker, do not forget to link
 it in the PR.
 
+### Error management
+
+When you add code or fix old code, try to find the possible error cases where an
+uncontrolled `panic` can occur, and use the error interface in `Glob`. For example, if you
+do a pattern matching on a value and you reach an unreachable case, you should return a
+`Glob.Anomaly`: this is something that shouldn't happen, there is an error in the
+code. Otherwise, if the problem does not come from the code but e.g., from the problem
+being malformed or any other external factor, you should fail using `Glob.Fatal`. Try to
+have a very descriptive error as it will make things easier to debug.
+
+Note that, by default, neither of these options `panic`. You have to activate the `-debug`
+flag in order for them to panic and you to have a backtrace.
+
 ## For Maintainers
 
 By default, a pull request that modifies the go source code has the `needs:ci` label. You

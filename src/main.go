@@ -58,6 +58,7 @@ import (
 )
 
 var chAssistant chan bool = make(chan bool)
+var main_label = "Main"
 
 func printChrono(id string, start time.Time) {
 	fmt.Printf("%s Chrono - %s - %d\n", "%", id, time.Since(start).Milliseconds())
@@ -69,33 +70,31 @@ func main() {
 		fmt.Printf("You are running Goeland v.%v\n", Glob.GetVersion())
 		return
 	}
-	
+
 	form, bound := presearchLoader()
-	
+
 	// This block cannot be removed from the main function, as it breaks how the CPU profiler works
 	if Glob.GetCpuProfile() != "" {
 		file, err := os.Create(Glob.GetCpuProfile())
 		if err != nil {
-			Glob.PrintFatal("MAIN", fmt.Sprintf("Could not create a CPU profile: %v", err))
+			Glob.Fatal(main_label, fmt.Sprintf("Could not create a CPU profile: %v", err))
 		}
 		defer file.Close()
 
 		if err := pprof.StartCPUProfile(file); err != nil {
-			Glob.PrintFatal("MAIN", fmt.Sprintf("Could not start the CPU profile: %v", err))
+			Glob.Fatal(main_label, fmt.Sprintf("Could not start the CPU profile: %v", err))
 		}
 		defer pprof.StopCPUProfile()
 	}
 
-
 	startSearch(form, bound)
-	
 
 	doMemProfile()
 }
 
 // Start solving
 func startSearch(form AST.Form, bound int) {
-	Glob.PrintDebug("MAIN", "Start search")
+	Glob.PrintDebug(main_label, "Start search")
 
 	// FIXME: assisted should be a plugin.
 	// Ideally, we should create a hook here in order to let plugins do what
@@ -122,11 +121,11 @@ func presearchLoader() (AST.Form, int) {
 	fmt.Printf("You are running Goeland v.%v\n", Glob.GetVersion())
 	fmt.Printf("Problem: %v\n", Glob.GetProblemName())
 
-	Glob.PrintInfo("MAIN", fmt.Sprintf("Problem : %v", problem))
+	Glob.PrintInfo(main_label, fmt.Sprintf("Problem : %v", problem))
 
 	statements, bound, containsEquality := Parser.ParseTPTPFile(problem)
 
-	Glob.PrintDebug("MAIN", fmt.Sprintf("Statement : %s", Core.StatementListToString(statements)))
+	Glob.PrintDebug(main_label, fmt.Sprintf("Statement : %s", Core.StatementListToString(statements)))
 
 	if Glob.GetLimit() != -1 {
 		bound = Glob.GetLimit()
@@ -141,7 +140,7 @@ func presearchLoader() (AST.Form, int) {
 	}
 
 	if form == nil {
-		Glob.PrintFatal("MAIN", "Problem not found")
+		Glob.Fatal(main_label, "Problem not found")
 	}
 
 	form = checkForTypedProof(form)
@@ -153,13 +152,13 @@ func doMemProfile() {
 	if Glob.GetMemProfile() != "" {
 		f, err := os.Create(Glob.GetMemProfile())
 		if err != nil {
-			Glob.PrintFatal("MAIN", fmt.Sprintf("Could not create a memory profile: %v", err))
+			Glob.Fatal(main_label, fmt.Sprintf("Could not create a memory profile: %v", err))
 		}
 		defer f.Close()
 
 		runtime.GC()
 		if err := pprof.WriteHeapProfile(f); err != nil {
-			Glob.PrintFatal("MAIN", fmt.Sprintf("Could not write the memory profile: %v", err))
+			Glob.Fatal(main_label, fmt.Sprintf("Could not write the memory profile: %v", err))
 		}
 	}
 }
@@ -184,10 +183,10 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			file_name := statement.GetName()
 
 			realname, err := getFile(file_name, problemDir)
-			Glob.PrintDebug("MAIN", fmt.Sprintf("File to parse : %s\n", realname))
+			Glob.PrintDebug(main_label, fmt.Sprintf("File to parse : %s\n", realname))
 
 			if err != nil {
-				Glob.PrintError("MAIN", err.Error())
+				Glob.PrintError(main_label, err.Error())
 				return nil, -1, false
 			}
 
@@ -316,9 +315,9 @@ func checkForTypedProof(form AST.Form) AST.Form {
 		formula, err := Typing.WellFormedVerification(form, Glob.GetTypeProof())
 
 		if err != nil {
-			Glob.PrintPanic("MAIN", fmt.Sprintf("Typing error: %v", err))
+			Glob.Fatal(main_label, fmt.Sprintf("Typing error: %v", err))
 		} else {
-			Glob.PrintInfo("MAIN", "Well typed.")
+			Glob.PrintInfo(main_label, "Well typed.")
 			return formula
 		}
 	}
