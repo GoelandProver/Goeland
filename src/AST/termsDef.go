@@ -147,6 +147,7 @@ func (i Id) Less(u any) bool {
 type Fun struct {
 	*MappedString
 	p     Id
+	tys   Lib.List[Ty]
 	args  Lib.List[Term]
 	metas Lib.Cache[Lib.Set[Meta], Fun]
 }
@@ -190,6 +191,7 @@ func (f Fun) GetChildrenForMappedString() []MappableString {
 
 func (f Fun) GetID() Id               { return f.p.Copy().(Id) }
 func (f Fun) GetP() Id                { return f.p.Copy().(Id) }
+func (f Fun) GetTyArgs() Lib.List[Ty] { return f.tys }
 func (f Fun) GetArgs() Lib.List[Term] { return f.args }
 
 func (f *Fun) SetArgs(tl Lib.List[Term]) { f.args = tl }
@@ -204,9 +206,11 @@ func (f Fun) Equals(t any) bool {
 	switch typed := t.(type) {
 	case Fun:
 		return typed.GetID().Equals(f.GetID()) &&
+			Lib.ListEquals(typed.GetTyArgs(), f.GetTyArgs()) &&
 			Lib.ListEquals(typed.GetArgs(), f.GetArgs())
 	case *Fun:
 		return typed.GetID().Equals(f.GetID()) &&
+			Lib.ListEquals(typed.GetTyArgs(), f.GetTyArgs()) &&
 			Lib.ListEquals(typed.GetArgs(), f.GetArgs())
 	default:
 		return false
@@ -214,11 +218,11 @@ func (f Fun) Equals(t any) bool {
 }
 
 func (f Fun) Copy() Term {
-	return MakeFun(f.GetP(), f.GetArgs(), f.metas.Raw())
+	return MakeFun(f.GetP(), Lib.ListCpy(f.GetTyArgs()), Lib.ListCpy(f.GetArgs()), f.metas.Raw())
 }
 
 func (f Fun) PointerCopy() *Fun {
-	nf := MakeFun(f.GetP(), f.GetArgs(), f.metas.Raw())
+	nf := MakeFun(f.GetP(), f.GetTyArgs(), f.GetArgs(), f.metas.Raw())
 	return &nf
 }
 
@@ -256,7 +260,7 @@ func (f Fun) ReplaceSubTermBy(oldTerm, newTerm Term) Term {
 		return newTerm.Copy()
 	} else {
 		tl, res := replaceFirstOccurrenceTermList(f.GetArgs(), oldTerm, newTerm)
-		nf := MakeFun(f.GetID(), tl, f.metas.Raw())
+		nf := MakeFun(f.GetID(), f.GetTyArgs(), tl, f.metas.Raw())
 		if !res && !f.metas.NeedsUpd() {
 			nf.metas.AvoidUpd()
 		}
@@ -269,7 +273,7 @@ func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
 		return newTerm.Copy()
 	} else {
 		tl, res := ReplaceOccurrence(f.GetArgs(), oldTerm, newTerm)
-		nf := MakeFun(f.GetID(), tl, f.metas.Raw())
+		nf := MakeFun(f.GetID(), f.GetTyArgs(), tl, f.metas.Raw())
 		if !res && !f.metas.NeedsUpd() {
 			nf.metas.AvoidUpd()
 		}
@@ -336,7 +340,7 @@ func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
 
 func (v Var) ToMappedString(map_ MapString, type_ bool) string {
 	if type_ {
-		return fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex())
+		return fmt.Sprintf("%s_%d", v.GetName(), v.GetIndex())
 	}
 	return v.GetName()
 }
@@ -347,7 +351,7 @@ func (v Var) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 
 func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	if displayTypes {
-		return "", fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex())
+		return "", fmt.Sprintf("%s_%d", v.GetName(), v.GetIndex())
 	} else {
 		return "", v.GetName()
 	}
@@ -376,7 +380,7 @@ type Meta struct {
 	occurence int
 	name      string
 	formula   int
-	// FIXME: remember the type of a Meta
+	ty        Ty
 }
 
 func (m Meta) GetFormula() int { return m.formula }
@@ -389,6 +393,7 @@ func (m Meta) IsFun() bool                 { return false }
 func (m Meta) ToMeta() Meta                { return m }
 func (m Meta) GetMetas() Lib.Set[Meta]     { return Lib.Singleton(m) }
 func (m Meta) GetMetaList() Lib.List[Meta] { return Lib.MkListV(m) }
+func (m Meta) GetTy() Ty                   { return m.ty }
 
 func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	return "%s"
@@ -396,7 +401,7 @@ func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) strin
 
 func (m Meta) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
 	if displayTypes {
-		return "", fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex())
+		return "", fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.ty.ToString())
 	} else {
 		return "", fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
 	}
@@ -414,7 +419,7 @@ func (m Meta) Equals(t any) bool {
 }
 
 func (m Meta) Copy() Term {
-	return MakeMeta(m.GetIndex(), m.GetOccurence(), m.GetName(), m.GetFormula())
+	return MakeMeta(m.GetIndex(), m.GetOccurence(), m.GetName(), m.GetFormula(), m.GetTy())
 }
 
 func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
@@ -439,7 +444,8 @@ func (m Meta) Less(u any) bool {
 }
 
 func MakeEmptyMeta() Meta {
-	return MakeMeta(-1, -1, "-1", -1)
+	// FIXME: nil are bad
+	return MakeMeta(-1, -1, "-1", -1, nil)
 }
 
 func MetaEquals(x, y Meta) bool {

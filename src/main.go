@@ -58,7 +58,7 @@ import (
 	"github.com/GoelandProver/Goeland/Parser"
 	"github.com/GoelandProver/Goeland/Search"
 	"github.com/GoelandProver/Goeland/Search/incremental"
-	_ "github.com/GoelandProver/Goeland/Typing"
+	"github.com/GoelandProver/Goeland/Typing"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -126,7 +126,11 @@ func presearchLoader() (AST.Form, int) {
 
 	Glob.PrintInfo(
 		"preloader",
-		fmt.Sprintf("You are running problem %s on Goeland v.%s", path.Base(problem), Glob.GetVersion()),
+		fmt.Sprintf(
+			"You are running problem %s on Goeland v.%s",
+			path.Base(problem),
+			Glob.GetVersion(),
+		),
 	)
 	debug(
 		Lib.MkLazy(func() string {
@@ -135,12 +139,12 @@ func presearchLoader() (AST.Form, int) {
 	)
 
 	statements, bound, containsEquality := Parser.ParseTPTPFile(problem)
-	actualStatements := Engine.ToInternalSyntax(statements)
+	actual_statements, is_typed_problem := Engine.ToInternalSyntax(statements)
 
 	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
-				"Statement : %s", Core.StatementListToString(actualStatements))
+				"Statement : %s", Core.StatementListToString(actual_statements))
 		}),
 	)
 
@@ -148,7 +152,11 @@ func presearchLoader() (AST.Form, int) {
 		bound = Glob.GetLimit()
 	}
 
-	form, bound, contEq := StatementListToFormula(actualStatements, bound, path.Dir(problem))
+	form, bound, contEq, is_typed_include := StatementListToFormula(
+		actual_statements,
+		bound,
+		path.Dir(problem),
+	)
 	containsEquality = containsEquality || contEq
 
 	if !containsEquality {
@@ -160,7 +168,9 @@ func presearchLoader() (AST.Form, int) {
 		Glob.Fatal(main_label, "Problem not found")
 	}
 
-	form = checkForTypedProof(form)
+	if is_typed_problem || is_typed_include {
+		checkForTypedProof(form)
+	}
 
 	return form, bound
 }
@@ -190,6 +200,7 @@ func initEverything() {
 	initOpts()
 	runtime.GOMAXPROCS(Glob.GetCoreLimit())
 	AST.Init()
+	Typing.Init()
 }
 
 func initDebuggers() {
@@ -205,8 +216,14 @@ func initDebuggers() {
 	Unif.InitDebugger()
 }
 
-func StatementListToFormula(statements []Core.Statement, old_bound int, problemDir string) (form AST.Form, bound int, containsEquality bool) {
+// FIXME: eventually, we would want to add an "interpretation" layer between elab and internal representation that does this
+func StatementListToFormula(
+	statements []Core.Statement,
+	old_bound int,
+	problemDir string,
+) (form AST.Form, bound int, containsEquality bool, is_typed_problem bool) {
 	and_list := Lib.NewList[AST.Form]()
+	is_typed_problem = false
 	negated_conjecture := Lib.MkNone[AST.Form]()
 	bound = old_bound
 
@@ -222,22 +239,25 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			file_name := statement.GetName()
 
 			realname, err := getFile(file_name, problemDir)
-			debug(Lib.MkLazy(func() string { return fmt.Sprintf("File to parse : %s\n", realname) }))
+			debug(
+				Lib.MkLazy(func() string { return fmt.Sprintf("File to parse : %s\n", realname) }),
+			)
 
 			if err != nil {
 				Glob.Fatal(main_label, err.Error())
-				return nil, -1, false
+				return nil, -1, false, false
 			}
 
 			new_lstm, bound_tmp, contEq := Parser.ParseTPTPFile(realname)
-			actual_new_lstm := Engine.ToInternalSyntax(new_lstm)
+			actual_new_lstm, is_typed := Engine.ToInternalSyntax(new_lstm)
 			containsEquality = containsEquality || contEq
-			new_form_list, new_bound, contEq := StatementListToFormula(
+			new_form_list, new_bound, contEq, is_typed := StatementListToFormula(
 				actual_new_lstm,
 				bound_tmp,
 				path.Join(problemDir, path.Dir(file_name)),
 			)
 			containsEquality = containsEquality || contEq
+			is_typed_problem = is_typed_problem || is_typed
 
 			if new_form_list != nil {
 				bound = new_bound
@@ -279,29 +299,32 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			}
 
 		default:
-			Glob.Fatal("main", fmt.Sprintf("Unmanaged statement role: %s", statement.GetRole().ToString()))
+			Glob.Fatal(
+				"main",
+				fmt.Sprintf("Unmanaged statement role: %s", statement.GetRole().ToString()),
+			)
 		}
 	}
 
 	switch conj := negated_conjecture.(type) {
 	case Lib.None[AST.Form]:
 		if and_list.Empty() {
-			return nil, bound, containsEquality
+			return nil, bound, containsEquality, is_typed_problem
 		} else {
-			return AST.MakerAnd(and_list), bound, containsEquality
+			return AST.MakerAnd(and_list), bound, containsEquality, is_typed_problem
 		}
 	case Lib.Some[AST.Form]:
 		if and_list.Empty() {
-			return conj.Val, bound, containsEquality
+			return conj.Val, bound, containsEquality, is_typed_problem
 		} else {
 			flattened := AST.FlattenAnd(and_list)
 			flattened.Append(conj.Val)
-			return AST.MakerAnd(flattened), bound, containsEquality
+			return AST.MakerAnd(flattened), bound, containsEquality, is_typed_problem
 		}
 	}
 
 	Glob.Anomaly(main_label, "reached an unreachable state")
-	return nil, -1, false
+	return nil, -1, false, false
 }
 
 func doAxiomStatement(andList Lib.List[AST.Form], f AST.Form) Lib.List[AST.Form] {
@@ -331,33 +354,16 @@ func doConjectureStatement(f AST.Form) AST.Form {
 }
 
 func doTypeStatement(atomTyping Core.TFFAtomTyping) {
-	typeScheme := atomTyping.Ts
+	typeScheme := atomTyping.Ty
 
 	if typeScheme == nil {
-		Glob.PrintWarn("main", fmt.Sprintf("The constant %s has no type!", atomTyping.Literal.ToString()))
-		return
+		Glob.PrintWarn(
+			"main",
+			fmt.Sprintf("The constant %s has no type!", atomTyping.Literal.ToString()),
+		)
 	}
 
-	if typeScheme.Size() == 1 {
-		isNewType := typeScheme.ToString() == "$tType"
-		if isNewType {
-			AST.MkTypeHint(atomTyping.Literal.GetName())
-		} else {
-			isConstant := !Glob.Is[AST.QuantifiedType](typeScheme)
-			if isConstant {
-				AST.SaveConstant(atomTyping.Literal.GetName(), typeScheme.GetPrimitives()[0])
-			} else {
-				AST.SavePolymorphScheme(atomTyping.Literal.GetName(), typeScheme)
-			}
-		}
-	} else {
-		switch typeScheme.(type) {
-		case AST.TypeArrow:
-			AST.SaveTypeScheme(atomTyping.Literal.GetName(), AST.GetInputType(typeScheme)[0], AST.GetOutType(typeScheme))
-		case AST.QuantifiedType:
-			AST.SavePolymorphScheme(atomTyping.Literal.GetName(), typeScheme)
-		}
-	}
+	Typing.AddToGlobalEnv(atomTyping.Literal.GetName(), atomTyping.Ty)
 }
 
 func getFile(filename string, dir string) (string, error) {
@@ -388,18 +394,9 @@ func getFile(filename string, dir string) (string, error) {
 	return "", fmt.Errorf("file %s not found", filename)
 }
 
-func checkForTypedProof(form AST.Form) AST.Form {
-	isTypedProof := !AST.EmptyGlobalContext() && !Glob.NoTypeCheck()
-
-	if isTypedProof {
-		// err := Typing.WellFormedVerification(form.Copy(), Glob.GetTypeProof())
-
-		// if err != nil {
-		// 	Glob.Fatal(main_label, fmt.Sprintf("Typing error: %v", err))
-		// } else {
-		// 	Glob.PrintInfo(main_label, "Well typed.")
-		// }
+func checkForTypedProof(form AST.Form) {
+	if !Glob.NoTypeCheck() && !Typing.TypeCheck(form) {
+		Glob.Fatal(main_label, fmt.Sprintf("Formula %s is not well typed", form.ToString()))
 	}
-
-	return form
+	Glob.PrintInfo(main_label, "Problem is well typed")
 }

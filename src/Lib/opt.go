@@ -47,10 +47,10 @@ type None[A any] struct{}
 func (Some[A]) isOpt() {}
 func (None[A]) isOpt() {}
 
-func OptBind[A, B any](u Option[A], f Func[A, B]) Option[B] {
+func OptBind[A, B any](u Option[A], f Func[A, Option[B]]) Option[B] {
 	switch x := u.(type) {
 	case Some[A]:
-		return Some[B]{f(x.Val)}
+		return f(x.Val)
 	case None[A]:
 		return None[B]{}
 	}

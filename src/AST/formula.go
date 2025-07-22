@@ -89,6 +89,7 @@ func replaceTermInTermList(
 				)
 				newTermList.Upd(i, MakerFun(
 					nf.GetP(),
+					nf.GetTyArgs(),
 					termList,
 				))
 				res = res || r
@@ -109,24 +110,6 @@ func replaceTermInTermList(
 }
 
 /* Utils */
-
-func instanciateTypeAppList(typeApps []TypeApp, vars []TypeVar, index int) []TypeApp {
-	// For each typeVar € nf.GetTypeVars(), if typeVar € varList, instanciate typeVar
-	typeVars := []TypeApp{}
-	for _, typeVar := range typeApps {
-		if Glob.Is[TypeVar](typeVar) {
-			tv := Glob.To[TypeVar](typeVar)
-			if Lib.ComparableList[TypeVar](vars).Contains(tv) {
-				tv.ShouldBeMeta(index)
-			}
-			typeVars = append(typeVars, tv)
-		} else {
-			typeVars = append(typeVars, typeVar)
-		}
-	}
-
-	return typeVars
-}
 
 func metasUnion(forms Lib.List[Form]) Lib.Set[Meta] {
 	res := Lib.EmptySet[Meta]()
