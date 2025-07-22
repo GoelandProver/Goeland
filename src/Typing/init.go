@@ -30,38 +30,19 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
+/**
+ * This file initializes the global environment (e.g., with TPTP primitives)
+**/
+
 package Typing
 
-// /**
-//  * This file defines the WF rules.
-//  **/
+import (
+	"github.com/GoelandProver/Goeland/AST"
+	"sync"
+)
 
-// /* WF1 rule first empties the variables, and then the types. */
-// func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-// 	root.appliedRule = "WF_2"
+var global_env Env
 
-// 	// Try to empty vars first
-// 	if len(state.localContext.vars) > 0 {
-// 		// Launch child on the type of the first var
-// 		var_, newLocalContext := state.localContext.popVar()
-// 		child := []Sequent{
-// 			{
-// 				localContext:  newLocalContext,
-// 				globalContext: state.globalContext,
-// 				consequence:   Consequence{a: var_.GetTypeApp()},
-// 			},
-// 		}
-// 		return launchChildren(child, root, fatherChan)
-// 	}
-
-// 	// Then, if vars is not empty, empty the types
-// 	_, newLocalContext := state.localContext.popTypeVar()
-// 	child := []Sequent{
-// 		{
-// 			localContext:  newLocalContext,
-// 			globalContext: state.globalContext,
-// 			consequence:   Consequence{a: metaType},
-// 		},
-// 	}
-// 	return launchChildren(child, root, fatherChan)
-// }
+func Init() {
+	global_env = Env{make(map[string]AST.Ty), sync.Mutex{}}
+}

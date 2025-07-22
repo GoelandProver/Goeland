@@ -82,10 +82,17 @@ func lookupInContext(con Context, name string) Lib.Option[Parser.PType] {
 	return Lib.MkNone[Parser.PType]()
 }
 
-func isTType(pty Parser.PType) bool {
+func isTyConstr(pty Parser.PType) bool {
 	switch ty := pty.(type) {
 	case Parser.PTypeFun:
 		return ty.Symbol() == "$tType"
+	case Parser.PTypeBin:
+		switch ty.Operator() {
+		case Parser.PTypeMap:
+			return isTyConstr(ty.Right())
+		}
+	case Parser.PTypeQuant:
+		return isTyConstr(ty.Ty())
 	}
 	return false
 }
@@ -96,7 +103,7 @@ func splitTypes(
 	actualTys := Lib.NewList[Parser.PType]()
 	others := Lib.NewList[Parser.PTerm]()
 	for _, ty := range tys {
-		if isTType(ty.Snd) {
+		if isTyConstr(ty.Snd) {
 			actualTys.Append(parserTermToType(ty.Fst))
 		} else {
 			others.Append(ty.Fst)
@@ -136,17 +143,11 @@ func parserTermToType(pterm Parser.PTerm) Parser.PType {
 	return nil
 }
 
-func splitTypeVars(
-	tys []Lib.Pair[string, Parser.PAtomicType],
-) ([]AST.TypeVar, []AST.Var) {
-	tyvars := []AST.TypeVar{}
-	others := []AST.Var{}
-	for _, ty := range tys {
-		if isTType(ty.Snd.(Parser.PType)) {
-			tyvars = append(tyvars, AST.MkTypeVar(ty.Fst))
-		} else {
-			others = append(others, AST.MakerVar(ty.Fst))
-		}
+func pretypeVars(vars []Lib.Pair[string, Parser.PAtomicType]) Lib.List[AST.TypedVar] {
+	res := Lib.MkList[AST.TypedVar](len(vars))
+	for i, v := range vars {
+		ty := elaborateType(v.Snd.(Parser.PType), v.Snd.(Parser.PType), false)
+		res.Upd(i, AST.MakerTypedVar(v.Fst, ty))
 	}
-	return tyvars, others
+	return res
 }

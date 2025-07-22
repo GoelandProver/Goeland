@@ -209,19 +209,11 @@ func ApplySubstitutionOnTerm(old_symbol AST.Meta, new_symbol, t AST.Term) AST.Te
 	case AST.Fun:
 		res = AST.MakerFun(
 			nf.GetP(),
+			nf.GetTyArgs(),
 			ApplySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
 		)
 	}
 	return res
-}
-
-func applySubstitutionOnType(old_type, new_type, t AST.TypeApp) AST.TypeApp {
-	if tv, isTv := t.(AST.TypeVar); isTv {
-		if tv.Instantiated() && tv.Equals(old_type) {
-			return new_type
-		}
-	}
-	return t
 }
 
 /* Apply substitutions on a list of terms */
@@ -276,6 +268,7 @@ func ApplySubstitutionOnFormula(old_symbol AST.Meta, new_symbol AST.Term, f AST.
 		res = AST.MakePred(
 			nf.GetIndex(),
 			nf.GetID(),
+			nf.GetTyArgs(),
 			ApplySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
 		)
 	case AST.Not:

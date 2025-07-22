@@ -59,29 +59,29 @@ func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
 		root = AST.MakerAnd(registeredAxioms)
 	}
 
-	if AST.EmptyGlobalContext() {
-		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+	// if AST.EmptyGlobalContext() {
+	resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
 
-		if metaList.Len() > 0 {
-			resultingString += contextualizeMetas(metaList)
-		}
-	} else {
-		context := AST.GetGlobalContext()
-		for k, v := range context {
-			if typed, ok := v[0].App.(AST.TypeHint); ok {
-				if k[0] != '$' && k == typed.ToString() {
-					resultingString += "Parameter " + k + ": Type.\n"
-
-				}
-			}
-		}
-
-		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
-
-		if metaList.Len() > 0 {
-			resultingString += contextualizeMetas(metaList)
-		}
+	if metaList.Len() > 0 {
+		resultingString += contextualizeMetas(metaList)
 	}
+	// } else {
+	// 	context := AST.GetGlobalContext()
+	// 	for k, v := range context {
+	// 		if typed, ok := v[0].App.(AST.TypeHint); ok {
+	// 			if k[0] != '$' && k == typed.ToString() {
+	// 				resultingString += "Parameter " + k + ": Type.\n"
+
+	// 			}
+	// 		}
+	// 	}
+
+	// 	resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+
+	// 	if metaList.Len() > 0 {
+	// 		resultingString += contextualizeMetas(metaList)
+	// 	}
+	// }
 	return resultingString
 }
 

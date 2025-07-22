@@ -213,7 +213,7 @@ func MakeEmptySubstitutionList() []Substitutions {
 
 /* Returns a « failed » substitution. */
 func Failure() Substitutions {
-	fail := AST.MakeMeta(-1, -1, "FAILURE", -1)
+	fail := AST.MakeEmptyMeta()
 	return Substitutions{Substitution{fail, fail}}
 }
 
@@ -313,6 +313,7 @@ func eliminateInside(key AST.Meta, value AST.Term, s Substitutions, has_changed_
 			case AST.Fun:
 				new_value := AST.MakerFun(
 					value_2_type.GetP(),
+					value_2_type.GetTyArgs(),
 					eliminateList(key, value, value_2_type.GetArgs(), &has_changed),
 				)
 				if OccurCheckValid(key_2, new_value) {
@@ -358,6 +359,7 @@ func eliminateList(
 			case AST.Fun: // If its a function, reccursive call for the arguments
 				tempList.Append(AST.MakerFun(
 					lt.GetP(),
+					lt.GetTyArgs(),
 					eliminateList(key, value, lt.GetArgs(), &hasChanged),
 				))
 			default:
