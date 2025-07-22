@@ -65,14 +65,14 @@ func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.Set[AST.Meta]) 
 }
 
 func RealInstantiate(
-	varList []AST.Var,
+	varList Lib.List[AST.TypedVar],
 	index, status int,
 	subForm AST.Form,
 	terms Lib.List[AST.Term],
 ) (FormAndTerms, AST.Meta) {
-	v := varList[0]
-	meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index)
-	subForm = subForm.SubstituteVarByMeta(v, meta)
+	v := varList.At(0)
+	meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTy())
+	subForm = subForm.SubstituteVarByMeta(v.ToBoundVar(), meta)
 
 	terms = terms.Copy(AST.Term.Copy)
 	terms.Add(
@@ -80,12 +80,12 @@ func RealInstantiate(
 		Glob.To[AST.Term](meta),
 	)
 
-	if len(varList) > 1 {
+	if varList.Len() > 1 {
 		if status == is_exists {
-			ex := AST.MakerEx(varList[1:], subForm)
+			ex := AST.MakerEx(varList.Slice(1, varList.Len()), subForm)
 			subForm = AST.MakerNot(ex)
 		} else {
-			subForm = AST.MakerAll(varList[1:], subForm)
+			subForm = AST.MakerAll(varList.Slice(1, varList.Len()), subForm)
 		}
 	} else {
 		if status == is_exists {

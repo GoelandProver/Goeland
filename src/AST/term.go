@@ -78,16 +78,16 @@ func MakeVar(i int, s string) Var {
 	return newVar
 }
 
-func MakeMeta(index, occurence int, s string, f int) Meta {
+func MakeMeta(index, occurence int, s string, f int, ty Ty) Meta {
 	fms := &MappedString{}
-	meta := Meta{fms, index, occurence, s, f}
+	meta := Meta{fms, index, occurence, s, f, ty}
 	fms.MappableString = &meta
 	return meta
 }
 
-func MakeFun(p Id, args Lib.List[Term], metas Lib.Set[Meta]) Fun {
+func MakeFun(p Id, ty_args Lib.List[Ty], args Lib.List[Term], metas Lib.Set[Meta]) Fun {
 	fms := &MappedString{}
-	fun := Fun{fms, p, args, Lib.MkCache(metas, Fun.forceGetMetas)}
+	fun := Fun{fms, p, ty_args, args, Lib.MkCache(metas, Fun.forceGetMetas)}
 	fms.MappableString = fun
 	return fun
 }

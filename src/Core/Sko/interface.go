@@ -34,7 +34,6 @@ package Sko
 
 import (
 	"fmt"
-	"sync"
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -53,7 +52,7 @@ type Skolemization interface {
 	Skolemize(
 		AST.Form,
 		AST.Form,
-		AST.Var,
+		AST.TypedVar,
 		Lib.Set[AST.Meta],
 	) (Skolemization, AST.Form)
 }
@@ -61,7 +60,7 @@ type Skolemization interface {
 /* If every Skolem symbol is created using this function, then it will generate
  * a fresh symbol for sure. Otherwise, nothing is guaranteed.
  */
-func genFreshSymbol(existingSymbols *Lib.Set[AST.Id], mu *sync.Mutex, x AST.Var) AST.Id {
+func genFreshSymbol(existingSymbols *Lib.Set[AST.Id], x AST.TypedVar) AST.Id {
 	symbol := AST.MakerNewId(
 		fmt.Sprintf("skolem@%v", x.GetName()),
 	)

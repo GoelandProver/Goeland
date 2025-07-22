@@ -50,19 +50,19 @@ func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
 		root = AST.MakerAnd(registeredAxioms)
 	}
 
-	if AST.EmptyGlobalContext() {
-		resultString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+	// if AST.EmptyGlobalContext() {
+	resultString += strings.Join(getContextFromFormula(root), "\n") + "\n"
 
-		if metaList.Len() > 0 {
-			resultString += contextualizeMetas(metaList)
-		}
-	} else {
-		resultString += getContextAsString(root)
-
-		if metaList.Len() > 0 {
-			resultString += contextualizeMetas(metaList)
-		}
+	if metaList.Len() > 0 {
+		resultString += contextualizeMetas(metaList)
 	}
+	// } else {
+	// 	resultString += getContextAsString(root)
+
+	// 	if metaList.Len() > 0 {
+	// 		resultString += contextualizeMetas(metaList)
+	// 	}
+	// }
 	return resultString
 }
 
@@ -116,54 +116,55 @@ func getContextAsString(root AST.Form) string {
 }
 
 func GlobContextPairs() (types, arrows, others []Glob.Pair[string, string]) {
-	context := AST.GetGlobalContext()
-	for k, v := range context {
-		if k != "=" && k[0] != '$' {
-			switch typed := v[0].App.(type) {
-			case AST.TypeArrow:
-				primitives := typed.GetPrimitives()
-				typesStr := ""
+	return []Glob.Pair[string, string]{}, []Glob.Pair[string, string]{}, []Glob.Pair[string, string]{}
+	// context := AST.GetGlobalContext()
+	// for k, v := range context {
+	// 	if k != "=" && k[0] != '$' {
+	// 		switch typed := v[0].App.(type) {
+	// 		case AST.TypeArrow:
+	// 			primitives := typed.GetPrimitives()
+	// 			typesStr := ""
 
-				for i, prim := range primitives {
-					if i != len(primitives)-1 {
-						typesStr += "τ (" + prim.ToString() + ") → "
-					} else {
-						typesStr += prim.ToString()
-					}
-				}
-				arrows = append(arrows, Glob.MakePair(k, typesStr))
-			case AST.QuantifiedType:
-				primitives := typed.GetPrimitives()
-				typesStr := ""
-				contextualized := []string{}
+	// 			for i, prim := range primitives {
+	// 				if i != len(primitives)-1 {
+	// 					typesStr += "τ (" + prim.ToString() + ") → "
+	// 				} else {
+	// 					typesStr += prim.ToString()
+	// 				}
+	// 			}
+	// 			arrows = append(arrows, Glob.MakePair(k, typesStr))
+	// 		case AST.QuantifiedType:
+	// 			primitives := typed.GetPrimitives()
+	// 			typesStr := ""
+	// 			contextualized := []string{}
 
-				for i, prim := range primitives {
-					if i != len(primitives)-1 {
-						switch typedPrim := prim.(type) {
-						case AST.TypeVar:
-							str := AST.SimpleStringMappable(typedPrim.ToString())
-							symbol := addToContext(&str)
-							typesStr += "τ (" + symbol + ") → "
-							contextualized = append(contextualized, symbol)
-						case AST.TypeHint:
-							typesStr += "τ (" + prim.ToString() + ") → "
-						}
-					} else {
-						typesStr += prim.ToString()
-					}
-				}
-				arrows = append(arrows, Glob.MakePair(k, fmt.Sprintf("Π (%s : Type), %s", strings.Join(contextualized, " : Type), ("), typesStr)))
-			case AST.TypeHint:
-				if k == typed.ToString() {
-					types = append(types, Glob.MakePair(k, "Type"))
-				} else {
-					others = append(others, Glob.MakePair(k, fmt.Sprintf("τ (%s)", typed.ToString())))
-				}
-			}
-		}
-	}
+	// 			for i, prim := range primitives {
+	// 				if i != len(primitives)-1 {
+	// 					switch typedPrim := prim.(type) {
+	// 					case AST.TypeVar:
+	// 						str := AST.SimpleStringMappable(typedPrim.ToString())
+	// 						symbol := addToContext(&str)
+	// 						typesStr += "τ (" + symbol + ") → "
+	// 						contextualized = append(contextualized, symbol)
+	// 					case AST.TypeHint:
+	// 						typesStr += "τ (" + prim.ToString() + ") → "
+	// 					}
+	// 				} else {
+	// 					typesStr += prim.ToString()
+	// 				}
+	// 			}
+	// 			arrows = append(arrows, Glob.MakePair(k, fmt.Sprintf("Π (%s : Type), %s", strings.Join(contextualized, " : Type), ("), typesStr)))
+	// 		case AST.TypeHint:
+	// 			if k == typed.ToString() {
+	// 				types = append(types, Glob.MakePair(k, "Type"))
+	// 			} else {
+	// 				others = append(others, Glob.MakePair(k, fmt.Sprintf("τ (%s)", typed.ToString())))
+	// 			}
+	// 		}
+	// 	}
+	// }
 
-	return types, arrows, others
+	// return types, arrows, others
 }
 
 func contextPreamble() string {
