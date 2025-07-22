@@ -36,6 +36,7 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type Ordered[T any] interface {
@@ -138,6 +139,7 @@ type termRecord struct {
 	eqClass  *eqClass
 	meta     *AST.Meta
 	symbolId AST.Id
+	tyArgs   Lib.List[AST.Ty]
 	args     []*eqClass
 }
 

@@ -93,7 +93,7 @@ func Skolemize(form AST.Form, branchMetas Lib.Set[AST.Meta]) AST.Form {
 			return realSkolemize(
 				form,
 				f.GetForm(),
-				f.GetVarList()[0],
+				f.GetVarList().At(0),
 				f.GetVarList(),
 				branchMetas,
 				isNegAll,
@@ -105,7 +105,7 @@ func Skolemize(form AST.Form, branchMetas Lib.Set[AST.Meta]) AST.Form {
 		return realSkolemize(
 			form,
 			nf.GetForm(),
-			nf.GetVarList()[0],
+			nf.GetVarList().At(0),
 			nf.GetVarList(),
 			branchMetas,
 			isExists,
@@ -119,8 +119,8 @@ func Skolemize(form AST.Form, branchMetas Lib.Set[AST.Meta]) AST.Form {
 
 func realSkolemize(
 	initialForm, deltaForm AST.Form,
-	x AST.Var,
-	allVars []AST.Var,
+	x AST.TypedVar,
+	allVars Lib.List[AST.TypedVar],
 	metas Lib.Set[AST.Meta],
 	typ int,
 ) AST.Form {
@@ -133,13 +133,13 @@ func realSkolemize(
 	selectedSkolemization = sko
 	switch typ {
 	case isNegAll:
-		if len(allVars) > 1 {
-			res = AST.MakerAll(allVars[1:], res)
+		if allVars.Len() > 1 {
+			res = AST.MakerAll(allVars.Slice(1, allVars.Len()), res)
 		}
 		res = AST.MakerNot(res)
 	case isExists:
-		if len(allVars) > 1 {
-			res = AST.MakerEx(allVars[1:], res)
+		if allVars.Len() > 1 {
+			res = AST.MakerEx(allVars.Slice(1, allVars.Len()), res)
 		}
 	default:
 		Glob.Anomaly("Skolemization", "impossible reconstruction case")

@@ -83,7 +83,7 @@ func translate(toTranslate *eqClass, correspondence map[*eqClass]*termRecord) AS
 		for i, s := range tr.args {
 			args.Upd(i, translate(s, correspondence))
 		}
-		return AST.MakerFun(tr.symbolId, args)
+		return AST.MakerFun(tr.symbolId, tr.tyArgs, args)
 	}
 }
 

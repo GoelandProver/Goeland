@@ -38,11 +38,13 @@ package Engine
 
 import (
 	"fmt"
+
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Parser"
+	"github.com/GoelandProver/Goeland/Typing"
 )
 
 type Context []Lib.Pair[string, Parser.PType]
@@ -50,31 +52,35 @@ type Context []Lib.Pair[string, Parser.PType]
 var elab_label string = "Elab"
 var parsing_label string = "Parsing"
 
-func ToInternalSyntax(parser_statements []Parser.PStatement) []Core.Statement {
-	statements := []Core.Statement{}
+func ToInternalSyntax(parser_statements []Parser.PStatement) (statements []Core.Statement, is_typed bool) {
+	is_typed = false
 	con := Context{}
 	for _, statement := range parser_statements {
-		newCon, stmt := elaborateParsingStatement(con, statement)
+		new_con, stmt, is_typed_stmt := elaborateParsingStatement(con, statement)
 		statements = append(statements, stmt)
-		con = newCon
+		con = new_con
+		is_typed = is_typed || is_typed_stmt
 	}
-	return statements
+	return statements, is_typed
 }
 
 func elaborateParsingStatement(
 	con Context,
 	statement Parser.PStatement,
-) (Context, Core.Statement) {
+) (Context, Core.Statement, bool) {
 	statement_role := elaborateRole(statement.Role(), statement)
+	is_typed := false
 	var core_statement Core.Statement
 	switch f := statement.Form().(type) {
 
 	case Lib.Some[Parser.PForm]:
+		form, is_typed_form := elaborateParsingForm(con, f.Val)
 		core_statement = Core.MakeFormStatement(
 			statement.Name(),
 			statement_role,
-			elaborateParsingForm(con, f.Val),
+			form,
 		)
+		is_typed = is_typed || is_typed_form
 
 	case Lib.None[Parser.PForm]:
 		switch ty := statement.TypedConst().(type) {
@@ -86,6 +92,7 @@ func elaborateParsingStatement(
 				statement_role,
 				elaborateParsingType(ty.Val),
 			)
+			is_typed = true
 
 		case Lib.None[Lib.Pair[string, Parser.PType]]:
 			if statement.Role() != Parser.Include {
@@ -96,7 +103,7 @@ func elaborateParsingStatement(
 			}
 		}
 	}
-	return con, core_statement
+	return con, core_statement, is_typed
 }
 
 func elaborateRole(parsing_role Parser.PFormulaRole, stmt Parser.PStatement) Core.FormulaRole {
@@ -123,13 +130,13 @@ func elaborateRole(parsing_role Parser.PFormulaRole, stmt Parser.PStatement) Cor
 	return Core.Unknown
 }
 
-func elaborateParsingForm(con Context, f Parser.PForm) AST.Form {
+func elaborateParsingForm(con Context, f Parser.PForm) (AST.Form, bool) {
 	return elaborateForm(con, f, f)
 }
 
 // The [source_form] argument is here for error printing purposes.
-func elaborateForm(con Context, f, source_form Parser.PForm) AST.Form {
-	aux := func(t Parser.PTerm) AST.Term {
+func elaborateForm(con Context, f, source_form Parser.PForm) (AST.Form, bool) {
+	aux := func(t Parser.PTerm) (AST.Term, bool) {
 		return elaborateParsingTerm(con, t)
 	}
 
@@ -138,23 +145,38 @@ func elaborateForm(con Context, f, source_form Parser.PForm) AST.Form {
 	case Parser.PConst:
 		switch pform.PConstant {
 		case Parser.PTop:
-			return AST.MakerTop()
+			return AST.MakerTop(), false
 		case Parser.PBot:
-			return AST.MakerBot()
+			return AST.MakerBot(), false
 		}
 
 	case Parser.PPred:
 		typed_arguments := pretype(con, pform.Args())
-		_, real_args := splitTypes(typed_arguments)
+		typed_args, term_args := splitTypes(typed_arguments)
+		args := Lib.MkList[AST.Term](term_args.Len())
+		is_typed := false
+
+		for i, trm := range term_args.GetSlice() {
+			arg, b := aux(trm)
+			is_typed = is_typed || b
+			args.Upd(i, arg)
+		}
+
 		return AST.MakerPred(
 			AST.MakerId(pform.Symbol()),
-			Lib.ListMap(real_args, aux),
-		)
+			Lib.ListMap(
+				typed_args,
+				func(pty Parser.PType) AST.Ty {
+					return elaborateType(pty, pty, false)
+				}),
+			args,
+		), is_typed || !typed_args.Empty()
 
 	case Parser.PUnary:
 		switch pform.PUnaryOp {
 		case Parser.PUnaryNeg:
-			return AST.MakerNot(elaborateForm(con, pform.PForm, source_form))
+			nf, b := elaborateForm(con, pform.PForm, source_form)
+			return AST.MakerNot(nf), b
 		}
 
 	case Parser.PBin:
@@ -164,19 +186,17 @@ func elaborateForm(con Context, f, source_form Parser.PForm) AST.Form {
 		case Parser.PBinaryAnd:
 			return maybeFlattenAnd(con, pform, source_form)
 		case Parser.PBinaryImp:
-			return AST.MakerImp(
-				elaborateForm(con, pform.Left(), source_form),
-				elaborateForm(con, pform.Right(), source_form),
-			)
+			lft, b1 := elaborateForm(con, pform.Left(), source_form)
+			rgt, b2 := elaborateForm(con, pform.Right(), source_form)
+			return AST.MakerImp(lft, rgt), b1 || b2
 		case Parser.PBinaryEqu:
-			return AST.MakerEqu(
-				elaborateForm(con, pform.Left(), source_form),
-				elaborateForm(con, pform.Right(), source_form),
-			)
+			lft, b1 := elaborateForm(con, pform.Left(), source_form)
+			rgt, b2 := elaborateForm(con, pform.Right(), source_form)
+			return AST.MakerEqu(lft, rgt), b1 || b2
 		}
 
 	case Parser.PQuant:
-		type_vars, vars := splitTypeVars(pform.Vars())
+		vars := pretypeVars(pform.Vars())
 		switch pform.PQuantifier {
 		case Parser.PQuantAll:
 			actualVars := Lib.ListMap(
@@ -185,13 +205,13 @@ func elaborateForm(con Context, f, source_form Parser.PForm) AST.Form {
 					return Lib.MkPair(p.Fst, p.Snd.(Parser.PType))
 				},
 			)
-			form := elaborateForm(append(con, actualVars.GetSlice()...), pform.PForm, source_form)
-			if len(vars) != 0 {
+			form, b := elaborateForm(append(con, actualVars.GetSlice()...), pform.PForm, source_form)
+			if !vars.Empty() {
 				form = AST.MakerAll(vars, form)
 			}
-			return form
+			return form, b
 		case Parser.PQuantEx:
-			if len(type_vars) != 0 {
+			if vars.Any(func(v AST.TypedVar) bool { return AST.IsTType(v.GetTy()) }) {
 				Glob.Anomaly(
 					elab_label,
 					"Found existentially quantified types when parsing "+source_form.ToString(),
@@ -203,21 +223,21 @@ func elaborateForm(con Context, f, source_form Parser.PForm) AST.Form {
 					return Lib.MkPair(p.Fst, p.Snd.(Parser.PType))
 				},
 			)
-			form := elaborateForm(append(con, actualVars.GetSlice()...), pform.PForm, source_form)
-			if len(vars) != 0 {
-				return AST.MakerEx(vars, form)
+			form, b := elaborateForm(append(con, actualVars.GetSlice()...), pform.PForm, source_form)
+			if !vars.Empty() {
+				form = AST.MakerEx(vars, form)
 			}
-			return form
+			return form, b
 		}
 	}
 	Glob.Anomaly(
 		elab_label,
 		"Parsed formula "+source_form.ToString()+" does not correspond to any internal formula",
 	)
-	return nil
+	return nil, false
 }
 
-func maybeFlattenOr(con Context, f Parser.PBin, source_form Parser.PForm) AST.Form {
+func maybeFlattenOr(con Context, f Parser.PBin, source_form Parser.PForm) (AST.Form, bool) {
 	return maybeFlattenBin(
 		con, f, source_form,
 		func(ls Lib.List[AST.Form]) AST.Form { return AST.MakerOr(ls) },
@@ -225,7 +245,7 @@ func maybeFlattenOr(con Context, f Parser.PBin, source_form Parser.PForm) AST.Fo
 	)
 }
 
-func maybeFlattenAnd(con Context, f Parser.PBin, source_form Parser.PForm) AST.Form {
+func maybeFlattenAnd(con Context, f Parser.PBin, source_form Parser.PForm) (AST.Form, bool) {
 	return maybeFlattenBin(
 		con, f, source_form,
 		func(ls Lib.List[AST.Form]) AST.Form { return AST.MakerAnd(ls) },
@@ -239,23 +259,22 @@ func maybeFlattenBin(
 	source_form Parser.PForm,
 	maker Lib.Func[Lib.List[AST.Form], AST.Form],
 	op Parser.PBinOp,
-) AST.Form {
+) (AST.Form, bool) {
 	if !Glob.Flatten() {
-		return maker(
-			Lib.MkListV(
-				elaborateForm(con, f.Left(), source_form),
-				elaborateForm(con, f.Right(), source_form),
-			))
+		lft, b1 := elaborateForm(con, f.Left(), source_form)
+		rgt, b2 := elaborateForm(con, f.Right(), source_form)
+		return maker(Lib.MkListV(lft, rgt)), b1 || b2
 	}
 
 	subforms := flatten(f, op)
-	forms := Lib.MkListV(
-		Lib.ListMap(
-			subforms,
-			func(f Parser.PForm) AST.Form { return elaborateForm(con, f, source_form) },
-		).GetSlice()...,
-	)
-	return maker(forms)
+	is_typed := false
+	real_subforms := Lib.MkList[AST.Form](subforms.Len())
+	for i, subform := range subforms.GetSlice() {
+		real_subform, b := elaborateForm(con, subform, source_form)
+		real_subforms.Upd(i, real_subform)
+		is_typed = is_typed || b
+	}
+	return maker(real_subforms), is_typed
 }
 
 func flatten(f Parser.PForm, op Parser.PBinOp) Lib.List[Parser.PForm] {
@@ -270,171 +289,132 @@ func flatten(f Parser.PForm, op Parser.PBinOp) Lib.List[Parser.PForm] {
 	return Lib.MkListV(f)
 }
 
-func elaborateParsingTerm(con Context, t Parser.PTerm) AST.Term {
+func elaborateParsingTerm(con Context, t Parser.PTerm) (AST.Term, bool) {
 	return elaborateTerm(con, t, t)
 }
 
 // The argument [source_term] is here for error printing purposes.
-func elaborateTerm(con Context, t, source_term Parser.PTerm) AST.Term {
-	aux := func(t Parser.PTerm) AST.Term {
+func elaborateTerm(con Context, t, source_term Parser.PTerm) (AST.Term, bool) {
+	aux := func(t Parser.PTerm) (AST.Term, bool) {
 		return elaborateTerm(con, t, source_term)
-	}
-
-	fail := func(ty AST.TypeScheme) {
-		Glob.Fatal(
-			parsing_label,
-			fmt.Sprintf(
-				"Non-atomic type found when pretyping %s: got %s",
-				t.ToString(),
-				ty.ToString(),
-			),
-		)
 	}
 
 	switch pterm := t.(type) {
 	case Parser.PVar:
-		ty := lookupInContext(con, pterm.Name())
-		switch t := ty.(type) {
-		case Lib.Some[Parser.PType]:
-			if isTType(t.Val) {
-				Glob.Anomaly(
-					elab_label,
-					fmt.Sprintf(
-						"Trying to transform the type variable %s into an internal term in %s",
-						pterm.Name(),
-						source_term.ToString(),
-					),
-				)
-			}
-
-			ty := elaborateType(t.Val, t.Val)
-			if _, ok := ty.(AST.TypeApp); !ok {
-				fail(ty)
-			}
-			// FIXME: get some error function over here
-			return AST.MakerVar(pterm.Name())
-		}
+		return AST.MakerVar(pterm.Name()), false
 
 	case Parser.PFun:
 		typed_arguments := pretype(con, pterm.Args())
-		_, real_args := splitTypes(typed_arguments)
+		ty_args, trm_args := splitTypes(typed_arguments)
+		args := Lib.MkList[AST.Term](trm_args.Len())
+		is_typed := false
+
+		for i, trm := range trm_args.GetSlice() {
+			arg, b := aux(trm)
+			is_typed = is_typed || b
+			args.Upd(i, arg)
+		}
+
 		fun := AST.MakerFun(
 			AST.MakerId(pterm.Symbol()),
-			Lib.ListMap(real_args, aux),
+			Lib.ListMap(
+				ty_args,
+				func(pty Parser.PType) AST.Ty {
+					return elaborateType(pty, pty, false)
+				}),
+			args,
 		)
 		switch oty := pterm.DefinedType().(type) {
 		case Lib.Some[Parser.PTypeFun]:
-			ty := elaborateType(oty.Val, oty.Val).(AST.TypeApp)
-			AST.SaveConstant(pterm.Symbol(), ty)
+			ty := elaborateType(oty.Val, oty.Val, false)
+			Typing.AddToGlobalEnv(pterm.Symbol(), ty)
 		}
-		return fun
+		return fun, is_typed || !ty_args.Empty()
 
 	}
 	Glob.Anomaly(
 		elab_label,
 		"Parsed term "+source_term.ToString()+" does not correspond to any internal term",
 	)
-	return nil
+	return nil, false
 }
 
 func elaborateParsingType(pty Lib.Pair[string, Parser.PType]) Core.TFFAtomTyping {
 	return Core.TFFAtomTyping{
 		Literal: AST.MakerId(pty.Fst),
-		Ts:      elaborateType(pty.Snd, pty.Snd),
+		Ty:      elaborateType(pty.Snd, pty.Snd, true),
 	}
 }
 
 // The [source_type] argument is here for error printing.
-func elaborateType(pty, source_type Parser.PType) AST.TypeScheme {
-	aux := func(pty Parser.PType) AST.TypeScheme {
-		return elaborateType(pty, source_type)
+func elaborateType(pty, source_type Parser.PType, from_top_level bool) AST.Ty {
+	aux := func(pty Parser.PType) AST.Ty {
+		return elaborateType(pty, source_type, from_top_level)
 	}
 	switch ty := pty.(type) {
 	case Parser.PTypeVar:
-		return AST.MkTypeVar(ty.Name())
-
-	case Parser.PTypeFun:
-		if len(ty.Args()) == 0 {
-			return AST.MkTypeHint(ty.Symbol())
+		if from_top_level {
+			return AST.MkTyVar(ty.Name())
 		} else {
-			args := Lib.MkListV(ty.Args()...)
-			actualArgs := Lib.ListMap(
-				args,
-				func(atom Parser.PAtomicType) Parser.PType { return atom.(Parser.PType) },
-			)
-			elaboratedArgs := Lib.ListMap(actualArgs, aux)
-			convertedArgs := Lib.ListMap(
-				elaboratedArgs,
-				func(ty AST.TypeScheme) AST.TypeApp { return ty.(AST.TypeApp) },
-			)
-			// FIXME: this is __bad__
-			params := []AST.TypeApp{}
-			for range convertedArgs.GetSlice() {
-				params = append(params, nil)
-			}
-			// FIXME: shouldn't this be internalized when making a new parameterized type
-			// instead of having to save it before?
-			AST.SaveParamereterizedType(ty.Symbol(), params)
-			return AST.MkParameterizedType(
-				ty.Symbol(),
-				convertedArgs.GetSlice(),
-			)
+			return AST.MakerTyBV(ty.Name())
 		}
+	case Parser.PTypeFun:
+		args := Lib.MkListV(ty.Args()...)
+		actualArgs := Lib.ListMap(
+			args,
+			func(atom Parser.PAtomicType) Parser.PType { return atom.(Parser.PType) },
+		)
+		elaboratedArgs := Lib.ListMap(actualArgs, aux)
+		return AST.MkTyConstr(ty.Symbol(), elaboratedArgs)
 
 	case Parser.PTypeBin:
-		new_left := elaborateType(ty.Left(), source_type)
-		new_right := elaborateType(ty.Right(), source_type)
-
-		fail := func(cse string) {
+		fail_if_forbidden := func(ty Parser.PType) {
 			Glob.Fatal(
 				parsing_label,
 				fmt.Sprintf(
-					"Non-atomic type found under the %s type %s in %s",
-					cse,
+					"Non-atomic type (%s) found under the type %s",
 					ty.ToString(),
 					source_type.ToString(),
 				),
 			)
 		}
 
+		fail_if_forbidden(ty.Left())
+		fail_if_forbidden(ty.Right())
+
+		new_left := elaborateType(ty.Left(), source_type, from_top_level)
+		new_right := elaborateType(ty.Right(), source_type, from_top_level)
+
 		switch ty.Operator() {
 		case Parser.PTypeProd:
-			if !Glob.Is[AST.TypeApp](new_left) {
-				fail("map")
-			}
-			if !Glob.Is[AST.TypeApp](new_right) {
-				fail("map")
-			}
-			left_list := flattenProd(new_left.(AST.TypeApp))
-			right_list := flattenProd(new_right.(AST.TypeApp))
-			return AST.MkTypeCross(append(left_list, right_list...)...)
+			left_list := flattenProd(new_left)
+			right_list := flattenProd(new_right)
+			return AST.MkTyProd(Lib.MkListV(append(left_list, right_list...)...))
 		case Parser.PTypeMap:
-			if !Glob.Is[AST.TypeApp](new_left) {
-				fail("map")
-			}
-			if !Glob.Is[AST.TypeApp](new_right) {
-				fail("map")
-			}
-			return AST.MkTypeArrow(
-				elaborateType(ty.Left(), source_type).(AST.TypeApp),
-				elaborateType(ty.Right(), source_type).(AST.TypeApp),
+			return AST.MkTyFunc(
+				elaborateType(ty.Left(), source_type, from_top_level),
+				elaborateType(ty.Right(), source_type, from_top_level),
 			)
 		}
 
 	case Parser.PTypeQuant:
 		switch ty.Quant() {
 		case Parser.PTypeAll:
-			vars := Lib.MkListV(ty.Vars()...)
-			actualVars := Lib.ListMap(
-				vars,
-				func(p Lib.Pair[string, Parser.PAtomicType]) AST.TypeVar {
-					return AST.MkTypeVar(p.Fst)
-				},
-			)
-			return AST.MkQuantifiedType(
-				actualVars.GetSlice(),
-				elaborateType(ty.Ty(), source_type),
-			)
+			var_names := Lib.MkList[string](len(ty.Vars()))
+			for i, v := range ty.Vars() {
+				var_names.Upd(i, v.Fst)
+			}
+
+			underlying_type := elaborateType(ty.Ty(), source_type, from_top_level)
+
+			if Glob.Is[AST.TyPi](underlying_type) {
+				Glob.Anomaly(
+					elab_label,
+					fmt.Sprintf("Found nested Pi-type in %s", source_type.ToString()),
+				)
+			}
+
+			return AST.MkTyPi(var_names, underlying_type)
 		}
 	}
 
@@ -445,14 +425,14 @@ func elaborateType(pty, source_type Parser.PType) AST.TypeScheme {
 	return nil
 }
 
-func flattenProd(ty AST.TypeApp) []AST.TypeApp {
+func flattenProd(ty AST.Ty) []AST.Ty {
 	switch nty := ty.(type) {
-	case AST.TypeCross:
-		res := []AST.TypeApp{}
-		for _, uty := range nty.GetAllUnderlyingTypes() {
+	case AST.TyProd:
+		res := []AST.Ty{}
+		for _, uty := range nty.GetTys().GetSlice() {
 			res = append(res, flattenProd(uty)...)
 		}
 		return res
 	}
-	return []AST.TypeApp{ty}
+	return []AST.Ty{ty}
 }
