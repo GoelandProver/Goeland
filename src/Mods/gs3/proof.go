@@ -652,20 +652,20 @@ func (gs GS3Proof) findInBetaHist(id int) int {
 func getAllFormulasDependantOn(term AST.Term, form AST.Form) Lib.List[AST.Form] {
 	switch f := form.(type) {
 	case AST.All:
-		return getSubformulas(term, f.GetVarList()[0], f.GetForm())
+		return getSubformulas(term, f.GetVarList().At(0), f.GetForm())
 	case AST.Not:
 		if ex, isEx := f.GetForm().(AST.Ex); isEx {
-			return getSubformulas(term, ex.GetVarList()[0], AST.MakerNot(f.GetForm()))
+			return getSubformulas(term, ex.GetVarList().At(0), AST.MakerNot(f.GetForm()))
 		}
 	}
 	return Lib.NewList[AST.Form]()
 }
 
-func getSubformulas(term AST.Term, v AST.Var, form AST.Form) Lib.List[AST.Form] {
+func getSubformulas(term AST.Term, v AST.TypedVar, form AST.Form) Lib.List[AST.Form] {
 	subforms := form.GetSubFormulasRecur()
 	dependantSubforms := Lib.NewList[AST.Form]()
 	for _, f := range subforms.GetSlice() {
-		f, res := f.ReplaceTermByTerm(v, term)
+		f, res := f.ReplaceTermByTerm(v.ToBoundVar(), term)
 		if res {
 			dependantSubforms.Append(f)
 		}

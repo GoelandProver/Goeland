@@ -144,7 +144,15 @@ func allRules(rule string, target AST.Form, composingForms Lib.List[AST.Form], n
 	return result
 }
 
-func allRulesQuantUniv(rule string, target AST.Form, composingForms Lib.List[AST.Form], nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form], vars []AST.Var, termGen AST.Term) string {
+func allRulesQuantUniv(
+	rule string,
+	target AST.Form,
+	composingForms Lib.List[AST.Form],
+	nexts []*gs3.GS3Sequent,
+	children []Lib.List[AST.Form],
+	vars Lib.List[AST.TypedVar],
+	termGen AST.Term,
+) string {
 
 	quant := ""
 	typeStr := ""
@@ -162,7 +170,7 @@ func allRulesQuantUniv(rule string, target AST.Form, composingForms Lib.List[AST
 	result += "(%s, " + toCorrectString(composingForms.At(0)) + ")\n"
 
 	varStrs := []string{}
-	for _, singleVar := range vars {
+	for _, singleVar := range vars.GetSlice() {
 		varStrs = append(varStrs, toLambdaIntroString(singleVar, ""))
 	}
 	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
@@ -189,7 +197,15 @@ func getRecursionUnivStr(nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form])
 	return result
 }
 
-func allRulesQuantExist(rule string, target AST.Form, composingForms Lib.List[AST.Form], nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form], vars []AST.Var, termGen AST.Term) string {
+func allRulesQuantExist(
+	rule string,
+	target AST.Form,
+	composingForms Lib.List[AST.Form],
+	nexts []*gs3.GS3Sequent,
+	children []Lib.List[AST.Form],
+	vars Lib.List[AST.TypedVar],
+	termGen AST.Term,
+) string {
 	quant := ""
 	typeStr := ""
 	switch target.(type) {
@@ -206,7 +222,7 @@ func allRulesQuantExist(rule string, target AST.Form, composingForms Lib.List[AS
 	result += "(%s, " + toCorrectString(composingForms.At(0)) + ")\n"
 
 	varStrs := []string{}
-	for _, singleVar := range vars {
+	for _, singleVar := range vars.GetSlice() {
 		varStrs = append(varStrs, toLambdaIntroString(singleVar, ""))
 	}
 	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
@@ -283,7 +299,15 @@ func deltaEx(proof *gs3.GS3Sequent) string {
 		formulaEx = form
 	}
 
-	return allRulesQuantExist("GS3ex", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren(), formulaEx.GetVarList(), proof.TermGenerated())
+	return allRulesQuantExist(
+		"GS3ex",
+		proof.GetTargetForm(),
+		proof.GetTargetForm().GetChildFormulas(),
+		proof.Children(),
+		proof.GetResultFormulasOfChildren(),
+		formulaEx.GetVarList(),
+		proof.TermGenerated(),
+	)
 }
 
 func deltaNotAll(proof *gs3.GS3Sequent) string {
@@ -304,7 +328,15 @@ func gammaAll(proof *gs3.GS3Sequent) string {
 		formulaAll = form
 	}
 
-	return allRulesQuantUniv("GS3all", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
+	return allRulesQuantUniv(
+		"GS3all",
+		proof.GetTargetForm(),
+		proof.GetTargetForm().GetChildFormulas(),
+		proof.Children(),
+		proof.GetResultFormulasOfChildren(),
+		formulaAll.GetVarList(),
+		proof.TermGenerated(),
+	)
 }
 
 func gammaNotEx(proof *gs3.GS3Sequent) string {

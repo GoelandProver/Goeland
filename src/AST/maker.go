@@ -66,13 +66,9 @@ var EmptyPredEq Pred
 /* Initialization */
 func Init() {
 	Reset()
-	initTypes()
+	initTPTPNativeTypes()
 	Id_eq = MakerId("=")
-	EmptyPredEq = MakerPred(Id_eq, Lib.NewList[Term]())
-
-	// Eq/Neq types
-	// FIXME: Register the type of equality in the global context
-	// --- (call an internal function like SaveEqType())
+	EmptyPredEq = MakerPred(Id_eq, Lib.NewList[Ty](), Lib.NewList[Term]())
 	initDefaultMap()
 }
 
@@ -133,7 +129,7 @@ func MakerNewVar(s string) Var {
 }
 
 /* Meta maker */
-func MakerMeta(s string, formula int) Meta {
+func MakerMeta(s string, formula int, ty Ty) Meta {
 	lock_term.Lock()
 	i, ok := occurenceMeta[s]
 	lock_term.Unlock()
@@ -143,25 +139,25 @@ func MakerMeta(s string, formula int) Meta {
 		new_index := cpt_term
 		cpt_term += 1
 		lock_term.Unlock()
-		return MakeMeta(new_index, i, s, formula)
+		return MakeMeta(new_index, i, s, formula, ty)
 	} else {
 		lock_term.Lock()
 		occurenceMeta[s] = 1
 		new_index := cpt_term
 		cpt_term += 1
 		lock_term.Unlock()
-		return MakeMeta(new_index, 0, s, formula)
+		return MakeMeta(new_index, 0, s, formula, ty)
 	}
 }
 
 /* Const maker (given a id, create a fun without args) */
 func MakerConst(id Id) Fun {
-	return MakeFun(id, Lib.NewList[Term](), Lib.EmptySet[Meta]())
+	return MakeFun(id, Lib.NewList[Ty](), Lib.NewList[Term](), Lib.EmptySet[Meta]())
 }
 
 /* Fun maker, with given id and args */
-func MakerFun(id Id, terms Lib.List[Term]) Fun {
-	return MakeFun(id, terms, Lib.EmptySet[Meta]())
+func MakerFun(id Id, ty_args Lib.List[Ty], terms Lib.List[Term]) Fun {
+	return MakeFun(id, ty_args, terms, Lib.EmptySet[Meta]())
 }
 
 /* Index make for formula */

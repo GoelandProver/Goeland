@@ -47,6 +47,7 @@ package Lib
 
 import (
 	_ "fmt"
+	"slices"
 )
 
 // -----------------------------------------------------------------------------
@@ -302,12 +303,7 @@ func (s0 Set[T]) Diff(s1 Set[T]) Set[T] {
 }
 
 func (s0 Set[T]) Disjoint(s1 Set[T]) bool {
-	for _, x := range s1.Elements().GetSlice() {
-		if s0.Contains(x) {
-			return false
-		}
-	}
-	return true
+	return !slices.ContainsFunc(s1.Elements().GetSlice(), s0.Contains)
 }
 
 func (s Set[T]) Cardinal() int {
@@ -320,6 +316,16 @@ func (s Set[T]) IsEmpty() bool {
 
 func (s Set[T]) Copy() Set[T] {
 	return mkSet(nodeCpy(s.root))
+}
+
+func (s Set[T]) Filter(pred Func[T, bool]) Set[T] {
+	res := EmptySet[T]()
+	for _, x := range s.Elements().GetSlice() {
+		if pred(x) {
+			res.Add(x)
+		}
+	}
+	return res
 }
 
 // -----------------------------------------------------------------------------

@@ -47,12 +47,12 @@ type quantifier struct {
 	*MappedString
 	metas   Lib.Cache[Lib.Set[Meta], quantifier]
 	index   int
-	varList []Var
+	varList Lib.List[TypedVar]
 	subForm Form
 	symbol  FormulaType
 }
 
-func makeQuantifier(i int, vars []Var, subForm Form, metas Lib.Set[Meta], symbol FormulaType) quantifier {
+func makeQuantifier(i int, vars Lib.List[TypedVar], subForm Form, metas Lib.Set[Meta], symbol FormulaType) quantifier {
 	fms := &MappedString{}
 	qua := quantifier{
 		fms,
@@ -71,16 +71,12 @@ func (q quantifier) GetIndex() int {
 	return q.index
 }
 
-func (q quantifier) GetVarList() []Var {
-	return copyVarList(q.varList)
+func (q quantifier) GetVarList() Lib.List[TypedVar] {
+	return Lib.ListCpy(q.varList)
 }
 
 func (q quantifier) GetForm() Form {
 	return q.subForm.Copy()
-}
-
-func (q quantifier) GetType() TypeScheme {
-	return DefaultPropType(0)
 }
 
 func (q quantifier) forceGetMetas() Lib.Set[Meta] {
@@ -110,9 +106,9 @@ func ChangeVarSeparator(sep string) string {
 func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	varStrings := []string{}
 
-	for _ = range q.GetVarList() {
+	for _ = range q.GetVarList().GetSlice() {
 		str := mapping[QuantVarOpen]
-		str += ListToMappedString(q.GetVarList(), varSeparator, "", mapping, false)
+		str += ListToMappedString(q.GetVarList().GetSlice(), varSeparator, "", mapping, false)
 		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 
@@ -129,7 +125,7 @@ func (q quantifier) GetChildFormulas() Lib.List[Form] {
 
 func (q quantifier) Equals(other any) bool {
 	if typed, ok := other.(quantifier); ok {
-		return AreEqualsVarList(q.varList, typed.varList) && q.subForm.Equals(typed.subForm)
+		return Lib.ListEquals(q.varList, typed.varList) && q.subForm.Equals(typed.subForm)
 	}
 
 	return false
@@ -142,7 +138,7 @@ func (q quantifier) GetSubTerms() Lib.List[Term] {
 func (q quantifier) copy() quantifier {
 	nq := makeQuantifier(
 		q.GetIndex(),
-		copyVarList(q.GetVarList()),
+		Lib.ListCpy(q.varList),
 		q.GetForm(),
 		q.metas.Raw().Copy(),
 		q.symbol,
@@ -167,14 +163,14 @@ func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
 }
 
 func (q quantifier) renameVariables() quantifier {
-	newVarList := []Var{}
+	newVarList := Lib.NewList[TypedVar]()
 	newForm := q.GetForm()
 
-	for _, v := range q.GetVarList() {
+	for _, v := range q.GetVarList().GetSlice() {
 		newVar := MakerNewVar(v.GetName())
 		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()))
-		newVarList = append(newVarList, newVar)
-		newForm, _ = newForm.RenameVariables().ReplaceTermByTerm(v, newVar)
+		newVarList.Append(MkTypedVar(newVar.name, newVar.index, v.ty))
+		newForm, _ = newForm.RenameVariables().ReplaceTermByTerm(v.ToBoundVar(), newVar)
 	}
 
 	return makeQuantifier(

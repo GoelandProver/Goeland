@@ -87,24 +87,20 @@ type All struct {
 	quantifier
 }
 
-func MakeAllSimple(i int, vars []Var, forms Form, metas Lib.Set[Meta]) All {
+func MakeAllSimple(i int, vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) All {
 	return All{makeQuantifier(i, vars, forms, metas, AllQuant)}
 }
 
-func MakeAll(i int, vars []Var, forms Form) All {
+func MakeAll(i int, vars Lib.List[TypedVar], forms Form) All {
 	return MakeAllSimple(i, vars, forms, Lib.EmptySet[Meta]())
 }
 
-func MakerAll(vars []Var, forms Form) All {
+func MakerAll(vars Lib.List[TypedVar], forms Form) All {
 	return MakeAll(MakerIndexFormula(), vars, forms)
 }
 
 func (a All) Equals(other any) bool {
-	if typed, ok := other.(All); ok {
-		return AreEqualsVarList(a.GetVarList(), typed.GetVarList()) && a.GetForm().Equals(typed.GetForm())
-	}
-
-	return false
+	return a.quantifier.Equals(other)
 }
 
 func (a All) GetSubFormulasRecur() Lib.List[Form] {
@@ -139,24 +135,20 @@ type Ex struct {
 	quantifier
 }
 
-func MakeExSimple(i int, vars []Var, forms Form, metas Lib.Set[Meta]) Ex {
+func MakeExSimple(i int, vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) Ex {
 	return Ex{makeQuantifier(i, vars, forms, metas, ExQuant)}
 }
 
-func MakeEx(i int, vars []Var, forms Form) Ex {
+func MakeEx(i int, vars Lib.List[TypedVar], forms Form) Ex {
 	return MakeExSimple(i, vars, forms, Lib.EmptySet[Meta]())
 }
 
-func MakerEx(vars []Var, forms Form) Ex {
+func MakerEx(vars Lib.List[TypedVar], forms Form) Ex {
 	return MakeEx(MakerIndexFormula(), vars, forms)
 }
 
 func (e Ex) Equals(other any) bool {
-	if typed, ok := other.(Ex); ok {
-		return AreEqualsVarList(e.GetVarList(), typed.GetVarList()) && e.GetForm().Equals(typed.GetForm())
-	}
-
-	return false
+	return e.quantifier.Equals(other)
 }
 
 func (e Ex) GetSubFormulasRecur() Lib.List[Form] {
@@ -826,6 +818,7 @@ type Pred struct {
 	*MappedString
 	index int
 	id    Id
+	tys   Lib.List[Ty]
 	args  Lib.List[Term]
 	metas Lib.Cache[Lib.Set[Meta], Pred]
 }
@@ -833,6 +826,7 @@ type Pred struct {
 func MakePredSimple(
 	index int,
 	id Id,
+	tys Lib.List[Ty],
 	terms Lib.List[Term],
 	metas Lib.Set[Meta],
 ) Pred {
@@ -841,6 +835,7 @@ func MakePredSimple(
 		fms,
 		index,
 		id,
+		tys,
 		terms,
 		Lib.MkCache(metas, Pred.forceGetMetas),
 	}
@@ -851,11 +846,13 @@ func MakePredSimple(
 func MakePred(
 	index int,
 	id Id,
+	tys Lib.List[Ty],
 	terms Lib.List[Term],
 ) Pred {
 	return MakePredSimple(
 		index,
 		id,
+		tys,
 		terms,
 		Lib.EmptySet[Meta](),
 	)
@@ -863,15 +860,17 @@ func MakePred(
 
 func MakerPred(
 	id Id,
+	tys Lib.List[Ty],
 	terms Lib.List[Term],
 ) Pred {
-	return MakePred(MakerIndexFormula(), id, terms)
+	return MakePred(MakerIndexFormula(), id, tys, terms)
 }
 
 /* Pred attributes getters */
 
 func (p Pred) GetIndex() int           { return p.index }
 func (p Pred) GetID() Id               { return p.id.Copy().(Id) }
+func (p Pred) GetTyArgs() Lib.List[Ty] { return p.tys }
 func (p Pred) GetArgs() Lib.List[Term] { return p.args }
 
 /* Formula methods */
@@ -914,6 +913,7 @@ func (p Pred) Copy() Form {
 	np := MakePredSimple(
 		p.index,
 		p.id,
+		p.GetTyArgs(),
 		p.GetArgs(),
 		p.metas.Raw().Copy(),
 	)
@@ -927,7 +927,9 @@ func (p Pred) Copy() Form {
 
 func (p Pred) Equals(other any) bool {
 	if typed, ok := other.(Pred); ok {
-		return typed.id.Equals(p.id) && Lib.ListEquals(typed.args, p.args)
+		return typed.id.Equals(p.id) &&
+			Lib.ListEquals(typed.tys, p.tys) &&
+			Lib.ListEquals(typed.args, p.args)
 	}
 
 	return false
@@ -968,6 +970,7 @@ func (p Pred) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	np := MakePredSimple(
 		p.GetIndex(),
 		p.GetID(),
+		p.GetTyArgs(),
 		termList,
 		p.metas.Raw(),
 	)
@@ -999,6 +1002,7 @@ func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
 			return MakePredSimple(
 				nf.index,
 				nf.id,
+				nf.tys,
 				nf.args,
 				nf.metas.Raw(),
 			)
@@ -1031,7 +1035,7 @@ func (p Pred) ReplaceMetaByTerm(meta Meta, term Term) Form {
 		}
 	}
 
-	return MakePred(p.GetIndex(), p.id, newTerms)
+	return MakePred(p.GetIndex(), p.id, p.tys, newTerms)
 }
 
 // -----------------------------------------------------------------------------
