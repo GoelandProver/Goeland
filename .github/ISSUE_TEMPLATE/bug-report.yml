@@ -1,0 +1,37 @@
+name: Bug report
+description: Report an unexpected behaviour
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thanks for your report, we greatly appreciate it!
+- type: textarea
+  attributes:
+    label: Description of the issue
+    placeholder: Briefly describe the issue at hand
+- type: input
+  attributes:
+    label: Flags used
+    description: Give the flags you passed to Goéland only if applicable
+    placeholder: If applicable, give the flags you used to run the problem
+- type: textarea
+  attributes:
+    label: Small problem file to reproduce the bug
+    placeholder: |
+      % If include is needed, give them at first:
+      %%% Includes
+      %% name: foo.ax
+      fof(foo_1,axiom,...)
+      ...
+      %% name: bar.ax
+      fof(bar_1,axiom,...)
+      ...
+      %%% Problem
+      fof(incl_foo,include,'foo.ax').
+      fof(incl_bar,include,'bar.ax').
+      ...
+      fof(bar,conjecture,...).
+- type: input
+  attributes:
+    label: Version of Goéland where the issue occurs
+    description: You can get this information by running `goeland -version`
