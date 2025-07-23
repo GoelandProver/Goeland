@@ -111,6 +111,8 @@ func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return i
 }
 
+func (i Id) ReplaceTyVar(TyBound, Ty) Term { return i }
+
 func (i Id) GetSubTerms() Lib.List[Term] {
 	return Lib.MkListV[Term](i)
 }
@@ -161,10 +163,17 @@ func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separato
 }
 
 func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, displayTypes bool) string {
-	if f.GetArgs().Len() == 0 {
+	if f.tys.Empty() && f.GetArgs().Empty() {
 		return idString + "%s"
 	}
+
 	args := []string{}
+	if !f.tys.Empty() {
+		if tv := Lib.ListToString(f.tys, ", ", mapping[PredEmpty]); tv != "" {
+			args = append(args, tv)
+		}
+	}
+
 	args = append(args, "%s")
 
 	str := idString + "(" + strings.Join(args, mapping[PredTypeVarSep]) + ")"
@@ -268,6 +277,23 @@ func (f Fun) ReplaceSubTermBy(oldTerm, newTerm Term) Term {
 	}
 }
 
+func (f Fun) ReplaceTyVar(old TyBound, new Ty) Term {
+	typed_args := Lib.ListMap(
+		f.tys,
+		func(t Ty) Ty { return t.ReplaceTyVar(old, new) },
+	)
+	args := Lib.ListMap(
+		f.args,
+		func(t Term) Term { return t.ReplaceTyVar(old, new) },
+	)
+	return MakeFun(
+		f.GetID(),
+		typed_args,
+		args,
+		f.metas.Raw(),
+	)
+}
+
 func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
 	if f.Equals(oldTerm) {
 		return newTerm.Copy()
@@ -338,10 +364,9 @@ func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return v
 }
 
+func (v Var) ReplaceTyVar(TyBound, Ty) Term { return v }
+
 func (v Var) ToMappedString(map_ MapString, type_ bool) string {
-	if type_ {
-		return fmt.Sprintf("%s_%d", v.GetName(), v.GetIndex())
-	}
 	return v.GetName()
 }
 
@@ -428,6 +453,8 @@ func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 	}
 	return m
 }
+
+func (m Meta) ReplaceTyVar(TyBound, Ty) Term { return m }
 
 func (m Meta) GetSubTerms() Lib.List[Term] {
 	return Lib.MkListV[Term](m)

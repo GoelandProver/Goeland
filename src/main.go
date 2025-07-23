@@ -201,6 +201,7 @@ func initDebuggers() {
 	Search.InitDebugger()
 	// Typing.InitDebugger()
 	Unif.InitDebugger()
+	Engine.InitDebugger()
 }
 
 // FIXME: eventually, we would want to add an "interpretation" layer between elab and internal representation that does this
