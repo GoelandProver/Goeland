@@ -38,6 +38,7 @@ package Engine
 
 import (
 	"fmt"
+
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -50,10 +51,15 @@ var defaultType = Parser.MkTypeConst("$i").(Parser.PType)
 func pretype(con Context, terms []Parser.PTerm) []Lib.Pair[Parser.PTerm, Parser.PType] {
 	tys := []Lib.Pair[Parser.PTerm, Parser.PType]{}
 	for _, term := range terms {
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("pretyping %s", term.ToString()) }))
 		lookupName := ""
+		args := []Parser.PTerm{}
+		defined_type := Lib.MkNone[Parser.PType]()
 		switch t := term.(type) {
 		case Parser.PFun:
 			lookupName = t.Symbol()
+			args = t.Args()
+			defined_type = t.DefinedType()
 		case Parser.PVar:
 			lookupName = t.Name()
 		}
@@ -62,21 +68,38 @@ func pretype(con Context, terms []Parser.PTerm) []Lib.Pair[Parser.PTerm, Parser.
 
 		switch ty := lookupInContext(con, lookupName).(type) {
 		case Lib.Some[Parser.PType]:
-			tys = append(tys, Lib.MkPair(term, ty.Val))
+			real_ty := instantiateType(ty.Val, lookupName, args)
+			debug_low_level(Lib.MkLazy(func() string {
+				return fmt.Sprintf("Term in context with type %s", real_ty.ToString())
+			}))
+
+			tys = append(tys, Lib.MkPair(term, real_ty))
 			typed = true
+		case Lib.None[Parser.PType]:
+			debug_low_level(Lib.MkLazy(func() string { return "Term not in context, is it defined?" }))
+			switch oty := defined_type.(type) {
+			case Lib.Some[Parser.PTypeFun]:
+				debug_low_level(Lib.MkLazy(func() string {
+					return fmt.Sprintf("%s has defined type %s", lookupName, oty.Val.ToString())
+				}))
+				tys = append(tys, Lib.MkPair(term, Parser.PType(oty.Val)))
+				typed = true
+			}
 		}
 
 		if !typed {
+			debug_low_level(Lib.MkLazy(func() string { return "Term is not a defined term, assigning default type" }))
 			tys = append(tys, Lib.MkPair(term, defaultType))
 		}
+
 	}
 	return tys
 }
 
 func lookupInContext(con Context, name string) Lib.Option[Parser.PType] {
-	for _, p := range con {
-		if p.Fst == name {
-			return Lib.MkSome(p.Snd)
+	for i := len(con) - 1; i >= 0; i-- {
+		if con[i].Fst == name {
+			return Lib.MkSome(con[i].Snd)
 		}
 	}
 	return Lib.MkNone[Parser.PType]()
@@ -86,13 +109,6 @@ func isTyConstr(pty Parser.PType) bool {
 	switch ty := pty.(type) {
 	case Parser.PTypeFun:
 		return ty.Symbol() == "$tType"
-	case Parser.PTypeBin:
-		switch ty.Operator() {
-		case Parser.PTypeMap:
-			return isTyConstr(ty.Right())
-		}
-	case Parser.PTypeQuant:
-		return isTyConstr(ty.Ty())
 	}
 	return false
 }
@@ -150,4 +166,79 @@ func pretypeVars(vars []Lib.Pair[string, Parser.PAtomicType]) Lib.List[AST.Typed
 		res.Upd(i, AST.MakerTypedVar(v.Fst, ty))
 	}
 	return res
+}
+
+func instantiateType(ty Parser.PType, lookupName string, args []Parser.PTerm) Parser.PType {
+	switch nty := ty.(type) {
+	case Parser.PTypeVar, Parser.PTypeFun:
+		if len(args) > 0 {
+			Glob.Fatal(
+				elab_label,
+				fmt.Sprintf("Expected constant, got %s which is a function", lookupName),
+			)
+		}
+
+		return nty
+
+	case Parser.PTypeBin:
+		if nty.Operator() != Parser.PTypeMap {
+			Glob.Fatal(
+				elab_label,
+				fmt.Sprintf("Expected map type, got %s", nty.ToString()),
+			)
+		}
+
+		return nty.Right()
+
+	case Parser.PTypeQuant:
+		type_args := map[string]Parser.PType{}
+		for i, v := range nty.Vars() {
+			type_args[v.Fst] = parserTermToType(args[i])
+		}
+		return instantiateRec(nty.Ty(), type_args)
+	}
+	Glob.Fatal(
+		elab_label,
+		fmt.Sprintf("Expected functional type, got %s", ty.ToString()),
+	)
+	return ty
+}
+
+func instantiateRec(ty Parser.PType, instance map[string]Parser.PType) Parser.PType {
+	switch nty := ty.(type) {
+	case Parser.PTypeVar:
+		if val, ok := instance[nty.Name()]; ok {
+			return val
+		}
+		Glob.Fatal(
+			elab_label,
+			fmt.Sprintf("Type variable %s not found in the instance", ty.ToString()),
+		)
+		return ty
+
+	case Parser.PTypeFun:
+		args := []Parser.PAtomicType{}
+		for _, arg := range nty.Args() {
+			args = append(args, instantiateRec(arg.(Parser.PType), instance).(Parser.PAtomicType))
+		}
+
+		return Parser.MkPTypeFun(nty.Symbol(), args)
+
+	case Parser.PTypeBin:
+		new_left := instantiateRec(nty.Left(), instance)
+		new_right := instantiateRec(nty.Right(), instance)
+		switch nty.Operator() {
+		case Parser.PTypeProd:
+			return Parser.MkTypeProd(new_left, new_right)
+
+		case Parser.PTypeMap:
+			return new_right
+		}
+	}
+
+	Glob.Anomaly(
+		elab_label,
+		fmt.Sprintf("Unexpected type on instantiation: %s", ty.ToString()),
+	)
+	return ty
 }

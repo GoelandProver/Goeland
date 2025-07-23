@@ -31,28 +31,56 @@
 **/
 
 /**
- * This file offers [String], a wrapper around [string] that allows for writing
- * methods over strings.
+ * This file provides a generic interface to launch goroutines on functions,
+ * collect their result and compute a final value.
+ * The computation of the final value is done incrementally at the answer of each child,
+ * consequently, the function taking care of reconciliating the output of two children
+ * should be associative, commutative, and have a neutral.
  **/
 
 package Lib
 
-type String string
+import (
+	"fmt"
+	"reflect"
+)
 
-func (s String) Equals(oth any) bool {
-	if str, ok := oth.(String); ok {
-		return s == str
+func GenericParallel[T any](
+	calls []func(chan T),
+	reconciliation func(T, T) T,
+	neutral T,
+) (T, error) {
+	channels := make([](chan T), len(calls))
+	for i, call := range calls {
+		call_chan := make(chan T)
+		channels[i] = call_chan
+		go call(call_chan)
 	}
-	return false
+	return genericSelect(channels, reconciliation, neutral)
 }
 
-func (s String) Less(oth any) bool {
-	if str, ok := oth.(String); ok {
-		return s < str
+func genericSelect[T any](
+	channels [](chan T),
+	reconciliation func(T, T) T,
+	neutral T,
+) (T, error) {
+	remaining := len(channels)
+	res := neutral
+	cases := make([]reflect.SelectCase, len(channels))
+	for i, channel := range channels {
+		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(channel)}
 	}
-	return false
-}
 
-func MkString(s string) String {
-	return String(s)
+	for remaining > 0 {
+		_, value, _ := reflect.Select(cases)
+		remaining--
+
+		if v, ok := value.Interface().(T); ok {
+			res = reconciliation(res, v)
+		} else {
+			return neutral, fmt.Errorf("Error in Lib.Par: channel has not answered a value of the right type.")
+		}
+	}
+
+	return res, nil
 }

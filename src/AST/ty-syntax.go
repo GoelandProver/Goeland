@@ -48,6 +48,7 @@ type Ty interface {
 	ToString() string
 	Equals(any) bool
 	Copy() Ty
+	ReplaceTyVar(TyBound, Ty) Ty
 }
 
 // Internal, shouldn't get out so no upper case
@@ -65,6 +66,8 @@ func (v tyVar) Equals(oth any) bool {
 }
 func (v tyVar) Copy() Ty { return tyVar{v.repr} }
 
+func (v tyVar) ReplaceTyVar(TyBound, Ty) Ty { return v }
+
 type TyBound struct {
 	name  string
 	index int
@@ -78,7 +81,15 @@ func (b TyBound) Equals(oth any) bool {
 	}
 	return false
 }
-func (b TyBound) Copy() Ty { return TyBound{b.name, b.index} }
+func (b TyBound) Copy() Ty        { return TyBound{b.name, b.index} }
+func (b TyBound) GetName() string { return b.name }
+
+func (b TyBound) ReplaceTyVar(old TyBound, new Ty) Ty {
+	if b.Equals(old) {
+		return new
+	}
+	return b
+}
 
 type TyMeta struct {
 	name string
@@ -93,6 +104,8 @@ func (m TyMeta) Equals(oth any) bool {
 	return false
 }
 func (m TyMeta) Copy() Ty { return TyMeta{m.name} }
+
+func (m TyMeta) ReplaceTyVar(TyBound, Ty) Ty { return m }
 
 // Type constructors, e.g., list, option, ...
 // Include constants, e.g., $i, $o, ...
@@ -122,6 +135,21 @@ func (c TyConstr) Copy() Ty {
 	return TyConstr{c.symbol, Lib.ListCpy(c.args)}
 }
 
+func (c TyConstr) Symbol() string {
+	return c.symbol
+}
+
+func (c TyConstr) Args() Lib.List[Ty] {
+	return c.args
+}
+
+func (c TyConstr) ReplaceTyVar(old TyBound, new Ty) Ty {
+	return TyConstr{
+		c.symbol,
+		Lib.ListMap(c.args, func(t Ty) Ty { return t.ReplaceTyVar(old, new) }),
+	}
+}
+
 type TyProd struct {
 	args Lib.List[Ty]
 }
@@ -147,6 +175,12 @@ func (p TyProd) Copy() Ty {
 	return TyProd{Lib.ListCpy(p.args)}
 }
 
+func (p TyProd) ReplaceTyVar(old TyBound, new Ty) Ty {
+	return TyProd{
+		Lib.ListMap(p.args, func(t Ty) Ty { return t.ReplaceTyVar(old, new) }),
+	}
+}
+
 type TyFunc struct {
 	in, out Ty
 }
@@ -164,6 +198,10 @@ func (f TyFunc) Equals(oth any) bool {
 
 func (f TyFunc) Copy() Ty {
 	return TyFunc{f.in.Copy(), f.out.Copy()}
+}
+
+func (f TyFunc) ReplaceTyVar(old TyBound, new Ty) Ty {
+	return TyFunc{f.in.ReplaceTyVar(old, new), f.out.ReplaceTyVar(old, new)}
 }
 
 type TyPi struct {
@@ -186,6 +224,10 @@ func (p TyPi) Equals(oth any) bool {
 
 func (p TyPi) Copy() Ty {
 	return TyPi{p.vars.Copy(func(x string) string { return x }), p.ty.Copy()}
+}
+
+func (p TyPi) ReplaceTyVar(old TyBound, new Ty) Ty {
+	return TyPi{p.vars, p.ty.ReplaceTyVar(old, new)}
 }
 
 // Makers
@@ -240,29 +282,28 @@ func MakerTyBV(name string) Ty {
 }
 
 func InstantiateTy(ty Ty, instance Lib.List[Ty]) Ty {
+	fatal := func(expected int) {
+		Glob.Fatal(
+			"Ty.Instantiate",
+			fmt.Sprintf(
+				"On instantiation of %s: given instance %s does not have the right number of arguments (expected %d)",
+				ty.ToString(),
+				Lib.ListToString(instance, ", ", "(empty instance)"),
+				expected,
+			),
+		)
+	}
+
 	switch rty := ty.(type) {
-	case TyFunc:
+	case TyConstr, TyFunc:
 		if !instance.Empty() {
-			Glob.Anomaly(
-				"Ty.Instantiate",
-				fmt.Sprintf(
-					"On instantiation of %s: given instance %s has arguments when it shouldn't",
-					ty.ToString(),
-					Lib.ListToString(instance, ", ", "(empty instance)"),
-				),
-			)
+			fatal(0)
 		}
+
 		return ty
 	case TyPi:
 		if instance.Len() != rty.vars.Len() {
-			Glob.Anomaly(
-				"Ty.Instantiate",
-				fmt.Sprintf(
-					"On instantiation of %s: given instance %s does not have the right number of arguments",
-					ty.ToString(),
-					Lib.ListToString(instance, ", ", "(empty instance)"),
-				),
-			)
+			fatal(rty.vars.Len())
 		}
 
 		instanceMap := make(map[string]Ty)
@@ -320,8 +361,12 @@ func instantiateTyRec(ty, source Ty, instance map[string]Ty) Ty {
 
 func GetArgsTy(ty Ty) Lib.List[Ty] {
 	switch rty := ty.(type) {
+	case TyConstr:
+		return Lib.NewList[Ty]()
 	case TyFunc:
 		switch nty := rty.in.(type) {
+		case TyBound, TyConstr:
+			return Lib.MkListV(rty.in)
 		case TyProd:
 			return nty.args
 		}
@@ -331,4 +376,19 @@ func GetArgsTy(ty Ty) Lib.List[Ty] {
 		fmt.Sprintf("Tried to extract types of arguments of a non-functional type %s", ty.ToString()),
 	)
 	return Lib.NewList[Ty]()
+}
+
+func GetOutTy(ty Ty) Ty {
+	switch rty := ty.(type) {
+	case TyConstr:
+		return tType
+	case TyFunc:
+		return rty.out
+	}
+
+	Glob.Anomaly(
+		"Ty.GetOutTy",
+		fmt.Sprintf("Tried to extract out type of a non-functional type %s", ty.ToString()),
+	)
+	return nil
 }

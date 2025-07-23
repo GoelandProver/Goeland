@@ -40,6 +40,7 @@ package Typing
 import (
 	"sync"
 
+	"fmt"
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Lib"
 )
@@ -83,6 +84,20 @@ func (con Con) add(name string, ty AST.Ty) Con {
 
 func (con Con) contains(name string, ty AST.Ty) bool {
 	return con.defs.Contains(definedType{name, ty})
+}
+
+func (con Con) addTypedVars(typed_vars Lib.List[AST.TypedVar]) Con {
+	for _, tv := range typed_vars.GetSlice() {
+		con = con.add(tv.GetName(), tv.GetTy())
+	}
+	return con
+}
+
+func (con Con) toString() string {
+	to_string := func(def definedType) string {
+		return fmt.Sprintf("%s: %s", def.name, def.ty.ToString())
+	}
+	return con.defs.Elements().ToString(to_string, ", ", "{}")
 }
 
 // We could use [Con] to do environments, but as we need to query by name it's faster to use a map.

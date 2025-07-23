@@ -1,5 +1,5 @@
 % As arithmetic is not handled by Goeland, we simply check that parsing is OK
-% args: -ari -one_step -l 1
+% args: -one_step -l 1
 % result: NOT VALID
 
 tff(p_int_type,type,

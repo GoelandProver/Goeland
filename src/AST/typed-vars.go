@@ -59,7 +59,7 @@ func (v TypedVar) Equals(oth any) bool {
 }
 
 func (v TypedVar) ToString() string {
-	return fmt.Sprintf("%s_%d : %s", v.name, v.index, v.ty.ToString())
+	return fmt.Sprintf("%s : %s", v.name, v.ty.ToString())
 }
 
 func (v TypedVar) GetName() string {
@@ -80,6 +80,10 @@ func (v TypedVar) ToBoundVar() Var {
 
 func (v TypedVar) ToTyBoundVar() TyBound {
 	return MkTyBV(v.name, v.index).(TyBound)
+}
+
+func (v TypedVar) ReplaceTyVar(old TyBound, new Ty) TypedVar {
+	return TypedVar{v.name, v.index, v.ty.ReplaceTyVar(old, new)}
 }
 
 func MkTypedVar(name string, index int, ty Ty) TypedVar {

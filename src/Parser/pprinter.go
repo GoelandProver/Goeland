@@ -40,27 +40,27 @@ import (
 )
 
 func (t PVar) ToString() string {
-	return fmt.Sprintf("Var{%s}", t.name)
+	return fmt.Sprintf("Var(%s)", t.name)
 }
 
 func (f PFun) ToString() string {
 	args := Lib.MkListV(f.arguments...)
-	return fmt.Sprintf("Fun{%s, %s}", f.symbol, args.ToString(PTerm.ToString, ", ", "[]"))
+	return fmt.Sprintf("%s(%s)", f.symbol, args.ToString(PTerm.ToString, ", ", ""))
 }
 
 func (c PConst) ToString() string {
 	switch c.PConstant {
 	case PTop:
-		return "Const{$true}"
+		return "$true"
 	case PBot:
-		return "Const{$false}"
+		return "$false"
 	}
-	return "Const{$unknown}"
+	return "Const{unknown}"
 }
 
 func (p PPred) ToString() string {
 	args := Lib.MkListV(p.arguments...)
-	return fmt.Sprintf("Pred{%s, %s}", p.symbol, args.ToString(PTerm.ToString, ", ", "[]"))
+	return fmt.Sprintf("%s(%s)", p.symbol, args.ToString(PTerm.ToString, ", ", ""))
 }
 
 func (u PUnary) ToString() string {
@@ -69,37 +69,37 @@ func (u PUnary) ToString() string {
 	case PUnaryNeg:
 		prefix = "Neg"
 	}
-	return fmt.Sprintf("%s{%s}", prefix, u.PForm.ToString())
+	return fmt.Sprintf("%s(%s)", prefix, u.PForm.ToString())
 }
 
 func (b PBin) ToString() string {
-	prefix := ""
+	infix := ""
 	switch b.operator {
 	case PBinaryAnd:
-		prefix = "And"
+		infix = "&"
 	case PBinaryOr:
-		prefix = "Or"
+		infix = "|"
 	case PBinaryImp:
-		prefix = "Imp"
+		infix = "=>"
 	case PBinaryEqu:
-		prefix = "Equ"
+		infix = "<=>"
 	}
-	return fmt.Sprintf("%s{%s, %s}", prefix, b.left.ToString(), b.right.ToString())
+	return fmt.Sprintf("(%s) %s (%s)", b.left.ToString(), infix, b.right.ToString())
 }
 
 func (q PQuant) ToString() string {
 	prefix := ""
 	switch q.PQuantifier {
 	case PQuantAll:
-		prefix = "All"
+		prefix = "!"
 	case PQuantEx:
-		prefix = "Ex"
+		prefix = "?"
 	}
 	vars := Lib.MkListV(q.vars...)
 	pairStr := func(p Lib.Pair[string, PAtomicType]) string {
 		return "(" + p.Fst + ": " + p.Snd.(PType).ToString() + ")"
 	}
-	return fmt.Sprintf("%s{%s, %s}", prefix, vars.ToString(pairStr, ", ", ""), q.PForm.ToString())
+	return fmt.Sprintf("%s [%s]: (%s)", prefix, vars.ToString(pairStr, ", ", ""), q.PForm.ToString())
 }
 
 func (v PTypeVar) ToString() string {
@@ -140,7 +140,7 @@ func (q PTypeQuant) ToString() string {
 	pairStr := func(p Lib.Pair[string, PAtomicType]) string {
 		return "(" + p.Fst + ": " + p.Snd.(PType).ToString() + ")"
 	}
-	return fmt.Sprintf("%s[%s]: (%s)", prefix, vars.ToString(pairStr, ", ", ""), q.t.ToString())
+	return fmt.Sprintf("%s [%s]: (%s)", prefix, vars.ToString(pairStr, ", ", ""), q.t.ToString())
 }
 
 func (stmt PStatement) ToString() string {
